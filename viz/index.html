@@ -391,6 +391,88 @@
     if (e.key === 'Escape') closeDetailPanel();
   });
 
+  // ── Mobile pinch-to-zoom ──
+  (function () {
+    const plotEl = document.getElementById('plot');
+    let startDist = null;
+    let startMidX = null;
+    let startMidY = null;
+    let startXRange = null;
+    let startYRange = null;
+
+    function touchDist(t) {
+      const dx = t[1].clientX - t[0].clientX;
+      const dy = t[1].clientY - t[0].clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function getAxRanges() {
+      const xa = plotEl._fullLayout.xaxis;
+      const ya = plotEl._fullLayout.yaxis;
+      return { x: xa.range.slice(), y: ya.range.slice() };
+    }
+
+    function plotFraction(clientX, clientY) {
+      // Convert client coords to fraction [0,1] within the plot area
+      const rect = plotEl.getBoundingClientRect();
+      const fl = plotEl._fullLayout;
+      const plotLeft = rect.left + fl.margin.l;
+      const plotTop = rect.top + fl.margin.t;
+      const plotWidth = fl.width - fl.margin.l - fl.margin.r;
+      const plotHeight = fl.height - fl.margin.t - fl.margin.b;
+      return {
+        fx: (clientX - plotLeft) / plotWidth,
+        fy: (clientY - plotTop) / plotHeight,
+      };
+    }
+
+    plotEl.addEventListener('touchstart', function (e) {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        const t = e.touches;
+        startDist = touchDist(t);
+        startMidX = (t[0].clientX + t[1].clientX) / 2;
+        startMidY = (t[0].clientY + t[1].clientY) / 2;
+        const ranges = getAxRanges();
+        startXRange = ranges.x;
+        startYRange = ranges.y;
+      }
+    }, { passive: false });
+
+    plotEl.addEventListener('touchmove', function (e) {
+      if (e.touches.length === 2 && startDist) {
+        e.preventDefault();
+        const t = e.touches;
+        const curDist = touchDist(t);
+        const scale = startDist / curDist; // >1 = zoom out, <1 = zoom in
+
+        // Zoom around the midpoint of the initial pinch
+        const { fx, fy } = plotFraction(startMidX, startMidY);
+
+        const xLen = startXRange[1] - startXRange[0];
+        const yLen = startYRange[1] - startYRange[0];
+        const newXLen = xLen * scale;
+        const newYLen = yLen * scale;
+
+        // Anchor point in data coordinates
+        const anchorX = startXRange[0] + fx * xLen;
+        const anchorY = startYRange[1] - fy * yLen; // y is flipped
+
+        const newXRange = [anchorX - fx * newXLen, anchorX + (1 - fx) * newXLen];
+        const newYRange = [anchorY - (1 - fy) * newYLen, anchorY + fy * newYLen];
+
+        Plotly.relayout(plotEl, {
+          'xaxis.range': newXRange,
+          'yaxis.range': newYRange,
+        });
+      }
+    }, { passive: false });
+
+    plotEl.addEventListener('touchend', function () {
+      startDist = null;
+    });
+  })();
+
   // ── Get category key and palette for current color mode ──
   function getCategoryInfo(d) {
     if (currentColorBy === 'color') return { key: d.c, palette: COLOR_PALETTE };
