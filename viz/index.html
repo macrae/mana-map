@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mana Map</title>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-system, sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+  /* Toolbar */
+  .toolbar { background: #16213e; padding: 10px 16px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; border-bottom: 1px solid #2a2a4a; }
+  .toolbar h1 { font-size: 1.3rem; color: #c4a747; white-space: nowrap; }
+  .toolbar label { font-size: 0.85rem; color: #aaa; }
+  .toolbar select, .toolbar input { background: #1a1a2e; color: #e0e0e0; border: 1px solid #3a3a5a; border-radius: 4px; padding: 5px 8px; font-size: 0.85rem; }
+  .toolbar select:focus, .toolbar input:focus { outline: none; border-color: #c4a747; }
+
+  /* Supertype toggles */
+  .toggles { display: flex; gap: 4px; flex-wrap: wrap; }
+  .toggle-btn { background: #2a2a4a; color: #ccc; border: 1px solid #3a3a5a; border-radius: 4px; padding: 3px 8px; font-size: 0.75rem; cursor: pointer; transition: all 0.15s; }
+  .toggle-btn.active { background: #3a3a6a; color: #fff; border-color: #c4a747; }
+
+  /* Main content area */
+  .main-area { display: flex; flex: 1; min-height: 0; }
+
+  /* Plot */
+  #plot { flex: 1; min-height: 0; }
+
+  /* Detail panel */
+  .detail-panel { width: 0; overflow: hidden; background: #16213e; border-left: 1px solid #2a2a4a; transition: width 0.25s ease; flex-shrink: 0; }
+  .detail-panel.open { width: 350px; }
+  .detail-inner { width: 350px; height: 100%; overflow-y: auto; padding: 16px; }
+  .detail-inner::-webkit-scrollbar { width: 6px; }
+  .detail-inner::-webkit-scrollbar-track { background: #16213e; }
+  .detail-inner::-webkit-scrollbar-thumb { background: #3a3a5a; border-radius: 3px; }
+
+  .detail-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .detail-header h2 { font-size: 1.1rem; color: #c4a747; line-height: 1.3; flex: 1; margin-right: 8px; }
+  .detail-close { background: none; border: 1px solid #3a3a5a; color: #aaa; width: 28px; height: 28px; border-radius: 4px; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .detail-close:hover { border-color: #c4a747; color: #e0e0e0; }
+
+  .detail-type { color: #aaa; font-size: 0.85rem; margin-bottom: 8px; }
+  .detail-mana { margin-bottom: 12px; display: flex; align-items: center; gap: 3px; flex-wrap: wrap; }
+
+  .detail-section { margin-bottom: 12px; }
+  .detail-section-title { font-size: 0.7rem; text-transform: uppercase; color: #666; letter-spacing: 0.5px; margin-bottom: 4px; }
+
+  .detail-oracle { font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; color: #ddd; background: #1a1a2e; padding: 10px; border-radius: 6px; border: 1px solid #2a2a4a; }
+
+  .detail-stats { display: flex; gap: 16px; flex-wrap: wrap; }
+  .detail-stat { text-align: center; }
+  .detail-stat-value { font-size: 1.2rem; font-weight: bold; color: #e0e0e0; }
+  .detail-stat-label { font-size: 0.65rem; color: #888; text-transform: uppercase; }
+
+  .detail-meta { font-size: 0.8rem; color: #bbb; }
+  .detail-meta span { display: block; margin-bottom: 2px; }
+
+  .detail-formats { display: flex; flex-wrap: wrap; gap: 4px; }
+  .format-badge { background: #2a2a4a; color: #aaa; border: 1px solid #3a3a5a; border-radius: 3px; padding: 2px 6px; font-size: 0.7rem; }
+  .format-badge.legal { background: #1a3a2a; color: #4ade80; border-color: #2a5a3a; }
+
+  .detail-keywords { display: flex; flex-wrap: wrap; gap: 4px; }
+  .keyword-badge { background: #2a2a4a; color: #ccc; border-radius: 3px; padding: 2px 6px; font-size: 0.7rem; }
+
+  .btn-similar { width: 100%; padding: 8px; background: #2a2a4a; color: #c4a747; border: 1px solid #c4a747; border-radius: 6px; cursor: pointer; font-size: 0.85rem; margin-top: 4px; transition: all 0.15s; }
+  .btn-similar:hover { background: #3a3a5a; }
+
+  /* Mana symbols */
+  .mana-sym { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; font-size: 0.65rem; font-weight: bold; color: #000; flex-shrink: 0; }
+  .mana-W { background: #F9FAF4; }
+  .mana-U { background: #0E68AB; color: #fff; }
+  .mana-B { background: #6B3FA0; color: #fff; }
+  .mana-R { background: #D3202A; color: #fff; }
+  .mana-G { background: #00733E; color: #fff; }
+  .mana-C { background: #BEB9B2; }
+  .mana-num { background: #CAC5C0; }
+
+  /* Status bar */
+  .status { background: #16213e; padding: 4px 16px; font-size: 0.75rem; color: #888; border-top: 1px solid #2a2a4a; }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <h1>Mana Map</h1>
+  <div>
+    <label for="colorBy">Color by</label>
+    <select id="colorBy">
+      <option value="color">Primary Color</option>
+      <option value="supertype">Supertype</option>
+      <option value="rarity">Rarity</option>
+    </select>
+  </div>
+  <div>
+    <label for="search">Search</label>
+    <input id="search" type="text" placeholder="Card name..." autocomplete="off">
+  </div>
+  <div class="toggles" id="toggles"></div>
+</div>
+
+<div class="main-area">
+  <div id="plot"></div>
+  <div class="detail-panel" id="detailPanel">
+    <div class="detail-inner" id="detailInner"></div>
+  </div>
+</div>
+
+<div class="status" id="status">Loading...</div>
+
+<script>
+(function () {
+  // ── Palettes ──
+  const COLOR_PALETTE = { W: '#F0E68C', U: '#4A90D9', B: '#8B5CF6', R: '#DC2626', G: '#22C55E', Colorless: '#9CA3AF', Multicolor: '#D4A017' };
+  const SUPERTYPE_PALETTE = { Creature: '#22C55E', Instant: '#4A90D9', Sorcery: '#8B5CF6', Enchantment: '#EC4899', Artifact: '#9CA3AF', Land: '#92400E', Planeswalker: '#F59E0B', Battle: '#DC2626', Unknown: '#555' };
+  const RARITY_PALETTE = { common: '#9CA3AF', uncommon: '#C0C0C0', rare: '#C4A747', mythic: '#EA580C', bonus: '#A855F7', special: '#F472B6' };
+
+  const ALL_FORMATS = ['standard', 'modern', 'legacy', 'vintage', 'commander', 'pioneer', 'pauper', 'historic'];
+  const SUPERTYPES = ['Creature', 'Instant', 'Sorcery', 'Enchantment', 'Artifact', 'Land', 'Planeswalker', 'Battle', 'Unknown'];
+
+  let allData = [];
+  let activeSupertypes = new Set(SUPERTYPES);
+  let currentColorBy = 'color';
+  let searchTerm = '';
+  let searchTimeout = null;
+  let plotInitialized = false;
+  let selectedCard = null;
+  let similarTrace = null;
+
+  // ── Helpers ──
+
+  function escHtml(s) {
+    if (!s) return '';
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function buildHoverText(d) {
+    let lines = ['<b>' + escHtml(d.n) + '</b>'];
+    if (d.t) lines.push(escHtml(d.t));
+    // Mana cost + stats line
+    let statsLine = '';
+    if (d.mc) statsLine += escHtml(d.mc);
+    if (d.p != null && d.th != null) {
+      statsLine += (statsLine ? '  \u2022  ' : '') + d.p + '/' + d.th;
+    } else if (d.l != null) {
+      statsLine += (statsLine ? '  \u2022  ' : '') + 'Loyalty: ' + d.l;
+    } else if (d.d != null) {
+      statsLine += (statsLine ? '  \u2022  ' : '') + 'Defense: ' + d.d;
+    }
+    if (statsLine) lines.push(statsLine);
+    // Oracle text preview (first ~120 chars)
+    if (d.o) {
+      let preview = d.o.length > 120 ? d.o.substring(0, 117) + '...' : d.o;
+      lines.push('<i>' + escHtml(preview) + '</i>');
+    }
+    return lines.join('<br>');
+  }
+
+  function renderManaSymbols(manaCost) {
+    if (!manaCost) return '';
+    // Parse {W}, {U}, {B}, {R}, {G}, {C}, {3}, {X}, {W/U}, etc.
+    const tokens = manaCost.match(/\{[^}]+\}/g);
+    if (!tokens) return escHtml(manaCost);
+    return tokens.map(tok => {
+      const inner = tok.slice(1, -1);
+      if ('WUBRG'.includes(inner)) {
+        return '<span class="mana-sym mana-' + inner + '">' + inner + '</span>';
+      }
+      if (inner === 'C') {
+        return '<span class="mana-sym mana-C">C</span>';
+      }
+      // Hybrid (e.g. W/U) — just show text
+      if (inner.includes('/')) {
+        return '<span class="mana-sym mana-num" style="width:auto;padding:0 4px;border-radius:10px;">' + escHtml(inner) + '</span>';
+      }
+      // Numeric, X, etc.
+      return '<span class="mana-sym mana-num">' + escHtml(inner) + '</span>';
+    }).join('');
+  }
+
+  // ── Detail Panel ──
+
+  function showDetailPanel(d) {
+    selectedCard = d;
+    const panel = document.getElementById('detailPanel');
+    const inner = document.getElementById('detailInner');
+
+    let html = '<div class="detail-header">';
+    html += '<h2>' + escHtml(d.n) + '</h2>';
+    html += '<button class="detail-close" onclick="window._closeDetail()" title="Close (ESC)">\u00d7</button>';
+    html += '</div>';
+
+    if (d.t) html += '<div class="detail-type">' + escHtml(d.t) + '</div>';
+    if (d.mc) html += '<div class="detail-mana">' + renderManaSymbols(d.mc) + '</div>';
+
+    // Oracle text
+    if (d.o) {
+      html += '<div class="detail-section">';
+      html += '<div class="detail-section-title">Oracle Text</div>';
+      html += '<div class="detail-oracle">' + escHtml(d.o).replace(/ \/\/ /g, '<br><br>') + '</div>';
+      html += '</div>';
+    }
+
+    // Stats (P/T, Loyalty, Defense)
+    if (d.p != null || d.l != null || d.d != null) {
+      html += '<div class="detail-section"><div class="detail-stats">';
+      if (d.p != null && d.th != null) {
+        html += '<div class="detail-stat"><div class="detail-stat-value">' + escHtml(d.p) + '</div><div class="detail-stat-label">Power</div></div>';
+        html += '<div class="detail-stat"><div class="detail-stat-value">' + escHtml(d.th) + '</div><div class="detail-stat-label">Toughness</div></div>';
+      }
+      if (d.l != null) {
+        html += '<div class="detail-stat"><div class="detail-stat-value">' + escHtml(String(d.l)) + '</div><div class="detail-stat-label">Loyalty</div></div>';
+      }
+      if (d.d != null) {
+        html += '<div class="detail-stat"><div class="detail-stat-value">' + escHtml(String(d.d)) + '</div><div class="detail-stat-label">Defense</div></div>';
+      }
+      html += '</div></div>';
+    }
+
+    // Keywords
+    if (d.k) {
+      html += '<div class="detail-section">';
+      html += '<div class="detail-section-title">Keywords</div>';
+      html += '<div class="detail-keywords">';
+      d.k.split(', ').forEach(kw => {
+        html += '<span class="keyword-badge">' + escHtml(kw) + '</span>';
+      });
+      html += '</div></div>';
+    }
+
+    // Meta info
+    html += '<div class="detail-section">';
+    html += '<div class="detail-section-title">Details</div>';
+    html += '<div class="detail-meta">';
+    if (d.ci) html += '<span>Color Identity: ' + escHtml(d.ci) + '</span>';
+    html += '<span>Rarity: ' + escHtml(d.r) + '</span>';
+    html += '<span>CMC: ' + d.m + '</span>';
+    if (d.er != null) html += '<span>EDHREC Rank: #' + d.er.toLocaleString() + '</span>';
+    html += '</div></div>';
+
+    // Format legality
+    html += '<div class="detail-section">';
+    html += '<div class="detail-section-title">Format Legality</div>';
+    html += '<div class="detail-formats">';
+    const legalSet = d.f ? new Set(d.f.split(',')) : new Set();
+    ALL_FORMATS.forEach(fmt => {
+      const isLegal = legalSet.has(fmt);
+      html += '<span class="format-badge' + (isLegal ? ' legal' : '') + '">' + fmt + '</span>';
+    });
+    html += '</div></div>';
+
+    // Find Similar button
+    html += '<div class="detail-section">';
+    html += '<button class="btn-similar" onclick="window._findSimilar()">Find Similar Cards</button>';
+    html += '</div>';
+
+    inner.innerHTML = html;
+    panel.classList.add('open');
+    // Resize plot to fit
+    setTimeout(() => Plotly.Plots.resize('plot'), 260);
+  }
+
+  function closeDetailPanel() {
+    document.getElementById('detailPanel').classList.remove('open');
+    selectedCard = null;
+    clearSimilarTrace();
+    setTimeout(() => Plotly.Plots.resize('plot'), 260);
+  }
+
+  // Expose for inline onclick handlers
+  window._closeDetail = closeDetailPanel;
+
+  // ── Find Similar Cards ──
+
+  function clearSimilarTrace() {
+    if (similarTrace) {
+      const plotDiv = document.getElementById('plot');
+      const numTraces = plotDiv.data.length;
+      // Remove the last 2 traces (similar + reference star) if they exist
+      const toDelete = [];
+      for (let i = numTraces - 1; i >= 0; i--) {
+        if (plotDiv.data[i]._isSimilar || plotDiv.data[i]._isReference) {
+          toDelete.push(i);
+        }
+      }
+      if (toDelete.length) {
+        Plotly.deleteTraces('plot', toDelete);
+      }
+      similarTrace = null;
+    }
+  }
+
+  function findSimilarCards() {
+    if (!selectedCard) return;
+    clearSimilarTrace();
+
+    const ref = selectedCard;
+    // Compute Euclidean distance from ref to all visible cards
+    const filtered = allData.filter(d => activeSupertypes.has(d.s) && d !== ref);
+    const dists = filtered.map(d => ({
+      d,
+      dist: Math.sqrt((d.x - ref.x) ** 2 + (d.y - ref.y) ** 2),
+    }));
+    dists.sort((a, b) => a.dist - b.dist);
+    const nearest = dists.slice(0, 20);
+
+    // Add similar cards trace (orange diamonds)
+    const simTrace = {
+      type: 'scattergl',
+      mode: 'markers',
+      name: 'Similar (20)',
+      x: nearest.map(n => n.d.x),
+      y: nearest.map(n => n.d.y),
+      text: nearest.map(n => buildHoverText(n.d)),
+      customdata: nearest.map(n => allData.indexOf(n.d)),
+      hoverinfo: 'text',
+      marker: { size: 9, opacity: 1, color: '#FFA500', symbol: 'diamond', line: { color: '#EA580C', width: 1.5 } },
+      _isSimilar: true,
+    };
+
+    // Add reference card trace (gold star)
+    const refTrace = {
+      type: 'scattergl',
+      mode: 'markers',
+      name: ref.n,
+      x: [ref.x],
+      y: [ref.y],
+      text: [buildHoverText(ref)],
+      customdata: [allData.indexOf(ref)],
+      hoverinfo: 'text',
+      marker: { size: 14, opacity: 1, color: '#c4a747', symbol: 'star', line: { color: '#fff', width: 1.5 } },
+      _isReference: true,
+    };
+
+    Plotly.addTraces('plot', [simTrace, refTrace]);
+    similarTrace = true;
+
+    setStatus(`20 similar cards to "${ref.n}" highlighted`);
+  }
+
+  window._findSimilar = findSimilarCards;
+
+  // ── Load data ──
+  fetch('../data/projection_2d.json')
+    .then(r => r.json())
+    .then(data => {
+      allData = data;
+      initToggles();
+      render();
+      setStatus(`${allData.length.toLocaleString()} cards loaded`);
+    })
+    .catch(err => setStatus('Error loading data: ' + err.message));
+
+  // ── Supertype toggle buttons ──
+  function initToggles() {
+    const container = document.getElementById('toggles');
+    SUPERTYPES.forEach(st => {
+      const btn = document.createElement('button');
+      btn.className = 'toggle-btn active';
+      btn.textContent = st;
+      btn.dataset.supertype = st;
+      btn.addEventListener('click', () => {
+        if (activeSupertypes.has(st)) {
+          activeSupertypes.delete(st);
+          btn.classList.remove('active');
+        } else {
+          activeSupertypes.add(st);
+          btn.classList.add('active');
+        }
+        render();
+      });
+      container.appendChild(btn);
+    });
+  }
+
+  // ── Event listeners ──
+  document.getElementById('colorBy').addEventListener('change', e => {
+    currentColorBy = e.target.value;
+    render();
+  });
+
+  document.getElementById('search').addEventListener('input', e => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      searchTerm = e.target.value.trim().toLowerCase();
+      render();
+    }, 300);
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeDetailPanel();
+  });
+
+  // ── Get category key and palette for current color mode ──
+  function getCategoryInfo(d) {
+    if (currentColorBy === 'color') return { key: d.c, palette: COLOR_PALETTE };
+    if (currentColorBy === 'supertype') return { key: d.s, palette: SUPERTYPE_PALETTE };
+    return { key: d.r, palette: RARITY_PALETTE };
+  }
+
+  // ── Render plot ──
+  function render() {
+    clearSimilarTrace();
+    const filtered = allData.filter(d => activeSupertypes.has(d.s));
+
+    // Group by category
+    const groups = {};
+    filtered.forEach((d, _) => {
+      const { key } = getCategoryInfo(d);
+      if (!groups[key]) groups[key] = { x: [], y: [], text: [], customdata: [], key };
+      groups[key].x.push(d.x);
+      groups[key].y.push(d.y);
+      groups[key].text.push(buildHoverText(d));
+      groups[key].customdata.push(allData.indexOf(d));
+    });
+
+    // Determine palette
+    const palette = currentColorBy === 'color' ? COLOR_PALETTE
+      : currentColorBy === 'supertype' ? SUPERTYPE_PALETTE
+      : RARITY_PALETTE;
+
+    // Build traces
+    const traces = Object.values(groups).map(g => ({
+      type: 'scattergl',
+      mode: 'markers',
+      name: g.key,
+      x: g.x,
+      y: g.y,
+      text: g.text,
+      customdata: g.customdata,
+      hoverinfo: 'text',
+      marker: { size: 3, opacity: 0.7, color: palette[g.key] || '#666' },
+    }));
+
+    // Search highlight trace
+    if (searchTerm.length >= 2) {
+      const term = searchTerm;
+      // Priority: exact > prefix > substring
+      let matches = allData.filter(d => activeSupertypes.has(d.s) && d.n.toLowerCase() === term);
+      if (!matches.length) matches = allData.filter(d => activeSupertypes.has(d.s) && d.n.toLowerCase().startsWith(term));
+      if (!matches.length) matches = allData.filter(d => activeSupertypes.has(d.s) && d.n.toLowerCase().includes(term));
+
+      if (matches.length) {
+        traces.push({
+          type: 'scattergl',
+          mode: 'markers',
+          name: `Search (${matches.length})`,
+          x: matches.map(d => d.x),
+          y: matches.map(d => d.y),
+          text: matches.map(d => buildHoverText(d)),
+          customdata: matches.map(d => allData.indexOf(d)),
+          hoverinfo: 'text',
+          marker: { size: 8, opacity: 1, color: '#fff', symbol: 'diamond', line: { color: '#EA580C', width: 2 } },
+        });
+        setStatus(`${matches.length} result${matches.length === 1 ? '' : 's'} for "${searchTerm}" — ${filtered.length.toLocaleString()} cards shown`);
+      } else {
+        setStatus(`No results for "${searchTerm}" — ${filtered.length.toLocaleString()} cards shown`);
+      }
+    } else {
+      setStatus(`${filtered.length.toLocaleString()} cards shown`);
+    }
+
+    const layout = {
+      paper_bgcolor: '#1a1a2e',
+      plot_bgcolor: '#1a1a2e',
+      font: { color: '#e0e0e0' },
+      margin: { l: 0, r: 0, t: 0, b: 0 },
+      xaxis: { visible: false, scaleanchor: 'y' },
+      yaxis: { visible: false },
+      dragmode: 'pan',
+      legend: { bgcolor: 'rgba(22,33,62,0.85)', bordercolor: '#3a3a5a', borderwidth: 1, font: { size: 11 } },
+      hovermode: 'closest',
+    };
+
+    const config = { scrollZoom: true, displayModeBar: false, responsive: true };
+
+    if (!plotInitialized) {
+      Plotly.newPlot('plot', traces, layout, config);
+      // Attach click handler
+      document.getElementById('plot').on('plotly_click', function (eventData) {
+        if (eventData.points && eventData.points.length > 0) {
+          const pt = eventData.points[0];
+          const idx = pt.customdata;
+          if (idx != null && allData[idx]) {
+            showDetailPanel(allData[idx]);
+          }
+        }
+      });
+      plotInitialized = true;
+    } else {
+      Plotly.react('plot', traces, layout, config);
+    }
+  }
+
+  function setStatus(msg) { document.getElementById('status').textContent = msg; }
+})();
+</script>
+</body>
+</html>
