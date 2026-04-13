@@ -8,11 +8,14 @@ from config import (
     CARD_FEATURES_PATH,
     COLOR_VECTORS_PATH,
     KEYWORD_DIM,
+    MECHANICAL_TAG_NAMES,
+    MECHANICAL_TAGS_PATH,
     OUTPUT_CSV_PATH,
     TEXT_EMBEDDING_DIM,
     TEXT_EMBEDDINGS_PATH,
     TEXT_MODEL_NAME,
 )
+from mechanical_tags import encode_tags_multihot
 
 
 def compute_text_embeddings(texts, model_name=TEXT_MODEL_NAME, batch_size=512):
@@ -177,7 +180,15 @@ def main():
     keywords_multihot = encode_keywords_multihot(df, top_keywords)
     print(f"  top {len(top_keywords)} keywords, multi-hot shape: {keywords_multihot.shape}")
 
-    # ── Save all features ─────────────────────────────────────────────────
+    # (features saved below after mechanical tags are computed)
+
+    # ── Mechanical tags ────────────────────────────────────────────────────
+    print("\nEncoding mechanical tags...")
+    mech_tags = encode_tags_multihot(df, MECHANICAL_TAG_NAMES)
+    np.save(MECHANICAL_TAGS_PATH, mech_tags)
+    print(f"  Saved {MECHANICAL_TAGS_PATH} — shape {mech_tags.shape}")
+
+    # Also add to card_features.npz for the ability model
     np.savez(
         CARD_FEATURES_PATH,
         supertype=supertype_encoded,
@@ -186,13 +197,22 @@ def main():
         layout=layout_encoded,
         continuous=continuous,
         keywords=keywords_multihot,
+        mechanical_tags=mech_tags,
         supertype_vocab=np.array(supertype_vocab),
         rarity_vocab=np.array(rarity_vocab),
         ci_vocab=np.array(ci_vocab),
         layout_vocab=np.array(layout_vocab),
         top_keywords=np.array(top_keywords),
+        mechanical_tag_names=np.array(MECHANICAL_TAG_NAMES),
     )
-    print(f"  Saved {CARD_FEATURES_PATH}")
+    print(f"  Updated {CARD_FEATURES_PATH} with mechanical_tags")
+
+    # Tag coverage stats
+    tagged_count = (mech_tags.sum(axis=1) > 0).sum()
+    non_land_count = (df["supertype"] != "Land").sum()
+    non_land_tagged = ((mech_tags.sum(axis=1) > 0) & (df["supertype"] != "Land").values).sum()
+    print(f"  Tagged cards: {tagged_count:,}/{len(df):,} ({tagged_count/len(df)*100:.1f}%)")
+    print(f"  Non-land tagged: {non_land_tagged:,}/{non_land_count:,} ({non_land_tagged/non_land_count*100:.1f}%)")
 
     # ── Color vectors (metadata) ──────────────────────────────────────────
     print("\nParsing WUBRG color vectors...")

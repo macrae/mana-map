@@ -10,6 +10,7 @@ from torch.utils.data import DataLoader, Dataset
 from config import (
     BATCH_SIZE,
     CARD_FEATURES_PATH,
+    EARLY_STOPPING_PATIENCE,
     LEARNING_RATE,
     MODEL_PATH,
     NUM_EPOCHS,
@@ -214,7 +215,8 @@ def main():
     optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
     best_val_loss = float("inf")
-    print(f"\nTraining for {NUM_EPOCHS} epochs...")
+    patience_counter = 0
+    print(f"\nTraining for {NUM_EPOCHS} epochs (early stopping patience={EARLY_STOPPING_PATIENCE})...")
 
     for epoch in range(1, NUM_EPOCHS + 1):
         train_loss = run_epoch(model, train_loader, criterion, device, optimizer)
@@ -223,11 +225,18 @@ def main():
         marker = ""
         if val_loss < best_val_loss:
             best_val_loss = val_loss
+            patience_counter = 0
             torch.save(model.state_dict(), MODEL_PATH)
             marker = " ← saved"
+        else:
+            patience_counter += 1
 
         print(f"  Epoch {epoch:3d}/{NUM_EPOCHS}  "
               f"train_loss={train_loss:.4f}  val_loss={val_loss:.4f}{marker}")
+
+        if patience_counter >= EARLY_STOPPING_PATIENCE:
+            print(f"\n  Early stopping: no improvement for {EARLY_STOPPING_PATIENCE} epochs")
+            break
 
     print(f"\nBest val loss: {best_val_loss:.4f}")
     print(f"Model saved to {MODEL_PATH}")

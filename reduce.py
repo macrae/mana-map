@@ -7,6 +7,8 @@ import pacmap
 import pandas as pd
 
 from config import (
+    ABILITY_EMBEDDINGS_PATH,
+    ABILITY_PROJECTION_PATH,
     CARD_METADATA_PATH,
     EMBEDDINGS_PATH,
     LEGALITY_FORMATS,
@@ -76,38 +78,51 @@ def export_json(records: list[dict], output_path) -> None:
         json.dump(records, f, separators=(",", ":"))
 
 
-def main():
-    print("Loading embeddings...")
-    embeddings = np.load(EMBEDDINGS_PATH)
-    print(f"  Shape: {embeddings.shape}")
+def run_reduce(emb_path, output_path):
+    """Run PaCMAP reduction and export JSON for a given embedding file.
 
-    print("Loading metadata...")
+    Returns the list of records.
+    """
+    print(f"  Loading {emb_path}...")
+    embeddings = np.load(emb_path)
+    print(f"    Shape: {embeddings.shape}")
+
     metadata = pd.read_csv(CARD_METADATA_PATH)
-    print(f"  {len(metadata):,} cards")
-
-    print("Loading full card data...")
     cards = pd.read_csv(OUTPUT_CSV_PATH)
-    print(f"  {len(cards):,} cards")
 
     assert len(embeddings) == len(metadata), (
         f"Mismatch: {len(embeddings)} embeddings vs {len(metadata)} metadata rows"
     )
-    assert len(cards) == len(metadata), (
-        f"Mismatch: {len(cards)} cards.csv rows vs {len(metadata)} metadata rows"
-    )
 
-    print("Reducing to 2D with PaCMAP...")
+    print(f"  Reducing to 2D with PaCMAP...")
     projection = reduce_to_2d(embeddings)
-    print(f"  Projection shape: {projection.shape}")
 
-    print("Building visualization records...")
+    print(f"  Building visualization records...")
     records = build_viz_records(projection, metadata, cards)
 
-    print(f"Exporting {len(records):,} records to {PROJECTION_PATH}...")
-    export_json(records, PROJECTION_PATH)
+    print(f"  Exporting {len(records):,} records to {output_path}...")
+    export_json(records, output_path)
 
-    size_mb = PROJECTION_PATH.stat().st_size / (1024 * 1024)
-    print(f"  Wrote {size_mb:.1f} MB")
+    size_mb = output_path.stat().st_size / (1024 * 1024)
+    print(f"    Wrote {size_mb:.1f} MB")
+    return records
+
+
+def main():
+    print("Loading metadata...")
+    metadata = pd.read_csv(CARD_METADATA_PATH)
+    print(f"  {len(metadata):,} cards")
+
+    # ── Default projection ────────────────────────────────────────────────
+    print("\n[Default Map] Color + Type projection")
+    run_reduce(EMBEDDINGS_PATH, PROJECTION_PATH)
+
+    # ── Ability projection ────────────────────────────────────────────────
+    if ABILITY_EMBEDDINGS_PATH.exists():
+        print("\n[Ability Map] Abilities projection")
+        run_reduce(ABILITY_EMBEDDINGS_PATH, ABILITY_PROJECTION_PATH)
+    else:
+        print(f"\n  Skipping ability projection ({ABILITY_EMBEDDINGS_PATH} not found)")
 
     print(f"\nTo view: python -m http.server 8000")
     print(f"  Then open http://localhost:8000/viz/index.html")

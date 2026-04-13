@@ -669,6 +669,6 @@ class TestProcessCard:
             assert f"legal_{fmt}" in row
 
     def test_csv_column_count(self):
-        """Every row should have exactly 33 columns (25 base + 8 legality)."""
+        """Every row should have exactly 34 columns (26 base + 8 legality)."""
         row = process_card(_lightning_bolt())
-        assert len(row) == 33
+        assert len(row) == 34

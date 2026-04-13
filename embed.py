@@ -5,9 +5,16 @@ import pandas as pd
 import torch
 
 from config import (
+    ABILITY_CI_EMBEDDING_DIM,
+    ABILITY_EMBEDDINGS_PATH,
+    ABILITY_KEYWORD_EMBEDDING_DIM,
+    ABILITY_MECHANICAL_TAG_EMBEDDING_DIM,
+    ABILITY_MODEL_PATH,
     CARD_FEATURES_PATH,
     CARD_METADATA_PATH,
     EMBEDDINGS_PATH,
+    MECHANICAL_TAG_DIM,
+    MECHANICAL_TAGS_PATH,
     MODEL_PATH,
     OUTPUT_CSV_PATH,
     TEXT_EMBEDDINGS_PATH,
@@ -16,25 +23,28 @@ from model import CardEmbeddingModel
 from train import get_device
 
 
-def main():
-    device = get_device()
-    print(f"Using device: {device}")
+def run_embed(model_path, output_path, model_kwargs=None, use_mechanical_tags=False):
+    """Generate embeddings for all cards using a given model.
 
-    # Load model
-    print("Loading trained model...")
-    model = CardEmbeddingModel().to(device)
-    model.load_state_dict(torch.load(MODEL_PATH, map_location=device, weights_only=True))
+    Args:
+        model_path: Path to model checkpoint.
+        output_path: Path to save embeddings .npy.
+        model_kwargs: Dict of kwargs for CardEmbeddingModel constructor.
+        use_mechanical_tags: Whether to pass mechanical tags to the model.
+    """
+    device = get_device()
+
+    model = CardEmbeddingModel(**(model_kwargs or {})).to(device)
+    model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
     model.eval()
 
-    # Load features
-    print("Loading features...")
     text_embs = np.load(TEXT_EMBEDDINGS_PATH)
     features = dict(np.load(CARD_FEATURES_PATH))
-    n = len(text_embs)
-    print(f"  {n:,} cards")
+    mechanical_tags = None
+    if use_mechanical_tags:
+        mechanical_tags = np.load(MECHANICAL_TAGS_PATH)
 
-    # Generate embeddings in batches
-    print("Generating embeddings...")
+    n = len(text_embs)
     batch_size = 512
     all_embs = []
 
@@ -49,20 +59,53 @@ def main():
             continuous = torch.tensor(features["continuous"][start:end], dtype=torch.float32).to(device)
             keywords = torch.tensor(features["keywords"][start:end], dtype=torch.float32).to(device)
 
-            emb = model(text, supertype, rarity, ci, layout, continuous, keywords)
+            kwargs = {}
+            if use_mechanical_tags and mechanical_tags is not None:
+                kwargs["mechanical_tags"] = torch.tensor(
+                    mechanical_tags[start:end], dtype=torch.float32
+                ).to(device)
+
+            emb = model(text, supertype, rarity, ci, layout, continuous, keywords, **kwargs)
             all_embs.append(emb.cpu().numpy())
 
     embeddings = np.concatenate(all_embs, axis=0)
-    print(f"  Embeddings shape: {embeddings.shape}")
+    np.save(output_path, embeddings)
+    return embeddings
 
-    np.save(EMBEDDINGS_PATH, embeddings)
+
+def main():
+    device = get_device()
+    print(f"Using device: {device}")
+
+    # ── Default model ─────────────────────────────────────────────────────
+    print("\nGenerating default embeddings...")
+    embeddings = run_embed(MODEL_PATH, EMBEDDINGS_PATH)
+    print(f"  Embeddings shape: {embeddings.shape}")
     print(f"  Saved {EMBEDDINGS_PATH}")
 
-    # Build metadata CSV
-    print("Building card metadata...")
+    # ── Ability model ─────────────────────────────────────────────────────
+    if ABILITY_MODEL_PATH.exists():
+        print("\nGenerating ability embeddings...")
+        ability_embeddings = run_embed(
+            ABILITY_MODEL_PATH,
+            ABILITY_EMBEDDINGS_PATH,
+            model_kwargs={
+                "ci_emb_dim": ABILITY_CI_EMBEDDING_DIM,
+                "keyword_emb_dim": ABILITY_KEYWORD_EMBEDDING_DIM,
+                "mechanical_tag_dim": MECHANICAL_TAG_DIM,
+                "mechanical_tag_emb_dim": ABILITY_MECHANICAL_TAG_EMBEDDING_DIM,
+            },
+            use_mechanical_tags=True,
+        )
+        print(f"  Ability embeddings shape: {ability_embeddings.shape}")
+        print(f"  Saved {ABILITY_EMBEDDINGS_PATH}")
+    else:
+        print(f"\n  Skipping ability embeddings ({ABILITY_MODEL_PATH} not found)")
+
+    # ── Build metadata CSV ────────────────────────────────────────────────
+    print("\nBuilding card metadata...")
     df = pd.read_csv(OUTPUT_CSV_PATH)
 
-    # Parse WUBRG from color_identity
     wubrg = list("WUBRG")
     for c in wubrg:
         df[f"color_{c}"] = df["color_identity"].fillna("").apply(

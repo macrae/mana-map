@@ -12,6 +12,7 @@ from config import (
     RAW_JSON_PATH,
     SUPERTYPE_PRIORITY,
 )
+from mechanical_tags import tag_oracle_text
 
 
 def combine_faces(card, field):
@@ -138,6 +139,14 @@ def process_card(card):
     supertype = derive_supertype(type_line)
     embedding_text = build_embedding_text(name, type_line, oracle_text, keywords_str)
 
+    # Mechanical tags from oracle text + keywords + type line
+    combined_text = oracle_text
+    if keywords_str:
+        combined_text += " " + keywords_str
+    if type_line:
+        combined_text += " " + type_line
+    tags = tag_oracle_text(combined_text)
+
     # Legalities
     legalities = card.get("legalities", {})
     legal_cols = {
@@ -170,6 +179,7 @@ def process_card(card):
         "flavor_text": (card.get("flavor_text") or "").replace("\n", " "),
         "edhrec_rank": card.get("edhrec_rank"),
         "reserved": card.get("reserved", False),
+        "mechanical_tags": ", ".join(tags),
         "embedding_text": embedding_text,
         **legal_cols,
     }
