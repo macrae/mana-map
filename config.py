@@ -117,7 +117,7 @@ MECHANICAL_TAGS = {
     # Effects
     "sacrifice": r"sacrifice (?:a |an |another )",
     "draw": r"draw (?:a |two |three |\d+ )?cards?",
-    "removal": r"destroy (?:target |all |each )|(?:target |each ).*gets? [+-]\d+/[+-]\d+|exile (?:target |all |each )",
+    "removal": r"destroy (?:target |all |each )|(?:target |each ).*gets? [+-]\d+/-\d+|exile (?:target |all |each )",
     "bounce": r"return (?:target |a ).*to (?:its |their )?owner'?s hand",
     "counterspell": r"counter target spell",
     "blink": r"exile .*(?:then |, )return (?:it|that card|them) to the battlefield|flicker",
@@ -166,8 +166,10 @@ MIN_SHARED_TAGS_POSITIVE = 2
 
 # ── Synergy Rules ────────────────────────────────────────────────────────
 SYNERGY_GRAPH_PATH = DATA_DIR / "synergy_graph.json"
+SYNERGY_MAX_PARTNERS = 10
 
-# Each rule: (tag_A, tag_B, label) — card with tag_A synergizes with card having tag_B
+# Each rule: (tag_A, tag_B, label) — card with tag_A synergizes with card having tag_B.
+# Rules are applied bidirectionally. Do NOT add reverse duplicates.
 SYNERGY_RULES = [
     ("blink", "etb", "Blink + ETB"),
     ("sacrifice", "death_trigger", "Sac + Death Trigger"),
@@ -182,8 +184,22 @@ SYNERGY_RULES = [
     ("sacrifice", "etb", "Sac + ETB"),
     ("reanimate", "etb", "Reanimate + ETB"),
     ("lifegain", "death_trigger", "Lifegain + Death Trigger"),
-    ("anthem", "tokens", "Anthem + Tokens"),
+    ("bounce", "etb", "Bounce + ETB"),
+    ("removal", "death_trigger", "Removal + Death Trigger"),
+    ("counters_minus", "death_trigger", "-1/-1 + Death Trigger"),
+    ("evasion_flying", "damage_trigger", "Flying + Damage Trigger"),
+    ("evasion_unblockable", "damage_trigger", "Unblockable + Damage Trigger"),
+    ("evasion_trample", "damage_trigger", "Trample + Damage Trigger"),
+    ("attack_trigger", "tokens", "Attack Trigger + Tokens"),
+    ("equipment", "attack_trigger", "Equipment + Attack Trigger"),
+    ("aura", "protection", "Aura + Protection"),
+    ("ramp", "cost_reduction", "Ramp + Cost Reduction"),
+    ("counterspell", "draw", "Counterspell + Draw"),
 ]
 
 # ── Power Creep / Obsolescence ───────────────────────────────────────────
 OBSOLESCENCE_INDEX_PATH = DATA_DIR / "obsolescence_index.json"
+OBSOLESCENCE_SIMILARITY_THRESHOLD = 0.75
+OBSOLESCENCE_SINGLE_TAG_THRESHOLD = 0.98
+OBSOLESCENCE_MIN_TAGS = 1
+OBSOLESCENCE_MAX_REPLACEMENTS = 5

@@ -10,6 +10,10 @@ from config import (
     EMBEDDINGS_PATH,
     MECHANICAL_TAG_NAMES,
     OBSOLESCENCE_INDEX_PATH,
+    OBSOLESCENCE_MAX_REPLACEMENTS,
+    OBSOLESCENCE_MIN_TAGS,
+    OBSOLESCENCE_SIMILARITY_THRESHOLD,
+    OBSOLESCENCE_SINGLE_TAG_THRESHOLD,
     OUTPUT_CSV_PATH,
 )
 
@@ -71,19 +75,37 @@ def parse_tags_set(tags_str):
     return {t.strip() for t in str(tags_str).split(",") if t.strip()}
 
 
-def find_strictly_better(df):
+def find_strictly_better(df, ability_embeddings=None, similarity_threshold=None,
+                         min_tags=None, single_tag_threshold=None):
     """Find strictly-better replacements for each card.
 
     Card B is strictly better than Card A if:
     1. Same supertype
     2. B.cmc <= A.cmc
     3. Same or easier color requirement
-    4. B has all of A's mechanical tags (superset)
-    5. Same or better power/toughness (for creatures)
-    6. B was released after A (newer)
+    4. Cosine similarity >= threshold in ability embedding space (if embeddings provided)
+       Uses tiered thresholds: single_tag_threshold for 1-tag cards, similarity_threshold for 2+
+    5. B has all of A's mechanical tags (superset)
+    6. Same or better power/toughness (for creatures)
+    7. At least one concrete advantage
+    8. B was released after A (newer)
 
-    Returns dict mapping card_name -> list of {name, advantages, released_at}.
+    Args:
+        df: DataFrame with card data
+        ability_embeddings: Optional (N, 128) array of ability embeddings for similarity gate
+        similarity_threshold: Min cosine similarity for 2+-tag cards (default from config)
+        min_tags: Min mechanical tags required for a card to be compared (default from config)
+        single_tag_threshold: Min cosine similarity for 1-tag cards (default from config)
+
+    Returns dict mapping card_name -> {obsoleted_by: [...], ...}.
     """
+    if similarity_threshold is None:
+        similarity_threshold = OBSOLESCENCE_SIMILARITY_THRESHOLD
+    if single_tag_threshold is None:
+        single_tag_threshold = OBSOLESCENCE_SINGLE_TAG_THRESHOLD
+    if min_tags is None:
+        min_tags = OBSOLESCENCE_MIN_TAGS
+
     # Pre-process data
     records = []
     for i, row in df.iterrows():
@@ -115,19 +137,39 @@ def find_strictly_better(df):
         if st in ("Land", "Unknown"):
             continue
 
-        for a in group:
-            if not a["tags"]:
-                continue  # Skip vanilla cards (no tags to compare)
+        # Pre-compute similarity matrix for this supertype group if embeddings available
+        sim_matrix = None
+        if ability_embeddings is not None:
+            group_indices = [rec["idx"] for rec in group]
+            group_embs = ability_embeddings[group_indices]
+            # L2 normalize (should already be normalized, but be safe)
+            norms = np.linalg.norm(group_embs, axis=1, keepdims=True)
+            norms = np.maximum(norms, 1e-8)
+            group_embs = group_embs / norms
+            # Batch cosine similarity via matrix multiply
+            sim_matrix = group_embs @ group_embs.T
+
+        for i_local, a in enumerate(group):
+            if len(a["tags"]) < min_tags:
+                continue  # Skip cards with too few tags
             if not a["mana_cost"] or pd.isna(a["mana_cost"]):
                 continue  # Skip cards with no mana cost (augments, tokens)
 
             strictly_better = []
 
-            for b in group:
+            for j_local, b in enumerate(group):
                 if b["name"] == a["name"]:
                     continue
                 if not b["mana_cost"] or pd.isna(b["mana_cost"]):
                     continue  # Skip cards with no mana cost
+
+                # Similarity gate: tiered threshold based on tag count
+                sim_score = None
+                if sim_matrix is not None:
+                    sim_score = float(sim_matrix[i_local, j_local])
+                    effective_threshold = single_tag_threshold if len(a["tags"]) == 1 else similarity_threshold
+                    if sim_score < effective_threshold:
+                        continue
 
                 # 1. Same supertype (already grouped)
                 # 2. B.cmc <= A.cmc
@@ -170,30 +212,25 @@ def find_strictly_better(df):
                 if b["released_at"] and a["released_at"] and b["released_at"] <= a["released_at"]:
                     continue
 
-                strictly_better.append({
+                entry = {
                     "name": b["name"],
                     "advantages": advantages,
                     "released_at": b["released_at"],
-                })
+                }
+                if sim_score is not None:
+                    entry["similarity"] = round(sim_score, 4)
+                strictly_better.append(entry)
 
             if strictly_better:
-                # Sort by number of advantages (most advantages first), limit to 5
-                strictly_better.sort(key=lambda x: -len(x["advantages"]))
+                # Sort by similarity (desc), then by number of advantages (desc)
+                strictly_better.sort(
+                    key=lambda x: (-x.get("similarity", 0), -len(x["advantages"]))
+                )
                 obsolescence[a["name"]] = {
-                    "obsoleted_by": strictly_better[:5],
+                    "obsoleted_by": strictly_better[:OBSOLESCENCE_MAX_REPLACEMENTS],
                 }
 
     return obsolescence
-
-
-def compute_soft_obsolescence(df, embeddings=None):
-    """Compute soft obsolescence score for cards that have strictly-better replacements.
-
-    Uses ability-embedding similarity as a proxy.
-    This is a lightweight scoring — returns dict of card_name -> float [0,1].
-    """
-    # Placeholder: soft obsolescence can be computed later with ability embeddings
-    return {}
 
 
 def main():
@@ -201,8 +238,16 @@ def main():
     df = pd.read_csv(OUTPUT_CSV_PATH)
     print(f"  {len(df):,} cards")
 
+    # Load ability embeddings for similarity gate
+    ability_embeddings = None
+    try:
+        ability_embeddings = np.load(ABILITY_EMBEDDINGS_PATH)
+        print(f"  Loaded ability embeddings: {ability_embeddings.shape}")
+    except FileNotFoundError:
+        print("  Warning: ability embeddings not found, running without similarity gate")
+
     print("Finding strictly-better replacements...")
-    obsolescence = find_strictly_better(df)
+    obsolescence = find_strictly_better(df, ability_embeddings=ability_embeddings)
 
     print(f"  {len(obsolescence):,} cards have strictly-better replacements")
 

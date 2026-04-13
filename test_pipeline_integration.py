@@ -202,6 +202,19 @@ class TestObsolescenceIndex:
                 assert isinstance(rep["advantages"], list)
                 assert len(rep["advantages"]) > 0
 
+    def test_entries_have_similarity(self):
+        """Obsolescence entries should include similarity scores."""
+        for card_name, data in list(self.index.items())[:10]:
+            for rep in data["obsoleted_by"]:
+                assert "similarity" in rep, f"Missing similarity for {card_name} -> {rep['name']}"
+                assert 0.0 <= rep["similarity"] <= 1.0
+
+    def test_count_bounds(self):
+        """With similarity gate + tiered thresholds, expect 5,000-16,000 flagged cards."""
+        count = len(self.index)
+        assert count >= 5000, f"Too few flagged cards: {count}"
+        assert count <= 16000, f"Too many flagged cards: {count}"
+
 
 # ── Combo graph ──
 

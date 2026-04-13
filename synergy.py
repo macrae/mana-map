@@ -6,11 +6,13 @@ import numpy as np
 import pandas as pd
 
 from config import (
+    ABILITY_EMBEDDINGS_PATH,
     COMBO_GRAPH_PATH,
     EMBEDDINGS_PATH,
     MECHANICAL_TAG_NAMES,
     OUTPUT_CSV_PATH,
     SYNERGY_GRAPH_PATH,
+    SYNERGY_MAX_PARTNERS,
     SYNERGY_RULES,
 )
 from mechanical_tags import tag_oracle_text
@@ -142,8 +144,8 @@ def build_synergy_graph(df, embeddings=None, name_to_idx=None):
 
         ranked.sort(key=lambda x: (-x["score"], -x["_emb_sim"]))
 
-        # Keep top 5
-        top = ranked[:5]
+        # Keep top partners
+        top = ranked[:SYNERGY_MAX_PARTNERS]
         synergy_graph[card_name] = [
             {"partner": r["partner"], "score": r["score"], "synergies": r["synergies"]}
             for r in top
@@ -157,15 +159,20 @@ def main():
     df = pd.read_csv(OUTPUT_CSV_PATH)
     print(f"  {len(df):,} cards")
 
-    # Load embeddings for tiebreaking
+    # Load ability embeddings for tiebreaking (fall back to color+type)
     embeddings = None
     name_to_idx = None
     try:
-        embeddings = np.load(EMBEDDINGS_PATH)
+        embeddings = np.load(ABILITY_EMBEDDINGS_PATH)
         name_to_idx = {name: i for i, name in enumerate(df["name"])}
-        print(f"  Loaded embeddings for similarity tiebreaking")
+        print(f"  Loaded ability embeddings for similarity tiebreaking")
     except FileNotFoundError:
-        print(f"  No embeddings found — skipping similarity tiebreaking")
+        try:
+            embeddings = np.load(EMBEDDINGS_PATH)
+            name_to_idx = {name: i for i, name in enumerate(df["name"])}
+            print(f"  Loaded color+type embeddings for similarity tiebreaking (ability embeddings not found)")
+        except FileNotFoundError:
+            print(f"  No embeddings found — skipping similarity tiebreaking")
 
     print("Building synergy graph...")
     synergy_graph = build_synergy_graph(df, embeddings, name_to_idx)

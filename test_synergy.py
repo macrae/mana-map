@@ -221,3 +221,89 @@ def test_synergy_graph_json_serializable(mock_combo):
     output = json.dumps(graph, separators=(",", ":"))
     parsed = json.loads(output)
     assert "Blinker" in parsed
+
+
+# ── New rule coverage tests ──
+
+
+@patch("synergy.load_combo_partners", return_value={})
+def test_no_duplicate_rule_scoring(mock_combo):
+    """Tokens+anthem should score exactly 1, not 2 (no duplicate rule)."""
+    df = make_df([
+        ("Token Maker", "tokens"),
+        ("Anthem Lord", "anthem"),
+    ])
+    graph = build_synergy_graph(df)
+
+    assert "Token Maker" in graph
+    partner = graph["Token Maker"][0]
+    assert partner["partner"] == "Anthem Lord"
+    assert partner["score"] == 1
+    assert len(partner["synergies"]) == 1
+
+
+@patch("synergy.load_combo_partners", return_value={})
+def test_bounce_etb_synergy(mock_combo):
+    """Bounce cards should find ETB partners."""
+    df = make_df([
+        ("Man-o'-War", "bounce, etb"),
+        ("Mulldrifter", "etb, draw"),
+        ("Vanilla Bear", ""),
+    ])
+    graph = build_synergy_graph(df)
+
+    assert "Man-o'-War" in graph
+    partner_names = [p["partner"] for p in graph["Man-o'-War"]]
+    assert "Mulldrifter" in partner_names
+    assert "Vanilla Bear" not in partner_names
+    # Check label
+    mulldrifter_entry = [p for p in graph["Man-o'-War"] if p["partner"] == "Mulldrifter"][0]
+    assert "Bounce + ETB" in mulldrifter_entry["synergies"]
+
+
+@patch("synergy.load_combo_partners", return_value={})
+def test_evasion_damage_trigger_synergy(mock_combo):
+    """Flying cards should find damage_trigger partners."""
+    df = make_df([
+        ("Flyer", "evasion_flying"),
+        ("Damage Dealer", "damage_trigger"),
+        ("Vanilla Card", "draw"),
+    ])
+    graph = build_synergy_graph(df)
+
+    assert "Flyer" in graph
+    partner_names = [p["partner"] for p in graph["Flyer"]]
+    assert "Damage Dealer" in partner_names
+    assert "Vanilla Card" not in partner_names
+
+
+@patch("synergy.load_combo_partners", return_value={})
+def test_equipment_attack_trigger_synergy(mock_combo):
+    """Equipment should find attack_trigger partners."""
+    df = make_df([
+        ("Sword of X", "equipment"),
+        ("Attacker", "attack_trigger"),
+        ("Lifegainer", "lifegain"),
+    ])
+    graph = build_synergy_graph(df)
+
+    assert "Sword of X" in graph
+    partner_names = [p["partner"] for p in graph["Sword of X"]]
+    assert "Attacker" in partner_names
+    assert "Lifegainer" not in partner_names
+
+
+@patch("synergy.load_combo_partners", return_value={})
+def test_aura_protection_synergy(mock_combo):
+    """Aura cards should find protection partners."""
+    df = make_df([
+        ("Rancor", "aura, evasion_trample"),
+        ("Hexproof Guy", "protection"),
+        ("Random Card", "draw"),
+    ])
+    graph = build_synergy_graph(df)
+
+    assert "Rancor" in graph
+    partner_names = [p["partner"] for p in graph["Rancor"]]
+    assert "Hexproof Guy" in partner_names
+    assert "Random Card" not in partner_names

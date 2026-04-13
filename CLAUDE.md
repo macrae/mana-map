@@ -109,7 +109,7 @@ Coverage: >=70% of non-land cards (actual ~80%). Used for: ability model trainin
 
 Synergies are **complementary** — finds cards that *complete* each other, NOT cards that do the same thing. Different from "Find Similar" which finds embedding neighbors.
 
-14 rules in `config.py` `SYNERGY_RULES`, each a `(tag_A, tag_B, label)` tuple:
+24 rules in `config.py` `SYNERGY_RULES`, each a `(tag_A, tag_B, label)` tuple. Covers 27/33 tags (82%):
 
 | Card A has | Card B has | Label |
 |-----------|-----------|-------|
@@ -126,28 +126,56 @@ Synergies are **complementary** — finds cards that *complete* each other, NOT 
 | `sacrifice` | `etb` | Sac + ETB |
 | `reanimate` | `etb` | Reanimate + ETB |
 | `lifegain` | `death_trigger` | Lifegain + Death Trigger |
-| `anthem` | `tokens` | Anthem + Tokens |
+| `bounce` | `etb` | Bounce + ETB |
+| `removal` | `death_trigger` | Removal + Death Trigger |
+| `counters_minus` | `death_trigger` | -1/-1 + Death Trigger |
+| `evasion_flying` | `damage_trigger` | Flying + Damage Trigger |
+| `evasion_unblockable` | `damage_trigger` | Unblockable + Damage Trigger |
+| `evasion_trample` | `damage_trigger` | Trample + Damage Trigger |
+| `attack_trigger` | `tokens` | Attack Trigger + Tokens |
+| `equipment` | `attack_trigger` | Equipment + Attack Trigger |
+| `aura` | `protection` | Aura + Protection |
+| `ramp` | `cost_reduction` | Ramp + Cost Reduction |
+| `counterspell` | `draw` | Counterspell + Draw |
 
-Rules are applied bidirectionally (both forward and reverse). Known combo partners (from `combo_graph.json`) are excluded to surface NEW synergies. Top 5 partners per card, ranked by rule count + embedding similarity tiebreaker.
+Uncovered tags (6): `tap_ability`, `upkeep_trigger`, `evasion_menace`, `tutor`, `counters_plus` (as tag_B only via tokens), `graveyard_matters` (as tag_A only via mill) — too generic for meaningful complementary rules.
+
+Rules are applied bidirectionally (both forward and reverse). Known combo partners (from `combo_graph.json`) are excluded to surface NEW synergies. Top `SYNERGY_MAX_PARTNERS` (10) partners per card, ranked by rule count + ability embedding similarity tiebreaker (falls back to color+type embeddings if ability embeddings unavailable).
+
+Synergy graph is format-agnostic by design. Filtering happens at consumption time: the deck builder filters by format legality + color identity before scoring, while explore mode shows all partners for discovery.
 
 ### Power Creep (`power_creep.py`)
 
 Detects "strictly-better" card replacements. Card B obsoletes Card A if **all** hold:
 1. Same supertype (grouped for efficiency)
-2. B.cmc <= A.cmc
-3. B's color requirement same or easier (pip comparison via `parse_color_requirement`)
-4. B has all of A's mechanical tags (superset)
-5. B has same or better power/toughness (creatures)
-6. B has at least one concrete advantage (lower CMC, better stats, or additional tags)
-7. B was printed later than A
+2. Cosine similarity >= `OBSOLESCENCE_SIMILARITY_THRESHOLD` (0.75) in ability embedding space (128D)
+3. B.cmc <= A.cmc
+4. B's color requirement same or easier (pip comparison via `parse_color_requirement`)
+5. B has all of A's mechanical tags (superset)
+6. B has same or better power/toughness (creatures)
+7. B has at least one concrete advantage (lower CMC, better stats, or additional tags)
+8. B was printed later than A
+
+**Three-layer filtering:**
+- **Tiered similarity gate** (step 2): Uses ability embeddings to ensure cards are functionally similar before comparing tags. **Tiered thresholds**: 1-tag cards need sim >= 0.98 (`OBSOLESCENCE_SINGLE_TAG_THRESHOLD`), 2+-tag cards need sim >= 0.75 (`OBSOLESCENCE_SIMILARITY_THRESHOLD`). This keeps iconic single-tag upgrades (Doom Blade → Fatal Push, sim 0.999) while filtering false positives (Sen Triplets → Moroii, sim 0.969). Batch matrix multiply per supertype group for performance. Graceful fallback if embeddings don't exist yet.
+- **Minimum tags** (`OBSOLESCENCE_MIN_TAGS = 1`): Cards must have at least 1 mechanical tag (vanilla cards excluded).
+- **Tag superset**: B must have all of A's tags (unchanged from before).
 
 **Exclusions (cards skipped entirely):**
 - Supertypes "Land" and "Unknown" are never compared
-- Vanilla cards (no tags) are skipped — nothing meaningful to compare
+- Cards with fewer than `OBSOLESCENCE_MIN_TAGS` (1) tags are skipped
 - Cards with empty/NaN `mana_cost` are skipped (augments, tokens, some special cards)
 - Modifier stats (`+2`, `-1`) return None from `parse_stat` — augment/host cards don't get real stat values
 
-Up to 5 replacements per card, sorted by number of advantages.
+Up to `OBSOLESCENCE_MAX_REPLACEMENTS` (5) per card, sorted by similarity descending then advantage count.
+
+**Config constants:**
+- `OBSOLESCENCE_SIMILARITY_THRESHOLD = 0.75` — min cosine similarity for 2+-tag cards
+- `OBSOLESCENCE_SINGLE_TAG_THRESHOLD = 0.98` — min cosine similarity for 1-tag cards (stricter)
+- `OBSOLESCENCE_MIN_TAGS = 1` — min mechanical tags for a card to be compared
+- `OBSOLESCENCE_MAX_REPLACEMENTS = 5` — max replacements per card
+
+**Output format:** Each entry includes `similarity` field (float, 0-1) alongside `name`, `advantages`, `released_at`.
 
 ### Visualization (`viz/`)
 
@@ -327,7 +355,7 @@ All constants live here — paths, hyperparameters, vocab sizes, embedding dims,
 ## Tests
 
 ```bash
-# Unit + integration tests (193 total, no data files required for unit tests)
+# Unit + integration tests (213 total, no data files required for unit tests)
 pytest test_extract.py test_preprocess.py test_combos.py test_mechanical_tags.py test_synergy.py test_power_creep.py test_pipeline_integration.py -v
 
 # Embedding quality tests (requires data files from pipeline run)
@@ -339,13 +367,13 @@ pytest test_find_similar.py -v
 | `test_extract.py` | 51 | Multi-face card handling, derived column logic, supertype classification |
 | `test_preprocess.py` | 23 | Vocab building, categorical encoding, normalization, keyword multi-hot, color vector parsing |
 | `test_combos.py` | 15 | Combo data extraction, graph building, filtering, deduplication |
-| `test_mechanical_tags.py` | 42 | All 33 tag regex patterns, edge cases, multi-hot encoding |
-| `test_synergy.py` | 14 | Synergy rule matching, bidirectionality, combo exclusion, ranking |
-| `test_power_creep.py` | 26 | Strictly-better detection, stat parsing (incl. modifier rejection), empty mana cost exclusion, edge cases |
-| `test_pipeline_integration.py` | 22 | End-to-end validation of all pipeline outputs (requires `data/` artifacts) |
+| `test_mechanical_tags.py` | 45 | All 33 tag regex patterns, removal regex edge cases, multi-hot encoding |
+| `test_synergy.py` | 19 | Synergy rule matching, bidirectionality, combo exclusion, ranking, new rule coverage |
+| `test_power_creep.py` | 36 | Strictly-better detection, similarity gate, tiered thresholds, min tags, stat parsing, edge cases |
+| `test_pipeline_integration.py` | 24 | End-to-end validation of all pipeline outputs, obsolescence quality checks (requires `data/` artifacts) |
 | `test_find_similar.py` | 12 | Embedding binary format, L2 normalization, cosine similarity, 128D vs 2D ranking divergence (requires `data/` artifacts) |
 
-**Total: 205 tests** (193 standard + 12 embedding quality).
+**Total: 225 tests** (213 standard + 12 embedding quality).
 
 ## Common Tasks
 
@@ -388,6 +416,7 @@ python synergy.py && python power_creep.py
 - The viz fetches `../data/projection_2d.json` relative to `viz/index.html` — must serve from project root
 - Color+Type model converges to near-zero triplet loss very quickly (epoch 2-3); this is expected since the margin (0.3) is easily satisfied with color/type groups
 - The ability model uses tag-overlap mining — it converges slower since tag groups are fuzzier (best val_loss ~0.05)
-- Synergy detection is **complementary** (blink finds ETB), not **similar** (ETB finds ETB). These are fundamentally different algorithms.
+- Synergy detection is **complementary** (blink finds ETB), not **similar** (ETB finds ETB). These are fundamentally different algorithms. Synergy graph is format-agnostic by design — filtering happens at consumption time.
+- `SYNERGY_MAX_PARTNERS = 10` — max synergy partners per card. Tiebreaker uses ability embeddings (functional similarity) rather than color+type embeddings.
 - Changing `MECHANICAL_TAGS` in config.py changes `MECHANICAL_TAG_DIM`, which makes existing `model_ability.pt` checkpoints incompatible. Must retrain (steps 3-5) after any tag change.
 - `PLAN.md` in root is a historical planning document from the deck builder feature. It contains outdated numbers and is not maintained.

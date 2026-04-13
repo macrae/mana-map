@@ -77,6 +77,27 @@ def test_removal_exile():
     assert "removal" in tags
 
 
+def test_removal_buff_not_tagged():
+    """A +1/+1 buff should NOT be tagged as removal."""
+    text = "Target creature gets +1/+1 until end of turn."
+    tags = tag_oracle_text(text)
+    assert "removal" not in tags
+
+
+def test_removal_debuff_tagged():
+    """A -3/-3 debuff should be tagged as removal."""
+    text = "Target creature gets -3/-3 until end of turn."
+    tags = tag_oracle_text(text)
+    assert "removal" in tags
+
+
+def test_removal_mixed_negative_toughness():
+    """A +3/-3 effect should be tagged as removal (kills via negative toughness)."""
+    text = "Target creature gets +3/-3 until end of turn."
+    tags = tag_oracle_text(text)
+    assert "removal" in tags
+
+
 def test_bounce():
     text = "Return target creature to its owner's hand."
     tags = tag_oracle_text(text)
