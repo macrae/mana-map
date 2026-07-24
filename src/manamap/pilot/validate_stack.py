@@ -1,10 +1,12 @@
-"""Pilot: mechanically enforce the citation contract on stack scenarios.
+"""Pilot: mechanically enforce the citation contract on scenario artifacts.
 
-This is the honesty gate for the LLM stack-resolver: a resolution cannot pass
-with an uncited effect, a citation of a nonexistent rule, or a quote that is
-not verbatim rule text. The rules-checker agent judges *meaning*; this module
-enforces *form* — and a resolution must clear this gate before the checker
-even looks at it.
+Two artifact kinds share this gate (`kind` field; missing = "stack"):
+- "stack" (stacks/): rules resolutions. A resolution cannot pass with an
+  uncited effect, a citation of a nonexistent rule, or a non-verbatim quote.
+  The rules-checker agent judges *meaning*; this module enforces *form*.
+- "decision" (decisions/): coaching decision trees (tier-3 evidence). Form
+  checks only — branches well-shaped, recommendation matches a branch — plus
+  the same citation contract for any branch that does cite rules.
 """
 
 import json
@@ -17,9 +19,30 @@ REQUIRED_TOP_KEYS = {"id", "slug", "deck", "title", "scenario", "resolution"}
 REQUIRED_SCENARIO_KEYS = {"stack", "question"}
 CHECKER_STATUSES = {"supported", "unsupported", "irrelevant", "misquoted"}
 
+REQUIRED_DECISION_KEYS = {"id", "slug", "deck", "title", "scenario", "branches", "recommendation"}
+REQUIRED_BRANCH_KEYS = {"choice", "line", "signals", "coalition_risk", "coaching"}
+
 
 def _normalize_ws(text):
     return re.sub(r"\s+", " ", text).strip()
+
+
+def _validate_citations(citations, rules, where, errors):
+    """Shared citation contract: valid IDs, existing rules, verbatim quotes."""
+    for cite in citations:
+        rule_id = cite.get("rule", "")
+        quote = cite.get("quote", "")
+        if not RULE_ID_RE.match(rule_id):
+            errors.append(f"{where}: malformed rule id {rule_id!r}")
+            continue
+        if rule_id not in rules:
+            errors.append(f"{where}: cites nonexistent rule {rule_id}")
+            continue
+        if not quote:
+            errors.append(f"{where}: citation of {rule_id} has no quote")
+            continue
+        if _normalize_ws(quote) not in _normalize_ws(rules[rule_id]["text"]):
+            errors.append(f"{where}: quote is not verbatim text of {rule_id}: {quote[:60]!r}...")
 
 
 def validate_scenario(doc, rules):
@@ -50,22 +73,7 @@ def validate_scenario(doc, rules):
         if not citations:
             errors.append(f"step {n}: NO CITATIONS — every effect must cite a rule")
             continue
-        for cite in citations:
-            rule_id = cite.get("rule", "")
-            quote = cite.get("quote", "")
-            if not RULE_ID_RE.match(rule_id):
-                errors.append(f"step {n}: malformed rule id {rule_id!r}")
-                continue
-            if rule_id not in rules:
-                errors.append(f"step {n}: cites nonexistent rule {rule_id}")
-                continue
-            if not quote:
-                errors.append(f"step {n}: citation of {rule_id} has no quote")
-                continue
-            if _normalize_ws(quote) not in _normalize_ws(rules[rule_id]["text"]):
-                errors.append(
-                    f"step {n}: quote is not verbatim text of {rule_id}: {quote[:60]!r}..."
-                )
+        _validate_citations(citations, rules, f"step {n}", errors)
 
     checker = doc.get("checker")
     if checker is not None:
@@ -86,28 +94,76 @@ def validate_scenario(doc, rules):
     return errors
 
 
+def validate_decision(doc, rules):
+    """Form checks for a coaching decision tree (tier-3). Returns error strings."""
+    errors = []
+
+    missing = REQUIRED_DECISION_KEYS - set(doc)
+    if missing:
+        errors.append(f"Missing top-level keys: {sorted(missing)}")
+        return errors
+
+    if not doc["scenario"].get("question"):
+        errors.append("scenario.question is required")
+    if not doc["scenario"].get("board"):
+        errors.append("scenario.board is required (include table context)")
+
+    branches = doc.get("branches", [])
+    if len(branches) < 2:
+        errors.append(f"decision needs >=2 branches, found {len(branches)}")
+    choices = []
+    for i, branch in enumerate(branches):
+        missing = REQUIRED_BRANCH_KEYS - set(branch)
+        if missing:
+            errors.append(f"branch {i}: missing keys {sorted(missing)}")
+        if branch.get("choice"):
+            choices.append(branch["choice"])
+        _validate_citations(branch.get("citations", []), rules, f"branch {i}", errors)
+
+    rec = doc.get("recommendation") or {}
+    if not rec.get("rationale"):
+        errors.append("recommendation.rationale is required")
+    if rec.get("choice") not in choices:
+        errors.append(
+            f"recommendation.choice {rec.get('choice')!r} does not match any branch choice"
+        )
+    return errors
+
+
+def validate_any(doc, rules):
+    """Dispatch on kind (missing kind = stack)."""
+    if doc.get("kind", "stack") == "decision":
+        return validate_decision(doc, rules)
+    return validate_scenario(doc, rules)
+
+
 def main(args):
     rules, _, _ = load_rules_db()
-    stacks_dir = deck_dir(args.slug) / "stacks"
+    base = deck_dir(args.slug)
     if args.stack:
-        paths = sorted(stacks_dir.glob(f"{args.stack}-*.json"))
+        paths = sorted((base / "stacks").glob(f"{args.stack}-*.json"))
         if not paths:
-            raise SystemExit(f"No scenario {args.stack} under {stacks_dir}")
+            raise SystemExit(f"No scenario {args.stack} under {base / 'stacks'}")
     else:
-        paths = sorted(stacks_dir.glob("*.json"))
+        paths = sorted((base / "stacks").glob("*.json")) + sorted(
+            (base / "decisions").glob("*.json")
+        )
         if not paths:
-            raise SystemExit(f"No scenarios found under {stacks_dir}")
+            raise SystemExit(f"No scenarios found under {base}/stacks or {base}/decisions")
 
     failed = False
     for path in paths:
         with open(path) as f:
             doc = json.load(f)
-        errors = validate_scenario(doc, rules)
+        errors = validate_any(doc, rules)
+        kind = doc.get("kind", "stack")
         if errors:
             failed = True
-            print(f"FAIL {path.name}:")
+            print(f"FAIL {path.name} ({kind}):")
             for e in errors:
                 print(f"  - {e}")
+        elif kind == "decision":
+            print(f"OK   {path.name} (decision form holds; coaching tier)")
         else:
             verdict = (doc.get("checker") or {}).get("verdict", "unchecked")
             print(f"OK   {path.name} (contract holds; checker: {verdict})")

@@ -6,7 +6,7 @@ import json
 import pytest
 
 from manamap.config import DECKS_DIR
-from manamap.pilot.validate_stack import validate_scenario
+from manamap.pilot.validate_stack import validate_any, validate_decision, validate_scenario
 
 from conftest import requires_deck, requires_rules
 
@@ -130,6 +130,75 @@ def test_invalid_checker_status_fails():
 def test_missing_top_keys_fail():
     errors = validate_scenario({"id": "001"}, RULES)
     assert any("Missing top-level keys" in e for e in errors)
+
+
+# ── Decision scenarios (kind: "decision", coaching tier) ──
+
+
+def valid_decision():
+    return {
+        "id": "001",
+        "slug": "open-mana-signal",
+        "deck": "test-deck",
+        "kind": "decision",
+        "title": "Cast now or hold?",
+        "scenario": {
+            "board": {"you": "Zada + 4 tokens", "table": "sweeper mana open"},
+            "question": "Cast the cantrip now or hold?",
+        },
+        "branches": [
+            {"choice": "Cast now", "line": "Fire it.", "signals": "Engine live.",
+             "coalition_risk": "High.", "coaching": "Only if lethal."},
+            {"choice": "Hold", "line": "Pass.", "signals": "Looks like interaction.",
+             "coalition_risk": "Low.", "coaching": "Default.",
+             "citations": [{"rule": "702.40a", "quote": "copy it for each other spell that was cast before it this turn"}]},
+        ],
+        "recommendation": {"choice": "Hold", "rationale": "Sweeper undoes everything."},
+    }
+
+
+def test_valid_decision_passes():
+    assert validate_decision(valid_decision(), RULES) == []
+
+
+def test_validate_any_dispatches_on_kind():
+    assert validate_any(valid_decision(), RULES) == []
+    assert validate_any(valid_doc(), RULES) == []  # missing kind -> stack
+
+
+def test_decision_needs_two_branches():
+    doc = valid_decision()
+    doc["branches"] = doc["branches"][:1]
+    errors = validate_decision(doc, RULES)
+    assert any(">=2 branches" in e for e in errors)
+
+
+def test_decision_branch_missing_fields():
+    doc = valid_decision()
+    del doc["branches"][0]["coalition_risk"]
+    errors = validate_decision(doc, RULES)
+    assert any("missing keys" in e and "coalition_risk" in e for e in errors)
+
+
+def test_decision_recommendation_must_match_branch():
+    doc = valid_decision()
+    doc["recommendation"]["choice"] = "Concede"
+    errors = validate_decision(doc, RULES)
+    assert any("does not match any branch" in e for e in errors)
+
+
+def test_decision_branch_citations_use_same_contract():
+    doc = valid_decision()
+    doc["branches"][1]["citations"][0]["quote"] = "made-up rule text"
+    errors = validate_decision(doc, RULES)
+    assert any("not verbatim" in e for e in errors)
+
+
+def test_decision_requires_board_and_question():
+    doc = valid_decision()
+    doc["scenario"]["board"] = {}
+    errors = validate_decision(doc, RULES)
+    assert any("scenario.board" in e for e in errors)
 
 
 # ── Golden artifacts: every committed scenario must hold the contract and pass ──
