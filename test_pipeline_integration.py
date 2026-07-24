@@ -25,6 +25,8 @@ from config import (
     OBSOLESCENCE_INDEX_PATH,
     OUTPUT_CSV_PATH,
     PROJECTION_PATH,
+    REGIONS_ABILITY_PATH,
+    REGIONS_DEFAULT_PATH,
     SYNERGY_GRAPH_PATH,
     TEXT_EMBEDDINGS_PATH,
 )
@@ -251,3 +253,44 @@ def test_csv_has_mechanical_tags_column():
     """Check mechanical_tags column exists (requires re-running extract.py)."""
     df = pd.read_csv(OUTPUT_CSV_PATH)
     assert "mechanical_tags" in df.columns
+
+
+# ── Region clustering ──
+
+
+@requires_file(REGIONS_DEFAULT_PATH)
+class TestRegions:
+
+    @pytest.fixture(autouse=True)
+    def load_regions(self):
+        with open(REGIONS_DEFAULT_PATH, "r") as f:
+            self.default = json.load(f)
+        if REGIONS_ABILITY_PATH.exists():
+            with open(REGIONS_ABILITY_PATH, "r") as f:
+                self.ability = json.load(f)
+        else:
+            self.ability = None
+
+    def test_regions_not_empty(self):
+        assert len(self.default["regions"]) > 0
+
+    def test_l0_count_reasonable(self):
+        l0 = self.default["meta"]["l0_count"]
+        assert 5 <= l0 <= 25, f"L0 count {l0} outside expected range 5-25"
+
+    def test_l1_count_reasonable(self):
+        l1 = self.default["meta"]["l1_count"]
+        assert 20 <= l1 <= 120, f"L1 count {l1} outside expected range 20-120"
+
+    def test_required_fields(self):
+        required = {"id", "level", "label", "short", "cx", "cy", "span", "count", "top_tags"}
+        for r in self.default["regions"][:20]:
+            missing = required - set(r.keys())
+            assert not missing, f"Region {r.get('id')} missing fields: {missing}"
+
+    def test_l1_has_parents(self):
+        l1_regions = [r for r in self.default["regions"] if r["level"] == 1]
+        assert len(l1_regions) > 0
+        for r in l1_regions:
+            assert "parent" in r, f"L1 region {r['id']} missing parent"
+            assert r["parent"].startswith("l0_")

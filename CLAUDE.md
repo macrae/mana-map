@@ -29,8 +29,9 @@ Mana Map is an MTG card embedding pipeline that downloads all ~33,700 oracle car
 | 9 | `export_embeddings.py` | Converts both embeddings.npy to raw Float32 binary for JS | `data/embeddings.bin`, `data/embeddings_ability.bin` |
 | 10 | `synergy.py` | Builds synergy partner graph using complementary mechanical tags | `data/synergy_graph.json` |
 | 11 | `power_creep.py` | Detects strictly-better card replacements (power creep) | `data/obsolescence_index.json` |
+| 12 | `cluster_regions.py` | HDBSCAN clustering of 2D projections into named regions at 2 zoom levels | `data/regions_default.json`, `data/regions_ability.json` |
 
-`pipeline.py` orchestrates all steps in order. Steps 10-11 are wrapped in try/except ImportError for forward compatibility.
+`pipeline.py` orchestrates all steps in order. Steps 10-12 are wrapped in try/except ImportError for forward compatibility.
 
 ## Architecture
 
@@ -177,12 +178,31 @@ Up to `OBSOLESCENCE_MAX_REPLACEMENTS` (5) per card, sorted by similarity descend
 
 **Output format:** Each entry includes `similarity` field (float, 0-1) alongside `name`, `advantages`, `released_at`.
 
+### Region Clustering (`cluster_regions.py`)
+
+Names geographic-style regions on both 2D maps using HDBSCAN at two zoom levels:
+- **L0 (mega-regions)**: `min_cluster_size=800`, `min_samples=50` → ~10-15 regions, visible zoomed out
+- **L1 (sub-regions)**: `min_cluster_size=100`, `min_samples=15` → ~40-120 regions, visible zoomed in
+
+**Naming strategy — Color+Type map**: Dominant color (≥40%) + type (≥30%), guild names for 2-color pairs (≥50%), fallback to top tag.
+**Naming strategy — Abilities map**: TF-IDF-like scoring (cluster tag freq / global freq), top 1-2 overrepresented tags. Minimum tag presence threshold (`REGION_MIN_TAG_PRESENCE=0.10`): a tag must be present in ≥10% of the cluster to be used in naming. Clusters with no qualifying tags fall back to color/type naming.
+
+**Label deduplication**: Multi-pass tag suffix appending (max 2 for L0, max 3 for L1), then spatial direction (N/S/E/W) for remaining collisions.
+
+**Index alignment**: projection[i] corresponds exactly to cards.csv[i] (maintained through embed.py → reduce.py). Tags are looked up by direct index, not name-based lookup (avoids issues with duplicate card names).
+
+Display name lookups in `config.py`: `REGION_TAG_DISPLAY_NAMES`, `REGION_COLOR_DISPLAY_NAMES`, `REGION_GUILD_NAMES`.
+
+**Output**: `data/regions_default.json` and `data/regions_ability.json` (~10-20KB each). Each region has `id`, `level`, `label`, `short`, `cx`, `cy`, `span`, `count`, `top_tags`, and `parent` (L1 only).
+
+**Visualization**: Labels rendered as Plotly annotations with zoom-dependent crossfade (L0 at wide zoom, L1 at close zoom). Optional density contour trace (`histogram2dcontour`). Both toggled via toolbar buttons.
+
 ### Visualization (`viz/`)
 
 - `viz/index.html` — HTML structure with toolbar, plot, detail panel, deck panel
-- `viz/css/mana-map.css` — All CSS (~294 lines): explore + deck builder + synergy + obsolescence + responsive
+- `viz/css/mana-map.css` — All CSS (~305 lines): explore + deck builder + synergy + obsolescence + responsive
 - `viz/js/mana-map.js` — Explore mode (~1159 lines): multi-map selector, rendering, search, toggles, detail panel, multi-card selection, find similar, find synergies, obsolescence display, keyboard nav, pinch zoom. Exposes shared state on `window.MM`.
-- `viz/js/deck-builder.js` — Deck builder (~1299 lines): state, UI, recommendation algorithm (with synergy scoring), mana base generator, analytics, export. Exposes API on `window.DeckBuilder`.
+- `viz/js/deck-builder.js` — Deck builder (~1365 lines): state, UI, 6-factor recommendation algorithm (with synergy/combo/curve scoring), mana base generator, land removal, obsolescence warnings, analytics, export. Exposes API on `window.DeckBuilder`.
 - Plotly.js 2.35.2 from CDN (`scattergl` for WebGL)
 
 **Two modes**: Explore (default) and Build Deck, toggled via toolbar dropdown.
@@ -248,16 +268,19 @@ Dark theme (#1a1a2e background, #c4a747 gold accents). Serves via `python -m htt
 3. Set type distribution targets (editable per-type with progress bars, "Defaults" button for format presets)
 4. Generate Recommendations → top 20 scored cards
 
-**Recommendation Algorithm (5-factor weighted scoring):**
-- **40% embedding similarity** (cosine to deck centroid)
-- **20% combo bonus** (from `combo_graph.json`)
-- **20% synergy bonus** (from `synergy_graph.json`, normalized: 5+ matches = max)
-- **10% EDHREC popularity** (normalized rank)
-- **10% keyword overlap** (Jaccard similarity)
+**Recommendation Algorithm (6-factor weighted scoring):**
+- **35% embedding similarity** — cosine to deck centroid, `Math.max(0, dot)` (L2-normalized embeddings, full [0,1] range)
+- **20% combo bonus** — proportional: counts how many combo partners are in deck, `min(count/3, 1)` (from `combo_graph.json`)
+- **20% synergy bonus** — from `synergy_graph.json`, normalized: `min(matchCount/10, 1)` (matches `SYNERGY_MAX_PARTNERS`)
+- **10% EDHREC popularity** — normalized rank
+- **5% mana curve fit** — rewards cards that fill under-represented CMC buckets (target distribution peaks at 2-3 CMC)
+- **10% keyword overlap** — Jaccard similarity with regex-based keyword parsing
 
-Filters: format legal, color identity subset, type distribution not full, singleton (commander), not rejected.
+Precomputed per-generate: `deckNames` Set and `deckKw` Set built once, passed to all scoring functions (avoids ~33K rebuilds per generate).
 
-**Recommendation UI:** Expandable cards with accept (✓) / reject (✗) buttons. Expanded view shows score breakdown chips (similarity/combo/synergy/popularity/keyword), synergy labels, combo partners, keywords, oracle text. "Accept All" button at top.
+Filters: format legal, color identity subset, type distribution not full, not rejected.
+
+**Recommendation UI:** Expandable cards with accept (✓) / reject (✗) buttons. Expanded view shows score breakdown chips (similarity/combo/synergy/popularity/curve/keyword), synergy labels, combo partners, obsolescence upgrade warnings (amber), keywords, oracle text. "Accept All" button at top. "Clear N rejected" button when rejected cards exist.
 
 **Mana Base Generator:**
 - Auto-generates lands based on deck's color pip requirements
@@ -269,7 +292,7 @@ Filters: format legal, color identity subset, type distribution not full, single
 - Mana curve: 7 buckets (0-6+), gold bars
 - Color distribution: pip percentages with mana symbols (W/U/B/R/G)
 
-**Deck List:** Grouped by type, per-group progress headers, alphabetical within groups. Remove buttons for seeds/accepted (not auto-lands).
+**Deck List:** Grouped by type, per-group progress headers, alphabetical within groups. Remove buttons for seeds, accepted, and lands. Amber dots on cards with known strictly-better upgrades (from `obsolescence_index.json` via `MM.obsolescence`).
 
 **Export:** Text format (`1 Card Name` per line, commander first), copy to clipboard.
 
@@ -324,7 +347,8 @@ All constants live here — paths, hyperparameters, vocab sizes, embedding dims,
 | `export_embeddings.py` | Step 9: Convert .npy → raw Float32 .bin for JS |
 | `synergy.py` | Step 10: Build synergy graph from complementary tag rules |
 | `power_creep.py` | Step 11: Detect strictly-better replacements |
-| `pipeline.py` | Orchestrator: runs all 11 steps in order |
+| `cluster_regions.py` | Step 12: HDBSCAN region clustering + naming for both maps |
+| `pipeline.py` | Orchestrator: runs all 12 steps in order |
 
 ## Data Artifacts (all in `data/`, gitignored unless noted)
 
@@ -349,14 +373,16 @@ All constants live here — paths, hyperparameters, vocab sizes, embedding dims,
 | `obsolescence_index.json` | ~8MB | Strictly-better replacements (git tracked) |
 | `embeddings.bin` | ~16MB | Color+Type Float32 binary for JS (git tracked) |
 | `embeddings_ability.bin` | ~16MB | Ability Float32 binary for JS (git tracked) |
+| `regions_default.json` | ~15KB | Color+Type named regions (L0 + L1) |
+| `regions_ability.json` | ~11KB | Ability named regions (L0 + L1) |
 
 **Note:** Card count grows as Scryfall adds new sets. Exact count as of latest run: 33,682.
 
 ## Tests
 
 ```bash
-# Unit + integration tests (213 total, no data files required for unit tests)
-pytest test_extract.py test_preprocess.py test_combos.py test_mechanical_tags.py test_synergy.py test_power_creep.py test_pipeline_integration.py -v
+# Unit + integration tests (246 total, no data files required for unit tests)
+pytest test_extract.py test_preprocess.py test_combos.py test_mechanical_tags.py test_synergy.py test_power_creep.py test_cluster_regions.py test_pipeline_integration.py -v
 
 # Embedding quality tests (requires data files from pipeline run)
 pytest test_find_similar.py -v
@@ -370,10 +396,11 @@ pytest test_find_similar.py -v
 | `test_mechanical_tags.py` | 45 | All 33 tag regex patterns, removal regex edge cases, multi-hot encoding |
 | `test_synergy.py` | 19 | Synergy rule matching, bidirectionality, combo exclusion, ranking, new rule coverage |
 | `test_power_creep.py` | 36 | Strictly-better detection, similarity gate, tiered thresholds, min tags, stat parsing, edge cases |
-| `test_pipeline_integration.py` | 24 | End-to-end validation of all pipeline outputs, obsolescence quality checks (requires `data/` artifacts) |
+| `test_cluster_regions.py` | 31 | Region naming (color+type, ability TF-IDF, guilds, min presence threshold), centroid/span, parent assignment, output format, pluralization |
+| `test_pipeline_integration.py` | 29 | End-to-end validation of all pipeline outputs, obsolescence + region quality checks (requires `data/` artifacts) |
 | `test_find_similar.py` | 12 | Embedding binary format, L2 normalization, cosine similarity, 128D vs 2D ranking divergence (requires `data/` artifacts) |
 
-**Total: 225 tests** (213 standard + 12 embedding quality).
+**Total: 261 tests** (249 standard + 12 embedding quality).
 
 ## Common Tasks
 
@@ -396,6 +423,7 @@ python process_combos.py  # Step 8
 python export_embeddings.py # Step 9 (both .bin files)
 python synergy.py         # Step 10
 python power_creep.py     # Step 11
+python cluster_regions.py # Step 12
 ```
 
 **Serve the visualization:**

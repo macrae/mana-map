@@ -26,9 +26,15 @@
   const projectionCache = {}; // { default: [...], ability: [...] }
   const embeddingsCache = {}; // { default: Float32Array, ability: Float32Array }
   const MAP_CONFIGS = {
-    default: { projection: '../data/projection_2d.json', embeddings: '../data/embeddings.bin' },
-    ability: { projection: '../data/projection_2d_ability.json', embeddings: '../data/embeddings_ability.bin' },
+    default: { projection: '../data/projection_2d.json', embeddings: '../data/embeddings.bin', regions: '../data/regions_default.json' },
+    ability: { projection: '../data/projection_2d_ability.json', embeddings: '../data/embeddings_ability.bin', regions: '../data/regions_ability.json' },
   };
+
+  // ── Region/Topo state ──
+  let regionDataCache = {};
+  let showContours = false;
+  let showRegionLabels = true;
+  let regionDebounceTimer = null;
 
   // ── Multi-select state ──
   const MAX_SELECTED = 8;
@@ -578,6 +584,8 @@
     if (mapName === currentMap) return;
     currentMap = mapName;
     embeddings = embeddingsCache[currentMap] || null;
+    // Pre-load region data so it's ready when render() builds annotations
+    if (showRegionLabels) await loadRegionData(mapName);
     await loadProjection(mapName);
     // Re-apply selection highlight after map switch (positions changed)
     updateSelectionHighlight();
@@ -688,6 +696,99 @@
     setStatus(`${synPoints.length} synergy partners for "${ref.n}" \u2014 ${labels}...`);
   }
 
+  // ── Region loading and rendering ──
+
+  async function loadRegionData(mapName) {
+    if (regionDataCache[mapName]) return regionDataCache[mapName];
+    const config = MAP_CONFIGS[mapName];
+    if (!config || !config.regions) return null;
+    try {
+      const r = await fetch(config.regions);
+      if (!r.ok) return null;
+      const data = await r.json();
+      regionDataCache[mapName] = data;
+      return data;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function buildContourTrace(filtered) {
+    return {
+      type: 'histogram2dcontour',
+      x: filtered.map(d => d.x),
+      y: filtered.map(d => d.y),
+      ncontours: 15,
+      showscale: false,
+      hoverinfo: 'skip',
+      colorscale: [
+        [0, 'rgba(0,0,0,0)'],
+        [0.2, 'rgba(90,60,140,0.08)'],
+        [0.4, 'rgba(90,80,160,0.15)'],
+        [0.6, 'rgba(100,90,180,0.22)'],
+        [0.8, 'rgba(120,100,200,0.28)'],
+        [1, 'rgba(140,120,220,0.35)'],
+      ],
+      contours: { coloring: 'heatmap' },
+      line: { width: 0.5, color: 'rgba(140,120,220,0.25)' },
+      _isContour: true,
+    };
+  }
+
+  function getRegionAnnotations(visibleSpan) {
+    const regionData = regionDataCache[currentMap];
+    if (!regionData || !showRegionLabels) return [];
+
+    const annotations = [];
+    for (const region of regionData.regions) {
+      let opacity = 0;
+      let fontSize = 11;
+
+      if (region.level === 0) {
+        if (visibleSpan > 25) opacity = 1;
+        else if (visibleSpan > 15) opacity = (visibleSpan - 15) / 10;
+        fontSize = 16;
+      } else {
+        if (region.span < visibleSpan * 0.05) continue;
+        if (visibleSpan < 20) opacity = 1;
+        else if (visibleSpan < 30) opacity = (30 - visibleSpan) / 10;
+        fontSize = 11;
+      }
+
+      if (opacity <= 0) continue;
+
+      annotations.push({
+        x: region.cx,
+        y: region.cy,
+        text: region.level === 0 ? region.label : region.short,
+        showarrow: false,
+        xref: 'x',
+        yref: 'y',
+        font: {
+          family: 'system-ui, -apple-system, sans-serif',
+          size: fontSize,
+          color: region.level === 0
+            ? 'rgba(196,167,71,' + opacity.toFixed(2) + ')'
+            : 'rgba(200,200,200,' + opacity.toFixed(2) + ')',
+        },
+      });
+    }
+    return annotations;
+  }
+
+  // Called only from plotly_relayout (zoom/pan) — uses Plotly.update with annotations only
+  let _labelUpdateInFlight = false;
+  function refreshLabelsOnZoom() {
+    if (_labelUpdateInFlight) return;
+    const plotEl = document.getElementById('plot');
+    if (!plotEl || !plotEl._fullLayout) return;
+    const xRange = plotEl._fullLayout.xaxis.range;
+    const visibleSpan = Math.abs(xRange[1] - xRange[0]);
+    _labelUpdateInFlight = true;
+    Plotly.relayout('plot', { annotations: getRegionAnnotations(visibleSpan) })
+      .finally(() => { _labelUpdateInFlight = false; });
+  }
+
   // ── Load data ──
   fetch('../data/projection_2d.json')
     .then(r => r.json())
@@ -697,6 +798,10 @@
       initToggles();
       render();
       setStatus(`${allData.length.toLocaleString()} cards loaded`);
+      // Load region data in background, then re-render with labels
+      loadRegionData('default').then(data => {
+        if (data) render();
+      });
     })
     .catch(err => setStatus('Error loading data: ' + err.message));
 
@@ -730,6 +835,23 @@
 
   document.getElementById('mapSelect').addEventListener('change', e => {
     switchMap(e.target.value);
+  });
+
+  // ── Topo toggle handlers ──
+  document.getElementById('toggleContours').addEventListener('click', function () {
+    showContours = !showContours;
+    this.classList.toggle('active', showContours);
+    render();
+  });
+
+  document.getElementById('toggleLabels').addEventListener('click', function () {
+    showRegionLabels = !showRegionLabels;
+    this.classList.toggle('active', showRegionLabels);
+    if (showRegionLabels && !regionDataCache[currentMap]) {
+      loadRegionData(currentMap).then(() => render());
+    } else {
+      render();
+    }
   });
 
   document.getElementById('search').addEventListener('input', e => {
@@ -947,6 +1069,12 @@
 
     const filtered = allData.filter(d => activeSupertypes.has(d.s));
 
+    // Contour trace (prepended before scatter so it renders beneath)
+    const contourTraces = [];
+    if (showContours && filtered.length > 0) {
+      contourTraces.push(buildContourTrace(filtered));
+    }
+
     // Group by category (iterate with index to avoid O(n) indexOf)
     const groups = {};
     for (let i = 0; i < allData.length; i++) {
@@ -1050,6 +1178,17 @@
     // Add overlay traces from deck builder
     traces.push(...overlayTraces);
 
+    // Prepend contour traces
+    const allTraces = [...contourTraces, ...traces];
+
+    // Compute visible span for region annotations
+    const plotEl = document.getElementById('plot');
+    let visibleSpan = 70; // default: full extent, shows L0 labels
+    if (plotEl && plotEl._fullLayout) {
+      const xr = plotEl._fullLayout.xaxis.range;
+      visibleSpan = Math.abs(xr[1] - xr[0]);
+    }
+
     const layout = {
       paper_bgcolor: '#1a1a2e',
       plot_bgcolor: '#1a1a2e',
@@ -1060,12 +1199,20 @@
       dragmode: shiftHeld ? 'select' : 'pan',
       legend: { bgcolor: 'rgba(22,33,62,0.85)', bordercolor: '#3a3a5a', borderwidth: 1, font: { size: 11 } },
       hovermode: 'closest',
+      annotations: getRegionAnnotations(visibleSpan),
     };
 
     const config = { scrollZoom: true, displayModeBar: false, responsive: true };
 
     if (!plotInitialized) {
-      Plotly.newPlot('plot', traces, layout, config);
+      Plotly.newPlot('plot', allTraces, layout, config);
+
+      // Zoom listener for region label crossfade
+      document.getElementById('plot').on('plotly_relayout', function () {
+        if (_labelUpdateInFlight) return; // ignore relayouts we caused
+        clearTimeout(regionDebounceTimer);
+        regionDebounceTimer = setTimeout(refreshLabelsOnZoom, 150);
+      });
 
       // Click handler
       document.getElementById('plot').on('plotly_click', function (eventData) {
@@ -1127,7 +1274,7 @@
 
       plotInitialized = true;
     } else {
-      Plotly.react('plot', traces, layout, config);
+      Plotly.react('plot', allTraces, layout, config);
     }
 
     // Re-apply selection highlight after render
@@ -1168,5 +1315,9 @@
     ALL_FORMATS,
     SUPERTYPES,
     MAP_CONFIGS,
+    get showContours() { return showContours; },
+    get showRegionLabels() { return showRegionLabels; },
+    toggleContours() { document.getElementById('toggleContours').click(); },
+    toggleRegionLabels() { document.getElementById('toggleLabels').click(); },
   };
 })();

@@ -62,6 +62,13 @@ def main():
     except ImportError:
         print("\n  [Step 11] Skipping power creep (module not yet created)")
 
+    try:
+        import cluster_regions
+        print("\n[Step 12] Cluster Regions")
+        cluster_regions.main()
+    except ImportError:
+        print("\n  [Step 12] Skipping region clustering (module not yet created)")
+
     print("\n" + "=" * 50)
     print("Pipeline complete.")
     print("=" * 50)

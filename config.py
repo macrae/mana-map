@@ -203,3 +203,75 @@ OBSOLESCENCE_SIMILARITY_THRESHOLD = 0.75
 OBSOLESCENCE_SINGLE_TAG_THRESHOLD = 0.98
 OBSOLESCENCE_MIN_TAGS = 1
 OBSOLESCENCE_MAX_REPLACEMENTS = 5
+
+# ── Region Clustering ──────────────────────────────────────────────────
+REGIONS_DEFAULT_PATH = DATA_DIR / "regions_default.json"
+REGIONS_ABILITY_PATH = DATA_DIR / "regions_ability.json"
+
+REGION_L0_MIN_CLUSTER_SIZE = 800
+REGION_L0_MIN_SAMPLES = 50
+REGION_L1_MIN_CLUSTER_SIZE = 100
+REGION_L1_MIN_SAMPLES = 15
+
+REGION_COLOR_DOMINANCE = 0.40
+REGION_TYPE_DOMINANCE = 0.30
+REGION_MIN_TAG_PRESENCE = 0.10  # Tag must be in >=10% of cluster to be used in naming
+
+REGION_TAG_DISPLAY_NAMES = {
+    "etb": "ETB",
+    "death_trigger": "Death Triggers",
+    "tokens": "Token Makers",
+    "sacrifice": "Sacrifice",
+    "draw": "Card Draw",
+    "removal": "Removal",
+    "blink": "Blink",
+    "reanimate": "Reanimation",
+    "bounce": "Bounce",
+    "counterspell": "Counterspells",
+    "tutor": "Tutors",
+    "discard": "Discard",
+    "ramp": "Mana Ramp",
+    "lifegain": "Lifegain",
+    "mill": "Mill",
+    "anthem": "Anthems",
+    "cost_reduction": "Cost Reduction",
+    "copy": "Copy Effects",
+    "protection": "Protection",
+    "equipment": "Equipment",
+    "aura": "Auras",
+    "tap_ability": "Tap Abilities",
+    "graveyard_matters": "Graveyard",
+    "storm": "Storm",
+    "counters_plus": "+1/+1 Counters",
+    "counters_minus": "-1/-1 Counters",
+    "attack_trigger": "Attack Triggers",
+    "damage_trigger": "Damage Triggers",
+    "upkeep_trigger": "Upkeep",
+    "evasion_flying": "Flyers",
+    "evasion_trample": "Tramplers",
+    "evasion_menace": "Menace",
+    "evasion_unblockable": "Unblockable",
+}
+
+REGION_COLOR_DISPLAY_NAMES = {
+    "W": "White",
+    "U": "Blue",
+    "B": "Black",
+    "R": "Red",
+    "G": "Green",
+    "Colorless": "Colorless",
+    "Multicolor": "Gold",
+}
+
+REGION_GUILD_NAMES = {
+    frozenset(["W", "U"]): "Azorius",
+    frozenset(["U", "B"]): "Dimir",
+    frozenset(["B", "R"]): "Rakdos",
+    frozenset(["R", "G"]): "Gruul",
+    frozenset(["G", "W"]): "Selesnya",
+    frozenset(["W", "B"]): "Orzhov",
+    frozenset(["U", "R"]): "Izzet",
+    frozenset(["B", "G"]): "Golgari",
+    frozenset(["R", "W"]): "Boros",
+    frozenset(["G", "U"]): "Simic",
+}

@@ -14,6 +14,10 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .toggle-btn { background: #2a2a4a; color: #ccc; border: 1px solid #3a3a5a; border-radius: 4px; padding: 3px 8px; font-size: 0.75rem; cursor: pointer; transition: all 0.15s; }
 .toggle-btn.active { background: #3a3a6a; color: #fff; border-color: #c4a747; }
 
+/* ── Topo Toggles ────────────────────────────────────────────────────── */
+.topo-toggles { display: flex; gap: 4px; margin-left: 8px; }
+.topo-toggles .toggle-btn.active { background: #2a3a4a; border-color: #5ab4c4; color: #5ab4c4; }
+
 /* ── Main Content Area ────────────────────────────────────────────────── */
 .main-area { display: flex; flex: 1; min-height: 0; }
 
@@ -278,6 +282,16 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 /* Mode select styling */
 #modeSelect { font-weight: 600; }
 #modeSelect option[value="build"] { color: #c4a747; }
+
+/* ── Obsolescence Warning (Deck Builder) ─────────────────────────────── */
+.obs-warning { color: #d4a017; font-size: 0.8em; margin-top: 4px; }
+.obs-name { cursor: pointer; text-decoration: underline; }
+.obs-name:hover { color: #e0c040; }
+.obs-dot { color: #d4a017; font-size: 0.5rem; margin-left: 4px; flex-shrink: 0; }
+
+/* ── Clear Rejected Button ───────────────────────────────────────────── */
+.clear-rejected-btn { font-size: 0.75em; color: #888; background: none; border: 1px solid #444; border-radius: 4px; padding: 2px 8px; cursor: pointer; }
+.clear-rejected-btn:hover { border-color: #888; color: #ccc; }
 
 /* ── Mobile ───────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {

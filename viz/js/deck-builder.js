@@ -229,25 +229,25 @@
     const off = idx * EMBED_DIM;
     let dot = 0;
     for (let j = 0; j < EMBED_DIM; j++) dot += emb[off + j] * centroid[j];
-    return (dot + 1) / 2; // map [-1,1] to [0,1]
+    return Math.max(0, dot); // embeddings are L2-normalized, so dot ∈ [-1,1]; useful range is [0,1]
   }
 
-  function comboBonus(cardName) {
+  function comboBonus(cardName, deckNames) {
     const graph = deckState.comboGraph;
     if (!graph || !graph.partners[cardName]) return 0;
     const partners = graph.partners[cardName];
-    const deckNames = new Set(getAllDeckIndices().map(i => MM.allData[i].n));
+    let count = 0;
     for (const p of partners) {
-      if (deckNames.has(p)) return 1;
+      if (deckNames.has(p)) count++;
     }
-    return 0;
+    // 3+ combo partners in deck = max score
+    return Math.min(count / 3, 1);
   }
 
-  function getComboPartners(cardName) {
+  function getComboPartners(cardName, deckNames) {
     const graph = deckState.comboGraph;
     if (!graph || !graph.partners[cardName]) return [];
     const partners = graph.partners[cardName];
-    const deckNames = new Set(getAllDeckIndices().map(i => MM.allData[i].n));
     return partners.filter(p => deckNames.has(p));
   }
 
@@ -264,10 +264,9 @@
     return 1 - (d.er / deckState._maxEdhrecRank);
   }
 
-  function synergyBonus(cardName) {
+  function synergyBonus(cardName, deckNames) {
     if (!synergyGraph || !synergyGraph[cardName]) return { score: 0, labels: [] };
     const partners = synergyGraph[cardName];
-    const deckNames = new Set(getAllDeckIndices().map(i => MM.allData[i].n));
     let matchCount = 0;
     const labels = [];
     for (const p of partners) {
@@ -278,28 +277,48 @@
         }
       }
     }
-    // Normalize: 5+ synergy matches = max score
-    const normalized = Math.min(matchCount / 5, 1);
+    // Normalize: 10+ synergy matches = max score (matches SYNERGY_MAX_PARTNERS)
+    const normalized = Math.min(matchCount / 10, 1);
     return { score: normalized, labels };
   }
 
-  function keywordOverlap(d) {
+  function keywordOverlap(d, deckKw) {
     if (!d.k) return 0;
-    // Build deck keyword set
-    const deckKw = new Set();
-    for (const idx of getAllDeckIndices()) {
-      const card = MM.allData[idx];
-      if (card.k) card.k.split(', ').forEach(kw => deckKw.add(kw));
-    }
     if (deckKw.size === 0) return 0;
 
-    const cardKw = new Set(d.k.split(', '));
+    const cardKw = new Set(d.k.split(/,\s*/));
     let intersection = 0;
     for (const kw of cardKw) {
       if (deckKw.has(kw)) intersection++;
     }
     const union = new Set([...deckKw, ...cardKw]).size;
     return union > 0 ? intersection / union : 0;
+  }
+
+  function curveFitBonus(d) {
+    const deckIndices = getAllDeckIndices();
+    if (deckIndices.length < 3) return 0.5; // neutral when deck is tiny
+
+    // Count current CMC distribution (buckets 0-6+)
+    const curve = new Array(7).fill(0);
+    for (const idx of deckIndices) {
+      const card = MM.allData[idx];
+      if (card.s === 'Land') continue;
+      const bucket = Math.min(Math.floor(card.m || 0), 6);
+      curve[bucket]++;
+    }
+
+    // Target curve (% of non-land cards) — peaks at 2-3 CMC
+    const targets = [0.03, 0.12, 0.25, 0.22, 0.18, 0.12, 0.08];
+    const nonLandCount = curve.reduce((a, b) => a + b, 0) || 1;
+
+    const bucket = Math.min(Math.floor(d.m || 0), 6);
+    const currentPct = curve[bucket] / nonLandCount;
+    const targetPct = targets[bucket];
+
+    // Reward cards that fill under-represented buckets
+    const gap = targetPct - currentPct;
+    return Math.max(0, Math.min(1, 0.5 + gap * 4)); // centered at 0.5, boosted/penalized by gap
   }
 
   function generateRecommendations() {
@@ -316,6 +335,14 @@
     if (!centroid) return;
 
     computeDeckColorIdentity();
+
+    // Precompute shared state (avoid rebuilding per candidate)
+    const deckNames = new Set(deckIndices.map(i => MM.allData[i].n));
+    const deckKw = new Set();
+    for (const idx of deckIndices) {
+      const card = MM.allData[idx];
+      if (card.k) card.k.split(/,\s*/).forEach(kw => deckKw.add(kw));
+    }
 
     // Score all candidates
     const candidates = [];
@@ -334,16 +361,15 @@
       if (d.s === 'Land') continue;
       // Filter: type distribution full (skip only when target > 0 and met; target=0 means uncapped)
       if (deckState.distribution[d.s] > 0 && typeCounts[d.s] >= deckState.distribution[d.s]) continue;
-      // Filter: copy limit (commander = singleton)
-      if (rules.maxCopies === 1 && !BASIC_LANDS.has(d.n) && deckSet.has(i)) continue;
 
       const sim = embeddingSim(i, centroid);
-      const combo = comboBonus(d.n);
-      const synergy = synergyBonus(d.n);
+      const combo = comboBonus(d.n, deckNames);
+      const synergy = synergyBonus(d.n, deckNames);
       const edhrec = edhrecScore(d);
-      const kwOverlap = keywordOverlap(d);
+      const kwOverlap = keywordOverlap(d, deckKw);
+      const curveFit = curveFitBonus(d);
 
-      const score = 0.40 * sim + 0.20 * combo + 0.20 * synergy.score + 0.10 * edhrec + 0.10 * kwOverlap;
+      const score = 0.35 * sim + 0.20 * combo + 0.20 * synergy.score + 0.10 * edhrec + 0.05 * curveFit + 0.10 * kwOverlap;
 
       candidates.push({
         index: i,
@@ -354,7 +380,8 @@
         synergyLabels: synergy.labels,
         edhrecScore: edhrec,
         kwScore: kwOverlap,
-        comboPartners: combo > 0 ? getComboPartners(d.n) : [],
+        curveScore: curveFit,
+        comboPartners: combo > 0 ? getComboPartners(d.n, deckNames) : [],
       });
     }
 
@@ -942,6 +969,13 @@
     html += '<button class="btn-primary" onclick="DeckBuilder.generate()"' + (!canGenerate ? ' disabled' : '') + '>Generate Recommendations</button>';
     html += '</div>';
 
+    // Clear rejected button
+    if (deckState.rejected.size > 0) {
+      html += '<div style="text-align:right;margin-bottom:4px;">';
+      html += '<button class="clear-rejected-btn" onclick="DeckBuilder.clearRejected()">Clear ' + deckState.rejected.size + ' rejected</button>';
+      html += '</div>';
+    }
+
     // Recommendations
     if (deckState.recommendations.length > 0) {
       html += '<div class="deck-section">';
@@ -980,9 +1014,10 @@
         // Score breakdown chips
         html += '<div class="rec-scores">';
         html += '<span class="rec-score-chip">Similarity ' + rec.simScore.toFixed(2) + '</span>';
-        if (rec.comboScore > 0) html += '<span class="rec-score-chip chip-combo">Combo</span>';
+        if (rec.comboScore > 0) html += '<span class="rec-score-chip chip-combo">Combo ' + rec.comboScore.toFixed(2) + '</span>';
         if (rec.synergyScore > 0) html += '<span class="rec-score-chip chip-synergy">Synergy ' + rec.synergyScore.toFixed(2) + '</span>';
         html += '<span class="rec-score-chip">Pop. ' + rec.edhrecScore.toFixed(2) + '</span>';
+        if (rec.curveScore != null && rec.curveScore !== 0.5) html += '<span class="rec-score-chip">Curve ' + rec.curveScore.toFixed(2) + '</span>';
         if (rec.kwScore > 0) html += '<span class="rec-score-chip">KW ' + rec.kwScore.toFixed(2) + '</span>';
         html += '</div>';
 
@@ -996,10 +1031,18 @@
           html += '<div class="rec-combo">Combos with: ' + rec.comboPartners.map(p => MM.escHtml(p)).join(', ') + '</div>';
         }
 
+        // Obsolescence warning
+        if (MM.obsolescence && MM.obsolescence[d.n]) {
+          const upgrades = MM.obsolescence[d.n].slice(0, 2);
+          html += '<div class="obs-warning">&#9888; Upgrade: ';
+          html += upgrades.map(u => '<span class="obs-name" data-name="' + MM.escHtml(u.name) + '">' + MM.escHtml(u.name) + '</span>').join(', ');
+          html += '</div>';
+        }
+
         // Keywords
         if (d.k) {
           html += '<div class="rec-keywords">';
-          d.k.split(', ').forEach(kw => {
+          d.k.split(/,\s*/).forEach(kw => {
             html += '<span class="keyword-badge">' + MM.escHtml(kw) + '</span>';
           });
           html += '</div>';
@@ -1063,19 +1106,26 @@
           html += '<div class="deck-card">';
           html += '<span class="deck-card-qty">' + (info.count > 1 ? info.count + 'x' : '') + '</span>';
           html += '<span class="deck-card-name">' + MM.escHtml(name) + '</span>';
+          // Obsolescence amber dot
+          if (MM.obsolescence && MM.obsolescence[name]) {
+            html += '<span class="obs-dot" title="Strictly-better upgrade available">&#9679;</span>';
+          }
           html += '<span class="deck-card-mana">' + MM.renderManaSymbols(cd.mc) + '</span>';
           if (cd.p != null && cd.th != null) {
             html += '<span class="deck-card-stats">' + MM.escHtml(cd.p) + '/' + MM.escHtml(cd.th) + '</span>';
           } else if (cd.l != null) {
             html += '<span class="deck-card-stats">[' + cd.l + ']</span>';
           }
-          // Only show remove for seeds/accepted, not auto-generated lands
+          // Show remove for seeds, accepted, and lands
           const isSeed = deckState.seeds.includes(info.idx);
           const isAccepted = deckState.accepted.includes(info.idx);
+          const isLand = deckState.landSlots.includes(info.idx);
           if (isSeed) {
             html += '<button class="deck-card-remove" onclick="DeckBuilder.removeSeed(' + info.idx + ')">&#10007;</button>';
           } else if (isAccepted) {
             html += '<button class="deck-card-remove" onclick="DeckBuilder.removeAccepted(' + info.idx + ')">&#10007;</button>';
+          } else if (isLand) {
+            html += '<button class="deck-card-remove" onclick="DeckBuilder.removeLand(' + info.idx + ')" title="Remove land">&#10007;</button>';
           }
           html += '</div>';
         }
@@ -1252,6 +1302,21 @@
     generateManaBase();
   }
 
+  function removeLand(idx) {
+    if (!deckState) return;
+    deckState.landSlots = deckState.landSlots.filter(i => i !== idx);
+    renderDeckPanel();
+    MM.render();
+    saveDeckState();
+  }
+
+  function clearRejected() {
+    if (!deckState) return;
+    deckState.rejected.clear();
+    saveDeckState();
+    renderDeckPanel();
+  }
+
   // ── Expand/Collapse Recommendation Cards ──
 
   function toggleRecExpand(btn) {
@@ -1288,6 +1353,8 @@
     removeAccepted,
     generateManaBase: generateManaBase,
     clearLands,
+    removeLand,
+    clearRejected,
     exportDeck,
     resetDeck,
     toggleRecExpand,
