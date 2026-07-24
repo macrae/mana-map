@@ -32,6 +32,7 @@ Steps 1 and 7 need internet. Every module also keeps a main-guard, so `python -m
 - Steps 1–2: ~1 min (download size ~200MB)
 - Step 3: ~5–10 min (sentence embeddings for ~34K cards)
 - Steps 4a/4b: a few minutes each (early stopping: Color+Type ~7 epochs, ability ~16)
-- Step 5: ~1 min · Step 6: ~5 min (PaCMAP) · Steps 7–8: ~3 min · Steps 9–12: ~2 min
+- Step 5: ~1 min · Step 6: ~5 min (PaCMAP) · Steps 7–8: ~3 min
+- Step 9: seconds · Step 10 (synergy): ~30 s · Step 11 (power-creep): ~4 min · Step 12 (regions): ~10 s
 
 Training uses MPS on Apple Silicon, falling back to CUDA then CPU (`training/common.py:get_device`).
