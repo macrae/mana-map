@@ -1,6 +1,16 @@
 # Pilot Subsystem
 
-Turns a locked 100-card Commander decklist into a **pilot's manual** — zine HTML whose combo lines are backed by rules-cited, machine-verified stack resolutions.
+Turns a locked 100-card Commander decklist into a **pilot's manual** — a coaching zine whose combo lines are backed by rules-cited, machine-verified stack resolutions, whose numbers come from seeded simulations, and whose coaching is labeled as coaching.
+
+## The three-tier evidence contract (manual v2)
+
+Every section of a manual wears a badge declaring its epistemic status:
+
+| Tier | Badge | Content | Enforcement |
+|---|---|---|---|
+| Rules-verified | ✓ green | Stack resolutions | Citation contract + adversarial checker |
+| Data-derived | ◆ blue | Goldfish metrics, upgrade data | Seeded, reproducible artifacts (byte-identical re-runs) |
+| Coaching | ★ gold | Threat assessment, matchups, decision trees | Labeled judgment grounded in tier 1/2 artifacts; founder review via tracked JSON |
 
 ## The citation contract
 
@@ -20,8 +30,10 @@ manamap pilot query-rules "…" --json    # semantic top-k (resolver's discovery
 manamap pilot lookup-rule 702.40a --json  # exact fetch (checker's verification path)
 manamap pilot fetch-deck <slug>         # decklist.txt → cards.json (Scryfall)
 manamap pilot validate-deck <slug>      # 100/commander/singleton/color identity
-manamap pilot validate-stack <slug> [--stack NNN]   # citation contract
+manamap pilot validate-stack <slug> [--stack NNN]   # citation contract (stacks + decisions)
+manamap pilot goldfish <slug>           # seeded Monte Carlo metrics → goldfish_metrics.json
 manamap pilot build-manual <slug>       # → manuals/<slug>.html
+manamap pilot build-index               # → manuals/index.html gallery
 ```
 
 ## Data layout
@@ -53,6 +65,14 @@ checker:    verdict (pass|fail), iterations, findings[] {step, rule,
 ```
 
 Verdict `pass` requires all findings `supported` **and** the mechanical validator passing. Failed artifacts are saved (they document open questions) but never published.
+
+## Goldfish metrics (`goldfish_metrics.json`, tier ◆)
+
+`pilot/goldfish.py`: seeded Monte Carlo (seed 42, 10K iterations) simulating **resource development, not full games** — model assumptions are embedded in the artifact and rendered in the manual. Metrics: opening-hand/mulligan stats, land-drop and mana curves, commander-cast turn distribution, per-deck target-set assembly (`goldfish_targets.json`, `any_of` groups, drawn-by-turn semantics), bodies-by-turn (labeled crude). Deterministic: the data-gated test regenerates and compares byte-for-byte.
+
+## Decision scenarios (`decisions/NNN-<kebab>.json`, tier ★)
+
+`kind: "decision"` artifacts: archetypal board + table state, a decision question, 2–4 branches each with `choice`, `line`, `signals`, `coalition_risk`, `coaching`, optional `citations` (same verbatim-quote contract), and a `recommendation` matching a branch. Mechanically form-checked by `validate-stack`; substantively reviewed by humans — the tracked JSON is the red-line surface. Authored via the `pilot-coach` agent (`author-decision` skill).
 
 ## The resolve loop (agents)
 
