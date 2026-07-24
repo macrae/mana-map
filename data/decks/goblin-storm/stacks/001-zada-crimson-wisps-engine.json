@@ -1,0 +1,421 @@
+{
+  "id": "001",
+  "slug": "zada-crimson-wisps-engine",
+  "deck": "goblin-storm",
+  "title": "Crimson Wisps on Zada with four Goblins out",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Zada, Hedron Grinder",
+        "Goblin token 1",
+        "Goblin token 2",
+        "Goblin token 3",
+        "Goblin token 4"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": []
+        }
+      ]
+    },
+    "hand": [
+      "Crimson Wisps"
+    ],
+    "graveyard": [],
+    "mana_available": "{R}",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Crimson Wisps",
+        "controller": "you",
+        "note": "cast targeting only Zada, Hedron Grinder"
+      }
+    ],
+    "extras": {
+      "goblin_tokens": 4
+    },
+    "question": "What happens when Crimson Wisps is cast targeting only Zada? How many copies are created, what does each do, and how many cards do you draw in total?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "You cast Crimson Wisps for {R}, putting it on the stack and choosing Zada, Hedron Grinder as its only target ('Target creature becomes red and gains haste until end of turn. ... Draw a card.').",
+        "effect": "Crimson Wisps is on the stack as a spell with exactly one target: Zada. Your {R} is spent; your hand is now empty.",
+        "citations": [
+          {
+            "rule": "601.2a",
+            "quote": "To propose the casting of a spell, a player first moves that card (or that copy of a card) from where it is to the stack. It becomes the topmost object on the stack."
+          },
+          {
+            "rule": "601.2c",
+            "quote": "The player announces their choice of an appropriate object or player for each target the spell requires."
+          },
+          {
+            "rule": "601.2c",
+            "quote": "The chosen objects and/or players each become a target of that spell."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Zada's triggered ability ('Whenever you cast an instant or sorcery spell that targets only Zada...') triggers, because Crimson Wisps is an instant spell cast targeting only Zada. It goes on the stack on top of Crimson Wisps.",
+        "effect": "The stack is now (top to bottom): Zada's triggered ability, then Crimson Wisps. The trigger will resolve before the spell.",
+        "citations": [
+          {
+            "rule": "113.3c",
+            "quote": "Whenever the trigger event occurs, the ability is put on the stack the next time a player would receive priority and stays there until it’s countered, it resolves, or it otherwise leaves the stack."
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "603.3",
+            "quote": "The ability becomes the topmost object on the stack."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "All players pass priority; Zada's triggered ability (the top object) resolves. It copies Crimson Wisps for each other creature you control that the spell could target. All 4 Goblin tokens are creatures you control and legal targets ('Target creature' — no protection, hexproof, or shroud), so 4 copies are created on the stack, each targeting a different Goblin token, in the order you choose.",
+        "effect": "Four copies of Crimson Wisps are put onto the stack above the original spell. The copies are NOT cast — so Zada's ability does not trigger again (it triggers only on casting) and they add no storm count. The trigger then leaves the stack. Stack is now: 4 Crimson Wisps copies (each targeting a different Goblin token), then the original Crimson Wisps targeting Zada.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "707.10d",
+            "quote": "Some effects copy a spell or ability for each player or object it “could target.” The copies are put onto the stack with those targets in the order of their controller’s choice."
+          },
+          {
+            "rule": "707.10",
+            "quote": "To copy a spell, activated ability, or triggered ability means to put a copy of it onto the stack; a copy of a spell isn’t cast and a copy of an activated ability isn’t activated."
+          },
+          {
+            "rule": "707.10",
+            "quote": "A copy of a spell is itself a spell, even though it has no spell card associated with it."
+          },
+          {
+            "rule": "608.2n",
+            "quote": "As the final part of an ability’s resolution, the ability is removed from the stack and ceases to exist."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Copy #1 of Crimson Wisps (top of stack) resolves, following its instructions in order: its target Goblin token becomes red and gains haste until end of turn, then you draw a card (draw #1).",
+        "effect": "Goblin token #1 is red and has haste until end of turn; you draw 1 card. As the final part of resolution the copy leaves the stack, and it ceases to exist (it never reaches the graveyard as a card).",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "702.10b",
+            "quote": "If a creature has haste, it can attack even if it hasn’t been controlled by its controller continuously since their most recent turn began."
+          },
+          {
+            "rule": "121.1",
+            "quote": "A player draws a card by putting the top card of their library into their hand."
+          },
+          {
+            "rule": "121.1",
+            "quote": "It may also be done as part of a cost or effect of a spell or ability."
+          },
+          {
+            "rule": "608.2n",
+            "quote": "As the final part of an instant or sorcery spell’s resolution, the spell is put into its owner’s graveyard."
+          },
+          {
+            "rule": "707.10a",
+            "quote": "If a copy of a spell is in a zone other than the stack, it ceases to exist."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Copy #2 resolves the same way: its target Goblin token becomes red and gains haste until end of turn, and you draw a card (draw #2).",
+        "effect": "Goblin token #2 is red with haste until end of turn; you have drawn 2 cards. The copy ceases to exist after resolving.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "121.1",
+            "quote": "A player draws a card by putting the top card of their library into their hand."
+          },
+          {
+            "rule": "707.10a",
+            "quote": "If a copy of a spell is in a zone other than the stack, it ceases to exist."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Copy #3 resolves: its target Goblin token becomes red and gains haste until end of turn, and you draw a card (draw #3).",
+        "effect": "Goblin token #3 is red with haste until end of turn; you have drawn 3 cards. The copy ceases to exist after resolving.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "121.1",
+            "quote": "A player draws a card by putting the top card of their library into their hand."
+          },
+          {
+            "rule": "707.10a",
+            "quote": "If a copy of a spell is in a zone other than the stack, it ceases to exist."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Copy #4 resolves: its target Goblin token becomes red and gains haste until end of turn, and you draw a card (draw #4).",
+        "effect": "Goblin token #4 is red with haste until end of turn; you have drawn 4 cards. The copy ceases to exist after resolving.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "121.1",
+            "quote": "A player draws a card by putting the top card of their library into their hand."
+          },
+          {
+            "rule": "707.10a",
+            "quote": "If a copy of a spell is in a zone other than the stack, it ceases to exist."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "The original Crimson Wisps (now the only object on the stack) resolves: Zada, Hedron Grinder becomes red and gains haste until end of turn, and you draw a card (draw #5). The card is then put into your graveyard.",
+        "effect": "Zada is red with haste until end of turn; you have drawn 5 cards total. Crimson Wisps goes to your graveyard. The stack is empty.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "304.2",
+            "quote": "When an instant spell resolves, the actions stated in its rules text are followed. Then it’s put into its owner’s graveyard."
+          },
+          {
+            "rule": "702.10b",
+            "quote": "If a creature has haste, it can attack even if it hasn’t been controlled by its controller continuously since their most recent turn began."
+          },
+          {
+            "rule": "121.1",
+            "quote": "A player draws a card by putting the top card of their library into their hand."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Zada's trigger created 4 copies of Crimson Wisps (one per Goblin token, each copy targeting a different one; copies were put on the stack, not cast, so Zada did not re-trigger). All 4 copies and then the original resolved: all 5 of your creatures (Zada + 4 Goblin tokens) are red and have haste until end of turn, and you drew 5 cards total (4 from copies + 1 from the original). Crimson Wisps is in your graveyard; the copies ceased to exist. Your {R} was spent. The opponent was unaffected.",
+      "you": {
+        "battlefield": [
+          "Zada, Hedron Grinder (red, haste until end of turn)",
+          "Goblin token 1 (red, haste until end of turn)",
+          "Goblin token 2 (red, haste until end of turn)",
+          "Goblin token 3 (red, haste until end of turn)",
+          "Goblin token 4 (red, haste until end of turn)"
+        ],
+        "cards_drawn": 5
+      },
+      "opponents": [
+        {
+          "life": 40
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "iterations": 1,
+    "findings": [
+      {
+        "step": 1,
+        "rule": "601.2a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 1,
+        "rule": "601.2c",
+        "status": "supported",
+        "note": "Both quotes (target announcement; chosen objects become targets) verbatim and in context"
+      },
+      {
+        "step": 2,
+        "rule": "113.3c",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 2,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Both quotes verbatim; trigger correctly placed atop the spell"
+      },
+      {
+        "step": 3,
+        "rule": "405.5",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 3,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 3,
+        "rule": "707.10d",
+        "status": "supported",
+        "note": "Establishes one copy per could-target object, targets assigned, controller chooses order"
+      },
+      {
+        "step": 3,
+        "rule": "707.10",
+        "status": "supported",
+        "note": "Both quotes verbatim; copies not cast (no Zada re-trigger, no storm count) and copies are spells"
+      },
+      {
+        "step": 3,
+        "rule": "608.2n",
+        "status": "supported",
+        "note": "Second sentence of 608.2n correctly applied to the triggered ability leaving the stack"
+      },
+      {
+        "step": 4,
+        "rule": "405.5",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "702.10b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "121.1",
+        "status": "supported",
+        "note": "Both quotes verbatim"
+      },
+      {
+        "step": 4,
+        "rule": "608.2n",
+        "status": "supported",
+        "note": "First sentence of 608.2n; combined with 707.10a correctly explains copy leaving stack then ceasing to exist"
+      },
+      {
+        "step": 4,
+        "rule": "707.10a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 5,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 5,
+        "rule": "121.1",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 5,
+        "rule": "707.10a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "121.1",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "707.10a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 7,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 7,
+        "rule": "121.1",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 7,
+        "rule": "707.10a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 8,
+        "rule": "405.5",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 8,
+        "rule": "304.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 8,
+        "rule": "702.10b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 8,
+        "rule": "121.1",
+        "status": "supported",
+        "note": ""
+      }
+    ]
+  }
+}
