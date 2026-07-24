@@ -4,9 +4,13 @@ from manamap.pilot.common import load_deck_cards
 
 
 def validate(doc):
-    """Return a list of human-readable error strings (empty = valid)."""
+    """Return a list of human-readable error strings (empty = valid).
+
+    Sideboard entries (tokens, art cards, spare copies) are excluded from the
+    100-card, singleton, and color-identity checks.
+    """
     errors = []
-    cards = doc.get("cards", [])
+    cards = [c for c in doc.get("cards", []) if not c.get("is_sideboard")]
     total = sum(c.get("quantity", 0) for c in cards)
     if total != 100:
         errors.append(f"Deck has {total} cards, expected exactly 100")

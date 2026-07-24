@@ -11,8 +11,8 @@ from manamap.pilot.validate_deck import validate
 from conftest import requires_deck
 
 REQUIRED_FIELDS = {
-    "name", "quantity", "is_commander", "mana_cost", "cmc", "type_line",
-    "oracle_text", "colors", "color_identity", "keywords", "power",
+    "name", "quantity", "is_commander", "is_sideboard", "mana_cost", "cmc",
+    "type_line", "oracle_text", "colors", "color_identity", "keywords", "power",
     "toughness", "loyalty", "layout", "image", "scryfall_uri", "card_faces",
 }
 
@@ -87,10 +87,12 @@ def test_parse_decklist_formats():
         "Empty the Warrens\n"
         "// comment\n"
     )
-    assert entries[0] == {"name": "Wort, Boggart Auntie", "quantity": 1, "is_commander": True}
-    assert entries[1] == {"name": "Skirk Prospector", "quantity": 1, "is_commander": False}
-    assert entries[2] == {"name": "Mountain", "quantity": 10, "is_commander": False}
-    assert entries[3] == {"name": "Empty the Warrens", "quantity": 1, "is_commander": False}
+    assert entries[0] == {"name": "Wort, Boggart Auntie", "quantity": 1,
+                          "is_commander": True, "is_sideboard": False}
+    assert entries[1]["name"] == "Skirk Prospector"
+    assert entries[2] == {"name": "Mountain", "quantity": 10,
+                          "is_commander": False, "is_sideboard": False}
+    assert entries[3]["name"] == "Empty the Warrens"
 
 
 def test_parse_decklist_cmdr_marker():
@@ -98,6 +100,49 @@ def test_parse_decklist_cmdr_marker():
     assert entries[0]["is_commander"] is True
     assert entries[0]["name"] == "Krenko, Mob Boss"
     assert entries[1]["is_commander"] is False
+
+
+def test_parse_decklist_moxfield_annotations():
+    entries = parse_decklist(
+        "1 Zada, Hedron Grinder (SLD) 2406 *F*\n"
+        "1 Arena of Glory (PLST) MH3-215\n"
+        "7 Mountain (SLD) 2418 *F*\n"
+    )
+    assert entries[0] == {"name": "Zada, Hedron Grinder", "quantity": 1,
+                          "is_commander": False, "is_sideboard": False,
+                          "set": "sld", "collector_number": "2406"}
+    assert entries[1]["name"] == "Arena of Glory"
+    assert entries[1]["set"] == "plst"
+    assert entries[1]["collector_number"] == "MH3-215"
+    assert entries[2]["quantity"] == 7
+
+
+def test_parse_decklist_sideboard_section():
+    entries = parse_decklist(
+        "1 Skirk Prospector\n"
+        "SIDEBOARD:\n"
+        "1 Sazacap's Brew (PLST) BLB-151\n"
+        "1 Storm Counter (SLD) 2422 *F*\n"
+    )
+    assert entries[0]["is_sideboard"] is False
+    assert entries[1] == {"name": "Sazacap's Brew", "quantity": 1,
+                          "is_commander": False, "is_sideboard": True,
+                          "set": "plst", "collector_number": "BLB-151"}
+    assert entries[2]["name"] == "Storm Counter"
+    assert entries[2]["is_sideboard"] is True
+
+
+def test_duplicate_basic_printings_merge():
+    by_name = {"mountain": scryfall_card("Mountain", type_line="Basic Land — Mountain")}
+    entries = [
+        {"name": "Mountain", "quantity": 7, "is_commander": False, "is_sideboard": False},
+        {"name": "Mountain", "quantity": 8, "is_commander": False, "is_sideboard": False},
+        {"name": "Mountain", "quantity": 7, "is_commander": False, "is_sideboard": False},
+    ]
+    shaped, unmatched = resolve_entries(entries, by_name)
+    assert unmatched == []
+    assert len(shaped) == 1
+    assert shaped[0]["quantity"] == 22
 
 
 # ── check 1: mocked collection response → full schema ──
@@ -129,9 +174,9 @@ def test_mocked_three_card_fetch_has_all_fields(monkeypatch, tmp_path):
         ["Skirk Prospector", "Mountain", "Bonecrusher Giant // Stomp"])
     assert not_found == []
     entries = [
-        {"name": "Skirk Prospector", "quantity": 1, "is_commander": True},
-        {"name": "Mountain", "quantity": 10, "is_commander": False},
-        {"name": "Bonecrusher Giant // Stomp", "quantity": 1, "is_commander": False},
+        {"name": "Skirk Prospector", "quantity": 1, "is_commander": True, "is_sideboard": False},
+        {"name": "Mountain", "quantity": 10, "is_commander": False, "is_sideboard": False},
+        {"name": "Bonecrusher Giant // Stomp", "quantity": 1, "is_commander": False, "is_sideboard": False},
     ]
     shaped, unmatched = resolve_entries(entries, by_name)
     assert unmatched == []
@@ -149,7 +194,8 @@ def test_mocked_three_card_fetch_has_all_fields(monkeypatch, tmp_path):
 def test_resolve_by_single_face_name():
     by_name = {"bonecrusher giant // stomp": ADVENTURE_CARD}
     shaped, unmatched = resolve_entries(
-        [{"name": "Bonecrusher Giant", "quantity": 1, "is_commander": False}], by_name)
+        [{"name": "Bonecrusher Giant", "quantity": 1, "is_commander": False,
+          "is_sideboard": False}], by_name)
     assert unmatched == []
     assert shaped[0]["name"] == "Bonecrusher Giant // Stomp"
 

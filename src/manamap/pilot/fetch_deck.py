@@ -7,6 +7,7 @@ Misspelled card names fail loudly, naming every missing card.
 
 import hashlib
 import json
+import re
 import time
 
 import requests
@@ -23,31 +24,44 @@ SESSION = requests.Session()
 SESSION.headers["User-Agent"] = USER_AGENT
 
 
+# Moxfield-style printing annotation: "Card Name (SET) COLLECTOR [*F*]"
+_PRINTING_RE = re.compile(r"\s+\(([A-Z0-9]{2,6})\)\s+([\w-]+)$")
+
+
 def parse_decklist(text):
-    """Parse a decklist into [{"name", "quantity", "is_commander"}], order preserved.
+    """Parse a decklist into entries, order preserved.
+
+    Entry: {"name", "quantity", "is_commander", "is_sideboard"} plus optional
+    "set"/"collector_number" when a Moxfield printing annotation is present.
 
     Supports: `1 Card Name`, `1x Card Name`, bare `Card Name` (quantity 1),
-    a `Commander:`/`Commanders:` section header, a trailing `*CMDR*` marker,
-    `#` and `//` comment lines, blank lines.
+    Moxfield `(SET) COLLECTOR` printing suffixes and `*F*` foil markers,
+    `Commander:`/`Commanders:` and `Sideboard:` section headers, a trailing
+    `*CMDR*` marker, `#` and `//` comment lines, blank lines.
     """
     entries = []
-    in_commander_section = False
+    section = "deck"
     for raw in text.split("\n"):
         line = raw.strip()
         if not line or line.startswith("#") or line.startswith("//"):
             continue
         lowered = line.lower().rstrip(":")
         if lowered in ("commander", "commanders"):
-            in_commander_section = True
+            section = "commander"
             continue
         if lowered in ("deck", "mainboard", "main"):
-            in_commander_section = False
+            section = "deck"
+            continue
+        if lowered in ("sideboard", "side", "maybeboard", "considering"):
+            section = "sideboard"
             continue
 
-        is_commander = in_commander_section
+        is_commander = section == "commander"
         if line.upper().endswith("*CMDR*"):
             is_commander = True
             line = line[: line.upper().rfind("*CMDR*")].strip()
+        if line.upper().endswith("*F*"):
+            line = line[: line.upper().rfind("*F*")].strip()
 
         quantity = 1
         parts = line.split(None, 1)
@@ -57,29 +71,57 @@ def parse_decklist(text):
             name = parts[1].strip()
         else:
             name = line
-        entries.append({"name": name, "quantity": quantity, "is_commander": is_commander})
+
+        entry = {
+            "name": name,
+            "quantity": quantity,
+            "is_commander": is_commander,
+            "is_sideboard": section == "sideboard",
+        }
+        printing = _PRINTING_RE.search(name)
+        if printing:
+            entry["name"] = name[: printing.start()].strip()
+            entry["set"] = printing.group(1).lower()
+            entry["collector_number"] = printing.group(2)
+        entries.append(entry)
     return entries
 
 
-def fetch_collection(names):
-    """POST names to /cards/collection in batches. Returns (by_name_lower, not_found)."""
-    by_name = {}
-    not_found = []
-    for start in range(0, len(names), SCRYFALL_BATCH_SIZE):
-        batch = names[start : start + SCRYFALL_BATCH_SIZE]
+def _post_collection(identifiers):
+    """POST identifier batches to /cards/collection. Returns (cards, not_found_ids)."""
+    cards, not_found = [], []
+    for start in range(0, len(identifiers), SCRYFALL_BATCH_SIZE):
+        batch = identifiers[start : start + SCRYFALL_BATCH_SIZE]
         if start > 0:
             time.sleep(SCRYFALL_REQUEST_DELAY_S)
-        payload = {"identifiers": [{"name": n} for n in batch]}
+        payload = {"identifiers": batch}
         resp = SESSION.post(SCRYFALL_COLLECTION_URL, json=payload, timeout=60)
         if resp.status_code == 429:
             time.sleep(1.0)
             resp = SESSION.post(SCRYFALL_COLLECTION_URL, json=payload, timeout=60)
         resp.raise_for_status()
         doc = resp.json()
-        for card in doc.get("data", []):
-            by_name[card["name"].lower()] = card
-        not_found.extend(nf.get("name", "?") for nf in doc.get("not_found", []))
-    return by_name, not_found
+        cards.extend(doc.get("data", []))
+        not_found.extend(doc.get("not_found", []))
+    return cards, not_found
+
+
+def fetch_collection(names):
+    """Fetch by name. Returns (by_name_lower, not_found_names)."""
+    cards, not_found = _post_collection([{"name": n} for n in names])
+    by_name = {card["name"].lower(): card for card in cards}
+    return by_name, [nf.get("name", "?") for nf in not_found]
+
+
+def fetch_printings(printings):
+    """Fetch by (set, collector_number). Returns {(set, cn): card}.
+
+    Fallback for names Scryfall can't resolve (tokens, art cards in
+    sideboards). Unresolvable printings are simply absent from the result.
+    """
+    identifiers = [{"set": s, "collector_number": cn} for s, cn in printings]
+    cards, _ = _post_collection(identifiers)
+    return {(card.get("set", ""), card.get("collector_number", "")): card for card in cards}
 
 
 def _shape_face(face):
@@ -95,7 +137,7 @@ def _shape_face(face):
     }
 
 
-def shape_card(sc, quantity, is_commander):
+def shape_card(sc, quantity, is_commander, is_sideboard=False):
     """Project a Scryfall card object onto the cards.json schema."""
     image_uris = sc.get("image_uris") or {}
     faces = sc.get("card_faces") or []
@@ -106,6 +148,7 @@ def shape_card(sc, quantity, is_commander):
         "name": sc["name"],
         "quantity": quantity,
         "is_commander": is_commander,
+        "is_sideboard": is_sideboard,
         "mana_cost": sc.get("mana_cost", ""),
         "cmc": sc.get("cmc", 0.0),
         "type_line": sc.get("type_line", ""),
@@ -124,10 +167,14 @@ def shape_card(sc, quantity, is_commander):
     }
 
 
-def resolve_entries(entries, by_name):
+def resolve_entries(entries, by_name, by_printing=None):
     """Match decklist entries to fetched cards. Entry names may be a single face
     of a multi-face card (Scryfall resolves them; response name is the full
-    ' // ' name). Returns (cards, unmatched_names)."""
+    ' // ' name); entries with a printing annotation fall back to (set, cn)
+    lookup when the name misses. Duplicate names (e.g. several basic-land
+    printings) merge into one entry, quantities summed, first position kept.
+    Returns (cards, unmatched_names)."""
+    by_printing = by_printing or {}
     # Secondary index: front-face name -> full card.
     by_face = {}
     for card in by_name.values():
@@ -135,13 +182,23 @@ def resolve_entries(entries, by_name):
             by_face.setdefault(face["name"].lower(), card)
 
     cards, unmatched = [], []
+    merged = {}  # (name_lower, is_sideboard) -> shaped card
     for entry in entries:
         key = entry["name"].lower()
         sc = by_name.get(key) or by_face.get(key)
+        if sc is None and "set" in entry:
+            sc = by_printing.get((entry["set"], entry["collector_number"]))
         if sc is None:
             unmatched.append(entry["name"])
             continue
-        cards.append(shape_card(sc, entry["quantity"], entry["is_commander"]))
+        merge_key = (sc["name"].lower(), entry["is_sideboard"])
+        if merge_key in merged:
+            merged[merge_key]["quantity"] += entry["quantity"]
+            merged[merge_key]["is_commander"] |= entry["is_commander"]
+            continue
+        shaped = shape_card(sc, entry["quantity"], entry["is_commander"], entry["is_sideboard"])
+        merged[merge_key] = shaped
+        cards.append(shaped)
     return cards, unmatched
 
 
@@ -158,13 +215,25 @@ def main(args):
         raise SystemExit(f"{path} parsed to zero cards — is it empty?")
     print(f"Parsed {len(entries)} decklist entries ({sum(e['quantity'] for e in entries)} cards)")
 
-    by_name, not_found = fetch_collection([e["name"] for e in entries])
-    cards, unmatched = resolve_entries(entries, by_name)
-    missing = sorted(set(not_found) | set(unmatched))
-    if missing:
+    unique_names = sorted({e["name"] for e in entries})
+    by_name, not_found = fetch_collection(unique_names)
+
+    # Second pass: entries whose names missed but that carry a printing
+    # annotation (sideboard tokens/art cards resolve by set + collector number).
+    unresolved_printings = sorted({
+        (e["set"], e["collector_number"])
+        for e in entries
+        if "set" in e and e["name"].lower() not in by_name
+    })
+    by_printing = fetch_printings(unresolved_printings) if unresolved_printings else {}
+    if by_printing:
+        print(f"  Resolved {len(by_printing)} entr(ies) by set/collector number")
+
+    cards, unmatched = resolve_entries(entries, by_name, by_printing)
+    if unmatched:
         raise SystemExit(
             "Scryfall could not resolve these card names (fix the decklist):\n  - "
-            + "\n  - ".join(missing)
+            + "\n  - ".join(sorted(set(unmatched)))
         )
 
     doc = {
@@ -176,9 +245,13 @@ def main(args):
     with open(out, "w") as f:
         json.dump(doc, f, indent=2, sort_keys=True, ensure_ascii=False)
         f.write("\n")
-    total = sum(c["quantity"] for c in cards)
+    main_total = sum(c["quantity"] for c in cards if not c["is_sideboard"])
+    side_total = sum(c["quantity"] for c in cards if c["is_sideboard"])
     commanders = [c["name"] for c in cards if c["is_commander"]]
-    print(f"Wrote {out}: {total} cards, commander: {', '.join(commanders) or 'NONE FLAGGED'}")
+    print(
+        f"Wrote {out}: {main_total} main + {side_total} sideboard, "
+        f"commander: {', '.join(commanders) or 'NONE FLAGGED'}"
+    )
 
 
 if __name__ == "__main__":
