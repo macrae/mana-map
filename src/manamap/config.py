@@ -1,6 +1,10 @@
+import os
 from pathlib import Path
 
-DATA_DIR = Path("data")
+# Anchor all paths to the repo root (src/manamap/config.py → two levels up)
+# so modules work regardless of CWD. Overridable for sandboxed runs.
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+DATA_DIR = Path(os.environ.get("MANAMAP_DATA_DIR", _REPO_ROOT / "data"))
 RAW_JSON_PATH = DATA_DIR / "oracle-cards.json"
 DOWNLOAD_META_PATH = DATA_DIR / ".download-meta.json"
 OUTPUT_CSV_PATH = DATA_DIR / "cards.csv"
@@ -59,7 +63,7 @@ MODEL_PATH = DATA_DIR / "model.pt"
 EMBEDDINGS_PATH = DATA_DIR / "embeddings.npy"
 CARD_METADATA_PATH = DATA_DIR / "card_metadata.csv"
 PROJECTION_PATH = DATA_DIR / "projection_2d.json"
-VIZ_DIR = Path("viz")
+VIZ_DIR = Path(os.environ.get("MANAMAP_VIZ_DIR", _REPO_ROOT / "viz"))
 
 # ── Combo / Deck Builder Data ────────────────────────────────────────────
 COMBOS_API_URL = "https://backend.commanderspellbook.com/variants/"

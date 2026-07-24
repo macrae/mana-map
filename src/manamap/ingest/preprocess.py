@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 
-from config import (
+from manamap.config import (
     CARD_FEATURES_PATH,
     COLOR_VECTORS_PATH,
     KEYWORD_DIM,
@@ -15,7 +15,7 @@ from config import (
     TEXT_EMBEDDINGS_PATH,
     TEXT_MODEL_NAME,
 )
-from mechanical_tags import encode_tags_multihot
+from manamap.mechanical_tags import encode_tags_multihot
 
 
 def compute_text_embeddings(texts, model_name=TEXT_MODEL_NAME, batch_size=512):

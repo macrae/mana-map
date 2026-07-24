@@ -6,7 +6,7 @@ import numpy as np
 import pacmap
 import pandas as pd
 
-from config import (
+from manamap.config import (
     ABILITY_EMBEDDINGS_PATH,
     ABILITY_PROJECTION_PATH,
     CARD_METADATA_PATH,

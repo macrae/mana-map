@@ -5,7 +5,7 @@ import sys
 
 import requests
 
-from config import (
+from manamap.config import (
     BULK_DATA_TYPE,
     BULK_DATA_URL,
     DATA_DIR,

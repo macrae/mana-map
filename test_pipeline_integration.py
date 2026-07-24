@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from config import (
+from manamap.config import (
     ABILITY_EMBEDDINGS_BIN_PATH,
     ABILITY_EMBEDDINGS_PATH,
     ABILITY_MODEL_PATH,

@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from config import (
+from manamap.config import (
     ABILITY_EMBEDDINGS_BIN_PATH,
     ABILITY_EMBEDDINGS_PATH,
     EMBEDDINGS_BIN_PATH,

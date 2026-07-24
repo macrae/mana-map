@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from config import (
+from manamap.config import (
     COLOR_IDENTITY_EMBEDDING_DIM,
     COLOR_IDENTITY_VOCAB_SIZE,
     CONTINUOUS_DIM,

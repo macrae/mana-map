@@ -4,7 +4,7 @@ import json
 
 import pandas as pd
 
-from config import (
+from manamap.config import (
     EXCLUDED_LAYOUTS,
     LEGALITY_FORMATS,
     MULTI_FACE_LAYOUTS,
@@ -12,7 +12,7 @@ from config import (
     RAW_JSON_PATH,
     SUPERTYPE_PRIORITY,
 )
-from mechanical_tags import tag_oracle_text
+from manamap.mechanical_tags import tag_oracle_text
 
 
 def combine_faces(card, field):

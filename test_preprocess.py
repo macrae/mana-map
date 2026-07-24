@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from preprocess import (
+from manamap.ingest.preprocess import (
     build_color_identity_vocab,
     build_top_keywords,
     build_vocab_index,

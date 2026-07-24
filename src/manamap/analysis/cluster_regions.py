@@ -7,7 +7,7 @@ import hdbscan
 import numpy as np
 import pandas as pd
 
-from config import (
+from manamap.config import (
     OUTPUT_CSV_PATH,
     PROJECTION_PATH,
     ABILITY_PROJECTION_PATH,

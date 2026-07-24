@@ -5,7 +5,7 @@ import json
 import numpy as np
 import pandas as pd
 
-from config import (
+from manamap.config import (
     ABILITY_EMBEDDINGS_PATH,
     COMBO_GRAPH_PATH,
     EMBEDDINGS_PATH,
@@ -15,7 +15,7 @@ from config import (
     SYNERGY_MAX_PARTNERS,
     SYNERGY_RULES,
 )
-from mechanical_tags import tag_oracle_text
+from manamap.mechanical_tags import tag_oracle_text
 
 
 def build_tag_index(df):

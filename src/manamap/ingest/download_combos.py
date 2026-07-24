@@ -5,7 +5,7 @@ import time
 
 import requests
 
-from config import (
+from manamap.config import (
     COMBOS_API_URL,
     COMBOS_META_PATH,
     COMBOS_RAW_PATH,

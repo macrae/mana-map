@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from mechanical_tags import encode_tags_multihot, tag_oracle_text
+from manamap.mechanical_tags import encode_tags_multihot, tag_oracle_text
 
 
 # ── tag_oracle_text: Trigger tags ──

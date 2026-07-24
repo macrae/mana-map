@@ -8,7 +8,7 @@ import pandas as pd
 import torch
 from torch.utils.data import DataLoader, Dataset
 
-from config import (
+from manamap.config import (
     ABILITY_CI_EMBEDDING_DIM,
     ABILITY_KEYWORD_EMBEDDING_DIM,
     ABILITY_MECHANICAL_TAG_EMBEDDING_DIM,
@@ -26,8 +26,8 @@ from config import (
     TRIPLET_MARGIN,
     VAL_SPLIT,
 )
-from model import CardEmbeddingModel
-from train import collate_triplets, get_device, run_epoch
+from manamap.training.model import CardEmbeddingModel
+from manamap.training.train import collate_triplets, get_device, run_epoch
 
 
 class AbilityTripletMiningDataset(Dataset):

@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from synergy import build_card_tags, build_synergy_graph, build_tag_index
+from manamap.analysis.synergy import build_card_tags, build_synergy_graph, build_tag_index
 
 
 # ── Fixtures ──
@@ -54,7 +54,7 @@ def test_build_card_tags():
 # ── build_synergy_graph ──
 
 
-@patch("synergy.load_combo_partners", return_value={})
+@patch("manamap.analysis.synergy.load_combo_partners", return_value={})
 def test_blink_etb_synergy(mock_combo):
     """Cards with blink should synergize with ETB cards."""
     df = make_df([
@@ -73,7 +73,7 @@ def test_blink_etb_synergy(mock_combo):
     assert "Lightning Bolt" not in partner_names
 
 
-@patch("synergy.load_combo_partners", return_value={})
+@patch("manamap.analysis.synergy.load_combo_partners", return_value={})
 def test_sac_death_synergy(mock_combo):
     """Sacrifice outlets should synergize with death trigger cards."""
     df = make_df([
@@ -89,7 +89,7 @@ def test_sac_death_synergy(mock_combo):
     assert "Zulaport Cutthroat" in partner_names
 
 
-@patch("synergy.load_combo_partners", return_value={})
+@patch("manamap.analysis.synergy.load_combo_partners", return_value={})
 def test_synergy_is_bidirectional(mock_combo):
     """Both sides of a synergy rule should find each other."""
     df = make_df([
@@ -104,7 +104,7 @@ def test_synergy_is_bidirectional(mock_combo):
     assert graph["ETB Card"][0]["partner"] == "Blink Card"
 
 
-@patch("synergy.load_combo_partners", return_value={})
+@patch("manamap.analysis.synergy.load_combo_partners", return_value={})
 def test_synergy_labels(mock_combo):
     """Synergy labels should describe the rule that matched."""
     df = make_df([
@@ -117,7 +117,7 @@ def test_synergy_labels(mock_combo):
     assert "Blink + ETB" in synergies
 
 
-@patch("synergy.load_combo_partners", return_value={})
+@patch("manamap.analysis.synergy.load_combo_partners", return_value={})
 def test_multiple_synergy_rules(mock_combo):
     """A card matching multiple rules with a partner should have higher score."""
     df = make_df([
@@ -137,7 +137,7 @@ def test_multiple_synergy_rules(mock_combo):
     assert graph["Multi Card"][0]["partner"] == "ETB Death Card"
 
 
-@patch("synergy.load_combo_partners", return_value={"Card A": ["Card B"]})
+@patch("manamap.analysis.synergy.load_combo_partners", return_value={"Card A": ["Card B"]})
 def test_excludes_combo_partners(mock_combo):
     """Known combo partners should be excluded from synergy results."""
     df = make_df([
@@ -153,7 +153,7 @@ def test_excludes_combo_partners(mock_combo):
     assert "Card C" in partner_names
 
 
-@patch("synergy.load_combo_partners", return_value={})
+@patch("manamap.analysis.synergy.load_combo_partners", return_value={})
 def test_no_self_synergy(mock_combo):
     """A card should not synergize with itself."""
     df = make_df([
@@ -166,7 +166,7 @@ def test_no_self_synergy(mock_combo):
         assert "Self Card" not in partner_names
 
 
-@patch("synergy.load_combo_partners", return_value={})
+@patch("manamap.analysis.synergy.load_combo_partners", return_value={})
 def test_top_10_limit(mock_combo):
     """Synergy results should be capped at 10 per card."""
     cards = [("Blinker", "blink")]
@@ -180,7 +180,7 @@ def test_top_10_limit(mock_combo):
     assert len(graph["Blinker"]) <= 10
 
 
-@patch("synergy.load_combo_partners", return_value={})
+@patch("manamap.analysis.synergy.load_combo_partners", return_value={})
 def test_no_tags_no_synergies(mock_combo):
     """Cards with no tags should have no synergies."""
     df = make_df([
@@ -192,7 +192,7 @@ def test_no_tags_no_synergies(mock_combo):
     assert "Vanilla Creature" not in graph
 
 
-@patch("synergy.load_combo_partners", return_value={})
+@patch("manamap.analysis.synergy.load_combo_partners", return_value={})
 def test_tokens_anthem_synergy(mock_combo):
     """Token generators should synergize with anthem effects."""
     df = make_df([
@@ -210,7 +210,7 @@ def test_tokens_anthem_synergy(mock_combo):
     assert any("Tokens" in s for s in synergies)
 
 
-@patch("synergy.load_combo_partners", return_value={})
+@patch("manamap.analysis.synergy.load_combo_partners", return_value={})
 def test_synergy_graph_json_serializable(mock_combo):
     """Ensure the output can be serialized to JSON."""
     df = make_df([
@@ -226,7 +226,7 @@ def test_synergy_graph_json_serializable(mock_combo):
 # ── New rule coverage tests ──
 
 
-@patch("synergy.load_combo_partners", return_value={})
+@patch("manamap.analysis.synergy.load_combo_partners", return_value={})
 def test_no_duplicate_rule_scoring(mock_combo):
     """Tokens+anthem should score exactly 1, not 2 (no duplicate rule)."""
     df = make_df([
@@ -242,7 +242,7 @@ def test_no_duplicate_rule_scoring(mock_combo):
     assert len(partner["synergies"]) == 1
 
 
-@patch("synergy.load_combo_partners", return_value={})
+@patch("manamap.analysis.synergy.load_combo_partners", return_value={})
 def test_bounce_etb_synergy(mock_combo):
     """Bounce cards should find ETB partners."""
     df = make_df([
@@ -261,7 +261,7 @@ def test_bounce_etb_synergy(mock_combo):
     assert "Bounce + ETB" in mulldrifter_entry["synergies"]
 
 
-@patch("synergy.load_combo_partners", return_value={})
+@patch("manamap.analysis.synergy.load_combo_partners", return_value={})
 def test_evasion_damage_trigger_synergy(mock_combo):
     """Flying cards should find damage_trigger partners."""
     df = make_df([
@@ -277,7 +277,7 @@ def test_evasion_damage_trigger_synergy(mock_combo):
     assert "Vanilla Card" not in partner_names
 
 
-@patch("synergy.load_combo_partners", return_value={})
+@patch("manamap.analysis.synergy.load_combo_partners", return_value={})
 def test_equipment_attack_trigger_synergy(mock_combo):
     """Equipment should find attack_trigger partners."""
     df = make_df([
@@ -293,7 +293,7 @@ def test_equipment_attack_trigger_synergy(mock_combo):
     assert "Lifegainer" not in partner_names
 
 
-@patch("synergy.load_combo_partners", return_value={})
+@patch("manamap.analysis.synergy.load_combo_partners", return_value={})
 def test_aura_protection_synergy(mock_combo):
     """Aura cards should find protection partners."""
     df = make_df([

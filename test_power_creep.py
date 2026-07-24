@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from power_creep import (
+from manamap.analysis.power_creep import (
     color_requirement_subset,
     find_strictly_better,
     parse_color_requirement,

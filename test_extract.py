@@ -2,7 +2,7 @@
 
 import pytest
 
-from extract import (
+from manamap.ingest.extract import (
     build_embedding_text,
     combine_faces,
     derive_primary_color,

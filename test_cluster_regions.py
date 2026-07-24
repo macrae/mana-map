@@ -5,7 +5,7 @@ import json
 import numpy as np
 import pytest
 
-from cluster_regions import (
+from manamap.analysis.cluster_regions import (
     assign_parents,
     compute_centroid,
     compute_span,

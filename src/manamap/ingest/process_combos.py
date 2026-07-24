@@ -5,7 +5,7 @@ from collections import defaultdict
 
 import pandas as pd
 
-from config import COMBO_GRAPH_PATH, COMBOS_RAW_PATH, OUTPUT_CSV_PATH
+from manamap.config import COMBO_GRAPH_PATH, COMBOS_RAW_PATH, OUTPUT_CSV_PATH
 
 
 def load_known_cards(csv_path):

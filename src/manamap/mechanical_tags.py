@@ -5,7 +5,7 @@ import re
 import numpy as np
 import pandas as pd
 
-from config import MECHANICAL_TAG_NAMES, MECHANICAL_TAGS
+from manamap.config import MECHANICAL_TAG_NAMES, MECHANICAL_TAGS
 
 
 # Pre-compile patterns for performance

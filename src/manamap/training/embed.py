@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import torch
 
-from config import (
+from manamap.config import (
     ABILITY_CI_EMBEDDING_DIM,
     ABILITY_EMBEDDINGS_PATH,
     ABILITY_KEYWORD_EMBEDDING_DIM,
@@ -19,8 +19,8 @@ from config import (
     OUTPUT_CSV_PATH,
     TEXT_EMBEDDINGS_PATH,
 )
-from model import CardEmbeddingModel
-from train import get_device
+from manamap.training.model import CardEmbeddingModel
+from manamap.training.train import get_device
 
 
 def run_embed(model_path, output_path, model_kwargs=None, use_mechanical_tags=False):

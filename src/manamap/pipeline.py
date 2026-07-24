@@ -1,15 +1,9 @@
 """Orchestrator: runs the full data + embedding pipeline."""
 
-import download
-import download_combos
-import embed
-import export_embeddings
-import extract
-import preprocess
-import process_combos
-import reduce
-import train
-import train_ability
+from manamap.analysis import cluster_regions, power_creep, synergy
+from manamap.export import export_embeddings, reduce
+from manamap.ingest import download, download_combos, extract, preprocess, process_combos
+from manamap.training import embed, train, train_ability
 
 
 def main():
@@ -47,27 +41,14 @@ def main():
     print("\n[Step 9] Export Embeddings Binary (both)")
     export_embeddings.main()
 
-    # Steps 10-11 run after combo/synergy data exists
-    try:
-        import synergy
-        print("\n[Step 10] Build Synergy Graph")
-        synergy.main()
-    except ImportError:
-        print("\n  [Step 10] Skipping synergy (module not yet created)")
+    print("\n[Step 10] Build Synergy Graph")
+    synergy.main()
 
-    try:
-        import power_creep
-        print("\n[Step 11] Build Obsolescence Index")
-        power_creep.main()
-    except ImportError:
-        print("\n  [Step 11] Skipping power creep (module not yet created)")
+    print("\n[Step 11] Build Obsolescence Index")
+    power_creep.main()
 
-    try:
-        import cluster_regions
-        print("\n[Step 12] Cluster Regions")
-        cluster_regions.main()
-    except ImportError:
-        print("\n  [Step 12] Skipping region clustering (module not yet created)")
+    print("\n[Step 12] Cluster Regions")
+    cluster_regions.main()
 
     print("\n" + "=" * 50)
     print("Pipeline complete.")

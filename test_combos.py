@@ -7,7 +7,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from process_combos import (
+from manamap.ingest.process_combos import (
     build_combo_graph,
     extract_card_names,
     extract_color_identity,

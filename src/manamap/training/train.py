@@ -7,7 +7,7 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader, Dataset
 
-from config import (
+from manamap.config import (
     BATCH_SIZE,
     CARD_FEATURES_PATH,
     EARLY_STOPPING_PATIENCE,
@@ -19,7 +19,7 @@ from config import (
     TRIPLET_MARGIN,
     VAL_SPLIT,
 )
-from model import CardEmbeddingModel
+from manamap.training.model import CardEmbeddingModel
 
 
 def get_device():

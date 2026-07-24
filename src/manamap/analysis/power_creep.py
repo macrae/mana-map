@@ -5,7 +5,7 @@ import json
 import numpy as np
 import pandas as pd
 
-from config import (
+from manamap.config import (
     ABILITY_EMBEDDINGS_PATH,
     EMBEDDINGS_PATH,
     MECHANICAL_TAG_NAMES,
