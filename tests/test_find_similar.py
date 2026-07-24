@@ -8,22 +8,26 @@ import json
 import struct
 import numpy as np
 import pytest
-from pathlib import Path
 
-DATA_DIR = Path("data")
-EMBED_DIM = 128
+from manamap.config import EMBEDDINGS_BIN_PATH, EMBEDDINGS_PATH, FINAL_EMBEDDING_DIM, PROJECTION_PATH
+
+from conftest import requires_data
+
+EMBED_DIM = FINAL_EMBEDDING_DIM
+
+pytestmark = requires_data
 
 
 @pytest.fixture(scope="module")
 def embeddings_npy():
     """Load the numpy embeddings (ground truth)."""
-    return np.load(DATA_DIR / "embeddings.npy")
+    return np.load(EMBEDDINGS_PATH)
 
 
 @pytest.fixture(scope="module")
 def embeddings_bin():
     """Load embeddings.bin as Float32Array (same format JS uses)."""
-    raw = (DATA_DIR / "embeddings.bin").read_bytes()
+    raw = EMBEDDINGS_BIN_PATH.read_bytes()
     arr = np.frombuffer(raw, dtype=np.float32)
     n_cards = len(arr) // EMBED_DIM
     return arr.reshape(n_cards, EMBED_DIM)
@@ -32,7 +36,7 @@ def embeddings_bin():
 @pytest.fixture(scope="module")
 def projection():
     """Load 2D projection data."""
-    with open(DATA_DIR / "projection_2d.json") as f:
+    with open(PROJECTION_PATH) as f:
         return json.load(f)
 
 
@@ -203,7 +207,7 @@ def test_128d_selects_different_cards_than_2d(embeddings_bin, projection):
 
 def test_embeddings_bin_is_raw_float32(embeddings_npy):
     """embeddings.bin should be raw Float32 with no header (JS reads it directly)."""
-    raw = (DATA_DIR / "embeddings.bin").read_bytes()
+    raw = EMBEDDINGS_BIN_PATH.read_bytes()
     expected_size = embeddings_npy.shape[0] * embeddings_npy.shape[1] * 4
     assert len(raw) == expected_size, (
         f"embeddings.bin is {len(raw)} bytes, expected {expected_size} "
