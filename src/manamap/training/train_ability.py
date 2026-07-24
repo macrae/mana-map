@@ -27,7 +27,7 @@ from manamap.config import (
     VAL_SPLIT,
 )
 from manamap.training.model import CardEmbeddingModel
-from manamap.training.train import collate_triplets, get_device, run_epoch
+from manamap.training.common import collate_triplets, get_device, run_epoch
 
 
 class AbilityTripletMiningDataset(Dataset):
