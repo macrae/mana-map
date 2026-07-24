@@ -251,6 +251,7 @@ def test_real_deck_is_100_with_commander():
     from manamap.pilot.common import load_deck_cards
 
     doc = load_deck_cards("goblin-storm")
-    assert sum(c["quantity"] for c in doc["cards"]) == 100
-    assert any(c["is_commander"] for c in doc["cards"])
+    main = [c for c in doc["cards"] if not c["is_sideboard"]]
+    assert sum(c["quantity"] for c in main) == 100
+    assert any(c["is_commander"] for c in main)
     assert validate(doc) == []
