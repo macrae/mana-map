@@ -6,6 +6,7 @@ stays fast (no torch import).
 
 import argparse
 
+from manamap.pilot.registry import add_pilot_parser, run_pilot_step
 from manamap.pipeline import STEP_NAMES, STEPS, run, run_step
 
 
@@ -28,6 +29,8 @@ def build_parser():
     for name, _, description in STEPS:
         subparsers.add_parser(name, help=description)
 
+    add_pilot_parser(subparsers)
+
     return parser
 
 
@@ -35,6 +38,8 @@ def main():
     args = build_parser().parse_args()
     if args.command == "run":
         run(start=args.start)
+    elif args.command == "pilot":
+        run_pilot_step(args)
     else:
         run_step(args.command)
 

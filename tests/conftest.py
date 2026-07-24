@@ -12,6 +12,17 @@ requires_data = pytest.mark.skipif(
     reason="requires generated data/ artifacts (run `manamap run` first)",
 )
 
+# Pilot subsystem artifact gates (same pattern).
+requires_rules = pytest.mark.skipif(
+    not config.RULES_INDEX_PATH.exists(),
+    reason="requires the rules DB (run `manamap pilot download-rules && manamap pilot build-rules-db`)",
+)
+
+requires_deck = pytest.mark.skipif(
+    not (config.DECKS_DIR / "goblin-storm" / "cards.json").exists(),
+    reason="requires a fetched deck (run `manamap pilot fetch-deck goblin-storm`)",
+)
+
 
 @pytest.fixture(scope="session")
 def data_dir():

@@ -279,3 +279,22 @@ REGION_GUILD_NAMES = {
     frozenset(["R", "W"]): "Boros",
     frozenset(["G", "U"]): "Simic",
 }
+
+# ── Pilot: Comprehensive Rules ───────────────────────────────────────────
+RULES_DIR = DATA_DIR / "rules"
+# Update per set release — current link lives at https://magic.wizards.com/en/rules
+CR_RULES_URL = "https://media.wizards.com/2026/downloads/MagicCompRules%2020260619.txt"
+CR_RULES_PATH = RULES_DIR / "comprehensive_rules.txt"
+CR_RULES_META_PATH = RULES_DIR / ".rules-meta.json"
+RULES_INDEX_PATH = RULES_DIR / "rules_index.json"
+RULES_EMBEDDINGS_PATH = RULES_DIR / "rules_embeddings.npy"
+RULES_DB_META_PATH = RULES_DIR / ".rules-db-meta.json"
+RULES_QUERY_TOP_K = 8
+
+# ── Pilot: Decks & Manuals ───────────────────────────────────────────────
+DECKS_DIR = DATA_DIR / "decks"
+MANUALS_DIR = _REPO_ROOT / "manuals"
+SCRYFALL_COLLECTION_URL = "https://api.scryfall.com/cards/collection"
+SCRYFALL_BATCH_SIZE = 75
+SCRYFALL_REQUEST_DELAY_S = 0.1
+RESOLVE_MAX_ITERATIONS = 3
