@@ -22,7 +22,10 @@
   };
 
   const BASIC_LANDS = new Set(['Plains', 'Island', 'Swamp', 'Mountain', 'Forest']);
-  const EMBED_DIM = 128;
+  const EMBED_DIM = MM.EMBED_DIM;
+  const SYNERGY_CAP = 10; // matches SYNERGY_MAX_PARTNERS in config.py
+  const REC_COUNT = 20; // recommendations shown per generate
+  const AUTOCOMPLETE_MAX = 10; // commander autocomplete results
   let synergyGraph = null; // lazy-loaded for synergy scoring
 
   // ── Deck State ──
@@ -60,17 +63,17 @@
     setTimeout(() => Plotly.Plots.resize('plot'), 260);
 
     try {
-      const embUrl = (MM.MAP_CONFIGS && MM.currentMap) ? MM.MAP_CONFIGS[MM.currentMap].embeddings : '../data/embeddings.bin';
+      const embUrl = (MM.MAP_CONFIGS && MM.currentMap) ? MM.MAP_CONFIGS[MM.currentMap].embeddings : MM.DATA.embeddings;
       const [embBuf, comboData, synergyData] = await Promise.all([
         fetch(embUrl).then(r => {
           if (!r.ok) throw new Error('embeddings.bin not found — run export_embeddings.py');
           return r.arrayBuffer();
         }),
-        fetch('../data/combo_graph.json').then(r => {
+        fetch(MM.DATA.comboGraph).then(r => {
           if (!r.ok) throw new Error('combo_graph.json not found — run process_combos.py');
           return r.json();
         }),
-        fetch('../data/synergy_graph.json').then(r => {
+        fetch(MM.DATA.synergyGraph).then(r => {
           if (!r.ok) return null;
           return r.json();
         }).catch(() => null),
@@ -277,8 +280,8 @@
         }
       }
     }
-    // Normalize: 10+ synergy matches = max score (matches SYNERGY_MAX_PARTNERS)
-    const normalized = Math.min(matchCount / 10, 1);
+    // Normalize: SYNERGY_CAP+ matches = max score
+    const normalized = Math.min(matchCount / SYNERGY_CAP, 1);
     return { score: normalized, labels };
   }
 
@@ -386,7 +389,7 @@
     }
 
     candidates.sort((a, b) => b.score - a.score);
-    deckState.recommendations = candidates.slice(0, 20);
+    deckState.recommendations = candidates.slice(0, REC_COUNT);
 
     renderDeckPanel();
     MM.render();
@@ -834,7 +837,7 @@
           if (!d.t.toLowerCase().includes('creature')) continue;
           if (!isLegalInFormat(d, 'commander')) continue;
           if (d.n.toLowerCase().includes(term)) matches.push(i);
-          if (matches.length >= 10) break;
+          if (matches.length >= AUTOCOMPLETE_MAX) break;
         }
 
         if (matches.length === 0) {

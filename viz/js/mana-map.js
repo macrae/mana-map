@@ -21,13 +21,27 @@
   let similarTrace = null;
   let currentMode = 'explore';
   let embeddings = null; // Float32Array, loaded lazily for Find Similar
-  const EMBED_DIM = 128;
+  const EMBED_DIM = 128; // mirrors FINAL_EMBEDDING_DIM in config.py
   let currentMap = 'default'; // 'default' or 'ability'
   const projectionCache = {}; // { default: [...], ability: [...] }
   const embeddingsCache = {}; // { default: Float32Array, ability: Float32Array }
+  // All data files the viz fetches, relative to viz/index.html. The server
+  // must be rooted at the repo top so '../data/' resolves (GitHub Pages layout).
+  const DATA_BASE = '../data/';
+  const DATA = {
+    projection: DATA_BASE + 'projection_2d.json',
+    projectionAbility: DATA_BASE + 'projection_2d_ability.json',
+    embeddings: DATA_BASE + 'embeddings.bin',
+    embeddingsAbility: DATA_BASE + 'embeddings_ability.bin',
+    regionsDefault: DATA_BASE + 'regions_default.json',
+    regionsAbility: DATA_BASE + 'regions_ability.json',
+    obsolescence: DATA_BASE + 'obsolescence_index.json',
+    synergyGraph: DATA_BASE + 'synergy_graph.json',
+    comboGraph: DATA_BASE + 'combo_graph.json',
+  };
   const MAP_CONFIGS = {
-    default: { projection: '../data/projection_2d.json', embeddings: '../data/embeddings.bin', regions: '../data/regions_default.json' },
-    ability: { projection: '../data/projection_2d_ability.json', embeddings: '../data/embeddings_ability.bin', regions: '../data/regions_ability.json' },
+    default: { projection: DATA.projection, embeddings: DATA.embeddings, regions: DATA.regionsDefault },
+    ability: { projection: DATA.projectionAbility, embeddings: DATA.embeddingsAbility, regions: DATA.regionsAbility },
   };
 
   // ── Region/Topo state ──
@@ -510,7 +524,7 @@
   async function loadObsolescenceIndex() {
     if (obsolescenceIndex) return true;
     try {
-      const r = await fetch('../data/obsolescence_index.json');
+      const r = await fetch(DATA.obsolescence);
       if (!r.ok) return false;
       obsolescenceIndex = await r.json();
       return true;
@@ -599,7 +613,7 @@
   async function loadSynergyGraph() {
     if (synergyGraph) return true;
     try {
-      const r = await fetch('../data/synergy_graph.json');
+      const r = await fetch(DATA.synergyGraph);
       if (!r.ok) return false;
       synergyGraph = await r.json();
       return true;
@@ -790,7 +804,7 @@
   }
 
   // ── Load data ──
-  fetch('../data/projection_2d.json')
+  fetch(MAP_CONFIGS.default.projection)
     .then(r => r.json())
     .then(data => {
       allData = data;
@@ -1315,6 +1329,9 @@
     ALL_FORMATS,
     SUPERTYPES,
     MAP_CONFIGS,
+    DATA,
+    EMBED_DIM,
+    get obsolescence() { return obsolescenceIndex; },
     get showContours() { return showContours; },
     get showRegionLabels() { return showRegionLabels; },
     toggleContours() { document.getElementById('toggleContours').click(); },
