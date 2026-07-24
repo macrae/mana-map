@@ -169,6 +169,51 @@ def test_decision_spread_renders():
     assert 'class="branch recommended"' in html_out
 
 
+def test_threat_and_matchups_sections_always_render():
+    html_out = render_manual("test-deck", deck_doc(), [], PROSE, {})
+    assert "Playing the Table" in html_out
+    assert "Threat assessment" in html_out
+    assert "Matchups" in html_out
+    assert "[TODO: threat_assessment prose]" in html_out
+    assert "[TODO: matchups prose]" in html_out
+
+
+def test_threat_and_matchups_prose_renders():
+    prose = dict(PROSE, threat_assessment="You are the threat the moment Zada resolves.",
+                 matchups="Against sweeper control, hold a rebuild hand.")
+    html_out = render_manual("test-deck", deck_doc(), [], prose, {})
+    assert "You are the threat the moment Zada resolves." in html_out
+    assert "Against sweeper control, hold a rebuild hand." in html_out
+
+
+def test_og_tags():
+    html_out = render_manual("test-deck", deck_doc(), [], PROSE, {})
+    assert '<meta property="og:title" content="Wort, Boggart Auntie' in html_out
+    assert 'og:description" content="Goblins all the way down"' in html_out
+    assert 'og:image" content="https://img/wort.jpg"' in html_out
+
+
+def test_index_renders_entries():
+    from manamap.pilot.build_index import render_index
+
+    entries = [{"slug": "goblin-storm", "commander": "Zada, Hedron Grinder",
+                "image": "https://img/zada.jpg", "tagline": "One spell in, five out.",
+                "verified": 2, "decisions": 3, "mean_cast": 4.35}]
+    html_out = render_index(entries)
+    assert "Zada, Hedron Grinder" in html_out
+    assert 'href="goblin-storm.html"' in html_out
+    assert "✓ 2 verified line(s)" in html_out
+    assert "★ 3 decision spread(s)" in html_out
+    assert "◆ commander turn 4.35" in html_out
+    assert render_index(entries) == html_out  # deterministic
+
+
+def test_index_empty():
+    from manamap.pilot.build_index import render_index
+
+    assert "No manuals built yet" in render_index([])
+
+
 def test_v2_determinism():
     kwargs = dict(goldfish=GOLDFISH_FIXTURE, decisions=[DECISION_FIXTURE])
     a = render_manual("test-deck", deck_doc(), [verified_stack()], PROSE, SYNERGY, **kwargs)

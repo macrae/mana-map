@@ -283,18 +283,32 @@ def render_manual(slug, deck_doc, stacks, prose_doc, synergy, goldfish=None, dec
 
     goldfish_section = render_goldfish(goldfish)
     decision_spreads = "".join(render_decision_spread(d) for d in (decisions or []))
-    if decision_spreads:
-        decision_spreads = (
-            '<section class="spread"><h2>Playing the Table</h2>'
-            "<p>Archetypal board states and the political reads that go with them. "
-            "These are coaching calls — grounded in the numbers above, decided by judgment.</p>"
-            "</section>" + decision_spreads
-        )
+    table_section = f"""
+<section class="spread"><h2>Playing the Table {BADGES["coach"]}</h2>
+  <p>Archetypal board states and the political reads that go with them.
+  These are coaching calls — grounded in the numbers above, decided by judgment.</p>
+  <h3>Threat assessment</h3>
+  {prose(prose_doc, "threat_assessment")}
+</section>""" + decision_spreads
 
+    matchups_section = (
+        f'<section class="spread"><h2>Matchups {BADGES["coach"]}</h2>'
+        f'{prose(prose_doc, "matchups")}</section>'
+    )
+
+    tagline = prose_doc.get("cover", {}).get("tagline", "")
+    og_image = (
+        f'\n<meta property="og:image" content="{esc(commander["image"])}">'
+        if commander and commander.get("image") else ""
+    )
     return f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)} — Pilot's Manual</title>
+<meta property="og:title" content="{esc(title)} — Pilot's Manual">
+<meta property="og:description" content="{esc(tagline) or 'A machine-verified Commander pilot manual.'}">
+<meta property="og:type" content="article">{og_image}
+<meta name="twitter:card" content="summary_large_image">
 <style>{CSS}</style></head><body><div class="page">
 
 <section class="spread cover">
@@ -313,7 +327,9 @@ def render_manual(slug, deck_doc, stacks, prose_doc, synergy, goldfish=None, dec
 
 {stack_spreads}
 
-{decision_spreads}
+{table_section}
+
+{matchups_section}
 
 <section class="spread"><h2>Card Roles {BADGES["coach"]}</h2>
   <div class="cards">{render_card_roles(cards, prose_doc, synergy)}</div>

@@ -17,6 +17,7 @@ PILOT_STEPS = [
     ("validate-stack", "manamap.pilot.validate_stack", "Enforce the citation contract on scenarios"),
     ("goldfish", "manamap.pilot.goldfish", "Seeded Monte Carlo resource-development metrics"),
     ("build-manual", "manamap.pilot.build_manual", "Render the zine HTML from verified artifacts"),
+    ("build-index", "manamap.pilot.build_index", "Render the manuals/index.html gallery"),
 ]
 
 _DECK_COMMANDS = {"fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual"}
