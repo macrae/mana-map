@@ -1286,9 +1286,32 @@
         }
       });
 
+      // Keep the Plotly SVG in sync with the container: the side panels resize
+      // #plot via CSS transitions, and one-shot timers can fire mid-transition
+      // (or while large deck-builder fetches block the main thread), leaving a
+      // stale full-width SVG painted over the open panel.
+      if (window.ResizeObserver) {
+        let resizeDebounce = null;
+        new ResizeObserver(function () {
+          clearTimeout(resizeDebounce);
+          resizeDebounce = setTimeout(function () {
+            const el = document.getElementById('plot');
+            if (el._fullLayout && Math.abs(el._fullLayout.width - el.getBoundingClientRect().width) > 1) {
+              Plotly.Plots.resize('plot');
+            }
+          }, 120);
+        }).observe(document.getElementById('plot'));
+      }
+
       plotInitialized = true;
     } else {
       Plotly.react('plot', allTraces, layout, config);
+      // react() can restore a stale cached width (e.g. full-window) after the
+      // container shrank for the deck panel, painting the plot over the panel.
+      const plotEl = document.getElementById('plot');
+      if (plotEl._fullLayout && Math.abs(plotEl._fullLayout.width - plotEl.getBoundingClientRect().width) > 1) {
+        Plotly.Plots.resize('plot');
+      }
     }
 
     // Re-apply selection highlight after render

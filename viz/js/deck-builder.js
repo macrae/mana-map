@@ -1036,7 +1036,7 @@
 
         // Obsolescence warning
         if (MM.obsolescence && MM.obsolescence[d.n]) {
-          const upgrades = MM.obsolescence[d.n].slice(0, 2);
+          const upgrades = (MM.obsolescence[d.n].obsoleted_by || []).slice(0, 2);
           html += '<div class="obs-warning">&#9888; Upgrade: ';
           html += upgrades.map(u => '<span class="obs-name" data-name="' + MM.escHtml(u.name) + '">' + MM.escHtml(u.name) + '</span>').join(', ');
           html += '</div>';
