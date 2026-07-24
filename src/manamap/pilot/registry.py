@@ -15,10 +15,11 @@ PILOT_STEPS = [
     ("query-rules", "manamap.pilot.query_rules", "Semantic top-k rules search"),
     ("lookup-rule", "manamap.pilot.query_rules", "Exact rule fetch by number"),
     ("validate-stack", "manamap.pilot.validate_stack", "Enforce the citation contract on scenarios"),
+    ("goldfish", "manamap.pilot.goldfish", "Seeded Monte Carlo resource-development metrics"),
     ("build-manual", "manamap.pilot.build_manual", "Render the zine HTML from verified artifacts"),
 ]
 
-_DECK_COMMANDS = {"fetch-deck", "validate-deck", "validate-stack", "build-manual"}
+_DECK_COMMANDS = {"fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual"}
 
 
 def add_pilot_parser(subparsers):
