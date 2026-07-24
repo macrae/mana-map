@@ -48,13 +48,13 @@ Section order: Cover (+ tier legend) → How It Wins → **Goldfish Numbers** (�
 
 | # | Scope | Status |
 |---|---|---|
-| C1 | Goldfish simulator + goblin-storm metrics artifact + tests | in progress |
-| C2 | Decision-scenario schema, validator extension, renderer badges + spreads + goldfish section | in progress |
-| C3 | pilot-coach agent; write-manual v2 pipeline skill; author-decision skill | pending |
-| C4 | Manual v2 build: matchups/threat sections, OG tags, manuals index gallery | pending |
-| C5 | Regenerate Zada manual v2 end-to-end; resolve 1–2 more queued combo lines | pending |
-| C6 | hapatra + edgar-vampires scaffolds; full runs when decklists land | blocked on decklists |
-| C7 | docs/pilot.md v2 (tier contract headline), memory updates | pending |
+| C1 | Goldfish simulator + goblin-storm metrics artifact + tests | done |
+| C2 | Decision-scenario schema, validator extension, renderer badges + spreads + goldfish section | done |
+| C3 | pilot-coach agent; write-manual v2 pipeline skill; author-decision skill | done |
+| C4 | Manual v2 build: matchups/threat sections, OG tags, manuals index gallery | done |
+| C5 | Regenerate Zada manual v2 end-to-end; resolve 1–2 more queued combo lines | done (stacks 002 + 003 verified; 003 needed 2 checker iterations) |
+| C6 | hapatra + edgar-vampires scaffolds; full runs when decklists land | scaffolds done; runs BLOCKED on decklists |
+| C7 | docs/pilot.md v2 (tier contract headline), memory updates | done |
 
 ## Risks / honesty notes
 
