@@ -1,0 +1,325 @@
+{
+  "id": "002",
+  "slug": "empty-the-warrens-storm-turn",
+  "deck": "goblin-storm",
+  "title": "Empty the Warrens as the fourth spell with Impact Tremors out",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Impact Tremors",
+        "Mountain x4"
+      ],
+      "opponents": [
+        {
+          "life": 32,
+          "board": []
+        },
+        {
+          "life": 28,
+          "board": []
+        }
+      ]
+    },
+    "hand": [
+      "Empty the Warrens",
+      "Grapeshot"
+    ],
+    "graveyard": [
+      "Battle Hymn",
+      "Brightstone Ritual",
+      "Dragon Fodder"
+    ],
+    "mana_available": "{R}{R}{R}{R}",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Empty the Warrens",
+        "controller": "you",
+        "note": "cast as the fourth spell this turn"
+      }
+    ],
+    "extras": {
+      "spells_cast_before_this_turn": 3
+    },
+    "question": "How many storm copies trigger, how many Goblin tokens enter in total, how much damage does Impact Tremors deal to each opponent, and if you cast Grapeshot afterward this turn, what storm count does it see?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "You cast Empty the Warrens ({3}{R}) as the fourth spell this turn; its storm ability triggers on the cast.",
+        "effect": "Storm triggers while Empty the Warrens is on the stack; nothing happens yet.",
+        "citations": [
+          {
+            "rule": "702.40a",
+            "quote": "Storm is a triggered ability that functions on the stack. “Storm” means “When you cast this spell, copy it for each other spell that was cast before it this turn."
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers. The ability doesn’t do anything at this point."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "The storm trigger is put on the stack above Empty the Warrens, then resolves.",
+        "effect": "Three other spells were cast before Empty the Warrens this turn, so 3 copies of Empty the Warrens are put on the stack. These copies are put on the stack, NOT cast — they will not increase any later storm count.",
+        "citations": [
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "702.40a",
+            "quote": "copy it for each other spell that was cast before it this turn"
+          },
+          {
+            "rule": "707.10",
+            "quote": "To copy a spell, activated ability, or triggered ability means to put a copy of it onto the stack; a copy of a spell isn’t cast"
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Copy #1 resolves (copies are spells and resolve like the original).",
+        "effect": "Create two 1/1 red Goblin creature tokens (running total: 2 tokens). Each token entering is a creature you control entering, so Impact Tremors triggers twice.",
+        "citations": [
+          {
+            "rule": "707.10",
+            "quote": "A copy of a spell is itself a spell, even though it has no spell card associated with it."
+          },
+          {
+            "rule": "701.7a",
+            "quote": "To create one or more tokens with certain characteristics, put the specified number of tokens with the specified characteristics onto the battlefield."
+          },
+          {
+            "rule": "glossary:enters-the-battlefield",
+            "quote": "A token enters the battlefield as it’s created."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "The two Impact Tremors triggers go on the stack and resolve one at a time.",
+        "effect": "Impact Tremors deals 1 damage to each opponent per trigger: 2 damage each. Opponent 1: 32 → 30. Opponent 2: 28 → 26.",
+        "citations": [
+          {
+            "rule": "113.3c",
+            "quote": "Whenever the trigger event occurs, the ability is put on the stack the next time a player would receive priority"
+          },
+          {
+            "rule": "119.2",
+            "quote": "Damage dealt to a player normally causes that player to lose that much life."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Copy #2 resolves; two more Impact Tremors triggers resolve.",
+        "effect": "Two more Goblin tokens (running total: 4). Impact Tremors deals 2 more damage to each opponent. Opponent 1: 30 → 28. Opponent 2: 26 → 24.",
+        "citations": [
+          {
+            "rule": "701.7a",
+            "quote": "put the specified number of tokens with the specified characteristics onto the battlefield"
+          },
+          {
+            "rule": "119.2",
+            "quote": "Damage dealt to a player normally causes that player to lose that much life."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Copy #3 resolves; two more Impact Tremors triggers resolve.",
+        "effect": "Two more Goblin tokens (running total: 6). Impact Tremors deals 2 more damage to each opponent. Opponent 1: 28 → 26. Opponent 2: 24 → 22.",
+        "citations": [
+          {
+            "rule": "701.7a",
+            "quote": "put the specified number of tokens with the specified characteristics onto the battlefield"
+          },
+          {
+            "rule": "119.2",
+            "quote": "Damage dealt to a player normally causes that player to lose that much life."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "The original Empty the Warrens resolves and is put into your graveyard; its two Impact Tremors triggers resolve.",
+        "effect": "Two more Goblin tokens (final total: 8 tokens). Impact Tremors deals 2 more damage to each opponent. Opponent 1: 26 → 24. Opponent 2: 22 → 20. Total: 8 Impact Tremors triggers, 8 damage to each opponent.",
+        "citations": [
+          {
+            "rule": "307.2",
+            "quote": "When a sorcery spell resolves, the actions stated in its rules text are followed. Then it’s put into its owner’s graveyard."
+          },
+          {
+            "rule": "119.2",
+            "quote": "Damage dealt to a player normally causes that player to lose that much life."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Later this turn you cast Grapeshot: determine its storm count.",
+        "effect": "Spells CAST before Grapeshot this turn: the 3 early spells + the Empty the Warrens cast = 4. The 3 storm copies of Empty the Warrens were put on the stack without being cast, so they do not count. Grapeshot is therefore the 5th spell cast this turn and its storm sees a count of 4, putting 4 copies on the stack — 5 total instances of 'Grapeshot deals 1 damage to any target' (5 damage if all aimed at one target).",
+        "citations": [
+          {
+            "rule": "702.40a",
+            "quote": "copy it for each other spell that was cast before it this turn"
+          },
+          {
+            "rule": "707.10",
+            "quote": "a copy of a spell isn’t cast"
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Empty the Warrens (4th spell cast) storm-triggers for 3 copies; 4 resolutions create 8 Goblin tokens total; Impact Tremors triggers 8 times dealing 8 damage to each opponent (32→24, 28→20). A later Grapeshot sees storm count 4 (copies were not cast) and is itself the 5th spell cast this turn.",
+      "you": {
+        "battlefield": [
+          "Impact Tremors",
+          "Mountain x4 (tapped)",
+          "8x 1/1 red Goblin creature token"
+        ],
+        "hand": [
+          "Grapeshot"
+        ],
+        "graveyard": [
+          "Battle Hymn",
+          "Brightstone Ritual",
+          "Dragon Fodder",
+          "Empty the Warrens"
+        ],
+        "mana_available": ""
+      },
+      "opponents": [
+        {
+          "life": 24,
+          "board": [],
+          "damage_taken": 8
+        },
+        {
+          "life": 20,
+          "board": [],
+          "damage_taken": 8
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "iterations": 1,
+    "findings": [
+      {
+        "step": 1,
+        "rule": "702.40a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 1,
+        "rule": "603.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 2,
+        "rule": "603.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 2,
+        "rule": "702.40a",
+        "status": "supported",
+        "note": "3 other spells cast before it this turn → 3 copies"
+      },
+      {
+        "step": 2,
+        "rule": "707.10",
+        "status": "supported",
+        "note": "copies put on stack, not cast"
+      },
+      {
+        "step": 3,
+        "rule": "707.10",
+        "status": "supported",
+        "note": "copy is itself a spell and resolves like one"
+      },
+      {
+        "step": 3,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 3,
+        "rule": "glossary:enters-the-battlefield",
+        "status": "supported",
+        "note": "token enters as it's created, so Impact Tremors triggers per token"
+      },
+      {
+        "step": 4,
+        "rule": "113.3c",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "119.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 5,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 5,
+        "rule": "119.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "119.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 7,
+        "rule": "307.2",
+        "status": "supported",
+        "note": "original sorcery goes to graveyard after resolving"
+      },
+      {
+        "step": 7,
+        "rule": "119.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 8,
+        "rule": "702.40a",
+        "status": "supported",
+        "note": "Grapeshot counts 4 spells cast before it (copies excluded)"
+      },
+      {
+        "step": 8,
+        "rule": "707.10",
+        "status": "supported",
+        "note": "storm copies were not cast, so they don't add to storm count"
+      }
+    ]
+  }
+}

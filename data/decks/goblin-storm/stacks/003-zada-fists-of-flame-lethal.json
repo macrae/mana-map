@@ -1,0 +1,349 @@
+{
+  "id": "003",
+  "slug": "zada-fists-of-flame-lethal",
+  "deck": "goblin-storm",
+  "title": "Fists of Flame on Zada: the sequential-draw lethal",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Zada, Hedron Grinder",
+        "Goblin token 1",
+        "Goblin token 2",
+        "Goblin token 3",
+        "Goblin token 4"
+      ],
+      "opponents": [
+        {
+          "life": 30,
+          "board": [
+            "one untapped 2/2 blocker"
+          ]
+        }
+      ]
+    },
+    "hand": [
+      "Fists of Flame"
+    ],
+    "graveyard": [],
+    "mana_available": "{1}{R}",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Fists of Flame",
+        "controller": "you",
+        "note": "cast targeting only Zada, Hedron Grinder"
+      }
+    ],
+    "extras": {
+      "cards_drawn_earlier_this_turn": 2
+    },
+    "question": "As the copies and the original resolve one at a time, each drawing a card, how big does each creature get (the +1/+0-per-card-drawn value locks in per resolution), what total power with trample attacks, and do earlier copies' buffs grow retroactively when later draws happen?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Cast Fists of Flame ({1}{R}) targeting only Zada, Hedron Grinder, with 2 cards already drawn this turn. Zada's ability triggers ('Whenever you cast an instant or sorcery spell that targets only Zada...') and is put on the stack above the spell.",
+        "effect": "Stack (top to bottom): Zada's triggered ability, then Fists of Flame. The trigger will resolve before the spell.",
+        "citations": [
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority. See rule 117, “Timing and Priority.” The ability becomes the topmost object on the stack."
+          },
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Zada's trigger resolves: it copies Fists of Flame for each other creature you control the spell could target — the 4 Goblin tokens — each copy targeting a different token. You choose the order the copies are put onto the stack; each goes on top of everything already there, so the copy placed last resolves first, and all four copies resolve before the original spell. The copies are not cast, so Zada does not trigger again.",
+        "effect": "Stack (top to bottom): Copy D, Copy C, Copy B, Copy A (each targeting a different Goblin token, in your chosen order), then the original Fists of Flame targeting Zada.",
+        "citations": [
+          {
+            "rule": "707.10d",
+            "quote": "Some effects copy a spell or ability for each player or object it “could target.” The copies are put onto the stack with those targets in the order of their controller’s choice."
+          },
+          {
+            "rule": "707.10",
+            "quote": "To copy a spell, activated ability, or triggered ability means to put a copy of it onto the stack; a copy of a spell isn’t cast and a copy of an activated ability isn’t activated."
+          },
+          {
+            "rule": "405.2",
+            "quote": "The stack keeps track of the order that spells and/or abilities were added to it. Each time an object is put on the stack, it’s put on top of all objects already there."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "First copy resolves (targeting Goblin token 1): following the instructions in order, you draw a card first (3rd card drawn this turn), then the buff applies using the count as of now.",
+        "effect": "You draw card #3. Goblin token 1 gains trample and gets +3/+0 until end of turn → 4/1 trample.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "121.1",
+            "quote": "A player draws a card by putting the top card of their library into their hand. This is done as a turn-based action during each player’s draw step. It may also be done as part of a cost or effect of a spell or ability."
+          },
+          {
+            "rule": "608.2h",
+            "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Second copy resolves (targeting Goblin token 2): draw first (4th card this turn), then buff at the new count.",
+        "effect": "You draw card #4. Goblin token 2 gains trample and gets +4/+0 until end of turn → 5/1 trample.",
+        "citations": [
+          {
+            "rule": "608.2h",
+            "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+          },
+          {
+            "rule": "611.2a",
+            "quote": "A continuous effect generated by the resolution of a spell or ability lasts as long as stated by the spell or ability creating it (such as “until end of turn”)."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Third copy resolves (targeting Goblin token 3): draw #5, then buff.",
+        "effect": "You draw card #5. Goblin token 3 gains trample and gets +5/+0 until end of turn → 6/1 trample.",
+        "citations": [
+          {
+            "rule": "608.2h",
+            "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Fourth copy resolves (targeting Goblin token 4): draw #6, then buff.",
+        "effect": "You draw card #6. Goblin token 4 gains trample and gets +6/+0 until end of turn → 7/1 trample.",
+        "citations": [
+          {
+            "rule": "608.2h",
+            "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "The original Fists of Flame (bottom of this stack, added first, so it resolves last) resolves targeting Zada: draw #7, then buff.",
+        "effect": "You draw card #7. Zada, Hedron Grinder gains trample and gets +7/+0 until end of turn → 10/3 trample.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "608.2h",
+            "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Retroactivity check: the earlier copies' +N/+0 values do NOT grow when later copies and the original draw more cards — each continuous effect's variable value was locked at that resolution and only its duration (until end of turn) persists.",
+        "effect": "Buffs stay +3/+4/+5/+6 on the tokens and +7 on Zada; nothing recomputes. Final powers: tokens 4, 5, 6, 7; Zada 10. Total 32 power, all with trample.",
+        "citations": [
+          {
+            "rule": "611.2d",
+            "quote": "If a resolving spell or ability that creates a continuous effect contains a variable such as X, the value of that variable is determined only once, on resolution. See rule 608.2h."
+          },
+          {
+            "rule": "608.2h",
+            "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Attack with all five creatures (32 total power, all trample). The opponent's lone 2/2 can block one attacker; that trampler assigns 2 lethal damage to the blocker and the excess to the player.",
+        "effect": "At most 2 damage is absorbed by the blocker; at least 32 - 2 = 30 trample/unblocked damage reaches the opponent at 30 life — exactly lethal.",
+        "citations": [
+          {
+            "rule": "702.19b",
+            "quote": "The controller of an attacking creature with trample first assigns damage to the creature(s) blocking it. Once all those blocking creatures are assigned lethal damage, any excess damage is assigned as its controller chooses among those blocking creatures and the player, planeswalker, or battle the creature is attacking."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "After combat damage is dealt, before any player receives priority, the game checks state-based actions: the opponent took at least 30 damage and is at 0 or less life, and the blocking 2/2 has 2 damage marked on it (lethal damage was assigned via the trample assignment).",
+        "effect": "State-based actions are performed simultaneously: the opponent at 0 or less life loses the game, and the 2/2 blocker with damage marked equal to its toughness is destroyed. The game ends with the opponent's loss.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "704.5g",
+            "quote": "If a creature has toughness greater than 0, it has damage marked on it, and the total damage marked on it is greater than or equal to its toughness, that creature has been dealt lethal damage and is destroyed. Regeneration can replace this event."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Zada's trigger makes 4 non-cast copies of Fists of Flame (one per Goblin token); the copies resolve before the original, each drawing a card first, so the +1/+0-per-card value locks in per resolution at 3/4/5/6 for the tokens and 7 for Zada — earlier buffs never grow retroactively (608.2h, 611.2d). Board: tokens 4/1, 5/1, 6/1, 7/1 and Zada 10/3, all with trample, 32 total power. Attacking, the 2/2 blocker absorbs at most 2, so at least 30 trample damage hits the opponent at 30 life: lethal.",
+      "you": {
+        "drew_this_resolution": 5,
+        "cards_drawn_this_turn_total": 7,
+        "board": [
+          "Zada, Hedron Grinder 10/3 trample (+7/+0 UEOT)",
+          "Goblin token 1 4/1 trample (+3/+0 UEOT)",
+          "Goblin token 2 5/1 trample (+4/+0 UEOT)",
+          "Goblin token 3 6/1 trample (+5/+0 UEOT)",
+          "Goblin token 4 7/1 trample (+6/+0 UEOT)"
+        ],
+        "total_attacking_power": 32,
+        "mana_spent": "{1}{R}"
+      },
+      "opponents": [
+        {
+          "life": 30,
+          "board": [
+            "one untapped 2/2 blocker"
+          ],
+          "incoming_damage_if_all_attack": "at least 30 (32 power minus at most 2 absorbed by the blocker via trample assignment)",
+          "outcome": "dead to exactly lethal trample damage"
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "iterations": 2,
+    "findings": [
+      {
+        "step": 1,
+        "rule": "603.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 1,
+        "rule": "405.5",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 2,
+        "rule": "707.10d",
+        "status": "supported",
+        "note": "Copies stacked in controller's chosen order; all 4 tokens are legal targets"
+      },
+      {
+        "step": 2,
+        "rule": "707.10",
+        "status": "supported",
+        "note": "Copies aren't cast, so Zada doesn't re-trigger"
+      },
+      {
+        "step": 2,
+        "rule": "405.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 3,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Card text is draw-first-then-buff; instruction order matches"
+      },
+      {
+        "step": 3,
+        "rule": "121.1",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 3,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": "Draw count read once, when the buff is applied during this copy's resolution"
+      },
+      {
+        "step": 4,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "611.2a",
+        "status": "supported",
+        "note": "Until-end-of-turn duration correctly attributed"
+      },
+      {
+        "step": 5,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 7,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Original was added first, so it resolves last"
+      },
+      {
+        "step": 7,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": "Zada's +7/+0 uses the count including draw #7"
+      },
+      {
+        "step": 8,
+        "rule": "611.2d",
+        "status": "supported",
+        "note": "Spell-generated continuous effect with a variable — fixed on resolution, not a recalculating CDA; earlier buffs cannot grow retroactively"
+      },
+      {
+        "step": 8,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 9,
+        "rule": "702.19b",
+        "status": "supported",
+        "note": "2 lethal to the blocker, 30 excess/unblocked to the opponent; math holds for any choice of blocked trampler"
+      },
+      {
+        "step": 10,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "SBAs checked before priority after combat damage, performed simultaneously"
+      },
+      {
+        "step": 10,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Opponent at 0 or less life loses the game"
+      },
+      {
+        "step": 10,
+        "rule": "704.5g",
+        "status": "supported",
+        "note": "2/2 blocker with lethal damage marked is destroyed"
+      }
+    ]
+  }
+}
