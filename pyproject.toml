@@ -20,6 +20,9 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest"]
 
+[project.scripts]
+manamap = "manamap.cli:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
