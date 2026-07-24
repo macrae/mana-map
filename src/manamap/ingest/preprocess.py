@@ -1,5 +1,7 @@
 """Step 3: Pre-process cards.csv into feature arrays for the embedding model."""
 
+from collections import Counter
+
 import numpy as np
 import pandas as pd
 from sentence_transformers import SentenceTransformer
@@ -66,10 +68,7 @@ def build_top_keywords(df, top_n=KEYWORD_DIM):
     """Return the top_n most frequent keywords across all cards."""
     all_kw = []
     for kw_str in df["keywords"].fillna(""):
-        if kw_str:
-            all_kw.extend([k.strip() for k in kw_str.split(",")])
-    from collections import Counter
-
+        all_kw.extend([k.strip() for k in kw_str.split(",")])
     counts = Counter(all_kw)
     return [kw for kw, _ in counts.most_common(top_n)]
 

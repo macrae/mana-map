@@ -4,6 +4,7 @@ import random
 from collections import defaultdict
 
 import numpy as np
+import pandas as pd
 import torch
 from torch.utils.data import DataLoader, Dataset
 
@@ -110,8 +111,6 @@ class TripletMiningDataset(Dataset):
 
 
 def main():
-    import pandas as pd
-
     device = get_device()
     print(f"Using device: {device}")
 

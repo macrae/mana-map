@@ -1,13 +1,14 @@
 """Step 11: Detect power creep / obsolescence — find strictly-better printings."""
 
 import json
+import re
 
 import numpy as np
 import pandas as pd
 
+from manamap.analysis.common import load_first_embeddings, parse_tag_set
 from manamap.config import (
     ABILITY_EMBEDDINGS_PATH,
-    EMBEDDINGS_PATH,
     MECHANICAL_TAG_NAMES,
     OBSOLESCENCE_INDEX_PATH,
     OBSOLESCENCE_MAX_REPLACEMENTS,
@@ -40,7 +41,6 @@ def parse_color_requirement(mana_cost):
     """
     if not mana_cost or pd.isna(mana_cost):
         return {}
-    import re
     tokens = re.findall(r'\{([^}]+)\}', str(mana_cost))
     pips = {}
     for t in tokens:
@@ -68,11 +68,8 @@ def color_requirement_subset(cost_a, cost_b):
     return True
 
 
-def parse_tags_set(tags_str):
-    """Parse mechanical_tags string into a set."""
-    if not tags_str or pd.isna(tags_str):
-        return set()
-    return {t.strip() for t in str(tags_str).split(",") if t.strip()}
+# Public name kept for backwards compatibility; implementation is shared.
+parse_tags_set = parse_tag_set
 
 
 def find_strictly_better(df, ability_embeddings=None, similarity_threshold=None,
@@ -239,11 +236,10 @@ def main():
     print(f"  {len(df):,} cards")
 
     # Load ability embeddings for similarity gate
-    ability_embeddings = None
-    try:
-        ability_embeddings = np.load(ABILITY_EMBEDDINGS_PATH)
+    ability_embeddings, _ = load_first_embeddings(ABILITY_EMBEDDINGS_PATH)
+    if ability_embeddings is not None:
         print(f"  Loaded ability embeddings: {ability_embeddings.shape}")
-    except FileNotFoundError:
+    else:
         print("  Warning: ability embeddings not found, running without similarity gate")
 
     print("Finding strictly-better replacements...")

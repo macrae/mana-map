@@ -2,7 +2,6 @@
 
 import json
 
-import numpy as np
 import pandas as pd
 
 from manamap.config import (
@@ -15,18 +14,14 @@ from manamap.config import (
     SYNERGY_MAX_PARTNERS,
     SYNERGY_RULES,
 )
-from manamap.mechanical_tags import tag_oracle_text
+from manamap.analysis.common import cosine_similarity, load_first_embeddings, parse_tag_set
 
 
 def build_tag_index(df):
     """Build {tag_name: set(card_names)} index from mechanical_tags column."""
     tag_to_cards = {tag: set() for tag in MECHANICAL_TAG_NAMES}
     for _, row in df.iterrows():
-        tags_str = row.get("mechanical_tags", "")
-        if not tags_str or pd.isna(tags_str):
-            continue
-        tags = [t.strip() for t in tags_str.split(",") if t.strip()]
-        for tag in tags:
+        for tag in parse_tag_set(row.get("mechanical_tags", "")):
             if tag in tag_to_cards:
                 tag_to_cards[tag].add(row["name"])
     return tag_to_cards
@@ -34,14 +29,10 @@ def build_tag_index(df):
 
 def build_card_tags(df):
     """Build {card_name: set(tags)} from mechanical_tags column."""
-    card_tags = {}
-    for _, row in df.iterrows():
-        tags_str = row.get("mechanical_tags", "")
-        if not tags_str or pd.isna(tags_str):
-            card_tags[row["name"]] = set()
-        else:
-            card_tags[row["name"]] = {t.strip() for t in tags_str.split(",") if t.strip()}
-    return card_tags
+    return {
+        row["name"]: parse_tag_set(row.get("mechanical_tags", ""))
+        for _, row in df.iterrows()
+    }
 
 
 def load_combo_partners():
@@ -52,18 +43,6 @@ def load_combo_partners():
         return graph.get("partners", {})
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
-
-
-def compute_embedding_similarity(name_to_idx, embeddings, idx_a, idx_b):
-    """Compute cosine similarity between two cards by index."""
-    a = embeddings[idx_a]
-    b = embeddings[idx_b]
-    dot = np.dot(a, b)
-    norm_a = np.linalg.norm(a)
-    norm_b = np.linalg.norm(b)
-    if norm_a == 0 or norm_b == 0:
-        return 0.0
-    return float(dot / (norm_a * norm_b))
 
 
 def build_synergy_graph(df, embeddings=None, name_to_idx=None):
@@ -132,9 +111,7 @@ def build_synergy_graph(df, embeddings=None, name_to_idx=None):
                 idx_a = name_to_idx.get(card_name)
                 idx_b = name_to_idx.get(partner)
                 if idx_a is not None and idx_b is not None:
-                    emb_sim = compute_embedding_similarity(
-                        name_to_idx, embeddings, idx_a, idx_b
-                    )
+                    emb_sim = cosine_similarity(embeddings[idx_a], embeddings[idx_b])
             ranked.append({
                 "partner": partner,
                 "score": info["score"],
@@ -160,19 +137,16 @@ def main():
     print(f"  {len(df):,} cards")
 
     # Load ability embeddings for tiebreaking (fall back to color+type)
-    embeddings = None
+    embeddings, loaded_path = load_first_embeddings(ABILITY_EMBEDDINGS_PATH, EMBEDDINGS_PATH)
     name_to_idx = None
-    try:
-        embeddings = np.load(ABILITY_EMBEDDINGS_PATH)
+    if embeddings is None:
+        print("  No embeddings found — skipping similarity tiebreaking")
+    else:
         name_to_idx = {name: i for i, name in enumerate(df["name"])}
-        print(f"  Loaded ability embeddings for similarity tiebreaking")
-    except FileNotFoundError:
-        try:
-            embeddings = np.load(EMBEDDINGS_PATH)
-            name_to_idx = {name: i for i, name in enumerate(df["name"])}
-            print(f"  Loaded color+type embeddings for similarity tiebreaking (ability embeddings not found)")
-        except FileNotFoundError:
-            print(f"  No embeddings found — skipping similarity tiebreaking")
+        if loaded_path == ABILITY_EMBEDDINGS_PATH:
+            print("  Loaded ability embeddings for similarity tiebreaking")
+        else:
+            print("  Loaded color+type embeddings for similarity tiebreaking (ability embeddings not found)")
 
     print("Building synergy graph...")
     synergy_graph = build_synergy_graph(df, embeddings, name_to_idx)
