@@ -14,6 +14,8 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
   training/           # model, train, train_ability, embed, common
   export/             # reduce (PaCMAP), export_embeddings (.bin for JS)
   analysis/           # synergy, power_creep, cluster_regions, common
+  pilot/              # pilot's-manual subsystem: rules DB, deck ingestion,
+                      # citation-contract enforcement, manual renderer
 tests/                # pytest suite (261 tests), conftest with requires_data marker
 data/                 # artifacts; mostly gitignored, viz-served files tracked
 viz/                  # static frontend (Plotly CDN, two IIFE scripts, window.MM / window.DeckBuilder)
@@ -38,6 +40,7 @@ manamap run                   # full 12-step pipeline (steps 1 & 7 need internet
 manamap run --from STEP       # resume from a step
 manamap <step>                # single step; see `manamap --help` for the 13 subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions   # fast analysis-only refresh
+manamap pilot <cmd>           # pilot's-manual subsystem — see docs/pilot.md
 
 .venv/bin/python -m pytest    # 261 tests; data-dependent ones skip if artifacts missing
 
@@ -65,4 +68,5 @@ python -m http.server 8000    # serve viz FROM REPO ROOT
 - `docs/data-artifacts.md` — every `data/` file: producer, size, git status, consumers
 - `docs/viz.md` — frontend structure, `window.MM` API, DATA map, Pages deployment
 - `docs/testing.md` — test layout, skip markers, conventions
+- `docs/pilot.md` — pilot subsystem: citation contract, rules DB, resolve loop, manual generation
 - `docs/history/PLAN.md` — historical deck-builder planning doc (outdated, unmaintained)

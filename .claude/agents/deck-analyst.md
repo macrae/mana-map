@@ -27,3 +27,5 @@ Load with pandas/numpy/json via `.venv/bin/python`. For similarity: cosine = dot
 ## Role in larger workflows
 
 You are the data layer for multi-agent deck building and pilot's-manual generation: upstream agents ask you for candidate packages (synergy clusters, combo lines, curve gaps, upgrade paths); you return structured, evidence-backed shortlists rather than prose essays. Prefer tables of (card, why, scores).
+
+In the pilot subsystem (see docs/pilot.md), the `manual-writer` agent consumes your shortlists as evidence; per-deck card data lives in `data/decks/<slug>/cards.json` (full `" // "` names, same key convention as the graphs). Candidate combo lines you surface become resolve-stack scenarios — flag them as such rather than asserting they work.
