@@ -94,7 +94,7 @@ def test_full_render_contains_all_sections():
         "Goblins all the way down",                  # tagline
         "How the Deck Wins",
         "Storm count with Empty the Warrens",        # verified stack spread
-        "✓ verified · 2 iteration(s)",
+        "✓ RULES-VERIFIED · 2 iteration(s)",
         "702.40a",                                   # citation footnote
         "copy it for each other spell",              # verbatim quote
         "Sac outlet and mana engine.",               # card role prose
@@ -219,3 +219,35 @@ def test_v2_determinism():
     a = render_manual("test-deck", deck_doc(), [verified_stack()], PROSE, SYNERGY, **kwargs)
     b = render_manual("test-deck", deck_doc(), [verified_stack()], PROSE, SYNERGY, **kwargs)
     assert a == b
+
+
+def test_sideboard_excluded_from_roles_grid_but_in_strip():
+    doc = deck_doc()
+    doc["cards"].append({"name": "Storm Counter", "is_commander": False, "quantity": 1,
+                          "is_sideboard": True, "type_line": "Card", "image": "https://img/sc.jpg"})
+    doc["cards"].append({"name": "Sazacap's Brew", "is_commander": False, "quantity": 1,
+                          "is_sideboard": True, "type_line": "Instant", "image": "https://img/sb.jpg"})
+    prose = dict(PROSE, card_roles=dict(PROSE["card_roles"], **{"Sazacap's Brew": "Flex slot."}))
+    html_out = render_manual("test-deck", doc, [], prose, {})
+    assert "Sideboard &amp; table aids" in html_out
+    assert "Table aid — no rules text" in html_out          # accessory gets the aid blurb
+    assert "Flex slot." in html_out                          # real sideboard card gets its role
+    # The accessory tile must appear exactly once (strip), not in the main roles grid too.
+    assert html_out.count("<h3>Storm Counter</h3>") == 1
+
+
+def test_cover_toc_anchors():
+    html_out = render_manual("test-deck", deck_doc(), [verified_stack()], PROSE, SYNERGY,
+                             decisions=[DECISION_FIXTURE])
+    assert '<nav class="toc">' in html_out
+    assert '<a href="#stack-001">' in html_out
+    assert '<a href="#decision-001">' in html_out
+    assert 'id="stack-001"' in html_out
+    assert 'id="decision-001"' in html_out
+    assert 'id="mulligan"' in html_out
+
+
+def test_goldfish_table_rounding():
+    html_out = render_manual("test-deck", deck_doc(), [], PROSE, {}, goldfish=GOLDFISH_FIXTURE)
+    assert "<td>4.1</td>" in html_out      # mean mana rounded to 1 decimal
+    assert "<td>0.2</td>" in html_out      # bodies rounded

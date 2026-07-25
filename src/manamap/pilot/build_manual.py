@@ -38,6 +38,11 @@ h3 { color:var(--text); margin:16px 0 6px; }
 .badge-coach { background:rgba(196,167,71,.12); color:var(--gold); border:1px solid var(--gold); }
 .legend { font:13px sans-serif; color:var(--dim); text-align:left; margin:20px auto 0;
           max-width:560px; line-height:1.9; }
+.toc { font:14px sans-serif; text-align:left; margin:24px auto 0; max-width:560px;
+       border-top:1px solid var(--border); padding-top:16px; }
+.toc div { margin:4px 0; }
+.toc a { color:var(--text); text-decoration:none; }
+.toc a:hover { color:var(--gold); }
 table.metrics { border-collapse:collapse; width:100%; margin:12px 0; font-size:.92em; }
 table.metrics th, table.metrics td { border:1px solid var(--border); padding:6px 10px; text-align:left; }
 table.metrics th { color:var(--gold); font-family:sans-serif; font-size:.85em; }
@@ -138,9 +143,9 @@ def render_goldfish(metrics_doc):
     turn_table = "<table class='metrics'>" + row("Turn", turns) + row(
         "Land drop hit", [f"{m['land_drop_hit_rate_by_turn'][t]:.0%}" for t in turns]
     ) + row(
-        "Mean mana available", [m["mean_available_mana_by_turn"][t] for t in turns]
+        "Mean mana available", [f"{m['mean_available_mana_by_turn'][t]:.1f}" for t in turns]
     ) + row(
-        "Mean bodies on board", [m["mean_bodies_by_turn"][t] for t in turns]
+        "Mean bodies on board", [f"{m['mean_bodies_by_turn'][t]:.1f}" for t in turns]
     ) + "</table>"
 
     commander = m["commander"]
@@ -158,7 +163,7 @@ def render_goldfish(metrics_doc):
     assumptions = "".join(f"<li>{esc(a)}</li>" for a in meta["model_assumptions"])
 
     return f"""
-<section class="spread"><h2>Goldfish Numbers {BADGES["data"]}</h2>
+<section class="spread" id="goldfish"><h2>Goldfish Numbers {BADGES["data"]}</h2>
   <p>{esc(meta["commander"])} comes down on <strong>turn {commander["mean_cast_turn"]}</strong> on
   average (median turn {esc(commander["median_cast_turn"])}), and is out by turn 6 in
   <strong>{commander["cast_by_turn_6_rate"]:.0%}</strong> of games. First-seven keep rate:
@@ -199,7 +204,7 @@ def render_decision_spread(decision):
     </div>""")
     rationale = esc((decision.get("recommendation") or {}).get("rationale", ""))
     return f"""
-<section class="spread"><h2>{esc(decision["title"])} {BADGES["coach"]}</h2>
+<section class="spread" id="decision-{esc(decision["id"])}"><h2>{esc(decision["title"])} {BADGES["coach"]}</h2>
   <div class="scenario-box">{"<br>".join(board_bits)}<br>
     <strong>Decision:</strong> {esc(scenario.get("question", ""))}</div>
   {"".join(branches_html)}
@@ -227,9 +232,9 @@ def render_stack_spread(stack, prose_doc):
     )
     final = stack.get("resolution", {}).get("final_state", {})
     return f"""
-<section class="spread">
+<section class="spread" id="stack-{esc(stack["id"])}">
   <h2>{esc(stack["title"])}
-    <span class="verified">✓ verified · {checker.get("iterations", "?")} iteration(s)</span></h2>
+    <span class="verified">✓ RULES-VERIFIED · {checker.get("iterations", "?")} iteration(s)</span></h2>
   {prose(prose_doc, "combo_lines", stack["id"])}
   <div class="scenario-box">
     <strong>The stack (top first):</strong><ol>{stack_lines}</ol>
@@ -246,7 +251,7 @@ def render_card_roles(cards, prose_doc, synergy):
     roles = prose_doc.get("card_roles", {})
     tiles = []
     for card in cards:
-        if card["is_commander"]:
+        if card["is_commander"] or card.get("is_sideboard"):
             continue
         name = card["name"]
         labels = sorted({
@@ -267,6 +272,32 @@ def render_card_roles(cards, prose_doc, synergy):
     return "".join(tiles)
 
 
+def render_sideboard(cards, prose_doc):
+    """Sideboard strip: real cards get their role blurb; type 'Card' accessories
+    are labeled as table aids rather than rendered as deck cards."""
+    side = [c for c in cards if c.get("is_sideboard")]
+    if not side:
+        return ""
+    roles = prose_doc.get("card_roles", {})
+    tiles = []
+    for card in side:
+        is_accessory = card.get("type_line", "") == "Card"
+        blurb = roles.get(card["name"]) or (
+            "Table aid — no rules text. Use it to track game state on big turns."
+            if is_accessory else ""
+        )
+        image = f'<img src="{esc(card["image"])}" alt="{esc(card["name"])}" loading="lazy">' if card["image"] else ""
+        kind = "Table aid" if is_accessory else esc(card.get("type_line", ""))
+        tiles.append(
+            f'<div class="card">{image}<h3>{esc(card["name"])}</h3>'
+            f'<div class="labels">{kind}</div><p>{esc(blurb)}</p></div>'
+        )
+    return (
+        "<h3>Sideboard &amp; table aids</h3>"
+        '<div class="cards">' + "".join(tiles) + "</div>"
+    )
+
+
 def render_manual(slug, deck_doc, stacks, prose_doc, synergy, goldfish=None, decisions=None):
     cards = deck_doc["cards"]
     commanders = [c for c in cards if c["is_commander"]]
@@ -284,7 +315,7 @@ def render_manual(slug, deck_doc, stacks, prose_doc, synergy, goldfish=None, dec
     goldfish_section = render_goldfish(goldfish)
     decision_spreads = "".join(render_decision_spread(d) for d in (decisions or []))
     table_section = f"""
-<section class="spread"><h2>Playing the Table {BADGES["coach"]}</h2>
+<section class="spread" id="playing-the-table"><h2>Playing the Table {BADGES["coach"]}</h2>
   <p>Archetypal board states and the political reads that go with them.
   These are coaching calls — grounded in the numbers above, decided by judgment.</p>
   <h3>Threat assessment</h3>
@@ -292,9 +323,19 @@ def render_manual(slug, deck_doc, stacks, prose_doc, synergy, goldfish=None, dec
 </section>""" + decision_spreads
 
     matchups_section = (
-        f'<section class="spread"><h2>Matchups {BADGES["coach"]}</h2>'
+        f'<section class="spread" id="matchups"><h2>Matchups {BADGES["coach"]}</h2>'
         f'{prose(prose_doc, "matchups")}</section>'
     )
+
+    toc_items = ['<a href="#how-it-wins">How the Deck Wins</a>']
+    if goldfish:
+        toc_items.append('<a href="#goldfish">Goldfish Numbers</a>')
+    toc_items += [f'<a href="#stack-{esc(s["id"])}">✓ {esc(s["title"])}</a>' for s in stacks]
+    toc_items.append('<a href="#playing-the-table">Playing the Table</a>')
+    toc_items += [f'<a href="#decision-{esc(d["id"])}">★ {esc(d["title"])}</a>' for d in (decisions or [])]
+    toc_items += ['<a href="#matchups">Matchups</a>', '<a href="#card-roles">Card Roles</a>',
+                  '<a href="#mulligan">Mulligan Guide</a>', '<a href="#upgrades">Upgrade Paths</a>']
+    toc = '<nav class="toc">' + "".join(f"<div>{item}</div>" for item in toc_items) + "</nav>"
 
     tagline = prose_doc.get("cover", {}).get("tagline", "")
     og_image = (
@@ -318,10 +359,11 @@ def render_manual(slug, deck_doc, stacks, prose_doc, synergy, goldfish=None, dec
   {commander_img}
   {prose(prose_doc, "cover", "identity")}
   {LEGEND}
+  {toc}
   <p class="footer">A verified pilot's manual · {esc(slug)} · {len(stacks)} verified line(s)</p>
 </section>
 
-<section class="spread"><h2>How the Deck Wins</h2>{prose(prose_doc, "how_it_wins")}</section>
+<section class="spread" id="how-it-wins"><h2>How the Deck Wins</h2>{prose(prose_doc, "how_it_wins")}</section>
 
 {goldfish_section}
 
@@ -331,13 +373,14 @@ def render_manual(slug, deck_doc, stacks, prose_doc, synergy, goldfish=None, dec
 
 {matchups_section}
 
-<section class="spread"><h2>Card Roles {BADGES["coach"]}</h2>
+<section class="spread" id="card-roles"><h2>Card Roles {BADGES["coach"]}</h2>
   <div class="cards">{render_card_roles(cards, prose_doc, synergy)}</div>
+  {render_sideboard(cards, prose_doc)}
 </section>
 
-<section class="spread"><h2>Mulligan Guide {BADGES["coach"]}</h2>{prose(prose_doc, "mulligan")}</section>
+<section class="spread" id="mulligan"><h2>Mulligan Guide {BADGES["coach"]}</h2>{prose(prose_doc, "mulligan")}</section>
 
-<section class="spread"><h2>Upgrade Paths {BADGES["data"]}</h2>{prose(prose_doc, "upgrades")}</section>
+<section class="spread" id="upgrades"><h2>Upgrade Paths {BADGES["data"]}</h2>{prose(prose_doc, "upgrades")}</section>
 
 <p class="footer">Every combo line above is machine-verified: each resolution step cites the
 Magic Comprehensive Rules, and every citation was checked against the full rule text.</p>
