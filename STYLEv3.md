@@ -574,13 +574,17 @@ always. `prefers-reduced-motion` disables animated furniture.
 - **Art scale communicates importance**: commander at hero scale, engine pieces at
   feature scale, the 99 at tile scale. Never uniform.
 - **Angled cutouts** with thick keylines and hard shadows, never more than ±6°.
-- **Target standard (forward-compatible)**: use `art_crop` for hero and department
-  headers — borderless full-art crops read as magazine photography rather than card
-  scans — with **artist credit** on every hero image, following The Duelist's
-  featured-artist convention. Foil printings get a holographic sheen treatment.
-- **Current fallback**: until printing metadata lands (deferred phase), render the
-  stored `image` field. The renderer must prefer `art_crop`/`artist` when present and
-  degrade silently when absent, so the upgrade requires no layout changes.
+- **Exact printings, always.** `cards.json` carries the printing named in the pilot's
+  decklist export — set, collector number, artist, border, frame effects, finishes —
+  so the manual shows *their* cards, not default reprints. This is the difference
+  between a report about a deck and a magazine about a specific person's deck.
+- **`art_crop` for hero and department headers.** Borderless full-art crops read as
+  magazine photography rather than card scans; fall back to the framed `image` when a
+  printing has no crop.
+- **Artist credit on every hero image**, following The Duelist's featured-artist
+  convention, with the set and collector number beneath it.
+- **Foil printings get a holographic sheen** — a real property of the physical card,
+  not decoration.
 
 ---
 

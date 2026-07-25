@@ -15,6 +15,9 @@ REQUIRED_FIELDS = {
     "name", "quantity", "is_commander", "is_sideboard", "mana_cost", "cmc",
     "type_line", "oracle_text", "colors", "color_identity", "keywords", "power",
     "toughness", "loyalty", "layout", "image", "scryfall_uri", "card_faces",
+    # Printing identity — which physical card the pilot owns.
+    "art_crop", "set", "set_name", "collector_number", "artist",
+    "border_color", "frame_effects", "finishes", "foil",
 }
 
 VOLATILE_FIELDS = {"prices", "purchase_uris", "related_uris", "released_at", "edhrec_rank"}
@@ -89,10 +92,10 @@ def test_parse_decklist_formats():
         "// comment\n"
     )
     assert entries[0] == {"name": "Wort, Boggart Auntie", "quantity": 1,
-                          "is_commander": True, "is_sideboard": False}
+                          "is_commander": True, "is_sideboard": False, "foil": False}
     assert entries[1]["name"] == "Skirk Prospector"
     assert entries[2] == {"name": "Mountain", "quantity": 10,
-                          "is_commander": False, "is_sideboard": False}
+                          "is_commander": False, "is_sideboard": False, "foil": False}
     assert entries[3]["name"] == "Empty the Warrens"
 
 
@@ -111,7 +114,7 @@ def test_parse_decklist_moxfield_annotations():
     )
     assert entries[0] == {"name": "Zada, Hedron Grinder", "quantity": 1,
                           "is_commander": False, "is_sideboard": False,
-                          "set": "sld", "collector_number": "2406"}
+                          "set": "sld", "collector_number": "2406", "foil": True}
     assert entries[1]["name"] == "Arena of Glory"
     assert entries[1]["set"] == "plst"
     assert entries[1]["collector_number"] == "MH3-215"
@@ -128,7 +131,7 @@ def test_parse_decklist_sideboard_section():
     assert entries[0]["is_sideboard"] is False
     assert entries[1] == {"name": "Sazacap's Brew", "quantity": 1,
                           "is_commander": False, "is_sideboard": True,
-                          "set": "plst", "collector_number": "BLB-151"}
+                          "set": "plst", "collector_number": "BLB-151", "foil": False}
     assert entries[2]["name"] == "Storm Counter"
     assert entries[2]["is_sideboard"] is True
 
@@ -335,3 +338,82 @@ def test_changed_decklist_refetches(monkeypatch, tmp_path):
     monkeypatch.setattr(fetch_deck, "fetch_collection", fake_fetch)
     fetch_deck.main(argparse.Namespace(slug="d", force=False))
     assert called["n"] == 1
+
+
+# ── Exact printings ──────────────────────────────────────────────────────
+
+SECRET_LAIR = {
+    "name": "Zada, Hedron Grinder", "mana_cost": "{3}{R}", "cmc": 4.0,
+    "type_line": "Legendary Creature — Goblin Ally", "oracle_text": "Copy that spell.",
+    "colors": ["R"], "color_identity": ["R"], "keywords": [], "power": "3",
+    "toughness": "3", "loyalty": None, "layout": "normal",
+    "set": "sld", "set_name": "Secret Lair Drop", "collector_number": "2406",
+    "artist": "Wizard of Barge", "border_color": "borderless",
+    "frame_effects": ["legendary", "inverted"], "finishes": ["foil"],
+    "image_uris": {"normal": "https://cards.scryfall.io/normal/sld.jpg?1783903430",
+                   "art_crop": "https://cards.scryfall.io/art_crop/sld.jpg?1783903430"},
+    "scryfall_uri": "https://scryfall.com/card/sld/2406",
+    "prices": {"usd": "9.99"},
+}
+
+DEFAULT_PRINTING = dict(
+    SECRET_LAIR, set="cmm", set_name="Commander Masters", collector_number="268",
+    artist="Someone Else", border_color="black", frame_effects=[],
+    finishes=["nonfoil", "foil"],
+    image_uris={"normal": "https://cards.scryfall.io/normal/cmm.jpg?1"},
+)
+
+
+def test_printing_annotation_wins_over_name_lookup():
+    """A Moxfield export names the physical card; a default reprint must lose."""
+    entry = {"name": "Zada, Hedron Grinder", "quantity": 1, "is_commander": True,
+             "is_sideboard": False, "foil": True, "set": "sld",
+             "collector_number": "2406"}
+    shaped, unmatched = resolve_entries(
+        [entry],
+        by_name={"zada, hedron grinder": DEFAULT_PRINTING},
+        by_printing={("sld", "2406"): SECRET_LAIR},
+    )
+    assert unmatched == []
+    card = shaped[0]
+    assert card["set"] == "sld"
+    assert card["collector_number"] == "2406"
+    assert card["artist"] == "Wizard of Barge"
+    assert card["border_color"] == "borderless"
+    assert card["foil"] is True
+
+
+def test_name_lookup_is_the_fallback_when_printing_unresolvable():
+    entry = {"name": "Zada, Hedron Grinder", "quantity": 1, "is_commander": True,
+             "is_sideboard": False, "foil": False, "set": "xxx",
+             "collector_number": "999"}
+    shaped, unmatched = resolve_entries(
+        [entry], by_name={"zada, hedron grinder": DEFAULT_PRINTING}, by_printing={})
+    assert unmatched == [] and shaped[0]["set"] == "cmm"
+
+
+def test_image_urls_drop_cache_busting_query():
+    """Scryfall's ?timestamp churns cards.json on every re-fetch for no visual change."""
+    card = shape_card(SECRET_LAIR, 1, True, False, foil=True)
+    assert card["image"] == "https://cards.scryfall.io/normal/sld.jpg"
+    assert card["art_crop"] == "https://cards.scryfall.io/art_crop/sld.jpg"
+    assert "?" not in card["image"] and "?" not in card["art_crop"]
+
+
+def test_foil_marker_flows_from_decklist_to_card():
+    entries = parse_decklist("1 Zada, Hedron Grinder (SLD) 2406 *F*\n")
+    assert entries[0]["foil"] is True
+    shaped, _ = resolve_entries(entries, by_name={},
+                                by_printing={("sld", "2406"): SECRET_LAIR})
+    assert shaped[0]["foil"] is True
+
+
+def test_printing_metadata_is_not_agent_semantic():
+    """Enriching printings must not invalidate agent routines (docs/agent-cost.md)."""
+    from manamap.pilot.agent_cache import CARD_SEMANTIC_FIELDS
+
+    plain = shape_card(DEFAULT_PRINTING, 1, True, False, foil=False)
+    fancy = shape_card(SECRET_LAIR, 1, True, False, foil=True)
+    assert {k: plain[k] for k in CARD_SEMANTIC_FIELDS} == \
+           {k: fancy[k] for k in CARD_SEMANTIC_FIELDS}
+    assert plain["artist"] != fancy["artist"]     # but presentation differs

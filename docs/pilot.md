@@ -59,6 +59,15 @@ data/decks/<slug>/             tracked: decklist.txt, cards.json,
 manuals/<slug>.html            tracked; manuals/index.html gallery tracked
 ```
 
+**Exact printings**: `fetch-deck` resolves a Moxfield export's `(SET) COLLECTOR [*F*]`
+annotations against Scryfall's `/cards/collection` by set + collector number **first**,
+falling back to name lookup only for unannotated lines. `cards.json` therefore carries
+the physical card the pilot owns — artist, set, collector number, border, frame
+effects, finishes, foil, plus `art_crop` for full-bleed magazine art. Image URLs have
+Scryfall's cache-busting query string stripped so re-fetches stay byte-stable, and the
+run short-circuits entirely when the decklist hash is unchanged (`--force` to override
+after an oracle update).
+
 Deck slugs are kebab-case. Scenario files are `NNN-<kebab>.json`, zero-padded, authoring order. Card names use the full `" // "` form, matching the combo/synergy/obsolescence graph keys.
 
 ## Rules DB

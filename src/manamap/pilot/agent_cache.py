@@ -109,6 +109,30 @@ def artifact_digest(path, keys=None):
     return json_sha256({k: doc.get(k) for k in sorted(keys)})
 
 
+# The cards.json fields agents actually read. Printing metadata (art, artist,
+# set, collector number, finishes) is presentation for the renderer — enriching
+# it must not cost a 330k-token regeneration of prose that would be identical.
+CARD_SEMANTIC_FIELDS = (
+    "name", "quantity", "is_commander", "is_sideboard", "mana_cost", "cmc",
+    "type_line", "oracle_text", "colors", "color_identity", "keywords",
+    "power", "toughness", "loyalty", "layout",
+)
+
+
+def cards_semantic_digest(path):
+    """Digest only the card facts agents reason about, not how cards look."""
+    if not path.exists():
+        return None
+    with open(path) as f:
+        doc = json.load(f)
+    cards = [
+        {k: card.get(k) for k in CARD_SEMANTIC_FIELDS}
+        for card in doc.get("cards", [])
+    ]
+    cards.sort(key=lambda c: (str(c.get("name")), bool(c.get("is_sideboard"))))
+    return json_sha256(cards)
+
+
 def prose_shape(path):
     """manual_prose.json's key skeleton with all leaf text dropped.
 
@@ -257,6 +281,11 @@ def resolve_inputs(slug, spec):
                 raise MissingInput(f"{rel(path)} is required by this routine but missing")
             entries.append({"path": f"{rel(path)}#scenario",
                             "sha256": scenario_block_digest(path)})
+        elif token == "cards:semantic":
+            path = base / "cards.json"
+            if not path.exists():
+                raise MissingInput(f"{rel(path)} is required by this routine but missing")
+            extra["cards_semantic"] = cards_semantic_digest(path)
         elif token == "strategy:doc":
             extra["strategy_doc_sha256"] = strategy_doc_digest()
         elif token == "prose:shape":

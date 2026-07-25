@@ -60,7 +60,9 @@ def parse_decklist(text):
         if line.upper().endswith("*CMDR*"):
             is_commander = True
             line = line[: line.upper().rfind("*CMDR*")].strip()
+        foil = False
         if line.upper().endswith("*F*"):
+            foil = True
             line = line[: line.upper().rfind("*F*")].strip()
 
         quantity = 1
@@ -77,6 +79,7 @@ def parse_decklist(text):
             "quantity": quantity,
             "is_commander": is_commander,
             "is_sideboard": section == "sideboard",
+            "foil": foil,
         }
         printing = _PRINTING_RE.search(name)
         if printing:
@@ -138,6 +141,17 @@ def fetch_printings(printings):
     return {(card.get("set", ""), card.get("collector_number", "")): card for card in cards}
 
 
+def stable_image_url(url):
+    """Drop Scryfall's cache-busting query string.
+
+    The `?1783903430` suffix changes whenever Scryfall re-renders an image,
+    which would churn cards.json on every re-fetch for no visual difference.
+    """
+    if not url:
+        return url
+    return url.split("?", 1)[0]
+
+
 def _shape_face(face):
     image_uris = face.get("image_uris") or {}
     return {
@@ -147,17 +161,28 @@ def _shape_face(face):
         "oracle_text": face.get("oracle_text", ""),
         "power": face.get("power"),
         "toughness": face.get("toughness"),
-        "image": image_uris.get("normal"),
+        "image": stable_image_url(image_uris.get("normal")),
+        "art_crop": stable_image_url(image_uris.get("art_crop")),
     }
 
 
-def shape_card(sc, quantity, is_commander, is_sideboard=False):
-    """Project a Scryfall card object onto the cards.json schema."""
+def shape_card(sc, quantity, is_commander, is_sideboard=False, foil=False):
+    """Project a Scryfall card object onto the cards.json schema.
+
+    Printing metadata (set, collector number, artist, finishes, borderless/frame
+    effects, art_crop) is what lets the manual show the *physical* cards in the
+    deck — the borderless Secret Lair, not a default reprint. `art_crop` in
+    particular is full-bleed art with no frame, which is what reads as magazine
+    photography rather than a card scan.
+    """
     image_uris = sc.get("image_uris") or {}
     faces = sc.get("card_faces") or []
     image = image_uris.get("normal")
+    art_crop = image_uris.get("art_crop")
     if image is None and faces:
-        image = (faces[0].get("image_uris") or {}).get("normal")
+        front = faces[0].get("image_uris") or {}
+        image = front.get("normal")
+        art_crop = front.get("art_crop")
     return {
         "name": sc["name"],
         "quantity": quantity,
@@ -175,9 +200,19 @@ def shape_card(sc, quantity, is_commander, is_sideboard=False):
         "toughness": sc.get("toughness"),
         "loyalty": sc.get("loyalty"),
         "layout": sc.get("layout", "normal"),
-        "image": image,
+        "image": stable_image_url(image),
+        "art_crop": stable_image_url(art_crop),
         "scryfall_uri": sc.get("scryfall_uri"),
         "card_faces": [_shape_face(f) for f in faces],
+        # Printing identity — which physical card this is.
+        "set": sc.get("set"),
+        "set_name": sc.get("set_name"),
+        "collector_number": sc.get("collector_number"),
+        "artist": sc.get("artist"),
+        "border_color": sc.get("border_color"),
+        "frame_effects": sc.get("frame_effects") or [],
+        "finishes": sc.get("finishes") or [],
+        "foil": bool(foil),
     }
 
 
@@ -199,9 +234,14 @@ def resolve_entries(entries, by_name, by_printing=None):
     merged = {}  # (name_lower, is_sideboard) -> shaped card
     for entry in entries:
         key = entry["name"].lower()
-        sc = by_name.get(key) or by_face.get(key)
-        if sc is None and "set" in entry:
+        # The decklist's own printing annotation wins: it names the physical
+        # card the pilot owns. Name lookup is the fallback for unannotated
+        # lines (and for printings Scryfall can't resolve).
+        sc = None
+        if "set" in entry:
             sc = by_printing.get((entry["set"], entry["collector_number"]))
+        if sc is None:
+            sc = by_name.get(key) or by_face.get(key)
         if sc is None:
             unmatched.append(entry["name"])
             continue
@@ -210,7 +250,8 @@ def resolve_entries(entries, by_name, by_printing=None):
             merged[merge_key]["quantity"] += entry["quantity"]
             merged[merge_key]["is_commander"] |= entry["is_commander"]
             continue
-        shaped = shape_card(sc, entry["quantity"], entry["is_commander"], entry["is_sideboard"])
+        shaped = shape_card(sc, entry["quantity"], entry["is_commander"],
+                            entry["is_sideboard"], entry.get("foil", False))
         merged[merge_key] = shaped
         cards.append(shaped)
     return cards, unmatched
@@ -237,19 +278,22 @@ def main(args):
         raise SystemExit(f"{path} parsed to zero cards — is it empty?")
     print(f"Parsed {len(entries)} decklist entries ({sum(e['quantity'] for e in entries)} cards)")
 
-    unique_names = sorted({e["name"] for e in entries})
-    by_name, not_found = fetch_collection(unique_names)
-
-    # Second pass: entries whose names missed but that carry a printing
-    # annotation (sideboard tokens/art cards resolve by set + collector number).
-    unresolved_printings = sorted({
-        (e["set"], e["collector_number"])
-        for e in entries
-        if "set" in e and e["name"].lower() not in by_name
+    # Printings first — a Moxfield export names the exact card the pilot owns,
+    # and resolving by name alone would silently substitute a default reprint.
+    wanted_printings = sorted({
+        (e["set"], e["collector_number"]) for e in entries if "set" in e
     })
-    by_printing = fetch_printings(unresolved_printings) if unresolved_printings else {}
-    if by_printing:
-        print(f"  Resolved {len(by_printing)} entr(ies) by set/collector number")
+    by_printing = fetch_printings(wanted_printings) if wanted_printings else {}
+    if wanted_printings:
+        print(f"  Resolved {len(by_printing)}/{len(wanted_printings)} exact printing(s)")
+
+    # Names still needing resolution: unannotated lines, plus any printing
+    # Scryfall couldn't find.
+    unique_names = sorted({
+        e["name"] for e in entries
+        if "set" not in e or (e["set"], e["collector_number"]) not in by_printing
+    })
+    by_name, not_found = fetch_collection(unique_names) if unique_names else ({}, [])
 
     cards, unmatched = resolve_entries(entries, by_name, by_printing)
     if unmatched:

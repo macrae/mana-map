@@ -348,14 +348,14 @@ AGENT_ROUTINES = {
     "strategic-frame": {
         "agent": "strategy-researcher",
         "artifact": "strategic_frame.json",
-        "inputs": ["deck:cards.json", "deck:goldfish_metrics.json",
+        "inputs": ["cards:semantic", "deck:goldfish_metrics.json",
                    "stacks:passing", "strategy:doc"],
     },
     "coach-prose": {
         "agent": "pilot-coach",
         "artifact": "manual_prose.json",
         "artifact_keys": ["threat_assessment", "matchups"],
-        "inputs": ["deck:cards.json", "deck:goldfish_metrics.json", "stacks:passing",
+        "inputs": ["cards:semantic", "deck:goldfish_metrics.json", "stacks:passing",
                    "deck:strategic_frame.json?", "strategy:doc"],
     },
     "writer-prose": {
@@ -363,7 +363,7 @@ AGENT_ROUTINES = {
         "artifact": "manual_prose.json",
         "artifact_keys": ["cover", "how_it_wins", "combo_lines", "card_roles",
                           "mulligan", "upgrades"],
-        "inputs": ["deck:cards.json", "stacks:passing", "deck:strategic_frame.json?",
+        "inputs": ["cards:semantic", "stacks:passing", "deck:strategic_frame.json?",
                    "global:COMBO_GRAPH_PATH", "global:SYNERGY_GRAPH_PATH",
                    "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
     },
@@ -371,7 +371,7 @@ AGENT_ROUTINES = {
         "agent": "magazine-editor",
         "artifact": "issue_plan.json",
         "inputs": ["repo:STYLE_DOC_PATH", "repo:ISSUE_SPEC_PATH",
-                   "deck:issue.json", "deck:cards.json", "stacks:passing",
+                   "deck:issue.json", "cards:semantic", "stacks:passing",
                    "decisions:all", "deck:goldfish_metrics.json",
                    "deck:strategic_frame.json?", "prose:shape",
                    "global:COMBO_GRAPH_PATH", "global:SYNERGY_GRAPH_PATH",
@@ -381,8 +381,8 @@ AGENT_ROUTINES = {
 
 # Dynamic routines (stack:NNN / decision:NNN) — resolved per artifact.
 AGENT_ROUTINE_STACK_AGENT = "stack-resolver+rules-checker"
-AGENT_ROUTINE_STACK_INPUTS = ["scenario:self", "deck:cards.json", "rules:version"]
+AGENT_ROUTINE_STACK_INPUTS = ["scenario:self", "cards:semantic", "rules:version"]
 AGENT_ROUTINE_DECISION_AGENT = "pilot-coach"
-AGENT_ROUTINE_DECISION_INPUTS = ["scenario:self", "deck:cards.json",
+AGENT_ROUTINE_DECISION_INPUTS = ["scenario:self", "cards:semantic",
                                  "deck:goldfish_metrics.json",
                                  "deck:strategic_frame.json?", "strategy:doc"]

@@ -246,6 +246,22 @@ figcaption b { color:var(--ink); font-family:var(--condensed); text-transform:up
 .hero-art img { border:4px solid var(--ink); box-shadow:10px 10px 0 rgba(0,0,0,.3); }
 .art-credit { font-family:var(--condensed); text-transform:uppercase; font-size:10.5px;
               letter-spacing:.14em; color:var(--ink-soft); margin-top:6px; }
+.printing { font-family:var(--condensed); text-transform:uppercase; font-size:10px;
+            letter-spacing:.12em; color:var(--ink-soft); margin-top:2px; }
+
+/* Foil: a real property of the physical card, not decoration. */
+.foil { position:relative; display:inline-block; }
+.foil::after {
+  content:""; position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen;
+  background:linear-gradient(115deg, rgba(255,0,128,.34) 8%, rgba(255,214,0,.30) 24%,
+    rgba(0,255,170,.30) 40%, rgba(0,170,255,.32) 56%, rgba(170,0,255,.30) 72%,
+    rgba(255,0,128,.28) 88%);
+  background-size:220% 220%; background-position:38% 42%;
+}
+.foil-tag { font-family:var(--comic); font-size:.95em; letter-spacing:.04em;
+            background:linear-gradient(100deg,#ff4fa3,#ffd600,#00e0b0,#4aa8ff,#c04fff);
+            -webkit-background-clip:text; background-clip:text; color:transparent;
+            filter:drop-shadow(1px 1px 0 rgba(0,0,0,.45)); }
 
 /* ── Cover ──────────────────────────────────────────────────────────── */
 .cover { position:relative; padding:26px 30px 34px; overflow:hidden;
@@ -396,14 +412,33 @@ def map_key(entries):
     return f'<div class="map-key">{items}</div>'
 
 
-def card_figure(name, image, caption_html, scryfall_uri=None):
+def printing_credit(card):
+    """Artist + printing line — the Duelist convention, and the reason the
+    manual shows *your* cards rather than default reprints."""
+    if not card:
+        return ""
+    bits = []
+    if card.get("artist"):
+        foil = ' <span class="foil-tag">foil</span>' if card.get("foil") else ""
+        bits.append(f'<div class="art-credit">Art: {esc(card["artist"])}{foil}</div>')
+    if card.get("set_name"):
+        number = card.get("collector_number")
+        suffix = f" #{esc(number)}" if number else ""
+        bits.append(f'<div class="printing">{esc(card["set_name"])}{suffix}</div>')
+    return "".join(bits)
+
+
+def card_figure(name, image, caption_html, scryfall_uri=None, card=None):
     """Hero/feature card image with a teaching caption (STYLEv3 §7.4)."""
     if not image:
         return ""
     img = f'<img src="{esc(image)}" alt="{esc(name)}" loading="lazy">'
+    if (card or {}).get("foil"):
+        img = f'<span class="foil">{img}</span>'
     if scryfall_uri:
         img = f'<a href="{esc(scryfall_uri)}">{img}</a>'
-    return f'<figure class="card-fig">{img}<figcaption>{caption_html}</figcaption></figure>'
+    return (f'<figure class="card-fig">{img}<figcaption>{caption_html}'
+            f"{printing_credit(card)}</figcaption></figure>")
 
 
 def folio(department_title, volume, page_note=""):

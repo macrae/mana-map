@@ -106,6 +106,13 @@ other look hand-edited.
 **Only passing stacks are inputs.** A failing stack can't be published, so editing one
 doesn't invalidate downstream prose — but flipping it to `pass` does.
 
+**`cards.json` is hashed semantically.** Agents read names, oracle text, costs and
+types; they never read artist, set, collector number, finishes, or image URLs. So
+`cards:semantic` digests only `CARD_SEMANTIC_FIELDS`. This was proven by the printing-
+fidelity change: enriching all 82 cards with exact Secret Lair printings produced a
+byte-identical semantic digest, so the prose stayed valid and the enrichment cost **0
+agent tokens** instead of ~330k.
+
 ## The other cost: `fetch-deck`
 
 `fetch_deck.py` computed `decklist_sha256` and wrote it into `cards.json` but never

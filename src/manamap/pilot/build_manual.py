@@ -29,6 +29,7 @@ from manamap.pilot.design import (
     map_key,
     pilot_tip,
     power_meter,
+    printing_credit,
     pull_quote,
     threat_box,
     violator,
@@ -168,7 +169,7 @@ def dept_captions(dept, cards_by_name, limit=3):
         if not card:
             continue
         figures.append(card_figure(name, card.get("image"), caption_html(text),
-                                   card.get("scryfall_uri")))
+                                   card.get("scryfall_uri"), card))
     return "".join(figures)
 
 
@@ -188,13 +189,13 @@ def render_cover(issue, plan, commander, stacks):
     coverline = cover.get("dominant_coverline") or issue["deck_name"]
     art = ""
     if commander:
+        # art_crop is borderless full-bleed art — magazine photography, not a
+        # card scan. Falls back to the card image when a printing lacks it.
         image = commander.get("art_crop") or commander.get("image")
-        artist = commander.get("artist")
-        credit = f'<div class="art-credit">Art: {esc(artist)}</div>' if artist else ""
-        art = (
-            f'<div class="hero-art"><img src="{esc(image)}" '
-            f'alt="{esc(commander["name"])}">{credit}</div>'
-        )
+        img = f'<img src="{esc(image)}" alt="{esc(commander["name"])}">'
+        if commander.get("foil"):
+            img = f'<span class="foil">{img}</span>'
+        art = f'<div class="hero-art">{img}{printing_credit(commander)}</div>'
     return f"""
 <section class="cover" id="cover">
   <div class="cover-top">
@@ -267,6 +268,12 @@ def render_command_zone(issue, plan, commander, goldfish, cards_by_name):
     """The Commander Mandate department (STYLEv3 §3.3)."""
     dept = plan_dept(plan, "command-zone")
     body = []
+    if commander and (commander.get("art_crop") or commander.get("image")):
+        image = commander.get("art_crop") or commander.get("image")
+        img = f'<img src="{esc(image)}" alt="{esc(commander["name"])}" loading="lazy">'
+        if commander.get("foil"):
+            img = f'<span class="foil">{img}</span>'
+        body.append(f'<div class="hero-art">{img}{printing_credit(commander)}</div>')
     if commander:
         cmc = int(commander.get("cmc") or 0)
         identity = "".join(commander.get("color_identity") or []) or "C"
