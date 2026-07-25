@@ -182,6 +182,10 @@ def process_card(card):
         "flavor_text": (card.get("flavor_text") or "").replace("\n", " "),
         "edhrec_rank": card.get("edhrec_rank"),
         "reserved": card.get("reserved", False),
+        # WotC's Game Changers list, tracked by Scryfall. The spine of the
+        # Commander bracket system: brackets 1-2 allow none, 3 allows three,
+        # 4-5 are unrestricted. See pilot/bracket.py.
+        "game_changer": card.get("game_changer", False),
         "mechanical_tags": ", ".join(tags),
         "embedding_text": embedding_text,
         **legal_cols,

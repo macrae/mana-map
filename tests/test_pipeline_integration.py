@@ -225,10 +225,11 @@ class TestObsolescenceIndex:
 class TestComboGraph:
 
     def test_combo_graph_structure(self):
+        """The viz artifact carries partners only — details live in their own file."""
         with open(COMBO_GRAPH_PATH, "r") as f:
             graph = json.load(f)
         assert "partners" in graph
-        assert "combos" in graph
+        assert "combos" not in graph
         assert len(graph["partners"]) > 0
 
 
@@ -242,10 +243,19 @@ def test_csv_has_base_required_columns():
     required = [
         "oracle_id", "name", "layout", "type_line", "supertype",
         "mana_cost", "cmc", "colors", "color_identity", "primary_color",
-        "oracle_text", "keywords", "embedding_text",
+        "oracle_text", "keywords", "embedding_text", "game_changer",
     ]
     for col in required:
         assert col in df.columns, f"Missing column: {col}"
+
+
+@requires_file(OUTPUT_CSV_PATH)
+def test_game_changers_are_commander_legal():
+    """Game Changers are a power signal, not a ban list — every one stays legal."""
+    df = pd.read_csv(OUTPUT_CSV_PATH)
+    flagged = df[df["game_changer"]]
+    assert len(flagged) > 0, "no Game Changers found — is the oracle dump stale?"
+    assert (flagged["legal_commander"] == "legal").all()
 
 
 @requires_file(MECHANICAL_TAGS_PATH)

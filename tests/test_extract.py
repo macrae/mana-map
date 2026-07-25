@@ -567,6 +567,15 @@ class TestBuildEmbeddingText:
 # ---------------------------------------------------------------------------
 
 class TestProcessCard:
+    def test_game_changer_defaults_false(self):
+        """Absence must read as False — a missing flag can't imply a Game Changer."""
+        row = process_card(_lightning_bolt())
+        assert row["game_changer"] is False
+
+    def test_game_changer_passed_through(self):
+        card = dict(_lightning_bolt(), game_changer=True)
+        assert process_card(card)["game_changer"] is True
+
     def test_lightning_bolt(self):
         row = process_card(_lightning_bolt())
         assert row["name"] == "Lightning Bolt"
@@ -669,6 +678,6 @@ class TestProcessCard:
             assert f"legal_{fmt}" in row
 
     def test_csv_column_count(self):
-        """Every row should have exactly 34 columns (26 base + 8 legality)."""
+        """Every row should have exactly 35 columns (27 base + 8 legality)."""
         row = process_card(_lightning_bolt())
-        assert len(row) == 34
+        assert len(row) == 35

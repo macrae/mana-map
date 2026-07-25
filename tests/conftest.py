@@ -28,6 +28,11 @@ requires_strategy = pytest.mark.skipif(
     reason="requires the strategy DB (run `manamap pilot build-strategy-db`)",
 )
 
+requires_roles = pytest.mark.skipif(
+    not config.CARD_ROLES_PATH.exists(),
+    reason="requires the role index (run `manamap card-roles`)",
+)
+
 
 @pytest.fixture(scope="session")
 def data_dir():

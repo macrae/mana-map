@@ -22,6 +22,7 @@ STEPS = [
     ("synergy", "manamap.analysis.synergy", "Step 10: Build synergy graph"),
     ("power-creep", "manamap.analysis.power_creep", "Step 11: Build obsolescence index"),
     ("cluster-regions", "manamap.analysis.cluster_regions", "Step 12: Cluster + name map regions"),
+    ("card-roles", "manamap.analysis.card_roles", "Step 13: Classify deckbuilding roles"),
 ]
 
 STEP_NAMES = [name for name, _, _ in STEPS]

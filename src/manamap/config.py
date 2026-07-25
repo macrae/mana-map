@@ -70,7 +70,24 @@ COMBOS_API_URL = "https://backend.commanderspellbook.com/variants/"
 COMBOS_RAW_PATH = DATA_DIR / "combos_raw.json"
 COMBOS_META_PATH = DATA_DIR / ".combos-meta.json"
 COMBO_GRAPH_PATH = DATA_DIR / "combo_graph.json"
+COMBO_DETAILS_PATH = DATA_DIR / "combo_details.json"
 EMBEDDINGS_BIN_PATH = DATA_DIR / "embeddings.bin"
+
+# Commander Spellbook classifies every combo variant by power, stored as a
+# single letter (Variant.BracketTag in their backend). The letters map onto
+# WotC's bracket ladder, which is what makes a computed bracket floor possible:
+# a deck's floor is the highest-bracket combo it fully contains.
+# "B" (Banned) is deliberately absent — those variants use Commander-banned
+# cards and carry their own flag rather than a bracket.
+COMBO_BRACKET_TAGS = {
+    "E": 1,   # Exhibition
+    "C": 2,   # Core
+    "O": 2,   # Oddball
+    "P": 3,   # Powerful
+    "S": 3,   # Spicy
+    "R": 4,   # Ruthless
+}
+COMBO_BANNED_TAG = "B"
 
 # ── Text Encoder (frozen) ─────────────────────────────────────────────────
 TEXT_MODEL_NAME = "all-MiniLM-L6-v2"
@@ -200,6 +217,108 @@ SYNERGY_RULES = [
     ("ramp", "cost_reduction", "Ramp + Cost Reduction"),
     ("counterspell", "draw", "Counterspell + Draw"),
 ]
+
+# ── Deckbuilding Roles ───────────────────────────────────────────────────
+# MECHANICAL_TAGS is a retrieval vocabulary — it answers "what is this card
+# like". Deckbuilding needs a different question: "what job does this card do
+# in a 99". The two overlap but are not interchangeable: `ramp` there is one
+# regex covering rocks, dorks, land ramp and rituals, which is fatal for curve
+# modeling. This dict is deliberately SEPARATE — editing MECHANICAL_TAGS
+# invalidates model_ability.pt and forces a retrain, and roles change often.
+CARD_ROLES_PATH = DATA_DIR / "card_roles.json"
+
+# Roles that need the type line to disambiguate are resolved in card_roles.py;
+# these patterns run against oracle text + keywords.
+ROLE_PATTERNS = {
+    # Card advantage
+    "draw:engine": r"(?:whenever|at the beginning of).{0,80}?draws? (?:a |two |three |\d+ )?cards?",
+    "draw:burst": r"draw (?:two|three|four|five|six|seven|\d+) cards",
+    "draw:impulse": r"exile the top (?:\w+ )?cards?.{0,60}?(?:you may (?:play|cast)|until)",
+    "draw:wheel": r"discards? (?:their|your) hand.{0,60}?draws?|each player draws",
+    # Interaction
+    "removal:sweeper": r"destroy all|exile all|destroy each|all creatures get -|each creature gets -",
+    "removal:spot": r"destroy target|exile target (?:creature|permanent|artifact|enchantment|planeswalker|battle)",
+    "removal:damage": r"deals? (?:\d+|x) damage to (?:target|any target|each)",
+    "removal:edict": r"sacrifices? a (?:creature|permanent)",
+    "removal:tax": r"(?:spells?|abilities).{0,40}?costs? \{?\d+\}? more",
+    "removal:fight": r"\bfights? (?:target|another)",
+    "counterspell": r"counter target (?:spell|ability)",
+    # Consistency
+    "tutor:unrestricted": r"search your library for a card",
+    "tutor:narrow": r"search your library for (?:a|an|up to \w+) (?!card)[\w\s]{0,30}?cards?",
+    "recursion": r"return (?:target |a |another )?[\w\s]{0,30}?(?:card )?from (?:your|a) graveyard to (?:the battlefield|your hand)",
+    # Resilience
+    "protection:self": r"\b(?:hexproof|shroud|indestructible|ward)\b",
+    "protection:granted": r"(?:target |another target )?creatures? you control (?:gains?|have|has) (?:hexproof|indestructible|protection|shroud)",
+    # Engines
+    "sac-outlet": r"sacrifice (?:a|an|another) (?:creature|permanent|artifact|token)[^.]{0,20}?:",
+    "stax": r"players? can't|can't be (?:activated|cast)|skip (?:your|their) |don't untap|enters? tapped and",
+    # Finishers
+    "wincon:alt": r"wins? the game|loses? the game",
+    "wincon:drain": r"each opponent loses (?:\d+|x) life|each opponent (?:loses|sacrifices)",
+    "wincon:combat": r"\b(?:infect|double strike)\b|deals? double|can't be blocked",
+    # Broad jobs. Most cards in a deck are not a tutor or a sweeper — they are
+    # a body, an enters-trigger, or an activated ability, and a builder counts
+    # those slots too.
+    "value:etb": r"when(?:ever)? (?:this|[\w\s,']{0,30}?) enters",
+    "utility:activated": r"\{T\}[,:]|\{\d+\}[,:].{0,40}?:",
+    "removal:debuff": r"gets? -\d+/-\d+|gets? -\d+/-0|put a -1/-1 counter",
+    # Voltron and combat-trick slots. An Aura that pumps and an Equipment that
+    # pumps are the same job wearing different card types.
+    "buff:attached": r"(?:enchanted|equipped) creature (?:gets?|has|have)|\bequip[\s—]|\benchant creature\b",
+    "buff:pump": r"gets? \+\d+/\+\d+ until end of turn|creatures you control get \+",
+    "buff:counters": r"put (?:a|two|three|\d+|x) \+1/\+1 counters?",
+    "hate:graveyard": r"exile[\w\s]{0,30}?from (?:a|target opponent's|each) (?:player's )?graveyard|graveyards? instead",
+}
+
+# A creature with no other listed job is still doing one: attacking and
+# blocking. `threat:body` is that fallback, applied by type line. It is
+# reported separately from the specific roles so it can never flatter the
+# coverage number — see ROLE_COVERAGE_TARGET.
+ROLE_BODY_FALLBACK = "threat:body"
+
+# Mana production is one regex plus the type line: an artifact that taps for
+# mana is a rock, a creature is a dork, an instant is a ritual. v1's single
+# `ramp` tag scored a Signet and a Dark Ritual identically.
+ROLE_MANA_SOURCE = r"add \{|adds? (?:one|two|three|\d+) mana|add one mana"
+ROLE_MANA_BY_SUPERTYPE = {
+    "Artifact": "ramp:rock",
+    "Creature": "ramp:dork",
+    "Enchantment": "ramp:rock",
+    "Instant": "ramp:ritual",
+    "Sorcery": "ramp:ritual",
+}
+ROLE_LAND_RAMP = r"search your library for (?:a|up to \w+)[\w\s]{0,30}?land"
+ROLE_COST_REDUCTION = r"costs? \{?\d+\}? less|spells? you cast cost"
+
+# Land quality — lands never carry spell roles, so these are evaluated alone.
+ROLE_LAND_PATTERNS = {
+    # Fetchlands name basic land *types*, not "land card" — Windswept Heath
+    # says "a Forest or Plains card" and would otherwise read as plain utility.
+    "land:fetch": r"search your library for a[\w\s]{0,40}?(?:land card|Plains|Island|Swamp|Mountain|Forest)",
+    "land:tapped": r"enters tapped|enters the battlefield tapped",
+    "land:utility": r"\{T\},|\{T\}: (?!add)|draw a card|deals? \d+ damage",
+}
+
+ROLE_NAMES = sorted(
+    set(ROLE_PATTERNS) | set(ROLE_LAND_PATTERNS) | set(ROLE_MANA_BY_SUPERTYPE.values())
+    | {"ramp:land", "ramp:cost-reduction", "land:untapped-dual", "land:mdfc",
+       "land:basic", ROLE_BODY_FALLBACK}
+)
+
+# Coverage floors, asserted by the test suite. `COVERAGE` counts any role at
+# all; `SPECIFIC` excludes cards carrying only the body fallback, because a
+# classifier that labels every creature "threat:body" and stops has told the
+# slot filler nothing.
+#
+# These are regression floors set just under what the classifier measured
+# (86.3% / 67.6%), not aspirations. 100% is explicitly not the goal: the ~4.3K
+# cards that stay unclassified are genuinely miscellaneous one-off effects
+# (Aura Graft, Saheeli's Artistry, Theft of Dreams), and forcing them into a
+# bucket with looser regexes would buy coverage with false positives — which
+# is strictly worse for a slot filler than an honest null.
+ROLE_COVERAGE_TARGET = 0.85
+ROLE_SPECIFIC_COVERAGE_TARGET = 0.65
 
 # ── Power Creep / Obsolescence ───────────────────────────────────────────
 OBSOLESCENCE_INDEX_PATH = DATA_DIR / "obsolescence_index.json"

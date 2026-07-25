@@ -8,7 +8,10 @@ import pandas as pd
 import pytest
 
 from manamap.ingest.process_combos import (
+    bracket_summary,
+    build_card_index,
     build_combo_graph,
+    extract_bracket,
     extract_card_names,
     extract_color_identity,
     extract_produces,
@@ -19,11 +22,19 @@ from manamap.ingest.process_combos import (
 # ── Fixtures ──
 
 
-def make_combo(card_names, identity="", produces=None):
+def make_combo(card_names, identity="", produces=None, bracket_tag=None,
+               mana_value_needed=None, popularity=None):
     """Helper to build a combo variant dict matching Commander Spellbook format."""
     uses = [{"card": {"name": name}} for name in card_names]
     prods = [{"feature": {"name": p}} for p in (produces or [])]
-    return {"uses": uses, "identity": identity, "produces": prods}
+    return {
+        "uses": uses,
+        "identity": identity,
+        "produces": prods,
+        "bracketTag": bracket_tag,
+        "manaValueNeeded": mana_value_needed,
+        "popularity": popularity,
+    }
 
 
 # ── extract_card_names ──
@@ -177,4 +188,97 @@ def test_combo_graph_json_serializable():
     output = json.dumps(graph, separators=(",", ":"))
     parsed = json.loads(output)
     assert "partners" in parsed
-    assert "combos" in parsed
+
+
+# ── extract_bracket ──
+
+
+@pytest.mark.parametrize("tag,expected", [
+    ("E", 1), ("C", 2), ("O", 2), ("P", 3), ("S", 3), ("R", 4),
+])
+def test_extract_bracket_maps_spellbook_letters(tag, expected):
+    bracket, banned = extract_bracket({"bracketTag": tag})
+    assert bracket == expected
+    assert banned is False
+
+
+def test_extract_bracket_flags_banned():
+    bracket, banned = extract_bracket({"bracketTag": "B"})
+    assert bracket is None
+    assert banned is True
+
+
+def test_extract_bracket_unknown_letter_is_none_not_one():
+    """An unrecognized tag must not read as bracket 1 — that under-reports a floor."""
+    bracket, banned = extract_bracket({"bracketTag": "X"})
+    assert bracket is None
+    assert banned is False
+
+
+def test_extract_bracket_missing_tag():
+    assert extract_bracket({}) == (None, False)
+
+
+# ── enriched combo records ──
+
+
+def test_build_combo_graph_carries_bracket_fields():
+    known = {"A", "B"}
+    combos = [make_combo(["A", "B"], bracket_tag="R", mana_value_needed=4, popularity=1200)]
+    _, combo_list = build_combo_graph(combos, known)
+
+    assert combo_list[0]["bracket"] == 4
+    assert combo_list[0]["mana_value_needed"] == 4
+    assert combo_list[0]["popularity"] == 1200
+    assert "banned" not in combo_list[0]
+
+
+def test_build_combo_graph_keeps_banned_combos_flagged():
+    """Format-agnostic by design: banned combos are flagged, never dropped."""
+    known = {"A", "B"}
+    combos = [make_combo(["A", "B"], bracket_tag="B")]
+    partners, combo_list = build_combo_graph(combos, known)
+
+    assert len(combo_list) == 1
+    assert combo_list[0]["banned"] is True
+    assert combo_list[0]["bracket"] is None
+    assert set(partners["A"]) == {"B"}
+
+
+# ── build_card_index ──
+
+
+def test_build_card_index_maps_names_to_combo_indices():
+    known = {"A", "B", "C"}
+    combos = [make_combo(["A", "B"]), make_combo(["B", "C"])]
+    _, combo_list = build_combo_graph(combos, known)
+    index = build_card_index(combo_list)
+
+    assert index["A"] == [0]
+    assert index["B"] == [0, 1]
+    assert index["C"] == [1]
+
+
+def test_build_card_index_deduplicates_repeated_names():
+    index = build_card_index([{"cards": ["A", "A", "B"]}])
+    assert index["A"] == [0]
+
+
+def test_build_card_index_empty():
+    assert build_card_index([]) == {}
+
+
+# ── bracket_summary ──
+
+
+def test_bracket_summary_counts_by_bracket_and_banned():
+    known = {"A", "B", "C", "D"}
+    combos = [
+        make_combo(["A", "B"], bracket_tag="E"),
+        make_combo(["C", "D"], bracket_tag="E"),
+        make_combo(["A", "C"], bracket_tag="R"),
+        make_combo(["B", "D"], bracket_tag="B"),
+    ]
+    _, combo_list = build_combo_graph(combos, known)
+
+    assert bracket_summary(combo_list) == {"1": 2, "4": 1, "banned": 1}
