@@ -13,7 +13,7 @@ import json
 import re
 import sys
 
-from manamap.pilot.common import RULE_ID_RE, deck_dir, load_rules_db
+from manamap.pilot.common import RULE_ID_RE, STRATEGY_ID_RE, deck_dir, load_rules_db
 
 REQUIRED_TOP_KEYS = {"id", "slug", "deck", "title", "scenario", "resolution"}
 REQUIRED_SCENARIO_KEYS = {"stack", "question"}
@@ -27,11 +27,34 @@ def _normalize_ws(text):
     return re.sub(r"\s+", " ", text).strip()
 
 
-def _validate_citations(citations, rules, where, errors):
-    """Shared citation contract: valid IDs, existing rules, verbatim quotes."""
+def _validate_citations(citations, rules, where, errors, strategy_sections=None):
+    """Shared citation contract: valid IDs, existing rules/sections, verbatim quotes.
+
+    `strategy:` IDs (tier-★ grounding in decision branches) dispatch against the
+    strategy DB with the same verbatim-quote check; None means the DB is
+    unavailable, which only errors if a strategy citation actually appears.
+    """
     for cite in citations:
         rule_id = cite.get("rule", "")
         quote = cite.get("quote", "")
+        if STRATEGY_ID_RE.match(rule_id):
+            if strategy_sections is None:
+                errors.append(
+                    f"{where}: cites {rule_id} but the strategy DB is unavailable — "
+                    f"run `manamap pilot build-strategy-db`"
+                )
+                continue
+            if rule_id not in strategy_sections:
+                errors.append(f"{where}: cites nonexistent strategy section {rule_id}")
+                continue
+            if not quote:
+                errors.append(f"{where}: citation of {rule_id} has no quote")
+                continue
+            if _normalize_ws(quote) not in _normalize_ws(strategy_sections[rule_id]["text"]):
+                errors.append(
+                    f"{where}: quote is not verbatim text of {rule_id}: {quote[:60]!r}..."
+                )
+            continue
         if not RULE_ID_RE.match(rule_id):
             errors.append(f"{where}: malformed rule id {rule_id!r}")
             continue
@@ -45,7 +68,7 @@ def _validate_citations(citations, rules, where, errors):
             errors.append(f"{where}: quote is not verbatim text of {rule_id}: {quote[:60]!r}...")
 
 
-def validate_scenario(doc, rules):
+def validate_scenario(doc, rules, strategy_sections=None):
     """Return a list of error strings (empty = the contract holds)."""
     errors = []
 
@@ -73,7 +96,7 @@ def validate_scenario(doc, rules):
         if not citations:
             errors.append(f"step {n}: NO CITATIONS — every effect must cite a rule")
             continue
-        _validate_citations(citations, rules, f"step {n}", errors)
+        _validate_citations(citations, rules, f"step {n}", errors, strategy_sections)
 
     checker = doc.get("checker")
     if checker is not None:
@@ -94,7 +117,7 @@ def validate_scenario(doc, rules):
     return errors
 
 
-def validate_decision(doc, rules):
+def validate_decision(doc, rules, strategy_sections=None):
     """Form checks for a coaching decision tree (tier-3). Returns error strings."""
     errors = []
 
@@ -118,7 +141,9 @@ def validate_decision(doc, rules):
             errors.append(f"branch {i}: missing keys {sorted(missing)}")
         if branch.get("choice"):
             choices.append(branch["choice"])
-        _validate_citations(branch.get("citations", []), rules, f"branch {i}", errors)
+        _validate_citations(
+            branch.get("citations", []), rules, f"branch {i}", errors, strategy_sections
+        )
 
     rec = doc.get("recommendation") or {}
     if not rec.get("rationale"):
@@ -130,15 +155,30 @@ def validate_decision(doc, rules):
     return errors
 
 
-def validate_any(doc, rules):
+def validate_any(doc, rules, strategy_sections=None):
     """Dispatch on kind (missing kind = stack)."""
     if doc.get("kind", "stack") == "decision":
-        return validate_decision(doc, rules)
-    return validate_scenario(doc, rules)
+        return validate_decision(doc, rules, strategy_sections)
+    return validate_scenario(doc, rules, strategy_sections)
+
+
+def _load_strategy_sections():
+    """Best-effort strategy DB load; None = unavailable (only errors if cited)."""
+    from manamap.pilot.common import load_strategy_db
+
+    try:
+        sections, _, _ = load_strategy_db()
+        return sections
+    except FileNotFoundError:
+        return None
+    except ValueError as e:
+        print(f"WARN strategy DB unusable ({e}) — strategy citations will fail")
+        return None
 
 
 def main(args):
     rules, _, _ = load_rules_db()
+    strategy_sections = _load_strategy_sections()
     base = deck_dir(args.slug)
     if args.stack:
         paths = sorted((base / "stacks").glob(f"{args.stack}-*.json"))
@@ -155,7 +195,7 @@ def main(args):
     for path in paths:
         with open(path) as f:
             doc = json.load(f)
-        errors = validate_any(doc, rules)
+        errors = validate_any(doc, rules, strategy_sections)
         kind = doc.get("kind", "stack")
         if errors:
             failed = True

@@ -18,6 +18,10 @@ PILOT_STEPS = [
     ("goldfish", "manamap.pilot.goldfish", "Seeded Monte Carlo resource-development metrics"),
     ("build-manual", "manamap.pilot.build_manual", "Render the zine HTML from verified artifacts"),
     ("build-index", "manamap.pilot.build_index", "Render the manuals/index.html gallery"),
+    ("validate-strategy", "manamap.pilot.validate_strategy", "Form-check strategy.md + CHANGELOG"),
+    ("build-strategy-db", "manamap.pilot.build_strategy_db", "Chunk + embed strategy.md into the strategy DB"),
+    ("query-strategy", "manamap.pilot.query_strategy", "Semantic top-k strategy search"),
+    ("lookup-strategy", "manamap.pilot.query_strategy", "Exact strategy section fetch by id"),
 ]
 
 _DECK_COMMANDS = {"fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual"}
@@ -41,6 +45,13 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "validate-stack":
             cmd.add_argument("--stack", default=None, help="Only this scenario id (e.g. 001)")
+        if name == "query-strategy":
+            cmd.add_argument("query", help="Natural-language strategy question")
+            cmd.add_argument("--k", type=int, default=None, help="Number of results")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "lookup-strategy":
+            cmd.add_argument("section_id", help="Exact section id, e.g. strategy:tempo")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
 
 
 def run_pilot_step(args):

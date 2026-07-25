@@ -23,6 +23,11 @@ requires_deck = pytest.mark.skipif(
     reason="requires a fetched deck (run `manamap pilot fetch-deck goblin-storm`)",
 )
 
+requires_strategy = pytest.mark.skipif(
+    not config.STRATEGY_INDEX_PATH.exists(),
+    reason="requires the strategy DB (run `manamap pilot build-strategy-db`)",
+)
+
 
 @pytest.fixture(scope="session")
 def data_dir():
