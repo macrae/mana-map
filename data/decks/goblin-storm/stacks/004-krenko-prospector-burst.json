@@ -1,0 +1,352 @@
+{
+  "id": "004",
+  "slug": "krenko-prospector-burst",
+  "deck": "goblin-storm",
+  "title": "Krenko + Prospector + Warchief: the combo-graph 'infinite' examined in this deck",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Goblin Warchief",
+        "Skirk Prospector",
+        "1/1 red Goblin creature token x2",
+        "Mountain x5 (3 untapped)"
+      ],
+      "opponents": [
+        {
+          "life": 30,
+          "board": []
+        },
+        {
+          "life": 25,
+          "board": []
+        }
+      ]
+    },
+    "hand": [
+      "Krenko, Mob Boss"
+    ],
+    "mana_available": "{R}{R}{R} (three untapped Mountains)",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Krenko, Mob Boss",
+        "controller": "you",
+        "note": "being cast this main phase; Goblin Warchief's cost reduction applied"
+      }
+    ],
+    "extras": {
+      "commander": "Zada, Hedron Grinder (in the command zone — Krenko is NOT the commander in this deck)",
+      "combo_graph_claim": "Krenko, Mob Boss + Skirk Prospector + Goblin Warchief produces: Infinite commander casts, Infinite creature tokens with haste, Infinite red mana, Infinite storm count (Commander Spellbook, format-agnostic)"
+    },
+    "question": "Resolve Krenko entering and activating this turn: (a) what did Krenko actually cost to cast and can he activate his {T} ability immediately, (b) how many Goblin tokens does one activation create and what is the resulting board, (c) how much red mana can Skirk Prospector generate from that board and at what cost, and (d) is the combo graph's claimed infinite loop achievable in THIS deck, where Krenko is not the commander and cannot return from the graveyard? State precisely what the line produces in one turn and why the loop terminates."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Determine and pay Krenko, Mob Boss's cost. Mana cost {2}{R}{R}; Goblin Warchief's static ability ('Goblin spells you cast cost {1} less to cast') reduces it, and the total cost locks in at {1}{R}{R}.",
+        "effect": "You tap all three untapped Mountains for {R}{R}{R} and pay {1}{R}{R} (one {R} pays the generic {1}). Krenko is cast and is on the stack. Storm-relevant count for the turn from this line: 1 spell cast.",
+        "citations": [
+          {
+            "rule": "601.2f",
+            "quote": "The total cost is the mana cost or alternative cost (as determined in rule 601.2b), plus all additional costs and cost increases, and minus all cost reductions."
+          },
+          {
+            "rule": "601.2f",
+            "quote": "Then the resulting total cost becomes “locked in.” If effects would change the total cost after this time, they have no effect."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "All players pass priority; Krenko, Mob Boss (stack pos 0, the only object) resolves.",
+        "effect": "Krenko, a targetless permanent spell, enters the battlefield under your control. You now control 5 Goblins: Krenko, Goblin Warchief, Skirk Prospector, and two 1/1 red Goblin tokens.",
+        "citations": [
+          {
+            "rule": "608.3a",
+            "quote": "If the object that’s resolving has no targets, it becomes a permanent and enters the battlefield under the control of the spell’s controller."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "State-based actions are checked (nothing to do: only one Krenko, so no legend issue arises) and the active player — you — receives priority.",
+        "effect": "You have priority in your main phase with Krenko on the battlefield.",
+        "citations": [
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event"
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Activate Krenko's '{T}: Create X 1/1 red Goblin creature tokens' the same turn he entered. Krenko is a Goblin, so Goblin Warchief's 'Goblins you control have haste' applies, overriding the summoning-sickness restriction. Tapping Krenko (he is untapped) pays the cost; the ability goes on the stack — it is NOT a mana ability because it cannot add mana to your mana pool, so it can be responded to.",
+        "effect": "Krenko is now tapped; his token-making ability is on the stack.",
+        "citations": [
+          {
+            "rule": "302.6",
+            "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+          },
+          {
+            "rule": "702.10c",
+            "quote": "If a creature has haste, its controller can activate its activated abilities whose cost includes the tap symbol or the untap symbol even if that creature hasn’t been controlled by that player continuously since their most recent turn began."
+          },
+          {
+            "rule": "701.26a",
+            "quote": "Only untapped permanents can be tapped."
+          },
+          {
+            "rule": "605.1a",
+            "quote": "An activated ability is a mana ability if it meets all of the following criteria: it doesn’t require a target (see rule 115.6), it could add mana to a player’s mana pool when it resolves, and it’s not a loyalty ability."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Krenko's ability resolves. X is determined now, at resolution: you control 5 Goblins (Krenko, Warchief, Prospector, 2 tokens), so X = 5, and 5 more 1/1 red Goblin tokens are put onto the battlefield.",
+        "effect": "Board is now 10 Goblins: Krenko (tapped), Goblin Warchief, Skirk Prospector, and 7 Goblin tokens. Every one of them has haste from Warchief.",
+        "citations": [
+          {
+            "rule": "608.2h",
+            "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+          },
+          {
+            "rule": "701.7a",
+            "quote": "To create one or more tokens with certain characteristics, put the specified number of tokens with the specified characteristics onto the battlefield."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Optionally convert bodies to mana with Skirk Prospector ('Sacrifice a Goblin: Add {R}'). This is an activated mana ability (no target, adds mana, not a loyalty ability), so each activation skips the stack, resolves immediately, and cannot be responded to; it can even be activated in the middle of paying for a spell.",
+        "effect": "Each activation: sacrifice one Goblin, add {R}. Keeping the engine (Krenko, Warchief, Prospector) you can sacrifice the 7 tokens for {R}{R}{R}{R}{R}{R}{R}; the absolute maximum is 10 red mana, with Prospector's last activation sacrificing Prospector itself, which empties your board entirely. This mana disappears at end of phase, so it must be spent now.",
+        "citations": [
+          {
+            "rule": "605.1a",
+            "quote": "An activated ability is a mana ability if it meets all of the following criteria: it doesn’t require a target (see rule 115.6), it could add mana to a player’s mana pool when it resolves, and it’s not a loyalty ability."
+          },
+          {
+            "rule": "605.3b",
+            "quote": "An activated mana ability doesn’t go on the stack, so it can’t be targeted, countered, or otherwise responded to. Rather, it resolves immediately after it is activated."
+          },
+          {
+            "rule": "605.3a",
+            "quote": "A player may activate an activated mana ability whenever they have priority, whenever they are casting a spell or activating an ability that requires a mana payment, or whenever a rule or effect asks for a mana payment, even if it’s in the middle of casting or resolving a spell or activating or resolving an ability."
+          },
+          {
+            "rule": "500.5",
+            "quote": "Then any unspent mana left in a player’s mana pool empties."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Track where sacrificed Goblins go. Sacrificed permanents move directly to their owner's graveyard; sacrificed tokens then cease to exist at the next state-based-action check.",
+        "effect": "Sacrificed tokens are gone permanently. If Krenko himself is ever sacrificed, he is a card, so he sits in your graveyard — and stays there.",
+        "citations": [
+          {
+            "rule": "701.21a",
+            "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner’s graveyard."
+          },
+          {
+            "rule": "404.1",
+            "quote": "Any object that’s countered, discarded, destroyed, or sacrificed is put on top of its owner’s graveyard"
+          },
+          {
+            "rule": "111.7",
+            "quote": "A token that’s in a zone other than the battlefield ceases to exist. This is a state-based action; see rule 704."
+          },
+          {
+            "rule": "704.5d",
+            "quote": "If a token is in a zone other than the battlefield, it ceases to exist."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Examine the combo graph's 'infinite' claim. The Commander Spellbook loop requires recasting Krenko repeatedly, which depends on the commander-specific state-based action returning him from the graveyard to the command zone. That rule applies only to 'a commander' — and in this deck the commander is Zada, Hedron Grinder; Krenko is a regular card.",
+        "effect": "The claimed infinite does NOT hold in this deck. If Krenko is sacrificed to Prospector he goes to the graveyard (step 7) and no effect in this scenario can recast or return him. Independently, the loop cannot even repeat on the battlefield: Krenko's ability costs {T}, he is already tapped from step 4, only untapped permanents can be tapped, and nothing here untaps him — so his ability fires exactly once this turn. Storm count from the line is exactly 1 (Krenko was the only spell cast); 'infinite commander casts' is inapplicable since Krenko is not the commander.",
+        "citations": [
+          {
+            "rule": "903.9a",
+            "quote": "If a commander is in a graveyard or in exile and that object was put into that zone since the last time state-based actions were checked, its owner may put it into the command zone."
+          },
+          {
+            "rule": "701.26a",
+            "quote": "Only untapped permanents can be tapped."
+          },
+          {
+            "rule": "701.21a",
+            "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner’s graveyard."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "One-turn output (keeping the board): Krenko cast for {1}{R}{R} (Warchief reduction), one activation makes 5 tokens, leaving 10 Goblins (13 total power, all with haste; 9 untapped attackers for 10 damage since Krenko is tapped). Alternatively, Skirk Prospector can convert up to 7 tokens into {R} x7 (engine kept) or up to 10 Goblins into {R} x10 (board emptied, Prospector sacrificing itself last), usable only this phase. The combo graph's 'infinite tokens/mana/storm' line is NOT achievable here: it presumes Krenko is the commander so 903.9a loops him through the command zone for repeated casts; in this deck Zada is the commander, so a sacrificed Krenko stays in the graveyard, Krenko stays tapped after his single activation, and the line terminates after one cast (storm 1), one activation, and at most 10 one-shot red mana.",
+      "you": {
+        "battlefield": [
+          "Krenko, Mob Boss (tapped)",
+          "Goblin Warchief",
+          "Skirk Prospector",
+          "1/1 red Goblin creature token x7 (all with haste)",
+          "Mountain x5 (all tapped: 2 previously + 3 for Krenko)"
+        ],
+        "hand": [],
+        "mana_pool": "{0} (or up to {R} x7 this phase if tokens are sacrificed to Prospector)",
+        "graveyard": [],
+        "command_zone": [
+          "Zada, Hedron Grinder"
+        ]
+      },
+      "opponents": [
+        {
+          "life": 30,
+          "board": []
+        },
+        {
+          "life": 25,
+          "board": []
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "iterations": 1,
+    "findings": [
+      {
+        "step": 1,
+        "rule": "601.2f",
+        "status": "supported",
+        "note": "Both quotes verbatim; {2}{R}{R} minus Warchief's {1} = {1}{R}{R}, lock-in correctly applied"
+      },
+      {
+        "step": 2,
+        "rule": "608.3a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 3,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "SBA check correct; legend rule (704.5j) correctly a no-op with a single Krenko"
+      },
+      {
+        "step": 3,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "302.6",
+        "status": "supported",
+        "note": "Correctly cited as the restriction being overridden"
+      },
+      {
+        "step": 4,
+        "rule": "702.10c",
+        "status": "supported",
+        "note": "Krenko's type line is Goblin; Warchief grants haste; exact rule for tap-ability activation"
+      },
+      {
+        "step": 4,
+        "rule": "701.26a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "605.1a",
+        "status": "supported",
+        "note": "Negative inference correct: Krenko's ability cannot add mana, so it uses the stack"
+      },
+      {
+        "step": 5,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": "X=5 determined at resolution (Krenko + Warchief + Prospector + 2 tokens) is correct"
+      },
+      {
+        "step": 5,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "605.1a",
+        "status": "supported",
+        "note": "Prospector meets all three mana-ability criteria per oracle text. Minor phrasing nit: 'empties your board entirely' ignores the 5 Mountains that remain"
+      },
+      {
+        "step": 6,
+        "rule": "605.3b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "605.3a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "500.5",
+        "status": "supported",
+        "note": "Mana-empties-at-phase-end claim matches full rule text"
+      },
+      {
+        "step": 7,
+        "rule": "701.21a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 7,
+        "rule": "404.1",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 7,
+        "rule": "111.7",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 7,
+        "rule": "704.5d",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 8,
+        "rule": "903.9a",
+        "status": "supported",
+        "note": "Full rule text scopes the return SBA to 'a commander'; cards.json confirms is_commander is true only for Zada and false for Krenko — the refutation of the combo-graph infinite is correct for this deck"
+      },
+      {
+        "step": 8,
+        "rule": "701.26a",
+        "status": "supported",
+        "note": "Krenko tapped from step 4, no untap effect in scenario; single activation per turn is correct"
+      },
+      {
+        "step": 8,
+        "rule": "701.21a",
+        "status": "supported",
+        "note": "Sacrificed Krenko goes to graveyard and stays; storm count of exactly 1 is correct"
+      }
+    ]
+  }
+}

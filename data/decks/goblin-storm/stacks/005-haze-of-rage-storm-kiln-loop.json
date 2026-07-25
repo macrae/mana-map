@@ -1,0 +1,420 @@
+{
+  "id": "005",
+  "slug": "haze-of-rage-storm-kiln-loop",
+  "deck": "goblin-storm",
+  "title": "Haze of Rage buyback + Storm-Kiln Artist: the self-sustaining storm loop",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Storm-Kiln Artist",
+        "1/1 red Goblin creature token x3",
+        "Mountain x4 (all untapped)"
+      ],
+      "opponents": [
+        {
+          "life": 30,
+          "board": []
+        },
+        {
+          "life": 25,
+          "board": []
+        }
+      ]
+    },
+    "hand": [
+      "Haze of Rage"
+    ],
+    "mana_available": "{R}{R}{R}{R} (four untapped Mountains)",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Haze of Rage",
+        "controller": "you",
+        "note": "cast with the buyback cost paid; this is the fourth spell cast this turn"
+      }
+    ],
+    "extras": {
+      "spells_cast_before_this_turn": 3,
+      "combo_graph_claim": "Storm-Kiln Artist + Haze of Rage produces: Infinite colored mana, Infinitely powerful creatures until end of turn, Infinite magecraft triggers, Infinite storm count, Infinite Treasure tokens (Commander Spellbook)"
+    },
+    "question": "Resolve TWO consecutive buyback casts of Haze of Rage: (a) per cast, how many storm copies go on the stack and how many Treasures does Storm-Kiln Artist's magecraft create (count casts vs copies precisely), (b) does buyback return the storm copies to hand or only the original card, and what happens to the copies, (c) track the mana: is the loop mana-positive after this second cast, and does each further iteration get strictly better — i.e. is it repeatable arbitrarily many times, (d) how much power has your team gained in total after both casts resolve, and what is Storm-Kiln Artist's own power given its artifact bonus and the Treasures on board?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Haze of Rage (cast #1, buyback paid, 4th spell this turn) has been cast; its storm ability and Storm-Kiln Artist's magecraft ability both trigger.",
+        "effect": "Two triggered abilities you control await placement: storm (from the spell) and magecraft (from the cast event). Magecraft is an ability word with no rules meaning; the trigger is exactly its printed text 'Whenever you cast or copy an instant or sorcery spell, create a Treasure token.'",
+        "citations": [
+          {
+            "rule": "702.40a",
+            "quote": "Storm is a triggered ability that functions on the stack."
+          },
+          {
+            "rule": "207.2c",
+            "quote": "Ability words are similar to keywords in that they tie together cards that have similar functionality, but they have no special rules meaning and no individual entries in the Comprehensive Rules."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "You put both triggers on the stack in an order you choose: magecraft first, storm on top.",
+        "effect": "Storm will resolve before the cast's magecraft trigger. Either order reaches the same end state since neither trigger affects the other.",
+        "citations": [
+          {
+            "rule": "603.3b",
+            "quote": "each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose"
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Storm trigger resolves: 3 spells were cast before Haze of Rage this turn, so 3 copies are put on the stack.",
+        "effect": "Three copies of Haze of Rage go on the stack. Each copy retains the buyback choice (additional costs are among the copied decisions). The copies are NOT cast, so they will not themselves trigger storm and will not raise the storm count of later casts.",
+        "citations": [
+          {
+            "rule": "702.40a",
+            "quote": "copy it for each other spell that was cast before it this turn"
+          },
+          {
+            "rule": "707.10",
+            "quote": "a copy of a spell isn’t cast and a copy of an activated ability isn’t activated"
+          },
+          {
+            "rule": "707.10",
+            "quote": "A copy of a spell or ability copies both the characteristics of the spell or ability and all decisions made for it, including modes, targets, the value of X, and additional or alternative costs."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Creating the 3 copies triggers Storm-Kiln Artist's magecraft 3 more times ('cast or copy'); before you receive priority, those triggers are put on the stack above the copies.",
+        "effect": "Three magecraft triggers sit on top of the three copies. Each copy is a real spell even without a card, satisfying 'copy an instant or sorcery spell.'",
+        "citations": [
+          {
+            "rule": "112.1a",
+            "quote": "A copy of a spell is also a spell, even if it has no card associated with it."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack (see rule 603, “Handling Triggered Abilities”)."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "The 3 magecraft triggers resolve one at a time (top of stack first), each creating a Treasure token.",
+        "effect": "Treasures 1-3 enter the battlefield. Each is a colorless artifact token, immediately increasing Storm-Kiln Artist's power via its static +1/+0-per-artifact ability.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "111.10a",
+            "quote": "A Treasure token is a colorless Treasure artifact token with “{T}, Sacrifice this token: Add one mana of any color.”"
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "The 3 storm copies resolve one at a time. Each gives your creatures +1/+0 until end of turn; each copy's buyback replacement redirects it toward your hand instead of the graveyard, but as a copy it ceases to exist by state-based action before any player receives priority.",
+        "effect": "Three separate +1/+0-until-end-of-turn effects apply to all creatures you control. No copy ever becomes a card in your hand — only the original card can return. Running pump total: +3/+0 per creature.",
+        "citations": [
+          {
+            "rule": "702.27a",
+            "quote": "If the buyback cost was paid, put this spell into its owner’s hand instead of into that player’s graveyard as it resolves."
+          },
+          {
+            "rule": "707.10",
+            "quote": "A copy of a spell is itself a spell, even though it has no spell card associated with it."
+          },
+          {
+            "rule": "704.5e",
+            "quote": "If a copy of a spell is in a zone other than the stack, it ceases to exist."
+          },
+          {
+            "rule": "405.6f",
+            "quote": "They are dealt with before a player would receive priority."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "The cast's own magecraft trigger resolves: Treasure 4 is created.",
+        "effect": "You now control 4 Treasures. Cast #1 magecraft accounting: 1 (cast) + 3 (copies) = 4 Treasures.",
+        "citations": [
+          {
+            "rule": "111.10a",
+            "quote": "A Treasure token is a colorless Treasure artifact token with “{T}, Sacrifice this token: Add one mana of any color.”"
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "The original Haze of Rage resolves: creatures you control get +1/+0 until end of turn (4th pump), and buyback puts the actual card into your hand instead of your graveyard.",
+        "effect": "Cast #1 complete: your creatures have +4/+0 from four independent until-end-of-turn effects, 4 Treasures on the battlefield, Haze of Rage back in hand. Each pump lasts until end of turn as a continuous effect from a resolved spell.",
+        "citations": [
+          {
+            "rule": "702.27a",
+            "quote": "If the buyback cost was paid, put this spell into its owner’s hand instead of into that player’s graveyard as it resolves."
+          },
+          {
+            "rule": "611.2a",
+            "quote": "A continuous effect generated by the resolution of a spell or ability lasts as long as stated by the spell or ability creating it (such as “until end of turn”)."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Cast #2: you tap all 4 Mountains for {R}{R}{R}{R} and cast Haze of Rage from your hand paying {1}{R} plus the buyback additional cost {2} (4 mana total). This is the 5th spell cast this turn.",
+        "effect": "Haze of Rage is on the stack again with buyback paid. Storm and magecraft trigger again. Storm counts actual casts only: 4 other spells were cast before it (the 3 earlier spells + cast #1); the 3 storm copies from cast #1 were never cast and add nothing.",
+        "citations": [
+          {
+            "rule": "702.27a",
+            "quote": "You may pay an additional [cost] as you cast this spell"
+          },
+          {
+            "rule": "707.10",
+            "quote": "a copy of a spell isn’t cast and a copy of an activated ability isn’t activated"
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "Cast #2 resolves exactly as cast #1 did: storm makes 4 copies; magecraft fires 5 times (1 cast + 4 copies) creating Treasures 5-9; the 4 copies and the original each give +1/+0 until end of turn (5 more pumps); the copies cease to exist as state-based actions; the original card returns to your hand via buyback.",
+        "effect": "Cast #2 totals: 4 storm copies, 5 Treasures, +5/+0 per creature. Combined with cast #1: 9 pump instances (+9/+0 per creature), 9 Treasures, Haze of Rage in hand, all 4 Mountains tapped.",
+        "citations": [
+          {
+            "rule": "702.40a",
+            "quote": "copy it for each other spell that was cast before it this turn"
+          },
+          {
+            "rule": "704.5e",
+            "quote": "If a copy of a spell is in a zone other than the stack, it ceases to exist."
+          },
+          {
+            "rule": "702.27a",
+            "quote": "If the buyback cost was paid, put this spell into its owner’s hand instead of into that player’s graveyard as it resolves."
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "Mana/loop accounting: each Treasure carries the activated mana ability '{T}, Sacrifice this token: Add one mana of any color', which resolves immediately without using the stack, so the next cast (#3) is fully payable by sacrificing 4 of your 9 Treasures.",
+        "effect": "The loop is mana-positive and strictly improving: iteration k is the (k+3)th spell of the turn, costs 4 mana, and yields k+3 Treasures (net k-1) plus k+2 copies and 1 cast worth of pumps. Cast #3 nets +2 Treasures, cast #4 nets +3, and so on — repeatable arbitrarily many times with unbounded Treasures, mana, storm count, magecraft triggers, and team power, confirming the combo-graph claim.",
+        "citations": [
+          {
+            "rule": "111.10a",
+            "quote": "A Treasure token is a colorless Treasure artifact token with “{T}, Sacrifice this token: Add one mana of any color.”"
+          },
+          {
+            "rule": "605.3b",
+            "quote": "An activated mana ability doesn’t go on the stack, so it can’t be targeted, countered, or otherwise responded to. Rather, it resolves immediately after it is activated."
+          }
+        ]
+      },
+      {
+        "n": 12,
+        "action": "Final power calculation: the nine +1/+0 effects and Storm-Kiln Artist's per-artifact bonus all apply cumulatively in layer 7c (none sets power to a value, so they simply sum).",
+        "effect": "Each Goblin token: 1 + 9 = 10/1. Storm-Kiln Artist: base 2, +9 from Haze pumps, +9 from its static '+1/+0 for each artifact you control' (9 Treasures) = 20/2. Team power 50, up from 5 — a total gain of +45 (+36 from the nine pumps across 4 creatures, +9 from the artifact bonus). Note the artifact bonus is a static ability that recounts artifacts continuously: sacrificing Treasures for cast #3 would lower Storm-Kiln's power by 1 per Treasure spent.",
+        "citations": [
+          {
+            "rule": "613.4c",
+            "quote": "Layer 7c: Effects and counters that modify power and/or toughness (but don’t set power and/or toughness to a specific number or value) are applied."
+          },
+          {
+            "rule": "611.2a",
+            "quote": "A continuous effect generated by the resolution of a spell or ability lasts as long as stated by the spell or ability creating it (such as “until end of turn”)."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "After two buyback storm casts: cast #1 (4th spell) made 3 copies and 4 Treasures; cast #2 (5th spell) made 4 copies and 5 Treasures. Only the original card returns to hand each time; every copy ceases to exist on resolution (SBA 704.5e). You hold Haze of Rage in hand with 9 Treasures on board, 4 tapped Mountains, and a team pumped +9/+0 until end of turn. The loop is mana-positive from here (sacrifice 4 Treasures per cast, gain k+3) and strictly improves each iteration — the Commander Spellbook infinite-combo claim is verified.",
+      "you": {
+        "hand": [
+          "Haze of Rage"
+        ],
+        "battlefield": {
+          "Storm-Kiln Artist": "20/2 (base 2, +9 Haze pumps until end of turn, +9 static for 9 artifacts)",
+          "Goblin tokens": "3x 10/1 (base 1/1, +9/+0 until end of turn)",
+          "Treasure tokens": 9,
+          "Mountains": "4, all tapped"
+        },
+        "mana_floating": 0,
+        "spells_cast_this_turn": 5,
+        "loop_status": "Repeatable arbitrarily: cast #3 costs 4 Treasures, yields 6 Treasures and +6/+0; every later iteration is strictly better."
+      },
+      "opponents": [
+        {
+          "life": 30,
+          "board": [],
+          "note": "unaffected; Haze of Rage touches only your creatures"
+        },
+        {
+          "life": 25,
+          "board": [],
+          "note": "unaffected"
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "iterations": 1,
+    "findings": [
+      {
+        "step": 1,
+        "rule": "702.40a",
+        "status": "supported",
+        "note": "Storm is a triggered ability; triggers on cast."
+      },
+      {
+        "step": 1,
+        "rule": "207.2c",
+        "status": "supported",
+        "note": "Magecraft listed among ability words with no rules meaning; printed trigger text matches cards.json oracle."
+      },
+      {
+        "step": 2,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Same controller orders both triggers; both are first-pass triggers under the full rule text."
+      },
+      {
+        "step": 3,
+        "rule": "702.40a",
+        "status": "supported",
+        "note": "3 other spells cast before it -> 3 copies."
+      },
+      {
+        "step": 3,
+        "rule": "707.10",
+        "status": "supported",
+        "note": "Copies aren't cast; and copies retain additional-cost decisions, so buyback payment is copied."
+      },
+      {
+        "step": 4,
+        "rule": "112.1a",
+        "status": "supported",
+        "note": "Copy is a spell even without a card, satisfying magecraft's 'copy an instant or sorcery spell'."
+      },
+      {
+        "step": 4,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "Triggers from the copy event are put on the stack before priority is received."
+      },
+      {
+        "step": 5,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Top-down resolution after all players pass."
+      },
+      {
+        "step": 5,
+        "rule": "111.10a",
+        "status": "supported",
+        "note": "Treasure token definition matches."
+      },
+      {
+        "step": 6,
+        "rule": "702.27a",
+        "status": "supported",
+        "note": "Buyback replacement applies to the copy (decision was copied); redirects toward hand."
+      },
+      {
+        "step": 6,
+        "rule": "707.10",
+        "status": "supported",
+        "note": "Copy is itself a spell; quote verbatim and in context."
+      },
+      {
+        "step": 6,
+        "rule": "704.5e",
+        "status": "supported",
+        "note": "Copy in hand (a zone other than the stack) ceases to exist; full rule text confirms hand is covered."
+      },
+      {
+        "step": 6,
+        "rule": "405.6f",
+        "status": "supported",
+        "note": "SBA cleanup happens before any player receives priority."
+      },
+      {
+        "step": 7,
+        "rule": "111.10a",
+        "status": "supported",
+        "note": "Treasure 4; cast #1 accounting 1 cast + 3 copies = 4 is correct."
+      },
+      {
+        "step": 8,
+        "rule": "702.27a",
+        "status": "supported",
+        "note": "Original card returns to hand instead of graveyard as it resolves."
+      },
+      {
+        "step": 8,
+        "rule": "611.2a",
+        "status": "supported",
+        "note": "Each +1/+0 lasts until end of turn as stated."
+      },
+      {
+        "step": 9,
+        "rule": "702.27a",
+        "status": "supported",
+        "note": "Buyback is an additional cost paid as you cast; {1}{R}+{2}=4 matches cards.json."
+      },
+      {
+        "step": 9,
+        "rule": "707.10",
+        "status": "supported",
+        "note": "Storm count for cast #2 is 4 (copies from cast #1 were never cast)."
+      },
+      {
+        "step": 10,
+        "rule": "702.40a",
+        "status": "supported",
+        "note": "4 copies for cast #2; magecraft 1+4=5; running totals 9 Treasures / +9 pumps correct."
+      },
+      {
+        "step": 10,
+        "rule": "704.5e",
+        "status": "supported",
+        "note": "Copies cease to exist again on resolution."
+      },
+      {
+        "step": 10,
+        "rule": "702.27a",
+        "status": "supported",
+        "note": "Original returns to hand again."
+      },
+      {
+        "step": 11,
+        "rule": "111.10a",
+        "status": "supported",
+        "note": "Treasures produce any color, so 4 of them pay {3}{R}."
+      },
+      {
+        "step": 11,
+        "rule": "605.3b",
+        "status": "supported",
+        "note": "Treasure sacrifice is an activated mana ability, no stack; loop formula verified: iteration k = (k+3)th spell, k+2 copies, k+3 Treasures, net k-1 at cost 4."
+      },
+      {
+        "step": 12,
+        "rule": "613.4c",
+        "status": "supported",
+        "note": "All effects are additive 7c modifications; Goblins 10/1, Storm-Kiln 2+9+9=20/2, team 50 (+45 = 36 pumps + 9 artifact bonus) all check."
+      },
+      {
+        "step": 12,
+        "rule": "611.2a",
+        "status": "supported",
+        "note": "Pump durations correctly scoped to end of turn; static artifact bonus correctly treated as continuously recounting."
+      }
+    ]
+  }
+}
