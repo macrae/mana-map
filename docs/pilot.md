@@ -34,6 +34,10 @@ manamap pilot validate-stack <slug> [--stack NNN]   # citation contract (stacks 
 manamap pilot goldfish <slug>           # seeded Monte Carlo metrics → goldfish_metrics.json
 manamap pilot build-manual <slug>       # → manuals/<slug>.html
 manamap pilot build-index               # → manuals/index.html gallery
+manamap pilot validate-strategy         # form-check strategy.md + CHANGELOG
+manamap pilot build-strategy-db         # chunk + embed strategy.md
+manamap pilot query-strategy "…" --json # semantic top-k strategy search
+manamap pilot lookup-strategy <id> --json  # exact section fetch (strategy:tempo)
 ```
 
 ## Data layout
@@ -73,6 +77,45 @@ Verdict `pass` requires all findings `supported` **and** the mechanical validato
 ## Decision scenarios (`decisions/NNN-<kebab>.json`, tier ★)
 
 `kind: "decision"` artifacts: archetypal board + table state, a decision question, 2–4 branches each with `choice`, `line`, `signals`, `coalition_risk`, `coaching`, optional `citations` (same verbatim-quote contract), and a `recommendation` matching a branch. Mechanically form-checked by `validate-stack`; substantively reviewed by humans — the tracked JSON is the red-line surface. Authored via the `pilot-coach` agent (`author-decision` skill).
+
+## Strategy DB (`data/strategy/`, tier ★ grounding)
+
+The strategic counterpart to the rules DB: `strategy.md` is a tracked, sourced
+companion doc of expert theory (resource pillars, role assignment, information
+play, combat math, Commander multiplayer dynamics, schools of thought), chunked
+and embedded exactly like the CR — **section ID = citation ID**
+(`strategy:<slug>[.<child>]`, `STRATEGY_ID_RE` in `common.py`). Heading format
+`## strategy:<id> — Title`; every section ends with a `Sources:` block
+(`- Author, "Title" — URL`, URL verified or `(print)`). `CHANGELOG.md` logs every
+amendment (`added|amended|renamed|deprecated strategy:<id>` bullets, mechanically
+checked). Enforcement mirrors the citation contract: `validate-strategy` enforces
+form in code; substance is founder-reviewed via `git diff data/strategy/`. The
+index records the doc's sha256 — `load_strategy_db` refuses a stale DB, so
+rebuild after any doc edit. Derived index/embeddings are gitignored; the doc and
+changelog are tracked.
+
+Strategy content is **curated grounding for tier ★**, not a fourth tier: coach
+and writer prose may reference `strategy:<id>` sections, and decision-branch
+citations may cite them under the same verbatim-quote contract (`validate-stack`
+dispatches on the `strategy:` prefix), but a strategy citation never makes a
+claim rules-verified.
+
+**The strategy-researcher agent** (two modes, stated in its prompt):
+- `MODE: research` — the only write-scoped pilot agent (strictly
+  `data/strategy/` only). Searches online sources (articles, reddit,
+  transcripts — video only via transcript), verifies every URL it cites,
+  amends the doc, appends one changelog entry per pass. Run via the
+  `research-strategy` skill: spawn → scope guard (`git status --porcelain`,
+  revert strays) → `validate-strategy` (≤3 iterations) → `build-strategy-db`
+  → founder reviews the diff.
+- `MODE: consult` — read-only strategic feedback on board states, cards,
+  combos, and decks; must RAG-query before answering and cite `strategy:<id>`
+  for every framework claim. Produces the **strategic frame**
+  (`data/decks/<slug>/strategic_frame.json`, tracked): archetype, schools,
+  role assignment, engine map, candidate missing lines (flagged "needs a stack
+  scenario", feeding the resolve-stack queue), matchup frames, gaps (feeding
+  the next research pass). The write-manual pipeline generates it after the
+  evidence pull; pilot-coach and manual-writer consume it.
 
 ## The resolve loop (agents)
 

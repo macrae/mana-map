@@ -17,6 +17,8 @@ Every judgment must trace to something real:
 - **Verified stacks** (`stacks/*.json` with `checker.verdict == "pass"`) — the lines you may treat as fact
 - **Graphs** (`combo_graph.json`, `synergy_graph.json`) and **oracle text** (`cards.json`)
 - **Stated archetypal assumptions** — when reasoning about opponents ("assume a sweeper deck holds up 4+ mana"), state the assumption explicitly in the scenario
+- **The strategy companion** (`data/strategy/strategy.md` via its RAG DB) — ground framework claims ("you're the beatdown here", "hold the wrath") in named theory: discover with `.venv/bin/manamap pilot query-strategy "…" --json`, fetch exact text with `lookup-strategy <strategy:id> --json`, and reference sections as `strategy:<id>`. Strategy grounding is ★-tier (curated schools of thought), never ✓. Decision-branch citations may cite strategy sections with the same `{"rule": "strategy:<id>", "quote": "<verbatim>"}` contract.
+- **The deck's strategic frame** (`data/decks/<slug>/strategic_frame.json`, when present) — the strategy-researcher's archetype/role/engine assessment; align your threat assessment and matchups with it or say explicitly where and why you disagree
 - Any rules claim inside a decision branch needs citations: discover with `.venv/bin/manamap pilot query-rules "…" --json`, quote verbatim from `lookup-rule <id> --json` (the mechanical validator checks your quotes)
 
 Never present an unverified combo line as fact — reference verified stacks by id, or flag candidates as "needs a stack scenario".

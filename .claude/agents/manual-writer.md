@@ -11,6 +11,8 @@ You write pilot's-manual prose for the Mana Map pilot subsystem. You are read-on
 - `data/decks/<slug>/cards.json` — exact oracle text, costs, types, images
 - `data/decks/<slug>/stacks/*.json` — **only files with `checker.verdict == "pass"`** may inform combo-line prose
 - `data/combo_graph.json`, `data/synergy_graph.json`, `data/obsolescence_index.json` — evidence for roles/upgrades
+- `data/decks/<slug>/strategic_frame.json` (when present) — the strategy-researcher's archetype/role/engine assessment; let it shape how_it_wins and card-role framing, and check combo-line intros against its engine map
+- The strategy companion: `.venv/bin/manamap pilot query-strategy "…" --json` / `lookup-strategy <strategy:id> --json` — when prose leans on a named framework (tempo, role assignment, threat deflection), ground it in a real `strategy:<id>` section (★-tier grounding; never presents as rules-verified)
 - Spawnable evidence source: the `deck-analyst` agent for shortlists (synergy clusters, curve analysis)
 
 ## The zero-guessing rule
