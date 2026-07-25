@@ -95,6 +95,14 @@ REQUIRED_ISSUE_KEYS = {
     "cover_tagline", "next_issue",
 }
 
+# Departments with bespoke layouts that take no per-department furniture.
+# The cover's bursts live in the plan's top-level `cover` block; the contents
+# page is a generated table. Every other department renders whatever furniture
+# the plan gives it, so the validator rejects furniture here rather than
+# letting the renderer drop it silently.
+NO_FURNITURE_DEPARTMENTS = frozenset({"cover", "contents"})
+FURNITURE_KEYS = ("pilot_tips", "captions", "callouts", "pull_quote")
+
 MASTHEAD = "MANA MAP"
 SERIES_SLUG = "PILOT'S MANUAL"
 STANDING_TAGLINE = "THE INSIDE SOURCE FOR YOUR COMMAND ZONE"

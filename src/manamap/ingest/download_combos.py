@@ -21,7 +21,12 @@ REQUEST_DELAY = 0.2  # 200ms between requests
 
 
 def is_up_to_date():
-    """Check sidecar metadata to skip re-download."""
+    """True if both combo artifacts already exist.
+
+    Existence only — there is no version or hash check, so combo data never
+    refreshes once present. Delete the artifacts to force a re-download.
+
+    Original note: check sidecar metadata to skip re-download."""
     if not COMBOS_META_PATH.exists() or not COMBOS_RAW_PATH.exists():
         return False
     return True

@@ -61,36 +61,16 @@ def _count_cluster_tags(tags_list):
     return counts, n
 
 
-def _top_tag_display(tags_list, global_tag_freq):
-    """Get the top overrepresented tag display name for a cluster.
-
-    Returns None if no tag meets the minimum presence threshold.
-    """
-    cluster_tag_counts, n = _count_cluster_tags(tags_list)
-    if not cluster_tag_counts or n == 0:
-        return None
-    # TF-IDF scoring, but only consider tags with >= minimum presence
-    scored = {}
-    for tag, count in cluster_tag_counts.items():
-        cluster_freq = count / n
-        if cluster_freq < REGION_MIN_TAG_PRESENCE:
-            continue
-        gf = global_tag_freq.get(tag, 0.01)
-        scored[tag] = cluster_freq / max(gf, 0.01)
-    if not scored:
-        return None
-    top_tag = max(scored, key=scored.get)
-    return REGION_TAG_DISPLAY_NAMES.get(top_tag, top_tag.replace("_", " ").title())
-
-
-def name_cluster_colortype(colors, supertypes, tags_list=None, global_tag_freq=None):
+def name_cluster_colortype(colors, supertypes):
     """Name a cluster from the Color+Type map using dominant color/type.
 
     Args:
         colors: list of primary_color values for cards in this cluster
         supertypes: list of supertype values for cards in this cluster
-        tags_list: optional list of tag strings for tag-based descriptor
-        global_tag_freq: optional dict of tag -> global frequency
+
+    The default map names by color and type only. Tag descriptors are the
+    ability map's job (name_cluster_ability) and appear here solely as
+    disambiguating suffixes, added later by _deduplicate_labels.
 
     Returns:
         (label, short) tuple
@@ -197,7 +177,7 @@ def name_cluster_ability(tags_list, global_tag_freq, colors=None, supertypes=Non
     return top_display, top_display
 
 
-def _deduplicate_labels(regions, global_tag_freq, max_suffixes=1):
+def _deduplicate_labels(regions, max_suffixes=1):
     """Post-process region labels: append tag descriptors where labels collide.
 
     Uses tag suffixes first, then falls back to spatial direction (N/S/E/W)
@@ -307,7 +287,8 @@ def cluster_map(projection_data, cards_df, map_type, output_path):
     tags_col = cards_df["mechanical_tags"].fillna("").values
     proj_tags = [str(tags_col[i]) for i in range(len(projection_data))]
 
-    # Compute global tag frequencies (used by both maps for deduplication)
+    # Global tag frequencies — the IDF half of the TF-IDF used to name ability-map
+    # regions. Recomputed per map; deduplication does not use it.
     global_tag_freq = {}
     total_cards = len(proj_tags)
     tag_counts = Counter()
@@ -361,9 +342,7 @@ def cluster_map(projection_data, cards_df, map_type, output_path):
         cluster_tags = [proj_tags[i] for i in indices]
 
         if map_type == "default":
-            label, short = name_cluster_colortype(
-                cluster_colors, cluster_types, cluster_tags, global_tag_freq
-            )
+            label, short = name_cluster_colortype(cluster_colors, cluster_types)
         else:
             label, short = name_cluster_ability(
                 cluster_tags, global_tag_freq, cluster_colors, cluster_types
@@ -408,9 +387,7 @@ def cluster_map(projection_data, cards_df, map_type, output_path):
         cluster_tags = [proj_tags[i] for i in indices]
 
         if map_type == "default":
-            label, short = name_cluster_colortype(
-                cluster_colors, cluster_types, cluster_tags, global_tag_freq
-            )
+            label, short = name_cluster_colortype(cluster_colors, cluster_types)
         else:
             label, short = name_cluster_ability(
                 cluster_tags, global_tag_freq, cluster_colors, cluster_types
@@ -439,9 +416,13 @@ def cluster_map(projection_data, cards_df, map_type, output_path):
     assign_parents(l0_regions, l1_regions)
     regions.extend(l1_regions)
 
-    # Deduplicate labels — append tag descriptors where names collide
-    _deduplicate_labels(l0_regions, global_tag_freq, max_suffixes=2)
-    _deduplicate_labels(l1_regions, global_tag_freq, max_suffixes=3)
+    # Deduplicate labels — append tag descriptors where names collide.
+    # These mutate the region dicts in place, and `regions` holds the same
+    # objects, so the renames propagate without reassignment. L0 and L1 are
+    # deduped separately by design: a level-0 and a level-1 region may share
+    # a label because they are drawn at different zooms.
+    _deduplicate_labels(l0_regions, max_suffixes=2)
+    _deduplicate_labels(l1_regions, max_suffixes=3)
 
     # Build output
     output = {

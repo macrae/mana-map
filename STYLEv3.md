@@ -580,6 +580,11 @@ The agent composes from this fixed set. It does not invent new furniture.
 | `pull-quote` | Rhythm breathers | Large oblique display type |
 | `folio` | Page footer | `DEPARTMENT | MANA MAP · VOL. 001` |
 | `tax-ladder` | Command Zone only | Successive recast costs |
+| `artist-gallery` | Featured Artist only | Card grid with printing credits and foil sheen |
+
+The authoritative list is `COMPONENTS` in `src/manamap/pilot/issue_spec.py`, which
+`validate-issue` checks against. Keep this table and that set in sync — a component
+missing here is one the agent will never use.
 
 ### 8.5 Print artifacts
 

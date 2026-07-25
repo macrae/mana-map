@@ -14,10 +14,15 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
   training/           # model, train, train_ability, embed, common
   export/             # reduce (PaCMAP), export_embeddings (.bin for JS)
   analysis/           # synergy, power_creep, cluster_regions, common
-  pilot/              # pilot's-manual subsystem: rules DB + strategy KB (RAG),
+  pilot/              # the magazine subsystem: rules DB + strategy KB (RAG),
                       # deck ingestion, citation-contract enforcement, goldfish
-                      # simulator, manual renderer
-tests/                # pytest suite (364 tests: 261 card-pipeline + 103 pilot),
+                      # simulator, agent-invocation cache, artist credits, and
+                      # the deterministic 15-department issue renderer
+                      #   issue_spec.py  department system (single source of truth)
+                      #   design.py      tokens, stylesheet, component library
+                      #   build_manual.py / build_index.py  issue + newsstand
+                      #   validate_issue.py / agent_cache.py / artist_credits.py
+tests/                # pytest suite (470 tests: 261 card-pipeline + 209 pilot),
                       # conftest markers: requires_data/rules/deck/strategy
 data/                 # artifacts; mostly gitignored, viz-served files tracked
 viz/                  # static frontend (Plotly CDN, two IIFE scripts, window.MM / window.DeckBuilder)
@@ -40,11 +45,11 @@ docs/                 # reference docs (see Pointers below)
 ```bash
 manamap run                   # full 12-step pipeline (steps 1 & 7 need internet)
 manamap run --from STEP       # resume from a step
-manamap <step>                # single step; see `manamap --help` for the 13 subcommands
+manamap <step>                # single step; see `manamap --help` for all 15 subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions   # fast analysis-only refresh
 manamap pilot <cmd>           # pilot's-manual subsystem (19 subcommands) — see docs/pilot.md
 
-.venv/bin/python -m pytest    # 467 tests; data-dependent ones skip if artifacts missing
+.venv/bin/python -m pytest    # 470 tests; data-dependent ones skip if artifacts missing
 
 python -m http.server 8000    # serve viz FROM REPO ROOT
 # http://localhost:8000/viz/index.html

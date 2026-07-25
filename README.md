@@ -1,91 +1,244 @@
 # Mana Map
 
-An interactive 2D map of every Magic: The Gathering card, built by embedding ~34,300 oracle cards into a shared vector space and projecting them with PaCMAP.
+Two things live here, sharing one data layer and one CLI:
 
-Cards that play alike land near each other — red burn spells cluster together, green fatties form their own continent, and multicolor bombs float between their guilds.
+**An interactive card map** — every Magic: The Gathering oracle card (~34,300) embedded
+by two small neural nets, projected to 2D, and served as a browsable atlas with a deck
+builder, synergy lookup, and power-creep detection.
 
-## Quickstart
+**Pilot's Manual** — a magazine generator. Point it at one Commander deck and it produces
+a self-contained web issue: combo lines whose every step cites the Comprehensive Rules and
+survived an adversarial checker, resource curves from a seeded simulation, and coaching
+that says out loud when it's coaching.
 
-```bash
-# Requires Python 3.10 (PyTorch has no 3.14 wheels)
-python -m venv .venv
-source .venv/bin/activate
+The fastest way to understand the second one is to read an issue:
+**[Vol. 001 — Goblin Storm](https://macrae.github.io/mana-map/manuals/goblin-storm.html)**
+· [the newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-# macOS: install prebuilt numba wheels first (pacmap dependency)
-pip install llvmlite==0.41.1 numba==0.58.1
-pip install -e ".[dev]"
+---
 
-# Run the full pipeline (12 steps; steps 1 and 7 need internet)
-manamap run
+# For users
 
-# Launch the visualization (from the repo root)
-python -m http.server 8000
-# Open http://localhost:8000/viz/index.html
-```
+## Explore the card map
 
-## Features
-
-### Two Maps
-- **Color+Type Map** — cards cluster by color identity and supertype
-- **Abilities Map** — cards cluster by what they *do* (all blink cards together regardless of color)
-
-### Explore Mode
-- **Color by** Primary Color, Supertype, or Rarity; **filter** by supertype
-- **Search** by card name or oracle text (4-tier fallback)
-- **Multi-select** up to 8 cards (Shift+click or Shift+drag), full keyboard navigation
-- **Find Similar** — 20 nearest neighbors in 128D embedding space
-- **Find Synergies** — complementary cards (blink finds ETB, sac finds death triggers)
-- **Obsolescence** — strictly-better replacements per card (power creep detection)
-- **Named regions** — HDBSCAN-clustered map regions with zoom-dependent labels, optional density contours
-
-### Deck Builder
-- 8 formats (Standard, Modern, Legacy, Vintage, Commander, Pioneer, Pauper, Historic)
-- Click cards as seeds, get recommendations (6-factor scoring: similarity, combos, synergies, popularity, curve fit, keywords)
-- Auto-generate an optimized mana base (greedy set cover)
-- Analytics (mana curve, color distribution), upgrade warnings, clipboard export
-
-## How It Works
-
-Twelve pipeline steps, orchestrated by the `manamap` CLI (`manamap run`, or `manamap <step>` individually):
-
-| Step | What it does |
-|------|-------------|
-| 1 `download` | Fetch Scryfall oracle card bulk data |
-| 2 `extract` | Parse JSON into flat CSV with derived columns and mechanical tags |
-| 3 `preprocess` | Sentence embeddings (all-MiniLM-L6-v2), categorical + keyword/tag encoding |
-| 4a `train` | Triplet loss — positives by (supertype, color) groups |
-| 4b `train-ability` | Triplet loss — positives by mechanical tag overlap |
-| 5 `embed` | Run all cards through both models → 128-dim embeddings |
-| 6 `reduce` | PaCMAP 128D → 2D for both maps |
-| 7 `download-combos` | Fetch Commander Spellbook combo data |
-| 8 `process-combos` | Build combo partner graph |
-| 9 `export` | Embeddings → raw Float32 binary for the browser |
-| 10 `synergy` | Synergy graph from 24 complementary tag rules |
-| 11 `power-creep` | Strictly-better replacement detection (tiered similarity gate) |
-| 12 `cluster-regions` | HDBSCAN named map regions at two zoom levels |
-
-Two lightweight fusion MLPs (~180K params each) produce 128-dim L2-normalized embeddings; the text encoder (all-MiniLM-L6-v2) stays frozen. The ability model deliberately shrinks its color inputs so cards cluster by function instead of color.
-
-## Project Structure
-
-```
-src/manamap/           # Python package
-  config.py            # all constants: paths, hyperparams, tag patterns, synergy rules
-  pipeline.py, cli.py  # step registry + `manamap` CLI
-  ingest/              # download, extract, preprocess, combos
-  training/            # model, both trainers, embed
-  export/              # PaCMAP reduce, binary export
-  analysis/            # synergy, power_creep, cluster_regions
-tests/                 # 261 pytest tests
-data/                  # artifacts (viz-served files git-tracked; the rest regenerable)
-viz/                   # static frontend: Plotly map + deck builder
-docs/                  # architecture, pipeline, data, viz, and testing reference
-```
-
-Deep dives: [architecture](docs/architecture.md) · [pipeline](docs/pipeline.md) · [data artifacts](docs/data-artifacts.md) · [visualization](docs/viz.md) · [testing](docs/testing.md)
-
-## Tests
+**Two commands. No install, no pipeline, no API keys.** Every data file the frontend
+needs is committed.
 
 ```bash
-python -m pytest       # 261 tests; the 41 data-dependent ones skip until you've run the pipeline
+git clone git@github.com:macrae/mana-map.git && cd mana-map
+python3 -m http.server 8000
 ```
+
+Open <http://localhost:8000/viz/index.html>.
+
+Three things to know:
+
+- **Serve from the repo root.** The page fetches `../data/*`, so `viz/` and `data/` must
+  stay top-level siblings. Opening `viz/index.html` as a `file://` URL fails on CORS.
+- The clone is ~100 MB and the map loads ~80 MB into the browser. That's the tracked
+  data, and it's deliberate — see [Landmines](#landmines).
+- Plotly loads from a CDN, so the page needs internet even though the data doesn't.
+
+What you get: two maps (one clustered by color and type, one by what cards *do*), Find
+Similar via embedding neighbours, Find Synergies via rule-based complementarity — these
+are different algorithms, see `docs/architecture.md` — a deck builder across 8 formats
+with a six-factor recommender, and obsolescence badges for cards with strictly-better
+replacements.
+
+## Generate a manual for your own deck
+
+This half is more involved, and honest about why: **the manual pipeline needs
+[Claude Code](https://claude.com/claude-code).** The Python in this repo makes *zero* LLM
+calls — it is deterministic infrastructure (fetching, simulating, validating, rendering)
+that AI agents drive from the outside. A full generation runs ~330k tokens across four
+serially-dependent agents; an invocation cache is what makes iterating on it affordable.
+
+### 1. Environment
+
+**Python 3.10 specifically** — PyTorch has no wheels for 3.13/3.14, and the pins
+(`sentence-transformers<4`, `numpy<2`) target torch 2.2.2. `pyproject.toml` says `>=3.10`,
+which is more permissive than reality.
+
+```bash
+python3.10 -m venv .venv
+.venv/bin/pip install llvmlite==0.41.1 numba==0.58.1   # must come first on macOS
+.venv/bin/pip install -e ".[dev]"
+```
+
+That ordering is not cosmetic: pacmap pulls numba, and installing it afterwards triggers a
+source build of LLVM.
+
+### 2. One-time databases
+
+```bash
+.venv/bin/manamap pilot download-rules      # the Comprehensive Rules text
+.venv/bin/manamap pilot build-rules-db      # ~3.9K chunks, chunk ID = rule number
+.venv/bin/manamap pilot build-strategy-db   # the strategy companion's RAG index
+```
+
+Both are gitignored and must be built locally. `CR_RULES_URL` in `config.py` is pinned to
+a specific rules release — update it when Wizards ships a new one.
+
+### 3. Your deck
+
+```bash
+mkdir -p data/decks/<slug>/{stacks,decisions}
+# write data/decks/<slug>/decklist.txt
+.venv/bin/manamap pilot fetch-deck <slug>
+.venv/bin/manamap pilot validate-deck <slug>
+```
+
+**Use a Moxfield export.** Lines like `1 Zada, Hedron Grinder (SLD) 2406 *F*` carry the
+set, collector number and foil marker, and `fetch-deck` resolves those *first* — so the
+manual shows the actual cards in your deck, with the right artist and the right art. A
+name-only list works but yields default reprints and a visibly weaker issue.
+
+`fetch-deck` short-circuits when the decklist hasn't changed; use `--force` after oracle
+errata.
+
+### 4. Three files you write by hand
+
+Nothing scaffolds these. `data/decks/goblin-storm/` is the worked reference for all three.
+
+| File | Why it's manual |
+|---|---|
+| `decklist.txt` | It's your deck |
+| `goldfish_targets.json` | Which key-piece sets are worth simulating is a judgment call |
+| `issue.json` | Volume, date, cover price, next issue. **The build hard-exits without it** — a *generated* date would break byte-identical rebuilds |
+
+### 5. The agent phases
+
+Run these from Claude Code in the repo root. Each is a skill in `.claude/skills/`:
+
+| Step | Produces | Pure CLI? |
+|---|---|---|
+| `/resolve-stack` | A verified combo line: resolver → validator → adversarial checker | no |
+| `manamap pilot goldfish <slug>` | Resource curves from 10k seeded games | **yes** |
+| `/write-manual` | Strategic frame, coaching, body prose | no |
+| `/design-issue` | The issue plan — cover, departments, headlines | no |
+| `manamap pilot validate-issue <slug>` | Form gate over the plan | **yes** |
+
+### 6. Build and read
+
+```bash
+.venv/bin/manamap pilot build-manual <slug>
+.venv/bin/manamap pilot build-index          # run after build-manual
+open manuals/<slug>.html
+```
+
+Rendering is free, deterministic and repeatable — the same artifacts always produce the
+same bytes.
+
+---
+
+# For developers
+
+## The shape
+
+Two pipelines, same pattern: each stage writes artifacts the next one reads, and every
+stage is independently runnable and testable.
+
+```
+Card map   download → extract → preprocess → train ×2 → embed → reduce
+                    → combos → export → synergy → power-creep → regions → viz
+
+Manual     fetch-deck → goldfish + RAG DBs → agents author JSON
+                    → validators gate → renderer builds → GitHub Pages
+```
+
+`manamap run` drives the first (12 steps, ~40–60 min, internet at two of them).
+`manamap pilot <cmd>` drives the second (19 subcommands). All constants live in
+`src/manamap/config.py`; both CLIs are registry-driven with lazy imports.
+
+Two lightweight fusion MLPs (~180K params each) produce the 128-dim embeddings; the text
+encoder stays frozen. The ability model deliberately shrinks its color inputs so cards
+cluster by function rather than color — that handicap is the whole reason the second map
+is interesting.
+
+## Extension points
+
+| To add… | Touch |
+|---|---|
+| A pipeline step | `STEPS` in `pipeline.py`; the module exposes `main()` |
+| A pilot command | `PILOT_STEPS` + `_DECK_COMMANDS` + argparse in `pilot/registry.py`; module exposes `main(args)` |
+| A magazine department | `DEPARTMENTS` in `pilot/issue_spec.py` — changes every issue; treat it like `config.py` |
+| A data file the viz reads | The `DATA` map in `viz/js/mana-map.js`, plus a `.gitignore` negation |
+| A synergy rule, tag, or threshold | `config.py`, nowhere else |
+| An agent cache routine | `AGENT_ROUTINES` in `config.py` |
+
+## Three contracts worth understanding
+
+**Evidence tiers.** Every section of a manual wears a badge: ✓ rules-verified,
+◆ data-derived, ★ coaching. `validate-issue` enforces that a department cannot claim a
+tier the system didn't grant it — costume never earns the badge.
+
+**Validation gates — form in code, meaning by agent, publication by verdict.** A mechanical
+validator checks structure: does every step cite a rule, does that rule exist, is the quote
+a verbatim substring. A *separate adversarial agent* then fetches each full rule and judges
+whether it actually supports the claim. Only `pass` renders. Failed artifacts are kept —
+they document open questions.
+
+**Determinism.** Agents return JSON and never write HTML. That keeps the renderer a pure
+function of committed artifacts, byte-identical on rebuild and enforced by tests — and it
+is *why* the issue date is authored, why goldfish is seeded, and why image URLs get their
+cache-busters stripped.
+
+## Testing
+
+```bash
+.venv/bin/python -m pytest        # 470 tests
+```
+
+261 card-pipeline + 209 pilot. Four skip markers in `tests/conftest.py` gate on the last
+artifact of each stage, so **skips on a fresh clone are expected and correct**. Unit tests
+build inline fixtures — no fixture files. Paths always come from `manamap.config`, so the
+suite is CWD-independent and honours `MANAMAP_DATA_DIR`.
+
+## Landmines
+
+- **`python -m manamap.pipeline` starts the full 40–60 minute run** with no arguments and
+  no confirmation, overwriting trained models. Use the `manamap` CLI.
+- **Never put `data/` on Git LFS.** GitHub Pages serves LFS pointer files, not content —
+  it would silently break every fetch on the deployed site. The ~85 MB of tracked JSON is
+  deliberate.
+- **Index alignment**: `projection[i]` ≡ `cards.csv[i]` ≡ `embeddings[i]`, positionally
+  (card names duplicate). Never partially regenerate after a card-count change.
+- **Cache ordering**: check → spawn → write → validate → **record last**. Recording before
+  validating poisons the cache.
+- **Bump `?v=N`** on the script and CSS tags in `viz/index.html` after any frontend edit.
+- **The combo graph is format-agnostic.** Commander Spellbook lines may quietly assume a
+  card is *your commander* — `"Infinite commander casts"` in `produces` is the tell.
+  Verify before publishing; Judge's Desk Case A-004 is the cautionary tale.
+- **Rebuild the strategy DB after editing `strategy.md`** — the loader hard-errors on a
+  sha256 mismatch.
+
+## Deployment
+
+GitHub Pages serves the repo directly. There is no root index; the two entry points are
+`/viz/index.html` and `/manuals/index.html`. Pushing to `main` deploys.
+
+## Where to read next
+
+| Doc | Covers |
+|---|---|
+| `CLAUDE.md` | Orientation, environment, gotchas — the densest single page |
+| `PLAN.md` | Current state and what's next |
+| `STYLEv3.md` | The magazine's editorial and design constitution |
+| `docs/architecture.md` | Models, mechanical tags, synergy rules, power creep, regions |
+| `docs/pipeline.md` | All 12 steps: inputs, outputs, runtimes, when to re-run |
+| `docs/data-artifacts.md` | Every `data/` file: producer, size, git status, consumers |
+| `docs/viz.md` | Frontend structure, the `window.MM` API, Pages layout |
+| `docs/testing.md` | Test layout, skip markers, conventions |
+| `docs/pilot.md` | Evidence contract, rules and strategy DBs, the magazine layer |
+| `docs/agent-cost.md` | Where LLM spend lives, per-routine costs, the cache |
+
+## Non-goals
+
+Lint, formatting and CI are intentionally absent — this is a single-author project and the
+test suite is the gate. Revisit if that changes.
+
+---
+
+Card images and card text are property of Wizards of the Coast. This is unofficial fan
+content permitted under the Wizards of the Coast Fan Content Policy, not approved or
+endorsed by Wizards.

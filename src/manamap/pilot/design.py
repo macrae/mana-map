@@ -373,7 +373,11 @@ def fast_facts(title, pairs):
 
 
 def power_meter(label, rate, segments=20):
-    """Segmented bar for a ◆ rate. `rate` is 0..1."""
+    """Segmented bar for a ◆ rate. `rate` is 0..1.
+
+    The bar clamps; the printed percentage does not, so an out-of-range rate
+    shows a full bar labelled with the real (wrong) number rather than hiding it.
+    """
     filled = max(0, min(segments, round(rate * segments)))
     segs = "".join(
         f'<span class="meter-seg{" on" if i < filled else ""}"></span>'
@@ -429,7 +433,16 @@ def printing_credit(card):
 
 
 def card_figure(name, image, caption_html, scryfall_uri=None, card=None):
-    """Hero/feature card image with a teaching caption (STYLEv3 §7.4)."""
+    """Hero/feature card image with a teaching caption (STYLEv3 §7.4).
+
+    `caption_html` is inserted **unescaped** — it arrives pre-escaped from
+    build_manual.caption_html(), which injects the bold lead-in. Pass raw user
+    text and you will emit broken markup.
+
+    `card` is the full cards.json entry; without it the figure loses its artist
+    and printing credit and its foil sheen, which is the whole point of the
+    Featured Artist department.
+    """
     if not image:
         return ""
     img = f'<img src="{esc(image)}" alt="{esc(name)}" loading="lazy">'

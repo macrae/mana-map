@@ -1,8 +1,15 @@
 """Pilot: decklist.txt -> Scryfall /cards/collection -> cards.json.
 
-Idempotent: re-running against unchanged Scryfall data produces byte-identical
-output (decklist order preserved, dict keys sorted, volatile fields stripped).
-Misspelled card names fail loudly, naming every missing card.
+Two-phase resolution: a Moxfield export's `(SET) COLLECTOR [*F*]` annotations
+are looked up **first** by set + collector number, so cards.json carries the
+physical card the pilot owns — artist, border, finish, art crop — rather than
+Scryfall's default printing. Names are the fallback for unannotated lines.
+
+Idempotent twice over: the run short-circuits entirely when the decklist hash
+matches what produced the existing cards.json (`--force` to override after
+oracle errata), and the output itself is byte-identical for unchanged Scryfall
+data (decklist order preserved, dict keys sorted, volatile fields and image
+cache-busters stripped). Misspelled card names fail loudly, naming every miss.
 """
 
 import hashlib
@@ -31,8 +38,13 @@ _PRINTING_RE = re.compile(r"\s+\(([A-Z0-9]{2,6})\)\s+([\w-]+)$")
 def parse_decklist(text):
     """Parse a decklist into entries, order preserved.
 
-    Entry: {"name", "quantity", "is_commander", "is_sideboard"} plus optional
-    "set"/"collector_number" when a Moxfield printing annotation is present.
+    Entry: {"name", "quantity", "is_commander", "is_sideboard", "foil"} plus
+    optional "set"/"collector_number" when a Moxfield printing annotation is
+    present.
+
+    Marker-stripping order is load-bearing: `*CMDR*` and `*F*` come off the end
+    of the line *before* `_PRINTING_RE` runs, because that pattern is anchored
+    to `$`. Reorder these and every foil line silently loses its printing.
 
     Supports: `1 Card Name`, `1x Card Name`, bare `Card Name` (quantity 1),
     Moxfield `(SET) COLLECTOR` printing suffixes and `*F*` foil markers,
@@ -133,8 +145,11 @@ def fetch_collection(names):
 def fetch_printings(printings):
     """Fetch by (set, collector_number). Returns {(set, cn): card}.
 
-    Fallback for names Scryfall can't resolve (tokens, art cards in
-    sideboards). Unresolvable printings are simply absent from the result.
+    The **primary** resolution path: a Moxfield export names the exact card the
+    pilot owns, and resolving by name instead would silently substitute
+    Scryfall's default printing. `resolve_entries` prefers these over name
+    matches; name lookup is the fallback for unannotated lines. Unresolvable
+    printings are simply absent from the result.
     """
     identifiers = [{"set": s, "collector_number": cn} for s, cn in printings]
     cards, _ = _post_collection(identifiers)
@@ -174,6 +189,11 @@ def shape_card(sc, quantity, is_commander, is_sideboard=False, foil=False):
     deck — the borderless Secret Lair, not a default reprint. `art_crop` in
     particular is full-bleed art with no frame, which is what reads as magazine
     photography rather than a card scan.
+
+    Two fields look alike and mean different things: `finishes` is Scryfall's
+    list of finishes this printing was *released in*, while `foil` comes from
+    the decklist's `*F*` marker and says whether *this pilot's copy* is foil.
+    The renderer's holographic treatment keys off `foil`.
     """
     image_uris = sc.get("image_uris") or {}
     faces = sc.get("card_faces") or []
@@ -221,7 +241,9 @@ def resolve_entries(entries, by_name, by_printing=None):
     of a multi-face card (Scryfall resolves them; response name is the full
     ' // ' name); entries with a printing annotation fall back to (set, cn)
     lookup when the name misses. Duplicate names (e.g. several basic-land
-    printings) merge into one entry, quantities summed, first position kept.
+    printings) merge into one entry, quantities summed, first position kept —
+    note that means the *first* printing's artist, set and art represent every
+    copy, so a deck with four different basic-land arts credits only one.
     Returns (cards, unmatched_names)."""
     by_printing = by_printing or {}
     # Secondary index: front-face name -> full card.

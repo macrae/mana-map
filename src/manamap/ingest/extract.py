@@ -89,7 +89,10 @@ def derive_supertype(type_line):
 
 
 def build_embedding_text(name, type_line, oracle_text, keywords):
-    """Build a combined text string for future embedding work."""
+    """Build the text the embedding model actually reads.
+
+    Not speculative: preprocess.py feeds this column straight to the sentence
+    transformer, so editing it changes every embedding and every map position."""
     parts = [name]
     if type_line:
         parts.append(type_line)

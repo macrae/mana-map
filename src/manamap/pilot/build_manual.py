@@ -8,8 +8,15 @@ assembles them into the fifteen fixed departments of STYLEv3 §5.
 Contract invariants:
 - Only checker-passed stacks render, and Judge's Desk reproduces every citation
   verbatim — the renderer may not summarize proof (STYLEv3 §5.1, docs/pilot.md).
-- A department with thin artifacts renders a visible [TODO], never vanishes.
+- A department whose *prose* is missing renders a visible [TODO], never vanishes.
+  (The 99 and Featured Artist are grid-driven and thin out gracefully instead.)
 - Tier badges come from the department system, not the plan (STYLEv3 §10).
+- Every department renders the plan's furniture. `validate_issue` accepts pilot
+  tips and captions for any department, so a renderer that ignored them would
+  silently drop validated content.
+
+The only date here is `issue.json`'s authored `issue_date`; nothing is generated,
+which is what keeps rebuilds byte-identical.
 """
 
 import json
@@ -177,7 +184,7 @@ def dept_captions(dept, cards_by_name, limit=3):
 # ── Departments ─────────────────────────────────────────────────────────
 
 
-def render_cover(issue, plan, commander, stacks):
+def render_cover(issue, plan, commander):
     cover = (plan or {}).get("cover", {})
     volume = issue["volume"]
     teases = "".join(f"<li>{esc(t)}</li>" for t in cover.get("teases", []))
@@ -483,7 +490,7 @@ def _card_tile(card, roles, synergy, printing=False):
     )
 
 
-def render_the_99(issue, plan, cards, prose_doc, synergy):
+def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
     """Ranked roster — load-bearing cards lead, depth reads as depth.
 
     The plan's optional `roster` groups cards by role; anything it doesn't name
@@ -535,6 +542,8 @@ def render_the_99(issue, plan, cards, prose_doc, synergy):
     return (
         dept_open("the-99", plan)
         + tiles + side_html
+        + dept_captions(dept, cards_by_name)
+        + dept_furniture(dept, cards_by_name)
         + dept_close("the-99", issue["volume"])
     )
 
@@ -590,11 +599,9 @@ def render_featured_artist(issue, plan, cards, cards_by_name):
         body.append(f'<h3>Every {esc(name)} card in the deck</h3>'
                     f'<div class="card-grid">{tiles}</div>')
 
-    # Where the concentration falls — and where it conspicuously doesn't.
-    overlap = [r for r in credits["roster_overlap"] if r["artist"] == name]
-    dispersed = [r for r in credits["roster_overlap"]
-                 if r["distinct_artists"] == r["of"] and r["of"] >= 3]
-    if overlap or dispersed:
+    # The whole table, because the story is the contrast: the groups this
+    # artist dominates next to the ones where every card is a different hand.
+    if credits["roster_overlap"]:
         rows = "".join(
             f'<tr><td>{esc(r["group"])}</td><td>{esc(r["artist"])}</td>'
             f'<td>{r["painted"]} of {r["of"]}</td>'
@@ -675,13 +682,15 @@ def render_upgrade_watch(issue, plan, prose_doc, cards_by_name):
     return (
         dept_open("upgrade-watch", plan)
         + f'<div class="body-copy">{prose(prose_doc, "upgrades")}</div>'
+        + dept_captions(dept, cards_by_name)
         + dept_furniture(dept, cards_by_name)
         + dept_close("upgrade-watch", issue["volume"])
     )
 
 
-def render_judges_desk(issue, plan, stacks):
+def render_judges_desk(issue, plan, stacks, cards_by_name):
     """The proof. Every citation reproduced verbatim — never summarized."""
+    dept = plan_dept(plan, "judges-desk")
     files = []
     for stack in stacks:
         sid = stack["id"]
@@ -713,11 +722,13 @@ def render_judges_desk(issue, plan, stacks):
         + '<p class="dek">Every claim the magazine made, with the rule text that backs '
           "it. Nothing here is paraphrased.</p>"
         + ("".join(files) or TODO)
+        + dept_furniture(dept, cards_by_name)
         + dept_close("judges-desk", issue["volume"])
     )
 
 
-def render_back_page(issue, plan, deck_doc, stacks):
+def render_back_page(issue, plan, deck_doc, stacks, cards_by_name):
+    dept = plan_dept(plan, "back-page")
     sha = str(deck_doc.get("decklist_sha256", ""))[:12]
     rules_version = stacks[0].get("rules_version", "—") if stacks else "—"
     return f"""
@@ -741,13 +752,14 @@ def render_back_page(issue, plan, deck_doc, stacks):
     unofficial fan content permitted under the Wizards of the Coast Fan Content Policy,
     not approved or endorsed by Wizards. Portions of the materials used are property of
     Wizards of the Coast LLC.</p>
+  {dept_furniture(dept, cards_by_name)}
 </section>""" + folio("The Back Page", issue["volume"])
 
 
 # ── Assembly ────────────────────────────────────────────────────────────
 
 
-def render_issue(slug, issue, plan, deck_doc, stacks, prose_doc, synergy,
+def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
                  goldfish=None, decisions=None):
     """Assemble a complete issue. Deterministic for fixed inputs."""
     cards = deck_doc["cards"]
@@ -765,7 +777,7 @@ def render_issue(slug, issue, plan, deck_doc, stacks, prose_doc, synergy,
     )
 
     body = "".join([
-        render_cover(issue, plan, commander, stacks),
+        render_cover(issue, plan, commander),
         render_contents(issue, plan, stacks, decisions),
         render_first_turns(issue, plan, prose_doc, cards_by_name),
         render_command_zone(issue, plan, commander, goldfish, cards_by_name),
@@ -774,12 +786,12 @@ def render_issue(slug, issue, plan, deck_doc, stacks, prose_doc, synergy,
         render_politics(issue, plan, prose_doc, cards_by_name),
         render_whats_your_play(issue, plan, decisions, cards_by_name),
         render_know_your_enemy(issue, plan, prose_doc, cards_by_name),
-        render_the_99(issue, plan, cards, prose_doc, synergy),
+        render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name),
         render_featured_artist(issue, plan, cards, cards_by_name),
         render_keep_or_ship(issue, plan, prose_doc, goldfish, cards_by_name),
         render_upgrade_watch(issue, plan, prose_doc, cards_by_name),
-        render_judges_desk(issue, plan, stacks),
-        render_back_page(issue, plan, deck_doc, stacks),
+        render_judges_desk(issue, plan, stacks, cards_by_name),
+        render_back_page(issue, plan, deck_doc, stacks, cards_by_name),
     ])
 
     return f"""<!DOCTYPE html>
@@ -822,7 +834,7 @@ def main(args):
     goldfish = load_json(base / "goldfish_metrics.json")
     synergy = load_json(SYNERGY_GRAPH_PATH, {})
 
-    html_out = render_issue(slug, issue, plan, deck_doc, stacks, prose_doc, synergy,
+    html_out = render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
                             goldfish, decisions)
     MANUALS_DIR.mkdir(parents=True, exist_ok=True)
     out = MANUALS_DIR / f"{slug}.html"

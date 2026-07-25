@@ -41,7 +41,14 @@ def build_viz_records(
     metadata: pd.DataFrame,
     cards: pd.DataFrame,
 ) -> list[dict]:
-    """Merge 2D coordinates with card metadata and full card data into compact records."""
+    """Merge 2D coordinates with card metadata and full card data into compact records.
+
+    All three inputs are zipped **positionally** — `projection[i]`,
+    `metadata.iloc[i]` and `cards.iloc[i]` must be the same card. Only the
+    projection/metadata lengths are asserted upstream; a `cards.csv` regenerated
+    out of step with the embeddings produces a viz where every card shows
+    another card's text, with no error. See preprocess.py for the invariant.
+    """
     records = []
     for i in range(len(metadata)):
         meta = metadata.iloc[i]

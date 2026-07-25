@@ -23,6 +23,8 @@ from manamap.pilot.common import deck_dir, load_deck_cards
 from manamap.pilot.issue_spec import (
     COMPONENTS,
     DENSE_MODES,
+    FURNITURE_KEYS,
+    NO_FURNITURE_DEPARTMENTS,
     DEPARTMENT_BY_ID,
     DEPARTMENT_IDS,
     MODE,
@@ -47,7 +49,13 @@ def validate_identity(issue):
 
 
 def validate_plan(plan, card_names=None, artists=None):
-    """Check an issue plan. Returns error strings (empty = form holds)."""
+    """Check an issue plan. Returns error strings (empty = form holds).
+
+    `card_names` / `artists` of None mean *skip that class of check* — not
+    "the deck has no cards". An empty set is the opposite: it makes every
+    caption and every featured artist an error. main() passes None only when
+    cards.json is unreadable.
+    """
     errors = []
 
     missing = REQUIRED_PLAN_KEYS - set(plan)
@@ -99,6 +107,16 @@ def validate_plan(plan, card_names=None, artists=None):
         for component in dept.get("components", []):
             if component not in COMPONENTS:
                 errors.append(f"{where}: unknown component {component!r}")
+
+        # Furniture the renderer would drop must be rejected, not accepted.
+        if dept_id in NO_FURNITURE_DEPARTMENTS:
+            carried = [k for k in FURNITURE_KEYS if dept.get(k)]
+            if carried:
+                errors.append(
+                    f"{where}: has a bespoke layout and renders no department "
+                    f"furniture — move {sorted(carried)} elsewhere "
+                    f"(cover bursts belong in the plan's top-level cover block)"
+                )
 
         # Costume never earns the badge (STYLEv3 §10).
         claimed = dept.get("tiers")

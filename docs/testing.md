@@ -4,7 +4,7 @@
 .venv/bin/python -m pytest          # full suite (discovery via testpaths = tests/)
 ```
 
-467 tests in `tests/`: 261 card-pipeline + 206 pilot-subsystem. Three categories:
+470 tests in `tests/`: 261 card-pipeline + 209 pilot-subsystem. Three categories:
 
 **Card-pipeline unit tests (220) — no data files needed, run anywhere:**
 
@@ -27,19 +27,19 @@
 
 Both are skip-guarded: `test_pipeline_integration.py` skips per-file via `requires_file(...)`; `test_find_similar.py` uses the module-level `requires_data` marker from `tests/conftest.py` (gates on `embeddings.npy` existing).
 
-**Pilot-subsystem tests (206) — mostly pure-function with inline fixtures; data-gated ones behind markers:**
+**Pilot-subsystem tests (209) — mostly pure-function with inline fixtures; data-gated ones behind markers:**
 
 | File | Tests | Covers | Data gate |
 |------|-------|--------|-----------|
 | `test_pilot_rules_db.py` | 12 | CR chunker edge cases (TOC, subrules, examples, glossary) | 2 behind `requires_rules` |
 | `test_pilot_query_rules.py` | 5 | Semantic top-k, exact lookup, suggestions | all behind `requires_rules` |
-| `test_pilot_fetch_deck.py` | 11 | Decklist parsing, mocked Scryfall, sideboard handling | — |
-| `test_pilot_validate_stack.py` | 18 | Citation contract, decision form, strategy-citation dispatch, golden artifacts | golden test behind `requires_deck` |
+| `test_pilot_fetch_deck.py` | 19 | Decklist parsing, mocked Scryfall, exact printings, decklist-hash short-circuit | 1 behind `requires_deck` |
+| `test_pilot_validate_stack.py` | 18 | Citation contract, decision form, strategy-citation dispatch, golden artifacts | golden test behind `requires_deck` **and** `requires_rules` |
 | `test_pilot_goldfish.py` | 12 | Seeded determinism, mulligan rule, target assembly | 1 behind `requires_deck` |
-| `test_pilot_build_manual.py` | 18 | Renderer determinism, escaping, badges, TOC, sideboard strip | — |
+| `test_pilot_build_manual.py` | 30 | Department completeness, contract integrity, furniture rendering, determinism, escaping | — |
 | `test_pilot_strategy_db.py` | 9 | Strategy chunker (IDs, sources, parents), real-DB alignment | 3 behind `requires_strategy` |
 | `test_pilot_validate_strategy.py` | 18 | Doc form errors, changelog contract, strategy citations through `_validate_citations` | — |
-| `test_pilot_validate_issue.py` | 21 | Issue identity, department completeness/order, tier-costume integrity, card-name accuracy | — |
+| `test_pilot_validate_issue.py` | 25 | Issue identity, department completeness/order, tier-costume integrity, card-name accuracy | — |
 | `test_pilot_artist_credits.py` | 24 | Standout detection, per-entry counting, drop runs, roster overlap | 1 behind `requires_deck` |
 | `test_pilot_agent_cache.py` | 37 | Fingerprint stability/order-independence, prose-shape semantics, staleness diffs, record guards, strategy-rebuild hazard | 1 behind `requires_deck` |
 

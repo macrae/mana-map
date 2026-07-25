@@ -1,7 +1,10 @@
 """Pilot: render manuals/index.html — the newsstand.
 
-Issues on a rack, not links in a list (STYLEv3 §12/R5). Deterministic: scans
-data/decks/ for decks whose issue exists, ordered by volume then slug.
+Issues on a rack, not links in a list (STYLEv3 §12/R5). Deterministic.
+
+**Run after `build-manual`**: the rack lists decks whose rendered HTML already
+exists, so building the index first silently omits the issue you just made.
+A deck without an `issue.json` sorts last under a sentinel volume of 999.
 """
 
 import json
@@ -72,11 +75,14 @@ def gather_entries():
         goldfish_path = deck_path / "goldfish_metrics.json"
         if goldfish_path.exists():
             with open(goldfish_path) as f:
-                mean_cast = json.load(f)["metrics"]["commander"]["mean_cast_turn"]
+                # A deck with no flagged commander has no commander block; one
+                # bad artifact must not take down the whole newsstand.
+                metrics = json.load(f).get("metrics") or {}
+                mean_cast = (metrics.get("commander") or {}).get("mean_cast_turn")
 
         entries.append({
             "slug": slug,
-            "volume": issue.get("volume", 999),
+            "volume": issue.get("volume", 999),   # sentinel: un-numbered issues sort last
             "issue_date": issue.get("issue_date", ""),
             "deck_name": issue.get("deck_name") or commander.get("name", slug),
             "commander": commander.get("name", slug),

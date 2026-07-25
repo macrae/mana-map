@@ -132,7 +132,7 @@ PLAN = {
 
 def render(**overrides):
     kwargs = dict(
-        slug="test-deck", issue=ISSUE, plan=PLAN, deck_doc=deck_doc(),
+        issue=ISSUE, plan=PLAN, deck_doc=deck_doc(),
         stacks=[verified_stack()], prose_doc=PROSE, synergy=SYNERGY,
         goldfish=GOLDFISH, decisions=[DECISION],
     )
@@ -369,3 +369,60 @@ def test_featured_artist_sits_between_the_99_and_keep_or_ship():
     assert (html_out.index('id="the-99"')
             < html_out.index('id="featured-artist"')
             < html_out.index('id="keep-or-ship"'))
+
+
+# ── No department silently drops validated furniture ─────────────────────
+
+
+def test_every_department_renders_its_plan_furniture():
+    """validate_issue accepts tips/captions for any department, so every
+    renderer must show them — otherwise validated content vanishes silently."""
+    from manamap.pilot.issue_spec import NO_FURNITURE_DEPARTMENTS
+
+    plan = copy.deepcopy(PLAN)
+    furnished = [d for d in plan["departments"]
+                 if d["id"] not in NO_FURNITURE_DEPARTMENTS]
+    for dept in furnished:
+        dept["pilot_tips"] = [{"card": "Sac Outlet",
+                               "text": f"Tip for {dept['id']}."}]
+        dept["pull_quote"] = f"Quote for {dept['id']}."
+    html_out = render(plan=plan)
+    for dept in furnished:
+        assert f"Tip for {dept['id']}." in html_out, f"{dept['id']} dropped its tip"
+        assert f"Quote for {dept['id']}." in html_out, f"{dept['id']} dropped its quote"
+
+
+def test_the_99_renders_captions_and_tips():
+    plan = copy.deepcopy(PLAN)
+    for dept in plan["departments"]:
+        if dept["id"] == "the-99":
+            dept["captions"] = {"Sac Outlet": "**THE OUTLET:** it sacrifices."}
+            dept["pilot_tips"] = [{"card": "Payoff Engine", "text": "Deploy it late."}]
+    html_out = render(plan=plan)
+    assert "THE OUTLET:" in html_out
+    assert "Deploy it late." in html_out
+
+
+def test_newsstand_survives_a_deck_without_a_commander_metric(tmp_path, monkeypatch):
+    """One malformed goldfish artifact must not take down the whole rack."""
+    import json
+    from manamap.pilot import build_index
+
+    decks = tmp_path / "decks"
+    base = decks / "d"
+    base.mkdir(parents=True)
+    (base / "cards.json").write_text(json.dumps(
+        {"deck": "d", "cards": [{"name": "X", "is_commander": True}]}))
+    # No "commander" key — a deck with nothing flagged as commander.
+    (base / "goldfish_metrics.json").write_text(json.dumps({"meta": {}, "metrics": {}}))
+    (base / "stacks").mkdir()
+    (base / "decisions").mkdir()
+    manuals = tmp_path / "manuals"
+    manuals.mkdir()
+    (manuals / "d.html").write_text("<html></html>")
+
+    monkeypatch.setattr(build_index, "DECKS_DIR", decks)
+    monkeypatch.setattr(build_index, "MANUALS_DIR", manuals)
+    entries = build_index.gather_entries()
+    assert len(entries) == 1 and entries[0]["mean_cast"] is None
+    assert "d.html" in build_index.render_index(entries)

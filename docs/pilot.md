@@ -32,6 +32,7 @@ manamap pilot fetch-deck <slug>         # decklist.txt → cards.json (Scryfall)
 manamap pilot validate-deck <slug>      # 100/commander/singleton/color identity
 manamap pilot validate-stack <slug> [--stack NNN]   # citation contract (stacks + decisions)
 manamap pilot goldfish <slug>           # seeded Monte Carlo metrics → goldfish_metrics.json
+manamap pilot artist-credits <slug> --json  # standout artists + art themes (Featured Artist)
 manamap pilot build-manual <slug>       # → manuals/<slug>.html
 manamap pilot build-index               # → manuals/index.html gallery
 manamap pilot validate-issue <slug>     # form-check issue.json + issue_plan.json
@@ -52,10 +53,18 @@ data/rules/                    gitignored (regenerable): comprehensive_rules.txt
 data/strategy/                 strategy.md + CHANGELOG.md tracked;
                                strategy_index.json / strategy_embeddings.npy /
                                .strategy-db-meta.json gitignored (regenerable)
-data/decks/<slug>/             tracked: decklist.txt, cards.json,
-                               stacks/NNN-<kebab>.json, decisions/NNN-<kebab>.json,
-                               goldfish_targets.json, goldfish_metrics.json,
-                               strategic_frame.json, manual_prose.json
+data/decks/<slug>/             all tracked:
+                               decklist.txt          authored
+                               cards.json            fetch-deck
+                               goldfish_targets.json authored
+                               goldfish_metrics.json goldfish
+                               stacks/NNN-*.json     authored scenario + resolve loop
+                               decisions/NNN-*.json  pilot-coach
+                               strategic_frame.json  strategy-researcher (consult)
+                               manual_prose.json     pilot-coach + manual-writer
+                               issue.json            authored (never generated)
+                               issue_plan.json       magazine-editor
+                               .agent-cache.json     cache-record
 manuals/<slug>.html            tracked; manuals/index.html gallery tracked
 ```
 
@@ -213,4 +222,4 @@ Content pipeline (`write-manual` skill) — goldfish → `deck-analyst` evidence
 
 ## Tests
 
-`tests/test_pilot_*.py` — 103 tests across 8 files: CR chunker edge cases (`test_pilot_rules_db`, 12), rules queries (`test_pilot_query_rules`, 5), mocked Scryfall ingestion (`test_pilot_fetch_deck`, 11), citation-contract fixtures incl. strategy-citation dispatch (`test_pilot_validate_stack`, 18), goldfish determinism (`test_pilot_goldfish`, 12), renderer determinism/escaping/TOC/sideboard (`test_pilot_build_manual`, 18), strategy chunker + real-DB checks (`test_pilot_strategy_db`, 9), strategy form validator + changelog (`test_pilot_validate_strategy`, 18). Data-gated tests use `requires_rules` / `requires_deck` / `requires_strategy` markers from `tests/conftest.py`.
+`tests/test_pilot_*.py` — 209 tests across 11 files: CR chunker edge cases (`test_pilot_rules_db`, 12), rules queries (`test_pilot_query_rules`, 5), mocked Scryfall ingestion (`test_pilot_fetch_deck`, 11), citation-contract fixtures incl. strategy-citation dispatch (`test_pilot_validate_stack`, 18), goldfish determinism (`test_pilot_goldfish`, 12), renderer determinism/escaping/TOC/sideboard (`test_pilot_build_manual`, 18), strategy chunker + real-DB checks (`test_pilot_strategy_db`, 9), strategy form validator + changelog (`test_pilot_validate_strategy`, 18). Data-gated tests use `requires_rules` / `requires_deck` / `requires_strategy` markers from `tests/conftest.py`.

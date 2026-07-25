@@ -1,4 +1,20 @@
-"""Step 3: Pre-process cards.csv into feature arrays for the embedding model."""
+"""Step 3: Pre-process cards.csv into feature arrays.
+
+**The row-index invariant starts here.** Every array this step writes is
+positional: row i of `text_embeddings.npy`, of each array in
+`card_features.npz`, of `mechanical_tags.npy` and `color_vectors.npy` is row i
+of `cards.csv`. Everything downstream inherits it — embeddings, the 2D
+projection, `embeddings.bin`, the region files. Nothing keys by card name
+(names duplicate across printings), so a regenerated `cards.csv` with a
+different row count or order silently pairs each card's coordinates with
+another card's text. Never regenerate one stage without the ones after it.
+
+Second coupling worth knowing: the categorical vocabularies here are derived
+from the *current* CSV, but `training/model.py` sizes its embedding tables from
+the fixed `*_VOCAB_SIZE` constants in config.py. If Scryfall introduces a new
+layout or rarity, those constants must grow too or training raises an opaque
+index error far from this file.
+"""
 
 from collections import Counter
 
@@ -23,7 +39,13 @@ from manamap.mechanical_tags import encode_tags_multihot
 def compute_text_embeddings(texts, model_name=TEXT_MODEL_NAME, batch_size=512):
     """Encode texts with a frozen sentence-transformer model.
 
-    Returns (N, 384) float32 array.
+    Returns a (N, D) float32 array, where D follows the model — 384 for the
+    default all-MiniLM-L6-v2, which both RAG indexes assume.
+
+    Output is **not** L2-normalized. Callers that need unit vectors
+    (build_rules_db, build_strategy_db) normalize at build time so queries can
+    use a bare matmul for cosine; `common.load_rules_db` documents that
+    guarantee on the read side.
     """
     model = SentenceTransformer(model_name)
     embeddings = model.encode(
