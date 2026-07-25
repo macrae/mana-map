@@ -230,6 +230,7 @@ GitHub Pages serves the repo directly. There is no root index; the two entry poi
 | `docs/viz.md` | Frontend structure, the `window.MM` API, Pages layout |
 | `docs/testing.md` | Test layout, skip markers, conventions |
 | `docs/pilot.md` | Evidence contract, rules and strategy DBs, the magazine layer |
+| `docs/deck-builder-v2.md` | Proposed: automated Commander deck construction, bracket engine |
 | `docs/agent-cost.md` | Where LLM spend lives, per-routine costs, the cache |
 
 ## Non-goals

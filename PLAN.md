@@ -104,8 +104,41 @@ counts a different population.
 - Strategy DB has no commander-damage/clock section to ground The Command Zone's
   21-damage answer.
 
-**Longer term:** commander build functionality in the viz deck builder — `deck-analyst`
-and the strategic frames are the seed data layer.
+## Next: Deck Building v2
+
+**Full spec: [`docs/deck-builder-v2.md`](docs/deck-builder-v2.md).** Proposed, not started.
+
+Give the system a commander, a target bracket, and any cards you already want; it returns a
+legal, functional 99 with a justification per slot, a mechanically-proven bracket claim, and
+a simulated proof the mana works — then publishes its own manual. The same evidence contract
+that governs how we *describe* a deck governs how we *choose* it.
+
+Four things set the shape:
+
+1. A prototype builder already ships in `viz/js/deck-builder.js`, but it doesn't model
+   Commander (color identity only enforced when a commander is set, no partners, no
+   "build me a deck"), every constant is an untested JS literal, and it persists raw row
+   indices that a pipeline refresh silently corrupts.
+2. **The power-level signal is already on disk and we discard it.** `combos_raw.json` carries
+   a per-combo `bracketTag` (`E`xhibition/`C`ore/`O`ddball/`P`owerful/`S`picy/`R`uthless/
+   `B`anned — read from the Spellbook backend source), plus `popularity`, `manaValueNeeded`,
+   prerequisites and prices. `process_combos.py` drops all of it. ~30 lines to recover, and
+   it makes a **computed bracket floor** possible: we can name the exact combo that pushes a
+   deck out of Bracket 2.
+3. `MECHANICAL_TAGS` is a retrieval vocabulary, not a deckbuilding role taxonomy — `ramp`
+   conflates rocks, dorks, land ramp and rituals; there is no `wincon` tag; 20% of cards are
+   untagged. Slot-filling needs a new classifier.
+4. **The gate:** of 32 strategy sections, zero are about construction, and tutors are never
+   mentioned once. Since citations are verbatim-substring checked, a builder cannot cite
+   "37 lands" because that number exists nowhere in the prose. Phase 0 is a deckbuilding
+   research pass (~14–18 sections, ~3 passes) and everything else waits on it.
+
+New agents: `deck-architect` ⇄ `deck-critic` (adversarial pair, `rules-checker` pattern),
+`meta-analyst` (own dated corpus — meta claims perish, theory doesn't), and `deck-analyst`
+upgraded with a schema and an artifact so it's finally cacheable.
+
+Hard requirement: **the deterministic core produces a complete legal 99 with no agent
+involvement.** Agents improve a build; they're never required to make one.
 
 ## Invariants that must not erode
 
