@@ -4,9 +4,9 @@
 .venv/bin/python -m pytest          # full suite (discovery via testpaths = tests/)
 ```
 
-261 tests in `tests/`. Two categories:
+364 tests in `tests/`: 261 card-pipeline + 103 pilot-subsystem. Three categories:
 
-**Unit tests (220) — no data files needed, run anywhere:**
+**Card-pipeline unit tests (220) — no data files needed, run anywhere:**
 
 | File | Tests | Covers |
 |------|-------|--------|
@@ -18,7 +18,7 @@
 | `test_combos.py` | 15 | Combo extraction, graph building, dedup |
 | `test_cluster_regions.py` | 31 | Region naming (color/type/guild/TF-IDF), geometry, dedup |
 
-**Data-dependent tests (41) — need artifacts from a pipeline run:**
+**Card-pipeline data-dependent tests (41) — need artifacts from a pipeline run:**
 
 | File | Tests | Covers |
 |------|-------|--------|
@@ -27,10 +27,28 @@
 
 Both are skip-guarded: `test_pipeline_integration.py` skips per-file via `requires_file(...)`; `test_find_similar.py` uses the module-level `requires_data` marker from `tests/conftest.py` (gates on `embeddings.npy` existing).
 
+**Pilot-subsystem tests (103) — mostly pure-function with inline fixtures; data-gated ones behind markers:**
+
+| File | Tests | Covers | Data gate |
+|------|-------|--------|-----------|
+| `test_pilot_rules_db.py` | 12 | CR chunker edge cases (TOC, subrules, examples, glossary) | 2 behind `requires_rules` |
+| `test_pilot_query_rules.py` | 5 | Semantic top-k, exact lookup, suggestions | all behind `requires_rules` |
+| `test_pilot_fetch_deck.py` | 11 | Decklist parsing, mocked Scryfall, sideboard handling | — |
+| `test_pilot_validate_stack.py` | 18 | Citation contract, decision form, strategy-citation dispatch, golden artifacts | golden test behind `requires_deck` |
+| `test_pilot_goldfish.py` | 12 | Seeded determinism, mulligan rule, target assembly | 1 behind `requires_deck` |
+| `test_pilot_build_manual.py` | 18 | Renderer determinism, escaping, badges, TOC, sideboard strip | — |
+| `test_pilot_strategy_db.py` | 9 | Strategy chunker (IDs, sources, parents), real-DB alignment | 3 behind `requires_strategy` |
+| `test_pilot_validate_strategy.py` | 18 | Doc form errors, changelog contract, strategy citations through `_validate_citations` | — |
+
 ## conftest.py
 
-- `requires_data` — skipif marker for artifact-dependent tests
+- `requires_data` — skipif marker gating on `embeddings.npy` (card pipeline)
+- `requires_rules` — gates on `rules_index.json` (build the rules DB first)
+- `requires_deck` — gates on `data/decks/goblin-storm/cards.json`
+- `requires_strategy` — gates on `strategy_index.json` (run `manamap pilot build-strategy-db`)
 - `data_dir` — session fixture returning the resolved `config.DATA_DIR`
+
+Each pilot marker gates on the *last* artifact of its stage so a partially populated directory still skips cleanly.
 
 Paths come from `manamap.config` (never hardcode `Path("data")`), so the suite runs from any CWD and honors `MANAMAP_DATA_DIR`:
 

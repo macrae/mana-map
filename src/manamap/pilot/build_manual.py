@@ -1,9 +1,11 @@
 """Pilot: render a deck's pilot's manual as standalone zine HTML.
 
 Fully deterministic — no LLM calls. Inputs: cards.json, checker-passed stack
-scenarios, manual_prose.json (agent-written, human-editable), and the
-combo/synergy/obsolescence graphs. Only verified stacks appear; missing prose
-renders as a visible [TODO] rather than failing the build.
+scenarios (only verified stacks appear), decision scenarios (decisions/),
+goldfish_metrics.json, manual_prose.json (agent-written, human-editable), and
+the combo/synergy/obsolescence graphs. Sections carry the three-tier evidence
+badges (rules-verified / data-derived / coaching); missing prose renders as a
+visible [TODO] rather than failing the build.
 """
 
 import html

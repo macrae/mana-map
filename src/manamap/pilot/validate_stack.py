@@ -7,6 +7,12 @@ Two artifact kinds share this gate (`kind` field; missing = "stack"):
 - "decision" (decisions/): coaching decision trees (tier-3 evidence). Form
   checks only — branches well-shaped, recommendation matches a branch — plus
   the same citation contract for any branch that does cite rules.
+
+Citations dispatch on ID shape: CR rule numbers / glossary terms check against
+the rules DB; `strategy:<id>` IDs (tier-* grounding from data/strategy/) check
+against the strategy DB under the same verbatim-quote contract. The strategy DB
+loads best-effort in main() — its absence only errors if a strategy citation
+actually appears.
 """
 
 import json

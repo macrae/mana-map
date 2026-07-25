@@ -45,9 +45,14 @@ manamap pilot lookup-strategy <id> --json  # exact section fetch (strategy:tempo
 ```
 data/rules/                    gitignored (regenerable): comprehensive_rules.txt,
                                rules_index.json, rules_embeddings.npy, sidecars
+data/strategy/                 strategy.md + CHANGELOG.md tracked;
+                               strategy_index.json / strategy_embeddings.npy /
+                               .strategy-db-meta.json gitignored (regenerable)
 data/decks/<slug>/             tracked: decklist.txt, cards.json,
-                               stacks/NNN-<kebab>.json, manual_prose.json
-manuals/<slug>.html            tracked
+                               stacks/NNN-<kebab>.json, decisions/NNN-<kebab>.json,
+                               goldfish_targets.json, goldfish_metrics.json,
+                               strategic_frame.json, manual_prose.json
+manuals/<slug>.html            tracked; manuals/index.html gallery tracked
 ```
 
 Deck slugs are kebab-case. Scenario files are `NNN-<kebab>.json`, zero-padded, authoring order. Card names use the full `" // "` form, matching the combo/synergy/obsolescence graph keys.
@@ -125,8 +130,8 @@ Run via the `resolve-stack` skill: `stack-resolver` agent drafts → `validate-s
 
 ## Manual generation
 
-`write-manual` skill: optional `deck-analyst` evidence pull → `manual-writer` agent (zero-guessing: combo lines only from verified stacks, claims trace to graphs/oracle text) → `manual_prose.json` (tracked, human-editable) → `manamap pilot build-manual <slug>` (deterministic, byte-identical rebuilds, `[TODO]` placeholders for missing prose).
+`write-manual` skill (v2.1 order): goldfish → `deck-analyst` evidence pull → **strategic frame** (`strategy-researcher` MODE consult → `strategic_frame.json`; its `candidate_missing_lines` feed the resolve-stack queue, its `gaps` feed the next research pass) → `pilot-coach` coaching (threat/matchups + decisions, receives the frame) → `manual-writer` prose (zero-guessing: combo lines only from verified stacks, claims trace to graphs/oracle text; receives the frame) → `manual_prose.json` (tracked, human-editable) → `manamap pilot build-manual <slug>` + `build-index` (deterministic, byte-identical rebuilds, `[TODO]` placeholders for missing prose, only checker-passed stacks render).
 
 ## Tests
 
-`tests/test_pilot_*.py` — 41 tests: chunker edge cases, DB queries, mocked Scryfall ingestion, citation-contract fixtures, renderer determinism/escaping. Data-gated tests use `requires_rules` / `requires_deck` markers from `tests/conftest.py`.
+`tests/test_pilot_*.py` — 103 tests across 8 files: CR chunker edge cases (`test_pilot_rules_db`, 12), rules queries (`test_pilot_query_rules`, 5), mocked Scryfall ingestion (`test_pilot_fetch_deck`, 11), citation-contract fixtures incl. strategy-citation dispatch (`test_pilot_validate_stack`, 18), goldfish determinism (`test_pilot_goldfish`, 12), renderer determinism/escaping/TOC/sideboard (`test_pilot_build_manual`, 18), strategy chunker + real-DB checks (`test_pilot_strategy_db`, 9), strategy form validator + changelog (`test_pilot_validate_strategy`, 18). Data-gated tests use `requires_rules` / `requires_deck` / `requires_strategy` markers from `tests/conftest.py`.
