@@ -1,40 +1,40 @@
-"""Pilot: render manuals/index.html — the shareable gallery of pilot's manuals.
+"""Pilot: render manuals/index.html — the newsstand.
 
-Deterministic: scans data/decks/ for decks whose manual exists, sorted by slug.
+Issues on a rack, not links in a list (STYLEv3 §12/R5). Deterministic: scans
+data/decks/ for decks whose issue exists, ordered by volume then slug.
 """
 
-import html
 import json
 
 from manamap.config import DECKS_DIR, MANUALS_DIR
+from manamap.pilot.design import CSS as MAGAZINE_CSS
+from manamap.pilot.design import FONT_LINK, badge, barcode, esc
+from manamap.pilot.issue_spec import MASTHEAD, SERIES_SLUG, STANDING_TAGLINE
 
-CSS = """
-:root { --bg:#1a1a2e; --panel:#16213e; --gold:#c4a747; --text:#e8e6e3; --dim:#9a97b0;
-        --green:#4ade80; --border:#3a3a5a; }
-* { box-sizing:border-box; margin:0; }
-body { background:var(--bg); color:var(--text); font:16px/1.6 Georgia, serif; }
-.page { max-width:960px; margin:0 auto; padding:48px 32px; text-align:center; }
-h1 { color:var(--gold); font-size:2.4em; }
-.sub { color:var(--dim); font-style:italic; margin:8px 0 32px; }
-.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:24px; }
-a.deck { display:block; background:var(--panel); border:1px solid var(--border);
-         border-radius:10px; padding:20px; text-decoration:none; color:var(--text);
-         transition:border-color .15s; }
-a.deck:hover { border-color:var(--gold); }
-a.deck img { width:100%; border-radius:8px; }
-a.deck h2 { color:var(--gold); font-size:1.15em; margin:12px 0 4px; }
-a.deck .tag { color:var(--dim); font-style:italic; font-size:.9em; }
-a.deck .stats { font:12px sans-serif; color:var(--green); margin-top:10px; }
-.footer { color:var(--dim); font-size:.8em; margin-top:48px; }
+EXTRA_CSS = """
+.newsstand { padding:40px 34px 60px; }
+.stand-head { text-align:center; border-bottom:5px solid var(--ink); padding-bottom:20px;
+              margin-bottom:34px; }
+.rack { display:grid; gap:30px; grid-template-columns:repeat(auto-fill,minmax(268px,1fr)); }
+a.issue { display:block; text-decoration:none; color:inherit; background:#fff;
+          border:4px solid var(--ink); box-shadow:9px 9px 0 rgba(0,0,0,.28);
+          transition:transform .12s ease, box-shadow .12s ease; position:relative; }
+a.issue:hover { transform:translate(-3px,-3px); box-shadow:13px 13px 0 rgba(0,0,0,.32); }
+a.issue .vol { background:var(--ink); color:var(--paper); font-family:var(--condensed);
+               text-transform:uppercase; letter-spacing:.2em; font-size:11px;
+               padding:6px 11px; display:flex; justify-content:space-between; }
+a.issue img { width:100%; border-bottom:3px solid var(--ink); }
+a.issue .meta { padding:13px 14px 16px; }
+a.issue h2 { font-family:var(--display); text-transform:uppercase; font-size:1.22em;
+             margin:0 0 5px; line-height:1; }
+a.issue .tag { color:var(--ink-soft); font-size:.9em; margin-bottom:10px; }
+a.issue .stats { display:flex; flex-wrap:wrap; gap:5px; }
+.stand-foot { text-align:center; margin-top:44px; font-size:.86em; color:var(--ink-soft); }
 """
 
 
-def esc(value):
-    return html.escape(str(value)) if value is not None else ""
-
-
 def gather_entries():
-    """Collect gallery entries for every deck with a built manual, sorted by slug."""
+    """Gallery entries for every deck with a built issue, by volume then slug."""
     entries = []
     if not DECKS_DIR.is_dir():
         return entries
@@ -49,11 +49,19 @@ def gather_entries():
             doc = json.load(f)
         commanders = [c for c in doc["cards"] if c.get("is_commander")]
         commander = commanders[0] if commanders else {}
-        tagline = ""
-        prose_path = deck_path / "manual_prose.json"
-        if prose_path.exists():
-            with open(prose_path) as f:
-                tagline = json.load(f).get("cover", {}).get("tagline", "")
+
+        issue = {}
+        issue_path = deck_path / "issue.json"
+        if issue_path.exists():
+            with open(issue_path) as f:
+                issue = json.load(f)
+
+        coverline = ""
+        plan_path = deck_path / "issue_plan.json"
+        if plan_path.exists():
+            with open(plan_path) as f:
+                coverline = (json.load(f).get("cover") or {}).get("dominant_coverline", "")
+
         verified = 0
         for stack_path in sorted((deck_path / "stacks").glob("*.json")):
             with open(stack_path) as f:
@@ -65,48 +73,69 @@ def gather_entries():
         if goldfish_path.exists():
             with open(goldfish_path) as f:
                 mean_cast = json.load(f)["metrics"]["commander"]["mean_cast_turn"]
+
         entries.append({
             "slug": slug,
+            "volume": issue.get("volume", 999),
+            "issue_date": issue.get("issue_date", ""),
+            "deck_name": issue.get("deck_name") or commander.get("name", slug),
             "commander": commander.get("name", slug),
-            "image": commander.get("image"),
-            "tagline": tagline,
+            "image": commander.get("art_crop") or commander.get("image"),
+            "coverline": coverline or issue.get("cover_tagline", ""),
             "verified": verified,
             "decisions": decisions,
             "mean_cast": mean_cast,
         })
-    return entries
+    return sorted(entries, key=lambda e: (e["volume"], e["slug"]))
 
 
 def render_index(entries):
-    cards = []
+    issues = []
     for e in entries:
-        image = f'<img src="{esc(e["image"])}" alt="{esc(e["commander"])}" loading="lazy">' if e["image"] else ""
-        stats = f"✓ {e['verified']} verified line(s)"
+        image = (f'<img src="{esc(e["image"])}" alt="{esc(e["commander"])}" loading="lazy">'
+                 if e["image"] else "")
+        stats = [f'{badge("verified")}' if e["verified"] else ""]
         if e["decisions"]:
-            stats += f" · ★ {e['decisions']} decision spread(s)"
+            stats.append(badge("coach"))
         if e["mean_cast"] is not None:
-            stats += f" · ◆ commander turn {e['mean_cast']}"
-        cards.append(f"""
-  <a class="deck" href="{esc(e["slug"])}.html">{image}
-    <h2>{esc(e["commander"])}</h2>
-    <div class="tag">{esc(e["tagline"])}</div>
-    <div class="stats">{stats}</div>
+            stats.append(badge("data"))
+        issues.append(f"""
+  <a class="issue" href="{esc(e["slug"])}.html">
+    <div class="vol"><span>Vol. {e["volume"]:03d}</span><span>{esc(e["issue_date"])}</span></div>
+    {image}
+    <div class="meta">
+      <h2>{esc(e["deck_name"])}</h2>
+      <div class="tag">{esc(e["coverline"])}</div>
+      <div class="tag" style="font-size:.82em">{esc(e["commander"])} ·
+        {e["verified"]} verified line(s) · {e["decisions"]} decision spread(s)</div>
+      <div class="stats">{"".join(stats)}</div>
+    </div>
   </a>""")
-    body = "".join(cards) or "<p class='sub'>No manuals built yet.</p>"
+    body = "".join(issues) or '<p class="dek">No issues on the rack yet.</p>'
     return f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pilot's Manuals — Mana Map</title>
-<meta property="og:title" content="Pilot's Manuals — Mana Map">
-<meta property="og:description" content="Machine-verified Commander pilot manuals: every combo line cites the Comprehensive Rules.">
-<style>{CSS}</style></head><body><div class="page">
-<h1>Pilot's Manuals</h1>
-<p class="sub">Every combo line machine-checked against the Comprehensive Rules.
-Every number reproducible. Coaching labeled as coaching.</p>
-<div class="grid">{body}</div>
-<p class="footer">Built by the Mana Map pilot subsystem · <a style="color:inherit"
-href="../viz/index.html">explore the card map</a></p>
-</div></body></html>
+<title>{esc(SERIES_SLUG)} — {esc(MASTHEAD)}</title>
+<meta name="description" content="Commander deck magazines: every combo line cites the Comprehensive Rules, every number is reproducible, and coaching says when it's coaching.">
+<meta property="og:title" content="{esc(SERIES_SLUG)} — {esc(MASTHEAD)}">
+<meta property="og:description" content="Commander deck magazines with a three-tier evidence contract.">
+<meta property="og:type" content="website">
+{FONT_LINK}
+<style>{MAGAZINE_CSS}{EXTRA_CSS}</style></head>
+<body><div class="trim"><div class="newsstand">
+  <div class="stand-head">
+    <h1 class="masthead">{esc(MASTHEAD)}</h1>
+    <div class="series-slug">{esc(SERIES_SLUG)}</div>
+    <p class="dek" style="margin:16px auto 0">{esc(STANDING_TAGLINE)} — one deck per issue.
+      Every combo line machine-checked against the Comprehensive Rules, every number
+      reproducible, and coaching labeled as coaching.</p>
+    {barcode("newsstand")}
+  </div>
+  <div class="rack">{body}</div>
+  <p class="stand-foot">Built by the Mana Map pilot subsystem ·
+    <a href="../viz/index.html">explore the card map</a><br>
+    Unofficial fan content permitted under the Wizards of the Coast Fan Content Policy.</p>
+</div></div></body></html>
 """
 
 
@@ -115,7 +144,7 @@ def main(args=None):
     MANUALS_DIR.mkdir(exist_ok=True)
     out = MANUALS_DIR / "index.html"
     out.write_text(render_index(entries), encoding="utf-8")
-    print(f"Wrote {out} ({len(entries)} manual(s))")
+    print(f"Wrote {out} ({len(entries)} issue(s) on the rack)")
 
 
 if __name__ == "__main__":

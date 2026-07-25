@@ -34,6 +34,7 @@ manamap pilot validate-stack <slug> [--stack NNN]   # citation contract (stacks 
 manamap pilot goldfish <slug>           # seeded Monte Carlo metrics → goldfish_metrics.json
 manamap pilot build-manual <slug>       # → manuals/<slug>.html
 manamap pilot build-index               # → manuals/index.html gallery
+manamap pilot validate-issue <slug>     # form-check issue.json + issue_plan.json
 manamap pilot validate-strategy         # form-check strategy.md + CHANGELOG
 manamap pilot build-strategy-db         # chunk + embed strategy.md
 manamap pilot query-strategy "…" --json # semantic top-k strategy search
@@ -128,9 +129,43 @@ Run via the `resolve-stack` skill: `stack-resolver` agent drafts → `validate-s
 
 **Manual DoD verification**: run `/resolve-stack` on a scenario; confirm the saved artifact passes `manamap pilot validate-stack` and the golden-artifact test (`tests/test_pilot_validate_stack.py::test_all_committed_stacks_validate_and_pass`) unskips and passes.
 
+## The magazine layer (STYLEv3)
+
+Each deck is a complete **issue** of *Pilot's Manual* — fourteen fixed departments in
+a fixed order, so readers learn the publication once and navigate it forever. The
+design authority is `STYLEv3.md` (editorial laws, the Commander Mandate, department
+specs, voice, component library); `docs/history/STYLE-v1-visual-research.md` and
+`-v2-editorial-method.md` are its archived sources.
+
+- **`src/manamap/pilot/issue_spec.py`** — the canonical department system: ids, order,
+  promises, evidence tiers, rhythm tags, component library. Changing it changes every
+  issue; treat it like `config.py`.
+- **`issue.json`** (tracked, **authored by a human**) — volume, issue_date, cover_price,
+  deck_name, commander, cover_tagline, next_issue. Never generated: a generated date
+  would break byte-identical rebuilds.
+- **`issue_plan.json`** (tracked, human-editable) — the packaging layer from the
+  `magazine-editor` agent: the issue's angle, cover lines, per-department
+  kicker/headline/dek, captions, PILOT TIPs, callouts, pull quotes, roster grouping,
+  threat boxes, sample hands. `manual_prose.json` remains the body-copy layer; the
+  renderer merges them.
+- **`validate-issue`** — the mechanical gate: identity block complete, all fourteen
+  departments present in canonical order, copy completeness, components from the fixed
+  library, **tier costume never overridden**, every PILOT TIP / caption / roster card
+  name real, and no two dense departments adjacent.
+- **`magazine-editor` agent** — reads STYLEv3 and every artifact, returns the plan as
+  JSON. It never writes HTML: determinism, mechanical validation, and the citation
+  contract all depend on the renderer staying deterministic.
+- **`design-issue` skill** — the loop: gather → plan → validate → build → review.
+
+The Kill renders combo lines as feature spreads with dossier pointers; **Judge's Desk**
+carries the complete resolutions with every citation verbatim (the renderer may not
+summarize proof). The Command Zone department is mandatory and format-specific — the
+tax ladder, color identity, the 21-damage clock — and is what makes this a Commander
+magazine rather than a Magic one.
+
 ## Manual generation
 
-`write-manual` skill (v2.1 order): goldfish → `deck-analyst` evidence pull → **strategic frame** (`strategy-researcher` MODE consult → `strategic_frame.json`; its `candidate_missing_lines` feed the resolve-stack queue, its `gaps` feed the next research pass) → `pilot-coach` coaching (threat/matchups + decisions, receives the frame) → `manual-writer` prose (zero-guessing: combo lines only from verified stacks, claims trace to graphs/oracle text; receives the frame) → `manual_prose.json` (tracked, human-editable) → `manamap pilot build-manual <slug>` + `build-index` (deterministic, byte-identical rebuilds, `[TODO]` placeholders for missing prose, only checker-passed stacks render).
+Content pipeline (`write-manual` skill) — goldfish → `deck-analyst` evidence pull → **strategic frame** (`strategy-researcher` MODE consult → `strategic_frame.json`; its `candidate_missing_lines` feed the resolve-stack queue, its `gaps` feed the next research pass) → `pilot-coach` coaching (threat/matchups + decisions, receives the frame) → `manual-writer` prose (zero-guessing: combo lines only from verified stacks, claims trace to graphs/oracle text; receives the frame) → `manual_prose.json` (tracked, human-editable) → `manamap pilot build-manual <slug>` + `build-index` (deterministic, byte-identical rebuilds, `[TODO]` placeholders for missing prose, only checker-passed stacks render).
 
 ## Tests
 

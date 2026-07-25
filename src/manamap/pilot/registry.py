@@ -18,13 +18,17 @@ PILOT_STEPS = [
     ("goldfish", "manamap.pilot.goldfish", "Seeded Monte Carlo resource-development metrics"),
     ("build-manual", "manamap.pilot.build_manual", "Render the zine HTML from verified artifacts"),
     ("build-index", "manamap.pilot.build_index", "Render the manuals/index.html gallery"),
+    ("validate-issue", "manamap.pilot.validate_issue", "Form-check issue.json + issue_plan.json"),
     ("validate-strategy", "manamap.pilot.validate_strategy", "Form-check strategy.md + CHANGELOG"),
     ("build-strategy-db", "manamap.pilot.build_strategy_db", "Chunk + embed strategy.md into the strategy DB"),
     ("query-strategy", "manamap.pilot.query_strategy", "Semantic top-k strategy search"),
     ("lookup-strategy", "manamap.pilot.query_strategy", "Exact strategy section fetch by id"),
 ]
 
-_DECK_COMMANDS = {"fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual"}
+_DECK_COMMANDS = {
+    "fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual",
+    "validate-issue",
+}
 
 
 def add_pilot_parser(subparsers):

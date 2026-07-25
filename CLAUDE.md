@@ -42,9 +42,9 @@ manamap run                   # full 12-step pipeline (steps 1 & 7 need internet
 manamap run --from STEP       # resume from a step
 manamap <step>                # single step; see `manamap --help` for the 13 subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions   # fast analysis-only refresh
-manamap pilot <cmd>           # pilot's-manual subsystem (14 subcommands) — see docs/pilot.md
+manamap pilot <cmd>           # pilot's-manual subsystem (15 subcommands) — see docs/pilot.md
 
-.venv/bin/python -m pytest    # 364 tests; data-dependent ones skip if artifacts missing
+.venv/bin/python -m pytest    # 388 tests; data-dependent ones skip if artifacts missing
 
 python -m http.server 8000    # serve viz FROM REPO ROOT
 # http://localhost:8000/viz/index.html
@@ -74,4 +74,5 @@ python -m http.server 8000    # serve viz FROM REPO ROOT
 - `docs/testing.md` — test layout, skip markers, conventions
 - `docs/pilot.md` — pilot subsystem: three-tier evidence contract, citation contract, rules DB, strategy DB + strategy-researcher agent, resolve loop, goldfish, manual generation
 - `PLAN.md` — ACTIVE plan: current state, what's done, what's next (read this first when resuming work)
+- `STYLEv3.md` — the magazine's editorial + design constitution (department system, Commander Mandate, voice, component library); read before touching `build_manual.py`, `design.py`, or `issue_spec.py`
 - `docs/history/PLAN.md` — historical deck-builder planning doc (outdated, unmaintained)

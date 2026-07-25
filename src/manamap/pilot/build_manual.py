@@ -1,431 +1,713 @@
-"""Pilot: render a deck's pilot's manual as standalone zine HTML.
+"""Pilot: render a deck's issue of Pilot's Manual as standalone magazine HTML.
 
-Fully deterministic — no LLM calls. Inputs: cards.json, checker-passed stack
-scenarios (only verified stacks appear), decision scenarios (decisions/),
-goldfish_metrics.json, manual_prose.json (agent-written, human-editable), and
-the combo/synergy/obsolescence graphs. Sections carry the three-tier evidence
-badges (rules-verified / data-derived / coaching); missing prose renders as a
-visible [TODO] rather than failing the build.
+Fully deterministic — no LLM calls, no dates, no randomness. The editorial layer
+arrives as data (`issue.json` identity + `issue_plan.json` packaging from the
+magazine-editor agent) and the body prose as `manual_prose.json`; this module
+assembles them into the fourteen fixed departments of STYLEv3 §5.
+
+Contract invariants:
+- Only checker-passed stacks render, and Judge's Desk reproduces every citation
+  verbatim — the renderer may not summarize proof (STYLEv3 §5.1, docs/pilot.md).
+- A department with thin artifacts renders a visible [TODO], never vanishes.
+- Tier badges come from the department system, not the plan (STYLEv3 §10).
 """
 
-import html
 import json
 
 from manamap.config import MANUALS_DIR, SYNERGY_GRAPH_PATH
 from manamap.pilot.common import deck_dir, load_deck_cards
+from manamap.pilot.design import (
+    CSS,
+    FONT_LINK,
+    badge,
+    barcode,
+    callout,
+    card_figure,
+    esc,
+    fast_facts,
+    folio,
+    map_key,
+    pilot_tip,
+    power_meter,
+    pull_quote,
+    threat_box,
+    violator,
+)
+from manamap.pilot.issue_spec import (
+    DEPARTMENT_BY_ID,
+    DEPARTMENT_IDS,
+    MASTHEAD,
+    SERIES_SLUG,
+    STANDING_TAGLINE,
+)
 
-# Dark theme matching viz/ (background #1a1a2e, panel #16213e, gold #c4a747).
-CSS = """
-:root { --bg:#1a1a2e; --panel:#16213e; --gold:#c4a747; --text:#e8e6e3; --dim:#9a97b0;
-        --magenta:#E040FB; --green:#4ade80; --border:#3a3a5a; }
-* { box-sizing:border-box; margin:0; }
-body { background:var(--bg); color:var(--text); font:16px/1.6 Georgia, serif; }
-.page { max-width:880px; margin:0 auto; padding:48px 32px; }
-.spread { background:var(--panel); border:1px solid var(--border); border-radius:8px;
-          padding:32px; margin:32px 0; page-break-inside:avoid; }
-h1 { font-size:2.6em; color:var(--gold); line-height:1.15; }
-h2 { color:var(--gold); font-size:1.6em; margin-bottom:12px; border-bottom:1px solid var(--border);
-     padding-bottom:6px; }
-h3 { color:var(--text); margin:16px 0 6px; }
-.tagline { font-style:italic; color:var(--dim); font-size:1.2em; margin:8px 0 16px; }
-.cover { text-align:center; }
-.cover img { max-width:340px; border-radius:12px; margin:24px auto; display:block; }
-.verified { display:inline-block; background:rgba(74,222,128,.12); color:var(--green);
-            border:1px solid var(--green); border-radius:12px; padding:1px 10px;
-            font:12px sans-serif; vertical-align:middle; margin-left:8px; }
-.badge { display:inline-block; border-radius:12px; padding:1px 10px; font:11px sans-serif;
-         vertical-align:middle; margin-left:10px; letter-spacing:.5px; }
-.badge-rules { background:rgba(74,222,128,.12); color:var(--green); border:1px solid var(--green); }
-.badge-data { background:rgba(96,165,250,.12); color:#60a5fa; border:1px solid #60a5fa; }
-.badge-coach { background:rgba(196,167,71,.12); color:var(--gold); border:1px solid var(--gold); }
-.legend { font:13px sans-serif; color:var(--dim); text-align:left; margin:20px auto 0;
-          max-width:560px; line-height:1.9; }
-.toc { font:14px sans-serif; text-align:left; margin:24px auto 0; max-width:560px;
-       border-top:1px solid var(--border); padding-top:16px; }
-.toc div { margin:4px 0; }
-.toc a { color:var(--text); text-decoration:none; }
-.toc a:hover { color:var(--gold); }
-table.metrics { border-collapse:collapse; width:100%; margin:12px 0; font-size:.92em; }
-table.metrics th, table.metrics td { border:1px solid var(--border); padding:6px 10px; text-align:left; }
-table.metrics th { color:var(--gold); font-family:sans-serif; font-size:.85em; }
-.branch { background:rgba(0,0,0,.25); border:1px solid var(--border); border-radius:8px;
-          padding:14px; margin:12px 0; }
-.branch.recommended { border-color:var(--green); }
-.branch h4 { color:var(--text); margin-bottom:6px; }
-.branch .pick { color:var(--green); font:11px sans-serif; letter-spacing:.5px; }
-.branch dl { font-size:.9em; margin-top:8px; }
-.branch dt { color:var(--gold); font-family:sans-serif; font-size:.8em; margin-top:6px; }
-.branch dd { color:var(--dim); margin-left:0; }
-.todo { color:var(--magenta); font-family:monospace; }
-ol.steps { padding-left:24px; }
-ol.steps li { margin:10px 0; }
-.effect { color:var(--dim); }
-details { margin:4px 0 4px 8px; font-size:.9em; }
-summary { color:var(--gold); cursor:pointer; font-family:monospace; }
-blockquote { border-left:3px solid var(--gold); padding-left:12px; color:var(--dim);
-             margin:6px 0; font-style:italic; }
-.cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px; }
-.card { background:rgba(0,0,0,.25); border:1px solid var(--border); border-radius:8px; padding:14px; }
-.card img { width:100%; border-radius:6px; }
-.card .labels { font:11px sans-serif; color:var(--magenta); margin:6px 0 2px; }
-.card p { font-size:.85em; color:var(--dim); }
-.scenario-box { background:rgba(0,0,0,.25); border-radius:6px; padding:14px; margin:12px 0;
-                font-size:.92em; }
-.footer { text-align:center; color:var(--dim); font-size:.8em; margin-top:48px; }
-@media print { body { background:#fff; color:#111; } .spread { page-break-after:always; } }
-"""
-
-
-def esc(value):
-    return html.escape(str(value)) if value is not None else ""
-
-
-def prose(prose_doc, key, sub=None):
-    """Fetch a prose string, or a visible TODO placeholder."""
-    node = prose_doc.get(key, {})
-    if sub is not None:
-        node = node.get(sub, "") if isinstance(node, dict) else ""
-    if not node or not isinstance(node, str):
-        label = f"{key}.{sub}" if sub else key
-        return f'<span class="todo">[TODO: {esc(label)} prose]</span>'
-    return "".join(f"<p>{esc(p)}</p>" for p in node.split("\n\n"))
-
-
-BADGES = {
-    "rules": '<span class="badge badge-rules">✓ RULES-VERIFIED</span>',
-    "data": '<span class="badge badge-data">◆ DATA-DERIVED</span>',
-    "coach": '<span class="badge badge-coach">★ COACHING</span>',
+# One accent per department — held across all its pages and its folio tab.
+ACCENT = {
+    "cover": "var(--power-red)", "contents": "var(--ink)",
+    "first-turns": "var(--power-red)", "command-zone": "var(--y2k-violet)",
+    "by-the-numbers": "var(--y2k-blue)", "the-kill": "var(--power-red)",
+    "politics-table": "var(--radical-purple)", "whats-your-play": "var(--hot-magenta)",
+    "know-your-enemy": "var(--radical-purple)", "the-99": "var(--slime-green)",
+    "keep-or-ship": "var(--tier-coach)", "upgrade-watch": "var(--y2k-blue)",
+    "judges-desk": "var(--stamp-red)", "back-page": "var(--ink)",
 }
 
-LEGEND = """
-<div class="legend">
-  <strong>How to read this manual:</strong><br>
-  <span class="badge badge-rules">✓ RULES-VERIFIED</span> machine-checked against the
-  Comprehensive Rules — every step cites verbatim rule text, verified adversarially<br>
-  <span class="badge badge-data">◆ DATA-DERIVED</span> reproducible from committed data
-  and seeded simulations (assumptions stated)<br>
-  <span class="badge badge-coach">★ COACHING</span> judgment from play patterns —
-  grounded in the data, but a human call
-</div>"""
+MAP_KEY_ENTRIES = [("⚡", "mana floated"), ("🜲", "storm count"),
+                   ("⛃", "treasure"), ("♥", "life")]
+
+TODO = '<p><span class="todo">TODO</span> This department is awaiting content.</p>'
+
+
+# ── Loading ─────────────────────────────────────────────────────────────
+
+
+def load_json(path, default=None):
+    if not path.exists():
+        return default
+    with open(path) as f:
+        return json.load(f)
 
 
 def load_verified_stacks(slug):
-    stacks_dir = deck_dir(slug) / "stacks"
-    verified, skipped = [], []
-    for path in sorted(stacks_dir.glob("*.json")):
+    """Checker-passed stacks only, in id order — the publication gate."""
+    stacks = []
+    for path in sorted((deck_dir(slug) / "stacks").glob("*.json")):
         with open(path) as f:
             doc = json.load(f)
         if (doc.get("checker") or {}).get("verdict") == "pass":
-            verified.append(doc)
-        else:
-            skipped.append(path.name)
-    return verified, skipped
+            stacks.append(doc)
+    return stacks
 
 
 def load_decisions(slug):
-    decisions_dir = deck_dir(slug) / "decisions"
-    docs = []
-    for path in sorted(decisions_dir.glob("*.json")):
+    decisions = []
+    directory = deck_dir(slug) / "decisions"
+    if not directory.is_dir():
+        return decisions
+    for path in sorted(directory.glob("*.json")):
         with open(path) as f:
-            docs.append(json.load(f))
-    return docs
+            decisions.append(json.load(f))
+    return decisions
 
 
-def render_goldfish(metrics_doc):
-    if not metrics_doc:
-        return ""
-    meta = metrics_doc["meta"]
-    m = metrics_doc["metrics"]
-    turns = sorted(m["land_drop_hit_rate_by_turn"], key=int)
+# ── Plan access ─────────────────────────────────────────────────────────
 
-    def row(label, values):
-        cells = "".join(f"<td>{esc(v)}</td>" for v in values)
-        return f"<tr><th>{esc(label)}</th>{cells}</tr>"
 
-    turn_table = "<table class='metrics'>" + row("Turn", turns) + row(
-        "Land drop hit", [f"{m['land_drop_hit_rate_by_turn'][t]:.0%}" for t in turns]
-    ) + row(
-        "Mean mana available", [f"{m['mean_available_mana_by_turn'][t]:.1f}" for t in turns]
-    ) + row(
-        "Mean bodies on board", [f"{m['mean_bodies_by_turn'][t]:.1f}" for t in turns]
-    ) + "</table>"
+def plan_dept(plan, dept_id):
+    for dept in (plan or {}).get("departments", []):
+        if dept.get("id") == dept_id:
+            return dept
+    return {}
 
-    commander = m["commander"]
-    target_rows = "".join(
-        f"<tr><td>{esc(t['label'])}</td><td>{t['assembled_rate']:.0%}</td>"
-        f"<td>{esc(t['mean_turn'] if t['mean_turn'] is not None else '—')}</td>"
-        f"<td>{t['by_turn_6_rate']:.0%}</td></tr>"
-        for t in m["targets"]
+
+def prose(prose_doc, key, sub=None):
+    """Body copy from manual_prose.json; visible TODO when absent."""
+    value = (prose_doc or {}).get(key)
+    if sub is not None:
+        value = (value or {}).get(sub)
+    if not value:
+        return TODO
+    paragraphs = [p.strip() for p in str(value).split("\n\n") if p.strip()]
+    return "".join(f"<p>{esc(p)}</p>" for p in paragraphs)
+
+
+def caption_html(text):
+    """Caption grammar: **bold lead-in**, then roman body."""
+    if "**" in text:
+        head, _, tail = text.partition("**")
+        lead, _, rest = tail.partition("**")
+        return f"{esc(head)}<b>{esc(lead)}</b>{esc(rest)}"
+    return esc(text)
+
+
+# ── Department frame ────────────────────────────────────────────────────
+
+
+def dept_open(dept_id, plan, extra_badges=()):
+    spec = DEPARTMENT_BY_ID[dept_id]
+    dept = plan_dept(plan, dept_id)
+    badges = "".join(badge(t) for t in spec["tiers"]) + "".join(extra_badges)
+    kicker = (
+        f'<div class="kicker">{esc(dept["kicker"])}</div>' if dept.get("kicker") else ""
     )
-    targets_table = (
-        "<table class='metrics'><tr><th>Assembly target</th><th>Assembled</th>"
-        "<th>Mean turn</th><th>By turn 6</th></tr>" + target_rows + "</table>"
-        if m["targets"] else ""
-    )
-    assumptions = "".join(f"<li>{esc(a)}</li>" for a in meta["model_assumptions"])
-
-    return f"""
-<section class="spread" id="goldfish"><h2>Goldfish Numbers {BADGES["data"]}</h2>
-  <p>{esc(meta["commander"])} comes down on <strong>turn {commander["mean_cast_turn"]}</strong> on
-  average (median turn {esc(commander["median_cast_turn"])}), and is out by turn 6 in
-  <strong>{commander["cast_by_turn_6_rate"]:.0%}</strong> of games. First-seven keep rate:
-  {m["opening_hand"]["keep_first_seven_rate"]:.0%}.</p>
-  {turn_table}
-  {targets_table}
-  <details><summary>Simulation model &amp; assumptions (seed {meta["seed"]},
-  {meta["iterations"]:,} iterations)</summary><ul>{assumptions}</ul></details>
-</section>"""
-
-
-def render_decision_spread(decision):
-    scenario = decision["scenario"]
-    board_bits = []
-    board = scenario.get("board", {})
-    if isinstance(board, dict):
-        for key, value in board.items():
-            board_bits.append(f"<strong>{esc(key)}:</strong> {esc(value)}")
-    branches_html = []
-    recommended = (decision.get("recommendation") or {}).get("choice")
-    for branch in decision["branches"]:
-        is_pick = branch["choice"] == recommended
-        pick = '<div class="pick">★ RECOMMENDED LINE</div>' if is_pick else ""
-        cites = "".join(
-            f'<details><summary>{esc(c["rule"])}</summary>'
-            f"<blockquote>{esc(c['quote'])}</blockquote></details>"
-            for c in branch.get("citations", [])
-        )
-        branches_html.append(f"""
-    <div class="branch{' recommended' if is_pick else ''}">{pick}
-      <h4>{esc(branch["choice"])}</h4>
-      <p class="effect">{esc(branch["line"])}</p>
-      <dl>
-        <dt>Signals sent</dt><dd>{esc(branch["signals"])}</dd>
-        <dt>Coalition risk</dt><dd>{esc(branch["coalition_risk"])}</dd>
-        <dt>Coaching</dt><dd>{esc(branch["coaching"])}</dd>
-      </dl>{cites}
-    </div>""")
-    rationale = esc((decision.get("recommendation") or {}).get("rationale", ""))
-    return f"""
-<section class="spread" id="decision-{esc(decision["id"])}"><h2>{esc(decision["title"])} {BADGES["coach"]}</h2>
-  <div class="scenario-box">{"<br>".join(board_bits)}<br>
-    <strong>Decision:</strong> {esc(scenario.get("question", ""))}</div>
-  {"".join(branches_html)}
-  <p><strong>Why the recommended line:</strong> {rationale}</p>
-</section>"""
-
-
-def render_stack_spread(stack, prose_doc):
-    scenario = stack["scenario"]
-    steps_html = []
-    for step in stack["resolution"]["steps"]:
-        cites = "".join(
-            f'<details><summary>{esc(c["rule"])}</summary>'
-            f"<blockquote>{esc(c['quote'])}</blockquote></details>"
-            for c in step.get("citations", [])
-        )
-        steps_html.append(
-            f"<li><strong>{esc(step['action'])}</strong>"
-            f'<div class="effect">{esc(step.get("effect", ""))}</div>{cites}</li>'
-        )
-    checker = stack.get("checker", {})
-    stack_lines = "".join(
-        f"<li>{esc(item.get('object', '?'))} ({esc(item.get('controller', '?'))})</li>"
-        for item in reversed(scenario.get("stack", []))
-    )
-    final = stack.get("resolution", {}).get("final_state", {})
-    return f"""
-<section class="spread" id="stack-{esc(stack["id"])}">
-  <h2>{esc(stack["title"])}
-    <span class="verified">✓ RULES-VERIFIED · {checker.get("iterations", "?")} iteration(s)</span></h2>
-  {prose(prose_doc, "combo_lines", stack["id"])}
-  <div class="scenario-box">
-    <strong>The stack (top first):</strong><ol>{stack_lines}</ol>
-    <strong>Question:</strong> {esc(scenario.get("question", ""))}
-  </div>
-  <h3>Resolution</h3>
-  <ol class="steps">{"".join(steps_html)}</ol>
-  <h3>Where you end up</h3>
-  <p>{esc(final.get("summary", ""))}</p>
-</section>"""
-
-
-def render_card_roles(cards, prose_doc, synergy):
-    roles = prose_doc.get("card_roles", {})
-    tiles = []
-    for card in cards:
-        if card["is_commander"] or card.get("is_sideboard"):
-            continue
-        name = card["name"]
-        labels = sorted({
-            label
-            for entry in synergy.get(name, [])
-            for label in entry.get("synergies", [])
-        })[:4]
-        blurb = roles.get(name)
-        blurb_html = (
-            f"<p>{esc(blurb)}</p>" if blurb
-            else '<p class="todo">[TODO: role]</p>' if labels else ""
-        )
-        image = f'<img src="{esc(card["image"])}" alt="{esc(name)}" loading="lazy">' if card["image"] else ""
-        tiles.append(
-            f'<div class="card">{image}<h3>{esc(name)}</h3>'
-            f'<div class="labels">{esc(" · ".join(labels))}</div>{blurb_html}</div>'
-        )
-    return "".join(tiles)
-
-
-def render_sideboard(cards, prose_doc):
-    """Sideboard strip: real cards get their role blurb; type 'Card' accessories
-    are labeled as table aids rather than rendered as deck cards."""
-    side = [c for c in cards if c.get("is_sideboard")]
-    if not side:
-        return ""
-    roles = prose_doc.get("card_roles", {})
-    tiles = []
-    for card in side:
-        is_accessory = card.get("type_line", "") == "Card"
-        blurb = roles.get(card["name"]) or (
-            "Table aid — no rules text. Use it to track game state on big turns."
-            if is_accessory else ""
-        )
-        image = f'<img src="{esc(card["image"])}" alt="{esc(card["name"])}" loading="lazy">' if card["image"] else ""
-        kind = "Table aid" if is_accessory else esc(card.get("type_line", ""))
-        tiles.append(
-            f'<div class="card">{image}<h3>{esc(card["name"])}</h3>'
-            f'<div class="labels">{kind}</div><p>{esc(blurb)}</p></div>'
-        )
+    headline = dept.get("headline") or spec["title"]
+    dek = f'<p class="dek">{esc(dept["dek"])}</p>' if dept.get("dek") else ""
     return (
-        "<h3>Sideboard &amp; table aids</h3>"
-        '<div class="cards">' + "".join(tiles) + "</div>"
+        f'<section class="dept" id="{dept_id}" style="--accent:{ACCENT[dept_id]}">'
+        f'<div class="dept-head"><div>'
+        f'<h2 class="dept-title">{esc(spec["title"])}</h2></div>'
+        f"<div>{badges}</div>"
+        f'<div class="dept-promise">{esc(spec["promise"])}</div></div>'
+        f"{kicker}<h1 class=\"feature\">{esc(headline)}</h1>{dek}"
     )
 
 
-def render_manual(slug, deck_doc, stacks, prose_doc, synergy, goldfish=None, decisions=None):
+def dept_close(dept_id, volume):
+    return "</section>" + folio(DEPARTMENT_BY_ID[dept_id]["title"], volume)
+
+
+def dept_furniture(dept, cards_by_name):
+    """Render the plan's furniture for a department: tips, callouts, pull quote."""
+    out = []
+    for step in dept.get("callouts", []):
+        out.append(callout(step.get("n", "•"), step.get("title", ""), step.get("text", "")))
+    for tip in dept.get("pilot_tips", []):
+        card = cards_by_name.get(tip.get("card", ""))
+        out.append(pilot_tip(tip.get("card", ""), tip.get("text", ""),
+                             (card or {}).get("image")))
+    if dept.get("pull_quote"):
+        out.append(pull_quote(dept["pull_quote"]))
+    return "".join(out)
+
+
+def dept_captions(dept, cards_by_name, limit=3):
+    """Card figures for captions the editor wrote, in plan order."""
+    figures = []
+    for name, text in list((dept.get("captions") or {}).items())[:limit]:
+        card = cards_by_name.get(name)
+        if not card:
+            continue
+        figures.append(card_figure(name, card.get("image"), caption_html(text),
+                                   card.get("scryfall_uri")))
+    return "".join(figures)
+
+
+# ── Departments ─────────────────────────────────────────────────────────
+
+
+def render_cover(issue, plan, commander, stacks):
+    cover = (plan or {}).get("cover", {})
+    volume = issue["volume"]
+    teases = "".join(f"<li>{esc(t)}</li>" for t in cover.get("teases", []))
+    violators = "".join(
+        violator(v.get("text", "")) for v in cover.get("violators", [])[:2]
+    )
+    kicker = (
+        f'<div class="kicker">{esc(cover["kicker"])}</div>' if cover.get("kicker") else ""
+    )
+    coverline = cover.get("dominant_coverline") or issue["deck_name"]
+    art = ""
+    if commander:
+        image = commander.get("art_crop") or commander.get("image")
+        artist = commander.get("artist")
+        credit = f'<div class="art-credit">Art: {esc(artist)}</div>' if artist else ""
+        art = (
+            f'<div class="hero-art"><img src="{esc(image)}" '
+            f'alt="{esc(commander["name"])}">{credit}</div>'
+        )
+    return f"""
+<section class="cover" id="cover">
+  <div class="cover-top">
+    <div><h1 class="masthead">{esc(MASTHEAD)}</h1>
+      <div class="series-slug">{esc(SERIES_SLUG)}</div></div>
+    <div class="cover-meta">VOL. {volume:03d}<br>{esc(issue["issue_date"])}<br>
+      {esc(issue["cover_price"])}<br>{esc(STANDING_TAGLINE)}</div>
+  </div>
+  <div class="cover-body">
+    <div>{kicker}
+      <div class="coverline">{esc(coverline)}</div>
+      <p class="dek">{esc(issue["cover_tagline"])} · {esc(issue["commander"])}</p>
+      <ul class="teases">{teases}</ul>
+      {barcode(f"vol-{volume}")}
+    </div>
+    <div>{art}</div>
+  </div>
+  {violators}
+</section>"""
+
+
+def render_contents(issue, plan, stacks, decisions):
+    rows = []
+    for dept_id in DEPARTMENT_IDS:
+        if dept_id in ("cover", "contents"):
+            continue
+        spec = DEPARTMENT_BY_ID[dept_id]
+        dept = plan_dept(plan, dept_id)
+        headline = dept.get("headline") or spec["title"]
+        badges = "".join(badge(t) for t in spec["tiers"])
+        rows.append(
+            f'<tr><td><a href="#{dept_id}"><b>{esc(spec["title"])}</b></a><br>'
+            f'<span style="color:var(--ink-soft)">{esc(headline)}</span></td>'
+            f'<td>{esc(spec["promise"])}</td><td>{badges}</td></tr>'
+        )
+    legend = f"""
+<div class="legend"><h3>How to read this issue</h3>
+  <div class="legend-row">{badge("verified")}<div>Every step cites the Comprehensive
+    Rules, and an adversarial checker verified each citation against the full rule text.
+    The complete case files are in Judge's Desk.</div></div>
+  <div class="legend-row">{badge("data")}<div>Numbers from a seeded, reproducible
+    simulation committed to the repository. Same seed, same answer, every time.</div></div>
+  <div class="legend-row">{badge("coach")}<div>Judgment — grounded in the verified
+    lines and the numbers, but a human call, and labeled as one.</div></div>
+</div>"""
+    return f"""
+<section class="dept" id="contents" style="--accent:{ACCENT["contents"]}">
+  <div class="dept-head"><div><h2 class="dept-title">In This Issue</h2></div>
+    <div class="dept-promise">Where am I, and how do I read this?</div></div>
+  <p class="dek">{len(stacks)} verified line(s) · {len(decisions)} decision spread(s)
+    · {esc(issue["deck_name"])}</p>
+  <table class="data"><tr><th>Department</th><th>The promise it keeps</th><th>Evidence</th></tr>
+    {"".join(rows)}</table>
+  {legend}
+</section>""" + folio("In This Issue", issue["volume"])
+
+
+def render_first_turns(issue, plan, prose_doc, cards_by_name):
+    dept = plan_dept(plan, "first-turns")
+    return (
+        dept_open("first-turns", plan)
+        + f'<div class="body-copy">{prose(prose_doc, "how_it_wins")}</div>'
+        + dept_captions(dept, cards_by_name)
+        + dept_furniture(dept, cards_by_name)
+        + dept_close("first-turns", issue["volume"])
+    )
+
+
+def render_command_zone(issue, plan, commander, goldfish, cards_by_name):
+    """The Commander Mandate department (STYLEv3 §3.3)."""
+    dept = plan_dept(plan, "command-zone")
+    body = []
+    if commander:
+        cmc = int(commander.get("cmc") or 0)
+        identity = "".join(commander.get("color_identity") or []) or "C"
+        rows = "".join(
+            f"<tr><td>{n}{'st' if n == 1 else 'nd' if n == 2 else 'rd' if n == 3 else 'th'} cast</td>"
+            f"<td>{esc(commander.get('mana_cost', ''))}</td><td>+{{{2 * (n - 1)}}}</td>"
+            f"<td>{cmc + 2 * (n - 1)}</td></tr>"
+            for n in range(1, 5)
+        )
+        body.append(
+            '<table class="tax-ladder"><tr><th>Cast</th><th>Printed cost</th>'
+            "<th>Commander tax</th><th>Total mana</th></tr>" + rows + "</table>"
+        )
+        facts = [
+            ("Commander", commander["name"]),
+            ("Mana cost", commander.get("mana_cost", "—")),
+            ("Color identity", identity),
+            ("Type", commander.get("type_line", "—")),
+        ]
+        if goldfish:
+            m = goldfish.get("metrics", goldfish)
+            cast = m.get("commander", {})
+            if cast:
+                facts.append(("Mean cast turn", cast.get("mean_cast_turn", "—")))
+                facts.append(("Out by turn 6", f"{cast.get('cast_by_turn_6_rate', 0):.0%}"))
+        body.append(fast_facts("Commander File", facts))
+    body.append(f'<div class="body-copy">{prose_or_todo(dept)}</div>')
+    return (
+        dept_open("command-zone", plan)
+        + "".join(body)
+        + dept_captions(dept, cards_by_name, limit=1)
+        + dept_furniture(dept, cards_by_name)
+        + dept_close("command-zone", issue["volume"])
+    )
+
+
+def prose_or_todo(dept):
+    """Departments whose body copy the editor supplies inline via the plan."""
+    body = dept.get("body")
+    if not body:
+        return TODO
+    return "".join(f"<p>{esc(p.strip())}</p>" for p in str(body).split("\n\n") if p.strip())
+
+
+def render_by_the_numbers(issue, plan, goldfish, cards_by_name):
+    dept = plan_dept(plan, "by-the-numbers")
+    if not goldfish:
+        return dept_open("by-the-numbers", plan) + TODO + dept_close("by-the-numbers", issue["volume"])
+    m = goldfish["metrics"]
+    meta = goldfish["meta"]
+    opening = m.get("opening_hand", {})
+    commander = m.get("commander", {})
+
+    meters = [power_meter("Keepable first sevens", opening.get("keep_first_seven_rate", 0))]
+    if commander:
+        meters.append(power_meter("Commander cast by turn 6",
+                                  commander.get("cast_by_turn_6_rate", 0)))
+    for target in m.get("targets") or []:
+        meters.append(power_meter(target.get("label", "Target"),
+                                  target.get("assembled_rate", 0)))
+
+    turns = sorted(m["land_drop_hit_rate_by_turn"], key=int)
+    def row(label, values):
+        return f"<tr><th>{esc(label)}</th>" + "".join(f"<td>{esc(v)}</td>" for v in values) + "</tr>"
+    table = (
+        '<table class="data">'
+        + row("Turn", turns)
+        + row("Land drop hit", [f"{m['land_drop_hit_rate_by_turn'][t]:.0%}" for t in turns])
+        + row("Mean mana", [f"{m['mean_available_mana_by_turn'][t]:.1f}" for t in turns])
+        + row("Mean bodies", [f"{m['mean_bodies_by_turn'][t]:.1f}" for t in turns])
+        + "</table>"
+    )
+    assumptions = "".join(f"<li>{esc(a)}</li>" for a in meta.get("model_assumptions", []))
+    facts = fast_facts("Simulation File", [
+        ("Iterations", f"{meta.get('iterations', 0):,}"),
+        ("Seed", meta.get("seed", "—")),
+        ("Decklist sha", str(meta.get("decklist_sha256", ""))[:12] or "—"),
+    ])
+    return (
+        dept_open("by-the-numbers", plan)
+        + "".join(meters) + table + facts
+        + f'<div class="assumptions"><b>What this model does and does not do.</b> '
+          f"These runs simulate resource development, not full games. Every assumption "
+          f"is stated:<ul>{assumptions}</ul></div>"
+        + dept_furniture(dept, cards_by_name)
+        + dept_close("by-the-numbers", issue["volume"])
+    )
+
+
+def render_the_kill(issue, plan, stacks, prose_doc, cards_by_name):
+    dept = plan_dept(plan, "the-kill")
+    spreads = []
+    for stack in stacks:
+        sid = stack["id"]
+        checker = stack.get("checker", {})
+        intro = prose(prose_doc, "combo_lines", sid)
+        final = stack.get("resolution", {}).get("final_state", {})
+        spreads.append(f"""
+<article style="border-top:3px solid var(--ink);padding-top:18px;margin-top:26px">
+  <div class="kicker">Verified line {esc(sid)}</div>
+  <h3 style="font-family:var(--display);font-size:1.5em">{esc(stack["title"])}</h3>
+  <div class="body-copy">{intro}</div>
+  <div class="scenario"><span class="lbl">The question</span><br>
+    {esc(stack["scenario"].get("question", ""))}</div>
+  <p><b>Result.</b> {esc(final.get("summary", ""))}</p>
+  <a class="dossier-pointer" href="#case-{esc(sid)}">
+    Full dossier: Judge's Desk, Case A-{esc(sid)} →</a>
+  <span style="margin-left:10px">{badge("verified")} cleared in
+    {esc(checker.get("iterations", "?"))} review cycle(s)</span>
+</article>""")
+    return (
+        dept_open("the-kill", plan)
+        + map_key(MAP_KEY_ENTRIES)
+        + dept_captions(dept, cards_by_name)
+        + dept_furniture(dept, cards_by_name)
+        + ("".join(spreads) or TODO)
+        + dept_close("the-kill", issue["volume"])
+    )
+
+
+def render_politics(issue, plan, prose_doc, cards_by_name):
+    dept = plan_dept(plan, "politics-table")
+    return (
+        dept_open("politics-table", plan)
+        + f'<div class="body-copy">{prose(prose_doc, "threat_assessment")}</div>'
+        + dept_captions(dept, cards_by_name)
+        + dept_furniture(dept, cards_by_name)
+        + dept_close("politics-table", issue["volume"])
+    )
+
+
+def render_whats_your_play(issue, plan, decisions, cards_by_name):
+    dept = plan_dept(plan, "whats-your-play")
+    spreads = []
+    for decision in decisions:
+        scenario = decision.get("scenario", {})
+        board = scenario.get("board", {})
+        bits = []
+        for label, key in (("You", "you"), ("Table", "opponents"), ("Hand", "hand")):
+            value = board.get(key) or scenario.get(key)
+            if value:
+                text = ", ".join(map(str, value)) if isinstance(value, list) else str(value)
+                bits.append(f'<span class="lbl">{label}</span> {esc(text)}')
+        branches = "".join(f"""
+<div class="branch"><h4>{esc(b.get("choice", ""))}</h4>
+  <dl><dt>The line</dt><dd>{esc(b.get("line", ""))}</dd>
+  <dt>Signals sent</dt><dd>{esc(b.get("signals", ""))}</dd>
+  <dt>Coalition risk</dt><dd>{esc(b.get("coalition_risk", ""))}</dd>
+  <dt>Read</dt><dd>{esc(b.get("coaching", ""))}</dd></dl></div>"""
+            for b in decision.get("branches", []))
+        rec = decision.get("recommendation", {})
+        spreads.append(f"""
+<article style="border-top:3px solid var(--ink);padding-top:18px;margin-top:26px">
+  <h3 style="font-family:var(--display);font-size:1.4em">{esc(decision["title"])}</h3>
+  <div class="scenario">{"<br>".join(bits)}<br><br>
+    <b>{esc(scenario.get("question", ""))}</b></div>
+  <div class="branches">{branches}</div>
+  <div class="verdict"><b>Our call: {esc(rec.get("choice", ""))}</b><br>
+    {esc(rec.get("rationale", ""))}</div>
+</article>""")
+    return (
+        dept_open("whats-your-play", plan)
+        + dept_furniture(dept, cards_by_name)
+        + ("".join(spreads) or TODO)
+        + dept_close("whats-your-play", issue["volume"])
+    )
+
+
+def render_know_your_enemy(issue, plan, prose_doc, cards_by_name):
+    dept = plan_dept(plan, "know-your-enemy")
+    boxes = []
+    for entry in dept.get("threats", []):
+        boxes.append(threat_box(
+            entry.get("archetype", ""), entry.get("meter_label", "Threat"),
+            float(entry.get("rate", 0.5)),
+            f'<p>{esc(entry.get("read", ""))}</p>'
+            f'<p><b>Your outs:</b> {esc(", ".join(entry.get("outs", [])))}</p>',
+        ))
+    return (
+        dept_open("know-your-enemy", plan)
+        + "".join(boxes)
+        + f'<div class="body-copy">{prose(prose_doc, "matchups")}</div>'
+        + dept_captions(dept, cards_by_name)
+        + dept_furniture(dept, cards_by_name)
+        + dept_close("know-your-enemy", issue["volume"])
+    )
+
+
+def _card_tile(card, roles, synergy):
+    name = card["name"]
+    labels = sorted({
+        entry.get("rule", "").split(":")[0]
+        for entry in (synergy or {}).get(name, [])[:3] if entry.get("rule")
+    })
+    chips = "".join(f'<span class="chip">{esc(l)}</span>' for l in labels[:2])
+    image = (f'<img src="{esc(card["image"])}" alt="{esc(name)}" loading="lazy">'
+             if card.get("image") else "")
+    return (
+        f'<div class="card-tile">{image}<h4>{esc(name)}</h4>{chips}'
+        f'<p>{esc(roles.get(name, ""))}</p></div>'
+    )
+
+
+def render_the_99(issue, plan, cards, prose_doc, synergy):
+    """Ranked roster — load-bearing cards lead, depth reads as depth.
+
+    The plan's optional `roster` groups cards by role; anything it doesn't name
+    falls into a final "Depth" group so no card silently vanishes.
+    """
+    dept = plan_dept(plan, "the-99")
+    roles = (prose_doc or {}).get("card_roles", {})
+    main = [c for c in cards if not c.get("is_sideboard")]
+    by_name = {c["name"]: c for c in main}
+
+    groups, placed = [], set()
+    for entry in dept.get("roster", []):
+        named = [by_name[n] for n in entry.get("cards", []) if n in by_name]
+        if not named:
+            continue
+        placed.update(c["name"] for c in named)
+        groups.append((entry.get("role", "Roster"), named))
+    remainder = [c for c in main if c["name"] not in placed and not c["is_commander"]]
+    if remainder:
+        groups.append(("Depth", remainder))
+    if not groups:  # no roster in the plan — flat grid, decklist order
+        groups = [("", [c for c in main if not c["is_commander"]])]
+
+    sections = []
+    for role, group_cards in groups:
+        heading = f"<h3>{esc(role)}</h3>" if role else ""
+        tiles = "".join(_card_tile(c, roles, synergy) for c in group_cards)
+        sections.append(f'{heading}<div class="card-grid">{tiles}</div>')
+    tiles = "".join(sections)
+
+    side = [c for c in cards if c.get("is_sideboard")]
+    side_html = ""
+    if side:
+        side_tiles = []
+        for card in side:
+            accessory = card.get("type_line", "") == "Card"
+            blurb = roles.get(card["name"]) or (
+                "Table aid — no rules text. Use it to track game state on big turns."
+                if accessory else "")
+            image = (f'<img src="{esc(card["image"])}" alt="{esc(card["name"])}" loading="lazy">'
+                     if card.get("image") else "")
+            side_tiles.append(
+                f'<div class="card-tile">{image}<h4>{esc(card["name"])}</h4>'
+                f'<span class="chip">{"Table aid" if accessory else esc(card.get("type_line", ""))}</span>'
+                f"<p>{esc(blurb)}</p></div>"
+            )
+        side_html = ("<h3>Sideboard &amp; table aids</h3>"
+                     f'<div class="card-grid">{"".join(side_tiles)}</div>')
+    return (
+        dept_open("the-99", plan)
+        + tiles + side_html
+        + dept_close("the-99", issue["volume"])
+    )
+
+
+def render_keep_or_ship(issue, plan, prose_doc, goldfish, cards_by_name):
+    dept = plan_dept(plan, "keep-or-ship")
+    meter = ""
+    if goldfish:
+        rate = goldfish["metrics"].get("opening_hand", {}).get("keep_first_seven_rate", 0)
+        meter = power_meter("Keepable first sevens (simulated)", rate)
+    hands = "".join(f"""
+<div class="branch"><h4>{esc(h.get("verdict", ""))}</h4>
+  <p style="font-size:.92em">{esc(", ".join(h.get("cards", [])))}</p>
+  <p style="font-size:.9em;color:var(--ink-soft)">{esc(h.get("why", ""))}</p></div>"""
+        for h in dept.get("hands", []))
+    hands_html = f'<div class="branches">{hands}</div>' if hands else ""
+    return (
+        dept_open("keep-or-ship", plan)
+        + meter + hands_html
+        + f'<div class="body-copy">{prose(prose_doc, "mulligan")}</div>'
+        + dept_captions(dept, cards_by_name)
+        + dept_furniture(dept, cards_by_name)
+        + dept_close("keep-or-ship", issue["volume"])
+    )
+
+
+def render_upgrade_watch(issue, plan, prose_doc, cards_by_name):
+    dept = plan_dept(plan, "upgrade-watch")
+    return (
+        dept_open("upgrade-watch", plan)
+        + f'<div class="body-copy">{prose(prose_doc, "upgrades")}</div>'
+        + dept_furniture(dept, cards_by_name)
+        + dept_close("upgrade-watch", issue["volume"])
+    )
+
+
+def render_judges_desk(issue, plan, stacks):
+    """The proof. Every citation reproduced verbatim — never summarized."""
+    files = []
+    for stack in stacks:
+        sid = stack["id"]
+        checker = stack.get("checker", {})
+        steps = []
+        for step in stack.get("resolution", {}).get("steps", []):
+            cites = "".join(
+                f'<div class="cite"><b>CR {esc(c["rule"])}</b> — “{esc(c["quote"])}”</div>'
+                for c in step.get("citations", [])
+            )
+            steps.append(
+                f'<li><b>{esc(step.get("action", ""))}</b>'
+                f'<div class="effect">{esc(step.get("effect", ""))}</div>{cites}</li>'
+            )
+        files.append(f"""
+<div class="dossier" id="case-{esc(sid)}">
+  <div class="file-tab">Case A-{esc(sid)}</div>
+  <div class="dossier-head">
+    <div><b>{esc(stack["title"])}</b><br>
+      <span style="font-size:.85em;color:var(--ink-soft)">
+        Rules version {esc(stack.get("rules_version", "—"))} ·
+        status: cleared in {esc(checker.get("iterations", "?"))} review cycle(s)</span></div>
+    <div class="stamp">Verified</div>
+  </div>
+  <ol>{"".join(steps)}</ol>
+</div>""")
+    return (
+        dept_open("judges-desk", plan)
+        + '<p class="dek">Every claim the magazine made, with the rule text that backs '
+          "it. Nothing here is paraphrased.</p>"
+        + ("".join(files) or TODO)
+        + dept_close("judges-desk", issue["volume"])
+    )
+
+
+def render_back_page(issue, plan, deck_doc, stacks):
+    sha = str(deck_doc.get("decklist_sha256", ""))[:12]
+    rules_version = stacks[0].get("rules_version", "—") if stacks else "—"
+    return f"""
+<section class="dept" id="back-page" style="--accent:{ACCENT["back-page"]}">
+  <div class="dept-head"><div><h2 class="dept-title">The Back Page</h2></div>
+    <div class="dept-promise">What's in the next issue?</div></div>
+  <div class="kicker">Next issue</div>
+  <h1 class="feature">{esc(issue["next_issue"])}</h1>
+  <p class="dek">Another commander, another 99, the same contract: verified lines,
+    seeded numbers, and coaching that says when it's coaching.</p>
+  {fast_facts("Colophon", [
+      ("Volume", f'{issue["volume"]:03d}'),
+      ("Issue", issue["issue_date"]),
+      ("Deck", issue["deck_name"]),
+      ("Verified lines", len(stacks)),
+      ("Rules version", rules_version),
+      ("Decklist sha", sha or "—"),
+  ])}
+  <p style="font-size:.82em;color:var(--ink-soft);margin-top:18px">
+    Card images and card text are property of Wizards of the Coast. Pilot's Manual is
+    unofficial fan content permitted under the Wizards of the Coast Fan Content Policy,
+    not approved or endorsed by Wizards. Portions of the materials used are property of
+    Wizards of the Coast LLC.</p>
+</section>""" + folio("The Back Page", issue["volume"])
+
+
+# ── Assembly ────────────────────────────────────────────────────────────
+
+
+def render_issue(slug, issue, plan, deck_doc, stacks, prose_doc, synergy,
+                 goldfish=None, decisions=None):
+    """Assemble a complete issue. Deterministic for fixed inputs."""
     cards = deck_doc["cards"]
+    cards_by_name = {c["name"]: c for c in cards}
     commanders = [c for c in cards if c["is_commander"]]
     commander = commanders[0] if commanders else None
-    commander_img = (
-        f'<img src="{esc(commander["image"])}" alt="{esc(commander["name"])}">'
-        if commander and commander.get("image") else ""
-    )
-    title = " & ".join(c["name"] for c in commanders) or slug
-    stack_spreads = "".join(render_stack_spread(s, prose_doc) for s in stacks)
-    if not stack_spreads:
-        stack_spreads = '<section class="spread"><h2>Combo Lines</h2><p class="todo">' \
-            "[TODO: no verified stack scenarios yet — run the resolve-stack skill]</p></section>"
+    decisions = decisions or []
+    volume = issue["volume"]
 
-    goldfish_section = render_goldfish(goldfish)
-    decision_spreads = "".join(render_decision_spread(d) for d in (decisions or []))
-    table_section = f"""
-<section class="spread" id="playing-the-table"><h2>Playing the Table {BADGES["coach"]}</h2>
-  <p>Archetypal board states and the political reads that go with them.
-  These are coaching calls — grounded in the numbers above, decided by judgment.</p>
-  <h3>Threat assessment</h3>
-  {prose(prose_doc, "threat_assessment")}
-</section>""" + decision_spreads
-
-    matchups_section = (
-        f'<section class="spread" id="matchups"><h2>Matchups {BADGES["coach"]}</h2>'
-        f'{prose(prose_doc, "matchups")}</section>'
+    title = f"{issue['deck_name']} — Pilot's Manual Vol. {volume:03d}"
+    og_image = commander.get("image") if commander else ""
+    description = (
+        f"{issue['deck_name']}: {len(stacks)} rules-verified lines, seeded goldfish "
+        f"numbers, and table coaching. Pilot's Manual Vol. {volume:03d}."
     )
 
-    toc_items = ['<a href="#how-it-wins">How the Deck Wins</a>']
-    if goldfish:
-        toc_items.append('<a href="#goldfish">Goldfish Numbers</a>')
-    toc_items += [f'<a href="#stack-{esc(s["id"])}">✓ {esc(s["title"])}</a>' for s in stacks]
-    toc_items.append('<a href="#playing-the-table">Playing the Table</a>')
-    toc_items += [f'<a href="#decision-{esc(d["id"])}">★ {esc(d["title"])}</a>' for d in (decisions or [])]
-    toc_items += ['<a href="#matchups">Matchups</a>', '<a href="#card-roles">Card Roles</a>',
-                  '<a href="#mulligan">Mulligan Guide</a>', '<a href="#upgrades">Upgrade Paths</a>']
-    toc = '<nav class="toc">' + "".join(f"<div>{item}</div>" for item in toc_items) + "</nav>"
+    body = "".join([
+        render_cover(issue, plan, commander, stacks),
+        render_contents(issue, plan, stacks, decisions),
+        render_first_turns(issue, plan, prose_doc, cards_by_name),
+        render_command_zone(issue, plan, commander, goldfish, cards_by_name),
+        render_by_the_numbers(issue, plan, goldfish, cards_by_name),
+        render_the_kill(issue, plan, stacks, prose_doc, cards_by_name),
+        render_politics(issue, plan, prose_doc, cards_by_name),
+        render_whats_your_play(issue, plan, decisions, cards_by_name),
+        render_know_your_enemy(issue, plan, prose_doc, cards_by_name),
+        render_the_99(issue, plan, cards, prose_doc, synergy),
+        render_keep_or_ship(issue, plan, prose_doc, goldfish, cards_by_name),
+        render_upgrade_watch(issue, plan, prose_doc, cards_by_name),
+        render_judges_desk(issue, plan, stacks),
+        render_back_page(issue, plan, deck_doc, stacks),
+    ])
 
-    tagline = prose_doc.get("cover", {}).get("tagline", "")
-    og_image = (
-        f'\n<meta property="og:image" content="{esc(commander["image"])}">'
-        if commander and commander.get("image") else ""
-    )
     return f"""<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
+<html lang="en"><head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{esc(title)} — Pilot's Manual</title>
-<meta property="og:title" content="{esc(title)} — Pilot's Manual">
-<meta property="og:description" content="{esc(tagline) or 'A machine-verified Commander pilot manual.'}">
-<meta property="og:type" content="article">{og_image}
-<meta name="twitter:card" content="summary_large_image">
-<style>{CSS}</style></head><body><div class="page">
-
-<section class="spread cover">
-  <h1>{esc(title)}</h1>
-  <div class="tagline">{esc(prose_doc.get("cover", {}).get("tagline", "")) or
-                        '<span class="todo">[TODO: tagline]</span>'}</div>
-  {commander_img}
-  {prose(prose_doc, "cover", "identity")}
-  {LEGEND}
-  {toc}
-  <p class="footer">A verified pilot's manual · {esc(slug)} · {len(stacks)} verified line(s)</p>
-</section>
-
-<section class="spread" id="how-it-wins"><h2>How the Deck Wins</h2>{prose(prose_doc, "how_it_wins")}</section>
-
-{goldfish_section}
-
-{stack_spreads}
-
-{table_section}
-
-{matchups_section}
-
-<section class="spread" id="card-roles"><h2>Card Roles {BADGES["coach"]}</h2>
-  <div class="cards">{render_card_roles(cards, prose_doc, synergy)}</div>
-  {render_sideboard(cards, prose_doc)}
-</section>
-
-<section class="spread" id="mulligan"><h2>Mulligan Guide {BADGES["coach"]}</h2>{prose(prose_doc, "mulligan")}</section>
-
-<section class="spread" id="upgrades"><h2>Upgrade Paths {BADGES["data"]}</h2>{prose(prose_doc, "upgrades")}</section>
-
-<p class="footer">Every combo line above is machine-verified: each resolution step cites the
-Magic Comprehensive Rules, and every citation was checked against the full rule text.</p>
+<title>{esc(title)}</title>
+<meta name="description" content="{esc(description)}">
+<meta property="og:title" content="{esc(title)}">
+<meta property="og:description" content="{esc(description)}">
+<meta property="og:type" content="article">
+{f'<meta property="og:image" content="{esc(og_image)}">' if og_image else ""}
+{FONT_LINK}
+<style>{CSS}</style>
+</head><body><div class="trim">
+{body}
 </div></body></html>
 """
 
 
 def main(args):
-    deck_doc = load_deck_cards(args.slug)
-    stacks, skipped = load_verified_stacks(args.slug)
-    if skipped:
-        print(f"  Skipping {len(skipped)} unverified stack(s): {', '.join(skipped)}")
+    slug = args.slug
+    base = deck_dir(slug)
+    issue = load_json(base / "issue.json")
+    if issue is None:
+        raise SystemExit(
+            f"{base / 'issue.json'} not found — author the issue identity block "
+            f"(volume, issue_date, cover_price, deck_name, commander, cover_tagline, "
+            f"next_issue). See STYLEv3 §4.1."
+        )
+    plan = load_json(base / "issue_plan.json", {})
+    if not plan:
+        print("WARN issue_plan.json absent — rendering with department defaults "
+              "(run the design-issue skill for the full magazine treatment)")
 
-    prose_path = deck_dir(args.slug) / "manual_prose.json"
-    prose_doc = {}
-    if prose_path.exists():
-        with open(prose_path) as f:
-            prose_doc = json.load(f)
-    else:
-        print(f"  {prose_path.name} not found — building with [TODO] placeholders.")
+    deck_doc = load_deck_cards(slug)
+    stacks = load_verified_stacks(slug)
+    decisions = load_decisions(slug)
+    prose_doc = load_json(base / "manual_prose.json", {})
+    goldfish = load_json(base / "goldfish_metrics.json")
+    synergy = load_json(SYNERGY_GRAPH_PATH, {})
 
-    synergy = {}
-    if SYNERGY_GRAPH_PATH.exists():
-        with open(SYNERGY_GRAPH_PATH) as f:
-            synergy = json.load(f)
-
-    goldfish = None
-    goldfish_path = deck_dir(args.slug) / "goldfish_metrics.json"
-    if goldfish_path.exists():
-        with open(goldfish_path) as f:
-            goldfish = json.load(f)
-
-    decisions = load_decisions(args.slug)
-
-    MANUALS_DIR.mkdir(exist_ok=True)
-    out = MANUALS_DIR / f"{args.slug}.html"
-    out.write_text(
-        render_manual(args.slug, deck_doc, stacks, prose_doc, synergy, goldfish, decisions),
-        encoding="utf-8",
-    )
+    html_out = render_issue(slug, issue, plan, deck_doc, stacks, prose_doc, synergy,
+                            goldfish, decisions)
+    MANUALS_DIR.mkdir(parents=True, exist_ok=True)
+    out = MANUALS_DIR / f"{slug}.html"
+    out.write_text(html_out, encoding="utf-8")
     print(
-        f"Wrote {out} ({len(stacks)} verified line(s), "
-        f"{len(decisions)} decision spread(s), goldfish: {'yes' if goldfish else 'no'})"
+        f"Wrote {out}: Vol. {issue['volume']:03d} · {len(stacks)} verified line(s), "
+        f"{len(decisions)} decision spread(s), goldfish: {'yes' if goldfish else 'no'}, "
+        f"plan: {'yes' if plan else 'defaults'}"
     )
 
 

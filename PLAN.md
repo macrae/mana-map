@@ -13,6 +13,21 @@ brains of the operation"). Three decks: `goblin-storm` (LIVE, deployed),
 `hapatra`, `edgar-vampires` (scaffolded, blocked on decklists). Shareable at the
 MagicCon release via the manuals gallery.
 
+## Magazine layer (2026-07-25)
+
+`STYLEv3.md` is the design constitution — each deck is now a complete **issue** of
+*Pilot's Manual*: fourteen fixed departments, a cover with masthead/volume/violators,
+a mandatory **Command Zone** department (tax ladder, color identity, the 21-damage
+clock), and **Judge's Desk** carrying the full rules dossiers with every citation
+verbatim. `magazine-editor` agent plans the issue as data (`issue_plan.json`),
+`validate-issue` gates it mechanically, and the deterministic renderer builds it.
+Vol. 001 (goblin-storm) is rendered. See docs/pilot.md "The magazine layer".
+
+Deferred: exact printing fidelity in `fetch_deck.py` (set/collector number → real
+Secret Lair art, artist credit, foil treatment). The renderer already prefers
+`art_crop`/`artist` and degrades to the stored image, so it slots in with no layout
+change.
+
 ## Current state (2026-07-24, all pushed & deployed)
 
 - **goblin-storm manual v2.1 is live**: https://macrae.github.io/mana-map/manuals/goblin-storm.html

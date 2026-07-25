@@ -1,13 +1,43 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PILOT&#x27;S MANUAL — MANA MAP</title>
-<meta name="description" content="Commander deck magazines: every combo line cites the Comprehensive Rules, every number is reproducible, and coaching says when it's coaching.">
-<meta property="og:title" content="PILOT&#x27;S MANUAL — MANA MAP">
-<meta property="og:description" content="Commander deck magazines with a three-tier evidence contract.">
-<meta property="og:type" content="website">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bangers&family=Inter:wght@400;600;800&family=Michroma&family=Oswald:wght@500;700&family=Special+Elite&display=swap" rel="stylesheet">
-<style>
+"""Pilot: the Pilot's Manual design system (STYLEv3 §8).
+
+The visual layer of the magazine: design tokens, the stylesheet, and the fixed
+component library the issue plan composes from. Kept separate from
+build_manual.py so the renderer reads as editorial assembly and the costume
+lives in one place.
+
+Everything here is deterministic — no dates, no randomness. Where a "varied"
+treatment is wanted (violator angles, tape rotation), it derives from a stable
+hash of the content so the same input always renders the same page.
+"""
+
+import hashlib
+import html
+
+# Google Fonts: Michroma (Eurostile-class display), Archivo Black + Oswald
+# (condensed feature heads), Bangers (comic slugs), Special Elite (typewriter),
+# Inter (body). All free/OFL.
+FONT_LINK = (
+    '<link rel="preconnect" href="https://fonts.googleapis.com">'
+    '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
+    '<link href="https://fonts.googleapis.com/css2?'
+    "family=Archivo+Black&family=Bangers&family=Inter:wght@400;600;800&"
+    "family=Michroma&family=Oswald:wght@500;700&family=Special+Elite&"
+    'display=swap" rel="stylesheet">'
+)
+
+
+def esc(value):
+    """Escape for HTML text/attribute context."""
+    return html.escape(str(value if value is not None else ""), quote=True)
+
+
+def stable_angle(text, spread=5.0):
+    """Deterministic small rotation from content — same text, same tilt."""
+    digest = hashlib.sha256(str(text).encode("utf-8")).digest()[0]
+    return round((digest / 255.0) * 2 * spread - spread, 2)
+
+
+CSS = """
 /* ── Tokens ─────────────────────────────────────────────────────────── */
 :root {
   --paper:#F4EFE4; --ink:#1A1714; --ink-soft:#4A4038; --rule:#1A1714;
@@ -232,7 +262,7 @@ figcaption b { color:var(--ink); font-family:var(--condensed); text-transform:up
 .teases li { font-family:var(--condensed); font-weight:700; text-transform:uppercase;
              font-size:clamp(12px,1.6vw,15px); letter-spacing:.05em; padding:7px 0 7px 24px;
              border-top:2px solid var(--ink); position:relative; }
-.teases li::before { content:"\25B6"; position:absolute; left:0; color:var(--power-red); }
+.teases li::before { content:"\\25B6"; position:absolute; left:0; color:var(--power-red); }
 .barcode { display:flex; gap:1.5px; align-items:flex-end; height:38px; margin-top:14px; }
 .barcode i { display:block; width:2px; background:var(--ink); }
 
@@ -284,48 +314,111 @@ table.data tr:nth-child(even) td { background:rgba(255,255,255,.45); }
 }
 @media (prefers-reduced-motion:reduce) { * { transition:none!important; animation:none!important; } }
 @media print { .trim { box-shadow:none; } body { background:#fff; } }
+"""
 
-.newsstand { padding:40px 34px 60px; }
-.stand-head { text-align:center; border-bottom:5px solid var(--ink); padding-bottom:20px;
-              margin-bottom:34px; }
-.rack { display:grid; gap:30px; grid-template-columns:repeat(auto-fill,minmax(268px,1fr)); }
-a.issue { display:block; text-decoration:none; color:inherit; background:#fff;
-          border:4px solid var(--ink); box-shadow:9px 9px 0 rgba(0,0,0,.28);
-          transition:transform .12s ease, box-shadow .12s ease; position:relative; }
-a.issue:hover { transform:translate(-3px,-3px); box-shadow:13px 13px 0 rgba(0,0,0,.32); }
-a.issue .vol { background:var(--ink); color:var(--paper); font-family:var(--condensed);
-               text-transform:uppercase; letter-spacing:.2em; font-size:11px;
-               padding:6px 11px; display:flex; justify-content:space-between; }
-a.issue img { width:100%; border-bottom:3px solid var(--ink); }
-a.issue .meta { padding:13px 14px 16px; }
-a.issue h2 { font-family:var(--display); text-transform:uppercase; font-size:1.22em;
-             margin:0 0 5px; line-height:1; }
-a.issue .tag { color:var(--ink-soft); font-size:.9em; margin-bottom:10px; }
-a.issue .stats { display:flex; flex-wrap:wrap; gap:5px; }
-.stand-foot { text-align:center; margin-top:44px; font-size:.86em; color:var(--ink-soft); }
-</style></head>
-<body><div class="trim"><div class="newsstand">
-  <div class="stand-head">
-    <h1 class="masthead">MANA MAP</h1>
-    <div class="series-slug">PILOT&#x27;S MANUAL</div>
-    <p class="dek" style="margin:16px auto 0">THE INSIDE SOURCE FOR YOUR COMMAND ZONE — one deck per issue.
-      Every combo line machine-checked against the Comprehensive Rules, every number
-      reproducible, and coaching labeled as coaching.</p>
-    <div class="barcode"><i style="height:36px;width:1px"></i><i style="height:31px;width:3px"></i><i style="height:36px;width:1px"></i><i style="height:31px;width:2px"></i><i style="height:24px;width:2px"></i><i style="height:34px;width:2px"></i><i style="height:27px;width:2px"></i><i style="height:35px;width:1px"></i><i style="height:36px;width:1px"></i><i style="height:30px;width:3px"></i><i style="height:35px;width:2px"></i><i style="height:25px;width:1px"></i><i style="height:27px;width:2px"></i><i style="height:23px;width:1px"></i><i style="height:36px;width:1px"></i><i style="height:25px;width:2px"></i><i style="height:23px;width:1px"></i><i style="height:26px;width:3px"></i><i style="height:22px;width:2px"></i><i style="height:22px;width:2px"></i><i style="height:32px;width:1px"></i><i style="height:29px;width:3px"></i><i style="height:26px;width:3px"></i><i style="height:25px;width:1px"></i><i style="height:32px;width:2px"></i><i style="height:24px;width:1px"></i><i style="height:30px;width:2px"></i><i style="height:34px;width:2px"></i></div>
-  </div>
-  <div class="rack">
-  <a class="issue" href="goblin-storm.html">
-    <div class="vol"><span>Vol. 001</span><span>August 2026</span></div>
-    <img src="https://cards.scryfall.io/normal/front/4/5/4520cdcc-a10f-4b39-9c6f-ba86f6aa2c87.jpg?1783915638" alt="Zada, Hedron Grinder" loading="lazy">
-    <div class="meta">
-      <h2>GOBLIN STORM</h2>
-      <div class="tag">THE HAZE LOOP</div>
-      <div class="tag" style="font-size:.82em">Zada, Hedron Grinder ·
-        5 verified line(s) · 2 decision spread(s)</div>
-      <div class="stats"><span class="badge badge-verified">✓ RULES-VERIFIED</span><span class="badge badge-coach">★ COACHING</span><span class="badge badge-data">◆ DATA-DERIVED</span></div>
-    </div>
-  </a></div>
-  <p class="stand-foot">Built by the Mana Map pilot subsystem ·
-    <a href="../viz/index.html">explore the card map</a><br>
-    Unofficial fan content permitted under the Wizards of the Coast Fan Content Policy.</p>
-</div></div></body></html>
+
+# ── Component builders ──────────────────────────────────────────────────
+
+
+def badge(tier):
+    """Tier badge markup. Costume never earns the badge — STYLEv3 §10."""
+    glyphs = {
+        "verified": ("✓", "RULES-VERIFIED", "badge-verified"),
+        "data": ("◆", "DATA-DERIVED", "badge-data"),
+        "coach": ("★", "COACHING", "badge-coach"),
+    }
+    glyph, label, cls = glyphs[tier]
+    return f'<span class="badge {cls}">{glyph} {label}</span>'
+
+
+def violator(text, plain=False):
+    """Starburst violator. Angle is content-derived, so renders identically."""
+    angle = stable_angle(text, 9)
+    cls = "violator plain" if plain else "violator"
+    return (f'<div class="{cls}" style="transform:rotate({angle}deg)">{esc(text)}</div>')
+
+
+def pilot_tip(card_name, text, image=None):
+    """GamePro ProTip formula: image + slug + one imperative sentence."""
+    img = f'<img src="{esc(image)}" alt="{esc(card_name)}" loading="lazy">' if image else "<div></div>"
+    return (
+        f'<div class="pilot-tip">{img}<div>'
+        f'<span class="slug">Pilot Tip</span>{esc(text)}</div></div>'
+    )
+
+
+def fast_facts(title, pairs):
+    """Spec-sheet box: label/value pairs with tabular figures."""
+    rows = "".join(f"<dt>{esc(k)}</dt><dd>{esc(v)}</dd>" for k, v in pairs)
+    return (
+        f'<div class="fast-facts"><div class="ff-head">{esc(title)}</div>'
+        f"<dl>{rows}</dl></div>"
+    )
+
+
+def power_meter(label, rate, segments=20):
+    """Segmented bar for a ◆ rate. `rate` is 0..1."""
+    filled = max(0, min(segments, round(rate * segments)))
+    segs = "".join(
+        f'<span class="meter-seg{" on" if i < filled else ""}"></span>'
+        for i in range(segments)
+    )
+    return (
+        f'<div class="meter"><div class="meter-label"><span>{esc(label)}</span>'
+        f"<b>{rate:.0%}</b></div>"
+        f'<div class="meter-track">{segs}</div></div>'
+    )
+
+
+def callout(n, title, text):
+    """Numbered play-sequence step with an all-caps mini-headline."""
+    return (
+        f'<div class="callout"><div class="n">{esc(n)}</div><div>'
+        f'<span class="t">{esc(title)}</span>{esc(text)}</div></div>'
+    )
+
+
+def threat_box(name, meter_label, rate, body_html):
+    return (
+        f'<div class="threat-box"><div class="tb-head"><span>{esc(name)}</span>'
+        f"<span>{esc(meter_label)}</span></div>"
+        f'<div class="tb-body">{power_meter("Threat level", rate)}{body_html}</div></div>'
+    )
+
+
+def pull_quote(text):
+    return f'<blockquote class="pull-quote">{esc(text)}</blockquote>'
+
+
+def map_key(entries):
+    """Icon legend — one consistent set across every issue."""
+    items = "".join(f"<span>{esc(icon)} {esc(label)}</span>" for icon, label in entries)
+    return f'<div class="map-key">{items}</div>'
+
+
+def card_figure(name, image, caption_html, scryfall_uri=None):
+    """Hero/feature card image with a teaching caption (STYLEv3 §7.4)."""
+    if not image:
+        return ""
+    img = f'<img src="{esc(image)}" alt="{esc(name)}" loading="lazy">'
+    if scryfall_uri:
+        img = f'<a href="{esc(scryfall_uri)}">{img}</a>'
+    return f'<figure class="card-fig">{img}<figcaption>{caption_html}</figcaption></figure>'
+
+
+def folio(department_title, volume, page_note=""):
+    right = esc(page_note) if page_note else f"VOL. {volume:03d}"
+    return (
+        f'<div class="folio"><strong>{esc(department_title)}</strong>'
+        f"<span>MANA MAP · {right}</span></div>"
+    )
+
+
+def barcode(seed):
+    """Deterministic decorative barcode derived from the issue identity."""
+    digest = hashlib.sha256(str(seed).encode("utf-8")).digest()
+    bars = "".join(
+        f'<i style="height:{22 + (b % 17)}px;width:{1 + (b % 3)}px"></i>'
+        for b in digest[:28]
+    )
+    return f'<div class="barcode">{bars}</div>'
