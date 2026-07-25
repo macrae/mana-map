@@ -16,6 +16,7 @@ PILOT_STEPS = [
     ("lookup-rule", "manamap.pilot.query_rules", "Exact rule fetch by number"),
     ("validate-stack", "manamap.pilot.validate_stack", "Enforce the citation contract on scenarios"),
     ("goldfish", "manamap.pilot.goldfish", "Seeded Monte Carlo resource-development metrics"),
+    ("artist-credits", "manamap.pilot.artist_credits", "Standout artists and art themes in a deck"),
     ("build-manual", "manamap.pilot.build_manual", "Render the zine HTML from verified artifacts"),
     ("build-index", "manamap.pilot.build_index", "Render the manuals/index.html gallery"),
     ("validate-issue", "manamap.pilot.validate_issue", "Form-check issue.json + issue_plan.json"),
@@ -30,7 +31,7 @@ PILOT_STEPS = [
 
 _DECK_COMMANDS = {
     "fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual",
-    "validate-issue", "cache-status", "cache-record", "cache-clear",
+    "validate-issue", "cache-status", "cache-record", "cache-clear", "artist-credits",
 }
 
 
@@ -58,6 +59,8 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "lookup-strategy":
             cmd.add_argument("section_id", help="Exact section id, e.g. strategy:tempo")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "artist-credits":
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "cache-status":
             cmd.add_argument("--routine", default=None,

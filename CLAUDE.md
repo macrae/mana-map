@@ -42,9 +42,9 @@ manamap run                   # full 12-step pipeline (steps 1 & 7 need internet
 manamap run --from STEP       # resume from a step
 manamap <step>                # single step; see `manamap --help` for the 13 subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions   # fast analysis-only refresh
-manamap pilot <cmd>           # pilot's-manual subsystem (18 subcommands) — see docs/pilot.md
+manamap pilot <cmd>           # pilot's-manual subsystem (19 subcommands) — see docs/pilot.md
 
-.venv/bin/python -m pytest    # 428 tests; data-dependent ones skip if artifacts missing
+.venv/bin/python -m pytest    # 467 tests; data-dependent ones skip if artifacts missing
 
 python -m http.server 8000    # serve viz FROM REPO ROOT
 # http://localhost:8000/viz/index.html

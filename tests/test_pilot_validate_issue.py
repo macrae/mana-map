@@ -172,9 +172,49 @@ def test_departments_are_stable_across_issues():
     assert DEPARTMENT_IDS[-1] == "back-page"
     assert "command-zone" in DEPARTMENT_IDS      # the Commander Mandate
     assert "judges-desk" in DEPARTMENT_IDS       # the proof
-    assert len(DEPARTMENT_IDS) == 14
+    assert "featured-artist" in DEPARTMENT_IDS   # who painted your deck
+    assert len(DEPARTMENT_IDS) == 15
 
 
 def test_canonical_plan_has_no_adjacent_dense_departments():
     """The shipped department order must itself satisfy the rhythm rule."""
     assert validate_plan(good_plan(), CARD_NAMES) == []
+
+
+# ── Featured Artist ──────────────────────────────────────────────────────
+
+ARTISTS = {"Wizard of Barge", "Jesper Ejsing"}
+
+
+def test_featured_artist_must_have_painted_a_card():
+    plan = good_plan()
+    for dept in plan["departments"]:
+        if dept["id"] == "featured-artist":
+            dept["featured"] = {"artist": "Rembrandt", "note": "Nope."}
+    errors = validate_plan(plan, CARD_NAMES, ARTISTS)
+    assert any("painted no card" in e for e in errors)
+
+
+def test_also_worth_noting_artists_are_checked_too():
+    plan = good_plan()
+    for dept in plan["departments"]:
+        if dept["id"] == "featured-artist":
+            dept["also_worth_noting"] = [{"artist": "Nobody At All", "note": "x"}]
+    assert any("painted no card" in e for e in validate_plan(plan, CARD_NAMES, ARTISTS))
+
+
+def test_real_artists_pass():
+    plan = good_plan()
+    for dept in plan["departments"]:
+        if dept["id"] == "featured-artist":
+            dept["featured"] = {"artist": "Wizard of Barge", "note": "The drop."}
+            dept["also_worth_noting"] = [{"artist": "Jesper Ejsing", "note": "Four."}]
+    assert validate_plan(plan, CARD_NAMES, ARTISTS) == []
+
+
+def test_artist_checks_skipped_when_unavailable():
+    plan = good_plan()
+    for dept in plan["departments"]:
+        if dept["id"] == "featured-artist":
+            dept["featured"] = {"artist": "Anyone", "note": "x"}
+    assert validate_plan(plan, CARD_NAMES, None) == []

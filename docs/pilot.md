@@ -175,7 +175,7 @@ Run via the `resolve-stack` skill: `stack-resolver` agent drafts → `validate-s
 
 ## The magazine layer (STYLEv3)
 
-Each deck is a complete **issue** of *Pilot's Manual* — fourteen fixed departments in
+Each deck is a complete **issue** of *Pilot's Manual* — fifteen fixed departments in
 a fixed order, so readers learn the publication once and navigate it forever. The
 design authority is `STYLEv3.md` (editorial laws, the Commander Mandate, department
 specs, voice, component library); `docs/history/STYLE-v1-visual-research.md` and
@@ -192,7 +192,7 @@ specs, voice, component library); `docs/history/STYLE-v1-visual-research.md` and
   kicker/headline/dek, captions, PILOT TIPs, callouts, pull quotes, roster grouping,
   threat boxes, sample hands. `manual_prose.json` remains the body-copy layer; the
   renderer merges them.
-- **`validate-issue`** — the mechanical gate: identity block complete, all fourteen
+- **`validate-issue`** — the mechanical gate: identity block complete, all fifteen
   departments present in canonical order, copy completeness, components from the fixed
   library, **tier costume never overridden**, every PILOT TIP / caption / roster card
   name real, and no two dense departments adjacent.

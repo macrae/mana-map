@@ -36,6 +36,8 @@ DEPARTMENTS = [
      "Who beats me, and why?", ("coach",), True),
     ("the-99", "The 99",
      "Why is each card in here?", ("coach",), True),
+    ("featured-artist", "Featured Artist",
+     "Who painted your deck?", ("data", "coach"), True),
     ("keep-or-ship", "Keep or Ship",
      "Should I keep this hand?", ("coach", "data"), True),
     ("upgrade-watch", "Upgrade Watch",
@@ -58,7 +60,8 @@ INTENSITY = {
     "cover": "peak", "contents": "low", "first-turns": "high",
     "command-zone": "medium", "by-the-numbers": "medium", "the-kill": "peak",
     "politics-table": "medium", "whats-your-play": "high",
-    "know-your-enemy": "medium", "the-99": "low", "keep-or-ship": "medium",
+    "know-your-enemy": "medium", "the-99": "low", "featured-artist": "low",
+    "keep-or-ship": "medium",
     "upgrade-watch": "low", "judges-desk": "low", "back-page": "low",
 }
 
@@ -71,7 +74,7 @@ MODE = {
     # precisely what makes it the breather after By the Numbers (STYLEv3 §6).
     "the-kill": "narrative", "politics-table": "reflection",
     "whats-your-play": "participation", "know-your-enemy": "reference",
-    "the-99": "browsing", "keep-or-ship": "practice",
+    "the-99": "browsing", "featured-artist": "appreciation", "keep-or-ship": "practice",
     "upgrade-watch": "imagination", "judges-desk": "reference",
     "back-page": "closure",
 }
@@ -81,7 +84,7 @@ MODE = {
 COMPONENTS = {
     "violator", "pilot-tip", "fast-facts", "power-meter", "callout-step",
     "threat-box", "scenario-box", "dossier-file", "map-key", "pull-quote",
-    "folio", "tax-ladder",
+    "folio", "tax-ladder", "artist-gallery",
 }
 
 # Issue identity fields required in data/decks/<slug>/issue.json.

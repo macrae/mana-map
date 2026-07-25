@@ -133,6 +133,30 @@ def cards_semantic_digest(path):
     return json_sha256(cards)
 
 
+# How cards *look*. Only the magazine-editor reads this (Featured Artist), so
+# it is a separate token rather than part of CARD_SEMANTIC_FIELDS — adding it
+# there would needlessly invalidate coach, writer, stacks and decisions, none of
+# which reason about art.
+CARD_PRINTING_FIELDS = (
+    "name", "artist", "set", "set_name", "collector_number",
+    "border_color", "frame_effects", "finishes", "foil",
+)
+
+
+def cards_printing_digest(path):
+    """Digest the printing identity of every card — artist, set, treatment."""
+    if not path.exists():
+        return None
+    with open(path) as f:
+        doc = json.load(f)
+    cards = [
+        {k: card.get(k) for k in CARD_PRINTING_FIELDS}
+        for card in doc.get("cards", [])
+    ]
+    cards.sort(key=lambda c: str(c.get("name")))
+    return json_sha256(cards)
+
+
 def prose_shape(path):
     """manual_prose.json's key skeleton with all leaf text dropped.
 
@@ -286,6 +310,11 @@ def resolve_inputs(slug, spec):
             if not path.exists():
                 raise MissingInput(f"{rel(path)} is required by this routine but missing")
             extra["cards_semantic"] = cards_semantic_digest(path)
+        elif token == "cards:printing":
+            path = base / "cards.json"
+            if not path.exists():
+                raise MissingInput(f"{rel(path)} is required by this routine but missing")
+            extra["cards_printing"] = cards_printing_digest(path)
         elif token == "strategy:doc":
             extra["strategy_doc_sha256"] = strategy_doc_digest()
         elif token == "prose:shape":

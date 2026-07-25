@@ -103,6 +103,11 @@ writes back never self-invalidate.
 but own disjoint keys; each digests only its own keys, so one running doesn't make the
 other look hand-edited.
 
+**Art is a separate token.** `cards:printing` (artist, set, collector number, border,
+frame effects, finishes, foil) is an input to `issue-plan` only, because the
+magazine-editor is the one agent that reads it — Featured Artist names an artist. Coach,
+writer, stacks and decisions don't reason about art, so they never see it.
+
 **Only passing stacks are inputs.** A failing stack can't be published, so editing one
 doesn't invalidate downstream prose — but flipping it to `pass` does.
 

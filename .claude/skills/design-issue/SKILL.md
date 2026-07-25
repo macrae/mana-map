@@ -39,7 +39,7 @@ Turns `data/decks/<slug>/` artifacts into `manuals/<slug>.html` — a complete i
    enough to change the issue's angle, since prose *wording* is deliberately not a
    cache input (only its structure is).
 3. **Validate.** `.venv/bin/manamap pilot validate-issue <slug>` — checks identity
-   block, all 14 departments in canonical order, copy completeness, component library,
+   block, all 15 departments in canonical order, copy completeness, component library,
    tier-costume integrity, card-name accuracy, and rhythm. On failure, re-spawn the
    editor with the errors and **do not record**; do not hand-fix content beyond
    mechanical formatting. On success:

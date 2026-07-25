@@ -13,6 +13,7 @@ Checks:
 - tier costume is never overridden (a department can't claim a badge the
   department system doesn't grant it)
 - pilot tips and captions name cards that actually exist in the deck
+- a featured artist actually painted a card in the deck
 """
 
 import json
@@ -45,7 +46,7 @@ def validate_identity(issue):
     return errors
 
 
-def validate_plan(plan, card_names=None):
+def validate_plan(plan, card_names=None, artists=None):
     """Check an issue plan. Returns error strings (empty = form holds)."""
     errors = []
 
@@ -78,7 +79,7 @@ def validate_plan(plan, card_names=None):
         errors.append(f"unknown department id(s): {unknown}")
     absent = [i for i in DEPARTMENT_IDS if i not in seen]
     if absent:
-        errors.append(f"missing department(s): {absent} — all 14 render every issue")
+        errors.append(f"missing department(s): {absent} — all 15 render every issue")
     ordered = [i for i in seen if i in DEPARTMENT_BY_ID]
     if ordered != [i for i in DEPARTMENT_IDS if i in ordered]:
         errors.append("departments are out of canonical order (STYLEv3 §5)")
@@ -125,6 +126,16 @@ def validate_plan(plan, card_names=None):
                             f"{card!r}, not in the deck"
                         )
 
+        if artists is not None:
+            named = [(dept.get("featured") or {}).get("artist")]
+            named += [o.get("artist") for o in dept.get("also_worth_noting", [])]
+            for artist in [a for a in named if a]:
+                if artist not in artists:
+                    errors.append(
+                        f"{where}: names artist {artist!r}, who painted no card in "
+                        f"this deck"
+                    )
+
     # Rhythm: no two dense departments adjacent (STYLEv3 §6).
     for a, b in zip(ordered, ordered[1:]):
         if MODE.get(a) in DENSE_MODES and MODE.get(b) in DENSE_MODES:
@@ -160,12 +171,14 @@ def main(args):
         plan = json.load(f)
 
     try:
-        card_names = {c["name"] for c in load_deck_cards(args.slug)["cards"]}
+        deck_cards = load_deck_cards(args.slug)["cards"]
+        card_names = {c["name"] for c in deck_cards}
+        artists = {c["artist"] for c in deck_cards if c.get("artist")}
     except FileNotFoundError:
-        card_names = None
+        card_names = artists = None
         print("WARN cards.json absent — skipping card-name checks")
 
-    errors += validate_plan(plan, card_names)
+    errors += validate_plan(plan, card_names, artists)
 
     if errors:
         print(f"FAIL issue plan for {args.slug} ({len(errors)} error(s)):")

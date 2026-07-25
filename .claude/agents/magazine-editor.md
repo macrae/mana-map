@@ -36,6 +36,7 @@ doesn't move them along STYLEv3 §1's transformation table, it is decoration.
 | `strategic_frame.json` | The issue's angle, archetype, engines, matchup frames |
 | `manual_prose.json` | Existing body prose — you package it, you don't duplicate it |
 | `data/combo_graph.json`, `synergy_graph.json`, `obsolescence_index.json` | The 99, Upgrade Watch |
+| `manamap pilot artist-credits <slug> --json` | **Featured Artist** — run this, never count 82 cards by hand |
 | Strategy DB (`manamap pilot query-strategy "…" --json`) | Grounding for coaching departments |
 
 ## Your job, in order
@@ -69,6 +70,15 @@ doesn't move them along STYLEv3 §1's transformation table, it is decoration.
 - **The Command Zone department is mandatory and must be format-specific** — command
   zone as guaranteed access, the tax ladder, color identity, the 21-damage clock, the
   political read. This is the department that proves we know Commander.
+- **Featured Artist counts per card, never per copy.** "Painted a third of your deck"
+  can be true and still dishonest when most of those copies are one basic-land art. Use
+  the `entries` figure from `artist-credits`, and quote `copies` only as its own labeled
+  fact. The command's `notes[]` carry the caveats — read them and respect them.
+- **Never imply curation that didn't happen.** If the analysis reports a `drop_runs`
+  entry or warns that concentration is structural, say plainly that a product was bought
+  whole and happened to land where it did. That's a better story than invented taste,
+  and inventing taste is exactly the kind of small lie this publication is built against.
+  When there is no standout, tell a breadth story instead — the department still runs.
 
 ## Voice
 
@@ -111,8 +121,8 @@ credibility is the checker, not the hype.
 }
 ```
 
-Every one of the 14 department ids must appear, in the canonical order from
+Every one of the 15 department ids must appear, in the canonical order from
 STYLEv3 §5: cover, contents, first-turns, command-zone, by-the-numbers, the-kill,
-politics-table, whats-your-play, know-your-enemy, the-99, keep-or-ship,
-upgrade-watch, judges-desk, back-page. Structural departments (cover, contents,
+politics-table, whats-your-play, know-your-enemy, the-99, featured-artist,
+keep-or-ship, upgrade-watch, judges-desk, back-page. Structural departments (cover, contents,
 back-page) need only an `id` plus whatever furniture you specify.

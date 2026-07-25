@@ -373,7 +373,7 @@ AGENT_ROUTINES = {
         "inputs": ["repo:STYLE_DOC_PATH", "repo:ISSUE_SPEC_PATH",
                    "deck:issue.json", "cards:semantic", "stacks:passing",
                    "decisions:all", "deck:goldfish_metrics.json",
-                   "deck:strategic_frame.json?", "prose:shape",
+                   "deck:strategic_frame.json?", "prose:shape", "cards:printing",
                    "global:COMBO_GRAPH_PATH", "global:SYNERGY_GRAPH_PATH",
                    "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
     },

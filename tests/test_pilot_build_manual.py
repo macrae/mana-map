@@ -1,4 +1,5 @@
 """Issue renderer: department completeness, contract integrity, determinism, escaping."""
+import copy
 
 from manamap.pilot.build_manual import render_issue
 from manamap.pilot.design import esc
@@ -116,6 +117,8 @@ PLAN = {
                       "read": "This is the one.", "outs": ["Vandalblast"]}]},
         {"id": "the-99", "kicker": "ROSTER", "headline": "EVERY SLOT", "dek": "A dek.",
          "roster": [{"role": "The engine", "cards": ["Payoff Engine"]}]},
+        {"id": "featured-artist", "kicker": "THE GALLERY", "headline": "WHO PAINTED THIS",
+         "dek": "A dek."},
         {"id": "keep-or-ship", "kicker": "DRILL", "headline": "FOUR SEVENS", "dek": "A dek.",
          "hands": [{"verdict": "KEEP", "cards": ["Mountain"], "why": "Enough mana."}]},
         {"id": "upgrade-watch", "kicker": "INSIDE", "headline": "SHOPPING LIST",
@@ -289,3 +292,80 @@ def test_html_is_escaped():
     html_out = render(deck_doc=doc, prose_doc=prose)
     assert "<script>alert" not in html_out
     assert "&lt;script&gt;" in html_out
+
+
+# ── Featured Artist ──────────────────────────────────────────────────────
+
+
+def artist_deck():
+    """A deck with a clear standout artist and a secondary cluster."""
+    doc = deck_doc()
+    for card in doc["cards"]:
+        card.update(artist="Lead Artist", set="sld", set_name="Secret Lair Drop",
+                    collector_number="100", border_color="borderless",
+                    frame_effects=["inverted"], finishes=["foil"], foil=True,
+                    art_crop="https://img/crop.jpg")
+    for i, name in enumerate(["Extra One", "Extra Two", "Extra Three"]):
+        doc["cards"].append({
+            "name": name, "is_commander": False, "is_sideboard": False, "quantity": 1,
+            "type_line": "Instant", "image": f"https://img/{i}.jpg",
+            "artist": "Other Artist", "set": "plst", "set_name": "The List",
+            "collector_number": f"X-{i}", "border_color": "black",
+            "frame_effects": [], "finishes": ["nonfoil"], "foil": False,
+        })
+    return doc
+
+
+def test_featured_artist_renders_standout_and_gallery():
+    plan = copy.deepcopy(PLAN)
+    for dept in plan["departments"]:
+        if dept["id"] == "featured-artist":
+            dept["featured"] = {"artist": "Lead Artist", "note": "One drop, bought whole."}
+            dept["also_worth_noting"] = [{"artist": "Other Artist", "note": "Three more."}]
+    html_out = render(plan=plan, deck_doc=artist_deck())
+    assert 'id="featured-artist"' in html_out
+    assert "Lead Artist" in html_out
+    assert "One drop, bought whole." in html_out
+    assert "Every Lead Artist card in the deck" in html_out
+    assert "Secret Lair Drop" in html_out          # printing credit in tiles
+
+
+def test_featured_artist_leads_with_the_commander():
+    html_out = render(plan=PLAN, deck_doc=artist_deck())
+    section = html_out[html_out.index('id="featured-artist"'):]
+    hero = section[:section.index("Every ")]
+    assert "Test Commander" in hero
+
+
+def test_featured_artist_surfaces_honesty_notes():
+    """Counting caveats travel with the numbers onto the page."""
+    doc = artist_deck()
+    doc["cards"][1]["quantity"] = 22          # a basic-land-style multi-copy entry
+    html_out = render(deck_doc=doc)
+    assert "How these numbers are counted" in html_out
+    assert "counted once" in html_out
+
+
+def test_featured_artist_handles_a_deck_with_no_standout():
+    """Every artist unique — the department still renders, telling breadth."""
+    doc = deck_doc()
+    for i, card in enumerate(doc["cards"]):
+        card.update(artist=f"Artist {i}", set="plst", set_name="The List",
+                    collector_number=f"X-{i}", border_color="black",
+                    frame_effects=[], finishes=["nonfoil"], foil=False)
+    html_out = render(deck_doc=doc)
+    assert 'id="featured-artist"' in html_out
+    assert "Art File" in html_out              # facts box still renders
+
+
+def test_featured_artist_works_without_artist_data():
+    """Older decks have no printing metadata — must not crash."""
+    html_out = render(deck_doc=deck_doc())
+    assert 'id="featured-artist"' in html_out
+
+
+def test_featured_artist_sits_between_the_99_and_keep_or_ship():
+    html_out = render()
+    assert (html_out.index('id="the-99"')
+            < html_out.index('id="featured-artist"')
+            < html_out.index('id="keep-or-ship"'))

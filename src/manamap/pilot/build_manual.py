@@ -3,7 +3,7 @@
 Fully deterministic — no LLM calls, no dates, no randomness. The editorial layer
 arrives as data (`issue.json` identity + `issue_plan.json` packaging from the
 magazine-editor agent) and the body prose as `manual_prose.json`; this module
-assembles them into the fourteen fixed departments of STYLEv3 §5.
+assembles them into the fifteen fixed departments of STYLEv3 §5.
 
 Contract invariants:
 - Only checker-passed stacks render, and Judge's Desk reproduces every citation
@@ -49,6 +49,7 @@ ACCENT = {
     "by-the-numbers": "var(--y2k-blue)", "the-kill": "var(--power-red)",
     "politics-table": "var(--radical-purple)", "whats-your-play": "var(--hot-magenta)",
     "know-your-enemy": "var(--radical-purple)", "the-99": "var(--slime-green)",
+    "featured-artist": "var(--hot-magenta)",
     "keep-or-ship": "var(--tier-coach)", "upgrade-watch": "var(--y2k-blue)",
     "judges-desk": "var(--stamp-red)", "back-page": "var(--ink)",
 }
@@ -462,7 +463,9 @@ def render_know_your_enemy(issue, plan, prose_doc, cards_by_name):
     )
 
 
-def _card_tile(card, roles, synergy):
+def _card_tile(card, roles, synergy, printing=False):
+    """A card tile. `printing=True` adds the artist/set credit and foil sheen —
+    used by the gallery, where the physical printing is the subject."""
     name = card["name"]
     labels = sorted({
         entry.get("rule", "").split(":")[0]
@@ -471,9 +474,12 @@ def _card_tile(card, roles, synergy):
     chips = "".join(f'<span class="chip">{esc(l)}</span>' for l in labels[:2])
     image = (f'<img src="{esc(card["image"])}" alt="{esc(name)}" loading="lazy">'
              if card.get("image") else "")
+    if printing and card.get("foil") and image:
+        image = f'<span class="foil">{image}</span>'
+    credit = printing_credit(card) if printing else ""
     return (
         f'<div class="card-tile">{image}<h4>{esc(name)}</h4>{chips}'
-        f'<p>{esc(roles.get(name, ""))}</p></div>'
+        f'<p>{esc(roles.get(name, ""))}</p>{credit}</div>'
     )
 
 
@@ -530,6 +536,115 @@ def render_the_99(issue, plan, cards, prose_doc, synergy):
         dept_open("the-99", plan)
         + tiles + side_html
         + dept_close("the-99", issue["volume"])
+    )
+
+
+def render_featured_artist(issue, plan, cards, cards_by_name):
+    """Who painted the deck. Facts computed here, the choice authored in the plan.
+
+    The department adapts: a real standout leads with a gallery; a deck of
+    all-different artists tells a breadth story instead. Either way the honesty
+    notes from the analysis are surfaced, so concentration is never dressed up
+    as curation it wasn't (STYLEv3 §7.6).
+    """
+    from manamap.pilot.artist_credits import analyze
+
+    dept = plan_dept(plan, "featured-artist")
+    roster = plan_dept(plan, "the-99").get("roster")
+    credits = analyze(cards, roster)
+    totals = credits["totals"]
+
+    featured = dept.get("featured") or {}
+    # The plan may name the artist; otherwise the computed standout leads.
+    name = featured.get("artist") or (credits["standout"] or {}).get("artist")
+    entry = next((r for r in credits["ranking"] if r["artist"] == name), None)
+
+    body = []
+    if entry:
+        # Lead with the commander when the featured artist painted them, else the
+        # most load-bearing card they did paint, else whatever comes first.
+        owned = [cards_by_name[c] for c in entry["cards"] if c in cards_by_name]
+        roster_order = [n for g in (roster or []) for n in g.get("cards", [])]
+        hero = next(
+            (c for c in owned if c.get("is_commander")),
+            next((cards_by_name[n] for n in roster_order
+                  if n in cards_by_name and cards_by_name[n].get("artist") == name),
+                 owned[0] if owned else None),
+        )
+        if hero:
+            lead = f'{entry["entries"]} of {totals["entries"]} cards'
+            body.append(card_figure(
+                hero["name"], hero.get("art_crop") or hero.get("image"),
+                f"<b>{esc(name)}</b> — {esc(lead)} in this deck.",
+                hero.get("scryfall_uri"), hero))
+        if featured.get("note"):
+            paragraphs = "".join(
+                f"<p>{esc(p.strip())}</p>"
+                for p in str(featured["note"]).split("\n\n") if p.strip()
+            )
+            body.append(f'<div class="body-copy">{paragraphs}</div>')
+        tiles = "".join(
+            _card_tile(cards_by_name[c], {}, {}, printing=True)
+            for c in entry["cards"] if c in cards_by_name
+        )
+        body.append(f'<h3>Every {esc(name)} card in the deck</h3>'
+                    f'<div class="card-grid">{tiles}</div>')
+
+    # Where the concentration falls — and where it conspicuously doesn't.
+    overlap = [r for r in credits["roster_overlap"] if r["artist"] == name]
+    dispersed = [r for r in credits["roster_overlap"]
+                 if r["distinct_artists"] == r["of"] and r["of"] >= 3]
+    if overlap or dispersed:
+        rows = "".join(
+            f'<tr><td>{esc(r["group"])}</td><td>{esc(r["artist"])}</td>'
+            f'<td>{r["painted"]} of {r["of"]}</td>'
+            f'<td>{r["distinct_artists"]}</td></tr>'
+            for r in credits["roster_overlap"]
+        )
+        body.append('<h3>Against the roster</h3><table class="data">'
+                    "<tr><th>Group</th><th>Most cards by</th><th>Painted</th>"
+                    "<th>Artists in group</th></tr>" + rows + "</table>")
+
+    others = dept.get("also_worth_noting") or []
+    if others or credits["clusters"]:
+        noted = {o.get("artist"): o.get("note", "") for o in others}
+        items = []
+        for cluster in credits["clusters"][:6]:
+            note = noted.get(cluster["artist"], "")
+            items.append(
+                f'<div class="branch"><h4>{esc(cluster["artist"])} '
+                f'({cluster["entries"]})</h4>'
+                f'<p style="font-size:.9em">{esc(", ".join(cluster["cards"]))}</p>'
+                f'{f"<p>{esc(note)}</p>" if note else ""}</div>'
+            )
+        body.append(f'<h3>Also worth noting</h3><div class="branches">{"".join(items)}</div>')
+
+    treat = credits["treatments"]
+    facts = [("Distinct artists", totals["artists"]),
+             ("Cards counted", totals["entries"]),
+             ("Borderless", treat["borderless"]),
+             ("Foil", treat["foil"])]
+    # Set dispersion is its own story: a reprint stream assembled one card at a
+    # time reads very differently from a drop bought whole.
+    for entry in credits["sets"][:2]:
+        facts.append((entry["set_name"] or entry["set"] or "Set",
+                      f'{entry["entries"]} cards · {entry["artists"]} artists'))
+    for run in credits["drop_runs"][:2]:
+        facts.append((f'Drop run ({run["set"]})',
+                      f'#{run["from"]}–{run["to"]}, {run["entries"]} cards'))
+    body.append(fast_facts("Art File", facts))
+
+    if credits["notes"]:
+        notes = "".join(f"<li>{esc(n)}</li>" for n in credits["notes"])
+        body.append('<div class="assumptions"><b>How these numbers are counted.</b>'
+                    f"<ul>{notes}</ul></div>")
+
+    return (
+        dept_open("featured-artist", plan)
+        + "".join(body)
+        + dept_captions(dept, cards_by_name)
+        + dept_furniture(dept, cards_by_name)
+        + dept_close("featured-artist", issue["volume"])
     )
 
 
@@ -660,6 +775,7 @@ def render_issue(slug, issue, plan, deck_doc, stacks, prose_doc, synergy,
         render_whats_your_play(issue, plan, decisions, cards_by_name),
         render_know_your_enemy(issue, plan, prose_doc, cards_by_name),
         render_the_99(issue, plan, cards, prose_doc, synergy),
+        render_featured_artist(issue, plan, cards, cards_by_name),
         render_keep_or_ship(issue, plan, prose_doc, goldfish, cards_by_name),
         render_upgrade_watch(issue, plan, prose_doc, cards_by_name),
         render_judges_desk(issue, plan, stacks),

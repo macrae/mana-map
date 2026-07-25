@@ -210,7 +210,7 @@ it. Therefore:
 
 ## 5. The department system
 
-Fourteen departments, fixed order, every issue. This order is the reading experience;
+Fifteen departments, fixed order, every issue. This order is the reading experience;
 it is not negotiable per-deck. A department with no artifact to fill it renders a
 visible `[TODO]`, never a silent omission.
 
@@ -226,10 +226,11 @@ visible `[TODO]`, never a silent omission.
 | 8 | **What's Your Play?** | "What would you do here?" | `decisions/*.json` | ★ |
 | 9 | **Know Your Enemy** | "Who beats me, and why?" | `matchups` | ★ |
 | 10 | **The 99** | "Why is each card in here?" | `card_roles` + graphs | ★ |
-| 11 | **Keep or Ship** | "Should I keep this hand?" | `mulligan` + goldfish | ★◆ |
-| 12 | **Upgrade Watch** | "What's next for this deck?" | obsolescence index | ◆ |
-| 13 | **Judge's Desk** | "Prove it." | full stack resolutions | ✓ |
-| 14 | **The Back Page** | "What's in the next issue?" | `issue.json` + colophon | — |
+| 11 | **Featured Artist** | "Who painted your deck?" | `cards.json` printing metadata | ◆★ |
+| 12 | **Keep or Ship** | "Should I keep this hand?" | `mulligan` + goldfish | ★◆ |
+| 13 | **Upgrade Watch** | "What's next for this deck?" | obsolescence index | ◆ |
+| 14 | **Judge's Desk** | "Prove it." | full stack resolutions | ✓ |
+| 15 | **The Back Page** | "What's in the next issue?" | `issue.json` + colophon | — |
 
 ### 5.1 Department specifications
 
@@ -345,7 +346,29 @@ Each spec is binding. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**11. Keep or Ship** — *the drill*
+**11. Featured Artist** — *who made this beautiful*
+
+- **Promise**: Every issue, this department shows you who painted your deck.
+- **Shape**: Hero card by the featured artist (commander first when they painted them),
+  the artist's note, a gallery of every card they made, a roster table showing where
+  their work concentrates *and where it conspicuously doesn't*, an "also worth noting"
+  strip for secondary clusters, and an Art File fast-facts box.
+- **The facts are computed, the choice is authored.** Run
+  `manamap pilot artist-credits <slug> --json`; the renderer recomputes the counts, so
+  the plan supplies only the artist to feature and the prose about them.
+- **Count per card, never per copy.** A basic-land art repeated 22 times is one card's
+  worth of authorship. Copies are their own labeled fact.
+- **Never imply curation that didn't happen.** If the analysis flags a contiguous
+  collector-number run or warns the concentration is structural, say plainly that a
+  product was bought whole and landed where it landed. That's the better story.
+- **No standout is also a story** — a deck of ninety-nine different artists gets a
+  breadth feature. The department never vanishes.
+- **Failure mode**: a gallery that reads as a shopping receipt instead of an
+  appreciation, or one that invents taste the pilot never exercised.
+
+---
+
+**12. Keep or Ship** — *the drill*
 
 - **Shape**: 3–4 sample opening hands as quiz cards, each with a verdict and a one-line
   reason citing the goldfish keep rate. Then the general heuristic.
@@ -353,7 +376,7 @@ Each spec is binding. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**12. Upgrade Watch** — *the future*
+**13. Upgrade Watch** — *the future*
 
 - **Shape**: Preview-department voice ("the inside source on future slots"), each
   candidate with a fast-facts line and an honest note on what it costs.
@@ -364,7 +387,7 @@ Each spec is binding. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**13. Judge's Desk** — *the proof* (the appendix)
+**14. Judge's Desk** — *the proof* (the appendix)
 
 - **Promise**: Every issue, this department proves everything the magazine claimed.
 - **Shape**: Declassified case files. Manila tint, file tabs, `CASE A-00N`, a
@@ -377,7 +400,7 @@ Each spec is binding. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**14. The Back Page** — *the return*
+**15. The Back Page** — *the return*
 
 - **Shape**: `NEXT ISSUE` teaser naming the next volume's deck, the colophon (rules
   version, decklist sha, generation provenance), and the Fan Content Policy line.
@@ -403,6 +426,7 @@ and the sequence must alternate.
 | What's Your Play? | High | Active participation |
 | Know Your Enemy | Medium | Reference |
 | The 99 | Low | Browsing |
+| Featured Artist | Low | Appreciation |
 | Keep or Ship | Medium | Practice |
 | Upgrade Watch | Low | Imagination |
 | Judge's Desk | Low (opt-in) | Deep reference |
@@ -637,7 +661,7 @@ An issue ships only if every line passes.
 - [ ] **Permanence** — worth keeping; worth returning to.
 
 **Structural**
-- [ ] All 14 departments present in fixed order, `[TODO]` where artifacts are thin.
+- [ ] All 15 departments present in fixed order, `[TODO]` where artifacts are thin.
 - [ ] Rhythm alternates; no two dense departments adjacent.
 - [ ] Every department opens with a question, not an explanation (L1).
 - [ ] Folios carry department names; tier legend reprinted in full.
