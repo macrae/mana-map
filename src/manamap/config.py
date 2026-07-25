@@ -317,3 +317,72 @@ STRATEGY_DB_META_PATH = STRATEGY_DIR / ".strategy-db-meta.json"
 STRATEGY_QUERY_TOP_K = 6
 STRATEGY_RESEARCH_MAX_ITERATIONS = 3
 STRATEGY_SECTION_WARN_CHARS = 1200
+
+# ── Pilot: Agent Invocation Cache ────────────────────────────────────────
+# Subagent spawns are the only real cost in this subsystem (the renderer is
+# free and deterministic). A routine is one agent invocation whose output is a
+# tracked artifact; if none of its declared inputs changed, the skill reuses
+# the artifact instead of paying for the spawn. See docs/agent-cost.md.
+AGENT_CACHE_VERSION = 1        # bump to invalidate every routine everywhere
+AGENT_CACHE_FILENAME = ".agent-cache.json"
+AGENT_PROMPTS_DIR = _REPO_ROOT / ".claude" / "agents"
+STYLE_DOC_PATH = _REPO_ROOT / "STYLEv3.md"
+ISSUE_SPEC_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "issue_spec.py"
+
+# Input tokens resolved by agent_cache.resolve_inputs():
+#   deck:<name>[?]     file under data/decks/<slug>/ ('?' = optional; absence
+#                      is still hashed, so an input appearing invalidates)
+#   stacks:passing     every stacks/*.json with checker.verdict == "pass"
+#   decisions:all      every decisions/*.json
+#   global:<CONST>     repo-level artifact named by a config constant
+#   repo:<CONST>       tracked source file named by a config constant
+#   scenario:self      the {title, scenario} slice of the routine's own
+#                      artifact — so the resolution/checker blocks the loop
+#                      writes back never self-invalidate
+#   strategy:doc       strategy.md bytes via common.strategy_doc_sha256();
+#                      never the derived index, so build-strategy-db is free
+#   prose:shape        manual_prose.json key skeleton only — rewording is free,
+#                      adding or removing a section is not
+#   rules:version      effective_date from data/rules/.rules-meta.json
+AGENT_ROUTINES = {
+    "strategic-frame": {
+        "agent": "strategy-researcher",
+        "artifact": "strategic_frame.json",
+        "inputs": ["deck:cards.json", "deck:goldfish_metrics.json",
+                   "stacks:passing", "strategy:doc"],
+    },
+    "coach-prose": {
+        "agent": "pilot-coach",
+        "artifact": "manual_prose.json",
+        "artifact_keys": ["threat_assessment", "matchups"],
+        "inputs": ["deck:cards.json", "deck:goldfish_metrics.json", "stacks:passing",
+                   "deck:strategic_frame.json?", "strategy:doc"],
+    },
+    "writer-prose": {
+        "agent": "manual-writer",
+        "artifact": "manual_prose.json",
+        "artifact_keys": ["cover", "how_it_wins", "combo_lines", "card_roles",
+                          "mulligan", "upgrades"],
+        "inputs": ["deck:cards.json", "stacks:passing", "deck:strategic_frame.json?",
+                   "global:COMBO_GRAPH_PATH", "global:SYNERGY_GRAPH_PATH",
+                   "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
+    },
+    "issue-plan": {
+        "agent": "magazine-editor",
+        "artifact": "issue_plan.json",
+        "inputs": ["repo:STYLE_DOC_PATH", "repo:ISSUE_SPEC_PATH",
+                   "deck:issue.json", "deck:cards.json", "stacks:passing",
+                   "decisions:all", "deck:goldfish_metrics.json",
+                   "deck:strategic_frame.json?", "prose:shape",
+                   "global:COMBO_GRAPH_PATH", "global:SYNERGY_GRAPH_PATH",
+                   "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
+    },
+}
+
+# Dynamic routines (stack:NNN / decision:NNN) — resolved per artifact.
+AGENT_ROUTINE_STACK_AGENT = "stack-resolver+rules-checker"
+AGENT_ROUTINE_STACK_INPUTS = ["scenario:self", "deck:cards.json", "rules:version"]
+AGENT_ROUTINE_DECISION_AGENT = "pilot-coach"
+AGENT_ROUTINE_DECISION_INPUTS = ["scenario:self", "deck:cards.json",
+                                 "deck:goldfish_metrics.json",
+                                 "deck:strategic_frame.json?", "strategy:doc"]

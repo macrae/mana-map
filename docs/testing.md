@@ -39,6 +39,8 @@ Both are skip-guarded: `test_pipeline_integration.py` skips per-file via `requir
 | `test_pilot_build_manual.py` | 18 | Renderer determinism, escaping, badges, TOC, sideboard strip | — |
 | `test_pilot_strategy_db.py` | 9 | Strategy chunker (IDs, sources, parents), real-DB alignment | 3 behind `requires_strategy` |
 | `test_pilot_validate_strategy.py` | 18 | Doc form errors, changelog contract, strategy citations through `_validate_citations` | — |
+| `test_pilot_validate_issue.py` | 21 | Issue identity, department completeness/order, tier-costume integrity, card-name accuracy | — |
+| `test_pilot_agent_cache.py` | 37 | Fingerprint stability/order-independence, prose-shape semantics, staleness diffs, record guards, strategy-rebuild hazard | 1 behind `requires_deck` |
 
 ## conftest.py
 

@@ -13,6 +13,22 @@ brains of the operation"). Three decks: `goblin-storm` (LIVE, deployed),
 `hapatra`, `edgar-vampires` (scaffolded, blocked on decklists). Shareable at the
 MagicCon release via the manuals gallery.
 
+## Agent invocation cache (2026-07-25)
+
+Subagent spawns are the only LLM cost in this project — **there are no LLM calls in
+Python**, so `build-manual` is already free and there was nothing to mock in
+`conftest`. A full manual regeneration was ~330k tokens across four serially-dependent
+agents, re-paid in full even after a one-word prose tweak.
+
+`manamap pilot cache-status|cache-record|cache-clear` fingerprints each routine's
+declared inputs (`config.AGENT_ROUTINES`) and records them in a tracked
+`data/decks/<slug>/.agent-cache.json`. Skills now run **check → (miss) spawn → write →
+validate → record**. Prose *wording* is deliberately not an input to `issue-plan` (only
+its structure), so typo fixes are free; agent prompts *are* inputs, so editing one
+invalidates by design. `fetch-deck` now short-circuits on an unchanged decklist —
+important because a no-op rewrite of `cards.json` used to invalidate everything
+downstream. Sizing and rationale: `docs/agent-cost.md`.
+
 ## Magazine layer (2026-07-25)
 
 `STYLEv3.md` is the design constitution — each deck is now a complete **issue** of

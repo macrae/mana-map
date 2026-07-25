@@ -35,6 +35,9 @@ manamap pilot goldfish <slug>           # seeded Monte Carlo metrics → goldfis
 manamap pilot build-manual <slug>       # → manuals/<slug>.html
 manamap pilot build-index               # → manuals/index.html gallery
 manamap pilot validate-issue <slug>     # form-check issue.json + issue_plan.json
+manamap pilot cache-status <slug>       # have an agent routine's inputs changed?
+manamap pilot cache-record <slug> --routine R   # record what produced an artifact
+manamap pilot cache-clear <slug>        # drop cache records
 manamap pilot validate-strategy         # form-check strategy.md + CHANGELOG
 manamap pilot build-strategy-db         # chunk + embed strategy.md
 manamap pilot query-strategy "…" --json # semantic top-k strategy search
@@ -122,6 +125,38 @@ claim rules-verified.
   scenario", feeding the resolve-stack queue), matchup frames, gaps (feeding
   the next research pass). The write-manual pipeline generates it after the
   evidence pull; pilot-coach and manual-writer consume it.
+
+## Agent invocation cache
+
+Subagent spawns are the only real cost here (the renderer is free and deterministic —
+there are **no LLM calls in Python at all**). A full manual regeneration is ~330k
+tokens across four serially-dependent agents, so every skill that spawns one checks
+first:
+
+```
+check → (miss) spawn → write → validate → record
+```
+
+`manamap pilot cache-status <slug>` reports per routine — `HIT`/`EDITED` exit 0 (don't
+spawn), `MISS` exits 1 (spawn), a missing required input exits 2 (stop). Records live
+in `data/decks/<slug>/.agent-cache.json` (**tracked**, so a `git pull` transfers
+someone else's regeneration as a cache hit, and `git log` answers "which inputs
+produced this prose?"). `record()` refuses artifacts that are missing, lack their
+routine's keys, or have no checker block — a failed run can't poison the cache.
+
+Routines: `strategic-frame`, `coach-prose`, `writer-prose`, `issue-plan`, plus
+`stack:<NNN>` and `decision:<NNN>` discovered from disk. Declared in
+`config.AGENT_ROUTINES`.
+
+Four semantics worth knowing: agent prompts are inputs (editing
+`.claude/agents/*.md` invalidates that agent's routines by design); `issue-plan`
+hashes prose *structure* not wording, so a typo fix is free but a new section
+re-plans; `strategy:doc` hashes `strategy.md` bytes so `build-strategy-db` never
+invalidates anything; and `stack:<NNN>` hashes only its own scenario slice so the
+resolver/checker loop can't self-invalidate. Full sizing and rationale:
+`docs/agent-cost.md`.
+
+`build-manual` is deliberately **uncached** — already $0 and deterministic.
 
 ## The resolve loop (agents)
 

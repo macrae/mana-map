@@ -42,9 +42,9 @@ manamap run                   # full 12-step pipeline (steps 1 & 7 need internet
 manamap run --from STEP       # resume from a step
 manamap <step>                # single step; see `manamap --help` for the 13 subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions   # fast analysis-only refresh
-manamap pilot <cmd>           # pilot's-manual subsystem (15 subcommands) — see docs/pilot.md
+manamap pilot <cmd>           # pilot's-manual subsystem (18 subcommands) — see docs/pilot.md
 
-.venv/bin/python -m pytest    # 388 tests; data-dependent ones skip if artifacts missing
+.venv/bin/python -m pytest    # 428 tests; data-dependent ones skip if artifacts missing
 
 python -m http.server 8000    # serve viz FROM REPO ROOT
 # http://localhost:8000/viz/index.html
@@ -61,6 +61,7 @@ python -m http.server 8000    # serve viz FROM REPO ROOT
 - **Plotly**: `Plotly.relayout` fires `plotly_relayout` — guard against event loops.
 - Paths in `config.py` are `__file__`-anchored (CWD-independent); override with `MANAMAP_DATA_DIR` / `MANAMAP_VIZ_DIR`.
 - Color+Type model hitting near-zero triplet loss by epoch ~3 is expected, not a bug.
+- **Agent cache**: subagent spawns are the only LLM cost (there are no LLM calls in Python). Skills check `manamap pilot cache-status <slug>` before spawning and `cache-record` after validating — see `docs/agent-cost.md`. Editing a `.claude/agents/*.md` prompt invalidates that agent's routines by design; `build-manual` is deliberately uncached.
 - **Strategy DB staleness**: any edit to `data/strategy/strategy.md` requires `manamap pilot build-strategy-db` — `load_strategy_db` hard-errors on a sha256 mismatch. Doc + CHANGELOG are tracked; the derived index/embeddings are gitignored.
 - **Combo graph is format-agnostic**: Commander Spellbook combos may assume a card is your commander ("Infinite commander casts" in `produces` is the tell) — verify lines with a resolve-stack run before presenting them as fact (stack 004 refuted one this way).
 - Lint/format/CI intentionally not set up; revisit if the project grows.
@@ -72,6 +73,7 @@ python -m http.server 8000    # serve viz FROM REPO ROOT
 - `docs/data-artifacts.md` — every `data/` file: producer, size, git status, consumers
 - `docs/viz.md` — frontend structure, `window.MM` API, DATA map, Pages deployment
 - `docs/testing.md` — test layout, skip markers, conventions
+- `docs/agent-cost.md` — where LLM spend lives, per-routine token sizing, the invocation cache
 - `docs/pilot.md` — pilot subsystem: three-tier evidence contract, citation contract, rules DB, strategy DB + strategy-researcher agent, resolve loop, goldfish, manual generation
 - `PLAN.md` — ACTIVE plan: current state, what's done, what's next (read this first when resuming work)
 - `STYLEv3.md` — the magazine's editorial + design constitution (department system, Commander Mandate, voice, component library); read before touching `build_manual.py`, `design.py`, or `issue_spec.py`

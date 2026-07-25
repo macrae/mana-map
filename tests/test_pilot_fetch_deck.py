@@ -1,5 +1,6 @@
 """Tests for deck ingestion: decklist parsing, Scryfall shaping, failure modes."""
 
+import argparse
 import json
 
 import pytest
@@ -255,3 +256,82 @@ def test_real_deck_is_100_with_commander():
     assert sum(c["quantity"] for c in main) == 100
     assert any(c["is_commander"] for c in main)
     assert validate(doc) == []
+
+
+# ── Decklist-unchanged short-circuit ─────────────────────────────────────
+
+
+def test_unchanged_decklist_skips_scryfall(monkeypatch, tmp_path, capsys):
+    """A no-op re-fetch must make no network call and leave cards.json alone.
+
+    Beyond the saved round trips: rewriting cards.json would invalidate every
+    downstream agent routine that reads it.
+    """
+    import hashlib
+
+    decks = tmp_path / "decks"
+    base = decks / "d"
+    base.mkdir(parents=True)
+    decklist = "1 Sol Ring\n"
+    (base / "decklist.txt").write_text(decklist)
+    sha = hashlib.sha256(decklist.encode("utf-8")).hexdigest()
+    cards_path = base / "cards.json"
+    cards_path.write_text(json.dumps({"deck": "d", "decklist_sha256": sha, "cards": []}))
+    before = cards_path.read_bytes()
+
+    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", decks)
+
+    def explode(*a, **k):
+        raise AssertionError("Scryfall must not be called for an unchanged decklist")
+
+    monkeypatch.setattr(fetch_deck, "fetch_collection", explode)
+    fetch_deck.main(argparse.Namespace(slug="d", force=False))
+
+    assert cards_path.read_bytes() == before
+    assert "Already up to date" in capsys.readouterr().out
+
+
+def test_force_refetches_even_when_unchanged(monkeypatch, tmp_path):
+    import hashlib
+
+    decks = tmp_path / "decks"
+    base = decks / "d"
+    base.mkdir(parents=True)
+    decklist = "1 Sol Ring\n"
+    (base / "decklist.txt").write_text(decklist)
+    sha = hashlib.sha256(decklist.encode("utf-8")).hexdigest()
+    (base / "cards.json").write_text(
+        json.dumps({"deck": "d", "decklist_sha256": sha, "cards": []}))
+
+    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", decks)
+    called = {"n": 0}
+
+    def fake_fetch(names):
+        called["n"] += 1
+        return {"sol ring": {"name": "Sol Ring", "cmc": 1.0, "type_line": "Artifact",
+                             "oracle_text": "", "image_uris": {"normal": "u"}}}, []
+
+    monkeypatch.setattr(fetch_deck, "fetch_collection", fake_fetch)
+    fetch_deck.main(argparse.Namespace(slug="d", force=True))
+    assert called["n"] == 1
+
+
+def test_changed_decklist_refetches(monkeypatch, tmp_path):
+    decks = tmp_path / "decks"
+    base = decks / "d"
+    base.mkdir(parents=True)
+    (base / "decklist.txt").write_text("1 Sol Ring\n")
+    (base / "cards.json").write_text(
+        json.dumps({"deck": "d", "decklist_sha256": "stale", "cards": []}))
+
+    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", decks)
+    called = {"n": 0}
+
+    def fake_fetch(names):
+        called["n"] += 1
+        return {"sol ring": {"name": "Sol Ring", "cmc": 1.0, "type_line": "Artifact",
+                             "oracle_text": "", "image_uris": {"normal": "u"}}}, []
+
+    monkeypatch.setattr(fetch_deck, "fetch_collection", fake_fetch)
+    fetch_deck.main(argparse.Namespace(slug="d", force=False))
+    assert called["n"] == 1

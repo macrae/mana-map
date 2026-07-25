@@ -19,6 +19,9 @@ PILOT_STEPS = [
     ("build-manual", "manamap.pilot.build_manual", "Render the zine HTML from verified artifacts"),
     ("build-index", "manamap.pilot.build_index", "Render the manuals/index.html gallery"),
     ("validate-issue", "manamap.pilot.validate_issue", "Form-check issue.json + issue_plan.json"),
+    ("cache-status", "manamap.pilot.agent_cache", "Have an agent routine's inputs changed?"),
+    ("cache-record", "manamap.pilot.agent_cache", "Record the fingerprint that produced an artifact"),
+    ("cache-clear", "manamap.pilot.agent_cache", "Drop cache records for a deck or routine"),
     ("validate-strategy", "manamap.pilot.validate_strategy", "Form-check strategy.md + CHANGELOG"),
     ("build-strategy-db", "manamap.pilot.build_strategy_db", "Chunk + embed strategy.md into the strategy DB"),
     ("query-strategy", "manamap.pilot.query_strategy", "Semantic top-k strategy search"),
@@ -27,7 +30,7 @@ PILOT_STEPS = [
 
 _DECK_COMMANDS = {
     "fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual",
-    "validate-issue",
+    "validate-issue", "cache-status", "cache-record", "cache-clear",
 }
 
 
@@ -56,6 +59,21 @@ def add_pilot_parser(subparsers):
         if name == "lookup-strategy":
             cmd.add_argument("section_id", help="Exact section id, e.g. strategy:tempo")
             cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "cache-status":
+            cmd.add_argument("--routine", default=None,
+                             help="Routine id (e.g. writer-prose, stack:001); omit for all")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+            cmd.add_argument("--force", action="store_true",
+                             help="Always report MISS (deliberate rebuild)")
+        if name == "cache-record":
+            cmd.add_argument("--routine", required=True,
+                             help="Routine id (e.g. issue-plan, stack:004)")
+        if name == "cache-clear":
+            cmd.add_argument("--routine", default=None,
+                             help="Routine id; omit to clear the whole deck")
+        if name == "fetch-deck":
+            cmd.add_argument("--force", action="store_true",
+                             help="Re-fetch from Scryfall even if the decklist is unchanged")
 
 
 def run_pilot_step(args):

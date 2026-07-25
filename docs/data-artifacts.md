@@ -39,6 +39,7 @@ N = card count, ~34,300 as of July 2026; grows as Scryfall adds sets.
 | `data/strategy/strategy.md`, `CHANGELOG.md` | authored / `strategy-researcher` agent | **tracked** | The strategy companion — curated source of truth; founder-reviewed via diffs |
 | `data/strategy/strategy_index.json`, `strategy_embeddings.npy`, `.strategy-db-meta.json` | `pilot build-strategy-db` | ignored | Derived RAG DB; index records the doc's sha256 (staleness handshake) |
 | `data/decks/<slug>/*` | build-deck-db skill, resolve-stack loop, `pilot goldfish`, consult mode, agents | **tracked** | Curated per-deck artifacts: cards.json, verified stacks, decisions, goldfish metrics/targets, strategic_frame.json, manual_prose.json |
+| `data/decks/<slug>/.agent-cache.json` | `pilot cache-record` | **tracked** | Which inputs produced each agent artifact. Tracked so a `git pull` transfers someone else's regeneration as a cache hit. No timestamps — every diff line is a content fact. See `docs/agent-cost.md` |
 | `manuals/*.html` | `pilot build-manual` + `build-index` | **tracked** | Deterministic renders; deployed by GitHub Pages |
 
 The `.gitignore` mechanics matter here: `data/*` blanket-ignores, `!data/decks/` and `!data/strategy/` re-include those directories (trailing slash load-bearing), and the three derived strategy-DB files are then re-ignored individually.

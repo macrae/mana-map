@@ -22,13 +22,29 @@ Turns `data/decks/<slug>/` artifacts into `manuals/<slug>.html` — a complete i
 
 1. **Gather.** Confirm the preconditions above. Note which departments have thin or
    missing artifacts — they render `[TODO]`, never vanish silently.
-2. **Plan.** Spawn `magazine-editor` with the deck slug. It reads STYLEv3 and every
-   artifact, then returns the issue plan as JSON. Write it to
-   `data/decks/<slug>/issue_plan.json` (tracked, human-editable).
+2. **Plan.** First check the cache — a re-plan costs ~147k tokens, so never spawn
+   blindly: `.venv/bin/manamap pilot cache-status <slug> --routine issue-plan`
+   - **exit 0, `HIT`** — `issue_plan.json` is current for these inputs. **Do not spawn
+     the editor.** Skip to step 3; validation is free and still runs.
+   - **exit 0, `EDITED`** — the plan was hand-edited and its inputs have not changed.
+     Treat as a HIT: the human's headline wins. Do not spawn. After step 3 passes,
+     `cache-record` to bless the edit.
+   - **exit 1, `MISS`** — the output names which input changed. Spawn `magazine-editor`
+     with the deck slug; it reads STYLEv3 and every artifact and returns the plan as
+     JSON. Write it to `data/decks/<slug>/issue_plan.json` (tracked, human-editable).
+   - **exit 2** — a required input is missing (usually `issue.json`, which is authored,
+     never generated). Fix that first; do not spawn.
+
+   Add `--force` when you want a re-plan regardless — e.g. you rewrote prose heavily
+   enough to change the issue's angle, since prose *wording* is deliberately not a
+   cache input (only its structure is).
 3. **Validate.** `.venv/bin/manamap pilot validate-issue <slug>` — checks identity
    block, all 14 departments in canonical order, copy completeness, component library,
    tier-costume integrity, card-name accuracy, and rhythm. On failure, re-spawn the
-   editor with the errors; do not hand-fix content beyond mechanical formatting.
+   editor with the errors and **do not record**; do not hand-fix content beyond
+   mechanical formatting. On success:
+   `.venv/bin/manamap pilot cache-record <slug> --routine issue-plan` — always last,
+   after the artifact is written and validated.
 4. **Build.** `.venv/bin/manamap pilot build-manual <slug>` then
    `.venv/bin/manamap pilot build-index`. Deterministic — rerun must be byte-identical.
 5. **Review.** Open `manuals/<slug>.html` and run the STYLEv3 §12 checklist. The
@@ -40,7 +56,9 @@ Turns `data/decks/<slug>/` artifacts into `manuals/<slug>.html` — a complete i
 
 - `issue_plan.json` is the packaging layer (cover, headlines, captions, furniture);
   `manual_prose.json` is the body-copy layer. Both are tracked and hand-editable —
-  tune a headline directly and rebuild without re-running any agent.
+  tune a headline directly and rebuild without re-running any agent. The cache is
+  built for this: a hand edit leaves the inputs unchanged, so `cache-status` reports
+  `EDITED` and still exits 0. It never overwrites or invalidates a human edit.
 - Only checker-passed stacks render. A refuted line is still a feature — the honest
   finding is the best story in the issue (STYLEv3 §7.6).
 - The Command Zone department is mandatory and must be format-specific. An issue that

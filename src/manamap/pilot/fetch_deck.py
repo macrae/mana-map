@@ -87,6 +87,20 @@ def parse_decklist(text):
     return entries
 
 
+def is_up_to_date(cards_path, decklist_sha256):
+    """True if cards.json was already built from this exact decklist.
+
+    Mirrors download_rules.is_up_to_date. This matters beyond the saved
+    Scryfall round trips: a no-op re-fetch that rewrites cards.json would
+    invalidate every downstream agent routine that reads it (see
+    docs/agent-cost.md), silently costing a full regeneration.
+    """
+    if not cards_path.exists():
+        return False
+    with open(cards_path) as f:
+        return json.load(f).get("decklist_sha256") == decklist_sha256
+
+
 def _post_collection(identifiers):
     """POST identifier batches to /cards/collection. Returns (cards, not_found_ids)."""
     cards, not_found = [], []
@@ -210,6 +224,14 @@ def main(args):
             f"commander under a 'Commander:' header or marked *CMDR*)."
         )
     text = path.read_text()
+    decklist_sha256 = hashlib.sha256(text.encode("utf-8")).hexdigest()
+    out = deck_dir(args.slug) / "cards.json"
+    if not getattr(args, "force", False) and is_up_to_date(out, decklist_sha256):
+        print(f"  Already up to date — skipping Scryfall fetch ({out}).")
+        print("  (The hash covers the decklist, not Scryfall's data — use "
+              "--force after an oracle update.)")
+        return
+
     entries = parse_decklist(text)
     if not entries:
         raise SystemExit(f"{path} parsed to zero cards — is it empty?")
@@ -238,10 +260,9 @@ def main(args):
 
     doc = {
         "deck": args.slug,
-        "decklist_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+        "decklist_sha256": decklist_sha256,
         "cards": cards,
     }
-    out = deck_dir(args.slug) / "cards.json"
     with open(out, "w") as f:
         json.dump(doc, f, indent=2, sort_keys=True, ensure_ascii=False)
         f.write("\n")
