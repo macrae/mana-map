@@ -47,7 +47,7 @@ doesn't move them along STYLEv3 §1's transformation table, it is decoration.
 2. **Write the cover.** One dominant coverline naming the most exciting *verified*
    thing in the issue, 2–4 specific teases, at most 2 violators. Never promise what
    the issue doesn't deliver — cover inflation is the one era habit we refuse.
-3. **Plan all 14 departments** in canonical order. For each copy department write
+3. **Plan all 15 departments** in canonical order. For each copy department write
    kicker → headline → dek (STYLEv3 §7.2), choose components from the fixed library,
    and write the furniture: captions, PILOT TIPs, callout mini-headlines, pull quotes.
 4. **Check the rhythm.** No two dense departments adjacent; The Kill is the peak.
