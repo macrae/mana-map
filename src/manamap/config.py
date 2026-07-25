@@ -418,6 +418,47 @@ SCRYFALL_BATCH_SIZE = 75
 SCRYFALL_REQUEST_DELAY_S = 0.1
 RESOLVE_MAX_ITERATIONS = 3
 
+# ── Pilot: Commander Brackets ────────────────────────────────────────────
+# WotC's bracket ladder. The restrictions here are the ones we can check
+# mechanically; the system is explicitly NOT a calculator, so bracket.py
+# reports what a deck *contains* and the floor that implies. It never tells a
+# player what bracket their deck is.
+#
+# `game_changers`/`two_card_infinites` are counts (None = unlimited).
+# `tutor_budget` is advisory only — WotC says "few tutors", never a number, so
+# it is reported and never raises a floor. Inventing a threshold and refusing
+# on it would be exactly the kind of unverifiable claim this repo avoids.
+BRACKETS = {
+    1: {"name": "Exhibition", "game_changers": 0, "two_card_infinites": 0,
+        "mass_land_denial": False, "tutor_budget": 1, "expected_turns": "9+"},
+    2: {"name": "Core", "game_changers": 0, "two_card_infinites": 0,
+        "mass_land_denial": False, "tutor_budget": 3, "expected_turns": "8+"},
+    3: {"name": "Upgraded", "game_changers": 3, "two_card_infinites": 0,
+        "mass_land_denial": False, "tutor_budget": 6, "expected_turns": "6+"},
+    4: {"name": "Optimized", "game_changers": None, "two_card_infinites": None,
+        "mass_land_denial": True, "tutor_budget": None, "expected_turns": "4+"},
+    5: {"name": "cEDH", "game_changers": None, "two_card_infinites": None,
+        "mass_land_denial": True, "tutor_budget": None, "expected_turns": "any"},
+}
+BRACKET_DEFAULT = 3
+BRACKET_MAX = 5
+
+# A two-card infinite assembling at or below this mana value is "early game",
+# which is what separates a bracket-3 deck from a bracket-4 one.
+BRACKET_EARLY_COMBO_MANA = 6
+
+# Curated and deliberately conservative — this is the one bracket signal that
+# isn't derived from data, so it is incomplete by construction and bracket.py
+# says so in its report rather than implying the check is exhaustive.
+MASS_LAND_DENIAL = frozenset({
+    "Armageddon", "Ravages of War", "Catastrophe", "Decree of Annihilation",
+    "Jokulhaups", "Obliterate", "Wildfire", "Burning of Xinye", "Sunder",
+    "Cataclysm", "Global Ruin", "Ruination", "Mana Vortex", "Fall of the Thran",
+    "Death Cloud", "Realm Razer", "Worldfire", "Devastation", "Epicenter",
+    "Keldon Firebombers", "Impending Disaster", "Boom // Bust", "Tectonic Break",
+    "Winter Moon", "Bend or Break", "Numot, the Devastator",
+})
+
 # ── Pilot: Goldfish Simulation ───────────────────────────────────────────
 GOLDFISH_SEED = 42
 GOLDFISH_ITERATIONS = 10000

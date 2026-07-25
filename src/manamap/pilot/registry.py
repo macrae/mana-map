@@ -16,6 +16,7 @@ PILOT_STEPS = [
     ("lookup-rule", "manamap.pilot.query_rules", "Exact rule fetch by number"),
     ("validate-stack", "manamap.pilot.validate_stack", "Enforce the citation contract on scenarios"),
     ("goldfish", "manamap.pilot.goldfish", "Seeded Monte Carlo resource-development metrics"),
+    ("bracket-check", "manamap.pilot.bracket", "Computed bracket floor and its evidence"),
     ("artist-credits", "manamap.pilot.artist_credits", "Standout artists and art themes in a deck"),
     ("build-manual", "manamap.pilot.build_manual", "Render a deck's 15-department magazine issue"),
     ("build-index", "manamap.pilot.build_index", "Render manuals/index.html — the newsstand"),
@@ -32,6 +33,7 @@ PILOT_STEPS = [
 _DECK_COMMANDS = {
     "fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual",
     "validate-issue", "cache-status", "cache-record", "cache-clear", "artist-credits",
+    "bracket-check",
 }
 
 
@@ -61,6 +63,10 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("section_id", help="Exact section id, e.g. strategy:tempo")
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "artist-credits":
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "bracket-check":
+            cmd.add_argument("--target", type=int, default=None,
+                             help="Target bracket 1-5; exits 1 if the floor exceeds it")
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "cache-status":
             cmd.add_argument("--routine", default=None,
