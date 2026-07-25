@@ -17,6 +17,8 @@ PILOT_STEPS = [
     ("validate-stack", "manamap.pilot.validate_stack", "Enforce the citation contract on scenarios"),
     ("goldfish", "manamap.pilot.goldfish", "Seeded Monte Carlo resource-development metrics"),
     ("bracket-check", "manamap.pilot.bracket", "Computed bracket floor and its evidence"),
+    ("build-deck", "manamap.pilot.build_deck", "brief.json -> build_plan.json, deterministic"),
+    ("validate-build", "manamap.pilot.validate_build", "Form-check a build plan against the contract"),
     ("artist-credits", "manamap.pilot.artist_credits", "Standout artists and art themes in a deck"),
     ("build-manual", "manamap.pilot.build_manual", "Render a deck's 15-department magazine issue"),
     ("build-index", "manamap.pilot.build_index", "Render manuals/index.html — the newsstand"),
@@ -33,7 +35,7 @@ PILOT_STEPS = [
 _DECK_COMMANDS = {
     "fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual",
     "validate-issue", "cache-status", "cache-record", "cache-clear", "artist-credits",
-    "bracket-check",
+    "bracket-check", "build-deck", "validate-build",
 }
 
 
@@ -64,6 +66,9 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "artist-credits":
             cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "build-deck":
+            cmd.add_argument("--write-decklist", action="store_true", dest="write_decklist",
+                             help="Also write decklist.txt for fetch-deck")
         if name == "bracket-check":
             cmd.add_argument("--target", type=int, default=None,
                              help="Target bracket 1-5; exits 1 if the floor exceeds it")

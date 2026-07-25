@@ -459,6 +459,71 @@ MASS_LAND_DENIAL = frozenset({
     "Winter Moon", "Bend or Break", "Numot, the Devastator",
 })
 
+# ── Pilot: Deck Construction ─────────────────────────────────────────────
+# The deterministic builder. Every constant here has a home so it can be
+# tested and tuned — the browser prototype's equivalents were JS literals with
+# no derivation, no tests, and no way to reason about them.
+DECK_SIZE = 100
+DECK_BUILD_ALTERNATES = 3
+DECK_BUILD_MAX_BRACKET_PASSES = 10
+
+# Slot budget for the 99. PROVISIONAL: these are conventional Commander ratios
+# and they are the one part of the builder not yet grounded in a citable
+# source. The strategy:deckbuilding.ratios research pass (M0) replaces them
+# with numbers the architect can cite; until then the plan reports them as
+# uncited and `validate_build` does not treat them as evidence.
+DECK_ROLE_BUDGET = {
+    "lands": 36,
+    "ramp": 10,
+    "draw": 10,
+    "removal": 8,
+    "sweeper": 3,
+    "protection": 3,
+    "recursion": 2,
+    "tutor": 2,
+    "wincon": 3,
+    "flex": 22,
+}
+
+# Which classifier roles satisfy each budget line. `flex` takes anything and is
+# what makes the deck feel like the commander rather than a checklist.
+DECK_ROLE_GROUPS = {
+    "ramp": ("ramp:rock", "ramp:dork", "ramp:ritual", "ramp:land", "ramp:cost-reduction"),
+    "draw": ("draw:engine", "draw:burst", "draw:impulse", "draw:wheel"),
+    "removal": ("removal:spot", "removal:damage", "removal:edict", "removal:fight",
+                "removal:debuff", "counterspell"),
+    "sweeper": ("removal:sweeper",),
+    "protection": ("protection:self", "protection:granted"),
+    "recursion": ("recursion",),
+    "tutor": ("tutor:unrestricted", "tutor:narrow"),
+    "wincon": ("wincon:alt", "wincon:drain", "wincon:combat"),
+}
+
+# Scoring weights. Sum to 1.0. Three deliberate departures from the prototype:
+# EDHREC rank is log-scaled and bracket-damped (a uniform global popularity
+# rank pushes every deck toward the same staples, which is wrong for a synergy
+# deck and wrong for a low bracket); curve is scored, so a 13-drop no longer
+# competes with a two-drop for a ramp slot; and castability measures pip
+# intensity rather than colour legality, which the pool filter already
+# guarantees.
+DECK_BUILD_WEIGHTS = {
+    "similarity": 0.30,
+    "synergy": 0.22,
+    "combo": 0.12,
+    "curve": 0.16,
+    "edhrec": 0.10,
+    "castability": 0.10,
+}
+
+# Curve scoring. Commander is not a format where a 13-mana card is a ramp
+# payoff, and the prototype's hardcoded 7-bucket target had no derivation.
+DECK_CURVE_SWEET_SPOT = 3
+DECK_CURVE_TOLERANCE = 5.0
+
+# EDHREC's contribution is scaled by bracket: at Exhibition the format's
+# most-played cards are the least appropriate answer.
+DECK_BUILD_EDHREC_BY_BRACKET = {1: 0.2, 2: 0.5, 3: 1.0, 4: 1.0, 5: 1.0}
+
 # ── Pilot: Goldfish Simulation ───────────────────────────────────────────
 GOLDFISH_SEED = 42
 GOLDFISH_ITERATIONS = 10000
