@@ -92,7 +92,9 @@ def validate(plan, cards=None, rules=None, strategy_sections=None):
 
     errors.extend(_validate_bracket(plan))
     errors.extend(_validate_budget(plan))
+    errors.extend(_validate_land_list(plan))
     errors.extend(_validate_slots(plan))
+    errors.extend(_validate_manabase(plan))
     errors.extend(_validate_critic(plan))
 
     for i, slot in enumerate(plan.get("slots", [])):
@@ -129,6 +131,14 @@ def _validate_bracket(plan):
 
 
 def _validate_budget(plan):
+    """Budget arithmetic, per role as well as in total.
+
+    Checking only the total lets an author re-label slots until the sum lands
+    while every individual line is wrong — the deck-critic caught exactly that
+    on the first real build (declared 9 ramp against 10 ramp slots, 9 draw
+    against 6, 10 removal against 12; net zero). A budget that doesn't describe
+    its own deck is not a budget.
+    """
     budget = plan.get("role_budget") or {}
     if not budget:
         return ["role_budget is missing"]
@@ -137,13 +147,66 @@ def _validate_budget(plan):
         counts[slot.get("role")] = counts.get(slot.get("role"), 0) + 1
     lands = sum((plan.get("land_counts") or {}).values())
     errors = []
+
     if budget.get("lands") and lands != budget["lands"]:
         errors.append(f"land_counts total {lands}, role_budget says {budget['lands']}")
+
     declared = sum(v for k, v in budget.items() if k != "lands")
     actual = sum(counts.values())
     if declared != actual:
         errors.append(f"role_budget declares {declared} nonland slots, plan has {actual}")
+
+    for role, want in sorted(budget.items()):
+        if role == "lands":
+            continue
+        have = counts.get(role, 0)
+        if have != want:
+            errors.append(
+                f"role_budget says {want} {role}, plan labels {have} slot(s) {role}"
+            )
+    for role in sorted(set(counts) - set(budget)):
+        errors.append(f"{counts[role]} slot(s) labelled {role!r}, which the budget never declares")
+
     return errors
+
+
+def _validate_land_list(plan):
+    """`lands` and `land_counts` must describe the same 36 cards."""
+    counts = plan.get("land_counts") or {}
+    listed = plan.get("lands")
+    if listed is None:
+        return []
+    if sorted(set(listed)) != sorted(set(counts)):
+        only_listed = sorted(set(listed) - set(counts))
+        only_counted = sorted(set(counts) - set(listed))
+        return [
+            "lands and land_counts disagree — "
+            f"only in lands: {only_listed or '(none)'}; "
+            f"only in land_counts: {only_counted or '(none)'}"
+        ]
+    return []
+
+
+def _validate_manabase(plan):
+    """The mana base must describe the spells the plan actually runs.
+
+    Diagnostics are computed against a spell list; if slots change afterwards
+    and nobody recomputes, the plan reports a mana base for a deck it no longer
+    is. That is not a cosmetic staleness — the deck-critic found a build whose
+    swaps pushed black from one pip to two, moving the source target from 22 to
+    36 while the plan still claimed no shortfall.
+    """
+    diag = plan.get("manabase")
+    if not isinstance(diag, dict):
+        return []
+    slots = len(plan.get("slots", []))
+    counted = diag.get("spell_slots")
+    if counted is not None and counted != slots:
+        return [
+            f"manabase diagnostics were computed against {counted} spell slot(s) "
+            f"but the plan now has {slots} — re-run the mana base"
+        ]
+    return []
 
 
 def _validate_slots(plan):

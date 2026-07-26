@@ -236,7 +236,16 @@ ROLE_PATTERNS = {
     "draw:impulse": r"exile the top (?:\w+ )?cards?.{0,60}?(?:you may (?:play|cast)|until)",
     "draw:wheel": r"discards? (?:their|your) hand.{0,60}?draws?|each player draws",
     # Interaction
-    "removal:sweeper": r"destroy all|exile all|destroy each|all creatures get -|each creature gets -",
+    # "exile all" must be scoped to permanents: Demonic Consultation says
+    # "exile all cards from your library named that card" and is a tutor, not a
+    # wrath. The -1/-1 clause catches Black Sun's Zenith, which sweeps without
+    # ever using the word "destroy".
+    "removal:sweeper": (
+        r"destroy all|destroy each"
+        r"|exile all (?:other )?(?:creature|permanent|nonland|artifact|enchantment)"
+        r"|all creatures get -|each creature gets -"
+        r"|put (?:x|\d+|a|two|three) -1/-1 counters? on each"
+    ),
     "removal:spot": r"destroy target|exile target (?:creature|permanent|artifact|enchantment|planeswalker|battle)",
     "removal:damage": r"deals? (?:\d+|x) damage to (?:target|any target|each)",
     "removal:edict": r"sacrifices? a (?:creature|permanent)",
@@ -262,7 +271,16 @@ ROLE_PATTERNS = {
     # those slots too.
     "value:etb": r"when(?:ever)? (?:this|[\w\s,']{0,30}?) enters",
     "utility:activated": r"\{T\}[,:]|\{\d+\}[,:].{0,40}?:",
-    "removal:debuff": r"gets? -\d+/-\d+|gets? -\d+/-0|put a -1/-1 counter",
+    "removal:debuff": r"gets? -\d+/-\d+|gets? -\d+/-0|put (?:a|x|\d+|two|three) -1/-1 counters?",
+    # Cards that trigger off counters rather than placing them. Whole archetypes
+    # (Hapatra's -1/-1 payoffs: Nest of Scarabs, Flourishing Defenses) carried
+    # no role at all before this, and absence of a role reads to a slot filler
+    # as absence of a function.
+    "payoff:counters": (
+        r"(?:whenever|when).{0,40}?(?:you )?put (?:one or more|a|x|\d+|two|three)"
+        r"(?: \+1/\+1| -1/-1)? counters?"
+        r"|(?:\+1/\+1|-1/-1) counters? (?:is|are) put"
+    ),
     # Voltron and combat-trick slots. An Aura that pumps and an Equipment that
     # pumps are the same job wearing different card types.
     "buff:attached": r"(?:enchanted|equipped) creature (?:gets?|has|have)|\bequip[\s—]|\benchant creature\b",
@@ -476,6 +494,7 @@ MASS_LAND_DENIAL = frozenset({
 DECK_SIZE = 100
 DECK_BUILD_ALTERNATES = 3
 DECK_BUILD_MAX_BRACKET_PASSES = 10
+DECK_BUILD_MAX_ITERATIONS = 3      # architect ⇄ critic, mirrors RESOLVE_MAX_ITERATIONS
 
 # Slot budget for the 99. PROVISIONAL: these are conventional Commander ratios
 # and they are the one part of the builder not yet grounded in a citable
@@ -507,6 +526,7 @@ DECK_ROLE_GROUPS = {
     "recursion": ("recursion",),
     "tutor": ("tutor:unrestricted", "tutor:narrow"),
     "wincon": ("wincon:alt", "wincon:drain", "wincon:combat"),
+    "flex": ("payoff:counters",),   # engine payoffs are the deck, not filler
 }
 
 # Scoring weights. Sum to 1.0. Three deliberate departures from the prototype:
@@ -611,6 +631,27 @@ AGENT_ROUTINES = {
                    "deck:strategic_frame.json?", "prose:shape", "cards:printing",
                    "global:COMBO_GRAPH_PATH", "global:SYNERGY_GRAPH_PATH",
                    "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
+    },
+    # Deck construction. Note none of these take `cards:semantic` — it digests a
+    # cards.json that by definition does not exist before a build, and would
+    # raise MissingInput -> exit 2 -> "stop, don't spawn". The authored brief is
+    # the root input instead.
+    "candidate-pool": {
+        "agent": "deck-analyst",
+        "artifact": "candidate_pool.json",
+        "inputs": ["deck:brief.json", "global:CARD_ROLES_PATH",
+                   "global:COMBO_DETAILS_PATH", "global:SYNERGY_GRAPH_PATH",
+                   "global:OBSOLESCENCE_INDEX_PATH"],
+    },
+    "deck-build": {
+        "agent": "deck-architect+deck-critic",
+        "artifact": "build_plan.json",
+        "artifact_keys": ["archetype", "gameplan", "role_budget",
+                          "role_budget_citations", "swaps", "engines", "keep",
+                          "gaps", "critic"],
+        "inputs": ["deck:brief.json", "deck:candidate_pool.json",
+                   "global:CARD_ROLES_PATH", "global:COMBO_DETAILS_PATH",
+                   "global:SYNERGY_GRAPH_PATH", "strategy:doc"],
     },
 }
 

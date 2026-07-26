@@ -314,6 +314,9 @@ def build(spells, pool, slots, basics=None):
     shortfalls = {c: targets[c] - sources.get(c, 0) for c in targets if sources.get(c, 0) < targets[c]}
     diagnostics = {
         "slots": slots,
+        # Stamped so a later edit to the spell list is detectable: diagnostics
+        # computed against a deck you no longer run are worse than none.
+        "spell_slots": len(spells),
         "lands_selected": len(chosen),
         "requirements": {
             c: {"effective_pips": r["effective_pips"], "max_pips": r["max_pips"],

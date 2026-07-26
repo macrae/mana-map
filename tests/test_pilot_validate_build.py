@@ -168,6 +168,61 @@ def test_nonland_budget_mismatch_is_caught():
     assert any("declares 10 nonland slots" in e for e in validate(plan, _cards()))
 
 
+def test_per_role_mismatch_is_caught_even_when_the_total_is_right():
+    """The deck-critic found a real build where the total summed but every line
+    was wrong — 9 declared ramp against 10 slots, 9 draw against 6, net zero."""
+    plan = _plan(
+        slots=[{"name": "Sol Ring", "role": "ramp"},
+               {"name": "Deadly Dispute", "role": "ramp"}],
+        role_budget={"lands": 2, "ramp": 1, "draw": 1},
+    )
+    errors = validate(plan, _cards())
+    assert any("says 1 ramp, plan labels 2" in e for e in errors)
+    assert any("says 1 draw, plan labels 0" in e for e in errors)
+    # ...and the total check alone would have passed it
+    assert not any("nonland slots" in e for e in errors)
+
+
+def test_undeclared_role_is_caught():
+    plan = _plan(
+        slots=[{"name": "Sol Ring", "role": "ramp"}, {"name": "Deadly Dispute", "role": "wincon"}],
+        role_budget={"lands": 2, "ramp": 1, "flex": 1},
+    )
+    assert any("labelled 'wincon', which the budget never declares" in e
+               for e in validate(plan, _cards()))
+
+
+# ── derived blocks must describe the deck they claim to ──
+
+
+def test_lands_array_disagreeing_with_land_counts_is_caught():
+    """A swap that edits land_counts but not `lands` leaves two 36-card lists."""
+    plan = _plan(lands=["Swamp", "Haven of the Spirit Dragon"])
+    assert any("lands and land_counts disagree" in e for e in validate(plan, _cards()))
+
+
+def test_matching_lands_array_passes():
+    plan = _plan(lands=["Forest", "Swamp"])
+    assert not any("disagree" in e for e in validate(plan, _cards()))
+
+
+def test_stale_manabase_diagnostics_are_caught():
+    """Diagnostics computed against a spell list the deck no longer runs."""
+    plan = _plan(manabase={"spell_slots": 63, "sources": {"B": 29}})
+    assert any("re-run the mana base" in e for e in validate(plan, _cards()))
+
+
+def test_fresh_manabase_diagnostics_pass():
+    plan = _plan(manabase={"spell_slots": 2, "sources": {"B": 29}})
+    assert not any("re-run the mana base" in e for e in validate(plan, _cards()))
+
+
+def test_manabase_without_a_stamp_is_not_flagged():
+    """Older plans predate the stamp — absence is not staleness."""
+    plan = _plan(manabase={"sources": {"B": 29}})
+    assert not any("re-run the mana base" in e for e in validate(plan, _cards()))
+
+
 # ── critic verdict consistency (mirrors the stack contract) ──
 
 

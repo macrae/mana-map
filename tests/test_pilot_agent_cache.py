@@ -392,6 +392,25 @@ def test_strategy_db_rebuild_does_not_invalidate(deck, monkeypatch):
 
 @requires_deck
 def test_real_deck_routines_resolve():
+    """Every routine whose inputs a hand-built deck has must resolve cleanly.
+
+    The construction routines (candidate-pool, deck-build) require an authored
+    brief.json, which a hand-built deck like goblin-storm has no reason to
+    carry. MissingInput there is the designed behaviour — it becomes exit 2,
+    "stop, don't spawn" — not a failure to resolve.
+    """
+    resolved = 0
     for routine in ac.discover_routines("goblin-storm"):
-        result = ac.status("goblin-storm", routine)
+        try:
+            result = ac.status("goblin-storm", routine)
+        except ac.MissingInput:
+            continue
         assert result["status"] in {"HIT", "MISS", "EDITED"}
+        resolved += 1
+    assert resolved, "no routine resolved for goblin-storm at all"
+
+
+def test_build_routines_require_a_brief():
+    """A deck with no brief cannot be built — that must be exit 2, not a MISS."""
+    with pytest.raises(ac.MissingInput, match="brief.json"):
+        ac.status("goblin-storm", "candidate-pool")
