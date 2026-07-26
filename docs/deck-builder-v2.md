@@ -1,7 +1,24 @@
 # Deck Building v2 — design plan
 
-*Status: proposed, not started. Written 2026-07-25. The active summary lives in `PLAN.md`;
-this is the full spec.*
+*Status: **Phases 0–3 shipped** in `265753f..3ff1ec2`; Phase 4 (the frontend) outstanding.
+Written 2026-07-25 as a proposal and kept as the design record — where the implementation
+departed from the design, the departure is marked inline and the shipped behaviour wins.
+The active summary lives in `PLAN.md`.*
+
+**Three departures worth knowing before you read on:**
+
+1. **Tutor density is not a bracket signal.** The design treated it as a floor input. The
+   `strategy:deckbuilding.power-level` research then found WotC *removed* the tutor
+   restriction outright on 2025-10-21 — "not all Tutors are created equal" — and now relies
+   on Game Changers membership, which the engine already counts. `config.py` carries no
+   tutor field; `bracket.py` reports tutor density and never scores it.
+2. **There is no `data/game_changers.json`.** Scryfall's bulk data carries a `game_changer`
+   boolean, so it ships as a column in `cards.csv` — no scrape, no sidecar, no staleness
+   handshake. The design's "stale list" risk discussion below is moot. The *new* hazard it
+   creates: the signal now lives in a gitignored file, so `bracket-check` silently needs a
+   pipeline run.
+3. **`analysis/similar.py` was never created.** The helpers went into `analysis/common.py`
+   instead, which was the right home.
 
 ## What we're building
 
@@ -162,38 +179,43 @@ This is the differentiated part, and it falls out of finding 2 almost for free.
 WotC's bracket ladder is defined by deck-construction restrictions, and we can check nearly
 all of them mechanically:
 
-| Bracket | Name | Game Changers | Two-card infinites | Mass land denial | Tutors |
+| Bracket | Name | Game Changers | Two-card infinites | Mass land denial | Expected turns |
 |---|---|---|---|---|---|
-| 1 | Exhibition | 0 | none | none | minimal |
-| 2 | Core | 0 | none | none | few |
-| 3 | Upgraded | ≤3 | not early-game | none | some |
-| 4 | Optimized | unlimited | unlimited | allowed | unlimited |
-| 5 | cEDH | unlimited | unlimited | allowed | unlimited |
+| 1 | Exhibition | 0 | none | none | 9+ |
+| 2 | Core | 0 | none | none | 8+ |
+| 3 | Upgraded | ≤3 | not early-game | none | 6+ |
+| 4 | Optimized | unlimited | unlimited | allowed | 4+ |
+| 5 | cEDH | unlimited | unlimited | allowed | any |
+
+*(Shipped: the design had a **Tutors** column — `minimal / few / some / unlimited` — which
+is now deliberately absent. See departure 1 above.)*
 
 `bracket.py` computes a **bracket floor** for any 99:
 
-- **Game Changer count** — set membership against a new tracked `data/game_changers.json`.
-- **Combo content** — intersect the deck's name set against `combo_graph.combos`, take the
-  maximum `bracketTag` present, and report the specific lines. This is the piece nobody
-  else has: we can name the exact combo that pushes a deck out of Bracket 2.
+- **Game Changer count** — the `game_changer` column in `cards.csv` (departure 2).
+- **Combo content** — intersect the deck's name set against `combo_details.json` via its
+  `by_card` index (the records moved out of `combo_graph.json` in M1), take the maximum
+  bracket tag present, and report the specific lines. This is the piece nobody else has: we
+  can name the exact combo that pushes a deck out of Bracket 2.
 - **Two-card infinite detection** — combos of length 2 whose `produces` contains an
-  `Infinite …` feature, cross-checked against `manaValueNeeded` for the "early game"
-  qualifier in Bracket 3.
-- **Tutor density** — from the role classifier's `tutor:unrestricted` count.
-- **Mass land denial** — a small curated name/text list; the honest weak spot, and it should
-  be a reviewed list rather than a regex.
+  `Infinite …` feature, cross-checked against `mana_value_needed` for the "early game"
+  qualifier in Bracket 3. **This test runs independently of the bracket tag, and that turned
+  out to be load-bearing**: Spellbook tags Hapatra + Blowfly Infestation as bracket 1 despite
+  it being a genuine two-card infinite, and the engine returns floor 4 anyway.
+- **Commander-assumption exclusion** — a Spellbook line can quietly assume one of its own
+  pieces is your commander (`"Infinite commander casts"` in `produces` is the tell). Such a
+  line is excluded when none of its cards holds that seat. This encodes Judge's Desk A-004,
+  where CR 903.9a refuted a promised infinite for goblin-storm.
+- **Mass land denial** — a small curated name list; the honest weak spot, and reviewed by
+  hand rather than derived.
 
-The output is a ◆ artifact: a claimed bracket, a computed floor, and the evidence for each.
-When the two disagree, that is a finding, not a rounding error. It also runs on *existing*
-decks — pointing it at goblin-storm on day one is the cheapest possible validation.
+The output is `bracket_report.json`, a ◆ artifact: a claimed bracket, a computed floor, and
+the evidence for each. `validate_build` cross-checks a plan's self-reported floor against it.
+It also runs on *existing* decks — pointing it at goblin-storm on day one was the cheapest
+possible validation, and it independently reproduced both of that deck's verified findings.
 
-Two honest caveats to carry into implementation:
+One honest caveat, still current:
 
-- The Game Changers list must be fetched from the **official WotC page**, not an aggregator.
-  Sources currently disagree on the count (53 vs 56 depending on date and site), the list is
-  revised periodically, and the artifact needs a `source_url` + `as_of` + `sha256` sidecar
-  exactly like `.rules-meta.json`. A stale Game Changers list produces a confidently wrong
-  bracket claim, which is worse than no claim.
 - "Intent of play is the most important part" is WotC's own framing — the brackets are
   explicitly *not* a calculator. We compute a floor and say so. We never tell a player what
   bracket their deck is; we tell them what their deck contains.

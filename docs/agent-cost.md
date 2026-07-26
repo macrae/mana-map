@@ -36,9 +36,25 @@ Real numbers from the session that built the magazine layer (2026-07-25):
 | `stack:<NNN>` resolve | stack-resolver | 35,278 / 38,231 | new or re-run scenario |
 | `stack:<NNN>` check | rules-checker | 29,625 / 28,097 | every resolver iteration |
 
+From the session that built the deck builder and built hapatra (2026-07-25):
+
+| Routine | Agent | Tokens | Typical trigger |
+|---|---|---|---|
+| `candidate-pool` | deck-analyst | **235,579** | new brief, role or combo-data refresh |
+| `deck-build` | deck-architect | 105,096 + 96,380 (revision) | new pool, critic findings |
+| `deck-build` | deck-critic | 94,468 | every architect iteration |
+| *(research pass)* | strategy-researcher (research) | 120,545 / 92,559 / 166,544 | the `strategy:deckbuilding` corpus, 3 passes |
+
 **A full manual regeneration ≈ 330k tokens** across four serially-dependent agents.
 `resolve-stack` is 2–6 spawns per scenario (resolver + checker, up to
 `RESOLVE_MAX_ITERATIONS = 3`).
+
+**A full build ≈ 530k tokens** for a first pass with one critic iteration
+(pool → architect → critic → architect), bounded by `DECK_BUILD_MAX_ITERATIONS = 3`.
+The pool dominates, which is why `candidate-pool` is cached separately from
+`deck-build`: revising a plan against critic findings reuses the pool for free.
+And the deterministic builder underneath costs **zero** — a cache miss on both
+routines still leaves you a legal, bracket-compliant 99.
 
 What this bought before the cache: re-running `write-manual` after a one-word prose
 tweak paid all four agents again, and `design-issue` paid another 147k because
@@ -87,9 +103,16 @@ enough to change the issue's angle, use `--force`.
 agent produces from identical artifacts, so it invalidates that agent's routines by
 design.
 
-**Full content hashes, never mtime.** The three global graphs total ~56MB and hash in
-0.17s. Using size+mtime would be actively harmful: `regen-analysis` rewrites them
-byte-identical on every run, which would false-invalidate ~200k tokens of agent work.
+**Full content hashes, never mtime.** The manual routines hash ~38MB of global graphs;
+the build routines hash ~32MB (`combo_details.json` 25.7MB + `card_roles.json` 1.9MB +
+`synergy_graph.json`). Using size+mtime would be actively harmful: `regen-analysis`
+rewrites them byte-identical on every run, which would false-invalidate ~200k tokens of
+agent work. `cached_file_sha256` memoizes on `(path, mtime_ns, size)` so a single
+`cache-status` scan hashes each file once.
+
+Note the build routines deliberately hash `card_roles.json` by **content** rather than
+taking a `roles:version` token — a role edit that doesn't change any card's
+classification correctly costs nothing.
 
 **The strategy-doc handshake.** `strategy:doc` reuses `common.strategy_doc_sha256()`,
 which hashes `strategy.md` bytes — never the derived index. So

@@ -1,6 +1,6 @@
 ---
 name: run-pipeline
-description: Run the Mana Map data pipeline — full 12-step run, resume from a step, or single steps. Use when the user wants to (re)generate data artifacts, refresh Scryfall data, or rebuild any data/ file.
+description: Run the Mana Map data pipeline — full 13-step run, resume from a step, or single steps. Use when the user wants to (re)generate data artifacts, refresh Scryfall data, or rebuild any data/ file.
 ---
 
 # Run the pipeline
@@ -10,7 +10,7 @@ All commands use the project venv. Full step reference: `docs/pipeline.md`.
 ```bash
 .venv/bin/manamap run                # full pipeline (steps 1 & 7 need internet)
 .venv/bin/manamap run --from STEP    # resume from a step
-.venv/bin/manamap <step>             # one step; `manamap --help` lists all 13
+.venv/bin/manamap <step>             # one step; `manamap --help` lists all 16
 ```
 
 Steps in order: `download`, `extract`, `preprocess`, `train`, `train-ability`, `embed`, `reduce`, `download-combos`, `process-combos`, `export`, `synergy`, `power-creep`, `cluster-regions`.
@@ -27,4 +27,4 @@ Steps in order: `download`, `extract`, `preprocess`, `train`, `train-ability`, `
 ```bash
 .venv/bin/python -m pytest tests/test_pipeline_integration.py tests/test_find_similar.py
 ```
-41 tests validate cross-artifact consistency. All green = pipeline output is coherent.
+42 tests validate cross-artifact consistency. All green = pipeline output is coherent.

@@ -28,6 +28,9 @@ manamap pilot download-rules            # CR txt (idempotent; sha256 sidecar)
 manamap pilot build-rules-db            # ~3.9K chunks → embeddings + index
 manamap pilot query-rules "…" --json    # semantic top-k (resolver's discovery path)
 manamap pilot lookup-rule 702.40a --json  # exact fetch (checker's verification path)
+manamap pilot build-deck <slug> [--write-decklist]  # brief.json → build_plan.json (no agents)
+manamap pilot validate-build <slug>     # form gate over a build plan
+manamap pilot bracket-check <slug> [--target N] [--json]  # bracket floor → bracket_report.json
 manamap pilot fetch-deck <slug>         # decklist.txt → cards.json (Scryfall)
 manamap pilot validate-deck <slug>      # 100/commander/singleton/color identity
 manamap pilot validate-stack <slug> [--stack NNN]   # citation contract (stacks + decisions)
@@ -54,7 +57,11 @@ data/strategy/                 strategy.md + CHANGELOG.md tracked;
                                strategy_index.json / strategy_embeddings.npy /
                                .strategy-db-meta.json gitignored (regenerable)
 data/decks/<slug>/             all tracked:
-                               decklist.txt          authored
+                               brief.json            authored (build side only)
+                               candidate_pool.json   deck-analyst
+                               build_plan.json       deck-architect ⇄ deck-critic
+                               bracket_report.json   bracket-check (◆)
+                               decklist.txt          authored, OR build-deck --write-decklist
                                cards.json            fetch-deck
                                goldfish_targets.json authored
                                goldfish_metrics.json goldfish
@@ -162,9 +169,16 @@ someone else's regeneration as a cache hit, and `git log` answers "which inputs
 produced this prose?"). `record()` refuses artifacts that are missing, lack their
 routine's keys, or have no checker block — a failed run can't poison the cache.
 
-Routines: `strategic-frame`, `coach-prose`, `writer-prose`, `issue-plan`, plus
-`stack:<NNN>` and `decision:<NNN>` discovered from disk. Declared in
-`config.AGENT_ROUTINES`.
+Routines (6 static): `candidate-pool`, `deck-build`, `strategic-frame`,
+`coach-prose`, `writer-prose`, `issue-plan`, plus `stack:<NNN>` and
+`decision:<NNN>` discovered from disk. Declared in `config.AGENT_ROUTINES`.
+
+The two build routines take **no `cards:semantic`** — it digests a `cards.json`
+that by definition doesn't exist before a build, so the authored `brief.json` is
+their root input instead. Conversely a hand-built deck has no `brief.json`, so
+those routines report **`N/A`** in the all-routines scan rather than aborting it;
+an explicit `--routine` still exits 2, because there you asked about that routine
+specifically and a missing input means fix it, don't spawn.
 
 Four semantics worth knowing: agent prompts are inputs (editing
 `.claude/agents/*.md` invalidates that agent's routines by design); `issue-plan`
@@ -222,4 +236,10 @@ Content pipeline (`write-manual` skill) — goldfish → `deck-analyst` evidence
 
 ## Tests
 
-`tests/test_pilot_*.py` — 209 tests across 11 files: CR chunker edge cases (`test_pilot_rules_db`, 12), rules queries (`test_pilot_query_rules`, 5), mocked Scryfall ingestion (`test_pilot_fetch_deck`, 11), citation-contract fixtures incl. strategy-citation dispatch (`test_pilot_validate_stack`, 18), goldfish determinism (`test_pilot_goldfish`, 12), renderer determinism/escaping/TOC/sideboard (`test_pilot_build_manual`, 18), strategy chunker + real-DB checks (`test_pilot_strategy_db`, 9), strategy form validator + changelog (`test_pilot_validate_strategy`, 18). Data-gated tests use `requires_rules` / `requires_deck` / `requires_strategy` markers from `tests/conftest.py`.
+`tests/test_pilot_*.py` — 368 tests across 15 files.
+
+**Build side:** deck builder pool/scoring/slot-filling/emergent-combo pass (`test_pilot_build_deck`, 42), hypergeometric mana math and land selection (`test_pilot_manabase`, 36), bracket floor + drivers + the goblin-storm golden checks (`test_pilot_bracket`, 35), build-plan form gate (`test_pilot_validate_build`, 37).
+
+**Publish side:** agent cache incl. N/A scan semantics (`test_pilot_agent_cache`, 42), renderer determinism/escaping/TOC/sideboard (`test_pilot_build_manual`, 30), issue form gate (`test_pilot_validate_issue`, 25), artist analysis (`test_pilot_artist_credits`, 24), mocked Scryfall ingestion (`test_pilot_fetch_deck`, 19), citation contract incl. strategy-citation dispatch (`test_pilot_validate_stack`, 18), strategy form validator + changelog (`test_pilot_validate_strategy`, 18), goldfish determinism and the two opening-hand distributions (`test_pilot_goldfish`, 16), CR chunker edge cases (`test_pilot_rules_db`, 12), strategy chunker + real-DB checks (`test_pilot_strategy_db`, 9), rules queries (`test_pilot_query_rules`, 5).
+
+Data-gated tests use `requires_rules` / `requires_deck` / `requires_strategy` / `requires_roles` markers from `tests/conftest.py`.

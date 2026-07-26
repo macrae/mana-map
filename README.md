@@ -35,8 +35,10 @@ Three things to know:
 
 - **Serve from the repo root.** The page fetches `../data/*`, so `viz/` and `data/` must
   stay top-level siblings. Opening `viz/index.html` as a `file://` URL fails on CORS.
-- The clone is ~100 MB and the map loads ~80 MB into the browser. That's the tracked
-  data, and it's deliberate — see [Landmines](#landmines).
+- The clone carries ~123 MB of tracked data; the map loads ~100 MB of it into the browser.
+  That's deliberate — see [Landmines](#landmines). (Two of the tracked files,
+  `combo_details.json` and `card_roles.json`, are for the deck builder and the agents; the
+  browser never fetches them.)
 - Plotly loads from a CDN, so the page needs internet even though the data doesn't.
 
 What you get: two maps (one clustered by color and type, one by what cards *do*), Find
@@ -96,15 +98,28 @@ name-only list works but yields default reprints and a visibly weaker issue.
 `fetch-deck` short-circuits when the decklist hasn't changed; use `--force` after oracle
 errata.
 
-### 4. Three files you write by hand
+### 4. The files you write by hand
 
-Nothing scaffolds these. `data/decks/goblin-storm/` is the worked reference for all three.
+Nothing scaffolds these. `data/decks/goblin-storm/` is the worked reference.
 
 | File | Why it's manual |
 |---|---|
-| `decklist.txt` | It's your deck |
-| `goldfish_targets.json` | Which key-piece sets are worth simulating is a judgment call |
+| `decklist.txt` | It's your deck — **unless you let the builder write it**, see below |
 | `issue.json` | Volume, date, cover price, next issue. **The build hard-exits without it** — a *generated* date would break byte-identical rebuilds |
+| `goldfish_targets.json` | Which key-piece sets are worth simulating is a judgment call — though `/build-deck` derives it from the plan's declared engines |
+
+### 4b. Or don't write a decklist at all
+
+If you have a commander in mind rather than a list, the builder makes one:
+
+```bash
+# author data/decks/<slug>/brief.json: commander, bracket (1-5), playstyle
+.venv/bin/manamap pilot build-deck <slug> --write-decklist   # deterministic, no agents
+.venv/bin/manamap pilot fetch-deck <slug>
+```
+
+That alone produces a legal, tier-conditioned, goldfishable 99. Running the `/build-deck`
+skill on top adds the agent loop, which is what makes it *good* rather than merely legal.
 
 ### 5. The agent phases
 
@@ -112,6 +127,8 @@ Run these from Claude Code in the repo root. Each is a skill in `.claude/skills/
 
 | Step | Produces | Pure CLI? |
 |---|---|---|
+| `/build-deck` | A 99 from a brief: pool → architect ⇄ critic, bracket-gated | no |
+| `manamap pilot bracket-check <slug>` | Computed bracket floor + its evidence | **yes** |
 | `/resolve-stack` | A verified combo line: resolver → validator → adversarial checker | no |
 | `manamap pilot goldfish <slug>` | Resource curves from 10k seeded games | **yes** |
 | `/write-manual` | Strategic frame, coaching, body prose | no |
@@ -140,14 +157,16 @@ stage is independently runnable and testable.
 
 ```
 Card map   download → extract → preprocess → train ×2 → embed → reduce
-                    → combos → export → synergy → power-creep → regions → viz
+                    → combos → export → synergy → power-creep → regions → card-roles → viz
+
+Build      brief.json → build-deck → bracket-check → architect ⇄ critic → decklist
 
 Manual     fetch-deck → goldfish + RAG DBs → agents author JSON
                     → validators gate → renderer builds → GitHub Pages
 ```
 
-`manamap run` drives the first (12 steps, ~40–60 min, internet at two of them).
-`manamap pilot <cmd>` drives the second (19 subcommands). All constants live in
+`manamap run` drives the first (13 steps, ~40–60 min, internet at two of them).
+`manamap pilot <cmd>` drives the second (22 subcommands). All constants live in
 `src/manamap/config.py`; both CLIs are registry-driven with lazy imports.
 
 Two lightweight fusion MLPs (~180K params each) produce the 128-dim embeddings; the text
@@ -164,6 +183,9 @@ is interesting.
 | A magazine department | `DEPARTMENTS` in `pilot/issue_spec.py` — changes every issue; treat it like `config.py` |
 | A data file the viz reads | The `DATA` map in `viz/js/mana-map.js`, plus a `.gitignore` negation |
 | A synergy rule, tag, or threshold | `config.py`, nowhere else |
+| A deckbuilding role | `ROLE_PATTERNS` in `config.py`, then re-run `manamap card-roles` |
+| A bracket rule | `BRACKETS` / `COMBO_BRACKET_TAGS` / `MASS_LAND_DENIAL` in `config.py` |
+| Builder tuning | `DECK_ROLE_BUDGET` / `DECK_BUILD_WEIGHTS` in `config.py` |
 | An agent cache routine | `AGENT_ROUTINES` in `config.py` |
 
 ## Three contracts worth understanding
@@ -186,10 +208,10 @@ cache-busters stripped.
 ## Testing
 
 ```bash
-.venv/bin/python -m pytest        # 470 tests
+.venv/bin/python -m pytest        # 686 tests
 ```
 
-261 card-pipeline + 209 pilot. Four skip markers in `tests/conftest.py` gate on the last
+318 card-pipeline + 368 pilot. Four skip markers in `tests/conftest.py` gate on the last
 artifact of each stage, so **skips on a fresh clone are expected and correct**. Unit tests
 build inline fixtures — no fixture files. Paths always come from `manamap.config`, so the
 suite is CWD-independent and honours `MANAMAP_DATA_DIR`.
@@ -199,8 +221,8 @@ suite is CWD-independent and honours `MANAMAP_DATA_DIR`.
 - **`python -m manamap.pipeline` starts the full 40–60 minute run** with no arguments and
   no confirmation, overwriting trained models. Use the `manamap` CLI.
 - **Never put `data/` on Git LFS.** GitHub Pages serves LFS pointer files, not content —
-  it would silently break every fetch on the deployed site. The ~85 MB of tracked JSON is
-  deliberate.
+  it would silently break every fetch on the deployed site. The ~123 MB of tracked JSON
+  is deliberate.
 - **Index alignment**: `projection[i]` ≡ `cards.csv[i]` ≡ `embeddings[i]`, positionally
   (card names duplicate). Never partially regenerate after a card-count change.
 - **Cache ordering**: check → spawn → write → validate → **record last**. Recording before
@@ -225,12 +247,12 @@ GitHub Pages serves the repo directly. There is no root index; the two entry poi
 | `PLAN.md` | Current state and what's next |
 | `STYLEv3.md` | The magazine's editorial and design constitution |
 | `docs/architecture.md` | Models, mechanical tags, synergy rules, power creep, regions |
-| `docs/pipeline.md` | All 12 steps: inputs, outputs, runtimes, when to re-run |
+| `docs/pipeline.md` | All 13 steps: inputs, outputs, runtimes, when to re-run |
 | `docs/data-artifacts.md` | Every `data/` file: producer, size, git status, consumers |
 | `docs/viz.md` | Frontend structure, the `window.MM` API, Pages layout |
 | `docs/testing.md` | Test layout, skip markers, conventions |
 | `docs/pilot.md` | Evidence contract, rules and strategy DBs, the magazine layer |
-| `docs/deck-builder-v2.md` | Proposed: automated Commander deck construction, bracket engine |
+| `docs/deck-builder-v2.md` | The deck builder: bracket engine, role taxonomy, architect ⇄ critic loop |
 | `docs/agent-cost.md` | Where LLM spend lives, per-routine costs, the cache |
 
 ## Non-goals

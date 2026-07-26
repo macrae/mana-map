@@ -17,7 +17,7 @@ def build_parser():
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    run_parser = subparsers.add_parser("run", help="Run the full 12-step pipeline in order")
+    run_parser = subparsers.add_parser("run", help="Run the full 13-step pipeline in order")
     run_parser.add_argument(
         "--from",
         dest="start",
