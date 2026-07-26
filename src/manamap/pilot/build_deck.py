@@ -116,6 +116,11 @@ def candidate_pool(df, identity, target_bracket, brief):
     mask = color_identity_mask(df, identity)
     mask &= (df["legal_commander"] == "legal").to_numpy()
     mask &= (df["name"] != brief["commander"]).to_numpy()
+    # Un-set sticker sheets carry legal_commander == "legal" in Scryfall's data
+    # (48 rows), have real mechanical tags, and therefore score — the pool
+    # surfaced Familiar Beeble Mascot as a wincon before this. They are not
+    # castable cards. Any consumer filtering on legality alone hits this.
+    mask &= ~df["type_line"].fillna("").str.contains("Stickers", regex=False).to_numpy()
 
     excluded = set(brief.get("must_exclude", []))
     if excluded:

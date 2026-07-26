@@ -459,10 +459,17 @@ def test_scan_reports_every_applicable_routine_despite_an_inapplicable_one():
 
 @requires_deck
 def test_scan_exit_code_ignores_inapplicable_routines():
-    """N/A is neither a hit nor a miss — it must not force a spawn signal."""
-    code, out = _run(_Args("edgar-vampires"))
-    assert code == 0
-    assert "0 of 0 applicable routines" in out
+    """N/A is neither a hit nor a miss — it must not force a spawn signal.
+
+    Asserted as an invariant rather than against a fixed deck: the exit code
+    must track *applicable* misses only, whatever state the decks are in.
+    """
+    code, out = _run(_Args("goblin-storm", as_json=True))
+    doc = json.loads(out)
+    assert doc["not_applicable"], "expected at least one N/A routine on a hand-built deck"
+    expected = 1 if any(r["status"] == "MISS" for r in doc["routines"]) else 0
+    assert code == expected
+    assert code != 2
 
 
 @requires_deck

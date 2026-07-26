@@ -248,7 +248,13 @@ ROLE_PATTERNS = {
     ),
     "removal:spot": r"destroy target|exile target (?:creature|permanent|artifact|enchantment|planeswalker|battle)",
     "removal:damage": r"deals? (?:\d+|x) damage to (?:target|any target|each)",
-    "removal:edict": r"sacrifices? a (?:creature|permanent)",
+    # Opponent-facing only. The bare "sacrifices a creature" pattern fired on
+    # your own activated sacrifice *costs* — Viscera Seer, Ashnod's Altar,
+    # Carrion Feeder — which made two thirds of the removal:edict population
+    # sacrifice outlets rather than interaction, and inflated every deck's
+    # apparent removal count.
+    "removal:edict": r"(?:each|target) (?:opponent|player)[\w\s,']{0,40}? sacrifices?",
+    "sac-cost": r"sacrifice (?:a|an|another)[\w\s]{0,20}?[:,]",
     "removal:tax": r"(?:spells?|abilities).{0,40}?costs? \{?\d+\}? more",
     "removal:fight": r"\bfights? (?:target|another)",
     "counterspell": r"counter target (?:spell|ability)",
@@ -284,9 +290,20 @@ ROLE_PATTERNS = {
     # Voltron and combat-trick slots. An Aura that pumps and an Equipment that
     # pumps are the same job wearing different card types.
     "buff:attached": r"(?:enchanted|equipped) creature (?:gets?|has|have)|\bequip[\s—]|\benchant creature\b",
-    "buff:pump": r"gets? \+\d+/\+\d+ until end of turn|creatures you control get \+",
+    # Modern typal templating drops the word "creatures" — "Other Vampires you
+    # control get +1/+1". Requiring it made Legion Lieutenant, the best two-drop
+    # in a Vampire deck, invisible to every automated signal in the repo.
+    "buff:pump": (
+        r"gets? \+\d+/\+\d+ until end of turn"
+        r"|(?:other )?[\w\s]{0,20}?you control get \+\d+/\+\d+"
+    ),
     "buff:counters": r"put (?:a|two|three|\d+|x) \+1/\+1 counters?",
     "hate:graveyard": r"exile[\w\s]{0,30}?from (?:a|target opponent's|each) (?:player's )?graveyard|graveyards? instead",
+    # Typal payoffs almost never name the tribe: "as this enters, choose a
+    # creature type". Herald's Horn, Vanquisher's Banner, Door of Destinies and
+    # friends carried no role at all, so no text search for a tribe and no role
+    # query could find them — a structural blind spot for every typal commander.
+    "payoff:typal": r"choose a creature type|of the chosen type|creature type of your choice",
 }
 
 # A creature with no other listed job is still doing one: attacking and
@@ -526,7 +543,7 @@ DECK_ROLE_GROUPS = {
     "recursion": ("recursion",),
     "tutor": ("tutor:unrestricted", "tutor:narrow"),
     "wincon": ("wincon:alt", "wincon:drain", "wincon:combat"),
-    "flex": ("payoff:counters",),   # engine payoffs are the deck, not filler
+    "flex": ("payoff:counters", "payoff:typal", "sac-cost"),  # engine payoffs are the deck, not filler
 }
 
 # Scoring weights. Sum to 1.0. Three deliberate departures from the prototype:

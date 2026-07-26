@@ -88,6 +88,54 @@ def test_counterspell():
     assert "counterspell" in classify_row(row)
 
 
+def test_edict_is_opponent_facing_only():
+    """The bare pattern fired on your own activated sacrifice costs, which made
+    two thirds of removal:edict sacrifice outlets rather than interaction."""
+    edict = _card("Diabolic Edict", "Instant", "Instant",
+                  "Target opponent sacrifices a creature.")
+    outlet = _card("Viscera Seer", "Creature", "Creature — Vampire Wizard",
+                   "Sacrifice a creature: Scry 1.")
+    assert "removal:edict" in classify_row(edict)
+    assert "removal:edict" not in classify_row(outlet)
+
+
+def test_sacrifice_cost_is_its_own_role():
+    outlet = _card("Ashnod's Altar", "Artifact", "Artifact",
+                   "Sacrifice a creature: Add {C}{C}.")
+    assert "sac-cost" in classify_row(outlet)
+
+
+# ── typal templating ──
+
+
+def test_typal_pump_without_the_word_creatures():
+    """Modern templating says "Other Vampires you control get +1/+1".
+
+    Requiring the literal word "creatures" made Legion Lieutenant — a two-mana
+    tribal lord, the best cheap card in a Vampire deck — carry no role, no
+    mechanical tag, no synergy-graph entry, and a negative embedding cosine to
+    its own commander. Every automated signal called it irrelevant.
+    """
+    lord = _card("Legion Lieutenant", "Creature", "Creature — Vampire Knight",
+                 "Other Vampires you control get +1/+1.")
+    assert "buff:pump" in classify_row(lord)
+
+
+def test_generic_anthem_still_matches():
+    row = _card("Glorious Anthem", "Enchantment", "Enchantment",
+                "Creatures you control get +1/+1.")
+    assert "buff:pump" in classify_row(row)
+
+
+def test_typal_payoffs_that_never_name_the_tribe():
+    """"As this enters, choose a creature type" — no text search for a tribe and
+    no role query could find these before, for any typal commander."""
+    horn = _card("Herald's Horn", "Artifact", "Artifact",
+                 "As this artifact enters, choose a creature type. "
+                 "Creature spells you cast of the chosen type cost {1} less to cast.")
+    assert "payoff:typal" in classify_row(horn)
+
+
 def test_unrestricted_tutor_does_not_also_count_as_narrow():
     row = _card("Demonic Tutor", "Sorcery", "Sorcery",
                 "Search your library for a card, put it into your hand, then shuffle.")

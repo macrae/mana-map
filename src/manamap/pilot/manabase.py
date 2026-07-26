@@ -187,8 +187,24 @@ def achieved_probability(requirements, sources):
     return result
 
 
+RESTRICTED_MANA = "spend this mana only"
+
+
 def land_colors(card):
-    """Which colours a land can produce, from its oracle text."""
+    """Which colours a land can produce *for general purposes*.
+
+    "Add one mana of any color" is only a five-colour source when the mana is
+    unrestricted. Haven of the Spirit Dragon says "Spend this mana only to cast
+    a Dragon creature spell", so in a Vampire deck it taps for {C} and nothing
+    else — counting it as five sources overstates a mana base badly, and it is
+    the kind of card a greedy selector reaches for precisely because it looks
+    like it covers everything.
+
+    Conditional sources are deliberately counted at their *unconditional* value
+    only. That understates a card like Cavern of Souls in a tribal deck, where
+    the restriction is nearly free — understating a source is recoverable,
+    overstating one produces a deck that cannot cast its spells.
+    """
     text = str(card.get("oracle_text", "") or "")
     type_line = str(card.get("type_line", "") or "")
     produced = set()
@@ -197,12 +213,13 @@ def land_colors(card):
         if basic in type_line:
             produced.add(colour)
     lowered = text.lower()
-    if "any color" in lowered:
+    restricted = RESTRICTED_MANA in lowered
+    if "any color" in lowered and not restricted:
         produced.update(WUBRG)
     for colour in WUBRG:
         if f"add {{{colour.lower()}}}" in lowered or f"add {{{colour}}}" in lowered:
             produced.add(colour)
-    if not produced:
+    if not produced and not restricted:
         produced.update(c for c in str(card.get("color_identity", "")) if c in WUBRG)
     return produced
 

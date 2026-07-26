@@ -162,6 +162,43 @@ def test_land_colors_any_color():
     assert land_colors(_land("City of Brass", "{T}: Add one mana of any color.")) == set("WUBRG")
 
 
+def test_restricted_any_color_is_not_a_five_colour_source():
+    """Haven of the Spirit Dragon taps for {C} in a deck with no Dragons.
+
+    A greedy selector reaches for these precisely because they look like they
+    cover everything, which is how a Vampire deck ended up running two
+    Dragon-restricted lands.
+    """
+    haven = _land(
+        "Haven of the Spirit Dragon",
+        "{T}: Add {C}. {T}: Add one mana of any color. Spend this mana only to "
+        "cast a Dragon creature spell.")
+    assert land_colors(haven) == set()
+
+
+def test_restricted_source_does_not_fall_back_to_color_identity():
+    """The fallback would smuggle the restriction back in through the side door."""
+    card = _land("Restricted Thing",
+                 "{T}: Add one mana of any color. Spend this mana only to cast a Dragon.",
+                 ci="W")
+    assert land_colors(card) == set()
+
+
+def test_tribal_restriction_is_counted_conservatively():
+    """Cavern of Souls is nearly free in a tribal deck, but understating a
+    source is recoverable and overstating one is not."""
+    cavern = _land(
+        "Cavern of Souls",
+        "{T}: Add {C}. {T}: Add one mana of any color. Spend this mana only to "
+        "cast a creature spell of the chosen type.")
+    assert land_colors(cavern) == set()
+
+
+def test_unrestricted_any_color_still_counts_fully():
+    grotto = _land("Hidden Grotto", "{T}: Add {C}. {1}, {T}: Add one mana of any color.")
+    assert land_colors(grotto) == set("WUBRG")
+
+
 def test_enters_tapped_detection():
     assert enters_tapped(_land("Guildgate", "This land enters tapped."))
     assert not enters_tapped(_land("Plains", "{T}: Add {W}."))
