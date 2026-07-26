@@ -50,7 +50,7 @@
       {
         "n": 1,
         "action": "You activate Ashnod's Altar, sacrificing the 1/1 green Snake token as the activation cost.",
-        "effect": "Correction to the scenario file: this is a mana ability, so it never uses the stack. It resolves immediately and cannot be responded to. The Snake moves from the battlefield directly to your graveyard; you have {C}{C} floating.",
+        "effect": "Correction to the scenario file: this is a mana ability — it requires no target and could add mana — so it never uses the stack. It resolves immediately and cannot be responded to; the listed stack object does not exist. Choices are locked first, then the cost is paid: the Snake moves from the battlefield directly to your graveyard. You have {C}{C} floating.",
         "citations": [
           {
             "rule": "605.1a",
@@ -61,6 +61,10 @@
             "quote": "An activated mana ability doesn’t go on the stack, so it can’t be targeted, countered, or otherwise responded to. Rather, it resolves immediately after it is activated."
           },
           {
+            "rule": "602.2b",
+            "quote": "The remainder of the process for activating an ability is identical to the process for casting a spell listed in rules 601.2b–i."
+          },
+          {
             "rule": "701.21a",
             "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner’s graveyard."
           }
@@ -69,7 +73,7 @@
       {
         "n": 2,
         "action": "Sub-question 1a — does Mikaeus grant undying to a token? Yes.",
-        "effect": "The Snake is a non-Human creature you control, so Mikaeus's static ability applies: it is a 2/2 with deathtouch and undying. There is no token exemption in the grant. It had no +1/+1 counters, so undying's trigger condition and its intervening 'if' are both satisfied by its death.",
+        "effect": "The Snake is a non-Human creature you control, so Mikaeus's static ability applies: a 2/2 with deathtouch and undying. There is no token exemption in the grant. It had no +1/+1 counters, so undying's trigger condition and its intervening 'if' are both satisfied by its death.",
         "citations": [
           {
             "rule": "111.6",
@@ -84,7 +88,7 @@
       {
         "n": 3,
         "action": "Both death triggers fire: the Snake's undying and Blood Artist.",
-        "effect": "Undying is a leaves-the-battlefield ability, so it looks back in time — the game uses the Snake as it appeared immediately before the event, when it still had undying and no +1/+1 counters. Both triggers fire before the token ceases to exist.",
+        "effect": "Undying is a leaves-the-battlefield ability, so it looks back in time — the game uses the Snake as it appeared immediately before the event, when it still had undying and no +1/+1 counters. Both fire before the token ceases to exist.",
         "citations": [
           {
             "rule": "603.10a",
@@ -99,26 +103,26 @@
       {
         "n": 4,
         "action": "Before either trigger goes on the stack, state-based actions are checked — and the token ceases to exist.",
-        "effect": "This is the decisive ordering point. SBAs are performed first, as a single event; only once none remain do waiting triggers go on the stack. The token is in a zone other than the battlefield, so it ceases to exist right then. By the time undying is even placed on the stack, the object it wants to return no longer exists in any zone.",
+        "effect": "The decisive ordering point. SBAs are performed first as a single event, and only when a check performs none do waiting triggers get put on the stack. The token is in a zone other than the battlefield, so it ceases to exist in that first check. By the time undying is placed on the stack, the object it wants to return no longer exists in any zone.",
         "citations": [
           {
             "rule": "704.3",
             "quote": "the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event"
           },
           {
-            "rule": "704.5d",
-            "quote": "If a token is in a zone other than the battlefield, it ceases to exist."
+            "rule": "704.3",
+            "quote": "otherwise all triggered abilities that are waiting to be put on the stack are put on the stack, then the check is repeated"
           },
           {
-            "rule": "603.3b",
-            "quote": "Then the game once again checks for and performs state-based actions until none are performed, then abilities that triggered during this process go on the stack."
+            "rule": "704.5d",
+            "quote": "If a token is in a zone other than the battlefield, it ceases to exist."
           }
         ]
       },
       {
         "n": 5,
         "action": "Sub-question 1b — the undying trigger resolves and does nothing.",
-        "effect": "Even setting the ceasing-to-exist aside, a token that has left the battlefield cannot come back. The return instruction is impossible, so the ability does only as much as possible, which is nothing. Undying on a token is a dead grant.",
+        "effect": "A token that has left the battlefield cannot come back. The return instruction is impossible, so the ability does only as much as possible, which is nothing. Undying on a token is a dead grant. Blood Artist targets a player, so it is unaffected.",
         "citations": [
           {
             "rule": "111.8",
@@ -133,7 +137,7 @@
       {
         "n": 6,
         "action": "Blood Artist's trigger resolves.",
-        "effect": "Its target is a player and is still legal, so an opponent loses 1 life and you gain 1. Net for the whole scenario: {C}{C}, one point of drain, and the Snake is gone permanently. No loop has begun.",
+        "effect": "Its target is still legal: an opponent loses 1 life, you gain 1. Net for the scenario: {C}{C}, one drain, and the Snake gone permanently. No loop has begun.",
         "citations": [
           {
             "rule": "608.2b",
@@ -147,8 +151,8 @@
       },
       {
         "n": 7,
-        "action": "Sub-question 2 — counter annihilation is real, and it is a state-based action.",
-        "effect": "As soon as a player would receive priority, if a permanent has both a +1/+1 and a -1/-1 counter, N of each are removed. One of each leaves zero. Nobody can respond in between.",
+        "action": "Sub-question 2 — counter annihilation is a state-based action.",
+        "effect": "As soon as a player would receive priority, if a permanent has both a +1/+1 and a -1/-1 counter, N of each are removed. One of each leaves zero. There is no window in which the creature holds both while a player has priority.",
         "citations": [
           {
             "rule": "704.5q",
@@ -163,8 +167,12 @@
       {
         "n": 8,
         "action": "Sub-question 3 — annihilation does reset undying, with one sharp exception.",
-        "effect": "If the annihilation already happened in an earlier SBA check and the creature survived it, then at its later death it genuinely has zero +1/+1 counters and undying triggers. THE TRAP: if the -1/-1 counters both annihilate and reduce toughness to 0 in the SAME check, last known information is taken from before any of those SBAs — the +1/+1 counter is still visible and undying does NOT trigger. The CR's own example is exactly an undying creature losing its trigger this way. Strip the counter first, let SBAs run, kill it separately.",
+        "effect": "If the annihilation happened in an earlier SBA check and the creature survived, then at its later death it genuinely has zero +1/+1 counters and undying triggers. THE TRAP: if the -1/-1 counters both annihilate and take toughness to 0 in the SAME check, last known information is read from before any of those SBAs — the +1/+1 counter is still visible and undying does NOT trigger. The CR's own example is exactly this case. Strip the counter first, let SBAs run, kill it separately.",
         "citations": [
+          {
+            "rule": "603.4",
+            "quote": "If the ability triggers, it checks the stated condition again as it resolves. If the condition isn’t true at that time, the ability is removed from the stack and does nothing."
+          },
           {
             "rule": "704.8",
             "quote": "If a state-based action results in a permanent leaving the battlefield at the same time other state-based actions were performed, that permanent’s last known information is derived from the game state before any of those state-based actions were performed."
@@ -172,17 +180,13 @@
           {
             "rule": "704.8",
             "quote": "When it was last on the battlefield, it had a +1/+1 counter on it, so undying will not trigger."
-          },
-          {
-            "rule": "122.2",
-            "quote": "Counters on an object are not retained if that object moves from one zone to another."
           }
         ]
       },
       {
         "n": 9,
         "action": "Sub-question 4a — for Snake tokens the loop produces ZERO iterations.",
-        "effect": "Mikaeus plus a free outlet fed by Hapatra's Snakes is not a loop at all. Each Snake gives {C}{C} and one drain, then ceases to exist. Any line assuming 'sacrifice a token, get it back' is invalid on its face.",
+        "effect": "Mikaeus plus an outlet fed by Hapatra's Snakes is not a loop. Each Snake gives {C}{C} and one drain, then ceases to exist. Any line assuming 'sacrifice a token, get it back' is invalid on its face.",
         "citations": [
           {
             "rule": "704.5d",
@@ -196,8 +200,8 @@
       },
       {
         "n": 10,
-        "action": "Sub-question 4b — for a non-token creature the line is worth exactly ONE extra death, not infinity.",
-        "effect": "Iteration 1: sacrifice it with no counters, undying returns it as a new object WITH a +1/+1 counter. Iteration 2: sacrifice it again — it dies carrying that counter, the intervening 'if' is false, undying never triggers. Total across the whole 'engine': 4 colorless mana and 2 drains. None of this deck's six free outlets removes a +1/+1 counter, so all six of those two-card entries terminate here. Carrion Feeder is actively anti-synergistic: it ADDS +1/+1 counters.",
+        "action": "Sub-question 4b — for a non-token creature with a counter-neutral outlet, exactly ONE extra death.",
+        "effect": "Iteration 1: sacrifice it with no counters, undying returns it as a new object WITH a +1/+1 counter. Iteration 2: sacrifice again — it dies carrying that counter, the intervening 'if' is false, undying never triggers. Total: 4 colorless and 2 drains. This is the verdict for the six two-card entries whose outlet places no -1/-1 counter: Ashnod's Altar, Phyrexian Altar, Carrion Feeder, Viscera Seer, Yahenni, Blasting Station. Carrion Feeder is actively anti-synergistic — it ADDS +1/+1 counters. FULL OUTLET CENSUS, since my earlier counts were wrong twice: eight of this deck's sacrifice outlets have no mana in their activation cost — Ashnod's Altar, Phyrexian Altar, Carrion Feeder, Viscera Seer, Yahenni and Yawgmoth (all activatable without tapping), plus Blasting Station ({T}, but it untaps itself whenever a creature enters, which an undying loop supplies) and Lazotep Quarry ({T}, no untapper, so once per turn and unable to loop). Exactly one of the eight — Yawgmoth — also places a -1/-1 counter.",
         "citations": [
           {
             "rule": "702.93a",
@@ -216,7 +220,7 @@
       {
         "n": 11,
         "action": "Sub-question 4c — Hapatra does NOT supply the reset. The scenario's claim fails here.",
-        "effect": "Her ability is 'whenever Hapatra deals combat damage to a player, you may put a -1/-1 counter on target creature'. It is a combat-damage trigger, not a free repeatable counter-remover, so it cannot be interleaved between sacrifices. At best it buys one extra undying iteration per combat.",
+        "effect": "Her ability is a combat-damage trigger: it goes on the stack only when Hapatra connects. It is not an at-will repeatable placement and cannot be interleaved between sacrifices. At best it buys ONE extra iteration per combat.",
         "citations": [
           {
             "rule": "113.3c",
@@ -226,16 +230,133 @@
       },
       {
         "n": 12,
-        "action": "Sub-question 4d — what the line actually needs is a creature that removes its own +1/+1 counter for free. In this deck that is Devoted Druid, and it needs no outlet at all.",
-        "effect": "Devoted Druid's untap cost self-inflicts a -1/-1 counter. Full cycle: tap for {G}; untap (counter #1); tap; untap (#2); tap; untap (#3) takes toughness to 0, and because no annihilation happens in that same check, 704.8 does not bite — it dies with zero +1/+1 counters and undying returns it with one; tap; untap, and the new -1/-1 annihilates the +1/+1, returning it to a clean state. Per cycle: 4 green mana, 4 counter placements (4 Hapatra Snake triggers), 1 death. That is the deck's genuine two-card Mikaeus infinite. Mikaeus + Walking Ballista is also real but is a THREE-card line needing one of the free outlets.",
+        "action": "Correction — the deck has SEVEN mana-free outlets, and the seventh is the real reset.",
+        "effect": "\"Pay 1 life, Sacrifice another creature: Put a -1/-1 counter on up to one target creature and draw a card.\" That counter annihilates an undying +1/+1 counter under 704.5q, so this outlet does not hit the step-10 wall. ON THE TARGETING, corrected: 601.2c (reached for activated abilities through 602.2b) locks targets BEFORE costs are paid at 601.2h, so you may perfectly legally choose the creature you are about to sacrifice. What stops it is resolution, not announcement — a target no longer in the zone it was in when targeted is illegal, and since this ability has only one instance of the word 'target', that single illegal target means it does not resolve at all. You would not even draw the card. Hence a second body is mandatory. Loop with two non-Human creatures A and B: activate targeting B and sacrificing A → A returns with a +1/+1 counter, the ability resolves putting a -1/-1 counter on B. Next activation targets A (annihilating its counter) and sacrifices B. Symmetric, and it repeats. BUT each activation costs 1 life and the draw is mandatory, so the loop is LIBRARY-BOUNDED — run it out and you lose to an empty draw. A strong three-card engine, not a true infinite. With Hapatra out, the counters generate Snakes, which supply the fodder half.",
         "citations": [
+          {
+            "rule": "704.5q",
+            "quote": "If a permanent has both a +1/+1 counter and a -1/-1 counter on it, N +1/+1 and N -1/-1 counters are removed from it, where N is the smaller of the number of +1/+1 and -1/-1 counters on it."
+          },
+          {
+            "rule": "602.2b",
+            "quote": "The remainder of the process for activating an ability is identical to the process for casting a spell listed in rules 601.2b–i."
+          },
+          {
+            "rule": "601.2c",
+            "quote": "The player announces their choice of an appropriate object or player for each target the spell requires."
+          },
+          {
+            "rule": "601.2h",
+            "quote": "The player pays the total cost."
+          },
+          {
+            "rule": "608.2b",
+            "quote": "A target that’s no longer in the zone it was in when it was targeted is illegal."
+          },
+          {
+            "rule": "702.93a",
+            "quote": "if it had no +1/+1 counters on it, return it to the battlefield under its owner’s control with a +1/+1 counter on it."
+          },
+          {
+            "rule": "104.3c",
+            "quote": "If a player is required to draw more cards than are left in their library, they draw the remaining cards and then lose the game the next time a player would receive priority."
+          }
+        ]
+      },
+      {
+        "n": 13,
+        "action": "Mechanism — Devoted Druid's untap ability uses the stack, and its counter is a cost.",
+        "effect": "It cannot add mana, so it is an ordinary activated ability created on the stack. Its cost, the -1/-1 counter, is paid on activation, not resolution. On the activation that brings the Druid to 0 toughness the counter is already on it while the untap ability still sits on the stack, so the next SBA check puts the Druid in the graveyard before the untap resolves. Critically it goes there with three -1/-1 counters and ZERO +1/+1 counters, and no other SBA fires alongside, so 704.8's trap does not apply and undying triggers cleanly.",
+        "citations": [
+          {
+            "rule": "605.1a",
+            "quote": "it could add mana to a player’s mana pool when it resolves"
+          },
+          {
+            "rule": "113.3b",
+            "quote": "A player may activate such an ability whenever they have priority. Doing so puts it on the stack, where it remains until it’s countered, it resolves, or it otherwise leaves the stack."
+          },
+          {
+            "rule": "602.2a",
+            "quote": "That ability is created on the stack as an object that’s not a card. It becomes the topmost object on the stack."
+          },
+          {
+            "rule": "602.2b",
+            "quote": "The remainder of the process for activating an ability is identical to the process for casting a spell listed in rules 601.2b–i."
+          },
+          {
+            "rule": "601.2h",
+            "quote": "The player pays the total cost."
+          },
           {
             "rule": "704.5f",
             "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
           },
           {
+            "rule": "608.2h",
+            "quote": "If an ability states that an object does something, it’s the object as it exists—or as it most recently existed—that does it, not the ability."
+          },
+          {
+            "rule": "609.3",
+            "quote": "If an effect attempts to do something impossible, it does only as much as possible."
+          }
+        ]
+      },
+      {
+        "n": 14,
+        "action": "Sub-question 4d — Mikaeus + Devoted Druid IS a true two-card infinite, but NOT a mana engine.",
+        "effect": "Devoted Druid (Elf Druid, non-Human, 0/2 → 1/3 under Mikaeus) resets itself and needs no outlet. FIRST PASS, with the Druid not summoning-sick: three taps for {G} interleaved with three untaps takes it to 0 toughness; it dies counterless and undying returns it with a +1/+1 counter. That is THREE green, not four. EVERY PASS AFTER PRODUCES ZERO MANA — the returned Druid is a new object that has not been under your control since your most recent turn began, so 302.6 forbids its {T} ability. The loop still runs forever because the untap cost carries no tap or untap SYMBOL and is outside 302.6 entirely. STEADY STATE (no haste): one activation annihilates the +1/+1 counter, three more take it to 0 toughness and it dies counterless; undying returns it. Per cycle: FOUR -1/-1 placements, ONE death, ZERO mana. On the scenario's actual board that is four Hapatra Snakes and one Blood Artist drain per cycle; Nest of Scarabs and Obelisk Spider would add four Insects and four drains, but NEITHER IS ON THIS BOARD, so those outputs are conditional. WITH HASTE the returned Druid can tap again and the cycle becomes: (1) re-equip the haste source; (2) tap {G}; (3) untap-activate, annihilating the counter; (4) tap {G}; (5) untap; (6) tap {G}; (7) untap; (8) tap {G}; (9) untap → dies → undying returns it. Four green produced per cycle. Lightning Greaves is equip {0}, so it NETS 4 GREEN; Swiftfoot Boots is equip {1}, so it NETS 3. Step (1) is not optional: the Equipment unattaches the moment the Druid dies — it is then attached to a nonexistent permanent, a state-based unattachment — and the returned Druid is a different object, so it must be re-equipped every cycle. Equip activates only as a sorcery, meaning your own main phase with an empty stack, so the three-card mana engine is main-phase-only and cannot run at instant speed. Greaves' shroud does not affect the loop (neither Druid ability targets) but does shut off Hapatra and Yawgmoth targeting the Druid.",
+        "citations": [
+          {
+            "rule": "302.6",
+            "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+          },
+          {
+            "rule": "400.7",
+            "quote": "An object that moves from one zone to another becomes a new object with no memory of, or relation to, its previous existence."
+          },
+          {
+            "rule": "702.10c",
+            "quote": "If a creature has haste, its controller can activate its activated abilities whose cost includes the tap symbol or the untap symbol even if that creature hasn’t been controlled by that player continuously since their most recent turn began."
+          },
+          {
             "rule": "704.5q",
             "quote": "If a permanent has both a +1/+1 counter and a -1/-1 counter on it, N +1/+1 and N -1/-1 counters are removed from it, where N is the smaller of the number of +1/+1 and -1/-1 counters on it."
+          },
+          {
+            "rule": "122.2",
+            "quote": "Counters on an object are not retained if that object moves from one zone to another."
+          },
+          {
+            "rule": "704.5n",
+            "quote": "If an Equipment or Fortification is attached to an illegal permanent or to a player, it becomes unattached from that permanent or player. It remains on the battlefield."
+          },
+          {
+            "rule": "301.5c",
+            "quote": "An Equipment that equips an illegal or nonexistent permanent becomes unattached from that permanent but remains on the battlefield. (This is a state-based action. See rule 704.)"
+          },
+          {
+            "rule": "702.6a",
+            "quote": "Attach this permanent to target creature you control. Activate only as a sorcery."
+          },
+          {
+            "rule": "117.1a",
+            "quote": "A player may cast a noninstant spell during their main phase any time they have priority and the stack is empty."
+          }
+        ]
+      },
+      {
+        "n": 15,
+        "action": "Mikaeus + Walking Ballista is a THREE-card line, and here is why.",
+        "effect": "Ballista is printed 0/0. Mikaeus's +1/+1 is a layer-7c modification applied alongside counters, so a counterless Ballista is a 1/1 under Mikaeus, not a 0/0. Its toughness is above 0, so 704.5f never fires and the classic 'remove the last counter and it dies' pattern is switched off. An external free outlet is therefore mandatory. Per iteration: 1 damage plus whatever the outlet yields. Genuinely unbounded, but only as a three-card assembly.",
+        "citations": [
+          {
+            "rule": "613.4c",
+            "quote": "Layer 7c: Effects and counters that modify power and/or toughness (but don’t set power and/or toughness to a specific number or value) are applied."
+          },
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
           },
           {
             "rule": "702.93a",
@@ -244,13 +365,25 @@
         ]
       },
       {
-        "n": 13,
+        "n": 16,
         "action": "Loop bookkeeping for the lines that are genuinely unbounded.",
-        "effect": "Every action in the Druid and Ballista cycles is optional, so no mandatory-loop draw applies: you announce a number of iterations and stop where you choose. The Druid cycle is a mana/token/drain engine, not a win by itself — it still needs a payoff to convert.",
+        "effect": "These loops contain mandatory components — Hapatra's Snake trigger and Blood Artist's drain fire whether you want them to or not, and undying is not a 'may'. But the DRIVER of every iteration is an optional action the controller chooses: activating the Druid's untap ability, or activating an outlet. Because the loop contains an optional action it is not a mandatory loop and the game is not a draw; you announce a number of iterations as a shortcut and end where a player has priority. CONVERSION, correcting my earlier claim that a payoff is still needed: Blood Artist is already on the scenario board, so the Druid loop converts directly — one life from a player of your choice per cycle, repeated until each opponent is dead. Obelisk Spider would convert four times faster but is not on this board. The Ballista line converts to damage without needing any drain at all.",
         "citations": [
           {
+            "rule": "104.4b",
+            "quote": "Loops that contain an optional action don’t result in a draw."
+          },
+          {
+            "rule": "732.4",
+            "quote": "If a loop contains only mandatory actions, the game is a draw."
+          },
+          {
             "rule": "732.2a",
-            "quote": "a loop that repeats a specified number of times"
+            "quote": "The ending point of this sequence must be a place where a player has priority"
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
           },
           {
             "rule": "117.3b",
@@ -260,7 +393,7 @@
       }
     ],
     "final_state": {
-      "summary": "The claim is FALSE. The Snake token is sacrificed for {C}{C}, ceases to exist as a state-based action before its undying trigger is even placed on the stack, and undying returns nothing. Mikaeus plus a free sacrifice outlet is worth exactly one extra death on a NON-token creature and zero on a token. Hapatra cannot supply the reset — her -1/-1 ability is a combat-damage trigger. Counter annihilation does reset undying, but only when the annihilation and the death fall in different SBA checks; 704.8 kills the trigger when they coincide. Deck impact: eight of the nineteen listed two-card infinites route through Mikaeus, and six of those eight are refuted. Mikaeus + Devoted Druid survives as a true two-card infinite; Mikaeus + Walking Ballista is real but is a three-card line. Bracket 4 still stands on Scurry Oak + Ivy Lane Denizen and 11 Game Changers, but the '19 two-card infinites' figure is inflated and the Mikaeus-plus-outlet family is the wrong thing to tutor for.",
+      "summary": "The scenario resolves in one pass with no recursion: the Snake token is sacrificed for {C}{C}, ceases to exist as a state-based action before its undying trigger is even placed on the stack, and undying returns nothing. Blood Artist drains 1. RULING: the claim is FALSE as written. Hapatra cannot supply the reset — her -1/-1 ability is a combat-damage trigger, worth at most one extra iteration per combat. Counter annihilation does reset undying, but only when the annihilation and the death fall in different SBA checks; 704.8 kills the trigger when they coincide. DECK IMPACT: eight of the nineteen listed two-card infinites route through Mikaeus, and six of those eight are refuted — Ashnod's Altar, Phyrexian Altar, Carrion Feeder, Viscera Seer, Yahenni and Blasting Station each yield exactly one undying return. Mikaeus + Devoted Druid IS a true two-card infinite, but of deaths, counters, Snakes and drain, NOT mana: three green on the first pass and zero thereafter, because the returned Druid is a new object and 302.6 blocks its tap ability. Adding Lightning Greaves or Swiftfoot Boots restores the mana as a three-card, main-phase-only line. Mikaeus + Walking Ballista is real but three cards. The tutor target that matters is not any particular altar — it is a free repeatable -1/-1 source, and exactly one of the deck's seven mana-free outlets qualifies: Yawgmoth, which loops for real but is library-bounded by its mandatory draw. BRACKET: the floor holds at 4 on the 11 Game Changers plus the three lines verified here — Devoted Druid, Walking Ballista + outlet, and Yawgmoth. It is deliberately NOT rested on Scurry Oak + Ivy Lane Denizen: that entry comes from the same unresolved bracket_report source whose Mikaeus half just failed six times over, and it is unverified. The six Ivy Lane and three Blowfly entries turn on different mechanics with no undying dependency and belong in their own scenario; nothing here confirms or refutes them. The '19 two-card infinites' figure is inflated.",
       "you": {
         "life": 41,
         "battlefield": [
