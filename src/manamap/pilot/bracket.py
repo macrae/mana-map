@@ -13,9 +13,10 @@ mechanically checkable. Three signals do the work:
 Two things this module refuses to do. It does not tell you what bracket your
 deck is: WotC is explicit that brackets are a conversation, not a calculator,
 so we compute a **floor** — the lowest bracket the contents are consistent with
-— and report what drove it. And it does not raise that floor on tutor density,
-because "few tutors" was never given a number; tutor counts are reported as
-advisory and nothing more.
+— and report what drove it. And it does not raise that floor on tutor density:
+WotC removed the tutor guardrail entirely on 2025-10-21 ("not all Tutors are
+created equal") and now catches the efficient ones through Game Changers
+membership, which this module already counts. Tutors are reported, never scored.
 
 Fully deterministic: set intersections over committed artifacts, no LLM calls,
 no randomness. The same deck always produces the same report (◆ evidence).
@@ -181,8 +182,9 @@ def assess(names, card_flags, roles, details, commanders=()):
     notes = [
         "Brackets are a conversation, not a calculator — this is the lowest "
         "bracket the deck's contents are consistent with, not a verdict.",
-        f"Tutor density ({len(tutors)}) is advisory: WotC says 'few tutors' "
-        "and never gives a number, so it never raises the floor.",
+        f"Tutor density ({len(tutors)}) is reported, never scored: WotC removed "
+        "the tutor restriction on 2025-10-21 and now relies on Game Changers "
+        "membership, which is already counted above.",
         "Mass land denial is checked against a curated list and is incomplete "
         "by construction.",
     ]

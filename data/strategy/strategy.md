@@ -693,22 +693,342 @@ Sources:
 - Scott Cullen, "Choosing the Right Protection for Your Commander" — https://blog.cardkingdom.com/choosing-the-right-protection-for-your-commander/
 - Ilija Miljkovac, "How Does the Commander Tax Work in EDH?" — https://draftsim.com/mtg-commander-tax-edh/
 
+## strategy:deckbuilding — Deck Construction
+
+The construction frame: 99 slots are a budget, and every inclusion is a cut.
+The question is never "is this card good" but "is this the best card for this
+slot given what the other 98 already do" — a card that duplicates a job you
+have covered is worse than a mediocre card that covers a job you don't. Build
+for the distribution, not the list: you play the hands your deck deals you, so
+a deck is a probability distribution over openings (strategy:mulligans), and
+the strong card you cast in a third of games loses to the fine card you cast in
+all of them. Consistency is bought with slots, so price it: every tutor, ramp
+piece and cantrip is a slot spent making other slots reachable. Commander
+correction: singleton means you cannot build toward named cards, only toward
+*classes* of effects — ramp, draw, interaction, protection, payoff — so count
+functions first and fill them second (Hinds' categories survive even where his
+numbers don't). Unsummoned Skull's lesson holds: decks that "do a few things,
+and do them well" beat multi-purpose piles, and a synergy deck still needs a
+clock it controls.
+
+Sources:
+- Cas Hinds, "Everything You Need To Know About Commander Deck Building" — https://www.coolstuffinc.com/a/everything-you-need-to-know-about-commander-deckbuilding-05292026
+- Unsummoned Skull, "Top Lessons Learned About Deckbuilding" — https://commandersherald.com/top-lessons-learned-about-deckbuilding/
+- Reid Duke, "The Basics of Mana" — https://magic.wizards.com/en/articles/archive/level-one/basics-mana-2015-07-06
+- Patrick Chapin, "Next Level Deckbuilding" (print)
+
+### strategy:deckbuilding.mana-base — Mana Base: Land Count & the Source Budget
+
+Budget mana *sources*, not lands. Karsten's regression over 110 top-performing
+60-card lists fits "the number of lands in a deck is given by 16 plus 3.14
+times the average converted mana cost of its nonland spells" — 24 lands at a
+2.40–2.72 average cost, 26 at 3.04–3.36 — and he scales to Commander by
+multiplying by 99/60, which makes a 60-card deck's 25 lands worth 41.25 here.
+Commander's usual 36–38 lands only works because rocks, dorks and land-ramp pay
+the remainder. Dana Roach's EDHREC pull found the average deck at just over 29
+lands plus 4.15 mana rocks, goldfished 100 of them, and had 26% miss the turn-3
+land drop with no mana source at all — "that is terrible, and it will make you
+lose games before they've even begun"; precons ship over 37 lands. His quoted
+starting point (Nate Burgess): lands = 31 + colours in the commander's identity
++ the commander's mana value, counting 0-mana rocks as lands. Everything else
+taxes the same budget: a utility land that can't produce the colour you need is
+not a source, and Duke treats entering tapped as a real drawback — around eight
+taplands is comfortable in a slow deck, near zero in an aggressive one.
+
+Sources:
+- Frank Karsten, "How Many Lands Do You Need to Consistently Hit Your Land Drops?" (mirror of the 2017 ChannelFireball article) — https://orkerhulen.dk/onewebmedia/How%20Many%20Lands%20Do%20You%20Need%20to%20Consistently%20Hit%20Your%20Land%20Drops.pdf
+- Dana Roach, "Superior Numbers - Land Counts" — https://edhrec.com/articles/superior-numbers-land-counts
+- Reid Duke, "Building a Mana Base" — https://magic.wizards.com/en/articles/archive/level-one/building-mana-base-2014-11-24
+- David Royale, "How to Build a Great Commander Deck (4 Steps)" — https://draftsim.com/build-commander-deck-mtg/
+
+### strategy:deckbuilding.mana-base.color-sources — Colour Sources per Pip
+
+Karsten's numbers, C meaning an arbitrary coloured pip; his 99-card column
+assumes 40 lands, on the play, casting on curve, "consistently" ≈ 90%. Single
+pip: 23 sources for {C}, 21 for 1{C}, 19 for 2{C}, 17 for 3{C}, 15 for 4{C}.
+Double pip: 33 for {C}{C}, 29 for 1{C}{C}, 26 for 2{C}{C}, 23 for 3{C}{C}, 22
+for 4{C}{C}. Triple pip: 37 for {C}{C}{C}, 33 for 1{C}{C}{C}, 30 for 2{C}{C}{C},
+28 for 3{C}{C}{C}. (60-card equivalents for {C} / {C}{C} / {C}{C}{C}: 14 / 20 /
+23.) Read them as a budget, not a table: 37 sources of one colour is a
+mono-coloured mana base, so triple pips and three colours do not coexist, and
+the cheap pips are the expensive ones — the requirement falls fast as the spell
+gets later. Only untapped sources count for turn one, and Karsten caps pure
+taplands at about four before you should "rethink your deck or simply add more
+lands". Duke's judgment layer, in 60-card terms: 17–18 sources for a colour you
+won't keep a hand without, 14–16 for a main colour, 10–13 for a secondary, 4–7
+for a splash.
+
+Sources:
+- Frank Karsten, "How Many Colored Mana Sources Do You Need to Consistently Cast Your Spells? A Guilds of Ravnica Update" (ChannelFireball, archived) — https://web.archive.org/web/20230331165535/https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/how-many-colored-mana-sources-do-you-need-to-consistently-cast-your-spells-a-guilds-of-ravnica-update/
+- Reid Duke, "Building a Mana Base" — https://magic.wizards.com/en/articles/archive/level-one/building-mana-base-2014-11-24
+
+### strategy:deckbuilding.ratios — Slot Ratios & the Template Genre
+
+Templates exist to stop you from building 99 payoffs. The 8x8 method takes a
+commander, 35 land slots, and "8 different kinds of effects... 8 individual
+cards for each", yielding 64 spells — offered explicitly as "an initial
+jumping-off point", not rules. Cas Hinds' "11 9s" partitions the 99 into 36
+lands, 9 ramp, 9 draw, 9 removal and 45 theme. The Command Zone template (Wong
+and Lee Kwai) is the format's default: 36–38 lands, 10–12 ramp, 10 card draw,
+10–12 targeted removal, 3–4 board wipes, the rest strategy — the updated
+version having roughly doubled targeted removal and cut wipes. Draftsim's
+Royale lands nearby: 36–40 lands, ~10 ramp, ~10 card-advantage-or-tutor slots,
+10–15 removal split between spot and sweepers. Where they go wrong: they are
+counts of *functions*, not cards, so a card doing two jobs fills two slots
+(Hinds counts self-mill as draw, reanimation as interaction) and a graveyard
+deck legitimately runs 5 draw. Hinds' own verdict on his template is that it is
+"too 'one size fits all'". Take the categories, derive the counts from the
+deck's actual failure modes.
+
+Sources:
+- The 8x8 Theory, "What is the 8x8 Theory?" — https://the8x8theory.tumblr.com/what-is-the-8x8-theory
+- Cas Hinds, "Everything You Need To Know About Commander Deck Building" — https://www.coolstuffinc.com/a/everything-you-need-to-know-about-commander-deckbuilding-05292026
+- Commander Deck Maker, "The Command Zone Template" (written write-up of Wong & Lee Kwai's template) — https://commanderdeckmaker.com/learn/deckbuilding/command-zone-template
+- David Royale, "How to Build a Great Commander Deck (4 Steps)" — https://draftsim.com/build-commander-deck-mtg/
+
+### strategy:deckbuilding.curve — Mana Curve & the Four-Player Clock
+
+Duke's baseline: lands are "a touch over 40% of a deck", 24–25 in 60 cards, and
+"there's no 'master formula'" for the spell costs above them — the curve is
+whatever your plan needs, steep only if you can pay for it. The Commander shape
+is measurable: MtGDS' EDHREC data puts the modal mana value at 2, with 15.7
+two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana
+value 8+; the same data shows builders run *more* cards at their commander's
+mana value than the global curve (9.7 four-drops for four-mana commanders vs
+9.5), not fewer. The clock is what disciplines the top end: Commander games
+average 7–10 turns, so "unless the majority of your deck is mana ramp... you're
+probably only going to be able to cast ONE big-mana spell per game" (Commander
+Mechanic). Build to hit 2, 4 and 6 mana reliably, because four-player turn
+cycles are expensive — a turn spent off-curve is three opponents' worth of
+development, and one missed key turn puts the plan two to three turns behind.
+Archetype shaping: aggro and critical-mass decks buy cheap enablers
+(strategy:critical-mass.storm-math); ramp decks buy a payoff tier and must
+count the ramp itself as curve.
+
+Sources:
+- Reid Duke, "The Basics of Mana" — https://magic.wizards.com/en/articles/archive/level-one/basics-mana-2015-07-06
+- MtGDS, "Paradigm Shift - How Your Commander's Mana Value Alters Your Curve" — https://edhrec.com/articles/paradigm-shift-how-your-commanders-mana-value-alters-your-curve
+- Commander Mechanic, "Dangerous Curves Ahead" — https://commandersherald.com/dangerous-curves-ahead/
+
+### strategy:deckbuilding.redundancy-vs-tutors — Redundancy vs Tutors
+
+Singleton kills the 4-of, so consistency has two purchases: redundancy (more
+cards doing the job) or tutoring (cards that fetch it). Hypergeometric
+arithmetic on 99 cards: a named card is 7.1% of your opening seven, 10.1% by
+ten cards seen. An effect-class climbs slowly — 5 copies is 31% of openers, 7
+is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%, and 90% by
+ten cards seen costs about 20 copies. A tutor is "essentially an additional
+copy of any card in our deck" (Commander Mechanic): k tutors plus the card act
+like k+1 copies of *every* card. The trade: redundancy is cheap per slot and
+live every game; tutoring is fewer slots but costs board impact and a turn of
+tempo — Lowry, "the more tutors you play, the less actual cards you get to
+play" — and Sheldon's design cost: tutors "reduce the diversity of the games
+you play", making tutor count a power-level lever. So stack the classes you
+want every game (ramp, draw, removal, enablers), tutor only the irreplaceable;
+Nicol's start is 7-8 enablers, 10-12 enhancers. Keep rates track enabler-class
+density, not tutor count (strategy:mulligans.engine-hands) — a tutor is an
+enabler only if you can cast it and still deploy.
+
+Sources:
+- WitchPHD, "7x9, Every Time" — https://witchphd.substack.com/p/7x9-every-time
+- Commander Mechanic, "Mechanical Engineering – Learning from Tutors" — https://commandersherald.com/mechanical-engineering-learning-from-tutors/
+- Anthony Lowry, "How Many Tutors Is Too Many Tutors?" — https://www.hipstersofthecoast.com/2023/06/how-many-tutors-is-too-many-tutors/
+- Kieran Sheldon, "Brew like a Game Designer: Fixing the Tutor Problem (A Defense of Toolbox Decks)" — https://commandersherald.com/brew-like-a-game-designer-fixing-the-tutor-problem-a-defense-of-toolbox-decks/
+- Benjamin Nicol, "Solve the Equation - How to Tell if a Strategy Has Enough Support by Using Deck Templates" — https://edhrec.com/articles/solve-the-equation-how-to-tell-if-a-strategy-has-enough-support-using-deck-templates
+
+### strategy:deckbuilding.threat-density — Threat Density: Finishers & Engine Pieces
+
+Value is not a win. Gregory's diagnosis of the deck that ramps, draws and never
+closes is focus — unsynergistic win conditions dilute the list — and a
+four-player seat wins ~25% of games by default, so conversion is where decks
+differ. Countable floor, Zupke's structure: 3-5 finishers, "at least 3
+finishers in your deck", 5-7 protection slots, 20-25 flexible strategy cards.
+cEDH compresses that, its finishers being combos: Eisenherz's rule is two
+primary combos, "a Plan A and Plan B", never more than two *unconnected* ones —
+cut the least efficient — a third only when the pieces are "exceptionally
+compact". Layering reconciles them: overlap pieces, so five cards support four
+combos (his sans-blue Pod example), keeping dead cards down and surviving
+disruption. Engine density — Nicol asks 7-8 enablers and 10-12 enhancers
+against ~25 standalone cards, and the enabler slots fail first
+(strategy:mulligans.engine-hands). Separate ceiling from median: the ceiling
+build runs one spectacular finisher and loses when it's answered; the median
+runs three cheap ones and closes from any board. Know your number
+(strategy:critical-mass.storm-math), then count how many of the 99 produce it.
+
+Sources:
+- Andy Zupke, "Building a Commander Deck - Part Two: Structure" — https://blog.cardsphere.com/building-a-commander-deck-part-two-structure/
+- Learn cEDH, "How Many Combos Are Too Many?" (written lesson from Eisenherz's video) — https://learncedh.com/intermediate-course/how-many-combos-are-too-many
+- Kristen Gregory, "5 Reasons Your Commander Deck Isn't Winning Games" — https://blog.cardkingdom.com/5-reasons-your-commander-deck-isnt-winning-games/
+- Benjamin Nicol, "Solve the Equation - How to Tell if a Strategy Has Enough Support by Using Deck Templates" — https://edhrec.com/articles/solve-the-equation-how-to-tell-if-a-strategy-has-enough-support-using-deck-templates
+
+### strategy:deckbuilding.interaction-suite — Interaction Suite: Breadth, Depth & Answers to Answers
+
+Count first. Walser's baseline is "at least 8-10 removal spells" inside a
+"15- to 20-card interactive suite", built expecting only 2-3 to resolve, wipes
+"one or two max" (Zupke caps at 3) — the drift is real: the Command Zone
+template cut wipes 5→3-4 as the format sped up
+(strategy:deckbuilding.ratios), so date any wipe count you inherit. Hinds'
+observed spread is 7-15, counting counters and bounce. Breadth before depth:
+three opponents mean every permanent type appears, so cover the classes —
+creature, artifact, enchantment, graveyard, land — before doubling any;
+catch-all removal earns its premium. Depth is a meta call: copy the answer your
+table beats you with. Ceiling: McGuinness reports three mana as "essentially
+the most any player should pay for interaction" in cEDH, wipes out of favour as
+games speed up. Answers to answers are a separate budget — Commander Deck
+Maker: 2-4 protection generic, 4-6 combo, 6-8 Voltron; counterspells do both
+jobs. Stax is the hardest breadth test: a counter answers
+a lock piece only on the way in, so some answers must be castable under the tax
+(strategy:threat-assessment.resource-denial). Spending it:
+strategy:threat-assessment.answer-economy.
+
+Sources:
+- A.L. Walser, "How Much Removal Should You Really Play in Commander?" — https://draftsim.com/edh-how-much-removal/
+- Cas Hinds, "The Problem with Removal in Commander" — https://www.coolstuffinc.com/a/cashinds-seo-10232024-the-problem-with-removal-in-commander
+- Harvey McGuinness, "EDHREC Guide To Interaction in cEDH" — https://edhrec.com/guides/edhrec-guide-to-interaction-in-cedh
+- Commander Deck Maker, "Interaction and Protection" — https://commanderdeckmaker.com/learn/card-roles/interaction-and-protection
+- Andy Zupke, "Building a Commander Deck - Part Two: Structure" — https://blog.cardsphere.com/building-a-commander-deck-part-two-structure/
+
+### strategy:deckbuilding.archetype-selection — Commander & Archetype Selection
+
+Choose three things at once: a commander, a plan, a bracket
+(strategy:deckbuilding.power-level) — Walser puts the bracket first, since it
+decides which cards are candidates. Zupke's entry points: commander-first,
+strategy-first (Voltron, wheels, aristocrats, alt-win), flavour-first. They
+converge, but the commander is the only card you always have access to, so it
+licenses a plan rather than being one. What it licenses is narrow: colour
+identity fixes the source budget
+(strategy:deckbuilding.mana-base.color-sources), its mana value bends the curve
+(strategy:deckbuilding.curve). Walser's distinction carries the weight: built
+around your commander is not reliant on it. A deck whose only payoff sits in
+the command zone hands three opponents one target; buy it back with redundant
+copies (strategy:deckbuilding.redundancy-vs-tutors) or protection
+(strategy:multiplayer.commander-insurance). Archetype then sets every count,
+each in its own section: Commander Deck Maker's spread runs
+aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7
+wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16
+equipment and auras. Bend those there, not here.
+
+Sources:
+- A.L. Walser, "9 Critical Tips for Building a Better Commander Deck" — https://draftsim.com/edh-deck-tips/
+- Andy Zupke, "Building a Commander Deck - Part One: The Adventure" — https://blog.cardsphere.com/building-a-commander-deck-part-one-the-adventure/
+- Brian Cain, "How to Choose Your Commander" — https://edhrec.com/articles/how-to-choose-your-commander
+- Commander Deck Maker, "Ratios by Archetype" — https://commanderdeckmaker.com/learn/deckbuilding/ratios-by-archetype
+
+### strategy:deckbuilding.power-level — Power Level: Brackets, Game Changers & Rule 0
+
+WotC's Commander Format Panel sorts decks into five brackets, and the sharpest
+line between them is expected game length: 1 Exhibition, theme over power, at
+least nine turns before you win or lose; 2 Core, unoptimized and telegraphed,
+at least eight; 3 Upgraded, strong synergy and one-big-turn kills off accrued
+resources, at least six; 4 Optimized, "lethal, consistent, and fast", at least
+four; 5 cEDH, metagame-driven, where games "could end on any turn". The one
+hard gate is the Game Changers list — 53 cards as of July 2026, still beta:
+Brackets 1-2 exclude them, Bracket 3 allows up to three, Brackets 4-5 are
+unlimited. The rest is intent, not arithmetic. Verhey grants he "can easily
+build a deck that technically meets all the rules of Core (Bracket 2) and plays
+at the power level of Optimized (Bracket 4)", says of the Moxfield and
+Archidekt estimators that "any estimate is just an estimate", and the panel
+frames brackets as "a tool to guide pregame conversations—not an ultimate
+arbiter of who can play against whom". Contents give a floor, never a verdict.
+Rule zero — permission by pregame discussion — stays live at every bracket
+except cEDH.
+
+Sources:
+- Wizards of the Coast, "MTG Commander Format" (official brackets and Game Changers pages) — https://magic.wizards.com/en/formats/commander
+- Gavin Verhey, "Introducing Commander Brackets Beta" — https://magic.wizards.com/en/news/announcements/introducing-commander-brackets-beta
+- Gavin Verhey, "Commander Brackets Beta Update – April 22, 2025" — https://magic.wizards.com/en/news/announcements/commander-brackets-beta-update-april-22-2025
+- Gavin Verhey, "Commander Brackets Beta Update – October 21, 2025" — https://magic.wizards.com/en/news/announcements/commander-brackets-beta-update-october-21-2025
+- Gavin Verhey, "Commander Brackets Beta Update – February 9, 2026" — https://magic.wizards.com/en/news/announcements/commander-brackets-beta-update-february-9-2026
+
+### strategy:deckbuilding.power-level.barometers — Bracket Barometers: Combos, Extra Turns, Land Denial, Tutors
+
+Three content barometers, and one that was deleted. Mass land denial: not
+anywhere in Brackets 1-3, defined as cards that "regularly destroy, exile, and
+bounce other lands, keep lands tapped, or change what mana is produced by four
+or more lands per player without replacing them" — Armageddon, Ruination,
+Sunder, Winter Orb, Blood Moon. Two-card infinite combos: none intended in 1-2
+and none early in 3, restated in October 2025 as the turn floor, so the test is
+whether a line tends to happen inside the bracket's turn count; holding it back
+doesn't launder it, since "if a combo could frequently come up, it's not the
+best fit for that bracket". Extra turns: none in 1, low quantities in 2-3 and
+"not intended to be chained in succession or looped". Tutors: no restriction at
+all any more. The original "few"/"sparse" guidance was never given a number and
+was dropped in October 2025 to "rely on Game Changers to catch the most
+efficient tutors" — which is why Demonic Tutor and Imperial Seal are gated and
+Diabolic Tutor isn't. Brackets 4-5 restrict nothing but the banned list.
+
+Sources:
+- Gavin Verhey, "Introducing Commander Brackets Beta" — https://magic.wizards.com/en/news/announcements/introducing-commander-brackets-beta
+- Gavin Verhey, "Commander Brackets Beta Update – October 21, 2025" — https://magic.wizards.com/en/news/announcements/commander-brackets-beta-update-october-21-2025
+- Wizards of the Coast, "MTG Commander Format" (official brackets and Game Changers pages) — https://magic.wizards.com/en/formats/commander
+
+### strategy:deckbuilding.cutting — The Last Ten Cards: Cutting & Iteration
+
+Gregory locates the pressure: 36 lands plus the commander, Sol Ring, Arcane
+Signet and Command Tower leave "about 58-60 slots", and a brewer's pile
+routinely arrives at 90 or 100 nonland candidates. Her cuts: use a price budget
+purely as a forcing device, cut the most-played "staples" first and make the
+synergy pick argue for itself, brew only with what's at home. Milan's mechanic:
+fill a template to the letter, set the lands aside untouched, then change one
+in, one out so you never lose count. Then stop building and play — he cut ~150
+candidates to reach 100, and reckons seven or eight of those survive six months
+later. The math says late cuts are cheap: an 11th copy of an effect buys about
+four points of opening-hand probability over the 10th, 54% to 57%
+(strategy:deckbuilding.redundancy-vs-tutors), so cut duplicated function before
+any uncovered class, and cut the ceiling card before the median one
+(strategy:deckbuilding.threat-density). Iterate against play, not paper —
+Gregory: "it's far better to playtest your rough draft first". Keep the
+near-misses as a sideboard and swap them in between games.
+
+Sources:
+- Kristen Gregory, "5 Ways to Cut Cards Easier in Commander" — https://blog.cardkingdom.com/5-ways-to-cut-cards-easier-in-commander/
+- Roman Milan, "New Player Guide - How to Cut Cards From Your Commander Decks" — https://edhrec.com/articles/new-player-guide-how-to-cut-cards-from-your-commander-decks
+- Commander Deck Maker, "The Command Zone Template" (its build loop ends "build, playtest, adjust") — https://commanderdeckmaker.com/learn/deckbuilding/command-zone-template
+
+### strategy:deckbuilding.budget — Budget, Proxies & Where Money Actually Binds
+
+Budget binds in one place: the mana base. Zupke built a five-colour Sisay deck
+to a $50 total with no card over $1 and found the fixing, not the spells, was
+the constraint — his tier is Command Tower and Exotic Orchard, ~$1 pain lands,
+BFZ duals carrying basic types (Farseek finds them), and sub-dollar tri-lands
+you pay for in tempo rather than dollars (strategy:deckbuilding.mana-base). His
+hard rule: "You should never have to pay mana to play your lands" — Rupture
+Spire and its clones aren't budget, just bad. Bucks prices the same tier at "$1
+or less", rating a condition to enter untapped paramount. For spells, Levin
+filters Scryfall at two dollars or less against the rules text he wants:
+"budget replacements aren't going to be as good as their non-budget
+counterparts, but rarely are they going to be as bad as their difference in
+price might suggest." Gregory uses a budget as a cutting device — it makes you
+less precious about staples. Price is not power: proxies are normalized, and
+Carrozza's point is that "the issue... is the power level and that's the
+conversation that should be had" — a proxied Game Changer still raises your
+bracket floor (strategy:deckbuilding.power-level).
+
+Sources:
+- Andy Zupke, "Now Is the Best Time There's Ever Been for Budget Commander" — https://blog.cardsphere.com/why-now-is-the-best-time-theres-ever-been-for-budget-edh/
+- Benjamin Levin, "Shower Thoughts: Budget Deck Building Guide" — https://commandersherald.com/shower-thoughts-budget-deck-building-guide/
+- Tyler Bucks, "The Big List of Budget Dual Lands in Commander" — https://edhrec.com/articles/the-big-list-of-budget-dual-lands-in-commander
+- Kristen Gregory, "5 Ways to Cut Cards Easier in Commander" — https://blog.cardkingdom.com/5-ways-to-cut-cards-easier-in-commander/
+- Mike Carrozza, "Am I The Bolas? – Moving to EDHREC (A Last One about Proxies and Power Level)" — https://commandersherald.com/am-i-the-bolas-moving-to-edhrec-a-last-one-about-proxies-and-power-level/
+
 ## strategy:schools — Schools of Thought & Canonical Literature
 
-The strategic canon this document synthesizes. Mike Flores' "Who's the
-Beatdown?" (1999, The Dojo; reprinted at StarCityGames) founded role-assignment
-theory; Adrian Sullivan's Philosophy of Fire (1999, canonized in Flores'
-writing) founded resource-conversion theory. Reid Duke's Level One course
-(Wizards, 2014–2015) is the community-consensus foundation for the resource
-pillars — card advantage, tempo, combat, sequencing, risk — and most of this
-document's 1v1 grounding cites its individual lessons. Patrick Chapin's "Next
-Level Magic" systematized information play and metagaming. Paulo Vitor Damo da
-Rosa's two-decade article corpus (now archived at his Substack) is the
-playing-to-win reference. Frank Karsten's hypergeometric articles are the
-mathematical spine. Commander-specific theory is younger and article-borne:
-EDHREC and Commander's Herald carry the written threat-assessment and politics
-work; The Command Zone podcast popularized much of it but is cited here only
-through written sources, since episodes are not directly citable.
+The canon this document synthesizes. Mike Flores' "Who's the
+Beatdown?" (1999, The Dojo) founded role-assignment theory; Adrian Sullivan's
+Philosophy of Fire (1999, canonized by Flores) founded resource-conversion
+theory. Reid Duke's Level One course (Wizards, 2014-2015) is the consensus
+foundation for the resource pillars — card advantage, tempo, combat,
+sequencing, risk — and most 1v1 grounding here cites it. Patrick Chapin's "Next
+Level Magic" systematized information play and metagaming; Paulo Vitor Damo da
+Rosa's corpus (archived at his Substack) is the playing-to-win reference. Deck
+construction has a different shape: Karsten's regressions and per-pip source
+tables are the mathematical spine, above which sits a template genre — 8x8, the
+Command Zone template, Hinds' 11 9s — counts as priors, not law, plus EDHREC's
+data pulls. Commander theory is younger and article-borne: EDHREC, Commander's
+Herald, Card Kingdom and Cardsphere carry its threat-assessment, politics and
+construction work. Power level alone has a primary: WotC's Commander Format
+Panel. The Command Zone podcast popularized much of it but is cited only
+through written sources; episodes are not directly citable.
 
 Sources:
 - Mike Flores, "Who's the Beatdown?" — https://articles.starcitygames.com/premium/whos-the-beatdown/
@@ -717,5 +1037,7 @@ Sources:
 - Patrick Chapin, "Next Level Magic" (print)
 - Paulo Vitor Damo da Rosa, "PVDDR's Articles" (Substack archive) — https://pvddr.substack.com/archive
 - Frank Karsten, "How Many Lands Do You Need to Consistently Hit Your Land Drops?" (mirror of the 2017 ChannelFireball article) — https://orkerhulen.dk/onewebmedia/How%20Many%20Lands%20Do%20You%20Need%20to%20Consistently%20Hit%20Your%20Land%20Drops.pdf
+- Commander Deck Maker, "The Command Zone Template" (written write-up of Wong & Lee Kwai's template) — https://commanderdeckmaker.com/learn/deckbuilding/command-zone-template
+- Wizards of the Coast, "MTG Commander Format" (official brackets and Game Changers pages) — https://magic.wizards.com/en/formats/commander
 - EDHREC, "Articles" — https://edhrec.com/articles
 - The Command Zone (YouTube channel; episodes not directly citable) — https://www.youtube.com/@commandzone

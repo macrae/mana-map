@@ -425,26 +425,36 @@ RESOLVE_MAX_ITERATIONS = 3
 # player what bracket their deck is.
 #
 # `game_changers`/`two_card_infinites` are counts (None = unlimited).
-# `tutor_budget` is advisory only — WotC says "few tutors", never a number, so
-# it is reported and never raises a floor. Inventing a threshold and refusing
-# on it would be exactly the kind of unverifiable claim this repo avoids.
+# `expected_turns` matches WotC's current published copy verbatim.
+#
+# There is deliberately no tutor field. An earlier version of this table
+# carried a `tutor_budget` of 1/3/6, which had no source — and the
+# strategy:deckbuilding.power-level research established something stronger
+# than "unnumbered": WotC *removed* the tutor restriction outright on
+# 2025-10-21, because "not all Tutors are created equal", and now relies on
+# Game Changers membership to catch the efficient ones. Since the code already
+# counts Game Changers, a tutor budget would encode a rule that no longer
+# exists. bracket.py still reports tutor density as information.
 BRACKETS = {
     1: {"name": "Exhibition", "game_changers": 0, "two_card_infinites": 0,
-        "mass_land_denial": False, "tutor_budget": 1, "expected_turns": "9+"},
+        "mass_land_denial": False, "expected_turns": "9+"},
     2: {"name": "Core", "game_changers": 0, "two_card_infinites": 0,
-        "mass_land_denial": False, "tutor_budget": 3, "expected_turns": "8+"},
+        "mass_land_denial": False, "expected_turns": "8+"},
     3: {"name": "Upgraded", "game_changers": 3, "two_card_infinites": 0,
-        "mass_land_denial": False, "tutor_budget": 6, "expected_turns": "6+"},
+        "mass_land_denial": False, "expected_turns": "6+"},
     4: {"name": "Optimized", "game_changers": None, "two_card_infinites": None,
-        "mass_land_denial": True, "tutor_budget": None, "expected_turns": "4+"},
+        "mass_land_denial": True, "expected_turns": "4+"},
     5: {"name": "cEDH", "game_changers": None, "two_card_infinites": None,
-        "mass_land_denial": True, "tutor_budget": None, "expected_turns": "any"},
+        "mass_land_denial": True, "expected_turns": "any"},
 }
 BRACKET_DEFAULT = 3
 BRACKET_MAX = 5
 
-# A two-card infinite assembling at or below this mana value is "early game",
-# which is what separates a bracket-3 deck from a bracket-4 one.
+# WotC states the Bracket 3 combo guardrail as a *turn* ("you don't expect to
+# win or lose before turn six"), not a mana value. This is our proxy for that,
+# and it is a proxy — a cheap combo that needs a long setup will read as early
+# when it isn't. Note WotC also says holding a combo back doesn't exempt it:
+# "if a combo could frequently come up, it's not the best fit for that bracket."
 BRACKET_EARLY_COMBO_MANA = 6
 
 # Curated and deliberately conservative — this is the one bracket signal that
