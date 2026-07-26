@@ -3,7 +3,7 @@
     "commander": "Hapatra, Vizier of Poisons",
     "commander_cmc": 2,
     "deck": "hapatra",
-    "decklist_sha256": "eca45c1ad914bb8ab6b0d828af61f29fc63d7f766372b18285565e85ef75a52c",
+    "decklist_sha256": "824c1eebd641e9f210336fc33660ce5665b45905437071e12036849a443f1e2e",
     "iterations": 10000,
     "max_turn": 10,
     "model_assumptions": [
@@ -21,17 +21,17 @@
   },
   "metrics": {
     "commander": {
-      "cast_by_turn_6_rate": 1.0,
+      "cast_by_turn_6_rate": 0.999,
       "cast_turn_histogram": {
-        "2": 9969,
-        "3": 14,
-        "4": 5,
+        "2": 9970,
+        "3": 11,
+        "4": 6,
         "5": 5,
-        "6": 2,
-        "7": 1,
+        "6": 1,
+        "7": 3,
         "8": 1,
-        "9": 2,
-        "not_by_max_turn": 1
+        "9": 1,
+        "not_by_max_turn": 2
       },
       "mean_cast_turn": 2.007,
       "median_cast_turn": 2
@@ -51,27 +51,27 @@
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 7.124,
-      "2": 2.145,
-      "3": 3.056,
-      "4": 4.04,
-      "5": 4.735,
-      "6": 5.312,
-      "7": 5.821,
-      "8": 6.276,
-      "9": 6.713
+      "10": 8.241,
+      "2": 2.464,
+      "3": 3.462,
+      "4": 4.71,
+      "5": 5.497,
+      "6": 6.15,
+      "7": 6.725,
+      "8": 7.247,
+      "9": 7.755
     },
     "mean_bodies_by_turn": {
-      "1": 0.197,
-      "10": 5.997,
-      "2": 0.234,
-      "3": 1.085,
-      "4": 2.136,
-      "5": 3.087,
-      "6": 3.873,
-      "7": 4.507,
-      "8": 5.058,
-      "9": 5.54
+      "1": 0.283,
+      "10": 4.589,
+      "2": 0.413,
+      "3": 1.214,
+      "4": 2.101,
+      "5": 2.74,
+      "6": 3.224,
+      "7": 3.604,
+      "8": 3.955,
+      "9": 4.272
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -98,52 +98,34 @@
     },
     "targets": [
       {
-        "assembled_rate": 0.682,
-        "by_turn_6_rate": 0.567,
+        "assembled_rate": 0.672,
+        "by_turn_6_rate": 0.557,
         "label": "Commander plus any -1/-1 payoff",
-        "mean_turn": 3.592
+        "mean_turn": 3.623
       },
       {
-        "assembled_rate": 0.028,
-        "by_turn_6_rate": 0.016,
-        "label": "Hapatra, Vizier of Poisons + Nest of Scarabs + Flourishing Defenses",
-        "mean_turn": 5.77
+        "assembled_rate": 0.163,
+        "by_turn_6_rate": 0.125,
+        "label": "Hapatra + Blowfly Infestation (two-card kill)",
+        "mean_turn": 4.102
       },
       {
-        "assembled_rate": 0.03,
-        "by_turn_6_rate": 0.016,
-        "label": "Hapatra, Vizier of Poisons + Yawgmoth, Thran Physician + Blood Artist",
-        "mean_turn": 5.792
+        "assembled_rate": 0.095,
+        "by_turn_6_rate": 0.058,
+        "label": "Mikaeus + a free sacrifice outlet",
+        "mean_turn": 5.092
       },
       {
-        "assembled_rate": 0.026,
-        "by_turn_6_rate": 0.014,
-        "label": "Cauldron of Souls + Viscera Seer + Hapatra, Vizier of Poisons",
-        "mean_turn": 5.842
+        "assembled_rate": 0.519,
+        "by_turn_6_rate": 0.415,
+        "label": "Any drain converter",
+        "mean_turn": 3.339
       },
       {
-        "assembled_rate": 0.171,
-        "by_turn_6_rate": 0.127,
-        "label": "Skullclamp + Hapatra, Vizier of Poisons",
-        "mean_turn": 4.263
-      },
-      {
-        "assembled_rate": 0.027,
-        "by_turn_6_rate": 0.015,
-        "label": "Massacre Girl, Known Killer + Necroskitter",
-        "mean_turn": 5.551
-      },
-      {
-        "assembled_rate": 0.025,
-        "by_turn_6_rate": 0.014,
-        "label": "Obelisk Spider + Black Sun's Zenith",
-        "mean_turn": 5.445
-      },
-      {
-        "assembled_rate": 0.172,
-        "by_turn_6_rate": 0.131,
-        "label": "Sinister Gnarlbark + Hapatra, Vizier of Poisons",
-        "mean_turn": 4.197
+        "assembled_rate": 0.78,
+        "by_turn_6_rate": 0.676,
+        "label": "Any tutor drawn",
+        "mean_turn": 2.695
       }
     ]
   }

@@ -1,0 +1,39 @@
+{
+  "id": "001",
+  "slug": "mikaeus-undying-counter-annihilation",
+  "deck": "hapatra",
+  "title": "Does Hapatra's -1/-1 counter reset undying under Mikaeus?",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Hapatra, Vizier of Poisons",
+        "Mikaeus, the Unhallowed",
+        "Ashnod's Altar",
+        "Blood Artist",
+        "Snake token (1/1 green, deathtouch)"
+      ],
+      "opponents": [
+        {"life": 40, "board": []},
+        {"life": 40, "board": []},
+        {"life": 40, "board": []}
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "{0}",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Ashnod's Altar activated ability",
+        "controller": "you",
+        "note": "Snake token sacrificed as the cost; Mikaeus grants it undying"
+      }
+    ],
+    "extras": {
+      "why_this_matters": "Nineteen of this deck's two-card infinite lines route through Mikaeus plus a free sacrifice outlet. Undying only returns a creature that died with no +1/+1 counter on it, so the loop stalls after one iteration unless something strips the counter it comes back with. The claim under test is that Hapatra supplies exactly that, by way of counter annihilation.",
+      "the_claim": "Sacrifice a non-Human creature to a free outlet; Mikaeus's undying returns it with a +1/+1 counter. On a later iteration Hapatra places a -1/-1 counter on it, the two counters annihilate as a state-based action, and the creature is once again a legal undying target. If that holds, the loop is unbounded and each pass drains the table via Blood Artist."
+    },
+    "question": "Resolve the full sequence. (1) Does Mikaeus grant undying to a Snake *token*, and what happens to a token that undying tries to return? (2) When a creature with a +1/+1 counter later receives a -1/-1 counter from Hapatra, do the counters annihilate, and under which rule? (3) Does a creature whose +1/+1 counter was annihilated this way satisfy undying's 'if it had no +1/+1 counters on it' check the next time it dies? (4) Given all of that, is the Mikaeus + Ashnod's Altar line actually unbounded in this deck, and if so what is the loop's per-iteration output — or does it terminate, and where?"
+  }
+}

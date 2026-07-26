@@ -1,31 +1,314 @@
 {
   "banned": [],
-  "combo_bracket_floor": 3,
-  "combo_count": 8,
+  "combo_bracket_floor": 4,
+  "combo_count": 32,
   "cut_candidates": [],
   "drivers": [
     {
-      "detail": "highest-bracket line present: Hapatra, Vizier of Poisons + Yawgmoth, Thran Physician + Obelisk Spider",
-      "forces": 3,
+      "detail": "11 Game Changer(s): Chrome Mox, Demonic Tutor, Grim Monolith, Imperial Seal, Mana Vault, Mox Diamond, Orcish Bowmasters, Survival of the Fittest, The One Ring, Vampiric Tutor, Worldly Tutor",
+      "forces": 4,
+      "signal": "game_changers"
+    },
+    {
+      "detail": "highest-bracket line present: Scurry Oak + Ivy Lane Denizen",
+      "forces": 4,
       "signal": "combo_content"
+    },
+    {
+      "detail": "19 two-card infinite(s); 19 assemble at mana value <= 6. e.g. Mikaeus, the Unhallowed + Ashnod's Altar",
+      "forces": 4,
+      "signal": "two_card_infinite"
     }
   ],
   "excluded_commander_assumption": [],
-  "floor": 3,
-  "floor_name": "Upgraded",
-  "game_changers": [],
+  "floor": 4,
+  "floor_name": "Optimized",
+  "game_changers": [
+    "Chrome Mox",
+    "Demonic Tutor",
+    "Grim Monolith",
+    "Imperial Seal",
+    "Mana Vault",
+    "Mox Diamond",
+    "Orcish Bowmasters",
+    "Survival of the Fittest",
+    "The One Ring",
+    "Vampiric Tutor",
+    "Worldly Tutor"
+  ],
   "mass_land_denial": [],
   "notes": [
     "Brackets are a conversation, not a calculator — this is the lowest bracket the deck's contents are consistent with, not a verdict.",
-    "Tutor density (2) is reported, never scored: WotC removed the tutor restriction on 2025-10-21 and now relies on Game Changers membership, which is already counted above.",
+    "Tutor density (5) is reported, never scored: WotC removed the tutor restriction on 2025-10-21 and now relies on Game Changers membership, which is already counted above.",
     "Mass land denial is checked against a curated list and is incomplete by construction."
   ],
   "slug": "hapatra",
-  "target": 3,
+  "target": 4,
   "tutors": [
+    "Demonic Tutor",
     "Diabolic Intent",
-    "Sidisi, Undead Vizier"
+    "Grim Tutor",
+    "Imperial Seal",
+    "Vampiric Tutor"
   ],
-  "two_card_infinites": [],
+  "two_card_infinites": [
+    {
+      "bracket": 1,
+      "cards": [
+        "Mikaeus, the Unhallowed",
+        "Ashnod's Altar"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB",
+        "Infinite sacrifice triggers",
+        "Infinite death triggers",
+        "Infinite colorless mana"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Mikaeus, the Unhallowed",
+        "Phyrexian Altar"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB",
+        "Infinite colored mana",
+        "Infinite sacrifice triggers",
+        "Infinite death triggers"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Mikaeus, the Unhallowed",
+        "Carrion Feeder"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB",
+        "Infinite sacrifice triggers",
+        "Infinite death triggers",
+        "Infinite +1/+1 counters on a creature"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Mikaeus, the Unhallowed",
+        "Viscera Seer"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB",
+        "Infinite sacrifice triggers",
+        "Infinite death triggers",
+        "Infinite scry 1"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Blowfly Infestation",
+        "Nest of Scarabs"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite death triggers",
+        "Infinite ETB",
+        "Infinite LTB"
+      ]
+    },
+    {
+      "bracket": 4,
+      "cards": [
+        "Scurry Oak",
+        "Ivy Lane Denizen"
+      ],
+      "mana_value_needed": 3,
+      "produces": [
+        "Infinite +1/+1 counters on a creature",
+        "Infinite creature tokens",
+        "Infinite ETB"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Blowfly Infestation",
+        "Hapatra, Vizier of Poisons"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite death triggers",
+        "Infinite ETB",
+        "Infinite LTB"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Blowfly Infestation",
+        "Flourishing Defenses"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite ETB",
+        "Infinite LTB",
+        "Infinite death triggers"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Walking Ballista",
+        "Mikaeus, the Unhallowed"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite death triggers",
+        "Infinite ETB",
+        "Infinite LTB"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Ivy Lane Denizen",
+        "Ashnod's Altar"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB",
+        "Infinite colorless mana"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Mikaeus, the Unhallowed",
+        "Yahenni, Undying Partisan"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB",
+        "Infinite sacrifice triggers",
+        "Infinite death triggers"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Mikaeus, the Unhallowed",
+        "Devoted Druid"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite death triggers",
+        "Infinite ETB",
+        "Infinite LTB"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Ivy Lane Denizen",
+        "Viscera Seer"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB",
+        "Infinite scry 1"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Ivy Lane Denizen",
+        "Phyrexian Altar"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB",
+        "Infinite colored mana"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Mikaeus, the Unhallowed",
+        "Blasting Station"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB",
+        "Infinite sacrifice triggers",
+        "Infinite death triggers",
+        "Infinite damage"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Ivy Lane Denizen",
+        "Carrion Feeder"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB",
+        "Infinite +1/+1 counters on a creature"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Ivy Lane Denizen",
+        "Blasting Station"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB",
+        "Infinite damage"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Ivy Lane Denizen",
+        "Yahenni, Undying Partisan"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Hapatra, Vizier of Poisons",
+        "Host of the Hereafter"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB",
+        "Infinite death triggers"
+      ]
+    }
+  ],
   "within_target": true
 }
