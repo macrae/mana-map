@@ -36,7 +36,7 @@ from manamap.config import (
     MASS_LAND_DENIAL,
     OUTPUT_CSV_PATH,
 )
-from manamap.pilot.common import load_deck_cards
+from manamap.pilot.common import deck_dir, load_deck_cards
 
 INFINITE_PREFIX = "infinite"
 
@@ -291,15 +291,25 @@ def main(args):
     report = assess(names, card_flags, roles, details, commanders)
     target = getattr(args, "target", None)
 
+    report["slug"] = args.slug
+    if target is not None:
+        report["target"] = target
+        report["within_target"] = report["floor"] <= target
+        report["cut_candidates"] = offending_cards(report, target)
+
+    # Write the assessment as a ◆ artifact, not just stdout. A floor that only
+    # exists in a terminal cannot be cited by validate-build, cached as a
+    # routine input, or rendered into a manual.
+    out = deck_dir(args.slug) / "bracket_report.json"
+    with open(out, "w") as f:
+        json.dump(report, f, indent=2, sort_keys=True, ensure_ascii=False)
+        f.write("\n")
+
     if getattr(args, "as_json", False):
-        report["slug"] = args.slug
-        if target is not None:
-            report["target"] = target
-            report["within_target"] = report["floor"] <= target
-            report["cut_candidates"] = offending_cards(report, target)
         print(json.dumps(report, indent=2, ensure_ascii=False))
     else:
         print(format_report(args.slug, report, target))
+        print(f"  Wrote {out}")
 
     if target is not None and report["floor"] > target:
         sys.exit(1)

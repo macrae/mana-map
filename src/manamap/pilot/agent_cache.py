@@ -547,32 +547,47 @@ def main(args):
             print(f"{args.routine} already recorded at this fingerprint — skipping write.")
         return
 
-    routines = [args.routine] if getattr(args, "routine", None) else discover_routines(slug)
+    explicit = bool(getattr(args, "routine", None))
+    routines = [args.routine] if explicit else discover_routines(slug)
     force = getattr(args, "force", False)
-    results = []
+    results, not_applicable = [], []
+
     for routine in routines:
         try:
             result = status(slug, routine, force=force)
         except (UnknownRoutine, MissingInput) as e:
-            if getattr(args, "as_json", False):
-                print(json.dumps({"slug": slug, "error": str(e)}, indent=2))
-            else:
-                print(f"ERROR  {routine}: {e}")
-            sys.exit(2)
+            # An explicit --routine with a missing input is exit 2: the caller
+            # asked about this routine and must fix the input, not spawn. But in
+            # the all-routines scan a routine that simply doesn't apply to this
+            # deck is not an error — a hand-built deck has no brief.json and
+            # never will, and aborting there would hide every other routine.
+            if explicit:
+                if getattr(args, "as_json", False):
+                    print(json.dumps({"slug": slug, "error": str(e)}, indent=2))
+                else:
+                    print(f"ERROR  {routine}: {e}")
+                sys.exit(2)
+            not_applicable.append({"routine": routine, "reason": str(e)})
+            continue
         result["slug"] = slug
         results.append(result)
 
     any_miss = any(r["status"] == "MISS" for r in results)
     if getattr(args, "as_json", False):
-        print(json.dumps({"slug": slug, "any_miss": any_miss, "routines": results},
+        print(json.dumps({"slug": slug, "any_miss": any_miss, "routines": results,
+                          "not_applicable": not_applicable},
                          indent=2, ensure_ascii=False))
     else:
-        single = len(results) == 1
+        single = len(results) == 1 and not not_applicable
         for result in results:
             print(format_status(result, verbose=single))
+        for skipped in not_applicable:
+            print(f"N/A    {skipped['routine']:<16} {skipped['reason']}")
         if not single:
             misses = sum(1 for r in results if r["status"] == "MISS")
-            print(f"\n{misses} of {len(results)} routines need a spawn.")
+            print(f"\n{misses} of {len(results)} applicable routines need a spawn"
+                  + (f"; {len(not_applicable)} not applicable to this deck." if not_applicable
+                     else "."))
     sys.exit(1 if any_miss else 0)
 
 

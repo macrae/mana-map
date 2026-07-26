@@ -155,6 +155,24 @@ def test_invalid_bracket_target():
     assert any("must be 1-5" in e for e in validate(plan, cards))
 
 
+def test_plan_disagreeing_with_the_bracket_artifact_is_caught():
+    """A self-reported floor is a claim; bracket_report.json is the evidence."""
+    plan, cards = _sized(_plan(bracket={"target": 3, "computed_floor": 3}), _cards())
+    errors = validate(plan, cards, bracket_report={"floor": 4})
+    assert any("bracket_report.json measured 4" in e for e in errors)
+
+
+def test_plan_agreeing_with_the_bracket_artifact_passes():
+    plan, cards = _sized(_plan(bracket={"target": 3, "computed_floor": 3}), _cards())
+    assert not any("bracket_report" in e
+                   for e in validate(plan, cards, bracket_report={"floor": 3}))
+
+
+def test_absent_bracket_artifact_only_skips_the_cross_check():
+    plan, cards = _sized(_plan(), _cards())
+    assert validate(plan, cards, bracket_report=None) == []
+
+
 # ── budget arithmetic ──
 
 

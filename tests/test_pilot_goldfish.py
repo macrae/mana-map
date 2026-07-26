@@ -133,6 +133,54 @@ def test_aggregate_shapes():
     assert metrics["opening_hand"]["keep_first_seven_rate"] > 0.5  # 40 lands in 95 keeps most hands
 
 
+# ── the two opening-hand distributions answer different questions ──
+
+
+def _window_share(histogram):
+    """Share of hands inside the keep window (2-5 lands)."""
+    total = sum(histogram.values())
+    return sum(v for k, v in histogram.items() if 2 <= int(k) <= 5) / total
+
+
+def test_both_opening_histograms_are_reported():
+    results = run_sim(iterations=400, targets=[])
+    opening = aggregate(results, [], 8)["opening_hand"]
+    assert opening["first_seven_land_histogram"]
+    assert opening["kept_hand_land_histogram"]
+
+
+def test_first_seven_window_share_equals_the_keep_rate():
+    """They are the same measurement by definition — if they diverge, one is wrong."""
+    results = run_sim(iterations=800, targets=[])
+    opening = aggregate(results, [], 8)["opening_hand"]
+    # The published rate is rounded to three places; the histogram is exact.
+    assert _window_share(opening["first_seven_land_histogram"]) == pytest.approx(
+        opening["keep_first_seven_rate"], abs=5e-4
+    )
+
+
+def test_kept_hand_is_filtered_tighter_than_the_first_seven():
+    """The mulligan rule can only push the kept hand further inside the window.
+
+    Conflating these made the histogram nearly invariant to deck composition —
+    every deck reads ~99% healthy because that is the keep rule restating
+    itself, which is the wrong property for a build's fitness signal.
+    """
+    results = run_sim(iterations=800, targets=[])
+    opening = aggregate(results, [], 8)["opening_hand"]
+    first = _window_share(opening["first_seven_land_histogram"])
+    kept = _window_share(opening["kept_hand_land_histogram"])
+    assert kept > first
+
+
+def test_first_seven_histogram_keeps_the_unkeepable_hands():
+    """Land-light and land-flooded sevens are real and must survive into the data."""
+    results = run_sim(iterations=800, targets=[])
+    histogram = aggregate(results, [], 8)["opening_hand"]["first_seven_land_histogram"]
+    outside = sum(v for k, v in histogram.items() if not 2 <= int(k) <= 5)
+    assert outside > 0
+
+
 # ── data-gated: real metrics artifact ──
 
 

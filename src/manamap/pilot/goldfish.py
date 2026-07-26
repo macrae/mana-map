@@ -118,6 +118,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn):
 
     hand = deck[:7]
     deck = deck[7:]
+    # Captured BEFORE the mulligan loop rebinds `hand`. The two populations
+    # answer different questions and must not be conflated: the first seven is
+    # what the keep rule is applied to, the kept hand is what you actually play.
+    # Reporting the kept hand as "opening" made the distribution nearly
+    # invariant to deck composition — every deck looks ~99% healthy at 2-5
+    # lands, because that is the keep rule restating itself.
+    first_seven_lands = sum(1 for c in hand if c["is_land"])
+
     mulligans = 0
     while not keepable(hand) and mulligans < GOLDFISH_MAX_MULLIGANS:
         mulligans += 1
@@ -126,7 +134,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn):
         hand = deck[:7]
         deck = deck[7:]
 
-    opening_lands = sum(1 for c in hand if c["is_land"])
+    kept_hand_lands = sum(1 for c in hand if c["is_land"])
     seen = {c["name"] for c in hand}
 
     lands_in_play = 0
@@ -179,7 +187,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn):
                 target_turns[i] = turn
 
     return {
-        "opening_lands": opening_lands,
+        "first_seven_lands": first_seven_lands,
+        "kept_hand_lands": kept_hand_lands,
         "mulligans": mulligans,
         "land_hits": land_hits,
         "mana_by_turn": mana_by_turn,
@@ -214,15 +223,25 @@ def aggregate(results, targets, max_turn):
             "by_turn_6_rate": _round(sum(1 for t in assembled if t <= 6) / n),
         })
 
-    opening_histogram = {}
-    for r in results:
-        key = str(r["opening_lands"])
-        opening_histogram[key] = opening_histogram.get(key, 0) + 1
+    def _histogram(key):
+        counts = {}
+        for r in results:
+            bucket = str(r[key])
+            counts[bucket] = counts.get(bucket, 0) + 1
+        return dict(sorted(counts.items(), key=lambda kv: int(kv[0])))
 
     return {
         "iterations": n,
         "opening_hand": {
-            "land_histogram": opening_histogram,
+            # Two distributions, deliberately both reported. `first_seven` is
+            # the deck's real land distribution and moves when you change the
+            # mana base. `kept_hand` is that distribution after the keep rule
+            # has filtered it, so it sits near 100% inside the keep window for
+            # every deck — informative about the mulligan rule, useless as a
+            # fitness signal. The single `land_histogram` key this replaces
+            # carried the second while being read as the first.
+            "first_seven_land_histogram": _histogram("first_seven_lands"),
+            "kept_hand_land_histogram": _histogram("kept_hand_lands"),
             "keep_first_seven_rate": _round(sum(1 for r in results if r["mulligans"] == 0) / n),
             "mean_mulligans": _round(sum(r["mulligans"] for r in results) / n),
         },

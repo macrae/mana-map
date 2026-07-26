@@ -45,7 +45,7 @@ def deck_card_names(plan):
     return names
 
 
-def validate(plan, cards=None, rules=None, strategy_sections=None):
+def validate(plan, cards=None, rules=None, strategy_sections=None, bracket_report=None):
     """Return a list of human-readable error strings (empty = the form holds).
 
     `cards` maps name -> {color_identity, legal_commander, type_line}. None
@@ -90,7 +90,7 @@ def validate(plan, cards=None, rules=None, strategy_sections=None):
                     f"commander identity {sorted(identity) or ['C']}"
                 )
 
-    errors.extend(_validate_bracket(plan))
+    errors.extend(_validate_bracket(plan, bracket_report))
     errors.extend(_validate_budget(plan))
     errors.extend(_validate_land_list(plan))
     errors.extend(_validate_slots(plan))
@@ -110,7 +110,14 @@ def validate(plan, cards=None, rules=None, strategy_sections=None):
     return errors
 
 
-def _validate_bracket(plan):
+def _validate_bracket(plan, bracket_report=None):
+    """The plan's bracket claim, cross-checked against the engine's own artifact.
+
+    A plan self-reporting its floor is a claim, not evidence. When
+    bracket_report.json is present it is the ◆ record and the plan must agree
+    with it — a stale floor left behind by a later swap is exactly the failure
+    the deck-critic had to catch by hand the first time.
+    """
     errors = []
     block = plan.get("bracket")
     if not isinstance(block, dict):
@@ -127,6 +134,14 @@ def _validate_bracket(plan):
             f"bracket floor {floor} exceeds target {target} ({BRACKETS[target]['name']}) — "
             f"the deck is out of tier"
         )
+
+    if bracket_report is not None and floor is not None:
+        measured = bracket_report.get("floor")
+        if measured is not None and measured != floor:
+            errors.append(
+                f"bracket.computed_floor is {floor} but bracket_report.json measured "
+                f"{measured} — re-run `manamap pilot bracket-check`"
+            )
     return errors
 
 
@@ -275,7 +290,12 @@ def main(args):
         rules = {}
     strategy_sections = _load_strategy_sections()
 
-    errors = validate(plan, cards, rules, strategy_sections)
+    # Best-effort: absent bracket_report.json only means the cross-check is
+    # skipped, not that the plan is wrong.
+    bracket_path = deck_dir(args.slug) / "bracket_report.json"
+    bracket_report = json.loads(bracket_path.read_text()) if bracket_path.exists() else None
+
+    errors = validate(plan, cards, rules, strategy_sections, bracket_report)
     if errors:
         print(f"FAIL {path.name} ({len(errors)} error(s)):")
         for error in errors:

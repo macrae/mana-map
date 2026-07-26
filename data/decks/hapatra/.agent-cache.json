@@ -1,0 +1,79 @@
+{
+  "cache_version": 1,
+  "routines": {
+    "candidate-pool": {
+      "agent": "deck-analyst",
+      "agent_prompt_sha256": "d16589d9e5f95849f1e7413e4c6e1bcfbb0c29affb6c9ee31fbcc17556eb2906",
+      "artifact": "data/decks/hapatra/candidate_pool.json",
+      "artifact_sha256": "3c168d5d91d87a0c5f598f9fa0688d41f540d492c99298664d1ac27221224ae7",
+      "extra": {},
+      "fingerprint": "906001c75e28bb6e4e396efa053d3439ed08ad982641894c4dd65b159dd130dd",
+      "inputs": [
+        {
+          "path": "data/card_roles.json",
+          "sha256": "ac90542601a5b03aa318cf157f4fd9debb0b47a963455433af452be259d08cb6"
+        },
+        {
+          "path": "data/combo_details.json",
+          "sha256": "2164926ed9f3b34d05507e9609a8a07132a7fcfcbd82a79a76a7aabb58914044"
+        },
+        {
+          "path": "data/decks/hapatra/brief.json",
+          "sha256": "306208e6226fd51c7fd2b945b85c864fc43a0eab47dc6299bea19a399f1635d5"
+        },
+        {
+          "path": "data/obsolescence_index.json",
+          "sha256": "94d9662cb54ef5ed9f2ca9ce31f3a8427f5be8f584032a3efd66b16c81aedf2b"
+        },
+        {
+          "path": "data/synergy_graph.json",
+          "sha256": "f09551fd9024addb575d417e3acdbef5abeba046c6753ef07976339688e854df"
+        }
+      ]
+    },
+    "deck-build": {
+      "agent": "deck-architect+deck-critic",
+      "agent_prompt_sha256": "d9194a506ca8d55d81e67d05bdcf1229ade8b08916b50ad3c285348dfc7a0511",
+      "artifact": "data/decks/hapatra/build_plan.json",
+      "artifact_keys": [
+        "archetype",
+        "critic",
+        "engines",
+        "gameplan",
+        "gaps",
+        "keep",
+        "role_budget",
+        "role_budget_citations",
+        "swaps"
+      ],
+      "artifact_sha256": "87a9ba924c2abb3dedc6b00726a23209626ee494768fc82add511f3a05f3cf51",
+      "extra": {
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "90290ef0f1347697c62eef0619e5500599429046705c8ae622766b0dd41569bc",
+      "inputs": [
+        {
+          "path": "data/card_roles.json",
+          "sha256": "ac90542601a5b03aa318cf157f4fd9debb0b47a963455433af452be259d08cb6"
+        },
+        {
+          "path": "data/combo_details.json",
+          "sha256": "2164926ed9f3b34d05507e9609a8a07132a7fcfcbd82a79a76a7aabb58914044"
+        },
+        {
+          "path": "data/decks/hapatra/brief.json",
+          "sha256": "306208e6226fd51c7fd2b945b85c864fc43a0eab47dc6299bea19a399f1635d5"
+        },
+        {
+          "path": "data/decks/hapatra/candidate_pool.json",
+          "sha256": "f61816dbe33705a93b1f69af92ddff31f836d6a9c185e29fe4e7c8482157e67b"
+        },
+        {
+          "path": "data/synergy_graph.json",
+          "sha256": "f09551fd9024addb575d417e3acdbef5abeba046c6753ef07976339688e854df"
+        }
+      ]
+    }
+  },
+  "slug": "hapatra"
+}

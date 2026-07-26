@@ -414,3 +414,68 @@ def test_build_routines_require_a_brief():
     """A deck with no brief cannot be built — that must be exit 2, not a MISS."""
     with pytest.raises(ac.MissingInput, match="brief.json"):
         ac.status("goblin-storm", "candidate-pool")
+
+
+# ── the all-routines scan must survive routines that don't apply ──
+
+
+class _Args:
+    def __init__(self, slug, routine=None, as_json=False, force=False):
+        self.slug = slug
+        self.pilot_command = "cache-status"
+        self.routine = routine
+        self.as_json = as_json
+        self.force = force
+
+
+def _run(args):
+    """Run main(args), returning (exit_code, stdout)."""
+    import contextlib
+    import io
+    buf = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(buf):
+            ac.main(args)
+    except SystemExit as e:
+        return (e.code if isinstance(e.code, int) else 1), buf.getvalue()
+    return 0, buf.getvalue()
+
+
+@requires_deck
+def test_scan_reports_every_applicable_routine_despite_an_inapplicable_one():
+    """A hand-built deck has no brief.json and never will.
+
+    Before this, one inapplicable routine aborted the whole scan with exit 2,
+    which broke a command that had worked for months the moment the build
+    routines were registered.
+    """
+    code, out = _run(_Args("goblin-storm"))
+    assert code in (0, 1), f"scan should not exit 2, got {code}"
+    assert "N/A" in out and "candidate-pool" in out
+    # ...and the routines that DO apply are still reported
+    assert "writer-prose" in out
+    assert "stack:001" in out
+
+
+@requires_deck
+def test_scan_exit_code_ignores_inapplicable_routines():
+    """N/A is neither a hit nor a miss — it must not force a spawn signal."""
+    code, out = _run(_Args("edgar-vampires"))
+    assert code == 0
+    assert "0 of 0 applicable routines" in out
+
+
+@requires_deck
+def test_explicit_routine_with_a_missing_input_still_exits_2():
+    """Asked directly about a routine, a missing input is still 'stop, fix it'."""
+    code, _ = _run(_Args("goblin-storm", routine="candidate-pool"))
+    assert code == 2
+
+
+@requires_deck
+def test_scan_json_separates_applicable_from_not():
+    code, out = _run(_Args("goblin-storm", as_json=True))
+    doc = json.loads(out)
+    assert {"slug", "any_miss", "routines", "not_applicable"} <= set(doc)
+    assert any(r["routine"] == "candidate-pool" for r in doc["not_applicable"])
+    assert all("brief.json" in r["reason"] for r in doc["not_applicable"])
