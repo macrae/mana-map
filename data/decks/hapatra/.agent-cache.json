@@ -31,6 +31,35 @@
         }
       ]
     },
+    "coach-prose": {
+      "agent": "pilot-coach",
+      "agent_prompt_sha256": "54bbbe64b46eae8f9775966119ee253af1a46c9c695d3534bbb901f313e4ffbf",
+      "artifact": "data/decks/hapatra/manual_prose.json",
+      "artifact_keys": [
+        "matchups",
+        "threat_assessment"
+      ],
+      "artifact_sha256": "688909acb1d88d0c682e5016664c5ca2815f2834ca2c7c593337fc9658ab2fc0",
+      "extra": {
+        "cards_semantic": "81dedc4cf566fbac7bafa537418d39b96f168c66fe9789c148e1c48f50ee0ac8",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "c286f2edb0216de7e60723e70b456a8a134ad2a03b16ce3a219737e4a849f4be",
+      "inputs": [
+        {
+          "path": "data/decks/hapatra/goldfish_metrics.json",
+          "sha256": "95ac2e1cf14f467a8512eb2eacc489b2ed5997a65a91c74c6ef20c8f4c8d3447"
+        },
+        {
+          "path": "data/decks/hapatra/stacks/001-mikaeus-undying-counter-annihilation.json",
+          "sha256": "9684b09860194f71e02fedaaa263415545ddaaff9c9ee1915881adc358afb366"
+        },
+        {
+          "path": "data/decks/hapatra/strategic_frame.json",
+          "sha256": "f401740460c25d8d48352da3c15db4b87764580d434f07e544c7d9d9d52c5ed5"
+        }
+      ]
+    },
     "deck-build": {
       "agent": "deck-architect+deck-critic",
       "agent_prompt_sha256": "d9194a506ca8d55d81e67d05bdcf1229ade8b08916b50ad3c285348dfc7a0511",
@@ -78,7 +107,7 @@
       "agent": "stack-resolver+rules-checker",
       "agent_prompt_sha256": "6caa44a430ff1450238c3afb3dc9bea967a918a808d0e91f3558539b1bd6b78e",
       "artifact": "data/decks/hapatra/stacks/001-mikaeus-undying-counter-annihilation.json",
-      "artifact_sha256": "0f3ee8e2bfa99dd3a0bdc52a62680170edf4d82cd5e439e6b0341eed2eb15fc3",
+      "artifact_sha256": "12c716b365ef65edd0a5b4fc19e8279312f1c1b4f42b9873e8ccc87b3782ec40",
       "extra": {
         "cards_semantic": "81dedc4cf566fbac7bafa537418d39b96f168c66fe9789c148e1c48f50ee0ac8",
         "rules_version": "June 19, 2026"
@@ -90,8 +119,29 @@
           "sha256": "96dbf97726888136bf6c36338bb8b106f78bb811250c5b8410b8f69d397c256b"
         }
       ],
-      "iterations": 3,
-      "verdict": "fail"
+      "iterations": 4,
+      "verdict": "pass"
+    },
+    "strategic-frame": {
+      "agent": "strategy-researcher",
+      "agent_prompt_sha256": "ba54c33a6d10f04f62f28285c181cdc02074a2713cdb5c37e98fe8be9c69d2cd",
+      "artifact": "data/decks/hapatra/strategic_frame.json",
+      "artifact_sha256": "3a5af570908bd7b41f046582b6d1f81636864a0b02356e92dd86807a23a76307",
+      "extra": {
+        "cards_semantic": "81dedc4cf566fbac7bafa537418d39b96f168c66fe9789c148e1c48f50ee0ac8",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "011586f3ed7dee8240cb1cb4feab5fc1c96dae2a33fa52cd5a72477b3fb1acef",
+      "inputs": [
+        {
+          "path": "data/decks/hapatra/goldfish_metrics.json",
+          "sha256": "95ac2e1cf14f467a8512eb2eacc489b2ed5997a65a91c74c6ef20c8f4c8d3447"
+        },
+        {
+          "path": "data/decks/hapatra/stacks/001-mikaeus-undying-counter-annihilation.json",
+          "sha256": "9684b09860194f71e02fedaaa263415545ddaaff9c9ee1915881adc358afb366"
+        }
+      ]
     }
   },
   "slug": "hapatra"

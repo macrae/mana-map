@@ -424,9 +424,30 @@
     }
   },
   "checker": {
-    "verdict": "fail",
-    "iterations": 3,
+    "verdict": "pass",
+    "iterations": 4,
     "findings": [
+      {
+        "step": null,
+        "rule": null,
+        "status": "supported",
+        "note": "Clean on the fourth pass. Every substantive conclusion independently re-derived: the nine-step haste cycle (4 green with Greaves, 3 with Boots), the zero-mana no-haste steady state of four placements and one death, the eight-outlet census re-derived from every 'sacrific' card in cards.json, the 608.2b single-target no-resolution argument, the A/B Yawgmoth loop and its library bound, the 704.8 same-check trap, the token analysis, and the layer-7c Ballista reasoning."
+      },
+      {
+        "step": 14,
+        "rule": "307.5",
+        "status": "supported",
+        "note": "The timing chain is now complete and never routes through a spell-casting rule: 702.6a supplies the restriction, 602.5d bridges it to activated abilities, 307.5 states what it requires. Replaced the spell-only 117.1a."
+      },
+      {
+        "step": 12,
+        "rule": null,
+        "status": "supported",
+        "note": "Outlet count reads eight in all three places and matches the verified census."
+      }
+    ],
+    "iteration_bound_override": "RESOLVE_MAX_ITERATIONS = 3 was reached with verdict fail, then deliberately overridden for a fourth pass at the operator's direction. Justification: the checker stated the rules analysis had converged and independently re-derived and confirmed every substantive conclusion, failing the line only on a stale outlet count that the document's own step 10 already corrects and a timing claim citing a rule about casting spells rather than activating abilities. Both are one-line edits that change no conclusion. Recorded here so the override is visible in the artifact rather than implicit in the iteration count.",
+    "prior_iteration_findings": [
       {
         "step": 12,
         "rule": null,
@@ -458,7 +479,6 @@
         "note": "NIT: the loop is described as needing Mikaeus + Yawgmoth + two creatures (four cards) and then labelled 'a strong three-card engine'. The three-card form works only via Hapatra's Snakes filling the second slot — correct, but never tied to the stated count."
       }
     ],
-    "checker_note": "The rules analysis converged and every substantive conclusion is believed correct — the nine-step haste cycle, the eight-outlet census, the 608.2b targeting argument and both loop verdicts were independently re-derived and confirmed. The verdict is fail on two mechanical defects only: a stale count the document's own body refutes, and a timing claim resting on a rule about casting spells. Neither changes a conclusion. RESOLVE_MAX_ITERATIONS = 3 was reached.",
-    "iteration_bound_override": "RESOLVE_MAX_ITERATIONS = 3 was reached with verdict fail, then deliberately overridden for a fourth pass at the operator's direction. Justification: the checker stated the rules analysis had converged and independently re-derived and confirmed every substantive conclusion, failing the line only on a stale outlet count that the document's own step 10 already corrects and a timing claim citing a rule about casting spells rather than activating abilities. Both are one-line edits that change no conclusion. Recorded here so the override is visible in the artifact rather than implicit in the iteration count."
+    "checker_note": "Verified at the commit level rather than on the summary: the word-diff confirms the fourth pass changed exactly the five specified items and nothing in the substantive analysis moved. The checker also confirmed it is quoted accurately in the override justification."
   }
 }
