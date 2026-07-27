@@ -109,6 +109,10 @@ def render_index(entries):
     </div>
   </a>""")
     body = "".join(issues) or '<p class="dek">No issues on the rack yet.</p>'
+    # The rack's social preview: the current lead issue's cover art (entries
+    # arrive volume-sorted, so this is Vol. 001's commander crop).
+    lead_art = next((e["image"] for e in entries if e.get("image")), "")
+    og_image_tag = f'<meta property="og:image" content="{esc(lead_art)}">' if lead_art else ""
     return f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -117,6 +121,7 @@ def render_index(entries):
 <meta property="og:title" content="{esc(SERIES_SLUG)} — {esc(MASTHEAD)}">
 <meta property="og:description" content="Commander deck magazines with a three-tier evidence contract.">
 <meta property="og:type" content="website">
+{og_image_tag}
 {FONT_LINK}
 {stylesheet_link()}
 <style>{EXTRA_CSS}</style></head>
