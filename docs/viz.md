@@ -32,9 +32,12 @@ All data URLs are centralized in the `DATA` map at the top of `mana-map.js` (bui
 
 ## window.MM API surface
 
-Getters: `allData`, `currentMode`, `currentMap`, `activeSupertypes`, `selectedCard`, `selectedCards`, `showContours`, `showRegionLabels`, `obsolescence`.
-Helpers: `escHtml`, `buildHoverText(Minimal)`, `renderManaSymbols`, `showDetailPanel`, `closeDetail`, `addToSelection`, `removeFromSelection`, `clearSelection`, `bringToTop`, `selectByName`, `findSimilar`, `findSynergies`, `render`, `setStatus`, `setMode`, `toggleContours`, `toggleRegionLabels`.
-Constants: `ALL_FORMATS`, `SUPERTYPES`, `MAP_CONFIGS`, `DATA`, `EMBED_DIM`.
+Every member has a live caller (deck-builder.js, generated onclick handlers, or index.html) — exports without callers were trimmed 2026-07; don't re-add one without a consumer.
+
+Getters: `allData`, `currentMap`, `obsolescence`.
+Helpers: `escHtml`, `buildHoverTextMinimal`, `renderManaSymbols`, `closeDetail`, `removeFromSelection`, `bringToTop`, `selectByName`, `findSimilar`, `findSynergies`, `render`, `setStatus`, `setMode`.
+Constants: `MAP_CONFIGS`, `DATA`, `EMBED_DIM`.
+Async data loaders: `getEmbeddings()`, `getSynergyGraph()` — the deck builder awaits these instead of downloading its own copies of the two largest payloads (17.5 MB + 27.8 MB); both resolve to the shared cached instance.
 
 ## Explore mode highlights
 

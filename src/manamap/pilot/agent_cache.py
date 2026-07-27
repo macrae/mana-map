@@ -67,7 +67,7 @@ def file_sha256(path):
 def cached_file_sha256(path):
     """file_sha256 memoized on (path, mtime_ns, size) for this process.
 
-    The three global graphs are ~56MB combined and feed several routines; a
+    The global graphs are ~38MB combined and feed several routines; a
     whole-deck status would otherwise hash them once per routine.
     """
     if not path.exists():

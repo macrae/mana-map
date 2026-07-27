@@ -133,9 +133,11 @@ enough to change the issue's angle, use `--force`.
 agent produces from identical artifacts, so it invalidates that agent's routines by
 design.
 
-**Full content hashes, never mtime.** The manual routines hash ~38MB of global graphs;
-the build routines hash ~32MB (`combo_details.json` 25.7MB + `card_roles.json` 1.9MB +
-`synergy_graph.json`). Using size+mtime would be actively harmful: `regen-analysis`
+**Full content hashes, never mtime.** The manual routines hash ~38MB of global graphs
+(`combo_graph.json` 4.5MB + `synergy_graph.json` 27.8MB + `obsolescence_index.json`
+5.9MB); the build routines hash ~34MB (`combo_graph.json` 4.5MB as the documented
+proxy for `combo_details.json` + `card_roles.json` 1.9MB + `synergy_graph.json`
+27.8MB). Using size+mtime would be actively harmful: `regen-analysis`
 rewrites them byte-identical on every run, which would false-invalidate ~200k tokens of
 agent work. `cached_file_sha256` memoizes on `(path, mtime_ns, size)` so a single
 `cache-status` scan hashes each file once.

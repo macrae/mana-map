@@ -27,7 +27,7 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #   design.py      tokens, stylesheet, component library
                       #   build_manual.py / build_index.py  issue + newsstand
                       #   validate_issue.py / agent_cache.py / artist_credits.py
-tests/                # pytest suite (776 tests: 323 card-pipeline + 453 pilot),
+tests/                # pytest suite (802 tests: 323 card-pipeline + 479 pilot),
                       # conftest markers: requires_data/rules/deck/strategy/roles
 data/                 # artifacts; mostly gitignored, viz-served files tracked
 viz/                  # static frontend (Plotly CDN, two IIFE scripts, window.MM / window.DeckBuilder)
@@ -53,9 +53,9 @@ manamap run --from STEP       # resume from a step
 manamap <step>                # single step; see `manamap --help` for all 16 subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # fast analysis-only refresh (no retrain)
-manamap pilot <cmd>           # build + publish subsystem (23 subcommands) — see docs/pilot.md
+manamap pilot <cmd>           # build + publish subsystem (26 subcommands) — see docs/pilot.md
 
-.venv/bin/python -m pytest    # 776 tests; data-dependent ones skip if artifacts missing
+.venv/bin/python -m pytest    # 802 tests; data-dependent ones skip if artifacts missing
 
 python -m http.server 8000    # serve viz FROM REPO ROOT
 # http://localhost:8000/viz/index.html

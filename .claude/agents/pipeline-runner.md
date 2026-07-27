@@ -17,7 +17,7 @@ You operate the Mana Map data pipeline. Your job is execution and verification, 
 
 - NEVER edit files under `src/manamap/` — report needed code changes back instead
 - NEVER run `train`/`train-ability` unless the task explicitly says to retrain (checkpoints are gitignored; a retrain irreversibly replaces them)
-- Respect index alignment: if `download` or `extract` ran, the card count may have changed — every downstream step through `cluster-regions` must then run too. Never leave `data/` partially regenerated; if interrupted, say so loudly.
+- Respect index alignment: if `download` or `extract` ran, the card count may have changed — every downstream step through `card-roles` (step 13; a build-routine cache input) must then run too. Never leave `data/` partially regenerated; if interrupted, say so loudly.
 - Long steps (preprocess ~10 min, training, reduce) → background them and poll artifacts
 - Steps 1 and 7 need internet; step 7 (`download-combos`) takes ~2.5 min
 

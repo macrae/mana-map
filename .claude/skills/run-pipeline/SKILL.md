@@ -13,12 +13,12 @@ All commands use the project venv. Full step reference: `docs/pipeline.md`.
 .venv/bin/manamap <step>             # one step; `manamap --help` lists all 16
 ```
 
-Steps in order: `download`, `extract`, `preprocess`, `train`, `train-ability`, `embed`, `reduce`, `download-combos`, `process-combos`, `export`, `synergy`, `power-creep`, `cluster-regions`.
+Steps in order: `download`, `extract`, `preprocess`, `train`, `train-ability`, `embed`, `reduce`, `download-combos`, `process-combos`, `export`, `synergy`, `power-creep`, `cluster-regions`, `card-roles`.
 
 ## Rules
 
 - **Never run `train`/`train-ability` casually** — retraining replaces `model.pt`/`model_ability.pt` (gitignored, unrecoverable) and every downstream artifact. Confirm with the user first unless they explicitly asked for a retrain.
-- **Index alignment**: if `download`/`extract` ran (card count may change), everything downstream is stale — you must continue through step 12. Never leave `data/` partially regenerated.
+- **Index alignment**: if `download`/`extract` ran (card count may change), everything downstream is stale — you must continue through step 13 (`card-roles`; its output is a build-routine cache input). Never leave `data/` partially regenerated.
 - Long steps (preprocess, train×2, reduce) → run in background and verify artifacts by timestamp/shape afterward.
 - Expected artifact per step is listed in `docs/pipeline.md`; spot-check with `ls -la data/`.
 

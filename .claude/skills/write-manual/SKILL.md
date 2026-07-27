@@ -16,6 +16,8 @@ Pipeline for `data/decks/<slug>/` → `manuals/<slug>.html`. Evidence tiers: ✓
      edit wins.
    - **exit 1** (`MISS`) → spawn, write the artifact, validate it, and only then
      `cache-record`.
+   Canonical exit-code semantics: the table in `docs/agent-cost.md` — skills restate
+   only what they need.
    - **exit 2** → a required input is missing. Stop and report; do not spawn.
 
    The order is always **check → (miss) spawn → write → validate → record**. Never

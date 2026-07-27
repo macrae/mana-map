@@ -34,6 +34,7 @@ manamap pilot bracket-check <slug> [--target N] [--json]  # bracket floor → br
 manamap pilot deck-facts <slug> [--out F]  # the deterministic brief agents read first
 manamap pilot sideboard-facts <slug> [--json]  # per-sideboard-card roles, legality, bracket-if-added
 manamap pilot validate-sideboard <slug>  # swap form + recomputed bracket deltas
+manamap pilot validate-strategic-frame <slug>  # frame form + candidate-line flags
 manamap pilot fetch-deck <slug>         # decklist.txt → cards.json (Scryfall)
 manamap pilot validate-deck <slug>      # 100/commander/singleton/color identity
 manamap pilot validate-stack <slug> [--stack NNN]   # citation contract (stacks + decisions)
@@ -63,7 +64,7 @@ data/strategy/                 strategy.md + CHANGELOG.md tracked;
 data/decks/<slug>/             all tracked:
                                brief.json            authored (build side only)
                                candidate_pool.json   deck-analyst
-                               build_plan.json       deck-architect ⇄ deck-critic
+                               build_plan.json       build-deck (deterministic) + deck-architect ⇄ deck-critic merge
                                bracket_report.json   bracket-check (◆)
                                decklist.txt          authored, OR build-deck --write-decklist
                                cards.json            fetch-deck
@@ -261,11 +262,11 @@ histogram — if those two ever diverge, one of them is wrong.
 
 ## Tests
 
-`tests/test_pilot_*.py` — 372 tests across 15 files.
+`tests/test_pilot_*.py` — 479 tests across 19 files.
 
 **Build side:** deck builder pool/scoring/slot-filling/emergent-combo pass (`test_pilot_build_deck`, 42), hypergeometric mana math and land selection (`test_pilot_manabase`, 36), bracket floor + drivers + the goblin-storm golden checks (`test_pilot_bracket`, 35), build-plan form gate (`test_pilot_validate_build`, 37).
 
-**Publish side:** agent cache incl. N/A scan semantics (`test_pilot_agent_cache`, 42), renderer determinism/escaping/TOC/sideboard (`test_pilot_build_manual`, 30), issue form gate (`test_pilot_validate_issue`, 25), artist analysis (`test_pilot_artist_credits`, 24), mocked Scryfall ingestion (`test_pilot_fetch_deck`, 19), citation contract incl. strategy-citation dispatch (`test_pilot_validate_stack`, 18), strategy form validator + changelog (`test_pilot_validate_strategy`, 18), goldfish determinism and the two opening-hand distributions (`test_pilot_goldfish`, 16), CR chunker edge cases (`test_pilot_rules_db`, 12), strategy chunker + real-DB checks (`test_pilot_strategy_db`, 9), rules queries (`test_pilot_query_rules`, 5).
+**Publish side:** agent cache incl. N/A scan semantics and memoized loaders (`test_pilot_agent_cache`, 57), renderer determinism/escaping/TOC/sideboard (`test_pilot_build_manual`, 42), issue form gate incl. the decklist_sha256 stamp (`test_pilot_validate_issue`, 29), artist analysis (`test_pilot_artist_credits`, 24), mocked Scryfall ingestion (`test_pilot_fetch_deck`, 24), sideboard analysis form (`test_pilot_validate_sideboard`, 22), citation contract incl. strategy-citation dispatch (`test_pilot_validate_stack`, 18), strategy form validator + changelog (`test_pilot_validate_strategy`, 18), goldfish determinism and the two opening-hand distributions (`test_pilot_goldfish`, 16), strategic-frame form (`test_pilot_validate_strategic_frame`, 15), deck facts (`test_pilot_deck_facts`, 14), sideboard facts (`test_pilot_sideboard_facts`, 14), CR chunker edge cases (`test_pilot_rules_db`, 12), strategy chunker + real-DB checks (`test_pilot_strategy_db`, 9), rules queries (`test_pilot_query_rules`, 5).
 
 Data-gated tests use `requires_rules` / `requires_deck` / `requires_strategy` / `requires_roles` markers from `tests/conftest.py`.
 
