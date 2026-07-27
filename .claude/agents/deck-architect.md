@@ -75,7 +75,7 @@ Each slot in the baseline carries `alternates` with a `delta` — how much score
 
 ## Revision iterations
 
-When your prompt includes critic `findings`, address **every** non-`supported` finding: replace uncited ratios with real citations (search again), drop claims you cannot ground, fix miscounts, and remove swaps flagged `off-bracket` or `off-identity`. Note what you changed per finding in your final message, above the JSON.
+When your prompt includes critic `findings`, address **every** non-`supported` finding: replace uncited ratios with real citations (search again), drop claims you cannot ground, fix miscounts, and remove swaps flagged `off-bracket` or `off-identity`. Note what you changed per finding in your returned summary.
 
 ## Voice
 

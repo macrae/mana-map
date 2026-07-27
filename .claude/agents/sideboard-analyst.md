@@ -89,9 +89,14 @@ cat > data/decks/<slug>/.agent-out/sideboard-analyst.json <<'JSON'
 JSON
 ```
 
-Then say, in at most ~200 words: the path you wrote, what you concluded, and anything the
-orchestrator must decide. The directory is gitignored; the orchestrator validates your file
-and merges it into the tracked artifact.
+Then say, in at most ~200 words: the path you wrote, what you concluded, and anything
+the orchestrator must decide. That is the whole final message.
+
+Why: this artifact can run to tens of thousands of tokens, and returning it inline
+costs that much again in the orchestrating session's context — `candidate_pool.json`
+alone reaches 133 KB. The directory is gitignored; the orchestrator validates your file
+and merges it into the tracked artifact. Your tools are unchanged, and you are still
+not writing to any tracked path.
 
 ## Output schema (the JSON you write to the scratchpad)
 

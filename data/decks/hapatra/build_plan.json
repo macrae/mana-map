@@ -28,9 +28,151 @@
     "G"
   ],
   "commander": "Hapatra, Vizier of Poisons",
+  "critic": {
+    "findings": [
+      {
+        "claim": "mechanical gate: validate-build (iteration 3 merge)",
+        "note": "OK — 100 cards, bracket 4 (Optimized), floor 4.",
+        "rule": null,
+        "status": "supported"
+      },
+      {
+        "card": "Walking Ballista",
+        "claim": "engine: Mikaeus + Walking Ballista (rewritten)",
+        "note": "Iteration-2 finding resolved: the self-kill parenthetical is gone; the engine now states the external free outlet as mandatory with 001 step 15's exact reasoning (counterless Ballista is a 1/1 under Mikaeus, 704.5f never fires) and limits Ballista's damage to conversion per step 16. No new claims beyond the artifact.",
+        "rule": null,
+        "status": "supported"
+      },
+      {
+        "card": "Yawgmoth, Thran Physician",
+        "claim": "engine: Mikaeus + Yawgmoth + Hapatra (rewritten)",
+        "note": "Iteration-2 finding resolved: pieces now list the three-card assembly with Hapatra's Snakes as the mandatory second body, tracking 001 step 12 verbatim ('a second body is mandatory... FOUR-CARD assembly... collapsing to three cards plus the commander's Snakes'); the unestablished 'lethal through the drain layer' arithmetic is deleted and replaced with 001's own bound ('ends when the library does'). No new over-claim.",
+        "rule": null,
+        "status": "supported"
+      },
+      {
+        "claim": "gameplan echo of the Yawgmoth line",
+        "note": "'Convert the deaths into lethal' is now 'convert the deaths into drain', and the Yawgmoth option carries its 'library-bounded' qualifier inline. The 'tutor to a kill' umbrella is supportable through the Druid loop (001 step 16: 'repeated until each opponent is dead') and the genuinely unbounded Ballista line (step 15).",
+        "rule": null,
+        "status": "supported"
+      },
+      {
+        "claim": "engine: Mikaeus + Devoted Druid verified; six free-outlet lines refuted; four lines 'needs a stack scenario'",
+        "note": "Unchanged from iteration 2 and re-confirmed against 001: the verified Druid entry, the refuted Viscera Seer/Carrion Feeder/Yahenni/Ashnod's/Phyrexian/Blasting Station entry (704.8, one undying return each), and the correctly-open Blowfly, Obelisk Spider lock, Scurry Oak, and Skullclamp entries. Nothing refuted survives as fact or open candidate.",
+        "rule": null,
+        "status": "supported"
+      },
+      {
+        "claim": "all other sections unchanged from the audited iteration-2 artifact",
+        "note": "Re-verified: swaps [] (correct for the repair run); role budget recounts to 63 spells + 36 lands; manabase B 34/40 G 14/15, targets 22/22, sources 29/29, 96.2%, 0 taplands (matches cards.json excluding commander); bracket block floor 4 = target 4 with drivers matching a fresh bracket-check; all 11 citations re-verified verbatim against their full sections; keep (6) and gaps (7) textually identical to iteration 2, including the 001 cuts-both-ways summary, the priority scenario queue, and the resolved manabase note.",
+        "rule": null,
+        "status": "supported"
+      }
+    ],
+    "verdict": "pass"
+  },
   "cut_for_bracket": [],
-  "gameplan": "Deploy Hapatra on turn 2 off a dork or a mox, then tutor to Blowfly Infestation or to Mikaeus plus any free sacrifice outlet, and convert the loop into lethal through Blood Artist, Zulaport Cutthroat, Bastion of Remembrance or Blasting Station. Without the combo it grinds: Skullclamp and Yawgmoth turn 1/1 Snakes into cards, Necroskitter and Crumbling Ashes turn shrunken opposing creatures into your creatures.",
+  "engines": [
+    {
+      "how": "A true two-card infinite of deaths, -1/-1 counters, Snakes and drain — but NOT mana: the returned Druid is a new object, so 302.6 blocks its tap ability and it produces three green on the first pass and zero thereafter. Lightning Greaves or Swiftfoot Boots restores the mana as a three-card, main-phase-only line.",
+      "pieces": [
+        "Mikaeus, the Unhallowed",
+        "Devoted Druid"
+      ],
+      "status": "verified — stacks/001-mikaeus-undying-counter-annihilation.json, checker.verdict pass"
+    },
+    {
+      "how": "Real, but three cards: Ballista removes its own counters to reset undying, and an external free sacrifice outlet is required to drive the loop — 001 rules the self-kill pattern off, since a counterless Ballista under Mikaeus is a 1/1 and 704.5f never fires. Once running, the line converts to damage. 001's ruling: 'Mikaeus + Walking Ballista is real but three cards.'",
+      "pieces": [
+        "Mikaeus, the Unhallowed",
+        "Walking Ballista"
+      ],
+      "status": "verified — stacks/001-mikaeus-undying-counter-annihilation.json, checker.verdict pass"
+    },
+    {
+      "how": "Yawgmoth is the one mana-free outlet that also supplies the repeatable -1/-1 counter undying needs, but 001 rules a second body mandatory for his activation, making it a 3-4 card assembly that collapses to three because Hapatra's Snakes supply the body. The loop is real and bounded by Yawgmoth's mandatory draw: it ends when the library does.",
+      "pieces": [
+        "Mikaeus, the Unhallowed",
+        "Yawgmoth, Thran Physician",
+        "Hapatra, Vizier of Poisons"
+      ],
+      "status": "verified — stacks/001-mikaeus-undying-counter-annihilation.json, checker.verdict pass"
+    },
+    {
+      "how": "The combo DB records Mikaeus plus each free outlet — Viscera Seer, Carrion Feeder, Yahenni, Ashnod's Altar, Phyrexian Altar, Blasting Station — as a two-card infinite. Stack 001 refuted all six: each yields exactly one undying return, because the creature comes back with a +1/+1 counter and 704.8 kills the undying trigger when counter annihilation and death fall in the same SBA check. Hapatra cannot supply the reset; her -1/-1 ability is a combat-damage trigger.",
+      "pieces": [
+        "Mikaeus, the Unhallowed",
+        "Viscera Seer"
+      ],
+      "status": "refuted — stacks/001-mikaeus-undying-counter-annihilation.json (one undying return each, not a loop)"
+    },
+    {
+      "how": "Any 1-toughness creature dying with a -1/-1 counter has Blowfly move a counter onto the next body; each placement is a Snake from Hapatra, and each Snake death continues the chain. Nest of Scarabs and Flourishing Defenses substitute for Hapatra as the token half. 001 explicitly left these entries open: the three Blowfly entries 'belong in their own scenario; nothing here confirms or refutes them.'",
+      "pieces": [
+        "Blowfly Infestation",
+        "Hapatra, Vizier of Poisons"
+      ],
+      "status": "needs a stack scenario"
+    },
+    {
+      "how": "Yawgmoth pays 1 life and sacrifices a Snake to put a -1/-1 counter and draw; Hapatra replaces the Snake, Obelisk Spider (or Blood Artist / Zulaport Cutthroat) drains per counter or death. The combo DB records the Spider line as producing a creature lock.",
+      "pieces": [
+        "Hapatra, Vizier of Poisons",
+        "Yawgmoth, Thran Physician",
+        "Obelisk Spider"
+      ],
+      "status": "needs a stack scenario"
+    },
+    {
+      "how": "Each Squirrel is a green creature entering, so Ivy Lane Denizen puts a +1/+1 counter on Scurry Oak, which makes another Squirrel. The bracket report names it as the deck's highest-bracket combo signal, but 001 deliberately declined to rest the floor on it because it comes from the same unverified source whose Mikaeus half failed six times over.",
+      "pieces": [
+        "Scurry Oak",
+        "Ivy Lane Denizen"
+      ],
+      "status": "needs a stack scenario"
+    },
+    {
+      "how": "The grind engine, not a combo: every Snake is a 1/1 that Skullclamp turns into two cards for one mana, with Bitterblossom supplying additional 1/1 bodies and Yawgmoth as the backup sac-for-cards line.",
+      "pieces": [
+        "Skullclamp",
+        "Hapatra, Vizier of Poisons"
+      ],
+      "status": "needs a stack scenario"
+    }
+  ],
+  "gameplan": "Deploy Hapatra on turn 2 off a dork or a mox, then tutor to a kill: one of the stack-001-verified Mikaeus lines — Devoted Druid, Walking Ballista plus a free sacrifice outlet, or the library-bounded Yawgmoth loop — or the still-unverified Blowfly Infestation chain, and convert the deaths into drain through Blood Artist, Zulaport Cutthroat, Bastion of Remembrance or Blasting Station. Without the combo it grinds: Skullclamp and Yawgmoth turn 1/1 Snakes into cards, Necroskitter and Crumbling Ashes turn shrunken opposing creatures into your creatures.",
+  "gameplan_citations": [
+    {
+      "quote": "two primary combos, \"a Plan A and Plan B\", never more than two *unconnected* ones",
+      "rule": "strategy:deckbuilding.threat-density"
+    },
+    {
+      "quote": "Layering reconciles them: overlap pieces, so five cards support four combos",
+      "rule": "strategy:deckbuilding.threat-density"
+    },
+    {
+      "quote": "A tutor is \"essentially an additional copy of any card in our deck\"",
+      "rule": "strategy:deckbuilding.redundancy-vs-tutors"
+    }
+  ],
+  "gaps": [
+    "SWAP HISTORY DROPPED: the surviving build_plan carried 56 swap records with empty why fields whose 'out' names do not appear anywhere in candidate_pool.json (only as slot alternates); with the pre-swap baseline erased by the tooling bug the history cannot be verified against any artifact, so swaps is [] — the 99 is final and unchanged.",
+    "Stack 001 is the only passed artifact and it cuts both ways: it verified three Mikaeus lines (Devoted Druid, Walking Ballista + outlet, the library-bounded Yawgmoth loop), refuted six of the eight Mikaeus two-card DB entries, and ruled the Hapatra-reset claim false as written — so the bracket report's '19 two-card infinites' figure is inflated per 001's own final state. The bracket floor still holds at 4 on the 11 Game Changers plus the three verified lines.",
+    "Priority scenarios still open, in order: the three Blowfly Infestation entries (001: 'belong in their own scenario; nothing here confirms or refutes them'), including whether the Blowfly + Hapatra chain terminates; Scurry Oak + Ivy Lane Denizen, since bracket_report cites it but 001 declined to rest the floor on it; and the 'Lock' claim on Hapatra + Yawgmoth + Obelisk Spider.",
+    "RESOLVED DURING CRITIQUE: the apparent deck-facts vs build_plan.manabase G-pip divergence (15/16 vs 14/15) is deck-facts including the commander's own pip in the G row while the plan block correctly excludes the commander; the manabase block is correct and needs no regeneration.",
+    "Bitterblossom and Svogthos, the Restless Tomb have no card_roles.json entry — the flex/token-engine and land-threat functions are real, the taxonomy just has no pattern for them.",
+    "The surviving plan had no gameplan_citations key at all; the three above are newly sourced and verified this run.",
+    "synergy_graph.json has only 6 intra-deck edges, so no synergy-based fit claim is supportable for this list (per deck-facts notes)."
+  ],
   "generated_by": "manamap pilot build-deck (deterministic; no agent involvement)",
+  "keep": [
+    "The full 8-tutor suite (Demonic Tutor, Vampiric Tutor, Imperial Seal, Grim Tutor, Diabolic Intent, Green Sun's Zenith, Worldly Tutor, Survival of the Fittest) — the top of the cited combo range, and the brief explicitly licenses Game Changers at bracket 4. Per 001, the tutor target that matters is a free repeatable -1/-1 source, not any particular altar.",
+    "11 ramp slots weighted toward fast mana (Sol Ring, Mana Vault, Grim Monolith, Chrome Mox, Mox Diamond, Lotus Petal, Dark Ritual) — the turn-2 Hapatra plan and a bracket whose floor is a turn-4 game length both want mana ahead of the curve.",
+    "Three cheap drain wincons (Blood Artist, Zulaport Cutthroat, Bastion of Remembrance) rather than one large finisher — the median-vs-ceiling structure the threat-density section prescribes, and each converts every loop in the deck.",
+    "The 36-land, zero-tapland manabase with 29/29 B/G sources against 22/22 targets and 96.2% on-curve probability in both colours.",
+    "The removal suite built from -1/-1 counter placement (Blowfly Infestation, Fume Spitter, Grim Affliction, Contagion Clasp, Serrated Arrows, Crumbling Ashes) — every removal spell is also a Hapatra trigger and a combo piece, the two-jobs-per-card principle the ratios section demands.",
+    "Lightning Greaves and Swiftfoot Boots in the protection slots earn a second job 001 documented: either one restores the mana half of Mikaeus + Devoted Druid as a three-card, main-phase-only line."
+  ],
   "land_counts": {
     "Abstergo Entertainment": 1,
     "Bayou": 1,
@@ -700,342 +842,5 @@
     }
   ],
   "slug": "hapatra",
-  "swaps": [
-    {
-      "in": "Sol Ring",
-      "out": "Crowded Crypt",
-      "role": "ramp",
-      "why": ""
-    },
-    {
-      "in": "Birds of Paradise",
-      "out": "Gilded Goose",
-      "role": "ramp",
-      "why": ""
-    },
-    {
-      "in": "Llanowar Elves",
-      "out": "Herd Heirloom",
-      "role": "ramp",
-      "why": ""
-    },
-    {
-      "in": "Elvish Mystic",
-      "out": "The Cabbage Merchant",
-      "role": "ramp",
-      "why": ""
-    },
-    {
-      "in": "Arcane Signet",
-      "out": "The Warring Triad",
-      "role": "ramp",
-      "why": ""
-    },
-    {
-      "in": "Mana Vault",
-      "out": "Solemn Simulacrum",
-      "role": "ramp",
-      "why": ""
-    },
-    {
-      "in": "Grim Monolith",
-      "out": "Esper Origins // Summon: Esper Maduin",
-      "role": "ramp",
-      "why": ""
-    },
-    {
-      "in": "Lotus Petal",
-      "out": "Jugan Defends the Temple // Remnant of the Rising Star",
-      "role": "ramp",
-      "why": ""
-    },
-    {
-      "in": "Dark Ritual",
-      "out": "Shambling Ghast",
-      "role": "ramp",
-      "why": ""
-    },
-    {
-      "in": "Chrome Mox",
-      "out": "Garruk's Uprising",
-      "role": "ramp",
-      "why": ""
-    },
-    {
-      "in": "Mox Diamond",
-      "out": "High-Society Hunter",
-      "role": "ramp",
-      "why": ""
-    },
-    {
-      "in": "Orcish Bowmasters",
-      "out": "Agent Venom",
-      "role": "draw",
-      "why": ""
-    },
-    {
-      "in": "Village Rites",
-      "out": "Erebos, Bleak-Hearted",
-      "role": "draw",
-      "why": ""
-    },
-    {
-      "in": "Morbid Opportunist",
-      "out": "Shadow, Mysterious Assassin",
-      "role": "draw",
-      "why": ""
-    },
-    {
-      "in": "Night's Whisper",
-      "out": "Vampire Gourmand",
-      "role": "draw",
-      "why": ""
-    },
-    {
-      "in": "Demonic Tutor",
-      "out": "Tribute to Horobi // Echo of Death's Wail",
-      "role": "tutor",
-      "why": ""
-    },
-    {
-      "in": "Vampiric Tutor",
-      "out": "The Meathook Massacre",
-      "role": "tutor",
-      "why": ""
-    },
-    {
-      "in": "Worldly Tutor",
-      "out": "Casal, Lurkwood Pathfinder // Casal, Pathbreaker Owlbear",
-      "role": "tutor",
-      "why": ""
-    },
-    {
-      "in": "Survival of the Fittest",
-      "out": "Scrapyard Recombiner",
-      "role": "tutor",
-      "why": ""
-    },
-    {
-      "in": "Imperial Seal",
-      "out": "Flesh Carver",
-      "role": "tutor",
-      "why": ""
-    },
-    {
-      "in": "Green Sun's Zenith",
-      "out": "Skyclave Shadowcat",
-      "role": "tutor",
-      "why": ""
-    },
-    {
-      "in": "Diabolic Intent",
-      "out": "Wave of Rats",
-      "role": "tutor",
-      "why": ""
-    },
-    {
-      "in": "Grim Tutor",
-      "out": "Weatherlight Compleated",
-      "role": "tutor",
-      "why": ""
-    },
-    {
-      "in": "Walking Ballista",
-      "out": "Aberrant",
-      "role": "removal",
-      "why": ""
-    },
-    {
-      "in": "Fume Spitter",
-      "out": "Criminal Enterprise",
-      "role": "removal",
-      "why": ""
-    },
-    {
-      "in": "Contagion Clasp",
-      "out": "Dusk Urchins",
-      "role": "removal",
-      "why": ""
-    },
-    {
-      "in": "Grim Affliction",
-      "out": "Garruk, Cursed Huntsman",
-      "role": "removal",
-      "why": ""
-    },
-    {
-      "in": "Serrated Arrows",
-      "out": "Oft-Nabbed Goat",
-      "role": "removal",
-      "why": ""
-    },
-    {
-      "in": "Crumbling Ashes",
-      "out": "Throne of the Grim Captain // The Grim Captain",
-      "role": "removal",
-      "why": ""
-    },
-    {
-      "in": "Black Sun's Zenith",
-      "out": "Necroplasm",
-      "role": "sweeper",
-      "why": ""
-    },
-    {
-      "in": "Toxic Deluge",
-      "out": "Season of Gathering",
-      "role": "sweeper",
-      "why": ""
-    },
-    {
-      "in": "Lightning Greaves",
-      "out": "Altar of the Wretched // Wretched Bonemass",
-      "role": "protection",
-      "why": ""
-    },
-    {
-      "in": "Swiftfoot Boots",
-      "out": "Eater of Virtue",
-      "role": "protection",
-      "why": ""
-    },
-    {
-      "in": "Heroic Intervention",
-      "out": "Urborg Scavengers",
-      "role": "protection",
-      "why": ""
-    },
-    {
-      "in": "The One Ring",
-      "out": "Forebear's Blade",
-      "role": "protection",
-      "why": ""
-    },
-    {
-      "in": "Phyrexian Reclamation",
-      "out": "Chronomancer",
-      "role": "recursion",
-      "why": ""
-    },
-    {
-      "in": "Eternal Witness",
-      "out": "Unshakable Tail",
-      "role": "recursion",
-      "why": ""
-    },
-    {
-      "in": "Blood Artist",
-      "out": "Callous Inspector",
-      "role": "wincon",
-      "why": ""
-    },
-    {
-      "in": "Zulaport Cutthroat",
-      "out": "Park Heights Maverick",
-      "role": "wincon",
-      "why": ""
-    },
-    {
-      "in": "Bastion of Remembrance",
-      "out": "Relic Vial",
-      "role": "wincon",
-      "why": ""
-    },
-    {
-      "in": "Mikaeus, the Unhallowed",
-      "out": "Jerren, Corrupted Bishop // Ormendahl, the Corrupter",
-      "role": "flex",
-      "why": ""
-    },
-    {
-      "in": "Nest of Scarabs",
-      "out": "Kraven the Hunter",
-      "role": "flex",
-      "why": ""
-    },
-    {
-      "in": "Flourishing Defenses",
-      "out": "Technodrome",
-      "role": "flex",
-      "why": ""
-    },
-    {
-      "in": "Obelisk Spider",
-      "out": "Taborax, Hope's Demise",
-      "role": "flex",
-      "why": ""
-    },
-    {
-      "in": "Necroskitter",
-      "out": "Ulvenwald Mysteries",
-      "role": "flex",
-      "why": ""
-    },
-    {
-      "in": "Ivy Lane Denizen",
-      "out": "Midnight Reaper",
-      "role": "flex",
-      "why": ""
-    },
-    {
-      "in": "Scurry Oak",
-      "out": "Mosswood Dreadknight // Dread Whispers",
-      "role": "flex",
-      "why": ""
-    },
-    {
-      "in": "Host of the Hereafter",
-      "out": "Super-Adaptoid",
-      "role": "flex",
-      "why": ""
-    },
-    {
-      "in": "Ashnod's Altar",
-      "out": "Voldaren Bloodcaster // Bloodbat Summoner",
-      "role": "flex",
-      "why": ""
-    },
-    {
-      "in": "Phyrexian Altar",
-      "out": "Mari, the Killing Quill",
-      "role": "flex",
-      "why": ""
-    },
-    {
-      "in": "Viscera Seer",
-      "out": "Eyetwitch",
-      "role": "flex",
-      "why": ""
-    },
-    {
-      "in": "Carrion Feeder",
-      "out": "Ring of Kalonia",
-      "role": "flex",
-      "why": ""
-    },
-    {
-      "in": "Blasting Station",
-      "out": "Buzzard-Wasp Colony",
-      "role": "flex",
-      "why": ""
-    },
-    {
-      "in": "Devoted Druid",
-      "out": "June, Bounty Hunter",
-      "role": "flex",
-      "why": ""
-    },
-    {
-      "in": "Bitterblossom",
-      "out": "Syr Ginger, the Meal Ender",
-      "role": "flex",
-      "why": ""
-    },
-    {
-      "in": "Pitiless Plunderer",
-      "out": "Chevill, Bane of Monsters",
-      "role": "flex",
-      "why": ""
-    }
-  ]
+  "swaps": []
 }

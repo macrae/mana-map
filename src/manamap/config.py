@@ -695,8 +695,11 @@ AGENT_ROUTINES = {
     "candidate-pool": {
         "agent": "deck-analyst",
         "artifact": "candidate_pool.json",
+        # COMBO_GRAPH_PATH as the invalidation proxy for combo_details — same
+        # reasoning as writer-prose above: process_combos writes both in one
+        # step, and the 4.5 MB graph hashes for a tenth of the 25.7 MB details.
         "inputs": ["deck:brief.json", "global:CARD_ROLES_PATH",
-                   "global:COMBO_DETAILS_PATH", "global:SYNERGY_GRAPH_PATH",
+                   "global:COMBO_GRAPH_PATH", "global:SYNERGY_GRAPH_PATH",
                    "global:OBSOLESCENCE_INDEX_PATH"],
     },
     "deck-build": {
@@ -705,8 +708,12 @@ AGENT_ROUTINES = {
         "artifact_keys": ["archetype", "gameplan", "role_budget",
                           "role_budget_citations", "swaps", "engines", "keep",
                           "gaps", "critic"],
+        # bracket_report.json is declared because validate-build cross-checks
+        # the plan's floor against it — re-running bracket-check must MISS this
+        # routine, not flip a recorded plan from valid to invalid in silence.
         "inputs": ["deck:brief.json", "deck:candidate_pool.json",
-                   "global:CARD_ROLES_PATH", "global:COMBO_DETAILS_PATH",
+                   "deck:bracket_report.json?",
+                   "global:CARD_ROLES_PATH", "global:COMBO_GRAPH_PATH",
                    "global:SYNERGY_GRAPH_PATH", "strategy:doc"],
     },
 }

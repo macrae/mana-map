@@ -89,7 +89,7 @@ never answer from memory alone:
 
 ### The strategic frame (deck assessment output)
 
-When asked for a deck's strategic frame, return this JSON as your final message
+When asked for a deck's strategic frame, write this JSON to the scratchpad
 (write it to the agent scratchpad per Returning your output; the orchestrator merges it into `data/decks/<slug>/strategic_frame.json`):
 
 ```json

@@ -89,10 +89,13 @@ COMPONENTS = {
 
 # Issue identity fields required in data/decks/<slug>/issue.json.
 # Authored, never generated — a generated date breaks byte-identical rebuilds
-# (STYLEv3 §4.2).
+# (STYLEv3 §4.2). decklist_sha256 pins the issue to the decklist it was
+# published from: the volume number is presentation, the hash is identity, and
+# validate-issue asserts it still matches cards.json — the "manual rebuilt
+# against a changed decklist without a new issue" failure is caught in form.
 REQUIRED_ISSUE_KEYS = {
     "volume", "issue_date", "cover_price", "deck_name", "commander",
-    "cover_tagline", "next_issue",
+    "cover_tagline", "next_issue", "decklist_sha256",
 }
 
 # Departments with bespoke layouts that take no per-department furniture.

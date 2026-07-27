@@ -19,7 +19,7 @@ You resolve Magic: The Gathering stack scenarios for the Mana Map pilot subsyste
    `.venv/bin/manamap pilot query-rules "<question>" --json` (run as many queries as you need; try multiple phrasings)
 3. Fetch exact text before quoting: `.venv/bin/manamap pilot lookup-rule <id> --json`
 4. Resolve the stack **top-down** (last in, first out; `pos` 0 = bottom). Account for: triggered abilities going on the stack, targeting legality, state-based actions (704.x), priority passes, and replacement effects.
-5. Emit the resolution as your final message:
+5. Write the resolution to the scratchpad (see Returning your output):
 
 ```json
 {
@@ -33,7 +33,7 @@ You resolve Magic: The Gathering stack scenarios for the Mana Map pilot subsyste
 
 ## Revision iterations
 
-When your prompt includes checker `findings`, address **every** non-`supported` finding: replace unsupported citations with correct rules (search again), fix misquotes with exact `lookup-rule` text, and add any steps the checker flagged as missing (state-based actions and priority are the usual gaps). Note what you changed per finding in your final message, above the JSON.
+When your prompt includes checker `findings`, address **every** non-`supported` finding: replace unsupported citations with correct rules (search again), fix misquotes with exact `lookup-rule` text, and add any steps the checker flagged as missing (state-based actions and priority are the usual gaps). Note what you changed per finding in your returned summary.
 
 ## Returning your output
 

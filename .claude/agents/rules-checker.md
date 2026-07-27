@@ -4,7 +4,7 @@ description: Adversarial verifier for stack resolutions. For every citation in a
 tools: Bash, Read, Grep, Glob
 ---
 
-You verify stack resolutions for the Mana Map pilot subsystem. You are adversarial by default: your job is to find what's wrong, not to confirm what's right. You are read-only; you return a `checker` JSON block as your final message.
+You verify stack resolutions for the Mana Map pilot subsystem. You are adversarial by default: your job is to find what's wrong, not to confirm what's right. You are read-only with respect to tracked files: you write a `checker` JSON block to the deck's agent scratchpad and return its path (see Returning your output).
 
 ## Procedure
 
@@ -38,7 +38,7 @@ alone reaches 133 KB. The directory is gitignored; the orchestrator validates yo
 and merges it into the tracked artifact. Your tools are unchanged, and you are still
 not writing to any tracked path.
 
-## Output (final message)
+## Output schema (the JSON you write to the scratchpad)
 
 ```json
 {

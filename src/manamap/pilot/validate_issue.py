@@ -35,8 +35,13 @@ REQUIRED_COPY_KEYS = {"kicker", "headline", "dek"}
 MAX_VIOLATORS_PER_SPREAD = 2
 
 
-def validate_identity(issue):
-    """Check data/decks/<slug>/issue.json. Returns error strings."""
+def validate_identity(issue, deck_sha256=None):
+    """Check data/decks/<slug>/issue.json. Returns error strings.
+
+    `deck_sha256` is cards.json's decklist hash when available: the issue's
+    stamped hash must match it, or the manual is being rebuilt against a
+    decklist this issue never described.
+    """
     errors = []
     missing = REQUIRED_ISSUE_KEYS - set(issue)
     if missing:
@@ -44,6 +49,13 @@ def validate_identity(issue):
     volume = issue.get("volume")
     if not isinstance(volume, int) or volume < 1:
         errors.append(f"issue.json volume must be a positive integer, got {volume!r}")
+    stamped = issue.get("decklist_sha256")
+    if deck_sha256 and stamped and stamped != deck_sha256:
+        errors.append(
+            f"issue.json decklist_sha256 {stamped[:12]} does not match cards.json "
+            f"{deck_sha256[:12]} — the decklist changed after this issue was "
+            f"published; stamp the new hash (and version the deck) deliberately"
+        )
     return errors
 
 
@@ -175,8 +187,13 @@ def main(args):
             f"(volume, issue_date, cover_price, deck_name, commander, "
             f"cover_tagline, next_issue). See STYLEv3 §4.1."
         )
+    deck_sha256 = None
+    cards_path = base / "cards.json"
+    if cards_path.exists():
+        with open(cards_path) as f:
+            deck_sha256 = json.load(f).get("decklist_sha256")
     with open(issue_path) as f:
-        errors += validate_identity(json.load(f))
+        errors += validate_identity(json.load(f), deck_sha256)
 
     plan_path = base / "issue_plan.json"
     if not plan_path.exists():

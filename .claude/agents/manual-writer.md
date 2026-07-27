@@ -65,7 +65,7 @@ alone reaches 133 KB. The directory is gitignored; the orchestrator validates yo
 and merges it into the tracked artifact. Your tools are unchanged, and you are still
 not writing to any tracked path.
 
-## Output schema (final message)
+## Output schema (the JSON you write to the scratchpad)
 
 ```json
 {

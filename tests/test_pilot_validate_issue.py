@@ -13,6 +13,7 @@ GOOD_IDENTITY = {
     "commander": "Zada, Hedron Grinder",
     "cover_tagline": "Goblins all the way down",
     "next_issue": "HAPATRA, VIZIER OF POISON",
+    "decklist_sha256": "c" * 64,
 }
 
 CARD_NAMES = {"Zada, Hedron Grinder", "Skirk Prospector", "Haze of Rage"}
@@ -218,3 +219,39 @@ def test_artist_checks_skipped_when_unavailable():
         if dept["id"] == "featured-artist":
             dept["featured"] = {"artist": "Anyone", "note": "x"}
     assert validate_plan(plan, CARD_NAMES, None) == []
+
+
+# ── decklist_sha256 stamping (deck versioning, zeroth step) ──────────────
+
+
+def _identity(**overrides):
+    doc = {"volume": 1, "issue_date": "August 2026", "cover_price": "$4.95",
+           "deck_name": "TEST", "commander": "Zada, Hedron Grinder",
+           "cover_tagline": "t", "next_issue": "NEXT",
+           "decklist_sha256": "a" * 64}
+    doc.update(overrides)
+    return doc
+
+
+def test_issue_without_a_decklist_hash_fails():
+    from manamap.pilot.validate_issue import validate_identity
+    doc = _identity()
+    del doc["decklist_sha256"]
+    errors = validate_identity(doc)
+    assert any("decklist_sha256" in e for e in errors)
+
+
+def test_matching_decklist_hash_passes():
+    from manamap.pilot.validate_issue import validate_identity
+    assert validate_identity(_identity(), deck_sha256="a" * 64) == []
+
+
+def test_a_changed_decklist_is_caught_at_the_identity_gate():
+    from manamap.pilot.validate_issue import validate_identity
+    errors = validate_identity(_identity(), deck_sha256="b" * 64)
+    assert any("decklist changed after this issue was published" in e for e in errors)
+
+
+def test_no_cards_json_means_no_hash_comparison():
+    from manamap.pilot.validate_issue import validate_identity
+    assert validate_identity(_identity(), deck_sha256=None) == []
