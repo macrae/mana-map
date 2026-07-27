@@ -1,0 +1,595 @@
+{
+  "id": "003",
+  "slug": "relic-of-legends-summoning-sickness",
+  "deck": "sisay",
+  "title": "Tapping a freshly tutored legend for mana: Relic of Legends versus Esika's granted ability",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Sisay, Weatherlight Captain (entered last turn)",
+        "Esika, God of the Tree (entered last turn, untapped)",
+        "Relic of Legends (entered last turn, untapped)",
+        "Derevi, Empyrial Tactician (entered three turns ago, untapped)",
+        "Jodah, the Unifier (put onto the battlefield THIS turn by Sisay's ability, untapped)"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": []
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "{0}",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Relic of Legends — second ability, activated by tapping Jodah, the Unifier",
+        "controller": "you",
+        "note": "recorded here as the action under test; as a mana ability it does not actually use the stack (CR 605.3b)"
+      }
+    ],
+    "extras": {
+      "relic_text": "Relic of Legends reads: \"{T}: Add one mana of any color.\" and \"Tap an untapped legendary creature you control: Add one mana of any color.\"",
+      "esika_text": "Esika, God of the Tree reads in part: \"Other legendary creatures you control have vigilance and '{T}: Add one mana of any color.'\"",
+      "why_it_matters": "Sisay puts permanents onto the battlefield mid-turn. Whether those permanents can immediately help pay for the next activation decides whether the deck chains in one turn or across two."
+    },
+    "question": "Jodah, the Unifier was put onto the battlefield this turn and has not been under your control since your most recent turn began. (a) May you tap Jodah to pay the cost of Relic of Legends' second ability, \"Tap an untapped legendary creature you control\"? Cite the rule that governs whether summoning sickness restricts this. (b) May you activate the \"{T}: Add one mana of any color\" ability that Esika grants Jodah? (c) Explain precisely why the answers to (a) and (b) differ, identifying whose ability is being activated in each case. (d) Does Jodah's static ability giving legendary creatures +X/+X apply immediately on entry, and does Esika's grant of vigilance apply to Jodah this turn? (e) How many mana can you produce in total this turn from Relic of Legends, Esika and the legendary creatures listed?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Establish Jodah's control history. Jodah, the Unifier was put onto the battlefield this turn by Sisay's activated ability, so it entered under your control this turn and has NOT been under your control continuously since your most recent turn began. Jodah has no haste. Sisay, Esika, Relic of Legends and Derevi have all been under your control since before this turn began.",
+        "effect": "Jodah is 'summoning sick'. Note the exact scope of rule 302.6: it covers (i) activating an ability OF THAT CREATURE whose activation cost contains the tap or untap symbol, and (ii) attacking. It says nothing about that creature being tapped by any other means.",
+        "citations": [
+          {
+            "rule": "110.2a",
+            "quote": "If an effect instructs a player to put an object onto the battlefield, that object enters the battlefield under that player’s control unless the effect states otherwise."
+          },
+          {
+            "rule": "302.6",
+            "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+          },
+          {
+            "rule": "glossary:summoning-sickness-rule",
+            "quote": "Informal term for a player’s inability to attack with a creature or to activate its abilities that include the tap symbol or the untap symbol unless the creature has been under that player’s control since the beginning of that player’s most recent turn."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "(a) Identify whose ability Relic of Legends' second ability is. Relic of Legends is an Artifact, not a creature. Its second ability reads 'Tap an untapped legendary creature you control: Add one mana of any color.' Everything before the colon is that ability's activation cost, paid by you, the player activating Relic's ability. The cost is a written-out instruction to tap a creature; it does not contain the tap symbol {T}, which would instead have meant 'tap Relic itself'.",
+        "effect": "The object whose ability is being activated is RELIC OF LEGENDS. Rule 302.6 restricts only 'a creature's activated ability with the tap symbol or the untap symbol in its activation cost'. Relic's ability is not a creature's ability, and its cost contains no tap or untap symbol, so 302.6 does not engage and imposes no control-duration requirement on the creature tapped to pay it.",
+        "citations": [
+          {
+            "rule": "602.2",
+            "quote": "Only an object’s controller (or its owner, if it doesn’t have a controller) can activate its activated ability unless the object specifically says otherwise."
+          },
+          {
+            "rule": "602.1a",
+            "quote": "The activation cost is everything before the colon (:). An ability’s activation cost must be paid by the player who is activating it."
+          },
+          {
+            "rule": "107.5",
+            "quote": "The tap symbol in an activation cost means “Tap this permanent.”"
+          },
+          {
+            "rule": "302.6",
+            "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "(a) Check that the cost is payable with Jodah. Jodah is an untapped legendary creature you control. Paying Relic's cost means carrying out the instruction 'tap an untapped legendary creature you control'; the only requirements on the chosen creature are that it be legendary, controlled by you, and untapped.",
+        "effect": "ANSWER (a): YES. You may tap Jodah to pay the cost of Relic of Legends' second ability even though Jodah entered the battlefield this turn. That ability is a mana ability - no target, could add mana, not a loyalty ability - so it never uses the stack and resolves immediately, adding one mana of any color. Jodah becomes tapped.",
+        "citations": [
+          {
+            "rule": "118.1",
+            "quote": "To pay a cost, a player carries out the instructions specified by the spell, ability, or effect that contains that cost."
+          },
+          {
+            "rule": "701.26a",
+            "quote": "To tap a permanent, turn it sideways from an upright position. Only untapped permanents can be tapped."
+          },
+          {
+            "rule": "605.1a",
+            "quote": "An activated ability is a mana ability if it meets all of the following criteria: it doesn’t require a target (see rule 115.6), it could add mana to a player’s mana pool when it resolves, and it’s not a loyalty ability."
+          },
+          {
+            "rule": "605.3b",
+            "quote": "An activated mana ability doesn’t go on the stack, so it can’t be targeted, countered, or otherwise responded to. Rather, it resolves immediately after it is activated."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "(b) Identify whose ability the Esika-granted mana ability is. Esika, God of the Tree has the static ability 'Other legendary creatures you control have vigilance and \"{T}: Add one mana of any color.\"' That is an ability-adding effect applied in layer 6; the granted ability becomes an ability OF JODAH, exactly as if it were printed on Jodah.",
+        "effect": "Jodah now has an activated ability '{T}: Add one mana of any color.' For activation purposes the ability belongs to Jodah - Esika merely grants it. Its activation cost contains the tap symbol, which means 'Tap this permanent', i.e. tap Jodah. Rule 107.5's fourth sentence is scoped identically to rule 302.6 and independently confirms the answer to (b): what is restricted is a CREATURE'S activated ability with the tap symbol in its cost - which is exactly what Esika's grant has made this.",
+        "citations": [
+          {
+            "rule": "113.1a",
+            "quote": "Abilities can also be granted to objects by rules or effects."
+          },
+          {
+            "rule": "113.10",
+            "quote": "Effects can add or remove abilities of objects."
+          },
+          {
+            "rule": "613.1f",
+            "quote": "Layer 6: Ability-adding effects, keyword counters, ability-removing effects, and effects that say an object can’t have an ability are applied."
+          },
+          {
+            "rule": "604.2",
+            "quote": "Static abilities create continuous effects, some of which are prevention effects or replacement effects. These effects are active as long as the permanent with the ability remains on the battlefield and has the ability"
+          },
+          {
+            "rule": "107.5",
+            "quote": "The tap symbol in an activation cost means “Tap this permanent.” A permanent that’s already tapped can’t be tapped again to pay the cost. A creature’s activated ability with the tap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "(b) Apply the summoning-sickness restriction to that granted ability. It is a creature's (Jodah's) activated ability with the tap symbol in its activation cost, and Jodah has not been under your control continuously since your most recent turn began. Jodah has no haste, so the haste exception does not apply.",
+        "effect": "ANSWER (b): NO. You may not activate the '{T}: Add one mana of any color' ability Esika grants Jodah this turn. Rule 302.6 forbids the activation, and rule 602.5 means you can't even begin to activate it; if a player nonetheless attempts it, rule 602.2 makes the activation illegal and the game returns to the moment before that ability started to be activated - the entire action is reversed and any payments already made are canceled (733.1). (Sisay and Derevi, under your control since before this turn, MAY activate their Esika-granted copies of that ability.)",
+        "citations": [
+          {
+            "rule": "302.6",
+            "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+          },
+          {
+            "rule": "602.5a",
+            "quote": "A creature’s activated ability with the tap symbol ({T}) or the untap symbol ({Q}) in its activation cost can’t be activated unless the creature has been under its controller’s control since the start of their most recent turn. Ignore this rule for creatures with haste"
+          },
+          {
+            "rule": "602.5",
+            "quote": "A player can’t begin to activate an ability that’s prohibited from being activated."
+          },
+          {
+            "rule": "602.2",
+            "quote": "If, at any point during the activation of an ability, a player is unable to comply with any of those steps, the activation is illegal; the game returns to the moment before that ability started to be activated"
+          },
+          {
+            "rule": "733.1",
+            "quote": "If a player takes an illegal action or starts to take an action but can’t legally complete it, the entire action is reversed and any payments already made are canceled."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "(c) State the distinction precisely. In (a) the ability being activated is RELIC OF LEGENDS' ability: Relic is the object whose ability it is, you are the activator, and 'tap an untapped legendary creature you control' is merely an instruction you carry out to pay that ability's cost - Jodah is a resource spent, not the object whose ability is being activated. In (b) the ability being activated is JODAH'S ability (granted by Esika but belonging to Jodah), and the tap symbol in its cost means 'tap Jodah'.",
+        "effect": "ANSWER (c): Rule 302.6 is scoped to 'a creature's activated ability with the tap symbol ... in its activation cost' - a restriction on which of a CREATURE'S OWN abilities may be activated, not a general prohibition on tapping a freshly arrived creature. Case (a) activates an artifact's ability, so 302.6 never engages; case (b) activates the creature's own tap ability, so 302.6 engages and forbids it. Everything turns on which object's ability is being activated and whether the tap symbol appears in that ability's cost - not on which permanent physically ends up tapped.",
+        "citations": [
+          {
+            "rule": "302.6",
+            "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+          },
+          {
+            "rule": "602.2",
+            "quote": "Only an object’s controller (or its owner, if it doesn’t have a controller) can activate its activated ability unless the object specifically says otherwise."
+          },
+          {
+            "rule": "602.1a",
+            "quote": "The activation cost is everything before the colon (:). An ability’s activation cost must be paid by the player who is activating it."
+          },
+          {
+            "rule": "118.1",
+            "quote": "A cost is an action or payment necessary to take another action or to stop another action from taking place."
+          },
+          {
+            "rule": "glossary:summoning-sickness-rule",
+            "quote": "Informal term for a player’s inability to attack with a creature or to activate its abilities that include the tap symbol or the untap symbol unless the creature has been under that player’s control since the beginning of that player’s most recent turn."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "(d) Apply Jodah's static ability. 'Legendary creatures you control get +X/+X, where X is the number of legendary creatures you control' is a static ability generating a continuous effect applied in layer 7c. It is not an activated ability and has no tap symbol, so rule 302.6 is irrelevant to it. The effect applies simultaneously with Jodah entering the battlefield and is not locked in - X is read continuously.",
+        "effect": "ANSWER (d) part 1: YES, immediately. On entry you control four legendary creatures (Sisay, Esika, Derevi, Jodah), so X = 4 and every legendary creature you control - Jodah included, since it is itself a legendary creature you control - gets +4/+4 at once. Summoning sickness never restricts static abilities.",
+        "citations": [
+          {
+            "rule": "604.1",
+            "quote": "Static abilities do something all the time rather than being activated or triggered. They are written as statements, and they’re simply true."
+          },
+          {
+            "rule": "611.3c",
+            "quote": "Continuous effects that modify characteristics of permanents do so simultaneously with the permanent entering the battlefield. They don’t wait until the permanent is on the battlefield and then change it."
+          },
+          {
+            "rule": "611.3b",
+            "quote": "The effect applies at all times that the permanent generating it is on the battlefield or the object generating it is in the appropriate zone."
+          },
+          {
+            "rule": "613.4c",
+            "quote": "Layer 7c: Effects and counters that modify power and/or toughness (but don’t set power and/or toughness to a specific number or value) are applied."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "(d) Apply Esika's grant of vigilance to Jodah. The same layer-6 ability-adding effect that grants the mana ability also grants vigilance, and it applies to Jodah from the moment Jodah is on the battlefield. Vigilance is a static ability that only modifies the declare attackers step.",
+        "effect": "ANSWER (d) part 2: YES, Jodah has vigilance immediately - but it is inert this turn. Vigilance only means attacking does not cause Jodah to tap; it does not permit a creature to attack. Rule 302.6's second sentence independently forbids Jodah from attacking this turn, so the vigilance grant changes nothing until your next turn. Vigilance also has no bearing on tapping Jodah for mana.",
+        "citations": [
+          {
+            "rule": "613.1f",
+            "quote": "Layer 6: Ability-adding effects, keyword counters, ability-removing effects, and effects that say an object can’t have an ability are applied."
+          },
+          {
+            "rule": "702.20a",
+            "quote": "Vigilance is a static ability that modifies the rules for the declare attackers step."
+          },
+          {
+            "rule": "702.20b",
+            "quote": "Attacking doesn’t cause creatures with vigilance to tap."
+          },
+          {
+            "rule": "302.6",
+            "quote": "A creature can’t attack unless it has been under its controller’s control continuously since their most recent turn began."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "State-based actions and priority check before the mana sequence. Jodah's arrival and the +4/+4 effect are checked the next time a player would receive priority. No creature has toughness 0 or less (every toughness is increased, none reduced); Sisay, Esika, Derevi and Jodah are four differently named legendary permanents, so the legend rule is not violated; nothing else on the listed board meets a state-based action condition.",
+        "effect": "No state-based actions are performed and no triggered abilities are waiting (Relic's and Esika's mana abilities are activated abilities, not triggers). You hold priority in your main phase with an empty stack and may begin activating mana abilities; mana abilities may also be activated mid-payment.",
+        "citations": [
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed."
+          },
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+          },
+          {
+            "rule": "704.5j",
+            "quote": "If two or more legendary permanents with the same name are controlled by the same player, that player chooses one of them, and the rest are put into their owners’ graveyards."
+          },
+          {
+            "rule": "605.3a",
+            "quote": "A player may activate an activated mana ability whenever they have priority, whenever they are casting a spell or activating an ability that requires a mana payment, or whenever a rule or effect asks for a mana payment"
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "(e) Tally source 1 - Relic of Legends' own '{T}: Add one mana of any color.' Relic is an artifact, not a creature, so rule 302.6 does not apply to it at all; it is untapped and entered last turn regardless.",
+        "effect": "+1 mana of any color; Relic of Legends becomes tapped. Running total: 1.",
+        "citations": [
+          {
+            "rule": "302.6",
+            "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+          },
+          {
+            "rule": "107.5",
+            "quote": "The tap symbol in an activation cost means “Tap this permanent.”"
+          },
+          {
+            "rule": "605.3b",
+            "quote": "An activated mana ability doesn’t go on the stack, so it can’t be targeted, countered, or otherwise responded to."
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "(e) Tally sources 2-4 - the three legendary creatures that are not summoning sick each tap for one mana. Esika activates her own printed '{T}: Add one mana of any color.' Sisay and Derevi each activate the '{T}: Add one mana of any color' ability Esika grants them. All three have been under your control continuously since your most recent turn began, so rule 302.6 permits these activations.",
+        "effect": "+3 mana in any colors; Esika, Sisay and Derevi become tapped. Running total: 4.",
+        "citations": [
+          {
+            "rule": "302.6",
+            "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+          },
+          {
+            "rule": "113.1a",
+            "quote": "Abilities can also be granted to objects by rules or effects."
+          },
+          {
+            "rule": "613.1f",
+            "quote": "Layer 6: Ability-adding effects, keyword counters, ability-removing effects, and effects that say an object can’t have an ability are applied."
+          },
+          {
+            "rule": "605.1a",
+            "quote": "An activated ability is a mana ability if it meets all of the following criteria: it doesn’t require a target (see rule 115.6), it could add mana to a player’s mana pool when it resolves, and it’s not a loyalty ability."
+          }
+        ]
+      },
+      {
+        "n": 12,
+        "action": "(e) Tally source 5 - Jodah, routed through Relic of Legends' second ability per steps 2-3, since Jodah's own granted tap ability is unavailable. Sequencing note: Relic's second ability has no tap symbol in its cost, so Relic having already tapped for its first ability does not prevent activating it. STATED ASSUMPTION for this tally: it counts your PRECOMBAT MAIN PHASE ONLY, with no untap effect used. Within such a window nothing is ever untapped, and only untapped permanents can be tapped, so each of these five permanents can be tapped at most once and yields at most one mana. That is a property of the assumed window, not a universal truth about the turn.",
+        "effect": "+1 mana of any color, tapping Jodah. ANSWER (e), under the stated assumption: 5 mana in the precombat main phase, each of any color you choose - one from Relic of Legends itself, one each from Esika, Sisay and Derevi via tap abilities, and one from Jodah via Relic's 'tap an untapped legendary creature you control' cost. Jodah does contribute mana on the turn it arrives, but only through Relic, never through Esika's grant. Because question (e) asks for the total IN THIS TURN, 5 must be read as a floor rather than the turn's ceiling: any untap effect breaks the one-tap-per-permanent premise above. Step 13 lifts the assumption.",
+        "citations": [
+          {
+            "rule": "118.3",
+            "quote": "A player can’t pay a cost without having the necessary resources to pay it fully."
+          },
+          {
+            "rule": "701.26a",
+            "quote": "To tap a permanent, turn it sideways from an upright position. Only untapped permanents can be tapped."
+          },
+          {
+            "rule": "107.5",
+            "quote": "A permanent that’s already tapped can’t be tapped again to pay the cost."
+          },
+          {
+            "rule": "602.1a",
+            "quote": "The activation cost is everything before the colon (:). An ability’s activation cost must be paid by the player who is activating it."
+          },
+          {
+            "rule": "106.4",
+            "quote": "Each player’s mana pool empties at the end of each step and phase, and the player is said to lose this mana."
+          }
+        ]
+      },
+      {
+        "n": 13,
+        "action": "(e) Lift step 12's stated assumption. The TURN total is above 5 because this board contains an untapper — but the ceiling is set by how many of your mana sources are TAPPED when Derevi's triggers go on the stack, not by how many creatures attack. The line: in your precombat main phase tap Relic of Legends for its own {T} (1 mana) and tap Jodah to pay Relic's second ability (1 mana), leaving Sisay, Esika and Derevi untapped — declaring an attacker requires the creature to be untapped, so this line requires NOT tapping those three for mana first. Attack with Sisay, Esika and Derevi; Esika grants the other legendary creatures vigilance (step 8), so attacking does not cause them to tap. Jodah cannot be declared as an attacker. The opponent controls no permanents, so nothing blocks and no attacker is dealt any damage; in the combat damage step each attacker assigns and deals damage equal to its power: Sisay 11, Esika 5, Derevi 6 = 22 damage to the opponent.",
+        "effect": "Combat damage is dealt simultaneously as a turn-based action that does not use the stack, and it takes the opponent from 40 to 18 (22 damage from sources without infect is 22 life lost). Derevi's ability has now triggered three times but has done nothing yet. STATE-BASED ACTIONS: before any player would receive priority in the combat damage step — and therefore before those triggers are put on the stack — the game performs all applicable state-based actions. Nothing qualifies: no player has 0 or less life (opponent 18, you 40); nothing blocked, so no creature has damage marked on it and none has been dealt lethal damage; no creature has toughness 0 or less (every toughness on your board is increased by Jodah, none reduced); and Sisay, Esika, Derevi and Jodah remain four differently named legendary permanents. No state-based action is performed. Your three attackers are still untapped; Relic of Legends and Jodah are the only tapped permanents in the game.",
+        "citations": [
+          {
+            "rule": "508.1a",
+            "quote": "The chosen creatures must be untapped, they can’t also be battles, and each one must either have haste or have been controlled by the active player continuously since the turn began."
+          },
+          {
+            "rule": "702.20b",
+            "quote": "Attacking doesn’t cause creatures with vigilance to tap."
+          },
+          {
+            "rule": "302.6",
+            "quote": "A creature can’t attack unless it has been under its controller’s control continuously since their most recent turn began."
+          },
+          {
+            "rule": "510.1a",
+            "quote": "Each attacking creature and each blocking creature assigns combat damage equal to its power."
+          },
+          {
+            "rule": "510.2",
+            "quote": "all combat damage that’s been assigned is dealt simultaneously. This turn-based action doesn’t use the stack."
+          },
+          {
+            "rule": "119.2",
+            "quote": "Damage dealt to a player normally causes that player to lose that much life."
+          },
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack"
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "704.5g",
+            "quote": "If a creature has toughness greater than 0, it has damage marked on it, and the total damage marked on it is greater than or equal to its toughness, that creature has been dealt lethal damage and is destroyed."
+          },
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+          },
+          {
+            "rule": "704.5j",
+            "quote": "If two or more legendary permanents with the same name are controlled by the same player, that player chooses one of them, and the rest are put into their owners’ graveyards."
+          }
+        ]
+      },
+      {
+        "n": 14,
+        "action": "Put the three Derevi triggers on the stack — and note that they TARGET, so the choice is made up front, not adaptively. Derevi, Empyrial Tactician reads 'When Derevi enters and whenever a creature you control deals combat damage to a player, you may tap or untap target permanent.' Three creatures you control dealt combat damage to a player simultaneously, so that ability triggered three times. All three are put on the stack together the next time a player would receive priority, in any order you choose; the remainder of that process is identical to casting a spell per rules 601.2c–d, so each trigger's target is announced as it is put on the stack, and a target declared that way can't be changed later. All three targets are therefore locked in BEFORE any of the three resolves.",
+        "effect": "At the moment those targets are chosen, exactly two permanents in the game are tapped: Relic of Legends and Jodah. Only tapped permanents can be untapped, so at most TWO of the three triggers can be aimed at a mana source that an untap would return to service — target Relic with one and Jodah with another. Pointing two triggers at the same permanent gains nothing: once the first resolves that permanent is untapped, and the second finds nothing to untap. The third trigger still requires a legal target (any permanent is one), but there is no third tapped mana source to aim it at; because the ability says 'you may', you decline its tap-or-untap when it resolves. Resolving the two useful triggers untaps Relic of Legends and Jodah. This is also why the two precombat taps in step 13 are load-bearing rather than wasteful: they are what makes two mana sources tapped, and therefore untappable, at the instant the targets are chosen. THE CEILING IS THE NUMBER OF TAPPED MANA SOURCES AT THAT INSTANT, NOT THE NUMBER OF ATTACKERS — a fourth attacker would supply a fourth trigger and no fourth mana.",
+        "citations": [
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers. The ability doesn’t do anything at this point."
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "603.3b",
+            "quote": "If multiple abilities have triggered since the last time a player received priority, the abilities are placed on the stack in a two-part process."
+          },
+          {
+            "rule": "603.3d",
+            "quote": "The remainder of the process for putting a triggered ability on the stack is identical to the process for casting a spell listed in rules 601.2c–d."
+          },
+          {
+            "rule": "601.2c",
+            "quote": "The player announces their choice of an appropriate object or player for each target the spell requires."
+          },
+          {
+            "rule": "115.1",
+            "quote": "These targets are declared as part of the process of putting the spell or ability on the stack. The targets can’t be changed except by another spell or ability that explicitly says it can do so."
+          },
+          {
+            "rule": "115.2",
+            "quote": "Only permanents are legal targets for spells and abilities"
+          },
+          {
+            "rule": "701.26b",
+            "quote": "To untap a permanent, rotate it back to the upright position from a sideways position. Only tapped permanents can be untapped."
+          }
+        ]
+      },
+      {
+        "n": 15,
+        "action": "Decide WHEN to re-tap the two permanents the triggers untapped — derive it, don't assert it. Both triggers resolve during the combat damage step, so the untaps happen there; the open question is whether to tap Relic and Jodah for mana immediately (still in that step) or to bank them for your postcombat main phase. You do have the opportunity to be greedy: the active player receives priority after each trigger resolves, and a player may activate a mana ability whenever they have priority. Count what greed buys: tapping Relic and tapping Jodah to pay Relic's second ability there produces 2 mana; your hand is empty, so there is no spell to cast with it, and the only mana sink on the board is Sisay's activated ability at {W}{U}{B}{R}{G}, which 2 mana cannot pay — a player can't pay a cost without the resources to pay it fully. That 2 mana is then lost when the combat damage step ends, AND Relic and Jodah are tapped again, so the postcombat main phase would yield only Sisay, Esika and Derevi.",
+        "effect": "Banking is strictly better, and it costs nothing, since nothing in the combat damage step can use the mana. Postcombat main phase: tap Relic for its own {T} (1), tap the now-untapped Jodah to pay Relic's second ability (1 — that cost contains no tap symbol, so Relic already being tapped does not prevent it), and tap Sisay, Esika and Derevi for their {T} mana abilities (3). That is 5 mana in one phase, each of any color, i.e. {W}{U}{B}{R}{G} — exactly one Sisay activation. ANSWER (e) for the turn IN TOTAL: 7 mana produced (2 precombat + 5 postcombat) using only 2 of the 3 combat-damage triggers, plus 22 damage. Honest accounting: with an empty hand the 2 precombat mana has no sink and is lost at end of phase, so the SPENDABLE-TOGETHER total is 5 either way — what the attacking line actually adds over step 12's line is the 22 damage and an untouched, vigilant board, at the price of nothing. Constraints that survive: Jodah still cannot attack this turn, and Jodah still cannot activate its own Esika-granted {T} ability even after being untapped (step 5) — Jodah's mana always routes through Relic's cost. Each further trigger spent untapping a mana source would be worth exactly 1 more mana (Relic via its own {T}, or Jodah via Relic's second ability), but on this board there are only two such sources to untap.",
+        "citations": [
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          },
+          {
+            "rule": "605.3a",
+            "quote": "A player may activate an activated mana ability whenever they have priority"
+          },
+          {
+            "rule": "118.3",
+            "quote": "A player can’t pay a cost without having the necessary resources to pay it fully."
+          },
+          {
+            "rule": "106.4",
+            "quote": "Each player’s mana pool empties at the end of each step and phase, and the player is said to lose this mana."
+          },
+          {
+            "rule": "107.5",
+            "quote": "A permanent that’s already tapped can’t be tapped again to pay the cost."
+          },
+          {
+            "rule": "701.26a",
+            "quote": "To tap a permanent, turn it sideways from an upright position. Only untapped permanents can be tapped."
+          },
+          {
+            "rule": "701.26b",
+            "quote": "Only tapped permanents can be untapped."
+          },
+          {
+            "rule": "602.1a",
+            "quote": "The activation cost is everything before the colon (:). An ability’s activation cost must be paid by the player who is activating it."
+          }
+        ]
+      },
+      {
+        "n": 16,
+        "action": "Payoff and timing caveat for the 5-mana precombat line of step 12. The five mana are each of any color, so they can be spent as {W}{U}{B}{R}{G} - exactly Sisay's activation cost. Sisay's power at this moment: base 2, +5/+5 from its own ability (the other legendary permanents are Esika - green, from the {1}{G}{G} of the face that is up - Derevi GWU and Jodah WUBRG, five colors among them), and +4/+4 from Jodah's static ability, both applied in layer 7c: 11/11.",
+        "effect": "You may activate Sisay's ability once off this mana, searching for a legendary permanent card with mana value less than 11. If the mana is not spent it is lost when the current step or phase ends, so all five must be spent within the same step in which they are produced.",
+        "citations": [
+          {
+            "rule": "712.8f",
+            "quote": "While a modal double-faced spell is on the stack or a modal double-faced permanent is on the battlefield, it has only the characteristics of the face that’s up."
+          },
+          {
+            "rule": "202.2",
+            "quote": "An object is the color or colors of the mana symbols in its mana cost, regardless of the color of its frame."
+          },
+          {
+            "rule": "613.4c",
+            "quote": "Layer 7c: Effects and counters that modify power and/or toughness (but don’t set power and/or toughness to a specific number or value) are applied."
+          },
+          {
+            "rule": "106.4",
+            "quote": "Each player’s mana pool empties at the end of each step and phase, and the player is said to lose this mana."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "(a) Yes - tapping Jodah pays a cost of RELIC OF LEGENDS' ability, and rule 302.6 restricts only a creature's OWN activated abilities that have {T} or {Q} in their cost, so summoning sickness is irrelevant there. (b) No - Esika's grant makes '{T}: Add one mana of any color' an ability OF JODAH, and that ability has the tap symbol in its cost, so 302.6 forbids activating it this turn (Jodah has no haste). (c) The difference is purely which object's ability is being activated: an artifact's ability whose cost happens to tap a creature, versus the creature's own tap ability. (d) Jodah's +X/+X static ability applies immediately on entry (X = 4, so every legendary creature you control, Jodah included, gets +4/+4), and Esika's vigilance grant attaches immediately too - but vigilance does not defeat 302.6's separate ban on attacking, so Jodah still cannot attack this turn. (e) STATED ASSUMPTION - counting your precombat main phase with no untap effect used: 5 mana, each of any color: Relic's own {T}, Esika's own {T}, Sisay and Derevi via Esika's granted {T}, and Jodah tapped to pay Relic's second ability. That is exactly {W}{U}{B}{R}{G} - one more Sisay activation, searching for a legendary permanent with mana value less than Sisay's current power of 11. Since (e) asks for the turn IN TOTAL, 5 is a floor and not the ceiling: Esika's vigilance grant lets Sisay, Esika and Derevi attack without tapping, they deal 22 combat damage (opponent 40 -> 18), and each triggers Derevi's 'you may tap or untap TARGET permanent'. Those three triggers all go on the stack together and each one's target is chosen then, before any of them resolves - and at that moment only two permanents are tapped (Relic of Legends and Jodah), so only 2 of the 3 triggers can be aimed at a mana source worth untapping. The best line therefore produces 7 mana on the turn (2 precombat + 5 postcombat) using 2 of the 3 triggers; the ceiling is capped by the number of TAPPED mana sources when the targets are chosen, not by the number of attackers. Jodah still cannot attack, and still cannot use its own granted {T} ability, even after being untapped.",
+      "you": {
+        "life": 40,
+        "mana_produced_this_step": 5,
+        "mana_precombat_main_no_untap_effects": 5,
+        "turn_total_ceiling": "7 mana produced in the attacking line of steps 13-15 (2 precombat + 5 postcombat), using only 2 of the 3 Derevi triggers. The cap is the number of TAPPED mana sources at the instant the triggers' targets are chosen - here 2 (Relic of Legends, Jodah) - not the number of attackers. Each trigger spent untapping a mana source is worth exactly 1 more mana: Relic via its own {T}, or Jodah via Relic's second ability (whose cost has no tap symbol, so Relic may stay tapped).",
+        "assumptions": [
+          "The tally of 5 is scoped to the precombat main phase with no untap effect used; nothing is untapped during it, so each permanent taps at most once.",
+          "The board shown taps out fully in that line. The higher-total line in steps 13-15 instead taps only Relic and Jodah precombat, leaves Sisay, Esika and Derevi untapped through declare attackers (vigilance), and requires their combat damage to connect against the opponent's empty board.",
+          "STATED ASSUMPTION on the 7-mana line: your hand is empty (as the scenario states) and no other permanent enters or is untapped, so the only mana sinks are Sisay's {W}{U}{B}{R}{G} ability and nothing else."
+        ],
+        "mana_colors": "five mana, each of any color you choose, e.g. {W}{U}{B}{R}{G}",
+        "battlefield_after_full_tap_out": [
+          {
+            "name": "Relic of Legends",
+            "status": "tapped (its own {T} mana ability)",
+            "mana": 1
+          },
+          {
+            "name": "Esika, God of the Tree",
+            "status": "tapped (its own printed {T} mana ability)",
+            "power_toughness": "5/8 (base 1/4, +4/+4 from Jodah)",
+            "mana": 1
+          },
+          {
+            "name": "Sisay, Weatherlight Captain",
+            "status": "tapped (Esika-granted {T} mana ability)",
+            "power_toughness": "11/11 (base 2/2, +5/+5 from its own ability, +4/+4 from Jodah)",
+            "mana": 1
+          },
+          {
+            "name": "Derevi, Empyrial Tactician",
+            "status": "tapped (Esika-granted {T} mana ability)",
+            "power_toughness": "6/7 (base 2/3, +4/+4 from Jodah)",
+            "mana": 1
+          },
+          {
+            "name": "Jodah, the Unifier",
+            "status": "tapped to pay Relic of Legends' second ability; its own Esika-granted {T} ability was NOT activatable this turn",
+            "power_toughness": "9/9 (base 5/5, +4/+4 from its own static ability)",
+            "mana": 1,
+            "summoning_sick": true,
+            "can_attack": false,
+            "has_vigilance": true
+          }
+        ],
+        "stack": [],
+        "notes": [
+          "Nothing used the stack in the 5-mana precombat line: every mana ability there resolves immediately (605.3b). Derevi's three combat-damage triggers in the steps 13-15 line DO use the stack, and they target - all three targets are chosen as the triggers are put on the stack, before any resolves (603.3, 603.3b, 603.3d, 115.1).",
+          "No state-based action is performed anywhere in this scenario, but the check is made twice: at step 9 (after Jodah's arrival) and at step 13 (after 22 combat damage, before the triggers go on the stack). The legend rule (704.5j) is never violated - the four legendary permanents all have different names - and with no blockers nothing is dealt lethal damage (704.5g).",
+          "Unspent mana is lost at the end of the step or phase (106.4), so mana must be spent in the phase that produced it - that is what stops you banking precombat mana for a postcombat Sisay activation, and it is why taking the untaps greedily during the combat damage step is strictly worse: 2 mana there cannot pay Sisay's five-colour cost (118.3) and your hand is empty, so it would simply be lost.",
+          "Deck lesson: a permanent Sisay puts onto the battlefield mid-turn can still pay for the NEXT activation, but only through cost-side taps like Relic of Legends - never through a {T} ability the creature itself has or is granted.",
+          "Deck lesson 2: with Esika's vigilance grant and Derevi on board, tapping out precombat is often wrong - attacking first keeps the vigilant legends untapped AND generates untap triggers. But size the plan by how many mana sources will be TAPPED when those triggers hit the stack, because that number, not the attacker count, is what the triggers can convert into mana."
+        ],
+        "mana_produced_turn_attacking_line": 7,
+        "derevi_triggers_used": "2 of 3 - targets for all three are locked in together (steps 14), and only Relic of Legends and Jodah are tapped at that moment; the third trigger has no tapped mana source to aim at and its optional 'you may' is declined"
+      },
+      "opponents": [
+        {
+          "life": 18,
+          "life_before_combat": 40,
+          "board": [],
+          "notes": "Untouched in the 5-mana precombat line of step 12; nothing there interacts with the opponent. In the attacking line of steps 13-15 the opponent takes 22 combat damage - Sisay 11, Esika 5, Derevi 6 - with no blockers available, going 40 -> 18 (119.2, 120.3a). That damage is also what generates the three Derevi triggers. 18 is above 0, so the state-based action check in step 13 performs nothing (704.5a)."
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "fail",
+    "iterations": 3,
+    "note": "Iteration bound (RESOLVE_MAX_ITERATIONS = 3) exhausted. Answers (a) through (d) were independently verified correct across all three passes, as were the 22 combat damage, the opponent at 18, and the spendable-together total of 5. The two surviving defects are confined to the turn-total mana material in steps 13-15. Per-citation findings condensed: 45 distinct rule IDs fetched, all quotes faithful substrings and all rules on-topic; only the entries below were not plain 'supported'.",
+    "findings": [
+      {
+        "step": 13,
+        "rule": "702.20b",
+        "status": "unsupported",
+        "note": "[status normalised from 'partial' to the contract vocabulary {supported, unsupported, irrelevant, misquoted}] The step justifies all three attackers staying untapped by Esika's grant, but that grant reads 'OTHER legendary creatures you control have vigilance' and cannot reach Esika. Esika stays untapped because Vigilance is PRINTED on its front face, a fact the artifact never states or cites. Outcome right, stated reason does not cover Esika - and step 14's 'exactly two permanents are tapped' depends on it."
+      },
+      {
+        "step": 14,
+        "rule": "701.26b",
+        "status": "unsupported",
+        "note": "LOAD-BEARING DEFECT. 'Only tapped permanents can be untapped' is true but is used to derive 'pointing two triggers at the same permanent gains nothing'. That ignores the priority window between resolutions: per 117.3b (cited by this artifact in step 15) the active player receives priority after each trigger resolves and per 605.3a may activate a mana ability then. Trigger A untaps Relic, you tap Relic for its own {T} (+1 mana), trigger B then finds Relic tapped and untaps it again. A second trigger aimed at Relic is worth a full extra mana. Step 14's conclusion is refuted by step 15's own citations."
+      },
+      {
+        "step": 14,
+        "rule": null,
+        "status": "unsupported",
+        "note": "CEILING RECHARACTERISATION IS WRONG. 'The ceiling is the number of tapped mana sources at that instant, not the number of attackers' and 'a fourth attacker would supply a fourth trigger and no fourth mana' both fail for the reason above. Because a permanent can be re-tapped in the priority window between trigger resolutions, each additional trigger aimed at Relic or Jodah converts to exactly one more mana. The binding cap on this board is the NUMBER OF TRIGGERS (3), not the number of tapped sources (2). The revision traded one wrong ceiling for another."
+      },
+      {
+        "step": 15,
+        "rule": null,
+        "status": "unsupported",
+        "note": "[status normalised from 'partial' to the contract vocabulary {supported, unsupported, irrelevant, misquoted}] The honest-accounting concession is correct as far as it goes: with an empty hand the 2 precombat mana has no sink and is lost at end of phase, the maximum spendable-together in any one phase is 5 either way, and what the attacking line adds is 22 damage plus an untapped vigilant board. Independently confirmed. But 'banking is strictly better' and 'ANSWER (e) for the turn IN TOTAL: 7 mana produced' hold only under the mistaken 2-of-3-triggers premise. With the third trigger also aimed at Relic the production total is 8. The third trigger costs nothing to use, so declining it is not forced. The 5-mana spendable figure and the Sisay activation conclusion survive unchanged."
+      }
+    ],
+    "missing_steps": [
+      "Per-trigger resolution walk with the 117.3b priority window and 605.3a mana-ability activation shown between each resolution, before any ceiling is asserted.",
+      "Explicit establishment that Esika, God of the Tree has PRINTED vigilance on its front face, since Esika's own grant says 'other legendary creatures' and therefore cannot keep Esika untapped when it attacks."
+    ],
+    "verified_correct": [
+      "Answer (a): tapping a summoning-sick Jodah to pay Relic of Legends' cost is legal. CR 302.6 scopes only to a creature's own {T}/{Q} abilities; a full sweep of the rules index found no rule anywhere barring it.",
+      "Answer (b): Esika's granted '{T}: Add one mana of any color' is Jodah's own ability and 302.6 forbids activating it this turn.",
+      "Answer (c): the distinction turns on which object's ability is activated, not which permanent ends up tapped.",
+      "Answer (d): Jodah's +X/+X applies immediately on entry (X=4); Esika's vigilance grant attaches immediately but is inert because 302.6 independently bars attacking.",
+      "Sisay 11/11, Esika 5/8, Derevi 6/7, Jodah 9/9; 22 combat damage; opponent 40 -> 18; no state-based action fires.",
+      "Maximum spendable-together mana in any one phase is 5, i.e. exactly one Sisay activation."
+    ]
+  }
+}

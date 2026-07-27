@@ -1,0 +1,1428 @@
+{
+  "id": "002",
+  "slug": "najeela-derevi-combat-loop",
+  "deck": "sisay",
+  "title": "Whether Najeela plus Derevi is genuinely a two-card infinite",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Najeela, the Blade-Blossom (entered two turns ago, untapped)",
+        "Derevi, Empyrial Tactician (entered two turns ago, untapped)",
+        "Command Tower (untapped)",
+        "City of Brass (untapped)",
+        "Mana Confluence (untapped)",
+        "Exotic Orchard (untapped)",
+        "Plaza of Heroes (untapped)"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": []
+        },
+        {
+          "life": 40,
+          "board": []
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "{W}{U}{B}{R}{G} (from the five lands listed, each of which can produce any of those colours)",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Najeela, the Blade-Blossom — triggered ability (first Warrior declared as an attacker)",
+        "controller": "you",
+        "note": "combat 1, declare attackers step"
+      }
+    ],
+    "extras": {
+      "claim_under_test": "The bracket engine reports Najeela, the Blade-Blossom + Derevi, Empyrial Tactician as a two-card infinite and uses it as a driver for this deck's bracket 4 floor. This scenario tests that claim.",
+      "creature_types": "Najeela is a Human Warrior. Derevi is a Bird Wizard. The tokens Najeela creates are 1/1 white Warrior creature tokens.",
+      "opponents_have_no_blockers": true,
+      "you_are_attacking": "the first opponent"
+    },
+    "question": "You attack with Najeela and Derevi. (a) In the first combat, how many Warriors are declared as attackers, and how many Najeela triggers result? Do the tokens Najeela creates, which enter tapped and attacking, themselves trigger Najeela? (b) How many separate Derevi untap triggers do you get from first-combat damage, and can they untap enough lands to pay Najeela's {W}{U}{B}{R}{G} a second time? (c) Track the number of attacking creatures and the number of Derevi triggers through the second and third combats. Does the loop become self-sustaining, and if so on which combat? (d) Is the claim that these two cards alone form an infinite combo accurate, or does the loop depend on resources outside those two cards? State precisely what is required."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Combat phase 1 begins. You control Najeela, the Blade-Blossom (3/2 Human Warrior) and Derevi, Empyrial Tactician (2/3 Bird Wizard), both untapped and controlled since before this turn, plus five untapped lands. Both opponents are at 40 with empty boards.",
+        "effect": "The combat phase runs beginning of combat -> declare attackers -> declare blockers -> combat damage -> end of combat. Nothing is on the stack yet; the first thing that happens is the beginning of combat step.",
+        "citations": [
+          {
+            "rule": "506.1",
+            "quote": "The combat phase has five steps, which proceed in order: beginning of combat, declare attackers, declare blockers, combat damage, and end of combat."
+          },
+          {
+            "rule": "500.1",
+            "quote": "The beginning, combat, and ending phases are further broken down into steps, which proceed in order."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "COMBAT 1 - beginning of combat step: establish who is being attacked. This is a three-player game, so a defending player must be determined before attackers are declared; the scenario stipulates you attack the first opponent (opponent A).",
+        "effect": "Commander's default multiplayer setup is Free-for-All with the attack multiple players option, so unless the table has agreed otherwise that is the configuration in force here. A Free-for-All table must use exactly one of attack left, attack right, or attack multiple players. Under attack multiple players — the Commander default — NO turn-based choice is made in this step: every opponent is already a defending player, and you choose which player each creature attacks individually as you declare it. 506.2a's turn-based choice applies only to the other branch, and even there it is scoped: 506.2a covers the case where the attacking player chooses, and it expressly notes that the choice may instead be DICTATED by the variant or option in use — which is what attack left and attack right do (they hand you a fixed defending player, you do not pick one). So it is wrong to say 'either way the choice is a turn-based action you make'; under attack multiple players there is no such choice, and under attack left/right the choice is not yours. What IS true on every branch is that the determination is made fresh in EVERY combat phase, because each additional combat phase Najeela creates has its own beginning of combat step and its own declare attackers step. Under the Commander default that is what later licenses pointing the army at opponent B (step 22); under attack left/right the redirect in step 22 would NOT be available, because the defending player would be fixed by seating.",
+        "citations": [
+          {
+            "rule": "903.2",
+            "quote": "The default multiplayer setup is the Free-for-All variant with the attack multiple players option and without the limited range of influence option."
+          },
+          {
+            "rule": "806.2b",
+            "quote": "Exactly one of the attack left, attack right, and attack multiple players options must be used."
+          },
+          {
+            "rule": "802.2",
+            "quote": "As the combat phase starts, the attacking player doesn’t choose an opponent to become the defending player. Instead, all the attacking player’s opponents are defending players during the combat phase."
+          },
+          {
+            "rule": "506.2a",
+            "quote": "Unless all the attacking player’s opponents automatically become defending players during the combat phase, the attacking player chooses one of their opponents as a turn-based action during the beginning of combat step. (Note that the choice may be dictated by the variant being played or the options chosen for it.)"
+          },
+          {
+            "rule": "803.1",
+            "quote": "Some multiplayer games use the optional attack left or attack right rules."
+          },
+          {
+            "rule": "506.1",
+            "quote": "The combat phase has five steps, which proceed in order: beginning of combat, declare attackers, declare blockers, combat damage, and end of combat."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "COMBAT 1 - declare attackers. You declare Najeela and Derevi as attackers, choosing opponent A as the player each of them attacks.",
+        "effect": "Two creatures are declared as attackers. Exactly ONE of them is a Warrior: Najeela is a Human Warrior; Derevi is a Bird Wizard. Declaring them taps them (neither has vigilance). Both were legal choices: untapped and controlled since the turn began. Each attacker's defending player is chosen here, per creature.",
+        "citations": [
+          {
+            "rule": "508.1a",
+            "quote": "The active player chooses which creatures that they control, if any, will attack. The chosen creatures must be untapped, they can’t also be battles, and each one must either have haste or have been controlled by the active player continuously since the turn began."
+          },
+          {
+            "rule": "802.3",
+            "quote": "As the attacking player declares each attacking creature, they choose a defending player, a planeswalker controlled by a defending player, or a battle protected by a defending player for it to attack."
+          },
+          {
+            "rule": "508.1f",
+            "quote": "The active player taps the chosen creatures. Tapping a creature when it’s declared as an attacker isn’t a cost; attacking simply causes creatures to become tapped."
+          },
+          {
+            "rule": "508.1k",
+            "quote": "Each chosen creature still controlled by the active player becomes an attacking creature."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Najeela's first ability triggers ONCE (not twice) on the attack declaration, and is put on the stack when a player would next receive priority.",
+        "effect": "“Whenever a Warrior attacks” triggers per Warrior declared as an attacker. Najeela is the only Warrior declared, so exactly 1 trigger. Derevi (Bird Wizard) is not a Warrior and generates nothing. Trigger count, combat 1 = 1.",
+        "citations": [
+          {
+            "rule": "508.3a",
+            "quote": "An ability that reads “Whenever [a creature] attacks, . . .” triggers if that creature is declared as an attacker."
+          },
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs."
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "The Najeela trigger resolves. You choose “yes,” and its controller (you) creates one 1/1 white Warrior creature token that’s tapped and attacking opponent A.",
+        "effect": "Token A is put onto the battlefield already tapped and attacking; since Najeela's ability does not name a defending player, you choose one as it enters — opponent A. Attacking creatures in combat 1 = 3 (Najeela, Derevi, token A). Total power on the table = 3 + 2 + 1 = 6.",
+        "citations": [
+          {
+            "rule": "701.7a",
+            "quote": "To create one or more tokens with certain characteristics, put the specified number of tokens with the specified characteristics onto the battlefield."
+          },
+          {
+            "rule": "111.2",
+            "quote": "The player who creates a token is its owner. The token enters the battlefield under that player’s control."
+          },
+          {
+            "rule": "508.4",
+            "quote": "If a creature is put onto the battlefield attacking, its controller chooses which defending player, planeswalker a defending player controls, or battle a defending player protects it’s attacking as it enters the battlefield (unless the effect that put it onto the battlefield specifies what it’s attacking)."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "KEY CHECK (question a): token A does NOT trigger Najeela, even though it is a Warrior and is attacking.",
+        "effect": "A creature put onto the battlefield attacking was never declared as an attacker, so for trigger purposes it never “attacked.” Najeela's “Whenever a Warrior attacks” therefore does not see it. It IS an attacking creature for every other purpose — it deals combat damage (step 8), it is untapped by Najeela's activated ability (step 12) and it can be declared again next combat (step 15). The tokens simply do not chain within a single combat: 1 Warrior declared -> 1 trigger -> 1 token, full stop. (This is what keeps the loop finite per combat instead of infinite inside combat 1.)",
+        "citations": [
+          {
+            "rule": "508.3a",
+            "quote": "Such abilities won’t trigger if a creature is put onto the battlefield attacking."
+          },
+          {
+            "rule": "508.4",
+            "quote": "Such creatures are “attacking” but, for the purposes of trigger events and effects, they never “attacked.” They remain attacking creatures until they’re removed from combat or the combat phase ends, whichever comes first."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Declare blockers step: opponent A controls no creatures, so no blocks are declared. All three attackers are unblocked.",
+        "effect": "Blocking is a choice the DEFENDING player makes from among creatures they control; opponent A controls no creatures, so there is nothing they can choose and no block can be declared. Every attacker therefore stays unblocked, and each unblocked attacker assigns its combat damage to the player it is attacking. This is the standing assumption for every combat in this line (the scenario stipulates the opponents have no blockers).",
+        "citations": [
+          {
+            "rule": "509.1a",
+            "quote": "The defending player chooses which creatures they control, if any, will block. The chosen creatures must be untapped and they can’t also be battles."
+          },
+          {
+            "rule": "510.1b",
+            "quote": "An unblocked creature assigns its combat damage to the player, planeswalker, or battle it’s attacking."
+          },
+          {
+            "rule": "510.1a",
+            "quote": "Each attacking creature and each blocking creature assigns combat damage equal to its power."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "COMBAT 1 combat damage step: Najeela (3), Derevi (2) and token A (1) deal 6 combat damage to opponent A simultaneously.",
+        "effect": "Opponent A: 40 -> 34. No lifelink yet (Najeela's activated ability has not been used), so you gain nothing from this damage.",
+        "citations": [
+          {
+            "rule": "510.2",
+            "quote": "Second, all combat damage that’s been assigned is dealt simultaneously. This turn-based action doesn’t use the stack."
+          },
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          },
+          {
+            "rule": "119.2",
+            "quote": "Damage dealt to a player normally causes that player to lose that much life."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "KEY CHECK (question b): Derevi's ability triggers THREE times — once per creature that dealt combat damage to a player — not once for the whole damage event.",
+        "effect": "Combat damage is dealt simultaneously, but that single event contains three separate occurrences of “a creature you control deals combat damage to a player,” so the ability triggers once per creature. The three triggers are put on the stack the next time a player would receive priority, each choosing a target permanent (you target your own lands). Derevi trigger count, combat 1 = 3 = number of attacking creatures.",
+        "citations": [
+          {
+            "rule": "603.2c",
+            "quote": "However, it can trigger repeatedly if one event contains multiple occurrences."
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "115.1d",
+            "quote": "A triggered ability is targeted if it identifies something it will affect by using the phrase “target [something],”"
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "With the three Derevi triggers on the stack you receive priority and activate Najeela's second ability (legal: you are in a combat phase). LINE CHOICE — this resolution takes line L2: you announce the activation FIRST and tap the five lands DURING cost payment, not while holding priority.",
+        "effect": "Announcing the ability puts it on the stack; activating an ability then follows the casting steps, and the last of those steps is paying the total cost. A player may activate mana abilities while paying that cost — that is precisely when a mana payment is being asked for — and those mana abilities do not use the stack, so the five mana appear in your pool and the {W}{U}{B}{R}{G} is paid in full. The important consequence of taking line L2 is that you do NOT have priority at the moment the lands are tapped: priority is only handed back after a mana ability when the player HAD priority before activating it, and during cost payment you did not. Najeela's ability is therefore put on the stack ABOVE the three Derevi triggers — but it is NOT the last thing to go on the stack, because the City of Brass trigger produced by the cost payment is still waiting (step 11). Resolution order will be: City of Brass trigger, then Najeela's ability, then the three Derevi triggers. Mana Confluence's “Pay 1 life” is likewise part of the activation cost of its mana ability, not a trigger — it never uses the stack.",
+        "citations": [
+          {
+            "rule": "117.1b",
+            "quote": "A player may activate an activated ability any time they have priority."
+          },
+          {
+            "rule": "602.2b",
+            "quote": "The remainder of the process for activating an ability is identical to the process for casting a spell listed in rules 601.2b–i."
+          },
+          {
+            "rule": "601.2h",
+            "quote": "The player pays the total cost."
+          },
+          {
+            "rule": "118.2",
+            "quote": "If a cost includes a mana payment, the player paying the cost has a chance to activate mana abilities."
+          },
+          {
+            "rule": "605.3a",
+            "quote": "A player may activate an activated mana ability whenever they have priority, whenever they are casting a spell or activating an ability that requires a mana payment, or whenever a rule or effect asks for a mana payment, even if it’s in the middle of casting or resolving a spell or activating or resolving an ability."
+          },
+          {
+            "rule": "605.3b",
+            "quote": "An activated mana ability doesn’t go on the stack, so it can’t be targeted, countered, or otherwise responded to. Rather, it resolves immediately after it is activated."
+          },
+          {
+            "rule": "405.6c",
+            "quote": "If a player had priority before a mana ability was activated, that player gets priority after it resolves."
+          },
+          {
+            "rule": "405.2",
+            "quote": "Each time an object is put on the stack, it’s put on top of all objects already there."
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "City of Brass's triggered ability goes on the stack ON TOP of Najeela's ability. “Whenever this land becomes tapped, it deals 1 damage to you” triggered when you tapped City of Brass during cost payment in step 10.",
+        "effect": "This is the L2 bookkeeping, stated explicitly because the two lines order the stack differently. Under L2 you were paying a cost when City of Brass became tapped, so you did not have priority; 117.3c (which returns priority to a player who HAD priority when they activated an ability) applies to your activation of NAJEELA's ability, not to the land taps, and 405.6c does not hand priority back after the mana abilities either. A triggered ability waits and is put on the stack the next time a player would receive priority — here, the moment you receive priority after finishing the activation — and it becomes the topmost object on the stack. Najeela's ability is already on the stack by then, so the City of Brass trigger sits ABOVE it and resolves FIRST, dealing you 1 damage (you: 40 → 39); Najeela's ability resolves next (step 12), then the three Derevi triggers (step 13). (The alternative line L1 — tap the lands while holding priority, float the mana, then activate Najeela — is equally legal but produces the OPPOSITE stack order: the City of Brass trigger would be put on the stack beneath Najeela's ability and Najeela's ability would resolve first. Either way 1 damage is dealt and nothing downstream changes, but this resolution commits to L2 so the step order 11 → 12 → 13 is the true resolution order.) The trigger is NOT a mana ability: it cannot add mana to a mana pool, so it uses the stack like any other trigger. Every tap of City of Brass puts another copy of this trigger on the stack, including the repeat taps inside a single damage step described in step 17. Mana Confluence is the contrast case: its life payment is a cost, so it produces no stack object.",
+        "citations": [
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority. See rule 117, “Timing and Priority.” The ability becomes the topmost object on the stack."
+          },
+          {
+            "rule": "117.3c",
+            "quote": "If a player has priority when they cast a spell, activate an ability, or take a special action, that player receives priority afterward."
+          },
+          {
+            "rule": "405.6c",
+            "quote": "If a player had priority before a mana ability was activated, that player gets priority after it resolves."
+          },
+          {
+            "rule": "405.2",
+            "quote": "Each time an object is put on the stack, it’s put on top of all objects already there."
+          },
+          {
+            "rule": "605.1b",
+            "quote": "A triggered ability is a mana ability if it meets all of the following criteria: it doesn’t require a target (see rule 115.6), it triggers from the activation or resolution of an activated mana ability (see rule 605.1a) or from mana being added to a player’s mana pool, and it could add mana to a player’s mana pool when it resolves."
+          },
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          },
+          {
+            "rule": "118.1",
+            "quote": "A cost is an action or payment necessary to take another action or to stop another action from taking place."
+          }
+        ]
+      },
+      {
+        "n": 12,
+        "action": "Najeela's activated ability resolves: untap all attacking creatures; they gain trample, lifelink and haste until end of turn; after this phase there is an additional combat phase.",
+        "effect": "Najeela, Derevi and token A are untapped and now have haste (critical: token A was created this turn and could not otherwise be declared as an attacker) and lifelink. Token A is a legal object for “all attacking creatures” because it is an attacking creature (step 6) even though it never “attacked.” The untap is NOT self-defeating: untapping a creature that has already been declared as an attacker does not remove it from combat and does not prevent its combat damage, so all three remain attacking creatures and remain able to be untapped/redeclared without losing anything. The extra combat phase is added directly after this combat phase.",
+        "citations": [
+          {
+            "rule": "701.26b",
+            "quote": "To untap a permanent, rotate it back to the upright position from a sideways position. Only tapped permanents can be untapped."
+          },
+          {
+            "rule": "506.4b",
+            "quote": "Tapping or untapping a creature that’s already been declared as an attacker or blocker doesn’t remove it from combat and doesn’t prevent its combat damage."
+          },
+          {
+            "rule": "508.4",
+            "quote": "Such creatures are “attacking” but, for the purposes of trigger events and effects, they never “attacked.”"
+          },
+          {
+            "rule": "500.8",
+            "quote": "Some effects can add phases to a turn. They do this by adding the phases directly after the specified phase."
+          },
+          {
+            "rule": "702.10b",
+            "quote": "If a creature has haste, it can attack even if it hasn’t been controlled by its controller continuously since their most recent turn began."
+          }
+        ]
+      },
+      {
+        "n": 13,
+        "action": "The three Derevi triggers now resolve one at a time; you untap three of your five tapped lands. Answer to (b): three triggers untap three lands — two SHORT of a second {W}{U}{B}{R}{G} activation on their own.",
+        "effect": "Combat 1's triggers alone cannot refund the activation; the first activation was funded by the five lands that were already untapped before combat. Ceiling for the step is 5 taps + 3 untaps = 8 mana, of which 5 were spent. You end the step with 3 untapped lands. Unspent mana is then lost as the step ends. NOTE: steps 10–13 walk the NAIVE line — tap all five lands at once, which costs 1 damage to City of Brass and 1 life to Mana Confluence. Step 23 shows a strictly better line on this same board that pays 0 life and still leaves 3 untapped lands, so the 2 life spent here is a choice, not a floor.",
+        "citations": [
+          {
+            "rule": "608.1",
+            "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+          },
+          {
+            "rule": "701.26b",
+            "quote": "Only tapped permanents can be untapped."
+          },
+          {
+            "rule": "106.4",
+            "quote": "Each player’s mana pool empties at the end of each step and phase, and the player is said to lose this mana."
+          },
+          {
+            "rule": "500.5",
+            "quote": "Then any unspent mana left in a player’s mana pool empties."
+          }
+        ]
+      },
+      {
+        "n": 14,
+        "action": "End of combat step ends: all creatures are removed from combat. The additional combat phase begins with its own beginning of combat step.",
+        "effect": "“Attacking” does not carry over. Every creature must be declared as an attacker again in the new declare attackers step — which is exactly why the token pool converts into new Najeela triggers each combat — and the defending player is determined again (step 2).",
+        "citations": [
+          {
+            "rule": "511.3",
+            "quote": "As soon as the end of combat step ends, all creatures, battles, and planeswalkers are removed from combat."
+          },
+          {
+            "rule": "506.1",
+            "quote": "The combat phase has five steps, which proceed in order: beginning of combat, declare attackers, declare blockers, combat damage, and end of combat."
+          },
+          {
+            "rule": "508.1",
+            "quote": "First, the active player declares attackers. This turn-based action doesn’t use the stack."
+          }
+        ]
+      },
+      {
+        "n": 15,
+        "action": "COMBAT 2 - declare attackers: declare Najeela, Derevi and token A (3 attackers), all attacking opponent A. Warriors declared = 2 (Najeela + token A) -> 2 Najeela triggers -> 2 new tokens (B, C), tapped and attacking.",
+        "effect": "Token A is legal to declare because Najeela's ability untapped it and gave it haste. Tokens B and C were put onto the battlefield attacking, so they generate no triggers this combat. Attacking creatures, combat 2 = 5 (Najeela, Derevi, A, B, C).",
+        "citations": [
+          {
+            "rule": "508.1a",
+            "quote": "The chosen creatures must be untapped, they can’t also be battles, and each one must either have haste or have been controlled by the active player continuously since the turn began."
+          },
+          {
+            "rule": "802.3",
+            "quote": "As the attacking player declares each attacking creature, they choose a defending player, a planeswalker controlled by a defending player, or a battle protected by a defending player for it to attack."
+          },
+          {
+            "rule": "508.4",
+            "quote": "Such creatures are “attacking” but, for the purposes of trigger events and effects, they never “attacked.”"
+          }
+        ]
+      },
+      {
+        "n": 16,
+        "action": "COMBAT 2 combat damage: 3 + 2 + 1 + 1 + 1 = 8 damage to opponent A (40-6=34 -> 26). Najeela, Derevi and token A have lifelink from the first activation, so you gain 6 life. Derevi triggers = 5.",
+        "effect": "Derevi trigger count equals the number of your creatures that dealt combat damage to a player = 5. Tokens B and C do not have lifelink yet (they were created after the grant), so the lifelink cohort lags the damage by one combat.",
+        "citations": [
+          {
+            "rule": "603.2c",
+            "quote": "However, it can trigger repeatedly if one event contains multiple occurrences."
+          },
+          {
+            "rule": "702.15b",
+            "quote": "Damage dealt by a source with lifelink causes that source’s controller, or its owner if it has no controller, to gain that much life (in addition to any other results that damage causes)."
+          },
+          {
+            "rule": "510.2",
+            "quote": "all combat damage that’s been assigned is dealt simultaneously"
+          }
+        ]
+      },
+      {
+        "n": 17,
+        "action": "COMBAT 2 mana check (the break-even point) — THE MECHANISM SPELLED OUT. With the 5 Derevi triggers on the stack, repeat this cycle once per trigger: (i) holding priority, tap a land for mana — a mana ability, so it resolves immediately and the mana sits in your pool; (ii) pass priority; if that tap was City of Brass, its trigger is already on top and resolves first for 1 damage to you, then the next pass resolves the top Derevi trigger, untapping that same land; (iii) you receive priority again the moment it resolves; (iv) tap the now-untapped land again. Mana accumulated this way does not drain between iterations because the pool only empties at end of step.",
+        "effect": "Each of the N triggers is therefore worth up to one extra mana within the one damage step, without ever needing more than one land: 5 triggers = up to 5 extra mana = exactly Najeela's {W}{U}{B}{R}{G}. So FROM COMBAT 2 ONWARD THE LOOP PAYS FOR ITSELF with no lands carried in (in fact 3 untapped lands are carried in from combat 1, giving 3 + 5 = 8 available against a 5 cost, leaving 3 untapped again). The interleave is legal because the stack resolves one object at a time and the active player gets priority after each resolution — you are never forced to let the whole stack empty first. Second activation -> untap all attackers, grant trample/lifelink/haste (now including B and C), add combat phase 3.",
+        "citations": [
+          {
+            "rule": "608.1",
+            "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+          },
+          {
+            "rule": "405.2",
+            "quote": "The stack keeps track of the order that spells and/or abilities were added to it. Each time an object is put on the stack, it’s put on top of all objects already there."
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          },
+          {
+            "rule": "605.3b",
+            "quote": "An activated mana ability doesn’t go on the stack, so it can’t be targeted, countered, or otherwise responded to. Rather, it resolves immediately after it is activated."
+          },
+          {
+            "rule": "106.4",
+            "quote": "From there, it can be used to pay costs immediately, or it can stay in the player’s mana pool as unspent mana."
+          },
+          {
+            "rule": "701.26a",
+            "quote": "To tap a permanent, turn it sideways from an upright position. Only untapped permanents can be tapped."
+          },
+          {
+            "rule": "118.3",
+            "quote": "A player can’t pay a cost without having the necessary resources to pay it fully."
+          },
+          {
+            "rule": "500.8",
+            "quote": "Some effects can add phases to a turn. They do this by adding the phases directly after the specified phase."
+          },
+          {
+            "rule": "117.3c",
+            "quote": "If a player has priority when they cast a spell, activate an ability, or take a special action, that player receives priority afterward."
+          }
+        ]
+      },
+      {
+        "n": 18,
+        "action": "COMBAT 3 - declare attackers: all 5 creatures are declared (Najeela, Derevi, A, B, C). Warriors declared = 4 -> 4 Najeela triggers -> 4 new tokens. Attacking creatures, combat 3 = 9.",
+        "effect": "Combat damage = 3 + 2 + 1x7 = 12 (opponent A: 26 -> 14); life gained from the 5 lifelinkers = 8. Derevi triggers = 9, against a fixed 5-mana cost: a surplus of 4 untaps even before counting the 3 lands carried in. The loop is now strictly growing, not merely break-even.",
+        "citations": [
+          {
+            "rule": "603.2c",
+            "quote": "However, it can trigger repeatedly if one event contains multiple occurrences."
+          },
+          {
+            "rule": "510.1b",
+            "quote": "An unblocked creature assigns its combat damage to the player, planeswalker, or battle it’s attacking."
+          },
+          {
+            "rule": "508.3a",
+            "quote": "An ability that reads “Whenever [a creature] attacks, . . .” triggers if that creature is declared as an attacker."
+          }
+        ]
+      },
+      {
+        "n": 19,
+        "action": "Recurrence (answer to c): with A = attacking creatures in a combat, every attacker except Derevi is a Warrior, so next combat A' = A + (A - 1) = 2A - 1. Attackers: 3, 5, 9, 17, 33 ... Derevi triggers per combat = A: 3, 5, 9, 17, 33 ... Cost per combat is constant at 5.",
+        "effect": "Triggers first reach the 5-mana cost in COMBAT 2 (5 = 5, break-even) and exceed it from COMBAT 3 (9 > 5). Combat 1 is the only combat that must be funded from outside the loop (3 triggers < 5), and it is funded by the five lands untapped before combat. The loop is therefore self-sustaining from combat 2 and runaway from combat 3.",
+        "citations": [
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+          },
+          {
+            "rule": "508.3a",
+            "quote": "Such abilities won’t trigger if a creature is put onto the battlefield attacking."
+          },
+          {
+            "rule": "118.3",
+            "quote": "A player can’t pay a cost without having the necessary resources to pay it fully."
+          }
+        ]
+      },
+      {
+        "n": 20,
+        "action": "Damage per combat = A + 3 (Najeela 3 + Derevi 2 + (A-2) 1/1s): 6, 8, 12, 20, 36 ... Cumulative on opponent A: 6, 14, 26, 46. Opponent A is at -6 the instant combat 4's damage is dealt and loses the game as a state-based action.",
+        "effect": "Nobody gets priority in between: state-based actions are performed the moment a player would receive priority, before that player actually does, so opponent A leaves the game before you could respond and before the Derevi and City of Brass triggers from that damage are put on the stack. Trample is irrelevant here (no blockers) but makes blocks non-answers.",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event"
+          },
+          {
+            "rule": "104.3b",
+            "quote": "If a player’s life total is 0 or less, that player loses the game the next time a player would receive priority."
+          },
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          }
+        ]
+      },
+      {
+        "n": 21,
+        "action": "CRITICAL CHECK: what happens to the 17 creatures attacking opponent A now that opponent A has left the game mid-combat? Answer: nothing. They are NOT removed from combat, so Najeela's activation later in this same damage step still finds 17 attacking creatures to untap and give haste.",
+        "effect": "506.4's list of removal causes is exhaustive and the defending player leaving the game is not on it: a permanent is removed from combat only if it leaves the battlefield, changes controller, phases out, is specifically removed by an effect, is an attacked planeswalker/battle that stops being one, or is an attacking/blocking creature that regenerates, stops being a creature, or becomes a battle. None applies. 508.1k keeps each declared attacker an attacking creature until it is removed from combat or the combat phase ends, and the multiplayer rules for a departing player do not add a removal: 800.4e only stops future combat damage assignment (irrelevant — this combat's damage is already dealt), and 800.4a/800.4b only touch objects owned or controlled by the departed player. Your tokens are yours, so 800.4b's “no token is created” clause never bites. So: Derevi's 17 triggers and the City of Brass triggers go on the stack, you interleave taps and untaps (step 17), pay {W}{U}{B}{R}{G}, and Najeela's ability untaps all 17 attackers, grants haste, and adds combat phase 5. Had removal occurred, the untap would have found nothing, the 8 tokens made this combat would be hasteless, and combat 5 would be empty — the line works precisely because removal does not occur.",
+        "citations": [
+          {
+            "rule": "506.4",
+            "quote": "A permanent is removed from combat if it leaves the battlefield, if its controller changes, if it phases out, if an effect specifically removes it from combat, if it’s a planeswalker that’s being attacked and stops being a planeswalker, if it’s a battle that’s being attacked and stops being a battle, or if it’s an attacking or blocking creature that regenerates (see rule 701.19), stops being a creature, or becomes a battle."
+          },
+          {
+            "rule": "508.1k",
+            "quote": "It remains an attacking creature until it’s removed from combat or the combat phase ends, whichever comes first."
+          },
+          {
+            "rule": "800.4",
+            "quote": "Unlike two-player games, multiplayer games can continue after one or more players have left the game."
+          },
+          {
+            "rule": "800.4e",
+            "quote": "If combat damage would be assigned to a player who has left the game, that damage isn’t assigned."
+          },
+          {
+            "rule": "800.4a",
+            "quote": "When a player leaves the game, all objects (see rule 109) owned by that player leave the game and any effects which give that player control of any objects or players end."
+          },
+          {
+            "rule": "800.4b",
+            "quote": "If a token would be created under the control of a player who has left the game, no token is created."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event"
+          }
+        ]
+      },
+      {
+        "n": 22,
+        "action": "COMBAT 5: after combat 4's end of combat step every creature is removed from combat, the added combat phase begins with a fresh beginning of combat step, and at declare attackers you DECLARE 17 attackers — Najeela, Derevi and the 15 tokens, the same 17 creatures step 21 kept in combat — each attacking opponent B.",
+        "effect": "COUNT, precisely: 17 creatures are DECLARED as attackers. 16 of them are Warriors (Najeela plus the 15 tokens; Derevi is a Bird Wizard), so Najeela triggers 16 times and 16 new tokens are put onto the battlefield tapped and attacking. Those 16 tokens are NOT declared attackers, so 508.1a's untapped/haste requirement never applies to them; they are attacking because they were put onto the battlefield attacking, and their controller chooses the defending player as they enter — opponent B. That gives 33 attacking creatures in combat 5 (17 declared + 16 put onto the battlefield attacking), which is the 33 of the A' = 2A - 1 recurrence. The 17 DECLARED creatures are each legal to declare because Najeela's combat-4 activation untapped them and gave them haste until end of turn. Redirecting at opponent B is sound because the Commander default is the attack multiple players option (step 2): all opponents are defending players and you choose the defending player per creature as you declare it. Under attack left or attack right this redirect would be unavailable — there the defending player is dictated by the option rather than chosen. Combat 5 deals 33 + 3 = 36 to opponent B (40 → 4); combat 6 declares 33, adds 32 tokens for 65 attackers and 68 damage, and kills them.",
+        "citations": [
+          {
+            "rule": "511.3",
+            "quote": "As soon as the end of combat step ends, all creatures, battles, and planeswalkers are removed from combat."
+          },
+          {
+            "rule": "508.1a",
+            "quote": "The active player chooses which creatures that they control, if any, will attack. The chosen creatures must be untapped, they can’t also be battles, and each one must either have haste or have been controlled by the active player continuously since the turn began."
+          },
+          {
+            "rule": "508.4",
+            "quote": "If a creature is put onto the battlefield attacking, its controller chooses which defending player, planeswalker a defending player controls, or battle a defending player protects it’s attacking as it enters the battlefield (unless the effect that put it onto the battlefield specifies what it’s attacking)."
+          },
+          {
+            "rule": "508.3a",
+            "quote": "Such abilities won’t trigger if a creature is put onto the battlefield attacking."
+          },
+          {
+            "rule": "802.2",
+            "quote": "Instead, all the attacking player’s opponents are defending players during the combat phase."
+          },
+          {
+            "rule": "802.3",
+            "quote": "As the attacking player declares each attacking creature, they choose a defending player, a planeswalker controlled by a defending player, or a battle protected by a defending player for it to attack."
+          },
+          {
+            "rule": "506.2a",
+            "quote": "Note that the choice may be dictated by the variant being played or the options chosen for it."
+          },
+          {
+            "rule": "903.2",
+            "quote": "The default multiplayer setup is the Free-for-All variant with the attack multiple players option and without the limited range of influence option."
+          },
+          {
+            "rule": "702.10b",
+            "quote": "If a creature has haste, it can attack even if it hasn’t been controlled by its controller continuously since their most recent turn began."
+          }
+        ]
+      },
+      {
+        "n": 23,
+        "action": "Loop status and the TRUE life cost. Both triggers are optional (“you may”), so this is a loop you choose to iterate rather than a mandatory one; you shortcut it to lethal. CORRECTION TO THE NAIVE LINE: the minimum life paid per combat is 0, not 2.",
+        "effect": "The set of actions can be repeated indefinitely and each iteration strictly increases attackers, damage and untaps, so no external resource is consumed faster than it is replenished. The only candidate drains are life: 1 damage per City of Brass tap (a triggered ability that uses the stack, once per tap — step 11) and 1 life per Mana Confluence tap (a cost). BOTH ARE AVOIDABLE ENTIRELY on the audited board of step 24. City of Brass's ability triggers only when that land becomes tapped, and Mana Confluence's life is paid only when its mana ability is activated — and activating a mana ability is never mandatory. So if you never tap those two lands, you never pay anything. You never have to: Command Tower produces one mana of any color in your commander's color identity, and this deck's commander is Sisay, Weatherlight Captain, whose color identity is all five colors, so Command Tower alone covers {B} — the one colour Plaza of Heroes cannot make. Plaza of Heroes' third mode makes one mana of any color among legendary permanents you control; the legendary permanents you control are Najeela (red) and Derevi (green/white/blue), an object being the colour of the mana symbols in its mana cost, so Plaza covers W, U, R and G with no spend restriction. The line: with the Derevi triggers on the stack, tap Plaza for {W}; pass; a Derevi trigger untaps Plaza; tap it for {U}; pass; a second trigger untaps it; tap it for {R}; pass; a third trigger untaps it; tap it for {G}; then tap Command Tower for {B}. Five taps, three untaps, {W}{U}{B}{R}{G} floating, all inside one combat damage step so the pool never empties — and neither City of Brass nor Mana Confluence was ever tapped. Combat 1 supplies EXACTLY the three Derevi triggers this needs; every later combat supplies five or more. The floor is therefore 0 life per combat, in every combat of the loop. The 2 life spent in steps 10–13 is the price of the naive tap-all-five line, not a lower bound; and even that is dwarfed by lifelink gains of 6, 8, 12 ... from combat 2 on. End state: Plaza and Command Tower tapped, City of Brass, Mana Confluence and Exotic Orchard untapped — the same 3 untapped lands the naive line leaves.",
+        "citations": [
+          {
+            "rule": "732.1b",
+            "quote": "Occasionally the game gets into a state in which a set of actions could be repeated indefinitely (thus creating a “loop”)."
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          },
+          {
+            "rule": "118.3c",
+            "quote": "Activating mana abilities is not mandatory, even if paying a cost is."
+          },
+          {
+            "rule": "118.1",
+            "quote": "A cost is an action or payment necessary to take another action or to stop another action from taking place."
+          },
+          {
+            "rule": "903.4",
+            "quote": "The color identity of a card is the color or colors of any mana symbols in that card’s mana cost or rules text, plus any colors defined by its characteristic-defining abilities"
+          },
+          {
+            "rule": "202.2",
+            "quote": "An object is the color or colors of the mana symbols in its mana cost, regardless of the color of its frame."
+          },
+          {
+            "rule": "701.26a",
+            "quote": "To tap a permanent, turn it sideways from an upright position. Only untapped permanents can be tapped."
+          },
+          {
+            "rule": "701.26b",
+            "quote": "Only tapped permanents can be untapped."
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          },
+          {
+            "rule": "106.4",
+            "quote": "Each player’s mana pool empties at the end of each step and phase, and the player is said to lose this mana."
+          },
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 24,
+        "action": "VERDICT on the claim under test (answer to d): the loop is real and lethal, but it is NOT a self-contained two-card infinite. Najeela + Derevi produce no mana; the engine is 'two cards + a WUBRG-capable mana base + an unblocked attack'.",
+        "effect": "Precise requirements: (1) five mana of five DIFFERENT colors every single combat, re-produced each time because mana pools empty each step; (2) mana permanents that Derevi's untaps can recycle — Derevi untaps one target permanent per trigger and only tapped permanents can be untapped, so the untaps are worth mana only if you control sources covering W, U, B, R and G; (3) at least 5 of your creatures connecting with a player each combat (combat 1 yields only 3 triggers, so the first activation must be pre-funded); (4) Najeela on the battlefield at each declare-attackers and Derevi on the battlefield at each combat damage step. BOARD AUDIT, as literally listed: opponents control no lands, so Exotic Orchard produces nothing; Plaza of Heroes cannot produce {B}, because its any-color mode is restricted to casting legendary spells and so cannot pay an activation cost, and its third mode is limited to colours among legendary permanents you control — Najeela (red) and Derevi (green/white/blue), i.e. W, U, R, G. That leaves four usable lands: Command Tower, which makes any colour in Sisay's five-colour identity and therefore covers {B}; Plaza, covering W/U/R/G; and City of Brass and Mana Confluence, which each make any colour at a cost of 1 life. CONCLUSION ON THE STIPULATION: Command Tower plus Plaza ALONE cover {W}{U}{B}{R}{G} in five taps requiring three Plaza untaps, and combat 1 supplies exactly three Derevi triggers while every later combat supplies five or more (step 23). City of Brass and Mana Confluence therefore never have to be tapped at all. The scenario's stipulation that all five lands make any of WUBRG is consequently not load-bearing in any respect — it does not enable the loop and it does not even change the life paid, because the true minimum is 0 per combat on the audited board and 0 per combat under the stipulation alike.",
+        "citations": [
+          {
+            "rule": "106.4",
+            "quote": "Each player’s mana pool empties at the end of each step and phase, and the player is said to lose this mana."
+          },
+          {
+            "rule": "701.26b",
+            "quote": "Only tapped permanents can be untapped."
+          },
+          {
+            "rule": "118.3",
+            "quote": "A player can’t pay a cost without having the necessary resources to pay it fully."
+          },
+          {
+            "rule": "903.4",
+            "quote": "The Commander variant uses color identity to determine what cards can be in a deck with a certain commander."
+          },
+          {
+            "rule": "202.2",
+            "quote": "An object is the color or colors of the mana symbols in its mana cost, regardless of the color of its frame."
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Najeela + Derevi is a genuine, deterministic, unbounded combat loop, but not a self-contained two-card infinite: it needs a mana base that can produce {W}{U}{B}{R}{G} every combat and at least five creatures connecting with a player. Combat 1: 2 attackers declared, 1 Warrior declared, 1 Najeela trigger, 1 token (tokens put onto the battlefield attacking never 'attacked', so they never re-trigger Najeela in the combat that made them); 3 attackers, 6 damage, 3 Derevi triggers -- 2 short of the 5-mana activation, which is instead paid by the 5 pre-combat untapped lands. Combat 2: 3 declared, 2 Warriors, 2 new tokens, 5 attackers, 8 damage, 5 Derevi triggers = exactly the 5-mana cost -> BREAK-EVEN; the loop becomes self-sustaining on combat 2, via tap -> pass priority -> Derevi untap resolves -> retap inside one damage step. Combat 3: 5 declared, 4 Warriors, 4 new tokens, 9 attackers, 12 damage, 9 triggers -> surplus of 4; runaway from here. Attackers follow A' = 2A - 1 (3, 5, 9, 17, 33 ...) and Derevi triggers equal attacker count, while the cost stays fixed at 5, so the margin only widens. Damage per combat = A + 3 (6, 8, 12, 20, 36 ...): opponent A dies as a state-based action during combat 4's damage step, and because a defending player leaving the game is not one of CR 506.4's removal causes the 17 attackers stay in combat, so that combat's Najeela activation still untaps them and adds combat 5. Each added combat phase has its own beginning of combat and declare attackers step, and Commander's default attack multiple players option makes every opponent a defending player, so the army is legally redirected at opponent B: 17 creatures declared in combat 5, 16 Warrior triggers, 33 attacking for 36, and 68 in combat 6, which kills them. The loop's life cost is 0 per combat at the floor — Command Tower plus Plaza of Heroes cover all five colours with three Plaza untaps, so City of Brass and Mana Confluence never need to be tapped.",
+      "you": {
+        "life": "40 at the start; the true floor is 0 life per combat — Command Tower (any colour in Sisay's WUBRG identity, so {B}) plus Plaza of Heroes' third mode (W/U/R/G off Najeela and Derevi) cover {W}{U}{B}{R}{G} in five taps needing only three Plaza untaps, and combat 1 supplies exactly three Derevi triggers (five or more thereafter), so City of Brass and Mana Confluence never have to be tapped at all. The 2 life per combat in the walked line (1 damage from City of Brass's trigger, 1 life to Mana Confluence's cost) is the price of the naive tap-all-five line, not a lower bound. Either way, massively offset by lifelink from combat 2 onward (+6, +8, +12 ...); never in danger",
+        "battlefield": "Najeela, the Blade-Blossom; Derevi, Empyrial Tactician; a doubling pool of 1/1 white Warrior tokens (1 after combat 1, 3 after combat 2, 7 after combat 3, 15 after combat 4); the 5 lands, cycling tapped/untapped via Derevi triggers — though the 0-life line needs only two of them, Plaza of Heroes (tapped and untapped repeatedly for W/U/R/G) and Command Tower (one tap for {B}), leaving City of Brass, Mana Confluence and Exotic Orchard untouched",
+        "combats_taken": "unbounded (one additional combat phase per Najeela activation); 4 combats suffice to kill the first opponent, 6 to kill both",
+        "mana_per_combat": "5 spent, generated from untapped lands plus one extra tap per Derevi untap trigger (tap, pass priority, let the trigger untap, retap — all inside one damage step); surplus from combat 2 onward",
+        "loop_status": "self-sustaining from combat 2 (5 triggers = 5 mana cost), strictly growing from combat 3 (9 triggers vs 5 mana cost)"
+      },
+      "opponents": [
+        {
+          "label": "Opponent A (defending player chosen in combat 1)",
+          "life_by_combat": [
+            34,
+            26,
+            14,
+            -6
+          ],
+          "result": "loses the game as a state-based action during combat 4's combat damage step (40 - 6 - 8 - 12 - 20); the 17 creatures attacking them are NOT removed from combat when they leave (CR 506.4), so the loop continues uninterrupted"
+        },
+        {
+          "label": "Opponent B",
+          "life_by_combat": [
+            40,
+            40,
+            40,
+            40,
+            4,
+            -64
+          ],
+          "result": "dies by combat 6. In combat 5 you DECLARE 17 attackers (Najeela, Derevi and the 15 tokens) at opponent B; 16 of them are Warriors, so Najeela triggers 16 times and 16 more tokens are put onto the battlefield attacking (those 16 are not declared attackers, so the untapped/haste requirement of 508.1a does not apply to them — they attack opponent B under 508.4). That is 33 attacking creatures for 36 damage (40 → 4), then 33 declared in combat 6 for 65 attackers and 68 damage; could be killed earlier by splitting attackers"
+        }
+      ],
+      "claim_under_test": {
+        "verdict": "partially accurate",
+        "true_part": "Najeela + Derevi on the battlefield, with a normal five-color Commander mana base and an open attack, is a deterministic loop that generates unbounded combat phases, unbounded tokens and unbounded damage, and it becomes self-funding on the second combat. As a bracket-4 driver the signal is correct.",
+        "false_part": "It is not a two-card infinite in isolation. The pair produces no mana; each iteration costs five mana of five different colors that must be re-produced every combat because mana pools empty each step, and Derevi's untaps only convert to mana through mana permanents you separately control. Combat 1 produces only 3 untaps, so the first activation must be pre-funded from outside the loop.",
+        "minimum_external_requirements": "Mana sources covering W, U, B, R and G that Derevi can untap and retap; enough untapped mana before combat 1 to pay the first {W}{U}{B}{R}{G}; at least five of your creatures dealing combat damage to a player per combat from combat 2 onward; both creatures surviving each combat."
+      }
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "iterations": 3,
+    "note": "All 24 steps re-audited against full rule text across three passes; card oracle text confirmed against cards.json. The three iteration-2 failures are resolved: the life floor is now correctly stated as 0 (CR 118.3c - activating mana abilities is never mandatory - carries the never-tap-City-of-Brass claim, and the checker independently re-derived the Plaza/Command Tower line); step 22 now reads 17 declared attackers with the 16 tokens attributed to 508.4 rather than 508.1a; and step 11 commits to line L2 with 405.6c establishing that priority is not returned after a cost-payment mana ability. Missing-step audit found no omissions.",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "506.1",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 1,
+        "rule": "500.1",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 2,
+        "rule": "903.2",
+        "status": "supported",
+        "note": "Full rule is Commander-scoped and states the attack multiple players default verbatim."
+      },
+      {
+        "step": 2,
+        "rule": "806.2b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 2,
+        "rule": "802.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 2,
+        "rule": "506.2a",
+        "status": "supported",
+        "note": "Rescoping is correct: the 'Unless all the attacking player's opponents automatically become defending players' clause excludes the turn-based choice under attack multiple players; the parenthetical carries the 'dictated' branch."
+      },
+      {
+        "step": 2,
+        "rule": "803.1",
+        "status": "supported",
+        "note": "Establishes the attack left/right branch exists; the 'fixed defending player' detail sits in 803.1a, but the claim as made is carried by 506.2a's parenthetical."
+      },
+      {
+        "step": 2,
+        "rule": "506.1",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 3,
+        "rule": "508.1a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 3,
+        "rule": "802.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 3,
+        "rule": "508.1f",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 3,
+        "rule": "508.1k",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "508.3a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "603.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 5,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 5,
+        "rule": "111.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 5,
+        "rule": "508.4",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "508.3a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "508.4",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 7,
+        "rule": "509.1a",
+        "status": "supported",
+        "note": "Rule genuinely makes blocking a defending-player choice from creatures they control; with an empty board no block can be declared."
+      },
+      {
+        "step": 7,
+        "rule": "510.1b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 7,
+        "rule": "510.1a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 8,
+        "rule": "510.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 8,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 8,
+        "rule": "119.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 9,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 9,
+        "rule": "603.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 9,
+        "rule": "115.1d",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 10,
+        "rule": "117.1b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 10,
+        "rule": "602.2b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 10,
+        "rule": "601.2h",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 10,
+        "rule": "118.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 10,
+        "rule": "605.3a",
+        "status": "supported",
+        "note": "Explicitly covers activating mana abilities mid-activation for a mana payment."
+      },
+      {
+        "step": 10,
+        "rule": "605.3b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 10,
+        "rule": "405.6c",
+        "status": "supported",
+        "note": "Rule conditions priority return on having had priority before the mana ability; during cost payment that condition fails, and no rule grants priority mid-payment (601.2i/602.2a return it only on completion)."
+      },
+      {
+        "step": 10,
+        "rule": "405.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 11,
+        "rule": "603.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 11,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Quoted 'becomes the topmost object on the stack' is verbatim and is exactly what puts the City of Brass trigger above Najeela's ability."
+      },
+      {
+        "step": 11,
+        "rule": "117.3c",
+        "status": "supported",
+        "note": "Correctly applied to the Najeela activation and correctly withheld from the cost-payment land taps."
+      },
+      {
+        "step": 11,
+        "rule": "405.6c",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 11,
+        "rule": "405.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 11,
+        "rule": "605.1b",
+        "status": "supported",
+        "note": "City of Brass's trigger cannot add mana, so it fails the third criterion and uses the stack."
+      },
+      {
+        "step": 11,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 11,
+        "rule": "118.1",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 12,
+        "rule": "701.26b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 12,
+        "rule": "506.4b",
+        "status": "supported",
+        "note": "Verbatim and on point for Najeela and Derevi; token A, never a declared attacker, is covered by 508.4's 'remain attacking creatures' clause cited in the same step."
+      },
+      {
+        "step": 12,
+        "rule": "508.4",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 12,
+        "rule": "500.8",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 12,
+        "rule": "702.10b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 13,
+        "rule": "608.1",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 13,
+        "rule": "701.26b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 13,
+        "rule": "106.4",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 13,
+        "rule": "500.5",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 14,
+        "rule": "511.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 14,
+        "rule": "506.1",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 14,
+        "rule": "508.1",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 15,
+        "rule": "508.1a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 15,
+        "rule": "802.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 15,
+        "rule": "508.4",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 16,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 16,
+        "rule": "702.15b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 16,
+        "rule": "510.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 17,
+        "rule": "608.1",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 17,
+        "rule": "405.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 17,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 17,
+        "rule": "605.3b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 17,
+        "rule": "106.4",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 17,
+        "rule": "701.26a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 17,
+        "rule": "118.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 17,
+        "rule": "500.8",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 17,
+        "rule": "117.3c",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 18,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 18,
+        "rule": "510.1b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 18,
+        "rule": "508.3a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 19,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 19,
+        "rule": "508.3a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 19,
+        "rule": "118.3",
+        "status": "supported",
+        "note": "The 'funded by the five lands untapped before combat' phrasing describes the naive line only; step 13 forward-references the step 23 correction, so the substantive claim (combat 1 needs external funding) stands."
+      },
+      {
+        "step": 20,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 20,
+        "rule": "117.5",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 20,
+        "rule": "104.3b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 20,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Confirms SBAs are performed before waiting triggers are put on the stack, which is exactly the ordering step 20 asserts."
+      },
+      {
+        "step": 21,
+        "rule": "506.4",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 21,
+        "rule": "508.1k",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 21,
+        "rule": "800.4",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 21,
+        "rule": "800.4e",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 21,
+        "rule": "800.4a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 21,
+        "rule": "800.4b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 21,
+        "rule": "117.5",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 22,
+        "rule": "511.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 22,
+        "rule": "508.1a",
+        "status": "supported",
+        "note": "Correctly scoped to the 17 declared attackers; the step expressly excludes the 16 put onto the battlefield attacking."
+      },
+      {
+        "step": 22,
+        "rule": "508.4",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 22,
+        "rule": "508.3a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 22,
+        "rule": "802.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 22,
+        "rule": "802.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 22,
+        "rule": "506.2a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 22,
+        "rule": "903.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 22,
+        "rule": "702.10b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 23,
+        "rule": "732.1b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 23,
+        "rule": "603.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 23,
+        "rule": "118.3c",
+        "status": "supported",
+        "note": "Rule text genuinely establishes that no mana ability is ever compulsory, which is the whole of the never-tap-City-of-Brass claim."
+      },
+      {
+        "step": 23,
+        "rule": "118.1",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 23,
+        "rule": "903.4",
+        "status": "supported",
+        "note": "Definitional sentence quoted; Sisay's {2}{W} cost plus {W}{U}{B}{R}{G} rules text yields the five-colour identity Command Tower keys off."
+      },
+      {
+        "step": 23,
+        "rule": "202.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 23,
+        "rule": "701.26a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 23,
+        "rule": "701.26b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 23,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 23,
+        "rule": "106.4",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 23,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 23,
+        "rule": "119.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 24,
+        "rule": "106.4",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 24,
+        "rule": "701.26b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 24,
+        "rule": "118.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 24,
+        "rule": "903.4",
+        "status": "supported",
+        "note": "Quoted fragment is the deck-construction sentence, but the full rule defines color identity, which is what the Command Tower claim needs."
+      },
+      {
+        "step": 24,
+        "rule": "202.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 24,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": ""
+      }
+    ],
+    "missing_steps": []
+  }
+}

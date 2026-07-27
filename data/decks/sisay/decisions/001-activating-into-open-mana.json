@@ -1,0 +1,79 @@
+{
+  "id": "001",
+  "slug": "activating-into-open-mana",
+  "deck": "sisay",
+  "kind": "decision",
+  "title": "Three colours up, Dimir holding four: activate Sisay now, at their end step, or harden the ladder first?",
+  "scenario": {
+    "board": {
+      "you": "Turn 6, your precombat main. Battlefield: Sisay, Weatherlight Captain (cast on turn 3 — the goldfish's single most common line, 8,028 of 10,000 seeded iterations; mean 2.96, 99.1% by turn 6), Katilda, Dawnhart Prime (green/white 1/1), Lotho, Corrupt Shirriff (white/black 2/1), Bloom Tender, Mox Amber, and six lands including Hallowed Fountain and Sacred Foundry. Colours among your OTHER legendary permanents: white, green, black — three — so Sisay is a 5/5 and her gate reads 'mana value less than 5', which is 28 of the deck's 33 fetchable legendary permanents. You can pay {W}{U}{B}{R}{G} exactly once this turn: Bloom Tender covers {W}{B}{G} ('For each color among permanents you control, add one mana of that color' — and green, white and black are the only colours among your permanents, which is also why Mox Amber cannot make {U} or {R} on this board), Hallowed Fountain covers {U}, Sacred Foundry covers {R}. Four lands and Mox Amber stay open afterwards. Hand: Kodama of the West Tree (mono-green, mana value 3), two lands. Goldfish mean available mana at turn 6 is 5.87 — you are paying a five-pip cost out of roughly six mana, which is the whole reason Bloom Tender is on the battlefield.",
+      "table": "Player 2 (Dimir control, 36 life) has four lands untapped including two blue sources, countered a spell two turns ago and has cast nothing since; assume one instant-speed removal spell and one counterspell in hand (stated archetypal assumption). Player 3 (Boros aggro, 27 life) is tapped out after attacking Player 4 with four creatures. Player 4 (Simic ramp, 40 life, nine lands, a visible draw engine) owns the long game if nobody interferes, and sits immediately before you in turn order. You are at 38 and have not been attacked."
+    },
+    "question": "Shalai, Voice of Plenty is mana value 4 — legal right now, one rung under your power — and she would give you, your planeswalkers and every OTHER creature you control hexproof, which permanently blanks the 'shrink the ladder in response' attack. But Sisay's power is read when the ability resolves, so the Dimir player can kill Katilda mid-activation and put Shalai out of reach. Do you activate now, hold the five pips until the end step before your turn, or spend this turn making the ladder redundant first?"
+  },
+  "branches": [
+    {
+      "choice": "Activate now in your main phase and decide the fetch on resolution",
+      "line": "Tap Bloom Tender for {W}{B}{G}, Hallowed Fountain for {U}, Sacred Foundry for {R}, activate. Sisay's ability names no target, so nothing is chosen on announcement — you search only as it resolves. If it resolves with Sisay at 5 power, take Shalai, Voice of Plenty and the ladder becomes hexproof for the rest of the game. If the Dimir player kills Katilda in response, Sisay is a 4/4 (white and black remain, on Lotho alone), the gate becomes 'mana value less than 4', and you take Kutzil, Malamet Exemplar or Thalia, Heretic Cathar out of the 23 still legal. Four lands and Mox Amber remain open either way; play the land after the ability resolves.",
+      "signals": "Spending all five colours in your own main phase says 'the engine is live and I intend to fire it every turn' — but that is a thing the table already assumes about a resolved Sisay. The louder signal is which card you take: Shalai reads 'my commander is my deck, pre-answer her'; Thalia reads 'I am pointing hate at the Boros player'. Take the fetch that keeps the spotlight where it already is.",
+      "coalition_risk": "Moderate and mostly borrowed. Boros has the clock, Simic has the inevitability, and you are at 38 untouched. The activation is the tell, not the card — so the incremental risk of doing it now instead of in four hours' time is small.",
+      "coaching": "The decisive fact is that the greedy attempt is free. Sisay's activated ability has no targets and no modes chosen on announcement; the only thing that matters is what her power is when the effect is applied, and the game asks that question once, at resolution — so you are not committing to Shalai when you tap, you are committing to 'the best legend legal at whatever power survives'. There is no version of this where the fetch fizzles: if they shrink you, you search the same library with a lower ceiling and take a three-drop that you wanted anyway. Second, and this is the part good Dimir players get wrong from the other side: removal aimed at Sisay herself in response is the WRONG removal. Once activated, the ability is on the stack independently of her; killing her does not shrink the fetch, it just costs you the commander. The removal that actually beats you is aimed at Katilda — the sole green rung. Count that before you tap: identify which of your legends is the only source of a colour, and know that it, not Sisay, is the removal magnet. Third, the payload here is exceptional. Shalai gives hexproof to you and to every OTHER creature you control, which means every future colour rung is untargetable and the entire shrink attack is retired. That is worth taking a downgrade risk for, because the downgrade is a Kutzil, not a blank.",
+      "citations": [
+        {
+          "rule": "608.2h",
+          "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied. If the effect requires information from a specific object, including the source of the ability itself, the effect uses the current information of that object if it’s in the public zone it was expected to be in; if it’s no longer in that zone, or if the effect has moved it from a public zone to a hidden zone, the effect uses the object’s last known information."
+        },
+        {
+          "rule": "113.7a",
+          "quote": "Once activated or triggered, an ability exists on the stack independently of its source. Destruction or removal of the source after that time won’t affect the ability."
+        },
+        {
+          "rule": "701.23b",
+          "quote": "If a player is searching a hidden zone for cards with a stated quality, such as a card with a certain card type or color, that player isn’t required to find some or all of those cards even if they’re present in that zone."
+        }
+      ]
+    },
+    {
+      "choice": "Pass with {W}{U}{B}{R}{G} up and activate at the Simic player's end step",
+      "line": "Play the land, add nothing, pass holding all five colours. Watch Dimir's turn, Boros's turn and Simic's turn; activate Sisay in Player 4's end step so the fetched permanent is untapped and available on your turn and you have seen three seats spend their mana first. This is legal at any priority — Sisay's ability carries no timing restriction and no tap symbol.",
+      "signals": "Five untapped colour-producing sources next to an untapped Sisay is one of the loudest reads in the format — a Dimir player who is counting your mana already knows the activation is live and will simply hold their removal into your end-step window. Worse, this posture bluffs interaction you structurally cannot have: all six counterspells and both free protection instants in this deck are non-legendary and must be drawn, never fetched.",
+      "coalition_risk": "Low in optics, real in cost. You look patient, but you also spend a full rotation with an unprotected ladder, and holding WUBRG open at turn 6 means casting nothing else out of a mean 5.87 mana.",
+      "coaching": "The general principle behind this line is correct and it is why the line is tempting — wait until the last possible moment, commit at the end step before your own turn, make three seats spend their responses first. The exception that governs here is specific: waiting does not dodge the shrink attack at all. The removal answers the activation whenever the activation happens, so patience buys information, not safety — and the information you buy is worth less than the protection you delay, because the very card you are reaching for (Shalai) is what makes their removal stop working. There is a real version of this branch, though: take it when the fetch you want is a tax piece that only matters on THEIR turns anyway, or when you can already see the removal spell has been spent elsewhere in the rotation. And take it whenever Kutzil, Malamet Exemplar is on board — with 'Your opponents can't cast spells during your turn' the ordering inverts, and your own main phase becomes the safest priority window in the game.",
+      "citations": [
+        {
+          "rule": "117.1b",
+          "quote": "A player may activate an activated ability any time they have priority."
+        },
+        {
+          "rule": "602.5a",
+          "quote": "A creature’s activated ability with the tap symbol ({T}) or the untap symbol ({Q}) in its activation cost can’t be activated unless the creature has been under its controller’s control since the start of their most recent turn."
+        },
+        {
+          "rule": "strategy:tempo.sequencing",
+          "quote": "Commander correction: you are sequencing around three responders — count each seat's open mana separately, and prefer committing at the end step before your own turn so the table's chances to respond are spent"
+        },
+        {
+          "rule": "strategy:tempo.sequencing",
+          "quote": "Default spell timing is to wait until the last possible moment, with two standing exceptions: cast early when the spell informs the rest of your turn, and strike in the window when opponents are tapped out and cannot respond."
+        }
+      ]
+    },
+    {
+      "choice": "Cast Kodama of the West Tree first, then activate with green doubled",
+      "line": "Kodama ({2}{G}, mana value 3) off Mox Amber plus two lands, then activate with Bloom Tender, Hallowed Fountain and Sacred Foundry. Green is now sourced twice — kill Katilda and you still show green (Kodama), white and black (Lotho), so Sisay stays a 5/5 and Shalai stays legal. You end the turn tapped very low.",
+      "signals": "A fair three-mana green legend cast before the activation reads as ordinary development and gives the table nothing. This is the quietest of the three lines.",
+      "coalition_risk": "Low. Nobody re-ranks you for a 3/3 Spirit.",
+      "coaching": "The instinct is right and the execution is half a card short. You have hardened green and left black single-sourced on Lotho — and because the power question is answered at resolution, the Dimir player gets to look at your board and choose, so they will simply kill Lotho instead and you are back to a 4/4 with Shalai out of reach. Redundancy only defends the ladder when every colour is doubled, which two-colour bodies (Katilda, Kutzil, Kinnan, Lotho, Saffi, Kambal) do far more efficiently than mono-coloured ones. There is also a card-economy error hiding here: Kodama is mana value 3 and therefore already inside your 28 legal fetches. Spending a card from hand on a rung the tutor could have found is exactly backwards — 26 of this deck's 99 cards are non-legendary and permanently invisible to Sisay, including three of the six things that can pay her activation and every counterspell you own. Hand cards should be the ones she can't find.",
+      "citations": [
+        {
+          "rule": "608.2h",
+          "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied. If the effect requires information from a specific object, including the source of the ability itself, the effect uses the current information of that object if it’s in the public zone it was expected to be in; if it’s no longer in that zone, or if the effect has moved it from a public zone to a hidden zone, the effect uses the object’s last known information."
+        }
+      ]
+    }
+  ],
+  "recommendation": {
+    "choice": "Activate now in your main phase and decide the fetch on resolution",
+    "rationale": "Because the ability has no targets and the power question is asked once on resolution, reaching for Shalai costs you nothing you would not otherwise pay: the worst case is a 4/4 Sisay and a Kutzil instead of a Shalai, out of a still-23-card legal pool, while the Dimir player has spent a removal spell on a 1/1. The best case retires the deck's single worst structural vulnerability — every colour rung becomes untargetable and the shrink attack never comes up again. Holding to the end step buys information rather than protection and leaves the ladder naked for a full rotation; hardening with Kodama defends the wrong colour and spends a card from hand on something the tutor already reaches. Tier note for this issue: the rules quoted in these branches are verbatim, and this deck has exactly one checker-passed stack resolution — the Najeela plus Derevi combat loop — which does not cover this interaction. So treat the applied reading here — 'they shrink you by killing the rung, not the captain' — as coaching judgment, not a verified line."
+  }
+}

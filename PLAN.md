@@ -14,6 +14,7 @@ a **deck builder** that produces the deck in the first place.
 
 Live: [Vol. 001 — Goblin Storm](https://macrae.github.io/mana-map/manuals/goblin-storm.html)
 · [Vol. 002 — Hapatra](https://macrae.github.io/mana-map/manuals/hapatra.html)
+· [Vol. 003 — Sisay](https://macrae.github.io/mana-map/manuals/sisay.html)
 · [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
 ## Shipped
@@ -90,7 +91,49 @@ mentions the command zone when none of their pieces is actually this deck's comm
 |---|---|
 | `goblin-storm` | Hand-built, **published** as Vol. 001 — 5 verified stacks, 2 decision spreads |
 | `hapatra` | **Built by the v2 loop and published** as Vol. 002 — bracket 4, 1 verified stack, 0 decisions |
+| `sisay` | Hand-built, **published** as Vol. 003 — five-colour Sisay, Weatherlight Captain toolbox, bracket 4, **1 verified stack of 3 attempted**, 2 decision spreads |
 | `edgar-vampires` | **Built** by the deterministic builder (Mardu, bracket 3, floor 1); no brief-driven agent pass, not published |
+
+## Vol. 003 — Sisay, and the first issue to ship with a `fail`
+
+The deck is a toolbox whose currency is **access**, not cards: Sisay is 2/2 plus one per distinct
+colour among *other* legendary permanents, and her gate is mana value **strictly less than** her
+power. The ladder is **3 / 10 / 23 / 28 / 33 / 33** targets at power 2–7, and it tops out at four
+colours because nothing in the list exceeds mana value 5 — the fifth colour buys stats and zero
+access. The structural flaw is the headline: **26 of the 99 are non-legendary and permanently
+outside her reach**, including three of the six cards that can pay her `{W}{U}{B}{R}{G}`, all six
+counterspells, and all four Game Changers. She finds payoffs, never fuel or protection.
+
+**Three stacks attempted, one passed.** This is the first issue to publish with failures on the
+record, and Judge's Desk names them rather than hiding them:
+
+| # | Line | Verdict |
+|---|---|---|
+| 001 | The escalating tutor chain | **fail** at 3 iterations — one clause: a −X/−X death case priced at exactly −6/−6 when power can go below zero. Everything else verified, including the ladder arithmetic and the summoning-sickness answer |
+| 002 | Najeela + Derevi combat loop | **pass** at 3 iterations, 116 citations |
+| 003 | Relic of Legends vs Esika's granted ability | **fail** at 3 iterations — the mana ceiling is capped by trigger count, not tapped-source count, because a permanent can be re-tapped in the priority window between resolutions |
+
+**Stack 002 corrected the bracket engine in print.** The engine calls Najeela + Derevi a two-card
+infinite and uses it to justify floor 4. Verified verdict: **partially accurate**. A real,
+deterministic, unbounded loop — but not two cards, because the pair produces no mana and each
+iteration owes five pips again. Attackers follow `A' = 2A − 1` (3, 5, 9, 17, 33); combat 1 must be
+pre-funded, **combat 2 breaks even at exactly 5**, combat 3 runs away. It also established the loop
+costs **0 life, not 2** — Command Tower plus Plaza of Heroes cover all five colours, so City of
+Brass and Mana Confluence never need tapping (CR 118.3c: activating a mana ability is never
+mandatory). The floor of 4 holds regardless, forced by the four Game Changers alone.
+
+**Process notes worth keeping.** Three errors originated in *my* prompts, not the agents:
+a checker status vocabulary I invented (`partial`, which the validator rejects — the real set is
+`supported`/`unsupported`/`irrelevant`/`misquoted`, and collapsing them lost diagnostic
+resolution); a prose key the renderer does not read (`combo_line_intros` vs `combo_lines`, which
+would have rendered a TODO where the only verified line goes); and a wrong card fact propagated
+into the strategic frame — **Secluded Courtyard *can* pay the activation**, because it carries an
+"or activate an ability of a creature source of the chosen type" clause that Unclaimed Territory
+lacks. The writer caught the last one by preferring oracle text over the frame it was handed.
+
+Also: both decision spreads were authored before 002 cleared, and both asserted the deck had no
+checker-passed resolution. The magazine-editor caught the contradiction against its own cover at
+plan time and flagged it as blocking. Fixed in the artifacts, not papered over in the plan.
 
 ## Verified stack — hapatra
 
@@ -107,6 +150,23 @@ Verdict `pass` at **4 iterations** — `RESOLVE_MAX_ITERATIONS` is 3 and was del
 overridden, recorded in `checker.iteration_bound_override`. See the loop note below.
 
 ## Open
+
+**Sisay's two failed stacks are one or two named clauses from passing**, and the magazine-editor
+ranks 001 as the highest-value fix in the deck: resolving it would promote the ladder arithmetic
+and the summoning-sickness answer from ★ to ✓ across three departments at once. 003 needs a fresh
+resolve run rather than a patch — its defect is load-bearing, not clerical. Both were declined a
+fourth iteration deliberately; `RESOLVE_MAX_ITERATIONS` is 3 and the bound was left standing.
+
+**Nine of Sisay's ten combo lines are unverified.** The three worth resolving next are the other
+Najeela pairs — Faeburrow Elder, Esika, Selvala — all claimed as two-card infinites at bracket 3.
+Case A-002 hands them a ready-made test: unlike Derevi, each of those *does* produce mana, so the
+break-even arithmetic that refuted the two-card claim may resolve differently. Interesting either
+way. Also queued, from the writer: does a fetched Mikaeus arrive as a 0/0 (decides whether the
+cold-start pool is three cards or two), and which face an Esika put onto the battlefield arrives on.
+
+**Sisay's `goldfish_targets.json` has no target for the line the cover sells.** The issue can prove
+the loop works and cannot say how often it is available — the obvious reader question. A
+"Najeela + Derevi + five colour sources" target would close it.
 
 **Eleven unresolved combo lines on hapatra**, none of which may be stated as fact. Highest
 value first, per the magazine-editor's own gaps list:
@@ -157,11 +217,76 @@ without it. The design point worth keeping: **meta claims perish and strategy th
 doesn't**, so they want separate corpora with different invalidation, and every meta section
 needs an `as_of` date.
 
-**Phase 4, the frontend.** `viz/js/deck-builder.js` persists **raw row indices** into
-`projection_2d.json` — any pipeline refresh that changes card ordering silently
-reinterprets every saved deck as a different set of cards. That is a correctness bug and the
-one Phase 4 item worth doing on its own schedule. The viz was otherwise untouched by v2 and
-its build-mode payload dropped ~19 MB for free when `combo_graph.json` was split.
+**Frontend v2 — planned, not started.** Full plan in `docs/frontend-v2.md`; scope and the
+reasoning behind it below. Decisions taken: built for one expert user (depth over
+onboarding, no mobile or a11y push), a new builder surface with the map kept as-is,
+everything deterministic client-side with a handoff to Claude Code for the judgment layer,
+and the magazine's design system as the single design language.
+
+Three findings reframe it from "modernise the deck builder" to "the builder already exists,
+it's just in the wrong language":
+
+- **The whole deterministic core ports to JS.** `build_deck.py`, `bracket.py`,
+  `manabase.py`, `goldfish.py` and `validate_build.py` use numpy/pandas as convenience over
+  arrays and dicts, and every constant is a literal in `config.py`. Bracket floors would be
+  byte-identical; goldfish runs 10K iterations in ~200–500 ms in a Worker.
+- **The blocker is 476 KB.** The browser is missing exactly four card fields —
+  `game_changer`, `mechanical_tags`, `layout`, and `legal_commander` as a tri-state
+  (`reduce.py` collapses `banned` and `not_legal`, so the browser can't reproduce
+  `bracket.py`'s banned note). A positional `viz_index.json` in cards.csv row order closes
+  every gap.
+- **~1 MB of finished JSON per deck is committed and unrendered.** `build_plan.json` carries
+  every slot's six-component score and its runners-up with deltas; `bracket_report.json`
+  carries display-ready driver sentences. `combo_details.json` and `card_roles.json` are
+  tracked, served by Pages, and never fetched by anything.
+
+**The problem worth solving is the missing middle gear.** A curated 100-card deck costs
+~250 clicks today, each triggering a full `innerHTML` rebuild that resets scroll and
+collapses every expanded row; the alternative is ~12 clicks and no agency. The fix is a
+change of primitive — **the deck starts complete** and you review and swap slots, because
+the builder already fills 63 slots by role budget and already keeps scored alternates for
+each. A score delta of 0.01 is the signal that the scorer was nearly indifferent and the
+pilot's judgment is cheap. Two things give the loop consequence, both newly possible: live
+goldfish on every swap, and a live bracket floor that **names its driver** ("Bracket 4 —
+Mikaeus + Devoted Druid"), which nothing else can do without a rules-verified combo corpus.
+
+Milestones, sequenced **M1 → M2 → M6 → M3 → M4 → M5**:
+
+| | Scope |
+|---|---|
+| **M1** | `viz_index.json`; fetch `combo_details.json` + `card_roles.json`; **int8-quantise `embeddings.bin`** (16.3 MB gz → 4.3 MB, and it's currently loaded *twice*) |
+| **M2** | Port the five deterministic modules into a Worker |
+| **M3** | Port `design.py` tokens + component library to CSS — `power_meter`→bracket floor, `fast_facts`→spec sheet, `badge`→tier/role, `threat_box`→matchups; dark register, same tokens |
+| **M4** | `build.html` — slots as the primitive, incremental DOM, always-live diagnostics, map demoted from *only* input to *one* input |
+| **M5** | Handoff: emit `brief.json` + `decklist.txt` and the command to run |
+| **M6** | `deck.html` — render the already-committed artifacts. No pipeline work at all |
+
+**M6 sits before M4 deliberately**: it's low-risk, needs no new data, and forces the
+component library into existence against real content before anything depends on it. If the
+plan stalls it should stall *after* M6, not before.
+
+**The rule that keeps it honest.** Two implementations of one algorithm is the bug we
+already have — `deck-builder.js` carries its own six-factor scorer with different weights
+and a different sixth factor than `DECK_BUILD_WEIGHTS`, documented in two places with no
+cross-reference. So `viz/js/engine/constants.js` is **generated from `config.py`**, never
+hand-edited, and a parity test asserts both builders emit identical `build_plan.json`.
+Divergence becomes a failing test rather than a documentation problem.
+
+**The one genuinely fiddly part is goldfish determinism.** The manual renders those numbers
+as ◆ reproducible evidence, so a browser producing different values would quietly break the
+tier contract. It needs an MT19937 port matching `random.shuffle`'s reverse Fisher–Yates
+with `_randbelow`. If that proves unreasonable, the honest fallback is labelling
+browser-computed goldfish an *estimate* and never letting it overwrite a committed artifact.
+
+Carried into M7 (opportunistic, not blocking): hover tooltips are **built for all 34,322
+points on every render and thrown away** — all 13 traces set `hoverinfo: 'none'`, ~275K
+regex ops producing text nobody sees, and turning them on is the single biggest available
+UX win; the detail panel is hidden in build mode, exactly when you're deciding whether a
+card belongs; there is no URL state anywhere (`location`, `history`, `URLSearchParams` do
+not appear), so a map whose value is "look at this region" can't link to a region; and
+`deck-builder.js` persists **raw row indices** into `projection_2d.json`, so any pipeline
+refresh that changes card ordering silently reinterprets every saved deck as a different
+set of cards — a correctness bug, and the one item worth doing on its own schedule.
 
 **Four strategy-DB gaps the Vol. 002 pipeline routed around**, all flagged by the strategic
 frame and all load-bearing there: no section on **auditing a combo list** (how to price an

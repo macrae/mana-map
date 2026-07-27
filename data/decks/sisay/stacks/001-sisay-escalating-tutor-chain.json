@@ -1,0 +1,570 @@
+{
+  "id": "001",
+  "slug": "sisay-escalating-tutor-chain",
+  "deck": "sisay",
+  "title": "Sisay activated the turn she lands, and the chain that grows her power",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Sisay, Weatherlight Captain (cast this turn, has not attacked)",
+        "Derevi, Empyrial Tactician (entered two turns ago)",
+        "Command Tower",
+        "City of Brass",
+        "Mana Confluence",
+        "Exotic Orchard",
+        "Plaza of Heroes",
+        "Breeding Pool",
+        "Sacred Foundry",
+        "Watery Grave",
+        "Temple Garden",
+        "Bloom Tender (entered two turns ago, untapped)"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": []
+        },
+        {
+          "life": 40,
+          "board": []
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "{W}{U}{B}{R}{G}{W}{U}{B}{R}{G}",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Sisay, Weatherlight Captain — activated ability (first activation)",
+        "controller": "you",
+        "note": "cost {W}{U}{B}{R}{G} already paid; the ability is on the stack and about to resolve"
+      }
+    ],
+    "extras": {
+      "note_sisay_cost": "Sisay's ability is an activated ability with no tap symbol in its cost.",
+      "library_contains": [
+        "Najeela, the Blade-Blossom (mana value 3, red)",
+        "Sheoldred, the Apocalypse (mana value 4, black)",
+        "Jodah, the Unifier (mana value 5, five-coloured)",
+        "Esika, God of the Tree (mana value 3)"
+      ],
+      "colours_of_derevi": "green, white and blue"
+    },
+    "question": "Sisay entered the battlefield this turn. (a) May she activate immediately, and why or why not? (b) What is Sisay's power before the first activation, and what is the exact set of mana values she may fetch? (c) If the first activation fetches Najeela, the Blade-Blossom, what is Sisay's power immediately afterward, and does the game recalculate it without any player taking an action? (d) With the remaining {W}{U}{B}{R}{G}, what is the largest mana value the second activation may fetch, and is Sheoldred, the Apocalypse a legal target for it? (e) At what point, if any, would Jodah, the Unifier become a legal fetch target?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Answer (a). Sisay, Weatherlight Captain entered the battlefield this turn. Read her activation cost: everything before the colon is {W}{U}{B}{R}{G} — five mana, no {T} and no {Q} symbol.",
+        "effect": "She may activate immediately. The summoning-sickness rule restricts only (i) attacking and (ii) activated abilities whose activation cost contains the tap or untap symbol; it says nothing about mana-only costs. So Sisay can activate at any time she has priority on the turn she lands, once per {W}{U}{B}{R}{G} she can pay. Derevi, Empyrial Tactician and Bloom Tender have both been on the battlefield two turns and are unaffected by summoning sickness in any case.",
+        "citations": [
+          {
+            "rule": "302.6",
+            "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began. A creature can’t attack unless it has been under its controller’s control continuously since their most recent turn began."
+          },
+          {
+            "rule": "602.1a",
+            "quote": "The activation cost is everything before the colon (:). An ability’s activation cost must be paid by the player who is activating it."
+          },
+          {
+            "rule": "117.1b",
+            "quote": "A player may activate an activated ability any time they have priority."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Answer (b), first half. Count the colors among OTHER legendary permanents you control. Sisay is excluded by the word “other.” The only other legendary permanent on your board is Derevi, Empyrial Tactician: the nine lands (Command Tower, City of Brass, Mana Confluence, Exotic Orchard, Plaza of Heroes, Breeding Pool, Sacred Foundry, Watery Grave, Temple Garden) are all nonlegendary Lands, and Bloom Tender is a nonlegendary Creature — Elf Druid.",
+        "effect": "Derevi's mana cost is {G}{W}{U}, so Derevi is green, white and blue — three colors. Sisay's static ability (“Sisay gets +1/+1 for each color among other legendary permanents you control”) is a continuous effect that modifies power and toughness in layer 7c: base 2/2 plus +3/+3 = 5/5. Sisay's power before the first activation is 5.",
+        "citations": [
+          {
+            "rule": "202.2",
+            "quote": "An object is the color or colors of the mana symbols in its mana cost, regardless of the color of its frame."
+          },
+          {
+            "rule": "105.2",
+            "quote": "An object can be one or more of the five colors, or it can be no color at all."
+          },
+          {
+            "rule": "604.2",
+            "quote": "Static abilities create continuous effects, some of which are prevention effects or replacement effects. These effects are active as long as the permanent with the ability remains on the battlefield and has the ability"
+          },
+          {
+            "rule": "613.4c",
+            "quote": "Layer 7c: Effects and counters that modify power and/or toughness (but don’t set power and/or toughness to a specific number or value) are applied."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Answer (b), second half. Apply the strict inequality in “mana value less than Sisay's power” against power 5.",
+        "effect": "Legal finds for the first activation are legendary permanent cards with mana value 4 or less — exactly the set {0, 1, 2, 3, 4}. From the stated library: Najeela, the Blade-Blossom ({2}{R}, mana value 3), Esika, God of the Tree (a double-faced card, which in the library has only its front face's characteristics: {1}{G}{G}, mana value 3) and Sheoldred, the Apocalypse ({2}{B}{B}, mana value 4) all qualify. Jodah, the Unifier ({W}{U}{B}{R}{G}, mana value 5) does NOT: 5 is not less than 5. This is the off-by-one that decides the whole chain.",
+        "citations": [
+          {
+            "rule": "202.3",
+            "quote": "The mana value of an object is a number equal to the total amount of mana in its mana cost, regardless of color."
+          },
+          {
+            "rule": "712.8a",
+            "quote": "While a double-faced card is outside the game or in a zone other than the battlefield or stack, it has only the characteristics of its front face."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Account for the stated pool {W}{U}{B}{R}{G}{W}{U}{B}{R}{G}, and correct one board reading: Exotic Orchard produces nothing in this scenario.",
+        "effect": "Exotic Orchard's ability adds “one mana of any color that a land an opponent controls could produce.” Both opponents have empty boards, so no land an opponent controls could produce any type of mana; the ability's type of mana is undefined and it produces no mana at all. The ten mana still comes out of the remaining permanents. Bloom Tender's Vivid ability adds one mana per color among permanents you control; your permanents are Sisay (white), Derevi (green/white/blue), Bloom Tender (green) and colorless lands, so it adds {G}{W}{U} — three mana. Seven lands supply the other seven: Command Tower → {B} (Sisay's color identity is all five colors, because {W}{U}{B}{R}{G} appears in her rules text), Watery Grave → {B}, Sacred Foundry → {R}, Mana Confluence → {R} (paying 1 life), Temple Garden → {W}, Breeding Pool → {G}, and Plaza of Heroes → {U} via “Add one mana of any color among legendary permanents you control” (Sisay is white, Derevi is green/white/blue), which is unrestricted mana, unlike Plaza's legendary-spells-only ability. Total: {W}{W}{U}{U}{B}{B}{R}{R}{G}{G} — exactly two activations' worth. City of Brass and Exotic Orchard are left untapped; Mana Confluence's cost drops you to 39 life. All of these are mana abilities, so none of them used the stack or could be responded to.",
+        "citations": [
+          {
+            "rule": "106.5",
+            "quote": "If an ability would produce one or more mana of an undefined type, it produces no mana instead."
+          },
+          {
+            "rule": "903.4",
+            "quote": "The color identity of a card is the color or colors of any mana symbols in that card’s mana cost or rules text, plus any colors defined by its characteristic-defining abilities (see rule 604.3) or color indicator (see rule 204)."
+          },
+          {
+            "rule": "605.1a",
+            "quote": "An activated ability is a mana ability if it meets all of the following criteria: it doesn’t require a target (see rule 115.6), it could add mana to a player’s mana pool when it resolves, and it’s not a loyalty ability."
+          },
+          {
+            "rule": "605.3b",
+            "quote": "An activated mana ability doesn’t go on the stack, so it can’t be targeted, countered, or otherwise responded to. Rather, it resolves immediately after it is activated."
+          },
+          {
+            "rule": "119.4",
+            "quote": "If a player pays life, the payment is subtracted from their life total; in other words, the player loses that much life."
+          },
+          {
+            "rule": "202.2",
+            "quote": "An object is the color or colors of the mana symbols in its mana cost, regardless of the color of its frame."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Take the stack as given: the first activation of Sisay's ability is already on the stack with its {W}{U}{B}{R}{G} cost paid. Nothing is re-announced and nothing is re-paid here — read what the object on the stack is.",
+        "effect": "An activated ability, once activated, sits on the stack as an independent object until it is countered, resolves, or otherwise leaves the stack. It has NO targets: the word “target” never appears anywhere in Sisay's ability, so no card was chosen at announcement and no legality check was made at announcement. The library card is chosen later, during resolution. Half the pool ({W}{U}{B}{R}{G}) is spent; {W}{U}{B}{R}{G} remains unspent for a second activation.",
+        "citations": [
+          {
+            "rule": "113.3b",
+            "quote": "Doing so puts it on the stack, where it remains until it’s countered, it resolves, or it otherwise leaves the stack."
+          },
+          {
+            "rule": "602.1a",
+            "quote": "The activation cost is everything before the colon (:). An ability’s activation cost must be paid by the player who is activating it."
+          },
+          {
+            "rule": "115.10a",
+            "quote": "Just because an object or player is being affected by a spell or ability doesn’t make that object or player a target of that spell or ability. Unless that object or player is identified by the word “target” in the text of that spell or ability, or the rule for that keyword ability, it’s not a target."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Priority passes on the first activation. You retained priority after activating; you pass, then each opponent in turn order receives priority and passes.",
+        "effect": "Both opponents have empty boards and (per the scenario) nothing to do, so all players pass in succession without taking an action in between. Only then does the top object on the stack — the first activation — begin to resolve. This is a real window: the opponents were entitled to act here, and the fact that the ability has no targets did not deny them the chance (see step 11, where it matters).",
+        "citations": [
+          {
+            "rule": "117.3c",
+            "quote": "If a player has priority when they cast a spell, activate an ability, or take a special action, that player receives priority afterward."
+          },
+          {
+            "rule": "117.3d",
+            "quote": "If a player has priority and chooses not to take any actions, that player passes."
+          },
+          {
+            "rule": "117.1a",
+            "quote": "A player may cast an instant spell any time they have priority."
+          },
+          {
+            "rule": "117.4",
+            "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves or, if the stack is empty, the phase or step ends."
+          },
+          {
+            "rule": "608.1",
+            "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "The first activation resolves. Determine the value of “Sisay's power” that the search uses.",
+        "effect": "Resolution means following the ability's instructions, and an instruction that requires information from the game gets its answer once, at the moment the effect is applied — that is, now, against the current game state, not at announcement. The specific object the effect asks about is its own source, Sisay, and she is in a public zone (the battlefield), so her CURRENT power is used. Her +N/+N comes from a static ability, whose continuous effect is never locked in and reads the board as it stands. Sisay is 5/5 at this moment, so the search condition is “mana value less than 5,” i.e. mana value at most 4, as computed in step 3.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "608.2h",
+            "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+          },
+          {
+            "rule": "611.3a",
+            "quote": "A continuous effect generated by a static ability isn’t “locked in”; it applies at any given moment to whatever its text indicates."
+          },
+          {
+            "rule": "613.4c",
+            "quote": "Layer 7c: Effects and counters that modify power and/or toughness (but don’t set power and/or toughness to a specific number or value) are applied."
+          },
+          {
+            "rule": "202.3",
+            "quote": "The mana value of an object is a number equal to the total amount of mana in its mana cost, regardless of color."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Perform the ability's instructions in written order: search your library, find Najeela, the Blade-Blossom (mana value 3, legal since 3 < 5), put that card onto the battlefield, then shuffle.",
+        "effect": "Najeela enters the battlefield under your control and is now a permanent; the library is shuffled. Note that the search is not compulsory-find: searching a hidden zone for cards with a stated quality never forces you to find them, so you could legally decline and shuffle with nothing. Najeela is put onto the battlefield, not cast — no spell is put on the stack and no cast triggers fire.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "701.23a",
+            "quote": "To search for a card in a zone, look at all cards in that zone (even if it’s a hidden zone) and find a card that matches the given description."
+          },
+          {
+            "rule": "701.23b",
+            "quote": "If a player is searching a hidden zone for cards with a stated quality, such as a card with a certain card type or color, that player isn’t required to find some or all of those cards even if they’re present in that zone."
+          },
+          {
+            "rule": "701.24a",
+            "quote": "To shuffle a library or a face-down pile of cards, randomize the cards within it so that no player knows their order."
+          },
+          {
+            "rule": "403.3",
+            "quote": "Permanents exist only on the battlefield. Every object on the battlefield is a permanent."
+          },
+          {
+            "rule": "701.5a",
+            "quote": "To cast a spell is to take it from the zone it’s in (usually the hand), put it on the stack, and pay its costs, so that it will eventually resolve and have its effect."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Answer (c). Recount the colors among other legendary permanents now that Najeela is on the battlefield.",
+        "effect": "Other legendary permanents are Derevi (green, white, blue) and Najeela ({2}{R} — red). That is four colors: {G, W, U, R}. Sisay's static ability now gives +4/+4, so Sisay is 6/6. Yes, the game recalculates this with no player taking any action, no trigger and no state-based action: a static ability's continuous effect doesn't use the stack, isn't “locked in,” applies at all times the permanent generating it is on the battlefield, and applies at any given moment to whatever its text indicates — the layer 7c arithmetic is simply redone the instant Najeela's presence changes the color count, mid-resolution.",
+        "citations": [
+          {
+            "rule": "611.3a",
+            "quote": "A continuous effect generated by a static ability isn’t “locked in”; it applies at any given moment to whatever its text indicates."
+          },
+          {
+            "rule": "611.3b",
+            "quote": "The effect applies at all times that the permanent generating it is on the battlefield or the object generating it is in the appropriate zone."
+          },
+          {
+            "rule": "405.6b",
+            "quote": "Static abilities continuously generate effects and don’t go on the stack."
+          },
+          {
+            "rule": "613.4c",
+            "quote": "Layer 7c: Effects and counters that modify power and/or toughness (but don’t set power and/or toughness to a specific number or value) are applied."
+          },
+          {
+            "rule": "202.2",
+            "quote": "An object is the color or colors of the mana symbols in its mana cost, regardless of the color of its frame."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "The first activation has finished resolving. Before the active player receives priority, state-based actions are checked and any waiting triggered abilities go on the stack. Then you activate Sisay a second time with the remaining {W}{U}{B}{R}{G}, which puts a second, targetless ability on the stack.",
+        "effect": "State-based actions do nothing: no permanent has 0 toughness or lethal damage, and the legend rule doesn't apply because you control no two legendary permanents with the same name (Sisay, Derevi, Najeela are all distinct). Nothing triggered either — Najeela's trigger needs a Warrior to attack, and Derevi's trigger needs Derevi to enter or a creature to deal combat damage. You, the active player, receive priority with Sisay at 6/6 and {W}{U}{B}{R}{G} unspent, and you spend it: the second activation goes on the stack, again with no targets and no card chosen yet. You retain priority afterward.",
+        "citations": [
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event"
+          },
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "704.5j",
+            "quote": "If two or more legendary permanents with the same name are controlled by the same player, that player chooses one of them, and the rest are put into their owners’ graveyards."
+          },
+          {
+            "rule": "117.1b",
+            "quote": "A player may activate an activated ability any time they have priority."
+          },
+          {
+            "rule": "113.3b",
+            "quote": "Doing so puts it on the stack, where it remains until it’s countered, it resolves, or it otherwise leaves the stack."
+          },
+          {
+            "rule": "117.3c",
+            "quote": "If a player has priority when they cast a spell, activate an ability, or take a special action, that player receives priority afterward."
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "The response window on the second activation — the deck's real vulnerability. You pass priority; each opponent in turn order now has priority while the ability sits on the stack, and may cast instants or activate abilities before it resolves.",
+        "effect": "CORRECTION to the natural intuition: the fact that this ability has no targets does NOT make it safe. Not targeting only means the ability can never be countered on resolution for having an illegal target — the on-resolution legality check applies to spells and abilities that specify targets, and this one specifies none, so that check finds nothing to invalidate. It does not stop an opponent from changing the game state in response. Because the number is read at resolution (step 7), it can move DOWN as well as up during this window. Three concrete responses: (1) Kill Derevi. Other legendary permanents then reduce to Najeela alone (red, one color), Sisay's static bonus falls to +1/+1 and she is 3/3 when the ability resolves, so the search wants mana value less than 3. Sheoldred (4) and Jodah (5) are both now illegal finds, and nothing in the stated library qualifies — the ability resolves and finds nothing. This is the strongest answer. (2) Kill Najeela. Sisay is back to 5/5 and the ceiling reverts to mana value at most 4: Sheoldred is still legal, Jodah is not. (3) Remove Sisay herself — and here the answer depends on HOW. The ability resolves either way: once activated it exists on the stack independently of its source, and destruction or removal of the source after that time won't affect it. But the power it reads is not always 6. (3a) DESTROY, EXILE, BOUNCE or SACRIFICE (or any removal that changes her zone, and likewise lethal damage, which does not change her power at all): she is no longer in the public zone the effect expected her in, so the effect uses her last known information, which captures her last existence on the battlefield — base 2/2 with the +4/+4 from four colors still applied, power 6. The fetch ceiling is UNCHANGED at mana value 5, you still get Jodah, and the opponent has taken the commander without shrinking the search. (3b) A -X/-X EFFECT IS THE EXCEPTION, because a -X/-X is itself a layer 7c modification that is part of the power computation, whether or not she survives it. A -3/-3 leaves her on the battlefield at 3/3; she is still in the zone the effect expected her in, so the effect uses her CURRENT information — power 3, ceiling mana value less than 3, and neither Sheoldred nor Jodah can be found. A -6/-6 or larger drops her toughness to 0 or less, so she is put into her owner's graveyard as a state-based action; her last known information is her last existence on the battlefield, which includes that same -X/-X in layer 7c, giving a last known power of 0 and a ceiling of mana value less than 0 — no card qualifies. Against -X/-X removal, killing Sisay takes the commander AND shrinks the search. COACHING, conditioned on the removal type rather than stated flatly: against removal that changes her zone or deals damage — destroy, exile, bounce, sacrifice, burn, which is the common case — Derevi is the better target for an opponent than Sisay, because killing Derevi shrinks the search by three colors while killing Sisay leaves the ceiling at mana value 5. That ranking holds only for those answers. An opponent holding a -X/-X effect has no such dilemma: pointing it at Sisay takes the commander and shrinks the search in one card.",
+        "citations": [
+          {
+            "rule": "117.1a",
+            "quote": "A player may cast an instant spell any time they have priority."
+          },
+          {
+            "rule": "117.1b",
+            "quote": "A player may activate an activated ability any time they have priority."
+          },
+          {
+            "rule": "115.10a",
+            "quote": "Just because an object or player is being affected by a spell or ability doesn’t make that object or player a target of that spell or ability."
+          },
+          {
+            "rule": "608.2b",
+            "quote": "If the spell or ability specifies targets, it checks whether the targets are still legal."
+          },
+          {
+            "rule": "608.2h",
+            "quote": "If the effect requires information from a specific object, including the source of the ability itself, the effect uses the current information of that object if it’s in the public zone it was expected to be in; if it’s no longer in that zone, or if the effect has moved it from a public zone to a hidden zone, the effect uses the object’s last known information."
+          },
+          {
+            "rule": "glossary:last-known-information",
+            "quote": "This information captures that object’s last existence in that zone"
+          },
+          {
+            "rule": "302.4c",
+            "quote": "To determine a creature’s power and toughness, start with the numbers printed in its lower right corner, then apply any applicable continuous effects."
+          },
+          {
+            "rule": "613.4c",
+            "quote": "Layer 7c: Effects and counters that modify power and/or toughness (but don’t set power and/or toughness to a specific number or value) are applied."
+          },
+          {
+            "rule": "302.7",
+            "quote": "Damage dealt to a creature by a source with neither wither nor infect is marked on that creature (see rule 120.3). If the total damage marked on that creature is greater than or equal to its toughness, that creature has been dealt lethal damage and is destroyed as a state-based action (see rule 704)."
+          },
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+          },
+          {
+            "rule": "611.3a",
+            "quote": "A continuous effect generated by a static ability isn’t “locked in”; it applies at any given moment to whatever its text indicates."
+          },
+          {
+            "rule": "113.7a",
+            "quote": "Once activated or triggered, an ability exists on the stack independently of its source. Destruction or removal of the source after that time won’t affect the ability."
+          }
+        ]
+      },
+      {
+        "n": 12,
+        "action": "Answer (d). Assume the window in step 11 passes unanswered: all players pass in succession and the second activation resolves.",
+        "effect": "Only now is “Sisay's power” read for this ability, and only now is a card chosen. With the board unchanged Sisay is 6/6, so the search finds a legendary permanent card with mana value less than 6 — the largest legal mana value is 5. Sheoldred, the Apocalypse has mana value 4, and 4 < 6, so yes, she is a legal find. One precision: Sheoldred is a legal CHOICE made during the search, not a legal target — the ability never uses the word “target.” What that buys you is narrow, and it comes from the on-resolution legality check: that check runs only if the spell or ability specifies targets, and only an ability all of whose targets have become illegal fails to resolve. With no targets there is nothing to check and nothing that can become illegal, so this ability can never be countered for an illegal target, and no card was locked in at announcement. It buys you no protection from the responses in step 11.",
+        "citations": [
+          {
+            "rule": "117.4",
+            "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves or, if the stack is empty, the phase or step ends."
+          },
+          {
+            "rule": "608.1",
+            "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+          },
+          {
+            "rule": "608.2h",
+            "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+          },
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "202.3",
+            "quote": "The mana value of an object is a number equal to the total amount of mana in its mana cost, regardless of color."
+          },
+          {
+            "rule": "115.10a",
+            "quote": "Unless that object or player is identified by the word “target” in the text of that spell or ability, or the rule for that keyword ability, it’s not a target."
+          },
+          {
+            "rule": "608.2b",
+            "quote": "If the spell or ability specifies targets, it checks whether the targets are still legal."
+          },
+          {
+            "rule": "608.2b",
+            "quote": "If all its targets, for every instance of the word “target,” are now illegal, the spell or ability doesn’t resolve."
+          }
+        ]
+      },
+      {
+        "n": 13,
+        "action": "Answer (e). Locate the exact moment Jodah, the Unifier (mana value 5) becomes a legal find.",
+        "effect": "Jodah requires Sisay's power to be at least 6. That threshold is crossed the instant Najeela enters the battlefield during the resolution of the FIRST activation — the continuous effect updates immediately, before any player receives priority and without anyone doing anything. So: Jodah is illegal for the first activation (5 is not less than 5) and legal for the second one, PROVIDED the fourth color is still there when the second activation resolves (step 11). Any fourth color would do it; fetching Sheoldred first (mana value 4 < 5, adding black) also puts Sisay at 6/6 and unlocks Jodah for the second activation.",
+        "citations": [
+          {
+            "rule": "611.3a",
+            "quote": "A continuous effect generated by a static ability isn’t “locked in”; it applies at any given moment to whatever its text indicates."
+          },
+          {
+            "rule": "613.4c",
+            "quote": "Layer 7c: Effects and counters that modify power and/or toughness (but don’t set power and/or toughness to a specific number or value) are applied."
+          },
+          {
+            "rule": "202.3",
+            "quote": "The mana value of an object is a number equal to the total amount of mana in its mana cost, regardless of color."
+          },
+          {
+            "rule": "608.2h",
+            "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+          }
+        ]
+      },
+      {
+        "n": 14,
+        "action": "Take the maximum line for the second activation: search, find Jodah, the Unifier (mana value 5 < 6), put him onto the battlefield, then shuffle.",
+        "effect": "Jodah is put onto the battlefield rather than cast, so his “whenever you cast a legendary spell from your hand” trigger does not trigger (and your hand is empty). Colors among other legendary permanents are now Derevi (G, W, U) + Najeela (R) + Jodah (W, U, B, R, G) = all five, so Sisay's own bonus becomes +5/+5. Jodah's static ability gives legendary creatures you control +X/+X where X is the number of legendary creatures you control = 4 (Sisay, Derevi, Najeela, Jodah). Both bonuses are layer 7c modifications and are cumulative, and both apply from the same instant: Jodah entering is the single event that makes the color count five AND turns on his own anthem, so there is no moment at which one is applied and the other is not. Timestamp order (Sisay's effect is older than Jodah's) governs only the order in which the two effects are applied within layer 7c, not any sequence of observable values — since both are +N/+N modifications the order does not change the arithmetic. Sisay 2/2 +5/+5 +4/+4 = 11/11, Derevi 2/3 +4/+4 = 6/7, Najeela 3/2 +4/+4 = 7/6, Jodah 5/5 +4/+4 = 9/9.",
+        "citations": [
+          {
+            "rule": "701.5a",
+            "quote": "To cast a spell is to take it from the zone it’s in (usually the hand), put it on the stack, and pay its costs, so that it will eventually resolve and have its effect."
+          },
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "701.24a",
+            "quote": "To shuffle a library or a face-down pile of cards, randomize the cards within it so that no player knows their order."
+          },
+          {
+            "rule": "613.4c",
+            "quote": "Layer 7c: Effects and counters that modify power and/or toughness (but don’t set power and/or toughness to a specific number or value) are applied."
+          },
+          {
+            "rule": "611.3a",
+            "quote": "A continuous effect generated by a static ability isn’t “locked in”; it applies at any given moment to whatever its text indicates."
+          },
+          {
+            "rule": "611.3b",
+            "quote": "The effect applies at all times that the permanent generating it is on the battlefield or the object generating it is in the appropriate zone."
+          },
+          {
+            "rule": "613.7",
+            "quote": "Within a layer or sublayer, determining which order effects are applied in is usually done using a timestamp system. An effect with an earlier timestamp is applied before an effect with a later timestamp."
+          },
+          {
+            "rule": "613.7a",
+            "quote": "A continuous effect generated by a static ability has the same timestamp as the object the static ability is on, or the timestamp of the effect that created the ability, whichever is later."
+          },
+          {
+            "rule": "613.1",
+            "quote": "Then all applicable continuous effects are applied in a series of layers in the following order:"
+          }
+        ]
+      },
+      {
+        "n": 15,
+        "action": "The second activation finishes resolving. State-based actions are checked again, waiting triggers (none) would go on the stack, and the active player receives priority.",
+        "effect": "No state-based action applies: nothing has 0 or less toughness, nothing has lethal damage, and the legend rule finds no two legendary permanents with the same name among Sisay, Derevi, Najeela and Jodah. You get priority back with an empty stack, no unspent mana, four legendary creatures, and Sisay at 11/11. Najeela and Jodah entered this turn and have summoning sickness, so neither can attack.",
+        "citations": [
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event"
+          },
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "704.5j",
+            "quote": "If two or more legendary permanents with the same name are controlled by the same player, that player chooses one of them, and the rest are put into their owners’ graveyards."
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          },
+          {
+            "rule": "302.6",
+            "quote": "A creature can’t attack unless it has been under its controller’s control continuously since their most recent turn began."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Sisay activates twice the turn she lands. (a) Yes — her cost is {W}{U}{B}{R}{G} with no {T}, so summoning sickness is irrelevant. (b) She is 5/5 (base 2/2, +3/+3 for Derevi's green/white/blue), so activation one may find mana value 0-4 only; mana value 5 is excluded by the strict “less than.” (c) Finding Najeela adds red, making four colors, and Sisay becomes 6/6 automatically, mid-resolution, with no action, trigger or state-based action — a static ability's continuous effect is never locked in. (d) Activation two therefore reaches mana value 5; Sheoldred (mana value 4) is a legal choice, not a target. (e) Jodah (mana value 5) is illegal on activation one and becomes legal the instant Najeela enters during activation one's resolution, so activation two can take him. Best line shown: Najeela, then Jodah, leaving Sisay 11/11 with Jodah's anthem online. THE CAVEAT THAT MATTERS: because the power comparison is made at resolution, not at announcement, the ceiling can fall as well as rise. Each opponent gets priority while the second activation is on the stack; killing Derevi there drops Sisay to 3/3 and turns both Sheoldred and Jodah into illegal finds. Not targeting protects the ability from being countered for an illegal target; it protects nothing else. Killing Sisay in response is the weaker answer only against removal that changes her zone or deals damage — the ability resolves anyway on her last known power of 6. Against a -X/-X effect it is not weaker: the -X/-X is a layer 7c modification that is part of her power whether she survives it or dies to it, so that removal takes the commander and shrinks the search at the same time.",
+      "you": {
+        "life": 39,
+        "battlefield": [
+          "Sisay, Weatherlight Captain — 11/11 (base 2/2, +5/+5 from her own ability for W/U/B/R/G among other legendary permanents, +4/+4 from Jodah)",
+          "Derevi, Empyrial Tactician — 6/7 (base 2/3, +4/+4 from Jodah), flying",
+          "Najeela, the Blade-Blossom — 7/6 (base 3/2, +4/+4 from Jodah), entered this turn, summoning sick",
+          "Jodah, the Unifier — 9/9 (base 5/5, +4/+4 from his own ability), entered this turn, summoning sick",
+          "Bloom Tender — 1/1, tapped for mana (added {G}{W}{U})",
+          "Command Tower (tapped, {B}), Mana Confluence (tapped, {R}, 1 life paid), Sacred Foundry (tapped, {R}), Watery Grave (tapped, {B}), Temple Garden (tapped, {W}), Breeding Pool (tapped, {G}), Plaza of Heroes (tapped, {U})",
+          "City of Brass — untapped, not needed for the pool",
+          "Exotic Orchard — untapped; it could produce no mana this turn, because no land an opponent controls could produce any type of mana"
+        ],
+        "hand": [],
+        "graveyard": [],
+        "library": "shuffled twice; Sheoldred, the Apocalypse and Esika, God of the Tree still in it",
+        "mana_available": "none — both {W}{U}{B}{R}{G} payments spent",
+        "stack": [],
+        "notes": [
+          "Sisay's final power is an arithmetic decomposition, not a sequence of values: 2 (printed base) + 5 (her own ability, one for each of the five colors among other legendary permanents) + 4 (Jodah's anthem, one for each of the four legendary creatures you control) = 11. There is no moment at which she is 7. Her own +5/+5 and Jodah's +4/+4 are both layer 7c continuous effects that begin applying at the same instant Jodah enters; CR 613.7's timestamp system fixes the order in which the two are APPLIED within that sublayer, not a sequence of observable values, so from the instant Jodah enters she is 11/11. The only earlier values are the ones read by the two activations: 5 (2 + 3 for Derevi's green/white/blue) before activation one, and 6 (2 + 4 once Najeela adds red) for activation two.",
+          "Find ceilings: activation one = mana value at most 4; activation two = mana value at most 5 — but only if the board is unchanged when it resolves.",
+          "The ceiling is read at resolution and can fall. An opponent with priority on the second activation who removes Derevi leaves Sisay at 3/3, ceiling mana value 2, and neither Sheoldred nor Jodah can be found. Removing Najeela instead restores the 5/5 / ceiling-4 state, which still allows Sheoldred but not Jodah.",
+          "Removing Sisay in response does not shrink the search IF the removal destroys, exiles, bounces or sacrifices her, or deals lethal damage: the ability resolves independently of its source and uses her last known power of 6. A -X/-X effect is the exception — it is a layer 7c modification that is part of her power whether she survives it (current information: -3/-3 leaves her 3/3, ceiling mana value less than 3) or dies to it (last known information includes the -X/-X: -6/-6 gives last known power 0 and no card qualifies).",
+          "Life is 39 because the assignment shown pays 1 life to Mana Confluence. An alternative assignment that taps City of Brass instead costs 1 damage from its tap trigger for the same net 39.",
+          "Najeela's {W}{U}{B}{R}{G} ability is NOT usable at this point: it reads “Activate only during combat,” this is a main phase with no attacking creatures, and all ten mana has been spent. Neither Najeela nor Jodah can attack this turn."
+        ]
+      },
+      "opponents": [
+        {
+          "life": 40,
+          "board": []
+        },
+        {
+          "life": 40,
+          "board": []
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "fail",
+    "iterations": 3,
+    "note": "Iteration bound (RESOLVE_MAX_ITERATIONS = 3) exhausted. Every answer to scenario questions (a) through (e) was independently verified correct, as were the full mana assignment, the 39 life, the response-window branches (1) and (2), branch (3a), and the entire step-14 arithmetic. A sweep of the whole artifact confirmed no residual power-7 checkpoint. Per-citation findings condensed: 88 citations fetched and judged, all quotes verbatim and on-topic; the single entry below was the only one not 'supported'.",
+    "findings": [
+      {
+        "step": 11,
+        "rule": "613.4c",
+        "status": "unsupported",
+        "note": "[status normalised from 'partial' to the contract vocabulary] SOLE REMAINING DEFECT, and a class-generalisation slip rather than a rules error. The -X/-X survival case is correct: 2/2 +4/+4 = 6/6, -3/-3 leaves her 3/3 on the battlefield, so the effect uses current information and the ceiling is 'less than 3', excluding Sheoldred (4) and Jodah (5). The death case is stated as a class but priced at the boundary: 'a -6/-6 OR LARGER ... giving a last known power of 0 and a ceiling of mana value less than 0.' Those two numbers hold only at exactly -6/-6. A -8/-8 on a 6/6 yields last known power -2 and a ceiling of 'less than -2'; CR 107.1b expressly states it is possible for a creature's power to be less than zero, so power does not floor at 0. The operative conclusion ('no card qualifies') survives for every X >= 6 a fortiori, and final_state.notes[3] already states the case correctly by naming -6/-6 without generalising. Fix is one clause."
+      }
+    ],
+    "missing_steps": [],
+    "verified_correct": [
+      "(a) Sisay may activate the turn she lands: her cost is {W}{U}{B}{R}{G} with no tap symbol, and CR 302.6 restricts only attacking and {T}/{Q} activation costs.",
+      "(b) She is 5/5 before the first activation (base 2/2 plus Derevi's three colours), so the first find is mana value 4 or less; mana value 5 is excluded by the strict 'less than'.",
+      "(c) Finding Najeela adds red, making four colours, and she becomes 6/6 mid-resolution with no player action, no trigger and no state-based action.",
+      "(d) The second activation reaches mana value 5; Sheoldred is a legal choice, not a target.",
+      "(e) Jodah is illegal on activation one and becomes legal the instant Najeela enters during activation one's resolution.",
+      "The full ten-mana assignment, including Bloom Tender producing exactly {G}{W}{U}, Plaza of Heroes' unrestricted third ability, Command Tower producing {B} via Sisay's WUBRG colour identity, Exotic Orchard producing nothing against empty opposing boards, and the resulting 39 life.",
+      "Response-window branch (1): killing Derevi leaves Sisay 3/3, ceiling 2, and nothing in the stated library qualifies.",
+      "Response-window branch (2): killing Najeela restores 5/5 and a ceiling of 4 - Sheoldred legal, Jodah not.",
+      "Response-window branch (3a): removal that changes her zone, or lethal damage, leaves last known power 6 and the ceiling unchanged at mana value 5.",
+      "The coaching sentence is now properly conditioned on removal type and paired with the contrary -X/-X case.",
+      "CR 608.2b correctly supports the narrowed 'cannot be countered for an illegal target' claim in steps 11 and 12.",
+      "Step 14 arithmetic: Sisay 11/11, Derevi 6/7, Najeela 7/6, Jodah 9/9, with both bonuses cumulative in layer 7c.",
+      "notes[0] correctly recast as an arithmetic decomposition (2 + 5 + 4 = 11) with the simultaneity stated and CR 613.7 correctly characterised as fixing application order within the sublayer, not a sequence of observable values."
+    ]
+  }
+}

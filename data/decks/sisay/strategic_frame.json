@@ -1,0 +1,160 @@
+{
+  "slug": "sisay",
+  "archetype": "Five-colour legendary-permanent toolbox: a repeatable, self-escalating battlefield tutor (Sisay) whose access ladder is bought with board colours, wrapped in a legendary tax/hate shell and closed by an unverified Najeela combat-loop package.",
+  "schools": [
+    "strategy:critical-mass",
+    "strategy:deckbuilding.redundancy-vs-tutors",
+    "strategy:whos-the-beatdown.metagame-clock",
+    "strategy:multiplayer.pivot-window",
+    "strategy:multiplayer.threat-deflection",
+    "strategy:multiplayer.commander-insurance",
+    "strategy:card-advantage.virtual",
+    "strategy:deckbuilding.mana-base.color-sources"
+  ],
+  "role_assignment": {
+    "default_role": "Control / inevitability holder. Sisay is a repeatable tutor with no tap symbol, so every untap step she survives is another permanent off the top of the toolbox — this is the deck that 'is virtually guaranteed to win a game that goes long enough' if left alone (strategy:whos-the-beatdown.metagame-clock). Duke's table test — picture turn 15 with everyone on their best draws — resolves in your favour, so you are the control seat by default and should not force early action. Role is still seat-relative: you can be the control player against the ramp seat and the beatdown against the combo seat in the same turn cycle (strategy:whos-the-beatdown).",
+    "pivot_trigger": "Pivot when the ladder crosses four distinct colours among OTHER legendary permanents (Sisay power 6, all 33 legendary permanents in the deck fetchable — the top of the ladder) AND you can pay {W}{U}{B}{R}{G} with protection or a counterspell still up. The 2→3 colour step (+13 targets, 10→23) is the largest single jump and is the real 'engine online' moment; the 5th colour buys stats and Jodah's anthem, not access, so waiting for it is a false pivot. Concrete pivot events per strategy:pivot-point: a resolved second colour-diverse legend, a table wrath already spent, or a fetched Najeela with five untapped colour sources. Goldfish says the material for this exists early — commander mean cast turn 2.96 and 99.1% by turn 6, five-colour source alongside her 55.8% by turn 6 — so the constraint is table interaction, not draws.",
+    "strategy_ref": "strategy:pivot-point"
+  },
+  "engines": [
+    {
+      "piece": "Sisay, Weatherlight Captain",
+      "engine": "The access ladder. Base 2/2, +1/+1 per colour among OTHER legendary permanents; activation fetches a legendary permanent with mana value STRICTLY LESS than her power. Verified-by-count against cards.json: fetch pool by distinct colours is 3 / 10 / 23 / 28 / 33 / 33 targets at power 2 / 3 / 4 / 5 / 6 / 7. Each fetch that adds a new colour widens the next fetch — the escalation is the engine, not the single tutor.",
+      "evidence": "oracle text (Sisay) + computed over data/decks/sisay/cards.json (33 non-commander legendary permanents; mv histogram 0:1, 1:2, 2:7, 3:13, 4:5, 5:5)",
+      "strategy_ref": "strategy:deckbuilding.redundancy-vs-tutors"
+    },
+    {
+      "piece": "Sisay, Weatherlight Captain (cost shape)",
+      "engine": "Cost discipline: {W}{U}{B}{R}{G} is five coloured pips with ZERO generic, and no tap symbol. That makes the activation immune to summoning sickness but maximally exposed to colour screw — Karsten's tables price ~23 sources for a single {C} on curve and 37 for {C}{C}{C}, i.e. 'triple pips and three colours do not coexist'; a five-pip repeatable activation sits off the end of that table entirely. This is why the deck is at 39 lands and leans on Vivid/omni-mana bodies rather than rocks.",
+      "evidence": "oracle text (Sisay) + cards.json (39 lands; Command Tower, City of Brass, Mana Confluence, Exotic Orchard, Plaza of Heroes, 5 duals, 8 fetches)",
+      "strategy_ref": "strategy:deckbuilding.mana-base.color-sources"
+    },
+    {
+      "piece": "Bloom Tender / Faeburrow Elder / Jegantha, the Wellspring / Esika, God of the Tree / Relic of Legends / Selvala, Heart of the Wilds",
+      "engine": "The pip battery — the only cards that can actually pay a five-colour activation. Bloom Tender and Faeburrow Elder scale off colours among permanents you control (the same resource the ladder scales off, so they compound with it); Jegantha adds {W}{U}{B}{R}{G} in one tap; Esika grants '{T}: Add one mana of any color' to other legendary creatures, turning the fetched board into the fuel for the next fetch; Relic of Legends converts an untapped legendary creature into a coloured mana. Goldfish target 'Sisay online with a five-colour mana source' assembles at mean turn 4.22, 55.8% by turn 6, 67.9% overall.",
+      "evidence": "oracle text + goldfish_metrics.json targets[0] (assembled_rate 0.679, by_turn_6_rate 0.558, mean_turn 4.219)",
+      "strategy_ref": "strategy:mulligans.engine-hands"
+    },
+    {
+      "piece": "Bloom Tender, Faeburrow Elder, Relic of Legends, Seedborn Muse, Rhystic Study, Drannith Magistrate, Grand Abolisher, Dauthi Voidwalker, Esper Sentinel (26 cards total)",
+      "engine": "The blind spot: 26 of the 99 are NOT legendary and therefore cannot be fetched by Sisay at any power. That includes three of the six pip-battery pieces (Bloom Tender, Faeburrow Elder, Relic of Legends), all four Game Changers (Drannith Magistrate, Fierce Guardianship, Rhystic Study, Seedborn Muse), and every instant in the deck. The engine can find its payoffs but largely cannot find its own fuel or its own protection; those must be drawn. This is Nicol's enabler/payoff asymmetry made structural: the enabler slots fail first.",
+      "evidence": "computed over data/decks/sisay/cards.json (26 non-legendary nonland cards enumerated) + bracket_report.json game_changers",
+      "strategy_ref": "strategy:deckbuilding.threat-density"
+    },
+    {
+      "piece": "Mox Amber, Yoshimaru Ever Faithful, Mikaeus the Lunarch",
+      "engine": "The cold-start problem. With no other legendary permanent out, Sisay is a 2/2 and the fetch gate is mv < 2 — exactly three cards in the deck, and the deck runs ZERO legendary lands, the mv-0 targets that would otherwise always be live. Worse, Mikaeus is {X}{W}: fetched (not cast) X is 0, so he would arrive with zero counters. The practical cold-start pool may therefore be Mox Amber and Yoshimaru only — flagged as a stack scenario below. Sequencing implication: land a cheap colour-diverse legend BEFORE the first activation rather than activating into a near-empty pool.",
+      "evidence": "oracle text (Mikaeus, Mox Amber, Yoshimaru) + cards.json (zero legendary lands; mv<2 legendary permanents = 3)",
+      "strategy_ref": "strategy:tempo.sequencing"
+    },
+    {
+      "piece": "Thalia Heretic Cathar, Kutzil Malamet Exemplar, Teferi Time Raveler, Kambal Consul of Allocation, Sheoldred the Apocalypse, Lotho Corrupt Shirriff",
+      "engine": "The tutorable tax shell — the deck's real answer suite. Rather than 8-10 removal spells, the deck buys virtual advantage: Kutzil and Teferi restrict when opponents may act, Thalia taxes their development, Kambal and Sheoldred convert opponents' own draws and noncreature spells into loss. One tax effect blanks plans from three seats at once, which is the cheapest way to 'answer' ~120 life worth of aggression. Each is legendary and mana value 2-4, so all sit inside the fetch pool once the ladder reaches 2-3 colours.",
+      "evidence": "oracle text + cards.json type_line (all Legendary, mv 2-4)",
+      "strategy_ref": "strategy:card-advantage.virtual"
+    },
+    {
+      "piece": "Shalai Voice of Plenty, Flowering of the White Tree, Plaza of Heroes, Fierce Guardianship, Flawless Maneuver, Heroic Intervention, Grand Abolisher, Silence",
+      "engine": "Commander insurance, split across Cullen's three classes: constant protection that is itself tutorable (Shalai grants you and other creatures hexproof; Flowering gives legendary creatures ward {1}), a land-based single-use (Plaza of Heroes, {3}{T} exile: hexproof + indestructible), and free/cheap instants (Fierce Guardianship, Flawless Maneuver). The recast tax matters more than usual here because the ladder resets with her: losing Sisay costs {2} more per prior command-zone cast AND costs the accumulated fetch access. Goldfish: 'commander protection available' 79.8% by turn 6, mean turn 2.3.",
+      "evidence": "oracle text + goldfish_metrics.json targets[3] (assembled_rate 0.884, by_turn_6_rate 0.798, mean_turn 2.3)",
+      "strategy_ref": "strategy:multiplayer.commander-insurance"
+    },
+    {
+      "piece": "Najeela the Blade-Blossom",
+      "engine": "The finisher slot and the deck's tell. Najeela's untap-attackers activation shares Sisay's exact {W}{U}{B}{R}{G} cost, so the pip battery double-duties as combo fuel; she is mv 3 and becomes fetchable once the ladder reaches 2 colours (power 4). Treated here as a CANDIDATE finisher only — see candidate_missing_lines. Zupke's floor of 'at least 3 finishers' is met on paper only if the Najeela package resolves as advertised.",
+      "evidence": "oracle text (Najeela, mv 3) + combo_details.json in-deck lines (4 two-card, 5 three-card, 1 five-card)",
+      "strategy_ref": "strategy:deckbuilding.threat-density"
+    },
+    {
+      "piece": "Jodah the Unifier",
+      "engine": "The ceiling target and the reason the ladder's fourth colour matters. Jodah is mv 5 — the deck's most expensive legendary permanent — so he needs Sisay at power 6, i.e. four distinct colours among other legends. He then pays back with a static anthem (legendary creatures get +X/+X for X legendary creatures) and free-cast value off legendary spells cast from hand. Note that his anthem raises Sisay's POWER, and her gate reads power rather than colour count — so the anthem can in principle widen the gate. This is practically moot in this deck because nothing exceeds mana value 5, which means 'the ladder tops out at four colours' is a deck-contents fact, not a card fact. Flagged as a stack scenario below.",
+      "evidence": "oracle text (Jodah) + computed ladder (mv 5 reachable only at power 6)",
+      "strategy_ref": "strategy:critical-mass"
+    },
+    {
+      "piece": "Ioreth of the Healing House, Samut Voice of Dissent, Emiel the Blessed, Derevi Empyrial Tactician, Seedborn Muse",
+      "engine": "The untap/reuse cluster — the value system that turns one activation per turn into several. Ioreth untaps two legendary creatures; Samut untaps a creature for {W}; Emiel blinks a creature for {3}; Derevi taps or untaps a permanent on combat damage; Seedborn Muse untaps everything on every opponent's untap step. All of these point at the pip battery, i.e. at more Sisay activations per turn cycle. Every one of these is also a component of an unverified combo line, so treat their VALUE use as real and their LOOP use as candidate.",
+      "evidence": "oracle text + combo_details.json (Emiel/Derevi/Ioreth/Samut/Selvala appear across 5 three-card lines)",
+      "strategy_ref": "strategy:tempo"
+    }
+  ],
+  "candidate_missing_lines": [
+    {
+      "title": "Najeela + Derevi: unbounded combat phases",
+      "cards": ["Najeela, the Blade-Blossom", "Derevi, Empyrial Tactician"],
+      "why_plausible": "combo_details.json #393 (bracket 3, mv_needed 0, popularity 10,049); bracket_report.json names it the highest-bracket driver of the deck's floor 4. A resolution artifact exists at data/decks/sisay/stacks/002-najeela-derevi-combat-loop.json and its own final_state calls it 'a genuine, deterministic, unbounded combat loop, but NOT a self-contained two-card infinite' — it requires a {W}{U}{B}{R}{G} mana base and five creatures connecting, and only breaks even on combat 2.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Najeela + a single omni-mana body (three variants)",
+      "cards": ["Najeela, the Blade-Blossom", "Faeburrow Elder", "Esika, God of the Tree // The Prismatic Bridge", "Selvala, Heart of the Wilds"],
+      "why_plausible": "combo_details.json #569, #818, #1340 — all bracket 3, mv_needed 0-1. Each pairs Najeela's five-pip untap with one permanent that taps for one mana of each colour among your permanents. Plausible on oracle text alone, but the same break-even arithmetic raised for Derevi applies: the mana must arrive every combat, not once.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Emiel blink loops with a colour-scaling mana dork",
+      "cards": ["Emiel the Blessed", "Derevi, Empyrial Tactician", "Bloom Tender", "Faeburrow Elder", "Selvala, Heart of the Wilds", "Samut, Voice of Dissent"],
+      "why_plausible": "combo_details.json #220, #294, #524, #3947 — four three-card lines, all bracket 1, mv_needed 0-1. Emiel costs {3} to blink; the dork must produce more than {3} on re-entry, which for Bloom Tender/Faeburrow Elder means four-plus colours on board and for Selvala means a large creature. Note the summoning-sickness question: a blinked creature is a NEW object and cannot use its own {T} ability — so these lines likely need Derevi's untap or a haste source, which is precisely what the combo record does not say.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Ioreth + Samut + Selvala: untapping legendary creatures for mana",
+      "cards": ["Ioreth of the Healing House", "Samut, Voice of Dissent", "Selvala, Heart of the Wilds"],
+      "why_plausible": "combo_details.json #4617 (bracket 1, mv_needed 1, popularity 719 — the least-played line in the deck). Ioreth untaps two legendary creatures; Samut untaps one for {W}. Whether the net mana is positive depends on the greatest power among your creatures via Selvala, which in this deck is often Sisay herself — making the line's viability a function of the ladder's own state.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "The five-card Jegantha line",
+      "cards": ["Jegantha, the Wellspring", "Sisay, Weatherlight Captain", "Derevi, Empyrial Tactician", "Najeela, the Blade-Blossom", "Samut, Voice of Dissent"],
+      "why_plausible": "combo_details.json #5856 (bracket 3, mv_needed 1, popularity 488). It is the only in-deck line that names Sisay as a component. Five cards is far past Eisenherz's 'two primary combos' discipline, so this is more likely a description of a board state the toolbox reaches than a line to assemble deliberately.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Can the anthem widen the gate? Jodah/Flowering-boosted power and the fetch ceiling",
+      "cards": ["Sisay, Weatherlight Captain", "Jodah, the Unifier", "Flowering of the White Tree"],
+      "why_plausible": "Sisay's gate reads 'mana value less than Sisay's power', not 'less than her colour count'. Jodah gives legendary creatures +X/+X and Flowering gives +2/+1, both of which raise Sisay's printed power. If those apply, the deck's ceiling is not power 6 but much higher — and the stated ladder (topping out at four colours) would understate access. Nothing in the deck exceeds mv 5, so the practical effect is nil today, but the rule matters for any future addition above mv 5 and for the deck's own decision text.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Mikaeus fetched, not cast: does he arrive as a 0/0?",
+      "cards": ["Sisay, Weatherlight Captain", "Mikaeus, the Lunarch"],
+      "why_plausible": "Mikaeus is {X}{W}, mana value 1 in the library, and is one of only three targets legal at Sisay's base power 2. Put onto the battlefield without being cast, X is not chosen. If he enters with zero counters he is a 0/0 and dies immediately, which would reduce the genuine cold-start pool from three cards to two and change the opening-turn sequencing advice.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Removal in response as a gate attack",
+      "cards": ["Sisay, Weatherlight Captain", "Derevi, Empyrial Tactician", "Esika, God of the Tree // The Prismatic Bridge"],
+      "why_plausible": "Because the power comparison happens on resolution, killing a colour-contributing legend in response to an activation lowers Sisay's power and can make the intended fetch illegal. The scenario that matters at the table is the one where the fetch does not merely shrink but fizzles for choosing nothing — and whether you may then choose a smaller legal target instead.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "One-turn chaining: can a freshly fetched legend pay for the next activation?",
+      "cards": ["Relic of Legends", "Esika, God of the Tree // The Prismatic Bridge", "Jodah, the Unifier"],
+      "why_plausible": "This is the single highest-leverage question in the deck: whether Sisay chains within one turn or across two. data/decks/sisay/stacks/003 argues Relic of Legends works (its cost taps the creature, it is not the creature's own {T} ability) while Esika's granted '{T}: Add one mana of any color' does not (it IS the creature's own tap ability).",
+      "status": "needs a stack scenario"
+    }
+  ],
+  "matchup_frames": {
+    "vs_sweeper_control": "Assume the wrath — over a four-player game one is near-certain — and note that a sweeper here is doubly expensive: it removes the board AND collapses the access ladder from power 5-6 back to power 2, where only three cards in the deck are legal fetches and effectively two are live. So Duke's rule 'commit exactly as much as wins before it arrives' has a Sisay-specific reading: hold a colour-diverse legend in HAND rather than on board, because the hand copy restores two ladder rungs after the wipe while a board copy dies with the rest. Rebuild worst-first. Your own Toxic Deluge is the asymmetric version of this — you are the deck that recovers cheapest from a wipe you chose the timing of. (strategy:resource-hedging.wrath-math; recast tax and protection classes per strategy:multiplayer.commander-insurance)",
+    "vs_stax": "You are the beatdown here and the role is forced: under an assembling lock you rarely own the long game, so race the lock's completion rather than out-valuing it. The specific vulnerability is LaPage's tax category applied to a five-pip, zero-generic, repeatable activation — anything that raises the cost of converting mana into effects, or that keeps lands tapped, attacks this deck's engine more directly than it attacks a generic ramp deck, because there is no generic component to pay around. Recount your activations under the tax, not your cards. Note also that three of the deck's accelerants cannot pay the activation AT ALL by their own text (Delighted Halfling restricts to legendary SPELLS and an activated ability is not a spell; Unclaimed Territory restricts to creature spells; Sol Ring is colourless) — so your effective mana under pressure is smaller than your mana count suggests. Name the out early: the piece that breaks the lock on YOU, not the scariest piece. (strategy:threat-assessment.resource-denial)",
+    "vs_aggro": "You cannot race three life totals, and ~120 combined life behind three defenses makes incremental combat damage a losing plan — but you are also not being asked to. Your answer to aggression is virtual, not spent: fetch the tax or the wall rather than the removal spell. Thalia (their creatures enter tapped), Sheoldred (their draws cost life), Shalai (you and your board gain hexproof) and Flowering of the White Tree (ward {1} on legends) each blank multiple attacking plans at once, which is the cheap way to answer three seats. Treat any two-player race you are pulled into as a subgame: spend the minimum that wins it and keep watching the other seats. (strategy:multiplayer.asymmetry; strategy:card-advantage.virtual; strategy:combat-math.racing)",
+    "vs_combo": "The endgame collapses to counting held interaction, and yours is unusually poor at being tutored for: all six counterspells and both free protection instants are non-legendary and therefore invisible to Sisay. Against combo the correct posture is the opposite of the default — hold up mana and count the table's, rather than tapping out to advance the ladder, because the ladder is worth nothing if the game ends before it matures. Held answers rot against combo: the last profitable moment for your one Path to Exile is when the piece hits the battlefield, not later. Your proactive answers here are Grand Abolisher and Drannith Magistrate — both non-legendary, both must be drawn. (strategy:threat-assessment.answer-economy; strategy:multiplayer.pivot-window)",
+    "vs_fair_value_midrange": "This is the matchup where you are cleanly the control seat: the toolbox out-scales a fair board and the tax pieces raise their conversion cost. Manage the pod toward the game length you win — spend a turn or two under the radar after each visible fetch, because a repeatable tutor is exactly the tell experienced tables read as 'quiet ramp player, hit them now'. Sequence the scary fetches (Najeela, Jodah) last, and cash the deflection budget on the turn you take the window rather than the turn the fetch impresses. (strategy:multiplayer.pod-management; strategy:multiplayer.threat-deflection)"
+  },
+  "distribution_notes": "Counted from cards.json: 39 lands, 34 legendary permanents (33 of them fetchable), 26 non-legendary nonland cards. The land count is not arbitrary — Burgess' starting point relayed by Roach is lands = 31 + colours in the commander's identity + the commander's mana value, which is 31 + 5 + 3 = 39 exactly (strategy:deckbuilding.mana-base). Nonland curve: mv 0x1, 1x11, 2x17, 3x20, 4x5, 5x6 (60 spells). Modal mana value is 3, one step above EDHREC's format-wide mode of 2, and the top end is deliberately truncated at 5 — no card in the deck exceeds mana value 5, which is the same ceiling as the tutor gate at power 6 (strategy:deckbuilding.curve). Interaction is thin by template standards: exactly one unconditional spot creature answer (Path to Exile), one sweeper (Toxic Deluge), one artifact/enchantment answer stapled to a fetchable body (Loran of the Third Path), six counterspells, three protection instants and Plaza of Heroes. That is ~13 interactive cards against Walser's 8-10 removal inside a 15-20 card suite, with the removal half badly underweight — the deck is paying for it with permanent-based taxes instead (strategy:deckbuilding.interaction-suite). Goldfish (seed 42, 10k iters): commander mean cast turn 2.963, median 3, 99.1% by turn 6; mean available mana 4.06 at turn 4, 5.87 at turn 6 — i.e. the five-pip activation is only barely affordable on curve at turn 6 even ignoring colour, so a mana body is not optional. Land-drop hit rate decays fast (0.842 t4, 0.735 t5, 0.637 t6), and mean mulligans is 0.183 with an 84.2% first-seven keep rate. Target rates: five-colour source with Sisay 55.8% by t6, three-colour legend 41.9% by t6, early accelerant 63.8%, protection 79.8%. EDHREC ranks from cards.csv show the shape clearly: the top of the list is pure staple (Sol Ring 1, Command Tower 2, Arcane Signet 3, Exotic Orchard 9) while the legendary shell runs deep into the tail (Saffi 7278, Raff Capashen 6313, Samut 6170, Najeela 5412, Katilda 4386, Reki 4286) — this is a narrow purpose-built toolbox, not a good-stuff pile. Bracket floor 4 (Optimized) with four Game Changers (Drannith Magistrate, Fierce Guardianship, Rhystic Study, Seedborn Muse) and four two-card infinites as drivers; the Game Changer count alone is over Bracket 3's cap of three, so the floor is content-driven and not negotiable by intent (strategy:deckbuilding.power-level, strategy:deckbuilding.power-level.barometers).",
+  "overall_assessment": "This deck plays the critical-mass game with a tutor where most linear decks use redundancy. Duke's linear frame fits it: every card feeds one plan and the plan is reaching the threshold where the synergies take over — except that here the threshold is measurable and unusually legible. It is the number of DISTINCT COLOURS among your other legendary permanents, and the deck's whole arc is the ladder 3 -> 10 -> 23 -> 28 -> 33 fetchable targets at Sisay's power 2 -> 3 -> 4 -> 5 -> 6. Below two colours it is a pile of undersized legends and a 2/2 commander with a five-pip ability she cannot usefully aim; at three colours it is a toolbox that can find an answer to almost anything; at four it is complete. The fifth colour is a trap for the pilot's attention — it buys combat stats and Jodah's anthem, and zero new access. The Commander correction on linear strategy is the deck's real problem: three players' interaction punishes the naked all-in, and this engine routes entirely through one legendary creature whose loss costs both the recast tax and every ladder rung at once. The deck's answer is Cullen's constant-protection-plus-held-response posture, and the goldfish says the protection is genuinely there (79.8% by turn 6). The deck's honest weakness is one the artifacts make unmistakable: 26 cards — including three of the six mana pieces that can pay the activation, all six counterspells, and all four Game Changers — are non-legendary and thus permanently outside the tutor's reach. Sisay finds payoffs; she does not find her own fuel or her own protection. That is Nicol's enabler asymmetry made structural, and it means mulligan decisions here are enabler decisions, not payoff decisions: a hand with Sisay and no colour-diverse body or omni-mana dork is a hand of payoffs. Finally, and most importantly for how this deck should be written up: the Najeela package is the plausible finisher, and it is a candidate until a checker verdict says otherwise.",
+  "gaps": [
+    "No section on the TOOLBOX school. strategy:deckbuilding.redundancy-vs-tutors treats a tutor as card selection — 'k tutors plus the card act like k+1 copies of every card' — which is the wrong model for a repeatable battlefield tutor that costs no card at all. Best query hit for 'toolbox silver bullet single target answers' scored 0.154, i.e. nothing. Needed: silver-bullet construction, how many one-of answers a repeatable tutor justifies, and why toolbox decks trade raw card quality for coverage.",
+    "No section on ACCESS AS A RESOURCE — the idea that a deck's real currency can be 'how much of my library is legal to reach' rather than cards, mana, or tempo. The Sisay ladder (3/10/23/28/33) is a resource curve with sharply diminishing returns after the third colour, and the doc has no framework for spending toward a widening gate or for recognising a false pivot at the top of one.",
+    "No section on DEPLOYING taxes and hatebears as a proactive plan. strategy:threat-assessment.resource-denial is written entirely from the perspective of playing UNDER denial; strategy:card-advantage.virtual is the closest fit but is about blanking opposing cards, not about being the stax seat. This deck runs six-plus tax permanents as its de facto removal suite and the doc cannot ground that choice.",
+    "No section on ANSWERING BY CHANGING A SOURCE'S CHARACTERISTICS — removal in response that makes an ability's own gate illegal rather than countering it. This is the single most important interaction the Sisay pilot faces from the other side of the table, and resource-denial's three-flavour taxonomy (stax/tax/lock) has no slot for it.",
+    "No section on COMBAT-LOOP finishers as a win-condition class. strategy:deckbuilding.threat-density counts finishers and cites Eisenherz on 'two primary combos', but there is nothing on extra-combat-phase loops specifically — how they differ from mana loops in fragility, why they need a live mana base every iteration, and why a break-even point is the number that matters rather than the card count.",
+    "No section on FIVE-COLOUR mana bases specifically. strategy:deckbuilding.mana-base.color-sources is Karsten's per-pip table for casting a spell on curve; a repeatable activated ability costing five distinct coloured pips with zero generic sits outside it, and the doc offers no way to price omni-mana bodies (Bloom Tender, Faeburrow Elder, Jegantha) against lands.",
+    "No section on RESTRICTED MANA — the class of accelerants that produce mana usable only for spells, and therefore cannot pay activated-ability costs. In this deck that is Delighted Halfling (legendary SPELLS only, and an activated ability is not a spell), Unclaimed Territory (creature spells only) and Sol Ring (colourless against five coloured pips). NOTE, corrected against oracle text: Secluded Courtyard is NOT in this class — its restriction reads 'spend this mana only to cast a creature spell of the chosen type or activate an ability of a creature source of the chosen type', and Sisay is a Human Soldier, so named on Human it pays her activation fine. That one clause is the entire difference between it and Unclaimed Territory, which is exactly the sort of distinction a RESTRICTED MANA section would exist to teach."
+  ],
+  "evidence_caveats": [
+    "At the time this frame was assembled, the three stack artifacts in data/decks/sisay/stacks/ carried a 'resolution' block but no 'checker' key. Under the citation contract none of the three may be cited as rules-verified, and nothing in this frame does so.",
+    "data/synergy_graph.json has no entry for Sisay, Weatherlight Captain, and the entries for Najeela, Emiel, Relic of Legends and Jodah contain ZERO in-deck partners. No synergy-graph evidence was used in this frame; all engine claims rest on oracle text in cards.json, computed counts over cards.json, combo_details.json records, goldfish_metrics.json, bracket_report.json and cards.csv.",
+    "All ten combo lines are unverified. bracket_report.json's floor of 4 rests partly on them, but the Game Changer count (4, versus Bracket 3's cap of 3) forces floor 4 independently, so the bracket classification survives even if every combo line is refuted."
+  ]
+}

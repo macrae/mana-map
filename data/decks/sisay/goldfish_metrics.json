@@ -1,0 +1,127 @@
+{
+  "meta": {
+    "commander": "Sisay, Weatherlight Captain",
+    "commander_cmc": 3,
+    "deck": "sisay",
+    "decklist_sha256": "a4bcbd509313b155837b838367691f794ef8f03f6640e22cc71a7e1164e62f4d",
+    "iterations": 10000,
+    "max_turn": 10,
+    "model_assumptions": [
+      "Simulates resource development, not full games (no interaction, no removal).",
+      "Draw every turn including turn 1 (multiplayer Commander).",
+      "Mulligan: keep 7-card hands with 2-5 lands; up to 2 fresh redraws, keep the last.",
+      "One land drop per turn when available.",
+      "Mana rocks ('{T}: Add') contribute from the turn after they are cast.",
+      "Commander cast on first affordable turn (highest spending priority).",
+      "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
+      "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+      "Cost reducers, rituals, and extra card draw are not modeled (conservative)."
+    ],
+    "seed": 42
+  },
+  "metrics": {
+    "commander": {
+      "cast_by_turn_6_rate": 0.991,
+      "cast_turn_histogram": {
+        "10": 8,
+        "2": 1469,
+        "3": 8028,
+        "4": 219,
+        "5": 127,
+        "6": 64,
+        "7": 42,
+        "8": 21,
+        "9": 17,
+        "not_by_max_turn": 5
+      },
+      "mean_cast_turn": 2.963,
+      "median_cast_turn": 3
+    },
+    "iterations": 10000,
+    "land_drop_hit_rate_by_turn": {
+      "1": 1.0,
+      "10": 0.431,
+      "2": 0.999,
+      "3": 0.935,
+      "4": 0.842,
+      "5": 0.735,
+      "6": 0.637,
+      "7": 0.555,
+      "8": 0.483,
+      "9": 0.455
+    },
+    "mean_available_mana_by_turn": {
+      "1": 1.0,
+      "10": 8.267,
+      "2": 2.22,
+      "3": 3.187,
+      "4": 4.063,
+      "5": 4.894,
+      "6": 5.869,
+      "7": 6.552,
+      "8": 7.161,
+      "9": 7.727
+    },
+    "mean_bodies_by_turn": {
+      "1": 0.238,
+      "10": 6.37,
+      "2": 0.859,
+      "3": 1.11,
+      "4": 2.218,
+      "5": 3.157,
+      "6": 4.066,
+      "7": 4.77,
+      "8": 5.372,
+      "9": 5.891
+    },
+    "opening_hand": {
+      "first_seven_land_histogram": {
+        "0": 217,
+        "1": 1189,
+        "2": 2606,
+        "3": 3031,
+        "4": 2017,
+        "5": 767,
+        "6": 157,
+        "7": 16
+      },
+      "keep_first_seven_rate": 0.842,
+      "kept_hand_land_histogram": {
+        "0": 10,
+        "1": 30,
+        "2": 3098,
+        "3": 3572,
+        "4": 2379,
+        "5": 909,
+        "6": 2
+      },
+      "mean_mulligans": 0.183
+    },
+    "targets": [
+      {
+        "assembled_rate": 0.679,
+        "by_turn_6_rate": 0.558,
+        "label": "Sisay online with a five-colour mana source",
+        "mean_turn": 4.219
+      },
+      {
+        "assembled_rate": 0.525,
+        "by_turn_6_rate": 0.419,
+        "label": "Sisay online with a three-colour legend to grow her",
+        "mean_turn": 4.395
+      },
+      {
+        "assembled_rate": 0.747,
+        "by_turn_6_rate": 0.638,
+        "label": "Early accelerant drawn",
+        "mean_turn": 2.836
+      },
+      {
+        "assembled_rate": 0.884,
+        "by_turn_6_rate": 0.798,
+        "label": "Commander protection available",
+        "mean_turn": 2.3
+      }
+    ]
+  }
+}
