@@ -33,7 +33,9 @@ from manamap.pilot.common import (
     sideboard,
 )
 from manamap.pilot.design import (
-    CSS,
+    card_tile,
+    stylesheet_link,
+    write_stylesheet,
     FONT_LINK,
     badge,
     barcode,
@@ -153,8 +155,8 @@ def dept_open(dept_id, plan, extra_badges=()):
     )
 
 
-def dept_close(dept_id, volume):
-    return "</section>" + folio(DEPARTMENT_BY_ID[dept_id]["title"], volume)
+def dept_close(dept_id, issue):
+    return "</section>" + folio(DEPARTMENT_BY_ID[dept_id]["title"], issue["volume"])
 
 
 def dept_furniture(dept, cards_by_name):
@@ -238,7 +240,7 @@ def render_contents(issue, plan, stacks, decisions):
         badges = "".join(badge(t) for t in spec["tiers"])
         rows.append(
             f'<tr><td><a href="#{dept_id}"><b>{esc(spec["title"])}</b></a><br>'
-            f'<span style="color:var(--ink-soft)">{esc(headline)}</span></td>'
+            f'<span class="soft">{esc(headline)}</span></td>'
             f'<td>{esc(spec["promise"])}</td><td>{badges}</td></tr>'
         )
     legend = f"""
@@ -270,7 +272,7 @@ def render_first_turns(issue, plan, prose_doc, cards_by_name):
         + f'<div class="body-copy">{prose(prose_doc, "how_it_wins")}</div>'
         + dept_captions(dept, cards_by_name)
         + dept_furniture(dept, cards_by_name)
-        + dept_close("first-turns", issue["volume"])
+        + dept_close("first-turns", issue)
     )
 
 
@@ -316,7 +318,7 @@ def render_command_zone(issue, plan, commander, goldfish, cards_by_name):
         + "".join(body)
         + dept_captions(dept, cards_by_name, limit=1)
         + dept_furniture(dept, cards_by_name)
-        + dept_close("command-zone", issue["volume"])
+        + dept_close("command-zone", issue)
     )
 
 
@@ -331,7 +333,7 @@ def prose_or_todo(dept):
 def render_by_the_numbers(issue, plan, goldfish, cards_by_name):
     dept = plan_dept(plan, "by-the-numbers")
     if not goldfish:
-        return dept_open("by-the-numbers", plan) + TODO + dept_close("by-the-numbers", issue["volume"])
+        return dept_open("by-the-numbers", plan) + TODO + dept_close("by-the-numbers", issue)
     m = goldfish["metrics"]
     meta = goldfish["meta"]
     opening = m.get("opening_hand", {})
@@ -369,7 +371,7 @@ def render_by_the_numbers(issue, plan, goldfish, cards_by_name):
           f"These runs simulate resource development, not full games. Every assumption "
           f"is stated:<ul>{assumptions}</ul></div>"
         + dept_furniture(dept, cards_by_name)
-        + dept_close("by-the-numbers", issue["volume"])
+        + dept_close("by-the-numbers", issue)
     )
 
 
@@ -382,7 +384,7 @@ def render_the_kill(issue, plan, stacks, prose_doc, cards_by_name):
         intro = prose(prose_doc, "combo_lines", sid)
         final = stack.get("resolution", {}).get("final_state", {})
         spreads.append(f"""
-<article style="border-top:3px solid var(--ink);padding-top:18px;margin-top:26px">
+<article class="rule-top">
   <div class="kicker">Verified line {esc(sid)}</div>
   <h3 style="font-family:var(--display);font-size:1.5em">{esc(stack["title"])}</h3>
   <div class="body-copy">{intro}</div>
@@ -400,7 +402,7 @@ def render_the_kill(issue, plan, stacks, prose_doc, cards_by_name):
         + dept_captions(dept, cards_by_name)
         + dept_furniture(dept, cards_by_name)
         + ("".join(spreads) or TODO)
-        + dept_close("the-kill", issue["volume"])
+        + dept_close("the-kill", issue)
     )
 
 
@@ -411,7 +413,7 @@ def render_politics(issue, plan, prose_doc, cards_by_name):
         + f'<div class="body-copy">{prose(prose_doc, "threat_assessment")}</div>'
         + dept_captions(dept, cards_by_name)
         + dept_furniture(dept, cards_by_name)
-        + dept_close("politics-table", issue["volume"])
+        + dept_close("politics-table", issue)
     )
 
 
@@ -436,7 +438,7 @@ def render_whats_your_play(issue, plan, decisions, cards_by_name):
             for b in decision.get("branches", []))
         rec = decision.get("recommendation", {})
         spreads.append(f"""
-<article style="border-top:3px solid var(--ink);padding-top:18px;margin-top:26px">
+<article class="rule-top">
   <h3 style="font-family:var(--display);font-size:1.4em">{esc(decision["title"])}</h3>
   <div class="scenario">{"<br>".join(bits)}<br><br>
     <b>{esc(scenario.get("question", ""))}</b></div>
@@ -448,7 +450,7 @@ def render_whats_your_play(issue, plan, decisions, cards_by_name):
         dept_open("whats-your-play", plan)
         + dept_furniture(dept, cards_by_name)
         + ("".join(spreads) or TODO)
-        + dept_close("whats-your-play", issue["volume"])
+        + dept_close("whats-your-play", issue)
     )
 
 
@@ -468,31 +470,7 @@ def render_know_your_enemy(issue, plan, prose_doc, cards_by_name):
         + f'<div class="body-copy">{prose(prose_doc, "matchups")}</div>'
         + dept_captions(dept, cards_by_name)
         + dept_furniture(dept, cards_by_name)
-        + dept_close("know-your-enemy", issue["volume"])
-    )
-
-
-def _card_tile(card, roles, synergy, printing=False):
-    """A card tile. `printing=True` adds the artist/set credit and foil sheen —
-    used by the gallery, where the physical printing is the subject."""
-    name = card["name"]
-    # Graph entries are {partner, score, synergies} — `synergies` is a list of rule
-    # labels like "Tokens + Sacrifice". This used to read a `rule` key that has never
-    # existed on this artifact, so every chip on every manual rendered empty.
-    labels = sorted({
-        label
-        for entry in (synergy or {}).get(name, [])[:3]
-        for label in entry.get("synergies", [])
-    })
-    chips = "".join(f'<span class="chip">{esc(l)}</span>' for l in labels[:2])
-    image = (f'<img src="{esc(card["image"])}" alt="{esc(name)}" loading="lazy">'
-             if card.get("image") else "")
-    if printing and card.get("foil") and image:
-        image = f'<span class="foil">{image}</span>'
-    credit = printing_credit(card) if printing else ""
-    return (
-        f'<div class="card-tile">{image}<h4>{esc(name)}</h4>{chips}'
-        f'<p>{esc(roles.get(name, ""))}</p>{credit}</div>'
+        + dept_close("know-your-enemy", issue)
     )
 
 
@@ -528,7 +506,7 @@ def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
     sections = []
     for role, group_cards in groups:
         heading = f"<h3>{esc(role)}</h3>" if role else ""
-        tiles = "".join(_card_tile(c, roles, synergy) for c in group_cards)
+        tiles = "".join(card_tile(c, roles, synergy) for c in group_cards)
         sections.append(f'{heading}<div class="card-grid">{tiles}</div>')
     tiles = "".join(sections)
 
@@ -558,7 +536,7 @@ def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
             side_roles.setdefault(
                 card["name"],
                 f"{card.get('type_line', 'Sideboard card')} — no role blurb written yet.")
-            side_tiles.append(_card_tile(card, side_roles, synergy))
+            side_tiles.append(card_tile(card, side_roles, synergy))
         side_html = ("<h3>Sideboard &amp; table aids</h3>"
                      f'<div class="card-grid">{"".join(side_tiles)}</div>')
     return (
@@ -567,7 +545,7 @@ def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
         + tiles + side_html
         + dept_captions(dept, cards_by_name)
         + dept_furniture(dept, cards_by_name)
-        + dept_close("the-99", issue["volume"])
+        + dept_close("the-99", issue)
     )
 
 
@@ -616,7 +594,7 @@ def render_featured_artist(issue, plan, cards, cards_by_name):
             )
             body.append(f'<div class="body-copy">{paragraphs}</div>')
         tiles = "".join(
-            _card_tile(cards_by_name[c], {}, {}, printing=True)
+            card_tile(cards_by_name[c], {}, {}, printing=True)
             for c in entry["cards"] if c in cards_by_name
         )
         body.append(f'<h3>Every {esc(name)} card in the deck</h3>'
@@ -644,7 +622,7 @@ def render_featured_artist(issue, plan, cards, cards_by_name):
             items.append(
                 f'<div class="branch"><h4>{esc(cluster["artist"])} '
                 f'({cluster["entries"]})</h4>'
-                f'<p style="font-size:.9em">{esc(", ".join(cluster["cards"]))}</p>'
+                f'<p class="small">{esc(", ".join(cluster["cards"]))}</p>'
                 f'{f"<p>{esc(note)}</p>" if note else ""}</div>'
             )
         body.append(f'<h3>Also worth noting</h3><div class="branches">{"".join(items)}</div>')
@@ -674,7 +652,7 @@ def render_featured_artist(issue, plan, cards, cards_by_name):
         + "".join(body)
         + dept_captions(dept, cards_by_name)
         + dept_furniture(dept, cards_by_name)
-        + dept_close("featured-artist", issue["volume"])
+        + dept_close("featured-artist", issue)
     )
 
 
@@ -687,7 +665,7 @@ def render_keep_or_ship(issue, plan, prose_doc, goldfish, cards_by_name):
     hands = "".join(f"""
 <div class="branch"><h4>{esc(h.get("verdict", ""))}</h4>
   <p style="font-size:.92em">{esc(", ".join(h.get("cards", [])))}</p>
-  <p style="font-size:.9em;color:var(--ink-soft)">{esc(h.get("why", ""))}</p></div>"""
+  <p class="small soft">{esc(h.get("why", ""))}</p></div>"""
         for h in dept.get("hands", []))
     hands_html = f'<div class="branches">{hands}</div>' if hands else ""
     return (
@@ -696,7 +674,7 @@ def render_keep_or_ship(issue, plan, prose_doc, goldfish, cards_by_name):
         + f'<div class="body-copy">{prose(prose_doc, "mulligan")}</div>'
         + dept_captions(dept, cards_by_name)
         + dept_furniture(dept, cards_by_name)
-        + dept_close("keep-or-ship", issue["volume"])
+        + dept_close("keep-or-ship", issue)
     )
 
 
@@ -708,7 +686,7 @@ def render_upgrade_watch(issue, plan, prose_doc, cards_by_name, sideboard=None):
         + render_sideboard(sideboard)
         + dept_captions(dept, cards_by_name)
         + dept_furniture(dept, cards_by_name)
-        + dept_close("upgrade-watch", issue["volume"])
+        + dept_close("upgrade-watch", issue)
     )
 
 
@@ -825,7 +803,7 @@ def render_judges_desk(issue, plan, stacks, cards_by_name):
           "it. Nothing here is paraphrased.</p>"
         + ("".join(files) or TODO)
         + dept_furniture(dept, cards_by_name)
-        + dept_close("judges-desk", issue["volume"])
+        + dept_close("judges-desk", issue)
     )
 
 
@@ -872,7 +850,9 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
     volume = issue["volume"]
 
     title = f"{issue['deck_name']} — Pilot's Manual Vol. {volume:03d}"
-    og_image = commander.get("image") if commander else ""
+    # art_crop for the same reason the cover uses it: a social preview is
+    # magazine photography, not a card scan.
+    og_image = (commander.get("art_crop") or commander.get("image")) if commander else ""
     description = (
         f"{issue['deck_name']}: {len(stacks)} rules-verified lines, seeded goldfish "
         f"numbers, and table coaching. Pilot's Manual Vol. {volume:03d}."
@@ -907,7 +887,7 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
 <meta property="og:type" content="article">
 {f'<meta property="og:image" content="{esc(og_image)}">' if og_image else ""}
 {FONT_LINK}
-<style>{CSS}</style>
+{stylesheet_link()}
 </head><body><div class="trim">
 {body}
 </div></body></html>
@@ -943,6 +923,9 @@ def main(args):
     html_out = render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
                             goldfish, decisions, sideboard)
     MANUALS_DIR.mkdir(parents=True, exist_ok=True)
+    sheet, wrote_sheet = write_stylesheet(MANUALS_DIR)
+    if wrote_sheet:
+        print(f"Wrote {sheet}")
     out = MANUALS_DIR / f"{slug}.html"
     out.write_text(html_out, encoding="utf-8")
     print(

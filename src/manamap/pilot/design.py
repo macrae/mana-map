@@ -242,6 +242,12 @@ p { margin:0 0 1em; }
 .card-tile h4 { font-family:var(--condensed); text-transform:uppercase; font-size:.9em;
                 margin:0 0 4px; letter-spacing:.03em; }
 .card-tile p { font-size:.82em; line-height:1.4; margin:0; color:var(--ink-soft); }
+
+/* Utility classes for the handful of styles the renderer repeated inline —
+   promoted so the output stops carrying 40+ copies of the same declaration. */
+.soft { color:var(--ink-soft); }
+.small { font-size:.9em; }
+.rule-top { border-top:3px solid var(--ink); padding-top:18px; margin-top:26px; }
 .chip { font-family:var(--condensed); text-transform:uppercase; font-size:9.5px;
         letter-spacing:.1em; background:var(--ink); color:var(--paper);
         padding:2px 6px; display:inline-block; margin:0 3px 5px 0; }
@@ -411,6 +417,60 @@ def threat_box(name, meter_label, rate, body_html):
         f'<div class="threat-box"><div class="tb-head"><span>{esc(name)}</span>'
         f"<span>{esc(meter_label)}</span></div>"
         f'<div class="tb-body">{power_meter("Threat level", rate)}{body_html}</div></div>'
+    )
+
+
+def stylesheet_version():
+    """Content hash of the stylesheet — the cache-busting query string.
+
+    Derived, never hand-bumped: hapatra shipped a stale inline stylesheet for
+    two issues because resyncing depended on remembering to rebuild. A
+    content-addressed href can't drift — same CSS, same URL; changed CSS,
+    changed URL, and every page that links it re-fetches.
+    """
+    return hashlib.sha256(CSS.encode("utf-8")).hexdigest()[:8]
+
+
+def stylesheet_link():
+    """The <link> tag every magazine page carries."""
+    return f'<link rel="stylesheet" href="magazine.css?v={stylesheet_version()}">'
+
+
+def write_stylesheet(directory):
+    """Materialise manuals/magazine.css. Idempotent — content-addressed writes
+    only when the bytes differ, so repeat builds stay churn-free."""
+    path = directory / "magazine.css"
+    if not path.exists() or path.read_text(encoding="utf-8") != CSS:
+        path.write_text(CSS, encoding="utf-8")
+        return path, True
+    return path, False
+
+
+def card_tile(card, roles, synergy, printing=False):
+    """A card tile. `printing=True` adds the artist/set credit and foil sheen —
+    used by the gallery, where the physical printing is the subject.
+
+    Lives here beside card_figure: .card-tile's CSS is this module's, and a
+    component whose markup and stylesheet sit in different files drifts.
+    """
+    name = card["name"]
+    # Graph entries are {partner, score, synergies} — `synergies` is a list of rule
+    # labels like "Tokens + Sacrifice". This used to read a `rule` key that has never
+    # existed on this artifact, so every chip on every manual rendered empty.
+    labels = sorted({
+        label
+        for entry in (synergy or {}).get(name, [])[:3]
+        for label in entry.get("synergies", [])
+    })
+    chips = "".join(f'<span class="chip">{esc(l)}</span>' for l in labels[:2])
+    image = (f'<img src="{esc(card["image"])}" alt="{esc(name)}" loading="lazy">'
+             if card.get("image") else "")
+    if printing and card.get("foil") and image:
+        image = f'<span class="foil">{image}</span>'
+    credit = printing_credit(card) if printing else ""
+    return (
+        f'<div class="card-tile">{image}<h4>{esc(name)}</h4>{chips}'
+        f'<p>{esc(roles.get(name, ""))}</p>{credit}</div>'
     )
 
 

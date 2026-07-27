@@ -11,7 +11,7 @@ import json
 
 from manamap.pilot.common import checker_passed, load_json
 from manamap.config import DECKS_DIR, MANUALS_DIR
-from manamap.pilot.design import CSS as MAGAZINE_CSS
+from manamap.pilot.design import stylesheet_link, write_stylesheet
 from manamap.pilot.design import FONT_LINK, badge, barcode, esc
 from manamap.pilot.issue_spec import MASTHEAD, SERIES_SLUG, STANDING_TAGLINE
 
@@ -118,7 +118,8 @@ def render_index(entries):
 <meta property="og:description" content="Commander deck magazines with a three-tier evidence contract.">
 <meta property="og:type" content="website">
 {FONT_LINK}
-<style>{MAGAZINE_CSS}{EXTRA_CSS}</style></head>
+{stylesheet_link()}
+<style>{EXTRA_CSS}</style></head>
 <body><div class="trim"><div class="newsstand">
   <div class="stand-head">
     <h1 class="masthead">{esc(MASTHEAD)}</h1>
@@ -139,6 +140,7 @@ def render_index(entries):
 def main(args=None):
     entries = gather_entries()
     MANUALS_DIR.mkdir(exist_ok=True)
+    write_stylesheet(MANUALS_DIR)
     out = MANUALS_DIR / "index.html"
     out.write_text(render_index(entries), encoding="utf-8")
     print(f"Wrote {out} ({len(entries)} issue(s) on the rack)")
