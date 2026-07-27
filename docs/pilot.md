@@ -180,6 +180,12 @@ those routines report **`N/A`** in the all-routines scan rather than aborting it
 an explicit `--routine` still exits 2, because there you asked about that routine
 specifically and a missing input means fix it, don't spawn.
 
+`validate-build` checks the role budget **per role**, not just in total — a budget that
+sums correctly while every line is wrong is not a budget — and cross-checks the plan's
+self-reported bracket floor against `bracket_report.json`, the `lands` array against
+`land_counts`, and the mana base's `spell_slots` stamp against the current slot count so
+diagnostics computed for a deck you no longer run are rejected.
+
 Four semantics worth knowing: agent prompts are inputs (editing
 `.claude/agents/*.md` invalidates that agent's routines by design); `issue-plan`
 hashes prose *structure* not wording, so a typo fix is free but a new section
@@ -234,9 +240,22 @@ magazine rather than a Magic one.
 
 Content pipeline (`write-manual` skill) — goldfish → `deck-analyst` evidence pull → **strategic frame** (`strategy-researcher` MODE consult → `strategic_frame.json`; its `candidate_missing_lines` feed the resolve-stack queue, its `gaps` feed the next research pass) → `pilot-coach` coaching (threat/matchups + decisions, receives the frame) → `manual-writer` prose (zero-guessing: combo lines only from verified stacks, claims trace to graphs/oracle text; receives the frame) → `manual_prose.json` (tracked, human-editable) → `manamap pilot build-manual <slug>` + `build-index` (deterministic, byte-identical rebuilds, `[TODO]` placeholders for missing prose, only checker-passed stacks render).
 
+## Goldfish: two opening-hand distributions
+
+`goldfish_metrics.json` reports **both** `first_seven_land_histogram` and
+`kept_hand_land_histogram`, and they answer different questions. The first is the deck's
+real land distribution and moves when you change the mana base. The second is that
+distribution *after* the keep rule has filtered it, so it sits near 100% inside the 2–5
+window for every deck — informative about the mulligan rule, useless as a fitness signal.
+
+They replace a single `land_histogram` key that carried the second while being read as the
+first, which made the metric nearly invariant to deck composition. `keep_first_seven_rate`
+is unaffected, and by construction it equals the in-window share of the *first-seven*
+histogram — if those two ever diverge, one of them is wrong.
+
 ## Tests
 
-`tests/test_pilot_*.py` — 368 tests across 15 files.
+`tests/test_pilot_*.py` — 372 tests across 15 files.
 
 **Build side:** deck builder pool/scoring/slot-filling/emergent-combo pass (`test_pilot_build_deck`, 42), hypergeometric mana math and land selection (`test_pilot_manabase`, 36), bracket floor + drivers + the goblin-storm golden checks (`test_pilot_bracket`, 35), build-plan form gate (`test_pilot_validate_build`, 37).
 

@@ -13,7 +13,12 @@ that says out loud when it's coaching.
 
 The fastest way to understand the second one is to read an issue:
 **[Vol. 001 — Goblin Storm](https://macrae.github.io/mana-map/manuals/goblin-storm.html)**
+· **[Vol. 002 — Hapatra](https://macrae.github.io/mana-map/manuals/hapatra.html)**
 · [the newsstand](https://macrae.github.io/mana-map/manuals/index.html)
+
+Vol. 001 was hand-built. **Vol. 002 was not** — the deck was generated from a three-line
+brief naming a commander and a power bracket, and the issue's headline finding is that the
+deck's own combo count was wrong.
 
 ---
 
@@ -119,7 +124,8 @@ If you have a commander in mind rather than a list, the builder makes one:
 ```
 
 That alone produces a legal, tier-conditioned, goldfishable 99. Running the `/build-deck`
-skill on top adds the agent loop, which is what makes it *good* rather than merely legal.
+skill on top adds the agent loop, which is what makes it *good* rather than merely legal —
+and the whole path from brief to published issue is proven: see Vol. 002.
 
 ### 5. The agent phases
 
@@ -208,10 +214,10 @@ cache-busters stripped.
 ## Testing
 
 ```bash
-.venv/bin/python -m pytest        # 686 tests
+.venv/bin/python -m pytest        # 695 tests
 ```
 
-318 card-pipeline + 368 pilot. Four skip markers in `tests/conftest.py` gate on the last
+323 card-pipeline + 372 pilot. Four skip markers in `tests/conftest.py` gate on the last
 artifact of each stage, so **skips on a fresh clone are expected and correct**. Unit tests
 build inline fixtures — no fixture files. Paths always come from `manamap.config`, so the
 suite is CWD-independent and honours `MANAMAP_DATA_DIR`.

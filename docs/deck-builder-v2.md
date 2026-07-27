@@ -1,6 +1,6 @@
 # Deck Building v2 — design plan
 
-*Status: **Phases 0–3 shipped** in `265753f..3ff1ec2`; Phase 4 (the frontend) outstanding.
+*Status: **Phases 0–3 shipped and proven end to end** — hapatra was built from a brief and published as Vol. 002. Phase 4 (the frontend) outstanding.
 Written 2026-07-25 as a proposal and kept as the design record — where the implementation
 departed from the design, the departure is marked inline and the shipped behaviour wins.
 The active summary lives in `PLAN.md`.*

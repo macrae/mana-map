@@ -4,9 +4,9 @@
 .venv/bin/python -m pytest          # full suite (discovery via testpaths = tests/)
 ```
 
-686 tests in `tests/`: 318 card-pipeline + 368 pilot-subsystem. Three categories:
+695 tests in `tests/`: 323 card-pipeline + 372 pilot-subsystem. Three categories:
 
-**Card-pipeline unit tests (276) — no data files needed, run anywhere:**
+**Card-pipeline unit tests (281) — no data files needed, run anywhere:**
 
 | File | Tests | Covers |
 |------|-------|--------|
@@ -17,7 +17,7 @@
 | `test_power_creep.py` | 36 | Strictly-better detection, tiered similarity gate, stat parsing |
 | `test_combos.py` | 30 | Combo extraction, graph building, dedup |
 | `test_cluster_regions.py` | 31 | Region naming (color/type/guild/TF-IDF), geometry, dedup |
-| `test_card_roles.py` | 22 | Role classification, type-line mana disambiguation, coverage floors |
+| `test_card_roles.py` | 27 | Role classification, type-line mana disambiguation, coverage floors |
 | `test_analysis_common.py` | 17 | Colour-identity masks, name index, vectorized top-k |
 
 **Card-pipeline data-dependent tests (42) — need artifacts from a pipeline run:**
@@ -29,7 +29,7 @@
 
 Both are skip-guarded: `test_pipeline_integration.py` skips per-file via `requires_file(...)`; `test_find_similar.py` uses the module-level `requires_data` marker from `tests/conftest.py` (gates on `embeddings.npy` existing).
 
-**Pilot-subsystem tests (368) — mostly pure-function with inline fixtures; data-gated ones behind markers:**
+**Pilot-subsystem tests (372) — mostly pure-function with inline fixtures; data-gated ones behind markers:**
 
 | File | Tests | Covers | Data gate |
 |------|-------|--------|-----------|
@@ -45,7 +45,7 @@ Both are skip-guarded: `test_pipeline_integration.py` skips per-file via `requir
 | `test_pilot_artist_credits.py` | 24 | Standout detection, per-entry counting, drop runs, roster overlap | 1 behind `requires_deck` |
 | `test_pilot_agent_cache.py` | 42 | Fingerprint stability/order-independence, prose-shape semantics, staleness diffs, record guards, N/A scan semantics and exit codes | 5 behind `requires_deck` |
 | `test_pilot_build_deck.py` | 42 | Pool hard filters (bracket, identity, bans), scoring components, slot filling with alternates, emergent-combo pass, decklist naming | — |
-| `test_pilot_manabase.py` | 36 | Hypergeometric source counts, pip counting incl. hybrid, effective-pip quorum, greedy land selection, land quality | — |
+| `test_pilot_manabase.py` | 40 | Hypergeometric source counts, pip counting incl. hybrid, effective-pip quorum, greedy land selection, land quality | — |
 | `test_pilot_bracket.py` | 35 | Floor drivers, commander-assumption exclusion (A-004), two-card infinites, tutors-never-scored, goblin-storm golden checks | 3 behind `requires_deck` + `requires_roles` |
 | `test_pilot_validate_build.py` | 37 | Card count, singleton, identity, per-role budget arithmetic, bracket cross-check, manabase staleness, critic verdict consistency | — |
 

@@ -22,6 +22,6 @@ Either path continues automatically through embed → reduce → export → syne
 ## Verification
 
 ```bash
-.venv/bin/python -m pytest                 # full suite, 686 tests
+.venv/bin/python -m pytest                 # full suite, 695 tests
 ```
 Then serve the viz (`python -m http.server 8000`, from repo root) and spot-check: map renders, Find Similar returns sensible neighbors, region labels appear.

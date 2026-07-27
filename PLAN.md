@@ -3,7 +3,7 @@
 *The resume-here doc. Read `README.md` for orientation, `CLAUDE.md` for gotchas, this for
 what shipped and what's still open. Completed plans live in `docs/history/`.*
 
-Last updated 2026-07-25. All work below is committed, pushed, and deployed.
+Last updated 2026-07-26. All work below is committed, pushed, and deployed.
 
 ## What this is now
 
@@ -13,6 +13,7 @@ self-contained web issue with a three-tier evidence contract — and, since Deck
 a **deck builder** that produces the deck in the first place.
 
 Live: [Vol. 001 — Goblin Storm](https://macrae.github.io/mana-map/manuals/goblin-storm.html)
+· [Vol. 002 — Hapatra](https://macrae.github.io/mana-map/manuals/hapatra.html)
 · [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
 ## Shipped
@@ -27,8 +28,8 @@ Live: [Vol. 001 — Goblin Storm](https://macrae.github.io/mana-map/manuals/gobl
 | **Agent cache** | Fingerprints declared inputs per routine into a tracked `.agent-cache.json`; check → spawn → validate → record |
 | **Exact printings** | Moxfield `(SET) COLLECTOR *F*` resolved first, so the manual shows the pilot's physical cards |
 | **Featured Artist** | 15th department; `artist_credits.py` auto-detects standout artists, clusters, drop runs |
-| **Role taxonomy** | `analysis/card_roles.py` (step 13) → `card_roles.json`; deckbuilding roles, *separate* from `MECHANICAL_TAGS`; coverage published (86.3%, 67.6% excluding the body fallback) |
-| **Bracket engine** | `pilot/bracket.py` computes a bracket **floor** from Game Changers, per-combo Spellbook bracket tags, two-card infinites and mass land denial; names the card or line driving it; writes `bracket_report.json` |
+| **Role taxonomy** | `analysis/card_roles.py` (step 13) → `card_roles.json`; 43 deckbuilding roles, *separate* from `MECHANICAL_TAGS`; coverage published (86.5%, 68.1% excluding the body fallback) |
+| **Bracket engine** | `pilot/bracket.py` computes a bracket **floor** from Game Changers, per-combo Spellbook bracket tags, two-card infinites and mass land denial; names the card or line driving it; writes `bracket_report.json`, which `validate-build` cross-checks against the plan's own claim |
 | **Deterministic builder** | `brief.json` → `build_plan.json` → `decklist.txt` with no agent involvement; `manabase.py` sizes colour sources hypergeometrically |
 | **Build loop** | `deck-analyst` → `deck-architect` ⇄ `deck-critic`, gated by `validate_build.py` and the bracket engine |
 
@@ -87,25 +88,67 @@ mentions the command zone when none of their pieces is actually this deck's comm
 
 | Deck | State |
 |---|---|
-| `goblin-storm` | Built by hand, **published** as Vol. 001 |
-| `hapatra` | **Built** by the v2 loop (bracket 3, floor 3); not yet published |
-| `edgar-vampires` | Scaffold only — no brief, no decklist |
+| `goblin-storm` | Hand-built, **published** as Vol. 001 — 5 verified stacks, 2 decision spreads |
+| `hapatra` | **Built by the v2 loop and published** as Vol. 002 — bracket 4, 1 verified stack, 0 decisions |
+| `edgar-vampires` | **Built** by the deterministic builder (Mardu, bracket 3, floor 1); no brief-driven agent pass, not published |
+
+## Verified stack — hapatra
+
+**Verified stack — hapatra.** One line, and it rewrote the deck. Stack 001 asked whether
+Hapatra's −1/−1 counters reset undying under Mikaeus; the answer is no, and the bracket
+engine's **19 two-card infinites is inflated**. Eight route through Mikaeus and six of those
+are refuted: a Snake token yields *zero* iterations (it ceases to exist before the trigger
+is even placed on the stack) and a non-token creature yields exactly *one*. What survives is
+Mikaeus + Devoted Druid (a true two-card infinite of deaths and Snakes, **not mana** — the
+returned Druid is summoning-sick), Mikaeus + Walking Ballista (real, three cards) and
+Yawgmoth (the only free repeatable −1/−1 source, library-bounded by its own draw).
+
+Verdict `pass` at **4 iterations** — `RESOLVE_MAX_ITERATIONS` is 3 and was deliberately
+overridden, recorded in `checker.iteration_bound_override`. See the loop note below.
 
 ## Open
 
-**Publish hapatra.** It has `brief.json`, `candidate_pool.json`, `build_plan.json`,
-`cards.json`, `goldfish_targets.json` (derived from the plan's engines) and
-`goldfish_metrics.json`. It needs, in order: `issue.json` authored → at least one
-checker-passed stack → strategic frame → coach + writer prose → issue plan → `build-manual`.
+**Eleven unresolved combo lines on hapatra**, none of which may be stated as fact. Highest
+value first, per the magazine-editor's own gaps list:
+- **Does Mikaeus's `+1/+1` anthem switch off the deck's own token loops?** Snakes, Insects
+  and Elf Warriors are non-Human, so under Mikaeus they are 2/2 and a single −1/−1 counter
+  no longer kills them. If so, the deck's two flagship engines are mutually exclusive.
+  Stack 001 step 15 already established this exact layer-7c math for Walking Ballista.
+- **The Blowfly Infestation family** — the line goldfish actually tracks (16.3% assembled),
+  and the deck's headline two-card kill on paper. Never verified.
+- **Yawgmoth + Hapatra without Mikaeus** — very likely the line the deck wins with most
+  often, and verified only *inside* the Mikaeus context.
+- **The Ivy Lane Denizen family.** Six of its seven two-card entries pair it with sacrifice
+  outlets, but Ivy Lane only triggers when a green creature *enters* and none of those
+  outlets makes one — the same projection artifact that inflated the Mikaeus count.
+- Hapatra + Host of the Hereafter; Necroskitter + Black Sun's Zenith; and whether Heroic
+  Intervention answers a −X/−X effect that kills by toughness rather than destruction.
 
-The first stack is already specified. `build_plan.gaps` names it: CR 122.6 establishes that
-counters put on a permanent *as it enters* count as counters being put on it, but not **who
-put them** when the counter arrives via persist or the creature's own enters-with
-replacement effect. Hapatra reads "whenever *you* put one or more −1/−1 counters on a
-creature". Resolving it once validates or kills four persist slots.
+**hapatra has no decision spreads**, so What's Your Play? renders a visible TODO. The
+magazine-editor specified both boards precisely enough to author straight into artifacts —
+a counted-pivot board and a default-fetch board — see `issue_plan.json` gaps.
 
-**Build edgar-vampires.** No longer blocked on a decklist — the builder produces one. Its
-three-colour mana base is a harder test of `manabase.py` than hapatra's two.
+**`bracket_report.json` contradicts the verified stack in print.** It still carries the
+inflated 19 and names a refuted pairing as its example driver. The floor of 4 holds on the
+11 Game Changers alone, but the artifact should either carry a verified-refutation
+annotation or the engine should consult passing stacks.
+
+**edgar-vampires is built but not architected or published.** It has `brief.json`,
+`build_plan.json`, `cards.json` and a bracket report from the deterministic path only; no
+`candidate_pool.json`, no agent pass, no `issue.json`.
+
+**The resolve loop's iteration bound needs a structural fix.** Stack 001 took four resolver
+passes and four checks — roughly 600k tokens for one line, against five lines for less in
+Vol. 001. The override was justified (the checker had confirmed convergence; the blockers
+were a stale count and a citation about casting spells doing work that belongs to activating
+abilities) but a bound lifted whenever the checker sounds confident is not a bound. Either
+raise `RESOLVE_MAX_ITERATIONS` to 4 or add a mechanical-defects-only exit that doesn't
+consume a full iteration.
+
+**A prompt is an evidence surface.** A figure I stated in a prompt ("99.7% by turn 6", when
+goldfish reports 0.999) propagated into two prose keys and was caught only by the
+magazine-editor at plan time. Figures passed to agents need the same citation discipline as
+figures in artifacts.
 
 **`meta-analyst` — deferred, not dropped.** The v2 design called for a meta-awareness agent
 with its own `data/meta/` corpus (`validate_meta`, `build_meta_db`, `query_meta`,
@@ -119,6 +162,13 @@ needs an `as_of` date.
 reinterprets every saved deck as a different set of cards. That is a correctness bug and the
 one Phase 4 item worth doing on its own schedule. The viz was otherwise untouched by v2 and
 its build-mode payload dropped ~19 MB for free when `combo_graph.json` was split.
+
+**Four strategy-DB gaps the Vol. 002 pipeline routed around**, all flagged by the strategic
+frame and all load-bearing there: no section on **auditing a combo list** (how to price an
+unverified count, why pairwise combo data silently drops third pieces) — the single most
+load-bearing idea in that issue; no **aristocrats/sacrifice-engine** section (outlet, fodder
+and converter taxonomy); no **counters-matter** section (annihilation as a resource, the
+anthem-versus-shrink anti-synergy); and no **tutor-sequencing** section for pilots.
 
 **Queued stacks.** Roaming Throne × Zada is the interesting one: Throne makes Zada's copy
 trigger fire twice, and whether that produces a second full copy set is genuinely unsettled.

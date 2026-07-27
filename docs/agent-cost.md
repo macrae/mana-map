@@ -49,6 +49,28 @@ From the session that built the deck builder and built hapatra (2026-07-25):
 `resolve-stack` is 2–6 spawns per scenario (resolver + checker, up to
 `RESOLVE_MAX_ITERATIONS = 3`).
 
+From the session that published Vol. 002 (2026-07-26):
+
+| Routine | Agent | Tokens | Note |
+|---|---|---|---|
+| `candidate-pool` | deck-analyst | 235,579 / 130,161 | rebuilt on the bracket retarget |
+| `deck-build` | deck-architect ⇄ deck-critic | ~430,000 | 2 architect passes + 1 critic pass |
+| `strategic-frame` | strategy-researcher (consult) | 130,161 | |
+| `coach-prose` | pilot-coach | 78,093 | |
+| `writer-prose` | manual-writer | 68,798 | |
+| `issue-plan` | magazine-editor | 152,697 | |
+| `stack:001` | stack-resolver ⇄ rules-checker | **~600,000** | 4 resolver passes, 4 checks |
+
+**The stack is the outlier and it is worth understanding before queueing more.** Vol. 001
+resolved *five* lines for less than stack 001 cost alone. The spend was earned — the answer
+overturned the deck's premise and the checker was right on every pass — but it is not a
+repeatable rate, and `RESOLVE_MAX_ITERATIONS = 3` was deliberately overridden to reach a
+verdict. See `PLAN.md` for the structural fix that implies.
+
+**A full publish ≈ 1.7M tokens** for a deck built from scratch, dominated by the build loop
+and one hard rules question. A deck with an existing decklist and no contested combo skips
+both and lands nearer Vol. 001's ~330k.
+
 **A full build ≈ 530k tokens** for a first pass with one critic iteration
 (pool → architect → critic → architect), bounded by `DECK_BUILD_MAX_ITERATIONS = 3`.
 The pool dominates, which is why `candidate-pool` is cached separately from
