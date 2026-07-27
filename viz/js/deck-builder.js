@@ -28,6 +28,15 @@
   const AUTOCOMPLETE_MAX = 10; // commander autocomplete results
   let synergyGraph = null; // lazy-loaded for synergy scoring
 
+  // One document-level dismiss handler for the commander autocomplete. Lives
+  // at module scope because renderDeckPanel re-runs on every deck mutation.
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.deck-commander-row')) {
+      const listEl = document.getElementById('commanderAutocomplete');
+      if (listEl) listEl.style.display = 'none';
+    }
+  });
+
   // ── Deck State ──
   let deckState = null;
 
@@ -63,23 +72,20 @@
     setTimeout(() => Plotly.Plots.resize('plot'), 260);
 
     try {
-      const embUrl = (MM.MAP_CONFIGS && MM.currentMap) ? MM.MAP_CONFIGS[MM.currentMap].embeddings : MM.DATA.embeddings;
-      const [embBuf, comboData, synergyData] = await Promise.all([
-        fetch(embUrl).then(r => {
-          if (!r.ok) throw new Error('embeddings.bin not found — run export_embeddings.py');
-          return r.arrayBuffer();
-        }),
+      // Embeddings and the synergy graph come from MM's caches — explore mode
+      // and the deck builder used to hold independent copies of the same two
+      // payloads (17.5 MB + 27.8 MB), downloaded and parsed twice.
+      const [emb, comboData, synergyData] = await Promise.all([
+        MM.getEmbeddings(),
         fetch(MM.DATA.comboGraph).then(r => {
           if (!r.ok) throw new Error('combo_graph.json not found — run process_combos.py');
           return r.json();
         }),
-        fetch(MM.DATA.synergyGraph).then(r => {
-          if (!r.ok) return null;
-          return r.json();
-        }).catch(() => null),
+        MM.getSynergyGraph().catch(() => null),
       ]);
+      if (!emb) throw new Error('embeddings.bin not found — run export_embeddings.py');
 
-      deckState.embeddings = new Float32Array(embBuf);
+      deckState.embeddings = emb;
       deckState.comboGraph = comboData;
       synergyGraph = synergyData;
 
@@ -864,12 +870,8 @@
       }, 200);
     });
 
-    // Close on click outside
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.deck-commander-row')) {
-        listEl.style.display = 'none';
-      }
-    });
+    // Close on click outside — registered ONCE at module scope (below); a
+    // per-render registration leaked one document listener per deck mutation.
   }
 
   // ── Render Deck Panel ──

@@ -66,26 +66,6 @@
     return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
-  function buildHoverText(d) {
-    let lines = ['<b>' + escHtml(d.n) + '</b>'];
-    if (d.t) lines.push(escHtml(d.t));
-    let statsLine = '';
-    if (d.mc) statsLine += escHtml(d.mc);
-    if (d.p != null && d.th != null) {
-      statsLine += (statsLine ? '  \u2022  ' : '') + d.p + '/' + d.th;
-    } else if (d.l != null) {
-      statsLine += (statsLine ? '  \u2022  ' : '') + 'Loyalty: ' + d.l;
-    } else if (d.d != null) {
-      statsLine += (statsLine ? '  \u2022  ' : '') + 'Defense: ' + d.d;
-    }
-    if (statsLine) lines.push(statsLine);
-    if (d.o) {
-      let preview = d.o.length > 120 ? d.o.substring(0, 117) + '...' : d.o;
-      lines.push('<i>' + escHtml(preview) + '</i>');
-    }
-    return lines.join('<br>');
-  }
-
   function buildHoverTextMinimal(d) {
     let line = '<b>' + escHtml(d.n) + '</b>';
     let parts = [];
@@ -389,14 +369,6 @@
 
   // ── Detail Panel (legacy wrapper for backward compat) ──
 
-  function showDetailPanel(d) {
-    clearSelection();
-    const idx = allData.indexOf(d);
-    if (idx !== -1) {
-      addToSelection(idx);
-    }
-  }
-
   // ── Find Similar Cards ──
 
   function clearSimilarTrace() {
@@ -437,17 +409,15 @@
   }
 
   function cosineSimilarity(idxA, idxB) {
+    // Rows of embeddings.bin are L2-normalized at export, so the cosine IS the
+    // dot product — computing the norms was 3x the float work for a constant 1.
     const offA = idxA * EMBED_DIM;
     const offB = idxB * EMBED_DIM;
-    let dot = 0, normA = 0, normB = 0;
+    let dot = 0;
     for (let j = 0; j < EMBED_DIM; j++) {
-      const a = embeddings[offA + j], b = embeddings[offB + j];
-      dot += a * b;
-      normA += a * a;
-      normB += b * b;
+      dot += embeddings[offA + j] * embeddings[offB + j];
     }
-    const denom = Math.sqrt(normA) * Math.sqrt(normB);
-    return denom > 0 ? dot / denom : 0;
+    return dot;
   }
 
   async function findSimilarCards() {
@@ -554,9 +524,6 @@
     html += '</div>';
     return html;
   }
-
-  // Eagerly load obsolescence data in background
-  setTimeout(loadObsolescenceIndex, 2000);
 
   // ── Map switching ──
 
@@ -1326,22 +1293,16 @@
   }
 
   // ── Expose shared state/functions on window.MM ──
+  // Only members with a live caller (deck-builder.js, generated onclick
+  // handlers, or index.html) are exported — see docs/viz.md for the contract.
   window.MM = {
     get allData() { return allData; },
-    get currentMode() { return currentMode; },
     get currentMap() { return currentMap; },
-    get activeSupertypes() { return activeSupertypes; },
-    get selectedCard() { return getSelectedCard(); },
-    get selectedCards() { return selectedCards; },
     escHtml,
-    buildHoverText,
     buildHoverTextMinimal,
     renderManaSymbols,
-    showDetailPanel,
     closeDetail: clearSelection,
-    addToSelection,
     removeFromSelection,
-    clearSelection,
     bringToTop,
     selectByName,
     findSimilar: findSimilarCards,
@@ -1349,15 +1310,19 @@
     render,
     setStatus,
     setMode,
-    ALL_FORMATS,
-    SUPERTYPES,
     MAP_CONFIGS,
     DATA,
     EMBED_DIM,
     get obsolescence() { return obsolescenceIndex; },
-    get showContours() { return showContours; },
-    get showRegionLabels() { return showRegionLabels; },
-    toggleContours() { document.getElementById('toggleContours').click(); },
-    toggleRegionLabels() { document.getElementById('toggleLabels').click(); },
+    // Shared big-data loaders: the deck builder awaits these instead of
+    // re-downloading its own copies (embeddings 17.5 MB, synergy 27.8 MB).
+    async getEmbeddings() {
+      const ok = await loadEmbeddings();
+      return ok ? embeddings : null;
+    },
+    async getSynergyGraph() {
+      const ok = await loadSynergyGraph();
+      return ok ? synergyGraph : null;
+    },
   };
 })();
