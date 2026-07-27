@@ -31,9 +31,11 @@ manamap pilot lookup-rule 702.40a --json  # exact fetch (checker's verification 
 manamap pilot build-deck <slug> [--write-decklist]  # brief.json → build_plan.json (no agents)
 manamap pilot validate-build <slug>     # form gate over a build plan
 manamap pilot bracket-check <slug> [--target N] [--json]  # bracket floor → bracket_report.json
+manamap pilot deck-facts <slug> [--out F]  # the deterministic brief agents read first
 manamap pilot fetch-deck <slug>         # decklist.txt → cards.json (Scryfall)
 manamap pilot validate-deck <slug>      # 100/commander/singleton/color identity
 manamap pilot validate-stack <slug> [--stack NNN]   # citation contract (stacks + decisions)
+manamap pilot validate-stack <slug> --scenario-only # preflight BEFORE spawning a resolver
 manamap pilot goldfish <slug>           # seeded Monte Carlo metrics → goldfish_metrics.json
 manamap pilot artist-credits <slug> --json  # standout artists + art themes (Featured Artist)
 manamap pilot build-manual <slug>       # → manuals/<slug>.html
@@ -262,3 +264,53 @@ histogram — if those two ever diverge, one of them is wrong.
 **Publish side:** agent cache incl. N/A scan semantics (`test_pilot_agent_cache`, 42), renderer determinism/escaping/TOC/sideboard (`test_pilot_build_manual`, 30), issue form gate (`test_pilot_validate_issue`, 25), artist analysis (`test_pilot_artist_credits`, 24), mocked Scryfall ingestion (`test_pilot_fetch_deck`, 19), citation contract incl. strategy-citation dispatch (`test_pilot_validate_stack`, 18), strategy form validator + changelog (`test_pilot_validate_strategy`, 18), goldfish determinism and the two opening-hand distributions (`test_pilot_goldfish`, 16), CR chunker edge cases (`test_pilot_rules_db`, 12), strategy chunker + real-DB checks (`test_pilot_strategy_db`, 9), rules queries (`test_pilot_query_rules`, 5).
 
 Data-gated tests use `requires_rules` / `requires_deck` / `requires_strategy` / `requires_roles` markers from `tests/conftest.py`.
+
+## Deck facts — the brief agents read instead of re-deriving
+
+`manamap pilot deck-facts <slug>` composes existing primitives (`extract.get_colors`,
+`manabase.count_pips`/`land_colors`, `bracket.combos_in_deck`, `card_roles.json`) into
+one deterministic answer. Computed on demand and printed to stdout, **never committed** —
+same rule as `artist-credits`: a second copy of facts already in `cards.json` could only
+desync.
+
+It reports counts (entries *and* copies), the mana-value curve, per-card colours resolved
+correctly for multi-face cards (both the card's union and the face-up permanent's),
+per-colour pip load and source targets, role coverage plus the cards the taxonomy has no
+pattern for, every combo line fully contained in the deck — and a `notes[]` block that
+pre-answers the traps agents kept rediscovering:
+
+- how many synergy edges actually fall **inside** this deck (0 on sisay, 213 on
+  edgar-vampires — it is a global top-10 shortlist, so report the number rather than
+  assuming either way)
+- which cards have no `card_roles.json` entry, with the standing caveat that absence of
+  a role is not absence of the function
+- **restricted mana, classified precisely.** "Spend this mana only" means three different
+  things: `spells_only` (Delighted Halfling, Unclaimed Territory — cannot pay an
+  activated ability, because an ability is not a spell), `pays_abilities` (Secluded
+  Courtyard, whose clause says "or activate an ability"), and
+  `has_unrestricted_coloured_mode` (Plaza of Heroes). An unrestricted `{T}: Add {C}`
+  does **not** count — colourless pays no coloured pip. Getting this wrong is worse than
+  saying nothing: sisay's strategic frame asserted Secluded Courtyard was dead to its own
+  commander, and it isn't.
+
+## Scenario scope, and why it is the loop's main cost lever
+
+The checker's verdict is atomic over the whole artifact, so every citation is another
+chance for all of it to fail. Measured across three published decks: every artifact at
+**≤32 citations passed in 1–2 rounds**; every one at **≥59 needed 4 rounds or failed**.
+goblin-storm's five narrow scenarios produced 5 verified lines in 6 rounds; sisay's three
+broad ones produced 1 in 9, and sisay 003's answers (a)–(d) were verified correct three
+times before being discarded with the file.
+
+`RESOLVE_SCOPE_BUDGET` (config.py, and actually imported) warns above 12 steps, 40
+citations, or 3 lettered sub-questions. `validate-stack --scenario-only` runs the
+sub-question check **before** a resolver spawn, for free. The rule: **one rules domain per
+scenario**; split multi-part questions into separate artifacts so they fail independently.
+
+## Agent handoff
+
+Deck agents write their JSON to `data/decks/<slug>/.agent-out/<agent>.json` (gitignored)
+and return only that path plus a short summary. The orchestrator reads, validates, and
+merges into the tracked artifact. `candidate_pool.json` reaches 133 KB — returning it
+inline costs ~35k tokens of orchestrator context for nothing, and the agent's tools are
+unchanged either way.

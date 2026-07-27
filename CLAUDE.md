@@ -27,7 +27,7 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #   design.py      tokens, stylesheet, component library
                       #   build_manual.py / build_index.py  issue + newsstand
                       #   validate_issue.py / agent_cache.py / artist_credits.py
-tests/                # pytest suite (695 tests: 323 card-pipeline + 372 pilot),
+tests/                # pytest suite (725 tests: 323 card-pipeline + 402 pilot),
                       # conftest markers: requires_data/rules/deck/strategy/roles
 data/                 # artifacts; mostly gitignored, viz-served files tracked
 viz/                  # static frontend (Plotly CDN, two IIFE scripts, window.MM / window.DeckBuilder)
@@ -53,9 +53,9 @@ manamap run --from STEP       # resume from a step
 manamap <step>                # single step; see `manamap --help` for all 16 subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # fast analysis-only refresh (no retrain)
-manamap pilot <cmd>           # build + publish subsystem (22 subcommands) — see docs/pilot.md
+manamap pilot <cmd>           # build + publish subsystem (23 subcommands) — see docs/pilot.md
 
-.venv/bin/python -m pytest    # 695 tests; data-dependent ones skip if artifacts missing
+.venv/bin/python -m pytest    # 725 tests; data-dependent ones skip if artifacts missing
 
 python -m http.server 8000    # serve viz FROM REPO ROOT
 # http://localhost:8000/viz/index.html
@@ -78,6 +78,9 @@ python -m http.server 8000    # serve viz FROM REPO ROOT
 - **The combo data is two files**: `combo_graph.json` is `{"partners": {...}}` **only** (4.5 MB — it's what the viz fetches on the main thread, so nothing else belongs in it). The per-combo records live in `combo_details.json` (`{combos, by_card, meta}`, 25.7 MB, Python/agents only) with `bracket`, `mana_value_needed`, `popularity`. If you remember a `combos` key on the graph, that moved.
 - **Combo data is format-agnostic**: Commander Spellbook combos may assume a card is your commander ("Infinite commander casts" in `produces` is the tell) — verify lines with a resolve-stack run before presenting them as fact (stack 004 refuted one this way; `bracket.py` now excludes such lines automatically). Their per-combo `bracket` tag is also not gospel: it tags a real Hapatra two-card infinite as bracket 1, which is why the engine runs its own infinite test.
 - **`bracket-check` needs a pipeline run**: the Game Changers signal is the `game_changer` column in `cards.csv`, which is gitignored. A fresh clone can render manuals but cannot compute a bracket floor until `manamap extract` has run.
+- **`deck-facts` first, always**: `manamap pilot deck-facts <slug>` is the deterministic brief — DFC-correct colours, curve, pip load, role coverage and holes, contained combos, and a `notes[]` block naming the traps. It is computed on demand and never committed (same rule as `artist-credits`). Every deck agent is told to run it before deriving anything; re-deriving by hand costs tokens and has produced wrong answers.
+- **Scenario scope drives the resolve loop's cost**: the checker verdict is atomic over an artifact whose size the author controls, so citation count predicts iterations. Every artifact at ≤32 citations passed in 1–2 rounds; every one at ≥59 needed 4 rounds or failed. `RESOLVE_SCOPE_BUDGET` warns, and `validate-stack --scenario-only` preflights a scenario for free before any spawn. **One rules domain per scenario** — split multi-part questions.
+- **Agents hand off by path, not inline JSON**: deck agents write `data/decks/<slug>/.agent-out/<agent>.json` (gitignored) and return the path plus a summary. The orchestrator validates and merges. Returning a 133 KB artifact inline costs ~35k tokens of context for nothing.
 - Lint/format/CI intentionally not set up; revisit if the project grows.
 
 ## Pointers

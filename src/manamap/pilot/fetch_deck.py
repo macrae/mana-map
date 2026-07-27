@@ -22,9 +22,12 @@ import requests
 from manamap.config import (
     SCRYFALL_BATCH_SIZE,
     SCRYFALL_COLLECTION_URL,
+    SCRYFALL_MAX_RETRIES,
     SCRYFALL_REQUEST_DELAY_S,
+    SCRYFALL_RETRY_BACKOFF_S,
     USER_AGENT,
 )
+from manamap.ingest.extract import get_colors
 from manamap.pilot.common import deck_dir
 
 SESSION = requests.Session()
@@ -124,10 +127,15 @@ def _post_collection(identifiers):
         if start > 0:
             time.sleep(SCRYFALL_REQUEST_DELAY_S)
         payload = {"identifiers": batch}
-        resp = SESSION.post(SCRYFALL_COLLECTION_URL, json=payload, timeout=60)
-        if resp.status_code == 429:
-            time.sleep(1.0)
+        # Retry 429 (rate limit) and 5xx (transient outage) with linear backoff.
+        # A single 503 used to abort the whole fetch mid-batch, losing every batch
+        # already retrieved; observed live against /cards/collection.
+        for attempt in range(SCRYFALL_MAX_RETRIES):
             resp = SESSION.post(SCRYFALL_COLLECTION_URL, json=payload, timeout=60)
+            if resp.status_code != 429 and resp.status_code < 500:
+                break
+            if attempt < SCRYFALL_MAX_RETRIES - 1:
+                time.sleep(SCRYFALL_RETRY_BACKOFF_S * (attempt + 1))
         resp.raise_for_status()
         doc = resp.json()
         cards.extend(doc.get("data", []))
@@ -174,6 +182,10 @@ def _shape_face(face):
         "mana_cost": face.get("mana_cost", ""),
         "type_line": face.get("type_line", ""),
         "oracle_text": face.get("oracle_text", ""),
+        # Face colours are the ONLY place a transform/modal-DFC's colours live —
+        # Scryfall omits the top-level `colors` for those layouts entirely. Dropping
+        # this field left cards.json with no way to recover them. See shape_card.
+        "colors": face.get("colors", []),
         "power": face.get("power"),
         "toughness": face.get("toughness"),
         "image": stable_image_url(image_uris.get("normal")),
@@ -213,7 +225,11 @@ def shape_card(sc, quantity, is_commander, is_sideboard=False, foil=False):
         "type_line": sc.get("type_line", ""),
         "oracle_text": sc.get("oracle_text")
         or " // ".join(f.get("oracle_text", "") for f in faces),
-        "colors": sc.get("colors", []),
+        # NOT sc.get("colors"): transform and modal-DFC cards carry no top-level
+        # `colors` — it lives on card_faces. get_colors() unions the faces and falls
+        # back to the top level for split/adventure/flip, which is the same helper
+        # the card pipeline uses for cards.csv, so the two agree by construction.
+        "colors": get_colors(sc),
         "color_identity": sc.get("color_identity", []),
         "keywords": sc.get("keywords", []),
         "power": sc.get("power"),

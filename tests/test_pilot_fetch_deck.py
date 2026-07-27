@@ -417,3 +417,96 @@ def test_printing_metadata_is_not_agent_semantic():
     assert {k: plain[k] for k in CARD_SEMANTIC_FIELDS} == \
            {k: fancy[k] for k in CARD_SEMANTIC_FIELDS}
     assert plain["artist"] != fancy["artist"]     # but presentation differs
+
+
+# ── Multi-face colours ───────────────────────────────────────────────────
+#
+# Scryfall omits the top-level `colors` for transform and modal_dfc layouts —
+# it lives on card_faces. fetch_deck used to copy the top-level field verbatim
+# AND drop colours when shaping faces, so cards.json recorded `[]` for every
+# DFC with no way to recover, while cards.csv (which uses get_colors) was right.
+# `colors` is in CARD_SEMANTIC_FIELDS, so the wrong value was agent-facing.
+
+TRANSFORM_DFC = {
+    "name": "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "layout": "transform",
+    "cmc": 2.0,
+    "type_line": "Legendary Creature — Human Artificer // Legendary Creature — Phyrexian Praetor",
+    "color_identity": ["B", "U"],
+    # NOTE: no top-level "colors" key at all — this is what Scryfall actually sends.
+    "card_faces": [
+        {"name": "Rona, Herald of Invasion", "mana_cost": "{1}{U}", "colors": ["U"],
+         "type_line": "Legendary Creature — Human Artificer", "oracle_text": "front"},
+        {"name": "Rona, Tolarian Obliterator", "mana_cost": "", "colors": ["B"],
+         "type_line": "Legendary Creature — Phyrexian Praetor", "oracle_text": "back"},
+    ],
+}
+
+DFC_LAND = {
+    "name": "Darkbore Pathway // Slitherbore Pathway",
+    "layout": "modal_dfc",
+    "cmc": 0.0,
+    "type_line": "Land // Land",
+    "color_identity": ["B", "G"],
+    "card_faces": [
+        {"name": "Darkbore Pathway", "mana_cost": "", "colors": [],
+         "type_line": "Land", "oracle_text": "{T}: Add {B}."},
+        {"name": "Slitherbore Pathway", "mana_cost": "", "colors": [],
+         "type_line": "Land", "oracle_text": "{T}: Add {G}."},
+    ],
+}
+
+
+def test_transform_dfc_colors_union_the_faces():
+    card = shape_card(TRANSFORM_DFC, 1, False)
+    assert card["colors"] == ["U", "B"], "face colours must be unioned in WUBRG order"
+
+
+def test_dfc_faces_carry_their_own_colors():
+    """Without this the union has nothing to read and cannot be recomputed later."""
+    card = shape_card(TRANSFORM_DFC, 1, False)
+    assert [f["colors"] for f in card["card_faces"]] == [["U"], ["B"]]
+
+
+def test_dfc_land_is_legitimately_colorless():
+    """A Pathway is two Lands: colourless objects. The B/G lives in color_identity."""
+    card = shape_card(DFC_LAND, 1, False)
+    assert card["colors"] == []
+    assert card["color_identity"] == ["B", "G"]
+
+
+def test_single_faced_card_colors_still_come_from_the_top_level():
+    card = shape_card(DEFAULT_PRINTING, 1, True)
+    assert card["colors"] == DEFAULT_PRINTING["colors"]
+
+
+@requires_deck
+def test_real_deck_dfc_colors_agree_with_cards_csv():
+    """The two sources must not disagree — they share get_colors by construction."""
+    import pandas as pd
+
+    from manamap.config import DECKS_DIR, OUTPUT_CSV_PATH
+
+    if not OUTPUT_CSV_PATH.exists():
+        pytest.skip("cards.csv not built")
+    csv = pd.read_csv(OUTPUT_CSV_PATH, usecols=["name", "colors"])
+    expected = {
+        r["name"]: (set(str(r["colors"]).split(", ")) if pd.notna(r["colors"]) else set())
+        for _, r in csv.iterrows()
+    }
+    checked = 0
+    for cards_json in sorted(DECKS_DIR.glob("*/cards.json")):
+        with open(cards_json) as f:
+            doc = json.load(f)
+        for card in doc["cards"]:
+            if card.get("layout") not in ("transform", "modal_dfc", "reversible_card"):
+                continue
+            want = expected.get(card["name"])
+            if want is None:
+                continue
+            assert set(card["colors"]) == want, (
+                f"{cards_json.parent.name}/{card['name']}: "
+                f"cards.json {sorted(card['colors'])} != cards.csv {sorted(want)}"
+            )
+            checked += 1
+    assert checked, "no multi-face cards found in any committed deck"

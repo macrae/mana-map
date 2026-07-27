@@ -451,7 +451,30 @@ MANUALS_DIR = _REPO_ROOT / "manuals"
 SCRYFALL_COLLECTION_URL = "https://api.scryfall.com/cards/collection"
 SCRYFALL_BATCH_SIZE = 75
 SCRYFALL_REQUEST_DELAY_S = 0.1
+# Transient 429/5xx retries. A fetch is all-or-nothing across batches, so one 503
+# on batch 2 of 3 used to discard the two that succeeded.
+SCRYFALL_MAX_RETRIES = 4
+SCRYFALL_RETRY_BACKOFF_S = 1.0
 RESOLVE_MAX_ITERATIONS = 3
+
+# Scope budget for one stack artifact — advisory, and unlike the bound above it is
+# actually imported (validate_stack.py).
+#
+# Citation count predicts iteration count, measured across the first three published
+# decks. Every artifact at <= 32 citations passed in one or two rounds (goblin-storm,
+# 5 of 5); every artifact at >= 59 needed four rounds or failed outright (hapatra 59
+# @4, sisay 84 fail, 82 fail, 116 @3). The checker's verdict is atomic over the whole
+# artifact, so each citation is an independent chance to be judged unsupported and the
+# probability of a clean pass falls off a cliff as the artifact grows.
+#
+# The fix is authoring discipline, not a bigger bound: one rules domain per scenario.
+# Sisay 003's answers (a)-(d) were verified correct in all three passes and were
+# discarded because sub-question (e) failed in the same file.
+RESOLVE_SCOPE_BUDGET = {
+    "max_steps": 12,
+    "max_citations": 40,
+    "max_subquestions": 3,
+}
 
 # ── Pilot: Commander Brackets ────────────────────────────────────────────
 # WotC's bracket ladder. The restrictions here are the ones we can check
@@ -633,8 +656,14 @@ AGENT_ROUTINES = {
     "writer-prose": {
         "agent": "manual-writer",
         "artifact": "manual_prose.json",
-        "artifact_keys": ["cover", "how_it_wins", "combo_lines", "card_roles",
+        # No "cover" key: issue_plan.json owns the cover (build_manual.render_cover
+        # reads plan["cover"] and issue["cover_tagline"], never manual_prose).
+        "artifact_keys": ["how_it_wins", "combo_lines", "card_roles",
                           "mulligan", "upgrades"],
+        # COMBO_GRAPH_PATH stands in for COMBO_DETAILS_PATH here on purpose: agents
+        # read the details file, but process_combos writes both in one step, so the
+        # 4.5 MB graph is a faithful invalidation proxy for the 25.7 MB details and
+        # costs far less to hash.
         "inputs": ["cards:semantic", "stacks:passing", "deck:strategic_frame.json?",
                    "global:COMBO_GRAPH_PATH", "global:SYNERGY_GRAPH_PATH",
                    "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],

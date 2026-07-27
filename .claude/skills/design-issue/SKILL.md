@@ -63,3 +63,5 @@ Turns `data/decks/<slug>/` artifacts into `manuals/<slug>.html` — a complete i
   finding is the best story in the issue (STYLEv3 §7.6).
 - The Command Zone department is mandatory and must be format-specific. An issue that
   could be about any format has failed the Commander Mandate (STYLEv3 §3).
+
+**Agent output arrives as a path, not inline JSON.** Every deck agent writes to `data/decks/<slug>/.agent-out/<agent>.json` (gitignored) and returns that path with a short summary. Read the file, validate it, then merge — never ask for the JSON in the reply. A 133 KB `candidate_pool.json` returned inline costs ~35k tokens of context for nothing.

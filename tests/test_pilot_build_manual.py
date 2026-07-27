@@ -86,7 +86,16 @@ PROSE = {
     "matchups": "Against sweepers, bank cards.",
 }
 
-SYNERGY = {"Sac Outlet": [{"partner": "Payoff Engine", "rule": "sacrifice:death-trigger"}]}
+# Real synergy_graph.json entry shape: {partner, score, synergies}. The fixture used
+# to invent a "rule" key that matched a renderer bug, so no test ever noticed that
+# every chip on every published manual rendered empty. Keep this shaped like the
+# artifact — analysis/synergy.py:155 is the producer.
+SYNERGY = {
+    "Sac Outlet": [
+        {"partner": "Payoff Engine", "score": 4,
+         "synergies": ["Sacrifice + Death Trigger", "Tokens + Sacrifice"]},
+    ]
+}
 
 PLAN = {
     "slug": "test-deck",
@@ -222,6 +231,32 @@ def test_goldfish_assumptions_always_render():
 def test_missing_prose_renders_visible_todo():
     html_out = render(prose_doc={})
     assert "todo" in html_out.lower()
+
+
+def test_synergy_chips_render_from_the_graphs_real_keys():
+    """Chips read `synergies`; there has never been a `rule` key on this artifact."""
+    html_out = render()
+    assert '<span class="chip">Sacrifice + Death Trigger</span>' in html_out
+
+
+def test_synergy_chips_cap_at_two_per_tile():
+    busy = {"Sac Outlet": [{"partner": "P", "score": 9,
+                            "synergies": ["Aaa", "Bbb", "Ccc", "Ddd"]}]}
+    html_out = render(synergy=busy)
+    assert html_out.count('<span class="chip">Aaa</span>') == 1
+    assert "Ccc" not in html_out and "Ddd" not in html_out
+
+
+def test_absent_card_roles_says_so_instead_of_rendering_blank_tiles():
+    """card_roles is a dict so it cannot route through prose(); it must still TODO.
+
+    A grid of empty blurbs reads as "these need no explanation", not as
+    "nobody wrote this yet".
+    """
+    prose = {k: v for k, v in PROSE.items() if k != "card_roles"}
+    html_out = render(prose_doc=prose)
+    the_99 = html_out.split('id="the-99"')[1].split("</section>")[0]
+    assert "todo" in the_99.lower()
 
 
 def test_missing_goldfish_does_not_break_build():

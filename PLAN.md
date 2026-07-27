@@ -33,6 +33,8 @@ Live: [Vol. 001 — Goblin Storm](https://macrae.github.io/mana-map/manuals/gobl
 | **Bracket engine** | `pilot/bracket.py` computes a bracket **floor** from Game Changers, per-combo Spellbook bracket tags, two-card infinites and mass land denial; names the card or line driving it; writes `bracket_report.json`, which `validate-build` cross-checks against the plan's own claim |
 | **Deterministic builder** | `brief.json` → `build_plan.json` → `decklist.txt` with no agent involvement; `manabase.py` sizes colour sources hypergeometrically |
 | **Build loop** | `deck-analyst` → `deck-architect` ⇄ `deck-critic`, gated by `validate_build.py` and the bracket engine |
+| **Deck facts** | `pilot/deck_facts.py` (`manamap pilot deck-facts <slug>`) — the deterministic brief every agent reads instead of re-deriving: DFC-correct colours, curve, pip load, role coverage + holes, contained combos, and a `notes[]` block naming the traps. Computed on demand, never committed |
+| **Loop economics** | Scenario preflight (`validate-stack --scenario-only`) before any spawn; `RESOLVE_SCOPE_BUDGET` warns on oversized artifacts; `RESOLVE_MAX_ITERATIONS` enforced in `cache-record` rather than quoted in markdown; agents hand off by path via `.agent-out/` |
 
 ## The agent roster (11)
 
@@ -148,6 +150,50 @@ Yawgmoth (the only free repeatable −1/−1 source, library-bounded by its own 
 
 Verdict `pass` at **4 iterations** — `RESOLVE_MAX_ITERATIONS` is 3 and was deliberately
 overridden, recorded in `checker.iteration_bound_override`. See the loop note below.
+
+## The yield collapse, and what was done about it
+
+Three decks through the pipeline, and the per-round yield of verified lines fell off a
+cliff: goblin-storm **0.83** lines/round (5 in 6), hapatra 0.25 (1 in 4), sisay **0.11**
+(1 in 9). The cause is measurable and authored, not inherent — **citation count predicts
+iterations**, because the checker's verdict is atomic over an artifact whose size the
+author controls:
+
+| Artifact | steps | citations | outcome |
+|---|---|---|---|
+| goblin-storm 001–005 | 8–12 | **18–32** | pass@1 ×4, pass@2 ×1 |
+| hapatra 001 | 16 | 59 | pass@**4** |
+| sisay 001 / 003 | 15 / 16 | 84 / 82 | **fail**@3 |
+| sisay 002 | 24 | 116 | pass@3 |
+
+Sisay 003's answers (a)–(d) were independently verified correct in **all three** passes
+and were discarded because sub-question (e) failed in the same file. The rule now stated
+in `resolve-stack/SKILL.md`: **one rules domain per scenario**, split multi-part
+questions. `RESOLVE_SCOPE_BUDGET` warns, and re-running the budget over the committed
+artifacts flags every problem file and none of goblin-storm's.
+
+**Four live bugs found by auditing the loops, each with correct code already in-repo:**
+
+- **DFC colours were `[]` in every deck's `cards.json`.** `fetch_deck.py` read the
+  top-level field, which Scryfall omits for transform/modal DFCs, and `_shape_face`
+  dropped face colours so nothing could recover them. `extract.get_colors()` — correct
+  and tested — was never imported. 7 cards across 3 decks; `colors` is in
+  `CARD_SEMANTIC_FIELDS`, so the wrong value was agent-facing.
+- **Every synergy chip in every manual rendered empty.** `build_manual.py` read an
+  `entry["rule"]` key that has never existed on `synergy_graph.json` (`partner`/`score`/
+  `synergies`). Two published issues had **zero** chips; now 125/120/110. The test
+  fixture had invented the same wrong key, which is why nothing caught it.
+- **`cache-record` used `any()`, not `all()`** — a 1-of-6-key artifact recorded cleanly
+  and froze as a permanent HIT. On its first run the fix caught hapatra's `deck-build`
+  recorded with **5 of 9 keys**: the critic block and the architect's `engines`/`keep`/
+  `gaps` were never merged, and the cache had been saying "current, don't re-spawn".
+- **The `cover` prose key was dead work** — declared, written on every deck, cached, and
+  rendered nowhere (`issue_plan.json` owns the cover).
+
+Also: `RESOLVE_MAX_ITERATIONS` was never imported by any Python file — the bound was
+enforced by a model reading a number in markdown, which is why hapatra ran to 4. It is
+now enforced in `cache-record`, with `iteration_bound_override` schematized rather than
+invented ad hoc (it accepts the bare string hapatra actually stored).
 
 ## Open
 

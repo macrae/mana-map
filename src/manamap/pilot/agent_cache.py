@@ -36,6 +36,7 @@ from manamap.config import (
     AGENT_ROUTINE_STACK_INPUTS,
     AGENT_ROUTINES,
     CR_RULES_META_PATH,
+    RESOLVE_MAX_ITERATIONS,
 )
 from manamap.pilot.common import deck_dir
 
@@ -449,11 +450,17 @@ def record(slug, routine):
     keys = spec.get("artifact_keys")
     with open(artifact) as f:
         doc = json.load(f)
-    if keys and not any(k in doc for k in keys):
-        raise MissingInput(
-            f"{rel(artifact)} has none of this routine's keys {sorted(keys)} — "
-            f"did the agent run?"
-        )
+    if keys:
+        # ALL, not any: a partial artifact must never be frozen as a HIT. The digest
+        # below hashes missing keys as None, so recording a 1-of-6 output would make
+        # the next run report "current" on a manual that is five sections short.
+        missing = [k for k in keys if k not in doc]
+        if missing:
+            raise MissingInput(
+                f"{rel(artifact)} is missing {len(missing)} of this routine's "
+                f"{len(keys)} keys: {sorted(missing)} — did the agent finish? "
+                f"Recording a partial artifact would freeze it as a permanent HIT."
+            )
     entry = {
         "agent": spec["agent"],
         "agent_prompt_sha256": agent_prompt_sha256(spec["agent"]),
@@ -473,6 +480,30 @@ def record(slug, routine):
             )
         entry["verdict"] = checker.get("verdict")
         entry["iterations"] = checker.get("iterations")
+
+        # Make the bound real. RESOLVE_MAX_ITERATIONS lived in config purely so skill
+        # markdown could quote it — no Python imported it, so it was enforced by a
+        # model reading a number in a heading, and hapatra's stack 001 duly ran to 4.
+        # Overriding is still allowed; it just has to be declared and reasoned, which
+        # is the difference between a bound and a suggestion.
+        iterations = checker.get("iterations")
+        # The key was invented ad hoc on hapatra and written as free text, so accept a
+        # bare string as well as {"reason": ...}. Either way it must actually say
+        # something — an empty override is not a justification.
+        override = checker.get("iteration_bound_override")
+        if isinstance(override, str):
+            override = {"reason": override}
+        override = override or {}
+        if isinstance(iterations, int) and iterations > RESOLVE_MAX_ITERATIONS:
+            if not str(override.get("reason", "")).strip():
+                raise MissingInput(
+                    f"{rel(artifact)} records {iterations} iterations but "
+                    f"RESOLVE_MAX_ITERATIONS is {RESOLVE_MAX_ITERATIONS}. To record it "
+                    f"anyway, add checker.iteration_bound_override = "
+                    f'{{"reason": "<why this line earned an extra pass>"}}. '
+                    f"A bound lifted whenever the checker sounds confident is not a bound."
+                )
+            entry["iteration_bound_override"] = override
 
     cache = load_cache(slug)
     cache["cache_version"] = AGENT_CACHE_VERSION

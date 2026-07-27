@@ -3,15 +3,15 @@
   "routines": {
     "candidate-pool": {
       "agent": "deck-analyst",
-      "agent_prompt_sha256": "d16589d9e5f95849f1e7413e4c6e1bcfbb0c29affb6c9ee31fbcc17556eb2906",
+      "agent_prompt_sha256": "40a16b7ef02c0ae910fbb899f0ef8850aba76080aba7a606afa66d025d028734",
       "artifact": "data/decks/hapatra/candidate_pool.json",
-      "artifact_sha256": "3c168d5d91d87a0c5f598f9fa0688d41f540d492c99298664d1ac27221224ae7",
+      "artifact_sha256": "bccf14f236807b2dd53ceef2dcbc5f1b5cdb80869def17229df27aceec495581",
       "extra": {},
-      "fingerprint": "906001c75e28bb6e4e396efa053d3439ed08ad982641894c4dd65b159dd130dd",
+      "fingerprint": "0e52acaa277d08f9fc644aec1d6f5d5ce739175d0c4c40de181364e6953735a8",
       "inputs": [
         {
           "path": "data/card_roles.json",
-          "sha256": "ac90542601a5b03aa318cf157f4fd9debb0b47a963455433af452be259d08cb6"
+          "sha256": "034d12cb14d1c052c5c77ff325bc9987ab2c1107727f4a739891aab280fcbfb1"
         },
         {
           "path": "data/combo_details.json",
@@ -19,7 +19,7 @@
         },
         {
           "path": "data/decks/hapatra/brief.json",
-          "sha256": "306208e6226fd51c7fd2b945b85c864fc43a0eab47dc6299bea19a399f1635d5"
+          "sha256": "1e96fa0de5ddbd7096bc9a48ae35ab7d5a6c79db8266ed94d200bd17ba9e64dc"
         },
         {
           "path": "data/obsolescence_index.json",
@@ -33,7 +33,7 @@
     },
     "coach-prose": {
       "agent": "pilot-coach",
-      "agent_prompt_sha256": "54bbbe64b46eae8f9775966119ee253af1a46c9c695d3534bbb901f313e4ffbf",
+      "agent_prompt_sha256": "b45e21197e2288f5caf97d98e455ffd865b8b6e834aa1a14e8f8194ff979bd11",
       "artifact": "data/decks/hapatra/manual_prose.json",
       "artifact_keys": [
         "matchups",
@@ -41,10 +41,10 @@
       ],
       "artifact_sha256": "688909acb1d88d0c682e5016664c5ca2815f2834ca2c7c593337fc9658ab2fc0",
       "extra": {
-        "cards_semantic": "81dedc4cf566fbac7bafa537418d39b96f168c66fe9789c148e1c48f50ee0ac8",
+        "cards_semantic": "7733fe17b484c0a466bbfe347d3694529115013aa0d4979ac9ad3ca082fa4df4",
         "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
       },
-      "fingerprint": "c286f2edb0216de7e60723e70b456a8a134ad2a03b16ce3a219737e4a849f4be",
+      "fingerprint": "51ddcd97e7f522dd7c6b81a346afc1ef2a9a06aa17fc8e2a71470f4a21eee808",
       "inputs": [
         {
           "path": "data/decks/hapatra/goldfish_metrics.json",
@@ -105,12 +105,12 @@
     },
     "issue-plan": {
       "agent": "magazine-editor",
-      "agent_prompt_sha256": "10a1a02b0f6532e62c0a7cae6efa9938a0b0fd7bba564cf449610e6a35b7ec3c",
+      "agent_prompt_sha256": "704e709127a2ac8a8d4ab7fd52f37cffcfd1553b1bdcb147732bd7bbdb2a0141",
       "artifact": "data/decks/hapatra/issue_plan.json",
       "artifact_sha256": "47157c28c80ddd7eb8f15e415c100ca083fe9dbf7006e6f8519032eab7f8deb4",
       "extra": {
         "cards_printing": "ca18e4e54bb3bb441a28a773734fcb58334300238d96ba957ecbf72e5d184263",
-        "cards_semantic": "81dedc4cf566fbac7bafa537418d39b96f168c66fe9789c148e1c48f50ee0ac8",
+        "cards_semantic": "7733fe17b484c0a466bbfe347d3694529115013aa0d4979ac9ad3ca082fa4df4",
         "prose_shape": {
           "card_roles": [
             "Arcane Signet",
@@ -195,7 +195,7 @@
         },
         "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
       },
-      "fingerprint": "0f8c65268925e8b72ee2d95703eddec06c266694a92a95759a2178f52839b323",
+      "fingerprint": "234a679327f00d94b899b1f3cf34adf035ee4d44e8c0d8c9630a006c7f4073ee",
       "inputs": [
         {
           "path": "STYLEv3.md",
@@ -211,7 +211,7 @@
         },
         {
           "path": "data/decks/hapatra/issue.json",
-          "sha256": "83fa04151d5e8ce048afa2f60bca54720e503efac5500809da7660c055a97fc5"
+          "sha256": "e6e219c001f71ecce099740f266adb041ce8146c7c28f4cf1e0d12bc973ce2fa"
         },
         {
           "path": "data/decks/hapatra/stacks/001-mikaeus-undying-counter-annihilation.json",
@@ -237,33 +237,36 @@
     },
     "stack:001": {
       "agent": "stack-resolver+rules-checker",
-      "agent_prompt_sha256": "6caa44a430ff1450238c3afb3dc9bea967a918a808d0e91f3558539b1bd6b78e",
+      "agent_prompt_sha256": "310902fc5f16d3b62ed8bb262889c62230cb85905c1fa376b42c4c97dcbe2169",
       "artifact": "data/decks/hapatra/stacks/001-mikaeus-undying-counter-annihilation.json",
       "artifact_sha256": "12c716b365ef65edd0a5b4fc19e8279312f1c1b4f42b9873e8ccc87b3782ec40",
       "extra": {
-        "cards_semantic": "81dedc4cf566fbac7bafa537418d39b96f168c66fe9789c148e1c48f50ee0ac8",
+        "cards_semantic": "7733fe17b484c0a466bbfe347d3694529115013aa0d4979ac9ad3ca082fa4df4",
         "rules_version": "June 19, 2026"
       },
-      "fingerprint": "fff9cdfefe71b10e9d13b6d2b915493736d16d046fa8a1b646dcb61eba4abd61",
+      "fingerprint": "a7024ca09052c5c29db676ba2cda3555f17d4d692e184c57efdba3371e810369",
       "inputs": [
         {
           "path": "data/decks/hapatra/stacks/001-mikaeus-undying-counter-annihilation.json#scenario",
           "sha256": "96dbf97726888136bf6c36338bb8b106f78bb811250c5b8410b8f69d397c256b"
         }
       ],
+      "iteration_bound_override": {
+        "reason": "RESOLVE_MAX_ITERATIONS = 3 was reached with verdict fail, then deliberately overridden for a fourth pass at the operator's direction. Justification: the checker stated the rules analysis had converged and independently re-derived and confirmed every substantive conclusion, failing the line only on a stale outlet count that the document's own step 10 already corrects and a timing claim citing a rule about casting spells rather than activating abilities. Both are one-line edits that change no conclusion. Recorded here so the override is visible in the artifact rather than implicit in the iteration count."
+      },
       "iterations": 4,
       "verdict": "pass"
     },
     "strategic-frame": {
       "agent": "strategy-researcher",
-      "agent_prompt_sha256": "ba54c33a6d10f04f62f28285c181cdc02074a2713cdb5c37e98fe8be9c69d2cd",
+      "agent_prompt_sha256": "9a059a21c52844abadbdacbd639b16c1dc63ab34b6c2f06258e555cdb3b49004",
       "artifact": "data/decks/hapatra/strategic_frame.json",
       "artifact_sha256": "3a5af570908bd7b41f046582b6d1f81636864a0b02356e92dd86807a23a76307",
       "extra": {
-        "cards_semantic": "81dedc4cf566fbac7bafa537418d39b96f168c66fe9789c148e1c48f50ee0ac8",
+        "cards_semantic": "7733fe17b484c0a466bbfe347d3694529115013aa0d4979ac9ad3ca082fa4df4",
         "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
       },
-      "fingerprint": "011586f3ed7dee8240cb1cb4feab5fc1c96dae2a33fa52cd5a72477b3fb1acef",
+      "fingerprint": "7943f68ce187963d475961ef78c76f834707fab4879ce9c6a6f9c358ab0f9491",
       "inputs": [
         {
           "path": "data/decks/hapatra/goldfish_metrics.json",
@@ -277,22 +280,21 @@
     },
     "writer-prose": {
       "agent": "manual-writer",
-      "agent_prompt_sha256": "7ba3764101119e91b73ef186a9c63cb255f615294b6f99a2503de0646a538589",
+      "agent_prompt_sha256": "aaa8d8fec7d57f4ac929b2730f4afb54e34083255bd7dee952d2a8bc25e8cf78",
       "artifact": "data/decks/hapatra/manual_prose.json",
       "artifact_keys": [
         "card_roles",
         "combo_lines",
-        "cover",
         "how_it_wins",
         "mulligan",
         "upgrades"
       ],
-      "artifact_sha256": "78f35a55d05c218f1ca8d0cf3c66011e041f32c4dfef8e677c6fde030941ddfb",
+      "artifact_sha256": "193954056809120a7c3fa46637255da61d5192e84280488816065fdb4b654d69",
       "extra": {
-        "cards_semantic": "81dedc4cf566fbac7bafa537418d39b96f168c66fe9789c148e1c48f50ee0ac8",
+        "cards_semantic": "7733fe17b484c0a466bbfe347d3694529115013aa0d4979ac9ad3ca082fa4df4",
         "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
       },
-      "fingerprint": "54afd667903e08e18c7e6fdb04cb13efe6b17cc950eda310b9fe35f5820b0b52",
+      "fingerprint": "88b384d26745708bdb2238b0d5f08e4c3d402fa76b03f65d06502bdd5b0d67c7",
       "inputs": [
         {
           "path": "data/combo_graph.json",

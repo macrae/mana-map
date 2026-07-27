@@ -474,9 +474,13 @@ def _card_tile(card, roles, synergy, printing=False):
     """A card tile. `printing=True` adds the artist/set credit and foil sheen —
     used by the gallery, where the physical printing is the subject."""
     name = card["name"]
+    # Graph entries are {partner, score, synergies} — `synergies` is a list of rule
+    # labels like "Tokens + Sacrifice". This used to read a `rule` key that has never
+    # existed on this artifact, so every chip on every manual rendered empty.
     labels = sorted({
-        entry.get("rule", "").split(":")[0]
-        for entry in (synergy or {}).get(name, [])[:3] if entry.get("rule")
+        label
+        for entry in (synergy or {}).get(name, [])[:3]
+        for label in entry.get("synergies", [])
     })
     chips = "".join(f'<span class="chip">{esc(l)}</span>' for l in labels[:2])
     image = (f'<img src="{esc(card["image"])}" alt="{esc(name)}" loading="lazy">'
@@ -498,6 +502,11 @@ def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
     """
     dept = plan_dept(plan, "the-99")
     roles = (prose_doc or {}).get("card_roles", {})
+    # Every other department routes its copy through prose(), which makes a missing
+    # key a visible TODO. card_roles is a dict, so it can't — and an absent one used
+    # to render a full grid of blank blurbs, which reads as "these cards need no
+    # explanation" rather than "nobody wrote this yet". Say it out loud instead.
+    roles_todo = "" if roles else TODO
     main = [c for c in cards if not c.get("is_sideboard")]
     by_name = {c["name"]: c for c in main}
 
@@ -541,6 +550,7 @@ def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
                      f'<div class="card-grid">{"".join(side_tiles)}</div>')
     return (
         dept_open("the-99", plan)
+        + roles_todo
         + tiles + side_html
         + dept_captions(dept, cards_by_name)
         + dept_furniture(dept, cards_by_name)

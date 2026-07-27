@@ -5,6 +5,7 @@ import json
 import pytest
 
 from conftest import requires_deck
+from manamap import config
 from manamap.pilot import agent_cache as ac
 
 SLUG = "test-deck"
@@ -327,6 +328,40 @@ def test_record_refuses_when_owned_keys_absent(deck):
         ac.record(SLUG, "coach-prose")
 
 
+def test_record_refuses_a_partial_artifact(deck):
+    """ALL the routine's keys, not any of them.
+
+    The guard used to be `any`, so an agent that produced one of six declared
+    keys recorded cleanly and became a permanent HIT on a manual that was five
+    sections short. artifact_digest hashes absent keys as None, so nothing
+    downstream would have noticed.
+    """
+    keys = config.AGENT_ROUTINES["writer-prose"]["artifact_keys"]
+    partial = {keys[0]: "the writer stopped after one section"}
+    write_json(deck / "manual_prose.json", partial)
+    with pytest.raises(ac.MissingInput) as excinfo:
+        ac.record(SLUG, "writer-prose")
+    message = str(excinfo.value)
+    # The message must name what is missing, so the fix is obvious without a re-read.
+    for absent in keys[1:]:
+        assert absent in message
+
+
+def test_record_accepts_a_complete_artifact(deck):
+    keys = config.AGENT_ROUTINES["writer-prose"]["artifact_keys"]
+    write_json(deck / "manual_prose.json", {k: f"{k} prose" for k in keys})
+    entry, _ = ac.record(SLUG, "writer-prose")
+    assert entry["artifact"].endswith("manual_prose.json")
+
+
+def test_writer_prose_does_not_own_a_cover_key(deck):
+    """issue_plan.json owns the cover; build_manual never reads prose['cover'].
+
+    The key was declared, produced on every deck, cached — and rendered nowhere.
+    """
+    assert "cover" not in config.AGENT_ROUTINES["writer-prose"]["artifact_keys"]
+
+
 # ── Sidecar ──────────────────────────────────────────────────────────────
 
 
@@ -486,3 +521,53 @@ def test_scan_json_separates_applicable_from_not():
     assert {"slug", "any_miss", "routines", "not_applicable"} <= set(doc)
     assert any(r["routine"] == "candidate-pool" for r in doc["not_applicable"])
     assert all("brief.json" in r["reason"] for r in doc["not_applicable"])
+
+
+# ── The iteration bound, enforced rather than quoted ─────────────────────
+
+
+def test_record_refuses_iterations_over_the_bound_without_a_reason(deck):
+    """RESOLVE_MAX_ITERATIONS used to be enforced by a model reading markdown.
+
+    No Python imported it, so hapatra's stack 001 ran to 4 and recorded cleanly.
+    Overriding is still allowed — it just has to be declared.
+    """
+    doc = stack_doc("001")
+    doc["checker"]["iterations"] = config.RESOLVE_MAX_ITERATIONS + 1
+    write_json(deck / "stacks" / "001-first.json", doc)
+    with pytest.raises(ac.MissingInput) as excinfo:
+        ac.record(SLUG, "stack:001")
+    assert "iteration_bound_override" in str(excinfo.value)
+
+
+def test_record_accepts_an_over_bound_run_with_a_stated_reason(deck):
+    doc = stack_doc("001")
+    doc["checker"]["iterations"] = config.RESOLVE_MAX_ITERATIONS + 1
+    doc["checker"]["iteration_bound_override"] = {"reason": "checker confirmed convergence"}
+    write_json(deck / "stacks" / "001-first.json", doc)
+    entry, _ = ac.record(SLUG, "stack:001")
+    assert entry["iteration_bound_override"]["reason"]
+
+
+def test_override_may_be_a_bare_string(deck):
+    """The key was invented ad hoc as free text; accept the shape that exists."""
+    doc = stack_doc("001")
+    doc["checker"]["iterations"] = config.RESOLVE_MAX_ITERATIONS + 1
+    doc["checker"]["iteration_bound_override"] = "deliberate fourth pass, operator approved"
+    write_json(deck / "stacks" / "001-first.json", doc)
+    entry, _ = ac.record(SLUG, "stack:001")
+    assert "fourth pass" in entry["iteration_bound_override"]["reason"]
+
+
+def test_an_empty_override_is_not_a_justification(deck):
+    doc = stack_doc("001")
+    doc["checker"]["iterations"] = config.RESOLVE_MAX_ITERATIONS + 1
+    doc["checker"]["iteration_bound_override"] = {"reason": "   "}
+    write_json(deck / "stacks" / "001-first.json", doc)
+    with pytest.raises(ac.MissingInput):
+        ac.record(SLUG, "stack:001")
+
+
+def test_runs_within_the_bound_need_no_override(deck):
+    entry, _ = ac.record(SLUG, "stack:001")
+    assert "iteration_bound_override" not in entry

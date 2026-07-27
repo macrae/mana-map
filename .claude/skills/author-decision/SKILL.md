@@ -21,3 +21,5 @@ Produces `data/decks/<slug>/decisions/NNN-<kebab>.json` (`kind: "decision"`). Sc
    Once it passes: `.venv/bin/manamap pilot cache-record <slug> --routine decision:<NNN>`.
 4. **Review note**: decisions are pure coaching (★). The tracked JSON is the review surface — flag new scenarios to the user for red-lining; founder review is the quality mechanism, not machine verification.
 5. Rebuild when ready: `.venv/bin/manamap pilot build-manual <slug>`.
+
+**Agent output arrives as a path, not inline JSON.** Every deck agent writes to `data/decks/<slug>/.agent-out/<agent>.json` (gitignored) and returns that path with a short summary. Read the file, validate it, then merge — never ask for the JSON in the reply. A 133 KB `candidate_pool.json` returned inline costs ~35k tokens of context for nothing.

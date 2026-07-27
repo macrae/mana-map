@@ -22,3 +22,8 @@ __pycache__/
 data/strategy/strategy_index.json
 data/strategy/strategy_embeddings.npy
 data/strategy/.strategy-db-meta.json
+
+# Agent scratchpad: subagents write their JSON here and return only the path, so a
+# 133 KB candidate_pool never crosses the orchestrator's context. The orchestrator
+# validates and merges into the tracked artifact; these are working files.
+data/decks/*/.agent-out/

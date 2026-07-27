@@ -11,7 +11,33 @@ Runs the resolver→checker loop for one scenario and saves the artifact at
 ## Loop (max RESOLVE_MAX_ITERATIONS = 3, from config.py)
 
 1. **Scenario**: create or receive the scenario block (`id`, `slug`, `deck`, `title`, `scenario{board, hand, mana_available, stack[], extras, question}`). Stack is ordered, `pos` 0 = bottom. Number scenarios `NNN` zero-padded in authoring order.
-1a. **Cache gate** (the loop costs 65–130k tokens — never re-run it blindly):
+
+   **Keep it to one rules domain.** This is the single biggest lever on cost and
+   success, and it is entirely in your hands. The checker's verdict is atomic over the
+   whole artifact, so every extra citation is another chance for the whole thing to
+   fail. Measured across the first three published decks: every artifact at **≤32
+   citations passed in one or two rounds** (goblin-storm, 5 for 5); every artifact at
+   **≥59 needed four rounds or failed** (hapatra 59@4; sisay 84 fail, 82 fail, 116@3).
+   goblin-storm got 5 verified lines out of 6 rounds; sisay got 1 out of 9.
+
+   A scenario asking `(a)`–`(e)` across summoning sickness, layers, priority and mana
+   pools is five chances to fail in one file — and when it fails, correct answers die
+   with it. Sisay 003's (a)–(d) were verified correct in all three passes and were
+   discarded because (e) was weak. **Split multi-part questions into separate
+   scenarios**; they resolve faster, cost less, and fail independently.
+
+1a. **Preflight** — free, and it runs before you spend anything:
+
+   ```bash
+   .venv/bin/manamap pilot validate-stack <slug> --scenario-only
+   ```
+
+   Checks the scenario's form without needing a resolution, and warns when the question
+   is over the sub-question budget. An empty `scenario.stack` once aborted three
+   resolutions *after* all three had run, because nothing looked at the scenario until
+   it had an answer attached. Fix anything it reports before step 1b.
+
+1b. **Cache gate** (the loop costs 65–130k tokens — never re-run it blindly):
    `.venv/bin/manamap pilot cache-status <slug> --routine stack:<NNN>`
    - **exit 0** — the scenario block, `cards.json`, the CR version, and both agent
      prompts are unchanged since this artifact was resolved. Report the recorded
@@ -23,7 +49,7 @@ Runs the resolver→checker loop for one scenario and saves the artifact at
 
    Only the scenario block is fingerprinted, so the `resolution` and `checker` blocks
    the loop writes into the same file never self-invalidate.
-2. **Resolve**: spawn the `stack-resolver` agent with the scenario JSON and deck slug. Write its `resolution` block into the stack file.
+2. **Resolve**: spawn the `stack-resolver` agent with the scenario JSON and deck slug. It writes `data/decks/<slug>/.agent-out/stack-resolver-<NNN>.json`; read that file and merge its `resolution` block into the stack file.
 3. **Mechanical gate**: `.venv/bin/manamap pilot validate-stack <slug> --stack <NNN>`. On failure, re-spawn the resolver with the validator errors — do NOT proceed to the checker until form passes.
 4. **Check**: spawn the `rules-checker` agent for the file. Merge its `checker` block (set `iterations` to the loop count) into the file.
 5. **Iterate**: if verdict is `fail` and iterations < 3, re-spawn `stack-resolver` with the findings attached. Else save as-is — a `fail` artifact is saved too (it documents an open question), but it can never appear in a manual.
@@ -39,3 +65,5 @@ Also set `rules_version` in the artifact from `data/rules/.rules-meta.json` `eff
 ## Scale-out note
 
 For batch-resolving many scenarios (full manual prep), the Workflow tool can fan out resolver→checker pipelines per scenario. v1 keeps it sequential — a quality loop with human-reviewable intermediate states.
+
+**Agent output arrives as a path, not inline JSON.** Every deck agent writes to `data/decks/<slug>/.agent-out/<agent>.json` (gitignored) and returns that path with a short summary. Read the file, validate it, then merge — never ask for the JSON in the reply. A 133 KB `candidate_pool.json` returned inline costs ~35k tokens of context for nothing.

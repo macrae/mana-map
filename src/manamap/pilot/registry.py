@@ -17,6 +17,7 @@ PILOT_STEPS = [
     ("validate-stack", "manamap.pilot.validate_stack", "Enforce the citation contract on scenarios"),
     ("goldfish", "manamap.pilot.goldfish", "Seeded Monte Carlo resource-development metrics"),
     ("bracket-check", "manamap.pilot.bracket", "Computed bracket floor and its evidence"),
+    ("deck-facts", "manamap.pilot.deck_facts", "Deterministic deck facts agents would else re-derive"),
     ("build-deck", "manamap.pilot.build_deck", "brief.json -> build_plan.json, deterministic"),
     ("validate-build", "manamap.pilot.validate_build", "Form-check a build plan against the contract"),
     ("artist-credits", "manamap.pilot.artist_credits", "Standout artists and art themes in a deck"),
@@ -35,7 +36,7 @@ PILOT_STEPS = [
 _DECK_COMMANDS = {
     "fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual",
     "validate-issue", "cache-status", "cache-record", "cache-clear", "artist-credits",
-    "bracket-check", "build-deck", "validate-build",
+    "bracket-check", "build-deck", "validate-build", "deck-facts",
 }
 
 
@@ -57,6 +58,9 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "validate-stack":
             cmd.add_argument("--stack", default=None, help="Only this scenario id (e.g. 001)")
+            cmd.add_argument("--scenario-only", action="store_true", dest="scenario_only",
+                             help="Preflight the scenario before resolving it (free; "
+                                  "run this BEFORE spawning a resolver)")
         if name == "query-strategy":
             cmd.add_argument("query", help="Natural-language strategy question")
             cmd.add_argument("--k", type=int, default=None, help="Number of results")
@@ -88,6 +92,9 @@ def add_pilot_parser(subparsers):
         if name == "fetch-deck":
             cmd.add_argument("--force", action="store_true",
                              help="Re-fetch from Scryfall even if the decklist is unchanged")
+        if name == "deck-facts":
+            cmd.add_argument("--out", default=None,
+                             help="Write JSON here instead of stdout (a view, never tracked)")
 
 
 def run_pilot_step(args):

@@ -19,10 +19,17 @@ import json
 import re
 import sys
 
+from manamap.config import RESOLVE_SCOPE_BUDGET
 from manamap.pilot.common import RULE_ID_RE, STRATEGY_ID_RE, deck_dir, load_rules_db
 
 REQUIRED_TOP_KEYS = {"id", "slug", "deck", "title", "scenario", "resolution"}
+# A scenario can be checked before it has an answer — that is the whole point of the
+# preflight, which costs milliseconds where a resolver spawn costs ~35k tokens.
+REQUIRED_PREFLIGHT_KEYS = REQUIRED_TOP_KEYS - {"resolution"}
 REQUIRED_SCENARIO_KEYS = {"stack", "question"}
+# Lettered sub-questions: "(a) ... (b) ..." — the strongest cheap predictor that a
+# scenario spans several rules domains and will fail atomically on the weakest one.
+_SUBQUESTION_RE = re.compile(r"\(([a-h])\)")
 CHECKER_STATUSES = {"supported", "unsupported", "irrelevant", "misquoted"}
 
 REQUIRED_DECISION_KEYS = {"id", "slug", "deck", "title", "scenario", "branches", "recommendation"}
@@ -72,6 +79,60 @@ def _validate_citations(citations, rules, where, errors, strategy_sections=None)
             continue
         if _normalize_ws(quote) not in _normalize_ws(rules[rule_id]["text"]):
             errors.append(f"{where}: quote is not verbatim text of {rule_id}: {quote[:60]!r}...")
+
+
+def validate_preflight(doc):
+    """Form-check a scenario BEFORE it has a resolution. Returns (errors, warnings).
+
+    Everything here is free and runs in milliseconds; the resolver spawn it guards
+    costs ~35k tokens. An empty `scenario.stack` once aborted three resolutions
+    *after* they had all run, because nothing checked the scenario until it had an
+    answer attached.
+    """
+    errors, warnings = [], []
+    missing = REQUIRED_PREFLIGHT_KEYS - set(doc)
+    if missing:
+        errors.append(f"Missing top-level keys: {sorted(missing)}")
+        return errors, warnings
+
+    scenario = doc["scenario"]
+    missing = REQUIRED_SCENARIO_KEYS - set(scenario)
+    if missing:
+        errors.append(f"scenario missing keys: {sorted(missing)}")
+    stack = scenario.get("stack")
+    if not isinstance(stack, list) or not stack:
+        errors.append("scenario.stack must be a non-empty ordered list (pos 0 = bottom)")
+    if not str(scenario.get("question", "")).strip():
+        errors.append("scenario.question is empty — there is nothing to resolve")
+
+    parts = {m.group(1) for m in _SUBQUESTION_RE.finditer(str(scenario.get("question", "")))}
+    limit = RESOLVE_SCOPE_BUDGET["max_subquestions"]
+    if len(parts) > limit:
+        warnings.append(
+            f"scenario.question has {len(parts)} lettered sub-questions (budget {limit}). "
+            f"Broad scenarios fail atomically: the checker's verdict covers the whole "
+            f"artifact, so one weak sub-answer discards the rest. Prefer one rules domain "
+            f"per scenario and split the others into their own files."
+        )
+    return errors, warnings
+
+
+def scope_warnings(doc):
+    """Advisory size checks on a finished resolution. Never errors — see config."""
+    warnings = []
+    steps = (doc.get("resolution") or {}).get("steps", [])
+    citations = sum(len(s.get("citations", [])) for s in steps)
+    if len(steps) > RESOLVE_SCOPE_BUDGET["max_steps"]:
+        warnings.append(
+            f"{len(steps)} steps (budget {RESOLVE_SCOPE_BUDGET['max_steps']})"
+        )
+    if citations > RESOLVE_SCOPE_BUDGET["max_citations"]:
+        warnings.append(
+            f"{citations} citations (budget {RESOLVE_SCOPE_BUDGET['max_citations']}) — "
+            f"every artifact at <=32 citations passed in 1-2 rounds; every one at >=59 "
+            f"needed 4 rounds or failed"
+        )
+    return warnings
 
 
 def validate_scenario(doc, rules, strategy_sections=None):
@@ -201,8 +262,24 @@ def main(args):
     for path in paths:
         with open(path) as f:
             doc = json.load(f)
-        errors = validate_any(doc, rules, strategy_sections)
         kind = doc.get("kind", "stack")
+
+        if getattr(args, "scenario_only", False):
+            if kind == "decision":
+                continue
+            errors, warnings = validate_preflight(doc)
+            if errors:
+                failed = True
+                print(f"FAIL {path.name} (scenario preflight):")
+                for e in errors:
+                    print(f"  - {e}")
+            else:
+                print(f"OK   {path.name} (scenario form holds — safe to spawn)")
+            for w in warnings:
+                print(f"  ! {w}")
+            continue
+
+        errors = validate_any(doc, rules, strategy_sections)
         if errors:
             failed = True
             print(f"FAIL {path.name} ({kind}):")
@@ -213,6 +290,8 @@ def main(args):
         else:
             verdict = (doc.get("checker") or {}).get("verdict", "unchecked")
             print(f"OK   {path.name} (contract holds; checker: {verdict})")
+            for w in scope_warnings(doc):
+                print(f"  ! over scope budget: {w}")
     if failed:
         sys.exit(1)
 

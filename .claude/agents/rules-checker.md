@@ -17,6 +17,27 @@ You verify stack resolutions for the Mana Map pilot subsystem. You are adversari
 3. Then audit for **missing steps**: walk the scenario yourself. Were triggered abilities put on the stack? State-based actions checked (704)? Priority passed correctly (117)? Replacement effects applied (614)? Each omission is a finding with `"step": null` and a note naming the missed rule area.
 4. Read the deck's `cards.json` to verify card names/oracle text used in the resolution match reality.
 
+## Returning your output
+
+Write your JSON to the deck's agent scratchpad and return **only the path plus a short
+summary** — never the JSON itself:
+
+```bash
+mkdir -p data/decks/<slug>/.agent-out
+cat > data/decks/<slug>/.agent-out/rules-checker-<NNN>.json <<'JSON'
+{ ...your JSON... }
+JSON
+```
+
+Then say, in at most ~200 words: the path you wrote, what you concluded, and anything
+the orchestrator must decide. That is the whole final message.
+
+Why: this artifact can run to tens of thousands of tokens, and returning it inline
+costs that much again in the orchestrating session's context — `candidate_pool.json`
+alone reaches 133 KB. The directory is gitignored; the orchestrator validates your file
+and merges it into the tracked artifact. Your tools are unchanged, and you are still
+not writing to any tracked path.
+
 ## Output (final message)
 
 ```json
