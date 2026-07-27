@@ -668,6 +668,16 @@ AGENT_ROUTINES = {
                    "global:COMBO_GRAPH_PATH", "global:SYNERGY_GRAPH_PATH",
                    "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
     },
+    # Deliberately NOT an input to writer-prose or issue-plan: a sideboard edit
+    # should cost one analysis, not a full manual regeneration. The renderer reads
+    # the artifact directly, so the coupling stays one-way.
+    "sideboard-analysis": {
+        "agent": "sideboard-analyst",
+        "artifact": "sideboard_analysis.json",
+        "inputs": ["cards:semantic", "stacks:passing", "deck:strategic_frame.json?",
+                   "deck:bracket_report.json?", "deck:pilot_feedback.md?",
+                   "global:COMBO_GRAPH_PATH", "strategy:doc"],
+    },
     "issue-plan": {
         "agent": "magazine-editor",
         "artifact": "issue_plan.json",

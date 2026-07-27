@@ -28,7 +28,12 @@ from manamap.config import (
     USER_AGENT,
 )
 from manamap.ingest.extract import get_colors
-from manamap.pilot.common import deck_dir
+from manamap.pilot.common import (
+    COMMANDER_SECTION_MARKERS,
+    MAIN_SECTION_MARKERS,
+    SIDEBOARD_SECTION_MARKERS,
+    deck_dir,
+)
 
 SESSION = requests.Session()
 SESSION.headers["User-Agent"] = USER_AGENT
@@ -61,13 +66,13 @@ def parse_decklist(text):
         if not line or line.startswith("#") or line.startswith("//"):
             continue
         lowered = line.lower().rstrip(":")
-        if lowered in ("commander", "commanders"):
+        if lowered in COMMANDER_SECTION_MARKERS:
             section = "commander"
             continue
-        if lowered in ("deck", "mainboard", "main"):
+        if lowered in MAIN_SECTION_MARKERS:
             section = "deck"
             continue
-        if lowered in ("sideboard", "side", "maybeboard", "considering"):
+        if lowered in SIDEBOARD_SECTION_MARKERS:
             section = "sideboard"
             continue
 

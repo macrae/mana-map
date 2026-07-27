@@ -7,6 +7,7 @@ import pandas as pd
 import pytest
 
 from manamap.config import DECK_ROLE_BUDGET, DECK_SIZE
+from manamap.pilot import build_deck
 from manamap.pilot.build_deck import (
     BriefError,
     candidate_pool,
@@ -365,3 +366,61 @@ def test_decklist_text_is_deterministic():
 def test_role_budget_sums_to_the_deck_size():
     """36 lands + 63 spells + 1 commander = 100."""
     assert sum(DECK_ROLE_BUDGET.values()) == DECK_SIZE - 1
+
+
+# ── Sideboard preservation ───────────────────────────────────────────────
+#
+# decklist_text() renders commander + slots + lands from the plan, so rewriting
+# decklist.txt used to erase any hand-authored sideboard. Harmless while no built
+# deck had one; a live hazard the moment one does.
+
+SIDEBOARD_BLOCK = (
+    "SIDEBOARD:\n"
+    "1 Sazacap's Brew (PLST) BLB-151\n"
+    "1 Red Mana (SLD) 7082 *F*"
+)
+
+TOY_PLAN = {
+    "commander": "Zada, Hedron Grinder",
+    "slots": [{"name": "Sol Ring"}],
+    "land_counts": {"Mountain": 2},
+}
+
+
+def test_extract_sideboard_lifts_the_block_verbatim():
+    text = "1 Sol Ring\n1 Mountain\n\n" + SIDEBOARD_BLOCK + "\n"
+    assert build_deck.extract_sideboard(text) == SIDEBOARD_BLOCK
+
+
+def test_extract_sideboard_accepts_every_marker_the_parser_does():
+    from manamap.pilot.common import SIDEBOARD_SECTION_MARKERS
+
+    for marker in SIDEBOARD_SECTION_MARKERS:
+        text = f"1 Sol Ring\n{marker.title()}:\n1 Sazacap's Brew\n"
+        assert "Sazacap's Brew" in build_deck.extract_sideboard(text), marker
+
+
+def test_extract_sideboard_returns_empty_when_there_is_none():
+    assert build_deck.extract_sideboard("1 Sol Ring\n1 Mountain\n") == ""
+    assert build_deck.extract_sideboard("") == ""
+
+
+def test_rewriting_a_decklist_preserves_its_sideboard():
+    out = build_deck.decklist_text(TOY_PLAN, {}, SIDEBOARD_BLOCK)
+    assert "SIDEBOARD:" in out
+    assert "Sazacap's Brew" in out
+    assert out.startswith("1 Zada, Hedron Grinder *CMDR*")
+
+
+def test_a_preserved_sideboard_reparses_into_the_same_cards():
+    """The block must survive a full write -> parse round trip."""
+    from manamap.pilot.fetch_deck import parse_decklist
+
+    out = build_deck.decklist_text(TOY_PLAN, {}, SIDEBOARD_BLOCK)
+    side = [e["name"] for e in parse_decklist(out) if e["is_sideboard"]]
+    assert side == ["Sazacap's Brew", "Red Mana"]
+
+
+def test_no_sideboard_means_no_trailing_blank_section():
+    out = build_deck.decklist_text(TOY_PLAN, {}, "")
+    assert out.endswith("2 Mountain\n") and "SIDEBOARD" not in out

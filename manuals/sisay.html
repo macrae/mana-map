@@ -100,6 +100,14 @@ p { margin:0 0 1em; }
 .badge-verified { color:#fff; background:var(--tier-verified); border-color:var(--tier-verified); }
 .badge-data     { color:#fff; background:var(--tier-data); border-color:var(--tier-data); }
 .badge-coach    { color:var(--ink); background:rgba(200,160,60,.2); border-color:var(--tier-coach); }
+/* Inline tier marks, for a section that genuinely mixes tiers inside one
+   department — a computed bracket delta beside a judgment about a swap. The
+   department badge still comes from the spec; these only label the sentence. */
+.tier-data  { color:var(--tier-data); font-weight:800; }
+.tier-coach { color:var(--tier-coach); font-weight:800; }
+.swap-list { list-style:none; padding:0; margin:14px 0; }
+.swap-list li { border-left:5px solid var(--y2k-blue); background:rgba(27,79,216,.05);
+                padding:11px 14px; margin:9px 0; line-height:1.5; }
 .legend { border:3px double var(--ink); padding:16px 18px; margin:20px 0;
           background:rgba(255,255,255,.5); }
 .legend h3 { margin-top:0; }

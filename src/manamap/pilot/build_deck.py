@@ -53,7 +53,7 @@ from manamap.config import (
 )
 from manamap.pilot import bracket as bracket_mod
 from manamap.pilot import manabase
-from manamap.pilot.common import deck_dir
+from manamap.pilot.common import SIDEBOARD_SECTION_MARKERS, deck_dir
 
 BASIC_LANDS = {"W": "Plains", "U": "Island", "B": "Swamp", "R": "Mountain", "G": "Forest"}
 
@@ -442,8 +442,29 @@ def decklist_name(name, layout):
     return name.split(" // ")[0]
 
 
-def decklist_text(plan, layouts=None):
-    """Render the plan as a decklist.txt that fetch-deck can parse."""
+def extract_sideboard(text):
+    """The sideboard block of an existing decklist, verbatim, or "".
+
+    The builder only ever knows about the 99 it built, so rewriting decklist.txt
+    from a plan would silently delete a sideboard someone authored by hand. Lift
+    the block out and hand it back unchanged — the section markers and the exact
+    printing annotations are the pilot's, not ours to regenerate.
+    """
+    if not text:
+        return ""
+    lines = text.split("\n")
+    for i, line in enumerate(lines):
+        if line.strip().lower().rstrip(":") in SIDEBOARD_SECTION_MARKERS:
+            return "\n".join(lines[i:]).rstrip("\n")
+    return ""
+
+
+def decklist_text(plan, layouts=None, sideboard=""):
+    """Render the plan as a decklist.txt that fetch-deck can parse.
+
+    `sideboard` is appended verbatim; pass the result of extract_sideboard() on
+    the file being overwritten so a hand-authored sideboard survives a rebuild.
+    """
     layouts = layouts or {}
 
     def render(name):
@@ -454,7 +475,10 @@ def decklist_text(plan, layouts=None):
         lines.append(f"1 {render(slot['name'])}")
     for name, count in plan["land_counts"].items():
         lines.append(f"{count} {render(name)}")
-    return "\n".join(lines) + "\n"
+    body = "\n".join(lines)
+    if sideboard:
+        body += "\n\n" + sideboard
+    return body + "\n"
 
 
 def main(args):
@@ -484,8 +508,11 @@ def main(args):
         layouts = pd.read_csv(OUTPUT_CSV_PATH, usecols=["name", "layout"])
         layouts = dict(zip(layouts["name"], layouts["layout"]))
         path = base / "decklist.txt"
-        path.write_text(decklist_text(plan, layouts), encoding="utf-8")
-        print(f"  Wrote {path}")
+        existing = path.read_text(encoding="utf-8") if path.exists() else ""
+        sideboard = extract_sideboard(existing)
+        path.write_text(decklist_text(plan, layouts, sideboard), encoding="utf-8")
+        print(f"  Wrote {path}"
+              + (" (sideboard preserved)" if sideboard else ""))
 
 
 if __name__ == "__main__":

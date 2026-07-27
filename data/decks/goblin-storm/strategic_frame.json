@@ -16,20 +16,101 @@
     "strategy_ref": "strategy:multiplayer.pivot-window"
   },
   "engines": [
-    {"piece": "Zada, Hedron Grinder", "engine": "Copy multiplier: any instant/sorcery targeting only Zada is copied per other creature — with cantrips (Crimson Wisps, Expedite, Ancestors' Aid, Renegade Tactics, Wild Ride, Witch's Mark, Sazacap's Brew, Great Train Heist) each body becomes a card", "evidence": "verified stack 001 (four Goblins + one {R} Crimson Wisps = 5 cards drawn, team hasted); synergy_graph edge Zada→Frontline Heroism (Copy + ETB)", "strategy_ref": "strategy:card-advantage"},
-    {"piece": "Empty the Warrens", "engine": "Storm token burst converted to direct damage by Impact Tremors; Grapeshot rides the same storm count", "evidence": "verified stack 002 (fourth spell = 3 storm copies, 8 tokens, 8 damage to each opponent via Impact Tremors, Grapeshot then sees storm 5)", "strategy_ref": "strategy:multiplayer.asymmetry"},
-    {"piece": "Fists of Flame", "engine": "Finisher: copies resolve sequentially, each drawing a card, so later copies lock in bigger +1/+0 buffs with trample — burst lethal from an unassuming board", "evidence": "verified stack 003 (sequential per-resolution buff sizing confirmed; buffs do not grow retroactively)", "strategy_ref": "strategy:life-as-resource.philosophy-of-fire"},
-    {"piece": "Krenko, Mob Boss", "engine": "Token doubler feeding every payoff: Prospector mana, Skullclamp draws, Bombardment/Pashalik Mons reach, wide attacks", "evidence": "combo_graph: 3 full in-deck combos (Krenko + Skirk Prospector + each of Goblin Warchief / Goblin Chieftain / Howlsquad Heavy); no synergy_graph key exists for Krenko, Mob Boss (verified absent)", "strategy_ref": "strategy:multiplayer.asymmetry"},
-    {"piece": "Skirk Prospector", "engine": "Bodies-to-mana converter alongside Battle Hymn, Brightstone Ritual, Seething Song, Mana Geyser — the ritual base that funds storm turns", "evidence": "oracle text; combo_graph partners in deck: Snoop, Chieftain, Warchief, Howlsquad Heavy, Krenko, Mogg War Marshal, Pashalik Mons, Ruby Medallion, Rundvelt Hordemaster", "strategy_ref": "strategy:tempo.sequencing"},
-    {"piece": "Skullclamp", "engine": "Attrition-proof draw: 1-toughness tokens convert to two cards each for {1}", "evidence": "oracle text (equipped creature gets +1/-1; dies → draw two)", "strategy_ref": "strategy:card-advantage"},
-    {"piece": "Storm-Kiln Artist", "engine": "Treasure per cast OR copy — every Zada cantrip mints one Treasure per body, funding the next spell", "evidence": "combo_graph partners map lists Storm-Kiln Artist as Zada's only in-deck combo partner; oracle text (Magecraft on cast or copy)", "strategy_ref": "strategy:tempo.sequencing"},
-    {"piece": "Goblin Bombardment + Pashalik Mons", "engine": "Death-trigger reach that converts leftover tokens to damage and dodges exile/bounce answers", "evidence": "oracle text both cards; combo_graph partners map lists Bombardment with 7 in-deck partners incl. Impact Tremors, Krenko, Roaming Throne", "strategy_ref": "strategy:multiplayer.asymmetry"}
+    {
+      "piece": "Zada, Hedron Grinder",
+      "engine": "Copy multiplier: any instant/sorcery targeting only Zada is copied per other creature — with cantrips (Crimson Wisps, Expedite, Ancestors' Aid, Renegade Tactics, Wild Ride, Witch's Mark, Great Train Heist) each body becomes a card (Sazacap's Brew is NOT in this set — it targets a player, so Zada never copies it)",
+      "evidence": "verified stack 001 (four Goblins + one {R} Crimson Wisps = 5 cards drawn, team hasted); synergy_graph edge Zada→Frontline Heroism (Copy + ETB)",
+      "strategy_ref": "strategy:card-advantage"
+    },
+    {
+      "piece": "Empty the Warrens",
+      "engine": "Storm token burst converted to direct damage by Impact Tremors; Grapeshot rides the same storm count",
+      "evidence": "verified stack 002 (fourth spell = 3 storm copies, 8 tokens, 8 damage to each opponent via Impact Tremors, Grapeshot then sees storm 5)",
+      "strategy_ref": "strategy:multiplayer.asymmetry"
+    },
+    {
+      "piece": "Fists of Flame",
+      "engine": "Finisher: copies resolve sequentially, each drawing a card, so later copies lock in bigger +1/+0 buffs with trample — burst lethal from an unassuming board",
+      "evidence": "verified stack 003 (sequential per-resolution buff sizing confirmed; buffs do not grow retroactively)",
+      "strategy_ref": "strategy:life-as-resource.philosophy-of-fire"
+    },
+    {
+      "piece": "Krenko, Mob Boss",
+      "engine": "Token doubler feeding every payoff: Prospector mana, Skullclamp draws, Bombardment/Pashalik Mons reach, wide attacks",
+      "evidence": "combo_graph: 3 full in-deck combos (Krenko + Skirk Prospector + each of Goblin Warchief / Goblin Chieftain / Howlsquad Heavy); no synergy_graph key exists for Krenko, Mob Boss (verified absent)",
+      "strategy_ref": "strategy:multiplayer.asymmetry"
+    },
+    {
+      "piece": "Skirk Prospector",
+      "engine": "Bodies-to-mana converter alongside Battle Hymn, Brightstone Ritual, Seething Song, Mana Geyser — the ritual base that funds storm turns",
+      "evidence": "oracle text; combo_graph partners in deck: Snoop, Chieftain, Warchief, Howlsquad Heavy, Krenko, Mogg War Marshal, Pashalik Mons, Ruby Medallion, Rundvelt Hordemaster",
+      "strategy_ref": "strategy:tempo.sequencing"
+    },
+    {
+      "piece": "Skullclamp",
+      "engine": "Attrition-proof draw: 1-toughness tokens convert to two cards each for {1}",
+      "evidence": "oracle text (equipped creature gets +1/-1; dies → draw two)",
+      "strategy_ref": "strategy:card-advantage"
+    },
+    {
+      "piece": "Storm-Kiln Artist",
+      "engine": "Treasure per cast OR copy — every Zada cantrip mints one Treasure per body, funding the next spell",
+      "evidence": "combo_graph partners map lists Storm-Kiln Artist as Zada's only in-deck combo partner; oracle text (Magecraft on cast or copy)",
+      "strategy_ref": "strategy:tempo.sequencing"
+    },
+    {
+      "piece": "Goblin Bombardment + Pashalik Mons",
+      "engine": "Death-trigger reach that converts leftover tokens to damage and dodges exile/bounce answers",
+      "evidence": "oracle text both cards; combo_graph partners map lists Bombardment with 7 in-deck partners incl. Impact Tremors, Krenko, Roaming Throne",
+      "strategy_ref": "strategy:multiplayer.asymmetry"
+    }
   ],
   "candidate_missing_lines": [
-    {"title": "Krenko + Skirk Prospector + haste enabler: infinite tokens, mana, and storm", "cards": ["Krenko, Mob Boss", "Skirk Prospector", "Goblin Warchief", "Goblin Chieftain", "Howlsquad Heavy"], "why_plausible": "combo_graph lists three FULL in-deck combos (Krenko+Prospector plus each haste enabler) producing infinite creature tokens with haste, infinite red mana, infinite death triggers, infinite storm count, infinite commander casts", "status": "needs a stack scenario"},
-    {"title": "Storm-Kiln Artist + Haze of Rage buyback: self-sustaining storm loop", "cards": ["Storm-Kiln Artist", "Haze of Rage"], "why_plausible": "combo_graph FULL in-deck pair producing infinite colored mana, infinite storm count, infinite Treasures, infinitely powerful creatures until end of turn; oracle text checks out — Haze of Rage buyback is {2} (total {3}{R} per recast) and each cast plus its storm copies each mint a Treasure via Magecraft, so past a small storm count the loop nets mana. Note: the queued candidate said 'Mana Haze' — the actual card in cards.json is Haze of Rage", "status": "needs a stack scenario"},
-    {"title": "Past in Flames ritual-and-payoff rebuild", "cards": ["Past in Flames", "Battle Hymn", "Brightstone Ritual", "Seething Song", "Mana Geyser", "Grapeshot", "Empty the Warrens"], "why_plausible": "no combo_graph entry (Past in Flames absent from partners map — verified), but oracle text is direct: flashback every instant/sorcery in graveyard at mana cost, and stack 002's scenario already shows rituals accumulating in the graveyard mid-storm-turn; recast rituals re-raise storm count for a second Grapeshot/Empty the Warrens", "status": "needs a stack scenario"},
-    {"title": "Roaming Throne (naming Goblin) doubles Zada's copy trigger", "cards": ["Roaming Throne", "Zada, Hedron Grinder", "Crimson Wisps"], "why_plausible": "oracle text: Zada is a Goblin Ally and her copy ability is a triggered ability ('Whenever you cast...'); Throne makes it trigger an additional time, plausibly doubling the copy set per cantrip — exact interaction (does the second trigger produce a second full set of copies?) is precisely what a stack scenario must verify. Throne's only in-deck combo_graph partner is Goblin Bombardment, via combos requiring out-of-deck third cards", "status": "needs a stack scenario"}
+    {
+      "title": "Krenko + Skirk Prospector + haste enabler: infinite tokens, mana, and storm",
+      "cards": [
+        "Krenko, Mob Boss",
+        "Skirk Prospector",
+        "Goblin Warchief",
+        "Goblin Chieftain",
+        "Howlsquad Heavy"
+      ],
+      "why_plausible": "combo_graph lists three FULL in-deck combos (Krenko+Prospector plus each haste enabler) producing infinite creature tokens with haste, infinite red mana, infinite death triggers, infinite storm count, infinite commander casts",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Storm-Kiln Artist + Haze of Rage buyback: self-sustaining storm loop",
+      "cards": [
+        "Storm-Kiln Artist",
+        "Haze of Rage"
+      ],
+      "why_plausible": "combo_graph FULL in-deck pair producing infinite colored mana, infinite storm count, infinite Treasures, infinitely powerful creatures until end of turn; oracle text checks out — Haze of Rage buyback is {2} (total {3}{R} per recast) and each cast plus its storm copies each mint a Treasure via Magecraft, so past a small storm count the loop nets mana. Note: the queued candidate said 'Mana Haze' — the actual card in cards.json is Haze of Rage",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Past in Flames ritual-and-payoff rebuild",
+      "cards": [
+        "Past in Flames",
+        "Battle Hymn",
+        "Brightstone Ritual",
+        "Seething Song",
+        "Mana Geyser",
+        "Grapeshot",
+        "Empty the Warrens"
+      ],
+      "why_plausible": "no combo_graph entry (Past in Flames absent from partners map — verified), but oracle text is direct: flashback every instant/sorcery in graveyard at mana cost, and stack 002's scenario already shows rituals accumulating in the graveyard mid-storm-turn; recast rituals re-raise storm count for a second Grapeshot/Empty the Warrens",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Roaming Throne (naming Goblin) doubles Zada's copy trigger",
+      "cards": [
+        "Roaming Throne",
+        "Zada, Hedron Grinder",
+        "Crimson Wisps"
+      ],
+      "why_plausible": "oracle text: Zada is a Goblin Ally and her copy ability is a triggered ability ('Whenever you cast...'); Throne makes it trigger an additional time, plausibly doubling the copy set per cantrip — exact interaction (does the second trigger produce a second full set of copies?) is precisely what a stack scenario must verify. Throne's only in-deck combo_graph partner is Goblin Bombardment, via combos requiring out-of-deck third cards",
+      "status": "needs a stack scenario"
+    }
   ],
   "matchup_frames": {
     "vs_sweeper_control": "Assume the wrath and size commitment to it: deploy token waves that replace themselves (Dragon Fodder, Mogg War Marshal, Krenko's Command), keep a rebuild package, and note the deck's resilience purchases — Skullclamp and Goblin Bombardment convert a swept board into cards and damage on the way out (strategy:resource-hedging.wrath-math). Decision 002 is the verified spot: with the engine online and the wrath telegraphed at sorcery speed, fire the cantrip engine now and bank the draws rather than hold.",

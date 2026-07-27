@@ -32,6 +32,8 @@ manamap pilot build-deck <slug> [--write-decklist]  # brief.json → build_plan.
 manamap pilot validate-build <slug>     # form gate over a build plan
 manamap pilot bracket-check <slug> [--target N] [--json]  # bracket floor → bracket_report.json
 manamap pilot deck-facts <slug> [--out F]  # the deterministic brief agents read first
+manamap pilot sideboard-facts <slug> [--json]  # per-sideboard-card roles, legality, bracket-if-added
+manamap pilot validate-sideboard <slug>  # swap form + recomputed bracket deltas
 manamap pilot fetch-deck <slug>         # decklist.txt → cards.json (Scryfall)
 manamap pilot validate-deck <slug>      # 100/commander/singleton/color identity
 manamap pilot validate-stack <slug> [--stack NNN]   # citation contract (stacks + decisions)
@@ -71,6 +73,8 @@ data/decks/<slug>/             all tracked:
                                decisions/NNN-*.json  pilot-coach
                                strategic_frame.json  strategy-researcher (consult)
                                manual_prose.json     pilot-coach + manual-writer
+                               pilot_feedback.md     authored, OPTIONAL (free-text pilot notes)
+                               sideboard_analysis.json  sideboard-analyst
                                issue.json            authored (never generated)
                                issue_plan.json       magazine-editor
                                .agent-cache.json     cache-record
@@ -171,7 +175,7 @@ someone else's regeneration as a cache hit, and `git log` answers "which inputs
 produced this prose?"). `record()` refuses artifacts that are missing, lack their
 routine's keys, or have no checker block — a failed run can't poison the cache.
 
-Routines (6 static): `candidate-pool`, `deck-build`, `strategic-frame`,
+Routines (7 static): `candidate-pool`, `deck-build`, `strategic-frame`, `sideboard-analysis`,
 `coach-prose`, `writer-prose`, `issue-plan`, plus `stack:<NNN>` and
 `decision:<NNN>` discovered from disk. Declared in `config.AGENT_ROUTINES`.
 
@@ -292,6 +296,62 @@ pre-answers the traps agents kept rediscovering:
   does **not** count — colourless pays no coloured pip. Getting this wrong is worse than
   saying nothing: sisay's strategic frame asserted Secluded Courtyard was dead to its own
   commander, and it isn't.
+
+## Sideboard analysis (`sideboard_analysis.json`, tiers ◆ + ★)
+
+A deliberately constrained refactor pass: **the agent may only propose cards already in
+that deck's sideboard.** No pool search, no rebuild, no new decklist. Applying a swap is a
+separate, future job (see PLAN.md, deck versioning).
+
+```bash
+manamap pilot sideboard-facts <slug> [--json]   # free, deterministic, pre-agent
+manamap pilot validate-sideboard <slug>         # form gate + recomputed bracket deltas
+```
+
+`sideboard-facts` does the arithmetic before an agent spawns: per real sideboard card its
+roles and tags, whether it is inside the commander's colour identity, the deck's bracket
+floor **if you ran it**, and every combo line it would complete that the deck cannot
+currently assemble (a set difference over `bracket.combos_in_deck`). Secret Lair table
+accessories — `type_line == "Card"`, no rules text — are excluded via
+`artist_credits.is_accessory`; they are not cards and cannot be swapped in. Decks with no
+real sideboard report `{"available": false}` so callers branch cleanly.
+
+Artifact shape (tracked):
+
+```json
+{"slug", "decklist_sha256",
+ "assessment": "what this sideboard is for",
+ "swaps": [{"in", "out", "role", "when", "why", "bracket_delta", "citations"}],
+ "opens_lines": [{"cards", "why_plausible", "status": "needs a stack scenario"}],
+ "long_term_defaults": [{"card", "verdict": "promote|keep-in-sideboard", "why"}],
+ "gaps": []}
+```
+
+`when` is the addition over `deck-architect`'s build-time swap shape: a build swap is
+unconditional, a sideboard swap is a conditional answer. **A sideboard card that is right
+unconditionally belongs in the 99** — and saying so is the `long_term_defaults` verdict
+`promote`.
+
+`validate_sideboard.py` enforces what the build side never did: `in` must be a real
+sideboard card, `out` a maindeck card and never the commander, no two swaps may cut the
+same slot, and **`why` must be non-empty** — the check whose absence let 56 blank `why`
+fields into hapatra's `build_plan.json`. It does not trust a claimed bracket delta; it
+recomputes it through `bracket.assess()`, so a mismatch is a real disagreement rather than
+a typo. Citations go through `validate_stack._validate_citations`, the one shared
+implementation.
+
+Rendered as a section inside **Upgrade Watch**, not a 16th department, straight from the
+artifact with no prose key — a new key would change `prose:shape` and invalidate both
+prose routines for no gain. Tiers are marked inline: computed deltas ◆, the recommendation
+to actually make the swap ★. The section is omitted entirely when a deck has no sideboard.
+
+**The trap this exists to catch.** Goblin-storm's one sideboard card is Sazacap's Brew,
+tagged `buff:pump` because its text contains "+2/+0", and Vol. 001 shipped advice to test
+it in the Witch's Mark slot. Both are wrong: the Brew's first target is a *player*, so
+Zada — which copies instants targeting **only** Zada — never copies it, while Witch's Mark
+targets a creature and is copyable. Reading the card rather than its role tag inverted the
+recommendation, and the published prose was corrected to match. That is the whole value of
+the pass.
 
 ## Scenario scope, and why it is the loop's main cost lever
 

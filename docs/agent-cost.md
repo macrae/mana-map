@@ -44,6 +44,14 @@ From the session that built the deck builder and built hapatra (2026-07-25):
 | `deck-build` | deck-architect | 105,096 + 96,380 (revision) | new pool, critic findings |
 | `deck-build` | deck-critic | 94,468 | every architect iteration |
 | *(research pass)* | strategy-researcher (research) | 120,545 / 92,559 / 166,544 | the `strategy:deckbuilding` corpus, 3 passes |
+| `sideboard-analysis` | sideboard-analyst | ~55,000 (1 spawn, goblin-storm) | new sideboard card, new pilot feedback |
+
+`sideboard-analysis` is the cheapest agent routine in the system, and deliberately so: its
+pool is one deck's sideboard rather than a 133 KB `candidate_pool.json`, and
+`sideboard-facts` hands it the arithmetic (roles, colour legality, bracket-if-added,
+lines-opened) before it reads a single card. Note that editing a sideboard changes the
+deck's card digest — `is_sideboard` is in `CARD_SEMANTIC_FIELDS` — so a one-card sideboard
+change MISSes **every** routine on that deck, not just this one.
 
 **A full manual regeneration ≈ 330k tokens** across four serially-dependent agents.
 `resolve-stack` is 2–6 spawns per scenario (resolver + checker, up to

@@ -172,7 +172,7 @@ Manual     fetch-deck → goldfish + RAG DBs → agents author JSON
 ```
 
 `manamap run` drives the first (13 steps, ~40–60 min, internet at two of them).
-`manamap pilot <cmd>` drives the second (22 subcommands). All constants live in
+`manamap pilot <cmd>` drives the second (25 subcommands). All constants live in
 `src/manamap/config.py`; both CLIs are registry-driven with lazy imports.
 
 Two lightweight fusion MLPs (~180K params each) produce the 128-dim embeddings; the text
@@ -214,7 +214,7 @@ cache-busters stripped.
 ## Testing
 
 ```bash
-.venv/bin/python -m pytest        # 695 tests
+.venv/bin/python -m pytest        # 776 tests
 ```
 
 323 card-pipeline + 372 pilot. Four skip markers in `tests/conftest.py` gate on the last

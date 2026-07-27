@@ -18,8 +18,10 @@ PILOT_STEPS = [
     ("goldfish", "manamap.pilot.goldfish", "Seeded Monte Carlo resource-development metrics"),
     ("bracket-check", "manamap.pilot.bracket", "Computed bracket floor and its evidence"),
     ("deck-facts", "manamap.pilot.deck_facts", "Deterministic deck facts agents would else re-derive"),
+    ("sideboard-facts", "manamap.pilot.sideboard_facts", "What each sideboard card would do if run"),
     ("build-deck", "manamap.pilot.build_deck", "brief.json -> build_plan.json, deterministic"),
     ("validate-build", "manamap.pilot.validate_build", "Form-check a build plan against the contract"),
+    ("validate-sideboard", "manamap.pilot.validate_sideboard", "Form-check a sideboard analysis"),
     ("artist-credits", "manamap.pilot.artist_credits", "Standout artists and art themes in a deck"),
     ("build-manual", "manamap.pilot.build_manual", "Render a deck's 15-department magazine issue"),
     ("build-index", "manamap.pilot.build_index", "Render manuals/index.html — the newsstand"),
@@ -36,7 +38,7 @@ PILOT_STEPS = [
 _DECK_COMMANDS = {
     "fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual",
     "validate-issue", "cache-status", "cache-record", "cache-clear", "artist-credits",
-    "bracket-check", "build-deck", "validate-build", "deck-facts",
+    "bracket-check", "build-deck", "validate-build", "deck-facts", "sideboard-facts", "validate-sideboard",
 }
 
 
@@ -93,6 +95,10 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--force", action="store_true",
                              help="Re-fetch from Scryfall even if the decklist is unchanged")
         if name == "deck-facts":
+            cmd.add_argument("--out", default=None,
+                             help="Write JSON here instead of stdout (a view, never tracked)")
+        if name == "sideboard-facts":
+            cmd.add_argument("--json", action="store_true", dest="as_json")
             cmd.add_argument("--out", default=None,
                              help="Write JSON here instead of stdout (a view, never tracked)")
 

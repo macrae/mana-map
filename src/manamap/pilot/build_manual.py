@@ -22,6 +22,7 @@ which is what keeps rebuilds byte-identical.
 import json
 
 from manamap.config import MANUALS_DIR, SYNERGY_GRAPH_PATH
+from manamap.pilot.artist_credits import is_accessory
 from manamap.pilot.common import deck_dir, load_deck_cards
 from manamap.pilot.design import (
     CSS,
@@ -535,17 +536,28 @@ def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
     if side:
         side_tiles = []
         for card in side:
-            accessory = card.get("type_line", "") == "Card"
-            blurb = roles.get(card["name"]) or (
-                "Table aid — no rules text. Use it to track game state on big turns."
-                if accessory else "")
-            image = (f'<img src="{esc(card["image"])}" alt="{esc(card["name"])}" loading="lazy">'
-                     if card.get("image") else "")
-            side_tiles.append(
-                f'<div class="card-tile">{image}<h4>{esc(card["name"])}</h4>'
-                f'<span class="chip">{"Table aid" if accessory else esc(card.get("type_line", ""))}</span>'
-                f"<p>{esc(blurb)}</p></div>"
-            )
+            # is_accessory imported rather than re-implemented — this predicate used
+            # to exist twice, here and in artist_credits, with nothing keeping them
+            # in step.
+            if is_accessory(card):
+                blurb = roles.get(card["name"]) or (
+                    "Table aid — no rules text. Use it to track game state on big turns.")
+                image = (f'<img src="{esc(card["image"])}" alt="{esc(card["name"])}" loading="lazy">'
+                         if card.get("image") else "")
+                side_tiles.append(
+                    f'<div class="card-tile">{image}<h4>{esc(card["name"])}</h4>'
+                    f'<span class="chip">Table aid</span>'
+                    f"<p>{esc(blurb)}</p></div>"
+                )
+                continue
+            # A real sideboard card is a card: same tile, same synergy chips. It used
+            # to bypass _card_tile entirely and render with an empty <p> when nobody
+            # had written it a role blurb — silently, with no TODO.
+            side_roles = dict(roles)
+            side_roles.setdefault(
+                card["name"],
+                f"{card.get('type_line', 'Sideboard card')} — no role blurb written yet.")
+            side_tiles.append(_card_tile(card, side_roles, synergy))
         side_html = ("<h3>Sideboard &amp; table aids</h3>"
                      f'<div class="card-grid">{"".join(side_tiles)}</div>')
     return (
@@ -687,15 +699,94 @@ def render_keep_or_ship(issue, plan, prose_doc, goldfish, cards_by_name):
     )
 
 
-def render_upgrade_watch(issue, plan, prose_doc, cards_by_name):
+def render_upgrade_watch(issue, plan, prose_doc, cards_by_name, sideboard=None):
     dept = plan_dept(plan, "upgrade-watch")
     return (
         dept_open("upgrade-watch", plan)
         + f'<div class="body-copy">{prose(prose_doc, "upgrades")}</div>'
+        + render_sideboard(sideboard, cards_by_name)
         + dept_captions(dept, cards_by_name)
         + dept_furniture(dept, cards_by_name)
         + dept_close("upgrade-watch", issue["volume"])
     )
+
+
+def render_sideboard(analysis, cards_by_name):
+    """The sideboard read, straight from sideboard_analysis.json.
+
+    Rendered from the artifact rather than a prose key on purpose: a new
+    manual_prose key would change prose:shape and invalidate both prose routines
+    and every issue plan, for a section the renderer can build itself.
+
+    Tiers are labelled inline because this section genuinely mixes them. The
+    bracket delta is ◆ — recomputed by validate-sideboard, not taken on trust.
+    The recommendation to make the swap is ★, and a line the sideboard opens is a
+    candidate until a stack passes. The department badge stays ◆; nothing here
+    wears costume it did not earn.
+    """
+    if not analysis:
+        return ""  # a deck with no sideboard simply has no section
+
+    parts = ['<h3>From the sideboard</h3>']
+    assessment = analysis.get("assessment")
+    if assessment:
+        parts.append(f'<div class="body-copy"><p>{esc(assessment)}</p></div>')
+
+    swaps = analysis.get("swaps") or []
+    if swaps:
+        rows = []
+        for swap in swaps:
+            delta = swap.get("bracket_delta") or {}
+            if delta.get("before") is not None and delta.get("after") is not None:
+                moved = delta["before"] != delta["after"]
+                bracket = (f'<span class="tier-data">◆</span> bracket '
+                           f'{delta["before"]}&nbsp;&rarr;&nbsp;{delta["after"]}' if moved
+                           else f'<span class="tier-data">◆</span> bracket '
+                                f'{delta["after"]}, unchanged')
+            else:
+                bracket = ""
+            rows.append(
+                '<li>'
+                f'<strong>{esc(swap.get("in", "?"))}</strong> in, '
+                f'<strong>{esc(swap.get("out", "?"))}</strong> out'
+                f' <span class="chip">{esc(swap.get("role", ""))}</span>'
+                f'<br><em>When:</em> {esc(swap.get("when", ""))}'
+                f'<br><span class="tier-coach">★</span> {esc(swap.get("why", ""))}'
+                + (f'<br>{bracket}' if bracket else "")
+                + '</li>'
+            )
+        parts.append(f'<ul class="swap-list">{"".join(rows)}</ul>')
+    else:
+        parts.append('<div class="body-copy"><p>No swap in this sideboard earns a '
+                     'maindeck slot as the deck currently stands.</p></div>')
+
+    lines = analysis.get("opens_lines") or []
+    if lines:
+        items = "".join(
+            f'<li><strong>{esc(" + ".join(line.get("cards", [])))}</strong> — '
+            f'{esc(line.get("why_plausible", ""))} '
+            f'<span class="chip">{esc(line.get("status", ""))}</span></li>'
+            for line in lines
+        )
+        parts.append(
+            '<h4>Lines this sideboard would open</h4>'
+            f'<ul class="swap-list">{items}</ul>'
+            '<div class="body-copy"><p>Unverified, every one: a line is fact only once a '
+            'resolution has passed the checker. These are the next Judge&rsquo;s Desk '
+            'candidates, not results.</p></div>'
+        )
+
+    defaults = analysis.get("long_term_defaults") or []
+    if defaults:
+        items = "".join(
+            f'<li><strong>{esc(d.get("card", "?"))}</strong> — '
+            f'<span class="chip">{esc(d.get("verdict", ""))}</span> '
+            f'<span class="tier-coach">★</span> {esc(d.get("why", ""))}</li>'
+            for d in defaults
+        )
+        parts.append(f'<h4>Belongs in the 99?</h4><ul class="swap-list">{items}</ul>')
+
+    return "".join(parts)
 
 
 def render_judges_desk(issue, plan, stacks, cards_by_name):
@@ -770,7 +861,7 @@ def render_back_page(issue, plan, deck_doc, stacks, cards_by_name):
 
 
 def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
-                 goldfish=None, decisions=None):
+                 goldfish=None, decisions=None, sideboard=None):
     """Assemble a complete issue. Deterministic for fixed inputs."""
     cards = deck_doc["cards"]
     cards_by_name = {c["name"]: c for c in cards}
@@ -799,7 +890,7 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
         render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name),
         render_featured_artist(issue, plan, cards, cards_by_name),
         render_keep_or_ship(issue, plan, prose_doc, goldfish, cards_by_name),
-        render_upgrade_watch(issue, plan, prose_doc, cards_by_name),
+        render_upgrade_watch(issue, plan, prose_doc, cards_by_name, sideboard),
         render_judges_desk(issue, plan, stacks, cards_by_name),
         render_back_page(issue, plan, deck_doc, stacks, cards_by_name),
     ])
@@ -843,9 +934,13 @@ def main(args):
     prose_doc = load_json(base / "manual_prose.json", {})
     goldfish = load_json(base / "goldfish_metrics.json")
     synergy = load_json(SYNERGY_GRAPH_PATH, {})
+    # Absent for every deck without a sideboard, which is most of them — the
+    # section is simply omitted rather than rendering a TODO for a thing the
+    # deck does not have.
+    sideboard = load_json(base / "sideboard_analysis.json")
 
     html_out = render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
-                            goldfish, decisions)
+                            goldfish, decisions, sideboard)
     MANUALS_DIR.mkdir(parents=True, exist_ok=True)
     out = MANUALS_DIR / f"{slug}.html"
     out.write_text(html_out, encoding="utf-8")

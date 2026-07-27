@@ -4,7 +4,7 @@
 .venv/bin/python -m pytest          # full suite (discovery via testpaths = tests/)
 ```
 
-695 tests in `tests/`: 323 card-pipeline + 372 pilot-subsystem. Three categories:
+776 tests in `tests/`: 323 card-pipeline + 453 pilot-subsystem. Three categories:
 
 **Card-pipeline unit tests (281) — no data files needed, run anywhere:**
 

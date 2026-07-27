@@ -23,6 +23,14 @@ RULE_ID_RE = re.compile(r"^\d{3}(\.\d+[a-z]?)?$|^glossary:[a-z0-9'-]+$")
 # Prefix-dispatched alongside RULE_ID_RE so one citation validator serves both.
 STRATEGY_ID_RE = re.compile(r"^strategy:[a-z0-9-]+(\.[a-z0-9-]+){0,2}$")
 
+# Decklist section headers, lowercased with any trailing colon stripped. Shared by
+# the parser (fetch_deck) and the writer (build_deck), which must agree: the writer
+# has to recognise a sideboard block to preserve it, and if these two sets drifted
+# a rebuild would silently delete the section the parser can still read.
+COMMANDER_SECTION_MARKERS = frozenset({"commander", "commanders"})
+MAIN_SECTION_MARKERS = frozenset({"deck", "mainboard", "main"})
+SIDEBOARD_SECTION_MARKERS = frozenset({"sideboard", "side", "maybeboard", "considering"})
+
 
 def deck_dir(slug):
     """Return the deck directory for a slug, or fail with an actionable message."""

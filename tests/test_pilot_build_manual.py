@@ -461,3 +461,99 @@ def test_newsstand_survives_a_deck_without_a_commander_metric(tmp_path, monkeypa
     entries = build_index.gather_entries()
     assert len(entries) == 1 and entries[0]["mean_cast"] is None
     assert "d.html" in build_index.render_index(entries)
+
+
+# ── The sideboard section ────────────────────────────────────────────────
+
+SIDEBOARD = {
+    "slug": "test-deck",
+    "assessment": "One flex slot for graveyard-light metas.",
+    "swaps": [{"in": "Payoff Engine", "out": "Sac Outlet", "role": "draw:engine",
+               "when": "against graveyard-light tables",
+               "why": "Instant speed matters on the turn that matters.",
+               "bracket_delta": {"before": 3, "after": 4}}],
+    "opens_lines": [{"cards": ["Payoff Engine", "Sac Outlet"],
+                     "why_plausible": "Both present once swapped.",
+                     "status": "needs a stack scenario"}],
+    "long_term_defaults": [{"card": "Payoff Engine", "verdict": "keep-in-sideboard",
+                            "why": "Only better when the meta is graveyard-light."}],
+}
+
+
+def test_sideboard_section_renders_inside_upgrade_watch():
+    html_out = render(sideboard=SIDEBOARD)
+    upgrade = html_out.split('id="upgrade-watch"')[1].split("</section>")[0]
+    assert "From the sideboard" in upgrade
+    assert "Payoff Engine" in upgrade and "Sac Outlet" in upgrade
+
+
+def test_a_deck_with_no_sideboard_gets_no_section():
+    """Most decks have none; a TODO for a thing that doesn't exist is noise."""
+    html_out = render(sideboard=None)
+    assert "From the sideboard" not in html_out
+
+
+def test_bracket_delta_is_marked_as_computed_and_the_advice_as_coaching():
+    """The section mixes tiers, so it labels them. Costume never earns the badge."""
+    html_out = render(sideboard=SIDEBOARD)
+    upgrade = html_out.split('id="upgrade-watch"')[1].split("</section>")[0]
+    assert 'class="tier-data">◆' in upgrade      # the recomputed bracket move
+    assert 'class="tier-coach">★' in upgrade     # the recommendation
+    assert "3" in upgrade and "4" in upgrade
+
+
+def test_upgrade_watch_still_wears_only_its_spec_badge():
+    """A ★ block inside the section must not change the department's own badge."""
+    from manamap.pilot.issue_spec import DEPARTMENT_BY_ID
+
+    html_out = render(sideboard=SIDEBOARD)
+    head = html_out.split('id="upgrade-watch"')[1].split("</div></div>")[0]
+    assert DEPARTMENT_BY_ID["upgrade-watch"]["tiers"] == ("data",)
+    assert "badge-coach" not in head
+
+
+def test_opened_lines_render_as_candidates_not_results():
+    html_out = render(sideboard=SIDEBOARD)
+    assert "needs a stack scenario" in html_out
+    assert "fact only once a resolution has passed the checker" in html_out
+
+
+def test_an_empty_swap_list_says_so_rather_than_rendering_nothing():
+    html_out = render(sideboard=dict(SIDEBOARD, swaps=[], opens_lines=[],
+                                     long_term_defaults=[]))
+    assert "No swap in this sideboard earns a maindeck slot" in html_out
+
+
+def test_sideboard_tiles_get_synergy_chips_like_any_other_card():
+    """They used to bypass _card_tile entirely and render chipless."""
+    doc = deck_doc()
+    doc["cards"].append(
+        {"name": "Sideboard Bomb", "is_commander": False, "is_sideboard": True,
+         "type_line": "Creature — Goblin", "mana_cost": "{R}", "cmc": 1.0,
+         "image": "https://img/sb.jpg", "quantity": 1})
+    synergy = dict(SYNERGY, **{"Sideboard Bomb": [
+        {"partner": "Payoff Engine", "score": 3, "synergies": ["Tokens + Sacrifice"]}]})
+    html_out = render(deck_doc=doc, synergy=synergy)
+    the_99 = html_out.split('id="the-99"')[1].split("</section>")[0]
+    assert "Sideboard &amp; table aids" in the_99
+    assert '<span class="chip">Tokens + Sacrifice</span>' in the_99
+
+
+def test_a_real_sideboard_card_without_a_blurb_says_so_instead_of_rendering_blank():
+    """An empty <p> reads as "needs no explanation", not "nobody wrote this"."""
+    doc = deck_doc()
+    doc["cards"].append(
+        {"name": "Unblurbed Card", "is_commander": False, "is_sideboard": True,
+         "type_line": "Instant", "mana_cost": "{R}", "cmc": 1.0,
+         "image": "https://img/u.jpg", "quantity": 1})
+    assert "no role blurb written yet" in render(deck_doc=doc)
+
+
+def test_accessories_still_get_the_table_aid_treatment():
+    doc = deck_doc()
+    doc["cards"].append(
+        {"name": "Storm Counter", "is_commander": False, "is_sideboard": True,
+         "type_line": "Card", "mana_cost": "", "cmc": 0.0,
+         "image": "https://img/sc.jpg", "quantity": 1})
+    html_out = render(deck_doc=doc)
+    assert "Table aid" in html_out and "no rules text" in html_out
