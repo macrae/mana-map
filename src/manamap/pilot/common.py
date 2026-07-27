@@ -4,6 +4,7 @@ import atexit
 import hashlib
 import json
 import re
+import sys
 
 import numpy as np
 
@@ -88,6 +89,67 @@ def load_combo_details():
 def load_synergy_graph():
     """synergy_graph.json (name → top-10 shortlist), parsed once. Read-only."""
     return load_json_memo(SYNERGY_GRAPH_PATH)
+
+
+def load_json(path, default=None):
+    """Parse `path` if it exists, else `default`. For small per-deck artifacts."""
+    if not path.exists():
+        return default
+    with open(path) as f:
+        return json.load(f)
+
+
+def mainboard(cards):
+    """The cards actually in the deck — everything not behind a SIDEBOARD marker."""
+    return [c for c in cards if not c.get("is_sideboard")]
+
+
+def sideboard(cards):
+    """The cards behind a SIDEBOARD marker, accessories included."""
+    return [c for c in cards if c.get("is_sideboard")]
+
+
+def is_land(card):
+    """Land by front-face type line — the face that comes down on the battlefield."""
+    return "Land" in str(card.get("type_line", "")).split(" // ")[0]
+
+
+def checker_passed(doc):
+    """The publication gate: only a checker-passed artifact may be stated as fact.
+
+    One predicate, three consumers (renderer, cache, newsstand) — if the gate
+    ever changes shape, it changes for all of them at once.
+    """
+    return (doc.get("checker") or {}).get("verdict") == "pass"
+
+
+def try_load_rules_db():
+    """Best-effort rules for citation checks: real rules, or {} when the DB is absent.
+
+    Validators degrade gracefully — an absent rules DB skips rule-text
+    verification rather than failing the artifact.
+    """
+    try:
+        rules, _, _ = load_rules_db()
+        return rules
+    except (FileNotFoundError, ValueError):
+        return {}
+
+
+def report_errors(fail_label, errors, ok_line=None):
+    """The shared validator CLI tail: FAIL + list + exit 1, else the OK line.
+
+    Pass `ok_line=None` when the OK message derefs the validated document —
+    composing it eagerly would crash on exactly the malformed input the FAIL
+    branch exists for. Print it after this returns instead.
+    """
+    if errors:
+        print(f"FAIL {fail_label} ({len(errors)} error(s)):")
+        for e in errors:
+            print(f"  - {e}")
+        sys.exit(1)
+    if ok_line is not None:
+        print(ok_line)
 
 
 def deck_dir(slug):

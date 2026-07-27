@@ -35,10 +35,12 @@ from manamap.ingest.extract import get_colors
 from manamap.pilot.bracket import combos_in_deck, is_infinite
 from manamap.pilot.common import (
     deck_dir,
+    is_land,
     load_card_roles,
     load_combo_details,
     load_deck_cards,
     load_synergy_graph,
+    mainboard,
 )
 from manamap.pilot.manabase import (
     RESTRICTED_MANA as RESTRICTED_PHRASE,
@@ -67,8 +69,7 @@ def _front(card, key, default=""):
     return card.get(key, default)
 
 
-def _is_land(card):
-    return "Land" in str(card.get("type_line", "")).split(" // ")[0]
+_is_land = is_land  # canonical predicate lives in common; alias kept for callers
 
 
 def _is_legendary(card):
@@ -326,7 +327,7 @@ def build_notes(facts):
 
 def analyze(slug):
     doc = load_deck_cards(slug)
-    cards = [c for c in doc.get("cards", []) if not c.get("is_sideboard")]
+    cards = mainboard(doc.get("cards", []))
     names = [c["name"] for c in cards]
     commanders = [c["name"] for c in cards if c.get("is_commander")]
     legendary = [c for c in cards if _is_legendary(c)]

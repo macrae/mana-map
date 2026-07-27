@@ -17,9 +17,8 @@ Checks:
 """
 
 import json
-import sys
 
-from manamap.pilot.common import deck_dir, load_deck_cards
+from manamap.pilot.common import deck_dir, load_deck_cards, report_errors
 from manamap.pilot.issue_spec import (
     COMPONENTS,
     DENSE_MODES,
@@ -198,11 +197,7 @@ def main(args):
 
     errors += validate_plan(plan, card_names, artists)
 
-    if errors:
-        print(f"FAIL issue plan for {args.slug} ({len(errors)} error(s)):")
-        for e in errors:
-            print(f"  - {e}")
-        sys.exit(1)
+    report_errors(f"issue plan for {args.slug}", errors)
     print(
         f"OK   issue plan for {args.slug} — {len(plan['departments'])} departments, "
         f"form holds; angle: {plan['angle'][:60]}"

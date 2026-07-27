@@ -21,12 +21,18 @@ there is no second citation implementation to drift.
 """
 
 import json
-import sys
 
 from manamap.pilot import bracket as bracket_mod
 from manamap.pilot.artist_credits import is_accessory
-from manamap.pilot.common import deck_dir, load_deck_cards
-from manamap.pilot.validate_stack import _load_strategy_sections, _validate_citations
+from manamap.pilot.common import (
+    deck_dir,
+    load_deck_cards,
+    mainboard,
+    report_errors,
+    sideboard,
+    try_load_rules_db,
+)
+from manamap.pilot.validate_stack import load_strategy_sections, validate_citations
 
 REQUIRED_TOP_KEYS = {"slug", "assessment", "swaps", "opens_lines", "long_term_defaults"}
 REQUIRED_SWAP_KEYS = {"in", "out", "role", "when", "why"}
@@ -41,9 +47,10 @@ UNVERIFIED_STATUS = "needs a stack scenario"
 def deck_split(doc):
     """(maindeck names, real sideboard names, accessory names, commander names)."""
     cards = doc.get("cards", [])
-    main = {c["name"] for c in cards if not c.get("is_sideboard")}
-    side = {c["name"] for c in cards if c.get("is_sideboard") and not is_accessory(c)}
-    accessories = {c["name"] for c in cards if c.get("is_sideboard") and is_accessory(c)}
+    side_all = sideboard(cards)
+    main = {c["name"] for c in mainboard(cards)}
+    side = {c["name"] for c in side_all if not is_accessory(c)}
+    accessories = {c["name"] for c in side_all if is_accessory(c)}
     commanders = {c["name"] for c in cards if c.get("is_commander")}
     return main, side, accessories, commanders
 
@@ -168,7 +175,7 @@ def validate(doc, deck_doc, rules=None, strategy_sections=None):
     for i, swap in enumerate(doc.get("swaps", [])):
         citations = swap.get("citations") or []
         if citations:
-            _validate_citations(citations, rules or {}, f"swap {i}", errors, strategy_sections)
+            validate_citations(citations, rules or {}, f"swap {i}", errors, strategy_sections)
     return errors
 
 
@@ -183,21 +190,13 @@ def main(args):
         doc = json.load(f)
     deck_doc = load_deck_cards(args.slug)
 
-    rules = {}
-    try:
-        from manamap.pilot.common import load_rules_db
-        rules, _, _ = load_rules_db()
-    except (FileNotFoundError, ValueError):
-        rules = {}
+    rules = try_load_rules_db()
 
-    errors = validate(doc, deck_doc, rules, _load_strategy_sections())
-    if errors:
-        print(f"FAIL {path.name} ({len(errors)} error(s)):")
-        for e in errors:
-            print(f"  - {e}")
-        sys.exit(1)
-    print(f"OK   {path.name} — {len(doc.get('swaps', []))} swap(s), "
-          f"{len(doc.get('opens_lines', []))} candidate line(s); coaching tier")
+    errors = validate(doc, deck_doc, rules, load_strategy_sections())
+    report_errors(
+        path.name, errors,
+        f"OK   {path.name} — {len(doc.get('swaps', []))} swap(s), "
+        f"{len(doc.get('opens_lines', []))} candidate line(s); coaching tier")
 
 
 if __name__ == "__main__":

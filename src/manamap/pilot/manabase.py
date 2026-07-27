@@ -24,6 +24,7 @@ import math
 import re
 
 from manamap.analysis.common import WUBRG
+from manamap.pilot.common import is_land
 
 # Cards seen by turn T on the play: the opening seven plus one per turn after
 # the first. Commander is singleton and games are long, but the mana base has
@@ -124,7 +125,7 @@ def pip_requirements(cards):
         for c in WUBRG
     }
     for card in cards:
-        if "Land" in str(card.get("type_line", "")).split(" // ")[0]:
+        if is_land(card):
             continue
         counts = count_pips(card.get("mana_cost", ""))
         turn = max(1, min(int(card.get("cmc") or 1), MAX_CASTING_TURN))

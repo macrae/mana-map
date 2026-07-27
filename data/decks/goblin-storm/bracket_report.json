@@ -1,0 +1,72 @@
+{
+  "banned": [],
+  "combo_bracket_floor": 3,
+  "combo_count": 1,
+  "drivers": [
+    {
+      "detail": "highest-bracket line present: Storm-Kiln Artist + Haze of Rage",
+      "forces": 3,
+      "signal": "combo_content"
+    },
+    {
+      "detail": "1 two-card infinite(s); 1 assemble at mana value <= 6. e.g. Storm-Kiln Artist + Haze of Rage",
+      "forces": 4,
+      "signal": "two_card_infinite"
+    }
+  ],
+  "excluded_commander_assumption": [
+    {
+      "bracket": 1,
+      "cards": [
+        "Krenko, Mob Boss",
+        "Skirk Prospector",
+        "Goblin Warchief"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Krenko, Mob Boss",
+        "Skirk Prospector",
+        "Goblin Chieftain"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Krenko, Mob Boss",
+        "Skirk Prospector",
+        "Howlsquad Heavy"
+      ]
+    }
+  ],
+  "floor": 4,
+  "floor_name": "Optimized",
+  "game_changers": [],
+  "mass_land_denial": [],
+  "notes": [
+    "Brackets are a conversation, not a calculator — this is the lowest bracket the deck's contents are consistent with, not a verdict.",
+    "Tutor density (0) is reported, never scored: WotC removed the tutor restriction on 2025-10-21 and now relies on Game Changers membership, which is already counted above.",
+    "Mass land denial is checked against a curated list and is incomplete by construction.",
+    "3 known line(s) excluded: they assume one of their own pieces is your commander, and it isn't. See CR 903.9a."
+  ],
+  "slug": "goblin-storm",
+  "tutors": [],
+  "two_card_infinites": [
+    {
+      "bracket": 3,
+      "cards": [
+        "Storm-Kiln Artist",
+        "Haze of Rage"
+      ],
+      "mana_value_needed": 4,
+      "produces": [
+        "Infinite colored mana",
+        "Infinitely powerful creatures you control until end of turn",
+        "Infinite magecraft triggers",
+        "Infinite storm count",
+        "Infinite Treasure tokens"
+      ]
+    }
+  ]
+}

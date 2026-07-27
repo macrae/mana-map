@@ -23,7 +23,15 @@ import json
 
 from manamap.config import MANUALS_DIR, SYNERGY_GRAPH_PATH
 from manamap.pilot.artist_credits import is_accessory
-from manamap.pilot.common import deck_dir, load_deck_cards
+from manamap.pilot.common import (
+    checker_passed,
+    deck_dir,
+    load_deck_cards,
+    load_json,
+    load_synergy_graph,
+    mainboard,
+    sideboard,
+)
 from manamap.pilot.design import (
     CSS,
     FONT_LINK,
@@ -71,20 +79,13 @@ TODO = '<p><span class="todo">TODO</span> This department is awaiting content.</
 # ── Loading ─────────────────────────────────────────────────────────────
 
 
-def load_json(path, default=None):
-    if not path.exists():
-        return default
-    with open(path) as f:
-        return json.load(f)
-
-
 def load_verified_stacks(slug):
     """Checker-passed stacks only, in id order — the publication gate."""
     stacks = []
     for path in sorted((deck_dir(slug) / "stacks").glob("*.json")):
         with open(path) as f:
             doc = json.load(f)
-        if (doc.get("checker") or {}).get("verdict") == "pass":
+        if checker_passed(doc):
             stacks.append(doc)
     return stacks
 
@@ -508,7 +509,7 @@ def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
     # to render a full grid of blank blurbs, which reads as "these cards need no
     # explanation" rather than "nobody wrote this yet". Say it out loud instead.
     roles_todo = "" if roles else TODO
-    main = [c for c in cards if not c.get("is_sideboard")]
+    main = mainboard(cards)
     by_name = {c["name"]: c for c in main}
 
     groups, placed = [], set()
@@ -531,7 +532,7 @@ def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
         sections.append(f'{heading}<div class="card-grid">{tiles}</div>')
     tiles = "".join(sections)
 
-    side = [c for c in cards if c.get("is_sideboard")]
+    side = sideboard(cards)
     side_html = ""
     if side:
         side_tiles = []

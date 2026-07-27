@@ -9,6 +9,7 @@ A deck without an `issue.json` sorts last under a sentinel volume of 999.
 
 import json
 
+from manamap.pilot.common import checker_passed, load_json
 from manamap.config import DECKS_DIR, MANUALS_DIR
 from manamap.pilot.design import CSS as MAGAZINE_CSS
 from manamap.pilot.design import FONT_LINK, badge, barcode, esc
@@ -48,28 +49,18 @@ def gather_entries():
         cards_path = deck_path / "cards.json"
         if not cards_path.exists():
             continue
-        with open(cards_path) as f:
-            doc = json.load(f)
+        doc = load_json(cards_path)
         commanders = [c for c in doc["cards"] if c.get("is_commander")]
         commander = commanders[0] if commanders else {}
 
-        issue = {}
-        issue_path = deck_path / "issue.json"
-        if issue_path.exists():
-            with open(issue_path) as f:
-                issue = json.load(f)
+        issue = load_json(deck_path / "issue.json", {})
 
-        coverline = ""
-        plan_path = deck_path / "issue_plan.json"
-        if plan_path.exists():
-            with open(plan_path) as f:
-                coverline = (json.load(f).get("cover") or {}).get("dominant_coverline", "")
+        plan = load_json(deck_path / "issue_plan.json", {})
+        coverline = (plan.get("cover") or {}).get("dominant_coverline", "")
 
-        verified = 0
-        for stack_path in sorted((deck_path / "stacks").glob("*.json")):
-            with open(stack_path) as f:
-                if (json.load(f).get("checker") or {}).get("verdict") == "pass":
-                    verified += 1
+        verified = sum(
+            1 for stack_path in sorted((deck_path / "stacks").glob("*.json"))
+            if checker_passed(load_json(stack_path, {})))
         decisions = len(list((deck_path / "decisions").glob("*.json")))
         mean_cast = None
         goldfish_path = deck_path / "goldfish_metrics.json"

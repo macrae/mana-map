@@ -1,6 +1,6 @@
 """Pilot: validate a fetched deck's Commander invariants."""
 
-from manamap.pilot.common import load_deck_cards
+from manamap.pilot.common import load_deck_cards, mainboard, report_errors
 
 
 def validate(doc):
@@ -10,7 +10,7 @@ def validate(doc):
     100-card, singleton, and color-identity checks.
     """
     errors = []
-    cards = [c for c in doc.get("cards", []) if not c.get("is_sideboard")]
+    cards = mainboard(doc.get("cards", []))
     total = sum(c.get("quantity", 0) for c in cards)
     if total != 100:
         errors.append(f"Deck has {total} cards, expected exactly 100")
@@ -44,11 +44,7 @@ def validate(doc):
 def main(args):
     doc = load_deck_cards(args.slug)
     errors = validate(doc)
-    if errors:
-        print(f"INVALID: {len(errors)} problem(s) in {args.slug}:")
-        for e in errors:
-            print(f"  - {e}")
-        raise SystemExit(1)
+    report_errors(args.slug, errors)
     commanders = [c["name"] for c in doc["cards"] if c["is_commander"]]
     print(f"OK: 100 cards, commander: {', '.join(commanders)}")
 

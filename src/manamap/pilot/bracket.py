@@ -41,6 +41,7 @@ from manamap.pilot.common import (
     load_card_roles,
     load_combo_details,
     load_deck_cards,
+    mainboard,
 )
 
 INFINITE_PREFIX = "infinite"
@@ -300,7 +301,7 @@ def format_report(slug, report, target=None):
 
 def main(args):
     doc = load_deck_cards(args.slug)
-    cards = [c for c in doc.get("cards", []) if not c.get("is_sideboard")]
+    cards = mainboard(doc.get("cards", []))
     names = [c["name"] for c in cards]
     commanders = [c["name"] for c in cards if c.get("is_commander")]
     card_flags, roles, details = load_reference()

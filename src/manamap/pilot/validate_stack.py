@@ -40,7 +40,7 @@ def _normalize_ws(text):
     return re.sub(r"\s+", " ", text).strip()
 
 
-def _validate_citations(citations, rules, where, errors, strategy_sections=None):
+def validate_citations(citations, rules, where, errors, strategy_sections=None):
     """Shared citation contract: valid IDs, existing rules/sections, verbatim quotes.
 
     `strategy:` IDs (tier-★ grounding in decision branches) dispatch against the
@@ -163,7 +163,7 @@ def validate_scenario(doc, rules, strategy_sections=None):
         if not citations:
             errors.append(f"step {n}: NO CITATIONS — every effect must cite a rule")
             continue
-        _validate_citations(citations, rules, f"step {n}", errors, strategy_sections)
+        validate_citations(citations, rules, f"step {n}", errors, strategy_sections)
 
     checker = doc.get("checker")
     if checker is not None:
@@ -208,7 +208,7 @@ def validate_decision(doc, rules, strategy_sections=None):
             errors.append(f"branch {i}: missing keys {sorted(missing)}")
         if branch.get("choice"):
             choices.append(branch["choice"])
-        _validate_citations(
+        validate_citations(
             branch.get("citations", []), rules, f"branch {i}", errors, strategy_sections
         )
 
@@ -229,7 +229,7 @@ def validate_any(doc, rules, strategy_sections=None):
     return validate_scenario(doc, rules, strategy_sections)
 
 
-def _load_strategy_sections():
+def load_strategy_sections():
     """Best-effort strategy DB load; None = unavailable (only errors if cited)."""
     from manamap.pilot.common import load_strategy_db
 
@@ -245,7 +245,7 @@ def _load_strategy_sections():
 
 def main(args):
     rules, _, _ = load_rules_db()
-    strategy_sections = _load_strategy_sections()
+    strategy_sections = load_strategy_sections()
     base = deck_dir(args.slug)
     if args.stack:
         paths = sorted((base / "stacks").glob(f"{args.stack}-*.json"))

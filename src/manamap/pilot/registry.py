@@ -22,6 +22,7 @@ PILOT_STEPS = [
     ("build-deck", "manamap.pilot.build_deck", "brief.json -> build_plan.json, deterministic"),
     ("validate-build", "manamap.pilot.validate_build", "Form-check a build plan against the contract"),
     ("validate-sideboard", "manamap.pilot.validate_sideboard", "Form-check a sideboard analysis"),
+    ("validate-strategic-frame", "manamap.pilot.validate_strategic_frame", "Form-check a strategic frame"),
     ("artist-credits", "manamap.pilot.artist_credits", "Standout artists and art themes in a deck"),
     ("build-manual", "manamap.pilot.build_manual", "Render a deck's 15-department magazine issue"),
     ("build-index", "manamap.pilot.build_index", "Render manuals/index.html — the newsstand"),
@@ -39,6 +40,7 @@ _DECK_COMMANDS = {
     "fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual",
     "validate-issue", "cache-status", "cache-record", "cache-clear", "artist-credits",
     "bracket-check", "build-deck", "validate-build", "deck-facts", "sideboard-facts", "validate-sideboard",
+    "validate-strategic-frame",
 }
 
 

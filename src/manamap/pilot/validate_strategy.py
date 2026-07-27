@@ -18,14 +18,13 @@ sentence-transformers import.
 """
 
 import re
-import sys
 
 from manamap.config import (
     STRATEGY_CHANGELOG_PATH,
     STRATEGY_DOC_PATH,
     STRATEGY_SECTION_WARN_CHARS,
 )
-from manamap.pilot.common import STRATEGY_ID_RE
+from manamap.pilot.common import STRATEGY_ID_RE, report_errors
 
 HEADING_RE = re.compile(r"^(#{2,3})\s+(strategy:\S+)\s+—\s+(\S.*)$")
 SOURCE_BULLET_RE = re.compile(r"^- \S.*$")
@@ -190,12 +189,9 @@ def main(args=None):
 
     for warning in oversize_warnings(chunks):
         print(f"WARN {warning}")
-    if errors:
-        print(f"FAIL strategy doc ({len(errors)} error(s)):")
-        for e in errors:
-            print(f"  - {e}")
-        sys.exit(1)
-    print(f"OK   strategy.md — {len(chunks)} sections, form holds; CHANGELOG.md consistent")
+    report_errors(
+        "strategy doc", errors,
+        f"OK   strategy.md — {len(chunks)} sections, form holds; CHANGELOG.md consistent")
 
 
 if __name__ == "__main__":

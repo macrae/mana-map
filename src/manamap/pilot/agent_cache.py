@@ -38,7 +38,7 @@ from manamap.config import (
     CR_RULES_META_PATH,
     RESOLVE_MAX_ITERATIONS,
 )
-from manamap.pilot.common import deck_dir, load_json_memo
+from manamap.pilot.common import checker_passed, deck_dir, load_json_memo
 
 _REPO_ROOT = config.DATA_DIR.parent
 _DYNAMIC_RE = re.compile(r"^(stack|decision):(\w+)$")
@@ -257,11 +257,8 @@ def discover_routines(slug):
 
 def passing_stacks(base):
     """Only checker-passed stacks are inputs — a failed line can't be published."""
-    out = []
-    for path in sorted((base / "stacks").glob("*.json")):
-        if (load_json_memo(path).get("checker") or {}).get("verdict") == "pass":
-            out.append(path)
-    return out
+    return [path for path in sorted((base / "stacks").glob("*.json"))
+            if checker_passed(load_json_memo(path))]
 
 
 def resolve_inputs(slug, spec):

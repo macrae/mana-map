@@ -14,7 +14,6 @@ no second citation implementation to drift.
 """
 
 import json
-import sys
 
 import pandas as pd
 
@@ -24,8 +23,8 @@ from manamap.config import (
     OUTPUT_CSV_PATH,
 )
 from manamap.analysis.common import parse_color_identity
-from manamap.pilot.common import deck_dir
-from manamap.pilot.validate_stack import _load_strategy_sections, _validate_citations
+from manamap.pilot.common import deck_dir, report_errors, try_load_rules_db
+from manamap.pilot.validate_stack import load_strategy_sections, validate_citations
 
 REQUIRED_TOP_KEYS = {"slug", "commander", "color_identity", "bracket", "slots", "land_counts"}
 CRITIC_STATUSES = {
@@ -99,10 +98,10 @@ def validate(plan, cards=None, rules=None, strategy_sections=None, bracket_repor
             (slot.get("citations", []), f"slot {i} ({slot.get('name')})"),
         ):
             if citation_list:
-                _validate_citations(citation_list, rules or {}, where, errors, strategy_sections)
+                validate_citations(citation_list, rules or {}, where, errors, strategy_sections)
     for key in ("role_budget_citations", "gameplan_citations"):
         if plan.get(key):
-            _validate_citations(plan[key], rules or {}, key, errors, strategy_sections)
+            validate_citations(plan[key], rules or {}, key, errors, strategy_sections)
 
     return errors
 
@@ -279,13 +278,8 @@ def main(args):
         plan = json.load(f)
 
     cards = load_cards_reference()
-    rules = {}
-    try:
-        from manamap.pilot.common import load_rules_db
-        rules, _, _ = load_rules_db()
-    except (FileNotFoundError, ValueError):
-        rules = {}
-    strategy_sections = _load_strategy_sections()
+    rules = try_load_rules_db()
+    strategy_sections = load_strategy_sections()
 
     # Best-effort: absent bracket_report.json only means the cross-check is
     # skipped, not that the plan is wrong.
@@ -293,12 +287,7 @@ def main(args):
     bracket_report = json.loads(bracket_path.read_text()) if bracket_path.exists() else None
 
     errors = validate(plan, cards, rules, strategy_sections, bracket_report)
-    if errors:
-        print(f"FAIL {path.name} ({len(errors)} error(s)):")
-        for error in errors:
-            print(f"  - {error}")
-        sys.exit(1)
-
+    report_errors(path.name, errors)
     block = plan["bracket"]
     print(
         f"OK   {path.name} — {plan['commander']}, {DECK_SIZE} cards, "

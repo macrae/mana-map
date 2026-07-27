@@ -111,11 +111,11 @@ def test_changelog_requires_an_entry():
 
 
 def test_strategy_citation_verbatim_quote_passes():
-    from manamap.pilot.validate_stack import _validate_citations
+    from manamap.pilot.validate_stack import validate_citations
 
     strategy_sections = {"strategy:tempo": {"text": "Spend all your mana every turn."}}
     errors = []
-    _validate_citations(
+    validate_citations(
         [{"rule": "strategy:tempo", "quote": "all your mana every turn"}],
         {}, "branch 0", errors, strategy_sections=strategy_sections,
     )
@@ -123,11 +123,11 @@ def test_strategy_citation_verbatim_quote_passes():
 
 
 def test_strategy_citation_bad_quote_fails():
-    from manamap.pilot.validate_stack import _validate_citations
+    from manamap.pilot.validate_stack import validate_citations
 
     strategy_sections = {"strategy:tempo": {"text": "Spend all your mana every turn."}}
     errors = []
-    _validate_citations(
+    validate_citations(
         [{"rule": "strategy:tempo", "quote": "hoard your mana forever"}],
         {}, "branch 0", errors, strategy_sections=strategy_sections,
     )
@@ -135,10 +135,10 @@ def test_strategy_citation_bad_quote_fails():
 
 
 def test_strategy_citation_nonexistent_section_fails():
-    from manamap.pilot.validate_stack import _validate_citations
+    from manamap.pilot.validate_stack import validate_citations
 
     errors = []
-    _validate_citations(
+    validate_citations(
         [{"rule": "strategy:nope", "quote": "anything"}],
         {}, "branch 0", errors, strategy_sections={},
     )

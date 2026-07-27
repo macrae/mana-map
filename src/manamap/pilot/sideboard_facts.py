@@ -28,8 +28,14 @@ from manamap.analysis.common import parse_tag_set
 from manamap.config import CARD_ROLES_PATH
 from manamap.pilot.artist_credits import is_accessory
 from manamap.pilot.bracket import assess, combos_in_deck, is_infinite, load_reference
-from manamap.pilot.common import deck_dir, load_card_roles, load_deck_cards
-from manamap.pilot.deck_facts import _is_land
+from manamap.pilot.common import (
+    deck_dir,
+    is_land,
+    load_card_roles,
+    load_deck_cards,
+    mainboard,
+    sideboard,
+)
 from manamap.pilot.manabase import WUBRG, count_pips
 
 
@@ -42,9 +48,10 @@ def split_deck(doc):
     Predicate reused from artist_credits rather than re-implemented.
     """
     cards = doc.get("cards", [])
-    main = [c for c in cards if not c.get("is_sideboard")]
-    side = [c for c in cards if c.get("is_sideboard")]
-    return main, [c for c in side if not is_accessory(c)], [c for c in side if is_accessory(c)]
+    side = sideboard(cards)
+    return (mainboard(cards),
+            [c for c in side if not is_accessory(c)],
+            [c for c in side if is_accessory(c)])
 
 
 def _roles():
@@ -133,7 +140,7 @@ def analyze(slug):
             "roles": roles.get(name, []),
             "tags": sorted(parse_tag_set(card.get("mechanical_tags"))),
             "pips": card_pips(card),
-            "is_land": _is_land(card),
+            "is_land": is_land(card),
             "edhrec_rank": card.get("edhrec_rank"),
             # A sideboard card outside the commander's identity is unplayable here.
             # validate_deck exempts the sideboard, so nothing else catches this.
