@@ -571,3 +571,70 @@ def test_an_empty_override_is_not_a_justification(deck):
 def test_runs_within_the_bound_need_no_override(deck):
     entry, _ = ac.record(SLUG, "stack:001")
     assert "iteration_bound_override" not in entry
+
+
+# ── Sideboard N/A gating ─────────────────────────────────────────────────
+
+
+def sideboard_analysis_doc():
+    return {"slug": SLUG, "assessment": "x", "swaps": [], "opens_lines": [],
+            "long_term_defaults": [], "gaps": []}
+
+
+def test_sideboard_routine_is_na_without_a_real_sideboard(deck):
+    """A deck with no sideboard can never satisfy the routine — N/A, not MISS."""
+    with pytest.raises(ac.MissingInput, match="no analysable sideboard"):
+        ac.status(SLUG, "sideboard-analysis")
+
+
+def test_accessories_alone_do_not_make_the_routine_applicable(deck):
+    doc = json.loads((deck / "cards.json").read_text())
+    doc["cards"].append({"name": "Storm Counter", "type_line": "Card",
+                         "is_sideboard": True})
+    write_json(deck / "cards.json", doc)
+    with pytest.raises(ac.MissingInput, match="no analysable sideboard"):
+        ac.status(SLUG, "sideboard-analysis")
+
+
+def test_a_real_sideboard_card_makes_the_routine_applicable(deck):
+    doc = json.loads((deck / "cards.json").read_text())
+    doc["cards"].append({"name": "Sazacap's Brew", "type_line": "Instant",
+                         "is_sideboard": True})
+    write_json(deck / "cards.json", doc)
+    result = ac.status(SLUG, "sideboard-analysis")
+    assert result["status"] == "MISS"  # applicable, just never recorded
+
+
+def test_record_refuses_the_inapplicable_sideboard_routine(deck):
+    write_json(deck / "sideboard_analysis.json", sideboard_analysis_doc())
+    with pytest.raises(ac.MissingInput, match="no analysable sideboard"):
+        ac.record(SLUG, "sideboard-analysis")
+
+
+# ── Memoized artifact loading (common.load_json_memo) ────────────────────
+
+
+def test_load_json_memo_returns_one_parse(tmp_path):
+    from manamap.pilot import common
+    path = tmp_path / "artifact.json"
+    path.write_text('{"a": 1}')
+    first = common.load_json_memo(path)
+    assert common.load_json_memo(path) is first  # same object, not a re-parse
+
+
+def test_load_json_memo_sees_a_rewrite(tmp_path):
+    from manamap.pilot import common
+    path = tmp_path / "artifact.json"
+    path.write_text('{"a": 1}')
+    assert common.load_json_memo(path) == {"a": 1}
+    path.write_text('{"a": 2, "b": 3}')
+    assert common.load_json_memo(path) == {"a": 2, "b": 3}
+
+
+def test_clear_memo_drops_cached_parses(tmp_path):
+    from manamap.pilot import common
+    path = tmp_path / "artifact.json"
+    path.write_text('{"a": 1}')
+    first = common.load_json_memo(path)
+    common.clear_memo()
+    assert common.load_json_memo(path) is not first

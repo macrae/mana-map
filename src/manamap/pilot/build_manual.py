@@ -933,7 +933,7 @@ def main(args):
     decisions = load_decisions(slug)
     prose_doc = load_json(base / "manual_prose.json", {})
     goldfish = load_json(base / "goldfish_metrics.json")
-    synergy = load_json(SYNERGY_GRAPH_PATH, {})
+    synergy = load_synergy_graph() if SYNERGY_GRAPH_PATH.exists() else {}
     # Absent for every deck without a sideboard, which is most of them — the
     # section is simply omitted rather than rendering a TODO for a thing the
     # deck does not have.

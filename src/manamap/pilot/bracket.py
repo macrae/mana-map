@@ -22,6 +22,7 @@ Fully deterministic: set intersections over committed artifacts, no LLM calls,
 no randomness. The same deck always produces the same report (◆ evidence).
 """
 
+import atexit
 import json
 import sys
 
@@ -35,7 +36,12 @@ from manamap.config import (
     MASS_LAND_DENIAL,
     OUTPUT_CSV_PATH,
 )
-from manamap.pilot.common import deck_dir, load_deck_cards
+from manamap.pilot.common import (
+    deck_dir,
+    load_card_roles,
+    load_combo_details,
+    load_deck_cards,
+)
 
 INFINITE_PREFIX = "infinite"
 
@@ -63,16 +69,27 @@ def load_reference():
             + " — run `manamap extract`, `manamap card-roles`, `manamap process-combos`."
         )
 
+    return _card_flags(), load_card_roles(), load_combo_details()
+
+
+_FLAGS_MEMO = {}
+atexit.register(_FLAGS_MEMO.clear)  # see common.clear_memo — cheap now, costly at shutdown
+
+
+def _card_flags():
+    """{name: {game_changer, legal_commander}} from cards.csv, once per process."""
+    stat = OUTPUT_CSV_PATH.stat()
+    sig = (stat.st_mtime_ns, stat.st_size)
+    hit = _FLAGS_MEMO.get("flags")
+    if hit is not None and hit[0] == sig:
+        return hit[1]
     df = pd.read_csv(OUTPUT_CSV_PATH, usecols=["name", "game_changer", "legal_commander"])
-    card_flags = {
+    flags = {
         row.name_: {"game_changer": bool(row.game_changer), "legal_commander": row.legal_commander}
         for row in df.rename(columns={"name": "name_"}).itertuples(index=False)
     }
-    with open(CARD_ROLES_PATH) as f:
-        roles = json.load(f)["roles"]
-    with open(COMBO_DETAILS_PATH) as f:
-        details = json.load(f)
-    return card_flags, roles, details
+    _FLAGS_MEMO["flags"] = (sig, flags)
+    return flags
 
 
 def combos_in_deck(names, details):

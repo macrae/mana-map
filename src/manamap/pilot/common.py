@@ -1,5 +1,6 @@
 """Shared pilot helpers: rule-ID validation, deck paths, rules/strategy-DB loading."""
 
+import atexit
 import hashlib
 import json
 import re
@@ -7,12 +8,15 @@ import re
 import numpy as np
 
 from manamap.config import (
+    CARD_ROLES_PATH,
+    COMBO_DETAILS_PATH,
     DECKS_DIR,
     RULES_EMBEDDINGS_PATH,
     RULES_INDEX_PATH,
     STRATEGY_DOC_PATH,
     STRATEGY_EMBEDDINGS_PATH,
     STRATEGY_INDEX_PATH,
+    SYNERGY_GRAPH_PATH,
 )
 
 # The single source of truth for valid citation IDs: a numbered CR rule
@@ -30,6 +34,60 @@ STRATEGY_ID_RE = re.compile(r"^strategy:[a-z0-9-]+(\.[a-z0-9-]+){0,2}$")
 COMMANDER_SECTION_MARKERS = frozenset({"commander", "commanders"})
 MAIN_SECTION_MARKERS = frozenset({"deck", "mainboard", "main"})
 SIDEBOARD_SECTION_MARKERS = frozenset({"sideboard", "side", "maybeboard", "considering"})
+
+
+# ── Memoized artifact loading ───────────────────────────────────────────
+#
+# The global graphs are 1.9–27.8 MB and several modules parse the same file in
+# one process (deck-facts alone used to parse card_roles.json twice and pay
+# 0.42 s for a synergy parse it printed one number from). Same key discipline
+# as agent_cache._SHA_MEMO: (mtime_ns, size) per path, so a rewrite in-process
+# is picked up and the stale copy is evicted rather than accumulated.
+#
+# Treat every returned object as READ-ONLY — callers share one parse.
+
+_JSON_MEMO = {}
+
+
+def load_json_memo(path):
+    """Parse a JSON file once per (mtime_ns, size) per process. Read-only."""
+    stat = path.stat()  # propagates FileNotFoundError, same as open() did
+    sig = (stat.st_mtime_ns, stat.st_size)
+    hit = _JSON_MEMO.get(str(path))
+    if hit is not None and hit[0] == sig:
+        return hit[1]
+    with open(path) as f:
+        doc = json.load(f)
+    _JSON_MEMO[str(path)] = (sig, doc)
+    return doc
+
+
+def clear_memo():
+    """Drop all memoized parses (test teardown; mirrors _SHA_MEMO.clear())."""
+    _JSON_MEMO.clear()
+    _STRATEGY_SHA_MEMO.clear()
+
+
+# Freeing tens of MB of parsed JSON via refcounting is nearly free; letting it
+# survive to interpreter shutdown costs ~0.7 s of teardown GC per CLI call
+# (measured on deck-facts). Clear the memo before Python starts tearing the
+# world down so the win from one-parse-per-process isn't paid back at exit.
+atexit.register(clear_memo)
+
+
+def load_card_roles():
+    """card_roles.json's roles map, parsed once per process. Read-only."""
+    return load_json_memo(CARD_ROLES_PATH)["roles"]
+
+
+def load_combo_details():
+    """combo_details.json ({combos, by_card, meta}), parsed once. Read-only."""
+    return load_json_memo(COMBO_DETAILS_PATH)
+
+
+def load_synergy_graph():
+    """synergy_graph.json (name → top-10 shortlist), parsed once. Read-only."""
+    return load_json_memo(SYNERGY_GRAPH_PATH)
 
 
 def deck_dir(slug):
@@ -79,9 +137,23 @@ def load_rules_db():
     return index["rules"], order, embeddings
 
 
+_STRATEGY_SHA_MEMO = {}
+
+
 def strategy_doc_sha256():
-    """sha256 of the strategy doc — the doc/DB staleness handshake."""
-    return hashlib.sha256(STRATEGY_DOC_PATH.read_bytes()).hexdigest()
+    """sha256 of the strategy doc — the doc/DB staleness handshake.
+
+    Memoized on (mtime_ns, size): a whole-deck cache-status scan asks for this
+    once per strategy-consuming routine.
+    """
+    stat = STRATEGY_DOC_PATH.stat()
+    sig = (stat.st_mtime_ns, stat.st_size)
+    hit = _STRATEGY_SHA_MEMO.get("doc")
+    if hit is not None and hit[0] == sig:
+        return hit[1]
+    digest = hashlib.sha256(STRATEGY_DOC_PATH.read_bytes()).hexdigest()
+    _STRATEGY_SHA_MEMO["doc"] = (sig, digest)
+    return digest
 
 
 def load_strategy_db():

@@ -38,7 +38,7 @@ from manamap.config import (
     CR_RULES_META_PATH,
     RESOLVE_MAX_ITERATIONS,
 )
-from manamap.pilot.common import deck_dir
+from manamap.pilot.common import deck_dir, load_json_memo
 
 _REPO_ROOT = config.DATA_DIR.parent
 _DYNAMIC_RE = re.compile(r"^(stack|decision):(\w+)$")
@@ -124,8 +124,7 @@ def cards_semantic_digest(path):
     """Digest only the card facts agents reason about, not how cards look."""
     if not path.exists():
         return None
-    with open(path) as f:
-        doc = json.load(f)
+    doc = load_json_memo(path)
     cards = [
         {k: card.get(k) for k in CARD_SEMANTIC_FIELDS}
         for card in doc.get("cards", [])
@@ -148,8 +147,7 @@ def cards_printing_digest(path):
     """Digest the printing identity of every card — artist, set, treatment."""
     if not path.exists():
         return None
-    with open(path) as f:
-        doc = json.load(f)
+    doc = load_json_memo(path)
     cards = [
         {k: card.get(k) for k in CARD_PRINTING_FIELDS}
         for card in doc.get("cards", [])
@@ -166,8 +164,7 @@ def prose_shape(path):
     """
     if not path.exists():
         return None
-    with open(path) as f:
-        doc = json.load(f)
+    doc = load_json_memo(path)
     return {k: (sorted(v) if isinstance(v, dict) else None) for k, v in sorted(doc.items())}
 
 
@@ -179,7 +176,7 @@ def agent_prompt_sha256(agent):
     """
     parts = {}
     for name in str(agent).split("+"):
-        parts[name] = file_sha256(AGENT_PROMPTS_DIR / f"{name}.md")
+        parts[name] = cached_file_sha256(AGENT_PROMPTS_DIR / f"{name}.md")
     return json_sha256(parts)
 
 
@@ -191,16 +188,14 @@ def scenario_block_digest(path):
     """
     if not path.exists():
         return None
-    with open(path) as f:
-        doc = json.load(f)
+    doc = load_json_memo(path)
     return json_sha256({"title": doc.get("title"), "scenario": doc.get("scenario")})
 
 
 def rules_version():
     if not CR_RULES_META_PATH.exists():
         return None
-    with open(CR_RULES_META_PATH) as f:
-        return json.load(f).get("effective_date")
+    return load_json_memo(CR_RULES_META_PATH).get("effective_date")
 
 
 def strategy_doc_digest():
@@ -264,9 +259,7 @@ def passing_stacks(base):
     """Only checker-passed stacks are inputs — a failed line can't be published."""
     out = []
     for path in sorted((base / "stacks").glob("*.json")):
-        with open(path) as f:
-            doc = json.load(f)
-        if (doc.get("checker") or {}).get("verdict") == "pass":
+        if (load_json_memo(path).get("checker") or {}).get("verdict") == "pass":
             out.append(path)
     return out
 
@@ -402,8 +395,33 @@ def _extra_changes(old_extra, new_extra):
     return changes
 
 
-def status(slug, routine, force=False):
-    """HIT / EDITED / MISS for one routine. Read-only."""
+def _sideboard_applicable(slug):
+    """A deck with no real sideboard card can never have a sideboard analysis.
+
+    Mirrors what sideboard-facts reports as `available: false`: only accessories
+    (or nothing) behind the SIDEBOARD marker. Checked here so a whole-deck scan
+    reports the routine as N/A instead of a permanent MISS — without this, three
+    of four decks could never reach a clean exit 0.
+    """
+    from manamap.pilot.artist_credits import is_accessory
+
+    path = deck_dir(slug) / "cards.json"
+    if not path.exists():
+        return True  # let the normal missing-input error name the real problem
+    cards = load_json_memo(path).get("cards", [])
+    return any(c.get("is_sideboard") and not is_accessory(c) for c in cards)
+
+
+def status(slug, routine, force=False, cache=None):
+    """HIT / EDITED / MISS for one routine. Read-only.
+
+    `cache` lets a whole-deck scan pass the sidecar in once instead of
+    re-reading it per routine.
+    """
+    if routine == "sideboard-analysis" and not _sideboard_applicable(slug):
+        raise MissingInput(
+            "deck has no analysable sideboard (sideboard-facts reports "
+            "available: false) — nothing to spawn or cache")
     spec = routine_spec(slug, routine)
     entries, extra = resolve_inputs(slug, spec)
     current = fingerprint(routine, spec, entries, extra)
@@ -414,7 +432,9 @@ def status(slug, routine, force=False):
         "artifact_keys": sorted(keys) if keys else None,
         "fingerprint": current, "changed": [],
     }
-    record_entry = (load_cache(slug).get("routines") or {}).get(routine)
+    if cache is None:
+        cache = load_cache(slug)
+    record_entry = (cache.get("routines") or {}).get(routine)
 
     if force:
         return {**result, "status": "MISS", "reason": "forced"}
@@ -445,6 +465,10 @@ def status(slug, routine, force=False):
 
 def record(slug, routine):
     """Record the fingerprint that produced the artifact. Refuses bad states."""
+    if routine == "sideboard-analysis" and not _sideboard_applicable(slug):
+        raise MissingInput(
+            "deck has no analysable sideboard (sideboard-facts reports "
+            "available: false) — nothing to spawn or cache")
     spec = routine_spec(slug, routine)
     entries, extra = resolve_inputs(slug, spec)
     artifact = artifact_path(slug, spec)
@@ -586,9 +610,10 @@ def main(args):
     force = getattr(args, "force", False)
     results, not_applicable = [], []
 
+    sidecar = load_cache(slug)
     for routine in routines:
         try:
-            result = status(slug, routine, force=force)
+            result = status(slug, routine, force=force, cache=sidecar)
         except (UnknownRoutine, MissingInput) as e:
             # An explicit --routine with a missing input is exit 2: the caller
             # asked about this routine and must fix the input, not spawn. But in

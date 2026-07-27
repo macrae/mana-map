@@ -344,10 +344,8 @@ def build(slug):
     target = brief["bracket"]
 
     df = pd.read_csv(OUTPUT_CSV_PATH)
-    with open(CARD_ROLES_PATH) as f:
-        roles = json.load(f)["roles"]
-    with open(COMBO_DETAILS_PATH) as f:
-        details = json.load(f)
+    roles = load_card_roles()
+    details = load_combo_details()
     if not SYNERGY_GRAPH_PATH.exists():  # presence check; scoring uses the rules directly
         raise BriefError(f"{SYNERGY_GRAPH_PATH} missing — run `manamap synergy` first")
 

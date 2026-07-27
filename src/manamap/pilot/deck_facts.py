@@ -32,8 +32,14 @@ from collections import Counter
 from manamap.analysis.common import parse_tag_set
 from manamap.config import CARD_ROLES_PATH, SYNERGY_GRAPH_PATH
 from manamap.ingest.extract import get_colors
-from manamap.pilot.bracket import combos_in_deck, is_infinite, load_reference
-from manamap.pilot.common import deck_dir, load_deck_cards
+from manamap.pilot.bracket import combos_in_deck, is_infinite
+from manamap.pilot.common import (
+    deck_dir,
+    load_card_roles,
+    load_combo_details,
+    load_deck_cards,
+    load_synergy_graph,
+)
 from manamap.pilot.manabase import (
     RESTRICTED_MANA as RESTRICTED_PHRASE,
     WUBRG,
@@ -185,8 +191,7 @@ def role_facts(names):
     """
     if not CARD_ROLES_PATH.exists():
         return {"available": False}
-    with open(CARD_ROLES_PATH) as f:
-        roles = json.load(f)["roles"]
+    roles = load_card_roles()
     covered, missing, hist = {}, [], Counter()
     for name in names:
         got = roles.get(name, [])
@@ -213,8 +218,7 @@ def synergy_facts(names):
     """
     if not SYNERGY_GRAPH_PATH.exists():
         return {"available": False}
-    with open(SYNERGY_GRAPH_PATH) as f:
-        graph = json.load(f)
+    graph = load_synergy_graph()
     present = set(names)
     edges = 0
     absent = []
@@ -235,8 +239,8 @@ def synergy_facts(names):
 def combo_facts(names, commanders):
     """Combos fully contained in the deck, from combo_details (never the graph)."""
     try:
-        _, _, details = load_reference()
-    except SystemExit:
+        details = load_combo_details()
+    except FileNotFoundError:
         return {"available": False}
     lines = []
     for idx in combos_in_deck(names, details):

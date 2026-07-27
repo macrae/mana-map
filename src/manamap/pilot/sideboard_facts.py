@@ -28,7 +28,7 @@ from manamap.analysis.common import parse_tag_set
 from manamap.config import CARD_ROLES_PATH
 from manamap.pilot.artist_credits import is_accessory
 from manamap.pilot.bracket import assess, combos_in_deck, is_infinite, load_reference
-from manamap.pilot.common import deck_dir, load_deck_cards
+from manamap.pilot.common import deck_dir, load_card_roles, load_deck_cards
 from manamap.pilot.deck_facts import _is_land
 from manamap.pilot.manabase import WUBRG, count_pips
 
@@ -50,8 +50,7 @@ def split_deck(doc):
 def _roles():
     if not CARD_ROLES_PATH.exists():
         return {}
-    with open(CARD_ROLES_PATH) as f:
-        return json.load(f)["roles"]
+    return load_card_roles()
 
 
 def card_pips(card):
