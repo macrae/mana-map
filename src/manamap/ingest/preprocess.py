@@ -36,6 +36,9 @@ from manamap.config import (
 from manamap.mechanical_tags import encode_tags_multihot
 
 
+_MODEL_CACHE = {}
+
+
 def compute_text_embeddings(texts, model_name=TEXT_MODEL_NAME, batch_size=512):
     """Encode texts with a frozen sentence-transformer model.
 
@@ -46,8 +49,14 @@ def compute_text_embeddings(texts, model_name=TEXT_MODEL_NAME, batch_size=512):
     (build_rules_db, build_strategy_db) normalize at build time so queries can
     use a bare matmul for cosine; `common.load_rules_db` documents that
     guarantee on the read side.
+
+    The model is cached per name: loading MiniLM costs ~2 s, and the RAG query
+    paths (query-rules, query-strategy) call this once per query. The weights
+    are frozen, so a cached instance cannot change any output.
     """
-    model = SentenceTransformer(model_name)
+    if model_name not in _MODEL_CACHE:
+        _MODEL_CACHE[model_name] = SentenceTransformer(model_name)
+    model = _MODEL_CACHE[model_name]
     embeddings = model.encode(
         texts, batch_size=batch_size, show_progress_bar=True, convert_to_numpy=True
     )
