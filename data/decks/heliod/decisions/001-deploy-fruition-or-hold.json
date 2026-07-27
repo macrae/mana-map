@@ -1,0 +1,83 @@
+{
+  "id": "001",
+  "slug": "deploy-fruition-or-hold",
+  "deck": "heliod",
+  "kind": "decision",
+  "title": "Turn 6: does Forced Fruition come down against a spellslinger?",
+  "scenario": {
+    "board": {
+      "you": "Turn 6, precombat main. Battlefield: Howling Mine, Iron Maiden, six lands (WWUU + 2 colorless available). Hand: Forced Fruition, Ebony Owl Netsuke, Swan Song, Island. Heliod not yet cast (goldfish mean cast 4.125 — you spent those turns on engine pieces).",
+      "table": "Player 2 (Izzet spellslinger) has a storm-adjacent board — two cost reducers, a cantrip engine — and six cards in hand off your Howling Mine. Player 3 (Selesnya go-wide) has eight tokens and swings elsewhere this turn. Player 4 (mono-black reanimator) just tutored and is visibly one untap from something big."
+    },
+    "question": "Forced Fruition punishes every opponent spell with seven fresh cards. Against a spellslinger who WANTS cards and a reanimator about to combo, do you deploy it now to feed Iron Maiden and Ebony Owl, hold it and deploy Ebony Owl alone, or hold everything and keep Swan Song up?"
+  },
+  "branches": [
+    {
+      "choice": "Deploy Forced Fruition now and start the punisher clock",
+      "line": "Play the Island (seven mana: WWUUU + 2 colorless), cast Forced Fruition paying {U}{U} plus WWCC for the generic, hold the last {U} for Swan Song. Owl stays in hand until next turn. From here every opponent cast hands its caster seven cards; whoever ends their turn hoarding trims to seven at cleanup and takes Iron Maiden damage each upkeep — and once Owl lands, exactly 7 per upkeep at a seven-card hand, the number stack 003 verifies.",
+      "signals": "Forced Fruition is this deck's loudest tell — a six-mana 'every spell you cast is an event' enchantment reads as the group-slug engine coming online, and the table's assessment updates instantly. You announce yourself as the archenemy with two artifacts, no Heliod, and one mana held.",
+      "coalition_risk": "High, and paid for nothing yet. Your asymmetry layer is missing — no Heliod discount, no Tithe or Sphinx on board — so this is the scary half of the engine deployed before the half that makes it yours. Worse, both dangerous seats profit: the spellslinger's cost reducers and cantrip engine convert 'seven cards per spell' into an explosive refill loop, and the reanimator's cleanup trim is a free discard outlet — rule 514.1 lets them choose which cards hit the graveyard, and they will choose the fattest thing they own. Expect the go-wide player to be told, correctly, that you are now the problem.",
+      "coaching": "Know what Fruition actually is before Heliod and Owl are down: a donation, not a tax. Iron Maiden punishes hand-hoarders, and a spellslinger is the one archetype that never hoards — they metabolize the seven cards into more spells. Stack 003's math is real (trigger resolves before removal, cleanup trims to seven, Owl 4 + Maiden 3 = 7 per upkeep), but every number in it assumes an opponent who holds cards, and the two seats that scare you tonight are the two that won't. Note also that with Fruition down even your own interaction donates: the cast trigger goes on the stack immediately, so the reanimation spell you Swan Song still draws its caster seven on the way to being countered. The pivot-window rule is exactly this: your win attempt should come when it can't be profitably answered — a naked Fruition on turn 6 into a tutoring reanimator is the opposite, three players' worth of incentive to remove one enchantment. If you want one honest case for this line: a table full of hoarding, spell-shy opponents. That is not this table.",
+      "citations": [
+        {
+          "rule": "603.3",
+          "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority. See rule 117, “Timing and Priority.” The ability becomes the topmost object on the stack."
+        },
+        {
+          "rule": "608.1",
+          "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+        },
+        {
+          "rule": "514.1",
+          "quote": "First, if the active player’s hand contains more cards than their maximum hand size (normally seven), they discard enough cards to reduce their hand size to that number. This turn-based action doesn’t use the stack."
+        },
+        {
+          "rule": "strategy:multiplayer.pivot-window",
+          "quote": "Go too early and the table unites to stop you with three players' worth of interaction; too late and someone else takes their window first."
+        }
+      ]
+    },
+    {
+      "choice": "Hold Fruition, deploy Ebony Owl Netsuke, keep Swan Song up",
+      "line": "Play the Island, cast Ebony Owl Netsuke off the two colorless — and take the line the mana is begging for: cast Heliod's front face ({2}{W}{W}) with WWUU, holding the last {U} for Swan Song. Owl + Heliod + counter held, seven mana used to the point. The spellslinger sits at six cards off your Howling Mine; their own Mine draw puts them at seven-plus at their upkeep unless they dump — Owl's intervening 'if' checks seven or more, and at exactly seven the verified split is Owl 4 + Iron Maiden (7 − 4) = 3, the 7-per-upkeep clock from stack 003, running without donating anyone a single card.",
+      "signals": "A two-mana trinket and your commander's harmless front face read as a quiet development turn — the table's attention stays on the tutoring reanimator and the eight-token board. One blue open after this deck has shown counterspells makes three players respect interaction that only one of them will test.",
+      "coalition_risk": "Low. The punisher damage arrives as upkeep triggers, not as an announced haymaker — the spellslinger who takes 7 for hoarding blames their own hand. Nobody unites against an Owl. Your deflection budget stays intact for the turn Fruition actually wins something.",
+      "coaching": "You're in the lucky third — the core two-piece assembles by turn 6 in only 34.3% of goldfish games — and the discipline that rewards it is sequencing: punishers before the big draw engine, so any refill is taxed on arrival rather than gifted. Howling Mine is already feeding hands; Owl turns those fed hands into a clock tonight, against exactly the seats that hold cards. Heliod now means the {3}{U/P} transform next turn, and Warped Eclipse is what converts a later Fruition from donation into engine — flash deployment, spells discounted by every card the table draws. Swan Song stays home for the reanimation spell itself (it counters instants, sorceries, and enchantments — Reanimate and Animate Dead lines both die to it; a creature-land or activated-ability line does not, so watch what the tutor was for). That is the answer-economy bar: the counter is for the card that ends the game, and the reanimator just told you it's coming. Time Fruition for the turn it wins — Eclipse online, punishers established, ideally the spellslinger's library already thin — not the turn it impresses.",
+      "citations": [
+        {
+          "rule": "603.4",
+          "quote": "When the trigger event occurs, the ability checks whether the stated condition is true. The ability triggers only if it is; otherwise it does nothing."
+        },
+        {
+          "rule": "608.2a",
+          "quote": "If a triggered ability has an intervening “if” clause, it checks whether the clause’s condition is true. If it isn’t, the ability is removed from the stack and does nothing. Otherwise, it continues to resolve."
+        },
+        {
+          "rule": "strategy:multiplayer.threat-deflection",
+          "quote": "Know your deck's tells — the cards everyone fears — and time them for the turn they win, not the turn they impress."
+        },
+        {
+          "rule": "strategy:threat-assessment.answer-economy",
+          "quote": "the bar is \"ends the game or ends my deck's function,\" not \"looks scary\""
+        }
+      ]
+    },
+    {
+      "choice": "Hold everything and keep Swan Song up",
+      "line": "Play the Island, cast nothing, pass with seven mana and Swan Song ready. Pure draw-go: wait out the reanimator's turn, wait out the sweeper you haven't seen, deploy nothing until the coast is clear.",
+      "signals": "Passing with seven up looks like maximum interaction, but this deck holds one Swan Song, not seven counterspells — and the table already sees Howling Mine and Iron Maiden. The quiet-artifact posture stopped fooling anyone the turn Iron Maiden hit the table.",
+      "coalition_risk": "Minimal optics risk, real tempo cost. You defer to the reanimator's schedule and the spellslinger's engine while your own clock never starts.",
+      "coaching": "This confuses holding an answer with holding everything. Swan Song costs {U}; the other six mana protect nothing, because until Heliod transforms this deck has no flash — those six mana are dead air, not held interaction. Your claim on this game is inevitability: the punishers are a clock that advances during draw-go, and whoever owns the long game gets to wait. But inevitability has to be running to be owned — an Owl in hand deals zero per upkeep, and a Heliod in the command zone discounts nothing. You are already behind the commander curve (goldfish mean cast 4.125, 90.5% by turn 6 — this game is in the slow tail), and every fully passive turn is a free draw step for a spellslinger you are feeding with your own Howling Mine. Branch two holds the exact same Swan Song for the exact same reanimation spell and starts a verified 7-damage clock with the spare mana. Choose this line only if you have concrete evidence of artifact mass removal in a specific hand — an assumption this scenario doesn't grant you.",
+      "citations": [
+        {
+          "rule": "strategy:whos-the-beatdown.metagame-clock",
+          "quote": "Inevitability is Duke's name for ownership of the long game: if one player is virtually guaranteed to win a game that goes long enough, that player has it"
+        }
+      ]
+    }
+  ],
+  "recommendation": {
+    "choice": "Hold Fruition, deploy Ebony Owl Netsuke, keep Swan Song up",
+    "rationale": "Every fact in this scenario points the same way. Stack 003's verified math — Owl 4 + Maiden 3 = 7 at a seven-card hand — needs opponents who hold cards, and Howling Mine is already pushing the spellslinger there without Fruition's help; the 7-per-upkeep clock starts tonight for two mana and zero donation. Fruition into this table feeds the two seats that punish it worst: a spellslinger who metabolizes seven-card gifts into more spells, and a reanimator for whom the cleanup trim (rule 514.1, walked in 003) is a free, self-selected discard outlet one untap before their big turn. The Owl line also fits Heliod and Swan Song into the same seven mana — commander progressing toward the Warped Eclipse flip that makes a later Fruition asymmetric, counter held for the reanimation spell per the answer-economy bar. Deploy the tax before the gift, keep the tell in hand until it wins, and let the strategic frame's own warning stand: against spellslinger pods, Forced Fruition is a liability until your asymmetry layer is online."
+  }
+}

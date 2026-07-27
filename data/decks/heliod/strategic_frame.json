@@ -1,0 +1,89 @@
+{
+  "slug": "heliod",
+  "archetype": "WU forced-draw punisher control: symmetric table-draw engines feeding asymmetric upkeep-damage punishers, with Heliod, the Warped Eclipse converting opponents' draws into cost reduction and flash-speed control",
+  "schools": [
+    "strategy:whos-the-beatdown",
+    "strategy:whos-the-beatdown.metagame-clock",
+    "strategy:critical-mass",
+    "strategy:multiplayer.threat-deflection",
+    "strategy:multiplayer.pivot-window",
+    "strategy:card-advantage.virtual"
+  ],
+  "role_assignment": {
+    "default_role": "control with inevitability: the punisher upkeep damage (verified in stack 003: Iron Maiden + Ebony Owl Netsuke deal 7 on the punished upkeep once Forced Fruition has filled the hand, and cleanup trims to exactly 7 in hand) is a clock that runs without tapping out, and the counterspell suite (goldfish: free/cheap interaction held in 73.4% of games) defends the long game — whoever loses the long game must be the beatdown, and here that is usually not you (strategy:whos-the-beatdown, strategy:whos-the-beatdown.metagame-clock)",
+    "pivot_trigger": "either (a) the core two-piece (table engine + punisher) is assembled and Heliod's discount is live — goldfish says this happens by turn 6 in only 34.3% of games, so do not plan as if it is automatic — or (b) Approach of the Second Sun with the second cast set up (verified stack 002) and the table's open mana counted; commit only when the attempt can't be profitably answered, holding Dovin's Veto/Swan Song for the commit turn, not after (strategy:pivot-point, strategy:multiplayer.pivot-window)",
+    "strategy_ref": "strategy:pivot-point"
+  },
+  "engines": [
+    {
+      "piece": "Forced Fruition + Iron Maiden + Ebony Owl Netsuke",
+      "engine": "the punisher core: force draws (Forced Fruition, Howling Mine, Font of Mythos, Temple Bell, Dictate of Kruphix, Kami of the Crescent Moon, Folio of Fancies) into hand-size upkeep damage (Iron Maiden, Ebony Owl Netsuke, Viseling) — a two-piece critical-mass engine that is inert below threshold and a table-wide clock past it; note deck-facts flags nearly this entire core as having no role tag, so role histograms undercount the real plan",
+      "evidence": "verified stack 003 (7 damage on the punished upkeep, incl. the cleanup-trims-to-7 subtlety); oracle text; goldfish target 'Engine + punisher assembled' 34.3% by t6",
+      "strategy_ref": "strategy:critical-mass"
+    },
+    {
+      "piece": "Hullbreaker Horror + Sol Ring + Arcane Signet",
+      "engine": "verified unbounded-cast loop: alternating-bounce of the two rocks is exactly mana-neutral per cycle, giving unbounded cast/storm count in one main phase — but it nets no mana, cards, or damage on its own; Thought Vessel substitutes exactly for Arcane Signet, Fellwar Stone is board-conditional. The two-card Hullbreaker + Sol Ring 'infinite' in the combo DB is REFUTED (stack 001): no repeatable sequence exists with only those two cards",
+      "evidence": "verified stack 004 (engine real, mana-neutral); verified stack 001 (two-card version refuted); combo_details line for the pair is not fact",
+      "strategy_ref": "strategy:critical-mass.storm-math"
+    },
+    {
+      "piece": "Heliod, the Warped Eclipse",
+      "engine": "the hinge that makes the symmetric draw asymmetric: spells cost {1} less per card opponents drew this turn and everything gains flash, so the table-draw engines pay your mana bill and let you hold up counterspells while deploying — the deck's version of making the opponents' cards work for you",
+      "evidence": "oracle text (back face: flash grant + per-opponent-draw cost reduction); goldfish: commander mean cast turn 4.125, 90.5% by t6",
+      "strategy_ref": "strategy:card-advantage.virtual"
+    },
+    {
+      "piece": "Approach of the Second Sun + Mystical Tutor",
+      "engine": "the clean win line: first Approach resolves and goes seventh from the top, Mystical Tutor puts it back on top the turn you re-draw it, second cast wins — with the opponents' interaction window on the second cast explicitly walked through and survivable behind held countermagic",
+      "evidence": "verified stack 002 (second-cast win incl. the interaction window)",
+      "strategy_ref": "strategy:multiplayer.pivot-window"
+    },
+    {
+      "piece": "Rhystic Study / Mystic Remora / Consecrated Sphinx / Teferi's Ageless Insight / Faerie Mastermind / Smothering Tithe",
+      "engine": "asymmetric value layer riding the same forced-draw turbulence: while the punishers tax opponents' hands, these convert the table's activity into your cards and treasure; goldfish: Heliod down with an asymmetric engine in 49.2% of games by t6",
+      "evidence": "oracle text; goldfish target 'Heliod down with an asymmetric card engine' 65.0% assembled",
+      "strategy_ref": "strategy:whos-the-beatdown.metagame-clock"
+    }
+  ],
+  "candidate_missing_lines": [
+    {
+      "title": "Aetherflux Reservoir lethal off the verified Hullbreaker three-card engine",
+      "cards": ["Hullbreaker Horror", "Sol Ring", "Arcane Signet", "Aetherflux Reservoir"],
+      "why_plausible": "stack 004 verifies unbounded mana-neutral casts in one main phase; Aetherflux's oracle text gains 1 life per spell cast this turn on each cast (50 casts ≈ 1,275 life), then 'Pay 50 life: deals 50 damage to any target' repeats per opponent — but the ordering (Reservoir down before the loop), the loop's exact cast legality with the fourth piece, and the life arithmetic are unverified",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Psychosis Crawler + mass self-draw for table damage",
+      "cards": ["Psychosis Crawler", "Prosperity", "Braingeyser", "Stroke of Genius", "Skyscribing", "Mathemagics"],
+      "why_plausible": "Psychosis Crawler's oracle text drains each opponent 1 per card YOU draw; the deck runs several large X-draw spells (Mathemagics draws 2^X), so a big self-draw is table-wide reach — but no stack has verified trigger count or survivability of the Crawler through the draw",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Displacer Kitten value chains off noncreature casts",
+      "cards": ["Displacer Kitten", "Agent of Treachery", "Torrential Gearhulk", "Sol Ring"],
+      "why_plausible": "Kitten's oracle text blinks a nonland permanent you control on each noncreature cast — re-triggering Agent of Treachery theft or Torrential Gearhulk flashback, or untapping a tapped rock mid-chain; with the 004 engine's unbounded casts this could go degenerate, but whether the loop stays legal and mana-neutral with Kitten triggers interleaved is unverified",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Smothering Tithe treasure arithmetic under forced-draw engines",
+      "cards": ["Smothering Tithe", "Forced Fruition", "Howling Mine", "Font of Mythos"],
+      "why_plausible": "Tithe triggers once per opponent draw with a {2} opt-out; Forced Fruition makes every opponent spell 7 draws, so one opponent turn can present 7+ pay-or-treasure decisions — the trigger count, the may-pay timing, and the realistic treasure yield have not been walked through",
+      "status": "needs a stack scenario"
+    }
+  ],
+  "matchup_frames": {
+    "vs_sweeper_control": "You are rarely the beatdown by label, but in a control mirror someone must be (strategy:whos-the-beatdown) — and your punishers are a clock that advances during draw-go, so you own inevitability (strategy:whos-the-beatdown.metagame-clock) and can let them act first. Creature sweepers hit almost nothing here (the threat:body count is mostly utility bodies); the real exposure is artifact/enchantment mass removal taking the engine and punisher layers together — deploy the engine in layers rather than dumping it, and bank countermagic for the pivot turn (strategy:pivot-point).",
+    "vs_stax": "Taxes attack exactly this deck's velocity math — many cheap spells per turn — so recount your hand under the tax (strategy:threat-assessment.resource-denial). You rarely own the long game under an assembling lock: role flips to beatdown, racing the lock's completion. Heliod's per-opponent-draw discount is a partial tax rebate unique to this deck, and the forced-draw engines keep feeding it even under a lock, but layered pieces are the danger — answer the compounding second piece, not the first inconvenience.",
+    "vs_aggro": "Propaganda and Ghostly Prison are virtual card advantage tripled in multiplayer — one pillow-fort effect blanks attack plans from three players (strategy:card-advantage.virtual) — and the punishers convert defense into a clock, pushing the aggressor's damage-per-card below lethal (strategy:life-as-resource.philosophy-of-fire). The trap: Forced Fruition refuels the aggro player's hand with action; sequence punishers before or with the big draw engines so the refill is taxed on arrival (strategy:critical-mass).",
+    "vs_combo": "Hold the free suite (Fierce Guardianship, Force of Negation, Swan Song, An Offer You Can't Refuse, Dovin's Veto — held in 73.4% of goldfish games) for the card that ends the game if it resolves, per the answer-economy bar (strategy:threat-assessment.answer-economy). The deck-specific warning: Forced Fruition hands a combo pilot seven cards per spell — against storm or spellslinger pods it is a liability, not an engine. Your artifact engines read as quiet; expect experienced tables to discount your 'I haven't done anything' and hit you anyway (strategy:multiplayer.threat-deflection)."
+  },
+  "distribution_notes": "85 entries / 100 copies with only 18 land entries; curve is aggressively low (9/21/19 at MV 1-3, just 7 cards at MV 5+) because the deck expects Heliod's discount to pay the top end. Pips skew hard blue: 50 total U pips across 34 cards (source target 36) versus 15 W pips across 12 (target 22) — the front face of Heliod is W but the deck's operating colour is U. Goldfish: commander mean cast 4.125 (median 4, 90.5% by t6), keep-first-seven 73.6%, but the core two-piece assembles by t6 in only 34.3% of games and ever in 49.1% — the honest consistency number: this deck spends most early games as a draw-go control deck holding interaction (73.4% held), not as an assembled punisher engine. Mulligan accordingly: engine-half hands (a Mine effect) dig toward punishers; punisher-only hands are blanks until the engine exists (strategy:mulligans.engine-hands). Note 24 cards, including nearly the whole punisher core, carry no role tag — the role histogram materially undercounts the deck's plan. Bracket floor is 4 (Optimized): 8 Game Changers force it independent of the combo story, which matters because stack 001 refuted the DB's two-card infinite that the bracket report also lists as a floor-4 driver — the Game Changers signal alone sustains the floor.",
+  "overall_assessment": "This deck plays the long game on purpose and makes the whole table pay for its card advantage. Its world-view is Duke's inevitability (strategy:whos-the-beatdown.metagame-clock): every symmetric draw engine is really asymmetric three ways — it feeds Heliod's cost reduction, it feeds the hand-size punishers, and it feeds Smothering Tithe/Sphinx-class value — so a game that goes long enough belongs to it, and the counterspell suite plus flash-speed deployment defends that claim. Structurally it is a two-piece critical-mass engine (strategy:critical-mass) whose honest assembly rate is 34% by turn 6, which means the pilot's real skill is the waiting game: draw-go control, threat deflection while the artifacts look harmless (strategy:multiplayer.threat-deflection), then one precisely-timed pivot — an assembled punisher board, an Approach with the second cast guaranteed (verified stack 002), or the Hullbreaker engine (verified stack 004) if a payoff line is ever verified — taken inside the window where the table cannot profitably answer it (strategy:multiplayer.pivot-window).",
+  "gaps": [
+    "The strategy doc has no section on the forced-draw / 'group slug' punisher archetype itself — the hug/slug asymmetry (giving the table resources as a weapon) is currently framed only obliquely through critical-mass and virtual card advantage",
+    "No section on the risk calculus of donating resources to opponents (Forced Fruition feeding a combo or aggro player) — when symmetric gifts are safe versus suicidal",
+    "No section on hand-size as an attack vector (maximum hand size, cleanup-step trimming, Reliquary Tower/Folio asymmetry) — stack 003 needed this rules territory and the strategy doc has nothing framing it",
+    "No section on wheel/forced-draw interaction with mill wincons (Sphinx's Tutelage-style inevitability) for framing that punisher sub-line"
+  ]
+}

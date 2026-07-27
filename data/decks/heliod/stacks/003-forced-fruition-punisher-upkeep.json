@@ -1,0 +1,425 @@
+{
+  "id": "003",
+  "slug": "forced-fruition-punisher-upkeep",
+  "deck": "heliod",
+  "title": "Forced Fruition feeds Iron Maiden and Ebony Owl Netsuke",
+  "scenario": {
+    "board": {
+      "you": [
+        "Forced Fruition",
+        "Iron Maiden",
+        "Ebony Owl Netsuke",
+        "Island x4",
+        "Plains x2"
+      ],
+      "opponents": [
+        {
+          "life": 18,
+          "board": [
+            "untapped lands x3"
+          ],
+          "hand_size": 2,
+          "note": "it is this opponent's main phase; they are about to act"
+        },
+        {
+          "life": 30,
+          "board": [],
+          "hand_size": 5
+        }
+      ]
+    },
+    "hand": [
+      "Arcane Denial"
+    ],
+    "graveyard": [],
+    "mana_available": "{U}{U}",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Naturalize",
+        "controller": "opponent 1",
+        "target": "Forced Fruition",
+        "note": "opponent 1 casts Naturalize (a Standard-legal {1}{G} 'destroy target artifact or enchantment') targeting Forced Fruition; Forced Fruition's cast trigger has not yet been put on the stack in this listing"
+      }
+    ],
+    "extras": {},
+    "question": "Opponent 1, with two cards in hand, casts Naturalize targeting Forced Fruition. Does Forced Fruition's trigger still make them draw seven cards even if Naturalize then destroys it, and in what order do the trigger and the spell resolve? Assuming you do not counter it and the opponent takes no further action, walk their next upkeep: with nine minus however many cards they played still in hand, exactly how much damage do Iron Maiden and Ebony Owl Netsuke deal, who orders those triggers, and what is opponent 1's life total afterward?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Opponent 1 (hand size 2, on their own main phase) casts Naturalize targeting Forced Fruition. The card leaves their hand for the stack, leaving 1 card in hand. Casting the spell is the trigger event for Forced Fruition ('Whenever an opponent casts a spell, that player draws seven cards'); the trigger is put on the stack on top of Naturalize before any player gets priority.",
+        "effect": "Stack, top-down: Forced Fruition's triggered ability (affects opponent 1), then Naturalize (targeting Forced Fruition). Opponent 1's hand: 1 card.",
+        "citations": [
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority. See rule 117, “Timing and Priority.” The ability becomes the topmost object on the stack."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "All players pass priority. The top object of the stack resolves first: Forced Fruition's triggered ability. It resolves BEFORE Naturalize, because it sits on top of the spell that triggered it.",
+        "effect": "Opponent 1 draws seven cards: 1 + 7 = 8 cards in hand. Yes — the draw happens even though Naturalize will destroy Forced Fruition, because the trigger resolves first.",
+        "citations": [
+          {
+            "rule": "608.1",
+            "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Naturalize resolves next and destroys Forced Fruition (moved to its owner's graveyard). Note that even if the destruction had somehow happened before the trigger resolved, the trigger would still resolve — an ability on the stack is independent of its source.",
+        "effect": "Forced Fruition is destroyed. Opponent 1 still has the 7 drawn cards (hand: 8). No further Fruition triggers will occur for future spells.",
+        "citations": [
+          {
+            "rule": "701.8a",
+            "quote": "To destroy a permanent, move it from the battlefield to its owner’s graveyard."
+          },
+          {
+            "rule": "113.7a",
+            "quote": "Once activated or triggered, an ability exists on the stack independently of its source. Destruction or removal of the source after that time won’t affect the ability."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Opponent 1 takes no further action this turn (per the scenario). At the cleanup step of their own turn, they are the active player holding 8 cards, one more than the normal maximum hand size of seven, so they must discard down to 7.",
+        "effect": "Opponent 1 discards 1 card. Hand: 7 cards. (The question's '9 minus cards played' framing gives 8 held at end of turn — but cleanup trims that to 7 before their next upkeep.)",
+        "citations": [
+          {
+            "rule": "514.1",
+            "quote": "First, if the active player’s hand contains more cards than their maximum hand size (normally seven), they discard enough cards to reduce their hand size to that number. This turn-based action doesn’t use the stack."
+          },
+          {
+            "rule": "402.2",
+            "quote": "Each player has a maximum hand size, which is normally seven cards. A player may have any number of cards in their hand, but as part of their cleanup step, the player must discard excess cards down to the maximum hand size."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Before opponent 1's next upkeep, the other players take turns (assumed turn order: opponent 2, then you; the order between those two turns changes no numbers). Opponent 2's upkeep: Iron Maiden triggers — it triggers at the beginning of EACH opponent's upkeep, not only opponent 1's. Ebony Owl Netsuke does NOT trigger: its intervening 'if' condition (seven or more cards in hand) is false at 5 cards, so it never triggers at all. Iron Maiden's trigger resolves: X = 5 - 4 = 1 damage to opponent 2. State-based actions are then checked before priority: opponent 2 is at 29 life, above 0, so no state-based action is performed. In their draw step, opponent 2 draws a card.",
+        "effect": "Opponent 2: 30 - 1 = 29 life; hand 5 + 1 = 6 (no cleanup discard needed at 6 ≤ 7; assumed no other action per scenario).",
+        "citations": [
+          {
+            "rule": "603.2b",
+            "quote": "When a phase or step begins, all abilities that trigger “at the beginning of” that phase or step trigger."
+          },
+          {
+            "rule": "603.4",
+            "quote": "When the trigger event occurs, the ability checks whether the stated condition is true. The ability triggers only if it is; otherwise it does nothing."
+          },
+          {
+            "rule": "119.2",
+            "quote": "Damage dealt to a player normally causes that player to lose that much life."
+          },
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "504.1",
+            "quote": "First, the active player draws a card. This turn-based action doesn’t use the stack."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Your own turn passes. Your upkeep triggers neither artifact — both read 'each opponent's upkeep', and you are not your own opponent. You draw a card in your draw step.",
+        "effect": "Your hand at the walked upkeep: Arcane Denial plus 1 unknown drawn card (2 cards). No other action assumed.",
+        "citations": [
+          {
+            "rule": "504.1",
+            "quote": "First, the active player draws a card. This turn-based action doesn’t use the stack."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Opponent 1's next upkeep begins with their hand at exactly 7 cards (no draws since their cleanup). Both of your 'at the beginning of each opponent's upkeep' abilities trigger: Iron Maiden (no condition) and Ebony Owl Netsuke, whose intervening 'if' clause — seven or more cards in hand — is checked as it would trigger and is true at exactly 7.",
+        "effect": "Two triggered abilities, both controlled by you, are waiting to go on the stack. Opponent 1's hand: 7.",
+        "citations": [
+          {
+            "rule": "603.2b",
+            "quote": "When a phase or step begins, all abilities that trigger “at the beginning of” that phase or step trigger."
+          },
+          {
+            "rule": "603.4",
+            "quote": "When the trigger event occurs, the ability checks whether the stated condition is true. The ability triggers only if it is; otherwise it does nothing."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "The triggers are put on the stack before the active player (opponent 1) gets priority. Under APNAP, opponent 1 would put their triggers on first, but they control none; then YOU, the nonactive player, put both of your triggers on the stack in any order YOU choose — the controller of the abilities orders them, not the player whose upkeep it is.",
+        "effect": "You choose the order. The last one you put on the stack resolves first. The order is irrelevant to the math here: neither ability changes opponent 1's hand size, so both see 7 cards regardless.",
+        "citations": [
+          {
+            "rule": "503.1a",
+            "quote": "Any abilities that triggered during the untap step and any abilities that triggered at the beginning of the upkeep are put onto the stack before the active player gets priority; the order in which they triggered doesn’t matter."
+          },
+          {
+            "rule": "603.3b",
+            "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+          },
+          {
+            "rule": "101.4",
+            "quote": "the active player (the player whose turn it is) makes any choices required, then the next player in turn order (usually the player seated to the active player’s left) makes any choices required, followed by the remaining nonactive players in turn order."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "First trigger resolves (say Ebony Owl Netsuke's). Its intervening 'if' condition is rechecked on resolution: opponent 1 still has 7 cards in hand, so it deals 4 damage to that player. Before any player gets priority again, state-based actions are checked: opponent 1 is at 14 life, above 0, so no state-based action is performed.",
+        "effect": "Ebony Owl Netsuke deals 4 damage; opponent 1 loses 4 life: 18 - 4 = 14. SBA check: no effect.",
+        "citations": [
+          {
+            "rule": "608.2a",
+            "quote": "If a triggered ability has an intervening “if” clause, it checks whether the clause’s condition is true. If it isn’t, the ability is removed from the stack and does nothing. Otherwise, it continues to resolve."
+          },
+          {
+            "rule": "119.2",
+            "quote": "Damage dealt to a player normally causes that player to lose that much life."
+          },
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "Players pass again; the second trigger resolves: Iron Maiden deals X damage where X is opponent 1's hand size minus 4, computed on resolution: 7 - 4 = 3. State-based actions are checked once more: opponent 1 is at 11 life, above 0, so no state-based action is performed.",
+        "effect": "Iron Maiden deals 3 damage; opponent 1 loses 3 life: 14 - 3 = 11. Total upkeep damage to opponent 1: 4 + 3 = 7. SBA check: no effect.",
+        "citations": [
+          {
+            "rule": "608.1",
+            "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+          },
+          {
+            "rule": "119.2",
+            "quote": "Damage dealt to a player normally causes that player to lose that much life."
+          },
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Q1: Yes — Forced Fruition's trigger goes on the stack ON TOP of Naturalize and resolves first, so opponent 1 draws seven (hand 1 -> 8) before Naturalize destroys Fruition; destroying the source wouldn't have stopped the trigger anyway (113.7a). Q2: Their 8-card hand is trimmed to 7 at their own cleanup (514.1/402.2). Along the way, Iron Maiden also pings opponent 2 at THEIR upkeep — it triggers on each opponent's upkeep — for 5 - 4 = 1 (30 -> 29); Ebony Owl Netsuke never triggers for them (5 < 7). At opponent 1's next upkeep both artifact triggers are YOURS: opponent 1 (active player) has no triggers, so under APNAP you order both, in any order you choose — the order doesn't affect the outcome since neither changes their hand size. Ebony Owl Netsuke sees 7 cards (intervening-if true at trigger and at resolution) and deals 4; Iron Maiden deals 7 - 4 = 3. Total 7 damage: opponent 1 goes from 18 to 11. State-based actions checked after each damage resolution; no player is at 0 or less life, so none are performed.",
+      "you": {
+        "battlefield": [
+          "Iron Maiden",
+          "Ebony Owl Netsuke",
+          "Island x4",
+          "Plains x2"
+        ],
+        "hand": [
+          "Arcane Denial",
+          "1 unknown card drawn during your intervening turn"
+        ],
+        "note": "Forced Fruition destroyed by Naturalize (in your graveyard). Scenario assumes you do not counter Naturalize and cast nothing on your turn."
+      },
+      "opponents": [
+        {
+          "id": "opponent 1",
+          "life": 11,
+          "hand_size": 7,
+          "note": "Drew 7 from Fruition trigger (hand 8), discarded to 7 at their cleanup; took 4 (Ebony Owl Netsuke) + 3 (Iron Maiden) = 7 at their next upkeep. Their own draw step falls after the walked upkeep."
+        },
+        {
+          "id": "opponent 2",
+          "life": 29,
+          "hand_size": 6,
+          "note": "Iron Maiden dealt 5 - 4 = 1 at their intervening upkeep (30 -> 29); Ebony Owl Netsuke did not trigger (5 < 7); drew to 6 in their draw step."
+        }
+      ]
+    }
+  },
+  "rules_version": "June 19, 2026",
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Trigger goes on stack atop Naturalize before priority; hand 2->1 on cast is correct."
+      },
+      {
+        "step": 2,
+        "rule": "608.1",
+        "status": "supported",
+        "note": "Top of stack resolves first; draw 7 happens before Naturalize."
+      },
+      {
+        "step": 3,
+        "rule": "701.8a",
+        "status": "supported",
+        "note": "Destroy = battlefield to owner's graveyard; final_state correctly places Fruition in YOUR graveyard (you own it)."
+      },
+      {
+        "step": 3,
+        "rule": "113.7a",
+        "status": "supported",
+        "note": "Ability independent of source; the counterfactual note is accurate."
+      },
+      {
+        "step": 4,
+        "rule": "514.1",
+        "status": "supported",
+        "note": "Active-player cleanup discard 8->7."
+      },
+      {
+        "step": 4,
+        "rule": "402.2",
+        "status": "supported",
+        "note": "Maximum hand size seven."
+      },
+      {
+        "step": 5,
+        "rule": "603.2b",
+        "status": "supported",
+        "note": "Iron Maiden ('each opponent's upkeep') correctly triggers on opponent 2's upkeep — resolves iteration-1 finding 1."
+      },
+      {
+        "step": 5,
+        "rule": "603.4",
+        "status": "supported",
+        "note": "Owl's intervening-if false at 5<7, so it never triggers at all; matches Felidar Sovereign example in full rule."
+      },
+      {
+        "step": 5,
+        "rule": "119.2",
+        "status": "supported",
+        "note": "X = 5-4 = 1 damage; 30->29 correct (hand is 5 during upkeep, before their draw)."
+      },
+      {
+        "step": 5,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "SBA check before priority after damage resolution — resolves iteration-1 finding 2 for this upkeep."
+      },
+      {
+        "step": 5,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "29 > 0, no SBA performed."
+      },
+      {
+        "step": 5,
+        "rule": "504.1",
+        "status": "supported",
+        "note": "Draw step after upkeep: hand 5->6; 6<=7 so no cleanup discard — correct."
+      },
+      {
+        "step": 6,
+        "rule": "504.1",
+        "status": "supported",
+        "note": "Your intervening draw now stated — resolves iteration-1 finding 3. Neither artifact triggers on your own upkeep ('each opponent's'); you are their controller."
+      },
+      {
+        "step": 7,
+        "rule": "603.2b",
+        "status": "supported",
+        "note": "Both abilities trigger at opponent 1's upkeep; hand exactly 7 (their draw step follows the upkeep, so no draw since cleanup)."
+      },
+      {
+        "step": 7,
+        "rule": "603.4",
+        "status": "supported",
+        "note": "Owl's intervening-if true at exactly 7 ('seven or more')."
+      },
+      {
+        "step": 8,
+        "rule": "503.1a",
+        "status": "supported",
+        "note": "Upkeep triggers stacked before active player gets priority."
+      },
+      {
+        "step": 8,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "APNAP placement; you control both triggers so you order them, not the upkeep's player."
+      },
+      {
+        "step": 8,
+        "rule": "101.4",
+        "status": "supported",
+        "note": "Quote begins mid-sentence but is used faithfully for APNAP order; active player (opponent 1) controls no triggers."
+      },
+      {
+        "step": 9,
+        "rule": "608.2a",
+        "status": "supported",
+        "note": "Intervening-if rechecked on resolution; still 7 cards, deals 4; 18->14."
+      },
+      {
+        "step": 9,
+        "rule": "119.2",
+        "status": "supported",
+        "note": "Damage to player = life loss."
+      },
+      {
+        "step": 9,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "SBA check between resolutions stated."
+      },
+      {
+        "step": 9,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "14 > 0, no SBA performed."
+      },
+      {
+        "step": 10,
+        "rule": "608.1",
+        "status": "supported",
+        "note": "Second trigger resolves after players pass again."
+      },
+      {
+        "step": 10,
+        "rule": "119.2",
+        "status": "supported",
+        "note": "Iron Maiden X = 7-4 = 3 computed on resolution (correct per 608.2, and hand size unchanged since trigger so order-independent); 14->11, total 7."
+      },
+      {
+        "step": 10,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Final SBA check stated."
+      },
+      {
+        "step": 10,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "11 > 0, no SBA performed."
+      }
+    ],
+    "notes": {
+      "iteration_1_findings": "All three resolved: (1) opponent 2's upkeep walked with Iron Maiden 1 damage in new step 5; (2) SBA checks citing 704.3/704.5a added after every damage resolution (steps 5, 9, 10); (3) resolver's own draw stated in new step 6.",
+      "card_text_verified": "Forced Fruition, Iron Maiden, Ebony Owl Netsuke, Arcane Denial oracle texts match data/decks/heliod/cards.json; Naturalize description ({1}{G}, destroy target artifact or enchantment) is accurate.",
+      "new_step_audit": "Turn-order assumption (opponent 2 then you) is explicitly labeled and provably numbers-neutral; draw-step sequencing correct in both intervening turns; opponent 2's cleanup (6<=7, no discard) handled; final_state life/hand totals (11/7, 29/6, your 2 cards) all consistent.",
+      "minor": "Step 10's 'computed on resolution' claim is uncited (608.2 family would cover it) but is correct and numerically moot since hand size is 7 at both trigger and resolution — not verdict-affecting."
+    },
+    "iterations": 2
+  }
+}

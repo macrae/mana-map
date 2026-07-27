@@ -1,0 +1,326 @@
+{
+  "id": "001",
+  "slug": "hullbreaker-sol-ring-loop",
+  "deck": "heliod",
+  "title": "Hullbreaker Horror + Sol Ring: is the claimed infinite real?",
+  "scenario": {
+    "board": {
+      "you": [
+        "Hullbreaker Horror",
+        "Island x4",
+        "Plains x2"
+      ],
+      "opponents": [
+        {
+          "life": 34,
+          "board": [
+            "a tapped creature"
+          ]
+        },
+        {
+          "life": 40,
+          "board": []
+        }
+      ]
+    },
+    "hand": [
+      "Sol Ring",
+      "Counterspell"
+    ],
+    "graveyard": [],
+    "mana_available": "{U}{U}{W}{1}",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Sol Ring",
+        "controller": "you",
+        "note": "cast for {1}; Hullbreaker Horror's cast trigger will go on the stack above it"
+      }
+    ],
+    "extras": {
+      "combo_db_claim": "combo_details.json lists Hullbreaker Horror + Sol Ring as producing 'Infinite colorless mana' and 'Infinite storm count', and it is the line driving this deck's computed bracket floor of 4"
+    },
+    "question": "Resolve the cast of Sol Ring with Hullbreaker Horror on the battlefield, stating exactly when the Horror's triggered ability can and cannot return Sol Ring to its owner's hand. Then determine: with only these two cards (plus ordinary lands), does repeating any sequence of casts and activations produce unbounded colorless mana or an unbounded storm count, or does the loop require an additional card? State precisely what the pair alone can and cannot do."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "You cast Sol Ring for {1}. The card moves from your hand to the stack and becomes a spell you control.",
+        "effect": "Sol Ring is a spell on the stack (pos 0), controlled by you. While on the stack it is a spell, not a permanent.",
+        "citations": [
+          {
+            "rule": "601.2a",
+            "quote": "To propose the casting of a spell, a player first moves that card (or that copy of a card) from where it is to the stack. It becomes the topmost object on the stack. It has all the characteristics of the card (or the copy of a card) associated with it, and that player becomes its controller."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Casting Sol Ring meets Hullbreaker Horror's trigger condition ('Whenever you cast a spell'). The triggered ability is put on the stack above Sol Ring the next time a player would receive priority.",
+        "effect": "Stack, top to bottom: Hullbreaker Horror's trigger, then Sol Ring. The trigger will resolve (or leave the stack) before Sol Ring does.",
+        "citations": [
+          {
+            "rule": "113.3c",
+            "quote": "Whenever the trigger event occurs, the ability is put on the stack the next time a player would receive priority and stays there until it’s countered, it resolves, or it otherwise leaves the stack."
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority. See rule 117, “Timing and Priority.” The ability becomes the topmost object on the stack."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "The trigger is modal ('choose up to one —'). You must announce the mode — and any target for that mode — now, as the ability is put on the stack, not when it resolves.",
+        "effect": "Mode and target legality are locked in at this moment, while Sol Ring is still a spell on the stack.",
+        "citations": [
+          {
+            "rule": "603.3c",
+            "quote": "If a triggered ability is modal, its controller announces the mode choice when putting the ability on the stack."
+          },
+          {
+            "rule": "700.2b",
+            "quote": "The controller of a modal triggered ability chooses the mode(s) as part of putting that ability on the stack."
+          },
+          {
+            "rule": "603.3d",
+            "quote": "The remainder of the process for putting a triggered ability on the stack is identical to the process for casting a spell listed in rules 601.2c–d."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Check mode 1 ('Return target spell you don't control to its owner's hand') against Sol Ring: the only spell on the stack is Sol Ring, and you control it.",
+        "effect": "Sol Ring is not an 'appropriate object' for mode 1 — it fails the 'you don't control' requirement — so mode 1 cannot be chosen targeting Sol Ring. A mode whose only would-be target is illegal can't be chosen at all.",
+        "citations": [
+          {
+            "rule": "601.2c",
+            "quote": "The player announces their choice of an appropriate object or player for each target the spell requires."
+          },
+          {
+            "rule": "603.3c",
+            "quote": "If one of the modes would be illegal (due to an inability to choose legal targets, for example), that mode can’t be chosen."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Check mode 2 ('Return target nonland permanent to its owner's hand') against Sol Ring: while on the stack, Sol Ring is a spell, not a permanent.",
+        "effect": "Mode 2 cannot target the Sol Ring being cast. Legal mode-2 targets at this moment are only existing nonland permanents — Hullbreaker Horror itself or the opponent's tapped creature — neither of which advances any loop.",
+        "citations": [
+          {
+            "rule": "110.1",
+            "quote": "A permanent is a card or token on the battlefield. A permanent remains on the battlefield indefinitely. A card or token becomes a permanent as it enters the battlefield and it stops being a permanent as it’s moved to another zone by an effect or rule."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "You choose no mode ('up to one' permits zero). The ability is removed from the stack; players pass priority.",
+        "effect": "The trigger leaves the stack with no effect. Sol Ring is now the top object on the stack.",
+        "citations": [
+          {
+            "rule": "603.3c",
+            "quote": "If no mode is chosen, the ability is removed from the stack."
+          },
+          {
+            "rule": "608.1",
+            "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Sol Ring resolves. It is a permanent spell with no targets, so it becomes a permanent and enters the battlefield under your control.",
+        "effect": "Only now is Sol Ring a permanent — and Hullbreaker Horror's trigger from casting it is already gone. The trigger can never bounce the very spell that caused it: too early on the stack (illegal target for both modes), too late once it has resolved (the trigger no longer exists).",
+        "citations": [
+          {
+            "rule": "608.3",
+            "quote": "If the object that’s resolving is a permanent spell, its resolution may involve several steps."
+          },
+          {
+            "rule": "608.3a",
+            "quote": "If the object that’s resolving has no targets, it becomes a permanent and enters the battlefield under the control of the spell’s controller."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "You tap Sol Ring for {C}{C}. This is an activated mana ability: it does not use the stack and is not casting a spell.",
+        "effect": "You add {C}{C}. Hullbreaker Horror does not trigger (nothing was cast), and no cast count / storm-relevant count increases. Activating Sol Ring any number of times per turn is impossible anyway — it taps.",
+        "citations": [
+          {
+            "rule": "605.3b",
+            "quote": "An activated mana ability doesn’t go on the stack, so it can’t be targeted, countered, or otherwise responded to. Rather, it resolves immediately after it is activated."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Loop analysis for the pair alone: after step 7 there is no further spell to cast (only Counterspell, which is a one-shot, not a loop piece the claim relies on). Hullbreaker Horror only triggers on casts, and Sol Ring can only be re-bounced as a permanent — which requires some OTHER spell to be cast while Sol Ring is on the battlefield.",
+        "effect": "Verdict: the combo DB claim is REFUTED as a two-card line. Hullbreaker Horror + Sol Ring alone produce neither unbounded colorless mana nor an unbounded storm count: the Horror trigger created by casting Sol Ring can never return that Sol Ring (illegal target under both modes while it is a spell; trigger already resolved once it is a permanent), and tapping Sol Ring is not a cast, so no new trigger ever arises. Even the {C}{C} produced does not accumulate across phases. The real loop needs a third card: with Sol Ring on the battlefield, casting any other recastable spell (cheapest with a {0}-cost artifact) lets the Horror bounce Sol Ring as a permanent, and recasting Sol Ring lets the Horror bounce the third piece — netting {C}{C} minus recast costs per iteration. Unbounded mana and unbounded casts exist only with that additional piece.",
+        "citations": [
+          {
+            "rule": "110.1",
+            "quote": "A card or token becomes a permanent as it enters the battlefield and it stops being a permanent as it’s moved to another zone by an effect or rule."
+          },
+          {
+            "rule": "113.3c",
+            "quote": "Triggered abilities have a trigger condition and an effect."
+          },
+          {
+            "rule": "106.4",
+            "quote": "Each player’s mana pool empties at the end of each step and phase, and the player is said to lose this mana."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Sol Ring resolves and is on the battlefield; the Horror trigger it created resolved first with no legal way to bounce it (no mode chosen, or a strictly non-loop bounce of an existing permanent). You may tap Sol Ring for {C}{C} once. No repeatable sequence exists with only these two cards: the 'Infinite colorless mana / Infinite storm count' claim requires at least one additional recastable spell (ideally a {0}-cost artifact) and should not, on its own, drive a bracket floor of 4 for this deck.",
+      "you": {
+        "battlefield": [
+          "Hullbreaker Horror",
+          "Sol Ring (untapped, may tap for {C}{C})",
+          "Island x4",
+          "Plains x2"
+        ],
+        "hand": [
+          "Counterspell"
+        ],
+        "mana_pool": "{U}{U}{W} remaining of floated mana; empties at end of phase"
+      },
+      "opponents": [
+        {
+          "life": 34,
+          "board": [
+            "a tapped creature (untouched unless mode 2 was aimed at it)"
+          ]
+        },
+        {
+          "life": 40,
+          "board": []
+        }
+      ]
+    }
+  },
+  "rules_version": "June 19, 2026",
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "601.2a",
+        "status": "supported",
+        "note": "Card moves to stack, becomes topmost object, caster becomes controller — exactly as claimed."
+      },
+      {
+        "step": 2,
+        "rule": "113.3c",
+        "status": "supported",
+        "note": "Full rule confirms trigger goes on stack next time a player would receive priority."
+      },
+      {
+        "step": 2,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Ability becomes topmost object on the stack, above Sol Ring; LIFO resolution follows."
+      },
+      {
+        "step": 3,
+        "rule": "603.3c",
+        "status": "supported",
+        "note": "Mode announced when putting the ability on the stack — the load-bearing lock-in claim holds."
+      },
+      {
+        "step": 3,
+        "rule": "700.2b",
+        "status": "supported",
+        "note": "Restates mode choice as part of putting a modal triggered ability on the stack."
+      },
+      {
+        "step": 3,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "Targets chosen per 601.2c-d at announcement, not at resolution. Chain to step 4 is sound."
+      },
+      {
+        "step": 4,
+        "rule": "601.2c",
+        "status": "supported",
+        "note": "Targets must be 'appropriate objects'; Sol Ring fails mode 1's 'you don't control' criterion — you control it."
+      },
+      {
+        "step": 4,
+        "rule": "603.3c",
+        "status": "supported",
+        "note": "A mode with no legal targets can't be chosen. Verified: Sol Ring is the only spell on the stack and is yours."
+      },
+      {
+        "step": 5,
+        "rule": "110.1",
+        "status": "supported",
+        "note": "Permanent = card/token on the battlefield; a spell on the stack is not a permanent, so mode 2 cannot take the cast Sol Ring. Load-bearing claim holds."
+      },
+      {
+        "step": 6,
+        "rule": "603.3c",
+        "status": "supported",
+        "note": "'If no mode is chosen, the ability is removed from the stack' — verbatim and in context ('up to one' permits zero, per 700.2 cross-reference)."
+      },
+      {
+        "step": 6,
+        "rule": "608.1",
+        "status": "supported",
+        "note": "All players passing resolves top of stack; Sol Ring is now topmost."
+      },
+      {
+        "step": 7,
+        "rule": "608.3",
+        "status": "supported",
+        "note": "Permanent spell resolution steps."
+      },
+      {
+        "step": 7,
+        "rule": "608.3a",
+        "status": "supported",
+        "note": "No-target permanent spell becomes a permanent under its controller's control. The trigger that could have referenced it is already gone — the too-early/too-late argument is airtight."
+      },
+      {
+        "step": 8,
+        "rule": "605.3b",
+        "status": "supported",
+        "note": "Activated mana ability resolves immediately without the stack. Oracle text confirms '{T}: Add {C}{C}.' is a mana ability; an activation is not a cast (definitional, 112/601), so no Horror trigger and no storm-relevant count. Tap cost also prevents repeat activation."
+      },
+      {
+        "step": 9,
+        "rule": "110.1",
+        "status": "supported",
+        "note": "Once on the battlefield Sol Ring is bounceable only as a permanent, which requires a later cast to trigger the Horror."
+      },
+      {
+        "step": 9,
+        "rule": "113.3c",
+        "status": "supported",
+        "note": "Generic but genuine: no trigger event (no cast), no triggered ability. Quote is accurate and in context of the full rule."
+      },
+      {
+        "step": 9,
+        "rule": "106.4",
+        "status": "supported",
+        "note": "Mana pool empties at end of each step/phase; the {C}{C} does not accumulate across turns."
+      }
+    ],
+    "missing_steps_audit": {
+      "state_based_actions": "Checked: no SBA applies at any point (no damage, no zero-toughness, no legend conflicts); nothing was omitted that changes the outcome.",
+      "priority": "Priority passes are represented at steps 2, 6, and 7 and are consistent with 117/608.1.",
+      "replacement_effects": "None exist in this scenario.",
+      "triggers": "The single Horror trigger from casting Sol Ring is the only trigger; it is handled. Counterspell cannot even be legally cast post-resolution (no target spell), so no trigger path was missed."
+    },
+    "third_piece_claim_verification": {
+      "claim_checked": "Step 9's positive claim that a third recastable spell makes the loop real",
+      "result": "Mechanically verified: with Sol Ring on the battlefield, tap it for {C}{C}, cast third piece -> trigger bounces Sol Ring (a permanent, legal mode-2 target); recast Sol Ring -> trigger bounces the third piece after it resolved. With a {0}-cost artifact this nets +{C} and +2 casts per iteration, as stated ('netting {C}{C} minus recast costs').",
+      "deck_relevance_note": "This deck contains NO {0}-cost artifact, but it does contain 2-mana rocks (Arcane Signet, Fellwar Stone, Talisman of Progress, Thought Vessel). Horror + Sol Ring + any {2} rock that taps for {1} is a mana-NEUTRAL, infinitely repeatable loop: +{C}{C} (Sol Ring) +{1} (rock) per iteration vs {2}+{1} recast costs = net 0 mana, +2 casts. That is an unbounded cast/storm count line actually present in the 99, and net-positive mana with Sapphire/Pearl Medallion cost reduction. Refuting the two-card DB entry does not by itself remove the archetype from the deck."
+    }
+  }
+}

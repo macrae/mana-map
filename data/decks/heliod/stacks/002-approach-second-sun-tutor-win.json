@@ -1,0 +1,342 @@
+{
+  "id": "002",
+  "slug": "approach-second-sun-tutor-win",
+  "deck": "heliod",
+  "title": "Approach of the Second Sun, second cast off Mystical Tutor",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Howling Mine",
+        "Island x5",
+        "Plains x3",
+        "Ancient Tomb"
+      ],
+      "opponents": [
+        {
+          "life": 25,
+          "board": [
+            "untapped lands x2"
+          ],
+          "note": "known to be holding at least one instant"
+        },
+        {
+          "life": 31,
+          "board": []
+        }
+      ]
+    },
+    "hand": [
+      "Approach of the Second Sun",
+      "Swan Song"
+    ],
+    "graveyard": [
+      "Mystical Tutor"
+    ],
+    "mana_available": "{W}{W}{U}{5}",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Approach of the Second Sun",
+        "controller": "you",
+        "note": "cast from hand for {6}{W}"
+      }
+    ],
+    "extras": {
+      "game_history": "You cast Approach of the Second Sun from your hand earlier this game; it resolved, went seventh from the top, and you gained 7 life. Last night's end step you cast Mystical Tutor (now in your graveyard) putting Approach on top, and you drew it during your draw step this turn."
+    },
+    "question": "Resolve this second cast of Approach of the Second Sun: exactly when is the 'you win the game' condition checked, does the first casting still count toward it even though the card was put back into the library, and at what point can an opponent's counterspell or other interaction still stop the win? If it resolves, state precisely how the game ends."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "You have cast Approach of the Second Sun from your hand for {6}{W}. It is the only object on the stack. The casting is already complete, so the spell 'was cast from your hand' for the purpose of its own first sentence, and you receive priority.",
+        "effect": "Approach of the Second Sun is a sorcery spell on the stack, cast from your hand. It has no targets, so there is no targeting legality to check on resolution. You hold priority with {U} still available (Swan Song in hand).",
+        "citations": [
+          {
+            "rule": "601.2i",
+            "quote": "Once the steps described in 601.2a–h are completed, effects that modify the characteristics of the spell as it’s cast are applied, then the spell becomes cast."
+          },
+          {
+            "rule": "117.3c",
+            "quote": "If a player has priority when they cast a spell, activate an ability, or take a special action, that player receives priority afterward."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Before Approach can resolve, every player must pass priority in succession. This is the opponents' window — their only window — to interact with the win.",
+        "effect": "The opponent known to hold an instant may cast it in response while Approach is on the stack. Anything cast in response goes on top of the stack and resolves before Approach does. If instead all players pass without acting, Approach will resolve (step 5).",
+        "citations": [
+          {
+            "rule": "117.4",
+            "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+          },
+          {
+            "rule": "117.7",
+            "quote": "the new spell or ability has been cast or activated"
+          },
+          {
+            "rule": "117.7",
+            "quote": "The new spell or ability will resolve first."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Contingency: the opponent's instant is a counterspell targeting Approach of the Second Sun, and it resolves.",
+        "effect": "If that happens, Approach is removed from the stack, it does not resolve, and none of its effects occur — no win-condition check, no life gain, and it is put into your graveyard rather than back into your library. The win is fully stoppable at this point.",
+        "citations": [
+          {
+            "rule": "701.6a",
+            "quote": "To counter a spell or ability means to cancel it, removing it from the stack. It doesn’t resolve and none of its effects occur. A countered spell is put into its owner’s graveyard."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Your answer: while the opponent's instant is on the stack, you respond with Swan Song for {U}, targeting that instant ('Counter target enchantment, instant, or sorcery spell. Its controller creates a 2/2 blue Bird creature token with flying.').",
+        "effect": "Swan Song goes on top of the stack and resolves first. If it resolves, the opponent's instant is countered and that opponent creates a 2/2 blue Bird creature token with flying; Approach then remains on the stack and resolves as in step 5 (unless someone has further interaction). Honest limits: Swan Song can only counter an enchantment, instant, or sorcery SPELL — if the opponent interacts with an activated or triggered ability instead of a spell, Swan Song cannot stop it; and Swan Song itself can be responded to.",
+        "citations": [
+          {
+            "rule": "117.7",
+            "quote": "The new spell or ability will resolve first."
+          },
+          {
+            "rule": "701.6a",
+            "quote": "To counter a spell or ability means to cancel it, removing it from the stack."
+          },
+          {
+            "rule": "113.9",
+            "quote": "Activated and triggered abilities on the stack aren’t spells, and therefore can’t be countered by anything that counters only spells."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "All players pass priority in succession. Approach of the Second Sun begins to resolve, and you follow its instructions in the order written.",
+        "effect": "Once resolution begins, no player has priority and nobody can respond any longer — the interaction window of steps 2–4 has closed. The first instruction to evaluate is the conditional first sentence of the card.",
+        "citations": [
+          {
+            "rule": "608.1",
+            "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+          },
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "117.2e",
+            "quote": "Even if a player is doing so, no player has priority while a spell or ability is resolving."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "The win condition is checked NOW — during resolution, as a resolving spell effect. Both halves of the condition are evaluated: (a) 'this spell was cast from your hand' — true; (b) 'you've cast another spell named Approach of the Second Sun this game' — true, per the game history.",
+        "effect": "This is an effect that states a player wins the game (CR 104.2b) — it is not a state-based action and does not wait for any check or priority pass. The moment this instruction is followed, you win. Because the condition is met, the 'Otherwise' clause (put it seventh from the top of your library and gain 7 life) is never performed.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "104.2b",
+            "quote": "An effect may state that a player wins the game."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Why the first casting still counts even though the card went back into the library: the condition asks whether YOU have CAST another spell with that name this game — it checks an event in the game's history, not a property of any current card.",
+        "effect": "Casting is an action the player completed earlier this game (the spell 'becomes cast' when the casting steps finish). The physical card later becoming a new object as it was shuffled back into your library changes the card object's identity, but the condition never looks at that object — your casting of it remains a fact of game history. (For the same reason, even a first Approach that had been COUNTERED would satisfy this clause: it was still cast.)",
+        "citations": [
+          {
+            "rule": "701.5a",
+            "quote": "To cast a spell is to take it from the zone it’s in (usually the hand), put it on the stack, and pay its costs, so that it will eventually resolve and have its effect."
+          },
+          {
+            "rule": "601.2i",
+            "quote": "Once the steps described in 601.2a–h are completed, effects that modify the characteristics of the spell as it’s cast are applied, then the spell becomes cast."
+          },
+          {
+            "rule": "400.7",
+            "quote": "An object that moves from one zone to another becomes a new object with no memory of, or relation to, its previous existence."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "The game ends. You win, immediately, mid-resolution.",
+        "effect": "The game ends immediately when a player wins — there are no further priority passes and no state-based-action checks (those only happen when a player would get priority, which never occurs again). Both opponents' life totals (25 and 31) are irrelevant; they do not 'lose to an SBA' — the game simply ends with you as the winner. Note: the limited range of influence option (under which a win instead makes opponents in range lose) applies only to games using that option; Commander does not, so the whole game ends.",
+        "citations": [
+          {
+            "rule": "104.1",
+            "quote": "A game ends immediately when a player wins, when the game is a draw, or when the game is restarted."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event"
+          },
+          {
+            "rule": "104.3h",
+            "quote": "In a multiplayer game using the limited range of influence option (see rule 801), an effect that states that a player wins the game instead causes all of that player’s opponents within the player’s range of influence to lose the game."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "If Approach of the Second Sun resolves, you win the game during its resolution: the first sentence's condition (cast from hand + another Approach cast this game) is checked as a resolving spell effect — not a state-based action — and the game ends immediately at that moment. The first casting counts because the condition tracks the casting event in game history, not the card object that was shuffled back into the library. The only window to stop the win is while Approach is on the stack, before all players pass priority: the opponent's held instant can counter it there (Approach would go to the graveyard with no effect), and your Swan Song with {U} up can counter that counter (giving them a 2/2 Bird) — but Swan Song cannot answer non-spell interaction such as activated or triggered abilities. Once resolution begins, no player has priority and nothing can stop the win.",
+      "you": {
+        "result": "Winner. Game over during Approach of the Second Sun's resolution; the 'Otherwise' clause never executes (no life gain, card does not return to the library).",
+        "mana_note": "{U} was held for Swan Song; if it was never needed, it simply goes unspent."
+      },
+      "opponents": [
+        {
+          "life": 25,
+          "result": "Game ends immediately; final life total irrelevant. Their one clean out was countering Approach before resolution (or non-spell interaction Swan Song cannot answer)."
+        },
+        {
+          "life": 31,
+          "result": "Game ends immediately; final life total irrelevant. Had no known interaction."
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "601.2i",
+        "status": "supported",
+        "note": "Full rule confirms the spell 'becomes cast' once 601.2a-h complete and that the controller gets priority afterward; 'was cast from your hand' is therefore already a settled fact while on the stack."
+      },
+      {
+        "step": 1,
+        "rule": "117.3c",
+        "status": "supported",
+        "note": "Exact rule: caster receives priority after casting."
+      },
+      {
+        "step": 2,
+        "rule": "117.4",
+        "status": "supported",
+        "note": "Quote elides only the empty-stack clause; the claim (all players must pass before the top of stack resolves) is exactly what the rule says."
+      },
+      {
+        "step": 2,
+        "rule": "117.7",
+        "status": "supported",
+        "note": "Fragment 'has been cast or activated' is mid-sentence but not misused; the full rule establishes 'in response to' and resolve-first, matching the claim."
+      },
+      {
+        "step": 2,
+        "rule": "117.7",
+        "status": "supported",
+        "note": "'The new spell or ability will resolve first' directly supports responses resolving before Approach."
+      },
+      {
+        "step": 3,
+        "rule": "701.6a",
+        "status": "supported",
+        "note": "Countered spell removed from stack, no effects occur, goes to owner's graveyard — supports 'graveyard, not library, no win check, no life gain'."
+      },
+      {
+        "step": 4,
+        "rule": "117.7",
+        "status": "supported",
+        "note": "Swan Song, cast in response, resolves first."
+      },
+      {
+        "step": 4,
+        "rule": "701.6a",
+        "status": "supported",
+        "note": "Countering removes the opponent's instant from the stack. Swan Song oracle text quoted in the step matches cards.json verbatim, including the Bird token rider."
+      },
+      {
+        "step": 4,
+        "rule": "113.9",
+        "status": "supported",
+        "note": "Full rule confirms the honest limit: activated/triggered abilities aren't spells and can't be countered by spell-only counters like Swan Song."
+      },
+      {
+        "step": 5,
+        "rule": "608.1",
+        "status": "supported",
+        "note": "All players pass in succession -> top of stack resolves."
+      },
+      {
+        "step": 5,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Controller follows instructions in the order written; the conditional first sentence is evaluated first."
+      },
+      {
+        "step": 5,
+        "rule": "117.2e",
+        "status": "supported",
+        "note": "No player has priority during resolution — correctly grounds 'the interaction window has closed'."
+      },
+      {
+        "step": 6,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Win check performed as a resolving instruction, in order written — the load-bearing 'during resolution, as a spell effect' claim is correct; winning by effect appears in rule 104, not among the 704 state-based actions."
+      },
+      {
+        "step": 6,
+        "rule": "104.2b",
+        "status": "supported",
+        "note": "Exact rule: an effect may state that a player wins the game. Both condition halves verified true against oracle text and the scenario's game history (first Approach cast from hand and resolved). 'Otherwise' clause correctly skipped."
+      },
+      {
+        "step": 7,
+        "rule": "701.5a",
+        "status": "supported",
+        "note": "Casting is an action/event the player takes — supports the condition tracking a game-history event rather than a card object."
+      },
+      {
+        "step": 7,
+        "rule": "601.2i",
+        "status": "supported",
+        "note": "The spell 'becomes cast' when the casting steps finish — this fact is fixed at that moment, so a later counter would not un-cast it; the parenthetical (a countered first Approach still counts) is correct."
+      },
+      {
+        "step": 7,
+        "rule": "400.7",
+        "status": "supported",
+        "note": "Cited to concede the object became new when shuffled back, then correctly argued irrelevant: the condition never references that object. None of 400.7's listed exceptions is needed or invoked. Matches official Approach rulings."
+      },
+      {
+        "step": 8,
+        "rule": "104.1",
+        "status": "supported",
+        "note": "Game ends immediately when a player wins — mid-resolution, no further priority."
+      },
+      {
+        "step": 8,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "SBAs run only when a player would get priority; since the game ends immediately on the win, priority never recurs — the 'opponents do not lose to an SBA' framing is correct."
+      },
+      {
+        "step": 8,
+        "rule": "104.3h",
+        "status": "supported",
+        "note": "Correctly scoped as an exception that applies only to limited-range-of-influence games; Commander does not use rule 801's option, so the whole game ends."
+      }
+    ],
+    "audit": {
+      "missing_steps": "None found. Priority passes before resolution covered (steps 1, 2, 5). Counter-war sequencing covered with correct LIFO resolution and the honest 113.9 limit. No triggered abilities exist to put on the stack (Howling Mine triggers only at draw steps; nothing on the board triggers on cast). No replacement effects apply. No relevant SBAs before the win; if Swan Song resolves, the step correctly leaves the door open for further responses before Approach resolves. No alternative or additional costs exist in this scenario ({6}{W} paid from hand matches oracle mana cost); mana math checks: {W}{W}{U}{5} covers {6}{W} with {U} left for Swan Song. The 'Last night's end step' phrase in game_history is scenario flavor per orchestrator instruction, not a rules claim.",
+      "cards_verified": [
+        "Approach of the Second Sun",
+        "Swan Song",
+        "Mystical Tutor",
+        "Howling Mine",
+        "Ancient Tomb"
+      ]
+    }
+  }
+}

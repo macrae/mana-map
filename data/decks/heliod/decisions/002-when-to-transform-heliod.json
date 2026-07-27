@@ -1,0 +1,87 @@
+{
+  "id": "002",
+  "slug": "when-to-transform-heliod",
+  "deck": "heliod",
+  "kind": "decision",
+  "title": "The flip: when does Heliod become the Warped Eclipse?",
+  "scenario": {
+    "board": {
+      "you": "Turn 7, precombat main. Battlefield: Heliod, the Radiant Dawn (front face), Temple Bell, Font of Mythos, Psychosis Crawler, seven lands ({W}{W}{U}{U} + 3 colorless available). Hand: Counterspell, Approach of the Second Sun, Plains. Life 34.",
+      "table": "Everyone is drawing two extra per turn off your engines. Player 2 (Azorius control) holds five cards and open mana. Player 3 (gruul aggro) is at 21 after trading with Player 4. Player 4 (Dimir value) quietly assembled seven cards in hand and has been polite about your engines so far."
+    },
+    "question": "Transforming Heliod costs {3}{U/P} at sorcery speed — this turn it competes with holding Counterspell up. The back face gives your spells flash and a discount per card opponents drew this turn, which your own engines feed every turn cycle. Do you flip now (telegraphing the control turn and marking yourself the threat), hold the flip until the turn you intend to cast Approach with counter backup, or never flip and stay the friendly hug deck until the kill?"
+  },
+  "branches": [
+    {
+      "choice": "Flip now — pay the {U/P} with 2 life and keep Counterspell fully up",
+      "line": "Play the Plains (eight mana: {W}{W}{W}{U}{U} plus three colorless). Activate the transform for {3}{U/P}, paying the three colorless and 2 life for the Phyrexian pip (34 to 32) — the front face's own reminder text, '{U/P} can be paid with either {U} or 2 life,' is a sequencing lever, not flavor. Pass with Counterspell live ({U}{U}) and {W}{W}{W} spare. Next turn cycle, on the turn of the opponent who acts right before you: their draw step gives them three cards (one regular plus two from Font of Mythos — 'that player draws two additional cards'), then at their end step ring Temple Bell ('Each player draws a card'), pushing opponents' draws this turn to six — your own Bell draw drains each opponent 1 via Psychosis Crawler ('Whenever you draw a card, each opponent loses 1 life'). With the back face granting 'You may cast spells as though they had flash,' cast Approach of the Second Sun right there for {W} — {6}{W} minus six. It resolves: gain 7, Approach goes seventh from the top, and at three cards per draw step you rebuy it in about two turns for the winning second cast, whose only interaction window is mapped and survivable behind held countermagic in verified stack 002.",
+      "signals": "The flip is a known tell — an experienced table reads the Warped Eclipse as 'flash everything plus a growing discount,' and Player 2 must respect your end steps from here on. But the flip turn itself presents zero board impact: no attack, no spell resolved, mana still up. You have separated the flip tell from the Approach tell so that no single turn shows both.",
+      "coalition_risk": "Medium. Player 2 books you as the real control opponent and starts holding counters across your windows, and Player 4's seven-card hand keeps growing off your engines. But the table's live conflict is Player 3 versus Player 4, and the flip offers nobody a profitable answer: Counterspell-style effects hit spells, and the transform is an activated ability — not a card on the stack — while any removal spell aimed at Heliod in response walks into your held {U}{U}.",
+      "coaching": "Flip at the first sorcery window where you can shield the aftermath — and this is it. The timing restriction is the whole argument: the transform can only ever happen under sorcery timing rules, so it is the one move in this deck you can never make reactively. Wait a cycle and a removal spell, or the sweeper Player 3's board is begging out of someone, deletes the option and adds recast tax on top. The Phyrexian pip is worth exactly one live Counterspell: pay {U} instead and you keep only a single blue up. Two life out of 34 buys the counter, and the first Approach pays 7 back. And the back face is the deck's entire mana plan — the curve keeps only seven cards at five-plus mana because Heliod's discount is expected to pay the top end, while Font of Mythos donates two cards per opponent per turn whether you flip or not. Every unflipped turn is donation with no rebate. Flip on the quiet turn: spend deflection budget on the tell that doesn't win, so the budget is still there for the one that does.",
+      "citations": [
+        {
+          "rule": "602.5d",
+          "quote": "Activated abilities that read “Activate only as a sorcery” mean the player must follow the timing rules for casting a sorcery spell, though the ability isn’t actually a sorcery."
+        },
+        {
+          "rule": "107.4f",
+          "quote": "A Phyrexian mana symbol represents a cost that can be paid either with one mana of its color or by paying 2 life."
+        },
+        {
+          "rule": "112.1",
+          "quote": "A spell is a card on the stack."
+        },
+        {
+          "rule": "strategy:multiplayer.threat-deflection",
+          "quote": "The deflection budget spends down as your engine shows; plan the pivot before it runs out"
+        }
+      ]
+    },
+    {
+      "choice": "Hold the flip; take one big turn later — flip, ring the Bell, Approach with backup",
+      "line": "Play the Plains and pass with eight mana up and Counterspell live — the picture of a draw-go turn. On a later turn with nine-plus lands: flip at your main phase ({3} plus 2 life), tap Temple Bell so your three opponents each draw (your spells now cost {3} less), and cast Approach of the Second Sun for {3}{W} in the same main phase, aiming to keep {U}{U} open through its resolution.",
+      "signals": "Until the commit turn you are the harmless hug deck with open mana — maximum deflection. The commit turn itself is the loudest possible sequence: the commander flips, the Bell rings, and a seven-mana sorcery hits the stack in one motion. Every player at the table re-evaluates you simultaneously.",
+      "coalition_risk": "Low now, maximal on the commit turn. Stacking both tells into one turn hands Player 2 a single clean decision point with five cards in hand. And check the arithmetic: on your own turn only the Bell feeds the discount — your Font of Mythos draws are yours, not your opponents' — so flip plus Bell plus a {3}{W} Approach costs seven of your mana. At nine lands you hold {U}{U}; at eight you don't, and the Approach crosses the stack unprotected.",
+      "coaching": "This line respects the right instinct — 'hold the protection spell for the turn you commit, not after' — but points it at the wrong cast. The first Approach doesn't win anything; it gains 7 life and sets the clock ('put Approach of the Second Sun into its owner's library seventh from the top and you gain 7 life'). The cast that must survive is the second one, and verified stack 002 already maps that window with countermagic held. Meanwhile the waiting cost is concrete: the flip is sorcery-only, so one removal spell or wrath during the cycle you spend posing ends the plan entirely, and Font of Mythos donates six opponent cards per full cycle with no discount flowing back. The discount math is real — cost reductions come off the total cost, and a Bell-fed Approach at {3}{W} is legitimate — but the same math is better on an opponent's end step after the flip is already old news. Count Player 2's five cards the way the pivot rule demands, and notice the count argues for flipping on the turn nothing is at stake, not the turn everything is.",
+      "citations": [
+        {
+          "rule": "602.5d",
+          "quote": "Activated abilities that read “Activate only as a sorcery” mean the player must follow the timing rules for casting a sorcery spell, though the ability isn’t actually a sorcery."
+        },
+        {
+          "rule": "601.2f",
+          "quote": "The total cost is the mana cost or alternative cost (as determined in rule 601.2b), plus all additional costs and cost increases, and minus all cost reductions."
+        },
+        {
+          "rule": "strategy:pivot-point",
+          "quote": "hold the protection spell for the turn you commit, not after"
+        },
+        {
+          "rule": "strategy:multiplayer.pivot-window",
+          "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
+        }
+      ]
+    },
+    {
+      "choice": "Never flip — stay the friendly hug deck and win at sorcery speed",
+      "line": "Keep the front face for good. Play the Plains, pass with Counterspell up, and plan to cast Approach of the Second Sun on a future main phase for the full {6}{W}, trusting the table's goodwill and the Psychosis Crawler chip damage to carry the long game.",
+      "signals": "You stay the table's favorite player right up until you cast a seven-mana sorcery with your shields down. An unflipped Heliod is a forgettable 4/4; nobody re-evaluates you until the Approach hits the stack — and then everyone does at once, with priority in hand.",
+      "coalition_risk": "Lowest until the cast, then total. At sorcery speed the Approach goes on the stack in your own main phase, giving every opponent the exact priority window verified stack 002 identifies as the only place the win can be stopped — and Player 2 has been banking five cards for precisely this moment.",
+      "coaching": "Run the mana honestly and this line collapses. A noninstant spell is castable only in your main phase with the stack empty, so the unflipped Approach is always a telegraphed main-phase play — and protecting it means paying for Approach plus Counterspell in one breath: nine mana. Goldfish says your mean available mana is 6.7 on turn 8, 7.2 on turn 9, 7.6 on turn 10. The protected sorcery-speed Approach never arrives. The flip is the deck's hinge precisely because it closes that gap: opponents' draws become your discount and your action moves to their end steps. Refusing it to dodge hypothetical removal is the textbook scared line — you are literally handing a control deck free draw steps, two extra per turn off your own Font of Mythos, while declining the half of the engine that makes the table pay for them. There are tables where the front face is right — punisher boards that win without Approach, removal-saturated pods where the flip eats an instant kill — but this board has no punishers and your only clock is a Crawler. Fear of becoming the threat is not a plan; the table is already eating off you either way.",
+      "citations": [
+        {
+          "rule": "117.1a",
+          "quote": "A player may cast a noninstant spell during their main phase any time they have priority and the stack is empty."
+        },
+        {
+          "rule": "strategy:resource-hedging",
+          "quote": "playing *scared* is paying real equity to dodge specific cards — handing a control deck free draw steps by refusing to commit — and it loses games the opponent never had the card in"
+        }
+      ]
+    }
+  ],
+  "recommendation": {
+    "choice": "Flip now — pay the {U/P} with 2 life and keep Counterspell fully up",
+    "rationale": "Every clock in this scenario ticks against the front face. The transform is the one action this deck can never take reactively — sorcery timing only — so its risk compounds each cycle it waits: Player 2 holds five cards, Player 3's board is pulling a sweeper out of somebody, and an answered Heliod means commander tax plus another sorcery window you may never get. Flipping now costs nothing that matters: the Phyrexian pip converts two of your 34 life into a live Counterspell, the flip itself offers no profitable answer because it is an ability rather than a spell, and the turn shows no other action — far cheaper in deflection budget than any stacked commit turn. What it buys is the whole deck: from the next turn cycle your engines' donations become your discount — the last opponent's Font draws plus one Bell ring make Approach cost {W} at their end step with Counterspell up — and the rebought Approach wins through the exact interaction window verified in stack 002, counter backup already in place. Goldfish closes the case: the unflipped, protected Approach needs nine mana, and mean available mana is still 7.6 on turn 10. Flip on the quiet turn; save the scary card for the turn it wins."
+  }
+}

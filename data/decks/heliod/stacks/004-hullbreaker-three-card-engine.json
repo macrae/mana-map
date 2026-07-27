@@ -1,0 +1,388 @@
+{
+  "id": "004",
+  "slug": "hullbreaker-three-card-engine",
+  "deck": "heliod",
+  "title": "Hullbreaker Horror + Sol Ring + a two-mana rock: the real loop?",
+  "scenario": {
+    "board": {
+      "you": [
+        "Hullbreaker Horror",
+        "Sol Ring",
+        "Island x5",
+        "Plains x3"
+      ],
+      "opponents": [
+        {
+          "life": 34,
+          "board": []
+        },
+        {
+          "life": 40,
+          "board": []
+        }
+      ]
+    },
+    "hand": [
+      "Arcane Signet"
+    ],
+    "graveyard": [],
+    "mana_available": "{U}{U}",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Arcane Signet",
+        "controller": "you",
+        "note": "cast for {2}; Hullbreaker Horror's cast trigger will go on the stack above it"
+      }
+    ],
+    "extras": {
+      "context": "Stack 001 (checker: pass) refuted the two-card Hullbreaker Horror + Sol Ring infinite: the cast trigger locks its mode and target while the cast artifact is still a spell. The open question it left: with a THIRD recastable artifact — this deck runs Arcane Signet, Fellwar Stone and Thought Vessel — can the triggers alternate bounces so that each cast returns the OTHER artifact, and if so, is the resulting loop mana-neutral or mana-negative per full cycle, and does it produce an unbounded storm/cast count? Sapphire Medallion and Pearl Medallion are also in the 99 but NOT on this board — resolve the base three-card case first, then state (without a full walkthrough) what one Medallion changes."
+    },
+    "question": "With Hullbreaker Horror and Sol Ring on the battlefield and Arcane Signet being cast: walk the trigger choices and resolutions precisely. Can you sequence casts so that Arcane Signet's cast bounces Sol Ring and Sol Ring's re-cast bounces Arcane Signet, repeating? Account for every mana spent and produced in one full cycle: is the cycle mana-positive, mana-neutral, or mana-negative, and therefore is the cast/storm count unbounded with these three cards plus lands alone? State exactly what a Sapphire Medallion on the battlefield would change about the cycle's mana arithmetic."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Casting Arcane Signet triggers Hullbreaker Horror ('Whenever you cast a spell, choose up to one — ... Return target nonland permanent to its owner's hand.'). The trigger goes on the stack above the Arcane Signet spell; its mode AND target are locked in now. Choose the second mode and target Sol Ring.",
+        "effect": "This is the exact point where the two-card version (stack 001) failed: the cast artifact is still a spell you control, so it is neither a legal target for 'target spell you don't control' nor a permanent. Sol Ring, however, is on the battlefield — it IS a nonland permanent — so it is a fully legal target here.",
+        "citations": [
+          {
+            "rule": "603.3c",
+            "quote": "If a triggered ability is modal, its controller announces the mode choice when putting the ability on the stack."
+          },
+          {
+            "rule": "115.1d",
+            "quote": "The target(s) are chosen as the ability is put on the stack"
+          },
+          {
+            "rule": "110.1",
+            "quote": "A permanent is a card or token on the battlefield."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "With the trigger on the stack and Sol Ring still on the battlefield, you (holding priority or when you receive it) tap Sol Ring for mana: '{T}: Add {C}{C}.'",
+        "effect": "This is a mana ability — it does not use the stack and resolves immediately, so nothing can stop it. {C}{C} is now floating in your mana pool. Tapping Sol Ring before the bounce resolves is mandatory sequencing for the loop's mana math.",
+        "citations": [
+          {
+            "rule": "605.3a",
+            "quote": "A player may activate an activated mana ability whenever they have priority"
+          },
+          {
+            "rule": "605.3b",
+            "quote": "An activated mana ability doesn’t go on the stack, so it can’t be targeted, countered, or otherwise responded to. Rather, it resolves immediately after it is activated."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "The Hullbreaker Horror trigger (top of stack) resolves. Sol Ring is checked for target legality: it is still on the battlefield (tapped is irrelevant), so it is still legal. Sol Ring is returned to your hand.",
+        "effect": "Sol Ring is in your hand; the {C}{C} it made remains in your pool.",
+        "citations": [
+          {
+            "rule": "608.2b",
+            "quote": "If the spell or ability specifies targets, it checks whether the targets are still legal. A target that’s no longer in the zone it was in when it was targeted is illegal."
+          },
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "The Arcane Signet spell (now top of stack) resolves and enters the battlefield untapped.",
+        "effect": "Board: Hullbreaker Horror, Arcane Signet. Hand: Sol Ring. Floating: {C}{C} — floating mana survives between spells; it is only lost at the end of each step and phase, and we stay inside your main phase throughout.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "106.4",
+            "quote": "it can be used to pay costs immediately, or it can stay in the player’s mana pool as unspent mana"
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "With the stack now empty in your main phase, cast Sol Ring from your hand for {1}, paying with one floating {C} (one {C} remains floating). Hullbreaker Horror triggers again; choose 'Return target nonland permanent' targeting Arcane Signet — which is now a permanent on the battlefield, not a spell.",
+        "effect": "Note the timing constraint: artifacts are sorcery-speed, so the two casts cannot respond to each other — each cast must wait for the stack to empty. That is exactly why the bounces must ALTERNATE between two rocks rather than a rock bouncing itself. The trigger goes on the stack above the Sol Ring spell with Arcane Signet locked as its target.",
+        "citations": [
+          {
+            "rule": "301.1",
+            "quote": "A player who has priority may cast an artifact card from their hand during a main phase of their turn when the stack is empty."
+          },
+          {
+            "rule": "603.3c",
+            "quote": "If a triggered ability is modal, its controller announces the mode choice when putting the ability on the stack."
+          },
+          {
+            "rule": "110.1",
+            "quote": "A permanent is a card or token on the battlefield."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "With the trigger on the stack, tap Arcane Signet for one mana of your commander's color identity — Heliod, the Radiant Dawn is white/blue, so {W} or {U} (either works; the loop only needs it as generic mana).",
+        "effect": "Legal even though the Signet just entered: the 'summoning sickness' tap restriction applies only to creatures, and Arcane Signet is a noncreature artifact. Floating mana is now {C} plus one {W} or {U}.",
+        "citations": [
+          {
+            "rule": "605.3a",
+            "quote": "A player may activate an activated mana ability whenever they have priority"
+          },
+          {
+            "rule": "302.6",
+            "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "The trigger resolves (Arcane Signet still on the battlefield, still a legal target): Arcane Signet returns to your hand. Then the Sol Ring spell resolves and enters the battlefield untapped.",
+        "effect": "The game state now exactly matches the cycle's start: Hullbreaker Horror and untapped Sol Ring on the battlefield, the two-mana rock in hand, you holding priority in your main phase with an empty stack. The loop is closed.",
+        "citations": [
+          {
+            "rule": "608.2b",
+            "quote": "If the spell or ability specifies targets, it checks whether the targets are still legal. A target that’s no longer in the zone it was in when it was targeted is illegal."
+          },
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Full-cycle mana ledger (one cycle = cast Signet, bounce+tap Sol Ring, cast Sol Ring, bounce+tap Signet).",
+        "effect": "Spent: {2} (Arcane Signet) + {1} (Sol Ring) = 3 mana. Produced: {C}{C} (Sol Ring) + 1 (Signet) = 3 mana. The cycle is exactly MANA-NEUTRAL. The 2 mana floating at the end of each cycle ({C} + {W/U}) pays the next cycle's Signet cost of {2}, so after the initial {2} investment (the {U}{U} available here) no further outside mana is ever needed.",
+        "citations": [
+          {
+            "rule": "106.4",
+            "quote": "When an effect instructs a player to add mana, that mana goes into a player’s mana pool. From there, it can be used to pay costs immediately, or it can stay in the player’s mana pool as unspent mana."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Because each mana-neutral cycle returns to an identical game state with you holding priority, you may shortcut the loop for any chosen number of iterations: the cast/storm count IS unbounded with Hullbreaker Horror + Sol Ring + Arcane Signet plus {2} of starting mana. Substitutions for the two-mana rock: Thought Vessel substitutes exactly ({2} to cast, '{T}: Add {C}' — the same 3-spent/3-produced neutral ledger). Fellwar Stone substitutes only while an opponent controls a land that produces a color ('{T}: Add one mana of any color that a land an opponent controls could produce') — true in most real games, but false on this stated board, where both opponents' boards are empty: there Fellwar Stone taps for nothing and its cycle is mana-negative (3 spent, 2 produced), so the loop is NOT unbounded with it.",
+        "effect": "Precise bounds, stated exactly: (1) the loop nets ZERO mana, zero cards, and zero damage — it is a pure cast-count engine (2 casts per cycle), so it only wins through a payoff that cares about casts (e.g., a storm or magecraft-style effect) or by generating unbounded Hullbreaker triggers; (2) every trigger in the loop is consumed bouncing your own rock — the moment you aim a trigger at an opponent's permanent instead, the chain breaks (your rock stays on the battlefield and cannot be recast); (3) the loop lives inside a single phase, since the pool empties at end of phase — but arbitrarily many iterations fit before that, so this does not bound the count.",
+        "citations": [
+          {
+            "rule": "732.1b",
+            "quote": "Occasionally the game gets into a state in which a set of actions could be repeated indefinitely (thus creating a “loop”). In that case, the shortcut rules can be used to determine how many times those actions are repeated without having to actually perform them"
+          },
+          {
+            "rule": "732.2a",
+            "quote": "the player with priority may suggest a shortcut by describing a sequence of game choices, for all players, that may be legally taken based on the current game state and the predictable results of the sequence of choices"
+          },
+          {
+            "rule": "106.4",
+            "quote": "Each player’s mana pool empties at the end of each step and phase"
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "What Sapphire Medallion changes: nothing about this cycle's arithmetic. Its text is 'Blue spells you cast cost {1} less to cast' — but Sol Ring ({1}) and Arcane Signet ({2}) have no colored mana symbols in their mana costs, so both are colorless, and colorless is not a color. Neither cast in the cycle is a blue spell.",
+        "effect": "The Medallion discounts ZERO of the loop's casts: the cycle stays exactly mana-neutral and does NOT become mana-positive — no infinite mana. (Pearl Medallion is identical reasoning for white.) A Medallion only discounts genuinely blue/white spells cast alongside the loop, e.g., recasting Hullbreaker Horror itself. The rock that would change the math is one whose cast-plus-tap is mana-positive or whose cost a discount can actually touch — no such piece is on this board, and this resolution makes no claim beyond it.",
+        "citations": [
+          {
+            "rule": "202.2b",
+            "quote": "Objects with no colored mana symbols in their mana costs are colorless."
+          },
+          {
+            "rule": "202.2a",
+            "quote": "an object with a mana cost of {2} is colorless"
+          },
+          {
+            "rule": "glossary:colorless",
+            "quote": "An object with no color is colorless. Colorless is not a color."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "The three-card version is REAL as a cast-count engine: with Hullbreaker Horror + Sol Ring + Arcane Signet and {2} to start, the alternating-bounce loop (each cast's trigger returns the OTHER rock, which is a permanent at that moment) is exactly mana-neutral per cycle — 3 mana spent, 3 produced — so the cast/storm count is unbounded within your main phase. It nets no mana, no cards, and no damage on its own, and its triggers cannot double as opponent-facing bounce without breaking the chain. Sapphire Medallion changes nothing: both rocks are colorless, so it discounts neither cast and the loop never becomes mana-positive.",
+      "you": {
+        "battlefield": [
+          "Hullbreaker Horror",
+          "Sol Ring (untapped)",
+          "Island x5",
+          "Plains x3"
+        ],
+        "hand": [
+          "Arcane Signet"
+        ],
+        "floating_mana": "{C} + one of {W}/{U} at the end of each cycle (funds the next cycle); {U}{U} initial investment consumed by the first Signet cast",
+        "notes": "Loop state after any whole number of cycles; storm/cast count = 2 per cycle, chosen arbitrarily large via shortcut."
+      },
+      "opponents": [
+        {
+          "life": 34,
+          "board": [],
+          "notes": "unchanged — the loop deals no damage and its triggers are consumed internally"
+        },
+        {
+          "life": 40,
+          "board": [],
+          "notes": "unchanged"
+        }
+      ]
+    }
+  },
+  "rules_version": "June 19, 2026",
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "603.3c",
+        "status": "supported",
+        "note": "Modal trigger's mode is announced when the ability is put on the stack; full rule confirms."
+      },
+      {
+        "step": 1,
+        "rule": "115.1d",
+        "status": "supported",
+        "note": "Full rule is specifically about triggered abilities: targets chosen as the ability is put on the stack (pointing to 603.3d). Exactly the lock the step claims. At announcement, Sol Ring is on the battlefield (scenario board), so it is a legal target for the second mode; the second mode of Hullbreaker Horror has no 'you don't control' restriction (verified against cards.json oracle text)."
+      },
+      {
+        "step": 1,
+        "rule": "110.1",
+        "status": "supported",
+        "note": "Permanent = card/token on the battlefield; correctly distinguishes on-stack Signet (not a permanent) from battlefield Sol Ring."
+      },
+      {
+        "step": 2,
+        "rule": "605.3a",
+        "status": "supported",
+        "note": "You have priority after the trigger is put on the stack; activating Sol Ring's mana ability then is legal per the full rule."
+      },
+      {
+        "step": 2,
+        "rule": "605.3b",
+        "status": "supported",
+        "note": "Mana ability doesn't use the stack, resolves immediately; {C}{C} floats."
+      },
+      {
+        "step": 3,
+        "rule": "608.2b",
+        "status": "supported",
+        "note": "Sol Ring is still in the zone it was targeted in (battlefield); tapped status is not a legality change under the full rule. Target legal, bounce resolves."
+      },
+      {
+        "step": 3,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Top of stack (the trigger) resolves when all players pass."
+      },
+      {
+        "step": 4,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Signet spell resolves next; it enters untapped (no tapped clause on Arcane Signet)."
+      },
+      {
+        "step": 4,
+        "rule": "106.4",
+        "status": "supported",
+        "note": "Full rule: pool empties at end of each step and phase; a main phase has no steps, so {C}{C} persists across resolutions within the phase. The step's persistence claim matches the exact emptying rule."
+      },
+      {
+        "step": 5,
+        "rule": "301.1",
+        "status": "supported",
+        "note": "Artifact casts require main phase + empty stack; correctly grounds why the two casts cannot respond to each other and why bounces alternate between permanents."
+      },
+      {
+        "step": 5,
+        "rule": "603.3c",
+        "status": "supported",
+        "note": "Mode announced on stack placement for the Sol Ring cast trigger."
+      },
+      {
+        "step": 5,
+        "rule": "110.1",
+        "status": "supported",
+        "note": "Arcane Signet resolved in step 4, so it is a permanent and a legal target at this announcement."
+      },
+      {
+        "step": 6,
+        "rule": "605.3a",
+        "status": "supported",
+        "note": "Tapping Signet with the trigger on the stack is legal while holding priority."
+      },
+      {
+        "step": 6,
+        "rule": "302.6",
+        "status": "supported",
+        "note": "Cited to show the summoning-sickness tap restriction is creature-only; full rule confirms it applies to creatures' abilities, so the fresh noncreature Signet taps freely. Commander color identity WU verified in cards.json (Heliod, the Radiant Dawn // Heliod, the Warped Eclipse, ci [U,W]), so {W} or {U} is correct and pays generic."
+      },
+      {
+        "step": 7,
+        "rule": "608.2b",
+        "status": "supported",
+        "note": "Signet still on battlefield, target legal; bounce resolves, then Sol Ring resolves untapped. Cycle state matches the start."
+      },
+      {
+        "step": 7,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Correct resolution order, trigger above spell."
+      },
+      {
+        "step": 8,
+        "rule": "106.4",
+        "status": "supported",
+        "note": "Ledger independently verified: spend {2} (Signet) + {1} (Sol Ring, paid from floating {C}) = 3; produce {C}{C} + one {W}/{U} = 3; {C}+{W/U} floats at cycle end and covers the next Signet's fully generic {2} (any mana pays generic). Exactly mana-neutral after a one-time {2}."
+      },
+      {
+        "step": 9,
+        "rule": "732.1b",
+        "status": "supported",
+        "note": "Loop shortcut rule; applicable."
+      },
+      {
+        "step": 9,
+        "rule": "732.2a",
+        "status": "supported",
+        "note": "All choices belong to the player with priority, sequence is non-conditional and returns to an identical state with that player holding priority — a legal shortcut for an arbitrary iteration count. Storm/cast count 2 per cycle is correct."
+      },
+      {
+        "step": 9,
+        "rule": "106.4",
+        "status": "supported",
+        "note": "Correctly concedes the phase boundary (pool empties at end of each step and phase) while noting arbitrarily many iterations fit within the main phase."
+      },
+      {
+        "step": 9,
+        "rule": null,
+        "status": "supported",
+        "note": "RESOLVED in iteration 2. Thought Vessel claim verified against cards.json (mana cost {2}, '{T}: Add {C}') — 3 spent / 3 produced, exact neutral substitute. Fellwar Stone quote matches oracle text verbatim; the stated condition (opponent controls a land producing a color) is correct, and the negative case on this board is arithmetically right: 3 spent ({2} Fellwar + {1} Sol Ring), 2 produced ({C}{C} + nothing), so the loop is correctly declared NOT unbounded with Fellwar here. All other steps, citations, and final_state are unchanged from the iteration-1 artifact already verified."
+      },
+      {
+        "step": 10,
+        "rule": "202.2b",
+        "status": "supported",
+        "note": "No colored mana symbols in {1}/{2} costs, so both rocks are colorless."
+      },
+      {
+        "step": 10,
+        "rule": "202.2a",
+        "status": "supported",
+        "note": "Quote is from the rule's example; in-context ('an object with a mana cost of {2} is colorless'). Sapphire Medallion oracle text verified ('Blue spells you cast cost {1} less to cast'); it discounts neither cast, cycle stays neutral — no infinite mana. Correct."
+      },
+      {
+        "step": 10,
+        "rule": "glossary:colorless",
+        "status": "supported",
+        "note": "'Colorless is not a color' — correct backing for the Medallion nullity claim."
+      }
+    ],
+    "iterations": 2
+  }
+}

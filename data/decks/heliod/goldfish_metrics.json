@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "commander": "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
+    "commander_cmc": 4,
+    "deck": "heliod",
+    "decklist_sha256": "1813c487a7e846ac1d5a7b9d02419c802299e04a901ba41b9a490b83e55ec053",
+    "iterations": 10000,
+    "max_turn": 10,
+    "model_assumptions": [
+      "Simulates resource development, not full games (no interaction, no removal).",
+      "Draw every turn including turn 1 (multiplayer Commander).",
+      "Mulligan: keep 7-card hands with 2-5 lands; up to 2 fresh redraws, keep the last.",
+      "One land drop per turn when available.",
+      "Mana rocks ('{T}: Add') contribute from the turn after they are cast.",
+      "Commander cast on first affordable turn (highest spending priority).",
+      "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
+      "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+      "Cost reducers, rituals, and extra card draw are not modeled (conservative)."
+    ],
+    "seed": 42
+  },
+  "metrics": {
+    "commander": {
+      "cast_by_turn_6_rate": 0.905,
+      "cast_turn_histogram": {
+        "10": 94,
+        "2": 724,
+        "3": 2046,
+        "4": 5155,
+        "5": 647,
+        "6": 480,
+        "7": 316,
+        "8": 207,
+        "9": 155,
+        "not_by_max_turn": 176
+      },
+      "mean_cast_turn": 4.125,
+      "median_cast_turn": 4
+    },
+    "iterations": 10000,
+    "land_drop_hit_rate_by_turn": {
+      "1": 0.998,
+      "10": 0.332,
+      "2": 0.991,
+      "3": 0.87,
+      "4": 0.714,
+      "5": 0.571,
+      "6": 0.484,
+      "7": 0.402,
+      "8": 0.362,
+      "9": 0.345
+    },
+    "mean_available_mana_by_turn": {
+      "1": 0.998,
+      "10": 7.595,
+      "2": 2.136,
+      "3": 3.316,
+      "4": 4.242,
+      "5": 4.962,
+      "6": 5.695,
+      "7": 6.219,
+      "8": 6.699,
+      "9": 7.158
+    },
+    "mean_bodies_by_turn": {
+      "1": 0.0,
+      "10": 2.376,
+      "2": 0.115,
+      "3": 0.397,
+      "4": 0.612,
+      "5": 1.038,
+      "6": 1.393,
+      "7": 1.675,
+      "8": 1.922,
+      "9": 2.159
+    },
+    "opening_hand": {
+      "first_seven_land_histogram": {
+        "0": 523,
+        "1": 2077,
+        "2": 3180,
+        "3": 2624,
+        "4": 1231,
+        "5": 323,
+        "6": 41,
+        "7": 1
+      },
+      "keep_first_seven_rate": 0.736,
+      "kept_hand_land_histogram": {
+        "0": 33,
+        "1": 149,
+        "2": 4205,
+        "3": 3519,
+        "4": 1669,
+        "5": 418,
+        "6": 6,
+        "7": 1
+      },
+      "mean_mulligans": 0.336
+    },
+    "targets": [
+      {
+        "assembled_rate": 0.737,
+        "by_turn_6_rate": 0.624,
+        "label": "Table draw engine drawn",
+        "mean_turn": 2.851
+      },
+      {
+        "assembled_rate": 0.674,
+        "by_turn_6_rate": 0.567,
+        "label": "Draw punisher drawn",
+        "mean_turn": 2.975
+      },
+      {
+        "assembled_rate": 0.491,
+        "by_turn_6_rate": 0.343,
+        "label": "Engine + punisher assembled (the deck's core two-piece)",
+        "mean_turn": 4.442
+      },
+      {
+        "assembled_rate": 0.65,
+        "by_turn_6_rate": 0.492,
+        "label": "Heliod down with an asymmetric card engine",
+        "mean_turn": 5.116
+      },
+      {
+        "assembled_rate": 0.734,
+        "by_turn_6_rate": 0.619,
+        "label": "Free or cheap interaction held",
+        "mean_turn": 2.911
+      },
+      {
+        "assembled_rate": 0.61,
+        "by_turn_6_rate": 0.499,
+        "label": "Win condition access",
+        "mean_turn": 3.146
+      }
+    ]
+  }
+}

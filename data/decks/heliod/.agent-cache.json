@@ -1,0 +1,453 @@
+{
+  "cache_version": 1,
+  "routines": {
+    "coach-prose": {
+      "agent": "pilot-coach",
+      "agent_prompt_sha256": "b45e21197e2288f5caf97d98e455ffd865b8b6e834aa1a14e8f8194ff979bd11",
+      "artifact": "data/decks/heliod/manual_prose.json",
+      "artifact_keys": [
+        "matchups",
+        "threat_assessment"
+      ],
+      "artifact_sha256": "9fe7c22931add1b9325606d5b8523e512205c70d60387cb8d83472364fea409e",
+      "extra": {
+        "cards_semantic": "66d833d6db3e0d9a7b65fdac355353b8594e016512b5419434a0445b5025d3af",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "e67a943a65d7752b0e27c8da0848de917b35409ccd405bff99c31165a40fdcda",
+      "inputs": [
+        {
+          "path": "data/decks/heliod/goldfish_metrics.json",
+          "sha256": "7ed9549ecdb74c4547699e280657cb1c61f4fe2d277bc488c7f698dc4c7b989c"
+        },
+        {
+          "path": "data/decks/heliod/stacks/001-hullbreaker-sol-ring-loop.json",
+          "sha256": "339accfe6d873f5787e4eea800750334d454b6f169a5680f2400dec001a45902"
+        },
+        {
+          "path": "data/decks/heliod/stacks/002-approach-second-sun-tutor-win.json",
+          "sha256": "d77564c26960e83c5d02d32dd296ea7a84d9de29d0668435d91cac876c86ed74"
+        },
+        {
+          "path": "data/decks/heliod/stacks/003-forced-fruition-punisher-upkeep.json",
+          "sha256": "b516da3605938a13edf892e2d28b1eec163aff49cfb714108f35b79434bebbf0"
+        },
+        {
+          "path": "data/decks/heliod/stacks/004-hullbreaker-three-card-engine.json",
+          "sha256": "82dfef3f7b903ff5c78962b7e51bf08e104fa9515b1b85d7f0dfe57f2f3315bb"
+        },
+        {
+          "path": "data/decks/heliod/strategic_frame.json",
+          "sha256": "55896d3d36a1e1c294c67cd9194c708118d8e75ca3688f0224381d413032c075"
+        }
+      ]
+    },
+    "decision:001": {
+      "agent": "pilot-coach",
+      "agent_prompt_sha256": "b45e21197e2288f5caf97d98e455ffd865b8b6e834aa1a14e8f8194ff979bd11",
+      "artifact": "data/decks/heliod/decisions/001-deploy-fruition-or-hold.json",
+      "artifact_sha256": "47ac14fbfbdf7fc5ff3b22fdc02a45714af2b884a58f2eb4084017b703f6a94d",
+      "extra": {
+        "cards_semantic": "66d833d6db3e0d9a7b65fdac355353b8594e016512b5419434a0445b5025d3af",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "507c62c70c73c879470b5dad03e039e706f87a69851bf1ba932234dfba0684ec",
+      "inputs": [
+        {
+          "path": "data/decks/heliod/decisions/001-deploy-fruition-or-hold.json#scenario",
+          "sha256": "aec300839e3918a4e83ce0a63c4aa56d8a79d2dbd82d686c846f66e304bbbffa"
+        },
+        {
+          "path": "data/decks/heliod/goldfish_metrics.json",
+          "sha256": "7ed9549ecdb74c4547699e280657cb1c61f4fe2d277bc488c7f698dc4c7b989c"
+        },
+        {
+          "path": "data/decks/heliod/strategic_frame.json",
+          "sha256": "55896d3d36a1e1c294c67cd9194c708118d8e75ca3688f0224381d413032c075"
+        }
+      ]
+    },
+    "decision:002": {
+      "agent": "pilot-coach",
+      "agent_prompt_sha256": "b45e21197e2288f5caf97d98e455ffd865b8b6e834aa1a14e8f8194ff979bd11",
+      "artifact": "data/decks/heliod/decisions/002-when-to-transform-heliod.json",
+      "artifact_sha256": "415e3f95044dea170f616c5740ec05669f3a4836e5b7d2d39f1b0fdddbd43171",
+      "extra": {
+        "cards_semantic": "66d833d6db3e0d9a7b65fdac355353b8594e016512b5419434a0445b5025d3af",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "492608d15fabb9d61b1d97ce288acd29e251871826cdf5a94d31b51b525eb90a",
+      "inputs": [
+        {
+          "path": "data/decks/heliod/decisions/002-when-to-transform-heliod.json#scenario",
+          "sha256": "a78a3608832d6589d08bf1c2669b181c5d5112ff19b9b915e9ed8097c4c53ec8"
+        },
+        {
+          "path": "data/decks/heliod/goldfish_metrics.json",
+          "sha256": "7ed9549ecdb74c4547699e280657cb1c61f4fe2d277bc488c7f698dc4c7b989c"
+        },
+        {
+          "path": "data/decks/heliod/strategic_frame.json",
+          "sha256": "55896d3d36a1e1c294c67cd9194c708118d8e75ca3688f0224381d413032c075"
+        }
+      ]
+    },
+    "issue-plan": {
+      "agent": "magazine-editor",
+      "agent_prompt_sha256": "704e709127a2ac8a8d4ab7fd52f37cffcfd1553b1bdcb147732bd7bbdb2a0141",
+      "artifact": "data/decks/heliod/issue_plan.json",
+      "artifact_sha256": "12fa234f913af92188eef167455da72483bdd0ec55ce9b838b3970117412ae76",
+      "extra": {
+        "cards_printing": "b1bb869d9522b48fc4f038e06f513922006a50aea6b0d4123f4ae1e52e79bfa8",
+        "cards_semantic": "66d833d6db3e0d9a7b65fdac355353b8594e016512b5419434a0445b5025d3af",
+        "prose_shape": {
+          "card_roles": [
+            "Aetherflux Reservoir",
+            "Agent of Treachery",
+            "An Offer You Can't Refuse",
+            "Approach of the Second Sun",
+            "Arcane Denial",
+            "Arcane Signet",
+            "Braingeyser",
+            "Brass Infiniscope",
+            "Chasm Skulker",
+            "Consecrated Sphinx",
+            "Counterspell",
+            "Cyclonic Rift",
+            "Dictate of Kruphix",
+            "Dig Through Time",
+            "Displacer Kitten",
+            "Dovin's Veto",
+            "Ebony Owl Netsuke",
+            "Faerie Mastermind",
+            "Fellwar Stone",
+            "Fierce Guardianship",
+            "Folio of Fancies",
+            "Font of Mythos",
+            "Force of Negation",
+            "Forced Fruition",
+            "Ghostly Prison",
+            "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
+            "Homeward Path",
+            "Horn of Greed",
+            "Howling Mine",
+            "Hullbreaker Horror",
+            "Iron Maiden",
+            "Kami of the Crescent Moon",
+            "Leyline of Anticipation",
+            "Lightning Greaves",
+            "Long-Term Plans",
+            "Loran of the Third Path",
+            "Mathemagics",
+            "Metallurgic Summonings",
+            "Mikokoro, Center of the Sea",
+            "Monastery Mentor",
+            "Mystic Remora",
+            "Mystical Tutor",
+            "Path to Exile",
+            "Propaganda",
+            "Prosperity",
+            "Psychosis Crawler",
+            "Reliquary Tower",
+            "Rhystic Study",
+            "Scrawling Crawler",
+            "Secure the Wastes",
+            "Skyscribing",
+            "Smothering Tithe",
+            "Sol Ring",
+            "Sphinx's Tutelage",
+            "Stroke of Genius",
+            "Swan Song",
+            "Swords to Plowshares",
+            "Teferi's Ageless Insight",
+            "Teferi's Protection",
+            "Temple Bell",
+            "Thought Vessel",
+            "Torrential Gearhulk",
+            "United Front",
+            "Viseling",
+            "White Sun's Zenith"
+          ],
+          "combo_lines": [
+            "001",
+            "002",
+            "003",
+            "004"
+          ],
+          "how_it_wins": null,
+          "matchups": null,
+          "mulligan": null,
+          "threat_assessment": null,
+          "upgrades": null
+        },
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "d6f95d9c5fc72c79e4d046dbd7ccdb01f18a647113050749f4186ed15c7f5d62",
+      "inputs": [
+        {
+          "path": "STYLEv3.md",
+          "sha256": "ccc15781694b1ad775fb30496c035dcb7da04694bb9c33c93f23f0668fe3cf1b"
+        },
+        {
+          "path": "data/combo_graph.json",
+          "sha256": "29bd168f2dfbef5f58122de994ee66965fd4d7675922557a4365fe3454089805"
+        },
+        {
+          "path": "data/decks/heliod/decisions/001-deploy-fruition-or-hold.json",
+          "sha256": "3773126fa7012d1910e326b782f24f30496a556a7a5a65bd3933452fbdd6baeb"
+        },
+        {
+          "path": "data/decks/heliod/decisions/002-when-to-transform-heliod.json",
+          "sha256": "fee19dc30cfde6de70515d03738769e42a54192d1739e00e7de7e01fde28aa3d"
+        },
+        {
+          "path": "data/decks/heliod/goldfish_metrics.json",
+          "sha256": "7ed9549ecdb74c4547699e280657cb1c61f4fe2d277bc488c7f698dc4c7b989c"
+        },
+        {
+          "path": "data/decks/heliod/issue.json",
+          "sha256": "681c27cec8fd8e1a5ef4c64979bd80ed462192afee92425c2630e0c4ecd161aa"
+        },
+        {
+          "path": "data/decks/heliod/stacks/001-hullbreaker-sol-ring-loop.json",
+          "sha256": "339accfe6d873f5787e4eea800750334d454b6f169a5680f2400dec001a45902"
+        },
+        {
+          "path": "data/decks/heliod/stacks/002-approach-second-sun-tutor-win.json",
+          "sha256": "d77564c26960e83c5d02d32dd296ea7a84d9de29d0668435d91cac876c86ed74"
+        },
+        {
+          "path": "data/decks/heliod/stacks/003-forced-fruition-punisher-upkeep.json",
+          "sha256": "b516da3605938a13edf892e2d28b1eec163aff49cfb714108f35b79434bebbf0"
+        },
+        {
+          "path": "data/decks/heliod/stacks/004-hullbreaker-three-card-engine.json",
+          "sha256": "82dfef3f7b903ff5c78962b7e51bf08e104fa9515b1b85d7f0dfe57f2f3315bb"
+        },
+        {
+          "path": "data/decks/heliod/strategic_frame.json",
+          "sha256": "55896d3d36a1e1c294c67cd9194c708118d8e75ca3688f0224381d413032c075"
+        },
+        {
+          "path": "data/obsolescence_index.json",
+          "sha256": "94d9662cb54ef5ed9f2ca9ce31f3a8427f5be8f584032a3efd66b16c81aedf2b"
+        },
+        {
+          "path": "data/synergy_graph.json",
+          "sha256": "f09551fd9024addb575d417e3acdbef5abeba046c6753ef07976339688e854df"
+        },
+        {
+          "path": "src/manamap/pilot/issue_spec.py",
+          "sha256": "8b9e9954d0fef402262916e979b397c5e59a865af299de605271fcb06f5820ba"
+        }
+      ]
+    },
+    "sideboard-analysis": {
+      "agent": "sideboard-analyst",
+      "agent_prompt_sha256": "6d674efb47eca4b78d4feb95c65a1daf6ff8c3fafb34c73afcb1e6b986468d15",
+      "artifact": "data/decks/heliod/sideboard_analysis.json",
+      "artifact_sha256": "198f754caaf1897b54f9e21d7b6f1eece09cc688eb8b29bb66622c26855b421c",
+      "extra": {
+        "cards_semantic": "66d833d6db3e0d9a7b65fdac355353b8594e016512b5419434a0445b5025d3af",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "fc83d59412aada8b72cfa255aed2d6fded6e457e6454f2604e8187092c281259",
+      "inputs": [
+        {
+          "path": "data/combo_graph.json",
+          "sha256": "29bd168f2dfbef5f58122de994ee66965fd4d7675922557a4365fe3454089805"
+        },
+        {
+          "path": "data/decks/heliod/bracket_report.json",
+          "sha256": "86590236250d4903710c865826cba8529dcd4696e508e6cc222c0a26f47a0cd1"
+        },
+        {
+          "path": "data/decks/heliod/pilot_feedback.md",
+          "sha256": "edb3034cdb810f2fce641ea8fbb844617ab9e355330bed7c434ffb61f1c61eeb"
+        },
+        {
+          "path": "data/decks/heliod/stacks/001-hullbreaker-sol-ring-loop.json",
+          "sha256": "339accfe6d873f5787e4eea800750334d454b6f169a5680f2400dec001a45902"
+        },
+        {
+          "path": "data/decks/heliod/stacks/002-approach-second-sun-tutor-win.json",
+          "sha256": "d77564c26960e83c5d02d32dd296ea7a84d9de29d0668435d91cac876c86ed74"
+        },
+        {
+          "path": "data/decks/heliod/stacks/003-forced-fruition-punisher-upkeep.json",
+          "sha256": "b516da3605938a13edf892e2d28b1eec163aff49cfb714108f35b79434bebbf0"
+        },
+        {
+          "path": "data/decks/heliod/stacks/004-hullbreaker-three-card-engine.json",
+          "sha256": "82dfef3f7b903ff5c78962b7e51bf08e104fa9515b1b85d7f0dfe57f2f3315bb"
+        },
+        {
+          "path": "data/decks/heliod/strategic_frame.json",
+          "sha256": "55896d3d36a1e1c294c67cd9194c708118d8e75ca3688f0224381d413032c075"
+        }
+      ]
+    },
+    "stack:001": {
+      "agent": "stack-resolver+rules-checker",
+      "agent_prompt_sha256": "12dc45362c304a02f051588056f71efa77b678bb0a00d95db293a55086400e2e",
+      "artifact": "data/decks/heliod/stacks/001-hullbreaker-sol-ring-loop.json",
+      "artifact_sha256": "60f88cb2d6113a78c1c02dde3ce23dda9518715207b006659966d1c5173c32fd",
+      "extra": {
+        "cards_semantic": "66d833d6db3e0d9a7b65fdac355353b8594e016512b5419434a0445b5025d3af",
+        "rules_version": "June 19, 2026"
+      },
+      "fingerprint": "07baf5a035f0df007528d91139736e45b87f4c5829aaa1385bba7639a55a55d4",
+      "inputs": [
+        {
+          "path": "data/decks/heliod/stacks/001-hullbreaker-sol-ring-loop.json#scenario",
+          "sha256": "0c64d695131aead8c50ce41698804faa7cce59b49bbc5c1f84198ded0419cdf3"
+        }
+      ],
+      "iterations": null,
+      "verdict": "pass"
+    },
+    "stack:002": {
+      "agent": "stack-resolver+rules-checker",
+      "agent_prompt_sha256": "12dc45362c304a02f051588056f71efa77b678bb0a00d95db293a55086400e2e",
+      "artifact": "data/decks/heliod/stacks/002-approach-second-sun-tutor-win.json",
+      "artifact_sha256": "b33a796510c39d0bd827eeeae9c5608207e22722f0014f4bd582c7988ae76cbb",
+      "extra": {
+        "cards_semantic": "66d833d6db3e0d9a7b65fdac355353b8594e016512b5419434a0445b5025d3af",
+        "rules_version": "June 19, 2026"
+      },
+      "fingerprint": "9d450e8d09a0a19efa2a71a72acabf6884aa9c8e561157b0c1ec2f317b9dad05",
+      "inputs": [
+        {
+          "path": "data/decks/heliod/stacks/002-approach-second-sun-tutor-win.json#scenario",
+          "sha256": "fdb5e1806773dc68d2d8ac7c471d019e581e700c27b6c218b9a92f2ca4712428"
+        }
+      ],
+      "iterations": null,
+      "verdict": "pass"
+    },
+    "stack:003": {
+      "agent": "stack-resolver+rules-checker",
+      "agent_prompt_sha256": "12dc45362c304a02f051588056f71efa77b678bb0a00d95db293a55086400e2e",
+      "artifact": "data/decks/heliod/stacks/003-forced-fruition-punisher-upkeep.json",
+      "artifact_sha256": "189046e546d9aa038924e293c0219788b3253c988f0a394c4f0a1e4043d8091b",
+      "extra": {
+        "cards_semantic": "66d833d6db3e0d9a7b65fdac355353b8594e016512b5419434a0445b5025d3af",
+        "rules_version": "June 19, 2026"
+      },
+      "fingerprint": "0b5a4162481f4cbe6e14f5851b9995445ee5fec0fc7faec44d9a4b478d73e878",
+      "inputs": [
+        {
+          "path": "data/decks/heliod/stacks/003-forced-fruition-punisher-upkeep.json#scenario",
+          "sha256": "156d6d1e4279272dfa72283f89a10a1db5f0e4bab257c24b48a0b9d3bcbf4913"
+        }
+      ],
+      "iterations": 2,
+      "verdict": "pass"
+    },
+    "stack:004": {
+      "agent": "stack-resolver+rules-checker",
+      "agent_prompt_sha256": "12dc45362c304a02f051588056f71efa77b678bb0a00d95db293a55086400e2e",
+      "artifact": "data/decks/heliod/stacks/004-hullbreaker-three-card-engine.json",
+      "artifact_sha256": "381189039bb662045b505e4495e7bce8f15b95562c3a66a0f3dd1e391635fb4a",
+      "extra": {
+        "cards_semantic": "66d833d6db3e0d9a7b65fdac355353b8594e016512b5419434a0445b5025d3af",
+        "rules_version": "June 19, 2026"
+      },
+      "fingerprint": "c768a41602446de73a1ab16fe4e60b6f5c36ecc3aebcb847d6adc4ceb44c287b",
+      "inputs": [
+        {
+          "path": "data/decks/heliod/stacks/004-hullbreaker-three-card-engine.json#scenario",
+          "sha256": "9d98519413d6c4199b8816572c3692d0edb586ec5fff96abe914de53f1b7874d"
+        }
+      ],
+      "iterations": 2,
+      "verdict": "pass"
+    },
+    "strategic-frame": {
+      "agent": "strategy-researcher",
+      "agent_prompt_sha256": "72b1b21517c3ae295e68f4b1fb7c089a5ddf21b269f013fc9df86321a2947f75",
+      "artifact": "data/decks/heliod/strategic_frame.json",
+      "artifact_sha256": "fbeb9eebe1c8ceb3e0df71378da2ed70bff0ebff00b56e54e5a95213e0756bb3",
+      "extra": {
+        "cards_semantic": "66d833d6db3e0d9a7b65fdac355353b8594e016512b5419434a0445b5025d3af",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "032d60b4f632b457226dbc3b0577c8611c89b73b25d36f4479247ee6302846fc",
+      "inputs": [
+        {
+          "path": "data/decks/heliod/goldfish_metrics.json",
+          "sha256": "7ed9549ecdb74c4547699e280657cb1c61f4fe2d277bc488c7f698dc4c7b989c"
+        },
+        {
+          "path": "data/decks/heliod/stacks/001-hullbreaker-sol-ring-loop.json",
+          "sha256": "339accfe6d873f5787e4eea800750334d454b6f169a5680f2400dec001a45902"
+        },
+        {
+          "path": "data/decks/heliod/stacks/002-approach-second-sun-tutor-win.json",
+          "sha256": "d77564c26960e83c5d02d32dd296ea7a84d9de29d0668435d91cac876c86ed74"
+        },
+        {
+          "path": "data/decks/heliod/stacks/003-forced-fruition-punisher-upkeep.json",
+          "sha256": "b516da3605938a13edf892e2d28b1eec163aff49cfb714108f35b79434bebbf0"
+        },
+        {
+          "path": "data/decks/heliod/stacks/004-hullbreaker-three-card-engine.json",
+          "sha256": "82dfef3f7b903ff5c78962b7e51bf08e104fa9515b1b85d7f0dfe57f2f3315bb"
+        }
+      ]
+    },
+    "writer-prose": {
+      "agent": "manual-writer",
+      "agent_prompt_sha256": "d7be3c41483ad556364e78a0a55d41f8f850a6780eb2afa0d143fb44a2d6c2df",
+      "artifact": "data/decks/heliod/manual_prose.json",
+      "artifact_keys": [
+        "card_roles",
+        "combo_lines",
+        "how_it_wins",
+        "mulligan",
+        "upgrades"
+      ],
+      "artifact_sha256": "4efa8388a4edd1e22daeda8488af152053be79408abeb8a13adf4854b47b1e34",
+      "extra": {
+        "cards_semantic": "66d833d6db3e0d9a7b65fdac355353b8594e016512b5419434a0445b5025d3af",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "3c6bcc508260f4e0a8a83ed2575344cc6ce6ef4de91b74848bceecae3e431507",
+      "inputs": [
+        {
+          "path": "data/combo_graph.json",
+          "sha256": "29bd168f2dfbef5f58122de994ee66965fd4d7675922557a4365fe3454089805"
+        },
+        {
+          "path": "data/decks/heliod/stacks/001-hullbreaker-sol-ring-loop.json",
+          "sha256": "339accfe6d873f5787e4eea800750334d454b6f169a5680f2400dec001a45902"
+        },
+        {
+          "path": "data/decks/heliod/stacks/002-approach-second-sun-tutor-win.json",
+          "sha256": "d77564c26960e83c5d02d32dd296ea7a84d9de29d0668435d91cac876c86ed74"
+        },
+        {
+          "path": "data/decks/heliod/stacks/003-forced-fruition-punisher-upkeep.json",
+          "sha256": "b516da3605938a13edf892e2d28b1eec163aff49cfb714108f35b79434bebbf0"
+        },
+        {
+          "path": "data/decks/heliod/stacks/004-hullbreaker-three-card-engine.json",
+          "sha256": "82dfef3f7b903ff5c78962b7e51bf08e104fa9515b1b85d7f0dfe57f2f3315bb"
+        },
+        {
+          "path": "data/decks/heliod/strategic_frame.json",
+          "sha256": "55896d3d36a1e1c294c67cd9194c708118d8e75ca3688f0224381d413032c075"
+        },
+        {
+          "path": "data/obsolescence_index.json",
+          "sha256": "94d9662cb54ef5ed9f2ca9ce31f3a8427f5be8f584032a3efd66b16c81aedf2b"
+        },
+        {
+          "path": "data/synergy_graph.json",
+          "sha256": "f09551fd9024addb575d417e3acdbef5abeba046c6753ef07976339688e854df"
+        }
+      ]
+    }
+  },
+  "slug": "heliod"
+}
