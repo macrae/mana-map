@@ -231,44 +231,6 @@ ordering and nothing records what came before. Three steps, increasing cost:
 Explicitly **avoid a hand-incremented `deck_version` int**; `volume` already demonstrates
 that failure mode.
 
-**Sazacap's Brew corrected two published claims in Vol. 001.** The role taxonomy tagged it
-`buff:pump` (its text contains "+2/+0") and the manual advised testing it in the Witch's
-Mark slot. Both wrong: the Brew's first target is a *player*, so Zada — which copies
-instants targeting **only** Zada — never copies it, while Witch's Mark targets a creature
-and is copyable. Fixed in `strategic_frame.json` and `manual_prose.json`; the affected
-routines were re-recorded as a stated decision, not silently.
-
-
-**Deck versioning is the next thing this needs, and nothing exists for it.** The
-sideboard analyst *proposes* swaps; the stated next step is an agent that **applies** one
-and publishes a new deck version without publishing a new manual each time — the UI shows
-only the current list. There is no versioning primitive anywhere today: no `version`
-field in any deck artifact, no per-deck changelog, and `issue.json.volume` is a magazine
-issue number, not a deck version (nothing checks it for uniqueness or monotonicity).
-`build_index.gather_entries()` keys on **slug** and emits at most one entry per deck, so a
-second issue for the same deck is currently inexpressible and would silently overwrite
-`manuals/<slug>.html`.
-
-`decklist_sha256` (`fetch_deck.py`) is already the right identity primitive: content-
-addressed, tracked, stable, scoped to the decklist rather than to Scryfall data, and
-already printed in the colophon. It is an identity, not yet a version — it carries no
-ordering and nothing records what came before. Three steps, increasing cost:
-
-1. **`data/decks/<slug>/HISTORY.md`** — append-only, one line per decklist change
-   (`decklist_sha256`, date, bracket, one-sentence reason). Modelled on
-   `data/strategy/CHANGELOG.md` + `validate_strategy.py`, the repo's only precedent for a
-   tracked artifact plus a validated append-only log. Ordering comes from append
-   position, identity from a hash that already exists. Zero new computation.
-2. **`supersedes` in `issue.json`**, plus stamping `decklist_sha256` at publication, so
-   "Vol. 004 corrects Vol. 002" becomes expressible and `build_index` has something to
-   key on besides the slug.
-3. **`build:<NNN>` as a third dynamic cache-routine family** — `docs/deck-builder-v2.md`
-   already names the three edits, and `artifact_subdir` supports a `builds/` directory
-   with no new code.
-
-Explicitly **avoid a hand-incremented `deck_version` int**; `volume` already demonstrates
-that failure mode.
-
 
 **Sisay's two failed stacks are one or two named clauses from passing**, and the magazine-editor
 ranks 001 as the highest-value fix in the deck: resolving it would promote the ladder arithmetic

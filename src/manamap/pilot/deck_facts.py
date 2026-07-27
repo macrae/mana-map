@@ -26,7 +26,6 @@ this module:
     tags             analysis/common.py      parse_tag_set
 """
 
-import argparse
 import json
 from collections import Counter
 
@@ -371,9 +370,6 @@ def main(args):
     else:
         print(text)
 
-
-def add_arguments(parser: argparse.ArgumentParser):
-    parser.add_argument("--out", help="write JSON here instead of stdout (never tracked)")
 
 
 if __name__ == "__main__":

@@ -427,8 +427,11 @@ def status(slug, routine, force=False):
         changed = diff_inputs(record_entry.get("inputs"), entries)
         changed += _extra_changes(record_entry.get("extra"), extra)
         if record_entry.get("agent_prompt_sha256") != agent_prompt_sha256(spec["agent"]):
-            changed.append({"path": f".claude/agents/{spec['agent']}.md",
-                            "change": "changed", "note": "agent prompt edited"})
+            # Combined routines ("deck-architect+deck-critic") hash several
+            # prompts; name the real files, not a nonexistent joined path.
+            for agent_name in spec["agent"].split("+"):
+                changed.append({"path": f".claude/agents/{agent_name}.md",
+                                "change": "changed", "note": "agent prompt edited"})
         if not changed:
             changed = [{"path": "cache_version", "change": "changed",
                         "note": "cache format changed"}]

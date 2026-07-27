@@ -71,7 +71,10 @@ thing that made the deck legal — the code did that.
    — `.venv/bin/manamap pilot build-deck <slug> --write-decklist`, then
    `fetch-deck <slug>`, then `validate-deck <slug>`. Step 1 already proved the
    *baseline* was legal; this proves the *edited* deck still is. Cheap either way, and
-   now it can only fail on something an agent actually did.
+   now it can only fail on something an agent actually did. `build-deck` carries the
+   agent-merged keys (`archetype`, `swaps`, `critic`, …) forward from the existing
+   plan — verify they survived (`python -c` a key check or eyeball the diff) before
+   step 10; a plan missing its architect/critic keys must never be recorded.
 
 9. **Simulate**: author `goldfish_targets.json` from `build_plan.engines` (the deck
    declared its own gameplan, so it knows what to test), then

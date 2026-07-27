@@ -29,7 +29,6 @@ import pandas as pd
 
 from manamap.config import (
     BRACKET_EARLY_COMBO_MANA,
-    BRACKET_MAX,
     BRACKETS,
     CARD_ROLES_PATH,
     COMBO_DETAILS_PATH,

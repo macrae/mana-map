@@ -21,7 +21,6 @@ Two things make this cheap rather than a rewrite:
 Computed on demand, never committed — the same rule artist_credits states.
 """
 
-import argparse
 import json
 from collections import Counter
 
@@ -260,10 +259,6 @@ def main(args):
             f.write("\n")
         print(f"Wrote {path}")
 
-
-def add_arguments(parser: argparse.ArgumentParser):
-    parser.add_argument("--json", action="store_true", dest="as_json")
-    parser.add_argument("--out", default=None)
 
 
 if __name__ == "__main__":

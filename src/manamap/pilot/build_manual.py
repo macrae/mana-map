@@ -704,14 +704,14 @@ def render_upgrade_watch(issue, plan, prose_doc, cards_by_name, sideboard=None):
     return (
         dept_open("upgrade-watch", plan)
         + f'<div class="body-copy">{prose(prose_doc, "upgrades")}</div>'
-        + render_sideboard(sideboard, cards_by_name)
+        + render_sideboard(sideboard)
         + dept_captions(dept, cards_by_name)
         + dept_furniture(dept, cards_by_name)
         + dept_close("upgrade-watch", issue["volume"])
     )
 
 
-def render_sideboard(analysis, cards_by_name):
+def render_sideboard(analysis):
     """The sideboard read, straight from sideboard_analysis.json.
 
     Rendered from the artifact rather than a prose key on purpose: a new

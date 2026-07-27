@@ -17,7 +17,6 @@ copies are one basic-land art. Copies are reported as their own labeled fact.
 """
 
 import json
-import sys
 from collections import Counter, defaultdict
 
 from manamap.pilot.common import deck_dir, load_deck_cards

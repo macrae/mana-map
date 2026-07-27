@@ -348,8 +348,8 @@ def build(slug):
         roles = json.load(f)["roles"]
     with open(COMBO_DETAILS_PATH) as f:
         details = json.load(f)
-    with open(SYNERGY_GRAPH_PATH) as f:
-        json.load(f)  # presence check; scoring uses the rules directly
+    if not SYNERGY_GRAPH_PATH.exists():  # presence check; scoring uses the rules directly
+        raise BriefError(f"{SYNERGY_GRAPH_PATH} missing — run `manamap synergy` first")
 
     matches = df[df["name"] == brief["commander"]]
     if matches.empty:
@@ -481,11 +481,44 @@ def decklist_text(plan, layouts=None, sideboard=""):
     return body + "\n"
 
 
+# Keys the deck-architect / deck-critic loop merges into build_plan.json. The
+# deterministic builder never produces them, so a re-materialisation must carry
+# them forward — same rule as extract_sideboard(): the builder only rewrites
+# what it owns. (This is the fix for the two-writer bug that silently erased
+# hapatra's critic block: build-deck ran after the agent merge and dropped it.)
+AGENT_PLAN_KEYS = (
+    "archetype", "gameplan", "role_budget_citations", "swaps",
+    "engines", "keep", "gaps", "critic",
+)
+
+
+def merge_agent_keys(plan, existing):
+    """Carry agent-merged keys from an existing plan into a fresh build.
+
+    `role_budget` is special: the deterministic builder emits a provisional
+    budget, but if the existing plan carries an agent-cited one
+    (`role_budget_citations` present), the cited budget + its grounding travel
+    with the citations as an atomic set — citations for an overwritten budget
+    would be worse than either version alone.
+    """
+    for key in AGENT_PLAN_KEYS:
+        if key not in plan and key in existing:
+            plan[key] = existing[key]
+    if "role_budget_citations" in existing:
+        for key in ("role_budget", "role_budget_grounding"):
+            if key in existing:
+                plan[key] = existing[key]
+    return plan
+
+
 def main(args):
     plan = build(args.slug)
     base = deck_dir(args.slug)
 
     out = base / "build_plan.json"
+    if out.exists():
+        with open(out) as f:
+            plan = merge_agent_keys(plan, json.load(f))
     with open(out, "w") as f:
         json.dump(plan, f, indent=2, sort_keys=True, ensure_ascii=False)
         f.write("\n")

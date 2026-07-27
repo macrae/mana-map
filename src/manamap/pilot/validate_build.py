@@ -20,13 +20,10 @@ import pandas as pd
 
 from manamap.config import (
     BRACKETS,
-    CARD_ROLES_PATH,
-    COMBO_DETAILS_PATH,
     DECK_SIZE,
     OUTPUT_CSV_PATH,
 )
 from manamap.analysis.common import parse_color_identity
-from manamap.pilot import bracket as bracket_mod
 from manamap.pilot.common import deck_dir
 from manamap.pilot.validate_stack import _load_strategy_sections, _validate_citations
 
