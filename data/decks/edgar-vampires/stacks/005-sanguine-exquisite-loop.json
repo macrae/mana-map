@@ -1,0 +1,359 @@
+{
+  "id": "005",
+  "slug": "sanguine-exquisite-loop",
+  "deck": "edgar-vampires",
+  "title": "Sanguine Bond + Exquisite Blood: the two-enchantment loop, verified for the swap",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Sanguine Bond",
+        "Exquisite Blood",
+        "Vampire Nighthawk (lifelink, 2/3)",
+        "lands"
+      ],
+      "opponents": [
+        {
+          "life": 34,
+          "board": [
+            "no instant-speed interaction held"
+          ]
+        },
+        {
+          "life": 17,
+          "board": []
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Sanguine Bond's trigger",
+        "controller": "you",
+        "note": "you just gained 2 life (Nighthawk lifelink combat damage); Bond's 'Whenever you gain life, target opponent loses that much life' trigger is on the stack targeting opponent 2 (at 17)"
+      }
+    ],
+    "extras": {
+      "context": "VERIFIED PRE-SWAP (Sanguine Bond has since been promoted to the 99 — HISTORY.md 2026-07-28): the aggressive re-analysis promoted it as loop redundancy for the checker-passed Vito loops (stacks 001/004) and this scenario decides whether the swap carries a verified stamp. Sanguine Bond: 'Whenever you gain life, target opponent loses that much life.' Exquisite Blood (maindeck): 'Whenever an opponent loses life, you gain that much life.' Bond's trigger targets, exactly like Vito's. Stack 001 (checker-passed) verified this loop shape with Vito as the lose-half trigger source; here Bond replaces Vito as the enchantment version — neither piece is a creature. NOTE (2026-07-28): the seed exemplar Vampire Nighthawk was benched in the v2 swaps; the loop pieces are all maindeck and ANY life-gain event seeds it (Sanctum Seeker's drain, Cruel Celebrant's death trigger, commander-damage lifelink from Sorin-granted effects) — the resolution's mechanics are seed-agnostic.",
+      "your_life": 29
+    },
+    "question": "Resolve the loop from this 2-life seed. Is Bond + Exquisite Blood deterministic and unbounded exactly as the verified Vito loops are — per-iteration retargeting, the killing loss still triggering Exquisite Blood, bounded only by living opponents? Give the iteration counts to kill both opponents, and state the one practical difference from stacks 001/004: with BOTH pieces enchantments, what removal windows exist mid-loop compared to the Conqueror version?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Seed: Vampire Nighthawk's lifelink combat damage caused you to gain 2 life (you: 29 as given). Sanguine Bond's ability ('Whenever you gain life, target opponent loses that much life' — oracle text per cards.json) triggered on that gain and is on the stack. Its target — opponent 2, at 17 — was locked in when the trigger was put on the stack.",
+        "effect": "One Sanguine Bond trigger on the stack targeting opponent 2 for 2. Targets are per-instance choices made at put-on-stack time, not at resolution.",
+        "citations": [
+          {
+            "rule": "702.15b",
+            "quote": "Damage dealt by a source with lifelink causes that source’s controller, or its owner if it has no controller, to gain that much life (in addition to any other results that damage causes)."
+          },
+          {
+            "rule": "115.1d",
+            "quote": "A triggered ability is targeted if it identifies something it will affect by using the phrase “target [something],” where the “something” is a phrase that describes an object and/or player. The target(s) are chosen as the ability is put on the stack; see rule 603.3d."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Sanguine Bond's trigger resolves (no responses; opponents hold no instant-speed interaction). Opponent 2 loses 2 life: 17 -> 15. That life loss matches Exquisite Blood's trigger condition ('Whenever an opponent loses life, you gain that much life'), so Exquisite Blood triggers during resolution — but nothing happens yet.",
+        "effect": "Opponent 2 at 15. Exquisite Blood has triggered and is waiting to be put on the stack.",
+        "citations": [
+          {
+            "rule": "117.2a",
+            "quote": "Triggered abilities can trigger at any time, including while a spell is being cast, an ability is being activated, or a spell or ability is resolving. (See rule 603, “Handling Triggered Abilities.”) However, nothing actually happens at the time an ability triggers."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "The next time a player would receive priority, state-based actions are checked (none apply — opponent 2 is at 15), then Exquisite Blood's trigger is put on the stack. It has no targets. It resolves: you gain 2 (29 -> 31). That life gain triggers Sanguine Bond again.",
+        "effect": "You gain 2 per iteration; each Exquisite Blood resolution re-triggers Sanguine Bond. The engine is now self-sustaining.",
+        "citations": [
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack"
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "The new Sanguine Bond trigger is put on the stack, and a NEW target is chosen for this new instance. You may keep targeting opponent 2 or retarget opponent 1 — each iteration is an independent targeting decision, since target choice is part of putting each triggered ability on the stack. Identical to the verified Vito behavior in stack 001: the trigger wording is the same sentence.",
+        "effect": "Retargeting between iterations is legal and free. You keep opponent 2 as the target while they live.",
+        "citations": [
+          {
+            "rule": "603.3d",
+            "quote": "The remainder of the process for putting a triggered ability on the stack is identical to the process for casting a spell listed in rules 601.2c–d."
+          },
+          {
+            "rule": "115.1d",
+            "quote": "The target(s) are chosen as the ability is put on the stack; see rule 603.3d."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Loop legality: each iteration (Bond resolves -> opponent loses 2 -> Exquisite Blood triggers -> resolves -> you gain 2 -> Bond triggers -> new target) is fully determined once you name the target, so the whole sequence may be proposed as a shortcut for a stated number of iterations rather than physically performed.",
+        "effect": "The loop is deterministic and repeatable indefinitely while both enchantments remain and a legal target exists. It transfers exactly 2 life per iteration from the targeted opponent to you.",
+        "citations": [
+          {
+            "rule": "732.1b",
+            "quote": "Occasionally the game gets into a state in which a set of actions could be repeated indefinitely (thus creating a “loop”). In that case, the shortcut rules can be used to determine how many times those actions are repeated without having to actually perform them, and how the loop is broken."
+          },
+          {
+            "rule": "732.2a",
+            "quote": "At any point in the game, the player with priority may suggest a shortcut by describing a sequence of game choices, for all players, that may be legally taken based on the current game state and the predictable results of the sequence of choices."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Killing opponent 2: after 9 total Sanguine Bond resolutions targeting them, opponent 2 goes below 0 (8 iterations x 2 = 16 leaves them at 1; the 9th takes them from 1 to -1, one point of overkill from the 2-life granularity). Before any player next receives priority, state-based actions are performed: opponent 2 loses the game and leaves it.",
+        "effect": "Opponent 2 is out at -1 after 9 iterations. Their owned objects leave the game with them (none here).",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "104.5",
+            "quote": "If a player loses the game, that player leaves the game."
+          },
+          {
+            "rule": "800.4a",
+            "quote": "When a player leaves the game, all objects (see rule 109) owned by that player leave the game"
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Does Exquisite Blood trigger off the loss that killed them? Yes. The life-loss event occurred while opponent 2 was still in the game, so Exquisite Blood triggered at that moment (though nothing happened yet); the ability is then put on the stack after state-based actions remove opponent 2, and it resolves normally — it targets nothing and belongs to YOUR enchantment. You gain 2 and Sanguine Bond triggers again, and the new Bond trigger chooses opponent 1 as its target (603.3d would remove a Bond trigger only if NO legal target existed).",
+        "effect": "The chain is not broken by a targeted opponent's death: the final loss still feeds a life-gain iteration, and the next Bond trigger simply targets the surviving opponent 1.",
+        "citations": [
+          {
+            "rule": "117.2a",
+            "quote": "However, nothing actually happens at the time an ability triggers. Each time a player would receive priority, each ability that has triggered but hasn’t yet been put on the stack is put on the stack."
+          },
+          {
+            "rule": "117.5",
+            "quote": "the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack"
+          },
+          {
+            "rule": "603.3d",
+            "quote": "If a choice is required when the triggered ability goes on the stack but no legal choices can be made for it, or if a rule or a continuous effect otherwise makes the ability illegal, the ability is simply removed from the stack."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Continue the shortcut against opponent 1: 17 iterations targeting them (34 -> 0 exactly, no overkill). The loop does NOT depend on Vampire Nighthawk: it only seeded the first gain, and even the seed trigger exists on the stack independently of Nighthawk once it triggered — the Bond/Exquisite Blood engine runs on the two named enchantments alone.",
+        "effect": "Opponent 1 reaches exactly 0 on the 26th total Bond resolution (9 + 17). The loop survives the seed creature's death or absence — any future life gain restarts it.",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "113.7a",
+            "quote": "Once activated or triggered, an ability exists on the stack independently of its source. Destruction or removal of the source after that time won’t affect the ability."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "The 26th and final Sanguine Bond resolution puts opponent 1 at 0. State-based actions: opponent 1 loses and leaves; their 'no instant-speed interaction held' board leaves with them. You are the only player remaining, so you win the game immediately — the last Exquisite Blood trigger (off opponent 1's killing loss) never resolves because the game has already ended.",
+        "effect": "GAME OVER: you win. Exquisite Blood resolutions: 25 of 26 (the last is mooted by the win). Your life at game end: 29 + 25 x 2 = 79.",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "104.2a",
+            "quote": "A player still in the game wins the game if that player’s opponents have all left the game. This happens immediately and overrides all effects that would preclude that player from winning the game."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "The removal-window DIFFERENCE from stacks 001/004: the windows themselves are identical — an opponent could interrupt the proposed shortcut at any named point and act with priority while a trigger is on the stack (and even then, destroying a piece whose trigger is already on the stack lets that one trigger resolve; the loop merely stops generating new iterations). What changes is which removal can use those windows: with BOTH halves enchantments, no creature removal, board wipe, -X/-X effect, or damage can break the engine, unlike the Vito version, where the creature half died to any of those. Only enchantment removal or trigger-level interaction (counter/redirect the trigger, life-gain replacement) reaches this pair. In this scenario the point is moot — both opponents hold no instant-speed interaction, so the shortcut is accepted as proposed.",
+        "effect": "Mechanically the same priority windows exist mid-loop; practically the two-enchantment version is strictly harder to interrupt, because the common creature-removal answers to Vito do nothing here.",
+        "citations": [
+          {
+            "rule": "732.2b",
+            "quote": "Each other player, in turn order starting after the player who suggested the shortcut, may either accept the proposed sequence, or shorten it by naming a place where they will make a game choice that’s different than what’s been proposed."
+          },
+          {
+            "rule": "113.7a",
+            "quote": "Once activated or triggered, an ability exists on the stack independently of its source. Destruction or removal of the source after that time won’t affect the ability."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Deterministic table-kill, VERIFIED — the swap carries the stamp. From the 2-life seed, 26 Sanguine Bond resolutions (9 + 17) drain opponent 2 (17, one point of overkill at -1) and opponent 1 (34, exactly 0), retargeting each fresh trigger per iteration. Each opponent's killing loss still triggers Exquisite Blood, so the chain crosses deaths. You win via 104.2a when the last opponent leaves; the 26th Exquisite Blood trigger is mooted by the win.",
+      "you": {
+        "life": 79,
+        "board": "Sanguine Bond, Exquisite Blood, Vampire Nighthawk, lands — all untouched; the loop consumed no cards, mana, or creatures",
+        "result": "wins the game"
+      },
+      "opponents": [
+        {
+          "seat": 1,
+          "life_start": 34,
+          "iterations_to_kill": 17,
+          "result": "loses at exactly 0 (state-based action, 704.5a); dies second, killing loss's Exquisite Blood trigger mooted by your immediate win"
+        },
+        {
+          "seat": 2,
+          "life_start": 17,
+          "iterations_to_kill": 9,
+          "result": "loses first at -1 (2-point granularity overkills by 1); killing loss still triggers Exquisite Blood"
+        }
+      ]
+    },
+    "answer": "VERIFIED: Sanguine Bond + Exquisite Blood is deterministic and unbounded exactly as the checker-passed Vito loops (001/004) are — Bond's trigger is the same targeted sentence, so every property carries over. Each Bond trigger is a new object whose target is chosen fresh as it is put on the stack (115.1d/603.3d), so per-iteration retargeting is legal and free. Mid-loop death does not break the chain: the killing life-loss event triggers Exquisite Blood while the opponent is still in the game (117.2a), state-based actions remove the player before the trigger is put on the stack (117.5/704.5a), and the untargeted trigger of your enchantment resolves regardless. Iteration counts: 9 to kill opponent 2 (17 -> -1) and 17 to kill opponent 1 (34 -> 0), 26 total; 25 of 26 Exquisite Blood resolutions land (the last is mooted by the immediate 104.2a win), leaving you at 79. Bounds: a surviving opponent to target and both enchantments on the battlefield — the seed creature is irrelevant after the first trigger (113.7a). The one practical difference from 001/004: the mid-loop priority windows are identical (732.2b lets any opponent interrupt the shortcut), but with BOTH halves enchantments none of the creature-removal answers that could break the Vito version — spot removal, wipes, -X/-X, damage — reach this pair; only enchantment removal or trigger-level interaction does, making the two-enchantment loop strictly harder to interrupt. The sideboard swap earns the verified stamp as loop redundancy."
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "702.15b",
+        "status": "supported",
+        "note": "Lifelink gain claim supported. Seed-history note: both opponent boards are creatureless, so the given stack (Bond trigger only) is reachable only if Nighthawk's combat damage was dealt to a blocking creature that has since died (deathtouch makes this natural). Had the damage hit a player, that opponent's life loss would have put an Exquisite Blood trigger on the seed stack too. The given state is self-consistent and the resolution from it is correct; recommend step 1 narration say the damage was to a creature. Not an omission in the resolution itself."
+      },
+      {
+        "step": 1,
+        "rule": "115.1d",
+        "status": "supported",
+        "note": "Targets locked at put-on-stack time; full rule confirms."
+      },
+      {
+        "step": 2,
+        "rule": "117.2a",
+        "status": "supported",
+        "note": "EB triggers mid-resolution, nothing happens yet; contiguous in-context quote."
+      },
+      {
+        "step": 3,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Trigger placed next time a player would receive priority."
+      },
+      {
+        "step": 3,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "SBAs before triggers are placed; none apply at 15."
+      },
+      {
+        "step": 4,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "Each new trigger instance follows 601.2c-d, so a fresh target per iteration is correct."
+      },
+      {
+        "step": 4,
+        "rule": "115.1d",
+        "status": "supported",
+        "note": "Per-instance targeting; Bond's oracle text in cards.json is the identical sentence to Vito's, so the 001/004 carry-over claim is factual."
+      },
+      {
+        "step": 5,
+        "rule": "732.1b",
+        "status": "supported",
+        "note": "Loop shortcut applicability."
+      },
+      {
+        "step": 5,
+        "rule": "732.2a",
+        "status": "supported",
+        "note": "Sequence is fully determined once targets are named; no conditional actions; proposal legal."
+      },
+      {
+        "step": 6,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Arithmetic verified: 8x2=16 leaves opp2 at 1; 9th resolution -> -1 (one overkill). 0-or-less loses."
+      },
+      {
+        "step": 6,
+        "rule": "104.5",
+        "status": "supported",
+        "note": "Loser leaves the game."
+      },
+      {
+        "step": 6,
+        "rule": "800.4a",
+        "status": "supported",
+        "note": "Owned objects leave with the player; board is empty, so trivially none."
+      },
+      {
+        "step": 7,
+        "rule": "117.2a",
+        "status": "supported",
+        "note": "EB triggered on the killing loss while opp2 was still in the game; correct."
+      },
+      {
+        "step": 7,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "SBA removes opp2 first, then your EB trigger is placed; it survives (you control it, 800.4a only strips the leaver's objects) and needs no target."
+      },
+      {
+        "step": 7,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "Correctly scoped: the next Bond trigger would be removed only if NO legal target existed; opponent 1 remains, so it targets them."
+      },
+      {
+        "step": 8,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Arithmetic verified: 17x2=34, opp1 reaches exactly 0; loses at 0 or less. 9+17=26 total Bond resolutions."
+      },
+      {
+        "step": 8,
+        "rule": "113.7a",
+        "status": "supported",
+        "note": "Seed trigger independent of Nighthawk once on the stack; engine needs only the two enchantments."
+      },
+      {
+        "step": 9,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Final resolution: opp1 to 0, SBA loss."
+      },
+      {
+        "step": 9,
+        "rule": "104.2a",
+        "status": "supported",
+        "note": "Win is immediate when the last opponent leaves during the SBA/trigger-placement cycle, BEFORE the pending 26th EB trigger is put on the stack; its exclusion is correct. Final life verified: 25 EB resolutions x2 = +50; 29+50=79, not 81."
+      },
+      {
+        "step": 10,
+        "rule": "732.2b",
+        "status": "supported",
+        "note": "Any opponent may shorten the proposed shortcut at a named point; 'identical priority windows' claim is correct — the windows are structural, not piece-dependent."
+      },
+      {
+        "step": 10,
+        "rule": "113.7a",
+        "status": "supported",
+        "note": "Destroying a piece with its trigger already on the stack lets that trigger resolve; loop stops generating new iterations. Correct, and the no-creature-targets practical claim follows from both pieces being enchantments per cards.json type lines."
+      }
+    ],
+    "summary": "PASS, iteration 1. Mechanical gate clean. All 21 citations fetched in full and judged supported in context; no misquotes, no out-of-context fragments. Card facts match cards.json: Sanguine Bond (sideboard, enchantment, 'Whenever you gain life, target opponent loses that much life' — verbatim Vito's sentence), Exquisite Blood (maindeck, enchantment), Vampire Nighthawk (2-power lifelinker). Arithmetic independently re-derived and exact: opp2 17 -> -1 in 9 iterations (one overkill from 2-life granularity), opp1 34 -> 0 in exactly 17, 26 total Bond resolutions, EB triggers 26 times but resolves 25 — the 26th is correctly mooted because 104.2a's immediate win fires during the SBA step of the priority cycle, before pending triggers are placed. 29 + 2x25 = 79 confirmed. Per-iteration retargeting, killing-loss trigger survival, SBA/trigger ordering (117.5), and the removal-window analysis all verified. One narration nit recorded on step 1 (seed damage must have been to a now-dead blocking creature for the given single-trigger stack to be complete); it does not affect any resolved step or number.",
+    "iterations": 1
+  }
+}

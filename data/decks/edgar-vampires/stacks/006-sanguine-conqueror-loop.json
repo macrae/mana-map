@@ -1,0 +1,341 @@
+{
+  "id": "006",
+  "slug": "sanguine-conqueror-loop",
+  "deck": "edgar-vampires",
+  "title": "Sanguine Bond + Bloodthirsty Conqueror: the third pairing closes the set",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Sanguine Bond",
+        "Bloodthirsty Conqueror",
+        "lands"
+      ],
+      "opponents": [
+        {
+          "life": 26,
+          "board": [
+            "no instant-speed interaction held"
+          ]
+        },
+        {
+          "life": 11,
+          "board": []
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Sanguine Bond's trigger",
+        "controller": "you",
+        "note": "you just gained 3 life (any source); Bond's trigger is on the stack targeting opponent 2 (at 11)"
+      }
+    ],
+    "extras": {
+      "context": "VERIFIED PRE-SWAP (Sanguine Bond has since been promoted to the 99 — HISTORY.md 2026-07-28) with maindeck Bloodthirsty Conqueror — the third gain/loss pairing after the checker-passed stacks 001 (Exquisite+Vito) and 004 (Conqueror+Vito). Sanguine Bond: 'Whenever you gain life, target opponent loses that much life.' Bloodthirsty Conqueror: 'Whenever an opponent loses life, you gain that much life. (Damage causes loss of life.)' Stack 004 established the Conqueror-side mechanics including reminder-text handling (207.2a) and the per-iteration removal window on a creature half.",
+      "your_life": 22
+    },
+    "question": "Resolve the loop from this 3-life seed: deterministic and unbounded on the same terms as stacks 001/004? Iteration counts to kill opponent 2 (11) then opponent 1 (26), retargeting between them; the killing loss still triggering Conqueror; final life total; and the removal-window profile (one creature half — the same honest cost stack 004 named)."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Seed: you gained 3 life from some source (your life 22 as given already includes it). Sanguine Bond's ability ('Whenever you gain life, target opponent loses that much life') triggered on that gain and is on the stack. Its target — opponent 2, at 11 — was locked in when the trigger was put on the stack.",
+        "effect": "One Sanguine Bond trigger on the stack targeting opponent 2 for 3. Targets are per-instance choices made at put-on-stack time, not at resolution.",
+        "citations": [
+          {
+            "rule": "115.1d",
+            "quote": "A triggered ability is targeted if it identifies something it will affect by using the phrase “target [something],” where the “something” is a phrase that describes an object and/or player. The target(s) are chosen as the ability is put on the stack; see rule 603.3d."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Bond's trigger resolves (no responses; opponents hold no instant-speed interaction). Opponent 2 loses 3 life: 11 -> 8. That direct life loss matches Bloodthirsty Conqueror's trigger condition ('Whenever an opponent loses life, you gain that much life') — Bond's effect is life loss, not damage, and Conqueror's '(Damage causes loss of life.)' parenthetical is reminder text clarifying that damage ALSO counts, not a restriction to damage (the same 207.2a reading the stack-004 checker verified for this exact card). Conqueror triggers during resolution — but nothing happens yet.",
+        "effect": "Opponent 2 at 8. Conqueror has triggered and is waiting to be put on the stack.",
+        "citations": [
+          {
+            "rule": "117.2a",
+            "quote": "Triggered abilities can trigger at any time, including while a spell is being cast, an ability is being activated, or a spell or ability is resolving. (See rule 603, “Handling Triggered Abilities.”) However, nothing actually happens at the time an ability triggers."
+          },
+          {
+            "rule": "207.2a",
+            "quote": "Reminder text is italicized text within parentheses that summarizes a rule that applies to that card."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "The next time a player would receive priority, state-based actions are checked (none apply — opponent 2 is at 8, both your permanents are undamaged), then Conqueror's trigger is put on the stack. It has no targets. It resolves: you gain 3 (22 -> 25). That life gain triggers Sanguine Bond again.",
+        "effect": "You gain 3 per iteration; each Conqueror resolution re-triggers Bond. The engine is self-sustaining — the same gain/loss handshake as stacks 001 and 004, with Bond playing Vito's role.",
+        "citations": [
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack"
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "The new Bond trigger is put on the stack, and a NEW target is chosen for this new instance. You may keep targeting opponent 2 or retarget opponent 1 — each iteration is an independent targeting decision, since target choice is part of putting each triggered ability on the stack.",
+        "effect": "Retargeting between iterations is legal and free. You keep opponent 2 as the target while they live.",
+        "citations": [
+          {
+            "rule": "603.3d",
+            "quote": "The remainder of the process for putting a triggered ability on the stack is identical to the process for casting a spell listed in rules 601.2c–d."
+          },
+          {
+            "rule": "115.1d",
+            "quote": "The target(s) are chosen as the ability is put on the stack; see rule 603.3d."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Loop legality: each iteration (Bond resolves -> opponent loses 3 -> Conqueror triggers -> resolves -> you gain 3 -> Bond triggers -> new target) is fully determined once you name the target, so the whole sequence may be proposed as a shortcut for a stated number of iterations rather than physically performed. The amount is fixed at the seed's 3 for every iteration.",
+        "effect": "The loop is deterministic and repeatable indefinitely while both permanents remain and a legal target exists — the same shortcut structure as stacks 001 and 004, same 3-life constant as 004.",
+        "citations": [
+          {
+            "rule": "732.1b",
+            "quote": "Occasionally the game gets into a state in which a set of actions could be repeated indefinitely (thus creating a “loop”). In that case, the shortcut rules can be used to determine how many times those actions are repeated without having to actually perform them, and how the loop is broken."
+          },
+          {
+            "rule": "732.2a",
+            "quote": "At any point in the game, the player with priority may suggest a shortcut by describing a sequence of game choices, for all players, that may be legally taken based on the current game state and the predictable results of the sequence of choices."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Removal-window profile — the honest cost, stated as stack 004 stated it: this pairing has exactly ONE creature half. Sanguine Bond is an enchantment; Bloodthirsty Conqueror is a 5/5 creature. Every iteration passes priority while each trigger is on the stack, and any player with priority may cast an instant — so each iteration is a real window for instant-speed creature removal on Conqueror (or enchantment removal on Bond). If either dies mid-loop, a trigger already on the stack still resolves (abilities exist independently of their sources), but the engine stops after it. Formally, an opponent responds to a proposed shortcut by shortening it: naming the iteration where they will act differently. Here neither opponent holds instant-speed interaction, so the shortcut stands in full.",
+        "effect": "One creature half exposed to creature removal — the same profile as stack 001 (enchantment + creature) and one fewer creature target than stack 004 (two creatures). In THIS scenario, no window is exploitable.",
+        "citations": [
+          {
+            "rule": "117.1a",
+            "quote": "A player may cast an instant spell any time they have priority."
+          },
+          {
+            "rule": "113.7a",
+            "quote": "Once activated or triggered, an ability exists on the stack independently of its source. Destruction or removal of the source after that time won’t affect the ability."
+          },
+          {
+            "rule": "732.2b",
+            "quote": "may either accept the proposed sequence, or shorten it by naming a place where they will make a game choice that’s different than what’s been proposed."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Killing opponent 2: iterations 1-4 take them 11 -> 8 -> 5 -> 2 -> -1. The 3-point granularity does NOT divide 11 evenly, so the 4th Bond resolution overkills by 1 (2 -> -1). Before any player next receives priority, state-based actions are performed: opponent 2 loses the game and leaves it; their owned objects leave with them (none here).",
+        "effect": "Opponent 2 dies on iteration 4 at -1 (one point of overkill — unlike stack 004's exact zeros).",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "104.5",
+            "quote": "If a player loses the game, that player leaves the game."
+          },
+          {
+            "rule": "800.4a",
+            "quote": "When a player leaves the game, all objects (see rule 109) owned by that player leave the game"
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Does Conqueror trigger off the loss that killed opponent 2? Yes. The life-loss event occurred while opponent 2 was still in the game, so Conqueror triggered at that moment (though nothing happened yet); the ability is then put on the stack after state-based actions remove opponent 2, and it resolves normally — it targets nothing and belongs to YOUR creature, which is still on the battlefield. You gain 3 (22 + 4x3 = 34 after Conqueror resolution 4) and Bond triggers again. The new Bond trigger is put on the stack and targeted fresh — at opponent 1 (26), the only remaining opponent. A Bond trigger would be removed from the stack only if NO legal target existed.",
+        "effect": "The chain crosses opponent 2's death exactly as in stacks 001 and 004: the killing loss still feeds a gain iteration, and the next trigger retargets the survivor.",
+        "citations": [
+          {
+            "rule": "117.2a",
+            "quote": "However, nothing actually happens at the time an ability triggers. Each time a player would receive priority, each ability that has triggered but hasn’t yet been put on the stack is put on the stack."
+          },
+          {
+            "rule": "117.5",
+            "quote": "the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack"
+          },
+          {
+            "rule": "603.3d",
+            "quote": "If a choice is required when the triggered ability goes on the stack but no legal choices can be made for it, or if a rule or a continuous effect otherwise makes the ability illegal, the ability is simply removed from the stack."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Continue the shortcut against opponent 1: iterations 5 through 13 — nine Bond resolutions at 3 each (26 -> 23 -> 20 -> 17 -> 14 -> 11 -> 8 -> 5 -> 2 -> -1; 3 does not divide 26, so the 13th and final Bond resolution overkills by 1). State-based actions: opponent 1 loses and leaves; their permanents leave with them. You are the only player remaining, so you win the game immediately — the 13th Conqueror trigger (off opponent 1's killing loss) never resolves because the game has already ended, so its 3 life is EXCLUDED from the ledger (the exact point the stack-004 checker enforced).",
+        "effect": "GAME OVER: you win. Total: 13 Bond resolutions (4 for opponent 2 + 9 for opponent 1). Conqueror resolutions: 12 of 13 (the last is mooted by the win). Your life at game end: 22 + 12 x 3 = 58.",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "104.2a",
+            "quote": "A player still in the game wins the game if that player’s opponents have all left the game. This happens immediately and overrides all effects that would preclude that player from winning the game."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Deterministic table-kill, VERIFIED — the third gain/loss pairing holds on the same terms as stacks 001 and 004. From the 3-life seed, 13 Sanguine Bond resolutions (4 + 9) drain opponent 2 (11, one point of overkill) and opponent 1 (26, one point of overkill; 3 divides neither total, unlike 004's exact zeros), retargeting each fresh trigger. Opponent 2's killing loss still triggers Conqueror, so the chain crosses their death; the 13th Conqueror trigger is mooted by the immediate 104.2a win and its gain does not count. Final life 22 + 12x3 = 58. Removal-window profile: exactly one creature half (Conqueror, 5/5) — every iteration's priority window admits instant-speed creature removal, the same honest cost stack 004 named, but one fewer creature target than 004 since Bond is an enchantment. Irrelevant here: no opponent holds interaction.",
+      "you": {
+        "life": 58,
+        "board": "Sanguine Bond, Bloodthirsty Conqueror, lands — untouched; the loop consumed no cards, mana, or creatures",
+        "result": "wins the game"
+      },
+      "opponents": [
+        {
+          "seat": 1,
+          "life_start": 26,
+          "iterations_to_kill": 9,
+          "result": "loses at -1 on Bond resolution 13 overall (state-based action, 704.5a; 3-point granularity overkills by 1); permanents leave with them"
+        },
+        {
+          "seat": 2,
+          "life_start": 11,
+          "iterations_to_kill": 4,
+          "result": "loses first, at -1 on iteration 4 (overkill by 1); killing loss still triggers Conqueror"
+        }
+      ]
+    },
+    "answer": "VERIFIED as a true two-card infinite and a full table-kill — Sanguine Bond + Bloodthirsty Conqueror is deterministic and unbounded on exactly the terms of stacks 001 and 004. Bond's oracle text is word-for-word Vito's trigger ('Whenever you gain life, target opponent loses that much life'), and Conqueror's side was established in stack 004: its '(Damage causes loss of life.)' parenthetical is reminder text (207.2a), not a damage requirement, so Bond's direct life loss triggers it. The loop is shortcut-legal (732.1b/732.2a) at a fixed 3 life per iteration, retargetable every iteration (115.1d/603.3d), and not broken by a targeted opponent dying mid-loop: the killing loss triggers Conqueror before state-based actions remove the player, and the untargeted trigger of your still-present creature resolves. From the 3-life seed: opponent 2 (11) dies on iteration 4 at -1, opponent 1 (26) on Bond resolution 13 at -1 (9 more) — 3 divides neither total, so each death overkills by 1, unlike 004's exact zeros. 13 Bond resolutions, 12 Conqueror resolutions (the 13th mooted by the immediate 104.2a win — its gain excluded from the ledger, as the stack-004 checker enforced), your life 22 -> 58. Removal-window profile: one creature half — Conqueror is the only creature (Bond is an enchantment), so instant-speed creature removal in any iteration's priority window (117.1a) breaks the loop; an in-flight trigger still resolves (113.7a) and a shortcut can be shortened at the named iteration (732.2b). That is the same profile as 001 (enchantment + creature) and one fewer creature target than 004. Sideboard-swap conclusion: the Bond swap preserves a verified contained infinite with maindeck Conqueror."
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "115.1d",
+        "status": "supported",
+        "note": "Full rule confirms targets chosen as the ability is put on the stack; per-instance targeting claim holds."
+      },
+      {
+        "step": 2,
+        "rule": "117.2a",
+        "status": "supported",
+        "note": "Rule confirms abilities trigger during resolution and nothing happens at trigger time."
+      },
+      {
+        "step": 2,
+        "rule": "207.2a",
+        "status": "supported",
+        "note": "Full rule establishes '(Damage causes loss of life.)' is reminder text; Bond's effect ('loses that much life') is direct loss, which satisfies Conqueror's non-damage-restricted condition — same reading as passed stack 004."
+      },
+      {
+        "step": 3,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Trigger put on stack next time a player would receive priority — exact match."
+      },
+      {
+        "step": 3,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "SBAs before triggers go on stack; none apply at this point (opp 2 at 8) — correctly reasoned."
+      },
+      {
+        "step": 4,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "Process identical to 601.2c-d, which includes target choice per instance; retargeting between iterations is legal."
+      },
+      {
+        "step": 4,
+        "rule": "115.1d",
+        "status": "supported",
+        "note": "Reinforces per-instance target choice at put-on-stack time."
+      },
+      {
+        "step": 5,
+        "rule": "732.1b",
+        "status": "supported",
+        "note": "Loop shortcut rule applies; sequence is unconditional (fixed 3/iteration), satisfying 732.2a's no-conditional-actions clause."
+      },
+      {
+        "step": 5,
+        "rule": "732.2a",
+        "status": "supported",
+        "note": "Full rule allows proposing a loop repeated a specified number of times; deterministic sequence qualifies."
+      },
+      {
+        "step": 6,
+        "rule": "117.1a",
+        "status": "supported",
+        "note": "Instants castable at any priority; each iteration's priority passes are real removal windows."
+      },
+      {
+        "step": 6,
+        "rule": "113.7a",
+        "status": "supported",
+        "note": "In-flight trigger resolves after source removal — correctly stated that the engine stops only after it."
+      },
+      {
+        "step": 6,
+        "rule": "732.2b",
+        "status": "supported",
+        "note": "Quote is a fragment but used in context; opponents shorten a shortcut by naming the deviation point. Scenario stipulates no interaction held, so shortcut stands."
+      },
+      {
+        "step": 7,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "0-or-less life SBA. Arithmetic verified: 11 -> 8 -> 5 -> 2 -> -1 over 4 iterations; 3 does not divide 11; overkill by 1."
+      },
+      {
+        "step": 7,
+        "rule": "104.5",
+        "status": "supported",
+        "note": "Losing player leaves the game."
+      },
+      {
+        "step": 7,
+        "rule": "800.4a",
+        "status": "supported",
+        "note": "Owned objects leave with the player; opponent 2's board is empty, so 'none here' is accurate for permanents."
+      },
+      {
+        "step": 8,
+        "rule": "117.2a",
+        "status": "supported",
+        "note": "Loss occurred while opponent 2 was in the game, so Conqueror triggered at that moment; trigger is put on stack after SBAs remove the player. Correct."
+      },
+      {
+        "step": 8,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "SBA-then-triggers ordering correctly applied across opponent 2's death. Life math verified: 22 + 4x3 = 34 after Conqueror resolution 4."
+      },
+      {
+        "step": 8,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "Correctly notes Bond's trigger would be removed only if no legal target existed; opponent 1 remains, so the fresh trigger targets them."
+      },
+      {
+        "step": 9,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Arithmetic verified: 26 requires ceil(26/3) = 9 resolutions (iterations 5-13), ending at -1; 3 does not divide 26; the listed chain 26->...->-1 has exactly 9 steps."
+      },
+      {
+        "step": 9,
+        "rule": "104.2a",
+        "status": "supported",
+        "note": "Win is immediate when all opponents have left; the 13th Conqueror trigger (triggered but never resolved) correctly contributes no life. Ledger reconciles: 13 Bond resolutions (4+9), 12 Conqueror resolutions, final life 22 + 12x3 = 58."
+      }
+    ],
+    "summary": "Mechanical gate passed. All 20 citation instances across 9 steps verified supported against full rule texts; no misquotes or out-of-context uses. Card facts verified against cards.json: Sanguine Bond is an Enchantment (sideboard, is_sideboard true) with oracle text exactly 'Whenever you gain life, target opponent loses that much life.'; Bloodthirsty Conqueror is a maindeck 5/5 Creature - Vampire Knight with the quoted trigger and reminder text. Arithmetic audit reconciles: opponent 2 (11) dies iteration 4 at -1; opponent 1 (26) dies on Bond resolution 13 at -1 (9 more resolutions); opponent 2's killing loss still triggers Conqueror (loss predates SBA removal); the 13th Conqueror gain is correctly excluded (game ends immediately per 104.2a before it resolves); final life 58 = 22 + 12x3. Missing-step audit found nothing: SBAs checked at each priority juncture (117.5), trigger ordering across a player's death handled, no replacement effects apply (Bond's loss is not damage; no lifelink/replacement in scenario), retargeting per-instance is correct, and the removal-window claim (exactly one creature half, Conqueror) matches the type lines. No findings against.",
+    "iterations": 1
+  }
+}

@@ -1,0 +1,285 @@
+{
+  "id": "007",
+  "slug": "throne-bloodletter-end-step",
+  "deck": "edgar-vampires",
+  "title": "Throne of the God-Pharaoh + Bloodletter: does the end step drain double?",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Throne of the God-Pharaoh",
+        "Bloodletter of Aclazotz (UNTAPPED — it did not attack)",
+        "Sanctum Seeker (tapped, attacked)",
+        "Edgar Markov (tapped, attacked)",
+        "five 1/1 black Vampire tokens (tapped, attacked)"
+      ],
+      "opponents": [
+        {
+          "life": 15,
+          "board": []
+        },
+        {
+          "life": 9,
+          "board": []
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Throne of the God-Pharaoh's triggered ability",
+        "controller": "you",
+        "note": "it is the beginning of YOUR end step, after a seven-attacker combat (the stack-003 shape); the trigger 'each opponent loses life equal to the number of tapped creatures you control' is on the stack"
+      }
+    ],
+    "extras": {
+      "context": "VERIFIED PRE-SWAP (Throne has since been promoted to the 99 — HISTORY.md 2026-07-28); the full-step tier relied on this interaction. Throne: 'At the beginning of your end step, each opponent loses life equal to the number of tapped creatures you control.' Bloodletter of Aclazotz (maindeck): 'If an opponent would lose life during your turn, they lose twice that much life instead.' Seven creatures are TAPPED (the attackers); Bloodletter itself is untapped and does not count. The end step is still your turn.",
+      "your_life": 30
+    },
+    "question": "Resolve Throne's trigger. How many tapped creatures do you control (Bloodletter did not attack and is untapped — does it count?), how much does EACH opponent lose through Bloodletter's replacement (is the end step 'during your turn'), is the loss simultaneous for both opponents or per-opponent events for the replacement, do both opponents at 15 and 9 die to this single trigger, and does the game end before anything else happens?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Setup: Throne of the God-Pharaoh's ability triggered at the beginning of your end step and is the only object on the stack.",
+        "effect": "Throne reads 'At the beginning of your end step, each opponent loses life equal to the number of tapped creatures you control.' The end step began, so the ability triggered and was put on the stack; it is now resolving.",
+        "citations": [
+          {
+            "rule": "603.2b",
+            "quote": "When a phase or step begins, all abilities that trigger “at the beginning of” that phase or step trigger."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "The trigger resolves: count the tapped creatures you control at resolution.",
+        "effect": "Tapped creatures you control: Sanctum Seeker, Edgar Markov, and five 1/1 black Vampire tokens — SEVEN. Bloodletter of Aclazotz did not attack, is untapped, and is NOT counted. The base event is 'each opponent loses 7 life.'",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written. However, replacement effects may modify these actions."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Check Bloodletter's condition: is the end step 'during your turn'?",
+        "effect": "Yes. The ending phase is the fifth of the turn's five phases and the end step is its first step, so it is still your turn and Bloodletter of Aclazotz's replacement ('If an opponent would lose life during your turn, they lose twice that much life instead.') applies.",
+        "citations": [
+          {
+            "rule": "500.1",
+            "quote": "A turn consists of five phases, in this order: beginning, precombat main, combat, postcombat main, and ending."
+          },
+          {
+            "rule": "glossary:end-step",
+            "quote": "Part of the turn. This step is the first step of the ending phase."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Apply Bloodletter's replacement effect to each opponent's life loss independently.",
+        "effect": "Bloodletter's 'instead' ability is a replacement effect. Replacement effects modify how an event affects a given player, so each opponent's loss of 7 is doubled separately: each opponent loses 14 instead of 7. The original 7-loss events never happen; the modified 14-loss events occur, simultaneously, as part of the trigger's resolution.",
+        "citations": [
+          {
+            "rule": "614.1a",
+            "quote": "Effects that use the word “instead” are replacement effects."
+          },
+          {
+            "rule": "616.1",
+            "quote": "modify the way an event affects an object or player"
+          },
+          {
+            "rule": "614.6",
+            "quote": "If an event is replaced, it never happens. A modified event occurs instead"
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Adjust life totals.",
+        "effect": "Opponent A: 15 − 14 = 1 life. Opponent B: 9 − 14 = −5 life. The trigger has finished resolving and leaves the stack.",
+        "citations": [
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "State-based actions are checked before any player receives priority.",
+        "effect": "Opponent B, at −5 life, loses the game. Opponent A, at 1 life, does NOT meet the condition and stays in the game.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event"
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Opponent B leaves the game.",
+        "effect": "Losing the game means leaving the game, and this happens as soon as the player loses — Opponent B's board is empty, so nothing leaves the battlefield or is exiled with them.",
+        "citations": [
+          {
+            "rule": "104.5",
+            "quote": "If a player loses the game, that player leaves the game."
+          },
+          {
+            "rule": "800.4a",
+            "quote": "When a player leaves the game, all objects (see rule 109) owned by that player leave the game"
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Check whether the game ends: it does NOT.",
+        "effect": "You win only if ALL your opponents have left the game. Opponent A remains at 1 life, so rule 104.2a's condition is not met and the game continues: you, the active player, receive priority in your end step.",
+        "citations": [
+          {
+            "rule": "104.2a",
+            "quote": "A player still in the game wins the game if that player’s opponents have all left the game."
+          },
+          {
+            "rule": "513.1",
+            "quote": "The end step has no turn-based actions. Once it begins, the active player gets priority."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "PARTIALLY REFUTED as a table-kill. Seven creatures are tapped (Bloodletter, untapped, does not count); the end step is during your turn, so Bloodletter doubles each opponent's loss independently: each loses 14, not 7. That kills the 9-life opponent (to −5, loses via SBA and leaves the game) but the 15-life opponent survives at exactly 1 life. The game does not end — you do not win off this trigger, and play continues in your end step with one opponent left at 1.",
+      "you": {
+        "life": 30,
+        "board": [
+          "Throne of the God-Pharaoh",
+          "Bloodletter of Aclazotz (untapped)",
+          "Sanctum Seeker (tapped)",
+          "Edgar Markov (tapped)",
+          "five 1/1 black Vampire tokens (tapped)"
+        ]
+      },
+      "opponents": [
+        {
+          "life": 1,
+          "board": [],
+          "note": "survived: 15 − 14 = 1"
+        },
+        {
+          "life": null,
+          "board": [],
+          "note": "eliminated: 9 − 14 = −5; lost via 704.5a and left the game"
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "603.2b",
+        "status": "supported",
+        "note": "Beginning-of-end-step trigger; rule matches exactly."
+      },
+      {
+        "step": 2,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Instructions followed at resolution, replacements may modify. Card fact verified against cards.json: Throne reads 'tapped creatures you control', NOT attackers — count is taken at resolution. Seven tapped (Sanctum Seeker, Edgar Markov, five tokens); untapped Bloodletter correctly excluded."
+      },
+      {
+        "step": 3,
+        "rule": "500.1",
+        "status": "supported",
+        "note": "Ending phase is one of the turn's five phases; the end step is during your turn."
+      },
+      {
+        "step": 3,
+        "rule": "glossary:end-step",
+        "status": "supported",
+        "note": "End step is the first step of the ending phase — part of the turn. Bloodletter's 'during your turn' condition met; oracle text verified against cards.json."
+      },
+      {
+        "step": 4,
+        "rule": "614.1a",
+        "status": "supported",
+        "note": "Bloodletter's 'instead' ability is a replacement effect."
+      },
+      {
+        "step": 4,
+        "rule": "616.1",
+        "status": "supported",
+        "note": "Fragment is from the competing-replacements rule, but the framing it is used for — a replacement modifies the way an event affects a particular affected player, hence applied per opponent — is genuinely what 616.1's per-affected-player structure establishes. Each opponent's 7-loss is doubled independently to 14; matches official Bloodletter handling."
+      },
+      {
+        "step": 4,
+        "rule": "614.6",
+        "status": "supported",
+        "note": "Original 7-loss events never happen; modified 14-loss events occur."
+      },
+      {
+        "step": 5,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Arithmetic verified: 15-14=1 (survives at exactly 1); 9-14=-5."
+      },
+      {
+        "step": 6,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "SBAs checked before priority after the trigger finishes resolving."
+      },
+      {
+        "step": 6,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "Redundant with 704.3 but accurate."
+      },
+      {
+        "step": 6,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "-5 <= 0 loses; 1 > 0 does not. The partial refutation is honest: opponent A survives at exactly 1."
+      },
+      {
+        "step": 7,
+        "rule": "104.5",
+        "status": "supported",
+        "note": "Losing player leaves the game."
+      },
+      {
+        "step": 7,
+        "rule": "800.4a",
+        "status": "supported",
+        "note": "Leave-the-game cleanup; opponent B's board is empty per scenario, so nothing to exile — claim consistent with full rule text."
+      },
+      {
+        "step": 8,
+        "rule": "104.2a",
+        "status": "supported",
+        "note": "Win requires ALL opponents to have left; opponent A remains at 1 life, so the game does not end and you do not win off this trigger."
+      },
+      {
+        "step": 8,
+        "rule": "513.1",
+        "status": "supported",
+        "note": "Slightly indirect (post-resolution priority is 117.3b territory), but 513.1 plus the already-cited 704.3 genuinely establish that play continues in your end step with you receiving priority. Not misleading."
+      }
+    ],
+    "iterations": 1
+  }
+}

@@ -1,0 +1,347 @@
+{
+  "id": "008",
+  "slug": "purphoros-token-entry-count",
+  "deck": "edgar-vampires",
+  "title": "Purphoros through the doublers: damage per two-mana Vampire",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Purphoros, God of the Forge",
+        "Anointed Procession",
+        "Mondrak, Glory Dominus",
+        "five lands, all untapped"
+      ],
+      "opponents": [
+        {
+          "life": 24,
+          "board": []
+        },
+        {
+          "life": 10,
+          "board": []
+        }
+      ]
+    },
+    "hand": [
+      "Gifted Aetherborn"
+    ],
+    "graveyard": [],
+    "mana_available": "",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Gifted Aetherborn (Vampire spell)",
+        "controller": "you",
+        "note": "cast for {B}{B}; Edgar Markov is in the COMMAND ZONE; his eminence trigger is on the stack above the spell"
+      }
+    ],
+    "extras": {
+      "context": "VERIFIED PRE-SWAP (Purphoros has since been promoted to the 99 — HISTORY.md 2026-07-28); the promote relied on this count. Stack 002 (checker-passed) verified the token math on this exact board minus Purphoros: the eminence event is doubled twice, 1→2→4 tokens. Purphoros: 'Whenever another creature you control enters, Purphoros deals 2 damage to each opponent.' Also: 'As long as your devotion to red is less than five, Purphoros isn't a creature' — irrelevant to the entry trigger, note it once. The four tokens enter simultaneously; Gifted Aetherborn enters later when the spell resolves.",
+      "commander_zone": "Edgar Markov is in the command zone"
+    },
+    "question": "Resolve the eminence trigger (4 tokens enter simultaneously per stack 002's verified math) and then the Gifted Aetherborn spell. How many Purphoros triggers fire for the simultaneous token entry (one per creature entering?), plus the Aetherborn's own entry — total triggers and total damage to EACH opponent from this single two-mana cast. Does opponent 2 at 10 die, on which trigger resolution, and does damage-caused loss here interact with anything else on this board? Give final life totals."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "All players pass priority; the stack resolves top-down. Edgar Markov's eminence trigger (top) resolves before the Gifted Aetherborn spell (pos 0, bottom).",
+        "effect": "The eminence trigger begins resolving; the Vampire spell waits on the stack.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "The eminence trigger resolves from the command zone. Its intervening 'if' clause ('if Edgar is in the command zone or on the battlefield') is rechecked on resolution and is still true; the ability functions from the command zone because it states its zones. This exact question was verified on this exact board in checker-passed stack 002.",
+        "effect": "The trigger instructs you to create a 1/1 black Vampire creature token: one token-creation event.",
+        "citations": [
+          {
+            "rule": "113.6b",
+            "quote": "An ability that states which zones it functions in functions only from those zones."
+          },
+          {
+            "rule": "603.4",
+            "quote": "If the ability triggers, it checks the stated condition again as it resolves. If the condition isn’t true at that time, the ability is removed from the stack and does nothing."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Anointed Procession ('If an effect would create one or more tokens under your control, it creates twice that many of those tokens instead') and Mondrak, Glory Dominus ('If one or more tokens would be created under your control, twice that many of those tokens are created instead') each apply once to the event, in an order you choose (symmetrical): 1 -> 2 -> 4, exactly as verified in stack 002. The four tokens are put onto the battlefield.",
+        "effect": "Four 1/1 black Vampire creature tokens enter the battlefield simultaneously under your control.",
+        "citations": [
+          {
+            "rule": "616.1",
+            "quote": "If two or more replacement and/or prevention effects are attempting to modify the way an event affects an object or player, the affected object’s controller (or its owner if it has no controller) or the affected player chooses one to apply"
+          },
+          {
+            "rule": "614.5",
+            "quote": "A replacement effect doesn’t invoke itself repeatedly; it gets only one opportunity to affect an event or any modified events that may replace that event."
+          },
+          {
+            "rule": "701.7a",
+            "quote": "To create one or more tokens with certain characteristics, put the specified number of tokens with the specified characteristics onto the battlefield."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "The single event of four creatures entering is checked against Purphoros's enters-the-battlefield trigger, 'Whenever another creature you control enters, Purphoros deals 2 damage to each opponent.' One event containing four occurrences of the trigger condition makes the ability trigger four times — one trigger per entering creature. Note once: Purphoros's 'As long as your devotion to red is less than five, Purphoros isn't a creature' is irrelevant here — the trigger asks whether the ENTERING permanents are creatures you control (the tokens are), and Purphoros's abilities function on the battlefield whether or not it is a creature.",
+        "effect": "Four separate Purphoros triggered abilities trigger.",
+        "citations": [
+          {
+            "rule": "603.6a",
+            "quote": "Each time an event puts one or more permanents onto the battlefield, all permanents on the battlefield (including the newcomers) are checked for any enters-the-battlefield triggers that match the event."
+          },
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+          },
+          {
+            "rule": "113.6",
+            "quote": "Abilities of all other objects usually function only while that object is on the battlefield."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Before a player receives priority, the four Purphoros triggers are put on the stack in the order their controller (you) chooses, above the waiting Gifted Aetherborn spell. Order is immaterial here — all four are identical.",
+        "effect": "Stack, top to bottom: four Purphoros triggers, then Gifted Aetherborn.",
+        "citations": [
+          {
+            "rule": "603.3b",
+            "quote": "each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose"
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "The four triggers resolve one at a time, with priority passed and state-based actions checked between each resolution. Each resolution: Purphoros deals 2 damage to each opponent; damage dealt to a player causes that much life loss. Running totals — after trigger 1: opp1 22, opp2 8; trigger 2: 20/6; trigger 3: 18/4; trigger 4: 16/2. At every intervening SBA check both opponents are above 0 life, so no one loses and nothing else happens.",
+        "effect": "After all four token-entry triggers: opponent 1 at 16, opponent 2 at 2. 8 damage dealt to each so far.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          },
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Gifted Aetherborn (targetless 2/3 Aetherborn Vampire creature spell with deathtouch, lifelink) resolves and enters the battlefield under your control. It is another creature you control entering — a fifth, separate entry event — so Purphoros triggers a fifth time.",
+        "effect": "Gifted Aetherborn is on the battlefield; a fifth Purphoros trigger goes on the stack.",
+        "citations": [
+          {
+            "rule": "608.3a",
+            "quote": "If the object that’s resolving has no targets, it becomes a permanent and enters the battlefield under the control of the spell’s controller."
+          },
+          {
+            "rule": "603.6a",
+            "quote": "Each time an event puts one or more permanents onto the battlefield, all permanents on the battlefield (including the newcomers) are checked for any enters-the-battlefield triggers that match the event."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "The fifth Purphoros trigger resolves: 2 damage to each opponent, causing 2 life loss each. Opponent 1: 16 -> 14. Opponent 2: 2 -> 0. Nothing else on this board interacts with this loss — the damage source is Purphoros, so Gifted Aetherborn's lifelink (which is its own ability) is not involved, and no other permanent here triggers on damage or life loss.",
+        "effect": "Opponent 1 at 14; opponent 2 at 0. Total from the {B}{B} cast: 5 triggers x 2 = 10 damage to EACH opponent.",
+        "citations": [
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "State-based actions are checked before any player would receive priority: opponent 2 has 0 life and loses the game — on the resolution of the FIFTH trigger (the Gifted Aetherborn entry), the last one. Opponent 2 leaves the game owning no objects (empty board), so nothing else changes. No Purphoros triggers remain after this one; had any remained (i.e., had opponent 2 died on an earlier trigger), your triggers are not among the leaving player's objects — they would remain on the stack, still resolve, and still deal 2 to opponent 1, the remaining opponent.",
+        "effect": "Opponent 2 is out of the game; opponent 1 remains at 14; the stack is empty and the game continues.",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "104.3b",
+            "quote": "If a player’s life total is 0 or less, that player loses the game the next time a player would receive priority. (This is a state-based action. See rule 704.)"
+          },
+          {
+            "rule": "800.4a",
+            "quote": "When a player leaves the game, all objects (see rule 109) owned by that player leave the game and any effects which give that player control of any objects or players end."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "One {B}{B} Vampire cast, through the verified 1->2->4 eminence doubling (stack 002), makes four tokens whose simultaneous entry is one event with four occurrences — four separate Purphoros triggers — plus a fifth trigger when Gifted Aetherborn itself resolves: 5 triggers x 2 = 10 damage to each opponent. Purphoros's devotion-dependent non-creature status is irrelevant to its own trigger. Opponent 2 (at 10) hits exactly 0 on the fifth and final trigger resolution and loses to the SBA check; opponent 1 ends at 14. Had the kill landed on an earlier trigger, the remaining triggers would still resolve against opponent 1.",
+      "you": {
+        "battlefield_new": [
+          "4x Vampire token — 1/1 black Vampire",
+          "Gifted Aetherborn — 2/3, deathtouch, lifelink"
+        ],
+        "battlefield_unchanged": [
+          "Purphoros, God of the Forge (indestructible; noncreature at current devotion — irrelevant to its trigger)",
+          "Anointed Procession",
+          "Mondrak, Glory Dominus",
+          "five lands minus {B}{B} spent"
+        ],
+        "command_zone": "Edgar Markov (still in the command zone)",
+        "life": "unchanged — no lifelink applied (Purphoros dealt the damage, not Gifted Aetherborn)"
+      },
+      "opponents": [
+        {
+          "life": 14,
+          "board": [],
+          "note": "opponent 1: 24 - 10 (five triggers x 2)"
+        },
+        {
+          "life": 0,
+          "board": [],
+          "note": "opponent 2: 10 - 10; loses the game on the fifth trigger's resolution (SBA before priority); owned no objects, so nothing left with them"
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Full rule confirms top-of-stack resolves first; eminence trigger (put on stack above the waiting spell) correctly resolves before Gifted Aetherborn."
+      },
+      {
+        "step": 2,
+        "rule": "113.6b",
+        "status": "supported",
+        "note": "Eminence's condition names the command zone; ability functions from there. Matches checker-passed stack 002 on this exact question."
+      },
+      {
+        "step": 2,
+        "rule": "603.4",
+        "status": "supported",
+        "note": "Intervening 'if' (Edgar in command zone or on battlefield) is rechecked on resolution; still true — scenario keeps Edgar in the command zone."
+      },
+      {
+        "step": 3,
+        "rule": "616.1",
+        "status": "supported",
+        "note": "Two self-replacement token doublers; affected player (you) chooses application order; symmetric, 1->2->4."
+      },
+      {
+        "step": 3,
+        "rule": "614.5",
+        "status": "supported",
+        "note": "Each doubler applies exactly once to the event/modified event — exactly the rule's doubling example; 4 tokens, not more."
+      },
+      {
+        "step": 3,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": "Create = put tokens onto the battlefield; all four are put on simultaneously as one event."
+      },
+      {
+        "step": 4,
+        "rule": "603.6a",
+        "status": "supported",
+        "note": "One event putting four permanents onto the battlefield; all permanents including newcomers checked for matching ETB triggers. Purphoros's 'Whenever another creature you control enters' matches each token."
+      },
+      {
+        "step": 4,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "One event containing four occurrences of the trigger condition -> ability triggers four times, one per entering creature. The rule's own example (all lands destroyed) is exactly this pattern."
+      },
+      {
+        "step": 4,
+        "rule": "113.6",
+        "status": "supported",
+        "note": "Purphoros's abilities function while it is on the battlefield regardless of creature status; verified against oracle text — devotion clause only removes the creature type, and the trigger condition tests the ENTERING permanents (the tokens are creatures you control, and 'another' excludes only Purphoros itself). Devotion note is correct and correctly labeled irrelevant. At 1 red pip devotion Purphoros is indeed a noncreature, as final_state says."
+      },
+      {
+        "step": 5,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Quote verbatim from full rule; you control all four identical triggers and order them above the waiting spell. Order-immaterial claim is fair (identical abilities, no targets)."
+      },
+      {
+        "step": 6,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Triggers resolve one at a time with priority passes between; correct."
+      },
+      {
+        "step": 6,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "Purphoros has no infect; 2 damage per resolution = 2 life loss per opponent. Running totals verified: opp1 24->22->20->18->16; opp2 10->8->6->4->2. Both above 0 at every intervening SBA check."
+      },
+      {
+        "step": 6,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "SBAs checked whenever a player would get priority — i.e., between each trigger resolution; no condition applies until after the fifth."
+      },
+      {
+        "step": 7,
+        "rule": "608.3a",
+        "status": "supported",
+        "note": "Gifted Aetherborn (verified in cards.json: {B}{B} 2/3 Aetherborn Vampire, deathtouch lifelink, no targets) becomes a permanent under your control on resolution."
+      },
+      {
+        "step": 7,
+        "rule": "603.6a",
+        "status": "supported",
+        "note": "Its entry is a separate, fifth event; Purphoros triggers a fifth time. No eminence re-trigger — eminence is cast-triggered and already fired. Correctly a fifth separate trigger, not part of the token event."
+      },
+      {
+        "step": 8,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "Fifth resolution: opp1 16->14, opp2 2->0. Total 5x2=10 to EACH opponent — arithmetic verified. Lifelink note correct: damage source is Purphoros, not Gifted Aetherborn, so no life gain."
+      },
+      {
+        "step": 8,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Life totals adjusted for the loss; straightforward."
+      },
+      {
+        "step": 9,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Opp2 at 0 loses via SBA. Timing correct: opp2 takes damage from all five triggers (2,4,6,8,10) and hits exactly 0 on the fifth and final resolution; earlier SBA checks find life > 0."
+      },
+      {
+        "step": 9,
+        "rule": "104.3b",
+        "status": "supported",
+        "note": "Loss happens the next time a player would receive priority — i.e., the SBA check immediately after the fifth trigger's resolution, before any player gets priority."
+      },
+      {
+        "step": 9,
+        "rule": "800.4a",
+        "status": "supported",
+        "note": "Counterfactual is rules-correct: triggers you control are your objects, not the leaving player's, so they would remain on the stack and resolve, dealing 2 to the surviving opponent ('each opponent' then reaches only opp1). Full rule read in context; the leave-the-game mechanics support the claim. Scenario's 'owning no objects' is a scenario abstraction (empty board as given) and changes nothing."
+      }
+    ],
+    "iterations": 1
+  }
+}
