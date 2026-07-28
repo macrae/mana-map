@@ -1,17 +1,27 @@
 {
   "banned": [],
-  "combo_bracket_floor": 1,
-  "combo_count": 0,
+  "combo_bracket_floor": 3,
+  "combo_count": 1,
   "drivers": [
     {
       "detail": "2 Game Changer(s): Enlightened Tutor, Worldly Tutor",
       "forces": 3,
       "signal": "game_changers"
+    },
+    {
+      "detail": "highest-bracket line present: Polyraptor + Forerunner of the Empire",
+      "forces": 3,
+      "signal": "combo_content"
+    },
+    {
+      "detail": "1 two-card infinite(s); 1 assemble at mana value <= 6. e.g. Polyraptor + Forerunner of the Empire",
+      "forces": 4,
+      "signal": "two_card_infinite"
     }
   ],
   "excluded_commander_assumption": [],
-  "floor": 3,
-  "floor_name": "Upgraded",
+  "floor": 4,
+  "floor_name": "Optimized",
   "game_changers": [
     "Enlightened Tutor",
     "Worldly Tutor"
@@ -24,5 +34,21 @@
   ],
   "slug": "gishath",
   "tutors": [],
-  "two_card_infinites": []
+  "two_card_infinites": [
+    {
+      "bracket": 3,
+      "cards": [
+        "Polyraptor",
+        "Forerunner of the Empire"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite creature tokens",
+        "Infinite damage to all creatures",
+        "Infinite death triggers",
+        "Infinite ETB",
+        "Infinite LTB"
+      ]
+    }
+  ]
 }

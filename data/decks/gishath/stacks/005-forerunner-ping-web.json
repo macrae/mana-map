@@ -1,0 +1,315 @@
+{
+  "id": "005",
+  "slug": "forerunner-ping-web",
+  "deck": "gishath",
+  "title": "One ping, five payoffs: the post-swap enrage web",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Forerunner of the Empire (1/3 Human Soldier, no damage marked)",
+        "Ranging Raptors (2/3)",
+        "Trapjaw Tyrant (5/5)",
+        "Ripjaw Raptor (4/5)",
+        "Polyraptor (5/5, no damage marked)",
+        "lands (a basic Forest remains in your library)"
+      ],
+      "opponents": [
+        {
+          "life": 35,
+          "board": [
+            "a 3/3 creature",
+            "a 1/1 creature token"
+          ]
+        },
+        {
+          "life": 40,
+          "board": []
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Forerunner of the Empire's damage trigger",
+        "controller": "you",
+        "note": "Itzquinth, Firstborn of Gishath (a Dinosaur) just entered under your control; Forerunner's OPTIONAL trigger 'you may have this creature deal 1 damage to each creature' is on the stack and you have chosen YES"
+      }
+    ],
+    "extras": {
+      "context": "SWAP-BLOCK VERIFICATION (the block has since been APPLIED — HISTORY.md 2026-07-28): this is the board the applied block creates (Forerunner, Ranging Raptors, Trapjaw Tyrant and Polyraptor now maindeck; Ripjaw Raptor maindeck). Forerunner of the Empire is a HUMAN SOLDIER, not a Dinosaur: 'Whenever a Dinosaur you control enters, you may have this creature deal 1 damage to each creature.' Ranging Raptors enrage: search a basic land onto the battlefield tapped (optional, 'you may'). Trapjaw Tyrant enrage: 'exile target creature an opponent controls until this creature leaves the battlefield' (mandatory trigger with a target). Ripjaw Raptor enrage: draw a card. Polyraptor enrage: create a copy token. Temple Altisaur is NOT on this board — note anyway that a 1-damage ping is unaffected by 'prevent all but 1'. One ping hits EVERY creature: your five, Itzquinth, and both opponents' creatures.",
+      "entered_this_turn": "Itzquinth, Firstborn of Gishath (2/3 Dinosaur)"
+    },
+    "question": "Resolve the single ping: 1 damage to each of the eight creatures. Enumerate every trigger it produces — Ranging Raptors' optional basic fetch, Trapjaw's mandatory exile (choose the opponent's 3/3), Ripjaw's draw, Polyraptor's copy, and Itzquinth's own enrage if it has one (verify its oracle text) — and their ordering/targets. Does Forerunner damage itself (it is not a Dinosaur and not protected — 1 of 3), do the opponents' 1/1 token and 3/3 take 1 (does the token die), and does Polyraptor's copy ENTERING grant Forerunner another optional trigger (the stack-003 chain re-arming)? Give the full yield of one ping and the state after declining the second trigger."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Forerunner of the Empire's trigger (pos 0) resolves. The 'you may' choice is made now, on resolution (not earlier, despite the scenario's 'you have chosen YES' framing); you choose yes, and Forerunner deals 1 damage to each creature — all eight: Forerunner itself, Ranging Raptors, Trapjaw Tyrant, Ripjaw Raptor, Polyraptor, Itzquinth, and the opponent's 3/3 and 1/1 token. Forerunner is a creature, so its own sweep hits it (1 of 3 on a 1/3 Human Soldier); it is not a Dinosaur and has no enrage, so its self-damage yields nothing. Itzquinth's oracle text is Haste plus an enters-the-battlefield 'you may pay {2}' trigger — it has NO enrage, so its 1 damage is just marked with no trigger. The opponents' vanilla 3/3 and 1/1 likewise produce no triggers.",
+        "effect": "1 damage marked on each of the eight creatures: Forerunner 1/3 (1), Ranging Raptors 2/3 (1), Trapjaw 5/5 (1), Ripjaw 4/5 (1), Polyraptor 5/5 (1), Itzquinth 2/3 (1), opp 3/3 (1), opp 1/1 (1).",
+        "citations": [
+          {
+            "rule": "603.5",
+            "quote": "The choice is made when the ability resolves."
+          },
+          {
+            "rule": "302.7",
+            "quote": "Damage dealt to a creature by a source with neither wither nor infect is marked on that creature"
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "State-based actions are checked and performed BEFORE any waiting triggers go on the stack. The opponent's 1/1 token has 1 damage marked on 1 toughness — lethal — and is destroyed; as a token in the graveyard it then ceases to exist. Every other creature has toughness 3+ and survives 1 damage.",
+        "effect": "The opponents' 1/1 token dies to the ping and ceases to exist. All seven other creatures survive with 1 marked.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event"
+          },
+          {
+            "rule": "704.5g",
+            "quote": "the total damage marked on it is greater than or equal to its toughness, that creature has been dealt lethal damage and is destroyed"
+          },
+          {
+            "rule": "704.5d",
+            "quote": "If a token is in a zone other than the battlefield, it ceases to exist."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "The trigger wave is counted and stacked: exactly FOUR enrage triggers fired — Ranging Raptors, Trapjaw Tyrant, Ripjaw Raptor, Polyraptor (Itzquinth and Forerunner have no enrage; the opponents' creatures have none). All four are yours, so no APNAP contention arises: you put your own simultaneous triggers on the stack in any order you choose. Trapjaw's trigger is targeted, and its target is chosen NOW, as it goes on the stack — the 1/1 already ceased to exist in step 2, so the opponent's 3/3 is the only legal target and you choose it. You stack them to resolve: Trapjaw first, then Ripjaw, then Ranging Raptors, then Polyraptor last.",
+        "effect": "Stack (top to bottom): [Trapjaw exile targeting the 3/3, Ripjaw draw, Ranging Raptors fetch, Polyraptor copy].",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "otherwise all triggered abilities that are waiting to be put on the stack are put on the stack"
+          },
+          {
+            "rule": "603.3b",
+            "quote": "on the stack in any order they choose"
+          },
+          {
+            "rule": "115.1d",
+            "quote": "The target(s) are chosen as the ability is put on the stack"
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Trapjaw Tyrant's enrage resolves: the opponent's 3/3 is exiled until Trapjaw leaves the battlefield. This is a one-shot exile with a linked return — if Trapjaw ever leaves, a second one-shot effect returns the 3/3. The 1 damage marked on the 3/3 stops mattering; exile removes it from combat math entirely.",
+        "effect": "Opponent A's 3/3 is exiled (returns only if Trapjaw leaves the battlefield). Opponent A's board is now empty.",
+        "citations": [
+          {
+            "rule": "610.3",
+            "quote": "A second one-shot effect is created immediately after the specified event. This second one-shot effect returns the object to its previous zone."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Ripjaw Raptor's enrage resolves: you draw a card (mandatory).",
+        "effect": "You draw the top card of your library. Hand: 1 card.",
+        "citations": [
+          {
+            "rule": "121.1",
+            "quote": "A player draws a card by putting the top card of their library into their hand."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Ranging Raptors' enrage resolves. This one IS optional ('you may search'); you choose yes on resolution, search your library, put the basic Forest onto the battlefield tapped, then shuffle. A Forest is a land entering, not a Dinosaur — Forerunner's 'Whenever a Dinosaur you control enters' condition does not match, so no new Forerunner trigger.",
+        "effect": "A tapped basic Forest joins your battlefield; library shuffled. No Forerunner trigger from the land.",
+        "citations": [
+          {
+            "rule": "603.5",
+            "quote": "The choice is made when the ability resolves."
+          },
+          {
+            "rule": "701.23a",
+            "quote": "To search for a card in a zone, look at all cards in that zone"
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Polyraptor's enrage resolves: create a token that's a copy of Polyraptor — a fresh 5/5 Dinosaur with Enrage and no damage marked (damage and counters are not copiable values). The token entering IS a Dinosaur you control entering, so Forerunner — alive at 1 of 3 — triggers again: the ping web re-arms exactly as in stack 003.",
+        "effect": "Polyraptor token (5/5, Enrage, 0 damage) on your battlefield. Stack: [Forerunner's second optional trigger].",
+        "citations": [
+          {
+            "rule": "701.7a",
+            "quote": "put the specified number of tokens with the specified characteristics onto the battlefield"
+          },
+          {
+            "rule": "707.2",
+            "quote": "the copy acquires the copiable values of the original object’s characteristics"
+          },
+          {
+            "rule": "603.6a",
+            "quote": "Enters-the-battlefield abilities trigger when a permanent enters the battlefield."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Forerunner's second trigger resolves and the pilot DECLINES — the 'you may' choice is made on resolution, and saying no simply spends the trigger with no effect. This is the safe close: a second sweep would put Ranging Raptors and Itzquinth to 2 of 3, Forerunner to 2 of 3, and start another enrage wave with no defensive payoff left (the 3/3 is already exiled, the 1/1 already dead). The chain is stoppable at every link, exactly as stack 003 established.",
+        "effect": "Trigger resolves with no effect. Stack empty; the turn can end. At cleanup all marked damage is removed, so every survivor resets to undamaged.",
+        "citations": [
+          {
+            "rule": "603.5",
+            "quote": "The choice is made when the ability resolves."
+          },
+          {
+            "rule": "514.2",
+            "quote": "all damage marked on permanents (including phased-out permanents) is removed"
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "One ping yields five payoffs: the opponents' 1/1 token dies to state-based actions, the opponents' 3/3 is exiled under Trapjaw Tyrant (Trapjaw's target, chosen as the trigger went on the stack), you draw a card off Ripjaw, ramp a tapped Forest off Ranging Raptors, and add a Polyraptor copy token. Costs: 1 damage marked on each of your six creatures until cleanup (all survive; Forerunner takes 1 of 3 from its own sweep). Itzquinth has no enrage, so it contributes nothing beyond having triggered the ping by entering. The copy token entering re-arms Forerunner with a genuinely new optional trigger; declining it closes the turn with the full yield banked and no further self-damage.",
+      "you": {
+        "battlefield": [
+          "Forerunner of the Empire 1/3 (1 damage marked until cleanup)",
+          "Ranging Raptors 2/3 (1 marked)",
+          "Trapjaw Tyrant 5/5 (1 marked; holding the exiled 3/3)",
+          "Ripjaw Raptor 4/5 (1 marked)",
+          "Polyraptor 5/5 (1 marked)",
+          "Itzquinth, Firstborn of Gishath 2/3 (1 marked)",
+          "Polyraptor copy token 5/5 (no damage)",
+          "basic Forest (tapped) + other lands"
+        ],
+        "hand": [
+          "1 card (Ripjaw draw)"
+        ],
+        "notes": "All marked damage clears at cleanup; every creature survives."
+      },
+      "opponents": [
+        {
+          "life": 35,
+          "board": [],
+          "notes": "1/1 token destroyed by SBA and ceased to exist; 3/3 exiled until Trapjaw Tyrant leaves the battlefield"
+        },
+        {
+          "life": 40,
+          "board": []
+        }
+      ],
+      "answer": "Yes to every question: the single ping hits all eight creatures including Forerunner itself (1 of 3, no enrage, no protection); Itzquinth's verified oracle text has NO enrage (Haste plus an optional pay-{2} ETB trigger), so it just takes 1; the opponents' 1/1 dies to state-based actions before triggers stack, leaving the 3/3 as Trapjaw's only legal target — chosen when the trigger is put on the stack; the wave is exactly four enrage triggers (fetch, exile, draw, copy), all yours to order; and the Polyraptor token's entry DOES grant Forerunner a new optional trigger, which the pilot declines to end the turn with everything banked."
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "603.5",
+        "status": "supported",
+        "note": "Full rule confirms the 'may' choice on an optional trigger is made at resolution, not when stacked; resolution correctly overrides the scenario's 'chosen YES' framing."
+      },
+      {
+        "step": 1,
+        "rule": "302.7",
+        "status": "supported",
+        "note": "Damage from a source with neither wither nor infect is marked; 1 marked on each of the eight creatures is correct. Card facts verified: Forerunner is a Human Soldier (hits itself, no enrage); Itzquinth's verbatim oracle is 'Haste' plus 'When Itzquinth enters, you may pay {2}. When you do, target Dinosaur you control deals damage equal to its power to another target creature.' — NO enrage, exactly as claimed."
+      },
+      {
+        "step": 2,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Full rule establishes SBAs are checked and performed (and re-checked) BEFORE waiting triggered abilities go on the stack; the 1/1 dies and, on the repeated check, ceases to exist before any trigger is stacked."
+      },
+      {
+        "step": 2,
+        "rule": "704.5g",
+        "status": "supported",
+        "note": "1 marked >= 1 toughness: lethal, destroyed. All other seven creatures have toughness 3+ and survive (Forerunner 1/3 at 1-of-3)."
+      },
+      {
+        "step": 2,
+        "rule": "704.5d",
+        "status": "supported",
+        "note": "Token in graveyard ceases to exist on the subsequent SBA check."
+      },
+      {
+        "step": 3,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "'otherwise all triggered abilities that are waiting...' is verbatim and in context: triggers stack only after SBAs settle."
+      },
+      {
+        "step": 3,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "All four enrage triggers (Ranging, Trapjaw, Ripjaw, Polyraptor) are controlled by one player, who orders them freely. Count verified against oracle text: Itzquinth, Forerunner, and both opponent creatures have no damage triggers — exactly four."
+      },
+      {
+        "step": 3,
+        "rule": "115.1d",
+        "status": "supported",
+        "note": "Targets chosen as the ability is put on the stack; since the 1/1 ceased to exist during the SBA phase, the 3/3 is the only legal target for 'target creature an opponent controls' (opponent B's board is empty). Load-bearing sequencing confirmed."
+      },
+      {
+        "step": 4,
+        "rule": "610.3",
+        "status": "supported",
+        "note": "Exile-until from a resolved triggered ability is a one-shot effect with a linked second one-shot return effect. Trapjaw oracle verbatim: 'exile target creature an opponent controls until this creature leaves the battlefield' — mandatory, as claimed."
+      },
+      {
+        "step": 5,
+        "rule": "121.1",
+        "status": "supported",
+        "note": "Ripjaw enrage 'draw a card' is mandatory; draw = top of library to hand."
+      },
+      {
+        "step": 6,
+        "rule": "603.5",
+        "status": "supported",
+        "note": "Ranging Raptors' enrage contains 'you may search' — optional, choice at resolution. Oracle verbatim: basic land onto the battlefield tapped, then shuffle."
+      },
+      {
+        "step": 6,
+        "rule": "701.23a",
+        "status": "supported",
+        "note": "Search mechanics correct; a Forest entering is not 'a Dinosaur you control enters', so no new Forerunner trigger — correct."
+      },
+      {
+        "step": 7,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": "Create-token mechanics correct."
+      },
+      {
+        "step": 7,
+        "rule": "707.2",
+        "status": "supported",
+        "note": "Copy acquires copiable values only; rule explicitly excludes counters, and marked damage is not a characteristic, so the token enters as an undamaged 5/5 Dinosaur with Enrage."
+      },
+      {
+        "step": 7,
+        "rule": "603.6a",
+        "status": "supported",
+        "note": "Full rule covers 'Whenever a [type] enters' wording; the copy token entering is a Dinosaur you control entering, so Forerunner (alive at 1-of-3) gets a genuinely new optional trigger."
+      },
+      {
+        "step": 8,
+        "rule": "603.5",
+        "status": "supported",
+        "note": "Declining the 'may' at resolution spends the trigger with no effect."
+      },
+      {
+        "step": 8,
+        "rule": "514.2",
+        "status": "supported",
+        "note": "All marked damage removed at cleanup; final-state note correct."
+      }
+    ],
+    "iterations": 1
+  }
+}
