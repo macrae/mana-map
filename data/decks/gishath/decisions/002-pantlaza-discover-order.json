@@ -1,0 +1,96 @@
+{
+  "id": "002",
+  "slug": "pantlaza-discover-order",
+  "deck": "gishath",
+  "kind": "decision",
+  "title": "Nine triggers, one discover: ordering the Gishath cascade so the once-per-turn lands at X=6",
+  "scenario": {
+    "board": {
+      "you": "Combat damage step. Gishath, Sun's Avatar (7/6, vigilance, trample, haste) attacked the open seat unblocked and dealt 7. Also on the battlefield: Pantlaza, Sun-Favored (4/4 — its once-per-turn discover has NOT been used this turn), Garruk's Uprising, eight lands (two untapped).",
+      "opponents": [
+        {
+          "seat": "1 — just took the hit",
+          "life": 26,
+          "board": "empty"
+        },
+        {
+          "seat": "2",
+          "life": 40,
+          "board": "a 4/4 creature"
+        }
+      ]
+    },
+    "hand": [],
+    "mana_available": "two untapped lands",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Gishath's combat damage trigger",
+        "controller": "you",
+        "note": "Resolving now. Revealed seven: Regisaur Alpha (4/4 Dino), Ripjaw Raptor (4/5 Dino), Carnage Tyrant (7/6 Dino), Ravenous Sailback (3/4 Dino), Cultivate, Mountain, Path to Exile. You put all four Dinosaur creature cards onto the battlefield — one event, simultaneous entry; the three non-Dinosaurs go to the bottom in random order."
+      }
+    ],
+    "extras": {
+      "context": "The simultaneous entry produces NINE triggered abilities you control, all placed on the stack in any order you choose: four Pantlaza discover triggers (X = each enterer's toughness: 4 for Regisaur Alpha, 5 for Ripjaw Raptor, 6 for Carnage Tyrant, 4 for Ravenous Sailback), three Garruk's Uprising draws (Regisaur, Ripjaw, and Carnage Tyrant have power 4+; the 3-power Sailback does not), Regisaur Alpha's create-a-3/3-token trigger, and Ravenous Sailback's modal ETB. Regisaur Alpha's haste grant is a static ability — every Dinosaur you control has haste regardless of what order anything resolves. This is the exact scenario of verified stack 001.",
+      "constraint": "Pantlaza's rider is once each TURN, not once each combat or once each event — whichever discover you take here is the only one until your next turn."
+    },
+    "question": "You choose the order for all nine triggers. Which Pantlaza trigger do you actually take, and where in the stack does Regisaur Alpha's token trigger go?"
+  },
+  "branches": [
+    {
+      "choice": "Carnage Tyrant's discover on top, Regisaur's token trigger on the bottom — take X=6, decline the rest",
+      "line": "Place the token trigger first (bottom), then Sailback's modal trigger, then the spare Pantlaza triggers (X=4, X=5, X=4), then the three Uprising draws, and Carnage Tyrant's Pantlaza trigger LAST — so it resolves FIRST. Discover 6. Decline the remaining Pantlaza triggers as they resolve. The token enters dead last, after the once-per-turn is already spent, so it cannot generate a live Pantlaza trigger.",
+      "signals": "To the table this is one flurry of value — but a pilot who visibly sequences the discover before the token tells everyone they know the deck cold. Expect removal priorities to shift onto Pantlaza afterward.",
+      "coalition_risk": "None beyond what the connection already caused. The cascade itself — not its ordering — is what the table responds to.",
+      "coaching": "This is verified stack 001's exact line: five new bodies, three draws, and the discover at X=6 off one connection. The stack is last-in-first-out and you control the order of all nine, so there is no excuse for taking less than the maximum X — discover 6 stops on the first nonland with mana value 6 or less and casts it free, and this deck's density of 5- and 6-drops makes that ceiling worth protecting. Burying the token trigger is the discipline: it resolves after the discover is spent, so the 3/3's entry triggers nothing. And the haste question is already answered by Regisaur's static ability — entering last costs the token nothing.",
+      "citations": [
+        {
+          "rule": "603.3b",
+          "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+        },
+        {
+          "rule": "405.2",
+          "quote": "The stack keeps track of the order that spells and/or abilities were added to it. Each time an object is put on the stack, it’s put on top of all objects already there."
+        },
+        {
+          "rule": "603.2c",
+          "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+        }
+      ]
+    },
+    {
+      "choice": "Token trigger on top — 'get the body online first'",
+      "line": "Place Regisaur Alpha's token trigger last so it resolves first, making the 3/3 immediately, then work through the draws and discovers.",
+      "signals": "Looks proactive — a body now against removal, an attacker for a second combat. Both reads are illusions: the token has haste from Regisaur's static whenever it enters this turn, and nothing in this stack threatens it.",
+      "coalition_risk": "None directly, but a misordered cascade that whiffs its discover produces a visibly weaker board — and the table's wrath math gets easier when your burst underdelivers.",
+      "coaching": "Here is the leak stack 001 exists to teach: the token enters while your four Pantlaza triggers still sit UNRESOLVED below it, and because you have not yet taken the discover this turn, Pantlaza's once-per-turn rider does not stop it triggering AGAIN — the token's entry leaks a fifth Pantlaza trigger at X=3, and new objects go on TOP of the stack, so that X=3 resolves before your X=6. Now you must consciously decline the X=3 (and every spare) to reach the Carnage Tyrant trigger intact; say yes one trigger early and your once-per-turn is burned at the floor — a discover capped at mana value 3 in a deck whose payoffs start at 5. You gained nothing for taking on that trap: the haste is static, the body was never in danger. Resolve the discover BEFORE the token trigger, always.",
+      "citations": [
+        {
+          "rule": "603.2h",
+          "quote": "A triggered ability may have an instruction followed by “Do this only once each turn.” This ability triggers only if its source’s controller has not yet taken the indicated action that turn."
+        },
+        {
+          "rule": "405.2",
+          "quote": "Each time an object is put on the stack, it’s put on top of all objects already there."
+        }
+      ]
+    },
+    {
+      "choice": "Take the first spare discover at X=4 — 'a cheaper X digs deeper for cheap spells'",
+      "line": "Order the triggers casually and say yes to the Regisaur Alpha discover (X=4), reasoning that a lower X skips your expensive cards and digs toward cheap interaction or ramp.",
+      "signals": "None the table can see — this mistake is invisible from across the table, which is exactly why it goes uncorrected in playgroups for years.",
+      "coalition_risk": "None. The cost is paid entirely in your own expected value.",
+      "coaching": "The digging logic is technically real — discover X skips nonlands above X, so X=4 digs past a 5-drop that X=6 would stop on — but it optimizes for the wrong turn. You just put five bodies onto the battlefield; you do not need the Cultivate this deck would dig to, you need the biggest free spell available, and X=6 is the widest net: it can stop on anything X=4 can only if it appears before a 5-6 drop, and everything a 5-6 drop IS. On the turn your board quintuples, ceiling beats depth. Take X=6 (Carnage Tyrant), decline the rest, and if what you truly need is land, remember the discover is a may — declining ALL four is legal and keeps the library intact. What is never right is spending the once-per-turn at X=4 while an X=6 sits one trigger away on a stack whose order you control.",
+      "citations": [
+        {
+          "rule": "603.3b",
+          "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+        }
+      ]
+    }
+  ],
+  "recommendation": {
+    "choice": "Carnage Tyrant's discover on top, Regisaur's token trigger on the bottom — take X=6, decline the rest",
+    "rationale": "Verified stack 001 establishes both the payoff and the trap: ordered correctly the cascade yields five bodies, three draws, and a discover at X=6; ordered token-first it leaks a fifth Pantlaza trigger at X=3 that sits on top of your best one and dares you to spend the once-per-turn at the floor. The stack order is entirely yours (603.3b), the token loses nothing by entering last (haste is static), and X=6 is the widest free-cast net in a deck built out of 5- and 6-drops. Discover before the token, ceiling over depth, every time."
+  }
+}

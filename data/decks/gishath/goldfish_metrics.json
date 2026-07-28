@@ -1,0 +1,138 @@
+{
+  "meta": {
+    "commander": "Gishath, Sun's Avatar",
+    "commander_cmc": 8,
+    "deck": "gishath",
+    "decklist_sha256": "7f1a23e468601dca04cc725321eceddfa0f9ab69e705bb4466d434b78e2160ef",
+    "iterations": 10000,
+    "max_turn": 10,
+    "model_assumptions": [
+      "Simulates resource development, not full games (no interaction, no removal).",
+      "Draw every turn including turn 1 (multiplayer Commander).",
+      "Mulligan: keep 7-card hands with 2-5 lands; up to 2 fresh redraws, keep the last.",
+      "One land drop per turn when available.",
+      "Mana rocks ('{T}: Add') contribute from the turn after they are cast.",
+      "Commander cast on first affordable turn (highest spending priority).",
+      "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
+      "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+      "Cost reducers, rituals, and extra card draw are not modeled (conservative)."
+    ],
+    "seed": 42
+  },
+  "metrics": {
+    "commander": {
+      "cast_by_turn_6_rate": 0.09,
+      "cast_turn_histogram": {
+        "10": 810,
+        "3": 5,
+        "4": 71,
+        "5": 179,
+        "6": 642,
+        "7": 635,
+        "8": 1360,
+        "9": 838,
+        "not_by_max_turn": 5460
+      },
+      "mean_cast_turn": 7.932,
+      "median_cast_turn": 8
+    },
+    "iterations": 10000,
+    "land_drop_hit_rate_by_turn": {
+      "1": 0.999,
+      "10": 0.351,
+      "2": 0.996,
+      "3": 0.897,
+      "4": 0.76,
+      "5": 0.627,
+      "6": 0.519,
+      "7": 0.446,
+      "8": 0.408,
+      "9": 0.374
+    },
+    "mean_available_mana_by_turn": {
+      "1": 0.999,
+      "10": 7.331,
+      "2": 2.145,
+      "3": 3.32,
+      "4": 4.223,
+      "5": 4.914,
+      "6": 5.494,
+      "7": 6.002,
+      "8": 6.476,
+      "9": 6.913
+    },
+    "mean_bodies_by_turn": {
+      "1": 0.0,
+      "10": 4.875,
+      "2": 0.281,
+      "3": 0.801,
+      "4": 1.345,
+      "5": 1.999,
+      "6": 2.598,
+      "7": 3.194,
+      "8": 3.733,
+      "9": 4.312
+    },
+    "opening_hand": {
+      "first_seven_land_histogram": {
+        "0": 389,
+        "1": 1798,
+        "2": 3062,
+        "3": 2804,
+        "4": 1416,
+        "5": 442,
+        "6": 83,
+        "7": 6
+      },
+      "keep_first_seven_rate": 0.772,
+      "kept_hand_land_histogram": {
+        "0": 18,
+        "1": 86,
+        "2": 3885,
+        "3": 3572,
+        "4": 1844,
+        "5": 591,
+        "6": 4
+      },
+      "mean_mulligans": 0.279
+    },
+    "targets": [
+      {
+        "assembled_rate": 0.902,
+        "by_turn_6_rate": 0.82,
+        "label": "Ramp or fixing drawn",
+        "mean_turn": 2.232
+      },
+      {
+        "assembled_rate": 0.672,
+        "by_turn_6_rate": 0.559,
+        "label": "Cost reducer or cheat-into-play drawn",
+        "mean_turn": 3.004
+      },
+      {
+        "assembled_rate": 0.672,
+        "by_turn_6_rate": 0.56,
+        "label": "Dinosaur payoff drawn (per-dino trigger engine)",
+        "mean_turn": 3.003
+      },
+      {
+        "assembled_rate": 0.618,
+        "by_turn_6_rate": 0.512,
+        "label": "The Gishath connection kit (haste or evasion for the 7/6)",
+        "mean_turn": 3.016
+      },
+      {
+        "assembled_rate": 0.599,
+        "by_turn_6_rate": 0.487,
+        "label": "Enrage engine drawn",
+        "mean_turn": 3.168
+      },
+      {
+        "assembled_rate": 0.601,
+        "by_turn_6_rate": 0.492,
+        "label": "Protection held for the board",
+        "mean_turn": 3.169
+      }
+    ]
+  }
+}

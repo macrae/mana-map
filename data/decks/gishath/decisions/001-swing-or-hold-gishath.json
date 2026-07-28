@@ -1,0 +1,97 @@
+{
+  "id": "001",
+  "slug": "swing-or-hold-gishath",
+  "deck": "gishath",
+  "kind": "decision",
+  "title": "Turn 8, Gishath resolving, two blue seats passed: swing now on one free trick, or untap into the covered line?",
+  "scenario": {
+    "board": {
+      "you": "Turn 8, precombat main. Battlefield: eight lands including Rogue's Passage and Secluded Courtyard (naming Dinosaur), Boros Signet, Drover of the Mighty, Pantlaza, Sun-Favored. Nine mana was available; Gishath, Sun's Avatar was cast from the command zone for eight (first cast — no tax) and is on the stack with one mana still open. Rogue's Passage's {4} activation is NOT affordable this turn.",
+      "opponents": [
+        {
+          "seat": "A — Azorius flash control",
+          "life": 35,
+          "board": "four untapped lands (two produce blue), a 2/4 wall, drew two extra cards last turn. Stated archetypal assumption: holds a sorcery-speed wrath and one counterspell."
+        },
+        {
+          "seat": "B — Simic tempo",
+          "life": 29,
+          "board": "two Islands open, two 3/3 fliers. Passed on Gishath."
+        },
+        {
+          "seat": "C — Gruul midrange",
+          "life": 21,
+          "board": "empty — swept by Seat A last turn; fully tapped out."
+        }
+      ]
+    },
+    "hand": [
+      "Flawless Maneuver",
+      "Cultivate",
+      "Ripjaw Raptor"
+    ],
+    "mana_available": "{G} (Drover) after paying for Gishath; Flawless Maneuver is castable for free once Gishath resolves (you control a commander)",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Gishath, Sun's Avatar (cast from the command zone)",
+        "controller": "you",
+        "note": "Both blue seats have passed priority — the counterspell window on the commander itself is closing. Gishath will resolve with haste, vigilance, trample. The table has not seen Flawless Maneuver; nobody knows whether you hold protection."
+      }
+    ],
+    "extras": {
+      "context": "The table read: your mana has been visible all game — goldfish mean cast turn is 7.932, median 8, so every experienced opponent expected the commander THIS turn and Seat A's held wrath is priced for it. Your protection is unknown information: the deck holds a board trick by turn 6 in only 49% of goldfish games, so the table cannot assume you have one.",
+      "assumption": "Seat A wraths at sorcery speed on their own turn when it maximizes value; the held counterspell is now earmarked for a protection spell or a follow-up threat, not the already-resolving commander."
+    },
+    "question": "Gishath resolves. Do you attack Seat C's empty board immediately with Flawless Maneuver as your only cover, hold Gishath home and untap into a covered Rogue's Passage swing, or attack Seat A to pressure the wrath-holder?"
+  },
+  "branches": [
+    {
+      "choice": "Swing at Seat C now — Flawless Maneuver is the cover",
+      "line": "Declare Gishath attacking Seat C. The lane is genuinely open: no blockers, no untapped mana. Haste makes the cast-turn attack legal; the connection deals 7 and reveals 7. Hold the free Flawless Maneuver through the entire next rotation — it costs zero mana while your commander is on the battlefield, so Seat A's wrath turn walks into indestructible for free.",
+      "signals": "Casting AND connecting in one turn flips you to archenemy on the spot — but the trigger's payoff (bodies, draws, a discover) is banked before anyone gets a wrath window. Your one floating {G} plus an 'attack with no protection mana open' look invites the wrath; that read is exactly wrong, and Maneuver punishes it.",
+      "coalition_risk": "Real but bounded: you are hitting the seat that just got wrathed, which reads as bullying the weak player, and Seats A and B will start coordinating against you next rotation. Accepted — the trigger converts one attack into a board plus cards, and resources banked now survive the coalition's answer.",
+      "coaching": "This is the pivot-window play: the counter window on Gishath already closed when both blue seats passed, the open lane exists RIGHT NOW and closes when Seat C untaps and redeploys, and your cover is free. The recast-tax math is the whole argument for swinging covered rather than waiting for perfect: an answered Gishath costs {2} more plus a tempo turn each time — but an UNSWUNG Gishath that eats the sorcery-speed wrath next turn costs the same and banked nothing. Maneuver does not beat exile or bounce; it beats exactly what the stated assumption says Seat A holds. Swing, bank the trigger, and plan to be archenemy with the resources to survive it.",
+      "citations": [
+        {
+          "rule": "702.10b",
+          "quote": "If a creature has haste, it can attack even if it hasn’t been controlled by its controller continuously since their most recent turn began."
+        },
+        {
+          "rule": "903.8",
+          "quote": "A commander cast from the command zone costs an additional {2} for each previous time the player casting it has cast it from the command zone that game."
+        }
+      ]
+    },
+    {
+      "choice": "Hold Gishath home — untap into Rogue's Passage plus open protection",
+      "line": "Resolve Gishath, attack with nothing, pass with vigilant blockers up. Next turn, ten mana: activate Rogue's Passage in the declare attackers step (before blockers — evasion gained after a legal block is declared does not undo the block), guaranteeing a full 7-card reveal with Maneuver still free behind it.",
+      "signals": "A resolved 7/6 commander doing nothing is still the loudest object on the battlefield — you take on the full archenemy signal WITHOUT banking any payoff. Seat A now gets to wrath on their own schedule, into a board that gained nothing.",
+      "coalition_risk": "Highest of the three, disguised as lowest: the table's wrath-holder gets a free rotation to answer you at maximum value, and Seats B and C get a turn to redeploy blockers and countermagic. Patience here reads as safety but functions as a gift.",
+      "coaching": "Audit what the covered line actually buys. Passage's guarantee matters against real blockers — but Seat C has NO blockers this turn, so you are paying a full rotation to insure against a risk that does not currently exist, while the risk that does exist (the sorcery-speed wrath) grows. Per the pivot-window discipline, assume every held answer appears the moment the 8-drop is on the table — that clock started when Gishath hit the stack, not when you choose to attack. Worse, Maneuver is only free WHILE you control your commander: if Seat A answers Gishath during your off-turn, your protection becomes a 3-mana spell protecting nothing. This is the line for a board where every lane is blocked. That is not this board.",
+      "citations": [
+        {
+          "rule": "509.1b",
+          "quote": "If an attacking creature gains or loses an evasion ability after a legal block has been declared, it doesn’t affect that block."
+        }
+      ]
+    },
+    {
+      "choice": "Swing at Seat A — pressure the wrath-holder",
+      "line": "Declare Gishath attacking Seat A, reasoning that the player holding the wrath is the real threat and 7 damage plus the reveal punishes them directly.",
+      "signals": "Attacking the control seat announces that you have identified them as the problem — which they answer with mana, not life total. It also tells Seats B and C you will do their fighting for them, and they will happily let you.",
+      "coalition_risk": "Low social cost, high strategic cost: you spend your best turn attacking the one seat equipped to make it worthless, while the actually-open lane closes behind you.",
+      "coaching": "The trigger scales with damage DEALT to a player, and that is the whole problem: Seat A's 2/4 wall chump-blocks, trample forces you to assign 4 lethal to it first, and only 3 damage crosses — your reveal collapses from 7 cards to 3. The difference between a 7-reveal and a 3-reveal is the difference between a board and a body (stack 001's verified cascade — five bodies, three draws, a discover at X=6 — came off a full 7). 'Attack the problem player' is threat-assessment applied to the wrong resource: their life total is not what beats you, their wrath is, and this line feeds it a smaller board next turn anyway. If you must pressure Seat A, do it after the trigger banks elsewhere.",
+      "citations": [
+        {
+          "rule": "702.19b",
+          "quote": "The controller of an attacking creature with trample first assigns damage to the creature(s) blocking it. Once all those blocking creatures are assigned lethal damage, any excess damage is assigned as its controller chooses among those blocking creatures and the player, planeswalker, or battle the creature is attacking."
+        }
+      ]
+    }
+  ],
+  "recommendation": {
+    "choice": "Swing at Seat C now — Flawless Maneuver is the cover",
+    "rationale": "The three conditions of the pivot window are all met and all temporary: the counter window on the commander has closed, an unblocked lane exists this turn only, and your protection costs zero mana. Holding trades a guaranteed 7-card reveal for insurance against a blocker that does not exist, while the wrath you actually fear gets a free turn; attacking the wrath-holder shrinks the reveal to 3 through a chump block. Mean cast turn 7.932 means the table has been counting to exactly this turn — the only surprise you have left is Maneuver, and this line spends it at maximum leverage."
+  }
+}

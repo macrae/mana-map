@@ -1,0 +1,345 @@
+{
+  "id": "002",
+  "slug": "marauding-polyraptor-verdict",
+  "deck": "gishath",
+  "title": "Marauding Raptor + Polyraptor: infinite tokens, or a mandatory draw?",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Marauding Raptor (2/3)",
+        "lands"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": []
+        },
+        {
+          "life": 40,
+          "board": []
+        }
+      ]
+    },
+    "hand": [
+      "Polyraptor"
+    ],
+    "graveyard": [],
+    "mana_available": "{7} available (Polyraptor costs {6}{G}{G}, reduced {1} by Marauding Raptor to {5}{G}{G} = 7 total — payable)",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Polyraptor (creature spell)",
+        "controller": "you",
+        "note": "cast with Marauding Raptor's discount; about to resolve"
+      }
+    ],
+    "extras": {
+      "context": "SIDEBOARD-PACKAGE VERIFICATION: BOTH cards are in this deck's sideboard; the aggressive upgrade analysis needs this verdict before promoting the pair. Marauding Raptor: 'Creature spells you cast cost {1} less to cast. Whenever another creature you control enters, this creature deals 2 damage to it. If a Dinosaur is dealt damage this way, this creature gets +2/+0 until end of turn.' Polyraptor: 'Enrage — Whenever this creature is dealt damage, create a token that's a copy of this creature.' Note both triggers are MANDATORY (no 'may'). Polyraptor is 5/5; a 2-damage ping does not kill it. You control no sacrifice outlet and hold no instants."
+    },
+    "question": "Resolve Polyraptor and walk the resulting loop: each copy that enters is pinged for 2 (mandatory), each ping triggers enrage creating another copy (mandatory), each copy entering triggers another ping. Does any token ever die (2 damage per ping, 5 toughness, does damage accumulate on distinct tokens)? Is there any legal way for the controller to stop the loop from this position? Under the comprehensive rules on mandatory loops that no player can interrupt, what is the GAME OUTCOME — infinite tokens and a win, or a drawn game? This verdict decides whether the sideboard pair is a wincon or a liability."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Polyraptor resolves.",
+        "effect": "Polyraptor is a creature spell with no targets; it becomes a permanent and enters the battlefield under your control as a 5/5 Dinosaur.",
+        "citations": [
+          {
+            "rule": "608.3a",
+            "quote": "If the object that’s resolving has no targets, it becomes a permanent and enters the battlefield under the control of the spell’s controller."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Marauding Raptor's enters trigger triggers.",
+        "effect": "Polyraptor entering matches Marauding Raptor's trigger condition ('Whenever another creature you control enters, this creature deals 2 damage to it'). The ability triggers automatically — it contains no 'may', so nothing about it is optional — and is put on the stack the next time a player would receive priority.",
+        "citations": [
+          {
+            "rule": "603.6a",
+            "quote": "Enters-the-battlefield abilities trigger when a permanent enters the battlefield."
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "All players pass priority; the ping trigger resolves.",
+        "effect": "The active player receives priority, and when all players pass in succession the trigger resolves: Marauding Raptor deals 2 damage to Polyraptor. That damage is marked on Polyraptor. Because Polyraptor is a Dinosaur dealt damage this way, Marauding Raptor gets +2/+0 until end of turn (part of the same ability's resolution — irrelevant to the loop's outcome).",
+        "citations": [
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          },
+          {
+            "rule": "117.4",
+            "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+          },
+          {
+            "rule": "302.7",
+            "quote": "Damage dealt to a creature by a source with neither wither nor infect is marked on that creature"
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "State-based actions are checked: nothing dies.",
+        "effect": "Before any player receives priority, state-based actions are performed. Polyraptor has 2 damage marked against toughness 5 — 2 is not greater than or equal to 5, so it is not dealt lethal damage and is not destroyed. The 2 damage stays marked until cleanup, but each individual Polyraptor is pinged exactly once (only when it enters), so no Polyraptor ever accumulates more than 2 damage. No token ever dies in this loop.",
+        "citations": [
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event"
+          },
+          {
+            "rule": "704.5g",
+            "quote": "If a creature has toughness greater than 0, it has damage marked on it, and the total damage marked on it is greater than or equal to its toughness, that creature has been dealt lethal damage and is destroyed."
+          },
+          {
+            "rule": "120.6",
+            "quote": "Damage marked on a creature remains until the cleanup step"
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Polyraptor's Enrage triggers and resolves, creating a token copy.",
+        "effect": "Being dealt damage matches Enrage's trigger condition ('Whenever this creature is dealt damage, create a token that's a copy of this creature'). It contains no 'may' — it is mandatory. After priority passes again, it resolves and a token copy of Polyraptor is put onto the battlefield.",
+        "citations": [
+          {
+            "rule": "603.2",
+            "quote": "that ability automatically triggers"
+          },
+          {
+            "rule": "701.7a",
+            "quote": "To create one or more tokens with certain characteristics, put the specified number of tokens with the specified characteristics onto the battlefield."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "The token copy enters fresh: 5/5, has Enrage, zero damage marked.",
+        "effect": "The copy acquires only Polyraptor's copiable values — including its rules text, so every token has Enrage, and its printed 5/5 power/toughness. Damage marked on the original is NOT among the copiable values (those are only the values derived from the printed text), so each new token enters with no damage marked. Every iteration starts from a full-toughness 5/5.",
+        "citations": [
+          {
+            "rule": "707.2",
+            "quote": "The copiable values are the values derived from the text printed on the object (that text being name, mana cost, color indicator, card type, subtype, supertype, rules text, power, toughness, and/or loyalty)"
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "The loop closes: the token entering re-triggers Marauding Raptor.",
+        "effect": "The token is another creature you control entering, so Marauding Raptor's ping triggers again (mandatory), deals 2 to the new token (2 < 5, it survives per step 4), the token's Enrage triggers (mandatory), a new token is created, and that token entering triggers the ping again. Each iteration adds one 5/5 Polyraptor token with 2 damage marked and nothing ever leaves the battlefield. This is a set of actions that could be repeated indefinitely — a loop in the rules' sense — and every action in the repeated sequence is mandatory.",
+        "citations": [
+          {
+            "rule": "603.6a",
+            "quote": "Enters-the-battlefield abilities trigger when a permanent enters the battlefield."
+          },
+          {
+            "rule": "732.1b",
+            "quote": "Occasionally the game gets into a state in which a set of actions could be repeated indefinitely (thus creating a “loop”)."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "What could break it: players DO receive priority inside the loop.",
+        "effect": "Triggers resolve one at a time; each one is put on the stack when a player would receive priority, the active player then receives priority, and every trigger only resolves after all players pass. So every iteration contains real priority windows in which any player could cast an instant or activate an ability — e.g. killing Marauding Raptor (no more pings; the loop ends and you keep the tokens created so far) or removing the Polyraptors. From YOUR position that is impossible: you hold no instants and control no sacrifice outlet, so you cannot break the loop. Your opponents' boards are empty; whether they can break it depends on their unknown hands, and nothing can force them to.",
+        "citations": [
+          {
+            "rule": "603.3",
+            "quote": "its controller puts it on the stack as an object that’s not a card the next time a player would receive priority"
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          },
+          {
+            "rule": "117.4",
+            "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Game outcome: if no player intervenes, the game is a draw.",
+        "effect": "The repeated sequence itself (enters trigger → ping → Enrage trigger → token → enters trigger ...) contains only mandatory actions and has no way to stop on its own — no token dies, no choice exists within any trigger. Under the loop rules, a loop containing only mandatory actions ends the game in a draw. If some player injects an optional action (removal in a priority window, per step 8), the loop is broken and the game continues; but no player can be forced to do so, and if no one does, the whole game — all three players — ends in a draw.",
+        "citations": [
+          {
+            "rule": "732.4",
+            "quote": "If a loop contains only mandatory actions, the game is a draw."
+          },
+          {
+            "rule": "104.4b",
+            "quote": "If a game that’s not using the limited range of influence option (including a two-player game) somehow enters a “loop” of mandatory actions, repeating a sequence of events with no way to stop, the game is a draw."
+          },
+          {
+            "rule": "104.4b",
+            "quote": "Loops that contain an optional action don’t result in a draw."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "VERDICT: as built, this sideboard pair is a LIABILITY, not a wincon. Resolving Polyraptor with Marauding Raptor on the battlefield locks the table into a mandatory loop: every ping is forced, 2 damage never kills a fresh 5/5 token (each token is pinged exactly once and copies enter with no damage marked), and neither trigger contains a choice. You cannot exit — no instants, no sacrifice outlet. Opponents receive priority between every trigger resolution and MAY break the loop (killing Marauding Raptor is the clean out, leaving you the tokens made so far — but the break happens on an opponent's terms, at a token count they choose). If nobody acts, CR 732.4 / 104.4b end the game in a draw for all players. To promote this pair, the deck must add its own loop-breaker: a free sacrifice outlet, an instant-speed way to remove Marauding Raptor, or an effect that makes the ping lethal / the tokens bigger-than-lethal converts the draw engine into an arbitrarily-large token wincon. Without one, boarding both cards in threatens your own game.",
+      "you": {
+        "battlefield": "Marauding Raptor (4/3 until end of turn after the first Dinosaur ping; +2/+0 stacking each iteration), Polyraptor (5/5, 2 damage marked), N Polyraptor tokens (each 5/5 with 2 damage marked) where N grows without bound — the loop never terminates on its own",
+        "hand": [],
+        "loop_status": "cannot break it from this position"
+      },
+      "opponents": [
+        {
+          "life": 40,
+          "board": [],
+          "note": "receives priority each iteration; may break the loop with instant-speed interaction or let the game draw"
+        },
+        {
+          "life": 40,
+          "board": [],
+          "note": "receives priority each iteration; may break the loop with instant-speed interaction or let the game draw"
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "608.3a",
+        "status": "supported",
+        "note": "Polyraptor has no targets; resolves directly to the battlefield. Iteration-1 arithmetic defect fixed: scenario now reads {7} available, {6}{G}{G} reduced {1} to {5}{G}{G} = 7 total."
+      },
+      {
+        "step": 2,
+        "rule": "603.6a",
+        "status": "supported",
+        "note": "'Whenever another creature you control enters' is the 'Whenever a [type] enters' ETB form; Polyraptor entering matches."
+      },
+      {
+        "step": 2,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Trigger is automatic; oracle text (verified in cards.json) contains no 'may'."
+      },
+      {
+        "step": 2,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Put on stack next time a player would receive priority."
+      },
+      {
+        "step": 3,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 3,
+        "rule": "117.4",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 3,
+        "rule": "302.7",
+        "status": "supported",
+        "note": "Marauding Raptor has neither wither nor infect; 2 damage marked. The +2/+0 rider matches oracle text and is correctly flagged as outcome-irrelevant (toughness stays 3, power growth changes nothing in the loop)."
+      },
+      {
+        "step": 4,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "SBAs performed before priority — the missing-SBA class of error from other decks' stacks is handled here."
+      },
+      {
+        "step": 4,
+        "rule": "704.5g",
+        "status": "supported",
+        "note": "2 < 5, not lethal. Claim that each Polyraptor is pinged exactly once is correct: the ping targets only the entering creature ('deals 2 damage to it'), so damage never accumulates on any one body."
+      },
+      {
+        "step": 4,
+        "rule": "120.6",
+        "status": "supported",
+        "note": "Marked damage persists to cleanup, but cleanup is never reached inside the loop; correctly immaterial."
+      },
+      {
+        "step": 5,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Fragment quote, in context. Enrage oracle text verified: no 'may'; mandatory."
+      },
+      {
+        "step": 5,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "707.2",
+        "status": "supported",
+        "note": "Copiable values are printed-text-derived; rules text (Enrage) and 5/5 copy over, marked damage does not — each token enters at full toughness. Full rule read; the 'as...enters' modifiers clause doesn't apply (no such ability on Polyraptor)."
+      },
+      {
+        "step": 7,
+        "rule": "603.6a",
+        "status": "supported",
+        "note": "Token entering re-triggers the ping; exactly one new trigger per entry (Enrage is damage-triggered, not entry-triggered, so pre-existing Polyraptors never chain off an entry). One token per iteration is correct."
+      },
+      {
+        "step": 7,
+        "rule": "732.1b",
+        "status": "supported",
+        "note": "Set of actions repeatable indefinitely = loop."
+      },
+      {
+        "step": 8,
+        "rule": "603.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 8,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 8,
+        "rule": "117.4",
+        "status": "supported",
+        "note": "Real priority windows exist each iteration; opponents may (not must) intervene. Killing Marauding Raptor as the clean out is correct — no future entries get pinged (an already-stacked ping would still resolve once, which doesn't change the analysis)."
+      },
+      {
+        "step": 9,
+        "rule": "732.4",
+        "status": "supported",
+        "note": "Loop of only mandatory actions = draw."
+      },
+      {
+        "step": 9,
+        "rule": "104.4b",
+        "status": "supported",
+        "note": "First quote verified; a normal 3-player Commander game does not use limited range of influence, so the draw is whole-table — the 'all three players' claim is correct."
+      },
+      {
+        "step": 9,
+        "rule": "104.4b",
+        "status": "supported",
+        "note": "Second quote ('Loops that contain an optional action don't result in a draw') verified in same rule; correctly frames opponent intervention as breaking the loop rather than merely optionalizing it."
+      }
+    ],
+    "iterations": 2
+  }
+}

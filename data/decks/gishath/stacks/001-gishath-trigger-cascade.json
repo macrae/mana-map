@@ -1,0 +1,385 @@
+{
+  "id": "001",
+  "slug": "gishath-trigger-cascade",
+  "deck": "gishath",
+  "title": "Gishath connects: what seven damage actually unleashes",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Gishath, Sun's Avatar (7/6, vigilance, trample, haste)",
+        "Pantlaza, Sun-Favored (4/4; its once-per-turn discover has NOT been used this turn)",
+        "Garruk's Uprising",
+        "lands"
+      ],
+      "opponents": [
+        {
+          "life": 33,
+          "board": [
+            "no blockers (empty board)"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "a 4/4 creature"
+          ]
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Gishath's combat damage trigger",
+        "controller": "you",
+        "note": "combat damage step: Gishath attacked opponent 1 unblocked and dealt 7 combat damage; the trigger 'reveal that many cards... put any number of Dinosaur creature cards from among them onto the battlefield' is on the stack. The revealed seven are stipulated in extras."
+      }
+    ],
+    "extras": {
+      "context": "THE DECK'S CORE ACTION, resolved precisely once. Gishath: 'Whenever Gishath deals combat damage to a player, reveal that many cards from the top of your library. Put any number of Dinosaur creature cards from among them onto the battlefield and the rest on the bottom of your library in a random order.' Stipulated reveal (top 7): Regisaur Alpha, Ripjaw Raptor, Carnage Tyrant, Cultivate, Mountain, Ravenous Sailback, Path to Exile. Pantlaza: 'Whenever Pantlaza or another Dinosaur you control enters, you may discover X, where X is that creature's toughness. Do this only once each turn.' Garruk's Uprising: 'Whenever a creature you control with power 4 or greater enters, draw a card.' Regisaur Alpha: 'Other Dinosaurs you control have haste. When this creature enters, create a 3/3 green Dinosaur creature token with trample.'",
+      "combat_state": "combat damage step of your combat; damage has been dealt"
+    },
+    "question": "Resolve Gishath's trigger putting ALL FOUR Dinosaur creature cards from the stipulated reveal onto the battlefield (Regisaur Alpha, Ripjaw Raptor, Carnage Tyrant, Ravenous Sailback — confirm each is a Dinosaur creature card and that Cultivate/Mountain/Path go to the bottom in random order). The four enter simultaneously: how many Garruk's Uprising draws (which of the four have power 4+), does Regisaur Alpha's token trigger fire and does THAT token also trigger Uprising and Pantlaza, which single Pantlaza discover may you take (choose the best toughness among simultaneous enterers — the once-per-turn constraint), and do the entering Dinosaurs have haste for a second combat? Final count of new bodies, cards drawn, and the one discover."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Gishath's trigger (the only object on the stack) resolves. You reveal the stipulated seven cards and follow the trigger's instructions in order.",
+        "effect": "Type-line check from oracle text: Regisaur Alpha (Creature — Dinosaur, 4/4), Ripjaw Raptor (Creature — Dinosaur, 4/5), Carnage Tyrant (Creature — Dinosaur, 7/6), and Ravenous Sailback (Creature — Dinosaur, 3/4) are all Dinosaur creature cards and may be put onto the battlefield. Cultivate (Sorcery), Mountain (land), and Path to Exile (Instant) are not Dinosaur creature cards; per the trigger's text they go on the bottom of your library in a random order. You choose to put all four Dinosaurs onto the battlefield — a single event, so they enter simultaneously.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "603.6a",
+            "quote": "Each time an event puts one or more permanents onto the battlefield, all permanents on the battlefield (including the newcomers) are checked for any enters-the-battlefield triggers that match the event."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Static abilities apply the moment the four are on the battlefield: Regisaur Alpha's 'Other Dinosaurs you control have haste' and Garruk's Uprising's 'Creatures you control have trample'.",
+        "effect": "Because Regisaur Alpha enters simultaneously with the others, its haste-granting static ability applies to Ripjaw Raptor, Carnage Tyrant, and Ravenous Sailback (and to Pantlaza and Gishath) immediately — the newcomers are never on the battlefield without haste. Regisaur Alpha itself is not granted haste ('Other Dinosaurs'). All your creatures also have trample from Garruk's Uprising.",
+        "citations": [
+          {
+            "rule": "603.6b",
+            "quote": "Continuous effects that modify characteristics of a permanent do so the moment the permanent is on the battlefield (and not before then). The permanent is never on the battlefield with its unmodified characteristics."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Count the triggers from the simultaneous entry. Garruk's Uprising's 'Whenever a creature you control with power 4 or greater enters, draw a card' checks each entering creature.",
+        "effect": "One event, four occurrences — Uprising triggers separately for each qualifying enterer. Regisaur Alpha (power 4), Ripjaw Raptor (power 4), and Carnage Tyrant (power 7) qualify: THREE Uprising triggers. Ravenous Sailback is a 3/4 — power 3 — so it does NOT trigger Uprising.",
+        "citations": [
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Pantlaza's ability checks the same event. Its 'Do this only once each turn' rider restricts triggering, not just resolution — but you have not discovered yet this turn.",
+        "effect": "Because you have not yet taken the discover action this turn, Pantlaza triggers once for each of the four entering Dinosaurs (X would be 4 for Regisaur Alpha, 5 for Ripjaw Raptor, 6 for Carnage Tyrant, 4 for Ravenous Sailback — X is the entering creature's toughness). Regisaur Alpha's own ETB (create a token) and Ravenous Sailback's modal ETB also trigger: nine triggered abilities total are waiting.",
+        "citations": [
+          {
+            "rule": "603.2h",
+            "quote": "A triggered ability may have an instruction followed by “Do this only once each turn.” This ability triggers only if its source’s controller has not yet taken the indicated action that turn."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Gishath's trigger finishes resolving and leaves the stack. Before you would receive priority, state-based actions are checked (none apply — nothing has lethal damage, no zero-toughness creatures), then all nine waiting triggers go on the stack in any order you choose (you control them all). THE PILOT'S ORDERING CHOICE, stated explicitly: put Regisaur Alpha's token trigger on the stack FIRST (bottom), then Ravenous Sailback's modal trigger, then the three spare Pantlaza triggers (X=4, X=5, X=4), then the three Garruk's Uprising triggers, and put the Pantlaza trigger from Carnage Tyrant on LAST (top).",
+        "effect": "The stack resolves last-in, first-out, so this order makes the Carnage Tyrant Pantlaza trigger (the X=6 discover) resolve FIRST and Regisaur Alpha's token trigger resolve LAST — the token will not enter until after the once-per-turn discover has already been taken. This sequencing is why the token cannot re-trigger Pantlaza (step 9). Ravenous Sailback's trigger is modal; you announce the mode as you put it on the stack. Its only artifact/enchantment target on any board is your own Garruk's Uprising, so you choose 'This creature gains haste until end of turn' (redundant with Regisaur Alpha's static haste, but harmless).",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "603.3b",
+            "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+          },
+          {
+            "rule": "603.3c",
+            "quote": "If a triggered ability is modal, its controller announces the mode choice when putting the ability on the stack."
+          },
+          {
+            "rule": "405.2",
+            "quote": "The stack keeps track of the order that spells and/or abilities were added to it. Each time an object is put on the stack, it’s put on top of all objects already there."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "The top trigger — Pantlaza from Carnage Tyrant — resolves first. It is optional ('you may discover X'); the choice is made on resolution, and you take it: discover 6, the best X among the simultaneous enterers (Carnage Tyrant's toughness).",
+        "effect": "Discover 6: exile cards from the top of your library until you exile a nonland card with mana value 6 or less; cast it free or put it into your hand; the rest go to the bottom in random order. The once-per-turn discover action has now been TAKEN this turn — this fact governs everything below it on the stack.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves. If the stack is empty when all players pass, the current step or phase ends and the next begins."
+          },
+          {
+            "rule": "603.5",
+            "quote": "These abilities go on the stack when they trigger, regardless of whether their controller intends to exercise the ability’s option or not. The choice is made when the ability resolves."
+          },
+          {
+            "rule": "701.57a",
+            "quote": "Exile cards from the top of your library until you exile a nonland card with mana value N or less. You may cast that card without paying its mana cost if the resulting spell’s mana value is less than or equal to N. If you don’t cast it, put that card into your hand. Put the remaining exiled cards on the bottom of your library in a random order."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "The three Garruk's Uprising triggers resolve one at a time.",
+        "effect": "You draw a card for each: three cards drawn (Regisaur Alpha, Ripjaw Raptor, Carnage Tyrant). Ripjaw Raptor's enrage does not trigger — nothing has dealt damage to it.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "The three spare Pantlaza triggers (X=4, X=5, X=4) and Ravenous Sailback's trigger resolve.",
+        "effect": "The discover action has already been taken this turn, so the 'Do this only once each turn' instruction means each remaining Pantlaza trigger resolves with no effect — you cannot perform the action again this turn. Exactly ONE discover total, at X=6. Sailback's resolved mode grants it haste until end of turn, redundant with Regisaur Alpha's static grant.",
+        "citations": [
+          {
+            "rule": "603.2h",
+            "quote": "A triggered ability may have an instruction followed by “Do this only once each turn.”"
+          },
+          {
+            "rule": "603.5",
+            "quote": "These abilities go on the stack when they trigger, regardless of whether their controller intends to exercise the ability’s option or not. The choice is made when the ability resolves."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Regisaur Alpha's ETB trigger — deliberately placed at the bottom in step 5 — resolves last: create a 3/3 green Dinosaur creature token with trample.",
+        "effect": "The token is put onto the battlefield, and a token enters the battlefield as it is created — so entry triggers are checked again. Garruk's Uprising does NOT trigger: the token's power is 3, not 4 or greater. Pantlaza does not trigger at all: you have already taken the once-per-turn discover action (step 6), and per 603.2h the ability triggers only if that action has not yet been taken this turn. This is the payoff of the step-5 ordering. (Honest note on the alternative: had you resolved this token trigger BEFORE the discover, Pantlaza would have triggered a fifth time at X=3 — a strictly worse discover you would decline, so the chosen order both plays better and keeps the count at four.)",
+        "citations": [
+          {
+            "rule": "701.7a",
+            "quote": "To create one or more tokens with certain characteristics, put the specified number of tokens with the specified characteristics onto the battlefield."
+          },
+          {
+            "rule": "glossary:enters-the-battlefield",
+            "quote": "A token enters the battlefield as it’s created."
+          },
+          {
+            "rule": "603.2h",
+            "quote": "This ability triggers only if its source’s controller has not yet taken the indicated action that turn."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "Haste and the 'second combat' question. All new Dinosaurs have haste from Regisaur Alpha's static ability (the token too — it is an 'other Dinosaur'), and Sailback's chosen mode is redundant extra haste.",
+        "effect": "Haste only exempts them from the continuous-control requirement for attacking; attackers are chosen only in the declare attackers step, which has already passed this combat, and a turn has only one combat phase by default. With no additional-combat effect in the scenario, none of the new bodies attack this turn. The haste matters only if some other effect grants an extra combat (or for tap abilities) — but they are all ready to swing next turn regardless.",
+        "citations": [
+          {
+            "rule": "702.10b",
+            "quote": "If a creature has haste, it can attack even if it hasn’t been controlled by its controller continuously since their most recent turn began."
+          },
+          {
+            "rule": "508.1a",
+            "quote": "The chosen creatures must be untapped, they can’t also be battles, and each one must either have haste or have been controlled by the active player continuously since the turn began."
+          },
+          {
+            "rule": "500.1",
+            "quote": "A turn consists of five phases, in this order: beginning, precombat main, combat, postcombat main, and ending."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "One 7-damage Gishath connection becomes five new bodies, three cards drawn, and a discover 6. All four revealed Dinosaur creature cards (Regisaur Alpha, Ripjaw Raptor, Carnage Tyrant, Ravenous Sailback) enter simultaneously; Cultivate, Mountain, and Path to Exile go to the bottom in random order. Garruk's Uprising draws exactly 3 (Sailback's power 3 misses; the 3/3 token's power 3 misses). Pantlaza triggers four times but discovers exactly once — the pilot stacks the Carnage Tyrant trigger on top so the X=6 discover resolves FIRST and Regisaur Alpha's token trigger resolves LAST; the token then enters after the once-per-turn action is used and cannot re-trigger Pantlaza. Everything new has haste and trample but cannot attack this turn without an extra-combat effect.",
+      "you": {
+        "battlefield": [
+          "Gishath, Sun's Avatar (attacked; vigilance so untapped)",
+          "Pantlaza, Sun-Favored",
+          "Garruk's Uprising",
+          "Regisaur Alpha (new)",
+          "Ripjaw Raptor (new, haste)",
+          "Carnage Tyrant (new, haste)",
+          "Ravenous Sailback (new, haste)",
+          "3/3 green Dinosaur token with trample (new, haste)",
+          "lands"
+        ],
+        "cards_drawn": 3,
+        "discover": "one discover at X=6 (Carnage Tyrant's toughness): a nonland card with mana value 6 or less cast free or put into hand",
+        "library_bottom": "Cultivate, Mountain, Path to Exile in a random order (plus the non-discovered exiled cards from discover 6, bottom in random order)"
+      },
+      "opponents": [
+        {
+          "life": 33,
+          "board": [
+            "empty"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "a 4/4 creature"
+          ]
+        }
+      ]
+    },
+    "answer": "All four stipulated cards are Dinosaur creature cards and can all be put onto the battlefield; the three non-Dinosaur-creature cards bottom in random order. Garruk's Uprising draws exactly 3 cards (Regisaur Alpha 4 power, Ripjaw Raptor 4 power, Carnage Tyrant 7 power; Ravenous Sailback is only a 3/4). Pantlaza triggers four times off the simultaneous entry; you perform the discover on exactly one resolution — Carnage Tyrant's, for discover 6. THE ORDERING IS THE PLAY: you control all nine triggers, so you stack Regisaur Alpha's token trigger on the bottom and the Carnage Tyrant Pantlaza trigger on top. The discover resolves first; when the 3/3 token is finally created, it re-triggers NEITHER Uprising (power 3) nor Pantlaza (the once-per-turn action has been taken, so per 603.2h the ability doesn't even trigger). If you misorder and make the token before discovering, Pantlaza triggers a fifth time at X=3 — legal but strictly worse. All new Dinosaurs (including the token) have haste from Regisaur Alpha, but with no extra-combat effect they cannot attack this turn; haste is insurance, not a second swing. Net: 5 new bodies, 3 cards drawn, 1 discover at X=6."
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Resolver follows instructions in written order; full rule adds replacement-effect caveat, none present."
+      },
+      {
+        "step": 1,
+        "rule": "603.6a",
+        "status": "supported",
+        "note": "All permanents checked for ETB triggers matching the event; single put-onto-battlefield event = simultaneous entry is correctly characterized."
+      },
+      {
+        "step": 2,
+        "rule": "603.6b",
+        "status": "supported",
+        "note": "Continuous effects apply the moment the permanent is on the battlefield; simultaneous-enterer Regisaur Alpha's haste grant and Uprising's trample apply immediately. 'Other Dinosaurs' correctly excludes Regisaur Alpha itself."
+      },
+      {
+        "step": 3,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "One event, multiple occurrences → repeated triggers. Uprising count of 3 verified against oracle P/T: Regisaur 4/4, Ripjaw 4/5, Carnage 7/6 qualify; Sailback 3/4 does not."
+      },
+      {
+        "step": 4,
+        "rule": "603.2h",
+        "status": "supported",
+        "note": "Second sentence: triggers only if the action has not yet been taken this turn. Action untaken at trigger time, so all four Pantlaza instances trigger. X values 4/5/6/4 match oracle toughnesses. Nine-trigger total (3 Uprising + 4 Pantlaza + Regisaur token + Sailback modal) verified."
+      },
+      {
+        "step": 5,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "SBAs checked before triggers go on stack when a player would get priority; none apply here (no damaged/zero-toughness creatures)."
+      },
+      {
+        "step": 5,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Controller puts their triggered abilities on the stack in any order they choose — the ordering play (token trigger bottom, X=6 Pantlaza top) is legal."
+      },
+      {
+        "step": 5,
+        "rule": "603.3c",
+        "status": "supported",
+        "note": "Modal trigger's mode announced when put on stack. Sailback oracle confirmed modal (haste / destroy artifact-enchantment); only artifact/enchantment on any board is your own Garruk's Uprising, so haste mode is the sane announcement."
+      },
+      {
+        "step": 5,
+        "rule": "405.2",
+        "status": "supported",
+        "note": "Each object goes on top of the stack — establishes that last-placed (X=6 Pantlaza) resolves first and first-placed (token trigger) resolves last. This is the iteration-1 ordering fix, and it is correct."
+      },
+      {
+        "step": 6,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Top of stack resolves first: the Carnage Tyrant Pantlaza trigger, X=6."
+      },
+      {
+        "step": 6,
+        "rule": "603.5",
+        "status": "supported",
+        "note": "'You may' triggered abilities: choice made on resolution; taking the discover here is correct timing."
+      },
+      {
+        "step": 6,
+        "rule": "701.57a",
+        "status": "supported",
+        "note": "Discover 6 mechanics quoted verbatim and applied correctly."
+      },
+      {
+        "step": 7,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Three Uprising resolutions, three draws. Enrage non-trigger note correct — Ripjaw has taken no damage."
+      },
+      {
+        "step": 8,
+        "rule": "603.2h",
+        "status": "supported",
+        "note": "Once the discover has been taken (step 6), the 'Do this only once each turn' instruction means the remaining already-stacked Pantlaza triggers resolve without performing the action. Exactly one discover, at X=6 — correct."
+      },
+      {
+        "step": 8,
+        "rule": "603.5",
+        "status": "supported",
+        "note": "The spare optional triggers were correctly put on the stack when they triggered and their option is simply not available on resolution."
+      },
+      {
+        "step": 9,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": "Token creation = put onto battlefield."
+      },
+      {
+        "step": 9,
+        "rule": "glossary:enters-the-battlefield",
+        "status": "supported",
+        "note": "'A token enters the battlefield as it's created' — verbatim; entry triggers are re-checked for the token."
+      },
+      {
+        "step": 9,
+        "rule": "603.2h",
+        "status": "supported",
+        "note": "THE ITERATION-1 FIX, VERIFIED: with the token entering after the discover was taken, 603.2h's trigger-side condition fails and Pantlaza does not trigger at all for the token. Uprising also misses (token power 3). The honest note on the misordered alternative (fifth trigger at X=3, declinable) is accurate: token toughness is 3."
+      },
+      {
+        "step": 10,
+        "rule": "702.10b",
+        "status": "supported",
+        "note": "Haste only lifts the continuous-control requirement; correctly framed as not granting an attack after declare attackers."
+      },
+      {
+        "step": 10,
+        "rule": "508.1a",
+        "status": "supported",
+        "note": "Attackers chosen only in the declare attackers step, already passed this combat."
+      },
+      {
+        "step": 10,
+        "rule": "500.1",
+        "status": "supported",
+        "note": "One combat phase per turn by default; no extra-combat effect in scenario, so no second swing."
+      }
+    ],
+    "card_facts": {
+      "verified_against": "data/decks/gishath/cards.json",
+      "checks": [
+        "Gishath, Sun's Avatar 7/6 vigilance/trample/haste; trigger text matches oracle verbatim",
+        "Pantlaza, Sun-Favored 4/4; 'you may discover X, where X is that creature's toughness. Do this only once each turn.' matches",
+        "Garruk's Uprising: static trample + 'Whenever a creature you control with power 4 or greater enters, draw a card' matches",
+        "Regisaur Alpha 4/4 Dinosaur; other-Dinos haste; ETB 3/3 green Dinosaur token with trample — matches",
+        "Ripjaw Raptor 4/5 Dinosaur, enrage — matches",
+        "Carnage Tyrant 7/6 Dinosaur — matches",
+        "Ravenous Sailback 3/4 Dinosaur, modal ETB (haste / destroy target artifact or enchantment) — matches",
+        "Cultivate (Sorcery), Mountain (land), Path to Exile (Instant): none are Dinosaur creature cards; bottom in random order per Gishath's text — correct"
+      ]
+    },
+    "missing_steps_audit": "None found. SBAs checked at the correct point (step 5, 704.3, correctly none applicable); all nine triggers accounted for and stacked in one batch per 603.3b; modal announcement handled (603.3c); no replacement effects in scenario (614 n/a); enrage non-trigger addressed; token re-check of entry triggers performed (step 9); totals verified: 5 new bodies (4 Dinosaurs + token), 3 draws, exactly 1 discover at X=6.",
+    "iterations": 2
+  }
+}

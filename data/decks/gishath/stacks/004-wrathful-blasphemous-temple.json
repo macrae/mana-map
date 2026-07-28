@@ -1,0 +1,309 @@
+{
+  "id": "004",
+  "slug": "wrathful-blasphemous-temple",
+  "deck": "gishath",
+  "title": "Wrathful Raptors + Blasphemous Act + Temple Altisaur: the one-sided apocalypse",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Wrathful Raptors (5/5, trample)",
+        "Temple Altisaur (3/4)",
+        "Ripjaw Raptor (4/5)",
+        "Gishath, Sun's Avatar (7/6)"
+      ],
+      "opponents": [
+        {
+          "life": 26,
+          "board": [
+            "four 2/2 creature tokens"
+          ]
+        },
+        {
+          "life": 31,
+          "board": [
+            "a 6/6 creature"
+          ]
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Blasphemous Act",
+        "controller": "you",
+        "note": "cast for {R} (nine creatures on the battlefield reduce the {8} to nothing); about to resolve"
+      }
+    ],
+    "extras": {
+      "context": "SIDEBOARD-SWAP VERIFICATION: Wrathful Raptors is in this deck's sideboard; Blasphemous Act, Temple Altisaur, Ripjaw Raptor and Gishath are maindeck. Wrathful Raptors: 'Whenever a Dinosaur you control is dealt damage, it deals that much damage to any target that isn't a Dinosaur.' Temple Altisaur: 'If a source would deal damage to another Dinosaur you control, prevent all but 1 of that damage.' Ripjaw Raptor: 'Enrage — Whenever this creature is dealt damage, draw a card.' All four of your creatures are Dinosaurs. Note the composition: the Act's 13 is PREVENTED down to 1 for each of your Dinosaurs except Temple Altisaur itself (which takes the full 13 and dies), so the Wrathful redirects fire for the DEALT amount, not 13."
+    },
+    "question": "Resolve Blasphemous Act through Temple Altisaur's prevention: exactly how much damage is DEALT to each of your four Dinosaurs (Altisaur takes 13 and dies; the other three take 1 each — do they survive), how many Wrathful Raptors redirect triggers fire and for how much each (the dealt amount after prevention — does the dead Altisaur's 13 still trigger a redirect via last-known information, and is Altisaur 'another Dinosaur' for its own prevention), does Ripjaw Raptor's enrage draw a card, what legal non-Dinosaur targets remain after the sweep kills the opponents' creatures, and what are the final life totals if all redirects go at opponent 1?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Blasphemous Act resolves, dealing 13 damage to each of the nine creatures on the battlefield as a single simultaneous event; Temple Altisaur's prevention effect is applied as the damage is dealt.",
+        "effect": "One damage event hits all nine creatures at once. Temple Altisaur's static ability ('If a source would deal damage to another Dinosaur you control, prevent all but 1 of that damage') is a prevention effect and modifies the event as it happens — it was not locked in ahead of time.",
+        "citations": [
+          {
+            "rule": "608.2f",
+            "quote": "Some spells and abilities include actions taken on multiple players and/or objects. In most cases, each such action is processed simultaneously."
+          },
+          {
+            "rule": "615.1",
+            "quote": "prevention effects apply continuously as events happen—they aren’t locked in ahead of time. Such effects watch for a damage event that would happen and completely or partially prevent the damage that would be dealt."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Apply the prevention: the Act's 13 is prevented down to 1 for each Dinosaur you control OTHER than Temple Altisaur. Altisaur is not 'another Dinosaur you control' relative to itself, so its own 13 is not prevented.",
+        "effect": "Damage actually DEALT: Temple Altisaur 13; Wrathful Raptors 1; Ripjaw Raptor 1; Gishath, Sun's Avatar 1 (all four are Dinosaurs per their type lines; the shield partially prevents each 13 down to 1). Opponents' creatures are not Dinosaurs you control, so the four 2/2s and the 6/6 are each dealt the full 13.",
+        "citations": [
+          {
+            "rule": "615.1",
+            "quote": "completely or partially prevent the damage that would be dealt. They act like “shields” around whatever they’re affecting."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Damage is marked and trigger conditions are checked against the event: Wrathful Raptors' ability triggers once per damaged Dinosaur you control (four times), and Ripjaw Raptor's enrage triggers once.",
+        "effect": "Marked damage: Altisaur 13 (toughness 4), Wrathful Raptors 1 (5/5), Ripjaw 1 (4/5), Gishath 1 (7/6), four 2/2s 13 each, the 6/6 13. Wrathful Raptors ('Whenever a Dinosaur you control is dealt damage, it deals that much damage to any target that isn't a Dinosaur') triggers four times — one occurrence per damaged Dinosaur in the single event — with 'that much' fixed by the event: 13 (Altisaur), 1 (Wrathful Raptors), 1 (Ripjaw), 1 (Gishath). Ripjaw's enrage ('Whenever this creature is dealt damage, draw a card') triggers on being dealt 1. Prevented damage was never dealt, so the surviving Dinosaurs' triggers are for 1, not 13.",
+        "citations": [
+          {
+            "rule": "120.6",
+            "quote": "Damage marked on a creature remains until the cleanup step"
+          },
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Before any player receives priority — and therefore BEFORE the waiting triggers are put on the stack — state-based actions are performed: every creature with lethal damage marked is destroyed simultaneously.",
+        "effect": "Destroyed as one SBA event: Temple Altisaur (13 ≥ 4), the four 2/2s (13 ≥ 2), and the 6/6 (13 ≥ 6). Six creatures die. Your other three Dinosaurs survive: Wrathful Raptors 1 < 5, Ripjaw Raptor 1 < 5, Gishath 1 < 6. The SBA check repeats, finds nothing further, and only then are triggered abilities put on the stack.",
+        "citations": [
+          {
+            "rule": "704.5g",
+            "quote": "If a creature has toughness greater than 0, it has damage marked on it, and the total damage marked on it is greater than or equal to its toughness, that creature has been dealt lethal damage and is destroyed."
+          },
+          {
+            "rule": "704.3",
+            "quote": "performs all applicable state-based actions simultaneously as a single event. If any state-based actions are performed as a result of a check, the check is repeated; otherwise all triggered abilities that are waiting to be put on the stack are put on the stack"
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "You put all five triggers on the stack in an order you choose, choosing targets for the four Wrathful Raptors triggers AS THEY ARE PUT ON THE STACK — at which point every opposing creature is already dead.",
+        "effect": "Because SBAs (step 4) resolved before triggers go on the stack, the four 2/2s and the 6/6 are no longer on the battlefield when targets are chosen. 'Any target' means a creature, player, planeswalker, or battle; excluding Dinosaurs (all four of your creatures, including Gishath, a Dinosaur Avatar) and with no opposing creatures, planeswalkers, or battles left, the only legal targets for each redirect are players. Per the scenario, all four triggers target opponent 1. Ripjaw's enrage trigger has no targets.",
+        "citations": [
+          {
+            "rule": "603.3b",
+            "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+          },
+          {
+            "rule": "115.1d",
+            "quote": "The target(s) are chosen as the ability is put on the stack; see rule 603.3d."
+          },
+          {
+            "rule": "glossary:any-target",
+            "quote": "“Any target” is the same as “target creature, player, planeswalker, or battle.”"
+          },
+          {
+            "rule": "603.3d",
+            "quote": "If a choice is required when the triggered ability goes on the stack but no legal choices can be made for it, or if a rule or a continuous effect otherwise makes the ability illegal, the ability is simply removed from the stack."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "The Temple Altisaur redirect trigger resolves: the dead Altisaur deals 13 damage to opponent 1 using last known information.",
+        "effect": "The trigger exists on the stack independently of Altisaur; even though Altisaur is in the graveyard, it still performs the action using its last known information. Opponent 1 is dealt 13 damage and loses 13 life: 26 -> 13.",
+        "citations": [
+          {
+            "rule": "113.7a",
+            "quote": "if the source is no longer in the zone it’s expected to be in at that time, its last known information is used. The source can still perform the action even though it no longer exists."
+          },
+          {
+            "rule": "119.2",
+            "quote": "Damage dealt to a player normally causes that player to lose that much life."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "The three surviving Dinosaurs' redirect triggers resolve: Wrathful Raptors, Ripjaw Raptor, and Gishath each deal 1 damage to opponent 1.",
+        "effect": "Three more resolutions of 1 damage each to opponent 1: 13 -> 12 -> 11 -> 10. (Order among the five triggers is your choice per step 5 and doesn't change the totals here.)",
+        "citations": [
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Ripjaw Raptor's enrage trigger resolves: you draw a card.",
+        "effect": "Ripjaw was dealt 1 damage (prevention leaves 1, which is still 'dealt damage'), so its enrage instruction 'draw a card' is followed. You draw one card.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Final state-based action check: no player has 0 or less life and no creature has lethal damage; the game continues.",
+        "effect": "Opponent 1 took 13+1+1+1 = 16 total, ending at 26 - 16 = 10 life — NOT dead, since the lose-the-game condition requires 0 or less life. Opponent 2 stays at 31 but has lost their only creature.",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "One-sided apocalypse confirmed with one correction of scale: Temple Altisaur eats its own unprevented 13 and dies (it is not 'another Dinosaur' to itself), but its death converts into a 13-point Wrathful Raptors redirect via last known information. Your other three Dinosaurs are each dealt exactly 1, survive, and each throw 1 more. Because state-based actions destroy all six lethally-damaged creatures BEFORE the triggers are put on the stack, the opponents' creatures are already gone when redirect targets are chosen — the only legal non-Dinosaur targets are players. All redirects at opponent 1 total 16: they drop to 10, alive. Ripjaw's enrage draws you a card.",
+      "you": {
+        "battlefield": [
+          "Wrathful Raptors (5/5, 1 damage marked)",
+          "Ripjaw Raptor (4/5, 1 damage marked)",
+          "Gishath, Sun's Avatar (7/6, 1 damage marked)"
+        ],
+        "graveyard": [
+          "Blasphemous Act",
+          "Temple Altisaur"
+        ],
+        "cards_drawn": 1
+      },
+      "opponents": [
+        {
+          "player": "opponent 1",
+          "life": 10,
+          "board": [],
+          "notes": "took 16 from redirects (13 Altisaur LKI + 1 + 1 + 1); lost four 2/2 tokens"
+        },
+        {
+          "player": "opponent 2",
+          "life": 31,
+          "board": [],
+          "notes": "untouched by redirects; lost the 6/6 to the Act"
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "608.2f",
+        "status": "supported",
+        "note": "Full rule confirms simultaneous processing of multi-object actions; the Act's 13-to-each is one event."
+      },
+      {
+        "step": 1,
+        "rule": "615.1",
+        "status": "supported",
+        "note": "Prevention effects apply continuously as events happen, not locked in ahead of time — exactly as claimed."
+      },
+      {
+        "step": 2,
+        "rule": "615.1",
+        "status": "supported",
+        "note": "'Completely or partially prevent... shields' supports 13-to-1 partial prevention. Card text 'another Dinosaur you control' (verified in cards.json) supports Altisaur self-exclusion: dealt 13; others dealt 1; opponents' non-controlled creatures dealt full 13."
+      },
+      {
+        "step": 3,
+        "rule": "120.6",
+        "status": "supported",
+        "note": "Damage marked until cleanup; marked amounts (13/1/1/1, 13 on each opposing creature) are arithmetically correct."
+      },
+      {
+        "step": 3,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "One event with multiple occurrences triggers Wrathful Raptors once per damaged Dinosaur you control = four times; 'that much' fixed at 13/1/1/1. Opposing creatures don't trigger it (not 'you control')."
+      },
+      {
+        "step": 4,
+        "rule": "704.5g",
+        "status": "supported",
+        "note": "Lethal-damage SBA: Altisaur 13>=4, 2/2s 13>=2, 6/6 13>=6 destroyed; survivors 1<5, 1<5, 1<6 correct."
+      },
+      {
+        "step": 4,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Full rule confirms SBAs performed and check repeated BEFORE waiting triggers go on the stack — the load-bearing ordering claim."
+      },
+      {
+        "step": 5,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Controller puts their triggered abilities on the stack in any order they choose."
+      },
+      {
+        "step": 5,
+        "rule": "115.1d",
+        "status": "supported",
+        "note": "Targets chosen as the triggered ability is put on the stack — after the SBA deaths, so opposing creatures are unavailable."
+      },
+      {
+        "step": 5,
+        "rule": "glossary:any-target",
+        "status": "supported",
+        "note": "'Any target' = creature, player, planeswalker, or battle; with the Dinosaur exclusion and empty boards, only players remain legal. Gishath (Dinosaur Avatar) correctly excluded."
+      },
+      {
+        "step": 5,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "Correct contingency rule for the choose-at-stack-time process; not triggered here since players are legal targets, and the artifact does not claim any trigger is removed."
+      },
+      {
+        "step": 6,
+        "rule": "113.7a",
+        "status": "supported",
+        "note": "Ability exists independently of source; dead Altisaur performs the 13-damage action via last known information."
+      },
+      {
+        "step": 6,
+        "rule": "119.2",
+        "status": "supported",
+        "note": "13 damage = 13 life lost; 26 -> 13 correct."
+      },
+      {
+        "step": 7,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "Three 1-damage resolutions: 13 -> 12 -> 11 -> 10 correct; order among triggers immaterial to totals."
+      },
+      {
+        "step": 8,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Controller follows instructions on resolution; Ripjaw was dealt 1 (prevention leaves 1), enrage draws one card."
+      },
+      {
+        "step": 9,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "26 - (13+1+1+1) = 10 > 0; opponent 1 alive; opponent 2 at 31 with empty board. Final state consistent, Act + Altisaur in graveyard."
+      }
+    ],
+    "iteration_2_note": "The single iteration-1 defect is fixed: stack note now reads 'cast for {R} (nine creatures on the battlefield reduce the {8} to nothing)'. Board count confirms nine creatures (4 yours + 4 tokens + 1); reduction floors the generic {8} at zero leaving {R}, per Blasphemous Act's oracle text in cards.json. No missing steps found: all four Wrathful occurrences and the single enrage accounted for, SBAs sequenced before stack placement, no other triggers or replacement effects in scope.",
+    "iterations": 2
+  }
+}

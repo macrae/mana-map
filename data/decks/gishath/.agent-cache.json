@@ -1,0 +1,474 @@
+{
+  "cache_version": 1,
+  "routines": {
+    "coach-prose": {
+      "agent": "pilot-coach",
+      "agent_prompt_sha256": "b45e21197e2288f5caf97d98e455ffd865b8b6e834aa1a14e8f8194ff979bd11",
+      "artifact": "data/decks/gishath/manual_prose.json",
+      "artifact_keys": [
+        "matchups",
+        "threat_assessment"
+      ],
+      "artifact_sha256": "5f2f27606fb6f266704481f8afe58829f443cc7449c6c20f51b26d24c6f20647",
+      "extra": {
+        "cards_semantic": "fe3083590710a2037eb0de678d6bb8ce6950de7e875dbd2aac8cab67ea485032",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "61c92ac37d0a52768792b6e3c251add59606625fe7bbc31db4ea0381388f4c0d",
+      "inputs": [
+        {
+          "path": "data/decks/gishath/goldfish_metrics.json",
+          "sha256": "c93fee008960ddadd7b2fb910223a9dd01ac8c7967d68a3e40ffd1201f05777d"
+        },
+        {
+          "path": "data/decks/gishath/stacks/001-gishath-trigger-cascade.json",
+          "sha256": "20fa1f251589a77074be9f3d68113a6d5b95a61c07c7c6e412cb91a259d41a00"
+        },
+        {
+          "path": "data/decks/gishath/stacks/002-marauding-polyraptor-verdict.json",
+          "sha256": "b328f79d3a9c8878f090b21035195071b538e1d8ab4de6eaa60d24b5c6a9b8a1"
+        },
+        {
+          "path": "data/decks/gishath/stacks/003-forerunner-polyraptor-burst.json",
+          "sha256": "4c672db3d4bd32e95fe07f3e6ab37e6bed7c32dc95d6ba23c1ca2bd00e942eac"
+        },
+        {
+          "path": "data/decks/gishath/stacks/004-wrathful-blasphemous-temple.json",
+          "sha256": "1b530ab0499af7d32fc1c81e8e63c3f4c7f03a3c69b9338f7496adab1a5b8dd0"
+        },
+        {
+          "path": "data/decks/gishath/strategic_frame.json",
+          "sha256": "098d2cc50fd6021989dc89d68d9610bd122716e4ca3d78af22f8d8d938556e43"
+        }
+      ]
+    },
+    "decision:001": {
+      "agent": "pilot-coach",
+      "agent_prompt_sha256": "b45e21197e2288f5caf97d98e455ffd865b8b6e834aa1a14e8f8194ff979bd11",
+      "artifact": "data/decks/gishath/decisions/001-swing-or-hold-gishath.json",
+      "artifact_sha256": "b394497331faf9d25c8df944c14ce53d390c5a713724d1acfbe0015cbbbd99f1",
+      "extra": {
+        "cards_semantic": "fe3083590710a2037eb0de678d6bb8ce6950de7e875dbd2aac8cab67ea485032",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "e6dc59935f4c2852f8ad5b82eb48fe9aee09357ab5ff9047a6986dc44af8e05f",
+      "inputs": [
+        {
+          "path": "data/decks/gishath/decisions/001-swing-or-hold-gishath.json#scenario",
+          "sha256": "e3adfee6ca899bcce2c9fd95d72abdddd0f75c2aac0c45b149d9dde59920d8a0"
+        },
+        {
+          "path": "data/decks/gishath/goldfish_metrics.json",
+          "sha256": "c93fee008960ddadd7b2fb910223a9dd01ac8c7967d68a3e40ffd1201f05777d"
+        },
+        {
+          "path": "data/decks/gishath/strategic_frame.json",
+          "sha256": "098d2cc50fd6021989dc89d68d9610bd122716e4ca3d78af22f8d8d938556e43"
+        }
+      ]
+    },
+    "decision:002": {
+      "agent": "pilot-coach",
+      "agent_prompt_sha256": "b45e21197e2288f5caf97d98e455ffd865b8b6e834aa1a14e8f8194ff979bd11",
+      "artifact": "data/decks/gishath/decisions/002-pantlaza-discover-order.json",
+      "artifact_sha256": "abcad5fb54d2412310a631d4366439fb71742020a502ea278ee9c13a3e82eb0a",
+      "extra": {
+        "cards_semantic": "fe3083590710a2037eb0de678d6bb8ce6950de7e875dbd2aac8cab67ea485032",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "d8ffbc321ca99589ae07dc0e14a6562fca61a49b2e33aa18f06d81d99b405cff",
+      "inputs": [
+        {
+          "path": "data/decks/gishath/decisions/002-pantlaza-discover-order.json#scenario",
+          "sha256": "e177a085a9935bb1716007cfd74d39299f4be28d8b0001cbd671aaf30eeeeba2"
+        },
+        {
+          "path": "data/decks/gishath/goldfish_metrics.json",
+          "sha256": "c93fee008960ddadd7b2fb910223a9dd01ac8c7967d68a3e40ffd1201f05777d"
+        },
+        {
+          "path": "data/decks/gishath/strategic_frame.json",
+          "sha256": "098d2cc50fd6021989dc89d68d9610bd122716e4ca3d78af22f8d8d938556e43"
+        }
+      ]
+    },
+    "issue-plan": {
+      "agent": "magazine-editor",
+      "agent_prompt_sha256": "704e709127a2ac8a8d4ab7fd52f37cffcfd1553b1bdcb147732bd7bbdb2a0141",
+      "artifact": "data/decks/gishath/issue_plan.json",
+      "artifact_sha256": "0c0990a18face8672d53d77c53fbe57a51994d08d0418d0c1dde1e6da9cf5325",
+      "extra": {
+        "cards_printing": "1e8c5e4878e1faf22a99ae2f05b69088d6e06b172dc5d8868c120535a758d116",
+        "cards_semantic": "fe3083590710a2037eb0de678d6bb8ce6950de7e875dbd2aac8cab67ea485032",
+        "prose_shape": {
+          "card_roles": [
+            "Akroma's Will",
+            "Alpine Meadow",
+            "Arcane Signet",
+            "Austere Command",
+            "Beast Within",
+            "Belbe's Portal",
+            "Blasphemous Act",
+            "Bonehoard Dracosaur",
+            "Boros Charm",
+            "Boros Signet",
+            "Bronzebeak Foragers",
+            "Canopy Vista",
+            "Carnage Tyrant",
+            "Cinder Glade",
+            "City of Brass",
+            "Clifftop Retreat",
+            "Command Tower",
+            "Congregation at Dawn",
+            "Cultivate",
+            "Curious Altisaur",
+            "Descendants' Path",
+            "Drover of the Mighty",
+            "Earthshaker Dreadmaw",
+            "Eerie Interlude",
+            "Enlightened Tutor",
+            "Etali, Primal Storm",
+            "Exotic Orchard",
+            "Flawless Maneuver",
+            "Forbidden Orchard",
+            "Forest",
+            "Garruk's Uprising",
+            "Ghalta and Mavren",
+            "Ghalta, Primal Hunger",
+            "Gishath, Sun's Avatar",
+            "Goring Ceratops",
+            "Heroic Intervention",
+            "Huatli, Poet of Unity // Roar of the Fifth People",
+            "Hulking Raptor",
+            "Hunter's Insight",
+            "Intrepid Paleontologist",
+            "Itzquinth, Firstborn of Gishath",
+            "Jetmir's Garden",
+            "Kessig Wolf Run",
+            "Kinjalli's Sunwing",
+            "Kodama's Reach",
+            "Krosan Verge",
+            "Mirari's Wake",
+            "Monster Manual // Zoological Study",
+            "Mountain",
+            "Myriad Landscape",
+            "Nature's Lore",
+            "Otepec Huntmaster",
+            "Overwhelming Stampede",
+            "Pantlaza, Sun-Favored",
+            "Path of Ancestry",
+            "Path to Exile",
+            "Plains",
+            "Pugnacious Hammerskull",
+            "Quartzwood Crasher",
+            "Ravenous Sailback",
+            "Regal Imperiosaur",
+            "Regisaur Alpha",
+            "Ripjaw Raptor",
+            "Rishkar's Expertise",
+            "Rogue's Passage",
+            "Rootbound Crag",
+            "Secluded Courtyard",
+            "Skyshroud Claim",
+            "Sol Ring",
+            "Sunpetal Grove",
+            "Swords to Plowshares",
+            "Talisman of Unity",
+            "Temple Altisaur",
+            "Thrashing Brontodon",
+            "Topiary Stomper",
+            "Triumphant Chomp",
+            "Trumpeting Carnosaur",
+            "Unclaimed Territory",
+            "Urza's Incubator",
+            "Vaultborn Tyrant",
+            "Verdant Sun's Avatar",
+            "Wakening Sun's Avatar",
+            "Wayward Swordtooth",
+            "Worldly Tutor",
+            "Zacama, Primal Calamity",
+            "Zetalpa, Primal Dawn"
+          ],
+          "combo_lines": [
+            "001",
+            "002",
+            "003",
+            "004"
+          ],
+          "how_it_wins": null,
+          "matchups": null,
+          "mulligan": null,
+          "threat_assessment": null,
+          "upgrades": null
+        },
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "d9d4f533a4235c80212e5d0cc6badd3795319c98733c28b2a0f062adcd77df52",
+      "inputs": [
+        {
+          "path": "STYLEv3.md",
+          "sha256": "ccc15781694b1ad775fb30496c035dcb7da04694bb9c33c93f23f0668fe3cf1b"
+        },
+        {
+          "path": "data/combo_graph.json",
+          "sha256": "29bd168f2dfbef5f58122de994ee66965fd4d7675922557a4365fe3454089805"
+        },
+        {
+          "path": "data/decks/gishath/decisions/001-swing-or-hold-gishath.json",
+          "sha256": "5fcc6c29f0ac163f41bc8022f90eb291bf814173e6d652c60fd532244fc8d9a2"
+        },
+        {
+          "path": "data/decks/gishath/decisions/002-pantlaza-discover-order.json",
+          "sha256": "9350dd6d66265d2461323d97a35f4dbd305003a32415867ff11d80b74f3adc62"
+        },
+        {
+          "path": "data/decks/gishath/goldfish_metrics.json",
+          "sha256": "c93fee008960ddadd7b2fb910223a9dd01ac8c7967d68a3e40ffd1201f05777d"
+        },
+        {
+          "path": "data/decks/gishath/issue.json",
+          "sha256": "0d8d457cfc7479549341bf4da1a6c5b437ae2e78f581e5652ab1704536eb4c51"
+        },
+        {
+          "path": "data/decks/gishath/stacks/001-gishath-trigger-cascade.json",
+          "sha256": "20fa1f251589a77074be9f3d68113a6d5b95a61c07c7c6e412cb91a259d41a00"
+        },
+        {
+          "path": "data/decks/gishath/stacks/002-marauding-polyraptor-verdict.json",
+          "sha256": "b328f79d3a9c8878f090b21035195071b538e1d8ab4de6eaa60d24b5c6a9b8a1"
+        },
+        {
+          "path": "data/decks/gishath/stacks/003-forerunner-polyraptor-burst.json",
+          "sha256": "4c672db3d4bd32e95fe07f3e6ab37e6bed7c32dc95d6ba23c1ca2bd00e942eac"
+        },
+        {
+          "path": "data/decks/gishath/stacks/004-wrathful-blasphemous-temple.json",
+          "sha256": "1b530ab0499af7d32fc1c81e8e63c3f4c7f03a3c69b9338f7496adab1a5b8dd0"
+        },
+        {
+          "path": "data/decks/gishath/strategic_frame.json",
+          "sha256": "098d2cc50fd6021989dc89d68d9610bd122716e4ca3d78af22f8d8d938556e43"
+        },
+        {
+          "path": "data/obsolescence_index.json",
+          "sha256": "94d9662cb54ef5ed9f2ca9ce31f3a8427f5be8f584032a3efd66b16c81aedf2b"
+        },
+        {
+          "path": "data/synergy_graph.json",
+          "sha256": "f09551fd9024addb575d417e3acdbef5abeba046c6753ef07976339688e854df"
+        },
+        {
+          "path": "src/manamap/pilot/issue_spec.py",
+          "sha256": "8b9e9954d0fef402262916e979b397c5e59a865af299de605271fcb06f5820ba"
+        }
+      ]
+    },
+    "sideboard-analysis": {
+      "agent": "sideboard-analyst",
+      "agent_prompt_sha256": "7650c6a096271474302cb1e1823064e03632a3e42b3d3c1cd2f01143c2a79745",
+      "artifact": "data/decks/gishath/sideboard_analysis.json",
+      "artifact_sha256": "8c3795f41de616c898ac8ed50d8081cd6dbafd6bdd1216546b8866c2a8a9bcd2",
+      "extra": {
+        "cards_semantic": "fe3083590710a2037eb0de678d6bb8ce6950de7e875dbd2aac8cab67ea485032",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "f00594d61791ca7655c24f73e0ca01ff858fb3f60b1bb2aebf394c572f7b1386",
+      "inputs": [
+        {
+          "path": "data/combo_graph.json",
+          "sha256": "29bd168f2dfbef5f58122de994ee66965fd4d7675922557a4365fe3454089805"
+        },
+        {
+          "path": "data/decks/gishath/bracket_report.json",
+          "sha256": "84dcedb2a706a769dc721a14cc6e7cc65d1d267fe27696b3b689338840d45ef5"
+        },
+        {
+          "path": "data/decks/gishath/pilot_feedback.md",
+          "sha256": "f804f859da7aed5861146fd401df98c7d6be706e661a74d8d8d5906522796b61"
+        },
+        {
+          "path": "data/decks/gishath/stacks/001-gishath-trigger-cascade.json",
+          "sha256": "20fa1f251589a77074be9f3d68113a6d5b95a61c07c7c6e412cb91a259d41a00"
+        },
+        {
+          "path": "data/decks/gishath/stacks/002-marauding-polyraptor-verdict.json",
+          "sha256": "b328f79d3a9c8878f090b21035195071b538e1d8ab4de6eaa60d24b5c6a9b8a1"
+        },
+        {
+          "path": "data/decks/gishath/stacks/003-forerunner-polyraptor-burst.json",
+          "sha256": "4c672db3d4bd32e95fe07f3e6ab37e6bed7c32dc95d6ba23c1ca2bd00e942eac"
+        },
+        {
+          "path": "data/decks/gishath/stacks/004-wrathful-blasphemous-temple.json",
+          "sha256": "1b530ab0499af7d32fc1c81e8e63c3f4c7f03a3c69b9338f7496adab1a5b8dd0"
+        },
+        {
+          "path": "data/decks/gishath/strategic_frame.json",
+          "sha256": "098d2cc50fd6021989dc89d68d9610bd122716e4ca3d78af22f8d8d938556e43"
+        }
+      ]
+    },
+    "stack:001": {
+      "agent": "stack-resolver+rules-checker",
+      "agent_prompt_sha256": "12dc45362c304a02f051588056f71efa77b678bb0a00d95db293a55086400e2e",
+      "artifact": "data/decks/gishath/stacks/001-gishath-trigger-cascade.json",
+      "artifact_sha256": "b6e1fe3b727fe0f3949c8b81caf54cd3e875bddb17b5fad120b2f691ec0f95d2",
+      "extra": {
+        "cards_semantic": "fe3083590710a2037eb0de678d6bb8ce6950de7e875dbd2aac8cab67ea485032",
+        "rules_version": "June 19, 2026"
+      },
+      "fingerprint": "4e330969a2d3ff12b37c381b5232d12c83451d7dff21817afefa0d18e717dd93",
+      "inputs": [
+        {
+          "path": "data/decks/gishath/stacks/001-gishath-trigger-cascade.json#scenario",
+          "sha256": "70bbf6c051a5a707197b20197f37c0196fd77992d98311b5c24a866c320b25b8"
+        }
+      ],
+      "iterations": 2,
+      "verdict": "pass"
+    },
+    "stack:002": {
+      "agent": "stack-resolver+rules-checker",
+      "agent_prompt_sha256": "12dc45362c304a02f051588056f71efa77b678bb0a00d95db293a55086400e2e",
+      "artifact": "data/decks/gishath/stacks/002-marauding-polyraptor-verdict.json",
+      "artifact_sha256": "75e429035f56c6331f2dce57859f3482bf2c9ad618d25738dc16f688f8ed9a97",
+      "extra": {
+        "cards_semantic": "fe3083590710a2037eb0de678d6bb8ce6950de7e875dbd2aac8cab67ea485032",
+        "rules_version": "June 19, 2026"
+      },
+      "fingerprint": "53af31fa5de065cee74404634a3c15e911200477f4677a6e2985263ec3b268d0",
+      "inputs": [
+        {
+          "path": "data/decks/gishath/stacks/002-marauding-polyraptor-verdict.json#scenario",
+          "sha256": "13d84904d899217b0a9ffc7cccd10fe166eb36284bd4e13c1b5388675bd35766"
+        }
+      ],
+      "iterations": 2,
+      "verdict": "pass"
+    },
+    "stack:003": {
+      "agent": "stack-resolver+rules-checker",
+      "agent_prompt_sha256": "12dc45362c304a02f051588056f71efa77b678bb0a00d95db293a55086400e2e",
+      "artifact": "data/decks/gishath/stacks/003-forerunner-polyraptor-burst.json",
+      "artifact_sha256": "4fc2d104d06be057fa9c2ef929003a400725a02d0087189159592d0b79444a6e",
+      "extra": {
+        "cards_semantic": "fe3083590710a2037eb0de678d6bb8ce6950de7e875dbd2aac8cab67ea485032",
+        "rules_version": "June 19, 2026"
+      },
+      "fingerprint": "1bff2a49bb5fc98a18f593e08f8939772511323b86138611dd8bca5f0fe3e114",
+      "inputs": [
+        {
+          "path": "data/decks/gishath/stacks/003-forerunner-polyraptor-burst.json#scenario",
+          "sha256": "4dd639b16c7c8a580164adfc9dc82525a92ace12c7b2a9169963027b1cc843a3"
+        }
+      ],
+      "iterations": 1,
+      "verdict": "pass"
+    },
+    "stack:004": {
+      "agent": "stack-resolver+rules-checker",
+      "agent_prompt_sha256": "12dc45362c304a02f051588056f71efa77b678bb0a00d95db293a55086400e2e",
+      "artifact": "data/decks/gishath/stacks/004-wrathful-blasphemous-temple.json",
+      "artifact_sha256": "2e8488da7f28b37eb3a3abf273aac80627e51ac9224f2294b7f88e609af3c854",
+      "extra": {
+        "cards_semantic": "fe3083590710a2037eb0de678d6bb8ce6950de7e875dbd2aac8cab67ea485032",
+        "rules_version": "June 19, 2026"
+      },
+      "fingerprint": "52415647a99c06645718c8fdf6acbd5fa8a23c1c75cd2848230c9013f635565a",
+      "inputs": [
+        {
+          "path": "data/decks/gishath/stacks/004-wrathful-blasphemous-temple.json#scenario",
+          "sha256": "4d8283cf968f24fb02a706ed52901ee2dd03f6f5ddc08bf2c38275693b50d1e1"
+        }
+      ],
+      "iterations": 2,
+      "verdict": "pass"
+    },
+    "strategic-frame": {
+      "agent": "strategy-researcher",
+      "agent_prompt_sha256": "72b1b21517c3ae295e68f4b1fb7c089a5ddf21b269f013fc9df86321a2947f75",
+      "artifact": "data/decks/gishath/strategic_frame.json",
+      "artifact_sha256": "dd62cdf49ac2c8e5de3573ff8f66e93d357c1ee42091cb91c3230a146b6aa8b3",
+      "extra": {
+        "cards_semantic": "fe3083590710a2037eb0de678d6bb8ce6950de7e875dbd2aac8cab67ea485032",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "df07d6bb7eb34cc2061d3bbc2da7e7092877ad39100e0ececa8a5a894f4ebc82",
+      "inputs": [
+        {
+          "path": "data/decks/gishath/goldfish_metrics.json",
+          "sha256": "c93fee008960ddadd7b2fb910223a9dd01ac8c7967d68a3e40ffd1201f05777d"
+        },
+        {
+          "path": "data/decks/gishath/stacks/001-gishath-trigger-cascade.json",
+          "sha256": "20fa1f251589a77074be9f3d68113a6d5b95a61c07c7c6e412cb91a259d41a00"
+        },
+        {
+          "path": "data/decks/gishath/stacks/002-marauding-polyraptor-verdict.json",
+          "sha256": "b328f79d3a9c8878f090b21035195071b538e1d8ab4de6eaa60d24b5c6a9b8a1"
+        },
+        {
+          "path": "data/decks/gishath/stacks/003-forerunner-polyraptor-burst.json",
+          "sha256": "4c672db3d4bd32e95fe07f3e6ab37e6bed7c32dc95d6ba23c1ca2bd00e942eac"
+        },
+        {
+          "path": "data/decks/gishath/stacks/004-wrathful-blasphemous-temple.json",
+          "sha256": "1b530ab0499af7d32fc1c81e8e63c3f4c7f03a3c69b9338f7496adab1a5b8dd0"
+        }
+      ]
+    },
+    "writer-prose": {
+      "agent": "manual-writer",
+      "agent_prompt_sha256": "d7be3c41483ad556364e78a0a55d41f8f850a6780eb2afa0d143fb44a2d6c2df",
+      "artifact": "data/decks/gishath/manual_prose.json",
+      "artifact_keys": [
+        "card_roles",
+        "combo_lines",
+        "how_it_wins",
+        "mulligan",
+        "upgrades"
+      ],
+      "artifact_sha256": "f8858feb5d629aeec5147aea09d2fad63e4838f2c791d41d19779b6b1911e454",
+      "extra": {
+        "cards_semantic": "fe3083590710a2037eb0de678d6bb8ce6950de7e875dbd2aac8cab67ea485032",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "e9423b1bd1297a3d6a126870cbf2fdc347af7fb4549b2bb50414a2a0a1489403",
+      "inputs": [
+        {
+          "path": "data/combo_graph.json",
+          "sha256": "29bd168f2dfbef5f58122de994ee66965fd4d7675922557a4365fe3454089805"
+        },
+        {
+          "path": "data/decks/gishath/stacks/001-gishath-trigger-cascade.json",
+          "sha256": "20fa1f251589a77074be9f3d68113a6d5b95a61c07c7c6e412cb91a259d41a00"
+        },
+        {
+          "path": "data/decks/gishath/stacks/002-marauding-polyraptor-verdict.json",
+          "sha256": "b328f79d3a9c8878f090b21035195071b538e1d8ab4de6eaa60d24b5c6a9b8a1"
+        },
+        {
+          "path": "data/decks/gishath/stacks/003-forerunner-polyraptor-burst.json",
+          "sha256": "4c672db3d4bd32e95fe07f3e6ab37e6bed7c32dc95d6ba23c1ca2bd00e942eac"
+        },
+        {
+          "path": "data/decks/gishath/stacks/004-wrathful-blasphemous-temple.json",
+          "sha256": "1b530ab0499af7d32fc1c81e8e63c3f4c7f03a3c69b9338f7496adab1a5b8dd0"
+        },
+        {
+          "path": "data/decks/gishath/strategic_frame.json",
+          "sha256": "098d2cc50fd6021989dc89d68d9610bd122716e4ca3d78af22f8d8d938556e43"
+        },
+        {
+          "path": "data/obsolescence_index.json",
+          "sha256": "94d9662cb54ef5ed9f2ca9ce31f3a8427f5be8f584032a3efd66b16c81aedf2b"
+        },
+        {
+          "path": "data/synergy_graph.json",
+          "sha256": "f09551fd9024addb575d417e3acdbef5abeba046c6753ef07976339688e854df"
+        }
+      ]
+    }
+  },
+  "slug": "gishath"
+}

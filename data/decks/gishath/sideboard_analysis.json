@@ -1,0 +1,150 @@
+{
+  "slug": "gishath",
+  "assessment": "This 21-card bench is not a box of situational answers — it is the deck's entire step-up package, held out of a maindeck that computes floor 3 with zero contained combos. The top-of-bracket-3 version of this deck pulls in the mana tier (Selvala, Regal Behemoth) to attack the 8-drop problem (goldfish mean cast 7.93, 9% by turn 6), then the verified enrage package: Forerunner of the Empire rigging Gishath's reveal and enabling the stack-003 controlled Polyraptor burst, plus Wrathful Raptors completing the stack-004 one-sided Blasphemous Act sweep with two cards already in the 99. Every delta is 3 -> 3 — the bench holds no Game Changers, so this step-up is power within bracket 3, not a bracket move; the only true infinite on the bench (Marauding Raptor + Polyraptor, stack 002) is a verified mandatory-loop DRAW of the whole game, which is why those two cards must never share the 99.",
+  "swaps": [
+    {
+      "in": "Selvala, Heart of the Wilds",
+      "out": "Ravenous Sailback",
+      "role": "draw:engine",
+      "when": "Any pod — this is the promote case; the one live condition is holding her back when an opponent's deck, not yours, is landing the table's biggest bodies, since her draw clause is symmetric.",
+      "why": "In a deck with 34 threat bodies, Selvala on turn 2 plus any 4-power Dinosaur taps for 4+ the following turn and puts Gishath castable around turn 5-6 against a goldfish mean cast of 7.93 — while most of your Dinosaur ETBs draw a card because your bodies are the biggest on the table; Ravenous Sailback is 5 mana for a 3/4 whose Naturalize mode duplicates Thrashing Brontodon and Zacama.",
+      "bracket_delta": {"before": 3, "after": 3},
+      "citations": [
+        {"rule": "strategy:deckbuilding.curve", "quote": "unless the majority of your deck is mana ramp... you're probably only going to be able to cast ONE big-mana spell per game"}
+      ]
+    },
+    {
+      "in": "Regal Behemoth",
+      "out": "Verdant Sun's Avatar",
+      "role": "value:etb",
+      "when": "Pods where you can defend the monarchy — 34 bodies, most of them oversized blockers, usually can.",
+      "why": "Monarch is a draw every turn and the mana clause doubles every land tap while you hold it — six lands become twelve toward an 8-mana commander — on a 5/5 trample body that defends its own crown; Verdant Sun's Avatar spends 7 mana on lifegain that rebuilds nothing after the wrath the deck must assume.",
+      "bracket_delta": {"before": 3, "after": 3},
+      "citations": [
+        {"rule": "strategy:resource-hedging.wrath-math", "quote": "buy resilience instead of restraint where you can"}
+      ]
+    },
+    {
+      "in": "Forerunner of the Empire",
+      "out": "Goring Ceratops",
+      "role": "tutor:narrow",
+      "when": "Unconditional — the tutor mode alone is live from turn 4 in every game Gishath or Descendants' Path is in.",
+      "why": "The ETB puts any Dinosaur on top of the library, rigging Gishath's reveal-7 and Descendants' Path, and the optional 1-damage ping converts every Dinosaur ETB into maindeck Ripjaw Raptor draws under Temple Altisaur's damage cap — plus it is the verified-safe half of the stack-003 Polyraptor burst; Goring Ceratops is a 7-mana 3/3 that grants double strike only in board states already won.",
+      "bracket_delta": {"before": 3, "after": 3},
+      "citations": [
+        {"rule": "strategy:critical-mass", "quote": "hit enablers, not payoffs"}
+      ]
+    },
+    {
+      "in": "Polyraptor",
+      "out": "Zetalpa, Primal Dawn",
+      "role": "threat:body",
+      "when": "Only alongside the Forerunner promotion, and only while Marauding Raptor stays benched — stack 002 verified the Marauding pair as a mandatory-loop draw of the whole game with no deck-side breaker (the deck has no sac outlet).",
+      "why": "With Forerunner in the 99 this is the stack-003 verified line: up to 7 free 8/8 tokens on a single Dinosaur ETB via the decline-one sequencing, self-terminating with a safe stop at every link; Zetalpa is 8 mana of keywords with no trigger and no cards, and this deck's 8-slot belongs to Gishath.",
+      "bracket_delta": {"before": 3, "after": 3},
+      "citations": []
+    },
+    {
+      "in": "Wrathful Raptors",
+      "out": "Earthshaker Dreadmaw",
+      "role": "threat:body",
+      "when": "Effectively unconditional while Blasphemous Act and Temple Altisaur remain maindeck — which they are.",
+      "why": "Stack 004 verified the line with two maindeck cards: Blasphemous Act under Temple Altisaur becomes a one-sided sweep — your Dinosaurs are dealt 1 each, Temple Altisaur dies but still redirects 13 via LKI, and 16 total damage is redirected at a player — and every future enrage ping becomes reach; Earthshaker Dreadmaw's one-shot draw needs exactly the board Gishath's reveal already supplies.",
+      "bracket_delta": {"before": 3, "after": 3},
+      "citations": []
+    },
+    {
+      "in": "Ranging Raptors",
+      "out": "Drover of the Mighty",
+      "role": "ramp:land",
+      "when": "Once the ping package (Forerunner, or Blasphemous Act turns) is live, or in sweeper-heavy pods.",
+      "why": "It puts the ramp on lands, which survive the wrath: every Forerunner ping, Blasphemous Act, or profitable chump block fetches a basic, where Drover of the Mighty is a mana body that dies to the deck's own Act and to the very ping web this upgrade path installs — the frame already flags dorks dying to the sweepers the deck most fears.",
+      "bracket_delta": {"before": 3, "after": 3},
+      "citations": [
+        {"rule": "strategy:resource-hedging.wrath-math", "quote": "After the wrath, initiative goes to whoever rebuilds cheapest"}
+      ]
+    },
+    {
+      "in": "Trapjaw Tyrant",
+      "out": "Kinjalli's Sunwing",
+      "role": "removal:spot",
+      "when": "Creature-dense pods, once Forerunner of the Empire is in the 99.",
+      "why": "Each optional Forerunner ping converts a Dinosaur ETB into 'exile target creature an opponent controls until Trapjaw leaves' — a repeatable Oblivion Ring on a 4/3 — while Kinjalli's Sunwing's 1/2 body is collateral to the deck's own plan: two Forerunner pings in a turn kill it.",
+      "bracket_delta": {"before": 3, "after": 3},
+      "citations": []
+    },
+    {
+      "in": "Marauding Raptor",
+      "out": "Otepec Huntmaster",
+      "role": "ramp:cost-reduction",
+      "when": "ONLY if Polyraptor stays benched — this swap and the Polyraptor swap are mutually exclusive: stack 002 verified the pair as a mandatory loop that draws the whole game (732.4/104.4b), breakable only by an opponent's choice, and the deck runs no sac outlet to break it itself.",
+      "why": "A strictly wider reducer — {1} off every creature spell including Gishath, versus Otepec's Dinosaur-only {1} — whose ping turns each creature ETB into a deck-side enrage trigger (Ripjaw Raptor draws; Ranging Raptors fetches; Temple Altisaur caps the ping at 1 for other Dinosaurs), and Otepec's haste mode is half-redundant with Gishath's native haste and Regisaur Alpha; the real cost is that it kills your own Intrepid Paleontologist and 1-toughness dorks on entry.",
+      "bracket_delta": {"before": 3, "after": 3},
+      "citations": []
+    }
+  ],
+  "opens_lines": [
+    {
+      "cards": ["Marauding Raptor", "Polyraptor"],
+      "why_plausible": "Marauding's ping is mandatory and Polyraptor's copy trigger is mandatory: verified as a mandatory loop that DRAWS the whole game (732.4/104.4b) unless an opponent chooses to break it — a liability, not a wincon, for a deck with no sac outlet. This verdict is why the two cards must never share the 99.",
+      "status": "verified",
+      "stack_artifact": "stacks/002-marauding-polyraptor-verdict.json"
+    },
+    {
+      "cards": ["Forerunner of the Empire", "Polyraptor"],
+      "why_plausible": "Forerunner's ping is 'you may', so the loop is controllable: verified self-terminating burst of up to 7 tokens via the decline-one-intermediate-trigger line (yes-to-everything caps at 6), with a safe stop at every link. The safe way to run Polyraptor.",
+      "status": "verified",
+      "stack_artifact": "stacks/003-forerunner-polyraptor-burst.json"
+    },
+    {
+      "cards": ["Wrathful Raptors", "Blasphemous Act", "Temple Altisaur"],
+      "why_plausible": "Verified one-sided sweep: your Dinosaurs are dealt 1 each under Temple Altisaur (which takes 13, dies, and still redirects 13 via LKI), 16 total damage redirected to a player — not by itself lethal from 26, and Act plus Temple are already maindeck, so promoting Wrathful Raptors alone completes it.",
+      "status": "verified",
+      "stack_artifact": "stacks/004-wrathful-blasphemous-temple.json"
+    },
+    {
+      "cards": ["Forerunner of the Empire", "Ripjaw Raptor", "Temple Altisaur"],
+      "why_plausible": "Each Dinosaur ETB, Forerunner may ping every creature 1; Temple caps damage to your other Dinosaurs at 1, and stack 004 established that 'dealt 1' still deals damage — so every ETB should read 'draw a card' off Ripjaw. The repeated-trigger loop under prevention has not itself been run.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "cards": ["Forerunner of the Empire", "Bellowing Aegisaur"],
+      "why_plausible": "Each optional ping should put a +1/+1 counter on each OTHER creature you control — a team anthem per Dinosaur ETB — but Aegisaur itself never grows and eats every ping, so its survival budget and the Temple Altisaur interaction need verifying.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "cards": ["Forerunner of the Empire", "Silverclad Ferocidons"],
+      "why_plausible": "Each optional ping should make each opponent sacrifice a permanent of their choice — a repeatable triple edict per Dinosaur ETB — if Silverclad's enrage triggers off the 1 damage; unverified.",
+      "status": "needs a stack scenario"
+    }
+  ],
+  "long_term_defaults": [
+    {"card": "Selvala, Heart of the Wilds", "verdict": "promote", "why": "The single highest-ROI card on the bench: a 3-mana engine that attacks the deck's defining problem (goldfish mean Gishath cast 7.93, 9% by t6) with 34 bodies to key off, and it is not a Game Changer — the delta is 3 -> 3."},
+    {"card": "Regal Behemoth", "verdict": "promote", "why": "Monarch draw plus land-tap doubling is ramp and a draw engine on one 5/5 trample body; strictly more game than the 7-mana lifegain avatar it replaces."},
+    {"card": "Forerunner of the Empire", "verdict": "promote", "why": "Rigs the Gishath reveal and Descendants' Path, powers the verified 003 burst, and is the hub of four candidate enrage engines; the deck's cheapest way to bring its own damage."},
+    {"card": "Polyraptor", "verdict": "promote", "why": "As the Forerunner-package payoff (verified 003, up to 7 tokens, self-terminating) it belongs in the 99 — with the absolute rider that Marauding Raptor never joins it there (verified 002 whole-table draw)."},
+    {"card": "Wrathful Raptors", "verdict": "promote", "why": "Completes the verified 004 one-sided sweep with two cards already maindeck; the only bench card whose best line needs zero other promotions."},
+    {"card": "Ranging Raptors", "verdict": "promote", "why": "Ramp that lives on lands instead of dying to the deck's own Blasphemous Act; every deck-side ping is a Rampant Growth."},
+    {"card": "Marauding Raptor", "verdict": "keep-in-sideboard", "why": "Promotion is blocked while Polyraptor is in the 99 (verified 002 mandatory-loop draw, no deck-side breaker), and its ping kills Intrepid Paleontologist and the 1-toughness dorks; only the Polyraptor-less build wants it, as the swap-8 branch records."},
+    {"card": "Trapjaw Tyrant", "verdict": "keep-in-sideboard", "why": "A 3/3 for WW3 with no deck-side damage is fair; it earns its slot only in creature-dense pods after Forerunner is promoted, which is exactly a conditional swap, not a default."},
+    {"card": "Apex Altisaur", "verdict": "keep-in-sideboard", "why": "A 9-mana repeatable fight engine competing with Zacama for the same slot; bring it in against creature-mirror pods, not by default."},
+    {"card": "Runic Armasaur", "verdict": "keep-in-sideboard", "why": "Draws only off opponents' non-mana creature/land activations — a meta call for fetchland and activated-ability pods, blank elsewhere."},
+    {"card": "Rampaging Ferocidon", "verdict": "keep-in-sideboard", "why": "'Players can't gain life' hits your own Vaultborn Tyrant, Verdant Sun's Avatar, and Deathgorge Scavenger too; it is token/lifegain hate for specific pods, not a default."},
+    {"card": "Deathgorge Scavenger", "verdict": "keep-in-sideboard", "why": "Graveyard hate the maindeck already partially covers with Intrepid Paleontologist; sleeve it against reanimator pods."},
+    {"card": "Bellowing Aegisaur", "verdict": "keep-in-sideboard", "why": "Its anthem engine with Forerunner is a candidate line, not a verified one, and alone it is a 6-mana 5/5 that needs someone else to hurt it."},
+    {"card": "Silverclad Ferocidons", "verdict": "keep-in-sideboard", "why": "The repeatable-edict line with Forerunner is unverified, and at 7 mana with no protection it is a slow payoff in a slot the deck already saturates."},
+    {"card": "Frilled Deathspitter", "verdict": "keep-in-sideboard", "why": "2 damage per ping is real reach inside a full ping web but too small a payoff to displace any current 3-slot on its own."},
+    {"card": "Sunfrill Imitator", "verdict": "keep-in-sideboard", "why": "Copying your best Dinosaur on attack requires already having the best Dinosaur and surviving to combat at 2/2-equivalent rate; win-more where the deck needs setup."},
+    {"card": "Rampaging Brontodon", "verdict": "keep-in-sideboard", "why": "A 7-mana attack-only pump body with no ETB, no draw, and no enrage — the one axis this deck's 7-slot never lacks is stats."},
+    {"card": "Knight of the Stampede", "verdict": "keep-in-sideboard", "why": "A fourth reducer that lands turn 4 and saves mana only from turn 5 on, behind Urza's Incubator, Otepec (or Marauding), and Huatli in the same job."},
+    {"card": "Kinjalli's Caller", "verdict": "keep-in-sideboard", "why": "Turn-1 W on 9 white land sources is unreliable, and a 1/2 reducer dies to the deck's own ping plan; the Selvala/Behemoth mana tier is the better use of the slots."},
+    {"card": "Savage Land Dinosaur", "verdict": "keep-in-sideboard", "why": "Basic landcycling for {2} is honest early-game flexibility, but as a body it is a fair 6-mana trampler in the deck's most crowded slot band."},
+    {"card": "Wakening Sun's Avatar", "verdict": "keep-in-sideboard", "why": "A spare copy — the card is already in the 99, and singleton rules make promoting the duplicate illegal; it is a physical backup, not an option."}
+  ],
+  "gaps": [
+    "No bench card has an EDHREC rank (sideboard-facts note), so every claim above rests on this deck's needs and the four verified stacks, not popularity — nothing would settle this except the ranks appearing in a future data refresh.",
+    "The Forerunner ping-web composites (Ripjaw draws, Bellowing Aegisaur counters, Silverclad edicts, Trapjaw exiles — all under Temple Altisaur's prevention) are unverified; one /resolve-stack run on the ping-web under prevention would settle all four candidate lines at once.",
+    "The strategy corpus has no section on typal construction, on enrage/self-damage engines, or on Commander sideboard/upgrade-path doctrine (all already logged in strategic_frame.gaps) — the promote/keep verdicts here lean on general principles (critical-mass, wrath-math, curve) instead.",
+    "Selvala's symmetric draw clause has no corpus grounding for its political cost (opponents' biggest-body ETBs draw them cards); the hold-back guidance in swap 1 is card-reading, not a cited principle."
+  ]
+}

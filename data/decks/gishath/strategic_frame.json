@@ -1,0 +1,126 @@
+{
+  "slug": "gishath",
+  "archetype": "Naya Dinosaur typal battlecruiser: a linear critical-mass ramp deck whose entire payoff density is compressed into one commander combat trigger, with a benched 21-card sideboard holding the whole combo package (bracket floor 3, zero contained combos maindeck).",
+  "schools": [
+    "strategy:critical-mass",
+    "strategy:whos-the-beatdown",
+    "strategy:multiplayer.threat-deflection",
+    "strategy:multiplayer.pivot-window",
+    "strategy:resource-hedging.wrath-math",
+    "strategy:multiplayer.commander-insurance"
+  ],
+  "role_assignment": {
+    "default_role": "Quiet ramp player for turns 1-6 — a control POSTURE, not a control deck. Per strategy:whos-the-beatdown the deck's label (aggro battlecruiser) is not its role: until Gishath is castable it cannot race anyone, so it develops mana and manages perceived threat (strategy:multiplayer.threat-deflection) — while knowing that experienced tables hit exactly the quiet ramp player, so the 'I'm just casting Cultivate' posture gets discounted by anyone tracking mana.",
+    "pivot_trigger": "The turn Gishath can be cast AND connect: haste means cast-turn combat, so the pivot condition is castable commander + a held protection instant + at least one opponent who cannot profitably block or answer. Per strategy:multiplayer.pivot-window, assume every held answer appears the moment the 8-drop hits the stack, and count open mana before committing — the trigger only pays if combat damage lands. Secondary pivot: a resolved Pantlaza or Descendants' Path engine turn makes the deck the value player and defers the swing.",
+    "strategy_ref": "strategy:pivot-point"
+  },
+  "engines": [
+    {
+      "piece": "Gishath, Sun's Avatar",
+      "engine": "The core payoff-compression engine: combat damage to a player reveals that many cards, free-rolling every Dinosaur among them onto the battlefield. 34 threat:body entries (deck-facts roles) make the reveal dense. Vigilance/trample/haste means the swing happens the turn he lands. Stack 001 (trigger cascade) has NO checker verdict yet — the trigger's mechanics interactions are candidate, not fact.",
+      "evidence": "oracle text; deck-facts roles histogram; stack 001 pending",
+      "strategy_ref": "strategy:critical-mass"
+    },
+    {
+      "piece": "Pantlaza, Sun-Favored",
+      "engine": "Second, independent engine: once-per-turn discover X = entering Dinosaur's toughness. Unlike Gishath it needs no combat and no 8 mana — it converts every Dinosaur ETB (including Gishath's free-rolls and token creators) into extra spells. It is the engine that keeps working the turn after a wrath.",
+      "evidence": "oracle text (cards.json); absent from synergy_graph per deck-facts (shortlist artifact, not a fit score)",
+      "strategy_ref": "strategy:critical-mass"
+    },
+    {
+      "piece": "Urza's Incubator / Belbe's Portal / Monster Manual / Descendants' Path / Huatli, Poet of Unity",
+      "engine": "The cheat/reducer layer that attacks the 8-mana problem from the cost side: goldfish target 'Cost reducer or cheat-into-play drawn' hits 55.9% by turn 6 (assembled 67.2% overall, mean turn 3.0). Note the deck-facts trap: Unclaimed Territory's mana is spells-only and cannot activate Belbe's Portal or Monster Manual; Secluded Courtyard pays creature-source abilities but Portal/Manual are not creature sources either — both typal lands accelerate the cast plan, not the cheat plan.",
+      "evidence": "goldfish_metrics.json targets; oracle text; deck-facts notes on restricted mana",
+      "strategy_ref": "strategy:deckbuilding.curve"
+    },
+    {
+      "piece": "Ramp shell (21 lands + 4 ramp:land + 5 rocks + 4 dorks + 3 cost-reduction)",
+      "engine": "82% of games see ramp/fixing by turn 6 (goldfish, mean turn 2.2), yet commander mean cast is 7.932 with only 9% by turn 6 — the goldfish does not model cost reducers (stated assumption), so real casts run earlier, but the naked number is the honest picture of the 8-drop problem. 21 lands is far below Duke's ~40% baseline (strategy:deckbuilding.curve); the deck substitutes dorks and rocks, which die to the sweepers it most fears.",
+      "evidence": "goldfish_metrics.json (mean_cast_turn 7.932, cast_by_turn_6_rate 0.09, ramp target 0.82 by t6); deck-facts roles/curve",
+      "strategy_ref": "strategy:deckbuilding.curve"
+    },
+    {
+      "piece": "Protection suite (Heroic Intervention, Flawless Maneuver, Boros Charm, Akroma's Will, Eerie Interlude)",
+      "engine": "49% drawn by turn 6 (goldfish protection target). Five held instants, four of which cover the WHOLE board — this is Cullen's single-use-instant class from strategy:multiplayer.commander-insurance, correctly chosen for a deck whose engine hub costs 8 + tax: each removal spell eaten uncovered costs ~2 full turns (recast tax {2} plus the tempo turn). Flawless Maneuver is free with a commander out — it is the swing-turn card.",
+      "evidence": "oracle text; goldfish target 0.49 by t6 (per pilot brief)",
+      "strategy_ref": "strategy:multiplayer.commander-insurance"
+    },
+    {
+      "piece": "Draw engines (Garruk's Uprising, Curious Altisaur, Bonehoard Dracosaur, Etali, Primal Storm)",
+      "engine": "Power-4 ETB draw, Dino combat-damage draw, and impulse exile keep the deck rebuilding after a wrath — the cheapest-rebuild criterion of strategy:resource-hedging.wrath-math. Curious Altisaur turns every Gishath free-roll swing into cards.",
+      "evidence": "oracle text; deck-facts roles (draw:engine 3, draw:impulse 2)",
+      "strategy_ref": "strategy:resource-hedging.wrath-math"
+    },
+    {
+      "piece": "Enrage composition shell (Temple Altisaur + Blasphemous Act maindeck; payoffs benched)",
+      "engine": "Maindeck holds the asymmetry pieces — Temple Altisaur prevents all but 1 damage to other Dinosaurs; Blasphemous Act costs {1} less per creature — but the enrage PAYOFFS (Polyraptor, Marauding Raptor, Wrathful Raptors, Forerunner, Bellowing Aegisaur, Trapjaw Tyrant, Ranging Raptors...) sit in the 21-card sideboard. Enrage engine hits 49% by t6 per the pilot brief, but its ceiling is bench-gated. This is the pilot's upgrade-path axis.",
+      "evidence": "oracle text; cards.json is_sideboard flags (21 benched cards); pilot_feedback.md mandate",
+      "strategy_ref": "strategy:critical-mass"
+    },
+    {
+      "piece": "Top-stack tutors (Congregation at Dawn, Worldly Tutor) + Gishath trigger",
+      "engine": "Congregation at Dawn puts three creature cards on top in any order — with Gishath's reveal-7 this rigs the free-roll; Worldly Tutor rigs one card for Descendants' Path or Etali. deck-facts shows 9 tutor:narrow slots. This is setup, not a combo: no combo_details record, no stack scenario yet.",
+      "evidence": "oracle text; deck-facts roles (tutor:narrow 9)",
+      "strategy_ref": "strategy:critical-mass"
+    }
+  ],
+  "candidate_missing_lines": [
+    {
+      "title": "Marauding Raptor + Polyraptor: infinite tokens or mandatory-loop draw (stack 002, verdict pending)",
+      "cards": [
+        "Marauding Raptor",
+        "Polyraptor"
+      ],
+      "why_plausible": "combo_details record exists: produces ['Draw the game', 'Infinite ETB', 'Infinite creature tokens', 'Infinitely powerful creature until end of turn'], bracket 3, mana_value_needed 8. The record itself lists 'Draw the game' alongside the wins — Marauding Raptor's ping is mandatory and Polyraptor's copy trigger is mandatory, so whether this is a win or a draw is exactly the open question. BOTH cards are benched (is_sideboard). — VERDICT: verified as a mandatory loop that DRAWS the whole game (732.4/104.4b) unless an opponent chooses to break it — a liability, not a wincon, absent a deck-side loop-breaker.",
+      "status": "verified",
+      "stack_artifact": "stacks/002-marauding-polyraptor-verdict.json"
+    },
+    {
+      "title": "Forerunner of the Empire + Polyraptor: controllable token burst (stack 003, verdict pending)",
+      "cards": [
+        "Forerunner of the Empire",
+        "Polyraptor"
+      ],
+      "why_plausible": "combo_details record: produces infinite creature tokens / damage to all creatures / ETB-LTB-death triggers, bracket 3, mana_value_needed 0. Forerunner's ping is 'you may', which is why this version reads as controllable where the Marauding version may not be. Both cards benched. — VERDICT: verified controllable burst — maximum 7 tokens (declining one intermediate trigger beats yes-to-everything, which caps at 6); self-terminates when Forerunner dies; safe-stop at every link.",
+      "status": "verified",
+      "stack_artifact": "stacks/003-forerunner-polyraptor-burst.json"
+    },
+    {
+      "title": "Wrathful Raptors + Blasphemous Act + Temple Altisaur: one-sided table nuke (stack 004, verdict pending)",
+      "cards": [
+        "Wrathful Raptors",
+        "Blasphemous Act",
+        "Temple Altisaur"
+      ],
+      "why_plausible": "No combo_details record joins Wrathful Raptors with Temple Altisaur (by_card intersection empty) — this is an oracle-text composition: Act deals 13 to each creature; Temple prevents all but 1 to your OTHER Dinosaurs; Wrathful redirects damage dealt to your Dinosaurs at non-Dinosaur targets. How much redirects (13 or 1, per Dinosaur), and what Wrathful itself takes, is unresolved rules work. Wrathful Raptors is benched; Act and Temple are maindeck. — VERDICT: verified one-sided sweep — your Dinosaurs are dealt 1 each under Temple Altisaur (Altisaur takes 13, dies, still redirects 13 via LKI); 16 total redirected to a player; not by itself lethal from 26.",
+      "status": "verified",
+      "stack_artifact": "stacks/004-wrathful-blasphemous-temple.json"
+    },
+    {
+      "title": "Gishath trigger cascade mechanics (stack 001, verdict pending)",
+      "cards": [
+        "Gishath, Sun's Avatar",
+        "Pantlaza, Sun-Favored",
+        "Garruk's Uprising"
+      ],
+      "why_plausible": "The trigger itself is oracle text, but the cascade of consequences — Pantlaza's single once-per-turn discover off multiple simultaneous ETBs, draw-trigger ordering, token interactions — is what stack 001 exists to verify. Until checker passes, no claim about the trigger's downstream sequencing is fact. — VERDICT: verified (5 bodies, 3 draws, discover X=6; trigger-ordering matters — discover before the Regisaur token).",
+      "status": "verified",
+      "stack_artifact": "stacks/001-gishath-trigger-cascade.json"
+    }
+  ],
+  "matchup_frames": {
+    "vs_sweeper_control": "The deck's worst frame: a board built by one Gishath trigger is one sweeper from zero, and 'deploy in waves' (strategy:resource-hedging.wrath-math) is structurally unavailable — the trigger IS the wave. So buy resilience, not restraint: the swing should happen only with a board-wide protection instant held (Flawless Maneuver is free with the commander out), timed into the control player's tapped-out turn (strategy:multiplayer.pivot-window). After a wrath, Pantlaza + draw engines are the cheapest-rebuild package; redeploy worst-first and keep Gishath recastable. Note also strategy:multiplayer.commander-insurance: every uncovered removal spell on Gishath costs {2} more plus a tempo turn — two answered casts roughly ends the game plan.",
+    "vs_stax": "Cost taxes hit an 8-drop harder than anyone else at the table; the cheat layer (Belbe's Portal, Monster Manual, Descendants' Path, Incubator) is the tax-resistant route, so per strategy:critical-mass the fight is over enablers, not payoffs — protect and sequence the cheat pieces first, and mulligan toward them (strategy:mulligans.engine-hands: payoffs without the enabler are blanks). Watch the deck-facts trap: Unclaimed Territory cannot activate Portal or Manual. Removal budget (6 spot, per roles) goes to the stax piece that turns off the cheat layer specifically, not the scariest permanent (strategy:threat-assessment.answer-economy).",
+    "vs_aggro": "The deck owns the long game — an 8/7-ish commander that refills the board on connect is inevitability by Duke's definition (strategy:whos-the-beatdown.metagame-clock) — so against faster aggro it takes the control role: big vigilant blockers, Blasphemous Act as a catch-up sweeper (cheap against their wide board), spot removal on the one threat that actually races (strategy:threat-assessment). Turn the corner immediately on stabilizing (strategy:combat-math.racing): every passive turn after stabilization is a free draw step for them, and Gishath's haste makes the corner-turn violent.",
+    "vs_combo": "The bad seat. The maindeck has zero contained combos and a thin interaction suite (6 spot removal, 2 sweepers, 4 damage-based per deck-facts roles) with no counterspells in Naya; the clock is real but starts around turn 6-8. Per strategy:threat-assessment.answer-economy the held-answers-rot clause governs: against combo the last profitable moment is now — spend removal on enablers (draw engines, tutors, the combo hub) rather than banking it, and race honestly the rest of the way. Per strategy:whos-the-beatdown, this matchup forces the beatdown role regardless of posture: playing control here concedes the only axis available."
+  },
+  "distribution_notes": "Curve mode is 3 (17 entries) over 65 nonland spells with 21 lands + 13 mana producers + 3 reducers — a mana-heavy bottom (roughly 40% of the deck makes or reduces mana) supporting a 34-body typal top. Goldfish: ramp/fixing 82% by t6 (mean turn 2.2) but land-drop hit rate falls to 52% by t6 and mean available mana is only 5.5 at t6 — the deck ramps early then relies on rocks/dorks, exactly the profile a mid-game sweeper punishes twice (board AND mana). Commander mean cast 7.932, median 8, 9% by t6, 54.6% of goldfish games never cast him by turn 10 — though the simulator explicitly does not model the cost reducers or cheat pieces (56% drawn by t6), so treat 7.93 as the ceiling of the problem, not the expectation. Pip picture is comfortable: G 53 total pips dominates (38 cards), source targets 36/36/36 vs land sources G11/R12/W9 — the colour weight rides on the 13 nonland producers. Role coverage 93%; the six no-role cards (Descendants' Path, Eerie Interlude, Hunter's Insight, Overwhelming Stampede, Rishkar's Expertise, Triumphant Chomp) are real functions the taxonomy lacks patterns for, not dead slots.",
+  "overall_assessment": "This is a linear critical-mass deck (strategy:critical-mass) wearing battlecruiser clothes: every card either accelerates toward, cheapens, protects, or cashes in one event — Gishath connecting. The game it plays is a seven-turn setup into a single pivot (strategy:pivot-point): turns 1-6 in a deflection posture as the quiet ramp player (strategy:multiplayer.threat-deflection), knowing that posture is discounted by good tables, then one haste swing that must be timed like a combo turn (strategy:multiplayer.pivot-window) — protection held, table's mana counted, sweeper assumed (strategy:resource-hedging.wrath-math). Its two structural tensions are honest weaknesses: the payoff arrives as one wrath-sized package on a commander whose recast tax is ruinous (strategy:multiplayer.commander-insurance), and its enrage sub-engine wants damage dealt to its own creatures that a table under no obligation to attack a Temple Altisaur board will not volunteer — the deck must bring its own damage (Blasphemous Act, Itzquinth, Forerunner-from-bench), which is precisely where the sideboard's combo package lives. Pantlaza and the draw engines are what elevate it from all-in to resilient: they are the rebuild after the wrath and the engine that does not need combat. The pilot's aggressive upgrade-path mandate has a clear shape: every verified bench line (002/003/004 pending) converts the enrage tension from a liability into the win condition — but not one of those lines is fact until its checker verdict lands.",
+  "gaps": [
+    "No strategy section on typal/tribal deck construction (critical-mass density of a creature type, typal-land tradeoffs) — queries route to mana-base sections instead. This deck needed it for the Incubator/Territory/Courtyard layer.",
+    "No section on self-damage/enrage-style engines (wanting your own creatures damaged); nearest hit is strategy:life-as-resource.philosophy-of-fire at 0.38, which is about life totals, not creature damage as a resource.",
+    "No section on cheat-into-play / cost-cheating as an archetype axis (Belbe's Portal, Descendants' Path, reanimator-adjacent battlecruiser) — 'cheating big creatures into play' returns nothing above 0.37.",
+    "No section on top-of-library stacking as a setup discipline (Congregation at Dawn / Worldly Tutor rigging a reveal trigger) — relevant to both Gishath and Descendants' Path lines.",
+    "No section on sideboard/upgrade-path doctrine for Commander (when moving a combo package from bench to maindeck changes bracket and table contract) — directly load-bearing for this deck's pilot mandate."
+  ]
+}

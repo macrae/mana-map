@@ -1,0 +1,426 @@
+{
+  "id": "003",
+  "slug": "forerunner-polyraptor-burst",
+  "deck": "gishath",
+  "title": "Forerunner of the Empire + Polyraptor: the controllable token bomb",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Forerunner of the Empire (1/3)",
+        "Polyraptor (5/5, no damage marked)",
+        "lands"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": [
+            "a 2/2 creature"
+          ]
+        },
+        {
+          "life": 40,
+          "board": []
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Forerunner of the Empire's damage trigger",
+        "controller": "you",
+        "note": "a Dinosaur just entered under your control; Forerunner's OPTIONAL trigger 'you may have this creature deal 1 damage to each creature' is on the stack and you have chosen YES"
+      }
+    ],
+    "extras": {
+      "context": "SIDEBOARD-PACKAGE VERIFICATION: both cards are in this deck's sideboard. Forerunner of the Empire: 'Whenever a Dinosaur you control enters, you may have this creature deal 1 damage to each creature.' — OPTIONAL, once per Dinosaur entry. Polyraptor: 'Enrage — Whenever this creature is dealt damage, create a token that's a copy of this creature.' Each 1-damage sweep hits EVERY creature: Forerunner (1/3), the original Polyraptor, every Polyraptor token so far, and opponents' creatures. Damage accumulates on each permanent until cleanup. The loop is player-controlled: you choose 'yes' on each new trigger."
+    },
+    "question": "Walk the chain while you keep saying yes: each sweep deals 1 to each creature; each surviving Polyraptor (original + tokens) triggers enrage, creating that many new copies; each new copy entering gives Forerunner another optional trigger. Track accumulated damage: Forerunner dies after how many sweeps (3 toughness), each Polyraptor dies at 5 accumulated damage, and new tokens enter with 0 damage. What is the maximum number of Polyraptor tokens this generates before the chain self-terminates (Forerunner dead), is the chain safely stoppable at any point by declining, and what dies on the opponents' boards (the 2/2)? Give the final board."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Sweep 1: Forerunner of the Empire's trigger (pos 0) resolves; you confirm the 'you may' option and Forerunner deals 1 damage to each creature.",
+        "effect": "1 damage is marked on each creature: Forerunner 1/3 (1 marked), original Polyraptor P0 (1 marked), and the opponent's 2/2 (1 marked).",
+        "citations": [
+          {
+            "rule": "603.5",
+            "quote": "The choice is made when the ability resolves."
+          },
+          {
+            "rule": "302.7",
+            "quote": "Damage dealt to a creature by a source with neither wither nor infect is marked on that creature"
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "State-based actions are checked; no creature has damage equal to or greater than its toughness, so nothing dies. P0's enrage ability triggered (it was dealt damage) and is put on the stack.",
+        "effect": "Stack: [P0's enrage trigger E1]. Board unchanged; damage stays marked.",
+        "citations": [
+          {
+            "rule": "704.5g",
+            "quote": "the total damage marked on it is greater than or equal to its toughness, that creature has been dealt lethal damage and is destroyed"
+          },
+          {
+            "rule": "704.3",
+            "quote": "otherwise all triggered abilities that are waiting to be put on the stack are put on the stack"
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "E1 resolves: create a token that's a copy of Polyraptor (token P1: 5/5 green Dinosaur with Enrage, 0 damage marked). P1 entering is a Dinosaur you control entering, so Forerunner triggers again (T2).",
+        "effect": "Board: Forerunner (1 marked), P0 (1 marked), P1 (fresh). Stack: [T2]. Tokens so far: 1.",
+        "citations": [
+          {
+            "rule": "701.7a",
+            "quote": "put the specified number of tokens with the specified characteristics onto the battlefield"
+          },
+          {
+            "rule": "707.2",
+            "quote": "the copy acquires the copiable values of the original object’s characteristics"
+          },
+          {
+            "rule": "603.6a",
+            "quote": "Enters-the-battlefield abilities trigger when a permanent enters the battlefield."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Sweep 2: T2 resolves; you again choose yes. 1 damage to each creature.",
+        "effect": "Forerunner now has 2 marked, P0 has 2, P1 has 1, the opponent's 2/2 has 2.",
+        "citations": [
+          {
+            "rule": "603.5",
+            "quote": "The choice is made when the ability resolves."
+          },
+          {
+            "rule": "302.7",
+            "quote": "Damage dealt to a creature by a source with neither wither nor infect is marked on that creature"
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "State-based actions: the 2/2 has 2 damage marked on 2 toughness and is destroyed. Then the two enrage triggers that fired during sweep 2 (P0 and P1) are put on the stack; you control both and choose their order: E2a resolves first, E2b under it.",
+        "effect": "Opponent A's 2/2 dies on sweep 2. Stack (top to bottom): [E2a, E2b].",
+        "citations": [
+          {
+            "rule": "704.5g",
+            "quote": "the total damage marked on it is greater than or equal to its toughness, that creature has been dealt lethal damage and is destroyed"
+          },
+          {
+            "rule": "603.3b",
+            "quote": "on the stack in any order they choose"
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "E2a resolves: token P2 is created (0 damage). P2's entry triggers Forerunner (T3), which goes on the stack as the topmost object -- above E2b.",
+        "effect": "Tokens so far: 2 (P1, P2). Stack (top to bottom): [T3, E2b].",
+        "citations": [
+          {
+            "rule": "701.7a",
+            "quote": "put the specified number of tokens with the specified characteristics onto the battlefield"
+          },
+          {
+            "rule": "603.6a",
+            "quote": "Enters-the-battlefield abilities trigger when a permanent enters the battlefield."
+          },
+          {
+            "rule": "603.3",
+            "quote": "The ability becomes the topmost object on the stack."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "The stack resolves top-down, so T3 must resolve before E2b. KEY MAXIMIZING PLAY: on T3's resolution you DECLINE the optional sweep. This spends T3 without damaging anything, letting E2b's token enter before the final sweep. (Saying yes here instead would make sweep 3 hit only 3 Polyraptors, capping the line at 6 tokens.)",
+        "effect": "T3 resolves with no effect. Stack: [E2b]. Forerunner still at 2 marked.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "603.5",
+            "quote": "The choice is made when the ability resolves."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "E2b resolves: token P3 is created (0 damage). P3's entry triggers Forerunner again (T4).",
+        "effect": "Tokens so far: 3 (P1, P2, P3). Four Polyraptors on the battlefield. Stack: [T4].",
+        "citations": [
+          {
+            "rule": "701.7a",
+            "quote": "put the specified number of tokens with the specified characteristics onto the battlefield"
+          },
+          {
+            "rule": "603.6a",
+            "quote": "Enters-the-battlefield abilities trigger when a permanent enters the battlefield."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Sweep 3: T4 resolves; you choose yes. Forerunner deals 1 damage to each creature: itself, P0, P1, P2, P3.",
+        "effect": "Marked damage: Forerunner 3, P0 3, P1 2, P2 1, P3 1. No Polyraptor is near its 5 toughness.",
+        "citations": [
+          {
+            "rule": "302.7",
+            "quote": "Damage dealt to a creature by a source with neither wither nor infect is marked on that creature"
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "State-based actions: Forerunner has 3 damage marked on 3 toughness and is destroyed. Then the four enrage triggers from sweep 3 (P0, P1, P2, P3 -- each was dealt damage) are put on the stack.",
+        "effect": "Forerunner dies after the third sweep. Stack: four enrage triggers.",
+        "citations": [
+          {
+            "rule": "704.5g",
+            "quote": "the total damage marked on it is greater than or equal to its toughness, that creature has been dealt lethal damage and is destroyed"
+          },
+          {
+            "rule": "704.3",
+            "quote": "the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event"
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "The four enrage triggers resolve one by one, creating tokens P4, P5, P6, P7 (each 0 damage). These entries do NOT create new Forerunner triggers: Forerunner is in the graveyard, and abilities of a permanent function only while it is on the battlefield. The chain self-terminates.",
+        "effect": "Tokens total: 7 (P1-P7). Eight Polyraptors on the battlefield. Stack empty.",
+        "citations": [
+          {
+            "rule": "701.7a",
+            "quote": "put the specified number of tokens with the specified characteristics onto the battlefield"
+          },
+          {
+            "rule": "113.6",
+            "quote": "Abilities of all other objects usually function only while that object is on the battlefield."
+          }
+        ]
+      },
+      {
+        "n": 12,
+        "action": "Safe-stop property and cleanup: every link in the chain is a 'you may' trigger whose choice is made on resolution -- declining any sweep simply ends the loop with the tokens already made (as step 7 shows, declining is even part of the optimal line). At the cleanup step all marked damage is removed, so surviving Polyraptors reset to undamaged.",
+        "effect": "The chain is fully player-controlled and stoppable at any point with no downside beyond forgoing further tokens.",
+        "citations": [
+          {
+            "rule": "603.5",
+            "quote": "The choice is made when the ability resolves."
+          },
+          {
+            "rule": "514.2",
+            "quote": "all damage marked on permanents (including phased-out permanents) is removed"
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Maximum line: 7 Polyraptor tokens (8 Polyraptors total counting the original) at the cost of Forerunner of the Empire, which dies to its own third sweep. The maximum requires DECLINING the intermediate trigger T3 so the second sweep-2 enrage token enters before the final sweep (yes-to-everything yields only 6 tokens). The chain is safely stoppable at any 'you may' choice. Opponent A's 2/2 dies on sweep 2. All marked damage clears at cleanup.",
+      "you": {
+        "battlefield": [
+          "Polyraptor (original, 3 damage marked)",
+          "Polyraptor token P1 (2 damage marked)",
+          "Polyraptor token P2 (1 damage marked)",
+          "Polyraptor token P3 (1 damage marked)",
+          "Polyraptor tokens P4-P7 (no damage marked)",
+          "lands"
+        ],
+        "graveyard": [
+          "Forerunner of the Empire (destroyed by lethal damage after sweep 3)"
+        ],
+        "polyraptor_count": 8,
+        "tokens_created": 7
+      },
+      "opponents": [
+        {
+          "life": 40,
+          "board": [],
+          "note": "2/2 destroyed by accumulated damage after sweep 2"
+        },
+        {
+          "life": 40,
+          "board": []
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "603.5",
+        "status": "supported",
+        "note": "May-trigger choice made on resolution; also quietly corrects the scenario note's 'you have chosen YES' framing (choice cannot precede resolution)."
+      },
+      {
+        "step": 1,
+        "rule": "302.7",
+        "status": "supported",
+        "note": "Damage marked on creatures; full rule also confirms cleanup removal used in step 12."
+      },
+      {
+        "step": 2,
+        "rule": "704.5g",
+        "status": "supported",
+        "note": "No creature at lethal after sweep 1 (F 1/3, P0 1/5, 2/2 1/2)."
+      },
+      {
+        "step": 2,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "SBA check first, then waiting triggers go on the stack; enrage E1 correctly stacked after the check."
+      },
+      {
+        "step": 3,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 3,
+        "rule": "707.2",
+        "status": "supported",
+        "note": "Token copy acquires copiable values: 5/5 Dinosaur with Enrage; counters/damage not copied, so token enters undamaged."
+      },
+      {
+        "step": 3,
+        "rule": "603.6a",
+        "status": "supported",
+        "note": "Rule explicitly covers 'Whenever a [type] enters' — Forerunner's Dinosaur-entry trigger matches."
+      },
+      {
+        "step": 4,
+        "rule": "603.5",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "302.7",
+        "status": "supported",
+        "note": "Damage accumulates: F 2, P0 2, P1 1, 2/2 2 — verified."
+      },
+      {
+        "step": 5,
+        "rule": "704.5g",
+        "status": "supported",
+        "note": "2/2 with 2 marked >= 2 toughness destroyed on sweep 2 — verified claim (d)."
+      },
+      {
+        "step": 5,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Single controller orders own simultaneous triggers; E2a/E2b ordering legal."
+      },
+      {
+        "step": 6,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "603.6a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "T3 is put on the stack next time a player would receive priority and becomes topmost — above E2b. This is the load-bearing timing fact of the whole line; full rule text supports it."
+      },
+      {
+        "step": 7,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Top-down resolution: T3 must resolve (or be declined) before E2b."
+      },
+      {
+        "step": 7,
+        "rule": "603.5",
+        "status": "supported",
+        "note": "Declining on resolution is legal; trigger is spent with no effect."
+      },
+      {
+        "step": 8,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 8,
+        "rule": "603.6a",
+        "status": "supported",
+        "note": "P3's entry triggers Forerunner again (T4) — Forerunner still alive at 2 marked."
+      },
+      {
+        "step": 9,
+        "rule": "302.7",
+        "status": "supported",
+        "note": "Sweep 3 marks: F 3, P0 3, P1 2, P2 1, P3 1 — matches my independent tally. 2/2 already dead, correctly omitted."
+      },
+      {
+        "step": 10,
+        "rule": "704.5g",
+        "status": "supported",
+        "note": "F at 3 marked / 3 toughness destroyed — dies after third sweep, verified claim on termination timing."
+      },
+      {
+        "step": 10,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "SBA (Forerunner destroyed) performed before the four enrage triggers are stacked."
+      },
+      {
+        "step": 11,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": "P4-P7 created; each SBA check between resolutions finds nothing at lethal (max is P0 at 3/5)."
+      },
+      {
+        "step": 11,
+        "rule": "113.6",
+        "status": "supported",
+        "note": "Forerunner in graveyard; its battlefield trigger no longer functions. No listed exception applies (its trigger condition is a Dinosaur entering, not a leave-the-battlefield event, so no look-back applies). Clean termination — verified claim (c)."
+      },
+      {
+        "step": 12,
+        "rule": "603.5",
+        "status": "supported",
+        "note": "Every link is a may-trigger resolved with a choice; declining any sweep ends the chain (enrage fires only off damage). Safe-stop verified at every link — claim (e)."
+      },
+      {
+        "step": 12,
+        "rule": "514.2",
+        "status": "supported",
+        "note": "All marked damage removed at cleanup."
+      }
+    ],
+    "arithmetic_verification": {
+      "yes_to_everything": "T1 sweep (F1,P0:1) -> E1 -> P1 + T2. T2 sweep (F2,P0:2,P1:1; 2/2 dies) -> E2a,E2b. E2a -> P2 + T3 (above E2b). YES on T3: sweep hits F,P0,P1,P2; F dies at 3; 3 enrage triggers stack above E2b -> P3,P4,P5 (no Forerunner triggers, dead); then E2b -> P6. Total 6 tokens. Matches claim (a).",
+      "decline_T3_line": "Same through E2a. DECLINE T3; E2b -> P3 + T4. YES on T4: sweep hits F,P0,P1,P2,P3; F dies at 3; 4 enrage triggers -> P4-P7. Total 7 tokens. Matches claim (b) and the artifact's step-by-step sequencing exactly.",
+      "maximum_argument": "Exactly 3 yes-sweeps possible (F toughness 3, self-damage 1/sweep). Token yield per sweep = Polyraptors alive at sweep time: 1 + 2 + 4 = 7 is the ceiling, achieved only by declining T3 so both sweep-2 enrage tokens land pre-sweep-3. 7 confirmed as maximum.",
+      "final_state_check": "P0:3, P1:2, P2:1, P3:1, P4-P7:0 marked; 8 Polyraptors; Forerunner in graveyard; opponent boards empty, life 40 (sweeps hit creatures only). All match."
+    },
+    "card_facts": {
+      "Forerunner of the Empire": "cards.json confirms 1/3, sideboard, oracle: 'Whenever a Dinosaur you control enters, you may have this creature deal 1 damage to each creature.' Optional, per-entry, hits each creature including itself. ETB library-search trigger exists but is correctly irrelevant (already on battlefield).",
+      "Polyraptor": "cards.json confirms 5/5, sideboard, Enrage: 'Whenever this creature is dealt damage, create a token that's a copy of this creature.' One trigger per damage event per Polyraptor; tokens copy Enrage."
+    },
+    "iterations": 1
+  }
+}
