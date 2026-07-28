@@ -1,0 +1,525 @@
+{
+  "id": "006",
+  "slug": "aetherflux-storm-lethal",
+  "deck": "heliod",
+  "title": "Aetherflux Reservoir on the Hullbreaker engine: the verified kill?",
+  "scenario": {
+    "board": {
+      "you": [
+        "Hullbreaker Horror",
+        "Sol Ring",
+        "Aetherflux Reservoir",
+        "Island x5",
+        "Plains x3"
+      ],
+      "opponents": [
+        {
+          "life": 34,
+          "board": []
+        },
+        {
+          "life": 40,
+          "board": []
+        },
+        {
+          "life": 26,
+          "board": []
+        }
+      ]
+    },
+    "hand": [
+      "Arcane Signet"
+    ],
+    "graveyard": [],
+    "mana_available": "{U}{U}",
+    "your_life": 32,
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Arcane Signet",
+        "controller": "you",
+        "note": "cast for {2}; this is cast number 1 this turn — Hullbreaker Horror's trigger and Aetherflux Reservoir's life-gain trigger both fire on every cast"
+      }
+    ],
+    "extras": {
+      "context": "Stack 004 (checker: pass) verified the Hullbreaker Horror + Sol Ring + Arcane Signet loop: exactly mana-neutral, unbounded casts within one main phase. Stack 005 (checker: pass) confirmed the loop survives with a one-time +1-float exit and that payoffs must key on CAST COUNT, not mana. Aetherflux Reservoir is that payoff: 'Whenever you cast a spell, you gain 1 life for each spell cast this turn' and 'Pay 50 life: Aetherflux Reservoir deals 50 damage to any target.' Three opponents at 34, 40, and 26 life; you at 32. The question is whether the verified engine plus the Reservoir is a complete, rules-verified kill of the whole table in one turn."
+    },
+    "question": "With the verified cast loop running and Aetherflux Reservoir on the battlefield: state exactly how much life the Reservoir's trigger nets per loop cycle as the cast count climbs (the arithmetic of 'gain 1 life for each spell cast this turn' on casts n and n+1), how many total casts are needed from a starting life of 32 to pay 50 life three times while surviving, when and how the 50-damage activation is used between loop iterations (it is an activated ability of an artifact — what can opponents do in response, and does Hullbreaker Horror protect it?), and whether killing all three opponents in one main phase is fully supported by these cards alone. State the exact sequence and ledger for the kill, or exactly what falls short."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Arcane Signet (cast #1 this turn) is on the stack; the cast matched the trigger conditions of both Aetherflux Reservoir ('Whenever you cast a spell, you gain 1 life for each spell you've cast this turn.') and Hullbreaker Horror ('Whenever you cast a spell, choose up to one —'). Both pending triggers are put on the stack above the Signet, in the order you choose, before any player receives priority.",
+        "effect": "Stack, top-down: your two triggers (your chosen order), then Arcane Signet. You control both triggers, so you order them freely.",
+        "citations": [
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "603.3b",
+            "quote": "each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "The Reservoir trigger for cast #1 resolves. The Signet itself counts: the spell 'becomes cast' at the end of the casting process, and cast-triggers fire after that, so at resolution one spell has been cast this turn.",
+        "effect": "You gain 1 life for each spell you've cast this turn = 1. Life: you 32 -> 33.",
+        "citations": [
+          {
+            "rule": "601.2i",
+            "quote": "the spell becomes cast. Any abilities that trigger when a spell is cast or put onto the stack trigger at this time."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "The Hullbreaker trigger and then Arcane Signet resolve (top of stack first), and the 004/005-verified mana-neutral loop runs: each iteration bounces and recasts a rock, adding one cast per iteration. The trigger-sees-n sequencing is FORCED, not chosen: Sol Ring and Arcane Signet are artifact cards without flash, castable only during your main phase while the stack is empty, so every trigger from cast n must have fully resolved before cast n+1 is even legal. The Reservoir trigger for cast #n therefore always resolves seeing exactly n spells cast this turn.",
+        "effect": "Per-cast life gain climbs: cast n nets +n life (cast n+1 nets +(n+1)). After k total casts the Reservoir has paid out 1+2+...+k = k(k+1)/2 life.",
+        "citations": [
+          {
+            "rule": "301.1",
+            "quote": "A player who has priority may cast an artifact card from their hand during a main phase of their turn when the stack is empty."
+          },
+          {
+            "rule": "117.1a",
+            "quote": "A player may cast a noninstant spell during their main phase any time they have priority and the stack is empty."
+          },
+          {
+            "rule": "117.4",
+            "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Arithmetic bound for the kill: you must pay 50 life three times (150 total), can only pay 50 while at 50 or more life, and must end above 0 (a player at 0 or less loses as a state-based action). From 32 life: 32 + k(k+1)/2 - 150 >= 1 requires k(k+1)/2 >= 119, so k = 15 (120 life gained); k = 14 yields only 105 and fails.",
+        "effect": "Minimum 15 casts this turn, with the three payments interleaved at points where your life is at least 50 (a legal schedule is given in steps 5, 9, and 10).",
+        "citations": [
+          {
+            "rule": "119.4",
+            "quote": "the player may do so only if their life total is greater than or equal to the amount of the payment. If a player pays life, the payment is subtracted from their life total"
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "First activation. Casts 2-6 resolve their Reservoir triggers: +2+3+4+5+6 = +20, life 33 -> 53. With the stack empty and priority yours, you activate Aetherflux Reservoir ('Pay 50 life: This artifact deals 50 damage to any target.') targeting Opponent C (26 life) — a player is a legal 'any target'. Paying 50 life is part of the activation process (the activation analog of paying a spell's costs), legal because 53 >= 50.",
+        "effect": "Life: you 53 -> 3. The 50-damage ability is on the stack targeting Opponent C. The cost is fully paid before anyone can respond.",
+        "citations": [
+          {
+            "rule": "117.1b",
+            "quote": "A player may activate an activated ability any time they have priority."
+          },
+          {
+            "rule": "115.4",
+            "quote": "These targets may be creatures, players, planeswalkers, or battles."
+          },
+          {
+            "rule": "602.2b",
+            "quote": "The remainder of the process for activating an ability is identical to the process for casting a spell listed in rules 601.2b–i."
+          },
+          {
+            "rule": "601.2h",
+            "quote": "The player pays the total cost. First, they pay all costs that don’t involve random elements or moving objects from the library to a public zone, in any order."
+          },
+          {
+            "rule": "119.4",
+            "quote": "the player may do so only if their life total is greater than or equal to the amount of the payment. If a player pays life, the payment is subtracted from their life total"
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Response window — honest assessment. The activation uses the stack, and every opponent receives priority before it resolves; nothing on this board forbids responses (Grand Abolisher is in this 99 but is NOT on this battlefield). Per the scenario, all three opponents' boards are empty, so any response must be castable without mana from permanents (e.g. a pitch-cost instant), but the window is rules-open. Note the 50 life is already paid (step 5) whether or not the ability survives.",
+        "effect": "Opponents may cast instants or activate abilities in response to each activation. On this exact board they have no mana sources, but the line is not response-proof in the rules.",
+        "citations": [
+          {
+            "rule": "117.7",
+            "quote": "If a player with priority casts a spell or activates an activated ability while another spell or ability is already on the stack"
+          },
+          {
+            "rule": "117.4",
+            "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Hullbreaker Horror and the activation: no protection. Activating an ability is not casting a spell — an ability goes on the stack without a card, and only a card on the stack is a spell — so your Reservoir activation does not trigger Hullbreaker. Nor can you manufacture a trigger in response: the only castable cards in the engine are Sol Ring and Arcane Signet, sorcery-speed artifact spells that are legal to cast only during your main phase while the stack is empty — with the activation (or an opponent's answer) on the stack, no loop cast is legal. On this board, each activation window is fully open; Grand Abolisher (in the 99, not on this battlefield) is the card that would close it during your turn.",
+        "effect": "The activation can be responded to, and Hullbreaker Horror offers NO protection during any activation window on this board.",
+        "citations": [
+          {
+            "rule": "405.1",
+            "quote": "When an ability is activated or triggers, it goes on top of the stack without any card associated with it"
+          },
+          {
+            "rule": "112.1",
+            "quote": "the card becomes a spell and is moved to the top of the stack from the zone it was in"
+          },
+          {
+            "rule": "301.1",
+            "quote": "A player who has priority may cast an artifact card from their hand during a main phase of their turn when the stack is empty."
+          },
+          {
+            "rule": "117.1a",
+            "quote": "A player may cast a noninstant spell during their main phase any time they have priority and the stack is empty."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "The first activation resolves: Aetherflux Reservoir deals 50 damage to Opponent C, who loses 50 life: 26 - 50 = -24. Before any player next receives priority, state-based actions are checked and Opponent C loses the game. Damage-to-player kills via SBA at anything at or past exact lethal — there is no 'exactly lethal' exception.",
+        "effect": "Opponent C (26 life) is dead and leaves the game (empty board, nothing else to clean up). Ledger: you 3, A 34, B 40.",
+        "citations": [
+          {
+            "rule": "119.2",
+            "quote": "Damage dealt to a player normally causes that player to lose that much life."
+          },
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event"
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Second cycle: resume the loop for casts 7-12; the Reservoir triggers pay +7+8+9+10+11+12 = +57, life 3 -> 60. With the stack empty you activate the Reservoir again targeting Opponent B (40 life), paying 50 (legal: 60 >= 50); after the same open response window it resolves.",
+        "effect": "Life: you 60 -> 10. B takes 50: 40 - 50 = -10; B loses the game on the next state-based action check. Ledger: you 10, A 34.",
+        "citations": [
+          {
+            "rule": "119.4",
+            "quote": "the player may do so only if their life total is greater than or equal to the amount of the payment. If a player pays life, the payment is subtracted from their life total"
+          },
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "Third cycle: casts 13-15 pay +13+14+15 = +42, life 10 -> 52. You activate the Reservoir a third time targeting Opponent A (34 life), paying 50 (legal: 52 >= 50); it resolves for 50 damage: 34 - 50 = -16, and A loses on the SBA check. Each player who loses the game leaves the game; once A leaves, all your opponents have left, so you win immediately.",
+        "effect": "Life: you 52 -> 2. Opponent A dies. Final: you win the game at 2 life after exactly 15 casts and three activations (total gain 15*16/2 = 120; 32 + 120 - 150 = 2).",
+        "citations": [
+          {
+            "rule": "119.4",
+            "quote": "the player may do so only if their life total is greater than or equal to the amount of the payment. If a player pays life, the payment is subtracted from their life total"
+          },
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "104.5",
+            "quote": "If a player loses the game, that player leaves the game."
+          },
+          {
+            "rule": "104.2a",
+            "quote": "A player still in the game wins the game if that player’s opponents have all left the game."
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "What the line requires beyond the three loop pieces + Reservoir: nothing. No extra mana (the loop is mana-neutral per stacks 004/005 and the activation cost is life only, paid at activation), and no particular starting life — any positive total works because per-cast gain grows without bound, though from 32 the floor is 15 casts. What interrupts it: any instant-speed answer at any priority window — each of the three activations, and each loop cast, passes priority to every opponent. On this board there is NO protection: the loop's castable pieces are sorcery-speed artifacts, so you can never cast into an occupied stack to trigger Hullbreaker, and Grand Abolisher is not on this battlefield to close the windows.",
+        "effect": "Complete, rules-supported one-turn table kill on this board: 15 casts, activations after casts 6, 12, and 15, killing the 26-, 40-, then 34-life opponents, ending at 2 life. The rules-level exposure is real: every window is open to instant-speed interaction.",
+        "citations": [
+          {
+            "rule": "117.1b",
+            "quote": "A player may activate an activated ability any time they have priority."
+          },
+          {
+            "rule": "117.1a",
+            "quote": "A player may cast a noninstant spell during their main phase any time they have priority and the stack is empty."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "The kill is complete and fully supported by these cards alone. Exact line: run the verified loop to 6 total casts (life 32 -> 53 via +1..+6), activate for 50 at the 26-life opponent (life 3, they die at -24); loop casts 7-12 (life 60), activate at the 40-life opponent (life 10, dead at -10); loop casts 13-15 (life 52), activate at the 34-life opponent (life 2, dead at -16). 15 casts is the proven minimum from 32 life; the trigger-sees-n count is forced by 301.1 (artifacts are only castable with the stack empty). You win via 104.5 + 104.2a. Caveats: every activation and every loop cast opens a fully open priority window — activating is not casting, so Hullbreaker Horror never triggers during the windows, and the loop's sorcery-speed artifact pieces cannot be cast in response to anything, so Hullbreaker provides NO protection on this board. Opponents here have empty boards, and Grand Abolisher is in the 99 but not deployed.",
+      "you": {
+        "life": 2,
+        "board": [
+          "Hullbreaker Horror",
+          "Sol Ring",
+          "Aetherflux Reservoir",
+          "Island x5",
+          "Plains x3"
+        ],
+        "notes": "Loop pieces intact; loop could continue past cast 15 for more life if desired. Result: you win the game."
+      },
+      "opponents": [
+        {
+          "life": -16,
+          "result": "lost the game (704.5a) — third kill, was at 34"
+        },
+        {
+          "life": -10,
+          "result": "lost the game (704.5a) — second kill, was at 40"
+        },
+        {
+          "life": -24,
+          "result": "lost the game (704.5a) — first kill, was at 26"
+        }
+      ]
+    }
+  },
+  "rules_version": "June 19, 2026",
+  "checker": {
+    "verdict": "pass",
+    "iterations": 2,
+    "findings": [
+      {
+        "step": 1,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Both trigger conditions verified against cards.json oracle text; both fire on the Signet cast."
+      },
+      {
+        "step": 1,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Triggers stacked above the spell before any player receives priority."
+      },
+      {
+        "step": 1,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "First-pass clause: single controller orders their own triggers freely."
+      },
+      {
+        "step": 2,
+        "rule": "601.2i",
+        "status": "supported",
+        "note": "Cast-triggers fire after the spell becomes cast; trigger for cast #1 resolves seeing 1 spell. Aetherflux counts at resolution; +1 correct."
+      },
+      {
+        "step": 2,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "32 -> 33 verified."
+      },
+      {
+        "step": 3,
+        "rule": "301.1",
+        "status": "supported",
+        "note": "FIXED in iteration 2: trigger-sees-n now correctly grounded as FORCED — artifact casts require an empty stack, so all of cast n's objects resolve before cast n+1 is legal."
+      },
+      {
+        "step": 3,
+        "rule": "117.1a",
+        "status": "supported",
+        "note": "Noninstant timing rule; quote is the verbatim second sentence, in context."
+      },
+      {
+        "step": 3,
+        "rule": "117.4",
+        "status": "supported",
+        "note": "Resolution mechanics correct."
+      },
+      {
+        "step": 3,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Cast n nets +n; k casts pay k(k+1)/2. Verified."
+      },
+      {
+        "step": 4,
+        "rule": "119.4",
+        "status": "supported",
+        "note": "Recomputed: k(k+1)/2 >= 119 -> k=15 (120); k=14 (105) fails at -13. Three payments irreducible (each opponent <= 50 life, one activation each). 15 is the true minimum from 32."
+      },
+      {
+        "step": 4,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Survival constraint correct; schedule lows 3/10/2 all positive."
+      },
+      {
+        "step": 5,
+        "rule": "117.1b",
+        "status": "supported",
+        "note": "Stack empty, priority yours; activation legal."
+      },
+      {
+        "step": 5,
+        "rule": "115.4",
+        "status": "supported",
+        "note": "'Any target' reaches players; Opponent C legal."
+      },
+      {
+        "step": 5,
+        "rule": "602.2b",
+        "status": "supported",
+        "note": "Activation follows 601.2b-i; activation cost is the mana-cost analog."
+      },
+      {
+        "step": 5,
+        "rule": "601.2h",
+        "status": "supported",
+        "note": "Costs paid during activation, before priority; 50 lost even if the ability is answered — honest."
+      },
+      {
+        "step": 5,
+        "rule": "119.4",
+        "status": "supported",
+        "note": "Casts 2-6 = +20, 33 -> 53; 53 >= 50; 53 -> 3. Verified."
+      },
+      {
+        "step": 6,
+        "rule": "117.7",
+        "status": "supported",
+        "note": "Quote trimmed to a clean verbatim clause in iteration 2; open response window honestly disclosed; Grand Abolisher correctly noted in-99-not-on-board."
+      },
+      {
+        "step": 6,
+        "rule": "117.4",
+        "status": "supported",
+        "note": "Resolves only after all players pass."
+      },
+      {
+        "step": 7,
+        "rule": "405.1",
+        "status": "supported",
+        "note": "Ability on stack has no card; activation does not trigger Hullbreaker. Correct."
+      },
+      {
+        "step": 7,
+        "rule": "112.1",
+        "status": "supported",
+        "note": "Trimmed verbatim quote; supports activation-is-not-casting."
+      },
+      {
+        "step": 7,
+        "rule": "301.1",
+        "status": "supported",
+        "note": "FIXED in iteration 2: the illegal 'respond by making the next loop cast' claim is removed; step now correctly states no loop cast is legal into an occupied stack and Hullbreaker offers NO protection on this board."
+      },
+      {
+        "step": 7,
+        "rule": "117.1a",
+        "status": "supported",
+        "note": "Correctly closes the instant-speed door for the sorcery-speed artifact pieces."
+      },
+      {
+        "step": 8,
+        "rule": "119.2",
+        "status": "supported",
+        "note": "Damage to player -> life loss."
+      },
+      {
+        "step": 8,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "26 - 50 = -24 verified; no infect."
+      },
+      {
+        "step": 8,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "SBAs before priority; kill timing correct; no exactly-lethal exception."
+      },
+      {
+        "step": 8,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "0 or less loses."
+      },
+      {
+        "step": 9,
+        "rule": "119.4",
+        "status": "supported",
+        "note": "Casts 7-12 = +57, 3 -> 60; 60 >= 50; 60 -> 10. Verified."
+      },
+      {
+        "step": 9,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "40 - 50 = -10 verified."
+      },
+      {
+        "step": 9,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "B loses on next SBA check."
+      },
+      {
+        "step": 10,
+        "rule": "119.4",
+        "status": "supported",
+        "note": "Casts 13-15 = +42, 10 -> 52; 52 >= 50; 52 -> 2. Final 32 + 120 - 150 = 2 confirmed."
+      },
+      {
+        "step": 10,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "34 - 50 = -16 verified."
+      },
+      {
+        "step": 10,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "A loses."
+      },
+      {
+        "step": 10,
+        "rule": "104.5",
+        "status": "supported",
+        "note": "FIXED in iteration 2: the loses->leaves bridge is now cited; verbatim first sentence of the full rule, exactly the missing link flagged in iteration 1."
+      },
+      {
+        "step": 10,
+        "rule": "104.2a",
+        "status": "supported",
+        "note": "All opponents have left -> immediate win. Chain 704.5a -> 104.5 -> 104.2a now complete."
+      },
+      {
+        "step": 11,
+        "rule": "117.1b",
+        "status": "supported",
+        "note": "Mana-neutrality claim correct (Reservoir adds no casts, cost is life only); any-positive-starting-life claim verified (gains unbounded, payments deferrable); 15-cast floor from 32 verified."
+      },
+      {
+        "step": 11,
+        "rule": "117.1a",
+        "status": "supported",
+        "note": "FIXED in iteration 2: replaces the misquoted 117.7; correctly states there is NO protection — sorcery-speed pieces can never be cast into an occupied stack. final_state summary matches; no protection claim survives anywhere in the artifact."
+      }
+    ]
+  }
+}
