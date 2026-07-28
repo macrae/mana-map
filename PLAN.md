@@ -99,6 +99,8 @@ mentions the command zone when none of their pieces is actually this deck's comm
 | `hapatra` | **Built by the v2 loop and published** as Vol. 002 — bracket 4, 1 verified stack, 0 decisions |
 | `sisay` | Hand-built, **published** as Vol. 003 — five-colour Sisay, Weatherlight Captain toolbox, bracket 4, **1 verified stack of 3 attempted**, 2 decision spreads |
 | `edgar-vampires` | **Built** by the deterministic builder (Mardu, bracket 3, floor 1); no brief-driven agent pass, not published |
+| `heliod` | **Published** as Vol. 004 — v3 build, five verified stacks, five sideboard swaps applied, zero swaps left |
+| `ur-dragon` | Hand-built, **published** as Vol. 005 — five-colour dragon tribal, bracket floor 3, 3 verified stacks (003 lives in the sideboard: Ventmaw + Aggravated Assault, floor 3→4 if swapped in), 2 decision spreads, full 38-card sideboard analysis (Deflecting Swat + Korlessa promoted) |
 
 ## Vol. 003 — Sisay, and the first issue to ship with a `fail`
 
