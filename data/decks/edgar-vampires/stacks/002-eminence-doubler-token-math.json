@@ -1,0 +1,305 @@
+{
+  "id": "002",
+  "slug": "eminence-doubler-token-math",
+  "deck": "edgar-vampires",
+  "title": "Edgar's eminence through two doublers: how many bodies per cast?",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Anointed Procession",
+        "Mondrak, Glory Dominus",
+        "Vampire Socialite",
+        "Cordial Vampire",
+        "five lands (any colours), all untapped"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": [
+            "a 2/2 creature"
+          ],
+          "note": "lost 3 life earlier this turn"
+        },
+        {
+          "life": 40,
+          "board": []
+        }
+      ]
+    },
+    "hand": [
+      "Gifted Aetherborn"
+    ],
+    "graveyard": [],
+    "mana_available": "",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Gifted Aetherborn (Vampire spell)",
+        "controller": "you",
+        "note": "cast for {B}{B}; Edgar Markov is in the COMMAND ZONE; his eminence trigger 'create a 1/1 black Vampire creature token' is on the stack above the spell, having triggered on the cast"
+      }
+    ],
+    "extras": {
+      "context": "Edgar Markov's eminence: 'Whenever you cast another Vampire spell, if Edgar is in the command zone or on the battlefield, create a 1/1 black Vampire creature token.' Anointed Procession: 'If an effect would create one or more tokens under your control, it creates twice that many of those tokens instead.' Mondrak: 'If one or more tokens would be created under your control, twice that many of those tokens are created instead.' Vampire Socialite: 'As long as an opponent lost life this turn, each other Vampire you control enters with an additional +1/+1 counter on it' (an opponent DID lose 3 life this turn). Cordial Vampire triggers only on deaths — nothing dies here.",
+      "commander_zone": "Edgar Markov is in the command zone; he has not been cast this game"
+    },
+    "question": "Resolve the eminence trigger and then the Gifted Aetherborn spell. How do the two token-doubling replacement effects stack on the single eminence token event (order, and the resulting token count)? Does the eminence trigger fire from the command zone? Do the tokens — and the resolved Gifted Aetherborn — each enter with Vampire Socialite's additional +1/+1 counter given an opponent lost life this turn? Final board: exactly how many new Vampire bodies, at what sizes, from this one two-mana cast?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "All players pass priority; the stack resolves top-down. Edgar Markov's eminence trigger (top) resolves before the Gifted Aetherborn spell (bottom).",
+        "effect": "The eminence triggered ability begins resolving first; Gifted Aetherborn waits on the stack.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "The eminence trigger resolves. Its intervening 'if' clause — 'if Edgar is in the command zone or on the battlefield' — is checked again on resolution; Edgar is still in the command zone, and the ability functions there because it states the zones it functions in.",
+        "effect": "The trigger resolves from the command zone and instructs you to create a 1/1 black Vampire creature token: a single token-creation event for one token.",
+        "citations": [
+          {
+            "rule": "113.6b",
+            "quote": "An ability that states which zones it functions in functions only from those zones."
+          },
+          {
+            "rule": "603.4",
+            "quote": "If the ability triggers, it checks the stated condition again as it resolves. If the condition isn’t true at that time, the ability is removed from the stack and does nothing."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Two replacement effects — Anointed Procession ('If an effect would create one or more tokens under your control, it creates twice that many of those tokens instead') and Mondrak, Glory Dominus ('If one or more tokens would be created under your control, twice that many of those tokens are created instead') — both want to modify this one token-creation event. You, the affected player, choose which applies first.",
+        "effect": "You pick an order (it is symmetrical here); the chosen doubler modifies the event, then the other applies to the modified event.",
+        "citations": [
+          {
+            "rule": "616.1",
+            "quote": "If two or more replacement and/or prevention effects are attempting to modify the way an event affects an object or player, the affected object’s controller (or its owner if it has no controller) or the affected player chooses one to apply"
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Each doubler gets exactly one application to the event, so the math is 1 token → 2 (first doubler) → 4 (second doubler), identical in either order.",
+        "effect": "The modified event creates four 1/1 black Vampire creature tokens; neither doubler applies a second time.",
+        "citations": [
+          {
+            "rule": "614.5",
+            "quote": "A replacement effect doesn’t invoke itself repeatedly; it gets only one opportunity to affect an event or any modified events that may replace that event."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "The four tokens are put onto the battlefield. They are created, not cast, so no game event matches eminence's 'you cast another Vampire spell' trigger condition — eminence does not fire again for the tokens.",
+        "effect": "Four Vampire tokens enter the battlefield under your control; no new eminence triggers.",
+        "citations": [
+          {
+            "rule": "701.7a",
+            "quote": "To create one or more tokens with certain characteristics, put the specified number of tokens with the specified characteristics onto the battlefield."
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Vampire Socialite's static ability — 'As long as an opponent lost life this turn, each other Vampire you control enters with an additional +1/+1 counter on it' — is an 'enters with' replacement effect. An opponent lost 3 life earlier this turn, and each token is another Vampire you control, so each token enters with a +1/+1 counter.",
+        "effect": "Each 1/1 token enters with one +1/+1 counter and is a 2/2.",
+        "citations": [
+          {
+            "rule": "614.1d",
+            "quote": "Continuous effects that read “[This permanent] enters . . .” or “[Objects] enter [the battlefield] . . .” are replacement effects."
+          },
+          {
+            "rule": "122.1a",
+            "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object’s power and Y to that object’s toughness."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Before any player gets priority, state-based actions are checked: no creature has 0 or less toughness or lethal damage, so nothing happens and nothing dies. Cordial Vampire ('Whenever this creature or another creature dies, put a +1/+1 counter on each Vampire you control') is scenery here — no death event occurred, so it never triggers. All players pass again.",
+        "effect": "No state-based actions, no Cordial Vampire triggers; the Gifted Aetherborn spell (now top of stack) resolves next.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "603.2g",
+            "quote": "An ability triggers only if its trigger event actually occurs."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Gifted Aetherborn (a 2/3 Aetherborn Vampire with deathtouch and lifelink, no targets) resolves and enters the battlefield under your control. It is another Vampire you control entering while an opponent lost life this turn, so Vampire Socialite's replacement effect applies to it as well. It is not a token, so Anointed Procession and Mondrak are irrelevant to it.",
+        "effect": "Gifted Aetherborn enters with an additional +1/+1 counter: a 3/4 deathtouch lifelink Vampire.",
+        "citations": [
+          {
+            "rule": "608.3a",
+            "quote": "If the object that’s resolving has no targets, it becomes a permanent and enters the battlefield under the control of the spell’s controller."
+          },
+          {
+            "rule": "614.1d",
+            "quote": "Continuous effects that read “[This permanent] enters . . .” or “[Objects] enter [the battlefield] . . .” are replacement effects."
+          },
+          {
+            "rule": "122.1a",
+            "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object’s power and Y to that object’s toughness."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Final state-based-action check before priority: all creatures have positive toughness and no damage marked; the stack is empty.",
+        "effect": "Nothing dies; no further triggers; the game proceeds with five new Vampire bodies on your battlefield.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "One {B}{B} cast yields five new Vampire bodies: eminence's single token event, doubled by Anointed Procession and Mondrak in an order you choose (result identical either way, 1→2→4), makes four 1/1 black Vampire tokens that each enter with a Vampire Socialite +1/+1 counter (2/2s), and the resolved Gifted Aetherborn also enters with a counter (3/4 deathtouch/lifelink). Eminence does not re-trigger on the tokens (created, not cast), and Cordial Vampire never triggers because nothing dies.",
+      "you": {
+        "battlefield_new": [
+          "4x Vampire token — 1/1 black Vampire, each with one +1/+1 counter (2/2)",
+          "Gifted Aetherborn — 2/3 with one +1/+1 counter (3/4), deathtouch, lifelink"
+        ],
+        "battlefield_unchanged": [
+          "Anointed Procession",
+          "Mondrak, Glory Dominus (4/4)",
+          "Vampire Socialite (2/2)",
+          "Cordial Vampire (1/1)",
+          "five untapped lands minus {B}{B} spent"
+        ],
+        "command_zone": "Edgar Markov (still in the command zone, never cast)",
+        "new_bodies": 5
+      },
+      "opponents": [
+        {
+          "life": 40,
+          "board": [
+            "a 2/2 creature"
+          ],
+          "note": "unchanged; lost 3 life earlier this turn (already reflected)"
+        },
+        {
+          "life": 40,
+          "board": [],
+          "note": "unchanged"
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Full rule confirms top-of-stack resolves when all pass; trigger (put on stack after the cast, above the spell) resolves before Gifted Aetherborn."
+      },
+      {
+        "step": 2,
+        "rule": "113.6b",
+        "status": "supported",
+        "note": "Eminence states its zones ('in the command zone or on the battlefield'), so it functions from the command zone."
+      },
+      {
+        "step": 2,
+        "rule": "603.4",
+        "status": "supported",
+        "note": "Intervening-'if' rechecked on resolution; Edgar is still in the command zone per scenario, so the ability resolves. Felidar Sovereign example in full rule matches the pattern used."
+      },
+      {
+        "step": 3,
+        "rule": "616.1",
+        "status": "supported",
+        "note": "Two replacement effects modifying one token-creation event affecting you; you (affected player) choose application order. Truncated quote omits only the APNAP sentence, which is irrelevant (single player affected)."
+      },
+      {
+        "step": 4,
+        "rule": "614.5",
+        "status": "supported",
+        "note": "Each doubler applies once to the event chain: 1→2→4, order-independent. Rule's own double-damage example (2→8) is the exact analogue."
+      },
+      {
+        "step": 5,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": "Create = put tokens onto the battlefield."
+      },
+      {
+        "step": 5,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Trigger requires a matching event; tokens are created, not cast, so 'you cast another Vampire spell' never matches — no re-trigger of eminence."
+      },
+      {
+        "step": 6,
+        "rule": "614.1d",
+        "status": "supported",
+        "note": "Socialite's '[each other Vampire you control] enters with an additional +1/+1 counter' is an '[Objects] enter' continuous effect = replacement. Oracle text verified in cards.json; condition (opponent lost life this turn) is true; 'each other' correctly excludes Socialite and correctly includes the tokens."
+      },
+      {
+        "step": 6,
+        "rule": "122.1a",
+        "status": "supported",
+        "note": "+1/+1 counter makes each 1/1 token a 2/2."
+      },
+      {
+        "step": 7,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "SBAs checked before priority; nothing has 0 toughness or damage; no pending triggers, so the spell resolves next."
+      },
+      {
+        "step": 7,
+        "rule": "603.2g",
+        "status": "supported",
+        "note": "Cordial Vampire ('Whenever this creature or another creature dies...', oracle verified) has no death event, so it never triggers."
+      },
+      {
+        "step": 8,
+        "rule": "608.3a",
+        "status": "supported",
+        "note": "Targetless creature spell becomes a permanent under its controller's control on resolution."
+      },
+      {
+        "step": 8,
+        "rule": "614.1d",
+        "status": "supported",
+        "note": "Socialite's replacement also applies to the nontoken Gifted Aetherborn: it is a Vampire (Aetherborn Vampire per cards.json), 'other' than Socialite, entering while the condition holds. Token doublers correctly held irrelevant to a nontoken entry."
+      },
+      {
+        "step": 8,
+        "rule": "122.1a",
+        "status": "supported",
+        "note": "2/3 base + one counter = 3/4; deathtouch/lifelink match oracle text exactly."
+      },
+      {
+        "step": 9,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Final SBA check before priority; nothing applies; stack empty."
+      }
+    ],
+    "summary": "Mechanical gate passed. All 15 citations verified against full CR text and every card fact against cards.json. Audit targets confirmed: (a) intervening-'if' rechecked on resolution with Edgar still in the command zone, and 113.6b covers functioning from that zone; (b) Anointed Procession + Mondrak compose on the single eminence event under 616.1 (controller's choice of order) with one application each under 614.5, giving 1→2→4 either way; (c) Socialite's static is a 614.1d replacement whose 'each other Vampire' scoping correctly hits the four tokens and Gifted Aetherborn but not Socialite itself, with the lost-life condition satisfied; (d) Gifted Aetherborn resolves to a 3/4 deathtouch/lifelink; (e) final count of four 2/2 tokens plus one 3/4 (five new bodies) is exact. Missing-step audit clean: Socialite's own ETB trigger correctly dormant (it did not enter), eminence does not re-trigger on created tokens (603.2/603.2g), Cordial Vampire dormant (no deaths), SBA checks present at both priority points, and trigger-above-spell ordering is correct.",
+    "iterations": 1
+  }
+}

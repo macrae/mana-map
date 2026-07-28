@@ -1,0 +1,144 @@
+{
+  "slug": "edgar-vampires",
+  "archetype": "Mardu vampire typal go-wide aggro with an each-opponent drain sub-engine and a tutorable two-card infinite as a lategame knockout — the engine runs from the command zone via eminence, not from the commander.",
+  "schools": [
+    "strategy:whos-the-beatdown",
+    "strategy:multiplayer.asymmetry",
+    "strategy:multiplayer.threat-deflection",
+    "strategy:resource-hedging.wrath-math",
+    "strategy:multiplayer.pivot-window"
+  ],
+  "role_assignment": {
+    "default_role": "Beatdown. Four-player games trend long and inevitability compounds toward engines (strategy:whos-the-beatdown.metagame-clock), and this deck's late game is a 4.9%-by-t10 natural infinite plus commander-attack triggers — it does not own the long game against dedicated engines, so it must compress the game. Role is seat-relative: against a faster aggro seat it takes the control role behind lords, first strike (Stromkirk Captain), and deathtouch bodies (strategy:whos-the-beatdown).",
+    "pivot_trigger": "Two concrete pivots. (1) Casting Edgar: goldfish median cast is turn 6 (52.1% by t6), and his attack trigger (+1/+1 counter on each Vampire) converts an accumulated token board into an alpha strike — cast him the turn you intend to swing wide with protection held, not merely on curve (strategy:multiplayer.pivot-window). (2) Drawing/tutoring the Vito half onto an established gain-on-loss piece flips the deck from combat clock to a stack-based table-kill attempt; assume every held answer appears the moment you present it.",
+    "strategy_ref": "strategy:pivot-point"
+  },
+  "engines": [
+    {
+      "piece": "Edgar Markov (eminence)",
+      "engine": "One 1/1 Vampire token per other Vampire spell cast while Edgar is in the command zone or on the battlefield — the deck's core engine online from turn 1 with zero mana invested in the commander",
+      "evidence": "oracle text; goldfish mean_bodies_by_turn 1.9 by t3, 4.2 by t6",
+      "strategy_ref": "strategy:deckbuilding.curve"
+    },
+    {
+      "piece": "Anointed Procession / Mondrak, Glory of Dominus",
+      "engine": "Token doubling stacked on eminence (and on Black Market Connections / Strefan Blood tokens); exact multiplication math is stack 002's question",
+      "evidence": "oracle text; goldfish token-amplifier target 42.4% by t6",
+      "strategy_ref": "strategy:multiplayer.asymmetry"
+    },
+    {
+      "piece": "Sanctum Seeker + Bloodletter of Aclazotz",
+      "engine": "Each-opponent drain per attacking Vampire, doubled by Bloodletter on your turn — the reach that makes go-wide combat scale against ~120 combined life; exact numbers are stack 003's question",
+      "evidence": "oracle text; goldfish drain-engine target 62.5% by t6",
+      "strategy_ref": "strategy:life-as-resource.philosophy-of-fire"
+    },
+    {
+      "piece": "Vito, Thorn of the Dusk Rose + any gain-on-loss piece (Exquisite Blood, Bloodthirsty Conqueror)",
+      "engine": "Loss-on-gain × gain-on-loss loop; both contained two-card infinites in combo_details route through Vito (Exquisite+Vito popularity 107,037; Conqueror+Vito 64,824; both mana_value_needed 0, bracket 3)",
+      "evidence": "combo_details via deck-facts; VERIFIED — stack 001 (Exquisite+Vito) and stack 004 (Conqueror+Vito) both passed the rules-checker",
+      "strategy_ref": "strategy:multiplayer.pivot-window"
+    },
+    {
+      "piece": "Grave Pact + expendable eminence tokens",
+      "engine": "Repeatable each-opponent edicts riding token deaths; Cordial Vampire converts the same deaths into +1/+1 counters",
+      "evidence": "oracle text; roles histogram removal:edict 2",
+      "strategy_ref": "strategy:multiplayer.asymmetry"
+    },
+    {
+      "piece": "Black Market Connections / Welcoming Vampire",
+      "engine": "Draw engines priced in life and wide small bodies respectively — life spent here is cheap early currency",
+      "evidence": "oracle text; goldfish draw-engine target 49.8% by t6",
+      "strategy_ref": "strategy:life-as-resource"
+    },
+    {
+      "piece": "Bloodghast",
+      "engine": "Landfall recursion; free rebuild material after sweepers and edict fodder for Grave Pact/Diabolic Intent",
+      "evidence": "oracle text",
+      "strategy_ref": "strategy:resource-hedging.wrath-math"
+    }
+  ],
+  "gameplan_by_phase": {
+    "early_t1_t3": "Deploy cheap Vampires on the 8/19/19 one-two-three curve; every cast banks an eminence token, and a lord or payoff is drawn by t6 in 67.7% of games (mean draw turn 2.7). Do NOT cast Edgar early — the engine costs nothing while he sits in the command zone (strategy:deckbuilding.curve). Mulligan on the engine-deck test: cheap Vampire spells are the enablers, lords/drains the payoffs — enabler-heavy keeps beat payoff-heavy ones (strategy:mulligans.engine-hands).",
+    "mid_t4_t6": "Layer amplifiers (doubler drawn 42.4% by t6) and drain pieces (62.5%); Grave Pact turns token deaths into table-wide edicts. Deploy in waves under wrath-math: commit exactly what wins before the near-certain sweeper, hold Bloodghast and hand threats as the rebuild package — eminence itself is the cheapest rebuilder in the format, one token per cast with no recast tax (strategy:resource-hedging.wrath-math). Manage perceived threat: tokens accrue visibly, so the deflection budget spends down fast (strategy:multiplayer.threat-deflection).",
+    "late_t7_plus": "Take the pivot window: cast Edgar (median t6.6) into a protected alpha strike — his attack trigger pumps every Vampire, Akroma's Will/Boros Charm/Flawless Maneuver cover the swing (protection held 57.1% by t6 in goldfish) — or convert an established gain-on-loss piece into the Vito knockout via Demonic/Vampiric Tutor/Diabolic Intent. Sequence the scariest piece last and count the table's open mana before committing (strategy:multiplayer.pivot-window)."
+  },
+  "key_tensions": [
+    "Free protection vs the eminence plan: Deflecting Swat and Flawless Maneuver are free only 'if you control a commander' (oracle text) — but the deck's engine works precisely by leaving Edgar in the command zone until t6+. Before Edgar resolves, the protection suite costs real mana (Boros Charm, Teferi's Protection), pinching the same turns the curve wants for casting Vampires (strategy:multiplayer.commander-insurance).",
+    "Go-wide combat vs ~120 combined life: incremental combat damage is a losing plan against three defenses; the deck's honest answers are the each-opponent drains (Sanctum Seeker, Bloodletter) and the Edgar alpha strike, which is why those pieces, not the lords, are the cards to protect (strategy:multiplayer.asymmetry).",
+    "Telegraphed threat vs deflection: eminence tokens from turn 1 make 'I haven't done anything' unsellable — the table's assessment updates every cast, so this deck buys pressure with its deflection budget early and must plan the pivot before the budget is gone (strategy:multiplayer.threat-deflection).",
+    "The infinite is a knockout, not plan A: natural assembly is 2.8% by t6 / 4.9% by t10 (goldfish), but three unrestricted tutors (Demonic, Vampiric, Diabolic Intent — unmodeled by goldfish) and the bracket-4 floor mean opponents will play against it anyway; expect drain-half removal on sight (strategy:deckbuilding.power-level.barometers).",
+    "Wrath exposure vs commitment: 29 threat bodies plus tokens against a near-certain sweeper per game; own sweepers are asymmetric (Olivia's Wrath -X/-X to non-Vampires) or life-priced (Toxic Deluge). Commit as much as wins, no further; redeploy worst-first after (strategy:resource-hedging.wrath-math).",
+    "Velocity vs taxes: the 19+19 two/three-drop core is exactly the many-cheap-spells profile that Sphere/Thalia taxes halve — under an assembling lock this deck is forced beatdown, racing the lock's completion (strategy:threat-assessment.resource-denial)."
+  ],
+  "candidate_missing_lines": [
+    {
+      "title": "Exquisite Blood + Vito table-kill loop (is it a full table kill or per-opponent?)",
+      "cards": [
+        "Exquisite Blood",
+        "Vito, Thorn of the Dusk Rose"
+      ],
+      "why_plausible": "combo_details: infinite, mana_value_needed 0, popularity 107,037; oracle texts form gain→loss→gain loop once any life changes hands — PASSED the rules-checker (iteration 1): deterministic table-kill from a 2-life seed, 38 iterations across three opponents, retargeting per trigger; the killing loss still triggers Exquisite Blood.",
+      "status": "verified",
+      "stack_artifact": "stacks/001-exquisite-vito-drain-loop.json"
+    },
+    {
+      "title": "Bloodthirsty Conqueror + Vito loop",
+      "cards": [
+        "Bloodthirsty Conqueror",
+        "Vito, Thorn of the Dusk Rose"
+      ],
+      "why_plausible": "combo_details: second contained infinite, same loop shape on a creature body (cheaper to assemble, easier to remove) — PASSED the rules-checker (iteration 1) as its own scenario: 13 iterations from a 3-life seed; the honest difference from 001 is a per-iteration instant-speed removal window because Conqueror is a creature.",
+      "status": "verified",
+      "stack_artifact": "stacks/004-conqueror-vito-drain-loop.json"
+    },
+    {
+      "title": "Eminence through Anointed Procession + Mondrak: tokens per Vampire cast",
+      "cards": [
+        "Edgar Markov",
+        "Anointed Procession",
+        "Mondrak, Glory of Dominus"
+      ],
+      "why_plausible": "replacement-effect stacking on token creation; oracle texts — PASSED the rules-checker (iteration 1): 1→2→4 tokens per Vampire cast, all entering with Socialite counters; five bodies from one two-mana cast.",
+      "status": "verified",
+      "stack_artifact": "stacks/002-eminence-doubler-token-math.json"
+    },
+    {
+      "title": "Bloodletter + Sanctum Seeker attack drain arithmetic",
+      "cards": [
+        "Bloodletter of Aclazotz",
+        "Sanctum Seeker"
+      ],
+      "why_plausible": "Bloodletter doubles opponent life loss during your turn; Sanctum Seeker triggers per attacking Vampire — PASSED the rules-checker (iteration 2): seven attackers drain each opponent 14 before combat damage; your gain is never doubled.",
+      "status": "verified",
+      "stack_artifact": "stacks/003-bloodletter-sanctum-attack-math.json"
+    },
+    {
+      "title": "Sanguine Bond + Exquisite Blood (or + Bloodthirsty Conqueror) — sideboard-conditional loop",
+      "cards": [
+        "Sanguine Bond",
+        "Exquisite Blood"
+      ],
+      "why_plausible": "Sanguine Bond (sideboard) is a second loss-on-gain half; oracle texts mirror the Vito loops without needing a creature",
+      "status": "needs a stack scenario — only live if the sideboard swap happens; flag for swap analysis"
+    }
+  ],
+  "matchup_frames": {
+    "vs_sweeper_control": "Assume the wrath; deploy in waves and let eminence be the rebuild — every post-wrath Vampire cast re-banks a token without recasting anything. Hold one protection spell for the committed turn, not after; against control, holding back the whole board IS the loss because buying time is their plan (strategy:resource-hedging.wrath-math).",
+    "vs_stax": "Forced beatdown: taxes halve the two-spell turns this curve is built on, so race the lock's assembly, name the out that breaks the piece that beats YOU (Despark/Fracture/Rite of Oblivion), and remember one stax piece is an inconvenience — the layered second and third are the lock (strategy:threat-assessment.resource-denial).",
+    "vs_aggro": "Take the control seat of the two-player subgame: lords plus Stromkirk Captain's first strike and Gifted Aetherborn's deathtouch win fair combat, and every drain trigger is life the racer must re-earn. Spend life freely above the threshold where it buys tempo, and keep watching the other two seats — you cannot race three life totals (strategy:combat-math.racing).",
+    "vs_combo": "Your combat clock rarely beats a tuned combo turn, so answer economy inverts: against combo the last profitable moment for held interaction is now, not later. Deflecting Swat (once Edgar is out) and the white removal are the cards that matter; your own tutored Vito line is the counter-clock (strategy:threat-assessment.answer-economy)."
+  },
+  "distribution_notes": "34 lands but 16 enter tapped — a real tempo tax on an aggro curve; goldfish land-drop rate falls to 59.2% by t6 with only 3 rocks and 1 ritual, and mean available mana is 5.36 on t6 (why Edgar's mean cast is 6.61). Curve is aggressively modal at 2-3 (19+19 of 63 nonland spells, 8 one-drops, 2 spells above MV 5) — on-template per strategy:deckbuilding.curve's hit-2-4-6 discipline. Pips are B-dominant (49 total B pips, source target 36 vs 13 B lands plus fixing/Urborg). Roles: 29 threat bodies vs 10 spot/edict/damage removal and 1 sweeper — a threat-dense, answer-light list that leans on the table per strategy:multiplayer.asymmetry. Caveats: synergy_graph has 0 intra-deck edges (it is a global top-10 shortlist, not a fit score — deck-facts notes), and 12 cards including Exquisite Blood, Grave Pact, and Anointed Procession have no role-taxonomy entry despite being engine pieces.",
+  "overall_assessment": "This deck plays the game strategy:multiplayer.asymmetry says pure aggro cannot: it is the beatdown (strategy:whos-the-beatdown) whose damage scales to three opponents by construction — wide token boards from a zero-mana command-zone engine, each-opponent drains and edicts instead of single-target damage, and an alpha-strike commander held back as the pivot rather than the plan. Its game is a race against the table's compounding inevitability (strategy:whos-the-beatdown.metagame-clock): spend turns 1-5 converting cheap Vampire casts into a doubled, counter-laden board while managing a rapidly-depleting deflection budget, then take one decisive pivot window — Edgar plus protection for lethal-wide, or a tutor for the Vito half onto a gain engine already in play. The infinites are insurance against the game going long (3% natural by t6, but 3 tutors and a bracket-4 floor make them table-relevant), not the spine; the spine is that every wrath answer the table holds trades against an engine that rebuilds for the cost of casting the next two-drop.",
+  "gaps": [
+    "No typal/tribal section in the strategy doc — queries for 'tribal typal lords anthem payoffs' top out at 0.24 on unrelated mana-base sections; critical-mass-of-lords theory, typal density math, and lord-vs-body evaluation are uncovered and this deck needed them.",
+    "No aristocrats section — 'aristocrats sacrifice drain' top hit is politics at 0.19; the sideboard package (Viscera Seer, Cruel Celebrant, Indulgent Aristocrat) and the Grave Pact engine have no school to cite for sacrifice-value theory.",
+    "No eminence/command-zone-value section — the defining strategic fact of this commander (the engine runs uncast, changing the commander-insurance calculus entirely) has no doc coverage; 'eminence command zone free value' top hit is 0.26 on slot ratios.",
+    "No lifegain-as-archetype section — strategy:life-as-resource covers life as currency, but gain-triggers-as-engine (Vito/Bond payoff density, incidental vs engine lifegain) is unaddressed."
+  ],
+  "corrections_for_orchestrator": [
+    "The briefed combo pair 'Exquisite Blood + Bloodthirsty Conqueror' is NOT a combo: both are gain-on-loss triggers (oracle text confirmed) and do not loop with each other. deck-facts and bracket_report agree the two contained infinites are Exquisite Blood + Vito and Bloodthirsty Conqueror + Vito.",
+    "bracket_report.json lists 4 Game Changers (Ancient Tomb, Demonic Tutor, Teferi's Protection, Vampiric Tutor), not '10-ish'. Floor 4 is driven by the two ≤6-MV two-card infinites signal, not GC count.",
+    "RESOLVED since this frame was drafted: stacks 001-004 all carry checker.verdict == 'pass' (001/002/004 at iteration 1, 003 at iteration 2); the Conqueror+Vito variant was verified separately as stack 004 exactly as this correction demanded."
+  ]
+}

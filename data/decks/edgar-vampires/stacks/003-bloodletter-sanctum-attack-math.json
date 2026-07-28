@@ -1,0 +1,279 @@
+{
+  "id": "003",
+  "slug": "bloodletter-sanctum-attack-math",
+  "deck": "edgar-vampires",
+  "title": "Bloodletter + Sanctum Seeker: what does an attack actually drain?",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Bloodletter of Aclazotz",
+        "Sanctum Seeker",
+        "four 1/1 black Vampire creature tokens",
+        "Edgar Markov (4/4, first strike, haste)"
+      ],
+      "opponents": [
+        {
+          "life": 21,
+          "board": [
+            "no untapped creatures"
+          ]
+        },
+        {
+          "life": 14,
+          "board": []
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Sanctum Seeker's attack trigger (first of several)",
+        "controller": "you",
+        "note": "it is YOUR turn, declare-attackers step: all seven Vampires (Bloodletter, Sanctum Seeker, four tokens, Edgar) were just declared as attackers; Edgar's own attack trigger and seven Sanctum Seeker triggers (one per attacking Vampire) are being put on the stack"
+      }
+    ],
+    "extras": {
+      "context": "Sanctum Seeker: 'Whenever a Vampire you control attacks, each opponent loses 1 life and you gain 1 life.' Bloodletter of Aclazotz: 'If an opponent would lose life during your turn, they lose twice that much life instead.' Edgar Markov: 'Whenever Edgar attacks, put a +1/+1 counter on each Vampire you control.' All seven attackers are Vampires (Bloodletter and Sanctum Seeker are Vampires; Edgar is a Vampire). It is your turn, so Bloodletter's replacement applies to each opponent's life loss.",
+      "your_life": 26
+    },
+    "question": "One rules domain: the life-loss arithmetic of this attack declaration, before any blocks or combat damage. Seven Vampires attacked: how many Sanctum Seeker triggers fire, how much life does EACH opponent lose per trigger through Bloodletter's replacement effect (does doubling apply per trigger event), how much life do you gain (is your gain doubled — Bloodletter only doubles opponents' loss), does Edgar's counter trigger change the drain, and what are all three life totals after every trigger resolves? Does the trigger drain alone kill opponent 2 at 14, and do the deaths' timing (state-based actions between resolutions) stop remaining triggers?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Declare attackers: all seven Vampires (Bloodletter of Aclazotz, Sanctum Seeker, four 1/1 Vampire tokens, Edgar Markov) are declared as attackers. Sanctum Seeker's ability ('Whenever a Vampire you control attacks, each opponent loses 1 life and you gain 1 life') triggers once for each attacking Vampire — seven separate trigger events, so SEVEN Sanctum Seeker triggers. Edgar Markov's ability ('Whenever Edgar attacks, put a +1/+1 counter on each Vampire you control') triggers once.",
+        "effect": "Eight triggered abilities are waiting to go on the stack: 7 Sanctum Seeker drains + 1 Edgar counter trigger.",
+        "citations": [
+          {
+            "rule": "508.3a",
+            "quote": "An ability that reads “Whenever [a creature] attacks, . . .” triggers if that creature is declared as an attacker."
+          },
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "All eight triggers are put on the stack. You control all of them, so you choose their relative order. Chosen order here: Edgar's counter trigger is placed last (on top), so it resolves first; the seven Sanctum Seeker triggers resolve after it, one at a time.",
+        "effect": "Stack (top to bottom): Edgar counter trigger, then Sanctum Seeker triggers #1–#7.",
+        "citations": [
+          {
+            "rule": "603.3b",
+            "quote": "each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose"
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Edgar Markov's trigger resolves: put a +1/+1 counter on each Vampire you control. All seven attackers get a counter (tokens become 2/2, Sanctum Seeker 4/5, Bloodletter 3/5, Edgar 5/5).",
+        "effect": "Power and toughness change ONLY. Sanctum Seeker's drain is a fixed 'each opponent loses 1 life' — it does not reference power — so Edgar's counters do NOT change the trigger drain at all (they only matter for later combat damage). Active player would then receive priority, so the game checks state-based actions; no life totals changed, nothing happens.",
+        "citations": [
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Sanctum Seeker trigger #1 resolves: each opponent would lose 1 life and you would gain 1 life. Bloodletter of Aclazotz ('If an opponent would lose life during your turn, they lose twice that much life instead') is a replacement effect — it is your turn, so each opponent's 1 life loss is replaced with 2. It applies once to each opponent's loss event and does not re-apply to its own result. Your life GAIN is untouched: Bloodletter's text only replaces an OPPONENT'S life LOSS, and your gain is neither an opponent's event nor a loss.",
+        "effect": "Opponent 1: 21 → 19. Opponent 2: 14 → 12. You: 26 → 27 (gain 1, not doubled). Life totals adjust accordingly.",
+        "citations": [
+          {
+            "rule": "614.1a",
+            "quote": "Effects that use the word “instead” are replacement effects."
+          },
+          {
+            "rule": "614.5",
+            "quote": "A replacement effect doesn’t invoke itself repeatedly; it gets only one opportunity to affect an event or any modified events that may replace that event."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Between each trigger resolution the active player would receive priority, so state-based actions are checked each time. Sanctum Seeker triggers #2 through #6 resolve identically: each opponent loses 2 (1 doubled by Bloodletter — the replacement applies anew to each separate life-loss event, since each trigger's resolution is its own event), you gain 1 each time.",
+        "effect": "Running totals after trigger #6: Opponent 1: 21 → 9 (six drains × 2). Opponent 2: 14 → 2. You: 26 → 32. At every SBA check through trigger #6, opponent 2 is at 12/10/8/6/4/2 — above 0 — so no one has lost the game yet and all triggers keep resolving.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "117.2d",
+            "quote": "State-based actions happen automatically when certain conditions are met. See rule 704. They’re dealt with before a player would receive priority."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Sanctum Seeker trigger #7 (the last drain) resolves: each opponent loses 1, doubled to 2 by Bloodletter; you gain 1.",
+        "effect": "Opponent 1: 9 → 7. Opponent 2: 2 → 0. You: 32 → 33. Total drain across all seven triggers: 14 to each opponent, 7 gained by you.",
+        "citations": [
+          {
+            "rule": "614.1a",
+            "quote": "replacement effects use the word “instead” to indicate what events will be replaced with other events"
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "State-based action check after trigger #7 resolves (before any player receives priority): opponent 2 has 0 life and loses the game, then leaves the game.",
+        "effect": "Opponent 2 is eliminated on exactly the SEVENTH Sanctum Seeker trigger — the last one (14 life ÷ 2 per trigger = 7 triggers). The kill is not 'partway': the drain uses opponent 2's last point of life on the final trigger.",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "104.3b",
+            "quote": "If a player’s life total is 0 or less, that player loses the game the next time a player would receive priority."
+          },
+          {
+            "rule": "104.5",
+            "quote": "If a player loses the game, that player leaves the game."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Would remaining triggers survive an opponent's death? Here none remain (Edgar's trigger already resolved first and opponent 2 died on the final drain). But in general: when a player leaves the game, only THAT player's objects leave — you control the Sanctum Seeker triggers, so any still on the stack would remain and resolve, and their 'each opponent' would simply drain only the opponents still in the game.",
+        "effect": "Opponent 2's departure removes their own objects only; your triggers are unaffected. Combat continues against opponent 1 only.",
+        "citations": [
+          {
+            "rule": "800.4a",
+            "quote": "When a player leaves the game, all objects (see rule 109) owned by that player leave the game and any effects which give that player control of any objects or players end."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Attack declaration alone (before blocks or any combat damage): 7 Sanctum Seeker triggers, each draining every opponent for 2 (1 doubled once per event by Bloodletter — it is your turn) and gaining you 1 (NOT doubled; Bloodletter replaces only opponents' life loss). Edgar's trigger adds +1/+1 counters but changes nothing about the drain. Opponent 2 (14 life) hits exactly 0 on the seventh and final trigger and is eliminated by state-based actions. Final: you 33, opponent 1 at 7, opponent 2 eliminated — all before blockers are even declared.",
+      "you": {
+        "life": 33,
+        "board_note": "All seven attackers have +1/+1 counters from Edgar's trigger; combat proceeds against opponent 1."
+      },
+      "opponents": [
+        {
+          "life": 7,
+          "note": "Opponent 1: 21 − (7 triggers × 2) = 7; still faces combat damage from 20 power of attackers with a 5/5 first-strike Edgar."
+        },
+        {
+          "life": 0,
+          "note": "Opponent 2: 14 − 14 = 0; loses the game on the SBA check after the seventh Sanctum Seeker trigger, before blockers."
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "508.3a",
+        "status": "supported",
+        "note": "Attack trigger fires on declaration; full rule confirms, and no attacker was put onto the battlefield attacking."
+      },
+      {
+        "step": 1,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "One declare-attackers event contains seven occurrences (seven attacking Vampires) -> seven Sanctum Seeker triggers. All seven attackers verified as Vampires in cards.json (Edgar: Vampire Knight; Bloodletter: Vampire Demon)."
+      },
+      {
+        "step": 2,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "All eight triggers controlled by one player, ordered as they choose. Quote is a fragment of the two-part-process rule but not used out of context."
+      },
+      {
+        "step": 3,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": "AP gets priority after each resolution; SBA-check consequence backed by 704.3/117.2d cited in step 5. Post-counter stats verified against cards.json: Bloodletter 2/4 -> 3/5 (iteration-1 fix landed), Sanctum Seeker 3/4 -> 4/5, Edgar 4/4 -> 5/5, tokens 2/2."
+      },
+      {
+        "step": 4,
+        "rule": "614.1a",
+        "status": "supported",
+        "note": "Bloodletter's 'instead' text is a replacement effect; oracle text matches cards.json verbatim."
+      },
+      {
+        "step": 4,
+        "rule": "614.5",
+        "status": "supported",
+        "note": "Single application per event: 1 -> 2, not 4. Correctly applied per opponent's separate loss."
+      },
+      {
+        "step": 4,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Life totals adjust. Gain of 1 correctly NOT doubled: Bloodletter replaces only an opponent's life LOSS."
+      },
+      {
+        "step": 5,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "SBAs checked whenever a player would get priority, i.e. between each trigger resolution."
+      },
+      {
+        "step": 5,
+        "rule": "117.2d",
+        "status": "supported",
+        "note": "SBAs handled before priority. Running totals 12/10/8/6/4/2 for opp2 through trigger 6 are correct; no SBA fires while above 0."
+      },
+      {
+        "step": 6,
+        "rule": "614.1a",
+        "status": "supported",
+        "note": "Quote is an accurate substring of the second sentence; same replacement applies anew to trigger 7's loss events."
+      },
+      {
+        "step": 6,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Final trigger arithmetic correct: opp1 9->7, opp2 2->0, you 32->33; totals 14/14/7 across seven triggers."
+      },
+      {
+        "step": 7,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "0 life -> loses the game; opp2 hits exactly 0 on trigger 7 (14 / 2 = 7)."
+      },
+      {
+        "step": 7,
+        "rule": "104.3b",
+        "status": "supported",
+        "note": "Loss happens at the next SBA check before priority, i.e. after trigger 7 resolves and before blockers."
+      },
+      {
+        "step": 7,
+        "rule": "104.5",
+        "status": "supported",
+        "note": "Losing player leaves the game; full rule defers to 800.4, cited in step 8."
+      },
+      {
+        "step": 8,
+        "rule": "800.4a",
+        "status": "supported",
+        "note": "Only the leaving player's objects leave; your triggers on the stack (controlled and owned by you, though none remain here) would survive and drain remaining opponents. Hypothetical framed honestly."
+      }
+    ],
+    "summary": "Iteration 2: both iteration-1 card-fact errors are fixed (Bloodletter now 3/5 post-counter; total attacker power now 20 = Bloodletter 3 + Sanctum Seeker 4 + four 2/2 tokens 8 + Edgar 5/5 first strike). Full re-verification from scratch: all 15 citations judged supported against complete rule text; oracle text for Edgar Markov, Bloodletter of Aclazotz, and Sanctum Seeker matches cards.json verbatim; trigger count (7 Sanctum + 1 Edgar), per-event doubling (each opponent loses 2 per trigger, your gain of 1 never doubled per 614.5/oracle wording), SBA checks between every resolution, opponent 2 eliminated on exactly trigger 7 at 0 life, and final totals you 33 / opp1 7 / opp2 eliminated are all correct. Missing-step audit found no omissions: no other triggers exist in the scenario (Eminence needs a cast; opponents' boards are empty), Edgar's counters correctly do not alter the fixed 1-life drain, and priority/SBA sequencing is fully accounted for.",
+    "iterations": 2
+  }
+}

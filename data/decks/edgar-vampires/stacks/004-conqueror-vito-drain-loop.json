@@ -1,0 +1,368 @@
+{
+  "id": "004",
+  "slug": "conqueror-vito-drain-loop",
+  "deck": "edgar-vampires",
+  "title": "Bloodthirsty Conqueror + Vito: the second infinite, verified on its own terms",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Bloodthirsty Conqueror",
+        "Vito, Thorn of the Dusk Rose",
+        "lands"
+      ],
+      "opponents": [
+        {
+          "life": 30,
+          "board": [
+            "no instant-speed interaction held"
+          ]
+        },
+        {
+          "life": 9,
+          "board": []
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Vito's trigger",
+        "controller": "you",
+        "note": "you just gained 3 life (any source); Vito's 'Whenever you gain life, target opponent loses that much life' trigger is on the stack targeting opponent 2 (at 9)"
+      }
+    ],
+    "extras": {
+      "context": "BRACKET VERIFICATION: bracket_report.json lists this deck's second contained two-card infinite as Bloodthirsty Conqueror + Vito, Thorn of the Dusk Rose. The strategic frame explicitly notes stack 001's Exquisite Blood + Vito pass does NOT verify this pairing — Conqueror is a different gain half. Bloodthirsty Conqueror (5/5 flying deathtouch): 'Whenever an opponent loses life, you gain that much life. (Damage causes loss of life.)' Vito: 'Whenever you gain life, target opponent loses that much life.' Note Conqueror's reminder text and that this loop's amounts are set by the seed.",
+      "your_life": 24
+    },
+    "question": "Resolve the loop from this 3-life seed. Is Conqueror + Vito deterministic and unbounded exactly as Exquisite Blood + Vito is, or does anything differ (Conqueror is a creature — what removal windows exist mid-loop; does its deathtouch/flying matter to the loop itself)? Walk the mid-loop death of opponent 2 at 9 (dies on which iteration; does Conqueror still trigger off the killing loss; retarget the next Vito trigger at opponent 1) and give the iteration count to kill both opponents from the 3-life seed."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Seed: you gained 3 life from some source (your life 24 as given already includes it). Vito's ability ('Whenever you gain life, target opponent loses that much life') triggered on that gain and is on the stack. Its target — opponent 2, at 9 — was locked in when the trigger was put on the stack.",
+        "effect": "One Vito trigger on the stack targeting opponent 2 for 3. Targets are per-instance choices made at put-on-stack time, not at resolution.",
+        "citations": [
+          {
+            "rule": "115.1d",
+            "quote": "A triggered ability is targeted if it identifies something it will affect by using the phrase “target [something],” where the “something” is a phrase that describes an object and/or player. The target(s) are chosen as the ability is put on the stack; see rule 603.3d."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Vito's trigger resolves (no responses; opponents hold no instant-speed interaction). Opponent 2 loses 3 life: 9 -> 6. That direct life loss matches Bloodthirsty Conqueror's trigger condition ('Whenever an opponent loses life, you gain that much life') — Vito's effect is life loss, not damage, and Conqueror's '(Damage causes loss of life.)' parenthetical is reminder text clarifying that damage ALSO counts, not a restriction to damage. Conqueror triggers during resolution — but nothing happens yet.",
+        "effect": "Opponent 2 at 6. Conqueror has triggered and is waiting to be put on the stack.",
+        "citations": [
+          {
+            "rule": "117.2a",
+            "quote": "Triggered abilities can trigger at any time, including while a spell is being cast, an ability is being activated, or a spell or ability is resolving. (See rule 603, “Handling Triggered Abilities.”) However, nothing actually happens at the time an ability triggers."
+          },
+          {
+            "rule": "207.2a",
+            "quote": "Reminder text is italicized text within parentheses that summarizes a rule that applies to that card."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "The next time a player would receive priority, state-based actions are checked (none apply — opponent 2 is at 6, Conqueror and Vito are undamaged), then Conqueror's trigger is put on the stack. It has no targets. It resolves: you gain 3 (24 -> 27). That life gain triggers Vito again.",
+        "effect": "You gain 3 per iteration; each Conqueror resolution re-triggers Vito. The engine is self-sustaining, exactly as in stack 001 — the trigger condition is identical to Exquisite Blood's.",
+        "citations": [
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack"
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "The new Vito trigger is put on the stack, and a NEW target is chosen for this new instance. You may keep targeting opponent 2 or retarget opponent 1 — each iteration is an independent targeting decision, since target choice is part of putting each triggered ability on the stack.",
+        "effect": "Retargeting between iterations is legal and free. You keep opponent 2 as the target while they live.",
+        "citations": [
+          {
+            "rule": "603.3d",
+            "quote": "The remainder of the process for putting a triggered ability on the stack is identical to the process for casting a spell listed in rules 601.2c–d."
+          },
+          {
+            "rule": "115.1d",
+            "quote": "The target(s) are chosen as the ability is put on the stack; see rule 603.3d."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Loop legality: each iteration (Vito resolves -> opponent loses 3 -> Conqueror triggers -> resolves -> you gain 3 -> Vito triggers -> new target) is fully determined once you name the target, so the whole sequence may be proposed as a shortcut for a stated number of iterations rather than physically performed. The amount is fixed at the seed's 3 for every iteration.",
+        "effect": "The loop is deterministic and repeatable indefinitely while both permanents remain and a legal target exists. It transfers exactly 3 life per iteration from the targeted opponent to you — same structure as stack 001, different constant.",
+        "citations": [
+          {
+            "rule": "732.1b",
+            "quote": "Occasionally the game gets into a state in which a set of actions could be repeated indefinitely (thus creating a “loop”). In that case, the shortcut rules can be used to determine how many times those actions are repeated without having to actually perform them, and how the loop is broken."
+          },
+          {
+            "rule": "732.2a",
+            "quote": "At any point in the game, the player with priority may suggest a shortcut by describing a sequence of game choices, for all players, that may be legally taken based on the current game state and the predictable results of the sequence of choices."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "THE difference from stack 001: Conqueror is a 5/5 creature, not an enchantment. Every iteration passes priority while each trigger is on the stack, and any player with priority may cast an instant — so each iteration is a real window for instant-speed creature removal on Conqueror (or Vito, a vulnerability 001 also had). If either dies mid-loop, a trigger already on the stack still resolves (abilities exist independently of their sources), but the engine stops after it. Formally, an opponent responds to a proposed shortcut by shortening it: naming the iteration where they will act differently. Here neither opponent holds instant-speed interaction, so the shortcut stands in full.",
+        "effect": "Conqueror + Vito is mechanically identical to Exquisite Blood + Vito but strictly more fragile: it adds every creature-removal spell to the list of loop-breakers. In THIS scenario, no window is exploitable.",
+        "citations": [
+          {
+            "rule": "117.1a",
+            "quote": "A player may cast an instant spell any time they have priority."
+          },
+          {
+            "rule": "113.7a",
+            "quote": "Once activated or triggered, an ability exists on the stack independently of its source. Destruction or removal of the source after that time won’t affect the ability."
+          },
+          {
+            "rule": "732.2b",
+            "quote": "may either accept the proposed sequence, or shorten it by naming a place where they will make a game choice that’s different than what’s been proposed."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Flying and deathtouch do NOT matter to the loop itself. Flying only restricts blocking in combat; deathtouch's destruction effect applies only to creatures dealt damage by the deathtouch source. The loop involves no combat and Conqueror deals no damage — the life loss comes from Vito's effect and the gain from Conqueror's trigger. Both keywords are combat-relevant extras, nothing more.",
+        "effect": "The loop's operation is unchanged by Conqueror's keywords; they neither speed it up nor protect it.",
+        "citations": [
+          {
+            "rule": "702.9b",
+            "quote": "A creature with flying can’t be blocked except by creatures with flying and/or reach."
+          },
+          {
+            "rule": "702.2b",
+            "quote": "A creature with toughness greater than 0 that’s been dealt damage by a source with deathtouch since the last time state-based actions were checked is destroyed as a state-based action."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Killing opponent 2: after 3 total Vito resolutions targeting them (3 x 3 = 9), opponent 2 hits exactly 0 life — no overkill, the 3-point granularity divides 9 evenly. Before any player next receives priority, state-based actions are performed: opponent 2 loses the game and leaves it.",
+        "effect": "Opponent 2 dies on iteration 3. Their owned objects leave the game with them (none here).",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "104.5",
+            "quote": "If a player loses the game, that player leaves the game."
+          },
+          {
+            "rule": "800.4a",
+            "quote": "When a player leaves the game, all objects (see rule 109) owned by that player leave the game"
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Does Conqueror trigger off the loss that killed opponent 2? Yes. The life-loss event occurred while opponent 2 was still in the game, so Conqueror triggered at that moment (though nothing happened yet); the ability is then put on the stack after state-based actions remove opponent 2, and it resolves normally — it targets nothing and belongs to YOUR creature, which is still on the battlefield. You gain 3 (24 + 3x3 = 33 after Conqueror resolution 3) and Vito triggers again. The new Vito trigger is put on the stack and targeted fresh — at opponent 1 (30), the only remaining opponent. A Vito trigger would be removed from the stack only if NO legal target existed.",
+        "effect": "The chain crosses opponent 2's death exactly as it crossed deaths in stack 001: the killing loss still feeds a gain iteration, and the next trigger retargets the survivor.",
+        "citations": [
+          {
+            "rule": "117.2a",
+            "quote": "However, nothing actually happens at the time an ability triggers. Each time a player would receive priority, each ability that has triggered but hasn’t yet been put on the stack is put on the stack."
+          },
+          {
+            "rule": "117.5",
+            "quote": "the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack"
+          },
+          {
+            "rule": "603.3d",
+            "quote": "If a choice is required when the triggered ability goes on the stack but no legal choices can be made for it, or if a rule or a continuous effect otherwise makes the ability illegal, the ability is simply removed from the stack."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "Continue the shortcut against opponent 1: iterations 4 through 13 — ten Vito resolutions at 3 each (30 -> 0, exactly zero again). The 13th and final Vito resolution puts opponent 1 at 0. State-based actions: opponent 1 loses and leaves; their permanents leave with them. You are the only player remaining, so you win the game immediately — the 13th Conqueror trigger (off opponent 1's killing loss) never resolves because the game has already ended.",
+        "effect": "GAME OVER: you win. Total: 13 Vito resolutions (3 for opponent 2 + 10 for opponent 1). Conqueror resolutions: 12 of 13 (the last is mooted by the win). Your life at game end: 24 + 12 x 3 = 60.",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "104.2a",
+            "quote": "A player still in the game wins the game if that player’s opponents have all left the game. This happens immediately and overrides all effects that would preclude that player from winning the game."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Deterministic table-kill, VERIFIED — the deck's second contained infinite holds on its own terms. From the 3-life seed, 13 Vito resolutions (3 + 10) drain opponent 2 (9, exact) and opponent 1 (30, exact; the 3-point granularity divides both totals evenly, zero overkill), retargeting each fresh trigger. Opponent 2's killing loss still triggers Conqueror, so the chain crosses their death. You win via 104.2a when opponent 1 leaves. The one real difference from stack 001: Conqueror is a creature, so every iteration's priority window admits instant-speed creature removal as a loop-breaker — irrelevant here, where no opponent holds interaction. Flying and deathtouch play no part in the loop.",
+      "you": {
+        "life": 60,
+        "board": "Bloodthirsty Conqueror, Vito, lands — untouched; the loop consumed no cards, mana, or creatures",
+        "result": "wins the game"
+      },
+      "opponents": [
+        {
+          "seat": 1,
+          "life_start": 30,
+          "iterations_to_kill": 10,
+          "result": "loses at exactly 0 on Vito resolution 13 overall (state-based action, 704.5a); permanents leave with them"
+        },
+        {
+          "seat": 2,
+          "life_start": 9,
+          "iterations_to_kill": 3,
+          "result": "loses first, at exactly 0 on iteration 3; killing loss still triggers Conqueror"
+        }
+      ]
+    },
+    "answer": "VERIFIED as a true two-card infinite and a full table-kill — Bloodthirsty Conqueror + Vito is mechanically identical in structure to Exquisite Blood + Vito: Conqueror's trigger condition ('Whenever an opponent loses life, you gain that much life') matches Exquisite Blood's word for word, and its '(Damage causes loss of life.)' parenthetical is reminder text (207.2a), not a damage requirement — Vito's direct life loss triggers it. The loop is deterministic (3 life per iteration from this seed, shortcut-legal under 732), retargetable every iteration (115.1d/603.3d), and not broken by a targeted opponent dying mid-loop: the killing loss triggers Conqueror before state-based actions remove the player, and the untargeted trigger of your still-present creature resolves. From the 3-life seed: opponent 2 (9) dies on iteration 3, opponent 1 (30) on iteration 13 (10 more), both at exactly 0 — 13 total Vito resolutions, 12 Conqueror resolutions (the 13th mooted by the immediate 104.2a win), your life 24 -> 60. What DIFFERS from 001: Conqueror is a 5/5 creature, so instant-speed creature removal in any iteration's priority window (117.1a) breaks the loop — an in-progress trigger still resolves (113.7a) and a shortcut can be shortened at the named iteration (732.2b) — making this pairing strictly more fragile than the enchantment version; its flying and deathtouch are combat-only and contribute nothing to the loop. Bracket-relevant conclusion: the second contained two-card infinite is genuine and independently verified."
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "115.1d",
+        "status": "supported",
+        "note": "Full rule confirms targets for triggered abilities are chosen as the ability is put on the stack."
+      },
+      {
+        "step": 2,
+        "rule": "117.2a",
+        "status": "supported",
+        "note": "Rule confirms abilities can trigger mid-resolution and nothing happens at trigger time."
+      },
+      {
+        "step": 2,
+        "rule": "207.2a",
+        "status": "supported",
+        "note": "Defines reminder text as a parenthetical summary of a rule; supports reading '(Damage causes loss of life.)' as non-restrictive. cards.json oracle text for Bloodthirsty Conqueror matches verbatim: trigger condition is 'loses life', not 'is dealt damage', so Vito's direct life loss triggers it."
+      },
+      {
+        "step": 3,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Trigger goes on stack next time a player would receive priority."
+      },
+      {
+        "step": 3,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "SBAs performed before triggered abilities are put on the stack; step correctly notes none apply at opp2=6."
+      },
+      {
+        "step": 4,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "Putting the trigger on the stack follows 601.2c-d, which includes fresh target choice per instance; retargeting each iteration is legal."
+      },
+      {
+        "step": 4,
+        "rule": "115.1d",
+        "status": "supported",
+        "note": "Same targeting-at-put-on-stack point, correctly reused."
+      },
+      {
+        "step": 5,
+        "rule": "732.1b",
+        "status": "supported",
+        "note": "Shortcut rules apply to indefinitely repeatable loops."
+      },
+      {
+        "step": 5,
+        "rule": "732.2a",
+        "status": "supported",
+        "note": "Loop as described (targets named per iteration, fixed 3-life amount) is a legal proposable shortcut with no conditional actions."
+      },
+      {
+        "step": 6,
+        "rule": "117.1a",
+        "status": "supported",
+        "note": "Instants castable any time a player has priority; each iteration's priority passes are real removal windows. Note: 'neither opponent holds instant-speed interaction' is a scenario stipulation stated explicitly only for opponent 1; opponent 2's hand is unstated but scenario intent is clear and opponent 2 dies on iteration 3 regardless. Not fail-worthy; flagging for the record."
+      },
+      {
+        "step": 6,
+        "rule": "113.7a",
+        "status": "supported",
+        "note": "In-flight trigger resolves even if its source dies; engine stops after."
+      },
+      {
+        "step": 6,
+        "rule": "732.2b",
+        "status": "supported",
+        "note": "Opponents break a proposed shortcut by shortening it at a named point; correctly framed."
+      },
+      {
+        "step": 7,
+        "rule": "702.9b",
+        "status": "supported",
+        "note": "Flying is a blocking restriction only; irrelevant to the loop."
+      },
+      {
+        "step": 7,
+        "rule": "702.2b",
+        "status": "supported",
+        "note": "Deathtouch destruction requires damage dealt by the source; the loop deals no damage, so irrelevant — as the step itself argues."
+      },
+      {
+        "step": 8,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "0 life = lose as SBA. Arithmetic verified: 3 Vito resolutions x 3 = 9, opponent 2 hits exactly 0 on iteration 3."
+      },
+      {
+        "step": 8,
+        "rule": "104.5",
+        "status": "supported",
+        "note": "Losing player leaves the game; hands off to 800.4."
+      },
+      {
+        "step": 8,
+        "rule": "800.4a",
+        "status": "supported",
+        "note": "Owned objects leave with the player; opp2's board is empty, claim consistent."
+      },
+      {
+        "step": 9,
+        "rule": "117.2a",
+        "status": "supported",
+        "note": "Conqueror triggered at the moment of the killing loss (while opp2 was in the game); nothing happens until it is put on the stack."
+      },
+      {
+        "step": 9,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "SBAs (opp2 loses, leaves) complete before the pending Conqueror trigger goes on the stack; trigger is yours and its source lives, so 800.4a does not eat it. Ledger verified: 24 + 3x3 = 33 after Conqueror resolution 3."
+      },
+      {
+        "step": 9,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "A Vito trigger is removed only if no legal target exists; opponent 1 remains, so it retargets fine."
+      },
+      {
+        "step": 10,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Arithmetic verified: iterations 4-13 = 10 Vito resolutions x 3 = 30; opponent 1 hits exactly 0 on Vito resolution 13 overall."
+      },
+      {
+        "step": 10,
+        "rule": "104.2a",
+        "status": "supported",
+        "note": "Win is immediate when the last opponent leaves, overriding everything — so the 13th Conqueror trigger is correctly mooted and its gain correctly EXCLUDED from the ledger: 24 + 12x3 = 60, matching the final_state life of 60. 13 Vito resolutions, 12 Conqueror resolutions, all totals reconcile with zero overkill (9 = 3x3, 30 = 10x3)."
+      }
+    ],
+    "summary": "PASS. Mechanical gate clean. All 17 distinct (step, rule) citations verified against full rule text: every one supported, none misquoted or out of context. Card facts match cards.json oracle text verbatim for both Bloodthirsty Conqueror and Vito. The orchestrator's requested arithmetic audit reconciles exactly: opp2 dies on iteration 3 (9 = 3x3, exact zero); opp1 dies on Vito resolution 13 (10 x 3 = 30, exact zero); killing loss of opp2 still feeds Conqueror resolution 3 (24 -> 33); the 13th Conqueror trigger is mooted by the immediate 104.2a win so its gain does not count; final life 60 = 24 + 12x3. Removal-window disclosure is honest (117.1a/113.7a/732.2b). Reminder-text handling of 207.2a is correct. Missing-step audit found nothing: SBAs, priority, trigger stacking, and player-leaves sequencing all handled; no replacement effects apply. One non-fail observation: opponent 2's lack of interaction is implied rather than explicitly stipulated in the scenario board.",
+    "iterations": 1
+  }
+}

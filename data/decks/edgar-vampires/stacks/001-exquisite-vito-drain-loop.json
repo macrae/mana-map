@@ -1,0 +1,369 @@
+{
+  "id": "001",
+  "slug": "exquisite-vito-drain-loop",
+  "deck": "edgar-vampires",
+  "title": "Exquisite Blood + Vito: is the classic drain loop a table-kill?",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Exquisite Blood",
+        "Vito, Thorn of the Dusk Rose",
+        "Vampire Nighthawk (lifelink, 2/3)",
+        "lands"
+      ],
+      "opponents": [
+        {
+          "life": 38,
+          "board": [
+            "irrelevant permanents, no instant-speed interaction held"
+          ]
+        },
+        {
+          "life": 25,
+          "board": []
+        },
+        {
+          "life": 12,
+          "board": []
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Vampire Nighthawk's lifelink life gain event has just occurred (2 combat damage to opponent 3); Vito's trigger",
+        "controller": "you",
+        "note": "you gained 2 from lifelink; Vito's 'Whenever you gain life, target opponent loses that much life' trigger is on the stack, targeting opponent 3 (at 12)"
+      }
+    ],
+    "extras": {
+      "context": "BRACKET VERIFICATION: bracket_report.json names Exquisite Blood + Vito, Thorn of the Dusk Rose as one of this deck's two contained two-card infinites and the driver of floor 4. Exquisite Blood: 'Whenever an opponent loses life, you gain that much life.' Vito: 'Whenever you gain life, target opponent loses that much life.' The claimed loop: any life gain triggers Vito (opponent loses), which triggers Exquisite Blood (you gain), which triggers Vito again. Note Vito's trigger TARGETS a single opponent per iteration.",
+      "your_life": 31
+    },
+    "question": "Resolve the loop from this 2-life seed. Is it deterministic and unbounded while an opponent survives to be targeted? Each Vito trigger targets ONE opponent — walk the targeting each iteration: can you retarget successive triggers at different opponents, what happens when the targeted opponent's life reaches zero mid-loop (state-based actions, when they lose, whether Exquisite Blood still triggers off the loss that killed them), and can the loop kill all three opponents from this position? What bounds it — and does the loop survive the death of the creature that seeded it?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Seed: Vampire Nighthawk's lifelink combat damage to opponent 3 caused you to gain 2 life (you: 31 as given). Vito's ability ('Whenever you gain life, target opponent loses that much life') triggered on that gain and is on the stack. Its target — opponent 3, at 12 — was locked in when the trigger was put on the stack.",
+        "effect": "One Vito trigger on the stack targeting opponent 3 for 2. Targets are per-instance choices made at put-on-stack time, not at resolution.",
+        "citations": [
+          {
+            "rule": "702.15b",
+            "quote": "Damage dealt by a source with lifelink causes that source’s controller, or its owner if it has no controller, to gain that much life (in addition to any other results that damage causes)."
+          },
+          {
+            "rule": "115.1d",
+            "quote": "A triggered ability is targeted if it identifies something it will affect by using the phrase “target [something],” where the “something” is a phrase that describes an object and/or player. The target(s) are chosen as the ability is put on the stack; see rule 603.3d."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Vito's trigger resolves (no responses; opponents hold no instant-speed interaction). Opponent 3 loses 2 life: 12 -> 10. That life loss matches Exquisite Blood's trigger condition ('Whenever an opponent loses life, you gain that much life'), so Exquisite Blood triggers during resolution — but nothing happens yet.",
+        "effect": "Opponent 3 at 10. Exquisite Blood has triggered and is waiting to be put on the stack.",
+        "citations": [
+          {
+            "rule": "117.2a",
+            "quote": "Triggered abilities can trigger at any time, including while a spell is being cast, an ability is being activated, or a spell or ability is resolving. (See rule 603, “Handling Triggered Abilities.”) However, nothing actually happens at the time an ability triggers."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "The next time a player would receive priority, state-based actions are checked (none apply — opponent 3 is at 10), then Exquisite Blood's trigger is put on the stack. It has no targets. It resolves: you gain 2 (31 -> 33). That life gain triggers Vito again.",
+        "effect": "You gain 2 per iteration; each Exquisite Blood resolution re-triggers Vito. The engine is now self-sustaining.",
+        "citations": [
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack"
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "The new Vito trigger is put on the stack, and a NEW target is chosen for this new instance. You may keep targeting opponent 3 or retarget any other opponent — each iteration is an independent targeting decision, since target choice is part of putting each triggered ability on the stack.",
+        "effect": "Retargeting between iterations is legal and free. You keep opponent 3 as the target while they live.",
+        "citations": [
+          {
+            "rule": "603.3d",
+            "quote": "The remainder of the process for putting a triggered ability on the stack is identical to the process for casting a spell listed in rules 601.2c–d."
+          },
+          {
+            "rule": "115.1d",
+            "quote": "The target(s) are chosen as the ability is put on the stack; see rule 603.3d."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Loop legality: each iteration (Vito resolves -> opponent loses 2 -> Exquisite Blood triggers -> resolves -> you gain 2 -> Vito triggers -> new target) is fully determined once you name the target, so the whole sequence may be proposed as a shortcut for a stated number of iterations rather than physically performed.",
+        "effect": "The loop is deterministic and repeatable indefinitely while both permanents remain and a legal target exists. It transfers exactly 2 life per iteration from the targeted opponent to you.",
+        "citations": [
+          {
+            "rule": "732.1b",
+            "quote": "Occasionally the game gets into a state in which a set of actions could be repeated indefinitely (thus creating a “loop”). In that case, the shortcut rules can be used to determine how many times those actions are repeated without having to actually perform them, and how the loop is broken."
+          },
+          {
+            "rule": "732.2a",
+            "quote": "At any point in the game, the player with priority may suggest a shortcut by describing a sequence of game choices, for all players, that may be legally taken based on the current game state and the predictable results of the sequence of choices."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Killing opponent 3: after 6 total Vito resolutions targeting them (6 x 2 = 12), opponent 3 hits 0 life. Before any player next receives priority, state-based actions are performed: opponent 3 loses the game and leaves it.",
+        "effect": "Opponent 3 is out. Their owned objects leave the game with them (none here).",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "104.5",
+            "quote": "If a player loses the game, that player leaves the game."
+          },
+          {
+            "rule": "800.4a",
+            "quote": "When a player leaves the game, all objects (see rule 109) owned by that player leave the game"
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Does Exquisite Blood trigger off the loss that killed them? Yes. The life-loss event occurred while opponent 3 was still in the game, so Exquisite Blood triggered at that moment (though nothing happened yet); the ability is then put on the stack after state-based actions remove opponent 3, and it resolves normally — it targets nothing and belongs to YOUR enchantment. You gain 2 and Vito triggers again.",
+        "effect": "The chain is not broken by a targeted opponent's death: the final loss still feeds a life-gain iteration, and the next Vito trigger simply chooses a new target among the survivors (603.3d would remove a Vito trigger only if NO legal target existed).",
+        "citations": [
+          {
+            "rule": "117.2a",
+            "quote": "However, nothing actually happens at the time an ability triggers. Each time a player would receive priority, each ability that has triggered but hasn’t yet been put on the stack is put on the stack."
+          },
+          {
+            "rule": "117.5",
+            "quote": "the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack"
+          },
+          {
+            "rule": "603.3d",
+            "quote": "If a choice is required when the triggered ability goes on the stack but no legal choices can be made for it, or if a rule or a continuous effect otherwise makes the ability illegal, the ability is simply removed from the stack."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Edge case for completeness: if a Vito trigger were somehow already on the stack targeting a player who then left the game, that instance would not resolve (illegal target). In this loop it never happens — exactly one trigger resolves at a time and each new one is targeted fresh.",
+        "effect": "No iteration is wasted; the loop loses no life to fizzled triggers under correct sequencing.",
+        "citations": [
+          {
+            "rule": "608.2b",
+            "quote": "If the spell or ability specifies targets, it checks whether the targets are still legal. A target that’s no longer in the zone it was in when it was targeted is illegal."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Continue the shortcut against the survivors: 13 iterations targeting opponent 2 (25 -> -1; the 13th iteration takes them from 1 to -1) and 19 iterations targeting opponent 1 (38 -> 0). Each dies to the same state-based action and leaves the game; opponent 1's 'irrelevant permanents' leave with them. The loop does NOT depend on Vampire Nighthawk: it only seeded the first gain, and even the seed trigger exists on the stack independently of Nighthawk once it triggered — the Vito/Exquisite Blood engine runs on the two named permanents alone.",
+        "effect": "All three opponents reach 0 or less. The loop survives the seed creature's death (or its absence entirely — any future life gain restarts it).",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "800.4a",
+            "quote": "When a player leaves the game, all objects (see rule 109) owned by that player leave the game"
+          },
+          {
+            "rule": "113.7a",
+            "quote": "Once activated or triggered, an ability exists on the stack independently of its source. Destruction or removal of the source after that time won’t affect the ability."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "The 38th and final Vito resolution puts opponent 1 at 0. State-based actions: opponent 1 loses and leaves. You are the only player remaining, so you win the game immediately — the last Exquisite Blood trigger (off opponent 1's killing loss) never resolves because the game has already ended.",
+        "effect": "GAME OVER: you win. Final Exquisite Blood resolutions: 37 of 38 (the last is mooted by the win). Your life at game end: 31 + 37 x 2 = 105.",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "104.2a",
+            "quote": "A player still in the game wins the game if that player’s opponents have all left the game. This happens immediately and overrides all effects that would preclude that player from winning the game."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Deterministic table-kill, VERIFIED. From the 2-life seed, 38 Vito resolutions (6 + 13 + 19) drain opponent 3 (12), opponent 2 (25, one point of overkill), and opponent 1 (38) in any order you choose, retargeting each fresh trigger. Each opponent's killing loss still triggers Exquisite Blood, so the chain crosses deaths. You win via 104.2a when the last opponent leaves.",
+      "you": {
+        "life": 105,
+        "board": "Exquisite Blood, Vito, Vampire Nighthawk, lands — all untouched; the loop consumed no cards, mana, or creatures",
+        "result": "wins the game"
+      },
+      "opponents": [
+        {
+          "seat": 1,
+          "life_start": 38,
+          "iterations_to_kill": 19,
+          "result": "loses (state-based action, 704.5a), permanents leave with them"
+        },
+        {
+          "seat": 2,
+          "life_start": 25,
+          "iterations_to_kill": 13,
+          "result": "loses at -1 (2-point granularity overkills by 1)"
+        },
+        {
+          "seat": 3,
+          "life_start": 12,
+          "iterations_to_kill": 6,
+          "result": "loses first; killing loss still triggers Exquisite Blood"
+        }
+      ]
+    },
+    "answer": "VERIFIED as a true two-card infinite and a full table-kill from any nonzero life-gain seed. The loop is deterministic (2 life per iteration, shortcut-legal under 732), retargetable every iteration because each Vito trigger is a new object whose target is chosen as it is put on the stack (115.1d/603.3d), and it is not broken by a targeted opponent dying mid-loop: the killing life-loss event triggers Exquisite Blood before state-based actions remove the player, and the trigger resolves regardless because it belongs to your enchantment and targets nothing. Bounds: only (a) a surviving opponent to target — when none remain you win immediately (104.2a) — and (b) both permanents remaining on the battlefield; the seed creature is irrelevant after the first trigger (113.7a). This supports bracket_report.json's floor-4 classification: Exquisite Blood + Vito is a genuine contained two-card infinite that kills all three opponents from this position with no mana and no cards spent."
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "702.15b",
+        "status": "supported",
+        "note": "Lifelink gain on combat damage; Nighthawk is 2/3 lifelink per cards.json, 2 gained is correct."
+      },
+      {
+        "step": 1,
+        "rule": "115.1d",
+        "status": "supported",
+        "note": "Targeted triggered ability; targets chosen as the ability is put on the stack."
+      },
+      {
+        "step": 2,
+        "rule": "117.2a",
+        "status": "supported",
+        "note": "Exquisite Blood triggers during Vito's resolution but nothing happens at trigger time."
+      },
+      {
+        "step": 3,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Trigger goes on stack next time a player would receive priority."
+      },
+      {
+        "step": 3,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "SBAs performed before triggered abilities are put on the stack; none apply at opp3=10."
+      },
+      {
+        "step": 4,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "Each new trigger instance follows 601.2c-d targeting; retargeting each fresh Vito trigger is legal."
+      },
+      {
+        "step": 4,
+        "rule": "115.1d",
+        "status": "supported",
+        "note": "Target chosen per instance when put on stack."
+      },
+      {
+        "step": 5,
+        "rule": "732.1b",
+        "status": "supported",
+        "note": "Loop shortcut rule; shortcuts are rule 732 in the 2026-06-19 CR (formerly 720/723)."
+      },
+      {
+        "step": 5,
+        "rule": "732.2a",
+        "status": "supported",
+        "note": "Sequence is fully determined once targets named; no conditional actions, so shortcut-proposable. Opponents hold no interaction per scenario."
+      },
+      {
+        "step": 6,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Arithmetic checks: 6 x 2 = 12 exactly zeroes opp3 (12)."
+      },
+      {
+        "step": 6,
+        "rule": "104.5",
+        "status": "supported",
+        "note": "Losing player leaves the game."
+      },
+      {
+        "step": 6,
+        "rule": "800.4a",
+        "status": "supported",
+        "note": "Owned objects leave with the player; opp3 has none."
+      },
+      {
+        "step": 7,
+        "rule": "117.2a",
+        "status": "supported",
+        "note": "Exquisite Blood triggered at the moment of the killing life loss, while opp3 was still in the game; correct."
+      },
+      {
+        "step": 7,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "SBA (opp3 loses) happens before the EB trigger is put on the stack; EB still goes on stack and resolves — it is yours and has no targets."
+      },
+      {
+        "step": 7,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "A fresh Vito trigger would be removed from the stack only if no legal target existed; matches rule text verbatim and in context."
+      },
+      {
+        "step": 8,
+        "rule": "608.2b",
+        "status": "supported",
+        "note": "Full rule establishes the claim: if all targets are illegal the ability doesn't resolve. Minor: the quoted 'zone' sentence is object-scoped; a departed player is illegal via the game-state-change clause of the same rule — claim itself is correct and the edge case never arises under the stated sequencing."
+      },
+      {
+        "step": 9,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Math verified at 2/iteration constant: opp2 25 -> -1 in 13 (12 iters = 24 leaves 1; 13th overkills by 1); opp1 38 -> 0 in exactly 19."
+      },
+      {
+        "step": 9,
+        "rule": "800.4a",
+        "status": "supported",
+        "note": "Opp1's permanents leave with them."
+      },
+      {
+        "step": 9,
+        "rule": "113.7a",
+        "status": "supported",
+        "note": "Seed trigger independent of Nighthawk once on the stack; engine needs only Vito + Exquisite Blood."
+      },
+      {
+        "step": 10,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "38th Vito resolution zeroes opp1; SBA removes them."
+      },
+      {
+        "step": 10,
+        "rule": "104.2a",
+        "status": "supported",
+        "note": "Sole remaining player wins immediately; the 38th EB trigger is mooted. Life ledger re-derived: Vito trigger #k+1 comes from EB resolution #k, so the 38th Vito resolution requires exactly 37 EB resolutions; 31 + 37 x 2 = 105. Consistent."
+      }
+    ],
+    "summary": "Mechanical gate passed. All 21 citations fetched in full and judged against entire rule texts: all supported, none misquoted or out of context. Card oracle texts (Exquisite Blood, Vito, Vampire Nighthawk 2/3 lifelink) match cards.json exactly. The three contested domains all hold: (1) retargeting — each Vito trigger is a new object with a fresh target chosen at put-on-stack time (115.1d/603.3d); (2) mid-loop death — the killing life-loss event triggers Exquisite Blood while the opponent is still in the game, SBAs (704.5a via 117.5) remove the player before the EB trigger is put on the stack, and the untargeted EB trigger of your enchantment resolves normally; the fizzle edge case (608.2b) correctly never arises under the stated one-trigger-at-a-time sequencing; (3) arithmetic — constant 2 life per iteration throughout, 6+13+19=38 iterations reconcile exactly with 12/25/38 life totals (opp2 overkilled by 1 as stated), and the 105 final life (37 of 38 EB resolutions, last mooted by the immediate 104.2a win) is internally consistent. Shortcut legality under 732.1b/732.2a is correctly stated (no conditional actions once targets are named). Missing-step audit found no omissions: SBA checks, trigger stacking order, priority handling, and leave-the-game cleanup are all present; no replacement effects exist in the scenario.",
+    "iterations": 1
+  }
+}
