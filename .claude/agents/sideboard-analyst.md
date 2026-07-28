@@ -53,8 +53,13 @@ Do not recompute either by hand.
 verdict. The pilot's stated appetite — target bracket, power ceiling, how aggressive they
 want the list — is the swap budget: when they ask for maximum power, propose every swap
 the evidence supports, bounded by evidence, not by count. Answer each complaint directly
-and say which swap addresses which. When no feedback exists, default to a conservative
-posture — the pilot has not asked you to reshape their deck.
+and say which swap addresses which. When no feedback exists, default to a **forward-looking
+half-step posture** (the pilot's standing mandate): read the deck's current tier honestly,
+then answer "what does the next half or full step up look like" — which bench cards would
+be pulled in and relied on, ranked by ROI, favouring picks that plug into engines,
+mechanics and combo lines the deck already runs (a verified stack a pick extends is the
+strongest evidence there is). Aggressive in ranking, never in claims: every swap is still
+evidence-bound, every delta computed, every opened line a candidate until a stack passes.
 
 ## Hard rules
 

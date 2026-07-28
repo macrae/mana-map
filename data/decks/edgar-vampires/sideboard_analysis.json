@@ -1,259 +1,173 @@
 {
   "slug": "edgar-vampires",
-  "assessment": "A 36-card bench (34 distinct names: Vampire Nocturnus and Unholy Officiant each appear as two printings) that is mostly the parts bin an evolving typal deck should keep: outgrown tribe bodies, spares of maindeck cards (Strefan, Vito), one unplayable card (Runo Stromkirk, blue identity), plus three things that actually earn attention — a free sac outlet the Grave Pact/Voldaren Pariah maindeck conspicuously lacks, a second loss-on-gain half (Sanguine Bond) for the verified drain knockout, and a coherent aristocrats sub-package. With no pilot_feedback.md the posture is conservative: one promotion, two conditional swaps, and the rest stays in the box with reasons.",
+  "assessment": "Under the recorded mandate (forward-looking, half-to-full-step-up, engine-extending picks only) this 36-card bench re-ranks into three tiers: a six-card half-step core (Viscera Seer, Sanguine Bond, Cruel Celebrant, Purphoros, Kalitas, Herald's Horn) that wires directly into the four verified engines and moves the list to the top of bracket 4 — the floor never moves (every delta is 4→4), but redundancy on the drain half plus Horn velocity raises how often the knockout actually comes up, which per the bracket barometers is the real power move; a three-card full-step tier (Throne of the God-Pharaoh, Elenda, Indulgent Aristocrat) that deepens the aristocrats/attack-drain web and RELIES on the two unverified Sanguine Bond lines, the Throne-under-Bloodletter doubling, and the three tutors finding a drain half on demand. The honest costs of the step: the cuts thin the cheap deathtouch defense (Gifted Aetherborn, Vampire Nighthawk, Vampire of the Dire Moon) that the vs-aggro control seat leans on, Purphoros is a non-Vampire that never banks an eminence token, and nothing past the half-step is checker-verified until the Bond stacks run. This extends rather than contradicts manual_prose.upgrades: the aristocrats lean is adopted deliberately as the identity shift that prose named, and the Bond lines stay 'strongly indicated, not verified'.",
   "swaps": [
     {
       "in": "Viscera Seer",
       "out": "Vampire Interloper",
       "role": "sac-outlet",
-      "when": "Unconditional — every game this 99 plays draws toward Grave Pact or Voldaren Pariah, and the maindeck role histogram has zero sac-outlet entries; this is the promote case, applied at the next revision rather than pod-by-pod",
-      "why": "Viscera Seer is the deck's only route to killing its own creatures on demand: with Grave Pact it converts each free eminence token into an each-opponent edict at instant speed, and it is the card that makes Voldaren Pariah's 'sacrifice three other creatures' flip castable — while Vampire Interloper is a 2/1 flyer that can't block and carries no other text; both are one-mana Vampire casts, so the eminence token is a wash.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      },
+      "when": "Unconditional — apply at the next revision (the previous pass's promote reasoning, accepted by the pilot)",
+      "why": "The 99 has zero sac outlets next to Grave Pact and Voldaren Pariah; Seer kills your own tokens on demand at instant speed — each free eminence token becomes an each-opponent edict — and makes Pariah's three-creature flip castable, while Vampire Interloper is a 2/1 that can't block and carries no other text; both are one-mana Vampire casts, so the eminence token is a wash.",
+      "bracket_delta": {"before": 4, "after": 4},
       "citations": [
-        {
-          "rule": "strategy:deckbuilding.cutting",
-          "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
-        }
+        {"rule": "strategy:deckbuilding.cutting", "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"}
       ]
     },
     {
       "in": "Sanguine Bond",
       "out": "Stensia Masquerade",
       "role": "wincon:drain",
-      "when": "Once your pod has seen the Vito loop (stacks 001/004) and starts holding creature removal for the drain half — Bond is the redundant copy that lives where Swords to Plowshares can't reach",
-      "why": "Sanguine Bond's trigger is word-for-word Vito's first ability ('Whenever you gain life, target opponent loses that much life'), so it pairs with maindeck Exquisite Blood — the famous two-enchantment infinite — and with Bloodthirsty Conqueror, the same loop shape stacks 001 and 004 verified for Vito, on an enchantment instead of a 3-toughness creature; the Bond pairings themselves are unverified (see opens_lines). Stensia Masquerade is the narrowest maindeck buff: attacker-only first strike the deck already gets from Stromkirk Captain, plus slow one-at-a-time counters that Edgar's attack trigger outclasses.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      },
+      "when": "The half-step the mandate asks for: adopt when you intend the tutored drain knockout as a standing plan rather than insurance — the pilot's recorded appetite meets this condition now",
+      "why": "Bond's trigger is word-for-word Vito's first ability, so it pairs with maindeck Exquisite Blood and Bloodthirsty Conqueror in exactly the loop shape stacks 001/004 verified for Vito — but on an enchantment that Swords to Plowshares and Toxic Deluge can't touch, which matters because bracket-4 pods answer Vito on sight; the Bond pairings themselves are unverified (see opens_lines). Stensia Masquerade is the narrowest maindeck buff: attacker-only first strike Stromkirk Captain already grants, plus one-at-a-time counters Edgar's attack trigger outclasses.",
+      "bracket_delta": {"before": 4, "after": 4},
       "citations": [
-        {
-          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-          "quote": "consistency has two purchases: redundancy (more cards doing the job) or tutoring (cards that fetch it)"
-        }
+        {"rule": "strategy:deckbuilding.redundancy-vs-tutors", "quote": "consistency has two purchases: redundancy (more cards doing the job) or tutoring (cards that fetch it)"},
+        {"rule": "strategy:deckbuilding.power-level.barometers", "quote": "if a combo could frequently come up, it's not the best fit for that bracket"}
+      ]
+    },
+    {
+      "in": "Cruel Celebrant",
+      "out": "Gifted Aetherborn",
+      "role": "wincon:drain",
+      "when": "With the Viscera Seer promotion applied — Celebrant is the payoff that makes on-demand deaths worth paying for",
+      "why": "With Seer promoted, one sacrificed eminence token becomes: each opponent sacrifices (Grave Pact) + each opponent loses 1 and you gain 1 (Celebrant) + a counter on every Vampire (Cordial Vampire) — and Celebrant's gain-1 is a live Vito/Exquisite Blood trigger, seeding the verified 001 loop from any death; Gifted Aetherborn is a textless-beyond-keywords two-drop whose deathtouch/lifelink job Vampire of the Dire Moon and Nighthawk Scavenger still cover.",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:multiplayer.asymmetry", "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"}
+      ]
+    },
+    {
+      "in": "Purphoros, God of the Forge",
+      "out": "Akroma's Memorial",
+      "role": "removal:damage",
+      "when": "The half-step: adopt when the pilot wants the token engine converting to damage without combat — the mandate's 'high-ROI pick that plays with the existing engines' almost by definition",
+      "why": "Stack 002 verified 1→2→4 tokens per Vampire cast through Procession+Mondrak; Purphoros turns each entry into 2 damage to each opponent — 8 per opponent from a single two-mana cast at full multiplication, 10 counting the creature itself — indestructible reach that ignores blockers, wraths, and the ~120-combined-life problem; Akroma's Memorial is the deck's 7-mana ceiling card in a curve with two spells above five, and its haste/protection alpha job is already covered at instant speed by Akroma's Will. Costs named: Purphoros is not a Vampire (no eminence token on cast, no lord buffs) and leans on 22 red source targets.",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:deckbuilding.cutting", "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"},
+        {"rule": "strategy:multiplayer.asymmetry", "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"}
       ]
     },
     {
       "in": "Kalitas, Traitor of Ghet",
       "out": "Vampire Nighthawk",
       "role": "threat:body",
-      "when": "Pods leaning on graveyard recursion or opposing death-trigger engines (reanimator, aristocrats seats) — a meta call, not a default",
-      "why": "With maindeck Grave Pact, every eminence-token death forces each opponent to sacrifice a creature — and Kalitas's replacement exiles each nontoken creature that would die that way (no reanimation, no death triggers for them) while handing you a 2/2 Zombie per exile; Vampire Nighthawk is duplicated function next to Nighthawk Scavenger, the same three-mana flying/deathtouch/lifelink body the deck already runs in its power-crept form.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      },
+      "when": "Default at bracket-4 tables — the Grave Pact shell makes the replacement effect live every game, with extra value wherever graveyards matter",
+      "why": "Every Grave Pact edict this deck forces now exiles the opponent's nontoken creature instead of sending it to the graveyard — no reanimation, no death triggers — and hands you a 2/2 Zombie that is itself Seer/Aristocrat sac fodder or food for Kalitas's own pump; Vampire Nighthawk is duplicated function next to Nighthawk Scavenger, the same three-mana flying/deathtouch/lifelink body in its power-crept form.",
+      "bracket_delta": {"before": 4, "after": 4},
       "citations": [
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "Depth is a meta call: copy the answer your table beats you with."
-        },
-        {
-          "rule": "strategy:deckbuilding.cutting",
-          "quote": "cut duplicated function before any uncovered class"
-        }
+        {"rule": "strategy:deckbuilding.interaction-suite", "quote": "Depth is a meta call: copy the answer your table beats you with."},
+        {"rule": "strategy:deckbuilding.cutting", "quote": "cut duplicated function before any uncovered class"}
+      ]
+    },
+    {
+      "in": "Herald's Horn",
+      "out": "Ivora, Insatiable Heir",
+      "role": "ramp:cost-reduction",
+      "when": "The half-step's velocity piece: adopt alongside the swaps above so the extra engine pieces actually get cast on time",
+      "why": "The deck's mana support is thin (3 rocks, 1 ritual; goldfish mean available mana 5.36 on t6, Edgar median cast 6.61) — Horn discounts nearly every one of the 29+ Vampire bodies, converting the 19+19 two/three-drop core into double-spell turns where each cast banks another eminence token, and the upkeep reveal is near-a-card-a-turn at this tribal density (it also lifts Forerunner of the Legion's tutor-to-top straight to hand if that card ever comes in); Ivora is a solo trample beater whose Blood output feeds only Strefan, who already makes his own.",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:deckbuilding.curve", "quote": "Build to hit 2, 4 and 6 mana reliably, because four-player turn cycles are expensive"}
+      ]
+    },
+    {
+      "in": "Throne of the God-Pharaoh",
+      "out": "Blade of the Bloodchief",
+      "role": "wincon:drain",
+      "when": "The full step: adopt when the pilot commits to the harder list and alpha-strike turns (stack 003's shape) are the norm at their pods",
+      "why": "After a seven-attacker turn like stack 003's, Throne drains each opponent 7 more at end step for two mana — reach that survives sweepers and blocked attacks, and every point is an Exquisite Blood/Bloodthirsty Conqueror gain trigger feeding the verified Vito loops; whether Bloodletter doubles Throne's end-step loss the way 003 verified for Sanctum Seeker needs its own stack (see opens_lines). Blade of the Bloodchief is single-threat voltron in a go-wide deck — a one-mana engine that grows one body the deck never wants to be its whole threat.",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:multiplayer.asymmetry", "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"}
+      ]
+    },
+    {
+      "in": "Elenda, the Dusk Rose",
+      "out": "Mavren Fein, Dusk Apostle",
+      "role": "payoff:counters",
+      "when": "The full step, with the aristocrats package adopted — Elenda is the package's wrath-math payoff",
+      "why": "Elenda counters off every creature death anywhere — your Seer sacrifices, your Grave Pact edicts, the table's combat — and dies into X doubled lifelink Vampire tokens through Procession/Mondrak, which is exactly the 'threats that replace themselves' resilience the sweeper-heavy bracket-4 midgame demands; Mavren Fein makes one token per combat off nontoken attackers only, a slower trickle than the death web these swaps build.",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:resource-hedging.wrath-math", "quote": "buy resilience instead of restraint where you can — high toughness, indestructible and regeneration, token rebuilders, threats that replace themselves"}
+      ]
+    },
+    {
+      "in": "Indulgent Aristocrat",
+      "out": "Vampire of the Dire Moon",
+      "role": "sac-outlet",
+      "when": "The full step: second sac outlet, in once the Seer promotion has proved out and outlet access needs to survive removal",
+      "why": "Outlet redundancy that pays in tribe-wide +1/+1 counters — each activation compounds with Cordial Vampire's death counters and Edgar's attack trigger across the whole token board — on a one-mana lifelink Vampire; the honest cost is losing Vampire of the Dire Moon's deathtouch, part of the cheap defensive web the vs-aggro control seat uses, which is why this is the ninth swap and not the second.",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:deckbuilding.redundancy-vs-tutors", "quote": "consistency has two purchases: redundancy (more cards doing the job) or tutoring (cards that fetch it)"}
       ]
     }
   ],
   "opens_lines": [
     {
-      "cards": [
-        "Sanguine Bond",
-        "Exquisite Blood"
-      ],
-      "why_plausible": "Bond duplicates Vito's loss-on-gain trigger verbatim, and stack 001 verified Exquisite Blood + Vito as a deterministic table-kill from any life exchange; Bond + Exquisite is the classic two-enchantment version of the same shape, and strategic_frame.candidate_missing_lines already flags it as sideboard-conditional — but no artifact covers the Bond pairing, and 001 verifies the Vito loop, not this one",
+      "cards": ["Sanguine Bond", "Exquisite Blood"],
+      "why_plausible": "Bond duplicates Vito's loss-on-gain trigger verbatim and stack 001 verified Exquisite Blood + Vito as a deterministic table-kill from any life exchange; Bond + Exquisite is the classic two-enchantment version of the same shape — but 001 verifies the Vito loop, not this pairing, and no artifact covers it",
       "status": "needs a stack scenario"
     },
     {
-      "cards": [
-        "Sanguine Bond",
-        "Bloodthirsty Conqueror"
-      ],
-      "why_plausible": "Mirrors the Conqueror + Vito loop that stack 004 verified, with Bond supplying the loss-on-gain half from an enchantment; sideboard-facts counts it among the 2 lines Bond completes that the deck cannot currently assemble — unverified until a checker-passed artifact exists for this exact pair",
+      "cards": ["Sanguine Bond", "Bloodthirsty Conqueror"],
+      "why_plausible": "Mirrors the Conqueror + Vito loop stack 004 verified, with Bond supplying the loss-on-gain half from an enchantment; sideboard-facts counts it among the 2 lines Bond completes that the deck cannot currently assemble — unverified until its own checker-passed artifact exists",
+      "status": "needs a stack scenario"
+    },
+    {
+      "cards": ["Throne of the God-Pharaoh", "Bloodletter of Aclazotz"],
+      "why_plausible": "Throne's end-step trigger happens during your turn, the window in which stack 003 verified Bloodletter doubling opponents' life loss from Sanctum Seeker — whether the same doubling applies to Throne's lump-sum loss is the same rules domain but a different trigger, and needs its own scenario before the full-step math can be stated as fact",
+      "status": "needs a stack scenario"
+    },
+    {
+      "cards": ["Purphoros, God of the Forge", "Edgar Markov", "Anointed Procession"],
+      "why_plausible": "Stack 002 verified 1→4 token entries per Vampire cast through both doublers; Purphoros reads 'whenever another creature you control enters, deals 2 damage to each opponent', so four entries should mean 8 per opponent per cast — the per-entry trigger count on replacement-doubled tokens deserves a cheap scenario before the 8-damage claim is promoted past plausible",
       "status": "needs a stack scenario"
     }
   ],
   "long_term_defaults": [
-    {
-      "card": "Viscera Seer",
-      "verdict": "promote",
-      "why": "The maindeck has zero sac-outlet roles next to Grave Pact and Voldaren Pariah; a free, instant-speed outlet on a one-mana Vampire body is better than Vampire Interloper in every pod this deck sits down at — see the first swap"
-    },
-    {
-      "card": "Sanguine Bond",
-      "verdict": "keep-in-sideboard",
-      "why": "Conditional redundancy: five mana that does nothing without a gain engine already online; it comes in when the pod answers Vito on sight, not by default"
-    },
-    {
-      "card": "Kalitas, Traitor of Ghet",
-      "verdict": "keep-in-sideboard",
-      "why": "A meta answer to recursion and death-trigger decks that happens to combo with Grave Pact edicts; in a vacuum it is a slower body than the maindeck three-drops"
-    },
-    {
-      "card": "Herald's Horn",
-      "verdict": "keep-in-sideboard",
-      "why": "The strongest artifact on the bench — cost reduction on ~40 Vampire casts plus a free upkeep impulse, and it turns Forerunner of the Legion's tutor-to-top into tutor-to-hand — but the deck already runs Vanquisher's Banner and Bontu's Monument in the same slot class; first-in if the pilot ever asks for more velocity"
-    },
-    {
-      "card": "Purphoros, God of the Forge",
-      "verdict": "keep-in-sideboard",
-      "why": "Two damage to each opponent per eminence token is real non-combat reach against ~120 combined life, but it is a non-Vampire (no eminence trigger, no lord support) in a deck with only 9 red cards and 22 red source targets; a deliberate power-up, not a default"
-    },
-    {
-      "card": "Elenda, the Dusk Rose",
-      "verdict": "keep-in-sideboard",
-      "why": "Grows off every token death and refunds a lifelinker board when she dies — decent wrath insurance — but the deck's rebuild plan is already eminence itself, which costs zero slots"
-    },
-    {
-      "card": "Sorin of House Markov // Sorin, Ravenous Neonate",
-      "verdict": "keep-in-sideboard",
-      "why": "A two-mana lifelink Vampire whose extort feeds Vito-style triggers, but the flip condition (gain 3+ in a turn, postcombat) is win-more here and the planeswalker face does not advance the go-wide plan"
-    },
-    {
-      "card": "Vampire Nocturnus",
-      "verdict": "keep-in-sideboard",
-      "why": "+2/+1 and flying tribe-wide when the top card is black is a real lord, but {1}{B}{B}{B} is the heaviest pip cost in the tribe and the trigger whiffs on the deck's 34 lands and white/red spells; the PDP13 promo copy is a spare of the M13 copy either way"
-    },
-    {
-      "card": "Strefan, Maurer Progenitor",
-      "verdict": "keep-in-sideboard",
-      "why": "Spare copy — Strefan is already in the maindeck; this one exists to replace a lost or worn card, not to be swapped in"
-    },
-    {
-      "card": "Vito, Thorn of the Dusk Rose",
-      "verdict": "keep-in-sideboard",
-      "why": "Spare copy of the maindeck loop piece that stacks 001 and 004 verified; keep it sleeved nearby precisely because the maindeck copy is the most removal-magnetic card in the 99, but a second copy cannot be swapped in next to the first"
-    },
-    {
-      "card": "Callous Bloodmage",
-      "verdict": "keep-in-sideboard",
-      "why": "A flexible ETB Vampire (Pest, draw, or graveyard exile) with no maindeck slot weaker than it; the graveyard-exile mode is why it stays in the box as meta insurance"
-    },
-    {
-      "card": "Gluttonous Guest",
-      "verdict": "keep-in-sideboard",
-      "why": "One Blood token and gain-1-per-Blood-sacrifice is Strefan support, but Strefan is the only maindeck Blood producer — the package is too thin to pay off a vanilla 1/4"
-    },
-    {
-      "card": "Unholy Officiant",
-      "verdict": "keep-in-sideboard",
-      "why": "A one-mana vigilance body with a five-mana pump; the deck's one-drop slots are already better (Knight of the Ebon Legion, Vampire of the Dire Moon); the second VOW printing is a spare of the first"
-    },
-    {
-      "card": "Runo Stromkirk // Krothuss, Lord of the Deep",
-      "verdict": "keep-in-sideboard",
-      "why": "Outside Edgar's Mardu colour identity ({1}{U}{B}) — unplayable in this deck, per the sideboard-facts flag; it lives here as a collection card, nothing more"
-    },
-    {
-      "card": "Belligerent Guest",
-      "verdict": "keep-in-sideboard",
-      "why": "A three-mana 3/2 trampler making Blood on connect is below the maindeck three-drop bar (Sanctum Seeker, Captivating Vampire) and the Blood package is one card deep"
-    },
-    {
-      "card": "Blood Petal Celebrant",
-      "verdict": "keep-in-sideboard",
-      "why": "A two-mana 2/1 that first-strikes on the attack and leaves one Blood behind; strictly filler next to the maindeck two-drop lords and utility bodies"
-    },
-    {
-      "card": "Markov Purifier",
-      "verdict": "keep-in-sideboard",
-      "why": "The best pure draw engine on the bench — the deck gains life incidentally almost every turn (lifelink bodies, drains, Ocelot Pride), so the end-step pay-{2}-draw is near-reliable; the deck's draw:engine count is only 2, making Purifier the second-in after Herald's Horn if consistency ever feels short"
-    },
-    {
-      "card": "Alluring Suitor // Deadly Dancer",
-      "verdict": "keep-in-sideboard",
-      "why": "'Attack with exactly two creatures' is anti-synergy with a go-wide token deck whose plan is seven-Vampire alpha strikes (stack 003's scenario); wrong list for this card"
-    },
-    {
-      "card": "Wedding Security",
-      "verdict": "keep-in-sideboard",
-      "why": "A five-mana payoff that needs a Blood token per attack in a deck whose only maindeck Blood source is Strefan's end step; too slow and too conditional"
-    },
-    {
-      "card": "Leering Onlooker",
-      "verdict": "keep-in-sideboard",
-      "why": "A two-mana 1/1 flyer whose value is a four-mana graveyard exhale for two Bats; no synergy hook here — the Bats are not Vampires and never trigger eminence"
-    },
-    {
-      "card": "Throne of the God-Pharaoh",
-      "verdict": "keep-in-sideboard",
-      "why": "Each-opponent life loss off tapped attackers stacks with Exquisite Blood and Bloodthirsty Conqueror's gain-on-loss triggers, and it survives sweepers — a genuinely interesting reach card, but colourless artifact slots are contested (Vanquisher's Banner, Akroma's Memorial) and no feedback asks for more reach"
-    },
-    {
-      "card": "Charismatic Conqueror",
-      "verdict": "keep-in-sideboard",
-      "why": "A two-mana vigilant taxer that either taps opposing rocks/creatures on entry or hands you lifelinker Vampire tokens — the best fair two-drop on the bench, waiting on a two-drop slot to open"
-    },
-    {
-      "card": "Master of Dark Rites",
-      "verdict": "keep-in-sideboard",
-      "why": "A one-mana Vampire that sacrifices another creature for {B}{B}{B} restricted to Vampire/Cleric/Demon spells — a real ritual-dork and third sac outlet if the aristocrats package is ever adopted wholesale, but not ahead of Viscera Seer on any axis this deck cares about"
-    },
-    {
-      "card": "Markov Baron",
-      "verdict": "keep-in-sideboard",
-      "why": "A convoke lord with madness is fine lord-redundancy behind Legion Lieutenant, Captivating Vampire, and Stromkirk Captain, but the deck is not short on anthems — it is short on sac outlets and draw"
-    },
-    {
-      "card": "Shadow Alley Denizen",
-      "verdict": "keep-in-sideboard",
-      "why": "One-shot intimidate on a single creature per black ETB is weaker evasion than the maindeck's Cover of Darkness, which does the job tribe-wide"
-    },
-    {
-      "card": "Stensian Sanguinist // Exsanguinate",
-      "verdict": "keep-in-sideboard",
-      "why": "A repeatable Exsanguinate is tempting with two gain-on-loss enchantments in the maindeck, but the prepare condition routes through single-target combat damage — slow and fragile next to the drains the deck already runs"
-    },
-    {
-      "card": "Cemetery Gatekeeper",
-      "verdict": "keep-in-sideboard",
-      "why": "This is what a sideboard card looks like by design: two-mana graveyard hate with a body, in for graveyard pods, out otherwise; it stays benched until the meta asks"
-    },
-    {
-      "card": "Indulgent Aristocrat",
-      "verdict": "keep-in-sideboard",
-      "why": "Sac outlet number two, and the only one that pays in tribe-wide +1/+1 counters (which Edgar's attack trigger then compounds); the natural second-in if the Viscera Seer promotion proves out"
-    },
-    {
-      "card": "Cruel Celebrant",
-      "verdict": "keep-in-sideboard",
-      "why": "The aristocrats payoff: each token death drains 1 and gains 1 — and every gain is a Vito/Sanguine Bond trigger — but without an adopted sac outlet the deaths are not on demand, so the payoff waits on the package"
-    },
-    {
-      "card": "Vampire Gourmand",
-      "verdict": "keep-in-sideboard",
-      "why": "Attack-triggered sacrifice-for-a-card is a fourth outlet plus draw, but it only fires once per combat and telegraphs; package depth, not a starter"
-    },
-    {
-      "card": "Forerunner of the Legion",
-      "verdict": "keep-in-sideboard",
-      "why": "Tutor-to-top for any Vampire (including Bloodthirsty Conqueror, half of the 004-verified loop) is real, but it costs a turn of draw unless Herald's Horn is also in play to lift the card at upkeep — a pairing worth remembering if the pilot ever asks for both"
-    },
-    {
-      "card": "Aclazotz, Deepest Betrayal // Temple of the Dead",
-      "verdict": "keep-in-sideboard",
-      "why": "A self-recurring five-drop that punishes each opponent per attack and comes back as a land — arguably the best top-end card on the bench in a curve with only two spells above five, but cutting a maindeck card for a five-drop needs pilot appetite this analysis does not have"
-    },
-    {
-      "card": "Scheming Silvertongue // Sign in Blood",
-      "verdict": "keep-in-sideboard",
-      "why": "A repeatable Sign in Blood behind a trivially-met gain-2 condition is the third-best draw option benched (after Herald's Horn and Markov Purifier); worth a look the day the pilot reports running out of gas"
-    },
-    {
-      "card": "Abzan Falconer",
-      "verdict": "keep-in-sideboard",
-      "why": "A non-Vampire Human that triggers neither eminence nor any lord; the +1/+1-counter flying payoff reads well against the deck's 9 buff:counters roles but the counters arrive too sporadically (Edgar attack, Drana) to build around"
-    }
+    {"card": "Viscera Seer", "verdict": "promote", "why": "Zero sac outlets in the 99 next to Grave Pact and Voldaren Pariah; a free instant-speed outlet on a one-mana Vampire is better than Vampire Interloper at every table — the accepted promote, swap 1"},
+    {"card": "Sanguine Bond", "verdict": "promote", "why": "Under the standing step-up mandate the condition on its old keep verdict is met: it is the removal-resistant redundant drain half for the verified 001/004 loop shape, and the pilot has asked to rely on that line — swap 2; run the Bond stacks to convert it from indicated to verified"},
+    {"card": "Cruel Celebrant", "verdict": "promote", "why": "With Seer in the 99 the trigger is live every game: each token death drains all opponents and seeds the verified Exquisite/Vito loop with its gain — swap 3"},
+    {"card": "Purphoros, God of the Forge", "verdict": "promote", "why": "The single highest-ROI engine plug on the bench: stack 002's verified multiplication turns every cheap Vampire cast into indestructible each-opponent reach — swap 4; the eminence-blind non-Vampire body is the named cost"},
+    {"card": "Kalitas, Traitor of Ghet", "verdict": "promote", "why": "Re-ranked from meta call to default: Grave Pact makes the exile replacement live in every game this deck plays, and the Zombies feed the promoted outlets — swap 5"},
+    {"card": "Herald's Horn", "verdict": "promote", "why": "Re-ranked from 'first-in for velocity' to core: the step-up list adds engine pieces without adding mana, and Horn is the cheapest fix that also draws — swap 6"},
+    {"card": "Throne of the God-Pharaoh", "verdict": "keep-in-sideboard", "why": "Full-step tier (swap 7): right when alpha strikes are the norm and the Bloodletter-doubling scenario has run; until then a conditional two-mana reach piece"},
+    {"card": "Elenda, the Dusk Rose", "verdict": "keep-in-sideboard", "why": "Full-step tier (swap 8): the aristocrats package's wrath-insurance payoff — in when the package is adopted wholesale, not before"},
+    {"card": "Indulgent Aristocrat", "verdict": "keep-in-sideboard", "why": "Full-step tier (swap 9): outlet redundancy paying tribe-wide counters, but it costs a defensive one-drop the aggro matchup uses — in once Seer proves out"},
+    {"card": "Master of Dark Rites", "verdict": "keep-in-sideboard", "why": "Would be swap 10 — its BBB pays Edgar's generic cost, pulling the median t6.6 cast forward a turn off one sacrificed token — but the remaining cuts (Swiftfoot Boots, Bontu's Monument, Vanquisher's Banner) each protect something the mandate keeps: pivot-window protection, the per-cast drain trickle, the draw engine; next in when a slot opens"},
+    {"card": "Markov Purifier", "verdict": "keep-in-sideboard", "why": "Best pure draw engine on the bench — end-step pay-{2}-draw is near-reliable in a deck that gains life most turns; first in after the nine swaps if the pilot reports running out of gas"},
+    {"card": "Scheming Silvertongue // Sign in Blood", "verdict": "keep-in-sideboard", "why": "A repeatable Sign in Blood behind a trivially-met gain-2 condition; second draw option behind Markov Purifier"},
+    {"card": "Charismatic Conqueror", "verdict": "keep-in-sideboard", "why": "Best fair two-drop on the bench — taxes or generates lifelink Vampire tokens — but the step-up mandate ranks engine extenders above fair bodies and no two-drop slot opened"},
+    {"card": "Aclazotz, Deepest Betrayal // Temple of the Dead", "verdict": "keep-in-sideboard", "why": "Best top-end on the bench, but the curve keeps only two spells above five by design and the mandate's top-end slot went to Purphoros; the candidate if the pilot wants a resilient five-drop later"},
+    {"card": "Vampire Nocturnus", "verdict": "keep-in-sideboard", "why": "Only 39 of 97 maindeck entries are black cards, so the top-of-library trigger is blind-off more often than on; Viscera Seer's scry can rig it but a coin-flip lord is not a clean pick under any mandate — and the PDP13 copy is a spare of the M13 copy"},
+    {"card": "Sorin of House Markov // Sorin, Ravenous Neonate", "verdict": "keep-in-sideboard", "why": "Extort feeds the drain web one life at a time, but the flip needs gain-3-postcombat and the walker face does not advance go-wide; a trickle where the mandate asks for engines"},
+    {"card": "Vampire Gourmand", "verdict": "keep-in-sideboard", "why": "A fourth outlet that fires once per combat and telegraphs; package depth behind Seer/Aristocrat/Dark Rites, not a starter"},
+    {"card": "Forerunner of the Legion", "verdict": "keep-in-sideboard", "why": "Tutor-to-top for Bloodthirsty Conqueror (half of the 004-verified loop) is real, and Herald's Horn's upkeep lift now lives in the 99 under these swaps — the pairing to remember if the pilot wants a fourth tutor effect"},
+    {"card": "Callous Bloodmage", "verdict": "keep-in-sideboard", "why": "Flexible ETB (Pest, draw, or graveyard exile) with no maindeck slot clearly weaker than it; stays as meta insurance"},
+    {"card": "Cemetery Gatekeeper", "verdict": "keep-in-sideboard", "why": "Designed sideboard card: two-mana graveyard hate with a body, in for graveyard pods, out otherwise — note Kalitas's promotion already covers much of this job"},
+    {"card": "Gluttonous Guest", "verdict": "keep-in-sideboard", "why": "Blood support one card deep in the 99 (Strefan only); a vanilla 1/4 without the package"},
+    {"card": "Wedding Security", "verdict": "keep-in-sideboard", "why": "Five mana needing a Blood per attack — and the Ivora cut makes the Blood package thinner still"},
+    {"card": "Belligerent Guest", "verdict": "keep-in-sideboard", "why": "Below the maindeck three-drop bar (Sanctum Seeker, Captivating Vampire); one Blood on connect does not close the gap"},
+    {"card": "Blood Petal Celebrant", "verdict": "keep-in-sideboard", "why": "Filler two-drop next to the maindeck lords and utility bodies; one Blood on death is not a hook"},
+    {"card": "Leering Onlooker", "verdict": "keep-in-sideboard", "why": "Its Bats are not Vampires — no eminence trigger, no lord support; no hook into any engine here"},
+    {"card": "Shadow Alley Denizen", "verdict": "keep-in-sideboard", "why": "One-shot single-creature intimidate under Cover of Darkness's tribe-wide fear; strictly outclassed evasion"},
+    {"card": "Stensian Sanguinist // Exsanguinate", "verdict": "keep-in-sideboard", "why": "The prepare condition routes through single-target combat damage — slow next to the each-opponent drains the deck already runs"},
+    {"card": "Markov Baron", "verdict": "keep-in-sideboard", "why": "Lord-redundancy behind three maindeck lords; the deck is short on outlets and draw, not anthems"},
+    {"card": "Unholy Officiant", "verdict": "keep-in-sideboard", "why": "A one-mana vigilance body with a five-mana pump, behind Knight of the Ebon Legion and the promoted outlets at one mana; second printing is a spare"},
+    {"card": "Abzan Falconer", "verdict": "keep-in-sideboard", "why": "A non-Vampire Human triggering neither eminence nor lords; the counters arrive too sporadically to build a flying payoff around"},
+    {"card": "Alluring Suitor // Deadly Dancer", "verdict": "keep-in-sideboard", "why": "'Attack with exactly two creatures' is anti-synergy with seven-attacker alpha strikes (stack 003); wrong list"},
+    {"card": "Runo Stromkirk // Krothuss, Lord of the Deep", "verdict": "keep-in-sideboard", "why": "Outside Edgar's Mardu identity ({1}{U}{B}) — unplayable here per the sideboard-facts flag"},
+    {"card": "Strefan, Maurer Progenitor", "verdict": "keep-in-sideboard", "why": "Spare copy of a maindeck card; exists to replace a lost or worn copy, not to swap in"},
+    {"card": "Vito, Thorn of the Dusk Rose", "verdict": "keep-in-sideboard", "why": "Spare of the most removal-magnetic card in the 99 (both verified loops route through it); a second copy cannot be swapped in beside the first"}
   ],
   "gaps": [
-    "No pilot_feedback.md exists for this deck — appetite unknown, so this analysis defaults to the conservative posture (one promotion, two conditional swaps); a feedback file stating target bracket or desired aggression would change the swap budget",
-    "No manual_prose.json for this deck, and issue.json contains no sideboard prose — there is no published sideboard stance to align with or contradict; the first published mention of these cards will be whatever merges from this analysis",
-    "The strategy corpus has no aristocrats/sacrifice-value section (strategic_frame.gaps confirms: 'aristocrats sacrifice drain' tops out at 0.19 on politics) — the Viscera Seer promotion and the package reads on Cruel Celebrant / Indulgent Aristocrat / Master of Dark Rites rest on oracle-text interactions alone; a research-strategy pass on aristocrats theory would ground them",
-    "No typal/lord-density section in the corpus — the lord-vs-body calls on Vampire Nocturnus and Markov Baron are uncited for the same reason",
-    "Sanguine Bond + Exquisite Blood and Sanguine Bond + Bloodthirsty Conqueror are unverified — a /resolve-stack run on either pair would settle whether the Bond swap carries the same verified table-kill as stacks 001/004, and stack 001's scenario is a ready template",
-    "sideboard-facts reports no EDHREC rank for any bench card, so every 'stronger default' claim here argues from the deck's needs, never from popularity"
+    "The two Sanguine Bond loops, the Throne-under-Bloodletter doubling, and the Purphoros-per-token-entry count are all unverified — /resolve-stack runs using stacks 001/003/002 as templates would settle them, and the full-step tier of this analysis leans on the first three",
+    "The strategy corpus still has no aristocrats/sacrifice-value section (strategic_frame.gaps: 'aristocrats sacrifice drain' tops out at 0.19 on politics) — the Seer/Celebrant/Aristocrat package reads rest on oracle-text interactions alone",
+    "No typal/lord-density section in the corpus — the lord-vs-body calls on Vampire Nocturnus and Markov Baron remain uncited",
+    "sideboard-facts reports no EDHREC rank for any bench card, so every ranking here argues from the deck's own needs and verified engines, never popularity",
+    "All nine swaps compute to bracket 4→4 per sideboard-facts — the step-up this analysis describes is a frequency-of-the-knockout change inside bracket 4, not a floor change; the corpus has no section quantifying 'top of bracket 4', so that framing rests on the barometers turn-frequency language"
   ]
 }

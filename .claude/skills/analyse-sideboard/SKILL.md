@@ -33,8 +33,9 @@ acquiring a lookout card is a separate job.
    plays or what they want from it — "draws too few cards", "clunky on turn three", "want
    it a bracket lower", "bracket 4 is fine, maximize power" — write it to
    `data/decks/<slug>/pilot_feedback.md` before spawning. It is a cache input, so it must
-   exist first. The stated appetite is the swap budget; absent feedback, the agent does a
-   conservative unprompted analysis.
+   exist first. The stated appetite is the swap budget; absent feedback, the agent runs
+   the standing forward-looking half-step posture (aggressive in ranking, evidence-bound
+   in claims — see the agent charter).
 
 2a. **Sequence after the strategic frame.** Run this skill only once
    `data/decks/<slug>/strategic_frame.json` exists — the frame is the declared pivot for
