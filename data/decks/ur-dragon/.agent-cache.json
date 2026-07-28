@@ -1,0 +1,443 @@
+{
+  "cache_version": 1,
+  "routines": {
+    "coach-prose": {
+      "agent": "pilot-coach",
+      "agent_prompt_sha256": "b45e21197e2288f5caf97d98e455ffd865b8b6e834aa1a14e8f8194ff979bd11",
+      "artifact": "data/decks/ur-dragon/manual_prose.json",
+      "artifact_keys": [
+        "matchups",
+        "threat_assessment"
+      ],
+      "artifact_sha256": "93741d29caaa347e3bd28eeb788c0efee7482dfa92497baf1fb812e9a225e656",
+      "extra": {
+        "cards_semantic": "2ee75a9b6250716c3a50c0bf085d14571baadac85e331c384dc2d01a5b9a0d37",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "c7590d19690c50db13abacc030db9580390e6b49acee36a4046e41498dec905a",
+      "inputs": [
+        {
+          "path": "data/decks/ur-dragon/goldfish_metrics.json",
+          "sha256": "dfbfb530e3521209f522f768c90afc8b20ade2c84303d99455f68a72cc7f4413"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/001-tempest-gold-dragon-burst.json",
+          "sha256": "08a511ecafb234e59519d72b4d38627fc9767873723ce7dda81b2d1b8e343f14"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/002-miirym-panharmonicon-doubling.json",
+          "sha256": "7f09f26ebdf1e7d0fe4b25ebd63eb5255fd7c8eed3a5054fbfa8952a48f3d1df"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/003-ventmaw-aggravated-assault-loop.json",
+          "sha256": "6e4c9ca26118491cf4b2088f6c46beb109042834fb77bbaa60c49ef28ad4d2d3"
+        },
+        {
+          "path": "data/decks/ur-dragon/strategic_frame.json",
+          "sha256": "87f81ab1c33a5ed78d8c05574f574650ba17845467615dd240cbeae72c74aefb"
+        }
+      ]
+    },
+    "decision:001": {
+      "agent": "pilot-coach",
+      "agent_prompt_sha256": "b45e21197e2288f5caf97d98e455ffd865b8b6e834aa1a14e8f8194ff979bd11",
+      "artifact": "data/decks/ur-dragon/decisions/001-commit-ur-dragon-or-hold.json",
+      "artifact_sha256": "51bfc8072ecbc92f551c10010d2d48f231e08c317ca78f2f1811b6a2efd638af",
+      "extra": {
+        "cards_semantic": "2ee75a9b6250716c3a50c0bf085d14571baadac85e331c384dc2d01a5b9a0d37",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "77fdd3cfb11db86cb64a32128c6ffa1adc9283f96d05c1cc886d2d6e6e5ee42a",
+      "inputs": [
+        {
+          "path": "data/decks/ur-dragon/decisions/001-commit-ur-dragon-or-hold.json#scenario",
+          "sha256": "66015c389bb3bb20d556fd85f8f6a530a43e0e443be4341d901949a2fe055c3c"
+        },
+        {
+          "path": "data/decks/ur-dragon/goldfish_metrics.json",
+          "sha256": "dfbfb530e3521209f522f768c90afc8b20ade2c84303d99455f68a72cc7f4413"
+        },
+        {
+          "path": "data/decks/ur-dragon/strategic_frame.json",
+          "sha256": "87f81ab1c33a5ed78d8c05574f574650ba17845467615dd240cbeae72c74aefb"
+        }
+      ]
+    },
+    "decision:002": {
+      "agent": "pilot-coach",
+      "agent_prompt_sha256": "b45e21197e2288f5caf97d98e455ffd865b8b6e834aa1a14e8f8194ff979bd11",
+      "artifact": "data/decks/ur-dragon/decisions/002-tiamat-pile-into-sweeper-mana.json",
+      "artifact_sha256": "915e70f25ecf28ea0364ee3f832d39886715923502137507664b048c7b50f905",
+      "extra": {
+        "cards_semantic": "2ee75a9b6250716c3a50c0bf085d14571baadac85e331c384dc2d01a5b9a0d37",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "2555d79c887195ef4d5919eca597f4a21abbdbca024c5888975571099d8dc2db",
+      "inputs": [
+        {
+          "path": "data/decks/ur-dragon/decisions/002-tiamat-pile-into-sweeper-mana.json#scenario",
+          "sha256": "5b80b760114e6dea026e4213ce4488857bd37b83698ebb409a56d7e48b27421b"
+        },
+        {
+          "path": "data/decks/ur-dragon/goldfish_metrics.json",
+          "sha256": "dfbfb530e3521209f522f768c90afc8b20ade2c84303d99455f68a72cc7f4413"
+        },
+        {
+          "path": "data/decks/ur-dragon/strategic_frame.json",
+          "sha256": "87f81ab1c33a5ed78d8c05574f574650ba17845467615dd240cbeae72c74aefb"
+        }
+      ]
+    },
+    "issue-plan": {
+      "agent": "magazine-editor",
+      "agent_prompt_sha256": "704e709127a2ac8a8d4ab7fd52f37cffcfd1553b1bdcb147732bd7bbdb2a0141",
+      "artifact": "data/decks/ur-dragon/issue_plan.json",
+      "artifact_sha256": "7032ca2dbaef9cfc4a5b70e892a0e7fac021d4aa81e5c66f7248863105ef9619",
+      "extra": {
+        "cards_printing": "d8e3e52c511fee4d5467db828b0de2c818585ee5a75d1e3ea9823c21646ec41a",
+        "cards_semantic": "2ee75a9b6250716c3a50c0bf085d14571baadac85e331c384dc2d01a5b9a0d37",
+        "prose_shape": {
+          "card_roles": [
+            "An Offer You Can't Refuse",
+            "Ancient Gold Dragon",
+            "Arcane Signet",
+            "Atarka, World Render",
+            "Blasphemous Act",
+            "Blood Crypt",
+            "Boros Charm",
+            "Breaching Dragonstorm",
+            "Breeding Pool",
+            "Canopy Vista",
+            "Cavern-Hoard Dragon",
+            "Chaos Warp",
+            "Chromatic Lantern",
+            "Cinder Glade",
+            "City of Brass",
+            "Clifftop Retreat",
+            "Command Tower",
+            "Counterspell",
+            "Crucible of Fire",
+            "Crux of Fate",
+            "Dovin's Veto",
+            "Dracogenesis",
+            "Dragon Tempest",
+            "Dragon's Hoard",
+            "Dragonback Assault",
+            "Dragonlord Dromoka",
+            "Dragonlord Kolaghan",
+            "Dragonlord's Servant",
+            "Dragonspeaker Shaman",
+            "Drakuseth, Maw of Flames",
+            "Eerie Interlude",
+            "Encroaching Dragonstorm",
+            "Enlightened Tutor",
+            "Exotic Orchard",
+            "Fabled Passage",
+            "Farseek",
+            "Flawless Maneuver",
+            "Forbidden Orchard",
+            "Forest",
+            "Garruk's Uprising",
+            "Generous Gift",
+            "Glacial Fortress",
+            "Goldspan Dragon",
+            "Haven of the Spirit Dragon",
+            "Hellkite Courser",
+            "Herald's Horn",
+            "Heroic Intervention",
+            "Island",
+            "Jetmir's Garden",
+            "Klauth, Unrivaled Ancient",
+            "Lathliss, Dragon Queen",
+            "Maelstrom of the Spirit Dragon",
+            "Miirym, Sentinel Wyrm",
+            "Mountain",
+            "Mox Jasper",
+            "Nature's Lore",
+            "Old Gnawbone",
+            "Overgrown Tomb",
+            "Panharmonicon",
+            "Path of Ancestry",
+            "Patriarch's Bidding",
+            "Reflecting Pool",
+            "Relic of Legends",
+            "Return of the Wildspeaker",
+            "Rishkar's Expertise",
+            "Rivaz of the Claw",
+            "Roiling Dragonstorm",
+            "Rootbound Crag",
+            "Sarkhan's Triumph",
+            "Sarkhan, Fireblood",
+            "Savage Lands",
+            "Savage Ventmaw",
+            "Scourge of Valkas",
+            "Scourge of the Throne",
+            "Skyshroud Claim",
+            "Sol Ring",
+            "Steam Vents",
+            "Stomping Ground",
+            "Sulfur Falls",
+            "Swamp",
+            "Swan Song",
+            "Swords to Plowshares",
+            "Teferi's Protection",
+            "Temur Ascendancy",
+            "Terror of the Peaks",
+            "The Ur-Dragon",
+            "The World Tree",
+            "Thrakkus the Butcher",
+            "Tiamat",
+            "Unclaimed Territory",
+            "Urza's Incubator",
+            "Utvara Hellkite",
+            "Witherbloom, the Balancer",
+            "Worldly Tutor",
+            "Ziatora's Proving Ground"
+          ],
+          "combo_lines": [
+            "001",
+            "002",
+            "003"
+          ],
+          "how_it_wins": null,
+          "matchups": null,
+          "mulligan": null,
+          "threat_assessment": null,
+          "upgrades": null
+        },
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "3a8e2d13f54a039f3471685cb606017e58537fb718f5b57ef15a107ab58fd56b",
+      "inputs": [
+        {
+          "path": "STYLEv3.md",
+          "sha256": "ccc15781694b1ad775fb30496c035dcb7da04694bb9c33c93f23f0668fe3cf1b"
+        },
+        {
+          "path": "data/combo_graph.json",
+          "sha256": "29bd168f2dfbef5f58122de994ee66965fd4d7675922557a4365fe3454089805"
+        },
+        {
+          "path": "data/decks/ur-dragon/decisions/001-commit-ur-dragon-or-hold.json",
+          "sha256": "5e5473541a711b79cb5050a9c0b65b17aca9cc1348a7b571d7f72a9676f6d8bd"
+        },
+        {
+          "path": "data/decks/ur-dragon/decisions/002-tiamat-pile-into-sweeper-mana.json",
+          "sha256": "1f6e7be65412e23e82bad0d6bf11ddfa2987a2b5897db92fdd373601e61e3adc"
+        },
+        {
+          "path": "data/decks/ur-dragon/goldfish_metrics.json",
+          "sha256": "dfbfb530e3521209f522f768c90afc8b20ade2c84303d99455f68a72cc7f4413"
+        },
+        {
+          "path": "data/decks/ur-dragon/issue.json",
+          "sha256": "e6862b12f4bf0f04eb6064daac521114aa8a718cea6909f523f8b72ded409e04"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/001-tempest-gold-dragon-burst.json",
+          "sha256": "08a511ecafb234e59519d72b4d38627fc9767873723ce7dda81b2d1b8e343f14"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/002-miirym-panharmonicon-doubling.json",
+          "sha256": "7f09f26ebdf1e7d0fe4b25ebd63eb5255fd7c8eed3a5054fbfa8952a48f3d1df"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/003-ventmaw-aggravated-assault-loop.json",
+          "sha256": "6e4c9ca26118491cf4b2088f6c46beb109042834fb77bbaa60c49ef28ad4d2d3"
+        },
+        {
+          "path": "data/decks/ur-dragon/strategic_frame.json",
+          "sha256": "87f81ab1c33a5ed78d8c05574f574650ba17845467615dd240cbeae72c74aefb"
+        },
+        {
+          "path": "data/obsolescence_index.json",
+          "sha256": "94d9662cb54ef5ed9f2ca9ce31f3a8427f5be8f584032a3efd66b16c81aedf2b"
+        },
+        {
+          "path": "data/synergy_graph.json",
+          "sha256": "f09551fd9024addb575d417e3acdbef5abeba046c6753ef07976339688e854df"
+        },
+        {
+          "path": "src/manamap/pilot/issue_spec.py",
+          "sha256": "8b9e9954d0fef402262916e979b397c5e59a865af299de605271fcb06f5820ba"
+        }
+      ]
+    },
+    "sideboard-analysis": {
+      "agent": "sideboard-analyst",
+      "agent_prompt_sha256": "6d674efb47eca4b78d4feb95c65a1daf6ff8c3fafb34c73afcb1e6b986468d15",
+      "artifact": "data/decks/ur-dragon/sideboard_analysis.json",
+      "artifact_sha256": "572b0396e60ad351a480b86f94ed6eecb8109993e58faea4afd6be585d12d996",
+      "extra": {
+        "cards_semantic": "2ee75a9b6250716c3a50c0bf085d14571baadac85e331c384dc2d01a5b9a0d37",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "c3cd1df35291d6fae745b8a9b7b6000f172b6557a628c6fde53f959015590b2c",
+      "inputs": [
+        {
+          "path": "data/combo_graph.json",
+          "sha256": "29bd168f2dfbef5f58122de994ee66965fd4d7675922557a4365fe3454089805"
+        },
+        {
+          "path": "data/decks/ur-dragon/bracket_report.json",
+          "sha256": "9aa0c170cbfebecd00a414c181bf6dfd84745dc7b02694d1d35307d163110346"
+        },
+        {
+          "path": "data/decks/ur-dragon/pilot_feedback.md",
+          "sha256": null
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/001-tempest-gold-dragon-burst.json",
+          "sha256": "08a511ecafb234e59519d72b4d38627fc9767873723ce7dda81b2d1b8e343f14"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/002-miirym-panharmonicon-doubling.json",
+          "sha256": "7f09f26ebdf1e7d0fe4b25ebd63eb5255fd7c8eed3a5054fbfa8952a48f3d1df"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/003-ventmaw-aggravated-assault-loop.json",
+          "sha256": "6e4c9ca26118491cf4b2088f6c46beb109042834fb77bbaa60c49ef28ad4d2d3"
+        },
+        {
+          "path": "data/decks/ur-dragon/strategic_frame.json",
+          "sha256": "87f81ab1c33a5ed78d8c05574f574650ba17845467615dd240cbeae72c74aefb"
+        }
+      ]
+    },
+    "stack:001": {
+      "agent": "stack-resolver+rules-checker",
+      "agent_prompt_sha256": "12dc45362c304a02f051588056f71efa77b678bb0a00d95db293a55086400e2e",
+      "artifact": "data/decks/ur-dragon/stacks/001-tempest-gold-dragon-burst.json",
+      "artifact_sha256": "3f9288136f2b0839bf7538bc1c09d501cc3e5c3dfcbdbc961063ae378ea88ec1",
+      "extra": {
+        "cards_semantic": "2ee75a9b6250716c3a50c0bf085d14571baadac85e331c384dc2d01a5b9a0d37",
+        "rules_version": "June 19, 2026"
+      },
+      "fingerprint": "110a961277914c01aeb37a2870f4737c17406182ec8b75f0b6db64115f8c7a61",
+      "inputs": [
+        {
+          "path": "data/decks/ur-dragon/stacks/001-tempest-gold-dragon-burst.json#scenario",
+          "sha256": "3c8c154b23cea0ea18f178481bf60ce7992498c82115d6fc2e284d4418874832"
+        }
+      ],
+      "iterations": 2,
+      "verdict": "pass"
+    },
+    "stack:002": {
+      "agent": "stack-resolver+rules-checker",
+      "agent_prompt_sha256": "12dc45362c304a02f051588056f71efa77b678bb0a00d95db293a55086400e2e",
+      "artifact": "data/decks/ur-dragon/stacks/002-miirym-panharmonicon-doubling.json",
+      "artifact_sha256": "495765dd308b334a9ba3b1ab8ebbb426c318c6668e7a6a7329aa07cbf0fb942f",
+      "extra": {
+        "cards_semantic": "2ee75a9b6250716c3a50c0bf085d14571baadac85e331c384dc2d01a5b9a0d37",
+        "rules_version": "June 19, 2026"
+      },
+      "fingerprint": "4424b82ebe7bf146829580b437474974d6324076e59294e50e425238bb980c8f",
+      "inputs": [
+        {
+          "path": "data/decks/ur-dragon/stacks/002-miirym-panharmonicon-doubling.json#scenario",
+          "sha256": "5edd2da9068f2646ee5960c09aee0bb2b2e526bf5c43228fc9b3d516c8a08ce4"
+        }
+      ],
+      "iterations": 2,
+      "verdict": "pass"
+    },
+    "stack:003": {
+      "agent": "stack-resolver+rules-checker",
+      "agent_prompt_sha256": "12dc45362c304a02f051588056f71efa77b678bb0a00d95db293a55086400e2e",
+      "artifact": "data/decks/ur-dragon/stacks/003-ventmaw-aggravated-assault-loop.json",
+      "artifact_sha256": "07cb6b274582f3da0661f3cb270e833d20ab70ca7df319af51f8201b1beb19cc",
+      "extra": {
+        "cards_semantic": "2ee75a9b6250716c3a50c0bf085d14571baadac85e331c384dc2d01a5b9a0d37",
+        "rules_version": "June 19, 2026"
+      },
+      "fingerprint": "aec06ac64b992740e23ce7de1ff5dfe446a110e968f6b10581f82561c492ebb7",
+      "inputs": [
+        {
+          "path": "data/decks/ur-dragon/stacks/003-ventmaw-aggravated-assault-loop.json#scenario",
+          "sha256": "d443351737773d7174e5a5b4656bcc2868fba63e53476011d3783994fb0e3ae6"
+        }
+      ],
+      "iterations": 2,
+      "verdict": "pass"
+    },
+    "strategic-frame": {
+      "agent": "strategy-researcher",
+      "agent_prompt_sha256": "72b1b21517c3ae295e68f4b1fb7c089a5ddf21b269f013fc9df86321a2947f75",
+      "artifact": "data/decks/ur-dragon/strategic_frame.json",
+      "artifact_sha256": "ad8bd23f4fdfd572f0a983f508be84459592a664bd1e09c59e9cfe616af30bc2",
+      "extra": {
+        "cards_semantic": "2ee75a9b6250716c3a50c0bf085d14571baadac85e331c384dc2d01a5b9a0d37",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "ed365fe1f4156206925eafbc97c25dac39eb4c16105bb26842405863649a923b",
+      "inputs": [
+        {
+          "path": "data/decks/ur-dragon/goldfish_metrics.json",
+          "sha256": "dfbfb530e3521209f522f768c90afc8b20ade2c84303d99455f68a72cc7f4413"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/001-tempest-gold-dragon-burst.json",
+          "sha256": "08a511ecafb234e59519d72b4d38627fc9767873723ce7dda81b2d1b8e343f14"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/002-miirym-panharmonicon-doubling.json",
+          "sha256": "7f09f26ebdf1e7d0fe4b25ebd63eb5255fd7c8eed3a5054fbfa8952a48f3d1df"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/003-ventmaw-aggravated-assault-loop.json",
+          "sha256": "6e4c9ca26118491cf4b2088f6c46beb109042834fb77bbaa60c49ef28ad4d2d3"
+        }
+      ]
+    },
+    "writer-prose": {
+      "agent": "manual-writer",
+      "agent_prompt_sha256": "d7be3c41483ad556364e78a0a55d41f8f850a6780eb2afa0d143fb44a2d6c2df",
+      "artifact": "data/decks/ur-dragon/manual_prose.json",
+      "artifact_keys": [
+        "card_roles",
+        "combo_lines",
+        "how_it_wins",
+        "mulligan",
+        "upgrades"
+      ],
+      "artifact_sha256": "d750637f42f8cb755cd353f8018dfbd5c3a75c00335c64fab5111b78ad1a891e",
+      "extra": {
+        "cards_semantic": "2ee75a9b6250716c3a50c0bf085d14571baadac85e331c384dc2d01a5b9a0d37",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "8b71461372438984e365786ef3d29b2d4115ef89c66f342c162f5c5e7ffd34b0",
+      "inputs": [
+        {
+          "path": "data/combo_graph.json",
+          "sha256": "29bd168f2dfbef5f58122de994ee66965fd4d7675922557a4365fe3454089805"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/001-tempest-gold-dragon-burst.json",
+          "sha256": "08a511ecafb234e59519d72b4d38627fc9767873723ce7dda81b2d1b8e343f14"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/002-miirym-panharmonicon-doubling.json",
+          "sha256": "7f09f26ebdf1e7d0fe4b25ebd63eb5255fd7c8eed3a5054fbfa8952a48f3d1df"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/003-ventmaw-aggravated-assault-loop.json",
+          "sha256": "6e4c9ca26118491cf4b2088f6c46beb109042834fb77bbaa60c49ef28ad4d2d3"
+        },
+        {
+          "path": "data/decks/ur-dragon/strategic_frame.json",
+          "sha256": "87f81ab1c33a5ed78d8c05574f574650ba17845467615dd240cbeae72c74aefb"
+        },
+        {
+          "path": "data/obsolescence_index.json",
+          "sha256": "94d9662cb54ef5ed9f2ca9ce31f3a8427f5be8f584032a3efd66b16c81aedf2b"
+        },
+        {
+          "path": "data/synergy_graph.json",
+          "sha256": "f09551fd9024addb575d417e3acdbef5abeba046c6753ef07976339688e854df"
+        }
+      ]
+    }
+  },
+  "slug": "ur-dragon"
+}

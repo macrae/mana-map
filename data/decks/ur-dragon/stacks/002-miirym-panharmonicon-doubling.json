@@ -1,0 +1,416 @@
+{
+  "id": "002",
+  "slug": "miirym-panharmonicon-doubling",
+  "deck": "ur-dragon",
+  "title": "Miirym under Panharmonicon: how many copies?",
+  "scenario": {
+    "board": {
+      "you": [
+        "Miirym, Sentinel Wyrm",
+        "Panharmonicon",
+        "Dragon Tempest",
+        "Terror of the Peaks",
+        "lands x8"
+      ],
+      "opponents": [
+        {
+          "life": 32,
+          "board": []
+        },
+        {
+          "life": 40,
+          "board": []
+        }
+      ]
+    },
+    "hand": [
+      "Lathliss, Dragon Queen"
+    ],
+    "graveyard": [],
+    "mana_available": "{4}{R}{R}",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Lathliss, Dragon Queen",
+        "controller": "you",
+        "note": "cast for her printed {4}{R}{R} — with The Ur-Dragon's eminence she would cost {3}{R}{R}; the scenario pays full price for simplicity and the extra mana is available"
+      }
+    ],
+    "extras": {
+      "context": "Panharmonicon: 'If an artifact or creature entering the battlefield causes a triggered ability of a permanent you control to trigger, that ability triggers an additional time.' Miirym: 'Whenever another nontoken Dragon you control enters, create a token that's a copy of it, except the token isn't legendary.' Lathliss: 'Whenever another nontoken Dragon you control enters, create a 5/5 red Dragon token.' Terror of the Peaks: 'Whenever another creature you control enters, this creature deals damage equal to that creature's power to any target.' Dragon Tempest damage trigger as usual. The question is the full cascade when Lathliss (a nontoken Dragon) resolves."
+    },
+    "question": "Lathliss resolves and enters. Walk every trigger precisely: does Panharmonicon double Miirym's trigger (two nonlegendary Lathliss copies?), do the copies entering then trigger Lathliss herself and each other (copies are TOKENS — which triggers care about nontoken?), what does Terror of the Peaks and Dragon Tempest deal in total and from which enters, and what is the final board plus total damage available to distribute? Be precise about which entries are token vs nontoken and which triggers double under Panharmonicon (Miirym's and Lathliss's trigger on Dragons entering vs Terror/Tempest triggering on the SAME event)."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Lathliss, Dragon Queen (the only object on the stack) resolves.",
+        "effect": "Lathliss, a legendary nontoken 6/6 Dragon, enters the battlefield under your control.",
+        "citations": [
+          {
+            "rule": "608.3a",
+            "quote": "If the object that’s resolving has no targets, it becomes a permanent and enters the battlefield under the control of the spell’s controller."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Trigger check for the event 'Lathliss enters'.",
+        "effect": "Four abilities trigger from this one event: Miirym ('another nontoken Dragon' — Lathliss qualifies), Terror of the Peaks ('another creature'), Dragon Tempest's damage ability ('a Dragon you control enters'), and Dragon Tempest's haste ability ('a creature you control with flying enters'). Lathliss's OWN ability does not trigger: her trigger condition requires 'another' nontoken Dragon, and she is not another Dragon relative to herself, so the game state does not match her trigger event.",
+        "citations": [
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          },
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Panharmonicon applies to every one of those triggers.",
+        "effect": "Each of the four abilities is a triggered ability of a permanent you control, and each was caused to trigger by a creature (Lathliss) entering — Panharmonicon does not care whether the ability reads 'Dragon', 'creature', or 'nontoken Dragon', only what caused it to trigger. So each triggers an additional time: Miirym x2, Terror x2, Tempest-damage x2, Tempest-haste x2 (8 triggers total). Panharmonicon does not re-apply to the extra triggers it creates.",
+        "citations": [
+          {
+            "rule": "603.2d",
+            "quote": "An ability may state that a triggered ability triggers additional times. In this case, rather than simply determining that such an ability has triggered, determine how many times it should trigger, then that ability triggers that many times."
+          },
+          {
+            "rule": "603.2d",
+            "quote": "An effect that states that an ability triggers additional times doesn’t invoke itself repeatedly"
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "You order all 8 triggers on the stack and choose targets for the damage triggers.",
+        "effect": "You control all triggers, so you order them freely. Damage-maximizing order (bottom to top): Tempest-damage x2, Terror x2, haste x2, Miirym x2 — so both Miirym triggers resolve FIRST and both original Tempest triggers resolve LAST (after all tokens have entered). Targets for both Terror triggers (6 damage each — Lathliss's power) and both Tempest triggers (X computed later, at resolution) are chosen now, as the abilities are put on the stack.",
+        "citations": [
+          {
+            "rule": "603.3b",
+            "quote": "puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose"
+          },
+          {
+            "rule": "603.3d",
+            "quote": "The remainder of the process for putting a triggered ability on the stack is identical to the process for casting a spell listed in rules 601.2c–d."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Miirym trigger #1 resolves.",
+        "effect": "You create Token A: a token copy of Lathliss, except it isn't legendary. The copy acquires Lathliss's copiable values — it is a 6/6 red Dragon with flying and ALL of her printed abilities, including her 'Whenever another nontoken Dragon you control enters' trigger. It enters the battlefield under your control as it is created.",
+        "citations": [
+          {
+            "rule": "707.2",
+            "quote": "When copying an object, the copy acquires the copiable values of the original object’s characteristics"
+          },
+          {
+            "rule": "707.2",
+            "quote": "The copiable values are the values derived from the text printed on the object (that text being name, mana cost, color indicator, card type, subtype, supertype, rules text, power, toughness, and/or loyalty)"
+          },
+          {
+            "rule": "111.2",
+            "quote": "The player who creates a token is its owner. The token enters the battlefield under that player’s control."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Trigger check for the event 'Token A enters' — a TOKEN Dragon creature with flying.",
+        "effect": "A token entering the battlefield is an enter event. Triggers that fire: Terror of the Peaks ('another creature' — no nontoken restriction) and both Dragon Tempest abilities ('a Dragon' / 'a creature with flying' — no nontoken restriction). Each is again caused by a creature entering, so Panharmonicon doubles each: Terror x2, Tempest-damage x2, Tempest-haste x2. Triggers that do NOT fire: Miirym (requires nontoken — Token A is a token), original Lathliss (requires nontoken), and Token A's own copied Lathliss ability (requires 'another' Dragon — cannot see its own entry). These 6 new triggers go on the stack ABOVE the waiting Miirym #2, Terror, and Tempest triggers.",
+        "citations": [
+          {
+            "rule": "glossary:enters-the-battlefield",
+            "quote": "A token enters the battlefield as it’s created."
+          },
+          {
+            "rule": "603.2d",
+            "quote": "determine how many times it should trigger, then that ability triggers that many times"
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Token A's six triggers resolve (they cannot be ordered below the waiting Miirym #2).",
+        "effect": "Terror x2: 6 damage each (Token A's power is 6) = 12 damage. Tempest-damage x2: X is determined at resolution — Dragons you control are Miirym, Terror, Lathliss, Token A = 4, so 4 damage each = 8 damage. Tempest-haste x2: Token A gains haste. Running damage total: 20.",
+        "citations": [
+          {
+            "rule": "608.2h",
+            "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Miirym trigger #2 resolves.",
+        "effect": "You create Token B, a second nonlegendary token copy of Lathliss (6/6 flying Dragon with all her abilities). Trigger check for 'Token B enters': Terror x2 (doubled) and both Tempest abilities x2 (doubled) fire. Miirym, original Lathliss, Token A's copied Lathliss ability, and Token B's own ability all do NOT fire — Token B is a token ('nontoken' fails) and cannot be 'another' Dragon to itself. The token copies never trigger off each other.",
+        "citations": [
+          {
+            "rule": "707.2",
+            "quote": "When copying an object, the copy acquires the copiable values of the original object’s characteristics"
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Token B's six triggers resolve.",
+        "effect": "Terror x2: 6 damage each = 12. Tempest-damage x2: X at resolution = 5 Dragons (Miirym, Terror, Lathliss, Token A, Token B), so 5 each = 10. Tempest-haste x2: Token B gains haste. Running damage total: 20 + 22 = 42.",
+        "citations": [
+          {
+            "rule": "608.2h",
+            "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "The original wave-1 haste and Terror triggers resolve.",
+        "effect": "Haste x2: Lathliss gains haste (the doubled instance is redundant). Terror x2: each deals damage equal to Lathliss's power — she is still on the battlefield, so current information is used: 6 each = 12. Running damage total: 54.",
+        "citations": [
+          {
+            "rule": "608.2h",
+            "quote": "the effect uses the current information of that object if it’s in the public zone it was expected to be in"
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "The original wave-1 Dragon Tempest damage triggers resolve last.",
+        "effect": "X is determined at each resolution: 5 Dragons on the battlefield, so 5 damage each = 10. Grand total: 64 damage across 12 independently targeted instances (Terror: 6+6+6+6+6+6 = 36; Tempest: 4+4+5+5+5+5 = 28). Note this 64 requires the ordering chosen in step 4 — if the wave-1 Tempest triggers had resolved first, X would have been 3 each and the total only 60. Token A's Tempest triggers are capped at X=4 because they must sit above Miirym #2 on the stack.",
+        "citations": [
+          {
+            "rule": "608.2h",
+            "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+          },
+          {
+            "rule": "603.3b",
+            "quote": "puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose"
+          }
+        ]
+      },
+      {
+        "n": 12,
+        "action": "State-based actions are checked between each resolution and after the last.",
+        "effect": "The legend rule never applies: Miirym's tokens are created 'except the token isn't legendary,' so you control only one legendary Lathliss and two nonlegendary copies — nothing is put into a graveyard. No creature took damage (all 64 was aimed where you chose). If all 64 damage is pointed at faces, you can eliminate the 32-life opponent (32 dealt; at 0 or less life they lose) and drop the 40-life opponent to 8 with the remaining 32 — you cannot kill both (64 < 72).",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "704.5j",
+            "quote": "If two or more legendary permanents with the same name are controlled by the same player, that player chooses one of them, and the rest are put into their owners’ graveyards."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "One Lathliss cast under Miirym + Panharmonicon + Terror of the Peaks + Dragon Tempest yields: 2 nonlegendary 6/6 hasty Lathliss token copies (Panharmonicon doubles Miirym), and 64 total damage in 12 separately-targeted instances — 36 from Terror (6 enters-triggers x 6 damage) and 28 from Tempest (X = 4,4,5,5,5,5 with optimal trigger ordering). Panharmonicon doubles EVERY trigger in the cascade because each is caused by a creature entering. The token copies have Lathliss's ability but it never fires here: every later entry is a token, and both 'nontoken' clauses (Miirym, all Lathliss instances) exclude them, which is what keeps the loop finite. Kills the 32-life opponent outright; the 40-life opponent survives at 8.",
+      "you": {
+        "battlefield": [
+          "Miirym, Sentinel Wyrm",
+          "Terror of the Peaks",
+          "Lathliss, Dragon Queen (haste)",
+          "Lathliss token copy A (nonlegendary, 6/6 flying, haste, all her abilities)",
+          "Lathliss token copy B (nonlegendary, 6/6 flying, haste, all her abilities)",
+          "Panharmonicon",
+          "Dragon Tempest",
+          "lands x8"
+        ],
+        "dragons_controlled": 5,
+        "damage_dealt_total": 64,
+        "damage_instances": [
+          6,
+          6,
+          4,
+          4,
+          6,
+          6,
+          5,
+          5,
+          6,
+          6,
+          5,
+          5
+        ]
+      },
+      "opponents": [
+        {
+          "life": 0,
+          "note": "if 32 of the 64 damage is assigned here, this player loses (704.5a)"
+        },
+        {
+          "life": 8,
+          "note": "remaining 32 damage; cannot be killed from this cascade alone"
+        }
+      ]
+    }
+  },
+  "rules_version": "2026-06-19",
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "608.3a",
+        "status": "supported",
+        "note": "Lathliss has no targets; becomes a permanent on resolution."
+      },
+      {
+        "step": 2,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "All four trigger conditions verified against oracle text: Miirym (another nontoken Dragon), Terror (another creature), Tempest damage (a Dragon you control), Tempest haste (creature with flying — Lathliss has flying). Lathliss's own 'another' correctly excludes herself."
+      },
+      {
+        "step": 2,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "Fragment omits the multi-occurrence caveat, but only one creature enters per event here, so the use is accurate."
+      },
+      {
+        "step": 3,
+        "rule": "603.2d",
+        "status": "supported",
+        "note": "Correct rule for 'triggers an additional time' in the 2026-06-19 CR. Panharmonicon's condition (verified against current oracle: 'If an artifact or creature entering causes a triggered ability of a permanent you control to trigger') keys on the CAUSE, not the ability's filter wording — all four abilities, including both Tempest abilities on the original Lathliss entry, are doubled. Independently confirmed."
+      },
+      {
+        "step": 3,
+        "rule": "603.2d",
+        "status": "supported",
+        "note": "Second quote (no self-invocation) is verbatim from the same rule and correctly limits Panharmonicon to one extra trigger per ability per event."
+      },
+      {
+        "step": 4,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "All eight triggers controlled by one player; free ordering is correct."
+      },
+      {
+        "step": 4,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "Targets chosen on placement per 601.2c; X deferred to resolution is consistent."
+      },
+      {
+        "step": 5,
+        "rule": "707.2",
+        "status": "supported",
+        "note": "Copy acquires copiable values; token is 6/6 flying Dragon with all printed abilities (Lathliss verified 6/6 in cards.json), nonlegendary per Miirym's copy exception."
+      },
+      {
+        "step": 5,
+        "rule": "707.2",
+        "status": "supported",
+        "note": "Second quote (copiable values list) accurately used."
+      },
+      {
+        "step": 5,
+        "rule": "111.2",
+        "status": "supported",
+        "note": "Token enters under creator's control."
+      },
+      {
+        "step": 6,
+        "rule": "glossary:enters-the-battlefield",
+        "status": "supported",
+        "note": "A token enters as it's created — enter triggers fire for Token A."
+      },
+      {
+        "step": 6,
+        "rule": "603.2d",
+        "status": "supported",
+        "note": "Panharmonicon doubles Terror and both Tempest abilities on the token entry (creature entering caused them). Miirym, both Lathliss instances correctly excluded: 'nontoken' fails for the token; 'another' fails for the token's own ability."
+      },
+      {
+        "step": 6,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "New triggers placed above the waiting wave-1 triggers — correct; they cannot be ordered below Miirym #2."
+      },
+      {
+        "step": 7,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": "X determined at resolution: Miirym (Dragon Spirit), Terror (Dragon), Lathliss, Token A = 4 Dragons; type lines verified in cards.json. Terror deals Token A's power (6). Running total 20 confirmed."
+      },
+      {
+        "step": 8,
+        "rule": "707.2",
+        "status": "supported",
+        "note": "Token B identical copy; trigger/non-trigger analysis correct — tokens never trigger Miirym or any Lathliss instance, which is the finiteness argument, and it holds."
+      },
+      {
+        "step": 8,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Same doubling logic as Token A; verified."
+      },
+      {
+        "step": 9,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": "X=5 at resolution (five Dragons). 12+10=22; running 42 confirmed."
+      },
+      {
+        "step": 10,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": "Terror wave-1 uses current info: Lathliss still on battlefield, power 6. Running 54 confirmed."
+      },
+      {
+        "step": 11,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": "Wave-1 Tempest at X=5 each. Independently recomputed both orderings: optimal 64 (Terror 6x6=36; Tempest 4+4+5+5+5+5=28); naive (wave-1 Tempest first, X=3 each) = 60. 64 is the true maximum: Token A's Tempest triggers are forced above Miirym #2, capping them at X=4."
+      },
+      {
+        "step": 11,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Ordering-dependence claim is correct and correctly attributed to trigger ordering freedom."
+      },
+      {
+        "step": 12,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "SBA checks between resolutions covered; priority/trigger-placement timing implicit in this rule's text. No replacement effects in play (Panharmonicon modifies trigger count, not a replacement — correctly handled under 603.2d, not 614). Haste correctly noted as redundant/combat-only."
+      },
+      {
+        "step": 12,
+        "rule": "704.5j",
+        "status": "supported",
+        "note": "Legend rule inapplicable — copies are nonlegendary; only one legendary Lathliss."
+      },
+      {
+        "step": 12,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "32 damage kills the 32-life opponent; remaining 32 leaves the 40-life opponent at 8; 64 < 72 so both cannot die. Arithmetic confirmed."
+      },
+      {
+        "step": null,
+        "rule": null,
+        "status": "supported",
+        "note": "RESOLVED iteration 2: scenario note now reads 'cast for her printed {4}{R}{R} — with The Ur-Dragon's eminence she would cost {3}{R}{R}; the scenario pays full price for simplicity and the extra mana is available.' This matches cards.json (Lathliss {4}{R}{R}; eminence: other Dragon spells cost {1} less). Resolution steps, citations, and totals unchanged from the verified iteration-1 artifact; mechanical gate re-passed."
+      }
+    ],
+    "iterations": 2
+  }
+}

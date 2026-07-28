@@ -1,0 +1,134 @@
+{
+  "meta": {
+    "commander": "The Ur-Dragon",
+    "commander_cmc": 9,
+    "deck": "ur-dragon",
+    "decklist_sha256": "b54a3501460aaa041440d2a4485bf9802de3f590502f6086d6af1f0013e8641b",
+    "iterations": 10000,
+    "max_turn": 10,
+    "model_assumptions": [
+      "Simulates resource development, not full games (no interaction, no removal).",
+      "Draw every turn including turn 1 (multiplayer Commander).",
+      "Mulligan: keep 7-card hands with 2-5 lands; up to 2 fresh redraws, keep the last.",
+      "One land drop per turn when available.",
+      "Mana rocks ('{T}: Add') contribute from the turn after they are cast.",
+      "Commander cast on first affordable turn (highest spending priority).",
+      "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
+      "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+      "Cost reducers, rituals, and extra card draw are not modeled (conservative)."
+    ],
+    "seed": 42
+  },
+  "metrics": {
+    "commander": {
+      "cast_by_turn_6_rate": 0.0,
+      "cast_turn_histogram": {
+        "10": 447,
+        "7": 183,
+        "8": 96,
+        "9": 626,
+        "not_by_max_turn": 8648
+      },
+      "mean_cast_turn": 8.989,
+      "median_cast_turn": 9
+    },
+    "iterations": 10000,
+    "land_drop_hit_rate_by_turn": {
+      "1": 0.998,
+      "10": 0.355,
+      "2": 0.994,
+      "3": 0.882,
+      "4": 0.741,
+      "5": 0.605,
+      "6": 0.501,
+      "7": 0.433,
+      "8": 0.38,
+      "9": 0.369
+    },
+    "mean_available_mana_by_turn": {
+      "1": 0.998,
+      "10": 6.564,
+      "2": 2.133,
+      "3": 3.038,
+      "4": 3.799,
+      "5": 4.428,
+      "6": 4.947,
+      "7": 5.4,
+      "8": 5.797,
+      "9": 6.189
+    },
+    "mean_bodies_by_turn": {
+      "1": 0.0,
+      "10": 3.515,
+      "2": 0.112,
+      "3": 0.56,
+      "4": 0.741,
+      "5": 1.09,
+      "6": 1.536,
+      "7": 1.992,
+      "8": 2.481,
+      "9": 2.966
+    },
+    "opening_hand": {
+      "first_seven_land_histogram": {
+        "0": 460,
+        "1": 1881,
+        "2": 3165,
+        "3": 2672,
+        "4": 1354,
+        "5": 407,
+        "6": 57,
+        "7": 4
+      },
+      "keep_first_seven_rate": 0.76,
+      "kept_hand_land_histogram": {
+        "0": 29,
+        "1": 102,
+        "2": 4086,
+        "3": 3476,
+        "4": 1786,
+        "5": 514,
+        "6": 7
+      },
+      "mean_mulligans": 0.298
+    },
+    "targets": [
+      {
+        "assembled_rate": 0.528,
+        "by_turn_6_rate": 0.429,
+        "label": "Cost reducer drawn (the deck's real curve fixer)",
+        "mean_turn": 3.261
+      },
+      {
+        "assembled_rate": 0.853,
+        "by_turn_6_rate": 0.756,
+        "label": "Ramp or fixing drawn",
+        "mean_turn": 2.525
+      },
+      {
+        "assembled_rate": 0.727,
+        "by_turn_6_rate": 0.616,
+        "label": "Dragon payoff drawn (per-dragon trigger engine)",
+        "mean_turn": 2.896
+      },
+      {
+        "assembled_rate": 0.424,
+        "by_turn_6_rate": 0.294,
+        "label": "Reducer + ramp assembled (the turn-5-Ur-Dragon hand)",
+        "mean_turn": 4.492
+      },
+      {
+        "assembled_rate": 0.391,
+        "by_turn_6_rate": 0.258,
+        "label": "Payoff + a castable dragon by mid-game",
+        "mean_turn": 4.751
+      },
+      {
+        "assembled_rate": 0.773,
+        "by_turn_6_rate": 0.664,
+        "label": "Protection held for the big turn",
+        "mean_turn": 2.741
+      }
+    ]
+  }
+}

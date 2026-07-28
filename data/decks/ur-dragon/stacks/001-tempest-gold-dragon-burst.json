@@ -1,0 +1,384 @@
+{
+  "id": "001",
+  "slug": "tempest-gold-dragon-burst",
+  "deck": "ur-dragon",
+  "title": "Dragon Tempest + Ancient Gold Dragon: the d20 damage burst",
+  "scenario": {
+    "board": {
+      "you": [
+        "Dragon Tempest",
+        "Ancient Gold Dragon",
+        "Miirym, Sentinel Wyrm",
+        "lands x7 (any colours)"
+      ],
+      "opponents": [
+        {
+          "life": 30,
+          "board": [
+            "a 4/4 creature"
+          ]
+        },
+        {
+          "life": 38,
+          "board": []
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Ancient Gold Dragon's combat-damage trigger (d20 rolled 15)",
+        "controller": "you",
+        "note": "on the stack, about to resolve: 'roll a d20. You create a number of 1/1 blue Faerie Dragon creature tokens with flying equal to the result' — the roll is already fixed at 15 for determinism"
+      }
+    ],
+    "extras": {
+      "context": "combo_details.json lists Dragon Tempest + Ancient Gold Dragon as the deck's highest-bracket contained line (bracket 3, not infinite). Ancient Gold Dragon: 'Whenever this creature deals combat damage to a player, roll a d20. You create a number of 1/1 blue Faerie Dragon creature tokens with flying equal to the result.' Dragon Tempest: 'Whenever a Dragon you control enters, it deals X damage to any target, where X is the number of Dragons you control.' Miirym is also on this board — but Miirym copies only NONTOKEN Dragons, so the Faerie Dragon tokens should not be copied; verify. It is your combat; Ancient Gold Dragon has just dealt combat damage to the 30-life opponent and the d20 roll is a 15.",
+      "combat_state": "post-combat-damage; Ancient Gold Dragon dealt combat damage to opponent 1; d20 rolled 15"
+    },
+    "question": "Resolve the trigger: 15 Faerie Dragon tokens are created. Walk exactly what Dragon Tempest does — do all 15 entering Dragons trigger it separately, what is X for each trigger (do earlier-resolving triggers see the later-entered Dragons — lay out how X is computed when 15 tokens enter simultaneously with 3 Dragons already on the battlefield), does Miirym copy any of the tokens, can the damage be aimed at different targets per trigger, and what is the total damage available? State the maximum single-target total and confirm whether this one combat kills the 30-life opponent."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Ancient Gold Dragon's combat-damage trigger resolves. The d20 result is fixed at 15, so its instruction creates fifteen 1/1 blue Faerie Dragon creature tokens with flying.",
+        "effect": "All 15 tokens are put onto the battlefield by a single instruction of one resolving ability, so they enter simultaneously as one event.",
+        "citations": [
+          {
+            "rule": "701.7a",
+            "quote": "To create one or more tokens with certain characteristics, put the specified number of tokens with the specified characteristics onto the battlefield."
+          },
+          {
+            "rule": "glossary:enters-the-battlefield",
+            "quote": "A token enters the battlefield as it’s created."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Determine what the tokens are: the creating ability sets their name and subtypes, so each token has the creature types Faerie and Dragon.",
+        "effect": "Each of the 15 tokens is a Dragon you control. Their simultaneous entry is checked against every enters-the-battlefield trigger on the battlefield, including Dragon Tempest's two abilities and Miirym's ability.",
+        "citations": [
+          {
+            "rule": "111.4",
+            "quote": "A spell or ability that creates a token sets both its name and its subtype(s)."
+          },
+          {
+            "rule": "603.6a",
+            "quote": "Each time an event puts one or more permanents onto the battlefield, all permanents on the battlefield (including the newcomers) are checked for any enters-the-battlefield triggers that match the event."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Count Dragon Tempest triggers: the single entry event contains 15 occurrences of 'a Dragon you control enters', so the damage ability triggers 15 separate times. Its first ability ('a creature you control with flying enters') also triggers 15 times, granting each token haste.",
+        "effect": "15 separate Dragon Tempest damage triggers (plus 15 haste triggers) are waiting to go on the stack.",
+        "citations": [
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Check Miirym, Sentinel Wyrm: her trigger condition is 'Whenever another nontoken Dragon you control enters.' The Faerie Dragons are tokens, so none of the 15 entries matches her condition.",
+        "effect": "Miirym triggers zero times. No token is copied.",
+        "citations": [
+          {
+            "rule": "111.1",
+            "quote": "A token is a marker used to represent any permanent that isn’t represented by a card."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Ancient Gold Dragon's trigger has finished resolving. Before you receive priority, the game performs state-based actions (none apply), then all waiting triggered abilities are put on the stack in the order you choose.",
+        "effect": "You stack the 15 haste triggers and 15 Dragon Tempest damage triggers in any order you like. Ordering matters: triggers resolve last-in-first-out, so the damage trigger you place on the stack LAST will resolve FIRST (see step 10 for why this decides whether the 4/4 can be killed by a trigger at all).",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "If any state-based actions are performed as a result of a check, the check is repeated; otherwise all triggered abilities that are waiting to be put on the stack are put on the stack"
+          },
+          {
+            "rule": "603.3b",
+            "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Choose targets: each Dragon Tempest damage trigger is a targeted ability ('any target'), and its target is chosen independently as that trigger is put on the stack — legal targets are creatures, players, planeswalkers, or battles.",
+        "effect": "You may aim each of the 15 triggers at a different target or all at the same one. Each target is locked in now, before any trigger resolves; only the amount X remains to be determined.",
+        "citations": [
+          {
+            "rule": "115.1d",
+            "quote": "The target(s) are chosen as the ability is put on the stack; see rule 603.3d."
+          },
+          {
+            "rule": "115.4",
+            "quote": "These targets may be creatures, players, planeswalkers, or battles."
+          },
+          {
+            "rule": "603.3d",
+            "quote": "The remainder of the process for putting a triggered ability on the stack is identical to the process for casting a spell listed in rules 601.2c–d."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Determine X for each trigger as it resolves: 'the number of Dragons you control' is game information read at resolution time, not when the trigger was created.",
+        "effect": "Dragons you control at resolution: Ancient Gold Dragon + Miirym, Sentinel Wyrm + 15 Faerie Dragon tokens = 17. Dragon Tempest itself is an Enchantment (not a Dragon) and does not count. X = 17 for each trigger — note this is 2 pre-existing Dragons, not 3; the board as given contains no third pre-existing Dragon.",
+        "citations": [
+          {
+            "rule": "608.2h",
+            "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Timing check across the 15 triggers: because all 15 tokens entered simultaneously during Ancient Gold Dragon's trigger, every token is already on the battlefield before the first Tempest trigger resolves.",
+        "effect": "There is no ramp-up: the first-resolving trigger and the last-resolving trigger each see the same 17 Dragons. X would only differ if a Dragon left (or entered) the battlefield between resolutions; nothing in this scenario does so — each trigger that resolves deals exactly 17.",
+        "citations": [
+          {
+            "rule": "608.2h",
+            "quote": "the answer is determined only once, when the effect is applied"
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Priority passes between resolutions: the triggers do NOT all resolve as one lump. After each trigger resolves, the active player (you) receives priority, and the next trigger on the stack resolves only after all players pass in succession.",
+        "effect": "There are 15 separate resolution windows. Opponents can respond between any two of them (e.g., removal on a Dragon would lower X for the triggers still on the stack, per step 7's resolution-time count). Absent responses, the triggers resolve one at a time as analyzed below.",
+        "citations": [
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          },
+          {
+            "rule": "117.4",
+            "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "Resolve the damage triggers top-down. Each deals 17 damage to its locked-in target; damage to a player causes that much life loss. Sequencing constraint: a trigger aimed at the 4/4 destroys it (17 >= 4) ONLY if that trigger resolves BEFORE the triggers that kill its controller — order it to resolve first if that matters.",
+        "effect": "Total damage available: 15 triggers x 17 = 255. Maximum single-target total: 255 (all 15 at one target), fully dealt only if that target can survive or absorb all 15 resolutions.",
+        "citations": [
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          },
+          {
+            "rule": "704.5g",
+            "quote": "If a creature has toughness greater than 0, it has damage marked on it, and the total damage marked on it is greater than or equal to its toughness, that creature has been dealt lethal damage and is destroyed."
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "Lethality check on the 30-life opponent: aim triggers at them. After the first resolves they are at 13; after the second resolves they are at -4. The state-based-action check before the next priority pass sees a player at 0 or less life.",
+        "effect": "CONFIRMED LETHAL — with margin. Just 2 of the 15 triggers (34 damage) kill the 30-life opponent. Triggers aimed at the 38-life opponent (targets were locked at stacking time, step 6) still resolve normally: 3 of them (51 damage) kill that opponent too.",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          }
+        ]
+      },
+      {
+        "n": 12,
+        "action": "Consequences of the kill: the moment opponent 1 leaves the game, every object they own — including the 4/4 — leaves the game with them. This is immediate, not a state-based action. Any Tempest triggers still on the stack that target the departed 4/4 or the dead player now have illegal targets and do not resolve.",
+        "effect": "Triggers aimed at opponent 1 (or their 4/4) beyond the lethal ones simply fizzle; they are removed from the stack with no effect. Note the 4/4 leaves the game when its owner loses regardless, so spending a trigger on it is only meaningful if you need it gone BEFORE opponent 1 dies (e.g., mid-combat). Triggers targeting opponent 2 or your own permanents are unaffected and resolve normally.",
+        "citations": [
+          {
+            "rule": "800.4a",
+            "quote": "When a player leaves the game, all objects (see rule 109) owned by that player leave the game and any effects which give that player control of any objects or players end."
+          },
+          {
+            "rule": "800.4a",
+            "quote": "This is not a state-based action. It happens as soon as the player leaves the game."
+          },
+          {
+            "rule": "608.2b",
+            "quote": "If all its targets, for every instance of the word “target,” are now illegal, the spell or ability doesn’t resolve. It’s removed from the stack"
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "15 Faerie Dragon tokens (with haste) enter simultaneously; Miirym copies nothing (tokens are not nontoken). Dragon Tempest's damage ability triggers 15 times, each with its own independently chosen, locked-in target, and every resolving trigger deals X = 17 (2 pre-existing Dragons + 15 tokens; Dragon Tempest is an Enchantment and doesn't count itself). Priority passes between each of the 15 resolutions, so opponents get response windows. Maximum single-target damage available: 255. The 30-life opponent dies to the second trigger aimed at them — lethality confirmed. When they leave the game, their 4/4 leaves with them (800.4a) and any remaining triggers targeting them or the 4/4 fizzle (608.2b); a trigger can only kill the 4/4 itself if ordered to resolve before the lethal ones. The 38-life opponent dies too if 3 triggers were aimed at them at stacking time.",
+      "you": {
+        "battlefield": [
+          "Dragon Tempest",
+          "Ancient Gold Dragon",
+          "Miirym, Sentinel Wyrm",
+          "15x 1/1 blue Faerie Dragon token (flying, haste until end of turn)",
+          "lands x7"
+        ],
+        "dragons_controlled": 17,
+        "damage_dealt_available": "15 triggers x 17 = 255; triggers targeting opponent 1 beyond the lethal two fizzle once that player leaves the game"
+      },
+      "opponents": [
+        {
+          "opponent": 1,
+          "life": "dead (30 - 34 = -4 after two triggers; loses the game to state-based actions)",
+          "board_note": "the 4/4 leaves the game with its owner via 800.4a; pending triggers targeting either fizzle via 608.2b"
+        },
+        {
+          "opponent": 2,
+          "life": "38, or dead if 3 triggers were aimed at them when targets were locked at stacking time (51 damage); those triggers resolve normally after opponent 1 leaves"
+        }
+      ]
+    }
+  },
+  "rules_version": "2026-06-19",
+  "checker": {
+    "verdict": "pass",
+    "iterations": 2,
+    "findings": [
+      {
+        "step": 1,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": "Exact rule text; single instruction creates all 15 tokens at once."
+      },
+      {
+        "step": 1,
+        "rule": "glossary:enters-the-battlefield",
+        "status": "supported",
+        "note": "Token enters as it's created; simultaneous single-event entry holds."
+      },
+      {
+        "step": 2,
+        "rule": "111.4",
+        "status": "supported",
+        "note": "Tokens have creature types Faerie and Dragon (rule's Dwarf Berserker example is directly analogous)."
+      },
+      {
+        "step": 2,
+        "rule": "603.6a",
+        "status": "supported",
+        "note": "Event checked against all permanents' ETB triggers, including newcomers."
+      },
+      {
+        "step": 3,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "One event, 15 occurrences -> 15 damage triggers + 15 haste triggers; oracle texts verified in cards.json."
+      },
+      {
+        "step": 4,
+        "rule": "111.1",
+        "status": "supported",
+        "note": "Faerie Dragons are tokens; Miirym's 'another nontoken Dragon' condition verified — zero copies is correct."
+      },
+      {
+        "step": 5,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "SBAs checked, then waiting triggers stacked. Iteration-2 LIFO ordering note (last placed resolves first) is rules-correct."
+      },
+      {
+        "step": 5,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Controller chooses stack order for their triggers."
+      },
+      {
+        "step": 6,
+        "rule": "115.1d",
+        "status": "supported",
+        "note": "Targets chosen per trigger at stacking time, locked before any resolves."
+      },
+      {
+        "step": 6,
+        "rule": "115.4",
+        "status": "supported",
+        "note": "'Any target' = creatures, players, planeswalkers, battles."
+      },
+      {
+        "step": 6,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "Announcement mirrors 601.2c-d."
+      },
+      {
+        "step": 7,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": "X read at each resolution. X = 17 verified from type lines: Elder Dragon + Dragon Spirit + 15 tokens; Tempest is an Enchantment and excluded."
+      },
+      {
+        "step": 8,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": "No ramp-up; all tokens on battlefield before first trigger resolves."
+      },
+      {
+        "step": 9,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": "FIX 2 VERIFIED: active player receives priority after each resolution; 15 separate windows."
+      },
+      {
+        "step": 9,
+        "rule": "117.4",
+        "status": "supported",
+        "note": "Full rule checked: quote accurate and in context (stack-empty clause omitted is fine — stack is not empty here). X-drops-if-a-Dragon-dies implication consistent with 608.2h."
+      },
+      {
+        "step": 10,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "Damage to player = life loss; 15 x 17 = 255 max single-target correct."
+      },
+      {
+        "step": 10,
+        "rule": "704.5g",
+        "status": "supported",
+        "note": "17 >= 4 toughness lethal; kill-the-4/4-first sequencing constraint now correctly stated."
+      },
+      {
+        "step": 11,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "30 - 34 = -4 after two triggers; lethal confirmed. Erroneous 'spare triggers destroy the 4/4 afterwards' claim removed."
+      },
+      {
+        "step": 11,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "SBA check before next priority registers the loss."
+      },
+      {
+        "step": 12,
+        "rule": "800.4a",
+        "status": "supported",
+        "note": "FIX 1 VERIFIED (quote 1): dead player's owned objects, including the 4/4, leave the game immediately."
+      },
+      {
+        "step": 12,
+        "rule": "800.4a",
+        "status": "supported",
+        "note": "FIX 1 VERIFIED (quote 2): not a state-based action; happens as soon as the player leaves."
+      },
+      {
+        "step": 12,
+        "rule": "608.2b",
+        "status": "supported",
+        "note": "Triggers whose only targets (departed 4/4 or dead player) are illegal don't resolve and are removed from the stack. Correctly notes triggers on opponent 2 resolve normally."
+      }
+    ]
+  }
+}

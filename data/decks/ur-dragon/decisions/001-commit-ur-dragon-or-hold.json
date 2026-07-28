@@ -1,0 +1,55 @@
+{
+  "id": "001",
+  "slug": "commit-ur-dragon-or-hold",
+  "deck": "ur-dragon",
+  "kind": "decision",
+  "title": "Turn 7: cast The Ur-Dragon into open mana, or one more setup turn?",
+  "scenario": {
+    "board": {
+      "you": "Turn 7, precombat main. Battlefield: Urza's Incubator (naming Dragon), Dragon's Hoard, seven lands (all five colours via The World Tree + duals). Hand: The Ur-Dragon (costs {2}{W}{U}{B}{R}{G} after Incubator; eminence has been discounting all game), Miirym, Sentinel Wyrm, Heroic Intervention, Forest. Nothing else on board — your two early dragons traded away.",
+      "table": "Player 2 (Azorius control) has FIVE untapped lands and has countered two things this game. Player 3 (Selesnya tokens) is wide but not lethal. Player 4 (Rakdos aggro) is at 24 and has been hitting Player 2."
+    },
+    "question": "The Ur-Dragon is castable this turn with Heroic Intervention backup — but the control player has open mana and a proven counter habit. Do you jam the commander now with protection held, cast Miirym first and wait a turn (feeding eminence value but giving the table time), or hold everything and play the Forest with mana up?"
+  },
+  "branches": [
+    {
+      "choice": "Jam The Ur-Dragon now with Heroic Intervention held",
+      "line": "Play the Forest (eight lands plus Dragon's Hoard's mana ability = nine mana). Cast The Ur-Dragon for seven ({2}{W}{U}{B}{R}{G} after Incubator), holding {1}{G} for Heroic Intervention to cover the removal window through your next attack.",
+      "signals": "A nine-mana turn from the Dragon deck is the loudest possible announcement. Player 2's five untapped lands are the whole question — they have shown two counters and are under Rakdos pressure, so they must choose between answering you and holding up defense.",
+      "coalition_risk": "High. A resolved Ur-Dragon makes you the archenemy immediately with zero board behind him — if he eats a wrath or exile next rotation, you spent your window on a body that never attacked.",
+      "coaching": "The trap in this line is that Heroic Intervention does not protect the cast. Hexproof and indestructible attach to permanents you control — The Ur-Dragon on the stack is a spell, not a permanent, so a counterspell beats the entire line and your two held mana were a bluff, not a shield. If he is countered, he goes to your graveyard and the state-based action returns him to the command zone, but the next cast carries the {2} tax — nine mana again even with Incubator, and you have shown your whole intent for nothing. This line is only right if you read Player 2's counters as spent or their priority as the Rakdos deck hitting them. Against a proven two-counter hand with five lands up, you are betting your one realistic commander window (goldfish mean cast turn 8.989 — you do not get many of these) on their worst-case holding.",
+      "citations": [
+        {
+          "rule": "702.11b",
+          "quote": "“Hexproof” on a permanent means “This permanent can’t be the target of spells or abilities your opponents control.”"
+        },
+        {
+          "rule": "903.9a",
+          "quote": "If a commander is in a graveyard or in exile and that object was put into that zone since the last time state-based actions were checked, its owner may put it into the command zone."
+        },
+        {
+          "rule": "903.8",
+          "quote": "A commander cast from the command zone costs an additional {2} for each previous time the player casting it has cast it from the command zone that game."
+        }
+      ]
+    },
+    {
+      "choice": "Bait with Miirym this turn; commander next turn",
+      "line": "Play the Forest. Cast Miirym for three ({3}{G}{U}{R}, minus {2} from Incubator and {1} from eminence = {G}{U}{R}), holding Heroic Intervention plus spare mana. Next turn: cast The Ur-Dragon for seven into whatever interaction remains — and if Miirym lived, his entry triggers Miirym, creating a nonlegendary token copy of the commander.",
+      "signals": "A three-mana Miirym with six mana still open reads as efficient, not lethal, and ward {2} taxes any targeted answer. If Player 2 counters it, that is their third counter spent this game — you jam the commander next turn with strictly better information.",
+      "coalition_risk": "Medium. Miirym announces the doubling engine (verified stack 002 is exactly why tables fear him), but a lone Miirym is not archenemy material while the Selesnya board is the visible threat and Rakdos keeps hitting Player 2.",
+      "coaching": "This is the frame's rule applied literally: the pivot attempt must clear the table's held interaction, so sequence the scariest piece last (strategy:multiplayer.pivot-window). Both outcomes improve the commander's odds. Counter spent on Miirym: you cast The Ur-Dragon into a lighter hand. Miirym resolves: every subsequent Dragon — including the commander — arrives doubled, and a copied Ur-Dragon means the attack trigger scales to two Dragons attacking. You lose one turn of tempo, but the goldfish says the deck's clock was never the fast one (0.0% commander casts by turn 6); what it cannot afford is the commander dying on the stack. Spend your one shot when it is most likely to stick, and keep Heroic Intervention for the turn he is on the battlefield, where it actually works."
+    },
+    {
+      "choice": "Hold everything; pass with mana up",
+      "line": "Play the Forest and pass with nine mana available, representing interaction you mostly do not have (Heroic Intervention is your only trick). Wait for Player 2 to tap out against Selesnya or Rakdos before committing anything.",
+      "signals": "A five-colour deck passing with nine mana screams held haymaker — nobody at this table believes you are a draw-go deck, and Player 2 simply keeps holding counters since you have made their job free.",
+      "coalition_risk": "Low immediately, rising every turn: each passive turn is a free draw step for three opponents (strategy:pivot-point), and the Selesnya board goes from wide-not-lethal to lethal while you cultivate nothing.",
+      "coaching": "Defensible only if you concretely expect Player 2 to be forced to tap out — and Rakdos pressure does make that plausible within a turn or two. But you have zero bodies, so eminence value accrues to nobody, and turn 7 is already the capstone phase the whole deck rigs toward (strategic frame turns_7_plus). Waiting costs you the exact window the deck spent six turns buying. If you want the effect of this line, Branch B gives it to you with a threat attached: Miirym forces Player 2 to make a decision instead of letting them make none."
+    }
+  ],
+  "recommendation": {
+    "choice": "Bait with Miirym this turn; commander next turn",
+    "rationale": "The commander is an event, not a plan (goldfish: mean cast turn 8.989, cast at all by turn 10 in 13.5% of runs) — so the one cast you get must resolve. Miirym at three mana is the cheapest possible probe of Player 2's counter density, and heads you win either way: a spent counter clears the path, a resolved Miirym doubles the commander and every Dragon after him (verified stack 002 mechanics). Jamming now stakes the game on Heroic Intervention doing something it cannot do — protect a spell on the stack (702.11b: hexproof is a permanent's shield) — and holding everything donates a full rotation to three opponents. Sequence the scariest piece last."
+  }
+}

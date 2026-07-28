@@ -1,0 +1,292 @@
+{
+  "slug": "ur-dragon",
+  "assessment": "This 38-card sideboard is mostly a bench of interchangeable Dragon bodies (none EDHREC-ranked, and a seven-card spellslinger package that belongs to a different deck), but it hides four genuinely differentiated pieces: Deflecting Swat, Korlessa, Aggravated Assault, and Sneak Attack. Three sideboard cards (Old Gnawbone, Utvara Hellkite, Encroaching Dragonstorm) are duplicate copies of maindeck cards and can never be swapped in. The upgrades worth sleeving are the two cheap non-body cards — free commander protection and a two-mana card-advantage engine — plus Aggravated Assault as an explicitly bracket-conditional wincon whose three combo lines all await stack verification.",
+  "swaps": [
+    {
+      "in": "Deflecting Swat",
+      "out": "An Offer You Can't Refuse",
+      "role": "protection:granted",
+      "when": "Any pod where opponents run targeted removal or counterspells — which is every pod at this deck's bracket, since the plan commits nine mana to The Ur-Dragon (goldfish median cast turn 9 under the conservative model) and the worst line the deck has is losing him to one spell on the turn he lands.",
+      "why": "Swat is free with any commander on the battlefield and retargets the Swords to Plowshares aimed at The Ur-Dragon or the counterspell aimed at Tiamat — and it hits abilities, which no counterspell in the 99 does; An Offer You Can't Refuse answers the same removal for {U} but gifts its controller two Treasures, ramping the player you just interacted with.",
+      "bracket_delta": {
+        "before": 3,
+        "after": 3
+      },
+      "citations": [
+        {
+          "rule": "strategy:multiplayer.commander-insurance",
+          "quote": "single-use instants (cost held mana all game but protect at the decisive moment and can cover the board)"
+        }
+      ]
+    },
+    {
+      "in": "Korlessa, Scale Singer",
+      "out": "Dragonlord's Servant",
+      "role": "draw:engine",
+      "when": "Unconditional — this is the promote. There is no matchup where the deck's seventh cost-reduction effect beats a two-mana engine that casts extra Dragons off the library.",
+      "why": "With 21 Dragon-type cards in the maindeck plus Path of Ancestry's scry and Herald's Horn's upkeep peek to stack the top card, Korlessa converts the library into a second hand every few turns and is herself a Dragon for Herald's Horn and Path of Ancestry; Dragonlord's Servant is the seventh ramp:cost-reduction effect in a deck already running eminence, Herald's Horn, Urza's Incubator, and Dragonspeaker Shaman.",
+      "bracket_delta": {
+        "before": 3,
+        "after": 3
+      },
+      "citations": [
+        {
+          "rule": "strategy:card-advantage",
+          "quote": "with three opponents, one-for-one trades are net losses to the table, and engines that out-draw three players are the format's defining advantage"
+        }
+      ]
+    },
+    {
+      "in": "Aggravated Assault",
+      "out": "Crucible of Fire",
+      "role": "wincon:combat",
+      "when": "Only when the pod has agreed to a bracket-4 table: sideboard-facts computes the deck's floor moving 3 -> 4 the moment Assault is in the list, and that number changes which table the deck belongs at, not just how it plays.",
+      "why": "Savage Ventmaw's attack trigger makes exactly {R}{R}{R}{G}{G}{G} — enough to pay Assault's {3}{R}{R} activation with {R} left over — and Old Gnawbone and Cavern-Hoard Dragon fund further activations with Treasures, so Assault turns three maindeck cards into candidate infinite-combat lines (stack 003 passed the rules-checker at iteration 2 — the Ventmaw loop is verified; the Gnawbone and Cavern-Hoard extensions remain candidates); Crucible of Fire is the cut because the deck wins connections on triggers (Dragon Tempest, Terror of the Peaks, Scourge of Valkas, verified in stack 001), not on three extra power stapled to already-oversized fliers.",
+      "bracket_delta": {
+        "before": 3,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.power-level",
+          "quote": "Contents give a floor, never a verdict."
+        }
+      ]
+    }
+  ],
+  "opens_lines": [
+    {
+      "cards": [
+        "Savage Ventmaw",
+        "Aggravated Assault"
+      ],
+      "why_plausible": "Ventmaw's attack trigger adds {R}{R}{R}{G}{G}{G} that persists through steps and phases until end of turn; that pays Assault's {3}{R}{R} sorcery-speed activation each main phase, untapping Ventmaw for the extra combat it grants. Stack 003 (003-ventmaw-aggravated-assault-loop) passed the rules-checker at iteration 2: the loop is real and unbounded, netting +1 mana per cycle. NOTE: the core loop itself is checker-verified as stack 003 on a specific board; under the sideboard contract the opened line remains formally a candidate because the swap has not been applied to the 99.",
+      "status": "needs a stack scenario",
+      "stack_artifact": "stacks/003-ventmaw-aggravated-assault-loop.json"
+    },
+    {
+      "cards": [
+        "Aggravated Assault",
+        "Old Gnawbone"
+      ],
+      "why_plausible": "Old Gnawbone makes Treasures equal to combat damage dealt to players; any board connecting for 5+ funds the next {3}{R}{R} activation. Depends on damage actually connecting each combat, which the combo DB does not model.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "cards": [
+        "Cavern-Hoard Dragon",
+        "Aggravated Assault"
+      ],
+      "why_plausible": "The combo DB claims 'Target opponent loses the game', but Cavern-Hoard only makes a Treasure per artifact the defending player controls — sustaining {3}{R}{R} per combat requires that opponent to keep five or more artifacts on board. Meta-dependent at best; needs verification before it counts for anything.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "cards": [
+        "Wrathful Red Dragon",
+        "Blasphemous Act"
+      ],
+      "why_plausible": "Blasphemous Act (maindeck) deals 13 to each creature including your own Dragons; Wrathful Red Dragon triggers once per damaged Dragon, throwing 13 at any non-Dragon target each — three of your Dragons in play would redirect 39 damage at players while the wipe clears the table. Whether Dragons that die to the 13 still produce triggers, and how the ordering works, is exactly a checker question.",
+      "status": "needs a stack scenario"
+    }
+  ],
+  "long_term_defaults": [
+    {
+      "card": "Deflecting Swat",
+      "verdict": "promote",
+      "why": "Free interaction in a deck whose plan is a nine-mana commander; strictly more flexible than the An Offer You Can't Refuse slot it replaces and never gifts Treasures."
+    },
+    {
+      "card": "Korlessa, Scale Singer",
+      "verdict": "promote",
+      "why": "Two-mana card-advantage engine in the deck's densest resource (21 Dragon-type cards), with Path of Ancestry scry and Herald's Horn peeks to rig her top-of-library casts."
+    },
+    {
+      "card": "Aggravated Assault",
+      "verdict": "keep-in-sideboard",
+      "why": "Raises the computed bracket floor 3 -> 4; it is the sideboard's bracket dial, brought in only when the table has agreed to that power level, and its three lines are all unverified."
+    },
+    {
+      "card": "Sneak Attack",
+      "verdict": "keep-in-sideboard",
+      "why": "Against counterspell-heavy pods it puts Drakuseth or Ancient Gold Dragon into play without casting, dodging countermagic entirely, and the end-step sacrifice stocks the graveyard for Patriarch's Bidding and Haven of the Spirit Dragon; in normal pods it wastes the eminence discount the deck is built around."
+    },
+    {
+      "card": "Old Gnawbone",
+      "verdict": "keep-in-sideboard",
+      "why": "Duplicate copy — Old Gnawbone is already in the 99 and a second copy is illegal in Commander. This is a spare, not an option."
+    },
+    {
+      "card": "Utvara Hellkite",
+      "verdict": "keep-in-sideboard",
+      "why": "Duplicate copy of a maindeck card; a spare, not an option."
+    },
+    {
+      "card": "Encroaching Dragonstorm",
+      "verdict": "keep-in-sideboard",
+      "why": "Duplicate copy of a maindeck card; a spare, not an option."
+    },
+    {
+      "card": "Wrathful Red Dragon",
+      "verdict": "keep-in-sideboard",
+      "why": "The Blasphemous Act interaction could turn the deck's own sweeper into a table-kill, but it earns a slot only after a stack scenario verifies the trigger behaviour on dying Dragons."
+    },
+    {
+      "card": "Balefire Dragon",
+      "verdict": "keep-in-sideboard",
+      "why": "Against go-wide pods it is a one-sided wipe on connection, but maindeck Crux of Fate already wipes non-Dragons at sorcery speed for five mana without needing to survive a combat step first."
+    },
+    {
+      "card": "Hellkite Tyrant",
+      "verdict": "keep-in-sideboard",
+      "why": "Bring in against Treasure and artifact-ramp pods, where one connection strips their mana; the twenty-artifact win is incidental in this 15-artifact-or-fewer deck."
+    },
+    {
+      "card": "Ancient Silver Dragon",
+      "verdict": "keep-in-sideboard",
+      "why": "A connection draws 10.5 cards on average with no maximum hand size — the sideboard's biggest draw spike — but at eight mana it competes with Drakuseth's slot at the top of a curve that already has 12 cards at 6+; the first card in if the deck plays out hellbent."
+    },
+    {
+      "card": "Scion of the Ur-Dragon",
+      "verdict": "keep-in-sideboard",
+      "why": "Self-milling Dragons stocks the graveyard for maindeck Patriarch's Bidding and Haven of the Spirit Dragon, but the {W}{U}{B}{R}{G} cost is real against 9 white and 10 blue land sources."
+    },
+    {
+      "card": "Call the Spirit Dragons",
+      "verdict": "keep-in-sideboard",
+      "why": "A five-upkeep telegraphed alt-win that needs Dragons of all five colours on board; the indestructibility is the actually useful text, and Teferi's Protection plus Heroic Intervention already cover it."
+    },
+    {
+      "card": "Faeburrow Elder",
+      "verdict": "keep-in-sideboard",
+      "why": "Taps for up to five, but it is the would-be fourth dork and, not being a Dragon, dies to the deck's own Blasphemous Act and Crux of Fate."
+    },
+    {
+      "card": "Goreclaw, Terror of Qal Sisma",
+      "verdict": "keep-in-sideboard",
+      "why": "Would be the eighth cost-reduction effect, and unlike the seven already in the 99 it is not a Dragon for the typal payoffs."
+    },
+    {
+      "card": "Scaled Nurturer",
+      "verdict": "keep-in-sideboard",
+      "why": "A fine two-mana dork, but the deck already runs 17 ramp pieces and its bottleneck is cards, not mana."
+    },
+    {
+      "card": "Rakdos Pit Dragon",
+      "verdict": "keep-in-sideboard",
+      "why": "Hellbent is anti-synergy in a deck that draws a card per attacking Dragon off the commander's battlefield trigger."
+    },
+    {
+      "card": "Manaform Hellkite",
+      "verdict": "keep-in-sideboard",
+      "why": "The tokens exile at end step, so they miss the deck's attack-trigger payoffs on any turn you cast a noncreature spell precombat and want to hold mana."
+    },
+    {
+      "card": "Voracious Bibliophile",
+      "verdict": "keep-in-sideboard",
+      "why": "The deck casts few targeted spells — most triggers would come off its own removal, roughly one card per exchange."
+    },
+    {
+      "card": "Sagu Wildling // Roost Seek",
+      "verdict": "keep-in-sideboard",
+      "why": "The Omen face is a worse Farseek (basic to hand, not battlefield) and the creature face is a five-mana 3-power body in a deck full of better five-drops."
+    },
+    {
+      "card": "Transcendent Dragon",
+      "verdict": "keep-in-sideboard",
+      "why": "A flash Dragon that counters and exiles a spell is the right flex against spell-combo pods — a real conditional answer, but the 99's counterspell suite (Counterspell, Swan Song, Dovin's Veto) covers the default pod."
+    },
+    {
+      "card": "Shiko and Narset, Unified",
+      "verdict": "keep-in-sideboard",
+      "why": "Second-spell-each-turn copying wants a spell density this 21-Dragon curve does not produce; most turns cast one big thing."
+    },
+    {
+      "card": "Juvenile Mist Dragon",
+      "verdict": "keep-in-sideboard",
+      "why": "Tapping three blockers for a turn is tempo the archetype does not need — its fliers are rarely blocked anyway."
+    },
+    {
+      "card": "Iymrith, Desert Doom",
+      "verdict": "keep-in-sideboard",
+      "why": "The draw refill is gated on combat damage and a near-empty hand, and The Ur-Dragon's attack trigger already refills the hand the same way without the gate."
+    },
+    {
+      "card": "Karakyk Guardian",
+      "verdict": "keep-in-sideboard",
+      "why": "A hexproof-until-it-swings body with no other text; every maindeck Dragon at that cost carries a trigger."
+    },
+    {
+      "card": "Twinmaw Stormbrood // Charring Bite",
+      "verdict": "keep-in-sideboard",
+      "why": "Lifegain plus 5 damage to a non-flier across two castings is fine value but strictly less impactful than any current six-drop's trigger."
+    },
+    {
+      "card": "Velomachus Lorehold",
+      "verdict": "keep-in-sideboard",
+      "why": "The 99 runs 23 instants and sorceries, but half are ramp, tutors, and protection — a free mid-combat Farseek is a whiff, and the payoff needs that whiff rate priced in."
+    },
+    {
+      "card": "Lozhan, Dragons' Legacy",
+      "verdict": "keep-in-sideboard",
+      "why": "Wants a Dragon-storm turn the curve produces rarely, and its damage cannot hit commanders — the target that matters most at this table."
+    },
+    {
+      "card": "Caldera Pyremaw",
+      "verdict": "keep-in-sideboard",
+      "why": "An instant/sorcery payoff in a creature deck; wrong 99 for its trigger."
+    },
+    {
+      "card": "Riling Dawnbreaker // Signaling Roar",
+      "verdict": "keep-in-sideboard",
+      "why": "+1/+0 to one creature per combat is the weakest text in the box; the Omen face's 2/2 Soldier is not a Dragon."
+    },
+    {
+      "card": "Rite of the Dragoncaller",
+      "verdict": "keep-in-sideboard",
+      "why": "The spell density won't sustain it, and maindeck Utvara Hellkite already makes bigger Dragon tokens off the attack the deck makes every turn."
+    },
+    {
+      "card": "Oros, the Avenger",
+      "verdict": "keep-in-sideboard",
+      "why": "Its 3-damage sweep hits each nonwhite creature — which includes most of this deck's own Dragons. Anti-synergy on its only interesting line of text."
+    },
+    {
+      "card": "Moltensteel Dragon",
+      "verdict": "keep-in-sideboard",
+      "why": "A Phyrexian-mana pump wincon built for a Scion voltron shell; in this deck it is a vanilla 4/4 flier for four-ish."
+    },
+    {
+      "card": "Balefire Liege",
+      "verdict": "keep-in-sideboard",
+      "why": "Anthems only red and white creatures in a five-colour deck, and {2}{R/W}{R/W}{R/W} is a hostile cost on 9 white sources."
+    },
+    {
+      "card": "Leyline Tyrant",
+      "verdict": "keep-in-sideboard",
+      "why": "Retaining red mana across phases slightly extends Savage Ventmaw's trigger, but Ventmaw's own text already holds the mana through end of turn — this is a win-more wrinkle, not a slot."
+    },
+    {
+      "card": "Atsushi, the Blazing Sky",
+      "verdict": "keep-in-sideboard",
+      "why": "The best pure rate card on the bench and a fine future swap if the curve needs cheapening, but no maindeck card is clearly worse than it today."
+    },
+    {
+      "card": "Glorybringer",
+      "verdict": "keep-in-sideboard",
+      "why": "Exert removal is real, but the deck already runs 9 removal pieces and the exert un-untap fights the extra-combat plan Aggravated Assault represents."
+    },
+    {
+      "card": "Earthquake Dragon",
+      "verdict": "keep-in-sideboard",
+      "why": "Often nearly free with a Dragon board, but the deck has no self-mill to exploit the graveyard recursion, and a late vanilla beater is what the deck already has most of."
+    }
+  ],
+  "gaps": [
+    "No strategic_frame.json or manual_prose.json exists for this deck yet — the archetype read (Dragon typal winning on ETB/attack triggers) is derived from deck-facts, bracket_report.json, and verified stacks 001/002 only; a strategic frame would settle whether the pilot values keeping the bracket-3 floor, which is the pivot for the Aggravated Assault swap.",
+    "Stack 003 (Savage Ventmaw + Aggravated Assault) passed the rules-checker at iteration 2; the core loop is verified, while the Gnawbone Treasure extension and Cavern-Hoard line remain candidates.",
+    "The Wrathful Red Dragon x Blasphemous Act interaction (do Dragons dying to the 13 still produce redirect triggers?) needs its own stack scenario; a pass would upgrade Wrathful to a serious swap candidate against creature pods.",
+    "No sideboard card has an EDHREC rank (sideboard-facts note), so every verdict here is argued from the deck's needs; there is no popularity prior to sanity-check against.",
+    "12 maindeck cards have no card_roles.json entry (deck-facts note), so role-count claims (e.g., '7 cost-reduction effects', '9 removal pieces') are floors, not exact counts.",
+    "No pilot_feedback.md exists — this is unprompted analysis; play-pattern complaints could reorder the promote queue."
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "slug": "ur-dragon",
+  "archetype": "Five-colour Dragon typal battlecruiser midrange: a linear critical-mass deck (strategy:critical-mass) whose engine is 'Dragons entering and attacking', with the nine-mana commander as a late-game capstone rather than the plan — Eminence discounts every other Dragon spell from the command zone from turn zero, so the deck functions for seven turns without ever casting him.",
+  "schools": [
+    "strategy:critical-mass",
+    "strategy:whos-the-beatdown",
+    "strategy:pivot-point",
+    "strategy:multiplayer.pivot-window",
+    "strategy:multiplayer.threat-deflection",
+    "strategy:resource-hedging.wrath-math",
+    "strategy:deckbuilding.curve",
+    "strategy:deckbuilding.mana-base.color-sources",
+    "strategy:multiplayer.commander-insurance",
+    "strategy:threat-assessment",
+    "strategy:threat-assessment.answer-economy",
+    "strategy:threat-assessment.resource-denial"
+  ],
+  "role_assignment": {
+    "default_role": "Control/value seat for the first five-plus turns — the deck cannot race (goldfish: mean available mana 4.95 at t6, mean bodies 1.54 at t6), so it loses any early clock contest and must play for the long game it actually owns via Eminence-discounted haymakers (strategy:whos-the-beatdown: whoever has inevitability is the control).",
+    "pivot_trigger": "The concrete event is a haste enabler on the table (Dragon Tempest or Temur Ascendancy — oracle text) plus two-to-three Dragons deployable in one turn, or the commander/Tiamat resolving. That turn the correct role flips to beatdown and every passive turn after it is a free draw step for the table (strategy:pivot-point). Multiplayer correction: the attempt must clear three players' held interaction — count open mana, sequence the scariest piece last, and prefer attempts that leave a rebuilt position if swept (strategy:multiplayer.pivot-window).",
+    "strategy_ref": "strategy:pivot-point"
+  },
+  "gameplan_by_phase": {
+    "turns_1_3": "Ramp and rig the discount stack: 7 ramp:cost-reduction entries, 6 rocks, 3 dorks (deck-facts roles). Goldfish: ramp-or-fixing drawn by t6 in 75.6% of games but a cost reducer in only 42.9% — the reducer draws, not the land drops, are what compress the top of the curve, and land drop hit rate falls to 50.1% by t6, so mulligan and sequencing decisions should weight reducers as engine pieces (strategy:critical-mass: mulligan to enablers, know your number).",
+    "turns_4_6": "Deploy the mid-size Dragons under the enters-payoff layer — Dragon Tempest, Temur Ascendancy, Garruk's Uprising, Scourge of Valkas, Miirym (oracle text: each triggers on Dragons/big creatures entering). This is where critical mass is reached: below it the deck is undersized bodies, past it each new Dragon draws cards, deals damage, and copies itself (strategy:critical-mass). Deploy in waves, not all at once — over four players one wrath is near-certain (strategy:resource-hedging.wrath-math).",
+    "turns_7_plus": "The capstone phase. Goldfish (seed 42, 10k iters): commander mean cast turn 8.989, cast-by-turn-6 rate 0.0, and cast at all by t10 in only 13.5% of runs (1,352/10,000) — though the model is stated-conservative (cost reducers not modeled), the commander is an event, not a plan. Tiamat, Dracogenesis, Breaching Dragonstorm and Hellkite Courser (which loans the commander from the command zone for one attack, dodging the full nine — oracle text) are the alternate top-end. Pick the pivot window and commit through it (strategy:multiplayer.pivot-window)."
+  },
+  "engines": [
+    {
+      "piece": "The Ur-Dragon (Eminence)",
+      "engine": "Command-zone cost reduction on every other Dragon spell, active from turn zero without casting; his attack trigger (draw per attacking Dragon + free permanent) is the payoff mode",
+      "evidence": "oracle text; goldfish_metrics.json commander histogram",
+      "strategy_ref": "strategy:multiplayer.commander-insurance"
+    },
+    {
+      "piece": "Dragon Tempest + Ancient Gold Dragon",
+      "engine": "Enters-payoff damage burst: d20 Pegasus tokens multiply the Dragon count feeding Tempest's X — verified stack 001 (checker pass); also the deck's one fully contained combo_details line (bracket 3, non-infinite, 'Near-infinite damage')",
+      "evidence": "verified stack 001; combo_details via deck-facts",
+      "strategy_ref": "strategy:critical-mass"
+    },
+    {
+      "piece": "Miirym, Sentinel Wyrm + Panharmonicon",
+      "engine": "Body doubling: each nontoken Dragon entering triggers Miirym twice, and the copies re-feed Tempest/Valkas/Ascendancy triggers",
+      "evidence": "verified stack 002 (checker pass); oracle text",
+      "strategy_ref": "strategy:critical-mass"
+    },
+    {
+      "piece": "Temur Ascendancy + Garruk's Uprising + The Ur-Dragon attack trigger",
+      "engine": "Draw layer keyed to big bodies entering and attacking — the deck's card advantage is on-board, not spell-based",
+      "evidence": "oracle text (all three trigger on power-4+/Dragon events)",
+      "strategy_ref": "strategy:threat-assessment"
+    },
+    {
+      "piece": "Old Gnawbone / Goldspan Dragon / Savage Ventmaw",
+      "engine": "Combat-mana layer: Treasures and attack-mana convert the beatdown turn into more Dragons the same turn — note Ventmaw and the six spells-only sources (Haven, Klauth, Maelstrom, Rivaz, Sarkhan Fireblood, Unclaimed Territory) cannot pay activated abilities (deck-facts restricted_mana), so this mana only accelerates casting",
+      "evidence": "oracle text; deck-facts restricted_mana notes",
+      "strategy_ref": "strategy:critical-mass"
+    }
+  ],
+  "key_tensions": [
+    "Curve vs the four-player clock: 21 of 66 spells at MV 5+ against 29 lands, when Commander games run 7-10 turns and an undiscounted deck casts roughly ONE big-mana spell per game (strategy:deckbuilding.curve). The whole architecture is a bet that cost reducers plus Eminence turn a 9-drop curve into a 6-drop curve — and goldfish says that bet lands by t6 in under half of games (42.9%).",
+    "Colour sources vs Karsten targets: deck-facts source targets are B 36 / R 36 / U 22 / W 22 / G 22 against land sources of B 11 / R 15 / U 10 / W 9 / G 14 — every colour is short on lands alone, patched by rocks, Chromatic Lantern, The World Tree and the spells-only Dragon lands (strategy:deckbuilding.mana-base.color-sources: read the numbers as a budget). B is the thinnest against real double-pip asks (Patriarch's Bidding).",
+    "Board-based engine vs wrath exposure: 24 threat:body entries and all card advantage on permanents means one sweeper hits the engine, the payoffs, and the draw layer at once. The deck's answer is its 5-card protection/rebuild package (Teferi's Protection, Heroic Intervention, Flawless Maneuver, Eerie Interlude, Patriarch's Bidding) — hold one before committing the wave (strategy:resource-hedging.wrath-math).",
+    "Telegraphed threat vs deflection: Dragons cannot pretend to be a 3/3 — perceived threat runs ahead of actual threat during the below-critical-mass turns, so expect early interaction pointed your way and sequence the scary pieces after the table's removal is spent (strategy:multiplayer.threat-deflection).",
+    "Commander dependence is low but recast pain is maximal: Eminence works from the command zone, so the engine does not route through casting him (strategy:multiplayer.commander-insurance: a value commander can eat removal) — but at 9 mana each +{2} recast is close to unpayable, which argues for Teferi's Protection-class cover on the turn he finally comes down."
+  ],
+  "matchup_frames": {
+    "vs_sweeper_control": "They own the mid-game reset; commit exactly as much board as wins before the wrath and no more, redeploy worst-first afterward, and treat Patriarch's Bidding plus Haven of the Spirit Dragon as the rebuild that flips a wrath into your pivot point (strategy:resource-hedging.wrath-math, strategy:pivot-point).",
+    "vs_stax": "Taxes attack cheap-spell velocity hardest; this deck's few, huge spells with stacked discounts are comparatively tax-resistant, but an assembling lock still forces the beatdown role — race the lock's completion, and note the spells-only mana keeps working under most taxes since it casts spells (strategy:threat-assessment.resource-denial).",
+    "vs_aggro": "You are the control: you lose the race for five turns and own the long game, so trade with big blockers, spend Blasphemous Act/Crux of Fate (Crux can spare Dragons — oracle text), and turn the corner the moment you stabilize (strategy:whos-the-beatdown, strategy:pivot-point).",
+    "vs_combo": "Your clock is slow, so their inevitability beats yours; the 4 free-ish counters (Counterspell, Swan Song, Dovin's Veto, An Offer You Can't Refuse) are the only relevant answers — hold them for the game-ending spell, not the value piece, since the bar is 'ends the game', not 'looks scary' (strategy:threat-assessment, strategy:threat-assessment.answer-economy)."
+  },
+  "candidate_missing_lines": [
+    {
+      "title": "Savage Ventmaw + Aggravated Assault extra-combat loop",
+      "cards": [
+        "Savage Ventmaw",
+        "Aggravated Assault"
+      ],
+      "why_plausible": "Ventmaw's attack trigger adds {R}{R}{R}{G}{G}{G} that persists through the phase (oracle text), exactly Assault's {3}{R}{R} activation plus one; Assault sits in the 38-card all-Dragons sideboard, not the 99. Stack 003 passed the rules-checker (iteration 2): the loop is real and unbounded, netting +1 mana per cycle, and Assault would raise the bracket floor if moved into the 99.",
+      "status": "verified",
+      "stack_artifact": "stacks/003-ventmaw-aggravated-assault-loop.json"
+    },
+    {
+      "title": "Sneak Attack as commander-cheat vector",
+      "cards": [
+        "Sneak Attack",
+        "The Ur-Dragon"
+      ],
+      "why_plausible": "Sideboard card; one red mana for a hasty attack trigger (draw + free permanent) would attack the goldfish problem (mean cast 8.989) directly, at the cost of the end-step sacrifice. No stack artifact exists.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Scourge of the Throne + haste layer extra combats",
+      "cards": [
+        "Scourge of the Throne",
+        "Temur Ascendancy",
+        "Old Gnawbone"
+      ],
+      "why_plausible": "Dethrone extra combat untaps all attackers (oracle text); with Gnawbone treasures each combat funds more deployment. Non-infinite but the deck's likeliest table-kill turn; unverified sequencing questions (dethrone condition re-check on second combat).",
+      "status": "needs a stack scenario"
+    }
+  ],
+  "distribution_notes": "95 entries / 29 lands; curve mode at MV 3 (16 entries) with a genuine second hump at 5-7 (23 entries). Goldfish: 76% keep-7 rate, mean 0.298 mulligans; land drops decay hard (88.2% t3, 50.1% t6, 35.5% t10) so the deck's mana growth after t4 comes from rocks and treasures, not lands. Role histogram: 17 ramp-class entries and 24 threat bodies but only 10 pieces of interaction (6 removal:damage largely riding on Dragons entering, 2 spot, 1 sweeper, 1 counterspell role — plus the un-roled Swan Song/Dovin's Veto/Chaos Warp), consistent with the linear-deck tradeoff of interaction slots for engine slots (strategy:critical-mass). deck-facts notes 12 cards the role taxonomy has no pattern for; absence of role is not absence of function.",
+  "overall_assessment": "This deck is playing Duke's linear game (strategy:critical-mass): every slot either discounts Dragons, deploys Dragons, or pays off Dragons entering and attacking, and its defence is redundancy and a protection package rather than answers. The goldfish numbers settle the identity question the nine-mana commander raises — cast-by-t6 rate 0.0, mean cast turn 8.989 — The Ur-Dragon is not the plan; his Eminence discount is, working from the command zone all game while the deck plays a control-role value game (strategy:whos-the-beatdown) until the haste-plus-mass pivot window opens (strategy:multiplayer.pivot-window). Its two verified engines (stack 001 Tempest burst, stack 002 Miirym doubling) both reward the same action — Dragons entering — so the deck goes over the top in one explosive turn rather than incrementally, which is also its weakness: it telegraphs (strategy:multiplayer.threat-deflection), it folds board, payoffs and draw into one wrath-vulnerable pile (strategy:resource-hedging.wrath-math), and its slow clock cedes inevitability to dedicated combo. Correctly piloted, it wins by hedging into the near-certain sweeper, rebuilding cheaper than anyone else via Bidding and Haven, and committing fully exactly once.",
+  "gaps": [
+    "No strategy section on typal/tribal construction specifically (payoff-vs-member ratios, when a typal land is worth its restriction) — critical-mass covers the theory but not the typal-specific counts; a future research pass topic.",
+    "No section on battlecruiser/haymaker social-contract metagames (bracket-3 table expectations for big-mana decks) — the curve section's four-player clock is the nearest frame.",
+    "No section on cheat-into-play vectors (Sneak Attack, reanimation as curve compression) — needed to frame the sideboard's Sneak Attack question.",
+    "Sideboard theory for Commander (the 38-card all-Dragons swap pool) — strategy:deckbuilding.cutting mentions keeping near-misses as a sideboard but nothing on swap policy between games."
+  ]
+}
