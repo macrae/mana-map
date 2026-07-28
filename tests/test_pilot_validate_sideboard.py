@@ -4,6 +4,8 @@ Synthetic fixtures throughout: the repo contains exactly one analysable sideboar
 card, and coverage that depends on one Instant is not coverage.
 """
 
+import json
+
 import pytest
 
 from manamap.pilot import validate_sideboard as vs
@@ -109,11 +111,67 @@ def test_missing_swap_keys_are_named():
 # ── Candidate lines stay candidates ──────────────────────────────────────
 
 
-def test_an_opened_line_must_be_flagged_unverified():
+def test_an_opened_line_with_an_unknown_status_is_rejected():
+    bad = errors(opens_lines=[
+        {"cards": ["A", "B"], "why_plausible": "Both are now present.", "status": "probably fine"},
+    ])
+    assert any("needs a stack scenario" in e for e in bad)
+
+
+def test_a_verified_line_without_an_artifact_is_rejected():
+    """The claim needs a checker-passed stack behind it, not just the word."""
     bad = errors(opens_lines=[
         {"cards": ["A", "B"], "why_plausible": "Both are now present.", "status": "verified"},
     ])
-    assert any("needs a stack scenario" in e for e in bad)
+    assert any("requires a `stack_artifact`" in e for e in bad)
+
+
+def _stack_artifact(tmp_path, verdict="pass", cards=("Sazacap's Brew", "Chaos Warp")):
+    stacks = tmp_path / "stacks"
+    stacks.mkdir(exist_ok=True)
+    path = stacks / "001-toy-line.json"
+    path.write_text(json.dumps({
+        "scenario": {"question": " and ".join(cards)},
+        "checker": {"verdict": verdict},
+    }))
+    return "stacks/001-toy-line.json"
+
+
+def _verified_line(rel, cards=("Sazacap's Brew", "Chaos Warp")):
+    return {"cards": list(cards), "why_plausible": "Checker-passed.",
+            "status": vs.VERIFIED_STATUS, "stack_artifact": rel}
+
+
+def test_a_verified_line_with_a_passing_artifact_passes(tmp_path):
+    rel = _stack_artifact(tmp_path)
+    doc = analysis(opens_lines=[_verified_line(rel)])
+    assert vs.validate(doc, DECK, deck_path=tmp_path) == []
+
+
+def test_a_verified_line_with_a_failing_artifact_is_rejected(tmp_path):
+    rel = _stack_artifact(tmp_path, verdict="fail")
+    doc = analysis(opens_lines=[_verified_line(rel)])
+    bad = vs.validate(doc, DECK, deck_path=tmp_path)
+    assert any("not 'pass'" in e for e in bad)
+
+
+def test_a_verified_line_with_a_missing_artifact_is_rejected(tmp_path):
+    doc = analysis(opens_lines=[_verified_line("stacks/999-nope.json")])
+    bad = vs.validate(doc, DECK, deck_path=tmp_path)
+    assert any("does not exist" in e for e in bad)
+
+
+def test_a_verified_line_whose_artifact_never_names_the_cards_is_rejected(tmp_path):
+    rel = _stack_artifact(tmp_path, cards=("Lightning Bolt",))
+    doc = analysis(opens_lines=[_verified_line(rel)])
+    bad = vs.validate(doc, DECK, deck_path=tmp_path)
+    assert any("never mentions" in e for e in bad)
+
+
+def test_a_verified_line_without_a_deck_path_cannot_be_confirmed():
+    doc = analysis(opens_lines=[_verified_line("stacks/001-toy-line.json")])
+    bad = vs.validate(doc, DECK)
+    assert any("cannot be confirmed" in e for e in bad)
 
 
 def test_a_correctly_flagged_line_passes():

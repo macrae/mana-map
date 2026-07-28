@@ -42,6 +42,10 @@ DEFAULT_VERDICTS = {"promote", "keep-in-sideboard"}
 # The magic string five agent prompts already use for an unproven line. Kept
 # identical so one grep finds every candidate claim in the repo.
 UNVERIFIED_STATUS = "needs a stack scenario"
+# An opened line may claim this only by pointing at a stack artifact whose
+# checker verdict is `pass` and which actually names the line's cards — the
+# claim is re-checked against the file, never trusted.
+VERIFIED_STATUS = "verified"
 
 
 def deck_split(doc):
@@ -122,20 +126,50 @@ def _validate_bracket_deltas(doc, main, commanders):
     return errors
 
 
-def _validate_lines(doc):
+def _validate_lines(doc, deck_path=None):
     errors = []
     for i, line in enumerate(doc.get("opens_lines", [])):
         if not line.get("cards"):
             errors.append(f"opens_lines {i}: no cards named")
-        if line.get("status") != UNVERIFIED_STATUS:
+        status = line.get("status")
+        if status == VERIFIED_STATUS:
+            errors += _check_verified_line(i, line, deck_path)
+        elif status != UNVERIFIED_STATUS:
             errors.append(
-                f"opens_lines {i}: status must be {UNVERIFIED_STATUS!r}, got "
-                f"{line.get('status')!r} — a line the sideboard opens is a candidate "
+                f"opens_lines {i}: status must be {UNVERIFIED_STATUS!r} (or "
+                f"{VERIFIED_STATUS!r} with a checker-passed `stack_artifact`), got "
+                f"{status!r} — a line the sideboard opens is a candidate "
                 f"until a stack artifact passes the checker"
             )
         if not str(line.get("why_plausible", "")).strip():
             errors.append(f"opens_lines {i}: `why_plausible` is empty")
     return errors
+
+
+def _check_verified_line(i, line, deck_path):
+    """A `verified` claim is re-checked against the stack artifact, never trusted."""
+    rel = line.get("stack_artifact")
+    if not rel:
+        return [f"opens_lines {i}: status {VERIFIED_STATUS!r} requires a "
+                f"`stack_artifact` path to a checker-passed stack"]
+    if deck_path is None:
+        return [f"opens_lines {i}: status {VERIFIED_STATUS!r} cannot be confirmed "
+                f"without the deck directory"]
+    path = deck_path / rel
+    if not path.exists():
+        return [f"opens_lines {i}: stack_artifact {rel!r} does not exist"]
+    with open(path) as f:
+        artifact = json.load(f)
+    if artifact.get("checker", {}).get("verdict") != "pass":
+        return [f"opens_lines {i}: stack_artifact {rel!r} has checker verdict "
+                f"{artifact.get('checker', {}).get('verdict')!r}, not 'pass' — "
+                f"only a passing stack verifies a line"]
+    body = json.dumps(artifact, ensure_ascii=False)
+    missing = [c for c in line.get("cards", []) if c not in body]
+    if missing:
+        return [f"opens_lines {i}: stack_artifact {rel!r} never mentions "
+                f"{missing} — it cannot verify this line"]
+    return []
 
 
 def _validate_defaults(doc, side, accessories):
@@ -155,7 +189,7 @@ def _validate_defaults(doc, side, accessories):
     return errors
 
 
-def validate(doc, deck_doc, rules=None, strategy_sections=None):
+def validate(doc, deck_doc, rules=None, strategy_sections=None, deck_path=None):
     """Return a list of error strings (empty = the contract holds)."""
     errors = []
     missing = REQUIRED_TOP_KEYS - set(doc)
@@ -168,7 +202,7 @@ def validate(doc, deck_doc, rules=None, strategy_sections=None):
 
     main, side, accessories, commanders = deck_split(deck_doc)
     errors += _validate_swaps(doc, main, side, accessories, commanders)
-    errors += _validate_lines(doc)
+    errors += _validate_lines(doc, deck_path)
     errors += _validate_defaults(doc, side, accessories)
     errors += _validate_bracket_deltas(doc, main, commanders)
 
@@ -192,7 +226,7 @@ def main(args):
 
     rules = try_load_rules_db()
 
-    errors = validate(doc, deck_doc, rules, load_strategy_sections())
+    errors = validate(doc, deck_doc, rules, load_strategy_sections(), deck_path=base)
     report_errors(
         path.name, errors,
         f"OK   {path.name} — {len(doc.get('swaps', []))} swap(s), "

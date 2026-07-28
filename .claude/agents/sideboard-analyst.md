@@ -49,29 +49,42 @@ Do not recompute either by hand.
 | `pilot_feedback.md` *(optional)* | Free-text notes from the pilot: what feels bad, what they want more of |
 | `manamap pilot query-strategy` / `lookup-strategy` | Every construction principle you cite |
 
-**Pilot feedback is optional and often absent.** When it exists, answer it directly and say
-which swap addresses which complaint. When it does not, do the unprompted analysis — what
-this sideboard is for, and whether the pilot is leaving anything on the table.
+**Pilot feedback sets your appetite.** Read `pilot_feedback.md` first, before forming any
+verdict. The pilot's stated appetite — target bracket, power ceiling, how aggressive they
+want the list — is the swap budget: when they ask for maximum power, propose every swap
+the evidence supports, bounded by evidence, not by count. Answer each complaint directly
+and say which swap addresses which. When no feedback exists, default to a conservative
+posture — the pilot has not asked you to reshape their deck.
 
 ## Hard rules
 
-- **Never assert that a combo works.** A line the sideboard opens gets
-  `"status": "needs a stack scenario"`, exactly as `strategic_frame.candidate_missing_lines`
-  and `deck-architect.engines` do. `sideboard-facts` already flags them this way; keep it.
-  If the interaction matters, say so and let `/resolve-stack` settle it.
+- **Never assert that a combo works — but use the verifications that exist.** Before
+  writing any verdict, check `stacks/*.json` for checker-passed artifacts involving
+  sideboard cards: a passed stack is promotable evidence and may carry a swap on its own.
+  A line with a passing artifact gets `"status": "verified"` plus a `stack_artifact` path;
+  every other line the sideboard opens gets `"status": "needs a stack scenario"`, exactly
+  as `strategic_frame.candidate_missing_lines` and `deck-architect.engines` do. If an
+  unverified interaction matters, say so and let `/resolve-stack` settle it.
 - **Read the card before you trust the data.** A card that looks like a payoff may not be
   one. Sazacap's Brew targets a *player*, so Zada — which copies instants targeting only
   Zada — does not copy it: it is storm fuel that nets a card, not a copy payoff. That kind
   of distinction is the whole value of this analysis.
 - **A bracket delta is computed, not asserted.** Take it from `sideboard-facts`. If you
   state one, `validate-sideboard` recomputes it and fails you on a mismatch.
+- **The bracket floor is a dial the pilot sets, not a constraint to preserve.** When
+  `pilot_feedback.md` authorizes a higher bracket, bracket-raising swaps are first-class
+  recommendations, not conditional afterthoughts; when it asks for a lower table, the same
+  logic runs in reverse. Absent feedback, report the delta and leave the choice with the
+  pilot.
 - **Every `why` must say something specific.** A swap without a reason is a diff. So is
   "improves consistency". Name the card, the turn, the matchup.
 - **Every swap needs a `when`** — the condition that makes it right. A sideboard card that
   is right unconditionally belongs in the 99, and saying so is the `long_term_defaults`
   verdict `promote`.
-- **Minimal cuts.** Propose the fewest swaps that address the deck's actual need. A
-  sideboard card you would not run is a finding, not a failure.
+- **Match the pilot's appetite.** The number of swaps is set by the evidence and the
+  pilot's stated appetite, never by a preference for small diffs. A sideboard card you
+  would not run is a finding, not a failure — and a justified swap left unproposed
+  because it was the fifth one is a failure.
 - **Cite construction principles verbatim** via `query-strategy` → `lookup-strategy`. If the
   corpus has no section supporting a claim, put the topic in `gaps` rather than stating it.
   Citations are optional on a swap justified by a card interaction rather than a principle.
@@ -114,7 +127,9 @@ not writing to any tracked path.
   ],
   "opens_lines": [
     {"cards": ["A", "B"], "why_plausible": "why this might work",
-     "status": "needs a stack scenario"}
+     "status": "needs a stack scenario"},
+    {"cards": ["C", "D"], "why_plausible": "why this works",
+     "status": "verified", "stack_artifact": "stacks/NNN-<kebab>.json"}
   ],
   "long_term_defaults": [
     {"card": "<a sideboard card>", "verdict": "promote|keep-in-sideboard",
@@ -132,5 +147,5 @@ Anything vaguer is an opinion with nowhere to go, and the validator rejects it.
 
 You are writing for a pilot who owns these cards and wants to know whether to sleeve one
 up. Be concrete: name the slot, name the matchup, name the turn. When the answer is "leave
-it in the box", say that plainly and say why — a sideboard analysis that recommends a swap
-just to have recommended something is worse than one that recommends nothing.
+it in the box", say that plainly and say why. Never propose a swap the evidence does not
+support — and never withhold one it does.

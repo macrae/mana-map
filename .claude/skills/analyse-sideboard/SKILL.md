@@ -24,10 +24,17 @@ a separate, future job.
    say so** — do not spawn. A deck whose sideboard is two table accessories has nothing to
    analyse, and the manual simply omits the section.
 
-2. **Optional pilot feedback**: if the user has described how the deck plays — "draws too
-   few cards", "clunky on turn three", "want it a bracket lower" — write it to
+2. **Pilot feedback sets the agent's appetite**: if the user has described how the deck
+   plays or what they want from it — "draws too few cards", "clunky on turn three", "want
+   it a bracket lower", "bracket 4 is fine, maximize power" — write it to
    `data/decks/<slug>/pilot_feedback.md` before spawning. It is a cache input, so it must
-   exist first. Absent, the agent does an unprompted analysis.
+   exist first. The stated appetite is the swap budget; absent feedback, the agent does a
+   conservative unprompted analysis.
+
+2a. **Sequence after the strategic frame.** Run this skill only once
+   `data/decks/<slug>/strategic_frame.json` exists — the frame is the declared pivot for
+   bracket-moving swaps, and an analysis produced without it argues archetype questions
+   from thinner evidence (ur-dragon's first pass flagged exactly this in its own gaps).
 
 3. **Cache gate** — never spawn blindly:
    `.venv/bin/manamap pilot cache-status <slug> --routine sideboard-analysis`
@@ -51,21 +58,29 @@ a separate, future job.
 7. **Build**: `.venv/bin/manamap pilot build-manual <slug>`. The Upgrade Watch section
    renders straight from the artifact — there is no prose key to merge.
 
-8. **Report**: the swaps proposed and their conditions, any line the sideboard opens (all
-   unverified), the long-term-default verdicts, and the `gaps`. Surface opened lines as
-   `/resolve-stack` candidates.
+8. **Report**: the swaps proposed and their conditions, any line the sideboard opens, the
+   long-term-default verdicts, and the `gaps`.
+
+9. **Resolve, then re-analyse.** Every `"needs a stack scenario"` entry is a work queue,
+   not a dead end: offer the user the `/resolve-stack` runs, and when a scenario passes,
+   the analysis is stale by its own admission — re-run this skill (the new stack artifact
+   is evidence the previous pass declared itself missing). The loop is
+   analyse → resolve the blocking scenarios → re-analyse.
 
 ## Notes
 
 - **Tier discipline.** Computed deltas are ◆; the recommendation to make a swap is ★. The
   section may never imply a swap is verified, and a line the sideboard opens is a candidate
-  until a stack artifact passes the checker.
+  until a stack artifact passes the checker — once one has, the line carries
+  `"status": "verified"` plus its `stack_artifact` path, and the validator confirms the
+  artifact's verdict.
 - **Editing a sideboard invalidates everything.** `is_sideboard` is in
   `CARD_SEMANTIC_FIELDS`, so adding or removing a sideboard card changes the deck's card
   digest and MISSes every routine on that deck — prose, coach, editor, stacks, decisions.
   Expect it; do not re-record blindly.
-- "Nothing in this sideboard earns a slot" is a complete answer. An analysis that proposes
-  a swap in order to have proposed something is worse than one that proposes none.
+- "Nothing in this sideboard earns a slot" is a complete answer when the evidence says so.
+  The swap count is set by the evidence and the pilot's stated appetite, never by a
+  preference for small diffs.
 
 **Agent output arrives as a path, not inline JSON.** Every deck agent writes to
 `data/decks/<slug>/.agent-out/<agent>.json` (gitignored) and returns that path with a short
