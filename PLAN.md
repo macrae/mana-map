@@ -95,7 +95,7 @@ mentions the command zone when none of their pieces is actually this deck's comm
 
 | Deck | State |
 |---|---|
-| `gishath` | The pilot's physical Naya dino tribal, **published** as Vol. 007 — the fairest famous deck (floor 3, ZERO maindeck combos); 4 verified stacks incl. the headline refutation (Marauding Raptor + Polyraptor = whole-table DRAW-machine, 732.4/104.4b) and the verified alternative (Forerunner line, max 7 tokens, optimal play declines a trigger); 8 ranked swaps proposed under the aggressive mandate with a documented mutual exclusion (Polyraptor via Forerunner; Marauding stays benched); swaps NOT yet applied |
+| `gishath` | The pilot's physical Naya dino tribal, **published** as Vol. 007 — the fairest famous deck (floor 3, ZERO maindeck combos); 4 verified stacks incl. the headline refutation (Marauding Raptor + Polyraptor = whole-table DRAW-machine, 732.4/104.4b) and the verified alternative (Forerunner line, max 7 tokens, optimal play declines a trigger); 8 ranked swaps proposed under the aggressive mandate with a documented mutual exclusion (Polyraptor via Forerunner; Marauding stays benched); v2 applied 2026-07-28: swaps 1–7 landed verified (stack 005 the ping web, pass@1), swap 8 refused; floor conversation on the cover (PRESENT 4. ARGUE 3. — DB infinite tag vs stack 003's bounded max-7) |
 | `goblin-storm` | Hand-built, **published** as Vol. 001 — 5 verified stacks, 2 decision spreads |
 | `hapatra` | **Built by the v2 loop and published** as Vol. 002 — bracket 4, 1 verified stack, 0 decisions |
 | `sisay` | Hand-built, **published** as Vol. 003 — five-colour Sisay, Weatherlight Captain toolbox, bracket 4, **1 verified stack of 3 attempted**, 2 decision spreads |
