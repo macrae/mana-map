@@ -519,8 +519,11 @@ def test_scan_json_separates_applicable_from_not():
     code, out = _run(_Args("goblin-storm", as_json=True))
     doc = json.loads(out)
     assert {"slug", "any_miss", "routines", "not_applicable"} <= set(doc)
-    assert any(r["routine"] == "candidate-pool" for r in doc["not_applicable"])
-    assert all("brief.json" in r["reason"] for r in doc["not_applicable"])
+    na = {r["routine"]: r["reason"] for r in doc["not_applicable"]}
+    assert "brief.json" in na["candidate-pool"]
+    # goblin-storm has a real sideboard card, so the pool scout does not apply —
+    # sideboard-analysis and upgrade-watch partition every deck.
+    assert "analysable sideboard" in na["upgrade-watch"]
 
 
 # ── The iteration bound, enforced rather than quoted ─────────────────────

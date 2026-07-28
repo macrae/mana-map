@@ -19,9 +19,11 @@ PILOT_STEPS = [
     ("bracket-check", "manamap.pilot.bracket", "Computed bracket floor and its evidence"),
     ("deck-facts", "manamap.pilot.deck_facts", "Deterministic deck facts agents would else re-derive"),
     ("sideboard-facts", "manamap.pilot.sideboard_facts", "What each sideboard card would do if run"),
+    ("upgrade-facts", "manamap.pilot.upgrade_facts", "Pool-scout brief for a deck with no sideboard"),
     ("build-deck", "manamap.pilot.build_deck", "brief.json -> build_plan.json, deterministic"),
     ("validate-build", "manamap.pilot.validate_build", "Form-check a build plan against the contract"),
     ("validate-sideboard", "manamap.pilot.validate_sideboard", "Form-check a sideboard analysis"),
+    ("validate-upgrade-watch", "manamap.pilot.validate_upgrade_watch", "Form-check an upgrade-watch scout report"),
     ("validate-strategic-frame", "manamap.pilot.validate_strategic_frame", "Form-check a strategic frame"),
     ("artist-credits", "manamap.pilot.artist_credits", "Standout artists and art themes in a deck"),
     ("build-manual", "manamap.pilot.build_manual", "Render a deck's 15-department magazine issue"),
@@ -40,7 +42,7 @@ _DECK_COMMANDS = {
     "fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual",
     "validate-issue", "cache-status", "cache-record", "cache-clear", "artist-credits",
     "bracket-check", "build-deck", "validate-build", "deck-facts", "sideboard-facts", "validate-sideboard",
-    "validate-strategic-frame",
+    "validate-strategic-frame", "upgrade-facts", "validate-upgrade-watch",
 }
 
 
@@ -99,7 +101,7 @@ def add_pilot_parser(subparsers):
         if name == "deck-facts":
             cmd.add_argument("--out", default=None,
                              help="Write JSON here instead of stdout (a view, never tracked)")
-        if name == "sideboard-facts":
+        if name in ("sideboard-facts", "upgrade-facts"):
             cmd.add_argument("--json", action="store_true", dest="as_json")
             cmd.add_argument("--out", default=None,
                              help="Write JSON here instead of stdout (a view, never tracked)")

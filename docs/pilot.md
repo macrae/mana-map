@@ -34,6 +34,8 @@ manamap pilot bracket-check <slug> [--target N] [--json]  # bracket floor → br
 manamap pilot deck-facts <slug> [--out F]  # the deterministic brief agents read first
 manamap pilot sideboard-facts <slug> [--json]  # per-sideboard-card roles, legality, bracket-if-added
 manamap pilot validate-sideboard <slug>  # swap form + recomputed bracket deltas
+manamap pilot upgrade-facts <slug> [--json]    # pool-scout brief for a deck with NO sideboard
+manamap pilot validate-upgrade-watch <slug>    # lookout form + claims re-checked against the indexes
 manamap pilot validate-strategic-frame <slug>  # frame form + candidate-line flags
 manamap pilot fetch-deck <slug>         # decklist.txt → cards.json (Scryfall)
 manamap pilot validate-deck <slug>      # 100/commander/singleton/color identity
@@ -75,7 +77,8 @@ data/decks/<slug>/             all tracked:
                                strategic_frame.json  strategy-researcher (consult)
                                manual_prose.json     pilot-coach + manual-writer
                                pilot_feedback.md     authored, OPTIONAL (free-text pilot notes)
-                               sideboard_analysis.json  sideboard-analyst
+                               sideboard_analysis.json  sideboard-analyst (deck has a sideboard)
+                               upgrade_watch.json    upgrade-scout (deck has NO sideboard)
                                issue.json            authored (never generated)
                                issue_plan.json       magazine-editor
                                .agent-cache.json     cache-record
@@ -176,7 +179,9 @@ someone else's regeneration as a cache hit, and `git log` answers "which inputs
 produced this prose?"). `record()` refuses artifacts that are missing, lack their
 routine's keys, or have no checker block — a failed run can't poison the cache.
 
-Routines (7 static): `candidate-pool`, `deck-build`, `strategic-frame`, `sideboard-analysis`,
+Routines (8 static): `candidate-pool`, `deck-build`, `strategic-frame`, `sideboard-analysis`,
+`upgrade-watch` (the empty-sideboard pool scout — `sideboard-analysis` and `upgrade-watch`
+partition every deck via the accessory-aware applicability gate in agent_cache),
 `coach-prose`, `writer-prose`, `issue-plan`, plus `stack:<NNN>` and
 `decision:<NNN>` discovered from disk. Declared in `config.AGENT_ROUTINES`.
 
@@ -344,7 +349,13 @@ implementation.
 Rendered as a section inside **Upgrade Watch**, not a 16th department, straight from the
 artifact with no prose key — a new key would change `prose:shape` and invalidate both
 prose routines for no gain. Tiers are marked inline: computed deltas ◆, the recommendation
-to actually make the swap ★. The section is omitted entirely when a deck has no sideboard.
+to actually make the swap ★. When a deck has no sideboard the section is not omitted:
+the `upgrade-scout` agent (the sideboard-analyst's empty-bench counterpart) scouts the
+whole card pool for a ranked top-10 "On the Lookout" list — straight upgrades from the
+obsolescence index, combo-line openers, and synergy candidates, each claim re-checked by
+`validate-upgrade-watch` against the tracked indexes and rendered from
+`upgrade_watch.json`. `upgrade-facts` is its deterministic pre-agent brief. Only a deck
+with neither artifact renders no section.
 
 **The trap this exists to catch.** Goblin-storm's one sideboard card is Sazacap's Brew,
 tagged `buff:pump` because its text contains "+2/+0", and Vol. 001 shipped advice to test

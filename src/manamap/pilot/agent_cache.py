@@ -409,16 +409,50 @@ def _sideboard_applicable(slug):
     return any(c.get("is_sideboard") and not is_accessory(c) for c in cards)
 
 
+def _upgrade_watch_applicable(slug):
+    """The pool scout exists exactly where the sideboard analyst cannot.
+
+    Same accessory-aware predicate, inverted, so the two routines partition
+    every deck: a bench with one real card gets the analyst, an empty (or
+    accessory-only) bench gets the scout. Missing cards.json again defers to
+    the normal missing-input error.
+    """
+    path = deck_dir(slug) / "cards.json"
+    if not path.exists():
+        return True
+    return not _sideboard_applicable(slug)
+
+
+# routine -> (predicate, reason shown when it does not apply). The whole-deck
+# scan turns the raised MissingInput into an N/A row; an explicit --routine
+# call exits 2 with the reason.
+_APPLICABILITY = {
+    "sideboard-analysis": (
+        _sideboard_applicable,
+        "deck has no analysable sideboard (sideboard-facts reports "
+        "available: false) — nothing to spawn or cache",
+    ),
+    "upgrade-watch": (
+        _upgrade_watch_applicable,
+        "deck has an analysable sideboard — the sideboard-analysis routine "
+        "owns Upgrade Watch for this deck, not the pool scout",
+    ),
+}
+
+
+def _check_applicable(slug, routine):
+    gate = _APPLICABILITY.get(routine)
+    if gate and not gate[0](slug):
+        raise MissingInput(gate[1])
+
+
 def status(slug, routine, force=False, cache=None):
     """HIT / EDITED / MISS for one routine. Read-only.
 
     `cache` lets a whole-deck scan pass the sidecar in once instead of
     re-reading it per routine.
     """
-    if routine == "sideboard-analysis" and not _sideboard_applicable(slug):
-        raise MissingInput(
-            "deck has no analysable sideboard (sideboard-facts reports "
-            "available: false) — nothing to spawn or cache")
+    _check_applicable(slug, routine)
     spec = routine_spec(slug, routine)
     entries, extra = resolve_inputs(slug, spec)
     current = fingerprint(routine, spec, entries, extra)
@@ -462,10 +496,7 @@ def status(slug, routine, force=False, cache=None):
 
 def record(slug, routine):
     """Record the fingerprint that produced the artifact. Refuses bad states."""
-    if routine == "sideboard-analysis" and not _sideboard_applicable(slug):
-        raise MissingInput(
-            "deck has no analysable sideboard (sideboard-facts reports "
-            "available: false) — nothing to spawn or cache")
+    _check_applicable(slug, routine)
     spec = routine_spec(slug, routine)
     entries, extra = resolve_inputs(slug, spec)
     artifact = artifact_path(slug, spec)

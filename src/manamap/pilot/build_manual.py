@@ -678,12 +678,13 @@ def render_keep_or_ship(issue, plan, prose_doc, goldfish, cards_by_name):
     )
 
 
-def render_upgrade_watch(issue, plan, prose_doc, cards_by_name, sideboard=None):
+def render_upgrade_watch(issue, plan, prose_doc, cards_by_name, sideboard=None,
+                         lookout=None):
     dept = plan_dept(plan, "upgrade-watch")
     return (
         dept_open("upgrade-watch", plan)
         + f'<div class="body-copy">{prose(prose_doc, "upgrades")}</div>'
-        + render_sideboard(sideboard)
+        + (render_sideboard(sideboard) if sideboard else render_lookout(lookout))
         + dept_captions(dept, cards_by_name)
         + dept_furniture(dept, cards_by_name)
         + dept_close("upgrade-watch", issue)
@@ -768,6 +769,64 @@ def render_sideboard(analysis):
     return "".join(parts)
 
 
+def render_lookout(analysis):
+    """The pool-scout read, straight from upgrade_watch.json.
+
+    The empty-sideboard counterpart of render_sideboard, and the same tier
+    discipline: the evidence lines (obsolescence, synergy partners, combo
+    lines) are ◆ — re-checked by validate-upgrade-watch against the tracked
+    indexes, never taken on trust — while the pick itself is ★. A combo line a
+    candidate would open stays a candidate until a stack passes. Department
+    badge stays ◆.
+    """
+    if not analysis:
+        return ""  # no sideboard and no scout report: no section, same as ever
+
+    parts = ['<h3>On the Lookout</h3>']
+    assessment = analysis.get("assessment")
+    if assessment:
+        parts.append(f'<div class="body-copy"><p>{esc(assessment)}</p></div>')
+
+    rows = []
+    for entry in analysis.get("lookout") or []:
+        ev = entry.get("evidence") or entry
+        bits = []
+        for deck_card in ev.get("obsoletes") or []:
+            bits.append(f'<span class="tier-data">◆</span> straight upgrade over '
+                        f'<strong>{esc(deck_card)}</strong>')
+        partners = ev.get("synergy_partners_in_deck") or []
+        if partners:
+            names = ", ".join(esc(p.get("partner") if isinstance(p, dict) else p)
+                              for p in partners)
+            bits.append(f'<span class="tier-data">◆</span> synergy partners already '
+                        f'in the 99: {names}')
+        for line in ev.get("combo_lines_opened") or []:
+            bits.append(
+                f'<span class="tier-data">◆</span> completes '
+                f'<strong>{esc(" + ".join(line.get("cards", [])))}</strong> '
+                f'<span class="chip">{esc(line.get("status", ""))}</span>'
+            )
+        role = entry.get("role", "")
+        rows.append(
+            '<li>'
+            f'<strong>{esc(entry.get("card", "?"))}</strong>'
+            + (f' <span class="chip">{esc(role)}</span>' if role else "")
+            + "".join(f'<br>{bit}' for bit in bits)
+            + f'<br><span class="tier-coach">★</span> {esc(entry.get("why", ""))}'
+            + (f'<br><em>Natural cut:</em> {esc(entry["natural_cut"])}'
+               if entry.get("natural_cut") else "")
+            + '</li>'
+        )
+    if rows:
+        parts.append(f'<ul class="swap-list">{"".join(rows)}</ul>')
+        parts.append(
+            '<div class="body-copy"><p>Ten cards the deck does not own yet. Every '
+            'combo line above is a candidate until a resolution passes the checker; '
+            'every straight-upgrade and synergy claim traces to a tracked index.</p></div>'
+        )
+    return "".join(parts)
+
+
 def render_judges_desk(issue, plan, stacks, cards_by_name):
     """The proof. Every citation reproduced verbatim — never summarized."""
     dept = plan_dept(plan, "judges-desk")
@@ -840,7 +899,7 @@ def render_back_page(issue, plan, deck_doc, stacks, cards_by_name):
 
 
 def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
-                 goldfish=None, decisions=None, sideboard=None):
+                 goldfish=None, decisions=None, sideboard=None, lookout=None):
     """Assemble a complete issue. Deterministic for fixed inputs."""
     cards = deck_doc["cards"]
     cards_by_name = {c["name"]: c for c in cards}
@@ -871,7 +930,8 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
         render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name),
         render_featured_artist(issue, plan, cards, cards_by_name),
         render_keep_or_ship(issue, plan, prose_doc, goldfish, cards_by_name),
-        render_upgrade_watch(issue, plan, prose_doc, cards_by_name, sideboard),
+        render_upgrade_watch(issue, plan, prose_doc, cards_by_name, sideboard,
+                             lookout),
         render_judges_desk(issue, plan, stacks, cards_by_name),
         render_back_page(issue, plan, deck_doc, stacks, cards_by_name),
     ])
@@ -915,13 +975,15 @@ def main(args):
     prose_doc = load_json(base / "manual_prose.json", {})
     goldfish = load_json(base / "goldfish_metrics.json")
     synergy = load_synergy_graph() if SYNERGY_GRAPH_PATH.exists() else {}
-    # Absent for every deck without a sideboard, which is most of them — the
+    # A deck has one of these at most: the bench analysis when it has a real
+    # sideboard, the pool-scout lookout when it does not. Both absent → the
     # section is simply omitted rather than rendering a TODO for a thing the
     # deck does not have.
     sideboard = load_json(base / "sideboard_analysis.json")
+    lookout = load_json(base / "upgrade_watch.json")
 
     html_out = render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
-                            goldfish, decisions, sideboard)
+                            goldfish, decisions, sideboard, lookout)
     MANUALS_DIR.mkdir(parents=True, exist_ok=True)
     sheet, wrote_sheet = write_stylesheet(MANUALS_DIR)
     if wrote_sheet:

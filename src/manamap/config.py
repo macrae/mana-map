@@ -678,6 +678,17 @@ AGENT_ROUTINES = {
                    "deck:bracket_report.json?", "deck:pilot_feedback.md?",
                    "global:COMBO_GRAPH_PATH", "strategy:doc"],
     },
+    # The empty-sideboard counterpart: pool scout for the Upgrade Watch
+    # "On the Lookout" section. Applicable exactly when sideboard-analysis
+    # is not (the two partition every deck — see agent_cache applicability).
+    "upgrade-watch": {
+        "agent": "upgrade-scout",
+        "artifact": "upgrade_watch.json",
+        "inputs": ["cards:semantic", "stacks:passing", "deck:strategic_frame.json?",
+                   "deck:bracket_report.json?", "deck:pilot_feedback.md?",
+                   "global:COMBO_DETAILS_PATH", "global:SYNERGY_GRAPH_PATH",
+                   "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
+    },
     "issue-plan": {
         "agent": "magazine-editor",
         "artifact": "issue_plan.json",
