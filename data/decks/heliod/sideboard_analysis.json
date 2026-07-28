@@ -1,278 +1,126 @@
 {
   "slug": "heliod",
-  "assessment": "This 60-card pool is three piles. First, spares: Agent of Treachery, Chasm Skulker, United Front, Stroke of Genius, White Sun's Zenith and five lands (Adarkar Wastes, Flooded Strand, Glacial Fortress, Hallowed Fountain, Prairie Stream) duplicate maindeck cards and cannot legally enter while their copy remains — they are printing variants, not options — and the remaining lands sub-pool (Temple of the False God, Radiant Fountain, taplands) never beats the current 33-land base given 50 blue pips and measured land-drop decay. Second, a fair-value blue draw pile (Vision Skeins, Trade Secrets, Pull from Tomorrow, Homesickness, the creature cantrips) that is strictly worse than the engines already in the 99. Third — the part that matters — about a dozen on-plan cards forming three coherent packages: turn-protection (Grand Abolisher, Drannith Magistrate) that directly hardens the verified 002 Approach window and the 004 loop turn; a draw-payoff/mill constellation (Teferi Temporal Pilgrim, Teferi's Tutelage, Jace Beleren, Jace Wielder of Mysteries riding the maindeck X-draw suite) that gives the deck its first win axes needing neither combat nor the punisher two-piece; and one trap package — Walking Ballista / Hangarback Walker / Inspiring Statuary as 004-loop payoffs — which the loop's verified mana-neutral ledger refutes (X=0 forever, and improvise never applies to the loop's artifact casts). The pool contains zero punisher-half cards, so it cannot directly close the 34.3% two-piece consistency gap; what it honestly offers is engine-half redundancy (Jace Beleren) plus alternate lines that make the 65.7% of games without the two-piece winnable anyway.",
+  "assessment": "Post-rebuild, this 66-entry pool has one job: make the v2 99 stand up at a professional tier-4 table, and it can do that on exactly two axes — turn-protection for the verified lines (Grand Abolisher, Drannith Magistrate) and closing power off the non-combat axes (the Jace/Teferi walker package) to repair the wincon-access drop to 42.6% by t6. It still contains zero punisher-half cards, so no swap can directly raise the 39.6% two-piece rate; what the pool honestly buys there is engine-half redundancy that survives Farewell (Jace Beleren) where the artifact Mine-effects and punishers die together. The four v1 cuts sitting in the pool as spares were all correct cuts — including White Sun's Zenith, whose swap-back I evaluate and reject below — and stack 005's refutation of the mana-positive Kitten loop confirms there is still no infinite mana anywhere for the Ballista/Hangarback/Statuary trap package to sink. Five swaps, five distinct outs, floor 4 throughout.",
   "swaps": [
     {
       "in": "Grand Abolisher",
       "out": "Lightning Greaves",
       "role": "protection:commit-turn",
-      "when": "Any pod holding instant-speed interaction — which at this deck's bracket-4 floor is every pod; cast it the turn you commit to the second Approach or the Hullbreaker loop, not before.",
-      "why": "Stack 002's only loss window is opponents' instants on the second Approach cast; Abolisher's text — opponents can't cast spells or activate artifact/creature/enchantment abilities during your turn — closes that window for two mana, while Greaves only gives haste and shroud to a 4/4 the deck rarely needs to attack with.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      },
+      "when": "Every pod holding instant-speed interaction — at a tier-4 table that is every pod; cast it the turn you commit to the second Approach, the 004/005 loop turn, or the punisher deployment, not before.",
+      "why": "Stack 002's only loss window is opponents' instants on the second Approach cast, and Abolisher's text — opponents can't cast spells or activate artifact/creature/enchantment abilities during your turn — closes that window for two mana; Greaves' one v2 job is shielding Displacer Kitten from targeted removal, but shroud does nothing against the sweepers that actually kill Kitten at this tier and nothing on the commit turn that decides the game.",
+      "bracket_delta": {"before": 4, "after": 4},
       "citations": [
-        {
-          "rule": "strategy:multiplayer.pivot-window",
-          "quote": "The window opens when your win attempt either can't be profitably answered — protection up, table tapped out, interaction counted and accounted for"
-        }
+        {"rule": "strategy:multiplayer.pivot-window", "quote": "The window opens when your win attempt either can't be profitably answered — protection up, table tapped out, interaction counted and accounted for"}
       ]
     },
     {
       "in": "Drannith Magistrate",
-      "out": "United Front",
+      "out": "Worn Powerstone",
       "role": "hate:non-hand-casts",
-      "when": "Pods where commanders are recast twice-plus a game or anything casts from exile or graveyard (cascade, flashback, Breach-style) — i.e., most bracket-4 tables; bench it only in the rare all-from-hand pod.",
-      "why": "Opponents can't cast from anywhere but their hands: it strands every commander this deck bounces with Hullbreaker Horror or Cyclonic Rift in the command zone, while United Front is the worst of the deck's three X token spells — sorcery-speed Allies with no Ally or go-wide payoff, in a list whose verified wins are all noncombat.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "in": "Teferi, Temporal Pilgrim",
-      "out": "Chasm Skulker",
-      "role": "draw:engine",
-      "when": "The midgame stall where you sit on draw engines waiting for a punisher — and any meta with sweepers, where Skulker's death payoff is cleaned up in the same wrath that kills it.",
-      "why": "Both are draw payoffs, but under Teferi's Ageless Insight plus the Mine effects Pilgrim gains 3-5 loyalty a turn — arriving turn 5 and climbing out of burn range immediately — and the -2 token grows on every draw, while Chasm Skulker only pays off by dying, which this deck never wants to let happen.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "in": "Jace, Wielder of Mysteries",
-      "out": "White Sun's Zenith",
-      "role": "wincon:alt",
-      "when": "When you want a win that needs neither combat nor the 34.3% two-piece — best in removal-light, counter-heavy pods where a resolved walker sticks and the maindeck X-draw suite is live.",
-      "why": "White Sun's Zenith's {W}{W}{W} is the heaviest colored cost in a deck with 11 white land sources and its Cats are an off-plan combat wincon; Jace is a standalone draw engine whose static turns the maindeck's own Stroke of Genius or Braingeyser, self-targeted for X ≥ library under Heliod's discount, into a win (line flagged in opens_lines, needs a stack scenario).",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      },
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.threat-density",
-          "quote": "unsynergistic win conditions dilute the list"
-        }
-      ]
+      "when": "Pods where commanders return to the command zone (your own Supreme Verdict, Path to Exile, Swords to Plowshares guarantee this) or anything casts from exile or graveyard — cascade, flashback, foretell, adventures, Breach-style — i.e., most tier-4 tables; bench it only in the rare all-from-hand pod.",
+      "why": "Opponents can't cast spells from anywhere but their hands: every commander your uncounterable Supreme Verdict wraths away goes to the command zone and stays stranded there, and every cascade or graveyard cast at the table is simply illegal — while Worn Powerstone is the slowest of nine rocks (enters tapped, taps for colourless in a list with 50 blue pips) whose delayed ramp arrives exactly when Heliod's per-opponent-draw discount starts paying the bill instead. Note the honest limit: commanders this deck bounces with Hullbreaker Horror or Cyclonic Rift go to hand and remain castable — the stranding case is wraths and exile removal, not bounce (see opens_lines).",
+      "bracket_delta": {"before": 4, "after": 4}
     },
     {
       "in": "Jace Beleren",
       "out": "Horn of Greed",
       "role": "draw:engine",
-      "when": "Whenever two-piece assembly is the complaint — the swap adds a table-draw engine copy that keeps triggering after land drops dry up, which per goldfish is turn 5 onward in about half of games.",
-      "why": "Horn of Greed's trigger decays with the measured land-drop rate (57.1% at t5, 48.4% at t6) exactly when the engine must be online, while Beleren's +2 draws each player every single turn — feeding Iron Maiden hands and Heliod's discount unconditionally — and his -10 folds into the Tutelage mill axis.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      },
+      "when": "Whenever two-piece assembly or Farewell exposure is the complaint — which after the rebuild is always; sleeve it for any pod running artifact mass removal.",
+      "why": "Horn of Greed's trigger decays with the measured land-drop rate (57.1% at t5, 48.2% at t6) exactly when the engine must be online, while Beleren's +2 draws each player every turn unconditionally — feeding Iron Maiden and Ebony Owl Netsuke hands and Heliod's discount — and as a planeswalker he is the only table-draw engine in either pile that survives the artifact sweep that takes Howling Mine, Font of Mythos, Temple Bell and both punishers in one card.",
+      "bracket_delta": {"before": 4, "after": 4},
       "citations": [
-        {
-          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-          "quote": "consistency has two purchases: redundancy (more cards doing the job) or tutoring (cards that fetch it)"
-        }
+        {"rule": "strategy:deckbuilding.redundancy-vs-tutors", "quote": "consistency has two purchases: redundancy (more cards doing the job) or tutoring (cards that fetch it)"},
+        {"rule": "strategy:critical-mass", "quote": "the linear deck needs redundancy that shrugs off three answers"}
       ]
     },
     {
-      "in": "Teferi's Tutelage",
+      "in": "Jace, Wielder of Mysteries",
       "out": "Brass Infiniscope",
-      "role": "wincon:mill-attrition",
-      "when": "Attrition pods without graveyard decks — mill feeds Breach- and recursion-style tables, so bench it against those; sleeve it wherever games go long and the punisher half is missing.",
-      "why": "It is the second copy of the maindeck Sphinx's Tutelage effect: with Teferi's Ageless Insight doubling your draws the pair converts a normal turn cycle into 8-16 mill, a second inevitability axis for the 65.7% of games without the two-piece; Brass Infiniscope is a four-mana rock that cannot join the 004 loop (recasts mana-negative at {4} for {C}{C}) and only cantrips when an X-spell follows it.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      },
+      "role": "wincon:alt",
+      "when": "The direct answer to the rebuild's known cost — wincon access down to 42.6% by t6; best in counter-heavy, removal-light pods where a resolved walker sticks and the maindeck X-draw suite is live.",
+      "why": "Jace is a standalone draw engine at {1}{U}{U}{U} on a 36-blue-source base whose static turns the maindeck's own Stroke of Genius, Braingeyser or Mathemagics, self-targeted for X ≥ library, into a win that needs neither combat nor the 39.6% two-piece (line flagged in opens_lines, needs a stack scenario); Brass Infiniscope is a four-mana colourless rock whose cantrip only fires if an X-spell follows it that same turn, and stack 004's ledger showed it recasts mana-negative in the loop.",
+      "bracket_delta": {"before": 4, "after": 4},
       "citations": [
-        {
-          "rule": "strategy:critical-mass",
-          "quote": "the linear deck needs redundancy that shrugs off three answers"
-        }
+        {"rule": "strategy:deckbuilding.threat-density", "quote": "the ceiling build runs one spectacular finisher and loses when it's answered; the median runs three cheap ones and closes from any board"}
+      ]
+    },
+    {
+      "in": "Teferi, Temporal Pilgrim",
+      "out": "Monastery Mentor",
+      "role": "threat:resilient-clock",
+      "when": "Sweeper-rich tier-4 pods — and every game plan that includes casting your own Supreme Verdict, which v2 made a core line.",
+      "why": "Both cards convert spell velocity into board presence, but the rebuild's own Supreme Verdict wipes Mentor's monk board along with everything else, while Pilgrim survives your reset, gains a loyalty counter on every draw (3-5 a turn under Alhammarret's Archive, Teferi's Ageless Insight and the Mine effects — arriving turn 5 and climbing out of burn range immediately), and his -2 Spirit grows on each draw into a clock the next wrath resets but his loyalty doesn't feel.",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:resource-hedging.wrath-math", "quote": "buy resilience instead of restraint where you can — high toughness, indestructible and regeneration, token rebuilders, threats that replace themselves"}
       ]
     }
   ],
   "opens_lines": [
     {
-      "cards": [
-        "Jace, Wielder of Mysteries",
-        "Stroke of Genius",
-        "Braingeyser",
-        "Mathemagics"
-      ],
-      "why_plausible": "Jace's static replaces the empty-library draw with a win; the maindeck X-draw suite self-targeted for X ≥ library size presents exactly that draw, and Heliod, the Warped Eclipse's per-opponent-draw discount (huge on Forced Fruition turns) plus Folio of Fancies/Reliquary Tower/Thought Vessel no-max-hand insurance make the X affordable and the hand legal. Laboratory Maniac is the redundant second copy of the win clause. Unverified: the X arithmetic, the mid-resolution replacement timing, and what happens if Jace leaves the battlefield partway through the draws.",
+      "cards": ["Grand Abolisher", "Approach of the Second Sun", "Mystical Tutor"],
+      "why_plausible": "Stack 002's framing is that the second cast's only window is the stack; Abolisher forbids opponents casting spells during your turn, which would close that window entirely — but Abolisher restricts only spell casts and artifact/creature/enchantment activations, so an opponent channeling Otawara (an ability of a land card, activated from hand) can still bounce Abolisher or the win attempt's other pieces on your turn. Whether the window is truly shut, and against exactly what, needs a walkthrough.",
       "status": "needs a stack scenario"
     },
     {
-      "cards": [
-        "Grand Abolisher",
-        "Approach of the Second Sun"
-      ],
-      "why_plausible": "002's framing is that the second cast's only window is the stack; Abolisher forbids opponents casting spells during your turn, which would close that window entirely — but Abolisher restricts only spell casts and artifact/creature/enchantment activations, so channel lands (an opponent's Otawara bouncing Abolisher itself from their hand) and planeswalker/land activations remain legal on your turn. Whether the window is truly shut, and against exactly what, needs a walkthrough.",
+      "cards": ["Jace, Wielder of Mysteries", "Stroke of Genius", "Braingeyser", "Mathemagics", "Alhammarret's Archive"],
+      "why_plausible": "Jace's static replaces the empty-library draw with a win, the maindeck X-draw suite self-targeted presents exactly that draw, and the v2 doublers change the arithmetic: Alhammarret's Archive and Teferi's Ageless Insight double each draw, roughly halving the X needed to empty the library — but the interaction of Archive's draw-two replacement with Jace's win replacement mid-resolution, and what happens if Jace leaves the battlefield partway through the draws, is layered-replacement territory that must be walked through. Blue Sun's Zenith is the pool's backup fuel with a complicating shuffle-back clause; Laboratory Maniac is the redundant win clause.",
       "status": "needs a stack scenario"
     },
     {
-      "cards": [
-        "Fraying Sanity",
-        "Teferi's Tutelage",
-        "Forced Fruition"
-      ],
-      "why_plausible": "Fraying Sanity counts cards put into the enchanted player's graveyard from anywhere this turn, and this deck forces cleanup-step discards from Fruition-bloated hands (stack 003's trim-to-7 subtlety) — but Fraying Sanity triggers at the beginning of the end step, before cleanup discards happen, so whether trimmed cards ever count (including via a second cleanup round under CR 514.3) is a genuine open rules question that decides whether the curse doubles the punisher engine or misses it entirely.",
+      "cards": ["Drannith Magistrate", "Supreme Verdict", "Path to Exile"],
+      "why_plausible": "The stranding package: commanders killed by Supreme Verdict or exiled by Path elect the command zone (CR 903.9), and Drannith makes casting from there illegal — a repeatable soft-lock on commander-centric pods. But the zone-election mechanics decide its real coverage: Hullbreaker Horror and Cyclonic Rift bounces go to hand, which Drannith does not stop, and hand/library moves have their own election rule. The prior sideboard analysis overstated this as stranding bounced commanders; the corrected claim needs the 903.9 walkthrough before it is played as fact.",
       "status": "needs a stack scenario"
     },
     {
-      "cards": [
-        "Omniscience",
-        "Approach of the Second Sun",
-        "Mystical Tutor"
-      ],
-      "why_plausible": "A free Approach via Omniscience is still cast from hand, which the win condition requires, and the deck's table-draw density plus Heliod's generic discount can realistically pay {7}{U}{U}{U}; free countermagic from hand then defends the second cast. Unverified: the cast-from-hand satisfaction under alternative costs, the timing of the win check, and the honest cost of note — every X-spell in the deck resolves at X=0 when cast for free.",
+      "cards": ["Fraying Sanity", "Teferi's Tutelage", "Forced Fruition"],
+      "why_plausible": "Fraying Sanity counts cards put into the enchanted player's graveyard from anywhere this turn, and this deck forces cleanup-step discards from Fruition-bloated hands (stack 003's trim-to-7 subtlety) — but Fraying Sanity triggers at the beginning of the end step, before cleanup discards happen, so whether trimmed cards ever count (including via a repeated cleanup under CR 514.3) is a genuine open rules question that decides whether the curse doubles the punisher engine or misses it entirely.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "cards": ["Omniscience", "Approach of the Second Sun", "Mystical Tutor"],
+      "why_plausible": "A free Approach via Omniscience is still cast from hand, which the win condition requires, and Heliod's per-opponent-draw discount on a forced-draw turn plus the table-draw density can realistically pay {7}{U}{U}{U}; free countermagic from hand then defends the second cast. Unverified: cast-from-hand satisfaction under alternative costs, the win-check timing, and the honest cost — every X-spell in the deck resolves at X=0 when cast for free under it.",
       "status": "needs a stack scenario"
     }
   ],
   "long_term_defaults": [
-    {
-      "card": "Grand Abolisher",
-      "verdict": "promote",
-      "why": "Every verified win this deck has (002 second Approach, 004 loop, the 003 punisher board deployed ahead of interaction) is committed on its own turn, and two mana protects all of them; there is no pod at this bracket where you would rather hold Lightning Greaves."
-    },
-    {
-      "card": "Drannith Magistrate",
-      "verdict": "promote",
-      "why": "Commander recasts and non-hand casts appear in essentially every bracket-4 game, and it compounds the deck's own bounce plan by stranding rebought commanders in the command zone — live unconditionally, not situationally."
-    },
-    {
-      "card": "Teferi, Temporal Pilgrim",
-      "verdict": "promote",
-      "why": "In a deck drawing 3-5 cards a turn under its own engines the loyalty snowball makes him effectively unkillable in combat while the -2 token grows per draw; the strictly better use of the draw-payoff slot Chasm Skulker holds."
-    },
-    {
-      "card": "Jace, Wielder of Mysteries",
-      "verdict": "promote",
-      "why": "A fine standalone draw engine at {1}{U}{U}{U} on a 36-blue-source base, plus the deck's first wincon that rides the X-draw suite instead of combat or the 34.3% two-piece — worth the slot even before the self-draw line is verified."
-    },
-    {
-      "card": "Jace Beleren",
-      "verdict": "promote",
-      "why": "The only true engine-half redundancy in the entire 60: a repeatable each-player draw for three mana that keeps feeding punishers and Heliod's discount after land drops fail, where Horn of Greed goes quiet."
-    },
-    {
-      "card": "Teferi's Tutelage",
-      "verdict": "promote",
-      "why": "Second copy of the Sphinx's Tutelage effect in a deck that draws in multiples every turn — effect-class redundancy for the mill axis that carries games where the punisher half never shows."
-    },
-    {
-      "card": "Laboratory Maniac",
-      "verdict": "keep-in-sideboard",
-      "why": "Redundant copy of Jace's win clause on a 2/2 that dies to any removal mid-draw; sleeve it only if the self-draw line verifies and the pod is light on creature removal — never ahead of Jace."
-    },
-    {
-      "card": "Teferi, Hero of Dominaria",
-      "verdict": "keep-in-sideboard",
-      "why": "Good card, wrong queue: it competes with Temporal Pilgrim for the walker slot and gains far less from the deck's draw density; first alternate if a slot opens."
-    },
-    {
-      "card": "Jin-Gitaxias, Core Augur",
-      "verdict": "keep-in-sideboard",
-      "why": "Reads like the dream and is actually a trap: reducing each opponent's maximum hand size by seven makes them trim toward zero at cleanup, so they arrive at their punished upkeep with empty hands — it switches OFF Iron Maiden, Ebony Owl Netsuke and Viseling, the deck's verified 003 clock, to play a different deck's game."
-    },
-    {
-      "card": "Walking Ballista",
-      "verdict": "keep-in-sideboard",
-      "why": "The tempting 004-loop outlet fails on the verified ledger: the loop is exactly mana-neutral (3 in, 3 out per cycle), so Ballista only ever recasts at X=0, enters as a 0/0, and dies to SBAs into the graveyard — it cannot rejoin the loop and deals zero; with the two-card infinite refuted (001) there is no infinite mana anywhere to sink."
-    },
-    {
-      "card": "Hangarback Walker",
-      "verdict": "keep-in-sideboard",
-      "why": "Same arithmetic as Walking Ballista: the mana-neutral loop caps X at 0, and a zero-counter Hangarback dies leaving zero Thopters."
-    },
-    {
-      "card": "Inspiring Statuary",
-      "verdict": "keep-in-sideboard",
-      "why": "Improvise applies only to nonartifact spells — the 004 loop casts Sol Ring and Arcane Signet, both artifact spells, so Statuary never touches the loop's ledger; and outside the loop, tapping a rock for improvise yields the same {1} its mana ability would. It converts nothing here."
-    },
-    {
-      "card": "Omniscience",
-      "verdict": "keep-in-sideboard",
-      "why": "The Approach package is real if a scenario verifies it, but nine mana with no built-in protection is the one-spectacular-finisher shape that loses to a single answer, and every X-spell in the deck is dead (X=0) when cast for free under it."
-    },
-    {
-      "card": "Fraying Sanity",
-      "verdict": "keep-in-sideboard",
-      "why": "Worth a slot only if the cleanup-discard timing question in opens_lines resolves favourably; on its face it deepens mill on one opponent while this deck's engines mill all three shallowly."
-    },
-    {
-      "card": "Sphinx of the Final Word",
-      "verdict": "keep-in-sideboard",
-      "why": "Its static makes the second Approach uncounterable — real tech for counterspell wars — but it is seven mana for protection Grand Abolisher gives at two on the only turn that matters."
-    },
-    {
-      "card": "Emrakul, the Promised End",
-      "verdict": "keep-in-sideboard",
-      "why": "Heliod's per-opponent-draw discount on a Forced Fruition turn can shave double-digit generic off the cost and the deck can flash it in — a genuine haymaker, but off-plan, and the arithmetic is uncomputed: goldfish explicitly does not model cost reducers."
-    },
-    {
-      "card": "It That Betrays",
-      "verdict": "keep-in-sideboard",
-      "why": "Same discount logic as Emrakul with a weaker payoff for this deck: nothing here makes opponents sacrifice, so its second ability is nearly blank and Annihilator is a combat plan the deck doesn't have."
-    },
-    {
-      "card": "Blue Sun's Zenith",
-      "verdict": "keep-in-sideboard",
-      "why": "Backup fuel for the Jace line and an instant-speed punisher push, but maindeck Stroke of Genius already fills the slot, and BSZ's shuffle-back clause complicates the empty-library math — same scenario would need to cover it."
-    },
-    {
-      "card": "Brainstorm",
-      "verdict": "keep-in-sideboard",
-      "why": "Without shuffle density (the 99 offers Flooded Strand, Mystical Tutor, Long-Term Plans) it rearranges more than it draws; every engine card it could displace does more."
-    },
-    {
-      "card": "Archmage's Charm",
-      "verdict": "keep-in-sideboard",
-      "why": "All three modes play and {U}{U}{U} is fine on a 36-source blue base, but the maindeck counter suite is already seven deep at better rates; first replacement if the suite thins."
-    },
-    {
-      "card": "No More Lies",
-      "verdict": "keep-in-sideboard",
-      "why": "Fine rate, but the existing suite is deeper and cheaper; the exile clause is its one edge — sleeve it against recursion pods specifically."
-    },
-    {
-      "card": "Trade Secrets",
-      "verdict": "keep-in-sideboard",
-      "why": "Banned in Commander (cards.csv legal_commander: 'banned') — it can never enter the 99, so it is a dead slot in the pool regardless of its text; even were it legal, the opponent controls the repeats and stops precisely when it would profit you."
-    },
-    {
-      "card": "Temple of the False God",
-      "verdict": "keep-in-sideboard",
-      "why": "Its five-lands condition is live in barely half of games by the measured land-drop rates (57.1% at t5), and Ancient Tomb already serves the colorless-burst job without ever being a dead draw."
-    },
-    {
-      "card": "Radiant Fountain",
-      "verdict": "keep-in-sideboard",
-      "why": "Colorless-only in a deck with 50 blue pips across 34 spells; two life does not pay for the {U} it can't produce."
-    },
-    {
-      "card": "Gandalf, Friend of the Shire",
-      "verdict": "keep-in-sideboard",
-      "why": "Sorcery-only flash when the commander's back face and Leyline of Anticipation grant broader flash already, and the Ring text is blank in a deck with no tempt sources."
-    },
-    {
-      "card": "Ephara, God of the Polis",
-      "verdict": "keep-in-sideboard",
-      "why": "Her upkeep draw needs a creature to have entered last turn and goldfish shows a mean of 1.4 bodies deployed by turn 6 — the trigger misses more turns than it hits."
-    },
-    {
-      "card": "Finale of Revelation",
-      "verdict": "keep-in-sideboard",
-      "why": "The X=10 mode shuffles your graveyard back into your library — direct anti-synergy with the Jace/Lab Man empty-library line this same pool proposes — and as a plain X-draw the maindeck already runs five."
-    }
+    {"card": "Grand Abolisher", "verdict": "promote", "why": "Every verified win this deck has — the 002 second Approach, the 004/005 loop turn, the 003 punisher deployment — is committed on its own turn, and two mana protects all of them; there is no tier-4 pod where you would rather be holding Lightning Greaves."},
+    {"card": "Drannith Magistrate", "verdict": "promote", "why": "Command-zone recasts (your own Verdict and exile removal guarantee the zone) and non-hand casts appear in essentially every tier-4 game; a two-mana body that makes them illegal is live unconditionally, unlike the enters-tapped colourless rock it replaces."},
+    {"card": "Jace Beleren", "verdict": "promote", "why": "The only true engine-half redundancy in the entire pool: a repeatable each-player draw for three mana that keeps feeding punishers and Heliod's discount after land drops fail, and the only Mine-effect on either side of the list that lives through an artifact sweep."},
+    {"card": "Jace, Wielder of Mysteries", "verdict": "promote", "why": "A fine standalone draw engine at {1}{U}{U}{U} on a 36-blue-source base, plus the deck's only wincon that rides the X-draw suite instead of combat or the two-piece — worth the slot even before the self-draw line is verified, and the correct answer to the 42.6% wincon-access number."},
+    {"card": "Teferi, Temporal Pilgrim", "verdict": "promote", "why": "In a deck drawing 3-5 cards a turn under its own engines the loyalty snowball survives every sweeper including your own Supreme Verdict — the resilient version of the board presence Monastery Mentor builds and loses."},
+    {"card": "White Sun's Zenith", "verdict": "keep-in-sideboard", "why": "The swap-back is rejected: it duplicates Secure the Wastes' effect class at a worse rate ({W}{W}{W} on 22 white sources in a 50-blue-pip deck), and X vanilla 2/2s from a draw-go deck must survive a full turn cycle of three opponents plus every sweeper — including your own Verdict — before dealing a point; the wincon-access drop is better repaired by a new non-combat axis (Jace) than a second copy of the deck's weakest wincon class. Its shuffle-back recursion is the one virtue: sleeve it only in ultra-long attrition pods where wincons get stripped and Secure the Wastes has already been spent."},
+    {"card": "Agent of Treachery", "verdict": "keep-in-sideboard", "why": "The v1 cut was right: seven mana for one steal, and its draw rider needs three permanents you don't own; the v2 additions (Archive, Kwain, Second Doctor) do more for the actual plan at lower cost."},
+    {"card": "Chasm Skulker", "verdict": "keep-in-sideboard", "why": "The v1 cut was right: it pays off by dying, which this deck never volunteers, and its Squid rebuild is 1/1s at a table where that is not a clock — Temporal Pilgrim is the strictly better draw-payoff body."},
+    {"card": "United Front", "verdict": "keep-in-sideboard", "why": "The v1 cut was right: the worst of the pool's X-token spells — sorcery-speed Allies with no payoff in a list whose verified wins are all noncombat."},
+    {"card": "Teferi's Tutelage", "verdict": "keep-in-sideboard", "why": "Still the best pure-value card in the pool — a second Sphinx's Tutelage that mills 8-16 per turn cycle under the doublers — but with Brass Infiniscope's slot now spent on an actual wincon, its remaining displacement targets are ramp and pillow pieces the tier-4 posture needs; first alternate if a slot opens, and sleeve it in attrition pods without graveyard decks."},
+    {"card": "Sphinx of the Final Word", "verdict": "keep-in-sideboard", "why": "Its static makes the second Approach uncounterable — real tech for a genuine counter-war pod — but it is seven mana for protection Grand Abolisher gives at two on the only turn that matters; sleeve it when the pod runs three-plus blue seats."},
+    {"card": "Laboratory Maniac", "verdict": "keep-in-sideboard", "why": "Redundant copy of Jace's win clause on a 2/2 that dies to any removal mid-draw; sleeve it only if the self-draw line verifies and the pod is light on creature removal — never ahead of Jace."},
+    {"card": "Walking Ballista", "verdict": "keep-in-sideboard", "why": "Stack 005 closed the last hope: the Kitten exit is a one-time +1 float capping terminal mana at 3, so Ballista tops out at X=1 for a single ping — there is still no infinite mana anywhere in this deck to sink, and the mana-neutral loop recasts it at X=0 into the graveyard."},
+    {"card": "Hangarback Walker", "verdict": "keep-in-sideboard", "why": "Same arithmetic as Walking Ballista under the verified 004/005 ledger: X capped at trivial size, a zero-counter Hangarback dies leaving zero Thopters."},
+    {"card": "Inspiring Statuary", "verdict": "keep-in-sideboard", "why": "Improvise applies only to nonartifact spells — the loop casts Sol Ring and Arcane Signet, both artifact spells, so Statuary never touches the ledger; outside the loop, tapping a rock for improvise yields the same {1} its mana ability would."},
+    {"card": "Jin-Gitaxias, Core Augur", "verdict": "keep-in-sideboard", "why": "Still the trap it was: reducing opponents' maximum hand size by seven makes them trim toward zero at cleanup, so they reach their punished upkeep empty-handed — it switches OFF Iron Maiden, Ebony Owl Netsuke and Viseling, the deck's verified 003 clock."},
+    {"card": "Emrakul, the Promised End", "verdict": "keep-in-sideboard", "why": "Heliod's per-opponent-draw discount on a Forced Fruition turn can shave double-digit generic off the cost and the deck can flash it in — a genuine haymaker, but off-plan, and the arithmetic is uncomputed: goldfish explicitly does not model cost reducers."},
+    {"card": "It That Betrays", "verdict": "keep-in-sideboard", "why": "Same discount logic as Emrakul with a weaker payoff: nothing here makes opponents sacrifice, so its second ability is nearly blank and Annihilator is a combat plan the deck does not have."},
+    {"card": "Omniscience", "verdict": "keep-in-sideboard", "why": "The Approach package is real if a scenario verifies it, but nine mana with no built-in protection is the one-spectacular-finisher shape that loses to a single answer, and every X-spell in the deck is dead at X=0 when cast for free under it."},
+    {"card": "Fraying Sanity", "verdict": "keep-in-sideboard", "why": "Worth a slot only if the cleanup-discard timing question in opens_lines resolves favourably; on its face it deepens mill on one opponent while this deck's engines pressure all three."},
+    {"card": "Blue Sun's Zenith", "verdict": "keep-in-sideboard", "why": "Backup fuel for the Jace line and an instant-speed hand-filler into the punishers, but maindeck Stroke of Genius already holds the slot and the shuffle-back clause complicates the empty-library math; the same scenario that verifies the Jace line should cover it."},
+    {"card": "Archmage's Charm", "verdict": "keep-in-sideboard", "why": "All three modes play and {U}{U}{U} is fine on 36 blue sources, but the maindeck counter suite is already seven deep at better rates; first replacement if the suite thins."},
+    {"card": "No More Lies", "verdict": "keep-in-sideboard", "why": "Fine rate, but the existing suite is deeper and cheaper; the exile clause is its one edge — sleeve it against recursion pods specifically."},
+    {"card": "Brainstorm", "verdict": "keep-in-sideboard", "why": "Without shuffle density (the 99 offers Flooded Strand, Mystical Tutor, Long-Term Plans) it rearranges more than it draws; every engine card it could displace does more."},
+    {"card": "Trade Secrets", "verdict": "keep-in-sideboard", "why": "Banned in Commander (settled last pass via cards.csv legal_commander) — it can never enter the 99; even were it legal, the opponent controls the repeats and stops precisely when it would profit you."},
+    {"card": "Teferi, Hero of Dominaria", "verdict": "keep-in-sideboard", "why": "Good card, wrong queue: it competes with Temporal Pilgrim for the walker slot and gains far less from the deck's draw density; second alternate behind Teferi's Tutelage if a slot opens."},
+    {"card": "Ephara, God of the Polis", "verdict": "keep-in-sideboard", "why": "Her upkeep draw needs a creature to have entered last turn and the v2 goldfish shows a mean of 1.46 bodies by turn 6 — the trigger misses more turns than it hits."},
+    {"card": "Gandalf, Friend of the Shire", "verdict": "keep-in-sideboard", "why": "Sorcery-only flash when Heliod's back face and Leyline of Anticipation grant broader flash already, and the Ring text is blank in a deck with no tempt sources."},
+    {"card": "Temple of the False God", "verdict": "keep-in-sideboard", "why": "Its five-lands condition is live in barely half of games by the measured land-drop rates (57.1% at t5), and Ancient Tomb already serves the colourless-burst job without ever being a dead draw."},
+    {"card": "Radiant Fountain", "verdict": "keep-in-sideboard", "why": "Colourless-only in a deck with 50 blue pips; two life does not pay for the {U} it cannot produce."}
   ],
   "gaps": [
-    "Trade Secrets' legality is settled, not open: cards.csv marks it banned in Commander, so it is excluded from every swap and line above — recorded here because sideboard-facts and bracket_report (maindeck-scoped) did not surface the flag.",
-    "The strategy corpus has no section on group-slug donation risk (already noted in strategic_frame.gaps), so the evaluation of Vision Skeins, Trade Secrets and Homesickness rests on card reading alone rather than a citable principle.",
-    "The pool contains zero punisher-half effects, so no swap can directly raise the 34.3% two-piece-by-t6 rate; a goldfish re-run after the Jace Beleren swap would quantify what engine-half redundancy actually buys, but goldfish does not model cost reducers or the swap set, so that number is currently uncomputable.",
-    "Four candidate lines need resolve-stack runs before any is played as fact: the Jace/X-draw self-deck win, the Grand Abolisher window closure (channel-land loophole included), the Fraying Sanity cleanup-discard timing, and the Omniscience free second Approach.",
-    "Emrakul/It That Betrays castability under Heliod's discount is arithmetic no current artifact computes — goldfish's stated assumptions exclude cost reduction — so their 'live earlier than the curve suggests' claim is oracle-text reasoning only."
+    "Correction of the superseded v1 analysis: it claimed Drannith Magistrate strands commanders this deck bounces with Hullbreaker Horror or Cyclonic Rift — bounce goes to hand, which Drannith does not restrict; the corrected stranding case (wraths and exile removal into the command zone) is flagged in opens_lines and needs the CR 903.9 walkthrough before being played as fact.",
+    "No swap can be shown to move the wincon-access number: goldfish_targets.json counts only Approach of the Second Sun, Aetherflux Reservoir, Secure the Wastes and Mystical Tutor, so adding Jace, Wielder of Mysteries (or swapping White Sun's Zenith back) changes the measured 42.6% only after a curated target edit plus a goldfish re-run — recommend that follow-up once the swaps land.",
+    "The pool still contains zero punisher-half effects, so the 39.6% two-piece-by-t6 rate cannot be raised directly from the sideboard; engine-half redundancy (Jace Beleren) is the only available purchase.",
+    "The strategy corpus still has no sections on group-slug donation risk, blink value engines, or hand-size as an attack vector (per strategic_frame.gaps), so the Displacer Kitten and punisher-adjacent judgments above rest on oracle text and the verified stacks rather than citable principles.",
+    "Emrakul / It That Betrays castability under Heliod's discount remains oracle-text reasoning only — goldfish's stated assumptions exclude cost reduction.",
+    "Five candidate lines need resolve-stack runs before any is played as fact: the Abolisher 002-window closure (channel-land loophole included), the Jace/X-draw self-deck win under the Archive doubler, the Drannith command-zone stranding scope, the Fraying Sanity cleanup-discard timing, and the Omniscience free second Approach."
   ]
 }

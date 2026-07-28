@@ -1,12 +1,18 @@
-# Pilot feedback — Heliod, the Warped Eclipse (sideboard pass, 2026-07-27)
+# Pilot feedback — Heliod, the Warped Eclipse (v2 build, 2026-07-27)
 
-The 60-card sideboard is the full candidate pool for refactoring. Goals, in the
-pilot's words: tighten and improve the deck, enhance the existing engines,
-create new engines and lines — combos included — using only these cards.
+Corrected build definition supersedes the initial import (see HISTORY.md):
+Alhammarret's Archive, Kwain, Supreme Verdict and The Second Doctor are in;
+Agent of Treachery, Chasm Skulker, United Front and White Sun's Zenith moved
+to the pool. The blink engine matters and was under-covered: Displacer
+Kitten resets Mystic Remora (a blinked Remora is a new object with no age
+counters), untaps Sol Ring mid-chain, and re-triggers Loran and Faerie
+Mastermind.
 
-Standing context the analysis should honour:
-- The core engine + punisher two-piece assembles by turn 6 in only 34.3% of
-  goldfish games — consistency is a known soft spot.
-- The verified three-card cast engine (stack 004) currently has no verified
-  lethal outlet; Aetherflux is a flagged candidate.
-- The deck's only verified wins are punisher attrition (003) and Approach (002).
+Goal for the sideboard pass: identify swaps so the deck STANDS UP AT A
+TIER-4, PROFESSIONAL TABLE — resilience and protection for the verified
+lines, consistency of the two-piece (40% by t6 after the rebuild), and a
+believable clock, against pods that mulligan well, hold up free
+interaction, and punish durdling.
+
+Standing facts: verified stacks 001-004 unchanged; floor 4 on 8 Game
+Changers; wincon access dropped to 43% by t6 with White Sun's Zenith out.

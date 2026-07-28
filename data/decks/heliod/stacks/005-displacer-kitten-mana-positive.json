@@ -1,0 +1,453 @@
+{
+  "id": "005",
+  "slug": "displacer-kitten-mana-positive",
+  "deck": "heliod",
+  "title": "Displacer Kitten joins the Hullbreaker engine: mana-positive?",
+  "scenario": {
+    "board": {
+      "you": [
+        "Hullbreaker Horror",
+        "Displacer Kitten",
+        "Sol Ring",
+        "Island x5",
+        "Plains x3"
+      ],
+      "opponents": [
+        {
+          "life": 34,
+          "board": []
+        },
+        {
+          "life": 40,
+          "board": []
+        }
+      ]
+    },
+    "hand": [
+      "Arcane Signet"
+    ],
+    "graveyard": [],
+    "mana_available": "{U}{U}",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Arcane Signet",
+        "controller": "you",
+        "note": "cast for {2}; BOTH Hullbreaker Horror's cast trigger AND Displacer Kitten's Avoidance trigger will go on the stack above it"
+      }
+    ],
+    "extras": {
+      "context": "Stack 004 (checker: pass) verified the Hullbreaker Horror + Sol Ring + Arcane Signet loop as real but EXACTLY mana-neutral: 3 spent, 3 produced per cycle, unbounded casts, zero net mana. Displacer Kitten adds a second trigger to every noncreature cast: 'exile up to one target nonland permanent you control, then return that card to the battlefield under its owner's control.' A permanent that leaves and re-enters is a new object — an exiled-and-returned Sol Ring comes back UNTAPPED. The question: with the Kitten also on the battlefield, can the loop's controller order and use the two triggers per cast so that Sol Ring is tapped for {C}{C} more than once per cycle, making each full cycle net mana-POSITIVE — and if so, exactly how much per cycle, and does that convert the unbounded cast count into unbounded MANA?"
+    },
+    "question": "Walk one full cycle of the Arcane Signet / Sol Ring alternating recast loop from stack 004 with Displacer Kitten on the battlefield: for each cast, state both triggers, their controller-chosen order, targets, and resolutions, including when Sol Ring can be tapped and whether the Kitten's exile-and-return lets it be tapped again in the same cycle. Produce the complete mana ledger for one full cycle. Is the cycle now mana-positive, and by exactly how much? Does this make total mana unbounded, and what does that change about what the deck can do on that turn (X spells, Aetherflux casts) — stated strictly within what these cards alone enable?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Cast Arcane Signet for {2}, paying by tapping Sol Ring for {C}{C} (an activated mana ability that resolves immediately, without using the stack). Casting this noncreature spell meets the trigger conditions of BOTH Hullbreaker Horror ('Whenever you cast a spell, choose up to one — ... Return target nonland permanent to its owner's hand.') and Displacer Kitten's Avoidance ('Whenever you cast a noncreature spell, exile up to one target nonland permanent you control, then return that card to the battlefield under its owner's control.'). You control both triggered abilities, so YOU choose their relative order on the stack; whichever is put on the stack last resolves first.",
+        "effect": "Arcane Signet is on the stack (pos 0); Sol Ring is tapped; two triggered abilities, both yours, are about to go on the stack above it in an order you choose.",
+        "citations": [
+          {
+            "rule": "603.3b",
+            "quote": "puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose"
+          },
+          {
+            "rule": "605.3b",
+            "quote": "An activated mana ability doesn’t go on the stack, so it can’t be targeted, countered, or otherwise responded to. Rather, it resolves immediately after it is activated."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Lock in modes and targets AT ANNOUNCEMENT. Putting each triggered ability on the stack follows the same process as casting a spell: Horror's trigger chooses its mode ('up to one') and its target now; the Kitten trigger chooses its target now. Once declared, these targets cannot be changed by anything on this board.",
+        "effect": "Both triggers have their targets fixed before either resolves. This target lock is the hinge of the entire scenario.",
+        "citations": [
+          {
+            "rule": "603.3d",
+            "quote": "The remainder of the process for putting a triggered ability on the stack is identical to the process for casting a spell listed in rules 601.2c–d."
+          },
+          {
+            "rule": "115.1",
+            "quote": "These targets are declared as part of the process of putting the spell or ability on the stack. The targets can’t be changed except by another spell or ability that explicitly says it can do so."
+          },
+          {
+            "rule": "700.2b",
+            "quote": "The controller of a modal triggered ability chooses the mode(s) as part of putting that ability on the stack."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Determine legal targets. The Kitten trigger targets a 'nonland permanent you control'; the Arcane Signet being cast is a spell on the stack, and a permanent is by definition on the battlefield — so the Signet CANNOT be targeted. Eligible nonland permanents you control at announcement: Sol Ring (tapped), Displacer Kitten, Hullbreaker Horror. Only Sol Ring is mana-relevant (blinking the untapped Kitten or Horror gains nothing; neither has an enters ability). Horror's bounce mode faces the same pool: the only artifact on the battlefield is Sol Ring.",
+        "effect": "Both triggers have exactly ONE useful target, and it is the same object: the tapped Sol Ring.",
+        "citations": [
+          {
+            "rule": "110.1",
+            "quote": "A permanent is a card or token on the battlefield."
+          },
+          {
+            "rule": "601.2c",
+            "quote": "The player announces their choice of an appropriate object or player for each target the spell requires."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "ORDERING A (loop-preserving): put the Kitten trigger on the stack first, Horror's trigger on top. Horror's trigger resolves first: return Sol Ring to its owner's hand. Sol Ring changes zones and becomes a new object with no memory of its previous existence.",
+        "effect": "Sol Ring is in your hand (recastable). The battlefield Sol Ring that the Kitten trigger targeted no longer exists as that object.",
+        "citations": [
+          {
+            "rule": "603.3b",
+            "quote": "puts all remaining triggered abilities they control on the stack in any order they choose"
+          },
+          {
+            "rule": "400.7",
+            "quote": "An object that moves from one zone to another becomes a new object with no memory of, or relation to, its previous existence."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "The Kitten trigger is now on top of the stack and checks its target on resolution. Its only target, the battlefield Sol Ring, is no longer in the zone it was in when targeted, so the target is illegal and the ability does not resolve. (Announcing it with zero targets instead — 'up to one' — changes nothing: it would resolve and do nothing.)",
+        "effect": "The Kitten trigger fizzles. In Ordering A the Kitten contributes exactly nothing to this cast.",
+        "citations": [
+          {
+            "rule": "608.2b",
+            "quote": "A target that’s no longer in the zone it was in when it was targeted is illegal."
+          },
+          {
+            "rule": "608.2b",
+            "quote": "If all its targets, for every instance of the word “target,” are now illegal, the spell or ability doesn’t resolve."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Arcane Signet resolves and enters the battlefield untapped. State-based actions are checked each time a player would get priority throughout this sequence; none apply here (no creatures with lethal damage, no zero-toughness creatures, no illegal attachments). Tap Signet for one mana of your commander's color identity ({W} or {U}).",
+        "effect": "Battlefield: Arcane Signet (tapped), Kitten, Horror. Hand: Sol Ring. Mana floated this half-cycle: {C}{C} (spent on Signet) + 1 colored (floating). Stack: empty.",
+        "citations": [
+          {
+            "rule": "110.5b",
+            "quote": "Permanents enter the battlefield untapped, unflipped, face up, and phased in unless a spell or ability says otherwise."
+          },
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "605.3b",
+            "quote": "it resolves immediately after it is activated"
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Second half of the cycle: with the stack empty in your main phase — the ONLY time an artifact may be cast, which is also why Sol Ring can never be recast while the first cast's triggers are still on the stack — cast Sol Ring for {1} using the floated colored mana. Both triggers fire again. The only artifact on the battlefield is now Arcane Signet (tapped); the Sol Ring spell on the stack is not a permanent. So Horror's bounce and the Kitten's blink again share a single useful target: the tapped Signet. Loop-preserving order (Ordering A mirrored): Horror resolves first, returns Signet to your hand; the Kitten trigger fizzles exactly as in step 5. Sol Ring resolves, enters untapped, and you tap it for {C}{C} — no summoning-sickness restriction, because that rule covers only creatures' tap abilities and Sol Ring is a noncreature artifact.",
+        "effect": "Battlefield: Sol Ring (tapped after producing {C}{C}), Kitten, Horror. Hand: Arcane Signet. Floating: {C}{C}. Untap Sol Ring is NOT available again — the cycle state has returned to its start, one full iteration complete.",
+        "citations": [
+          {
+            "rule": "301.1",
+            "quote": "A player who has priority may cast an artifact card from their hand during a main phase of their turn when the stack is empty."
+          },
+          {
+            "rule": "110.1",
+            "quote": "A permanent is a card or token on the battlefield."
+          },
+          {
+            "rule": "302.6",
+            "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+          },
+          {
+            "rule": "110.5b",
+            "quote": "Permanents enter the battlefield untapped, unflipped, face up, and phased in unless a spell or ability says otherwise."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Complete per-cycle mana ledger, loop-preserving order. SPENT: {2} (Arcane Signet) + {1} (Sol Ring) = 3 mana. PRODUCED: {C}{C} (one Sol Ring tap) + 1 colored (one Arcane Signet tap) = 3 mana. NET: exactly 0. This is identical to the stack-004 ledger. In EVERY loop-preserving iteration the Kitten trigger either fizzles on resolution (step 5) or is announced with zero targets and does nothing — 'up to one target' permits zero. Sol Ring is tapped exactly ONCE per cycle. The cycle is NOT mana-positive.",
+        "effect": "Sustainable loop: unbounded iterations, unbounded casts, zero net mana per iteration. Displacer Kitten adds nothing to any iteration that keeps the loop alive.",
+        "citations": [
+          {
+            "rule": "115.6",
+            "quote": "A spell or ability that requires targets may allow zero targets to be chosen."
+          },
+          {
+            "rule": "608.2b",
+            "quote": "If all its targets, for every instance of the word “target,” are now illegal, the spell or ability doesn’t resolve."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "ORDERING B (blink-first): put Horror's trigger on the stack first, the Kitten trigger on top. The Kitten trigger resolves first: exile Sol Ring, then return it to the battlefield. It re-enters UNTAPPED as a new object, and you may immediately tap it for {C}{C} again (mana ability, no stack, no waiting).",
+        "effect": "Sol Ring IS tapped for {C}{C} a second time within one cast — the blink-untap works exactly as the scenario hoped. Floating: {C}{C} extra.",
+        "citations": [
+          {
+            "rule": "400.7",
+            "quote": "An object that moves from one zone to another becomes a new object with no memory of, or relation to, its previous existence."
+          },
+          {
+            "rule": "110.5b",
+            "quote": "Permanents enter the battlefield untapped, unflipped, face up, and phased in unless a spell or ability says otherwise."
+          },
+          {
+            "rule": "405.6c",
+            "quote": "Mana abilities resolve immediately."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "But Horror's trigger, targets locked at announcement on the PRE-blink Sol Ring, now resolves — and its target has changed zones (battlefield → exile → battlefield) and become a new object. A target no longer in the zone it was in when targeted is illegal; with its only target illegal, Horror's bounce does not resolve. Nothing is returned to your hand. After the Signet resolves (tap it for +1), your hand is EMPTY: no artifact can be recast, no further spells can be cast, no further triggers occur. The loop TERMINATES. (Having Horror target Kitten or Horror itself instead does not save it: recasting them costs {3}{U} / {5}{U}{U}, strictly mana-negative, and the {5}{U}{U} is unpayable from this engine's float.)",
+        "effect": "The blink and the bounce are mutually exclusive per cast: whichever trigger resolves second loses its target to the new-object rule. Extra Sol Ring taps can only be bought at the price of ending the loop.",
+        "citations": [
+          {
+            "rule": "608.2b",
+            "quote": "A target that’s no longer in the zone it was in when it was targeted is illegal."
+          },
+          {
+            "rule": "400.7",
+            "quote": "An object that moves from one zone to another becomes a new object with no memory of, or relation to, its previous existence."
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "Exact accounting of the one-shot blink exit (choose Ordering B on the FINAL iteration, starting from steady state: Sol Ring on battlefield untapped, Signet in hand, float 0): tap Sol Ring +{C}{C}; cast Signet −{2}; Kitten blinks Sol Ring, tap it again +{C}{C}; Horror's trigger fizzles; Signet resolves, tap +1 colored. Terminal float: 3 ({C}{C} plus one colored). Best exit WITHOUT using the Kitten: cast Signet (Sol Ring tap pays), Horror bounces Sol Ring, tap Signet +1, cast Sol Ring −1, Horror's modal trigger declines its mode ('up to one' — choosing no mode simply removes the ability), Sol Ring resolves, tap +{C}{C}: terminal float 2. The Kitten's blink is therefore worth one extra {C}{C} Sol Ring activation on exactly one cast, for a net gain of +1 mana over the best Kitten-less exit — ONCE per game state, not per cycle.",
+        "effect": "Maximum achievable float after any number of loop iterations: 3 mana with the blink exit, 2 without. Bounded either way.",
+        "citations": [
+          {
+            "rule": "700.2b",
+            "quote": "If no mode is chosen, the ability is removed from the stack."
+          },
+          {
+            "rule": "405.6c",
+            "quote": "Mana abilities resolve immediately."
+          }
+        ]
+      },
+      {
+        "n": 12,
+        "action": "Verdict. The cycle is NOT mana-positive and total mana is NOT unbounded. The claim fails on two interlocking rules: targets are locked when each trigger is put on the stack, and an exiled-and-returned (or bounced) permanent is a new object — so the two triggers can never both act usefully on the same cast, and every cast offers exactly one useful battlefield target. What remains is precisely the stack-004 engine: unbounded CASTS at exactly zero net mana, now with a one-time +1 mana kicker on the final iteration (terminal float 3). Within these cards alone: an X spell could be paid for X no greater than the actual terminal float (at most 3 mana here — this is what the mana COULD pay for; no X spell is on this board), and a cast-count payoff such as Aetherflux Reservoir would profit from the unbounded cast count exactly as established in stack 004 — but no such card is on this board, and nothing among Hullbreaker Horror, Displacer Kitten, Sol Ring, and Arcane Signet converts casts into mana, damage, or cards.",
+        "effect": "REFUTED: Displacer Kitten does not make the Hullbreaker Horror / Sol Ring / Arcane Signet loop mana-positive. It upgrades the loop's exit by exactly +1 mana, once.",
+        "citations": [
+          {
+            "rule": "115.1",
+            "quote": "The targets can’t be changed except by another spell or ability that explicitly says it can do so."
+          },
+          {
+            "rule": "400.7",
+            "quote": "An object that moves from one zone to another becomes a new object with no memory of, or relation to, its previous existence."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Loop-preserving play: after any number of full cycles the state is unchanged — Sol Ring on the battlefield (tapped), Arcane Signet in hand, Horror and Kitten on the battlefield, net 0 mana per cycle, unbounded total casts, bounded total mana. Blink exit (final iteration, Ordering B): Sol Ring and Arcane Signet both on the battlefield tapped, hand empty, 3 mana floating ({C}{C} + 1 colored), loop over. The Kitten trigger and the Horror trigger can never both resolve usefully on one cast; the mana-positive loop does not exist.",
+      "you": {
+        "battlefield": [
+          "Hullbreaker Horror",
+          "Displacer Kitten",
+          "Sol Ring (tapped)",
+          "Arcane Signet (tapped; on battlefield only in the blink-exit line, otherwise in hand)",
+          "Island x5",
+          "Plains x3"
+        ],
+        "hand": [
+          "Arcane Signet (loop-preserving line) OR empty (blink-exit line)"
+        ],
+        "mana_floating": "loop steady state: 0 net per cycle; blink exit: {C}{C} plus one mana of your commander's color identity (3 total)",
+        "notes": "Unbounded storm/cast count remains available (stack 004); unbounded mana does NOT exist in this engine."
+      },
+      "opponents": [
+        {
+          "life": 34,
+          "board": [],
+          "notes": "unaffected"
+        },
+        {
+          "life": 40,
+          "board": [],
+          "notes": "unaffected"
+        }
+      ]
+    }
+  },
+  "rules_version": "June 19, 2026",
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Both triggers controlled by same player; 603.3b first-pass clause lets that player order them freely. LIFO resolution (last-put resolves first) is uncited but is bedrock stack mechanics."
+      },
+      {
+        "step": 1,
+        "rule": "605.3b",
+        "status": "supported",
+        "note": "Sol Ring tap is an activated mana ability, no stack. Oracle verified: '{T}: Add {C}{C}.' Both trigger conditions verified against oracle text; 'Avoidance' is a real ability word on Displacer Kitten (CLB), and Horror triggers on any spell, Kitten on noncreature spells only."
+      },
+      {
+        "step": 2,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "Full rule confirms triggered-ability announcement follows 601.2c-d, so targets are chosen when the trigger is put on the stack."
+      },
+      {
+        "step": 2,
+        "rule": "115.1",
+        "status": "supported",
+        "note": "Targets declared at announcement and unchangeable; nothing on this board can change targets."
+      },
+      {
+        "step": 2,
+        "rule": "700.2b",
+        "status": "supported",
+        "note": "Horror's trigger is modal ('choose up to one —', oracle verified); mode chosen as part of putting the ability on the stack."
+      },
+      {
+        "step": 3,
+        "rule": "110.1",
+        "status": "supported",
+        "note": "Arcane Signet on the stack is a spell, not a permanent, so the Kitten trigger cannot target it. Correct."
+      },
+      {
+        "step": 3,
+        "rule": "601.2c",
+        "status": "supported",
+        "note": "Eligible targets at announcement correctly enumerated: Sol Ring, Kitten, Horror. Oracle verified: neither Kitten nor Horror has an enters-the-battlefield ability, so blinking either adds no mana. Sol Ring is the only mana-relevant target."
+      },
+      {
+        "step": 4,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Quote is from 603.3b's second-pass sentence; used only for controller-chosen ordering, which the first-pass clause equally establishes here. Contextually sound."
+      },
+      {
+        "step": 4,
+        "rule": "400.7",
+        "status": "supported",
+        "note": "Bounced Sol Ring is a new object in a new zone."
+      },
+      {
+        "step": 5,
+        "rule": "608.2b",
+        "status": "supported",
+        "note": "Target left its zone -> illegal; sole target illegal -> ability doesn't resolve. Exactly the fizzle mechanism claimed."
+      },
+      {
+        "step": 6,
+        "rule": "110.5b",
+        "status": "supported",
+        "note": "Signet enters untapped."
+      },
+      {
+        "step": 6,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "SBA checks correctly placed; none apply on this board (no creatures damaged/dying, no illegal attachments). Verified no LTB/ETB triggers exist on any involved card."
+      },
+      {
+        "step": 6,
+        "rule": "605.3b",
+        "status": "supported",
+        "note": "Signet tap resolves immediately; oracle verified it produces one mana of commander's color identity."
+      },
+      {
+        "step": 7,
+        "rule": "301.1",
+        "status": "supported",
+        "note": "Artifact cast requires main phase + empty stack, which also correctly rules out recasting Sol Ring while the first cast's triggers are pending."
+      },
+      {
+        "step": 7,
+        "rule": "110.1",
+        "status": "supported",
+        "note": "Sol Ring spell on the stack is not a permanent; only battlefield artifact is the tapped Signet, so both second-cast triggers again share one useful target."
+      },
+      {
+        "step": 7,
+        "rule": "302.6",
+        "status": "supported",
+        "note": "Summoning sickness restricts creatures' tap abilities only; Sol Ring is a noncreature artifact and taps immediately. Correct use of the full rule."
+      },
+      {
+        "step": 7,
+        "rule": "110.5b",
+        "status": "supported",
+        "note": "Recast Sol Ring enters untapped; second-half mirror of the cycle is mechanically correct including both triggers refiring (Sol Ring is a noncreature spell, so Kitten triggers too)."
+      },
+      {
+        "step": 8,
+        "rule": "115.6",
+        "status": "supported",
+        "note": "'Up to one target' permits zero targets; trigger then resolves doing nothing. Minor phrasing nit, not an error: a loop-preserving iteration could ALSO have the Kitten successfully blink Horror or itself (step 3 already establishes these gain nothing; Horror's stack trigger survives its source blinking via 608.2b LKI and still bounces Sol Ring). All such lines are mana-neutral, so 'Sol Ring tapped exactly once per cycle, net 0' holds in every loop-preserving line. Ledger arithmetic independently verified: 3 spent, 3 produced, identical to stack 004."
+      },
+      {
+        "step": 8,
+        "rule": "608.2b",
+        "status": "supported",
+        "note": "Fizzle alternative correctly cited."
+      },
+      {
+        "step": 9,
+        "rule": "400.7",
+        "status": "supported",
+        "note": "Exiled-and-returned Sol Ring is a new object."
+      },
+      {
+        "step": 9,
+        "rule": "110.5b",
+        "status": "supported",
+        "note": "Returns untapped; the double-tap within one cast is real."
+      },
+      {
+        "step": 9,
+        "rule": "405.6c",
+        "status": "supported",
+        "note": "Controller has priority between trigger resolutions and may tap the new Sol Ring immediately; mana ability resolves at once, {C}{C} floats within the phase (no step/phase boundary crossed anywhere in the sequence, so no pool emptying issue)."
+      },
+      {
+        "step": 10,
+        "rule": "608.2b",
+        "status": "supported",
+        "note": "Horror's trigger, locked on the pre-blink object, fizzles. Termination verified: no bounce -> hand empty after Signet resolves -> loop dead. Alternative Horror targets checked independently: bouncing Kitten costs {3}{U}=4 to recast vs at most +2/+1 blink gain per cast (and the recast is a creature spell, so no Kitten trigger on it) — strictly mana-negative as claimed; bouncing Horror ends its own triggers. Even counting the scenario's {U}{U} land mana, no line becomes net-positive per cycle."
+      },
+      {
+        "step": 10,
+        "rule": "400.7",
+        "status": "supported",
+        "note": "New-object rule correctly makes blink and bounce mutually exclusive per cast."
+      },
+      {
+        "step": 11,
+        "rule": "700.2b",
+        "status": "supported",
+        "note": "'If no mode is chosen, the ability is removed from the stack' is verbatim 700.2b and Horror's trigger is modal, so declining is legal. Exit arithmetic independently verified: blink exit terminal float = 3; best Kitten-less exit = 2; no ordering or multi-cast exit variant exceeds 3 (blinking the Signet on the final Sol Ring cast also yields exactly 3)."
+      },
+      {
+        "step": 11,
+        "rule": "405.6c",
+        "status": "supported",
+        "note": "Immediate mana resolution in the exit accounting."
+      },
+      {
+        "step": 12,
+        "rule": "115.1",
+        "status": "supported",
+        "note": "Target lock is one of the two load-bearing rules of the refutation; correctly applied."
+      },
+      {
+        "step": 12,
+        "rule": "400.7",
+        "status": "supported",
+        "note": "New-object rule is the other. Verdict claims properly scoped: X-spell capped at actual terminal float (≤3) with explicit 'no X spell on this board'; Aetherflux framed as cast-count payoff 'not on this board'. Unbounded casts / bounded mana conclusion verified."
+      }
+    ],
+    "iterations": 1
+  }
+}

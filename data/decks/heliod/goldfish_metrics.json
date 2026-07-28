@@ -3,7 +3,7 @@
     "commander": "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
     "commander_cmc": 4,
     "deck": "heliod",
-    "decklist_sha256": "1813c487a7e846ac1d5a7b9d02419c802299e04a901ba41b9a490b83e55ec053",
+    "decklist_sha256": "519adaa60d064c8a77f5989a63b391321983fcaa93e5050d5b7785a415352ab7",
     "iterations": 10000,
     "max_turn": 10,
     "model_assumptions": [
@@ -21,119 +21,118 @@
   },
   "metrics": {
     "commander": {
-      "cast_by_turn_6_rate": 0.905,
+      "cast_by_turn_6_rate": 0.908,
       "cast_turn_histogram": {
-        "10": 94,
-        "2": 724,
+        "10": 80,
+        "2": 734,
         "3": 2046,
-        "4": 5155,
-        "5": 647,
-        "6": 480,
-        "7": 316,
-        "8": 207,
-        "9": 155,
-        "not_by_max_turn": 176
+        "4": 5165,
+        "5": 672,
+        "6": 465,
+        "7": 299,
+        "8": 219,
+        "9": 124,
+        "not_by_max_turn": 196
       },
-      "mean_cast_turn": 4.125,
+      "mean_cast_turn": 4.098,
       "median_cast_turn": 4
     },
     "iterations": 10000,
     "land_drop_hit_rate_by_turn": {
-      "1": 0.998,
-      "10": 0.332,
+      "1": 0.997,
+      "10": 0.334,
       "2": 0.991,
       "3": 0.87,
-      "4": 0.714,
+      "4": 0.718,
       "5": 0.571,
-      "6": 0.484,
-      "7": 0.402,
-      "8": 0.362,
+      "6": 0.482,
+      "7": 0.401,
+      "8": 0.37,
       "9": 0.345
     },
     "mean_available_mana_by_turn": {
-      "1": 0.998,
-      "10": 7.595,
+      "1": 0.997,
+      "10": 7.601,
       "2": 2.136,
-      "3": 3.316,
-      "4": 4.242,
-      "5": 4.962,
-      "6": 5.695,
-      "7": 6.219,
-      "8": 6.699,
-      "9": 7.158
+      "3": 3.314,
+      "4": 4.238,
+      "5": 4.965,
+      "6": 5.692,
+      "7": 6.215,
+      "8": 6.705,
+      "9": 7.161
     },
     "mean_bodies_by_turn": {
       "1": 0.0,
-      "10": 2.376,
-      "2": 0.115,
-      "3": 0.397,
-      "4": 0.612,
-      "5": 1.038,
-      "6": 1.393,
-      "7": 1.675,
-      "8": 1.922,
-      "9": 2.159
+      "10": 2.416,
+      "2": 0.168,
+      "3": 0.437,
+      "4": 0.657,
+      "5": 1.095,
+      "6": 1.456,
+      "7": 1.73,
+      "8": 1.971,
+      "9": 2.205
     },
     "opening_hand": {
       "first_seven_land_histogram": {
-        "0": 523,
-        "1": 2077,
-        "2": 3180,
-        "3": 2624,
-        "4": 1231,
-        "5": 323,
-        "6": 41,
-        "7": 1
+        "0": 499,
+        "1": 2033,
+        "2": 3124,
+        "3": 2675,
+        "4": 1287,
+        "5": 331,
+        "6": 46,
+        "7": 5
       },
-      "keep_first_seven_rate": 0.736,
+      "keep_first_seven_rate": 0.742,
       "kept_hand_land_histogram": {
-        "0": 33,
+        "0": 44,
         "1": 149,
-        "2": 4205,
-        "3": 3519,
-        "4": 1669,
-        "5": 418,
-        "6": 6,
-        "7": 1
+        "2": 4169,
+        "3": 3514,
+        "4": 1691,
+        "5": 429,
+        "6": 4
       },
-      "mean_mulligans": 0.336
+      "mean_mulligans": 0.326
     },
     "targets": [
       {
-        "assembled_rate": 0.737,
-        "by_turn_6_rate": 0.624,
+        "assembled_rate": 0.827,
+        "by_turn_6_rate": 0.723,
         "label": "Table draw engine drawn",
-        "mean_turn": 2.851
+        "mean_turn": 2.607
       },
       {
-        "assembled_rate": 0.674,
-        "by_turn_6_rate": 0.567,
+        "assembled_rate": 0.672,
+        "by_turn_6_rate": 0.566,
         "label": "Draw punisher drawn",
-        "mean_turn": 2.975
+        "mean_turn": 2.955
       },
       {
-        "assembled_rate": 0.491,
-        "by_turn_6_rate": 0.343,
+        "assembled_rate": 0.548,
+        "by_turn_6_rate": 0.396,
         "label": "Engine + punisher assembled (the deck's core two-piece)",
-        "mean_turn": 4.442
+        "mean_turn": 4.231
       },
       {
-        "assembled_rate": 0.65,
-        "by_turn_6_rate": 0.492,
+        "assembled_rate": 0.702,
+        "by_turn_6_rate": 0.54,
         "label": "Heliod down with an asymmetric card engine",
-        "mean_turn": 5.116
+        "mean_turn": 5.042
       },
       {
-        "assembled_rate": 0.734,
-        "by_turn_6_rate": 0.619,
+        "assembled_rate": 0.733,
+        "by_turn_6_rate": 0.622,
         "label": "Free or cheap interaction held",
-        "mean_turn": 2.911
+        "mean_turn": 2.875
       },
       {
-        "assembled_rate": 0.61,
-        "by_turn_6_rate": 0.499,
+        "assembled_rate": 0.526,
+        "by_turn_6_rate": 0.426,
         "label": "Win condition access",
-        "mean_turn": 3.146
+        "mean_turn": 3.248
       }
     ]
   }
