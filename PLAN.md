@@ -100,7 +100,7 @@ mentions the command zone when none of their pieces is actually this deck's comm
 | `sisay` | Hand-built, **published** as Vol. 003 — five-colour Sisay, Weatherlight Captain toolbox, bracket 4, **1 verified stack of 3 attempted**, 2 decision spreads |
 | `edgar-vampires` | **Built** by the deterministic builder (Mardu, bracket 3, floor 1); no brief-driven agent pass, not published |
 | `heliod` | **Published** as Vol. 004 — v3 build, five verified stacks, five sideboard swaps applied, zero swaps left |
-| `ur-dragon` | Hand-built, **published** as Vol. 005 — five-colour dragon tribal, bracket floor 3, 3 verified stacks (003 lives in the sideboard: Ventmaw + Aggravated Assault, floor 3→4 if swapped in), 2 decision spreads, full 38-card sideboard analysis (Deflecting Swat + Korlessa promoted) |
+| `ur-dragon` | Hand-built, **published** as Vol. 005 and upgraded to **v3 in place** — six pilot-approved swaps applied across two waves (HISTORY.md), bracket floor **4** (three two-card infinites), **6 verified stacks** incl. one refutation (Sneak Attack ≠ commander-cheat), 2 decision spreads, final sideboard analysis with one live meta-conditional swap. The de-biased sideboard loop (appetite rule + verified opens_lines) shipped alongside |
 
 ## Vol. 003 — Sisay, and the first issue to ship with a `fail`
 
