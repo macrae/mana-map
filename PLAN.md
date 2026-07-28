@@ -100,7 +100,7 @@ mentions the command zone when none of their pieces is actually this deck's comm
 | `sisay` | Hand-built, **published** as Vol. 003 — five-colour Sisay, Weatherlight Captain toolbox, bracket 4, **1 verified stack of 3 attempted**, 2 decision spreads |
 | `edgar-vampires` | **Built** by the deterministic builder (Mardu, bracket 3, floor 1); no brief-driven agent pass, not published |
 | `heliod` | **Published** as Vol. 004 — v3 build, five verified stacks, five sideboard swaps applied, zero swaps left |
-| `ur-dragon` | Hand-built, **published** as Vol. 005 and upgraded to **v3 in place** — six pilot-approved swaps applied across two waves (HISTORY.md), bracket floor **4** (three two-card infinites), **6 verified stacks** incl. one refutation (Sneak Attack ≠ commander-cheat), 2 decision spreads, final sideboard analysis with one live meta-conditional swap. The de-biased sideboard loop (appetite rule + verified opens_lines) shipped alongside |
+| `ur-dragon` | Hand-built, **published** as Vol. 005, now at **v4** — six swaps applied (HISTORY.md, two waves), then the 38-card sideboard **retired**; bracket floor **4**, **6 verified stacks** incl. one refutation (Sneak Attack ≠ commander-cheat), 2 decision spreads, and the first **upgrade_watch.json**: a validated top-10 pool-scout Lookout (Assault-engine redundancy the headline theme). Two process layers shipped alongside: the de-biased sideboard loop (appetite rule + verified opens_lines) and the **upgrade-scout path** (upgrade-facts → upgrade-scout → validate-upgrade-watch; `sideboard-analysis`/`upgrade-watch` partition every deck) |
 
 ## Vol. 003 — Sisay, and the first issue to ship with a `fail`
 
