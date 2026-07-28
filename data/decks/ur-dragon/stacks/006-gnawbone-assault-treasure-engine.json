@@ -1,0 +1,415 @@
+{
+  "id": "006",
+  "slug": "gnawbone-assault-treasure-engine",
+  "deck": "ur-dragon",
+  "title": "Old Gnawbone + Aggravated Assault: does one dragon fund the whole night?",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Old Gnawbone",
+        "Aggravated Assault",
+        "five lands (can produce {3}{R}{R}), all untapped"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": []
+        },
+        {
+          "life": 38,
+          "board": [
+            "a 2/2 creature with no flying and no reach"
+          ]
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Old Gnawbone's combat damage trigger",
+        "controller": "you",
+        "note": "combat 1: Gnawbone attacked opponent 1 (empty board) unblocked and dealt 7; the trigger 'create that many Treasure tokens' is on the stack about to resolve"
+      }
+    ],
+    "extras": {
+      "context": "SIDEBOARD VERIFICATION: Aggravated Assault is in this deck's sideboard. Stack 003 verified the Ventmaw+Assault loop; this scenario isolates the OTHER claimed pairing — Assault funded purely by Old Gnawbone's Treasures with no Ventmaw on the battlefield. Old Gnawbone (7/7, Flying): 'Whenever a creature you control deals combat damage to a player, create that many Treasure tokens.' Aggravated Assault: '{3}{R}{R}: Untap all creatures you control. After this main phase, there is an additional combat phase followed by an additional main phase. Activate only as a sorcery.' A Treasure token is an artifact with '{T}, Sacrifice this token: Add one mana of any color.' Lands were NOT used this combat; all five are still untapped.",
+      "combat_state": "combat damage step of combat 1 has resolved; 7 damage dealt to opponent 1 (40 to 33)"
+    },
+    "question": "Resolve the trigger: 7 Treasures enter. In the post-combat main phase, activate Aggravated Assault paying {3}{R}{R} entirely from Treasures — legal? Walk one full cycle: activation, extra combat, Gnawbone untaps and attacks again unblocked for 7, another 7 Treasures. What is the net Treasure count per cycle, what sustains the loop (combat damage of 5 or more to a player each combat), what bounds it (blockers, Gnawbone's survival, running out of players to hit), and on which combat does opponent 1 at 40 life die?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Old Gnawbone's combat damage trigger resolves. Gnawbone dealt 7 combat damage to opponent 1, so 'that many' is 7: you create 7 Treasure tokens.",
+        "effect": "Seven Treasure tokens — colorless Treasure artifacts with '{T}, Sacrifice this token: Add one mana of any color.' — are put onto the battlefield under your control. Treasures: 7. Opponent 1 is at 33.",
+        "citations": [
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "701.7a",
+            "quote": "To create one or more tokens with certain characteristics, put the specified number of tokens with the specified characteristics onto the battlefield."
+          },
+          {
+            "rule": "111.10a",
+            "quote": "A Treasure token is a colorless Treasure artifact token with “{T}, Sacrifice this token: Add one mana of any color.”"
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Combat 1 ends and the game moves to the postcombat main phase. With the stack empty and priority yours during your main phase, you activate Aggravated Assault — its 'Activate only as a sorcery' restriction is satisfied.",
+        "effect": "Aggravated Assault's ability goes on the stack; its activation cost {3}{R}{R} must be paid as part of activating it.",
+        "citations": [
+          {
+            "rule": "602.5d",
+            "quote": "Activated abilities that read “Activate only as a sorcery” mean the player must follow the timing rules for casting a sorcery spell, though the ability isn’t actually a sorcery."
+          },
+          {
+            "rule": "505.1a",
+            "quote": "Only the first main phase of the turn is a precombat main phase. All other main phases are postcombat main phases."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "You pay {3}{R}{R} entirely from Treasures: while paying the cost you activate five Treasures' mana abilities, tapping and sacrificing each to add one mana of any color (two red for {R}{R}, three of any color for {3}). This is legal — cost payment explicitly allows activating mana abilities, and Treasure's ability is a mana ability that resolves immediately without using the stack.",
+        "effect": "Five Treasures are sacrificed producing five mana; the five mana are removed from your mana pool to pay {3}{R}{R}. Treasures: 7 → 2. Your five lands remain untapped and untouched.",
+        "citations": [
+          {
+            "rule": "118.2",
+            "quote": "If a cost includes a mana payment, the player paying the cost has a chance to activate mana abilities."
+          },
+          {
+            "rule": "605.1a",
+            "quote": "An activated ability is a mana ability if it meets all of the following criteria: it doesn’t require a target (see rule 115.6), it could add mana to a player’s mana pool when it resolves, and it’s not a loyalty ability."
+          },
+          {
+            "rule": "605.3b",
+            "quote": "An activated mana ability doesn’t go on the stack, so it can’t be targeted, countered, or otherwise responded to. Rather, it resolves immediately after it is activated."
+          },
+          {
+            "rule": "118.3a",
+            "quote": "Paying mana is done by removing the indicated mana from a player’s mana pool."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Aggravated Assault's ability resolves: untap all creatures you control, and an additional combat phase followed by an additional main phase is added after this main phase.",
+        "effect": "Old Gnawbone untaps. Combat 2 (with a fresh postcombat main phase after it) is inserted directly after the current main phase.",
+        "citations": [
+          {
+            "rule": "701.26b",
+            "quote": "To untap a permanent, rotate it back to the upright position from a sideways position. Only tapped permanents can be untapped."
+          },
+          {
+            "rule": "500.8",
+            "quote": "Some effects can add phases to a turn. They do this by adding the phases directly after the specified phase."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Combat 2: you declare Old Gnawbone attacking opponent 1, tapping it. Opponent 1 controls no creatures, so Gnawbone is unblocked and assigns its 7 combat damage to opponent 1; the damage trigger creates 7 more Treasures.",
+        "effect": "Opponent 1: 33 → 26. Treasures: 2 → 9. One full cycle is complete: 5 Treasures spent, 7 created — net +2 Treasures per cycle.",
+        "citations": [
+          {
+            "rule": "508.1f",
+            "quote": "The active player taps the chosen creatures. Tapping a creature when it’s declared as an attacker isn’t a cost; attacking simply causes creatures to become tapped."
+          },
+          {
+            "rule": "510.1b",
+            "quote": "An unblocked creature assigns its combat damage to the player, planeswalker, or battle it’s attacking."
+          },
+          {
+            "rule": "119.2",
+            "quote": "Damage dealt to a player normally causes that player to lose that much life."
+          },
+          {
+            "rule": "701.7a",
+            "quote": "put the specified number of tokens with the specified characteristics onto the battlefield"
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Sustaining condition: each activation costs 5 mana, so the loop self-funds only if the combat produces at least 5 Treasures — i.e., a creature you control deals 5+ combat damage to a player that combat. An unblocked 7/7 Gnawbone yields +7, a surplus of 2. If the trigger ever refunds fewer than 5, the Treasure count drains, and once you hold fewer than 5 Treasures (with no other mana) you cannot pay the activation cost at all.",
+        "effect": "Loop is sustained while Gnawbone (or any creature) connects for 5+ each combat; it halts the moment the cost can no longer be fully paid.",
+        "citations": [
+          {
+            "rule": "118.3",
+            "quote": "A player can’t pay a cost without having the necessary resources to pay it fully."
+          },
+          {
+            "rule": "111.10a",
+            "quote": "Sacrifice this token: Add one mana of any color."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Kill math, opponent 1 (40 life): combat 1 dealt 7 (40→33). Each subsequent cycle repeats steps 2–5 in the new postcombat main phase: combat 3 (26→19), combat 4 (19→12), combat 5 (12→5), combat 6 (5→−2). When state-based actions are checked after combat damage in combat 6, opponent 1 is at −2 life and loses the game, leaving the game.",
+        "effect": "Opponent 1 dies on combat 6 — the fifth Aggravated Assault activation. Treasure ledger stays solvent throughout: 7→2→9→4→11→6→13→8→15→10→17 (17 after combat 6's trigger, which resolves because opponent 2 is still in the game).",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "104.5",
+            "quote": "If a player loses the game, that player leaves the game."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "The loop continues into opponent 2 (38 life). Their only creature is a 2/2 with no flying and no reach, which cannot block the flying Gnawbone — every attack remains unblocked for 7.",
+        "effect": "Combats 7–12 take opponent 2 from 38 to −4 (38→31→24→17→10→3→−4); opponent 2 loses the game on combat 12, your eleventh Assault activation. Net Treasures grow +2 per cycle through combat 11 (17→12→19→14→21→16→23→18→25→20→27); the combat-12 activation is paid before damage (27→22), but the final cycle never completes — see step 9.",
+        "citations": [
+          {
+            "rule": "702.9b",
+            "quote": "A creature with flying can’t be blocked except by creatures with flying and/or reach."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Game end, combat 12: after combat damage is dealt, state-based actions are performed before any waiting triggered ability is put on the stack. Opponent 2 is at −4 life and loses; they leave the game, and — as your last remaining opponent has now left — you win the game immediately. The game ends at that moment, so Old Gnawbone's twelfth combat damage trigger is never put on the stack and never resolves: its 7 Treasures are never created.",
+        "effect": "You win on combat 12. Final Treasure count is 22 (11 triggers resolved for +77, 11 activations paid −55, from a base of 0), not 29 — the state '29 Treasures after combat 12's trigger' never exists.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event. If any state-based actions are performed as a result of a check, the check is repeated; otherwise all triggered abilities that are waiting to be put on the stack are put on the stack"
+          },
+          {
+            "rule": "104.2a",
+            "quote": "A player still in the game wins the game if that player’s opponents have all left the game. This happens immediately and overrides all effects that would preclude that player from winning the game."
+          },
+          {
+            "rule": "104.1",
+            "quote": "A game ends immediately when a player wins, when the game is a draw, or when the game is restarted."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "Bounds: the loop is not infinite in the rules sense — each cycle requires a real activation, a real combat, and a real damage event. It ends if (a) Gnawbone is removed or the attack is blocked/prevented so the trigger refunds under 5 mana and the cost eventually can't be fully paid, (b) an opponent presents flying/reach blockers, or (c) every opponent has lost and left the game, at which point you win and the game itself ends.",
+        "effect": "Bounded by Gnawbone's survival, opposing flying/reach blockers, and the supply of opponents. In this scenario none of those bounds bite before both opponents are dead.",
+        "citations": [
+          {
+            "rule": "118.3",
+            "quote": "A player can’t pay a cost without having the necessary resources to pay it fully."
+          },
+          {
+            "rule": "702.9b",
+            "quote": "A creature with flying can’t be blocked except by creatures with flying and/or reach."
+          },
+          {
+            "rule": "104.5",
+            "quote": "If a player loses the game, that player leaves the game."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "The pairing is verified: 7 Treasures in, 5 out per activation, net +2 per cycle, with the five lands never touched. Opponent 1 (40) dies on combat 6; opponent 2 (38, one ground 2/2 that cannot block a flyer) dies on combat 12 — and the game ends immediately on that win, so the twelfth Gnawbone trigger never resolves and the final Treasure count is 22.",
+      "you": {
+        "battlefield": "Old Gnawbone (tapped after the final attack), Aggravated Assault, five untapped lands, 22 Treasure tokens at game end (ledger: 11 triggers × +7, 11 activations × −5; combat 12's trigger never resolves because the game ends first)",
+        "life": "unchanged"
+      },
+      "opponents": [
+        {
+          "player": "opponent 1",
+          "life": -2,
+          "status": "lost on combat 6 (state-based action), left the game"
+        },
+        {
+          "player": "opponent 2",
+          "life": -4,
+          "status": "lost on combat 12; the 2/2 without flying or reach never legally blocked; their loss ends the game — you win"
+        }
+      ]
+    },
+    "answer": "Yes — paying {3}{R}{R} entirely from Treasures is legal: cost payment lets you activate mana abilities, and Treasure's tap-sacrifice ability is a mana ability that resolves without the stack. Each cycle spends 5 Treasures and creates 7 (unblocked 7/7), net +2. The loop sustains itself as long as a creature you control deals 5+ combat damage to a player each combat; it is bounded by Gnawbone's survival, flying/reach blockers, and opponents remaining. Opponent 1 at 40 dies on combat 6 (7 damage × 6 connects = 42); opponent 2 at 38 — whose ground 2/2 cannot block a flyer — dies on combat 12. That final loss makes you win immediately (104.2a/104.1), so combat 12's Gnawbone trigger never resolves and you end the game holding 22 Treasures, not 29."
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Trigger placed on stack as non-card object; matches scenario premise of trigger about to resolve."
+      },
+      {
+        "step": 1,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": "Create = put specified number of tokens onto battlefield; 'that many' = 7 from 7 combat damage."
+      },
+      {
+        "step": 1,
+        "rule": "111.10a",
+        "status": "supported",
+        "note": "Treasure token characteristics quoted verbatim and complete."
+      },
+      {
+        "step": 2,
+        "rule": "602.5d",
+        "status": "supported",
+        "note": "Sorcery-timing restriction satisfied: main phase, empty stack, your priority."
+      },
+      {
+        "step": 2,
+        "rule": "505.1a",
+        "status": "supported",
+        "note": "Main phase after combat 1 is a postcombat main phase; rule explicitly covers extra-combat turns too."
+      },
+      {
+        "step": 3,
+        "rule": "118.2",
+        "status": "supported",
+        "note": "Mana payment in a cost allows activating mana abilities."
+      },
+      {
+        "step": 3,
+        "rule": "605.1a",
+        "status": "supported",
+        "note": "Treasure's ability: no target, adds mana, not loyalty — is a mana ability."
+      },
+      {
+        "step": 3,
+        "rule": "605.3b",
+        "status": "supported",
+        "note": "Mana ability resolves immediately, no stack, no responses."
+      },
+      {
+        "step": 3,
+        "rule": "118.3a",
+        "status": "supported",
+        "note": "Paying {3}{R}{R} removes five mana from pool; 2 of any color for {R}{R} is fine since Treasures add any color."
+      },
+      {
+        "step": 4,
+        "rule": "701.26b",
+        "status": "supported",
+        "note": "Gnawbone tapped from attacking combat 1; Assault untaps it."
+      },
+      {
+        "step": 4,
+        "rule": "500.8",
+        "status": "supported",
+        "note": "Extra combat + main added directly after the current main phase; only one extra phase pending at a time, so ordering clause never bites."
+      },
+      {
+        "step": 5,
+        "rule": "508.1f",
+        "status": "supported",
+        "note": "Attacker tapped on declaration; not a cost."
+      },
+      {
+        "step": 5,
+        "rule": "510.1b",
+        "status": "supported",
+        "note": "Unblocked attacker assigns damage to defending player; opponent 1 has no creatures."
+      },
+      {
+        "step": 5,
+        "rule": "119.2",
+        "status": "supported",
+        "note": "7 damage = 7 life loss; 33 to 26 correct."
+      },
+      {
+        "step": 5,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": "Verbatim substring; 7 more Treasures, 2 to 9, net +2 per cycle arithmetic verified."
+      },
+      {
+        "step": 6,
+        "rule": "118.3",
+        "status": "supported",
+        "note": "Cannot partially pay {3}{R}{R}; loop halts below 5 Treasures with no other mana. Sustaining condition (5+ combat damage to a player) correctly stated."
+      },
+      {
+        "step": 6,
+        "rule": "111.10a",
+        "status": "supported",
+        "note": "One mana per sacrificed Treasure — 5 Treasures per activation confirmed."
+      },
+      {
+        "step": 7,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Opp1 at -2 after combat 6 loses via SBA. Independent math: 40-7x6=-2, dies combat 6 (fifth activation). Ledger 7,2,9,4,11,6,13,8,15,10,17 re-derived and correct; combat 6 trigger resolves since opp2 remains."
+      },
+      {
+        "step": 7,
+        "rule": "104.5",
+        "status": "supported",
+        "note": "Losing player leaves the game; opp1's board is empty so nothing else leaves with them."
+      },
+      {
+        "step": 8,
+        "rule": "702.9b",
+        "status": "supported",
+        "note": "2/2 without flying or reach can never block the flying Gnawbone; every combat 7-12 connects for 7."
+      },
+      {
+        "step": 8,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "38-7x6=-4; opp2 dies combat 12 (eleventh activation). Ledger 12,19,14,21,16,23,18,25,20,27 then activation 11 to 22 re-derived; every pre-activation balance is >=5, loop stays solvent."
+      },
+      {
+        "step": 9,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Full rule confirms SBAs are performed BEFORE waiting triggered abilities are put on the stack — the combat-12 trigger is still waiting when opp2's loss is processed. Quote is a mid-sentence extract but faithful to the rule's meaning in context."
+      },
+      {
+        "step": 9,
+        "rule": "104.2a",
+        "status": "supported",
+        "note": "Last opponent leaving makes you win immediately; 'overrides all effects' language confirms nothing defers it."
+      },
+      {
+        "step": 9,
+        "rule": "104.1",
+        "status": "supported",
+        "note": "Game ends immediately on the win, so the waiting trigger is never put on the stack and never resolves. Final count 22 = 11x7 - 11x5, independently verified; iteration-1 defect is fixed."
+      },
+      {
+        "step": 10,
+        "rule": "118.3",
+        "status": "supported",
+        "note": "Bound (a) — refund under 5 eventually starves the full payment."
+      },
+      {
+        "step": 10,
+        "rule": "702.9b",
+        "status": "supported",
+        "note": "Bound (b) — flying/reach blockers are the only legal blocks."
+      },
+      {
+        "step": 10,
+        "rule": "104.5",
+        "status": "supported",
+        "note": "Bound (c) — supply of opponents; correctly notes the loop is not rules-infinite (each cycle needs real activations and combats)."
+      }
+    ],
+    "summary": "Iteration 2 passes. The iteration-1 defect (combat-12 trigger wrongly resolving for a final count of 29) is fixed correctly: 704.3 sequences SBAs before pending triggers, 704.5a/104.5 remove the last opponent, 104.2a makes the win immediate, and 104.1 ends the game before the trigger can be put on the stack — final count 22 confirmed by independent ledger (11 triggers x +7, 11 activations x -5, minimum pre-activation balance 7 >= 5 throughout). All 27 citations across 10 steps verified against full rule text; card facts (Old Gnawbone 7/7 Flying trigger wording, Aggravated Assault cost/text, both sideboard) match cards.json. Kill combats re-derived: opp1 (40) dies combat 6 at -2; opp2 (38, ground 2/2 cannot block a flyer) dies combat 12 at -4. Missing-step audit: SBA checks present at both deaths, no replacement effects in play, priority and sorcery-timing handled, combat-6 trigger correctly resolves (opp2 still in game). No omissions found.",
+    "iterations": 2
+  }
+}

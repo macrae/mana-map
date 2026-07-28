@@ -1,0 +1,392 @@
+{
+  "id": "005",
+  "slug": "sneak-attack-what-it-cheats",
+  "deck": "ur-dragon",
+  "title": "Sneak Attack: what it can cheat in — and the commander it can't",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Sneak Attack",
+        "four lands (one producing {R}, all untapped)"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": []
+        },
+        {
+          "life": 40,
+          "board": [
+            "a 2/2 creature with no evasion keywords"
+          ]
+        }
+      ]
+    },
+    "hand": [
+      "Drakuseth, Maw of Flames"
+    ],
+    "graveyard": [],
+    "mana_available": "three lands still untapped ({R} already spent on the activation)",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Sneak Attack's activated ability",
+        "controller": "you",
+        "note": "activated for {R}, choosing to put Drakuseth, Maw of Flames from hand onto the battlefield; about to resolve"
+      }
+    ],
+    "extras": {
+      "context": "SIDEBOARD VERIFICATION: Sneak Attack is in this deck's sideboard. The strategic frame lists it as a 'commander-cheat vector' for The Ur-Dragon (mean cast turn 8.989), and the sideboard analysis parked it pending verification. Sneak Attack: '{R}: You may put a creature card from your hand onto the battlefield. That creature gains haste. Sacrifice the creature at the beginning of the next end step.' Drakuseth, Maw of Flames (7/7, Flying): 'Whenever Drakuseth attacks, it deals 4 damage to any target and 3 damage to each of up to two other targets.' The Ur-Dragon is IN THE COMMAND ZONE, as commanders are. It is your precombat main phase.",
+      "commander_zone": "The Ur-Dragon is in the command zone; it has not been cast this game"
+    },
+    "question": "Two questions in one domain (what Sneak Attack's own text reaches). (a) Activate Sneak Attack paying {R}, putting Drakuseth onto the battlefield: walk the turn — is Drakuseth's attack trigger a cast trigger or an attack trigger, does it fire when Drakuseth attacks the turn it enters, when is the sacrifice trigger put on the stack and is it optional, and does the sacrificed Drakuseth's damage already dealt stand? (b) The strategic frame proposes Sneak Attack as a way to cheat The Ur-Dragon into play, dodging the nine-mana cast: can Sneak Attack ever put The Ur-Dragon onto the battlefield given the commander begins the game in the command zone and Sneak Attack reaches only 'a creature card from your hand'?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Sneak Attack's activated ability resolves. Following its instructions in order, you choose to put Drakuseth, Maw of Flames from your hand onto the battlefield; it gains haste; and the resolution creates a delayed triggered ability — 'Sacrifice the creature at the beginning of the next end step.'",
+        "effect": "Drakuseth is on the battlefield as a 7/7 flier with haste. A delayed triggered ability waiting on the next end step now exists. Drakuseth was never cast, so no cast-related events occur.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "603.7a",
+            "quote": "Delayed triggered abilities are created during the resolution of spells or abilities"
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "You move to combat and declare Drakuseth as an attacker against the open opponent (the one with no board). Normally a creature that entered this turn could not attack, but haste overrides the summoning-sickness rule.",
+        "effect": "Drakuseth legally attacks the turn it entered the battlefield.",
+        "citations": [
+          {
+            "rule": "302.6",
+            "quote": "A creature can’t attack unless it has been under its controller’s control continuously since their most recent turn began."
+          },
+          {
+            "rule": "702.10b",
+            "quote": "If a creature has haste, it can attack even if it hasn’t been controlled by its controller continuously since their most recent turn began."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Drakuseth's 'Whenever Drakuseth attacks' ability triggers. It is an attack trigger, not a cast trigger: it cares only about Drakuseth being declared as an attacker, so it fires whether Drakuseth was cast or put onto the battlefield by Sneak Attack.",
+        "effect": "The attack trigger fires the turn Drakuseth enters — cheating it in loses nothing from this ability.",
+        "citations": [
+          {
+            "rule": "508.3a",
+            "quote": "An ability that reads “Whenever [a creature] attacks, . . .” triggers if that creature is declared as an attacker."
+          },
+          {
+            "rule": "508.2a",
+            "quote": "Abilities that trigger on a creature attacking trigger only at the point the creature is declared as an attacker."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "The trigger is put on the stack the next time a player would receive priority (still in the declare attackers step), and its targets are chosen then: 4 damage to the opponent with the 2/2, 3 damage to that opponent's 2/2, and 3 damage to the defending opponent ('up to two other targets').",
+        "effect": "Drakuseth's trigger is on the stack with three distinct targets, before blockers are ever declared.",
+        "citations": [
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "115.1d",
+            "quote": "The target(s) are chosen as the ability is put on the stack"
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "All players pass priority and the trigger resolves during the declare attackers step: Drakuseth deals 4 damage to the second opponent, 3 to their 2/2, and 3 to the defending opponent. Damage dealt to a player makes them lose that much life.",
+        "effect": "Second opponent: 40 → 36. Defending opponent: 40 → 37. The 2/2 has 3 damage marked on it.",
+        "citations": [
+          {
+            "rule": "508.2",
+            "quote": "Second, the active player gets priority."
+          },
+          {
+            "rule": "119.2",
+            "quote": "Damage dealt to a player normally causes that player to lose that much life."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "State-based actions are checked before any player receives priority again: the 2/2 has damage marked on it greater than or equal to its toughness.",
+        "effect": "The 2/2 has been dealt lethal damage and is destroyed. The battlefield's only potential blocker is gone (it could not have blocked the flier anyway).",
+        "citations": [
+          {
+            "rule": "704.5g",
+            "quote": "If a creature has toughness greater than 0, it has damage marked on it, and the total damage marked on it is greater than or equal to its toughness, that creature has been dealt lethal damage and is destroyed."
+          },
+          {
+            "rule": "117.5",
+            "quote": "the game first performs all applicable state-based actions as a single event"
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Combat continues. Drakuseth (7/7 flying) is unblocked; in the combat damage step it deals its combat damage to the defending opponent.",
+        "effect": "Defending opponent: 37 → 30. One {R} activation delivered 17 total damage across the table.",
+        "citations": [
+          {
+            "rule": "510.1b",
+            "quote": "An unblocked creature assigns its combat damage to the player, planeswalker, or battle it’s attacking."
+          },
+          {
+            "rule": "510.2",
+            "quote": "all combat damage that’s been assigned is dealt simultaneously"
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "At the beginning of your end step, Sneak Attack's delayed triggered ability triggers and is put on the stack. Its instruction is 'Sacrifice the creature' — there is no 'may'; when it resolves you must follow it. It is not optional.",
+        "effect": "The mandatory sacrifice trigger is on the stack. (Players may respond to it — e.g., a blink effect would exile Drakuseth first — but nothing in this scenario does.)",
+        "citations": [
+          {
+            "rule": "603.7b",
+            "quote": "A delayed triggered ability will trigger only once—the next time its trigger event occurs"
+          },
+          {
+            "rule": "513.1",
+            "quote": "Once it begins, the active player gets priority."
+          },
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "The sacrifice trigger resolves: you move Drakuseth from the battlefield to its owner's graveyard. The damage it dealt this turn was a set of one-shot effects that already happened; sacrificing the creature does not undo them.",
+        "effect": "Drakuseth is in the graveyard. All 17 damage stands: opponents remain at 30 and 36.",
+        "citations": [
+          {
+            "rule": "701.21a",
+            "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner’s graveyard."
+          },
+          {
+            "rule": "610.1",
+            "quote": "A one-shot effect does something just once and doesn’t have a duration. Examples include dealing damage"
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "(b) Zone check for The Ur-Dragon. As a commander it began the game in the command zone, and it has not been cast, so it is there now. The command zone and the hand are different zones — a card in the command zone is not 'a creature card from your hand.'",
+        "effect": "Sneak Attack's ability has nothing legal to reach: The Ur-Dragon is not in your hand, and Sneak Attack's text reaches only your hand.",
+        "citations": [
+          {
+            "rule": "903.6",
+            "quote": "At the start of the game, each player puts their commander from their deck face up into the command zone."
+          },
+          {
+            "rule": "402.1",
+            "quote": "The hand is where a player holds cards that have been drawn."
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "(b) conclusion — REFUTATION. From the command zone, the only thing the rules let you do with The Ur-Dragon is cast it (nine mana, plus commander tax on later casts). Sneak Attack cannot put it onto the battlefield from there. The narrow exception: if The Ur-Dragon were genuinely in your hand — you drew it after it was shuffled away, or you declined the replacement that returns it to the command zone — Sneak Attack could then cheat it in, but that is not the commander's normal zone and not what the strategic frame described.",
+        "effect": "The strategic frame's 'commander-cheat vector' claim is refuted: Sneak Attack does not dodge the nine-mana cast for a commander sitting in the command zone. (The deck's actual commander-cheat is Hellkite Courser, whose oracle text reads 'put a commander you own from the command zone onto the battlefield.')",
+        "citations": [
+          {
+            "rule": "903.8",
+            "quote": "A commander cast from the command zone costs an additional {2} for each previous time the player casting it has cast it from the command zone that game."
+          },
+          {
+            "rule": "903.9b",
+            "quote": "If a commander would be put into its owner’s hand or library from anywhere, its owner may put it into the command zone instead."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "One {R} activation: Drakuseth enters with haste, attacks immediately, its attack trigger (not a cast trigger) deals 4+3+3 before blockers, it connects for 7 in the air, and is mandatorily sacrificed at the beginning of the end step — all 17 damage stands. The Ur-Dragon never moves: Sneak Attack cannot touch the command zone.",
+      "you": {
+        "battlefield": [
+          "Sneak Attack",
+          "four lands"
+        ],
+        "graveyard": [
+          "Drakuseth, Maw of Flames"
+        ],
+        "hand": [],
+        "command_zone": [
+          "The Ur-Dragon (untouched — still awaiting its nine-mana cast)"
+        ]
+      },
+      "opponents": [
+        {
+          "life": 30,
+          "board": [],
+          "note": "defending opponent: 3 (trigger) + 7 (combat) = 10 damage"
+        },
+        {
+          "life": 36,
+          "board": [],
+          "note": "took 4 from the trigger; their 2/2 was destroyed by lethal damage (SBA) from the 3-damage leg"
+        }
+      ]
+    },
+    "answer": "(a) Drakuseth's ability is an attack trigger — it fires when Drakuseth is declared as an attacker (508.3a), which haste permits the turn it enters (702.10b overriding 302.6); being put onto the battlefield rather than cast changes nothing, since no part of it is a cast trigger. The sacrifice is a delayed triggered ability created when Sneak Attack's ability resolves (603.7a); it goes on the stack at the beginning of the next end step and is mandatory — 'Sacrifice the creature' has no 'may'. All damage already dealt (10 trigger damage + 7 combat damage) stands after the sacrifice: dealing damage is a one-shot effect (610.1). (b) REFUTED. The Ur-Dragon is in the command zone (903.6), Sneak Attack reaches only 'a creature card from your hand', and the command zone is not the hand — so Sneak Attack can never cheat the commander in from its normal zone; the command-zone route remains the nine-mana cast plus tax (903.8). Sneak Attack is still an excellent card for this deck — a one-mana Drakuseth/Terror of the Peaks engine — but it is a 99-cheater, not a commander-cheater. Hellkite Courser is the card that actually does what the frame claimed."
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Resolution follows instructions in order; grounds put-onto-battlefield, haste grant, and delayed-trigger creation sequence."
+      },
+      {
+        "step": 1,
+        "rule": "603.7a",
+        "status": "supported",
+        "note": "Full rule confirms delayed triggered abilities are created during resolution of the ability; the sacrifice clause is exactly this."
+      },
+      {
+        "step": 2,
+        "rule": "302.6",
+        "status": "supported",
+        "note": "Exact quote of the summoning-sickness rule; correctly framed as the default Drakuseth would violate."
+      },
+      {
+        "step": 2,
+        "rule": "702.10b",
+        "status": "supported",
+        "note": "Haste overrides 302.6; full rule even cross-references it."
+      },
+      {
+        "step": 3,
+        "rule": "508.3a",
+        "status": "supported",
+        "note": "Trigger fires on declaration as attacker. Full-rule context checked: the 'put onto the battlefield attacking' exception does NOT apply — Drakuseth entered in the main phase and was then declared normally."
+      },
+      {
+        "step": 3,
+        "rule": "508.2a",
+        "status": "supported",
+        "note": "Attack triggers fire only at declaration; supports the attack-trigger-not-cast-trigger framing."
+      },
+      {
+        "step": 4,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Trigger goes on stack next time a player would receive priority."
+      },
+      {
+        "step": 4,
+        "rule": "115.1d",
+        "status": "supported",
+        "note": "Targets chosen as the triggered ability is put on the stack; Drakuseth's trigger is targeted ('any target', 'other targets'). Three distinct targets satisfy 'other'."
+      },
+      {
+        "step": 5,
+        "rule": "508.2",
+        "status": "supported",
+        "note": "Active player gets priority in the declare attackers step, so the trigger resolves there before blockers."
+      },
+      {
+        "step": 5,
+        "rule": "119.2",
+        "status": "supported",
+        "note": "Damage to a player causes life loss; 40->36 and 40->37 arithmetic correct."
+      },
+      {
+        "step": 6,
+        "rule": "704.5g",
+        "status": "supported",
+        "note": "3 damage marked on a 2/2 is lethal; destroyed as an SBA."
+      },
+      {
+        "step": 6,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "SBAs performed before any player receives priority; correct placement."
+      },
+      {
+        "step": 7,
+        "rule": "510.1b",
+        "status": "supported",
+        "note": "Iteration-1 gap now closed: rule establishes an unblocked creature assigns combat damage to the player it's attacking. The rule's no-longer-attacking exception is inapplicable here."
+      },
+      {
+        "step": 7,
+        "rule": "510.2",
+        "status": "supported",
+        "note": "Assigned combat damage dealt simultaneously; 37->30 for 7 correct."
+      },
+      {
+        "step": 8,
+        "rule": "603.7b",
+        "status": "supported",
+        "note": "Delayed trigger fires once at the next trigger event — the same-turn end step, since activation was precombat main."
+      },
+      {
+        "step": 8,
+        "rule": "513.1",
+        "status": "supported",
+        "note": "End step has no turn-based actions; active player gets priority, so the trigger is put on the stack and can be responded to, as the step notes."
+      },
+      {
+        "step": 8,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Instructions must be followed on resolution; 'Sacrifice the creature' has no 'may' in the oracle text (verified in cards.json), so it is mandatory."
+      },
+      {
+        "step": 9,
+        "rule": "701.21a",
+        "status": "supported",
+        "note": "Sacrifice moves the permanent from battlefield directly to owner's graveyard."
+      },
+      {
+        "step": 9,
+        "rule": "610.1",
+        "status": "supported",
+        "note": "Rule explicitly lists 'dealing damage' as a one-shot effect; damage already dealt is unaffected by the later sacrifice."
+      },
+      {
+        "step": 10,
+        "rule": "903.6",
+        "status": "supported",
+        "note": "Commander begins in the command zone; scenario states it was never cast."
+      },
+      {
+        "step": 10,
+        "rule": "402.1",
+        "status": "supported",
+        "note": "Defines the hand as a distinct zone; command zone is not the hand, so Sneak Attack's 'from your hand' cannot reach it."
+      },
+      {
+        "step": 11,
+        "rule": "903.8",
+        "status": "supported",
+        "note": "Casting from the command zone (with tax) is the route Sneak Attack fails to bypass; supports the refutation."
+      },
+      {
+        "step": 11,
+        "rule": "903.9b",
+        "status": "supported",
+        "note": "The 'may' in the replacement legitimately grounds the narrow exception: a declined replacement can leave the commander in hand/library, where Sneak Attack (or a draw) could reach it."
+      }
+    ],
+    "summary": "PASS on iteration 2. The single iteration-1 gap (uncited unblocked-damage claim in step 7) is closed by CR 510.1b, whose full text supports the claim and whose exception clause is inapplicable. Full re-verification from scratch: all 23 citations across 11 steps are supported against complete rule text with no out-of-context quoting — notably 508.3a's 'put onto the battlefield attacking' exception was checked and correctly does not apply (Drakuseth entered in the main phase, then was declared). Card facts verified against cards.json: Sneak Attack oracle text exact and is_sideboard true; Drakuseth 7/7 flying with the quoted attack trigger; The Ur-Dragon is_commander true at CMC 9; Hellkite Courser's quoted command-zone text exact and maindeck. Missing-step audit clean: trigger placement, target legality ('other' requires distinct targets — satisfied), SBA on the 2/2, priority passes, and damage arithmetic (4+3+3+7=17; life 40/40 -> 36/30) all consistent. The Ur-Dragon's own attack trigger correctly does not fire from the command zone (abilities function only from the battlefield; Eminence extends only the cost reduction). Part (b)'s refutation of the strategic frame's commander-cheat claim is rules-sound.",
+    "iterations": 2
+  }
+}
