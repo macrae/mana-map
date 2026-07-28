@@ -1,0 +1,194 @@
+{
+  "slug": "ur-dragon",
+  "assessment": "The pool offers exactly what the strategic frame says the deck lacks: redundancy for the one Aggravated Assault that carries all three contained infinites, and more of the Treasure fuel that verified stack 006 proved is the legal way to pay it. Eight of the ten picks are extra-combat engines or Treasure engines that extend the verified 003/006 architecture — every new line still needs its own stack scenario. The remaining two are consistency picks: an obsolescence-traced cheaper Skyshroud Claim and the draw engine the role budget is six cards short on (and the pilot asked for by name). No Game Changers among the ten; the floor stays at 4.",
+  "lookout": [
+    {
+      "card": "Hellkite Charger",
+      "cmc": 6.0,
+      "type_line": "Creature — Dragon",
+      "role": "threat:body",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": ["Old Gnawbone", "Hellkite Charger"],
+            "produces": ["Infinite colored mana", "Infinite combat damage", "Infinite combat phases", "Infinite Treasure tokens", "Infinite untap of creatures you control", "Infinite mana creatures you control can produce"],
+            "status": "needs a stack scenario"
+          }
+        ],
+        "edhrec_rank": 2126,
+        "game_changer": false
+      },
+      "why": "★ The second Aggravated Assault the frame says the deck doesn't have — an extra-combat engine on a Dragon body, so it takes the eminence discount, Sarkhan's Triumph tutors it, and all five spells-only Dragon sources (Haven, Klauth, Maelstrom, Rivaz, Unclaimed Territory) can actually cast it. Its {5}{R}{R} is an ability payment those sources still cannot pay — Treasures fund it exactly as verified stack 006 funds Assault.",
+      "unlocks": "One removal spell on Aggravated Assault no longer turns off every infinite at once; Gnawbone + Charger replays the 006 table-kill through a different card name."
+    },
+    {
+      "card": "The Reaver Cleaver",
+      "cmc": 3.0,
+      "type_line": "Legendary Artifact — Equipment",
+      "role": "buff:attached",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": ["The Reaver Cleaver", "Aggravated Assault"],
+            "produces": ["Infinite colored mana", "Infinite combat damage", "Infinite combat phases", "Infinite mana creatures you control can produce", "Infinite Treasure tokens", "Infinite untap of creatures you control"],
+            "status": "needs a stack scenario"
+          }
+        ],
+        "edhrec_rank": 565,
+        "game_changer": false
+      },
+      "why": "★ Redundancy for the funding half of the verified engine: 'create that many Treasure tokens' on combat damage turns any equipped flier into an Old Gnawbone, and it pairs directly with the Assault already in the 99 (the most popular line any candidate opens, popularity 34,407).",
+      "unlocks": "The 006 Treasure-funded loop no longer requires drawing one specific 7-drop — a 3-mana equipment plus any large Dragon reproduces it."
+    },
+    {
+      "card": "Sword of Feast and Famine",
+      "cmc": 3.0,
+      "type_line": "Artifact — Equipment",
+      "role": "buff:attached",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": ["Sword of Feast and Famine", "Aggravated Assault"],
+            "produces": ["Infinite combat phases"],
+            "status": "needs a stack scenario"
+          }
+        ],
+        "edhrec_rank": 539,
+        "game_changer": false
+      },
+      "why": "★ Pays Assault with the one mana type nothing in the deck restricts — untapped lands: on combat damage you untap all lands, which covers {3}{R}{R} for the next activation, and protection from black and green shields the key attacker from the removal the frame says will aim at the engine.",
+      "unlocks": "Assault activations stop competing with the deck's spell mana; every connected hit refunds the combat and strips a card from the defender."
+    },
+    {
+      "card": "Ancient Copper Dragon",
+      "cmc": 6.0,
+      "type_line": "Creature — Elder Dragon",
+      "role": "threat:body",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": ["Ancient Copper Dragon", "Aggravated Assault"],
+            "produces": ["Near-infinite colored mana", "Near-infinite combat damage", "Near-infinite Treasure tokens"],
+            "status": "needs a stack scenario"
+          }
+        ],
+        "edhrec_rank": 640,
+        "game_changer": false
+      },
+      "why": "★ A second Old Gnawbone for the verified 006 architecture: d20 Treasures per connection (mean 10.5, minimum 1 — hence 'near-infinite', the roll can undershoot Assault's five mana), on a Dragon body the deck's typal support and restricted mana all reach.",
+      "unlocks": "Doubles the count of in-99 Treasure engines that fund Assault, and its dice pair with Ancient Gold Dragon's for the same combat.",
+      "natural_cut": "Cavern-Hoard Dragon — same slot, but its Treasure count depends on the defender's artifacts rather than a d20 (★ judgment; the third contained infinite goes with it, so only cut if the redundancy picks land)."
+    },
+    {
+      "card": "Bear Umbra",
+      "cmc": 4.0,
+      "type_line": "Enchantment — Aura",
+      "role": "buff:attached",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": ["Aggravated Assault", "Bear Umbra"],
+            "produces": ["Infinite combat phases"],
+            "status": "needs a stack scenario"
+          }
+        ],
+        "edhrec_rank": 887,
+        "game_changer": false
+      },
+      "why": "★ Untaps all lands on attack — before blockers, not on damage — so it funds Assault even when the attacker is chumped, and umbra armor eats the first removal spell aimed at the creature carrying the engine.",
+      "unlocks": "An extra-combat loop that does not require connecting, which none of the Treasure-based funding can claim."
+    },
+    {
+      "card": "Selvala, Heart of the Wilds",
+      "cmc": 3.0,
+      "type_line": "Legendary Creature — Elf Scout",
+      "role": "ramp:dork",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": ["Aggravated Assault", "Selvala, Heart of the Wilds"],
+            "produces": ["Infinite colored mana", "Infinite combat phases", "Infinite untap of creatures you control"],
+            "status": "needs a stack scenario"
+          }
+        ],
+        "edhrec_rank": 438,
+        "role_shortfall": {"group": "draw", "short": 6, "pick_roles": ["draw:engine", "threat:body", "utility:activated", "value:etb"]},
+        "game_changer": false
+      },
+      "why": "★ A 3-drop whose tap ability makes X unrestricted any-colour mana equal to the greatest power you control — any 5-power Dragon means Selvala alone pays Assault, and Assault untaps her for the next activation; her draw trigger fires on the deck's own biggest-body-in-play Dragons against the role budget's draw -6.",
+      "unlocks": "The curve-peak turn-3 play that later becomes both combo fuel and a draw engine; note the draw trigger is symmetric, but this deck usually owns the biggest body."
+    },
+    {
+      "card": "Helm of the Host",
+      "cmc": 4.0,
+      "type_line": "Legendary Artifact — Equipment",
+      "role": "buff:attached",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": ["Scourge of the Throne", "Helm of the Host"],
+            "produces": ["Infinite combat phases", "Infinite creature tokens with haste", "Infinite ETB"],
+            "status": "needs a stack scenario"
+          }
+        ],
+        "edhrec_rank": 395,
+        "game_changer": false
+      },
+      "why": "★ The only candidate whose infinite does not route through Aggravated Assault at all — it pairs with the Scourge of the Throne already sleeved (each copy's dethrone grants another combat; the scenario must verify the attack-the-most-life condition holds each iteration) — and off-combo it stamps nonlegendary copies of Miirym, Terror of the Peaks, or Old Gnawbone every combat.",
+      "unlocks": "A second, fully independent extra-combat axis, plus a copy engine every verified ETB/damage-trigger stack (001, 002) scales with."
+    },
+    {
+      "card": "Neheb, the Eternal",
+      "cmc": 5.0,
+      "type_line": "Legendary Creature — Zombie Minotaur Warrior",
+      "role": "ramp:dork",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": ["Neheb, the Eternal", "Aggravated Assault"],
+            "produces": ["Infinite combat phases", "Infinite red mana", "Infinite mana creatures you control can produce"],
+            "status": "needs a stack scenario"
+          }
+        ],
+        "edhrec_rank": 1167,
+        "game_changer": false
+      },
+      "why": "★ Converts the damage the Dragons already deal into postcombat red mana that legally pays Assault (five or more damage covers {3}{R}{R} on its own) — and off-combo those postcombat main phases cast eminence-discounted Dragons; ranked below the Dragon-bodied options because no typal support reaches it.",
+      "unlocks": "Every combat the table takes becomes ramp; a Drakuseth attack alone banks ten mana for the second main."
+    },
+    {
+      "card": "Three Visits",
+      "cmc": 2.0,
+      "type_line": "Sorcery",
+      "role": "ramp:land",
+      "evidence": {
+        "obsoletes": ["Skyshroud Claim"],
+        "edhrec_rank": 42,
+        "game_changer": false
+      },
+      "why": "★ Obsolescence-traced (similarity 0.9983, Lower CMC): fetches any Forest card untapped — including the deck's seven Forest-typed duals — two turns earlier than Skyshroud Claim, as functional copies three and four of the Nature's Lore/Farseek effect the goldfish shows the deck leaning on.",
+      "unlocks": "A ramp spell at the curve's modal turn instead of turn 4, tightening the 71.6%-ramp-by-t6 consistency number the whole plan sits on.",
+      "natural_cut": "Skyshroud Claim — the card the index lists it as strictly upgrading."
+    },
+    {
+      "card": "Ancient Silver Dragon",
+      "cmc": 8.0,
+      "type_line": "Creature — Elder Dragon",
+      "role": "draw:engine",
+      "evidence": {
+        "role_shortfall": {"group": "draw", "short": 6, "pick_roles": ["draw:engine", "threat:body"]},
+        "edhrec_rank": 1421,
+        "game_changer": false
+      },
+      "why": "★ The role budget's biggest hole is draw (-6) and this is the pool's largest Dragon-shaped patch for it: d20 cards on connection with no maximum hand size — plus verified stack 005 already establishes Sneak Attack cheats any 99 Dragon in for {R}, which is exactly how an 8-drop draw engine should arrive. The pilot asked for it by name (pilot_feedback.md).",
+      "unlocks": "One connection refuels the hand that the wave-deployment wrath-math plan spends; eminence, Korlessa, and the Dragon-restricted mana all discount or pay the honest cast."
+    }
+  ],
+  "gaps": [
+    "Every combo line above is unverified — the highest-value stack scenarios to buy, in order: The Reaver Cleaver + Aggravated Assault Treasure accounting (mirrors 006), Old Gnawbone + Hellkite Charger, and Helm of the Host + Scourge of the Throne (the copy's dethrone condition — must it keep attacking the most-life player each extra combat? — decides whether the loop is real).",
+    "Ad Nauseam is the pool's only Game Changer candidate (line: Ad Nauseam + Teferi's Protection, infinite card draw, unverified). Excluded on fit, not on floor: the deck's average mana value makes the life cost brutal. The pilot approved bracket 4, so if the orchestrator wants it re-litigated the floor is not the objection.",
+    "The synergy channel produced only noise for this deck (Ramp + Cost Reduction pairings off Savage Ventmaw/Klauth, format-wide shortlists) — no pick carries a synergy_partners_in_deck claim.",
+    "Role budget shorts in lands (-7), sweeper (-2), and recursion (-2) have no evidenced pool candidate in any channel; the lands figure is the builder's 36-land prior against this deck's deliberate 29 and likely needs the pilot, not a pick.",
+    "Pilot feedback names Hellkite Tyrant and Faeburrow Elder; neither appears in any evidence channel (no obsolescence entry, no combo line with the 99, no qualifying synergy shortlist, no shorted role — ramp is over budget at 13/10). Carrying them anyway is an orchestrator/pilot decision the data cannot back."
+  ]
+}
