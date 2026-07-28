@@ -16,3 +16,14 @@ interaction, and punish durdling.
 
 Standing facts: verified stacks 001-004 unchanged; floor 4 on 8 Game
 Changers; wincon access dropped to 43% by t6 with White Sun's Zenith out.
+
+## Re-verification request (2026-07-28)
+
+The five tier-4 swaps recommended by the first pass (Grand Abolisher,
+Drannith Magistrate, Jace Beleren, Jace, Wielder of Mysteries, Teferi,
+Temporal Pilgrim) are APPLIED — that decision stands. The pilot now wants
+the complete 60-card pool re-verified under the appetite rule: the previous
+"zero swaps left" verdict was produced by the old minimal-cuts charter, and
+the pilot does not fully trust it. Max-power appetite at bracket 4 stands.
+Propose every swap the evidence supports; "zero swaps" remains a complete
+answer only if the evidence really says so.
