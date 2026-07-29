@@ -7,6 +7,7 @@ import pytest
 from conftest import requires_deck
 from manamap import config
 from manamap.pilot import agent_cache as ac
+from manamap.pilot import common
 
 SLUG = "test-deck"
 
@@ -641,3 +642,214 @@ def test_clear_memo_drops_cached_parses(tmp_path):
     first = common.load_json_memo(path)
     common.clear_memo()
     assert common.load_json_memo(path) is not first
+
+
+# ── Card-scoped invalidation: STALE_OK, refs, rebless ────────────────────
+
+
+def _two_card_deck(base):
+    """A deck where 'Sac Outlet' is referenced by the stack and 'Filler Land'
+    is not — the shape every STALE_OK test needs."""
+    write_json(base / "cards.json", {"deck": SLUG, "decklist_sha256": "abc", "cards": [
+        {"name": "Sac Outlet", "oracle_text": "Sacrifice a creature: draw."},
+        {"name": "Filler Land", "oracle_text": "T: Add C.", "is_sideboard": False},
+    ]})
+    stack = stack_doc("001")
+    stack["scenario"]["question"] = "What does Sac Outlet do here?"
+    write_json(base / "stacks" / "001-first.json", stack)
+    ac._SHA_MEMO.clear()
+    common.clear_memo()
+
+
+def test_diff_card_maps_names_changed_cards():
+    old = {"A\x000": "1", "B\x000": "2", "C\x001": "3"}
+    new = {"A\x000": "1", "B\x000": "9", "C\x000": "3"}  # B changed, C zone-moved
+    assert ac.diff_card_maps(old, new) == ["B", "C"]
+
+
+def test_record_stores_refs_and_card_map(deck):
+    _two_card_deck(deck)
+    entry, _ = ac.record(SLUG, "stack:001")
+    assert "Sac Outlet" in entry["card_refs"]
+    assert "Filler Land" not in entry["card_refs"]
+    cache = ac.load_cache(SLUG)
+    assert cache["cards_map"]["digest"] == entry["extra"]["cards_semantic"]
+    assert len(cache["cards_map"]["cards"]) == 2
+
+
+def test_unreferenced_card_change_is_stale_ok(deck):
+    _two_card_deck(deck)
+    ac.record(SLUG, "stack:001")
+    cards = json.loads((deck / "cards.json").read_text())
+    cards["cards"][1]["oracle_text"] = "T: Add one mana of any color."
+    write_json(deck / "cards.json", cards)
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    result = ac.status(SLUG, "stack:001")
+    assert result["status"] == "STALE_OK"
+    assert any("Filler Land" in c.get("note", "") for c in result["changed"])
+
+
+def test_referenced_card_change_is_a_real_miss(deck):
+    _two_card_deck(deck)
+    ac.record(SLUG, "stack:001")
+    cards = json.loads((deck / "cards.json").read_text())
+    cards["cards"][0]["oracle_text"] = "Sacrifice two creatures: draw two."
+    write_json(deck / "cards.json", cards)
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    result = ac.status(SLUG, "stack:001")
+    assert result["status"] == "MISS"
+    assert any("Sac Outlet" in c.get("note", "") for c in result["changed"])
+
+
+def test_record_without_refs_keeps_classic_miss(deck):
+    """Migration: a pre-refs record must never be silently STALE_OK'd."""
+    _two_card_deck(deck)
+    ac.record(SLUG, "stack:001")
+    cache = ac.load_cache(SLUG)
+    cache["routines"]["stack:001"].pop("card_refs", None)
+    ac.save_cache(SLUG, cache)
+    cards = json.loads((deck / "cards.json").read_text())
+    cards["cards"][1]["oracle_text"] = "changed"
+    write_json(deck / "cards.json", cards)
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    assert ac.status(SLUG, "stack:001")["status"] == "MISS"
+
+
+def test_stale_ok_requires_matching_card_map(deck):
+    """An older record whose deck state the stored map doesn't describe
+    cannot compute its changed set — classic MISS."""
+    _two_card_deck(deck)
+    ac.record(SLUG, "stack:001")
+    cache = ac.load_cache(SLUG)
+    cache["cards_map"]["digest"] = "stale-digest"
+    ac.save_cache(SLUG, cache)
+    cards = json.loads((deck / "cards.json").read_text())
+    cards["cards"][1]["oracle_text"] = "changed"
+    write_json(deck / "cards.json", cards)
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    assert ac.status(SLUG, "stack:001")["status"] == "MISS"
+
+
+def test_prompt_change_disqualifies_stale_ok(deck, monkeypatch):
+    _two_card_deck(deck)
+    ac.record(SLUG, "stack:001")
+    cards = json.loads((deck / "cards.json").read_text())
+    cards["cards"][1]["oracle_text"] = "changed"
+    write_json(deck / "cards.json", cards)
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    monkeypatch.setattr(ac, "agent_prompt_sha256", lambda agent: "edited-prompt")
+    assert ac.status(SLUG, "stack:001")["status"] == "MISS"
+
+
+def test_rebless_clears_stale_ok_and_seeds_refs(deck):
+    _two_card_deck(deck)
+    ac.record(SLUG, "stack:001")
+    # strip refs from one record to exercise the migration path too
+    cache = ac.load_cache(SLUG)
+    cache["routines"]["stack:001"].pop("card_refs", None)
+    ac.save_cache(SLUG, cache)
+    reblessed, _ = ac.rebless(SLUG)
+    assert "stack:001" in reblessed  # HIT-without-refs is reblessed
+    cards = json.loads((deck / "cards.json").read_text())
+    cards["cards"][1]["oracle_text"] = "changed again"
+    write_json(deck / "cards.json", cards)
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    assert ac.status(SLUG, "stack:001")["status"] == "STALE_OK"
+    reblessed, _ = ac.rebless(SLUG)
+    assert "stack:001" in reblessed
+    assert ac.status(SLUG, "stack:001")["status"] == "HIT"
+
+
+def test_keyed_routine_records_refs_by_key(deck):
+    _two_card_deck(deck)
+    prose = json.loads((deck / "manual_prose.json").read_text())
+    prose["mulligan"] = "Keep Sac Outlet hands."
+    prose["how_it_wins"] = "No cards named here."
+    write_json(deck / "manual_prose.json", prose)
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    entry, _ = ac.record(SLUG, "writer-prose")
+    assert "Sac Outlet" in entry["card_refs_by_key"]["mulligan"]
+    assert entry["card_refs_by_key"]["how_it_wins"] == []
+    # card_roles keys count as refs
+    assert "Sac Outlet" in entry["card_refs_by_key"]["card_roles"]
+
+
+def test_scan_exit_zero_with_stale_ok(deck):
+    _two_card_deck(deck)
+    ac.record(SLUG, "stack:001")
+    cards = json.loads((deck / "cards.json").read_text())
+    cards["cards"][1]["oracle_text"] = "changed"
+    write_json(deck / "cards.json", cards)
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    code, out = _run(_Args(SLUG, routine="stack:001"))
+    assert code == 0
+    assert "STALE_OK" in out
+
+
+# ── Per-key staleness (scoped regeneration) ──────────────────────────────
+
+
+def test_record_stores_key_fingerprints(deck):
+    _two_card_deck(deck)
+    entry, _ = ac.record(SLUG, "writer-prose")
+    assert set(entry["key_fingerprints"]) == {
+        "how_it_wins", "combo_lines", "card_roles", "mulligan", "upgrades"}
+
+
+def test_goldfish_change_stales_only_goldfish_keys(deck):
+    _two_card_deck(deck)
+    ac.record(SLUG, "writer-prose")
+    write_json(deck / "goldfish_metrics.json", {"meta": {"seed": 42},
+                                                "metrics": {"new": True}})
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    result = ac.status(SLUG, "writer-prose")
+    assert result["status"] == "MISS"
+    assert set(result["stale_keys"]) == {"how_it_wins", "mulligan"}
+
+
+def test_new_passing_stack_stales_stack_keys(deck):
+    _two_card_deck(deck)
+    ac.record(SLUG, "writer-prose")
+    write_json(deck / "stacks" / "003-new.json", stack_doc("003"))
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    result = ac.status(SLUG, "writer-prose")
+    assert result["status"] == "MISS"
+    assert set(result["stale_keys"]) == {"combo_lines", "how_it_wins", "upgrades"}
+
+
+def test_unreferenced_card_change_refines_stale_keys(deck):
+    """A card change only stales the keys whose refs include a changed card;
+    with no key referencing it, the whole routine is STALE_OK instead."""
+    _two_card_deck(deck)
+    prose = json.loads((deck / "manual_prose.json").read_text())
+    prose["mulligan"] = "Keep Sac Outlet hands."
+    prose["card_roles"] = {"Sac Outlet": "the engine."}
+    write_json(deck / "manual_prose.json", prose)
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    ac.record(SLUG, "writer-prose")
+    cards = json.loads((deck / "cards.json").read_text())
+    cards["cards"][1]["oracle_text"] = "changed filler"
+    write_json(deck / "cards.json", cards)
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    result = ac.status(SLUG, "writer-prose")
+    assert result["status"] == "STALE_OK"
+
+
+def test_referenced_card_change_names_the_stale_keys(deck):
+    _two_card_deck(deck)
+    prose = json.loads((deck / "manual_prose.json").read_text())
+    prose["mulligan"] = "Keep Sac Outlet hands."
+    prose["how_it_wins"] = "No names here."
+    prose["card_roles"] = {"Sac Outlet": "the engine."}
+    write_json(deck / "manual_prose.json", prose)
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    ac.record(SLUG, "writer-prose")
+    cards = json.loads((deck / "cards.json").read_text())
+    cards["cards"][0]["oracle_text"] = "Sacrifice everything."
+    write_json(deck / "cards.json", cards)
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    result = ac.status(SLUG, "writer-prose")
+    assert result["status"] == "MISS"
+    assert "mulligan" in result["stale_keys"]
+    assert "card_roles" in result["stale_keys"]
+    assert "how_it_wins" not in result["stale_keys"]

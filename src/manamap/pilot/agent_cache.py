@@ -36,6 +36,7 @@ from manamap.config import (
     AGENT_ROUTINE_STACK_INPUTS,
     AGENT_ROUTINES,
     CR_RULES_META_PATH,
+    PROSE_KEY_INPUTS,
     RESOLVE_MAX_ITERATIONS,
 )
 from manamap.pilot.common import checker_passed, deck_dir, load_json_memo
@@ -131,6 +132,37 @@ def cards_semantic_digest(path):
     ]
     cards.sort(key=lambda c: (str(c.get("name")), bool(c.get("is_sideboard"))))
     return json_sha256(cards)
+
+
+def cards_semantic_card_map(path):
+    """Per-card semantic digests: {"<name>\\x00<0|1 sideboard>": sha}.
+
+    The same rows `cards_semantic_digest` hashes as one opaque value, hashed
+    individually — the primitive that lets a MISS name WHICH cards changed
+    and lets unreferencing routines report STALE_OK instead. One extra hash
+    per card on data already parsed and memoized.
+    """
+    if not path.exists():
+        return None
+    doc = load_json_memo(path)
+    return {
+        f"{card.get('name')}\x00{int(bool(card.get('is_sideboard')))}":
+            json_sha256({k: card.get(k) for k in CARD_SEMANTIC_FIELDS})
+        for card in doc.get("cards", [])
+    }
+
+
+def diff_card_maps(old_map, new_map):
+    """Changed card NAMES between two per-card maps.
+
+    A zone move (main<->sideboard) appears as one key removed and one added
+    for the same name; either way the name lands in the changed set, which is
+    all invalidation needs. Returns a sorted list of names.
+    """
+    changed_keys = set(old_map or {}).symmetric_difference(set(new_map or {}))
+    changed_keys |= {k for k in set(old_map or {}) & set(new_map or {})
+                     if (old_map or {})[k] != (new_map or {})[k]}
+    return sorted({k.split("\x00", 1)[0] for k in changed_keys})
 
 
 # How cards *look*. Only the magazine-editor reads this (Featured Artist), so
@@ -319,6 +351,27 @@ def resolve_inputs(slug, spec):
     return entries, extra
 
 
+def key_fingerprints(slug, spec, keys):
+    """Per-owned-key fingerprints over each key's OWN declared inputs.
+
+    Rides outside the routine fingerprint; consulted on a MISS to name which
+    keys are actually stale so a re-spawn can be scoped to just those. Keys
+    without a PROSE_KEY_INPUTS entry are omitted (whole-routine staleness).
+    """
+    out = {}
+    for key in sorted(keys):
+        tokens = PROSE_KEY_INPUTS.get(key)
+        if tokens is None:
+            continue
+        entries, extra = resolve_inputs(slug, {"agent": spec["agent"],
+                                               "artifact": spec["artifact"],
+                                               "inputs": tokens})
+        out[key] = json_sha256({"key": key,
+                                "inputs": sorted(entries, key=lambda e: e["path"]),
+                                "extra": extra})
+    return out
+
+
 def fingerprint(routine, spec, entries, extra):
     """Stable, order-independent digest of everything that shapes the output."""
     return json_sha256({
@@ -475,9 +528,29 @@ def status(slug, routine, force=False, cache=None):
     if not artifact.exists():
         return {**result, "status": "MISS", "reason": "artifact missing"}
     if record_entry.get("fingerprint") != current:
-        changed = diff_inputs(record_entry.get("inputs"), entries)
-        changed += _extra_changes(record_entry.get("extra"), extra)
-        if record_entry.get("agent_prompt_sha256") != agent_prompt_sha256(spec["agent"]):
+        input_changes = diff_inputs(record_entry.get("inputs"), entries)
+        extra_changes = _extra_changes(record_entry.get("extra"), extra)
+        prompt_changed = (record_entry.get("agent_prompt_sha256")
+                          != agent_prompt_sha256(spec["agent"]))
+        changed = input_changes + extra_changes
+
+        # Name WHICH cards changed whenever the sidecar's per-card map lines
+        # up with this record's deck state — and, when the record carries
+        # refs, decide whether any changed card is actually referenced.
+        changed_cards = None
+        cards_map = (cache.get("cards_map") or {})
+        if (any(c["path"] == "cards_semantic" for c in extra_changes)
+                and cards_map.get("digest") == (record_entry.get("extra") or {}).get("cards_semantic")):
+            cards_path = deck_dir(slug) / "cards.json"
+            changed_cards = diff_card_maps(cards_map.get("cards"),
+                                           cards_semantic_card_map(cards_path))
+            for c in changed:
+                if c["path"] == "cards_semantic":
+                    shown = ", ".join(changed_cards[:6])
+                    more = f" (+{len(changed_cards) - 6} more)" if len(changed_cards) > 6 else ""
+                    c["note"] = f"cards changed: {shown}{more}"
+
+        if prompt_changed:
             # Combined routines ("deck-architect+deck-critic") hash several
             # prompts; name the real files, not a nonexistent joined path.
             for agent_name in spec["agent"].split("+"):
@@ -486,6 +559,61 @@ def status(slug, routine, force=False, cache=None):
         if not changed:
             changed = [{"path": "cache_version", "change": "changed",
                         "note": "cache format changed"}]
+
+        # STALE_OK: the ONLY thing that moved is the deck digest, the per-card
+        # diff is computable, the record declares its refs, and no changed card
+        # is among them. Conservative by construction — the matcher that built
+        # the refs over-triggers on purpose, and any other kind of change
+        # (inputs, prompt, strategy doc, rules, printing) disqualifies.
+        refs = record_entry.get("card_refs")
+        if (not input_changes and not prompt_changed
+                and extra_changes
+                and all(c["path"] == "cards_semantic" for c in extra_changes)
+                and refs is not None
+                and changed_cards is not None
+                and not set(changed_cards) & set(refs)):
+            return {**result, "status": "STALE_OK",
+                    "reason": ("cards changed but none this artifact references — "
+                               "safe to re-bless"),
+                    "changed": changed}
+
+        # For keyed routines, name WHICH keys are stale so a re-spawn can be
+        # scoped ("revise only these; copy the rest byte-identical"). A key
+        # whose only stale input is the deck digest, and whose own refs are
+        # disjoint from the changed cards, is not really stale — verify by
+        # re-fingerprinting it with the record-time deck digest substituted.
+        recorded_kfps = record_entry.get("key_fingerprints")
+        if keys and recorded_kfps:
+            stale_keys = []
+            refs_by_key = record_entry.get("card_refs_by_key") or {}
+            recorded_cards_digest = (record_entry.get("extra") or {}).get("cards_semantic")
+            for key in sorted(keys):
+                tokens = PROSE_KEY_INPUTS.get(key)
+                if tokens is None or key not in recorded_kfps:
+                    stale_keys.append(key)  # no per-key data — assume stale
+                    continue
+                k_entries, k_extra = resolve_inputs(
+                    slug, {"agent": spec["agent"], "artifact": spec["artifact"],
+                           "inputs": tokens})
+                k_fp = json_sha256({"key": key,
+                                    "inputs": sorted(k_entries, key=lambda e: e["path"]),
+                                    "extra": k_extra})
+                if k_fp == recorded_kfps[key]:
+                    continue
+                if (changed_cards is not None
+                        and key in refs_by_key
+                        and not set(changed_cards) & set(refs_by_key[key])
+                        and "cards_semantic" in k_extra):
+                    unchanged_fp = json_sha256({
+                        "key": key,
+                        "inputs": sorted(k_entries, key=lambda e: e["path"]),
+                        "extra": {**k_extra, "cards_semantic": recorded_cards_digest},
+                    })
+                    if unchanged_fp == recorded_kfps[key]:
+                        continue  # only the deck digest moved, no referenced card
+                stale_keys.append(key)
+            result["stale_keys"] = stale_keys
+
         return {**result, "status": "MISS", "reason": "inputs changed", "changed": changed}
 
     if artifact_digest(artifact, keys) != record_entry.get("artifact_sha256"):
@@ -527,6 +655,26 @@ def record(slug, routine):
     }
     if keys:
         entry["artifact_keys"] = sorted(keys)
+
+    # Card refs ride OUTSIDE the fingerprint: they refine invalidation (which
+    # cards this artifact actually mentions) without changing what a HIT means.
+    # Records without refs — anything written before this existed — keep the
+    # classic full-MISS behavior until their next record.
+    cards_path = deck_dir(slug) / "cards.json"
+    if cards_path.exists() and "cards_semantic" in extra:
+        from manamap.pilot.card_refs import (
+            artifact_card_refs, artifact_card_refs_by_key, deck_card_names,
+        )
+        deck_names = deck_card_names(load_json_memo(cards_path))
+        entry["card_refs"] = artifact_card_refs(
+            {k: v for k, v in doc.items() if k in keys} if keys else doc,
+            deck_names)
+        if keys:
+            entry["card_refs_by_key"] = artifact_card_refs_by_key(doc, keys, deck_names)
+    if keys:
+        kfps = key_fingerprints(slug, spec, keys)
+        if kfps:
+            entry["key_fingerprints"] = kfps
     if routine.startswith("stack:"):
         checker = doc.get("checker")
         if not checker:
@@ -564,6 +712,16 @@ def record(slug, routine):
     cache["cache_version"] = AGENT_CACHE_VERSION
     cache["slug"] = slug
     cache.setdefault("routines", {})[routine] = entry
+    # One shared per-card map, stamped with the digest it corresponds to. A
+    # record whose extra.cards_semantic matches this digest can have its
+    # changed-card set computed later; older records simply can't and fall
+    # back to a classic MISS.
+    cards_path = deck_dir(slug) / "cards.json"
+    if cards_path.exists():
+        cache["cards_map"] = {
+            "digest": cards_semantic_digest(cards_path),
+            "cards": cards_semantic_card_map(cards_path),
+        }
     wrote = save_cache(slug, cache)
     return entry, wrote
 
@@ -577,6 +735,33 @@ def clear(slug, routine=None):
     cache["routines"] = routines
     save_cache(slug, cache)
     return dropped
+
+
+def rebless(slug):
+    """Re-record every STALE_OK routine — and any HIT lacking refs — in one sweep.
+
+    STALE_OK means the deck changed but nothing this artifact references did;
+    re-recording refreshes the fingerprint (and refs) without any spawn.
+    HIT-without-refs is the migration case: re-recording seeds `card_refs`
+    so future card changes can be scoped. Never touches MISS or EDITED —
+    those still mean what they always meant.
+    """
+    reblessed, skipped = [], []
+    sidecar = load_cache(slug)
+    for routine in discover_routines(slug):
+        try:
+            result = status(slug, routine, cache=sidecar)
+        except (UnknownRoutine, MissingInput):
+            continue
+        needs_refs = (result["status"] == "HIT"
+                      and (sidecar.get("routines", {}).get(routine) or {}).get("card_refs") is None)
+        if result["status"] == "STALE_OK" or needs_refs:
+            record(slug, routine)
+            sidecar = load_cache(slug)  # records update the shared cards_map
+            reblessed.append(routine)
+        else:
+            skipped.append((routine, result["status"]))
+    return reblessed, skipped
 
 
 # ── CLI ─────────────────────────────────────────────────────────────────
@@ -603,12 +788,21 @@ def format_status(result, verbose=True):
         lines.append(f'       {_SYMBOL.get(change["change"], "~")} {change["path"]}'
                      f' {change["change"]}{note}')
     if result["status"] == "MISS":
+        stale_keys = result.get("stale_keys")
+        if stale_keys is not None:
+            fresh = sorted(set(keys or []) - set(stale_keys))
+            lines.append(f'       stale keys: {", ".join(stale_keys) or "(none)"}'
+                         + (f' — scope the spawn; keep verbatim: {", ".join(fresh)}'
+                            if fresh else ""))
         lines.append(f'       → spawn {result["agent"]}, validate, then: '
                      f'manamap pilot cache-record {result.get("slug", "<slug>")} '
                      f'--routine {result["routine"]}')
     elif result["status"] == "EDITED":
         lines.append("       → do NOT re-spawn; the hand edit wins. "
                      "cache-record to bless it.")
+    elif result["status"] == "STALE_OK":
+        lines.append(f'       → do NOT spawn; run: manamap pilot cache-rebless '
+                     f'{result.get("slug", "<slug>")}')
     return "\n".join(lines)
 
 
@@ -631,6 +825,17 @@ def main(args):
                   f'fingerprint {entry["fingerprint"][:12]}, {len(entry["inputs"])} input(s).')
         else:
             print(f"{args.routine} already recorded at this fingerprint — skipping write.")
+        return
+
+    if command == "cache-rebless":
+        reblessed, skipped = rebless(slug)
+        for routine in reblessed:
+            print(f"Reblessed {routine}")
+        if not reblessed:
+            print("Nothing to rebless — no STALE_OK routines.")
+        misses = [r for r, s in skipped if s == "MISS"]
+        if misses:
+            print(f"Still MISS (real work, spawn these): {', '.join(misses)}")
         return
 
     explicit = bool(getattr(args, "routine", None))
@@ -672,9 +877,15 @@ def main(args):
             print(f"N/A    {skipped['routine']:<16} {skipped['reason']}")
         if not single:
             misses = sum(1 for r in results if r["status"] == "MISS")
-            print(f"\n{misses} of {len(results)} applicable routines need a spawn"
-                  + (f"; {len(not_applicable)} not applicable to this deck." if not_applicable
-                     else "."))
+            stale = sum(1 for r in results if r["status"] == "STALE_OK")
+            line = f"\n{misses} of {len(results)} applicable routines need a spawn"
+            if stale:
+                line += f"; {stale} STALE_OK (cache-rebless {slug} to clear)"
+            if not_applicable:
+                line += f"; {len(not_applicable)} not applicable to this deck."
+            else:
+                line += "."
+            print(line)
     sys.exit(1 if any_miss else 0)
 
 

@@ -64,4 +64,13 @@ Turns `data/decks/<slug>/` artifacts into `manuals/<slug>.html` — a complete i
 - The Command Zone department is mandatory and must be format-specific. An issue that
   could be about any format has failed the Commander Mandate (STYLEv3 §3).
 
+## Scoped re-plans
+
+On a MISS caused by a deck or prose change, run `manamap pilot impact <slug>`
+first: it names which departments reference the changed cards. Spawn the
+magazine-editor scoped to those departments plus any the prose-shape diff
+touches, with the instruction to carry every other department verbatim (the
+charter's Partial revision mode). Validation and `cache-record` are unchanged
+— the plan is still one artifact; only the regeneration is scoped.
+
 **Agent output arrives as a path, not inline JSON.** Every deck agent writes to `data/decks/<slug>/.agent-out/<agent>.json` (gitignored) and returns that path with a short summary. Read the file, validate it, then merge — never ask for the JSON in the reply. A 133 KB `candidate_pool.json` returned inline costs ~35k tokens of context for nothing.

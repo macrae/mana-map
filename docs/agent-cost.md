@@ -110,6 +110,7 @@ run can't poison the cache.
 | `HIT` | 0 | inputs unchanged → do not spawn |
 | `EDITED` | 0 | inputs unchanged but the artifact was hand-edited → the human wins, do not spawn |
 | `MISS` | 1 | spawn, then record |
+| `STALE_OK` | 0 | inputs changed but no referenced card did — `cache-rebless` clears it, no spawn |
 | error | 2 | required input missing → stop, don't spawn |
 
 ```bash
@@ -182,6 +183,29 @@ agent routines, so a habitual no-op re-fetch could silently cost a 330k-token
 regeneration. It now short-circuits when the decklist is unchanged (`--force` to
 override). The hash covers the decklist text, not Scryfall's data, so oracle errata
 need `--force` — the right default for a locked-decklist subsystem.
+
+## Incremental regeneration (2026-07-28)
+
+The cache is card-scoped. Every record stores the card names its artifact
+references (`card_refs`, conservative matcher: full names + DFC faces +
+distinctive name-tokens), the sidecar keeps a per-card digest map, and keyed
+routines store per-key fingerprints over per-key inputs (`PROSE_KEY_INPUTS`).
+Three consequences:
+
+- A deck change that touches no referenced card reports `STALE_OK` (exit 0);
+  `manamap pilot cache-rebless <slug>` re-records the lot without a spawn.
+  What used to be a ~330k full sweep for a one-land swap is now zero spawns.
+- A real MISS on a keyed routine names its `stale keys:`, and the charters'
+  Partial revision mode scopes the spawn to exactly those keys — the writer
+  costs what the stale keys cost, not the whole file.
+- `manamap pilot impact <slug>` is the deterministic staleness report:
+  per-artifact/key/department card references, a rounding-aware audit of
+  goldfish/bracket figures quoted in prose, goldfish-target ghosts, and
+  zone-framing flags. Report-only; regeneration always goes through an agent.
+
+None of the new data enters the fingerprint — a HIT still means exactly what
+it meant, and pre-existing records behave classically until their next
+record seeds refs.
 
 ## Not cached, deliberately
 

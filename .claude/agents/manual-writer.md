@@ -44,6 +44,25 @@ land whose clause explicitly permits activating abilities.
 
 Every claim must trace to an artifact: a combo line to a verified stack, a card role to a synergy-graph entry or oracle text, an upgrade to an obsolescence-index entry. If you want to say something you can't source, either (a) drop it, or (b) flag it in your final message as "needs a stack scenario" so the user can queue a resolve-stack run. Never present unverified lines as fact.
 
+## Partial revision mode
+
+When the spawning prompt scopes you to named keys (or departments), that scope
+is a contract:
+
+- Revise ONLY the named pieces. Every other key is copied **byte-identical**
+  from the tracked artifact — copy programmatically (load the file and carry
+  the values), never retype prose from memory. When editing a string in
+  place, use a single-occurrence assert so a failed match aborts instead of
+  silently mangling.
+- Return the FULL artifact as usual; the orchestrator diffs and merges.
+- State, one sentence per revised piece, what changed and why.
+- If revising a scoped piece would make an UNSCOPED piece false (a claim it
+  contradicts), say so in your summary instead of silently editing it — the
+  orchestrator widens the scope; you don't.
+
+An unscoped spawn is the classic full rewrite. The scoped mode exists because
+regeneration cost tracks the pieces that changed, not the file they live in.
+
 ## Returning your output
 
 Write your JSON to the deck's agent scratchpad and return **only the path plus a short

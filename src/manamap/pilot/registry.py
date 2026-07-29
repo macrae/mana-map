@@ -32,6 +32,8 @@ PILOT_STEPS = [
     ("cache-status", "manamap.pilot.agent_cache", "Have an agent routine's inputs changed?"),
     ("cache-record", "manamap.pilot.agent_cache", "Record the fingerprint that produced an artifact"),
     ("cache-clear", "manamap.pilot.agent_cache", "Drop cache records for a deck or routine"),
+    ("cache-rebless", "manamap.pilot.agent_cache", "Re-record every STALE_OK routine without spawning"),
+    ("impact", "manamap.pilot.impact", "What does the latest deck change touch? Deterministic, report-only"),
     ("validate-strategy", "manamap.pilot.validate_strategy", "Form-check strategy.md + CHANGELOG"),
     ("build-strategy-db", "manamap.pilot.build_strategy_db", "Chunk + embed strategy.md into the strategy DB"),
     ("query-strategy", "manamap.pilot.query_strategy", "Semantic top-k strategy search"),
@@ -40,9 +42,10 @@ PILOT_STEPS = [
 
 _DECK_COMMANDS = {
     "fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual",
-    "validate-issue", "cache-status", "cache-record", "cache-clear", "artist-credits",
+    "validate-issue", "cache-status", "cache-record", "cache-clear", "cache-rebless",
+    "artist-credits",
     "bracket-check", "build-deck", "validate-build", "deck-facts", "sideboard-facts", "validate-sideboard",
-    "validate-strategic-frame", "upgrade-facts", "validate-upgrade-watch",
+    "validate-strategic-frame", "upgrade-facts", "validate-upgrade-watch", "impact",
 }
 
 
@@ -101,7 +104,7 @@ def add_pilot_parser(subparsers):
         if name == "deck-facts":
             cmd.add_argument("--out", default=None,
                              help="Write JSON here instead of stdout (a view, never tracked)")
-        if name in ("sideboard-facts", "upgrade-facts"):
+        if name in ("sideboard-facts", "upgrade-facts", "impact"):
             cmd.add_argument("--json", action="store_true", dest="as_json")
             cmd.add_argument("--out", default=None,
                              help="Write JSON here instead of stdout (a view, never tracked)")

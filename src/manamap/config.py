@@ -653,6 +653,9 @@ AGENT_ROUTINES = {
         "inputs": ["cards:semantic", "deck:goldfish_metrics.json", "stacks:passing",
                    "deck:strategic_frame.json?", "strategy:doc"],
     },
+    # deck:goldfish_metrics.json was added 2026-07-28: the writer quotes
+    # goldfish figures in how_it_wins/mulligan, and the cache not knowing
+    # that is why figure staleness used to need hand-grepped re-spawns.
     "writer-prose": {
         "agent": "manual-writer",
         "artifact": "manual_prose.json",
@@ -665,6 +668,7 @@ AGENT_ROUTINES = {
         # 4.5 MB graph is a faithful invalidation proxy for the 25.7 MB details and
         # costs far less to hash.
         "inputs": ["cards:semantic", "stacks:passing", "deck:strategic_frame.json?",
+                   "deck:goldfish_metrics.json",
                    "global:COMBO_GRAPH_PATH", "global:SYNERGY_GRAPH_PATH",
                    "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
     },
@@ -736,3 +740,24 @@ AGENT_ROUTINE_DECISION_AGENT = "pilot-coach"
 AGENT_ROUTINE_DECISION_INPUTS = ["scenario:self", "cards:semantic",
                                  "deck:goldfish_metrics.json",
                                  "deck:strategic_frame.json?", "strategy:doc"]
+
+# What each manual_prose key ACTUALLY depends on — the per-key refinement of
+# the owning routine's input list. A routine-level MISS consults this to name
+# which keys are stale, so a scoped re-spawn regenerates only those; the
+# routine-level fingerprint is untouched (these ride outside it). A key not
+# listed here falls back to whole-routine staleness.
+PROSE_KEY_INPUTS = {
+    # writer-prose
+    "card_roles": ["cards:semantic"],
+    "combo_lines": ["stacks:passing"],
+    "how_it_wins": ["cards:semantic", "deck:strategic_frame.json?",
+                    "deck:goldfish_metrics.json", "stacks:passing"],
+    "mulligan": ["cards:semantic", "deck:goldfish_metrics.json"],
+    "upgrades": ["cards:semantic", "deck:strategic_frame.json?", "stacks:passing"],
+    # coach-prose
+    "threat_assessment": ["cards:semantic", "deck:goldfish_metrics.json",
+                          "stacks:passing", "deck:strategic_frame.json?",
+                          "strategy:doc"],
+    "matchups": ["cards:semantic", "deck:goldfish_metrics.json",
+                 "stacks:passing", "deck:strategic_frame.json?", "strategy:doc"],
+}

@@ -52,4 +52,22 @@ Pipeline for `data/decks/<slug>/` → `manuals/<slug>.html`. Evidence tiers: ✓
 
 `manual_prose.json` is tracked and human-editable — tune voice directly and rebuild without re-running agents. The cache reports a hand edit as `EDITED` and still says "don't spawn"; run `cache-record` to bless it. Rewording prose never invalidates the issue plan — the editor's cache hashes prose *structure*, not text.
 
+## After a deck change: regenerate the diff, not the manual
+
+The cache is card-scoped. When the decklist changes:
+
+1. `.venv/bin/manamap pilot cache-rebless <slug>` — clears every `STALE_OK`
+   routine (deck changed, but nothing that artifact references) without a
+   single spawn. What remains MISS is real work.
+2. `.venv/bin/manamap pilot impact <slug>` — the deterministic report:
+   which artifacts/keys/departments reference the changed cards, which prose
+   figures no longer match goldfish, goldfish-target ghosts, zone-framing
+   flags on stacks. Report-only; it never edits.
+3. For a keyed routine's MISS, `cache-status` names `stale keys:` — spawn the
+   agent **scoped to exactly those keys** (the charters' Partial revision
+   mode); merge, validate, record as usual. Same for the editor: list the
+   impacted departments and instruct "carry the rest verbatim".
+4. Figures flagged by the impact audit are revised by the owning agent in a
+   scoped spawn — never hand-patched into prose.
+
 **Agent output arrives as a path, not inline JSON.** Every deck agent writes to `data/decks/<slug>/.agent-out/<agent>.json` (gitignored) and returns that path with a short summary. Read the file, validate it, then merge — never ask for the JSON in the reply. A 133 KB `candidate_pool.json` returned inline costs ~35k tokens of context for nothing.

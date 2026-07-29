@@ -36,6 +36,8 @@ manamap pilot sideboard-facts <slug> [--json]  # per-sideboard-card roles, legal
 manamap pilot validate-sideboard <slug>  # swap form + recomputed bracket deltas
 manamap pilot upgrade-facts <slug> [--json]    # pool-scout brief for a deck with NO sideboard
 manamap pilot validate-upgrade-watch <slug>    # lookout form + claims re-checked against the indexes
+manamap pilot cache-rebless <slug>             # re-record every STALE_OK routine, zero spawns
+manamap pilot impact <slug> [--json]           # card/figure/target/zone staleness report (free)
 manamap pilot validate-strategic-frame <slug>  # frame form + candidate-line flags
 manamap pilot fetch-deck <slug>         # decklist.txt → cards.json (Scryfall)
 manamap pilot validate-deck <slug>      # 100/commander/singleton/color identity
