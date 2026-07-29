@@ -12,45 +12,77 @@ Tier semantics are inherited from the three-tier evidence contract
 may not override its tier — costume never earns the badge (STYLEv3 §10).
 """
 
-# (id, title, promise, tiers, needs_copy)
-# `tiers`: badge(s) the department renders; () = structural, no evidence claim.
-# `needs_copy`: department requires kicker/headline/dek from the issue plan.
+# (id, title, promise, tiers, needs_copy, byline)
+# `tiers`: badge(s) the section renders; () = structural, no evidence claim.
+# `needs_copy`: section requires kicker/headline/dek from the issue plan.
+# `byline`: the signing columnist(s), reader-facing; None = unsigned furniture.
 #
-# Order is the STYLEv3 §5 three-act arc (v3.1 amendment): the Coach opens with
-# the thesis, the Counselor makes the case, the Quant runs the numbers, the
-# Coach takes you back to the table, the appendix holds the proof. Position in
-# this literal IS the canonical order — nothing else encodes it.
+# Order is the STYLEv3 §5 five-act flight plan (v3.2 amendment): fly the deck,
+# work the table, zoom out to the long game, then descend into the numbers and
+# the case law — depth and rigor rise monotonically through the book, and the
+# appendix holds the proof. Position in this literal IS the canonical order —
+# nothing else encodes it. Promises are written in the signing columnist's
+# voice; the renderer prints them verbatim in the Flight Plan.
 DEPARTMENTS = [
     ("cover", "The Cover",
-     "Why should I care about this deck?", (), False),
-    ("contents", "In This Issue",
-     "Where am I, and how do I read this?", (), False),
-    ("first-turns", "First Turns",
-     "What is this deck actually trying to do?", ("coach",), True),
-    ("command-zone", "The Command Zone",
-     "Why this commander — and what does the format change?", ("verified", "coach"), True),
-    ("the-kill", "The Kill",
-     "How does this deck actually win?", ("verified",), True),
-    ("by-the-numbers", "By the Numbers",
-     "What can I expect, turn by turn?", ("data",), True),
+     "Why should I care about this deck?", (), False, None),
+    ("contents", "The Flight Plan",
+     "You are here. Everything else is one tap away.", (), False, None),
+    # Act I — In the Cockpit: what to do, from turn one.
+    ("first-turns", "The Game Plan",
+     "What this deck wants to do — and why it's going to work.",
+     ("coach",), True, "Coach Sunny Brightside"),
     ("keep-or-ship", "Keep or Ship",
-     "Should I keep this hand?", ("coach", "data"), True),
-    ("upgrade-watch", "Upgrade Watch",
-     "What's next for this deck?", ("data",), True),
-    ("featured-artist", "Featured Artist",
-     "Who painted your deck?", ("data", "coach"), True),
-    ("politics-table", "The Politics Table",
-     "How do I survive three opponents?", ("coach",), True),
+     "Seven cards, one call. The Coach trusts your gut; Ledger brought receipts.",
+     ("coach", "data"), True, 'Coach Sunny Brightside with "Ledger" Lin Marginal'),
     ("whats-your-play", "What's Your Play?",
-     "What would you do here?", ("coach",), True),
+     "Real board, real stakes. Commit before the Coach shows his hand.",
+     ("coach",), True, "Coach Sunny Brightside"),
+    # Act II — At the Table: tactics against three live opponents.
+    ("politics-table", "Table Manners",
+     "Three opponents, one you. How to win friends and eliminate people.",
+     ("coach",), True, "Coach Sunny Brightside"),
     ("know-your-enemy", "Know Your Enemy",
-     "Who beats me, and why?", ("coach",), True),
+     "The decks that want you dead, and how to disappoint them.",
+     ("coach",), True, "Coach Sunny Brightside"),
+    # Act III — The Long Game: the zoomed-out view, then the future.
+    ("command-zone", "The Command Zone",
+     "Why this commander is exactly where you want to be — on the record.",
+     ("verified", "coach"), True,
+     "Counselor Vera Dictum with Coach Sunny Brightside"),
     ("the-99", "The 99",
-     "Why is each card in here?", ("coach",), True),
+     "Roll call. Every card earns its seat — or hears about it.",
+     ("coach",), True, "Coach Sunny Brightside"),
+    ("upgrade-watch", "Upgrade Watch",
+     "What this list wants next — ranked by return, not by hype.",
+     ("data",), True, '"Ledger" Lin Marginal'),
+    # Act IV — Show Your Work: the stats, then the verified lines.
+    ("by-the-numbers", "By the Numbers",
+     "Ten thousand opening hands don't lie.",
+     ("data",), True, '"Ledger" Lin Marginal'),
+    ("the-kill", "The Kill",
+     "The winning lines, argued and affirmed. Every step on the record.",
+     ("verified",), True, "Counselor Vera Dictum"),
+    # Act V — The Appendix: the proof, the paint, the door out.
     ("judges-desk", "Judge's Desk",
-     "Prove it.", ("verified",), True),
+     "The full case files. The Counselor read them twice.",
+     ("verified",), True, "Counselor Vera Dictum"),
+    ("featured-artist", "Featured Artist",
+     "The hands that painted your deck — counted and credited.",
+     ("data", "coach"), True, '"Ledger" Lin Marginal'),
     ("back-page", "The Back Page",
-     "What's in the next issue?", (), False),
+     "The next flight leaves soon.", (), False, None),
+]
+
+# The five acts (STYLEv3 §5): the Flight Plan groups its rows under these
+# headers, in this order. Every section after cover/contents belongs to
+# exactly one act — a test asserts the flattened acts equal DEPARTMENT_IDS.
+ACTS = [
+    ("In the Cockpit", ("first-turns", "keep-or-ship", "whats-your-play")),
+    ("At the Table", ("politics-table", "know-your-enemy")),
+    ("The Long Game", ("command-zone", "the-99", "upgrade-watch")),
+    ("Show Your Work", ("by-the-numbers", "the-kill")),
+    ("The Appendix", ("judges-desk", "featured-artist", "back-page")),
 ]
 
 # The masthead trio (STYLEv3 §7.7). Reprinted in In This Issue every issue;
@@ -65,7 +97,8 @@ MASTHEAD_COLUMNISTS = [
 ]
 
 DEPARTMENT_IDS = [d[0] for d in DEPARTMENTS]
-DEPARTMENT_BY_ID = {d[0]: {"title": d[1], "promise": d[2], "tiers": d[3], "needs_copy": d[4]}
+DEPARTMENT_BY_ID = {d[0]: {"title": d[1], "promise": d[2], "tiers": d[3],
+                           "needs_copy": d[4], "byline": d[5]}
                     for d in DEPARTMENTS}
 
 # Departments the magazine-editor agent must supply packaging copy for.

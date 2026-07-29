@@ -218,42 +218,59 @@ it. Therefore:
 
 ---
 
-## 5. The department system
+## 5. The section system
 
-Fifteen departments, fixed order, every issue. This order is the reading experience;
-it is not negotiable per-deck. A department with no artifact to fill it renders a
+Fifteen sections, fixed order, every issue. This order is the reading experience;
+it is not negotiable per-deck. A section with no artifact to fill it renders a
 visible `[TODO]`, never a silent omission.
 
-The order is a **three-act arc keyed to the evidence tiers and their columnists
-(§7.7)**: the Coach opens with the thesis, the Counselor makes the case, the Quant
-runs the numbers, the Coach takes you back to the table, and the appendix holds the
-proof. One voice speaks at a time for whole stretches of the book — the reader is
-never whipsawed between registers page to page. (Constitutional note: this arc
-replaced the original rhythm-first sequence in the v3.1 amendment; §13's
-"department drift" anti-pattern forbids per-issue reordering, not constitutional
-amendment.)
+**Terminology.** Reader-facing surfaces say **Section**, never "Department" — the
+contents page groups sections under act headers and calls itself **The Flight Plan**.
+"Department" survives only as internal vocabulary (code identifiers, plan schema,
+agent contracts), where renaming would churn every artifact for zero reader value.
 
-| # | Department | The promise it keeps | Source artifact | Tier |
-|---|---|---|---|---|
-| 1 | **The Cover** | "Why should I care about this deck?" | commander art, verified-line count | — |
-| 2 | **In This Issue** | "Where am I, and how do I read this?" | contents + tier legend + masthead | — |
-| 3 | **First Turns** | "What is this deck actually trying to do?" | `how_it_wins` | ★ |
-| 4 | **The Command Zone** | "Why this commander — and what does the format change?" | commander card + CR + strategy DB | ✓★ |
-| 5 | **The Kill** | "How does this deck actually win?" | verified `stacks/*.json` | ✓ |
-| 6 | **By the Numbers** | "What can I expect, turn by turn?" | `goldfish_metrics.json` | ◆ |
-| 7 | **Keep or Ship** | "Should I keep this hand?" | `mulligan` + goldfish | ★◆ |
-| 8 | **Upgrade Watch** | "What's next for this deck?" | obsolescence index | ◆ |
-| 9 | **Featured Artist** | "Who painted your deck?" | `cards.json` printing metadata | ◆★ |
-| 10 | **The Politics Table** | "How do I survive three opponents?" | `threat_assessment` | ★ |
-| 11 | **What's Your Play?** | "What would you do here?" | `decisions/*.json` | ★ |
-| 12 | **Know Your Enemy** | "Who beats me, and why?" | `matchups` | ★ |
-| 13 | **The 99** | "Why is each card in here?" | `card_roles` + graphs | ★ |
-| 14 | **Judge's Desk** | "Prove it." | full stack resolutions | ✓ |
-| 15 | **The Back Page** | "What's in the next issue?" | `issue.json` + colophon | — |
+The order is a **five-act flight plan keyed to depth (v3.2 amendment)**: start
+with what to do, end with why it's true. Act I puts you in the cockpit (pilot the
+deck, from turn one). Act II works the table (tactics against three live
+opponents). Act III zooms out (the commander, the roster, the future). Act IV
+shows its work (the stats, then the verified lines). Act V is the appendix (the
+case files, the paint, the door out). Rigor rises monotonically — a reader can
+stop at any act boundary and have gotten a complete, shallower book.
+(Constitutional note: §13's "section drift" anti-pattern forbids per-issue
+reordering, not constitutional amendment. Every act is signed — see the byline
+column; one voice speaks for whole stretches, and the reader is never whipsawed
+between registers page to page.)
 
-### 5.1 Department specifications
+Promises are written in the signing columnist's voice and printed verbatim in the
+Flight Plan — they are copy, not metadata. `issue_spec.py` is their single source.
 
-Each spec is binding. "Failure mode" is what the review in §12 looks for.
+| # | Section | The promise it keeps | Byline | Source artifact | Tier |
+|---|---|---|---|---|---|
+| 1 | **The Cover** | "Why should I care about this deck?" | — | commander art, verified-line count | — |
+| 2 | **The Flight Plan** | "You are here. Everything else is one tap away." | — | acts + tier legend + masthead | — |
+| — | *Act I — In the Cockpit* | | | | |
+| 3 | **The Game Plan** | "What this deck wants to do — and why it's going to work." | Brightside | `how_it_wins` | ★ |
+| 4 | **Keep or Ship** | "Seven cards, one call. The Coach trusts your gut; Ledger brought receipts." | Brightside + Marginal | `mulligan` + goldfish | ★◆ |
+| 5 | **What's Your Play?** | "Real board, real stakes. Commit before the Coach shows his hand." | Brightside | `decisions/*.json` | ★ |
+| — | *Act II — At the Table* | | | | |
+| 6 | **Table Manners** | "Three opponents, one you. How to win friends and eliminate people." | Brightside | `threat_assessment` | ★ |
+| 7 | **Know Your Enemy** | "The decks that want you dead, and how to disappoint them." | Brightside | `matchups` | ★ |
+| — | *Act III — The Long Game* | | | | |
+| 8 | **The Command Zone** | "Why this commander is exactly where you want to be — on the record." | Dictum + Brightside | commander card + CR + strategy DB | ✓★ |
+| 9 | **The 99** | "Roll call. Every card earns its seat — or hears about it." | Brightside | `card_roles` + graphs | ★ |
+| 10 | **Upgrade Watch** | "What this list wants next — ranked by return, not by hype." | Marginal | obsolescence index | ◆ |
+| — | *Act IV — Show Your Work* | | | | |
+| 11 | **By the Numbers** | "Ten thousand opening hands don't lie." | Marginal | `goldfish_metrics.json` | ◆ |
+| 12 | **The Kill** | "The winning lines, argued and affirmed. Every step on the record." | Dictum | verified `stacks/*.json` | ✓ |
+| — | *Act V — The Appendix* | | | | |
+| 13 | **Judge's Desk** | "The full case files. The Counselor read them twice." | Dictum | full stack resolutions | ✓ |
+| 14 | **Featured Artist** | "The hands that painted your deck — counted and credited." | Marginal | `cards.json` printing metadata | ◆★ |
+| 15 | **The Back Page** | "The next flight leaves soon." | — | `issue.json` + colophon | — |
+
+### 5.1 Section specifications
+
+Each spec is binding, and the order below is the five-act reading order from
+the table above. "Failure mode" is what the review in §12 looks for.
 
 ---
 
@@ -270,19 +287,22 @@ Each spec is binding. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**2. In This Issue** — *orientation*
+**2. The Flight Plan** — *orientation*
 
-- **Shape**: Two-bucket contents (`THIS ISSUE'S DECK` / `EVERY ISSUE`) mirroring the
-  era's TOC convention, plus the standing tier legend box.
-- **The tier legend is reprinted in full every issue.** Never abbreviate it; a new
-  reader may be holding their first volume.
-- **Failure mode**: a contents page that lists sections without their promises.
+- **Shape**: Sections grouped under the five act headers, one lean row each: title
+  (a link), the promise verbatim from `issue_spec.py`, tier badge + byline. No
+  headline sub-lines, no chart furniture — less is more; the map must read in one
+  glance. Then the standing tier legend box and the masthead trio.
+- **The tier legend and masthead are reprinted in full every issue.** Never
+  abbreviate them; a new reader may be holding their first volume.
+- **Failure mode**: a contents page that buries the map under furniture, or lists
+  sections without their promises.
 
 ---
 
-**3. First Turns** — *the thesis*
+**3. The Game Plan** — *the thesis* (signed: Coach Sunny Brightside)
 
-- **Promise**: Every issue, this department tells you what game this deck is playing.
+- **Promise**: Every issue, this section tells you what game this deck is playing.
 - **Shape**: Feature splash — big deck logotype, hero card image, kicker/headline/dek,
   3–4 short paragraphs. Open with a question (L1).
 - **Voice**: Second person, confident, no hedging. This is the issue's thesis statement.
@@ -290,7 +310,43 @@ Each spec is binding. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**4. The Command Zone** — *the format department* (see §3.3)
+**4. Keep or Ship** — *the drill*
+
+- **Shape**: 3–4 sample opening hands as quiz cards, each with a verdict and a one-line
+  reason citing the goldfish keep rate. Then the general heuristic.
+- **Failure mode**: heuristics with no hands to practice on.
+
+---
+
+**5. What's Your Play?** — *the challenge*
+
+- **Promise**: Every issue, this department makes you decide before it tells you.
+- **Shape**: Board-state box → the question → 2–4 branch cards (line, signals,
+  coalition risk, coaching) → **the recommendation revealed after the branches**.
+- **Rule**: The reader must be able to commit to an answer before seeing ours. This is
+  L1 in its purest form; never lead with the recommendation.
+- **Failure mode**: a decision spread that telegraphs its answer in the headline.
+
+---
+
+**6. Table Manners** — *the multiplayer section* (signed: Coach Sunny Brightside)
+
+- **Promise**: Every issue, this section tells you when the table turns on you.
+- **Shape**: Threat-assessment prose with a **THREAT WINDOW** callout naming the exact
+  board state that flips you to archenemy, plus signaling and sequencing guidance.
+- **Failure mode**: generic politics advice that isn't about *this* deck's tells.
+
+---
+
+**7. Know Your Enemy** — *matchups*
+
+- **Shape**: One **THREAT BOX** per archetype (sweeper control, stax, aggro, combo):
+  what their board looks like, what beats you, your named outs, and a threat meter.
+- **Failure mode**: naming a card as an out that isn't in the 99.
+
+---
+
+**8. The Command Zone** — *the format department* (see §3.3)
 
 - **Promise**: Every issue, this department teaches you what your commander means in
   the format, not just on the battlefield.
@@ -303,7 +359,35 @@ Each spec is binding. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**5. By the Numbers** — *the evidence*
+**9. The 99** — *the roster*
+
+- **Promise**: Every issue, this department explains why each card earned its slot.
+- **Shape**: Card-tile grid with role chips (engine / payoff / interaction / ramp /
+  protection). Grouped by role, not alphabetically. Sideboard and table-aid accessories
+  in a separate labeled strip.
+- **Failure mode**: 99 blurbs of equal weight. Rank matters; lead with the load-bearing
+  cards.
+
+---
+
+**10. Upgrade Watch** — *the future*
+
+- **Shape**: Preview-department voice ("the inside source on future slots"), each
+  candidate with a fast-facts line and an honest note on what it costs.
+- **Rule**: The obsolescence index is format-agnostic and cannot see tribal or
+  targeting constraints. Every suggestion must be sanity-checked against the deck's
+  actual pillars, and flagged when the index is wrong. Say so out loud.
+- **Rule (L10, absolute)**: this department looks FORWARD from the current list,
+  never backward at how the list came to be. No applied-swap history, no "the
+  upgrade already happened," no wave numbering, no benched/retired framing. A
+  sideboard card is a live option with conditions; a pool card is a candidate; the
+  past does not exist.
+- **Failure mode**: parroting machine suggestions that ignore the deck's identity —
+  or turning the future department into a changelog.
+
+---
+
+**11. By the Numbers** — *the evidence*
 
 - **Promise**: Every issue, this department tells you what to actually expect.
 - **Shape**: Power-meter bars for rates, a turn-by-turn table, the commander-cast
@@ -314,7 +398,7 @@ Each spec is binding. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**6. The Kill** — *the payoff*
+**12. The Kill** — *the payoff*
 
 - **Promise**: Every issue, this department shows you exactly how the deck wins.
 - **Shape**: One feature spread per verified line. Scene-setting box → numbered play
@@ -326,46 +410,20 @@ Each spec is binding. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**7. The Politics Table** — *the multiplayer department*
+**13. Judge's Desk** — *the proof* (the appendix)
 
-- **Promise**: Every issue, this department tells you when the table turns on you.
-- **Shape**: Threat-assessment prose with a **THREAT WINDOW** callout naming the exact
-  board state that flips you to archenemy, plus signaling and sequencing guidance.
-- **Failure mode**: generic politics advice that isn't about *this* deck's tells.
-
----
-
-**8. What's Your Play?** — *the challenge*
-
-- **Promise**: Every issue, this department makes you decide before it tells you.
-- **Shape**: Board-state box → the question → 2–4 branch cards (line, signals,
-  coalition risk, coaching) → **the recommendation revealed after the branches**.
-- **Rule**: The reader must be able to commit to an answer before seeing ours. This is
-  L1 in its purest form; never lead with the recommendation.
-- **Failure mode**: a decision spread that telegraphs its answer in the headline.
+- **Promise**: Every issue, this department proves everything the magazine claimed.
+- **Shape**: Declassified case files. Manila tint, file tabs, `CASE A-00N`, a
+  VERIFIED stamp, checker verdict and iteration count as case status, then the complete
+  step-by-step resolution with **every citation verbatim** in typewriter face.
+- **Hard rule**: The renderer generates this from checker-passed artifacts. It may not
+  summarize, truncate, or paraphrase a single citation. This department is the reason
+  anyone should believe the rest of the magazine.
+- **Failure mode**: any citation lost between artifact and page.
 
 ---
 
-**9. Know Your Enemy** — *matchups*
-
-- **Shape**: One **THREAT BOX** per archetype (sweeper control, stax, aggro, combo):
-  what their board looks like, what beats you, your named outs, and a threat meter.
-- **Failure mode**: naming a card as an out that isn't in the 99.
-
----
-
-**10. The 99** — *the roster*
-
-- **Promise**: Every issue, this department explains why each card earned its slot.
-- **Shape**: Card-tile grid with role chips (engine / payoff / interaction / ramp /
-  protection). Grouped by role, not alphabetically. Sideboard and table-aid accessories
-  in a separate labeled strip.
-- **Failure mode**: 99 blurbs of equal weight. Rank matters; lead with the load-bearing
-  cards.
-
----
-
-**11. Featured Artist** — *who made this beautiful*
+**14. Featured Artist** — *who made this beautiful* (the appendix's palate cleanser)
 
 - **Promise**: Every issue, this department shows you who painted your deck.
 - **Shape**: Hero card by the featured artist (commander first when they painted them),
@@ -387,44 +445,6 @@ Each spec is binding. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**12. Keep or Ship** — *the drill*
-
-- **Shape**: 3–4 sample opening hands as quiz cards, each with a verdict and a one-line
-  reason citing the goldfish keep rate. Then the general heuristic.
-- **Failure mode**: heuristics with no hands to practice on.
-
----
-
-**13. Upgrade Watch** — *the future*
-
-- **Shape**: Preview-department voice ("the inside source on future slots"), each
-  candidate with a fast-facts line and an honest note on what it costs.
-- **Rule**: The obsolescence index is format-agnostic and cannot see tribal or
-  targeting constraints. Every suggestion must be sanity-checked against the deck's
-  actual pillars, and flagged when the index is wrong. Say so out loud.
-- **Rule (L10, absolute)**: this department looks FORWARD from the current list,
-  never backward at how the list came to be. No applied-swap history, no "the
-  upgrade already happened," no wave numbering, no benched/retired framing. A
-  sideboard card is a live option with conditions; a pool card is a candidate; the
-  past does not exist.
-- **Failure mode**: parroting machine suggestions that ignore the deck's identity —
-  or turning the future department into a changelog.
-
----
-
-**14. Judge's Desk** — *the proof* (the appendix)
-
-- **Promise**: Every issue, this department proves everything the magazine claimed.
-- **Shape**: Declassified case files. Manila tint, file tabs, `CASE A-00N`, a
-  VERIFIED stamp, checker verdict and iteration count as case status, then the complete
-  step-by-step resolution with **every citation verbatim** in typewriter face.
-- **Hard rule**: The renderer generates this from checker-passed artifacts. It may not
-  summarize, truncate, or paraphrase a single citation. This department is the reason
-  anyone should believe the rest of the magazine.
-- **Failure mode**: any citation lost between artifact and page.
-
----
-
 **15. The Back Page** — *the return*
 
 - **Shape**: `NEXT ISSUE` teaser naming the next volume's deck, the colophon (rules
@@ -439,32 +459,34 @@ An issue is a journey with a tempo (L5). The agent explicitly plans this; the re
 executes it. Every department is tagged with an **intensity** and a **cognitive mode**,
 and the sequence must alternate.
 
-| Department | Intensity | Mode |
+| Section | Intensity | Mode |
 |---|---|---|
 | Cover | Peak | Anticipation |
-| In This Issue | Low | Orientation |
-| First Turns | High | Narrative |
+| The Flight Plan | Low | Orientation |
+| The Game Plan | High | Narrative |
+| Keep or Ship | Medium | Practice |
+| What's Your Play? | High | Active participation |
+| Table Manners | Medium | Reflection |
+| Know Your Enemy | Medium | Reference |
 | The Command Zone | Medium | Instruction |
+| The 99 | Low | Browsing |
+| Upgrade Watch | Low | Imagination |
 | By the Numbers | Medium | Analysis (dense) |
 | The Kill | **Peak** | Narrative (carrying technical content) |
-| The Politics Table | Medium | Reflection |
-| What's Your Play? | High | Active participation |
-| Know Your Enemy | Medium | Reference |
-| The 99 | Low | Browsing |
-| Featured Artist | Low | Appreciation |
-| Keep or Ship | Medium | Practice |
-| Upgrade Watch | Low | Imagination |
 | Judge's Desk | Low (opt-in) | Deep reference |
+| Featured Artist | Low | Appreciation |
 | The Back Page | Low | Closure |
 
 Two rules fall out of this table:
 
-- **The Kill is the peak.** It is the issue's biggest promise and gets the most
-  ambitious layout. Everything before it builds; everything after it recovers.
-- **Never place two dense departments adjacent.** By the Numbers (analysis) is followed
-  by The Kill (narrative). The 99 (browsing) follows Know Your Enemy (reference). If
-  a deck's artifacts force two dense departments together, insert a breather — a pull
-  quote spread, a full-bleed art break.
+- **The Kill is the late peak.** It is the issue's biggest promise and gets the most
+  ambitious layout — the summit the depth-ramp climbs to. Everything before it
+  builds; the appendix after it holds the proof.
+- **Never place two dense sections adjacent.** By the Numbers (analysis) is followed
+  by The Kill (narrative); Know Your Enemy (reference) sits between participation
+  and instruction; Judge's Desk (reference) is buffered by narrative before and
+  appreciation after. If a deck's artifacts force two dense sections together,
+  insert a breather — a pull quote spread, a full-bleed art break.
 
 ---
 
@@ -477,10 +499,17 @@ Enthusiastic but never breathless. We are a peer who has done the homework — n
 parent, never a professor, never a hype man. And per L10, no memory the reader is
 expected to share: the current list, described whole, every time.
 
-On top of the base register, **every department speaks in the voice of its tier's
-columnist (§7.7)**. The three voices are not decoration; they are how the evidence
+On top of the base register, **every section speaks in the voice of its signing
+columnist (§7.7)**, and the byline is printed — in the section head and in the
+Flight Plan. The three voices are not decoration; they are how the evidence
 contract becomes readable. Academic, dry, dense prose fails review regardless of
 accuracy.
+
+**Succinctness is a law, not a preference.** Short sentences. Short paragraphs.
+A paragraph that passes four sentences gets split; a sentence you can't say in
+one breath gets cut in two. One idea per paragraph — the reader should never have
+to re-find their place. Cutting a clause is almost always the right call; a
+columnist's voice lives in word choice and rhythm, never in length.
 
 ### 7.2 The four-part headline stack
 
@@ -525,9 +554,10 @@ corrections are period-authentic and they are the cheapest credibility we will e
 
 ### 7.7 The masthead — three columnists
 
-Every department is signed by the columnist of its primary tier. The trio is fixed
-across all volumes; their names and one-line bios are reprinted in **In This Issue**
-beside the tier legend, every issue (a new reader meets them before anything else).
+Every section is signed by the columnist of its primary tier, and the byline is
+printed in the section head and the Flight Plan. The trio is fixed across all
+volumes; their names and one-line bios are reprinted in **The Flight Plan** beside
+the tier legend, every issue (a new reader meets them before anything else).
 
 **◆ "Ledger" Lin Marginal — staff quant.**
 Billy-Beane-brained, Nate-Silver-fluent, and delivers it all like a favorite podcast
@@ -536,7 +566,8 @@ this deck*. Ledger never dumps a table — every figure arrives inside an intuit
 ("cast him on curve in about one game in twelve — so the deck's real engine has to be
 everything that happens first"). Ledger speaks only ◆: simulations, counts, rates,
 distributions. Never asserts a rules outcome, never tells you what to play.
-Signs: By the Numbers, Keep or Ship (lead), Upgrade Watch, Featured Artist (lead).
+Signs: By the Numbers, Upgrade Watch, Featured Artist (lead), and the receipts
+half of Keep or Ship.
 
 **✓ Counselor Vera Dictum — rules attorney.**
 Reads the Comprehensive Rules for pleasure and wants you to know it. Adores the
@@ -551,8 +582,9 @@ Shark, politician, manager, motivator. Pushes you to the better line, names the 
 you were about to walk into, and never once believes you're going to lose — a positive
 outlook breeds a positive outcome, and Sunny will tell you so while handing you the
 sideboard plan. Every judgment grounded in what Vera verified and Ledger measured, and
-owned as judgment. Signs: First Turns, The Politics Table, What's Your Play?, Know
-Your Enemy, The 99, and the coaching half of every shared department.
+owned as judgment. Signs: The Game Plan, Keep or Ship (lead), Table Manners,
+What's Your Play?, Know Your Enemy, The 99, and the coaching half of every shared
+section.
 
 **The contract stands (§10): personas are presentation only.** The badge means what it
 means; a voice never earns a stamp. Vera cannot bless an unverified line by sounding

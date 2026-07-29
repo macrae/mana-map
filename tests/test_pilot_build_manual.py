@@ -608,3 +608,37 @@ def test_floating_contents_button_renders_once():
 def test_masthead_columnists_render_in_contents():
     html_out = render()
     assert "Ledger" in html_out and "Vera Dictum" in html_out and "Brightside" in html_out
+
+
+# ── The Flight Plan: acts, bylines, section terminology ──────────────────
+
+
+def test_acts_cover_every_section_exactly_once():
+    """The five acts partition DEPARTMENT_IDS after cover/contents — a section
+    outside an act would vanish from the Flight Plan."""
+    from manamap.pilot.issue_spec import ACTS
+
+    flattened = [d for _, ids in ACTS for d in ids]
+    assert flattened == [d for d in DEPARTMENT_IDS if d not in ("cover", "contents")]
+
+
+def test_flight_plan_groups_sections_under_act_headers():
+    from manamap.pilot.issue_spec import ACTS
+
+    html_out = render()
+    for act_title, _ in ACTS:
+        assert f'<h3 class="toc-act-title">{act_title}</h3>' in html_out
+
+
+def test_bylines_render_in_section_heads_and_flight_plan():
+    html_out = render()
+    assert html_out.count('<div class="byline">by Coach Sunny Brightside</div>') >= 4
+    assert '<div class="byline">by Counselor Vera Dictum</div>' in html_out
+    assert '<span class="toc-byline">&quot;Ledger&quot; Lin Marginal</span>' in html_out
+
+
+def test_reader_facing_chrome_never_says_department():
+    """The reader's word is Section (grouped into acts); 'Department' is
+    internal vocabulary only."""
+    html_out = render()
+    assert "Department" not in html_out

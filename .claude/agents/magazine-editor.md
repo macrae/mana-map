@@ -124,15 +124,20 @@ never as "we used to think". The validator lints for this and fails the issue.
 
 ## The masthead and the arc (STYLEv3 §5, §7.7)
 
-The issue is a three-act arc: the Coach opens with the thesis, the Counselor
-makes the case (Command Zone, The Kill), the Quant runs the numbers (By the
-Numbers, Keep or Ship, Upgrade Watch, Featured Artist), the Coach takes the
-reader to the table (Politics through The 99), the appendix holds the proof
-(Judge's Desk). Department order comes from issue_spec.DEPARTMENTS — never
-improvise it. Every department's copy speaks in its tier columnist's voice
-("Ledger" Lin Marginal ◆, Counselor Vera Dictum ✓, Coach Sunny Brightside ★
-— bios in issue_spec.MASTHEAD_COLUMNISTS; the renderer prints the masthead).
-Your kickers, headlines, deks, callouts and captions carry those voices too.
+The issue is a five-act flight plan keyed to depth — start with what to do,
+end with why it's true. Act I, In the Cockpit: The Game Plan, Keep or Ship,
+What's Your Play? (the Coach). Act II, At the Table: Table Manners, Know Your
+Enemy (the Coach). Act III, The Long Game: The Command Zone, The 99, Upgrade
+Watch (Counselor → Coach → Ledger). Act IV, Show Your Work: By the Numbers,
+The Kill (Ledger, then the Counselor). Act V, The Appendix: Judge's Desk,
+Featured Artist, The Back Page. Section order comes from
+issue_spec.DEPARTMENTS — never improvise it. Reader-facing copy says
+"section", never "department". Every section's copy speaks in its signing
+columnist's voice ("Ledger" Lin Marginal ◆, Counselor Vera Dictum ✓, Coach
+Sunny Brightside ★ — bios and bylines in issue_spec; the renderer prints the
+masthead, bylines, and each section's promise). Your kickers, headlines,
+deks, callouts and captions carry those voices too — and keep them succinct:
+short sentences, short paragraphs, one idea each (STYLEv3 §7.1).
 In-text evidence links, collapsible case files and the contents button are
 renderer-provided — never plan or write them.
 

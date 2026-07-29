@@ -11,14 +11,22 @@
       "Present the 4, argue the 3: your Rule-0 script, receipts included"
     ],
     "violators": [
-      {"text": "5 VERIFIED STACKS!", "tone": "extreme"},
-      {"text": "INFINITE? WE COUNTED: SEVEN.", "tone": "extreme"}
+      {
+        "text": "5 VERIFIED STACKS!",
+        "tone": "extreme"
+      },
+      {
+        "text": "INFINITE? WE COUNTED: SEVEN.",
+        "tone": "extreme"
+      }
     ]
   },
   "departments": [
     {
       "id": "cover",
-      "components": ["violator"],
+      "components": [
+        "violator"
+      ],
       "note": "Full-bleed Gishath, Sun's Avatar art_crop as the hero; masthead, volume block, and coverline furniture come from the top-level cover block. The dominant coverline names stack 003's finding — the single most exciting verified thing in the issue."
     },
     {
@@ -31,9 +39,15 @@
       "kicker": "THE PLAN",
       "headline": "ACT ONE IS A BLUFF",
       "dek": "They see an eight-mana commander and they relax. Good — while they wait for act two, you're loading two engines that pay off whether or not the big turn ever comes.",
-      "components": ["pilot-tip", "pull-quote"],
+      "components": [
+        "pilot-tip",
+        "pull-quote"
+      ],
       "pilot_tips": [
-        {"card": "Topiary Stomper", "text": "Cast Topiary Stomper on curve and don't apologize for the statue — you hired it for the land, and the body clocks in the moment your seventh land does."}
+        {
+          "card": "Topiary Stomper",
+          "text": "Cast Topiary Stomper on curve and don't apologize for the statue — you hired it for the land, and the body clocks in the moment your seventh land does."
+        }
       ],
       "captions": {
         "Pantlaza, Sun-Favored": "**THE OTHER ENGINE:** every Dinosaur that enters can discover for its toughness, once a turn — no combat, no eight mana, and it keeps working the turn after a wrath.",
@@ -42,14 +56,204 @@
       "pull_quote": "You are not behind during those turns. You are loading."
     },
     {
+      "id": "keep-or-ship",
+      "kicker": "THE DRILL",
+      "headline": "KEEP THE SCHEDULE",
+      "dek": "The simulation keeps 77.1% of opening sevens, so your default answer is yes. These four hands are the drill: call each one out loud before you read the ledger's verdict.",
+      "components": [
+        "power-meter",
+        "pilot-tip",
+        "pull-quote"
+      ],
+      "hands": [
+        {
+          "verdict": "KEEP — the schedule hand",
+          "cards": [
+            "Forest",
+            "Plains",
+            "Cinder Glade",
+            "Cultivate",
+            "Arcane Signet",
+            "Ranging Raptors",
+            "Trumpeting Carnosaur"
+          ],
+          "why": "Three lands, two ramp pieces, a web body, and a card that is never dead at any stage. Ramp arrives by turn six in 86.9% of games — this hand IS the 86.9%."
+        },
+        {
+          "verdict": "KEEP — the modest jersey",
+          "cards": [
+            "Mountain",
+            "Forest",
+            "Sunpetal Grove",
+            "Ripjaw Raptor",
+            "Ranging Raptors",
+            "Otepec Huntmaster",
+            "Garruk's Uprising"
+          ],
+          "why": "Nothing here costs more than four, and that is the point: the enrage engine is drawn by turn six in 72.6% of games, and this hand starts it two turns early."
+        },
+        {
+          "verdict": "SHIP — the act-two hand",
+          "cards": [
+            "Forest",
+            "Plains",
+            "Command Tower",
+            "Zacama, Primal Calamity",
+            "Ghalta, Primal Hunger",
+            "Vaultborn Tyrant",
+            "Wakening Sun's Avatar"
+          ],
+          "why": "Four cards costing seven or more in a deck whose commander already averages a turn-7.969 arrival. The reveal casts these for free later; your opening hand can't."
+        },
+        {
+          "verdict": "SHIP — the empty tank",
+          "cards": [
+            "Forest",
+            "Forest",
+            "Plains",
+            "Mountain",
+            "Jetmir's Garden",
+            "Command Tower",
+            "Blasphemous Act"
+          ],
+          "why": "Six lands and a sweeper is a schedule with no train on it. Five-plus lands with no engine piece ramps into nothing — the model would redraw this, and so should you."
+        }
+      ],
+      "pilot_tips": [
+        {
+          "card": "Krosan Verge",
+          "text": "Upgrade a marginal three-land keep that contains Krosan Verge — it cracks into two typed lands, exactly what a 52.6% turn-six land-drop rate wants banked early."
+        }
+      ],
+      "pull_quote": "You're not keeping cards. You're keeping a schedule."
+    },
+    {
+      "id": "whats-your-play",
+      "kicker": "YOUR CALL",
+      "headline": "DECIDE, THEN READ",
+      "dek": "Two real boards from this exact 99: one asks whether the biggest swing of your game happens now or after untap, the other hands you nine triggers and one shot at ordering them. Commit out loud before you read our answer — that's the whole drill.",
+      "components": [
+        "scenario-box",
+        "pull-quote"
+      ],
+      "pull_quote": "The read you make before the reveal is worth two you make after.",
+      "note": "Render decisions 001 then 002. Recommendations stay below the branches per STYLEv3 section 5.1 — no caption, callout, or dek may telegraph either answer."
+    },
+    {
+      "id": "politics-table",
+      "kicker": "TABLE READS",
+      "headline": "BORING ON PURPOSE",
+      "dek": "For six turns you're the least interesting player at the table, and that's a fortified position. Here's when it flips, what your tells are, and how to walk into the archenemy seat smiling.",
+      "components": [
+        "callout-step",
+        "pilot-tip",
+        "pull-quote"
+      ],
+      "callouts": [
+        {
+          "n": 1,
+          "title": "THREAT WINDOW",
+          "text": "Three tells flip you from wallpaper to archenemy: Gishath hitting the battlefield, one connected reveal, and Polyraptor standing next to Forerunner of the Empire — a pairing listed in 12,132 decks, so anyone with a phone knows its reputation, deserved or not. Choose the moment; never drift into it."
+        }
+      ],
+      "captions": {
+        "Forerunner of the Empire": "**THE SOFT TARGET:** sharp tables kill the 1/3 Human before the 7/6 Avatar — your board-wide instants are its only cover, so deploy it the turn it works, not a turn early.",
+        "Regal Behemoth": "**THE CROWN TAX:** monarch is extra mana and an extra card — and a sign on your head. Take it when you're ready to be looked at."
+      },
+      "pilot_tips": [
+        {
+          "card": "Trapjaw Tyrant",
+          "text": "Aim Trapjaw Tyrant's exiles at the quiet player's engine piece, not the aggro player's biggest body — hostages are politics, and the aggro deck was already coming for you."
+        }
+      ],
+      "pull_quote": "Nobody calls the archenemy over a tapped Forest."
+    },
+    {
+      "id": "know-your-enemy",
+      "kicker": "SCOUTING REPORT",
+      "headline": "FOUR TABLES, FOUR PLANS",
+      "dek": "Sweepers, faster combo, stax, and the go-wide swarm — every one beats you differently, and every plan below names outs that are actually sleeved in this 99.",
+      "components": [
+        "threat-box",
+        "pilot-tip"
+      ],
+      "threats": [
+        {
+          "archetype": "Sweeper Control",
+          "meter_label": "Danger to you",
+          "rate": 0.85,
+          "read": "Your board is one wrath from zero and waves aren't available — the trigger IS the wave. Swing only with a shield held, aim the pivot at their tapped-out turn, and rebuild the web first: it restarts at two cards while Gishath restarts at eight plus tax.",
+          "outs": [
+            "Flawless Maneuver",
+            "Heroic Intervention",
+            "Boros Charm",
+            "Akroma's Will",
+            "Eerie Interlude"
+          ]
+        },
+        {
+          "archetype": "Faster Combo",
+          "meter_label": "Danger to you",
+          "rate": 0.8,
+          "read": "Naya has no counterspells and your clock starts turns six through eight, so you are the beatdown in every one of these games. Spend removal on enablers the moment they land, and force them to combo under pressure.",
+          "outs": [
+            "Swords to Plowshares",
+            "Path to Exile",
+            "Beast Within",
+            "Thrashing Brontodon"
+          ]
+        },
+        {
+          "archetype": "Stax & Taxes",
+          "meter_label": "Danger to you",
+          "rate": 0.6,
+          "read": "Taxes hit an eight-drop hardest — so stop playing the eight-drop's game. The ping web runs on creature ETBs, Selvala compresses your mana into one activation, and your removal goes to the one piece that locks the cheat layer. Remember: the typal lands fund casts, never Portal or Manual activations.",
+          "outs": [
+            "Selvala, Heart of the Wilds",
+            "Urza's Incubator",
+            "Monster Manual // Zoological Study",
+            "Thrashing Brontodon",
+            "Beast Within"
+          ]
+        },
+        {
+          "archetype": "Go-Wide Swarm",
+          "meter_label": "Danger to you",
+          "rate": 0.4,
+          "read": "The one matchup where you hold a verified trump: Blasphemous Act under Temple Altisaur and Wrathful Raptors clears their board, spares yours minus one martyr, and sends the redirects upstairs (stack 004). The wider they go, the cheaper it gets.",
+          "outs": [
+            "Blasphemous Act",
+            "Temple Altisaur",
+            "Wrathful Raptors",
+            "Austere Command",
+            "Trapjaw Tyrant"
+          ]
+        }
+      ],
+      "pilot_tips": [
+        {
+          "card": "Wrathful Raptors",
+          "text": "Don't promise yourself the enrage yield with Wrathful Raptors and the ping web out together — that interaction is unresolved rules territory, so plan the redirect OR the enrage, never both."
+        }
+      ]
+    },
+    {
       "id": "command-zone",
       "kicker": "COMMANDER FILE",
       "headline": "THE EIGHT-MANA GUARANTEE",
       "dek": "The one card you can always cast costs eight — so the zone, the tax, and the 21-point clock do more work in this seat than in any other chair at the table.",
       "body": "Start with the clause the whole deck is built on: your commander waits in the command zone, and you may cast him from there for as long as the game lasts (CR 903.4). That guarantee is why a 65-spell list can afford to aim half its mana at one eight-drop — Gishath, Sun's Avatar is not a card you hope to draw, he is an appointment you keep. Every mulligan verdict in this issue assumes it: no opening hand needs the commander, because the zone already holds him.\n\nNow the compounding clause. Each time you cast him from the zone after the first, he costs two more generic mana (CR 903.8). Read the tax ladder against Ledger's mana table and the problem states itself: mean available mana on turn six is 5.486, the first cast is eight, the second is ten, the third is twelve. One recast is a real plan; two is a fantasy. The record therefore holds that protection is the better spend — Flawless Maneuver is free with your commander on the battlefield, Heroic Intervention is two mana, and either is cheaper than the recast rider you would otherwise pay. That is the commander-insurance trade, and this deck takes it every time.\n\nColor identity next: every card in the 99 must fit inside Gishath's white, red, and green (CR 903.4, 903.5c). The identity buys the best board-wide protection instants in the format and the entire enrage package — and it permanently locks out counterspells. When Know Your Enemy tells you the combo matchup is a race, this is the clause that made it one.\n\nThe short clock is real here, not a coincidence. A player dealt 21 or more combat damage by the same commander loses the game (CR 903.10a), and Gishath swings for seven with vigilance, trample, and haste: three connections end a player, two if Overwhelming Stampede or Kessig Wolf Run stretches the arithmetic. Against a 40-life table thick with lifegain, the 21-point line is frequently the nearer finish — count both clocks every combat.\n\nAnd the coach's closing paragraph, because the zone is also a stage: an eight-mana commander is the best political cover in the format. Nobody wraths a board of ramp pieces, and nobody counts you as the threat while the big man sits in the zone. The table's patience is a resource. Spend six turns of it building two engines, and when you finally make the cast, do it with a shield in hand and no apology.",
-      "components": ["tax-ladder", "fast-facts", "pilot-tip", "pull-quote"],
+      "components": [
+        "tax-ladder",
+        "fast-facts",
+        "pilot-tip",
+        "pull-quote"
+      ],
       "pilot_tips": [
-        {"card": "Flawless Maneuver", "text": "Treat Flawless Maneuver as the tax you refuse to pay — it costs zero exactly when Gishath has eaten your whole turn, and it saves you the two-mana recast rider."}
+        {
+          "card": "Flawless Maneuver",
+          "text": "Treat Flawless Maneuver as the tax you refuse to pay — it costs zero exactly when Gishath has eaten your whole turn, and it saves you the two-mana recast rider."
+        }
       ],
       "captions": {
         "Gishath, Sun's Avatar": "**THE APPOINTMENT:** seven power, vigilance, trample, haste — and a reveal trigger that pays the whole eight back the first time it connects."
@@ -57,17 +261,255 @@
       "pull_quote": "One recast is a real plan. Two is a fantasy."
     },
     {
+      "id": "the-99",
+      "kicker": "THE ROSTER",
+      "headline": "EVERY SLEEVE EARNS IT",
+      "dek": "Ninety-nine slots, ranked the way the deck actually leans on them: the two engines first, the martyr package, the money, the shields — and a mana base with more jobs than a summer resume.",
+      "components": [
+        "pilot-tip",
+        "pull-quote"
+      ],
+      "roster": [
+        {
+          "role": "The two engines",
+          "cards": [
+            "Forerunner of the Empire",
+            "Polyraptor",
+            "Ranging Raptors",
+            "Ripjaw Raptor",
+            "Trapjaw Tyrant",
+            "Pantlaza, Sun-Favored",
+            "Garruk's Uprising",
+            "Curious Altisaur"
+          ]
+        },
+        {
+          "role": "The one-sided apocalypse",
+          "cards": [
+            "Blasphemous Act",
+            "Temple Altisaur",
+            "Wrathful Raptors"
+          ]
+        },
+        {
+          "role": "The money: ramp and acceleration",
+          "cards": [
+            "Selvala, Heart of the Wilds",
+            "Regal Behemoth",
+            "Hulking Raptor",
+            "Otepec Huntmaster",
+            "Sol Ring",
+            "Arcane Signet",
+            "Boros Signet",
+            "Talisman of Unity",
+            "Cultivate",
+            "Kodama's Reach",
+            "Nature's Lore",
+            "Skyshroud Claim",
+            "Topiary Stomper",
+            "Wayward Swordtooth",
+            "Intrepid Paleontologist",
+            "Mirari's Wake"
+          ]
+        },
+        {
+          "role": "The cheat layer",
+          "cards": [
+            "Urza's Incubator",
+            "Belbe's Portal",
+            "Monster Manual // Zoological Study",
+            "Descendants' Path",
+            "Huatli, Poet of Unity // Roar of the Fifth People"
+          ]
+        },
+        {
+          "role": "Shields for the swing turn",
+          "cards": [
+            "Heroic Intervention",
+            "Flawless Maneuver",
+            "Boros Charm",
+            "Akroma's Will",
+            "Eerie Interlude"
+          ]
+        },
+        {
+          "role": "Interaction",
+          "cards": [
+            "Swords to Plowshares",
+            "Path to Exile",
+            "Beast Within",
+            "Thrashing Brontodon",
+            "Austere Command",
+            "Wakening Sun's Avatar",
+            "Triumphant Chomp",
+            "Itzquinth, Firstborn of Gishath",
+            "Bronzebeak Foragers"
+          ]
+        },
+        {
+          "role": "Payoffs and finishers",
+          "cards": [
+            "Carnage Tyrant",
+            "Ghalta, Primal Hunger",
+            "Ghalta and Mavren",
+            "Zacama, Primal Calamity",
+            "Etali, Primal Storm",
+            "Vaultborn Tyrant",
+            "Trumpeting Carnosaur",
+            "Quartzwood Crasher",
+            "Bonehoard Dracosaur",
+            "Regisaur Alpha",
+            "Regal Imperiosaur",
+            "Pugnacious Hammerskull",
+            "Overwhelming Stampede",
+            "Rishkar's Expertise",
+            "Hunter's Insight"
+          ]
+        },
+        {
+          "role": "Setup and tutors",
+          "cards": [
+            "Congregation at Dawn",
+            "Worldly Tutor",
+            "Enlightened Tutor"
+          ]
+        },
+        {
+          "role": "Lands with jobs",
+          "cards": [
+            "Rogue's Passage",
+            "Kessig Wolf Run",
+            "Secluded Courtyard",
+            "Unclaimed Territory",
+            "Krosan Verge",
+            "Path of Ancestry",
+            "Myriad Landscape",
+            "Windswept Heath",
+            "Commercial District"
+          ]
+        }
+      ],
+      "pilot_tips": [
+        {
+          "card": "Secluded Courtyard",
+          "text": "Read Secluded Courtyard's second clause before you tap it — it pays Dinosaur creature abilities just fine; it's Unclaimed Territory that is spells-only."
+        }
+      ],
+      "pull_quote": "Rank matters: the deck leans on the 1/3 Human harder than on any 12/12.",
+      "note": "The remainder falls to the automatic Depth group — by design, that group is the plain mana base. The sideboard strip renders automatically; Marauding Raptor's tile blurb already carries the stack-002 warning."
+    },
+    {
+      "id": "upgrade-watch",
+      "kicker": "THE LOOKOUT",
+      "headline": "BUY SHIELDS, NOT MORE WEB",
+      "dek": "The enrage engine already shows up in 72.6% of your turn-six hands; protection shows up in 48.5%. The shopping advice writes itself — and the index's advice gets audited below, line by line.",
+      "components": [
+        "fast-facts",
+        "pilot-tip",
+        "pull-quote"
+      ],
+      "callouts": [
+        {
+          "n": 1,
+          "title": "THE CONDITIONAL SLEEVE",
+          "text": "Bellowing Aegisaur waits in the sideboard for damage-sweeper and attrition tables, where every Forerunner ping reads 'put a +1/+1 counter on each other creature you control.' Conditional, not default — the survival-budget scenario has not been run yet."
+        },
+        {
+          "n": 2,
+          "title": "THE STANDING NO",
+          "text": "Marauding Raptor stays out of this 99 as long as Polyraptor is in it: stack 002 proves the pairing is a mandatory loop that draws the game for everyone. It gets a seat only after a free sacrifice outlet does."
+        },
+        {
+          "n": 3,
+          "title": "AUDIT THE INDEX",
+          "text": "The obsolescence index scores similarity, not fit: it is right that cheaper two-mana Forest-fetch undercuts Kodama's Reach, and wrong that Eladamri's Call beats Congregation at Dawn — this deck pays a premium for the top of the library, and hand-delivery misses the reveal."
+        }
+      ],
+      "pilot_tips": [
+        {
+          "card": "Pugnacious Hammerskull",
+          "text": "When you do sleeve Bellowing Aegisaur, take out Pugnacious Hammerskull — it is the maindeck's only zero-trigger body, and pure stats are the one thing 34 Dinosaurs never run short of."
+        }
+      ],
+      "pull_quote": "Don't buy more web. Buy shields and lanes for the web you have."
+    },
+    {
+      "id": "by-the-numbers",
+      "kicker": "THE LEDGER",
+      "headline": "SEVEN POINT NINE SIX NINE",
+      "dek": "Ten thousand seeded games put your commander under oath: mean cast turn 7.969, on the battlefield by turn six in 8.3% of runs. That's not bad news — it's the case for everything else in the deck.",
+      "components": [
+        "power-meter",
+        "fast-facts",
+        "pilot-tip",
+        "pull-quote"
+      ],
+      "callouts": [
+        {
+          "n": 1,
+          "title": "EARLY MONEY",
+          "text": "Ramp or fixing is drawn by turn six in 86.9% of games, mean arrival turn 2.0. Act one funds itself almost every time."
+        },
+        {
+          "n": 2,
+          "title": "THE QUIET ENGINE",
+          "text": "The enrage web shows up by turn six in 72.6% of games — a full 24 points ahead of the protection suite at 48.5%. The deck assembles its value plan faster than its insurance."
+        },
+        {
+          "n": 3,
+          "title": "THE FADE",
+          "text": "Land drops hit only 52.6% of the time on turn six and mean mana sits at 5.486 — the deck ramps early, then rides rocks and dorks straight into sweeper season."
+        }
+      ],
+      "captions": {
+        "Selvala, Heart of the Wilds": "**OFF THE BOOKS:** the model does not simulate her X-for-greatest-power activation — so 7.969 is the floor of the problem, not your ceiling.",
+        "Urza's Incubator": "**ALSO OFF THE BOOKS:** the cost reducers go unmodeled too — across 34 Dinosaur bodies, this is the biggest invisible discount in the ledger."
+      },
+      "pilot_tips": [
+        {
+          "card": "Wayward Swordtooth",
+          "text": "Play Wayward Swordtooth the turn you draw it — the 52.6% turn-six land-drop rate is the one number in this file you can personally fix."
+        }
+      ],
+      "pull_quote": "Cast him on curve in about one game in twelve — so the real engine is everything that happens first."
+    },
+    {
       "id": "the-kill",
       "kicker": "THE DOCKET",
       "headline": "FIVE VERDICTS",
       "dek": "The reveal, the web, the bounded burst, the one-sided apocalypse — and the famous pairing that turns out to draw the whole game. Every line below survived the adversarial checker; nothing here is hope.",
-      "components": ["callout-step", "map-key", "pilot-tip", "pull-quote"],
+      "components": [
+        "callout-step",
+        "map-key",
+        "pilot-tip",
+        "pull-quote"
+      ],
       "callouts": [
-        {"n": 1, "title": "THE TRIGGER", "text": "Any Dinosaur enters with Forerunner of the Empire on the battlefield. The ping is 'you may' — every link in this chain has a brake (stack 005)."},
-        {"n": 2, "title": "THE SWEEP", "text": "One damage to every creature, yours included. Their 1/1 is dead by state-based action before any enrage trigger even chooses a target."},
-        {"n": 3, "title": "THE HOSTAGE", "text": "Trapjaw Tyrant exiles their best creature for as long as Trapjaw lives. Repeatable — one ping, one hostage."},
-        {"n": 4, "title": "THE DIVIDENDS", "text": "Ripjaw Raptor draws — that one is mandatory, the court's gift — and Ranging Raptors puts a tapped Forest onto the battlefield."},
-        {"n": 5, "title": "THE RE-ARM", "text": "Polyraptor files a fresh 5/5 copy, and its arrival offers Forerunner a genuinely new trigger. Say yes while the price is right; decline and bank the whole yield."}
+        {
+          "n": 1,
+          "title": "THE TRIGGER",
+          "text": "Any Dinosaur enters with Forerunner of the Empire on the battlefield. The ping is 'you may' — every link in this chain has a brake (stack 005)."
+        },
+        {
+          "n": 2,
+          "title": "THE SWEEP",
+          "text": "One damage to every creature, yours included. Their 1/1 is dead by state-based action before any enrage trigger even chooses a target."
+        },
+        {
+          "n": 3,
+          "title": "THE HOSTAGE",
+          "text": "Trapjaw Tyrant exiles their best creature for as long as Trapjaw lives. Repeatable — one ping, one hostage."
+        },
+        {
+          "n": 4,
+          "title": "THE DIVIDENDS",
+          "text": "Ripjaw Raptor draws — that one is mandatory, the court's gift — and Ranging Raptors puts a tapped Forest onto the battlefield."
+        },
+        {
+          "n": 5,
+          "title": "THE RE-ARM",
+          "text": "Polyraptor files a fresh 5/5 copy, and its arrival offers Forerunner a genuinely new trigger. Say yes while the price is right; decline and bank the whole yield."
+        }
       ],
       "captions": {
         "Forerunner of the Empire": "**THE HUB:** a 1/3 Human Soldier running a Dinosaur company — every verified line here routes through it, and not one tribal shield in the deck covers it.",
@@ -75,78 +517,51 @@
         "Blasphemous Act": "**THE APOCALYPSE, NOTARIZED:** thirteen to everything becomes one to each of your Dinosaurs, and stack 004 sends 16 points upstairs on the way through."
       },
       "pilot_tips": [
-        {"card": "Polyraptor", "text": "Never let Polyraptor share a battlefield with Marauding Raptor without an exit sleeved — both triggers are mandatory, and stack 002 shows the loop draws the game for everyone."}
+        {
+          "card": "Polyraptor",
+          "text": "Never let Polyraptor share a battlefield with Marauding Raptor without an exit sleeved — both triggers are mandatory, and stack 002 shows the loop draws the game for everyone."
+        }
       ],
       "pull_quote": "The database said infinite. The count stopped at seven.",
       "note": "Run the five spreads in stack order 001-005. Stack 002 is the refutation feature — celebrate it per STYLEv3 section 7.6, never bury it. The callout-step sequence above is the anatomy of stack 005, the line the reader will run most often."
     },
     {
-      "id": "by-the-numbers",
-      "kicker": "THE LEDGER",
-      "headline": "SEVEN POINT NINE SIX NINE",
-      "dek": "Ten thousand seeded games put your commander under oath: mean cast turn 7.969, on the battlefield by turn six in 8.3% of runs. That's not bad news — it's the case for everything else in the deck.",
-      "components": ["power-meter", "fast-facts", "pilot-tip", "pull-quote"],
-      "callouts": [
-        {"n": 1, "title": "EARLY MONEY", "text": "Ramp or fixing is drawn by turn six in 86.9% of games, mean arrival turn 2.0. Act one funds itself almost every time."},
-        {"n": 2, "title": "THE QUIET ENGINE", "text": "The enrage web shows up by turn six in 72.6% of games — a full 24 points ahead of the protection suite at 48.5%. The deck assembles its value plan faster than its insurance."},
-        {"n": 3, "title": "THE FADE", "text": "Land drops hit only 52.6% of the time on turn six and mean mana sits at 5.486 — the deck ramps early, then rides rocks and dorks straight into sweeper season."}
+      "id": "judges-desk",
+      "kicker": "CASE FILES",
+      "headline": "THE FULL RECORD",
+      "dek": "Five cases, every citation verbatim, every verdict stamped by an adversarial checker that would love nothing better than to bounce one back. This section is why you can believe the rest of the magazine.",
+      "components": [
+        "dossier-file"
       ],
-      "captions": {
-        "Selvala, Heart of the Wilds": "**OFF THE BOOKS:** the model does not simulate her X-for-greatest-power activation — so 7.969 is the floor of the problem, not your ceiling.",
-        "Urza's Incubator": "**ALSO OFF THE BOOKS:** the cost reducers go unmodeled too — across 34 Dinosaur bodies, this is the biggest invisible discount in the ledger."
-      },
-      "pilot_tips": [
-        {"card": "Wayward Swordtooth", "text": "Play Wayward Swordtooth the turn you draw it — the 52.6% turn-six land-drop rate is the one number in this file you can personally fix."}
-      ],
-      "pull_quote": "Cast him on curve in about one game in twelve — so the real engine is everything that happens first."
-    },
-    {
-      "id": "keep-or-ship",
-      "kicker": "THE DRILL",
-      "headline": "KEEP THE SCHEDULE",
-      "dek": "The simulation keeps 77.1% of opening sevens, so your default answer is yes. These four hands are the drill: call each one out loud before you read the ledger's verdict.",
-      "components": ["power-meter", "pilot-tip", "pull-quote"],
-      "hands": [
-        {"verdict": "KEEP — the schedule hand", "cards": ["Forest", "Plains", "Cinder Glade", "Cultivate", "Arcane Signet", "Ranging Raptors", "Trumpeting Carnosaur"], "why": "Three lands, two ramp pieces, a web body, and a card that is never dead at any stage. Ramp arrives by turn six in 86.9% of games — this hand IS the 86.9%."},
-        {"verdict": "KEEP — the modest jersey", "cards": ["Mountain", "Forest", "Sunpetal Grove", "Ripjaw Raptor", "Ranging Raptors", "Otepec Huntmaster", "Garruk's Uprising"], "why": "Nothing here costs more than four, and that is the point: the enrage engine is drawn by turn six in 72.6% of games, and this hand starts it two turns early."},
-        {"verdict": "SHIP — the act-two hand", "cards": ["Forest", "Plains", "Command Tower", "Zacama, Primal Calamity", "Ghalta, Primal Hunger", "Vaultborn Tyrant", "Wakening Sun's Avatar"], "why": "Four cards costing seven or more in a deck whose commander already averages a turn-7.969 arrival. The reveal casts these for free later; your opening hand can't."},
-        {"verdict": "SHIP — the empty tank", "cards": ["Forest", "Forest", "Plains", "Mountain", "Jetmir's Garden", "Command Tower", "Blasphemous Act"], "why": "Six lands and a sweeper is a schedule with no train on it. Five-plus lands with no engine piece ramps into nothing — the model would redraw this, and so should you."}
-      ],
-      "pilot_tips": [
-        {"card": "Krosan Verge", "text": "Upgrade a marginal three-land keep that contains Krosan Verge — it cracks into two typed lands, exactly what a 52.6% turn-six land-drop rate wants banked early."}
-      ],
-      "pull_quote": "You're not keeping cards. You're keeping a schedule."
-    },
-    {
-      "id": "upgrade-watch",
-      "kicker": "THE LOOKOUT",
-      "headline": "BUY SHIELDS, NOT MORE WEB",
-      "dek": "The enrage engine already shows up in 72.6% of your turn-six hands; protection shows up in 48.5%. The shopping advice writes itself — and the index's advice gets audited below, line by line.",
-      "components": ["fast-facts", "pilot-tip", "pull-quote"],
-      "callouts": [
-        {"n": 1, "title": "THE CONDITIONAL SLEEVE", "text": "Bellowing Aegisaur waits in the sideboard for damage-sweeper and attrition tables, where every Forerunner ping reads 'put a +1/+1 counter on each other creature you control.' Conditional, not default — the survival-budget scenario has not been run yet."},
-        {"n": 2, "title": "THE STANDING NO", "text": "Marauding Raptor stays out of this 99 as long as Polyraptor is in it: stack 002 proves the pairing is a mandatory loop that draws the game for everyone. It gets a seat only after a free sacrifice outlet does."},
-        {"n": 3, "title": "AUDIT THE INDEX", "text": "The obsolescence index scores similarity, not fit: it is right that cheaper two-mana Forest-fetch undercuts Kodama's Reach, and wrong that Eladamri's Call beats Congregation at Dawn — this deck pays a premium for the top of the library, and hand-delivery misses the reveal."}
-      ],
-      "pilot_tips": [
-        {"card": "Pugnacious Hammerskull", "text": "When you do sleeve Bellowing Aegisaur, take out Pugnacious Hammerskull — it is the maindeck's only zero-trigger body, and pure stats are the one thing 34 Dinosaurs never run short of."}
-      ],
-      "pull_quote": "Don't buy more web. Buy shields and lanes for the web you have."
+      "note": "Cases A-001 through A-005 render from the checker-passed stacks, citations untouched. A-002 and A-003 are the two findings the cover sells — the whole-table draw and the seven-token bound."
     },
     {
       "id": "featured-artist",
       "kicker": "ART FILE",
       "headline": "SEVENTY-SIX HANDS",
       "dek": "No single artist owns this deck — 76 painters across the 110 cards in the box, and the biggest cluster is six. That's not a lack of taste; it's what a collection assembled one Dinosaur at a time looks like.",
-      "components": ["artist-gallery", "fast-facts", "pull-quote"],
+      "components": [
+        "artist-gallery",
+        "fast-facts",
+        "pull-quote"
+      ],
       "featured": {
         "artist": "Simon Dominic",
         "note": "Call it a plurality, not a dynasty: Simon Dominic's six cards are the largest single hand in the deck, and half of them are working parts of the enrage plan — Ranging Raptors fetching a land off every ping, Curious Altisaur turning combat into cards, Triumphant Chomp borrowing the biggest jaw on your board.\n\nBe clear about what these counts are: per card, never per copy, and the tally includes the sideboard strip. The concentration here is structural, not curated — 26 of the 110 cards arrive from The Lost Caverns of Ixalan Commander, a product bought whole, and even that box spreads its art across nineteen different painters. No foils, no borderless printings, no single gallery to hang. The honest story of this deck's art is breadth, and the ledger likes breadth."
       },
       "also_worth_noting": [
-        {"artist": "Tyler Jacobson", "note": "Five cards, including both printings of Wakening Sun's Avatar the collection owns — plus Selvala, Heart of the Wilds and the Huatli the deck actually flips."},
-        {"artist": "Daarken", "note": "Three cards, and what a three: Blasphemous Act, Temple Altisaur, and Otepec Huntmaster — two of the three faces of the verified one-sided apocalypse from stack 004, painted by one hand."},
-        {"artist": "Adam Paquette", "note": "Three cards but five copies — the entries-versus-copies lesson in miniature: two battle lands plus a basic Plains repeated across the mana base."}
+        {
+          "artist": "Tyler Jacobson",
+          "note": "Five cards, including both printings of Wakening Sun's Avatar the collection owns — plus Selvala, Heart of the Wilds and the Huatli the deck actually flips."
+        },
+        {
+          "artist": "Daarken",
+          "note": "Three cards, and what a three: Blasphemous Act, Temple Altisaur, and Otepec Huntmaster — two of the three faces of the verified one-sided apocalypse from stack 004, painted by one hand."
+        },
+        {
+          "artist": "Adam Paquette",
+          "note": "Three cards but five copies — the entries-versus-copies lesson in miniature: two battle lands plus a basic Plains repeated across the mana base."
+        }
       ],
       "captions": {
         "Ranging Raptors": "**DOMINIC'S WORKHORSE:** the artist's most load-bearing card in the deck — every ping it survives is a land, and stack 005 shows it surviving plenty."
@@ -154,86 +569,12 @@
       "pull_quote": "Seventy-six painters, one deck — the biggest cluster is six cards, and even that came with the box."
     },
     {
-      "id": "politics-table",
-      "kicker": "TABLE READS",
-      "headline": "BORING ON PURPOSE",
-      "dek": "For six turns you're the least interesting player at the table, and that's a fortified position. Here's when it flips, what your tells are, and how to walk into the archenemy seat smiling.",
-      "components": ["callout-step", "pilot-tip", "pull-quote"],
-      "callouts": [
-        {"n": 1, "title": "THREAT WINDOW", "text": "Three tells flip you from wallpaper to archenemy: Gishath hitting the battlefield, one connected reveal, and Polyraptor standing next to Forerunner of the Empire — a pairing listed in 12,132 decks, so anyone with a phone knows its reputation, deserved or not. Choose the moment; never drift into it."}
-      ],
-      "captions": {
-        "Forerunner of the Empire": "**THE SOFT TARGET:** sharp tables kill the 1/3 Human before the 7/6 Avatar — your board-wide instants are its only cover, so deploy it the turn it works, not a turn early.",
-        "Regal Behemoth": "**THE CROWN TAX:** monarch is extra mana and an extra card — and a sign on your head. Take it when you're ready to be looked at."
-      },
-      "pilot_tips": [
-        {"card": "Trapjaw Tyrant", "text": "Aim Trapjaw Tyrant's exiles at the quiet player's engine piece, not the aggro player's biggest body — hostages are politics, and the aggro deck was already coming for you."}
-      ],
-      "pull_quote": "Nobody calls the archenemy over a tapped Forest."
-    },
-    {
-      "id": "whats-your-play",
-      "kicker": "YOUR CALL",
-      "headline": "DECIDE, THEN READ",
-      "dek": "Two real boards from this exact 99: one asks whether the biggest swing of your game happens now or after untap, the other hands you nine triggers and one shot at ordering them. Commit out loud before you read our answer — that's the whole drill.",
-      "components": ["scenario-box", "pull-quote"],
-      "pull_quote": "The read you make before the reveal is worth two you make after.",
-      "note": "Render decisions 001 then 002. Recommendations stay below the branches per STYLEv3 section 5.1 — no caption, callout, or dek may telegraph either answer."
-    },
-    {
-      "id": "know-your-enemy",
-      "kicker": "SCOUTING REPORT",
-      "headline": "FOUR TABLES, FOUR PLANS",
-      "dek": "Sweepers, faster combo, stax, and the go-wide swarm — every one beats you differently, and every plan below names outs that are actually sleeved in this 99.",
-      "components": ["threat-box", "pilot-tip"],
-      "threats": [
-        {"archetype": "Sweeper Control", "meter_label": "Danger to you", "rate": 0.85, "read": "Your board is one wrath from zero and waves aren't available — the trigger IS the wave. Swing only with a shield held, aim the pivot at their tapped-out turn, and rebuild the web first: it restarts at two cards while Gishath restarts at eight plus tax.", "outs": ["Flawless Maneuver", "Heroic Intervention", "Boros Charm", "Akroma's Will", "Eerie Interlude"]},
-        {"archetype": "Faster Combo", "meter_label": "Danger to you", "rate": 0.8, "read": "Naya has no counterspells and your clock starts turns six through eight, so you are the beatdown in every one of these games. Spend removal on enablers the moment they land, and force them to combo under pressure.", "outs": ["Swords to Plowshares", "Path to Exile", "Beast Within", "Thrashing Brontodon"]},
-        {"archetype": "Stax & Taxes", "meter_label": "Danger to you", "rate": 0.6, "read": "Taxes hit an eight-drop hardest — so stop playing the eight-drop's game. The ping web runs on creature ETBs, Selvala compresses your mana into one activation, and your removal goes to the one piece that locks the cheat layer. Remember: the typal lands fund casts, never Portal or Manual activations.", "outs": ["Selvala, Heart of the Wilds", "Urza's Incubator", "Monster Manual // Zoological Study", "Thrashing Brontodon", "Beast Within"]},
-        {"archetype": "Go-Wide Swarm", "meter_label": "Danger to you", "rate": 0.4, "read": "The one matchup where you hold a verified trump: Blasphemous Act under Temple Altisaur and Wrathful Raptors clears their board, spares yours minus one martyr, and sends the redirects upstairs (stack 004). The wider they go, the cheaper it gets.", "outs": ["Blasphemous Act", "Temple Altisaur", "Wrathful Raptors", "Austere Command", "Trapjaw Tyrant"]}
-      ],
-      "pilot_tips": [
-        {"card": "Wrathful Raptors", "text": "Don't promise yourself the enrage yield with Wrathful Raptors and the ping web out together — that interaction is unresolved rules territory, so plan the redirect OR the enrage, never both."}
-      ]
-    },
-    {
-      "id": "the-99",
-      "kicker": "THE ROSTER",
-      "headline": "EVERY SLEEVE EARNS IT",
-      "dek": "Ninety-nine slots, ranked the way the deck actually leans on them: the two engines first, the martyr package, the money, the shields — and a mana base with more jobs than a summer resume.",
-      "components": ["pilot-tip", "pull-quote"],
-      "roster": [
-        {"role": "The two engines", "cards": ["Forerunner of the Empire", "Polyraptor", "Ranging Raptors", "Ripjaw Raptor", "Trapjaw Tyrant", "Pantlaza, Sun-Favored", "Garruk's Uprising", "Curious Altisaur"]},
-        {"role": "The one-sided apocalypse", "cards": ["Blasphemous Act", "Temple Altisaur", "Wrathful Raptors"]},
-        {"role": "The money: ramp and acceleration", "cards": ["Selvala, Heart of the Wilds", "Regal Behemoth", "Hulking Raptor", "Otepec Huntmaster", "Sol Ring", "Arcane Signet", "Boros Signet", "Talisman of Unity", "Cultivate", "Kodama's Reach", "Nature's Lore", "Skyshroud Claim", "Topiary Stomper", "Wayward Swordtooth", "Intrepid Paleontologist", "Mirari's Wake"]},
-        {"role": "The cheat layer", "cards": ["Urza's Incubator", "Belbe's Portal", "Monster Manual // Zoological Study", "Descendants' Path", "Huatli, Poet of Unity // Roar of the Fifth People"]},
-        {"role": "Shields for the swing turn", "cards": ["Heroic Intervention", "Flawless Maneuver", "Boros Charm", "Akroma's Will", "Eerie Interlude"]},
-        {"role": "Interaction", "cards": ["Swords to Plowshares", "Path to Exile", "Beast Within", "Thrashing Brontodon", "Austere Command", "Wakening Sun's Avatar", "Triumphant Chomp", "Itzquinth, Firstborn of Gishath", "Bronzebeak Foragers"]},
-        {"role": "Payoffs and finishers", "cards": ["Carnage Tyrant", "Ghalta, Primal Hunger", "Ghalta and Mavren", "Zacama, Primal Calamity", "Etali, Primal Storm", "Vaultborn Tyrant", "Trumpeting Carnosaur", "Quartzwood Crasher", "Bonehoard Dracosaur", "Regisaur Alpha", "Regal Imperiosaur", "Pugnacious Hammerskull", "Overwhelming Stampede", "Rishkar's Expertise", "Hunter's Insight"]},
-        {"role": "Setup and tutors", "cards": ["Congregation at Dawn", "Worldly Tutor", "Enlightened Tutor"]},
-        {"role": "Lands with jobs", "cards": ["Rogue's Passage", "Kessig Wolf Run", "Secluded Courtyard", "Unclaimed Territory", "Krosan Verge", "Path of Ancestry", "Myriad Landscape", "Windswept Heath", "Commercial District"]}
-      ],
-      "pilot_tips": [
-        {"card": "Secluded Courtyard", "text": "Read Secluded Courtyard's second clause before you tap it — it pays Dinosaur creature abilities just fine; it's Unclaimed Territory that is spells-only."}
-      ],
-      "pull_quote": "Rank matters: the deck leans on the 1/3 Human harder than on any 12/12.",
-      "note": "The remainder falls to the automatic Depth group — by design, that group is the plain mana base. The sideboard strip renders automatically; Marauding Raptor's tile blurb already carries the stack-002 warning."
-    },
-    {
-      "id": "judges-desk",
-      "kicker": "CASE FILES",
-      "headline": "THE FULL RECORD",
-      "dek": "Five cases, every citation verbatim, every verdict stamped by an adversarial checker that would love nothing better than to bounce one back. This department is why you can believe the rest of the magazine.",
-      "components": ["dossier-file"],
-      "note": "Cases A-001 through A-005 render from the checker-passed stacks, citations untouched. A-002 and A-003 are the two findings the cover sells — the whole-table draw and the seven-token bound."
-    },
-    {
       "id": "back-page",
       "components": [],
       "note": "next_issue reads TO BE ANNOUNCED, so the teaser stays a standing-series line rather than a named deck. Colophon carries the decklist sha fb3507e3b705 and rules version automatically."
     }
   ],
-  "rhythm_notes": "The three-act arc does the pacing: Sunny's thesis (narrative) hands to Vera's instruction and the Kill peak; Ledger's one dense-analysis spread (By the Numbers) sits between the Kill's narrative and Keep or Ship's practice mode, then exhales through Upgrade Watch (imagination) into Featured Artist (appreciation) — the issue's designated mid-book breather. Sunny then takes the table for four rising pages: reflection, participation, reference, browsing. Know Your Enemy (reference) is followed by The 99 (browsing) per section 6, and Judge's Desk parks its opt-in density behind the browsing spread. Pull quotes are placed as micro-breathers on the five longest departments; no two dense modes are adjacent anywhere in the sequence.",
+  "rhythm_notes": "The five-act flight plan does the pacing: Sunny opens in the cockpit (narrative, practice, participation), works the table (reflection, then Know Your Enemy's reference buffered on both sides), and hands the long game to Vera's instruction, the roster's browsing, and Ledger's imagination. Act IV climbs: one dense-analysis spread (By the Numbers) exhales into the Kill's narrative peak. The appendix parks Judge's Desk's opt-in density behind the narrative and cools through Featured Artist (appreciation) to the Back Page. Pull quotes are placed as micro-breathers on the five longest sections; no two dense modes are adjacent anywhere in the sequence.",
   "gaps": [
     "Stack 005's title contains the phrase 'the post-swap enrage web' — the renderer prints stack titles verbatim in The Kill and Judge's Desk, and that phrasing is changelog voice under L10. Needs a title-only revision of stacks/005-forerunner-ping-web.json before build.",
     "strategic_frame.json land figures contradict deck-facts: the frame says '21 lands' with land sources G11/R12/W9, while deck-facts reports 24 land entries / 35 land copies and sources G13/R13/W10. No copy in this plan quotes the frame's numbers, but the frame should be synced before anything downstream does.",

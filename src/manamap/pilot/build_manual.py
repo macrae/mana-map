@@ -54,6 +54,7 @@ from manamap.pilot.design import (
     violator,
 )
 from manamap.pilot.issue_spec import (
+    ACTS,
     DEPARTMENT_BY_ID,
     DEPARTMENT_IDS,
     MASTHEAD,
@@ -77,7 +78,7 @@ ACCENT = {
 MAP_KEY_ENTRIES = [("⚡", "mana floated"), ("🜲", "storm count"),
                    ("⛃", "treasure"), ("♥", "life")]
 
-TODO = '<p><span class="todo">TODO</span> This department is awaiting content.</p>'
+TODO = '<p><span class="todo">TODO</span> This section is awaiting content.</p>'
 
 
 # ── Loading ─────────────────────────────────────────────────────────────
@@ -141,6 +142,15 @@ def esc_x(text):
     return linkify(esc(text))
 
 
+def esc_x_paras(text):
+    """esc_x that honors paragraph seams: '\\n\\n' splits into <p> blocks, so a
+    multi-paragraph field never renders as one collapsed wall."""
+    parts = [p.strip() for p in (text or "").split("\n\n") if p.strip()]
+    if len(parts) <= 1:
+        return esc_x(text)
+    return "".join(f"<p>{esc_x(p)}</p>" for p in parts)
+
+
 def prose(prose_doc, key, sub=None):
     """Body copy from manual_prose.json; visible TODO when absent."""
     value = (prose_doc or {}).get(key)
@@ -173,10 +183,13 @@ def dept_open(dept_id, plan, extra_badges=()):
     )
     headline = dept.get("headline") or spec["title"]
     dek = f'<p class="dek">{esc(dept["dek"])}</p>' if dept.get("dek") else ""
+    byline = (
+        f'<div class="byline">by {esc(spec["byline"])}</div>' if spec["byline"] else ""
+    )
     return (
         f'<section class="dept" id="{dept_id}" style="--accent:{ACCENT[dept_id]}">'
         f'<div class="dept-head"><div>'
-        f'<h2 class="dept-title">{esc(spec["title"])}</h2></div>'
+        f'<h2 class="dept-title">{esc(spec["title"])}</h2>{byline}</div>'
         f"<div>{badges}</div>"
         f'<div class="dept-promise">{esc(spec["promise"])}</div></div>'
         f"{kicker}<h1 class=\"feature\">{esc(headline)}</h1>{dek}"
@@ -258,18 +271,26 @@ def render_cover(issue, plan, commander):
 
 
 def render_contents(issue, plan, stacks, decisions):
-    rows = []
-    for dept_id in DEPARTMENT_IDS:
-        if dept_id in ("cover", "contents"):
-            continue
-        spec = DEPARTMENT_BY_ID[dept_id]
-        dept = plan_dept(plan, dept_id)
-        headline = dept.get("headline") or spec["title"]
-        badges = "".join(badge(t) for t in spec["tiers"])
-        rows.append(
-            f'<tr><td><a href="#{dept_id}"><b>{esc(spec["title"])}</b></a><br>'
-            f'<span class="soft">{esc(headline)}</span></td>'
-            f'<td>{esc(spec["promise"])}</td><td>{badges}</td></tr>'
+    spec_c = DEPARTMENT_BY_ID["contents"]
+    acts = []
+    for act_title, dept_ids in ACTS:
+        rows = []
+        for dept_id in dept_ids:
+            spec = DEPARTMENT_BY_ID[dept_id]
+            badges = "".join(badge(t) for t in spec["tiers"])
+            byline = (
+                f'<span class="toc-byline">{esc(spec["byline"])}</span>'
+                if spec["byline"] else ""
+            )
+            rows.append(
+                f'<tr><td class="toc-title"><a href="#{dept_id}">'
+                f'<b>{esc(spec["title"])}</b></a></td>'
+                f'<td class="toc-promise">{esc(spec["promise"])}</td>'
+                f"<td>{badges}{byline}</td></tr>"
+            )
+        acts.append(
+            f'<div class="toc-act"><h3 class="toc-act-title">{esc(act_title)}</h3>'
+            f'<table class="toc">{"".join(rows)}</table></div>'
         )
     masthead_rows = "".join(
         f'<div class="legend-row">{badge(c["tier"])}<div><b>{esc(c["name"])}</b> — '
@@ -291,14 +312,13 @@ def render_contents(issue, plan, stacks, decisions):
 <div class="legend masthead-block"><h3>The masthead</h3>{masthead_rows}</div>"""
     return f"""
 <section class="dept" id="contents" style="--accent:{ACCENT["contents"]}">
-  <div class="dept-head"><div><h2 class="dept-title">In This Issue</h2></div>
-    <div class="dept-promise">Where am I, and how do I read this?</div></div>
+  <div class="dept-head"><div><h2 class="dept-title">{esc(spec_c["title"])}</h2></div>
+    <div class="dept-promise">{esc(spec_c["promise"])}</div></div>
   <p class="dek">{len(stacks)} verified line(s) · {len(decisions)} decision spread(s)
     · {esc(issue["deck_name"])}</p>
-  <table class="data"><tr><th>Department</th><th>The promise it keeps</th><th>Evidence</th></tr>
-    {"".join(rows)}</table>
+  {"".join(acts)}
   {legend}
-</section>""" + folio("In This Issue", issue["volume"])
+</section>""" + folio(spec_c["title"], issue["volume"])
 
 
 def render_first_turns(issue, plan, prose_doc, cards_by_name):
@@ -467,10 +487,10 @@ def render_whats_your_play(issue, plan, decisions, cards_by_name):
                 bits.append(f'<span class="lbl">{label}</span> {esc(text)}')
         branches = "".join(f"""
 <div class="branch"><h4>{esc(b.get("choice", ""))}</h4>
-  <dl><dt>The line</dt><dd>{esc_x(b.get("line", ""))}</dd>
-  <dt>Signals sent</dt><dd>{esc_x(b.get("signals", ""))}</dd>
-  <dt>Coalition risk</dt><dd>{esc_x(b.get("coalition_risk", ""))}</dd>
-  <dt>Read</dt><dd>{esc_x(b.get("coaching", ""))}</dd></dl></div>"""
+  <dl><dt>The line</dt><dd>{esc_x_paras(b.get("line", ""))}</dd>
+  <dt>Signals sent</dt><dd>{esc_x_paras(b.get("signals", ""))}</dd>
+  <dt>Coalition risk</dt><dd>{esc_x_paras(b.get("coalition_risk", ""))}</dd>
+  <dt>Read</dt><dd>{esc_x_paras(b.get("coaching", ""))}</dd></dl></div>"""
             for b in decision.get("branches", []))
         rec = decision.get("recommendation", {})
         spreads.append(f"""
@@ -480,7 +500,7 @@ def render_whats_your_play(issue, plan, decisions, cards_by_name):
     <b>{esc(scenario.get("question", ""))}</b></div>
   <div class="branches">{branches}</div>
   <div class="verdict"><b>Our call: {esc(rec.get("choice", ""))}</b><br>
-    {esc_x(rec.get("rationale", ""))}</div>
+    {esc_x_paras(rec.get("rationale", ""))}</div>
 </article>""")
     return (
         dept_open("whats-your-play", plan)
@@ -914,7 +934,7 @@ def render_back_page(issue, plan, deck_doc, stacks, cards_by_name):
     return f"""
 <section class="dept" id="back-page" style="--accent:{ACCENT["back-page"]}">
   <div class="dept-head"><div><h2 class="dept-title">The Back Page</h2></div>
-    <div class="dept-promise">What's in the next issue?</div></div>
+    <div class="dept-promise">{esc(DEPARTMENT_BY_ID["back-page"]["promise"])}</div></div>
   <div class="kicker">Next issue</div>
   <h1 class="feature">{esc(issue["next_issue"])}</h1>
   <p class="dek">Another commander, another 99, the same contract: verified lines,
@@ -958,25 +978,42 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
         f"numbers, and table coaching. Pilot's Manual Vol. {volume:03d}."
     )
 
-    # Order mirrors issue_spec.DEPARTMENTS — the STYLEv3 §5 three-act arc.
-    body = "".join([
-        render_cover(issue, plan, commander),
-        render_contents(issue, plan, stacks, decisions),
-        render_first_turns(issue, plan, prose_doc, cards_by_name),
-        render_command_zone(issue, plan, commander, goldfish, cards_by_name),
-        render_the_kill(issue, plan, stacks, prose_doc, cards_by_name),
-        render_by_the_numbers(issue, plan, goldfish, cards_by_name),
-        render_keep_or_ship(issue, plan, prose_doc, goldfish, cards_by_name),
-        render_upgrade_watch(issue, plan, prose_doc, cards_by_name, sideboard,
-                             lookout),
-        render_featured_artist(issue, plan, cards, cards_by_name),
-        render_politics(issue, plan, prose_doc, cards_by_name),
-        render_whats_your_play(issue, plan, decisions, cards_by_name),
-        render_know_your_enemy(issue, plan, prose_doc, cards_by_name),
-        render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name),
-        render_judges_desk(issue, plan, stacks, cards_by_name),
-        render_back_page(issue, plan, deck_doc, stacks, cards_by_name),
-    ]) + '<a class="toc-float" href="#contents" title="Back to In This Issue">☰</a>'
+    # One renderer per section; issue_spec.DEPARTMENT_IDS is the only place
+    # the STYLEv3 §5 five-act order lives — reordering the spec reorders the book.
+    renderers = {
+        "cover": lambda: render_cover(issue, plan, commander),
+        "contents": lambda: render_contents(issue, plan, stacks, decisions),
+        "first-turns": lambda: render_first_turns(issue, plan, prose_doc,
+                                                  cards_by_name),
+        "keep-or-ship": lambda: render_keep_or_ship(issue, plan, prose_doc,
+                                                    goldfish, cards_by_name),
+        "whats-your-play": lambda: render_whats_your_play(issue, plan, decisions,
+                                                          cards_by_name),
+        "politics-table": lambda: render_politics(issue, plan, prose_doc,
+                                                  cards_by_name),
+        "know-your-enemy": lambda: render_know_your_enemy(issue, plan, prose_doc,
+                                                          cards_by_name),
+        "command-zone": lambda: render_command_zone(issue, plan, commander,
+                                                    goldfish, cards_by_name),
+        "the-99": lambda: render_the_99(issue, plan, cards, prose_doc, synergy,
+                                        cards_by_name),
+        "upgrade-watch": lambda: render_upgrade_watch(issue, plan, prose_doc,
+                                                      cards_by_name, sideboard,
+                                                      lookout),
+        "by-the-numbers": lambda: render_by_the_numbers(issue, plan, goldfish,
+                                                        cards_by_name),
+        "the-kill": lambda: render_the_kill(issue, plan, stacks, prose_doc,
+                                            cards_by_name),
+        "judges-desk": lambda: render_judges_desk(issue, plan, stacks,
+                                                  cards_by_name),
+        "featured-artist": lambda: render_featured_artist(issue, plan, cards,
+                                                          cards_by_name),
+        "back-page": lambda: render_back_page(issue, plan, deck_doc, stacks,
+                                              cards_by_name),
+    }
+    body = "".join(
+        renderers[dept_id]() for dept_id in DEPARTMENT_IDS
+    ) + '<a class="toc-float" href="#contents" title="Back to The Flight Plan">☰</a>'
 
     return f"""<!DOCTYPE html>
 <html lang="en"><head>
