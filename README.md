@@ -213,10 +213,10 @@ cache-busters stripped.
 ## Testing
 
 ```bash
-.venv/bin/python -m pytest        # 924 tests
+.venv/bin/python -m pytest        # 926 tests
 ```
 
-325 card-pipeline + 599 pilot. Five skip markers in `tests/conftest.py` gate on the last
+325 card-pipeline + 601 pilot. Five skip markers in `tests/conftest.py` gate on the last
 artifact of each stage, so **skips on a fresh clone are expected and correct**. Unit tests
 build inline fixtures — no fixture files. Paths always come from `manamap.config`, so the
 suite is CWD-independent and honours `MANAMAP_DATA_DIR`.

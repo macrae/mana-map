@@ -4,7 +4,7 @@
 .venv/bin/python -m pytest          # full suite (discovery via testpaths = tests/)
 ```
 
-924 tests in `tests/`: 325 card-pipeline + 599 pilot-subsystem. Three categories:
+926 tests in `tests/`: 325 card-pipeline + 601 pilot-subsystem. Three categories:
 
 **Card-pipeline unit tests (281) — no data files needed, run anywhere:**
 
@@ -29,7 +29,7 @@
 
 Both are skip-guarded: `test_pipeline_integration.py` skips per-file via `requires_file(...)`; `test_find_similar.py` uses the module-level `requires_data` marker from `tests/conftest.py` (gates on `embeddings.npy` existing).
 
-**Pilot-subsystem tests (599) — mostly pure-function with inline fixtures; data-gated ones behind markers:**
+**Pilot-subsystem tests (601) — mostly pure-function with inline fixtures; data-gated ones behind markers:**
 
 | File | Tests | Covers | Data gate |
 |------|-------|--------|-----------|

@@ -25,9 +25,9 @@ Steps 1 and 7 need internet. Every module also keeps a main-guard, so `python -m
 
 - **New Scryfall data** (new sets): full `manamap run`. Card count changes invalidate *everything* downstream — the index-alignment invariant (`projection[i]` == `cards.csv[i]`) means partial re-runs on changed data produce inconsistent artifacts.
 - **Changed `MECHANICAL_TAGS`**: retrain required — `manamap run --from preprocess`. Tag dim changes make `model_ability.pt` incompatible.
-- **Changed `SYNERGY_RULES` / obsolescence thresholds / region params**: only steps 10–12 — `manamap synergy && manamap power-creep && manamap cluster-regions`. Fast (no retraining).
+- **Changed `SYNERGY_RULES` / obsolescence thresholds / region params**: only steps 10–12 — `manamap synergy && manamap power-creep && manamap cluster-regions`. Fast (no retraining), but it invalidates **five** agent-cache routines that hash those graphs — `writer-prose`, `the-ten`, `issue-plan`, `candidate-pool`, `deck-build`. Verified prose is usually still correct after a graph refresh, so re-bless (`cache-record`) rather than re-spawn; make it a stated decision.
 - **Changed `ROLE_PATTERNS`**: only step 13 — `manamap card-roles` (~10 s, no retraining). Roles are deliberately *not* model-facing, so unlike `MECHANICAL_TAGS` they never force a retrain. Note this invalidates the `candidate-pool` and `deck-build` agent-cache routines, which hash `card_roles.json`.
-- **Changed viz only**: nothing to re-run; bump the cache-bust `?v=` in `viz/index.html`.
+- **Changed viz only**: nothing to re-run; bump the cache-bust `?v=` on the page you touched — `viz/index.html` (map) or `viz/deck.html` (dossier). `manuals/magazine.css` is content-addressed instead, so a magazine stylesheet change means rebuilding every manual page.
 
 ## Approximate runtimes (Apple Silicon, MPS)
 

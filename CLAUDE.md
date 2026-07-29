@@ -23,14 +23,18 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       # PUBLISH — a deck -> a magazine issue
                       #   rules DB + strategy KB (RAG), deck ingestion, citation
                       #   contract, goldfish simulator, agent cache, artist credits
-                      #   issue_spec.py  department system (single source of truth)
+                      #   issue_spec.py  SECTION system (single source of truth)
                       #   design.py      tokens, stylesheet, component library
+                      #   mana_analysis.py  Sources Say — deterministic, no agent
                       #   build_manual.py / build_index.py  issue + newsstand
                       #   validate_issue.py / agent_cache.py / artist_credits.py
-tests/                # pytest suite (802 tests: 323 card-pipeline + 479 pilot),
+                      #   validate_considering.py / validate_tutor_guide.py
+                      #   impact.py / card_refs.py  incremental regeneration
+tests/                # pytest suite (926 tests: 325 card-pipeline + 601 pilot),
                       # conftest markers: requires_data/rules/deck/strategy/roles
 data/                 # artifacts; mostly gitignored, viz-served files tracked
-viz/                  # static frontend (Plotly CDN, two IIFE scripts, window.MM / window.DeckBuilder)
+viz/                  # static frontend: index.html (the map) + deck.html (the
+                      # deck dossier); Plotly CDN, IIFE scripts, window.MM
 docs/                 # reference docs (see Pointers below)
 ```
 
@@ -53,12 +57,13 @@ manamap run --from STEP       # resume from a step
 manamap <step>                # single step; see `manamap --help` for all 16 subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # fast analysis-only refresh (no retrain)
-manamap pilot <cmd>           # build + publish subsystem (26 subcommands) — see docs/pilot.md
+manamap pilot <cmd>           # build + publish subsystem (33 subcommands) — see docs/pilot.md
 
-.venv/bin/python -m pytest    # 802 tests; data-dependent ones skip if artifacts missing
+.venv/bin/python -m pytest    # 926 tests; data-dependent ones skip if artifacts missing
 
 python -m http.server 8000    # serve viz FROM REPO ROOT
-# http://localhost:8000/viz/index.html
+# http://localhost:8000/viz/index.html          the card map
+# http://localhost:8000/viz/deck.html?deck=heliod   a deck's dossier
 ```
 
 ## Gotchas
@@ -68,19 +73,23 @@ python -m http.server 8000    # serve viz FROM REPO ROOT
 - **Index alignment**: `projection[i]` == `cards.csv[i]` == `embeddings[i]`. Never partially regenerate after the card count changes; re-run from the changed step onward.
 - **No Git LFS on `data/`**: GitHub Pages serves LFS pointers, which would break the deployed viz. Large tracked JSON/bin files are intentional.
 - **Viz serving root**: all fetches are `../data/<file>` relative to `viz/index.html` — `viz/` and `data/` must stay top-level siblings; serve from repo root.
-- **Cache busting**: bump `?v=N` on the script/CSS tags in `viz/index.html` after any JS/CSS change.
+- **Cache busting**: bump `?v=N` on the script/CSS tags in `viz/index.html` **and `viz/deck.html`** after any JS/CSS change. `manuals/magazine.css` is content-addressed instead (`?v=<sha8>`), so a CSS edit there obligates rebuilding every manual page.
 - **Synergy ≠ Similar**: synergy is complementary (blink→ETB, rule-based); Find Similar is embedding neighbors. Different algorithms.
 - **Plotly**: `Plotly.relayout` fires `plotly_relayout` — guard against event loops.
 - Paths in `config.py` are `__file__`-anchored (CWD-independent); override with `MANAMAP_DATA_DIR` / `MANAMAP_VIZ_DIR`.
 - Color+Type model hitting near-zero triplet loss by epoch ~3 is expected, not a bug.
-- **Agent cache**: subagent spawns are the only LLM cost (there are no LLM calls in Python). Skills check `manamap pilot cache-status <slug>` before spawning and `cache-record` after validating — see `docs/agent-cost.md`. Editing a `.claude/agents/*.md` prompt invalidates that agent's routines by design; `build-manual` is deliberately uncached.
+- **Agent cache**: subagent spawns are the only LLM cost (there are no LLM calls in Python). Always `cache-status` before spawning, `cache-record` **after** validating. Editing a `.claude/agents/*.md` prompt invalidates that agent's routines by design; `build-manual` is deliberately uncached. Costs and per-routine sizing: `docs/agent-cost.md`.
 - **Strategy DB staleness**: any edit to `data/strategy/strategy.md` requires `manamap pilot build-strategy-db` — `load_strategy_db` hard-errors on a sha256 mismatch. Doc + CHANGELOG are tracked; the derived index/embeddings are gitignored.
-- **The combo data is two files**: `combo_graph.json` is `{"partners": {...}}` **only** (4.5 MB — it's what the viz fetches on the main thread, so nothing else belongs in it). The per-combo records live in `combo_details.json` (`{combos, by_card, meta}`, 25.7 MB, Python/agents only) with `bracket`, `mana_value_needed`, `popularity`. If you remember a `combos` key on the graph, that moved.
+- **The combo data is two files**: `combo_graph.json` is `{"partners": {...}}` **only** — it's what the viz fetches on the main thread, so nothing else belongs in it. The per-combo records live in `combo_details.json` (`{combos, by_card, meta}`, Python/agents only) with `bracket`, `mana_value_needed`, `popularity`. If you remember a `combos` key on the graph, that moved. Sizes in `docs/data-artifacts.md`.
 - **Combo data is format-agnostic**: Commander Spellbook combos may assume a card is your commander ("Infinite commander casts" in `produces` is the tell) — verify lines with a resolve-stack run before presenting them as fact (stack 004 refuted one this way; `bracket.py` now excludes such lines automatically). Their per-combo `bracket` tag is also not gospel: it tags a real Hapatra two-card infinite as bracket 1, which is why the engine runs its own infinite test.
 - **`bracket-check` needs a pipeline run**: the Game Changers signal is the `game_changer` column in `cards.csv`, which is gitignored. A fresh clone can render manuals but cannot compute a bracket floor until `manamap extract` has run.
 - **`deck-facts` first, always**: `manamap pilot deck-facts <slug>` is the deterministic brief — DFC-correct colours, curve, pip load, role coverage and holes, contained combos, and a `notes[]` block naming the traps. It is computed on demand and never committed (same rule as `artist-credits`). Every deck agent is told to run it before deriving anything; re-deriving by hand costs tokens and has produced wrong answers.
-- **Scenario scope drives the resolve loop's cost**: the checker verdict is atomic over an artifact whose size the author controls, so citation count predicts iterations. Every artifact at ≤32 citations passed in 1–2 rounds; every one at ≥59 needed 4 rounds or failed. `RESOLVE_SCOPE_BUDGET` warns, and `validate-stack --scenario-only` preflights a scenario for free before any spawn. **One rules domain per scenario** — split multi-part questions.
-- **Agents hand off by path, not inline JSON**: deck agents write `data/decks/<slug>/.agent-out/<agent>.json` (gitignored) and return the path plus a summary. The orchestrator validates and merges. Returning a 133 KB artifact inline costs ~35k tokens of context for nothing.
+- **One rules domain per scenario.** The checker's verdict is atomic over the whole artifact, so citation count predicts iterations — small scenarios pass, big ones fail and take correct answers down with them. `RESOLVE_SCOPE_BUDGET` warns; `validate-stack --scenario-only` preflights for free before any spawn. The measured evidence is in `docs/pilot.md`.
+- **Agents hand off by path, not inline JSON**: deck agents write `data/decks/<slug>/.agent-out/<agent>.json` (gitignored) and return the path plus a summary; the orchestrator validates and merges. Returning a large artifact inline burns context for nothing.
+- **Count copies, not decklist entries**: `cards.json` stores basics as one entry with `quantity: N`, so anything the shuffler would see (land totals, colour sources, hypergeometric draws) must go through `common.expand_copies()`. Counting entries once published "18 lands" for a 33-land deck and understated every colour fleet-wide. `mana_analysis` reports `lands.total` (copies) beside `lands.entries` (distinct cards); `validate-issue` lints prose that quotes the entry count as a land count. `artist_credits` counts entries **on purpose** — authorship is per card.
+- **Never transcribe the section list or its count into a prompt**: read `issue_spec.DEPARTMENTS`. The magazine-editor's charter once enumerated the old 15 ids, in the old order, three lines after telling itself to read the spec. `tests/test_docs_section_count.py` fails on any stale count or hardcoded id list.
+- **The deck manifest is generated, not hand-kept**: `manamap pilot build-index` writes `data/decks/index.json` (deck list + each deck's passing stack filenames) because a browser can list neither `data/decks/` nor `stacks/`. `viz/deck.html` reads it; a test asserts it matches the artifacts. Add a deck, run `build-index`.
+- **`mana_analysis.json` is tracked and staleness-tested**: a decklist edit or a change to the maths needs `manamap pilot mana-analysis <slug>`, or `tests/test_pilot_mana_analysis.py` fails. Run it AFTER `goldfish`, since it embeds goldfish figures.
 - Lint/format/CI intentionally not set up; revisit if the project grows.
 
 ## Pointers
@@ -89,10 +98,11 @@ python -m http.server 8000    # serve viz FROM REPO ROOT
 - `docs/pipeline.md` — all 13 steps: commands, inputs/outputs, runtimes, when to re-run what
 - `docs/deck-builder-v2.md` — the deck builder's design record: bracket engine, role taxonomy, the architect ⇄ critic loop, and where the implementation departed from the design
 - `docs/data-artifacts.md` — every `data/` file: producer, size, git status, consumers
-- `docs/viz.md` — frontend structure, `window.MM` API, DATA map, Pages deployment
+- `docs/viz.md` — frontend structure, `window.MM` API, DATA map, the deck dossier, Pages deployment
 - `docs/testing.md` — test layout, skip markers, conventions
 - `docs/agent-cost.md` — where LLM spend lives, per-routine token sizing, the invocation cache
 - `docs/pilot.md` — pilot subsystem: three-tier evidence contract, citation contract, rules DB, strategy DB + strategy-researcher agent, resolve loop, build loop, goldfish, manual generation
 - `PLAN.md` — ACTIVE plan: current state, what's done, what's next (read this first when resuming work)
-- `STYLEv3.md` — the magazine's editorial + design constitution (department system, Commander Mandate, voice, component library); read before touching `build_manual.py`, `design.py`, or `issue_spec.py`
+- `STYLEv3.md` — the magazine's editorial + design constitution (the 17-section five-act system, the Commander Mandate, the three columnists, L10, voice, component library); read before touching `build_manual.py`, `design.py`, or `issue_spec.py`
+- `docs/frontend-v2.md` — the deck-building surface: what shipped (the dossier), what's next (`viz_index.json`, the Worker port), and the audit header saying which of its premises expired
 - `docs/history/PLAN.md` — historical deck-builder planning doc (outdated, unmaintained)

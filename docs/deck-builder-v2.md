@@ -1,6 +1,13 @@
 # Deck Building v2 — design plan
 
-*Status: **Phases 0–3 shipped and proven end to end** — hapatra was built from a brief and published as Vol. 002. Phase 4 (the frontend) outstanding.
+*Status: **Phases 0–3 shipped and proven end to end** — hapatra was built from a brief and
+published as Vol. 002. **Phase 4 partially shipped (2026-07-29): the read-only half.**
+`viz/deck.html` renders every deck's committed artifacts (bracket floor + driver, mana
+audit, goldfish, the Short List, tutors, case files, and this document's slot/score record
+where a `build_plan.json` exists). The interactive builder surface — `build.html`, the
+engine port to a Worker — has not started, and the three v1 liabilities named below
+(raw-index localStorage, the synchronous multi-MB parse, the full-`innerHTML` rebuild) are
+untouched. Sequencing since revised: see `docs/frontend-v2.md`'s audit header and `PLAN.md`.
 Written 2026-07-25 as a proposal and kept as the design record — where the implementation
 departed from the design, the departure is marked inline and the shipped behaviour wins.
 The active summary lives in `PLAN.md`.*
@@ -109,8 +116,12 @@ removal that destroys flyers; and 6,875 cards (20%) carry no tag. You cannot ask
 deck need more interaction" from what's there.
 
 **4. The strategy corpus has no deckbuilding theory, and the citation contract makes that
-fatal.** Of 32 sections, roughly 10 contain a deckbuilding *clause* and **zero are about
-construction**. There is nothing on land counts, ramp/draw/removal ratios, curve design,
+fatal.** *(Departure: **shipped**. `strategy.md` now indexes 45 sections including a full
+`strategy:deckbuilding` tree of 12 subsections — mana-base, ratios, curve,
+redundancy-vs-tutors, threat-density, interaction-suite, archetype-selection, power-level,
+cutting, budget — with literal land-count figures. The gate below is open; "tutors are
+never mentioned" no longer holds either.)* Of 32 sections, roughly 10 contain a
+deckbuilding *clause* and **zero are about construction**. There is nothing on land counts, ramp/draw/removal ratios, curve design,
 tutor density, threat count, archetype selection, power-level matching, or budget. Karsten's
 land-count work is cited three times as a *method* and not one number from it appears in the
 doc. Since citations are validated as verbatim whitespace-normalized substrings, a builder
@@ -239,7 +250,11 @@ sections; does the bracket claim survive `bracket.py`; do the claimed engines ac
 or do they need a stack scenario; does the mana base support the pips. It never
 rubber-stamps, and a `fail` artifact is saved as an open question rather than deleted.
 
-**`meta-analyst`** — the "hyper aware of strategy metas and playstyles" role. Research-mode,
+**`meta-analyst`** — *(Departure: **never built.** There is no `meta-analyst` agent and no
+`data/meta/` corpus; it was traded away to get the loop working, and the loop works without
+it. The design point worth keeping is in `PLAN.md`: meta claims perish and strategy theory
+doesn't, so they want separate corpora with different invalidation, and every meta section
+needs an `as_of`.)* The "hyper aware of strategy metas and playstyles" role. Research-mode,
 write-scoped to `data/meta/` with a CHANGELOG, mirroring `strategy-researcher`'s two-layer
 write guard (prompt declares scope, skill reverts anything else via `git status`
 snapshotting). Separate corpus from `strategy.md` for one specific reason: **strategy theory
@@ -431,10 +446,14 @@ listener leak.
   eyeballed.
 - No agent claim without a citation that `validate_build` can verify as a verbatim substring.
 
-## Prerequisite worth doing regardless
+## Prerequisite worth doing regardless — RESOLVED
 
-`PLAN.md` records a real open data question: `goldfish_metrics.json` reports
-`keep_first_seven_rate` of 0.791 while its own `land_histogram` puts 9,899 of 10,000 first
-sevens at 2–5 lands, and under the stated keep rule those two figures cannot describe the
-same test. Goldfish becomes this feature's fitness function. **Resolve that discrepancy
-before Phase 3 depends on it.**
+*(Departure: **resolved**, before Phase 3 shipped.)* This section recorded a real
+discrepancy: `goldfish_metrics.json` reported `keep_first_seven_rate` of 0.791 while its own
+`land_histogram` put 9,899 of 10,000 first sevens at 2–5 lands, and under the stated keep
+rule those two figures could not describe the same test.
+
+The cause was one histogram doing two jobs. `goldfish.py` now emits two under
+`metrics.opening_hand`: `first_seven_land_histogram` (2–5 lands = 7,907/10,000 = 0.791,
+consistent with the keep rate) and `kept_hand_land_histogram` (post-mulligan). See
+`docs/pilot.md`. Goldfish did become this feature's fitness function, as predicted.

@@ -98,7 +98,22 @@ It also excludes lines that assume one of their own pieces is your commander (`"
 
 ## Mana base math (`src/manamap/pilot/manabase.py`)
 
-Colour-source counts are **computed hypergeometrically**, not quoted from a table: the fewest sources k such that P(at least `pips` among the cards seen by turn T) ≥ 90%, over a 99-card library. Three calibrations keep the output usable. **Conditional sources count only at their unconditional value**: "add one mana of any color" is a five-colour source only when unrestricted, so Haven of the Spirit Dragon ("spend this mana only to cast a Dragon creature spell") taps for `{C}` in a Vampire deck. Understating a source is recoverable; overstating one produces a deck that cannot cast its spells, and a greedy selector reaches for those lands precisely because they *look* like they cover everything. Then — requirements are sized against the pip weight a 20% quorum of a colour's cards actually demand (`PIP_WEIGHT_QUORUM`), so one `{B}{B}{B}` bomb doesn't demand 48 sources; and planning never targets earlier than turn 3 (`MIN_PLANNING_TURN`), since sizing to turn 1 asks for more sources than a 36-land base can hold. Both the target and the *achieved* on-curve probability are reported, so a shortfall is information rather than a failure.
+Colour-source counts are **computed hypergeometrically** (callers must pass `common.expand_copies()` output — `manabase.py` counts whatever list it is handed, and handing it decklist *entries* silently halves every basic-land colour), not quoted from a table: the fewest sources k such that P(at least `pips` among the cards seen by turn T) ≥ 90%, over a 99-card library. Three calibrations keep the output usable. **Conditional sources count only at their unconditional value**: "add one mana of any color" is a five-colour source only when unrestricted, so Haven of the Spirit Dragon ("spend this mana only to cast a Dragon creature spell") taps for `{C}` in a Vampire deck. Understating a source is recoverable; overstating one produces a deck that cannot cast its spells, and a greedy selector reaches for those lands precisely because they *look* like they cover everything. Then — requirements are sized against the pip weight a 20% quorum of a colour's cards actually demand (`PIP_WEIGHT_QUORUM`), so one `{B}{B}{B}` bomb doesn't demand 48 sources; and planning never targets earlier than turn 3 (`MIN_PLANNING_TURN`), since sizing to turn 1 asks for more sources than a 36-land base can hold. Both the target and the *achieved* on-curve probability are reported, so a shortfall is information rather than a failure.
+
+## Mana audit (`src/manamap/pilot/mana_analysis.py`)
+
+The same hypergeometric kit, pointed at a *finished* deck instead of a pool, and the one
+magazine section with **no agent at all**: `manamap pilot mana-analysis <slug>` writes
+`mana_analysis.json` deterministically. It classifies each land (basic / snow / mdfc /
+fetch / tapped / untapped-dual / utility, reusing `ROLE_LAND_PATTERNS` deck-locally),
+counts land and nonland sources per colour, computes pip share against source share, and
+reports on-curve probability both from lands alone and with rocks and dorks.
+
+**It counts copies, not decklist entries.** Basics live in `cards.json` as one entry with
+`quantity: N`, so the artifact reports `lands.total` (copies — the real answer) beside
+`lands.entries` (distinct cards). Counting entries once published "18 lands" for a 33-land
+deck and understated every colour's sources across the whole fleet; `validate-issue` now
+lints reader-facing copy that quotes the entry count as a land count.
 
 ## Synergy detection (`src/manamap/analysis/synergy.py`)
 

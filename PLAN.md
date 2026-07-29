@@ -32,7 +32,7 @@ a **deck builder** that produces the deck in the first place.
 | **Rules DB** | CR chunked one-per-rule (~3.9K), chunk ID = citation ID; semantic query + exact lookup |
 | **Citation contract** | Form enforced in `validate_stack.py`; meaning by adversarial `rules-checker`; only `pass` publishes |
 | **Goldfish** | Seeded Monte Carlo (seed 42, 10K iters), resource development *not* full games, assumptions rendered |
-| **Strategy DB** | 45 sourced sections / 14 pillars; `strategy:<id>` = citation ID; `strategy-researcher` (research + consult modes) |
+| **Strategy DB** | 45 sourced strategy sections / 14 pillars; `strategy:<id>` = citation ID; `strategy-researcher` (research + consult modes) |
 | **Magazine layer** | **17 sections in five acts**, `issue_spec.py` as the single source of truth, `magazine-editor`, deterministic renderer, newsstand |
 | **The three columnists** | Every section is signed. `"Ledger" Lin Marginal` (◆), `Counselor Vera Dictum` (✓), `Coach Sunny Brightside` (★) — `MASTHEAD_COLUMNISTS`, per-section `byline`, promises written in the signing voice. Personas are presentation only; costume never earns the badge (STYLEv3 §7.7, §10) |
 | **L10 — every issue is the reader's first** | No version numbers, no HISTORY.md, no "previous build", no swap-wave narration in print. Enforced in code: `validate_issue.validate_self_containment()` lints the plan, prose and every decision file |
@@ -149,48 +149,74 @@ quotes `lands.entries` as a land count. The lint found two survivors the greps h
 `goldfish.py` was already correct (it expands `quantity` when building the library), so no
 simulation figure was ever wrong.
 
-## Open
+## Ongoing — what is in flight right now
 
-### Frontend
+Nothing is mid-edit: the working tree is clean, all seven issues validate, every deck's
+cache exits 0, and the fleet rebuilds byte-identical. "Ongoing" here means the threads
+that are live and have an obvious next move, not work left half-done.
 
-**Frontend v2 is 0% started** and `docs/frontend-v2.md` predates the v3.2/v3.3 magazine
-work, so its M3 targets a component set and a 15-department layout that no longer exist.
-Audited state: no `viz_index.json`, no `viz/js/engine/`, no Worker, no `build.html` or
-`deck.html`, no URL state anywhere, no CSS custom properties. The viz is four files,
-~3,000 lines, and knows nothing of the pilot subsystem — the two products share exactly
-one link, newsstand → map.
+| Thread | State | Next move |
+|---|---|---|
+| **Frontend v2** | The dossier (`viz/deck.html`) shipped and is the first two-way link between the map and the magazine. The engine port has not started. | `viz_index.json` — see *Future* below |
+| **Deck versioning** | `HISTORY.md` + a validated `decklist_sha256` shipped; `supersedes` and `build:<NNN>` did not | Add `supersedes` to `issue.json` so a second issue for one deck is expressible |
+| **Verification backlog** | 32 verified lines across 7 decks; ~30 named candidate lines unresolved, several one clause from passing | Sisay 001 — highest value in the fleet |
+| **Strategy DB** | 45 strategy sections / 14 pillars; four named gaps, one of them now backing a whole section with no pillar behind it | A tutor-sequencing pillar for Fetch Quests |
+| **Back pages** | `heliod` and `edgar-vampires` carry `next_issue: TO BE ANNOUNCED` | Pilot names the next deck |
 
-Two live defects in `viz/js/deck-builder.js`, both confirmed:
+### The frontend, precisely
+
+`viz/deck.html` shipped 2026-07-29. Before it, the two products shared exactly one link
+(newsstand → map) and the viz knew nothing of the pilot subsystem; now every issue's Back
+Page opens its deck's dossier and the dossier links back. It also introduced the first URL
+state this frontend has had (`?deck=<slug>`) and forced the design-token port into
+existence against real content.
+
+Still true, and still the two live defects in `viz/js/deck-builder.js`:
+
 - its six-factor scorer **diverges from `config.DECK_BUILD_WEIGHTS`** — different weights
   on every shared factor, and its sixth factor is keyword Jaccard where Python uses
-  castability;
-- saved decks persist **raw projection row indices**, so any pipeline refresh silently
-  reinterprets a saved deck as a different set of cards. A correctness bug.
+  castability. Two implementations of one algorithm, documented in two places with no
+  cross-reference;
+- saved decks persist **raw projection row indices**, so any pipeline refresh that changes
+  card ordering silently reinterprets a saved deck as a different set of cards. A
+  correctness bug, and the one item worth doing on its own schedule.
 
-**Resequenced from the original M1 → M2 → M6.** The deck artifacts are already tracked and
-servable (~3.6 MB, uniform across seven decks), so `deck.html` has **no prerequisites**,
-while the engine port is blocked on `data/cards.csv` being gitignored. Order:
+`docs/frontend-v2.md` keeps its analysis but carries an audit header: its M1 → M2 → M6
+sequencing was wrong (the dossier had no prerequisites; the engine port is blocked on
+`data/cards.csv` being gitignored) and its M3 premise predates the 17-section magazine.
 
-**`viz/deck.html` shipped 2026-07-29** — the dossier is the surface the rest builds on:
-it forced the design-token port into existence against real content and introduced the
-first URL state this frontend has had (`?deck=<slug>`). What remains, in order:
+## Future — what is not started
 
-1. **`viz_index.json`** — the next step. The browser is missing four card fields
-   (`game_changer`, `mechanical_tags`, `layout`, and `legal_commander` as a tri-state);
-   a positional file in cards.csv row order closes every gap. ~476 KB gzipped.
+### Frontend, in order
+
+1. **`viz_index.json`** — the browser is missing four card fields (`game_changer`,
+   `mechanical_tags`, `layout`, and `legal_commander` as a tri-state, since `reduce.py`
+   collapses `banned` and `not_legal`). A positional file in cards.csv row order closes
+   every gap, ~476 KB gzipped, as a new export step after `card-roles`. This is the real
+   M1: `data/cards.csv` is gitignored, and it is what blocks everything below.
 2. **Engine port to a Worker** — `manabase` is trivial (pure math, no deps), `bracket` and
-   `goldfish` easy, `build_deck` hardest (pandas is load-bearing). `constants.js` must be
-   **generated from `config.py`**, with a parity test, or the scorer divergence recurs.
-3. **`build.html`** — slots as the primitive, the deck starts complete, incremental DOM.
-4. **Handoff** — emit `brief.json` + `decklist.txt` + the command to run.
+   `goldfish` easy, `build_deck` hardest (pandas is load-bearing in pool filtering).
+   `viz/js/engine/constants.js` must be **generated from `config.py`**, never hand-edited,
+   with a parity test asserting both builders emit identical `build_plan.json` — otherwise
+   the scorer divergence above simply recurs in a new file. Goldfish determinism needs an
+   MT19937 port matching `random.shuffle`; the honest fallback is labelling
+   browser-computed goldfish an *estimate* that never overwrites a committed ◆ artifact.
+3. **`build.html`** — the deck starts complete and you review and swap slots, because the
+   builder already fills 63 slots by role budget and keeps scored alternates for each. A
+   score delta of 0.01 is the signal that the scorer was nearly indifferent and the
+   pilot's judgment is cheap. Every mutation incremental; no `innerHTML` rebuild.
+4. **Handoff** — emit `brief.json` + `decklist.txt` and the command to run.
 
-**Agents run in Claude Code, not the browser.** The integration model is: render what
-agents produced, hand a brief back, and deep-link cards between map and magazine. A
-browser-triggered agent run would need a server this project deliberately doesn't have.
+Opportunistic, none blocking: hover tooltips are built for all 34,322 points every render
+and thrown away (13 traces set `hoverinfo:'none'` — ~275k wasted regex ops per render, and
+turning them on is the single biggest available UX win); the detail panel hides in build
+mode, exactly when you're deciding whether a card belongs; int8-quantising
+`embeddings.bin` takes 17.6 MB → 4.4 MB.
 
-Opportunistic: hover tooltips are built for all 34,322 points every render and thrown away
-(13 traces set `hoverinfo:'none'`); the detail panel hides in build mode, exactly when
-you're deciding; int8-quantising `embeddings.bin` takes 17.6 MB → 4.4 MB.
+**Agents run in Claude Code, not the browser**, and none of the above changes that. The
+integration model is: render what agents produced (shipped), hand a brief back (step 4),
+and deep-link cards between map and magazine. A browser-triggered agent run would need a
+server this project deliberately does not have.
 
 ### Deck versioning — the remaining third
 
@@ -242,12 +268,14 @@ fodder, converter taxonomy); **counters-matter** (annihilation as a resource, th
 anthem-versus-shrink anti-synergy); and **tutor sequencing** — now doubly wanted, since
 Fetch Quests is a whole section with no strategy pillar behind it.
 
-### Deferred
+### Deferred by decision
 
 **`meta-analyst`** — the v2 design called for a meta-awareness agent with its own
 `data/meta/` corpus. Traded away to get the loop working, and the loop works without it.
 The design point worth keeping: **meta claims perish and strategy theory doesn't**, so they
 want separate corpora with different invalidation, and every meta section needs an `as_of`.
+
+## Standing notes — decided, not open
 
 ### Judgment calls surfaced by audit, deliberately not changed
 

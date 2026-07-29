@@ -13,9 +13,24 @@ from pathlib import Path
 from manamap.pilot.issue_spec import DEPARTMENT_IDS
 
 ROOT = Path(__file__).resolve().parent.parent
-# Files that instruct an agent or a human about the section system.
-SURFACES = [ROOT / "STYLEv3.md", *sorted((ROOT / ".claude").rglob("*.md")),
-            *sorted((ROOT / "src" / "manamap" / "pilot").glob("*.py"))]
+# Every surface that tells an agent or a human how many sections there are.
+# `docs/` and CLAUDE.md are included deliberately: an audit found the earlier,
+# narrower version let a stale count sit in the docs and pass green.
+# Design records are excluded: they deliberately quote the numbers of their own
+# era ("of 32 sections, roughly 10 contain a deckbuilding clause") and carry
+# inline departure marks where reality moved. Rewriting them would destroy the
+# record; the whole point of a design doc is that it dates.
+DESIGN_RECORDS = {"deck-builder-v2.md", "frontend-v2.md"}
+SURFACES = [
+    ROOT / "STYLEv3.md",
+    ROOT / "CLAUDE.md",
+    ROOT / "PLAN.md",
+    ROOT / "README.md",
+    *sorted((ROOT / ".claude").rglob("*.md")),
+    *[p for p in sorted((ROOT / "docs").glob("*.md"))
+      if p.name not in DESIGN_RECORDS],
+    *sorted((ROOT / "src" / "manamap" / "pilot").glob("*.py")),
+]
 
 _WORDS = {"fifteen": 15, "sixteen": 16, "seventeen": 17, "eighteen": 18}
 # `[^|\n]` guards against markdown table rows ("| # | Section |"), where the

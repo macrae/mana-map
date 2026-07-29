@@ -278,7 +278,7 @@ histogram — if those two ever diverge, one of them is wrong.
 
 ## Tests
 
-`tests/test_pilot_*.py` — 479 tests across 19 files.
+`tests/test_pilot_*.py` — 601 tests across 27 files.
 
 **Build side:** deck builder pool/scoring/slot-filling/emergent-combo pass (`test_pilot_build_deck`, 42), hypergeometric mana math and land selection (`test_pilot_manabase`, 36), bracket floor + drivers + the goblin-storm golden checks (`test_pilot_bracket`, 35), build-plan form gate (`test_pilot_validate_build`, 37).
 
