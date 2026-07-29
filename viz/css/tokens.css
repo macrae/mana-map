@@ -1,0 +1,169 @@
+/* Design tokens — the magazine's system in its dark register.
+ *
+ * Ported from src/manamap/pilot/design.py's CSS token block. The tier colours are
+ * fixed by STYLEv3 §8.3 and must not drift: a reader who learns ✓/◆/★ in the manual
+ * reads the same three colours here. Everything else is the same palette with the
+ * paper/ink relationship inverted for a screen surface that sits beside a dark map.
+ *
+ * If design.py's tokens change, change them here too — this is a port, not a fork.
+ */
+:root {
+  /* Inverted surface: the magazine's ink becomes the page, its paper the text. */
+  --paper: #14120F;
+  --panel: #1D1A16;
+  --panel-hi: #262119;
+  --ink: #F0EADC;
+  --ink-soft: #A79C8A;
+  --rule: #3A342B;
+
+  /* Era palette, unchanged from design.py. */
+  --power-red: #E4002B;
+  --burst-yellow: #FFD800;
+  --radical-purple: #9B4DAB;
+  --slime-green: #3FBF3F;
+  --hot-magenta: #E4007C;
+  --y2k-blue: #4A7BFF;
+  --y2k-violet: #8B5ECE;
+  --manila: #E8D9A8;
+  --stamp-red: #C41E1E;
+
+  /* The evidence contract. Same three tiers, lifted for contrast on dark. */
+  --tier-verified: #4CAF50;
+  --tier-data: #4A7BFF;
+  --tier-coach: #D4AF4A;
+
+  --trim: 1180px;
+  --display: "Archivo Black", "Arial Black", sans-serif;
+  --condensed: "Oswald", "Arial Narrow", sans-serif;
+  --techno: "Michroma", "Arial Black", sans-serif;
+  --type: "Special Elite", "Courier New", monospace;
+  --body: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+/* ── Page ────────────────────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--body); font-size: 15px; line-height: 1.55;
+}
+a { color: var(--y2k-blue); }
+img { max-width: 100%; display: block; }
+.trim { max-width: var(--trim); margin: 0 auto; padding: 0 22px 64px; }
+
+/* ── Masthead ────────────────────────────────────────────────────────── */
+.dossier-head {
+  display: flex; align-items: flex-end; gap: 18px; flex-wrap: wrap;
+  border-bottom: 3px solid var(--rule); padding: 26px 0 14px; margin-bottom: 26px;
+}
+.dossier-head h1 {
+  font-family: var(--display); text-transform: uppercase; margin: 0;
+  font-size: clamp(24px, 4vw, 40px); line-height: 1;
+}
+.slug-line {
+  font-family: var(--condensed); text-transform: uppercase; letter-spacing: .28em;
+  font-size: 11px; color: var(--ink-soft);
+}
+.head-links { margin-left: auto; display: flex; gap: 14px; font-family: var(--condensed);
+  text-transform: uppercase; letter-spacing: .12em; font-size: 12px; }
+
+/* ── Panels ──────────────────────────────────────────────────────────── */
+.panels { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(430px, 1fr)); }
+.panel {
+  background: var(--panel); border: 1px solid var(--rule);
+  border-top: 4px solid var(--accent, var(--rule)); padding: 18px 20px 20px;
+}
+.panel.wide { grid-column: 1 / -1; }
+.panel h2 {
+  font-family: var(--display); text-transform: uppercase; font-size: 1.05em;
+  margin: 0 0 2px; letter-spacing: .01em;
+}
+.panel .promise {
+  font-family: var(--condensed); text-transform: uppercase; letter-spacing: .14em;
+  font-size: 10.5px; color: var(--ink-soft); margin-bottom: 14px;
+}
+.panel .empty { color: var(--ink-soft); font-style: italic; }
+
+/* ── Badges (the evidence contract) ──────────────────────────────────── */
+.badge {
+  font-family: var(--condensed); font-weight: 700; text-transform: uppercase;
+  letter-spacing: .12em; font-size: 10px; padding: 3px 8px; display: inline-block;
+  border: 2px solid; white-space: nowrap;
+}
+.badge-verified { color: #fff; background: var(--tier-verified); border-color: var(--tier-verified); }
+.badge-data     { color: #fff; background: var(--tier-data); border-color: var(--tier-data); }
+.badge-coach    { color: var(--tier-coach); background: rgba(212,175,74,.14); border-color: var(--tier-coach); }
+.chip {
+  font-family: var(--condensed); text-transform: uppercase; letter-spacing: .1em;
+  font-size: 10px; padding: 2px 7px; border: 1px solid var(--rule);
+  color: var(--ink-soft); display: inline-block; margin-right: 5px;
+}
+.chip-bench { border-color: var(--tier-coach); color: var(--tier-coach); }
+.chip-pool  { border-color: var(--y2k-blue); color: var(--y2k-blue); }
+
+/* ── Power meter (design.py's, on dark) ──────────────────────────────── */
+.meter { margin: 9px 0; }
+.meter-label {
+  display: flex; justify-content: space-between; font-family: var(--condensed);
+  text-transform: uppercase; letter-spacing: .1em; font-size: 11px; margin-bottom: 3px;
+}
+.meter-label .val { font-variant-numeric: tabular-nums; color: var(--ink); }
+.meter-track { height: 12px; background: var(--panel-hi); border: 1px solid var(--rule); }
+.meter-fill { height: 100%; background: var(--accent, var(--tier-data)); }
+
+/* ── Spec sheet (fast_facts) ─────────────────────────────────────────── */
+.facts { border: 1px solid var(--rule); background: var(--panel-hi); padding: 12px 14px; }
+.facts dl { display: grid; grid-template-columns: auto auto; gap: 4px 16px; margin: 0; }
+.facts dt {
+  font-family: var(--condensed); text-transform: uppercase; letter-spacing: .1em;
+  font-size: 11px; color: var(--ink-soft);
+}
+.facts dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ── Tables ──────────────────────────────────────────────────────────── */
+table.data { width: 100%; border-collapse: collapse; font-size: .9em; margin: 10px 0; }
+table.data th {
+  background: var(--panel-hi); font-family: var(--condensed); text-transform: uppercase;
+  letter-spacing: .1em; font-size: 10.5px; text-align: left; padding: 6px 9px;
+  color: var(--ink-soft);
+}
+table.data td { border-top: 1px solid var(--rule); padding: 6px 9px; font-variant-numeric: tabular-nums; }
+
+/* ── Lists (the ten, tutors) ─────────────────────────────────────────── */
+ul.stack-list { list-style: none; padding: 0; margin: 10px 0; }
+ul.stack-list li {
+  border-left: 4px solid var(--accent, var(--rule)); background: var(--panel-hi);
+  padding: 9px 12px; margin: 7px 0; line-height: 1.5;
+}
+ul.stack-list li .rank { font-family: var(--display); margin-right: 6px; }
+.ev { display: block; font-size: .85em; color: var(--ink-soft); margin-top: 3px; }
+
+/* ── Case files (collapsible, mirrors the manual's dossier) ──────────── */
+details.case { border: 1px solid var(--rule); background: var(--panel-hi); margin: 8px 0; }
+details.case > summary {
+  cursor: pointer; padding: 9px 12px; font-family: var(--condensed);
+  text-transform: uppercase; letter-spacing: .08em; font-size: 12px;
+  display: flex; gap: 10px; align-items: center;
+}
+details.case > summary::-webkit-details-marker { display: none; }
+details.case > summary::after { content: "▸"; margin-left: auto; color: var(--ink-soft); }
+details.case[open] > summary::after { content: "▾"; }
+details.case .body { padding: 0 14px 14px; }
+.cite {
+  font-family: var(--type); font-size: .84em; background: var(--paper);
+  border-left: 3px solid var(--tier-verified); padding: 7px 10px; margin: 6px 0;
+  color: var(--ink-soft);
+}
+.step { margin: 10px 0; }
+.step .n {
+  font-family: var(--display); color: var(--accent, var(--tier-verified)); margin-right: 6px;
+}
+
+/* ── Assumptions ─────────────────────────────────────────────────────── */
+.assumptions {
+  border: 1px dashed var(--rule); padding: 10px 14px; margin-top: 12px;
+  font-size: .86em; color: var(--ink-soft);
+}
+.assumptions ul { margin: 6px 0 0; padding-left: 18px; }
+
+.status { color: var(--ink-soft); font-family: var(--condensed); letter-spacing: .1em;
+  text-transform: uppercase; font-size: 12px; padding: 40px 0; }

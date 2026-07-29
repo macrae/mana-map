@@ -71,6 +71,12 @@ def gather_entries():
                 metrics = json.load(f).get("metrics") or {}
                 mean_cast = (metrics.get("commander") or {}).get("mean_cast_turn")
 
+        # The browser cannot list a directory, so the manifest carries the stack
+        # filenames. Passing verdicts only — the dossier renders what publishes.
+        stack_files = sorted(
+            p.name for p in (deck_path / "stacks").glob("*.json")
+            if checker_passed(load_json(p, {})))
+
         entries.append({
             "slug": slug,
             "volume": issue.get("volume", 999),   # sentinel: un-numbered issues sort last
@@ -82,6 +88,7 @@ def gather_entries():
             "verified": verified,
             "decisions": decisions,
             "mean_cast": mean_cast,
+            "stack_files": stack_files,
         })
     return sorted(entries, key=lambda e: (e["volume"], e["slug"]))
 
@@ -142,13 +149,35 @@ def render_index(entries):
 """
 
 
+def write_manifest(entries):
+    """A machine-readable rack for the deck dossier (`viz/deck.html`).
+
+    The same scan that builds the newsstand, minus the presentation. It exists
+    because a browser cannot list `stacks/` and should not hardcode a deck list:
+    add a deck, run build-index, and the dossier picks it up.
+    """
+    manifest = {
+        "decks": [
+            {k: e[k] for k in ("slug", "volume", "deck_name", "commander",
+                               "coverline", "verified", "decisions", "stack_files")}
+            for e in entries
+        ]
+    }
+    out = DECKS_DIR / "index.json"
+    out.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n",
+                   encoding="utf-8")
+    return out
+
+
 def main(args=None):
     entries = gather_entries()
     MANUALS_DIR.mkdir(exist_ok=True)
     write_stylesheet(MANUALS_DIR)
     out = MANUALS_DIR / "index.html"
     out.write_text(render_index(entries), encoding="utf-8")
+    manifest = write_manifest(entries)
     print(f"Wrote {out} ({len(entries)} issue(s) on the rack)")
+    print(f"Wrote {manifest} (deck manifest for viz/deck.html)")
 
 
 if __name__ == "__main__":

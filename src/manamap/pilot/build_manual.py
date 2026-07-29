@@ -1248,6 +1248,10 @@ def render_back_page(issue, plan, deck_doc, stacks, cards_by_name):
   <h1 class="feature">{esc(issue["next_issue"])}</h1>
   <p class="dek">Another commander, another 99, the same contract: verified lines,
     seeded numbers, and coaching that says when it's coaching.</p>
+  <p class="dek" style="margin-top:18px">Want the numbers without the prose?
+    <a href="../viz/deck.html?deck={esc(deck_doc.get("deck", ""))}">Open this deck&rsquo;s
+    dossier</a> — the same committed artifacts, rendered as data — or
+    <a href="../viz/index.html">explore the card map</a>.</p>
   {fast_facts("Colophon", [
       ("Volume", f'{issue["volume"]:03d}'),
       ("Issue", issue["issue_date"]),
