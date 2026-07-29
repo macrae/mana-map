@@ -1,6 +1,6 @@
 {
   "slug": "heliod",
-  "decklist_sha256_12": "284067d77208",
+  "decklist_sha256_12": "204691428da1",
   "archetype": "WU forced-draw punisher control with a hug-fort shell and a VERIFIED storm-kill finisher — and tutor-backed access to it: symmetric table-draw engines feeding asymmetric hand-size punishers, Heliod, the Warped Eclipse converting opponents' draws into cost reduction and flash, the checker-passed Hullbreaker Horror + Sol Ring + Arcane Signet + Aetherflux Reservoir table-kill as the primary win line, Grand Abolisher as its purpose-built protection, a four-walker sweep-surviving second layer, and Enlightened Tutor buying instant-speed consistency for every artifact/enchantment piece of the kill",
   "schools": [
     "strategy:whos-the-beatdown",
@@ -15,8 +15,8 @@
     "strategy:deckbuilding.redundancy-vs-tutors"
   ],
   "role_assignment": {
-    "default_role": "control with inevitability: the punisher upkeep damage (verified stack 003: Iron Maiden + Ebony Owl Netsuke deal 7 on the punished upkeep once Forced Fruition fills the hand; cleanup trims to exactly 7) is a clock that runs without tapping out, and the interaction suite — Archmage's Charm among it, held by t6 in 67.2% of goldfish games (77.8% ever) — defends the long game. Whoever loses the long game must be the beatdown, and that is usually not you (strategy:whos-the-beatdown, strategy:whos-the-beatdown.metagame-clock). The hug-fort layer (Kwain, The Second Doctor) buys the waiting turns politically (strategy:multiplayer.politics), and Teferi, Hero of Dominaria lets you advance the clock while holding counter mana — his +1 draws and untaps two lands at the next end step",
-    "pivot_trigger": "the go decision is concrete storm arithmetic (strategy:critical-mass.storm-math): commit the turn you can deploy Hullbreaker Horror plus both rocks and Aetherflux Reservoir in one main phase — ideally the turn after Grand Abolisher, whose static closes every priority window the verified kill (stack 006) honestly opens — or the turn Approach of the Second Sun's second cast is set up behind held countermagic (verified stack 002). Enlightened Tutor sharpens the trigger: at instant speed on the end step before your commit turn it puts any artifact/enchantment piece of the kill (Reservoir, Sol Ring, Arcane Signet, Thought Vessel — everything but Hullbreaker itself) on top for your draw, converting a three-of-four board into a scheduled four-of-four (strategy:deckbuilding.redundancy-vs-tutors). Hold protection FOR the commit turn, not after (strategy:pivot-point); going early into three players' open mana is how the 15-cast line dies (strategy:multiplayer.pivot-window). Wincon access is 49.6% of goldfish games by t6 (61.2% ever, mean turn 3.207) with Enlightened Tutor in the access group",
+    "default_role": "control with inevitability: the punisher upkeep damage (verified stack 003: Iron Maiden + Ebony Owl Netsuke deal 7 on the punished upkeep once Forced Fruition fills the hand; cleanup trims to exactly 7) is a clock that runs without tapping out, and the interaction suite — Archmage's Charm among it, held by t6 in 67.2% of goldfish games (78.1% ever) — defends the long game. Whoever loses the long game must be the beatdown, and that is usually not you (strategy:whos-the-beatdown, strategy:whos-the-beatdown.metagame-clock). The hug-fort layer (Kwain, The Second Doctor) buys the waiting turns politically (strategy:multiplayer.politics), and Teferi, Hero of Dominaria lets you advance the clock while holding counter mana — his +1 draws and untaps two lands at the next end step",
+    "pivot_trigger": "the go decision is concrete storm arithmetic (strategy:critical-mass.storm-math): commit the turn you can deploy Hullbreaker Horror plus both rocks and Aetherflux Reservoir in one main phase — ideally the turn after Grand Abolisher, whose static closes every priority window the verified kill (stack 006) honestly opens — or the turn Approach of the Second Sun's second cast is set up behind held countermagic (verified stack 002). Enlightened Tutor sharpens the trigger: at instant speed on the end step before your commit turn it puts any artifact/enchantment piece of the kill (Reservoir, Sol Ring, Arcane Signet, Thought Vessel — everything but Hullbreaker itself) on top for your draw, converting a three-of-four board into a scheduled four-of-four (strategy:deckbuilding.redundancy-vs-tutors). Hold protection FOR the commit turn, not after (strategy:pivot-point); going early into three players' open mana is how the 15-cast line dies (strategy:multiplayer.pivot-window). Wincon access is 50.5% of goldfish games by t6 (61.2% ever, mean turn 3.083) with Enlightened Tutor in the access group",
     "strategy_ref": "strategy:pivot-point"
   },
   "engines": [
@@ -29,25 +29,25 @@
     {
       "piece": "Enlightened Tutor",
       "engine": "the consistency engine and the deck's tenth Game Changer: 'Search your library for an artifact or enchantment card, reveal it, then shuffle and put that card on top' — at instant speed for {W}. It reaches every artifact/enchantment piece of the verified kill (Aetherflux Reservoir, Sol Ring, Arcane Signet, Thought Vessel) — everything but Hullbreaker Horror, the one creature — plus the punisher core (Iron Maiden, Ebony Owl Netsuke, Forced Fruition), the taxes and doublers (Rhystic Study, Smothering Tithe, Alhammarret's Archive), and Propaganda. Per the tutors-as-copies frame, k tutors plus a card act like k+1 copies of every card in the deck (strategy:deckbuilding.redundancy-vs-tutors) — one slot backs up the kill, the punisher two-piece, and the value layer simultaneously. Honest cost: it tops, not draws — the piece arrives a draw step later unless a draw engine picks it up, which this deck of Howling Mines usually provides; and it cannot fetch Hullbreaker or Approach (sorcery)",
-      "evidence": "oracle text (Enlightened Tutor); bracket_report.json (tenth Game Changer, floor 4); goldfish 'Win condition access' group membership, 49.6% by t6, 61.2% ever",
+      "evidence": "oracle text (Enlightened Tutor); bracket_report.json (tenth Game Changer, floor 4); goldfish 'Win condition access' group membership, 50.5% by t6, 61.2% ever",
       "strategy_ref": "strategy:deckbuilding.redundancy-vs-tutors"
     },
     {
       "piece": "Grand Abolisher + the free/cheap counter suite (Archmage's Charm included)",
       "engine": "the protection layer the verified kill does not provide itself. Stack 006's honest caveat is that the kill's windows are rules-open on an unprotected board; Grand Abolisher's 'During your turn, your opponents can't cast spells or activate abilities of artifacts, creatures, or enchantments' closes exactly those windows on exactly the turn the loop runs. Sequencing rule: Abolisher the turn before, or lead the commit turn with him; failing that, the suite (Fierce Guardianship, Force of Negation, Swan Song, An Offer You Can't Refuse, Dovin's Veto, Counterspell, Arcane Denial, and Archmage's Charm) guards the windows the hard way — held-protection-on-the-commit-turn made literal (strategy:multiplayer.pivot-window). The suite runs deep: Charm's three modes (counter, draw two, steal a mana-value-1-or-less permanent — an opposing Sol Ring) make it interaction that is never dead, the flexible-answer discipline the interaction-suite school prescribes (strategy:deckbuilding.interaction-suite). Goldfish 'Free or cheap interaction held' is 67.2% by t6. Unverified caveat carried from the sideboard analysis: the Abolisher-closes-006 claim has no checker-passed walkthrough, and Otawara-style channel abilities activate from hand, outside Abolisher's list",
-      "evidence": "oracle text (Grand Abolisher, Archmage's Charm); verified stack 006 names Abolisher as the in-99 window-closer; goldfish 'Free or cheap interaction held' 67.2% by t6, 77.8% ever, mean turn 2.729",
+      "evidence": "oracle text (Grand Abolisher, Archmage's Charm); verified stack 006 names Abolisher as the in-99 window-closer; goldfish 'Free or cheap interaction held' 67.2% by t6, 78.1% ever, mean turn 2.764",
       "strategy_ref": "strategy:multiplayer.pivot-window"
     },
     {
       "piece": "Forced Fruition + Iron Maiden + Ebony Owl Netsuke",
       "engine": "the punisher core: force draws (Forced Fruition, Howling Mine, Font of Mythos, Temple Bell, Dictate of Kruphix, Kami of the Crescent Moon, Folio of Fancies) into hand-size upkeep damage (Iron Maiden, Ebony Owl Netsuke, Viseling) — a two-piece critical-mass engine that is inert below threshold and a table-wide clock past it; opponents trim to seven at cleanup, so the punishers hit on upkeep before the drawn cards are spent (verified sequencing, stack 003). Enlightened Tutor now fetches both named punishers and Fruition itself. Deck-facts flags most of this core as role-untagged — the histogram undercounts the real plan",
-      "evidence": "verified stack 003 (data/decks/heliod/stacks/003-forced-fruition-punisher-upkeep.json); oracle text; goldfish 'Engine + punisher assembled' 41.3% by t6, 56.6% ever, mean turn 4.176",
+      "evidence": "verified stack 003 (data/decks/heliod/stacks/003-forced-fruition-punisher-upkeep.json); oracle text; goldfish 'Engine + punisher assembled' 41.2% by t6, 56.7% ever, mean turn 4.215",
       "strategy_ref": "strategy:critical-mass"
     },
     {
       "piece": "Teferi, Hero of Dominaria + Jace Beleren + Jace, Wielder of Mysteries + Teferi, Temporal Pilgrim",
       "engine": "the sweep-surviving threat layer, four walkers deep: they dodge Supreme Verdict — including YOUR OWN — so you can wrath a hostile board while your threats keep drawing. This is Duke's 'buy resilience instead of restraint' answer to sweeper exposure (strategy:resource-hedging.wrath-math). Teferi, Hero of Dominaria is the layer's centrepiece: his +1 draws AND untaps two lands at the next end step — a clock that advances while your counter mana stays open, exactly the posture this deck wants — his -3 is repeatable tuck removal that also answers stax lock pieces, and his -8 emblem exiles a permanent per draw in a deck built on drawing. Beleren's +2 feeds the punisher math and Heliod's discount; Temporal Pilgrim self-charges off every draw; Wielder of Mysteries is a standing wincon whose +1 draws while threatening the empty-library win",
-      "evidence": "oracle text (all four walkers, Supreme Verdict); goldfish 'Win condition access' 49.6% by t6, 61.2% ever",
+      "evidence": "oracle text (all four walkers, Supreme Verdict); goldfish 'Win condition access' 50.5% by t6, 61.2% ever",
       "strategy_ref": "strategy:resource-hedging.wrath-math"
     },
     {
@@ -58,14 +58,14 @@
     },
     {
       "piece": "Kwain, Itinerant Meddler + The Second Doctor + Alhammarret's Archive",
-      "engine": "the hug-fort layer: Kwain taps for table draws (+life), The Second Doctor's end-step draw carries a rider that blanks the acceptor's next attack step against you (alongside Propaganda; Ghostly Prison sits in the sideboard), and every accepted card pushes hands toward the Iron Maiden/Netsuke thresholds. Alhammarret's Archive is the asymmetry hinge: your draws and life gain double while opponents' don't; Reliquary Tower/Thought Vessel/Second Doctor let you hoard the surplus",
-      "evidence": "oracle text; goldfish 'Table draw engine drawn' 76.2% by t6, 85.5% ever, mean turn 2.44",
+      "engine": "the hug-fort layer: Kwain taps for table draws (+life), The Second Doctor's end-step draw carries a rider that blanks the acceptor's next attack step against you (alongside Propaganda; Ghostly Prison sits in the sideboard), and every accepted card pushes hands toward the Iron Maiden/Netsuke thresholds. Alhammarret's Archive is the asymmetry hinge: your draws and life gain double while opponents' don't; Thought Vessel and The Second Doctor let you hoard the surplus, and the Doctor's clause is symmetric — the hands it lets opponents keep are exactly what Iron Maiden and Ebony Owl Netsuke charge for",
+      "evidence": "oracle text; goldfish 'Table draw engine drawn' 75.4% by t6, 85.2% ever, mean turn 2.507",
       "strategy_ref": "strategy:multiplayer.politics"
     },
     {
       "piece": "Heliod, the Warped Eclipse",
       "engine": "the hinge that makes the symmetric draw asymmetric: spells cost {1} less per card opponents drew this turn and everything gains flash, so the table-draw engines pay your mana bill and let you deploy at instant speed while holding counters — the opponents' cards working for you (strategy:card-advantage.virtual). The hug pieces directly grow the discount on the turns you want to act",
-      "evidence": "oracle text (back face); goldfish commander mean cast turn 4.161, median 4, 89.6% by t6",
+      "evidence": "oracle text (back face); goldfish commander mean cast turn 4.133, median 4, 90.2% by t6",
       "strategy_ref": "strategy:card-advantage.virtual"
     },
     {
@@ -77,62 +77,109 @@
     {
       "piece": "Rhystic Study / Mystic Remora / Consecrated Sphinx / Teferi's Ageless Insight / Faerie Mastermind / Smothering Tithe",
       "engine": "asymmetric value layer riding the forced-draw turbulence: while the punishers tax opponents' hands, these convert the table's activity into your cards and treasure; Ageless Insight stacks with the Archive as a second your-side draw doubler, and Enlightened Tutor fetches Study, Tithe, Remora, or either doubler on demand",
-      "evidence": "oracle text; goldfish 'Heliod down with an asymmetric card engine' 54.1% by t6, 71.2% ever",
+      "evidence": "oracle text; goldfish 'Heliod down with an asymmetric card engine' 54.0% by t6, 71.0% ever",
       "strategy_ref": "strategy:whos-the-beatdown.metagame-clock"
     }
   ],
   "candidate_missing_lines": [
     {
       "title": "Grand Abolisher actually closes stack 006's windows — including the channel-land loophole",
-      "cards": ["Grand Abolisher", "Hullbreaker Horror", "Sol Ring", "Arcane Signet", "Aetherflux Reservoir"],
+      "cards": [
+        "Grand Abolisher",
+        "Hullbreaker Horror",
+        "Sol Ring",
+        "Arcane Signet",
+        "Aetherflux Reservoir"
+      ],
       "why_plausible": "Abolisher's static names spells and activated abilities of artifacts, creatures, and enchantments; the kill's open windows are exactly those. But channel abilities (Otawara, Soaring City) activate from a card in hand — not from an artifact, creature, or enchantment — and the Abolisher-closes-006 claim has no checker-passed walkthrough of its own; the sideboard analysis flags this as the shield's unscoped edge",
       "status": "needs a stack scenario"
     },
     {
       "title": "Alhammarret's Archive halves the Reservoir kill's cast requirement",
-      "cards": ["Alhammarret's Archive", "Aetherflux Reservoir", "Hullbreaker Horror", "Sol Ring", "Arcane Signet"],
+      "cards": [
+        "Alhammarret's Archive",
+        "Aetherflux Reservoir",
+        "Hullbreaker Horror",
+        "Sol Ring",
+        "Arcane Signet"
+      ],
       "why_plausible": "stack 006's 15-cast ledger assumes undoubled life gain; the Archive's 'gain twice that much life instead' should double each +n trigger and materially lower the cast minimum and the life floor — but the doubled ledger and the earliest legal first activation have not been walked through",
       "status": "needs a stack scenario"
     },
     {
       "title": "Monastery Mentor (SIDEBOARD) as a token payoff on the verified loop",
-      "cards": ["Monastery Mentor", "Hullbreaker Horror", "Sol Ring", "Arcane Signet"],
+      "cards": [
+        "Monastery Mentor",
+        "Hullbreaker Horror",
+        "Sol Ring",
+        "Arcane Signet"
+      ],
       "why_plausible": "every cast in the 004-verified mana-neutral loop is an artifact — a noncreature spell — so Mentor's trigger should produce arbitrarily many 1/1 prowess Monks in one turn. Unwalked: the trigger arithmetic at scale, and whether a haste-less token army that must survive a full turn cycle of three opponents' interaction is ever preferable to the same-turn Reservoir kill. Mentor sits in the sideboard pool; this scenario decides whether his verdict flips",
       "status": "needs a stack scenario"
     },
     {
       "title": "Sphinx of the Final Word (SIDEBOARD) makes the second Approach cast counter-proof",
-      "cards": ["Sphinx of the Final Word", "Approach of the Second Sun", "Mystical Tutor"],
+      "cards": [
+        "Sphinx of the Final Word",
+        "Approach of the Second Sun",
+        "Mystical Tutor"
+      ],
       "why_plausible": "Sphinx's static — your instants and sorceries can't be countered — appears to close the counter-window stack 002 honestly walks on the second Approach cast; whether any non-counter interaction can still beat the second cast mid-resolution is the open question that decides how airtight the pod-conditional swap makes plan B",
       "status": "needs a stack scenario"
     },
     {
       "title": "The stranding package: Drannith Magistrate + Supreme Verdict / Path to Exile strand commanders in the command zone",
-      "cards": ["Drannith Magistrate", "Supreme Verdict", "Path to Exile", "Swords to Plowshares"],
+      "cards": [
+        "Drannith Magistrate",
+        "Supreme Verdict",
+        "Path to Exile",
+        "Swords to Plowshares"
+      ],
       "why_plausible": "Drannith's static ('Your opponents can't cast spells from anywhere other than their hands') should stop commander recasts from the command zone; sweep or exile the commander and the 903.9-family replacement puts it where Drannith locks it out. The rules walkthrough (which zone-change replacements apply, and that casting — not the zone change — is what's blocked) is unverified",
       "status": "needs a stack scenario"
     },
     {
       "title": "Jace, Wielder of Mysteries self-deck win off the X-draw suite with the Archive doubler",
-      "cards": ["Jace, Wielder of Mysteries", "Alhammarret's Archive", "Stroke of Genius", "Braingeyser", "Prosperity"],
+      "cards": [
+        "Jace, Wielder of Mysteries",
+        "Alhammarret's Archive",
+        "Stroke of Genius",
+        "Braingeyser",
+        "Prosperity"
+      ],
       "why_plausible": "Jace's static plus Archive-doubled X-draws targeting yourself can intentionally empty the library and win on the draw; the replacement-ordering questions (Archive doubling into an empty library, which replacement applies first) are unverified. No combo_details record contains this line within the deck",
       "status": "needs a stack scenario"
     },
     {
       "title": "Displacer Kitten resets Mystic Remora's age counters — free Remora forever",
-      "cards": ["Displacer Kitten", "Mystic Remora"],
+      "cards": [
+        "Displacer Kitten",
+        "Mystic Remora"
+      ],
       "why_plausible": "the returned Remora should be a new object with zero age counters, so cumulative upkeep restarts from nothing; the new-object/counter-reset walkthrough and the timing relative to your upkeep are unverified",
       "status": "needs a stack scenario"
     },
     {
       "title": "Psychosis Crawler + mass self-draw for table damage",
-      "cards": ["Psychosis Crawler", "Prosperity", "Braingeyser", "Stroke of Genius", "Skyscribing", "Mathemagics"],
+      "cards": [
+        "Psychosis Crawler",
+        "Prosperity",
+        "Braingeyser",
+        "Stroke of Genius",
+        "Skyscribing",
+        "Mathemagics"
+      ],
       "why_plausible": "Crawler drains each opponent 1 per card YOU draw, and the X-draw suite plus the two doublers makes a big self-draw table-wide reach; trigger count under doubling and the Crawler's survivability are unverified",
       "status": "needs a stack scenario"
     },
     {
       "title": "Smothering Tithe treasure arithmetic under forced-draw engines",
-      "cards": ["Smothering Tithe", "Forced Fruition", "Howling Mine", "Font of Mythos"],
+      "cards": [
+        "Smothering Tithe",
+        "Forced Fruition",
+        "Howling Mine",
+        "Font of Mythos"
+      ],
       "why_plausible": "Tithe triggers once per opponent draw with a {2} opt-out; Forced Fruition makes every opponent spell 7 draws, so one opponent turn presents 7+ pay-or-treasure decisions — trigger count, may-pay timing, and realistic yield unverified",
       "status": "needs a stack scenario"
     }
@@ -143,8 +190,8 @@
     "vs_aggro": "Propaganda and The Second Doctor's attack-deterrent rider (plus Eiganjo's channel removal) are virtual card advantage tripled in multiplayer — one pillow effect blanks attack plans from three players (strategy:card-advantage.virtual) — but note honestly: the deck runs two attack taxes, with Ghostly Prison in the sideboard — a bet that never-dead interaction (Archmage's Charm) beats a redundant third tax at a professional table. The punishers convert defense into a clock that pushes the aggressor's damage-per-card below lethal (strategy:life-as-resource.philosophy-of-fire). Commit little and let them overextend into Supreme Verdict (strategy:resource-hedging.wrath-math). The trap remains: Forced Fruition refuels their hand — sequence punishers before or with the big draw engines (strategy:critical-mass). Life-total caveat: the Reservoir kill pays 50 life three times; stack 006 proves any positive total works because per-cast gain grows without bound, but lower totals need more casts and therefore more open windows.",
     "vs_combo": "Hold the suite (Fierce Guardianship, Force of Negation, Swan Song, An Offer You Can't Refuse, Dovin's Veto, Counterspell, Arcane Denial, Archmage's Charm — held by t6 in 67.2% of goldfish games) for the card that ends the game, per the answer-economy bar (strategy:threat-assessment.answer-economy). Drannith Magistrate blanks commander- and non-hand-zone lines before they start; Grand Abolisher makes YOUR combo turn uninterruptable (unverified at the edges — see the Abolisher candidate); and Enlightened Tutor at instant speed means you can hold interaction AND assemble — the tutor-as-extra-copy math working under pressure (strategy:deckbuilding.redundancy-vs-tutors). You are the faster, better-protected combo deck in many pods, which flips your role to beatdown (strategy:whos-the-beatdown). Standing warning: Forced Fruition hands a storm pilot seven cards per spell; expect tables to discount your quiet artifacts and hit you anyway (strategy:multiplayer.threat-deflection)."
   },
-  "distribution_notes": "85 entries / 100 copies, 18 land entries (33 land copies); curve 9/21/15/11 at MV 1-4 with eleven cards at MV 5+, leaning on Heliod's discount for the top end. Pips skew hard blue: 61 U pips across 40 cards (source target 36 vs 6 U-producing lands — rocks and duals carry it) against 16 W pips across 14 (target 22, 11 W lands). The UUU cost is real and named: Archmage's Charm is the deck's only triple-pip card, and Karsten's table wants 37 U sources to cast {U}{U}{U} on curve at ~90% (strategy:deckbuilding.mana-base.color-sources) — the deck sits at a 36-source target, so treat Charm as a t4+ spell cast off duals and Heliod's discount, not a t3 promise. Goldfish (seed 42, 10k iters, sha 284067d77208): commander mean cast 4.161 (median 4, 89.6% by t6), keep-first-seven 73.4%; table draw engine 76.2% by t6; core two-piece 41.3% by t6 (56.6% ever); wincon access 49.6% by t6 (61.2% ever); interaction held 67.2% by t6. Mulligan rule: engine-half hands dig toward punishers; punisher-only hands are blanks until the engine exists (strategy:mulligans.engine-hands). Bracket floor 4 (Optimized) on TEN Game Changers — Enlightened Tutor is the tenth — plus the two-card-infinite signal; stack 001 refuted that listed line but stack 006 verifies the four-card table-kill, so the floor-4 conversation stays honest either way.",
-  "overall_assessment": "This deck pairs a verified kill with tutor-backed access to it. The world-view is still Duke's inevitability (strategy:whos-the-beatdown.metagame-clock): every symmetric draw is asymmetric three ways — Heliod's discount, the hand-size punishers, the Tithe/Sphinx value layer — the hug-fort keeps the waiting game political (strategy:multiplayer.politics), and the endgame is the checker-passed 15-cast Reservoir ledger (stack 006) behind Grand Abolisher (strategy:critical-mass.storm-math, strategy:multiplayer.pivot-window). Three cards carry that identity at a tier-4 table: Enlightened Tutor turns the four-piece kill from a draw problem into a one-mana instant plus a draw step — it fetches every piece but Hullbreaker, and the punisher core besides (strategy:deckbuilding.redundancy-vs-tutors); Teferi, Hero of Dominaria is the sweep-surviving clock that holds its counter mana open while it ticks (strategy:resource-hedging.wrath-math); Archmage's Charm is interaction that is never dead — the deck carries its attack tax twice already, and Ghostly Prison sits in the sideboard as a third. The honestly-named tensions: a heavy blue pip load against a 36-source target, a lean rock suite (loop-safe — Thought Vessel is the 004 engine's exact substitute), and a two-effect pillow layer. Play it as the control deck that never has to win the long game it owns — and the moment Enlightened Tutor schedules the fourth piece behind an Abolisher, stop playing fair (strategy:pivot-point).",
+  "distribution_notes": "85 entries / 100 copies, 33 of those copies lands; curve 9/21/15/11 at MV 1-4 with eleven cards at MV 5+, leaning on Heliod's discount for the top end. The base is 14 Island, 3 Plains, eleven UW duals (Temple of Enlightenment and Irrigated Farmland among them) and five utility lands — Eiganjo, Otawara, Ancient Tomb, Mikokoro, Flooded Strand. Seven of the 33 enter tapped (21%), above the roughly four pure taplands Karsten treats as the ceiling before you rethink the base (strategy:deckbuilding.mana-base.color-sources). Colour sources: W 15 lands and U 26 lands, lifting to 20 and 31 once the rocks are counted, against targets of 22 and 36. On curve off lands alone that is W 78.7% / U 74.2%, and W 88.1% / U 83.9% with rocks. Pips skew hard blue: 61 U pips across 40 cards against 16 W pips across 14. The UUU cost is real and named: Archmage's Charm is the deck's only triple-pip card, and Karsten's table wants 37 sources of a colour to cast {C}{C}{C} on curve at ~90% (strategy:deckbuilding.mana-base.color-sources) — this base offers 26 U lands and 31 U sources all told, so treat Charm as a t4+ spell cast off duals and Heliod's discount, not a t3 promise. Goldfish (seed 42, 10k iters, sha 204691428da1): commander mean cast 4.133 (median 4, 90.2% by t6), keep-first-seven 73.8%; land drop hit 86.6% on t3 and 47.1% on t6; table draw engine 75.4% by t6; core two-piece 41.2% by t6 (56.7% ever); wincon access 50.5% by t6 (61.2% ever); interaction held 67.2% by t6 (78.1% ever). Mulligan rule: engine-half hands dig toward punishers; punisher-only hands are blanks until the engine exists (strategy:mulligans.engine-hands). Bracket floor 4 (Optimized) on TEN Game Changers — Enlightened Tutor is the tenth — plus the two-card-infinite signal; stack 001 refuted that listed line but stack 006 verifies the four-card table-kill, so the floor-4 conversation stays honest either way.",
+  "overall_assessment": "This deck pairs a verified kill with tutor-backed access to it. The world-view is still Duke's inevitability (strategy:whos-the-beatdown.metagame-clock): every symmetric draw is asymmetric three ways — Heliod's discount, the hand-size punishers, the Tithe/Sphinx value layer — the hug-fort keeps the waiting game political (strategy:multiplayer.politics), and the endgame is the checker-passed 15-cast Reservoir ledger (stack 006) behind Grand Abolisher (strategy:critical-mass.storm-math, strategy:multiplayer.pivot-window). Three cards carry that identity at a tier-4 table: Enlightened Tutor turns the four-piece kill from a draw problem into a one-mana instant plus a draw step — it fetches every piece but Hullbreaker, and the punisher core besides (strategy:deckbuilding.redundancy-vs-tutors); Teferi, Hero of Dominaria is the sweep-surviving clock that holds its counter mana open while it ticks (strategy:resource-hedging.wrath-math); Archmage's Charm is interaction that is never dead — the deck carries its attack tax twice already, and Ghostly Prison sits in the sideboard as a third. The honestly-named tensions: a heavy blue pip load against a 36-source target the base answers with 26 U lands (31 U sources counting rocks), a lean rock suite (loop-safe — Thought Vessel is the 004 engine's exact substitute), and a two-effect pillow layer. Play it as the control deck that never has to win the long game it owns — and the moment Enlightened Tutor schedules the fourth piece behind an Abolisher, stop playing fair (strategy:pivot-point).",
   "gaps": [
     "no strategy section on group-hug/forced-draw punisher archetypes specifically — politics and critical-mass carry the weight but the donation-as-weapon frame deserves its own treatment",
     "no section on empty-library ('laboratory') win lines and their draw-replacement risks — needed for the Jace, Wielder of Mysteries candidate",

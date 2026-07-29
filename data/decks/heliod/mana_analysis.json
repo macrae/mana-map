@@ -1,14 +1,14 @@
 {
   "slug": "heliod",
-  "decklist_sha256": "284067d77208fd25916766520410d4bf6a1eef3d6750566a54ef89ea7dff32d9",
+  "decklist_sha256": "204691428da1a176a8adf3d367b7554463563058142a6f9a8d7a98d728c9b838",
   "lands": {
     "total": 33,
     "entries": 18,
-    "enters_tapped": 5,
+    "enters_tapped": 7,
     "classes": {
       "basic": 17,
       "fetch": 1,
-      "tapped": 5,
+      "tapped": 7,
       "untapped-dual": 4,
       "utility": 7
     },
@@ -97,16 +97,20 @@
         ]
       },
       {
-        "name": "Homeward Path",
+        "name": "Irrigated Farmland",
         "copies": 1,
         "classes": [
+          "tapped",
           "utility"
         ],
-        "produces": []
+        "produces": [
+          "U",
+          "W"
+        ]
       },
       {
         "name": "Island",
-        "copies": 11,
+        "copies": 14,
         "classes": [
           "basic"
         ],
@@ -144,7 +148,7 @@
       },
       {
         "name": "Plains",
-        "copies": 6,
+        "copies": 3,
         "classes": [
           "basic"
         ],
@@ -162,12 +166,6 @@
           "U",
           "W"
         ]
-      },
-      {
-        "name": "Reliquary Tower",
-        "copies": 1,
-        "classes": [],
-        "produces": []
       },
       {
         "name": "Seachrome Coast",
@@ -190,13 +188,24 @@
           "U",
           "W"
         ]
+      },
+      {
+        "name": "Temple of Enlightenment",
+        "copies": 1,
+        "classes": [
+          "tapped"
+        ],
+        "produces": [
+          "U",
+          "W"
+        ]
       }
     ]
   },
   "sources": {
     "lands": {
-      "W": 16,
-      "U": 21,
+      "W": 15,
+      "U": 26,
       "B": 0,
       "R": 0,
       "G": 0
@@ -209,8 +218,8 @@
       "G": 0
     },
     "total": {
-      "W": 21,
-      "U": 26,
+      "W": 20,
+      "U": 31,
       "B": 0,
       "R": 0,
       "G": 0
@@ -294,11 +303,11 @@
   "shares": {
     "U": {
       "pip_share": 0.792,
-      "source_share": 0.568
+      "source_share": 0.634
     },
     "W": {
       "pip_share": 0.208,
-      "source_share": 0.432
+      "source_share": 0.366
     }
   },
   "source_targets": {
@@ -307,12 +316,12 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "W": 0.81,
-      "U": 0.61
+      "W": 0.787,
+      "U": 0.742
     },
     "with_rocks_and_dorks": {
-      "W": 0.895,
-      "U": 0.742
+      "W": 0.881,
+      "U": 0.839
     }
   },
   "ramp": {
@@ -323,27 +332,27 @@
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 0.998,
-      "10": 0.335,
-      "2": 0.993,
-      "3": 0.872,
-      "4": 0.724,
-      "5": 0.576,
-      "6": 0.474,
-      "7": 0.404,
+      "10": 0.334,
+      "2": 0.992,
+      "3": 0.866,
+      "4": 0.725,
+      "5": 0.58,
+      "6": 0.471,
+      "7": 0.405,
       "8": 0.374,
-      "9": 0.351
+      "9": 0.352
     },
     "mean_available_mana_by_turn": {
       "1": 0.998,
-      "10": 7.03,
-      "2": 2.139,
+      "10": 7.033,
+      "2": 2.138,
       "3": 3.311,
-      "4": 4.113,
-      "5": 4.751,
-      "6": 5.318,
-      "7": 5.78,
-      "8": 6.222,
-      "9": 6.635
+      "4": 4.12,
+      "5": 4.764,
+      "6": 5.325,
+      "7": 5.792,
+      "8": 6.226,
+      "9": 6.644
     }
   },
   "assumptions": [
@@ -353,7 +362,7 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "U: 21 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 33-land deck; rocks and dorks lift the count to 26.",
-    "W: 16 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 33-land deck; rocks and dorks lift the count to 21."
+    "U: 26 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 33-land deck; rocks and dorks lift the count to 31.",
+    "W: 15 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 33-land deck; rocks and dorks lift the count to 20."
   ]
 }
