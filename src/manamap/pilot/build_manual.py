@@ -20,6 +20,7 @@ which is what keeps rebuilds byte-identical.
 """
 
 import json
+import re
 
 from manamap.config import MANUALS_DIR, SYNERGY_GRAPH_PATH
 from manamap.pilot.artist_credits import is_accessory
@@ -56,6 +57,7 @@ from manamap.pilot.issue_spec import (
     DEPARTMENT_BY_ID,
     DEPARTMENT_IDS,
     MASTHEAD,
+    MASTHEAD_COLUMNISTS,
     SERIES_SLUG,
     STANDING_TAGLINE,
 )
@@ -113,6 +115,32 @@ def plan_dept(plan, dept_id):
     return {}
 
 
+_STACK_REF_RE = re.compile(r"\b([Ss]tacks?)\s+(\d{3})\b")
+_CR_REF_RE = re.compile(r"\b(CR\s+\d+(?:\.\d+[a-z]?)?)")
+
+
+def linkify(escaped_text):
+    """Turn plain evidence references in ALREADY-ESCAPED text into links.
+
+    "stack 003" → a link to its Judge's Desk case file; "CR 603.2h" → a link
+    to the Judge's Desk section. Runs strictly AFTER esc() — on escaped text a
+    digit-bearing pattern cannot sit inside a tag or an entity, so injection
+    is safe (pinned by the escaping test). Never applied inside Judge's Desk
+    itself or to `.cite` blocks — no self-links.
+    """
+    out = _STACK_REF_RE.sub(
+        lambda m: f'<a class="xref" href="#case-{m.group(2)}">{m.group(1)} {m.group(2)}</a>',
+        escaped_text)
+    out = _CR_REF_RE.sub(
+        lambda m: f'<a class="xref" href="#judges-desk">{m.group(1)}</a>', out)
+    return out
+
+
+def esc_x(text):
+    """esc() + evidence linkification — the default for reader-facing copy."""
+    return linkify(esc(text))
+
+
 def prose(prose_doc, key, sub=None):
     """Body copy from manual_prose.json; visible TODO when absent."""
     value = (prose_doc or {}).get(key)
@@ -121,7 +149,7 @@ def prose(prose_doc, key, sub=None):
     if not value:
         return TODO
     paragraphs = [p.strip() for p in str(value).split("\n\n") if p.strip()]
-    return "".join(f"<p>{esc(p)}</p>" for p in paragraphs)
+    return "".join(f"<p>{esc_x(p)}</p>" for p in paragraphs)
 
 
 def caption_html(text):
@@ -129,8 +157,8 @@ def caption_html(text):
     if "**" in text:
         head, _, tail = text.partition("**")
         lead, _, rest = tail.partition("**")
-        return f"{esc(head)}<b>{esc(lead)}</b>{esc(rest)}"
-    return esc(text)
+        return f"{esc_x(head)}<b>{esc_x(lead)}</b>{esc_x(rest)}"
+    return esc_x(text)
 
 
 # ── Department frame ────────────────────────────────────────────────────
@@ -243,6 +271,11 @@ def render_contents(issue, plan, stacks, decisions):
             f'<span class="soft">{esc(headline)}</span></td>'
             f'<td>{esc(spec["promise"])}</td><td>{badges}</td></tr>'
         )
+    masthead_rows = "".join(
+        f'<div class="legend-row">{badge(c["tier"])}<div><b>{esc(c["name"])}</b> — '
+        f'{esc(c["bio"])}</div></div>'
+        for c in MASTHEAD_COLUMNISTS
+    )
     legend = f"""
 <div class="legend"><h3>How to read this issue</h3>
   <div class="legend-row">{badge("verified")}<div>Every step cites the Comprehensive
@@ -252,7 +285,10 @@ def render_contents(issue, plan, stacks, decisions):
     simulation committed to the repository. Same seed, same answer, every time.</div></div>
   <div class="legend-row">{badge("coach")}<div>Judgment — grounded in the verified
     lines and the numbers, but a human call, and labeled as one.</div></div>
-</div>"""
+  <p class="small soft">Tap any <a class="xref" href="#judges-desk">stack reference</a>
+    in the text to jump to its case file; the ☰ button returns you here.</p>
+</div>
+<div class="legend masthead-block"><h3>The masthead</h3>{masthead_rows}</div>"""
     return f"""
 <section class="dept" id="contents" style="--accent:{ACCENT["contents"]}">
   <div class="dept-head"><div><h2 class="dept-title">In This Issue</h2></div>
@@ -384,7 +420,7 @@ def render_the_kill(issue, plan, stacks, prose_doc, cards_by_name):
         intro = prose(prose_doc, "combo_lines", sid)
         final = stack.get("resolution", {}).get("final_state", {})
         spreads.append(f"""
-<article class="rule-top">
+<article class="rule-top" id="line-{esc(sid)}">
   <div class="kicker">Verified line {esc(sid)}</div>
   <h3 style="font-family:var(--display);font-size:1.5em">{esc(stack["title"])}</h3>
   <div class="body-copy">{intro}</div>
@@ -431,20 +467,20 @@ def render_whats_your_play(issue, plan, decisions, cards_by_name):
                 bits.append(f'<span class="lbl">{label}</span> {esc(text)}')
         branches = "".join(f"""
 <div class="branch"><h4>{esc(b.get("choice", ""))}</h4>
-  <dl><dt>The line</dt><dd>{esc(b.get("line", ""))}</dd>
-  <dt>Signals sent</dt><dd>{esc(b.get("signals", ""))}</dd>
-  <dt>Coalition risk</dt><dd>{esc(b.get("coalition_risk", ""))}</dd>
-  <dt>Read</dt><dd>{esc(b.get("coaching", ""))}</dd></dl></div>"""
+  <dl><dt>The line</dt><dd>{esc_x(b.get("line", ""))}</dd>
+  <dt>Signals sent</dt><dd>{esc_x(b.get("signals", ""))}</dd>
+  <dt>Coalition risk</dt><dd>{esc_x(b.get("coalition_risk", ""))}</dd>
+  <dt>Read</dt><dd>{esc_x(b.get("coaching", ""))}</dd></dl></div>"""
             for b in decision.get("branches", []))
         rec = decision.get("recommendation", {})
         spreads.append(f"""
-<article class="rule-top">
+<article class="rule-top" id="play-{esc(decision.get("id", ""))}">
   <h3 style="font-family:var(--display);font-size:1.4em">{esc(decision["title"])}</h3>
   <div class="scenario">{"<br>".join(bits)}<br><br>
     <b>{esc(scenario.get("question", ""))}</b></div>
   <div class="branches">{branches}</div>
   <div class="verdict"><b>Our call: {esc(rec.get("choice", ""))}</b><br>
-    {esc(rec.get("rationale", ""))}</div>
+    {esc_x(rec.get("rationale", ""))}</div>
 </article>""")
     return (
         dept_open("whats-your-play", plan)
@@ -710,7 +746,7 @@ def render_sideboard(analysis):
     parts = ['<h3>From the sideboard</h3>']
     assessment = analysis.get("assessment")
     if assessment:
-        parts.append(f'<div class="body-copy"><p>{esc(assessment)}</p></div>')
+        parts.append(f'<div class="body-copy"><p>{esc_x(assessment)}</p></div>')
 
     swaps = analysis.get("swaps") or []
     if swaps:
@@ -730,8 +766,8 @@ def render_sideboard(analysis):
                 f'<strong>{esc(swap.get("in", "?"))}</strong> in, '
                 f'<strong>{esc(swap.get("out", "?"))}</strong> out'
                 f' <span class="chip">{esc(swap.get("role", ""))}</span>'
-                f'<br><em>When:</em> {esc(swap.get("when", ""))}'
-                f'<br><span class="tier-coach">★</span> {esc(swap.get("why", ""))}'
+                f'<br><em>When:</em> {esc_x(swap.get("when", ""))}'
+                f'<br><span class="tier-coach">★</span> {esc_x(swap.get("why", ""))}'
                 + (f'<br>{bracket}' if bracket else "")
                 + '</li>'
             )
@@ -744,7 +780,7 @@ def render_sideboard(analysis):
     if lines:
         items = "".join(
             f'<li><strong>{esc(" + ".join(line.get("cards", [])))}</strong> — '
-            f'{esc(line.get("why_plausible", ""))} '
+            f'{esc_x(line.get("why_plausible", ""))} '
             f'<span class="chip">{esc(line.get("status", ""))}</span></li>'
             for line in lines
         )
@@ -761,7 +797,7 @@ def render_sideboard(analysis):
         items = "".join(
             f'<li><strong>{esc(d.get("card", "?"))}</strong> — '
             f'<span class="chip">{esc(d.get("verdict", ""))}</span> '
-            f'<span class="tier-coach">★</span> {esc(d.get("why", ""))}</li>'
+            f'<span class="tier-coach">★</span> {esc_x(d.get("why", ""))}</li>'
             for d in defaults
         )
         parts.append(f'<h4>Belongs in the 99?</h4><ul class="swap-list">{items}</ul>')
@@ -785,7 +821,7 @@ def render_lookout(analysis):
     parts = ['<h3>On the Lookout</h3>']
     assessment = analysis.get("assessment")
     if assessment:
-        parts.append(f'<div class="body-copy"><p>{esc(assessment)}</p></div>')
+        parts.append(f'<div class="body-copy"><p>{esc_x(assessment)}</p></div>')
 
     rows = []
     for entry in analysis.get("lookout") or []:
@@ -845,21 +881,26 @@ def render_judges_desk(issue, plan, stacks, cards_by_name):
                 f'<div class="effect">{esc(step.get("effect", ""))}</div>{cites}</li>'
             )
         files.append(f"""
-<div class="dossier" id="case-{esc(sid)}">
-  <div class="file-tab">Case A-{esc(sid)}</div>
-  <div class="dossier-head">
-    <div><b>{esc(stack["title"])}</b><br>
-      <span style="font-size:.85em;color:var(--ink-soft)">
-        Rules version {esc(stack.get("rules_version", "—"))} ·
-        status: cleared in {esc(checker.get("iterations", "?"))} review cycle(s)</span></div>
-    <div class="stamp">Verified</div>
-  </div>
+<details class="dossier" id="case-{esc(sid)}">
+  <summary>
+    <span class="file-tab">Case A-{esc(sid)}</span>
+    <span class="dossier-head">
+      <span><b>{esc(stack["title"])}</b><br>
+        <span style="font-size:.85em;color:var(--ink-soft)">
+          Rules version {esc(stack.get("rules_version", "—"))} ·
+          status: cleared in {esc(checker.get("iterations", "?"))} review cycle(s) ·
+          tap to open</span></span>
+      <span class="stamp">Verified</span>
+    </span>
+  </summary>
   <ol>{"".join(steps)}</ol>
-</div>""")
+  <p class="small"><a class="xref" href="#line-{esc(sid)}">↩ Back to this line in
+    The Kill</a> · <a class="xref" href="#contents">↑ Contents</a></p>
+</details>""")
     return (
         dept_open("judges-desk", plan)
         + '<p class="dek">Every claim the magazine made, with the rule text that backs '
-          "it. Nothing here is paraphrased.</p>"
+          "it. Nothing here is paraphrased. Tap a case to open its full record.</p>"
         + ("".join(files) or TODO)
         + dept_furniture(dept, cards_by_name)
         + dept_close("judges-desk", issue)
@@ -917,24 +958,25 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
         f"numbers, and table coaching. Pilot's Manual Vol. {volume:03d}."
     )
 
+    # Order mirrors issue_spec.DEPARTMENTS — the STYLEv3 §5 three-act arc.
     body = "".join([
         render_cover(issue, plan, commander),
         render_contents(issue, plan, stacks, decisions),
         render_first_turns(issue, plan, prose_doc, cards_by_name),
         render_command_zone(issue, plan, commander, goldfish, cards_by_name),
-        render_by_the_numbers(issue, plan, goldfish, cards_by_name),
         render_the_kill(issue, plan, stacks, prose_doc, cards_by_name),
+        render_by_the_numbers(issue, plan, goldfish, cards_by_name),
+        render_keep_or_ship(issue, plan, prose_doc, goldfish, cards_by_name),
+        render_upgrade_watch(issue, plan, prose_doc, cards_by_name, sideboard,
+                             lookout),
+        render_featured_artist(issue, plan, cards, cards_by_name),
         render_politics(issue, plan, prose_doc, cards_by_name),
         render_whats_your_play(issue, plan, decisions, cards_by_name),
         render_know_your_enemy(issue, plan, prose_doc, cards_by_name),
         render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name),
-        render_featured_artist(issue, plan, cards, cards_by_name),
-        render_keep_or_ship(issue, plan, prose_doc, goldfish, cards_by_name),
-        render_upgrade_watch(issue, plan, prose_doc, cards_by_name, sideboard,
-                             lookout),
         render_judges_desk(issue, plan, stacks, cards_by_name),
         render_back_page(issue, plan, deck_doc, stacks, cards_by_name),
-    ])
+    ]) + '<a class="toc-float" href="#contents" title="Back to In This Issue">☰</a>'
 
     return f"""<!DOCTYPE html>
 <html lang="en"><head>

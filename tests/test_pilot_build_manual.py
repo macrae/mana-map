@@ -399,11 +399,13 @@ def test_featured_artist_works_without_artist_data():
     assert 'id="featured-artist"' in html_out
 
 
-def test_featured_artist_sits_between_the_99_and_keep_or_ship():
+def test_departments_render_in_canonical_arc_order():
+    """Render order mirrors issue_spec.DEPARTMENTS — the single source of truth
+    for the STYLEv3 §5 three-act arc."""
+    from manamap.pilot.issue_spec import DEPARTMENT_IDS
     html_out = render()
-    assert (html_out.index('id="the-99"')
-            < html_out.index('id="featured-artist"')
-            < html_out.index('id="keep-or-ship"'))
+    positions = [html_out.index(f'id="{dept_id}"') for dept_id in DEPARTMENT_IDS]
+    assert positions == sorted(positions)
 
 
 # ── No department silently drops validated furniture ─────────────────────
@@ -557,3 +559,52 @@ def test_accessories_still_get_the_table_aid_treatment():
          "image": "https://img/sc.jpg", "quantity": 1})
     html_out = render(deck_doc=doc)
     assert "Table aid" in html_out and "no rules text" in html_out
+
+
+# ── Evidence linkification (renderer-provided navigation, STYLEv3 §8.4) ──
+
+
+def test_prose_stack_references_become_case_links():
+    html_out = render(prose_doc={**PROSE, "how_it_wins": "See stack 001 for proof."})
+    assert '<a class="xref" href="#case-001">stack 001</a>' in html_out
+
+
+def test_prose_cr_references_link_to_judges_desk():
+    html_out = render(prose_doc={**PROSE, "how_it_wins": "Per CR 603.2h it triggers."})
+    assert '<a class="xref" href="#judges-desk">CR 603.2h</a>' in html_out
+
+
+def test_linkifier_runs_after_escaping():
+    """A hostile prose string must be escaped BEFORE linkification."""
+    html_out = render(prose_doc={**PROSE,
+                                 "how_it_wins": '<script>alert("stack 001")</script>'})
+    assert "<script>" not in html_out
+    assert "&lt;script&gt;" in html_out
+
+
+def test_cite_blocks_are_never_linkified():
+    """Judge's Desk citations keep their verbatim CR text link-free."""
+    html_out = render()
+    import re as _re
+    for cite in _re.findall(r'<div class="cite">.*?</div>', html_out):
+        assert "xref" not in cite
+
+
+def test_judges_desk_cases_are_collapsible_with_backlinks():
+    html_out = render()
+    assert '<details class="dossier" id="case-001">' in html_out
+    assert 'href="#line-001">↩' in html_out
+
+
+def test_kill_articles_carry_line_anchors():
+    assert 'id="line-001"' in render()
+
+
+def test_floating_contents_button_renders_once():
+    html_out = render()
+    assert html_out.count('class="toc-float"') == 1
+
+
+def test_masthead_columnists_render_in_contents():
+    html_out = render()
+    assert "Ledger" in html_out and "Vera Dictum" in html_out and "Brightside" in html_out

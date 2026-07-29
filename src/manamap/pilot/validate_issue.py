@@ -176,6 +176,80 @@ def validate_plan(plan, card_names=None, artists=None):
     return errors
 
 
+# ── Self-containment (STYLEv3 L10): every issue is the reader's first ────
+
+# Patterns that mark changelog voice. Deliberately narrow: "swap"/"wave"/
+# "benched" are legitimate Commander vocabulary and are handled editorially,
+# not mechanically. These four have no innocent reading in reader-facing copy.
+import re
+
+_CONTINUITY_RE = re.compile(
+    r"\bv[1-9]\b"                       # "v2's answer", "V3 added"
+    r"|HISTORY\.md"
+    r"|\bprevious (?:version|build|list)\b"
+    r"|\bearlier build\b"
+    r"|\bsuperseded\b",
+    re.IGNORECASE,
+)
+
+# Plan fields the reader never sees; everything else in a department is copy.
+_EDITOR_ONLY_PLAN_KEYS = {"note", "components", "id", "tiers"}
+
+
+def _walk_strings(obj, path=""):
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            yield from _walk_strings(v, f"{path}.{k}" if path else str(k))
+    elif isinstance(obj, list):
+        for i, v in enumerate(obj):
+            yield from _walk_strings(v, f"{path}[{i}]")
+    elif isinstance(obj, str):
+        yield path, obj
+
+
+def _lint_strings(doc, label, skip_key=None):
+    errors = []
+    for path, text in _walk_strings(doc):
+        if skip_key and skip_key(path):
+            continue
+        match = _CONTINUITY_RE.search(text)
+        if match:
+            errors.append(
+                f"{label} [{path}]: changelog voice — {match.group()!r} "
+                f"(STYLEv3 L10: every issue is the reader's first)"
+            )
+    return errors
+
+
+def validate_self_containment(base, plan):
+    """Reader-facing text must carry no memory of previous deck versions."""
+    errors = []
+
+    def plan_skip(path):
+        last = path.rsplit(".", 1)[-1].split("[")[0]
+        # departments[].note is editor-facing except under featured/also_worth_noting,
+        # which build_manual renders. Keep the mechanical rule simple: skip bare
+        # `note` only when it is a department-level key.
+        return last in _EDITOR_ONLY_PLAN_KEYS and ".featured" not in path \
+            and "also_worth_noting" not in path
+
+    errors += _lint_strings(plan, "issue_plan.json", skip_key=plan_skip)
+
+    for fname in ("manual_prose.json", "sideboard_analysis.json",
+                  "upgrade_watch.json"):
+        path = base / fname
+        if path.exists():
+            with open(path) as f:
+                errors += _lint_strings(json.load(f), fname)
+
+    decisions = base / "decisions"
+    if decisions.exists():
+        for dec in sorted(decisions.glob("*.json")):
+            with open(dec) as f:
+                errors += _lint_strings(json.load(f), f"decisions/{dec.name}")
+    return errors
+
+
 def main(args):
     base = deck_dir(args.slug)
     errors = []
@@ -213,6 +287,7 @@ def main(args):
         print("WARN cards.json absent — skipping card-name checks")
 
     errors += validate_plan(plan, card_names, artists)
+    errors += validate_self_containment(base, plan)
 
     report_errors(f"issue plan for {args.slug}", errors)
     print(

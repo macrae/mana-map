@@ -106,6 +106,16 @@ The nostalgia is the costume; the pedagogy is the body. Never let a period devic
 (a violator, a stamp, a chrome gradient) override a teaching decision. When in doubt,
 this law breaks every tie.
 
+**L10 — Every issue is the reader's first.**
+The magazine has no memory the reader is expected to share. No version numbers ("v2's
+answer"), no HISTORY.md, no "previous build" or "earlier list," no benched/retired/
+superseded framing, no swap-wave numbering. Every sentence describes the current
+decklist as if it were the only one that has ever existed; the deck's evolution lives
+in git, not in print. A card is in the 99, in the sideboard, or not in the deck — it
+has no past tense. When an analysis exists because something was once verified another
+way (a refuted line, a bounded "infinite"), state the finding on its own terms: the
+refutation is content; the revision history that produced it is not.
+
 ---
 
 ## 3. The Commander Mandate
@@ -214,21 +224,30 @@ Fifteen departments, fixed order, every issue. This order is the reading experie
 it is not negotiable per-deck. A department with no artifact to fill it renders a
 visible `[TODO]`, never a silent omission.
 
+The order is a **three-act arc keyed to the evidence tiers and their columnists
+(§7.7)**: the Coach opens with the thesis, the Counselor makes the case, the Quant
+runs the numbers, the Coach takes you back to the table, and the appendix holds the
+proof. One voice speaks at a time for whole stretches of the book — the reader is
+never whipsawed between registers page to page. (Constitutional note: this arc
+replaced the original rhythm-first sequence in the v3.1 amendment; §13's
+"department drift" anti-pattern forbids per-issue reordering, not constitutional
+amendment.)
+
 | # | Department | The promise it keeps | Source artifact | Tier |
 |---|---|---|---|---|
 | 1 | **The Cover** | "Why should I care about this deck?" | commander art, verified-line count | — |
-| 2 | **In This Issue** | "Where am I, and how do I read this?" | contents + tier legend | — |
+| 2 | **In This Issue** | "Where am I, and how do I read this?" | contents + tier legend + masthead | — |
 | 3 | **First Turns** | "What is this deck actually trying to do?" | `how_it_wins` | ★ |
 | 4 | **The Command Zone** | "Why this commander — and what does the format change?" | commander card + CR + strategy DB | ✓★ |
-| 5 | **By the Numbers** | "What can I expect, turn by turn?" | `goldfish_metrics.json` | ◆ |
-| 6 | **The Kill** | "How does this deck actually win?" | verified `stacks/*.json` | ✓ |
-| 7 | **The Politics Table** | "How do I survive three opponents?" | `threat_assessment` | ★ |
-| 8 | **What's Your Play?** | "What would you do here?" | `decisions/*.json` | ★ |
-| 9 | **Know Your Enemy** | "Who beats me, and why?" | `matchups` | ★ |
-| 10 | **The 99** | "Why is each card in here?" | `card_roles` + graphs | ★ |
-| 11 | **Featured Artist** | "Who painted your deck?" | `cards.json` printing metadata | ◆★ |
-| 12 | **Keep or Ship** | "Should I keep this hand?" | `mulligan` + goldfish | ★◆ |
-| 13 | **Upgrade Watch** | "What's next for this deck?" | obsolescence index | ◆ |
+| 5 | **The Kill** | "How does this deck actually win?" | verified `stacks/*.json` | ✓ |
+| 6 | **By the Numbers** | "What can I expect, turn by turn?" | `goldfish_metrics.json` | ◆ |
+| 7 | **Keep or Ship** | "Should I keep this hand?" | `mulligan` + goldfish | ★◆ |
+| 8 | **Upgrade Watch** | "What's next for this deck?" | obsolescence index | ◆ |
+| 9 | **Featured Artist** | "Who painted your deck?" | `cards.json` printing metadata | ◆★ |
+| 10 | **The Politics Table** | "How do I survive three opponents?" | `threat_assessment` | ★ |
+| 11 | **What's Your Play?** | "What would you do here?" | `decisions/*.json` | ★ |
+| 12 | **Know Your Enemy** | "Who beats me, and why?" | `matchups` | ★ |
+| 13 | **The 99** | "Why is each card in here?" | `card_roles` + graphs | ★ |
 | 14 | **Judge's Desk** | "Prove it." | full stack resolutions | ✓ |
 | 15 | **The Back Page** | "What's in the next issue?" | `issue.json` + colophon | — |
 
@@ -383,7 +402,13 @@ Each spec is binding. "Failure mode" is what the review in §12 looks for.
 - **Rule**: The obsolescence index is format-agnostic and cannot see tribal or
   targeting constraints. Every suggestion must be sanity-checked against the deck's
   actual pillars, and flagged when the index is wrong. Say so out loud.
-- **Failure mode**: parroting machine suggestions that ignore the deck's identity.
+- **Rule (L10, absolute)**: this department looks FORWARD from the current list,
+  never backward at how the list came to be. No applied-swap history, no "the
+  upgrade already happened," no wave numbering, no benched/retired framing. A
+  sideboard card is a live option with conditions; a pool card is a candidate; the
+  past does not exist.
+- **Failure mode**: parroting machine suggestions that ignore the deck's identity —
+  or turning the future department into a changelog.
 
 ---
 
@@ -447,9 +472,15 @@ Two rules fall out of this table:
 
 ### 7.1 The register
 
-Second person, present tense, active voice. Enthusiastic but never breathless.
-Authoritative on rules, warm on coaching, funny in the furniture. We are a peer who has
-done the homework — never a parent, never a professor, never a hype man.
+The base register, under every voice: second person, present tense, active voice.
+Enthusiastic but never breathless. We are a peer who has done the homework — never a
+parent, never a professor, never a hype man. And per L10, no memory the reader is
+expected to share: the current list, described whole, every time.
+
+On top of the base register, **every department speaks in the voice of its tier's
+columnist (§7.7)**. The three voices are not decoration; they are how the evidence
+contract becomes readable. Academic, dry, dense prose fails review regardless of
+accuracy.
 
 ### 7.2 The four-part headline stack
 
@@ -492,12 +523,42 @@ loudly and make it the fun part.** The Krenko refutation is not a footnote; it's
 headline: *"THE DATABASE SAID INFINITE. THE RULES SAID NO."* Self-deprecating
 corrections are period-authentic and they are the cheapest credibility we will ever buy.
 
-### 7.7 Named personas
+### 7.7 The masthead — three columnists
 
-Departments carry consistent bylines that map to our actual generation roles: the coach
-signs coaching departments, the checker's stamp appears on dossiers, the simulator's
-lab voice captions the charts. **Personas are presentation only.** They never change
-what a tier badge means, and they never imply a human wrote something a system produced.
+Every department is signed by the columnist of its primary tier. The trio is fixed
+across all volumes; their names and one-line bios are reprinted in **In This Issue**
+beside the tier legend, every issue (a new reader meets them before anything else).
+
+**◆ "Ledger" Lin Marginal — staff quant.**
+Billy-Beane-brained, Nate-Silver-fluent, and delivers it all like a favorite podcast
+guest: plain speech, vivid comparisons, real affection for what a number *means for
+this deck*. Ledger never dumps a table — every figure arrives inside an intuition
+("cast him on curve in about one game in twelve — so the deck's real engine has to be
+everything that happens first"). Ledger speaks only ◆: simulations, counts, rates,
+distributions. Never asserts a rules outcome, never tells you what to play.
+Signs: By the Numbers, Keep or Ship (lead), Upgrade Watch, Featured Artist (lead).
+
+**✓ Counselor Vera Dictum — rules attorney.**
+Reads the Comprehensive Rules for pleasure and wants you to know it. Adores the
+legalese — quotes it, savors it, numbers her exhibits — and then, every time, closes
+with one clean plain-English holding anyone can carry to the table ("the killing blow
+still triggers; the dead may still owe testimony — 113.7a"). Where the record is
+silent, she says the record is silent; she never speculates. Signs: The Command Zone
+(lead), The Kill, Judge's Desk.
+
+**★ Coach Sunny Brightside — the corner office.**
+Shark, politician, manager, motivator. Pushes you to the better line, names the trap
+you were about to walk into, and never once believes you're going to lose — a positive
+outlook breeds a positive outcome, and Sunny will tell you so while handing you the
+sideboard plan. Every judgment grounded in what Vera verified and Ledger measured, and
+owned as judgment. Signs: First Turns, The Politics Table, What's Your Play?, Know
+Your Enemy, The 99, and the coaching half of every shared department.
+
+**The contract stands (§10): personas are presentation only.** The badge means what it
+means; a voice never earns a stamp. Vera cannot bless an unverified line by sounding
+sure; Sunny's optimism never upgrades a ★ to a ✓; Ledger's confidence intervals stay
+honest. And no persona ever implies a human wrote what a system produced — the
+masthead bios say what each columnist actually is.
 
 ---
 
@@ -565,6 +626,13 @@ tab. Gradients belong on display type and meter fills only — never behind body
 ### 8.4 The component library
 
 The agent composes from this fixed set. It does not invent new furniture.
+
+**Renderer-provided navigation (not furniture):** in-text evidence links (every
+"stack NNN" and CR reference in body copy becomes a link to its Judge's Desk case),
+collapsible case files, per-case backlinks, and the floating contents button are
+produced by the renderer deterministically. Agents never place them, never write
+`<a>` tags, and never add them to a plan — they write plain prose references
+("stack 003", "CR 603.2h") and the renderer does the rest.
 
 | Component | Use | Rules |
 |---|---|---|
@@ -677,6 +745,8 @@ An issue ships only if every line passes.
 - [ ] Every card image has a teaching caption.
 - [ ] Puns confined to furniture; ≤4 per issue.
 - [ ] Any refuted or negative finding is celebrated, not buried (§7.6).
+- Every department speaks in its tier columnist's voice (§7.7); no academic register survives.
+- L10 holds: zero version references, zero changelog voice, the issue reads whole to a first-time reader.
 
 **Contract**
 - [ ] No ★ content in ✓ costume.
@@ -693,6 +763,9 @@ Each of these has killed a publication that should have survived.
 - **Lecture openings** — explaining before the reader wonders.
 - **Uniform emphasis** — every spread shouting, so nothing lands.
 - **Decoration without teaching** — a device that looks era-correct and does no work.
+- **Changelog voice** — writing to a reader who has read the previous versions.
+  "V2's answer", applied-swap history, benched-card ghosts. The deadliest form of
+  cover inflation: it promises context the reader cannot have.
 - **Machine parroting** — repeating a graph's suggestion without checking it against
   the deck's identity.
 - **Badge laundering** — coaching content dressed as verified.

@@ -320,6 +320,33 @@ figcaption b { color:var(--ink); font-family:var(--condensed); text-transform:up
                    padding:7px 12px; display:inline-block; margin-top:12px;
                    background:var(--manila); text-decoration:none; }
 
+/* Collapsible case files: the summary carries the tab, title and stamp; the
+   record opens on tap. Print always shows the full record — proof does not
+   collapse on paper. */
+details.dossier > summary { cursor:pointer; list-style:none; position:relative;
+                            display:block; }
+details.dossier > summary::-webkit-details-marker { display:none; }
+details.dossier > summary .dossier-head { display:flex; }
+details.dossier > summary::after { content:"▸"; position:absolute; right:14px;
+                                   top:16px; font-size:.9em; color:var(--ink-soft); }
+details.dossier[open] > summary::after { content:"▾"; }
+details.dossier > p.small { padding:0 18px 14px; margin:0; }
+.dossier, .dept { scroll-margin-top:28px; }
+
+/* ── Navigation (renderer-provided; STYLEv3 §8.4) ────────────────────── */
+a.xref { color:inherit; text-decoration:underline dotted;
+         text-decoration-color:var(--accent, var(--ink-soft));
+         text-underline-offset:2px; }
+a.xref:hover { text-decoration-style:solid; }
+.toc-float { position:fixed; right:18px; bottom:18px; width:44px; height:44px;
+             display:flex; align-items:center; justify-content:center;
+             background:var(--ink); color:var(--paper); border:2px solid var(--paper);
+             box-shadow:3px 3px 0 rgba(0,0,0,.3); font-size:18px;
+             text-decoration:none; z-index:60; }
+.toc-float:hover { background:var(--power-red); }
+.masthead-block .legend-row b { font-family:var(--condensed);
+                                letter-spacing:.05em; text-transform:uppercase; }
+
 /* ── Tables ─────────────────────────────────────────────────────────── */
 table.data { width:100%; border-collapse:collapse; margin:16px 0; font-size:.9em; }
 table.data th { background:var(--ink); color:var(--paper); font-family:var(--condensed);
@@ -343,7 +370,10 @@ table.data tr:nth-child(even) td { background:rgba(255,255,255,.45); }
   .body-copy p:first-of-type::first-letter { font-size:2.4em; }
 }
 @media (prefers-reduced-motion:reduce) { * { transition:none!important; animation:none!important; } }
-@media print { .trim { box-shadow:none; } body { background:#fff; } }
+@media print { .trim { box-shadow:none; } body { background:#fff; }
+  .toc-float { display:none; }
+  details.dossier > *:not(summary) { display:block; }
+  details.dossier > summary::after { content:""; } }
 """
 
 

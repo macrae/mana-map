@@ -255,3 +255,38 @@ def test_a_changed_decklist_is_caught_at_the_identity_gate():
 def test_no_cards_json_means_no_hash_comparison():
     from manamap.pilot.validate_issue import validate_identity
     assert validate_identity(_identity(), deck_sha256=None) == []
+
+
+# ── Self-containment (STYLEv3 L10) ───────────────────────────────────────
+
+
+from manamap.pilot.validate_issue import _lint_strings, _CONTINUITY_RE
+
+
+def test_lint_catches_version_references():
+    errs = _lint_strings({"body": "V2's answer is: accruing."}, "plan")
+    assert errs and "changelog voice" in errs[0]
+
+
+def test_lint_catches_history_and_supersession():
+    assert _lint_strings({"x": "see HISTORY.md for the record"}, "f")
+    assert _lint_strings({"x": "the previous build ran this"}, "f")
+    assert _lint_strings({"x": "superseded by the new list"}, "f")
+
+
+def test_lint_passes_legitimate_vocabulary():
+    clean = {"a": "deploy in waves against the sweeper",
+             "b": "the sideboard swap costs one slot",
+             "c": "a d20 roll of 15 draws fifteen cards",
+             "d": "Vol. 007 of Pilot's Manual"}
+    assert _lint_strings(clean, "f") == []
+
+
+def test_lint_is_case_insensitive():
+    assert _CONTINUITY_RE.search("v3 added a second entry")
+    assert _CONTINUITY_RE.search("V3 added a second entry")
+
+
+def test_lint_names_the_path():
+    errs = _lint_strings({"departments": [{"body": "as v2 showed"}]}, "issue_plan.json")
+    assert "departments[0].body" in errs[0]

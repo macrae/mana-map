@@ -15,6 +15,11 @@ may not override its tier — costume never earns the badge (STYLEv3 §10).
 # (id, title, promise, tiers, needs_copy)
 # `tiers`: badge(s) the department renders; () = structural, no evidence claim.
 # `needs_copy`: department requires kicker/headline/dek from the issue plan.
+#
+# Order is the STYLEv3 §5 three-act arc (v3.1 amendment): the Coach opens with
+# the thesis, the Counselor makes the case, the Quant runs the numbers, the
+# Coach takes you back to the table, the appendix holds the proof. Position in
+# this literal IS the canonical order — nothing else encodes it.
 DEPARTMENTS = [
     ("cover", "The Cover",
      "Why should I care about this deck?", (), False),
@@ -24,10 +29,16 @@ DEPARTMENTS = [
      "What is this deck actually trying to do?", ("coach",), True),
     ("command-zone", "The Command Zone",
      "Why this commander — and what does the format change?", ("verified", "coach"), True),
-    ("by-the-numbers", "By the Numbers",
-     "What can I expect, turn by turn?", ("data",), True),
     ("the-kill", "The Kill",
      "How does this deck actually win?", ("verified",), True),
+    ("by-the-numbers", "By the Numbers",
+     "What can I expect, turn by turn?", ("data",), True),
+    ("keep-or-ship", "Keep or Ship",
+     "Should I keep this hand?", ("coach", "data"), True),
+    ("upgrade-watch", "Upgrade Watch",
+     "What's next for this deck?", ("data",), True),
+    ("featured-artist", "Featured Artist",
+     "Who painted your deck?", ("data", "coach"), True),
     ("politics-table", "The Politics Table",
      "How do I survive three opponents?", ("coach",), True),
     ("whats-your-play", "What's Your Play?",
@@ -36,16 +47,21 @@ DEPARTMENTS = [
      "Who beats me, and why?", ("coach",), True),
     ("the-99", "The 99",
      "Why is each card in here?", ("coach",), True),
-    ("featured-artist", "Featured Artist",
-     "Who painted your deck?", ("data", "coach"), True),
-    ("keep-or-ship", "Keep or Ship",
-     "Should I keep this hand?", ("coach", "data"), True),
-    ("upgrade-watch", "Upgrade Watch",
-     "What's next for this deck?", ("data",), True),
     ("judges-desk", "Judge's Desk",
      "Prove it.", ("verified",), True),
     ("back-page", "The Back Page",
      "What's in the next issue?", (), False),
+]
+
+# The masthead trio (STYLEv3 §7.7). Reprinted in In This Issue every issue;
+# the renderer and the magazine-editor both read this — never restate it.
+MASTHEAD_COLUMNISTS = [
+    {"tier": "data", "glyph": "◆", "name": '"Ledger" Lin Marginal',
+     "bio": "Staff quant. Ran it 10,000 times so you don't have to."},
+    {"tier": "verified", "glyph": "✓", "name": "Counselor Vera Dictum",
+     "bio": "Rules attorney. Reads the Comprehensive Rules for pleasure. Twice."},
+    {"tier": "coach", "glyph": "★", "name": "Coach Sunny Brightside",
+     "bio": "The corner office. Has never once believed you're going to lose."},
 ]
 
 DEPARTMENT_IDS = [d[0] for d in DEPARTMENTS]

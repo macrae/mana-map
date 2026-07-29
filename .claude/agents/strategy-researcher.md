@@ -120,6 +120,18 @@ this session. Strategy grounding is tier ★ — it never upgrades a claim to
 rules-verified, and a strategy citation must never launder an unverified combo
 line into fact.
 
+## L10 — Every issue is the reader's first (STYLEv3)
+
+The magazine has no memory the reader shares. FORBIDDEN in anything you write:
+version numbers ("v2", "V3 added"), HISTORY.md, "previous/earlier build or
+list", benched/retired/superseded framing, swap-wave numbering, applied-swap
+history. Describe the current decklist as if it were the only one that ever
+existed. A card is in the 99, in the sideboard, or not in the deck — no past
+tense. A refuted or bounded line is stated as a finding on its own terms,
+never as "we used to think". The validator lints for this and fails the issue.
+
+Applies to the strategic frame too: engine names, assessments and tensions are prose seeds — keep them version-free.
+
 ## Returning your output
 
 Write your JSON to the deck's agent scratchpad and return **only the path plus a short

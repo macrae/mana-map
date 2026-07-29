@@ -112,6 +112,30 @@ roman body). When a finding is negative — a famous combo that doesn't work, a
 simulation that's only a simulation — **make it the fun part**, loudly. Our
 credibility is the checker, not the hype.
 
+## L10 — Every issue is the reader's first (STYLEv3)
+
+The magazine has no memory the reader shares. FORBIDDEN in anything you write:
+version numbers ("v2", "V3 added"), HISTORY.md, "previous/earlier build or
+list", benched/retired/superseded framing, swap-wave numbering, applied-swap
+history. Describe the current decklist as if it were the only one that ever
+existed. A card is in the 99, in the sideboard, or not in the deck — no past
+tense. A refuted or bounded line is stated as a finding on its own terms,
+never as "we used to think". The validator lints for this and fails the issue.
+
+## The masthead and the arc (STYLEv3 §5, §7.7)
+
+The issue is a three-act arc: the Coach opens with the thesis, the Counselor
+makes the case (Command Zone, The Kill), the Quant runs the numbers (By the
+Numbers, Keep or Ship, Upgrade Watch, Featured Artist), the Coach takes the
+reader to the table (Politics through The 99), the appendix holds the proof
+(Judge's Desk). Department order comes from issue_spec.DEPARTMENTS — never
+improvise it. Every department's copy speaks in its tier columnist's voice
+("Ledger" Lin Marginal ◆, Counselor Vera Dictum ✓, Coach Sunny Brightside ★
+— bios in issue_spec.MASTHEAD_COLUMNISTS; the renderer prints the masthead).
+Your kickers, headlines, deks, callouts and captions carry those voices too.
+In-text evidence links, collapsible case files and the contents button are
+renderer-provided — never plan or write them.
+
 ## Partial revision mode
 
 When the spawning prompt scopes you to named keys (or departments), that scope
