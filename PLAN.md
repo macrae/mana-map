@@ -23,7 +23,7 @@ a **deck builder** that produces the deck in the first place.
 [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-924 tests. 33 `manamap pilot` subcommands. 12 agents, 15 skills.
+926 tests. 33 `manamap pilot` subcommands. 12 agents, 15 skills.
 
 ## Shipped
 
@@ -49,6 +49,7 @@ a **deck builder** that produces the deck in the first place.
 | **The Short List** | `considering.json` (all 7 decks) — exactly ten cards, bench-first, pool-filled, `validate-considering` enforcing the count and every evidence claim. Replaces both `sideboard_analysis.json` and `upgrade_watch.json` |
 | **Card links** | Every card mention in body copy links to its tile in The 99 (commander → The Command Zone) with a CSS-only hover preview. Renderer-provided navigation; agents write plain names |
 | **Deck versioning** | `HISTORY.md` per deck (append-only: date · sha12 · floor · reason) on 4 decks; `decklist_sha256` stamped in `issue.json` **and asserted against `cards.json`** by `validate_issue.validate_identity()` |
+| **Deck dossier** | `viz/deck.html` — every deck's committed artifacts rendered as data: bracket floor + named driver, Sources Say, goldfish, the Short List, Fetch Quests, verified case files with citations, and the builder's record where one exists. Nothing recomputed in the browser, nothing hardcoded; `build-index` emits `data/decks/index.json` as the manifest. `viz/css/tokens.css` ports design.py's tokens to a dark register with the ✓/◆/★ colours fixed. Each issue's Back Page links to its dossier and back |
 | **Loop economics** | Scenario preflight (`validate-stack --scenario-only`); `RESOLVE_SCOPE_BUDGET`; `RESOLVE_MAX_ITERATIONS` enforced in `cache-record`; agents hand off by path via `.agent-out/` |
 
 ## The 17 sections, in five acts
@@ -170,18 +171,18 @@ Two live defects in `viz/js/deck-builder.js`, both confirmed:
 servable (~3.6 MB, uniform across seven decks), so `deck.html` has **no prerequisites**,
 while the engine port is blocked on `data/cards.csv` being gitignored. Order:
 
-1. **`viz/deck.html` — the deck dossier** *(in progress)*. Renders committed artifacts for
-   all seven decks: bracket floor with its named driver, goldfish, the mana audit, the
-   Short List, the tutor guide, verified stacks. Forces the design-token port into
-   existence against real content, and introduces URL state (`?deck=<slug>`).
-2. **`viz_index.json`** — the real M1. The browser is missing four card fields
+**`viz/deck.html` shipped 2026-07-29** — the dossier is the surface the rest builds on:
+it forced the design-token port into existence against real content and introduced the
+first URL state this frontend has had (`?deck=<slug>`). What remains, in order:
+
+1. **`viz_index.json`** — the next step. The browser is missing four card fields
    (`game_changer`, `mechanical_tags`, `layout`, and `legal_commander` as a tri-state);
    a positional file in cards.csv row order closes every gap. ~476 KB gzipped.
-3. **Engine port to a Worker** — `manabase` is trivial (pure math, no deps), `bracket` and
+2. **Engine port to a Worker** — `manabase` is trivial (pure math, no deps), `bracket` and
    `goldfish` easy, `build_deck` hardest (pandas is load-bearing). `constants.js` must be
    **generated from `config.py`**, with a parity test, or the scorer divergence recurs.
-4. **`build.html`** — slots as the primitive, the deck starts complete, incremental DOM.
-5. **Handoff** — emit `brief.json` + `decklist.txt` + the command to run.
+3. **`build.html`** — slots as the primitive, the deck starts complete, incremental DOM.
+4. **Handoff** — emit `brief.json` + `decklist.txt` + the command to run.
 
 **Agents run in Claude Code, not the browser.** The integration model is: render what
 agents produced, hand a brief back, and deep-link cards between map and magazine. A
