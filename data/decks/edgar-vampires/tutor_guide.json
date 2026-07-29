@@ -1,0 +1,114 @@
+{
+  "slug": "edgar-vampires",
+  "assessment": "Three unrestricted tutors — Demonic Tutor, Vampiric Tutor, Diabolic Intent — against four loop halves: that is this deck's consistency engine. A tutor is 'essentially an additional copy of any card in our deck', and here every tutor is a copy of whichever half completes a verified pairing. Natural assembly is 5.4% by turn 6 and 9.4% by turn 10 (goldfish, tutors unmodeled), so the tutors ARE the assembly. The fetch discipline is removal-window profiling: fetch toward the pairing the table's open mana cannot answer — stack 005's all-enchantment Bond+Exquisite against creature-removal seats, a creature half only when the coast is genuinely clear. And remember the second job: against lifegain hate or an assembling lock, the tutors fetch the answer, not the combo.",
+  "tutors": [
+    {
+      "card": "Demonic Tutor",
+      "notes": "Two mana, any card, to hand. The question is never 'what is the best card' — it is 'which half completes a pair the table's held interaction cannot break.' Cite the matrix, then count their open mana.",
+      "targets": [
+        {
+          "scenario": "A gain-half is sleeved — Exquisite Blood or Bloodthirsty Conqueror on the battlefield — and the draw-go seat keeps passing with mana up.",
+          "fetch": "Sanguine Bond",
+          "why": "Bond is the lose-half with no body. With Exquisite Blood it assembles stack 005's all-enchantment loop — 26 iterations, deterministic, no per-iteration creature-removal window; with Conqueror it assembles stack 006. Fetch the half instant-speed creature removal cannot touch, hold it hidden, and cast it into the first tapped-out window.",
+          "citations": [
+            {
+              "rule": "strategy:multiplayer.pivot-window",
+              "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
+            }
+          ]
+        },
+        {
+          "scenario": "A lose-half is sleeved — Vito or Sanguine Bond has survived a table rotation — and you want the engine that closes.",
+          "fetch": "Exquisite Blood",
+          "why": "The gain-half with two living partners: it completes stack 001 with Vito and stack 005 with Bond, and any lifelink connect or Cruel Celebrant death seeds the loop. It is also the resilient gain-half — an enchantment, untouched by every kill spell aimed at your creatures.",
+          "citations": [
+            {
+              "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+              "quote": "essentially an additional copy of any card in our deck"
+            }
+          ]
+        },
+        {
+          "scenario": "You are behind: the aggro seat has run you low behind a bigger board, and your drains cannot race it.",
+          "fetch": "Olivia's Wrath",
+          "why": "The asymmetric reset: every non-Vampire gets -X/-X where X is your Vampire count, so it wipes their board and misses your entire army. You keep the eminence tokens, they keep nothing, and the race restarts with you ahead."
+        },
+        {
+          "scenario": "Closing: six-plus attackers plus Sanctum Seeker, the alpha turn is next, and you want it to end the game rather than dent it.",
+          "fetch": "Bloodletter of Aclazotz",
+          "why": "The doubler that turns the swing lethal. Stack 003 verified seven attackers under Sanctum Seeker and Bloodletter drain each opponent 14 at declare — before blockers exist — and stack 007 adds another verified 14 per opponent at your end step through Throne of the God-Pharaoh. One fetch converts a good attack into a table-shaking one."
+        }
+      ]
+    },
+    {
+      "card": "Diabolic Intent",
+      "notes": "The additional cost is nearly free — the engine prints the currency. Best body: Bloodghast if a land drop or fetch remains, because it returns on landfall for zero mana; otherwise a spare eminence token. Either death also pays out under Cruel Celebrant, Cordial Vampire, or Grave Pact: the tutor's cost becomes a drain, counters, and an edict on its way to the bin.",
+      "targets": [
+        {
+          "scenario": "Vito is on the battlefield, the table is tapped out or spent, and the window is open now.",
+          "fetch": "Exquisite Blood",
+          "why": "Completes stack 001 on the spot — deterministic, 38 iterations from a 2-life seed, retargeted each trigger, unbroken by a mid-loop death. When the open-mana count passes, Intent is Demonic Tutor at a discount you pay with a token you got for free.",
+          "citations": [
+            {
+              "rule": "strategy:multiplayer.pivot-window",
+              "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
+            }
+          ]
+        },
+        {
+          "scenario": "Both boards went wide and theirs is winning the fair fight — you need the board broken on your terms.",
+          "fetch": "Toxic Deluge",
+          "why": "The scalable sweeper: pay life to set X, sized to kill their board while your lords keep the counters-and-anthem survivors alive. Sacrificing Bloodghast to Intent first costs nothing — it returns on your next land drop, after the dust settles."
+        },
+        {
+          "scenario": "Closing through a stall: the swarm is big enough to win but chump-blockers keep it honest.",
+          "fetch": "Cover of Darkness",
+          "why": "Choose Vampire and the swarm gains fear — blockable only by artifact and black creatures. The sacrificed token is one fewer attacker, and it does not matter: the rest connect, and stack 003's declare-attackers drain math still fires per attacker."
+        },
+        {
+          "scenario": "A 'players can't gain life' piece landed and the whole 2×2 matrix is dark.",
+          "fetch": "Purphoros, God of the Forge",
+          "why": "The kill that ignores the hate: stack 008 verified 10 damage to each opponent per two-mana Vampire cast through both doublers, with no lifegain anywhere in the line. Indestructible and usually not a creature at this deck's devotion, he also ignores the wrath that seat is holding."
+        }
+      ]
+    },
+    {
+      "card": "Vampiric Tutor",
+      "notes": "One mana, instant speed, top of library — not hand. The card arrives on your NEXT draw, so cast it at the end step of the player before you: minimum information leaked, minimum time for a shuffle or surprise mill to take the top. The 2 life is trivial currency in a deck whose engines drain the whole table — but respect it under pressure. At 6 life against a swarm, the honest fetch is the sweeper, not the combo half.",
+      "targets": [
+        {
+          "scenario": "A gain-half is on the battlefield and your next untap is the assembly window.",
+          "fetch": "Sanguine Bond",
+          "why": "One mana at their end step sets the resilient lose-half on top; you draw it and cast it into stack 005 or 006's verified loop. Vampiric's discount over Demonic is exactly what keeps the loop's cast mana free on the combo turn.",
+          "citations": [
+            {
+              "rule": "strategy:multiplayer.threat-deflection",
+              "quote": "sequence scary pieces after the table's removal is spent"
+            }
+          ]
+        },
+        {
+          "scenario": "The wrath is telegraphed — the control seat passes with 4+ mana and your board is the widest at the table.",
+          "fetch": "Teferi's Protection",
+          "why": "The total out: life locked, protection from everything, board phased out. Set it the end step before your draw and it is in hand before their sorcery-speed window opens — one mana and 2 life for the disaster policy exactly when the premium is highest."
+        },
+        {
+          "scenario": "Alpha-strike turn next: Edgar is castable, seven attackers ready, and the swing must stick.",
+          "fetch": "Akroma's Will",
+          "why": "With Edgar on the battlefield you take both modes — flying, double strike, protection AND lifelink-indestructible — and every lifelink point is a lose-half trigger. Set it at the last end step before yours; the table sees one mana spent and learns nothing."
+        },
+        {
+          "scenario": "Twilight Prophet is on the battlefield with the city's blessing and your upkeep is coming.",
+          "fetch": "Exquisite Blood",
+          "why": "The wish nobody sees coming. Prophet reveals the top card at your upkeep, drains each opponent for its mana value, and puts it in your hand. A five-mana card on top means each opponent loses 5 and the combo half lands in hand anyway — the tutor recoups its 2 life doubled per opponent and delivers the fetch without spending your draw."
+        }
+      ]
+    }
+  ],
+  "gaps": [
+    "No tutor puts a card onto the battlefield or fetches at instant speed to play — every assembly crosses at least one turn of exposure, which is why the hidden-hand discipline matters as much as the fetch choice.",
+    "Against a resolved 'players can't gain life' effect the tutors can only fetch the answer (Despark, Fracture) or the hate-proof plan (Purphoros) — no tutor line restores the matrix while the piece stands.",
+    "The aristocrats-ignition path — a Cruel Celebrant death seeding a full pair — is flagged by the strategic frame as needing a stack scenario; these wishes lean on lifelink connects, the verified seed.",
+    "None of the three tutors is mana fixing in practice: burning Demonic Tutor on a land is a losing wish, and the manabase math belongs to Sources Say."
+  ]
+}

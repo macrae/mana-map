@@ -132,7 +132,7 @@
         "matchups",
         "threat_assessment"
       ],
-      "artifact_sha256": "688909acb1d88d0c682e5016664c5ca2815f2834ca2c7c593337fc9658ab2fc0",
+      "artifact_sha256": "0dc4e751d6603be648997f63538a825c9926d85c462ebbfddbc484a1ed048254",
       "card_refs": [
         "Abstergo Entertainment",
         "Ashnod's Altar",
@@ -146,6 +146,7 @@
         "Chrome Mox",
         "City of Brass",
         "Crumbling Ashes",
+        "Dark Ritual",
         "Deadly Dispute",
         "Demonic Tutor",
         "Devoted Druid",
@@ -197,6 +198,7 @@
           "Blowfly Infestation",
           "City of Brass",
           "Crumbling Ashes",
+          "Dark Ritual",
           "Deadly Dispute",
           "Demonic Tutor",
           "Devoted Druid",
@@ -336,9 +338,8 @@
       "agent": "magazine-editor",
       "agent_prompt_sha256": "bd7f00f4f8018aa7a0f072211ca1dc947d7d9e8ffddcf5fb1300cd455b74ce41",
       "artifact": "data/decks/hapatra/issue_plan.json",
-      "artifact_sha256": "47157c28c80ddd7eb8f15e415c100ca083fe9dbf7006e6f8519032eab7f8deb4",
+      "artifact_sha256": "fd7b1ee59c41e2d3d90a05a057f5697909531a2ab4a02f4e041584b14e4718d8",
       "card_refs": [
-        "Abstergo Entertainment",
         "Arcane Signet",
         "Ashnod's Altar",
         "Bastion of Remembrance",
@@ -353,11 +354,9 @@
         "Chrome Mox",
         "City of Brass",
         "Command Tower",
-        "Conduit Pylons",
         "Contagion Clasp",
         "Crumbling Ashes",
         "Dark Ritual",
-        "Darkbore Pathway // Slitherbore Pathway",
         "Deadly Dispute",
         "Demonic Tutor",
         "Devoted Druid",
@@ -369,21 +368,16 @@
         "Forbidden Orchard",
         "Forest",
         "Fume Spitter",
-        "Gemstone Caverns",
-        "Gond Gate",
         "Green Sun's Zenith",
         "Grim Affliction",
-        "Grim Backwoods",
         "Grim Haruspex",
         "Grim Monolith",
         "Grim Tutor",
         "Hapatra, Vizier of Poisons",
         "Heroic Intervention",
-        "Hidden Grotto",
         "Host of the Hereafter",
         "Imperial Seal",
         "Ivy Lane Denizen",
-        "Lazotep Quarry",
         "Lightning Greaves",
         "Llanowar Elves",
         "Lotus Petal",
@@ -408,20 +402,15 @@
         "Sol Ring",
         "Spire of Industry",
         "Survival of the Fittest",
-        "Svogthos, the Restless Tomb",
         "Swamp",
         "Swiftfoot Boots",
-        "Talon Gates of Madara",
         "Tarnished Citadel",
-        "The Grey Havens",
-        "The Mycosynth Gardens",
         "The One Ring",
         "Toxic Deluge",
         "Vampiric Tutor",
         "Village Rites",
         "Viscera Seer",
         "Walking Ballista",
-        "Wastewood Verge",
         "Worldly Tutor",
         "Yahenni, Undying Partisan",
         "Yawgmoth, Thran Physician",
@@ -507,6 +496,7 @@
             "tagline"
           ],
           "how_it_wins": null,
+          "mana_base": null,
           "matchups": null,
           "mulligan": null,
           "threat_assessment": null,
@@ -514,7 +504,7 @@
         },
         "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
       },
-      "fingerprint": "08312150730e2861597352622b6518e454a906427b6206135ed80e7a1bde5ece",
+      "fingerprint": "7f81b78c0d933d56edc84500d9d639d745a94c125d650b1174603718d089ef21",
       "inputs": [
         {
           "path": "STYLEv3.md",
@@ -679,18 +669,146 @@
         }
       ]
     },
+    "the-ten": {
+      "agent": "sideboard-analyst",
+      "agent_prompt_sha256": "f922251e74b30a1f14864740b2dcbfa6be71f724092c29ba1d5fba6b55996b93",
+      "artifact": "data/decks/hapatra/considering.json",
+      "artifact_sha256": "da3290be6cd29824b867069e0fb3c79f2475ee52d9d065ba241b6c6db550fbde",
+      "card_refs": [
+        "Ashnod's Altar",
+        "Blasting Station",
+        "Blood Artist",
+        "Blowfly Infestation",
+        "Carrion Feeder",
+        "Contagion Clasp",
+        "Dark Ritual",
+        "Grim Monolith",
+        "Hapatra, Vizier of Poisons",
+        "Host of the Hereafter",
+        "Mikaeus, the Unhallowed",
+        "Morbid Opportunist",
+        "Necroskitter",
+        "Nest of Scarabs",
+        "Orcish Bowmasters",
+        "Phyrexian Altar",
+        "Phyrexian Reclamation",
+        "Pitiless Plunderer",
+        "Serrated Arrows",
+        "Viscera Seer",
+        "Walking Ballista",
+        "Yahenni, Undying Partisan",
+        "Yawgmoth, Thran Physician"
+      ],
+      "extra": {
+        "cards_semantic": "7733fe17b484c0a466bbfe347d3694529115013aa0d4979ac9ad3ca082fa4df4",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "416dcb0ca3758cec88caf59445092ab4cd49aa0101850b146af936d09cecd317",
+      "inputs": [
+        {
+          "path": "data/combo_details.json",
+          "sha256": "2164926ed9f3b34d05507e9609a8a07132a7fcfcbd82a79a76a7aabb58914044"
+        },
+        {
+          "path": "data/decks/hapatra/bracket_report.json",
+          "sha256": "3ba4da652accada2fa62ddc4a57f932f92f24fc5fff38361bab7031fe314bc20"
+        },
+        {
+          "path": "data/decks/hapatra/pilot_feedback.md",
+          "sha256": null
+        },
+        {
+          "path": "data/decks/hapatra/stacks/001-mikaeus-undying-counter-annihilation.json",
+          "sha256": "9684b09860194f71e02fedaaa263415545ddaaff9c9ee1915881adc358afb366"
+        },
+        {
+          "path": "data/decks/hapatra/strategic_frame.json",
+          "sha256": "f401740460c25d8d48352da3c15db4b87764580d434f07e544c7d9d9d52c5ed5"
+        },
+        {
+          "path": "data/obsolescence_index.json",
+          "sha256": "94d9662cb54ef5ed9f2ca9ce31f3a8427f5be8f584032a3efd66b16c81aedf2b"
+        },
+        {
+          "path": "data/synergy_graph.json",
+          "sha256": "f09551fd9024addb575d417e3acdbef5abeba046c6753ef07976339688e854df"
+        }
+      ]
+    },
+    "tutor-guide": {
+      "agent": "pilot-coach",
+      "agent_prompt_sha256": "4c0c9124df3b2338306ed3f9e1a279444d7be65ec425cdb99345dfae563670b8",
+      "artifact": "data/decks/hapatra/tutor_guide.json",
+      "artifact_sha256": "e9c244cfa7e50f2e8995fd26452abb9bc8c04df3ebb130265e0c86bad3c22d20",
+      "card_refs": [
+        "Ashnod's Altar",
+        "Birds of Paradise",
+        "Bitterblossom",
+        "Black Sun's Zenith",
+        "Blasting Station",
+        "Blood Artist",
+        "Blowfly Infestation",
+        "Carrion Feeder",
+        "Demonic Tutor",
+        "Devoted Druid",
+        "Diabolic Intent",
+        "Eternal Witness",
+        "Green Sun's Zenith",
+        "Grim Haruspex",
+        "Grim Tutor",
+        "Hapatra, Vizier of Poisons",
+        "Heroic Intervention",
+        "Imperial Seal",
+        "Llanowar Elves",
+        "Mikaeus, the Unhallowed",
+        "Necroskitter",
+        "Nest of Scarabs",
+        "Obelisk Spider",
+        "Phyrexian Altar",
+        "Phyrexian Reclamation",
+        "Skullclamp",
+        "Survival of the Fittest",
+        "Toxic Deluge",
+        "Vampiric Tutor",
+        "Viscera Seer",
+        "Walking Ballista",
+        "Worldly Tutor",
+        "Yawgmoth, Thran Physician",
+        "Zulaport Cutthroat"
+      ],
+      "extra": {
+        "cards_semantic": "7733fe17b484c0a466bbfe347d3694529115013aa0d4979ac9ad3ca082fa4df4",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "e68b3f5db49fa472e7307c02a4feaadccd75c72d534e068b8cf5a6178607550c",
+      "inputs": [
+        {
+          "path": "data/decks/hapatra/goldfish_metrics.json",
+          "sha256": "95ac2e1cf14f467a8512eb2eacc489b2ed5997a65a91c74c6ef20c8f4c8d3447"
+        },
+        {
+          "path": "data/decks/hapatra/stacks/001-mikaeus-undying-counter-annihilation.json",
+          "sha256": "9684b09860194f71e02fedaaa263415545ddaaff9c9ee1915881adc358afb366"
+        },
+        {
+          "path": "data/decks/hapatra/strategic_frame.json",
+          "sha256": "f401740460c25d8d48352da3c15db4b87764580d434f07e544c7d9d9d52c5ed5"
+        }
+      ]
+    },
     "writer-prose": {
       "agent": "manual-writer",
-      "agent_prompt_sha256": "4a9acdc8be809403d64c95e9a2170745fe3e16d1a8d3197ece3c8945f44720eb",
+      "agent_prompt_sha256": "6ebfb2724620cf62302992004774cdf1ea137539f6db0204e4b96acafdc4f440",
       "artifact": "data/decks/hapatra/manual_prose.json",
       "artifact_keys": [
         "card_roles",
         "combo_lines",
         "how_it_wins",
+        "mana_base",
         "mulligan",
         "upgrades"
       ],
-      "artifact_sha256": "193954056809120a7c3fa46637255da61d5192e84280488816065fdb4b654d69",
+      "artifact_sha256": "4f8d95e62b61fba4a8452043472db367a99cfe85b3bd8ab4de53f76b73bd5680",
       "card_refs": [
         "Abstergo Entertainment",
         "Arcane Signet",
@@ -721,6 +839,7 @@
         "Exotic Orchard",
         "Flourishing Defenses",
         "Forbidden Orchard",
+        "Forest",
         "Fume Spitter",
         "Gemstone Caverns",
         "Gond Gate",
@@ -907,7 +1026,6 @@
           "Lazotep Quarry",
           "Mikaeus, the Unhallowed",
           "Morbid Opportunist",
-          "Necroskitter",
           "Obelisk Spider",
           "Phyrexian Altar",
           "Phyrexian Reclamation",
@@ -917,6 +1035,19 @@
           "Yahenni, Undying Partisan",
           "Yawgmoth, Thran Physician",
           "Zulaport Cutthroat"
+        ],
+        "mana_base": [
+          "Chrome Mox",
+          "City of Brass",
+          "Dark Ritual",
+          "Exotic Orchard",
+          "Forbidden Orchard",
+          "Forest",
+          "Grim Monolith",
+          "Mana Confluence",
+          "Mana Vault",
+          "Sol Ring",
+          "Tarnished Citadel"
         ],
         "mulligan": [
           "Bastion of Remembrance",
@@ -942,34 +1073,17 @@
           "Zulaport Cutthroat"
         ],
         "upgrades": [
-          "Abstergo Entertainment",
-          "Bastion of Remembrance",
-          "Black Sun's Zenith",
-          "Blood Artist",
-          "Blowfly Infestation",
-          "Contagion Clasp",
-          "Crumbling Ashes",
-          "Devoted Druid",
-          "Green Sun's Zenith",
-          "Hapatra, Vizier of Poisons",
           "Host of the Hereafter",
-          "Ivy Lane Denizen",
           "Mikaeus, the Unhallowed",
-          "Necroskitter",
-          "Obelisk Spider",
-          "Scurry Oak",
-          "Serrated Arrows",
-          "Skullclamp",
           "Walking Ballista",
-          "Yawgmoth, Thran Physician",
-          "Zulaport Cutthroat"
+          "Yawgmoth, Thran Physician"
         ]
       },
       "extra": {
         "cards_semantic": "7733fe17b484c0a466bbfe347d3694529115013aa0d4979ac9ad3ca082fa4df4",
         "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
       },
-      "fingerprint": "6b18f0c0c24d7bfd6e772e506d7d161e2775b351f70f567616fe6ed76774f817",
+      "fingerprint": "3332ba8701946769b9f93b2ddf17e14ddcad045cb996c3143c5c9ca2d50bc7b7",
       "inputs": [
         {
           "path": "data/combo_graph.json",
@@ -978,6 +1092,10 @@
         {
           "path": "data/decks/hapatra/goldfish_metrics.json",
           "sha256": "95ac2e1cf14f467a8512eb2eacc489b2ed5997a65a91c74c6ef20c8f4c8d3447"
+        },
+        {
+          "path": "data/decks/hapatra/mana_analysis.json",
+          "sha256": "b7dbd0de2e8c62c5c54fe775a5bbf2640e529724b80bc016124cb759d2caa9fe"
         },
         {
           "path": "data/decks/hapatra/stacks/001-mikaeus-undying-counter-annihilation.json",
@@ -1000,6 +1118,7 @@
         "card_roles": "d544051e8dff39624945ebf264332206b1ee885438f1782729d3c45dc4f4df7e",
         "combo_lines": "6505e8444bd3e3d6c4af404d25a28b9ff6f9adcf1ac53d80471f080a72479713",
         "how_it_wins": "3e26af26f76bda58f1599d42f7daf51fff5c10c4421b87ef599b0e05f58d2f9c",
+        "mana_base": "3cfba3627ee343d6f3862e4ef2bb1bd56a414042fca446e75937494180f1aff6",
         "mulligan": "45fe653a471fa4dd5b57fb49c45a97b196ee556d87cfb116e96820ae1f079c80",
         "upgrades": "529af3024227afd0eb66ea495444bbcc780f4491a1d1b03bba2c17b318b0d585"
       }

@@ -69,3 +69,20 @@ def test_commander_is_a_legal_creature_fetch():
     doc = good_doc()
     doc["tutors"][0]["targets"][0]["fetch"] = "Test Commander"
     assert validate(doc, deck_doc()) == []
+
+
+def test_battlefield_clause_is_not_a_battle_constraint():
+    doc = {"cards": [
+        {"name": "Moggcatcher", "is_commander": False, "is_sideboard": False,
+         "type_line": "Creature — Goblin",
+         "oracle_text": "{R}{R}{R}, {T}: Search your library for a Goblin "
+                        "permanent card, put it onto the battlefield..."},
+        {"name": "Krenko, Mob Boss", "is_commander": False,
+         "is_sideboard": False, "type_line": "Legendary Creature — Goblin",
+         "oracle_text": ""},
+    ]}
+    guide = {"slug": "x", "assessment": "a",
+             "tutors": [{"card": "Moggcatcher", "targets": [
+                 {"scenario": "s", "fetch": "Krenko, Mob Boss", "why": "w"}]}],
+             "gaps": []}
+    assert validate(guide, doc) == []

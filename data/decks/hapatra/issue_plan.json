@@ -1,793 +1,319 @@
 {
-  "angle": "An issue about a deck whose own combo count was a rumour: the bracket engine credited Hapatra with nineteen two-card infinites, one checker-passed scenario refuted six of the eight that route through Mikaeus — Snake tokens produce zero iterations — and what survives is a mint, not an engine, and a better deck to pilot than the fiction was.",
+  "slug": "hapatra",
+  "angle": "The combo sheet says nineteen infinites; the record says Hapatra is a mint — a turn-2 commander who cashes other cards' -1/-1 counters into Snakes, cards and table-wide drain, with exactly one verified true infinite sitting above a very strong grindy median.",
   "cover": {
-    "dominant_coverline": "ZERO ITERATIONS",
     "kicker": "THE COMBO AUDIT",
+    "dominant_coverline": "ONE TRUE INFINITE",
     "teases": [
-      "Feed a Snake to Mikaeus and nothing comes back — undying on a token is a dead grant",
-      "Mikaeus + Devoted Druid IS a true two-card infinite, and it makes exactly no mana",
-      "Six of nineteen listed infinites, refuted in one case file. Eleven still unresolved.",
-      "10,000 seeded games: your commander lands on turn 2 in 9,970 of them"
+      "Mikaeus + Devoted Druid loops forever — and makes exactly zero mana",
+      "Feed a Snake to Mikaeus and nothing comes back: undying on a token is a dead grant",
+      "Turn-2 commander in 9,970 of 10,000 seeded runs",
+      "24 lands, zero enter tapped — the audit finally gets to gloat"
     ],
     "violators": [
-      {
-        "text": "6 COMBOS BUSTED!",
-        "tone": "extreme"
-      },
-      {
-        "text": "1 TRUE 2-CARD INFINITE!",
-        "tone": "extreme"
-      }
+      {"text": "6 COMBOS BUSTED!", "tone": "extreme"},
+      {"text": "ZERO TAPPED LANDS!", "tone": "extreme"}
     ]
   },
   "departments": [
     {
-      "components": [
-        "violator"
-      ],
       "id": "cover",
-      "note": "Hapatra at hero scale, full bleed, from the art_crop of the deck's printing — Tyler Jacobson, Lorwyn Eclipsed Commander #123, nonfoil, no sheen. The dominant coverline is deliberately techno and blunt: ZERO ITERATIONS is the single most surprising verified finding in the issue and the teases immediately cash it. Vol. 001 sold a verified infinite and a busted one; Vol. 002 leads with the bust, because this is the second consecutive issue where the combo data promised something the rules refused, and that pattern is now the publication's signature. Two violators, no more. Do not add a third selling the bracket number — the bracket is fine, only the justification was inflated, and a cover cannot carry that distinction."
+      "components": ["violator"],
+      "note": "Full-bleed Hapatra art crop, masthead trio, identity block verbatim from issue.json. Both violators are delivered inside: six refutations in The Kill / Judge's Desk, the zero-tapped base in Sources Say."
     },
     {
-      "components": [
-        "folio"
-      ],
       "id": "contents",
-      "note": "Two-bucket contents plus the tier legend printed in full — a reader may be holding their first volume even though this is the second. The contents line for The Kill should read as one verified line, not five; under-promising here is what makes ZERO ITERATIONS on the cover believable."
+      "components": [],
+      "note": "Five-act Flight Plan, promises verbatim from issue_spec, tier legend and columnist bios in full — first-issue reader assumed."
     },
     {
-      "callouts": [
-        {
-          "n": 1,
-          "text": "Her second ability is the half that matters, and it is an exchange rate rather than a source: one 1/1 deathtouch Snake per placement event, not per counter. Black Sun's Zenith for three on a lone creature mints one Snake. Black Sun's Zenith for one across six creatures mints six. Same card, same commander, six times the payout.",
-          "title": "SHE MINTS, SHE DOESN'T PRINT"
-        },
-        {
-          "n": 2,
-          "text": "Case A-001's adversarial checker re-derived the census from every card in the list with 'sacrific' in its text: eight sacrifice outlets cost no mana, and exactly one of them also places a -1/-1 counter. That is Yawgmoth, Thran Physician. The only other free repeatable source is Devoted Druid, and only while Mikaeus, the Unhallowed is out to reset it. Two cards deep — which is why eight tutors is not a luxury.",
-          "title": "THE SCARCE CLASS IS THE SOURCE"
-        },
-        {
-          "n": 3,
-          "text": "Snakes, Insects, Elf Warriors, Skullclamp draws, Blood Artist drains, Necroskitter steals — the whole layer below the source is abundant and redundant. Snakes are 1/1, so Skullclamp is pay {1}, draw two, every single time. Every one of those bodies is also virtual interaction, because a 1/1 deathtouch blocker blanks an attacker of any size.",
-          "title": "EVERYTHING DOWNSTREAM IS FREE"
-        },
-        {
-          "n": 4,
-          "text": "'Commander plus any -1/-1 payoff' assembles in 67.2% of 10,000 seeded games at a mean turn of 3.623. That is the deck's actual identity: out-card three opponents, then drain them. The combo ceiling is real, verified and narrow — treat it as opportunism, not as the plan.",
-          "title": "PACE FOR THE MEDIAN"
-        }
-      ],
-      "captions": {
-        "Hapatra, Vizier of Poisons": "**THE EXCHANGE RATE:** one Snake per placement *event*, not per counter — so a sweeper that touches six creatures mints six, and a sweeper that stacks six counters on one mints one.",
-        "Skullclamp": "**THE CONVERSION:** every Snake, Insect, Faerie and Elf Warrior is a 1/1, so this reads pay {1}, draw two, on repeat. Bodies become cards long before they become a kill.",
-        "Yawgmoth, Thran Physician": "**THE SOURCE:** eight sacrifice outlets in this deck cost no mana; exactly one of them also places a counter. This is that one, and it is your tutor target."
-      },
-      "components": [
-        "callout-step",
-        "pilot-tip",
-        "pull-quote",
-        "folio"
-      ],
-      "dek": "Why does a deck built entirely around -1/-1 counters run so few cards that actually place one? Because Hapatra does not make counters — she buys them, at a fixed rate of one deathtouch Snake apiece, and the scarce card in your 99 is whoever does the placing.",
-      "headline": "THE MINT, NOT THE ENGINE",
       "id": "first-turns",
-      "kicker": "THE PLAN",
-      "note": "This is the sentence that reorganises the whole issue and it belongs on page one, before any combo talk. Body copy renders from manual_prose.how_it_wins; the callouts exist so a scanner gets the thesis without reading a word of prose (L7). Hero image is the commander at feature scale, Yawgmoth beside her at the same size — the visual argument is that these two cards are a pair, and that the deck's most important card is not the one on the cover.",
-      "pilot_tips": [
-        {
-          "card": "Black Sun's Zenith",
-          "text": "Cast it for the smallest X that kills what has to die — Hapatra pays you per creature touched, not per counter placed, so a wide X=1 mints more Snakes than a narrow X=3."
-        },
-        {
-          "card": "Toxic Deluge",
-          "text": "Never reach for this expecting Snakes: it gives -X/-X and places no counters at all, so Hapatra, Nest of Scarabs and Necroskitter see nothing."
-        }
-      ],
-      "pull_quote": "She does not make counters. She monetises them — one deathtouch Snake per placement, no matter who placed it."
-    },
-    {
-      "body": "Start with the rule that makes this a different game. CR 903.6: \"At the start of the game, each player puts their commander from their deck face up into the command zone.\" Hapatra, Vizier of Poisons is not a card you hope to draw. She is face up on the table before the first mulligan is offered, at {B}{G}, and the simulation casts her on turn 2 in 9,970 of 10,000 runs — mean 2.007, median 2, 99.9% by turn 6. That single fact is why Keep or Ship never asks your opening hand for a payoff and never asks it for her. It asks for lands and a route to a counter source, because the mint is already guaranteed and the source is not.\n\nNow the bill, and this is the good news. CR 903.8: a commander cast from the command zone \"costs an additional {2} for each previous time the player casting it has cast it from the command zone that game.\" On a two-drop that ladder reads two, four, six, eight. Put it beside your own mana: the goldfish gives you 2.464 mean available mana on turn 2, 4.710 on turn 4, 6.150 on turn 6 and 7.247 on turn 8. Every rung on that ladder is affordable roughly on schedule. Hapatra is one of the most recastable commanders in the format, and CR 903.9a lets you take her back from a graveyard or exile as a state-based action rather than losing her — so the correct answer to \"they killed my commander\" is usually to pay the tax and move on.\n\nThat conclusion has teeth, because it tells you where the protection goes. Lightning Greaves, Swiftfoot Boots and Heroic Intervention are four slots of protection, and the instinct is to point them at the commander. Don't. Hapatra is replaceable for two, then four, then six; Yawgmoth, Thran Physician is one of two free repeatable -1/-1 sources in ninety-nine cards and is replaceable for nothing. Protect the source, recast the mint. The one card that makes the tax an actual asset is Opal Palace: mana from it spent casting your commander gives her additional +1/+1 counters equal to the number of times she has been cast from the command zone this game, so the second Hapatra is a 3/3 and the third is a 4/4. It is the only card in the 99 that pays you for the ladder.\n\nColor identity next, and here we have to be careful, because it would be easy to blame the format for a build decision. CR 903.4 governs the 99 by the mana symbols in your commander's cost and rules text, and Hapatra's identity is black-green. What that genuinely locks out is the counterspell: you will never hold up an answer to a spell on the stack, and against a combo deck that is a real, permanent handicap. What it does not lock out is the rest of your problem. Black and green have artifact removal, enchantment removal and land answers in abundance, and this list runs none of them. Know Your Enemy prices that out honestly. It is a deckbuilding departure, not a color tax, and pretending otherwise would let the deck off a hook it should stay on.\n\nIs the 21-damage clock real here? No, and not even close. CR 903.10a: \"A player who's been dealt 21 or more combat damage by the same commander over the course of the game loses the game.\" Hapatra is a 2/2 with no evasion — eleven connections, and Opal Palace only trims that if you have already lost her twice. Worse, the thing that tempts you into combat is her first ability, and Case A-001 step 11 classifies it as a combat-damage trigger that is \"not an at-will repeatable placement,\" worth at most one extra iteration per combat. Attacking with your commander into open blockers to buy one Snake is how a good matchup becomes a bad seat. This deck's reach is drain, not damage: a table-wide converter crossing three opponents and roughly 120 combined life, which is exactly what incremental combat cannot do.\n\nFinally, the political read, and it is unusually favourable. A 2/2 Cleric and a pair of 1/1 Snakes is the cheapest defensive-looking board in the format; nobody has ever pointed removal at that. The budget you are spending is not her — it is the eleven Game Changers behind her. The turn a Mox resolves or a Demonic Tutor cracks, the Snakes stop reading as chump blockers and start reading as a combo deck's early board. Cast her on turn 2 and be boring. Spend the cover on the turn it converts.",
-      "captions": {
-        "Opal Palace": "**THE TAX, REFUNDED:** mana from here spent on your commander gives her a +1/+1 counter for every previous cast from the command zone. The second Hapatra is a 3/3; the third is a 4/4."
-      },
-      "components": [
-        "fast-facts",
-        "tax-ladder",
-        "pilot-tip",
-        "pull-quote",
-        "folio"
-      ],
-      "dek": "Your commander costs two, lands on turn 2 in 9,970 of 10,000 simulated games, and dies to absolutely everything. So how much should you actually spend protecting a card the format hands back to you?",
-      "headline": "TWO MANA, ALWAYS THERE",
-      "id": "command-zone",
-      "kicker": "THE FORMAT DEPARTMENT",
-      "note": "Commander File fast-facts and the tax ladder are renderer-computed from cards.json and goldfish_metrics.json; the body supplies the argument, never the figures. The ✓ badges attach only to the four CR quotes, which are verbatim from the rules DB at the June 19, 2026 version; everything about where protection goes is ★ coaching and must read that way. Do not let the color-identity paragraph get trimmed — refusing to blame BG for a missing Krosan Grip is the honesty beat of this department.",
-      "pilot_tips": [
-        {
-          "card": "Lightning Greaves",
-          "text": "Equip these to Yawgmoth, Thran Physician, not to your commander — she costs two more each time and he costs you the game."
-        },
-        {
-          "card": "Heroic Intervention",
-          "text": "Hold it for the turn you go, not the turn you feel sad — and note it grants hexproof and indestructible, which is not obviously an answer to a -X/-X effect that kills by toughness rather than by destruction. That one is on our list for a scenario."
-        }
-      ],
-      "pull_quote": "Two, then four, then six. On a two-drop the commander tax is a receipt, not a wall — so protect the card you cannot get back."
-    },
-    {
+      "kicker": "READ HER RIGHT",
+      "headline": "RUN THE MINT",
+      "dek": "Why does a 2/2 that never wants to attack keep winning long games? Because Hapatra is a mint, not an engine — other cards place the counters, she pays you a deathtouch Snake per placement, and every Snake becomes a card or a drain.",
+      "components": ["callout-step", "pilot-tip", "pull-quote"],
       "callouts": [
-        {
-          "n": 1,
-          "text": "The commander cast-turn histogram barely has a tail: 9,970 of 10,000 games cast Hapatra on turn 2 exactly. Mean 2.007, median 2, 99.9% by turn 6. Thirty-six lands with none entering tapped and a two-mana commander buy you the most reliable turn 2 in this magazine's short history.",
-          "title": "TURN 2, ESSENTIALLY ALWAYS"
-        },
-        {
-          "n": 2,
-          "text": "79.9% of first sevens are keeps and the deck averages 0.243 mulligans. With a mean mana value of 2.19 across the nonlands, you are rarely the player starting on six — which means the keep decision in this deck is about content, not count.",
-          "title": "79.9% KEEPABLE"
-        },
-        {
-          "n": 3,
-          "text": "'Mikaeus + a free sacrifice outlet' assembles in 9.5% of games, 5.8% by turn 6, mean turn 5.092. Read the target definition before you use that figure: the five outlets it checks for are Ashnod's Altar, Phyrexian Altar, Viscera Seer, Carrion Feeder and Blasting Station — and every single one of them is on Case A-001's refuted list. The simulator is faithfully measuring an assembly that yields one extra death.",
-          "title": "THE NUMBER MEASURING A GHOST"
-        },
-        {
-          "n": 4,
-          "text": "A tutor is drawn in 78.0% of games and 67.6% by turn 6, mean turn 2.695. Any drain converter shows up 51.9% of the time, 41.5% by turn 6. Those two rates are healthy because both classes are deep. The class that decides your games — free repeatable counter sources — is two cards, and the goldfish has no line for it at all.",
-          "title": "WHAT THE SOURCE CLASS COSTS YOU"
-        }
+        {"n": 1, "title": "LAND THE MINT", "text": "Hapatra costs two and arrives on turn 2 in 9,970 of 10,000 seeded runs. Your opening hand never needs her — it needs lands and a route to a counter source."},
+        {"n": 2, "title": "FIND THE SOURCE", "text": "The scarce class is two cards deep: Yawgmoth, and Devoted Druid under Mikaeus. Eight tutors exist to fix exactly that. Fetch the source before the payoff, every time."},
+        {"n": 3, "title": "CASH THE BODIES", "text": "Skullclamp, Grim Haruspex and Village Rites turn Snakes into cards. Out-card three opponents first. The drain converter closes once the table's interaction is counted and spent."}
       ],
-      "components": [
-        "power-meter",
-        "fast-facts",
-        "callout-step",
-        "pilot-tip",
-        "pull-quote",
-        "folio"
-      ],
-      "dek": "Seed 42, 10,000 runs, no interaction and no opponents. Three of these numbers tell you how to play the deck — and one of them is measuring a combo the rules deleted after the simulation was written.",
-      "headline": "TEN THOUSAND GOLDFISH",
-      "id": "by-the-numbers",
-      "kicker": "THE SIMULATOR'S LAB",
-      "note": "The stated-assumptions box is non-negotiable and renders all nine assumptions verbatim. No meter caption may read as a prediction — these runs model resource development, not games, and mean bodies (2.101 by turn 4, 3.224 by turn 6) counts creatures cast plus parsed token text, so it is a floor rather than a forecast. Callout 3 is the department's honesty beat and should sit visually alongside the meter it is criticising, not buried under the table.",
       "pilot_tips": [
-        {
-          "card": "Sol Ring",
-          "text": "It does not speed up your commander — she is already turn 2 in 9,970 of 10,000 runs. It buys the play that goes *beside* her, which is the turn that actually matters."
-        },
-        {
-          "card": "Mikaeus, the Unhallowed",
-          "text": "Don't hoard lands for him: mean available mana is 6.150 on turn 6 and he is the only six-drop in the list, so the seventh land is a blank in a deck averaging 2.19 mana value."
-        }
-      ],
-      "pull_quote": "A simulation can only measure the deck you described to it. This one is still counting a combination the rules had already taken apart."
-    },
-    {
-      "callouts": [
-        {
-          "n": 1,
-          "text": "Mikaeus, the Unhallowed plus Devoted Druid, and no outlet required. The Druid's untap ability pays a -1/-1 counter as a *cost*, so on the activation that takes it to 0 toughness the counter is already on it — it dies counterless, with no other state-based action firing alongside, and undying returns it cleanly. This is the deck's one verified true two-card infinite.",
-          "title": "THE LINE THAT WORKS"
-        },
-        {
-          "n": 2,
-          "text": "Three green on the first pass and zero on every pass after. The returned Druid is a new object that has not been under your control since your turn began, so CR 302.6 forbids its {T} ability. The loop still runs forever, because the untap cost carries no tap or untap symbol and sits outside 302.6 entirely. It is an infinite of deaths, counters, Snakes and drain — not of mana. Everyone gets this wrong.",
-          "title": "NOW COUNT THE MANA AGAIN"
-        },
-        {
-          "n": 3,
-          "text": "One activation annihilates the +1/+1 counter, three more take the Druid to 0 toughness, it dies counterless, undying returns it. Per cycle: four -1/-1 placements, one death, zero mana. With Hapatra out that is four Snakes a cycle. Bolt on Lightning Greaves and the mana comes back — four green a cycle, netting three with Swiftfoot Boots — but only as a three-card, main-phase-only line, because equip is sorcery-speed and the Equipment falls off every time the Druid dies.",
-          "title": "THE STEADY STATE, NO HASTE"
-        },
-        {
-          "n": 4,
-          "text": "With Blood Artist already on the battlefield the loop converts directly, at one life per cycle from a player of your choice. Obelisk Spider converts on counter *placement* rather than on death — four drains per cycle instead of one, which is the difference between a win this turn and a win in ten minutes. Fetch the Spider when the Druid loop is your kill.",
-          "title": "CONVERT OR IT'S A HOBBY"
-        },
-        {
-          "n": 5,
-          "text": "Feed a Snake token to Mikaeus and you get zero iterations. State-based actions are performed first as a single event; a token in a zone other than the battlefield ceases to exist in that first check, so the Snake is gone before its undying trigger is even placed on the stack. The trigger then resolves and does nothing. Undying on a token is a dead grant, and any line that reads 'sacrifice a Snake, get it back' is invalid on its face.",
-          "title": "AND HERE IS WHAT DIED"
-        },
-        {
-          "n": 6,
-          "text": "A non-token creature comes back from undying carrying a +1/+1 counter, so the second sacrifice finds the intervening 'if' false and undying never triggers. Ashnod's Altar, Phyrexian Altar, Carrion Feeder, Viscera Seer, Yahenni, Undying Partisan and Blasting Station each buy exactly one extra death — four colorless and two drains, in the Altar case. Carrion Feeder is worse than neutral: it *adds* +1/+1 counters.",
-          "title": "SIX PAIRINGS, ONE EXTRA DEATH EACH"
-        },
-        {
-          "n": 7,
-          "text": "Yawgmoth, Thran Physician loops for real, because his -1/-1 counter annihilates the undying +1/+1. Two catches. His ability has a single instance of the word 'target', so targeting the creature you just sacrificed makes it fail to resolve entirely — you don't even draw. And the draw is mandatory, so the loop is library-bounded. A strong engine, not a true infinite. Full dossier: Judge's Desk, Case A-001.",
-          "title": "THE THIRD KILL, AND ITS BILL"
-        }
+        {"card": "Fume Spitter", "text": "Hold Fume Spitter until it does three jobs at once — a Snake, a dead X/1, and a body for a sacrifice cost."}
       ],
       "captions": {
-        "Devoted Druid": "**THE HALF NOBODY EXPECTS:** its untap ability pays a -1/-1 counter as a cost, which makes it a free repeatable counter source wearing a mana dork's face.",
-        "Mikaeus, the Unhallowed": "**THE HINGE AND THE TRAP:** undying on every other non-Human enables two verified lines — and the same +1/+1 keeps a counterless Walking Ballista alive at 1/1.",
-        "Walking Ballista": "**THE THREE-CARD KILL:** under Mikaeus a counterless Ballista is a 1/1, so the toughness-0 check never fires and the classic self-kill is switched off. Genuinely unbounded, but bring an outlet."
+        "Hapatra, Vizier of Poisons": "**THE MINT:** one Snake per placement event, not per counter — Black Sun's Zenith for one across six creatures mints six Snakes; for three on one creature, just one.",
+        "Yawgmoth, Thran Physician": "**THE SOURCE:** the only free repeatable -1/-1 source in the 99 — and his single 'target' means a second body is mandatory, or you don't even draw."
       },
-      "components": [
-        "map-key",
-        "callout-step",
-        "pilot-tip",
-        "scenario-box",
-        "pull-quote",
-        "folio"
-      ],
-      "dek": "One case file went to the checker asking a single question about undying, and came back having rewritten the deck's combo count. Two lines still win the game. Six do not — and the first one to die was your Snakes.",
-      "headline": "WHAT SURVIVED THE AUDIT",
-      "id": "the-kill",
-      "kicker": "VERIFIED",
-      "note": "This is the issue's peak and gets the most ambitious layout, but there is exactly one ✓ line to build it around, so the spread is structured as survivors first, wreckage second — callouts 1-4 are the kill, 5-7 are the audit. Card images at feature scale for Devoted Druid and Mikaeus; the refutation callouts get the starburst treatment, because the negative finding is the fun part (STYLEv3 §7.6) and the second consecutive issue to carry one is a pattern worth showing off. No rules citations in the body — every one of them is verbatim two departments later.",
-      "pilot_tips": [
-        {
-          "card": "Lightning Greaves",
-          "text": "Equip them if you want the Druid loop to make mana, then immediately remember the shroud has locked Hapatra and Yawgmoth out of targeting the Druid — decide which you want before you fetch."
-        },
-        {
-          "card": "Yawgmoth, Thran Physician",
-          "text": "Never point the counter at the creature you are sacrificing — one instance of 'target' means an illegal target fizzles the whole ability and costs you the card you were owed."
-        }
-      ],
-      "pull_quote": "Undying on a token is a dead grant. The Snake is gone before the trigger is even on the stack."
+      "pull_quote": "She doesn't make the counters. She sets the exchange rate."
     },
     {
-      "callouts": [
+      "id": "keep-or-ship",
+      "kicker": "SEVEN CARDS",
+      "headline": "ROUTE OR RERACK",
+      "dek": "The keep test is one question: is there a route to a repeatable counter source? Ledger's receipts say you keep 79.9% of first sevens — so be picky. You can afford it.",
+      "components": ["power-meter", "pilot-tip"],
+      "hands": [
         {
-          "n": 1,
-          "text": "With Hapatra on the battlefield, Yawgmoth, Thran Physician plus one more creature is a real engine: each activation costs 1 life and a body, places a counter, draws a card, and the counter mints the replacement body. Every seat that has met him once kills him on sight. Do not present him into open mana unless the turn converts.",
-          "title": "THREAT WINDOW A — YAWGMOTH PLUS A SPARE BODY"
+          "verdict": "KEEP — the shape you want",
+          "cards": ["Swamp", "Forest", "Bayou", "Llanowar Elves", "Yawgmoth, Thran Physician", "Skullclamp", "Night's Whisper"],
+          "why": "Three lands, a turn-1 dork, the one free repeatable source in the 99, and two ways to cash it. Hapatra waits in the zone — this hand holds the card the zone can't promise."
         },
         {
-          "n": 2,
-          "text": "The verified two-card infinite. Its steady state costs zero mana, which means no tax deck can price you out of it once it is assembled — and it means an opponent's last window to interact is before the Druid resolves, not after. Assume they know that.",
-          "title": "THREAT WINDOW B — MIKAEUS AND THE DRUID"
+          "verdict": "KEEP — two lands, engine attached",
+          "cards": ["Swamp", "Command Tower", "Elvish Mystic", "Demonic Tutor", "Blood Artist", "Village Rites", "Blowfly Infestation"],
+          "why": "A two-lander carries with a dork attached, and Demonic Tutor is any card — the census answer is one fetch away. Keep Blowfly as what it reliably is, a counter source for the grind, never half of an unverified kill."
         },
         {
-          "n": 3,
-          "text": "Eleven Game Changers: Chrome Mox, Mox Diamond, Mana Vault, Grim Monolith, Demonic Tutor, Vampiric Tutor, Imperial Seal, Worldly Tutor, Survival of the Fittest, Orcish Bowmasters and The One Ring. The turn one of them resolves, your Snakes stop reading as chump blockers. Deploy fast mana on the turn it buys a threat, and fire tutors on a turn somebody else did something louder.",
-          "title": "THE TELL IS YOURS TO SPEND"
+          "verdict": "SHIP — payoffs without a source",
+          "cards": ["Swamp", "Forest", "City of Brass", "Mana Confluence", "Zulaport Cutthroat", "Blood Artist", "Bastion of Remembrance"],
+          "why": "Four lands, three converters, nothing placing counters. The goldfish keeps this hand — its rule only counts lands — and you are smarter than the goldfish: these are blanks waiting for a card you haven't drawn yet."
         },
         {
-          "n": 4,
-          "text": "Do not tell a table this deck has nineteen two-card infinites. Two are verified, six are refuted, eleven are unresolved, and the bracket floor of 4 holds on the eleven Game Changers alone. Saying the accurate number costs you nothing and buys you the one resource politics actually runs on.",
-          "title": "THE RULE 0 CORRECTION"
+          "verdict": "SHIP — one land and a prayer",
+          "cards": ["Forest", "Lotus Petal", "Mikaeus, the Unhallowed", "Nest of Scarabs", "Grim Affliction", "Heroic Intervention", "Morbid Opportunist"],
+          "why": "A Petal that finds no second land loses the commander, and Mikaeus is your only six-drop — a combo piece for two named partners, not a plan. Mean mulligans run 0.243; shipping this is what the average is made of."
         }
+      ],
+      "pilot_tips": [
+        {"card": "Lotus Petal", "text": "Count Lotus Petal as a spell you're owed, not a land you have — a mox hand with one land is still a ship."}
       ],
       "captions": {
-        "Bitterblossom": "**THE QUIET ONE:** a body every upkeep for 1 life, rebuilding through wraths without ever once looking like a plan.",
-        "The One Ring": "**THE LOUDEST CARD IN THE 99:** the table reads it as 'does this win if it resolves.' Cast it when you want the cards, not when you want the protection turn to look clever."
-      },
-      "components": [
-        "callout-step",
-        "pilot-tip",
-        "pull-quote",
-        "folio"
-      ],
-      "dek": "Nobody in the history of Commander has killed a 2/2 Cleric for making a 1/1 Snake. So what exactly is the card that turns three polite opponents into a coalition? It is never Hapatra — it is whatever lands beside her.",
-      "headline": "THE SECOND PERMANENT, NEVER HER",
-      "id": "politics-table",
-      "kicker": "THE READ",
-      "note": "Body copy renders manual_prose.threat_assessment, which is long and does the analytical work; the callouts exist to give a scanner the three windows and the correction without reading it. This is the breather after the peak — reflection mode, no new mechanics, no starbursts. Keep the accent calm.",
-      "pilot_tips": [
-        {
-          "card": "Orcish Bowmasters",
-          "text": "Flash it in on somebody else's draw spell rather than on your own turn — it is interaction and cover in the same card, and one of very few instant-speed plays you own."
-        },
-        {
-          "card": "Forbidden Orchard",
-          "text": "The Spirit you hand an opponent is a legal target for your own -1/-1 counters, so tap it on a turn you want a Snake — and never on a turn that Spirit can attack you profitably."
-        }
-      ],
-      "pull_quote": "Hapatra never makes you the archenemy. The card that lands beside her does."
+        "Bitterblossom": "**THE FREE KEEP:** a body every upkeep for 1 life — it rebuilds through wraths on its own, so it's a keepable engine all by itself."
+      }
     },
     {
-      "callouts": [
-        {
-          "n": 1,
-          "text": "Cover the last two boxes with your hand. Read the board, say your line out loud, then look. This department exists because the difference between a good pilot and a great one is not knowing the line — it is knowing which turn to take it.",
-          "title": "HOW TO PLAY ALONG"
-        },
-        {
-          "n": 2,
-          "text": "Turn 7. You control Hapatra, Vizier of Poisons, Yawgmoth, Thran Physician, one Snake token and Blood Artist. You are at 34 life. The player to your left has two untapped blue sources and has not tapped out in three turns; nobody else has open mana. Zulaport Cutthroat is in your hand. Do you start the Yawgmoth loop now, or deploy the Cutthroat and start it next turn?",
-          "title": "BOARD ONE — THE COUNTED PIVOT"
-        },
-        {
-          "n": 3,
-          "text": "Turn 3. Hapatra is on the battlefield, you have three lands untapped and Demonic Tutor in hand, and nothing in your list that places a -1/-1 counter has shown up yet. Mikaeus, the Unhallowed, Yawgmoth, Thran Physician and Obelisk Spider are all still in the library. What do you fetch?",
-          "title": "BOARD TWO — THE DEFAULT FETCH"
-        },
-        {
-          "n": 4,
-          "text": "Do the arithmetic before the loop. Yawgmoth costs 1 life per activation and Blood Artist drains one *target player* per death, not each opponent, so at 34 life you have at most thirty-three activations aimed at a single seat — you cannot kill three opponents through it, and you will draw yourself perilously close to an empty library trying. Deploy the Cutthroat, which drains every opponent, and take the window on a turn the blue mana is spent. A pivot that fails while your Snakes, Bitterblossom and drain survive is cheap; a pivot that empties your library is not.",
-          "title": "OUR CALL — BOARD ONE: WAIT"
-        },
-        {
-          "n": 5,
-          "text": "Not Mikaeus: he is a six-drop, he is not a source by himself, and after Case A-001 he is a combo piece for two specific partners rather than a general-purpose enabler. Not the converter: any drain converter is drawn on its own in 51.9% of games. Fetch the free repeatable -1/-1 source, because that class is two cards deep and everything else in the deck is redundant. Source first, converter second, protection third — and note that the correct answer here changed the day the case file cleared.",
-          "title": "OUR CALL — BOARD TWO: YAWGMOTH"
-        }
-      ],
-      "components": [
-        "scenario-box",
-        "callout-step",
-        "pilot-tip",
-        "pull-quote",
-        "folio"
-      ],
-      "dek": "Both of these are decisions about restraint, and both are decided before you tap anything. Read each board, commit to an answer out loud, and only then read ours — being wrong on this page is free.",
-      "headline": "TWO BOARDS, NO HINTS",
       "id": "whats-your-play",
-      "kicker": "YOUR MOVE",
-      "note": "IMPORTANT: data/decks/hapatra/decisions/ is empty, so the renderer will print a visible TODO where the branch spreads belong. That is correct and honest — but the callouts above are deliberately written to carry the department's teaching on their own so the spread is not a blank promise. The two boards here are specified precisely enough to be authored straight into decision artifacts; see gaps. When they land, the recommendation must render below the branches, never above.",
+      "kicker": "THE CHALLENGE",
+      "headline": "YOUR CALL FIRST",
+      "dek": "This is the section where you commit before we do: a real board, a hard question, and our call sealed until you've made yours. The docket for this deck is still being argued — the first case up is whether Yawgmoth hits the table into open mana.",
+      "components": ["scenario-box", "pilot-tip"],
       "pilot_tips": [
-        {
-          "card": "Demonic Tutor",
-          "text": "Fetch the source, not the payoff — the converter class turns up on its own 51.9% of the time and the free-repeatable-source class is two cards deep."
-        },
-        {
-          "card": "Green Sun's Zenith",
-          "text": "It puts the creature onto the battlefield, so X=2 is Devoted Druid with the tempo attached — the one tutor in the list that still functions under a tax."
-        }
+        {"card": "Yawgmoth, Thran Physician", "text": "Never present Yawgmoth into open mana unless this turn converts — he dies on sight everywhere competent."}
       ],
-      "pull_quote": "You do not pivot when the board looks impressive. You pivot when the table's interaction has been counted and spent."
+      "note": "decisions/ is empty; the renderer shows the standing TODO. Two spreads are queued in gaps — the copy above frames the format so the promise survives the wait."
     },
     {
-      "captions": {
-        "Crumbling Ashes": "**THE QUIET DOMINATOR:** seed one counter and it destroys a creature every upkeep, from a permanent class most fair creature decks cannot touch.",
-        "Necroskitter": "**THE STEAL:** any creature an opponent controls that dies with a -1/-1 counter on it returns under your control. Oracle reasoning only — it is verified *absent* from the combo graph and the Black Sun's Zenith pairing has no scenario behind it.",
-        "Toxic Deluge": "**THE PANIC BUTTON:** -X/-X until end of turn, no counters placed, so Hapatra, Nest of Scarabs and Necroskitter all see nothing. Sequence it as the emergency it is."
-      },
-      "components": [
-        "threat-box",
-        "pilot-tip",
-        "pull-quote",
-        "folio"
+      "id": "politics-table",
+      "kicker": "TABLE READ",
+      "headline": "HARMLESS UNTIL PROVEN GUILTY",
+      "dek": "What does the table see? A two-mana 2/2 and a few 1/1 Snakes — the quietest board in the pod. How long they keep believing it is entirely a sequencing decision, and it's yours.",
+      "components": ["callout-step", "pilot-tip", "pull-quote"],
+      "callouts": [
+        {"n": 1, "title": "THE COVER", "text": "Deathtouch Snakes read as defense, and they are — every attacker trades down into a token that cost you nothing. Lead with the token half and the cheap counter sources."},
+        {"n": 2, "title": "THE TELL", "text": "Eleven Game Changers live in this list. The moment a Mox, a Demonic Tutor or The One Ring resolves, the Snakes stop reading as chump blockers. Spend loud cards on turns that convert, and fire tutors while someone else is doing something louder."},
+        {"n": 3, "title": "THREAT WINDOW", "text": "The flip to archenemy is never Hapatra — it's the second permanent. Yawgmoth with a spare body, or Mikaeus alongside Devoted Druid or Walking Ballista, and the table is correct to dogpile you. Go the turn you're protected, or don't go."}
       ],
-      "dek": "Eight removal spells, two sweepers and four protection slots, every one of them pointed at a creature. Before you read the meters: can you name the archetype that beats this deck without ever casting one?",
-      "headline": "ONE CLASS OF FIVE",
-      "id": "know-your-enemy",
-      "kicker": "SCOUTING REPORT",
-      "note": "This department carries the issue's honest weakness and must not soften it: fourteen interactive slots, one permanent class. Order the boxes so sweeper control opens and stax lands second — the dek asks the reader to guess, and burying the answer five boxes down wastes the question. The stax box's 'outs' list is cards that keep functioning under a lock, not cards that break one, and the read says so explicitly; do not let the renderer's 'Your outs' label imply otherwise.",
       "pilot_tips": [
+        {"card": "The One Ring", "text": "Cast The One Ring when you want the cards, not when you want the protection turn to look clever — it is the loudest card you own."}
+      ],
+      "captions": {
+        "Orcish Bowmasters": "**THE QUIET MENACE:** flash it in on an opponent's draw spell — rare instant-speed interaction that spends none of your cover."
+      },
+      "pull_quote": "The table isn't wrong to fear the second permanent. Make sure it's the last thing they see coming."
+    },
+    {
+      "id": "know-your-enemy",
+      "kicker": "MATCHUPS",
+      "headline": "DEATHTOUCH IS A POLICY",
+      "dek": "Aggro can't swing into you and midrange can't out-grind you — so which board should actually scare you? The one with no creatures and a Winter Orb. Rank threats by permanent class before you rank them by size.",
+      "components": ["threat-box", "pilot-tip", "pull-quote"],
+      "threats": [
         {
-          "card": "Black Sun's Zenith",
-          "text": "Against a creature table this is a rebuild, not a reset — X counters on each creature is a Snake per creature and hands Necroskitter every opposing creature that dies with one on it."
+          "archetype": "Stax and prison",
+          "meter_label": "Threat to you",
+          "rate": 0.9,
+          "read": "The hard truth: your interaction covers exactly one permanent class, and it isn't theirs. A resolved Sphere, Orb or hoser stays forever — you race it or you politick it. Your engines cost no mana once assembled, your commander lands turn 2, and honesty about the hole is your best trade bait: say you can't answer it, and ask the seat holding the removal to spend it.",
+          "outs": ["Dark Ritual", "Mana Vault", "Yawgmoth, Thran Physician", "Bitterblossom"]
         },
         {
-          "card": "Abstergo Entertainment",
-          "text": "Know what it does before you need it: it exiles graveyards and returns a historic card, and it destroys nothing — it is the only graveyard-touching card in your 99 and it is not a hoser answer."
-        }
-      ],
-      "pull_quote": "An answer only counts when it matches a threat that actually beats you. Every answer you own matches the same one.",
-      "threats": [
+          "archetype": "Combo",
+          "meter_label": "Threat to you",
+          "rate": 0.7,
+          "read": "You can only interact with creature-based kills, and against combo held answers rot — the last profitable moment is now. Don't plan to out-race a dedicated combo deck either: your own headline assembly runs 16.3% and unverified. Be the seat their interaction isn't pointed at, and know your Game Changers spend that cover fast.",
+          "outs": ["Grim Affliction", "Fume Spitter", "Walking Ballista", "Serrated Arrows"]
+        },
         {
           "archetype": "Sweeper control",
           "meter_label": "Threat to you",
-          "outs": [
-            "Bitterblossom",
-            "Skullclamp",
-            "Grim Haruspex",
-            "Blood Artist",
-            "Phyrexian Reclamation",
-            "Heroic Intervention"
-          ],
           "rate": 0.4,
-          "read": "Structurally you are fine, and you should still sequence as if you are not. Your token half is nearly free to lose: Bitterblossom rebuilds every upkeep for 1 life, Skullclamp turns a Snake into two cards, Grim Haruspex draws off every nontoken death, and Blood Artist triggers on ANY creature dying — a table wrath with the Artist out is a large drain aimed wherever you like. The asymmetry runs the other way on the half that wins: Hapatra, Yawgmoth, Devoted Druid, Ivy Lane Denizen, Scurry Oak and Necroskitter are all creatures. Deploy in waves, lead with tokens and cheap sources, hold the enabler until the pivot. And know your own sweepers are not interchangeable — Black Sun's Zenith puts counters on each creature, so it is a rebuild that mints Snakes and feeds Necroskitter, while Toxic Deluge places nothing and triggers none of them."
-        },
-        {
-          "archetype": "Stax, taxes and prison",
-          "meter_label": "Threat to you",
-          "outs": [
-            "Yawgmoth, Thran Physician",
-            "Devoted Druid",
-            "Green Sun's Zenith",
-            "Bitterblossom"
-          ],
-          "rate": 0.85,
-          "read": "This is the one, and the honest coaching is that you cannot answer the archetype — you race it or you politick it. A scan of all 88 entries finds no artifact removal, no enchantment removal, no counterspell and no land answer; the only graveyard-touching effect is Abstergo Entertainment's exile-itself ability, which destroys nothing. A Sphere effect, a Winter Orb, a Blood Moon or a Rest-in-Peace-class hoser simply sits there. Three things genuinely favour you. You are fast: 36 lands with none entering tapped and a commander on turn 2 in 9,970 of 10,000 runs, so you are frequently under the lock before the second and third pieces layer. Your engines are mana-free once assembled, which is the exact profile a tax cannot touch — Yawgmoth costs 1 life and a body, the verified Druid steady state costs nothing at all. And you can tell the truth: say out loud that you are the seat with no artifact or enchantment answer, and ask the player holding the Krosan Grip to spend it. Keep the deal small, specific and expiring. None of the cards named below answers a lock; they are what keeps working underneath one."
-        },
-        {
-          "archetype": "Dedicated combo",
-          "meter_label": "Threat to you",
-          "outs": [
-            "Orcish Bowmasters",
-            "Grim Affliction",
-            "Fume Spitter",
-            "Walking Ballista",
-            "Serrated Arrows"
-          ],
-          "rate": 0.7,
-          "read": "Thin in both directions, so play it as a race rather than an interaction game. With no counterspell and no way to touch an artifact or enchantment kill, the only combo decks you can interact with are creature-based — and there you do hold real instant-speed answers. The answer-economy rule inverts here: held answers rot, and the last profitable moment against combo is now. Rank combo proximity above every board threat and re-rank it every turn. Be honest about your own clock while you do: any drain converter is drawn in 51.9% of games and only 41.5% by turn 6, and the Blowfly assembly the goldfish tracks at 16.3% is itself unverified. Do not plan to out-speed a dedicated combo deck on raw assembly — plan to be the deck their interaction is not pointed at."
-        },
-        {
-          "archetype": "Creature midrange",
-          "meter_label": "Threat to you",
-          "outs": [
-            "Crumbling Ashes",
-            "Necroskitter",
-            "Obelisk Spider",
-            "Skullclamp",
-            "Morbid Opportunist"
-          ],
-          "rate": 0.3,
-          "read": "The seat this deck was actually built for, and you out-grind it on two axes at once: their removal is bad against tokens and their attacks are bad into deathtouch. Hold single-target removal until a threat is pointed at you — every one-for-one you cast spends your card, costs one opponent theirs, and profits two bystanders for free. The card that quietly dominates here is Crumbling Ashes: seed a counter with Fume Spitter or Grim Affliction and it becomes repeatable unconditional removal sitting in a permanent class most fair creature decks cannot answer either. Behind it, the bodies-to-cards layer wins the long game outright, and four-player games trend long enough for an engine to be inevitability rather than value."
+          "read": "Your token half is nearly free to lose — Bitterblossom rebuilds every upkeep, Skullclamp and Grim Haruspex cash the deaths, and a wrath with Blood Artist out is a drain aimed wherever you like. But the half that wins is all creatures. Deploy in waves, hold the enabler until the pivot, and know your own sweepers differ: Black Sun's Zenith is a rebuild that mints Snakes; Toxic Deluge places nothing and feeds no one.",
+          "outs": ["Bitterblossom", "Skullclamp", "Grim Haruspex", "Blood Artist", "Heroic Intervention", "Phyrexian Reclamation"]
         },
         {
           "archetype": "Aggro",
           "meter_label": "Threat to you",
-          "outs": [
-            "Black Sun's Zenith",
-            "Toxic Deluge",
-            "Necroskitter",
-            "Blood Artist",
-            "Bitterblossom"
-          ],
           "rate": 0.25,
-          "read": "Your best matchup, for a reason that never appears in a removal count. A 1/1 deathtouch Snake is virtual interaction — it blanks an attacker of any size, and at a four-player table one board of them blanks attack plans from three players at once, which is the cheapest possible answer to roughly 120 life worth of aggression. Against trample the Snake still trades up. Behind them, Black Sun's Zenith and Toxic Deluge are catch-up buttons and Necroskitter turns their aggression into your board. The real discipline here is life: Yawgmoth at 1 per activation, Phyrexian Reclamation at 2 per return, Bitterblossom every upkeep, The One Ring's burden counters, Toxic Deluge's additional cost, plus City of Brass, Mana Confluence and Tarnished Citadel. Your life total is a shared budget with your engine — track which single opponent's clock is real and defend against that one, not the table."
+          "read": "A 1/1 deathtouch Snake blanks any attacker, and a board of them blanks three attack plans at once — the cheapest answer to roughly 120 life of aggression ever printed. Track the one clock that's actually real, defend that seat only, and spend life like the resource this deck already treats it as.",
+          "outs": ["Black Sun's Zenith", "Toxic Deluge", "Necroskitter"]
+        },
+        {
+          "archetype": "Creature midrange",
+          "meter_label": "Threat to you",
+          "rate": 0.2,
+          "read": "The seat this deck was built for. Their removal is bad against tokens, their attacks are bad into deathtouch, and Crumbling Ashes plus any counter source is a repeating removal engine most fair decks can't touch. Out-card them with the bodies-to-cards layer, then pivot on a counted window — not a pretty board.",
+          "outs": ["Crumbling Ashes", "Skullclamp", "Grim Haruspex"]
         }
-      ]
+      ],
+      "pilot_tips": [
+        {"card": "Toxic Deluge", "text": "Sequence Toxic Deluge as the panic button it is — until-end-of-turn -X/-X places no counters, so it mints nothing and feeds no one."}
+      ],
+      "pull_quote": "An answer only counts when it matches a threat that actually beats you."
     },
     {
-      "captions": {
-        "Blowfly Infestation": "**THE HONEST VERSION:** a mandatory counter placement every time a creature dies with a counter on it — a genuine repeating source in ordinary games. The two-card kill on top of it is unverified.",
-        "Ivy Lane Denizen": "**THE PROJECTION ARTIFACT:** six of the nineteen listed infinites pair it with outlets that cause no green creature to *enter*, so Ivy Lane never triggers. Unresolved in both directions.",
-        "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel": "**THE SYNERGY-GRAPH PICK:** listed as an in-deck Hapatra partner at score 4 — tokens plus sacrifice, -1/-1 plus death trigger — and it drains on every other creature dying while it waits to transform."
-      },
-      "components": [
-        "folio"
+      "id": "fetch-quests",
+      "kicker": "EIGHT WISHES",
+      "headline": "SAME WISH, EIGHT LAMPS",
+      "dek": "Why do eight tutors keep fetching the same card? Because the class that wins you the game is two cards deep — and a two-deep class with eight finders plays like a deep one. Know your delivery speeds: hand, top of library, or straight to the battlefield.",
+      "components": ["callout-step", "pilot-tip", "pull-quote"],
+      "pilot_tips": [
+        {"card": "Vampiric Tutor", "text": "Fire Vampiric Tutor at the end step before your turn — the wish spends zero turns in transit and nobody gets a draw step to answer it."}
       ],
-      "dek": "Ninety-nine cards doing three jobs, and one of the three is two cards deep. Read the roster in that order and the deck stops looking like a pile of good black cards.",
-      "headline": "SOURCE, FODDER, CONVERTER",
+      "captions": {
+        "Green Sun's Zenith": "**THE TEMPO WISH:** the only tutor here that pays tempo instead of charging it — Devoted Druid arrives on the battlefield, not in your hand."
+      },
+      "pull_quote": "The fetch quests make you faster. They cannot make you broader."
+    },
+    {
+      "id": "command-zone",
+      "kicker": "ON THE RECORD",
+      "headline": "THE TWO-MANA GUARANTEE",
+      "dek": "What is a command zone actually worth? Here: a turn-2 commander in 9,970 of 10,000 runs — a guarantee so cheap it rewrites your mulligan law. The Counselor reads the fine print; the Coach says when to pay the tax.",
+      "components": ["tax-ladder", "fast-facts", "pilot-tip", "pull-quote"],
+      "body": "Begin with the exhibit everyone skips: the zone itself. Rule 903.8 lets you cast Hapatra from the command zone any time you could cast a sorcery — no draw required, no tutor spent. At two mana, that right gets exercised on turn 2 in 9,970 of 10,000 seeded runs. The holding follows: your opening seven never needs her, so all seven cards are free to hunt the thing the zone cannot promise — a repeatable counter source.\n\nThe tax ladder above is the schedule: two more generic mana on each return trip (903.8). Read it against this deck's ledger — mean available mana 4.71 on turn 4, 6.15 on turn 6 — and a second or even third cast stays on schedule. So the court's spending advice: for Hapatra, pay the tax. Save Heroic Intervention and the boots for Yawgmoth and Mikaeus, the pieces the zone does not resurrect.\n\nColour identity (903.4) is the clause with teeth, and it counts mana symbols in rules text. Black-green admits every -1/-1 counter card on record and forbids the counterspell outright. Note what it does not forbid: green owns artifact and enchantment removal, and this 99 carries none. That hole is a signed trade, not a legal constraint — say so plainly in your Rule 0 conversation.\n\nOn the 21-point commander clock (903.10a), the record is short. Hapatra is an unevasive 2/2; eleven successful combats against a single defender is not a plan. Stack 001, step 11, classifies her combat trigger as a bonus iteration, never an engine. The clock exists. It is not yours.\n\nCoach's corner (★): the political read. A two-mana commander behind a spread of 1/1 Snakes is the quietest opening in the format — the table files you under 'later.' That filing is an asset. Spend it on engine pieces, and expect it revoked the moment a tutor resolves.",
+      "captions": {
+        "Hapatra, Vizier of Poisons": "**THE GUARANTEE:** two mana, both colours, every single game — the one card your mulligan never has to find."
+      },
+      "pilot_tips": [
+        {"card": "Opal Palace", "text": "Pay part of a taxed recast through Opal Palace — Hapatra returns wearing a +1/+1 counter per prior cast, big enough to outlive her own sweepers."}
+      ],
+      "pull_quote": "The zone promises her. The seven cards in your hand are free to promise everything else."
+    },
+    {
       "id": "the-99",
-      "kicker": "THE ROSTER",
-      "note": "Every one of the 88 entries is placed in a named group — there is deliberately no unlabeled Depth bucket this issue, which Vol. 001's own gaps list flagged as a failure. Group order is the argument: mint, source, converter, then everything that is merely abundant. Rank matters — Yawgmoth leads the source group and Hapatra leads the mint, and the tiles should read that way rather than as ninety-nine equal blurbs. Printing credits stay off these tiles; the physical cards are Featured Artist's subject two pages later.",
-      "pull_quote": "Eight free sacrifice outlets in this deck. Exactly one of them also places a counter, and that is the whole roster in one sentence.",
+      "kicker": "ROLL CALL",
+      "headline": "RANK AND VILE",
+      "dek": "Sixty-four spells sort into one scarce class and a lot of abundance. The sources lead this roster because they have to — everything behind them is bodies becoming cards, and cards becoming a clock on every seat.",
+      "components": ["pilot-tip"],
       "roster": [
-        {
-          "cards": [
-            "Hapatra, Vizier of Poisons",
-            "Nest of Scarabs",
-            "Flourishing Defenses"
-          ],
-          "role": "The mint — counters become bodies"
-        },
-        {
-          "cards": [
-            "Yawgmoth, Thran Physician",
-            "Devoted Druid",
-            "Blowfly Infestation",
-            "Fume Spitter",
-            "Grim Affliction",
-            "Contagion Clasp",
-            "Serrated Arrows",
-            "Black Sun's Zenith"
-          ],
-          "role": "The source — the class that is two deep"
-        },
-        {
-          "cards": [
-            "Zulaport Cutthroat",
-            "Bastion of Remembrance",
-            "Obelisk Spider",
-            "Blood Artist",
-            "Blasting Station"
-          ],
-          "role": "Converters — the class that actually ends games"
-        },
-        {
-          "cards": [
-            "Ashnod's Altar",
-            "Phyrexian Altar",
-            "Carrion Feeder",
-            "Viscera Seer",
-            "Yahenni, Undying Partisan",
-            "Lazotep Quarry"
-          ],
-          "role": "Free outlets — six that cost no mana and place no counter"
-        },
-        {
-          "cards": [
-            "Skullclamp",
-            "Grim Haruspex",
-            "Morbid Opportunist",
-            "Deadly Dispute",
-            "Village Rites",
-            "Night's Whisper",
-            "The One Ring",
-            "Bitterblossom",
-            "Pitiless Plunderer",
-            "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel"
-          ],
-          "role": "Bodies into cards"
-        },
-        {
-          "cards": [
-            "Mikaeus, the Unhallowed",
-            "Walking Ballista",
-            "Lightning Greaves",
-            "Swiftfoot Boots",
-            "Ivy Lane Denizen",
-            "Scurry Oak",
-            "Host of the Hereafter"
-          ],
-          "role": "The combo ceiling — narrower than the sheet says"
-        },
-        {
-          "cards": [
-            "Crumbling Ashes",
-            "Toxic Deluge",
-            "Necroskitter",
-            "Orcish Bowmasters",
-            "Heroic Intervention",
-            "Phyrexian Reclamation",
-            "Eternal Witness"
-          ],
-          "role": "Interaction and recovery — every answer points at a creature"
-        },
-        {
-          "cards": [
-            "Demonic Tutor",
-            "Vampiric Tutor",
-            "Imperial Seal",
-            "Worldly Tutor",
-            "Survival of the Fittest",
-            "Green Sun's Zenith",
-            "Diabolic Intent",
-            "Grim Tutor"
-          ],
-          "role": "Finding it — eight tutors for a two-deep class"
-        },
-        {
-          "cards": [
-            "Sol Ring",
-            "Mana Vault",
-            "Grim Monolith",
-            "Chrome Mox",
-            "Mox Diamond",
-            "Lotus Petal",
-            "Dark Ritual",
-            "Arcane Signet",
-            "Birds of Paradise",
-            "Llanowar Elves",
-            "Elvish Mystic"
-          ],
-          "role": "Fast mana and fixing"
-        },
-        {
-          "cards": [
-            "Bayou",
-            "Command Tower",
-            "City of Brass",
-            "Mana Confluence",
-            "Exotic Orchard",
-            "Spire of Industry",
-            "Conduit Pylons",
-            "Gond Gate",
-            "Hidden Grotto",
-            "Darkbore Pathway // Slitherbore Pathway",
-            "Wastewood Verge",
-            "The Grey Havens",
-            "Tarnished Citadel",
-            "Forbidden Orchard",
-            "Gemstone Caverns",
-            "Opal Palace",
-            "Grim Backwoods",
-            "Svogthos, the Restless Tomb",
-            "Talon Gates of Madara",
-            "The Mycosynth Gardens",
-            "Abstergo Entertainment",
-            "Forest",
-            "Swamp"
-          ],
-          "role": "The mana base — thirty-six lands, none entering tapped"
-        }
+        {"role": "The mint — counters become bodies", "cards": ["Hapatra, Vizier of Poisons", "Nest of Scarabs", "Flourishing Defenses"]},
+        {"role": "The source — the class that is two deep", "cards": ["Yawgmoth, Thran Physician", "Devoted Druid", "Blowfly Infestation", "Fume Spitter", "Grim Affliction", "Contagion Clasp", "Serrated Arrows", "Black Sun's Zenith"]},
+        {"role": "The converters — a clock on every seat", "cards": ["Zulaport Cutthroat", "Bastion of Remembrance", "Obelisk Spider", "Blood Artist"]},
+        {"role": "The outlets — free to feed", "cards": ["Ashnod's Altar", "Phyrexian Altar", "Carrion Feeder", "Viscera Seer", "Yahenni, Undying Partisan", "Blasting Station"]},
+        {"role": "Bodies to cards", "cards": ["Skullclamp", "Grim Haruspex", "Morbid Opportunist", "Deadly Dispute", "Village Rites", "Night's Whisper", "Pitiless Plunderer", "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel", "Bitterblossom"]},
+        {"role": "The combo shelf — two lines verified, the rest pending", "cards": ["Mikaeus, the Unhallowed", "Walking Ballista", "Scurry Oak", "Ivy Lane Denizen", "Host of the Hereafter", "Necroskitter"]},
+        {"role": "The eight tutors", "cards": ["Demonic Tutor", "Vampiric Tutor", "Imperial Seal", "Worldly Tutor", "Survival of the Fittest", "Green Sun's Zenith", "Diabolic Intent", "Grim Tutor"]},
+        {"role": "Speed and fixing", "cards": ["Sol Ring", "Mana Vault", "Grim Monolith", "Chrome Mox", "Mox Diamond", "Lotus Petal", "Arcane Signet", "Dark Ritual", "Birds of Paradise", "Llanowar Elves", "Elvish Mystic"]},
+        {"role": "Protection, recursion and the odd jobs", "cards": ["Heroic Intervention", "Lightning Greaves", "Swiftfoot Boots", "Phyrexian Reclamation", "Eternal Witness", "The One Ring", "Crumbling Ashes", "Toxic Deluge", "Orcish Bowmasters"]}
+      ],
+      "captions": {
+        "Skullclamp": "**THE ECONOMY:** every token here is a 1/1, so this is 'pay {1}, draw two' on repeat — the card that makes losing your board profitable.",
+        "Obelisk Spider": "**THE FAST CONVERTER:** it drains on counter placement, not death — roughly four times faster than any death-trigger drain on a loop."
+      },
+      "pilot_tips": [
+        {"card": "Lightning Greaves", "text": "Mind the shroud: Greaves protects the Druid and locks Hapatra and Yawgmoth out of targeting it — know which you want before you equip."}
       ]
     },
     {
-      "also_worth_noting": [
-        {
-          "artist": "John Avon",
-          "note": "The other three-card lead, and the most Avon set of cards imaginable: two lands and the deck's only colourless counter source. Opal Palace refunds your commander tax in +1/+1 counters, Spire of Industry keeps the double-pip costs honest, and Serrated Arrows places three counters over three turns without asking for a coloured mana."
-        },
-        {
-          "artist": "Chris Rahn",
-          "note": "Two cards, and one of them is the reason this issue exists. Rahn painted Mikaeus, the Unhallowed — the card the bracket engine credited with eight two-card infinites and Case A-001 cut down to two. Eternal Witness is the other, which is at least thematically tidy: the deck's memory next to the deck's misremembering."
-        },
-        {
-          "artist": "Volkan Baǵa",
-          "note": "Chrome Mox and Worldly Tutor — two of the eleven Game Changers that carry this deck's bracket floor on their own, sharing a hand entirely by accident."
-        },
-        {
-          "artist": "Martina Pilcerova",
-          "note": "Gemstone Caverns and Svogthos, the Restless Tomb: two lands that do something other than make mana, in a base of thirty-six where nothing enters tapped."
-        },
-        {
-          "artist": "Dan Murayama Scott",
-          "note": "Diabolic Intent and Flourishing Defenses — a tutor that eats a creature and a mint that pays you an Elf Warrior for the next counter you place. Two halves of the same turn, painted by the same person, from sets eight years apart."
-        }
+      "id": "upgrade-watch",
+      "kicker": "THE TEN",
+      "headline": "SCOUTED, NOT SIGNED",
+      "dek": "No sideboard means no incumbents: all ten are pool scouts, pulled from 11,831 eligible cards and ranked by what they add to the verified engines. Ayara and Warren Soultrader lead. And note what refuses to move — bracket 4 before, bracket 4 after, on every entry.",
+      "components": ["pilot-tip", "pull-quote"],
+      "pilot_tips": [
+        {"card": "Grim Monolith", "text": "Price the Monolith honestly: it makes colourless in a deck of double pips — the pool's cleanest scout does its job for zero mana and taps for colour."}
+      ],
+      "pull_quote": "Every tagged line arrives wearing the same stamp — needs a stack scenario — because six lines that looked this good on paper are already refuted."
+    },
+    {
+      "id": "sources-say",
+      "kicker": "THE AUDIT",
+      "headline": "ZERO TAPPED, NO APOLOGIES",
+      "dek": "How lopsided can a pip load get before the mana breaks? Black carries 71.4% of the pips on a 50% source share — and it costs nothing, because 22 of the 24 lands make both colours and not one of them arrives tapped.",
+      "components": ["power-meter", "fast-facts", "pilot-tip", "pull-quote"],
+      "captions": {
+        "City of Brass": "**THE INVOICE:** the price of a base this clean is written on your life total — City of Brass, Mana Confluence and Tarnished Citadel all charge you to fix."
+      },
+      "pilot_tips": [
+        {"card": "Forbidden Orchard", "text": "Point a spare -1/-1 counter at the Spirit you hand out — the Orchard's tax comes back as a Snake."}
+      ],
+      "pull_quote": "When nearly every land makes both colours at once, the split cannot be wrong."
+    },
+    {
+      "id": "by-the-numbers",
+      "kicker": "10,000 RUNS",
+      "headline": "THE 2.007 COMMANDER",
+      "dek": "Mean cast turn 2.007 — Hapatra is on the table before most decks have finished introducing themselves. The rest of the ledger is what happens next, and what a simulation is not.",
+      "components": ["power-meter", "callout-step", "pull-quote"],
+      "callouts": [
+        {"n": 1, "title": "THE HEADLINE", "text": "Turn 2 in 9,970 of 10,000 runs; 99.9% by turn 6. She is the most reliable card in the book — which is exactly why the plan never worries about her."},
+        {"n": 2, "title": "THE REAL IDENTITY", "text": "'Commander plus any -1/-1 payoff' assembles in 67.2% of runs at mean turn 3.62. That pair is the deck — the grindy median that out-cards three opponents."},
+        {"n": 3, "title": "THE HONEST CEILING", "text": "Hapatra plus Blowfly Infestation: 16.3% assembled, 12.5% by turn 6 — and unverified. Mikaeus plus a free outlet: 9.5%. The ceiling is real, narrow, and never the thing you mulligan toward."}
+      ],
+      "pull_quote": "The goldfish models resource development, not games — and it still can't stop casting her on turn 2."
+    },
+    {
+      "id": "the-kill",
+      "kicker": "VERIFIED",
+      "headline": "THE LOOP THAT MAKES NO MANA",
+      "dek": "The court affirms one true two-card infinite: Mikaeus and Devoted Druid, forever — four counter placements, one death, zero mana per cycle. It affirms a three-card Ballista kill beside it. And it strikes six pretenders from the record.",
+      "components": ["callout-step", "scenario-box", "pilot-tip", "pull-quote"],
+      "callouts": [
+        {"n": 1, "title": "FIRST PASS PAYS", "text": "The turn they meet, the Druid's untap nets three green. Every later pass nets none: the returned Druid is a new object, and rule 302.6 silences its tap ability. The loop runs anyway — the untap cost carries no tap symbol, so 302.6 never touches it."},
+        {"n": 2, "title": "THE STEADY STATE", "text": "Four -1/-1 placements and one death per cycle, at zero mana. With Hapatra out, four Snakes. With Obelisk Spider, four table-wide drains. With Blood Artist, one life per cycle from a player of your choosing."},
+        {"n": 3, "title": "THE THIRD CARD", "text": "Mikaeus plus Walking Ballista is real, and it is three cards: the anthem holds a counterless Ballista at 1/1, so an external free outlet is mandatory. With one, unbounded damage — no drain payoff required."},
+        {"n": 4, "title": "THE STRIKEOUTS", "text": "Six listed pairings die on the record: the altars, the Feeder, the Seer, Yahenni and the Station each buy exactly one undying return, not a loop. And a sacrificed Snake buys zero — a token ceases to exist before its undying trigger is ever put on the stack."}
       ],
       "captions": {
-        "Forbidden Orchard": "**THE ACCIDENT:** it hands an opponent a 1/1 Spirit whenever you tap it for mana — and a Spirit is a perfectly legal target for your own -1/-1 counters.",
-        "Hapatra, Vizier of Poisons": "**ONE CARD, ONE ARTIST:** Tyler Jacobson painted your commander and nothing else in the 99. In an eighty-artist deck that is not an oddity — it is the rule.",
-        "Mikaeus, the Unhallowed": "**THE FACE OF THE AUDIT:** Chris Rahn's Zombie Cleric, credited with eight two-card infinites by the bracket engine and left holding two after Case A-001."
+        "Devoted Druid": "**EXHIBIT A:** its untap pays a -1/-1 counter as a cost — no tap symbol, so rule 302.6 never touches it. That technicality is the entire infinite.",
+        "Mikaeus, the Unhallowed": "**THE HINGE:** undying powers both verified lines — and the same anthem may switch your own token loops off. That question tops the open docket.",
+        "Walking Ballista": "**THE CLOSER:** unbounded with Mikaeus and any free outlet — and never a two-card kill, because the anthem won't let it die on its own."
       },
-      "components": [
-        "artist-gallery",
-        "fast-facts",
-        "pilot-tip",
-        "pull-quote",
-        "folio"
+      "pilot_tips": [
+        {"card": "Lightning Greaves", "text": "Equip Greaves to net four green per cycle — and accept that shroud locks Hapatra and Yawgmoth out of targeting the wearer."}
       ],
-      "dek": "Eighty artists across eighty-eight cards, forty-five sets, zero foils and zero borderless printings. There is no collection here to admire — and saying so turns out to be the most honest thing on the page.",
+      "pull_quote": "The database said nineteen. The record says: one true infinite, one three-card kill, six strikeouts, eleven open questions.",
+      "note": "Dossier pointer: FULL DOSSIER — JUDGE'S DESK, CASE A-001."
+    },
+    {
+      "id": "judges-desk",
+      "kicker": "CASE FILES",
+      "headline": "CASE A-001, READ TWICE",
+      "dek": "One seductive claim — that Hapatra's counter resets undying under Mikaeus — four resolver passes, four adversarial checks, verdict: pass. Every citation below is verbatim. The claim is false as written, and the findings are worth more than the claim.",
+      "components": ["dossier-file", "pull-quote"],
+      "pull_quote": "Where the record is silent, the record is silent — eleven lines remain open, and none may be spoken of as fact."
+    },
+    {
+      "id": "featured-artist",
+      "kicker": "THE PAINT",
+      "headline": "EIGHTY HANDS",
+      "dek": "Nobody painted this deck — eighty artists share its 88 cards, and no one holds more than three. So the credit goes to the whole field, led by the man who happened to paint both the signature sweeper and the verified kill piece.",
+      "components": ["artist-gallery", "fast-facts"],
       "featured": {
         "artist": "Daniel Ljunggren",
-        "note": "Daniel Ljunggren leads this deck with three cards, which in an eighty-artist list is not a signature — it is the top of a very flat distribution. John Avon also has three. Nobody else has more than two, and the analysis says so plainly: no standout, tell a breadth story instead.\n\nSo here is the breadth story, and it is not flattering to anyone, including us. Nobody chose these printings. This deck was not assembled by a pilot over years the way Vol. 001's was; it was generated from a brief — a commander and a target bracket — by the deterministic builder, and the decklist it produced names cards, not printings. Every set code on this spread is whatever the resolver returned first. That is why there are forty-five sets, why twelve entries share a Marvel Super Heroes Commander stamp that means nothing except that reprint set is where several of these staples currently live, and why there is not one foil in ninety-nine cards. Vol. 001 asked whether a concentration of one artist was taste or a receipt, and the answer was a box bought whole. Vol. 002 asks the opposite question — is this dispersion connoisseurship? — and the answer is that nobody was ever in the room.\n\nWhat is genuinely worth looking at is the accident. Ljunggren's three cards do three unrelated jobs, and two of them are load-bearing: Black Sun's Zenith is the sweeper that rebuilds your board instead of resetting it, Walking Ballista is a kill piece Case A-001 verified, and Forbidden Orchard is the best joke in the deck. It hands an opponent a 1/1 Spirit every time you tap it for mana — which most decks treat as a cost, and this one treats as a delivery service, because a Spirit is a perfectly legal target for your own -1/-1 counters and therefore a Snake on the way back. Three cards, one hand, no plan behind it. That is the deck in miniature."
+        "note": "Daniel Ljunggren tops this roster with three cards, and in an eighty-artist field that is not a signature — it is the crest of a perfectly flat wave. John Avon also has three. Nobody else clears two. The analysis says it plainly: no standout, so the honest feature is the breadth itself.\n\nAnd the breadth has a cause worth stating out loud: nobody chose these printings. The decklist names cards, not editions, and each entry carries whatever printing the resolver returned first — which is why the largest single stamp is a reprint set holding twelve cards by twelve different artists, and why there is not one foil in the hundred. No curation happened here, and we won't invent taste where none was exercised.\n\nWhat luck delivered is still worth the page. Ljunggren's three are Black Sun's Zenith, Forbidden Orchard and Walking Ballista — the deck's signature sweeper, its most mischievous land, and the verified kill piece. If one set of hands had to lead a flat field, the ledger could have done far worse.",
+        "cards": ["Black Sun's Zenith", "Forbidden Orchard", "Walking Ballista"]
       },
-      "headline": "EIGHTY HANDS, NOBODY'S TASTE",
-      "id": "featured-artist",
-      "kicker": "FEATURED ARTIST",
-      "note": "Every count on this spread is recomputed by `manamap pilot artist-credits` at render time; the plan supplies the choice and the argument only. The choice of Ljunggren is deterministic: joint highest entry count (3), tie broken alphabetically, and the analysis explicitly reports standout: null with the instruction to tell a breadth story. The 'How these numbers are counted' notes stay under the gallery unabridged — including the Forest and Swamp per-entry caveats, which are exactly the rule that keeps a seven-copy basic from inventing a featured artist. Do not let this department imply curation: the honesty beat is that a machine built this deck and the printings are a side effect.",
-      "pilot_tips": [
-        {
-          "card": "Serrated Arrows",
-          "text": "Three counters over three turns from a colourless permanent — in a deck this pip-heavy, that is why a 1995 common is still holding a slot."
-        },
-        {
-          "card": "Forbidden Orchard",
-          "text": "Tap it when you want a target as much as mana, and never on a turn the Spirit you hand over can attack you profitably."
-        }
+      "also_worth_noting": [
+        {"artist": "John Avon", "note": "Opal Palace and Spire of Industry are classic Avon architecture; Serrated Arrows is the odd one out — even the utility gets a landscape painter here."},
+        {"artist": "Chris Rahn", "note": "Two cards, maximum gravity: Mikaeus, the Unhallowed — the combo hinge of the whole issue — and Eternal Witness, the rebuy that keeps the engine honest."},
+        {"artist": "Volkan Baǵa", "note": "Chrome Mox and Worldly Tutor — two of the eleven Game Changers, one brush."}
       ],
-      "pull_quote": "Eighty artists, forty-five sets, zero foils. Nobody chose any of this — and pretending otherwise would be the only dishonest page in the issue."
-    },
-    {
       "captions": {
-        "Bitterblossom": "**THE MARGINAL-KEEP UPGRADE:** a body every upkeep for 1 life turns a slow hand into a hand that is always doing something.",
-        "Blowfly Infestation": "**KEEP IT AS A SOURCE:** it places a counter every time a creature dies with one on it, which is a genuine repeating engine. Keep it for that, never as half of a kill nobody has verified."
+        "Black Sun's Zenith": "**THE SIGNATURE PIECE:** Ljunggren's sweeper is the card this deck's whole economy runs through — X counters on each creature, one Snake per creature."
       },
-      "components": [
-        "power-meter",
-        "scenario-box",
-        "pilot-tip",
-        "pull-quote",
-        "folio"
-      ],
-      "dek": "You keep your first seven 79.9% of the time, which makes 'should I keep this' the boring question. The real one is whether the hand has a route to a repeatable counter source — decide on each of these four before you read our reason.",
-      "hands": [
-        {
-          "cards": [
-            "Swamp",
-            "Forest",
-            "Bayou",
-            "Llanowar Elves",
-            "Yawgmoth, Thran Physician",
-            "Skullclamp",
-            "Blood Artist"
-          ],
-          "verdict": "KEEP — the shape you actually want",
-          "why": "Three lands, a turn-1 dork, the deck's only free repeatable -1/-1 source landing on turn 3, and two ways to spend it. Hapatra is already face up in the command zone at two mana and lands on turn 2 in 9,970 of 10,000 runs, so this keep does not need to contain her — it needs the card she cannot replace."
-        },
-        {
-          "cards": [
-            "Swamp",
-            "Bayou",
-            "Sol Ring",
-            "Demonic Tutor",
-            "Bitterblossom",
-            "Blood Artist",
-            "Toxic Deluge"
-          ],
-          "verdict": "KEEP — two lands and a tutor",
-          "why": "A tutor is drawn in 78.0% of games and this one arrives on turn 2 with Sol Ring under it. Fetch a source, not a payoff. Bitterblossom starts producing fodder for free while you look, which is what turns a two-lander into a functioning hand rather than a hopeful one."
-        },
-        {
-          "cards": [
-            "Swamp",
-            "Forest",
-            "Command Tower",
-            "Nest of Scarabs",
-            "Blood Artist",
-            "Zulaport Cutthroat",
-            "Bastion of Remembrance"
-          ],
-          "verdict": "SHIP — all payoff, no placement",
-          "why": "Four payoffs and not one card that puts a counter on anything. This is precisely the hand the mint metaphor warns about: Hapatra monetises placements she does not make, and there is nothing here to monetise. No tutor either, so nothing finds the missing half."
-        },
-        {
-          "cards": [
-            "Swamp",
-            "Swamp",
-            "Forest",
-            "Bayou",
-            "City of Brass",
-            "Mikaeus, the Unhallowed",
-            "Blood Artist"
-          ],
-          "verdict": "SHIP — the six-drop dream",
-          "why": "Five lands in a deck whose nonlands average 2.19 mana value, and the only action is the list's single six-drop — who is not a counter source by himself and who, after Case A-001, is a combo piece for two specific partners rather than a general-purpose infinite enabler."
-        }
-      ],
-      "headline": "FOUR SEVENS, ONE QUESTION",
-      "id": "keep-or-ship",
-      "kicker": "THE DRILL",
-      "note": "The keep meter renders 79.9% from the artifact. Body copy is manual_prose.mulligan — flag for the copydesk that its parenthetical reads '99.7% by turn 6' while goldfish_metrics reports 0.999 and the histogram sums to 9,993 of 10,000; the meter beside it will print 99.9%, so one of the two must move before this ships. See gaps.",
-      "pilot_tips": [
-        {
-          "card": "Green Sun's Zenith",
-          "text": "On a mulligan to six this is the best card in your deck: X=1 finds Llanowar Elves onto the battlefield, X=2 finds Devoted Druid, and both fix a hand that is short on action rather than short on lands."
-        },
-        {
-          "card": "Lotus Petal",
-          "text": "It upgrades an explosive keep from aspirational to functional — but a one-lander with a Petal still loses the commander, so it rescues nothing on its own."
-        }
-      ],
-      "pull_quote": "Your keep does not need the engine. It needs lands, a turn-2 commander, and one card that finds a source."
+      "note": "Counts recomputed by the renderer from artist-credits. Per-entry counting: Forest and Swamp are one entry each at seven copies; say copies only as their own labeled fact."
     },
     {
-      "captions": {
-        "Contagion Clasp": "**THE HONEST TRADE:** the cheapest slot to convert into a BG answer for a noncreature permanent — and a counter source you would be giving up, which is the scarce class."
-      },
-      "components": [
-        "pilot-tip",
-        "pull-quote",
-        "folio"
-      ],
-      "dek": "The obsolescence index has nothing to say about six of this deck's most important cards, which is the index telling you it found nothing better. The real upgrade this issue is not a card at all — it is what you fetch, and what you stop counting.",
-      "headline": "THE UPGRADE IS A SUBTRACTION",
-      "id": "upgrade-watch",
-      "kicker": "THE INSIDE SOURCE",
-      "note": "Body copy renders manual_prose.upgrades, which already audits the index rather than parroting it — that audit is the whole point of this department and must not be trimmed for space. The breadth fix (converting one or two narrow counter sources into BG answers that hit noncreature permanents) is a real trade with a real cost and must be presented as a Rule 0 conversation, not a strict improvement. Do not let this department suggest cards the deck's identity cannot use.",
-      "pilot_tips": [
-        {
-          "card": "Obelisk Spider",
-          "text": "If you are adding a converter rather than swapping one, add this first — it drains each opponent on counter *placement* rather than on death, which is four drains a cycle on the Druid loop instead of one."
-        },
-        {
-          "card": "Blood Artist",
-          "text": "Stop treating it as the kill: it drains one *target player* per death, so it is a wrath tax and a value card. Zulaport Cutthroat is the clock."
-        },
-        {
-          "card": "Crumbling Ashes",
-          "text": "Before you cut it for artifact removal, count how many turns it has actually destroyed something — it is a counter source and a removal engine in one slot, and this deck is short on the first."
-        }
-      ],
-      "pull_quote": "Two verified, six refuted, eleven unresolved. The most valuable upgrade in this issue is a smaller number."
-    },
-    {
-      "components": [
-        "dossier-file",
-        "pull-quote",
-        "folio"
-      ],
-      "dek": "Every citation verbatim, in the order the rules actually apply. Case A-001 took four resolver passes and four adversarial checks, and the fourth exists because the checker refused to sign a document whose own outlet count contradicted itself by one.",
-      "headline": "ONE CASE, FOUR PASSES",
-      "id": "judges-desk",
-      "kicker": "PROVE IT",
-      "note": "Renderer-generated from the checker-passed artifact; nothing here may be summarized, truncated or paraphrased, and every citation appears in typewriter face exactly as the file carries it. Three things in this dossier deserve the reader's eye and the layout should help them find it. (1) Steps 4-5 and 9: the token ruling — state-based actions are performed first as a single event, a token in a zone other than the battlefield ceases to exist, and the undying trigger then resolves doing nothing. Zero iterations, and the cover line comes from here. (2) Step 8: the 704.8 same-check trap, where annihilation and death land in the same state-based-action check, last known information still shows the +1/+1 counter, and undying does not trigger — the CR's own example is precisely this case. (3) Step 10: the census of eight mana-free outlets and the six refuted pairings. The case status must show the checker's own iteration_bound_override verbatim if the renderer surfaces it: three passes ended at verdict fail, the fourth was authorised because the analysis had converged and the only remaining defects were a stale outlet count and a citation about casting spells doing work that belongs to activating abilities. That the artifact still read 'fail' while its body described a completed proof is the strongest argument in this magazine for keeping the checker adversarial and the verdict machine-read rather than author-asserted.",
-      "pull_quote": "The checker's last objection was a single wrong word in the one sentence a reader would have seen. It blocked publication anyway."
-    },
-    {
-      "components": [
-        "fast-facts",
-        "folio"
-      ],
       "id": "back-page",
-      "note": "Next issue is EDGAR MARKOV per issue.json — a deck that will arrive with its own combo count and should expect the same treatment. Colophon carries rules version June 19, 2026, the decklist sha, and one verified line, which is the honest number and should not be padded. Fan Content Policy line stays."
+      "components": ["folio"],
+      "note": "NEXT ISSUE: SISAY, WEATHERLIGHT CAPTAIN — verbatim from issue.json. Colophon: rules version, decklist sha 824c1eeb…, generation provenance, Fan Content Policy line."
     }
   ],
+  "rhythm_notes": "Five acts ride the depth ramp. Coach owns the high-energy cockpit and table acts (narrative, practice, participation, then three medium instruction/reference spreads). Act III cools into browsing (The 99) and imagination (The Short List) before the audits. The two dense Ledger sections — Sources Say and By the Numbers — sit either side of the declared full-bleed art break, and The Kill lands as the late narrative peak carrying the technical payload. Judge's Desk is buffered by narrative before and appreciation after; The Back Page closes low. No undeclared dense adjacency anywhere in the sequence.",
   "gaps": [
-    "What's Your Play? has NO artifact: data/decks/hapatra/decisions/ is empty, so the department renders a visible TODO under its callouts. This is the single largest content gap in the issue. Both boards are specified in the callouts and are ready to author as decision artifacts: (1) the counted pivot — Hapatra, Yawgmoth, one Snake and Blood Artist at 34 life, one opponent with two untapped blue sources, Zulaport Cutthroat in hand, loop now versus deploy and loop next turn; the branch analysis turns on Blood Artist draining a single target player and Yawgmoth costing 1 life per activation, so the life total is the real bound; (2) the default fetch — turn 3, Demonic Tutor in hand, no counter source in play, choosing between Mikaeus, Yawgmoth and Obelisk Spider, with the coaching that Case A-001 changed the correct answer.",
-    "The Kill has exactly one ✓ line and the department is built for one feature spread per verified line. Vol. 001 had five. The highest-value scenario to resolve next is the one strategic_frame calls the highest-value unverified question in the deck: does Mikaeus's +1/+1 anthem switch OFF the deck's own token loops? Snakes, Insects and Elf Warriors are all non-Human, so under Mikaeus they are 2/2 and a single -1/-1 counter no longer kills them. If that reading holds, the deck's two flagship engines are mutually exclusive on the battlefield, and stack 001 step 15 already established that exact layer-7c math for Walking Ballista.",
-    "The Blowfly Infestation family is unverified and it is the line the goldfish actually tracks (16.3% assembled, 12.5% by turn 6, mean turn 4.102). It is the deck's headline two-card kill on paper and this issue cannot assert it. A scenario must settle whether the loop is optional enough to avoid a draw (Blowfly's placement is mandatory but the target is chosen), whether it needs a seed counter and a spare token, and what happens when no legal target remains.",
-    "Yawgmoth + Hapatra WITHOUT Mikaeus has never been resolved, and it is very likely the line this deck wins with most often. Case A-001 verified Yawgmoth's mechanics only inside the Mikaeus line. A scenario should settle the target-survives requirement, the single-instance-of-target fizzle, and the life-and-library bound — the arithmetic in What's Your Play? Board One is currently ★ coaching resting on ✓ mechanics, and it would be much stronger as its own case file.",
-    "Also unresolved and named in the issue as unresolved: the Ivy Lane Denizen family (Scurry Oak pairing plus six outlet-paired entries that look like projection artifacts, since none of those outlets causes a green creature to enter), Hapatra + Host of the Hereafter (does Host's counter-*moving* count as *putting* counters?), and Necroskitter + Black Sun's Zenith. Eleven of nineteen total. None may be spoken of as fact until a checker signs off.",
-    "Heroic Intervention grants hexproof and indestructible, which does not obviously answer a -X/-X effect that kills by toughness rather than by destruction. The magazine flags this as needing a scenario in two departments rather than asserting it either way. It is a cheap scenario and it changes a real sequencing decision.",
-    "DATA DISCREPANCY, publication-relevant: manual_prose.mulligan states the commander is cast '99.7% by turn 6', but goldfish_metrics reports cast_by_turn_6_rate 0.999 and its own histogram sums to 9,993 of 10,000 by turn 6. The rendered power meter will print 99.9% directly above prose saying 99.7%. This issue's copy cites 99.9% throughout; the prose artifact needs the one-character fix before press.",
-    "Strategy DB gaps this issue routed around, all four flagged by strategic_frame and all four load-bearing here: (1) no section on auditing a combo list — how to price an unverified combo count, why pairwise combo data silently drops third pieces, and what a verified kill count should do to a deck's self-image; this is the single most load-bearing idea in the issue and the doc has nothing on it. (2) No aristocrats / sacrifice-engine section — outlet, fodder and converter taxonomy, free versus costed outlets, and each-opponent versus single-target drain tiering all had to be derived from oracle text. (3) No counters-matter section — counter annihilation as a resource, the anthem-versus-shrink anti-synergy, and the Black Sun's Zenith versus Toxic Deluge distinction. (4) No tutor-sequencing section for pilots, which is exactly what What's Your Play? Board Two teaches.",
-    "Featured Artist is thin by construction, not by neglect: no standout (lead artist has 3 of 88 entries), zero foils, zero borderless, no drop runs. The department runs a breadth story instead, and the honest finding — that the deck was machine-built from a brief and nobody chose the printings — is genuinely the best material available. Worth noting for future issues that a builder-generated deck will always produce this shape, so the department's breadth mode is now load-bearing rather than a fallback.",
-    "bracket_report.json still carries the inflated '19 two-card infinite(s)' driver and names 'Mikaeus, the Unhallowed + Ashnod's Altar' as its example — a pairing Case A-001 refuted. The bracket floor of 4 is unaffected and holds on the eleven Game Changers alone, but the artifact and the verified stack now contradict each other in print. Either the report should carry a verified-refutation annotation or the manual should keep doing what it does here, which is name the contradiction out loud every time it appears."
-  ],
-  "rhythm_notes": "The canonical order alternates correctly on its own for this deck — By the Numbers (analysis, dense) hands off to The Kill (narrative), and Know Your Enemy (reference, dense) hands off to The 99 (browsing) — so the work went into the approach to the peak and the descent from it. Approaching: First Turns carries four callout steps rather than prose so a reader arrives at The Command Zone already holding the thesis, and The Command Zone runs long on instruction but takes no starbursts, which keeps the dense data spread that follows from feeling like a third consecutive escalation. By the Numbers exits on a pull quote rather than a table so the reader leaves it on a sentence. The peak: The Kill carries seven callouts, the heaviest furniture in the issue, deliberately split four-then-three — survivors, then wreckage — so the refutation lands as a reveal instead of a correction. Descending: The Politics Table is the designated breather, reflection mode, no new mechanics and a calm accent, immediately after the peak. What's Your Play? spikes back to participation, but note it will render a visible TODO under its callouts because no decision artifacts exist yet, so its actual on-page intensity is lower than the rhythm table assumes — if that spread stays empty at press time, The Politics Table's callouts should carry slightly more weight to compensate, because the issue would otherwise fall from peak to valley in one page. Know Your Enemy settles into reference with five threat boxes; The 99 and Featured Artist form the long exhale, browsing into appreciation, and they carry the issue's two honesty beats at opposite ends of the recovery arc — the roster refusing to give the ceiling more room than it earned, and Featured Artist refusing to call a machine-resolved printing list a collection. Keep or Ship returns the reader to practice, Upgrade Watch to imagination, and Judge's Desk is opt-in depth for the reader who wants to check our work, which after this issue's central finding is a reader we expect to have.",
-  "slug": "hapatra"
+    "decisions/ is empty, so What's Your Play? renders its standing TODO. Two spreads worth authoring: present-or-hold Yawgmoth into open mana, and Black Sun's Zenith rebuild versus Toxic Deluge panic with Blood Artist on board.",
+    "Eleven combo lines remain unresolved. Highest value: does Mikaeus's anthem switch the token loops off — the deck's two flagship engines may be mutually exclusive on the battlefield. Then the Blowfly family, Yawgmoth plus Hapatra as the realistic kill, Hapatra plus Host of the Hereafter, Necroskitter plus Black Sun's Zenith, and whether Heroic Intervention answers -X/-X effects.",
+    "Strategy DB topics flagged by the frame: auditing a combo list, the aristocrats outlet/fodder/converter taxonomy, counters-matter fundamentals, in-game tutor sequencing, and fast-mana trades.",
+    "No sideboard exists, so The Short List is all pool scouts. If Warren Soultrader and Gray Merchant of Asphodel ever land, Gravecrawler deserves a re-rank — the Zombie count would reach three."
+  ]
 }

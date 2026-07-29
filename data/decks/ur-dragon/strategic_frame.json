@@ -77,6 +77,54 @@
       "engine": "Virtual card advantage: casts Dragon spells off the top of the library at MV2, compounding with the eminence discount",
       "evidence": "oracle text (cards.json)",
       "strategy_ref": "strategy:whos-the-beatdown.metagame-clock"
+    },
+    {
+      "engine": "Dragon Tempest + Ancient Gold Dragon burst",
+      "piece": "Dragon Tempest + Ancient Gold Dragon",
+      "status": "verified",
+      "stack_artifact": "data/decks/ur-dragon/stacks/001-tempest-gold-dragon-burst.json",
+      "evidence": "Checker-passed stack artifact: data/decks/ur-dragon/stacks/001-tempest-gold-dragon-burst.json",
+      "strategy_ref": ""
+    },
+    {
+      "engine": "Miirym under Panharmonicon copy count",
+      "piece": "Miirym, Sentinel Wyrm + Panharmonicon",
+      "status": "verified",
+      "stack_artifact": "data/decks/ur-dragon/stacks/002-miirym-panharmonicon-doubling.json",
+      "evidence": "Checker-passed stack artifact: data/decks/ur-dragon/stacks/002-miirym-panharmonicon-doubling.json",
+      "strategy_ref": ""
+    },
+    {
+      "engine": "Savage Ventmaw + Aggravated Assault unbounded combats",
+      "piece": "Savage Ventmaw + Aggravated Assault",
+      "status": "verified",
+      "stack_artifact": "data/decks/ur-dragon/stacks/003-ventmaw-aggravated-assault-loop.json",
+      "evidence": "Checker-passed stack artifact: data/decks/ur-dragon/stacks/003-ventmaw-aggravated-assault-loop.json",
+      "strategy_ref": ""
+    },
+    {
+      "engine": "Wrathful Red Dragon + Blasphemous Act redirect (one-player kill, not table-kill)",
+      "piece": "Wrathful Red Dragon + Blasphemous Act",
+      "status": "verified",
+      "stack_artifact": "data/decks/ur-dragon/stacks/004-wrathful-blasphemous-redirect.json",
+      "evidence": "Checker-passed stack artifact: data/decks/ur-dragon/stacks/004-wrathful-blasphemous-redirect.json",
+      "strategy_ref": ""
+    },
+    {
+      "engine": "Sneak Attack cheats the 99; commander-cheat REFUTED (Hellkite Courser is the commander route)",
+      "piece": "Sneak Attack + Drakuseth, Maw of Flames + The Ur-Dragon",
+      "status": "verified",
+      "stack_artifact": "data/decks/ur-dragon/stacks/005-sneak-attack-what-it-cheats.json",
+      "evidence": "Checker-passed stack artifact: data/decks/ur-dragon/stacks/005-sneak-attack-what-it-cheats.json",
+      "strategy_ref": ""
+    },
+    {
+      "engine": "Old Gnawbone + Aggravated Assault Treasure engine table-kill",
+      "piece": "Old Gnawbone + Aggravated Assault",
+      "status": "verified",
+      "stack_artifact": "data/decks/ur-dragon/stacks/006-gnawbone-assault-treasure-engine.json",
+      "evidence": "Checker-passed stack artifact: data/decks/ur-dragon/stacks/006-gnawbone-assault-treasure-engine.json",
+      "strategy_ref": ""
     }
   ],
   "key_tensions": [
@@ -87,61 +135,6 @@
     "Stack 004 is a one-player kill, not a table-kill (39 redirect caps at one opponent at <=39 life; two triggers = 26 falls short) — do not oversell it; its real value is making every opposing sweeper a bad deal while the board rebuilds via Miirym/Lathliss/Utvara tokens (strategy:resource-hedging.wrath-math)."
   ],
   "candidate_missing_lines": [
-    {
-      "title": "Dragon Tempest + Ancient Gold Dragon burst",
-      "cards": [
-        "Dragon Tempest",
-        "Ancient Gold Dragon"
-      ],
-      "status": "verified",
-      "stack_artifact": "data/decks/ur-dragon/stacks/001-tempest-gold-dragon-burst.json"
-    },
-    {
-      "title": "Miirym under Panharmonicon copy count",
-      "cards": [
-        "Miirym, Sentinel Wyrm",
-        "Panharmonicon"
-      ],
-      "status": "verified",
-      "stack_artifact": "data/decks/ur-dragon/stacks/002-miirym-panharmonicon-doubling.json"
-    },
-    {
-      "title": "Savage Ventmaw + Aggravated Assault unbounded combats",
-      "cards": [
-        "Savage Ventmaw",
-        "Aggravated Assault"
-      ],
-      "status": "verified",
-      "stack_artifact": "data/decks/ur-dragon/stacks/003-ventmaw-aggravated-assault-loop.json"
-    },
-    {
-      "title": "Wrathful Red Dragon + Blasphemous Act redirect (one-player kill, not table-kill)",
-      "cards": [
-        "Wrathful Red Dragon",
-        "Blasphemous Act"
-      ],
-      "status": "verified",
-      "stack_artifact": "data/decks/ur-dragon/stacks/004-wrathful-blasphemous-redirect.json"
-    },
-    {
-      "title": "Sneak Attack cheats the 99; commander-cheat REFUTED (Hellkite Courser is the commander route)",
-      "cards": [
-        "Sneak Attack",
-        "Drakuseth, Maw of Flames",
-        "The Ur-Dragon"
-      ],
-      "status": "verified",
-      "stack_artifact": "data/decks/ur-dragon/stacks/005-sneak-attack-what-it-cheats.json"
-    },
-    {
-      "title": "Old Gnawbone + Aggravated Assault Treasure engine table-kill",
-      "cards": [
-        "Old Gnawbone",
-        "Aggravated Assault"
-      ],
-      "status": "verified",
-      "stack_artifact": "data/decks/ur-dragon/stacks/006-gnawbone-assault-treasure-engine.json"
-    },
     {
       "title": "Cavern-Hoard Dragon + Aggravated Assault: the third contained infinite",
       "cards": [
@@ -174,10 +167,10 @@
     "vs_sweeper_control": "Deploy in waves per wrath-math (strategy:resource-hedging.wrath-math) — but with Wrathful Red Dragon out the sweeper is a trap for THEM (39 redirect, verified stack 004), and Miirym/Lathliss/Utvara token-making plus Teferi's Protection/Heroic Intervention/Flawless Maneuver are the resilience the doc says to buy instead of restraint. Let another player's board draw the wrath, then rebuild cheapest via eminence-discounted recasts.",
     "vs_stax": "Role is forced to beatdown racing the lock (strategy:threat-assessment.resource-denial). Taxes hit a MV-heavy top end hard, but Treasure bursts (Gnawbone, Goldspan, Cavern-Hoard) and eminence discounts break the tax math, and the Assault engines need only one clean combat to go over the top. Name the piece that beats you — usually untap-denial or an activation tax on Assault — and hold removal for it.",
     "vs_aggro": "You are the control seat (strategy:whos-the-beatdown): aggro's math is worst at this table — ~120 combined life behind three defenses (strategy:multiplayer.asymmetry) — and big flying bodies blank ground attacks. Trade time, not cards; your inevitability engine wins every long game (strategy:whos-the-beatdown.metagame-clock).",
-    "vs_combo": "Held answers rot against combo (strategy:threat-assessment.answer-economy) — the last profitable moment is their win attempt, and the suite is real: Counterspell, Swan Song, Dovin's Veto, Deflecting Swat (free with a commander), Chaos Warp, Teferi's Protection. Post-swap you also race credibly: the deck's own two-card lines assemble at MV<=6 (bracket_report), so the frame is combo-vs-combo pivot-window timing (strategy:multiplayer.pivot-window), not pure reaction. Pilot's meta note (little white, token-heavy pods) means opposing interaction skews away from Silence-style white effects."
+    "vs_combo": "Held answers rot against combo (strategy:threat-assessment.answer-economy) — the last profitable moment is their win attempt, and the suite is real: Counterspell, Swan Song, Dovin's Veto, Deflecting Swat (free with a commander), Chaos Warp, Teferi's Protection. You also race credibly: the deck's own two-card lines assemble at MV<=6 (bracket_report), so the frame is combo-vs-combo pivot-window timing (strategy:multiplayer.pivot-window), not pure reaction. Pilot's meta note (little white, token-heavy pods) means opposing interaction skews away from Silence-style white effects."
   },
   "distribution_notes": "95 entries / 29 lands; curve peaks at MV3 (18) with a heavy 5-7 shelf (23 cards) and 5 cards at MV 8-9 — a two-humped ramp curve, not the EDHREC modal-2 shape (strategy:deckbuilding.curve). 23 threat bodies; ramp is 6 rocks + 5 cost-reducers + 3 dorks + 1 land-ramp. 15 cards have no role pattern — including Aggravated Assault, Sneak Attack, Panharmonicon, Deflecting Swat — so the 84% role coverage understates both the combo and interaction suites (deck-facts notes). Pip load is R-dominant (47 total R pips, max 3; source target 36 vs 15 R land sources — Treasures and five-colour rocks carry the gap). 16 of 29 lands enter tapped, reflected in goldfish t3-t5 mana means (3.0/4.4). Zero intra-deck synergy_graph edges — that graph is a global top-10 shortlist and says nothing about this deck (deck-facts notes).",
-  "overall_assessment": "Version 2 turned a battlecruiser typal deck into a linear critical-mass deck with a combo exit (strategy:critical-mass): every card still feeds the Dragon threshold, but past it the deck no longer merely outclasses the table — it takes unbounded combats. Its game is inevitability-ownership (strategy:whos-the-beatdown.metagame-clock): ramp and deflect through the early turns, deploy in wrath-aware waves with a verified sweeper-inversion trump, and take one decisive pivot window (strategy:multiplayer.pivot-window) where Aggravated Assault plus a connecting Gnawbone or Ventmaw ends the game — protection is held for exactly that turn 66.0% of the time by t6. Its honest weaknesses are structural, not incidental: one Assault carries all three infinites, six mana sources cannot pay it, and the commander the deck is named for is a turn-9 luxury the plan does not wait for. That is a coherent bracket-4 identity: menace delivered through engines the checker has already certified, per the pilot's mandate.",
+  "overall_assessment": "This is a linear critical-mass deck with a combo exit (strategy:critical-mass): every card still feeds the Dragon threshold, but past it the deck no longer merely outclasses the table — it takes unbounded combats. Its game is inevitability-ownership (strategy:whos-the-beatdown.metagame-clock): ramp and deflect through the early turns, deploy in wrath-aware waves with a verified sweeper-inversion trump, and take one decisive pivot window (strategy:multiplayer.pivot-window) where Aggravated Assault plus a connecting Gnawbone or Ventmaw ends the game — protection is held for exactly that turn 66.0% of the time by t6. Its honest weaknesses are structural, not incidental: one Assault carries all three infinites, six mana sources cannot pay it, and the commander the deck is named for is a turn-9 luxury the plan does not wait for. That is a coherent bracket-4 identity: menace delivered through engines the checker has already certified, per the pilot's mandate.",
   "gaps": [
     "No strategy section on extra-combat chaining as a school (when to take combat 2 vs. hold mana open; valuing extra-combat effects) — best hits were strategy:combat-math and strategy:critical-mass, neither specific.",
     "No section on kill-order sequencing in multiplayer (which opponent to eliminate first when a line kills sequentially, as verified stack 006 does) — strategy:multiplayer.politics is adjacent but not on point.",

@@ -1,0 +1,400 @@
+{
+  "slug": "heliod",
+  "assessment": "This ten reinforces what is already proven: the Aetherflux Reservoir kill off the Hullbreaker loop (stacks 004/006) gets a mana-positive rock, a turn-shield, and a token payoff; the Approach plan B (stack 002) gets counter-proofing; the punisher core gets a table-wide refuel. The 61-card bench prunes hard: twelve lands are spare copies or strictly slower entries than the maindeck's 18, and the one-shot cantrip bodies (Filigree Familiar, Cloudkin Seer, Skyscanner), fair stunners (Procrastinate, Run Behind, Homesickness, Teferi's Time Twist, Lay Claim), token boards that walk into your own Supreme Verdict (Hangarback Walker, Alandra, Mikaeus, Gandalf) and off-axis fatties are implicit cuts an engine deck at a tier-4 table never sleeves. Three pool cards beat the bench tail on the evidence: Mana Vault beats Worn Powerstone and Brass Infiniscope — both mana-negative by the 004 ledger where Vault's cycle is cast {1}, tap for {C}{C}{C} — Teferi, Time Raveler beats Lightning Greaves, which shields only Hullbreaker Horror of the four 006 pieces where Teferi's static covers the whole turn, and Windfall beats Pull from Tomorrow, which feeds only you where Windfall refuels all three punished hands and the pilot at once.",
+  "ten": [
+    {
+      "card": "Mana Vault",
+      "source": "pool",
+      "role": "ramp:rock",
+      "cmc": 1.0,
+      "type_line": "Artifact",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": [
+              "Hullbreaker Horror",
+              "Mana Vault"
+            ],
+            "produces": "Infinite colorless mana, infinite storm count",
+            "status": "needs a stack scenario"
+          }
+        ],
+        "edhrec_rank": 145,
+        "game_changer": true
+      },
+      "why": "The 004 loop is verified mana-neutral and the 005 mana-positive extension was refuted; Vault's cycle — cast for {1}, bounce, tap for {C}{C}{C} — is the candidate that turns the same loop mana-positive, and every recast is another Reservoir trigger toward the 006 lethal. Girten's storm frame is the fit: 'a balance of mana to cast all the spells you need' (strategy:critical-mass.storm-math), and this rock supplies the mana leg the loop currently only breaks even on.",
+      "unlocks": "A mana-positive Hullbreaker engine: infinite colorless plus storm count if the line verifies, and a cheaper go-turn even if it only half-works. An eleventh Game Changer on a floor already at 4.",
+      "natural_cut": "Talisman of Progress",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    },
+    {
+      "card": "Teferi, Time Raveler",
+      "source": "pool",
+      "role": "protection:self",
+      "cmc": 3.0,
+      "type_line": "Legendary Planeswalker — Teferi",
+      "evidence": {
+        "edhrec_rank": 1139,
+        "game_changer": false
+      },
+      "why": "The deck's one structural exposure is that Grand Abolisher has no backup; Teferi's static — opponents cast only at sorcery speed — closes every counter-window on the 006 go-turn and the second Approach cast (stack 002's honest caveat), and unlike Abolisher it also shuts their end-step interaction before your turn. The -3 is a noncreature-cast Displacer Kitten trigger with a bounce stapled on.",
+      "unlocks": "A second turn-shield for the verified kill, castable under Heliod's discount, that survives creature sweepers Abolisher dies to.",
+      "natural_cut": "Kami of the Crescent Moon",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    },
+    {
+      "card": "Sphinx of the Final Word",
+      "source": "sideboard",
+      "role": "protection:self",
+      "cmc": 7.0,
+      "type_line": "Creature — Sphinx",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": [
+              "Sphinx of the Final Word",
+              "Approach of the Second Sun",
+              "Mystical Tutor"
+            ],
+            "produces": "The second Approach cast cannot be countered",
+            "status": "needs a stack scenario"
+          }
+        ],
+        "edhrec_rank": 10178,
+        "game_changer": false
+      },
+      "why": "Stack 002 walks the counter-window on the second Approach cast honestly; Sphinx's static closes it, and your held instants win any counter-war outright. Krell's bar applies to your own attempt: 'assume every held answer appears the moment you present lethal' (strategy:multiplayer.pivot-window). Not an Abolisher substitute — a Reservoir activation is not a cast, and the 006 artifact casts sit outside its instant/sorcery static.",
+      "when": "Two or more heavy-permission blue seats at the table; the natural cut is near-dead there anyway.",
+      "natural_cut": "Propaganda",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    },
+    {
+      "card": "No More Lies",
+      "source": "sideboard",
+      "role": "counterspell",
+      "cmc": 2.0,
+      "type_line": "Instant",
+      "evidence": {
+        "edhrec_rank": 5771,
+        "game_changer": false
+      },
+      "why": "Against fast combo the strategic frame's own warning bites — the hug layer hands a storm pilot seven cards per spell — and Font of Mythos is the slowest, purest fuel; a {W}{U} tax counter that exiles protects the turn-2-4 setup and beats recursion loops, at McGuinness's ceiling: three mana is 'essentially the most any player should pay for interaction' (strategy:deckbuilding.interaction-suite). The obsolescence index offers Syncopate and Spell Snare as lower-CMC replacements; neither exiles at a fixed tax, so the index hit does not survive the oracle text.",
+      "when": "Fast-combo or storm-dense pods where the game is decided by turn 5 and the punisher clock is too slow to matter.",
+      "natural_cut": "Font of Mythos",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    },
+    {
+      "card": "Monastery Mentor",
+      "source": "sideboard",
+      "role": "threat:body",
+      "cmc": 3.0,
+      "type_line": "Creature — Human Monk",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": [
+              "Monastery Mentor",
+              "Hullbreaker Horror",
+              "Sol Ring",
+              "Arcane Signet"
+            ],
+            "produces": "Arbitrarily many 1/1 prowess Monks in one loop turn",
+            "status": "needs a stack scenario"
+          }
+        ],
+        "edhrec_rank": 1576,
+        "game_changer": false
+      },
+      "why": "Every cast in the 004-verified loop is an artifact — a noncreature spell — so Mentor is the pool's only second payoff on the verified cast count; a stack scenario must settle whether a haste-less Monk army that waits a turn cycle behind three opponents' interaction is worth a slot next to the same-turn 006 kill.",
+      "when": "Sleeve only if the Mentor-loop scenario verifies a protected next-turn kill; until then he is the list's open question.",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    },
+    {
+      "card": "Windfall",
+      "source": "pool",
+      "role": "draw:wheel",
+      "cmc": 3.0,
+      "type_line": "Sorcery",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": [
+              "Approach of the Second Sun",
+              "Windfall"
+            ],
+            "produces": "Win the game",
+            "status": "needs a stack scenario"
+          },
+          {
+            "cards": [
+              "Psychosis Crawler",
+              "Scrawling Crawler",
+              "Windfall"
+            ],
+            "produces": "Table-wide life loss on the refill",
+            "status": "needs a stack scenario"
+          }
+        ],
+        "edhrec_rank": 154,
+        "game_changer": false
+      },
+      "why": "After Forced Fruition bloats a hand to 15, Windfall makes every player draw 15 — Iron Maiden and Ebony Owl Netsuke (stack 003) punish the refilled hands, you draw the same 15 toward the Approach dig, and both Crawlers drain on every card. One honest caveat: it also refuels a storm pilot, so hold it out of fast-combo pods.",
+      "unlocks": "A one-card punisher refuel that doubles as the dig to Approach's seventh card.",
+      "natural_cut": "Skyscribing",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    },
+    {
+      "card": "Fellwar Stone",
+      "source": "sideboard",
+      "role": "ramp:rock",
+      "cmc": 2.0,
+      "type_line": "Artifact",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": [
+              "Fellwar Stone",
+              "Hullbreaker Horror",
+              "Sol Ring"
+            ],
+            "produces": "Loop-capable rock only while an opponent controls a coloured land",
+            "status": "verified",
+            "stack_artifact": "stacks/004-hullbreaker-three-card-engine.json"
+          }
+        ],
+        "edhrec_rank": 17,
+        "game_changer": false
+      },
+      "why": "The bench's only card with a checker-passed verdict attached: stack 004 proves it substitutes into the Hullbreaker loop while an opponent controls a land that produces a colour — and proves the loop is NOT unbounded with it against empty opposing boards (3 spent, 2 produced). A third loop-capable rock with a known, verified failure mode.",
+      "when": "A maindeck rock slot opens and the pilot accepts the opponent-dependency the artifact documents.",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    },
+    {
+      "card": "Vision Skeins",
+      "source": "sideboard",
+      "role": "draw:wheel",
+      "cmc": 2.0,
+      "type_line": "Instant",
+      "evidence": {
+        "edhrec_rank": 4187,
+        "game_changer": false
+      },
+      "why": "The most on-plan bench card: {1}{U} at instant speed hands each opponent two cards on your turn — six drawn, a {6} Heliod discount plus three Kwain-style triggers for the punisher upkeep — and it casts mid-counter-war where the maindeck's symmetric engines are all permanents.",
+      "when": "First in line the moment a symmetric-engine slot opens; the maindeck already carries ten, so it waits, not sleeps.",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    },
+    {
+      "card": "Ghostly Prison",
+      "source": "sideboard",
+      "role": "protection:self",
+      "cmc": 3.0,
+      "type_line": "Enchantment",
+      "evidence": {
+        "edhrec_rank": 161,
+        "game_changer": false
+      },
+      "why": "A second Propaganda effect buys real turns for the punisher clock when two or more combat seats turn sideways every turn; at the draw-go, combo-dense default table it is the deadest card in the 99, which is exactly why it lives here and not there.",
+      "when": "Two or more creature-combat seats in the pod; alongside Propaganda and The Second Doctor's rider it blanks whole attack steps.",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    },
+    {
+      "card": "Blue Sun's Zenith",
+      "source": "sideboard",
+      "role": "draw:burst",
+      "cmc": 3.0,
+      "type_line": "Instant",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": [
+              "Blue Sun's Zenith",
+              "Jace, Wielder of Mysteries",
+              "Alhammarret's Archive"
+            ],
+            "produces": "Empty your library mid-resolution and win on Jace's replacement",
+            "status": "needs a stack scenario"
+          }
+        ],
+        "edhrec_rank": 1716,
+        "game_changer": false
+      },
+      "why": "Two live modes: self-targeted at library size it presents the Jace, Wielder win mid-resolution before its own shuffle-back — the scenario that must pass first — and aimed at the punished player's end step it force-feeds X cards straight into Iron Maiden's hand-size arithmetic, a mode no maindeck X-spell shares at instant speed.",
+      "when": "Sleeve when the Jace empty-library scenario passes, or in punisher-heavy metas for the force-feed mode alone.",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    }
+  ],
+  "bench_verdicts": [
+    {
+      "card": "Secure the Wastes",
+      "verdict": "off-list",
+      "why": "A fair instant-speed wincon for a bracket-3 detune; at the mandated tier-4 table seven mana presents a clock free interaction beats, mana the 006 kill simply wins with."
+    },
+    {
+      "card": "Omniscience",
+      "verdict": "off-list",
+      "why": "A second, unverified nine-mana package the verified 006 kill makes redundant; re-argue only if an Approach-under-Omniscience scenario passes."
+    },
+    {
+      "card": "Laboratory Maniac",
+      "verdict": "off-list",
+      "why": "Redundancy for the unverified Jace, Wielder line, behind Jace himself and behind Blue Sun's Zenith, which at least has a second mode."
+    },
+    {
+      "card": "Fraying Sanity",
+      "verdict": "off-list",
+      "why": "Its end-step trigger resolves before cleanup discards happen, so whether Fruition-bloated trim-to-7 discards ever count is the open rules question its entire value hangs on."
+    },
+    {
+      "card": "Walking Ballista",
+      "verdict": "off-list",
+      "why": "No infinite colourless exists today (004 mana-neutral, 005 refuted) — but if the Mana Vault line verifies mana-positive, Ballista becomes a second kill and this verdict should be re-argued."
+    },
+    {
+      "card": "Lightning Greaves",
+      "verdict": "off-list",
+      "why": "Covers only Hullbreaker Horror of the four 006 pieces; beaten for its slot by Teferi, Time Raveler, whose static shields the whole go-turn."
+    },
+    {
+      "card": "Worn Powerstone",
+      "verdict": "off-list",
+      "why": "Enters tapped, so every loop recast pays {3} for mana a turn late — strictly mana-negative by the 004 ledger; beaten for its slot by Mana Vault."
+    },
+    {
+      "card": "Brass Infiniscope",
+      "verdict": "off-list",
+      "why": "{4} in, {C}{C} out is minus-two per loop cycle by the 004 ledger, and its draw rider needs an X-spell the loop never casts."
+    },
+    {
+      "card": "Horn of Greed",
+      "verdict": "off-list",
+      "why": "Goldfish land-drop hit rate is 57.6% at t5 and 47.4% at t6 — the engine turns — so it pays opponents more reliably than you."
+    },
+    {
+      "card": "Pull from Tomorrow",
+      "verdict": "off-list",
+      "why": "Sixth X-draw that feeds only you; beaten for its slot by Windfall, which refuels the punished hands and yours in one card."
+    },
+    {
+      "card": "Negate",
+      "verdict": "off-list",
+      "why": "Ninth-choice permission behind the free suite, Counterspell, Dovin's Veto and Archmage's Charm; it answers no creature."
+    },
+    {
+      "card": "Brainstorm",
+      "verdict": "off-list",
+      "why": "Three shuffle effects in a 99 is too thin to un-stick its put-backs; its one live trick with Long-Term Plans is not a slot."
+    },
+    {
+      "card": "Murmuring Mystic",
+      "verdict": "off-list",
+      "why": "Its Birds trigger on instants and sorceries only — zero triggers across an unbounded loop turn of artifact casts — and the token board dies to your own Supreme Verdict."
+    },
+    {
+      "card": "Deluge Virtuoso",
+      "verdict": "off-list",
+      "why": "Opus triggers on instant and sorcery casts only, so an unbounded loop turn gives it zero pumps; Monastery Mentor is the loop payoff, Virtuoso is not."
+    },
+    {
+      "card": "Hydro-Channeler",
+      "verdict": "off-list",
+      "why": "Both abilities restrict the mana to instant or sorcery spells — illegal for every artifact cast in the 004/006 engine."
+    },
+    {
+      "card": "Teferi's Tutelage",
+      "verdict": "off-list",
+      "why": "Mill-two into three 99-card libraries is no clock, it feeds graveyard pilots, and the punisher plan wants hands full, not libraries empty."
+    },
+    {
+      "card": "White Sun's Zenith",
+      "verdict": "off-list",
+      "why": "Instant-speed Cats are the most Verdict-shaped wincon in the pool; wincon access runs through two verified lines and the tutors instead."
+    },
+    {
+      "card": "Agent of Treachery",
+      "verdict": "off-list",
+      "why": "Seven mana for one theft; the draw-three rider needs three stolen permanents the deck cannot accumulate."
+    },
+    {
+      "card": "Chasm Skulker",
+      "verdict": "off-list",
+      "why": "Grows into exactly the creature your own Supreme Verdict plan kills, and the Squid payout dies to the next wipe too."
+    },
+    {
+      "card": "United Front",
+      "verdict": "off-list",
+      "why": "{X}{W}{W} fair tokens walked into your own planned Verdict, on the deck's weaker colour."
+    },
+    {
+      "card": "Emrakul, the Promised End",
+      "verdict": "off-list",
+      "why": "A 6-8 mana fair threat off both verified axes; the Mindslaver trigger hands the punished player an extra turn to untangle."
+    },
+    {
+      "card": "Jin-Gitaxias, Core Augur",
+      "verdict": "off-list",
+      "why": "Ten mana, and opponents discarding to nothing blanks Iron Maiden, Ebony Owl Netsuke and Viseling — the hand-size clause fights the deck."
+    },
+    {
+      "card": "It That Betrays",
+      "verdict": "off-list",
+      "why": "Twelve mana, and its theft trigger needs sacrifices nothing in the 99 forces."
+    },
+    {
+      "card": "Trade Secrets",
+      "verdict": "off-list",
+      "why": "The opponent controls the repetition; a professional opponent gives the minimum and stops."
+    },
+    {
+      "card": "Conjurer's Closet",
+      "verdict": "off-list",
+      "why": "Five mana to rebuy one ETB per end step; Displacer Kitten already re-triggers Loran on every noncreature cast."
+    },
+    {
+      "card": "Ephara, God of the Polis",
+      "verdict": "off-list",
+      "why": "Draws only when a creature entered under you last turn, and this deck deploys creatures in ones."
+    },
+    {
+      "card": "Inspiring Statuary",
+      "verdict": "off-list",
+      "why": "Improvise pays generic on nonartifact spells only: it casts no loop piece and pays none of the 61 blue pips."
+    }
+  ],
+  "gaps": [
+    "The Mana Vault line (Hullbreaker Horror + Mana Vault, infinite colorless and storm) is the pick the most rides on: a /resolve-stack scenario would settle the mana-positivity, the untap-clause interaction with the bounce, and whether Walking Ballista's off-list verdict should flip.",
+    "Teferi, Time Raveler's claim to close the 006 windows shares the Abolisher gap: neither static stops the Otawara channel loophole (activated from a card in hand, not from an artifact, creature, or enchantment), and no checker-passed walkthrough covers either shield yet.",
+    "The Blue Sun's Zenith / Jace, Wielder empty-library scenario decides two entries at once (Blue Sun's Zenith on-list, Laboratory Maniac off-list); it is queued, not settled.",
+    "The strategy corpus still lacks sections on group-hug/forced-draw punisher archetypes and empty-library win lines, so the Windfall and Blue Sun's Zenith rankings rest on oracle text, the six verified stacks and the goldfish artifacts rather than citable principles.",
+    "The obsolescence index flags Sphinx of the Final Word as obsoleted by Super-Adaptoid and No More Lies by Syncopate and Spell Snare; all three hits fail the oracle-text check (no fixed-tax exile, no instant/sorcery counter-proof static), recorded here so the leads are not re-chased."
+  ]
+}

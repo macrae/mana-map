@@ -85,25 +85,36 @@
       "engine": "The cheapest-rebuild package after a wrath (strategy:resource-hedging.wrath-math), with Ripjaw Raptor's enrage draw verified live in stacks 004 and 005 — the web makes card draw a side effect of every ping.",
       "evidence": "oracle text; deck-facts roles (draw:engine 4, draw:impulse 2); verified stacks 004, 005",
       "strategy_ref": "strategy:resource-hedging.wrath-math"
+    },
+    {
+      "engine": "Standing refutation: Marauding Raptor + Polyraptor is a whole-table DRAW machine, not a win — the reduced-cost Polyraptor ETBs feed everyone's triggers and the loop ends the game in a draw, verified on a real board.",
+      "piece": "Marauding Raptor + Polyraptor",
+      "status": "verified",
+      "stack_artifact": "stacks/002-marauding-polyraptor-verdict.json",
+      "evidence": "Checker-passed stack artifact (the finding is the refutation): stacks/002-marauding-polyraptor-verdict.json",
+      "strategy_ref": ""
     }
   ],
   "candidate_missing_lines": [
     {
-      "title": "Marauding Raptor + Polyraptor: mandatory whole-table draw (standing refutation)",
-      "cards": ["Marauding Raptor", "Polyraptor"],
-      "why_plausible": "combo_details lists this pairing as a win ('Infinite creature tokens' etc.) alongside 'Draw the game'. Stack 002 (checker pass) settled it: every trigger is mandatory, 2 damage never kills a fresh 5/5 token, the deck has no loop-breaker, and if no opponent intervenes CR 732.4/104.4b end the game in a DRAW for all players. A liability, not a wincon — which is why Marauding Raptor is deliberately kept out of the 99 (companion sideboard only). Including it would first require a free sacrifice outlet, instant-speed self-removal, or an effect that makes the loop lethal.",
-      "status": "verified",
-      "stack_artifact": "stacks/002-marauding-polyraptor-verdict.json"
-    },
-    {
       "title": "Wrathful Raptors × the Forerunner ping web: does redirection starve the enrage engine?",
-      "cards": ["Wrathful Raptors", "Forerunner of the Empire", "Ranging Raptors", "Ripjaw Raptor", "Polyraptor"],
+      "cards": [
+        "Wrathful Raptors",
+        "Forerunner of the Empire",
+        "Ranging Raptors",
+        "Ripjaw Raptor",
+        "Polyraptor"
+      ],
       "why_plausible": "All five are in the 99, yet their verified stacks never share a board: stack 005's ping web resolved WITHOUT Wrathful Raptors out; stack 004 shows Wrathful converting damage dealt to your Dinosaurs into redirects. Whether a Forerunner ping with Wrathful on the battlefield still marks damage on your Dinosaurs (and so still triggers Ranging/Ripjaw/Polyraptor enrage) or is turned into redirects (free reach, dead engine) turns entirely on Wrathful's exact wording — unresolved rules work this frame will not guess at.",
       "status": "needs a stack scenario"
     },
     {
       "title": "Selvala/Behemoth fast-cast: Gishath by turn 5",
-      "cards": ["Selvala, Heart of the Wilds", "Regal Behemoth", "Gishath, Sun's Avatar"],
+      "cards": [
+        "Selvala, Heart of the Wilds",
+        "Regal Behemoth",
+        "Gishath, Sun's Avatar"
+      ],
       "why_plausible": "Selvala for X≥5 plus lands plausibly casts Gishath two-plus turns ahead of the 7.969 goldfish mean, and the goldfish's own assumptions exclude both cards. But no artifact quantifies it — the claim needs either a goldfish model extension or a worked sequencing scenario before the manual may state a number.",
       "status": "needs a stack scenario"
     }

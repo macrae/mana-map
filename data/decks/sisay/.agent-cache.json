@@ -113,7 +113,7 @@
         "matchups",
         "threat_assessment"
       ],
-      "artifact_sha256": "0cb094829b29d15da9d9a02ae931d48de3cd76d4653fabf68df532165030785b",
+      "artifact_sha256": "2e35e46ca66a958cc636300fd329595b6ddd6e56a5b1747a531b3c06e8195b6b",
       "card_refs": [
         "Bloom Tender",
         "Boros Charm",
@@ -224,7 +224,7 @@
       "agent": "pilot-coach",
       "agent_prompt_sha256": "4c0c9124df3b2338306ed3f9e1a279444d7be65ec425cdb99345dfae563670b8",
       "artifact": "data/decks/sisay/decisions/001-activating-into-open-mana.json",
-      "artifact_sha256": "bfdd624bde22da08cd103dfe0ce930d82f46a7c9e1a14b08a1ff27e6d8949c80",
+      "artifact_sha256": "2325e8b29d676534411a413841620e80c42f8d71b648a5d3cff0036aac68a140",
       "card_refs": [
         "Bloom Tender",
         "Derevi, Empyrial Tactician",
@@ -267,7 +267,7 @@
       "agent": "pilot-coach",
       "agent_prompt_sha256": "4c0c9124df3b2338306ed3f9e1a279444d7be65ec425cdb99345dfae563670b8",
       "artifact": "data/decks/sisay/decisions/002-the-scary-fetch-and-the-correct-fetch.json",
-      "artifact_sha256": "08a9d35a4455ea9d3d29aee37242d65e614e9ca148909a8d192d7d21a2851a8a",
+      "artifact_sha256": "270dce04c4572f328f8b09c54d0f6df881796dabfcb62396f1dc6a70be1c6bf2",
       "card_refs": [
         "City of Brass",
         "Command Tower",
@@ -318,7 +318,7 @@
       "agent": "magazine-editor",
       "agent_prompt_sha256": "bd7f00f4f8018aa7a0f072211ca1dc947d7d9e8ffddcf5fb1300cd455b74ce41",
       "artifact": "data/decks/sisay/issue_plan.json",
-      "artifact_sha256": "a2fa8029313fa1f4cfe5050b95ef2b1f8cbe7c8ae88d58a435114f7eb1311cd8",
+      "artifact_sha256": "ced7db188de2a2963d1a7886193460fdfe43b74e8a3e5893fe2c27c1ae9ba939",
       "card_refs": [
         "An Offer You Can't Refuse",
         "Arcane Denial",
@@ -365,6 +365,7 @@
         "Lotho, Corrupt Shirriff",
         "Mana Confluence",
         "Mikaeus, the Lunarch",
+        "Mountain",
         "Mox Amber",
         "Najeela, the Blade-Blossom",
         "Negate",
@@ -372,13 +373,11 @@
         "Path to Exile",
         "Plains",
         "Plaza of Heroes",
-        "Polluted Delta",
         "Raff Capashen, Ship's Mage",
         "Reki, the History of Kamigawa",
         "Relic of Legends",
         "Rhystic Study",
         "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-        "Sacred Foundry",
         "Saffi Eriksdotter",
         "Samut, Voice of Dissent",
         "Secluded Courtyard",
@@ -391,15 +390,14 @@
         "Sol Ring",
         "Spire Garden",
         "Steam Vents",
-        "Stomping Ground",
         "Surrak Dragonclaw",
+        "Swamp",
         "Swan Song",
         "Teferi, Time Raveler",
         "Temple Garden",
         "Thalia, Heretic Cathar",
         "Toxic Deluge",
         "Unclaimed Territory",
-        "Watery Grave",
         "Windswept Heath",
         "Yoshimaru, Ever Faithful"
       ],
@@ -516,6 +514,7 @@
             "tagline"
           ],
           "how_it_wins": null,
+          "mana_base": null,
           "matchups": null,
           "mulligan": null,
           "threat_assessment": null,
@@ -523,7 +522,7 @@
         },
         "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
       },
-      "fingerprint": "689a6e9b2df2d2d31b632937439c27566e77165f200c902089ba99efbac73798",
+      "fingerprint": "db65b23b8acb26533a5c1e800b4aee408f6405c68adf6d669db367803b6fa2bc",
       "inputs": [
         {
           "path": "STYLEv3.md",
@@ -535,11 +534,11 @@
         },
         {
           "path": "data/decks/sisay/decisions/001-activating-into-open-mana.json",
-          "sha256": "8421143fca37b9191c722dbf432aeb2072fd5a5075edfc7dd8d6e58c55ae5620"
+          "sha256": "0e9b240fac8961823aa4e1335a25935a86fbab0b5c2d5ef84fb94c57def21894"
         },
         {
           "path": "data/decks/sisay/decisions/002-the-scary-fetch-and-the-correct-fetch.json",
-          "sha256": "441e8ad1a48568e26a7567eb79673394f5a0862a9b5ba19d50cc1690522a67ec"
+          "sha256": "8d528b95bc83ef2d8a24c0793319fa8f4f526c5bbdee449db541e452ef08cace"
         },
         {
           "path": "data/decks/sisay/goldfish_metrics.json",
@@ -745,18 +744,129 @@
         }
       ]
     },
+    "the-ten": {
+      "agent": "sideboard-analyst",
+      "agent_prompt_sha256": "f922251e74b30a1f14864740b2dcbfa6be71f724092c29ba1d5fba6b55996b93",
+      "artifact": "data/decks/sisay/considering.json",
+      "artifact_sha256": "aa891724c0c4e255100a50128f171f58a1b86442ba5d223e6a98aee7206d363c",
+      "card_refs": [
+        "Bloom Tender",
+        "Derevi, Empyrial Tactician",
+        "Dispel",
+        "Emiel the Blessed",
+        "Esika, God of the Tree // The Prismatic Bridge",
+        "Esper Sentinel",
+        "Faeburrow Elder",
+        "Forest",
+        "Heliod, Sun-Crowned",
+        "Ioreth of the Healing House",
+        "Island",
+        "Jegantha, the Wellspring",
+        "Kinnan, Bonder Prodigy",
+        "Mikaeus, the Lunarch",
+        "Najeela, the Blade-Blossom",
+        "Raff Capashen, Ship's Mage",
+        "Reki, the History of Kamigawa",
+        "Relic of Legends",
+        "Rhystic Study",
+        "Saffi Eriksdotter",
+        "Selvala, Heart of the Wilds",
+        "Sisay, Weatherlight Captain"
+      ],
+      "extra": {
+        "cards_semantic": "fe1514069b1f0193aed8f986f792fd9c6ccb00c82aad70b6070648c432981144",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "15d3274d4411ac9a89b4f2875951a82521300500e260443410ed0bb706f3c5f1",
+      "inputs": [
+        {
+          "path": "data/combo_details.json",
+          "sha256": "2164926ed9f3b34d05507e9609a8a07132a7fcfcbd82a79a76a7aabb58914044"
+        },
+        {
+          "path": "data/decks/sisay/bracket_report.json",
+          "sha256": "6df0cd865ac006a4ad5914ba21035eb18cd206dd568acded2a167d9543c21c5a"
+        },
+        {
+          "path": "data/decks/sisay/pilot_feedback.md",
+          "sha256": null
+        },
+        {
+          "path": "data/decks/sisay/stacks/002-najeela-derevi-combat-loop.json",
+          "sha256": "05139bf5c2f29ae6e12e49e22262166f9c1e3c240a919c8812a37ebee9bf3af9"
+        },
+        {
+          "path": "data/decks/sisay/strategic_frame.json",
+          "sha256": "d727a8d3ffb851ef5bb9121233903db0acbe10dbe3f8c51020ee03b47aa15952"
+        },
+        {
+          "path": "data/obsolescence_index.json",
+          "sha256": "94d9662cb54ef5ed9f2ca9ce31f3a8427f5be8f584032a3efd66b16c81aedf2b"
+        },
+        {
+          "path": "data/synergy_graph.json",
+          "sha256": "f09551fd9024addb575d417e3acdbef5abeba046c6753ef07976339688e854df"
+        }
+      ]
+    },
+    "tutor-guide": {
+      "agent": "pilot-coach",
+      "agent_prompt_sha256": "4c0c9124df3b2338306ed3f9e1a279444d7be65ec425cdb99345dfae563670b8",
+      "artifact": "data/decks/sisay/tutor_guide.json",
+      "artifact_sha256": "36e6ab127c9a87f167c16bd15fa366c488ce67abfb1aa9501a97765936045088",
+      "card_refs": [
+        "Bloom Tender",
+        "City of Brass",
+        "Command Tower",
+        "Derevi, Empyrial Tactician",
+        "Faeburrow Elder",
+        "Katilda, Dawnhart Prime",
+        "Loran of the Third Path",
+        "Mana Confluence",
+        "Mikaeus, the Lunarch",
+        "Mox Amber",
+        "Najeela, the Blade-Blossom",
+        "Plaza of Heroes",
+        "Relic of Legends",
+        "Selvala, Heart of the Wilds",
+        "Shalai, Voice of Plenty",
+        "Sisay, Weatherlight Captain",
+        "Teferi, Time Raveler",
+        "Yoshimaru, Ever Faithful"
+      ],
+      "extra": {
+        "cards_semantic": "fe1514069b1f0193aed8f986f792fd9c6ccb00c82aad70b6070648c432981144",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "f3aa5d485387178190e255dd1a78ccab0e554b5628e96db3c111e2a5633ff299",
+      "inputs": [
+        {
+          "path": "data/decks/sisay/goldfish_metrics.json",
+          "sha256": "c1577cd1e6643e0c69bf7d048dd706a8c5a5c8096a06769c85e33ed5f6dec58a"
+        },
+        {
+          "path": "data/decks/sisay/stacks/002-najeela-derevi-combat-loop.json",
+          "sha256": "05139bf5c2f29ae6e12e49e22262166f9c1e3c240a919c8812a37ebee9bf3af9"
+        },
+        {
+          "path": "data/decks/sisay/strategic_frame.json",
+          "sha256": "d727a8d3ffb851ef5bb9121233903db0acbe10dbe3f8c51020ee03b47aa15952"
+        }
+      ]
+    },
     "writer-prose": {
       "agent": "manual-writer",
-      "agent_prompt_sha256": "4a9acdc8be809403d64c95e9a2170745fe3e16d1a8d3197ece3c8945f44720eb",
+      "agent_prompt_sha256": "6ebfb2724620cf62302992004774cdf1ea137539f6db0204e4b96acafdc4f440",
       "artifact": "data/decks/sisay/manual_prose.json",
       "artifact_keys": [
         "card_roles",
         "combo_lines",
         "how_it_wins",
+        "mana_base",
         "mulligan",
         "upgrades"
       ],
-      "artifact_sha256": "63151852bff733d7c20d19f27ecc662c5799d5de3892d12a45fb4d63b12ebf8c",
+      "artifact_sha256": "9dba696c5e12ed4b1f02d711e935f518f319b780d07be4502ea1cbf128d7a1d1",
       "card_refs": [
         "An Offer You Can't Refuse",
         "Arcane Denial",
@@ -995,6 +1105,12 @@
           "Thalia, Heretic Cathar",
           "Unclaimed Territory"
         ],
+        "mana_base": [
+          "Dauthi Voidwalker",
+          "Delighted Halfling",
+          "Sol Ring",
+          "Unclaimed Territory"
+        ],
         "mulligan": [
           "Arcane Denial",
           "Arcane Signet",
@@ -1025,27 +1141,15 @@
           "Yoshimaru, Ever Faithful"
         ],
         "upgrades": [
-          "Bloom Tender",
-          "Delighted Halfling",
-          "Fellwar Stone",
-          "Flawless Maneuver",
-          "Heroic Intervention",
-          "Jegantha, the Wellspring",
-          "Jodah, the Unifier",
-          "Kambal, Consul of Allocation",
-          "Mox Amber",
-          "Najeela, the Blade-Blossom",
-          "Plains",
-          "Selvala, Heart of the Wilds",
-          "Sol Ring",
-          "Unclaimed Territory"
+          "Faeburrow Elder",
+          "Kinnan, Bonder Prodigy"
         ]
       },
       "extra": {
         "cards_semantic": "fe1514069b1f0193aed8f986f792fd9c6ccb00c82aad70b6070648c432981144",
         "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
       },
-      "fingerprint": "f5a21ad5d130b9fe46a19057f0148ddb69dd0cd39276eec6bf784991d354168d",
+      "fingerprint": "58dcb5ec4aa16c99af66b80391f5756b2a9828f5977c373fffc133ada45c2071",
       "inputs": [
         {
           "path": "data/combo_graph.json",
@@ -1054,6 +1158,10 @@
         {
           "path": "data/decks/sisay/goldfish_metrics.json",
           "sha256": "c1577cd1e6643e0c69bf7d048dd706a8c5a5c8096a06769c85e33ed5f6dec58a"
+        },
+        {
+          "path": "data/decks/sisay/mana_analysis.json",
+          "sha256": "1a55aec6c496e24fb09c4cf16f3b01649461fa27a5b0e7396c8643807968f8bc"
         },
         {
           "path": "data/decks/sisay/stacks/002-najeela-derevi-combat-loop.json",
@@ -1076,6 +1184,7 @@
         "card_roles": "322fae304396f21570834804e2dd7766420145a4e9fd2e917b9aed09b0299935",
         "combo_lines": "0a43b880f42cb3d7dee91802b8c1fd022f4d3dfe7a6d84ec266d034bf2de314e",
         "how_it_wins": "c7d9048e3f9e0d912d531a37fb91ff891ac8d26acce419c8753786b3f6b3d565",
+        "mana_base": "6e1b951f58c0511c7357c1adaf2e4074e78d8ab858bec8f466d56ed9129e88a2",
         "mulligan": "e5c4431920f3a01f30dfc6c0e6dcceea9a412c91fbb6cc5aeb304541ee50ef5c",
         "upgrades": "34ca098eb3fb03b1b38d526ed2641ae4aed4db5d6d29f048bffca66bc46b103f"
       }

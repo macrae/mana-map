@@ -1,8 +1,7 @@
 {
   "slug": "edgar-vampires",
-  "version": 2,
   "decklist_sha256_prefix": "6047837e800e",
-  "archetype": "Mardu vampire typal go-wide aggro whose late game is now a redundant verified kill-web: four checker-passed two-card infinites arranged as a 2x2 matrix of lose-halves (Vito, Sanguine Bond) x gain-halves (Exquisite Blood, Bloodthirsty Conqueror), an aristocrats layer (Viscera Seer / Cruel Celebrant / Grave Pact) converting free eminence tokens into edicts and drains, Purphoros taxing every cast and Throne of the God-Pharaoh echoing every attack. The engine still runs from the command zone via eminence; the infinites moved from insurance to co-equal plan.",
+  "archetype": "Mardu vampire typal go-wide aggro whose late game is a redundant verified kill-web: four checker-passed two-card infinites arranged as a 2x2 matrix of lose-halves (Vito, Sanguine Bond) x gain-halves (Exquisite Blood, Bloodthirsty Conqueror), an aristocrats layer (Viscera Seer / Cruel Celebrant / Grave Pact) converting free eminence tokens into edicts and drains, Purphoros taxing every cast and Throne of the God-Pharaoh echoing every attack. The engine runs from the command zone via eminence; the infinites are a co-equal plan, not insurance.",
   "schools": [
     "strategy:whos-the-beatdown",
     "strategy:deckbuilding.redundancy-vs-tutors",
@@ -13,20 +12,20 @@
     "strategy:multiplayer.pivot-window"
   ],
   "role_assignment": {
-    "default_role": "Beatdown, but with real inevitability for the first time. v1 had to compress the game because its long game was a 4.9%-by-t10 single infinite; v2 owns a piece of the long game — any of four verified loop pairings ends it, and per strategy:whos-the-beatdown.metagame-clock an unanswerable finisher is a source of inevitability. The deck is still not the control deck (29 threat bodies vs 11 removal slots and 1 sweeper), so the honest read is: beatdown that no longer fears the game going long, which per strategy:whos-the-beatdown makes overcommitting to the race a misassignment — you may now play the value turn you would have skipped in v1.",
-    "pivot_trigger": "Three pivots. (1) Edgar cast (median t6, 51.2% by t6 in goldfish v2): the alpha-strike window, now worth more because the verified attack turn drains 14/opponent at declare (stack 003) and another 14 at your end step (stack 007). (2) Resolving ANY loop half onto a board that already holds a complementary half — with four halves in the 99, the tutors (Demonic, Vampiric, Diabolic Intent) fetch whichever half completes a pair, per strategy:deckbuilding.redundancy-vs-tutors a tutor is effectively a copy of the missing piece. (3) Sequencing choice within the pivot: when both pairings are available, deploy toward Bond+Exquisite (stack 005) — both halves are enchantments, the pairing instant-speed creature removal cannot break (strategy:multiplayer.pivot-window: go when the win can't be profitably stopped).",
+    "default_role": "Beatdown, but with real inevitability. The deck owns a piece of the long game — any of four verified loop pairings ends it, and per strategy:whos-the-beatdown.metagame-clock an unanswerable finisher is a source of inevitability. The deck is not the control deck (29 threat bodies vs 11 removal slots and 1 sweeper), so the honest read is: beatdown that does not fear the game going long, which per strategy:whos-the-beatdown makes overcommitting to the race a misassignment — you may play the value turn a pure racer would skip.",
+    "pivot_trigger": "Three pivots. (1) Edgar cast (median t6, 51.2% by t6 in goldfish): the alpha-strike window, worth taking because the verified attack turn drains 14/opponent at declare (stack 003) and another 14 at your end step (stack 007). (2) Resolving ANY loop half onto a board that already holds a complementary half — with four halves in the 99, the tutors (Demonic, Vampiric, Diabolic Intent) fetch whichever half completes a pair, per strategy:deckbuilding.redundancy-vs-tutors a tutor is effectively a copy of the missing piece. (3) Sequencing choice within the pivot: when both pairings are available, deploy toward Bond+Exquisite (stack 005) — both halves are enchantments, the pairing instant-speed creature removal cannot break (strategy:multiplayer.pivot-window: go when the win can't be profitably stopped).",
     "strategy_ref": "strategy:pivot-point"
   },
   "engines": [
     {
       "piece": "Edgar Markov (eminence) + Anointed Procession + Mondrak, Glory Dominus",
       "engine": "One token per other Vampire spell cast from turn 1 with Edgar uncast; through both doublers 1->2->4 tokens per cast, all entering together — five bodies from one two-mana Vampire",
-      "evidence": "verified stack 002 (checker pass); goldfish v2 mean_bodies_by_turn 1.77 by t3, 4.11 by t6",
+      "evidence": "verified stack 002 (checker pass); goldfish mean_bodies_by_turn 1.77 by t3, 4.11 by t6",
       "strategy_ref": "strategy:multiplayer.asymmetry"
     },
     {
       "piece": "The 2x2 kill-web: Vito / Sanguine Bond (lose-halves) x Exquisite Blood / Bloodthirsty Conqueror (gain-halves)",
-      "engine": "Four verified two-card infinites — every lose-half pairs with every gain-half, all mana_value_needed 0 per combo_details. Redundancy math (strategy:deckbuilding.redundancy-vs-tutors): four halves plus three unrestricted tutors buy consistency singleton normally forbids; goldfish v2 has a natural pair assembled 5.4% by t6, 9.4% by t10, tutors unmodeled (conservative)",
+      "engine": "Four verified two-card infinites — every lose-half pairs with every gain-half, all mana_value_needed 0 per combo_details. Redundancy math (strategy:deckbuilding.redundancy-vs-tutors): four halves plus three unrestricted tutors buy consistency singleton normally forbids; goldfish has a natural pair assembled 5.4% by t6, 9.4% by t10, tutors unmodeled (conservative)",
       "evidence": "verified stacks 001 (Exquisite+Vito, 38 iterations, deterministic table-kill), 004 (Conqueror+Vito, 13 iterations), 005 (Bond+Exquisite, 26 iterations), 006 (Bond+Conqueror, 13 iterations) — all checker.verdict pass; combo_details via deck-facts (popularities 128280/107037/64824/54630)",
       "strategy_ref": "strategy:deckbuilding.redundancy-vs-tutors"
     },
@@ -50,8 +49,8 @@
     },
     {
       "piece": "Herald's Horn",
-      "engine": "Typal cost reduction ({1} off every Vampire spell — a rebate on nearly every cast in a 29-body list) plus upkeep card selection; the ramp-or-fixing goldfish target is 50.2% by t6 in v2, up from 42% in v1 per the swap brief",
-      "evidence": "oracle text; goldfish v2 target 'Ramp or fixing drawn' 0.502 by t6",
+      "engine": "Typal cost reduction ({1} off every Vampire spell — a rebate on nearly every cast in a 29-body list) plus upkeep card selection; the ramp-or-fixing goldfish target is 50.2% by t6",
+      "evidence": "oracle text; goldfish target 'Ramp or fixing drawn' 0.502 by t6",
       "strategy_ref": "strategy:deckbuilding.curve"
     },
     {
@@ -62,101 +61,114 @@
     },
     {
       "piece": "Bloodghast + eminence as the rebuild package",
-      "engine": "Landfall recursion plus one token per post-wrath cast with no recast tax — now upgraded fodder: every rebuilt body is also a Viscera Seer scry, a Grave Pact edict, and a Cruel Celebrant drain on its way out",
-      "evidence": "oracle text; carried over from v1 frame",
+      "engine": "Landfall recursion plus one token per post-wrath cast with no recast tax — and every rebuilt body is also a Viscera Seer scry, a Grave Pact edict, and a Cruel Celebrant drain on its way out",
+      "evidence": "oracle text",
       "strategy_ref": "strategy:resource-hedging.wrath-math"
+    },
+    {
+      "engine": "Verified line: Exquisite Blood + Vito, Thorn of the Dusk Rose",
+      "piece": "Exquisite Blood + Vito, Thorn of the Dusk Rose",
+      "status": "verified",
+      "stack_artifact": "stacks/001-exquisite-vito-drain-loop.json",
+      "evidence": "Checker-passed stack artifact: stacks/001-exquisite-vito-drain-loop.json",
+      "strategy_ref": ""
+    },
+    {
+      "engine": "Verified line: Bloodthirsty Conqueror + Vito, Thorn of the Dusk Rose",
+      "piece": "Bloodthirsty Conqueror + Vito, Thorn of the Dusk Rose",
+      "status": "verified",
+      "stack_artifact": "stacks/004-conqueror-vito-drain-loop.json",
+      "evidence": "Checker-passed stack artifact: stacks/004-conqueror-vito-drain-loop.json",
+      "strategy_ref": ""
+    },
+    {
+      "engine": "Verified line: Sanguine Bond + Exquisite Blood",
+      "piece": "Sanguine Bond + Exquisite Blood",
+      "status": "verified",
+      "stack_artifact": "stacks/005-sanguine-exquisite-loop.json",
+      "evidence": "Checker-passed stack artifact: stacks/005-sanguine-exquisite-loop.json",
+      "strategy_ref": ""
+    },
+    {
+      "engine": "Verified line: Sanguine Bond + Bloodthirsty Conqueror",
+      "piece": "Sanguine Bond + Bloodthirsty Conqueror",
+      "status": "verified",
+      "stack_artifact": "stacks/006-sanguine-conqueror-loop.json",
+      "evidence": "Checker-passed stack artifact: stacks/006-sanguine-conqueror-loop.json",
+      "strategy_ref": ""
+    },
+    {
+      "engine": "Verified line: Throne of the God-Pharaoh + Bloodletter of Aclazotz",
+      "piece": "Throne of the God-Pharaoh + Bloodletter of Aclazotz",
+      "status": "verified",
+      "stack_artifact": "stacks/007-throne-bloodletter-end-step.json",
+      "evidence": "Checker-passed stack artifact: stacks/007-throne-bloodletter-end-step.json",
+      "strategy_ref": ""
+    },
+    {
+      "engine": "Verified line: Purphoros, God of the Forge + Anointed Procession + Mondrak, Glory Dominus",
+      "piece": "Purphoros, God of the Forge + Anointed Procession + Mondrak, Glory Dominus",
+      "status": "verified",
+      "stack_artifact": "stacks/008-purphoros-token-entry-count.json",
+      "evidence": "Checker-passed stack artifact: stacks/008-purphoros-token-entry-count.json",
+      "strategy_ref": ""
     }
   ],
   "gameplan_by_phase": {
-    "early_t1_t3": "Unchanged in shape from v1: deploy cheap Vampires on the 8/18/18 curve, bank eminence tokens, leave Edgar in the command zone (the engine is free there). Mulligan on the engine-deck test — enabler-heavy hands beat payoff-heavy ones (strategy:mulligans.engine-hands); a hand of two loop halves and no cheap Vampires is the classic all-payoff mulligan. Herald's Horn on t3 is the best noncreature play: it discounts every subsequent body and digs at each upkeep.",
-    "mid_t4_t6": "Layer amplifiers (42.2% by t6) and drain pieces (62.7%) under wrath-math discipline — commit what wins, no further (strategy:resource-hedging.wrath-math) — but v2 buys resilience rather than restraint: Celebrant/Seer/Grave Pact monetize your own deaths, so a sweeper into this board costs the table edicts and drains. Deploy loop halves with intent: a lone Exquisite Blood or Conqueror reads as value and passively feeds on all table damage; the moment a second complementary half is visible, you are the archenemy (strategy:multiplayer.threat-deflection).",
+    "early_t1_t3": "Deploy cheap Vampires on the 8/18/18 curve, bank eminence tokens, leave Edgar in the command zone (the engine is free there). Mulligan on the engine-deck test — enabler-heavy hands beat payoff-heavy ones (strategy:mulligans.engine-hands); a hand of two loop halves and no cheap Vampires is the classic all-payoff mulligan. Herald's Horn on t3 is the best noncreature play: it discounts every subsequent body and digs at each upkeep.",
+    "mid_t4_t6": "Layer amplifiers (42.2% by t6) and drain pieces (62.7%) under wrath-math discipline — commit what wins, no further (strategy:resource-hedging.wrath-math) — but the deck buys resilience rather than restraint: Celebrant/Seer/Grave Pact monetize your own deaths, so a sweeper into this board costs the table edicts and drains. Deploy loop halves with intent: a lone Exquisite Blood or Conqueror reads as value and passively feeds on all table damage; the moment a second complementary half is visible, you are the archenemy (strategy:multiplayer.threat-deflection).",
     "late_t7_plus": "Take whichever window opens first: (a) Edgar into a protected seven-attacker turn — 14/opponent at declare (stack 003) plus 14 at end step (stack 007) plus counters and combat damage, protection held 57.5% by t6; or (b) tutor the missing half of the most resilient available pairing — Bond+Exquisite if creature removal is the table's held answer (stack 005), a creature pairing only if the coast is genuinely clear. Count open mana before committing and sequence the scariest piece last (strategy:multiplayer.pivot-window)."
   },
   "key_tensions": [
     "Archetypally telegraphed at bracket 4: Edgar plus any visible half of the four most famous drain pairings in the format (combined combo_details popularity ~355k) means the table plays against the loop from turn zero. The deflection budget (strategy:multiplayer.threat-deflection) is largely pre-spent by seat assignment; per strategy:threat-assessment you will be ranked by inevitability, not board. Plan for removal on sight of every half and treat deflection as buying single turns, not phases.",
-    "Removal-window profiles differ per pairing, and it is now a sequencing skill: stack 005 (Bond+Exquisite) is the resilient line — both halves enchantments, no per-iteration creature-removal window; stacks 001/004/006 each include at least one creature half, and 004/006's own artifacts name the per-iteration instant-speed removal window as the honest cost. When tutoring, fetch toward the pairing the table's open mana cannot answer (strategy:threat-assessment.answer-economy inverted onto yourself).",
-    "Cheap-deathtouch defense thinned by the swaps: Gifted Aetherborn and Vampire Nighthawk left the 99; Vampire of the Dire Moon is the only remaining one-drop deathtouch defender (Nighthawk Scavenger still carries deathtouch at three; Bloodthirsty Conqueror has it but is a loop half you should not trade in combat). Kalitas's lifelink-plus-exile body is the compensating anchor. Against fast aggro the control seat (strategy:whos-the-beatdown) is now held with drains and edicts more than with blockers.",
-    "The infinite graduated from insurance to co-equal plan: natural pair assembly 5.4% by t6 / 9.4% by t10 (goldfish v2, tutors unmodeled), four pairings, three tutors, mana_value_needed 0 on every line. Per strategy:deckbuilding.power-level.barometers this is squarely the bracket-4 profile the report's floor names — play it honestly as such; sandbagging the combo reads as bad faith at this floor, not deflection.",
-    "Free-protection tension carries over from v1: Deflecting Swat and Flawless Maneuver are free only with a commander on the battlefield, but the engine wants Edgar in the command zone until the pivot — pre-Edgar, protection costs real mana on the same turns the curve wants for bodies (strategy:multiplayer.commander-insurance).",
-    "Wrath exposure is now partially monetized rather than merely survived: 29 threat bodies still invite the sweeper, but Grave Pact/Celebrant/Seer convert your deaths into table damage and selection, and eminence plus Bloodghast rebuild for the cost of the next cast (strategy:resource-hedging.wrath-math: buy resilience instead of restraint). Purphoros (indestructible, usually noncreature) and the two enchantment halves survive creature wraths outright.",
-    "Velocity vs taxes unchanged: the 18+18 two/three-drop core is the many-cheap-spells profile that Sphere/Thalia effects punish hardest; under an assembling lock this deck is forced beatdown racing the lock (strategy:threat-assessment.resource-denial). Herald's Horn partially rebates a one-mana tax on creature spells — a real but narrow hedge."
+    "Removal-window profiles differ per pairing, and choosing between them is a sequencing skill: stack 005 (Bond+Exquisite) is the resilient line — both halves enchantments, no per-iteration creature-removal window; stacks 001/004/006 each include at least one creature half, and 004/006's own artifacts name the per-iteration instant-speed removal window as the honest cost. When tutoring, fetch toward the pairing the table's open mana cannot answer (strategy:threat-assessment.answer-economy inverted onto yourself).",
+    "Cheap-deathtouch defense is thin: Vampire of the Dire Moon is the only one-drop deathtouch defender (Nighthawk Scavenger carries deathtouch at three; Bloodthirsty Conqueror has it but is a loop half you should not trade in combat). Kalitas's lifelink-plus-exile body is the compensating anchor. Against fast aggro the control seat (strategy:whos-the-beatdown) is held with drains and edicts more than with blockers.",
+    "The infinite is a co-equal plan, not insurance: natural pair assembly 5.4% by t6 / 9.4% by t10 (goldfish, tutors unmodeled), four pairings, three tutors, mana_value_needed 0 on every line. Per strategy:deckbuilding.power-level.barometers this is squarely the bracket-4 profile the report's floor names — play it honestly as such; sandbagging the combo reads as bad faith at this floor, not deflection.",
+    "Free-protection tension: Deflecting Swat and Flawless Maneuver are free only with a commander on the battlefield, but the engine wants Edgar in the command zone until the pivot — pre-Edgar, protection costs real mana on the same turns the curve wants for bodies (strategy:multiplayer.commander-insurance).",
+    "Wrath exposure is partially monetized rather than merely survived: 29 threat bodies invite the sweeper, but Grave Pact/Celebrant/Seer convert your deaths into table damage and selection, and eminence plus Bloodghast rebuild for the cost of the next cast (strategy:resource-hedging.wrath-math: buy resilience instead of restraint). Purphoros (indestructible, usually noncreature) and the two enchantment halves survive creature wraths outright.",
+    "Velocity vs taxes: the 18+18 two/three-drop core is the many-cheap-spells profile that Sphere/Thalia effects punish hardest; under an assembling lock this deck is forced beatdown racing the lock (strategy:threat-assessment.resource-denial). Herald's Horn partially rebates a one-mana tax on creature spells — a real but narrow hedge."
   ],
   "candidate_missing_lines": [
     {
-      "title": "Exquisite Blood + Vito table-kill loop",
-      "cards": ["Exquisite Blood", "Vito, Thorn of the Dusk Rose"],
-      "why_plausible": "combo_details infinite, mana_value_needed 0; deterministic table-kill from a 2-life seed, 38 iterations across three opponents, killing losses still trigger Exquisite Blood across deaths",
-      "status": "verified",
-      "stack_artifact": "stacks/001-exquisite-vito-drain-loop.json"
-    },
-    {
-      "title": "Bloodthirsty Conqueror + Vito loop",
-      "cards": ["Bloodthirsty Conqueror", "Vito, Thorn of the Dusk Rose"],
-      "why_plausible": "Second pairing, verified on its own terms: 13 iterations from a 3-life seed; per-iteration instant-speed removal window because Conqueror is a creature — the artifact names this cost explicitly",
-      "status": "verified",
-      "stack_artifact": "stacks/004-conqueror-vito-drain-loop.json"
-    },
-    {
-      "title": "Sanguine Bond + Exquisite Blood — the double-enchantment loop",
-      "cards": ["Sanguine Bond", "Exquisite Blood"],
-      "why_plausible": "26 iterations from a 2-life seed, deterministic table-kill, retargeting fresh triggers per iteration, chain crosses deaths; BOTH halves are enchantments — the hardest of the four pairings to interact with at instant speed",
-      "status": "verified",
-      "stack_artifact": "stacks/005-sanguine-exquisite-loop.json"
-    },
-    {
-      "title": "Sanguine Bond + Bloodthirsty Conqueror — the pairing that closes the 2x2",
-      "cards": ["Sanguine Bond", "Bloodthirsty Conqueror"],
-      "why_plausible": "13 iterations from a 3-life seed, deterministic table-kill; one creature half, so one instant-speed removal window per iteration (fewer creature targets than 004)",
-      "status": "verified",
-      "stack_artifact": "stacks/006-sanguine-conqueror-loop.json"
-    },
-    {
-      "title": "Throne + Bloodletter end-step drain — verified with an honest bound",
-      "cards": ["Throne of the God-Pharaoh", "Bloodletter of Aclazotz"],
-      "why_plausible": "After the stack-003 seven-attacker shape: seven tapped creatures (untapped Bloodletter does not count itself), doubled to 14 lost per opponent. PARTIALLY REFUTED as a table-kill — a 15-life opponent survives at exactly 1; present it as 14/opponent reach, never as lethal-by-default",
-      "status": "verified",
-      "stack_artifact": "stacks/007-throne-bloodletter-end-step.json"
-    },
-    {
-      "title": "Purphoros through both doublers — 10 per opponent per two-mana Vampire",
-      "cards": ["Purphoros, God of the Forge", "Anointed Procession", "Mondrak, Glory Dominus"],
-      "why_plausible": "Four simultaneous token entries are four separate Purphoros triggers plus the spell's own body: 5 x 2 = 10 damage to each opponent; devotion-dependent noncreature status irrelevant to its own trigger",
-      "status": "verified",
-      "stack_artifact": "stacks/008-purphoros-token-entry-count.json"
-    },
-    {
       "title": "Grave Pact edict into Kalitas's exile replacement",
-      "cards": ["Grave Pact", "Kalitas, Traitor of Ghet"],
+      "cards": [
+        "Grave Pact",
+        "Kalitas, Traitor of Ghet"
+      ],
       "why_plausible": "Oracle texts: Grave Pact forces each other player to sacrifice per your creature death; Kalitas replaces opponents' dying nontoken creatures with exile plus a Zombie for you. Plausibly every edict your free tokens generate also denies death triggers/recursion and mints you a body — but the replacement/sacrifice interaction has not been resolved on the record",
       "status": "needs a stack scenario"
     },
     {
       "title": "Aristocrats ignition: Cruel Celebrant death with a full loop pair on the battlefield",
-      "cards": ["Cruel Celebrant", "Sanguine Bond", "Bloodthirsty Conqueror"],
+      "cards": [
+        "Cruel Celebrant",
+        "Sanguine Bond",
+        "Bloodthirsty Conqueror"
+      ],
       "why_plausible": "Celebrant's death trigger both drains each opponent 1 and gains you 1 — with any verified pair already on the battlefield, either event should ignite the loop mid-combat or through a wrath. The loops themselves are verified; the ignition-from-a-death path (trigger ordering, which event seeds the loop) is not",
       "status": "needs a stack scenario"
     }
   ],
   "matchup_frames": {
-    "vs_sweeper_control": "The wrath now costs them more than it costs you: Grave Pact and Cruel Celebrant convert the board they sweep into edicts and drains, the two enchantment halves plus indestructible Purphoros survive, and eminence rebuilds at one token per cast with no recast tax. Still commit only what wins (strategy:resource-hedging.wrath-math) — but the v1 advice to fear the long game is repealed; against draw-go control your four-pairing inevitability means you may play the patient game they think they own (strategy:whos-the-beatdown.metagame-clock).",
-    "vs_stax": "Forced beatdown, unchanged: taxes halve the two-spell turns this curve is built on; race the lock's assembly and aim Despark/Fracture/Rite of Oblivion at the piece that beats YOU (strategy:threat-assessment.resource-denial). Herald's Horn rebates one mana per creature spell under tax effects. The zero-mana loops are notably tax-resistant once assembled — pieces cost mana, iterations cost none.",
-    "vs_aggro": "Take the control seat of the subgame (strategy:whos-the-beatdown) — but honestly note the swaps thinned your fair-combat tools: one one-drop deathtouch defender remains (Vampire of the Dire Moon), so stabilization now comes from Kalitas's lifelink-plus-exile, each-opponent drains re-taxing the racer's life total, and the gain-halves converting ALL table damage into your life (Exquisite Blood triggers on any opponent's loss, including from other players). You cannot race three life totals; you can make every point of damage anywhere feed you (strategy:combat-math.racing).",
-    "vs_combo": "Answer economy inverts: the last profitable moment for held interaction is now (strategy:threat-assessment.answer-economy). Your counter-clock is materially faster than v1's — four pairings, three tutors, and 5.4%-by-t6 natural assembly mean the tutored kill is usually one turn away once either half sticks; Deflecting Swat (post-Edgar) and the white removal protect that turn. Against a faster combo seat you are the beatdown and must present the kill first (strategy:whos-the-beatdown)."
+    "vs_sweeper_control": "The wrath costs them more than it costs you: Grave Pact and Cruel Celebrant convert the board they sweep into edicts and drains, the two enchantment halves plus indestructible Purphoros survive, and eminence rebuilds at one token per cast with no recast tax. Still commit only what wins (strategy:resource-hedging.wrath-math) — but there is no need to fear the long game: against draw-go control your four-pairing inevitability means you may play the patient game they think they own (strategy:whos-the-beatdown.metagame-clock).",
+    "vs_stax": "Forced beatdown: taxes halve the two-spell turns this curve is built on; race the lock's assembly and aim Despark/Fracture/Rite of Oblivion at the piece that beats YOU (strategy:threat-assessment.resource-denial). Herald's Horn rebates one mana per creature spell under tax effects. The zero-mana loops are notably tax-resistant once assembled — pieces cost mana, iterations cost none.",
+    "vs_aggro": "Take the control seat of the subgame (strategy:whos-the-beatdown) — but honestly note the fair-combat tools are thin: the deck holds one one-drop deathtouch defender (Vampire of the Dire Moon), so stabilization comes from Kalitas's lifelink-plus-exile, each-opponent drains re-taxing the racer's life total, and the gain-halves converting ALL table damage into your life (Exquisite Blood triggers on any opponent's loss, including from other players). You cannot race three life totals; you can make every point of damage anywhere feed you (strategy:combat-math.racing).",
+    "vs_combo": "Answer economy inverts: the last profitable moment for held interaction is now (strategy:threat-assessment.answer-economy). Your counter-clock is fast — four pairings, three tutors, and 5.4%-by-t6 natural assembly mean the tutored kill is usually one turn away once either half sticks; Deflecting Swat (post-Edgar) and the white removal protect that turn. Against a faster combo seat you are the beatdown and must present the kill first (strategy:whos-the-beatdown)."
   },
-  "distribution_notes": "34 lands, 16 enter tapped — still a tempo tax; goldfish v2: land-drop rate 58.2% by t6, mean available mana 5.34 on t6, commander mean cast 6.628 / median 6 (marginally later than v1's 6.61 — the swaps traded a hair of velocity for the kill-web). Curve 8/18/18/12/6/1 over 63 nonland spells, modal at 2-3, on-template per strategy:deckbuilding.curve. Pips B-dominant: 50 total B pips, source target 36 against 13 B lands plus fixing. Roles (87.6% coverage): 29 threat bodies vs 11 spot/edict/damage removal and 1 sweeper — threat-dense and answer-light, leaning on the table per strategy:multiplayer.asymmetry; sac-outlet 1 (Viscera Seer; Kalitas's ability uncounted by the taxonomy). Ramp-or-fixing drawn 50.2% by t6 (Herald's Horn is the delta vs v1's 42% per the swap brief); drain engine 62.7%, payoff-or-lord 66.3%, protection 57.5%, token amplifier 42.2%, natural infinite pair 5.4% by t6 / 9.4% by t10. Caveats from deck-facts: 12 engine-relevant cards have no role entry (Sanguine Bond, Exquisite Blood, Grave Pact, Anointed Procession among them — absence of role is not absence of function), synergy_graph has 1 intra-deck edge (global shortlist, not a fit score), and no restricted mana in the base.",
-  "overall_assessment": "v1 was a beatdown deck with an insurance policy; v2 is a beatdown deck with inevitability, and that changes which mistakes are available. The deck still plays the game strategy:multiplayer.asymmetry endorses — wide token boards from a zero-mana command-zone engine, each-opponent drains, edicts, and per-cast burn instead of single-target damage — but its long game is no longer borrowed time: a 2x2 matrix of verified loop halves (stacks 001/004/005/006, all deterministic table-kills) backed by three tutors means the game that goes long is now often YOUR game (strategy:whos-the-beatdown.metagame-clock). The price is paid in perception and in blockers: at a bracket-4 floor with the format's four most famous drain pairings, threat deflection (strategy:multiplayer.threat-deflection) buys turns rather than phases, and the thinned deathtouch wall means fair defense is now drains, edicts, and Kalitas rather than bodies. Played correctly the deck presents two genuinely different kills the same table must answer with different cards — a protected 28-per-opponent attack turn (stacks 003+007, composed) and a stack-based loop whose most resilient form is two enchantments (stack 005) — and per strategy:deckbuilding.redundancy-vs-tutors the redundancy, not any single pairing, is the actual upgrade the seven swaps bought.",
+  "distribution_notes": "34 lands, 16 enter tapped — a tempo tax; goldfish: land-drop rate 58.2% by t6, mean available mana 5.34 on t6, commander mean cast 6.628 / median 6. Curve 8/18/18/12/6/1 over 63 nonland spells, modal at 2-3, on-template per strategy:deckbuilding.curve. Pips B-dominant: 50 total B pips, source target 36 against 13 B lands plus fixing. Roles (87.6% coverage): 29 threat bodies vs 11 spot/edict/damage removal and 1 sweeper — threat-dense and answer-light, leaning on the table per strategy:multiplayer.asymmetry; sac-outlet 1 (Viscera Seer; Kalitas's ability uncounted by the taxonomy). Ramp-or-fixing drawn 50.2% by t6; drain engine 62.7%, payoff-or-lord 66.3%, protection 57.5%, token amplifier 42.2%, natural infinite pair 5.4% by t6 / 9.4% by t10. Caveats from deck-facts: 12 engine-relevant cards have no role entry (Sanguine Bond, Exquisite Blood, Grave Pact, Anointed Procession among them — absence of role is not absence of function), synergy_graph has 1 intra-deck edge (global shortlist, not a fit score), and no restricted mana in the base.",
+  "overall_assessment": "This is a beatdown deck with inevitability, and that changes which mistakes are available. The deck plays the game strategy:multiplayer.asymmetry endorses — wide token boards from a zero-mana command-zone engine, each-opponent drains, edicts, and per-cast burn instead of single-target damage — but its long game is not borrowed time: a 2x2 matrix of verified loop halves (stacks 001/004/005/006, all deterministic table-kills) backed by three tutors means the game that goes long is often YOUR game (strategy:whos-the-beatdown.metagame-clock). The price is paid in perception and in blockers: at a bracket-4 floor with the format's four most famous drain pairings, threat deflection (strategy:multiplayer.threat-deflection) buys turns rather than phases, and the thin deathtouch wall means fair defense is drains, edicts, and Kalitas rather than bodies. Played correctly the deck presents two genuinely different kills the same table must answer with different cards — a protected 28-per-opponent attack turn (stacks 003+007, composed) and a stack-based loop whose most resilient form is two enchantments (stack 005) — and per strategy:deckbuilding.redundancy-vs-tutors the redundancy, not any single pairing, is the deck's real edge.",
   "gaps": [
-    "Still no typal/tribal section — 'tribal typal lords anthem' tops out at 0.145 on mana-base sections this session; lord density and lord-vs-body evaluation remain uncited-able.",
-    "Still no aristocrats section — the Seer/Celebrant/Grave Pact layer is now maindeck and its sacrifice-value theory has no school to cite ('aristocrats sacrifice drain value' top hit 0.367 on the budget section).",
-    "Still no eminence/command-zone-value section — the free-engine-changes-insurance-calculus argument is re-derived from oracle text every pass ('eminence command zone free value' top hit 0.264 on slot ratios).",
-    "No combo-redundancy-as-threat-posture coverage: strategy:deckbuilding.redundancy-vs-tutors prices consistency, but nothing covers how a REDUNDANT verified kill-web changes archenemy dynamics and answer-forcing at the table — this deck's defining v2 question.",
-    "Lifegain-as-archetype gap carries over: gain-triggers-as-engine (four halves' payoff density) is still unaddressed by strategy:life-as-resource."
+    "No typal/tribal section — 'tribal typal lords anthem' tops out at 0.145 on mana-base sections this session; lord density and lord-vs-body evaluation remain uncited-able.",
+    "No aristocrats section — the Seer/Celebrant/Grave Pact layer is maindeck and its sacrifice-value theory has no school to cite ('aristocrats sacrifice drain value' top hit 0.367 on the budget section).",
+    "No eminence/command-zone-value section — the free-engine-changes-insurance-calculus argument is re-derived from oracle text every pass ('eminence command zone free value' top hit 0.264 on slot ratios).",
+    "No combo-redundancy-as-threat-posture coverage: strategy:deckbuilding.redundancy-vs-tutors prices consistency, but nothing covers how a REDUNDANT verified kill-web changes archenemy dynamics and answer-forcing at the table — this deck's defining question.",
+    "Lifegain-as-archetype gap: gain-triggers-as-engine (four halves' payoff density) is unaddressed by strategy:life-as-resource."
   ],
   "corrections_for_orchestrator": [
     "All eight stack artifacts carry checker.verdict == 'pass' (005/006/007/008 at iteration 1) — confirmed by direct read this session.",
     "Stack 007 must never be presented as a table-kill: its own final_state is 'PARTIALLY REFUTED as a table-kill' — 14/opponent at end step, a 15-life opponent survives at 1. The 28/opponent full-turn figure (003 + 007) is arithmetic composition of two separately verified artifacts, not itself a checker-passed line.",
-    "The brief's 'ramp drawn 50%, up from 42%' matches goldfish v2 (0.502 by t6) but the 42% v1 figure is not independently verifiable from current artifacts (goldfish_metrics.json holds only v2, sha 6047837e800e); attributed to the brief.",
-    "Mondrak's correct name is 'Mondrak, Glory Dominus' — the v1 frame's 'Glory of Dominus' is a typo worth fixing at merge.",
-    "Nighthawk Scavenger (deathtouch, 3 MV) remains in the 99 — the 'cheap deathtouch thinned' claim is framed as one remaining ONE-DROP deathtouch defender (Vampire of the Dire Moon), which is what oracle text supports."
+    "The ramp-or-fixing goldfish figure is 0.502 by t6 (goldfish_metrics.json, sha 6047837e800e) — cite only this measured number; no other baseline is verifiable from current artifacts.",
+    "Mondrak's correct name is 'Mondrak, Glory Dominus' — the misspelling 'Glory of Dominus' must not survive the merge.",
+    "Nighthawk Scavenger (deathtouch, 3 MV) is in the 99 — the 'cheap deathtouch is thin' claim is framed as one ONE-DROP deathtouch defender (Vampire of the Dire Moon), which is what oracle text supports."
   ]
 }

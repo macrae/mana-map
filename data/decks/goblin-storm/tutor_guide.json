@@ -1,0 +1,59 @@
+{
+  "slug": "goblin-storm",
+  "assessment": "You wish in one color and one creature type, and that's a strength — every wish is on-plan. Goblin Matron puts any Goblin card in your hand; Moggcatcher is the repeatable version, dropping a Goblin permanent straight onto the battlefield for {3} and a tap, turn after turn. Neither finds the spell half of the deck, so the wishes buy bodies and engines while Zada's copied cantrips find the rest (stack 001). One split to know cold: Matron's find gets cast later, so kicker works; Moggcatcher's find is never cast, so kicker doesn't.",
+  "tutors": [
+    {
+      "card": "Goblin Matron",
+      "targets": [
+        {
+          "scenario": "The default: turn 4-5, three or four Goblins out, Goblin Warchief on the battlefield or in hand, no pressure on you yet.",
+          "fetch": "Krenko, Mob Boss",
+          "why": "The default wish is the burst. Stack 004 verifies that under Warchief, Krenko costs {1}{R}{R}, has haste, and taps the turn he lands — five Goblins become ten, 13 hasted power. Matron puts him in hand, so you cast him with the haste line intact. Plan the turn around one activation: the line is a burst, not a loop, and a Krenko sacrificed to Prospector is gone for good."
+        },
+        {
+          "scenario": "Behind: the board just got wrathed, you're rebuilding on four lands, and a second sweeper is entirely plausible.",
+          "fetch": "Mogg War Marshal",
+          "why": "Three bodies from one card — a token when he enters and another when he dies — which is why the synergy graph rates him the deck's best sacrifice fodder. The goldfish rebuilds to 4.07 bodies by turn 5 on average; Marshal beats that curve by himself and leaves value behind if the next wrath comes."
+        },
+        {
+          "scenario": "Closing: a wide board, or an Empty the Warrens turn planned, and you need the team lethal this turn — not next.",
+          "fetch": "Goblin Bushwhacker",
+          "why": "Kicked, he gives your creatures +1/+0 and haste the moment he enters — the classic token-swarm finisher. Matron is the right tutor for the job: kicker is an additional cost you pay as you cast the spell, so the kill needs Bushwhacker in hand, and that's exactly where Matron delivers him."
+        },
+        {
+          "scenario": "The one nobody sees coming: an opposing lord or must-die blocker is holding your swarm hostage, and your hand is all gas, no interaction.",
+          "fetch": "Gempalm Incinerator",
+          "why": "Matron doubles as a removal tutor because the removal is a Goblin. Gempalm cycles to deal damage to a creature equal to the number of Goblins on the battlefield — with your swarm out, that answers almost anything — and you draw a card doing it. To-hand is the point: cycling only works from your hand."
+        }
+      ],
+      "notes": "Matron finds Goblin cards, not just creatures — Boggart Shenanigans is a Kindred Enchantment — Goblin and a legal wish for the grind game. And Matron herself is a Goblin body afterward: she feeds Brightstone Ritual, Krenko's count, and every sacrifice outlet once the errand is run."
+    },
+    {
+      "card": "Moggcatcher",
+      "targets": [
+        {
+          "scenario": "The default: untapped Moggcatcher, four mana, a Goblin board, and a haste lord — Warchief, Chieftain, or Howlsquad Heavy — already on the battlefield.",
+          "fetch": "Krenko, Mob Boss",
+          "why": "Straight to the battlefield skips the cast entirely — no counterspell window on Krenko himself, just the ability. With a haste lord out he taps immediately for the stack 004 burst: X tokens where X is your Goblin count, five becoming ten on a modest board. Without haste he's next-turn value; with it he's this-turn doubling."
+        },
+        {
+          "scenario": "Behind: a stax artifact is strangling your spell velocity, or a Treasure-heavy deck is running away with the table.",
+          "fetch": "Goblin Trashmaster",
+          "why": "Your repeatable out, delivered at instant speed on the end step before your turn: 'Sacrifice a Goblin: Destroy target artifact', with a lord buff while he waits. The stax plan says protect the answer that breaks the piece that beats you — Moggcatcher means you don't even need to draw it."
+        },
+        {
+          "scenario": "Closing: Impact Tremors on the battlefield, an opponent in single digits, four mana available.",
+          "fetch": "Siege-Gang Commander",
+          "why": "One activation lands four bodies — the Commander plus three tokens — so Impact Tremors deals 4 to each opponent without a single spell cast. Then his {1}{R} sac ability turns every spare Goblin into 2 damage at any target. He is the drain and the reach that finishes what the drain starts."
+        },
+        {
+          "scenario": "The one nobody sees coming: a grind table where your Goblins die in bulk every turn cycle, and you want reach that survives the next sweeper.",
+          "fetch": "Boggart Shenanigans",
+          "why": "Moggcatcher searches for a Goblin permanent card, and Boggart Shenanigans — a Kindred Enchantment — Goblin — qualifies. A creature tutor putting an enchantment onto the battlefield is a play nobody defends against, and every Goblin funeral afterward becomes a point of damage at any player or planeswalker. It turns their wrath, or your own Blasphemous Act, into a burn spell."
+        }
+      ],
+      "notes": "The trap to never walk into: Moggcatcher puts the card onto the battlefield without casting it, and kicker is only paid as you cast a spell — a Moggcatcher'd Goblin Bushwhacker enters unkicked, no pump, no haste. Finishers to hand with Matron; engines to the battlefield with Moggcatcher. And Moggcatcher is a Human Mercenary — neither tutor can find him, and he adds nothing to your Goblin counts."
+    }
+  ],
+  "gaps": "Both wishes are Goblin-shaped, so the deck cannot search up the spell half of its game: no tutor finds Impact Tremors, Skullclamp, a ritual, or a storm payoff. Those arrive through volume — Zada's copied cantrips (stack 001), Glimpse the Impossible, Faithless Looting, Idol of Oblivion. The goldfish shows the cost: 'storm payoff plus ritual' assembles in only 15.2% of games, and no wish here raises that number. When the payoff is already in hand, the tutors close the distance from the other side — bodies for the copies, mana ability creatures for the ritual math."
+}

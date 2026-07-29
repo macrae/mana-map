@@ -1,0 +1,149 @@
+{
+  "slug": "edgar-vampires",
+  "assessment": "The ten is the deck's next half-step: extend the verified kill-web and feed the engines that already pass checkers. A 34-card bench was ranked and its top eight kept; two pool cards beat the bench tail — Marauding Blight-Priest (two new loop pairings, in-tribe) over spare bodies like Vampire Interloper, and Bloodchief Ascension (the index's one-mana hit on Sanguine Bond's shape) over Stensia Masquerade. Per strategy:deckbuilding.redundancy-vs-tutors, 'consistency has two purchases: redundancy (more cards doing the job) or tutoring (cards that fetch it)' — this ten buys redundancy: a third lose-half for the 2x2 loop matrix, a second and third sac outlet, and the bench's only repeatable draw engine. Everything else in the box is depth behind a 29-body maindeck; the notable stay-offs carry verdict lines below.",
+  "ten": [
+    {
+      "card": "Marauding Blight-Priest",
+      "source": "pool",
+      "role": "wincon:drain",
+      "cmc": 3.0,
+      "type_line": "Creature — Vampire Cleric",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": ["Exquisite Blood", "Marauding Blight-Priest"],
+            "produces": "Infinite lifegain triggers, infinite lifeloss, infinite lifegain",
+            "status": "needs a stack scenario"
+          },
+          {
+            "cards": ["Bloodthirsty Conqueror", "Marauding Blight-Priest"],
+            "produces": "Infinite lifegain triggers, infinite lifeloss, infinite lifegain",
+            "status": "needs a stack scenario"
+          }
+        ],
+        "edhrec_rank": 1108,
+        "game_changer": false
+      },
+      "why": "A third lose-half for the verified 2x2 kill-web: 'whenever you gain life, each opponent loses 1 life' pairs with both in-deck gain-halves, and it drains each opponent — no per-iteration retargeting like the Vito lines walk in stacks 001/004.",
+      "unlocks": "Two new pairings (with Exquisite Blood and with Bloodthirsty Conqueror) turn the verified 2x2 into a 2x3; as a Vampire it also banks an eminence token on cast and takes the Herald's Horn discount.",
+      "natural_cut": "Voldaren Pariah // Abolisher of Bloodlines",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Elenda, the Dusk Rose",
+      "source": "sideboard",
+      "role": "payoff:counters",
+      "cmc": 4.0,
+      "type_line": "Legendary Creature — Vampire Knight",
+      "why": "Every Viscera Seer sacrifice, Grave Pact edict and table death is a counter; she dies into that many lifelink tokens, doubled through Anointed Procession and Mondrak, and each token entry is a separate Purphoros trigger by stack 008's per-entry counting.",
+      "when": "Sleeve once games show the Seer/Celebrant/Grave Pact web producing multiple deaths per turn cycle — she is the death engine's wrath-math payoff.",
+      "natural_cut": "Mavren Fein, Dusk Apostle",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Bloodchief Ascension",
+      "source": "pool",
+      "role": "wincon:drain",
+      "cmc": 1.0,
+      "type_line": "Enchantment",
+      "evidence": {
+        "obsoletes": ["Sanguine Bond"],
+        "edhrec_rank": 742,
+        "game_changer": false
+      },
+      "why": "One mana buys the drain shape the index lists as Sanguine Bond's lower-CMC hit; stack 003's 14-per-opponent attack turn charges all three quest counters in a single combat, after which every card hitting any opponent's graveyard drains 2 and gains 2.",
+      "unlocks": "A turn-1 play under the curve that taxes wraths, draw-steps and fetches for the rest of the game — the cheapest new drain engine the pool offers, and the best-ranked candidate anywhere in this analysis (EDHREC 742).",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Markov Purifier",
+      "source": "sideboard",
+      "role": "draw:engine",
+      "cmc": 3.0,
+      "type_line": "Creature — Vampire Cleric",
+      "why": "Draw is the role budget's biggest hole (7 short); Purifier converts the lifegain the deck produces every turn — lifelink bodies, Sanctum Seeker triggers, Cruel Celebrant deaths — into a card each end step for {2}.",
+      "when": "Sleeve when games stall on an empty hand by turn 6-7; it is the only repeatable draw engine on the bench.",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Indulgent Aristocrat",
+      "source": "sideboard",
+      "role": "sac-outlet",
+      "cmc": 1.0,
+      "type_line": "Creature — Vampire Noble",
+      "why": "The maindeck holds exactly one sac outlet (Viscera Seer) feeding Grave Pact and Cruel Celebrant; a second one-mana outlet whose activation puts a counter on every Vampire keeps the edict engine alive through spot removal.",
+      "when": "Sleeve once Viscera Seer starts eating the table's first removal spell — outlet redundancy is the purchase.",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Master of Dark Rites",
+      "source": "sideboard",
+      "role": "ramp:dork",
+      "cmc": 1.0,
+      "type_line": "Creature — Vampire Cleric",
+      "why": "A third sac outlet that ramps: tap and sacrifice a spare token for {B}{B}{B} of Vampire/Cleric/Demon mana — a Grave Pact edict and a turn-4 five-drop from the same activation, in a deck 5 slots short on ramp.",
+      "when": "Sleeve alongside or instead of Indulgent Aristocrat when pod speed makes the mana burst matter more than tribe-wide counters.",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Blade of the Bloodchief",
+      "source": "sideboard",
+      "role": "buff:attached",
+      "cmc": 1.0,
+      "type_line": "Artifact — Equipment",
+      "why": "buff:attached is a named role gap, and on a Vampire the Blade grows +2/+2 per creature death — every Seer sacrifice, every Grave Pact edict, every board the table sweeps; on Edgar it makes commander damage a real clock.",
+      "when": "Sleeve for grindy pods where boards trade often; it is the cheapest permanent that monetizes the death web without attacking first.",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Vampire Nocturnus",
+      "source": "sideboard",
+      "role": "buff:pump",
+      "cmc": 4.0,
+      "type_line": "Creature — Vampire",
+      "why": "+2/+1 and flying to the whole tribe turns stack 003's seven-attacker, 14-per-opponent turn evasive — and Viscera Seer's free scry sets a black card on top on demand.",
+      "when": "Sleeve when the alpha strike is the primary kill at your pods and the loop halves are drawing the table's removal instead.",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Sorin of House Markov // Sorin, Ravenous Neonate",
+      "source": "sideboard",
+      "role": "wincon:drain",
+      "cmc": 2.0,
+      "type_line": "Legendary Creature — Human Noble // Legendary Planeswalker — Sorin",
+      "why": "A two-mana lifelink extort body that flips to a planeswalker any turn you gained 3 or more life — near-automatic when one Sanctum Seeker attack with seven Vampires gains 7 — and extort turns every cheap Vampire spell into a table drain.",
+      "when": "Sleeve for grindier pods where a drain-per-cast rider and the flipped walker outvalue a fourth interchangeable two-drop body.",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Gifted Aetherborn",
+      "source": "sideboard",
+      "role": "threat:body",
+      "cmc": 2.0,
+      "type_line": "Creature — Aetherborn Vampire",
+      "why": "The strategic frame's named tension is a single one-drop deathtouch defender (Vampire of the Dire Moon); Aetherborn adds a two-mana deathtouch-lifelink wall that trades up against anything and feeds every lifegain trigger while blocking.",
+      "when": "Sleeve against aggressive pods — the recall for the thin deathtouch web, and the cheapest body that defends without leaving the drain plan.",
+      "bracket_delta": {"before": 4, "after": 4}
+    }
+  ],
+  "bench_verdicts": [
+    {"card": "Vito, Thorn of the Dusk Rose", "verdict": "off-list", "why": "The box copy duplicates a card already sleeved in the 99 — a spare, not a candidate."},
+    {"card": "Strefan, Maurer Progenitor", "verdict": "off-list", "why": "Also a duplicate of a maindeck card; a spare, not a candidate."},
+    {"card": "Runo Stromkirk // Krothuss, Lord of the Deep", "verdict": "off-list", "why": "Outside Edgar's colour identity — unplayable in this deck."},
+    {"card": "Vampire Nighthawk", "verdict": "off-list", "why": "The same deathtouch-lifelink job as Gifted Aetherborn for one more mana; the recall slot goes to the cheaper body."},
+    {"card": "Callous Bloodmage", "verdict": "off-list", "why": "One-shot modal value; the 7-card draw hole wants engines, not a single trigger."},
+    {"card": "Vampire Gourmand", "verdict": "off-list", "why": "An attack-gated draw engine that competes with Viscera Seer and Grave Pact for the same bodies, at combat speed only."},
+    {"card": "Aclazotz, Deepest Betrayal // Temple of the Dead", "verdict": "off-list", "why": "A strong five-drop in a curve that peaks at 2-3; its discard engine advances nothing the verified kills need."},
+    {"card": "Akroma's Memorial", "verdict": "off-list", "why": "Seven mana for haste and evasion the alpha strike would enjoy — but the deck's verified kills do not need combat to end the game."},
+    {"card": "Cemetery Gatekeeper", "verdict": "off-list", "why": "A metagame card: sleeve it against graveyard pods, not by default."},
+    {"card": "Ivora, Insatiable Heir", "verdict": "off-list", "why": "Blood tokens without discard payoffs; its only bench partner (Wedding Security) is also off-list."},
+    {"card": "Wedding Security", "verdict": "off-list", "why": "A Blood payoff in a 99 with almost no Blood producers."},
+    {"card": "Markov Baron", "verdict": "off-list", "why": "A fourth lord at three mana behind Legion Lieutenant, Stromkirk Captain and Captivating Vampire — the pump axis is covered."}
+  ],
+  "gaps": [
+    "Marauding Blight-Priest's two lines and the frame's Cruel Celebrant ignition path are unverified — /resolve-stack scenarios would settle whether the new pairings resolve exactly as stacks 001/004/005/006 did.",
+    "Bloodchief Ascension's index hit is CMC-based; oracle text requires three quest counters before it drains, so 'upgrade over Sanguine Bond' is bounded to the index's own criteria, not an in-play dominance claim.",
+    "No EDHREC rank exists for any bench card, so the bench ranking rests on deck need alone.",
+    "The strategy corpus has no aristocrats or typal-lord section; outlet-redundancy and lord-density rankings here rest on oracle text and the role budget, not citable doctrine."
+  ]
+}

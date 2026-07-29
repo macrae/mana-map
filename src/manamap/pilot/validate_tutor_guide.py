@@ -73,7 +73,10 @@ def _tutor_constraint_types(oracle):
         if " card" not in clause + " ":
             constraints.append([])
             continue
-        constraints.append([t for t in _TYPE_WORDS if t in clause])
+        # Word-boundary matching: "battle" must never match "battlefield" in
+        # "put it onto the battlefield" — that clause tail is not a constraint.
+        constraints.append([t for t in _TYPE_WORDS
+                            if re.search(rf"\b{t}\b", clause)])
     return constraints
 
 

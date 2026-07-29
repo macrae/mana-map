@@ -14,10 +14,10 @@
   "branches": [
     {
       "choice": "Cast Crimson Wisps now and bank the draws",
-      "line": "Main phase: Crimson Wisps targeting only Zada. Per verified stack 001, Zada's trigger copies it for each of the four tokens — five total resolutions, five cards drawn, every creature red with haste. Storm-Kiln Artist's magecraft ('Whenever you cast or copy an instant or sorcery spell, create a Treasure token') makes a Treasure per copy and per cast — five Treasures. Attack with a responsible portion of the board, hold {R} and the new cards.",
-      "signals": "Drawing five cards in one action flips you to archenemy on the spot — expect the wrath next rotation regardless of what else happens. The haste granted by Wisps lets even this turn's new tokens attack.",
-      "coalition_risk": "High and accepted: you become the table's problem, but the value is already banked in zones a creature wrath can't reach — hand and Treasures.",
-      "coaching": "The engine's value is locked by bodies on board right now, and four tokens is exactly the payload stack 001 verifies: five draws for one {R}. The wrath player's sorcery-speed sweeper cannot interrupt a main-phase instant already resolving; their only out is a counterspell, which trades two of their mana against your one at the moment they most need to hold up the wrath. Crucially, a sweep after this still leaves you five cards and five Treasures ahead — you converted a fragile board into resilient resources. Two tempering notes: the copies aren't cast, so Zada does not re-trigger and nothing here builds storm count for a later Grapeshot; and don't dump Krenko's Command into the telegraphed wrath — hold it as the rebuild.",
+      "line": "Main phase: Crimson Wisps targeting only Zada. Per verified stack 001, Zada's trigger copies it for each of the four tokens — five total resolutions, five cards drawn, every creature red with haste. Storm-Kiln Artist's magecraft ('Whenever you cast or copy an instant or sorcery spell, create a Treasure token') pays out per cast and per copy — five Treasures. Attack with a responsible portion of the board, hold {R} and the new cards.",
+      "signals": "Drawing five cards in one action flips you to archenemy on the spot — expect the wrath next rotation regardless. The haste from Wisps lets even this turn's new tokens attack.",
+      "coalition_risk": "High and accepted. You become the table's problem, but the value is already banked in zones a creature wrath can't reach — hand and Treasures.",
+      "coaching": "The engine's value is locked by bodies on board right now, and four tokens is exactly the payload stack 001 verifies: five draws for one {R}. Their sorcery-speed sweeper cannot interrupt a main-phase instant already resolving; their only out is a counterspell, which trades two of their mana against your one at the exact moment they most want to hold up the wrath. Best of all, a sweep after this still leaves you five cards and five Treasures ahead — you converted a fragile board into resilient resources. Two tempering notes: the copies aren't cast, so Zada does not re-trigger and nothing here builds storm count for a later Grapeshot; and don't dump Krenko's Command into the telegraphed wrath — hold it as the rebuild.",
       "citations": [
         {
           "rule": "707.10",
@@ -36,9 +36,9 @@
     {
       "choice": "Hold Crimson Wisps to fire in response to the sweeper",
       "line": "Pass with {R} open. When the Azorius player casts their sorcery-speed wrath on their turn, respond with Crimson Wisps targeting only Zada — the trigger and all five resolutions complete before the sweeper resolves, banking five draws with the board still alive.",
-      "signals": "Passing with one red open after Zada has resolved a spell before is itself a signal — the table has seen the gun; the wrath player may simply refuse to sweep and force you to act first.",
-      "coalition_risk": "Medium: you look patient rather than threatening, but you hand the control player the initiative and a full extra turn of held counterspell mana.",
-      "coaching": "Legal and clean — Wisps is an instant, so any priority window works, including with their wrath on the stack. But audit what you're paying: a full turn of five fresh cards and a haste attack, in exchange for insurance against a spell they may not even cast this rotation. And the insurance has holes — if they wrath with counter mana up, they counter your Wisps at the moment it's worth six cards, and an instant-speed sweeper or attack-punisher invalidates the whole plan. Betting your engine turn on reading their exact list is worse than banking value while their best answer is stuck at sorcery speed.",
+      "signals": "Passing with one red open after Zada has already resolved a spell is itself a signal — the table has seen the gun. The wrath player may simply refuse to sweep and force you to act first.",
+      "coalition_risk": "Medium. You look patient rather than threatening, but you hand the control player the initiative and a full extra turn of held counterspell mana.",
+      "coaching": "Legal and clean — Wisps is an instant, so any priority window works, including with their wrath on the stack. But audit the price: a full turn of five fresh cards and a haste attack, traded for insurance against a spell they may not even cast this rotation. And the insurance has holes. If they wrath with counter mana up, they counter your Wisps at the moment it's worth six cards, and an instant-speed sweeper or attack-punisher invalidates the whole plan. Betting your engine turn on reading their exact list is worse than banking value while their best answer is stuck at sorcery speed.",
       "citations": [
         {
           "rule": "117.1a",
@@ -48,14 +48,14 @@
     },
     {
       "choice": "Hold everything and play around the wrath",
-      "line": "No spells. Attack with two tokens, keep Zada and the rest home, pass with all mana up, wait for the sweeper to resolve before recommitting.",
-      "signals": "Maximum under-the-radar posture — but the table already watched Zada resolve last turn; the wrath player is sweeping your four bodies on their schedule whether or not you add to them.",
-      "coalition_risk": "Low optics, high real cost: you protect nothing that was safe and cash none of what was ready.",
-      "coaching": "This confuses hiding with playing around. The engine's draw count is set by bodies on the battlefield at resolution time — after the sweep, Crimson Wisps targeting a rebuilt Zada with zero tokens draws exactly one card. You'd be volunteering to convert a verified five-draw turn (stack 001) into a one-draw turn to dodge a wrath that hits you either way. The goldfish says the deck rebuilds bodies fine (4.07 by turn 5, 5.26 by turn 6 on average, rituals unmodeled), but rebuilt bodies without the banked cards is strictly the worst version of the next three turns."
+      "line": "No spells. Attack with two tokens, keep Zada and the rest home, pass with all mana up, and wait for the sweeper to resolve before recommitting.",
+      "signals": "Maximum under-the-radar posture — but the table already watched Zada resolve last turn. The wrath player sweeps your four bodies on their schedule whether or not you add to them.",
+      "coalition_risk": "Low optics, high real cost. You protect nothing that was safe and cash none of what was ready.",
+      "coaching": "This confuses hiding with playing around. The engine's draw count is set by bodies on the battlefield at resolution time — after the sweep, Crimson Wisps at a rebuilt Zada with zero tokens draws exactly one card. You'd be volunteering to turn a verified five-draw turn (stack 001) into a one-draw turn to dodge a wrath that hits you either way. The goldfish says you rebuild bodies just fine (4.07 by turn 5, 5.26 by turn 6 on average, rituals unmodeled) — but rebuilt bodies without the banked cards is strictly the worst version of the next three turns."
     }
   ],
   "recommendation": {
     "choice": "Cast Crimson Wisps now and bank the draws",
-    "rationale": "Four bodies is the verified payload (stack 001: one {R} → five cards, full haste) and their most likely answer is sorcery-speed, so the only interaction point is a counterspell they'd rather save for your actual kill. Cards in hand and Storm-Kiln Treasures survive any creature sweeper — firing now converts the most wrath-vulnerable board state into the most wrath-proof resource state, and Krenko's Command stays held as the rebuild. Becoming archenemy is acceptable when the archenemy tax is paid in resources the wrath can't touch."
+    "rationale": "Four bodies is the verified payload (stack 001: one {R} → five cards, full haste), and their most likely answer is sorcery-speed — the only interaction point is a counterspell they'd rather save for your actual kill. Cards in hand and Storm-Kiln Treasures survive any creature sweeper. Firing now converts the most wrath-vulnerable board state into the most wrath-proof resource state, with Krenko's Command held as the rebuild. Becoming archenemy is fine when the archenemy tax is paid in resources the wrath can't touch."
   }
 }
