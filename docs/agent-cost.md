@@ -198,7 +198,9 @@ Three consequences:
 - A real MISS on a keyed routine names its `stale keys:`, and the charters'
   Partial revision mode scopes the spawn to exactly those keys — the writer
   costs what the stale keys cost, not the whole file.
-- `manamap pilot impact <slug>` is the deterministic staleness report:
+- `manamap pilot impact <slug>` (run it BEFORE cache-rebless — a rebless
+  advances the card baseline and blinds the deck diff) is the deterministic
+  staleness report:
   per-artifact/key/department card references, a rounding-aware audit of
   goldfish/bracket figures quoted in prose, goldfish-target ghosts, and
   zone-framing flags. Report-only; regeneration always goes through an agent.

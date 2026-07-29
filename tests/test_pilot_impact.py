@@ -162,3 +162,18 @@ def test_canonical_figures_rounding_variants(deck):
     assert 72 in figures           # percent, 0dp
     assert 7.982 in figures
     assert 8 in figures            # "turn 8"
+
+
+def test_figure_audit_ignores_bare_short_integers(deck, monkeypatch):
+    """'up from 49%' and '9->11 cards' are historical framing, not staleness."""
+    write_json(deck / "goldfish_metrics.json", {
+        "meta": {}, "metrics": {"rate": 0.485},
+    })
+    write_json(deck / "manual_prose.json", {
+        "how_it_wins": "up from 49% in v1, and the Forest count went 9 to 11",
+    })
+    monkeypatch.setattr(impact, "_previous_goldfish", lambda base: {
+        "meta": {}, "metrics": {"rate": 0.493},
+    })
+    common.clear_memo()
+    assert impact.figure_audit(deck) == []

@@ -50,6 +50,16 @@ def deck_diff(base, cache):
                 "reason": "no per-card baseline in .agent-cache.json — run "
                           "`manamap pilot cache-rebless <slug>` once to seed it"}
     changed = diff_card_maps(baseline, current)
+    stale_records = sorted(
+        r for r, e in (cache.get("routines") or {}).items()
+        if (e.get("extra") or {}).get("cards_semantic")
+        not in (None, (cache.get("cards_map") or {}).get("digest")))
+    if not changed and stale_records:
+        return {"available": False,
+                "reason": ("baseline already advanced past "
+                           f"{len(stale_records)} record(s) (a rebless ran before "
+                           "impact — run impact FIRST next time): "
+                           + ", ".join(stale_records[:6]))}
     zone_moved = sorted({
         key.split("\x00", 1)[0]
         for key in set(baseline) ^ set(current)
@@ -218,7 +228,8 @@ def figure_audit(base):
 
     findings = []
     surfaces = [("manual_prose.json", load_json(base / "manual_prose.json") or {}),
-                ("strategic_frame.json", load_json(base / "strategic_frame.json") or {})]
+                ("strategic_frame.json", load_json(base / "strategic_frame.json") or {}),
+                ("issue_plan.json", load_json(base / "issue_plan.json") or {})]
     for dec in sorted((base / "decisions").glob("*.json")) if (base / "decisions").exists() else []:
         surfaces.append((f"decisions/{dec.name}", load_json(dec, {})))
 
@@ -227,7 +238,14 @@ def figure_audit(base):
         for key, value in items:
             text = json.dumps(value, ensure_ascii=False)
             for match in _NUMBER_RE.finditer(text):
-                literal = float(match.group())
+                raw = match.group()
+                # Bare 1-2 digit integers are hopelessly ambiguous in prose —
+                # they match counts, versions, and version-labeled comparisons
+                # ("up from 49%", "9->11 Forest cards"). Only decimal-bearing
+                # or 3+-digit literals are unambiguous enough to flag.
+                if "." not in raw and len(raw) < 3:
+                    continue
+                literal = float(raw)
                 if literal in stale_candidates:
                     findings.append({"artifact": fname, "key": key,
                                      "stale_figure": match.group()})

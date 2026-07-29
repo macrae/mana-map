@@ -56,13 +56,13 @@ Pipeline for `data/decks/<slug>/` → `manuals/<slug>.html`. Evidence tiers: ✓
 
 The cache is card-scoped. When the decklist changes:
 
-1. `.venv/bin/manamap pilot cache-rebless <slug>` — clears every `STALE_OK`
+1. `.venv/bin/manamap pilot impact <slug>` — FIRST, before any rebless (a
+   rebless advances the card baseline and blinds the deck-diff). The report:
+   which artifacts/keys/departments reference the changed cards, stale prose
+   figures, goldfish-target ghosts, zone-framing flags. Report-only.
+2. `.venv/bin/manamap pilot cache-rebless <slug>` — clears every `STALE_OK`
    routine (deck changed, but nothing that artifact references) without a
    single spawn. What remains MISS is real work.
-2. `.venv/bin/manamap pilot impact <slug>` — the deterministic report:
-   which artifacts/keys/departments reference the changed cards, which prose
-   figures no longer match goldfish, goldfish-target ghosts, zone-framing
-   flags on stacks. Report-only; it never edits.
 3. For a keyed routine's MISS, `cache-status` names `stale keys:` — spawn the
    agent **scoped to exactly those keys** (the charters' Partial revision
    mode); merge, validate, record as usual. Same for the editor: list the
