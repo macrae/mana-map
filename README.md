@@ -12,8 +12,7 @@ survived an adversarial checker, resource curves from a seeded simulation, and c
 that says out loud when it's coaching.
 
 The fastest way to understand the second one is to read an issue:
-**[Vol. 001 — Goblin Storm](https://macrae.github.io/mana-map/manuals/goblin-storm.html)**
-· **[Vol. 002 — Hapatra](https://macrae.github.io/mana-map/manuals/hapatra.html)**
+**Seven issues live** — [001 Goblin Storm](https://macrae.github.io/mana-map/manuals/goblin-storm.html) · [002 Hapatra](https://macrae.github.io/mana-map/manuals/hapatra.html) · [003 Sisay](https://macrae.github.io/mana-map/manuals/sisay.html) · [004 Heliod](https://macrae.github.io/mana-map/manuals/heliod.html) · [005 Ur-Dragon](https://macrae.github.io/mana-map/manuals/ur-dragon.html) · [006 Edgar](https://macrae.github.io/mana-map/manuals/edgar-vampires.html) · [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html)
 · [the newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
 Vol. 001 was hand-built. **Vol. 002 was not** — the deck was generated from a three-line
@@ -214,10 +213,10 @@ cache-busters stripped.
 ## Testing
 
 ```bash
-.venv/bin/python -m pytest        # 802 tests
+.venv/bin/python -m pytest        # 924 tests
 ```
 
-323 card-pipeline + 479 pilot. Five skip markers in `tests/conftest.py` gate on the last
+325 card-pipeline + 599 pilot. Five skip markers in `tests/conftest.py` gate on the last
 artifact of each stage, so **skips on a fresh clone are expected and correct**. Unit tests
 build inline fixtures — no fixture files. Paths always come from `manamap.config`, so the
 suite is CWD-independent and honours `MANAMAP_DATA_DIR`.

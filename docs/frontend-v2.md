@@ -1,6 +1,25 @@
 # Frontend v2 — a deck-building surface
 
-*Status: proposed, not started. Written 2026-07-26.*
+*Status: proposed. Written 2026-07-26; **audited and partially superseded 2026-07-29**.*
+
+> **Read this first.** The analysis below still holds — the engine is portable, the
+> scorer diverges from `config.py`, decks persist raw row indices. Two things have
+> changed since it was written:
+>
+> 1. **The sequencing is wrong.** It orders M1 (data) → M2 (engine) → M6 (`deck.html`),
+>    but every deck artifact is already tracked and servable (~3.6 MB, seven decks,
+>    uniform schema), so **`deck.html` has no prerequisites** — while the engine port is
+>    blocked on `data/cards.csv` being gitignored. The dossier ships first. `PLAN.md`
+>    carries the current order.
+> 2. **M3's premise is stale.** It targets a 15-department layout and a component set
+>    that predate the v3.2/v3.3 magazine work: there are now 17 sections in five acts,
+>    with bylines, three columnists and L10. Port the *tokens* (they are unchanged);
+>    re-read `issue_spec.py` and `STYLEv3.md` §5 before porting any layout.
+>
+> Also corrected by audit: embeddings are **not** loaded twice (fixed in `3d3edc6`); the
+> int8 argument stands on its own. And M6 was re-scoped from a builder-record view to a
+> **deck dossier**, because `build_plan.json` exists for exactly one deck (hapatra), so
+> six of seven pages would have been empty.
 
 ## Context
 

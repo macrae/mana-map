@@ -44,14 +44,20 @@ From the session that built the deck builder and built hapatra (2026-07-25):
 | `deck-build` | deck-architect | 105,096 + 96,380 (revision) | new pool, critic findings |
 | `deck-build` | deck-critic | 94,468 | every architect iteration |
 | *(research pass)* | strategy-researcher (research) | 120,545 / 92,559 / 166,544 | the `strategy:deckbuilding` corpus, 3 passes |
-| `sideboard-analysis` | sideboard-analyst | ~55,000 (1 spawn, goblin-storm) | new sideboard card, new pilot feedback |
+| `the-ten` | sideboard-analyst | 76,000–115,000 (7 spawns, the fleet batch) | new sideboard card, new pilot feedback, pool refresh |
+| `tutor-guide` | pilot-coach | 60,000–90,000 (7 spawns) | a tutor enters or leaves the 99 |
 
-`sideboard-analysis` is the cheapest agent routine in the system, and deliberately so: its
-pool is one deck's sideboard rather than a 133 KB `candidate_pool.json`, and
-`sideboard-facts` hands it the arithmetic (roles, colour legality, bracket-if-added,
-lines-opened) before it reads a single card. Note that editing a sideboard changes the
-deck's card digest — `is_sideboard` is in `CARD_SEMANTIC_FIELDS` — so a one-card sideboard
-change MISSes **every** routine on that deck, not just this one.
+`the-ten` replaced the retired `sideboard-analysis`/`upgrade-watch` pair (one routine, one
+artifact — `considering.json`). It costs more than the old bench-only read because its pool
+is the whole card database when the bench cannot fill ten, but `sideboard-facts` and
+`upgrade-facts` hand it the arithmetic (roles, colour legality, bracket-if-added,
+lines-opened, obsolescence, synergy shortlists) before it reads a single card. Note that
+editing a sideboard changes the deck's card digest — `is_sideboard` is in
+`CARD_SEMANTIC_FIELDS` — so a one-card sideboard change MISSes **every** routine on that
+deck, not just this one.
+
+`tutor-guide` reports `N/A` for a deck with no library-search tutors, so it never becomes a
+permanent MISS on a tutorless list.
 
 **A full manual regeneration ≈ 330k tokens** across four serially-dependent agents.
 `resolve-stack` is 2–6 spawns per scenario (resolver + checker, up to

@@ -79,8 +79,9 @@ data/decks/<slug>/             all tracked:
                                strategic_frame.json  strategy-researcher (consult)
                                manual_prose.json     pilot-coach + manual-writer
                                pilot_feedback.md     authored, OPTIONAL (free-text pilot notes)
-                               sideboard_analysis.json  sideboard-analyst (deck has a sideboard)
-                               upgrade_watch.json    upgrade-scout (deck has NO sideboard)
+                               mana_analysis.json    mana-analysis (deterministic, no agent)
+                               tutor_guide.json      pilot-coach (Fetch Quests)
+                               considering.json      sideboard-analyst (The Short List — ten)
                                issue.json            authored (never generated)
                                issue_plan.json       magazine-editor
                                .agent-cache.json     cache-record
@@ -181,11 +182,11 @@ someone else's regeneration as a cache hit, and `git log` answers "which inputs
 produced this prose?"). `record()` refuses artifacts that are missing, lack their
 routine's keys, or have no checker block — a failed run can't poison the cache.
 
-Routines (8 static): `candidate-pool`, `deck-build`, `strategic-frame`, `sideboard-analysis`,
-`upgrade-watch` (the empty-sideboard pool scout — `sideboard-analysis` and `upgrade-watch`
-partition every deck via the accessory-aware applicability gate in agent_cache),
-`coach-prose`, `writer-prose`, `issue-plan`, plus `stack:<NNN>` and
-`decision:<NNN>` discovered from disk. Declared in `config.AGENT_ROUTINES`.
+Routines (8 static): `candidate-pool`, `deck-build`, `strategic-frame`, `coach-prose`,
+`writer-prose`, `the-ten` (The Short List — applies to every deck), `tutor-guide`
+(Fetch Quests — `N/A` for a deck with no library-search tutors, via the applicability
+gate in agent_cache), `issue-plan`, plus `stack:<NNN>` and `decision:<NNN>` discovered
+from disk. Declared in `config.AGENT_ROUTINES`.
 
 The two build routines take **no `cards:semantic`** — it digests a `cards.json`
 that by definition doesn't exist before a build, so the authored `brief.json` is
@@ -218,10 +219,16 @@ Run via the `resolve-stack` skill: `stack-resolver` agent drafts → `validate-s
 
 ## The magazine layer (STYLEv3)
 
-Each deck is a complete **issue** of *Pilot's Manual* — fifteen fixed departments in
-a fixed order, so readers learn the publication once and navigate it forever. The
-design authority is `STYLEv3.md` (editorial laws, the Commander Mandate, department
-specs, voice, component library); `docs/history/STYLE-v1-visual-research.md` and
+Each deck is a complete **issue** of *Pilot's Manual* — a fixed set of sections in a
+fixed order (see `issue_spec.DEPARTMENTS`; never transcribe the list or its count into
+a prompt), grouped into five acts that ramp from what to do, through tactics and the
+long game, into the numbers and the proof. Readers learn the publication once and
+navigate it forever. Every section is signed by one of three columnists — `"Ledger"
+Lin Marginal` (◆), `Counselor Vera Dictum` (✓), `Coach Sunny Brightside` (★) — and
+STYLEv3 L10 holds that every issue is the reader's first: no version numbers, no
+changelog voice, enforced by `validate_issue.validate_self_containment()`. The design
+authority is `STYLEv3.md` (editorial laws, the Commander Mandate, section specs,
+voice, component library); `docs/history/STYLE-v1-visual-research.md` and
 `-v2-editorial-method.md` are its archived sources.
 
 - **`src/manamap/pilot/issue_spec.py`** — the canonical department system: ids, order,
@@ -235,10 +242,12 @@ specs, voice, component library); `docs/history/STYLE-v1-visual-research.md` and
   kicker/headline/dek, captions, PILOT TIPs, callouts, pull quotes, roster grouping,
   threat boxes, sample hands. `manual_prose.json` remains the body-copy layer; the
   renderer merges them.
-- **`validate-issue`** — the mechanical gate: identity block complete, all fifteen
-  departments present in canonical order, copy completeness, components from the fixed
-  library, **tier costume never overridden**, every PILOT TIP / caption / roster card
-  name real, and no two dense departments adjacent.
+- **`validate-issue`** — the mechanical gate: identity block complete (including a
+  `decklist_sha256` that must match `cards.json`), every section present in canonical
+  order, copy completeness, components from the fixed library, **tier costume never
+  overridden**, every PILOT TIP / caption / roster card name real, no two dense
+  sections adjacent unless a breather is declared (`BREATHER_AFTER`), no changelog
+  voice (L10), and no reader-facing copy quoting `lands.entries` as a land count.
 - **`magazine-editor` agent** — reads STYLEv3 and every artifact, returns the plan as
   JSON. It never writes HTML: determinism, mechanical validation, and the citation
   contract all depend on the renderer staying deterministic.
@@ -305,59 +314,55 @@ pre-answers the traps agents kept rediscovering:
   saying nothing: sisay's strategic frame asserted Secluded Courtyard was dead to its own
   commander, and it isn't.
 
-## Sideboard analysis (`sideboard_analysis.json`, tiers ◆ + ★)
+## The Short List (`considering.json`, tiers ◆ + ★)
 
-A deliberately constrained refactor pass: **the agent may only propose cards already in
-that deck's sideboard.** No pool search, no rebuild, no new decklist. Applying a swap is a
-separate, future job (see PLAN.md, deck versioning).
+**Exactly ten cards**, ranked, that the pilot should be thinking about — one artifact and
+one routine (`the-ten`) for every deck, replacing the retired `sideboard_analysis.json` /
+`upgrade_watch.json` pair. Bench-first: every real sideboard card competes, a bench larger
+than ten is pruned to its best ten, a smaller or empty bench is topped up from the whole
+card pool, and each pick carries `source: "sideboard" | "pool"`. **Analysis-only** — the
+physical sideboard in `cards.json` is never rewritten.
 
-```bash
-manamap pilot sideboard-facts <slug> [--json]   # free, deterministic, pre-agent
-manamap pilot validate-sideboard <slug>         # form gate + recomputed bracket deltas
-```
+`validate_considering.py` enforces the count and every claim: source membership (a
+`sideboard` pick must really be on the bench, and accessories are not cards; a `pool` pick
+must not already be in the deck), no duplicate picks or duplicate `natural_cut`s, a cut
+that is a real maindeck card and never the commander, combo-line status vocabulary
+(`needs a stack scenario` unless a checker-passed artifact is named), obsolescence claims
+re-checked against `obsolescence_index.json`, synergy partners re-checked against the
+pick's own graph shortlist **and** the deck, and every claimed bracket delta recomputed
+through `bracket.assess()`. `sideboard-facts` and `upgrade-facts` are its deterministic
+pre-agent briefs.
 
-`sideboard-facts` does the arithmetic before an agent spawns: per real sideboard card its
-roles and tags, whether it is inside the commander's colour identity, the deck's bracket
-floor **if you ran it**, and every combo line it would complete that the deck cannot
-currently assemble (a set difference over `bracket.combos_in_deck`). Secret Lair table
-accessories — `type_line == "Card"`, no rules text — are excluded via
-`artist_credits.is_accessory`; they are not cards and cannot be swapped in. Decks with no
-real sideboard report `{"available": false}` so callers branch cleanly.
+Rendered as **The Short List**, straight from the artifact with no prose key — a new key
+would change `prose:shape` and invalidate both prose routines for no gain. The writer's
+`upgrades` key is the section's opening copy and is cached separately. Tiers are marked
+inline: computed evidence ◆, every ranking and verdict ★.
 
-Artifact shape (tracked):
+## Fetch Quests (`tutor_guide.json`, tier ★)
 
-```json
-{"slug", "decklist_sha256",
- "assessment": "what this sideboard is for",
- "swaps": [{"in", "out", "role", "when", "why", "bracket_delta", "citations"}],
- "opens_lines": [{"cards", "why_plausible", "status": "needs a stack scenario"}],
- "long_term_defaults": [{"card", "verdict": "promote|keep-in-sideboard", "why"}],
- "gaps": []}
-```
+One wish per tutor. `pilot-coach` authors an entry for every maindeck library-search
+tutor — scenario → the exact card to fetch → why — and `validate-tutor-guide` holds each
+one to the deck and to that tutor's own search constraint, **per clause**: a DFC or
+chapter card can carry several search clauses (Huatli's front face fetches a basic land;
+Roar III fetches Dinosaurs), so a fetch is legal if any clause permits it. Pure land ramp
+(Cultivate, Nature's Lore) is excluded — that belongs to Sources Say. A deck with no
+tutors keeps the section and prints standing copy; the routine reports `N/A`.
 
-`when` is the addition over `deck-architect`'s build-time swap shape: a build swap is
-unconditional, a sideboard swap is a conditional answer. **A sideboard card that is right
-unconditionally belongs in the 99** — and saying so is the `long_term_defaults` verdict
-`promote`.
+## Sources Say (`mana_analysis.json`, tier ◆)
 
-`validate_sideboard.py` enforces what the build side never did: `in` must be a real
-sideboard card, `out` a maindeck card and never the commander, no two swaps may cut the
-same slot, and **`why` must be non-empty** — the check whose absence let 56 blank `why`
-fields into hapatra's `build_plan.json`. It does not trust a claimed bracket delta; it
-recomputes it through `bracket.assess()`, so a mismatch is a real disagreement rather than
-a typo. Citations go through `validate_stack._validate_citations`, the one shared
-implementation.
+The mana audit, and the one section with **no agent at all**: `manamap pilot
+mana-analysis <slug>` computes it deterministically, reusing the deck-builder's own
+hypergeometric kit (`manabase.py`). Land classes, per-colour land and nonland sources,
+pip share vs source share, on-curve probability with and without rocks, the ramp census,
+and a stated-assumptions block. The writer's `mana_base` key narrates it.
 
-Rendered as a section inside **Upgrade Watch**, not a 16th department, straight from the
-artifact with no prose key — a new key would change `prose:shape` and invalidate both
-prose routines for no gain. Tiers are marked inline: computed deltas ◆, the recommendation
-to actually make the swap ★. When a deck has no sideboard the section is not omitted:
-the `upgrade-scout` agent (the sideboard-analyst's empty-bench counterpart) scouts the
-whole card pool for a ranked top-10 "On the Lookout" list — straight upgrades from the
-obsolescence index, combo-line openers, and synergy candidates, each claim re-checked by
-`validate-upgrade-watch` against the tracked indexes and rendered from
-`upgrade_watch.json`. `upgrade-facts` is its deterministic pre-agent brief. Only a deck
-with neither artifact renders no section.
+**Count copies, not decklist entries.** `cards.json` stores basics as one entry with
+`quantity: N`, and counting entries once published "18 lands" for a 33-land deck and
+understated every colour's sources fleet-wide. `common.expand_copies()` is the shared
+primitive; `lands.total` is copies and `lands.entries` is distinct cards, both reported so
+they can never be confused again. Three guards: a unit fixture (11 Islands = 11 blue
+sources), a staleness test recomputing every tracked artifact, and a `validate-issue` lint
+rejecting any reader-facing copy that quotes the entry count as a land count.
 
 **The trap this exists to catch.** Goblin-storm's one sideboard card is Sazacap's Brew,
 tagged `buff:pump` because its text contains "+2/+0", and Vol. 001 shipped advice to test
