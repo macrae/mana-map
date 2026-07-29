@@ -217,3 +217,21 @@ def test_sisay_reproduces_the_figures_derived_by_hand():
     assert verdicts["Delighted Halfling"] == "spells_only"
     assert verdicts["Unclaimed Territory"] == "spells_only"
     assert verdicts["Secluded Courtyard"] == "pays_abilities"
+
+
+def test_mana_facts_counts_copies_not_entries():
+    """A mana base is about physical cards: 11 Islands are 11 blue sources.
+
+    The `counts` block stays per-entry by convention (and reports both); the
+    mana block must not, or every source figure in the magazine is halved.
+    """
+    cards = [
+        {"name": "Island", "type_line": "Basic Land — Island", "quantity": 11,
+         "oracle_text": "({T}: Add {U}.)", "color_identity": []},
+        {"name": "Opt", "type_line": "Instant", "quantity": 1,
+         "mana_cost": "{U}", "cmc": 1.0, "oracle_text": "Scry 1."},
+    ]
+    mana = df.mana_facts(cards)
+    assert mana["lands"] == 11          # copies
+    assert mana["land_entries"] == 1    # distinct cards
+    assert mana["land_sources"]["U"] == 11

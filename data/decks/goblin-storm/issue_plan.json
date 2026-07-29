@@ -7,23 +7,33 @@
     "teases": [
       "ONE MANA, FIVE CARDS — the Crimson Wisps engine, on the record",
       "THE DATABASE SAID INFINITE. THE RULES SAID NO. — the Krenko case file",
-      "15 LANDS, ON PURPOSE — Ledger audits the fuse",
+      "33 RED SOURCES, SIX RITUALS — Ledger prices the storm turn",
       "10,000 GOLDFISH GAMES — your turn-4 window, to three decimals"
     ],
     "violators": [
-      {"text": "5 VERIFIED CASE FILES!", "tone": "extreme"},
-      {"text": "TRUE INFINITE INSIDE", "tone": "extreme"}
+      {
+        "text": "5 VERIFIED CASE FILES!",
+        "tone": "extreme"
+      },
+      {
+        "text": "TRUE INFINITE INSIDE",
+        "tone": "extreme"
+      }
     ]
   },
   "departments": [
     {
       "id": "cover",
-      "components": ["violator"],
+      "components": [
+        "violator"
+      ],
       "note": "Zada, Hedron Grinder at hero scale from the pilot's printing — art by Wizard of Barge (this issue's Featured Artist; the credit line under the art seeds that section). Tagline 'Goblins all the way down' from issue.json, verbatim. The dominant coverline names the single most exciting verified thing in the issue: the stack 005 true infinite. Both violators are true — five checker-passed case files, one of them a genuine unbounded loop. Vol. 001, August 2026, $4.95, sha c8c1c7ddaa72."
     },
     {
       "id": "contents",
-      "components": ["folio"],
+      "components": [
+        "folio"
+      ],
       "note": "The Flight Plan: sections grouped under the five act headers, one lean row each — title, the promise verbatim from issue_spec, tier badge, byline. Tier legend and the three-columnist masthead printed in full; Vol. 001 is by definition somebody's first issue. No chart furniture — the map reads in one glance."
     },
     {
@@ -31,19 +41,42 @@
       "kicker": "THE PLAN",
       "headline": "CHUMP BLOCKERS, ALLEGEDLY",
       "dek": "Why does a table full of veterans ignore a board of 1/1 Goblins? Because they haven't met the one that's a library in a trench coat — here's the game you're actually playing.",
-      "components": ["callout-step", "pilot-tip", "pull-quote"],
+      "components": [
+        "callout-step",
+        "pilot-tip",
+        "pull-quote"
+      ],
       "callouts": [
-        {"n": 1, "title": "SEED THE BOARD", "text": "Turns one through three, make Goblins and nothing but. Dragon Fodder and Krenko's Command read as defense at a multiplayer table, and the goldfish has your first token maker drawn by mean turn 3.18 in 60% of games. Two 1/1s aren't a threat — they're two extra copies of every spell you're about to aim at your commander."},
-        {"n": 2, "title": "LAND HER QUIET", "text": "Zada, Hedron Grinder arrives on turn 4 in 70% of games — cast her as 'just a 3/3' and pass. Never fire a cantrip at her for two copies of value. The engine assembles fully by mean turn 5.27; you usually get one quiet turn, so spend it looking harmless."},
-        {"n": 3, "title": "ONE MANA, FIVE CARDS", "text": "The pivot is exact: Zada untapped, three-plus other creatures, one red mana. Stack 001 verifies the payload — one Crimson Wisps into four bodies is five cards drawn and a hasted team. Fire when the table's instant-speed interaction is tapped or spent; a telegraphed sweeper forces the pivot early, and that's fine — cards in hand survive the wrath."},
-        {"n": 4, "title": "PICK YOUR EXIT", "text": "The kills are verified separately: Fists of Flame trample lethal off a board of 1/1s (stack 002 is the storm math, stack 003 the combat math), Empty the Warrens under Impact Tremors, a Grapeshot riding your real casts, or the Haze of Rage loop (stack 005). Pick the exit before you start the engine — the loop makes mana, not wins."}
+        {
+          "n": 1,
+          "title": "SEED THE BOARD",
+          "text": "Turns one through three, make Goblins and nothing but. Dragon Fodder and Krenko's Command read as defense at a multiplayer table, and the goldfish has your first token maker drawn by mean turn 3.18 in 60% of games. Two 1/1s aren't a threat — they're two extra copies of every spell you're about to aim at your commander."
+        },
+        {
+          "n": 2,
+          "title": "LAND HER QUIET",
+          "text": "Zada, Hedron Grinder arrives on turn 4 in 70% of games — cast her as 'just a 3/3' and pass. Never fire a cantrip at her for two copies of value. The engine assembles fully by mean turn 5.27; you usually get one quiet turn, so spend it looking harmless."
+        },
+        {
+          "n": 3,
+          "title": "ONE MANA, FIVE CARDS",
+          "text": "The pivot is exact: Zada untapped, three-plus other creatures, one red mana. Stack 001 verifies the payload — one Crimson Wisps into four bodies is five cards drawn and a hasted team. Fire when the table's instant-speed interaction is tapped or spent; a telegraphed sweeper forces the pivot early, and that's fine — cards in hand survive the wrath."
+        },
+        {
+          "n": 4,
+          "title": "PICK YOUR EXIT",
+          "text": "The kills are verified separately: Fists of Flame trample lethal off a board of 1/1s (stack 002 is the storm math, stack 003 the combat math), Empty the Warrens under Impact Tremors, a Grapeshot riding your real casts, or the Haze of Rage loop (stack 005). Pick the exit before you start the engine — the loop makes mana, not wins."
+        }
       ],
       "captions": {
         "Zada, Hedron Grinder": "**THE MULTIPLIER:** any instant or sorcery that targets only her is copied for each other creature you control — a wide board turns one cantrip into mass card draw.",
         "Dragon Fodder": "**THE FUEL:** two 1/1s are two extra copies of your next cantrip — the simplest card in the deck and one of the most important."
       },
       "pilot_tips": [
-        {"card": "Crimson Wisps", "text": "Hold Crimson Wisps until Zada has at least three coworkers — one {R} into four bodies is five cards (stack 001); the same spell on turn 2 is just a cantrip."}
+        {
+          "card": "Crimson Wisps",
+          "text": "Hold Crimson Wisps until Zada has at least three coworkers — one {R} into four bodies is five cards (stack 001); the same spell on turn 2 is just a cantrip."
+        }
       ],
       "pull_quote": "A board that reads as chump blockers until the turn it wins."
     },
@@ -52,26 +85,63 @@
       "kicker": "THE DRILL",
       "headline": "BODIES AND MANA",
       "dek": "Four hands, one call each. The sim keeps 79.1% of first sevens, so the drill isn't courage — it's spotting the seven that's all crescendo and no verse.",
-      "components": ["scenario-box", "power-meter", "pilot-tip", "pull-quote"],
+      "components": [
+        "scenario-box",
+        "power-meter",
+        "pilot-tip",
+        "pull-quote"
+      ],
       "hands": [
         {
           "verdict": "KEEP — the textbook",
-          "cards": ["Mountain", "Mountain", "Goblin Burrows", "Skirk Prospector", "Dragon Fodder", "Crimson Wisps", "Skullclamp"],
+          "cards": [
+            "Mountain",
+            "Mountain",
+            "Goblin Burrows",
+            "Skirk Prospector",
+            "Dragon Fodder",
+            "Crimson Wisps",
+            "Skullclamp"
+          ],
           "why": "Three lands, early bodies, a banked cantrip, and an engine. This is the gold standard: Goblins early, cheap spells always, and Zada waiting at four mana regardless. The 2-to-5-land rule keeps 79.1% of first sevens — this one isn't close."
         },
         {
           "verdict": "SHIP — all crescendo, no verse",
-          "cards": ["Mountain", "Mountain", "Blasphemous Act", "Mana Geyser", "Empty the Warrens", "Grapeshot", "Haze of Rage"],
+          "cards": [
+            "Mountain",
+            "Mountain",
+            "Blasphemous Act",
+            "Mana Geyser",
+            "Empty the Warrens",
+            "Grapeshot",
+            "Haze of Rage"
+          ],
           "why": "Two lands and five spells that all want a game already in progress. Rituals and storm payoffs do nothing without a board and a spell count — this is the named ship in the deck's mulligan rule, no matter how good the cards look fanned out."
         },
         {
           "verdict": "KEEP — the rock counts",
-          "cards": ["Mountain", "Mountain", "Sol Ring", "Ruby Medallion", "Krenko's Command", "Expedite", "Fists of Flame"],
+          "cards": [
+            "Mountain",
+            "Mountain",
+            "Sol Ring",
+            "Ruby Medallion",
+            "Krenko's Command",
+            "Expedite",
+            "Fists of Flame"
+          ],
           "why": "Two lands plus Sol Ring or Ruby Medallion satisfies the mana rule — and Medallion effectively doubles a storm turn in a deck of one- and two-mana spells. Bodies on two, discounts forever, and two cantrips banked for Zada's arrival."
         },
         {
           "verdict": "KEEP — Looting does the work",
-          "cards": ["Mountain", "Forgotten Cave", "Smoldering Crater", "Faithless Looting", "Seething Song", "Impact Tremors", "Empty the Warrens"],
+          "cards": [
+            "Mountain",
+            "Forgotten Cave",
+            "Smoldering Crater",
+            "Faithless Looting",
+            "Seething Song",
+            "Impact Tremors",
+            "Empty the Warrens"
+          ],
           "why": "A marginal seven upgraded by its worst card: Faithless Looting trades the crescendo pieces for verse and stocks the graveyard for Past in Flames. Two tapped lands cost tempo the deck can afford — mean mulligans run 0.255, and this keep beats a blind six."
         }
       ],
@@ -79,7 +149,10 @@
         "Zada, Hedron Grinder": "**THE ZONE SUBSIDY:** she's in none of these hands and all of them — four mana, always there, which is why your opener never needs a payoff."
       },
       "pilot_tips": [
-        {"card": "Faithless Looting", "text": "Count Faithless Looting as half a mulligan you don't have to take — it turns dead rituals into live bodies now and flashback fuel later."}
+        {
+          "card": "Faithless Looting",
+          "text": "Count Faithless Looting as half a mulligan you don't have to take — it turns dead rituals into live bodies now and flashback fuel later."
+        }
       ],
       "pull_quote": "Zada is always waiting at four mana — your opener needs bodies and mana, never a payoff."
     },
@@ -88,17 +161,33 @@
       "kicker": "YOUR MOVE",
       "headline": "TWO TURNS, TWO TRAPS",
       "dek": "Turn 3 with the engine in hand; turn 6 with a wrath across the table. Commit to your line out loud before the Coach shows his — the reps are the whole exercise.",
-      "components": ["scenario-box", "callout-step", "pilot-tip", "pull-quote"],
+      "components": [
+        "scenario-box",
+        "callout-step",
+        "pilot-tip",
+        "pull-quote"
+      ],
       "callouts": [
-        {"n": 1, "title": "SPREAD ONE — TURN 3", "text": "Skirk Prospector out, three mana up, and a hand holding Dragon Fodder, Brightstone Ritual, Zada, and Swiftfoot Boots. The sweeper deck just tapped low; the token deck across the table looks scary. Do you develop wide a turn early, hold everything for a protected Zada, or split the difference? Three branches, each with its coalition risk priced."},
-        {"n": 2, "title": "SPREAD TWO — TURN 6", "text": "Zada online, four Goblins, Storm-Kiln Artist, {R}{R} open — and the Azorius player is holding exactly four mana with a fresh fistful of cards. Crimson Wisps now, Wisps in response to the wrath, or no spells at all? The branches disagree about what a sweeper can actually take from you."}
+        {
+          "n": 1,
+          "title": "SPREAD ONE — TURN 3",
+          "text": "Skirk Prospector out, three mana up, and a hand holding Dragon Fodder, Brightstone Ritual, Zada, and Swiftfoot Boots. The sweeper deck just tapped low; the token deck across the table looks scary. Do you develop wide a turn early, hold everything for a protected Zada, or split the difference? Three branches, each with its coalition risk priced."
+        },
+        {
+          "n": 2,
+          "title": "SPREAD TWO — TURN 6",
+          "text": "Zada online, four Goblins, Storm-Kiln Artist, {R}{R} open — and the Azorius player is holding exactly four mana with a fresh fistful of cards. Crimson Wisps now, Wisps in response to the wrath, or no spells at all? The branches disagree about what a sweeper can actually take from you."
+        }
       ],
       "captions": {
         "Swiftfoot Boots": "**THE HOLD QUESTION:** protection is real — but every turn it sits in hand, the script it protects slips a turn. Spread one is about what insurance actually costs.",
         "Storm-Kiln Artist": "**THE OTHER BANK:** whatever you decide about the wrath, magecraft Treasures survive it — a fact both spreads lean on from opposite directions."
       },
       "pilot_tips": [
-        {"card": "Crimson Wisps", "text": "Count the copies before you cast: Zada copies a spell once for each OTHER creature you control, so four tokens means four copies plus the original — five draws."}
+        {
+          "card": "Crimson Wisps",
+          "text": "Count the copies before you cast: Zada copies a spell once for each OTHER creature you control, so four tokens means four copies plus the original — five draws."
+        }
       ],
       "pull_quote": "Commit before you turn the page — a read you didn't make out loud is a read you didn't make.",
       "note": "Two spreads from decisions/001 and 002. Hard rule: the recommendation renders only after all branches — neither headline, dek, nor callout may telegraph it, which is why both callouts end on the question. Branch citations render with their ✓ treatment inside otherwise ★ spreads, exactly as the artifacts carry them."
@@ -108,19 +197,43 @@
       "kicker": "THE READ",
       "headline": "NOBODY FEARS A 1/1",
       "dek": "Your commander telegraphs turn four to anyone who can count Mountains. Your board tells a different story — here's how to keep three opponents reading the wrong one.",
-      "components": ["callout-step", "scenario-box", "pilot-tip", "pull-quote"],
+      "components": [
+        "callout-step",
+        "scenario-box",
+        "pilot-tip",
+        "pull-quote"
+      ],
       "callouts": [
-        {"n": 1, "title": "YOUR COVER STORY IS TRUE", "text": "On turn 3 you average 2.36 bodies — a Prospector and a couple of tokens look like chump blockers, not a fuel tank. Everyone who knows Zada circles your turn-4 window (she lands exactly on 4 in 70% of games); let them stare at the window while you build behind it."},
-        {"n": 2, "title": "THE THREAT WINDOW", "text": "Two exact board states flip you to archenemy. One: Zada untapped, three-plus other creatures, one red open — the stack 001 payload. Two: Storm-Kiln Artist on the battlefield, four mana up, Haze of Rage in hand — from there, informed opponents must respect lethal (stack 005). Treat the first Haze cast as the commitment point and fire when the table's interaction is spent."},
-        {"n": 3, "title": "THE TELL LADDER", "text": "What the table answers on sight, in order: Skullclamp, because it screams engine deck; Conspicuous Snoop, because he shows your library top all game; Krenko, because everyone has heard the word infinite. Sequence the scary pieces after removal is spent — every tell you show early buys a removal spell aimed at the engine."},
-        {"n": 4, "title": "THE KRENKO DISCOUNT", "text": "The databases promise a Krenko loop this deck cannot run — stack 004 proves it's a one-activation burst here. When an opponent panic-removes Krenko expecting the infinite, they've paid a real card for a one-shot. Sometimes you let them."}
+        {
+          "n": 1,
+          "title": "YOUR COVER STORY IS TRUE",
+          "text": "On turn 3 you average 2.36 bodies — a Prospector and a couple of tokens look like chump blockers, not a fuel tank. Everyone who knows Zada circles your turn-4 window (she lands exactly on 4 in 70% of games); let them stare at the window while you build behind it."
+        },
+        {
+          "n": 2,
+          "title": "THE THREAT WINDOW",
+          "text": "Two exact board states flip you to archenemy. One: Zada untapped, three-plus other creatures, one red open — the stack 001 payload. Two: Storm-Kiln Artist on the battlefield, four mana up, Haze of Rage in hand — from there, informed opponents must respect lethal (stack 005). Treat the first Haze cast as the commitment point and fire when the table's interaction is spent."
+        },
+        {
+          "n": 3,
+          "title": "THE TELL LADDER",
+          "text": "What the table answers on sight, in order: Skullclamp, because it screams engine deck; Conspicuous Snoop, because he shows your library top all game; Krenko, because everyone has heard the word infinite. Sequence the scary pieces after removal is spent — every tell you show early buys a removal spell aimed at the engine."
+        },
+        {
+          "n": 4,
+          "title": "THE KRENKO DISCOUNT",
+          "text": "The databases promise a Krenko loop this deck cannot run — stack 004 proves it's a one-activation burst here. When an opponent panic-removes Krenko expecting the infinite, they've paid a real card for a one-shot. Sometimes you let them."
+        }
       ],
       "captions": {
         "Conspicuous Snoop": "**THE INFORMATION TAX:** he casts Goblins off your library top — and shows the whole table what's coming, all game. Price that in before he hits the felt.",
         "Grenzo, Havoc Raiser": "**THE OUTSOURCED DEFENSE:** every connecting Goblin goads a blocker or steals a spell — the cheapest way to keep three armies pointed anywhere but at you."
       },
       "pilot_tips": [
-        {"card": "Skullclamp", "text": "Deploy Skullclamp the turn you intend to use it, not the turn you draw it — it is the loudest tell in the 99, and it draws removal the way it draws cards."}
+        {
+          "card": "Skullclamp",
+          "text": "Deploy Skullclamp the turn you intend to use it, not the turn you draw it — it is the loudest tell in the 99, and it draws removal the way it draws cards."
+        }
       ],
       "pull_quote": "The gap between what your board says and what your hand is building is your entire early game. Protect it."
     },
@@ -129,39 +242,67 @@
       "kicker": "SCOUTING REPORT",
       "headline": "WHO BEATS THE SWARM",
       "dek": "Combo owns your clock, wraths walk into your draw engine, and the aggro seat was never your problem. Know which chair at the pod is actually dangerous before you sit down.",
-      "components": ["threat-box", "pilot-tip", "pull-quote"],
+      "components": [
+        "threat-box",
+        "pilot-tip",
+        "pull-quote"
+      ],
       "threats": [
         {
           "archetype": "Dedicated combo",
           "meter_label": "Threat to you",
           "rate": 0.85,
           "read": "The seat that beats you: their assembly is faster than your natural storm kill, which the goldfish puts at 15.2% of games. Your interaction is thin, so held answers rot — rank their combo proximity above every board threat and plan to disrupt once, cheaply, at the decisive moment. Apply pressure so their tapped-out setup turn is punished, and use Grenzo's goads to keep other bodies pointed at them. Do not plan to out-race; plan to interrupt.",
-          "outs": ["Chaos Warp", "Gempalm Incinerator", "Goblin Bombardment", "Grenzo, Havoc Raiser"]
+          "outs": [
+            "Chaos Warp",
+            "Gempalm Incinerator",
+            "Goblin Bombardment",
+            "Grenzo, Havoc Raiser"
+          ]
         },
         {
           "archetype": "Stax / taxes",
           "meter_label": "Threat to you",
           "rate": 0.7,
           "read": "Taxes attack your core math — many cheap spells per turn — so recount your hand under the tax: a two-spell turn becoming one halves the engine. You are the beatdown here, racing the lock's assembly. Your outs are narrow and real; sequence to protect the one that breaks the piece that beats you. Ruby Medallion and Goblin Warchief pay the toll, and your rituals scale with the board, not your lands — mana denial hurts less than the table assumes.",
-          "outs": ["Vandalblast", "Goblin Trashmaster", "Chaos Warp"]
+          "outs": [
+            "Vandalblast",
+            "Goblin Trashmaster",
+            "Chaos Warp"
+          ]
         },
         {
           "archetype": "Sweeper control",
           "meter_label": "Threat to you",
           "rate": 0.55,
           "read": "Your engine is wrath insurance, not a wrath victim: stack 001 banks five cards into a zone the sweeper can't touch, and Storm-Kiln Artist's Treasures ride straight through. When the wrath is telegraphed at sorcery speed, fire the cantrip engine and bank the draws — decision 002 walks this exact board. Hold one token maker back, and let Bombardment and Pashalik Mons convert the dying board into damage on the way out.",
-          "outs": ["Skullclamp", "Goblin Bombardment", "Pashalik Mons", "Mogg War Marshal", "Past in Flames", "Krenko's Command"]
+          "outs": [
+            "Skullclamp",
+            "Goblin Bombardment",
+            "Pashalik Mons",
+            "Mogg War Marshal",
+            "Past in Flames",
+            "Krenko's Command"
+          ]
         },
         {
           "archetype": "Aggro / token mirrors",
           "meter_label": "Threat to you",
           "rate": 0.3,
           "read": "You hold inevitability — your engines out-scale combat damage, and 40 life absorbs the early turns while Zada sets up. Gempalm Incinerator kills their lord for X equal to ALL Goblins on the battlefield, theirs included, and Blasphemous Act is often {1}{R} against wide boards. Take the control seat, chump with replaceable tokens, and let the other token deck be the archenemy — you out-grind them.",
-          "outs": ["Gempalm Incinerator", "Blasphemous Act", "Impact Tremors", "General Kreat, the Boltbringer"]
+          "outs": [
+            "Gempalm Incinerator",
+            "Blasphemous Act",
+            "Impact Tremors",
+            "General Kreat, the Boltbringer"
+          ]
         }
       ],
       "pilot_tips": [
-        {"card": "Brightstone Ritual", "text": "In the token mirror, read Brightstone Ritual again — it counts every Goblin on the battlefield, so the opposing swarm pays your storm turn's bill."}
+        {
+          "card": "Brightstone Ritual",
+          "text": "In the token mirror, read Brightstone Ritual again — it counts every Goblin on the battlefield, so the opposing swarm pays your storm turn's bill."
+        }
       ],
       "pull_quote": "Against combo the last profitable moment for an answer is now; against everyone else, it's later than you think."
     },
@@ -170,13 +311,19 @@
       "kicker": "THE WISHES",
       "headline": "TWO WISHES, ONE TRIBE",
       "dek": "Both your tutors wish in one color and one creature type — and that's a strength, because every wish is on-plan. Just don't send the wrong goblin on the errand.",
-      "components": ["pilot-tip", "pull-quote"],
+      "components": [
+        "pilot-tip",
+        "pull-quote"
+      ],
       "captions": {
         "Goblin Matron": "**THE ERRAND RUNNER:** any Goblin card to hand — including Boggart Shenanigans, a Kindred Enchantment the table never sees coming. She's a body afterward, feeding Brightstone Ritual and Krenko's count.",
         "Moggcatcher": "**THE REPEATABLE WISH:** a Goblin permanent straight to the battlefield for {3} and a tap, turn after turn — no counterspell window on the card itself. He's a Human Mercenary: neither tutor can find him, and he adds nothing to your Goblin counts."
       },
       "pilot_tips": [
-        {"card": "Goblin Bushwhacker", "text": "Fetch Goblin Bushwhacker with Matron, never Moggcatcher — kicker is paid only when you cast a spell, and Moggcatcher never casts; an unkicked Bushwhacker is a 1/1 with stage fright."}
+        {
+          "card": "Goblin Bushwhacker",
+          "text": "Fetch Goblin Bushwhacker with Matron, never Moggcatcher — kicker is paid only when you cast a spell, and Moggcatcher never casts; an unkicked Bushwhacker is a 1/1 with stage fright."
+        }
       ],
       "pull_quote": "Finishers to hand with Matron; engines to the battlefield with Moggcatcher.",
       "note": "Data renders from tutor_guide.json — eight scenario-fetch-why entries across the two tutors. The gaps line is worth keeping visible in the layout: no wish finds the spell half of the deck, and no tutor moves the 15.2% storm-assembly figure; the copied cantrips are the deck's real search engine."
@@ -186,14 +333,22 @@
       "kicker": "ON THE RECORD",
       "headline": "THE GRINDER'S GUARANTEE",
       "dek": "What is a guaranteed card worth? Everything, when the entire draw engine routes through it. The Counselor reads the contract clause by clause — and the Coach prices the insurance.",
-      "components": ["fast-facts", "tax-ladder", "pilot-tip", "pull-quote"],
+      "components": [
+        "fast-facts",
+        "tax-ladder",
+        "pilot-tip",
+        "pull-quote"
+      ],
       "body": "Begin with the clause the whole deck is drafted around, CR 903.4: your commander is the only card you always have. In most decks that guarantee is a luxury; here it is load-bearing. Every cantrip, every ritual count, every mulligan decision in this issue assumes Zada, Hedron Grinder arrives on schedule — and the record supports the assumption: mean cast turn 4.352, median 4, cast exactly on turn 4 in 7,002 of 10,000 goldfish runs. The guarantee inverts your mulligan logic: an opening hand never needs a payoff, because the payoff is filed in the command zone.\n\nNow the tax schedule, CR 903.8: two generic more for each previous cast from the command zone. First cast four; second, six; third, eight. Read those numbers against this deck's curve and the ruling writes itself — in a 99 where almost everything costs one or two, a six-mana recast is three storm counts that never happened, on a turn when mean available mana is 4.589. Recasting is a compounding cost, not a plan, so protection is the better spend: Swiftfoot Boots equips for one, and one mana is a fifth of a storm turn. The Coach's corollary: boot her up the turn before you fire, not the turn you fire.\n\nColor identity, CR 903.4 again: Zada's cost and text carry only red, so the 99 is mono-red — no counterspells, and exactly one clean answer to a resolved enchantment (Chaos Warp, which shuffles anything). What the identity buys in exchange is the entire engine: the ritual suite, the copy cantrips, and a commander whose text turns both into card advantage. As for the parallel clock, CR 903.10a's 21 commander damage would take seven clean connections from a 3/3 — in this deck it is a coincidence, never a plan. Your real clock is the wide board and the each-opponent effects; the table's is your turn-4 window. Everyone at the pod can count Mountains. Let them watch the window while you build behind it.",
       "captions": {
         "Zada, Hedron Grinder": "**EXHIBIT A:** a 3/3 for {3}{R} whose text never mentions winning — and the reason this deck's opening hands are allowed to be all fuel, no payoff.",
         "Swiftfoot Boots": "**THE INSURANCE POLICY:** hexproof and haste for {1} to equip — cheaper than the {2} tax on her second cast, and it keeps the engine's serial number intact."
       },
       "pilot_tips": [
-        {"card": "Swiftfoot Boots", "text": "Equip Zada the turn before the engine turn — paying {1} for hexproof on your quiet turn beats paying the tax ladder after the kill spell lands."}
+        {
+          "card": "Swiftfoot Boots",
+          "text": "Equip Zada the turn before the engine turn — paying {1} for hexproof on your quiet turn beats paying the tax ladder after the kill spell lands."
+        }
       ],
       "pull_quote": "The command zone is the one contract nobody at the table can break — and this deck wrote its whole draw engine into it."
     },
@@ -202,51 +357,147 @@
       "kicker": "ROLL CALL",
       "headline": "MOB RULES",
       "dek": "Sixty-four spells doing eight jobs, and rank matters: the case-file cards lead, the lands close, and every seat gets one line on why it's earned.",
-      "components": ["folio", "pilot-tip"],
+      "components": [
+        "folio",
+        "pilot-tip"
+      ],
       "roster": [
         {
           "role": "The engine — Zada and her ammunition",
-          "cards": ["Zada, Hedron Grinder", "Crimson Wisps", "Expedite", "Renegade Tactics", "Ancestors' Aid", "Wild Ride", "Witch's Mark", "Fists of Flame", "Frontline Heroism"]
+          "cards": [
+            "Zada, Hedron Grinder",
+            "Crimson Wisps",
+            "Expedite",
+            "Renegade Tactics",
+            "Ancestors' Aid",
+            "Wild Ride",
+            "Witch's Mark",
+            "Fists of Flame",
+            "Frontline Heroism"
+          ]
         },
         {
           "role": "The verified loop and the storm shelf",
-          "cards": ["Haze of Rage", "Storm-Kiln Artist", "Empty the Warrens", "Grapeshot", "Spreading Insurrection", "Past in Flames"]
+          "cards": [
+            "Haze of Rage",
+            "Storm-Kiln Artist",
+            "Empty the Warrens",
+            "Grapeshot",
+            "Spreading Insurrection",
+            "Past in Flames"
+          ]
         },
         {
           "role": "The token machine",
-          "cards": ["Dragon Fodder", "Krenko's Command", "Mogg War Marshal", "Krenko, Mob Boss", "Siege-Gang Commander", "Siege-Gang Lieutenant", "Searslicer Goblin", "Howlsquad Heavy", "Redcap Gutter-Dweller", "Impulsive Pilferer", "Goblin Lackey"]
+          "cards": [
+            "Dragon Fodder",
+            "Krenko's Command",
+            "Mogg War Marshal",
+            "Krenko, Mob Boss",
+            "Siege-Gang Commander",
+            "Siege-Gang Lieutenant",
+            "Searslicer Goblin",
+            "Howlsquad Heavy",
+            "Redcap Gutter-Dweller",
+            "Impulsive Pilferer",
+            "Goblin Lackey"
+          ]
         },
         {
           "role": "The payoffs that scale to three opponents",
-          "cards": ["Impact Tremors", "General Kreat, the Boltbringer", "Boggart Shenanigans", "Pashalik Mons", "Goblin Bombardment", "Broadside Bombardiers", "Goblin Bushwhacker", "Quest for the Goblin Lord"]
+          "cards": [
+            "Impact Tremors",
+            "General Kreat, the Boltbringer",
+            "Boggart Shenanigans",
+            "Pashalik Mons",
+            "Goblin Bombardment",
+            "Broadside Bombardiers",
+            "Goblin Bushwhacker",
+            "Quest for the Goblin Lord"
+          ]
         },
         {
           "role": "The mana gang",
-          "cards": ["Skirk Prospector", "Battle Hymn", "Brightstone Ritual", "Seething Song", "Mana Geyser", "Sol Ring", "Ruby Medallion", "Throne of Eldraine"]
+          "cards": [
+            "Skirk Prospector",
+            "Battle Hymn",
+            "Brightstone Ritual",
+            "Seething Song",
+            "Mana Geyser",
+            "Sol Ring",
+            "Ruby Medallion",
+            "Throne of Eldraine"
+          ]
         },
         {
           "role": "The card flow",
-          "cards": ["Skullclamp", "Faithless Looting", "Glimpse the Impossible", "Idol of Oblivion", "Daring Discovery", "Goblin Dark-Dwellers"]
+          "cards": [
+            "Skullclamp",
+            "Faithless Looting",
+            "Glimpse the Impossible",
+            "Idol of Oblivion",
+            "Daring Discovery",
+            "Goblin Dark-Dwellers"
+          ]
         },
         {
           "role": "Lords, tutors, and the doubling cube",
-          "cards": ["Goblin Chieftain", "Goblin Warchief", "Rundvelt Hordemaster", "Goblin Matron", "Moggcatcher", "Conspicuous Snoop", "Roaming Throne", "Grenzo, Havoc Raiser"]
+          "cards": [
+            "Goblin Chieftain",
+            "Goblin Warchief",
+            "Rundvelt Hordemaster",
+            "Goblin Matron",
+            "Moggcatcher",
+            "Conspicuous Snoop",
+            "Roaming Throne",
+            "Grenzo, Havoc Raiser"
+          ]
         },
         {
           "role": "Interaction — all six slots",
-          "cards": ["Chaos Warp", "Vandalblast", "Blasphemous Act", "Gempalm Incinerator", "Goblin Negotiation", "Goblin Trashmaster"]
+          "cards": [
+            "Chaos Warp",
+            "Vandalblast",
+            "Blasphemous Act",
+            "Gempalm Incinerator",
+            "Goblin Negotiation",
+            "Goblin Trashmaster"
+          ]
         },
         {
           "role": "The big-turn hardware",
-          "cards": ["Swiftfoot Boots", "Great Train Heist"]
+          "cards": [
+            "Swiftfoot Boots",
+            "Great Train Heist"
+          ]
         },
         {
           "role": "The lands worth naming",
-          "cards": ["Arena of Glory", "Castle Embereth", "Spinerock Knoll", "Kher Keep", "Reliquary Tower", "War Room", "Fountainport", "Den of the Bugbear", "Dwarven Mine", "Goblin Burrows", "Shinka, the Bloodsoaked Keep", "Hidden Volcano", "Forgotten Cave", "Smoldering Crater", "Mountain"]
+          "cards": [
+            "Arena of Glory",
+            "Castle Embereth",
+            "Spinerock Knoll",
+            "Kher Keep",
+            "Reliquary Tower",
+            "War Room",
+            "Fountainport",
+            "Den of the Bugbear",
+            "Dwarven Mine",
+            "Goblin Burrows",
+            "Shinka, the Bloodsoaked Keep",
+            "Hidden Volcano",
+            "Forgotten Cave",
+            "Smoldering Crater",
+            "Mountain"
+          ]
         },
         {
           "role": "The sideboard and the table aids",
-          "cards": ["Sazacap's Brew", "Red Mana", "Storm Counter"]
+          "cards": [
+            "Sazacap's Brew",
+            "Red Mana",
+            "Storm Counter"
+          ]
         }
       ],
       "captions": {
@@ -254,7 +505,10 @@
         "Brightstone Ritual": "**EVERYONE PAYS:** a red per Goblin on the battlefield — all Goblins, not just yours. In the mirror, their swarm funds your storm."
       },
       "pilot_tips": [
-        {"card": "Mogg War Marshal", "text": "Feed Mogg War Marshal to your sacrifice outlets first — a token on entry and another on death means he's three bodies pretending to be one card."}
+        {
+          "card": "Mogg War Marshal",
+          "text": "Feed Mogg War Marshal to your sacrifice outlets first — a token on entry and another on death means he's three bodies pretending to be one card."
+        }
       ],
       "note": "Grouped by job, not alphabet, and the groups are ranked — the verified engines lead per the roster's completionism rule. The sideboard strip is labeled and separate: Sazacap's Brew (analysis in The Short List) plus the two Secret Lair table aids, Red Mana and Storm Counter, which carry no rules text and exist to track floating mana and storm count on big turns."
     },
@@ -263,14 +517,34 @@
       "kicker": "THE LEDGER",
       "headline": "ONE SLEEVED, NINE SCOUTED",
       "dek": "One card in the box, nine scouted from the pool, ranked by a single metric: how directly each bolts onto a verified engine. Every infinite on this page is flagged, never blessed.",
-      "components": ["callout-step", "fast-facts", "pilot-tip", "pull-quote"],
+      "components": [
+        "callout-step",
+        "fast-facts",
+        "pilot-tip",
+        "pull-quote"
+      ],
       "callouts": [
-        {"n": 1, "title": "THE METHOD", "text": "Each pick is scored on adjacency to the three verified engines — the copy-draw (stack 001), the storm burst (stack 002), and the Haze loop (stack 005). A card that completes a line whose other pieces are already sleeved outranks a famous card that arrives alone. The evidence bullets are data; the picks are judgment, and wear the ◆ and ★ accordingly."},
-        {"n": 2, "title": "THE HEADLINE SCOUT", "text": "Seething Anger is the Haze loop's shape at half the entry cost: one red, targets only a creature, so Zada copies it per body and Storm-Kiln pays a Treasure per copy. The break-even creature count is exactly what its stack scenario must settle — until then it's the best-ranked lead in the book, and only a lead."},
-        {"n": 3, "title": "THE HONEST REFUSALS", "text": "Two famous pool hits stayed off on an oracle read: Repercussion turns your own Blasphemous Act self-lethal under a board of 1/1s, and Glacial Chasm says 'Creatures you control can't attack' to a deck that wins by attacking wide. Reputation doesn't survive contact with rules text — that's the standard all ten were held to."}
+        {
+          "n": 1,
+          "title": "THE METHOD",
+          "text": "Each pick is scored on adjacency to the three verified engines — the copy-draw (stack 001), the storm burst (stack 002), and the Haze loop (stack 005). A card that completes a line whose other pieces are already sleeved outranks a famous card that arrives alone. The evidence bullets are data; the picks are judgment, and wear the ◆ and ★ accordingly."
+        },
+        {
+          "n": 2,
+          "title": "THE HEADLINE SCOUT",
+          "text": "Seething Anger is the Haze loop's shape at half the entry cost: one red, targets only a creature, so Zada copies it per body and Storm-Kiln pays a Treasure per copy. The break-even creature count is exactly what its stack scenario must settle — until then it's the best-ranked lead in the book, and only a lead."
+        },
+        {
+          "n": 3,
+          "title": "THE HONEST REFUSALS",
+          "text": "Two famous pool hits stayed off on an oracle read: Repercussion turns your own Blasphemous Act self-lethal under a board of 1/1s, and Glacial Chasm says 'Creatures you control can't attack' to a deck that wins by attacking wide. Reputation doesn't survive contact with rules text — that's the standard all ten were held to."
+        }
       ],
       "pilot_tips": [
-        {"card": "Sazacap's Brew", "text": "Sleeve Sazacap's Brew only against creature-light pods — it targets a player, so Zada never copies it; it's storm fuel and card selection, not a payoff."}
+        {
+          "card": "Sazacap's Brew",
+          "text": "Sleeve Sazacap's Brew only against creature-light pods — it targets a player, so Zada never copies it; it's storm fuel and card selection, not a payoff."
+        }
       ],
       "pull_quote": "A card that completes a sleeved line beats a famous card that arrives alone.",
       "note": "Data renders from considering.json — exactly ten entries, one 'In the box' chip (Sazacap's Brew) and nine 'Scouted'. Analysis-only: the physical sideboard is never rewritten by this section. The gaps block names the highest-value follow-up scenario (Seething Anger's loop arithmetic) and the full-step option beyond the ten (Underworld Breach, unranked until its scenario exists)."
@@ -278,35 +552,67 @@
     {
       "id": "sources-say",
       "kicker": "THE AUDIT",
-      "headline": "FIFTEEN LANDS, ONE FUSE",
-      "dek": "Fifteen lands would flunk any ordinary audit, and eight of them enter tapped. Then you meet the underwriters: six rituals, a goblin who eats goblins, and an artist who's paid in Treasure.",
-      "components": ["power-meter", "fast-facts", "pilot-tip", "pull-quote"],
+      "headline": "THIRTY-THREE RED SOURCES, ONE LOUD TURN",
+      "dek": "Thirty-three of the 36 lands make red, only eight enter tapped (22%, inside the one-in-three budget), and lands alone put red on curve 86.9% of the time. So the audit's question was never whether the mana shows up — it's what 43 sources and six rituals buy on the one turn you choose.",
+      "components": [
+        "power-meter",
+        "fast-facts",
+        "pilot-tip",
+        "pull-quote"
+      ],
       "captions": {
-        "Skirk Prospector": "**THE CONVERSION DESK:** a Goblin is one red mana on demand, no stack, no responses — stack 004 certified the mana ability, and the audit counts him among the 22 real sources."
+        "Skirk Prospector": "**THE CONVERSION DESK:** a Goblin is one red mana on demand, no stack, no responses — stack 004 certified the mana ability, and the audit counts him among the 43 red sources."
       },
       "pilot_tips": [
-        {"card": "Throne of Eldraine", "text": "Spend Throne of Eldraine's four red on spells only — that's the card's own fine print, so it fuels the storm and can never pay an equip, a kicker-less activation, or any other machine."}
+        {
+          "card": "Throne of Eldraine",
+          "text": "Spend Throne of Eldraine's four red on spells only — that's the card's own fine print, so it fuels the storm and can never pay an equip, a kicker-less activation, or any other machine."
+        }
       ],
       "pull_quote": "You're not building a mana base — you're building a fuse.",
-      "note": "Data renders from mana_analysis.json plus the writer's mana_base prose: 69 red pips across 57 cards, 12 land sources against a 36-source yardstick, on-curve 29.9% from lands alone and 63.9% with rocks and dorks, 8 of 15 lands tapped (53%, over the one-in-three budget). Ledger's framing holds: the yardstick is a yardstick, not a grade — this deck's big turns are ritual-funded by design, and the stated-assumptions box says exactly what the hypergeometric model does and doesn't audit."
+      "note": "Data renders from mana_analysis.json plus the writer's mana_base prose: 69 red pips across 57 cards, 33 red land sources against a 36-source yardstick (43 sources once rocks and dorks are counted), on-curve 86.9% from lands alone and 96% with rocks and dorks, 8 of 36 lands tapped (22%, inside the one-in-three budget). Ledger's framing holds: the yardstick is a yardstick, not a grade — the base is redundant and reliable by design, the big turns are ritual-funded, and the stated-assumptions box says exactly what the hypergeometric model does and doesn't audit."
     },
     {
       "id": "by-the-numbers",
       "kicker": "SEED 42",
       "headline": "TEN THOUSAND GOBLINS",
       "dek": "We ran the list 10,000 times on seed 42. The window is turn four in seven games of ten, the floor is a draw engine, and the ceiling shows up in 15.2% of games — plan accordingly.",
-      "components": ["power-meter", "fast-facts", "pilot-tip", "pull-quote"],
+      "components": [
+        "power-meter",
+        "fast-facts",
+        "pilot-tip",
+        "pull-quote"
+      ],
       "callouts": [
-        {"n": 1, "title": "THE WINDOW", "text": "Commander mean cast turn 4.352, median 4 — exactly turn 4 in 7,002 of 10,000 runs, 90% by turn 6. That is a schedule, not a hope, and every opponent who can count Mountains knows it too."},
-        {"n": 2, "title": "THE FLOOR", "text": "An early token maker is drawn by mean turn 3.18 (60% of games), bodies average 5.26 by turn 6, and 'Zada online with a cantrip' assembles in 66.1% of games — 49.6% by turn 6, mean turn 5.27. This is the deck's median game: wide pressure plus mass draw."},
-        {"n": 3, "title": "THE CEILING IS RARE", "text": "'Storm payoff plus ritual drawn' assembles in 15.2% of runs — 9.1% by turn 6. The storm kill is opportunism, not the plan; and note the sim models no rituals, cost reducers, or extra draw, so the real number runs hotter than the printed one."},
-        {"n": 4, "title": "THE LANDS QUIT EARLY", "text": "Land drops fall to 63.7% by turn 5 and 54.2% by turn 6, yet mean available mana still reads 3.937 on turn 4 and 5.182 on turn 6. After the early turns, this deck's mana growth is rituals and Treasures, not land drops — which is why the audit next door calls it a fuse."}
+        {
+          "n": 1,
+          "title": "THE WINDOW",
+          "text": "Commander mean cast turn 4.352, median 4 — exactly turn 4 in 7,002 of 10,000 runs, 90% by turn 6. That is a schedule, not a hope, and every opponent who can count Mountains knows it too."
+        },
+        {
+          "n": 2,
+          "title": "THE FLOOR",
+          "text": "An early token maker is drawn by mean turn 3.18 (60% of games), bodies average 5.26 by turn 6, and 'Zada online with a cantrip' assembles in 66.1% of games — 49.6% by turn 6, mean turn 5.27. This is the deck's median game: wide pressure plus mass draw."
+        },
+        {
+          "n": 3,
+          "title": "THE CEILING IS RARE",
+          "text": "'Storm payoff plus ritual drawn' assembles in 15.2% of runs — 9.1% by turn 6. The storm kill is opportunism, not the plan; and note the sim models no rituals, cost reducers, or extra draw, so the real number runs hotter than the printed one."
+        },
+        {
+          "n": 4,
+          "title": "THE LANDS QUIT EARLY",
+          "text": "Land drops fall to 63.7% by turn 5 and 54.2% by turn 6, yet mean available mana still reads 3.937 on turn 4 and 5.182 on turn 6. After the early turns, this deck's mana growth is rituals and Treasures, not land drops — which is why the audit next door calls it a fuse."
+        }
       ],
       "captions": {
         "Idol of Oblivion": "**THE UNMODELED ENGINE:** a card per turn you made a token — the sim draws one card a turn and still likes this deck; your real games draw more."
       },
       "pilot_tips": [
-        {"card": "Reliquary Tower", "text": "Get Reliquary Tower down before the engine turn — the goldfish never fills a hand past seven, but stack 001 will, and discarding to hand size is a self-inflicted wrath."}
+        {
+          "card": "Reliquary Tower",
+          "text": "Get Reliquary Tower down before the engine turn — the goldfish never fills a hand past seven, but stack 001 will, and discarding to hand size is a self-inflicted wrath."
+        }
       ],
       "pull_quote": "The storm kill is the ceiling. The draw engine is the floor — and the floor wins the median game.",
       "note": "The stated-assumptions box is non-negotiable and prints all nine model assumptions verbatim: this is resource development, not games. Keep rate 79.1%, mean mulligans 0.255 — cite figures exactly as the artifact reports them."
@@ -316,13 +622,39 @@
       "kicker": "VERIFIED",
       "headline": "FIVE CASES, ONE LOOP",
       "dek": "Five questions went to the checker; five holdings came back. One is a true infinite, one is lethal to the exact point of state-based actions — and one refuses the most famous combo in the deck.",
-      "components": ["callout-step", "scenario-box", "map-key", "pilot-tip", "pull-quote"],
+      "components": [
+        "callout-step",
+        "scenario-box",
+        "map-key",
+        "pilot-tip",
+        "pull-quote"
+      ],
       "callouts": [
-        {"n": 1, "title": "CASE A-001 — THE BLUEPRINT", "text": "Crimson Wisps, Zada, four Goblin tokens, one red mana. The controlling clause: her copies are PUT on the stack, not cast — so she never re-triggers on them and they add nothing to storm. The holding: five cards drawn, five hasted creatures, one mana. Every one-target cantrip in the deck follows this blueprint."},
-        {"n": 2, "title": "CASE A-002 — STORM MATH", "text": "Empty the Warrens as the fourth spell: storm sees three, three copies join the original, eight tokens enter, and Impact Tremors bills each opponent 8. Then the same clause cuts the other way — a later Grapeshot counts only real casts. Count your casts, not your resolutions."},
-        {"n": 3, "title": "CASE A-003 — EXACTLY LETHAL", "text": "Fists of Flame copies resolve one at a time, each drawing before it buffs, so the pumps lock in ascending: +3, +4, +5, +6, +7 — 32 power of trample off a board of 1/1s. The checker refused the stamp until the record walked the last step: state-based actions, not combat, end the game. When your math is exactly lethal, walk that step every time."},
-        {"n": 4, "title": "CASE A-004 — THE REFUSAL", "text": "The database promises Krenko plus Prospector plus Warchief is infinite. The rules say no — the loop recasts Krenko through the command zone, and CR 903.9a serves commanders only; Zada holds that seat. What survives review is still excellent: {1}{R}{R}, haste, one activation, five Goblins become ten. Play the burst; mourn the loop."},
-        {"n": 5, "title": "CASE A-005 — THE TRUE INFINITE", "text": "Haze of Rage with buyback plus Storm-Kiln Artist: buyback returns the original card, Treasures are mana abilities nobody can respond to, and iteration k pays k+3 Treasures against a four-mana cast — net positive from cast three onward, without bound. The loop touches no opponent, so pick your exit before you start: Fists trample, Empty under Tremors, or a Grapeshot riding every real cast."}
+        {
+          "n": 1,
+          "title": "CASE A-001 — THE BLUEPRINT",
+          "text": "Crimson Wisps, Zada, four Goblin tokens, one red mana. The controlling clause: her copies are PUT on the stack, not cast — so she never re-triggers on them and they add nothing to storm. The holding: five cards drawn, five hasted creatures, one mana. Every one-target cantrip in the deck follows this blueprint."
+        },
+        {
+          "n": 2,
+          "title": "CASE A-002 — STORM MATH",
+          "text": "Empty the Warrens as the fourth spell: storm sees three, three copies join the original, eight tokens enter, and Impact Tremors bills each opponent 8. Then the same clause cuts the other way — a later Grapeshot counts only real casts. Count your casts, not your resolutions."
+        },
+        {
+          "n": 3,
+          "title": "CASE A-003 — EXACTLY LETHAL",
+          "text": "Fists of Flame copies resolve one at a time, each drawing before it buffs, so the pumps lock in ascending: +3, +4, +5, +6, +7 — 32 power of trample off a board of 1/1s. The checker refused the stamp until the record walked the last step: state-based actions, not combat, end the game. When your math is exactly lethal, walk that step every time."
+        },
+        {
+          "n": 4,
+          "title": "CASE A-004 — THE REFUSAL",
+          "text": "The database promises Krenko plus Prospector plus Warchief is infinite. The rules say no — the loop recasts Krenko through the command zone, and CR 903.9a serves commanders only; Zada holds that seat. What survives review is still excellent: {1}{R}{R}, haste, one activation, five Goblins become ten. Play the burst; mourn the loop."
+        },
+        {
+          "n": 5,
+          "title": "CASE A-005 — THE TRUE INFINITE",
+          "text": "Haze of Rage with buyback plus Storm-Kiln Artist: buyback returns the original card, Treasures are mana abilities nobody can respond to, and iteration k pays k+3 Treasures against a four-mana cast — net positive from cast three onward, without bound. The loop touches no opponent, so pick your exit before you start: Fists trample, Empty under Tremors, or a Grapeshot riding every real cast."
+        }
       ],
       "captions": {
         "Haze of Rage": "**THE PAYOFF:** two casts in, you hold the card, nine Treasures, and a 20/2 paymaster — and every loop after this one is better than the last.",
@@ -331,7 +663,10 @@
         "Krenko, Mob Boss": "**THE BURST, NOT THE LOOP:** one activation per turn, and a Krenko sacrificed to Prospector is gone for good — the rules checked."
       },
       "pilot_tips": [
-        {"card": "Krenko, Mob Boss", "text": "Never sacrifice Krenko to Skirk Prospector — we checked, and he does not come back."}
+        {
+          "card": "Krenko, Mob Boss",
+          "text": "Never sacrifice Krenko to Skirk Prospector — we checked, and he does not come back."
+        }
       ],
       "pull_quote": "Count your casts, not your resolutions.",
       "note": "The issue's peak — the most ambitious layout in the book. One feature spread per case in stack order; the refutation (A-004) is celebrated, not buried, per house style. Rules citations stay out of the body; each spread ends on its dossier pointer (FULL DOSSIER: JUDGE'S DESK A-00N)."
@@ -341,7 +676,10 @@
       "kicker": "PROVE IT",
       "headline": "FIVE FILES, ONE REFUSAL",
       "dek": "The complete record: every step, every citation verbatim, checked against the June 19, 2026 rules. The Counselor read them twice so you can cite them once.",
-      "components": ["dossier-file", "folio"],
+      "components": [
+        "dossier-file",
+        "folio"
+      ],
       "note": "Renderer-generated from the checker-passed artifacts; nothing summarized, truncated, or paraphrased — every citation verbatim in typewriter face. CASE A-001 (Crimson Wisps engine; pass, 1 iteration): copies put on the stack, five draws, team haste. CASE A-002 (Empty the Warrens storm turn; pass, 1 iteration): storm sees three, eight tokens, 8 per opponent via Impact Tremors, Grapeshot counts casts only. CASE A-003 (Fists of Flame lethal; pass, 2 iterations): ascending per-resolution buffs, 32 trample power, and the state-based-action step the checker demanded before stamping — run the iteration count as case status, it is the system working. CASE A-004 (Krenko burst; pass, 1 iteration): the combo-graph infinite refuted for this deck — CR 903.9a is commander-only and Zada holds the seat — with the verified burst quantified. CASE A-005 (Haze of Rage loop; pass, 1 iteration): the true infinite, k+3 Treasures per iteration against four mana, net positive from cast three, no opponent touched by the loop itself."
     },
     {
@@ -349,7 +687,11 @@
       "kicker": "THE CREDITS",
       "headline": "THE WIZARD OF BARGE",
       "dek": "Fifty-seven hands painted this deck, and one painted fourteen cards — including your commander. The count is honest, the provenance is printed, and the copies are their own line item.",
-      "components": ["artist-gallery", "fast-facts", "pull-quote"],
+      "components": [
+        "artist-gallery",
+        "fast-facts",
+        "pull-quote"
+      ],
       "featured": {
         "artist": "Wizard of Barge",
         "hero_card": "Zada, Hedron Grinder",
@@ -357,8 +699,14 @@
         "hero_caption": "**THE COMMANDER'S PORTRAIT:** Wizard of Barge's Zada — the card this whole issue argues is a draw engine in a trench coat, painted like she's in on the joke."
       },
       "also_worth_noting": [
-        {"artist": "Jesper Ejsing", "note": "Four entries and the honest count runner-up: Goblin Matron, Mogg War Marshal, Quest for the Goblin Lord, and Reliquary Tower — the tutor, the fodder, the anthem, and the land that holds the drawn cards."},
-        {"artist": "Svetlin Velinov", "note": "Three entries across three jobs: Goblin Negotiation's removal, Grenzo, Havoc Raiser's politics, and Swiftfoot Boots' insurance."}
+        {
+          "artist": "Jesper Ejsing",
+          "note": "Four entries and the honest count runner-up: Goblin Matron, Mogg War Marshal, Quest for the Goblin Lord, and Reliquary Tower — the tutor, the fodder, the anthem, and the land that holds the drawn cards."
+        },
+        {
+          "artist": "Svetlin Velinov",
+          "note": "Three entries across three jobs: Goblin Negotiation's removal, Grenzo, Havoc Raiser's politics, and Swiftfoot Boots' insurance."
+        }
       ],
       "captions": {
         "Krenko, Mob Boss": "**SAME HAND, SAME MOB:** the burst this issue's fourth case file quantifies, from the same brush as the commander — one drop, one house style.",
@@ -369,7 +717,10 @@
     },
     {
       "id": "back-page",
-      "components": ["fast-facts", "folio"],
+      "components": [
+        "fast-facts",
+        "folio"
+      ],
       "note": "NEXT ISSUE: HAPATRA, VIZIER OF POISONS, from issue.json verbatim — tease the pivot from one-mana draws to one-drop snakes without inventing content. Colophon: rules version June 19, 2026; decklist sha256 c8c1c7ddaa72...; goldfish seed 42, 10,000 iterations; generation provenance; Fan Content Policy line. Close the loop, not the artifacts: one line reminding the reader the whole claim ledger is five case files and a simulator, both in the back of the book."
     }
   ],

@@ -35,6 +35,7 @@ from manamap.ingest.extract import get_colors
 from manamap.pilot.bracket import combos_in_deck, is_infinite
 from manamap.pilot.common import (
     deck_dir,
+    expand_copies,
     is_land,
     load_card_roles,
     load_combo_details,
@@ -162,9 +163,15 @@ def classify_mana_restriction(card):
 
 
 def mana_facts(cards):
-    """What the mana base can actually produce, and what the spells actually owe."""
-    lands = [c for c in cards if _is_land(c)]
-    spells = [c for c in cards if not _is_land(c)]
+    """What the mana base can actually produce, and what the spells actually owe.
+
+    Counts COPIES, not entries: eleven Islands are eleven blue sources. The
+    `counts` block below is deliberately per-entry (and says so); a mana base is
+    the opposite question — it is about the physical library the shuffler sees.
+    """
+    copies = expand_copies(cards)
+    lands = [c for c in copies if _is_land(c)]
+    spells = [c for c in copies if not _is_land(c)]
     reqs = pip_requirements(spells)
     sources = {c: 0 for c in WUBRG}
     for land in lands:
@@ -174,6 +181,7 @@ def mana_facts(cards):
     restricted = [r for r in (classify_mana_restriction(c) for c in cards) if r]
     return {
         "lands": len(lands),
+        "land_entries": sum(1 for c in cards if _is_land(c)),
         "spells": len(spells),
         "enters_tapped": sum(1 for land in lands if enters_tapped(land)),
         "pip_requirements": reqs,
@@ -342,6 +350,10 @@ def analyze(slug):
             "entries": len(cards),
             "copies": sum(int(c.get("quantity") or 1) for c in cards),
             "lands": sum(1 for c in cards if _is_land(c)),
+            # The real land count (copies). `lands` above is entries, per this
+            # block's convention; agents reading for a mana base want this one.
+            "land_copies": sum(int(c.get("quantity") or 1)
+                               for c in cards if _is_land(c)),
             "nonland": sum(1 for c in cards if not _is_land(c)),
             "legendary": len(legendary),
             "legendary_permanents": sum(1 for c in legendary if _is_permanent(c)),

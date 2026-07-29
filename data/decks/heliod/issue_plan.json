@@ -6,19 +6,27 @@
     "kicker": "VERIFIED TABLE-KILL",
     "teases": [
       "Hullbreaker + Sol Ring: 296,000 decklists say infinite — the rules say no",
-      "18 lands, on purpose: the mana audit signs its name",
+      "Blue pays 79.2% of the pips and makes its curve 61% of the time — the audit's one hole",
       "Three tutors, eleven wishes — and not one puts a card in your hand",
       "The flip: when Heliod stops being friendly"
     ],
     "violators": [
-      {"text": "6 VERIFIED LINES!", "tone": "extreme"},
-      {"text": "TWO PETITIONS DENIED!", "tone": "extreme"}
+      {
+        "text": "6 VERIFIED LINES!",
+        "tone": "extreme"
+      },
+      {
+        "text": "TWO PETITIONS DENIED!",
+        "tone": "extreme"
+      }
     ]
   },
   "departments": [
     {
       "id": "cover",
-      "components": ["violator"],
+      "components": [
+        "violator"
+      ],
       "note": "Commander art full-bleed; the issue.json tagline 'Everyone draws. Everyone pays.' is the cover's thesis in four words. Both violators are literally true: six checker-passed stacks, two refutations (001, 005)."
     },
     {
@@ -31,14 +39,20 @@
       "kicker": "THE PLAN",
       "headline": "THE FRIENDLIEST CRIME",
       "dek": "Why would a control deck hand three opponents a free Howling Mine? Because in this 99 their draws pay your bills — and feed a meter that reads hands, not life totals.",
-      "components": ["pilot-tip", "pull-quote"],
+      "components": [
+        "pilot-tip",
+        "pull-quote"
+      ],
       "captions": {
         "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse": "**THE HINGE:** the flip grants everything flash and discounts your spells {1} per card your opponents drew this turn — the table's generosity, invoiced.",
         "Forced Fruition": "**THE FIREHOSE:** seven cards per opponent spell. It reads like a gift until Iron Maiden reads their hand.",
         "Howling Mine": "**THE SLOW DRIP:** an extra card a head, every turn — cover for you, fuel for the punishers, discount for Heliod."
       },
       "pilot_tips": [
-        {"card": "Kwain, Itinerant Meddler", "text": "Hold Kwain's tap for the turn a punisher is down — the same activation that buys goodwill becomes damage on three upkeeps."}
+        {
+          "card": "Kwain, Itinerant Meddler",
+          "text": "Hold Kwain's tap for the turn a punisher is down — the same activation that buys goodwill becomes damage on three upkeeps."
+        }
       ],
       "pull_quote": "Hand the whole table a firehose of cards, then charge for the water."
     },
@@ -47,31 +61,70 @@
       "kicker": "SEVEN CARDS",
       "headline": "FLOW, PLUS A NO",
       "dek": "What do 73.4% of first sevens have that the other quarter doesn't? Two to four lands, one card-flow piece, and something that says no. Drill on four real hands before you trust your gut.",
-      "components": ["power-meter", "pilot-tip", "pull-quote"],
+      "components": [
+        "power-meter",
+        "pilot-tip",
+        "pull-quote"
+      ],
       "hands": [
         {
           "verdict": "KEEP",
-          "cards": ["Ancient Tomb", "Island", "Plains", "Arcane Signet", "Rhystic Study", "Counterspell", "Howling Mine"],
+          "cards": [
+            "Ancient Tomb",
+            "Island",
+            "Plains",
+            "Arcane Signet",
+            "Rhystic Study",
+            "Counterspell",
+            "Howling Mine"
+          ],
           "why": "The dream opening. Ancient Tomb plus a two-drop rock is how 27.3% of games cast Heliod by turn 3, and this hand has flow (Study, Mine) and a no (Counterspell) besides."
         },
         {
           "verdict": "SHIP",
-          "cards": ["Island", "Plains", "Iron Maiden", "Ebony Owl Netsuke", "Viseling", "Forced Fruition", "Propaganda"],
+          "cards": [
+            "Island",
+            "Plains",
+            "Iron Maiden",
+            "Ebony Owl Netsuke",
+            "Viseling",
+            "Forced Fruition",
+            "Propaganda"
+          ],
           "why": "Three punishers, zero engines — a mulligan in costume. Punishers are inert alone, and the engine-plus-punisher pair assembles by turn 6 in only 41.3% of games. Never keep a hand for the lock it merely promises."
         },
         {
           "verdict": "KEEP",
-          "cards": ["Island", "Glacial Fortress", "Hallowed Fountain", "Kwain, Itinerant Meddler", "Mystic Remora", "Swan Song", "Dig Through Time"],
+          "cards": [
+            "Island",
+            "Glacial Fortress",
+            "Hallowed Fountain",
+            "Kwain, Itinerant Meddler",
+            "Mystic Remora",
+            "Swan Song",
+            "Dig Through Time"
+          ],
           "why": "Both reliable axes at once: a table-draw engine (drawn by turn 6 in 76.2% of games, mean turn 2.44) and cheap interaction (held by turn 6 in 67.2%). Dig Through Time is the payoff the Remora fills."
         },
         {
           "verdict": "SHIP",
-          "cards": ["Flooded Strand", "Prairie Stream", "Glacial Fortress", "Plains", "Island", "Approach of the Second Sun", "Hullbreaker Horror"],
-          "why": "Ledger's confession: the sim keeps every 2-5-land hand, so it keeps this one. You're smarter than the sim — five lands, two seven-drops, and nothing to do before turn 5 at an 18-land count that can't afford dead draws."
+          "cards": [
+            "Flooded Strand",
+            "Prairie Stream",
+            "Glacial Fortress",
+            "Plains",
+            "Island",
+            "Approach of the Second Sun",
+            "Hullbreaker Horror"
+          ],
+          "why": "Ledger's confession: the sim keeps every 2-5-land hand, so it keeps this one. You're smarter than the sim — five lands, two seven-drops, and nothing to do before turn 5. The base is clean — this flood is the hand's fault, not the deck's."
         }
       ],
       "pilot_tips": [
-        {"card": "Ancient Tomb", "text": "Keep almost any hand with Ancient Tomb and a two-mana rock — that exact pair is the deck's turn-3 Heliod."}
+        {
+          "card": "Ancient Tomb",
+          "text": "Keep almost any hand with Ancient Tomb and a two-mana rock — that exact pair is the deck's turn-3 Heliod."
+        }
       ],
       "pull_quote": "A hand of two punishers and no draw engine is a mulligan in costume."
     },
@@ -80,7 +133,9 @@
       "kicker": "YOU'RE UP",
       "headline": "TWO TURNS THAT DECIDE GAMES",
       "dek": "A turn-6 board with Forced Fruition in hand and a spellslinger across the table. A turn-5 flip decision with Counterspell mana in the balance. Commit out loud before the Coach shows his hand.",
-      "components": ["scenario-box"],
+      "components": [
+        "scenario-box"
+      ],
       "note": "No furniture that telegraphs: decision 001's answer is the punisher-first line and 002's is the early flip, so no tip or caption may name Netsuke deployment or flip timing. The spreads carry themselves."
     },
     {
@@ -88,17 +143,32 @@
       "kicker": "THE TABLE",
       "headline": "GENEROSITY, WITH INTEREST",
       "dek": "When does the friendliest deck in the pod become the archenemy? The exact turn drawing starts costing — and you want to know that turn before your opponents do.",
-      "components": ["callout-step", "pilot-tip", "pull-quote"],
+      "components": [
+        "callout-step",
+        "pilot-tip",
+        "pull-quote"
+      ],
       "callouts": [
-        {"n": 1, "title": "THREAT WINDOW", "text": "A punisher on board plus any second draw engine. The moment Iron Maiden's damage is a clock instead of a curiosity, the hug reads as a trap — and Forced Fruition resolving flips you instantly: seven cards per spell is a price the whole table is suddenly paying you."},
-        {"n": 2, "title": "THE COOL-DOWN", "text": "Sell the symmetry while it's true. Early Mines and Kwain taps are real gifts — say so, let the table spend them, and bank the goodwill for the turn your upkeep starts collecting."}
+        {
+          "n": 1,
+          "title": "THREAT WINDOW",
+          "text": "A punisher on board plus any second draw engine. The moment Iron Maiden's damage is a clock instead of a curiosity, the hug reads as a trap — and Forced Fruition resolving flips you instantly: seven cards per spell is a price the whole table is suddenly paying you."
+        },
+        {
+          "n": 2,
+          "title": "THE COOL-DOWN",
+          "text": "Sell the symmetry while it's true. Early Mines and Kwain taps are real gifts — say so, let the table spend them, and bank the goodwill for the turn your upkeep starts collecting."
+        }
       ],
       "captions": {
         "The Second Doctor": "**THE POLITE NO:** every card an opponent accepts costs them their next attack step at you — generosity with a cover charge.",
         "Propaganda": "**THE TOLL BOOTH:** one enchantment blanks combat math from three seats at once — virtual card advantage, tripled."
       },
       "pilot_tips": [
-        {"card": "Grand Abolisher", "text": "Don't lead with Grand Abolisher on an empty board — a two-mana creature that screams 'combo turn soon' is information you should spend as late as possible."}
+        {
+          "card": "Grand Abolisher",
+          "text": "Don't lead with Grand Abolisher on an empty board — a two-mana creature that screams 'combo turn soon' is information you should spend as late as possible."
+        }
       ],
       "pull_quote": "The table forgives a Howling Mine. It never forgives an Iron Maiden with the Mine still running."
     },
@@ -107,39 +177,67 @@
       "kicker": "THE FIELD",
       "headline": "WHO ACTUALLY KILLS YOU",
       "dek": "Not the aggro seat — you sell them attack taxes and punish their refills. The seat that kills you is the storm pilot you just handed twenty-one cards. Know the difference before you tap a Bell.",
-      "components": ["threat-box", "pilot-tip"],
+      "components": [
+        "threat-box",
+        "pilot-tip"
+      ],
       "threats": [
         {
           "archetype": "Fast combo & storm",
           "meter_label": "Danger",
           "rate": 0.8,
           "read": "The standing warning: Forced Fruition hands a storm pilot seven cards per spell. Hold the free suite for the spell that ends the game, not the first scary one — and land Drannith Magistrate early to blank command-zone lines before they start. Your own kill needs only {2} and four pieces, so in many pods you are the faster combo deck: race accordingly.",
-          "outs": ["Fierce Guardianship", "Force of Negation", "Swan Song", "An Offer You Can't Refuse", "Drannith Magistrate"]
+          "outs": [
+            "Fierce Guardianship",
+            "Force of Negation",
+            "Swan Song",
+            "An Offer You Can't Refuse",
+            "Drannith Magistrate"
+          ]
         },
         {
           "archetype": "Stax & taxes",
           "meter_label": "Danger",
           "rate": 0.6,
           "read": "Taxes attack your many-cheap-spells math — recount the hand under the tax, and under an assembling lock your role flips to beatdown, racing completion. Teferi's -3 tucks the lock piece that matters, Loran burns another, and the fifteen-cast kill outruns most soft locks that don't stop artifact casts. Enlightened Tutor finds the missing piece through a starved board.",
-          "outs": ["Teferi, Hero of Dominaria", "Loran of the Third Path", "Cyclonic Rift", "Enlightened Tutor"]
+          "outs": [
+            "Teferi, Hero of Dominaria",
+            "Loran of the Third Path",
+            "Cyclonic Rift",
+            "Enlightened Tutor"
+          ]
         },
         {
           "archetype": "Sweeper control",
           "meter_label": "Danger",
           "rate": 0.45,
           "read": "Your best seat: in a draw-go mirror your punishers advance while both sides pass, so someone else must be the beatdown. Four planeswalkers live through every Supreme Verdict — including yours, which resolves straight through their permission. Real exposure: artifact and enchantment mass removal taking the firehose and the meter together, so keep kill pieces in hand until the commit turn.",
-          "outs": ["Dovin's Veto", "Archmage's Charm", "Teferi, Hero of Dominaria", "Supreme Verdict"]
+          "outs": [
+            "Dovin's Veto",
+            "Archmage's Charm",
+            "Teferi, Hero of Dominaria",
+            "Supreme Verdict"
+          ]
         },
         {
           "archetype": "Creature aggro",
           "meter_label": "Danger",
           "rate": 0.4,
           "read": "Two attack taxes plus Eiganjo's channel blank combat math from three seats, and the punishers turn defense into a clock. The trap is feeding them: Forced Fruition refuels the aggro hand, so sequence punishers before or with the big draw engines. And your life is combo fuel — below 32, every missing point is an extra cast on the 006 ledger.",
-          "outs": ["Propaganda", "The Second Doctor", "Supreme Verdict", "Swords to Plowshares", "Path to Exile"]
+          "outs": [
+            "Propaganda",
+            "The Second Doctor",
+            "Supreme Verdict",
+            "Swords to Plowshares",
+            "Path to Exile"
+          ]
         }
       ],
       "pilot_tips": [
-        {"card": "Drannith Magistrate", "text": "Land Drannith Magistrate early against command-zone combo — he blanks their commander before it is ever a problem, and he's a lightning rod you can afford to lose."}
+        {
+          "card": "Drannith Magistrate",
+          "text": "Land Drannith Magistrate early against command-zone combo — he blanks their commander before it is ever a problem, and he's a lightning rod you can afford to lose."
+        }
       ]
     },
     {
@@ -147,12 +245,18 @@
       "kicker": "ONE WISH EACH",
       "headline": "DELIVERIES, NOT ARRIVALS",
       "dek": "Three tutors, eleven wishes, and every one of them ships to your library — top, top, or third from it. In a deck of Howling Mines the couriers are already hired; your job is counting draws per turn.",
-      "components": ["callout-step", "pilot-tip"],
+      "components": [
+        "callout-step",
+        "pilot-tip"
+      ],
       "captions": {
         "Long-Term Plans": "**THE SECRET WISH:** third from the top, no reveal. On a bare board that's three draw steps; under Font of Mythos, or a Mine doubled by the Archive, it's your very next one."
       },
       "pilot_tips": [
-        {"card": "Temple Bell", "text": "Ring Temple Bell at instant speed to advance a Long-Term Plans delivery a full turn — the wish arrives on your schedule, not the library's."}
+        {
+          "card": "Temple Bell",
+          "text": "Ring Temple Bell at instant speed to advance a Long-Term Plans delivery a full turn — the wish arrives on your schedule, not the library's."
+        }
       ]
     },
     {
@@ -160,13 +264,21 @@
       "kicker": "THE ZONE",
       "headline": "TWO FACES, ONE GUARANTEE",
       "dek": "Why does a mono-white front face captain an Azorius deck? One hybrid pip in an activation cost — the court reads mana symbols, not intentions, and that single {U/P} buys the whole blue half of this 99.",
-      "components": ["tax-ladder", "fast-facts", "pilot-tip", "pull-quote"],
+      "components": [
+        "tax-ladder",
+        "fast-facts",
+        "pilot-tip",
+        "pull-quote"
+      ],
       "body": "Enter the exhibit. Heliod, the Radiant Dawn is a white card — but color identity is every mana symbol anywhere on the card, rules text included (CR 903.4). The flip ability costs {3}{U/P}, and that one Phyrexian pip is why forty blue cards are legal in this 99. The holding is delightful: a god's identity turns on the fine print.\n\nNow the guarantee. The command zone means this deck's central card exists in every game you play (CR 903.4) — and the 99 is built on that assumption. Every table-draw engine you run was chosen because the Warped Eclipse converts opponents' draws into your discount and your flash. The goldfish has him down by turn 4 in the median game; the engines are worth less in the games he's late, which is exactly what guaranteed access insures against.\n\nThe tax, on the record: {2}{W}{W} the first cast, six mana the second, eight the third (CR 903.8). But Heliod pays a second tax nobody prints — every trip back to the zone also refunds the flip: {3}{U/P} again, sorcery-speed only, payable with two life. Coach's ledger says insure, don't re-buy: Teferi's Protection, a held Swan Song, or simply flipping on a turn your counter mana stays open all cost less than paying both taxes twice. Protection is the better spend in this deck by a wide margin.\n\nIs the 21-damage clock a plan here (CR 903.10a)? No — a coincidence. A 4/6 that would need six clean connections, in a deck whose attack step is mostly ceremonial. Your real clocks are the Maiden, the Owl, and a Reservoir ledger. The political read matters more: the front face registers as a harmless enchantment-rebuy, and the flip is your tell — the moment the Warped Eclipse shows, the table knows you have instant-speed range and a discount that scales with their own draws. Time the tell like the information it is.",
       "captions": {
         "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse": "**THE TELL:** the front face is camouflage; the flip announces instant-speed range. Pay the {U/P} with two life when it keeps your counter mana whole."
       },
       "pilot_tips": [
-        {"card": "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse", "text": "Flip only as a sorcery — so plan the flip turn a full rotation ahead, and pay the Phyrexian pip with life whenever the blue mana is doing counter duty."}
+        {
+          "card": "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
+          "text": "Flip only as a sorcery — so plan the flip turn a full rotation ahead, and pay the Phyrexian pip with life whenever the blue mana is doing counter duty."
+        }
       ],
       "pull_quote": "A god's color identity turns on the fine print — one Phyrexian pip, forty blue cards."
     },
@@ -174,24 +286,123 @@
       "id": "the-99",
       "kicker": "THE ROSTER",
       "headline": "EVERY SEAT EARNED",
-      "dek": "Sixty-seven spells, eighteen lands, one strict hierarchy: the four kill pieces outrank everything, and every other card is judged by what it feeds — the firehose, the meter, or the law office.",
-      "components": ["pilot-tip"],
+      "dek": "Sixty-six spells and 33 lands, plus Heliod in the command zone, sorted by one strict hierarchy: the four kill pieces outrank everything, and every other card is judged by what it feeds — the firehose, the meter, or the law office.",
+      "components": [
+        "pilot-tip"
+      ],
       "roster": [
-        {"role": "The verified kill", "cards": ["Hullbreaker Horror", "Sol Ring", "Arcane Signet", "Thought Vessel", "Aetherflux Reservoir", "Grand Abolisher"]},
-        {"role": "The firehose (table draw)", "cards": ["Forced Fruition", "Howling Mine", "Font of Mythos", "Temple Bell", "Dictate of Kruphix", "Kami of the Crescent Moon", "Folio of Fancies", "Kwain, Itinerant Meddler", "The Second Doctor", "Mikokoro, Center of the Sea"]},
-        {"role": "The meter (punishers)", "cards": ["Iron Maiden", "Ebony Owl Netsuke", "Viseling", "Psychosis Crawler", "Scrawling Crawler", "Sphinx's Tutelage"]},
-        {"role": "The asymmetry", "cards": ["Rhystic Study", "Mystic Remora", "Smothering Tithe", "Consecrated Sphinx", "Faerie Mastermind", "Alhammarret's Archive", "Teferi's Ageless Insight", "Reliquary Tower"]},
-        {"role": "The law office (interaction)", "cards": ["Counterspell", "Arcane Denial", "Swan Song", "An Offer You Can't Refuse", "Dovin's Veto", "Fierce Guardianship", "Force of Negation", "Archmage's Charm", "Supreme Verdict", "Cyclonic Rift", "Swords to Plowshares", "Path to Exile", "Teferi's Protection", "Drannith Magistrate"]},
-        {"role": "The sweep-proof clock (walkers)", "cards": ["Teferi, Hero of Dominaria", "Jace Beleren", "Jace, Wielder of Mysteries", "Teferi, Temporal Pilgrim"]},
-        {"role": "The couriers & plan B", "cards": ["Enlightened Tutor", "Mystical Tutor", "Long-Term Plans", "Approach of the Second Sun"]},
-        {"role": "The value layer", "cards": ["Displacer Kitten", "Loran of the Third Path", "Torrential Gearhulk", "Metallurgic Summonings", "Dig Through Time", "Stroke of Genius", "Braingeyser", "Prosperity", "Skyscribing", "Mathemagics"]}
+        {
+          "role": "The verified kill",
+          "cards": [
+            "Hullbreaker Horror",
+            "Sol Ring",
+            "Arcane Signet",
+            "Thought Vessel",
+            "Aetherflux Reservoir",
+            "Grand Abolisher"
+          ]
+        },
+        {
+          "role": "The firehose (table draw)",
+          "cards": [
+            "Forced Fruition",
+            "Howling Mine",
+            "Font of Mythos",
+            "Temple Bell",
+            "Dictate of Kruphix",
+            "Kami of the Crescent Moon",
+            "Folio of Fancies",
+            "Kwain, Itinerant Meddler",
+            "The Second Doctor",
+            "Mikokoro, Center of the Sea"
+          ]
+        },
+        {
+          "role": "The meter (punishers)",
+          "cards": [
+            "Iron Maiden",
+            "Ebony Owl Netsuke",
+            "Viseling",
+            "Psychosis Crawler",
+            "Scrawling Crawler",
+            "Sphinx's Tutelage"
+          ]
+        },
+        {
+          "role": "The asymmetry",
+          "cards": [
+            "Rhystic Study",
+            "Mystic Remora",
+            "Smothering Tithe",
+            "Consecrated Sphinx",
+            "Faerie Mastermind",
+            "Alhammarret's Archive",
+            "Teferi's Ageless Insight",
+            "Reliquary Tower"
+          ]
+        },
+        {
+          "role": "The law office (interaction)",
+          "cards": [
+            "Counterspell",
+            "Arcane Denial",
+            "Swan Song",
+            "An Offer You Can't Refuse",
+            "Dovin's Veto",
+            "Fierce Guardianship",
+            "Force of Negation",
+            "Archmage's Charm",
+            "Supreme Verdict",
+            "Cyclonic Rift",
+            "Swords to Plowshares",
+            "Path to Exile",
+            "Teferi's Protection",
+            "Drannith Magistrate"
+          ]
+        },
+        {
+          "role": "The sweep-proof clock (walkers)",
+          "cards": [
+            "Teferi, Hero of Dominaria",
+            "Jace Beleren",
+            "Jace, Wielder of Mysteries",
+            "Teferi, Temporal Pilgrim"
+          ]
+        },
+        {
+          "role": "The couriers & plan B",
+          "cards": [
+            "Enlightened Tutor",
+            "Mystical Tutor",
+            "Long-Term Plans",
+            "Approach of the Second Sun"
+          ]
+        },
+        {
+          "role": "The value layer",
+          "cards": [
+            "Displacer Kitten",
+            "Loran of the Third Path",
+            "Torrential Gearhulk",
+            "Metallurgic Summonings",
+            "Dig Through Time",
+            "Stroke of Genius",
+            "Braingeyser",
+            "Prosperity",
+            "Skyscribing",
+            "Mathemagics"
+          ]
+        }
       ],
       "captions": {
         "Hullbreaker Horror": "**THE LOOP'S HEART:** the kill's one creature, and the one piece Enlightened Tutor can't fetch — only Long-Term Plans delivers it.",
         "Thought Vessel": "**THE SLEEPER:** stack 004's loop accepts any two-mana rock, and this one moonlights as a kill piece while wearing a utility card's face."
       },
       "pilot_tips": [
-        {"card": "Torrential Gearhulk", "text": "Point Torrential Gearhulk at the Archmage's Charm you already spent — the 6/6 flash body is the smaller half of the purchase."}
+        {
+          "card": "Torrential Gearhulk",
+          "text": "Point Torrential Gearhulk at the Archmage's Charm you already spent — the 6/6 flash body is the smaller half of the purchase."
+        }
       ],
       "note": "Rocks, remaining lands, Leyline of Anticipation, and Propaganda fall to the automatic Depth group deliberately — depth should read as depth."
     },
@@ -200,30 +411,43 @@
       "kicker": "THE TEN",
       "headline": "TEN SLEEVES, ZERO SENTIMENT",
       "dek": "Sixty-one cards in the box argued for ten seats; seven made it, three more were scouted from the wider pool. What survived feeds the proven machines — Mana Vault to flip the loop's sign, Teferi, Time Raveler to back the shield.",
-      "components": ["pull-quote"],
+      "components": [
+        "pull-quote"
+      ],
       "pull_quote": "The filter was six case files and ten thousand games. Taste never got a vote.",
       "note": "Renderer draws the ten and the rest-of-the-box verdicts from considering.json. Two entries are pod-conditional by design (Sphinx of the Final Word, No More Lies) and two are gated on unwalked scenarios (Monastery Mentor, Blue Sun's Zenith) — the conditions are the content, not hedging."
     },
     {
       "id": "sources-say",
       "kicker": "THE AUDIT",
-      "headline": "EIGHTEEN, ON PURPOSE",
-      "dek": "An eighteen-land control deck should scare you — so audit it. The bet is priced: rocks as lands, Heliod's discount as ramp, and one leg of the mana base measurably shorter than the other.",
-      "components": ["power-meter", "fast-facts", "pilot-tip"],
+      "headline": "A CLEAN BASE WITH ONE BLUE PROBLEM",
+      "dek": "Thirty-three lands over 18 cards, five of them entering tapped — 15%, inside budget, nothing to fix. The one finding worth your attention is a colour: blue pays 79.2% of the pips off 21 land sources and makes its curve 61% of the time, so plan the {U}{U}{U} casts, not the land drops.",
+      "components": [
+        "power-meter",
+        "fast-facts",
+        "pilot-tip"
+      ],
       "captions": {
-        "Ancient Tomb": "**THE ACCELERANT:** two colorless a turn is how 27.3% of games cast Heliod by turn 3 — the eighteen-land bet's fastest payout."
+        "Ancient Tomb": "**THE ACCELERANT:** two colourless a turn is how 27.3% of games cast Heliod by turn 3. It isn't propping up a short base — 33 lands, five of them tapped, is a healthy one — it's raw speed sold to you two life at a time."
       },
       "pilot_tips": [
-        {"card": "Archmage's Charm", "text": "Treat {U}{U}{U} as a turn-4-plus promise cast off duals or Heliod's discount — sixteen blue sources will not make it a turn-3 one."}
+        {
+          "card": "Archmage's Charm",
+          "text": "Archmage's Charm is three blue pips and no generic, so Heliod's discount can never help pay for it. Blue has 21 land sources — 26 once the rocks arrive — and makes its curve 61% on lands alone: cast the Charm off duals and Signets on turn 4-plus, not off a turn-3 hope."
+        }
       ],
-      "pull_quote": "Blue carries 79.2% of the pips on exactly half of the sources."
+      "pull_quote": "Blue pays 79.2% of the pips off 56.8% of the land sources — that gap is the base's only real hole."
     },
     {
       "id": "by-the-numbers",
       "kicker": "10,000 RUNS",
       "headline": "THE HONEST GOLDFISH",
       "dek": "What survives a simulation that admits everything it can't see? A median turn-4 Heliod, a firehose in three games of four, and a two-piece lock you should never bet a hand on. No opponents, no interaction — and every assumption printed.",
-      "components": ["power-meter", "fast-facts", "pull-quote"],
+      "components": [
+        "power-meter",
+        "fast-facts",
+        "pull-quote"
+      ],
       "pull_quote": "The firehose shows up in 76.2% of games by turn 6. The meter only joins it in 41.3% — draw the difference, don't keep for it."
     },
     {
@@ -231,19 +455,43 @@
       "kicker": "VERIFIED",
       "headline": "THE FIFTEEN-CAST LEDGER",
       "dek": "Four cards, {2} to start, and an exact ledger: from 32 life, fifteen casts fund three fifty-life checks and a dead table. The record also names the weakness — every window the loop leaves open.",
-      "components": ["callout-step", "map-key", "pilot-tip", "pull-quote"],
+      "components": [
+        "callout-step",
+        "map-key",
+        "pilot-tip",
+        "pull-quote"
+      ],
       "callouts": [
-        {"n": 1, "title": "OPEN THE LOOP", "text": "Cast Arcane Signet. Hullbreaker Horror's trigger targets Sol Ring — a permanent now, so the target is legal — and you tap the Ring for {C}{C} while the trigger waits. Each cast bounces the other rock: exactly mana-neutral, unbounded casts in one main phase (stack 004)."},
-        {"n": 2, "title": "RUN THE METER", "text": "Aetherflux Reservoir pays +n on cast n. Casts one through six take 32 life to 53; pay 50, and the 26-life seat takes 50 to the face. First funeral, you at 3."},
-        {"n": 3, "title": "TWICE MORE", "text": "Casts seven through twelve rebuild to 60; pay 50 at the 40-life seat. Casts thirteen through fifteen reach 52; pay 50 at the 34-life seat. You end at 2, loop intact — fifteen casts is the proven minimum, because fourteen pays 105 and the bill is 119."},
-        {"n": 4, "title": "THE OPEN WINDOWS", "text": "The same record, the other way: every activation and every loop cast passes priority, activating is not casting, and the loop's sorcery-speed pieces can't be cast in response to anything. The engine protects itself exactly zero percent. Grand Abolisher is the in-99 answer — and his coverage has no case file of its own yet."}
+        {
+          "n": 1,
+          "title": "OPEN THE LOOP",
+          "text": "Cast Arcane Signet. Hullbreaker Horror's trigger targets Sol Ring — a permanent now, so the target is legal — and you tap the Ring for {C}{C} while the trigger waits. Each cast bounces the other rock: exactly mana-neutral, unbounded casts in one main phase (stack 004)."
+        },
+        {
+          "n": 2,
+          "title": "RUN THE METER",
+          "text": "Aetherflux Reservoir pays +n on cast n. Casts one through six take 32 life to 53; pay 50, and the 26-life seat takes 50 to the face. First funeral, you at 3."
+        },
+        {
+          "n": 3,
+          "title": "TWICE MORE",
+          "text": "Casts seven through twelve rebuild to 60; pay 50 at the 40-life seat. Casts thirteen through fifteen reach 52; pay 50 at the 34-life seat. You end at 2, loop intact — fifteen casts is the proven minimum, because fourteen pays 105 and the bill is 119."
+        },
+        {
+          "n": 4,
+          "title": "THE OPEN WINDOWS",
+          "text": "The same record, the other way: every activation and every loop cast passes priority, activating is not casting, and the loop's sorcery-speed pieces can't be cast in response to anything. The engine protects itself exactly zero percent. Grand Abolisher is the in-99 answer — and his coverage has no case file of its own yet."
+        }
       ],
       "captions": {
         "Aetherflux Reservoir": "**THE CONVERTER:** cast n, gain n — k casts pay k(k+1)/2 life, which is why the kill is arithmetic, not hope.",
         "Grand Abolisher": "**THE MISSING SHIELD:** stack 006 names the open windows; this is the card built to close them. The walkthrough that proves it is the issue's most wanted case."
       },
       "pilot_tips": [
-        {"card": "Grand Abolisher", "text": "Lead the commit turn with Grand Abolisher — without him, every loop cast and every fifty-life activation is an open invitation to three stacks of held interaction."}
+        {
+          "card": "Grand Abolisher",
+          "text": "Lead the commit turn with Grand Abolisher — without him, every loop cast and every fifty-life activation is an open invitation to three stacks of held interaction."
+        }
       ],
       "pull_quote": "Fifteen casts is the proven minimum. Fourteen pays 105 and falls short.",
       "note": "Feature order: 006 (the ledger) leads, then 004 (the real loop), 001 and 005 as the celebrated denials, 002 (plan B), 003 (the punisher upkeep). Intros come from manual_prose.combo_lines."
@@ -253,29 +501,49 @@
       "kicker": "THE RECORD",
       "headline": "SIX CASES, TWO DENIALS",
       "dek": "Every citation verbatim, every step on the record. The two denied petitions — the famous two-card infinite and the Kitten's mana claim — are the best reading in the issue, and the reason to believe the rest.",
-      "components": ["dossier-file"]
+      "components": [
+        "dossier-file"
+      ]
     },
     {
       "id": "featured-artist",
       "kicker": "THE PAINT",
       "headline": "ONE HUNDRED EIGHT HANDS",
       "dek": "No one owns this deck's look — the widest brush painted five cards, four of them places. Counted per card, never per copy: eleven Islands are one painting, and the honesty is the point.",
-      "components": ["artist-gallery", "fast-facts", "pull-quote"],
+      "components": [
+        "artist-gallery",
+        "fast-facts",
+        "pull-quote"
+      ],
       "featured": {
         "artist": "Adam Paquette",
         "note": "The top of this roster is a landscape painter. Adam Paquette's five cards are almost all places — Hallowed Fountain, two printings of Prairie Stream, Radiant Fountain — the waterlines and skies the rest of the box stands on, plus one stray Skyscanner.\n\nBelow him the field flattens fast: 108 artists across the 146 cards in the whole box, sideboard included, and nobody above five. That's not curation and we won't pretend it is — it's a deck assembled one card at a time from thirty years of printings, and the breadth is the story. Your kill pieces, your counters, and your fountains each came from a different hand."
       },
       "also_worth_noting": [
-        {"artist": "Daniel Ljunggren", "note": "The matched jewelry: Pearl Medallion and Sapphire Medallion, one painter — the deck's two cost-reducer medallions are literally a set."},
-        {"artist": "Eric Deschamps", "note": "Grand Abolisher — the kill turn's would-be shield — plus Ephara and Jin-Gitaxias waiting in the box."},
-        {"artist": "Piotr Dura", "note": "Your gentlest palette does the dirtiest work: Dura painted Swords to Plowshares alongside the Adarkar Wastes it often answers into."},
-        {"artist": "Richard Wright", "note": "Alhammarret's Archive and Mana Confluence — the doubler and the any-color land, both under his skies."}
+        {
+          "artist": "Daniel Ljunggren",
+          "note": "The matched jewelry: Pearl Medallion and Sapphire Medallion, one painter — the deck's two cost-reducer medallions are literally a set."
+        },
+        {
+          "artist": "Eric Deschamps",
+          "note": "Grand Abolisher — the kill turn's would-be shield — plus Ephara and Jin-Gitaxias waiting in the box."
+        },
+        {
+          "artist": "Piotr Dura",
+          "note": "Your gentlest palette does the dirtiest work: Dura painted Swords to Plowshares alongside the Adarkar Wastes it often answers into."
+        },
+        {
+          "artist": "Richard Wright",
+          "note": "Alhammarret's Archive and Mana Confluence — the doubler and the any-color land, both under his skies."
+        }
       ],
       "pull_quote": "Eleven Islands, one painting — per-card counting is the only honest ledger."
     },
     {
       "id": "back-page",
-      "components": ["fast-facts"],
+      "components": [
+        "fast-facts"
+      ],
       "note": "next_issue is 'TO BE ANNOUNCED' in issue.json — the teaser runs thin until a deck is named. Colophon carries rules version and decklist sha as standard."
     }
   ],

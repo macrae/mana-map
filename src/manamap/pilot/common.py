@@ -109,6 +109,22 @@ def sideboard(cards):
     return [c for c in cards if c.get("is_sideboard")]
 
 
+def expand_copies(cards):
+    """One element per PHYSICAL card, not per decklist entry.
+
+    cards.json stores basics as a single entry with `quantity: N` — eleven
+    Islands are one entry. Any statistic about the library (how many lands, how
+    many blue sources, what the hypergeometric draw looks like) is a question
+    about copies, and counting entries silently halves it. Use this before
+    counting anything the shuffler would see; use the raw list only where the
+    question really is per distinct card (artist authorship, role coverage).
+    """
+    out = []
+    for card in cards:
+        out.extend([card] * int(card.get("quantity") or 1))
+    return out
+
+
 def is_land(card):
     """Land by front-face type line — the face that comes down on the battlefield."""
     return "Land" in str(card.get("type_line", "")).split(" // ")[0]

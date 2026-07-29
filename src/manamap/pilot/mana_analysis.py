@@ -21,7 +21,14 @@ from manamap.config import (
     ROLE_MANA_BY_SUPERTYPE,
     ROLE_MANA_SOURCE,
 )
-from manamap.pilot.common import deck_dir, is_land, load_deck_cards, load_json, mainboard
+from manamap.pilot.common import (
+    deck_dir,
+    expand_copies,
+    is_land,
+    load_deck_cards,
+    load_json,
+    mainboard,
+)
 from manamap.pilot.manabase import (
     WUBRG,
     achieved_probability,
@@ -77,7 +84,12 @@ def nonland_producer_kind(card):
 
 def analyze(slug):
     deck_doc = load_deck_cards(slug)
-    cards = mainboard(deck_doc["cards"])
+    entries = mainboard(deck_doc["cards"])
+    # Every count below is about the library the shuffler sees, so it runs on
+    # COPIES: eleven Islands are eleven blue sources, not one. Counting entries
+    # here understates the mana base by every duplicated basic (STYLEv3 §7.6 —
+    # the honest number is the whole point of this section).
+    cards = expand_copies(entries)
     identity = {
         c
         for card in cards if card.get("is_commander")
@@ -85,36 +97,42 @@ def analyze(slug):
     }
 
     lands = sorted((c for c in cards if is_land(c)), key=lambda c: c["name"])
-    land_rows, class_counts, land_sources = [], {}, {c: 0 for c in WUBRG}
+    land_entries = sorted((c for c in entries if is_land(c)),
+                          key=lambda c: c["name"])
+    class_counts, land_sources = {}, {c: 0 for c in WUBRG}
     tapped = 0
     for card in lands:
-        classes = sorted(land_classes(card))
-        produces = sorted(land_colors(card) & (identity or set(WUBRG)))
-        for cls in classes:
+        for cls in land_classes(card):
             class_counts[cls] = class_counts.get(cls, 0) + 1
         if enters_tapped(card):
             tapped += 1
-        for colour in produces:
+        for colour in land_colors(card) & (identity or set(WUBRG)):
             land_sources[colour] += 1
-        land_rows.append({"name": card["name"], "classes": classes,
-                          "produces": produces})
+    # The table lists one row per distinct land, with its copy count — a reader
+    # wants "Island x11", not eleven identical rows.
+    land_rows = [{"name": card["name"],
+                  "copies": int(card.get("quantity") or 1),
+                  "classes": sorted(land_classes(card)),
+                  "produces": sorted(land_colors(card) & (identity or set(WUBRG)))}
+                 for card in land_entries]
 
     producers, ramp_counts, nonland_sources = [], {}, {c: 0 for c in WUBRG}
-    for card in sorted(cards, key=lambda c: c["name"]):
+    for card in sorted(entries, key=lambda c: c["name"]):
+        copies = int(card.get("quantity") or 1)
         kind = nonland_producer_kind(card)
         if kind:
             produces = sorted(land_colors(card) & (identity or set(WUBRG)))
-            ramp_counts[kind] = ramp_counts.get(kind, 0) + 1
+            ramp_counts[kind] = ramp_counts.get(kind, 0) + copies
             for colour in produces:
-                nonland_sources[colour] += 1
+                nonland_sources[colour] += copies
             producers.append({"name": card["name"], "kind": kind,
                               "cmc": card.get("cmc"), "produces": produces})
         text = str(card.get("oracle_text", "") or "")
         if _LAND_RAMP_RE.search(text) and not is_land(card):
-            ramp_counts["ramp:land"] = ramp_counts.get("ramp:land", 0) + 1
+            ramp_counts["ramp:land"] = ramp_counts.get("ramp:land", 0) + copies
         if _COST_REDUCTION_RE.search(text) and not is_land(card):
             ramp_counts["ramp:cost-reduction"] = ramp_counts.get(
-                "ramp:cost-reduction", 0) + 1
+                "ramp:cost-reduction", 0) + copies
 
     requirements = pip_requirements(cards)
     targets = source_targets(requirements)
@@ -157,7 +175,11 @@ def analyze(slug):
         "slug": slug,
         "decklist_sha256": deck_doc.get("decklist_sha256"),
         "lands": {
+            # `total` is copies — the answer to "how many lands does this deck
+            # run". `entries` is distinct cards, kept beside it so the two can
+            # never be confused again.
             "total": len(lands),
+            "entries": len(land_entries),
             "enters_tapped": tapped,
             "classes": dict(sorted(class_counts.items())),
             "list": land_rows,

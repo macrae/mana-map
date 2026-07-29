@@ -292,3 +292,45 @@ def test_lint_is_case_insensitive():
 def test_lint_names_the_path():
     errs = _lint_strings({"departments": [{"body": "as v2 showed"}]}, "issue_plan.json")
     assert "departments[0].body" in errs[0]
+
+
+# ── Land counts: entries are never a land count ──────────────────────────
+
+
+def _deck_with_mana(tmp_path, monkeypatch, prose, entries=18, total=33):
+    import json as _json
+    decks = tmp_path / "decks"
+    base = decks / "test-deck"
+    base.mkdir(parents=True)
+    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", decks)
+    (base / "mana_analysis.json").write_text(_json.dumps(
+        {"lands": {"total": total, "entries": entries, "enters_tapped": 5}}))
+    (base / "manual_prose.json").write_text(_json.dumps(prose))
+    return base
+
+
+def test_entry_count_quoted_as_a_land_count_is_rejected(tmp_path, monkeypatch):
+    """The exact bug that shipped: prose read lands.entries as the land count."""
+    from manamap.pilot.validate_issue import validate_land_counts
+
+    base = _deck_with_mana(tmp_path, monkeypatch,
+                           {"mana_base": "The 18-land bet shows in the goldfish."})
+    errors = validate_land_counts(base, good_plan())
+    assert any("distinct land CARDS" in e and "33 lands" in e for e in errors)
+
+
+def test_true_land_count_passes(tmp_path, monkeypatch):
+    from manamap.pilot.validate_issue import validate_land_counts
+
+    base = _deck_with_mana(tmp_path, monkeypatch,
+                           {"mana_base": "Thirty-three lands, 18 entries, 5 tapped."})
+    assert validate_land_counts(base, good_plan()) == []
+
+
+def test_lint_is_silent_when_entries_equal_copies(tmp_path, monkeypatch):
+    """A deck with no stacked basics has nothing to confuse."""
+    from manamap.pilot.validate_issue import validate_land_counts
+
+    base = _deck_with_mana(tmp_path, monkeypatch,
+                           {"mana_base": "A 33-land base."}, entries=33, total=33)
+    assert validate_land_counts(base, good_plan()) == []

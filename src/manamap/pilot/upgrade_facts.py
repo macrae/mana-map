@@ -37,6 +37,7 @@ from manamap.pilot.artist_credits import is_accessory
 from manamap.pilot.bracket import is_infinite, load_reference
 from manamap.pilot.common import (
     deck_dir,
+    expand_copies,
     load_card_roles,
     load_combo_details,
     load_deck_cards,
@@ -201,7 +202,10 @@ def role_budget_diff(main, roles):
                      for group, members in DECK_ROLE_GROUPS.items()
                      for role in members}
     have = {group: 0 for group in DECK_ROLE_BUDGET}
-    for card in main:
+    # Copies, because DECK_ROLE_BUDGET counts copies — comparing 15 land
+    # ENTRIES against a 36-land budget briefed the scout that a 36-land deck
+    # was twenty-one lands short.
+    for card in expand_copies(main):
         group = next((role_to_group[r] for r in roles.get(card["name"], [])
                       if r in role_to_group), None)
         if group is None:

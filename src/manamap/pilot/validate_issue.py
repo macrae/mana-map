@@ -227,6 +227,43 @@ def _lint_strings(doc, label, skip_key=None):
     return errors
 
 
+# -- Land-count truth (the entries-vs-copies trap) -----------------------
+
+# `mana_analysis.lands.entries` counts distinct land CARDS; `lands.total`
+# counts physical copies. Eleven Islands are one entry and eleven lands. An
+# issue once shipped claiming "18 lands" for a 33-land deck because prose read
+# the wrong field, so the number that is never a land count gets linted.
+_LAND_COUNT_RE = re.compile(r"\b(\d{1,3})[\s-]lands?\b", re.IGNORECASE)
+
+
+def validate_land_counts(base, plan):
+    """Reader-facing copy may not state the entry count as a land count."""
+    path = base / "mana_analysis.json"
+    if not path.exists():
+        return []
+    lands = json.loads(path.read_text()).get("lands", {})
+    entries, total = lands.get("entries"), lands.get("total")
+    if not entries or entries == total:
+        return []  # nothing to confuse
+
+    errors = []
+    docs = [(plan, "issue_plan.json")]
+    for fname in ("manual_prose.json", "considering.json", "tutor_guide.json"):
+        extra = base / fname
+        if extra.exists():
+            docs.append((json.loads(extra.read_text()), fname))
+    for doc, label in docs:
+        for where, text in _walk_strings(doc):
+            for match in _LAND_COUNT_RE.finditer(text):
+                if int(match.group(1)) == entries:
+                    errors.append(
+                        f"{label} [{where}]: says {match.group()!r}, but "
+                        f"{entries} is the count of distinct land CARDS - this "
+                        f"deck runs {total} lands. Quote lands.total."
+                    )
+    return errors
+
+
 def validate_self_containment(base, plan):
     """Reader-facing text must carry no memory of previous deck versions."""
     errors = []
@@ -294,6 +331,7 @@ def main(args):
 
     errors += validate_plan(plan, card_names, artists)
     errors += validate_self_containment(base, plan)
+    errors += validate_land_counts(base, plan)
 
     report_errors(f"issue plan for {args.slug}", errors)
     print(
