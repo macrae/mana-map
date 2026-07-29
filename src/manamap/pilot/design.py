@@ -135,6 +135,27 @@ td.toc-promise { color:var(--ink-soft); font-style:italic; }
 .toc-byline { display:block; font-family:var(--condensed); text-transform:uppercase;
               letter-spacing:.1em; font-size:10px; color:var(--ink-soft);
               margin-top:3px; white-space:nowrap; }
+/* ── Art break: the declared breather between dense spreads (§6) ────── */
+.art-break { position:relative; border-top:6px solid var(--ink); }
+.art-break img { width:100%; max-height:420px; object-fit:cover; }
+.art-break .pull-quote { position:absolute; left:34px; bottom:26px; margin:0;
+  background:rgba(26,23,20,.82); color:var(--paper); padding:12px 18px;
+  border-left:6px solid var(--burst-yellow); max-width:32ch; }
+.art-break .art-credit, .art-break .printing { position:absolute; right:12px;
+  bottom:6px; color:rgba(244,239,228,.75); font-size:.72em; }
+.art-break .printing { bottom:22px; }
+
+/* ── Card links: tap → tile in The 99, hover → card preview ─────────── */
+a.cardref { color:inherit; position:relative;
+            text-decoration:underline solid; text-decoration-thickness:1px;
+            text-decoration-color:var(--accent,var(--ink-soft));
+            text-underline-offset:2px; }
+a.cardref:hover { background:rgba(0,0,0,.05); }
+.card-pop { display:none; position:absolute; left:0; bottom:1.5em;
+            width:230px; max-width:60vw; z-index:70;
+            border:3px solid var(--ink); border-radius:11px;
+            box-shadow:6px 6px 0 rgba(0,0,0,.35); background:var(--paper); }
+a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
 .folio { display:flex; justify-content:space-between; align-items:center;
          font-family:var(--condensed); text-transform:uppercase; letter-spacing:.18em;
          font-size:11px; border-top:2px solid var(--ink); margin-top:30px;
@@ -388,6 +409,8 @@ table.data tr:nth-child(even) td { background:rgba(255,255,255,.45); }
   .folio { padding:7px 18px 18px; }
   .violator { position:static; margin:14px auto; }
   .body-copy p:first-of-type::first-letter { font-size:2.4em; }
+  /* Touch: no hover — the tap follows the anchor to the tile instead. */
+  .card-pop { display:none!important; }
   /* The Flight Plan stacks: title row, then promise + byline beneath. */
   table.toc, table.toc tr { display:block; }
   table.toc td { display:block; border-bottom:none; padding:1px 0; }
@@ -398,6 +421,7 @@ table.data tr:nth-child(even) td { background:rgba(255,255,255,.45); }
 @media (prefers-reduced-motion:reduce) { * { transition:none!important; animation:none!important; } }
 @media print { .trim { box-shadow:none; } body { background:#fff; }
   .toc-float { display:none; }
+  .card-pop { display:none!important; }
   details.dossier > *:not(summary) { display:block; }
   details.dossier > summary::after { content:""; } }
 """
@@ -424,12 +448,13 @@ def violator(text, plain=False):
     return (f'<div class="{cls}" style="transform:rotate({angle}deg)">{esc(text)}</div>')
 
 
-def pilot_tip(card_name, text, image=None):
-    """GamePro ProTip formula: image + slug + one imperative sentence."""
+def pilot_tip(card_name, text, image=None, esc_fn=esc):
+    """GamePro ProTip formula: image + slug + one imperative sentence.
+    `esc_fn` lets the renderer pass its link-aware escaper (esc_x)."""
     img = f'<img src="{esc(image)}" alt="{esc(card_name)}" loading="lazy">' if image else "<div></div>"
     return (
         f'<div class="pilot-tip">{img}<div>'
-        f'<span class="slug">Pilot Tip</span>{esc(text)}</div></div>'
+        f'<span class="slug">Pilot Tip</span>{esc_fn(text)}</div></div>'
     )
 
 
@@ -460,11 +485,12 @@ def power_meter(label, rate, segments=20):
     )
 
 
-def callout(n, title, text):
-    """Numbered play-sequence step with an all-caps mini-headline."""
+def callout(n, title, text, esc_fn=esc):
+    """Numbered play-sequence step with an all-caps mini-headline.
+    `esc_fn` lets the renderer pass its link-aware escaper (esc_x)."""
     return (
         f'<div class="callout"><div class="n">{esc(n)}</div><div>'
-        f'<span class="t">{esc(title)}</span>{esc(text)}</div></div>'
+        f'<span class="t">{esc(title)}</span>{esc_fn(text)}</div></div>'
     )
 
 
@@ -502,9 +528,11 @@ def write_stylesheet(directory):
     return path, False
 
 
-def card_tile(card, roles, synergy, printing=False):
+def card_tile(card, roles, synergy, printing=False, anchor_id=None):
     """A card tile. `printing=True` adds the artist/set credit and foil sheen —
     used by the gallery, where the physical printing is the subject.
+    `anchor_id` mints the card-link target — The 99 only, so a card that also
+    appears in the Featured Artist gallery never duplicates an id.
 
     Lives here beside card_figure: .card-tile's CSS is this module's, and a
     component whose markup and stylesheet sit in different files drifts.
@@ -524,8 +552,9 @@ def card_tile(card, roles, synergy, printing=False):
     if printing and card.get("foil") and image:
         image = f'<span class="foil">{image}</span>'
     credit = printing_credit(card) if printing else ""
+    anchor = f' id="{esc(anchor_id)}"' if anchor_id else ""
     return (
-        f'<div class="card-tile">{image}<h4>{esc(name)}</h4>{chips}'
+        f'<div class="card-tile"{anchor}>{image}<h4>{esc(name)}</h4>{chips}'
         f'<p>{esc(roles.get(name, ""))}</p>{credit}</div>'
     )
 

@@ -45,6 +45,9 @@ DEPARTMENTS = [
     ("know-your-enemy", "Know Your Enemy",
      "The decks that want you dead, and how to disappoint them.",
      ("coach",), True, "Coach Sunny Brightside"),
+    ("fetch-quests", "Fetch Quests",
+     "You get one wish per tutor. Here's how not to waste it.",
+     ("coach",), True, "Coach Sunny Brightside"),
     # Act III — The Long Game: the zoomed-out view, then the future.
     ("command-zone", "The Command Zone",
      "Why this commander is exactly where you want to be — on the record.",
@@ -53,10 +56,13 @@ DEPARTMENTS = [
     ("the-99", "The 99",
      "Roll call. Every card earns its seat — or hears about it.",
      ("coach",), True, "Coach Sunny Brightside"),
-    ("upgrade-watch", "Upgrade Watch",
-     "What this list wants next — ranked by return, not by hype.",
+    ("upgrade-watch", "The Short List",
+     "Ten cards — in the box or on the wish list — the only ten worth your sleeves.",
      ("data",), True, '"Ledger" Lin Marginal'),
-    # Act IV — Show Your Work: the stats, then the verified lines.
+    # Act IV — Show Your Work: the mana, the stats, then the verified lines.
+    ("sources-say", "Sources Say",
+     "Pips versus sources — does this mana base keep its promises?",
+     ("data",), True, '"Ledger" Lin Marginal'),
     ("by-the-numbers", "By the Numbers",
      "Ten thousand opening hands don't lie.",
      ("data",), True, '"Ledger" Lin Marginal'),
@@ -79,9 +85,9 @@ DEPARTMENTS = [
 # exactly one act — a test asserts the flattened acts equal DEPARTMENT_IDS.
 ACTS = [
     ("In the Cockpit", ("first-turns", "keep-or-ship", "whats-your-play")),
-    ("At the Table", ("politics-table", "know-your-enemy")),
+    ("At the Table", ("politics-table", "know-your-enemy", "fetch-quests")),
     ("The Long Game", ("command-zone", "the-99", "upgrade-watch")),
-    ("Show Your Work", ("by-the-numbers", "the-kill")),
+    ("Show Your Work", ("sources-say", "by-the-numbers", "the-kill")),
     ("The Appendix", ("judges-desk", "featured-artist", "back-page")),
 ]
 
@@ -96,6 +102,11 @@ MASTHEAD_COLUMNISTS = [
      "bio": "The corner office. Has never once believed you're going to lose."},
 ]
 
+# Sections followed by a renderer-emitted full-bleed breather spread (STYLEv3
+# §6, v3.3): the dense-adjacency check skips the pair on either side of a
+# declared breather, because the reader gets an art break between them.
+BREATHER_AFTER = frozenset({"sources-say"})
+
 DEPARTMENT_IDS = [d[0] for d in DEPARTMENTS]
 DEPARTMENT_BY_ID = {d[0]: {"title": d[1], "promise": d[2], "tiers": d[3],
                            "needs_copy": d[4], "byline": d[5]}
@@ -109,7 +120,8 @@ INTENSITY = {
     "cover": "peak", "contents": "low", "first-turns": "high",
     "command-zone": "medium", "by-the-numbers": "medium", "the-kill": "peak",
     "politics-table": "medium", "whats-your-play": "high",
-    "know-your-enemy": "medium", "the-99": "low", "featured-artist": "low",
+    "know-your-enemy": "medium", "fetch-quests": "medium",
+    "sources-say": "medium", "the-99": "low", "featured-artist": "low",
     "keep-or-ship": "medium",
     "upgrade-watch": "low", "judges-desk": "low", "back-page": "low",
 }
@@ -123,6 +135,7 @@ MODE = {
     # precisely what makes it the breather after By the Numbers (STYLEv3 §6).
     "the-kill": "narrative", "politics-table": "reflection",
     "whats-your-play": "participation", "know-your-enemy": "reference",
+    "fetch-quests": "instruction", "sources-say": "analysis",
     "the-99": "browsing", "featured-artist": "appreciation", "keep-or-ship": "practice",
     "upgrade-watch": "imagination", "judges-desk": "reference",
     "back-page": "closure",

@@ -662,36 +662,38 @@ AGENT_ROUTINES = {
         # No "cover" key: issue_plan.json owns the cover (build_manual.render_cover
         # reads plan["cover"] and issue["cover_tagline"], never manual_prose).
         "artifact_keys": ["how_it_wins", "combo_lines", "card_roles",
-                          "mulligan", "upgrades"],
+                          "mulligan", "upgrades", "mana_base"],
         # COMBO_GRAPH_PATH stands in for COMBO_DETAILS_PATH here on purpose: agents
         # read the details file, but process_combos writes both in one step, so the
         # 4.5 MB graph is a faithful invalidation proxy for the 25.7 MB details and
         # costs far less to hash.
         "inputs": ["cards:semantic", "stacks:passing", "deck:strategic_frame.json?",
-                   "deck:goldfish_metrics.json",
+                   "deck:goldfish_metrics.json", "deck:mana_analysis.json?",
                    "global:COMBO_GRAPH_PATH", "global:SYNERGY_GRAPH_PATH",
                    "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
     },
-    # Deliberately NOT an input to writer-prose or issue-plan: a sideboard edit
-    # should cost one analysis, not a full manual regeneration. The renderer reads
-    # the artifact directly, so the coupling stays one-way.
-    "sideboard-analysis": {
+    # The Short List (v3.3): one artifact replaces the sideboard-analysis /
+    # upgrade-watch pair — the ten cards most worth the pilot's sleeves,
+    # bench-first, pool-filled. Applicable to every deck. Deliberately NOT an
+    # input to writer-prose or issue-plan: a bench edit should cost one
+    # analysis, not a full manual regeneration — the renderer reads the
+    # artifact directly, so the coupling stays one-way.
+    "the-ten": {
         "agent": "sideboard-analyst",
-        "artifact": "sideboard_analysis.json",
-        "inputs": ["cards:semantic", "stacks:passing", "deck:strategic_frame.json?",
-                   "deck:bracket_report.json?", "deck:pilot_feedback.md?",
-                   "global:COMBO_GRAPH_PATH", "strategy:doc"],
-    },
-    # The empty-sideboard counterpart: pool scout for the Upgrade Watch
-    # "On the Lookout" section. Applicable exactly when sideboard-analysis
-    # is not (the two partition every deck — see agent_cache applicability).
-    "upgrade-watch": {
-        "agent": "upgrade-scout",
-        "artifact": "upgrade_watch.json",
+        "artifact": "considering.json",
         "inputs": ["cards:semantic", "stacks:passing", "deck:strategic_frame.json?",
                    "deck:bracket_report.json?", "deck:pilot_feedback.md?",
                    "global:COMBO_DETAILS_PATH", "global:SYNERGY_GRAPH_PATH",
                    "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
+    },
+    # Fetch Quests (v3.3): the coach's tutor guide — one wish per tutor.
+    # N/A for decks with zero library-search tutors in the 99 (the renderer
+    # prints standing copy instead; see agent_cache applicability).
+    "tutor-guide": {
+        "agent": "pilot-coach",
+        "artifact": "tutor_guide.json",
+        "inputs": ["cards:semantic", "stacks:passing", "deck:strategic_frame.json?",
+                   "deck:goldfish_metrics.json", "strategy:doc"],
     },
     "issue-plan": {
         "agent": "magazine-editor",
@@ -754,6 +756,8 @@ PROSE_KEY_INPUTS = {
                     "deck:goldfish_metrics.json", "stacks:passing"],
     "mulligan": ["cards:semantic", "deck:goldfish_metrics.json"],
     "upgrades": ["cards:semantic", "deck:strategic_frame.json?", "stacks:passing"],
+    "mana_base": ["cards:semantic", "deck:mana_analysis.json?",
+                  "deck:goldfish_metrics.json"],
     # coach-prose
     "threat_assessment": ["cards:semantic", "deck:goldfish_metrics.json",
                           "stacks:passing", "deck:strategic_frame.json?",

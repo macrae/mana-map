@@ -20,6 +20,7 @@ import json
 
 from manamap.pilot.common import deck_dir, load_deck_cards, report_errors
 from manamap.pilot.issue_spec import (
+    BREATHER_AFTER,
     COMPONENTS,
     DENSE_MODES,
     FURNITURE_KEYS,
@@ -98,7 +99,9 @@ def validate_plan(plan, card_names=None, artists=None):
         errors.append(f"unknown department id(s): {unknown}")
     absent = [i for i in DEPARTMENT_IDS if i not in seen]
     if absent:
-        errors.append(f"missing department(s): {absent} — all 15 render every issue")
+        errors.append(
+            f"missing department(s): {absent} — all {len(DEPARTMENT_IDS)} "
+            f"render every issue")
     ordered = [i for i in seen if i in DEPARTMENT_BY_ID]
     if ordered != [i for i in DEPARTMENT_IDS if i in ordered]:
         errors.append("departments are out of canonical order (STYLEv3 §5)")
@@ -165,8 +168,11 @@ def validate_plan(plan, card_names=None, artists=None):
                         f"this deck"
                     )
 
-    # Rhythm: no two dense departments adjacent (STYLEv3 §6).
+    # Rhythm: no two dense sections adjacent (STYLEv3 §6) — unless the
+    # renderer emits a declared full-bleed breather spread between them.
     for a, b in zip(ordered, ordered[1:]):
+        if a in BREATHER_AFTER:
+            continue
         if MODE.get(a) in DENSE_MODES and MODE.get(b) in DENSE_MODES:
             errors.append(
                 f"rhythm: {a} ({MODE[a]}) and {b} ({MODE[b]}) are both dense and adjacent — "

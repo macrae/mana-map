@@ -174,7 +174,9 @@ def test_departments_are_stable_across_issues():
     assert "command-zone" in DEPARTMENT_IDS      # the Commander Mandate
     assert "judges-desk" in DEPARTMENT_IDS       # the proof
     assert "featured-artist" in DEPARTMENT_IDS   # who painted your deck
-    assert len(DEPARTMENT_IDS) == 15
+    assert "fetch-quests" in DEPARTMENT_IDS      # what to tutor
+    assert "sources-say" in DEPARTMENT_IDS       # the mana audit
+    assert len(DEPARTMENT_IDS) == 17
 
 
 def test_canonical_plan_has_no_adjacent_dense_departments():

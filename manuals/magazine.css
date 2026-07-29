@@ -96,6 +96,27 @@ td.toc-promise { color:var(--ink-soft); font-style:italic; }
 .toc-byline { display:block; font-family:var(--condensed); text-transform:uppercase;
               letter-spacing:.1em; font-size:10px; color:var(--ink-soft);
               margin-top:3px; white-space:nowrap; }
+/* ── Art break: the declared breather between dense spreads (§6) ────── */
+.art-break { position:relative; border-top:6px solid var(--ink); }
+.art-break img { width:100%; max-height:420px; object-fit:cover; }
+.art-break .pull-quote { position:absolute; left:34px; bottom:26px; margin:0;
+  background:rgba(26,23,20,.82); color:var(--paper); padding:12px 18px;
+  border-left:6px solid var(--burst-yellow); max-width:32ch; }
+.art-break .art-credit, .art-break .printing { position:absolute; right:12px;
+  bottom:6px; color:rgba(244,239,228,.75); font-size:.72em; }
+.art-break .printing { bottom:22px; }
+
+/* ── Card links: tap → tile in The 99, hover → card preview ─────────── */
+a.cardref { color:inherit; position:relative;
+            text-decoration:underline solid; text-decoration-thickness:1px;
+            text-decoration-color:var(--accent,var(--ink-soft));
+            text-underline-offset:2px; }
+a.cardref:hover { background:rgba(0,0,0,.05); }
+.card-pop { display:none; position:absolute; left:0; bottom:1.5em;
+            width:230px; max-width:60vw; z-index:70;
+            border:3px solid var(--ink); border-radius:11px;
+            box-shadow:6px 6px 0 rgba(0,0,0,.35); background:var(--paper); }
+a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
 .folio { display:flex; justify-content:space-between; align-items:center;
          font-family:var(--condensed); text-transform:uppercase; letter-spacing:.18em;
          font-size:11px; border-top:2px solid var(--ink); margin-top:30px;
@@ -349,6 +370,8 @@ table.data tr:nth-child(even) td { background:rgba(255,255,255,.45); }
   .folio { padding:7px 18px 18px; }
   .violator { position:static; margin:14px auto; }
   .body-copy p:first-of-type::first-letter { font-size:2.4em; }
+  /* Touch: no hover — the tap follows the anchor to the tile instead. */
+  .card-pop { display:none!important; }
   /* The Flight Plan stacks: title row, then promise + byline beneath. */
   table.toc, table.toc tr { display:block; }
   table.toc td { display:block; border-bottom:none; padding:1px 0; }
@@ -359,5 +382,6 @@ table.data tr:nth-child(even) td { background:rgba(255,255,255,.45); }
 @media (prefers-reduced-motion:reduce) { * { transition:none!important; animation:none!important; } }
 @media print { .trim { box-shadow:none; } body { background:#fff; }
   .toc-float { display:none; }
+  .card-pop { display:none!important; }
   details.dossier > *:not(summary) { display:block; }
   details.dossier > summary::after { content:""; } }

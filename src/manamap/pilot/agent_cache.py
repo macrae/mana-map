@@ -445,50 +445,30 @@ def _extra_changes(old_extra, new_extra):
     return changes
 
 
-def _sideboard_applicable(slug):
-    """A deck with no real sideboard card can never have a sideboard analysis.
+def _tutor_guide_applicable(slug):
+    """Fetch Quests exists only for decks that actually tutor.
 
-    Mirrors what sideboard-facts reports as `available: false`: only accessories
-    (or nothing) behind the SIDEBOARD marker. Checked here so a whole-deck scan
-    reports the routine as N/A instead of a permanent MISS — without this, three
-    of four decks could never reach a clean exit 0.
+    Zero maindeck library-search tutors → N/A: the renderer prints standing
+    copy instead, and there is nothing for the coach to author. Missing
+    cards.json defers to the normal missing-input error.
     """
-    from manamap.pilot.artist_credits import is_accessory
+    from manamap.pilot.validate_tutor_guide import deck_tutors
 
     path = deck_dir(slug) / "cards.json"
     if not path.exists():
         return True  # let the normal missing-input error name the real problem
-    cards = load_json_memo(path).get("cards", [])
-    return any(c.get("is_sideboard") and not is_accessory(c) for c in cards)
-
-
-def _upgrade_watch_applicable(slug):
-    """The pool scout exists exactly where the sideboard analyst cannot.
-
-    Same accessory-aware predicate, inverted, so the two routines partition
-    every deck: a bench with one real card gets the analyst, an empty (or
-    accessory-only) bench gets the scout. Missing cards.json again defers to
-    the normal missing-input error.
-    """
-    path = deck_dir(slug) / "cards.json"
-    if not path.exists():
-        return True
-    return not _sideboard_applicable(slug)
+    return bool(deck_tutors(load_json_memo(path).get("cards", [])))
 
 
 # routine -> (predicate, reason shown when it does not apply). The whole-deck
 # scan turns the raised MissingInput into an N/A row; an explicit --routine
-# call exits 2 with the reason.
+# call exits 2 with the reason. The Short List (`the-ten`) has no gate: every
+# deck gets exactly ten, bench-first, pool-filled.
 _APPLICABILITY = {
-    "sideboard-analysis": (
-        _sideboard_applicable,
-        "deck has no analysable sideboard (sideboard-facts reports "
-        "available: false) — nothing to spawn or cache",
-    ),
-    "upgrade-watch": (
-        _upgrade_watch_applicable,
-        "deck has an analysable sideboard — the sideboard-analysis routine "
-        "owns Upgrade Watch for this deck, not the pool scout",
+    "tutor-guide": (
+        _tutor_guide_applicable,
+        "deck runs zero library-search tutors — Fetch Quests renders its "
+        "standing no-tutors copy; nothing to spawn or cache",
     ),
 }
 

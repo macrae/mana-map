@@ -38,6 +38,7 @@ PROSE = {
     "card_roles": {"Sac Outlet": "A role."},
     "mulligan": "Keep bodies.",
     "upgrades": "Swap these.",
+    "mana_base": "Twenty-four lands, honestly counted.",
     "threat_assessment": "They turn here.",
     "matchups": "Against sweepers.",
 }
@@ -522,9 +523,8 @@ def test_scan_json_separates_applicable_from_not():
     assert {"slug", "any_miss", "routines", "not_applicable"} <= set(doc)
     na = {r["routine"]: r["reason"] for r in doc["not_applicable"]}
     assert "brief.json" in na["candidate-pool"]
-    # goblin-storm has a real sideboard card, so the pool scout does not apply —
-    # sideboard-analysis and upgrade-watch partition every deck.
-    assert "analysable sideboard" in na["upgrade-watch"]
+    # the-ten has no applicability gate — every deck gets a Short List.
+    assert "the-ten" not in na
 
 
 # ── The iteration bound, enforced rather than quoted ─────────────────────
@@ -577,42 +577,49 @@ def test_runs_within_the_bound_need_no_override(deck):
     assert "iteration_bound_override" not in entry
 
 
-# ── Sideboard N/A gating ─────────────────────────────────────────────────
+# ── Applicability gating (tutor-guide; the-ten has no gate) ──────────────
 
 
-def sideboard_analysis_doc():
-    return {"slug": SLUG, "assessment": "x", "swaps": [], "opens_lines": [],
-            "long_term_defaults": [], "gaps": []}
+def test_tutor_guide_is_na_without_tutors(deck):
+    """A deck with zero library-search tutors — N/A, not a permanent MISS."""
+    with pytest.raises(ac.MissingInput, match="zero library-search tutors"):
+        ac.status(SLUG, "tutor-guide")
 
 
-def test_sideboard_routine_is_na_without_a_real_sideboard(deck):
-    """A deck with no sideboard can never satisfy the routine — N/A, not MISS."""
-    with pytest.raises(ac.MissingInput, match="no analysable sideboard"):
-        ac.status(SLUG, "sideboard-analysis")
-
-
-def test_accessories_alone_do_not_make_the_routine_applicable(deck):
+def test_a_tutor_makes_the_routine_applicable(deck):
     doc = json.loads((deck / "cards.json").read_text())
-    doc["cards"].append({"name": "Storm Counter", "type_line": "Card",
-                         "is_sideboard": True})
+    doc["cards"].append({"name": "Diabolic Tutor", "type_line": "Sorcery",
+                         "oracle_text": "Search your library for a card..."})
     write_json(deck / "cards.json", doc)
-    with pytest.raises(ac.MissingInput, match="no analysable sideboard"):
-        ac.status(SLUG, "sideboard-analysis")
+    result = ac.status(SLUG, "tutor-guide")
+    assert result["status"] == "MISS"  # applicable, just never recorded
 
 
-def test_a_real_sideboard_card_makes_the_routine_applicable(deck):
+def test_fetch_lands_do_not_make_tutor_guide_applicable(deck):
+    doc = json.loads((deck / "cards.json").read_text())
+    doc["cards"].append({"name": "Evolving Wilds", "type_line": "Land",
+                         "oracle_text": "Search your library for a basic land "
+                                        "card..."})
+    write_json(deck / "cards.json", doc)
+    with pytest.raises(ac.MissingInput, match="zero library-search tutors"):
+        ac.status(SLUG, "tutor-guide")
+
+
+def test_the_ten_applies_to_every_deck(deck):
+    """Bench or no bench, the Short List routine is live (MISS, never N/A)."""
+    assert ac.status(SLUG, "the-ten")["status"] == "MISS"
     doc = json.loads((deck / "cards.json").read_text())
     doc["cards"].append({"name": "Sazacap's Brew", "type_line": "Instant",
                          "is_sideboard": True})
     write_json(deck / "cards.json", doc)
-    result = ac.status(SLUG, "sideboard-analysis")
-    assert result["status"] == "MISS"  # applicable, just never recorded
+    assert ac.status(SLUG, "the-ten")["status"] == "MISS"
 
 
-def test_record_refuses_the_inapplicable_sideboard_routine(deck):
-    write_json(deck / "sideboard_analysis.json", sideboard_analysis_doc())
-    with pytest.raises(ac.MissingInput, match="no analysable sideboard"):
-        ac.record(SLUG, "sideboard-analysis")
+def test_record_refuses_the_inapplicable_tutor_guide(deck):
+    write_json(deck / "tutor_guide.json",
+               {"slug": SLUG, "assessment": "x", "tutors": [], "gaps": []})
+    with pytest.raises(ac.MissingInput, match="zero library-search tutors"):
+        ac.record(SLUG, "tutor-guide")
 
 
 # ── Memoized artifact loading (common.load_json_memo) ────────────────────
@@ -793,7 +800,8 @@ def test_record_stores_key_fingerprints(deck):
     _two_card_deck(deck)
     entry, _ = ac.record(SLUG, "writer-prose")
     assert set(entry["key_fingerprints"]) == {
-        "how_it_wins", "combo_lines", "card_roles", "mulligan", "upgrades"}
+        "how_it_wins", "combo_lines", "card_roles", "mulligan", "upgrades",
+        "mana_base"}
 
 
 def test_goldfish_change_stales_only_goldfish_keys(deck):
@@ -804,7 +812,8 @@ def test_goldfish_change_stales_only_goldfish_keys(deck):
     ac._SHA_MEMO.clear(); common.clear_memo()
     result = ac.status(SLUG, "writer-prose")
     assert result["status"] == "MISS"
-    assert set(result["stale_keys"]) == {"how_it_wins", "mulligan"}
+    assert set(result["stale_keys"]) == {"how_it_wins", "mulligan",
+                                         "mana_base"}
 
 
 def test_new_passing_stack_stales_stack_keys(deck):

@@ -97,8 +97,10 @@ def reference_impact(base, changed_names):
             if hits:
                 impact.append({"artifact": rel(path), "cards": hits})
 
-    for fname in ("strategic_frame.json", "sideboard_analysis.json",
-                  "upgrade_watch.json", "goldfish_targets.json"):
+    for fname in ("strategic_frame.json", "considering.json",
+                  "tutor_guide.json", "mana_analysis.json",
+                  "sideboard_analysis.json", "upgrade_watch.json",
+                  "goldfish_targets.json"):
         doc = load_json(base / fname)
         if doc is None:
             continue

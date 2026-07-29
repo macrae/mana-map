@@ -55,6 +55,7 @@ from manamap.pilot.design import (
 )
 from manamap.pilot.issue_spec import (
     ACTS,
+    BREATHER_AFTER,
     DEPARTMENT_BY_ID,
     DEPARTMENT_IDS,
     MASTHEAD,
@@ -70,6 +71,7 @@ ACCENT = {
     "by-the-numbers": "var(--y2k-blue)", "the-kill": "var(--power-red)",
     "politics-table": "var(--radical-purple)", "whats-your-play": "var(--hot-magenta)",
     "know-your-enemy": "var(--radical-purple)", "the-99": "var(--slime-green)",
+    "fetch-quests": "var(--tier-coach)", "sources-say": "var(--y2k-blue)",
     "featured-artist": "var(--hot-magenta)",
     "keep-or-ship": "var(--tier-coach)", "upgrade-watch": "var(--y2k-blue)",
     "judges-desk": "var(--stamp-red)", "back-page": "var(--ink)",
@@ -137,9 +139,107 @@ def linkify(escaped_text):
     return out
 
 
+# ── Card links (renderer-provided navigation, STYLEv3 §8.4) ─────────────
+#
+# Every card mention in reader-facing copy links to that card's tile in The 99
+# (the commander, which has no tile, links to The Command Zone) and carries a
+# CSS-only hover preview of the card image. Agents keep writing plain names;
+# the map is per-render module state set by render_issue — single-threaded,
+# deterministic, cleared after assembly.
+
+_CARD_LINKS = {"regex": None, "meta": {}}
+# name → tile anchor id for the current render; The 99 reads this when minting
+# tile ids so the linker's hrefs and the tiles can never drift apart.
+CARD_ANCHORS = {}
+
+
+def card_slug(name):
+    """Deterministic anchor slug for a card name."""
+    return re.sub(r"-{2,}", "-", re.sub(r"[^a-z0-9]", "-", name.lower())).strip("-")
+
+
+def card_anchor_ids(cards):
+    """name → unique tile anchor id, stable across renders (sorted names;
+    collisions get -2, -3 … in that order)."""
+    anchors, used = {}, set()
+    for name in sorted({c["name"] for c in cards}):
+        slug = card_slug(name)
+        candidate, n = slug, 2
+        while candidate in used:
+            candidate, n = f"{slug}-{n}", n + 1
+        used.add(candidate)
+        anchors[name] = f"card-{candidate}"
+    return anchors
+
+
+def _card_probes(cards):
+    """Conservative probe set: full names, DFC faces, and unambiguous
+    pre-comma short names ("Selvala"). Returns {probe: card_name}."""
+    names = {c["name"] for c in cards}
+    probes = {n: n for n in names}
+    for n in names:
+        for face in n.split(" // "):
+            face = face.strip()
+            if face and face not in probes:
+                probes[face] = n
+    shorts = {}
+    for n in sorted(names):
+        if "," in n:
+            short = n.split(",", 1)[0].strip()
+            if len(short) >= 5:
+                shorts.setdefault(short, []).append(n)
+    for short, owners in shorts.items():
+        if len(owners) == 1 and short not in probes:
+            probes[short] = owners[0]
+    return probes
+
+
+def set_card_links(cards, commander_name=None):
+    """Arm the card linker for one render. Probes are esc()-escaped so they
+    match post-escape text; longest-first so full names beat short forms."""
+    anchors = card_anchor_ids(cards)
+    by_name = {c["name"]: c for c in cards}
+    meta = {}
+    for probe, name in _card_probes(cards).items():
+        href = ("#command-zone" if name == commander_name
+                else f"#{anchors[name]}")
+        meta[esc(probe)] = (href, by_name[name].get("image") or "")
+    pattern = "|".join(re.escape(p) for p in
+                       sorted(meta, key=lambda p: (-len(p), p)))
+    _CARD_LINKS["regex"] = re.compile(rf"(?<!\w)(?:{pattern})(?!\w)") if meta else None
+    _CARD_LINKS["meta"] = meta
+    CARD_ANCHORS.clear()
+    CARD_ANCHORS.update(anchors)
+    return anchors
+
+
+def clear_card_links():
+    _CARD_LINKS["regex"] = None
+    _CARD_LINKS["meta"] = {}
+    CARD_ANCHORS.clear()
+
+
+def card_linkify(escaped_text):
+    """Wrap card-name mentions in ALREADY-ESCAPED text with tile links and a
+    hover-preview image. Runs before linkify(); card names cannot contain the
+    stack/CR patterns, and the emitted markup contains nothing the evidence
+    regexes match, so the passes compose safely."""
+    if _CARD_LINKS["regex"] is None:
+        return escaped_text
+
+    def repl(m):
+        href, image = _CARD_LINKS["meta"][m.group(0)]
+        pop = (f'<img class="card-pop" src="{esc(image)}" loading="lazy" alt="">'
+               if image else "")
+        return f'<a class="cardref" href="{href}">{m.group(0)}{pop}</a>'
+
+    return _CARD_LINKS["regex"].sub(repl, escaped_text)
+
+
 def esc_x(text):
-    """esc() + evidence linkification — the default for reader-facing copy."""
-    return linkify(esc(text))
+    """esc() + card links + evidence linkification — the default for
+    reader-facing copy."""
+    return linkify(card_linkify(esc(text)))
 
 
 def esc_x_paras(text):
@@ -204,11 +304,12 @@ def dept_furniture(dept, cards_by_name):
     """Render the plan's furniture for a department: tips, callouts, pull quote."""
     out = []
     for step in dept.get("callouts", []):
-        out.append(callout(step.get("n", "•"), step.get("title", ""), step.get("text", "")))
+        out.append(callout(step.get("n", "•"), step.get("title", ""),
+                           step.get("text", ""), esc_fn=esc_x))
     for tip in dept.get("pilot_tips", []):
         card = cards_by_name.get(tip.get("card", ""))
         out.append(pilot_tip(tip.get("card", ""), tip.get("text", ""),
-                             (card or {}).get("image")))
+                             (card or {}).get("image"), esc_fn=esc_x))
     if dept.get("pull_quote"):
         out.append(pull_quote(dept["pull_quote"]))
     return "".join(out)
@@ -517,8 +618,8 @@ def render_know_your_enemy(issue, plan, prose_doc, cards_by_name):
         boxes.append(threat_box(
             entry.get("archetype", ""), entry.get("meter_label", "Threat"),
             float(entry.get("rate", 0.5)),
-            f'<p>{esc(entry.get("read", ""))}</p>'
-            f'<p><b>Your outs:</b> {esc(", ".join(entry.get("outs", [])))}</p>',
+            f'<p>{esc_x(entry.get("read", ""))}</p>'
+            f'<p><b>Your outs:</b> {esc_x(", ".join(entry.get("outs", [])))}</p>',
         ))
     return (
         dept_open("know-your-enemy", plan)
@@ -562,7 +663,9 @@ def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
     sections = []
     for role, group_cards in groups:
         heading = f"<h3>{esc(role)}</h3>" if role else ""
-        tiles = "".join(card_tile(c, roles, synergy) for c in group_cards)
+        tiles = "".join(
+            card_tile(c, roles, synergy, anchor_id=CARD_ANCHORS.get(c["name"]))
+            for c in group_cards)
         sections.append(f'{heading}<div class="card-grid">{tiles}</div>')
     tiles = "".join(sections)
 
@@ -579,8 +682,11 @@ def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
                     "Table aid — no rules text. Use it to track game state on big turns.")
                 image = (f'<img src="{esc(card["image"])}" alt="{esc(card["name"])}" loading="lazy">'
                          if card.get("image") else "")
+                aid = (None if card["name"] in by_name
+                       else CARD_ANCHORS.get(card["name"]))
+                anchor = f' id="{esc(aid)}"' if aid else ""
                 side_tiles.append(
-                    f'<div class="card-tile">{image}<h4>{esc(card["name"])}</h4>'
+                    f'<div class="card-tile"{anchor}>{image}<h4>{esc(card["name"])}</h4>'
                     f'<span class="chip">Table aid</span>'
                     f"<p>{esc(blurb)}</p></div>"
                 )
@@ -592,7 +698,10 @@ def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
             side_roles.setdefault(
                 card["name"],
                 f"{card.get('type_line', 'Sideboard card')} — no role blurb written yet.")
-            side_tiles.append(card_tile(card, side_roles, synergy))
+            side_anchor = (None if card["name"] in by_name
+                           else CARD_ANCHORS.get(card["name"]))
+            side_tiles.append(card_tile(card, side_roles, synergy,
+                                         anchor_id=side_anchor))
         side_html = ("<h3>Sideboard &amp; table aids</h3>"
                      f'<div class="card-grid">{"".join(side_tiles)}</div>')
     return (
@@ -645,7 +754,7 @@ def render_featured_artist(issue, plan, cards, cards_by_name):
                 hero.get("scryfall_uri"), hero))
         if featured.get("note"):
             paragraphs = "".join(
-                f"<p>{esc(p.strip())}</p>"
+                f"<p>{esc_x(p.strip())}</p>"
                 for p in str(featured["note"]).split("\n\n") if p.strip()
             )
             body.append(f'<div class="body-copy">{paragraphs}</div>')
@@ -721,7 +830,7 @@ def render_keep_or_ship(issue, plan, prose_doc, goldfish, cards_by_name):
     hands = "".join(f"""
 <div class="branch"><h4>{esc(h.get("verdict", ""))}</h4>
   <p style="font-size:.92em">{esc(", ".join(h.get("cards", [])))}</p>
-  <p class="small soft">{esc(h.get("why", ""))}</p></div>"""
+  <p class="small soft">{esc_x(h.get("why", ""))}</p></div>"""
         for h in dept.get("hands", []))
     hands_html = f'<div class="branches">{hands}</div>' if hands else ""
     return (
@@ -734,17 +843,217 @@ def render_keep_or_ship(issue, plan, prose_doc, goldfish, cards_by_name):
     )
 
 
+def render_fetch_quests(issue, plan, tutor_guide, cards_by_name):
+    """What to tutor (★): scenario -> fetch -> why, straight from
+    tutor_guide.json. A deck with no tutors keeps the section (L8) with
+    standing copy instead of a TODO — zero tutors is an answer, not a gap."""
+    dept = plan_dept(plan, "fetch-quests")
+    parts = []
+    tutors = (tutor_guide or {}).get("tutors") or []
+    if tutor_guide and tutor_guide.get("assessment"):
+        parts.append(f'<div class="body-copy">'
+                     f'{esc_x_paras(tutor_guide["assessment"])}</div>')
+    for entry in tutors:
+        name = entry.get("card", "")
+        card = cards_by_name.get(name) or {}
+        rows = "".join(
+            f'<div class="callout"><div class="n">{i}</div><div>'
+            f'<span class="t">{esc_x(t.get("scenario", ""))}</span>'
+            f'<b>Fetch:</b> {esc_x(t.get("fetch", ""))}<br>'
+            f'{esc_x(t.get("why", ""))}</div></div>'
+            for i, t in enumerate(entry.get("targets", []), 1)
+        )
+        note = (f'<p class="small soft">{esc_x(entry["notes"])}</p>'
+                if entry.get("notes") else "")
+        image = (f'<img src="{esc(card["image"])}" alt="{esc(name)}" '
+                 f'loading="lazy" style="max-width:180px">'
+                 if card.get("image") else "")
+        parts.append(
+            f'<article class="rule-top">'
+            f'<h3 style="font-family:var(--display);font-size:1.25em">'
+            f'{esc_x(name)}</h3>{image}{rows}{note}</article>')
+    if not tutors:
+        parts.append(
+            '<div class="body-copy"><p>No tutors in this 99. The deck finds '
+            'its pieces the honest way — redundancy and card draw — so every '
+            'game plays out a little differently, and the Coach is fine with '
+            'that.</p></div>')
+    return (
+        dept_open("fetch-quests", plan)
+        + "".join(parts)
+        + dept_captions(dept, cards_by_name)
+        + dept_furniture(dept, cards_by_name)
+        + dept_close("fetch-quests", issue)
+    )
+
+
+def render_sources_say(issue, plan, mana, prose_doc, cards_by_name):
+    """The mana audit (◆), straight from mana_analysis.json — deterministic
+    Python, no agent. Ledger's mana_base prose key narrates it."""
+    dept = plan_dept(plan, "sources-say")
+    if not mana:
+        return (dept_open("sources-say", plan) + TODO
+                + dept_close("sources-say", issue))
+    lands = mana.get("lands", {})
+    sources = mana.get("sources", {})
+    pips = mana.get("pips", {})
+    probs = mana.get("on_curve_probability", {})
+    shares = mana.get("shares", {})
+    targets = mana.get("source_targets", {})
+
+    meters = "".join(
+        power_meter(f"{colour} on curve (lands + ramp)",
+                    probs.get("with_rocks_and_dorks", {}).get(colour, 0))
+        for colour in sorted(pips)
+    )
+    colour_rows = "".join(
+        f"<tr><th>{esc(colour)}</th>"
+        f"<td>{pips[colour]['total_pips']:g}</td>"
+        f"<td>{esc(pips[colour]['effective_pips'])}</td>"
+        f"<td>{esc(sources.get('lands', {}).get(colour, 0))}</td>"
+        f"<td>{esc(sources.get('total', {}).get(colour, 0))}</td>"
+        f"<td>{esc(targets.get(colour, 0))}</td>"
+        f"<td>{shares.get(colour, {}).get('pip_share', 0):.0%} / "
+        f"{shares.get(colour, {}).get('source_share', 0):.0%}</td></tr>"
+        for colour in sorted(pips)
+    )
+    colour_table = (
+        '<table class="data"><tr><th>Colour</th><th>Total pips</th>'
+        '<th>Heavy pip</th><th>Land sources</th><th>+ ramp</th>'
+        '<th>90% yardstick</th><th>Pip / source share</th></tr>'
+        f'{colour_rows}</table>'
+    )
+    class_rows = "".join(
+        f"<tr><th>{esc(cls.replace('-', ' ').title())}</th><td>{esc(n)}</td></tr>"
+        for cls, n in (lands.get("classes") or {}).items()
+    )
+    class_table = (
+        f'<table class="data"><tr><th>Land class</th><th>Count</th></tr>'
+        f'{class_rows}</table>' if class_rows else ""
+    )
+    ramp = mana.get("ramp", {})
+    facts = fast_facts("Mana File", [
+        ("Lands", lands.get("total", 0)),
+        ("Enter tapped", lands.get("enters_tapped", 0)),
+        ("Rocks", ramp.get("ramp:rock", 0)),
+        ("Dorks", ramp.get("ramp:dork", 0)),
+        ("Rituals", ramp.get("ramp:ritual", 0)),
+        ("Land ramp", ramp.get("ramp:land", 0)),
+        ("Cost reducers", ramp.get("ramp:cost-reduction", 0)),
+    ])
+    assumptions = "".join(f"<li>{esc(a)}</li>" for a in mana.get("assumptions", []))
+    notes = "".join(f"<li>{esc_x(n)}</li>" for n in mana.get("notes", []))
+    notes_html = (f'<h4>What the audit flags</h4><ul class="swap-list">{notes}</ul>'
+                  if notes else "")
+    return (
+        dept_open("sources-say", plan)
+        + f'<div class="body-copy">{prose(prose_doc, "mana_base")}</div>'
+        + meters + colour_table + class_table + facts + notes_html
+        + f'<div class="assumptions"><b>What this audit does and does not do.</b> '
+          f"Hypergeometric draws, not games. Every assumption is stated:"
+          f"<ul>{assumptions}</ul></div>"
+        + dept_captions(dept, cards_by_name)
+        + dept_furniture(dept, cards_by_name)
+        + dept_close("sources-say", issue)
+    )
+
+
+def render_art_break(commander, mana):
+    """The declared breather between the two dense analysis spreads (STYLEv3
+    §6, v3.3): a full-bleed art spread with one computed Ledger line."""
+    if not commander:
+        return ""
+    image = commander.get("art_crop") or commander.get("image")
+    if not image:
+        return ""
+    lands = (mana or {}).get("lands", {})
+    line = (f"{lands.get('total', '—')} lands. "
+            f"{lands.get('enters_tapped', '—')} arrive tapped. "
+            f"The pips know the difference.") if lands else ""
+    return (
+        f'<section class="art-break">'
+        f'<img src="{esc(image)}" alt="{esc(commander.get("name", ""))}">'
+        f'<blockquote class="pull-quote">{esc(line)}</blockquote>'
+        f'{printing_credit(commander)}</section>'
+    )
+
+
 def render_upgrade_watch(issue, plan, prose_doc, cards_by_name, sideboard=None,
-                         lookout=None):
+                         lookout=None, considering=None):
     dept = plan_dept(plan, "upgrade-watch")
+    if considering:
+        body = render_short_list(considering)
+    else:
+        # Transitional: decks not yet regenerated under the Short List keep
+        # rendering their legacy artifact until the batch pass retires it.
+        body = (render_sideboard(sideboard) if sideboard
+                else render_lookout(lookout))
     return (
         dept_open("upgrade-watch", plan)
         + f'<div class="body-copy">{prose(prose_doc, "upgrades")}</div>'
-        + (render_sideboard(sideboard) if sideboard else render_lookout(lookout))
+        + body
         + dept_captions(dept, cards_by_name)
         + dept_furniture(dept, cards_by_name)
         + dept_close("upgrade-watch", issue)
     )
+
+
+def render_short_list(analysis):
+    """The Ten, straight from considering.json: the only ten cards worth the
+    reader's sleeves — bench picks and pool scouts on one list, evidence ◆,
+    verdicts ★, exactly ten by contract (validate_considering)."""
+    parts = []
+    if analysis.get("assessment"):
+        parts.append(f'<div class="body-copy">'
+                     f'{esc_x_paras(analysis["assessment"])}</div>')
+    rows = []
+    for i, entry in enumerate(analysis.get("ten") or [], 1):
+        source = entry.get("source", "pool")
+        chip = "In the box" if source == "sideboard" else "Scouted"
+        evidence = entry.get("evidence") or {}
+        ev_bits = []
+        for line in evidence.get("combo_lines_opened") or []:
+            ev_bits.append(
+                f'<span class="tier-data">◆</span> completes '
+                f'{esc_x(" + ".join(line.get("cards", [])))} '
+                f'({esc(line.get("status", ""))})')
+        for obs in evidence.get("obsoletes") or []:
+            ev_bits.append(f'<span class="tier-data">◆</span> obsoletes '
+                           f'{esc_x(obs)}')
+        partners = evidence.get("synergy_partners_in_deck") or []
+        if partners:
+            ev_bits.append(f'<span class="tier-data">◆</span> synergy: '
+                           f'{esc_x(", ".join(partners))}')
+        rank = evidence.get("edhrec_rank")
+        if rank is not None:
+            shown = f"{rank:,}" if isinstance(rank, int) else str(rank)
+            ev_bits.append(f'<span class="tier-data">◆</span> EDHREC rank '
+                           f'{esc(shown)}')
+        ev_html = ("<br>" + "<br>".join(ev_bits)) if ev_bits else ""
+        when = entry.get("when") or entry.get("unlocks") or ""
+        when_html = f'<br><em>When:</em> {esc_x(when)}' if when else ""
+        cut = entry.get("natural_cut")
+        cut_html = f'<br><em>Natural cut:</em> {esc_x(cut)}' if cut else ""
+        rows.append(
+            f'<li><b>{esc(i)}.</b> <strong>{esc_x(entry.get("card", "?"))}</strong>'
+            f' <span class="chip">{chip}</span>'
+            f' <span class="chip">{esc(entry.get("role", ""))}</span>'
+            f'{ev_html}'
+            f'<br><span class="tier-coach">★</span> {esc_x(entry.get("why", ""))}'
+            f'{when_html}{cut_html}</li>'
+        )
+    parts.append(f'<ul class="swap-list">{"".join(rows)}</ul>')
+    verdicts = analysis.get("bench_verdicts") or []
+    if verdicts:
+        items = "".join(
+            f'<li><strong>{esc_x(v.get("card", "?"))}</strong> — '
+            f'<span class="chip">{esc(v.get("verdict", ""))}</span> '
+            f'<span class="tier-coach">★</span> {esc_x(v.get("why", ""))}</li>'
+            for v in verdicts
+        )
+        parts.append(f'<h4>The rest of the bench</h4>'
+                     f'<ul class="swap-list">{items}</ul>')
+    return "".join(parts)
 
 
 def render_sideboard(analysis):
@@ -960,7 +1269,8 @@ def render_back_page(issue, plan, deck_doc, stacks, cards_by_name):
 
 
 def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
-                 goldfish=None, decisions=None, sideboard=None, lookout=None):
+                 goldfish=None, decisions=None, sideboard=None, lookout=None,
+                 considering=None, tutor_guide=None, mana=None):
     """Assemble a complete issue. Deterministic for fixed inputs."""
     cards = deck_doc["cards"]
     cards_by_name = {c["name"]: c for c in cards}
@@ -978,6 +1288,11 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
         f"numbers, and table coaching. Pilot's Manual Vol. {volume:03d}."
     )
 
+    # Arm the card linker: every card mention in reader-facing copy becomes a
+    # link to its tile in The 99 (commander → Command Zone) with a hover
+    # preview. Cleared after assembly so renders never leak state into tests.
+    set_card_links(cards, commander["name"] if commander else None)
+
     # One renderer per section; issue_spec.DEPARTMENT_IDS is the only place
     # the STYLEv3 §5 five-act order lives — reordering the spec reorders the book.
     renderers = {
@@ -993,13 +1308,17 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
                                                   cards_by_name),
         "know-your-enemy": lambda: render_know_your_enemy(issue, plan, prose_doc,
                                                           cards_by_name),
+        "fetch-quests": lambda: render_fetch_quests(issue, plan, tutor_guide,
+                                                    cards_by_name),
+        "sources-say": lambda: render_sources_say(issue, plan, mana, prose_doc,
+                                                  cards_by_name),
         "command-zone": lambda: render_command_zone(issue, plan, commander,
                                                     goldfish, cards_by_name),
         "the-99": lambda: render_the_99(issue, plan, cards, prose_doc, synergy,
                                         cards_by_name),
         "upgrade-watch": lambda: render_upgrade_watch(issue, plan, prose_doc,
                                                       cards_by_name, sideboard,
-                                                      lookout),
+                                                      lookout, considering),
         "by-the-numbers": lambda: render_by_the_numbers(issue, plan, goldfish,
                                                         cards_by_name),
         "the-kill": lambda: render_the_kill(issue, plan, stacks, prose_doc,
@@ -1011,9 +1330,17 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
         "back-page": lambda: render_back_page(issue, plan, deck_doc, stacks,
                                               cards_by_name),
     }
-    body = "".join(
-        renderers[dept_id]() for dept_id in DEPARTMENT_IDS
-    ) + '<a class="toc-float" href="#contents" title="Back to The Flight Plan">☰</a>'
+    try:
+        sections = []
+        for dept_id in DEPARTMENT_IDS:
+            sections.append(renderers[dept_id]())
+            if dept_id in BREATHER_AFTER:
+                sections.append(render_art_break(commander, mana))
+        body = "".join(sections) + (
+            '<a class="toc-float" href="#contents" '
+            'title="Back to The Flight Plan">☰</a>')
+    finally:
+        clear_card_links()
 
     return f"""<!DOCTYPE html>
 <html lang="en"><head>
@@ -1054,15 +1381,18 @@ def main(args):
     prose_doc = load_json(base / "manual_prose.json", {})
     goldfish = load_json(base / "goldfish_metrics.json")
     synergy = load_synergy_graph() if SYNERGY_GRAPH_PATH.exists() else {}
-    # A deck has one of these at most: the bench analysis when it has a real
-    # sideboard, the pool-scout lookout when it does not. Both absent → the
-    # section is simply omitted rather than rendering a TODO for a thing the
-    # deck does not have.
+    # The Short List (considering.json) is the current contract; the legacy
+    # sideboard/lookout pair renders only for decks not yet regenerated under
+    # it (transitional — retired per-deck at batch time).
+    considering = load_json(base / "considering.json")
     sideboard = load_json(base / "sideboard_analysis.json")
     lookout = load_json(base / "upgrade_watch.json")
+    tutor_guide = load_json(base / "tutor_guide.json")
+    mana = load_json(base / "mana_analysis.json")
 
     html_out = render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
-                            goldfish, decisions, sideboard, lookout)
+                            goldfish, decisions, sideboard, lookout,
+                            considering, tutor_guide, mana)
     MANUALS_DIR.mkdir(parents=True, exist_ok=True)
     sheet, wrote_sheet = write_stylesheet(MANUALS_DIR)
     if wrote_sheet:

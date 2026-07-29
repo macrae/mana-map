@@ -220,7 +220,7 @@ it. Therefore:
 
 ## 5. The section system
 
-Fifteen sections, fixed order, every issue. This order is the reading experience;
+Seventeen sections, fixed order, every issue. This order is the reading experience;
 it is not negotiable per-deck. A section with no artifact to fill it renders a
 visible `[TODO]`, never a silent omission.
 
@@ -255,17 +255,20 @@ Flight Plan — they are copy, not metadata. `issue_spec.py` is their single sou
 | — | *Act II — At the Table* | | | | |
 | 6 | **Table Manners** | "Three opponents, one you. How to win friends and eliminate people." | Brightside | `threat_assessment` | ★ |
 | 7 | **Know Your Enemy** | "The decks that want you dead, and how to disappoint them." | Brightside | `matchups` | ★ |
+| 8 | **Fetch Quests** | "You get one wish per tutor. Here's how not to waste it." | Brightside | `tutor_guide.json` | ★ |
 | — | *Act III — The Long Game* | | | | |
-| 8 | **The Command Zone** | "Why this commander is exactly where you want to be — on the record." | Dictum + Brightside | commander card + CR + strategy DB | ✓★ |
-| 9 | **The 99** | "Roll call. Every card earns its seat — or hears about it." | Brightside | `card_roles` + graphs | ★ |
-| 10 | **Upgrade Watch** | "What this list wants next — ranked by return, not by hype." | Marginal | obsolescence index | ◆ |
+| 9 | **The Command Zone** | "Why this commander is exactly where you want to be — on the record." | Dictum + Brightside | commander card + CR + strategy DB | ✓★ |
+| 10 | **The 99** | "Roll call. Every card earns its seat — or hears about it." | Brightside | `card_roles` + graphs | ★ |
+| 11 | **The Short List** | "Ten cards — in the box or on the wish list — the only ten worth your sleeves." | Marginal | `considering.json` | ◆ |
 | — | *Act IV — Show Your Work* | | | | |
-| 11 | **By the Numbers** | "Ten thousand opening hands don't lie." | Marginal | `goldfish_metrics.json` | ◆ |
-| 12 | **The Kill** | "The winning lines, argued and affirmed. Every step on the record." | Dictum | verified `stacks/*.json` | ✓ |
+| 12 | **Sources Say** | "Pips versus sources — does this mana base keep its promises?" | Marginal | `mana_analysis.json` | ◆ |
+| — | *(full-bleed art break — the declared §6 breather)* | | | | |
+| 13 | **By the Numbers** | "Ten thousand opening hands don't lie." | Marginal | `goldfish_metrics.json` | ◆ |
+| 14 | **The Kill** | "The winning lines, argued and affirmed. Every step on the record." | Dictum | verified `stacks/*.json` | ✓ |
 | — | *Act V — The Appendix* | | | | |
-| 13 | **Judge's Desk** | "The full case files. The Counselor read them twice." | Dictum | full stack resolutions | ✓ |
-| 14 | **Featured Artist** | "The hands that painted your deck — counted and credited." | Marginal | `cards.json` printing metadata | ◆★ |
-| 15 | **The Back Page** | "The next flight leaves soon." | — | `issue.json` + colophon | — |
+| 15 | **Judge's Desk** | "The full case files. The Counselor read them twice." | Dictum | full stack resolutions | ✓ |
+| 16 | **Featured Artist** | "The hands that painted your deck — counted and credited." | Marginal | `cards.json` printing metadata | ◆★ |
+| 17 | **The Back Page** | "The next flight leaves soon." | — | `issue.json` + colophon | — |
 
 ### 5.1 Section specifications
 
@@ -346,7 +349,22 @@ the table above. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**8. The Command Zone** — *the format department* (see §3.3)
+**8. Fetch Quests** — *what to tutor* (signed: Coach Sunny Brightside)
+
+- **Promise**: Every issue, this section tells you what to actually go get.
+- **Shape**: One entry per maindeck tutor: the card, then numbered scenario
+  steps (board state → **Fetch:** the target → why). Rendered from
+  `tutor_guide.json`; the validator holds every fetch to the deck and the
+  tutor's own search constraint.
+- **Rule**: One wish per tutor — every library-search tutor in the 99 gets an
+  entry, and fetch lands belong to Sources Say, not here. A deck with zero
+  tutors keeps the section with its standing no-tutors copy (L8).
+- **Failure mode**: a generic "tutor for your best card" — the scenarios must
+  name real boards and real targets from *this* 99.
+
+---
+
+**9. The Command Zone** — *the format department* (see §3.3)
 
 - **Promise**: Every issue, this department teaches you what your commander means in
   the format, not just on the battlefield.
@@ -359,7 +377,7 @@ the table above. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**9. The 99** — *the roster*
+**10. The 99** — *the roster*
 
 - **Promise**: Every issue, this department explains why each card earned its slot.
 - **Shape**: Card-tile grid with role chips (engine / payoff / interaction / ramp /
@@ -370,24 +388,45 @@ the table above. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**10. Upgrade Watch** — *the future*
+**11. The Short List** — *the ten*
 
-- **Shape**: Preview-department voice ("the inside source on future slots"), each
-  candidate with a fast-facts line and an honest note on what it costs.
-- **Rule**: The obsolescence index is format-agnostic and cannot see tribal or
-  targeting constraints. Every suggestion must be sanity-checked against the deck's
-  actual pillars, and flagged when the index is wrong. Say so out loud.
-- **Rule (L10, absolute)**: this department looks FORWARD from the current list,
-  never backward at how the list came to be. No applied-swap history, no "the
-  upgrade already happened," no wave numbering, no benched/retired framing. A
-  sideboard card is a live option with conditions; a pool card is a candidate; the
-  past does not exist.
-- **Failure mode**: parroting machine suggestions that ignore the deck's identity —
-  or turning the future department into a changelog.
+- **Promise**: Every issue, this section names the only ten cards worth the
+  reader's sleeves — bench picks and pool scouts on one ranked list.
+- **Shape**: Ten entries from `considering.json`, each chipped **In the box**
+  (a real sideboard card) or **Scouted** (a pool candidate), with ◆ evidence
+  bullets (combo lines opened, obsolescence, synergy partners, EDHREC rank),
+  the ★ why, the when/unlocks, and a natural cut where one exists. A bench
+  bigger than ten is pruned to its best ten; a smaller one is topped up from
+  the pool; the leftovers worth a line get a "rest of the bench" verdict strip.
+- **Rule**: Exactly ten, enforced in code (`validate-considering`) — ten is
+  the section, not a budget. Computed deltas are ◆; every recommendation is ★;
+  a line the list would open stays a candidate until a stack passes.
+- **Rule (L10, absolute)**: strictly forward-looking, from the current list
+  only. Analysis-only: the physical sideboard in `cards.json` is never
+  rewritten by this section.
+- **Failure mode**: parroting machine suggestions that ignore the deck's
+  identity — or padding to ten with picks the analyst wouldn't sleeve.
 
 ---
 
-**11. By the Numbers** — *the evidence*
+**12. Sources Say** — *the mana audit* (signed: "Ledger" Lin Marginal)
+
+- **Promise**: Every issue, this section audits whether the mana keeps up with
+  the spells.
+- **Shape**: Colour meters (on-curve probability with ramp), the colour table
+  (pips, sources, the 90% yardstick, pip-vs-source share), the land-class
+  table, the Mana File fast-facts box, and a **stated-assumptions box** — the
+  hypergeometric model audits draws, not games, and the section says so.
+- **Source**: `mana_analysis.json`, deterministic Python (`manamap pilot
+  mana-analysis`) reusing the deck-builder's own hypergeometric kit. The 90%
+  yardstick is a yardstick: in a 24-land ramp deck it is unreachable by
+  design, and Ledger's prose says what the gap actually costs.
+- **Failure mode**: presenting the yardstick as a grade, or letting the tables
+  land without one sentence of what they imply for this deck.
+
+---
+
+**13. By the Numbers** — *the evidence*
 
 - **Promise**: Every issue, this department tells you what to actually expect.
 - **Shape**: Power-meter bars for rates, a turn-by-turn table, the commander-cast
@@ -398,7 +437,7 @@ the table above. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**12. The Kill** — *the payoff*
+**14. The Kill** — *the payoff*
 
 - **Promise**: Every issue, this department shows you exactly how the deck wins.
 - **Shape**: One feature spread per verified line. Scene-setting box → numbered play
@@ -410,7 +449,7 @@ the table above. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**13. Judge's Desk** — *the proof* (the appendix)
+**15. Judge's Desk** — *the proof* (the appendix)
 
 - **Promise**: Every issue, this department proves everything the magazine claimed.
 - **Shape**: Declassified case files. Manila tint, file tabs, `CASE A-00N`, a
@@ -423,7 +462,7 @@ the table above. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**14. Featured Artist** — *who made this beautiful* (the appendix's palate cleanser)
+**16. Featured Artist** — *who made this beautiful* (the appendix's palate cleanser)
 
 - **Promise**: Every issue, this department shows you who painted your deck.
 - **Shape**: Hero card by the featured artist (commander first when they painted them),
@@ -445,7 +484,7 @@ the table above. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**15. The Back Page** — *the return*
+**17. The Back Page** — *the return*
 
 - **Shape**: `NEXT ISSUE` teaser naming the next volume's deck, the colophon (rules
   version, decklist sha, generation provenance), and the Fan Content Policy line.
@@ -468,9 +507,12 @@ and the sequence must alternate.
 | What's Your Play? | High | Active participation |
 | Table Manners | Medium | Reflection |
 | Know Your Enemy | Medium | Reference |
+| Fetch Quests | Medium | Instruction |
 | The Command Zone | Medium | Instruction |
 | The 99 | Low | Browsing |
-| Upgrade Watch | Low | Imagination |
+| The Short List | Low | Imagination |
+| Sources Say | Medium | Analysis (dense) |
+| *(art break)* | — | *the declared breather* |
 | By the Numbers | Medium | Analysis (dense) |
 | The Kill | **Peak** | Narrative (carrying technical content) |
 | Judge's Desk | Low (opt-in) | Deep reference |
@@ -482,11 +524,15 @@ Two rules fall out of this table:
 - **The Kill is the late peak.** It is the issue's biggest promise and gets the most
   ambitious layout — the summit the depth-ramp climbs to. Everything before it
   builds; the appendix after it holds the proof.
-- **Never place two dense sections adjacent.** By the Numbers (analysis) is followed
-  by The Kill (narrative); Know Your Enemy (reference) sits between participation
-  and instruction; Judge's Desk (reference) is buffered by narrative before and
-  appreciation after. If a deck's artifacts force two dense sections together,
-  insert a breather — a pull quote spread, a full-bleed art break.
+- **Never place two dense sections adjacent — or declare the breather.** By the
+  Numbers (analysis) is followed by The Kill (narrative); Know Your Enemy
+  (reference) sits between participation and instruction; Judge's Desk
+  (reference) is buffered by narrative before and appreciation after. Where the
+  arc genuinely needs two dense spreads in a row — Sources Say into By the
+  Numbers — the renderer emits a **declared full-bleed art break** between them
+  (`issue_spec.BREATHER_AFTER`; commander art + one computed Ledger line), and
+  the rhythm check honors the declaration. Undeclared dense adjacency still
+  fails validation.
 
 ---
 
@@ -661,10 +707,13 @@ The agent composes from this fixed set. It does not invent new furniture.
 
 **Renderer-provided navigation (not furniture):** in-text evidence links (every
 "stack NNN" and CR reference in body copy becomes a link to its Judge's Desk case),
-collapsible case files, per-case backlinks, and the floating contents button are
-produced by the renderer deterministically. Agents never place them, never write
-`<a>` tags, and never add them to a plan — they write plain prose references
-("stack 003", "CR 603.2h") and the renderer does the rest.
+**card links** (every card-name mention in body copy links to that card's tile in
+The 99 — the commander to The Command Zone — with a CSS-only hover preview of the
+card image), collapsible case files, per-case backlinks, the declared art break,
+and the floating contents button are produced by the renderer deterministically.
+Agents never place them, never write `<a>` tags, and never add them to a plan —
+they write plain prose references ("stack 003", "CR 603.2h", "Forerunner of the
+Empire") and the renderer does the rest.
 
 | Component | Use | Rules |
 |---|---|---|

@@ -127,11 +127,16 @@ never as "we used to think". The validator lints for this and fails the issue.
 The issue is a five-act flight plan keyed to depth — start with what to do,
 end with why it's true. Act I, In the Cockpit: The Game Plan, Keep or Ship,
 What's Your Play? (the Coach). Act II, At the Table: Table Manners, Know Your
-Enemy (the Coach). Act III, The Long Game: The Command Zone, The 99, Upgrade
-Watch (Counselor → Coach → Ledger). Act IV, Show Your Work: By the Numbers,
-The Kill (Ledger, then the Counselor). Act V, The Appendix: Judge's Desk,
-Featured Artist, The Back Page. Section order comes from
-issue_spec.DEPARTMENTS — never improvise it. Reader-facing copy says
+Enemy, Fetch Quests (the Coach). Act III, The Long Game: The Command Zone,
+The 99, The Short List (Counselor → Coach → Ledger). Act IV, Show Your Work:
+Sources Say, By the Numbers, The Kill (Ledger twice — the renderer emits the
+declared art break between the two dense spreads — then the Counselor).
+Act V, The Appendix: Judge's Desk, Featured Artist, The Back Page. Section
+order comes from issue_spec.DEPARTMENTS — never improvise it. Section
+content sources: Fetch Quests renders tutor_guide.json, Sources Say renders
+mana_analysis.json + the writer's mana_base key, The Short List renders
+considering.json — you supply each section's kicker/headline/dek/furniture,
+never its data. Reader-facing copy says
 "section", never "department". Every section's copy speaks in its signing
 columnist's voice ("Ledger" Lin Marginal ◆, Counselor Vera Dictum ✓, Coach
 Sunny Brightside ★ — bios and bylines in issue_spec; the renderer prints the

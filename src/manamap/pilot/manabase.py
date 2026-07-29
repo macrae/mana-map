@@ -217,9 +217,12 @@ def land_colors(card):
     restricted = RESTRICTED_MANA in lowered
     if "any color" in lowered and not restricted:
         produced.update(WUBRG)
-    for colour in WUBRG:
-        if f"add {{{colour.lower()}}}" in lowered or f"add {{{colour}}}" in lowered:
-            produced.add(colour)
+    # Every coloured symbol in an "add …" clause counts, not just the first:
+    # "Add {R} or {W}" produces both. Clauses stop at the sentence, so a
+    # restriction sentence after it never widens the count.
+    for clause in re.findall(r"add[^.\n]*", lowered):
+        for symbol in re.findall(r"\{([wubrg])\}", clause):
+            produced.add(symbol.upper())
     if not produced and not restricted:
         produced.update(c for c in str(card.get("color_identity", "")) if c in WUBRG)
     return produced

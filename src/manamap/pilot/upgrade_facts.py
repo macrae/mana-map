@@ -219,16 +219,11 @@ def role_budget_diff(main, roles):
 
 
 def analyze(slug):
+    # The Short List serves every deck: benches under ten fill from the pool,
+    # and even a full bench's picks get audited against pool alternatives —
+    # so the old "has a sideboard -> not available" gate is gone.
     doc = load_deck_cards(slug)
     cards = doc.get("cards", [])
-    side = [c for c in sideboard(cards) if not is_accessory(c)]
-    if side:
-        return {
-            "slug": slug,
-            "available": False,
-            "reason": (f"deck has {len(side)} analysable sideboard card(s) — "
-                       "run sideboard-facts / the sideboard-analyst instead"),
-        }
 
     pool = load_pool()
     if pool is None:

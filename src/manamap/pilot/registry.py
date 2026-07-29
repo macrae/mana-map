@@ -18,12 +18,15 @@ PILOT_STEPS = [
     ("goldfish", "manamap.pilot.goldfish", "Seeded Monte Carlo resource-development metrics"),
     ("bracket-check", "manamap.pilot.bracket", "Computed bracket floor and its evidence"),
     ("deck-facts", "manamap.pilot.deck_facts", "Deterministic deck facts agents would else re-derive"),
+    ("mana-analysis", "manamap.pilot.mana_analysis", "Deterministic mana/land analysis behind Sources Say"),
     ("sideboard-facts", "manamap.pilot.sideboard_facts", "What each sideboard card would do if run"),
     ("upgrade-facts", "manamap.pilot.upgrade_facts", "Pool-scout brief for a deck with no sideboard"),
     ("build-deck", "manamap.pilot.build_deck", "brief.json -> build_plan.json, deterministic"),
     ("validate-build", "manamap.pilot.validate_build", "Form-check a build plan against the contract"),
     ("validate-sideboard", "manamap.pilot.validate_sideboard", "Form-check a sideboard analysis"),
     ("validate-upgrade-watch", "manamap.pilot.validate_upgrade_watch", "Form-check an upgrade-watch scout report"),
+    ("validate-considering", "manamap.pilot.validate_considering", "Form-check The Short List (the ten)"),
+    ("validate-tutor-guide", "manamap.pilot.validate_tutor_guide", "Form-check the Fetch Quests tutor guide"),
     ("validate-strategic-frame", "manamap.pilot.validate_strategic_frame", "Form-check a strategic frame"),
     ("artist-credits", "manamap.pilot.artist_credits", "Standout artists and art themes in a deck"),
     ("build-manual", "manamap.pilot.build_manual", "Render a deck's 15-department magazine issue"),
@@ -44,8 +47,9 @@ _DECK_COMMANDS = {
     "fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual",
     "validate-issue", "cache-status", "cache-record", "cache-clear", "cache-rebless",
     "artist-credits",
-    "bracket-check", "build-deck", "validate-build", "deck-facts", "sideboard-facts", "validate-sideboard",
-    "validate-strategic-frame", "upgrade-facts", "validate-upgrade-watch", "impact",
+    "bracket-check", "build-deck", "validate-build", "deck-facts", "mana-analysis", "sideboard-facts", "validate-sideboard",
+    "validate-strategic-frame", "upgrade-facts", "validate-upgrade-watch",
+    "validate-considering", "validate-tutor-guide", "impact",
 }
 
 

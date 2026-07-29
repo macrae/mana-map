@@ -238,6 +238,23 @@
       ]
     },
     {
+      "id": "fetch-quests",
+      "kicker": "WISH LIST",
+      "headline": "COURIERS, NOT GENIES",
+      "dek": "Five tutors, twenty wishes — and nearly every one lands on top of your library, one draw away, not in your hand. You don't spend a wish here; you schedule it, and every scenario below names the clock it serves.",
+      "components": [
+        "pilot-tip",
+        "pull-quote"
+      ],
+      "pilot_tips": [
+        {
+          "card": "Forerunner of the Empire",
+          "text": "Budget a Worldly Tutor or Congregation at Dawn wish for Forerunner of the Empire whenever the web is the plan — it's a Human Soldier, so no Dinosaur search and no Gishath reveal will ever deliver it."
+        }
+      ],
+      "pull_quote": "You're never drawing blanks — you're drawing appointments."
+    },
+    {
       "id": "command-zone",
       "kicker": "COMMANDER FILE",
       "headline": "THE EIGHT-MANA GUARANTEE",
@@ -400,9 +417,9 @@
     },
     {
       "id": "upgrade-watch",
-      "kicker": "THE LOOKOUT",
-      "headline": "BUY SHIELDS, NOT MORE WEB",
-      "dek": "The enrage engine already shows up in 72.6% of your turn-six hands; protection shows up in 48.5%. The shopping advice writes itself — and the index's advice gets audited below, line by line.",
+      "kicker": "THE CUT",
+      "headline": "TEN EARN A SLEEVE",
+      "dek": "Exactly ten cards make this list — four already in the box, six scouted from the wider pool, every one ranked with its evidence attached. The top picks buy no new tricks: they extend the verified enrage web and turn the reveal you already trust into damage.",
       "components": [
         "fast-facts",
         "pilot-tip",
@@ -422,7 +439,7 @@
         {
           "n": 3,
           "title": "AUDIT THE INDEX",
-          "text": "The obsolescence index scores similarity, not fit: it is right that cheaper two-mana Forest-fetch undercuts Kodama's Reach, and wrong that Eladamri's Call beats Congregation at Dawn — this deck pays a premium for the top of the library, and hand-delivery misses the reveal."
+          "text": "The obsolescence index scores similarity, not fit: it is right that turn-2 ramp — Three Visits, Farseek — undercuts Kodama's Reach and Skyshroud Claim, and wrong that Harmonize beats Rishkar's Expertise, which scales with Ghalta's 12 power and drops a free permanent besides."
         }
       ],
       "pilot_tips": [
@@ -431,7 +448,24 @@
           "text": "When you do sleeve Bellowing Aegisaur, take out Pugnacious Hammerskull — it is the maindeck's only zero-trigger body, and pure stats are the one thing 34 Dinosaurs never run short of."
         }
       ],
-      "pull_quote": "Don't buy more web. Buy shields and lanes for the web you have."
+      "pull_quote": "The smart money buys more of what the record already verified."
+    },
+    {
+      "id": "sources-say",
+      "kicker": "THE AUDIT",
+      "headline": "PAID IN FULL, A TURN LATE",
+      "dek": "Green is 56.2% of the pip bill, and the supply answers: 20 sources and the deck's best on-curve rate, 58% with ramp counted. The finding is time — twelve of the twenty-four lands enter tapped, and the tables below price that delay.",
+      "components": [
+        "pilot-tip",
+        "pull-quote"
+      ],
+      "pilot_tips": [
+        {
+          "card": "Nature's Lore",
+          "text": "Aim Nature's Lore and Skyshroud Claim at the typed duals — Canopy Vista, Cinder Glade, Jetmir's Garden — because neither spell says 'tapped,' and that is how you skip the twelve-land tapped bill."
+        }
+      ],
+      "pull_quote": "The mana keeps its promises — it just keeps some of them a turn late."
     },
     {
       "id": "by-the-numbers",
@@ -574,10 +608,9 @@
       "note": "next_issue reads TO BE ANNOUNCED, so the teaser stays a standing-series line rather than a named deck. Colophon carries the decklist sha fb3507e3b705 and rules version automatically."
     }
   ],
-  "rhythm_notes": "The five-act flight plan does the pacing: Sunny opens in the cockpit (narrative, practice, participation), works the table (reflection, then Know Your Enemy's reference buffered on both sides), and hands the long game to Vera's instruction, the roster's browsing, and Ledger's imagination. Act IV climbs: one dense-analysis spread (By the Numbers) exhales into the Kill's narrative peak. The appendix parks Judge's Desk's opt-in density behind the narrative and cools through Featured Artist (appreciation) to the Back Page. Pull quotes are placed as micro-breathers on the five longest sections; no two dense modes are adjacent anywhere in the sequence.",
+  "rhythm_notes": "The five-act flight plan does the pacing: Sunny opens in the cockpit (narrative, practice, participation), works the table (reflection, then Know Your Enemy's reference buffered on both sides, with Fetch Quests' instruction closing the act), and hands the long game to Vera's instruction, the roster's browsing, and Ledger's imagination. Act IV climbs: Sources Say's dense analysis exhales through the declared full-bleed art break into By the Numbers' second analysis spread, then the Kill's narrative peak. The appendix parks Judge's Desk's opt-in density behind the narrative and cools through Featured Artist (appreciation) to the Back Page. Pull quotes are placed as micro-breathers on the five longest sections; no two dense modes sit adjacent anywhere without a declared breather between them.",
   "gaps": [
     "Stack 005's title contains the phrase 'the post-swap enrage web' — the renderer prints stack titles verbatim in The Kill and Judge's Desk, and that phrasing is changelog voice under L10. Needs a title-only revision of stacks/005-forerunner-ping-web.json before build.",
-    "strategic_frame.json land figures contradict deck-facts: the frame says '21 lands' with land sources G11/R12/W9, while deck-facts reports 24 land entries / 35 land copies and sources G13/R13/W10. No copy in this plan quotes the frame's numbers, but the frame should be synced before anything downstream does.",
     "Wrathful Raptors x the Forerunner ping web is unresolved rules territory — the deck's two flashiest boards share no verified stack. Worth a scenario; until then Know Your Enemy and the Wrathful Raptors tile carry the caution.",
     "Selvala/Regal Behemoth fast-cast: no artifact quantifies how far they pull the 7.969 mean forward. Needs a goldfish model extension or a worked sequencing scenario before any department may print a number.",
     "Strategy DB holes the frame names and this issue felt: typal construction, enrage/self-damage engines as a doctrine, cheat-into-play as an archetype axis, top-of-library stacking discipline, and reconciling computed bracket floors with verified-bounded lines.",

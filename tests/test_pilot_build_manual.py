@@ -642,3 +642,103 @@ def test_reader_facing_chrome_never_says_department():
     internal vocabulary only."""
     html_out = render()
     assert "Department" not in html_out
+
+
+# ── Card links: tiles, hrefs, hover previews ─────────────────────────────
+
+
+def test_card_mentions_link_to_their_99_tile_with_preview():
+    prose = dict(PROSE, how_it_wins="Lead with Sac Outlet, then Payoff Engine.")
+    html_out = render(prose_doc=prose)
+    assert '<a class="cardref" href="#card-sac-outlet">Sac Outlet' in html_out
+    assert '<img class="card-pop" src="https://img/sac.jpg"' in html_out
+    assert 'id="card-sac-outlet"' in html_out  # the tile target exists
+
+
+def test_commander_mentions_link_to_command_zone_not_a_tile():
+    prose = dict(PROSE, how_it_wins="Test Commander leads from the zone.")
+    html_out = render(prose_doc=prose)
+    assert '<a class="cardref" href="#command-zone">Test Commander' in html_out
+    assert 'id="card-test-commander"' not in html_out  # no tile is minted
+
+
+def test_card_linker_matches_only_whole_names():
+    prose = dict(PROSE, how_it_wins="A Sac Outletter is not the Sac Outlet.")
+    html_out = render(prose_doc=prose)
+    assert "Sac Outletter is not" in html_out  # unlinked: trailing word chars
+    assert html_out.count('href="#card-sac-outlet"') >= 1
+
+
+def test_card_linker_runs_after_escaping_with_hostile_names():
+    doc = deck_doc()
+    doc["cards"][1]["name"] = 'Evil <script>alert("x")</script>'
+    prose = dict(PROSE,
+                 how_it_wins='Cast Evil <script>alert("x")</script> early.',
+                 card_roles={'Evil <script>alert("x")</script>': "Nasty."})
+    html_out = render(deck_doc=doc, prose_doc=prose)
+    assert "<script>alert" not in html_out
+    assert "&lt;script&gt;" in html_out
+
+
+def test_cite_blocks_carry_no_card_links():
+    import re as _re
+
+    doc = deck_doc()
+    stack = verified_stack()
+    stack["resolution"]["steps"][0]["citations"][0]["quote"] = (
+        "copy it for each other Sac Outlet cast before it")
+    html_out = render(deck_doc=doc, stacks=[stack])
+    for cite in _re.findall(r'<div class="cite">.*?</div>', html_out, _re.S):
+        assert "cardref" not in cite and "xref" not in cite
+
+
+def test_tile_anchor_ids_are_unique_even_for_bench_duplicates():
+    import re as _re
+    from collections import Counter
+
+    doc = deck_doc()
+    doc["cards"].append({"name": "Sac Outlet", "is_commander": False,
+                         "is_sideboard": True, "quantity": 1,
+                         "type_line": "Creature — Goblin",
+                         "image": "https://img/sac.jpg"})
+    html_out = render(deck_doc=doc)
+    ids = _re.findall(r'id="(card-[a-z0-9-]+)"', html_out)
+    assert not [k for k, v in Counter(ids).items() if v > 1]
+
+
+# ── The three v3.3 sections ──────────────────────────────────────────────
+
+
+def test_short_list_renders_ten_with_source_chips():
+    considering = {"slug": "x", "assessment": "Ten, ranked.",
+                   "ten": ([{"card": f"Bench {i}", "source": "sideboard",
+                             "why": "w"} for i in range(4)] +
+                           [{"card": f"Pool {i}", "source": "pool",
+                             "why": "w", "unlocks": "u"} for i in range(6)]),
+                   "gaps": []}
+    html_out = render(considering=considering)
+    assert html_out.count('<span class="chip">In the box</span>') == 4
+    assert html_out.count('<span class="chip">Scouted</span>') == 6
+
+
+def test_fetch_quests_renders_wishes_and_no_tutor_fallback():
+    guide = {"slug": "x", "assessment": "Wishes.",
+             "tutors": [{"card": "Sac Outlet", "targets": [
+                 {"scenario": "Turn 3.", "fetch": "Payoff Engine",
+                  "why": "It wins."}]}], "gaps": []}
+    html_out = render(tutor_guide=guide)
+    assert "<b>Fetch:</b>" in html_out
+    with_none = render()
+    assert "No tutors in this 99" in with_none
+
+
+def test_art_break_renders_after_sources_say():
+    mana = {"lands": {"total": 24, "enters_tapped": 12, "classes": {}},
+            "sources": {}, "pips": {}, "on_curve_probability": {},
+            "shares": {}, "source_targets": {}, "ramp": {},
+            "assumptions": [], "notes": []}
+    html_out = render(mana=mana)
+    pos_sources = html_out.index('id="sources-say"')
+    pos_break = html_out.index('class="art-break"')
+    pos_numbers = html_out.index('id="by-the-numbers"')
+    assert pos_sources < pos_break < pos_numbers
