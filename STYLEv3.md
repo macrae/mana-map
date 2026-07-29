@@ -815,7 +815,7 @@ An issue ships only if every line passes.
 - [ ] **Permanence** — worth keeping; worth returning to.
 
 **Structural**
-- [ ] All 15 departments present in fixed order, `[TODO]` where artifacts are thin.
+- [ ] Every section in §5 present in the five-act order, `[TODO]` where artifacts are thin.
 - [ ] Rhythm alternates; no two dense departments adjacent.
 - [ ] Every department opens with a question, not an explanation (L1).
 - [ ] Folios carry department names; tier legend reprinted in full.

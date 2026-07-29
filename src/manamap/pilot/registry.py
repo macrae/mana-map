@@ -29,7 +29,7 @@ PILOT_STEPS = [
     ("validate-tutor-guide", "manamap.pilot.validate_tutor_guide", "Form-check the Fetch Quests tutor guide"),
     ("validate-strategic-frame", "manamap.pilot.validate_strategic_frame", "Form-check a strategic frame"),
     ("artist-credits", "manamap.pilot.artist_credits", "Standout artists and art themes in a deck"),
-    ("build-manual", "manamap.pilot.build_manual", "Render a deck's 15-department magazine issue"),
+    ("build-manual", "manamap.pilot.build_manual", "Render a deck's magazine issue (sections per issue_spec)"),
     ("build-index", "manamap.pilot.build_index", "Render manuals/index.html — the newsstand"),
     ("validate-issue", "manamap.pilot.validate_issue", "Form-check issue.json + issue_plan.json"),
     ("cache-status", "manamap.pilot.agent_cache", "Have an agent routine's inputs changed?"),

@@ -3,7 +3,7 @@
 Fully deterministic — no LLM calls, no dates, no randomness. The editorial layer
 arrives as data (`issue.json` identity + `issue_plan.json` packaging from the
 magazine-editor agent) and the body prose as `manual_prose.json`; this module
-assembles them into the fifteen fixed departments of STYLEv3 §5.
+assembles them into the fixed sections of STYLEv3 §5 (issue_spec.DEPARTMENTS).
 
 Contract invariants:
 - Only checker-passed stacks render, and Judge's Desk reproduces every citation

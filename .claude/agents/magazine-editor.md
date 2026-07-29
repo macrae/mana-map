@@ -69,7 +69,7 @@ doesn't move them along STYLEv3 §1's transformation table, it is decoration.
 2. **Write the cover.** One dominant coverline naming the most exciting *verified*
    thing in the issue, 2–4 specific teases, at most 2 violators. Never promise what
    the issue doesn't deliver — cover inflation is the one era habit we refuse.
-3. **Plan all 15 departments** in canonical order. For each copy department write
+3. **Plan every section** in `issue_spec.DEPARTMENT_IDS` order. For each copy department write
    kicker → headline → dek (STYLEv3 §7.2), choose components from the fixed library,
    and write the furniture: captions, PILOT TIPs, callout mini-headlines, pull quotes.
 4. **Check the rhythm.** No two dense departments adjacent; The Kill is the peak.
@@ -217,8 +217,8 @@ not writing to any tracked path.
 }
 ```
 
-Every one of the 15 department ids must appear, in the canonical order from
-STYLEv3 §5: cover, contents, first-turns, command-zone, by-the-numbers, the-kill,
-politics-table, whats-your-play, know-your-enemy, the-99, featured-artist,
-keep-or-ship, upgrade-watch, judges-desk, back-page. Structural departments (cover, contents,
-back-page) need only an `id` plus whatever furniture you specify.
+Every section id must appear, in the canonical order — read it from
+`issue_spec.DEPARTMENT_IDS` (and `issue_spec.ACTS` for the act groupings) rather
+than from any list written down here. A list transcribed into a prompt goes stale
+the moment a section is added; the spec cannot. Structural sections (cover,
+contents, back-page) need only an `id` plus whatever furniture you specify.
