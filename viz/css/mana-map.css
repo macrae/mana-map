@@ -22,7 +22,10 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .main-area { display: flex; flex: 1; min-height: 0; }
 
 /* ── Plot ─────────────────────────────────────────────────────────────── */
-#plot { flex: 1; min-height: 0; min-width: 0; touch-action: none; }
+/* `position: relative` anchors the overlays that live inside the plot (.shift-hint,
+ * .drill-bar). It used to be set imperatively by the shift-key handler, which meant it
+ * only existed after the first Shift press. */
+#plot { flex: 1; min-height: 0; min-width: 0; touch-action: none; position: relative; }
 
 /* ── Detail Panel ─────────────────────────────────────────────────────── */
 .detail-panel { width: 0; overflow: hidden; background: #16213e; border-left: 1px solid #2a2a4a; transition: width 0.25s ease; flex-shrink: 0; }
@@ -362,3 +365,40 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
  * still belongs in the list — greyed, not hidden. */
 .lens-line-nodraw { border-left-color: #3a3a5a; }
 .lens-line-nodraw .lens-line-cards { color: #666; font-style: italic; }
+
+/* ── Drill bar ────────────────────────────────────────────────────────────
+ * Overlays the plot while a local layout is on screen. It is not decoration:
+ * a drilled position is recomputed from the 128-d embeddings for that selection
+ * and is NOT the same coordinate system as the world map. This bar is the only
+ * thing telling the reader which one they are looking at, so it must be present
+ * for the entire duration of a drill — including mid-flight.
+ */
+.drill-bar {
+  position: absolute; top: 8px; left: 8px; z-index: 120;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  background: rgba(22,33,62,0.94); border: 1px solid #3a3a5a; border-radius: 5px;
+  padding: 6px 10px; font-size: 0.78rem; color: #ccc;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+.drill-crumb { background: none; border: none; color: #4A7BFF; cursor: pointer;
+  font-size: 0.78rem; padding: 0; font-family: inherit; }
+.drill-crumb:hover { text-decoration: underline; }
+.drill-crumb.is-here { color: #e0e0e0; cursor: default; }
+.drill-crumb.is-here:hover { text-decoration: none; }
+.drill-sep { color: #555; }
+.drill-count { color: #e0e0e0; }
+
+/* The claim the whole feature rests on, said out loud. */
+.drill-local {
+  font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.6px;
+  color: #c4a747; border: 1px solid #6b5a24; border-radius: 3px;
+  padding: 2px 6px; cursor: help; white-space: nowrap;
+}
+.drill-warn { font-size: 0.66rem; color: #d08a3a; }
+
+.drill-go { background: #c4a747; color: #1a1a2e; border: none; border-radius: 3px;
+  padding: 4px 10px; font-size: 0.75rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+.drill-go:hover { background: #d8bb5b; }
+.drill-x { background: none; border: 1px solid #3a3a5a; border-radius: 3px; color: #999;
+  padding: 3px 8px; font-size: 0.72rem; cursor: pointer; font-family: inherit; }
+.drill-x:hover { border-color: #888; color: #ddd; }

@@ -25,7 +25,8 @@ python -m http.server 8000
 | `viz/index.html` | Map shell: toolbar, plot div, detail panel, deck panel, script tags |
 | `viz/css/mana-map.css` | Map + deck-builder styles, flat hex, no custom properties (~310 lines) |
 | `viz/js/mana-map.js` | Explore mode (~1,330 lines). IIFE; exposes shared state as `window.MM` |
-| `viz/js/deck-map.js` | Deck Lens (~480 lines). IIFE; exposes `window.DeckMap`; depends on `MM` |
+| `viz/js/drill.js` | Drill mode (~400 lines). IIFE; exposes `window.Drill`; depends on `MM` |
+| `viz/js/deck-map.js` | Deck Lens (~490 lines). IIFE; exposes `window.DeckMap`; depends on `MM` |
 | `viz/js/deck-builder.js` | Deck builder (~1,370 lines). IIFE; exposes `window.DeckBuilder`; depends on `MM` |
 | `viz/deck.html` | Dossier shell: masthead, deck picker, panel grid |
 | `viz/css/tokens.css` | The magazine's design tokens in a dark register (~170 lines) |
@@ -81,6 +82,89 @@ manifest's `verified`.
 `tests/test_viz_deck_lens.py` guards the three assumptions the browser cannot check for
 itself: every deck card name resolves in `projection_2d.json`, every role family has a
 colour, and `index.html` loads the script at a cache-bust matching its siblings.
+
+## Drill mode (`viz/js/drill.js`)
+
+**Orthogonal to mode.** Explore / Deck Lens / Build decide what is *painted over* the map;
+drill replaces the map's **coordinates**. It works from any mode and the base traces go
+`visible: false` while it is active.
+
+The world map is one PaCMAP layout of 34,322 cards at `n_neighbors=10` — the regime that
+preserves global shape by compressing local shape. Drilling recomputes a layout for the
+selected cards alone from the 128-d embeddings, so the structure the projection squashed
+out becomes the whole view. Measured on a real region: 156 Aura cards occupy **0.3 × 0.7**
+on the world map and **45.2 × 49.9** once re-mapped.
+
+**Four entries**, all routed through `Drill.enter(indices, label)`:
+
+| Trigger | Path |
+|---|---|
+| Box/lasso select over 8 cards | `plotly_selected` → `Drill.offer(...)` → a button in the bar |
+| Region label click | raw click hit-tested against annotation anchors → `Drill.enterRegion(id)` → `regions_*.json` `membership` |
+| Current filters | the `Drill ⤓` toolbar button → `Drill.enterFiltered()` |
+| Find Similar / Find Synergies | `Drill.offer(...)` after the highlight traces are added |
+
+Box-select **offers** rather than drills, because the same gesture already feeds the
+8-card detail stack; hijacking it silently would be worse than a button. It is also the
+only thing that reports how many cards the box actually caught — the handler used to
+truncate to 8 and say nothing.
+
+**The animation.** Points start at their world positions and relax toward the target
+layout over 90 frames of stochastic stress majorization against 128-d chord distance
+(`sqrt(2 - 2cos)`; embedding rows are L2-normalised, so the dot product *is* the cosine).
+Seeding from world positions is what makes it read as a dive rather than a cut — you can
+see which cards were already neighbours and which travel. `alpha` decays as `1 - t³`, and
+the per-frame residual is the weight and bounce.
+
+Frames are driven by `requestAnimationFrame` and pushed with **`Plotly.restyle`**, never
+`react`: restyle preserves the axis range where react resets it (see
+`tests/test_viz_camera.py`), and it is the only Plotly fast path in the codebase. The
+whole subset is one trace with a per-point colour array so a frame is a *single* restyle —
+splitting by category would multiply per-frame Plotly calls by the number of groups.
+
+**`MAX_DRILL = 2000`**, and the cap is announced in the breadcrumb rather than applied
+silently. Measured: restyle on a 1,200-point `scattergl` trace runs ~32 ms median with the
+full world still loaded.
+
+**Contours and labels do not animate.** `histogram2dcontour` is main-thread SVG over the
+whole subset, and region labels are annotations on a 150 ms debounce — both would stutter
+the settle. They return once, together, at arrival. Contour levels are **not comparable
+across drills**: the trace auto-bins to whatever extent it is handed.
+
+**Hidden tabs.** `requestAnimationFrame` does not fire in a background tab, so switching
+away mid-flight would freeze the points at meaningless intermediate positions forever —
+the callback that would schedule the next frame never runs. `finishNow()` runs the
+remaining relaxation without painting and lands on the settled layout; a `visibilitychange`
+listener and a `document.hidden` check at entry both route to it.
+
+### The honesty rule
+
+**A drilled position is local.** The same card sits somewhere else on the world map, and
+the two coordinate systems mean different things. There must be no state in which both are
+on screen without the breadcrumb saying which you are looking at.
+
+What that costs, concretely — everything anchored to world coordinates is suppressed while
+drilling: region labels (`annotations: drilling ? [] : ...`), the search highlight, and the
+status line's world count. The selection highlight is *not* suppressed but re-anchored:
+`Drill.localPosition(idx)` returns the card's local position, or `null` for a card outside
+the subset, and callers must drop it rather than defaulting to a world coordinate. That one
+was found by eye in a screenshot after the source checks already passed — a gold ring, in
+the one colour the map uses to mean *this is the card you are looking at*, pointing at
+nothing.
+
+`tests/test_viz_drill.py` covers the contract, the suppressions, the local-position
+lookup, the announced truncation, and the hidden-tab fallback.
+
+## Data cache-busting
+
+`MM.DATA` URLs carry `?v=DATA_VERSION`. **Bump it when a data artifact's schema changes** —
+a new key, a renamed field, a changed shape — not for content refreshes, where serving a
+slightly stale copy is harmless.
+
+This exists because `membership` was added to `regions_*.json` and every browser that had
+already loaded the map kept serving its cached copy, so drill-by-region found no membership
+and disabled itself. It failed politely, which is what makes the class expensive: the code
+was right and the bytes were old.
 
 ## Cache busting
 

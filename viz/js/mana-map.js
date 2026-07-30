@@ -11,6 +11,9 @@
 
   const ALL_FORMATS = ['standard', 'modern', 'legacy', 'vintage', 'commander', 'pioneer', 'pauper', 'historic'];
   const SUPERTYPES = ['Creature', 'Instant', 'Sorcery', 'Enchantment', 'Artifact', 'Land', 'Planeswalker', 'Battle', 'Unknown'];
+  // How near a click must land to a region label to count as clicking it. Labels are
+  // 11–16px text, so this is roughly "on the word or just beside it".
+  const REGION_CLICK_RADIUS_PX = 44;
 
   let allData = [];
   let activeSupertypes = new Set(SUPERTYPES);
@@ -28,16 +31,26 @@
   // All data files the viz fetches, relative to viz/index.html. The server
   // must be rooted at the repo top so '../data/' resolves (GitHub Pages layout).
   const DATA_BASE = '../data/';
+  // Bump when a data artifact's SCHEMA changes — a new key, a renamed field, a changed
+  // shape. Not needed for content refreshes (a re-run pipeline with the same fields),
+  // where serving a slightly stale copy is harmless.
+  //
+  // Learned the hard way: `membership` was added to regions_*.json and every browser
+  // that had ever loaded the map kept serving its cached copy, so drill-by-region found
+  // no membership and disabled itself. It failed politely, which is exactly what makes
+  // this class of bug expensive — the code was right and the bytes were old.
+  const DATA_VERSION = 2;
+  const v = url => url + '?v=' + DATA_VERSION;
   const DATA = {
-    projection: DATA_BASE + 'projection_2d.json',
-    projectionAbility: DATA_BASE + 'projection_2d_ability.json',
-    embeddings: DATA_BASE + 'embeddings.bin',
-    embeddingsAbility: DATA_BASE + 'embeddings_ability.bin',
-    regionsDefault: DATA_BASE + 'regions_default.json',
-    regionsAbility: DATA_BASE + 'regions_ability.json',
-    obsolescence: DATA_BASE + 'obsolescence_index.json',
-    synergyGraph: DATA_BASE + 'synergy_graph.json',
-    comboGraph: DATA_BASE + 'combo_graph.json',
+    projection: v(DATA_BASE + 'projection_2d.json'),
+    projectionAbility: v(DATA_BASE + 'projection_2d_ability.json'),
+    embeddings: v(DATA_BASE + 'embeddings.bin'),
+    embeddingsAbility: v(DATA_BASE + 'embeddings_ability.bin'),
+    regionsDefault: v(DATA_BASE + 'regions_default.json'),
+    regionsAbility: v(DATA_BASE + 'regions_ability.json'),
+    obsolescence: v(DATA_BASE + 'obsolescence_index.json'),
+    synergyGraph: v(DATA_BASE + 'synergy_graph.json'),
+    comboGraph: v(DATA_BASE + 'combo_graph.json'),
   };
   const MAP_CONFIGS = {
     default: { projection: DATA.projection, embeddings: DATA.embeddings, regions: DATA.regionsDefault },
@@ -324,9 +337,22 @@
 
     if (selectedCards.length === 0) return;
 
+    // Where a card is depends on which layout is showing. Drilling replaces the
+    // coordinate system, so a highlight drawn at `allData[i].x` while a local layout is
+    // on screen is a gold ring pointing at nothing — the exact ambiguity the drill
+    // breadcrumb exists to prevent, reintroduced by a helper that runs after every
+    // render. A card that is not in the drilled subset simply has no position to mark.
+    const drilling = typeof window.Drill !== 'undefined' && window.Drill.isActive();
+    const posOf = idx => {
+      if (!drilling) return [allData[idx].x, allData[idx].y];
+      return window.Drill.localPosition(idx);
+    };
+
     // Build selection highlight trace
     const topIdx = selectedCards[topCardIndex]?.idx;
-    const otherCards = selectedCards.filter((_, i) => i !== topCardIndex);
+    const otherCards = selectedCards
+      .filter((_, i) => i !== topCardIndex)
+      .filter(c => posOf(c.idx));
 
     const traces = [];
 
@@ -336,8 +362,8 @@
         type: 'scattergl',
         mode: 'markers',
         name: 'Selected',
-        x: otherCards.map(c => allData[c.idx].x),
-        y: otherCards.map(c => allData[c.idx].y),
+        x: otherCards.map(c => posOf(c.idx)[0]),
+        y: otherCards.map(c => posOf(c.idx)[1]),
         text: otherCards.map(c => buildHoverTextMinimal(allData[c.idx])),
         customdata: otherCards.map(c => c.idx),
         hoverinfo: 'none',
@@ -347,13 +373,14 @@
     }
 
     // Top card (bright gold)
-    if (topIdx != null) {
+    const topPos = topIdx != null ? posOf(topIdx) : null;
+    if (topPos) {
       traces.push({
         type: 'scattergl',
         mode: 'markers',
         name: 'Active',
-        x: [allData[topIdx].x],
-        y: [allData[topIdx].y],
+        x: [topPos[0]],
+        y: [topPos[1]],
         text: [buildHoverTextMinimal(allData[topIdx])],
         customdata: [topIdx],
         hoverinfo: 'none',
@@ -487,6 +514,13 @@
     updateSelectionHighlight();
 
     setStatus(`20 similar cards to "${ref.n}" highlighted (128D cosine similarity)`);
+
+    // A neighbourhood scattered as 21 dots across a 34K-point map shows you where its
+    // members live but nothing about how they relate. Offer the drill, which lays them
+    // out against each other instead.
+    if (typeof window.Drill !== 'undefined') {
+      window.Drill.offer([refIdx].concat(nearest.map(m => m.i)), `Near ${ref.n}`);
+    }
   }
 
   // ── Obsolescence Loading ──
@@ -675,6 +709,13 @@
       allData[p.idx].n + ' (' + p.synergies[0] + ')'
     ).join(', ');
     setStatus(`${synPoints.length} synergy partners for "${ref.n}" \u2014 ${labels}...`);
+
+    // Same offer as Find Similar, and more interesting here: synergy is rule-based and
+    // complementary, so its partners are scattered by construction. Their embedding
+    // layout says whether the rules found one coherent group or several.
+    if (typeof window.Drill !== 'undefined') {
+      window.Drill.offer([refIdx].concat(synPoints.map(p => p.idx)), `Synergies of ${ref.n}`);
+    }
   }
 
   // ── Region loading and rendering ──
@@ -854,7 +895,11 @@
   // ── Keyboard handlers ──
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
-      if (currentMode === 'build') {
+      // Drill wins the key: it is the deepest state on screen, and surfacing back up
+      // one level is what Escape should mean while a local layout is showing.
+      if (typeof window.Drill !== 'undefined' && window.Drill.isActive()) {
+        window.Drill.back();
+      } else if (currentMode === 'build') {
         if (typeof window.DeckBuilder !== 'undefined') {
           window.DeckBuilder.handleEscape();
         }
@@ -1067,12 +1112,23 @@
       dimmedIndices = overlay.getDimmedIndices();
     }
 
+    // Drill is orthogonal to mode: it replaces the world's *coordinates* rather than
+    // painting over them, so the 34K base traces are hidden outright while it is active.
+    // Dimming would leave two coordinate systems on screen at once, which is exactly the
+    // ambiguity the breadcrumb exists to prevent.
+    const drilling = typeof window.Drill !== 'undefined' && window.Drill.hidesWorld();
+    if (drilling) overlayTraces = overlayTraces.concat(window.Drill.getOverlayTraces());
+
     const filtered = allData.filter(d => activeSupertypes.has(d.s));
 
-    // Contour trace (prepended before scatter so it renders beneath)
+    // Contour trace (prepended before scatter so it renders beneath). While drilling it
+    // re-bins over the local layout — histogram2dcontour auto-bins to whatever extent it
+    // is handed, so levels are relative to the current selection and are NOT comparable
+    // across drills.
     const contourTraces = [];
-    if (showContours && filtered.length > 0) {
-      contourTraces.push(buildContourTrace(filtered));
+    const contourSource = drilling ? window.Drill.getContourSource() : filtered;
+    if (showContours && contourSource && contourSource.length > 0) {
+      contourTraces.push(buildContourTrace(contourSource));
     }
 
     // Group by category (iterate with index to avoid O(n) indexOf)
@@ -1092,7 +1148,9 @@
       : currentColorBy === 'supertype' ? SUPERTYPE_PALETTE
       : RARITY_PALETTE;
 
-    // Build traces with optional per-point opacity for dimming
+    // Build traces with optional per-point opacity for dimming. `visible: false` keeps
+    // the trace (and its legend entry order) while drilling instead of rebuilding the
+    // whole plot on the way in and out.
     const traces = Object.values(groups).map(g => {
       let opacity;
       if (dimmedIndices) {
@@ -1109,12 +1167,15 @@
         text: g.text,
         customdata: g.customdata,
         hoverinfo: 'none',
+        visible: drilling ? false : true,
         marker: { size: 3, opacity, color: palette[g.key] || '#666' },
       };
     });
 
-    // Search highlight trace (index-tracking to avoid O(n²) indexOf)
-    if (searchTerm.length >= 2) {
+    // Search highlight trace (index-tracking to avoid O(n²) indexOf). Suppressed while
+    // drilling: it plots world coordinates, and a diamond at a world position on top of
+    // a local layout would be pointing at nothing.
+    if (searchTerm.length >= 2 && !drilling) {
       const term = searchTerm;
       let matches = [];
       let isOracleSearch = false;
@@ -1171,6 +1232,11 @@
       } else {
         setStatus(`No results for "${searchTerm}" \u2014 ${filtered.length.toLocaleString()} cards shown`);
       }
+    } else if (drilling) {
+      // The world count is a lie while drilling — those cards are not on screen, and
+      // their positions would not mean the same thing if they were.
+      const n = window.Drill.getContourSource().length;
+      setStatus(`${n.toLocaleString()} cards · local layout from the 128-dim embeddings`);
     } else if (currentMode === 'explore') {
       setStatus(`${filtered.length.toLocaleString()} cards shown`);
     }
@@ -1217,13 +1283,50 @@
       dragmode: shiftHeld ? 'select' : 'pan',
       legend: { bgcolor: 'rgba(22,33,62,0.85)', bordercolor: '#3a3a5a', borderwidth: 1, font: { size: 11 } },
       hovermode: 'closest',
-      annotations: getRegionAnnotations(visibleSpan),
+      // Region labels are anchored to world centroids, so they are meaningless over a
+      // local layout — and their absence is part of how a drill reads as somewhere else.
+      annotations: drilling ? [] : getRegionAnnotations(visibleSpan),
     };
 
     const config = { scrollZoom: true, displayModeBar: false, responsive: true };
 
     if (!plotInitialized) {
       Plotly.newPlot('plot', allTraces, layout, config);
+
+      // Region labels are Plotly annotations, and annotations are not clickable — so
+      // hit-test raw clicks against their anchors. Runs on the capture-free bubble
+      // phase after plotly_click, and bails if a point was hit, so clicking a card
+      // still selects the card.
+      document.getElementById('plot').addEventListener('click', function (ev) {
+        if (typeof window.Drill === 'undefined' || window.Drill.isActive()) return;
+        if (currentMode === 'build') return;
+        const gd = document.getElementById('plot');
+        const fl = gd && gd._fullLayout;
+        if (!fl || !fl.annotations || !fl.annotations.length) return;
+        const regionData = regionDataCache[currentMap];
+        if (!regionData) return;
+
+        const rect = gd.getBoundingClientRect();
+        const px = ev.clientX - rect.left;
+        const py = ev.clientY - rect.top;
+
+        let best = null;
+        let bestDist = REGION_CLICK_RADIUS_PX;
+        for (const ann of fl.annotations) {
+          const ax = fl.xaxis.d2p(ann.x) + fl._size.l;
+          const ay = fl.yaxis.d2p(ann.y) + fl._size.t;
+          const dist = Math.hypot(ax - px, ay - py);
+          if (dist < bestDist) { bestDist = dist; best = ann; }
+        }
+        if (!best) return;
+
+        // Annotations carry the display text; L0 shows `label`, L1 shows `short`.
+        const region = regionData.regions.find(
+          r => (r.level === 0 ? r.label : r.short) === best.text);
+        if (!region) return;
+        ev.stopPropagation();
+        window.Drill.enterRegion(region.id);
+      });
 
       // Zoom listener for region label crossfade
       document.getElementById('plot').on('plotly_relayout', function () {
@@ -1285,6 +1388,17 @@
         const total = eventData.points.length;
         if (total > MAX_SELECTED) {
           setStatus(`Selected ${MAX_SELECTED} of ${total} cards (max ${MAX_SELECTED})`);
+          // The box caught more than the detail stack can hold. Rather than discard the
+          // rest silently — which is what this handler did — offer the whole set to
+          // drill. The 8-card stack keeps its own meaning; this is a second use for one
+          // gesture, and it is a button rather than an automatic hijack.
+          if (typeof window.Drill !== 'undefined') {
+            const all = [];
+            for (const pt of eventData.points) {
+              if (pt.customdata != null && allData[pt.customdata]) all.push(pt.customdata);
+            }
+            window.Drill.offer(all, 'Selection');
+          }
         } else {
           setStatus(`Selected ${indices.length} card${indices.length === 1 ? '' : 's'}`);
         }
@@ -1360,6 +1474,19 @@
     async getSynergyGraph() {
       const ok = await loadSynergyGraph();
       return ok ? synergyGraph : null;
+    },
+    // ── Drill support ──
+    // The colour a card would be painted under the current colour-by, so a local
+    // layout stays readable against the world the reader just left.
+    categoryColor(d) {
+      const { key, palette } = getCategoryInfo(d);
+      return palette[key] || '#666';
+    },
+    async getRegionData() { return loadRegionData(currentMap); },
+    passesFilters(d) { return activeSupertypes.has(d.s); },
+    filterLabel() {
+      const on = Array.from(activeSupertypes);
+      return on.length >= SUPERTYPES.length ? 'Everything' : on.join(' + ');
     },
   };
 })();
