@@ -415,6 +415,12 @@ touching. `velocityDecay: 0.22` is friction — d3's default `0.4` settles fast 
 this keeps inertia so a flung node swings. `charge: -110` is repulsion, `linkScale: 190`
 converts chord distance to pixels.
 
+**Leaving keeps the graph.** `exit()` stops the simulation and nothing else; re-entering
+without a seed picks up where you left off, trail included. It deliberately does *not*
+touch `canvas.style.display` — `#plot:not(.force-mode)` already hides the canvas, and an
+inline hide set on exit survived re-entry, so the graph rebuilt correctly into a 0x0
+hidden element: right node count, right status line, blank screen.
+
 `MAX_NODES = 500` caps the live graph — the simulation and canvas both scale much further,
 but past a few hundred nodes it is a hairball and the walk stops being legible. The cap is
 announced in the panel, never silent.

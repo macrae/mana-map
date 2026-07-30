@@ -348,6 +348,19 @@
   // ── Entering, branching, leaving ────────────────────────────────────────
 
   async function enter(rowIndices, seedLabel) {
+    // Re-entering with no explicit seed and a graph already built: pick up where you
+    // left off rather than starting over.
+    if (!rowIndices && nodes.length) {
+      active = true;
+      ensureCanvas();
+      if (canvas) canvas.style.display = '';
+      resize();
+      restart(0.15);          // a nudge, so it is visibly alive without rearranging
+      renderPanel();
+      MM.setStatus(nodes.length + ' cards · picked up where you left off');
+      return;
+    }
+
     const src = rowIndices && rowIndices.length ? rowIndices : seedFrom();
     const unique = Array.from(new Set(src)).filter(i => MM.allData[i]);
     if (unique.length < 2) {
@@ -355,6 +368,7 @@
       // go instead. A walk has to start from a set, so hand over the sets that exist.
       active = true;
       ensureCanvas();
+      if (canvas) canvas.style.display = '';
       resize();
       nodes = []; links = []; trail = [];
       draw();
@@ -383,6 +397,7 @@
 
     active = true;
     ensureCanvas();
+    if (canvas) canvas.style.display = '';
     resize();
     restart(1);
     // Keep it framed while it settles — cheap, and the graph is legible the whole way
@@ -452,12 +467,15 @@
 
   function clearTrail() { trail = []; draw(); renderPanel(); }
 
+  // Leaving keeps the graph. Rebuilding a walk you spent minutes growing, just because
+  // you looked at the map, is the wrong trade — `enter()` restores it.
+  //
+  // Note what this does NOT do: touch canvas.style.display. `#plot:not(.force-mode)`
+  // already hides it, and an inline `display:none` set here survived re-entry, so the
+  // graph rebuilt correctly into a 0x0 hidden canvas and the mode looked dead.
   function exit() {
     active = false;
-    if (sim) { sim.stop(); }
-    if (canvas) canvas.style.display = 'none';
-    const bar = document.getElementById('forcePanel');
-    if (bar) bar.style.display = 'none';
+    if (sim) sim.stop();
   }
 
   function focusCard(row) {

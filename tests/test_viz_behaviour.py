@@ -432,15 +432,21 @@ def test_leaving_the_walk_restores_the_map(page):
         document.getElementById('modeSelect').value = 'explore'; MM.setMode('explore');
         await new Promise(r => setTimeout(r, 900));
         const gd = document.getElementById('plot');
+        const cv = document.getElementById('forceCanvas');
         return {
             active: Force.isActive(),
             forceMode: gd.classList.contains('force-mode'),
-            canvasHidden: document.getElementById('forceCanvas').style.display === 'none',
+            // Hidden by the CSS class, NOT by an inline style. Asserting the inline
+            // style was asserting the bug: it survived re-entry and left the canvas 0x0.
+            canvasComputedHidden: getComputedStyle(cv).display === 'none',
+            canvasInline: cv.style.display || '',
             plotTraces: gd.data.length,
         };
     }""")
     assert page.js_errors == []
-    assert not r["active"] and not r["forceMode"] and r["canvasHidden"]
+    assert not r["active"] and not r["forceMode"]
+    assert r["canvasComputedHidden"], "the walk canvas is still visible over the map"
+    assert r["canvasInline"] == "", "visibility must come from the class, not an inline style"
     assert r["plotTraces"] >= 6, "the Plotly map did not come back"
 
 
@@ -481,3 +487,56 @@ def test_walking_a_deck_from_the_empty_state(page):
     assert page.js_errors == []
     assert r["nodes"] > 50 and r["links"] > r["nodes"]
     assert r["w"] > 50 and r["h"] > 50, "the deck's graph collapsed"
+
+
+def test_walk_survives_a_round_trip_through_explore(page):
+    """Leaving for the map and coming back must not lose the graph.
+
+    Two separate faults met here. `exit()` set an inline `display: none` on the canvas
+    that nothing ever cleared, so re-entry rebuilt the graph correctly into a 0x0 hidden
+    element — 79 nodes, 156 links, the right status line, and a blank screen. And the
+    graph was discarded on exit, so a walk you spent minutes growing had to be rebuilt
+    just because you glanced at the map.
+    """
+    r = page.evaluate("""async () => {
+        const setMode = m => { document.getElementById('modeSelect').value = m; MM.setMode(m); };
+        const cv = () => document.getElementById('forceCanvas');
+        const ink = () => {
+            const c = cv();
+            if (!c || !c.width) return 0;
+            const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+            let l = 0, n = 0;
+            for (let i = 3; i < d.length; i += 4 * 30) { n++; if (d[i] > 20) l++; }
+            return 100 * l / n;
+        };
+
+        setMode('force');
+        await new Promise(r => setTimeout(r, 2500));
+        document.querySelector('[onclick^="Force.walkDeck"]').click();
+        await new Promise(r => setTimeout(r, 9000));
+        const i = MM.allData.findIndex(d => d.n === 'Past in Flames');
+        if (i >= 0) Force.focusCard(i);
+        await new Promise(r => setTimeout(r, 2000));
+        const before = {nodes: Force.nodeCount, trail: Force.trailLength,
+                        w: cv().clientWidth, ink: ink()};
+
+        setMode('explore');
+        await new Promise(r => setTimeout(r, 1200));
+        const explore = {traces: document.getElementById('plot').data.length,
+                         inlineDisplay: cv().style.display || ''};
+
+        setMode('force');
+        await new Promise(r => setTimeout(r, 2500));
+        const after = {nodes: Force.nodeCount, trail: Force.trailLength,
+                       w: cv().clientWidth, ink: ink()};
+        return {before, explore, after};
+    }""")
+    assert page.js_errors == []
+    assert r["explore"]["traces"] >= 6, "the map did not come back"
+    assert r["explore"]["inlineDisplay"] == "", (
+        "exit() must not set an inline display — the CSS class owns visibility, and an "
+        "inline hide survives re-entry")
+    assert r["after"]["nodes"] == r["before"]["nodes"], "the graph was discarded on exit"
+    assert r["after"]["trail"] == r["before"]["trail"], "the trail was discarded on exit"
+    assert r["after"]["w"] > 400, f"canvas came back at {r['after']['w']}px wide"
+    assert r["after"]["ink"] > 0.5, "the graph is not being drawn after re-entry"

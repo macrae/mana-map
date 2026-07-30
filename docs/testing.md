@@ -1,12 +1,12 @@
 # Testing
 
 ```bash
-.venv/bin/python -m pytest              # everything (997, ~2.5 min)
+.venv/bin/python -m pytest              # everything (998, ~2.5 min)
 .venv/bin/python -m pytest -m "not browser"   # fast suite (978, ~68 s)
-.venv/bin/python -m pytest -m browser         # the 19 browser tests (~104 s)
+.venv/bin/python -m pytest -m browser         # the 20 browser tests (~110 s)
 ```
 
-997 tests in `tests/`: 377 card-pipeline + 601 pilot-subsystem + **19 browser**.
+998 tests in `tests/`: 377 card-pipeline + 601 pilot-subsystem + **20 browser**.
 
 ## Source assertions do not catch regressions
 
@@ -31,7 +31,7 @@ source tests pass and the behavioural tests fail with
 against a renderer that draws nothing, it is a source assertion — fine, but it is not
 coverage.
 
-### Browser tests (19) — `tests/test_viz_behaviour.py`
+### Browser tests (20) — `tests/test_viz_behaviour.py`
 
 Fixtures in `tests/conftest_viz.py` (deliberately not `conftest.py`, so the other 978 never
 import playwright): an ephemeral `http.server` rooted at the repo — `viz/` and `data/` must
