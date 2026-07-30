@@ -1181,12 +1181,29 @@
     // Prepend contour traces
     const allTraces = [...contourTraces, ...traces];
 
-    // Compute visible span for region annotations
+    // Read the live camera before rebuilding the layout — for the region
+    // annotations, and to put it back.
+    //
+    // `Plotly.react` replaces layout wholesale, so a layout with no explicit
+    // range silently resets the viewport to autorange. That made filtering and
+    // zooming mutually destructive: every supertype toggle, colour-by change,
+    // search keystroke and deck-panel mutation threw the camera away, and this
+    // very block read a span that the next statement destroyed. Measured before
+    // the fix: zoom to a span of 20.5, call render(), get 116.6.
+    //
+    // Gated on `plotInitialized` so the two cases that *should* autorange still
+    // do — the first render, and a map switch (`applyProjection` clears the flag
+    // because the coordinates themselves changed).
     const plotEl = document.getElementById('plot');
     let visibleSpan = 70; // default: full extent, shows L0 labels
-    if (plotEl && plotEl._fullLayout) {
+    let keepX = null;
+    let keepY = null;
+    if (plotInitialized && plotEl && plotEl._fullLayout) {
       const xr = plotEl._fullLayout.xaxis.range;
+      const yr = plotEl._fullLayout.yaxis.range;
       visibleSpan = Math.abs(xr[1] - xr[0]);
+      keepX = xr.slice();
+      keepY = yr.slice();
     }
 
     const layout = {
@@ -1194,8 +1211,9 @@
       plot_bgcolor: '#1a1a2e',
       font: { color: '#e0e0e0' },
       margin: { l: 0, r: 0, t: 0, b: 0 },
-      xaxis: { visible: false, scaleanchor: 'y' },
-      yaxis: { visible: false },
+      xaxis: keepX ? { visible: false, scaleanchor: 'y', range: keepX }
+        : { visible: false, scaleanchor: 'y' },
+      yaxis: keepY ? { visible: false, range: keepY } : { visible: false },
       dragmode: shiftHeld ? 'select' : 'pan',
       legend: { bgcolor: 'rgba(22,33,62,0.85)', bordercolor: '#3a3a5a', borderwidth: 1, font: { size: 11 } },
       hovermode: 'closest',
