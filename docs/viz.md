@@ -223,6 +223,39 @@ the dossier shipped, the two products shared exactly one link, one-way.
 - Color by primary color / supertype / rarity; supertype filter toggles
 - 4-tier search (exact → starts-with → includes → oracle text, capped 200)
 - Multi-select up to 8 (Shift+click / Shift+drag box select); keyboard nav (arrows, 1–8, Delete, Escape, `/`)
+
+### The card viewer
+
+One card selected renders as a plain detail panel. **More than one and the list becomes
+the panel**: an accordion where the open card's detail expands *inside the row you
+clicked*.
+
+The previous layout put the detail on top and the list underneath, so changing card meant
+scrolling down past a whole card to reach the list, clicking, then scrolling back up to
+look at what you picked — a round trip on every change, with up to eight cards in play.
+
+Three things make it hold together, and each was a separate fix:
+
+- **`scrollActiveRowIntoView()` lives in `updateViewerPanel`**, not in `bringToTop`, so
+  every path reveals the open row — clicking, the header arrows, arrow keys, number keys,
+  removing a card, and selecting a new one from the map. It was originally only on the
+  click path, which left map-selection scrolling nowhere. The row lands 89px down, just
+  under the sticky header. `.detail-inner` needs `position: relative` for the `offsetTop`
+  arithmetic.
+- **The header is sticky and bleeds across the panel padding** (`margin: -16px -16px`).
+  `.detail-inner` has 16px padding, so a header sized to the content box leaves gutters
+  either side where the scrolling list shows through beside it — measured at 16px left,
+  22px right before the fix.
+- **`cycleSelection(delta)` is shared** by the `‹ ›` header buttons and the arrow keys, so
+  the two cannot drift into one wrapping and one clamping. It wraps in both directions:
+  with at most eight cards, stopping at the end is more annoying than looping.
+
+Neighbouring cards' images are preloaded (`preloadNeighbourImages`), because each is a
+Scryfall round-trip and without it every arrow press showed a beat of empty grey — most of
+what made the old panel feel slow to browse. Neighbours only: preloading all eight would
+be eight requests for seven cards the reader may never open. The open card's image is
+deliberately **not** `loading="lazy"` — it is the only card image ever rendered and it is
+scrolled into view as it appears.
 - Find Similar: 20 nearest in 128D cosine. Find Synergies: complementary tag matches (magenta)
 - Region labels as Plotly annotations with zoom-dependent L0/L1 crossfade; optional density contours ("Topo")
 - Custom 2-finger pinch zoom on mobile (Plotly scattergl lacks it natively; `touch-action: none`)

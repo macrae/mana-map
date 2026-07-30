@@ -30,7 +30,9 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 /* ── Detail Panel ─────────────────────────────────────────────────────── */
 .detail-panel { width: 0; overflow: hidden; background: #16213e; border-left: 1px solid #2a2a4a; transition: width 0.25s ease; flex-shrink: 0; }
 .detail-panel.open { width: 350px; }
-.detail-inner { width: 350px; height: 100%; overflow-y: auto; padding: 16px; }
+/* `position: relative` makes .acc-row offsetTop measurable against this container,
+ * which is what scrollActiveRowIntoView() does its arithmetic in. */
+.detail-inner { width: 350px; height: 100%; overflow-y: auto; padding: 16px; position: relative; }
 .detail-inner::-webkit-scrollbar { width: 6px; }
 .detail-inner::-webkit-scrollbar-track { background: #16213e; }
 .detail-inner::-webkit-scrollbar-thumb { background: #3a3a5a; border-radius: 3px; }
@@ -83,7 +85,15 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .mana-num { background: #CAC5C0; }
 
 /* ── Viewer Panel Header ──────────────────────────────────────────────── */
-.viewer-header { display: flex; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+/* Sticky so the ‹ › arrows and the close button stay reachable however far down the
+ * accordion you have scrolled — the whole point of the redesign is not having to
+ * scroll back up to change cards. */
+/* The negative side margins matter: .detail-inner has 16px padding, so a sticky header
+ * sized to the content box leaves gutters either side where the scrolling list shows
+ * through beside it. Bleed the background across the padding instead. */
+.viewer-header { display: flex; align-items: center; flex-wrap: wrap; margin-bottom: 12px;
+  position: sticky; top: -16px; z-index: 5; background: #16213e;
+  padding: 16px 16px 8px; margin: -16px -16px 12px; border-bottom: 1px solid #2a2a4a; }
 .viewer-header h2 { flex: 1; font-size: 1.1rem; color: #c4a747; line-height: 1.3; margin-right: 8px; }
 .viewer-count { font-size: 0.75rem; color: #888; margin-right: 8px; }
 
@@ -97,19 +107,44 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .rarity-pill.uncommon { background: #2a2a3a; color: #C0C0C0; }
 .rarity-pill.common { background: #2a2a3a; color: #888; }
 
-/* ── Stack Tabs (multi-select cards beneath top card) ────────────────── */
-.stack-tabs { margin-top: 8px; border-top: 1px solid #2a2a4a; padding-top: 4px; }
-.stack-tab { display: flex; align-items: center; padding: 8px 10px; margin-bottom: 2px; background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 4px; cursor: pointer; transition: all 0.15s; }
-.stack-tab:hover { border-color: #c4a747; background: #222244; }
-.stack-tab-name { flex: 1; font-size: 0.85rem; color: #e0e0e0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.stack-tab-mana { display: flex; gap: 2px; margin: 0 8px; flex-shrink: 0; }
-.stack-tab-mana .mana-sym { width: 16px; height: 16px; font-size: 0.55rem; }
-.stack-tab-type { font-size: 0.7rem; color: #888; margin-right: 4px; flex-shrink: 0; }
-.stack-tab-stats { font-size: 0.75rem; color: #e0e0e0; font-weight: 600; margin-right: 4px; flex-shrink: 0; }
-.stack-tab-cmc { font-size: 0.6rem; color: #888; background: #2a2a4a; padding: 1px 4px;
-                 border-radius: 3px; margin-right: 4px; flex-shrink: 0; }
-.stack-tab-remove { background: none; border: none; color: #555; cursor: pointer; font-size: 0.8rem; padding: 0 4px; }
-.stack-tab-remove:hover { color: #DC2626; }
+/* ── Accordion (multi-select) ─────────────────────────────────────────
+ * The list IS the panel when more than one card is selected: the open card
+ * expands inside the row you clicked, so the point of interaction and the thing
+ * it reveals stay in the same place. The old layout put the card on top and the
+ * list underneath, which meant choosing a different card scrolled you away from
+ * the list you were choosing from, and then you scrolled back to look at it.
+ */
+.accordion { margin-top: 4px; }
+.acc-row { border: 1px solid #2a2a4a; border-radius: 4px; margin-bottom: 4px;
+  background: #1a1a2e; overflow: hidden; }
+.acc-row.active { border-color: #c4a747; }
+
+.acc-head { display: flex; align-items: center; padding: 8px 10px; cursor: pointer;
+  transition: background 0.15s; }
+.acc-head:hover { background: #222244; }
+.acc-row.active .acc-head { background: #222244; }
+
+.acc-caret { color: #666; font-size: 0.7rem; margin-right: 6px; flex-shrink: 0; }
+.acc-row.active .acc-caret { color: #c4a747; }
+.acc-name { flex: 1; font-size: 0.85rem; color: #e0e0e0; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; }
+.acc-row.active .acc-name { color: #c4a747; font-weight: 600; }
+.acc-mana { display: flex; gap: 2px; margin: 0 8px; flex-shrink: 0; }
+.acc-mana .mana-sym { width: 16px; height: 16px; font-size: 0.55rem; }
+.acc-stats { font-size: 0.75rem; color: #e0e0e0; font-weight: 600; margin-right: 4px; flex-shrink: 0; }
+.acc-type { font-size: 0.7rem; color: #888; margin-right: 4px; flex-shrink: 0; }
+.acc-remove { background: none; border: none; color: #555; cursor: pointer;
+  font-size: 0.9rem; padding: 0 2px; flex-shrink: 0; }
+.acc-remove:hover { color: #DC2626; }
+
+.acc-body { padding: 4px 10px 10px; border-top: 1px solid #2a2a4a; }
+
+/* ── Viewer nav arrows ────────────────────────────────────────────────── */
+.viewer-nav { display: flex; align-items: center; gap: 2px; margin-right: 8px; flex-shrink: 0; }
+.viewer-arrow { background: #1a1a2e; border: 1px solid #3a3a5a; border-radius: 3px;
+  color: #c4a747; cursor: pointer; font-size: 0.95rem; line-height: 1;
+  padding: 2px 7px; font-family: inherit; }
+.viewer-arrow:hover { border-color: #c4a747; background: #222244; }
 
 /* ── Image Fallback ──────────────────────────────────────────────────── */
 .detail-image-fallback { display: flex; align-items: center; justify-content: center; height: 100px;

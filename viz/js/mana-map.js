@@ -165,20 +165,39 @@
   function bringToTop(stackIndex) {
     if (stackIndex < 0 || stackIndex >= selectedCards.length) return;
     topCardIndex = stackIndex;
-    updateViewerPanel();
+    updateViewerPanel();   // reveals the opened row
     updateSelectionHighlight();
   }
 
   // ── Viewer Panel ──
 
+  function cardImageUrl(name) {
+    return 'https://api.scryfall.com/cards/named?exact='
+      + encodeURIComponent(name) + '&format=image&version=normal';
+  }
+
+  // Warm the browser cache for the cards either side of the open one. Each image is a
+  // Scryfall round-trip, so without this every arrow press shows a beat of empty grey
+  // before the card appears — which is most of what made the old panel feel slow to
+  // browse. Neighbours only: preloading all eight would be eight requests for the seven
+  // the reader may never look at.
+  function preloadNeighbourImages() {
+    if (selectedCards.length < 2) return;
+    const n = selectedCards.length;
+    for (const delta of [-1, 1]) {
+      const card = selectedCards[((topCardIndex + delta) % n + n) % n];
+      if (card) new Image().src = cardImageUrl(card.data.n);
+    }
+  }
+
   function buildCardDetailHtml(d) {
     let html = '';
 
-    const imgUrl = 'https://api.scryfall.com/cards/named?exact='
-      + encodeURIComponent(d.n) + '&format=image&version=normal';
+    // No `loading="lazy"`: the only card image we ever render is the open one, and it is
+    // scrolled into view the moment it appears — deferring it just adds a beat of grey.
     html += '<div class="detail-card-image">';
-    html += '<img src="' + imgUrl + '" alt="' + escHtml(d.n) + '"';
-    html += ' loading="lazy" onerror="this.onerror=null;this.parentElement.style.minHeight=\'auto\';this.parentElement.innerHTML=\'<div class=\\\'detail-image-fallback\\\'>Image not available</div>\'">';
+    html += '<img src="' + cardImageUrl(d.n) + '" alt="' + escHtml(d.n) + '"';
+    html += ' onerror="this.onerror=null;this.parentElement.style.minHeight=\'auto\';this.parentElement.innerHTML=\'<div class=\\\'detail-image-fallback\\\'>Image not available</div>\'">';
     html += '</div>';
 
     if (d.t) html += '<div class="detail-type">' + escHtml(d.t) + '</div>';
@@ -243,7 +262,13 @@
     let html = '<div class="viewer-header">';
     html += '<h2>' + escHtml(d.n) + '</h2>';
     if (selectedCards.length > 1) {
+      // The arrows live in the sticky header so they stay reachable no matter how far
+      // down the list you have scrolled. Same action as ← / →.
+      html += '<span class="viewer-nav">';
+      html += '<button class="viewer-arrow" onclick="MM.cyclePrev()" title="Previous (←)">‹</button>';
       html += '<span class="viewer-count">' + (topCardIndex + 1) + '/' + selectedCards.length + '</span>';
+      html += '<button class="viewer-arrow" onclick="MM.cycleNext()" title="Next (→)">›</button>';
+      html += '</span>';
     }
     // In-deck badge or add-to-deck button
     if (typeof window.DeckBuilder !== 'undefined' && window.DeckBuilder.isInDeck) {
@@ -271,8 +296,39 @@
     html += '</div>';
     html += '</div>';
 
-    // Top card full detail
-    html += buildCardDetailHtml(d);
+    // One card: no list to navigate, so the detail is the panel.
+    //
+    // More than one: the LIST is the structure and the card opens inside the row you
+    // clicked. The old layout put the detail on top and the list underneath, which meant
+    // choosing a different card scrolled you away from the thing you were choosing, and
+    // then you scrolled back to look at it. The accordion keeps the point of interaction
+    // and the thing it reveals in the same place.
+    if (selectedCards.length > 1) {
+      html += '<div class="accordion">';
+      for (let i = 0; i < selectedCards.length; i++) {
+        const isActive = (i === topCardIndex);
+        const card = selectedCards[i];
+        const cd = card.data;
+        html += '<div class="acc-row' + (isActive ? ' active' : '') + '">';
+        html += '<div class="acc-head" onclick="MM.bringToTop(' + i + ')">';
+        html += '<span class="acc-caret">' + (isActive ? '\u25be' : '\u25b8') + '</span>';
+        html += '<span class="acc-name">' + escHtml(cd.n) + '</span>';
+        html += '<span class="acc-mana">' + renderManaSymbols(cd.mc) + '</span>';
+        if (cd.p != null && cd.th != null) html += '<span class="acc-stats">' + escHtml(cd.p) + '/' + escHtml(cd.th) + '</span>';
+        html += '<span class="acc-type">' + escHtml(cd.s) + '</span>';
+        html += '<button class="acc-remove" onclick="event.stopPropagation(); MM.removeFromSelection(' + card.idx + ')" title="Remove">\u00d7</button>';
+        html += '</div>';
+        if (isActive) {
+          html += '<div class="acc-body">' + buildCardDetailHtml(cd) + '</div>';
+        }
+        html += '</div>';
+      }
+      html += '</div>';
+      html += '<div class="keyboard-hint">\u2190 \u2192 navigate \u00b7 1-8 jump \u00b7 Del remove \u00b7 Esc clear all \u00b7 / search</div>';
+    } else {
+      html += buildCardDetailHtml(d);
+      html += '<div class="keyboard-hint">Shift+click to multi-select \u00b7 Esc clear \u00b7 / search</div>';
+    }
 
     // Ensure obsolescence data is loaded, then patch it in
     if (!obsolescenceIndex) {
@@ -285,31 +341,37 @@
       });
     }
 
-    // Stack tabs for all selected cards
-    if (selectedCards.length > 1) {
-      html += '<div class="stack-tabs">';
-      for (let i = 0; i < selectedCards.length; i++) {
-        const isActive = (i === topCardIndex);
-        const card = selectedCards[i];
-        const cd = card.data;
-        html += '<div class="stack-tab' + (isActive ? ' active' : '') + '" onclick="MM.bringToTop(' + i + ')">';
-        html += '<span class="stack-tab-name">' + escHtml(cd.n) + '</span>';
-        html += '<span class="stack-tab-mana">' + renderManaSymbols(cd.mc) + '</span>';
-        if (cd.p != null && cd.th != null) html += '<span class="stack-tab-stats">' + escHtml(cd.p) + '/' + escHtml(cd.th) + '</span>';
-        html += '<span class="stack-tab-type">' + escHtml(cd.s) + '</span>';
-        if (cd.m > 0) html += '<span class="stack-tab-cmc">' + cd.m + '</span>';
-        html += '<button class="stack-tab-remove" onclick="event.stopPropagation(); MM.removeFromSelection(' + card.idx + ')">\u00d7</button>';
-        html += '</div>';
-      }
-      html += '</div>';
-      html += '<div class="keyboard-hint">\u2190 \u2192 navigate \u00b7 1-8 jump \u00b7 Del remove \u00b7 Esc clear all \u00b7 / search</div>';
-    } else {
-      html += '<div class="keyboard-hint">Shift+click to multi-select \u00b7 Esc clear \u00b7 / search</div>';
-    }
-
     inner.innerHTML = html;
     panel.classList.add('open');
+    // Reveal whichever row is open, on every path that changes it — clicking a row,
+    // the arrows, the arrow keys, a number key, removing a card, or selecting a new one
+    // from the map. This function is only called when the selection actually changes,
+    // so it never fights a scroll the reader started themselves.
+    scrollActiveRowIntoView();
+    preloadNeighbourImages();
     setTimeout(() => Plotly.Plots.resize('plot'), 260);
+  }
+
+  // Put the open row's header just under the sticky masthead, so the card it just
+  // revealed is on screen. Without this the accordion still scrolls you away from your
+  // own click once the list is longer than the panel.
+  function scrollActiveRowIntoView() {
+    const inner = document.getElementById('detailInner');
+    if (!inner) return;
+    const row = inner.querySelector('.acc-row.active');
+    if (!row) return;
+    const header = inner.querySelector('.viewer-header');
+    const offset = header ? header.offsetHeight : 0;
+    inner.scrollTop = Math.max(0, row.offsetTop - offset - 8);
+  }
+
+  // Shared by the header arrows and the arrow keys so the two can never disagree.
+  // Wraps in both directions \u2014 with at most 8 cards, running off the end and stopping
+  // is more annoying than looping.
+  function cycleSelection(delta) {
+    if (selectedCards.length < 2) return;
+    const n = selectedCards.length;
+    bringToTop(((topCardIndex + delta) % n + n) % n);
   }
 
   function closeViewerPanel() {
@@ -926,12 +988,10 @@
 
     if ((e.key === 'ArrowLeft' || e.key === 'ArrowUp') && selectedCards.length > 1) {
       e.preventDefault();
-      const newIdx = topCardIndex <= 0 ? selectedCards.length - 1 : topCardIndex - 1;
-      bringToTop(newIdx);
+      cycleSelection(-1);
     } else if ((e.key === 'ArrowRight' || e.key === 'ArrowDown') && selectedCards.length > 1) {
       e.preventDefault();
-      const newIdx = topCardIndex >= selectedCards.length - 1 ? 0 : topCardIndex + 1;
-      bringToTop(newIdx);
+      cycleSelection(1);
     } else if (e.key === 'Delete' || e.key === 'Backspace') {
       e.preventDefault();
       removeFromSelection(selectedCards[topCardIndex].idx);
@@ -1455,6 +1515,8 @@
     closeDetail: clearSelection,
     removeFromSelection,
     bringToTop,
+    cyclePrev: () => cycleSelection(-1),
+    cycleNext: () => cycleSelection(1),
     selectByName,
     findSimilar: findSimilarCards,
     findSynergies: findSynergyCards,
