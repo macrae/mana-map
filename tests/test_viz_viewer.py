@@ -207,3 +207,77 @@ def test_open_card_image_is_not_lazy():
     # Comment lines mention the attribute by name; only the emitted markup matters.
     emitted = "\n".join(ln for ln in detail.splitlines() if not ln.strip().startswith("//"))
     assert 'loading="lazy"' not in emitted
+
+
+# ── Performance invariants ──────────────────────────────────────────────
+#
+# The map renders 34,322 WebGL points. Every one of these was measured, and each
+# regressed silently before it was found — nothing threw, the app just got slower.
+
+
+def test_no_trace_builds_hover_text_while_hover_is_off():
+    """Every trace sets `hoverinfo: 'none'` and nothing reads `trace.text`.
+
+    Building it anyway meant ~34,000 escHtml calls per render — four chained global
+    regexes on each of three fields — for strings that were thrown away. Measured at
+    37 ms of a 90 ms render; removing it took render to 30 ms.
+
+    If hover is ever turned on, build the text in the hover callback for the one point
+    under the cursor, not for all 34K up front.
+    """
+    for path in sorted((VIZ_DIR / "js").glob("*.js")):
+        offenders = [
+            ln.strip() for ln in path.read_text(encoding="utf-8").splitlines()
+            if "buildHoverTextMinimal(" in ln
+            and not ln.strip().startswith(("//", "*"))
+            and "function buildHoverTextMinimal" not in ln
+        ]
+        assert not offenders, (
+            f"{path.name} still builds hover text for a trace that never shows it: "
+            f"{offenders[:2]}"
+        )
+
+
+def test_render_draws_the_selection_in_its_single_react():
+    """`Plotly.react` replaces the trace list, so it dropped the highlight and
+    `updateSelectionHighlight()` added it straight back — an extra addTraces of the whole
+    selection on every render. With a 15,000-card browse that is a full trace rebuild on
+    every pan, filter and panel open. One react now draws everything."""
+    js = _js()
+    assert "function buildSelectionTraces()" in js
+    assert "traces.push(...buildSelectionTraces());" in js
+    # render() registers the plot event handlers inside its first-run branch, and the
+    # box-select handler legitimately calls updateSelectionHighlight for the <=8 path.
+    # What must not come back is the unconditional re-add at the END of render.
+    start = js.index("function render()")
+    render = js[start:js.index("\n  function ", start + 10)]
+    tail = render[render.rindex("Plotly.react("):]
+    assert "updateSelectionHighlight();" not in tail, (
+        "render() must not re-add the highlight it already drew"
+    )
+    assert "Re-apply selection highlight after render" not in js
+
+
+def test_browse_highlight_is_cached_by_set_identity():
+    """Only the marker moves as you cycle; the set does not. Without the key check the
+    whole selection was torn down and rebuilt per press (197 ms at 3,434 cards)."""
+    js = _js()
+    assert "function browseHighlightKey()" in js
+    assert "key === _highlightKey" in js
+    key = js[js.index("function browseHighlightKey()"):]
+    key = key[:key.index("\n  }")]
+    # Drilling changes the coordinate system, so a cached world-space highlight must not
+    # survive into a local layout.
+    assert "drilling ? 'local' : 'world'" in key
+
+
+def test_box_select_has_one_destination():
+    """It used to build the 8-card stack, render the panel and rebuild the plot
+    highlight — then, for a big box, throw all of it away and do it again as browse."""
+    js = _js()
+    start = js.index("on('plotly_selected'")
+    handler = js[start:start + 2000]
+    assert handler.count("updateViewerPanel();") <= 1, "box-select renders the panel twice"
+    assert "return;" in handler.split("enterBrowse")[1][:200], (
+        "the browse path must return rather than falling through to the 8-card path"
+    )

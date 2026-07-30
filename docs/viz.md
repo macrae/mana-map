@@ -155,6 +155,51 @@ nothing.
 `tests/test_viz_drill.py` covers the contract, the suppressions, the local-position
 lookup, the announced truncation, and the hidden-tab fallback.
 
+## Render cost — the rules that keep it snappy
+
+The map draws 34,322 WebGL points. Four rules, each of which was violated and measured:
+
+**Never build what nothing displays.** Every trace sets `hoverinfo: 'none'` and nothing
+reads `trace.text`, but all of them were building hover strings anyway — ~34,000 `escHtml`
+calls per render, four chained global regexes on three fields each. **37 ms of a 90 ms
+render, for output that was discarded.** `buildHoverTextMinimal` is kept and exported for
+when hover is turned on; call it from the hover callback for the point under the cursor,
+never in bulk.
+
+**One `Plotly.react` draws everything.** `react` replaces the trace list, so it dropped the
+selection highlight and `updateSelectionHighlight()` added it straight back — an extra
+`addTraces` of the entire selection per render, which with a 15,000-card browse is a full
+rebuild on every pan, filter and panel open. `render()` now folds `buildSelectionTraces()`
+into its own trace list.
+
+**Scalar opacity, unless a mode genuinely needs per-point.** Per-point opacity means a
+34,000-entry array per colour group plus Plotly's per-point WebGL path. The Deck Lens dims
+*everything* and redraws its 99 on top, so one scalar is equivalent — it declares
+`dimsAll()`. The deck builder dims a real subset (format-illegal, colour-identity
+violations) with nothing over it and keeps the array.
+
+**Do the work once per gesture.** Box-select used to build the 8-card stack, render the
+panel and rebuild the highlight, then — for a big box — throw all of it away and do it
+again as browse. One pass over the points, one destination.
+
+Measured, same page, median of 7:
+
+| | before | after |
+|---|---|---|
+| `render()`, nothing selected | 90 ms | **30 ms** |
+| `render()`, 15,000-card browse | 128 ms | **36 ms** |
+| Arrow press while browsing | 25 ms | **16 ms** |
+| Plotly calls per render | react + add + delete | **react** |
+| Plotly calls per arrow press | delete + add | **restyle** |
+
+**What is still slow, and is not ours.** A shift-drag fires `plotly_selecting` on every
+mousemove, and Plotly hit-tests all 34,322 scattergl points each time — **measured ~138 ms
+per event** with only the seven base traces loaded. That is the dominant cost of box-select
+and it is inside Plotly. Any large highlight trace left on the plot adds to it, which is
+why the browse selection is one trace rather than one per colour. Deck Lens renders in the
+low hundreds of ms because it draws 16 separate role traces; that is the price of the
+legend doubling as the role budget, and it is a mode switch, not a per-frame cost.
+
 ## Data cache-busting
 
 `MM.DATA` URLs carry `?v=DATA_VERSION`. **Bump it when a data artifact's schema changes** —

@@ -118,3 +118,28 @@ def test_every_deck_names_a_commander_the_map_knows():
         assert deck["commander"] in known, (
             f"{deck['slug']}: commander {deck['commander']!r} is not on the map"
         )
+
+
+def test_lens_dims_with_a_scalar_not_a_per_point_array():
+    """Per-point opacity means a 34,000-entry array per colour group, every render.
+
+    The Lens dims *everything* and redraws its 99 as overlay traces on top, so one scalar
+    is equivalent. The deck builder dims a genuine subset (format-illegal cards, colour
+    identity violations) with nothing drawn over them, so it still needs the array —
+    `dimsAll()` is how a mode declares which it is.
+    """
+    src = _lens_source()
+    assert "function dimsAll()" in src
+    assert re.search(r"^\s+dimsAll,$", src, re.M), "dimsAll not exported"
+    assert "function getDimmedIndices() { return null; }" in src, (
+        "the Lens should no longer build a 34K index Set"
+    )
+
+    map_src = (VIZ_DIR / "js" / "mana-map.js").read_text(encoding="utf-8")
+    assert "overlay.dimsAll && overlay.dimsAll()" in map_src
+    # The builder's per-point path must survive.
+    assert "dimmedIndices.has(idx) ? 0.08 : 0.7" in map_src, (
+        "the deck builder still needs per-point dimming"
+    )
+    builder = (VIZ_DIR / "js" / "deck-builder.js").read_text(encoding="utf-8")
+    assert "dimsAll" not in builder, "the builder must NOT declare dimsAll"

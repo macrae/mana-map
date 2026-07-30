@@ -90,6 +90,10 @@
     return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
+  // Currently uncalled by design. Every trace on this plot sets `hoverinfo: 'none'`,
+  // and feeding this to `trace.text` anyway cost ~34,000 escHtml calls per render for
+  // strings nothing displayed. Kept (and exported) for when hover is turned on — but
+  // call it from the hover callback for the one point under the cursor, never in bulk.
   function buildHoverTextMinimal(d) {
     let line = '<b>' + escHtml(d.n) + '</b>';
     let parts = [];
@@ -537,30 +541,30 @@
     const cur = browseSet.indices[browseSet.pos];
     const p = cardPosition(cur);
     if (!p) return false;
-    Plotly.restyle('plot', {
-      x: [[p[0]]], y: [[p[1]]],
-      customdata: [[cur]],
-      text: [[buildHoverTextMinimal(allData[cur])]],
-    }, [ti]);
+    Plotly.restyle('plot', { x: [[p[0]]], y: [[p[1]]], customdata: [[cur]] }, [ti]);
     return true;
   }
 
-  function updateSelectionHighlight() {
-    const plotDiv = document.getElementById('plot');
-    if (!plotDiv || !plotDiv.data) return;
+  // Identity of whatever the current _isSelection traces are drawing. A browse selection
+  // can be tens of thousands of points, and render() calls this at the end of every pass
+  // — so without a check, panning, filtering, toggling Topo or opening a panel each did a
+  // deleteTraces + addTraces of the whole set. Nothing about the set changed; only the
+  // marker moves, and moveBrowseMarker() handles that in one restyle.
+  let _highlightKey = null;
 
-    // Remove existing selection traces
-    const toDelete = [];
-    for (let i = plotDiv.data.length - 1; i >= 0; i--) {
-      if (plotDiv.data[i]._isSelection) {
-        toDelete.push(i);
-      }
-    }
-    if (toDelete.length) {
-      Plotly.deleteTraces('plot', toDelete);
-    }
+  function browseHighlightKey() {
+    if (!browseSet) return null;
+    const ix = browseSet.indices;
+    const drilling = typeof window.Drill !== 'undefined' && window.Drill.isActive();
+    return 'b:' + ix.length + ':' + ix[0] + ':' + ix[ix.length - 1] + ':' + (drilling ? 'local' : 'world');
+  }
 
-    if (selectedCards.length === 0 && !browseSet) return;
+  // Pure: build the highlight traces without touching the plot. render() folds these
+  // into its single Plotly.react, so a re-render no longer wipes them and then adds them
+  // back — which, with a 15,000-card browse selection, was a full trace rebuild on every
+  // pan, filter, Topo toggle and panel open.
+  function buildSelectionTraces() {
+    if (selectedCards.length === 0 && !browseSet) return [];
 
     const posOf = cardPosition;
 
@@ -579,7 +583,6 @@
           name: 'Selection (' + browseSet.indices.length.toLocaleString() + ')',
           x: rows.map(i => posOf(i)[0]),
           y: rows.map(i => posOf(i)[1]),
-          text: rows.map(i => buildHoverTextMinimal(allData[i])),
           customdata: rows.slice(),
           hoverinfo: 'none',
           marker: { size: 5, opacity: 0.85, color: '#8B7730' },
@@ -593,7 +596,6 @@
           name: 'Browsing',
           x: [curPos[0]],
           y: [curPos[1]],
-          text: [buildHoverTextMinimal(allData[cur])],
           customdata: [cur],
           hoverinfo: 'none',
           marker: { size: 16, opacity: 1, color: '#c4a747', line: { color: '#fff', width: 2.5 } },
@@ -601,8 +603,7 @@
           _isBrowseCurrent: true,
         });
       }
-      if (traces.length) Plotly.addTraces('plot', traces);
-      return;
+      return traces;
     }
 
     // Build selection highlight trace
@@ -621,7 +622,6 @@
         name: 'Selected',
         x: otherCards.map(c => posOf(c.idx)[0]),
         y: otherCards.map(c => posOf(c.idx)[1]),
-        text: otherCards.map(c => buildHoverTextMinimal(allData[c.idx])),
         customdata: otherCards.map(c => c.idx),
         hoverinfo: 'none',
         marker: { size: 12, opacity: 1, color: '#8B7730', symbol: 'circle', line: { color: '#fff', width: 1.5 } },
@@ -638,7 +638,6 @@
         name: 'Active',
         x: [topPos[0]],
         y: [topPos[1]],
-        text: [buildHoverTextMinimal(allData[topIdx])],
         customdata: [topIdx],
         hoverinfo: 'none',
         marker: { size: 12, opacity: 1, color: '#c4a747', symbol: 'circle', line: { color: '#fff', width: 2 } },
@@ -646,9 +645,32 @@
       });
     }
 
-    if (traces.length) {
-      Plotly.addTraces('plot', traces);
+    return traces;
+  }
+
+  // Out-of-render updates (selecting a card, removing one, cycling the stack). Uses the
+  // marker fast path when only the browse position moved, otherwise swaps the traces in
+  // place — still much cheaper than a full render() for the <=8 case.
+  function updateSelectionHighlight() {
+    const plotDiv = document.getElementById('plot');
+    if (!plotDiv || !plotDiv.data) return;
+
+    if (browseSet) {
+      const key = browseHighlightKey();
+      if (key === _highlightKey && plotDiv.data.some(t => t._isSelection) && moveBrowseMarker()) return;
+      _highlightKey = key;
+    } else {
+      _highlightKey = null;
     }
+
+    const toDelete = [];
+    for (let i = plotDiv.data.length - 1; i >= 0; i--) {
+      if (plotDiv.data[i]._isSelection) toDelete.push(i);
+    }
+    if (toDelete.length) Plotly.deleteTraces('plot', toDelete);
+
+    const traces = buildSelectionTraces();
+    if (traces.length) Plotly.addTraces('plot', traces);
   }
 
   // ── Detail Panel (legacy wrapper for backward compat) ──
@@ -737,7 +759,6 @@
       name: 'Similar (20)',
       x: nearest.map(n => allData[n.i].x),
       y: nearest.map(n => allData[n.i].y),
-      text: nearest.map(n => buildHoverTextMinimal(allData[n.i])),
       customdata: nearest.map(n => n.i),
       hoverinfo: 'none',
       marker: { size: 9, opacity: 1, color: '#FFA500', symbol: 'diamond', line: { color: '#EA580C', width: 1.5 } },
@@ -750,7 +771,6 @@
       name: ref.n,
       x: [ref.x],
       y: [ref.y],
-      text: [buildHoverTextMinimal(ref)],
       customdata: [refIdx],
       hoverinfo: 'none',
       marker: { size: 14, opacity: 1, color: '#c4a747', symbol: 'star', line: { color: '#fff', width: 1.5 } },
@@ -942,7 +962,6 @@
       name: ref.n,
       x: [ref.x],
       y: [ref.y],
-      text: [buildHoverTextMinimal(ref)],
       customdata: [refIdx],
       hoverinfo: 'none',
       marker: { size: 14, opacity: 1, color: '#c4a747', symbol: 'star', line: { color: '#fff', width: 1.5 } },
@@ -1387,15 +1406,20 @@
     }
 
     // Group by category (iterate with index to avoid O(n) indexOf)
+    // No `text` — every trace on this plot sets `hoverinfo: 'none'` and nothing reads
+    // `trace.text`, so building hover strings here was ~34,000 calls into escHtml (four
+    // chained global regexes each, three fields per card) on EVERY render, producing
+    // ~275,000 regex operations whose output was thrown away. Measured at 37 ms of the
+    // 90 ms render. If hover is ever turned on, add the text back deliberately — and
+    // build it in the hover callback, not for all 34K points up front.
     const groups = {};
     for (let i = 0; i < allData.length; i++) {
       const d = allData[i];
       if (!activeSupertypes.has(d.s)) continue;
       const { key } = getCategoryInfo(d);
-      if (!groups[key]) groups[key] = { x: [], y: [], text: [], customdata: [], key };
+      if (!groups[key]) groups[key] = { x: [], y: [], customdata: [], key };
       groups[key].x.push(d.x);
       groups[key].y.push(d.y);
-      groups[key].text.push(buildHoverTextMinimal(d));
       groups[key].customdata.push(i);
     }
 
@@ -1406,9 +1430,21 @@
     // Build traces with optional per-point opacity for dimming. `visible: false` keeps
     // the trace (and its legend entry order) while drilling instead of rebuilding the
     // whole plot on the way in and out.
+    // Per-point opacity is expensive: a 34,000-entry array per group, plus Plotly's
+    // per-point path through the WebGL renderer. Measured at ~100 ms of a 133 ms Deck
+    // Lens render, and memoising the Set did not touch it because the Set was never the
+    // cost.
+    //
+    // The Lens dims *everything* and redraws its 99 as overlay traces on top, so a scalar
+    // opacity is equivalent and ~free. The deck builder dims a genuine subset (format
+    // illegal, colour-identity violations) with nothing drawn over it, so it still needs
+    // the per-point array — `dimsAll()` is how a mode says which it is.
+    const dimsAll = !!(overlay && overlay.dimsAll && overlay.dimsAll());
     const traces = Object.values(groups).map(g => {
       let opacity;
-      if (dimmedIndices) {
+      if (dimsAll) {
+        opacity = 0.08;
+      } else if (dimmedIndices) {
         opacity = g.customdata.map(idx => dimmedIndices.has(idx) ? 0.08 : 0.7);
       } else {
         opacity = 0.7;
@@ -1419,7 +1455,6 @@
         name: g.key,
         x: g.x,
         y: g.y,
-        text: g.text,
         customdata: g.customdata,
         hoverinfo: 'none',
         visible: drilling ? false : true,
@@ -1477,7 +1512,6 @@
           name: `Search (${displayCount})`,
           x: matches.map(m => m.d.x),
           y: matches.map(m => m.d.y),
-          text: matches.map(m => buildHoverTextMinimal(m.d)),
           customdata: matches.map(m => m.i),
           hoverinfo: 'none',
           marker: { size: 8, opacity: 1, color: '#fff', symbol: 'diamond', line: { color: '#EA580C', width: 2 } },
@@ -1498,6 +1532,11 @@
 
     // Add overlay traces from deck builder
     traces.push(...overlayTraces);
+    // ...and the selection highlight, so one react draws everything. Previously react
+    // replaced the trace list (dropping the highlight) and updateSelectionHighlight then
+    // added it straight back — an extra addTraces of the whole selection per render.
+    traces.push(...buildSelectionTraces());
+    _highlightKey = browseHighlightKey();
 
     // Prepend contour traces
     const allTraces = [...contourTraces, ...traces];
@@ -1623,37 +1662,29 @@
         if (!eventData || !eventData.points || eventData.points.length <= 1) return;
         if (!shiftHeld) return;
 
-        // Collect indices from selected points
-        const indices = [];
+        // One pass over the points, then one destination. This used to build the 8-card
+        // stack, render the whole panel and rebuild the plot highlight — and then, for a
+        // big box, throw all of it away and do it again as browse. Two full renders per
+        // selection, one of them purely wasted.
+        const all = [];
         for (const pt of eventData.points) {
-          if (pt.customdata != null && allData[pt.customdata]) {
-            indices.push(pt.customdata);
-          }
-          if (indices.length >= MAX_SELECTED) break;
+          if (pt.customdata != null && allData[pt.customdata]) all.push(pt.customdata);
+        }
+        if (all.length === 0) return;
+
+        if (all.length > MAX_SELECTED) {
+          // Too many for the accordion: take the WHOLE set into browse rather than an
+          // arbitrary 8, and offer the same set to drill.
+          enterBrowse(all, 'Selection');
+          if (typeof window.Drill !== 'undefined') window.Drill.offer(all, 'Selection');
+          return;
         }
 
-        if (indices.length === 0) return;
-
-        // Replace selection with box-selected cards
-        selectedCards = indices.map(idx => ({ idx, data: allData[idx] }));
+        selectedCards = all.map(idx => ({ idx, data: allData[idx] }));
         topCardIndex = 0;
         updateViewerPanel();
         updateSelectionHighlight();
-
-        const total = eventData.points.length;
-        if (total > MAX_SELECTED) {
-          // Too many for the accordion, so take the WHOLE set into browse mode rather
-          // than keeping an arbitrary 8. Also offer it to drill — flipping through the
-          // cards and re-laying them out are two useful things to do with one box.
-          const all = [];
-          for (const pt of eventData.points) {
-            if (pt.customdata != null && allData[pt.customdata]) all.push(pt.customdata);
-          }
-          enterBrowse(all, 'Selection');
-          if (typeof window.Drill !== 'undefined') window.Drill.offer(all, 'Selection');
-        } else {
-          setStatus(`Selected ${indices.length} card${indices.length === 1 ? '' : 's'}`);
-        }
+        setStatus(`Selected ${all.length} card${all.length === 1 ? '' : 's'}`);
       });
 
       // Keep the Plotly SVG in sync with the container: the side panels resize
@@ -1684,8 +1715,6 @@
       }
     }
 
-    // Re-apply selection highlight after render
-    updateSelectionHighlight();
   }
 
   function setStatus(msg) { document.getElementById('status').textContent = msg; }

@@ -310,11 +310,10 @@
   function getOverlayTraces() {
     if (!isActive()) return [];
     const n = indices.length;
-    const xs = new Array(n), ys = new Array(n), text = new Array(n);
+    const xs = new Array(n), ys = new Array(n);
     for (let i = 0; i < n; i++) {
       xs[i] = pos[2 * i];
       ys[i] = pos[2 * i + 1];
-      text[i] = MM.buildHoverTextMinimal(MM.allData[indices[i]]);
     }
     // One trace, per-point colour array — so a frame is a single restyle. Splitting by
     // category would multiply the per-frame Plotly calls by the number of groups.

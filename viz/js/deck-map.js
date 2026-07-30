@@ -262,7 +262,6 @@
         name: family + ' (' + slots.length + ')',
         x: slots.map(s => all[s.idx].x),
         y: slots.map(s => all[s.idx].y),
-        text: slots.map(s => MM.buildHoverTextMinimal(all[s.idx])),
         customdata: slots.map(s => s.idx),
         hoverinfo: 'none',
         marker: {
@@ -282,7 +281,6 @@
           name: 'Sideboard (' + bench.length + ')',
           x: bench.map(s => all[s.idx].x),
           y: bench.map(s => all[s.idx].y),
-          text: bench.map(s => MM.buildHoverTextMinimal(all[s.idx])),
           customdata: bench.map(s => s.idx),
           hoverinfo: 'none',
           marker: {
@@ -301,7 +299,6 @@
         name: 'Short List (' + active.candidates.length + ')',
         x: active.candidates.map(c => all[c.idx].x),
         y: active.candidates.map(c => all[c.idx].y),
-        text: active.candidates.map(c => MM.buildHoverTextMinimal(all[c.idx])),
         customdata: active.candidates.map(c => c.idx),
         hoverinfo: 'none',
         marker: {
@@ -321,7 +318,6 @@
         name: 'Commander',
         x: [all[cmd.idx].x],
         y: [all[cmd.idx].y],
-        text: [MM.buildHoverTextMinimal(all[cmd.idx])],
         customdata: [cmd.idx],
         hoverinfo: 'none',
         marker: { size: 18, opacity: 1, color: '#c4a747', symbol: 'star', line: { color: '#fff', width: 1.5 } },
@@ -332,17 +328,12 @@
     return traces;
   }
 
-  function getDimmedIndices() {
-    if (!active || !dimOthers) return null;
-    const lit = new Set();
-    for (const s of active.main) if (s.idx !== null) lit.add(s.idx);
-    if (showSideboard) for (const s of active.side) if (s.idx !== null) lit.add(s.idx);
-    if (showCandidates) for (const c of active.candidates) lit.add(c.idx);
+  // The Lens dims the whole world and redraws the deck as overlay traces on top, so
+  // render() can use one scalar opacity instead of a 34,000-entry per-point array.
+  // Returning the index Set at all was the expensive half of Deck Lens mode.
+  function dimsAll() { return !!(active && dimOthers); }
 
-    const dimmed = new Set();
-    for (let i = 0; i < MM.allData.length; i++) if (!lit.has(i)) dimmed.add(i);
-    return dimmed;
-  }
+  function getDimmedIndices() { return null; }
 
   // ── Panel ──
 
@@ -600,5 +591,6 @@
     focusLine,
     getOverlayTraces,
     getDimmedIndices,
+    dimsAll,
   };
 })();
