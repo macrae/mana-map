@@ -280,6 +280,9 @@
         String(issue.volume).padStart(3, '0') : '');
     var link = document.getElementById('issueLink');
     link.href = '../manuals/' + slug + '.html';
+    // The map's Deck Lens reads ?deck=<slug> on entry, so this deep-links straight
+    // into the overlay rather than dropping the reader on an unfiltered map.
+    document.getElementById('lensLink').href = 'index.html?deck=' + encodeURIComponent(slug);
 
     var html = [
       bracketPanel(d), manaPanel(d), goldfishPanel(d),

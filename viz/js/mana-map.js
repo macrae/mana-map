@@ -779,6 +779,14 @@
       initToggles();
       render();
       setStatus(`${allData.length.toLocaleString()} cards loaded`);
+      // ?deck=<slug> is the map's first inbound deep link — the dossier and the
+      // magazine's Back Page both use it. Honour it by entering the Lens, not by
+      // dropping the reader on an unfiltered map with a query string they can't see.
+      const wantedDeck = new URLSearchParams(window.location.search).get('deck');
+      if (wantedDeck) {
+        document.getElementById('modeSelect').value = 'deck';
+        setMode('deck');
+      }
       // Load region data in background, then re-render with labels
       loadRegionData('default').then(data => {
         if (data) render();
@@ -933,19 +941,26 @@
     setMode(e.target.value);
   });
 
+  // Build and Deck Lens share one side panel (#deckPanel), so entering either must exit
+  // the other. Explore keeps the detail panel; Build hides it because its own panel needs
+  // the width, and the Lens keeps it because clicking a lit deck card to read it is the
+  // whole interaction.
   function setMode(mode) {
     currentMode = mode;
+    const detail = document.getElementById('detailPanel');
+
+    if (mode !== 'build' && typeof window.DeckBuilder !== 'undefined') window.DeckBuilder.exit();
+    if (mode !== 'deck' && typeof window.DeckMap !== 'undefined') window.DeckMap.exit();
+
     if (mode === 'build') {
       clearSelection();
-      document.getElementById('detailPanel').style.display = 'none';
-      if (typeof window.DeckBuilder !== 'undefined') {
-        window.DeckBuilder.enter();
-      }
+      detail.style.display = 'none';
+      if (typeof window.DeckBuilder !== 'undefined') window.DeckBuilder.enter();
+    } else if (mode === 'deck') {
+      detail.style.display = '';
+      if (typeof window.DeckMap !== 'undefined') window.DeckMap.enter();
     } else {
-      document.getElementById('detailPanel').style.display = '';
-      if (typeof window.DeckBuilder !== 'undefined') {
-        window.DeckBuilder.exit();
-      }
+      detail.style.display = '';
     }
     render();
   }
@@ -1040,12 +1055,16 @@
   function render() {
     clearSimilarTrace();
 
-    // Get overlay traces from deck builder (if active)
+    // Get overlay traces from whichever mode owns the side panel. Both implement the
+    // same two-method contract; see docs/viz.md.
     let overlayTraces = [];
     let dimmedIndices = null;
-    if (currentMode === 'build' && typeof window.DeckBuilder !== 'undefined') {
-      overlayTraces = window.DeckBuilder.getOverlayTraces();
-      dimmedIndices = window.DeckBuilder.getDimmedIndices();
+    const overlay = currentMode === 'build' ? window.DeckBuilder
+      : currentMode === 'deck' ? window.DeckMap
+      : null;
+    if (overlay) {
+      overlayTraces = overlay.getOverlayTraces();
+      dimmedIndices = overlay.getDimmedIndices();
     }
 
     const filtered = allData.filter(d => activeSupertypes.has(d.s));

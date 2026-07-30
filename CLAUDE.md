@@ -30,11 +30,12 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #   validate_issue.py / agent_cache.py / artist_credits.py
                       #   validate_considering.py / validate_tutor_guide.py
                       #   impact.py / card_refs.py  incremental regeneration
-tests/                # pytest suite (926 tests: 325 card-pipeline + 601 pilot),
+tests/                # pytest suite (932 tests: 331 card-pipeline + 601 pilot),
                       # conftest markers: requires_data/rules/deck/strategy/roles
 data/                 # artifacts; mostly gitignored, viz-served files tracked
-viz/                  # static frontend: index.html (the map) + deck.html (the
-                      # deck dossier); Plotly CDN, IIFE scripts, window.MM
+viz/                  # static frontend: index.html (the map: explore / deck lens /
+                      # build) + deck.html (the deck dossier); Plotly CDN, IIFE
+                      # scripts, window.MM; overlay modes implement two methods
 docs/                 # reference docs (see Pointers below)
 ```
 
@@ -59,7 +60,7 @@ manamap synergy && manamap power-creep && manamap cluster-regions && manamap car
                               # fast analysis-only refresh (no retrain)
 manamap pilot <cmd>           # build + publish subsystem (33 subcommands) — see docs/pilot.md
 
-.venv/bin/python -m pytest    # 926 tests; data-dependent ones skip if artifacts missing
+.venv/bin/python -m pytest    # 932 tests; data-dependent ones skip if artifacts missing
 
 python -m http.server 8000    # serve viz FROM REPO ROOT
 # http://localhost:8000/viz/index.html          the card map
@@ -73,7 +74,7 @@ python -m http.server 8000    # serve viz FROM REPO ROOT
 - **Index alignment**: `projection[i]` == `cards.csv[i]` == `embeddings[i]`. Never partially regenerate after the card count changes; re-run from the changed step onward.
 - **No Git LFS on `data/`**: GitHub Pages serves LFS pointers, which would break the deployed viz. Large tracked JSON/bin files are intentional.
 - **Viz serving root**: all fetches are `../data/<file>` relative to `viz/index.html` — `viz/` and `data/` must stay top-level siblings; serve from repo root.
-- **Cache busting**: bump `?v=N` on the script/CSS tags in `viz/index.html` **and `viz/deck.html`** after any JS/CSS change. `manuals/magazine.css` is content-addressed instead (`?v=<sha8>`), so a CSS edit there obligates rebuilding every manual page.
+- **Cache busting**: bump `?v=N` on the script/CSS tags in `viz/index.html` **and `viz/deck.html`** after any JS/CSS change. `index.html`'s three script busts must move together — a test asserts it, since a mismatched pair is how `deck-map.js` ends up calling a stale `mana-map.js`. `manuals/magazine.css` is content-addressed instead (`?v=<sha8>`), so a CSS edit there obligates rebuilding every manual page.
 - **Synergy ≠ Similar**: synergy is complementary (blink→ETB, rule-based); Find Similar is embedding neighbors. Different algorithms.
 - **Plotly**: `Plotly.relayout` fires `plotly_relayout` — guard against event loops.
 - Paths in `config.py` are `__file__`-anchored (CWD-independent); override with `MANAMAP_DATA_DIR` / `MANAMAP_VIZ_DIR`.

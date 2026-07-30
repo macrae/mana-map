@@ -23,7 +23,7 @@ a **deck builder** that produces the deck in the first place.
 [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-926 tests. 33 `manamap pilot` subcommands. 12 agents, 15 skills.
+932 tests. 33 `manamap pilot` subcommands. 12 agents, 15 skills.
 
 ## Shipped
 
@@ -157,7 +157,7 @@ that are live and have an obvious next move, not work left half-done.
 
 | Thread | State | Next move |
 |---|---|---|
-| **Frontend v2** | The dossier (`viz/deck.html`) shipped and is the first two-way link between the map and the magazine. The engine port has not started. | `viz_index.json` — see *Future* below |
+| **Frontend v2** | The dossier (`viz/deck.html`) and the **Deck Lens** (map mode 3) shipped; the three surfaces now form a link cycle. The engine port has not started. | `viz_index.json` — see *Future* below |
 | **Deck versioning** | `HISTORY.md` + a validated `decklist_sha256` shipped; `supersedes` and `build:<NNN>` did not | Add `supersedes` to `issue.json` so a second issue for one deck is expressible |
 | **Verification backlog** | 32 verified lines across 7 decks; ~30 named candidate lines unresolved, several one clause from passing | Sisay 001 — highest value in the fleet |
 | **Strategy DB** | 45 strategy sections / 14 pillars; four named gaps, one of them now backing a whole section with no pillar behind it | A tutor-sequencing pillar for Fetch Quests |
@@ -170,6 +170,24 @@ that are live and have an obvious next move, not work left half-done.
 Page opens its deck's dossier and the dossier links back. It also introduced the first URL
 state this frontend has had (`?deck=<slug>`) and forced the design-token port into
 existence against real content.
+
+**The Deck Lens** (`viz/js/deck-map.js`) shipped 2026-07-30 as the map's third mode, and
+closes the remaining gap: the map plotted 34,322 cards while seven decks sat in tracked
+JSON one directory over with nothing connecting them. Pick a deck and its 99 light up
+while the rest dim, so the deck's *footprint in card space* becomes legible — a claim
+about archetype no decklist can make. It needed no new pipeline step: `card_roles.json` is
+tracked, and all seven decks' card names resolve against `projection_2d.json` exactly.
+
+It also generalised the overlay contract. `getOverlayTraces()` / `getDimmedIndices()` were
+private to the deck builder; `render()` now dispatches to whichever mode owns the panel, so
+mode four costs two methods. And `index.html?deck=<slug>` now enters the Lens directly, so
+the three surfaces form a cycle rather than a chain.
+
+Two deliberate honesty choices are worth keeping when this is extended: the panel states
+that **bars count copies and dots count distinct cards** rather than letting the two
+numbers disagree silently (the land bug's lesson, applied before it could recur), and a
+verified line naming fewer than two deck cards **stays in the list, greyed** instead of
+vanishing — so the panel's count always agrees with the manifest's `verified`.
 
 Still true, and still the two live defects in `viz/js/deck-builder.js`:
 

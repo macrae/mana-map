@@ -305,3 +305,60 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
   .detail-panel.open { width: 280px; }
   .detail-inner { width: 280px; }
 }
+
+/* ── Deck Lens ────────────────────────────────────────────────────────────
+ * The map's third mode. Shares #deckPanel with Build, so it reuses .deck-section,
+ * .deck-section-title and .deck-format-row; everything below is lens-specific.
+ * Tier colours (✓ green, ◆ blue, ★ gold) match STYLEv3 §8.3 and viz/css/tokens.css —
+ * a reader who learns the badges in the magazine reads the same three here.
+ */
+.deck-empty { color: #777; font-size: 0.82rem; line-height: 1.5; }
+
+.lens-title { font-size: 1.05rem; color: #e0e0e0; font-weight: 600; }
+.lens-sub { font-size: 0.8rem; color: #999; margin-top: 2px; }
+.lens-coverline { font-size: 0.78rem; color: #c4a747; margin-top: 6px; font-style: italic; }
+.lens-links { display: flex; gap: 14px; margin-top: 10px; }
+.lens-links a { color: #4A7BFF; font-size: 0.78rem; text-decoration: none; }
+.lens-links a:hover { text-decoration: underline; }
+
+.lens-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.lens-stat { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 4px; padding: 7px 4px; text-align: center; }
+.lens-stat-n { font-size: 1.05rem; color: #e0e0e0; font-variant-numeric: tabular-nums; }
+.lens-stat-l { font-size: 0.6rem; color: #777; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+.lens-btn { width: 100%; margin-top: 10px; background: #1a1a2e; color: #c4a747; border: 1px solid #3a3a5a;
+  border-radius: 4px; padding: 7px; font-size: 0.8rem; cursor: pointer; }
+.lens-btn:hover { border-color: #c4a747; }
+
+.lens-toggle { display: flex; align-items: center; gap: 7px; font-size: 0.8rem; color: #bbb; padding: 3px 0; cursor: pointer; }
+.lens-toggle input { accent-color: #c4a747; cursor: pointer; }
+
+.lens-bar-row { display: flex; align-items: center; gap: 6px; margin: 3px 0; font-size: 0.75rem; }
+.lens-swatch { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+.lens-bar-label { color: #aaa; width: 84px; flex-shrink: 0; }
+.lens-bar-track { flex: 1; height: 7px; background: #1a1a2e; border-radius: 2px; overflow: hidden; }
+.lens-bar-fill { display: block; height: 100%; opacity: 0.85; }
+.lens-bar-n { color: #ddd; width: 22px; text-align: right; font-variant-numeric: tabular-nums; }
+
+.lens-line { border-left: 3px solid #4CAF50; background: #1a1a2e; padding: 7px 9px; margin: 6px 0;
+  border-radius: 0 3px 3px 0; cursor: pointer; }
+.lens-line:hover { background: #20203a; }
+.lens-line-title { font-size: 0.78rem; color: #ddd; line-height: 1.35; }
+.lens-line-cards { font-size: 0.7rem; color: #4CAF50; margin-top: 3px; }
+
+.lens-cand { display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 5px 8px; margin: 4px 0; background: #1a1a2e; border-radius: 3px; cursor: pointer; }
+.lens-cand:hover { background: #20203a; }
+.lens-cand-name { font-size: 0.78rem; color: #ddd; }
+.lens-chip { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 6px;
+  border: 1px solid #3a3a5a; border-radius: 2px; color: #888; flex-shrink: 0; }
+.lens-chip-pool { border-color: #4A7BFF; color: #4A7BFF; }
+.lens-chip-bench { border-color: #D4AF4A; color: #D4AF4A; }
+.lens-note { font-size: 0.66rem; color: #666; margin: -2px 0 7px; }
+/* A <select> takes its intrinsic width from the longest option, which overflows the
+ * 420px panel once deck names are in it. flex:1 alone will not shrink it. */
+#deckLensSelect { min-width: 0; }
+/* A verified line the map cannot draw (fewer than two of its cards are in the deck)
+ * still belongs in the list — greyed, not hidden. */
+.lens-line-nodraw { border-left-color: #3a3a5a; }
+.lens-line-nodraw .lens-line-cards { color: #666; font-style: italic; }

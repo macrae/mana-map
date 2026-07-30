@@ -25,16 +25,66 @@ python -m http.server 8000
 | `viz/index.html` | Map shell: toolbar, plot div, detail panel, deck panel, script tags |
 | `viz/css/mana-map.css` | Map + deck-builder styles, flat hex, no custom properties (~310 lines) |
 | `viz/js/mana-map.js` | Explore mode (~1,330 lines). IIFE; exposes shared state as `window.MM` |
+| `viz/js/deck-map.js` | Deck Lens (~480 lines). IIFE; exposes `window.DeckMap`; depends on `MM` |
 | `viz/js/deck-builder.js` | Deck builder (~1,370 lines). IIFE; exposes `window.DeckBuilder`; depends on `MM` |
 | `viz/deck.html` | Dossier shell: masthead, deck picker, panel grid |
 | `viz/css/tokens.css` | The magazine's design tokens in a dark register (~170 lines) |
 | `viz/js/deck-view.js` | The dossier (~340 lines). IIFE; no globals exported, no `MM` dependency |
 
-**Script order matters on the map page**: `mana-map.js` must load before `deck-builder.js` (deck-builder reads `MM.*` at load time). mana-map degrades gracefully if deck-builder is absent (all calls guarded). `deck.html` loads only `deck-view.js` and shares no code with the map.
+**Script order matters on the map page**: `mana-map.js` must load before `deck-map.js` and `deck-builder.js` (both read `MM.*` at load time). mana-map degrades gracefully if either is absent — every call is guarded. `deck.html` loads only `deck-view.js` and shares no code with the map.
+
+## The three map modes
+
+`#modeSelect` switches between them and `MM.setMode` owns the transition. Build and Deck
+Lens share one side panel (`#deckPanel`), so entering either exits the other.
+
+| Mode | Panel | Overlay source |
+|---|---|---|
+| Explore | detail panel | — |
+| Deck Lens | `#deckPanel` + detail panel | `window.DeckMap` |
+| Build Deck | `#deckPanel` (detail hidden) | `window.DeckBuilder` |
+
+**The overlay contract.** Any mode that paints over the base scatter implements exactly
+two methods, and `render()` calls whichever mode is current:
+
+- `getOverlayTraces()` → an array of Plotly traces drawn above the base scatter. Mark them
+  `_isDeckOverlay: true`.
+- `getDimmedIndices()` → a `Set` of row indices to render at 0.08 opacity, or `null` for
+  no dimming.
+
+Row indices are indices into `MM.allData`, which is `projection_2d.json`, which is
+`cards.csv` row order. Both modes also expose `enter()` / `exit()`.
+
+### Deck Lens
+
+Overlays a published deck's 99 on the map: the deck lights up, the other ~34,200 cards
+dim, and the deck's footprint in card space becomes visible — a storm deck is a tight
+blob, a goodstuff pile is scattered. It reads the same tracked artifacts the magazine and
+the dossier read, and computes nothing beyond a name→index lookup and a role histogram.
+
+| Layer | Artifact | Rendering |
+|---|---|---|
+| The 99, one trace per role family | `cards.json` + `card_roles.json` | filled dots, legend doubles as role budget |
+| Commander | `index.json` `commander` | large gold star |
+| Verified lines | `stacks/*.json` (manifest-listed, passing only) | green edges between the cards each scenario names |
+| The Short List | `considering.json` | open blue rings |
+| Sideboard (off by default) | `cards.json` `is_sideboard` | open gold rings |
+
+Three things worth knowing. **A card carries several roles**, so the lens paints it with
+one — `FAMILY_PRIORITY` decides, and `threat` loses every tie because it sits on 19,032 of
+34,322 cards. Cards with no role fall back to the map's supertype for lands only.
+**Bars count copies, dots count distinct cards** — the panel says so out loud rather than
+letting the two numbers disagree in silence. **A verified line naming fewer than two deck
+cards draws no edge** but stays in the list, so the panel's count always agrees with the
+manifest's `verified`.
+
+`tests/test_viz_deck_lens.py` guards the three assumptions the browser cannot check for
+itself: every deck card name resolves in `projection_2d.json`, every role family has a
+colour, and `index.html` loads the script at a cache-bust matching its siblings.
 
 ## Cache busting
 
-Manual `?v=N` query strings, per page: `index.html` on both JS files and `mana-map.css`; `deck.html` on `deck-view.js` and `tokens.css`. **Bump the version on the page you touched** before pushing — Pages/browser caches are aggressive.
+Manual `?v=N` query strings, per page: `index.html` on all three JS files and `mana-map.css`; `deck.html` on `deck-view.js` and `tokens.css`. **Bump the version on the page you touched** before pushing — Pages/browser caches are aggressive. On `index.html` the three script busts must move together; a test asserts it, because a mismatched pair is how `deck-map.js` ends up talking to a stale `mana-map.js`.
 
 For contrast, `manuals/magazine.css` is **content-addressed** (`?v=<sha8>` from the CSS text, in `pilot/design.py`), so a stylesheet change there obligates rebuilding every manual page but can never go stale. That is the pattern to copy if `viz/` ever outgrows manual bumps.
 
@@ -57,7 +107,9 @@ Async data loaders: `getEmbeddings()`, `getSynergyGraph()` — the deck builder 
 ## The deck dossier (`deck.html`)
 
 Renders a deck's **committed pilot artifacts** and nothing else. Slug comes from
-`?deck=<slug>` — the only URL state in the frontend.
+`?deck=<slug>`, the frontend's only URL state — now honoured by **both** pages:
+`index.html?deck=<slug>` enters the Deck Lens with that deck loaded rather than dropping
+the reader on an unfiltered map with a query string they cannot see.
 
 | Panel | Artifact | Tier |
 |---|---|---|
@@ -76,9 +128,10 @@ only `hapatra` has a `build_plan.json` today, so six of seven dossiers show no b
 panel. `tests/test_pilot_deck_manifest.py` asserts the manifest matches the artifacts and
 that every stack it lists is checker-passed.
 
-Each issue's Back Page links to `../viz/deck.html?deck=<slug>`, and the dossier links back
-to the issue, the map, and the newsstand. Before this the two products shared exactly one
-link, one-way.
+The three surfaces now form a cycle. Each issue's Back Page links to
+`../viz/deck.html?deck=<slug>`; the dossier links to the issue, the newsstand, and
+`index.html?deck=<slug>`; the Lens links back to both the issue and the dossier. Before
+the dossier shipped, the two products shared exactly one link, one-way.
 
 ## Explore mode highlights
 
