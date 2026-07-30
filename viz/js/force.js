@@ -189,17 +189,38 @@
     canvas.addEventListener('mouseleave', function () {
       if (hovered) { hovered = null; draw(); renderPanel(); }
     });
+
+    // Track the plot's box. `inset: 0` would size the canvas to its parent, but resize()
+    // sets an explicit inline width/height for devicePixelRatio, which then does NOT
+    // follow the parent. enter() resizes before the side panel opens, so the canvas kept
+    // the full-width size and overhung the panel by ~420px at z-index 10 — swallowing
+    // every click on the deck menu underneath it. The panel looked fine and was inert.
+    if (window.ResizeObserver) {
+      let pending = null;
+      new ResizeObserver(function () {
+        clearTimeout(pending);
+        pending = setTimeout(function () { if (active) resize(); }, 60);
+      }).observe(document.getElementById('plot'));
+    }
   }
 
+  // Only the backing store is set here. The element's SIZE comes from `inset: 0` in CSS
+  // and nothing else.
+  //
+  // Setting canvas.style.width/height instead decoupled the element from its parent: the
+  // side panel opens after enter() has already resized, so the canvas kept the full-width
+  // size, overhung the 420px panel at z-index 10, and silently swallowed every click on
+  // the deck menu underneath. The panel looked perfect and was completely inert. A
+  // ResizeObserver is not a fix for that — RO callbacks are throttled in background tabs
+  // exactly like rAF and CSS transitions, so the overhang can outlive them. CSS geometry
+  // cannot get out of sync; a JS mirror of it always can.
   function resize() {
     if (!canvas) return;
-    const host = document.getElementById('plot');
-    const w = host.clientWidth, h = host.clientHeight;
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    if (!w || !h) return;
     dpr = window.devicePixelRatio || 1;
     canvas.width = Math.round(w * dpr);
     canvas.height = Math.round(h * dpr);
-    canvas.style.width = w + 'px';
-    canvas.style.height = h + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);   // crisp on retina; without this it is soft
     draw();
   }
@@ -467,6 +488,21 @@
 
   function clearTrail() { trail = []; draw(); renderPanel(); }
 
+  // Back to the menu. Without this the walk is a one-way door: the deck/region list only
+  // appears when the graph is empty, and since re-entry restores the graph, the first set
+  // you pick is the only set you can ever pick.
+  function newWalk() {
+    if (sim) sim.stop();
+    nodes = []; links = []; trail = [];
+    byIdx = new Map();
+    hovered = null; pinned = null;
+    truncatedFrom = 0;
+    label = '';
+    if (canvas) { transform = d3.zoomIdentity; draw(); }
+    renderEmptyState();
+    MM.setStatus('Pick a starting point for the walk.');
+  }
+
   // Leaving keeps the graph. Rebuilding a walk you spent minutes growing, just because
   // you looked at the map, is the wrong trade — `enter()` restores it.
   //
@@ -568,6 +604,8 @@
     const h = hovered || pinned;
     let html =
       '<div class="deck-header"><h2>The Walk</h2>' +
+      '<button class="lens-btn lens-btn-inline" onclick="Force.newWalk()" ' +
+        'title="Pick a different deck or region">New walk ↺</button>' +
       '<button class="detail-close" onclick="Force.close()" title="Close">×</button></div>' +
       '<div class="deck-section">' +
         '<div class="lens-title">' + MM.escHtml(label) + '</div>' +
@@ -635,7 +673,7 @@
 
   window.Force = {
     enter, exit, isActive, seedFrom, focusCard,
-    reheat, freeze, clearTrail, tune, close, renderPanel, bbox,
+    reheat, freeze, clearTrail, newWalk, tune, close, renderPanel, bbox,
     walkDeck, walkRegion,
     fit: function () { fitToGraph(true); },
     get nodeCount() { return nodes.length; },

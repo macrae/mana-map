@@ -407,6 +407,19 @@ axes, deliberately.
   current point was after the link strokes, and every node renders as a pac-man wedge.
 - **Node radius divides by `transform.k`,** so a card is the same size on screen at any
   zoom. Otherwise fitting a tight cluster turns every node into a dinner plate.
+- **The canvas must be sized in CSS, with percentages.** A `<canvas>` is a *replaced*
+  element, so an absolutely-positioned one with `width: auto` uses its intrinsic size —
+  the backing-store attribute — and `inset: 0` cannot stretch it. Setting
+  `canvas.style.width` from JS instead decouples it from the parent: `enter()` resizes
+  before the side panel opens, so the canvas kept the full-width size, overhung the 420px
+  panel at `z-index: 10`, and silently swallowed every click on the deck menu. The panel
+  looked perfect and was completely inert. A `ResizeObserver` is **not** a fix — RO
+  callbacks are throttled in background tabs exactly like `rAF` and CSS transitions, so
+  the overhang can outlive them. `width: 100%; height: 100%` follows the parent
+  unconditionally; only the backing store is set from JS.
+- **`New walk ↺` exists because restore made the walk a one-way door.** The deck menu only
+  renders when the graph is empty, and since re-entry restores the graph, the first set you
+  picked was the only set you could ever pick.
 
 ### Feel
 

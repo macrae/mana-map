@@ -540,3 +540,61 @@ def test_walk_survives_a_round_trip_through_explore(page):
     assert r["after"]["trail"] == r["before"]["trail"], "the trail was discarded on exit"
     assert r["after"]["w"] > 400, f"canvas came back at {r['after']['w']}px wide"
     assert r["after"]["ink"] > 0.5, "the graph is not being drawn after re-entry"
+
+
+def test_the_walk_panel_is_actually_on_screen(page):
+    """Rendering the menu is not the same as being able to click it.
+
+    The earlier tests asserted the buttons existed in the DOM and clicked them
+    programmatically — which passes even when the panel is collapsed to 1px and the
+    buttons are laid out past the right edge of the window, unreachable by a real mouse.
+    This asserts geometry and hit-testing instead.
+    """
+    r = page.evaluate("""async () => {
+        document.getElementById('modeSelect').value = 'force';
+        MM.setMode('force');
+        await new Promise(r => setTimeout(r, 2500));
+        const panel = document.getElementById('deckPanel');
+        const btn = document.querySelector('[onclick^="Force.walkDeck"]');
+        const b = btn.getBoundingClientRect();
+        const cx = Math.round(b.left + b.width / 2), cy = Math.round(b.top + b.height / 2);
+        const hit = document.elementFromPoint(cx, cy);
+        return {
+            panelWidth: Math.round(panel.getBoundingClientRect().width),
+            buttonRight: Math.round(b.right),
+            viewportWidth: document.documentElement.clientWidth,
+            reachable: !!hit && (hit === btn || btn.contains(hit)),
+        };
+    }""")
+    assert page.js_errors == []
+    assert r["panelWidth"] > 300, f"the panel is collapsed to {r['panelWidth']}px"
+    assert r["buttonRight"] <= r["viewportWidth"], "the buttons are laid out off-screen"
+    assert r["reachable"], "a real click at the button's centre does not land on it"
+
+
+def test_a_walk_in_progress_can_be_restarted(page):
+    """Restoring the graph on re-entry made the walk a one-way door: the deck menu only
+    appears when the graph is empty, so the first set you picked was the only set you
+    could ever pick. `New walk` is the way back."""
+    r = page.evaluate("""async () => {
+        const setMode = m => { document.getElementById('modeSelect').value = m; MM.setMode(m); };
+        setMode('force');
+        await new Promise(r => setTimeout(r, 2500));
+        await Force.walkDeck('goblin-storm', 'GOBLIN STORM');
+        await new Promise(r => setTimeout(r, 6000));
+        const walking = {nodes: Force.nodeCount,
+                         menu: document.querySelectorAll('[onclick^="Force.walkDeck"]').length,
+                         hasNewWalk: !!document.querySelector('[onclick^="Force.newWalk"]')};
+        document.querySelector('[onclick^="Force.newWalk"]').click();
+        await new Promise(r => setTimeout(r, 2500));
+        const reset = {nodes: Force.nodeCount,
+                       menu: document.querySelectorAll('[onclick^="Force.walkDeck"]').length};
+        await Force.walkDeck('heliod', 'HELIOD');
+        await new Promise(r => setTimeout(r, 6000));
+        return {walking, reset, switched: Force.nodeCount};
+    }""")
+    assert page.js_errors == []
+    assert r["walking"]["nodes"] > 50 and r["walking"]["menu"] == 0
+    assert r["walking"]["hasNewWalk"], "no way back to the menu from a walk in progress"
+    assert r["reset"]["nodes"] == 0 and r["reset"]["menu"] == 7, "New walk did not restore the menu"
+    assert r["switched"] > 50 and r["switched"] != r["walking"]["nodes"], "could not pick a different set"

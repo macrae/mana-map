@@ -79,6 +79,13 @@ def page(browser, viz_server):
     page.on("pageerror", lambda e: errors.append(str(e)))
     page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
     page.goto(f"{viz_server}/viz/index.html")
+    # Kill CSS transitions. Playwright pages run backgrounded, and Chrome throttles
+    # transitions there — the side panels' `transition: width 0.25s` never advances, so
+    # `.deck-panel.open` sits at 1px forever and every width assertion is meaningless.
+    # Verified: with transitions off the same panel measures 420px. This blinded the
+    # suite to a real bug (the panel being unreachable), so it is not a nicety.
+    page.add_style_tag(content="*, *::before, *::after {"
+                               " transition: none !important; animation: none !important; }")
     page.wait_for_function("() => window.MM && MM.allData && MM.allData.length > 0",
                            timeout=BOOT_TIMEOUT_MS)
     page.js_errors = errors        # the whole point: a ReferenceError must fail a test

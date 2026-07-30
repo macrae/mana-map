@@ -453,7 +453,14 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
  * A canvas layered over the plot area. Plotly's SVG is hidden rather than torn
  * down, so leaving the mode is instant and the map is exactly where you left it.
  */
-.force-canvas { position: absolute; inset: 0; z-index: 10; display: block; cursor: grab; }
+/* `width/height: 100%` is required, not decorative. A <canvas> is a REPLACED element, so
+ * with `width: auto` an absolutely-positioned canvas uses its intrinsic size — the
+ * backing-store attribute — and `inset: 0` cannot stretch it. Left to itself it grew to
+ * 2400px (1200 CSS px x devicePixelRatio 2) over a 1020px plot and covered the side
+ * panel, swallowing every click on it. Percentages follow the parent; JS mirrors of the
+ * parent's size do not, and neither does inset on a replaced element. */
+.force-canvas { position: absolute; inset: 0; width: 100%; height: 100%;
+  z-index: 10; display: block; cursor: grab; }
 .force-canvas:active { cursor: grabbing; }
 #plot.force-mode > .js-plotly-plot,
 #plot.force-mode > .plot-container,
@@ -465,3 +472,5 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
   color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
 .force-slider label span { color: #c4a747; font-variant-numeric: tabular-nums; }
 .force-slider input[type=range] { width: 100%; accent-color: #c4a747; }
+/* Inline variant for the panel header — the walk's "New walk" sits beside the title. */
+.lens-btn-inline { width: auto; margin: 0 8px 0 auto; padding: 4px 10px; font-size: 0.72rem; }

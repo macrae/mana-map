@@ -1,12 +1,12 @@
 # Testing
 
 ```bash
-.venv/bin/python -m pytest              # everything (998, ~2.5 min)
+.venv/bin/python -m pytest              # everything (1,000, ~2.5 min)
 .venv/bin/python -m pytest -m "not browser"   # fast suite (978, ~68 s)
-.venv/bin/python -m pytest -m browser         # the 20 browser tests (~110 s)
+.venv/bin/python -m pytest -m browser         # the 22 browser tests (~120 s)
 ```
 
-998 tests in `tests/`: 377 card-pipeline + 601 pilot-subsystem + **20 browser**.
+1,000 tests in `tests/`: 377 card-pipeline + 601 pilot-subsystem + **22 browser**.
 
 ## Source assertions do not catch regressions
 
@@ -31,7 +31,7 @@ source tests pass and the behavioural tests fail with
 against a renderer that draws nothing, it is a source assertion — fine, but it is not
 coverage.
 
-### Browser tests (20) — `tests/test_viz_behaviour.py`
+### Browser tests (22) — `tests/test_viz_behaviour.py`
 
 Fixtures in `tests/conftest_viz.py` (deliberately not `conftest.py`, so the other 978 never
 import playwright): an ephemeral `http.server` rooted at the repo — `viz/` and `data/` must
@@ -40,6 +40,19 @@ be siblings, the same constraint GitHub Pages imposes — plus a booted page tha
 
 Every test asserts `page.js_errors == []`. That list collects `pageerror` and console
 errors, and it is what catches the class of bug above.
+
+**Transitions are disabled in the page fixture, and that is not a nicety.** Playwright
+pages run backgrounded and Chrome throttles CSS transitions there, so the side panels'
+`transition: width 0.25s` never advances and `.deck-panel.open` measures 1px forever.
+That blinded the suite to a real bug — the walk's deck menu rendering into a collapsed,
+unclickable panel — because the tests only ever asserted that buttons *existed in the DOM*
+and clicked them programmatically. `test_the_walk_panel_is_actually_on_screen` now asserts
+geometry and hit-testing instead: panel width, buttons inside the viewport, and
+`elementFromPoint` at a button's centre actually landing on that button.
+
+The same throttling applies to `requestAnimationFrame` and `ResizeObserver`. Anything that
+depends on either to stay correct cannot be verified here — and, more importantly, cannot
+be relied on in a background tab at all.
 
 Covers: boot, plot geometry, drill render + return, the accordion, browse mode holding a
 whole selection, browse cycling, camera preservation across filter and search, camera
