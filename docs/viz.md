@@ -376,6 +376,12 @@ behaviour and the hit-test against real data before any of that goes under the m
 every existing way of picking cards feeds it: box-select, Find Similar, Find Synergies, a
 region, a deck.
 
+With **nothing** selected it shows an empty state offering all seven decks and the largest
+L1 regions, one click each. That routing lives inside `renderPanel` rather than at each
+call site: an empty graph must never render as a `0 CARDS / 0 LINKS` scoreboard, and
+putting the check at the one place that draws the panel means a new caller cannot
+reintroduce the dead end.
+
 ### What the picture claims
 
 Link length is the model's own 128-d cosine, not the PaCMAP projection, so two adjacent

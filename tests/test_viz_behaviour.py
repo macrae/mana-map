@@ -442,3 +442,42 @@ def test_leaving_the_walk_restores_the_map(page):
     assert page.js_errors == []
     assert not r["active"] and not r["forceMode"] and r["canvasHidden"]
     assert r["plotTraces"] >= 6, "the Plotly map did not come back"
+
+
+def test_walk_with_nothing_selected_offers_somewhere_to_go(page):
+    """An empty graph must never render as a "0 CARDS / 0 LINKS" scoreboard.
+
+    Routed inside `renderPanel` rather than at each call site, so a future caller cannot
+    reintroduce the dead end — which is how it got there the first time.
+    """
+    r = page.evaluate("""async () => {
+        document.getElementById('modeSelect').value = 'force';
+        MM.setMode('force');
+        await new Promise(r => setTimeout(r, 2500));
+        const el = document.getElementById('deckInner');
+        return {
+            decks: el.querySelectorAll('[onclick^="Force.walkDeck"]').length,
+            regions: el.querySelectorAll('[onclick^="Force.walkRegion"]').length,
+            saysZeroCards: (el.innerText || '').indexOf('0 CARDS') !== -1,
+        };
+    }""")
+    assert page.js_errors == []
+    assert r["decks"] == 7, "every published deck should be one click from a walk"
+    assert r["regions"] > 0, "regions come from the HDBSCAN membership"
+    assert not r["saysZeroCards"], "an empty graph rendered the dead-end scoreboard"
+
+
+def test_walking_a_deck_from_the_empty_state(page):
+    r = page.evaluate("""async () => {
+        document.getElementById('modeSelect').value = 'force';
+        MM.setMode('force');
+        await new Promise(r => setTimeout(r, 2500));
+        document.querySelector('[onclick^="Force.walkDeck"]').click();
+        await new Promise(r => setTimeout(r, 9000));
+        Force.freeze();
+        const b = Force.bbox();
+        return {nodes: Force.nodeCount, links: Force.linkCount, w: b.w, h: b.h};
+    }""")
+    assert page.js_errors == []
+    assert r["nodes"] > 50 and r["links"] > r["nodes"]
+    assert r["w"] > 50 and r["h"] > 50, "the deck's graph collapsed"

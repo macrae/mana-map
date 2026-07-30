@@ -351,8 +351,15 @@
     const src = rowIndices && rowIndices.length ? rowIndices : seedFrom();
     const unique = Array.from(new Set(src)).filter(i => MM.allData[i]);
     if (unique.length < 2) {
-      MM.setStatus('Select some cards first — box-select, Find Similar, or a region label — then switch to Walk.');
-      active = true; ensureCanvas(); resize(); renderPanel();
+      // Nothing selected. An error message here would be a dead end — offer somewhere to
+      // go instead. A walk has to start from a set, so hand over the sets that exist.
+      active = true;
+      ensureCanvas();
+      resize();
+      nodes = []; links = []; trail = [];
+      draw();
+      await renderEmptyState();
+      MM.setStatus('Pick a starting point for the walk.');
       return;
     }
 
@@ -460,9 +467,84 @@
 
   // ── Panel ───────────────────────────────────────────────────────────────
 
+  // Somewhere to start. Decks come from the tracked manifest; regions from the HDBSCAN
+  // membership the clustering now keeps. Both are one click.
+  async function renderEmptyState() {
+    const el = document.getElementById('deckInner');
+    if (!el) return;
+    document.getElementById('deckPanel').classList.add('open');
+
+    let decks = [];
+    try {
+      const doc = await (await fetch('../data/decks/index.json')).json();
+      decks = doc.decks || [];
+    } catch (e) { /* the walk works without them */ }
+
+    let regions = [];
+    try {
+      const rd = await MM.getRegionData();
+      if (rd && rd.membership) {
+        regions = rd.regions
+          .filter(r => r.level === 1 && r.count >= 60 && r.count <= MAX_NODES)
+          .sort((a, b) => b.count - a.count)
+          .slice(0, 8);
+      }
+    } catch (e) { /* likewise */ }
+
+    el.innerHTML =
+      '<div class="deck-header"><h2>The Walk</h2>' +
+      '<button class="detail-close" onclick="Force.close()" title="Close">×</button></div>' +
+      '<div class="deck-section"><div class="deck-empty">' +
+        'A walk starts from a set of cards. Pick one below — or box-select on the map, ' +
+        'or use Find Similar, then come back.' +
+      '</div></div>' +
+      (decks.length ? '<div class="deck-section">' +
+        '<div class="deck-section-title">Walk a deck</div>' +
+        decks.map(d => '<div class="lens-cand" onclick="Force.walkDeck(' +
+            JSON.stringify(d.slug).replace(/"/g, '&quot;') + ',' +
+            JSON.stringify(d.deck_name).replace(/"/g, '&quot;') + ')">' +
+          '<span class="lens-cand-name">' + MM.escHtml(d.deck_name) + '</span>' +
+          '<span class="lens-chip">Vol. ' + String(d.volume).padStart(3, '0') + '</span>' +
+        '</div>').join('') + '</div>' : '') +
+      (regions.length ? '<div class="deck-section">' +
+        '<div class="deck-section-title">Walk a region</div>' +
+        regions.map(r => '<div class="lens-cand" onclick="Force.walkRegion(' +
+            JSON.stringify(r.id).replace(/"/g, '&quot;') + ')">' +
+          '<span class="lens-cand-name">' + MM.escHtml(r.short || r.label) + '</span>' +
+          '<span class="lens-chip">' + r.count + '</span>' +
+        '</div>').join('') + '</div>' : '');
+  }
+
+  async function walkDeck(slug, name) {
+    try {
+      const doc = await (await fetch('../data/decks/' + slug + '/cards.json')).json();
+      const names = new Set(doc.cards.filter(c => !c.is_sideboard).map(c => c.name));
+      const rows = [];
+      MM.allData.forEach((d, i) => { if (names.has(d.n)) rows.push(i); });
+      enter(rows, name || slug);
+    } catch (e) { MM.setStatus('Could not load ' + slug); }
+  }
+
+  async function walkRegion(regionId) {
+    const rd = await MM.getRegionData();
+    if (!rd || !rd.membership) return;
+    const m = /^l(\d)_(\d+)$/.exec(regionId);
+    if (!m) return;
+    const labels = rd.membership['l' + m[1]];
+    const cid = parseInt(m[2], 10);
+    const rows = [];
+    for (let i = 0; i < labels.length; i++) if (labels[i] === cid) rows.push(i);
+    const region = rd.regions.find(r => r.id === regionId);
+    enter(rows, region ? region.label : regionId);
+  }
+
   function renderPanel() {
     const el = document.getElementById('deckInner');
     if (!el || !active) return;
+    // A "0 CARDS / 0 LINKS" panel is a dead end. Whoever calls this with an empty graph
+    // wants the empty state, not an empty scoreboard — routing it here rather than at
+    // each call site means a new caller cannot reintroduce the dead end.
+    if (!nodes.length) { renderEmptyState(); return; }
     document.getElementById('deckPanel').classList.add('open');
 
     const h = hovered || pinned;
@@ -536,6 +618,7 @@
   window.Force = {
     enter, exit, isActive, seedFrom, focusCard,
     reheat, freeze, clearTrail, tune, close, renderPanel, bbox,
+    walkDeck, walkRegion,
     fit: function () { fitToGraph(true); },
     get nodeCount() { return nodes.length; },
     get linkCount() { return links.length; },
