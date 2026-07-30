@@ -18,7 +18,10 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest"]
+# playwright drives the behavioural viz tests (tests/test_viz_behaviour.py). It needs a
+# one-time browser download: `.venv/bin/python -m playwright install chromium`. Those
+# tests skip cleanly without it, so the suite still runs on a fresh clone.
+dev = ["pytest", "playwright"]
 
 [project.scripts]
 manamap = "manamap.cli:main"
@@ -29,3 +32,10 @@ where = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
+markers = [
+    # Browser tests. They boot a real Chromium against a real server and assert on what
+    # rendered — the only tests here that can catch a viz regression. Excluded from the
+    # default run because they are ~100x slower than the rest; run them with
+    # `pytest -m browser`, or the fast suite with `pytest -m "not browser"`.
+    "browser: drives a real browser via playwright (slow; needs `playwright install chromium`)",
+]

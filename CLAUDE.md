@@ -30,8 +30,9 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #   validate_issue.py / agent_cache.py / artist_credits.py
                       #   validate_considering.py / validate_tutor_guide.py
                       #   impact.py / card_refs.py  incremental regeneration
-tests/                # pytest suite (978 tests: 377 card-pipeline + 601 pilot),
-                      # conftest markers: requires_data/rules/deck/strategy/roles
+tests/                # pytest suite (991: 978 fast + 13 browser). Markers in
+                      # conftest.py: requires_data/rules/deck/strategy/roles;
+                      # `-m browser` needs playwright + chromium
 data/                 # artifacts; mostly gitignored, viz-served files tracked
 viz/                  # static frontend: index.html (the map: explore / deck lens /
                       # build, plus drill — a re-layout from the embeddings) +
@@ -60,7 +61,8 @@ manamap synergy && manamap power-creep && manamap cluster-regions && manamap car
                               # fast analysis-only refresh (no retrain)
 manamap pilot <cmd>           # build + publish subsystem (33 subcommands) — see docs/pilot.md
 
-.venv/bin/python -m pytest    # 978 tests; data-dependent ones skip if artifacts missing
+.venv/bin/python -m pytest    # 991; data-dependent ones skip if artifacts missing
+.venv/bin/python -m pytest -m "not browser"   # 978, skips the browser suite (~68s)
 
 python -m http.server 8000    # serve viz FROM REPO ROOT
 # http://localhost:8000/viz/index.html          the card map
@@ -78,6 +80,7 @@ python -m http.server 8000    # serve viz FROM REPO ROOT
 - **Synergy ≠ Similar**: synergy is complementary (blink→ETB, rule-based); Find Similar is embedding neighbors. Different algorithms.
 - **Plotly**: `Plotly.relayout` fires `plotly_relayout` — guard against event loops. `Plotly.react` replaces layout wholesale, so `render()` must write the live axis range back or it silently resets the camera; `Plotly.restyle` preserves it and is the only fast path (~32ms on a 1,200-point `scattergl`).
 - **Data cache-busting**: `MM.DATA` URLs carry `?v=DATA_VERSION`. Bump it when a data artifact's **schema** changes (new key, renamed field), not for content refreshes. Adding `membership` to `regions_*.json` broke drill-by-region for every browser that had already cached the old shape — politely, which is what made it expensive to find.
+- **Frontend source-assertion tests catch nothing**: `test_viz_{camera,drill,deck_lens,viewer}.py` grep JS as text. A `ReferenceError` that killed drill mode outright passed all 13 drill tests. Real coverage lives in `tests/test_viz_behaviour.py` (playwright, `-m browser`) — add there when you change rendering or interaction. See `docs/testing.md`.
 - **Two coordinate systems**: drill mode re-lays-out a subset from the embeddings, so a drilled position is **local** and is not the world map's. Anything anchored to world coords (region labels, search highlight, selection ring) must be suppressed or re-anchored via `Drill.localPosition()` while drilling. See `docs/viz.md`.
 - Paths in `config.py` are `__file__`-anchored (CWD-independent); override with `MANAMAP_DATA_DIR` / `MANAMAP_VIZ_DIR`.
 - Color+Type model hitting near-zero triplet loss by epoch ~3 is expected, not a bug.

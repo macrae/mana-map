@@ -1,10 +1,57 @@
 # Testing
 
 ```bash
-.venv/bin/python -m pytest          # full suite (discovery via testpaths = tests/)
+.venv/bin/python -m pytest              # everything (991, ~2 min)
+.venv/bin/python -m pytest -m "not browser"   # fast suite (978, ~68 s)
+.venv/bin/python -m pytest -m browser         # the 13 browser tests (~60 s)
 ```
 
-978 tests in `tests/`: 377 card-pipeline + 601 pilot-subsystem. Three categories:
+991 tests in `tests/`: 377 card-pipeline + 601 pilot-subsystem + **13 browser**.
+
+## Source assertions do not catch regressions
+
+The frontend has two kinds of test and only one of them is real.
+
+`test_viz_{camera,drill,deck_lens,viewer}.py` read JS as **text** and assert that certain
+strings appear in certain files. They are cheap, they document intent well, and they are
+genuinely useful for invariants a human keeps breaking (cache-bust parity, "this function
+must not be called twice"). But they cannot see behaviour.
+
+On 2026-07-30 a perf commit deleted a variable declaration and left the property that
+referenced it. `drill.js:getOverlayTraces()` threw `ReferenceError` on every render while
+drilling; drill mode rendered nothing at all. **All 13 tests in `test_viz_drill.py`
+passed** — every string they looked for was still in the file.
+
+`test_viz_behaviour.py` exists because of that. It boots a real Chromium against a real
+server and asserts on what rendered. Verified both ways: against the broken revision the
+source tests pass and the behavioural tests fail with
+`assert ['text is not defined'] == []`.
+
+**When adding a frontend test, ask which kind you are writing.** If it would still pass
+against a renderer that draws nothing, it is a source assertion — fine, but it is not
+coverage.
+
+### Browser tests (13) — `tests/test_viz_behaviour.py`
+
+Fixtures in `tests/conftest_viz.py` (deliberately not `conftest.py`, so the other 978 never
+import playwright): an ephemeral `http.server` rooted at the repo — `viz/` and `data/` must
+be siblings, the same constraint GitHub Pages imposes — plus a booted page that waits on
+`MM.allData` rather than a timer, because the projection is 12.9 MB.
+
+Every test asserts `page.js_errors == []`. That list collects `pageerror` and console
+errors, and it is what catches the class of bug above.
+
+Covers: boot, plot geometry, drill render + return, the accordion, browse mode holding a
+whole selection, browse cycling, camera preservation across filter and search, camera
+*refit* on a map switch, Deck Lens, mode exclusivity, and two perf ceilings (render budget,
+and that a render is exactly one `Plotly.react`).
+
+Setup, one time: `.venv/bin/python -m playwright install chromium` (~94 MB). Without it the
+whole file skips cleanly, so a fresh clone still runs the other 978.
+
+## The rest of the suite
+
+377 card-pipeline + 601 pilot-subsystem. Three categories:
 
 **Card-pipeline unit tests (281) — no data files needed, run anywhere:**
 

@@ -323,7 +323,6 @@
       name: 'Local layout (' + n + ')',
       x: xs,
       y: ys,
-      text: text,
       customdata: indices.slice(),
       hoverinfo: 'none',
       marker: { size: 6, opacity: 0.95, color: colors, line: { color: '#0d0d1a', width: 0.5 } },
