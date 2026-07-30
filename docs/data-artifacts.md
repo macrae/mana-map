@@ -27,8 +27,12 @@ Everything lives in `data/`. Most files are gitignored (regenerable via `manamap
 | `embeddings_ability.bin` | export (9) | ~17MB | **tracked** | viz (Abilities map similarity) |
 | `synergy_graph.json` | synergy (10) | ~8–27MB | **tracked** | viz (Find Synergies, deck builder) |
 | `obsolescence_index.json` | power-creep (11) | ~5–8MB | **tracked** | viz (obsolescence panels) |
-| `regions_default.json` | cluster-regions (12) | ~27KB | **tracked** | viz (region labels) |
-| `regions_ability.json` | cluster-regions (12) | ~16KB | **tracked** | viz (region labels) |
+| `regions_default.json` | cluster-regions (12) | ~212KB, `{meta, regions, membership}`; 15 L0 + 110 L1, each with `cx/cy/span/w/h/count/top_tags` | **tracked** | viz (region labels, drill-by-region) |
+| `regions_ability.json` | cluster-regions (12) | ~195KB, same shape; 12 L0 + 73 L1 | **tracked** | viz (region labels, drill-by-region) |
+
+`membership` is two positional arrays (`l0`, `l1`), one entry per card in `cards.csv` row order, `-1` for noise — so it inherits the index-alignment invariant and `membership.l0[i]` describes `cards.csv[i]`. Cluster id *n* at level *L* is the region with `id == "lL_n"`. This is the only thing in the repo that can answer *which region is this card in*; before it existed the viz could draw a region's name but never its members. **Noise is a real answer, not a gap**: 29% of cards on the default map belong to no L0 region, and they are left at `-1` rather than snapped to a nearest centroid they were never clustered into.
+
+`w` and `h` are the bounding box beside `span` (which stays `max(w, h)` and still drives label culling). Collapsing them discarded aspect ratio, the one signal distinguishing a filament from a blob — a 20×1 streak and a 20×20 cloud serialised identically. With both axes kept, the map's roads are measurable: `White Enchantments — Auras — ETB` is 209 cards at 1.6 × 0.1, a 16:1 streak.
 | `card_roles.json` | card-roles (13) | ~1.9MB, `{roles, meta}`; 30,563 of 34,322 cards classified (31,622 Commander-legal), **53 roles in 19 families**, coverage 89.5% / 73.2% specific | **tracked** | `pilot/build_deck.py`, `pilot/bracket.py` (tutor density), `deck-analyst`, **and `viz/js/deck-map.js`** — the Deck Lens colours the 99 by role family |
 
 N = card count, ~34,300 as of July 2026; grows as Scryfall adds sets.

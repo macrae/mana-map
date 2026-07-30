@@ -1,10 +1,12 @@
 """Unit tests for cluster_regions.py naming and utility functions."""
 
 import json
+from collections import Counter
 
 import numpy as np
 import pytest
 
+from manamap.config import REGIONS_ABILITY_PATH, REGIONS_DEFAULT_PATH
 from manamap.analysis.cluster_regions import (
     assign_parents,
     compute_centroid,
@@ -184,12 +186,33 @@ class TestGeometry:
     def test_span_width_dominant(self):
         xs = np.array([0.0, 20.0, 10.0])
         ys = np.array([0.0, 5.0, 2.0])
-        assert compute_span(xs, ys) == pytest.approx(20.0)
+        span, width, height = compute_span(xs, ys)
+        assert span == pytest.approx(20.0)
+        assert width == pytest.approx(20.0)
+        assert height == pytest.approx(5.0)
 
     def test_span_height_dominant(self):
         xs = np.array([0.0, 3.0, 1.0])
         ys = np.array([-10.0, 10.0, 0.0])
-        assert compute_span(xs, ys) == pytest.approx(20.0)
+        span, width, height = compute_span(xs, ys)
+        assert span == pytest.approx(20.0)
+        assert width == pytest.approx(3.0)
+        assert height == pytest.approx(20.0)
+
+    def test_span_keeps_both_axes_so_a_filament_is_distinguishable(self):
+        """A 20x1 streak and a 20x20 cloud used to serialise identically.
+
+        `span` is max(w, h) and drives the viz's label culling, so it stays —
+        but collapsing to it discarded the aspect ratio, which is the only
+        thing in the artifact that could tell a road from a region.
+        """
+        streak_span, streak_w, streak_h = compute_span(
+            np.array([0.0, 20.0]), np.array([0.0, 1.0]))
+        cloud_span, cloud_w, cloud_h = compute_span(
+            np.array([0.0, 20.0]), np.array([0.0, 20.0]))
+        assert streak_span == cloud_span == pytest.approx(20.0)
+        assert streak_h / streak_w < 0.1
+        assert cloud_h / cloud_w == pytest.approx(1.0)
 
 
 # ── Parent assignment ───────────────────────────────────────────────────
@@ -264,3 +287,58 @@ class TestOutputFormat:
         assert isinstance(region["short"], str)
         assert len(region["short"]) > 0
         assert len(region["short"]) <= len(region["label"])
+
+
+# ── Membership (the tracked artifacts) ──────────────────────────────────
+
+
+REGION_PATHS = [REGIONS_DEFAULT_PATH, REGIONS_ABILITY_PATH]
+
+
+@pytest.mark.parametrize("path", REGION_PATHS, ids=lambda p: p.stem)
+class TestMembership:
+    """The per-card region assignment, which used to be computed and discarded.
+
+    Without it nothing in the repo could answer "which region is this card in" —
+    the viz could draw a region's name but never its members. These arrays are
+    positional over cards.csv row order, so they inherit the index-alignment
+    invariant: `membership.l0[i]` describes `cards.csv[i]`.
+    """
+
+    def _load(self, path):
+        if not path.exists():
+            pytest.skip(f"{path.name} not generated (run `manamap cluster-regions`)")
+        return json.loads(path.read_text(encoding="utf-8"))
+
+    def test_membership_covers_every_card(self, path):
+        doc = self._load(path)
+        n = doc["meta"]["card_count"]
+        assert len(doc["membership"]["l0"]) == n
+        assert len(doc["membership"]["l1"]) == n
+
+    def test_every_label_indexes_a_real_region(self, path):
+        doc = self._load(path)
+        ids = {r["id"] for r in doc["regions"]}
+        for level in (0, 1):
+            for cid in set(doc["membership"][f"l{level}"]):
+                if cid == -1:
+                    continue          # noise is a real answer, not a gap
+                assert f"l{level}_{cid}" in ids
+
+    def test_membership_counts_match_the_stored_counts(self, path):
+        """The two halves of the artifact must agree, or a drill lights up the
+        wrong number of cards from the same file that labelled the region."""
+        doc = self._load(path)
+        by_id = {r["id"]: r for r in doc["regions"]}
+        for level in (0, 1):
+            observed = Counter(doc["membership"][f"l{level}"])
+            for cid, seen in observed.items():
+                if cid == -1:
+                    continue
+                assert by_id[f"l{level}_{cid}"]["count"] == seen
+
+    def test_regions_record_both_axes(self, path):
+        doc = self._load(path)
+        for region in doc["regions"]:
+            assert "w" in region and "h" in region
+            assert region["span"] == pytest.approx(max(region["w"], region["h"]), abs=0.11)

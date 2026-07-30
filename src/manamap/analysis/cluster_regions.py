@@ -242,10 +242,17 @@ def compute_centroid(xs, ys):
 
 
 def compute_span(xs, ys):
-    """Compute the span (max of width, height) of a bounding box."""
+    """Bounding-box width, height, and the max of the two.
+
+    `span` alone drives the viz's label culling and is what callers usually want.
+    Width and height are returned beside it because collapsing them threw away the
+    one thing that distinguishes a filament from a blob: a 20x1 streak and a 20x20
+    cloud used to serialise identically, so nothing downstream could tell a road
+    from a region.
+    """
     width = float(np.max(xs) - np.min(xs))
     height = float(np.max(ys) - np.min(ys))
-    return max(width, height)
+    return max(width, height), width, height
 
 
 def assign_parents(l0_regions, l1_regions):
@@ -332,7 +339,7 @@ def cluster_map(projection_data, cards_df, map_type, output_path):
         cluster_xs = xs[mask]
         cluster_ys = ys[mask]
         cx, cy = compute_centroid(cluster_xs, cluster_ys)
-        span = compute_span(cluster_xs, cluster_ys)
+        span, width, height = compute_span(cluster_xs, cluster_ys)
         count = int(mask.sum())
 
         # Gather metadata for naming
@@ -363,6 +370,8 @@ def cluster_map(projection_data, cards_df, map_type, output_path):
             "cx": round(cx, 2),
             "cy": round(cy, 2),
             "span": round(span, 1),
+            "w": round(width, 1),
+            "h": round(height, 1),
             "count": count,
             "top_tags": top_tags,
         })
@@ -378,7 +387,7 @@ def cluster_map(projection_data, cards_df, map_type, output_path):
         cluster_xs = xs[mask]
         cluster_ys = ys[mask]
         cx, cy = compute_centroid(cluster_xs, cluster_ys)
-        span = compute_span(cluster_xs, cluster_ys)
+        span, width, height = compute_span(cluster_xs, cluster_ys)
         count = int(mask.sum())
 
         indices = np.where(mask)[0]
@@ -407,6 +416,8 @@ def cluster_map(projection_data, cards_df, map_type, output_path):
             "cx": round(cx, 2),
             "cy": round(cy, 2),
             "span": round(span, 1),
+            "w": round(width, 1),
+            "h": round(height, 1),
             "count": count,
             "top_tags": top_tags,
         }
@@ -424,7 +435,18 @@ def cluster_map(projection_data, cards_df, map_type, output_path):
     _deduplicate_labels(l0_regions, max_suffixes=2)
     _deduplicate_labels(l1_regions, max_suffixes=3)
 
-    # Build output
+    # Build output.
+    #
+    # `membership` is the pair of HDBSCAN label arrays, one entry per card in
+    # cards.csv row order, -1 for noise. They were being computed and thrown
+    # away, which left nothing anywhere in the repo able to answer "which region
+    # is this card in" — the viz could draw a region's name but not its members.
+    # ~34K small ints; the file goes from ~25 KB to ~100 KB and stays tracked.
+    #
+    # Cluster ids index the regions by `id`: label 3 at L0 is the region with
+    # id "l0_3". Noise is a real answer, not a gap — 29% of cards belong to no
+    # L0 region at all, and the honest thing is to say so rather than snap them
+    # to a nearest centroid they were never clustered into.
     output = {
         "meta": {
             "map": map_type,
@@ -433,6 +455,10 @@ def cluster_map(projection_data, cards_df, map_type, output_path):
             "l1_count": n_l1,
         },
         "regions": regions,
+        "membership": {
+            "l0": [int(v) for v in labels_l0],
+            "l1": [int(v) for v in labels_l1],
+        },
     }
 
     with open(output_path, "w") as f:

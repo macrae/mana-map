@@ -149,4 +149,8 @@ HDBSCAN names geographic-style regions on both 2D maps at two zoom levels:
 
 Naming — Color+Type map: dominant color (>= 40%) + type (>= 30%), guild names for 2-color pairs (>= 50%), fallback to top tag. Abilities map: TF-IDF-like scoring (cluster tag freq / global freq), top 1–2 overrepresented tags, minimum presence threshold `REGION_MIN_TAG_PRESENCE=0.10`. Label dedup: tag suffixes (max 2 for L0, 3 for L1), then spatial direction (N/S/E/W).
 
-**Index-alignment invariant**: `projection[i]` corresponds exactly to `cards.csv[i]` (maintained through embed → reduce). Tags are looked up by direct index, never by name (duplicate card names exist).
+**L0 and L1 are two independent flat clusterings, not a tree.** L1 is a separate HDBSCAN run over the same 2D coordinates, not a subdivision of L0, and `parent` is assigned by nearest L0 centroid with **no containment test** — an L1 region can be parented to an L0 region it does not overlap. Any UI that presents them as a hierarchy is claiming more than the data supports.
+
+**Membership is stored, and noise is a real answer.** `regions_*.json` carries `membership.l0` / `membership.l1`: positional arrays over `cards.csv` row order, `-1` for noise. 29% of cards on the default map are L0 noise and belong to no region at all — they stay `-1` rather than being snapped to a nearest centroid they were never clustered into. Regions also record `w`/`h` beside `span`, because `span = max(w, h)` alone cannot distinguish a filament from a blob.
+
+**Index-alignment invariant**: `projection[i]` corresponds exactly to `cards.csv[i]` (maintained through embed → reduce), and `membership.l0[i]` describes the same card. Tags are looked up by direct index, never by name (duplicate card names exist).
