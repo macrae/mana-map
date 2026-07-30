@@ -209,10 +209,12 @@ def test_sisay_reproduces_the_figures_derived_by_hand():
     assert counts["legendary_lands"] == 0          # the ladder's empty bottom rung
     assert counts["nonlegendary"] - counts["lands"] == 26   # outside the tutor's reach
     assert facts["synergy"]["intra_deck_edges"] == 0
-    assert facts["roles"]["no_role"] == [
-        "Dispel", "Fierce Guardianship", "Negate", "Silence", "Swan Song",
-        "Teferi, Time Raveler",
-    ]
+    # Was six. Dispel, Fierce Guardianship, Negate and Swan Song all say
+    # "counter target NONCREATURE spell" and the `counterspell` pattern once
+    # demanded the literal "counter target spell", so half of Sisay's
+    # interaction read as blank. What remains is genuinely unnamed: Silence is
+    # a one-turn Time Stop and Teferi is a static rule change.
+    assert facts["roles"]["no_role"] == ["Silence", "Teferi, Time Raveler"]
     verdicts = {r["name"]: r["verdict"] for r in facts["mana"]["restricted_mana"]}
     assert verdicts["Delighted Halfling"] == "spells_only"
     assert verdicts["Unclaimed Territory"] == "spells_only"

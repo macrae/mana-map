@@ -38,14 +38,14 @@
   // one. Order matters: threat:body sits on 19,032 of 34,322 cards, so it must lose every
   // tie or the map turns into one colour.
   const FAMILY_PRIORITY = [
-    'wincon', 'tutor', 'counterspell', 'stax', 'hate', 'removal', 'ramp', 'draw',
-    'recursion', 'protection', 'sac-outlet', 'payoff', 'land', 'value', 'buff',
+    'wincon', 'doubler', 'tutor', 'counterspell', 'stax', 'hate', 'removal', 'ramp',
+    'draw', 'recursion', 'protection', 'sac-outlet', 'payoff', 'land', 'value', 'buff',
     'utility', 'sac-cost', 'threat',
   ];
   const FAMILY_COLOR = {
-    wincon: '#FFD700', tutor: '#E879F9', counterspell: '#38BDF8', stax: '#94A3B8',
-    hate: '#CBD5E1', removal: '#EF4444', ramp: '#22C55E', draw: '#3B82F6',
-    recursion: '#A78BFA', protection: '#FDE68A', 'sac-outlet': '#FB923C',
+    wincon: '#FFD700', doubler: '#22D3EE', tutor: '#E879F9', counterspell: '#38BDF8',
+    stax: '#94A3B8', hate: '#CBD5E1', removal: '#EF4444', ramp: '#22C55E',
+    draw: '#3B82F6', recursion: '#A78BFA', protection: '#FDE68A', 'sac-outlet': '#FB923C',
     payoff: '#EC4899', land: '#A16207', value: '#14B8A6', buff: '#84CC16',
     utility: '#64748B', 'sac-cost': '#78716C', threat: '#F59E0B', unclassified: '#6B7280',
   };

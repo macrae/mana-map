@@ -29,7 +29,7 @@ Everything lives in `data/`. Most files are gitignored (regenerable via `manamap
 | `obsolescence_index.json` | power-creep (11) | ~5–8MB | **tracked** | viz (obsolescence panels) |
 | `regions_default.json` | cluster-regions (12) | ~27KB | **tracked** | viz (region labels) |
 | `regions_ability.json` | cluster-regions (12) | ~16KB | **tracked** | viz (region labels) |
-| `card_roles.json` | card-roles (13) | ~1.8MB, `{roles, meta}`; 27,344 of 34,322 cards classified (31,622 Commander-legal), **43 roles**, coverage 86.5% / 68.1% specific | **tracked** | `pilot/build_deck.py`, `pilot/bracket.py` (tutor density), `deck-analyst` — **never fetched by the viz** |
+| `card_roles.json` | card-roles (13) | ~1.9MB, `{roles, meta}`; 30,563 of 34,322 cards classified (31,622 Commander-legal), **53 roles in 19 families**, coverage 89.5% / 73.2% specific | **tracked** | `pilot/build_deck.py`, `pilot/bracket.py` (tutor density), `deck-analyst`, **and `viz/js/deck-map.js`** — the Deck Lens colours the 99 by role family |
 
 N = card count, ~34,300 as of July 2026; grows as Scryfall adds sets.
 

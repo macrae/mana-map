@@ -232,8 +232,15 @@ CARD_ROLES_PATH = DATA_DIR / "card_roles.json"
 ROLE_PATTERNS = {
     # Card advantage
     "draw:engine": r"(?:whenever|at the beginning of).{0,80}?draws? (?:a |two |three |\d+ )?cards?",
-    "draw:burst": r"draw (?:two|three|four|five|six|seven|\d+) cards",
+    "draw:burst": r"draws? (?:two|three|four|five|six|seven|\d+) cards",
     "draw:impulse": r"exile the top (?:\w+ )?cards?.{0,60}?(?:you may (?:play|cast)|until)",
+    # Selection plus a replacement — Ponder, Opt, Preordain. Not card advantage
+    # and not an engine: a cantrip smooths a draw step, which is a different job
+    # from drawing two, and a curve model that files them together is wrong.
+    "draw:cantrip": (
+        r"(?:scry \d+|surveil \d+|look at the top [\w\s]{0,30}? of your library)"
+        r"[\w\s,.—]{0,80}?draws? a card"
+    ),
     "draw:wheel": r"discards? (?:their|your) hand.{0,60}?draws?|each player draws",
     # Interaction
     # "exile all" must be scoped to permanents: Demonic Consultation says
@@ -243,38 +250,100 @@ ROLE_PATTERNS = {
     "removal:sweeper": (
         r"destroy all|destroy each"
         r"|exile all (?:other )?(?:creature|permanent|nonland|artifact|enchantment)"
-        r"|all creatures get -|each creature gets -"
+        # "Each NON-VAMPIRE creature gets -X/-X" — one-sided sweepers are the
+        # typal deck's wrath, and requiring "each creature" adjacent missed
+        # every one of them.
+        r"|all [\w-]{0,20} ?creatures get -|each [\w-]{0,20} ?creature gets -"
         r"|put (?:x|\d+|a|two|three) -1/-1 counters? on each"
     ),
-    "removal:spot": r"destroy target|exile target (?:creature|permanent|artifact|enchantment|planeswalker|battle)",
+    # "nonland permanent" is the modern templating for unconditional exile
+    # (Anguished Unmaking, Rite of Oblivion) and the bare alternation missed it,
+    # because the type word no longer follows "target" directly.
+    "removal:spot": (
+        r"destroy target"
+        r"|exile target (?:nonland )?(?:creature|permanent|artifact|enchantment|planeswalker|battle)"
+    ),
+    # Bounce is interaction, not recursion: battlefield -> hand, and the tell is
+    # "owner's hand" where recursion says "your hand". Cyclonic Rift heads a
+    # population of ~110 cards that carried no role at all.
+    "removal:bounce": r"return (?:target|all|each)[\w\s,'-]{0,50}? to (?:its|their) owner'?s? hand",
     "removal:damage": r"deals? (?:\d+|x) damage to (?:target|any target|each)",
     # Opponent-facing only. The bare "sacrifices a creature" pattern fired on
     # your own activated sacrifice *costs* — Viscera Seer, Ashnod's Altar,
     # Carrion Feeder — which made two thirds of the removal:edict population
     # sacrifice outlets rather than interaction, and inflated every deck's
     # apparent removal count.
-    "removal:edict": r"(?:each|target) (?:opponent|player)[\w\s,']{0,40}? sacrifices?",
+    # The optional "other" is load-bearing: Grave Pact and Syphon Flesh say
+    # "each OTHER player sacrifices", and requiring opponent/player to follow
+    # each/target directly missed the format's canonical edict by two words.
+    "removal:edict": r"(?:each|target) (?:other )?(?:opponent|player)[\w\s,']{0,40}? sacrifices?",
     "sac-cost": r"sacrifice (?:a|an|another)[\w\s]{0,20}?[:,]",
     "removal:tax": r"(?:spells?|abilities).{0,40}?costs? \{?\d+\}? more",
     "removal:fight": r"\bfights? (?:target|another)",
-    "counterspell": r"counter target (?:spell|ability)",
+    # Half of Commander's counterspells name what they answer — "counter target
+    # NONCREATURE spell", "counter target enchantment, instant, or sorcery
+    # spell". Negate, Swan Song and Fierce Guardianship all missed the literal.
+    "counterspell": r"counter target [\w\s,]{0,40}?(?:spell|ability)",
     # Consistency
     "tutor:unrestricted": r"search your library for a card",
     "tutor:narrow": r"search your library for (?:a|an|up to \w+) (?!card)[\w\s]{0,30}?cards?",
-    "recursion": r"return (?:target |a |another )?[\w\s]{0,30}?(?:card )?from (?:your|a) graveyard to (?:the battlefield|your hand)",
+    # Reanimation has two templates and this pattern only knew one. "Put target
+    # creature card from a graveyard ONTO THE BATTLEFIELD" (Reanimate) and
+    # "return the chosen cards to the battlefield" (Victimize) both missed.
+    "recursion": (
+        r"return (?:target |a |another )?[\w\s]{0,30}?(?:card )?from (?:your|a) graveyard to (?:the battlefield|your hand)"
+        r"|put target [\w\s]{0,40}?from (?:a|your|target opponent's) graveyard onto the battlefield"
+        r"|return (?:the chosen|those) cards? to the battlefield"
+    ),
     # Resilience
-    "protection:self": r"\b(?:hexproof|shroud|indestructible|ward)\b",
-    "protection:granted": r"(?:target |another target )?creatures? you control (?:gains?|have|has) (?:hexproof|indestructible|protection|shroud)",
+    # Phasing and blanket protection are the same job as a hexproof grant and
+    # were invisible to the keyword alternation — Teferi's Protection, the
+    # 107th most played card in the format, carried no role at all.
+    "protection:self": (
+        r"\b(?:hexproof|shroud|indestructible|ward)\b"
+        r"|protection from everything|phases? out"
+    ),
+    # A fog is not protection granted to a permanent — it answers the whole
+    # combat step. ~128 cards, headed by Fog, Darkness and Arachnogenesis.
+    "protection:fog": r"prevents? all (?:combat )?damage|damage that would be dealt this turn is prevented",
+    # The Swat/Bend cycle: it does not counter the spell, it points it back.
+    # Functionally how a Commander deck saves its commander from a removal
+    # spell, and there was no role that described it.
+    "protection:redirect": r"choose new targets for target|changes? the target of",
+    # The keyword rarely comes first. Akroma's Memorial reads "creatures you
+    # control have flying, first strike, vigilance, trample, haste, and
+    # protection from black" — requiring adjacency missed the whole anthem.
+    "protection:granted": (
+        r"(?:target |another target )?creatures? you control (?:gains?|have|has) "
+        r"[\w\s,]{0,60}?(?:hexproof|indestructible|protection|shroud)"
+    ),
     # Engines
     "sac-outlet": r"sacrifice (?:a|an|another) (?:creature|permanent|artifact|token)[^.]{0,20}?:",
     "stax": r"players? can't|can't be (?:activated|cast)|skip (?:your|their) |don't untap|enters? tapped and",
     # Finishers
     "wincon:alt": r"wins? the game|loses? the game",
-    "wincon:drain": r"each opponent loses (?:\d+|x) life|each opponent (?:loses|sacrifices)",
+    # The old pattern demanded a literal numeral and the word "each", so the two
+    # halves of the format's most famous loop both missed: Sanguine Bond says
+    # "target opponent loses THAT MUCH life" and Exquisite Blood says "whenever
+    # AN opponent loses life". Blood Artist and Vito missed for the same reason.
+    "wincon:drain": (
+        r"each opponent loses (?:\d+|x) life"
+        r"|each opponent (?:loses|sacrifices)"
+        r"|(?:target |an? )?(?:opponent|player)s? loses? (?:that much|\d+|x) life"
+        r"|whenever (?:an?|target) opponent loses life"
+    ),
     "wincon:combat": r"\b(?:infect|double strike)\b|deals? double|can't be blocked",
     # Broad jobs. Most cards in a deck are not a tutor or a sweeper — they are
     # a body, an enters-trigger, or an activated ability, and a builder counts
     # those slots too.
+    # The single largest hole the taxonomy had: 532 Commander-legal cards create
+    # creature tokens and none of them carried a role for it. A token maker is a
+    # threat generator — same family as a body, different mechanism — so this
+    # needs no new family and no colour.
+    "threat:tokens": r"creates? [\w\s,/\d'\-]{0,60}?creature tokens?",
+    # Treasure is ramp, not a threat, and the distinction matters to a curve
+    # model: a Treasure is a one-shot rock the deck can cash for colour.
+    "ramp:treasure": r"creates? (?:a|an|two|three|four|x|\d+|that many)[\w\s]{0,20}?treasure tokens?",
     "value:etb": r"when(?:ever)? (?:this|[\w\s,']{0,30}?) enters",
     "utility:activated": r"\{T\}[,:]|\{\d+\}[,:].{0,40}?:",
     "removal:debuff": r"gets? -\d+/-\d+|gets? -\d+/-0|put (?:a|x|\d+|two|three) -1/-1 counters?",
@@ -304,6 +373,24 @@ ROLE_PATTERNS = {
     # friends carried no role at all, so no text search for a tribe and no role
     # query could find them — a structural blind spot for every typal commander.
     "payoff:typal": r"choose a creature type|of the chosen type|creature type of your choice",
+    # Multiplication is its own job and the taxonomy had no name for it. A
+    # doubler is not a payoff and not a threat — it is a multiplier on whatever
+    # the deck already does, which is why Doubling Season sits in a thousand
+    # lists it has no other business in. Panharmonicon and Anointed Procession
+    # carried no role at all; Mondrak was classified on its ward clause, i.e.
+    # on the least interesting sentence on the card.
+    # Two templates for the same effect. Parallel Lives says "would CREATE one
+    # or more tokens"; Mondrak reverses it to "one or more TOKENS WOULD BE
+    # created", which is why it was classified on its ward clause instead.
+    "doubler:tokens": (
+        r"would create (?:one or more )?tokens?[\w\s,'\-]{0,60}?(?:twice|that many plus)"
+        r"|tokens? would be created[\w\s,'\-]{0,40}?(?:twice|that many plus)"
+    ),
+    "doubler:counters": (
+        r"would put (?:one or more )?[\w\s+/\-]{0,20}?counters?"
+        r"[\w\s,'\-]{0,70}?(?:twice|that many plus)"
+    ),
+    "doubler:triggers": r"(?:ability|abilities) triggers? an additional time",
 }
 
 # A creature with no other listed job is still doing one: attacking and
@@ -323,7 +410,12 @@ ROLE_MANA_BY_SUPERTYPE = {
     "Instant": "ramp:ritual",
     "Sorcery": "ramp:ritual",
 }
-ROLE_LAND_RAMP = r"search your library for (?:a|up to \w+)[\w\s]{0,30}?land"
+# Farseek and Nature's Lore name basic land *types*, never the word "land" —
+# the same miss `land:fetch` already works around, applied to the spell side.
+ROLE_LAND_RAMP = (
+    r"search your library for (?:a|up to \w+)[\w\s]{0,30}?land"
+    r"|search your library for a[\w\s,]{0,40}?(?:Plains|Island|Swamp|Mountain|Forest) card"
+)
 ROLE_COST_REDUCTION = r"costs? \{?\d+\}? less|spells? you cast cost"
 
 # Land quality — lands never carry spell roles, so these are evaluated alone.
@@ -332,7 +424,16 @@ ROLE_LAND_PATTERNS = {
     # says "a Forest or Plains card" and would otherwise read as plain utility.
     "land:fetch": r"search your library for a[\w\s]{0,40}?(?:land card|Plains|Island|Swamp|Mountain|Forest)",
     "land:tapped": r"enters tapped|enters the battlefield tapped",
-    "land:utility": r"\{T\},|\{T\}: (?!add)|draw a card|deals? \d+ damage",
+    # Channel lands are a spell stapled to a land, and lands never carry spell
+    # roles by design — so Takenuma and Boseiju read as blank without this.
+    "land:utility": r"\{T\},|\{T\}: (?!add)|draw a card|deals? \d+ damage|\bchannel\b",
+    # Fixing is the job a three-colour deck actually buys a land for, and it was
+    # unnamed: Reflecting Pool, Command Tower and Mana Confluence all produce
+    # "any colour", while Urborg and Yavimaya rewrite every other land's types.
+    "land:fixing": (
+        r"mana of any (?:type|color|colour)"
+        r"|each land is a|lands? you control are"
+    ),
 }
 
 ROLE_NAMES = sorted(
@@ -558,15 +659,19 @@ DECK_ROLE_BUDGET = {
 # what makes the deck feel like the commander rather than a checklist.
 DECK_ROLE_GROUPS = {
     "ramp": ("ramp:rock", "ramp:dork", "ramp:ritual", "ramp:land", "ramp:cost-reduction"),
-    "draw": ("draw:engine", "draw:burst", "draw:impulse", "draw:wheel"),
+    "draw": ("draw:engine", "draw:burst", "draw:impulse", "draw:wheel", "draw:cantrip"),
     "removal": ("removal:spot", "removal:damage", "removal:edict", "removal:fight",
-                "removal:debuff", "counterspell"),
+                "removal:debuff", "removal:bounce", "counterspell"),
     "sweeper": ("removal:sweeper",),
-    "protection": ("protection:self", "protection:granted"),
+    "protection": ("protection:self", "protection:granted", "protection:fog"),
     "recursion": ("recursion",),
     "tutor": ("tutor:unrestricted", "tutor:narrow"),
     "wincon": ("wincon:alt", "wincon:drain", "wincon:combat"),
-    "flex": ("payoff:counters", "payoff:typal", "sac-cost"),  # engine payoffs are the deck, not filler
+    # Engine payoffs and multipliers are the deck, not filler. A doubler files
+    # here rather than under wincon: it multiplies whatever the deck already
+    # does instead of being a way to win on its own.
+    "flex": ("payoff:counters", "payoff:typal", "sac-cost",
+             "doubler:tokens", "doubler:counters", "doubler:triggers"),
 }
 
 # Scoring weights. Sum to 1.0. Three deliberate departures from the prototype:
