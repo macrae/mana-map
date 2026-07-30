@@ -3,8 +3,9 @@
 Static frontend in `viz/` — no build tooling. **Two independent pages** that share a
 directory and nothing else:
 
-- **`index.html` — the card map.** Plotly.js 2.35.2 from CDN (`scattergl` WebGL), dark
-  theme (#1a1a2e background, #c4a747 gold accents), styles in `css/mana-map.css`.
+- **`index.html` — the card map.** Plotly.js 2.35.2 from CDN (`scattergl` WebGL) for three
+  of the four modes, plus d3 v7 for The Walk, which uses canvas instead. Dark theme
+  (#1a1a2e background, #c4a747 gold accents), styles in `css/mana-map.css`.
 - **`deck.html` — the deck dossier.** No Plotly, no `mana-map.js`; the magazine's design
   tokens in `css/tokens.css` (ported from `pilot/design.py`) plus Google Fonts.
 
@@ -25,7 +26,8 @@ python -m http.server 8000
 | `viz/index.html` | Map shell: toolbar, plot div, detail panel, deck panel, script tags |
 | `viz/css/mana-map.css` | Map + deck-builder styles, flat hex, no custom properties (~310 lines) |
 | `viz/js/mana-map.js` | Explore mode (~1,330 lines). IIFE; exposes shared state as `window.MM` |
-| `viz/js/drill.js` | Drill mode (~400 lines). IIFE; exposes `window.Drill`; depends on `MM` |
+| `viz/js/drill.js` | Drill mode (~410 lines). IIFE; exposes `window.Drill`; depends on `MM` |
+| `viz/js/force.js` | The Walk (~470 lines). Canvas + d3, **no Plotly**; exposes `window.Force` |
 | `viz/js/deck-map.js` | Deck Lens (~490 lines). IIFE; exposes `window.DeckMap`; depends on `MM` |
 | `viz/js/deck-builder.js` | Deck builder (~1,370 lines). IIFE; exposes `window.DeckBuilder`; depends on `MM` |
 | `viz/deck.html` | Dossier shell: masthead, deck picker, panel grid |
@@ -34,7 +36,7 @@ python -m http.server 8000
 
 **Script order matters on the map page**: `mana-map.js` must load before `deck-map.js` and `deck-builder.js` (both read `MM.*` at load time). mana-map degrades gracefully if either is absent — every call is guarded. `deck.html` loads only `deck-view.js` and shares no code with the map.
 
-## The three map modes
+## The four map modes
 
 `#modeSelect` switches between them and `MM.setMode` owns the transition. Build and Deck
 Lens share one side panel (`#deckPanel`), so entering either exits the other.
@@ -44,6 +46,7 @@ Lens share one side panel (`#deckPanel`), so entering either exits the other.
 | Explore | detail panel | — |
 | Deck Lens | `#deckPanel` + detail panel | `window.DeckMap` |
 | Build Deck | `#deckPanel` (detail hidden) | `window.DeckBuilder` |
+| The Walk | `#deckPanel` (detail hidden) | **its own canvas** — Plotly is hidden entirely |
 
 **The overlay contract.** Any mode that paints over the base scatter implements exactly
 two methods, and `render()` calls whichever mode is current:
@@ -355,3 +358,57 @@ scrolled into view as it appears.
 ## Future options (deliberately not done)
 
 ES-module migration / splitting the IIFEs, moving the ~17 inline styles in generated HTML into CSS, content-hash cache busting. Lint/format/CI intentionally not set up.
+
+## The Walk (`viz/js/force.js`) — the first thing here that is not Plotly
+
+A fourth map mode, and the opening move of the renderer migration. Cards become nodes,
+128-d cosine distance becomes link length, and a velocity-Verlet simulation gives the
+graph weight: it settles, it wobbles, you can grab a card and fling it and the rest
+follows. Click a card and its nearest neighbours in the full 34,322-card corpus are pulled
+in, the simulation reheats, and the graph grows toward whatever you were curious about.
+That is the walk. The path you took is drawn as a gold trail.
+
+**Canvas, `d3-force`, `d3-zoom`, `d3-drag` — no Plotly at all.** It is built as a new mode
+precisely because nothing can regress there: it proves the canvas renderer, the zoom
+behaviour and the hit-test against real data before any of that goes under the map itself.
+
+**Seeding** comes from `MM.selectedRows()` — browse set first, then the 8-card stack — so
+every existing way of picking cards feeds it: box-select, Find Similar, Find Synergies, a
+region, a deck.
+
+### What the picture claims
+
+Link length is the model's own 128-d cosine, not the PaCMAP projection, so two adjacent
+cards really are alike *to the model* — a stronger claim than the world map makes. It is
+still a 2-D embedding of a high-dimensional space: the layout satisfies link lengths
+approximately and nothing more. **Read adjacency, not absolute position.** There are no
+axes, deliberately.
+
+### Five things that were not obvious
+
+- **Seed jitter is load-bearing, not cosmetic.** d3 only assigns initial positions to nodes
+  that lack `x`/`y`, so seeding every node at its world-map position seeds a degenerate
+  cluster when the source region is degenerate — and some are. The White Sorceries filament
+  is 187 cards spanning **0.1 × 0.0** on the world map, and without jitter the whole graph
+  collapsed to a single point (bbox `1 × 0`, a blank canvas).
+- **Fit on settle, not on a timer.** `alphaDecay: 0.015` gives an ~8 s settle. A fit at
+  700 ms frames a graph that then grows straight out of the viewport. `sim.on('end')` does
+  the authoritative fit; an interval keeps it framed on the way there.
+- **One zoom behaviour.** Programmatic transforms must go through the same `d3.zoom`
+  instance that is bound to the canvas, or its internal state desyncs and the next wheel
+  event snaps the view back.
+- **`ctx.arc` needs an explicit `moveTo`.** Without one the arc connects from whatever the
+  current point was after the link strokes, and every node renders as a pac-man wedge.
+- **Node radius divides by `transform.k`,** so a card is the same size on screen at any
+  zoom. Otherwise fitting a tight cluster turns every node into a dinner plate.
+
+### Feel
+
+`PHYSICS` at the top of the file, and the three sliders in the panel expose the ones worth
+touching. `velocityDecay: 0.22` is friction — d3's default `0.4` settles fast and dead;
+this keeps inertia so a flung node swings. `charge: -110` is repulsion, `linkScale: 190`
+converts chord distance to pixels.
+
+`MAX_NODES = 500` caps the live graph — the simulation and canvas both scale much further,
+but past a few hundred nodes it is a hairball and the walk stops being legible. The cap is
+announced in the panel, never silent.

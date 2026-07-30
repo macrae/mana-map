@@ -332,3 +332,113 @@ def test_render_makes_one_plotly_call(page):
         f"render() is not a single react: {result['perRender']}")
     assert result["perCycle"]["restyle"] == 1 and result["perCycle"]["add"] == 0, (
         f"an arrow press should be one restyle: {result['perCycle']}")
+
+
+# ── The Walk (force mode) ───────────────────────────────────────────────
+
+
+def _walk(page, seed_js, settle=9000):
+    return page.evaluate("""async ([seedJs, settle]) => {
+        const rows = await (new Function('return (async () => {' + seedJs + '})()'))();
+        document.getElementById('modeSelect').value = 'force';
+        MM.setMode('force');
+        await new Promise(r => setTimeout(r, 200));
+        await Force.enter(rows, 'Test');
+        await new Promise(r => setTimeout(r, settle));
+        Force.freeze();
+        const b = Force.bbox();
+        return {
+            seeded: rows.length,
+            nodes: Force.nodeCount, links: Force.linkCount,
+            bbox: {w: b.w, h: b.h},
+            linkStats: Force.linkStats(),
+            canvas: !!document.getElementById('forceCanvas'),
+            plotHidden: document.getElementById('plot').classList.contains('force-mode'),
+        };
+    }""", [seed_js, settle])
+
+
+DECK_SEED = """
+    const deck = await (await fetch('../data/decks/edgar-vampires/cards.json')).json();
+    const names = new Set(deck.cards.filter(c => !c.is_sideboard).map(c => c.name));
+    const rows = []; MM.allData.forEach((d, i) => { if (names.has(d.n)) rows.push(i); });
+    return rows;
+"""
+
+
+def test_walk_builds_a_graph_that_spreads(page):
+    r = _walk(page, DECK_SEED)
+    assert page.js_errors == [], f"the walk threw: {page.js_errors}"
+    assert r["canvas"] and r["plotHidden"]
+    assert r["nodes"] == r["seeded"] == 97
+    assert r["links"] > r["nodes"], "every card should carry links"
+    # The layout must actually resolve. A collapsed graph reads as an empty canvas, which
+    # is what happened when nodes were seeded at identical world positions — some regions
+    # really are degenerate (the White Sorceries filament is 187 cards at 0.1 x 0.0).
+    assert r["bbox"]["w"] > 50 and r["bbox"]["h"] > 50, f"graph collapsed: {r['bbox']}"
+
+
+def test_link_length_is_the_embedding_distance(page):
+    """Chord distance on a unit sphere is bounded by [0, 2]. Screen distance is not, so
+    this fails immediately if the layout is ever fed 2-D positions instead."""
+    r = _walk(page, DECK_SEED, settle=3000)
+    st = r["linkStats"]
+    assert st is not None and st["n"] > 0
+    assert 0 <= st["min"] < st["max"] <= 2.0, f"link d out of chord range: {st}"
+    assert st["mean"] < 1.0, f"a k-nearest graph should be mostly short links: {st}"
+
+
+def test_branching_grows_the_graph_and_records_the_walk(page):
+    r = page.evaluate("""async () => {
+        const deck = await (await fetch('../data/decks/edgar-vampires/cards.json')).json();
+        const names = new Set(deck.cards.filter(c => !c.is_sideboard).map(c => c.name));
+        const rows = []; MM.allData.forEach((d, i) => { if (names.has(d.n)) rows.push(i); });
+        document.getElementById('modeSelect').value = 'force'; MM.setMode('force');
+        await new Promise(r => setTimeout(r, 200));
+        await Force.enter(rows, 'Test');
+        await new Promise(r => setTimeout(r, 2500));
+        const before = Force.nodeCount;
+        const steps = [];
+        for (const name of ['Edgar Markov', 'Sorin, Imperious Bloodlord', 'Exquisite Blood']) {
+            const i = MM.allData.findIndex(d => d.n === name);
+            Force.focusCard(i);
+            await new Promise(r => setTimeout(r, 700));
+            steps.push(Force.nodeCount);
+        }
+        // A card that is not on the graph must be a no-op, not a crash and not a
+        // phantom trail entry. Bloodline Keeper is in Edgar's SIDEBOARD, which is
+        // exactly the kind of near-miss that finds this.
+        const absent = MM.allData.findIndex(d => d.n === 'Black Lotus');
+        Force.focusCard(absent);
+        await new Promise(r => setTimeout(r, 300));
+        Force.freeze();
+        return {before, steps, trail: Force.trailLength, afterAbsent: Force.nodeCount};
+    }""")
+    assert page.js_errors == []
+    assert r["steps"][0] == r["before"] + 6, "a branch should pull in BRANCH_K neighbours"
+    assert r["steps"][2] > r["steps"][0], "the graph must keep growing as you walk"
+    assert r["trail"] == 3, "each distinct card visited should be recorded on the trail"
+    assert r["afterAbsent"] == r["steps"][2], (
+        "focusing a card that is not on the graph must change nothing")
+
+
+def test_leaving_the_walk_restores_the_map(page):
+    r = page.evaluate("""async () => {
+        const rows = []; for (let i = 0; i < 60; i++) rows.push(i * 37 % 34322);
+        document.getElementById('modeSelect').value = 'force'; MM.setMode('force');
+        await new Promise(r => setTimeout(r, 200));
+        await Force.enter(rows, 'Test');
+        await new Promise(r => setTimeout(r, 1500));
+        document.getElementById('modeSelect').value = 'explore'; MM.setMode('explore');
+        await new Promise(r => setTimeout(r, 900));
+        const gd = document.getElementById('plot');
+        return {
+            active: Force.isActive(),
+            forceMode: gd.classList.contains('force-mode'),
+            canvasHidden: document.getElementById('forceCanvas').style.display === 'none',
+            plotTraces: gd.data.length,
+        };
+    }""")
+    assert page.js_errors == []
+    assert not r["active"] and not r["forceMode"] and r["canvasHidden"]
+    assert r["plotTraces"] >= 6, "the Plotly map did not come back"

@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mana Map</title>
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
-<link rel="stylesheet" href="css/mana-map.css?v=8">
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<link rel="stylesheet" href="css/mana-map.css?v=9">
 </head>
 <body>
 
@@ -16,6 +17,7 @@
     <select id="modeSelect">
       <option value="explore">Explore</option>
       <option value="deck">Deck Lens</option>
+      <option value="force">The Walk</option>
       <option value="build">Build Deck</option>
     </select>
   </div>
@@ -61,9 +63,10 @@
 
 <div class="status" id="status">Loading...</div>
 
-<script src="js/mana-map.js?v=29"></script>
-<script src="js/drill.js?v=29"></script>
-<script src="js/deck-map.js?v=29"></script>
-<script src="js/deck-builder.js?v=29"></script>
+<script src="js/mana-map.js?v=36"></script>
+<script src="js/drill.js?v=36"></script>
+<script src="js/force.js?v=36"></script>
+<script src="js/deck-map.js?v=36"></script>
+<script src="js/deck-builder.js?v=36"></script>
 </body>
 </html>

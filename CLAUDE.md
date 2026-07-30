@@ -30,13 +30,14 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #   validate_issue.py / agent_cache.py / artist_credits.py
                       #   validate_considering.py / validate_tutor_guide.py
                       #   impact.py / card_refs.py  incremental regeneration
-tests/                # pytest suite (991: 978 fast + 13 browser). Markers in
+tests/                # pytest suite (995: 978 fast + 17 browser). Markers in
                       # conftest.py: requires_data/rules/deck/strategy/roles;
                       # `-m browser` needs playwright + chromium
 data/                 # artifacts; mostly gitignored, viz-served files tracked
 viz/                  # static frontend: index.html (the map: explore / deck lens /
-                      # build, plus drill — a re-layout from the embeddings) +
-                      # deck.html (the dossier); Plotly CDN, IIFE, window.MM
+                      # build / the walk, plus drill) + deck.html (the dossier).
+                      # Plotly + d3 CDN, IIFE, window.MM. force.js is canvas+d3,
+                      # the first step off Plotly — see docs/viz.md
 docs/                 # reference docs (see Pointers below)
 ```
 
@@ -61,7 +62,7 @@ manamap synergy && manamap power-creep && manamap cluster-regions && manamap car
                               # fast analysis-only refresh (no retrain)
 manamap pilot <cmd>           # build + publish subsystem (33 subcommands) — see docs/pilot.md
 
-.venv/bin/python -m pytest    # 991; data-dependent ones skip if artifacts missing
+.venv/bin/python -m pytest    # 995; data-dependent ones skip if artifacts missing
 .venv/bin/python -m pytest -m "not browser"   # 978, skips the browser suite (~68s)
 
 python -m http.server 8000    # serve viz FROM REPO ROOT

@@ -1270,6 +1270,14 @@
 
     if (mode !== 'build' && typeof window.DeckBuilder !== 'undefined') window.DeckBuilder.exit();
     if (mode !== 'deck' && typeof window.DeckMap !== 'undefined') window.DeckMap.exit();
+    if (mode !== 'force' && typeof window.Force !== 'undefined') window.Force.exit();
+
+    // The Walk replaces the plot rather than overlaying it: it is a different renderer
+    // (canvas) drawing a different thing (a graph, not a projection), so the Plotly
+    // surface is hidden outright while it runs.
+    const plotEl = document.getElementById('plot');
+    const svg = plotEl.querySelector('.main-svg');
+    plotEl.classList.toggle('force-mode', mode === 'force');
 
     if (mode === 'build') {
       clearSelection();
@@ -1278,6 +1286,10 @@
     } else if (mode === 'deck') {
       detail.style.display = '';
       if (typeof window.DeckMap !== 'undefined') window.DeckMap.enter();
+    } else if (mode === 'force') {
+      detail.style.display = 'none';
+      if (typeof window.Force !== 'undefined') window.Force.enter();
+      return;                     // no Plotly render — the canvas owns the surface
     } else {
       detail.style.display = '';
     }
@@ -1740,6 +1752,12 @@
     cycleNext: () => cycleSelection(1),
     enterBrowse,
     get browseSet() { return browseSet; },
+    // The row indices currently selected, whichever container holds them. The Walk seeds
+    // from this so every existing way of picking cards feeds it for free.
+    selectedRows() {
+      if (browseSet) return browseSet.indices.slice();
+      return selectedCards.map(c => c.idx);
+    },
     selectByName,
     findSimilar: findSimilarCards,
     findSynergies: findSynergyCards,

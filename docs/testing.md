@@ -1,12 +1,12 @@
 # Testing
 
 ```bash
-.venv/bin/python -m pytest              # everything (991, ~2 min)
+.venv/bin/python -m pytest              # everything (995, ~2.5 min)
 .venv/bin/python -m pytest -m "not browser"   # fast suite (978, ~68 s)
-.venv/bin/python -m pytest -m browser         # the 13 browser tests (~60 s)
+.venv/bin/python -m pytest -m browser         # the 17 browser tests (~87 s)
 ```
 
-991 tests in `tests/`: 377 card-pipeline + 601 pilot-subsystem + **13 browser**.
+995 tests in `tests/`: 377 card-pipeline + 601 pilot-subsystem + **17 browser**.
 
 ## Source assertions do not catch regressions
 
@@ -31,7 +31,7 @@ source tests pass and the behavioural tests fail with
 against a renderer that draws nothing, it is a source assertion — fine, but it is not
 coverage.
 
-### Browser tests (13) — `tests/test_viz_behaviour.py`
+### Browser tests (17) — `tests/test_viz_behaviour.py`
 
 Fixtures in `tests/conftest_viz.py` (deliberately not `conftest.py`, so the other 978 never
 import playwright): an ephemeral `http.server` rooted at the repo — `viz/` and `data/` must
@@ -43,8 +43,11 @@ errors, and it is what catches the class of bug above.
 
 Covers: boot, plot geometry, drill render + return, the accordion, browse mode holding a
 whole selection, browse cycling, camera preservation across filter and search, camera
-*refit* on a map switch, Deck Lens, mode exclusivity, and two perf ceilings (render budget,
-and that a render is exactly one `Plotly.react`).
+*refit* on a map switch, Deck Lens, mode exclusivity, two perf ceilings (render budget,
+and that a render is exactly one `Plotly.react`), and **The Walk** — that the graph
+resolves rather than collapsing, that link lengths stay inside the chord range `[0, 2]`
+(screen distance is not bounded, so this fails the moment 2-D positions leak in), that
+branching grows the graph and records the trail, and that leaving restores the map.
 
 Setup, one time: `.venv/bin/python -m playwright install chromium` (~94 MB). Without it the
 whole file skips cleanly, so a fresh clone still runs the other 978.

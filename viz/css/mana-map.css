@@ -448,3 +448,20 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
   overflow: hidden; margin-bottom: 5px; }
 .browse-order-bar > span { display: block; height: 100%; background: #c4a747; transition: width 0.2s ease; }
 .browse-order-label { display: block; font-size: 0.62rem; color: #777; line-height: 1.4; }
+
+/* ── The Walk (force mode) ────────────────────────────────────────────────
+ * A canvas layered over the plot area. Plotly's SVG is hidden rather than torn
+ * down, so leaving the mode is instant and the map is exactly where you left it.
+ */
+.force-canvas { position: absolute; inset: 0; z-index: 10; display: block; cursor: grab; }
+.force-canvas:active { cursor: grabbing; }
+#plot.force-mode > .js-plotly-plot,
+#plot.force-mode > .plot-container,
+#plot.force-mode > .svg-container { visibility: hidden; }
+#plot:not(.force-mode) .force-canvas { display: none; }
+
+.force-slider { margin-bottom: 10px; }
+.force-slider label { display: flex; justify-content: space-between; font-size: 0.7rem;
+  color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+.force-slider label span { color: #c4a747; font-variant-numeric: tabular-nums; }
+.force-slider input[type=range] { width: 100%; accent-color: #c4a747; }
