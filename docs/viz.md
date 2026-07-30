@@ -250,9 +250,43 @@ Three things make it hold together, and each was a separate fix:
   the two cannot drift into one wrapping and one clamping. It wraps in both directions:
   with at most eight cards, stopping at the end is more annoying than looping.
 
-Neighbouring cards' images are preloaded (`preloadNeighbourImages`), because each is a
-Scryfall round-trip and without it every arrow press showed a beat of empty grey — most of
-what made the old panel feel slow to browse. Neighbours only: preloading all eight would
+### Browse mode — selections too big for a list
+
+Over `MAX_SELECTED` (8) cards, the panel switches to **arrows only** and holds the *whole*
+selection with no cap. Only the card you are looking at is ever fetched, so the cost is one
+Scryfall request per arrow press rather than one per card in the box.
+
+It replaced a real bug. `plotly_selected` returns points **grouped by trace** — colour
+groups in palette order (`G, R, Colorless, U, B, W, Multicolor`), then `cards.csv` row
+order within each — and the handler took the first 8. Box a mixed cluster and you got eight
+green cards in Scryfall dump order: not a sample of your selection, an artifact of how the
+traces were built.
+
+**Ordering** is descending distance from the selection's own centroid in the 128-d
+embedding space, so you start on the least typical card in the box and walk inward to the
+most representative. The centroid is **renormalised** before scoring — rows are
+L2-normalised at export so a dot product is a cosine, but the *mean* of unit vectors is not
+itself a unit vector, and skipping that step makes the ordering depend on how tightly
+clustered the selection happens to be.
+
+The order does real work. Browsing the `Blue Artifacts` L0 region (3,434 cards) opens on
+Ob Nixilis, three Lilianas and Garruk — black planeswalkers sitting inside a region named
+for blue artifacts — and ends on Mantle of Tides and Neurok Stealthsuit. That is a finding
+about the clustering, surfaced by the first screen.
+
+**On the map**: the whole selection lights gold at size 5, and the card you are on renders
+at size 16 with a white ring. Static, not animated — one restyle per press, nothing to tear
+down. `moveBrowseMarker()` restyles just the single-point trace (found by `_isBrowseCurrent`,
+not by name) and falls back to a full rebuild only if it is missing; rebuilding the whole
+highlight per press measured **197 ms** on 3,434 cards versus **23 ms** for the fast path.
+
+Browse and the 8-card stack are **mutually exclusive** — clicking a single point clears
+`browseSet`, because two "current card" markers on the plot would be two different claims
+about what you are looking at.
+
+Neighbouring cards' images are preloaded (`preloadNeighbourImages`), in both modes, because
+each is a Scryfall round-trip and without it every arrow press showed a beat of empty grey —
+most of what made the old panel feel slow to browse. Neighbours only: preloading all eight would
 be eight requests for seven cards the reader may never open. The open card's image is
 deliberately **not** `loading="lazy"` — it is the only card image ever rendered and it is
 scrolled into view as it appears.

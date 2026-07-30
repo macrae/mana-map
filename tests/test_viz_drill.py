@@ -79,11 +79,15 @@ def test_selection_highlight_follows_the_active_coordinate_system():
     is why the position lookup is now shared rather than repeated inline.
     """
     src = _map()
+    # One shared lookup, used by both the 8-card stack and browse mode — two copies
+    # would drift, and only one of them would be fixed the next time this is found.
+    assert "function cardPosition(idx)" in src
     assert "window.Drill.localPosition(idx)" in src
-    assert "const posOf = idx =>" in src
+    assert "const posOf = cardPosition;" in src
     # A card outside the drilled subset has no local position and must be dropped,
     # not defaulted back to its world coordinate.
     assert ".filter(c => posOf(c.idx))" in src
+    assert ".filter(i => posOf(i))" in src, "browse mode must drop unpositioned cards too"
 
     drill_src = _drill()
     assert "function localPosition(rowIdx)" in drill_src

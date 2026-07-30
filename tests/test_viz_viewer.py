@@ -121,6 +121,83 @@ def test_neighbour_images_are_preloaded():
     assert "[-1, 1]" in fn, "preload should cover both neighbours, not just the next"
 
 
+# ── Browse mode (selections too big for the accordion) ──────────────────
+
+
+def _browse_fn(name: str) -> str:
+    js = _js()
+    start = js.index(f"function {name}(")
+    return js[start:js.index("\n  }", start)]
+
+
+def test_box_select_keeps_the_whole_set_not_an_arbitrary_eight():
+    """`plotly_selected` returns points grouped by trace — colour groups in palette
+    order (G, R, Colorless, U, B, W, Multicolor), then cards.csv row order within each.
+    Taking the first 8 meant boxing a mixed cluster and getting eight green cards in
+    Scryfall dump order: not a sample of the selection, an artifact of trace construction.
+    """
+    js = _js()
+    start = js.index("on('plotly_selected'")
+    handler = js[start:start + 2500]
+    assert "enterBrowse(all, 'Selection')" in handler
+    assert "MAX_SELECTED} of ${total}" not in handler, "the arbitrary-8 truncation is back"
+
+
+def test_browse_order_uses_the_embeddings_not_the_projection():
+    """Screen distance is the projection's compromise. An ordering exists to say
+    something the picture does not already."""
+    fn = _browse_fn("orderByCentroidDistance")
+    assert "EMBED_DIM" in fn and "embeddings[" in fn
+    assert ".x" not in fn and ".y" not in fn, "ordering must not use 2D positions"
+
+
+def test_browse_order_is_furthest_first():
+    fn = _browse_fn("orderByCentroidDistance")
+    assert "sort((a, b) => b.d - a.d)" in fn, "must sort descending — least typical first"
+
+
+def test_centroid_is_renormalised_before_scoring():
+    """Rows are L2-normalised at export so a dot product is a cosine, but the *mean* of
+    unit vectors is not itself a unit vector — without renormalising, the distances are
+    scaled by the centroid's length and the ordering silently depends on how tightly
+    clustered the selection happens to be."""
+    fn = _browse_fn("orderByCentroidDistance")
+    assert "Math.sqrt(norm)" in fn
+    assert "centroid[i] /= norm" in fn
+
+
+def test_browse_marker_moves_without_rebuilding_the_selection():
+    """Rebuilding the highlight per arrow press was a deleteTraces + addTraces of the
+    whole selection — measured 197 ms per step on a 3,434-card browse."""
+    js = _js()
+    assert "function moveBrowseMarker()" in js
+    assert "if (!moveBrowseMarker()) updateSelectionHighlight();" in js, (
+        "cycling must try the fast path and fall back, not always rebuild"
+    )
+    fn = _browse_fn("moveBrowseMarker")
+    assert "_isBrowseCurrent" in fn, "find the marker by flag, not by trace name"
+    assert "Plotly.restyle" in fn
+
+
+def test_browse_mode_is_exclusive_with_the_card_stack():
+    """Two 'current card' markers on the plot at once would be two different claims."""
+    js = _js()
+    assert "browseSet = null;" in _browse_fn("addToSelection")
+    assert "browseSet = null;" in _browse_fn("clearSelection")
+    enter = _browse_fn("enterBrowse")
+    assert "selectedCards = [];" in enter
+
+
+def test_browse_panel_has_no_list_and_explains_its_order():
+    """A list of 400 names is a wall, not navigation — so the ordering has to carry the
+    meaning the list would have, which means saying what it is."""
+    js = _js()
+    panel = js[js.index("function renderBrowsePanel()"):js.index("// Put the open row's header")]
+    assert "acc-row" not in panel and "accordion" not in panel
+    assert "browse-order-label" in panel
+    assert "least typical" in panel
+
+
 def test_open_card_image_is_not_lazy():
     """The only card image rendered is the open one, and it is scrolled into view as it
     appears — deferring it just adds a beat of grey."""

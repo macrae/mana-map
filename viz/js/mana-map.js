@@ -68,6 +68,17 @@
   let selectedCards = [];   // Array of { idx, data }, max 8
   let topCardIndex = 0;     // Which card is "on top" in the viewer
 
+  // Browse mode: a selection too big for the accordion. Holds the WHOLE set — no cap —
+  // because only the card you are looking at is ever fetched, so the cost is one Scryfall
+  // request per arrow press rather than one per card in the box.
+  //
+  // It exists because the old handler truncated a box-select to the first 8 points
+  // `plotly_selected` happened to return, and that order is grouped by trace: colour
+  // groups in palette order, then cards.csv row order within each. Box a mixed cluster
+  // and you got eight green cards in Scryfall dump order — not a sample of your
+  // selection, an artifact of how the traces were built.
+  let browseSet = null;     // { indices: [...ordered], pos, label }
+
   function getSelectedCard() {
     return selectedCards[topCardIndex]?.data ?? null;
   }
@@ -110,6 +121,11 @@
   // ── Selection Functions ──
 
   function addToSelection(idx) {
+    // Picking a single card is an exit from browse mode: you have stopped surveying a
+    // set and started looking at one thing. Keeping both would leave two different
+    // "current card" markers on the plot.
+    browseSet = null;
+
     // Don't add duplicates — if already selected, bring to top
     const existing = selectedCards.findIndex(c => c.idx === idx);
     if (existing !== -1) {
@@ -157,6 +173,7 @@
   function clearSelection() {
     selectedCards = [];
     topCardIndex = 0;
+    browseSet = null;
     closeViewerPanel();
     clearSimilarTrace();
     updateSelectionHighlight();
@@ -171,6 +188,57 @@
 
   // ── Viewer Panel ──
 
+  // ── Browse mode ──
+
+  // Order a selection by distance from its own centroid in the 128-d embedding space,
+  // furthest first — so you start on the least typical card in the box and walk inward
+  // to the most representative. Cosine, because the rows are L2-normalised at export, so
+  // the dot product IS the cosine and the centroid only needs renormalising once.
+  //
+  // 128-d rather than the 2D positions: screen distance is the projection's compromise,
+  // and the whole point of an ordering is to say something the picture does not already.
+  function orderByCentroidDistance(rows) {
+    if (!embeddings) return rows.slice();
+    const dim = EMBED_DIM;
+    const centroid = new Float64Array(dim);
+    for (const r of rows) {
+      const o = r * dim;
+      for (let i = 0; i < dim; i++) centroid[i] += embeddings[o + i];
+    }
+    let norm = 0;
+    for (let i = 0; i < dim; i++) norm += centroid[i] * centroid[i];
+    norm = Math.sqrt(norm) || 1;
+    for (let i = 0; i < dim; i++) centroid[i] /= norm;
+
+    return rows
+      .map(r => {
+        const o = r * dim;
+        let dot = 0;
+        for (let i = 0; i < dim; i++) dot += embeddings[o + i] * centroid[i];
+        return { r, d: 1 - dot };
+      })
+      .sort((a, b) => b.d - a.d)
+      .map(x => x.r);
+  }
+
+  async function enterBrowse(rowIndices, label) {
+    const rows = Array.from(new Set(rowIndices)).filter(i => allData[i]);
+    if (rows.length === 0) return;
+    setStatus(`Ordering ${rows.length.toLocaleString()} cards…`);
+    await loadEmbeddings();          // no-op after the first call
+    browseSet = { indices: orderByCentroidDistance(rows), pos: 0, label: label || 'Selection' };
+    selectedCards = [];              // browse replaces the 8-card stack, never coexists
+    topCardIndex = 0;
+    updateViewerPanel();
+    updateSelectionHighlight();
+    setStatus(`${rows.length.toLocaleString()} cards — ordered furthest to nearest from the selection's centre`);
+  }
+
+  function browseCard() {
+    if (!browseSet) return null;
+    return allData[browseSet.indices[browseSet.pos]];
+  }
+
   function cardImageUrl(name) {
     return 'https://api.scryfall.com/cards/named?exact='
       + encodeURIComponent(name) + '&format=image&version=normal';
@@ -182,11 +250,13 @@
   // browse. Neighbours only: preloading all eight would be eight requests for the seven
   // the reader may never look at.
   function preloadNeighbourImages() {
-    if (selectedCards.length < 2) return;
-    const n = selectedCards.length;
+    const n = browseSet ? browseSet.indices.length : selectedCards.length;
+    if (n < 2) return;
+    const at = browseSet ? browseSet.pos : topCardIndex;
     for (const delta of [-1, 1]) {
-      const card = selectedCards[((topCardIndex + delta) % n + n) % n];
-      if (card) new Image().src = cardImageUrl(card.data.n);
+      const i = ((at + delta) % n + n) % n;
+      const d = browseSet ? allData[browseSet.indices[i]] : selectedCards[i].data;
+      if (d) new Image().src = cardImageUrl(d.n);
     }
   }
 
@@ -248,6 +318,7 @@
   }
 
   function updateViewerPanel() {
+    if (browseSet) { renderBrowsePanel(); return; }
     if (selectedCards.length === 0) {
       closeViewerPanel();
       return;
@@ -352,6 +423,53 @@
     setTimeout(() => Plotly.Plots.resize('plot'), 260);
   }
 
+  // No list — a list of 400 names is not navigation, it is a wall. The arrows are the
+  // whole interface, the plot shows you where you are, and the order carries the meaning
+  // a list would have had to.
+  function renderBrowsePanel() {
+    const panel = document.getElementById('detailPanel');
+    const inner = document.getElementById('detailInner');
+    const d = browseCard();
+    if (!d) { closeViewerPanel(); return; }
+    const n = browseSet.indices.length;
+
+    let html = '<div class="viewer-header">';
+    html += '<h2>' + escHtml(d.n) + '</h2>';
+    html += '<span class="viewer-nav">';
+    html += '<button class="viewer-arrow" onclick="MM.cyclePrev()" title="Previous (←)">‹</button>';
+    html += '<span class="viewer-count">' + (browseSet.pos + 1) + ' / ' + n.toLocaleString() + '</span>';
+    html += '<button class="viewer-arrow" onclick="MM.cycleNext()" title="Next (→)">›</button>';
+    html += '</span>';
+    html += '<button class="detail-close" onclick="MM.closeDetail()" title="Close (ESC)">×</button>';
+    html += '<div class="viewer-quickstats">';
+    if (d.mc) html += renderManaSymbols(d.mc);
+    if (d.p != null && d.th != null) {
+      html += '<span class="stat-divider">·</span><strong>' + escHtml(d.p) + '/' + escHtml(d.th) + '</strong>';
+    }
+    if (d.r) {
+      const rc = ['mythic', 'rare', 'uncommon', 'common'].includes(d.r) ? d.r : '';
+      html += '<span class="stat-divider">·</span><span class="rarity-pill ' + rc + '">' + escHtml(d.r) + '</span>';
+    }
+    html += '</div></div>';
+
+    // Say what the order is. An unexplained sequence through 400 cards is just a shuffle
+    // with extra steps, and the ordering is the only thing making this browsable.
+    html += '<div class="browse-order">';
+    html += '<span class="browse-order-bar"><span style="width:' +
+      ((browseSet.pos / Math.max(n - 1, 1)) * 100).toFixed(1) + '%"></span></span>';
+    html += '<span class="browse-order-label">least typical → most typical · 128-dim distance from the selection’s centre</span>';
+    html += '</div>';
+
+    html += buildCardDetailHtml(d);
+    html += '<div class="keyboard-hint">← → browse · Esc clear · click a point to leave browse mode</div>';
+
+    inner.innerHTML = html;
+    panel.classList.add('open');
+    inner.scrollTop = 0;
+    preloadNeighbourImages();
+    setTimeout(() => Plotly.Plots.resize('plot'), 260);
+  }
+
   // Put the open row's header just under the sticky masthead, so the card it just
   // revealed is on screen. Without this the accordion still scrolls you away from your
   // own click once the list is longer than the panel.
@@ -369,6 +487,16 @@
   // Wraps in both directions \u2014 with at most 8 cards, running off the end and stopping
   // is more annoying than looping.
   function cycleSelection(delta) {
+    if (browseSet) {
+      const n = browseSet.indices.length;
+      if (n < 2) return;
+      browseSet.pos = ((browseSet.pos + delta) % n + n) % n;
+      updateViewerPanel();
+      // Fast path: nudge the marker. Falls back to a full rebuild only if the trace is
+      // missing (first render, or a mode change tore it down).
+      if (!moveBrowseMarker()) updateSelectionHighlight();
+      return;
+    }
     if (selectedCards.length < 2) return;
     const n = selectedCards.length;
     bringToTop(((topCardIndex + delta) % n + n) % n);
@@ -381,6 +509,41 @@
   }
 
   // ── Selection Highlight on Plot ──
+
+  // Where a card is depends on which layout is showing. Drilling replaces the coordinate
+  // system, so a highlight drawn at `allData[i].x` while a local layout is on screen is a
+  // gold ring pointing at nothing — the exact ambiguity the drill breadcrumb exists to
+  // prevent. Returns null for a card with no position in the current system; callers must
+  // drop it rather than falling back to a world coordinate.
+  function cardPosition(idx) {
+    const drilling = typeof window.Drill !== 'undefined' && window.Drill.isActive();
+    if (!drilling) return [allData[idx].x, allData[idx].y];
+    return window.Drill.localPosition(idx);
+  }
+
+  // Move only the marker. Rebuilding the whole highlight on every arrow press meant a
+  // deleteTraces + addTraces of the entire selection — 197 ms per step on a 3,434-card
+  // browse, which is a visible stutter on a keypress. One restyle of a single-point
+  // trace instead. Returns false if the trace is not there, so the caller can fall back
+  // to a full rebuild.
+  function moveBrowseMarker() {
+    const gd = document.getElementById('plot');
+    if (!gd || !gd.data || !browseSet) return false;
+    let ti = -1;
+    for (let i = 0; i < gd.data.length; i++) {
+      if (gd.data[i]._isBrowseCurrent) { ti = i; break; }
+    }
+    if (ti === -1) return false;
+    const cur = browseSet.indices[browseSet.pos];
+    const p = cardPosition(cur);
+    if (!p) return false;
+    Plotly.restyle('plot', {
+      x: [[p[0]]], y: [[p[1]]],
+      customdata: [[cur]],
+      text: [[buildHoverTextMinimal(allData[cur])]],
+    }, [ti]);
+    return true;
+  }
 
   function updateSelectionHighlight() {
     const plotDiv = document.getElementById('plot');
@@ -397,18 +560,50 @@
       Plotly.deleteTraces('plot', toDelete);
     }
 
-    if (selectedCards.length === 0) return;
+    if (selectedCards.length === 0 && !browseSet) return;
 
-    // Where a card is depends on which layout is showing. Drilling replaces the
-    // coordinate system, so a highlight drawn at `allData[i].x` while a local layout is
-    // on screen is a gold ring pointing at nothing — the exact ambiguity the drill
-    // breadcrumb exists to prevent, reintroduced by a helper that runs after every
-    // render. A card that is not in the drilled subset simply has no position to mark.
-    const drilling = typeof window.Drill !== 'undefined' && window.Drill.isActive();
-    const posOf = idx => {
-      if (!drilling) return [allData[idx].x, allData[idx].y];
-      return window.Drill.localPosition(idx);
-    };
+    const posOf = cardPosition;
+
+    // Browse mode paints the whole set small and the card you are on large with a white
+    // ring, so the arrows have a visible position on the map. No animation: one restyle
+    // per press, nothing to tear down, and it reads at any zoom.
+    if (browseSet) {
+      const rows = browseSet.indices.filter(i => posOf(i));
+      const cur = browseSet.indices[browseSet.pos];
+      const curPos = posOf(cur);
+      const traces = [];
+      if (rows.length) {
+        traces.push({
+          type: 'scattergl',
+          mode: 'markers',
+          name: 'Selection (' + browseSet.indices.length.toLocaleString() + ')',
+          x: rows.map(i => posOf(i)[0]),
+          y: rows.map(i => posOf(i)[1]),
+          text: rows.map(i => buildHoverTextMinimal(allData[i])),
+          customdata: rows.slice(),
+          hoverinfo: 'none',
+          marker: { size: 5, opacity: 0.85, color: '#8B7730' },
+          _isSelection: true,
+        });
+      }
+      if (curPos) {
+        traces.push({
+          type: 'scattergl',
+          mode: 'markers',
+          name: 'Browsing',
+          x: [curPos[0]],
+          y: [curPos[1]],
+          text: [buildHoverTextMinimal(allData[cur])],
+          customdata: [cur],
+          hoverinfo: 'none',
+          marker: { size: 16, opacity: 1, color: '#c4a747', line: { color: '#fff', width: 2.5 } },
+          _isSelection: true,
+          _isBrowseCurrent: true,
+        });
+      }
+      if (traces.length) Plotly.addTraces('plot', traces);
+      return;
+    }
 
     // Build selection highlight trace
     const topIdx = selectedCards[topCardIndex]?.idx;
@@ -1447,18 +1642,15 @@
 
         const total = eventData.points.length;
         if (total > MAX_SELECTED) {
-          setStatus(`Selected ${MAX_SELECTED} of ${total} cards (max ${MAX_SELECTED})`);
-          // The box caught more than the detail stack can hold. Rather than discard the
-          // rest silently — which is what this handler did — offer the whole set to
-          // drill. The 8-card stack keeps its own meaning; this is a second use for one
-          // gesture, and it is a button rather than an automatic hijack.
-          if (typeof window.Drill !== 'undefined') {
-            const all = [];
-            for (const pt of eventData.points) {
-              if (pt.customdata != null && allData[pt.customdata]) all.push(pt.customdata);
-            }
-            window.Drill.offer(all, 'Selection');
+          // Too many for the accordion, so take the WHOLE set into browse mode rather
+          // than keeping an arbitrary 8. Also offer it to drill — flipping through the
+          // cards and re-laying them out are two useful things to do with one box.
+          const all = [];
+          for (const pt of eventData.points) {
+            if (pt.customdata != null && allData[pt.customdata]) all.push(pt.customdata);
           }
+          enterBrowse(all, 'Selection');
+          if (typeof window.Drill !== 'undefined') window.Drill.offer(all, 'Selection');
         } else {
           setStatus(`Selected ${indices.length} card${indices.length === 1 ? '' : 's'}`);
         }
@@ -1517,6 +1709,8 @@
     bringToTop,
     cyclePrev: () => cycleSelection(-1),
     cycleNext: () => cycleSelection(1),
+    enterBrowse,
+    get browseSet() { return browseSet; },
     selectByName,
     findSimilar: findSimilarCards,
     findSynergies: findSynergyCards,

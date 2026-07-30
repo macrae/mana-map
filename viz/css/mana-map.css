@@ -437,3 +437,14 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .drill-x { background: none; border: 1px solid #3a3a5a; border-radius: 3px; color: #999;
   padding: 3px 8px; font-size: 0.72rem; cursor: pointer; font-family: inherit; }
 .drill-x:hover { border-color: #888; color: #ddd; }
+
+/* ── Browse mode (selections too big for the accordion) ───────────────────
+ * A list of 400 names is not navigation, it is a wall. The arrows are the whole
+ * interface; the bar says where you are in the ordering, because an unexplained
+ * sequence through hundreds of cards is a shuffle with extra steps.
+ */
+.browse-order { margin: 0 0 12px; }
+.browse-order-bar { display: block; height: 3px; background: #2a2a4a; border-radius: 2px;
+  overflow: hidden; margin-bottom: 5px; }
+.browse-order-bar > span { display: block; height: 100%; background: #c4a747; transition: width 0.2s ease; }
+.browse-order-label { display: block; font-size: 0.62rem; color: #777; line-height: 1.4; }
