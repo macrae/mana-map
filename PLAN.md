@@ -23,7 +23,7 @@ a **deck builder** that produces the deck in the first place.
 [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-1,078 tests (1,030 fast + 48 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
+1,092 tests (1,034 fast + 58 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
 
 > ### ⚠ OPEN: 23 agent-cache routines are deliberately MISSed
 >
@@ -338,8 +338,15 @@ present, so no cross-links ever formed); the panel followed the cursor rather th
 lone seed drew as a 6 px dot. Card art is a DOM `<img>` over the canvas — Scryfall's redirect
 refuses `crossOrigin`, so `ctx.drawImage` would taint the canvas and break `getImageData`.
 
-**Slice 3 — next.** The tray, Moxfield paste-import (shared fixtures first, then the parser), and
-the Optimize brief hand-off to Claude Code.
+**Slice 3 — shipped.** Paste a Moxfield export and your deck lights up as a graph, commander
+pinned (Edgar: 136 entries, 129 cards, 0 unresolved, 26 ms). A tray holds what you keep and
+exports a **brief** — the site stays static, and the pilot loop still runs in Claude Code where
+it works. The JS parser is checked against the Python one on shared **hand-authored** fixtures,
+projected onto `{name, quantity, is_commander, is_sideboard}` so the printing hazard is deleted
+rather than duplicated.
+
+**Next.** Relation-styled edges in the graph, and the synergy coverage holes (Doubling Season has
+no partners at all) now that the UI surfaces them.
 
 **Three findings that changed the requirements:**
 

@@ -683,6 +683,18 @@
     if (n) branchFrom(n);
   }
 
+  // Pin WITHOUT branching. An import wants the commander centred and open, not the deck
+  // silently grown by six cards it did not contain — which is what focusCard does, and
+  // did: importing a 129-card deck produced a 135-node graph.
+  function pinCard(row) {
+    const n = byIdx.get(row);
+    if (!n) return;
+    pinned = n;
+    if (trail[trail.length - 1] !== n) trail.push(n);
+    draw();
+    renderPanel();
+  }
+
   // ── Panel ───────────────────────────────────────────────────────────────
 
   // Somewhere to start. Decks come from the tracked manifest; regions from the HDBSCAN
@@ -759,6 +771,10 @@
   function renderPanel() {
     const el = document.getElementById('deckInner');
     if (!el || !active) return;
+    // Discovery owns the side panel in its chrome. Drawing the walk panel over it would
+    // erase the landing controls, the tray and the import box every time the graph
+    // reheats — which it does on every branch.
+    if (chrome === 'discovery') { if (window.Discovery) Discovery.render(); return; }
     // A "0 CARDS / 0 LINKS" panel is a dead end. Whoever calls this with an empty graph
     // wants the empty state, not an empty scoreboard — routing it here rather than at
     // each call site means a new caller cannot reintroduce the dead end.
@@ -844,7 +860,7 @@
   window.addEventListener('resize', function () { if (active) resize(); });
 
   window.Force = {
-    enter, exit, isActive, seedFrom, focusCard,
+    enter, exit, isActive, seedFrom, focusCard, pinCard,
     reheat, freeze, clearTrail, newWalk, tune, close, renderPanel, bbox,
     walkDeck, walkRegion, branchByRow,
     fit: function () { fitToGraph(true); },

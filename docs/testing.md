@@ -1,12 +1,12 @@
 # Testing
 
 ```bash
-.venv/bin/python -m pytest              # everything (1,078, ~5 min)
-.venv/bin/python -m pytest -m "not browser"   # fast suite (1,030, ~70 s)
-.venv/bin/python -m pytest -m browser         # the 48 browser tests (~230 s)
+.venv/bin/python -m pytest              # everything (1,092, ~5.5 min)
+.venv/bin/python -m pytest -m "not browser"   # fast suite (1,034, ~70 s)
+.venv/bin/python -m pytest -m browser         # the 58 browser tests (~260 s)
 ```
 
-1,078 tests in `tests/`: 429 card-pipeline + 601 pilot-subsystem + **48 browser**.
+1,092 tests in `tests/`: 433 card-pipeline + 601 pilot-subsystem + **58 browser**.
 One is a still-unmet `xfail(strict=True)` ship gate in `test_embedding_quality.py` — see below.
 
 ## Source assertions do not catch regressions
@@ -43,7 +43,7 @@ matched literal indentation and broke the moment the key handler was rewritten t
 gate — while the invariant it cared about was untouched. It now asserts the delegation
 (`cycleSelection` is called; the handler does not recompute an index) rather than the text.
 
-### Browser tests (48) — `tests/test_viz_behaviour.py`
+### Browser tests (58) — `tests/test_viz_behaviour.py` + `test_decklist_parity.py`
 
 Fixtures in `tests/conftest_viz.py` (deliberately not `conftest.py`, so the other 978 never
 import playwright): an ephemeral `http.server` rooted at the repo — `viz/` and `data/` must
@@ -76,6 +76,19 @@ branching grows the graph and records the trail, and that leaving restores the m
 
 Setup, one time: `.venv/bin/python -m playwright install chromium` (~94 MB). Without it the
 whole file skips cleanly, so a fresh clone still runs the other 978.
+
+## Session fixtures belong in `conftest.py`, not in an imported module
+
+`browser` and `viz_server` live in `tests/conftest.py`. They used to live in
+`conftest_viz.py` and be imported per test module — and a fixture imported into two
+modules is **registered twice**, so two files importing `browser` opened two concurrent
+`sync_playwright()` contexts and every browser test errored at setup.
+
+It only appeared in a full run. Each file passed alone, which is the worst shape a
+failure can have: the obvious debugging move (run the failing file) makes it disappear.
+
+Playwright is still imported lazily inside the fixture body, so the 1,034 non-browser
+tests pay nothing for its presence in `conftest.py`.
 
 ## Ship gates: `xfail(strict=True)` as a stated goal
 

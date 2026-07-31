@@ -1,7 +1,13 @@
-"""Browser fixtures for the behavioural viz tests.
+"""Page fixtures for the behavioural viz tests.
 
-Kept out of `conftest.py` so the 900+ non-browser tests never import playwright and never
-pay for it. `test_viz_behaviour.py` imports these explicitly.
+The session-scoped `browser` and `viz_server` fixtures live in `conftest.py`, NOT here.
+They used to live here and be imported by each test module — which registers a SEPARATE
+session fixture per importing module, so two files importing `browser` opened two
+concurrent `sync_playwright()` contexts and every browser test errored at setup. It only
+showed up in a full run: each file passed alone.
+
+Playwright is still not imported unless a browser test actually runs; `importorskip` sits
+inside the fixture body, so the 1,000+ non-browser tests pay nothing.
 
 The suite serves the repo root on an ephemeral port, because every fetch in `viz/` is
 `../data/<file>` relative to `viz/index.html` — `viz/` and `data/` must be siblings under
@@ -10,16 +16,7 @@ the server root, which is the same constraint GitHub Pages imposes.
 
 from __future__ import annotations
 
-import contextlib
-import functools
-import http.server
-import socket
-import threading
-from pathlib import Path
-
 import pytest
-
-ROOT = Path(__file__).resolve().parents[1]
 
 # The map eagerly fetches a 12.9 MB projection before it renders anything, then loads
 # region labels in the background. Every wait below is generous on purpose: a flaky
@@ -30,46 +27,6 @@ ROOT = Path(__file__).resolve().parents[1]
 # opens a fresh page that re-parses the projection. The cause was not diagnosed; this is
 # insurance, not a fix. If it recurs, instrument the fixture rather than raising it again.
 BOOT_TIMEOUT_MS = 120_000
-
-
-def _free_port() -> int:
-    with contextlib.closing(socket.socket()) as s:
-        s.bind(("127.0.0.1", 0))
-        return s.getsockname()[1]
-
-
-class _QuietHandler(http.server.SimpleHTTPRequestHandler):
-    def log_message(self, *args):  # noqa: D102 - silence per-request logging
-        pass
-
-
-@pytest.fixture(scope="session")
-def viz_server() -> str:
-    """Serve the repo root; yield the base URL."""
-    port = _free_port()
-    handler = functools.partial(_QuietHandler, directory=str(ROOT))
-    httpd = http.server.ThreadingHTTPServer(("127.0.0.1", port), handler)
-    thread = threading.Thread(target=httpd.serve_forever, daemon=True)
-    thread.start()
-    try:
-        yield f"http://127.0.0.1:{port}"
-    finally:
-        httpd.shutdown()
-        httpd.server_close()
-
-
-@pytest.fixture(scope="session")
-def browser():
-    playwright = pytest.importorskip(
-        "playwright.sync_api",
-        reason="browser tests need playwright: pip install playwright && playwright install chromium",
-    )
-    with playwright.sync_playwright() as p:
-        browser = p.chromium.launch()
-        try:
-            yield browser
-        finally:
-            browser.close()
 
 
 # Discovery is the landing now, so every existing fixture asks for the map explicitly.

@@ -22,7 +22,7 @@ from __future__ import annotations
 import pytest
 
 from conftest_viz import (  # noqa: F401
-    BOOT_TIMEOUT_MS, browser, canvas_page, discover_page, page, viz_server,
+    BOOT_TIMEOUT_MS, canvas_page, discover_page, page,
 )
 
 pytestmark = pytest.mark.browser
@@ -1200,3 +1200,115 @@ def test_the_atlas_is_still_one_click_away(discover_page):
     assert discover_page.js_errors == []
     assert r["rows"] > 30000, "the projection never loaded behind the landing"
     assert r["traces"] > 0, "switching to Explore did not draw the map"
+
+
+# ── Slice 3: the tray, import, and the hand-off ─────────────────────────
+
+
+def test_a_real_moxfield_export_imports_completely(discover_page):
+    """The end-to-end claim: paste a decklist, get your deck as a graph.
+
+    Checked against a deck the CLI already ingested, so `cards.json` is an independent
+    answer to what that list contains. Resolution goes through `viz_index`, NOT
+    `data/decks/index.json` — Deck Lens refuses any slug it does not already know, and an
+    imported deck has no slug and never will.
+    """
+    r = discover_page.evaluate("""async () => {
+        const text = await (await fetch('../data/decks/edgar-vampires/decklist.txt')).text();
+        const doc = await (await fetch('../data/decks/edgar-vampires/cards.json')).json();
+        const res = Discovery.importText(text);
+        await new Promise(r => setTimeout(r, 3000));
+        const expected = new Set(doc.cards.map(c => c.name));
+        const got = new Set(Discovery.tray.names());
+        const missingFromGraph = [...expected].filter(n => !got.has(n));
+        return {
+            resolved: res.resolved,
+            unresolved: res.missing,
+            nodes: Force.nodeCount,
+            commander: res.commander >= 0 ? Discovery.index[res.commander].n : null,
+            missingFromGraph: missingFromGraph.slice(0, 10),
+            missingCount: missingFromGraph.length,
+        };
+    }""")
+    assert discover_page.js_errors == []
+    assert r["unresolved"] == [], f"names the index could not resolve: {r['unresolved']}"
+    assert r["commander"] == "Edgar Markov", "the commander was not identified"
+    assert r["missingCount"] == 0, f"cards in the deck but not the graph: {r['missingFromGraph']}"
+    assert r["nodes"] == r["resolved"], (
+        f"{r['nodes']} nodes from {r['resolved']} cards — the import grew the deck, which "
+        f"is what focusCard did before pinCard existed"
+    )
+
+
+def test_import_keeps_the_discovery_chrome(discover_page):
+    """The panel must stay Discovery's after an import, or the tray and export vanish.
+
+    `renderPanel` runs on every reheat, and the graph reheats on every branch — so a
+    walk-chrome panel would wipe the controls seconds after the import landed.
+    """
+    r = discover_page.evaluate("""async () => {
+        const text = await (await fetch('../data/decks/goblin-storm/decklist.txt')).text();
+        Discovery.importText(text);
+        await new Promise(r => setTimeout(r, 2500));
+        Force.renderPanel();
+        return {
+            header: document.querySelector('#deckInner h2').textContent,
+            tray: !!document.querySelector('.discover-tray'),
+        };
+    }""")
+    assert discover_page.js_errors == []
+    assert r["header"] == "Discover"
+    assert r["tray"], "the tray controls were erased by a walk-chrome render"
+
+
+def test_the_tray_is_its_own_thing(discover_page):
+    r = discover_page.evaluate("""async () => {
+        const row = Discovery.current;
+        Discovery.tray.toggle(row);
+        const added = Discovery.tray.has(row);
+        Discovery.tray.toggle(row);
+        const removed = !Discovery.tray.has(row);
+        Discovery.tray.toggle(row);
+        Discovery.tray.toggle(Discovery.rowByName('Sol Ring'));
+        await new Promise(r => setTimeout(r, 150));
+        const two = Discovery.tray.list.length;
+        Discovery.tray.clear();
+        return {added: added, removed: removed, two: two, cleared: Discovery.tray.list.length};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["added"] and r["removed"]
+    assert r["two"] == 2 and r["cleared"] == 0
+
+
+def test_the_brief_is_the_hand_off_not_a_backend(discover_page):
+    """There is no server and this does not add one. The pilot loop is 6-10 serial
+    subagent spawns costing ~330k-1.7M tokens; a static page cannot run it. So the tray
+    emits a brief for a human to paste into Claude Code, and says so."""
+    r = discover_page.evaluate("""async () => {
+        const text = await (await fetch('../data/decks/heliod/decklist.txt')).text();
+        Discovery.importText(text);
+        await new Promise(r => setTimeout(r, 2500));
+        return Discovery.brief();
+    }""")
+    assert discover_page.js_errors == []
+    assert r["card_count"] > 50
+    assert len(r["cards"]) == r["card_count"]
+    assert r["commander_candidates"], "a brief with no commander candidates is not useful"
+    assert "Claude Code" in r["next_step"], "the brief must say where it gets run"
+
+
+def test_import_does_not_go_through_deck_lens(discover_page):
+    """Deck Lens hard-refuses any slug absent from the CLI-built manifest, and an imported
+    deck has no slug. Asserting the manifest is untouched keeps a future change from
+    quietly routing imports through a door that cannot open for them."""
+    r = discover_page.evaluate("""async () => {
+        const text = await (await fetch('../data/decks/sisay/decklist.txt')).text();
+        const res = Discovery.importText(text);
+        await new Promise(r => setTimeout(r, 2500));
+        return {resolved: res.resolved, mode: document.getElementById('modeSelect').value,
+                nodes: Force.nodeCount};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["resolved"] > 50
+    assert r["mode"] == "discover", "import switched modes — Deck Lens cannot host this"
+    assert r["nodes"] == r["resolved"]

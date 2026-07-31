@@ -200,11 +200,30 @@ window.Discovery = (function () {
     return pool[lo].row;
   }
 
-  function rowByName(name) {
-    if (!index) return -1;
-    const want = String(name).toLowerCase();
+  let nameMap = null;
+
+  function ensureNameMap() {
+    if (nameMap || !index) return nameMap;
+    // Built once and reused. A linear scan is 34,322 comparisons per lookup, which is
+    // fine for one card and 3.4M for a 100-card import.
+    nameMap = new Map();
     for (let i = 0; i < index.length; i++) {
-      if (index[i].n.toLowerCase() === want) return i;
+      const key = index[i].n.toLowerCase();
+      if (!nameMap.has(key)) nameMap.set(key, i);   // first printing wins, as everywhere
+    }
+    return nameMap;
+  }
+
+  function rowByName(name) {
+    const m = ensureNameMap();
+    if (!m) return -1;
+    const want = String(name).trim().toLowerCase();
+    if (m.has(want)) return m.get(want);
+    // Decklists often carry only the front face of a double-faced card. cards.csv keys
+    // the full "A // B" form, so fall back to a front-face match before giving up.
+    for (const [key, row] of m) {
+      const cut = key.indexOf(' // ');
+      if (cut > 0 && key.slice(0, cut) === want) return row;
     }
     return -1;
   }
@@ -252,6 +271,19 @@ window.Discovery = (function () {
       '<button class="lens-btn lens-btn-inline" onclick="Discovery.reroll()">Feeling lucky ↻</button>' +
       '</div>';
 
+    html += '<div class="discover-tray">' +
+      '<button class="lens-btn" onclick="Discovery.toggleImport()">Paste a decklist</button>' +
+      '<span class="discover-traycount">' + tray.length + ' in tray</span>' +
+      (tray.length ? '<button class="lens-btn" onclick="Discovery.exportBrief()">Export brief</button>' +
+                     '<button class="lens-btn" onclick="Discovery.tray.clear()">Clear</button>' : '') +
+      '</div>';
+    html += '<div id="dcImportWrap" style="display:none">' +
+      '<textarea id="dcImport" class="discover-import" rows="5" ' +
+      'placeholder="1 Sol Ring&#10;1 Edgar Markov *CMDR*&#10;&#10;Moxfield exports work as-is."></textarea>' +
+      '<button class="lens-btn" onclick="Discovery.onImport()">Load deck as a graph</button>' +
+      '<p class="lens-note">Resolved against the card index, not the published decks — ' +
+      'any list works, it does not have to be one of the seven.</p></div>';
+
     html += '<div class="discover-filters">' +
       '<select id="dcType" onchange="Discovery.onFilter(\'supertype\', this.value)">' +
         optionsFor(types, filters.supertype, 'Any type') + '</select>' +
@@ -283,6 +315,8 @@ window.Discovery = (function () {
       html += '<p class="lens-note">Synergy is a rule-based list of ten, not a ranking — ' +
               'the first one is not "the best".</p>';
     }
+    html += '<button class="lens-btn discover-keep" onclick="Discovery.tray.toggle(' +
+      current + ')">' + (inTray(current) ? '✓ In tray' : '+ Keep this card') + '</button>';
     html += MM.buildCardDetailHtml(MM.cardRecord(current));
     el.innerHTML = html;
   }
@@ -338,6 +372,117 @@ window.Discovery = (function () {
     Force.branchByRow(row, relation || 'similar');
   }
 
+  // ── the tray ───────────────────────────────────────────────────────────
+
+  /* A deliberately light selected-set, separate from the graph. The graph is where you
+   * are looking; the tray is what you are keeping. Four other "set of cards" ideas
+   * already exist in this codebase (selectedCards, browseSet, deck-builder seeds,
+   * Deck Lens) — this is not another one of those, it is the thing you export. */
+  const tray = [];
+
+  function inTray(row) { return tray.indexOf(row) !== -1; }
+
+  function toggleTray(row) {
+    const at = tray.indexOf(row);
+    if (at === -1) tray.push(row); else tray.splice(at, 1);
+    render();
+    if (window.Force && Force.isActive()) Force.renderPanel();
+  }
+
+  function clearTray() { tray.length = 0; render(); }
+
+  function trayNames() { return tray.map(r => index[r].n); }
+
+  /* The hand-off to the pilot loop. There is no backend and this plan does not add one:
+   * the manuals are 6-10 serially dependent LLM subagents costing ~330k-1.7M tokens, and
+   * a static page on Pages cannot run Python. So the tray produces a BRIEF — the thing a
+   * human pastes into Claude Code, where that loop already works. */
+  function brief() {
+    const cards = trayNames();
+    const commanderish = tray.filter(r => (index[r].g || []).length &&
+                                          index[r].s === 'Creature');
+    return {
+      generated_by: 'manamap discovery tray',
+      card_count: cards.length,
+      cards: cards,
+      commander_candidates: commanderish.slice(0, 8).map(r => index[r].n),
+      next_step: 'Run the build loop in Claude Code: /build-deck with these cards as the '
+               + 'pool. The pilot subsystem is 6-10 serial subagent spawns and cannot run '
+               + 'in a browser.',
+    };
+  }
+
+  function exportBrief() {
+    const doc = brief();
+    const text = JSON.stringify(doc, null, 2);
+    const blob = new Blob([text], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'manamap-brief.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    if (navigator.clipboard) navigator.clipboard.writeText(text).catch(() => {});
+    MM.setStatus(doc.card_count + ' cards exported — paste the brief into Claude Code.');
+    return doc;
+  }
+
+  // ── import ─────────────────────────────────────────────────────────────
+
+  /* Paste a Moxfield export, get your deck as a graph. Resolution is against viz_index,
+   * NOT data/decks/index.json — Deck Lens refuses any slug it does not already know
+   * (deck-map.js), and an imported deck has no slug and never will. */
+  function importText(text) {
+    if (!index) return { resolved: 0, missing: [], total: 0 };
+    const entries = Decklist.parse(text);
+    const rows = [];
+    const missing = [];
+    let commanderRow = -1;
+    for (const e of entries) {
+      const row = rowByName(e.name);
+      if (row < 0) { missing.push(e.name); continue; }
+      if (rows.indexOf(row) === -1) rows.push(row);
+      if (e.is_commander && commanderRow < 0) commanderRow = row;
+    }
+    if (!rows.length) {
+      MM.setStatus('Nothing in that list resolved to a card.');
+      return { resolved: 0, missing: missing, total: entries.length };
+    }
+
+    for (const r of rows) if (!inTray(r)) tray.push(r);
+
+    if (window.Force) {
+      Force.newWalk(true);
+      // Commander first so it becomes the pinned node — "where does my deck live" starts
+      // from the card the deck is built around.
+      const seeds = commanderRow >= 0
+        ? [commanderRow].concat(rows.filter(r => r !== commanderRow))
+        : rows;
+      Promise.resolve(Force.enter(seeds, 'Imported deck', { chrome: 'discovery' }))
+        .then(function () {
+          if (commanderRow >= 0) Force.pinCard(commanderRow);
+          render();
+        });
+    }
+    current = commanderRow >= 0 ? commanderRow : rows[0];
+    MM.setStatus(rows.length + ' of ' + entries.length + ' cards placed'
+      + (missing.length ? ' — ' + missing.length + ' unresolved' : ''));
+    return { resolved: rows.length, missing: missing, total: entries.length,
+             commander: commanderRow };
+  }
+
+  function onImport() {
+    const box = document.getElementById('dcImport');
+    if (!box) return;
+    const text = box.value.trim();
+    if (!text) { MM.setStatus('Paste a decklist first.'); return; }
+    importText(text);
+  }
+
+  function toggleImport() {
+    const box = document.getElementById('dcImportWrap');
+    if (box) box.style.display = box.style.display === 'none' ? '' : 'none';
+  }
+
   function enter() {
     // Called before the index exists on a cold boot — render the chrome now and let the
     // boot promise land the card. Calling land() here would pick from a null index.
@@ -350,6 +495,9 @@ window.Discovery = (function () {
   return {
     configure, ready, isReady, loadIndex, loadNeighbours, decode,
     enter, exit: exitMode, land, show, reroll, walk, onFilter, render,
+    tray: { get list() { return tray.slice(); }, has: inTray, toggle: toggleTray,
+            clear: clearTray, names: trayNames },
+    brief, exportBrief, importText, onImport, toggleImport, rowByName,
     get current() { return current; },
     record, neighbours, counts,
     pick, rowByName, poolSize, setFilter, getFilters,

@@ -220,6 +220,27 @@ turns out to do nothing reads as broken rather than as a fact about the card. Sy
 exactly 10 partners for every card that has any, so the UI says it is a rule-based list
 rather than a ranking.
 
+### The tray, import, and the hand-off
+
+**The tray** is a deliberately light selected-set, separate from the graph: the graph is
+where you are looking, the tray is what you are keeping. It is the fifth "set of cards"
+idea in this codebase and the only one that exports.
+
+**Import** parses a pasted Moxfield export with `viz/js/decklist.js`, resolves names
+against `viz_index.json`, and seeds the graph with the whole list, commander pinned. It
+deliberately does **not** touch Deck Lens: `deck-map.js` refuses any slug absent from the
+CLI-built `data/decks/index.json`, and an imported deck has no slug and never will.
+Measured on the tracked Edgar list — 136 entries, 129 unique cards, 0 unresolved, 26 ms.
+
+Pinning uses `Force.pinCard`, not `focusCard`. `focusCard` *branches*, so importing a
+129-card deck produced a 135-node graph — six cards the deck did not contain.
+
+**Optimize is a brief, not a button.** There is no backend and this does not add one: the
+pilot loop is 6–10 serially dependent LLM subagents costing ~330k–1.7M tokens, and a
+static page cannot run Python. The tray emits a JSON brief (download + clipboard) naming
+the cards and candidate commanders, which a human pastes into Claude Code where that loop
+already works. The brief says so in its own `next_step` field.
+
 ## The canvas renderer (`?renderer=canvas`) — Phases 2–3 of the migration
 
 `viz/js/render/canvas.js` draws the map instead of Plotly. Both renderers are live at once:
