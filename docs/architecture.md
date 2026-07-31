@@ -44,30 +44,72 @@ Shared utilities (`get_device`, `collate_triplets`, `run_epoch`) live in `traini
 
 **Both:** triplet margin loss (margin 0.3), batch 256, Adam lr 1e-3, 90/10 split, early stopping patience 5. Color+Type converges near-zero loss by ~epoch 7; the ability model typically stops ~epoch 16 (best val_loss ~0.05).
 
-### Both spaces have collapsed — measured, step 14
+### The two spaces do different jobs
 
-That near-zero loss is the problem, not a sign of health. Run `manamap eval-embeddings`:
+**Layout** (`train.py` → `embeddings.npy`) organises the map by colour and type. That is what
+a *picture* wants, and it is all this model is asked for — it feeds `projection_2d.json` and
+nothing else. It still converges to near-zero loss in a few epochs, and that is fine for a
+task whose whole content is "same colour, same type".
 
-| space | dim | effective dim | 1st→50th neighbour gap | recall@10 (held-out) |
-|---|---|---|---|---|
-| Color+Type | 128 | **3.05** | **0.0033** | 0.044 |
-| Ability | 128 | 5.97 | 0.0236 | 0.093 |
-| frozen MiniLM text (the *input*) | 384 | 81.04 | 0.1490 | **0.187** |
+**Function** (`train_ability.py` → `embeddings_ability.npy`) answers whether two cards do the
+same job. Every "find similar" answer in the product comes from here, on either map.
 
-Two independent failures, both traceable to the mining rules above:
+### The function model was rebuilt — measured, step 14
 
-- **The task is trivially satisfiable.** "Same (supertype, primary_color)" versus "differs in
-  both" is solved by encoding colour and type and discarding the rest — which is what 3.05
-  effective dimensions is. A triplet margin gives zero gradient once satisfied, so nothing ever
-  pressures the model to keep *within-class* structure. A 0.003 cosine spread across the top 50
-  means their ordering is float noise, so "most similar" is an arbitrary pick from a tie.
-- **The ability model's positives are mostly fallbacks.** Its rule needs ≥2 shared mechanical
-  tags, but only **46.9%** of cards have two tags at all (80% have one), so for most of the
-  corpus the positive is "shares ≥1 tag" or a random card. For contrast `card_roles.json`
-  covers **89%** at 1.94 roles/card — a denser signal neither model uses.
+Held-out `test` split of `data/eval/similarity_golden.json`:
 
-**Both trained spaces lose to the frozen text they are built from**, so the training stage is
-currently subtractive.
+| space | dim | effective dim | 1st→50th gap | r@10 | r@50 | median rank |
+|---|---|---|---|---|---|---|
+| layout | 128 | 3.20 | 0.0041 | 0.090 | 0.142 | 1651 |
+| frozen MiniLM text (the input) | 384 | 50.41 | 0.1411 | 0.244 | 0.414 | 124 |
+| **function (before)** | 128 | 5.97 | 0.0236 | 0.093 | 0.190 | 995 |
+| **function (after)** | 128 | **27.87** | 0.0315 | **0.245** | **0.455** | **78** |
+
+Against the model it replaces that is 2.6× recall@10 and a 12.8× cut in median rank. Against
+the frozen text it is built from, **recall@10 is a tie** (0.245 vs 0.244 — noise across ~160
+queries); the real gains are recall@50 (+0.041) and median rank (124 → 78).
+
+Three changes, and the reason each was needed:
+
+1. **In-batch InfoNCE replaces `TripletMarginLoss`.** A margin stops producing gradient once
+   satisfied, which for the old task happened almost immediately, so nothing preserved
+   within-class structure. InfoNCE ranks each anchor against all B−1 other positives and keeps
+   teaching after the easy pairs are solved. This is what reopened the space, 5.97 → 27.87
+   effective dimensions.
+2. **Positives come from roles, rarest first.** The old rule needed ≥2 shared mechanical tags
+   and only 46.9% of cards have two, so most positives were fallbacks or random draws. Roles
+   cover 72.6% at 1.62 specific roles per card. `ROLE_BODY_FALLBACK` is excluded deliberately —
+   it labels all 19,050 creatures, so "shares threat:body" would rebuild the trivial task.
+   Rarest-first because sharing `doubler:tokens` (11 cards) says far more than sharing
+   `value:etb` (5,580).
+3. **A fixed-weight text passthrough.** The output is two independently normalised halves —
+   96 learned dims and a 32-dim projection of the frozen text — scaled so similarity is exactly
+   `0.7·cos_learned + 0.3·cos_text`. The old model was free to discard the text and did exactly
+   that; now it structurally cannot.
+
+**The halves are complementary, which is the load-bearing result:**
+
+| | r@10 | r@50 | median rank |
+|---|---|---|---|
+| learned half alone (96d) | 0.136 | 0.341 | 172 |
+| text half alone (32d) | 0.219 | 0.369 | 152 |
+| combined (128d) | **0.245** | **0.455** | **78** |
+
+The learned half is *worse alone* than the text half, yet the combination beats both — and
+beats the full 384-dim frozen text at depth. That is why positives are deliberately **not**
+gated on text similarity: selecting pairs the text already scores highly would make the learned
+half a copy of the text half instead of a complement to it.
+
+**Do not tune the mixing weight on this golden set.** Sweeping it looked productive — W=0.45
+scored 0.258 recall@10 on test — but selecting on the `dev` split picks W=0.15, and the two
+splits disagree. Everything in W ∈ [0.15, 0.6] falls inside noise at ~50 dev and ~160 test
+queries. The shipped 0.3 was chosen a priori and fitted to neither split; the 0.258 figure was
+the eval leaking into the decision.
+
+**Still unfixed:** neighbour spread is 0.0315 against a 0.05 target — better than the old
+0.0236, but the top-50 remain tighter than a well-separated space would put them.
+`tests/test_embedding_quality.py` keeps that gate failing as `xfail(strict=True)` rather than
+lowering the threshold to match the result.
 
 ### The input text (`ingest/extract.py:build_embedding_text`)
 

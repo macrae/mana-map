@@ -288,3 +288,46 @@ def test_box_select_has_one_destination():
     assert "return;" in handler.split("enterBrowse")[1][:200], (
         "the browse path must return rather than falling through to the 8-card path"
     )
+
+
+# ── Similarity is not the displayed map ─────────────────────────────────
+
+
+def _mana_map_src():
+    return (VIZ_DIR / "js" / "mana-map.js").read_text(encoding="utf-8")
+
+
+def test_similarity_does_not_follow_the_displayed_map():
+    """The defect that made Find Similar look broken.
+
+    `loadEmbeddings` used to read `MAP_CONFIGS[currentMap].embeddings`, so on the
+    colour/type map "similar" meant "same colour and type" — measured, that space
+    uses 3.05 of its 128 dimensions and scores 0.044 recall@10 against known
+    functional equivalents. The projection is a picture; similarity is a question,
+    and they want different spaces.
+
+    Structural, so a source assertion is the right tool: the guarantee is that this
+    lookup is *absent*, which no amount of clicking would reveal until the numbers
+    were already wrong.
+    """
+    src = _mana_map_src()
+    assert "SIMILARITY_EMBEDDINGS" in src
+    assert "embeddingsCache[currentMap]" not in src, (
+        "similarity is keyed on the displayed map again"
+    )
+
+
+def test_only_one_knn_implementation_remains():
+    """`findSimilarCards` hand-rolled a second full scan for years while a comment on
+    `nearestTo` claimed the two had been consolidated. They had not — and the two
+    disagreed on filtering."""
+    src = _mana_map_src()
+    assert "function cosineSimilarity" not in src, "the duplicate scorer is back"
+    assert src.count("nearestTo(") >= 2, "callers should route through nearestTo"
+
+
+def test_nearest_excludes_duplicate_names():
+    """cards.csv carries 51 duplicate names, so self-exclusion alone let a card return
+    its own twin at cosine 1.0 — true, and useless."""
+    src = _mana_map_src()
+    assert "allData[j].n === selfName" in src

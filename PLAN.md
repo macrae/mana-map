@@ -23,7 +23,7 @@ a **deck builder** that produces the deck in the first place.
 [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-1,052 tests (1,013 fast + 39 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
+1,055 tests (1,016 fast + 39 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
 
 ## Shipped
 
@@ -224,43 +224,54 @@ Still true, and still the two live defects in `viz/js/deck-builder.js`:
 sequencing was wrong (the dossier had no prerequisites; the engine port is blocked on
 `data/cards.csv` being gitignored) and its M3 premise predates the 17-section magazine.
 
-## In progress — the embedding rebuild
+## Shipped — the embedding rebuild
 
 Find Similar returned neighbours that looked arbitrary. Measured, not guessed: **both trained
-embedding spaces have collapsed, and the frozen MiniLM text they are built from beats both of
-them 2:1** on held-out functional-equivalence groups.
+embedding spaces had collapsed, and the frozen MiniLM text they were built from beat both of
+them 2:1.** The training stage was subtractive.
 
-| space | dim | effective dim | 1st→50th gap | recall@10 |
-|---|---|---|---|---|
-| layout (colour+type) | 128 | **3.05** | **0.0033** | 0.044 |
-| function (ability) | 128 | 5.97 | 0.0236 | 0.093 |
-| frozen MiniLM text *(the input)* | 384 | 81.04 | 0.1490 | **0.187** |
+Held-out `test` split of a 40-group hand-authored golden set:
 
-The colour+type objective ("same supertype and colour" vs "differs in both") is solved by
-encoding colour and type and discarding everything else, and a triplet margin stops producing
-gradient once satisfied — so nothing preserved within-class structure. A 0.0033 cosine spread
-across the top 50 means their order is float noise. `CLAUDE.md` had recorded the near-zero
-loss as expected; it was the diagnosis.
+| space | dim | effective dim | 1st→50th gap | r@10 | r@50 | median rank |
+|---|---|---|---|---|---|---|
+| layout (colour+type) | 128 | 3.20 | 0.0041 | 0.090 | 0.142 | 1651 |
+| frozen MiniLM text *(the input)* | 384 | 50.41 | 0.1411 | 0.244 | 0.414 | 124 |
+| function — **before** | 128 | 5.97 | 0.0236 | 0.093 | 0.190 | 995 |
+| function — **after** | 128 | **27.87** | 0.0315 | **0.245** | **0.455** | **78** |
 
-**Phase 0 — shipped.** `manamap eval-embeddings` (step 14, the first reporting step) scores
-every space against `data/eval/similarity_golden.json`: 40 hand-authored groups, `dev`/`test`
-split so the headline number is one nothing was tuned against. `tests/test_embedding_quality.py`
-adds regression floors plus three `xfail(strict=True)` ship gates that fail today by design and
-will fail the suite when the retrain fixes them.
+Against the model it replaces: 2.6× recall@10, median rank cut 12.8×. Against the frozen text
+it is built from: **recall@10 is a tie**; the real gains are recall@50 and median rank.
 
-**Phase 1 — in progress.** Input fixes, measurable without retraining: the card name is out of
-the embedding text (it bought similarity off shared words — *Rhystic Study* matched *White
-Rhystic Study* at 0.951), mana cost and P/T are in, the empty-string keyword slot is fixed,
-EDHREC rank has a fixed rather than per-run scale, and WUBRG/pip/stat features are computed and
-staged for Phase 2 to consume.
+What it looks like in the product — *Doubling Season* went from *Gift of the Woods, Super
+Strength, Naturalize the Phyresis* to *Primal Vigor, Parallel Lives, Branching Evolution,
+Halving Season, Anointed Procession*.
 
-**Phases 2–4 — not started.** Replace the triplet loss with in-batch InfoNCE plus hard
-negatives and a text passthrough; decouple similarity from the displayed map (the layout space
-is what Find Similar searches today, which is most of the felt problem); refresh artifacts with
-`manamap run --from preprocess`, never from `download` — re-downloading changes `cards.csv`,
-which MISSes every cached agent routine on all seven decks.
+| Phase | What |
+|---|---|
+| **0 — measure** | `manamap eval-embeddings` (step 14, the first reporting step) + `data/eval/similarity_golden.json` (40 groups, `dev`/`test` split) + `tests/test_embedding_quality.py`. Nothing here was falsifiable before it |
+| **1 — inputs** | Card name out of the embedding text (0.187 → 0.248 alone — it bought similarity off shared *words*: *Rhystic Study* ↔ *White Rhystic Study* at 0.951); cost and P/T in; empty-string keyword slot fixed; EDHREC rank on a fixed rather than per-run scale; vocab capacity asserted |
+| **2 — objective** | In-batch InfoNCE replaces a triplet margin that stopped teaching once satisfied; positives from roles rarest-first instead of a ≥2-tag rule that fell back to random for most of the corpus; fixed-weight text passthrough so similarity is exactly `0.7·cos_learned + 0.3·cos_text` and the text can no longer be discarded |
+| **3 — consumers** | Similarity decoupled from the displayed map; the duplicate k-NN inside `findSimilarCards` deleted; duplicate names excluded; the `Math.max(0, dot)` clamp documented on both sides |
+| **4 — refresh** | `manamap run --from preprocess`; eight tracked artifacts regenerated |
 
-Full record: `/Users/michellemacrae/.claude/plans/wondrous-gliding-hoare.md`.
+Two results worth keeping:
+
+**The halves are complementary.** The learned half alone scores 0.136 recall@10 and the text
+half alone 0.219, yet combined they reach 0.245 with median rank 78 — better than either half
+and better than the full 384-dim frozen text. That is why positives are deliberately *not*
+gated on text similarity: it would have made the learned half a copy rather than a complement.
+
+**The golden set is too small to tune on.** Sweeping the text weight showed W=0.45 at 0.258
+recall@10 — but that was selected by reading the held-out split. Selecting on `dev` picks
+W=0.15, the two disagree, and everything in W ∈ [0.15, 0.6] is inside noise at ~50 dev and
+~160 test queries. Shipped W=0.3, chosen a priori and fitted to neither split.
+
+**Still open:** neighbour spread is 0.0315 against a 0.05 target — better than 0.0236 but the
+top-50 remain tight. Held as a failing `xfail(strict=True)` gate rather than lowering the
+threshold to match the result. Hard-negative mining was scoped out of this pass deliberately
+(random in-batch negatives are safe here — 0.004% false-negative rate — but mined ones need a
+similarity ceiling, since 39% of cards have a text neighbour above 0.75), and is the obvious
+next lever.
 
 ## Future — what is not started
 

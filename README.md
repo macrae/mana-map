@@ -175,9 +175,16 @@ Manual     fetch-deck → goldfish + RAG DBs → agents author JSON
 `src/manamap/config.py`; both CLIs are registry-driven with lazy imports.
 
 Two lightweight fusion MLPs (~180K params each) produce the 128-dim embeddings; the text
-encoder stays frozen. The ability model deliberately shrinks its color inputs so cards
-cluster by function rather than color — that handicap is the whole reason the second map
-is interesting.
+encoder stays frozen. They answer different questions and are not interchangeable. The
+**layout** model organises the map by colour and type and feeds the projection only. The
+**function** model answers whether two cards do the same job, and is the sole source of
+similarity — Find Similar, the walk and drill all read it whichever map is on screen.
+
+That split exists because the alternative was measured and was bad: when similarity followed
+the displayed map, the colour/type space was using 3.2 of its 128 dimensions and *Doubling
+Season*'s nearest neighbours came back as arbitrary green enchantments. `manamap
+eval-embeddings` (step 14) scores every space against a hand-authored golden set so a claim
+like that is a number rather than an opinion.
 
 ## Extension points
 
@@ -213,7 +220,7 @@ cache-busters stripped.
 ## Testing
 
 ```bash
-.venv/bin/python -m pytest        # 1,052 tests (1,013 fast + 39 browser)
+.venv/bin/python -m pytest        # 1,055 tests (1,016 fast + 39 browser)
 ```
 
 325 card-pipeline + 601 pilot. Five skip markers in `tests/conftest.py` gate on the last

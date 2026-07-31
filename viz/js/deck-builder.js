@@ -238,7 +238,15 @@
     const off = idx * EMBED_DIM;
     let dot = 0;
     for (let j = 0; j < EMBED_DIM; j++) dot += emb[off + j] * centroid[j];
-    return Math.max(0, dot); // embeddings are L2-normalized, so dot ∈ [-1,1]; useful range is [0,1]
+    // Clamped at 0 — and this is one of only two places in the codebase that clamps.
+    // `nearestTo`, `orderByCentroidDistance`, `synergy.py` and `power_creep.py` all keep
+    // negative cosines. That is consistent by ROLE rather than by accident: scoring a
+    // candidate against a deck centroid wants "how much does this belong", where anti-
+    // correlated should read as zero rather than as a penalty that outweighs a real
+    // positive elsewhere in the score. Retrieval wants the true ordering and must not
+    // clamp. The twin is `pilot/build_deck.py:score_pool`; nothing enforces the pairing,
+    // so if you change one, change the other.
+    return Math.max(0, dot); // L2-normalized rows, so dot ∈ [-1,1]; useful range is [0,1]
   }
 
   function comboBonus(cardName, deckNames) {

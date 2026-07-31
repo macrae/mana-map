@@ -17,13 +17,16 @@ from manamap.config import (
     MECHANICAL_TAGS_PATH,
     MODEL_PATH,
     OUTPUT_CSV_PATH,
+    STRUCTURED_FEATURE_DIM,
     TEXT_EMBEDDINGS_PATH,
 )
-from manamap.training.model import CardEmbeddingModel
 from manamap.training.common import get_device
+from manamap.training.model import CardEmbeddingModel
+from manamap.training.train_ability import build_structured
 
 
-def run_embed(model_path, output_path, model_kwargs=None, use_mechanical_tags=False):
+def run_embed(model_path, output_path, model_kwargs=None, use_mechanical_tags=False,
+              use_structured=False):
     """Generate embeddings for all cards using a given model.
 
     Args:
@@ -31,6 +34,9 @@ def run_embed(model_path, output_path, model_kwargs=None, use_mechanical_tags=Fa
         output_path: Path to save embeddings .npy.
         model_kwargs: Dict of kwargs for CardEmbeddingModel constructor.
         use_mechanical_tags: Whether to pass mechanical tags to the model.
+        use_structured: Whether to pass the Phase 1 structured numeric block
+            (power/toughness, mana pips, colour features). Must match how the
+            checkpoint was trained — the input width is baked into layer 1.
     """
     device = get_device()
 
@@ -43,6 +49,7 @@ def run_embed(model_path, output_path, model_kwargs=None, use_mechanical_tags=Fa
     mechanical_tags = None
     if use_mechanical_tags:
         mechanical_tags = np.load(MECHANICAL_TAGS_PATH)
+    structured = build_structured(features) if use_structured else None
 
     n = len(text_embs)
     batch_size = 512
@@ -63,6 +70,10 @@ def run_embed(model_path, output_path, model_kwargs=None, use_mechanical_tags=Fa
             if use_mechanical_tags and mechanical_tags is not None:
                 kwargs["mechanical_tags"] = torch.tensor(
                     mechanical_tags[start:end], dtype=torch.float32
+                ).to(device)
+            if structured is not None:
+                kwargs["structured"] = torch.tensor(
+                    structured[start:end], dtype=torch.float32
                 ).to(device)
 
             emb = model(text, supertype, rarity, ci, layout, continuous, keywords, **kwargs)
@@ -94,8 +105,11 @@ def main():
                 "keyword_emb_dim": ABILITY_KEYWORD_EMBEDDING_DIM,
                 "mechanical_tag_dim": MECHANICAL_TAG_DIM,
                 "mechanical_tag_emb_dim": ABILITY_MECHANICAL_TAG_EMBEDDING_DIM,
+                "structured_dim": STRUCTURED_FEATURE_DIM,
+                "text_passthrough": True,
             },
             use_mechanical_tags=True,
+            use_structured=True,
         )
         print(f"  Ability embeddings shape: {ability_embeddings.shape}")
         print(f"  Saved {ABILITY_EMBEDDINGS_PATH}")

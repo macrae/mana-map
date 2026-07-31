@@ -33,7 +33,7 @@
   const EMBED_DIM = 128; // mirrors FINAL_EMBEDDING_DIM in config.py
   let currentMap = 'default'; // 'default' or 'ability'
   const projectionCache = {}; // { default: [...], ability: [...] }
-  const embeddingsCache = {}; // { default: Float32Array, ability: Float32Array }
+  const embeddingsCache = {}; // { function: Float32Array } — one space, not one per map
   // All data files the viz fetches, relative to viz/index.html. The server
   // must be rooted at the repo top so '../data/' resolves (GitHub Pages layout).
   const DATA_BASE = '../data/';
@@ -45,7 +45,15 @@
   // that had ever loaded the map kept serving its cached copy, so drill-by-region found
   // no membership and disabled itself. It failed politely, which is exactly what makes
   // this class of bug expensive — the code was right and the bytes were old.
-  const DATA_VERSION = 2;
+  // Bumped to 3 when the embeddings were retrained. The rule used to be "bump on schema
+  // change, not content refresh" — which is wrong for a change that alters what the bytes
+  // MEAN. `embeddings_ability.bin` kept its exact shape and every value changed, so a
+  // cached copy still parsed, still rendered, and silently answered "similar" out of the
+  // old collapsed space. Verified in a browser: the page returned the pre-retrain
+  // neighbours for Doubling Season while a cache-busted fetch of the same URL returned
+  // the new ones. Bump whenever a consumer would draw a different conclusion from the
+  // bytes, not only when the parser would.
+  const DATA_VERSION = 3;
   const v = url => url + '?v=' + DATA_VERSION;
   const DATA = {
     projection: v(DATA_BASE + 'projection_2d.json'),
@@ -62,6 +70,16 @@
     default: { projection: DATA.projection, embeddings: DATA.embeddings, regions: DATA.regionsDefault },
     ability: { projection: DATA.projectionAbility, embeddings: DATA.embeddingsAbility, regions: DATA.regionsAbility },
   };
+
+  // Similarity is NOT the displayed map. The default map is laid out by colour and type,
+  // which is a good picture and a terrible answer to "what is like this card" — measured,
+  // that space used 3.05 of its 128 dimensions and scored 0.044 recall@10 against known
+  // functional equivalents, which is why Doubling Season's neighbours came back as
+  // arbitrary green enchantments. Find Similar, the walk and drill all ask a question
+  // about function, so they all read the function space regardless of which projection is
+  // on screen. `MAP_CONFIGS[*].embeddings` survives only because each projection is still
+  // built from its own space.
+  const SIMILARITY_EMBEDDINGS = DATA.embeddingsAbility;
 
   // ── Region/Topo state ──
   let regionDataCache = {};
@@ -839,30 +857,31 @@
     }
   }
 
+  // One space, fetched once. This used to key on `currentMap` and re-fetch on every map
+  // toggle, so the same card had different "nearest" answers depending on which picture
+  // you happened to be looking at.
   async function loadEmbeddings() {
     if (embeddings) return true;
-    // Check cache first
-    if (embeddingsCache[currentMap]) {
-      embeddings = embeddingsCache[currentMap];
+    if (embeddingsCache.function) {
+      embeddings = embeddingsCache.function;
       return true;
     }
     try {
-      const config = MAP_CONFIGS[currentMap];
-      const r = await fetch(config.embeddings);
+      const r = await fetch(SIMILARITY_EMBEDDINGS);
       if (!r.ok) return false;
-      const buf = await r.arrayBuffer();
-      embeddings = new Float32Array(buf);
-      embeddingsCache[currentMap] = embeddings;
+      embeddings = new Float32Array(await r.arrayBuffer());
+      embeddingsCache.function = embeddings;
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  // THE k-nearest primitive. There were two before this — `cosineSimilarity` plus the sort
-  // inside `findSimilarCards`, and `force.js:nearestInCorpus` — and the neighbourhood walk
-  // would have been a third. Rows are L2-normalised at export, so the dot product IS the
-  // cosine and no norms are needed. Returns `{i, sim}` nearest-first.
+  // THE k-nearest primitive, and now genuinely the only one. The header used to claim
+  // this had replaced `findSimilarCards`' hand-rolled scan; it had not — that scan was
+  // still there, sorting all 34,322 rows to take 20, with different filter semantics.
+  // Both are gone. Rows are L2-normalised at export, so the dot product IS the cosine
+  // and no norms are needed. Returns `{i, sim}` nearest-first.
   //
   // `respectFilters` defaults to true: if you have hidden Lands, a neighbourhood should not
   // walk you into one. `force.js` passes false, because a graph you are branching through
@@ -874,9 +893,14 @@
     const base = row * dim;
     const exclude = o.exclude || null;
     const respectFilters = o.respectFilters !== false;
+    // Exclude by NAME, not just by row. cards.csv carries 51 duplicate names (Un-set
+    // reprints and the like), so self-exclusion alone let a card return its own twin at
+    // cosine 1.0 as its most similar card — a true statement and a useless answer.
+    const selfName = allData[row] && allData[row].n;
     const best = [];                       // ascending by sim; best[0] is the weakest kept
     for (let j = 0; j < allData.length; j++) {
       if (j === row) continue;
+      if (allData[j].n === selfName) continue;
       if (exclude && exclude.has(j)) continue;
       if (respectFilters && !activeSupertypes.has(allData[j].s)) continue;
       const oj = j * dim;
@@ -893,18 +917,6 @@
     return best.sort((a, b) => b.sim - a.sim);
   }
 
-  function cosineSimilarity(idxA, idxB) {
-    // Rows of embeddings.bin are L2-normalized at export, so the cosine IS the
-    // dot product — computing the norms was 3x the float work for a constant 1.
-    const offA = idxA * EMBED_DIM;
-    const offB = idxB * EMBED_DIM;
-    let dot = 0;
-    for (let j = 0; j < EMBED_DIM; j++) {
-      dot += embeddings[offA + j] * embeddings[offB + j];
-    }
-    return dot;
-  }
-
   async function findSimilarCards() {
     const ref = getSelectedCard();
     if (!ref) return;
@@ -912,25 +924,20 @@
 
     const refIdx = selectedCards[topCardIndex].idx;
 
-    // Load embeddings on first use
     if (!embeddings) {
       setStatus('Loading embeddings...');
-      const ok = await loadEmbeddings();
-      if (!ok) {
-        setStatus('Could not load embeddings.bin \u2014 run export_embeddings.py');
+      if (!(await loadEmbeddings())) {
+        setStatus('Could not load embeddings_ability.bin \u2014 run `manamap export`');
         return;
       }
     }
 
-    // Cosine similarity in 128D embedding space
-    const scored = [];
-    for (let i = 0; i < allData.length; i++) {
-      if (i === refIdx) continue;
-      if (!activeSupertypes.has(allData[i].s)) continue;
-      scored.push({ i, sim: cosineSimilarity(refIdx, i) });
-    }
-    scored.sort((a, b) => b.sim - a.sim);
-    const nearest = scored.slice(0, 20);
+    // This was a second full-scan k-NN: it scored all 34,322 cards, sorted the whole
+    // array, and sliced 20 \u2014 with subtly different filter semantics from `nearestTo`,
+    // despite a comment there claiming the two had been consolidated. They had not.
+    // `nearestTo` keeps a bounded buffer instead of sorting 34K, and it excludes
+    // duplicate names, which this did not.
+    const nearest = await nearestTo(refIdx, 20);
 
     const simTrace = {
       type: 'scattergl',
@@ -1044,8 +1051,9 @@
       allData[i].x = data[i].x;
       allData[i].y = data[i].y;
     }
-    // Clear embeddings cache for current map (will reload on Find Similar)
-    embeddings = embeddingsCache[currentMap] || null;
+    // Embeddings are deliberately untouched: the projection changed, the space did not.
+    // These used to be re-keyed per map, which both dropped a 17 MB array that was still
+    // correct and made "similar" mean something different on each picture.
     plotInitialized = false; // Force full re-render with new coordinates
     render();
     setStatus(`${allData.length.toLocaleString()} cards loaded \u2014 ${currentMap === 'ability' ? 'Abilities' : 'Color + Type'} map`);
@@ -1054,7 +1062,6 @@
   async function switchMap(mapName) {
     if (mapName === currentMap) return;
     currentMap = mapName;
-    embeddings = embeddingsCache[currentMap] || null;
     // Pre-load region data so it's ready when render() builds annotations
     if (showRegionLabels) await loadRegionData(mapName);
     await loadProjection(mapName);

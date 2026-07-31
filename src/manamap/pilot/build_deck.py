@@ -199,6 +199,11 @@ def score_candidates(pool, embeddings, name_index, commander_name, identity,
     for row in pool.itertuples(index=False):
         idx = name_index.get(row.name)
         similarity = float(embeddings[idx] @ commander_vec) if idx is not None else 0.0
+        # Clamped, matching viz/js/deck-builder.js:embeddingSim. Deck scoring against a
+        # centroid wants "how much does this belong", so anti-correlated reads as zero
+        # rather than as a penalty large enough to swamp the other five factors.
+        # Retrieval paths (analysis/common.py, synergy, power_creep) deliberately do NOT
+        # clamp — they need the true ordering. Consistent by role, enforced nowhere.
         similarity = max(0.0, similarity)
 
         tags = parse_tag_set(getattr(row, "mechanical_tags", ""))

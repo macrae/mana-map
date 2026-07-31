@@ -369,11 +369,23 @@ own blue ring on the map, because otherwise nothing says whose neighbourhood you
 furthest-from-centroid ("least typical first"); a neighbourhood is nearest-first from its
 anchor, and shows the cosine as you step.
 
-**One k-nearest, `MM.nearestTo(row, k, opts)`.** There were two before — `cosineSimilarity`
-plus the sort inside `findSimilarCards`, and `force.js:nearestInCorpus` — and this would
-have been a third. `respectFilters` defaults to true so a neighbourhood will not walk you
-into a supertype you have hidden; The Walk passes `false`, because a graph you are branching
-through should not change shape when a toolbar toggle flips.
+**Similarity is not the displayed map.** `loadEmbeddings` used to read
+`MAP_CONFIGS[currentMap].embeddings`, so on the colour/type map "similar" meant "same colour
+and type" — a space measured at 3.05 of its 128 effective dimensions and 0.090 recall@10
+against known functional equivalents, which is why *Doubling Season* returned arbitrary green
+enchantments. Find Similar, the walk and drill now all read `SIMILARITY_EMBEDDINGS` (the
+function space) whichever projection is on screen. The projection is a picture; similarity is
+a question. Switching maps no longer drops the loaded array either — the old per-map keying
+re-fetched 17 MB and gave the same card different answers depending on the view.
+
+**One k-nearest, `MM.nearestTo(row, k, opts)`, and now genuinely one.** The header here used
+to claim `cosineSimilarity` and the sort inside `findSimilarCards` had been consolidated into
+it. They had not — that scan was still live, sorting all 34,322 rows to take 20, with
+different filter semantics. Both are gone. `respectFilters` defaults to true so a
+neighbourhood will not walk you into a supertype you have hidden; The Walk passes `false`,
+because a graph you are branching through should not change shape when a toolbar toggle
+flips. It also excludes by **name**, not just row: `cards.csv` carries 51 duplicate names, so
+self-exclusion alone let a card return its own twin at cosine 1.0.
 
 **The keyboard gate was broken.** Arrows sat behind `if (selectedCards.length === 0) return;`
 and `enterBrowse` sets `selectedCards = []` — so the arrow *keys* were dead in browse mode

@@ -11,10 +11,13 @@ Two kinds of assertion here, on purpose:
 - **Regression floors** pass today and fail if a change makes a space worse.
   They are set from measured values, a little below them, so ordinary run-to-run
   variation does not trip them.
-- **Ship gates** are `xfail(strict=True)` — they encode where this is going, not
-  where it is. They fail today, which is correct and documented. When the retrain
-  lands they XPASS, and `strict=True` turns that into a suite failure, so nobody
-  can fix the model and leave the goal marked as unmet.
+- **Ship gates** encode where this is going, not where it is. While a gate is unmet
+  it carries `xfail(strict=True)`: the suite stays green, the goal stays visible in
+  the output, and when the work lands the test XPASSes — which `strict` turns into a
+  failure, so the marker cannot be left on and the achievement cannot be silently
+  pocketed. Two of the three gates have now been met and are ordinary assertions.
+  The third (neighbour spread) is still `xfail` and its threshold was deliberately
+  NOT lowered to match what the retrain achieved.
 """
 
 import json
@@ -30,14 +33,16 @@ from manamap.config import SIMILARITY_GOLDEN_PATH
 # Measured on the shipped artifacts, test split (see docs/architecture.md).
 # Floors sit below the measurement, not at it — this catches breakage, not noise.
 MEASURED = {
-    "layout (color+type)": {"recall@10": 0.044, "effective_dim": 3.05},
-    "function (ability)": {"recall@10": 0.093, "effective_dim": 5.97},
-    "text baseline (frozen MiniLM)": {"recall@10": 0.187, "effective_dim": 81.04},
+    "layout (color+type)": {"recall@10": 0.090, "effective_dim": 3.20},
+    "function (ability)": {"recall@10": 0.245, "effective_dim": 27.87},
+    "text baseline (frozen MiniLM)": {"recall@10": 0.244, "effective_dim": 50.41},
 }
 FLOOR_TOLERANCE = 0.8
 
-# A space using fewer than this many of its 128 dimensions has collapsed. Today's
-# trained spaces are at 3.05 and 5.97, so this is the number the retrain must move.
+# A space using fewer than this many of its 128 dimensions has collapsed. Set while
+# the trained spaces were at 3.05 and 5.97; the retrain moved the function space to
+# 27.87, so this now passes. Left where it was rather than raised to hug the result —
+# a floor that tracks the current number stops being a floor.
 MIN_EFFECTIVE_DIM = 25.0
 
 
@@ -159,38 +164,59 @@ def test_text_baseline_stays_the_bar_to_beat(metrics):
 
 
 @requires_data
-@pytest.mark.xfail(strict=True, reason="the defect this work exists to fix: the trained "
-                                       "function space scores 0.093 against the frozen text "
-                                       "it is built from at 0.187")
 def test_function_space_beats_the_frozen_text_it_is_built_from(metrics):
-    """The ship gate for the retrain.
+    """The ship gate — asserted on MEDIAN RANK, not recall@10, and that is the point.
 
-    A trained embedding that loses to its own frozen input is not adding structure,
-    it is destroying it. If the retrain cannot clear this bar, the honest outcome is
-    to ship the text embedding as the function space and say so.
+    A trained embedding that loses to its own frozen input is destroying structure
+    rather than adding it. The retrain fixed that, against the model it replaced:
+    recall@10 0.093 -> 0.245, median rank 995 -> 78.
+
+    Against the *frozen text* baseline, though, recall@10 is a **tie** — 0.245 versus
+    0.244. That +0.001 across ~160 queries is noise, and a gate a coin flip can pass
+    is not a gate, so it is deliberately not what this asserts. The improvement that
+    is real and large is median rank (124 -> 78, a 37% cut), which also uses every
+    query rather than thresholding at a top-10 cutoff.
+
+    Recall@10 still gets a floor, one-sided: the function space is allowed to tie the
+    baseline, never to fall behind the input it is built from.
     """
-    function = metrics["function (ability)"]["recall"]["test"]["recall@10"]
-    baseline = metrics["text baseline (frozen MiniLM)"]["recall"]["test"]["recall@10"]
-    assert function > baseline
+    function = metrics["function (ability)"]["recall"]["test"]
+    baseline = metrics["text baseline (frozen MiniLM)"]["recall"]["test"]
+    assert function["median_rank"] < baseline["median_rank"] * 0.8, (
+        f"median rank {function['median_rank']:.0f} vs baseline "
+        f"{baseline['median_rank']:.0f} — the depth win is gone"
+    )
+    assert function["recall@10"] >= baseline["recall@10"] * 0.95, (
+        "the function space has fallen behind the frozen text it is built from"
+    )
 
 
 @requires_data
-@pytest.mark.xfail(strict=True, reason="the function space uses 5.97 of its 128 dimensions")
 def test_function_space_is_not_collapsed(metrics):
-    """Collapse is the mechanism behind the recall gap, and it fails earlier.
+    """Collapse was the mechanism behind the recall gap, and it fails earlier than
+    recall does. FIXED: 5.97 -> 27.87 effective dimensions.
 
-    A model whose triplet loss hits zero at epoch 3 has learned to separate its
-    labels and nothing else; every card within a label lands on the same point, and
-    the ranking among them is numerical noise. That shows up here long before it
-    shows up in recall.
+    The old model's triplet loss hit zero within a few epochs, having learned to
+    separate its labels and nothing else — every card within a label landed on the
+    same point, so the ranking among them was numerical noise. In-batch InfoNCE keeps
+    producing gradient after the easy pairs are solved, which is what reopened the
+    space.
     """
     assert metrics["function (ability)"]["effective_dim"] > MIN_EFFECTIVE_DIM
 
 
 @requires_data
-@pytest.mark.xfail(strict=True, reason="the top-50 neighbours are a numerical tie "
-                                       "(gap 0.0236)")
+@pytest.mark.xfail(strict=True, reason="improved 0.0236 -> 0.0315 by the retrain, but "
+                                       "still short of 0.05 — the top-50 are tighter "
+                                       "than they should be")
 def test_function_space_ranks_its_neighbours(metrics):
+    """The one gate the retrain did NOT clear.
+
+    Left failing rather than moved to meet what was achieved. A threshold edited down
+    to match the result is not a threshold, and this one is still saying something
+    true: the top-50 neighbours are closer together than a well-spread space would put
+    them, so their ordering carries less information than it should.
+    """
     assert metrics["function (ability)"]["neighbour_spread"] > 0.05
 
 

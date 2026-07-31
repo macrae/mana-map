@@ -128,6 +128,22 @@ FINAL_EMBEDDING_DIM = 128
 POWER_TOUGHNESS_DIM = 3  # [power, toughness, has_stats]
 MANA_PIPS_DIM = 6        # [W, U, B, R, G pip counts, generic]
 COLOR_FEATURE_DIM = 6    # [W, U, B, R, G, colour count]
+STRUCTURED_FEATURE_DIM = POWER_TOUGHNESS_DIM + MANA_PIPS_DIM + COLOR_FEATURE_DIM
+
+# ── The function model's output split ─────────────────────────────────────
+# The final 128 dims are two independently L2-normalized halves, weighted so
+# their squared weights sum to 1. That makes the resulting cosine an exact
+# convex combination:
+#
+#     sim(a, b) = (1 - W) * cos_learned(a, b) + W * cos_text(a, b)
+#
+# which is the point: the frozen text scores 0.244 recall@10 and the trained
+# model scored 0.093, so a model free to discard the text did exactly that.
+# This makes discarding it structurally impossible and the floor arithmetic
+# rather than hope.
+FUNCTION_TEXT_DIM = 32                   # dims carrying the projected frozen text
+FUNCTION_LEARNED_DIM = FINAL_EMBEDDING_DIM - FUNCTION_TEXT_DIM
+TEXT_PASSTHROUGH_WEIGHT = 0.3            # W above: text's share of the similarity
 
 # Fixed scales, deliberately not derived from the data. A per-run min-max makes
 # the same card's features differ between pipeline runs, so two runs' embeddings
@@ -210,6 +226,36 @@ ABILITY_CI_EMBEDDING_DIM = 8
 ABILITY_KEYWORD_EMBEDDING_DIM = 32
 ABILITY_MECHANICAL_TAG_EMBEDDING_DIM = 32
 MIN_SHARED_TAGS_POSITIVE = 2
+
+# ── The function model's objective ────────────────────────────────────────
+# In-batch InfoNCE replaces TripletMarginLoss. The margin loss stopped producing
+# gradient the moment it was satisfied — which for a task as easy as the old one
+# was epoch 3 — so nothing pressured the model to preserve structure within a
+# class. InfoNCE keeps ranking every anchor against all B-1 other positives in
+# the batch, so it stays informative long after the easy cases are solved.
+#
+# Temperature on L2-normalized vectors: 0.05 is the sentence-transformers MNRL
+# default (scale=20). Too high and everything blurs together (watch neighbour
+# spread collapse); too low and it overfits the hardest pairs (watch val loss
+# diverge while recall stalls).
+INFONCE_TEMPERATURE = 0.05
+
+# Positive mining. Roles beat mechanical tags on coverage — 72.6% of cards carry
+# a *specific* role at 1.62 each, against 46.9% with the two tags the old rule
+# demanded — so for most of the corpus the old positive was a fallback or a
+# random card. ROLE_BODY_FALLBACK is excluded deliberately: it labels all 19,050
+# creatures, so "shares threat:body" is barely narrower than "is a creature" and
+# would rebuild the trivial task this work exists to escape.
+#
+# Rarest-role-first: two cards sharing `doubler:tokens` (11 cards) say far more
+# about each other than two sharing `value:etb` (5,580). Searching the anchor's
+# rarest role first spends the positive on its most specific claim.
+#
+# Deliberately NOT gated on text similarity. The output's text half already
+# guarantees the frozen-text floor, so the learned half should capture what the
+# text misses; selecting positives the text already scores highly would make the
+# two halves redundant.
+ROLE_POSITIVE_CANDIDATES = 50
 
 # ── Synergy Rules ────────────────────────────────────────────────────────
 SYNERGY_GRAPH_PATH = DATA_DIR / "synergy_graph.json"
