@@ -63,6 +63,18 @@ MODEL_PATH = DATA_DIR / "model.pt"
 EMBEDDINGS_PATH = DATA_DIR / "embeddings.npy"
 CARD_METADATA_PATH = DATA_DIR / "card_metadata.csv"
 PROJECTION_PATH = DATA_DIR / "projection_2d.json"
+
+# ── Embedding Quality Evaluation ──────────────────────────────────────────
+# The golden set is hand-authored and must stay independent of every training
+# signal — see the _comment block inside the file itself.
+EVAL_DIR = DATA_DIR / "eval"
+SIMILARITY_GOLDEN_PATH = EVAL_DIR / "similarity_golden.json"
+# Sample size for the geometry statistics (effective dim, neighbour spread).
+# The full 34K x 34K similarity matrix is 4.7 GB; a sample answers the same
+# question for free. Seeded, so the numbers are comparable across runs.
+EVAL_GEOMETRY_SAMPLE = 4000
+EVAL_SPREAD_PROBES = 300
+EVAL_SEED = 42
 VIZ_DIR = Path(os.environ.get("MANAMAP_VIZ_DIR", _REPO_ROOT / "viz"))
 
 # ── Combo / Deck Builder Data ────────────────────────────────────────────

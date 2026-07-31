@@ -1,12 +1,13 @@
 # Testing
 
 ```bash
-.venv/bin/python -m pytest              # everything (1,012, ~4.5 min)
-.venv/bin/python -m pytest -m "not browser"   # fast suite (978, ~68 s)
+.venv/bin/python -m pytest              # everything (1,032, ~4.5 min)
+.venv/bin/python -m pytest -m "not browser"   # fast suite (993, ~71 s)
 .venv/bin/python -m pytest -m browser         # the 39 browser tests (~210 s)
 ```
 
-1,017 tests in `tests/`: 377 card-pipeline + 601 pilot-subsystem + **39 browser**.
+1,032 tests in `tests/`: 392 card-pipeline + 601 pilot-subsystem + **39 browser**.
+Three are `xfail(strict=True)` ship gates in `test_embedding_quality.py` — see below.
 
 ## Source assertions do not catch regressions
 
@@ -42,7 +43,7 @@ matched literal indentation and broke the moment the key handler was rewritten t
 gate — while the invariant it cared about was untouched. It now asserts the delegation
 (`cycleSelection` is called; the handler does not recompute an index) rather than the text.
 
-### Browser tests (34) — `tests/test_viz_behaviour.py`
+### Browser tests (39) — `tests/test_viz_behaviour.py`
 
 Fixtures in `tests/conftest_viz.py` (deliberately not `conftest.py`, so the other 978 never
 import playwright): an ephemeral `http.server` rooted at the repo — `viz/` and `data/` must
@@ -75,6 +76,26 @@ branching grows the graph and records the trail, and that leaving restores the m
 
 Setup, one time: `.venv/bin/python -m playwright install chromium` (~94 MB). Without it the
 whole file skips cleanly, so a fresh clone still runs the other 978.
+
+## Ship gates: `xfail(strict=True)` as a stated goal
+
+`tests/test_embedding_quality.py` carries three tests that fail today, on purpose. They
+encode a defect the project has committed to fixing — the trained embedding scores 0.093
+recall@10 against the frozen text it is built from at 0.187 — and a plain failing test would
+just leave the suite red for the duration, which teaches everyone to ignore red.
+
+`xfail(strict=True)` is the right shape for this:
+
+- today it reports XFAIL, so the suite is green and the goal is visible in the output;
+- when the retrain succeeds it reports **XPASS, and strict turns that into a failure**, so the
+  markers cannot be left on and the achievement cannot be silently pocketed.
+
+Use it for "we know this is broken and intend to fix it". Do not use it for flakiness — an
+`xfail` on a test that sometimes passes is how a real regression gets hidden.
+
+Alongside them are ordinary **regression floors** set at 80% of measured values. Those catch a
+change that makes things worse while the gates are still red, which is the window where a
+well-meant refactor would otherwise be invisible.
 
 ## The rest of the suite
 

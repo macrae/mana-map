@@ -55,9 +55,9 @@ docs/                 # reference docs (see Pointers below)
 ## Commands
 
 ```bash
-manamap run                   # full 13-step pipeline (steps 1 & 7 need internet)
+manamap run                   # full 14-step pipeline (steps 1 & 7 need internet)
 manamap run --from STEP       # resume from a step
-manamap <step>                # single step; see `manamap --help` for all 16 subcommands
+manamap <step>                # single step; see `manamap --help` for all 17 subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # fast analysis-only refresh (no retrain)
 manamap pilot <cmd>           # build + publish subsystem (33 subcommands) — see docs/pilot.md
@@ -84,7 +84,8 @@ python -m http.server 8000    # serve viz FROM REPO ROOT
 - **Frontend source-assertion tests catch nothing**: `test_viz_{camera,drill,deck_lens,viewer}.py` grep JS as text. A `ReferenceError` that killed drill mode outright passed all 13 drill tests. Real coverage lives in `tests/test_viz_behaviour.py` (playwright, `-m browser`) — add there when you change rendering or interaction. See `docs/testing.md`.
 - **Two coordinate systems**: drill mode re-lays-out a subset from the embeddings, so a drilled position is **local** and is not the world map's. Anything anchored to world coords (region labels, search highlight, selection ring) must be suppressed or re-anchored via `Drill.localPosition()` while drilling. See `docs/viz.md`.
 - Paths in `config.py` are `__file__`-anchored (CWD-independent); override with `MANAMAP_DATA_DIR` / `MANAMAP_VIZ_DIR`.
-- Color+Type model hitting near-zero triplet loss by epoch ~3 is expected, not a bug.
+- **Near-zero triplet loss by epoch ~3 is the diagnosis, not a reassurance.** This file used to say it was expected. Measured: the Color+Type model uses **3.05 of its 128 dimensions** (participation ratio) and its top-50 neighbours span 0.003 cosine — the ordering is float noise. Its positives are "same (supertype, primary_color)" and its negatives "differ in both", a task solved by encoding colour and type and discarding everything else; once the 0.3 margin is met the gradient is zero, so nothing preserves within-class structure. The ability model has the same shape (5.97 effective dims) because its positive rule needs ≥2 shared tags and only 46.9% of cards have two. **Both trained spaces lose to the frozen MiniLM text they are built from** (recall@10 on held-out functional-equivalence groups: text 0.187, ability 0.093, colour+type 0.044).
+- **`manamap eval-embeddings` (step 14) is how you know.** It scores every embedding artifact against `data/eval/similarity_golden.json` — hand-authored, and it must **stay** hand-authored: the training objective mines positives from tags/roles/synergy/combos, so an eval derived from those would only measure whether training memorised its own supervision. The set carries a `dev`/`test` split; quote the **test** number, because the dev groups were used while diagnosing and anything tuned against them is self-graded. `tests/test_embedding_quality.py` holds regression floors plus three `xfail(strict=True)` ship gates — when the retrain lands they XPASS and the suite fails until the markers come off, which is the point.
 - **Agent cache**: subagent spawns are the only LLM cost (there are no LLM calls in Python). Always `cache-status` before spawning, `cache-record` **after** validating. Editing a `.claude/agents/*.md` prompt invalidates that agent's routines by design; `build-manual` is deliberately uncached. Costs and per-routine sizing: `docs/agent-cost.md`.
 - **Strategy DB staleness**: any edit to `data/strategy/strategy.md` requires `manamap pilot build-strategy-db` — `load_strategy_db` hard-errors on a sha256 mismatch. Doc + CHANGELOG are tracked; the derived index/embeddings are gitignored.
 - **The combo data is two files**: `combo_graph.json` is `{"partners": {...}}` **only** — it's what the viz fetches on the main thread, so nothing else belongs in it. The per-combo records live in `combo_details.json` (`{combos, by_card, meta}`, Python/agents only) with `bracket`, `mana_value_needed`, `popularity`. If you remember a `combos` key on the graph, that moved. Sizes in `docs/data-artifacts.md`.
@@ -102,7 +103,7 @@ python -m http.server 8000    # serve viz FROM REPO ROOT
 ## Pointers
 
 - `docs/architecture.md` — models, training mining, mechanical tags, deckbuilding roles, synergy rules, power-creep criteria, region clustering
-- `docs/pipeline.md` — all 13 steps: commands, inputs/outputs, runtimes, when to re-run what
+- `docs/pipeline.md` — all 14 steps: commands, inputs/outputs, runtimes, when to re-run what
 - `docs/deck-builder-v2.md` — the deck builder's design record: bracket engine, role taxonomy, the architect ⇄ critic loop, and where the implementation departed from the design
 - `docs/data-artifacts.md` — every `data/` file: producer, size, git status, consumers
 - `docs/viz.md` — frontend structure, `window.MM` API, DATA map, the deck dossier, Pages deployment

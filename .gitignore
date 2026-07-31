@@ -19,6 +19,9 @@ __pycache__/
 .claude/settings.local.json
 !data/decks/
 !data/strategy/
+# The similarity golden set is hand-authored, not generated — losing it means losing
+# the only measurement that can tell a good embedding from a collapsed one.
+!data/eval/
 data/strategy/strategy_index.json
 data/strategy/strategy_embeddings.npy
 data/strategy/.strategy-db-meta.json

@@ -1,0 +1,420 @@
+{
+  "_comment": [
+    "Golden set for `manamap eval-embeddings`. Each group is a set of cards a player would",
+    "call functionally interchangeable; a good embedding puts them near each other.",
+    "",
+    "HAND-AUTHORED ON PURPOSE. This file must never be derived from mechanical tags, card",
+    "roles, the synergy graph or combo data — the training objective mines positives from",
+    "those, so deriving the eval from them would measure whether training memorised its own",
+    "supervision. Independence is the only thing that makes these numbers mean anything.",
+    "",
+    "split: 'dev' groups were used while diagnosing the collapse, so any choice made in",
+    "response to those numbers is fitted to them. 'test' groups were written afterwards and",
+    "touched nothing. Report both; believe the test split."
+  ],
+  "groups": [
+    {
+      "id": "mana-dorks",
+      "split": "dev",
+      "cards": [
+        "Llanowar Elves",
+        "Elvish Mystic",
+        "Fyndhorn Elves",
+        "Arbor Elf",
+        "Birds of Paradise",
+        "Noble Hierarch"
+      ]
+    },
+    {
+      "id": "wraths",
+      "split": "dev",
+      "cards": [
+        "Wrath of God",
+        "Damnation",
+        "Day of Judgment",
+        "Doomskar",
+        "Blasphemous Act",
+        "Toxic Deluge"
+      ]
+    },
+    {
+      "id": "token-doublers",
+      "split": "dev",
+      "cards": [
+        "Doubling Season",
+        "Parallel Lives",
+        "Anointed Procession",
+        "Primal Vigor",
+        "Mondrak, Glory Dominus"
+      ]
+    },
+    {
+      "id": "hard-counters",
+      "split": "dev",
+      "cards": [
+        "Counterspell",
+        "Cancel",
+        "Dissolve",
+        "Absorb",
+        "Dovin's Veto"
+      ]
+    },
+    {
+      "id": "burn-3-any-target",
+      "split": "dev",
+      "cards": [
+        "Lightning Bolt",
+        "Lightning Strike",
+        "Lightning Helix",
+        "Skewer the Critics"
+      ]
+    },
+    {
+      "id": "two-mana-rocks",
+      "split": "dev",
+      "cards": [
+        "Mind Stone",
+        "Fellwar Stone",
+        "Talisman of Dominance",
+        "Arcane Signet",
+        "Coldsteel Heart"
+      ]
+    },
+    {
+      "id": "tax-draw-enchantments",
+      "split": "dev",
+      "cards": [
+        "Rhystic Study",
+        "Mystic Remora",
+        "Smothering Tithe"
+      ]
+    },
+    {
+      "id": "white-exile-removal",
+      "split": "dev",
+      "cards": [
+        "Swords to Plowshares",
+        "Path to Exile",
+        "Condemn",
+        "Council's Judgment"
+      ]
+    },
+    {
+      "id": "ramp-sorceries",
+      "split": "dev",
+      "cards": [
+        "Cultivate",
+        "Kodama's Reach",
+        "Rampant Growth",
+        "Farseek",
+        "Nature's Lore",
+        "Three Visits"
+      ]
+    },
+    {
+      "id": "black-tutors",
+      "split": "dev",
+      "cards": [
+        "Demonic Tutor",
+        "Vampiric Tutor",
+        "Diabolic Tutor",
+        "Grim Tutor",
+        "Imperial Seal"
+      ]
+    },
+    {
+      "id": "mass-bounce",
+      "split": "dev",
+      "cards": [
+        "Cyclonic Rift",
+        "Evacuation",
+        "River's Rebuke",
+        "Devastation Tide"
+      ]
+    },
+    {
+      "id": "equipment-draw",
+      "split": "dev",
+      "cards": [
+        "Skullclamp",
+        "Bident of Thassa",
+        "Reconnaissance Mission"
+      ]
+    },
+    {
+      "id": "extra-turns",
+      "split": "test",
+      "cards": [
+        "Time Warp",
+        "Temporal Manipulation",
+        "Capture of Jingzhou",
+        "Nexus of Fate"
+      ]
+    },
+    {
+      "id": "fogs",
+      "split": "test",
+      "cards": [
+        "Fog",
+        "Holy Day",
+        "Darkness",
+        "Moment's Peace"
+      ]
+    },
+    {
+      "id": "blink",
+      "split": "test",
+      "cards": [
+        "Cloudshift",
+        "Ephemerate",
+        "Momentary Blink",
+        "Restoration Angel"
+      ]
+    },
+    {
+      "id": "anthems",
+      "split": "test",
+      "cards": [
+        "Glorious Anthem",
+        "Intangible Virtue",
+        "Dictate of Heliod"
+      ]
+    },
+    {
+      "id": "graveyard-hate",
+      "split": "test",
+      "cards": [
+        "Rest in Peace",
+        "Leyline of the Void",
+        "Relic of Progenitus",
+        "Grafdigger's Cage"
+      ]
+    },
+    {
+      "id": "naturalize",
+      "split": "test",
+      "cards": [
+        "Naturalize",
+        "Disenchant",
+        "Krosan Grip",
+        "Nature's Claim"
+      ]
+    },
+    {
+      "id": "fetchlands",
+      "split": "test",
+      "cards": [
+        "Misty Rainforest",
+        "Scalding Tarn",
+        "Polluted Delta",
+        "Windswept Heath"
+      ]
+    },
+    {
+      "id": "shocklands",
+      "split": "test",
+      "cards": [
+        "Steam Vents",
+        "Hallowed Fountain",
+        "Blood Crypt",
+        "Overgrown Tomb"
+      ]
+    },
+    {
+      "id": "signets",
+      "split": "test",
+      "cards": [
+        "Azorius Signet",
+        "Dimir Signet",
+        "Rakdos Signet",
+        "Selesnya Signet"
+      ]
+    },
+    {
+      "id": "cantrips",
+      "split": "test",
+      "cards": [
+        "Ponder",
+        "Preordain",
+        "Brainstorm",
+        "Opt",
+        "Serum Visions"
+      ]
+    },
+    {
+      "id": "overrun",
+      "split": "test",
+      "cards": [
+        "Overrun",
+        "Craterhoof Behemoth",
+        "End-Raze Forerunners",
+        "Triumph of the Hordes"
+      ]
+    },
+    {
+      "id": "rituals",
+      "split": "test",
+      "cards": [
+        "Dark Ritual",
+        "Cabal Ritual",
+        "Rite of Flame",
+        "Pyretic Ritual"
+      ]
+    },
+    {
+      "id": "sac-outlets",
+      "split": "test",
+      "cards": [
+        "Ashnod's Altar",
+        "Phyrexian Altar",
+        "Viscera Seer",
+        "Carrion Feeder"
+      ]
+    },
+    {
+      "id": "cost-reducers",
+      "split": "test",
+      "cards": [
+        "Urza's Incubator",
+        "Herald's Horn",
+        "Semblance Anvil"
+      ]
+    },
+    {
+      "id": "wheels",
+      "split": "test",
+      "cards": [
+        "Wheel of Fortune",
+        "Windfall",
+        "Timetwister",
+        "Echo of Eons"
+      ]
+    },
+    {
+      "id": "edicts",
+      "split": "test",
+      "cards": [
+        "Diabolic Edict",
+        "Chainer's Edict",
+        "Liliana's Triumph",
+        "Geth's Verdict"
+      ]
+    },
+    {
+      "id": "counter-doublers",
+      "split": "test",
+      "cards": [
+        "Hardened Scales",
+        "Branching Evolution",
+        "Conclave Mentor",
+        "Kalonian Hydra"
+      ]
+    },
+    {
+      "id": "pillowfort",
+      "split": "test",
+      "cards": [
+        "Ghostly Prison",
+        "Propaganda",
+        "Sphere of Safety",
+        "Norn's Annex"
+      ]
+    },
+    {
+      "id": "stax-taxes",
+      "split": "test",
+      "cards": [
+        "Thalia, Guardian of Thraben",
+        "Vryn Wingmare",
+        "Glowrider"
+      ]
+    },
+    {
+      "id": "recursion",
+      "split": "test",
+      "cards": [
+        "Regrowth",
+        "Eternal Witness",
+        "Noxious Revival",
+        "Timeless Witness"
+      ]
+    },
+    {
+      "id": "reanimation",
+      "split": "test",
+      "cards": [
+        "Reanimate",
+        "Animate Dead",
+        "Necromancy",
+        "Exhume"
+      ]
+    },
+    {
+      "id": "clones",
+      "split": "test",
+      "cards": [
+        "Clone",
+        "Phyrexian Metamorph",
+        "Sakashima's Student",
+        "Vesuvan Doppelganger"
+      ]
+    },
+    {
+      "id": "board-wipe-artifacts",
+      "split": "test",
+      "cards": [
+        "Vandalblast",
+        "Bane of Progress",
+        "Austere Command"
+      ]
+    },
+    {
+      "id": "protection-instants",
+      "split": "test",
+      "cards": [
+        "Heroic Intervention",
+        "Teferi's Protection",
+        "Boros Charm",
+        "Flawless Maneuver"
+      ]
+    },
+    {
+      "id": "mana-doublers",
+      "split": "test",
+      "cards": [
+        "Mana Reflection",
+        "Zendikar Resurgent",
+        "Nyxbloom Ancient",
+        "Mirari's Wake"
+      ]
+    },
+    {
+      "id": "impulse-draw",
+      "split": "test",
+      "cards": [
+        "Outpost Siege",
+        "Chandra, Torch of Defiance",
+        "Light Up the Stage"
+      ]
+    },
+    {
+      "id": "landfall-payoffs",
+      "split": "test",
+      "cards": [
+        "Avenger of Zendikar",
+        "Rampaging Baloths",
+        "Scute Swarm"
+      ]
+    },
+    {
+      "id": "free-counters",
+      "split": "test",
+      "cards": [
+        "Force of Will",
+        "Force of Negation",
+        "Fierce Guardianship",
+        "Pact of Negation"
+      ]
+    }
+  ]
+}

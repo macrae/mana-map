@@ -170,7 +170,7 @@ Manual     fetch-deck → goldfish + RAG DBs → agents author JSON
                     → validators gate → renderer builds → GitHub Pages
 ```
 
-`manamap run` drives the first (13 steps, ~40–60 min, internet at two of them).
+`manamap run` drives the first (14 steps, ~40–60 min, internet at two of them).
 `manamap pilot <cmd>` drives the second (26 subcommands). All constants live in
 `src/manamap/config.py`; both CLIs are registry-driven with lazy imports.
 
@@ -252,7 +252,7 @@ GitHub Pages serves the repo directly. There is no root index; the two entry poi
 | `PLAN.md` | Current state and what's next |
 | `STYLEv3.md` | The magazine's editorial and design constitution |
 | `docs/architecture.md` | Models, mechanical tags, synergy rules, power creep, regions |
-| `docs/pipeline.md` | All 13 steps: inputs, outputs, runtimes, when to re-run |
+| `docs/pipeline.md` | All 14 steps: inputs, outputs, runtimes, when to re-run |
 | `docs/data-artifacts.md` | Every `data/` file: producer, size, git status, consumers |
 | `docs/viz.md` | Frontend structure, the `window.MM` API, Pages layout |
 | `docs/testing.md` | Test layout, skip markers, conventions |

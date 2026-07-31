@@ -42,7 +42,34 @@ Shared utilities (`get_device`, `collate_triplets`, `run_epoch`) live in `traini
 - Negatives = share 0 mechanical tags
 - Fallback chain: >= 2 shared → >= 1 shared → random
 
-**Both:** triplet margin loss (margin 0.3), batch 256, Adam lr 1e-3, 90/10 split, early stopping patience 5. Color+Type converges near-zero loss by ~epoch 7 (expected — color/type groups easily satisfy the margin); the ability model typically stops ~epoch 16 (tag groups are fuzzier, best val_loss ~0.05).
+**Both:** triplet margin loss (margin 0.3), batch 256, Adam lr 1e-3, 90/10 split, early stopping patience 5. Color+Type converges near-zero loss by ~epoch 7; the ability model typically stops ~epoch 16 (best val_loss ~0.05).
+
+### Both spaces have collapsed — measured, step 14
+
+That near-zero loss is the problem, not a sign of health. Run `manamap eval-embeddings`:
+
+| space | dim | effective dim | 1st→50th neighbour gap | recall@10 (held-out) |
+|---|---|---|---|---|
+| Color+Type | 128 | **3.05** | **0.0033** | 0.044 |
+| Ability | 128 | 5.97 | 0.0236 | 0.093 |
+| frozen MiniLM text (the *input*) | 384 | 81.04 | 0.1490 | **0.187** |
+
+Two independent failures, both traceable to the mining rules above:
+
+- **The task is trivially satisfiable.** "Same (supertype, primary_color)" versus "differs in
+  both" is solved by encoding colour and type and discarding the rest — which is what 3.05
+  effective dimensions is. A triplet margin gives zero gradient once satisfied, so nothing ever
+  pressures the model to keep *within-class* structure. A 0.003 cosine spread across the top 50
+  means their ordering is float noise, so "most similar" is an arbitrary pick from a tie.
+- **The ability model's positives are mostly fallbacks.** Its rule needs ≥2 shared mechanical
+  tags, but only **46.9%** of cards have two tags at all (80% have one), so for most of the
+  corpus the positive is "shares ≥1 tag" or a random card. For contrast `card_roles.json`
+  covers **89%** at 1.94 roles/card — a denser signal neither model uses.
+
+**Both trained spaces lose to the frozen text they are built from**, so the training stage is
+currently subtractive. The evaluation is deliberately independent of every training signal (see
+`data/eval/similarity_golden.json`), and its `test` split was written after the diagnosis, so
+these numbers are not self-graded.
 
 ## Supertype classification (`src/manamap/ingest/extract.py`)
 
