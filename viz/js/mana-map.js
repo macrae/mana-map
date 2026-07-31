@@ -225,12 +225,45 @@
       .map(x => x.r);
   }
 
+  // Walking outward from one card. Reuses `browseSet` wholesale — the counter, the arrows,
+  // `moveBrowseMarker`'s single-restyle fast path and the image preloader all come free —
+  // and adds one field, `anchor`, so the panel can say whose neighbourhood you are in.
+  //
+  // Ordering is NEAREST-first, the opposite of a plain browse (furthest-from-centroid).
+  // Both are defensible and they mean opposite things, so the panel states which is which.
+  const NEIGHBOURHOOD_K = 24;
+
+  async function enterNeighbourhood(row, initialStep) {
+    if (!allData[row]) return;
+    setStatus('Finding neighbours of ' + allData[row].n + '…');
+    const near = await nearestTo(row, NEIGHBOURHOOD_K, {});
+    if (!near.length) { setStatus('Embeddings unavailable — cannot walk the neighbourhood.'); return; }
+
+    browseSet = {
+      indices: [row].concat(near.map(x => x.i)),
+      sims: [1].concat(near.map(x => x.sim)),
+      pos: 0,
+      label: allData[row].n,
+      anchor: row,
+    };
+    if (initialStep) {
+      const len = browseSet.indices.length;
+      browseSet.pos = ((initialStep % len) + len) % len;
+    }
+    selectedCards = [];                    // browse and the 8-stack never coexist
+    topCardIndex = 0;
+    updateViewerPanel();
+    updateSelectionHighlight();
+    setStatus(allData[row].n + ' — ' + near.length + ' nearest, ← → to walk them, Enter to re-anchor');
+  }
+
   async function enterBrowse(rowIndices, label) {
     const rows = Array.from(new Set(rowIndices)).filter(i => allData[i]);
     if (rows.length === 0) return;
     setStatus(`Ordering ${rows.length.toLocaleString()} cards…`);
     await loadEmbeddings();          // no-op after the first call
-    browseSet = { indices: orderByCentroidDistance(rows), pos: 0, label: label || 'Selection' };
+    browseSet = { indices: orderByCentroidDistance(rows), pos: 0, label: label || 'Selection',
+                  anchor: null, sims: null };
     selectedCards = [];              // browse replaces the 8-card stack, never coexists
     topCardIndex = 0;
     updateViewerPanel();
@@ -241,6 +274,76 @@
   function browseCard() {
     if (!browseSet) return null;
     return allData[browseSet.indices[browseSet.pos]];
+  }
+
+  // ── Hover card ──────────────────────────────────────────────────────────
+  //
+  // A floating image at the cursor. Verified in the browser before building it:
+  // `plotly_hover` DOES fire on traces with `hoverinfo: 'none'` — 'none' suppresses the
+  // label, 'skip' suppresses the event — so this needs no `text` arrays and reintroduces
+  // none of the per-point work that made Plotly's own hover cost 37 ms a render.
+  //
+  // The magazine's card preview (design.py `.card-pop`) is pure CSS, anchored to a static
+  // inline element. A point in a WebGL scatter is not an element, so only the look
+  // transfers, not the mechanism.
+  const HOVER_DELAY_MS = 180;
+  let hoverTimer = null;
+  let hoverRow = null;
+  let popupEl = null;
+
+  function ensurePopup() {
+    if (popupEl) return popupEl;
+    popupEl = document.createElement('div');
+    popupEl.className = 'card-popup';
+    popupEl.style.display = 'none';
+    document.getElementById('plot').appendChild(popupEl);
+    return popupEl;
+  }
+
+  // clientX/clientY, because the two callers measure in different spaces: Plotly hands back
+  // an event on the graph div, the canvas hands back a raw MouseEvent.
+  function showCardPopup(row, clientX, clientY) {
+    const d = allData[row];
+    if (!d) return;
+    clearTimeout(hoverTimer);
+    if (hoverRow === row && popupEl && popupEl.style.display !== 'none') {
+      positionPopup(clientX, clientY);
+      return;
+    }
+    hoverTimer = setTimeout(function () {
+      hoverRow = row;
+      const el = ensurePopup();
+      el.innerHTML =
+        '<img src="' + cardImageUrl(d.n) + '" alt="' + escHtml(d.n) + '"' +
+        ' onerror="this.onerror=null;this.parentElement.classList.add(\'card-popup-failed\');' +
+        'this.parentElement.textContent=' + JSON.stringify(d.n).replace(/"/g, '&quot;') + '">';
+      el.style.display = 'block';
+      positionPopup(clientX, clientY);
+    }, HOVER_DELAY_MS);
+  }
+
+  // Flip rather than clip. The panel side is where the cursor usually is, so a popup that
+  // always opened right would spend most of its life half off-screen.
+  function positionPopup(clientX, clientY) {
+    if (!popupEl) return;
+    const host = document.getElementById('plot');
+    const r = host.getBoundingClientRect();
+    const w = popupEl.offsetWidth || 230;
+    const h = popupEl.offsetHeight || 320;
+    let x = clientX - r.left + 18;
+    let y = clientY - r.top - h / 2;
+    if (x + w > r.width - 8) x = clientX - r.left - w - 18;
+    if (x < 8) x = 8;
+    if (y < 8) y = 8;
+    if (y + h > r.height - 8) y = Math.max(8, r.height - h - 8);
+    popupEl.style.left = Math.round(x) + 'px';
+    popupEl.style.top = Math.round(y) + 'px';
+  }
+
+  function hideCardPopup() {
+    clearTimeout(hoverTimer);
+    hoverRow = null;
+    if (popupEl) popupEl.style.display = 'none';
   }
 
   function cardImageUrl(name) {
@@ -444,6 +547,10 @@
     html += '<span class="viewer-count">' + (browseSet.pos + 1) + ' / ' + n.toLocaleString() + '</span>';
     html += '<button class="viewer-arrow" onclick="MM.cycleNext()" title="Next (→)">›</button>';
     html += '</span>';
+    if (browseSet.anchor != null && browseSet.pos !== 0) {
+      html += '<div class="browse-anchor">near <strong>' +
+        escHtml(allData[browseSet.anchor].n) + '</strong></div>';
+    }
     html += '<button class="detail-close" onclick="MM.closeDetail()" title="Close (ESC)">×</button>';
     html += '<div class="viewer-quickstats">';
     if (d.mc) html += renderManaSymbols(d.mc);
@@ -458,10 +565,18 @@
 
     // Say what the order is. An unexplained sequence through 400 cards is just a shuffle
     // with extra steps, and the ordering is the only thing making this browsable.
+    const nb = browseSet.anchor != null;
     html += '<div class="browse-order">';
     html += '<span class="browse-order-bar"><span style="width:' +
       ((browseSet.pos / Math.max(n - 1, 1)) * 100).toFixed(1) + '%"></span></span>';
-    html += '<span class="browse-order-label">least typical → most typical · 128-dim distance from the selection’s centre</span>';
+    html += '<span class="browse-order-label">' + (nb
+      ? (browseSet.pos === 0
+          ? 'the anchor · ← → walks its ' + (n - 1) + ' nearest · Enter re-anchors here'
+          : 'nearest → furthest from ' + escHtml(allData[browseSet.anchor].n) +
+            (browseSet.sims ? ' · cosine ' + browseSet.sims[browseSet.pos].toFixed(3) : '') +
+            ' · Enter re-anchors here')
+      : 'least typical → most typical · 128-dim distance from the selection’s centre') +
+      '</span>';
     html += '</div>';
 
     html += buildCardDetailHtml(d);
@@ -501,6 +616,9 @@
       if (!moveBrowseMarker()) updateSelectionHighlight();
       return;
     }
+    // One card selected: arrows used to be a no-op. Seed its neighbourhood and step into
+    // it in the direction pressed, so the first press already moves.
+    if (selectedCards.length === 1) { enterNeighbourhood(selectedCards[0].idx, delta); return; }
     if (selectedCards.length < 2) return;
     const n = selectedCards.length;
     bringToTop(((topCardIndex + delta) % n + n) % n);
@@ -556,7 +674,9 @@
     if (!browseSet) return null;
     const ix = browseSet.indices;
     const drilling = typeof window.Drill !== 'undefined' && window.Drill.isActive();
-    return 'b:' + ix.length + ':' + ix[0] + ':' + ix[ix.length - 1] + ':' + (drilling ? 'local' : 'world');
+    return 'b:' + ix.length + ':' + ix[0] + ':' + ix[ix.length - 1] +
+           ':' + (browseSet.anchor == null ? '-' : browseSet.anchor) +
+           ':' + (drilling ? 'local' : 'world');
   }
 
   // Pure: build the highlight traces without touching the plot. render() folds these
@@ -588,6 +708,25 @@
           marker: { size: 5, opacity: 0.85, color: '#8B7730' },
           _isSelection: true,
         });
+      }
+      // The anchor keeps a distinct marker from the card you have walked to — otherwise
+      // there is nothing on the map saying where the neighbourhood is centred.
+      if (browseSet.anchor != null && browseSet.anchor !== cur) {
+        const ap = posOf(browseSet.anchor);
+        if (ap) {
+          traces.push({
+            type: 'scattergl',
+            mode: 'markers',
+            name: 'Anchor',
+            x: [ap[0]],
+            y: [ap[1]],
+            customdata: [browseSet.anchor],
+            hoverinfo: 'none',
+            marker: { size: 14, opacity: 1, color: 'rgba(0,0,0,0)', symbol: 'circle',
+                      line: { color: '#4A7BFF', width: 2.5 } },
+            _isSelection: true,
+          });
+        }
       }
       if (curPos) {
         traces.push({
@@ -712,6 +851,40 @@
     } catch (e) {
       return false;
     }
+  }
+
+  // THE k-nearest primitive. There were two before this — `cosineSimilarity` plus the sort
+  // inside `findSimilarCards`, and `force.js:nearestInCorpus` — and the neighbourhood walk
+  // would have been a third. Rows are L2-normalised at export, so the dot product IS the
+  // cosine and no norms are needed. Returns `{i, sim}` nearest-first.
+  //
+  // `respectFilters` defaults to true: if you have hidden Lands, a neighbourhood should not
+  // walk you into one. `force.js` passes false, because a graph you are branching through
+  // should not silently change shape when a toolbar toggle flips.
+  async function nearestTo(row, k, opts) {
+    const o = opts || {};
+    if (!(await loadEmbeddings())) return [];
+    const dim = EMBED_DIM;
+    const base = row * dim;
+    const exclude = o.exclude || null;
+    const respectFilters = o.respectFilters !== false;
+    const best = [];                       // ascending by sim; best[0] is the weakest kept
+    for (let j = 0; j < allData.length; j++) {
+      if (j === row) continue;
+      if (exclude && exclude.has(j)) continue;
+      if (respectFilters && !activeSupertypes.has(allData[j].s)) continue;
+      const oj = j * dim;
+      let dot = 0;
+      for (let i = 0; i < dim; i++) dot += embeddings[base + i] * embeddings[oj + i];
+      if (best.length < k) {
+        best.push({ i: j, sim: dot });
+        if (best.length === k) best.sort((a, b) => a.sim - b.sim);
+      } else if (dot > best[0].sim) {
+        best[0] = { i: j, sim: dot };
+        best.sort((a, b) => a.sim - b.sim);
+      }
+    }
+    return best.sort((a, b) => b.sim - a.sim);
   }
 
   function cosineSimilarity(idxA, idxB) {
@@ -1198,15 +1371,30 @@
       return;
     }
 
+    // Arrows come FIRST and are gated on their own terms. They used to sit behind
+    // `selectedCards.length === 0`, and browse mode sets `selectedCards = []` — so the
+    // arrow KEYS were dead in browse mode and only the on-screen ‹ › buttons worked, while
+    // the panel's own hint said "← → browse". `cycleSelection` guards its own bounds, so
+    // the `> 1` conditions that also blocked the single-card case are gone too.
+    const back = e.key === 'ArrowLeft' || e.key === 'ArrowUp';
+    const fwd = e.key === 'ArrowRight' || e.key === 'ArrowDown';
+    if (back || fwd) {
+      if (!browseSet && selectedCards.length === 0) return;
+      e.preventDefault();
+      cycleSelection(back ? -1 : 1);
+      return;
+    }
+
+    // Enter re-anchors the neighbourhood to whatever you have walked to.
+    if (e.key === 'Enter' && browseSet && browseSet.anchor != null) {
+      e.preventDefault();
+      enterNeighbourhood(browseSet.indices[browseSet.pos]);
+      return;
+    }
+
     if (selectedCards.length === 0) return;
 
-    if ((e.key === 'ArrowLeft' || e.key === 'ArrowUp') && selectedCards.length > 1) {
-      e.preventDefault();
-      cycleSelection(-1);
-    } else if ((e.key === 'ArrowRight' || e.key === 'ArrowDown') && selectedCards.length > 1) {
-      e.preventDefault();
-      cycleSelection(1);
-    } else if (e.key === 'Delete' || e.key === 'Backspace') {
+    if (e.key === 'Delete' || e.key === 'Backspace') {
       e.preventDefault();
       removeFromSelection(selectedCards[topCardIndex].idx);
     } else if (e.key >= '1' && e.key <= '8') {
@@ -1266,6 +1454,7 @@
   // whole interaction.
   function setMode(mode) {
     currentMode = mode;
+    hideCardPopup();
     const detail = document.getElementById('detailPanel');
 
     if (mode !== 'build' && typeof window.DeckBuilder !== 'undefined') window.DeckBuilder.exit();
@@ -1276,7 +1465,6 @@
     // (canvas) drawing a different thing (a graph, not a projection), so the Plotly
     // surface is hidden outright while it runs.
     const plotEl = document.getElementById('plot');
-    const svg = plotEl.querySelector('.main-svg');
     plotEl.classList.toggle('force-mode', mode === 'force');
 
     if (mode === 'build') {
@@ -1634,6 +1822,16 @@
         window.Drill.enterRegion(region.id);
       });
 
+      // Hover → card image. `hoverinfo: 'none'` keeps the label off; the event still fires.
+      document.getElementById('plot').on('plotly_hover', function (eventData) {
+        if (!eventData || !eventData.points || !eventData.points.length) return;
+        const pt = eventData.points[0];
+        if (pt.customdata == null || !allData[pt.customdata]) return;
+        const ev = eventData.event;
+        if (ev) showCardPopup(pt.customdata, ev.clientX, ev.clientY);
+      });
+      document.getElementById('plot').on('plotly_unhover', hideCardPopup);
+
       // Zoom listener for region label crossfade
       document.getElementById('plot').on('plotly_relayout', function () {
         if (_labelUpdateInFlight) return; // ignore relayouts we caused
@@ -1751,6 +1949,11 @@
     cyclePrev: () => cycleSelection(-1),
     cycleNext: () => cycleSelection(1),
     enterBrowse,
+    enterNeighbourhood,
+    nearestTo,
+    buildCardDetailHtml,
+    showCardPopup,
+    hideCardPopup,
     get browseSet() { return browseSet; },
     // The row indices currently selected, whichever container holds them. The Walk seeds
     // from this so every existing way of picking cards feeds it for free.

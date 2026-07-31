@@ -71,14 +71,21 @@ def test_every_path_reveals_the_open_row():
 
 
 def test_arrows_and_arrow_keys_share_one_implementation():
-    """Two cycle implementations would drift — one wrapping, one clamping."""
+    """Two cycle implementations would drift — one wrapping, one clamping.
+
+    Asserts the delegation, not the exact source shape: the previous version matched
+    literal indentation and broke the moment the key handler was rewritten to fix the
+    browse-mode gate, even though the invariant it cared about was untouched.
+    """
     js = _js()
     assert "function cycleSelection(delta)" in js
     assert "cyclePrev: () => cycleSelection(-1)" in js
     assert "cycleNext: () => cycleSelection(1)" in js
-    # The key handler delegates rather than recomputing an index.
-    assert "e.preventDefault();\n      cycleSelection(-1);" in js
-    assert "e.preventDefault();\n      cycleSelection(1);" in js
+    # The key handler must delegate rather than recompute an index of its own.
+    handler = js[js.index("document.addEventListener('keydown'"):]
+    handler = handler[:handler.index("// ── Shift+Drag Box Select ──")]
+    assert "cycleSelection(" in handler, "arrow keys no longer delegate to cycleSelection"
+    assert "topCardIndex +" not in handler, "the key handler is recomputing an index itself"
 
 
 def test_cycling_wraps_in_both_directions():

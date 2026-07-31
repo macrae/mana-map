@@ -1,12 +1,12 @@
 # Testing
 
 ```bash
-.venv/bin/python -m pytest              # everything (1,000, ~2.5 min)
+.venv/bin/python -m pytest              # everything (1,005, ~4 min)
 .venv/bin/python -m pytest -m "not browser"   # fast suite (978, ~68 s)
-.venv/bin/python -m pytest -m browser         # the 22 browser tests (~120 s)
+.venv/bin/python -m pytest -m browser         # the 27 browser tests (~180 s)
 ```
 
-1,000 tests in `tests/`: 377 card-pipeline + 601 pilot-subsystem + **22 browser**.
+1,005 tests in `tests/`: 377 card-pipeline + 601 pilot-subsystem + **27 browser**.
 
 ## Source assertions do not catch regressions
 
@@ -31,7 +31,18 @@ source tests pass and the behavioural tests fail with
 against a renderer that draws nothing, it is a source assertion — fine, but it is not
 coverage.
 
-### Browser tests (22) — `tests/test_viz_behaviour.py`
+**Drive the real input, not the function behind it.** `test_browse_cycling_moves_the_marker`
+called `MM.cycleNext()` and passed for weeks while the arrow *keys* were dead in browse
+mode — the handler bailed on `selectedCards.length === 0` and `enterBrowse` empties that
+array, so only the on-screen buttons worked while the panel's own hint said "← → browse".
+The navigation tests now dispatch `KeyboardEvent`s.
+
+**Source assertions go stale on shape, not on meaning.** `test_arrows_and_arrow_keys_share_one_implementation`
+matched literal indentation and broke the moment the key handler was rewritten to fix that
+gate — while the invariant it cared about was untouched. It now asserts the delegation
+(`cycleSelection` is called; the handler does not recompute an index) rather than the text.
+
+### Browser tests (27) — `tests/test_viz_behaviour.py`
 
 Fixtures in `tests/conftest_viz.py` (deliberately not `conftest.py`, so the other 978 never
 import playwright): an ephemeral `http.server` rooted at the repo — `viz/` and `data/` must

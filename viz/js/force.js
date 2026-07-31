@@ -66,26 +66,13 @@
     return Math.sqrt(2 - 2 * dot);
   }
 
-  // k nearest to `row` across the whole corpus. One linear pass over 34,322 x 128 floats
-  // — about 10 ms, which is why branching can be a click and not a spinner.
-  function nearestInCorpus(row, k, exclude) {
-    const n = MM.allData.length;
-    const best = [];
-    const o = row * dim;
-    for (let j = 0; j < n; j++) {
-      if (j === row || exclude.has(j)) continue;
-      const oj = j * dim;
-      let dot = 0;
-      for (let i = 0; i < dim; i++) dot += emb[o + i] * emb[oj + i];
-      if (best.length < k) {
-        best.push({ j: j, dot: dot });
-        if (best.length === k) best.sort((a, b) => a.dot - b.dot);
-      } else if (dot > best[0].dot) {
-        best[0] = { j: j, dot: dot };
-        best.sort((a, b) => a.dot - b.dot);
-      }
-    }
-    return best.sort((a, b) => b.dot - a.dot).map(b => b.j);
+  // k-nearest now comes from MM.nearestTo — this file had its own copy, mana-map.js had
+  // another inside findSimilarCards, and the neighbourhood walk would have been a third.
+  // `respectFilters: false` on purpose: a graph you are branching through should not
+  // change shape because someone toggled Lands off in the toolbar.
+  async function nearestInCorpus(row, k, exclude) {
+    const hits = await MM.nearestTo(row, k, { exclude: exclude, respectFilters: false });
+    return hits.map(h => h.i);
   }
 
   // ── Graph construction ──────────────────────────────────────────────────
@@ -178,6 +165,8 @@
       const hit = pick(e.clientX - r.left, e.clientY - r.top);
       if (hit !== hovered) { hovered = hit || null; draw(); renderPanel(); }
       canvas.style.cursor = hit ? 'pointer' : 'grab';
+      if (hit) MM.showCardPopup(hit.row, e.clientX, e.clientY);
+      else MM.hideCardPopup();
     });
 
     canvas.addEventListener('click', function (e) {
@@ -187,6 +176,7 @@
     });
 
     canvas.addEventListener('mouseleave', function () {
+      MM.hideCardPopup();
       if (hovered) { hovered = null; draw(); renderPanel(); }
     });
 
@@ -435,7 +425,7 @@
 
   // The walk. Pull in the clicked card's nearest neighbours from the whole corpus, link
   // them, and reheat — the graph grows toward whatever you were curious about.
-  function branchFrom(node) {
+  async function branchFrom(node) {
     if (!emb) return;
     pinned = node;
     if (trail[trail.length - 1] !== node) {
@@ -452,7 +442,7 @@
 
     const have = new Set(nodes.map(n => n.row));
     const room = Math.min(BRANCH_K, MAX_NODES - nodes.length);
-    const found = nearestInCorpus(node.row, room, have);
+    const found = await nearestInCorpus(node.row, room, have);
     if (!found.length) { renderPanel(); return; }
 
     for (const row of found) {
@@ -619,12 +609,16 @@
         '<div class="lens-note">Drag a card to fling it · click to branch · scroll to zoom</div>' +
       '</div>';
 
+    // The card itself, rendered here rather than in #detailPanel — force mode hides that
+    // panel, so the old "Open the card →" button pushed the card into an invisible element
+    // and the reader saw nothing (it then popped open on leaving the Walk, which was
+    // worse than nothing). MM.buildCardDetailHtml is the same markup Explore uses, so
+    // there is one card renderer rather than two that drift.
     if (h) {
-      html += '<div class="deck-section"><div class="deck-section-title">Under the cursor</div>' +
+      html += '<div class="deck-section">' +
+        '<div class="deck-section-title">' + (h === pinned ? 'Pinned' : 'Under the cursor') + '</div>' +
         '<div class="lens-title">' + MM.escHtml(h.name) + '</div>' +
-        '<div class="lens-sub">' + MM.escHtml(MM.allData[h.row].t || '') + '</div>' +
-        '<button class="lens-btn" onclick="MM.selectByName(' +
-          JSON.stringify(h.name).replace(/"/g, '&quot;') + ')">Open the card →</button>' +
+        MM.buildCardDetailHtml(MM.allData[h.row]) +
         '</div>';
     }
 

@@ -598,3 +598,166 @@ def test_a_walk_in_progress_can_be_restarted(page):
     assert r["walking"]["hasNewWalk"], "no way back to the menu from a walk in progress"
     assert r["reset"]["nodes"] == 0 and r["reset"]["menu"] == 7, "New walk did not restore the menu"
     assert r["switched"] > 50 and r["switched"] != r["walking"]["nodes"], "could not pick a different set"
+
+
+# ── Navigation: arrows, hover, and the card in The Walk ─────────────────
+#
+# Every test here presses REAL KEYS. The previous browse test called `MM.cycleNext()`
+# directly, which is why it never noticed that the arrow keys were dead in browse mode:
+# the handler bailed on `selectedCards.length === 0` and `enterBrowse` empties that array.
+# Only the on-screen buttons worked, while the panel's own hint said "← → browse".
+
+
+def _key(page, name):
+    page.evaluate("k => document.dispatchEvent("
+                  "new KeyboardEvent('keydown', {key: k, bubbles: true}))", name)
+
+
+def test_one_card_plus_arrow_walks_its_neighbourhood(page):
+    """Selecting a card and pressing → was a no-op: `cycleSelection` returned early below
+    two selected cards. It now seeds the card's k nearest and steps into them."""
+    page.evaluate("MM.selectByName('Zada, Hedron Grinder')")
+    page.wait_for_timeout(700)
+    assert page.evaluate("!!MM.browseSet") is False, "selection should not start as a browse"
+
+    _key(page, "ArrowRight")
+    page.wait_for_timeout(3000)
+
+    r = page.evaluate("""async () => {
+        const bs = MM.browseSet;
+        // Recompute the true nearest independently, so this asserts the ordering is the
+        // model's and not just self-consistent.
+        const emb = await MM.getEmbeddings(), dim = MM.EMBED_DIM;
+        const a = bs.anchor, oa = a * dim;
+        let bestI = -1, best = -2;
+        for (let j = 0; j < MM.allData.length; j++) {
+            if (j === a) continue;
+            const oj = j * dim; let d = 0;
+            for (let i = 0; i < dim; i++) d += emb[oa + i] * emb[oj + i];
+            if (d > best) { best = d; bestI = j; }
+        }
+        return {anchor: MM.allData[bs.anchor].n, pos: bs.pos, n: bs.indices.length,
+                showing: MM.allData[bs.indices[bs.pos]].n,
+                trueNearest: MM.allData[bestI].n};
+    }""")
+    assert page.js_errors == []
+    assert r["anchor"] == "Zada, Hedron Grinder", "the anchor should be the card you picked"
+    assert r["pos"] == 1, "the first press should already move, not just seed"
+    assert r["showing"] == r["trueNearest"], (
+        f"stepped to {r['showing']}, nearest is {r['trueNearest']}")
+
+    _key(page, "ArrowLeft")
+    page.wait_for_timeout(600)
+    back = page.evaluate("({pos: MM.browseSet.pos, "
+                         "showing: MM.allData[MM.browseSet.indices[MM.browseSet.pos]].n})")
+    assert back["pos"] == 0 and back["showing"] == "Zada, Hedron Grinder"
+
+
+def test_enter_reanchors_the_neighbourhood(page):
+    page.evaluate("MM.selectByName('Zada, Hedron Grinder')")
+    page.wait_for_timeout(700)
+    _key(page, "ArrowRight")
+    page.wait_for_timeout(3000)
+    was = page.evaluate("MM.allData[MM.browseSet.indices[MM.browseSet.pos]].n")
+    _key(page, "Enter")
+    page.wait_for_timeout(3000)
+    r = page.evaluate("({anchor: MM.allData[MM.browseSet.anchor].n, pos: MM.browseSet.pos})")
+    assert page.js_errors == []
+    assert r["anchor"] == was, "Enter should re-anchor to the card you walked to"
+    assert r["pos"] == 0, "a fresh neighbourhood starts on its anchor"
+
+
+def test_arrow_keys_drive_browse_mode(page):
+    """The regression the suite was blind to — real keys, not MM.cycleNext()."""
+    page.evaluate("""async () => {
+        const rows = []; for (let i = 0; i < 300; i++) rows.push(i * 11 % 34322);
+        await MM.enterBrowse(rows, 'T');
+    }""")
+    page.wait_for_timeout(1500)
+    start = page.evaluate("MM.browseSet.pos")
+    _key(page, "ArrowRight")
+    page.wait_for_timeout(400)
+    fwd = page.evaluate("MM.browseSet.pos")
+    _key(page, "ArrowLeft")
+    page.wait_for_timeout(400)
+    back = page.evaluate("MM.browseSet.pos")
+    assert page.js_errors == []
+    assert fwd != start, "ArrowRight did nothing in browse mode"
+    assert back == start, "ArrowLeft did not return"
+
+
+def test_hover_shows_a_card_image_at_the_cursor(page):
+    """`plotly_hover` fires even though every trace sets `hoverinfo: 'none'` — verified in
+    a browser before this was built ('none' hides the label, 'skip' kills the event)."""
+    r = page.evaluate("""async () => {
+        const gd = document.getElementById('plot'), fl = gd._fullLayout;
+        const rect = gd.getBoundingClientRect();
+        const i = MM.allData.findIndex(d => d.n === 'Sol Ring'), d = MM.allData[i];
+        const px = fl.xaxis.d2p(d.x) + fl._size.l, py = fl.yaxis.d2p(d.y) + fl._size.t;
+        const drag = gd.querySelector('.nsewdrag') || gd;
+        // Record what Plotly says it hovered. Aiming at a card's pixel does NOT guarantee
+        // that card: hovermode is 'closest' over 34,322 points, so a denser neighbour a
+        // pixel away wins — asking for Sol Ring's coordinates returned Krark-Clan
+        // Ironworks. The invariant is that the popup shows whatever was hovered.
+        let hoveredRow = null;
+        gd.on('plotly_hover', e => {
+            if (hoveredRow === null && e.points && e.points[0]) hoveredRow = e.points[0].customdata;
+        });
+        drag.dispatchEvent(new MouseEvent('mousemove',
+            {bubbles: true, clientX: rect.left + px, clientY: rect.top + py}));
+        await new Promise(r => setTimeout(r, 700));
+        const p = document.querySelector('.card-popup');
+        const img = p && p.querySelector('img');
+        const pr = p ? p.getBoundingClientRect() : null;
+        return {
+            visible: !!p && p.style.display === 'block',
+            hoveredName: hoveredRow === null ? null : MM.allData[hoveredRow].n,
+            src: img ? decodeURIComponent(img.getAttribute('src') || '') : '',
+            pointerEvents: p ? getComputedStyle(p).pointerEvents : null,
+            insideRight: pr ? pr.right <= rect.right + 1 : false,
+            insideTop: pr ? pr.top >= rect.top - 1 : false,
+        };
+    }""")
+    assert page.js_errors == []
+    assert r["visible"], "no hover popup appeared"
+    assert r["hoveredName"], "plotly_hover never fired — has hoverinfo been set to 'skip'?"
+    assert r["hoveredName"] in r["src"], (
+        f"popup shows {r['src'][:80]}, but {r['hoveredName']} was hovered")
+    # Without this the popup sits under its own cursor and steals the hover from the point
+    # that summoned it, flickering forever.
+    assert r["pointerEvents"] == "none"
+    assert r["insideRight"] and r["insideTop"], "popup escaped the plot area"
+
+    page.evaluate("MM.hideCardPopup()")
+    page.wait_for_timeout(300)
+    assert page.evaluate("document.querySelector('.card-popup').style.display") == "none"
+
+
+def test_the_walk_shows_the_card_it_pinned(page):
+    """force mode hides #detailPanel, so the old "Open the card →" button pushed the card
+    into an invisible element — nothing appeared, and it then popped open on leaving the
+    Walk. The card now renders in the walk's own panel, from the same builder Explore uses.
+    """
+    r = page.evaluate("""async () => {
+        document.getElementById('modeSelect').value = 'force'; MM.setMode('force');
+        await new Promise(r => setTimeout(r, 2500));
+        document.querySelector('[onclick^="Force.walkDeck"]').click();
+        await new Promise(r => setTimeout(r, 8000));
+        const i = MM.allData.findIndex(d => d.n === 'Past in Flames');
+        Force.focusCard(i);
+        await new Promise(r => setTimeout(r, 2000));
+        const el = document.getElementById('deckInner');
+        const img = el.querySelector('.detail-card-image img');
+        const txt = (el.innerText || '');
+        return {
+            hasImage: !!img,
+            src: img ? decodeURIComponent(img.getAttribute('src') || '') : '',
+            hasOracle: txt.indexOf('ORACLE TEXT') !== -1,
+            detailHidden: document.getElementById('detailPanel').style.display === 'none',
+        };
+    }""")
+    assert page.js_errors == []
+    assert r["hasImage"], "the walk panel shows no card image"
+    assert "Past in Flames" in r["src"]
+    assert r["hasOracle"], "the walk panel shows an image but none of the card's text"
+    assert r["detailHidden"], "two panels open would cut the canvas in half"

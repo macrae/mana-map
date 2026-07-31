@@ -474,3 +474,22 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .force-slider input[type=range] { width: 100%; accent-color: #c4a747; }
 /* Inline variant for the panel header — the walk's "New walk" sits beside the title. */
 .lens-btn-inline { width: auto; margin: 0 8px 0 auto; padding: 4px 10px; font-size: 0.72rem; }
+
+/* ── Hover card ───────────────────────────────────────────────────────────
+ * A floating Scryfall image at the cursor, inside #plot (which is position:
+ * relative). `pointer-events: none` is essential — the popup sits under the
+ * pointer by construction, so without it the card would immediately steal the
+ * hover from the point that summoned it and flicker forever.
+ */
+.card-popup {
+  position: absolute; z-index: 60; width: 230px; pointer-events: none;
+  border-radius: 12px; overflow: hidden;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.55); border: 1px solid #3a3a5a;
+  background: #1a1a2e;
+}
+.card-popup img { width: 100%; display: block; }
+.card-popup-failed { padding: 10px 12px; font-size: 0.8rem; color: #aaa; width: 200px; }
+
+/* Which card's neighbourhood you are standing in. */
+.browse-anchor { width: 100%; font-size: 0.72rem; color: #888; margin-top: 4px; }
+.browse-anchor strong { color: #4A7BFF; font-weight: 600; }

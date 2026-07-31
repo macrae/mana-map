@@ -272,6 +272,58 @@ the dossier shipped, the two products shared exactly one link, one-way.
 - 4-tier search (exact → starts-with → includes → oracle text, capped 200)
 - Multi-select up to 8 (Shift+click / Shift+drag box select); keyboard nav (arrows, 1–8, Delete, Escape, `/`)
 
+### Navigating with the arrows
+
+Arrows mean "step", and what they step through depends on what is selected:
+
+| Selection | `←` / `→` |
+|---|---|
+| One card | its **neighbourhood** — k nearest in 128-d, nearest-first |
+| 2–8 cards | the accordion stack |
+| A browse set | the ordered set |
+
+**One card seeds a neighbourhood.** `enterNeighbourhood(row)` takes the k nearest by cosine
+and reuses `browseSet` wholesale — counter, `‹ ›` buttons, `moveBrowseMarker`'s
+single-restyle fast path, image preloading — adding one field, `anchor`. `Enter` re-anchors
+to whatever you have walked to, so you can travel outward card by card. The anchor keeps its
+own blue ring on the map, because otherwise nothing says whose neighbourhood you are in.
+
+**The two orderings are opposites and the panel says which is showing.** A plain browse is
+furthest-from-centroid ("least typical first"); a neighbourhood is nearest-first from its
+anchor, and shows the cosine as you step.
+
+**One k-nearest, `MM.nearestTo(row, k, opts)`.** There were two before — `cosineSimilarity`
+plus the sort inside `findSimilarCards`, and `force.js:nearestInCorpus` — and this would
+have been a third. `respectFilters` defaults to true so a neighbourhood will not walk you
+into a supertype you have hidden; The Walk passes `false`, because a graph you are branching
+through should not change shape when a toolbar toggle flips.
+
+**The keyboard gate was broken.** Arrows sat behind `if (selectedCards.length === 0) return;`
+and `enterBrowse` sets `selectedCards = []` — so the arrow *keys* were dead in browse mode
+and only the on-screen buttons worked, while the panel's hint read "← → browse". Arrows are
+now handled first and gated on their own terms.
+
+### Hover: the card at the cursor
+
+A floating image in `#plot`, 180 ms delay, flipping side near the edges.
+
+**`plotly_hover` fires even though every trace sets `hoverinfo: 'none'`** — verified in a
+browser before building on it: `'none'` suppresses the *label*, `'skip'` suppresses the
+*event*. So the popup needs no `text` arrays and reintroduces none of the per-point work
+that made Plotly's own hover cost 37 ms a render; it reads `MM.allData[i]` on demand.
+
+`pointer-events: none` on the popup is essential — it sits under the cursor by construction,
+so without it the card steals the hover from the point that summoned it and flickers.
+
+The magazine has a card preview too (`design.py` `.card-pop`), but it is pure CSS anchored
+to a static inline element. A point in a WebGL scatter is not an element, so only the look
+transfers, not the mechanism.
+
+**Aiming at a card's pixel does not guarantee that card.** `hovermode: 'closest'` over
+34,322 points means a denser neighbour a pixel away wins — asking for Sol Ring's coordinates
+returns Krark-Clan Ironworks. Tests assert the popup matches *what Plotly reported hovering*,
+not what they aimed at.
+
 ### The card viewer
 
 One card selected renders as a plain detail panel. **More than one and the list becomes
@@ -427,6 +479,12 @@ axes, deliberately.
 touching. `velocityDecay: 0.22` is friction — d3's default `0.4` settles fast and dead;
 this keeps inertia so a flung node swings. `charge: -110` is repulsion, `linkScale: 190`
 converts chord distance to pixels.
+
+**The card renders in the walk's own panel.** force mode hides `#detailPanel`, so the old
+"Open the card →" button pushed the card into an invisible element: nothing appeared, and
+it then popped open when you left the Walk, which is worse than nothing. `force.js` now
+calls `MM.buildCardDetailHtml` — the same builder Explore uses, so there is one card
+renderer rather than two that drift.
 
 **Leaving keeps the graph.** `exit()` stops the simulation and nothing else; re-entering
 without a seed picks up where you left off, trail included. It deliberately does *not*
