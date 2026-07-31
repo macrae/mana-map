@@ -34,10 +34,15 @@ tests/                # pytest suite (1,119: 1,042 fast + 77 browser). Markers i
                       # conftest.py: requires_data/rules/deck/strategy/roles;
                       # `-m browser` needs playwright + chromium
 data/                 # artifacts; mostly gitignored, viz-served files tracked
-viz/                  # static frontend: index.html (the map: explore / deck lens /
-                      # build / the walk, plus drill) + deck.html (the dossier).
-                      # Plotly + d3 CDN, IIFE, window.MM. force.js is canvas+d3,
-                      # the first step off Plotly — see docs/viz.md
+viz/                  # static frontend: index.html + deck.html (the dossier).
+                      # Modes: discover (the FRONT DOOR — one random card, click a
+                      # relation, grow a graph) / explore (the 34K atlas) / deck lens /
+                      # the walk / build, plus drill.
+                      #   discovery.js  landing, relations, tray, deck load, import
+                      #   force.js      the graph engine (canvas + d3-force)
+                      #   decklist.js   Moxfield parser, fixture-locked to the Python one
+                      #   render/canvas.js  the map on canvas; Plotly is the other path
+                      # Plotly + d3 CDN, IIFE, window.MM — see docs/viz.md
 docs/                 # reference docs (see Pointers below)
 ```
 

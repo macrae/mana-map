@@ -8,10 +8,16 @@ Every figure here was derived from the repo at write time, not remembered.
 
 ## What this is now
 
-Two products in one repo. The card map is stable and complete. The active work is
-**Pilot's Manual** — a magazine generator that turns one Commander deck into a
-self-contained web issue with a three-tier evidence contract — and, since Deck Building v2,
-a **deck builder** that produces the deck in the first place.
+Two products in one repo, sharing a data layer and a CLI.
+
+**The card tool** was rebuilt this cycle and is no longer "a scatter plot": it opens on a
+single card and grows a graph as you click (see *Shipped — discovery-first* below). Under it,
+the function embedding was retrained after being measured as collapsed, and the map itself
+moved off Plotly onto canvas.
+
+**Pilot's Manual** turns one Commander deck into a self-contained web issue with a three-tier
+evidence contract — and, since Deck Building v2, a **deck builder** produces the deck in the
+first place.
 
 **Seven issues live**, all rebuilt 2026-07-29 under the v3.3 process:
 [001 Goblin Storm](https://macrae.github.io/mana-map/manuals/goblin-storm.html) ·
@@ -302,63 +308,53 @@ threshold to match the result. Hard-negative mining was scoped out of this pass 
 similarity ceiling, since 39% of cards have a text neighbour above 0.75), and is the obvious
 next lever.
 
-## In progress — ManaMap as an experience (discovery-first)
+## Shipped — ManaMap as an experience (discovery-first)
 
-The product is being reframed from the builder's view to the user's: land on **one card**, hover
-to see it, click to open it and reveal its neighbours, keep clicking to grow a graph. The 34K
-scatter survives as a mode you go to, not the thing you arrive at.
+The product was reframed from the builder's view to the user's. It opens on **one card**:
+hover it, click a relation, and its neighbours join a graph you grow by clicking. The 34K
+scatter survives as a mode you go to (`?mode=explore`), not the thing you arrive at.
 
-The useful surprise: **~70% already exists** inside The Walk (`viz/js/force.js`) — physics,
-drag-and-fling, hover popup, click-to-branch at 6 neighbours, cumulative growth, card detail,
-no persistence. This is mostly a front door, not a rebuild.
+The useful surprise: **~70% already existed** inside The Walk — physics, drag-and-fling,
+hover popup, click-to-branch, cumulative growth, card detail, no persistence. This was a
+front door and some plumbing, not a rebuild.
 
-**Slice 1 — shipped.** The two artifacts discovery runs on, zero UI:
+**What it costs to use.** Boot is `viz_index.json` (0.56 MB gz) + `neighbours.bin` (1.27 MB
+gz) = **1.83 MB**, against the **18.4 MB** it used to take to reach a first branch (12.9 MB
+projection, then 16.8 MB of incompressible float32 embeddings on the first click). Branching
+is **synchronous** — median 0.4 ms, no await inside the gesture, which is what makes
+click-to-grow feel physical rather than laggy.
 
-| | raw | gzipped |
-|---|---|---|
-| `viz_index.json` | 3.4 MB | 0.56 MB |
-| `neighbours.bin` | 2.3 MB | 1.70 MB |
-| **boot total** | | **2.26 MB** |
-| *(today: projection + embeddings before first branch)* | | *18.4 MB* |
+| | what it does |
+|---|---|
+| **Landing** | weighted random card, `?card=` / `?seed=` for a reproducible one, coarse filters, *Feeling lucky* |
+| **Relations** | Similar / Synergy / Outclassed by, counts stated **before** the click, rendered in every panel via `MM.relate` |
+| **Graph** | branch to grow, drag to fling, cross-links so it is a graph and not a tree, relation-inked edges, synergy edges labelled with their rule |
+| **Decks** | load any of the seven by slug (commander ringed) or paste a Moxfield export; deck cards read differently from cards you found |
+| **Tray** | keep cards, export a brief for the pilot loop in Claude Code — the site stays static |
 
-`neighbours.bin` carries 12 similar + 10 synergy + 5 obsoleted-by row ids per card, so branching
-is **synchronous** — no await inside the gesture, and the 16.8 MB embedding matrix stops being a
-gate on the first click a new visitor makes. `manamap viz-index` is step 14; step 15 is the
-quality reporter.
+**The synergy graph was recommending near-random cards**, which no interface would have
+fixed. Partners were tie-broken by embedding *similarity* — backwards for a complementary
+relation, since it surfaces cards resembling the anchor rather than cards that play with it.
+Ranking by playability instead moved the median partner from EDHREC rank 10,713 to 1,472, and
+top-2,000 share from 7.0% to 60.2%. Skullclamp went from *Playable Delusionary Hydra* to
+*Yawgmoth, Thran Physician*. `tests/test_synergy.py:test_synergy_partners_are_playable` is
+the gate.
 
-**Slice 2 — shipped.** The landing is one card. `viz/js/discovery.js` picks it (weighted toward
-cards with somewhere to go), renders it as art floating in space, and states what it connects to
-before you click: *Similar 12 · Synergy 10 · Outclassed by 5*. Picking a relation grows the graph
-**synchronously** — median 0.4 ms, no await in the gesture, and the embedding matrix is never
-fetched on that path. `?card=`, `?seed=` and `?mode=explore` make it deep-linkable and testable.
+**Findings worth keeping:**
 
-It is the **same force engine with different chrome**, not a second simulation. Three defects the
-single-seed start exposed, all fixed: every graph was a pure tree (branching skipped cards already
-present, so no cross-links ever formed); the panel followed the cursor rather than the pin; and a
-lone seed drew as a 6 px dot. Card art is a DOM `<img>` over the canvas — Scryfall's redirect
-refuses `crossOrigin`, so `ctx.drawImage` would taint the canvas and break `getImageData`.
+- **"Anti-cards" do not exist.** Across 4.5M pairs, zero fall below cosine 0 (min +0.344,
+  median +0.714) — the space is a narrow positive cone, so "orthogonal" is not a place. The
+  complementary relation the vision wanted is the rule-based synergy graph, not distance.
+- **Three live relation lookups would have made the product 5× heavier**, not lighter (~48 MB
+  of lazy fetches with an await per click). Hence the precomputed table.
+- **Coverage is uneven and the UI says so:** similar 100%, synergy 76.1%, obsolescence 22.5%,
+  and **23.6% of cards have nothing but similar**. Doubling Season has no synergy partners at
+  all — a real hole in the rules, now visible rather than buried.
+- **A card whose top synergy tier is small cannot be rescued by re-ranking.** Skullclamp's
+  holds 3 cards. That is coarseness in the 24 rules, not in the ordering.
 
-**Slice 3 — shipped.** Paste a Moxfield export and your deck lights up as a graph, commander
-pinned (Edgar: 136 entries, 129 cards, 0 unresolved, 26 ms). A tray holds what you keep and
-exports a **brief** — the site stays static, and the pilot loop still runs in Claude Code where
-it works. The JS parser is checked against the Python one on shared **hand-authored** fixtures,
-projected onto `{name, quantity, is_commander, is_sideboard}` so the printing hazard is deleted
-rather than duplicated.
-
-**Next.** Relation-styled edges in the graph, and the synergy coverage holes (Doubling Season has
-no partners at all) now that the UI surfaces them.
-
-**Three findings that changed the requirements:**
-
-- **"Anti-cards" cannot exist.** Across 4.5M pairs, zero are below cosine 0 (min +0.344, median
-  +0.714). The space is a narrow positive cone, so "orthogonal" is not a place — the furthest
-  card from Doubling Season is a fetchland. The complementary relation the vision wants is the
-  rule-based synergy graph, not embedding distance.
-- **Three live relation lookups would have made the product 5× heavier**, not lighter (~48 MB of
-  lazy fetches with an await per click). Hence the precomputed table.
-- **Relation coverage is uneven and the UI has to say so:** similar 100%, synergy 76.1%,
-  obsolescence 22.5%, and **23.6% of cards have nothing but similar**. Synergy is also exactly 10
-  partners for every card that has any — a capped rule-based list, not a ranking.
+**Open, deliberately:** the synergy rule set is coarse (24 rules) and leaves holes like
+Doubling Season; mobile is undesigned (`force.js` registers only `mousemove` and `click`).
 
 Full record: `/Users/michellemacrae/.claude/plans/wondrous-gliding-hoare.md`.
 
@@ -366,11 +362,11 @@ Full record: `/Users/michellemacrae/.claude/plans/wondrous-gliding-hoare.md`.
 
 ### Frontend, in order
 
-1. **`viz_index.json`** — the browser is missing four card fields (`game_changer`,
-   `mechanical_tags`, `layout`, and `legal_commander` as a tri-state, since `reduce.py`
-   collapses `banned` and `not_legal`). A positional file in cards.csv row order closes
-   every gap, ~476 KB gzipped, as a new export step after `card-roles`. This is the real
-   M1: `data/cards.csv` is gitignored, and it is what blocks everything below.
+1. ~~**`viz_index.json`**~~ — **shipped** as pipeline step 14, though for discovery rather
+   than the deck builder: name, supertype, colour, rarity, CMC and role tags per row, 0.56 MB
+   gzipped. It still does **not** carry `game_changer`, `mechanical_tags`, `layout`, or
+   `legal_commander` as a tri-state, which is what the engine port below actually needs — so
+   that gap is real, just smaller and no longer blocking.
 2. **Engine port to a Worker** — `manabase` is trivial (pure math, no deps), `bracket` and
    `goldfish` easy, `build_deck` hardest (pandas is load-bearing in pool filtering).
    `viz/js/engine/constants.js` must be **generated from `config.py`**, never hand-edited,
@@ -384,10 +380,9 @@ Full record: `/Users/michellemacrae/.claude/plans/wondrous-gliding-hoare.md`.
    pilot's judgment is cheap. Every mutation incremental; no `innerHTML` rebuild.
 4. **Handoff** — emit `brief.json` + `decklist.txt` and the command to run.
 
-Opportunistic, none blocking: hover tooltips are built for all 34,322 points every render
-and thrown away (13 traces set `hoverinfo:'none'` — ~275k wasted regex ops per render, and
-turning them on is the single biggest available UX win); the detail panel hides in build
-mode, exactly when you're deciding whether a card belongs; int8-quantising
+Opportunistic, none blocking: ~~hover tooltips~~ **done** — hovering shows the card image at
+the cursor in every mode, without Plotly's per-point text (`showCardPopup`); the detail panel
+hides in build mode, exactly when you're deciding whether a card belongs; int8-quantising
 `embeddings.bin` takes 17.6 MB → 4.4 MB.
 
 **Agents run in Claude Code, not the browser**, and none of the above changes that. The

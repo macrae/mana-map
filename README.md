@@ -2,9 +2,15 @@
 
 Two things live here, sharing one data layer and one CLI:
 
-**An interactive card map** — every Magic: The Gathering oracle card (~34,300) embedded
-by two small neural nets, projected to 2D, and served as a browsable atlas with a deck
-builder, synergy lookup, and power-creep detection.
+**A card discovery tool** — every Magic: The Gathering oracle card (~34,300) embedded by
+two small neural nets. It opens on **one card**: hover it, click a relation, and its
+neighbours join a force-directed graph you grow by clicking. Load one of your own decks and
+it lights up with its commander ringed, so you can see where it sits in card space and walk
+outward from it. The 34,322-point atlas is still there, one click away.
+
+Three relations, each precomputed so a click is instant: **similar** (embedding neighbours),
+**synergy** (rule-based complements, each edge labelled with the rule), and **outclassed by**
+(strictly-better replacements). Boot costs 1.8 MB.
 
 **Pilot's Manual** — a magazine generator. Point it at one Commander deck and it produces
 a self-contained web issue: combo lines whose every step cites the Comprehensive Rules and
@@ -39,8 +45,11 @@ Three things to know:
 
 - **Serve from the repo root.** The page fetches `../data/*`, so `viz/` and `data/` must
   stay top-level siblings. Opening `viz/index.html` as a `file://` URL fails on CORS.
-- The clone carries ~123 MB of tracked data; the map loads ~100 MB of it into the browser.
-  That's deliberate — see [Landmines](#landmines). (Two of the tracked files,
+- The clone carries ~125 MB of tracked data, but **discovery boots on 1.8 MB** — a slim
+  card index plus a precomputed neighbour table. The heavy artifacts load only if you ask
+  for what needs them: the 2.9 MB projection when you open the atlas, the 16.8 MB embedding
+  matrix never on the discovery path at all. That the *clone* is large is deliberate — see
+  [Landmines](#landmines). (Two of the tracked files,
   `combo_details.json` and `card_roles.json`, are for the deck builder and the agents; the
   browser never fetches them.)
 - Plotly loads from a CDN, so the page needs internet even though the data doesn't.

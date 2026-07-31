@@ -1,6 +1,14 @@
 # Frontend v2 — a deck-building surface
 
-*Status: proposed. Written 2026-07-26; **audited and partially superseded 2026-07-29**.*
+*Status: proposed. Written 2026-07-26; **audited 2026-07-29; largely superseded 2026-07-31**.*
+
+> **Superseded in the parts that describe the surface.** The front end was reframed around
+> discovery — one card, typed relations, a graph you grow — and the map moved onto canvas.
+> `viz_index.json` now exists (pipeline step 14), though carrying discovery's fields rather
+> than the engine's. What still stands from this document is the *engine* analysis: the
+> scorer diverges from `config.py`, saved decks persist raw row indices, and the port is
+> still blocked on `data/cards.csv` being gitignored. Read `docs/viz.md` for what the front
+> end actually is now.
 
 > **Read this first.** The analysis below still holds — the engine is portable, the
 > scorer diverges from `config.py`, decks persist raw row indices. Two things have
