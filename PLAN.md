@@ -25,6 +25,35 @@ a **deck builder** that produces the deck in the first place.
 
 1,055 tests (1,016 fast + 39 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
 
+> ### ⚠ OPEN: 23 agent-cache routines are deliberately MISSed
+>
+> The embedding rebuild regenerated `synergy_graph.json` and `obsolescence_index.json`, which
+> are declared inputs of `writer-prose`, `the-ten` and `issue-plan` — so **every deck's copy of
+> those three is stale**, plus `candidate-pool` and `deck-build` on hapatra.
+>
+> | decks | routines MISSed |
+> |---|---|
+> | edgar-vampires, gishath, goblin-storm, heliod, sisay, ur-dragon | `writer-prose`, `the-ten`, `issue-plan` |
+> | hapatra | those three **plus** `candidate-pool`, `deck-build` |
+>
+> `strategic-frame`, `coach-prose`, `tutor-guide` and every `stack:NNN` still HIT — the rules
+> and strategy inputs did not move.
+>
+> **This was left MISSed on purpose.** Re-spawning all 23 costs roughly **2.46M tokens**
+> (~1.74M for the six decks, ~725k for hapatra). The published issues are not wrong: the graphs
+> changed underneath the prose, but the prose's claims were validated when written. The choice
+> is deliberate and belongs to a human:
+>
+> - **re-bless** — `manamap pilot cache-record <slug> --routine <name>` per routine, after
+>   reading the prose and agreeing it still holds. Free. This is what `docs/pipeline.md`
+>   recommends for a graph refresh.
+> - **re-spawn** — regenerate for real, at the cost above. Warranted if the new synergy and
+>   obsolescence data would actually change what the sections say.
+>
+> Do not `cache-record` blindly to make the status board green: the record is the claim that
+> someone checked. Until this is resolved, expect `cache-status` to report MISS on any deck.
+
+
 ## Shipped
 
 | Layer | What |

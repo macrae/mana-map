@@ -239,6 +239,11 @@ suite is CWD-independent and honours `MANAMAP_DATA_DIR`.
   (card names duplicate). Never partially regenerate after a card-count change.
 - **Cache ordering**: check → spawn → write → validate → **record last**. Recording before
   validating poisons the cache.
+- **23 cache routines are MISSed right now, deliberately.** The embedding rebuild regenerated
+  the synergy and obsolescence graphs, so `writer-prose`, `the-ten` and `issue-plan` are stale
+  on all seven decks (hapatra also `candidate-pool`, `deck-build`). Re-spawning is ~2.46M
+  tokens, so the re-bless-vs-re-spawn call was left to a human — see `PLAN.md`. A MISS on a
+  deck today is expected, not a bug.
 - **Bump `?v=N`** on the script and CSS tags in `viz/index.html` after any frontend edit.
 - **The combo graph is format-agnostic.** Commander Spellbook lines may quietly assume a
   card is *your commander* — `"Infinite commander casts"` in `produces` is the tell.

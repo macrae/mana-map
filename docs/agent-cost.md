@@ -3,6 +3,15 @@
 Where LLM spend actually lives in this project, how much each routine costs, and how
 the cache stops us paying twice for identical work.
 
+
+> **⚠ Outstanding as of the embedding rebuild: 23 routines are MISSed and were left that way
+> on purpose.** Regenerating `synergy_graph.json` and `obsolescence_index.json` invalidated
+> `writer-prose`, `the-ten` and `issue-plan` on all seven decks, plus `candidate-pool` and
+> `deck-build` on hapatra. At the per-routine costs tabulated below that is roughly **2.46M
+> tokens** to re-spawn — which is exactly why it is a human decision rather than a cleanup
+> task. `PLAN.md` holds the breakdown and the re-bless-vs-re-spawn reasoning. Do not
+> `cache-record` them just to clear the board: the record asserts that someone checked.
+
 ## The finding that shapes everything
 
 **No Python module in this repo calls an LLM.** There is no `anthropic`/`openai` SDK,
