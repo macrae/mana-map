@@ -241,6 +241,24 @@ keeping a card you spotted in the atlas is the same act as keeping one you walke
 Box-select still opens a browse set; that is a different question ("what did I just lasso?")
 and keeps the arrow-key walk.
 
+**Seed only when there is nothing to lose.** Growing the graph must never be able to empty
+it, and twice it could. `Force.enter` restores an existing graph *only when it is handed no
+seed* — the `!rowIndices && nodes.length` branch — so an explicit `[row]` always takes the
+rebuild path. `MM.relate` sent every card not already on the walk through `Discovery.show`,
+which calls `newWalk(true)`; and `Discovery.enter` reseeded with `[current]`, which meant a
+round trip to the atlas and back destroyed the walk on its own. The second one is why fixing
+`relate` alone did not hold: the outer path had already wiped the graph before the inner
+check ran.
+
+The rule is now explicit in both places. Reseed only when `Force.nodeCount === 0`; otherwise
+the card is **adopted** — `Force.adoptRow` adds it to the graph you already have, born at the
+graph's centre of mass rather than at its world position (against an established cluster the
+world position is usually off screen, which reads as a bug rather than as arrival) and linked
+to whichever of its precomputed neighbours are already present. `branchByRow` then branches
+from it normally. Two browser tests hold the line: one builds a walk, round-trips through
+Explore, grows from a card that was never on the graph and asserts every original node
+survives; the other asserts an *empty* graph still seeds, so the fix cannot become a no-op.
+
 This replaced **Find Similar Cards** / **Find Synergies**, which were broken four ways at
 once and untested: they took no card argument and read `selectedCards`, so they were silent
 no-ops in Discover *and* the browse panel (both clear it), acted on the **wrong card** in The

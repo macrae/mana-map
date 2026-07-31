@@ -357,10 +357,12 @@
       if (sel) sel.value = 'discover';
       setMode('discover');
     }
-    // Seed the graph on this card unless the walk already holds it, so branching from a
-    // card you found in the atlas starts a walk *from that card* rather than from
-    // whatever the landing happened to pick.
-    if (!Force.hasRow(row)) Discovery.show(row);
+    // Seed ONLY when there is nothing to lose. `Discovery.show` calls `Force.newWalk(true)`,
+    // which empties the graph — so calling it for any card not already on the walk (which
+    // is what this did) silently destroyed however much you had built. With a graph in
+    // hand, the card joins it instead: `branchByRow` adopts the row, links it to what it
+    // already belongs beside, and branches. Growing must never be able to delete.
+    if (Force.nodeCount === 0) Discovery.show(row);
     else Discovery.focus(row);
     Force.branchByRow(row, rel);
   }

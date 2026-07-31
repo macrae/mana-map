@@ -569,8 +569,17 @@ window.Discovery = (function () {
     // Called before the index exists on a cold boot — render the chrome now and let the
     // boot promise land the card. Calling land() here would pick from a null index.
     if (!isReady()) { render(); MM.setStatus('Finding you a card…'); return; }
-    if (current < 0) land(new URLSearchParams(location.search));
-    else { render(); if (window.Force) Force.enter([current], index[current].n, { chrome: 'discovery' }); }
+    if (current < 0) { land(new URLSearchParams(location.search)); return; }
+    render();
+    if (!window.Force) return;
+    // RESTORE, do not reseed. `Force.enter` only picks up where you left off when it is
+    // handed no seed (`force.js:555`); passing an explicit `[current]` takes the rebuild
+    // path and replaces the whole graph with that one card. So a round trip to the atlas
+    // and back silently cost you the entire walk — which is the same "growing must never
+    // delete" bug as `relate`'s, one level further out, and the reason the fix there alone
+    // did not hold.
+    if (Force.nodeCount) Force.enter(null, null, { chrome: 'discovery' });
+    else Force.enter([current], index[current].n, { chrome: 'discovery' });
   }
   function exitMode() {
     const p = panel();

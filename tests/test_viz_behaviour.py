@@ -2108,3 +2108,76 @@ def test_region_labels_do_not_pile_on_each_other(canvas_page):
     assert r["inDom"] > 5, "no region labels rendered at all"
     assert r["visible"] > 3, f"only {r['visible']} labels survived — the filter is too harsh"
     assert r["overlaps"] == 0, f"{r['overlaps']} pairs of region labels overlap"
+
+
+def test_growing_from_the_atlas_never_destroys_the_graph(discover_page):
+    """Growing must not be able to delete.
+
+    `MM.relate` used to call `Discovery.show(row)` for any card not already on the walk,
+    and `show` calls `Force.newWalk(true)`, which empties `nodes`, `links` and `trail`.
+    So building a graph, switching to Explore, and clicking a relation on some card you
+    had not walked to threw the whole graph away without a word. `discovery.js` carries a
+    comment warning about that exact hazard on `focus()`; the Explore path took the
+    destructive branch anyway.
+
+    The seed-vs-adopt rule is the fix: reseed only when there is nothing to lose.
+    """
+    r = discover_page.evaluate("""async () => {
+        // Build a real graph by branching a few times.
+        Discovery.show(Discovery.rowByName("Ashnod's Altar"));
+        await new Promise(r => setTimeout(r, 600));
+        for (let i = 0; i < 3; i++) {
+            const rows = Force.rows();
+            MM.relate(rows[rows.length - 1], 'similar');
+            await new Promise(r => setTimeout(r, 500));
+        }
+        const before = Force.rows().slice();
+        if (before.length < 8) return {tooSmall: before.length};
+
+        // Find a card that is NOT on the graph — the destructive case.
+        let outsider = -1;
+        for (let i = 0; i < Discovery.index.length && outsider < 0; i += 97) {
+            if (!Force.hasRow(i) && Discovery.counts(i).similar > 0) outsider = i;
+        }
+
+        // Go to the atlas and grow from it, exactly as a user would.
+        document.getElementById('modeSelect').value = 'explore';
+        MM.setMode('explore');
+        await new Promise(r => setTimeout(r, 3000));
+        MM.relate(outsider, 'similar');
+        await new Promise(r => setTimeout(r, 1500));
+
+        const after = Force.rows();
+        const kept = before.filter(x => after.indexOf(x) !== -1);
+        return {
+            before: before.length, after: after.length,
+            kept: kept.length, lost: before.length - kept.length,
+            outsiderJoined: Force.hasRow(outsider),
+            grew: after.length > before.length,
+        };
+    }""")
+    assert discover_page.js_errors == []
+    assert not r.get("tooSmall"), f"could not build a graph to test with: {r}"
+    assert r["lost"] == 0, (
+        f"growing from the atlas destroyed {r['lost']} of {r['before']} nodes"
+    )
+    assert r["outsiderJoined"], "the card grown from did not join the graph"
+    assert r["grew"], "the graph did not grow"
+
+
+def test_an_empty_graph_still_seeds_from_the_atlas(discover_page):
+    """The other half of the rule: with nothing on the walk there is nothing to lose, so
+    a relation clicked in Explore must still seed rather than no-op."""
+    r = discover_page.evaluate("""async () => {
+        Force.newWalk(true);
+        await new Promise(r => setTimeout(r, 300));
+        document.getElementById('modeSelect').value = 'explore';
+        MM.setMode('explore');
+        await new Promise(r => setTimeout(r, 3000));
+        const row = Discovery.rowByName("Ashnod's Altar");
+        MM.relate(row, 'similar');
+        await new Promise(r => setTimeout(r, 1500));
+        return {nodes: Force.nodeCount, seeded: Force.hasRow(row)};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["seeded"] and r["nodes"] > 1, f"an empty graph did not seed: {r}"

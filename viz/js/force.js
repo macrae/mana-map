@@ -794,9 +794,50 @@
 
   function hasRow(row) { return byIdx.has(row); }
 
+  // Take a card that is NOT on the graph and add it to the graph you already have.
+  //
+  // This exists because the alternative was destroying your work. Branching from a card
+  // found in the atlas used to go through `Discovery.show`, which calls `newWalk(true)` —
+  // so clicking a relation in Explore on any card you had not already walked to silently
+  // threw away the entire graph. `focus()` carries a comment warning about exactly that
+  // hazard; the Explore path took the destructive branch anyway.
+  //
+  // The node is born at the graph's centre of mass rather than at its world position:
+  // seeding from `makeNode`'s world coordinates would drop it wherever the atlas happens
+  // to put it, which against an established cluster is usually off screen. Arriving in the
+  // middle and being pushed out by the physics reads as joining; arriving 4,000 units away
+  // reads as a bug.
+  function adoptRow(row) {
+    let n = byIdx.get(row);
+    if (n) return n;
+    n = makeNode(row, false);
+    let cx = 0, cy = 0;
+    for (const m of nodes) { cx += m.x; cy += m.y; }
+    if (nodes.length) { cx /= nodes.length; cy /= nodes.length; }
+    n.x = cx + (Math.random() - 0.5) * 40;
+    n.y = cy + (Math.random() - 0.5) * 40;
+    nodes.push(n);
+    byIdx.set(row, n);
+    // Link it to whatever it already belongs beside, so it lands attached rather than
+    // drifting. `branchFrom` then adds the links for the relation actually asked for.
+    let made = 0;
+    for (const nb of Discovery.neighbours(row, 'similar')) {
+      if (made >= LINKS_PER_NODE) break;
+      const other = byIdx.get(nb.row);
+      if (!other || other === n || hasLink(n, other)) continue;
+      links.push({ source: n, target: other, d: edgeLength(nb), rel: nb.relation,
+                   reason: nb.reason || null });
+      made++;
+    }
+    return n;
+  }
+
   function branchByRow(row, relation) {
-    const n = byIdx.get(row);
-    if (n) branchFrom(n, relation);
+    if (nodes.length >= MAX_NODES && !byIdx.has(row)) {
+      MM.setStatus('At the ' + MAX_NODES + '-card cap — trim the walk or start a new one.');
+      return;
+    }
+    branchFrom(adoptRow(row), relation);
   }
 
   // `quiet` skips the empty-state menu: Discovery clears the graph only to immediately
