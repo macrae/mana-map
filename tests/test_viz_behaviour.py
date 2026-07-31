@@ -1605,3 +1605,81 @@ def test_clicking_a_card_opens_it_in_the_panel(discover_page):
     assert r["trayAfter"] == r["trayBefore"] + 1
     assert r["keptTheRightCard"], f"the tray got {r['trayNames']} instead of the clicked card"
     assert r["graphKept"], "opening a card discarded the walk that reached it"
+
+
+def test_a_checked_in_deck_loads_with_its_commander(discover_page):
+    """Load one of the published decks by slug and walk out from it.
+
+    Distinct from a pasted import in the way that matters: the manifest carries a KNOWN
+    commander, so it is ringed and centred rather than inferred from a `*CMDR*` marker.
+    """
+    r = discover_page.evaluate("""async () => {
+        const res = await Discovery.loadDeck('goblin-storm');
+        await new Promise(r => setTimeout(r, 3000));
+        return {
+            res: res,
+            commanderName: res && res.commander >= 0
+                ? Discovery.index[res.commander].n : null,
+            panel: (document.querySelector('#deckInner .lens-title') || {}).textContent,
+            membership: Force.membership(),
+            tray: Discovery.tray.list.length,
+            decks: Discovery.decks.map(d => d.slug),
+        };
+    }""")
+    assert discover_page.js_errors == []
+    assert "goblin-storm" in r["decks"] and len(r["decks"]) >= 7
+    assert r["res"]["missing"] == [], f"unresolved deck cards: {r['res']['missing']}"
+    assert r["commanderName"] == "Zada, Hedron Grinder"
+    assert r["panel"] == "Zada, Hedron Grinder", "the panel did not open on the commander"
+    assert r["membership"]["commander"] == 1, "exactly one card should be ringed as commander"
+    assert r["membership"]["deck"] > 50
+    assert r["membership"]["explored"] == 0, "a freshly loaded deck has nothing explored yet"
+    assert r["tray"] == r["membership"]["deck"], "the loaded deck should fill the tray"
+
+
+def test_cards_you_brought_look_different_from_cards_you_found(discover_page):
+    """The point of loading a deck: you can see what is yours and what you wandered into.
+
+    Deck membership drives radius, fill opacity, the white ring, the commander's gold ring
+    and — the part that makes the deck readable as a structure — warm heavy edges between
+    two deck cards versus thin cool ones for everything discovered.
+    """
+    r = discover_page.evaluate("""async () => {
+        await Discovery.loadDeck('goblin-storm');
+        await new Promise(r => setTimeout(r, 3000));
+        const before = Force.membership();
+        for (const row of Discovery.tray.list.slice(0, 5)) {
+            Force.branchByRow(row, 'similar');
+            await new Promise(r => setTimeout(r, 120));
+        }
+        await new Promise(r => setTimeout(r, 1200));
+        return {before: before, after: Force.membership()};
+    }""")
+    assert discover_page.js_errors == []
+    a = r["after"]
+    assert a["explored"] > 10, "branching from deck cards pulled in nothing"
+    assert a["deck"] == r["before"]["deck"], "exploring changed the deck's own membership"
+    # Deck edges are a fixed set; every link added by exploring is NOT a deck edge, which
+    # is exactly what makes the two readable apart.
+    assert a["deckLinks"] == r["before"]["deckLinks"], "an explored edge was drawn as a deck edge"
+    assert a["links"] > a["deckLinks"], "no exploration edges were added"
+
+
+def test_loading_a_deck_replaces_the_previous_one(discover_page):
+    """Two decks at once would be an unreadable pile, and the membership flags would be
+    ambiguous — a card in both decks could only be one colour."""
+    r = discover_page.evaluate("""async () => {
+        await Discovery.loadDeck('goblin-storm');
+        await new Promise(r => setTimeout(r, 2500));
+        const first = {m: Force.membership(),
+                       cmdr: Discovery.index[Discovery.current].n};
+        await Discovery.loadDeck('heliod');
+        await new Promise(r => setTimeout(r, 3000));
+        return {first: first, second: {m: Force.membership(),
+                                       cmdr: Discovery.index[Discovery.current].n}};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["first"]["cmdr"] == "Zada, Hedron Grinder"
+    assert r["second"]["cmdr"] != r["first"]["cmdr"], "the second deck did not take over"
+    assert r["second"]["m"]["commander"] == 1, "two commanders are ringed at once"
+    assert r["second"]["m"]["explored"] == 0, "the previous deck leaked in as explored cards"

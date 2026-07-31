@@ -33,7 +33,8 @@ window.Discovery = (function () {
   // that IIFE — so reading MM here threw, which aborted the IIFE, which meant MM was
   // never exported at all and every later module failed too. One missing global, four
   // broken files.
-  let urls = { vizIndex: '../data/viz_index.json', neighbours: '../data/neighbours.bin' };
+  let urls = { vizIndex: '../data/viz_index.json', neighbours: '../data/neighbours.bin',
+               deckIndex: '../data/decks/index.json', deckBase: '../data/decks/' };
 
   function configure(u) { urls = Object.assign({}, urls, u || {}); }
 
@@ -81,7 +82,7 @@ window.Discovery = (function () {
     return tablePromise;
   }
 
-  function ready() { return Promise.all([loadIndex(), loadNeighbours()]); }
+  function ready() { return Promise.all([loadIndex(), loadNeighbours(), loadManifest()]); }
   function isReady() { return !!(index && table); }
 
   // ── the card record ────────────────────────────────────────────────────
@@ -270,6 +271,13 @@ window.Discovery = (function () {
     let html = '<div class="deck-header"><h2>Discover</h2>' +
       '<button class="lens-btn lens-btn-inline" onclick="Discovery.reroll()">Feeling lucky ↻</button>' +
       '</div>';
+
+    html += '<div class="discover-decks">' +
+      '<select id="dcDeck" onchange="Discovery.onDeckPick(this.value)">' +
+      '<option value="">Load one of my decks…</option>' +
+      (manifest || []).map(d => '<option value="' + d.slug + '">' + d.deck_name +
+        ' — ' + d.commander + '</option>').join('') +
+      '</select></div>';
 
     html += '<div class="discover-tray">' +
       '<button class="lens-btn" onclick="Discovery.toggleImport()">Paste a decklist</button>' +
@@ -479,6 +487,65 @@ window.Discovery = (function () {
              commander: commanderRow };
   }
 
+  // ── the checked-in decks ───────────────────────────────────────────────
+
+  /* The seven published decks, loaded by slug from the tracked manifest. Distinct from a
+   * pasted import in one way that matters: these have a KNOWN commander, so it can be
+   * ringed and centred rather than guessed from a `*CMDR*` marker. */
+  let manifest = null;
+
+  function loadManifest() {
+    if (manifest) return Promise.resolve(manifest);
+    return fetch(urls.deckIndex)
+      .then(r => (r.ok ? r.json() : { decks: [] }))
+      .then(doc => { manifest = doc.decks || []; return manifest; })
+      .catch(() => { manifest = []; return manifest; });
+  }
+
+  function loadDeck(slug) {
+    const entry = (manifest || []).find(d => d.slug === slug);
+    return fetch(urls.deckBase + slug + '/cards.json')
+      .then(r => { if (!r.ok) throw new Error(slug + ' ' + r.status); return r.json(); })
+      .then(doc => {
+        const rows = [];
+        const missing = [];
+        let cmdr = -1;
+        for (const card of doc.cards) {
+          if (card.is_sideboard) continue;          // the 100, not the maybeboard
+          const row = rowByName(card.name);
+          if (row < 0) { missing.push(card.name); continue; }
+          if (rows.indexOf(row) === -1) rows.push(row);
+          if (card.is_commander && cmdr < 0) cmdr = row;
+        }
+        if (cmdr < 0 && entry && entry.commander) cmdr = rowByName(entry.commander);
+        if (!rows.length) { MM.setStatus('Could not resolve any of ' + slug); return null; }
+
+        for (const r of rows) if (!inTray(r)) tray.push(r);
+
+        const seeds = cmdr >= 0 ? [cmdr].concat(rows.filter(r => r !== cmdr)) : rows;
+        const deck = { rows: new Set(rows), commander: cmdr };
+        Force.newWalk(true);
+        return Promise.resolve(
+          Force.enter(seeds, (entry && entry.deck_name) || slug,
+                      { chrome: 'discovery', deck: deck })
+        ).then(() => {
+          if (cmdr >= 0) Force.pinCard(cmdr);
+          current = cmdr >= 0 ? cmdr : rows[0];
+          render();
+          MM.setStatus(((entry && entry.deck_name) || slug) + ' — ' + rows.length +
+            ' cards' + (cmdr >= 0 ? ', commander ringed' : '') +
+            '. Click any card to explore outward.');
+          return { rows: rows.length, commander: cmdr, missing: missing };
+        });
+      })
+      .catch(err => { MM.setStatus('Could not load ' + slug + ': ' + err.message); return null; });
+  }
+
+  function onDeckPick(slug) {
+    if (!slug) return;
+    loadManifest().then(() => loadDeck(slug));
+  }
+
   function onImport() {
     const box = document.getElementById('dcImport');
     if (!box) return;
@@ -504,6 +571,8 @@ window.Discovery = (function () {
   return {
     configure, ready, isReady, loadIndex, loadNeighbours, decode,
     enter, exit: exitMode, land, show, focus, reroll, walk, onFilter, render,
+    loadManifest, loadDeck, onDeckPick,
+    get decks() { return manifest || []; },
     tray: { get list() { return tray.slice(); }, has: inTray, toggle: toggleTray,
             clear: clearTray, names: trayNames },
     brief, exportBrief, importText, onImport, toggleImport, rowByName,

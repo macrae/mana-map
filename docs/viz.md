@@ -243,6 +243,25 @@ rather than a ranking.
 
 ### The tray, import, and the hand-off
 
+**Loading a checked-in deck.** The picker reads `data/decks/index.json`, and `loadDeck(slug)`
+resolves that deck's `cards.json` against `viz_index` — so it needs neither the projection nor
+Deck Lens. It differs from a pasted import in the way that matters: the manifest carries a
+**known** commander, so it is ringed and centred rather than inferred from a `*CMDR*` marker.
+
+**Brought versus found is the visual language.** Nodes carry `deck` and `commander` flags set
+at `enter({deck: {rows, commander}})`; anything `branchFrom` adds is by construction neither.
+
+| | radius | fill | ring | edges |
+|---|---|---|---|---|
+| commander | 9 | full | double gold | warm |
+| deck card | 6 | full | thin white | **warm gold, 1.7px** |
+| explored | 4.5 | 50% alpha | none | thin cool blue |
+
+That is what lets a deck stay legible as a structure while you explore outward from it — and
+labels follow the same priority, naming the commander and deck cards before anything you
+wandered into. `Force.membership()` exposes the split for tests, since none of this is
+queryable from canvas pixels.
+
 **The graph drives the panel.** Clicking a card calls `Discovery.focus(row)`, so the panel
 shows that card's art, its relation counts, and a Keep button that adds the card you actually
 clicked. `focus` is deliberately not `show` — `show` reseeds the graph, and opening a card you

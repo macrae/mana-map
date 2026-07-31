@@ -45,6 +45,11 @@
   const PHYSICS = { velocityDecay: 0.22, alphaDecay: 0.015, charge: -110, linkScale: 190 };
 
   let chrome = 'walk';
+  // Which rows came from a loaded deck, and which one is its commander. Nodes pulled in
+  // by branching are deliberately NOT in here — that difference is the whole point of
+  // loading a deck: you can see at a glance what you brought and what you found.
+  let deckRows = null;
+  let commanderRow = -1;
   let canvas = null, ctx = null, dpr = 1;
   let sim = null, nodes = [], links = [], byIdx = new Map();
   let transform = null;          // d3.zoomIdentity once d3 is loaded
@@ -96,12 +101,16 @@
     // something the layout needs.
     const wx = typeof d.x === 'number' ? d.x * 8 : 0;
     const wy = typeof d.y === 'number' ? d.y * 8 : 0;
+    const inDeck = !!(deckRows && deckRows.has(row));
+    const isCommander = row === commanderRow;
     return {
       row: row,
       name: d.n,
       color: MM.categoryColor(d),
-      r: seed ? 6 : 4.5,
+      r: isCommander ? 9 : (inDeck ? 6 : 4.5),
       seed: !!seed,
+      deck: inDeck,
+      commander: isCommander,
       // Start at the world-map position so the graph unfolds out of the map rather than
       // appearing from nowhere — plus jitter, which is not cosmetic. d3 only assigns
       // initial positions to nodes that lack x/y, so seeding them all by hand means
@@ -315,15 +324,23 @@
 
     // Links, faint, brighter the closer the pair. A short bright edge is the model
     // saying "these two are nearly the same card".
-    ctx.lineWidth = 1 / transform.k;
+    //
+    // Deck edges — both ends from a loaded decklist — are drawn warm and heavier, so the
+    // deck reads as a structure you can see through the exploration rather than dissolving
+    // into it the moment you branch. Everything cool and thin is something you found.
     for (const l of links) {
+      const inDeck = l.source.deck && l.target.deck;
       const closeness = Math.max(0, 1 - l.d / 1.4);
-      ctx.strokeStyle = 'rgba(122,138,196,' + (0.08 + closeness * 0.42).toFixed(3) + ')';
+      ctx.lineWidth = (inDeck ? 1.7 : 1) / transform.k;
+      ctx.strokeStyle = inDeck
+        ? 'rgba(196,167,71,' + (0.22 + closeness * 0.45).toFixed(3) + ')'
+        : 'rgba(122,138,196,' + (0.08 + closeness * 0.42).toFixed(3) + ')';
       ctx.beginPath();
       ctx.moveTo(l.source.x, l.source.y);
       ctx.lineTo(l.target.x, l.target.y);
       ctx.stroke();
     }
+    ctx.lineWidth = 1 / transform.k;
 
     // The trail — where the walk has been.
     if (trail.length > 1) {
@@ -344,8 +361,28 @@
       ctx.moveTo(n.x + r, n.y);
       ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
       ctx.closePath();
+      // Cards you brought keep their full colour; cards you found are washed out, so a
+      // loaded deck stays legible as you explore outward from it.
+      ctx.globalAlpha = (deckRows && !n.deck) ? 0.5 : 1;
       ctx.fillStyle = n.color;
       ctx.fill();
+      ctx.globalAlpha = 1;
+      // The commander gets a permanent gold ring — it is the one card the deck is built
+      // around, and it should be findable without hunting.
+      if (n.commander) {
+        ctx.lineWidth = 2.5 / transform.k;
+        ctx.strokeStyle = '#c4a747';
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, (n.r + 4) / transform.k, 0, Math.PI * 2);
+        ctx.lineWidth = 1.2 / transform.k;
+        ctx.strokeStyle = 'rgba(196,167,71,0.55)';
+        ctx.stroke();
+      } else if (n.deck) {
+        ctx.lineWidth = 1.2 / transform.k;
+        ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+        ctx.stroke();
+      }
       // Ring only what is meaningful right now. Ringing every seed was noise: on a fresh
       // walk every node is a seed, so the ring said nothing.
       if (n === hovered || n === pinned || onTrail.has(n)) {
@@ -374,7 +411,10 @@
     for (let i = trail.length - 1; i >= 0; i--) {
       if (priority.indexOf(trail[i]) === -1) priority.push(trail[i]);
     }
-    // Seeds next — on an imported deck those are the deck, which is what you want named.
+    // Commander, then the rest of the deck, then seeds — on a loaded deck those are the
+    // cards worth naming before anything you wandered into.
+    for (const n of nodes) if (n.commander && priority.indexOf(n) === -1) priority.push(n);
+    for (const n of nodes) if (n.deck && priority.indexOf(n) === -1) priority.push(n);
     for (const n of nodes) if (n.seed && priority.indexOf(n) === -1) priority.push(n);
     for (const n of nodes) if (priority.indexOf(n) === -1) priority.push(n);
 
@@ -437,6 +477,12 @@
   // mistake this codebase has already had to undo twice.
   async function enter(rowIndices, seedLabel, opts) {
     chrome = (opts && opts.chrome) || 'walk';
+    if (opts && opts.deck) {
+      deckRows = opts.deck.rows || null;
+      commanderRow = typeof opts.deck.commander === 'number' ? opts.deck.commander : -1;
+    } else if (opts && opts.deck === null) {
+      deckRows = null; commanderRow = -1;
+    }
     // Re-entering with no explicit seed and a graph already built: pick up where you
     // left off rather than starting over.
     if (!rowIndices && nodes.length) {
@@ -675,6 +721,7 @@
     hovered = null; pinned = null;
     truncatedFrom = 0;
     label = '';
+    deckRows = null; commanderRow = -1;
     if (canvas) { transform = d3.zoomIdentity; draw(); }
     if (quiet) return;
     renderEmptyState();
@@ -889,6 +936,15 @@
     // Canvas text cannot be queried, so the count of labels the last draw actually placed
     // is the only way a test can tell "a representative sample" from "one" or "all".
     get labelCount() { return lastLabelCount; },
+    // For the browser tests: how the graph is split between what you loaded and what you
+    // found, which is the thing the visual language is expressing.
+    membership() {
+      let deck = 0, explored = 0, commander = 0, deckLinks = 0;
+      for (const n of nodes) { if (n.commander) commander++; if (n.deck) deck++; else explored++; }
+      for (const l of links) if (l.source.deck && l.target.deck) deckLinks++;
+      return { deck: deck, explored: explored, commander: commander,
+               deckLinks: deckLinks, links: links.length };
+    },
     LABEL_MAX,
     linkStats() {
       if (!links.length) return null;
