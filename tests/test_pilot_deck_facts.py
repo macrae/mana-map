@@ -208,7 +208,15 @@ def test_sisay_reproduces_the_figures_derived_by_hand():
     assert counts["legendary_permanents"] == 34
     assert counts["legendary_lands"] == 0          # the ladder's empty bottom rung
     assert counts["nonlegendary"] - counts["lands"] == 26   # outside the tutor's reach
-    assert facts["synergy"]["intra_deck_edges"] == 0
+    # Was 0, now 2 — and the change is the synergy graph getting better, not this
+    # deck changing. Partners used to be tie-broken by embedding similarity, which
+    # filled the top ten with obscure lookalikes; ranking by playability instead
+    # surfaces cards people actually run, and two of Sisay's own cards are now
+    # reachable that way. Both are score-1 `Flying + Damage Trigger` matches —
+    # Kutzil, Malamet Exemplar with Raff Capashen and with Swan Song. Weak, but real
+    # rule matches rather than noise, which is why the number moved up rather than
+    # being suppressed.
+    assert facts["synergy"]["intra_deck_edges"] == 2
     # Was six. Dispel, Fierce Guardianship, Negate and Swan Song all say
     # "counter target NONCREATURE spell" and the `counterspell` pattern once
     # demanded the literal "counter target spell", so half of Sisay's

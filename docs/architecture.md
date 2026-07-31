@@ -219,6 +219,31 @@ The graph is **format-agnostic by design** — filtering happens at consumption 
 
 Shared helpers (`parse_tag_set`, `cosine_similarity`, `load_first_embeddings`) live in `analysis/common.py`.
 
+### Partners are ranked by playability, not similarity
+
+Ranking is `(-score, -playability)`. It used to be `(-score, -embedding similarity)`, which
+was backwards: synergy is a **complementary** relation, so breaking a tie by similarity
+surfaces cards that resemble the anchor rather than cards that play with it.
+
+A score tier is usually large — median 70 cards, p90 1,529 — so the tiebreak decides almost
+everything, and it was deciding it wrongly. Measured over 4,000 cards:
+
+| | median partner EDHREC rank | in the top 2,000 most-played |
+|---|---|---|
+| similarity tiebreak | 10,713 | 7.0% |
+| **playability tiebreak** | **1,472** | **60.2%** |
+
+Skullclamp went from recommending *Playable Delusionary Hydra* to *Yawgmoth, Thran Physician*.
+`tests/test_synergy.py:test_synergy_partners_are_playable` is the gate.
+
+Playability is `1 - log1p(rank)/log1p(EDHREC_RANK_SCALE)`, clipped strictly below 1 so it can
+never outrank a full score step — a 2-rule match always beats a 1-rule match. Unranked cards
+score 0. It is popularity, not quality, and will bias toward staples.
+
+**Known limit:** a card whose top tier is genuinely small cannot be rescued by re-ranking.
+Skullclamp's holds 3 cards, so its answer barely moves — that is coarseness in the 24 rules,
+not in the ordering.
+
 ## Power creep (`src/manamap/analysis/power_creep.py`)
 
 Card B obsoletes Card A only if **all** hold:

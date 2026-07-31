@@ -8,7 +8,14 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from manamap.analysis.synergy import build_card_tags, build_synergy_graph, build_tag_index
+from conftest import requires_data
+
+from manamap.analysis.synergy import (
+    build_card_tags,
+    build_playability,
+    build_synergy_graph,
+    build_tag_index,
+)
 
 
 # ── Fixtures ──
@@ -307,3 +314,72 @@ def test_aura_protection_synergy(mock_combo):
     partner_names = [p["partner"] for p in graph["Rancor"]]
     assert "Hexproof Guy" in partner_names
     assert "Random Card" not in partner_names
+
+
+# ── playability ranking ─────────────────────────────────────────────────
+
+
+class TestBuildPlayability:
+    def test_absent_column_is_tolerated(self):
+        """The unit fixtures carry only names and tags, and real callers must not be
+        able to break by omitting a column."""
+        df = make_df([("A", "blink"), ("B", "etb")])
+        play = build_playability(df, ["A", "B"], {"A": 0, "B": 1})
+        assert list(play) == [0.0, 0.0]
+
+    def test_popular_beats_obscure(self):
+        df = pd.DataFrame({"name": ["Top", "Mid", "Obscure", "Unranked"],
+                           "mechanical_tags": ["blink"] * 4,
+                           "edhrec_rank": [1, 5000, 30000, None]})
+        names = ["Top", "Mid", "Obscure", "Unranked"]
+        play = build_playability(df, names, {n: i for i, n in enumerate(names)})
+        assert play[0] > play[1] > play[2] > play[3]
+        assert play[3] == 0.0, "an unranked card must not outrank a ranked one"
+
+    def test_stays_below_one(self):
+        """The guarantee the whole ranking rests on: playability can never outrank a
+        full score step, so a 2-rule match always beats a 1-rule match."""
+        df = pd.DataFrame({"name": ["Top"], "mechanical_tags": ["blink"],
+                           "edhrec_rank": [1]})
+        assert build_playability(df, ["Top"], {"Top": 0})[0] < 1.0
+
+
+@requires_data
+def test_synergy_partners_are_playable():
+    """The ranking gate.
+
+    Partners used to be tie-broken by embedding similarity, which for a
+    *complementary* relation is backwards — it surfaces cards resembling the anchor
+    rather than cards that play with it. Measured on the shipped graph, partners were
+    in the top 2,000 most-played 7.0% of the time against a 6.3% corpus baseline:
+    barely above chance. Skullclamp recommended Playable Delusionary Hydra.
+
+    A score tier is usually large (median 70 cards, p90 1,529), so the tiebreak decides
+    almost everything. After ranking by playability: median rank 10,713 -> 1,472 and
+    top-2,000 share 7.0% -> 60.2%.
+
+    This exists so that cannot silently regress, the way the embedding collapse did.
+    """
+    import json
+
+    import numpy as np
+
+    from manamap.config import OUTPUT_CSV_PATH, SYNERGY_GRAPH_PATH
+
+    cards = pd.read_csv(OUTPUT_CSV_PATH, low_memory=False)
+    rank = dict(zip(cards["name"], pd.to_numeric(cards["edhrec_rank"], errors="coerce")))
+    with open(SYNERGY_GRAPH_PATH, encoding="utf-8") as fh:
+        graph = json.load(fh)
+
+    ranks = [rank[p["partner"]]
+             for entry in list(graph.values())[:4000]
+             for p in entry
+             if rank.get(p["partner"]) == rank.get(p["partner"])]
+    ranks = np.array([r for r in ranks if r == r])
+
+    share = (ranks < 2000).mean()
+    assert share > 0.40, (
+        f"only {share:.1%} of synergy partners are top-2,000 cards — the playability "
+        f"tiebreak has regressed (it was 7.0% with the similarity tiebreak, 60.2% after)"
+    )
+    assert np.median(ranks) < 4000, f"median partner rank {np.median(ranks):.0f} is too deep"
