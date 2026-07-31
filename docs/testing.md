@@ -1,12 +1,12 @@
 # Testing
 
 ```bash
-.venv/bin/python -m pytest              # everything (1,101, ~6 min)
+.venv/bin/python -m pytest              # everything (1,104, ~6 min)
 .venv/bin/python -m pytest -m "not browser"   # fast suite (1,034, ~70 s)
-.venv/bin/python -m pytest -m browser         # the 67 browser tests (~300 s)
+.venv/bin/python -m pytest -m browser         # the 70 browser tests (~310 s)
 ```
 
-1,101 tests in `tests/`: 433 card-pipeline + 601 pilot-subsystem + **67 browser**.
+1,104 tests in `tests/`: 433 card-pipeline + 601 pilot-subsystem + **70 browser**.
 One is a still-unmet `xfail(strict=True)` ship gate in `test_embedding_quality.py` — see below.
 
 ## Source assertions do not catch regressions
@@ -43,7 +43,7 @@ matched literal indentation and broke the moment the key handler was rewritten t
 gate — while the invariant it cared about was untouched. It now asserts the delegation
 (`cycleSelection` is called; the handler does not recompute an index) rather than the text.
 
-### Browser tests (67) — `tests/test_viz_behaviour.py` + `test_decklist_parity.py`
+### Browser tests (70) — `tests/test_viz_behaviour.py` + `test_decklist_parity.py`
 
 Fixtures in `tests/conftest_viz.py` (deliberately not `conftest.py`, so the other 978 never
 import playwright): an ephemeral `http.server` rooted at the repo — `viz/` and `data/` must

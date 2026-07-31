@@ -243,6 +243,29 @@ rather than a ranking.
 
 ### The tray, import, and the hand-off
 
+**The camera belongs to the user, and the layout arrives finished.**
+
+Two things made this feel clunky, and they had one shape: the graph kept re-framing itself.
+
+- `enter` ran `fitToGraph` on a 550 ms timer, **fourteen times**, plus once more on
+  `sim.on('end')`. Zooming while it settled was overwritten by the next fit — the reported
+  "zooming zooms back out". Auto-fit is now a *suggestion*: `fitToGraph(animate, auto)`
+  returns early once `userAdjusted` is set, which any real pan, zoom or drag does.
+  `ev.sourceEvent` is what distinguishes a gesture from a programmatic transform.
+  `Force.fit()` is an explicit request and always wins.
+- The initial layout animated from scaled world coordinates, so a loaded deck appeared as a
+  distorted smear and collapsed inward over several seconds with the user locked out.
+  `enter` now **pre-settles** it: `sim.tick()` advances the simulation *without* dispatching
+  tick events, so a few hundred synchronous ticks cost milliseconds and nothing draws until
+  the layout is done. Measured: a 79-card deck arrives arranged in ~120 ms and does not move
+  afterwards. The simulation is then left **stopped** — dragging and branching reheat it, so
+  it is alive exactly when something is happening.
+
+`alphaDecay` moved 0.015 → 0.08 as a consequence. The slow decay existed so the initial
+layout could be watched arranging itself; once that stopped animating, all it bought was a
+graph drifting under the cursor for eight seconds after every branch. Now ~1.3 s: new cards
+fly out, find their place, and stop.
+
 **Loading a checked-in deck.** The picker reads `data/decks/index.json`, and `loadDeck(slug)`
 resolves that deck's `cards.json` against `viz_index` — so it needs neither the projection nor
 Deck Lens. It differs from a pasted import in the way that matters: the manifest carries a

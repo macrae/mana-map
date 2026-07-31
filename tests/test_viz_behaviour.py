@@ -1683,3 +1683,83 @@ def test_loading_a_deck_replaces_the_previous_one(discover_page):
     assert r["second"]["cmdr"] != r["first"]["cmdr"], "the second deck did not take over"
     assert r["second"]["m"]["commander"] == 1, "two commanders are ringed at once"
     assert r["second"]["m"]["explored"] == 0, "the previous deck leaked in as explored cards"
+
+
+def test_a_loaded_deck_arrives_already_arranged(discover_page):
+    """Loading a deck used to be a spectacle: a hundred nodes seeded at scaled world
+    coordinates appeared as a distorted smear, collapsed inward over several seconds, and
+    re-framed itself fourteen times on a 550 ms timer while the user could do nothing.
+
+    `enter` now pre-settles the layout with synchronous `sim.tick()` calls, which advance
+    the simulation WITHOUT dispatching tick events — so nothing draws until it is done and
+    the graph arrives arranged.
+    """
+    r = discover_page.evaluate("""async () => {
+        const t0 = performance.now();
+        await Discovery.loadDeck('goblin-storm');
+        const ms = performance.now() - t0;
+        const bb = () => JSON.stringify(Force.bbox());
+        const atArrival = bb();
+        await new Promise(r => setTimeout(r, 1500));
+        return {ms: ms, stillAfterwards: bb() === atArrival, nodes: Force.nodeCount};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["nodes"] > 50
+    assert r["ms"] < 3000, f"the deck took {r['ms']:.0f} ms to arrange"
+    assert r["stillAfterwards"], (
+        "the layout kept moving after it arrived — the intro is animating again"
+    )
+
+
+def test_your_zoom_survives_the_graph_moving(discover_page):
+    """Reported: zooming while the graph was still moving zoomed back out.
+
+    A settle-time `fitToGraph` was overwriting the transform mid-gesture. Auto-fit is now
+    a suggestion — `fitToGraph(animate, auto=true)` returns early once any real pan, zoom
+    or drag has happened. `sourceEvent` is what separates a gesture from a programmatic
+    transform.
+    """
+    r = discover_page.evaluate("""async () => {
+        await Discovery.loadDeck('goblin-storm');
+        await new Promise(r => setTimeout(r, 1200));
+        const c = document.getElementById('forceCanvas');
+        const rect = c.getBoundingClientRect();
+        // Reheat, then zoom into the moving graph — the exact reported sequence.
+        Force.branchByRow(Discovery.current, 'similar');
+        const before = d3.zoomTransform(c).k;
+        c.dispatchEvent(new WheelEvent('wheel', {bubbles: true, cancelable: true,
+            clientX: rect.left + 400, clientY: rect.top + 300, deltaY: -300}));
+        const zoomed = d3.zoomTransform(c).k;
+        await new Promise(r => setTimeout(r, 3000));   // through the settle and any fit
+        return {before: before, zoomed: zoomed, after: d3.zoomTransform(c).k};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["zoomed"] != r["before"], "the wheel gesture did not zoom at all"
+    assert abs(r["after"] - r["zoomed"]) < 1e-6, (
+        f"the camera was stolen back: zoomed to {r['zoomed']:.3f}, ended at {r['after']:.3f}"
+    )
+
+
+def test_the_graph_stops_moving_promptly_after_a_branch(discover_page):
+    """New cards should fly out, find their place, and stop.
+
+    alphaDecay was 0.015 — an ~8 second settle — chosen so the initial layout could be
+    watched arranging itself. That layout no longer animates, so all the low decay bought
+    was a graph drifting under the cursor long after anything interesting had happened.
+    """
+    r = discover_page.evaluate("""async () => {
+        Force.branchByRow(Discovery.current, 'similar');
+        const bb = () => JSON.stringify(Force.bbox());
+        let last = bb(), still = 0, elapsed = 0, moved = false;
+        while (elapsed < 6000 && still < 400) {
+            await new Promise(r => setTimeout(r, 100));
+            elapsed += 100;
+            const now = bb();
+            if (now === last) { still += 100; } else { still = 0; last = now; moved = true; }
+        }
+        return {settleMs: elapsed - still, settled: still >= 400, moved: moved};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["moved"], "branching did not animate at all — the graph is frozen"
+    assert r["settled"], "the graph never came to rest within 6 s"
+    assert r["settleMs"] < 3000, f"took {r['settleMs']} ms to settle after a branch"

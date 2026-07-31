@@ -34,15 +34,26 @@
   // Persistent name labels: how many at most, and how much clear space each needs. 14 is
   // about what a 1440px canvas holds before names start reading as texture rather than
   // words; the gap keeps neighbours from touching.
+  // Synchronous ticks run before the first paint so the graph arrives settled. Capped
+  // because this is main-thread work: 500 nodes x 400 ticks is the worst case and still
+  // well under a frame budget's worth of stall at these sizes.
+  const SETTLE_TICKS = 400;
   const LABEL_MAX = 14;
   const LABEL_GAP = 6;
   let lastLabelCount = 0;   // exposed for the browser tests; canvas text is unassertable
 
   // Feel. These are the numbers that decide whether the graph has weight or just twitches.
   // velocityDecay is friction: d3's default 0.4 settles fast and dead, 0.22 keeps inertia
-  // so a flung node swings. alphaDecay lower than default keeps it alive long enough to
-  // watch it arrange itself.
-  const PHYSICS = { velocityDecay: 0.22, alphaDecay: 0.015, charge: -110, linkScale: 190 };
+  // so a flung node swings.
+  //
+  // alphaDecay was 0.015 — an ~8 second settle — so that the initial layout could be
+  // watched arranging itself. It no longer animates into place: `enter` pre-settles it
+  // synchronously before the first paint. All that remained was a graph that kept
+  // drifting under the cursor for eight seconds after every branch, which reads as
+  // clunky rather than alive. 0.08 settles in a bit over a second: new cards still fly
+  // out and find their place, then stop. Dragging is unaffected — it holds alphaTarget
+  // above zero for as long as you hold the node.
+  const PHYSICS = { velocityDecay: 0.22, alphaDecay: 0.08, charge: -110, linkScale: 190 };
 
   let chrome = 'walk';
   // Which rows came from a loaded deck, and which one is its commander. Nodes pulled in
@@ -50,6 +61,9 @@
   // loading a deck: you can see at a glance what you brought and what you found.
   let deckRows = null;
   let commanderRow = -1;
+  // Set by any real pan/zoom/drag. While false the graph may frame itself; once true it
+  // never moves the camera again without being asked.
+  let userAdjusted = false;
   let canvas = null, ctx = null, dpr = 1;
   let sim = null, nodes = [], links = [], byIdx = new Map();
   let transform = null;          // d3.zoomIdentity once d3 is loaded
@@ -161,6 +175,11 @@
 
     zoomBehaviour = d3.zoom().scaleExtent([0.02, 12]).on('zoom', function (ev) {
       transform = ev.transform;
+      // `sourceEvent` is null for programmatic transforms and set for real gestures. Once
+      // you have touched the camera it is yours: auto-fit stops competing with you. This
+      // is the whole of "zooming while the graph moves zooms back out" — a settle-time
+      // fit was overwriting the transform mid-gesture.
+      if (ev.sourceEvent) userAdjusted = true;
       draw();
     });
 
@@ -170,6 +189,7 @@
     const drag = d3.drag()
       .subject(function (ev) { return pick(ev.x, ev.y); })
       .on('start', function (ev) {
+        userAdjusted = true;
         if (!ev.active) sim.alphaTarget(0.25).restart();
         ev.subject.fx = ev.subject.x;
         ev.subject.fy = ev.subject.y;
@@ -278,8 +298,10 @@
     return { minX, maxX, minY, maxY, w: maxX - minX, h: maxY - minY };
   }
 
-  function fitToGraph(animate) {
+  function fitToGraph(animate, auto) {
     if (!canvas || !nodes.length) return;
+    // An automatic fit is a suggestion; a user gesture is an instruction.
+    if (auto && userAdjusted) return;
     const b = bbox();
     if (!isFinite(b.w) || !isFinite(b.h)) return;
     const minX = b.minX, maxX = b.maxX, minY = b.minY, maxY = b.maxY;
@@ -461,7 +483,7 @@
         // Fit when the layout stops, not on a timer. alphaDecay 0.015 gives an ~8 s
         // settle, so an early fit frames a graph that then grows out of the viewport —
         // which is exactly what left the canvas looking empty the first time.
-        .on('end', function () { fitToGraph(true); });
+        .on('end', function () { fitToGraph(true, true); });
     } else {
       sim.nodes(nodes);
       sim.force('link').links(links).distance(l => l.d * PHYSICS.linkScale);
@@ -551,15 +573,32 @@
     ensureCanvas();
     if (canvas) canvas.style.display = '';
     resize();
+    userAdjusted = false;      // a brand-new graph is allowed to frame itself, once
+
+    // Pre-settle the layout BEFORE the first paint.
+    //
+    // `sim.tick()` advances the simulation without dispatching tick events, so nothing
+    // draws. The graph therefore *arrives* arranged instead of being watched to arrange
+    // itself — which is what made loading a deck look broken: a hundred nodes seeded at
+    // scaled world coordinates appeared as a distorted smear, collapsed inward over
+    // several seconds, and re-framed fourteen times on the way, with the user unable to
+    // touch anything until it stopped.
+    //
+    // A few hundred synchronous ticks cost a few milliseconds at these sizes and buy the
+    // entire settling animation up front.
     restart(1);
-    // Keep it framed while it settles — cheap, and the graph is legible the whole way
-    // rather than drifting off-screen for the first few seconds. `sim.on('end')` does
-    // the final, authoritative fit.
-    let fits = 0;
-    const keepFramed = setInterval(function () {
-      if (!active || ++fits > 14) { clearInterval(keepFramed); return; }
-      fitToGraph(false);
-    }, 550);
+    sim.stop();
+    const ticks = Math.min(SETTLE_TICKS, 60 + nodes.length * 3);
+    for (let i = 0; i < ticks; i++) sim.tick();
+
+    fitToGraph(false, true);   // one fit, on a layout that is already still
+    draw();
+    // Left stopped on purpose. Dragging reheats it (`alphaTarget` on drag start) and
+    // branching reheats it (`restart(0.6)`), so it is alive exactly when something is
+    // happening and perfectly steady the rest of the time — which is what "snappy" means
+    // here. A graph that keeps drifting under the cursor is not responsive, it is busy.
+    sim.stop();
+
     // A single seed is a landing: pin it so it draws as card art rather than a 6 px dot.
     if (nodes.length === 1) pinned = nodes[0];
     renderPanel();
@@ -722,6 +761,7 @@
     truncatedFrom = 0;
     label = '';
     deckRows = null; commanderRow = -1;
+    userAdjusted = false;
     if (canvas) { transform = d3.zoomIdentity; draw(); }
     if (quiet) return;
     renderEmptyState();
@@ -926,7 +966,8 @@
     enter, exit, isActive, seedFrom, focusCard, pinCard,
     reheat, freeze, clearTrail, newWalk, tune, close, renderPanel, bbox,
     walkDeck, walkRegion, branchByRow,
-    fit: function () { fitToGraph(true); },
+    // An explicit request, so it overrides "the user has taken the camera".
+    fit: function () { userAdjusted = false; fitToGraph(true); userAdjusted = true; },
     get nodeCount() { return nodes.length; },
     get linkCount() { return links.length; },
     get trailLength() { return trail.length; },
