@@ -1042,7 +1042,12 @@ def test_landing_paints_a_card_without_the_projection(discover_page):
         mode: document.getElementById('modeSelect').value,
         card: Discovery.index[Discovery.current].n,
         panel: !!document.querySelector('.discover-filters'),
-        art: !!document.querySelector('.walk-art'),
+        cardInPanel: document.getElementById('deckInner').textContent
+                       .includes('Craterhoof Behemoth'),
+        stuckPopup: (() => {
+            const p = document.querySelector('.card-popup');
+            return !!p && p.style.display === 'block';
+        })(),
         nodes: Force.nodeCount,
     })""")
     assert discover_page.js_errors == []
@@ -1050,7 +1055,11 @@ def test_landing_paints_a_card_without_the_projection(discover_page):
     assert r["card"] == "Craterhoof Behemoth", "?card= deep link was not honoured"
     assert r["panel"], "the discovery controls did not render"
     assert r["nodes"] == 1, "the landing card should be the graph's single seed"
-    assert r["art"], "a landing card must be card art, not a 6px dot"
+    assert r["cardInPanel"], "the landing card must be readable in the panel"
+    assert not r["stuckPopup"], (
+        "a card is floating over the graph with nothing hovered — the popup is for hover "
+        "only, and a persistent one cannot be dismissed and covers the points behind it"
+    )
 
 
 def test_relation_counts_are_stated_before_any_click(discover_page):
@@ -1312,3 +1321,145 @@ def test_import_does_not_go_through_deck_lens(discover_page):
     assert r["resolved"] > 50
     assert r["mode"] == "discover", "import switched modes — Deck Lens cannot host this"
     assert r["nodes"] == r["resolved"]
+
+
+def test_the_hover_card_appears_and_leaves(discover_page):
+    """The floating card is hover-only: it opens over the point you rest on, and it goes
+    away when you are not on one.
+
+    A persistent version shipped briefly — pinned card art that survived re-rolls and
+    clicks, could not be dismissed, and hid the points behind it. Two card displays
+    existed at once and only one of them knew how to disappear.
+
+    Note the rests. `showCardPopup` has a 180 ms delay, so a sweep that keeps moving
+    cancels the timer on every step and the popup never opens — which is exactly how this
+    test failed first time, looking like a broken feature rather than a hurried cursor.
+    """
+    r = discover_page.evaluate("""async () => {
+        Force.branchByRow(Discovery.current, 'similar');
+        await new Promise(r => setTimeout(r, 600));
+        Force.fit();
+        await new Promise(r => setTimeout(r, 700));
+
+        const c = document.getElementById('forceCanvas');
+        const rect = c.getBoundingClientRect();
+        const move = (x, y) => c.dispatchEvent(new MouseEvent('mousemove',
+            {bubbles: true, clientX: rect.left + x, clientY: rect.top + y}));
+        const shown = () => {
+            const p = document.querySelector('.card-popup');
+            return !!p && p.style.display === 'block';
+        };
+
+        const before = shown();
+
+        // pick() sets cursor:pointer over a node — cheaper than guessing coordinates.
+        let at = null;
+        outer:
+        for (let x = 0; x < rect.width; x += 4) {
+            for (let y = 0; y < rect.height; y += 4) {
+                move(x, y);
+                if (c.style.cursor === 'pointer') { at = [x, y]; break outer; }
+            }
+        }
+        if (!at) return {before: before, found: false};
+
+        move(at[0], at[1]);
+        await new Promise(r => setTimeout(r, 450));
+        const opened = shown();
+
+        move(2, 2);
+        await new Promise(r => setTimeout(r, 250));
+        const afterOff = shown();
+
+        move(at[0], at[1]);
+        await new Promise(r => setTimeout(r, 450));
+        c.dispatchEvent(new MouseEvent('mouseleave', {bubbles: true}));
+        await new Promise(r => setTimeout(r, 250));
+
+        return {before: before, found: true, opened: opened,
+                afterOff: afterOff, afterLeave: shown()};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["found"], "no node under the cursor anywhere — the graph did not draw"
+    assert not r["before"], "a card was floating before anything was hovered"
+    assert r["opened"], "resting on a node did not open the card"
+    assert not r["afterOff"], "the card stayed after the cursor moved off the node"
+    assert not r["afterLeave"], (
+        "the card stayed after the cursor left the canvas — mouseleave fires no mousemove, "
+        "so nothing else would ever clear it"
+    )
+
+
+def test_a_sample_of_cards_stays_named(discover_page):
+    """Names you can read without touching anything.
+
+    Labelling all 500 nodes is an unreadable smear; labelling only the hovered one means
+    the graph says nothing until you interact with it. So a bounded sample is placed
+    greedily and rejected on collision — which is why it thins out when the graph is dense
+    and fills back in as you zoom, with no zoom logic of its own.
+
+    Canvas text cannot be queried, so this asserts the count the draw actually placed.
+    """
+    r = discover_page.evaluate("""async () => {
+        const grow = async () => {
+            Force.branchByRow(Discovery.current, 'similar');
+            await new Promise(r => setTimeout(r, 300));
+            for (const nb of Discovery.neighbours(Discovery.current, 'similar').slice(0, 4)) {
+                Force.branchByRow(nb.row, 'similar');
+            }
+            await new Promise(r => setTimeout(r, 900));
+        };
+        const single = Force.labelCount;      // the landing: one card
+        await grow();
+        Force.fit();
+        await new Promise(r => setTimeout(r, 800));
+        return {single: single, many: Force.labelCount,
+                nodes: Force.nodeCount, cap: Force.LABEL_MAX};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["nodes"] > 15, "the graph did not grow enough to test label thinning"
+    assert r["many"] > 3, "almost nothing is named — the graph reads as anonymous dots"
+    assert r["many"] <= r["cap"], f"{r['many']} labels exceeds the {r['cap']} cap"
+    assert r["many"] < r["nodes"], (
+        "every node is labelled — at 500 nodes that is a smear, not a sample"
+    )
+
+
+def test_the_hover_card_stays_inside_the_frame(discover_page):
+    """Reported: hovering a point near the foot of the page ran the card off-screen.
+
+    The cause was that `positionPopup` measured the popup the instant the <img> was
+    inserted — before the network returned anything — so the height read ~0 and the bottom
+    clamp had nothing to clamp. The CSS now reserves the card's aspect ratio and the
+    fallback height is explicit.
+    """
+    r = discover_page.evaluate("""async () => {
+        const host = document.getElementById('plot');
+        const rect = host.getBoundingClientRect();
+        const row = Discovery.current;
+        const out = [];
+        const spots = [['bottom edge', rect.bottom - 4], ['near bottom', rect.bottom - 40],
+                       ['middle', rect.top + rect.height / 2], ['top edge', rect.top + 4]];
+        for (const [label, cy] of spots) {
+            MM.hideCardPopup();
+            MM.showCardPopup(row, rect.left + 300, cy);
+            await new Promise(r => setTimeout(r, 420));
+            const p = document.querySelector('.card-popup');
+            const pr = p.getBoundingClientRect();
+            out.push({
+                at: label, height: Math.round(pr.height),
+                insideFrame: pr.bottom <= rect.bottom + 1 && pr.top >= rect.top - 1,
+                insideViewport: pr.bottom <= window.innerHeight + 1 && pr.top >= 0,
+            });
+        }
+        MM.hideCardPopup();
+        return out;
+    }""")
+    assert discover_page.js_errors == []
+    for case in r:
+        assert case["insideFrame"], f"the card escaped the plot frame at the {case['at']}"
+        assert case["insideViewport"], f"the card ran off the page at the {case['at']}"
+        assert case["height"] > 200, (
+            f"the popup measured {case['height']}px at the {case['at']} — an unloaded image "
+            f"measuring ~0 is exactly what defeated the clamp"
+        )

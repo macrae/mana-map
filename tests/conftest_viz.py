@@ -22,10 +22,12 @@ import pytest
 # region labels in the background. Every wait below is generous on purpose: a flaky
 # browser test is worse than a slow one, because it teaches you to ignore red.
 #
-# Raised from 60s after one unreproducible fixture ERROR during a full 1,007-test run —
-# the browser tests come last, after ~4 minutes of CPU-bound pipeline tests, and each
-# opens a fresh page that re-parses the projection. The cause was not diagnosed; this is
-# insurance, not a fix. If it recurs, instrument the fixture rather than raising it again.
+# Raised from 60s after one unreproducible fixture ERROR during a full 1,007-test run.
+# It recurred once at 1,092 tests and then did NOT reproduce across two consecutive full
+# runs — so it is rare and still undiagnosed. Per this comment's own earlier instruction
+# the timeout has deliberately NOT been raised again; `_wait_for_boot` below now reports
+# page state on failure instead, so the next occurrence says something instead of just
+# saying "ERROR at setup".
 BOOT_TIMEOUT_MS = 120_000
 
 
@@ -33,6 +35,36 @@ BOOT_TIMEOUT_MS = 120_000
 # A test about rendering 34,322 points should say so rather than rely on what boot
 # happens to produce — and it documents the change for whoever reads these next.
 EXPLORE = "?mode=explore"
+
+
+def _wait_for_boot(page, condition, what):
+    """Wait, and if it times out say what the page was actually doing.
+
+    A bare `wait_for_function` timeout surfaces as "ERROR at setup" with no page state at
+    all, which is why the last occurrence of this went undiagnosed and got a bigger
+    timeout instead of an explanation. Everything gathered here is cheap and is exactly
+    what the first debugging question would ask for.
+    """
+    try:
+        page.wait_for_function(condition, timeout=BOOT_TIMEOUT_MS)
+    except Exception as exc:  # noqa: BLE001 - re-raised with context below
+        try:
+            state = page.evaluate("""() => ({
+                url: location.href,
+                readyState: document.readyState,
+                hasMM: typeof window.MM !== 'undefined',
+                rows: (window.MM && MM.allData) ? MM.allData.length : -1,
+                hasDiscovery: typeof window.Discovery !== 'undefined',
+                discoveryReady: !!(window.Discovery && Discovery.isReady()),
+                scripts: [...document.scripts].map(s => s.src.split('/').pop()),
+            })""")
+        except Exception as inner:  # noqa: BLE001
+            state = f"page unreachable: {inner}"
+        raise AssertionError(
+            f"boot never satisfied {what!r} within {BOOT_TIMEOUT_MS} ms.\n"
+            f"page state: {state}\n"
+            f"console errors: {getattr(page, 'js_errors', None)}"
+        ) from exc
 
 
 def _boot(browser, viz_server, query=""):
@@ -43,9 +75,9 @@ def _boot(browser, viz_server, query=""):
     page.goto(f"{viz_server}/viz/index.html{query}")
     page.add_style_tag(content="*, *::before, *::after {"
                                " transition: none !important; animation: none !important; }")
-    page.wait_for_function("() => window.MM && MM.allData && MM.allData.length > 0",
-                           timeout=BOOT_TIMEOUT_MS)
     page.js_errors = errors
+    _wait_for_boot(page, "() => window.MM && MM.allData && MM.allData.length > 0",
+                   "the projection to load")
     return page
 
 
@@ -64,10 +96,9 @@ def discover_page(browser, viz_server):
     page.goto(f"{viz_server}/viz/index.html?card=Craterhoof%20Behemoth")
     page.add_style_tag(content="*, *::before, *::after {"
                                " transition: none !important; animation: none !important; }")
-    page.wait_for_function(
-        "() => window.Discovery && Discovery.isReady() && Discovery.current >= 0",
-        timeout=BOOT_TIMEOUT_MS)
     page.js_errors = errors
+    _wait_for_boot(page, "() => window.Discovery && Discovery.isReady() && Discovery.current >= 0",
+                   "discovery to land on a card")
     try:
         yield page
     finally:
@@ -82,8 +113,8 @@ def canvas_page(browser, viz_server):
     renderers are live at once so they can be compared on identical data.
     """
     page = _boot(browser, viz_server, "?renderer=canvas&mode=explore")
-    page.wait_for_function("() => !!document.querySelector('.map-canvas')",
-                           timeout=BOOT_TIMEOUT_MS)
+    _wait_for_boot(page, "() => !!document.querySelector('.map-canvas')",
+                   "the canvas renderer to attach")
     try:
         yield page
     finally:
@@ -109,9 +140,9 @@ def page(browser, viz_server):
     # suite to a real bug (the panel being unreachable), so it is not a nicety.
     page.add_style_tag(content="*, *::before, *::after {"
                                " transition: none !important; animation: none !important; }")
-    page.wait_for_function("() => window.MM && MM.allData && MM.allData.length > 0",
-                           timeout=BOOT_TIMEOUT_MS)
     page.js_errors = errors        # the whole point: a ReferenceError must fail a test
+    _wait_for_boot(page, "() => window.MM && MM.allData && MM.allData.length > 0",
+                   "the projection to load")
     try:
         yield page
     finally:

@@ -31,6 +31,12 @@
   const LINKS_PER_NODE = 3;      // k-nearest within the graph, so structure is visible
   const BRANCH_K = 6;            // neighbours pulled in when you branch from a card
   const TRAIL_MAX = 40;
+  // Persistent name labels: how many at most, and how much clear space each needs. 14 is
+  // about what a 1440px canvas holds before names start reading as texture rather than
+  // words; the gap keeps neighbours from touching.
+  const LABEL_MAX = 14;
+  const LABEL_GAP = 6;
+  let lastLabelCount = 0;   // exposed for the browser tests; canvas text is unassertable
 
   // Feel. These are the numbers that decide whether the graph has weight or just twitches.
   // velocityDecay is friction: d3's default 0.4 settles fast and dead, 0.22 keeps inertia
@@ -183,6 +189,13 @@
       else MM.hideCardPopup();
     });
 
+    // Leaving the canvas fires no mousemove, so without this the last hovered card keeps
+    // its ring and its popup stays open over the graph with no way to dismiss it.
+    canvas.addEventListener('mouseleave', function () {
+      if (hovered) { hovered = null; draw(); renderPanel(); }
+      MM.hideCardPopup();
+    });
+
     canvas.addEventListener('click', function (e) {
       const r = canvas.getBoundingClientRect();
       const hit = pick(e.clientX - r.left, e.clientY - r.top);
@@ -329,70 +342,55 @@
     }
     ctx.restore();
 
-    drawArt();
-
     // Labels in screen space so they stay legible at any zoom — the thing Plotly's
     // annotations could never do without a relayout.
+    //
+    // A representative sample, not every card. Labelling all 500 is an unreadable smear
+    // and labelling only the hovered one means the graph tells you nothing until you
+    // touch it. So: the cards you are interacting with always get a name, then as many
+    // others as physically fit, chosen greedily and rejected on collision — which is why
+    // the set thins out when the graph is dense and fills in as you zoom in, without any
+    // zoom logic of its own.
     ctx.font = '12px system-ui, -apple-system, sans-serif';
     ctx.textAlign = 'center';
-    const named = hovered ? [hovered] : (pinned ? [pinned] : []);
-    for (const n of named) {
+
+    const priority = [];
+    if (hovered) priority.push(hovered);
+    if (pinned && pinned !== hovered) priority.push(pinned);
+    for (let i = trail.length - 1; i >= 0; i--) {
+      if (priority.indexOf(trail[i]) === -1) priority.push(trail[i]);
+    }
+    // Seeds next — on an imported deck those are the deck, which is what you want named.
+    for (const n of nodes) if (n.seed && priority.indexOf(n) === -1) priority.push(n);
+    for (const n of nodes) if (priority.indexOf(n) === -1) priority.push(n);
+
+    const placed = [];
+    let drawn = 0;
+    lastLabelCount = 0;
+    for (const n of priority) {
+      if (drawn >= LABEL_MAX) break;
       const p = transform.apply([n.x, n.y]);
-      if (p[0] < -40 || p[0] > w + 40 || p[1] < -20 || p[1] > h + 20) continue;
-      const text = n.name;
-      const tw = ctx.measureText(text).width;
-      ctx.fillStyle = 'rgba(22,33,62,0.88)';
-      ctx.fillRect(p[0] - tw / 2 - 5, p[1] - 26, tw + 10, 16);
-      ctx.fillStyle = n === hovered ? '#fff' : '#c4a747';
-      ctx.fillText(text, p[0], p[1] - 14);
+      if (p[0] < 0 || p[0] > w || p[1] < 0 || p[1] > h) continue;
+      const tw = ctx.measureText(n.name).width;
+      const box = { x0: p[0] - tw / 2 - 5, x1: p[0] + tw / 2 + 5, y0: p[1] - 26, y1: p[1] - 10 };
+      let clash = false;
+      for (const b of placed) {
+        if (box.x0 < b.x1 + LABEL_GAP && box.x1 > b.x0 - LABEL_GAP &&
+            box.y0 < b.y1 + LABEL_GAP && box.y1 > b.y0 - LABEL_GAP) { clash = true; break; }
+      }
+      // The hovered and pinned cards are never suppressed — you asked about those.
+      if (clash && n !== hovered && n !== pinned) continue;
+      placed.push(box);
+      drawn++;
+      lastLabelCount = drawn;
+
+      const focus = n === hovered || n === pinned;
+      ctx.fillStyle = focus ? 'rgba(22,33,62,0.92)' : 'rgba(22,33,62,0.72)';
+      ctx.fillRect(box.x0, box.y0, tw + 10, 16);
+      ctx.fillStyle = n === hovered ? '#fff' : (focus ? '#c4a747' : 'rgba(196,167,71,0.72)');
+      ctx.fillText(n.name, p[0], p[1] - 14);
     }
   }
-
-  // The pinned card, drawn as real card art rather than a coloured dot.
-  //
-  // A DOM <img> over the canvas, NOT ctx.drawImage — and that is forced, not stylistic.
-  // Scryfall's image endpoint redirects, and the redirect chain refuses
-  // `crossOrigin="anonymous"` (verified: the load simply fails). Drawing it without
-  // that flag would taint the canvas, and `getImageData` on #forceCanvas would start
-  // throwing SecurityError — which a browser test already depends on. DOM-over-canvas
-  // is the same call this codebase made for region labels, for the same class of reason.
-  let artEl = null;
-
-  function ensureArt() {
-    if (artEl) return artEl;
-    const host = document.getElementById('plot');
-    if (!host) return null;
-    artEl = document.createElement('img');
-    artEl.className = 'walk-art';
-    artEl.alt = '';
-    artEl.onerror = function () { artEl.style.display = 'none'; };
-    host.appendChild(artEl);
-    return artEl;
-  }
-
-  function drawArt() {
-    const el = ensureArt();
-    if (!el) return;
-    // Only the pinned card. Every node would be 500 Scryfall round-trips and an
-    // unreadable collage; the hover popup already covers "what is that one".
-    if (!pinned || !transform) { el.style.display = 'none'; return; }
-
-    const rec = MM.cardRecord(pinned.row);
-    if (!rec) { el.style.display = 'none'; return; }
-    const src = MM.cardImageUrl(rec.n);
-    if (el.getAttribute('src') !== src) { el.setAttribute('src', src); el.style.display = ''; }
-
-    // Bigger when it is the whole graph: a single seed on an empty canvas was a 6 px
-    // dot, which is not a card you have landed on — it is a speck.
-    const height = nodes.length <= 2 ? 260 : 150;
-    const p = transform.apply([pinned.x, pinned.y]);
-    el.style.height = height + 'px';
-    el.style.transform = 'translate(' + Math.round(p[0]) + 'px,' + Math.round(p[1]) +
-                         'px) translate(-50%, -50%)';
-    el.style.display = '';
-  }
-
-  function hideArt() { if (artEl) artEl.style.display = 'none'; }
 
   // ── Simulation ──────────────────────────────────────────────────────────
 
@@ -674,7 +672,7 @@
   // graph rebuilt correctly into a 0x0 hidden canvas and the mode looked dead.
   function exit() {
     active = false;
-    hideArt();
+    MM.hideCardPopup();
     if (sim) sim.stop();
   }
 
@@ -870,6 +868,10 @@
     // Exposed for the browser tests: a link's `d` must be the 128-d chord distance, not
     // anything derived from screen position. Chord distance on a unit sphere is bounded
     // by [0, 2], which is the assertion.
+    // Canvas text cannot be queried, so the count of labels the last draw actually placed
+    // is the only way a test can tell "a representative sample" from "one" or "all".
+    get labelCount() { return lastLabelCount; },
+    LABEL_MAX,
     linkStats() {
       if (!links.length) return null;
       let min = Infinity, max = -Infinity, sum = 0;

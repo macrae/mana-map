@@ -330,7 +330,9 @@
   // clientX/clientY, because the two callers measure in different spaces: Plotly hands back
   // an event on the graph div, the canvas hands back a raw MouseEvent.
   function showCardPopup(row, clientX, clientY) {
-    const d = allData[row];
+    // cardRecord, not allData: on the discovery landing the projection has not arrived
+    // yet, and hovering would silently do nothing.
+    const d = cardRecord(row);
     if (!d) return;
     clearTimeout(hoverTimer);
     if (hoverRow === row && popupEl && popupEl.style.display !== 'none') {
@@ -346,6 +348,13 @@
         'this.parentElement.textContent=' + JSON.stringify(d.n).replace(/"/g, '&quot;') + '">';
       el.style.display = 'block';
       positionPopup(clientX, clientY);
+      // Reposition once the image has real dimensions. The CSS aspect-ratio means the box
+      // is already the right size, but a failed load collapses it to the name text, and
+      // that box wants clamping too.
+      const img = el.querySelector('img');
+      if (img) img.addEventListener('load', function () {
+        positionPopup(clientX, clientY);
+      }, { once: true });
     }, HOVER_DELAY_MS);
   }
 
@@ -356,7 +365,12 @@
     const host = document.getElementById('plot');
     const r = host.getBoundingClientRect();
     const w = popupEl.offsetWidth || 230;
-    const h = popupEl.offsetHeight || 320;
+    // The card is 230px wide at a 488:680 ratio, so ~321px tall. Measuring is preferred,
+    // but this is positioned the instant the <img> is inserted — before the network has
+    // returned anything — and an unloaded image used to measure ~0, which meant the
+    // bottom clamp below did nothing and a card hovered near the foot of the page ran
+    // straight off it. The CSS reserves the box; this is the belt to that braces.
+    const h = Math.max(popupEl.offsetHeight, 321);
     let x = clientX - r.left + 18;
     let y = clientY - r.top - h / 2;
     if (x + w > r.width - 8) x = clientX - r.left - w - 18;

@@ -198,6 +198,18 @@ the full run. A **seeded** walk (deck or region) still awaits it: `linkWithinFro
 only links cards whose precomputed top-12 are also in the set, which on a 97-card deck is
 38 links instead of ~290 — a visibly sparser graph, caught by the browser suite.
 
+**Names without hovering.** The graph places a bounded sample of card labels — priority to
+hovered, pinned, the trail, then seeds — greedily, rejecting any that would collide. Labelling
+all 500 nodes is a smear; labelling only the hovered one means the graph says nothing until
+you touch it. The set thins when dense and fills in as you zoom, with no zoom logic of its own.
+`Force.labelCount` exists because canvas text cannot be queried by a test.
+
+**The hover card is bounded.** `positionPopup` clamps to the plot frame, but it used to
+measure the popup the instant the `<img>` was inserted — before the network returned
+anything — so the height read ~0, the bottom clamp had nothing to clamp, and a card hovered
+near the foot of the page ran off it. The CSS now reserves the 488:680 card box so the height
+is known before load, and the fallback is explicit.
+
 **Three defects the single-seed landing exposed**, all fixed:
 
 - **Every graph was a tree.** `branchFrom` skipped neighbours already present and only ever
