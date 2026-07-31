@@ -1927,38 +1927,77 @@ def test_relations_render_in_every_panel(discover_page):
         assert n >= 3, f"the {panel} panel shows {n} relation controls, expected 3"
 
 
-def test_a_relation_grows_the_graph_or_opens_a_browse_set(discover_page):
-    """One control, two renderings. A graph can grow; a scatter plot cannot, so in explore
-    the answer becomes a walkable browse set instead — which also happens to be canvas-safe,
-    unlike the Plotly traces it replaces."""
+def test_a_relation_always_grows_the_graph(discover_page):
+    """One button, one behaviour, everywhere.
+
+    `relate` used to fork — graph modes grew the graph, Explore opened a linear browse set,
+    on the reasoning that a scatter plot cannot grow. True, but it made one control mean two
+    things. The fix is not to teach the scatter plot to grow; it is to let the click carry
+    you to where growing happens. Explore is a lens: you go to see where things sit, then
+    click to start walking from one.
+    """
     r = discover_page.evaluate("""async () => {
         const row = Discovery.rowByName("Ashnod's Altar");
+
         Discovery.show(row);
         await new Promise(r => setTimeout(r, 500));
         const before = Force.nodeCount;
         MM.relate(row, 'synergy');
         await new Promise(r => setTimeout(r, 1200));
-        const graph = {grew: Force.nodeCount > before, mode: 'discover'};
+        const fromDiscover = {grew: Force.nodeCount > before};
 
+        // From the atlas: same control, and it must land in the graph on THAT card.
         document.getElementById('modeSelect').value = 'explore';
         MM.setMode('explore');
         await new Promise(r => setTimeout(r, 3000));
-        MM.relate(row, 'synergy');
-        await new Promise(r => setTimeout(r, 1200));
+        MM.relate(row, 'similar');
+        await new Promise(r => setTimeout(r, 1500));
         return {
-            graph: graph,
-            browse: !!MM.browseSet,
-            held: MM.browseSet ? MM.browseSet.indices.length : 0,
-            relation: MM.browseSet ? MM.browseSet.relation : null,
-            anchorFirst: MM.browseSet ? MM.browseSet.indices[0] === row : false,
+            fromDiscover: fromDiscover,
+            mode: document.getElementById('modeSelect').value,
+            nodes: Force.nodeCount,
+            seeded: Force.hasRow(row),
+            noBrowseSet: !MM.browseSet,
+            panel: (document.querySelector('#deckInner .lens-title') || {}).textContent,
+            expected: Discovery.index[row].n,
         };
     }""")
     assert discover_page.js_errors == []
-    assert r["graph"]["grew"], "a relation in Discover did not grow the graph"
-    assert r["browse"], "a relation in explore did not open a browse set"
-    assert r["relation"] == "synergy"
-    assert r["held"] > 5
-    assert r["anchorFirst"], "the anchor should lead its own relation list"
+    assert r["fromDiscover"]["grew"], "a relation in Discover did not grow the graph"
+    assert r["mode"] == "discover", "a relation in Explore did not carry you to the graph"
+    assert r["seeded"], "the graph was not seeded on the card whose relation was clicked"
+    assert r["nodes"] > 1
+    assert r["noBrowseSet"], "Explore still opens a browse set — the fork is back"
+    assert r["panel"] == r["expected"], (
+        f"landed on {r['panel']!r} instead of the clicked card {r['expected']!r}"
+    )
+
+
+def test_the_tray_follows_the_card_not_the_mode(discover_page):
+    """Keeping something you found in the atlas is the same act as keeping something you
+    walked to, so the control lives in the shared card HTML rather than only in Discover."""
+    r = discover_page.evaluate("""async () => {
+        document.getElementById('modeSelect').value = 'explore';
+        MM.setMode('explore');
+        await new Promise(r => setTimeout(r, 3000));
+        MM.selectByName("Ashnod's Altar");
+        await new Promise(r => setTimeout(r, 1000));
+        const keep = document.querySelector('.discover-keep');
+        const before = Discovery.tray.list.length;
+        if (keep) keep.click();
+        await new Promise(r => setTimeout(r, 400));
+        return {
+            hadButton: !!keep,
+            before: before,
+            after: Discovery.tray.list.length,
+            label: (document.querySelector('.discover-keep') || {}).textContent,
+            kept: Discovery.tray.names().includes("Ashnod's Altar"),
+        };
+    }""")
+    assert discover_page.js_errors == []
+    assert r["hadButton"], "no Keep control in the atlas — the tray is still Discover-only"
+    assert r["after"] == r["before"] + 1 and r["kept"]
+    assert "In tray" in (r["label"] or ""), "the control did not reflect the new state"
 
 
 def test_relations_survive_the_canvas_renderer(canvas_page):
@@ -1970,12 +2009,12 @@ def test_relations_survive_the_canvas_renderer(canvas_page):
         MM.selectByName("Ashnod's Altar");
         await new Promise(r => setTimeout(r, 800));
         MM.relate(row, 'similar');
-        await new Promise(r => setTimeout(r, 1500));
-        return {browse: !!MM.browseSet,
-                held: MM.browseSet ? MM.browseSet.indices.length : 0};
+        await new Promise(r => setTimeout(r, 1800));
+        return {mode: document.getElementById('modeSelect').value,
+                nodes: Force.nodeCount, seeded: Force.hasRow(row)};
     }""")
     assert canvas_page.js_errors == [], f"the canvas path threw: {canvas_page.js_errors}"
-    assert r["browse"] and r["held"] > 5
+    assert r["mode"] == "discover" and r["seeded"] and r["nodes"] > 1
 
 
 # ── Explore as an orientation lens ──────────────────────────────────────

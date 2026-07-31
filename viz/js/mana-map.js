@@ -336,55 +336,33 @@
     dimsAll() { return !!orientation; },
   };
 
-  // THE relation entry point. One control, one concept, two renderings.
+  // THE relation entry point, and it does the SAME THING everywhere.
+  //
+  // It used to fork: graph modes grew the graph, Explore opened a linear browse set,
+  // on the reasoning that a scatter plot cannot grow. True, but it made one button mean
+  // two things — and the fix is not to teach the scatter plot to grow, it is to let the
+  // click carry you to where growing happens. Explore is a lens now: you go there to see
+  // where things sit, then click to start walking from one.
   //
   // Replaces `findSimilarCards` / `findSynergyCards`, which were broken four ways: silent
-  // no-ops in Discover and the browse panel (both clear `selectedCards`, which is the only
-  // card identity those functions had), the *wrong card* in The Walk, drawn onto a hidden
-  // Plotly surface, and an outright throw under `?renderer=canvas` where `#plot` has no
-  // `.data`. None of it was covered by a test.
+  // no-ops in Discover and the browse panel (both clear `selectedCards`, the only card
+  // identity those functions had), the *wrong card* in The Walk drawn onto a hidden Plotly
+  // surface, and an outright throw under `?renderer=canvas` where `#plot` has no `.data`.
   function relate(row, relation) {
     const rel = relation || 'similar';
-    if (!window.Discovery || !Discovery.isReady()) return;
-    if (currentMode === 'discover' || currentMode === 'force') {
-      // Graph modes: the answer becomes part of the graph you are building.
-      if (window.Force) {
-        if (!Force.hasRow(row)) Discovery.show(row);   // reseed on a card not yet placed
-        Force.branchByRow(row, rel);
-      }
-      return;
-    }
-    enterRelation(row, rel);
-  }
+    if (!window.Discovery || !Discovery.isReady() || !window.Force) return;
 
-  // Explore/Deck/Build: a scatter plot cannot grow, so the answer becomes a browse set —
-  // the anchor plus its related cards, walkable with the arrow keys. This reuses the
-  // browse machinery, which is canvas-safe; the old path added Plotly traces, which is
-  // precisely why it threw under the canvas renderer.
-  function enterRelation(row, relation) {
-    const d = cardRecord(row);
-    if (!d) return;
-    const near = Discovery.neighbours(row, relation);
-    if (!near.length) {
-      setStatus(d.n + ' has no ' + relation + ' cards.');
-      return;
+    if (currentMode !== 'discover' && currentMode !== 'force') {
+      const sel = document.getElementById('modeSelect');
+      if (sel) sel.value = 'discover';
+      setMode('discover');
     }
-    browseSet = {
-      indices: [row].concat(near.map(x => x.row)),
-      sims: [1].concat(near.map(x => x.sim)),
-      reasons: [null].concat(near.map(x => x.reason || null)),
-      pos: 0,
-      label: d.n,
-      anchor: row,
-      relation: relation,
-    };
-    selectedCards = [];                    // browse and the 8-stack never coexist
-    topCardIndex = 0;
-    updateViewerPanel();
-    updateSelectionHighlight();
-    const what = relation === 'similar' ? 'nearest'
-               : relation === 'synergy' ? 'synergy partners' : 'strictly-better cards';
-    setStatus(d.n + ' — ' + near.length + ' ' + what + ', ← → to walk them');
+    // Seed the graph on this card unless the walk already holds it, so branching from a
+    // card you found in the atlas starts a walk *from that card* rather than from
+    // whatever the landing happened to pick.
+    if (!Force.hasRow(row)) Discovery.show(row);
+    else Discovery.focus(row);
+    Force.branchByRow(row, rel);
   }
 
   async function enterBrowse(rowIndices, label) {
@@ -1077,7 +1055,22 @@
       html += '<p class="lens-note">Synergy is a rule-based list of ten, not a ranking — '
             + 'partners are ordered by how played they are.</p>';
     }
+    // The tray follows the card, not the mode. Keeping something you found in the atlas
+    // is the same act as keeping something you walked to, so the control lives here
+    // rather than only in the Discover panel.
+    const kept = Discovery.tray.has(row);
+    html += '<button class="lens-btn discover-keep" onclick="MM.keep(' + row + ')">'
+          + (kept ? '✓ In tray' : '+ Keep this card') + '</button>';
     return html;
+  }
+
+  // Toggle a card in the tray from any panel, then repaint whichever one is showing.
+  function keep(row) {
+    if (!window.Discovery || !Discovery.isReady()) return;
+    Discovery.tray.toggle(row);
+    if (currentMode === 'explore' || currentMode === 'deck' || currentMode === 'build') {
+      updateViewerPanel();
+    }
   }
 
   function buildObsolescenceHtml(cardName) {
@@ -2184,6 +2177,7 @@
     },
     selectByName,
     relate,
+    keep,
     orientTo,
     clearOrientation,
     get orientation() { return orientation; },

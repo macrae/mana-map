@@ -329,8 +329,8 @@ window.Discovery = (function () {
     // (MM.buildRelationHtml) so every panel that shows a card gets the same control —
     // which is what makes deleting the old Find Similar / Find Synergies pair an
     // unification rather than the removal of a feature.
-    html += '<button class="lens-btn discover-keep" onclick="Discovery.tray.toggle(' +
-      current + ')">' + (inTray(current) ? '✓ In tray' : '+ Keep this card') + '</button>';
+    // The Keep button is part of the shared card HTML now (MM.buildRelationHtml), so
+    // every panel that shows a card can put it in the tray.
     html += MM.buildCardDetailHtml(MM.cardRecord(current), current);
     el.innerHTML = html;
   }
