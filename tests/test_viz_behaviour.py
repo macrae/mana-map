@@ -1763,3 +1763,104 @@ def test_the_graph_stops_moving_promptly_after_a_branch(discover_page):
     assert r["moved"], "branching did not animate at all — the graph is frozen"
     assert r["settled"], "the graph never came to rest within 6 s"
     assert r["settleMs"] < 3000, f"took {r['settleMs']} ms to settle after a branch"
+
+
+# ── synergy reasons ─────────────────────────────────────────────────────
+
+
+def test_synergy_neighbours_carry_their_reason(discover_page):
+    """The reason is what makes a synergy edge worth drawing: it says WHY two cards are
+    connected, not merely that a rule fired.
+
+    These strings were already being computed and thrown away — the old Find Synergies
+    wrote them into a Plotly trace and then set `hoverinfo: 'none'`, so nobody ever saw
+    one. They now ride in `neighbours.bin` as a uint8 code plus an appended vocabulary,
+    so branching stays synchronous.
+    """
+    r = discover_page.evaluate("""async () => {
+        const row = Discovery.rowByName("Ashnod's Altar");
+        Discovery.show(row);
+        await new Promise(r => setTimeout(r, 400));
+        const syn = Discovery.neighbours(row, 'synergy');
+        return {
+            count: syn.length,
+            allHaveReasons: syn.every(s => !!s.reason),
+            sample: syn.slice(0, 3).map(s => ({card: Discovery.index[s.row].n,
+                                               reason: s.reason})),
+            vocab: Discovery.table.reasons.length,
+            similarHasNoReason: !Discovery.neighbours(row, 'similar')[0].reason,
+        };
+    }""")
+    assert discover_page.js_errors == []
+    assert r["count"] > 5
+    assert r["vocab"] == 24, "the reason vocabulary did not travel with the file"
+    assert r["allHaveReasons"], f"a synergy partner arrived with no reason: {r['sample']}"
+    assert r["similarHasNoReason"], "similarity is not a rule match and has no reason"
+    reasons = {s["reason"] for s in r["sample"]}
+    assert any("Sac" in x or "Token" in x for x in reasons), f"unexpected reasons: {reasons}"
+
+
+def test_synergy_edges_are_labelled_in_the_graph(discover_page):
+    """The reasons reach the canvas, subject to the same collision discipline as node
+    labels so they can never sit on top of a card name.
+
+    **Wait for the layout to settle before measuring.** Reading these counters mid-settle
+    reports almost nothing — the nodes are still clustered, so every label collides — and
+    it looks exactly like a broken feature. That cost several minutes of chasing a
+    non-bug, hence the explicit settle here.
+    """
+    r = discover_page.evaluate("""async () => {
+        const row = Discovery.rowByName("Ashnod's Altar");
+        Discovery.show(row);
+        await new Promise(r => setTimeout(r, 400));
+        Force.branchByRow(row, 'synergy');
+        // Settle: alphaDecay 0.08 is ~1.3 s, and a cramped graph collides every label.
+        const bb = () => JSON.stringify(Force.bbox());
+        let last = bb(), still = 0, elapsed = 0;
+        while (elapsed < 6000 && still < 500) {
+            await new Promise(r => setTimeout(r, 100));
+            elapsed += 100;
+            const now = bb();
+            if (now === last) still += 100; else { still = 0; last = now; }
+        }
+        const t = d3.zoomTransform(document.getElementById('forceCanvas'));
+        const b = Force.bbox();
+        return {edgeLabels: Force.edgeLabelCount, nodeLabels: Force.labelCount,
+                nodes: Force.nodeCount,
+                spreadPx: Math.round((b.maxX - b.minX) * t.k)};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["spreadPx"] > 150, (
+        f"the graph is only {r['spreadPx']}px wide — still settling, so any label count "
+        f"below is meaningless"
+    )
+    assert r["edgeLabels"] > 0, "no synergy edge was labelled with its reason"
+    assert r["nodeLabels"] > 0, "edge labels crowded out every card name"
+
+
+def test_obsolescence_fills_in_outside_explore(discover_page):
+    """"Obsoleted By" and its advantage badges used to be invisible in three of the five
+    panels that render card detail.
+
+    The index was fetched in exactly one place — inside `updateViewerPanel` — and patched
+    only that panel's open card, so the browse panel, The Walk and Discover drew a
+    placeholder nothing ever filled. `buildObsolescenceHtml` now triggers the load itself
+    and a single patcher fills every placeholder on the page.
+    """
+    r = discover_page.evaluate("""async () => {
+        // A card that definitely has a replacement, opened in Discover with no prior
+        // explore selection to have warmed the index.
+        Discovery.show(Discovery.rowByName('Storm Crow'));
+        await new Promise(r => setTimeout(r, 2500));
+        const section = document.querySelector('.obsolescence-section');
+        return {
+            filled: !!section,
+            hasAdvantageBadge: !!document.querySelector('.obsolescence-badge'),
+            stillPlaceholder: !!document.querySelector('.obsolescence-placeholder'),
+            text: section ? section.textContent.slice(0, 120) : null,
+        };
+    }""")
+    assert discover_page.js_errors == []
+    assert r["filled"], "Obsoleted By never rendered in Discover — the index never loaded"
+    assert r["hasAdvantageBadge"], "the advantage strings (Lower CMC, ...) are still hidden"
+    assert not r["stillPlaceholder"], "a placeholder was left unpatched"

@@ -50,9 +50,11 @@ from manamap.config import (
     NEIGHBOURS_K_SYNERGY,
     NEIGHBOURS_MAGIC,
     NEIGHBOURS_NONE,
+    NEIGHBOURS_NO_REASON,
     OBSOLESCENCE_INDEX_PATH,
     OUTPUT_CSV_PATH,
     SYNERGY_GRAPH_PATH,
+    SYNERGY_RULES,
     VIZ_INDEX_PATH,
 )
 
@@ -114,10 +116,17 @@ def build_tables(df, embeddings, synergy, obsolescence, name_index):
     """
     n = len(df)
     names = df["name"].tolist()
+    reason_index = {label: i for i, (_, _, label) in enumerate(SYNERGY_RULES)}
+    if len(reason_index) >= NEIGHBOURS_NO_REASON:
+        raise SystemExit(
+            f"{len(reason_index)} synergy reasons no longer fit in a uint8 slot "
+            f"(sentinel is {NEIGHBOURS_NO_REASON}). Widen the block or drop the sentinel."
+        )
 
     sim_idx = np.full((n, NEIGHBOURS_K_SIMILAR), NEIGHBOURS_NONE, dtype=np.uint16)
     sim_raw = np.zeros((n, NEIGHBOURS_K_SIMILAR), dtype=np.float32)
     syn_idx = np.full((n, NEIGHBOURS_K_SYNERGY), NEIGHBOURS_NONE, dtype=np.uint16)
+    syn_reason = np.full((n, NEIGHBOURS_K_SYNERGY), NEIGHBOURS_NO_REASON, dtype=np.uint8)
     obs_idx = np.full((n, NEIGHBOURS_K_OBSOLETE), NEIGHBOURS_NONE, dtype=np.uint16)
     counts = np.zeros((n, 3), dtype=np.uint8)
 
@@ -130,12 +139,19 @@ def build_tables(df, embeddings, synergy, obsolescence, name_index):
 
         name = names[row]
 
-        partners = synergy.get(name) or []
-        resolved = [name_index[p["partner"]] for p in partners
+        partners = [p for p in (synergy.get(name) or [])
                     if p.get("partner") in name_index]
+        resolved = [name_index[p["partner"]] for p in partners]
         slots, k = _pad(resolved, NEIGHBOURS_K_SYNERGY)
         syn_idx[row] = slots
         counts[row, 1] = k
+        # The FIRST reason only. A partner can match several rules, but an edge label
+        # gets one line — and the full list is still in synergy_graph.json for anything
+        # that wants it. Rules are in a fixed order, so "first" is deterministic.
+        for slot, p in enumerate(partners[:NEIGHBOURS_K_SYNERGY]):
+            labels = p.get("synergies") or []
+            if labels and labels[0] in reason_index:
+                syn_reason[row, slot] = reason_index[labels[0]]
 
         entry = obsolescence.get(name)
         better = entry.get("obsoleted_by", []) if entry else []
@@ -156,10 +172,11 @@ def build_tables(df, embeddings, synergy, obsolescence, name_index):
     hi = float(sim_raw.max())
     span = (hi - lo) or 1.0
     sim_val = np.round((sim_raw - lo) / span * 255).clip(0, 255).astype(np.uint8)
-    return sim_idx, sim_val, syn_idx, obs_idx, counts, lo, hi
+    return sim_idx, sim_val, syn_idx, syn_reason, obs_idx, counts, lo, hi
 
 
-def pack(n, digest, sim_idx, sim_val, syn_idx, obs_idx, counts, sim_lo, sim_hi):
+def pack(n, digest, sim_idx, sim_val, syn_idx, syn_reason, obs_idx, counts,
+         sim_lo, sim_hi):
     """Header, then every uint16 block, then every uint8 block. Little-endian.
 
     The ordering is load-bearing, not tidiness. A `Uint16Array` view on an odd byte
@@ -169,8 +186,10 @@ def pack(n, digest, sim_idx, sim_val, syn_idx, obs_idx, counts, sim_lo, sim_hi):
     would work today only because K_SIMILAR happens to be even; changing it to an
     odd number would break the file silently.
     """
+    vocab = json.dumps([label for _, _, label in SYNERGY_RULES],
+                       separators=(",", ":")).encode("utf-8")
     header = struct.pack(
-        "<4sIIHHHH32sff",
+        "<4sIIHHHH32sffI",
         NEIGHBOURS_MAGIC,
         NEIGHBOURS_FORMAT_VERSION,
         n,
@@ -181,6 +200,7 @@ def pack(n, digest, sim_idx, sim_val, syn_idx, obs_idx, counts, sim_lo, sim_hi):
         digest,
         sim_lo,
         sim_hi,
+        len(vocab),
     )
     header = header.ljust(NEIGHBOURS_HEADER_BYTES, b"\0")
     assert len(header) == NEIGHBOURS_HEADER_BYTES
@@ -191,7 +211,12 @@ def pack(n, digest, sim_idx, sim_val, syn_idx, obs_idx, counts, sim_lo, sim_hi):
         syn_idx.astype("<u2").tobytes(),
         obs_idx.astype("<u2").tobytes(),
         sim_val.astype(np.uint8).tobytes(),
+        syn_reason.astype(np.uint8).tobytes(),
         counts.tobytes(),
+        # The reason vocabulary rides along rather than becoming a third fetch. The
+        # header was already padded to 64 bytes, so its length fits in the spare four
+        # and the file stays self-describing.
+        vocab,
     ])
 
 
@@ -236,10 +261,15 @@ def main():
     print(f"  {VIZ_INDEX_PATH} — {VIZ_INDEX_PATH.stat().st_size / 1048576:.2f} MB")
 
     print("\nBuilding neighbour tables...")
-    tables = build_tables(df, embeddings, synergy, obsolescence, name_index)
-    counts = tables[4]
+    # Unpacked by name, not by index. This was `counts = tables[4]` with a `*tables`
+    # splat, so adding the reason block silently shifted `counts` onto `obs_idx` and the
+    # coverage report claimed 100% for every relation — wrong numbers, no error.
+    (sim_idx, sim_val, syn_idx, syn_reason, obs_idx, counts, sim_lo, sim_hi) = build_tables(
+        df, embeddings, synergy, obsolescence, name_index
+    )
 
-    blob = pack(len(df), embeddings_digest(ABILITY_EMBEDDINGS_PATH), *tables)
+    blob = pack(len(df), embeddings_digest(ABILITY_EMBEDDINGS_PATH),
+                sim_idx, sim_val, syn_idx, syn_reason, obs_idx, counts, sim_lo, sim_hi)
     NEIGHBOURS_BIN_PATH.write_bytes(blob)
     print(f"  {NEIGHBOURS_BIN_PATH} — {len(blob) / 1048576:.2f} MB")
 

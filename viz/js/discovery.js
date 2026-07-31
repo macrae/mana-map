@@ -60,6 +60,7 @@ window.Discovery = (function () {
     const ko = dv.getUint16(16, true);
     const lo = dv.getFloat32(52, true);
     const hi = dv.getFloat32(56, true);
+    const vocabLen = dv.getUint32(60, true);
 
     // Every Uint16Array view below is 2-aligned because the header is 64 bytes and the
     // uint16 blocks are contiguous after it. A misaligned view throws here, at load,
@@ -69,9 +70,15 @@ window.Discovery = (function () {
     const synIdx = new Uint16Array(buf, off, n * ky); off += n * ky * 2;
     const obsIdx = new Uint16Array(buf, off, n * ko); off += n * ko * 2;
     const simVal = new Uint8Array(buf, off, n * ks); off += n * ks;
-    const counts = new Uint8Array(buf, off, n * 3);
+    const synReason = new Uint8Array(buf, off, n * ky); off += n * ky;
+    const counts = new Uint8Array(buf, off, n * 3); off += n * 3;
+    // The reason codebook rides in the file rather than being a third fetch.
+    const reasons = vocabLen
+      ? JSON.parse(new TextDecoder().decode(new Uint8Array(buf, off, vocabLen)))
+      : [];
 
-    return { n, ks, ky, ko, lo, hi, simIdx, synIdx, obsIdx, simVal, counts, NONE: 0xFFFF };
+    return { n, ks, ky, ko, lo, hi, simIdx, synIdx, obsIdx, simVal, synReason, counts,
+             reasons, NONE: 0xFFFF, NO_REASON: 0xFF };
   }
 
   function loadNeighbours() {
@@ -105,7 +112,14 @@ window.Discovery = (function () {
       const base = row * table.ky;
       for (let i = 0; i < table.ky; i++) {
         const r = table.synIdx[base + i];
-        if (r !== table.NONE) out.push({ row: r, sim: 0.55, relation: 'synergy' });
+        if (r === table.NONE) continue;
+        // The reason is what makes a synergy edge worth drawing: it says WHY these two
+        // cards are connected, not merely that a rule fired. These strings were already
+        // being computed and thrown away — the old Find Synergies wrote them into a
+        // Plotly trace and then set hoverinfo:'none', so nobody ever saw one.
+        const code = table.synReason[base + i];
+        out.push({ row: r, sim: 0.55, relation: 'synergy',
+                   reason: code === table.NO_REASON ? null : (table.reasons[code] || null) });
       }
     } else if (relation === 'obsolete') {
       const base = row * table.ko;

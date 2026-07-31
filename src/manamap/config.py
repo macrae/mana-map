@@ -73,9 +73,15 @@ VIZ_INDEX_PATH = DATA_DIR / "viz_index.json"
 NEIGHBOURS_BIN_PATH = DATA_DIR / "neighbours.bin"
 
 NEIGHBOURS_MAGIC = b"MMNB"
-NEIGHBOURS_FORMAT_VERSION = 1
+# v2 adds the synergy reason block and an appended vocabulary. The 64-byte header
+# was already padded, so the vocabulary length fits in the spare 4 bytes and the
+# file stays a single self-describing fetch.
+NEIGHBOURS_FORMAT_VERSION = 2
 NEIGHBOURS_HEADER_BYTES = 64
 NEIGHBOURS_NONE = 0xFFFF  # slot sentinel; safe because 34,322 < 65,535
+# Reason slots are uint8, so this is the "no reason" sentinel. 24 rules today, and
+# the guard in build_tables fails loudly rather than wrapping if that ever passes 255.
+NEIGHBOURS_NO_REASON = 0xFF
 
 # How many of each relation to carry. Similar is the default click, so it gets the
 # most room. Synergy is 10 because that is exactly what the graph holds for every

@@ -23,7 +23,7 @@ a **deck builder** that produces the deck in the first place.
 [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-1,108 tests (1,038 fast + 70 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
+1,115 tests (1,042 fast + 73 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
 
 > ### ⚠ OPEN: 23 agent-cache routines are deliberately MISSed
 >

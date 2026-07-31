@@ -182,12 +182,12 @@ otherwise reuses the physics, drag-and-fling, hover popup and card detail. A sec
 simulation for the landing would have been the duplicate-k-NN mistake this codebase has
 already had to undo twice.
 
-**Boot: 2.26 MB, against 18.4 MB to reach a first branch before.**
+**Boot: 1.83 MB, against 18.4 MB to reach a first branch before.**
 
 | artifact | gzipped | needed for |
 |---|---|---|
 | `viz_index.json` | 0.56 MB | pick a card, filter, resolve a name |
-| `neighbours.bin` | 1.70 MB | branch — synchronously |
+| `neighbours.bin` | 1.27 MB | branch — synchronously, with reasons |
 | `projection_2d.json` | 2.90 MB | the atlas; upgrades card records behind the landing |
 | `embeddings_ability.bin` | 15.54 MB | **not fetched on the discovery path at all** |
 
@@ -197,6 +197,19 @@ and because it showed up as contention that made two browser tests pass alone an
 the full run. A **seeded** walk (deck or region) still awaits it: `linkWithinFromTable`
 only links cards whose precomputed top-12 are also in the set, which on a 97-card deck is
 38 links instead of ~290 — a visibly sparser graph, caught by the browser suite.
+
+**Synergy edges say why.** `neighbours.bin` v2 carries a uint8 reason code per synergy slot
+plus the 24-entry vocabulary appended after the data, so branching stays synchronous and the
+codebook never becomes a third fetch. Edges are inked by relation — deck gold, synergy violet,
+obsolescence red, similarity cool blue — and synergy edges are labelled with their reason
+("Sac + Death Trigger"), placed into the *same* collision set as node labels so a reason can
+never sit on a card name, capped at 8 and dropped entirely past 60 nodes.
+
+Those strings were already being computed and thrown away: the old Find Synergies wrote them
+into a Plotly trace and then set `hoverinfo: 'none'`.
+
+**When measuring label counts, wait for the layout to settle.** A cramped graph collides every
+label, so `Force.edgeLabelCount` mid-settle reads ~0 and looks exactly like a broken feature.
 
 **A click must survive a shaky hand.** `d3.drag`'s `clickDistance` defaults to **0**, so any
 pointer movement between mousedown and mouseup makes d3 install a capture-phase suppressor that

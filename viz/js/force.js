@@ -41,6 +41,11 @@
   const LABEL_MAX = 14;
   const LABEL_GAP = 6;
   let lastLabelCount = 0;   // exposed for the browser tests; canvas text is unassertable
+  let lastEdgeLabelCount = 0;
+  // Reason labels are only legible while the graph is small. Past this the edges are
+  // too short and too many, and naming them turns the canvas into texture.
+  const EDGE_LABEL_MAX_NODES = 60;
+  const EDGE_LABEL_MAX = 8;
 
   // Feel. These are the numbers that decide whether the graph has weight or just twitches.
   // velocityDecay is friction: d3's default 0.4 settles fast and dead, 0.22 keeps inertia
@@ -354,9 +359,18 @@
       const inDeck = l.source.deck && l.target.deck;
       const closeness = Math.max(0, 1 - l.d / 1.4);
       ctx.lineWidth = (inDeck ? 1.7 : 1) / transform.k;
-      ctx.strokeStyle = inDeck
-        ? 'rgba(196,167,71,' + (0.22 + closeness * 0.45).toFixed(3) + ')'
-        : 'rgba(122,138,196,' + (0.08 + closeness * 0.42).toFixed(3) + ')';
+      // Three relations, three inks: deck structure warm gold, synergy violet,
+      // similarity the default cool blue. Colour carries the relation so the reason
+      // labels below only have to carry the detail.
+      if (inDeck) {
+        ctx.strokeStyle = 'rgba(196,167,71,' + (0.22 + closeness * 0.45).toFixed(3) + ')';
+      } else if (l.rel === 'synergy') {
+        ctx.strokeStyle = 'rgba(168,120,214,0.55)';
+      } else if (l.rel === 'obsolete') {
+        ctx.strokeStyle = 'rgba(214,120,120,0.5)';
+      } else {
+        ctx.strokeStyle = 'rgba(122,138,196,' + (0.08 + closeness * 0.42).toFixed(3) + ')';
+      }
       ctx.beginPath();
       ctx.moveTo(l.source.x, l.source.y);
       ctx.lineTo(l.target.x, l.target.y);
@@ -443,6 +457,37 @@
     const placed = [];
     let drawn = 0;
     lastLabelCount = 0;
+
+    // Synergy edges say WHY. Placed first and into the same collision set as the node
+    // labels, so a reason can never sit on top of a card name — and dropped entirely
+    // once the graph is dense, because a wall of text is worse than no text.
+    lastEdgeLabelCount = 0;
+    if (nodes.length <= EDGE_LABEL_MAX_NODES) {
+      ctx.font = '10px system-ui, -apple-system, sans-serif';
+      for (const l of links) {
+        if (lastEdgeLabelCount >= EDGE_LABEL_MAX) break;
+        if (!l.reason) continue;
+        const a = transform.apply([l.source.x, l.source.y]);
+        const b = transform.apply([l.target.x, l.target.y]);
+        const mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2;
+        if (mx < 0 || mx > w || my < 0 || my > h) continue;
+        const tw = ctx.measureText(l.reason).width;
+        const box = { x0: mx - tw / 2 - 4, x1: mx + tw / 2 + 4, y0: my - 8, y1: my + 5 };
+        let clash = false;
+        for (const bb of placed) {
+          if (box.x0 < bb.x1 + LABEL_GAP && box.x1 > bb.x0 - LABEL_GAP &&
+              box.y0 < bb.y1 + LABEL_GAP && box.y1 > bb.y0 - LABEL_GAP) { clash = true; break; }
+        }
+        if (clash) continue;
+        placed.push(box);
+        lastEdgeLabelCount++;
+        ctx.fillStyle = 'rgba(22,33,62,0.82)';
+        ctx.fillRect(box.x0, box.y0, tw + 8, 13);
+        ctx.fillStyle = 'rgba(180,140,220,0.92)';
+        ctx.fillText(l.reason, mx, my + 2);
+      }
+      ctx.font = '12px system-ui, -apple-system, sans-serif';
+    }
     for (const n of priority) {
       if (drawn >= LABEL_MAX) break;
       const p = transform.apply([n.x, n.y]);
@@ -644,7 +689,8 @@
       const existing = byIdx.get(nb.row);
       if (!existing || existing === node) continue;
       if (hasLink(node, existing)) continue;
-      links.push({ source: node, target: existing, d: edgeLength(nb), rel: nb.relation });
+      links.push({ source: node, target: existing, d: edgeLength(nb), rel: nb.relation,
+                   reason: nb.reason || null });
       added++;
     }
 
@@ -667,7 +713,8 @@
       n.y = node.y + (Math.random() - 0.5) * 40;
       nodes.push(n);
       byIdx.set(nb.row, n);
-      links.push({ source: node, target: n, d: edgeLength(nb), rel: nb.relation });
+      links.push({ source: node, target: n, d: edgeLength(nb), rel: nb.relation,
+                   reason: nb.reason || null });
       grown++;
     }
 
@@ -977,6 +1024,7 @@
     // Canvas text cannot be queried, so the count of labels the last draw actually placed
     // is the only way a test can tell "a representative sample" from "one" or "all".
     get labelCount() { return lastLabelCount; },
+    get edgeLabelCount() { return lastEdgeLabelCount; },
     // For the browser tests: how the graph is split between what you loaded and what you
     // found, which is the thing the visual language is expressing.
     membership() {

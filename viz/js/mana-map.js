@@ -560,17 +560,6 @@
       html += '<div class="keyboard-hint">Shift+click to multi-select \u00b7 Esc clear \u00b7 / search</div>';
     }
 
-    // Ensure obsolescence data is loaded, then patch it in
-    if (!obsolescenceIndex) {
-      loadObsolescenceIndex().then(ok => {
-        if (ok && selectedCards.length > 0) {
-          const obsHtml = buildObsolescenceHtml(selectedCards[topCardIndex].data.n);
-          const placeholder = inner.querySelector('.obsolescence-placeholder');
-          if (placeholder && obsHtml) placeholder.outerHTML = obsHtml;
-        }
-      });
-    }
-
     inner.innerHTML = html;
     panel.classList.add('open');
     // Reveal whichever row is open, on every path that changes it — clicking a row,
@@ -1028,8 +1017,38 @@
     }
   }
 
+  // Fires the fetch itself and fills every placeholder on the page when it lands.
+  //
+  // The load used to be triggered in exactly one place — inside `updateViewerPanel` —
+  // and patched only that panel's open card. Every other renderer of card detail (the
+  // browse panel, The Walk, Discover) drew a placeholder that nothing ever filled, so
+  // "Obsoleted By" and its advantage badges were permanently invisible in three of the
+  // five places a card can appear.
+  let obsolescencePending = false;
+
+  function ensureObsolescenceIndex() {
+    if (obsolescenceIndex || obsolescencePending) return;
+    obsolescencePending = true;
+    loadObsolescenceIndex().then(function (ok) {
+      obsolescencePending = false;
+      if (ok) patchObsolescencePlaceholders();
+    });
+  }
+
+  function patchObsolescencePlaceholders() {
+    const slots = document.querySelectorAll('.obsolescence-placeholder[data-card]');
+    for (const el of slots) {
+      const html = buildObsolescenceHtml(el.getAttribute('data-card'));
+      el.outerHTML = html || '';
+    }
+  }
+
   function buildObsolescenceHtml(cardName) {
-    if (!obsolescenceIndex) return '<span class="obsolescence-placeholder"></span>';
+    if (!obsolescenceIndex) {
+      ensureObsolescenceIndex();
+      return '<span class="obsolescence-placeholder" data-card="'
+        + escHtml(cardName) + '"></span>';
+    }
     if (!obsolescenceIndex[cardName]) return '';
     const data = obsolescenceIndex[cardName];
     if (!data.obsoleted_by || data.obsoleted_by.length === 0) return '';

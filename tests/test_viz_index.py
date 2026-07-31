@@ -36,6 +36,7 @@ from manamap.config import (
     NEIGHBOURS_K_SYNERGY,
     NEIGHBOURS_MAGIC,
     NEIGHBOURS_NONE,
+    NEIGHBOURS_NO_REASON,
     OUTPUT_CSV_PATH,
     VIZ_INDEX_PATH,
 )
@@ -58,8 +59,8 @@ def decode(blob):
     """
     # unpack_from, not unpack: the fields occupy 60 bytes and the header is padded to
     # 64 so the uint16 blocks land aligned. `unpack` demands an exact-size buffer.
-    magic, version, n, ks, ky, ko, _, digest, lo, hi = struct.unpack_from(
-        "<4sIIHHHH32sff", blob, 0
+    magic, version, n, ks, ky, ko, _, digest, lo, hi, vocab_len = struct.unpack_from(
+        "<4sIIHHHH32sffI", blob, 0
     )
     assert magic == NEIGHBOURS_MAGIC
     off = NEIGHBOURS_HEADER_BYTES
@@ -73,11 +74,15 @@ def decode(blob):
     sim_idx, syn_idx, obs_idx = u16(ks), u16(ky), u16(ko)
     sim_val = np.frombuffer(blob, dtype=np.uint8, count=n * ks, offset=off).reshape(n, ks)
     off += n * ks
+    syn_reason = np.frombuffer(blob, dtype=np.uint8, count=n * ky, offset=off).reshape(n, ky)
+    off += n * ky
     counts = np.frombuffer(blob, dtype=np.uint8, count=n * 3, offset=off).reshape(n, 3)
+    off += n * 3
+    vocab = json.loads(blob[off:off + vocab_len].decode("utf-8"))
     return {
         "version": version, "n": n, "digest": digest, "lo": lo, "hi": hi,
         "sim_idx": sim_idx, "sim_val": sim_val, "syn_idx": syn_idx,
-        "obs_idx": obs_idx, "counts": counts,
+        "syn_reason": syn_reason, "obs_idx": obs_idx, "counts": counts, "vocab": vocab,
     }
 
 
@@ -248,3 +253,64 @@ def test_boot_payload_stays_small():
         for p in (VIZ_INDEX_PATH, NEIGHBOURS_BIN_PATH)
     )
     assert total < 3 * 1024 * 1024, f"boot payload grew to {total / 1048576:.2f} MB gzipped"
+
+
+# ── synergy reasons ─────────────────────────────────────────────────────
+
+
+def test_the_reason_vocabulary_travels_with_the_file(table):
+    """A code is useless without the codebook, and a third fetch would be friction —
+    so the vocabulary rides in the file's spare header bytes."""
+    from manamap.config import SYNERGY_RULES
+
+    assert table["vocab"] == [label for _, _, label in SYNERGY_RULES]
+    assert len(table["vocab"]) < NEIGHBOURS_NO_REASON, "reasons no longer fit a uint8"
+
+
+def test_every_synergy_slot_carries_a_reason(table):
+    """A filled synergy slot without a reason would be an edge the graph cannot
+    explain, which is the entire point of the block."""
+    filled = table["syn_idx"] != NEIGHBOURS_NONE
+    reasons = table["syn_reason"][filled]
+    assert len(reasons) > 100000, "suspiciously few synergy slots to check"
+    assert (reasons != NEIGHBOURS_NO_REASON).all(), (
+        f"{(reasons == NEIGHBOURS_NO_REASON).sum()} synergy partners have no reason"
+    )
+    assert reasons.max() < len(table["vocab"]), "a reason code points outside the vocabulary"
+
+
+def test_empty_synergy_slots_have_no_reason(table):
+    """The sentinel has to mean what it says, or a reader will label a phantom edge."""
+    empty = table["syn_idx"] == NEIGHBOURS_NONE
+    assert (table["syn_reason"][empty] == NEIGHBOURS_NO_REASON).all()
+
+
+@requires_data
+def test_reasons_match_the_synergy_graph(table):
+    """Round-trip against the source. The block stores the FIRST reason per partner;
+    anything else means the packing drifted from the graph it was built from."""
+    import json as _json
+
+    import pandas as pd
+
+    from manamap.config import OUTPUT_CSV_PATH, SYNERGY_GRAPH_PATH
+
+    names = pd.read_csv(OUTPUT_CSV_PATH, low_memory=False)["name"].tolist()
+    with open(SYNERGY_GRAPH_PATH, encoding="utf-8") as fh:
+        graph = _json.load(fh)
+    name_row = {}
+    for row, name in enumerate(names):
+        name_row.setdefault(name, row)
+
+    checked = 0
+    for row, name in enumerate(names[:4000]):
+        entries = [p for p in (graph.get(name) or []) if p["partner"] in name_row]
+        for slot, entry in enumerate(entries[:table["syn_idx"].shape[1]]):
+            assert table["syn_idx"][row, slot] == name_row[entry["partner"]]
+            labels = entry.get("synergies") or []
+            if not labels:
+                continue
+            got = table["vocab"][table["syn_reason"][row, slot]]
+            assert got == labels[0], f"{name} -> {entry['partner']}: {got!r} vs {labels[0]!r}"
+            checked += 1
+    assert checked > 500, f"only {checked} reasons verified"
