@@ -15,6 +15,12 @@
   // 11–16px text, so this is roughly "on the word or just beside it".
   const REGION_CLICK_RADIUS_PX = 44;
 
+  // Phase 2 of the migration: ?renderer=canvas draws the map with viz/js/render/canvas.js
+  // instead of Plotly. Both paths are live so they can be compared on identical data —
+  // the layer format IS the trace format, so render() builds one structure either way.
+  const USE_CANVAS = new URLSearchParams(window.location.search).get('renderer') === 'canvas';
+  let mapCanvas = null;
+
   let allData = [];
   let activeSupertypes = new Set(SUPERTYPES);
   let currentColorBy = 'color';
@@ -1251,6 +1257,11 @@
   let _labelUpdateInFlight = false;
   function refreshLabelsOnZoom() {
     if (_labelUpdateInFlight) return;
+    if (USE_CANVAS) {
+      // Region labels become DOM in Phase 3. Until then the canvas path simply has none,
+      // which is visible and honest rather than a half-drawn annotation layer.
+      return;
+    }
     const plotEl = document.getElementById('plot');
     if (!plotEl || !plotEl._fullLayout) return;
     const xRange = plotEl._fullLayout.xaxis.range;
@@ -1780,7 +1791,10 @@
     let visibleSpan = 70; // default: full extent, shows L0 labels
     let keepX = null;
     let keepY = null;
-    if (plotInitialized && plotEl && plotEl._fullLayout) {
+    if (USE_CANVAS && mapCanvas) {
+      const cam = mapCanvas.getCamera();
+      if (cam) visibleSpan = Math.abs(cam.x[1] - cam.x[0]);
+    } else if (plotInitialized && plotEl && plotEl._fullLayout) {
       const xr = plotEl._fullLayout.xaxis.range;
       const yr = plotEl._fullLayout.yaxis.range;
       visibleSpan = Math.abs(xr[1] - xr[0]);
@@ -1805,6 +1819,32 @@
     };
 
     const config = { scrollZoom: true, displayModeBar: false, responsive: true };
+
+    if (USE_CANVAS) {
+      if (!mapCanvas) {
+        mapCanvas = window.MapCanvas.create().init(document.getElementById('plot'));
+        mapCanvas.on('click', function (ev) {
+          if (ev.shiftKey) {
+            const at = selectedCards.findIndex(c => c.idx === ev.row);
+            if (at !== -1) removeFromSelection(ev.row); else addToSelection(ev.row);
+          } else {
+            clearSelection();
+            addToSelection(ev.row);
+          }
+        });
+        mapCanvas.on('hover', function (ev) { showCardPopup(ev.row, ev.clientX, ev.clientY); });
+        mapCanvas.on('unhover', hideCardPopup);
+        // The label crossfade keys on the visible span, exactly as it did off
+        // `_fullLayout.xaxis.range` — getCamera() reports in data units for that reason.
+        mapCanvas.on('camera', function () {
+          clearTimeout(regionDebounceTimer);
+          regionDebounceTimer = setTimeout(refreshLabelsOnZoom, 150);
+        });
+        plotInitialized = true;
+      }
+      mapCanvas.setLayers(allTraces);
+      return;
+    }
 
     if (!plotInitialized) {
       Plotly.newPlot('plot', allTraces, layout, config);
@@ -1929,6 +1969,7 @@
           clearTimeout(resizeDebounce);
           resizeDebounce = setTimeout(function () {
             const el = document.getElementById('plot');
+            if (USE_CANVAS) { if (mapCanvas) mapCanvas.resize(); return; }
             if (el._fullLayout && Math.abs(el._fullLayout.width - el.getBoundingClientRect().width) > 1) {
               Plotly.Plots.resize('plot');
             }
@@ -1972,6 +2013,10 @@
     cycleNext: () => cycleSelection(1),
     enterBrowse,
     enterNeighbourhood,
+    // The active canvas renderer, or null under Plotly. Phase 3 needs `dataToPixel` to
+    // place region labels as DOM; the browser tests need it to aim a click at a card
+    // rather than at a guessed pixel.
+    get mapRenderer() { return mapCanvas; },
     nearestTo,
     buildCardDetailHtml,
     showCardPopup,

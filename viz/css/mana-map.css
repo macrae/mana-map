@@ -496,3 +496,12 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 /* A toolbar button that would do nothing, saying so. Not `disabled` — the click still
  * lands and explains itself in the status line, which beats a dead control. */
 .toggle-btn.is-disabled { opacity: 0.4; border-color: #2a2a4a; cursor: not-allowed; }
+
+/* ── The canvas renderer (?renderer=canvas) ───────────────────────────────
+ * Sized by CSS, percentages not inset — a <canvas> is a replaced element, so
+ * `width: auto` makes it take its backing-store size and inset:0 cannot stretch
+ * it. Same trap as .force-canvas; same fix.
+ */
+.map-canvas { position: absolute; inset: 0; width: 100%; height: 100%;
+  display: block; cursor: grab; }
+.map-canvas:active { cursor: grabbing; }

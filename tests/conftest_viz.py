@@ -72,6 +72,36 @@ def browser():
             browser.close()
 
 
+def _boot(browser, viz_server, query=""):
+    page = browser.new_page(viewport={"width": 1440, "height": 900})
+    errors: list[str] = []
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+    page.goto(f"{viz_server}/viz/index.html{query}")
+    page.add_style_tag(content="*, *::before, *::after {"
+                               " transition: none !important; animation: none !important; }")
+    page.wait_for_function("() => window.MM && MM.allData && MM.allData.length > 0",
+                           timeout=BOOT_TIMEOUT_MS)
+    page.js_errors = errors
+    return page
+
+
+@pytest.fixture
+def canvas_page(browser, viz_server):
+    """The map under the canvas renderer (Phase 2 of the Plotly migration).
+
+    Same page, same code, `?renderer=canvas` — which is the point of the strangler: both
+    renderers are live at once so they can be compared on identical data.
+    """
+    page = _boot(browser, viz_server, "?renderer=canvas")
+    page.wait_for_function("() => !!document.querySelector('.map-canvas')",
+                           timeout=BOOT_TIMEOUT_MS)
+    try:
+        yield page
+    finally:
+        page.close()
+
+
 @pytest.fixture
 def page(browser, viz_server):
     """A booted map page.

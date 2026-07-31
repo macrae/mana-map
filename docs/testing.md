@@ -1,12 +1,12 @@
 # Testing
 
 ```bash
-.venv/bin/python -m pytest              # everything (1,007, ~4.5 min)
+.venv/bin/python -m pytest              # everything (1,012, ~4.5 min)
 .venv/bin/python -m pytest -m "not browser"   # fast suite (978, ~68 s)
-.venv/bin/python -m pytest -m browser         # the 29 browser tests (~190 s)
+.venv/bin/python -m pytest -m browser         # the 34 browser tests (~200 s)
 ```
 
-1,007 tests in `tests/`: 377 card-pipeline + 601 pilot-subsystem + **29 browser**.
+1,012 tests in `tests/`: 377 card-pipeline + 601 pilot-subsystem + **34 browser**.
 
 ## Source assertions do not catch regressions
 
@@ -42,7 +42,7 @@ matched literal indentation and broke the moment the key handler was rewritten t
 gate — while the invariant it cared about was untouched. It now asserts the delegation
 (`cycleSelection` is called; the handler does not recompute an index) rather than the text.
 
-### Browser tests (29) — `tests/test_viz_behaviour.py`
+### Browser tests (34) — `tests/test_viz_behaviour.py`
 
 Fixtures in `tests/conftest_viz.py` (deliberately not `conftest.py`, so the other 978 never
 import playwright): an ephemeral `http.server` rooted at the repo — `viz/` and `data/` must

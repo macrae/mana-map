@@ -169,6 +169,44 @@ nothing.
 `tests/test_viz_drill.py` covers the contract, the suppressions, the local-position
 lookup, the announced truncation, and the hidden-tab fallback.
 
+## The canvas renderer (`?renderer=canvas`) — Phase 2 of the migration
+
+`viz/js/render/canvas.js` draws the map instead of Plotly. Both renderers are live at once:
+`?renderer=canvas` switches, so they can be compared on identical data. The Walk proved the
+machinery on 500 nodes; this points it at 34,322.
+
+**The layer format IS the trace format.** A layer is a Plotly-shaped
+`{x, y, customdata, name, visible, mode, marker: {size, color, opacity, symbol, line}}`, so
+`render()` builds one structure and hands it to whichever renderer is active. No adapter to
+write now and delete later, and no second definition of what a layer is.
+
+Measured on this data *before* it was written, because the decision rested on the numbers:
+
+| | Plotly | canvas |
+|---|---|---|
+| `render()` | ~30 ms | **15 ms** |
+| Box-select (22,161 caught) | **138 ms** per mousemove | **4.5 ms** |
+| Hover pick | — | **~0 ms** |
+| Draw 34,322 points | — | 7.8 ms batched · 16.9 ms per-point |
+| Quadtree build | — | 23.5 ms, cached across renders |
+
+Two decisions worth keeping:
+
+- **Batch one path per colour.** 7.8 ms versus 16.9 ms issuing a fill per point — 128 fps
+  against 59. The map already groups by colour/supertype/rarity, so the grouping is free.
+- **`setLayers` draws synchronously; only pan/zoom coalesces through rAF.** A filter toggle
+  is a discrete state change and the caller wants it now — and rAF does not fire in a hidden
+  tab, so an rAF-only draw leaves the canvas blank until focus and leaves the browser tests
+  unable to see anything.
+- **The quadtree is cached** on a signature of the pickable layers. Rebuilding is 23.5 ms and
+  `setLayers` runs on every filter and keystroke, most of which do not change the point set.
+  Without the cache `render()` was 38 ms — slower than Plotly.
+
+**Not yet on canvas, and deliberately loud about it:** contours (`histogram2dcontour` →
+`d3-contour`), region labels (→ DOM), the legend, and box-select. `setLayers` warns to the
+console rather than silently mis-drawing, and `refreshLabelsOnZoom` returns early rather
+than half-drawing an annotation layer. Those are Phase 3.
+
 ## Render cost — the rules that keep it snappy
 
 The map draws 34,322 WebGL points. Four rules, each of which was violated and measured:

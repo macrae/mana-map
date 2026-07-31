@@ -21,7 +21,9 @@ from __future__ import annotations
 
 import pytest
 
-from conftest_viz import BOOT_TIMEOUT_MS, browser, page, viz_server  # noqa: F401
+from conftest_viz import (  # noqa: F401
+    BOOT_TIMEOUT_MS, browser, canvas_page, page, viz_server,
+)
 
 pytestmark = pytest.mark.browser
 
@@ -818,3 +820,90 @@ def test_capping_samples_evenly_rather_than_taking_a_prefix(page):
     assert r["isNotAPrefix"], "capping still takes a prefix"
     assert r["spansTheSet"], "the sample does not reach the end of the set"
     assert r["small"] == [1, 2, 3], "a set under the cap must pass through untouched"
+
+
+# ── The canvas renderer (?renderer=canvas) ──────────────────────────────
+#
+# Phase 2 of the Plotly migration. Both renderers are live at once so they can be compared
+# on identical data; these assert the canvas path draws, picks and stays within budget.
+
+
+def _ink(page):
+    """Percentage of sampled pixels that are not transparent — "did anything draw"."""
+    return page.evaluate("""() => {
+        const c = document.querySelector('.map-canvas');
+        const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+        let lit = 0, n = 0;
+        for (let i = 3; i < d.length; i += 4 * 30) { n++; if (d[i] > 10) lit++; }
+        return 100 * lit / n;
+    }""")
+
+
+def test_canvas_renderer_draws_the_map_without_plotly(canvas_page):
+    r = canvas_page.evaluate("""() => ({
+        canvas: !!document.querySelector('.map-canvas'),
+        plotlyDrew: !!document.querySelector('#plot .plot-container'),
+        cards: MM.allData.length,
+    })""")
+    assert canvas_page.js_errors == [], f"canvas renderer threw: {canvas_page.js_errors}"
+    assert r["canvas"] and not r["plotlyDrew"], "Plotly still drew under ?renderer=canvas"
+    assert r["cards"] == 34322
+    assert _ink(canvas_page) > 0.5, "the canvas is blank"
+
+
+def test_canvas_redraws_when_the_filter_changes(canvas_page):
+    """setLayers draws synchronously rather than through rAF — a filter is a discrete
+    state change, and rAF does not fire in a hidden tab at all."""
+    before = _ink(canvas_page)
+    canvas_page.evaluate("document.querySelectorAll('#toggles button')[0].click()")
+    canvas_page.wait_for_timeout(900)
+    after = _ink(canvas_page)
+    status = canvas_page.evaluate("document.getElementById('status').textContent")
+    assert canvas_page.js_errors == []
+    assert after < before, "turning off Creatures did not remove ink"
+    assert "15," in status or "cards shown" in status
+
+
+def test_canvas_click_selects_the_card_under_the_pointer(canvas_page):
+    r = canvas_page.evaluate("""async () => {
+        const c = document.querySelector('.map-canvas');
+        const rect = c.getBoundingClientRect();
+        // Aim at a real card via the renderer's own projection. Guessing a pixel depends
+        // on the viewport size and lands on empty space as often as not.
+        const i = MM.allData.findIndex(d => d.n === 'Sol Ring');
+        const p = MM.mapRenderer.dataToPixel(MM.allData[i].x, MM.allData[i].y);
+        c.dispatchEvent(new MouseEvent('click',
+            {bubbles: true, clientX: rect.left + p[0], clientY: rect.top + p[1]}));
+        await new Promise(r => setTimeout(r, 800));
+        const rows = MM.selectedRows();
+        return {n: rows.length, name: rows.length ? MM.allData[rows[0]].n : null,
+                aimedAt: MM.allData[i].n};
+    }""")
+    assert canvas_page.js_errors == []
+    assert r["n"] == 1, "a click on the canvas selected nothing"
+    # Not necessarily the card aimed at: the quadtree returns the nearest within the pick
+    # radius, and the map is dense. What must hold is that a click resolves to a real card.
+    assert r["name"], "selected a row with no card behind it"
+
+
+def test_canvas_render_beats_the_plotly_budget(canvas_page):
+    """Plotly's render measured ~30 ms on this data. The canvas path must not be slower —
+    the quadtree is cached across renders because rebuilding it is 23.5 ms and setLayers
+    runs on every filter and keystroke."""
+    ms = canvas_page.evaluate("""() => {
+        const t = [];
+        for (let i = 0; i < 9; i++) { const a = performance.now(); MM.render(); t.push(performance.now() - a); }
+        t.sort((x, y) => x - y);
+        return t[4];
+    }""")
+    assert canvas_page.js_errors == []
+    assert ms < 30, f"canvas render {ms:.0f}ms — no faster than Plotly"
+
+
+def test_both_renderers_agree_on_the_data(page, canvas_page):
+    """The A/B the strangler exists for: same cards, same filtered counts, either path."""
+    a = page.evaluate("({cards: MM.allData.length, "
+                      "shown: MM.allData.filter(d => MM.passesFilters(d)).length})")
+    b = canvas_page.evaluate("({cards: MM.allData.length, "
+                             "shown: MM.allData.filter(d => MM.passesFilters(d)).length})")
+    assert a == b, f"renderers disagree: plotly={a} canvas={b}"
