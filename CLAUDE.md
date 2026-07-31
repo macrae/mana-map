@@ -30,7 +30,7 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #   validate_issue.py / agent_cache.py / artist_credits.py
                       #   validate_considering.py / validate_tutor_guide.py
                       #   impact.py / card_refs.py  incremental regeneration
-tests/                # pytest suite (1,055: 1,016 fast + 39 browser). Markers in
+tests/                # pytest suite (1,069: 1,030 fast + 39 browser). Markers in
                       # conftest.py: requires_data/rules/deck/strategy/roles;
                       # `-m browser` needs playwright + chromium
 data/                 # artifacts; mostly gitignored, viz-served files tracked
@@ -55,15 +55,15 @@ docs/                 # reference docs (see Pointers below)
 ## Commands
 
 ```bash
-manamap run                   # full 14-step pipeline (steps 1 & 7 need internet)
+manamap run                   # full 15-step pipeline (steps 1 & 7 need internet)
 manamap run --from STEP       # resume from a step
-manamap <step>                # single step; see `manamap --help` for all 17 subcommands
+manamap <step>                # single step; see `manamap --help` for all 18 subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # fast analysis-only refresh (no retrain)
 manamap pilot <cmd>           # build + publish subsystem (33 subcommands) — see docs/pilot.md
 
-.venv/bin/python -m pytest    # 1,055; data-dependent ones skip if artifacts missing
-.venv/bin/python -m pytest -m "not browser"   # 1,016, skips the browser suite (~70s)
+.venv/bin/python -m pytest    # 1,069; data-dependent ones skip if artifacts missing
+.venv/bin/python -m pytest -m "not browser"   # 1,030, skips the browser suite (~70s)
 
 python -m http.server 8000    # serve viz FROM REPO ROOT
 # http://localhost:8000/viz/index.html          the card map
@@ -72,7 +72,7 @@ python -m http.server 8000    # serve viz FROM REPO ROOT
 
 ## Gotchas
 
-- **Frozen config**: changing `MECHANICAL_TAGS` (or any model-facing dim in `config.py`) invalidates `model_ability.pt` — retrain steps 3–5. Don't touch config values in refactors. `ROLE_PATTERNS` is a **separate** dict for exactly this reason: roles change often, tags must not. Editing roles needs only `manamap card-roles` (step 13).
+- **Frozen config**: changing `MECHANICAL_TAGS` (or any model-facing dim in `config.py`) invalidates `model_ability.pt` — retrain steps 3–5. Don't touch config values in refactors. `ROLE_PATTERNS` is a **separate** dict for exactly this reason: roles change often, tags must not. Editing roles needs only `manamap card-roles` (step 13) — then `manamap viz-index` (14), which bakes role tags into `viz_index.json`.
 - **Roles ≠ mechanical tags**: `MECHANICAL_TAGS` is a retrieval vocabulary ("what is this card like"); `ROLE_PATTERNS` answers "what job does it do in a 99". One `ramp` tag versus five `ramp:rock|dork|land|ritual|cost-reduction` roles is the canonical difference — a curve model that conflates a Signet with a Dark Ritual is wrong.
 - **Index alignment**: `projection[i]` == `cards.csv[i]` == `embeddings[i]`. Never partially regenerate after the card count changes; re-run from the changed step onward.
 - **No Git LFS on `data/`**: GitHub Pages serves LFS pointers, which would break the deployed viz. Large tracked JSON/bin files are intentional.
@@ -86,7 +86,8 @@ python -m http.server 8000    # serve viz FROM REPO ROOT
 - Paths in `config.py` are `__file__`-anchored (CWD-independent); override with `MANAMAP_DATA_DIR` / `MANAMAP_VIZ_DIR`.
 - **Two embedding spaces, two different jobs.** `embeddings.npy` is the **layout** space (colour/type) and feeds `projection_2d.json` *only* — its near-zero triplet loss is fine for a task whose whole content is "same colour, same type". `embeddings_ability.npy` is the **function** space and is the sole source of similarity: Find Similar, the walk and drill all read it regardless of which map is displayed (`SIMILARITY_EMBEDDINGS` in `viz/js/mana-map.js`). They used to follow the displayed map, which is why Doubling Season's neighbours were arbitrary green enchantments.
 - **The function model was rebuilt after measuring a collapse**: it had been using 5.97 of its 128 dimensions and losing to the frozen MiniLM text it was built from. Now 27.87 effective dims, recall@10 0.093 → 0.245, median rank 995 → 78. Three changes: in-batch InfoNCE instead of a triplet margin (a margin stops teaching once satisfied), positives from `card_roles.json` rarest-role-first (the old ≥2-shared-tags rule fell back to random for most of the corpus, and `ROLE_BODY_FALLBACK` is excluded because it labels all 19,050 creatures), and a fixed-weight text passthrough making similarity exactly `0.7·cos_learned + 0.3·cos_text` so the model **cannot** discard the text as it did before.
-- **`manamap eval-embeddings` (step 14) is how you know.** It scores every embedding artifact against `data/eval/similarity_golden.json` — hand-authored, and it must **stay** hand-authored: training mines positives from tags/roles, so an eval derived from those would only measure whether training memorised its own supervision. Quote the **test** split; `dev` was used while diagnosing. **Do not tune hyperparameters on it** — sweeping the text weight looked like a win (0.258 recall@10) until selecting on `dev` picked a different value and the splits disagreed; at ~50 dev / ~160 test queries those differences are noise. `tests/test_embedding_quality.py` holds regression floors plus one still-failing `xfail(strict=True)` gate (neighbour spread 0.0315 vs a 0.05 target) whose threshold was deliberately not lowered to match the result.
+- **`neighbours.bin` is pre-sorted and must never be re-sorted client-side.** It carries 12 similar + 10 synergy + 5 obsoleted-by row ids per card so the browser can branch *synchronously* — no await mid-gesture, and without the 16.8 MB embedding matrix (2.4 MB gzipped for the whole discovery boot, against 18.4 MB before). Its similarities are uint8-quantised **for edge length only**; ordering is the array order. Re-sorting by a lossy value changes the top-10 for ~two thirds of cards, because the space is a narrow cone (median pairwise cosine 0.714) — it would read as a model regression rather than a precision bug. The header carries a sha256 of the embeddings it was built from and `tests/test_viz_index.py` fails if they diverge, because a stale table parses fine and answers confidently.
+- **`manamap eval-embeddings` (step 15) is how you know.** It scores every embedding artifact against `data/eval/similarity_golden.json` — hand-authored, and it must **stay** hand-authored: training mines positives from tags/roles, so an eval derived from those would only measure whether training memorised its own supervision. Quote the **test** split; `dev` was used while diagnosing. **Do not tune hyperparameters on it** — sweeping the text weight looked like a win (0.258 recall@10) until selecting on `dev` picked a different value and the splits disagreed; at ~50 dev / ~160 test queries those differences are noise. `tests/test_embedding_quality.py` holds regression floors plus one still-failing `xfail(strict=True)` gate (neighbour spread 0.0315 vs a 0.05 target) whose threshold was deliberately not lowered to match the result.
 - **⚠ 23 cache routines are MISSed right now, on purpose.** The embedding rebuild regenerated `synergy_graph.json` + `obsolescence_index.json`, so `writer-prose`, `the-ten` and `issue-plan` are stale on all seven decks (hapatra also has `candidate-pool` and `deck-build`). Re-spawning all of them is ~2.46M tokens, so it was left as a deliberate human decision — **do not `cache-record` these to make the board green**, and do not treat a MISS here as a bug. The record is a claim that someone read the artifact and agreed it still holds. Full breakdown and the re-bless-vs-re-spawn call: `PLAN.md`.
 - **Agent cache**: subagent spawns are the only LLM cost (there are no LLM calls in Python). Always `cache-status` before spawning, `cache-record` **after** validating. Editing a `.claude/agents/*.md` prompt invalidates that agent's routines by design; `build-manual` is deliberately uncached. Costs and per-routine sizing: `docs/agent-cost.md`.
 - **Strategy DB staleness**: any edit to `data/strategy/strategy.md` requires `manamap pilot build-strategy-db` — `load_strategy_db` hard-errors on a sha256 mismatch. Doc + CHANGELOG are tracked; the derived index/embeddings are gitignored.
@@ -105,7 +106,7 @@ python -m http.server 8000    # serve viz FROM REPO ROOT
 ## Pointers
 
 - `docs/architecture.md` — models, training mining, mechanical tags, deckbuilding roles, synergy rules, power-creep criteria, region clustering
-- `docs/pipeline.md` — all 14 steps: commands, inputs/outputs, runtimes, when to re-run what
+- `docs/pipeline.md` — all 15 steps: commands, inputs/outputs, runtimes, when to re-run what
 - `docs/deck-builder-v2.md` — the deck builder's design record: bracket engine, role taxonomy, the architect ⇄ critic loop, and where the implementation departed from the design
 - `docs/data-artifacts.md` — every `data/` file: producer, size, git status, consumers
 - `docs/viz.md` — frontend structure, `window.MM` API, DATA map, the deck dossier, Pages deployment

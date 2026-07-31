@@ -23,7 +23,7 @@ a **deck builder** that produces the deck in the first place.
 [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-1,055 tests (1,016 fast + 39 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
+1,069 tests (1,030 fast + 39 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
 
 > ### ⚠ OPEN: 23 agent-cache routines are deliberately MISSed
 >
@@ -301,6 +301,48 @@ threshold to match the result. Hard-negative mining was scoped out of this pass 
 (random in-batch negatives are safe here — 0.004% false-negative rate — but mined ones need a
 similarity ceiling, since 39% of cards have a text neighbour above 0.75), and is the obvious
 next lever.
+
+## In progress — ManaMap as an experience (discovery-first)
+
+The product is being reframed from the builder's view to the user's: land on **one card**, hover
+to see it, click to open it and reveal its neighbours, keep clicking to grow a graph. The 34K
+scatter survives as a mode you go to, not the thing you arrive at.
+
+The useful surprise: **~70% already exists** inside The Walk (`viz/js/force.js`) — physics,
+drag-and-fling, hover popup, click-to-branch at 6 neighbours, cumulative growth, card detail,
+no persistence. This is mostly a front door, not a rebuild.
+
+**Slice 1 — shipped.** The two artifacts discovery runs on, zero UI:
+
+| | raw | gzipped |
+|---|---|---|
+| `viz_index.json` | 3.4 MB | 0.56 MB |
+| `neighbours.bin` | 2.3 MB | 1.70 MB |
+| **boot total** | | **2.26 MB** |
+| *(today: projection + embeddings before first branch)* | | *18.4 MB* |
+
+`neighbours.bin` carries 12 similar + 10 synergy + 5 obsoleted-by row ids per card, so branching
+is **synchronous** — no await inside the gesture, and the 16.8 MB embedding matrix stops being a
+gate on the first click a new visitor makes. `manamap viz-index` is step 14; step 15 is the
+quality reporter.
+
+**Slice 2 — next.** `Discovery.enter(row)`, `allData`-free node construction, card art instead of
+a 6 px dot, synchronous branching, `?card=` deep link, weighted random pick. Three existing Walk
+defects must be fixed for it to work at all — see the plan file.
+
+**Three findings that changed the requirements:**
+
+- **"Anti-cards" cannot exist.** Across 4.5M pairs, zero are below cosine 0 (min +0.344, median
+  +0.714). The space is a narrow positive cone, so "orthogonal" is not a place — the furthest
+  card from Doubling Season is a fetchland. The complementary relation the vision wants is the
+  rule-based synergy graph, not embedding distance.
+- **Three live relation lookups would have made the product 5× heavier**, not lighter (~48 MB of
+  lazy fetches with an await per click). Hence the precomputed table.
+- **Relation coverage is uneven and the UI has to say so:** similar 100%, synergy 76.1%,
+  obsolescence 22.5%, and **23.6% of cards have nothing but similar**. Synergy is also exactly 10
+  partners for every card that has any — a capped rule-based list, not a ranking.
+
+Full record: `/Users/michellemacrae/.claude/plans/wondrous-gliding-hoare.md`.
 
 ## Future — what is not started
 

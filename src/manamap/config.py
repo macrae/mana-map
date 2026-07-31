@@ -64,6 +64,27 @@ EMBEDDINGS_PATH = DATA_DIR / "embeddings.npy"
 CARD_METADATA_PATH = DATA_DIR / "card_metadata.csv"
 PROJECTION_PATH = DATA_DIR / "projection_2d.json"
 
+# ── Discovery artifacts (the front door) ──────────────────────────────────
+# Two small files that let the browser land on a card and branch from it without
+# fetching the 12.9 MB projection or the 16.8 MB embedding matrix. Both are
+# positionally aligned with cards.csv and belong to the same index invariant:
+# regenerate them with the pipeline, never on their own.
+VIZ_INDEX_PATH = DATA_DIR / "viz_index.json"
+NEIGHBOURS_BIN_PATH = DATA_DIR / "neighbours.bin"
+
+NEIGHBOURS_MAGIC = b"MMNB"
+NEIGHBOURS_FORMAT_VERSION = 1
+NEIGHBOURS_HEADER_BYTES = 64
+NEIGHBOURS_NONE = 0xFFFF  # slot sentinel; safe because 34,322 < 65,535
+
+# How many of each relation to carry. Similar is the default click, so it gets the
+# most room. Synergy is 10 because that is exactly what the graph holds for every
+# card that has any (min = median = max = 10) — truncating would drop real entries
+# for no saving. Obsolescence tops out at 5.
+NEIGHBOURS_K_SIMILAR = 12
+NEIGHBOURS_K_SYNERGY = 10
+NEIGHBOURS_K_OBSOLETE = 5
+
 # ── Embedding Quality Evaluation ──────────────────────────────────────────
 # The golden set is hand-authored and must stay independent of every training
 # signal — see the _comment block inside the file itself.

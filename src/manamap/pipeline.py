@@ -23,10 +23,13 @@ STEPS = [
     ("power-creep", "manamap.analysis.power_creep", "Step 11: Build obsolescence index"),
     ("cluster-regions", "manamap.analysis.cluster_regions", "Step 12: Cluster + name map regions"),
     ("card-roles", "manamap.analysis.card_roles", "Step 13: Classify deckbuilding roles"),
+    # Depends on embeddings, synergy, obsolescence AND card-roles, so it has to come
+    # after all of them — it is the last producer in the chain.
+    ("viz-index", "manamap.export.viz_index", "Step 14: Discovery index + neighbour tables"),
     # The only step that writes no artifact — it reports embedding quality against a
     # hand-authored golden set. Last so a full run ends by saying whether the thing it
     # just spent an hour training actually represents similarity.
-    ("eval-embeddings", "manamap.analysis.eval_embeddings", "Step 14: Report embedding quality"),
+    ("eval-embeddings", "manamap.analysis.eval_embeddings", "Step 15: Report embedding quality"),
 ]
 
 STEP_NAMES = [name for name, _, _ in STEPS]

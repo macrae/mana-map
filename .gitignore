@@ -10,6 +10,13 @@ data/*
 !data/obsolescence_index.json
 !data/regions_default.json
 !data/regions_ability.json
+# The discovery front door: viz_index.json + neighbours.bin are what let the browser
+# land on a card and branch from it without the 12.9 MB projection or the 16.8 MB
+# embedding matrix. Served by Pages, so they must be tracked like every other viz
+# artifact — and they belong to the index invariant, so they regenerate with the
+# pipeline, never on their own.
+!data/viz_index.json
+!data/neighbours.bin
 __pycache__/
 *.pyc
 *.egg-info/

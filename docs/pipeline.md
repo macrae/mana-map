@@ -18,7 +18,8 @@ Thirteen steps orchestrated by `src/manamap/pipeline.py`. Run everything with `m
 | 11 | `power-creep` | `analysis/power_creep.py` | Strictly-better replacement index | `data/obsolescence_index.json` |
 | 12 | `cluster-regions` | `analysis/cluster_regions.py` | HDBSCAN named regions, both maps, 2 zoom levels | `data/regions_default.json`, `data/regions_ability.json` |
 | 13 | `card-roles` | `analysis/card_roles.py` | Deckbuilding role taxonomy over type line + oracle text; reports its own coverage | `data/card_roles.json` |
-| 14 | `eval-embeddings` | `analysis/eval_embeddings.py` | Reports embedding quality against a hand-authored golden set | *(none — the only reporting step)* |
+| 14 | `viz-index` | `export/viz_index.py` | Discovery index + precomputed neighbour tables (all three relations) | `data/viz_index.json`, `data/neighbours.bin` |
+| 15 | `eval-embeddings` | `analysis/eval_embeddings.py` | Reports embedding quality against a hand-authored golden set | *(none — the only reporting step)* |
 
 Steps 1 and 7 need internet. Every module also keeps a main-guard, so `python -m manamap.ingest.download` etc. works too.
 
@@ -42,6 +43,6 @@ Steps 1 and 7 need internet. Every module also keeps a main-guard, so `python -m
 - Step 3: ~5–10 min (sentence embeddings for ~34K cards)
 - Steps 4a/4b: a few minutes each (early stopping: Color+Type ~7 epochs, ability ~16)
 - Step 5: ~1 min · Step 6: ~5 min (PaCMAP) · Steps 7–8: ~3 min
-- Step 9: seconds · Step 10 (synergy): ~30 s · Step 11 (power-creep): ~4 min · Step 12 (regions): ~10 s · Step 13 (card-roles): ~10 s · Step 14 (eval-embeddings): ~40 s
+- Step 9: seconds · Step 10 (synergy): ~30 s · Step 11 (power-creep): ~4 min · Step 12 (regions): ~10 s · Step 13 (card-roles): ~10 s · Step 14 (viz-index): ~30 s · Step 15 (eval-embeddings): ~40 s
 
 Training uses MPS on Apple Silicon, falling back to CUDA then CPU (`training/common.py:get_device`).
