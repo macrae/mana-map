@@ -67,6 +67,19 @@
     return Math.sqrt(2 - 2 * dot);
   }
 
+  // Cap a set without biasing it. `slice(0, N)` takes the first N rows in cards.csv
+  // order — Scryfall's export order — so a truncated drill of a 3,434-card region showed
+  // whichever cards happened to be exported first, not a sample of the region. The
+  // breadcrumb said "showing 2000 of 3434" and was honest about the count while silent
+  // about the bias. An even stride keeps the shape of the set.
+  function sampleEvenly(rows, cap) {
+    if (rows.length <= cap) return rows.slice();
+    const out = new Array(cap);
+    const stride = rows.length / cap;
+    for (let i = 0; i < cap; i++) out[i] = rows[Math.floor(i * stride)];
+    return out;
+  }
+
   function currentViewBox() {
     const gd = document.getElementById('plot');
     const xr = (gd && gd._fullLayout) ? gd._fullLayout.xaxis.range : [-50, 50];
@@ -206,7 +219,7 @@
     }
 
     truncatedFrom = unique.length > MAX_DRILL ? unique.length : 0;
-    indices = truncatedFrom ? unique.slice(0, MAX_DRILL) : unique;
+    indices = sampleEvenly(unique, MAX_DRILL);
     stack.push({ label: label, indices: indices.slice() });
 
     // Seed from where the points actually are on screen. This is what makes the
@@ -298,10 +311,19 @@
     enter(rows, region ? region.label : regionId);
   }
 
+  // Refuses rather than truncates. Drilling "everything" is not a thing: with no filters
+  // this is all 34,322 cards, and a 2,000-card sample of the entire universe re-maps into
+  // an incoherent pile whichever way you sample it. The other three entries — box-select,
+  // a region label, a Find Similar result — all hand over a set that means something.
   function enterFiltered() {
     const rows = [];
     const all = MM.allData;
     for (let i = 0; i < all.length; i++) if (MM.passesFilters(all[i])) rows.push(i);
+    if (rows.length > MAX_DRILL) {
+      MM.setStatus(rows.length.toLocaleString() + ' cards is too many to re-map — filter below ' +
+        MAX_DRILL.toLocaleString() + ', or box-select, or click a region label.');
+      return;
+    }
     enter(rows, MM.filterLabel());
   }
 
@@ -400,6 +422,7 @@
     getDimmedIndices,
     getContourSource,
     localPosition,
+    sampleEvenly,
     renderBar,
     MAX_DRILL,
   };

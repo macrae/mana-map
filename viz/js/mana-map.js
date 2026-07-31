@@ -1268,6 +1268,7 @@
       projectionCache['default'] = data;
       initToggles();
       render();
+      refreshDrillButton();
       setStatus(`${allData.length.toLocaleString()} cards loaded`);
       // ?deck=<slug> is the map's first inbound deep link — the dossier and the
       // magazine's Back Page both use it. Honour it by entering the Lens, not by
@@ -1285,6 +1286,26 @@
     .catch(err => setStatus('Error loading data: ' + err.message));
 
   // ── Supertype toggle buttons ──
+  // The Drill button used to say only "Drill ⤓". With no filters that meant "re-map all
+  // 34,322 cards", which the cap then truncated to an arbitrary 2,000 — an incoherent
+  // cross-section of the whole universe that flew in from everywhere and settled into a
+  // multicoloured pile. The button now states the size of what it would drill and goes
+  // inert when that is over the cap, so you can see whether pressing it will do anything.
+  function refreshDrillButton() {
+    const btn = document.getElementById('drillFiltered');
+    if (!btn || typeof window.Drill === 'undefined') return;
+    let n = 0;
+    for (let i = 0; i < allData.length; i++) if (activeSupertypes.has(allData[i].s)) n++;
+    const cap = window.Drill.MAX_DRILL;
+    const tooMany = n > cap;
+    btn.textContent = 'Drill ' + n.toLocaleString() + ' ⤓';
+    btn.classList.toggle('is-disabled', tooMany);
+    btn.title = tooMany
+      ? n.toLocaleString() + ' cards is too many to re-map — filter below ' +
+        cap.toLocaleString() + ', or box-select, or click a region label'
+      : 'Re-map these ' + n.toLocaleString() + ' cards from their 128-dim embeddings';
+  }
+
   function initToggles() {
     const container = document.getElementById('toggles');
     SUPERTYPES.forEach(st => {
@@ -1301,6 +1322,7 @@
           btn.classList.add('active');
         }
         render();
+        refreshDrillButton();
       });
       container.appendChild(btn);
     });

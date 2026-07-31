@@ -761,3 +761,60 @@ def test_the_walk_shows_the_card_it_pinned(page):
     assert "Past in Flames" in r["src"]
     assert r["hasOracle"], "the walk panel shows an image but none of the card's text"
     assert r["detailHidden"], "two panels open would cut the canvas in half"
+
+
+# ── Capping a set without biasing it ────────────────────────────────────
+
+
+def test_the_drill_button_reports_what_it_would_do(page):
+    """It used to read only "Drill ⤓". With no filters that meant "re-map all 34,322
+    cards", which the cap truncated to an arbitrary 2,000 — a cross-section of the entire
+    universe that flew in from everywhere and settled into an incoherent pile."""
+    r = page.evaluate("""async () => {
+        const btn = document.getElementById('drillFiltered');
+        const wide = {label: btn.textContent, disabled: btn.classList.contains('is-disabled')};
+        btn.click();
+        await new Promise(r => setTimeout(r, 700));
+        const refused = {active: Drill.isActive(),
+                         status: document.getElementById('status').textContent};
+
+        // Narrow to a supertype small enough to drill.
+        document.querySelectorAll('#toggles button').forEach(b => {
+            if (b.textContent !== 'Battle' && b.classList.contains('active')) b.click();
+        });
+        await new Promise(r => setTimeout(r, 1200));
+        const narrow = {label: btn.textContent, disabled: btn.classList.contains('is-disabled')};
+        btn.click();
+        await new Promise(r => setTimeout(r, 4000));
+        return {wide, refused, narrow, drilled: Drill.isActive()};
+    }""")
+    assert page.js_errors == []
+    assert "34,322" in r["wide"]["label"], "the button does not state its size"
+    assert r["wide"]["disabled"], "the button looks live when it would refuse"
+    assert not r["refused"]["active"], "drilling the whole map should be refused"
+    assert "too many" in r["refused"]["status"], "refusal must explain itself"
+    assert not r["narrow"]["disabled"] and "Drill 3" in r["narrow"]["label"]
+    assert r["drilled"], "a drillable set did not drill"
+
+
+def test_capping_samples_evenly_rather_than_taking_a_prefix(page):
+    """`slice(0, N)` takes the first N rows in cards.csv order — Scryfall's export order —
+    so a truncated drill of a 3,434-card region showed whichever cards happened to be
+    exported first. The breadcrumb said "showing 2000 of 3434", honest about the count and
+    silent about the bias."""
+    r = page.evaluate("""() => {
+        const src = [];
+        for (let i = 0; i < 100; i++) src.push(i);
+        const s = Drill.sampleEvenly(src, 10);
+        return {
+            sample: s,
+            small: Drill.sampleEvenly([1, 2, 3], 10),
+            spansTheSet: s[s.length - 1] > 80,
+            isNotAPrefix: s[1] !== 1,
+        };
+    }""")
+    assert page.js_errors == []
+    assert len(r["sample"]) == 10
+    assert r["isNotAPrefix"], "capping still takes a prefix"
+    assert r["spansTheSet"], "the sample does not reach the end of the set"
+    assert r["small"] == [1, 2, 3], "a set under the cap must pass through untouched"

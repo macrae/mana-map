@@ -493,3 +493,6 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 /* Which card's neighbourhood you are standing in. */
 .browse-anchor { width: 100%; font-size: 0.72rem; color: #888; margin-top: 4px; }
 .browse-anchor strong { color: #4A7BFF; font-weight: 600; }
+/* A toolbar button that would do nothing, saying so. Not `disabled` — the click still
+ * lands and explains itself in the status line, which beats a dead control. */
+.toggle-btn.is-disabled { opacity: 0.4; border-color: #2a2a4a; cursor: not-allowed; }

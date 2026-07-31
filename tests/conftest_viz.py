@@ -24,7 +24,12 @@ ROOT = Path(__file__).resolve().parents[1]
 # The map eagerly fetches a 12.9 MB projection before it renders anything, then loads
 # region labels in the background. Every wait below is generous on purpose: a flaky
 # browser test is worse than a slow one, because it teaches you to ignore red.
-BOOT_TIMEOUT_MS = 60_000
+#
+# Raised from 60s after one unreproducible fixture ERROR during a full 1,007-test run —
+# the browser tests come last, after ~4 minutes of CPU-bound pipeline tests, and each
+# opens a fresh page that re-parses the projection. The cause was not diagnosed; this is
+# insurance, not a fix. If it recurs, instrument the fixture rather than raising it again.
+BOOT_TIMEOUT_MS = 120_000
 
 
 def _free_port() -> int:

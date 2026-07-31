@@ -126,7 +126,18 @@ whole subset is one trace with a per-point colour array so a frame is a *single*
 splitting by category would multiply per-frame Plotly calls by the number of groups.
 
 **`MAX_DRILL = 2000`**, and the cap is announced in the breadcrumb rather than applied
-silently. Measured: restyle on a 1,200-point `scattergl` trace runs ~32 ms median with the
+silently — *and sampled evenly rather than taken as a prefix*. `sampleEvenly(rows, cap)`
+strides across the set, because `slice(0, N)` takes the first N rows in `cards.csv` order,
+which is Scryfall's export order: a truncated drill of a 3,434-card region showed whichever
+cards happened to be exported first. The breadcrumb was honest about the count and silent
+about the bias. The Walk uses the same helper for its 500-node cap.
+
+**The `Drill ⤓` button states its size and refuses over the cap.** It reads
+`Drill 34,322 ⤓`, greyed, with no filters — because "re-map everything" is not a thing: a
+2,000-card sample of the whole universe has no reason to cohere, and it flew in from all
+over the map and settled into a multicoloured pile. Filter below the cap (or box-select, or
+click a region label) and it goes live: `Drill 39 ⤓`. Clicking it while inert explains
+itself in the status line rather than being a dead control. Measured: restyle on a 1,200-point `scattergl` trace runs ~32 ms median with the
 full world still loaded.
 
 **Contours and labels do not animate.** `histogram2dcontour` is main-thread SVG over the

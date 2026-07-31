@@ -396,7 +396,10 @@
     }
 
     truncatedFrom = unique.length > MAX_NODES ? unique.length : 0;
-    const rows = truncatedFrom ? unique.slice(0, MAX_NODES) : unique;
+    // Even stride, not the first N — see Drill.sampleEvenly. Seeding a walk with the
+    // first 500 rows of a 3,434-card region seeds it with Scryfall's export order.
+    const rows = window.Drill ? window.Drill.sampleEvenly(unique, MAX_NODES)
+                              : unique.slice(0, MAX_NODES);
     label = seedLabel || 'Selection';
 
     nodes = rows.map(r => makeNode(r, true));
