@@ -122,6 +122,20 @@ CONTINUOUS_DIM = 2
 KEYWORD_DIM = 50
 FINAL_EMBEDDING_DIM = 128
 
+# Structured numeric features. Written by preprocess as separate arrays in
+# card_features.npz; wired into the model when the training objective is
+# replaced, so that model.py's input tuple changes exactly once.
+POWER_TOUGHNESS_DIM = 3  # [power, toughness, has_stats]
+MANA_PIPS_DIM = 6        # [W, U, B, R, G pip counts, generic]
+COLOR_FEATURE_DIM = 6    # [W, U, B, R, G, colour count]
+
+# Fixed scales, deliberately not derived from the data. A per-run min-max makes
+# the same card's features differ between pipeline runs, so two runs' embeddings
+# stop being comparable — which is what EDHREC rank used to do.
+EDHREC_RANK_SCALE = 50_000   # ranks currently reach ~31,800
+POWER_TOUGHNESS_SCALE = 15   # above this is a rounding error's worth of cards
+PIP_COUNT_SCALE = 4          # {W}{W}{W}{W} is already extreme
+
 # ── Fusion MLP ────────────────────────────────────────────────────────────
 MLP_HIDDEN_DIM = 256
 MLP_DROPOUT = 0.1

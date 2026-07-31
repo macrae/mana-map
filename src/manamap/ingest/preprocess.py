@@ -16,6 +16,7 @@ layout or rarity, those constants must grow too or training raises an opaque
 index error far from this file.
 """
 
+import re
 from collections import Counter
 
 import numpy as np
@@ -24,11 +25,18 @@ from sentence_transformers import SentenceTransformer
 
 from manamap.config import (
     CARD_FEATURES_PATH,
+    COLOR_IDENTITY_VOCAB_SIZE,
     COLOR_VECTORS_PATH,
+    EDHREC_RANK_SCALE,
     KEYWORD_DIM,
+    LAYOUT_VOCAB_SIZE,
     MECHANICAL_TAG_NAMES,
     MECHANICAL_TAGS_PATH,
     OUTPUT_CSV_PATH,
+    PIP_COUNT_SCALE,
+    POWER_TOUGHNESS_SCALE,
+    RARITY_VOCAB_SIZE,
+    SUPERTYPE_VOCAB_SIZE,
     TEXT_EMBEDDING_DIM,
     TEXT_EMBEDDINGS_PATH,
     TEXT_MODEL_NAME,
@@ -96,10 +104,18 @@ def build_color_identity_vocab(df):
 
 
 def build_top_keywords(df, top_n=KEYWORD_DIM):
-    """Return the top_n most frequent keywords across all cards."""
+    """Return the top_n most frequent keywords across all cards.
+
+    The `if k.strip()` matters more than it looks. 17,117 of 34,322 cards have no
+    keywords at all, and `"".split(",")` yields `[""]` — so without the guard the
+    empty string is the single most common "keyword" by a factor of five, takes
+    index 0 of the vocabulary, and `encode_keywords_multihot` then never sets that
+    column because it skips falsy strings. The result is a permanently dead feature
+    slot and only 49 real keywords out of a nominal 50.
+    """
     all_kw = []
     for kw_str in df["keywords"].fillna(""):
-        all_kw.extend([k.strip() for k in kw_str.split(",")])
+        all_kw.extend([k.strip() for k in kw_str.split(",") if k.strip()])
     counts = Counter(all_kw)
     return [kw for kw, _ in counts.most_common(top_n)]
 
@@ -126,16 +142,95 @@ def normalize_cmc(series):
     return arr / 16.0
 
 
-def normalize_edhrec_rank(series):
-    """Normalize EDHREC rank: fill NaN with median, log1p, scale to [0, 1]."""
+def normalize_edhrec_rank(series, max_rank=EDHREC_RANK_SCALE):
+    """Normalize EDHREC rank: fill NaN with median, log1p, scale by a FIXED bound.
+
+    The scale is a constant, not the observed min/max, because this used to be a
+    per-run min-max: the same card got a different feature value in every pipeline
+    run as the corpus grew, so two runs' embeddings were not comparable and neither
+    were their input features. Ranks currently top out near 31,800;
+    `EDHREC_RANK_SCALE` leaves headroom so a few new sets do not silently start
+    clipping.
+    """
     arr = series.copy()
-    median_val = arr.median()
-    arr = arr.fillna(median_val).values.astype(np.float32)
-    arr = np.log1p(arr)
-    arr_min, arr_max = arr.min(), arr.max()
-    if arr_max > arr_min:
-        arr = (arr - arr_min) / (arr_max - arr_min)
-    return arr.astype(np.float32)
+    arr = arr.fillna(arr.median()).values.astype(np.float32)
+    return np.clip(np.log1p(arr) / np.log1p(max_rank), 0.0, 1.0).astype(np.float32)
+
+
+def normalize_power_toughness(df):
+    """(N, 3) of [power, toughness, has_stats].
+
+    Power and toughness reach either model for the first time here — they were in
+    `cards.csv` and used by power_creep's stat comparison, but never fed to
+    training, so nothing distinguished a 1/1 from a 7/7 with the same text.
+
+    250 cards carry non-numeric stats (`*`, `1+*`). Those get 0.0 with `has_stats`
+    still set: "a creature whose power is variable" is a real and different thing
+    from "not a creature", and collapsing them would teach the model the latter.
+    """
+    power = pd.to_numeric(df["power"], errors="coerce")
+    toughness = pd.to_numeric(df["toughness"], errors="coerce")
+    has_stats = (df["power"].notna() | df["toughness"].notna()).values.astype(np.float32)
+    scale = float(POWER_TOUGHNESS_SCALE)
+    return np.stack([
+        np.clip(power.fillna(0).values.astype(np.float32), 0, scale) / scale,
+        np.clip(toughness.fillna(0).values.astype(np.float32), 0, scale) / scale,
+        has_stats,
+    ], axis=1)
+
+
+def parse_mana_pips(df):
+    """(N, 6) of [W, U, B, R, G pip counts, generic cost], each scaled.
+
+    Only scalar CMC reached the model before, so `{U}{U}` and `{2}` were identical
+    inputs — which erases the difference between a double-blue spell and a colourless
+    one of the same cost, and that difference is most of what makes a card castable.
+    Hybrid and Phyrexian symbols count toward every colour they can be paid with,
+    which is the honest reading for a castability feature.
+    """
+    wubrg = "WUBRG"
+    symbols = re.compile(r"\{([^}]+)\}")
+    result = np.zeros((len(df), 6), dtype=np.float32)
+    for i, cost in enumerate(df["mana_cost"].fillna("")):
+        for symbol in symbols.findall(str(cost)):
+            if symbol.isdigit():
+                result[i, 5] += float(symbol)
+                continue
+            for colour in symbol.split("/"):
+                if colour in wubrg:
+                    result[i, wubrg.index(colour)] += 1.0
+    scale = float(PIP_COUNT_SCALE)
+    return np.clip(result, 0, scale) / scale
+
+
+def build_color_identity_features(df):
+    """(N, 6) of [W, U, B, R, G, colour count].
+
+    Replaces the string categorical for model purposes. `"B, G"` and `"B, G, R"`
+    were unrelated one-hot indices, so nothing could express that Golgari is a
+    subset of Jund — and that vocabulary sat at exactly its table capacity (32 + 1
+    of 33), one new Scryfall value away from silently overflowing into the unknown
+    bucket. Multi-hot has neither problem and cannot outgrow itself.
+    """
+    wubrg = parse_color_vectors(df)
+    count = wubrg.sum(axis=1, keepdims=True) / 5.0
+    return np.concatenate([wubrg, count], axis=1).astype(np.float32)
+
+
+def assert_vocab_fits(name, vocab, capacity):
+    """Fail loudly here rather than opaquely inside an embedding table.
+
+    `preprocess` derives vocabularies from the current CSV while `model.py` sizes
+    its tables from fixed constants. When Scryfall adds a layout or a rarity, the
+    mismatch used to surface as an index error deep in training, hours later and
+    far from the cause.
+    """
+    if len(vocab) + 1 > capacity:
+        raise ValueError(
+            f"{name} vocabulary has {len(vocab)} values (+1 unknown) but "
+            f"config caps it at {capacity}. Raise the constant in config.py and "
+            f"retrain — the embedding table shape is baked into the checkpoint."
+        )
 
 
 def parse_color_vectors(df):
@@ -175,24 +270,28 @@ def main():
 
     # Supertype
     supertype_vocab = sorted(df["supertype"].dropna().unique())
+    assert_vocab_fits("supertype", supertype_vocab, SUPERTYPE_VOCAB_SIZE)
     supertype_index = build_vocab_index(supertype_vocab)
     supertype_encoded = encode_categorical(df["supertype"].fillna("Unknown"), supertype_index)
     print(f"  supertype vocab: {len(supertype_vocab)} + 1 unknown")
 
     # Rarity
     rarity_vocab = sorted(df["rarity"].dropna().unique())
+    assert_vocab_fits("rarity", rarity_vocab, RARITY_VOCAB_SIZE)
     rarity_index = build_vocab_index(rarity_vocab)
     rarity_encoded = encode_categorical(df["rarity"].fillna(""), rarity_index)
     print(f"  rarity vocab: {len(rarity_vocab)} + 1 unknown")
 
     # Color identity (as string, e.g. "W, U" or "")
     ci_vocab = build_color_identity_vocab(df)
+    assert_vocab_fits("color_identity", ci_vocab, COLOR_IDENTITY_VOCAB_SIZE)
     ci_index = build_vocab_index(ci_vocab)
     ci_encoded = encode_categorical(df["color_identity"].fillna(""), ci_index)
     print(f"  color_identity vocab: {len(ci_vocab)} + 1 unknown")
 
     # Layout
     layout_vocab = sorted(df["layout"].dropna().unique())
+    assert_vocab_fits("layout", layout_vocab, LAYOUT_VOCAB_SIZE)
     layout_index = build_vocab_index(layout_vocab)
     layout_encoded = encode_categorical(df["layout"].fillna(""), layout_index)
     print(f"  layout vocab: {len(layout_vocab)} + 1 unknown")
@@ -203,6 +302,16 @@ def main():
     edhrec_norm = normalize_edhrec_rank(df["edhrec_rank"])
     continuous = np.stack([cmc_norm, edhrec_norm], axis=1)
     print(f"  continuous shape: {continuous.shape}")
+
+    # Structured numeric features. Saved now, consumed when the model's input
+    # tuple is rebuilt — see config.py's Feature Dims block for why they are
+    # staged rather than wired in here.
+    power_toughness = normalize_power_toughness(df)
+    mana_pips = parse_mana_pips(df)
+    color_features = build_color_identity_features(df)
+    print(f"  power/toughness: {power_toughness.shape} "
+          f"({int(power_toughness[:, 2].sum()):,} cards with stats)")
+    print(f"  mana pips: {mana_pips.shape} · colour features: {color_features.shape}")
 
     # ── Keywords ──────────────────────────────────────────────────────────
     print("\nEncoding keywords...")
@@ -226,6 +335,9 @@ def main():
         color_identity=ci_encoded,
         layout=layout_encoded,
         continuous=continuous,
+        power_toughness=power_toughness,
+        mana_pips=mana_pips,
+        color_features=color_features,
         keywords=keywords_multihot,
         mechanical_tags=mech_tags,
         supertype_vocab=np.array(supertype_vocab),

@@ -541,25 +541,53 @@ class TestDeriveSupertype:
 class TestBuildEmbeddingText:
     def test_full_card(self):
         result = build_embedding_text(
-            "Lightning Bolt", "Instant",
-            "Lightning Bolt deals 3 damage to any target.", ""
+            "Instant", "Lightning Bolt deals 3 damage to any target.", "", "{R}"
         )
-        assert result == "Lightning Bolt. Instant. Lightning Bolt deals 3 damage to any target."
+        assert result == (
+            "Instant. Cost {R}. Lightning Bolt deals 3 damage to any target."
+        )
 
     def test_with_keywords(self):
         result = build_embedding_text(
-            "Questing Beast", "Legendary Creature — Beast",
-            "Vigilance, deathtouch, haste", "Vigilance, Deathtouch, Haste"
+            "Legendary Creature — Beast", "Vigilance, deathtouch, haste",
+            "Vigilance, Deathtouch, Haste", "{2}{G}{G}", "4", "4"
         )
         assert "Keywords: Vigilance, Deathtouch, Haste" in result
+        assert "4/4" in result
 
     def test_no_oracle_text(self):
-        result = build_embedding_text("Mountain", "Basic Land — Mountain", "", "")
-        assert result == "Mountain. Basic Land — Mountain"
+        result = build_embedding_text("Basic Land — Mountain", "", "")
+        assert result == "Basic Land — Mountain"
 
-    def test_name_only(self):
-        result = build_embedding_text("Mystery", "", "", "")
-        assert result == "Mystery"
+    def test_empty_everything(self):
+        assert build_embedding_text("", "", "") == ""
+
+    def test_name_is_excluded(self):
+        """The regression this guards is worth 0.06 recall@10.
+
+        The name used to lead the string and bought similarity off shared words
+        instead of shared function — Rhystic Study matched *White Rhystic Study* at
+        0.951, Sol Ring matched *Sisay's Ring*. There is no parameter for it now, so
+        this asserts the intent rather than the plumbing: nothing name-shaped should
+        reach the text.
+        """
+        result = build_embedding_text(
+            "Artifact", "{T}: Add {C}{C}.", "", "{1}"
+        )
+        assert "Sol Ring" not in result
+        assert result.startswith("Artifact")
+
+    def test_stats_appear_only_for_creatures(self):
+        creature = build_embedding_text("Creature — Elf", "", "", "{G}", "1", "1")
+        instant = build_embedding_text("Instant", "Draw a card.", "", "{U}")
+        assert "1/1" in creature
+        assert "/" not in instant.replace("Instant", "")
+
+    def test_double_pips_survive_into_the_text(self):
+        """{U}{U} and {2} were indistinguishable to the model before this."""
+        double = build_embedding_text("Instant", "Counter target spell.", "", "{U}{U}")
+        generic = build_embedding_text("Instant", "Counter target spell.", "", "{2}")
+        assert double != generic
 
 
 # ---------------------------------------------------------------------------
@@ -589,6 +617,9 @@ class TestProcessCard:
         assert row["legal_modern"] == "legal"
         assert row["legal_standard"] == "not_legal"
         assert "Lightning Bolt deals 3 damage" in row["embedding_text"]
+        assert not row["embedding_text"].startswith("Lightning Bolt."), (
+            "the card name must not lead the embedding text"
+        )
 
     def test_fire_ice_split(self):
         row = process_card(_fire_ice())

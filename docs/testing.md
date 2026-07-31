@@ -1,12 +1,12 @@
 # Testing
 
 ```bash
-.venv/bin/python -m pytest              # everything (1,032, ~4.5 min)
-.venv/bin/python -m pytest -m "not browser"   # fast suite (993, ~71 s)
+.venv/bin/python -m pytest              # everything (1,052, ~4.5 min)
+.venv/bin/python -m pytest -m "not browser"   # fast suite (1,013, ~71 s)
 .venv/bin/python -m pytest -m browser         # the 39 browser tests (~210 s)
 ```
 
-1,032 tests in `tests/`: 392 card-pipeline + 601 pilot-subsystem + **39 browser**.
+1,052 tests in `tests/`: 412 card-pipeline + 601 pilot-subsystem + **39 browser**.
 Three are `xfail(strict=True)` ship gates in `test_embedding_quality.py` — see below.
 
 ## Source assertions do not catch regressions

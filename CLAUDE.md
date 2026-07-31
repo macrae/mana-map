@@ -30,7 +30,7 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #   validate_issue.py / agent_cache.py / artist_credits.py
                       #   validate_considering.py / validate_tutor_guide.py
                       #   impact.py / card_refs.py  incremental regeneration
-tests/                # pytest suite (1,017: 978 fast + 39 browser). Markers in
+tests/                # pytest suite (1,052: 1,013 fast + 39 browser). Markers in
                       # conftest.py: requires_data/rules/deck/strategy/roles;
                       # `-m browser` needs playwright + chromium
 data/                 # artifacts; mostly gitignored, viz-served files tracked
@@ -62,8 +62,8 @@ manamap synergy && manamap power-creep && manamap cluster-regions && manamap car
                               # fast analysis-only refresh (no retrain)
 manamap pilot <cmd>           # build + publish subsystem (33 subcommands) — see docs/pilot.md
 
-.venv/bin/python -m pytest    # 1,012; data-dependent ones skip if artifacts missing
-.venv/bin/python -m pytest -m "not browser"   # 978, skips the browser suite (~68s)
+.venv/bin/python -m pytest    # 1,052; data-dependent ones skip if artifacts missing
+.venv/bin/python -m pytest -m "not browser"   # 1,013, skips the browser suite (~70s)
 
 python -m http.server 8000    # serve viz FROM REPO ROOT
 # http://localhost:8000/viz/index.html          the card map

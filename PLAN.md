@@ -23,7 +23,7 @@ a **deck builder** that produces the deck in the first place.
 [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-1,017 tests (978 fast + 39 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
+1,052 tests (1,013 fast + 39 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
 
 ## Shipped
 
@@ -223,6 +223,44 @@ Still true, and still the two live defects in `viz/js/deck-builder.js`:
 `docs/frontend-v2.md` keeps its analysis but carries an audit header: its M1 → M2 → M6
 sequencing was wrong (the dossier had no prerequisites; the engine port is blocked on
 `data/cards.csv` being gitignored) and its M3 premise predates the 17-section magazine.
+
+## In progress — the embedding rebuild
+
+Find Similar returned neighbours that looked arbitrary. Measured, not guessed: **both trained
+embedding spaces have collapsed, and the frozen MiniLM text they are built from beats both of
+them 2:1** on held-out functional-equivalence groups.
+
+| space | dim | effective dim | 1st→50th gap | recall@10 |
+|---|---|---|---|---|
+| layout (colour+type) | 128 | **3.05** | **0.0033** | 0.044 |
+| function (ability) | 128 | 5.97 | 0.0236 | 0.093 |
+| frozen MiniLM text *(the input)* | 384 | 81.04 | 0.1490 | **0.187** |
+
+The colour+type objective ("same supertype and colour" vs "differs in both") is solved by
+encoding colour and type and discarding everything else, and a triplet margin stops producing
+gradient once satisfied — so nothing preserved within-class structure. A 0.0033 cosine spread
+across the top 50 means their order is float noise. `CLAUDE.md` had recorded the near-zero
+loss as expected; it was the diagnosis.
+
+**Phase 0 — shipped.** `manamap eval-embeddings` (step 14, the first reporting step) scores
+every space against `data/eval/similarity_golden.json`: 40 hand-authored groups, `dev`/`test`
+split so the headline number is one nothing was tuned against. `tests/test_embedding_quality.py`
+adds regression floors plus three `xfail(strict=True)` ship gates that fail today by design and
+will fail the suite when the retrain fixes them.
+
+**Phase 1 — in progress.** Input fixes, measurable without retraining: the card name is out of
+the embedding text (it bought similarity off shared words — *Rhystic Study* matched *White
+Rhystic Study* at 0.951), mana cost and P/T are in, the empty-string keyword slot is fixed,
+EDHREC rank has a fixed rather than per-run scale, and WUBRG/pip/stat features are computed and
+staged for Phase 2 to consume.
+
+**Phases 2–4 — not started.** Replace the triplet loss with in-batch InfoNCE plus hard
+negatives and a text passthrough; decouple similarity from the displayed map (the layout space
+is what Find Similar searches today, which is most of the felt problem); refresh artifacts with
+`manamap run --from preprocess`, never from `download` — re-downloading changes `cards.csv`,
+which MISSes every cached agent routine on all seven decks.
+
+Full record: `/Users/michellemacrae/.claude/plans/wondrous-gliding-hoare.md`.
 
 ## Future — what is not started
 

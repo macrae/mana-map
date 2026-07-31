@@ -67,7 +67,30 @@ Two independent failures, both traceable to the mining rules above:
   covers **89%** at 1.94 roles/card — a denser signal neither model uses.
 
 **Both trained spaces lose to the frozen text they are built from**, so the training stage is
-currently subtractive. The evaluation is deliberately independent of every training signal (see
+currently subtractive.
+
+### The input text (`ingest/extract.py:build_embedding_text`)
+
+`"{type}. Cost {mana_cost}. {P}/{T}. {oracle}. Keywords: …"` — **no card name.**
+
+The name used to lead the string and was buying similarity off shared words rather than shared
+function: *Rhystic Study* → *White Rhystic Study* at 0.951, *Sol Ring* → *Sisay's Ring*,
+*Llanowar Elves* → *Llanowar Tribe*. It is also a large fraction of a short card — `Sol Ring`'s
+entire text was eleven words, three of them its name. Measured on the held-out split:
+
+| text | r@10 | r@50 | median rank |
+|---|---|---|---|
+| name-led (old) | 0.187 | 0.362 | 159 |
+| no name | **0.248** | 0.407 | 129 |
+| no name + cost + P/T (shipped) | 0.244 | **0.414** | **124** |
+
+Dropping the name is the win. Cost and P/T are a wash in the *text* (the r@10 difference is
+inside noise) and earn their place as structured features instead — they are in the string
+because it costs nothing and helps the frozen-text fallback, not because they moved this table.
+
+Note that effective dimensionality *fell* here, 81.0 → 50.4, while quality rose. Names added
+variance, and variance is not quality: the participation ratio is a collapse **detector**, good
+for telling 3 from 50, not a score to maximise. The evaluation is deliberately independent of every training signal (see
 `data/eval/similarity_golden.json`), and its `test` split was written after the diagnosis, so
 these numbers are not self-graded.
 
