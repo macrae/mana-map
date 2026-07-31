@@ -29,7 +29,7 @@ first place.
 [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-1,122 tests (1,042 fast + 80 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
+1,123 tests (1,042 fast + 81 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
 
 > ### ⚠ OPEN: 23 agent-cache routines are deliberately MISSed
 >
@@ -327,10 +327,17 @@ click-to-grow feel physical rather than laggy.
 | | what it does |
 |---|---|
 | **Landing** | weighted random card, `?card=` / `?seed=` for a reproducible one, coarse filters, *Feeling lucky* |
-| **Relations** | Similar / Synergy / Outclassed by, counts stated **before** the click, rendered in every panel via `MM.relate` |
+| **Relations** | Similar / Synergy / Outclassed by, counts stated **before** the click, rendered in every panel via `MM.relate` — always growing the graph, so a click in Explore carries you into the walk seeded on that card |
 | **Graph** | branch to grow, drag to fling, cross-links so it is a graph and not a tree, relation-inked edges, synergy edges labelled with their rule |
 | **Decks** | load any of the seven by slug (commander ringed) or paste a Moxfield export; deck cards read differently from cards you found |
 | **Tray** | keep cards, export a brief for the pilot loop in Claude Code — the site stays static |
+
+**Explore became a launchpad, not a second mode.** `MM.relate` used to fork — graph modes
+branched, Explore opened a linear browse set — on the reasoning that a scatter plot cannot
+grow. Sound reasoning, wrong result: one control meant two things, so the atlas felt dead
+next to the walk. It now always grows, switching modes to do it. The **Keep** control moved
+into the same shared card HTML for the same reason. Box-select still opens a browse set,
+because "what did I just lasso?" is a genuinely different question.
 
 **The synergy graph was recommending near-random cards**, which no interface would have
 fixed. Partners were tie-broken by embedding *similarity* — backwards for a complementary

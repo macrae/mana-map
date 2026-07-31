@@ -54,11 +54,15 @@ Three things to know:
   browser never fetches them.)
 - Plotly loads from a CDN, so the page needs internet even though the data doesn't.
 
-What you get: two maps (one clustered by color and type, one by what cards *do*), Find
-Similar via embedding neighbours, Find Synergies via rule-based complementarity — these
-are different algorithms, see `docs/architecture.md` — a deck builder across 8 formats
-with a six-factor recommender, and obsolescence badges for cards with strictly-better
-replacements.
+What you get: two maps (one clustered by color and type, one by what cards *do*), three
+relations on every card — **similar** via embedding neighbours, **synergy** via rule-based
+complementarity, **outclassed by** via the obsolescence index (these are different
+algorithms, see `docs/architecture.md`) — a deck builder across 8 formats with a six-factor
+recommender, and obsolescence badges for cards with strictly-better replacements.
+
+The atlas is a launchpad: clicking a relation there carries you into the walk seeded on that
+card, rather than doing something subtly different because you happened to be in a different
+mode.
 
 ## Generate a manual for your own deck
 
@@ -187,7 +191,7 @@ Two lightweight fusion MLPs (~180K params each) produce the 128-dim embeddings; 
 encoder stays frozen. They answer different questions and are not interchangeable. The
 **layout** model organises the map by colour and type and feeds the projection only. The
 **function** model answers whether two cards do the same job, and is the sole source of
-similarity — Find Similar, the walk and drill all read it whichever map is on screen.
+similarity — the *similar* relation, the walk and drill all read it whichever map is on screen.
 
 That split exists because the alternative was measured and was bad: when similarity followed
 the displayed map, the colour/type space was using 3.2 of its 128 dimensions and *Doubling
@@ -229,7 +233,7 @@ cache-busters stripped.
 ## Testing
 
 ```bash
-.venv/bin/python -m pytest        # 1,122 tests (1,042 fast + 80 browser)
+.venv/bin/python -m pytest        # 1,123 tests (1,042 fast + 81 browser)
 ```
 
 325 card-pipeline + 601 pilot. Five skip markers in `tests/conftest.py` gate on the last

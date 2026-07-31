@@ -98,14 +98,13 @@ selected cards alone from the 128-d embeddings, so the structure the projection 
 out becomes the whole view. Measured on a real region: 156 Aura cards occupy **0.3 × 0.7**
 on the world map and **45.2 × 49.9** once re-mapped.
 
-**Four entries**, all routed through `Drill.enter(indices, label)`:
+**Three entries**, all routed through `Drill.enter(indices, label)`:
 
 | Trigger | Path |
 |---|---|
 | Box/lasso select over 8 cards | `plotly_selected` → `Drill.offer(...)` → a button in the bar |
 | Region label click | raw click hit-tested against annotation anchors → `Drill.enterRegion(id)` → `regions_*.json` `membership` |
 | Current filters | the `Drill ⤓` toolbar button → `Drill.enterFiltered()` |
-| Find Similar / Find Synergies | `Drill.offer(...)` after the highlight traces are added |
 
 Box-select **offers** rather than drills, because the same gesture already feeds the
 8-card detail stack; hijacking it silently would be worse than a button. It is also the
@@ -223,11 +222,24 @@ the full run. A **seeded** walk (deck or region) still awaits it: `linkWithinFro
 only links cards whose precomputed top-12 are also in the set, which on a 97-card deck is
 38 links instead of ~290 — a visibly sparser graph, caught by the browser suite.
 
-**One relation mechanism, in every panel.** The controls live in `buildCardDetailHtml`, so
-Discover, The Walk, the explore accordion and the browse panel all offer the same thing.
-`MM.relate(row, relation)` dispatches on mode: graph modes branch the graph; explore opens a
-**browse set** — the anchor plus its related cards, walkable with the arrow keys — because a
-scatter plot cannot grow. That path also happens to be canvas-safe.
+**One relation mechanism, one behaviour.** The controls live in `buildCardDetailHtml`, so
+Discover, The Walk, the explore accordion and the browse panel all offer the same thing, and
+`MM.relate(row, relation)` always does the same thing with it: grow the graph from that card.
+From Explore that means switching modes — the click carries you into the walk, seeded on the
+card you clicked.
+
+That dispatch used to fork. Explore opened a linear **browse set** instead, on the reasoning
+that a scatter plot cannot grow. The reasoning was sound and the result was still wrong: one
+control meant two things, so the same button rewarded you differently depending on where you
+happened to be standing, and the atlas was the version that felt dead. The fix is not to
+teach the scatter plot to grow — it is to treat Explore as a **launchpad**: you go there to
+see where things sit, then click to start walking from one. `Discovery.show` seeds the graph,
+`Discovery.focus` re-centres it if the card is already present, and `Force.branchByRow` opens
+the relation. The **Keep** control moved into the same shared HTML for the same reason —
+keeping a card you spotted in the atlas is the same act as keeping one you walked to.
+
+Box-select still opens a browse set; that is a different question ("what did I just lasso?")
+and keeps the arrow-key walk.
 
 This replaced **Find Similar Cards** / **Find Synergies**, which were broken four ways at
 once and untested: they took no card argument and read `selectedCards`, so they were silent
@@ -669,7 +681,7 @@ most of what made the old panel feel slow to browse. Neighbours only: preloading
 be eight requests for seven cards the reader may never open. The open card's image is
 deliberately **not** `loading="lazy"` — it is the only card image ever rendered and it is
 scrolled into view as it appears.
-- Find Similar: 20 nearest in 128D cosine. Find Synergies: complementary tag matches (magenta)
+- Relations on every card: *similar* (12 nearest in 128D cosine), *synergy* (rule-based complements, carrying their reason), *outclassed by* — all precomputed in `neighbours.bin`, all growing the graph
 - Region labels as Plotly annotations with zoom-dependent L0/L1 crossfade; optional density contours ("Topo")
 - Custom 2-finger pinch zoom on mobile (Plotly scattergl lacks it natively; `touch-action: none`)
 
@@ -704,8 +716,8 @@ precisely because nothing can regress there: it proves the canvas renderer, the 
 behaviour and the hit-test against real data before any of that goes under the map itself.
 
 **Seeding** comes from `MM.selectedRows()` — browse set first, then the 8-card stack — so
-every existing way of picking cards feeds it: box-select, Find Similar, Find Synergies, a
-region, a deck.
+every existing way of picking cards feeds it: box-select, a region, a deck. Relations no
+longer seed a drill; they grow the graph instead, which is the same idea with physics.
 
 With **nothing** selected it shows an empty state offering all seven decks and the largest
 L1 regions, one click each. That routing lives inside `renderPanel` rather than at each

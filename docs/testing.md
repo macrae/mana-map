@@ -1,12 +1,12 @@
 # Testing
 
 ```bash
-.venv/bin/python -m pytest              # everything (1,122, ~7 min)
+.venv/bin/python -m pytest              # everything (1,123, ~7 min)
 .venv/bin/python -m pytest -m "not browser"   # fast suite (1,042, ~70 s)
 .venv/bin/python -m pytest -m browser         # the 80 browser tests (~340 s)
 ```
 
-1,122 tests in `tests/`: 441 card-pipeline + 601 pilot-subsystem + **80 browser**.
+1,123 tests in `tests/`: 441 card-pipeline + 601 pilot-subsystem + **81 browser**.
 One is a still-unmet `xfail(strict=True)` ship gate in `test_embedding_quality.py` — see below.
 
 ## Source assertions do not catch regressions
@@ -43,12 +43,14 @@ matched literal indentation and broke the moment the key handler was rewritten t
 gate — while the invariant it cared about was untouched. It now asserts the delegation
 (`cycleSelection` is called; the handler does not recompute an index) rather than the text.
 
-### Browser tests (80) — `tests/test_viz_behaviour.py` + `test_decklist_parity.py`
+### Browser tests (81) — `tests/test_viz_behaviour.py` + `test_decklist_parity.py`
 
-Fixtures in `tests/conftest_viz.py` (deliberately not `conftest.py`, so the other 978 never
-import playwright): an ephemeral `http.server` rooted at the repo — `viz/` and `data/` must
+The session fixtures `browser` and `viz_server` live in `tests/conftest.py` — see the
+section below for why they cannot live anywhere else. `conftest_viz.py` still holds the
+page-level helpers: an ephemeral `http.server` rooted at the repo — `viz/` and `data/` must
 be siblings, the same constraint GitHub Pages imposes — plus a booted page that waits on
-`MM.allData` rather than a timer, because the projection is 12.9 MB.
+`MM.allData` rather than a timer, because the projection is 12.9 MB. Playwright is imported
+lazily, so the other 1,042 tests never pay for it.
 
 Every test asserts `page.js_errors == []`. That list collects `pageerror` and console
 errors, and it is what catches the class of bug above.
@@ -75,7 +77,7 @@ resolves rather than collapsing, that link lengths stay inside the chord range `
 branching grows the graph and records the trail, and that leaving restores the map.
 
 Setup, one time: `.venv/bin/python -m playwright install chromium` (~94 MB). Without it the
-whole file skips cleanly, so a fresh clone still runs the other 978.
+whole file skips cleanly, so a fresh clone still runs the other 1,042.
 
 ## Session fixtures belong in `conftest.py`, not in an imported module
 
