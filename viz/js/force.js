@@ -38,6 +38,7 @@
   // watch it arrange itself.
   const PHYSICS = { velocityDecay: 0.22, alphaDecay: 0.015, charge: -110, linkScale: 190 };
 
+  let chrome = 'walk';
   let canvas = null, ctx = null, dpr = 1;
   let sim = null, nodes = [], links = [], byIdx = new Map();
   let transform = null;          // d3.zoomIdentity once d3 is loaded
@@ -78,7 +79,17 @@
   // ── Graph construction ──────────────────────────────────────────────────
 
   function makeNode(row, seed) {
-    const d = MM.allData[row];
+    // cardRecord, not allData: discovery boots on viz_index (0.56 MB) and the 2.9 MB
+    // projection lands behind it. Reading allData directly meant a node could not be
+    // built until the big fetch finished — and `nearestTo` failed the same way, but
+    // *silently*, returning [] so the first click simply did nothing.
+    const d = MM.cardRecord(row);
+    // World coordinates only exist once the projection has arrived. Without them the
+    // node starts at the origin and the jitter below does the work, which is fine —
+    // the seeded position is an aesthetic (the graph unfolding out of the map), not
+    // something the layout needs.
+    const wx = typeof d.x === 'number' ? d.x * 8 : 0;
+    const wy = typeof d.y === 'number' ? d.y * 8 : 0;
     return {
       row: row,
       name: d.n,
@@ -91,14 +102,17 @@
       // seeding a degenerate cluster with every node coincident. Some regions really are
       // that degenerate: the White Sorceries filament is 187 cards spanning 0.1 x 0.0 on
       // the world map, and without jitter the whole graph collapsed to a single point.
-      x: d.x * 8 + (Math.random() - 0.5) * 60,
-      y: d.y * 8 + (Math.random() - 0.5) * 60,
+      x: wx + (Math.random() - 0.5) * 60,
+      y: wy + (Math.random() - 0.5) * 60,
     };
   }
 
-  // k-nearest links *within* the current node set. All-pairs is O(n^2 d): at the 500-node
-  // cap that is 32M multiply-adds, ~100 ms, paid once per graph build.
+  // Links *within* the current node set. Two paths, and the cheap one is the default:
+  // the precomputed table already knows each card's 12 nearest, so intersecting that with
+  // the seed set is a lookup rather than an O(n^2 d) scan. All-pairs at the 500-node cap
+  // was 32M multiply-adds and needed the whole embedding matrix resident first.
   function linkWithin(nodeList) {
+    if (!emb) return linkWithinFromTable(nodeList);
     const out = [];
     const seen = new Set();
     for (let a = 0; a < nodeList.length; a++) {
@@ -315,6 +329,8 @@
     }
     ctx.restore();
 
+    drawArt();
+
     // Labels in screen space so they stay legible at any zoom — the thing Plotly's
     // annotations could never do without a relayout.
     ctx.font = '12px system-ui, -apple-system, sans-serif';
@@ -331,6 +347,52 @@
       ctx.fillText(text, p[0], p[1] - 14);
     }
   }
+
+  // The pinned card, drawn as real card art rather than a coloured dot.
+  //
+  // A DOM <img> over the canvas, NOT ctx.drawImage — and that is forced, not stylistic.
+  // Scryfall's image endpoint redirects, and the redirect chain refuses
+  // `crossOrigin="anonymous"` (verified: the load simply fails). Drawing it without
+  // that flag would taint the canvas, and `getImageData` on #forceCanvas would start
+  // throwing SecurityError — which a browser test already depends on. DOM-over-canvas
+  // is the same call this codebase made for region labels, for the same class of reason.
+  let artEl = null;
+
+  function ensureArt() {
+    if (artEl) return artEl;
+    const host = document.getElementById('plot');
+    if (!host) return null;
+    artEl = document.createElement('img');
+    artEl.className = 'walk-art';
+    artEl.alt = '';
+    artEl.onerror = function () { artEl.style.display = 'none'; };
+    host.appendChild(artEl);
+    return artEl;
+  }
+
+  function drawArt() {
+    const el = ensureArt();
+    if (!el) return;
+    // Only the pinned card. Every node would be 500 Scryfall round-trips and an
+    // unreadable collage; the hover popup already covers "what is that one".
+    if (!pinned || !transform) { el.style.display = 'none'; return; }
+
+    const rec = MM.cardRecord(pinned.row);
+    if (!rec) { el.style.display = 'none'; return; }
+    const src = MM.cardImageUrl(rec.n);
+    if (el.getAttribute('src') !== src) { el.setAttribute('src', src); el.style.display = ''; }
+
+    // Bigger when it is the whole graph: a single seed on an empty canvas was a 6 px
+    // dot, which is not a card you have landed on — it is a speck.
+    const height = nodes.length <= 2 ? 260 : 150;
+    const p = transform.apply([pinned.x, pinned.y]);
+    el.style.height = height + 'px';
+    el.style.transform = 'translate(' + Math.round(p[0]) + 'px,' + Math.round(p[1]) +
+                         'px) translate(-50%, -50%)';
+    el.style.display = '';
+  }
+
+  function hideArt() { if (artEl) artEl.style.display = 'none'; }
 
   // ── Simulation ──────────────────────────────────────────────────────────
 
@@ -358,7 +420,11 @@
 
   // ── Entering, branching, leaving ────────────────────────────────────────
 
-  async function enter(rowIndices, seedLabel) {
+  // `opts.chrome === 'discovery'` means someone else owns the side panel. One engine,
+  // two chromes — a second force simulation for the landing would be the duplicate-kNN
+  // mistake this codebase has already had to undo twice.
+  async function enter(rowIndices, seedLabel, opts) {
+    chrome = (opts && opts.chrome) || 'walk';
     // Re-entering with no explicit seed and a graph already built: pick up where you
     // left off rather than starting over.
     if (!rowIndices && nodes.length) {
@@ -373,8 +439,11 @@
     }
 
     const src = rowIndices && rowIndices.length ? rowIndices : seedFrom();
-    const unique = Array.from(new Set(src)).filter(i => MM.allData[i]);
-    if (unique.length < 2) {
+    const unique = Array.from(new Set(src)).filter(i => MM.cardRecord(i));
+    // One card is a legitimate starting point — it is THE starting point for discovery.
+    // This used to demand two and fall through to a deck/region menu, which is why
+    // landing on a single random card was impossible.
+    if (unique.length < 1) {
       // Nothing selected. An error message here would be a dead end — offer somewhere to
       // go instead. A walk has to start from a set, so hand over the sets that exist.
       active = true;
@@ -388,12 +457,23 @@
       return;
     }
 
-    if (!emb) {
+    // Embeddings are a gate only where they earn it, which is NOT the landing.
+    //
+    // A single seed has no intra-graph links to compute, so waiting on 16.8 MB of
+    // incompressible float32 before showing one card was pure dead time. A *seeded*
+    // walk is different: `linkWithinFromTable` only links cards whose precomputed top-12
+    // happen to also be in the set, which for a 97-card deck is 38 links instead of ~290
+    // — a visibly sparser, worse graph. The browser suite caught exactly that.
+    if (unique.length > 1 && !emb) {
       MM.setStatus('Loading embeddings…');
       emb = await MM.getEmbeddings();
-      if (!emb) { MM.setStatus('Embeddings unavailable — the walk needs them.'); return; }
-      dim = MM.EMBED_DIM;
+      if (emb) dim = MM.EMBED_DIM;
     }
+    // No background prefetch on the landing path, deliberately. Nothing in discovery
+    // reads `emb` — branching comes from the table and a single seed has no intra-graph
+    // links — so speculatively pulling 16.8 MB would be 16.8 MB spent on nothing. It also
+    // showed up as contention: with the fetch in place two browser tests passed alone and
+    // failed in the full run.
 
     truncatedFrom = unique.length > MAX_NODES ? unique.length : 0;
     // Even stride, not the first N — see Drill.sampleEvenly. Seeding a walk with the
@@ -422,46 +502,100 @@
       if (!active || ++fits > 14) { clearInterval(keepFramed); return; }
       fitToGraph(false);
     }, 550);
+    // A single seed is a landing: pin it so it draws as card art rather than a 6 px dot.
+    if (nodes.length === 1) pinned = nodes[0];
     renderPanel();
-    MM.setStatus(nodes.length + ' cards · link length is 128-dim cosine distance · click a card to branch');
+    if (chrome !== 'discovery') {
+      MM.setStatus(nodes.length + ' cards · link length is 128-dim cosine distance · click a card to branch');
+    }
   }
 
-  // The walk. Pull in the clicked card's nearest neighbours from the whole corpus, link
-  // them, and reheat — the graph grows toward whatever you were curious about.
-  async function branchFrom(node) {
-    if (!emb) return;
+  // The walk. Pull in the clicked card's neighbours and reheat — the graph grows toward
+  // whatever you were curious about.
+  //
+  // Synchronous on purpose. This used to `await nearestInCorpus`, which scanned the
+  // 34,322 x 128 embedding matrix on the main thread and could not run at all until
+  // 16.8 MB of incompressible float32 had downloaded. An await inside a click is what
+  // makes a graph feel laggy rather than physical; the precomputed table removes both.
+  function branchFrom(node, relation) {
     pinned = node;
     if (trail[trail.length - 1] !== node) {
       trail.push(node);
       if (trail.length > TRAIL_MAX) trail.shift();
     }
 
-    if (nodes.length >= MAX_NODES) {
+    const rel = relation || 'similar';
+    const found = Discovery.neighbours(node.row, rel);
+    if (!found.length) {
+      MM.setStatus(node.name + ' has no ' + rel + ' neighbours — try another relation.');
+      renderPanel();
+      return;
+    }
+
+    // Cross-links FIRST, and this is the fix for a real defect rather than a nicety.
+    // Branching used to skip every neighbour already on the graph, and only ever add
+    // parent->child edges. From a multi-seed start that was invisible because `enter()`
+    // ran `linkWithin` over the seeds; from a SINGLE seed it meant every graph was a
+    // pure tree forever — no cycles, no cross-links, and two near-duplicates reached
+    // down different branches sitting far apart with nothing between them. Which is the
+    // opposite of this file's whole thesis, "read adjacency, not absolute position".
+    let added = 0;
+    for (const nb of found) {
+      const existing = byIdx.get(nb.row);
+      if (!existing || existing === node) continue;
+      if (hasLink(node, existing)) continue;
+      links.push({ source: node, target: existing, d: edgeLength(nb), rel: nb.relation });
+      added++;
+    }
+
+    const room = Math.max(0, MAX_NODES - nodes.length);
+    if (!room && !added) {
       MM.setStatus('At the ' + MAX_NODES + '-card cap — trim the walk or start a new one.');
       renderPanel();
       draw();
       return;
     }
 
-    const have = new Set(nodes.map(n => n.row));
-    const room = Math.min(BRANCH_K, MAX_NODES - nodes.length);
-    const found = await nearestInCorpus(node.row, room, have);
-    if (!found.length) { renderPanel(); return; }
-
-    for (const row of found) {
-      const n = makeNode(row, false);
+    let grown = 0;
+    for (const nb of found) {
+      if (grown >= Math.min(BRANCH_K, room)) break;
+      if (byIdx.has(nb.row)) continue;
+      const n = makeNode(nb.row, false);
       // Born beside their parent, not at their world position — a new node should appear
       // to come *out of* the card you clicked.
       n.x = node.x + (Math.random() - 0.5) * 40;
       n.y = node.y + (Math.random() - 0.5) * 40;
       nodes.push(n);
-      byIdx.set(row, n);
-      links.push({ source: node, target: n, d: chord(node.row, row) });
+      byIdx.set(nb.row, n);
+      links.push({ source: node, target: n, d: edgeLength(nb), rel: nb.relation });
+      grown++;
     }
 
     restart(0.6);
     renderPanel();
-    MM.setStatus('Branched from ' + node.name + ' — ' + nodes.length + ' cards on the graph');
+    const bits = [];
+    if (grown) bits.push(grown + ' new');
+    if (added) bits.push(added + ' link' + (added === 1 ? '' : 's') + ' to cards already here');
+    MM.setStatus('Branched from ' + node.name + ' by ' + rel +
+                 (bits.length ? ' — ' + bits.join(', ') : '') +
+                 ' · ' + nodes.length + ' cards');
+  }
+
+  function hasLink(a, b) {
+    for (const l of links) {
+      const s = l.source.row !== undefined ? l.source.row : l.source;
+      const t = l.target.row !== undefined ? l.target.row : l.target;
+      if ((s === a.row && t === b.row) || (s === b.row && t === a.row)) return true;
+    }
+    return false;
+  }
+
+  // Chord distance from the stored cosine. Synergy and obsolescence are rule-based, not
+  // metric, so they carry a fixed nominal similarity — a synergy edge is a claim about
+  // function, and pretending it has a measured length would be a lie in pixels.
+  function edgeLength(nb) {
+    const c = Math.max(-1, Math.min(1, nb.sim));
+    return Math.sqrt(Math.max(0, 2 - 2 * c));
   }
 
   // What a walk starts from, in priority order. Everything that already knows how to
@@ -484,7 +618,42 @@
   // Back to the menu. Without this the walk is a one-way door: the deck/region list only
   // appears when the graph is empty, and since re-entry restores the graph, the first set
   // you pick is the only set you can ever pick.
-  function newWalk() {
+  // Branch a row that is already on the graph — how Discovery hands its landing card
+  // over: enter() seeds the single node, this opens it.
+  // Table-driven equivalent: whichever of a card's precomputed neighbours are also in
+  // this graph become links. Sparser than the all-pairs version by design — it only knows
+  // the top 12 — but it needs no embedding matrix and no scan.
+  function linkWithinFromTable(nodeList) {
+    const pos = new Map();
+    nodeList.forEach(function (n, i) { pos.set(n.row, i); });
+    const out = [];
+    const seen = new Set();
+    for (const n of nodeList) {
+      let made = 0;
+      for (const nb of Discovery.neighbours(n.row, 'similar')) {
+        if (made >= LINKS_PER_NODE) break;
+        const j = pos.get(nb.row);
+        if (j === undefined || nodeList[j] === n) continue;
+        const a = pos.get(n.row);
+        const key = a < j ? a + ':' + j : j + ':' + a;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        out.push({ source: n, target: nodeList[j], d: edgeLength(nb) });
+        made++;
+      }
+    }
+    return out;
+  }
+
+  function branchByRow(row, relation) {
+    const n = byIdx.get(row);
+    if (n) branchFrom(n, relation);
+  }
+
+  // `quiet` skips the empty-state menu: Discovery clears the graph only to immediately
+  // reseed it with a new landing card, and flashing a deck/region picker in between
+  // would be a menu nobody asked for.
+  function newWalk(quiet) {
     if (sim) sim.stop();
     nodes = []; links = []; trail = [];
     byIdx = new Map();
@@ -492,6 +661,7 @@
     truncatedFrom = 0;
     label = '';
     if (canvas) { transform = d3.zoomIdentity; draw(); }
+    if (quiet) return;
     renderEmptyState();
     MM.setStatus('Pick a starting point for the walk.');
   }
@@ -504,6 +674,7 @@
   // graph rebuilt correctly into a 0x0 hidden canvas and the mode looked dead.
   function exit() {
     active = false;
+    hideArt();
     if (sim) sim.stop();
   }
 
@@ -594,7 +765,11 @@
     if (!nodes.length) { renderEmptyState(); return; }
     document.getElementById('deckPanel').classList.add('open');
 
-    const h = hovered || pinned;
+    // Pinned wins over hovered. It used to be the other way round, which meant "click a
+    // card to open its details" evaporated the instant the cursor moved one pixel off
+    // the node — the panel would flick to whatever you happened to be passing over.
+    // Hover is a preview of somewhere you might go; the pin is where you are.
+    const h = pinned || hovered;
     let html =
       '<div class="deck-header"><h2>The Walk</h2>' +
       '<button class="lens-btn lens-btn-inline" onclick="Force.newWalk()" ' +
@@ -621,7 +796,7 @@
       html += '<div class="deck-section">' +
         '<div class="deck-section-title">' + (h === pinned ? 'Pinned' : 'Under the cursor') + '</div>' +
         '<div class="lens-title">' + MM.escHtml(h.name) + '</div>' +
-        MM.buildCardDetailHtml(MM.allData[h.row]) +
+        MM.buildCardDetailHtml(MM.cardRecord(h.row)) +
         '</div>';
     }
 
@@ -671,7 +846,7 @@
   window.Force = {
     enter, exit, isActive, seedFrom, focusCard,
     reheat, freeze, clearTrail, newWalk, tune, close, renderPanel, bbox,
-    walkDeck, walkRegion,
+    walkDeck, walkRegion, branchByRow,
     fit: function () { fitToGraph(true); },
     get nodeCount() { return nodes.length; },
     get linkCount() { return links.length; },

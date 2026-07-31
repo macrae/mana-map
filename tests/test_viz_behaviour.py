@@ -22,7 +22,7 @@ from __future__ import annotations
 import pytest
 
 from conftest_viz import (  # noqa: F401
-    BOOT_TIMEOUT_MS, browser, canvas_page, page, viz_server,
+    BOOT_TIMEOUT_MS, browser, canvas_page, discover_page, page, viz_server,
 )
 
 pytestmark = pytest.mark.browser
@@ -1025,3 +1025,178 @@ def test_deck_lens_and_drill_run_on_canvas(canvas_page):
     assert r["zoomed"] < r["before"], "focusLine did not move the camera"
     assert r["drilled"]["active"] and r["drilled"]["bar"], "drill did not run on canvas"
     assert r["backOk"] and r["labels"] > 5, "leaving drill did not restore the map"
+
+
+# ── Discovery: the front door ───────────────────────────────────────────
+
+
+def test_landing_paints_a_card_without_the_projection(discover_page):
+    """The reframe's whole claim.
+
+    Boot used to block on 12.9 MB of projection before a single pixel appeared, and the
+    first click then needed 16.8 MB of incompressible float32 on top. The landing now
+    renders from viz_index alone — this asserts the card is *there* while allData may
+    still be empty, which is the only way to prove the dependency is gone.
+    """
+    r = discover_page.evaluate("""() => ({
+        mode: document.getElementById('modeSelect').value,
+        card: Discovery.index[Discovery.current].n,
+        panel: !!document.querySelector('.discover-filters'),
+        art: !!document.querySelector('.walk-art'),
+        nodes: Force.nodeCount,
+    })""")
+    assert discover_page.js_errors == []
+    assert r["mode"] == "discover"
+    assert r["card"] == "Craterhoof Behemoth", "?card= deep link was not honoured"
+    assert r["panel"], "the discovery controls did not render"
+    assert r["nodes"] == 1, "the landing card should be the graph's single seed"
+    assert r["art"], "a landing card must be card art, not a 6px dot"
+
+
+def test_relation_counts_are_stated_before_any_click(discover_page):
+    """23.6% of cards have nothing but similar. A button that turns out to do nothing
+    reads as broken; a button labelled 0 reads as a fact about the card. The counts are
+    precomputed, so there is no excuse for finding out after the click."""
+    r = discover_page.evaluate(r"""() => {
+        const btns = [...document.querySelectorAll('.discover-rel')];
+        return {
+            labels: btns.map(b => b.textContent.replace(/\s+/g, ' ').trim()),
+            disabled: btns.map(b => b.disabled),
+            counts: Discovery.counts(Discovery.current),
+        };
+    }""")
+    assert discover_page.js_errors == []
+    assert any("Similar" in l for l in r["labels"])
+    assert r["counts"]["similar"] > 0
+    # Every button states its number, and an empty relation is disabled rather than absent.
+    for label, disabled in zip(r["labels"], r["disabled"]):
+        n = int(label.split()[-1])
+        assert disabled == (n == 0), f"{label!r} disabled={disabled} disagrees with its count"
+
+
+def test_a_card_with_no_synergy_says_zero_rather_than_lying(discover_page):
+    """Doubling Season is genuinely absent from the synergy graph — a real coverage hole.
+    Surfacing it as `Synergy 0` is the honest rendering of that."""
+    r = discover_page.evaluate("""async () => {
+        Discovery.show(Discovery.rowByName('Doubling Season'));
+        await new Promise(r => setTimeout(r, 300));
+        const btns = [...document.querySelectorAll('.discover-rel')];
+        return {
+            counts: Discovery.counts(Discovery.current),
+            synergyBtn: btns.find(b => b.textContent.includes('Synergy')).disabled,
+        };
+    }""")
+    assert discover_page.js_errors == []
+    assert r["counts"]["synergy"] == 0
+    assert r["synergyBtn"] is True, "an empty relation must be disabled, not clickable"
+
+
+def test_branching_is_synchronous(discover_page):
+    """The reason the table exists. An await inside a click is what makes a graph feel
+    laggy instead of physical; this asserts the branch completes within one call."""
+    r = discover_page.evaluate("""() => {
+        const before = Force.nodeCount;
+        const t = performance.now();
+        Force.branchByRow(Discovery.current, 'similar');
+        const ms = performance.now() - t;
+        // Read the count immediately — no await, no timeout. If branching were async
+        // the nodes would not exist yet on this line.
+        return {ms: ms, before: before, after: Force.nodeCount};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["after"] > r["before"], "branch did not add nodes synchronously"
+    assert r["ms"] < 100, f"a branch took {r['ms']:.0f} ms — is something awaiting?"
+
+
+def test_the_graph_is_not_a_pure_tree(discover_page):
+    """The defect a single-seed start exposed.
+
+    `branchFrom` skipped every neighbour already on the graph and only ever added
+    parent->child edges, so from one seed there were no cycles and no cross-links — two
+    near-duplicates reached down different branches would sit far apart with nothing
+    between them, contradicting the file's own thesis of reading adjacency. Branching now
+    also links to cards already present.
+    """
+    r = discover_page.evaluate("""async () => {
+        Force.branchByRow(Discovery.current, 'similar');
+        await new Promise(r => setTimeout(r, 200));
+        const rows = Discovery.neighbours(Discovery.current, 'similar').map(n => n.row);
+        for (const row of rows.slice(0, 4)) Force.branchByRow(row, 'similar');
+        await new Promise(r => setTimeout(r, 300));
+        return {nodes: Force.nodeCount, links: Force.linkCount};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["links"] > r["nodes"] - 1, (
+        f"{r['nodes']} nodes / {r['links']} links is still a tree — cross-linking is gone"
+    )
+
+
+def test_the_pin_beats_the_hover(discover_page):
+    """"Click a card to open its details" used to evaporate the moment the cursor moved
+    off the node: the panel read `hovered || pinned`, so it flicked to whatever you
+    happened to be passing over. Hover is a preview; the pin is where you are."""
+    r = discover_page.evaluate("""async () => {
+        Force.branchByRow(Discovery.current, 'similar');
+        await new Promise(r => setTimeout(r, 400));
+        document.getElementById('modeSelect').value = 'force';
+        MM.setMode('force');
+        await new Promise(r => setTimeout(r, 300));
+        const pinnedName = Discovery.index[Discovery.current].n;
+        const c = document.getElementById('forceCanvas');
+        const rect = c.getBoundingClientRect();
+        // Sweep the cursor across empty canvas — nothing should steal the panel.
+        c.dispatchEvent(new MouseEvent('mousemove',
+            {bubbles: true, clientX: rect.left + 5, clientY: rect.top + 5}));
+        await new Promise(r => setTimeout(r, 300));
+        return {panel: document.getElementById('deckInner').textContent, expect: pinnedName};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["expect"] in r["panel"], "the pinned card left the panel when the cursor moved"
+
+
+def test_feeling_lucky_changes_the_card(discover_page):
+    r = discover_page.evaluate("""async () => {
+        const first = Discovery.current;
+        const seen = new Set([first]);
+        for (let i = 0; i < 6; i++) {
+            Discovery.reroll();
+            await new Promise(r => setTimeout(r, 120));
+            seen.add(Discovery.current);
+        }
+        return {distinct: seen.size, nodes: Force.nodeCount};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["distinct"] > 2, "Feeling lucky kept returning the same card"
+    assert r["nodes"] == 1, "a re-roll should reset the graph to the new single card"
+
+
+def test_filters_narrow_the_pick(discover_page):
+    r = discover_page.evaluate("""async () => {
+        Discovery.onFilter('supertype', 'Land');
+        await new Promise(r => setTimeout(r, 200));
+        const land = Discovery.index[Discovery.current].s;
+        Discovery.onFilter('supertype', '');
+        Discovery.onFilter('color', 'R');
+        await new Promise(r => setTimeout(r, 200));
+        return {land: land, colour: Discovery.index[Discovery.current].c,
+                pool: Discovery.poolSize()};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["land"] == "Land"
+    assert r["colour"] == "R"
+    assert r["pool"] > 100
+
+
+def test_the_atlas_is_still_one_click_away(discover_page):
+    """Discovery is the front door, not a replacement — the 34,322-point map still has
+    to be reachable, and it still backs Deck Lens."""
+    r = discover_page.evaluate("""async () => {
+        document.getElementById('modeSelect').value = 'explore';
+        MM.setMode('explore');
+        await new Promise(r => setTimeout(r, 2500));
+        const gd = document.getElementById('plot');
+        return {traces: (gd.data || []).length, rows: MM.allData.length};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["rows"] > 30000, "the projection never loaded behind the landing"
+    assert r["traces"] > 0, "switching to Explore did not draw the map"

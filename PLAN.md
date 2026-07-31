@@ -23,7 +23,7 @@ a **deck builder** that produces the deck in the first place.
 [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-1,069 tests (1,030 fast + 39 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
+1,078 tests (1,030 fast + 48 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
 
 > ### ⚠ OPEN: 23 agent-cache routines are deliberately MISSed
 >
@@ -326,9 +326,20 @@ is **synchronous** — no await inside the gesture, and the 16.8 MB embedding ma
 gate on the first click a new visitor makes. `manamap viz-index` is step 14; step 15 is the
 quality reporter.
 
-**Slice 2 — next.** `Discovery.enter(row)`, `allData`-free node construction, card art instead of
-a 6 px dot, synchronous branching, `?card=` deep link, weighted random pick. Three existing Walk
-defects must be fixed for it to work at all — see the plan file.
+**Slice 2 — shipped.** The landing is one card. `viz/js/discovery.js` picks it (weighted toward
+cards with somewhere to go), renders it as art floating in space, and states what it connects to
+before you click: *Similar 12 · Synergy 10 · Outclassed by 5*. Picking a relation grows the graph
+**synchronously** — median 0.4 ms, no await in the gesture, and the embedding matrix is never
+fetched on that path. `?card=`, `?seed=` and `?mode=explore` make it deep-linkable and testable.
+
+It is the **same force engine with different chrome**, not a second simulation. Three defects the
+single-seed start exposed, all fixed: every graph was a pure tree (branching skipped cards already
+present, so no cross-links ever formed); the panel followed the cursor rather than the pin; and a
+lone seed drew as a 6 px dot. Card art is a DOM `<img>` over the canvas — Scryfall's redirect
+refuses `crossOrigin`, so `ctx.drawImage` would taint the canvas and break `getImageData`.
+
+**Slice 3 — next.** The tray, Moxfield paste-import (shared fixtures first, then the parser), and
+the Optimize brief hand-off to Claude Code.
 
 **Three findings that changed the requirements:**
 

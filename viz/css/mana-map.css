@@ -529,3 +529,31 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 }
 .map-legend-row { display: flex; align-items: center; gap: 7px; padding: 1px 0; white-space: nowrap; }
 .map-legend-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+/* The pinned card in The Walk, as real art rather than a dot. A DOM <img> over the
+   canvas because Scryfall's redirect refuses crossOrigin=anonymous, so ctx.drawImage
+   would taint the canvas and break getImageData — see force.js:drawArt. */
+.walk-art {
+  position: absolute; left: 0; top: 0; z-index: 18;
+  pointer-events: none; border-radius: 4.75% / 3.5%;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.55), 0 0 0 1px rgba(196,167,71,0.5);
+  transition: height 0.18s ease;
+}
+
+/* Discovery — the landing. Few controls on purpose: a type, a colour, a cost band,
+   and a re-roll. */
+.discover-filters { display: flex; gap: 6px; margin: 10px 0 14px; }
+.discover-filters select {
+  flex: 1; min-width: 0; background: #16213e; color: #ddd;
+  border: 1px solid #3a3a5a; border-radius: 4px; padding: 5px 6px; font-size: 0.8rem;
+}
+.discover-relations { display: flex; gap: 6px; margin: 10px 0 6px; flex-wrap: wrap; }
+.discover-rel { flex: 1; min-width: 92px; font-size: 0.78rem; }
+/* A relation with nothing behind it is a fact about the card, not a broken button —
+   23.6% of cards have only "similar". Say the number rather than hide the control. */
+.discover-rel.is-empty { opacity: 0.4; cursor: default; }
+.discover-count {
+  display: inline-block; margin-left: 4px; padding: 0 5px; border-radius: 8px;
+  background: rgba(196,167,71,0.22); color: #c4a747; font-variant-numeric: tabular-nums;
+}
+.lens-note { color: #8a8aa0; font-size: 0.72rem; margin: 2px 0 10px; line-height: 1.4; }

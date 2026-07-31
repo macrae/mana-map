@@ -72,6 +72,12 @@ def browser():
             browser.close()
 
 
+# Discovery is the landing now, so every existing fixture asks for the map explicitly.
+# A test about rendering 34,322 points should say so rather than rely on what boot
+# happens to produce — and it documents the change for whoever reads these next.
+EXPLORE = "?mode=explore"
+
+
 def _boot(browser, viz_server, query=""):
     page = browser.new_page(viewport={"width": 1440, "height": 900})
     errors: list[str] = []
@@ -87,13 +93,38 @@ def _boot(browser, viz_server, query=""):
 
 
 @pytest.fixture
+def discover_page(browser, viz_server):
+    """The landing, on a card chosen by deep link so the test is not random.
+
+    Waits on `Discovery.isReady()` rather than `MM.allData` — the whole point of the
+    front door is that it paints from 0.56 MB of viz_index without the 12.9 MB
+    projection, and a fixture that waited for allData could not observe that.
+    """
+    page = browser.new_page(viewport={"width": 1440, "height": 900})
+    errors: list[str] = []
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+    page.goto(f"{viz_server}/viz/index.html?card=Craterhoof%20Behemoth")
+    page.add_style_tag(content="*, *::before, *::after {"
+                               " transition: none !important; animation: none !important; }")
+    page.wait_for_function(
+        "() => window.Discovery && Discovery.isReady() && Discovery.current >= 0",
+        timeout=BOOT_TIMEOUT_MS)
+    page.js_errors = errors
+    try:
+        yield page
+    finally:
+        page.close()
+
+
+@pytest.fixture
 def canvas_page(browser, viz_server):
     """The map under the canvas renderer (Phase 2 of the Plotly migration).
 
     Same page, same code, `?renderer=canvas` — which is the point of the strangler: both
     renderers are live at once so they can be compared on identical data.
     """
-    page = _boot(browser, viz_server, "?renderer=canvas")
+    page = _boot(browser, viz_server, "?renderer=canvas&mode=explore")
     page.wait_for_function("() => !!document.querySelector('.map-canvas')",
                            timeout=BOOT_TIMEOUT_MS)
     try:
@@ -113,7 +144,7 @@ def page(browser, viz_server):
     errors: list[str] = []
     page.on("pageerror", lambda e: errors.append(str(e)))
     page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
-    page.goto(f"{viz_server}/viz/index.html")
+    page.goto(f"{viz_server}/viz/index.html{EXPLORE}")
     # Kill CSS transitions. Playwright pages run backgrounded, and Chrome throttles
     # transitions there — the side panels' `transition: width 0.25s` never advances, so
     # `.deck-panel.open` sits at 1px forever and every width assertion is meaningless.

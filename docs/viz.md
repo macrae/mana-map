@@ -169,6 +169,57 @@ nothing.
 `tests/test_viz_drill.py` covers the contract, the suppressions, the local-position
 lookup, the announced truncation, and the hidden-tab fallback.
 
+## Discovery — the front door (`viz/js/discovery.js`)
+
+The map used to be where you arrived. Now the landing is **one card**: hover it, click a
+relation, and the graph grows from there. `?card=<name>` and `?seed=<n>` make a landing
+reproducible; `?mode=explore` goes straight to the atlas, which is what every existing
+browser fixture now asks for.
+
+**It is the same force engine as The Walk, with different chrome.**
+`Force.enter(rows, label, {chrome: 'discovery'})` hands the side panel to Discovery and
+otherwise reuses the physics, drag-and-fling, hover popup and card detail. A second
+simulation for the landing would have been the duplicate-k-NN mistake this codebase has
+already had to undo twice.
+
+**Boot: 2.26 MB, against 18.4 MB to reach a first branch before.**
+
+| artifact | gzipped | needed for |
+|---|---|---|
+| `viz_index.json` | 0.56 MB | pick a card, filter, resolve a name |
+| `neighbours.bin` | 1.70 MB | branch — synchronously |
+| `projection_2d.json` | 2.90 MB | the atlas; upgrades card records behind the landing |
+| `embeddings_ability.bin` | 15.54 MB | **not fetched on the discovery path at all** |
+
+Nothing in discovery reads the embedding matrix, so it is never requested there — a
+speculative prefetch was tried and removed, both because it was 16.8 MB spent on nothing
+and because it showed up as contention that made two browser tests pass alone and fail in
+the full run. A **seeded** walk (deck or region) still awaits it: `linkWithinFromTable`
+only links cards whose precomputed top-12 are also in the set, which on a 97-card deck is
+38 links instead of ~290 — a visibly sparser graph, caught by the browser suite.
+
+**Three defects the single-seed landing exposed**, all fixed:
+
+- **Every graph was a tree.** `branchFrom` skipped neighbours already present and only ever
+  added parent→child edges. Invisible from a multi-seed start because `enter()` ran
+  `linkWithin` first; from one seed it meant no cycles and no cross-links, so two
+  near-duplicates reached down different branches sat far apart with nothing between them.
+  Branching now links to cards already on the graph as well.
+- **The panel followed the cursor.** `hovered || pinned` meant "click to open details"
+  evaporated the moment the mouse moved. Now `pinned || hovered`.
+- **A single seed was a 6 px dot.** The pinned card renders as real art — a DOM `<img>`
+  over the canvas, *not* `ctx.drawImage`, because Scryfall's image endpoint redirects and
+  the redirect chain refuses `crossOrigin="anonymous"` (verified: the load fails). Drawing
+  it without that flag would taint the canvas and `getImageData` on `#forceCanvas` would
+  start throwing, which a browser test depends on. Same DOM-over-canvas call as region
+  labels, for the same class of reason.
+
+**Relation counts are stated before the click**, because they are precomputed: "Similar 12
+· Synergy 10 · Outclassed by 5". 23.6% of cards have nothing but similar, and a button that
+turns out to do nothing reads as broken rather than as a fact about the card. Synergy is
+exactly 10 partners for every card that has any, so the UI says it is a rule-based list
+rather than a ranking.
+
 ## The canvas renderer (`?renderer=canvas`) — Phases 2–3 of the migration
 
 `viz/js/render/canvas.js` draws the map instead of Plotly. Both renderers are live at once:

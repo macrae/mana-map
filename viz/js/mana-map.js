@@ -28,7 +28,7 @@
   let searchTimeout = null;
   let plotInitialized = false;
   let similarTrace = null;
-  let currentMode = 'explore';
+  let currentMode = 'discover';
   let embeddings = null; // Float32Array, loaded lazily for Find Similar
   const EMBED_DIM = 128; // mirrors FINAL_EMBEDDING_DIM in config.py
   let currentMap = 'default'; // 'default' or 'ability'
@@ -65,6 +65,9 @@
     obsolescence: v(DATA_BASE + 'obsolescence_index.json'),
     synergyGraph: v(DATA_BASE + 'synergy_graph.json'),
     comboGraph: v(DATA_BASE + 'combo_graph.json'),
+    // The discovery front door — small enough to land on before anything else arrives.
+    vizIndex: v(DATA_BASE + 'viz_index.json'),
+    neighbours: v(DATA_BASE + 'neighbours.bin'),
   };
   const MAP_CONFIGS = {
     default: { projection: DATA.projection, embeddings: DATA.embeddings, regions: DATA.regionsDefault },
@@ -368,6 +371,17 @@
     clearTimeout(hoverTimer);
     hoverRow = null;
     if (popupEl) popupEl.style.display = 'none';
+  }
+
+  // The record for a row, whichever half of the data has arrived. Discovery boots on
+  // viz_index (0.56 MB) and the projection lands behind it, so this is what lets the
+  // landing paint immediately and get richer rather than waiting for 2.9 MB.
+  // `buildCardDetailHtml` is already field-by-field optional — only `.n` is required —
+  // so a slim record renders a real card, just without the local oracle text that the
+  // Scryfall image is showing anyway.
+  function cardRecord(row) {
+    if (allData.length && allData[row]) return allData[row];
+    return (window.Discovery && Discovery.record(row)) || null;
   }
 
   function cardImageUrl(name) {
@@ -1334,26 +1348,68 @@
   }
 
   // ── Load data ──
+  //
+  // Two tracks. Discovery boots on 2.26 MB (viz_index + neighbours) and is the front
+  // door; the 2.9 MB projection loads *behind* it and upgrades every record in place —
+  // `MM.cardRecord` prefers the full row when it exists and falls back to the slim one.
+  // Landing used to mean waiting for the projection before a single pixel appeared.
+  const params = new URLSearchParams(window.location.search);
+  const wantedDeck = params.get('deck');
+  // ?mode=explore deep-links straight to the atlas. Discovery is the front door now, so
+  // anything that wants the 34,322-point map — a bookmark, a browser test about
+  // rendering — has to ask for it rather than assume it is what boot produces.
+  const wantedMode = params.get('mode');
+  if (wantedMode) currentMode = wantedMode;
+
+  Discovery.configure({ vizIndex: DATA.vizIndex, neighbours: DATA.neighbours });
+  // Apply the mode chrome BEFORE the data arrives. `currentMode` being 'discover' is not
+  // enough on its own — setMode is what hides the Plotly surface and gives the force
+  // canvas a size, and without it the canvas measured 0x0, so the landing card's
+  // transform resolved to (0,0) and it drew half off-screen behind the toolbar.
+  //
+  // queueMicrotask, not a direct call: every line in this file runs INSIDE the IIFE whose
+  // return value becomes `window.MM`, so the global does not exist yet. Discovery touches
+  // MM.setStatus, and calling it here threw — which aborted the IIFE, so MM was never
+  // exported and deck-builder.js failed at its own top level too. One ordering mistake,
+  // four broken files, twice. A microtask runs after the assignment completes.
+  if (!wantedDeck) queueMicrotask(function () {
+    const sel = document.getElementById('modeSelect');
+    if (sel) sel.value = currentMode;
+    // Only discovery needs its chrome applied before data arrives — it is the one mode
+    // that renders from viz_index alone. Calling setMode('explore') here would run
+    // render() against an empty allData and initialise Plotly on nothing; the data-load
+    // path below already renders explore once there is something to draw.
+    if (currentMode === 'discover') setMode('discover');
+  });
+  Discovery.ready()
+    .then(() => {
+      if (!wantedDeck && currentMode === 'discover') Discovery.land(params);
+    })
+    .catch(err => setStatus('Discovery unavailable: ' + err.message));
+
   fetch(MAP_CONFIGS.default.projection)
     .then(r => r.json())
     .then(data => {
       allData = data;
       projectionCache['default'] = data;
       initToggles();
-      render();
       refreshDrillButton();
-      setStatus(`${allData.length.toLocaleString()} cards loaded`);
+      // Only paint the scatter if that is what the user is looking at. Rendering 34,322
+      // points behind a landing card is work nobody asked for.
+      if (currentMode === 'explore') {
+        render();
+        setStatus(`${allData.length.toLocaleString()} cards loaded`);
+      }
       // ?deck=<slug> is the map's first inbound deep link — the dossier and the
       // magazine's Back Page both use it. Honour it by entering the Lens, not by
       // dropping the reader on an unfiltered map with a query string they can't see.
-      const wantedDeck = new URLSearchParams(window.location.search).get('deck');
       if (wantedDeck) {
         document.getElementById('modeSelect').value = 'deck';
         setMode('deck');
       }
       // Load region data in background, then re-render with labels
       loadRegionData('default').then(data => {
-        if (data) render();
+        if (data && currentMode === 'explore') render();
       });
     })
     .catch(err => setStatus('Error loading data: ' + err.message));
@@ -1554,18 +1610,35 @@
   // whole interaction.
   function setMode(mode) {
     currentMode = mode;
+    const sel = document.getElementById('modeSelect');
+    if (sel && sel.value !== mode) sel.value = mode;
     hideCardPopup();
     const detail = document.getElementById('detailPanel');
 
+    if (mode !== 'discover' && typeof window.Discovery !== 'undefined') window.Discovery.exit();
     if (mode !== 'build' && typeof window.DeckBuilder !== 'undefined') window.DeckBuilder.exit();
     if (mode !== 'deck' && typeof window.DeckMap !== 'undefined') window.DeckMap.exit();
-    if (mode !== 'force' && typeof window.Force !== 'undefined') window.Force.exit();
+    // Discovery and The Walk are the same engine with different chrome, so entering
+    // discovery must not tear the graph down.
+    if (mode !== 'force' && mode !== 'discover' && typeof window.Force !== 'undefined') {
+      window.Force.exit();
+    }
 
     // The Walk replaces the plot rather than overlaying it: it is a different renderer
     // (canvas) drawing a different thing (a graph, not a projection), so the Plotly
     // surface is hidden outright while it runs.
+    // Discovery has no plot of its own — it is a card and a panel, with the canvas
+    // waiting behind. Hiding the Plotly surface keeps the landing from being a card
+    // pasted over 34,322 points the visitor did not ask for.
     const plotEl = document.getElementById('plot');
-    plotEl.classList.toggle('force-mode', mode === 'force');
+    plotEl.classList.toggle('force-mode', mode === 'force' || mode === 'discover');
+
+    if (mode === 'discover') {
+      clearSelection();
+      detail.style.display = 'none';
+      if (typeof window.Discovery !== 'undefined') window.Discovery.enter();
+      return;
+    }
 
     if (mode === 'build') {
       clearSelection();
@@ -2103,6 +2176,8 @@
     // rather than at a guessed pixel.
     get mapRenderer() { return mapCanvas; },
     nearestTo,
+    cardRecord,
+    cardImageUrl,
     buildCardDetailHtml,
     showCardPopup,
     hideCardPopup,
