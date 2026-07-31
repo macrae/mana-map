@@ -198,6 +198,15 @@ the full run. A **seeded** walk (deck or region) still awaits it: `linkWithinFro
 only links cards whose precomputed top-12 are also in the set, which on a 97-card deck is
 38 links instead of ~290 — a visibly sparser graph, caught by the browser suite.
 
+**A click must survive a shaky hand.** `d3.drag`'s `clickDistance` defaults to **0**, so any
+pointer movement between mousedown and mouseup makes d3 install a capture-phase suppressor that
+eats the following `click` event. Measured on this page: 0px jitter delivered the click, **1px
+and 3px swallowed it**. That is the whole of "some cards don't expand the first time, then work
+if I click again" — the second click was just steadier. The drag now sets `clickDistance(6)`, a
+tap tolerance: below it you meant to click, above it you meant to fling. The click handler also
+falls back to the hovered node when the hit test misses, because the simulation keeps running
+and a node can drift out from under the cursor between press and release.
+
 **Names without hovering.** The graph places a bounded sample of card labels — priority to
 hovered, pinned, the trail, then seeds — greedily, rejecting any that would collide. Labelling
 all 500 nodes is a smear; labelling only the hovered one means the graph says nothing until

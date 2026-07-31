@@ -1463,3 +1463,75 @@ def test_the_hover_card_stays_inside_the_frame(discover_page):
             f"the popup measured {case['height']}px at the {case['at']} — an unloaded image "
             f"measuring ~0 is exactly what defeated the clamp"
         )
+
+
+def test_a_click_survives_a_shaky_hand(discover_page):
+    """Reported: "some points don't expand the first time, then work if I click again".
+
+    Not latency and not rendering — the click event was being **swallowed**. d3-drag's
+    `clickDistance` defaults to 0, so ANY pointer movement between mousedown and mouseup
+    makes d3 install a capture-phase suppressor that eats the following `click`. One pixel
+    of hand tremor and the card does not expand; the next click happens to be steadier and
+    "fixes" it.
+
+    Measured on this page with the default: 0px jitter delivered the click, 1px and 3px
+    swallowed it. With a 6px tap tolerance, 0px and 3px deliver and 12px is correctly read
+    as a drag.
+
+    The tolerance is the whole point of the test, so it drives the real drag behaviour
+    rather than asserting a constant.
+    """
+    r = discover_page.evaluate("""async () => {
+        Force.branchByRow(Discovery.current, 'similar');
+        await new Promise(r => setTimeout(r, 600));
+        Force.fit();
+        await new Promise(r => setTimeout(r, 800));
+
+        const c = document.getElementById('forceCanvas');
+        const nodeAt = () => {
+            const r = c.getBoundingClientRect();
+            for (let x = 0; x < r.width; x += 3) {
+                for (let y = 0; y < r.height; y += 3) {
+                    c.dispatchEvent(new MouseEvent('mousemove',
+                        {bubbles: true, clientX: r.left + x, clientY: r.top + y}));
+                    if (c.style.cursor === 'pointer') return [r.left + x, r.top + y];
+                }
+            }
+            return null;
+        };
+        // press, jitter, release, click — the shape of a real click by a real hand
+        const tap = async (jitter) => {
+            const at = nodeAt();
+            if (!at) return null;
+            let clicks = 0;
+            const count = () => { clicks++; };
+            c.addEventListener('click', count, true);
+            const o = (x, y) => ({bubbles: true, clientX: x, clientY: y,
+                                  view: window, button: 0});
+            c.dispatchEvent(new MouseEvent('mousedown', o(at[0], at[1])));
+            window.dispatchEvent(new MouseEvent('mousemove', o(at[0] + jitter, at[1])));
+            window.dispatchEvent(new MouseEvent('mouseup', o(at[0] + jitter, at[1])));
+            c.dispatchEvent(new MouseEvent('click', o(at[0] + jitter, at[1])));
+            await new Promise(r => setTimeout(r, 120));
+            c.removeEventListener('click', count, true);
+            return clicks;
+        };
+        return {steady: await tap(0), tremor: await tap(3), drag: await tap(14)};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["steady"] == 1, "a perfectly still click did not register at all"
+    assert r["tremor"] == 1, (
+        "a 3px hand tremor swallowed the click — clickDistance is back at d3's default of "
+        "0, and cards will intermittently refuse to expand"
+    )
+    assert r["drag"] == 0, "a 14px drag should be a fling, not a click"
+
+
+def test_a_click_falls_back_to_the_highlighted_card(discover_page):
+    """The simulation keeps running after a branch, so a node can drift out from under the
+    cursor between press and release. The card the UI is highlighting is the one the user
+    aimed at, so the click handler uses it when the hit test comes up empty."""
+    src = discover_page.evaluate(
+        "() => [...document.scripts].map(s => s.src).find(s => s.includes('force.js'))")
+    body = discover_page.evaluate("""async (url) => (await (await fetch(url)).text())""", src)
+    assert "|| hovered" in body, "the click handler no longer falls back to the hovered node"

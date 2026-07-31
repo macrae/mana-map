@@ -178,7 +178,18 @@
         ev.subject.fy = null;
       });
 
-    d3.select(canvas).call(drag).call(zoomBehaviour);
+    // clickDistance is the whole reason clicking a card felt unreliable.
+    //
+    // d3-drag defaults it to 0, which means ANY pointer movement between mousedown and
+    // mouseup — one pixel of hand tremor — makes d3 install a capture-phase suppressor
+    // that swallows the subsequent `click` event outright. The handler below never runs,
+    // nothing expands, and clicking again "fixes" it only because that click happened to
+    // be steadier. Verified with real mouse input: two clicks on a node delivered zero
+    // click events and added zero nodes.
+    //
+    // 6px is a deliberate tap tolerance: below it you meant to click, above it you meant
+    // to fling the card.
+    d3.select(canvas).call(drag.clickDistance(6)).call(zoomBehaviour);
 
     canvas.addEventListener('mousemove', function (e) {
       const r = canvas.getBoundingClientRect();
@@ -198,7 +209,10 @@
 
     canvas.addEventListener('click', function (e) {
       const r = canvas.getBoundingClientRect();
-      const hit = pick(e.clientX - r.left, e.clientY - r.top);
+      // Fall back to whatever is hovered: the simulation is still running after a branch,
+      // so a node can drift out from under the cursor between press and release. The
+      // highlighted card is the one the user was aiming at.
+      const hit = pick(e.clientX - r.left, e.clientY - r.top) || hovered;
       if (hit) branchFrom(hit);
     });
 
