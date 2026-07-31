@@ -243,6 +243,11 @@ rather than a ranking.
 
 ### The tray, import, and the hand-off
 
+**The graph drives the panel.** Clicking a card calls `Discovery.focus(row)`, so the panel
+shows that card's art, its relation counts, and a Keep button that adds the card you actually
+clicked. `focus` is deliberately not `show` — `show` reseeds the graph, and opening a card you
+walked to must not discard the walk that reached it.
+
 **The tray** is a deliberately light selected-set, separate from the graph: the graph is
 where you are looking, the tray is what you are keeping. It is the fifth "set of cards"
 idea in this codebase and the only one that exports.

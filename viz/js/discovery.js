@@ -353,6 +353,15 @@ window.Discovery = (function () {
     show(row);
   }
 
+  /* The graph says which card is selected; the panel follows. Distinct from `show()`,
+   * which RESEEDS the graph — clicking a node must open that card without throwing away
+   * the walk you just built to reach it. */
+  function focus(row) {
+    if (row < 0 || row === current) { render(); return; }
+    current = row;
+    render();
+  }
+
   function reroll() { show(pick()); }
 
   function onFilter(key, value) {
@@ -494,7 +503,7 @@ window.Discovery = (function () {
 
   return {
     configure, ready, isReady, loadIndex, loadNeighbours, decode,
-    enter, exit: exitMode, land, show, reroll, walk, onFilter, render,
+    enter, exit: exitMode, land, show, focus, reroll, walk, onFilter, render,
     tray: { get list() { return tray.slice(); }, has: inTray, toggle: toggleTray,
             clear: clearTray, names: trayNames },
     brief, exportBrief, importText, onImport, toggleImport, rowByName,

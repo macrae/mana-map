@@ -531,6 +531,9 @@
   // makes a graph feel laggy rather than physical; the precomputed table removes both.
   function branchFrom(node, relation) {
     pinned = node;
+    // Tell Discovery which card is now open, so the panel shows THIS card's art, its
+    // relation counts, and a Keep button that adds the card you actually clicked.
+    if (chrome === 'discovery' && window.Discovery) Discovery.focus(node.row);
     if (trail[trail.length - 1] !== node) {
       trail.push(node);
       if (trail.length > TRAIL_MAX) trail.shift();
@@ -702,6 +705,7 @@
     const n = byIdx.get(row);
     if (!n) return;
     pinned = n;
+    if (chrome === 'discovery' && window.Discovery) Discovery.focus(row);
     if (trail[trail.length - 1] !== n) trail.push(n);
     draw();
     renderPanel();

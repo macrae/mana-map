@@ -1535,3 +1535,73 @@ def test_a_click_falls_back_to_the_highlighted_card(discover_page):
         "() => [...document.scripts].map(s => s.src).find(s => s.includes('force.js'))")
     body = discover_page.evaluate("""async (url) => (await (await fetch(url)).text())""", src)
     assert "|| hovered" in body, "the click handler no longer falls back to the hovered node"
+
+
+def test_clicking_a_card_opens_it_in_the_panel(discover_page):
+    """The graph says what is selected; the panel follows.
+
+    Clicking used to branch the graph and leave the panel on the landing card — so the
+    relation counts described a card you were no longer looking at, and "+ Keep this card"
+    put the wrong one in the tray.
+
+    `Discovery.focus` is deliberately not `show`: `show` reseeds the graph, and opening a
+    card you walked to must not throw away the walk that got you there.
+    """
+    r = discover_page.evaluate("""async () => {
+        const landing = Discovery.index[Discovery.current].n;
+        Force.branchByRow(Discovery.current, 'similar');
+        await new Promise(r => setTimeout(r, 700));
+        Force.fit();
+        await new Promise(r => setTimeout(r, 800));
+        const nodesAfterBranch = Force.nodeCount;
+
+        const c = document.getElementById('forceCanvas');
+        const rect = c.getBoundingClientRect();
+        const title = () => {
+            const el = document.querySelector('#deckInner .lens-title');
+            return el ? el.textContent : null;
+        };
+
+        let clicked = null;
+        outer:
+        for (let x = 0; x < rect.width; x += 3) {
+            for (let y = 0; y < rect.height; y += 3) {
+                c.dispatchEvent(new MouseEvent('mousemove',
+                    {bubbles: true, clientX: rect.left + x, clientY: rect.top + y}));
+                if (c.style.cursor !== 'pointer') continue;
+                const before = Discovery.current;
+                c.dispatchEvent(new MouseEvent('click',
+                    {bubbles: true, clientX: rect.left + x, clientY: rect.top + y}));
+                await new Promise(r => setTimeout(r, 250));
+                if (Discovery.current !== before) {
+                    clicked = Discovery.index[Discovery.current].n;
+                    break outer;
+                }
+            }
+        }
+
+        const keep = document.querySelector('.discover-keep');
+        const trayBefore = Discovery.tray.list.length;
+        if (keep) keep.click();
+        await new Promise(r => setTimeout(r, 200));
+
+        return {
+            landing: landing, clicked: clicked, panel: title(),
+            counts: Discovery.counts(Discovery.current),
+            trayBefore: trayBefore, trayAfter: Discovery.tray.list.length,
+            trayNames: Discovery.tray.names(),
+            keptTheRightCard: Discovery.tray.names().includes(clicked),
+            graphKept: Force.nodeCount >= nodesAfterBranch,
+        };
+    }""")
+    assert discover_page.js_errors == []
+    assert r["clicked"], "clicking a node never changed the selected card"
+    assert r["clicked"] != r["landing"], "the click selected the landing card again"
+    assert r["panel"] == r["clicked"], (
+        f"panel shows {r['panel']!r} after clicking {r['clicked']!r} — the relation counts "
+        f"and Keep button would describe the wrong card"
+    )
+    assert r["counts"]["similar"] > 0, "the panel is not showing the clicked card's relations"
+    assert r["trayAfter"] == r["trayBefore"] + 1
+    assert r["keptTheRightCard"], f"the tray got {r['trayNames']} instead of the clicked card"
+    assert r["graphKept"], "opening a card discarded the walk that reached it"
