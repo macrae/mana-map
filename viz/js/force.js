@@ -792,6 +792,8 @@
     return out;
   }
 
+  function hasRow(row) { return byIdx.has(row); }
+
   function branchByRow(row, relation) {
     const n = byIdx.get(row);
     if (n) branchFrom(n, relation);
@@ -962,7 +964,7 @@
       html += '<div class="deck-section">' +
         '<div class="deck-section-title">' + (h === pinned ? 'Pinned' : 'Under the cursor') + '</div>' +
         '<div class="lens-title">' + MM.escHtml(h.name) + '</div>' +
-        MM.buildCardDetailHtml(MM.cardRecord(h.row)) +
+        MM.buildCardDetailHtml(MM.cardRecord(h.row), h.row) +
         '</div>';
     }
 
@@ -1012,7 +1014,7 @@
   window.Force = {
     enter, exit, isActive, seedFrom, focusCard, pinCard,
     reheat, freeze, clearTrail, newWalk, tune, close, renderPanel, bbox,
-    walkDeck, walkRegion, branchByRow,
+    walkDeck, walkRegion, branchByRow, hasRow,
     // An explicit request, so it overrides "the user has taken the camera".
     fit: function () { userAdjusted = false; fitToGraph(true); userAdjusted = true; },
     get nodeCount() { return nodes.length; },

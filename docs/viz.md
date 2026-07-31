@@ -198,6 +198,18 @@ the full run. A **seeded** walk (deck or region) still awaits it: `linkWithinFro
 only links cards whose precomputed top-12 are also in the set, which on a 97-card deck is
 38 links instead of ~290 — a visibly sparser graph, caught by the browser suite.
 
+**One relation mechanism, in every panel.** The controls live in `buildCardDetailHtml`, so
+Discover, The Walk, the explore accordion and the browse panel all offer the same thing.
+`MM.relate(row, relation)` dispatches on mode: graph modes branch the graph; explore opens a
+**browse set** — the anchor plus its related cards, walkable with the arrow keys — because a
+scatter plot cannot grow. That path also happens to be canvas-safe.
+
+This replaced **Find Similar Cards** / **Find Synergies**, which were broken four ways at
+once and untested: they took no card argument and read `selectedCards`, so they were silent
+no-ops in Discover *and* the browse panel (both clear it), acted on the **wrong card** in The
+Walk while drawing onto a hidden Plotly surface, and threw outright under `?renderer=canvas`
+where `#plot` has no `.data`. Their highlight-trace machinery is gone with them.
+
 **Synergy edges say why.** `neighbours.bin` v2 carries a uint8 reason code per synergy slot
 plus the 24-entry vocabulary appended after the data, so branching stays synchronous and the
 codebook never becomes a third fetch. Edges are inked by relation — deck gold, synergy violet,

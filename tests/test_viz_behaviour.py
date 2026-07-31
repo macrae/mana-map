@@ -1864,3 +1864,115 @@ def test_obsolescence_fills_in_outside_explore(discover_page):
     assert r["filled"], "Obsoleted By never rendered in Discover — the index never loaded"
     assert r["hasAdvantageBadge"], "the advantage strings (Lower CMC, ...) are still hidden"
     assert not r["stillPlaceholder"], "a placeholder was left unpatched"
+
+
+# ── one relation mechanism, every panel ─────────────────────────────────
+
+
+def test_the_old_find_buttons_are_gone(discover_page):
+    """Find Similar Cards / Find Synergies were broken four ways at once.
+
+    They took no card argument and read `selectedCards`, so they were silent no-ops in
+    Discover and in the browse panel (both clear it), acted on the *wrong card* in The
+    Walk while drawing onto a hidden Plotly surface, and threw outright under
+    `?renderer=canvas` where `#plot` has no `.data`. Nothing tested any of it.
+    """
+    r = discover_page.evaluate("""async () => {
+        const src = [...document.scripts].map(s => s.src).find(s => s.includes('mana-map.js'));
+        const body = await (await fetch(src)).text();
+        return {
+            buttons: document.querySelectorAll('.btn-similar, .btn-synergy').length,
+            findSimilar: typeof MM.findSimilar,
+            findSynergies: typeof MM.findSynergies,
+            relate: typeof MM.relate,
+            sourceHasHandlers: /function findSimilarCards|function findSynergyCards/.test(body),
+            sourceHasTraceFlag: body.includes('similarTrace'),
+        };
+    }""")
+    assert discover_page.js_errors == []
+    assert r["buttons"] == 0, "the old buttons still render"
+    assert r["findSimilar"] == "undefined" and r["findSynergies"] == "undefined"
+    assert r["relate"] == "function", "nothing replaced them"
+    assert not r["sourceHasHandlers"], "the handlers are unreferenced but still present"
+    assert not r["sourceHasTraceFlag"], "the highlight-trace machinery survives"
+
+
+def test_relations_render_in_every_panel(discover_page):
+    """The unification. The buttons live in `buildCardDetailHtml` now, so every panel that
+    shows a card offers the same control — which is what makes deleting the old pair a
+    merge rather than the removal of a feature from explore."""
+    r = discover_page.evaluate("""async () => {
+        const count = () => {
+            const p = document.querySelector('.deck-panel.open, #detailPanel');
+            return document.querySelectorAll('.discover-rel').length;
+        };
+        const seen = {};
+        seen.discover = count();
+
+        document.getElementById('modeSelect').value = 'explore';
+        MM.setMode('explore');
+        await new Promise(r => setTimeout(r, 3000));
+        MM.selectByName("Ashnod's Altar");
+        await new Promise(r => setTimeout(r, 1200));
+        seen.explore = count();
+
+        // browse panel — a different renderer again, and one of the silent no-ops
+        MM.enterNeighbourhood(Discovery.rowByName("Ashnod's Altar"));
+        await new Promise(r => setTimeout(r, 1500));
+        seen.browse = count();
+        return seen;
+    }""")
+    assert discover_page.js_errors == []
+    for panel, n in r.items():
+        assert n >= 3, f"the {panel} panel shows {n} relation controls, expected 3"
+
+
+def test_a_relation_grows_the_graph_or_opens_a_browse_set(discover_page):
+    """One control, two renderings. A graph can grow; a scatter plot cannot, so in explore
+    the answer becomes a walkable browse set instead — which also happens to be canvas-safe,
+    unlike the Plotly traces it replaces."""
+    r = discover_page.evaluate("""async () => {
+        const row = Discovery.rowByName("Ashnod's Altar");
+        Discovery.show(row);
+        await new Promise(r => setTimeout(r, 500));
+        const before = Force.nodeCount;
+        MM.relate(row, 'synergy');
+        await new Promise(r => setTimeout(r, 1200));
+        const graph = {grew: Force.nodeCount > before, mode: 'discover'};
+
+        document.getElementById('modeSelect').value = 'explore';
+        MM.setMode('explore');
+        await new Promise(r => setTimeout(r, 3000));
+        MM.relate(row, 'synergy');
+        await new Promise(r => setTimeout(r, 1200));
+        return {
+            graph: graph,
+            browse: !!MM.browseSet,
+            held: MM.browseSet ? MM.browseSet.indices.length : 0,
+            relation: MM.browseSet ? MM.browseSet.relation : null,
+            anchorFirst: MM.browseSet ? MM.browseSet.indices[0] === row : false,
+        };
+    }""")
+    assert discover_page.js_errors == []
+    assert r["graph"]["grew"], "a relation in Discover did not grow the graph"
+    assert r["browse"], "a relation in explore did not open a browse set"
+    assert r["relation"] == "synergy"
+    assert r["held"] > 5
+    assert r["anchorFirst"], "the anchor should lead its own relation list"
+
+
+def test_relations_survive_the_canvas_renderer(canvas_page):
+    """The old path threw here: `Plotly.addTraces` on a div with no `.data`, swallowed as
+    an unhandled rejection so nothing drew and nothing complained."""
+    r = canvas_page.evaluate("""async () => {
+        await new Promise(r => setTimeout(r, 500));
+        const row = MM.allData.findIndex(d => d.n === "Ashnod's Altar");
+        MM.selectByName("Ashnod's Altar");
+        await new Promise(r => setTimeout(r, 800));
+        MM.relate(row, 'similar');
+        await new Promise(r => setTimeout(r, 1500));
+        return {browse: !!MM.browseSet,
+                held: MM.browseSet ? MM.browseSet.indices.length : 0};
+    }""")
+    assert canvas_page.js_errors == [], f"the canvas path threw: {canvas_page.js_errors}"
+    assert r["browse"] and r["held"] > 5

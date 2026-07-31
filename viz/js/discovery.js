@@ -325,21 +325,13 @@ window.Discovery = (function () {
     }
 
     html += '<div class="lens-title">' + rec.n + '</div>';
-    // State what this card HAS before anything is clicked. 23.6% of cards have nothing
-    // but similar, and a button that turns out to do nothing reads as broken rather
-    // than as a fact about the card.
-    html += '<div class="discover-relations">' +
-      relBtn('similar', 'Similar', c.similar) +
-      relBtn('synergy', 'Synergy', c.synergy) +
-      relBtn('obsolete', 'Outclassed by', c.obsolete) +
-      '</div>';
-    if (c.synergy) {
-      html += '<p class="lens-note">Synergy is a rule-based list of ten, not a ranking — ' +
-              'the first one is not "the best".</p>';
-    }
+    // The relation buttons used to be built here. They now live in the shared card HTML
+    // (MM.buildRelationHtml) so every panel that shows a card gets the same control —
+    // which is what makes deleting the old Find Similar / Find Synergies pair an
+    // unification rather than the removal of a feature.
     html += '<button class="lens-btn discover-keep" onclick="Discovery.tray.toggle(' +
       current + ')">' + (inTray(current) ? '✓ In tray' : '+ Keep this card') + '</button>';
-    html += MM.buildCardDetailHtml(MM.cardRecord(current));
+    html += MM.buildCardDetailHtml(MM.cardRecord(current), current);
     el.innerHTML = html;
   }
 
@@ -580,7 +572,15 @@ window.Discovery = (function () {
     if (current < 0) land(new URLSearchParams(location.search));
     else { render(); if (window.Force) Force.enter([current], index[current].n, { chrome: 'discovery' }); }
   }
-  function exitMode() { const p = panel(); if (p) p.classList.remove('open'); }
+  function exitMode() {
+    const p = panel();
+    if (p) p.classList.remove('open');
+    // Clear the content, not just the class. A closed panel is 1px wide rather than
+    // absent, so stale relation buttons stayed in the DOM and a querySelector could
+    // pick the invisible copy over the live one.
+    const el = inner();
+    if (el && !(window.Force && Force.isActive())) el.innerHTML = '';
+  }
 
   return {
     configure, ready, isReady, loadIndex, loadNeighbours, decode,

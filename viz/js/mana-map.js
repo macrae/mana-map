@@ -27,7 +27,6 @@
   let searchTerm = '';
   let searchTimeout = null;
   let plotInitialized = false;
-  let similarTrace = null;
   let currentMode = 'discover';
   let embeddings = null; // Float32Array, loaded lazily for Find Similar
   const EMBED_DIM = 128; // mirrors FINAL_EMBEDDING_DIM in config.py
@@ -206,7 +205,6 @@
     topCardIndex = 0;
     browseSet = null;
     closeViewerPanel();
-    clearSimilarTrace();
     updateSelectionHighlight();
   }
 
@@ -282,6 +280,57 @@
     updateViewerPanel();
     updateSelectionHighlight();
     setStatus(allData[row].n + ' — ' + near.length + ' nearest, ← → to walk them, Enter to re-anchor');
+  }
+
+  // THE relation entry point. One control, one concept, two renderings.
+  //
+  // Replaces `findSimilarCards` / `findSynergyCards`, which were broken four ways: silent
+  // no-ops in Discover and the browse panel (both clear `selectedCards`, which is the only
+  // card identity those functions had), the *wrong card* in The Walk, drawn onto a hidden
+  // Plotly surface, and an outright throw under `?renderer=canvas` where `#plot` has no
+  // `.data`. None of it was covered by a test.
+  function relate(row, relation) {
+    const rel = relation || 'similar';
+    if (!window.Discovery || !Discovery.isReady()) return;
+    if (currentMode === 'discover' || currentMode === 'force') {
+      // Graph modes: the answer becomes part of the graph you are building.
+      if (window.Force) {
+        if (!Force.hasRow(row)) Discovery.show(row);   // reseed on a card not yet placed
+        Force.branchByRow(row, rel);
+      }
+      return;
+    }
+    enterRelation(row, rel);
+  }
+
+  // Explore/Deck/Build: a scatter plot cannot grow, so the answer becomes a browse set —
+  // the anchor plus its related cards, walkable with the arrow keys. This reuses the
+  // browse machinery, which is canvas-safe; the old path added Plotly traces, which is
+  // precisely why it threw under the canvas renderer.
+  function enterRelation(row, relation) {
+    const d = cardRecord(row);
+    if (!d) return;
+    const near = Discovery.neighbours(row, relation);
+    if (!near.length) {
+      setStatus(d.n + ' has no ' + relation + ' cards.');
+      return;
+    }
+    browseSet = {
+      indices: [row].concat(near.map(x => x.row)),
+      sims: [1].concat(near.map(x => x.sim)),
+      reasons: [null].concat(near.map(x => x.reason || null)),
+      pos: 0,
+      label: d.n,
+      anchor: row,
+      relation: relation,
+    };
+    selectedCards = [];                    // browse and the 8-stack never coexist
+    topCardIndex = 0;
+    updateViewerPanel();
+    updateSelectionHighlight();
+    const what = relation === 'similar' ? 'nearest'
+               : relation === 'synergy' ? 'synergy partners' : 'strictly-better cards';
+    setStatus(d.n + ' — ' + near.length + ' ' + what + ', ← → to walk them');
   }
 
   async function enterBrowse(rowIndices, label) {
@@ -419,7 +468,10 @@
     }
   }
 
-  function buildCardDetailHtml(d) {
+  // `row` is required for the relation buttons: the old pair took no argument at all and
+  // leaned on `selectedCards`, which is exactly why they did nothing in three of the five
+  // panels that render this HTML.
+  function buildCardDetailHtml(d, row) {
     let html = '';
 
     // No `loading="lazy"`: the only card image we ever render is the open one, and it is
@@ -468,10 +520,7 @@
     });
     html += '</div></div>';
 
-    html += '<div class="detail-section">';
-    html += '<button class="btn-similar" onclick="MM.findSimilar()">Find Similar Cards</button>';
-    html += '<button class="btn-synergy" onclick="MM.findSynergies()">Find Synergies</button>';
-    html += '</div>';
+    html += buildRelationHtml(row);
 
     return html;
   }
@@ -549,14 +598,14 @@
         html += '<button class="acc-remove" onclick="event.stopPropagation(); MM.removeFromSelection(' + card.idx + ')" title="Remove">\u00d7</button>';
         html += '</div>';
         if (isActive) {
-          html += '<div class="acc-body">' + buildCardDetailHtml(cd) + '</div>';
+          html += '<div class="acc-body">' + buildCardDetailHtml(cd, card.idx) + '</div>';
         }
         html += '</div>';
       }
       html += '</div>';
       html += '<div class="keyboard-hint">\u2190 \u2192 navigate \u00b7 1-8 jump \u00b7 Del remove \u00b7 Esc clear all \u00b7 / search</div>';
     } else {
-      html += buildCardDetailHtml(d);
+      html += buildCardDetailHtml(d, selectedCards[topCardIndex].idx);
       html += '<div class="keyboard-hint">Shift+click to multi-select \u00b7 Esc clear \u00b7 / search</div>';
     }
 
@@ -620,7 +669,7 @@
       '</span>';
     html += '</div>';
 
-    html += buildCardDetailHtml(d);
+    html += buildCardDetailHtml(d, browseSet.indices[browseSet.pos]);
     html += '<div class="keyboard-hint">← → browse · Esc clear · click a point to leave browse mode</div>';
 
     inner.innerHTML = html;
@@ -667,7 +716,6 @@
 
   function closeViewerPanel() {
     document.getElementById('detailPanel').classList.remove('open');
-    clearSimilarTrace();
     setTimeout(() => Plotly.Plots.resize('plot'), 260);
   }
 
@@ -853,27 +901,6 @@
     if (traces.length) Plotly.addTraces('plot', traces);
   }
 
-  // ── Detail Panel (legacy wrapper for backward compat) ──
-
-  // ── Find Similar Cards ──
-
-  function clearSimilarTrace() {
-    if (similarTrace) {
-      const plotDiv = document.getElementById('plot');
-      const numTraces = plotDiv.data.length;
-      const toDelete = [];
-      for (let i = numTraces - 1; i >= 0; i--) {
-        if (plotDiv.data[i]._isSimilar || plotDiv.data[i]._isReference) {
-          toDelete.push(i);
-        }
-      }
-      if (toDelete.length) {
-        Plotly.deleteTraces('plot', toDelete);
-      }
-      similarTrace = null;
-    }
-  }
-
   // One space, fetched once. This used to key on `currentMap` and re-fetch on every map
   // toggle, so the same card had different "nearest" answers depending on which picture
   // you happened to be looking at.
@@ -934,75 +961,6 @@
     return best.sort((a, b) => b.sim - a.sim);
   }
 
-  async function findSimilarCards() {
-    const ref = getSelectedCard();
-    if (!ref) return;
-    clearSimilarTrace();
-
-    const refIdx = selectedCards[topCardIndex].idx;
-
-    if (!embeddings) {
-      setStatus('Loading embeddings...');
-      if (!(await loadEmbeddings())) {
-        setStatus('Could not load embeddings_ability.bin \u2014 run `manamap export`');
-        return;
-      }
-    }
-
-    // This was a second full-scan k-NN: it scored all 34,322 cards, sorted the whole
-    // array, and sliced 20 \u2014 with subtly different filter semantics from `nearestTo`,
-    // despite a comment there claiming the two had been consolidated. They had not.
-    // `nearestTo` keeps a bounded buffer instead of sorting 34K, and it excludes
-    // duplicate names, which this did not.
-    const nearest = await nearestTo(refIdx, 20);
-
-    const simTrace = {
-      type: 'scattergl',
-      mode: 'markers',
-      name: 'Similar (20)',
-      x: nearest.map(n => allData[n.i].x),
-      y: nearest.map(n => allData[n.i].y),
-      customdata: nearest.map(n => n.i),
-      hoverinfo: 'none',
-      marker: { size: 9, opacity: 1, color: '#FFA500', symbol: 'diamond', line: { color: '#EA580C', width: 1.5 } },
-      _isSimilar: true,
-    };
-
-    const refTrace = {
-      type: 'scattergl',
-      mode: 'markers',
-      name: ref.n,
-      x: [ref.x],
-      y: [ref.y],
-      customdata: [refIdx],
-      hoverinfo: 'none',
-      marker: { size: 14, opacity: 1, color: '#c4a747', symbol: 'star', line: { color: '#fff', width: 1.5 } },
-      _isReference: true,
-    };
-
-    Plotly.addTraces('plot', [simTrace, refTrace]);
-    similarTrace = true;
-
-    // Populate card viewer with top results (reference card on top + up to 7 similar)
-    selectedCards = [{ idx: refIdx, data: ref }];
-    const fillCount = Math.min(nearest.length, MAX_SELECTED - 1);
-    for (let j = 0; j < fillCount; j++) {
-      selectedCards.push({ idx: nearest[j].i, data: allData[nearest[j].i] });
-    }
-    topCardIndex = 0;
-    updateViewerPanel();
-    updateSelectionHighlight();
-
-    setStatus(`20 similar cards to "${ref.n}" highlighted (128D cosine similarity)`);
-
-    // A neighbourhood scattered as 21 dots across a 34K-point map shows you where its
-    // members live but nothing about how they relate. Offer the drill, which lays them
-    // out against each other instead.
-    if (typeof window.Drill !== 'undefined') {
-      window.Drill.offer([refIdx].concat(nearest.map(m => m.i)), `Near ${ref.n}`);
-    }
-  }
-
   // ── Obsolescence Loading ──
 
   async function loadObsolescenceIndex() {
@@ -1041,6 +999,31 @@
       const html = buildObsolescenceHtml(el.getAttribute('data-card'));
       el.outerHTML = html || '';
     }
+  }
+
+  // The relation controls, in the shared card HTML so every panel gets the same thing.
+  //
+  // Counts are precomputed and stated BEFORE the click — 23.6% of cards have nothing but
+  // similar, and a control that turns out to do nothing reads as broken rather than as a
+  // fact about the card.
+  function buildRelationHtml(row) {
+    if (typeof row !== 'number' || row < 0) return '';
+    if (!window.Discovery || !Discovery.isReady()) return '';
+    const c = Discovery.counts(row);
+    const btn = (rel, label, n) =>
+      '<button class="lens-btn discover-rel' + (n ? '' : ' is-empty') + '"'
+      + (n ? ' onclick="MM.relate(' + row + ',\'' + rel + '\')"' : ' disabled')
+      + '>' + label + ' <span class="discover-count">' + n + '</span></button>';
+    let html = '<div class="discover-relations">'
+      + btn('similar', 'Similar', c.similar)
+      + btn('synergy', 'Synergy', c.synergy)
+      + btn('obsolete', 'Outclassed by', c.obsolete)
+      + '</div>';
+    if (c.synergy) {
+      html += '<p class="lens-note">Synergy is a rule-based list of ten, not a ranking — '
+            + 'partners are ordered by how played they are.</p>';
+    }
+    return html;
   }
 
   function buildObsolescenceHtml(cardName) {
@@ -1130,100 +1113,6 @@
       return true;
     } catch (e) {
       return false;
-    }
-  }
-
-  async function findSynergyCards() {
-    const ref = getSelectedCard();
-    if (!ref) return;
-    clearSimilarTrace();
-
-    const refIdx = selectedCards[topCardIndex].idx;
-
-    // Lazy-load synergy graph
-    if (!synergyGraph) {
-      setStatus('Loading synergy data...');
-      const ok = await loadSynergyGraph();
-      if (!ok) {
-        setStatus('Could not load synergy_graph.json \u2014 run synergy.py');
-        return;
-      }
-    }
-
-    const partners = synergyGraph[ref.n];
-    if (!partners || partners.length === 0) {
-      setStatus(`No synergy partners found for "${ref.n}"`);
-      return;
-    }
-
-    // Build name-to-index map
-    const nameToIdx = {};
-    allData.forEach((d, i) => { nameToIdx[d.n] = i; });
-
-    const synPoints = [];
-    for (const p of partners) {
-      const idx = nameToIdx[p.partner];
-      if (idx == null) continue;
-      if (!activeSupertypes.has(allData[idx].s)) continue;
-      synPoints.push({ idx, score: p.score, synergies: p.synergies });
-    }
-
-    if (synPoints.length === 0) {
-      setStatus(`No visible synergy partners for "${ref.n}"`);
-      return;
-    }
-
-    const synTrace = {
-      type: 'scattergl',
-      mode: 'markers',
-      name: 'Synergies (' + synPoints.length + ')',
-      x: synPoints.map(p => allData[p.idx].x),
-      y: synPoints.map(p => allData[p.idx].y),
-      text: synPoints.map(p => {
-        const d = allData[p.idx];
-        return '<b>' + escHtml(d.n) + '</b><br>' + p.synergies.join(', ');
-      }),
-      customdata: synPoints.map(p => p.idx),
-      hoverinfo: 'none',
-      marker: { size: 10, opacity: 1, color: '#E040FB', symbol: 'diamond', line: { color: '#9C27B0', width: 1.5 } },
-      _isSimilar: true,
-    };
-
-    const refTrace = {
-      type: 'scattergl',
-      mode: 'markers',
-      name: ref.n,
-      x: [ref.x],
-      y: [ref.y],
-      customdata: [refIdx],
-      hoverinfo: 'none',
-      marker: { size: 14, opacity: 1, color: '#c4a747', symbol: 'star', line: { color: '#fff', width: 1.5 } },
-      _isReference: true,
-    };
-
-    Plotly.addTraces('plot', [synTrace, refTrace]);
-    similarTrace = true;
-
-    // Populate card viewer with top results (reference card on top + up to 7 synergy partners)
-    selectedCards = [{ idx: refIdx, data: ref }];
-    const fillCount = Math.min(synPoints.length, MAX_SELECTED - 1);
-    for (let j = 0; j < fillCount; j++) {
-      selectedCards.push({ idx: synPoints[j].idx, data: allData[synPoints[j].idx] });
-    }
-    topCardIndex = 0;
-    updateViewerPanel();
-    updateSelectionHighlight();
-
-    const labels = synPoints.slice(0, 3).map(p =>
-      allData[p.idx].n + ' (' + p.synergies[0] + ')'
-    ).join(', ');
-    setStatus(`${synPoints.length} synergy partners for "${ref.n}" \u2014 ${labels}...`);
-
-    // Same offer as Find Similar, and more interesting here: synergy is rule-based and
-    // complementary, so its partners are scattered by construction. Their embedding
-    // layout says whether the rules found one coherent group or several.
-    if (typeof window.Drill !== 'undefined') {
-      window.Drill.offer([refIdx].concat(synPoints.map(p => p.idx)), `Synergies of ${ref.n}`);
     }
   }
 
@@ -1778,7 +1667,6 @@
 
   // ── Render plot ──
   function render() {
-    clearSimilarTrace();
 
     // Get overlay traces from whichever mode owns the side panel. Both implement the
     // same two-method contract; see docs/viz.md.
@@ -2222,8 +2110,7 @@
       return selectedCards.map(c => c.idx);
     },
     selectByName,
-    findSimilar: findSimilarCards,
-    findSynergies: findSynergyCards,
+    relate,
     render,
     setStatus,
     setMode,

@@ -68,11 +68,6 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .detail-keywords { display: flex; flex-wrap: wrap; gap: 4px; }
 .keyword-badge { background: #2a2a4a; color: #ccc; border-radius: 3px; padding: 2px 6px; font-size: 0.7rem; }
 
-.btn-similar, .btn-synergy { width: 100%; padding: 8px; background: #2a2a4a; border: 1px solid #c4a747; border-radius: 6px; cursor: pointer; font-size: 0.85rem; margin-top: 4px; transition: all 0.15s; }
-.btn-similar { color: #c4a747; }
-.btn-similar:hover { background: #3a3a5a; }
-.btn-synergy { color: #E040FB; border-color: #E040FB; }
-.btn-synergy:hover { background: #3a2a4a; }
 
 /* ── Mana Symbols ─────────────────────────────────────────────────────── */
 .mana-sym { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; font-size: 0.65rem; font-weight: bold; color: #000; flex-shrink: 0; }
@@ -541,6 +536,8 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
   flex: 1; min-width: 0; background: #16213e; color: #ddd;
   border: 1px solid #3a3a5a; border-radius: 4px; padding: 5px 6px; font-size: 0.8rem;
 }
+/* Rendered by buildRelationHtml in the shared card detail, so these appear in every
+   panel that shows a card — Discover, The Walk, the explore accordion, the browse panel. */
 .discover-relations { display: flex; gap: 6px; margin: 10px 0 6px; flex-wrap: wrap; }
 .discover-rel { flex: 1; min-width: 92px; font-size: 0.78rem; }
 /* A relation with nothing behind it is a fact about the card, not a broken button —
