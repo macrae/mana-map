@@ -907,3 +907,121 @@ def test_both_renderers_agree_on_the_data(page, canvas_page):
     b = canvas_page.evaluate("({cards: MM.allData.length, "
                              "shown: MM.allData.filter(d => MM.passesFilters(d)).length})")
     assert a == b, f"renderers disagree: plotly={a} canvas={b}"
+
+
+# ── Phase 3: everything Plotly still owned ──────────────────────────────
+
+
+def test_canvas_region_labels_are_real_dom(canvas_page):
+    """Plotly drew these as layout annotations: a relayout to change one, no transition
+    (the crossfade was an rgba() alpha rebuilt on a 150 ms debounce, so they popped), and
+    no click target — clicking a region needed a 30-line hit-test against anchors."""
+    r = canvas_page.evaluate("""() => {
+        const els = document.querySelectorAll('.map-label');
+        const first = els[0];
+        return {
+            count: els.length,
+            text: first ? first.textContent : null,
+            isButton: first ? first.tagName === 'BUTTON' : false,
+            // Read the authored rule, not the computed one: this fixture injects
+            // `transition: none` globally, because Chrome throttles transitions in a
+            // backgrounded page and every duration assertion would be a lie.
+            authoredTransition: [...document.styleSheets]
+                .flatMap(s => { try { return [...s.cssRules]; } catch (e) { return []; } })
+                .some(r => r.selectorText === '.map-label' && r.style.transition),
+            positioned: first ? first.style.transform.indexOf('translate') !== -1 : false,
+        };
+    }""")
+    assert canvas_page.js_errors == []
+    assert r["count"] > 5, "no region labels on the canvas renderer"
+    assert r["isButton"], "a label must be a real click target, not painted text"
+    assert r["authoredTransition"], "the L0/L1 crossfade should be a CSS transition"
+    assert r["positioned"] and r["text"]
+
+
+def test_canvas_has_its_own_legend(canvas_page):
+    r = canvas_page.evaluate("""() => ({
+        present: !!document.getElementById('mapLegend'),
+        rows: document.querySelectorAll('.map-legend-row').length,
+        text: (document.getElementById('mapLegend') || {}).innerText || '',
+    })""")
+    assert canvas_page.js_errors == []
+    assert r["present"] and r["rows"] >= 6, "no legend under the canvas renderer"
+    assert "Multicolor" in r["text"] or "Colorless" in r["text"]
+
+
+def test_canvas_draws_density_contours(canvas_page):
+    """d3-contourDensity replaces histogram2dcontour. Plotly auto-binned to whatever
+    extent it was handed, which is why its levels were never comparable between filters."""
+    before = _ink(canvas_page)
+    canvas_page.evaluate("document.getElementById('toggleContours').click()")
+    canvas_page.wait_for_timeout(1800)
+    during = _ink(canvas_page)
+    canvas_page.evaluate("document.getElementById('toggleContours').click()")
+    canvas_page.wait_for_timeout(1000)
+    after = _ink(canvas_page)
+    assert canvas_page.js_errors == []
+    assert during > before * 3, f"Topo added almost no ink ({before:.1f} -> {during:.1f})"
+    assert after < during / 2, "Topo did not turn off"
+
+
+def test_canvas_box_select_uses_the_quadtree(canvas_page):
+    """The 138 ms operation. Measured at 4.5 ms here over 22,161 caught points."""
+    r = canvas_page.evaluate("""async () => {
+        const c = document.querySelector('.map-canvas');
+        const rect = c.getBoundingClientRect();
+        document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Shift', bubbles: true}));
+        await new Promise(r => setTimeout(r, 200));
+        c.dispatchEvent(new MouseEvent('mousedown',
+            {bubbles: true, clientX: rect.left + 400, clientY: rect.top + 200}));
+        window.dispatchEvent(new MouseEvent('mousemove',
+            {bubbles: true, clientX: rect.left + 800, clientY: rect.top + 450}));
+        await new Promise(r => setTimeout(r, 200));
+        window.dispatchEvent(new MouseEvent('mouseup',
+            {bubbles: true, clientX: rect.left + 800, clientY: rect.top + 450}));
+        await new Promise(r => setTimeout(r, 2500));
+        document.dispatchEvent(new KeyboardEvent('keyup', {key: 'Shift', bubbles: true}));
+        return {browse: !!MM.browseSet,
+                held: MM.browseSet ? MM.browseSet.indices.length : MM.selectedRows().length};
+    }""")
+    assert canvas_page.js_errors == []
+    assert r["held"] > 100, f"the marquee caught {r['held']} cards"
+    assert r["browse"], "a large box-select should enter browse mode"
+
+
+def test_deck_lens_and_drill_run_on_canvas(canvas_page):
+    """Deck Lens dims with a per-point opacity array — the last thing the canvas renderer
+    could not draw. Drill pushes 90 frames through updateLayerBy rather than rebuilding
+    every layer per frame."""
+    r = canvas_page.evaluate("""async () => {
+        document.getElementById('modeSelect').value = 'deck'; MM.setMode('deck');
+        await new Promise(r => setTimeout(r, 4000));
+        await DeckMap.select('edgar-vampires');
+        await new Promise(r => setTimeout(r, 2500));
+        const lens = {deck: (document.querySelector('.lens-title') || {}).textContent};
+
+        const span = () => { const c = MM.mapRenderer.getCamera();
+                             return Math.abs(c.x[1] - c.x[0]); };
+        const before = span();
+        DeckMap.focusLine(0);
+        await new Promise(r => setTimeout(r, 1200));
+        const zoomed = span();
+
+        document.getElementById('modeSelect').value = 'explore'; MM.setMode('explore');
+        await new Promise(r => setTimeout(r, 1200));
+        const rd = await MM.getRegionData();
+        const reg = rd.regions.find(r => r.level === 1 && r.count > 120 && r.count < 300);
+        await Drill.enterRegion(reg.id);
+        await new Promise(r => setTimeout(r, 4000));
+        const drilled = {active: Drill.isActive(),
+                         bar: document.getElementById('drillBar').style.display !== 'none'};
+        Drill.back();
+        await new Promise(r => setTimeout(r, 1200));
+        return {lens, before, zoomed, drilled, backOk: !Drill.isActive(),
+                labels: document.querySelectorAll('.map-label').length};
+    }""")
+    assert canvas_page.js_errors == []
+    assert r["lens"]["deck"] == "EDGAR MARKOV", "Deck Lens did not load on canvas"
+    assert r["zoomed"] < r["before"], "focusLine did not move the camera"
+    assert r["drilled"]["active"] and r["drilled"]["bar"], "drill did not run on canvas"
+    assert r["backOk"] and r["labels"] > 5, "leaving drill did not restore the map"

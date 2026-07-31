@@ -147,11 +147,15 @@
   }
 
   function pushPositions() {
-    const ti = drillTraceIndex();
-    if (ti < 0) return;
     const n = indices.length;
     const xs = new Array(n), ys = new Array(n);
     for (let i = 0; i < n; i++) { xs[i] = pos[2 * i]; ys[i] = pos[2 * i + 1]; }
+    // Whichever renderer is drawing. Both offer the same thing — move one layer's points
+    // without touching the other 34,322 — because rebuilding every frame is the whole
+    // cost this avoids.
+    if (MM.mapRenderer) { MM.mapRenderer.updateLayerBy('_isDrill', { x: xs, y: ys }); return; }
+    const ti = drillTraceIndex();
+    if (ti < 0) return;
     Plotly.restyle('plot', { x: [xs], y: [ys] }, [ti]);
   }
 

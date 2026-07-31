@@ -3,7 +3,7 @@
 *The resume-here doc. Read `README.md` for orientation, `CLAUDE.md` for gotchas, this for
 what shipped and what's still open. Completed plans live in `docs/history/`.*
 
-Last updated 2026-07-29. All work below is committed, pushed, and deployed.
+Last updated 2026-07-30. All work below is committed, pushed, and deployed.
 Every figure here was derived from the repo at write time, not remembered.
 
 ## What this is now
@@ -23,7 +23,7 @@ a **deck builder** that produces the deck in the first place.
 [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-1,012 tests (978 fast + 34 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
+1,017 tests (978 fast + 39 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
 
 ## Shipped
 
@@ -188,6 +188,27 @@ that **bars count copies and dots count distinct cards** rather than letting the
 numbers disagree silently (the land bug's lesson, applied before it could recur), and a
 verified line naming fewer than two deck cards **stays in the list, greyed** instead of
 vanishing — so the panel's count always agrees with the manifest's `verified`.
+
+**The renderer port is at Phase 3 of 4.** The map now draws on `<canvas>` + d3 behind
+`?renderer=canvas`, as a strangler behind the `MM` contract — both renderers are live at
+once and the *layer format is the trace format*, so there is no adapter to delete later.
+Phase 3 took the last four things Plotly still owned (region labels → DOM, contours →
+`d3.contourDensity`, the legend → a `<div>`, box-select → the quadtree) plus per-point
+opacity and an `updateLayerBy` restyle path. Measured: `render()` 30 ms → 15 ms, box-select
+138 ms → 4.5 ms per mousemove. `docs/viz.md` has the table and the reasoning.
+
+**Phase 4 is the deletion** — drop the Plotly CDN tag, the `keepX`/`keepY` camera
+preservation, the `_is*` trace flags, and the four resize timers; make canvas the only
+path. Held back deliberately: the two renderers should stay comparable on identical data
+until the canvas has run against real use, and the four source-assertion suites
+(`test_viz_{camera,drill,viewer,deck_lens}.py`) need porting or retiring first — several
+of their docstrings carry reasoning worth keeping.
+
+**The 39 browser tests are the real gate here.** A perf commit once stripped a variable
+declaration and left its use behind, breaking drill mode on every render; all 13
+source-assertion drill tests passed and it shipped. Playwright caught it in both
+directions when pointed at that revision. Nothing that renders should be verified by
+grepping source again.
 
 Still true, and still the two live defects in `viz/js/deck-builder.js`:
 

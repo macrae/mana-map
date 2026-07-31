@@ -505,3 +505,27 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .map-canvas { position: absolute; inset: 0; width: 100%; height: 100%;
   display: block; cursor: grab; }
 .map-canvas:active { cursor: grabbing; }
+
+/* ── Canvas renderer chrome: region labels and legend ─────────────────────
+ * Labels are real DOM now, so the L0/L1 crossfade is a CSS transition instead
+ * of an rgba() alpha rebuilt on a 150 ms debounce — they fade rather than pop —
+ * and each one is a button, which deletes the 30-line annotation hit-test.
+ */
+.map-labels { position: absolute; inset: 0; z-index: 20; pointer-events: none; }
+.map-label {
+  position: absolute; left: 0; top: 0; white-space: nowrap;
+  background: none; border: none; padding: 2px 6px; cursor: pointer;
+  font-family: system-ui, -apple-system, sans-serif; font-weight: 500;
+  pointer-events: auto; transition: color 0.25s ease, text-shadow 0.2s ease;
+  text-shadow: 0 1px 4px rgba(10,10,26,0.9);
+}
+.map-label:hover { text-shadow: 0 0 10px rgba(196,167,71,0.9); }
+
+.map-legend {
+  position: absolute; top: 10px; right: 10px; z-index: 25;
+  background: rgba(22,33,62,0.88); border: 1px solid #3a3a5a; border-radius: 5px;
+  padding: 8px 12px; font-size: 0.75rem; color: #ccc; pointer-events: none;
+  max-height: 60%; overflow: hidden;
+}
+.map-legend-row { display: flex; align-items: center; gap: 7px; padding: 1px 0; white-space: nowrap; }
+.map-legend-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }

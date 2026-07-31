@@ -3,10 +3,10 @@
 ```bash
 .venv/bin/python -m pytest              # everything (1,012, ~4.5 min)
 .venv/bin/python -m pytest -m "not browser"   # fast suite (978, ~68 s)
-.venv/bin/python -m pytest -m browser         # the 34 browser tests (~200 s)
+.venv/bin/python -m pytest -m browser         # the 39 browser tests (~210 s)
 ```
 
-1,012 tests in `tests/`: 377 card-pipeline + 601 pilot-subsystem + **34 browser**.
+1,017 tests in `tests/`: 377 card-pipeline + 601 pilot-subsystem + **39 browser**.
 
 ## Source assertions do not catch regressions
 

@@ -169,7 +169,7 @@ nothing.
 `tests/test_viz_drill.py` covers the contract, the suppressions, the local-position
 lookup, the announced truncation, and the hidden-tab fallback.
 
-## The canvas renderer (`?renderer=canvas`) — Phase 2 of the migration
+## The canvas renderer (`?renderer=canvas`) — Phases 2–3 of the migration
 
 `viz/js/render/canvas.js` draws the map instead of Plotly. Both renderers are live at once:
 `?renderer=canvas` switches, so they can be compared on identical data. The Walk proved the
@@ -202,10 +202,38 @@ Two decisions worth keeping:
   `setLayers` runs on every filter and keystroke, most of which do not change the point set.
   Without the cache `render()` was 38 ms — slower than Plotly.
 
-**Not yet on canvas, and deliberately loud about it:** contours (`histogram2dcontour` →
-`d3-contour`), region labels (→ DOM), the legend, and box-select. `setLayers` warns to the
-console rather than silently mis-drawing, and `refreshLabelsOnZoom` returns early rather
-than half-drawing an annotation layer. Those are Phase 3.
+### Phase 3 — the four things Plotly still owned
+
+Each was the last reason to keep a Plotly code path, and each came out better on the way
+across rather than merely equal:
+
+- **Region labels are now real DOM** (`.map-label` buttons in `.map-labels`). Plotly drew
+  them as layout annotations, which meant a relayout to change one, a click hit-test written
+  by hand against anchor positions, and no crossfade — the L0→L1 handoff *popped*, because
+  the only way to fade was rebuilding an `rgba()` alpha on the 150 ms debounce. They are now
+  a CSS `transition` and an ordinary `onclick`, positioned with a `translate()`.
+- **Contours are `d3.contourDensity`**, computed in base-fit space and cached on the same
+  quadtree signature. Plotly's `histogram2dcontour` auto-binned to whatever extent it was
+  handed, so its levels were never comparable between two filter states; these are.
+- **The legend is a positioned `<div>`** built from the same layer list that draws, so it
+  cannot disagree with what is on screen.
+- **Box-select is the quadtree** — shift-armed marquee, `pickRect`, 4.5 ms against Plotly's
+  138 ms per mousemove.
+
+Two things needed for correctness rather than parity:
+
+- **Per-point opacity**, batched by `(colour, opacity)` bucket rather than `colour` alone.
+  Deck Lens dims 34,000 points against ~100 with an opacity *array*; without this the canvas
+  had no way to draw it and fell back to a scalar.
+- **`updateLayerBy(flag, patch)`** — the `Plotly.restyle` fast path. Drill pushes ~90 frames
+  of stress-majorization positions; rebuilding every layer per frame would have made the
+  animation the slowest thing on the page.
+
+**Camera moves apply instantly in a hidden tab.** `setCamera({animate: true})` runs a d3
+transition, which is rAF-driven and therefore does not advance in a background tab — the
+move silently never happened. That is the fourth rAF-throttling bug in this file's history
+(`schedule()`, `ResizeObserver`, CSS transitions, and now transitions); a camera that
+arrives without easing beats one that never arrives.
 
 ## Render cost — the rules that keep it snappy
 

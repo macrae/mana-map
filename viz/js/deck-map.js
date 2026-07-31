@@ -524,10 +524,25 @@
     if (!pts.length) return;
     const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
     const pad = 2;
-    Plotly.relayout('plot', {
-      'xaxis.range': [Math.min(...xs) - pad, Math.max(...xs) + pad],
-      'yaxis.range': [Math.min(...ys) - pad, Math.max(...ys) + pad],
-    });
+    setCamera([Math.min(...xs) - pad, Math.max(...xs) + pad],
+              [Math.min(...ys) - pad, Math.max(...ys) + pad]);
+  }
+
+  // One camera call, either renderer. Plotly wants an axis-range relayout; the canvas
+  // wants a zoom transform. Neither caller should have to know which is drawing.
+  function setCamera(xr, yr) {
+    if (MM.mapRenderer) { MM.mapRenderer.setCamera({ x: xr, y: yr }, { animate: true }); return; }
+    Plotly.relayout('plot', { 'xaxis.range': xr, 'yaxis.range': yr });
+  }
+
+  // The panel is a 0.25s CSS width transition, so the map's box is only final after it
+  // ends — hence the 260ms. The canvas also has a ResizeObserver, but that is throttled
+  // in a background tab, so the explicit call is what makes this reliable.
+  function resizeMap() {
+    setTimeout(() => {
+      if (MM.mapRenderer) MM.mapRenderer.resize();
+      else Plotly.Plots.resize('plot');
+    }, 260);
   }
 
   function focusLine(i) {
@@ -541,17 +556,15 @@
     if (!pts.length) return;
     const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
     const pad = 4;
-    Plotly.relayout('plot', {
-      'xaxis.range': [Math.min(...xs) - pad, Math.max(...xs) + pad],
-      'yaxis.range': [Math.min(...ys) - pad, Math.max(...ys) + pad],
-    });
+    setCamera([Math.min(...xs) - pad, Math.max(...xs) + pad],
+              [Math.min(...ys) - pad, Math.max(...ys) + pad]);
     MM.setStatus(edge.title);
   }
 
   async function enter() {
     const panel = document.getElementById('deckPanel');
     panel.classList.add('open');
-    setTimeout(() => Plotly.Plots.resize('plot'), 260);
+    resizeMap();
     loading = true;
     renderPanel();
     try {
@@ -573,7 +586,7 @@
   function exit() {
     const panel = document.getElementById('deckPanel');
     panel.classList.remove('open');
-    setTimeout(() => Plotly.Plots.resize('plot'), 260);
+    resizeMap();
   }
 
   function close() {

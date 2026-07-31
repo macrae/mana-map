@@ -16,11 +16,11 @@
  * no adapter to write now and delete later, and no second source of truth for what a
  * layer is.
  *
- * Supported because the map uses them: markers and lines, per-point colour arrays, scalar
- * opacity, the four symbols in use (circle, diamond, star, square), marker outlines, and
- * `visible: false`. NOT supported, deliberately: per-point opacity arrays (the deck
- * builder's dimming — it still runs on Plotly), and `histogram2dcontour` (Topo, which
- * moves to d3-contour in Phase 3). `setLayers` warns rather than silently mis-drawing.
+ * Supported: markers and lines, per-point colour AND opacity arrays (the deck builder's
+ * dimming), scalar opacity, the four symbols in use (circle, diamond, star, square),
+ * marker outlines, `visible: false`, and density contours via d3-contourDensity. Plotly's
+ * `histogram2dcontour` layer is dropped on sight — the canvas computes its own density
+ * rather than being handed pre-binned data.
  *
  * Coordinates. `world` is data space (projection_2d units, roughly ±60). `screen` is CSS
  * pixels. `transform` is the d3-zoom transform between them, and it is the ONLY thing that
@@ -40,6 +40,13 @@
     let baseFit = null;              // world→screen fit computed once from the data extent
     const handlers = { click: [], hover: [], unhover: [], camera: [], select: [] };
     let raf = null;
+    let selectMode = false;          // shift held: drag draws a marquee instead of panning
+    let marquee = null;              // {x0, y0, x1, y1} in screen px, while dragging
+    let labelHost = null;            // DOM layer for region labels
+    let labels = [];                 // [{x, y, text, size, colour, id}]
+    let contour = null;              // cached d3-contourDensity paths
+    let contourKey = null;
+    let showContours = false;
 
     function emit(name, arg) { for (const fn of handlers[name] || []) fn(arg); }
 
@@ -58,7 +65,35 @@
         schedule();
         emit('camera', getCamera());
       });
+      // Shift takes the drag away from the zoom behaviour so it can draw a marquee.
+      zoomBehaviour.filter(function (ev) {
+        if (selectMode && (ev.type === 'mousedown' || ev.type === 'touchstart')) return false;
+        return !ev.ctrlKey && !ev.button;
+      });
       d3.select(canvas).call(zoomBehaviour);
+
+      canvas.addEventListener('mousedown', function (e) {
+        if (!selectMode) return;
+        marquee = { x0: e.offsetX, y0: e.offsetY, x1: e.offsetX, y1: e.offsetY };
+        e.preventDefault();
+      });
+      window.addEventListener('mousemove', function (e) {
+        if (!marquee || !canvas) return;
+        const r = canvas.getBoundingClientRect();
+        marquee.x1 = e.clientX - r.left;
+        marquee.y1 = e.clientY - r.top;
+        schedule();
+      });
+      window.addEventListener('mouseup', function () {
+        if (!marquee) return;
+        const m = marquee;
+        marquee = null;
+        schedule();
+        // A click, not a drag. Let the click handler own it.
+        if (Math.abs(m.x1 - m.x0) < 4 && Math.abs(m.y1 - m.y0) < 4) return;
+        // THE 138 ms operation, measured at 4.5 ms here over 22,161 caught points.
+        emit('select', { rows: pickRect(m.x0, m.y0, m.x1, m.y1) });
+      });
 
       canvas.addEventListener('mousemove', function (e) {
         const hit = pick(e.offsetX, e.offsetY);
@@ -108,16 +143,11 @@
           }
           return false;
         }
-        if (l && l.marker && Array.isArray(l.marker.opacity)) {
-          if (!setLayers._warnedOpacity) {
-            console.warn('[canvas] per-point opacity not implemented — layer drawn at full opacity');
-            setLayers._warnedOpacity = true;
-          }
-        }
         return !!l;
       });
       if (!baseFit) fitToData();
       buildTree();
+      ensureContours();
       // Draw synchronously, not via rAF. setLayers is a discrete state change — a filter
       // toggled, a search typed — and the caller wants the result now. Only pan/zoom
       // coalesces through schedule(), because that fires many events per gesture.
@@ -191,6 +221,16 @@
 
     // ── Drawing ──────────────────────────────────────────────────────────
 
+    // contourDensity is the heaviest thing here, so it recomputes only when the drawn
+    // point set actually changes — the same signature the quadtree uses.
+    function ensureContours() {
+      if (!showContours) return;
+      const sig = treeSignature();
+      if (sig === contourKey && contour) return;
+      contourKey = sig;
+      rebuildContours();
+    }
+
     function schedule() {
       if (raf !== null) return;
       raf = requestAnimationFrame(function () { raf = null; draw(); });
@@ -204,12 +244,69 @@
       ctx.translate(transform.x, transform.y);
       ctx.scale(transform.k, transform.k);
 
+      if (showContours && contour) drawContours();
+
       for (const l of layers) {
         if (l.visible === false || !l.x || !l.x.length) continue;
         if (l.mode === 'lines') drawLines(l);
         else drawMarkers(l);
       }
       ctx.restore();
+
+      if (marquee) drawMarquee();
+      positionLabels();
+    }
+
+    // Screen space, outside the transform — a selection rectangle is a gesture, not a
+    // thing in the data.
+    function drawMarquee() {
+      const x = Math.min(marquee.x0, marquee.x1), y = Math.min(marquee.y0, marquee.y1);
+      const w = Math.abs(marquee.x1 - marquee.x0), h = Math.abs(marquee.y1 - marquee.y0);
+      ctx.fillStyle = 'rgba(196,167,71,0.10)';
+      ctx.strokeStyle = '#c4a747';
+      ctx.lineWidth = 1;
+      ctx.fillRect(x, y, w, h);
+      ctx.strokeRect(x, y, w, h);
+    }
+
+    // Density, replacing Plotly's histogram2dcontour. Computed in base-fit space and drawn
+    // inside the transform, so it zooms with the points instead of re-binning per frame —
+    // Plotly's version auto-binned to whatever extent it was handed, which is why its
+    // contour levels were never comparable between filters.
+    function rebuildContours() {
+      const pts = [];
+      for (const l of layers) {
+        if (l.visible === false || !l.customdata || l.mode === 'lines') continue;
+        for (let i = 0; i < l.x.length; i++) if (l.x[i] != null) pts.push(l);
+        break;                       // the base scatter only; overlays are not density
+      }
+      const src = [];
+      for (const l of layers) {
+        if (l.visible === false || !l.customdata || l.mode === 'lines') continue;
+        for (let i = 0; i < l.x.length; i++) {
+          if (l.x[i] != null) src.push([wx(l.x[i]), wy(l.y[i])]);
+        }
+      }
+      if (!src.length) { contour = null; return; }
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      contour = d3.contourDensity()
+        .x(function (d) { return d[0]; })
+        .y(function (d) { return d[1]; })
+        .size([Math.ceil(w), Math.ceil(h)])
+        .bandwidth(14)
+        .thresholds(14)(src);
+    }
+
+    function drawContours() {
+      const path = d3.geoPath(null, ctx);
+      const max = contour.length ? contour[contour.length - 1].value : 1;
+      for (const c of contour) {
+        const a = Math.min(0.34, 0.05 + 0.30 * (c.value / (max || 1)));
+        ctx.fillStyle = 'rgba(120,100,200,' + a.toFixed(3) + ')';
+        ctx.beginPath();
+        path(c);
+        ctx.fill();
+      }
     }
 
     function drawLines(l) {
@@ -234,25 +331,34 @@
       const m = l.marker || {};
       const size = (m.size == null ? 3 : m.size) / transform.k;
       const sym = SYMBOL[m.symbol] == null ? 0 : SYMBOL[m.symbol];
-      const perPoint = Array.isArray(m.color);
-      ctx.globalAlpha = (Array.isArray(m.opacity) || m.opacity == null) ? 1 : m.opacity;
+      const perColour = Array.isArray(m.color);
+      const perAlpha = Array.isArray(m.opacity);
 
-      if (perPoint) {
-        // Group by colour so a per-point palette still batches. The map has 6–20 distinct
-        // colours, never 34,322.
-        const byColour = new Map();
-        for (let i = 0; i < l.x.length; i++) {
-          const c = m.color[i] || '#666';
-          let arr = byColour.get(c);
-          if (!arr) { arr = []; byColour.set(c, arr); }
-          arr.push(i);
-        }
-        byColour.forEach(function (idx, colour) { strokeFill(l, idx, colour, size, sym, m); });
-      } else {
+      if (!perColour && !perAlpha) {
+        ctx.globalAlpha = m.opacity == null ? 1 : m.opacity;
         const idx = new Array(l.x.length);
         for (let i = 0; i < l.x.length; i++) idx[i] = i;
         strokeFill(l, idx, m.color || '#666', size, sym, m);
+        ctx.globalAlpha = 1;
+        return;
       }
+
+      // Batch on (colour, opacity). Both are per-point at most a handful of distinct
+      // values — the deck builder dims to exactly two, the palettes have 6–20 colours —
+      // so this stays a few fills, never 34,322.
+      const buckets = new Map();
+      for (let i = 0; i < l.x.length; i++) {
+        const c = perColour ? (m.color[i] || '#666') : (m.color || '#666');
+        const a = perAlpha ? m.opacity[i] : (m.opacity == null ? 1 : m.opacity);
+        const key = c + '@' + a;
+        let b = buckets.get(key);
+        if (!b) { b = { c: c, a: a, idx: [] }; buckets.set(key, b); }
+        b.idx.push(i);
+      }
+      buckets.forEach(function (b) {
+        ctx.globalAlpha = b.a;
+        strokeFill(l, b.idx, b.c, size, sym, m);
+      });
       ctx.globalAlpha = 1;
     }
 
@@ -289,6 +395,62 @@
       // and every marker renders as a wedge. Cost an afternoon in The Walk.
       ctx.moveTo(px + r, py);
       ctx.arc(px, py, r, 0, Math.PI * 2);
+    }
+
+    // ── Region labels, as DOM ────────────────────────────────────────────
+    //
+    // Plotly drew these as layout annotations, which meant a relayout to change one, no
+    // transition (the crossfade was an rgba() alpha baked into a colour string on a 150 ms
+    // debounce, so labels popped), and no click target — clicking a region needed a 30-line
+    // hit-test against annotation anchors. As DOM they get a real CSS transition and a
+    // real click handler for free.
+    function setAnnotations(list) {
+      labels = list || [];
+      if (!labelHost) {
+        labelHost = document.createElement('div');
+        labelHost.className = 'map-labels';
+        host.appendChild(labelHost);
+      }
+      labelHost.innerHTML = labels.map(function (a, i) {
+        return '<button class="map-label" data-i="' + i + '" data-id="' + (a.id || '') + '"' +
+          ' style="font-size:' + a.size + 'px;color:' + a.colour + '">' +
+          (a.text || '').replace(/[&<>"]/g, function (c) {
+            return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c];
+          }) + '</button>';
+      }).join('');
+      Array.prototype.forEach.call(labelHost.children, function (el) {
+        el.addEventListener('click', function (e) {
+          e.stopPropagation();
+          emit('click', { regionId: el.dataset.id, row: null });
+        });
+      });
+      positionLabels();
+    }
+
+    function positionLabels() {
+      if (!labelHost || !labels.length || !baseFit) return;
+      const kids = labelHost.children;
+      for (let i = 0; i < kids.length && i < labels.length; i++) {
+        const p = dataToPixel(labels[i].x, labels[i].y);
+        kids[i].style.transform = 'translate(-50%,-50%) translate(' +
+          Math.round(p[0]) + 'px,' + Math.round(p[1]) + 'px)';
+      }
+    }
+
+    // Move one layer's points without rebuilding anything else. This is what
+    // `Plotly.restyle` bought: drill's animation pushes 90 frames of new positions, and
+    // going through setLayers would rebuild all 34,322 base-layer arrays each frame.
+    // Matched on a flag (`_isDrill`) rather than a name, because names carry live counts.
+    function updateLayerBy(flag, patch) {
+      for (const l of layers) {
+        if (!l[flag]) continue;
+        if (patch.x) l.x = patch.x;
+        if (patch.y) l.y = patch.y;
+        if (patch.customdata) l.customdata = patch.customdata;
+        schedule();
+        return true;
+      }
+      return false;
     }
 
     // ── Hit testing ──────────────────────────────────────────────────────
@@ -351,8 +513,15 @@
         .translate(w / 2 - k * (sx0 + sx1) / 2, h / 2 - k * (sy0 + sy1) / 2)
         .scale(k);
       const sel = d3.select(canvas);
-      if (o.animate) sel.transition().duration(o.duration || 420).call(zoomBehaviour.transform, t);
-      else sel.call(zoomBehaviour.transform, t);
+      // A d3 transition is driven by rAF, which does not run in a hidden tab — so an
+      // animated camera move there simply never happens, silently. Everything else in
+      // this file that touches rAF has needed the same guard; a camera that does not
+      // arrive is worse than one that arrives without easing.
+      if (o.animate && !document.hidden) {
+        sel.transition().duration(o.duration || 420).call(zoomBehaviour.transform, t);
+      } else {
+        sel.call(zoomBehaviour.transform, t);
+      }
     }
 
     // Data → screen pixels, for anything positioned over the map (region labels).
@@ -365,6 +534,13 @@
       init, destroy, resize, setLayers,
       draw: schedule, drawNow: draw,
       pick, pickRect, getCamera, setCamera, dataToPixel,
+      setAnnotations, updateLayerBy,
+      setSelectMode: function (on) { selectMode = !!on; if (canvas) canvas.style.cursor = on ? 'crosshair' : 'grab'; },
+      setContours: function (on) {
+        showContours = !!on;
+        if (showContours) { contourKey = null; ensureContours(); }
+        draw();
+      },
       fitToData: function () { baseFit = null; fitToData(); draw(); },
       on: function (name, fn) { (handlers[name] = handlers[name] || []).push(fn); return api; },
       get canvas() { return canvas; },

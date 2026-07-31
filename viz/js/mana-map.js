@@ -1255,6 +1255,61 @@
 
   // Called only from plotly_relayout (zoom/pan) — uses Plotly.update with annotations only
   let _labelUpdateInFlight = false;
+  // The same opacity/size curve `getRegionAnnotations` computes, handed to the canvas
+  // renderer as DOM instead of Plotly annotations — so the crossfade is a CSS transition
+  // rather than an rgba() alpha rebuilt on a 150 ms debounce, and each label is a real
+  // button rather than something a 30-line d2p hit-test has to find.
+  function refreshCanvasLabels() {
+    if (!mapCanvas) return;
+    const cam = mapCanvas.getCamera();
+    const span = cam ? Math.abs(cam.x[1] - cam.x[0]) : 70;
+    const data = regionDataCache[currentMap];
+    if (!data || !showRegionLabels) { mapCanvas.setAnnotations([]); return; }
+    const out = [];
+    for (const region of data.regions) {
+      let opacity = 0, size = 11;
+      if (region.level === 0) {
+        if (span > 25) opacity = 1;
+        else if (span > 15) opacity = (span - 15) / 10;
+        size = 16;
+      } else {
+        if (region.span < span * 0.05) continue;
+        if (span < 20) opacity = 1;
+        else if (span < 30) opacity = (30 - span) / 10;
+      }
+      if (opacity <= 0) continue;
+      out.push({
+        x: region.cx, y: region.cy, id: region.id, size: size,
+        text: region.level === 0 ? region.label : region.short,
+        colour: region.level === 0
+          ? 'rgba(196,167,71,' + opacity.toFixed(2) + ')'
+          : 'rgba(200,200,200,' + opacity.toFixed(2) + ')',
+      });
+    }
+    mapCanvas.setAnnotations(out);
+  }
+
+  // Plotly's legend, rebuilt as ours — which is most of what "control and polish" meant.
+  function renderCanvasLegend(traces) {
+    let el = document.getElementById('mapLegend');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'mapLegend';
+      el.className = 'map-legend';
+      document.getElementById('plot').appendChild(el);
+    }
+    el.innerHTML = traces
+      .filter(tr => tr.name && tr.visible !== false && tr.mode !== 'lines')
+      .map(tr => {
+        const m = tr.marker || {};
+        const c = Array.isArray(m.color) ? '#8a8a8a' : (m.color || '#666');
+        return '<div class="map-legend-row"><span class="map-legend-dot" style="background:' +
+          (c === 'rgba(0,0,0,0)' ? 'transparent;border:2px solid ' +
+            ((m.line && m.line.color) || '#888') : c) +
+          '"></span>' + escHtml(tr.name) + '</div>';
+      }).join('');
+  }
+
   function refreshLabelsOnZoom() {
     if (_labelUpdateInFlight) return;
     if (USE_CANVAS) {
@@ -1302,6 +1357,9 @@
   // cross-section of the whole universe that flew in from everywhere and settled into a
   // multicoloured pile. The button now states the size of what it would drill and goes
   // inert when that is over the cap, so you can see whether pressing it will do anything.
+  // Shift arms the marquee on canvas; on Plotly it flips dragmode. Same gesture either way.
+  function setCanvasSelectMode(on) { if (mapCanvas) mapCanvas.setSelectMode(on); }
+
   function refreshDrillButton() {
     const btn = document.getElementById('drillFiltered');
     if (!btn || typeof window.Drill === 'undefined') return;
@@ -1445,8 +1503,9 @@
   document.addEventListener('keydown', e => {
     if (e.key === 'Shift' && !shiftHeld && currentMode === 'explore') {
       shiftHeld = true;
+      setCanvasSelectMode(true);          // canvas: arms the marquee
       const plotDiv = document.getElementById('plot');
-      if (plotDiv && plotDiv._fullLayout) {
+      if (!USE_CANVAS && plotDiv && plotDiv._fullLayout) {
         Plotly.relayout('plot', { dragmode: 'select' });
       }
       // Show shift-mode hint
@@ -1466,9 +1525,10 @@
   document.addEventListener('keyup', e => {
     if (e.key === 'Shift' && shiftHeld) {
       shiftHeld = false;
+      setCanvasSelectMode(false);
       const plotDiv = document.getElementById('plot');
       if (plotDiv && plotDiv._fullLayout) {
-        Plotly.relayout('plot', { dragmode: 'pan' });
+        if (!USE_CANVAS) Plotly.relayout('plot', { dragmode: 'pan' });
       }
       // Hide shift-mode hint
       const hint = document.getElementById('shiftHint');
@@ -1838,11 +1898,29 @@
         // `_fullLayout.xaxis.range` — getCamera() reports in data units for that reason.
         mapCanvas.on('camera', function () {
           clearTimeout(regionDebounceTimer);
-          regionDebounceTimer = setTimeout(refreshLabelsOnZoom, 150);
+          regionDebounceTimer = setTimeout(refreshCanvasLabels, 150);
+        });
+        // Box-select, on a quadtree instead of Plotly's hit test: 4.5 ms against 138 ms.
+        mapCanvas.on('select', function (ev) {
+          const rows = ev.rows || [];
+          if (!rows.length) return;
+          if (rows.length > MAX_SELECTED) {
+            enterBrowse(rows, 'Selection');
+            if (typeof window.Drill !== 'undefined') window.Drill.offer(rows, 'Selection');
+          } else {
+            selectedCards = rows.map(idx => ({ idx, data: allData[idx] }));
+            topCardIndex = 0;
+            updateViewerPanel();
+            updateSelectionHighlight();
+            setStatus(`Selected ${rows.length} card${rows.length === 1 ? '' : 's'}`);
+          }
         });
         plotInitialized = true;
       }
       mapCanvas.setLayers(allTraces);
+      mapCanvas.setContours(showContours);
+      refreshCanvasLabels();
+      renderCanvasLegend(allTraces);
       return;
     }
 
