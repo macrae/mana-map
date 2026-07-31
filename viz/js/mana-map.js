@@ -201,6 +201,7 @@
   }
 
   function clearSelection() {
+    if (orientation) { clearOrientation(); return; }
     selectedCards = [];
     topCardIndex = 0;
     browseSet = null;
@@ -281,6 +282,59 @@
     updateSelectionHighlight();
     setStatus(allData[row].n + ' — ' + near.length + ' nearest, ← → to walk them, Enter to re-anchor');
   }
+
+  // ── Explore as an orientation lens ──────────────────────────────────────
+  //
+  // Explore stopped being a workspace. Entering it from a graph lights up the cards you
+  // are actually holding and dims the other 34,000, so the atlas answers the one question
+  // the graph structurally cannot: WHERE this sits. `force.js` says so in its own header —
+  // it encodes adjacency, not absolute position.
+  let orientation = null;   // { rows: Set, label, anchor }
+
+  function orientTo(rows, label, anchor) {
+    const live = (rows || []).filter(i => allData[i]);
+    if (!live.length) { orientation = null; return false; }
+    orientation = { rows: new Set(live), label: label || 'your graph',
+                    anchor: typeof anchor === 'number' ? anchor : -1 };
+    render();          // render() writes the status line for this mode
+    return true;
+  }
+
+  function clearOrientation() {
+    if (!orientation) return;
+    orientation = null;
+    render();
+    setStatus(allData.length.toLocaleString() + ' cards shown');
+  }
+
+  // Same two-method contract as Deck Lens and the deck builder — see docs/viz.md.
+  const OrientationOverlay = {
+    getOverlayTraces() {
+      if (!orientation) return [];
+      const rows = Array.from(orientation.rows);
+      const out = [{
+        type: 'scattergl', mode: 'markers',
+        name: 'On your graph (' + rows.length + ')',
+        x: rows.map(i => allData[i].x), y: rows.map(i => allData[i].y),
+        customdata: rows,
+        marker: { size: 8, color: '#c4a747', line: { color: '#fff', width: 0.7 } },
+        hoverinfo: 'none', _isOrientation: true,
+      }];
+      if (orientation.anchor >= 0 && allData[orientation.anchor]) {
+        const a = allData[orientation.anchor];
+        out.push({
+          type: 'scattergl', mode: 'markers', name: 'Where you are',
+          x: [a.x], y: [a.y], customdata: [orientation.anchor],
+          marker: { size: 16, color: '#fff', symbol: 'star',
+                    line: { color: '#c4a747', width: 1.5 } },
+          hoverinfo: 'none', _isOrientation: true,
+        });
+      }
+      return out;
+    },
+    getDimmedIndices() { return null; },
+    dimsAll() { return !!orientation; },
+  };
 
   // THE relation entry point. One control, one concept, two renderings.
   //
@@ -1555,6 +1609,19 @@
     const plotEl = document.getElementById('plot');
     plotEl.classList.toggle('force-mode', mode === 'force' || mode === 'discover');
 
+    // Leaving a graph for the atlas is a question about position, so answer it: carry the
+    // graph's cards across and light them up. Entering explore any other way clears it.
+    if (mode === 'explore') {
+      // NOT gated on Force.isActive(): the exit above already flipped it false, and
+      // `exit()` deliberately keeps the nodes so the walk can be resumed. The graph you
+      // just left is exactly the thing you want to locate.
+      const live = window.Force ? Force.rows() : [];
+      if (live.length) orientTo(live, 'your walk', Force.pinnedRow());
+      else clearOrientation();
+    } else if (mode !== 'force' && mode !== 'discover') {
+      orientation = null;
+    }
+
     if (mode === 'discover') {
       clearSelection();
       detail.style.display = 'none';
@@ -1674,6 +1741,7 @@
     let dimmedIndices = null;
     const overlay = currentMode === 'build' ? window.DeckBuilder
       : currentMode === 'deck' ? window.DeckMap
+      : (currentMode === 'explore' && orientation) ? OrientationOverlay
       : null;
     if (overlay) {
       overlayTraces = overlay.getOverlayTraces();
@@ -1820,6 +1888,11 @@
       // their positions would not mean the same thing if they were.
       const n = window.Drill.getContourSource().length;
       setStatus(`${n.toLocaleString()} cards · local layout from the 128-dim embeddings`);
+    } else if (currentMode === 'explore' && orientation) {
+      // The bare card count is the wrong answer while the lens is on — you came here to
+      // see where YOUR cards are, not to be told how many exist.
+      setStatus(orientation.rows.size + ' cards from ' + orientation.label +
+                ' — highlighted in the full map · Esc to see everything');
     } else if (currentMode === 'explore') {
       setStatus(`${filtered.length.toLocaleString()} cards shown`);
     }
@@ -2111,6 +2184,9 @@
     },
     selectByName,
     relate,
+    orientTo,
+    clearOrientation,
+    get orientation() { return orientation; },
     render,
     setStatus,
     setMode,

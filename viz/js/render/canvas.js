@@ -42,7 +42,8 @@
     let raf = null;
     let selectMode = false;          // shift held: drag draws a marquee instead of panning
     let marquee = null;              // {x0, y0, x1, y1} in screen px, while dragging
-    let labelHost = null;            // DOM layer for region labels
+    let labelHost = null;
+    let lastVisibleLabels = 0;            // DOM layer for region labels
     let labels = [];                 // [{x, y, text, size, colour, id}]
     let contour = null;              // cached d3-contourDensity paths
     let contourKey = null;
@@ -405,7 +406,9 @@
     // hit-test against annotation anchors. As DOM they get a real CSS transition and a
     // real click handler for free.
     function setAnnotations(list) {
-      labels = list || [];
+      // Sorted big-first: size tracks region level, so the L0 headline labels claim their
+      // space before the L1 detail labels compete for it.
+      labels = (list || []).slice().sort((a, b) => (b.size || 0) - (a.size || 0));
       if (!labelHost) {
         labelHost = document.createElement('div');
         labelHost.className = 'map-labels';
@@ -427,14 +430,38 @@
       positionLabels();
     }
 
+    // Position, then hide whatever would overlap something already placed.
+    //
+    // Collision MUST be evaluated here rather than in setAnnotations, in PIXELS: the
+    // annotations carry world coordinates (`region.cx/cy`), and comparing those against
+    // label widths in pixels is a units error that rejects essentially everything — world
+    // coords span about ±40 while a label is 150px wide, so every box overlaps every other.
+    // Doing it here also makes it zoom-responsive for free: labels that collide zoomed out
+    // separate as you zoom in, which is exactly the behaviour you want and what force.js
+    // has always done for node labels.
     function positionLabels() {
       if (!labelHost || !labels.length || !baseFit) return;
       const kids = labelHost.children;
+      const placed = [];
       for (let i = 0; i < kids.length && i < labels.length; i++) {
+        const el = kids[i];
         const p = dataToPixel(labels[i].x, labels[i].y);
-        kids[i].style.transform = 'translate(-50%,-50%) translate(' +
+        el.style.transform = 'translate(-50%,-50%) translate(' +
           Math.round(p[0]) + 'px,' + Math.round(p[1]) + 'px)';
+        // offsetWidth is 0 while hidden, so measure before deciding.
+        el.style.display = '';
+        const w = el.offsetWidth || (labels[i].text || '').length * 7;
+        const h = el.offsetHeight || 16;
+        const box = { x0: p[0] - w / 2, x1: p[0] + w / 2, y0: p[1] - h / 2, y1: p[1] + h / 2 };
+        let clash = false;
+        for (const b of placed) {
+          if (box.x0 < b.x1 + 3 && box.x1 > b.x0 - 3 &&
+              box.y0 < b.y1 + 3 && box.y1 > b.y0 - 3) { clash = true; break; }
+        }
+        if (clash) { el.style.display = 'none'; continue; }
+        placed.push(box);
       }
+      lastVisibleLabels = placed.length;
     }
 
     // Move one layer's points without rebuilding anything else. This is what
@@ -535,6 +562,7 @@
       draw: schedule, drawNow: draw,
       pick, pickRect, getCamera, setCamera, dataToPixel,
       setAnnotations, updateLayerBy,
+      get visibleLabelCount() { return lastVisibleLabels; },
       setSelectMode: function (on) { selectMode = !!on; if (canvas) canvas.style.cursor = on ? 'crosshair' : 'grab'; },
       setContours: function (on) {
         showContours = !!on;

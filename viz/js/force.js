@@ -1015,6 +1015,11 @@
     enter, exit, isActive, seedFrom, focusCard, pinCard,
     reheat, freeze, clearTrail, newWalk, tune, close, renderPanel, bbox,
     walkDeck, walkRegion, branchByRow, hasRow,
+    // The rows currently on the graph, for Explore's orientation lens: the graph encodes
+    // adjacency and has no absolute position, so "where does this sit in card space" is a
+    // question only the world map can answer.
+    rows() { return nodes.map(function (n) { return n.row; }); },
+    pinnedRow() { return pinned ? pinned.row : -1; },
     // An explicit request, so it overrides "the user has taken the camera".
     fit: function () { userAdjusted = false; fitToGraph(true); userAdjusted = true; },
     get nodeCount() { return nodes.length; },

@@ -29,7 +29,7 @@ first place.
 [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-1,119 tests (1,042 fast + 77 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
+1,122 tests (1,042 fast + 80 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
 
 > ### ⚠ OPEN: 23 agent-cache routines are deliberately MISSed
 >

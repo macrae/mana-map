@@ -169,6 +169,31 @@ nothing.
 `tests/test_viz_drill.py` covers the contract, the suppressions, the local-position
 lookup, the announced truncation, and the hidden-tab fallback.
 
+## Explore is an orientation lens, not a second workspace
+
+Discovery is generative — you build something, and it responds. Explore was inspective: a
+fixed picture behind filters, opening on 34,322 points and the words "34,322 cards shown",
+where clicking added to an 8-card *list* rather than to a structure. Same app, two different
+verbs, and the second one felt worse.
+
+So Explore was given the job it is uniquely good at. `force.js` states in its own header
+that the graph encodes **adjacency, not absolute position** — so "where does this sit in
+card space" is precisely what it cannot answer. Entering Explore from a graph now calls
+`MM.orientTo(rows, label, anchor)`: your cards light up gold, the card you were on gets a
+white star, the other 34,000 dim to texture, and the status says what you are looking at.
+Esc restores the whole atlas. It participates in the same
+`getOverlayTraces` / `getDimmedIndices` / `dimsAll` contract as Deck Lens.
+
+**Region labels now reject overlaps**, which `force.js` has done for node labels since the
+graph shipped. The map emitted every label unconditionally, so the atlas was a pile of
+colliding text while the graph never was — most of why one felt noisier than the other.
+
+The collision test is evaluated **in pixels at position time**, not in `setAnnotations`.
+Annotations carry world coordinates (`region.cx/cy`), and comparing those against label
+widths in pixels is a units error that rejects almost everything — world coords span about
+±40 while a label is 150 px wide. Doing it at position time also makes it zoom-responsive
+for free: labels that collide zoomed out separate as you zoom in.
+
 ## Discovery — the front door (`viz/js/discovery.js`)
 
 The map used to be where you arrived. Now the landing is **one card**: hover it, click a

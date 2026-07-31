@@ -1976,3 +1976,96 @@ def test_relations_survive_the_canvas_renderer(canvas_page):
     }""")
     assert canvas_page.js_errors == [], f"the canvas path threw: {canvas_page.js_errors}"
     assert r["browse"] and r["held"] > 5
+
+
+# ── Explore as an orientation lens ──────────────────────────────────────
+
+
+def test_leaving_a_graph_for_the_atlas_shows_where_it_sits(discover_page):
+    """Explore stopped being a workspace.
+
+    The graph encodes **adjacency and has no absolute position** — force.js says so in its
+    own header — so "where does this sit in card space" is the one question it structurally
+    cannot answer. Entering Explore from a graph now lights up exactly those cards and dims
+    the other 34,000, which gives the atlas a job it is uniquely good at instead of being a
+    second, worse place to work.
+    """
+    r = discover_page.evaluate("""async () => {
+        MM.relate(Discovery.current, 'synergy');
+        await new Promise(r => setTimeout(r, 1400));
+        const built = Force.nodeCount;
+
+        document.getElementById('modeSelect').value = 'explore';
+        MM.setMode('explore');
+        await new Promise(r => setTimeout(r, 4000));
+        return {
+            built: built,
+            active: !!MM.orientation,
+            rows: MM.orientation ? MM.orientation.rows.size : 0,
+            anchored: MM.orientation ? MM.orientation.anchor >= 0 : false,
+            status: document.getElementById('status').textContent,
+        };
+    }""")
+    assert discover_page.js_errors == []
+    assert r["built"] > 1
+    assert r["active"], "entering Explore from a graph did not light it up"
+    assert r["rows"] == r["built"], (
+        f"{r['rows']} cards highlighted from a {r['built']}-card graph"
+    )
+    assert r["anchored"], "the card you were on should be marked in the atlas"
+    assert "cards shown" not in r["status"], (
+        "the status is still the bare corpus count — you came to see YOUR cards"
+    )
+
+
+def test_escape_returns_the_whole_atlas(discover_page):
+    """The lens is a view, not a trap: Esc gives the full map back before it touches the
+    selection."""
+    r = discover_page.evaluate("""async () => {
+        MM.relate(Discovery.current, 'similar');
+        await new Promise(r => setTimeout(r, 1200));
+        document.getElementById('modeSelect').value = 'explore';
+        MM.setMode('explore');
+        await new Promise(r => setTimeout(r, 3500));
+        const on = !!MM.orientation;
+        MM.clearOrientation();
+        await new Promise(r => setTimeout(r, 800));
+        return {on: on, off: !MM.orientation,
+                status: document.getElementById('status').textContent};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["on"] and r["off"]
+    assert "cards shown" in r["status"], "clearing the lens did not restore the atlas status"
+
+
+def test_region_labels_do_not_pile_on_each_other(canvas_page):
+    """The inconsistency that made the atlas feel noisier than the graph.
+
+    `force.js` has rejected colliding node labels since the graph shipped; the map renderer
+    emitted every region label unconditionally, so "White Creatures — Flyers — ETB (West)"
+    sat straight across "Green Creatures — ETB — Tramplers (East)" and neither was readable.
+
+    Collision is evaluated in PIXELS during positioning, not in `setAnnotations`: the
+    annotations carry world coordinates, and comparing those to pixel widths is a units
+    error that rejects nearly everything. Doing it at position time also makes it
+    zoom-responsive.
+    """
+    r = canvas_page.evaluate("""async () => {
+        await new Promise(r => setTimeout(r, 2500));
+        const all = [...document.querySelectorAll('.map-label')];
+        const shown = all.filter(e => e.style.display !== 'none');
+        const boxes = shown.map(e => e.getBoundingClientRect());
+        let overlaps = 0;
+        for (let i = 0; i < boxes.length; i++) {
+            for (let j = i + 1; j < boxes.length; j++) {
+                const a = boxes[i], b = boxes[j];
+                if (a.left < b.right && a.right > b.left &&
+                    a.top < b.bottom && a.bottom > b.top) overlaps++;
+            }
+        }
+        return {inDom: all.length, visible: shown.length, overlaps: overlaps};
+    }""")
+    assert canvas_page.js_errors == []
+    assert r["inDom"] > 5, "no region labels rendered at all"
+    assert r["visible"] > 3, f"only {r['visible']} labels survived — the filter is too harsh"
+    assert r["overlaps"] == 0, f"{r['overlaps']} pairs of region labels overlap"
