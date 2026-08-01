@@ -1263,7 +1263,8 @@
       document.getElementById('plot').appendChild(el);
     }
     el.innerHTML = traces
-      .filter(tr => tr.name && tr.visible !== false && tr.mode !== 'lines')
+      .filter(tr => tr.name && tr.visible !== false &&
+              tr.mode !== 'lines' && tr.mode !== 'edges')
       .map(tr => {
         const m = tr.marker || {};
         const c = Array.isArray(m.color) ? '#8a8a8a' : (m.color || '#666');

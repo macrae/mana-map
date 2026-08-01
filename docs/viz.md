@@ -266,6 +266,48 @@ no-ops in Discover *and* the browse panel (both clear it), acted on the **wrong 
 Walk while drawing onto a hidden Plotly surface, and threw outright under `?renderer=canvas`
 where `#plot` has no `.data`. Their highlight-trace machinery is gone with them.
 
+### stage.js — what the two canvas renderers stopped writing twice
+
+There are two canvas renderers and there always will be: the atlas draws 34,322 cards at
+fixed world positions (*where does this sit*), The Walk draws a few hundred at simulated
+positions (*what is this next to*). They shared **zero lines** while separately implementing
+canvas creation and DPR resize (character-identical, both carrying the same "cost an
+afternoon" comment), d3-zoom wiring, the draw prologue, world→screen, screen→world,
+fit-to-extent, the `/transform.k` constant-screen-size trick, and greedy AABB label
+collision — which `render/canvas.js` openly noted it had copied from The Walk.
+
+`Stage` owns the **surface**: pixels, gestures, geometry. `surface()` + `surface.open()`,
+`camera()`, `placer()`/`placeLabels()`, `drawEdges()`/`edgeInk()`. −114 lines across the two
+renderers for +235 of shared primitive.
+
+**Stage never stores a coordinate, and that is the load-bearing decision.** `force.js`
+mutates node x/y every tick; `canvas.js` never touches its points and moves only the
+transform. An abstraction owning positions would have to serve both and become a union of
+two designs. Callers paint inside a transform Stage sets up and hand it screen-space boxes.
+
+Two places the API followed the caller rather than the reverse: label placement is
+**incremental** (The Walk draws each label on accept, caps on the number *accepted*, and
+shares one collision set between edge and node labels so a reason can never sit on a card
+name), and `drawEdges` takes a `relOf` callback because deck-ness is a property of the graph
+— both endpoints from a loaded decklist — not of the link.
+
+### Typed edges, and why `mode: 'lines'` was not enough
+
+A `lines` layer is one flattened polyline with a single colour for the whole layer, excluded
+from the quadtree so it can never be hovered. That draws the Deck Lens's verified-line edges
+and is structurally unable to say *this* edge is a synergy and *that* one an obsolescence.
+
+`mode: 'edges'` carries `[{source: [x, y], target: [x, y], rel, reason, d}]` and hands the
+inks to `Stage.INK`, so an edge means the same thing on the map as on the graph. Coordinates
+are explicit rather than row indices — the renderer still knows nothing about cards, and the
+producer already has the positions. Edge layers stay out of the quadtree (nothing to pick)
+and out of the legend (a swatch would be a dot standing for a line). `curve` bows the line,
+because a straight segment between two distant cards reads as an assertion about the space
+between them.
+
+`test_the_atlas_draws_typed_edges` asserts this by **reading pixels**, not by inspecting the
+layer list: "the layer is present" is exactly the claim that passes while nothing is drawn.
+
 **Synergy edges say why.** `neighbours.bin` v2 carries a uint8 reason code per synergy slot
 plus the 24-entry vocabulary appended after the data, so branching stays synchronous and the
 codebook never becomes a third fetch. Edges are inked by relation — deck gold, synergy violet,

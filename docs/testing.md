@@ -1,12 +1,12 @@
 # Testing
 
 ```bash
-.venv/bin/python -m pytest              # everything (1,122, ~7 min)
+.venv/bin/python -m pytest              # everything (1,123, ~7 min)
 .venv/bin/python -m pytest -m "not browser"   # fast suite (1,042, ~70 s)
 .venv/bin/python -m pytest -m browser         # the 80 browser tests (~340 s)
 ```
 
-1,122 tests in `tests/`: 438 card-pipeline + 601 pilot-subsystem + **83 browser**.
+1,123 tests in `tests/`: 438 card-pipeline + 601 pilot-subsystem + **84 browser**.
 One is a still-unmet `xfail(strict=True)` ship gate in `test_embedding_quality.py` — see below.
 
 ## Source assertions do not catch regressions
@@ -51,7 +51,7 @@ matched literal indentation and broke the moment the key handler was rewritten t
 gate — while the invariant it cared about was untouched. It now asserts the delegation
 (`cycleSelection` is called; the handler does not recompute an index) rather than the text.
 
-### Browser tests (83) — `tests/test_viz_behaviour.py` + `test_decklist_parity.py`
+### Browser tests (84) — `tests/test_viz_behaviour.py` + `test_decklist_parity.py`
 
 The session fixtures `browser` and `viz_server` live in `tests/conftest.py` — see the
 section below for why they cannot live anywhere else. `conftest_viz.py` still holds the
@@ -86,6 +86,29 @@ branching grows the graph and records the trail, and that leaving restores the m
 
 Setup, one time: `.venv/bin/python -m playwright install chromium` (~94 MB). Without it the
 whole file skips cleanly, so a fresh clone still runs the other 1,039.
+
+## Wait for the condition, never for a timer
+
+Two tests in this suite have failed intermittently for the same reason, and both looked
+like flakes rather than what they were.
+
+`test_the_hover_card_stays_inside_the_frame` waited a fixed 420 ms and then asserted the
+popup was taller than 200 px. That is a test of whether Scryfall answered in 420 ms. It
+failed in full runs and passed alone — the signature of timing an external fetch under
+load. It now waits for the `<img>` `load` event.
+
+Fixing it exposed the sharper version of the same mistake. Waiting for the popup *element*
+is not enough: it is created once and reused, so from the second hover onward it is already
+in the DOM while still hidden behind the 180 ms hover delay. Polling for existence returns
+instantly and measures a `display:none` box as 0×0 — a green-looking wait that measures
+nothing. The condition that actually means "ready" is `style.display === 'block'`, and then
+the image.
+
+The earlier instance was node labels in The Walk, measured mid-settle when every label
+legitimately collides; that one produced a confident and completely wrong conclusion that
+labelling was broken. **If an assertion depends on layout, network, or a simulation
+settling, wait for that thing — a `setTimeout` long enough to usually work is a flake with
+a delay on it.**
 
 ## Session fixtures belong in `conftest.py`, not in an imported module
 

@@ -1461,8 +1461,32 @@ def test_the_hover_card_stays_inside_the_frame(discover_page):
         for (const [label, cy] of spots) {
             MM.hideCardPopup();
             MM.showCardPopup(row, rect.left + 300, cy);
-            await new Promise(r => setTimeout(r, 420));
-            const p = document.querySelector('.card-popup');
+            // Wait for the IMAGE, not for a timer. A fixed delay makes this a test of
+            // whether Scryfall answered in 420 ms — it failed intermittently in full runs
+            // and passed alone, which is the signature of timing an external fetch. The
+            // clamp is what is under test, and it can only be judged once the popup has
+            // its real height.
+            //
+            // Wait for the popup to be VISIBLE, not merely present. The element is
+            // created once and reused, so after the first spot it is already in the DOM
+            // while still hidden behind the 180 ms hover delay — polling for existence
+            // returns instantly and measures a display:none box as 0x0.
+            let p = null;
+            for (let t = 0; t < 60; t++) {
+                const el = document.querySelector('.card-popup');
+                if (el && el.style.display === 'block') { p = el; break; }
+                await new Promise(r => setTimeout(r, 50));
+            }
+            if (!p) return [{at: label, missing: true}];
+            const img = p.querySelector('img');
+            if (img && !img.complete) {
+                await new Promise(res => {
+                    img.addEventListener('load', res, {once: true});
+                    img.addEventListener('error', res, {once: true});
+                    setTimeout(res, 4000);
+                });
+            }
+            await new Promise(r => setTimeout(r, 120));
             const pr = p.getBoundingClientRect();
             out.push({
                 at: label, height: Math.round(pr.height),
@@ -2199,3 +2223,64 @@ def test_an_empty_graph_still_seeds_from_the_atlas(discover_page):
     }""")
     assert discover_page.js_errors == []
     assert r["seeded"] and r["nodes"] > 1, f"an empty graph did not seed: {r}"
+
+
+# ── Typed edges on the atlas ────────────────────────────────────────────
+
+
+def test_the_atlas_draws_typed_edges(page):
+    """An edge on the map must be able to say WHAT it is.
+
+    What the atlas had was a `lines` layer: one flattened polyline with a single colour
+    for the whole layer, excluded from the quadtree so it could never be hovered. That is
+    enough for the Deck Lens's verified-line edges and structurally unable to say that
+    this edge is a synergy and that one is an obsolescence — `force.js` owned the only
+    real edge model and kept it to itself.
+
+    Asserted by reading pixels rather than by inspecting the layer list, because "the
+    layer is present" is exactly the kind of claim that passes while nothing is drawn.
+    The three inks come from `Stage.INK`, so the graph and the map now agree on what a
+    relation looks like.
+    """
+    r = page.evaluate("""async () => {
+        const row = MM.allData.findIndex(d => d.n === "Ashnod's Altar");
+        const a = MM.allData[row];
+        const edges = [];
+        for (const rel of ['similar', 'synergy', 'obsolete']) {
+            for (const nb of Discovery.neighbours(row, rel)) {
+                const t = MM.allData[nb.row];
+                if (!t) continue;
+                edges.push({source: [a.x, a.y], target: [t.x, t.y],
+                            rel: nb.relation, d: 1 - (nb.sim || 0.5)});
+            }
+        }
+        const layers = MM.mapRenderer.layers.slice();
+        layers.push({mode: 'edges', name: 'relations', edges: edges,
+                     curve: 0.12, line: {width: 1.4}, opacity: 0.9});
+        MM.mapRenderer.setLayers(layers);
+        await new Promise(r => setTimeout(r, 700));
+
+        const cv = MM.mapRenderer.canvas;
+        const px = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data;
+        let violet = 0, red = 0;
+        for (let i = 0; i < px.length; i += 4) {
+            const R = px[i], G = px[i + 1], B = px[i + 2];
+            if (R > 140 && R < 200 && G > 95 && G < 145 && B > 185) violet++;
+            else if (R > 185 && G > 95 && G < 145 && B > 95 && B < 145) red++;
+        }
+        return {
+            edges: edges.length,
+            byRel: edges.reduce((m, e) => (m[e.rel] = (m[e.rel] || 0) + 1, m), {}),
+            violet: violet, red: red,
+            // An edge layer carries no customdata, so it must stay out of the quadtree
+            // and out of the legend — a swatch for it would be a dot standing for a line.
+            legendRows: document.querySelectorAll('.map-legend-row').length,
+            picksACard: MM.mapRenderer.pointCount > 0,
+        };
+    }""")
+    assert page.js_errors == []
+    assert r["byRel"].get("synergy", 0) > 0 and r["byRel"].get("similar", 0) > 0
+    assert r["violet"] > 20, f"no synergy-inked edge pixels on the map ({r['violet']})"
+    assert r["red"] > 0, f"no obsolescence-inked edge pixels ({r['red']})"
+    assert r["legendRows"] == 7, f"an edge layer took a legend row ({r['legendRows']})"
+    assert r["picksACard"], "the quadtree lost its points to the edge layer"

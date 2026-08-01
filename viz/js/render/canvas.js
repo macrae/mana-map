@@ -193,7 +193,7 @@
     function treeSignature() {
       let sig = '';
       for (const l of layers) {
-        if (l.visible === false || !l.customdata || l.mode === 'lines') continue;
+        if (l.visible === false || !l.customdata || l.mode === 'lines' || l.mode === 'edges') continue;
         const cd = l.customdata;
         sig += l.x.length + ':' + cd[0] + ':' + cd[cd.length - 1] + '|';
       }
@@ -206,7 +206,7 @@
       treeKey = sig;
       const pts = [];
       for (const l of layers) {
-        if (l.visible === false || !l.customdata || l.mode === 'lines') continue;
+        if (l.visible === false || !l.customdata || l.mode === 'lines' || l.mode === 'edges') continue;
         for (let i = 0; i < l.x.length; i++) {
           if (l.x[i] == null) continue;
           pts.push({ x: l.x[i], y: l.y[i], row: l.customdata[i] });
@@ -242,7 +242,8 @@
 
       for (const l of layers) {
         if (l.visible === false || !l.x || !l.x.length) continue;
-        if (l.mode === 'lines') drawLines(l);
+        if (l.mode === 'edges') drawTypedEdges(l);
+        else if (l.mode === 'lines') drawLines(l);
         else drawMarkers(l);
       }
       close();
@@ -270,13 +271,13 @@
     function rebuildContours() {
       const pts = [];
       for (const l of layers) {
-        if (l.visible === false || !l.customdata || l.mode === 'lines') continue;
+        if (l.visible === false || !l.customdata || l.mode === 'lines' || l.mode === 'edges') continue;
         for (let i = 0; i < l.x.length; i++) if (l.x[i] != null) pts.push(l);
         break;                       // the base scatter only; overlays are not density
       }
       const src = [];
       for (const l of layers) {
-        if (l.visible === false || !l.customdata || l.mode === 'lines') continue;
+        if (l.visible === false || !l.customdata || l.mode === 'lines' || l.mode === 'edges') continue;
         for (let i = 0; i < l.x.length; i++) {
           if (l.x[i] != null) src.push([wx(l.x[i]), wy(l.y[i])]);
         }
@@ -301,6 +302,25 @@
         path(c);
         ctx.fill();
       }
+    }
+
+    // Typed edges: a relation drawn between two cards, coloured by what the relation IS.
+    //
+    // This is not the same thing as a `lines` layer, and the difference is the point. A
+    // `lines` layer is one flattened polyline with a single colour for the whole layer —
+    // enough for the Deck Lens's verified-line edges, and structurally unable to say that
+    // THIS edge is a synergy and THAT one is an obsolescence. An `edges` layer carries
+    // `[{source: [x, y], target: [x, y], rel, reason, d}]` and hands the inks to Stage, so
+    // an edge means the same thing here as it does on the graph.
+    //
+    // Coordinates are explicit rather than row indices: the renderer still knows nothing
+    // about cards, and the producer already has the positions.
+    function drawTypedEdges(l) {
+      if (!l.edges || !l.edges.length) return;
+      ctx.globalAlpha = l.opacity == null ? 1 : l.opacity;
+      Stage.drawEdges(ctx, l.edges, function (pt) { return [wx(pt[0]), wy(pt[1])]; },
+                      transform.k, { width: (l.line && l.line.width) || 1, curve: l.curve });
+      ctx.globalAlpha = 1;
     }
 
     function drawLines(l) {
