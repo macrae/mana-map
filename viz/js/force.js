@@ -60,7 +60,6 @@
   // above zero for as long as you hold the node.
   const PHYSICS = { velocityDecay: 0.22, alphaDecay: 0.08, charge: -110, linkScale: 190 };
 
-  let chrome = 'walk';
   // Which rows came from a loaded deck, and which one is its commander. Nodes pulled in
   // by branching are deliberately NOT in here — that difference is the whole point of
   // loading a deck: you can see at a glance what you brought and what you found.
@@ -516,11 +515,10 @@
 
   // ── Entering, branching, leaving ────────────────────────────────────────
 
-  // `opts.chrome === 'discovery'` means someone else owns the side panel. One engine,
-  // two chromes — a second force simulation for the landing would be the duplicate-kNN
-  // mistake this codebase has already had to undo twice.
+  // One engine, one chrome. `opts.chrome` used to select between this file owning the
+  // side panel and Discovery owning it; The Walk is gone and Discovery always owns it, so
+  // the option is accepted and ignored rather than removed from every call site.
   async function enter(rowIndices, seedLabel, opts) {
-    chrome = (opts && opts.chrome) || 'walk';
     if (opts && opts.deck) {
       deckRows = opts.deck.rows || null;
       commanderRow = typeof opts.deck.commander === 'number' ? opts.deck.commander : -1;
@@ -554,8 +552,8 @@
       resize();
       nodes = []; links = []; trail = [];
       draw();
-      await renderEmptyState();
-      MM.setStatus('Pick a starting point for the walk.');
+      renderPanel();
+      MM.setStatus('Pick a card, a deck or a region to start from.');
       return;
     }
 
@@ -624,9 +622,6 @@
     // A single seed is a landing: pin it so it draws as card art rather than a 6 px dot.
     if (nodes.length === 1) pinned = nodes[0];
     renderPanel();
-    if (chrome !== 'discovery') {
-      MM.setStatus(nodes.length + ' cards · link length is 128-dim cosine distance · click a card to branch');
-    }
   }
 
   // The walk. Pull in the clicked card's neighbours and reheat — the graph grows toward
@@ -640,7 +635,7 @@
     pinned = node;
     // Tell Discovery which card is now open, so the panel shows THIS card's art, its
     // relation counts, and a Keep button that adds the card you actually clicked.
-    if (chrome === 'discovery' && window.Discovery) Discovery.focus(node.row);
+    if (window.Discovery) Discovery.focus(node.row);
     if (trail[trail.length - 1] !== node) {
       trail.push(node);
       if (trail.length > TRAIL_MAX) trail.shift();
@@ -831,8 +826,8 @@
     userAdjusted = false;
     if (canvas) { transform = d3.zoomIdentity; draw(); }
     if (quiet) return;
-    renderEmptyState();
-    MM.setStatus('Pick a starting point for the walk.');
+    renderPanel();
+    MM.setStatus('Pick a card, a deck or a region to start from.');
   }
 
   // Leaving keeps the graph. Rebuilding a walk you spent minutes growing, just because
@@ -859,7 +854,7 @@
     const n = byIdx.get(row);
     if (!n) return;
     pinned = n;
-    if (chrome === 'discovery' && window.Discovery) Discovery.focus(row);
+    if (window.Discovery) Discovery.focus(row);
     if (trail[trail.length - 1] !== n) trail.push(n);
     draw();
     renderPanel();
@@ -869,62 +864,10 @@
 
   // Somewhere to start. Decks come from the tracked manifest; regions from the HDBSCAN
   // membership the clustering now keeps. Both are one click.
-  async function renderEmptyState() {
-    const el = document.getElementById('deckInner');
-    if (!el) return;
-    document.getElementById('deckPanel').classList.add('open');
-
-    let decks = [];
-    try {
-      const doc = await (await fetch('../data/decks/index.json')).json();
-      decks = doc.decks || [];
-    } catch (e) { /* the walk works without them */ }
-
-    let regions = [];
-    try {
-      const rd = await MM.getRegionData();
-      if (rd && rd.membership) {
-        regions = rd.regions
-          .filter(r => r.level === 1 && r.count >= 60 && r.count <= MAX_NODES)
-          .sort((a, b) => b.count - a.count)
-          .slice(0, 8);
-      }
-    } catch (e) { /* likewise */ }
-
-    el.innerHTML =
-      '<div class="deck-header"><h2>The Walk</h2>' +
-      '<button class="detail-close" onclick="Force.close()" title="Close">×</button></div>' +
-      '<div class="deck-section"><div class="deck-empty">' +
-        'A walk starts from a set of cards. Pick one below — or box-select on the map, ' +
-        'or use Find Similar, then come back.' +
-      '</div></div>' +
-      (decks.length ? '<div class="deck-section">' +
-        '<div class="deck-section-title">Walk a deck</div>' +
-        decks.map(d => '<div class="lens-cand" onclick="Force.walkDeck(' +
-            JSON.stringify(d.slug).replace(/"/g, '&quot;') + ',' +
-            JSON.stringify(d.deck_name).replace(/"/g, '&quot;') + ')">' +
-          '<span class="lens-cand-name">' + MM.escHtml(d.deck_name) + '</span>' +
-          '<span class="lens-chip">Vol. ' + String(d.volume).padStart(3, '0') + '</span>' +
-        '</div>').join('') + '</div>' : '') +
-      (regions.length ? '<div class="deck-section">' +
-        '<div class="deck-section-title">Walk a region</div>' +
-        regions.map(r => '<div class="lens-cand" onclick="Force.walkRegion(' +
-            JSON.stringify(r.id).replace(/"/g, '&quot;') + ')">' +
-          '<span class="lens-cand-name">' + MM.escHtml(r.short || r.label) + '</span>' +
-          '<span class="lens-chip">' + r.count + '</span>' +
-        '</div>').join('') + '</div>' : '');
-  }
-
-  async function walkDeck(slug, name) {
-    try {
-      const doc = await (await fetch('../data/decks/' + slug + '/cards.json')).json();
-      const names = new Set(doc.cards.filter(c => !c.is_sideboard).map(c => c.name));
-      const rows = [];
-      MM.allData.forEach((d, i) => { if (names.has(d.n)) rows.push(i); });
-      enter(rows, name || slug);
-    } catch (e) { MM.setStatus('Could not load ' + slug); }
-  }
-
+  // `renderEmptyState` and `walkDeck` lived here. The empty state was the walk panel's
+  // deck+region picker; Discovery's panel now carries both, and `Discovery.onDeckPick` is
+  // strictly better than `walkDeck` was — it passes `opts.deck`, so a loaded deck gets the
+  // commander ring and the deck ink that `walkDeck` never set.
   async function walkRegion(regionId) {
     const rd = await MM.getRegionData();
     if (!rd || !rd.membership) return;
@@ -938,79 +881,19 @@
     enter(rows, region ? region.label : regionId);
   }
 
+  // ONE PANEL. This used to branch: Discovery owned the side panel in discovery chrome,
+  // and in walk chrome this function rendered a second panel of its own — the scoreboard,
+  // Fit/Reheat/New walk, the physics sliders and the trail. The Walk was Discover with
+  // different chrome (two behaviours and a status string, across four `chrome ===` reads),
+  // so it was deleted and its panel's keepers moved into `Discovery.render`: the
+  // scoreboard, Fit, Reheat, Start over, the trail, and the truncation notice — which had
+  // never been shown in discovery chrome at all, so a >500-card import was silently cut.
+  //
+  // The physics sliders were NOT ported. They were a debugging surface and nothing else in
+  // the product exposes tuning; `Force.tune` remains for the console.
   function renderPanel() {
-    const el = document.getElementById('deckInner');
-    if (!el || !active) return;
-    // Discovery owns the side panel in its chrome. Drawing the walk panel over it would
-    // erase the landing controls, the tray and the import box every time the graph
-    // reheats — which it does on every branch.
-    if (chrome === 'discovery') { if (window.Discovery) Discovery.render(); return; }
-    // A "0 CARDS / 0 LINKS" panel is a dead end. Whoever calls this with an empty graph
-    // wants the empty state, not an empty scoreboard — routing it here rather than at
-    // each call site means a new caller cannot reintroduce the dead end.
-    if (!nodes.length) { renderEmptyState(); return; }
-    document.getElementById('deckPanel').classList.add('open');
-
-    // Pinned wins over hovered. It used to be the other way round, which meant "click a
-    // card to open its details" evaporated the instant the cursor moved one pixel off
-    // the node — the panel would flick to whatever you happened to be passing over.
-    // Hover is a preview of somewhere you might go; the pin is where you are.
-    const h = pinned || hovered;
-    let html =
-      '<div class="deck-header"><h2>The Walk</h2>' +
-      '<button class="lens-btn lens-btn-inline" onclick="Force.newWalk()" ' +
-        'title="Pick a different deck or region">New walk ↺</button>' +
-      '<button class="detail-close" onclick="Force.close()" title="Close">×</button></div>' +
-      '<div class="deck-section">' +
-        '<div class="lens-title">' + MM.escHtml(label) + '</div>' +
-        '<div class="lens-stats">' +
-          '<div class="lens-stat"><div class="lens-stat-n">' + nodes.length + '</div><div class="lens-stat-l">cards</div></div>' +
-          '<div class="lens-stat"><div class="lens-stat-n">' + links.length + '</div><div class="lens-stat-l">links</div></div>' +
-          '<div class="lens-stat"><div class="lens-stat-n">' + trail.length + '</div><div class="lens-stat-l">visited</div></div>' +
-          '<div class="lens-stat"><div class="lens-stat-n">' + MAX_NODES + '</div><div class="lens-stat-l">cap</div></div>' +
-        '</div>' +
-        (truncatedFrom ? '<div class="lens-note">seeded with ' + MAX_NODES + ' of ' + truncatedFrom + '</div>' : '') +
-        '<div class="lens-note">Drag a card to fling it · click to branch · scroll to zoom</div>' +
-      '</div>';
-
-    // The card itself, rendered here rather than in #detailPanel — force mode hides that
-    // panel, so the old "Open the card →" button pushed the card into an invisible element
-    // and the reader saw nothing (it then popped open on leaving the Walk, which was
-    // worse than nothing). MM.buildCardDetailHtml is the same markup Explore uses, so
-    // there is one card renderer rather than two that drift.
-    if (h) {
-      html += '<div class="deck-section">' +
-        '<div class="deck-section-title">' + (h === pinned ? 'Pinned' : 'Under the cursor') + '</div>' +
-        '<div class="lens-title">' + MM.escHtml(h.name) + '</div>' +
-        MM.buildCardDetailHtml(MM.cardRecord(h.row), h.row) +
-        '</div>';
-    }
-
-    html +=
-      '<div class="deck-section"><div class="deck-section-title">Physics</div>' +
-        slider('linkScale', 'link length', 60, 400, PHYSICS.linkScale) +
-        slider('charge', 'repulsion', -400, -20, PHYSICS.charge) +
-        slider('velocityDecay', 'friction', 5, 90, Math.round(PHYSICS.velocityDecay * 100)) +
-        '<button class="lens-btn" onclick="Force.fit()">Fit to the graph</button>' +
-        '<button class="lens-btn" onclick="Force.reheat()">Reheat</button>' +
-      '</div>';
-
-    if (trail.length) {
-      html += '<div class="deck-section"><div class="deck-section-title">The walk ' +
-        '<span>' + trail.length + '</span></div>' +
-        trail.slice().reverse().map(n =>
-          '<div class="lens-cand"><span class="lens-cand-name">' + MM.escHtml(n.name) + '</span></div>'
-        ).join('') +
-        '<button class="lens-btn" onclick="Force.clearTrail()">Clear the trail</button></div>';
-    }
-
-    el.innerHTML = html;
-  }
-
-  function slider(key, name, min, max, val) {
-    return '<div class="force-slider"><label>' + name + '<span>' + val + '</span></label>' +
-      '<input type="range" min="' + min + '" max="' + max + '" value="' + val +
-      '" oninput="Force.tune(\'' + key + '\', this.value, this)"></div>';
+    if (!active) return;
+    if (window.Discovery) Discovery.render();
   }
 
   function tune(key, value, el) {
@@ -1020,11 +903,6 @@
     else if (key === 'charge') { PHYSICS.charge = v; sim.force('charge').strength(v); }
     else if (key === 'linkScale') { PHYSICS.linkScale = v; sim.force('link').distance(l => l.d * v); }
     sim.alpha(Math.max(sim.alpha(), 0.35)).restart();
-  }
-
-  function close() {
-    document.getElementById('modeSelect').value = 'explore';
-    MM.setMode('explore');
   }
 
   window.addEventListener('resize', function () { if (active) resize(); });
@@ -1048,8 +926,8 @@
 
   window.Force = {
     enter, exit, isActive, seedFrom, focusCard, pinCard,
-    reheat, freeze, clearTrail, newWalk, tune, close, renderPanel, bbox,
-    walkDeck, walkRegion, branchByRow, hasRow,
+    reheat, freeze, clearTrail, newWalk, tune, renderPanel, bbox,
+    walkRegion, branchByRow, hasRow,
     // The rows currently on the graph, for Explore's orientation lens: the graph encodes
     // adjacency and has no absolute position, so "where does this sit in card space" is a
     // question only the world map can answer.
@@ -1069,6 +947,13 @@
     get nodeCount() { return nodes.length; },
     get linkCount() { return links.length; },
     get trailLength() { return trail.length; },
+    // Where the walk has been, for the panel. The walk panel rendered this itself; with
+    // one panel it has to be readable from outside.
+    trailNames() { return trail.map(function (n) { return n.name; }); },
+    // How many cards were dropped to fit MAX_NODES. Surfaced by the panel, and it never
+    // was in discovery chrome — a >500-card import was silently truncated.
+    get truncatedFrom() { return truncatedFrom; },
+    get label() { return label; },
     // Exposed for the browser tests: a link's `d` must be the 128-d chord distance, not
     // anything derived from screen position. Chord distance on a unit sphere is bounded
     // by [0, 2], which is the assertion.

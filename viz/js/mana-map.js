@@ -1708,7 +1708,7 @@
     if (mode !== 'deck' && typeof window.DeckMap !== 'undefined') window.DeckMap.exit();
     // Discovery and The Walk are the same engine with different chrome, so entering
     // discovery must not tear the graph down.
-    if (mode !== 'force' && mode !== 'discover' && typeof window.Force !== 'undefined') {
+    if (mode !== 'discover' && typeof window.Force !== 'undefined') {
       window.Force.exit();
     }
 
@@ -1719,7 +1719,9 @@
     // waiting behind. Hiding the Plotly surface keeps the landing from being a card
     // pasted over 34,322 points the visitor did not ask for.
     const plotEl = document.getElementById('plot');
-    plotEl.classList.toggle('force-mode', mode === 'force' || mode === 'discover');
+    // The class is still called `force-mode` — it names the force CANVAS, not the
+    // deleted mode — and Discover is the only mode that shows it.
+    plotEl.classList.toggle('force-mode', mode === 'discover');
 
     // Leaving a graph for the atlas is a question about position, so answer it: carry the
     // graph's cards across and light them up. Entering explore any other way clears it.
@@ -1731,7 +1733,7 @@
       // is on. The anchor comes from Session.focus rather than being frozen here.
       if (Session.size()) orientTo(null, 'your walk');
       else clearOrientation();
-    } else if (mode !== 'force' && mode !== 'discover') {
+    } else if (mode !== 'discover') {
       orientation = null;
     }
 
@@ -1749,10 +1751,6 @@
     } else if (mode === 'deck') {
       detail.style.display = '';
       if (typeof window.DeckMap !== 'undefined') window.DeckMap.enter();
-    } else if (mode === 'force') {
-      detail.style.display = 'none';
-      if (typeof window.Force !== 'undefined') window.Force.enter();
-      return;                     // no Plotly render — the canvas owns the surface
     } else {
       detail.style.display = '';
     }

@@ -352,14 +352,19 @@ def test_render_draws_everything_in_one_pass(page):
         f"an arrow press should move one layer, not redraw: {result['perCycle']}")
 
 
-# ── The Walk (force mode) ───────────────────────────────────────────────
+# ── The graph (Discover) ────────────────────────────────────────────────
+#
+# These were "The Walk" — a fifth mode that was Discover with different chrome (two
+# behaviours and a status string, across four `chrome ===` reads in force.js). It was
+# deleted; its panel's keepers moved into Discovery's. The engine under test is unchanged,
+# so these tests keep their assertions and change only how they get to the graph.
 
 
 def _walk(page, seed_js, settle=9000):
     return page.evaluate("""async ([seedJs, settle]) => {
         const rows = await (new Function('return (async () => {' + seedJs + '})()'))();
-        document.getElementById('modeSelect').value = 'force';
-        MM.setMode('force');
+        document.getElementById('modeSelect').value = 'discover';
+        MM.setMode('discover');
         await new Promise(r => setTimeout(r, 200));
         await Force.enter(rows, 'Test');
         await new Promise(r => setTimeout(r, settle));
@@ -411,7 +416,7 @@ def test_branching_grows_the_graph_and_records_the_walk(page):
         const deck = await (await fetch('../data/decks/edgar-vampires/cards.json')).json();
         const names = new Set(deck.cards.filter(c => !c.is_sideboard).map(c => c.name));
         const rows = []; MM.allData.forEach((d, i) => { if (names.has(d.n)) rows.push(i); });
-        document.getElementById('modeSelect').value = 'force'; MM.setMode('force');
+        document.getElementById('modeSelect').value = 'discover'; MM.setMode('discover');
         await new Promise(r => setTimeout(r, 200));
         await Force.enter(rows, 'Test');
         await new Promise(r => setTimeout(r, 2500));
@@ -443,7 +448,7 @@ def test_branching_grows_the_graph_and_records_the_walk(page):
 def test_leaving_the_walk_restores_the_map(page):
     r = page.evaluate("""async () => {
         const rows = []; for (let i = 0; i < 60; i++) rows.push(i * 37 % 34322);
-        document.getElementById('modeSelect').value = 'force'; MM.setMode('force');
+        document.getElementById('modeSelect').value = 'discover'; MM.setMode('discover');
         await new Promise(r => setTimeout(r, 200));
         await Force.enter(rows, 'Test');
         await new Promise(r => setTimeout(r, 1500));
@@ -468,35 +473,38 @@ def test_leaving_the_walk_restores_the_map(page):
     assert r["plotTraces"] >= 6, "the map did not come back"
 
 
-def test_walk_with_nothing_selected_offers_somewhere_to_go(page):
-    """An empty graph must never render as a "0 CARDS / 0 LINKS" scoreboard.
+def test_the_panel_always_offers_somewhere_to_go(page):
+    """Somewhere to start must always be one click away, and an empty graph must never
+    render as a "0 CARDS / 0 LINKS" scoreboard.
 
-    Routed inside `renderPanel` rather than at each call site, so a future caller cannot
-    reintroduce the dead end — which is how it got there the first time.
+    This used to be The Walk's `renderEmptyState`, which was the only place a REGION could
+    become a graph — `Drill.enterRegion` re-embeds a region into the atlas and never seeds
+    the graph. Deleting the mode without porting the region list would have deleted the
+    capability, so the list now lives in Discovery's panel and this test guards it there.
     """
     r = page.evaluate("""async () => {
-        document.getElementById('modeSelect').value = 'force';
-        MM.setMode('force');
-        await new Promise(r => setTimeout(r, 2500));
+        document.getElementById('modeSelect').value = 'discover';
+        MM.setMode('discover');
+        await new Promise(r => setTimeout(r, 3500));
         const el = document.getElementById('deckInner');
         return {
-            decks: el.querySelectorAll('[onclick^="Force.walkDeck"]').length,
+            decks: el.querySelectorAll('#dcDeck option').length - 1,   // minus the prompt
             regions: el.querySelectorAll('[onclick^="Force.walkRegion"]').length,
             saysZeroCards: (el.innerText || '').indexOf('0 CARDS') !== -1,
         };
     }""")
     assert page.js_errors == []
-    assert r["decks"] == 7, "every published deck should be one click from a walk"
+    assert r["decks"] == 7, "every published deck should be one click from a graph"
     assert r["regions"] > 0, "regions come from the HDBSCAN membership"
     assert not r["saysZeroCards"], "an empty graph rendered the dead-end scoreboard"
 
 
 def test_walking_a_deck_from_the_empty_state(page):
     r = page.evaluate("""async () => {
-        document.getElementById('modeSelect').value = 'force';
-        MM.setMode('force');
+        document.getElementById('modeSelect').value = 'discover';
+        MM.setMode('discover');
         await new Promise(r => setTimeout(r, 2500));
-        document.querySelector('[onclick^="Force.walkDeck"]').click();
+        await Discovery.loadDeck('goblin-storm');
         await new Promise(r => setTimeout(r, 9000));
         Force.freeze();
         const b = Force.bbox();
@@ -528,9 +536,9 @@ def test_walk_survives_a_round_trip_through_explore(page):
             return 100 * l / n;
         };
 
-        setMode('force');
+        setMode('discover');
         await new Promise(r => setTimeout(r, 2500));
-        document.querySelector('[onclick^="Force.walkDeck"]').click();
+        await Discovery.loadDeck('goblin-storm');
         await new Promise(r => setTimeout(r, 9000));
         const i = MM.allData.findIndex(d => d.n === 'Past in Flames');
         if (i >= 0) Force.focusCard(i);
@@ -543,7 +551,7 @@ def test_walk_survives_a_round_trip_through_explore(page):
         const explore = {traces: MM.mapRenderer.layers.length,
                          inlineDisplay: cv().style.display || ''};
 
-        setMode('force');
+        setMode('discover');
         await new Promise(r => setTimeout(r, 2500));
         const after = {nodes: Force.nodeCount, trail: Force.trailLength,
                        w: cv().clientWidth, ink: ink()};
@@ -569,11 +577,11 @@ def test_the_walk_panel_is_actually_on_screen(page):
     This asserts geometry and hit-testing instead.
     """
     r = page.evaluate("""async () => {
-        document.getElementById('modeSelect').value = 'force';
-        MM.setMode('force');
+        document.getElementById('modeSelect').value = 'discover';
+        MM.setMode('discover');
         await new Promise(r => setTimeout(r, 2500));
         const panel = document.getElementById('deckPanel');
-        const btn = document.querySelector('[onclick^="Force.walkDeck"]');
+        const btn = document.querySelector('[onclick^="Force.walkRegion"]');
         const b = btn.getBoundingClientRect();
         const cx = Math.round(b.left + b.width / 2), cy = Math.round(b.top + b.height / 2);
         const hit = document.elementFromPoint(cx, cy);
@@ -591,34 +599,36 @@ def test_the_walk_panel_is_actually_on_screen(page):
 
 
 def test_a_walk_in_progress_can_be_restarted(page):
-    """Restoring the graph on re-entry made the walk a one-way door: the deck menu only
-    appears when the graph is empty, so the first set you picked was the only set you
-    could ever pick. `New walk` is the way back."""
+    """Restoring the graph on re-entry made the graph a one-way door: the deck menu used
+    to appear only when the graph was empty, so the first set you picked was the only set
+    you could ever pick. `Start over` is the way back — and the deck picker is now a
+    persistent `<select>`, so loading a second deck no longer needs an empty graph."""
     r = page.evaluate("""async () => {
         const setMode = m => { document.getElementById('modeSelect').value = m; MM.setMode(m); };
-        setMode('force');
+        setMode('discover');
         await new Promise(r => setTimeout(r, 2500));
-        await Force.walkDeck('goblin-storm', 'GOBLIN STORM');
+        await Discovery.loadDeck('goblin-storm');
         await new Promise(r => setTimeout(r, 6000));
         const walking = {nodes: Force.nodeCount,
-                         menu: document.querySelectorAll('[onclick^="Force.walkDeck"]').length,
-                         hasNewWalk: !!document.querySelector('[onclick^="Force.newWalk"]')};
-        document.querySelector('[onclick^="Force.newWalk"]').click();
+                         hasStartOver: !!document.querySelector('[onclick^="Discovery.newGraph"]')};
+        document.querySelector('[onclick^="Discovery.newGraph"]').click();
         await new Promise(r => setTimeout(r, 2500));
-        const reset = {nodes: Force.nodeCount,
-                       menu: document.querySelectorAll('[onclick^="Force.walkDeck"]').length};
-        await Force.walkDeck('heliod', 'HELIOD');
+        const reset = {nodes: Force.nodeCount};
+        await Discovery.loadDeck('heliod');
         await new Promise(r => setTimeout(r, 6000));
         return {walking, reset, switched: Force.nodeCount};
     }""")
     assert page.js_errors == []
-    assert r["walking"]["nodes"] > 50 and r["walking"]["menu"] == 0
-    assert r["walking"]["hasNewWalk"], "no way back to the menu from a walk in progress"
-    assert r["reset"]["nodes"] == 0 and r["reset"]["menu"] == 7, "New walk did not restore the menu"
+    assert r["walking"]["nodes"] > 50
+    assert r["walking"]["hasStartOver"], "no way back from a graph in progress"
+    # `Start over` reseeds on a fresh landing card rather than leaving an empty canvas,
+    # because the deck and region pickers are always in the panel now — there is no empty
+    # state left to return to.
+    assert r["reset"]["nodes"] == 1, f"Start over left {r['reset']['nodes']} nodes"
     assert r["switched"] > 50 and r["switched"] != r["walking"]["nodes"], "could not pick a different set"
 
 
-# ── Navigation: arrows, hover, and the card in The Walk ─────────────────
+# ── Navigation: arrows, hover, and the card in the graph ────────────────
 #
 # Every test here presses REAL KEYS. The previous browse test called `MM.cycleNext()`
 # directly, which is why it never noticed that the arrow keys were dead in browse mode:
@@ -759,9 +769,9 @@ def test_the_walk_shows_the_card_it_pinned(page):
     Walk. The card now renders in the walk's own panel, from the same builder Explore uses.
     """
     r = page.evaluate("""async () => {
-        document.getElementById('modeSelect').value = 'force'; MM.setMode('force');
+        document.getElementById('modeSelect').value = 'discover'; MM.setMode('discover');
         await new Promise(r => setTimeout(r, 2500));
-        document.querySelector('[onclick^="Force.walkDeck"]').click();
+        await Discovery.loadDeck('goblin-storm');
         await new Promise(r => setTimeout(r, 8000));
         const i = MM.allData.findIndex(d => d.n === 'Past in Flames');
         Force.focusCard(i);
@@ -1165,8 +1175,8 @@ def test_the_pin_beats_the_hover(discover_page):
     r = discover_page.evaluate("""async () => {
         Force.branchByRow(Discovery.current, 'similar');
         await new Promise(r => setTimeout(r, 400));
-        document.getElementById('modeSelect').value = 'force';
-        MM.setMode('force');
+        document.getElementById('modeSelect').value = 'discover';
+        MM.setMode('discover');
         await new Promise(r => setTimeout(r, 300));
         const pinnedName = Discovery.index[Discovery.current].n;
         const c = document.getElementById('forceCanvas');
@@ -2469,7 +2479,7 @@ def test_the_ability_map_draws_no_similarity_arcs(page):
 
 
 def test_only_one_surface_draws_per_mode(page):
-    """Discover and The Walk must not leave the atlas drawing underneath them.
+    """Discover must not leave the atlas drawing underneath it.
 
     The mode CSS named `.js-plotly-plot`, `.plot-container` and `.svg-container` — Plotly
     elements that stopped existing when Plotly was deleted. Nothing then hid the canvas
@@ -2496,7 +2506,7 @@ def test_only_one_surface_draws_per_mode(page):
         });
         // Explore first, so `.map-canvas` exists before the graph modes are entered.
         const out = [look('explore')];
-        for (const m of ['discover', 'force', 'explore']) {
+        for (const m of ['discover', 'explore']) {
             document.getElementById('modeSelect').value = m;
             MM.setMode(m);
             await new Promise(r => setTimeout(r, 2800));
@@ -2506,7 +2516,7 @@ def test_only_one_surface_draws_per_mode(page):
     }""")
     assert page.js_errors == []
     by = {row["mode"]: row for row in r}
-    for m in ("discover", "force"):
+    for m in ("discover",):
         assert not by[m]["map"], f"the atlas was still drawing in {m}"
         assert by[m]["labels"] == 0, f"{by[m]['labels']} region labels survived into {m}"
         assert by[m]["force"], f"the graph canvas was not drawing in {m}"

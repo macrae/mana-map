@@ -38,6 +38,22 @@ window.Discovery = (function () {
 
   function configure(u) { urls = Object.assign({}, urls, u || {}); }
 
+  // Regions big enough to be a graph and small enough to stay under the node cap. Loaded
+  // once, lazily, and only used to render the seed list — a failure here just means the
+  // list is absent, never that discovery breaks.
+  let regionSeeds = [];
+  function loadRegionSeeds() {
+    if (regionSeeds.length || !window.MM || !MM.getRegionData) return;
+    MM.getRegionData().then(function (rd) {
+      if (!rd || !rd.membership) return;
+      regionSeeds = rd.regions
+        .filter(function (r) { return r.level === 1 && r.count >= 60 && r.count <= 500; })
+        .sort(function (a, b) { return b.count - a.count; })
+        .slice(0, 8);
+      if (isReady()) render();
+    }).catch(function () { /* the graph works without them */ });
+  }
+
   // ── loading ────────────────────────────────────────────────────────────
 
   function loadIndex() {
@@ -276,6 +292,7 @@ window.Discovery = (function () {
     const el = inner();
     if (!el) return;
     panel().classList.add('open');
+    loadRegionSeeds();
 
     const rec = current >= 0 ? index[current] : null;
     const c = current >= 0 ? counts(current) : { similar: 0, synergy: 0, obsolete: 0 };
@@ -306,6 +323,46 @@ window.Discovery = (function () {
       '<p class="lens-note">Resolved against the card index, not the published decks — ' +
       'any list works, it does not have to be one of the seven.</p></div>';
 
+    // The graph you are holding, and the controls that act on it. Ported from the walk
+    // panel when The Walk was deleted: it was the same force engine with different chrome,
+    // but its panel was the only home for Fit, Reheat, New walk, the scoreboard and — the
+    // one that was an actual defect — the truncation notice. Discovery has always
+    // truncated a >500-card import to MAX_NODES and never said so.
+    const graphN = window.Force ? Force.nodeCount : 0;
+    if (graphN) {
+      const cut = Force.truncatedFrom;
+      html += '<div class="deck-section">' +
+        '<div class="lens-stats">' +
+          '<div class="lens-stat"><div class="lens-stat-n">' + graphN + '</div><div class="lens-stat-l">cards</div></div>' +
+          '<div class="lens-stat"><div class="lens-stat-n">' + Force.linkCount + '</div><div class="lens-stat-l">links</div></div>' +
+          '<div class="lens-stat"><div class="lens-stat-n">' + Force.trailLength + '</div><div class="lens-stat-l">visited</div></div>' +
+          '<div class="lens-stat"><div class="lens-stat-n">' + Force.MAX_NODES + '</div><div class="lens-stat-l">cap</div></div>' +
+        '</div>' +
+        (cut ? '<div class="lens-note">seeded with ' + Force.MAX_NODES + ' of ' + cut +
+               ' — the rest were dropped to keep the graph readable</div>' : '') +
+        '<div class="discover-graphctl">' +
+          '<button class="lens-btn" onclick="Force.fit()">Fit</button>' +
+          '<button class="lens-btn" onclick="Force.reheat()">Reheat</button>' +
+          '<button class="lens-btn" onclick="Discovery.newGraph()">Start over ↺</button>' +
+        '</div>' +
+        '<div class="lens-note">Drag a card to fling it · click to branch · scroll to zoom</div>' +
+        '</div>';
+    }
+
+    // Seed from a region. This lived in the walk's empty state and was the ONLY
+    // region -> graph path in the app (`Drill.enterRegion` re-embeds a region into the
+    // atlas; it never seeds the graph). Deleting The Walk without this would have deleted
+    // the capability.
+    if (regionSeeds.length) {
+      html += '<div class="deck-section"><div class="deck-section-title">Or start from a region</div>' +
+        regionSeeds.map(function (r) {
+          return '<div class="lens-cand" onclick="Force.walkRegion(' +
+            JSON.stringify(r.id).replace(/"/g, '&quot;') + ')">' +
+            '<span class="lens-cand-name">' + MM.escHtml(r.short || r.label) + '</span>' +
+            '<span class="lens-chip">' + r.count + '</span></div>';
+        }).join('') + '</div>';
+    }
+
     html += '<div class="discover-filters">' +
       '<select id="dcType" onchange="Discovery.onFilter(\'supertype\', this.value)">' +
         optionsFor(types, filters.supertype, 'Any type') + '</select>' +
@@ -332,7 +389,25 @@ window.Discovery = (function () {
     // The Keep button is part of the shared card HTML now (MM.buildRelationHtml), so
     // every panel that shows a card can put it in the tray.
     html += MM.buildCardDetailHtml(MM.cardRecord(current), current);
+
+    if (window.Force && Force.trailLength > 1) {
+      html += '<div class="deck-section"><div class="deck-section-title">Where you have been ' +
+        '<span>' + Force.trailLength + '</span></div>' +
+        Force.trailNames().slice().reverse().map(function (n) {
+          return '<div class="lens-cand"><span class="lens-cand-name">' + MM.escHtml(n) + '</span></div>';
+        }).join('') +
+        '<button class="lens-btn" onclick="Force.clearTrail()">Clear the trail</button></div>';
+    }
     el.innerHTML = html;
+  }
+
+  /* Start over: empty the graph and land somewhere new. The walk panel called
+   * `Force.newWalk()` (loud), which rendered the deck/region picker; here the picker is
+   * already in the panel above, so this reseeds on a fresh card instead of leaving you
+   * looking at an empty canvas. */
+  function newGraph() {
+    if (window.Force) Force.newWalk(true);
+    show(pick());
   }
 
   function relBtn(rel, label, n) {
@@ -390,13 +465,6 @@ window.Discovery = (function () {
    * `Force.enter` used to refuse. */
   /* Hand off to the walk chrome. The graph is already seeded and on screen, so this is
    * a change of panel plus one branch — not a mode switch that rebuilds anything. */
-  function walk(relation) {
-    if (current < 0) return;
-    const row = current;
-    document.getElementById('modeSelect').value = 'force';
-    MM.setMode('force');
-    Force.branchByRow(row, relation || 'similar');
-  }
 
   // ── the tray ───────────────────────────────────────────────────────────
 
@@ -598,7 +666,7 @@ window.Discovery = (function () {
 
   return {
     configure, ready, isReady, loadIndex, loadNeighbours, decode,
-    enter, exit: exitMode, land, show, focus, reroll, walk, onFilter, render,
+    enter, exit: exitMode, land, show, focus, reroll, onFilter, render, newGraph,
     loadManifest, loadDeck, onDeckPick,
     get decks() { return manifest || []; },
     tray: { get list() { return Session.tray.list; }, has: inTray, toggle: toggleTray,
