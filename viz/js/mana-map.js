@@ -317,6 +317,36 @@
     setStatus(allData.length.toLocaleString() + ' cards shown');
   }
 
+  // WHICH RELATIONS EARN AN ARC ON WHICH MAP — measured, not chosen.
+  //
+  // Median edge length as a multiple of a random pair on the same map:
+  //
+  //                     default (colour/type)     ability (function)
+  //   outclassed-by     7.4u   0.29x              0.82u  0.04x
+  //   similar          15.2u   0.60x              0.27u  0.01x
+  //   synergy          24.0u   0.95x             19.3u   1.04x
+  //
+  // Three consequences, each of which decides something:
+  //
+  // 1. On the DEFAULT map, similar and outclassed-by are real structure — long enough to
+  //    see, short enough to mean something. This is where the constellation earns its keep.
+  // 2. On the ABILITY map those same relations are already stacked (0.27u apart, 97% of
+  //    them inside 5% of the atlas). An arc there is a single pixel pretending to be
+  //    information. Drill already exists and is the honest answer to "these are all on top
+  //    of each other".
+  // 3. SYNERGY is indistinguishable from random on BOTH maps, and that is correct rather
+  //    than broken: synergy is complementary, so partners belong in different regions by
+  //    construction (blink finds an ETB creature). It is orthogonal to every 2-D
+  //    projection we have, so it is NEVER drawn as an atlas arc — no amount of curving or
+  //    fading makes a random-length line informative. Its partners light up in place and
+  //    the affordance is the graph, one click away, where adjacency IS the geometry.
+  const MAP_ARC_RELATIONS = {
+    default: { similar: true, obsolete: true, deck: true, synergy: false },
+    ability: { similar: false, obsolete: false, deck: true, synergy: false },
+  };
+
+  function arcsAllowedOn(map) { return MAP_ARC_RELATIONS[map] || MAP_ARC_RELATIONS.default; }
+
   // Same two-method contract as Deck Lens and the deck builder — see docs/viz.md.
   const OrientationOverlay = {
     getOverlayTraces() {
@@ -330,6 +360,27 @@
         marker: { size: 8, color: '#c4a747', line: { color: '#fff', width: 0.7 } },
         hoverinfo: 'none', _isOrientation: true,
       }];
+      // The constellation's edges, drawn where those cards actually live. This is the
+      // thing the atlas could never do: a relation you can SEE reaching across the map.
+      const allowed = arcsAllowedOn(currentMap);
+      const edges = [];
+      for (const l of Session.links()) {
+        if (!allowed[l.rel]) continue;
+        const a = allData[l.a], b = allData[l.b];
+        if (!a || !b) continue;
+        edges.push({ source: [a.x, a.y], target: [b.x, b.y], rel: l.rel,
+                     reason: l.reason, d: l.d });
+      }
+      if (edges.length) {
+        // Edges first so the markers draw on top of them.
+        out.unshift({
+          mode: 'edges', name: 'relations', edges: edges,
+          // A straight line between two distant cards reads as a claim about the space
+          // between them; a shallow arc reads as a connection.
+          curve: 0.12, line: { width: 1.3 }, opacity: 0.85, _isOrientation: true,
+        });
+      }
+
       const anchor = Session.focus;
       if (anchor >= 0 && allData[anchor]) {
         const a = allData[anchor];
@@ -363,16 +414,40 @@
     const rel = relation || 'similar';
     if (!window.Discovery || !Discovery.isReady() || !window.Force) return;
 
-    if (currentMode !== 'discover' && currentMode !== 'force') {
-      const sel = document.getElementById('modeSelect');
-      if (sel) sel.value = 'discover';
-      setMode('discover');
+    // FROM EXPLORE: grow in place. The card and its relations join the constellation and
+    // the edges are drawn where those cards actually live, so you see reach and position
+    // at once — the one thing the graph structurally cannot show you.
+    //
+    // This used to switch modes and carry you into the walk. That was better than the
+    // fork before it (Explore opened a linear browse set) but it still meant the atlas
+    // could only ever hand you off, never respond. Growing here is what makes Explore a
+    // place you can work rather than a place you pass through.
+    if (currentMode === 'explore') {
+      const before = Session.size();
+      Session.grow(row, rel);
+      if (!orientation) orientTo(null, 'your walk');
+      render();
+      const added = Session.size() - before;
+      const name = (cardRecord(row) || {}).n || 'that card';
+      if (!arcsAllowedOn(currentMap)[rel]) {
+        // Synergy is ~random in world space on both maps, and similarity is already
+        // stacked on the ability map — so say what happened and where to see it, rather
+        // than drawing a line that means nothing. See MAP_ARC_RELATIONS.
+        const why = rel === 'synergy'
+          ? 'synergy partners sit all over the map — see them in the graph'
+          : 'these sit on top of each other here — drill in, or see the graph';
+        setStatus(name + ': ' + added + ' added · ' + why);
+      } else {
+        setStatus(name + ': ' + added + ' added by ' + rel + ' · ' +
+                  Session.size() + ' on your graph');
+      }
+      return;
     }
-    // Seed ONLY when there is nothing to lose. `Discovery.show` calls `Force.newWalk(true)`,
-    // which empties the graph — so calling it for any card not already on the walk (which
-    // is what this did) silently destroyed however much you had built. With a graph in
-    // hand, the card joins it instead: `branchByRow` adopts the row, links it to what it
-    // already belongs beside, and branches. Growing must never be able to delete.
+
+    // Graph modes: seed ONLY when there is nothing to lose. `Discovery.show` calls
+    // `Force.newWalk(true)`, which empties the graph, so calling it for any card not
+    // already on the walk destroyed however much you had built. With a graph in hand the
+    // card is adopted into it instead. Growing must never be able to delete.
     if (Force.nodeCount === 0) Discovery.show(row);
     else Discovery.focus(row);
     Force.branchByRow(row, rel);

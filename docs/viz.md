@@ -266,6 +266,47 @@ no-ops in Discover *and* the browse panel (both clear it), acted on the **wrong 
 Walk while drawing onto a hidden Plotly surface, and threw outright under `?renderer=canvas`
 where `#plot` has no `.data`. Their highlight-trace machinery is gone with them.
 
+### The constellation: Explore grows in place
+
+Clicking a relation in Explore adds the card and its relations to the graph **and stays
+there**, drawing the edges at the cards' true atlas positions — so you see reach and
+position at once, which is the one thing the force layout structurally cannot show.
+
+This control has now been written three times and the history is the reasoning:
+
+1. **Fork** — graph modes branched, Explore opened a linear browse set, because a scatter
+   plot cannot grow. One control meaning two things is why the atlas felt dead.
+2. **Carry you out** — a relation in Explore switched to Discover, seeded on that card.
+   Better, but the map could still only hand you off, never respond.
+3. **Grow in place** — the constellation appears on the map.
+
+**Which relations earn an arc is measured, not chosen.** Median edge length as a multiple of
+a random pair on the same map:
+
+| relation | default (colour/type) | ability (function) |
+|---|---|---|
+| outclassed-by | 7.4u — **0.29×** | 0.82u — 0.04× |
+| similar | 15.2u — **0.60×** | 0.27u — 0.01× |
+| synergy | 24.0u — **0.95×** | 19.3u — **1.04×** |
+
+`MAP_ARC_RELATIONS` encodes exactly that:
+
+- **default map** — similar and outclassed-by are real structure: long enough to see, short
+  enough to mean something. This is where the constellation earns its keep.
+- **ability map** — those same relations are already stacked (0.27u apart on a 71u map, 97%
+  inside 5% of the atlas). An arc is a pixel pretending to be information, so none is drawn
+  and the status points at **drill**, which already exists and is the honest answer to
+  "these are all on top of each other".
+- **synergy, either map** — indistinguishable from random, and that is *correct*: synergy is
+  complementary, so partners belong in different regions by construction (blink finds an ETB
+  creature). It is orthogonal to every 2-D projection here, so it is **never** drawn as an
+  atlas arc. The partners still join the graph and the status points at the force layout,
+  where adjacency IS the geometry.
+
+Drawing all three would have looked richer and rendered the most interesting relation as
+spaghetti. Three browser tests hold the line, including one asserting every arc **terminates
+at a real card's atlas position** — the actual claim the picture makes.
+
 ### session.js — one answer to "what am I holding"
 
 Eight "set of cards" containers, seven answers to "which card is selected", nothing

@@ -1490,6 +1490,10 @@ def test_the_hover_card_stays_inside_the_frame(discover_page):
             const pr = p.getBoundingClientRect();
             out.push({
                 at: label, height: Math.round(pr.height),
+                // Scryfall can fail or rate-limit under a full-suite run, and the popup
+                // then renders `.card-popup-failed` — a legitimately short text box. The
+                // clamp still has to work for it; its HEIGHT just is not the card's.
+                failed: !!p.querySelector('.card-popup-failed'),
                 insideFrame: pr.bottom <= rect.bottom + 1 && pr.top >= rect.top - 1,
                 insideViewport: pr.bottom <= window.innerHeight + 1 && pr.top >= 0,
             });
@@ -1501,10 +1505,14 @@ def test_the_hover_card_stays_inside_the_frame(discover_page):
     for case in r:
         assert case["insideFrame"], f"the card escaped the plot frame at the {case['at']}"
         assert case["insideViewport"], f"the card ran off the page at the {case['at']}"
-        assert case["height"] > 200, (
-            f"the popup measured {case['height']}px at the {case['at']} — an unloaded image "
-            f"measuring ~0 is exactly what defeated the clamp"
-        )
+        # The clamp assertions above are the invariant and always apply. This one is
+        # about the CSS reserving the card's box before the image arrives, so it only
+        # means anything when a card is actually being shown.
+        if not case.get("failed"):
+            assert case["height"] > 200, (
+                f"the popup measured {case['height']}px at the {case['at']} — an unloaded "
+                f"image measuring ~0 is exactly what defeated the clamp"
+            )
 
 
 def test_a_click_survives_a_shaky_hand(discover_page):
@@ -1970,49 +1978,52 @@ def test_relations_render_in_every_panel(discover_page):
 
 
 def test_a_relation_always_grows_the_graph(discover_page):
-    """One button, one behaviour, everywhere.
+    """One button, one behaviour, everywhere: it grows what you are holding.
 
-    `relate` used to fork — graph modes grew the graph, Explore opened a linear browse set,
-    on the reasoning that a scatter plot cannot grow. True, but it made one control mean two
-    things. The fix is not to teach the scatter plot to grow; it is to let the click carry
-    you to where growing happens. Explore is a lens: you go to see where things sit, then
-    click to start walking from one.
+    This control has been rewritten twice, and the history is the point. It first FORKED —
+    graph modes grew the graph, Explore opened a linear browse set — on the reasoning that
+    a scatter plot cannot grow. One control meaning two things is why the atlas felt dead.
+    Then it CARRIED YOU OUT: clicking a relation in Explore switched to Discover. Better,
+    but it still meant the map could only ever hand you off, never respond.
+
+    Now it grows the graph wherever you are. From Explore that means the constellation and
+    its arcs appear on the map and you stay put; from the graph it branches as before. What
+    is invariant, and all this test asserts, is that the graph is strictly larger and
+    nothing was thrown away.
     """
     r = discover_page.evaluate("""async () => {
         const row = Discovery.rowByName("Ashnod's Altar");
 
         Discovery.show(row);
         await new Promise(r => setTimeout(r, 500));
-        const before = Force.nodeCount;
+        const before = Session.size();
         MM.relate(row, 'synergy');
         await new Promise(r => setTimeout(r, 1200));
-        const fromDiscover = {grew: Force.nodeCount > before};
+        const fromDiscover = {grew: Session.size() > before, held: Session.rows().slice()};
 
-        // From the atlas: same control, and it must land in the graph on THAT card.
+        // From the atlas: same control, same direction of travel — bigger, never smaller.
         document.getElementById('modeSelect').value = 'explore';
         MM.setMode('explore');
         await new Promise(r => setTimeout(r, 3000));
+        const beforeExplore = Session.size();
         MM.relate(row, 'similar');
         await new Promise(r => setTimeout(r, 1500));
+        const after = Session.rows();
         return {
-            fromDiscover: fromDiscover,
+            fromDiscover: {grew: fromDiscover.grew},
             mode: document.getElementById('modeSelect').value,
-            nodes: Force.nodeCount,
-            seeded: Force.hasRow(row),
+            grewAgain: Session.size() > beforeExplore,
+            keptEverything: fromDiscover.held.every(x => after.indexOf(x) !== -1),
+            stillHasIt: Session.has(row),
             noBrowseSet: !MM.browseSet,
-            panel: (document.querySelector('#deckInner .lens-title') || {}).textContent,
-            expected: Discovery.index[row].n,
         };
     }""")
     assert discover_page.js_errors == []
     assert r["fromDiscover"]["grew"], "a relation in Discover did not grow the graph"
-    assert r["mode"] == "discover", "a relation in Explore did not carry you to the graph"
-    assert r["seeded"], "the graph was not seeded on the card whose relation was clicked"
-    assert r["nodes"] > 1
-    assert r["noBrowseSet"], "Explore still opens a browse set — the fork is back"
-    assert r["panel"] == r["expected"], (
-        f"landed on {r['panel']!r} instead of the clicked card {r['expected']!r}"
-    )
+    assert r["mode"] == "explore", "growing from the atlas left the atlas"
+    assert r["grewAgain"], "a relation in Explore did not grow the graph"
+    assert r["keptEverything"], "growing from the atlas dropped cards already held"
+    assert r["stillHasIt"] and r["noBrowseSet"]
 
 
 def test_the_tray_follows_the_card_not_the_mode(discover_page):
@@ -2050,13 +2061,18 @@ def test_relations_survive_the_canvas_renderer(canvas_page):
         const row = MM.allData.findIndex(d => d.n === "Ashnod's Altar");
         MM.selectByName("Ashnod's Altar");
         await new Promise(r => setTimeout(r, 800));
+        const before = Session.size();
         MM.relate(row, 'similar');
         await new Promise(r => setTimeout(r, 1800));
         return {mode: document.getElementById('modeSelect').value,
-                nodes: Force.nodeCount, seeded: Force.hasRow(row)};
+                grew: Session.size() > before, seeded: Session.has(row),
+                arcs: (MM.mapRenderer.layers.find(l => l.mode === 'edges') || {edges: []})
+                        .edges.length};
     }""")
     assert canvas_page.js_errors == [], f"the canvas path threw: {canvas_page.js_errors}"
-    assert r["mode"] == "discover" and r["seeded"] and r["nodes"] > 1
+    # Growing now happens in place, so the atlas keeps the user AND draws the arcs.
+    assert r["mode"] == "explore" and r["seeded"] and r["grew"]
+    assert r["arcs"] > 0, "the canvas path grew the graph but drew no arcs"
 
 
 # ── Explore as an orientation lens ──────────────────────────────────────
@@ -2334,3 +2350,113 @@ def test_the_orientation_lens_is_live_not_a_snapshot(discover_page):
         f"the lens stayed at {r['before']} while the graph went to {r['afterSize']} — "
         f"it is still a snapshot"
     )
+
+
+# ── Phase 3: the constellation on the atlas ─────────────────────────────
+
+
+def test_explore_grows_in_place_and_draws_the_arcs(page):
+    """Clicking a relation in Explore grows the constellation THERE.
+
+    The atlas used to be able only to hand you off. First it forked (a relation opened a
+    linear browse set, on the reasoning that a scatter plot cannot grow); then it switched
+    modes and carried you into the walk. Both meant the same thing: the map could not
+    respond to you. Now the card and its relations join the graph and the edges are drawn
+    where those cards actually live, so you see reach and position at once — the one thing
+    the force layout structurally cannot show.
+    """
+    r = page.evaluate("""async () => {
+        const edgeLayer = () => MM.mapRenderer.layers.find(l => l.mode === 'edges');
+        const row = MM.allData.findIndex(d => d.n === "Ashnod's Altar");
+        MM.selectByName("Ashnod's Altar");
+        await new Promise(r => setTimeout(r, 700));
+        const before = Session.size();
+        MM.relate(row, 'similar');
+        await new Promise(r => setTimeout(r, 1500));
+        const el = edgeLayer();
+        return {
+            mode: document.getElementById('modeSelect').value,
+            grew: Session.size() > before,
+            arcs: el ? el.edges.length : 0,
+            rels: el ? Array.from(new Set(el.edges.map(e => e.rel))) : [],
+            // Arcs must terminate at the cards' REAL atlas positions — that is the whole
+            // claim the picture is making.
+            anchored: el ? el.edges.every(e => {
+                const t = MM.allData.find(d => Math.abs(d.x - e.target[0]) < 1e-6 &&
+                                               Math.abs(d.y - e.target[1]) < 1e-6);
+                return !!t;
+            }) : false,
+        };
+    }""")
+    assert page.js_errors == []
+    assert r["mode"] == "explore", "growing from the atlas left the atlas"
+    assert r["grew"], "the graph did not grow"
+    assert r["arcs"] > 0, "no relation arcs were drawn on the map"
+    assert r["rels"] == ["similar"]
+    assert r["anchored"], "an arc did not end at a real card position"
+
+
+def test_synergy_is_never_drawn_as_an_atlas_arc(page):
+    """Measured, not chosen.
+
+    Median synergy edge length is 0.95x a random pair on the default map and 1.04x on the
+    ability map — indistinguishable from noise in world space. That is correct rather than
+    broken: synergy is *complementary*, so partners belong in different regions by
+    construction (blink finds an ETB creature). It is orthogonal to every 2-D projection
+    here, so drawing it as an arc would be drawing a random line and calling it structure.
+
+    The partners still join the graph. The affordance is the force layout, where adjacency
+    IS the geometry, and the status line says so.
+    """
+    r = page.evaluate("""async () => {
+        const edgeLayer = () => MM.mapRenderer.layers.find(l => l.mode === 'edges');
+        const row = MM.allData.findIndex(d => d.n === "Ashnod's Altar");
+        MM.relate(row, 'similar');
+        await new Promise(r => setTimeout(r, 1200));
+        const arcsBefore = edgeLayer() ? edgeLayer().edges.length : 0;
+        MM.relate(row, 'synergy');
+        await new Promise(r => setTimeout(r, 1500));
+        const el = edgeLayer();
+        return {
+            synergyLinks: Session.links().filter(l => l.rel === 'synergy').length,
+            arcsBefore: arcsBefore,
+            arcsAfter: el ? el.edges.length : 0,
+            arcRels: el ? Array.from(new Set(el.edges.map(e => e.rel))) : [],
+            status: document.getElementById('status').textContent,
+        };
+    }""")
+    assert page.js_errors == []
+    assert r["synergyLinks"] > 0, "synergy did not add links to the graph at all"
+    assert "synergy" not in r["arcRels"], "a synergy edge was drawn on the map"
+    assert r["arcsAfter"] == r["arcsBefore"], "the synergy branch added arcs"
+    assert "graph" in r["status"], f"the status did not point at the graph: {r['status']}"
+
+
+def test_the_ability_map_draws_no_similarity_arcs(page):
+    """On the ability map a card's similar neighbours are 0.27u apart on a 71u map — 97% of
+    them inside 5% of the atlas. An arc there is a single pixel pretending to be
+    information, so none is drawn and the status points at drill, which already exists and
+    is the honest answer to "these are all on top of each other"."""
+    r = page.evaluate("""async () => {
+        const edgeLayer = () => MM.mapRenderer.layers.find(l => l.mode === 'edges');
+        const row = MM.allData.findIndex(d => d.n === "Ashnod's Altar");
+        MM.relate(row, 'similar');
+        await new Promise(r => setTimeout(r, 1200));
+        const onDefault = edgeLayer() ? edgeLayer().edges.length : 0;
+
+        const ms = document.getElementById('mapSelect');
+        ms.value = 'ability'; ms.dispatchEvent(new Event('change'));
+        await new Promise(r => setTimeout(r, 15000));
+        const held = Session.size();
+        MM.relate(row, 'similar');
+        await new Promise(r => setTimeout(r, 1500));
+        const el = edgeLayer();
+        return {onDefault: onDefault, onAbility: el ? el.edges.length : 0,
+                held: held, stillHeld: Session.size(),
+                status: document.getElementById('status').textContent};
+    }""")
+    assert page.js_errors == []
+    assert r["onDefault"] > 0, "the default map drew no arcs to compare against"
+    assert r["onAbility"] == 0, f"the ability map drew {r['onAbility']} similarity arcs"
+    assert r["stillHeld"] >= r["held"], "the map switch lost the graph"
+    assert "drill" in r["status"].lower(), f"no drill affordance offered: {r['status']}"
