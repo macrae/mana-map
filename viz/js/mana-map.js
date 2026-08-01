@@ -530,8 +530,11 @@
     // already on the walk destroyed however much you had built. With a graph in hand the
     // card is adopted into it instead. Growing must never be able to delete.
     if (Force.nodeCount === 0) Discovery.show(row);
-    else Discovery.focus(row);
+    else Discovery.setCurrent(row);   // note the card; the panel owner draws it
     Force.branchByRow(row, rel);
+    // Whoever owns the panel in this mode repaints it. Calling `Discovery.focus` here
+    // rendered Discover's landing controls over Build's roles and curve on every branch.
+    if (window.Force) Force.renderPanel();
   }
 
   async function enterBrowse(rowIndices, label) {
@@ -1223,10 +1226,35 @@
     const kept = Session.tray.has(row);
     html += '<button class="lens-btn discover-keep" onclick="MM.keep(' + row + ')">'
           + (kept ? '✓ In tray' : '+ Keep this card') + '</button>';
+    // One card is the commander, and everything reads it from Session: the gold ring on
+    // the graph, the colour identity that decides what is legal, the exported brief.
+    // Offered on legendary creatures only — the rule, not a preference.
+    const rec = cardRecord(row);
+    const legendary = rec && /legendary/i.test(rec.t || '') && /creature/i.test(rec.t || '');
+    if (legendary) {
+      const isCmd = Session.commander === row;
+      html += '<button class="lens-btn discover-keep" onclick="MM.setCommander(' +
+        (isCmd ? -1 : row) + ')">' +
+        (isCmd ? '★ Commander' : 'Set as commander') + '</button>';
+    }
     return html;
   }
 
   // Toggle a card in the tray from any panel, then repaint whichever one is showing.
+  /* Designate the commander. Writes Session, then asks the graph to re-ink so the ring
+   * moves — `Force.setCommander` is a redraw, not a reseed, because changing your mind
+   * about the commander must not cost you the graph. */
+  function setCommander(row) {
+    Session.setCommander(row);
+    if (window.Force && Force.setCommander) Force.setCommander(Session.commander);
+    if (window.Build && Build.onCommanderChange) Build.onCommanderChange();
+    updateViewerPanel();
+    const rec = cardRecord(Session.commander);
+    setStatus(Session.commander >= 0
+      ? (rec ? rec.n : 'That card') + ' is your commander — colour identity follows it'
+      : 'Commander cleared.');
+  }
+
   function keep(row) {
     if (!window.Discovery || !Discovery.isReady()) return;
     Session.tray.toggle(row);
@@ -1707,8 +1735,10 @@
 
     if (mode !== 'discover' && typeof window.Discovery !== 'undefined') window.Discovery.exit();
     if (mode !== 'build' && typeof window.Build !== 'undefined') window.Build.exit();
-    // Discovery and The Walk are the same engine with different chrome, so entering
-    // discovery must not tear the graph down.
+    // Discover owns the graph surface, so entering it must not tear the graph down.
+    // (`currentMode` is already the DESTINATION here, which is what lets `Build.exit`
+    // tell "leaving for Explore" — a lens, keep the graph — from "leaving for Discover" —
+    // a different workspace, hand the canvas back.)
     if (mode !== 'discover' && typeof window.Force !== 'undefined') {
       window.Force.exit();
     }
@@ -2076,7 +2106,9 @@
       if (browseSet) return browseSet.indices.slice();
       return selectedCards.map(c => c.idx);
     },
+    get mode() { return currentMode; },
     selectByName,
+    setCommander,
     focusRegion,
     clearRegionFocus,
     get regionFocus() { return regionFocus; },

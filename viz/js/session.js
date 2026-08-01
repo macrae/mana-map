@@ -74,6 +74,20 @@ window.Session = (function () {
     emit('focus');
   }
 
+  // ── The commander ───────────────────────────────────────────────────────
+  //
+  // One card, and everything reads it from here: the gold ring on the graph, the colour
+  // identity that decides what you may legally play, and the exported brief. The builder
+  // kept its own `deckState.commander` and the graph kept `commanderRow`, so designating
+  // one meant writing two places and hoping.
+
+  let commanderRow = -1;
+
+  function setCommander(row) {
+    commanderRow = (typeof row === 'number' && row >= 0) ? row : -1;
+    emit('commander');
+  }
+
   // ── Tray: the cards you kept, and the thing you export ──────────────────
 
   function inTray(row) { return tray.indexOf(row) !== -1; }
@@ -99,6 +113,9 @@ window.Session = (function () {
     // focus
     get focus() { return focusRow; },
     setFocus: setFocus,
+    // commander
+    get commander() { return commanderRow; },
+    setCommander: setCommander,
     // tray
     tray: {
       get list() { return tray.slice(); },

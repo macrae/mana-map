@@ -635,7 +635,8 @@
     pinned = node;
     // Tell Discovery which card is now open, so the panel shows THIS card's art, its
     // relation counts, and a Keep button that adds the card you actually clicked.
-    if (window.Discovery) Discovery.focus(node.row);
+    // Note the card; the PANEL is `renderPanel`'s decision, and it asks the mode.
+    if (window.Discovery) Discovery.setCurrent(node.row);
     if (trail[trail.length - 1] !== node) {
       trail.push(node);
       if (trail.length > TRAIL_MAX) trail.shift();
@@ -850,11 +851,23 @@
   // Pin WITHOUT branching. An import wants the commander centred and open, not the deck
   // silently grown by six cards it did not contain — which is what focusCard does, and
   // did: importing a 129-card deck produced a 135-node graph.
+  /* Move the gold ring without touching the graph. Re-seeding to change a commander
+   * would throw away everything you had branched to. */
+  function setCommander(row) {
+    commanderRow = typeof row === 'number' ? row : -1;
+    for (const n of nodes) {
+      n.commander = n.row === commanderRow;
+      n.r = n.commander ? 9 : (n.deck ? 6 : 4.5);
+    }
+    draw();
+    renderPanel();
+  }
+
   function pinCard(row) {
     const n = byIdx.get(row);
     if (!n) return;
     pinned = n;
-    if (window.Discovery) Discovery.focus(row);
+    if (window.Discovery) Discovery.setCurrent(row);
     if (trail[trail.length - 1] !== n) trail.push(n);
     draw();
     renderPanel();
@@ -891,8 +904,17 @@
   //
   // The physics sliders were NOT ported. They were a debugging surface and nothing else in
   // the product exposes tuning; `Force.tune` remains for the console.
+  // WHO OWNS THE PANEL depends on the mode, not on a flag passed at `enter()`. The old
+  // `chrome` option was that flag, and collapsing it to "Discovery always owns it" was
+  // wrong the moment Build started seeding the graph too: every reheat repainted Build's
+  // roles, curve and verified lines with Discover's landing controls. One engine, two
+  // owners, and the engine has to ask which.
   function renderPanel() {
     if (!active) return;
+    if (window.MM && MM.mode === 'build') {
+      if (window.Build && window.Build.renderPanel) window.Build.renderPanel();
+      return;
+    }
     if (window.Discovery) Discovery.render();
   }
 
@@ -927,7 +949,7 @@
   window.Force = {
     enter, exit, isActive, seedFrom, focusCard, pinCard,
     reheat, freeze, clearTrail, newWalk, tune, renderPanel, bbox,
-    walkRegion, branchByRow, hasRow,
+    walkRegion, branchByRow, hasRow, setCommander,
     // The rows currently on the graph, for Explore's orientation lens: the graph encodes
     // adjacency and has no absolute position, so "where does this sit in card space" is a
     // question only the world map can answer.

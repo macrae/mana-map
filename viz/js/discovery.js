@@ -446,11 +446,20 @@ window.Discovery = (function () {
   /* The graph says which card is selected; the panel follows. Distinct from `show()`,
    * which RESEEDS the graph — clicking a node must open that card without throwing away
    * the walk you just built to reach it. */
+  /* Note the card WITHOUT claiming the panel. The graph engine calls this on every branch
+   * and pin, and it used to render Discovery's panel unconditionally — which meant Build,
+   * which seeds the same engine, had its roles and curve repainted with Discover's landing
+   * controls on every reheat. Who draws the panel is `Force.renderPanel`'s decision, and
+   * it asks the mode. */
+  function setCurrent(row) {
+    if (row < 0) return;
+    current = row;
+    Session.setFocus(row);
+  }
+
   function focus(row) {
     if (row < 0 || row === current) { render(); return; }
-    current = row;
-    // One answer to "which card am I looking at", written where the answer changes.
-    Session.setFocus(row);
+    setCurrent(row);
     render();
   }
 
@@ -553,7 +562,14 @@ window.Discovery = (function () {
       const seeds = commanderRow >= 0
         ? [commanderRow].concat(rows.filter(r => r !== commanderRow))
         : rows;
-      Promise.resolve(Force.enter(seeds, 'Imported deck', { chrome: 'discovery' }))
+      // Pass `opts.deck`, exactly as `loadDeck` does. Without it a PASTED list — which is
+      // how a bulk pool arrives — got a pinned commander and none of the visual language:
+      // no gold ring, no deck ink, no warm deck edges, every card washed out as if you had
+      // wandered into it. The cards you brought must look different from the cards you find.
+      Promise.resolve(Force.enter(seeds, 'Imported pool', {
+        chrome: 'discovery',
+        deck: { rows: new Set(rows), commander: commanderRow },
+      }))
         .then(function () {
           if (commanderRow >= 0) Force.pinCard(commanderRow);
           render();
@@ -666,7 +682,7 @@ window.Discovery = (function () {
 
   return {
     configure, ready, isReady, loadIndex, loadNeighbours, decode,
-    enter, exit: exitMode, land, show, focus, reroll, onFilter, render, newGraph,
+    enter, exit: exitMode, land, show, focus, setCurrent, reroll, onFilter, render, newGraph,
     loadManifest, loadDeck, onDeckPick,
     get decks() { return manifest || []; },
     tray: { get list() { return Session.tray.list; }, has: inTray, toggle: toggleTray,

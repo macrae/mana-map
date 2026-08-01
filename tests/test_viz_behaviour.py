@@ -247,13 +247,21 @@ def test_map_switch_refits_the_camera(page):
 # ── Modes ───────────────────────────────────────────────────────────────
 
 
-def test_deck_lens_lights_a_deck(page):
+def test_the_map_view_lights_a_deck(page):
+    """The old Deck Lens, now a view inside Build.
+
+    Build opens on the GRAPH, so the atlas overlay is not drawn until you ask for it —
+    hence the explicit `setView('map')`. That is the behaviour change, not a regression:
+    the map answers "where does this sit" and the graph answers "what is next to what".
+    """
     result = page.evaluate("""async () => {
         document.getElementById('modeSelect').value = 'build';
         MM.setMode('build');
         await new Promise(r => setTimeout(r, 4000));
         await Build.select('edgar-vampires');
-        await new Promise(r => setTimeout(r, 2000));
+        await new Promise(r => setTimeout(r, 6000));
+        Build.setView('map');
+        await new Promise(r => setTimeout(r, 2500));
         const gd = document.getElementById('plot');
         const base = MM.mapRenderer.layers.find(t => !t._isDeckOverlay && t.marker);
         return {
@@ -1017,14 +1025,16 @@ def test_canvas_box_select_uses_the_quadtree(canvas_page):
     assert r["browse"], "a large box-select should enter browse mode"
 
 
-def test_deck_lens_and_drill_run_on_canvas(canvas_page):
-    """Deck Lens dims with a per-point opacity array — the last thing the canvas renderer
-    could not draw. Drill pushes 90 frames through updateLayerBy rather than rebuilding
-    every layer per frame."""
+def test_the_map_view_and_drill_run_on_canvas(canvas_page):
+    """`focusLine` frames a verified line on the atlas, so it needs the MAP view — Build
+    opens on the graph. Drill pushes 90 frames through updateLayerBy rather than
+    rebuilding every layer per frame."""
     r = canvas_page.evaluate("""async () => {
         document.getElementById('modeSelect').value = 'build'; MM.setMode('build');
         await new Promise(r => setTimeout(r, 4000));
         await Build.select('edgar-vampires');
+        await new Promise(r => setTimeout(r, 6000));
+        Build.setView('map');
         await new Promise(r => setTimeout(r, 2500));
         const lens = {deck: (document.querySelector('.lens-title') || {}).textContent};
 
@@ -2682,4 +2692,225 @@ def test_selecting_a_card_does_not_leave_the_region(page):
     assert r["picked"]["card"], "no card was actually selected"
     assert not r["escaped"]["region"] and r["escaped"]["span"] > r["picked"]["span"] * 2, (
         "Escape no longer peels the region"
+    )
+
+
+# ── Build: one mode for a set of cards ──────────────────────────────────
+
+
+def test_build_opens_on_the_graph_and_keeps_it_across_views(page):
+    """Build opens on the graph, and switching to the map and back must not cost you it.
+
+    `Force.enter` with an explicit seed takes the rebuild path, so seeding unconditionally
+    on every view change threw away everything branched to — measured at six explored cards
+    lost on one round trip. Same hazard the relation buttons had, one file further on.
+    `seedGraph` restores instead when the graph already holds the deck.
+    """
+    r = page.evaluate("""async () => {
+        document.getElementById('modeSelect').value = 'build';
+        MM.setMode('build');
+        await new Promise(r => setTimeout(r, 3000));
+        await Build.select('edgar-vampires');
+        await new Promise(r => setTimeout(r, 9000));
+        const seeded = {view: Build.view, nodes: Force.nodeCount,
+                        m: Force.membership()};
+
+        MM.relate(Force.rows()[5], 'similar');
+        await new Promise(r => setTimeout(r, 2500));
+        const grown = Force.nodeCount;
+
+        Build.setView('map');
+        await new Promise(r => setTimeout(r, 2500));
+        const onMap = {view: Build.view,
+                       forceMode: document.getElementById('plot').classList.contains('force-mode'),
+                       layers: MM.mapRenderer.layers.length};
+        Build.setView('graph');
+        await new Promise(r => setTimeout(r, 3000));
+        return {seeded, grown, onMap,
+                back: {nodes: Force.nodeCount, m: Force.membership()}};
+    }""")
+    assert page.js_errors == []
+    assert r["seeded"]["view"] == "graph", "Build did not open on the graph"
+    assert r["seeded"]["nodes"] > 50
+    assert r["seeded"]["m"]["commander"] == 1, "the commander is not ringed"
+    assert r["seeded"]["m"]["explored"] == 0, "a freshly loaded deck has nothing explored yet"
+    assert r["grown"] > r["seeded"]["nodes"], "branching did not grow the graph"
+    # The map view is the old Deck Lens: the atlas with the deck lit.
+    assert not r["onMap"]["forceMode"] and r["onMap"]["layers"] > 5
+    assert r["back"]["nodes"] >= r["grown"], (
+        f"the view round trip lost cards: {r['grown']} -> {r['back']['nodes']}"
+    )
+    assert r["back"]["m"]["explored"] > 0, "the cards you found did not survive the round trip"
+
+
+def test_the_cards_you_brought_are_inked_differently(page):
+    """A pasted pool must look like a pool, not like something you wandered into.
+
+    `Discovery.importText` did not pass `opts.deck`, so a pasted list — which is how a bulk
+    pool arrives — got a pinned commander and none of the visual language: no gold ring, no
+    deck ink, no warm deck edges. `loadDeck` passed it and a paste did not, which is the
+    exact path a 300-card pool takes.
+    """
+    r = page.evaluate("""async () => {
+        const d = await (await fetch('../data/decks/heliod/cards.json')).json();
+        const text = d.cards.filter(c => !c.is_sideboard)
+                            .map(c => (c.quantity || 1) + ' ' + c.name).join('\\n');
+        document.getElementById('modeSelect').value = 'discover';
+        MM.setMode('discover');
+        await new Promise(r => setTimeout(r, 2000));
+        const distinct = new Set(d.cards.filter(c => !c.is_sideboard).map(c => c.name)).size;
+        const res = Discovery.importText(text);
+        await new Promise(r => setTimeout(r, 9000));
+        const imported = Force.membership();
+        MM.relate(Force.rows()[3], 'similar');
+        await new Promise(r => setTimeout(r, 2500));
+        return {resolved: res.resolved, missing: res.missing.length, distinct: distinct,
+                imported: imported, after: Force.membership()};
+    }""")
+    assert page.js_errors == []
+    # A card is a POSITION on the graph, so eleven Islands are one node — `importText`
+    # dedupes and the quantity rides along in the panel. Compare against distinct names,
+    # not the 100-card total, or this asserts the copies rule backwards.
+    assert r["missing"] == 0, "a published deck should resolve completely"
+    assert r["resolved"] == r["distinct"], (
+        f"{r['resolved']} rows for {r['distinct']} distinct names"
+    )
+    assert r["imported"]["deck"] == r["resolved"], (
+        "the pasted cards were not marked as brought — opts.deck was not passed"
+    )
+    assert r["imported"]["explored"] == 0
+    assert r["after"]["explored"] > 0, "branching added nothing"
+    assert r["after"]["deck"] == r["imported"]["deck"], (
+        "cards you found were counted as cards you brought"
+    )
+
+
+def test_the_commander_is_one_card_and_changing_it_keeps_the_graph(page):
+    """One card, read from Session by the ring, the colour identity and the brief.
+
+    Offered on legendary creatures only, because that is the rule rather than a
+    preference. `Force.setCommander` re-inks rather than re-seeding — changing your mind
+    about a commander must not cost you the graph.
+    """
+    r = page.evaluate("""async () => {
+        document.getElementById('modeSelect').value = 'discover';
+        MM.setMode('discover');
+        await new Promise(r => setTimeout(r, 2000));
+        const edgar = MM.allData.findIndex(d => d.n === 'Edgar Markov');
+        const bolt = MM.allData.findIndex(d => d.n === 'Lightning Bolt');
+
+        Discovery.show(edgar);
+        await new Promise(r => setTimeout(r, 1200));
+        const onLegend = document.getElementById('deckInner').innerHTML.indexOf('Set as commander') !== -1;
+
+        for (let i = 0; i < 2; i++) {
+            MM.relate(Force.rows()[Force.nodeCount - 1], 'similar');
+            await new Promise(r => setTimeout(r, 700));
+        }
+        const before = Force.nodeCount;
+        MM.setCommander(edgar);
+        await new Promise(r => setTimeout(r, 1200));
+        const set = {isCommander: Session.commander === edgar,
+                     ringed: Force.membership().commander,
+                     nodes: Force.nodeCount};
+
+        Discovery.focus(bolt);
+        await new Promise(r => setTimeout(r, 900));
+        const onSpell = document.getElementById('deckInner').innerHTML.indexOf('Set as commander') !== -1;
+        return {onLegend, onSpell, before, set};
+    }""")
+    assert page.js_errors == []
+    assert r["onLegend"], "no way to name a legendary creature as commander"
+    assert not r["onSpell"], "a non-creature was offered as a commander"
+    assert r["set"]["isCommander"] and r["set"]["ringed"] == 1
+    assert r["set"]["nodes"] >= r["before"], "naming a commander rebuilt the graph"
+
+
+def test_the_panel_belongs_to_the_mode_not_the_engine(page):
+    """One graph engine, two owners, and the engine has to ask which.
+
+    When The Walk was deleted, `Force.renderPanel` was collapsed to "Discovery always owns
+    the panel". That was true while Discover was the only thing seeding the graph. It
+    stopped being true the moment Build seeded the same engine: every reheat, branch and
+    pin repainted Build's roles, curve and verified lines with Discover's landing controls.
+
+    Three call sites had inherited the same assumption — `renderPanel`, `Force.pinCard` /
+    `branchFrom`, and `MM.relate` — all reaching for `Discovery.focus`, which *renders*.
+    Noting which card is open (`Discovery.setCurrent`) and deciding who draws the panel are
+    two different jobs.
+    """
+    r = page.evaluate("""async () => {
+        const heading = () => (document.querySelector('#deckInner h2') || {}).textContent;
+        document.getElementById('modeSelect').value = 'build';
+        MM.setMode('build');
+        await new Promise(r => setTimeout(r, 3000));
+        await Build.select('edgar-vampires');
+        await new Promise(r => setTimeout(r, 9000));
+        const loaded = {panel: heading(), nodes: Force.nodeCount};
+
+        // Branching is what reheats the graph, which is what repainted the panel.
+        MM.relate(Force.rows()[5], 'similar');
+        await new Promise(r => setTimeout(r, 2500));
+        const branched = {panel: heading(), nodes: Force.nodeCount};
+
+        document.getElementById('modeSelect').value = 'discover';
+        MM.setMode('discover');
+        await new Promise(r => setTimeout(r, 3500));
+        const discover = {panel: heading(), nodes: Force.nodeCount,
+                          deck: Force.membership().deck};
+        return {loaded, branched, discover};
+    }""")
+    assert page.js_errors == []
+    assert r["loaded"]["panel"] == "Build", "Build did not own its own panel"
+    assert r["branched"]["panel"] == "Build", (
+        "branching handed Build's panel to Discover — the engine assumed an owner"
+    )
+    assert r["branched"]["nodes"] > r["loaded"]["nodes"], "the branch did not grow the graph"
+    assert r["discover"]["panel"] == "Discover"
+
+
+def test_leaving_build_hands_the_canvas_back(page):
+    """Build owns its graph; a walk you grew is yours.
+
+    Everywhere else the rule is "growing must never be able to delete" — a walk survives a
+    round trip through Explore. A loaded DECK is not that: it is Build's subject, and
+    leaving it behind meant Discover opened on someone else's 97-card deck with the landing
+    card buried in it.
+
+    Explore is exempt on purpose. It is a LENS on whatever graph is current, not a
+    workspace, so clearing on the way there would empty the very thing it exists to show.
+    """
+    r = page.evaluate("""async () => {
+        document.getElementById('modeSelect').value = 'build';
+        MM.setMode('build');
+        await new Promise(r => setTimeout(r, 3000));
+        await Build.select('edgar-vampires');
+        await new Promise(r => setTimeout(r, 9000));
+        const inBuild = Force.nodeCount;
+
+        document.getElementById('modeSelect').value = 'discover';
+        MM.setMode('discover');
+        await new Promise(r => setTimeout(r, 3500));
+        const discover = {nodes: Force.nodeCount, deck: Force.membership().deck};
+
+        // Now grow a walk of your own, and check Explore does NOT take it away.
+        for (let i = 0; i < 2; i++) {
+            MM.relate(Force.rows()[Force.nodeCount - 1], 'similar');
+            await new Promise(r => setTimeout(r, 700));
+        }
+        const mine = Force.nodeCount;
+        document.getElementById('modeSelect').value = 'explore';
+        MM.setMode('explore');
+        await new Promise(r => setTimeout(r, 3000));
+        return {inBuild, discover, mine, throughExplore: Session.size()};
+    }""")
+    assert page.js_errors == []
+    assert r["inBuild"] > 50
+    assert r["discover"]["deck"] == 0, "Build's deck followed you into Discover"
+    assert r["discover"]["nodes"] <= 2, (
+        f"Discover opened on {r['discover']['nodes']} nodes — it should be a landing card"
+    )
+    assert r["mine"] > r["discover"]["nodes"], "could not grow a walk after leaving Build"
+    assert r["throughExplore"] >= r["mine"], (
+        "Explore cleared the walk — it is a lens, not a workspace"
     )

@@ -80,6 +80,10 @@
   let showCandidates = true;
   let showSideboard = false;
   let dimOthers = true;
+  // Build opens on the GRAPH. The map is still one click away and is what Deck Lens
+  // always was — position, roles and verified lines drawn where the cards actually live.
+  // The graph answers the other question: what is next to what, and what could join.
+  let view = 'graph';
   // Off-limits highlighting is opt-in: it costs the per-point opacity array.
   let showIllegal = false;
   let format = 'commander';
@@ -478,7 +482,7 @@
 
     let html =
       '<div class="deck-header">' +
-        '<h2>Deck Lens</h2>' +
+        '<h2>Build</h2>' +
         '<button class="detail-close" onclick="Build.close()" title="Close">×</button>' +
       '</div>' +
       '<div class="deck-section">' +
@@ -526,6 +530,17 @@
           statBox(active.side.length, 'bench') +
         '</div>' +
         '<button class="lens-btn" onclick="Build.zoomToDeck()">Zoom to the deck</button>' +
+      '</div>' +
+
+      '<div class="deck-section">' +
+        '<div class="deck-section-title">View</div>' +
+        '<div class="discover-graphctl">' +
+          '<button class="lens-btn' + (view === 'graph' ? ' is-on' : '') +
+            '" onclick="Build.setView(\'graph\')">Graph</button>' +
+          '<button class="lens-btn' + (view === 'map' ? ' is-on' : '') +
+            '" onclick="Build.setView(\'map\')">Map</button>' +
+        '</div>' +
+        '<div class="lens-note">The graph shows what is next to what · the map shows where it sits</div>' +
       '</div>' +
 
       '<div class="deck-section">' +
@@ -629,7 +644,7 @@
     }
     loading = false;
     renderPanel();
-    MM.render();
+    applyView();
   }
 
   function toggle(key, value) {
@@ -684,6 +699,50 @@
     MM.setStatus(edge.title);
   }
 
+  /* Seed the force graph from the loaded deck — the same call Discovery makes, with
+   * `opts.deck`, which is where the visual language lives: deck cards at full colour and
+   * a larger radius with a white rim, the commander double-ringed in gold, warm heavy
+   * deck edges, commander-first labels. Cards you branch to are washed out, so what you
+   * brought stays legible against what you found. */
+  function seedGraph() {
+    if (!active || !window.Force) return;
+    const rows = active.main.map(function (x) { return x.idx; })
+                            .filter(function (i) { return i !== null; });
+    if (!rows.length) return;
+    // RESEED ONLY WHEN THERE IS NOTHING TO LOSE. `Force.enter` with an explicit seed takes
+    // the rebuild path, so calling it unconditionally threw away everything you had
+    // branched to — flipping to the map and back cost six explored cards, measured. Same
+    // hazard the relation buttons had. If the graph already holds this deck, leave it.
+    if (Force.nodeCount && rows.every(function (r) { return Force.hasRow(r); })) {
+      Force.enter(null, null, { chrome: 'discovery' });   // restore, do not rebuild
+      return;
+    }
+    const cmd = active.commanderName && nameToIdx ? nameToIdx.get(active.commanderName) : null;
+    const cmdIdx = typeof cmd === 'number' ? cmd : -1;
+    const seeds = cmdIdx >= 0
+      ? [cmdIdx].concat(rows.filter(function (r) { return r !== cmdIdx; }))
+      : rows;
+    Promise.resolve(Force.enter(seeds, active.entry.deck_name,
+      { chrome: 'discovery', deck: { rows: new Set(rows), commander: cmdIdx } }))
+      .then(function () { if (cmdIdx >= 0) Force.pinCard(cmdIdx); });
+  }
+
+  function applyView() {
+    const plot = document.getElementById('plot');
+    if (!plot) return;
+    // Same class the graph mode uses — it names the force CANVAS, not a mode.
+    plot.classList.toggle('force-mode', view === 'graph' && !!active);
+    if (view === 'graph' && active) seedGraph();
+    else { if (window.Force) Force.exit(); MM.render(); }
+  }
+
+  function setView(v) {
+    if (v === view) return;
+    view = v;
+    applyView();
+    renderPanel();
+  }
+
   async function enter() {
     const panel = document.getElementById('deckPanel');
     panel.classList.add('open');
@@ -693,7 +752,7 @@
     try {
       await ensureShared();
     } catch (err) {
-      MM.setStatus('Deck Lens unavailable: ' + err.message);
+      MM.setStatus('Build unavailable: ' + err.message);
     }
     loading = false;
     renderPanel();
@@ -702,11 +761,23 @@
     if (wanted && manifest && manifest.decks.some(d => d.slug === wanted)) {
       await select(wanted);
     } else {
-      MM.render();
+      applyView();
     }
   }
 
   function exit() {
+    const plot = document.getElementById('plot');
+    if (plot) plot.classList.remove('force-mode');
+    // BUILD OWNS ITS GRAPH, so leaving takes it with you. Everywhere else the rule is
+    // "growing must never be able to delete" — a walk you grew is yours and survives a
+    // round trip through Explore. A loaded DECK is not that: it is Build's subject, and
+    // leaving it behind meant Discover opened on someone else's 97-card deck with the
+    // landing card buried in it. Two workspaces sharing one canvas have to hand it back.
+    //
+    // Explore is exempt: it is a LENS on whatever graph is current, not a workspace, and
+    // clearing on the way there would empty the very thing it exists to show you.
+    if (window.Force && active && window.MM && MM.mode !== 'explore') Force.newWalk(true);
+    if (window.Force) Force.exit();
     const panel = document.getElementById('deckPanel');
     panel.classList.remove('open');
     resizeMap();
@@ -743,8 +814,11 @@
   }
 
   window.Build = {
+    renderPanel,
     addCard,
     isInDeck,
+    setView,
+    get view() { return view; },
     enter,
     exit,
     close,
