@@ -138,15 +138,17 @@ def _browse_fn(name: str) -> str:
 
 
 def test_box_select_keeps_the_whole_set_not_an_arbitrary_eight():
-    """`plotly_selected` returns points grouped by trace — colour groups in palette
+    """Box-select used to return points grouped by trace — colour groups in palette
     order (G, R, Colorless, U, B, W, Multicolor), then cards.csv row order within each.
     Taking the first 8 meant boxing a mixed cluster and getting eight green cards in
     Scryfall dump order: not a sample of the selection, an artifact of trace construction.
+    The quadtree returns them in its own order, so the hazard is unchanged — take the set,
+    not a prefix of it.
     """
     js = _js()
-    start = js.index("on('plotly_selected'")
+    start = js.index("mapCanvas.on('select'")
     handler = js[start:start + 2500]
-    assert "enterBrowse(all, 'Selection')" in handler
+    assert "enterBrowse(rows, 'Selection')" in handler
     assert "MAX_SELECTED} of ${total}" not in handler, "the arbitrary-8 truncation is back"
 
 
@@ -183,7 +185,9 @@ def test_browse_marker_moves_without_rebuilding_the_selection():
     )
     fn = _browse_fn("moveBrowseMarker")
     assert "_isBrowseCurrent" in fn, "find the marker by flag, not by trace name"
-    assert "Plotly.restyle" in fn
+    # `updateLayerBy` is the canvas's `Plotly.restyle` — one layer moved, the other
+    # 34,322 untouched. That is the whole point of the fast path.
+    assert "updateLayerBy" in fn
 
 
 def test_browse_mode_is_exclusive_with_the_card_stack():
@@ -245,11 +249,14 @@ def test_no_trace_builds_hover_text_while_hover_is_off():
         )
 
 
-def test_render_draws_the_selection_in_its_single_react():
-    """`Plotly.react` replaces the trace list, so it dropped the highlight and
+def test_render_draws_the_selection_in_its_single_pass():
+    """render() must draw the highlight itself, not delegate it.
+
+    Under Plotly, `react` replaced the trace list, so it dropped the highlight and
     `updateSelectionHighlight()` added it straight back — an extra addTraces of the whole
     selection on every render. With a 15,000-card browse that is a full trace rebuild on
-    every pan, filter and panel open. One react now draws everything."""
+    every pan, filter and panel open. One pass now draws everything, and the hazard is
+    identical on the canvas: `setLayers` replaces the layer list the same way."""
     js = _js()
     assert "function buildSelectionTraces()" in js
     assert "traces.push(...buildSelectionTraces());" in js
@@ -258,7 +265,7 @@ def test_render_draws_the_selection_in_its_single_react():
     # What must not come back is the unconditional re-add at the END of render.
     start = js.index("function render()")
     render = js[start:js.index("\n  function ", start + 10)]
-    tail = render[render.rindex("Plotly.react("):]
+    tail = render[render.rindex("mapCanvas.setLayers("):]
     assert "updateSelectionHighlight();" not in tail, (
         "render() must not re-add the highlight it already drew"
     )
@@ -282,11 +289,17 @@ def test_box_select_has_one_destination():
     """It used to build the 8-card stack, render the panel and rebuild the plot
     highlight — then, for a big box, throw all of it away and do it again as browse."""
     js = _js()
-    start = js.index("on('plotly_selected'")
+    start = js.index("mapCanvas.on('select'")
     handler = js[start:start + 2000]
     assert handler.count("updateViewerPanel();") <= 1, "box-select renders the panel twice"
-    assert "return;" in handler.split("enterBrowse")[1][:200], (
-        "the browse path must return rather than falling through to the 8-card path"
+    # The two destinations must be mutually exclusive. The Plotly handler expressed that
+    # with an early `return` after `enterBrowse`; the canvas handler uses `if/else`, which
+    # is the same guarantee stated structurally rather than by control flow. Accept either
+    # — asserting on the *shape* of the exclusion rather than the exclusion itself is how
+    # a source check fails a correct refactor.
+    after = handler.split("enterBrowse")[1][:200]
+    assert "return;" in after or "} else {" in after, (
+        "the browse path must not fall through to the 8-card path"
     )
 
 

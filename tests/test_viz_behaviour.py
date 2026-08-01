@@ -33,7 +33,7 @@ pytestmark = pytest.mark.browser
 
 def test_map_boots_clean(page):
     assert page.evaluate("MM.allData.length") == 34322
-    traces = page.evaluate("document.getElementById('plot').data.length")
+    traces = page.evaluate("MM.mapRenderer.layers.length")
     assert traces >= 6, "base scatter did not render"
     assert page.js_errors == [], f"console/page errors at boot: {page.js_errors}"
 
@@ -65,7 +65,7 @@ def test_drill_renders_its_layout(page):
         await Drill.enterRegion(reg.id);
         await new Promise(r => setTimeout(r, 2500));
         const gd = document.getElementById('plot');
-        const dt = (gd.data || []).find(t => t._isDrill);
+        const dt = MM.mapRenderer.layers.find(t => t._isDrill);
         let moved = 0;
         if (dt) {
             for (let i = 0; i < dt.customdata.length; i++) {
@@ -76,7 +76,7 @@ def test_drill_renders_its_layout(page):
         return {
             region: reg.label,
             expected: reg.count,
-            drillTraces: (gd.data || []).filter(t => t._isDrill).length,
+            drillTraces: MM.mapRenderer.layers.filter(t => t._isDrill).length,
             points: dt ? dt.x.length : 0,
             movedFraction: dt ? moved / dt.customdata.length : 0,
             barVisible: document.getElementById('drillBar').style.display !== 'none',
@@ -101,12 +101,13 @@ def test_drill_back_restores_the_world(page):
         await new Promise(r => setTimeout(r, 2000));
         Drill.back();
         await new Promise(r => setTimeout(r, 900));
-        const gd = document.getElementById('plot');
+        const layers = MM.mapRenderer.layers;
         return {
             active: Drill.isActive(),
-            drillTraces: (gd.data || []).filter(t => t._isDrill).length,
-            hiddenBaseTraces: (gd.data || []).filter(t => t.visible === false).length,
-            annotations: (gd._fullLayout.annotations || []).length,
+            drillTraces: layers.filter(t => t._isDrill).length,
+            hiddenBaseTraces: layers.filter(t => t.visible === false).length,
+            // Region labels are DOM buttons now, not layout annotations.
+            annotations: document.querySelectorAll('.map-label').length,
             barHidden: document.getElementById('drillBar').style.display === 'none',
         };
     }""")
@@ -157,8 +158,8 @@ def test_big_selection_enters_browse_and_orders_by_embedding(page):
         return {
             expected: rows.length,
             held: bs.indices.length,
-            marker: (gd.data || []).filter(t => t._isBrowseCurrent).length,
-            setTrace: (gd.data || []).filter(t => t.name && t.name.startsWith('Selection')).length,
+            marker: MM.mapRenderer.layers.filter(t => t._isBrowseCurrent).length,
+            setTrace: MM.mapRenderer.layers.filter(t => t.name && t.name.startsWith('Selection')).length,
             noAccordion: !document.querySelector('.acc-row'),
             first: MM.allData[bs.indices[0]].n,
             last: MM.allData[bs.indices[bs.indices.length - 1]].n,
@@ -177,7 +178,7 @@ def test_browse_cycling_moves_the_marker(page):
         await MM.enterBrowse(rows, 'T');
         await new Promise(r => setTimeout(r, 900));
         const gd = document.getElementById('plot');
-        const snap = () => { const t = gd.data.find(x => x._isBrowseCurrent);
+        const snap = () => { const t = MM.mapRenderer.layers.find(x => x._isBrowseCurrent);
                              return {x: t.x[0], y: t.y[0], cd: t.customdata[0]}; };
         const a = snap(); MM.cycleNext(); await new Promise(r => setTimeout(r, 300));
         const b = snap(); MM.cyclePrev(); await new Promise(r => setTimeout(r, 300));
@@ -190,15 +191,27 @@ def test_browse_cycling_moves_the_marker(page):
 
 
 # ── The camera bug ──────────────────────────────────────────────────────
+#
+# `tests/test_viz_camera.py` used to guard this with three source assertions, and was
+# retired with Plotly rather than ported. Its subject no longer exists: `Plotly.react`
+# replaced layout wholesale, so a layout with no explicit axis range silently reset the
+# viewport to autorange, and `render()` had to read the live range and write it back
+# (`keepX`/`keepY`) on every pass. Filtering and zooming were mutually destructive
+# without it, and it was invisible because nothing failed — measured in a browser: zoom
+# to a span of 20.5, call `MM.render()`, read 116.6. The canvas never rebuilds a layout;
+# `transform` is the only thing that moves, so the hazard left with the renderer.
+#
+# What survives is the invariant, and it was always better tested here than by grep:
+# the camera must survive a re-render, EXCEPT when the coordinates themselves change.
 
 
 def test_filtering_does_not_reset_the_zoom(page):
     """Before the fix: zoom to a span of 20.5, toggle a filter, get 116.6."""
     result = page.evaluate("""async () => {
-        const gd = document.getElementById('plot');
-        const span = () => { const r = gd._fullLayout.xaxis.range;
-                             return Math.abs(r[1] - r[0]); };
-        await Plotly.relayout('plot', {'xaxis.range': [-5, 5], 'yaxis.range': [-5, 5]});
+        const span = () => { const c = MM.mapRenderer.getCamera();
+                             return Math.abs(c.x[1] - c.x[0]); };
+        MM.mapRenderer.setCamera({x: [-5, 5], y: [-5, 5]});
+        await new Promise(r => setTimeout(r, 300));
         const zoomed = span();
         document.querySelectorAll('#toggles button')[1].click();
         await new Promise(r => setTimeout(r, 700));
@@ -216,10 +229,10 @@ def test_filtering_does_not_reset_the_zoom(page):
 def test_map_switch_refits_the_camera(page):
     """The one case that SHOULD autorange — the coordinates themselves change."""
     result = page.evaluate("""async () => {
-        const gd = document.getElementById('plot');
-        const span = () => { const r = gd._fullLayout.xaxis.range;
-                             return Math.abs(r[1] - r[0]); };
-        await Plotly.relayout('plot', {'xaxis.range': [-5, 5], 'yaxis.range': [-5, 5]});
+        const span = () => { const c = MM.mapRenderer.getCamera();
+                             return Math.abs(c.x[1] - c.x[0]); };
+        MM.mapRenderer.setCamera({x: [-5, 5], y: [-5, 5]});
+        await new Promise(r => setTimeout(r, 300));
         const zoomed = span();
         const ms = document.getElementById('mapSelect');
         ms.value = 'ability'; ms.dispatchEvent(new Event('change'));
@@ -242,10 +255,10 @@ def test_deck_lens_lights_a_deck(page):
         await DeckMap.select('edgar-vampires');
         await new Promise(r => setTimeout(r, 2000));
         const gd = document.getElementById('plot');
-        const base = gd.data.find(t => !t._isDeckOverlay && t.marker);
+        const base = MM.mapRenderer.layers.find(t => !t._isDeckOverlay && t.marker);
         return {
-            overlays: gd.data.filter(t => t._isDeckOverlay).length,
-            commander: gd.data.filter(t => t.name === 'Commander').length,
+            overlays: MM.mapRenderer.layers.filter(t => t._isDeckOverlay).length,
+            commander: MM.mapRenderer.layers.filter(t => t.name === 'Commander').length,
             dimScalar: typeof base.marker.opacity,
             deckName: (document.querySelector('.lens-title') || {}).textContent,
             status: document.getElementById('status').textContent,
@@ -267,7 +280,7 @@ def test_mode_switches_are_exclusive(page):
         document.getElementById('modeSelect').value = 'explore'; MM.setMode('explore');
         await new Promise(r => setTimeout(r, 900));
         out.afterExplore = document.getElementById('deckPanel').classList.contains('open');
-        out.overlays = document.getElementById('plot').data
+        out.overlays = MM.mapRenderer.layers
             .filter(t => t._isDeckOverlay).length;
         return out;
     }""")
@@ -301,39 +314,42 @@ def test_render_stays_under_budget(page):
     assert result["cycle"] < 150, f"arrow press {result['cycle']:.0f}ms"
 
 
-def test_render_makes_one_plotly_call(page):
-    """`react` must draw everything, including the selection highlight.
+def test_render_draws_everything_in_one_pass(page):
+    """`render()` must draw everything, including the selection highlight, in one pass.
 
     When `render()` left the highlight to `updateSelectionHighlight()`, every pan and
     filter did an extra add/delete of the whole selection — a full rebuild of a
     15,000-point trace on each one.
+
+    The invariant outlived the renderer; only the call being counted changed. This
+    counted `Plotly.react` / `addTraces` / `deleteTraces` / `restyle`; the canvas
+    equivalents are `setLayers` (draw everything) and `updateLayerBy` (move one layer
+    without touching the other 34,322), which is precisely the distinction the original
+    was protecting.
     """
     result = page.evaluate("""async () => {
         const rows = []; for (let i = 0; i < 5000; i++) rows.push(i * 5 % 34322);
         await MM.enterBrowse(rows, 'Calls');
         await new Promise(r => setTimeout(r, 900));
-        const counts = {add: 0, del: 0, react: 0, restyle: 0};
-        const orig = {};
-        for (const k of ['addTraces', 'deleteTraces', 'react', 'restyle']) {
-            orig[k] = Plotly[k].bind(Plotly);
-            Plotly[k] = function (...a) {
-                counts[k === 'addTraces' ? 'add' : k === 'deleteTraces' ? 'del' : k]++;
-                return orig[k](...a);
-            };
+        const counts = {setLayers: 0, updateLayerBy: 0};
+        const r = MM.mapRenderer, orig = {};
+        for (const k of ['setLayers', 'updateLayerBy']) {
+            orig[k] = r[k].bind(r);
+            r[k] = function (...a) { counts[k]++; return orig[k](...a); };
         }
         MM.render();
         const perRender = {...counts};
-        counts.add = counts.del = counts.react = counts.restyle = 0;
+        counts.setLayers = counts.updateLayerBy = 0;
         MM.cycleNext();
         const perCycle = {...counts};
-        for (const k of ['addTraces', 'deleteTraces', 'react', 'restyle']) Plotly[k] = orig[k];
+        for (const k of ['setLayers', 'updateLayerBy']) r[k] = orig[k];
         return {perRender, perCycle};
     }""")
     assert page.js_errors == []
-    assert result["perRender"] == {"add": 0, "del": 0, "react": 1, "restyle": 0}, (
-        f"render() is not a single react: {result['perRender']}")
-    assert result["perCycle"]["restyle"] == 1 and result["perCycle"]["add"] == 0, (
-        f"an arrow press should be one restyle: {result['perCycle']}")
+    assert result["perRender"] == {"setLayers": 1, "updateLayerBy": 0}, (
+        f"render() is not a single full draw: {result['perRender']}")
+    assert result["perCycle"] == {"setLayers": 0, "updateLayerBy": 1}, (
+        f"an arrow press should move one layer, not redraw: {result['perCycle']}")
 
 
 # ── The Walk (force mode) ───────────────────────────────────────────────
@@ -442,14 +458,14 @@ def test_leaving_the_walk_restores_the_map(page):
             // style was asserting the bug: it survived re-entry and left the canvas 0x0.
             canvasComputedHidden: getComputedStyle(cv).display === 'none',
             canvasInline: cv.style.display || '',
-            plotTraces: gd.data.length,
+            plotTraces: MM.mapRenderer.layers.length,
         };
     }""")
     assert page.js_errors == []
     assert not r["active"] and not r["forceMode"]
     assert r["canvasComputedHidden"], "the walk canvas is still visible over the map"
     assert r["canvasInline"] == "", "visibility must come from the class, not an inline style"
-    assert r["plotTraces"] >= 6, "the Plotly map did not come back"
+    assert r["plotTraces"] >= 6, "the map did not come back"
 
 
 def test_walk_with_nothing_selected_offers_somewhere_to_go(page):
@@ -524,7 +540,7 @@ def test_walk_survives_a_round_trip_through_explore(page):
 
         setMode('explore');
         await new Promise(r => setTimeout(r, 1200));
-        const explore = {traces: document.getElementById('plot').data.length,
+        const explore = {traces: MM.mapRenderer.layers.length,
                          inlineDisplay: cv().style.display || ''};
 
         setMode('force');
@@ -689,23 +705,25 @@ def test_arrow_keys_drive_browse_mode(page):
 
 
 def test_hover_shows_a_card_image_at_the_cursor(page):
-    """`plotly_hover` fires even though every trace sets `hoverinfo: 'none'` — verified in
-    a browser before this was built ('none' hides the label, 'skip' kills the event)."""
+    """Hovering a point shows that card's art at the cursor.
+
+    This drove Plotly's `plotly_hover` through `_fullLayout.xaxis.d2p`; the canvas emits
+    its own `hover` off a quadtree pick, and `dataToPixel` is the d2p equivalent. The
+    subtle part is unchanged and is why the assertion reads the way it does: aiming at a
+    card's pixel does NOT guarantee that card. The pick takes the nearest point within a
+    radius over 34,322 of them, so a denser neighbour a pixel away wins — asking for Sol
+    Ring's coordinates once returned Krark-Clan Ironworks. The invariant is that the popup
+    shows whatever was actually hovered, not that it shows Sol Ring.
+    """
     r = page.evaluate("""async () => {
-        const gd = document.getElementById('plot'), fl = gd._fullLayout;
-        const rect = gd.getBoundingClientRect();
+        const host = document.getElementById('plot');
+        const cv = MM.mapRenderer.canvas;
+        const rect = host.getBoundingClientRect();
         const i = MM.allData.findIndex(d => d.n === 'Sol Ring'), d = MM.allData[i];
-        const px = fl.xaxis.d2p(d.x) + fl._size.l, py = fl.yaxis.d2p(d.y) + fl._size.t;
-        const drag = gd.querySelector('.nsewdrag') || gd;
-        // Record what Plotly says it hovered. Aiming at a card's pixel does NOT guarantee
-        // that card: hovermode is 'closest' over 34,322 points, so a denser neighbour a
-        // pixel away wins — asking for Sol Ring's coordinates returned Krark-Clan
-        // Ironworks. The invariant is that the popup shows whatever was hovered.
+        const [px, py] = MM.mapRenderer.dataToPixel(d.x, d.y);
         let hoveredRow = null;
-        gd.on('plotly_hover', e => {
-            if (hoveredRow === null && e.points && e.points[0]) hoveredRow = e.points[0].customdata;
-        });
-        drag.dispatchEvent(new MouseEvent('mousemove',
+        MM.mapRenderer.on('hover', e => { if (hoveredRow === null) hoveredRow = e.row; });
+        cv.dispatchEvent(new MouseEvent('mousemove',
             {bubbles: true, clientX: rect.left + px, clientY: rect.top + py}));
         await new Promise(r => setTimeout(r, 700));
         const p = document.querySelector('.card-popup');
@@ -722,7 +740,7 @@ def test_hover_shows_a_card_image_at_the_cursor(page):
     }""")
     assert page.js_errors == []
     assert r["visible"], "no hover popup appeared"
-    assert r["hoveredName"], "plotly_hover never fired — has hoverinfo been set to 'skip'?"
+    assert r["hoveredName"], "the canvas hover event never fired"
     assert r["hoveredName"] in r["src"], (
         f"popup shows {r['src'][:80]}, but {r['hoveredName']} was hovered")
     # Without this the popup sits under its own cursor and steals the hover from the point
@@ -1204,7 +1222,7 @@ def test_the_atlas_is_still_one_click_away(discover_page):
         MM.setMode('explore');
         await new Promise(r => setTimeout(r, 2500));
         const gd = document.getElementById('plot');
-        return {traces: (gd.data || []).length, rows: MM.allData.length};
+        return {traces: MM.mapRenderer.layers.length, rows: MM.allData.length};
     }""")
     assert discover_page.js_errors == []
     assert r["rows"] > 30000, "the projection never loaded behind the landing"

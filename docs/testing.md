@@ -1,22 +1,30 @@
 # Testing
 
 ```bash
-.venv/bin/python -m pytest              # everything (1,125, ~7 min)
+.venv/bin/python -m pytest              # everything (1,122, ~7 min)
 .venv/bin/python -m pytest -m "not browser"   # fast suite (1,042, ~70 s)
 .venv/bin/python -m pytest -m browser         # the 80 browser tests (~340 s)
 ```
 
-1,125 tests in `tests/`: 441 card-pipeline + 601 pilot-subsystem + **83 browser**.
+1,122 tests in `tests/`: 438 card-pipeline + 601 pilot-subsystem + **83 browser**.
 One is a still-unmet `xfail(strict=True)` ship gate in `test_embedding_quality.py` — see below.
 
 ## Source assertions do not catch regressions
 
 The frontend has two kinds of test and only one of them is real.
 
-`test_viz_{camera,drill,deck_lens,viewer}.py` read JS as **text** and assert that certain
-strings appear in certain files. They are cheap, they document intent well, and they are
-genuinely useful for invariants a human keeps breaking (cache-bust parity, "this function
-must not be called twice"). But they cannot see behaviour.
+`test_viz_{drill,deck_lens,viewer}.py` read JS as **text** and assert that certain strings
+appear in certain files. They are cheap, they document intent well, and they are genuinely
+useful for invariants a human keeps breaking (cache-bust parity, "this function must not be
+called twice"). But they cannot see behaviour.
+
+They also fail correct refactors. Deleting Plotly renamed the calls they grep for without
+changing anything they were protecting: one asserted the box-select handler used an early
+`return`, and failed because the canvas handler expresses the same exclusion with
+`if/else`. `test_viz_camera.py` was **retired** in that pass rather than ported — all three
+of its assertions were about a Plotly-only hazard (`react` replacing layout wholesale and
+silently autoranging), and the invariant they stood for was already covered behaviourally
+below, where it belonged all along.
 
 On 2026-07-30 a perf commit deleted a variable declaration and left the property that
 referenced it. `drill.js:getOverlayTraces()` threw `ReferenceError` on every render while
@@ -50,7 +58,7 @@ section below for why they cannot live anywhere else. `conftest_viz.py` still ho
 page-level helpers: an ephemeral `http.server` rooted at the repo — `viz/` and `data/` must
 be siblings, the same constraint GitHub Pages imposes — plus a booted page that waits on
 `MM.allData` rather than a timer, because the projection is 12.9 MB. Playwright is imported
-lazily, so the other 1,042 tests never pay for it.
+lazily, so the other 1,039 tests never pay for it.
 
 Every test asserts `page.js_errors == []`. That list collects `pageerror` and console
 errors, and it is what catches the class of bug above.
@@ -77,7 +85,7 @@ resolves rather than collapsing, that link lengths stay inside the chord range `
 branching grows the graph and records the trail, and that leaving restores the map.
 
 Setup, one time: `.venv/bin/python -m playwright install chromium` (~94 MB). Without it the
-whole file skips cleanly, so a fresh clone still runs the other 1,042.
+whole file skips cleanly, so a fresh clone still runs the other 1,039.
 
 ## Session fixtures belong in `conftest.py`, not in an imported module
 

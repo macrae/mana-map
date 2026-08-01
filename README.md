@@ -52,7 +52,7 @@ Three things to know:
   [Landmines](#landmines). (Two of the tracked files,
   `combo_details.json` and `card_roles.json`, are for the deck builder and the agents; the
   browser never fetches them.)
-- Plotly loads from a CDN, so the page needs internet even though the data doesn't.
+- d3 loads from a CDN, so the page needs internet even though the data doesn't.
 
 What you get: two maps (one clustered by color and type, one by what cards *do*), three
 relations on every card — **similar** via embedding neighbours, **synergy** via rule-based
@@ -233,7 +233,7 @@ cache-busters stripped.
 ## Testing
 
 ```bash
-.venv/bin/python -m pytest        # 1,125 tests (1,042 fast + 83 browser)
+.venv/bin/python -m pytest        # 1,122 tests (1,039 fast + 83 browser)
 ```
 
 325 card-pipeline + 601 pilot. Five skip markers in `tests/conftest.py` gate on the last

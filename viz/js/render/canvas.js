@@ -569,9 +569,32 @@
         if (showContours) { contourKey = null; ensureContours(); }
         draw();
       },
-      fitToData: function () { baseFit = null; fitToData(); draw(); },
+      // Refit to the data extent AND drop the user's zoom. Both halves matter: `baseFit`
+      // is the world→screen fit and `transform` is the zoom on top of it, so keeping the
+      // transform would frame the old camera over new coordinates. This is the map switch
+      // — the one case that SHOULD forget where you were, because the coordinates
+      // themselves changed. Under Plotly the same thing was expressed by clearing
+      // `plotInitialized` so the next `react` autoranged.
+      //
+      // Pushed through `zoomBehaviour.transform` rather than assigning `transform`, or
+      // d3 keeps its own internal copy and the next gesture jumps back.
+      fitToData: function () {
+        baseFit = null;
+        fitToData();
+        if (canvas && zoomBehaviour) {
+          d3.select(canvas).call(zoomBehaviour.transform, d3.zoomIdentity);
+        }
+        draw();
+      },
       on: function (name, fn) { (handlers[name] = handlers[name] || []).push(fn); return api; },
       get canvas() { return canvas; },
+      // What is currently drawn. This is the canvas's answer to Plotly's `gd.data`, and it
+      // exists because the browser suite legitimately needs to assert on the layer list —
+      // that drilling hides the base layers, that the deck overlay is present, that the
+      // browse marker moved. Losing that with the renderer would have meant deleting real
+      // coverage rather than porting it. Read-only by convention: mutate through
+      // `setLayers`/`updateLayerBy` so the quadtree signature stays honest.
+      get layers() { return layers; },
       get layerCount() { return layers.length; },
       get pointCount() { return tree ? tree.size() : 0; },
     };

@@ -69,7 +69,7 @@
     const inner = document.getElementById('deckInner');
     inner.innerHTML = '<div class="deck-loading"><div class="spinner"></div>Loading deck builder data...</div>';
     panel.classList.add('open');
-    setTimeout(() => Plotly.Plots.resize('plot'), 260);
+    setTimeout(() => { if (MM.mapRenderer) MM.mapRenderer.resize(); }, 260);
 
     try {
       // Embeddings and the synergy graph come from MM's caches — explore mode
@@ -1235,7 +1235,7 @@
   function exitBuildMode() {
     const panel = document.getElementById('deckPanel');
     panel.classList.remove('open');
-    setTimeout(() => Plotly.Plots.resize('plot'), 260);
+    setTimeout(() => { if (MM.mapRenderer) MM.mapRenderer.resize(); }, 260);
   }
 
   function closeBuildMode() {

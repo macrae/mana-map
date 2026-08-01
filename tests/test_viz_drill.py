@@ -60,7 +60,10 @@ def test_render_hides_the_world_rather_than_dimming_it():
 
 def test_world_anchored_layers_are_suppressed_while_drilling():
     src = _map()
-    assert "annotations: drilling ? [] : getRegionAnnotations" in src, (
+    # Region labels were Plotly annotations rebuilt per render; they are DOM buttons now,
+    # and `refreshCanvasLabels` is what decides whether any exist. The invariant is the
+    # same — nothing anchored to world centroids may render over a local layout.
+    assert "if (!data || !showRegionLabels) { mapCanvas.setAnnotations([]); return; }" in src, (
         "region labels are anchored to world centroids and must not render over a "
         "local layout"
     )

@@ -528,21 +528,17 @@
               [Math.min(...ys) - pad, Math.max(...ys) + pad]);
   }
 
-  // One camera call, either renderer. Plotly wants an axis-range relayout; the canvas
-  // wants a zoom transform. Neither caller should have to know which is drawing.
+  // The canvas wants a zoom transform. This used to branch — Plotly took an axis-range
+  // relayout — and the branch went with the renderer.
   function setCamera(xr, yr) {
-    if (MM.mapRenderer) { MM.mapRenderer.setCamera({ x: xr, y: yr }, { animate: true }); return; }
-    Plotly.relayout('plot', { 'xaxis.range': xr, 'yaxis.range': yr });
+    if (MM.mapRenderer) MM.mapRenderer.setCamera({ x: xr, y: yr }, { animate: true });
   }
 
   // The panel is a 0.25s CSS width transition, so the map's box is only final after it
   // ends — hence the 260ms. The canvas also has a ResizeObserver, but that is throttled
   // in a background tab, so the explicit call is what makes this reliable.
   function resizeMap() {
-    setTimeout(() => {
-      if (MM.mapRenderer) MM.mapRenderer.resize();
-      else Plotly.Plots.resize('plot');
-    }, 260);
+    setTimeout(() => { if (MM.mapRenderer) MM.mapRenderer.resize(); }, 260);
   }
 
   function focusLine(i) {

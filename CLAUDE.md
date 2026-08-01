@@ -30,7 +30,7 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #   validate_issue.py / agent_cache.py / artist_credits.py
                       #   validate_considering.py / validate_tutor_guide.py
                       #   impact.py / card_refs.py  incremental regeneration
-tests/                # pytest suite (1,125: 1,042 fast + 83 browser). Markers in
+tests/                # pytest suite (1,122: 1,039 fast + 83 browser). Markers in
                       # conftest.py: requires_data/rules/deck/strategy/roles;
                       # `-m browser` needs playwright + chromium
 data/                 # artifacts; mostly gitignored, viz-served files tracked
@@ -41,8 +41,8 @@ viz/                  # static frontend: index.html + deck.html (the dossier).
                       #   discovery.js  landing, relations, tray, deck load, import
                       #   force.js      the graph engine (canvas + d3-force)
                       #   decklist.js   Moxfield parser, fixture-locked to the Python one
-                      #   render/canvas.js  the map on canvas; Plotly is the other path
-                      # Plotly + d3 CDN, IIFE, window.MM — see docs/viz.md
+                      #   render/canvas.js  the map — the ONLY renderer; Plotly is gone
+                      # d3 from CDN, IIFE, window.MM — see docs/viz.md
 docs/                 # reference docs (see Pointers below)
 ```
 
@@ -67,8 +67,8 @@ manamap synergy && manamap power-creep && manamap cluster-regions && manamap car
                               # fast analysis-only refresh (no retrain)
 manamap pilot <cmd>           # build + publish subsystem (33 subcommands) — see docs/pilot.md
 
-.venv/bin/python -m pytest    # 1,125; data-dependent ones skip if artifacts missing
-.venv/bin/python -m pytest -m "not browser"   # 1,042, skips the browser suite (~70s)
+.venv/bin/python -m pytest    # 1,122; data-dependent ones skip if artifacts missing
+.venv/bin/python -m pytest -m "not browser"   # 1,039, skips the browser suite (~70s)
 
 python -m http.server 8000    # serve viz FROM REPO ROOT
 # http://localhost:8000/viz/index.html          the card map
@@ -84,7 +84,7 @@ python -m http.server 8000    # serve viz FROM REPO ROOT
 - **Viz serving root**: all fetches are `../data/<file>` relative to `viz/index.html` — `viz/` and `data/` must stay top-level siblings; serve from repo root.
 - **Cache busting**: bump `?v=N` on the script/CSS tags in `viz/index.html` **and `viz/deck.html`** after any JS/CSS change. `index.html`'s four script busts must move together — a test asserts it, since a mismatched pair is how `deck-map.js` ends up calling a stale `mana-map.js`. `manuals/magazine.css` is content-addressed instead (`?v=<sha8>`), so a CSS edit there obligates rebuilding every manual page.
 - **Synergy ≠ Similar**: synergy is complementary (blink→ETB, rule-based); Find Similar is embedding neighbors. Different algorithms.
-- **Plotly**: `Plotly.relayout` fires `plotly_relayout` — guard against event loops. `Plotly.react` replaces layout wholesale, so `render()` must write the live axis range back or it silently resets the camera; `Plotly.restyle` preserves it and is the only fast path (~32ms on a 1,200-point `scattergl`).
+- **One renderer: `viz/js/render/canvas.js`.** Plotly is deleted — no CDN tag, no `?renderer=` flag. `render()` builds a layer list and hands it to `setLayers`; `updateLayerBy(flag, patch)` is the restyle fast path (drill's 90 frames, the browse marker) and matches on a flag like `_isDrill` rather than a trace index. `mapRenderer.layers` is the read side (what `gd.data` was) and `getCamera`/`setCamera` speak **data units**, so span-keyed logic needed no change. Three bugs were hiding behind the old flag because canvas was opt-in: `updateSelectionHighlight` opened by reading `plotDiv.data` and was therefore a silent no-op, the region-label click called `addToSelection(null)` and threw, and `deck-builder.js` had two unguarded `Plotly.Plots.resize` calls. **A renderer kept behind a flag is a renderer nobody is testing.**
 - **Data cache-busting**: `MM.DATA` URLs carry `?v=DATA_VERSION`. Bump it whenever a consumer would draw a **different conclusion** from the bytes — not only when the parser would. Schema changes (new key, renamed field) obviously qualify; so does a retrain, which keeps every shape identical and changes every value. Caught in a browser after the embedding rebuild: the page happily served the pre-retrain neighbours for Doubling Season out of cache while a cache-busted fetch of the same URL returned the new ones. A pure content *refresh* (same model, new Scryfall dump) still does not need it. Adding `membership` to `regions_*.json` broke drill-by-region for every browser that had already cached the old shape — politely, which is what made it expensive to find.
 - **Frontend source-assertion tests catch nothing**: `test_viz_{camera,drill,deck_lens,viewer}.py` grep JS as text. A `ReferenceError` that killed drill mode outright passed all 13 drill tests. Real coverage lives in `tests/test_viz_behaviour.py` (playwright, `-m browser`) — add there when you change rendering or interaction. See `docs/testing.md`.
 - **Two coordinate systems**: drill mode re-lays-out a subset from the embeddings, so a drilled position is **local** and is not the world map's. Anything anchored to world coords (region labels, search highlight, selection ring) must be suppressed or re-anchored via `Drill.localPosition()` while drilling. See `docs/viz.md`.

@@ -3,10 +3,10 @@
 Static frontend in `viz/` — no build tooling. **Two independent pages** that share a
 directory and nothing else:
 
-- **`index.html` — the card map.** Plotly.js 2.35.2 from CDN (`scattergl` WebGL) for three
-  of the four modes, plus d3 v7 for The Walk, which uses canvas instead. Dark theme
+- **`index.html` — the card map.** One renderer: `<canvas>` + d3 v7 throughout, the atlas
+  via `js/render/canvas.js` and the graph modes via `js/force.js`. Plotly is gone. Dark theme
   (#1a1a2e background, #c4a747 gold accents), styles in `css/mana-map.css`.
-- **`deck.html` — the deck dossier.** No Plotly, no `mana-map.js`; the magazine's design
+- **`deck.html` — the deck dossier.** No `mana-map.js` at all; the magazine's design
   tokens in `css/tokens.css` (ported from `pilot/design.py`) plus Google Fonts.
 
 ## Serving
@@ -46,12 +46,12 @@ Lens share one side panel (`#deckPanel`), so entering either exits the other.
 | Explore | detail panel | — |
 | Deck Lens | `#deckPanel` + detail panel | `window.DeckMap` |
 | Build Deck | `#deckPanel` (detail hidden) | `window.DeckBuilder` |
-| The Walk | `#deckPanel` (detail hidden) | **its own canvas** — Plotly is hidden entirely |
+| The Walk | `#deckPanel` (detail hidden) | **its own canvas** — the atlas canvas is hidden entirely |
 
 **The overlay contract.** Any mode that paints over the base scatter implements exactly
 two methods, and `render()` calls whichever mode is current:
 
-- `getOverlayTraces()` → an array of Plotly traces drawn above the base scatter. Mark them
+- `getOverlayTraces()` → an array of layers drawn above the base scatter. Mark them
   `_isDeckOverlay: true`.
 - `getDimmedIndices()` → a `Set` of row indices to render at 0.08 opacity, or `null` for
   no dimming.
@@ -118,11 +118,12 @@ Seeding from world positions is what makes it read as a dive rather than a cut �
 see which cards were already neighbours and which travel. `alpha` decays as `1 - t³`, and
 the per-frame residual is the weight and bounce.
 
-Frames are driven by `requestAnimationFrame` and pushed with **`Plotly.restyle`**, never
-`react`: restyle preserves the axis range where react resets it (see
-`tests/test_viz_camera.py`), and it is the only Plotly fast path in the codebase. The
-whole subset is one trace with a per-point colour array so a frame is a *single* restyle —
-splitting by category would multiply per-frame Plotly calls by the number of groups.
+Frames are driven by `requestAnimationFrame` and pushed with **`updateLayerBy('_isDrill',
+…)`**, never `setLayers`: it moves one layer's points and leaves the other 34,322 alone.
+(Under Plotly this was `restyle` rather than `react`, for the same reason plus one that no
+longer applies — `react` also reset the axis range.) The whole subset is one layer with a
+per-point colour array so a frame is a *single* update; splitting by category would multiply
+per-frame calls by the number of groups.
 
 **`MAX_DRILL = 2000`**, and the cap is announced in the breadcrumb rather than applied
 silently — *and sampled evenly rather than taken as a prefix*. `sampleEvenly(rows, cap)`
@@ -391,7 +392,8 @@ already works. The brief says so in its own `next_step` field.
 
 ## The canvas renderer (`?renderer=canvas`) — Phases 2–3 of the migration
 
-`viz/js/render/canvas.js` draws the map instead of Plotly. Both renderers are live at once:
+`viz/js/render/canvas.js` draws the map. It is now the only renderer — the section below is
+the record of how it got there, when both were live at once:
 `?renderer=canvas` switches, so they can be compared on identical data. The Walk proved the
 machinery on 500 nodes; this points it at 34,322.
 
@@ -700,8 +702,8 @@ be eight requests for seven cards the reader may never open. The open card's ima
 deliberately **not** `loading="lazy"` — it is the only card image ever rendered and it is
 scrolled into view as it appears.
 - Relations on every card: *similar* (12 nearest in 128D cosine), *synergy* (rule-based complements, carrying their reason), *outclassed by* — all precomputed in `neighbours.bin`, all growing the graph
-- Region labels as Plotly annotations with zoom-dependent L0/L1 crossfade; optional density contours ("Topo")
-- Custom 2-finger pinch zoom on mobile (Plotly scattergl lacks it natively; `touch-action: none`)
+- Region labels as real DOM buttons with a zoom-dependent L0/L1 CSS crossfade; optional density contours ("Topo")
+- Pinch zoom on mobile comes from `d3.zoom` (the hand-rolled version existed only because `scattergl` has none)
 
 ## Deck builder highlights
 

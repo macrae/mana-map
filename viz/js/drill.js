@@ -139,24 +139,14 @@
 
   // ── The frame loop ──────────────────────────────────────────────────────
 
-  function drillTraceIndex() {
-    const gd = document.getElementById('plot');
-    if (!gd || !gd.data) return -1;
-    for (let i = 0; i < gd.data.length; i++) if (gd.data[i]._isDrill) return i;
-    return -1;
-  }
-
   function pushPositions() {
     const n = indices.length;
     const xs = new Array(n), ys = new Array(n);
     for (let i = 0; i < n; i++) { xs[i] = pos[2 * i]; ys[i] = pos[2 * i + 1]; }
-    // Whichever renderer is drawing. Both offer the same thing — move one layer's points
-    // without touching the other 34,322 — because rebuilding every frame is the whole
-    // cost this avoids.
-    if (MM.mapRenderer) { MM.mapRenderer.updateLayerBy('_isDrill', { x: xs, y: ys }); return; }
-    const ti = drillTraceIndex();
-    if (ti < 0) return;
-    Plotly.restyle('plot', { x: [xs], y: [ys] }, [ti]);
+    // Move one layer's points without touching the other 34,322 — rebuilding every frame
+    // is the whole cost this avoids. `updateLayerBy` matches on `_isDrill` rather than a
+    // trace index, which is why the Plotly-era `drillTraceIndex` scan went with it.
+    if (MM.mapRenderer) MM.mapRenderer.updateLayerBy('_isDrill', { x: xs, y: ys });
   }
 
   function animate() {

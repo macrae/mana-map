@@ -29,7 +29,7 @@ first place.
 [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-1,125 tests (1,042 fast + 83 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
+1,122 tests (1,039 fast + 83 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
 
 > ### ⚠ OPEN: 23 agent-cache routines are deliberately MISSed
 >
@@ -224,20 +224,36 @@ numbers disagree silently (the land bug's lesson, applied before it could recur)
 verified line naming fewer than two deck cards **stays in the list, greyed** instead of
 vanishing — so the panel's count always agrees with the manifest's `verified`.
 
-**The renderer port is at Phase 3 of 4.** The map now draws on `<canvas>` + d3 behind
-`?renderer=canvas`, as a strangler behind the `MM` contract — both renderers are live at
-once and the *layer format is the trace format*, so there is no adapter to delete later.
-Phase 3 took the last four things Plotly still owned (region labels → DOM, contours →
-`d3.contourDensity`, the legend → a `<div>`, box-select → the quadtree) plus per-point
-opacity and an `updateLayerBy` restyle path. Measured: `render()` 30 ms → 15 ms, box-select
-138 ms → 4.5 ms per mousemove. `docs/viz.md` has the table and the reasoning.
+**The renderer port is done — Plotly is deleted.** The map draws on `<canvas>` + d3 and
+there is no second path: no CDN tag, no `?renderer=` flag, no `_fullLayout`. The port ran as
+a strangler behind the `MM` contract with *the layer format as the trace format*, so there
+was no adapter to delete at the end — `render()` still builds one structure, it just has one
+consumer. Measured across the port: `render()` 30 ms → 15 ms, box-select 138 ms → 4.5 ms per
+mousemove.
 
-**Phase 4 is the deletion** — drop the Plotly CDN tag, the `keepX`/`keepY` camera
-preservation, the `_is*` trace flags, and the four resize timers; make canvas the only
-path. Held back deliberately: the two renderers should stay comparable on identical data
-until the canvas has run against real use, and the four source-assertion suites
-(`test_viz_{camera,drill,viewer,deck_lens}.py`) need porting or retiring first — several
-of their docstrings carry reasoning worth keeping.
+The last phase was mostly deletion: the `keepX`/`keepY` camera-preservation dance (a layout
+with no explicit range silently autoranged, so filtering and zooming were mutually
+destructive — the hazard left with the renderer rather than being ported),
+`getRegionAnnotations` (40 lines duplicating `refreshCanvasLabels`, still computed every
+render and thrown away unread at the fork), `refreshLabelsOnZoom` and its re-entry guard,
+~80 lines of hand-rolled pinch-zoom written because `scattergl` has no native pinch (`d3.zoom`
+does touch itself), the four scattered 260 ms resize timers, and `drillTraceIndex`.
+
+**Keeping it behind a flag cost three real bugs**, all invisible because canvas was opt-in:
+`updateSelectionHighlight` opened by reading `plotDiv.data` — Plotly's trace array — so on
+canvas it returned at the first line and selecting a card never repainted the highlight; the
+region-label click emitted `{regionId, row:null}` into a handler that read only `ev.row`, so
+it called `addToSelection(null)` and threw; and `deck-builder.js` carried two unguarded
+`Plotly.Plots.resize` calls that would have thrown the moment the tag went. A renderer kept
+behind a flag is a renderer nobody is testing.
+
+`tests/test_viz_camera.py` was **retired rather than ported** — all three of its assertions
+were about the Plotly layout hazard, and the invariant they protected (the camera survives a
+re-render, except on a map switch) was already covered behaviourally in
+`test_viz_behaviour.py`, where it always belonged. Its reasoning moved there as a comment.
+The other three source-assertion suites were ported; one of them failed the canvas handler
+for using `if/else` where Plotly used an early `return` — the same guarantee, and a good
+illustration of a source check failing a correct refactor.
 
 **The 39 browser tests are the real gate here.** A perf commit once stripped a variable
 declaration and left its use behind, breaking drill mode on every render; all 13

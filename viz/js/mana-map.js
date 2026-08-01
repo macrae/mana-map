@@ -15,10 +15,10 @@
   // 11–16px text, so this is roughly "on the word or just beside it".
   const REGION_CLICK_RADIUS_PX = 44;
 
-  // Phase 2 of the migration: ?renderer=canvas draws the map with viz/js/render/canvas.js
-  // instead of Plotly. Both paths are live so they can be compared on identical data —
-  // the layer format IS the trace format, so render() builds one structure either way.
-  const USE_CANVAS = new URLSearchParams(window.location.search).get('renderer') === 'canvas';
+  // The map is drawn by viz/js/render/canvas.js. Plotly is gone: it was kept alongside
+  // through the port so both could be compared on identical data, and the layer format
+  // deliberately WAS the trace format so there would be no adapter to delete at the end.
+  // There wasn't — `render()` still builds one structure, it just has one consumer now.
   let mapCanvas = null;
 
   let allData = [];
@@ -651,7 +651,7 @@
     // so it never fights a scroll the reader started themselves.
     scrollActiveRowIntoView();
     preloadNeighbourImages();
-    setTimeout(() => Plotly.Plots.resize('plot'), 260);
+    setTimeout(() => { if (mapCanvas) mapCanvas.resize(); }, 260);
   }
 
   // No list — a list of 400 names is not navigation, it is a wall. The arrows are the
@@ -710,7 +710,7 @@
     panel.classList.add('open');
     inner.scrollTop = 0;
     preloadNeighbourImages();
-    setTimeout(() => Plotly.Plots.resize('plot'), 260);
+    setTimeout(() => { if (mapCanvas) mapCanvas.resize(); }, 260);
   }
 
   // Put the open row's header just under the sticky masthead, so the card it just
@@ -750,7 +750,7 @@
 
   function closeViewerPanel() {
     document.getElementById('detailPanel').classList.remove('open');
-    setTimeout(() => Plotly.Plots.resize('plot'), 260);
+    setTimeout(() => { if (mapCanvas) mapCanvas.resize(); }, 260);
   }
 
   // ── Selection Highlight on Plot ──
@@ -772,18 +772,14 @@
   // trace instead. Returns false if the trace is not there, so the caller can fall back
   // to a full rebuild.
   function moveBrowseMarker() {
-    const gd = document.getElementById('plot');
-    if (!gd || !gd.data || !browseSet) return false;
-    let ti = -1;
-    for (let i = 0; i < gd.data.length; i++) {
-      if (gd.data[i]._isBrowseCurrent) { ti = i; break; }
-    }
-    if (ti === -1) return false;
+    if (!mapCanvas || !browseSet) return false;
     const cur = browseSet.indices[browseSet.pos];
     const p = cardPosition(cur);
     if (!p) return false;
-    Plotly.restyle('plot', { x: [[p[0]]], y: [[p[1]]], customdata: [[cur]] }, [ti]);
-    return true;
+    // `updateLayerBy` is the canvas's `Plotly.restyle`: it matches one layer by flag and
+    // moves its points without rebuilding the other 34,322.
+    return mapCanvas.updateLayerBy('_isBrowseCurrent',
+      { x: [p[0]], y: [p[1]], customdata: [cur] });
   }
 
   // Identity of whatever the current _isSelection traces are drawing. A browse selection
@@ -914,25 +910,22 @@
   // marker fast path when only the browse position moved, otherwise swaps the traces in
   // place — still much cheaper than a full render() for the <=8 case.
   function updateSelectionHighlight() {
-    const plotDiv = document.getElementById('plot');
-    if (!plotDiv || !plotDiv.data) return;
+    if (!mapCanvas) return;
 
+    // The one-marker fast path survives; the add/delete-traces path does not, and did not
+    // work here anyway. This function opened by reading `plotDiv.data` — Plotly's trace
+    // array, which the canvas host does not have — so under `?renderer=canvas` it returned
+    // at the first line and selecting a card never repainted the highlight at all. A full
+    // `render()` is the honest replacement: 15 ms on canvas against the 30 ms this was
+    // written to avoid, and selection is a user gesture, not a per-frame cost.
     if (browseSet) {
       const key = browseHighlightKey();
-      if (key === _highlightKey && plotDiv.data.some(t => t._isSelection) && moveBrowseMarker()) return;
+      if (key === _highlightKey && moveBrowseMarker()) return;
       _highlightKey = key;
     } else {
       _highlightKey = null;
     }
-
-    const toDelete = [];
-    for (let i = plotDiv.data.length - 1; i >= 0; i--) {
-      if (plotDiv.data[i]._isSelection) toDelete.push(i);
-    }
-    if (toDelete.length) Plotly.deleteTraces('plot', toDelete);
-
-    const traces = buildSelectionTraces();
-    if (traces.length) Plotly.addTraces('plot', traces);
+    render();
   }
 
   // One space, fetched once. This used to key on `currentMap` and re-fetch on every map
@@ -1133,9 +1126,15 @@
     // Embeddings are deliberately untouched: the projection changed, the space did not.
     // These used to be re-keyed per map, which both dropped a 17 MB array that was still
     // correct and made "similar" mean something different on each picture.
-    plotInitialized = false; // Force full re-render with new coordinates
+    // The coordinates themselves changed, so this is the one case that must forget the
+    // camera rather than preserve it — holding the old range would frame the wrong part
+    // of a different map. Plotly expressed this by clearing `plotInitialized` so the next
+    // `react` autoranged; the canvas needs it said out loud, because its camera is a
+    // persistent d3 transform that survives `setLayers` by design.
+    plotInitialized = false;
     render();
-    setStatus(`${allData.length.toLocaleString()} cards loaded \u2014 ${currentMap === 'ability' ? 'Abilities' : 'Color + Type'} map`);
+    if (mapCanvas) mapCanvas.fitToData();
+    setMapStatus();
   }
 
   async function switchMap(mapName) {
@@ -1144,8 +1143,18 @@
     // Pre-load region data so it's ready when render() builds annotations
     if (showRegionLabels) await loadRegionData(mapName);
     await loadProjection(mapName);
-    // Re-apply selection highlight after map switch (positions changed)
+    // Re-apply selection highlight after map switch (positions changed).
     updateSelectionHighlight();
+    // ...and restate which map you are on, because the highlight now goes through
+    // `render()`, which writes its own status line and would otherwise leave you looking
+    // at the Abilities map being told how many cards are shown. Under Plotly this was an
+    // addTraces/deleteTraces pair that touched no status.
+    setMapStatus();
+  }
+
+  function setMapStatus() {
+    setStatus(`${allData.length.toLocaleString()} cards loaded — ` +
+              `${currentMap === 'ability' ? 'Abilities' : 'Color + Type'} map`);
   }
 
   // ── Find Synergies ──
@@ -1204,49 +1213,12 @@
     };
   }
 
-  function getRegionAnnotations(visibleSpan) {
-    const regionData = regionDataCache[currentMap];
-    if (!regionData || !showRegionLabels) return [];
-
-    const annotations = [];
-    for (const region of regionData.regions) {
-      let opacity = 0;
-      let fontSize = 11;
-
-      if (region.level === 0) {
-        if (visibleSpan > 25) opacity = 1;
-        else if (visibleSpan > 15) opacity = (visibleSpan - 15) / 10;
-        fontSize = 16;
-      } else {
-        if (region.span < visibleSpan * 0.05) continue;
-        if (visibleSpan < 20) opacity = 1;
-        else if (visibleSpan < 30) opacity = (30 - visibleSpan) / 10;
-        fontSize = 11;
-      }
-
-      if (opacity <= 0) continue;
-
-      annotations.push({
-        x: region.cx,
-        y: region.cy,
-        text: region.level === 0 ? region.label : region.short,
-        showarrow: false,
-        xref: 'x',
-        yref: 'y',
-        font: {
-          family: 'system-ui, -apple-system, sans-serif',
-          size: fontSize,
-          color: region.level === 0
-            ? 'rgba(196,167,71,' + opacity.toFixed(2) + ')'
-            : 'rgba(200,200,200,' + opacity.toFixed(2) + ')',
-        },
-      });
-    }
-    return annotations;
-  }
-
-  // Called only from plotly_relayout (zoom/pan) — uses Plotly.update with annotations only
-  let _labelUpdateInFlight = false;
+  // `getRegionAnnotations` lived here: the identical span→opacity/size curve that
+  // `refreshCanvasLabels` computes below, differing only in output field names, built
+  // into a Plotly `annotations` array. Under the canvas it was still computed on every
+  // render and thrown away unread at the renderer fork. Deleted with `refreshLabelsOnZoom`
+  // and the `_labelUpdateInFlight` re-entry guard, which existed only because
+  // `Plotly.relayout` fires `plotly_relayout` and would otherwise loop on itself.
   // The same opacity/size curve `getRegionAnnotations` computes, handed to the canvas
   // renderer as DOM instead of Plotly annotations — so the crossfade is a CSS transition
   // rather than an rgba() alpha rebuilt on a 150 ms debounce, and each label is a real
@@ -1300,22 +1272,6 @@
             ((m.line && m.line.color) || '#888') : c) +
           '"></span>' + escHtml(tr.name) + '</div>';
       }).join('');
-  }
-
-  function refreshLabelsOnZoom() {
-    if (_labelUpdateInFlight) return;
-    if (USE_CANVAS) {
-      // Region labels become DOM in Phase 3. Until then the canvas path simply has none,
-      // which is visible and honest rather than a half-drawn annotation layer.
-      return;
-    }
-    const plotEl = document.getElementById('plot');
-    if (!plotEl || !plotEl._fullLayout) return;
-    const xRange = plotEl._fullLayout.xaxis.range;
-    const visibleSpan = Math.abs(xRange[1] - xRange[0]);
-    _labelUpdateInFlight = true;
-    Plotly.relayout('plot', { annotations: getRegionAnnotations(visibleSpan) })
-      .finally(() => { _labelUpdateInFlight = false; });
   }
 
   // ── Load data ──
@@ -1537,11 +1493,8 @@
   document.addEventListener('keydown', e => {
     if (e.key === 'Shift' && !shiftHeld && currentMode === 'explore') {
       shiftHeld = true;
-      setCanvasSelectMode(true);          // canvas: arms the marquee
+      setCanvasSelectMode(true);          // arms the marquee
       const plotDiv = document.getElementById('plot');
-      if (!USE_CANVAS && plotDiv && plotDiv._fullLayout) {
-        Plotly.relayout('plot', { dragmode: 'select' });
-      }
       // Show shift-mode hint
       let hint = document.getElementById('shiftHint');
       if (!hint) {
@@ -1560,10 +1513,6 @@
     if (e.key === 'Shift' && shiftHeld) {
       shiftHeld = false;
       setCanvasSelectMode(false);
-      const plotDiv = document.getElementById('plot');
-      if (plotDiv && plotDiv._fullLayout) {
-        if (!USE_CANVAS) Plotly.relayout('plot', { dragmode: 'pan' });
-      }
       // Hide shift-mode hint
       const hint = document.getElementById('shiftHint');
       if (hint) hint.style.display = 'none';
@@ -1641,90 +1590,83 @@
     render();
   }
 
-  // ── Mobile pinch-to-zoom ──
-  (function () {
-    const plotEl = document.getElementById('plot');
-    let startDist = null;
-    let startMidX = null;
-    let startMidY = null;
-    let startXRange = null;
-    let startYRange = null;
-
-    function touchDist(t) {
-      const dx = t[1].clientX - t[0].clientX;
-      const dy = t[1].clientY - t[0].clientY;
-      return Math.sqrt(dx * dx + dy * dy);
-    }
-
-    function getAxRanges() {
-      const xa = plotEl._fullLayout.xaxis;
-      const ya = plotEl._fullLayout.yaxis;
-      return { x: xa.range.slice(), y: ya.range.slice() };
-    }
-
-    function plotFraction(clientX, clientY) {
-      const rect = plotEl.getBoundingClientRect();
-      const fl = plotEl._fullLayout;
-      const plotLeft = rect.left + fl.margin.l;
-      const plotTop = rect.top + fl.margin.t;
-      const plotWidth = fl.width - fl.margin.l - fl.margin.r;
-      const plotHeight = fl.height - fl.margin.t - fl.margin.b;
-      return {
-        fx: (clientX - plotLeft) / plotWidth,
-        fy: (clientY - plotTop) / plotHeight,
-      };
-    }
-
-    plotEl.addEventListener('touchstart', function (e) {
-      if (e.touches.length === 2) {
-        e.preventDefault();
-        const t = e.touches;
-        startDist = touchDist(t);
-        startMidX = (t[0].clientX + t[1].clientX) / 2;
-        startMidY = (t[0].clientY + t[1].clientY) / 2;
-        const ranges = getAxRanges();
-        startXRange = ranges.x;
-        startYRange = ranges.y;
-      }
-    }, { passive: false });
-
-    plotEl.addEventListener('touchmove', function (e) {
-      if (e.touches.length === 2 && startDist) {
-        e.preventDefault();
-        const t = e.touches;
-        const curDist = touchDist(t);
-        const scale = startDist / curDist;
-
-        const { fx, fy } = plotFraction(startMidX, startMidY);
-
-        const xLen = startXRange[1] - startXRange[0];
-        const yLen = startYRange[1] - startYRange[0];
-        const newXLen = xLen * scale;
-        const newYLen = yLen * scale;
-
-        const anchorX = startXRange[0] + fx * xLen;
-        const anchorY = startYRange[1] - fy * yLen;
-
-        const newXRange = [anchorX - fx * newXLen, anchorX + (1 - fx) * newXLen];
-        const newYRange = [anchorY - (1 - fy) * newYLen, anchorY + fy * newYLen];
-
-        Plotly.relayout(plotEl, {
-          'xaxis.range': newXRange,
-          'yaxis.range': newYRange,
-        });
-      }
-    }, { passive: false });
-
-    plotEl.addEventListener('touchend', function () {
-      startDist = null;
-    });
-  })();
+  // Mobile pinch-to-zoom used to live here: ~80 lines of touchstart/touchmove that
+  // computed an anchor fraction and pushed axis ranges through `Plotly.relayout`,
+  // written because Plotly's scattergl has no native pinch. `d3.zoom` handles touch
+  // itself, so the canvas gets pinch for free and the hand-rolled version is gone.
 
   // ── Get category key and palette for current color mode ──
   function getCategoryInfo(d) {
     if (currentColorBy === 'color') return { key: d.c, palette: COLOR_PALETTE };
     if (currentColorBy === 'supertype') return { key: d.s, palette: SUPERTYPE_PALETTE };
     return { key: d.r, palette: RARITY_PALETTE };
+  }
+
+  // Canvas wiring, done once. This lived inside `render()` behind the renderer fork;
+  // with one renderer it is plain initialisation and belongs at the top level.
+  function initMapCanvas() {
+      mapCanvas = window.MapCanvas.create().init(document.getElementById('plot'));
+      mapCanvas.on('click', function (ev) {
+        // Region labels are real DOM buttons on this renderer and emit `regionId` with a
+        // null `row`. This handler read only `ev.row`, so clicking a region label ran
+        // `addToSelection(null)` and threw inside `updateViewerPanel` — a dead control
+        // that read as a rendering bug. The Plotly path routed the same click to
+        // `Drill.enterRegion` through a 30-line d2p hit-test against annotation anchors;
+        // a real button hands it over for free.
+        if (ev.regionId != null) {
+          if (typeof window.Drill !== 'undefined' && !window.Drill.isActive() &&
+              currentMode !== 'build') window.Drill.enterRegion(ev.regionId);
+          return;
+        }
+        if (ev.row == null || !allData[ev.row]) return;
+        if (currentMode === 'build') {
+          if (typeof window.DeckBuilder !== 'undefined') window.DeckBuilder.addSeed(ev.row);
+          return;
+        }
+        if (ev.shiftKey) {
+          const at = selectedCards.findIndex(c => c.idx === ev.row);
+          if (at !== -1) removeFromSelection(ev.row); else addToSelection(ev.row);
+        } else {
+          clearSelection();
+          addToSelection(ev.row);
+        }
+      });
+      mapCanvas.on('hover', function (ev) { showCardPopup(ev.row, ev.clientX, ev.clientY); });
+      mapCanvas.on('unhover', hideCardPopup);
+      // The label crossfade keys on the visible span, exactly as it did off
+      // `_fullLayout.xaxis.range` — getCamera() reports in data units for that reason.
+      mapCanvas.on('camera', function () {
+        clearTimeout(regionDebounceTimer);
+        regionDebounceTimer = setTimeout(refreshCanvasLabels, 150);
+      });
+      // Box-select, on a quadtree instead of Plotly's hit test: 4.5 ms against 138 ms.
+      mapCanvas.on('select', function (ev) {
+        const rows = ev.rows || [];
+        if (!rows.length) return;
+        if (rows.length > MAX_SELECTED) {
+          enterBrowse(rows, 'Selection');
+          if (typeof window.Drill !== 'undefined') window.Drill.offer(rows, 'Selection');
+        } else {
+          selectedCards = rows.map(idx => ({ idx, data: allData[idx] }));
+          topCardIndex = 0;
+          updateViewerPanel();
+          updateSelectionHighlight();
+          setStatus(`Selected ${rows.length} card${rows.length === 1 ? '' : 's'}`);
+        }
+      });
+      plotInitialized = true;
+
+    // The side panels resize #plot through a CSS transition, so a one-shot timer can
+    // fire mid-transition and leave a stale-width canvas painted over the open panel.
+    // The observer is the reliable version; Plotly needed four scattered 260 ms timers
+    // for the same job and they went with it.
+    if (window.ResizeObserver) {
+      let resizeDebounce = null;
+      new ResizeObserver(function () {
+        clearTimeout(resizeDebounce);
+        resizeDebounce = setTimeout(function () { if (mapCanvas) mapCanvas.resize(); }, 120);
+      }).observe(document.getElementById('plot'));
+    }
   }
 
   // ── Render plot ──
@@ -1903,238 +1845,17 @@
     // Prepend contour traces
     const allTraces = [...contourTraces, ...traces];
 
-    // Read the live camera before rebuilding the layout — for the region
-    // annotations, and to put it back.
-    //
-    // `Plotly.react` replaces layout wholesale, so a layout with no explicit
-    // range silently resets the viewport to autorange. That made filtering and
-    // zooming mutually destructive: every supertype toggle, colour-by change,
-    // search keystroke and deck-panel mutation threw the camera away, and this
-    // very block read a span that the next statement destroyed. Measured before
-    // the fix: zoom to a span of 20.5, call render(), get 116.6.
-    //
-    // Gated on `plotInitialized` so the two cases that *should* autorange still
-    // do — the first render, and a map switch (`applyProjection` clears the flag
-    // because the coordinates themselves changed).
-    const plotEl = document.getElementById('plot');
-    let visibleSpan = 70; // default: full extent, shows L0 labels
-    let keepX = null;
-    let keepY = null;
-    if (USE_CANVAS && mapCanvas) {
-      const cam = mapCanvas.getCamera();
-      if (cam) visibleSpan = Math.abs(cam.x[1] - cam.x[0]);
-    } else if (plotInitialized && plotEl && plotEl._fullLayout) {
-      const xr = plotEl._fullLayout.xaxis.range;
-      const yr = plotEl._fullLayout.yaxis.range;
-      visibleSpan = Math.abs(xr[1] - xr[0]);
-      keepX = xr.slice();
-      keepY = yr.slice();
-    }
-
-    const layout = {
-      paper_bgcolor: '#1a1a2e',
-      plot_bgcolor: '#1a1a2e',
-      font: { color: '#e0e0e0' },
-      margin: { l: 0, r: 0, t: 0, b: 0 },
-      xaxis: keepX ? { visible: false, scaleanchor: 'y', range: keepX }
-        : { visible: false, scaleanchor: 'y' },
-      yaxis: keepY ? { visible: false, range: keepY } : { visible: false },
-      dragmode: shiftHeld ? 'select' : 'pan',
-      legend: { bgcolor: 'rgba(22,33,62,0.85)', bordercolor: '#3a3a5a', borderwidth: 1, font: { size: 11 } },
-      hovermode: 'closest',
-      // Region labels are anchored to world centroids, so they are meaningless over a
-      // local layout — and their absence is part of how a drill reads as somewhere else.
-      annotations: drilling ? [] : getRegionAnnotations(visibleSpan),
-    };
-
-    const config = { scrollZoom: true, displayModeBar: false, responsive: true };
-
-    if (USE_CANVAS) {
-      if (!mapCanvas) {
-        mapCanvas = window.MapCanvas.create().init(document.getElementById('plot'));
-        mapCanvas.on('click', function (ev) {
-          if (ev.shiftKey) {
-            const at = selectedCards.findIndex(c => c.idx === ev.row);
-            if (at !== -1) removeFromSelection(ev.row); else addToSelection(ev.row);
-          } else {
-            clearSelection();
-            addToSelection(ev.row);
-          }
-        });
-        mapCanvas.on('hover', function (ev) { showCardPopup(ev.row, ev.clientX, ev.clientY); });
-        mapCanvas.on('unhover', hideCardPopup);
-        // The label crossfade keys on the visible span, exactly as it did off
-        // `_fullLayout.xaxis.range` — getCamera() reports in data units for that reason.
-        mapCanvas.on('camera', function () {
-          clearTimeout(regionDebounceTimer);
-          regionDebounceTimer = setTimeout(refreshCanvasLabels, 150);
-        });
-        // Box-select, on a quadtree instead of Plotly's hit test: 4.5 ms against 138 ms.
-        mapCanvas.on('select', function (ev) {
-          const rows = ev.rows || [];
-          if (!rows.length) return;
-          if (rows.length > MAX_SELECTED) {
-            enterBrowse(rows, 'Selection');
-            if (typeof window.Drill !== 'undefined') window.Drill.offer(rows, 'Selection');
-          } else {
-            selectedCards = rows.map(idx => ({ idx, data: allData[idx] }));
-            topCardIndex = 0;
-            updateViewerPanel();
-            updateSelectionHighlight();
-            setStatus(`Selected ${rows.length} card${rows.length === 1 ? '' : 's'}`);
-          }
-        });
-        plotInitialized = true;
-      }
-      mapCanvas.setLayers(allTraces);
-      mapCanvas.setContours(showContours);
-      refreshCanvasLabels();
-      renderCanvasLegend(allTraces);
-      return;
-    }
-
-    if (!plotInitialized) {
-      Plotly.newPlot('plot', allTraces, layout, config);
-
-      // Region labels are Plotly annotations, and annotations are not clickable — so
-      // hit-test raw clicks against their anchors. Runs on the capture-free bubble
-      // phase after plotly_click, and bails if a point was hit, so clicking a card
-      // still selects the card.
-      document.getElementById('plot').addEventListener('click', function (ev) {
-        if (typeof window.Drill === 'undefined' || window.Drill.isActive()) return;
-        if (currentMode === 'build') return;
-        const gd = document.getElementById('plot');
-        const fl = gd && gd._fullLayout;
-        if (!fl || !fl.annotations || !fl.annotations.length) return;
-        const regionData = regionDataCache[currentMap];
-        if (!regionData) return;
-
-        const rect = gd.getBoundingClientRect();
-        const px = ev.clientX - rect.left;
-        const py = ev.clientY - rect.top;
-
-        let best = null;
-        let bestDist = REGION_CLICK_RADIUS_PX;
-        for (const ann of fl.annotations) {
-          const ax = fl.xaxis.d2p(ann.x) + fl._size.l;
-          const ay = fl.yaxis.d2p(ann.y) + fl._size.t;
-          const dist = Math.hypot(ax - px, ay - py);
-          if (dist < bestDist) { bestDist = dist; best = ann; }
-        }
-        if (!best) return;
-
-        // Annotations carry the display text; L0 shows `label`, L1 shows `short`.
-        const region = regionData.regions.find(
-          r => (r.level === 0 ? r.label : r.short) === best.text);
-        if (!region) return;
-        ev.stopPropagation();
-        window.Drill.enterRegion(region.id);
-      });
-
-      // Hover → card image. `hoverinfo: 'none'` keeps the label off; the event still fires.
-      document.getElementById('plot').on('plotly_hover', function (eventData) {
-        if (!eventData || !eventData.points || !eventData.points.length) return;
-        const pt = eventData.points[0];
-        if (pt.customdata == null || !allData[pt.customdata]) return;
-        const ev = eventData.event;
-        if (ev) showCardPopup(pt.customdata, ev.clientX, ev.clientY);
-      });
-      document.getElementById('plot').on('plotly_unhover', hideCardPopup);
-
-      // Zoom listener for region label crossfade
-      document.getElementById('plot').on('plotly_relayout', function () {
-        if (_labelUpdateInFlight) return; // ignore relayouts we caused
-        clearTimeout(regionDebounceTimer);
-        regionDebounceTimer = setTimeout(refreshLabelsOnZoom, 150);
-      });
-
-      // Click handler
-      document.getElementById('plot').on('plotly_click', function (eventData) {
-        if (eventData.points && eventData.points.length > 0) {
-          const pt = eventData.points[0];
-          const idx = pt.customdata;
-          if (idx != null && allData[idx]) {
-            if (currentMode === 'build') {
-              // In build mode, clicking adds to seeds
-              if (typeof window.DeckBuilder !== 'undefined') {
-                window.DeckBuilder.addSeed(idx);
-              }
-            } else if (eventData.event && eventData.event.shiftKey) {
-              // Shift+Click: toggle in/out of selection
-              const existing = selectedCards.findIndex(c => c.idx === idx);
-              if (existing !== -1) {
-                removeFromSelection(idx);
-              } else {
-                addToSelection(idx);
-              }
-            } else {
-              // Regular click: replace selection
-              clearSelection();
-              addToSelection(idx);
-            }
-          }
-        }
-      });
-
-      // Box select handler (Shift+Drag)
-      document.getElementById('plot').on('plotly_selected', function (eventData) {
-        if (!eventData || !eventData.points || eventData.points.length <= 1) return;
-        if (!shiftHeld) return;
-
-        // One pass over the points, then one destination. This used to build the 8-card
-        // stack, render the whole panel and rebuild the plot highlight — and then, for a
-        // big box, throw all of it away and do it again as browse. Two full renders per
-        // selection, one of them purely wasted.
-        const all = [];
-        for (const pt of eventData.points) {
-          if (pt.customdata != null && allData[pt.customdata]) all.push(pt.customdata);
-        }
-        if (all.length === 0) return;
-
-        if (all.length > MAX_SELECTED) {
-          // Too many for the accordion: take the WHOLE set into browse rather than an
-          // arbitrary 8, and offer the same set to drill.
-          enterBrowse(all, 'Selection');
-          if (typeof window.Drill !== 'undefined') window.Drill.offer(all, 'Selection');
-          return;
-        }
-
-        selectedCards = all.map(idx => ({ idx, data: allData[idx] }));
-        topCardIndex = 0;
-        updateViewerPanel();
-        updateSelectionHighlight();
-        setStatus(`Selected ${all.length} card${all.length === 1 ? '' : 's'}`);
-      });
-
-      // Keep the Plotly SVG in sync with the container: the side panels resize
-      // #plot via CSS transitions, and one-shot timers can fire mid-transition
-      // (or while large deck-builder fetches block the main thread), leaving a
-      // stale full-width SVG painted over the open panel.
-      if (window.ResizeObserver) {
-        let resizeDebounce = null;
-        new ResizeObserver(function () {
-          clearTimeout(resizeDebounce);
-          resizeDebounce = setTimeout(function () {
-            const el = document.getElementById('plot');
-            if (USE_CANVAS) { if (mapCanvas) mapCanvas.resize(); return; }
-            if (el._fullLayout && Math.abs(el._fullLayout.width - el.getBoundingClientRect().width) > 1) {
-              Plotly.Plots.resize('plot');
-            }
-          }, 120);
-        }).observe(document.getElementById('plot'));
-      }
-
-      plotInitialized = true;
-    } else {
-      Plotly.react('plot', allTraces, layout, config);
-      // react() can restore a stale cached width (e.g. full-window) after the
-      // container shrank for the deck panel, painting the plot over the panel.
-      const plotEl = document.getElementById('plot');
-      if (plotEl._fullLayout && Math.abs(plotEl._fullLayout.width - plotEl.getBoundingClientRect().width) > 1) {
-        Plotly.Plots.resize('plot');
-      }
-    }
-
+    // The canvas owns the camera, so nothing here has to preserve it. Under Plotly this
+    // block read `_fullLayout.xaxis.range` and wrote it back into a freshly built layout,
+    // because `react()` replaced layout wholesale and would otherwise silently autorange —
+    // filtering and zooming were mutually destructive without it (zoom to a span of 20.5,
+    // call render(), get 116.6). The canvas never rebuilds a layout, so the hazard left
+    // with the renderer rather than being ported.
+    if (!mapCanvas) initMapCanvas();
+    mapCanvas.setLayers(allTraces);
+    mapCanvas.setContours(showContours);
+    refreshCanvasLabels();
+    renderCanvasLegend(allTraces);
   }
 
   function setStatus(msg) { document.getElementById('status').textContent = msg; }
