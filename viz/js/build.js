@@ -814,8 +814,18 @@
     return active.main.some(function (slot) { return slot.name === d.n; });
   }
 
+  /* Naming a commander changes what is legal, so the panel's legality dimming and its
+   * colour-identity read have to follow. `MM.setCommander` calls this behind a guard, and
+   * the guard was hiding the fact that it did not exist. */
+  function onCommanderChange() {
+    if (!active) return;
+    renderPanel();
+    if (showIllegal) MM.render();
+  }
+
   window.Build = {
     renderPanel,
+    onCommanderChange,
     addCard,
     isInDeck,
     setView,

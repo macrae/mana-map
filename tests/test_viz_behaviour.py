@@ -3000,3 +3000,53 @@ def test_the_brief_is_the_schema_build_deck_reads(discover_page):
 
     # What you brought vs what you found: the graph knows, so the agent should not guess.
     assert r["sources"] == ["found", "kept"], f"pool provenance lost: {r['sources']}"
+
+
+def test_a_box_select_can_become_a_graph(page):
+    """A lassoed set is a set of cards, and a set of cards can be walked.
+
+    This was `Force.seedFrom()`, reachable only by entering The Walk while a selection was
+    live. Deleting that mode did not delete the capability — it made it *unreachable*:
+    `seedFrom` still worked and nothing called it, which is the quietest kind of
+    regression. The browse panel offers it now.
+    """
+    r = page.evaluate("""async () => {
+        const rows = [];
+        for (let i = 0; i < MM.allData.length; i += 430) rows.push(i);
+        await MM.enterBrowse(rows.slice(0, 60), 'Test lasso');
+        await new Promise(r => setTimeout(r, 1800));
+        const offered = !!document.querySelector('[onclick^="MM.growFromBrowse"]');
+
+        MM.growFromBrowse();
+        await new Promise(r => setTimeout(r, 9000));
+        return {offered: offered, mode: MM.mode, nodes: Force.nodeCount,
+                links: Force.linkCount,
+                status: document.getElementById('status').textContent};
+    }""")
+    assert page.js_errors == []
+    assert r["offered"], "a browse set offers no way to grow a graph from it"
+    assert r["mode"] == "discover", "growing did not carry you to where growing happens"
+    assert r["nodes"] == 60, f"seeded {r['nodes']} of 60 lassoed cards"
+    assert r["links"] > 0, "a multi-seed graph should have intra-set links"
+    assert "Test lasso" in r["status"], "the graph forgot where it came from"
+
+
+def test_naming_a_commander_refreshes_build(page):
+    """`MM.setCommander` calls `Build.onCommanderChange()` behind a `&&` guard, and the
+    guard was hiding the fact that the method did not exist — so naming a commander in
+    Build changed the ring and left the panel's legality read stale. Colour identity is
+    derived from the commander, so the panel has to follow it."""
+    r = page.evaluate("""async () => {
+        document.getElementById('modeSelect').value = 'build';
+        MM.setMode('build');
+        await new Promise(r => setTimeout(r, 3000));
+        await Build.select('heliod');
+        await new Promise(r => setTimeout(r, 9000));
+        return {defined: typeof Build.onCommanderChange,
+                sections: document.querySelectorAll('#deckInner .deck-section-title').length};
+    }""")
+    assert page.js_errors == []
+    assert r["defined"] == "function", (
+        "Build.onCommanderChange is called by MM.setCommander but never defined"
+    )
+    assert r["sections"] >= 5, "Build's panel did not render its analysis"

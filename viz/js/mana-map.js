@@ -873,6 +873,12 @@
       '</span>';
     html += '</div>';
 
+    // A lassoed set can become a graph. This was `Force.seedFrom()`, reachable only by
+    // entering The Walk with a selection live — so when that mode was deleted the
+    // capability went quiet rather than away: `seedFrom` still worked and nothing called
+    // it. Growing from what you just boxed is the same gesture as growing from a card.
+    html += '<button class="lens-btn" onclick="MM.growFromBrowse()">Grow a graph from these ' +
+            n.toLocaleString() + '</button>';
     html += buildCardDetailHtml(d, browseSet.indices[browseSet.pos]);
     html += '<div class="keyboard-hint">← → browse · Esc clear · click a point to leave browse mode</div>';
 
@@ -1255,6 +1261,27 @@
       : 'Commander cleared.');
   }
 
+  /* Seed the graph from the current browse set and go where growing happens. Capped by
+   * `Force.enter` itself (MAX_NODES, announced in the panel's truncation notice). */
+  function growFromBrowse() {
+    if (!browseSet || !browseSet.indices.length || !window.Force) return;
+    // Capture BEFORE switching modes: `setMode` clears the browse set, so reading
+    // `browseSet.label` in the callback throws on null. The set is the input to this
+    // function, not state it can rely on afterwards.
+    const rows = browseSet.indices.slice();
+    const label = browseSet.label || 'Selection';
+    const sel = document.getElementById('modeSelect');
+    if (sel) sel.value = 'discover';
+    setMode('discover');
+    Force.newWalk(true);
+    Promise.resolve(Force.enter(rows, label, { chrome: 'discovery' }))
+      .then(function () {
+        if (window.Discovery) { Discovery.setCurrent(rows[0]); Discovery.render(); }
+        setStatus(rows.length.toLocaleString() + ' cards from ' + label +
+                  ' — click any card to grow outward.');
+      });
+  }
+
   function keep(row) {
     if (!window.Discovery || !Discovery.isReady()) return;
     Session.tray.toggle(row);
@@ -1472,7 +1499,7 @@
 
   // ── Load data ──
   //
-  // Two tracks. Discovery boots on 2.26 MB (viz_index + neighbours) and is the front
+  // Two tracks. Discovery is usable on 1.83 MB (viz_index 0.56 + neighbours 1.27, gz) and is the front
   // door; the 2.9 MB projection loads *behind* it and upgrades every record in place —
   // `MM.cardRecord` prefers the full row when it exists and falls back to the slim one.
   // Landing used to mean waiting for the projection before a single pixel appeared.
@@ -2108,6 +2135,7 @@
     },
     get mode() { return currentMode; },
     selectByName,
+    growFromBrowse,
     setCommander,
     focusRegion,
     clearRegionFocus,

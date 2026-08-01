@@ -29,7 +29,7 @@ first place.
 [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-1,137 tests (1,039 fast + 98 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
+1,139 tests (1,039 fast + 100 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
 
 > ### ⚠ OPEN: 23 agent-cache routines are deliberately MISSed
 >
@@ -261,15 +261,13 @@ source-assertion drill tests passed and it shipped. Playwright caught it in both
 directions when pointed at that revision. Nothing that renders should be verified by
 grepping source again.
 
-Still true, and still the two live defects in `viz/js/deck-builder.js`:
-
-- its six-factor scorer **diverges from `config.DECK_BUILD_WEIGHTS`** — different weights
-  on every shared factor, and its sixth factor is keyword Jaccard where Python uses
-  castability. Two implementations of one algorithm, documented in two places with no
-  cross-reference;
-- saved decks persist **raw projection row indices**, so any pipeline refresh that changes
-  card ordering silently reinterprets a saved deck as a different set of cards. A
-  correctness bug, and the one item worth doing on its own schedule.
+**Both live defects in `viz/js/deck-builder.js` are closed, by deleting the file.** The
+six-factor scorer diverged from `config.DECK_BUILD_WEIGHTS` on five of six factors — two
+had no counterpart at all — and cost ~50 MB of lazy downloads to be wrong differently from
+the pipeline. Saved decks persisted raw projection row indices with no schema version, so a
+refresh that reordered `cards.csv` silently reinterpreted a saved deck as different cards.
+Evaluation now comes from the sub-agent routine via the exported brief; suggestions come
+from the precomputed relations. See *Shipped — three modes* below.
 
 `docs/frontend-v2.md` keeps its analysis but carries an audit header: its M1 → M2 → M6
 sequencing was wrong (the dossier had no prerequisites; the engine port is blocked on
@@ -381,6 +379,39 @@ Doubling Season; mobile is undesigned (`force.js` registers only `mousemove` and
 
 Full record: `/Users/michellemacrae/.claude/plans/wondrous-gliding-hoare.md`.
 
+## Shipped — three modes, and the loop closed
+
+The frontend went from five modes to three: **Discover**, **Explore**, **Build**.
+
+**The Walk was deleted.** It was Discover with different chrome — four `chrome ===` reads
+amounting to two behaviours and a status string. But its *panel* was the only home for six
+things, so this was a port, then a delete: the scoreboard, Fit, Reheat, Start over, the
+trail, the truncation notice (never shown in Discover, so a >500-card import was silently
+cut), and **region seeding** — `renderEmptyState` was the only region→graph path in the
+app, since `Drill.enterRegion` re-embeds into the atlas and never seeds the graph.
+
+**Deck Lens and Build Deck merged into `viz/js/build.js`.** They were halves of one
+activity. `build.js` is deck-map.js grown, not deck-builder.js kept: the Lens half owned
+`card_roles.json` in the browser, the role histogram, the Short List, verified lines, the
+copies-vs-dots discipline and `dimsAll()`'s scalar fast path. From the builder it took only
+colour identity, format legality, the curve and the colour load. **`?deck=<slug>` now lands
+in Build** — an inbound contract from the dossier and every published manual.
+
+Build opens on the **graph**; the map is a view toggle. Measured before committing to that
+default: a real 251-card pool renders at 8.6% ink coverage with legible cluster structure,
+and `Force.fit`'s 1.6× cap does not bite at that size (fit lands at k≈0.19).
+
+**The brief IS `brief.json`.** `Discovery.brief()` emits the exact shape
+`pilot/build_deck.py:load_brief` reads, round-trip verified through Python. Colour identity
+rides in a `_manamap` block as information because it is *derived* from the commander,
+never authored; budget says it is unsupported rather than approximating it.
+
+Net ~1,900 lines deleted. Six bugs found and fixed on the way, four of them introduced
+during the work itself — the pattern in every case was **two places responsible for one
+decision**: mode CSS naming Plotly elements after Plotly was gone; the quadtree signature
+blind to positions `updateLayerBy` mutates; `clearSelection` meaning both "clear" and
+"peel"; panel ownership collapsed to one owner the moment a second appeared.
+
 ## Future — what is not started
 
 ### Frontend, in order
@@ -397,15 +428,19 @@ Full record: `/Users/michellemacrae/.claude/plans/wondrous-gliding-hoare.md`.
    the scorer divergence above simply recurs in a new file. Goldfish determinism needs an
    MT19937 port matching `random.shuffle`; the honest fallback is labelling
    browser-computed goldfish an *estimate* that never overwrites a committed ◆ artifact.
-3. **`build.html`** — the deck starts complete and you review and swap slots, because the
-   builder already fills 63 slots by role budget and keeps scored alternates for each. A
-   score delta of 0.01 is the signal that the scorer was nearly indifferent and the
-   pilot's judgment is cheap. Every mutation incremental; no `innerHTML` rebuild.
-4. **Handoff** — emit `brief.json` + `decklist.txt` and the command to run.
+3. ~~**`build.html`**~~ — **superseded.** Build is a mode, not a separate page, and its
+   premise died with the in-browser scorer: "review the scored alternates" needs a scorer,
+   and that one diverged from the pipeline on five of six factors. Reviewing and swapping
+   slots is worth building, but against the *pipeline's* scores arriving through the agent
+   loop, not a second implementation in the browser.
+4. ~~**Handoff**~~ — **shipped.** `Discovery.brief()` emits the exact shape `load_brief`
+   reads, round-trip verified through Python. `decklist.txt` is still not emitted; the
+   brief plus `/build-deck` produces one.
 
 Opportunistic, none blocking: ~~hover tooltips~~ **done** — hovering shows the card image at
 the cursor in every mode, without Plotly's per-point text (`showCardPopup`); the detail panel
-hides in build mode, exactly when you're deciding whether a card belongs; int8-quantising
+stays open in Build, because clicking a lit card to read it is the whole interaction (it
+used to hide, which is part of why adding a card felt like filing); int8-quantising
 `embeddings.bin` takes 17.6 MB → 4.4 MB.
 
 **Agents run in Claude Code, not the browser**, and none of the above changes that. The
@@ -444,6 +479,22 @@ that failure mode.
 - **Queued stacks**: Roaming Throne × Zada (genuinely unsettled — Throne makes Zada's copy
   trigger fire twice; whether that yields a second full copy set is the question) and the
   Past in Flames ritual rebuild.
+
+### Known-wrong, found and left alone deliberately
+
+**Verified-line edges are string-matched against scenario prose** (`build.js:buildEdges`),
+and it shows. Run over the tracked decks: heliod's Approach-of-the-Second-Sun scenario draws
+"verified" edges to **Ancient Tomb** and **Howling Mine** — bystanders that happen to be on
+the board — while **Swan Song**, the actual interaction, is cut by the 4-card cap, because
+the cap truncates in *name-length* order. gishath's headline stack draws nothing at all: its
+partner card is benched and only the maindeck is searched. The file is honest about the
+trade in its own header ("the scenario block has no card list"), and the real fix is a card
+list on the scenario schema — a Python change, not a frontend one.
+
+**`Force.fit` caps zoom at 1.6×**, so a small graph renders tiny. Measured: a 31-node graph
+whose bbox is 42×49 world units frames at ~70px wide, and every label collides, so
+`labelCount` reads 1. Confirmed pre-existing by A/B against the committed file. It does not
+bite at deck scale (a 251-card pool fits at k≈0.19), which is why it stayed open.
 
 ### Known-wrong artifacts
 

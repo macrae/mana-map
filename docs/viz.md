@@ -24,17 +24,18 @@ python -m http.server 8000
 | File | Role |
 |------|------|
 | `viz/index.html` | Map shell: toolbar, plot div, detail panel, deck panel, script tags |
-| `viz/css/mana-map.css` | Map + deck-builder styles, flat hex, no custom properties (~310 lines) |
+| `viz/css/mana-map.css` | Map + panel styles, flat hex, no custom properties (~310 lines) |
 | `viz/js/mana-map.js` | Explore mode (~1,330 lines). IIFE; exposes shared state as `window.MM` |
 | `viz/js/drill.js` | Drill mode (~410 lines). IIFE; exposes `window.Drill`; depends on `MM` |
-| `viz/js/force.js` | The Walk (~470 lines). Canvas + d3, **no Plotly**; exposes `window.Force` |
-| `viz/js/deck-map.js` | Deck Lens (~490 lines). IIFE; exposes `window.DeckMap`; depends on `MM` |
-| `viz/js/deck-builder.js` | Deck builder (~1,370 lines). IIFE; exposes `window.DeckBuilder`; depends on `MM` |
+| `viz/js/stage.js` | Shared canvas primitives (~235 lines). Surface, camera, labels, typed edges |
+| `viz/js/session.js` | Focus, tray, commander (~130 lines). One answer each; force registers as its graph provider |
+| `viz/js/force.js` | The graph engine (~980 lines). Canvas + d3-force; exposes `window.Force` |
+| `viz/js/build.js` | Build (~780 lines). Deck Lens + Build Deck merged; exposes `window.Build` |
 | `viz/deck.html` | Dossier shell: masthead, deck picker, panel grid |
 | `viz/css/tokens.css` | The magazine's design tokens in a dark register (~170 lines) |
 | `viz/js/deck-view.js` | The dossier (~340 lines). IIFE; no globals exported, no `MM` dependency |
 
-**Script order matters on the map page**: `mana-map.js` must load before `deck-map.js` and `deck-builder.js` (both read `MM.*` at load time). mana-map degrades gracefully if either is absent — every call is guarded. `deck.html` loads only `deck-view.js` and shares no code with the map.
+**Script order matters on the map page**: `stage.js` and `session.js` load first, then `mana-map.js` before `build.js` (which reads `MM.*` at load time). mana-map degrades gracefully if either is absent — every call is guarded. `deck.html` loads only `deck-view.js` and shares no code with the map.
 
 ## The four map modes
 
@@ -44,9 +45,7 @@ Lens share one side panel (`#deckPanel`), so entering either exits the other.
 | Mode | Panel | Overlay source |
 |---|---|---|
 | Explore | detail panel | — |
-| Deck Lens | `#deckPanel` + detail panel | `window.DeckMap` |
-| Build Deck | `#deckPanel` (detail hidden) | `window.DeckBuilder` |
-| The Walk | `#deckPanel` (detail hidden) | **its own canvas** — the atlas canvas is hidden entirely |
+| Build | `#deckPanel` + detail panel | `window.Build` — **its own canvas** in graph view, the atlas overlay in map view |
 
 **The overlay contract.** Any mode that paints over the base scatter implements exactly
 two methods, and `render()` calls whichever mode is current:
@@ -59,7 +58,7 @@ two methods, and `render()` calls whichever mode is current:
 Row indices are indices into `MM.allData`, which is `projection_2d.json`, which is
 `cards.csv` row order. Both modes also expose `enter()` / `exit()`.
 
-### Deck Lens
+### Build's map view (formerly Deck Lens)
 
 Overlays a published deck's 99 on the map: the deck lights up, the other ~34,200 cards
 dim, and the deck's footprint in card space becomes visible — a storm deck is a tight
@@ -88,7 +87,7 @@ colour, and `index.html` loads the script at a cache-bust matching its siblings.
 
 ## Drill mode (`viz/js/drill.js`)
 
-**Orthogonal to mode.** Explore / Deck Lens / Build decide what is *painted over* the map;
+**Orthogonal to mode.** Explore and Build decide what is *painted over* the map;
 drill replaces the map's **coordinates**. It works from any mode and the base traces go
 `visible: false` while it is active.
 
@@ -130,7 +129,7 @@ silently — *and sampled evenly rather than taken as a prefix*. `sampleEvenly(r
 strides across the set, because `slice(0, N)` takes the first N rows in `cards.csv` order,
 which is Scryfall's export order: a truncated drill of a 3,434-card region showed whichever
 cards happened to be exported first. The breadcrumb was honest about the count and silent
-about the bias. The Walk uses the same helper for its 500-node cap.
+about the bias. The graph uses the same helper for its 500-node cap.
 
 **The `Drill ⤓` button states its size and refuses over the cap.** It reads
 `Drill 34,322 ⤓`, greyed, with no filters — because "re-map everything" is not a thing: a
@@ -182,7 +181,7 @@ card space" is precisely what it cannot answer. Entering Explore from a graph no
 `MM.orientTo(rows, label, anchor)`: your cards light up gold, the card you were on gets a
 white star, the other 34,000 dim to texture, and the status says what you are looking at.
 Esc restores the whole atlas. It participates in the same
-`getOverlayTraces` / `getDimmedIndices` / `dimsAll` contract as Deck Lens.
+`getOverlayTraces` / `getDimmedIndices` / `dimsAll` contract as Build.
 
 **Region labels now reject overlaps**, which `force.js` has done for node labels since the
 graph shipped. The map emitted every label unconditionally, so the atlas was a pile of
@@ -201,7 +200,7 @@ relation, and the graph grows from there. `?card=<name>` and `?seed=<n>` make a 
 reproducible; `?mode=explore` goes straight to the atlas, which is what every existing
 browser fixture now asks for.
 
-**It is the same force engine as The Walk, with different chrome.**
+**It is the same force engine Build seeds.**
 `Force.enter(rows, label, {chrome: 'discovery'})` hands the side panel to Discovery and
 otherwise reuses the physics, drag-and-fling, hover popup and card detail. A second
 simulation for the landing would have been the duplicate-k-NN mistake this codebase has
@@ -224,7 +223,7 @@ only links cards whose precomputed top-12 are also in the set, which on a 97-car
 38 links instead of ~290 — a visibly sparser graph, caught by the browser suite.
 
 **One relation mechanism, one behaviour.** The controls live in `buildCardDetailHtml`, so
-Discover, The Walk, the explore accordion and the browse panel all offer the same thing, and
+Discover, Build, the explore accordion and the browse panel all offer the same thing, and
 `MM.relate(row, relation)` always does the same thing with it: grow the graph from that card.
 From Explore that means switching modes — the click carries you into the walk, seeded on the
 card you clicked.
@@ -355,7 +354,7 @@ One interface, one storage, nothing to drift. `Session.links()` returns links as
 rather than node objects, so a consumer with no simulation — the atlas — can read the same
 relations and draw them at world positions.
 
-Out of scope on purpose: `deckState`, `DeckMap.active` and `Drill.indices` are different
+Out of scope on purpose: `Build.active` and `Drill.indices` are different
 concepts (a deck under construction, a published decklist, a re-layout subset). `browseSet`
 stays too: box-select answers a different question and keeps its arrow-key walk.
 
@@ -372,12 +371,12 @@ screen* and fails if the lit set does not move: 18 → 24 when measured.
 ### stage.js — what the two canvas renderers stopped writing twice
 
 There are two canvas renderers and there always will be: the atlas draws 34,322 cards at
-fixed world positions (*where does this sit*), The Walk draws a few hundred at simulated
+fixed world positions (*where does this sit*), `force.js` draws a few hundred at simulated
 positions (*what is this next to*). They shared **zero lines** while separately implementing
 canvas creation and DPR resize (character-identical, both carrying the same "cost an
 afternoon" comment), d3-zoom wiring, the draw prologue, world→screen, screen→world,
 fit-to-extent, the `/transform.k` constant-screen-size trick, and greedy AABB label
-collision — which `render/canvas.js` openly noted it had copied from The Walk.
+collision — which `render/canvas.js` openly noted it had copied from the graph engine.
 
 `Stage` owns the **surface**: pixels, gestures, geometry. `surface()` + `surface.open()`,
 `camera()`, `placer()`/`placeLabels()`, `drawEdges()`/`edgeInk()`. −114 lines across the two
@@ -389,7 +388,7 @@ transform. An abstraction owning positions would have to serve both and become a
 two designs. Callers paint inside a transform Stage sets up and hand it screen-space boxes.
 
 Two places the API followed the caller rather than the reverse: label placement is
-**incremental** (The Walk draws each label on accept, caps on the number *accepted*, and
+**incremental** (the graph draws each label on accept, caps on the number *accepted*, and
 shares one collision set between edge and node labels so a reason can never sit on a card
 name), and `drawEdges` takes a `relOf` callback because deck-ness is a property of the graph
 — both endpoints from a loaded decklist — not of the link.
@@ -397,7 +396,7 @@ name), and `drawEdges` takes a `relOf` callback because deck-ness is a property 
 ### Typed edges, and why `mode: 'lines'` was not enough
 
 A `lines` layer is one flattened polyline with a single colour for the whole layer, excluded
-from the quadtree so it can never be hovered. That draws the Deck Lens's verified-line edges
+from the quadtree so it can never be hovered. That draws Build's verified-line edges
 and is structurally unable to say *this* edge is a synergy and *that* one an obsolescence.
 
 `mode: 'edges'` carries `[{source: [x, y], target: [x, y], rel, reason, d}]` and hands the
@@ -494,7 +493,7 @@ fly out, find their place, and stop.
 
 **Loading a checked-in deck.** The picker reads `data/decks/index.json`, and `loadDeck(slug)`
 resolves that deck's `cards.json` against `viz_index` — so it needs neither the projection nor
-Deck Lens. It differs from a pasted import in the way that matters: the manifest carries a
+Build's deck picker. It differs from a pasted import in the way that matters: the manifest carries a
 **known** commander, so it is ringed and centred rather than inferred from a `*CMDR*` marker.
 
 **Brought versus found is the visual language.** Nodes carry `deck` and `commander` flags set
@@ -522,7 +521,7 @@ idea in this codebase and the only one that exports.
 
 **Import** parses a pasted Moxfield export with `viz/js/decklist.js`, resolves names
 against `viz_index.json`, and seeds the graph with the whole list, commander pinned. It
-deliberately does **not** touch Deck Lens: `deck-map.js` refuses any slug absent from the
+deliberately does **not** touch the deck picker: `build.js` refuses any slug absent from the
 CLI-built `data/decks/index.json`, and an imported deck has no slug and never will.
 Measured on the tracked Edgar list — 136 entries, 129 unique cards, 0 unresolved, 26 ms.
 
@@ -539,7 +538,7 @@ already works. The brief says so in its own `next_step` field.
 
 `viz/js/render/canvas.js` draws the map. It is now the only renderer — the section below is
 the record of how it got there, when both were live at once:
-`?renderer=canvas` switches, so they can be compared on identical data. The Walk proved the
+`?renderer=canvas` switched, so they could be compared on identical data. The graph engine proved the
 machinery on 500 nodes; this points it at 34,322.
 
 **The layer format IS the trace format.** A layer is a Plotly-shaped
@@ -590,7 +589,7 @@ across rather than merely equal:
 Two things needed for correctness rather than parity:
 
 - **Per-point opacity**, batched by `(colour, opacity)` bucket rather than `colour` alone.
-  Deck Lens dims 34,000 points against ~100 with an opacity *array*; without this the canvas
+  Build's map view dims 34,000 points against ~100 with an opacity *array*; without this the canvas
   had no way to draw it and fell back to a scalar.
 - **`updateLayerBy(flag, patch)`** — the `Plotly.restyle` fast path. Drill pushes ~90 frames
   of stress-majorization positions; rebuilding every layer per frame would have made the
@@ -620,7 +619,7 @@ rebuild on every pan, filter and panel open. `render()` now folds `buildSelectio
 into its own trace list.
 
 **Scalar opacity, unless a mode genuinely needs per-point.** Per-point opacity means a
-34,000-entry array per colour group plus Plotly's per-point WebGL path. The Deck Lens dims
+34,000-entry array per colour group plus Plotly's per-point WebGL path. Build's map view dims
 *everything* and redraws its 99 on top, so one scalar is equivalent — it declares
 `dimsAll()`. The deck builder dims a real subset (format-illegal, colour-identity
 violations) with nothing over it and keeps the array.
@@ -643,7 +642,7 @@ Measured, same page, median of 7:
 mousemove, and Plotly hit-tests all 34,322 scattergl points each time — **measured ~138 ms
 per event** with only the seven base traces loaded. That is the dominant cost of box-select
 and it is inside Plotly. Any large highlight trace left on the plot adds to it, which is
-why the browse selection is one trace rather than one per colour. Deck Lens renders in the
+why the browse selection is one trace rather than one per colour. Build's map view renders in the
 low hundreds of ms because it draws 16 separate role traces; that is the price of the
 legend doubling as the role budget, and it is a mode switch, not a per-frame cost.
 
@@ -660,7 +659,7 @@ was right and the bytes were old.
 
 ## Cache busting
 
-Manual `?v=N` query strings, per page: `index.html` on all three JS files and `mana-map.css`; `deck.html` on `deck-view.js` and `tokens.css`. **Bump the version on the page you touched** before pushing — Pages/browser caches are aggressive. On `index.html` the three script busts must move together; a test asserts it, because a mismatched pair is how `deck-map.js` ends up talking to a stale `mana-map.js`.
+Manual `?v=N` query strings, per page: `index.html` on all **nine** JS files and `mana-map.css`; `deck.html` on `deck-view.js` and `tokens.css`. **Bump the version on the page you touched** before pushing — Pages/browser caches are aggressive. On `index.html` all nine script busts must move together; a test asserts it, because a mismatched pair is how `build.js` ends up talking to a stale `mana-map.js`.
 
 For contrast, `manuals/magazine.css` is **content-addressed** (`?v=<sha8>` from the CSS text, in `pilot/design.py`), so a stylesheet change there obligates rebuilding every manual page but can never go stale. That is the pattern to copy if `viz/` ever outgrows manual bumps.
 
@@ -668,12 +667,12 @@ For contrast, `manuals/magazine.css` is **content-addressed** (`?v=<sha8>` from 
 
 **Two registries, one per page** — the map's and the dossier's, deliberately disjoint:
 
-- **Map** (`mana-map.js`): the `DATA` map at the top (built on `DATA_BASE = '../data/'`) holds all nine card-map artifacts. `MAP_CONFIGS` (per-map projection/embeddings/regions) and every fetch reference it; deck-builder consumes `MM.DATA.*`. Add new card-map files there, never as inline literals.
+- **Map** (`mana-map.js`): the `DATA` map at the top (built on `DATA_BASE = '../data/'`) holds all nine card-map artifacts. `MAP_CONFIGS` (per-map projection/embeddings/regions) and every fetch reference it; `build.js` and `discovery.js` consume `MM.DATA.*`. Add new card-map files there, never as inline literals.
 - **Dossier** (`deck-view.js`): `BASE = '../data/decks/'` plus a `FILES` map of per-deck artifact names. It fetches `data/decks/index.json` first — the manifest written by `manamap pilot build-index`, carrying the deck list and each deck's **passing** stack filenames, because a browser can list neither the deck directory nor `stacks/`. Never hardcode a deck list; add a deck and re-run `build-index`.
 
 ## window.MM API surface
 
-Every member has a live caller (deck-builder.js, generated onclick handlers, or index.html) — exports without callers were trimmed 2026-07; don't re-add one without a consumer.
+Every member has a live caller (build.js, generated onclick handlers, or index.html) — exports without callers were trimmed 2026-07; don't re-add one without a consumer.
 
 Getters: `allData`, `currentMap`, `obsolescence`.
 Helpers: `escHtml`, `buildHoverTextMinimal`, `renderManaSymbols`, `closeDetail`, `removeFromSelection`, `bringToTop`, `selectByName`, `findSimilar`, `findSynergies`, `render`, `setStatus`, `setMode`.
@@ -684,7 +683,7 @@ Async data loaders: `getEmbeddings()`, `getSynergyGraph()` — the deck builder 
 
 Renders a deck's **committed pilot artifacts** and nothing else. Slug comes from
 `?deck=<slug>`, the frontend's only URL state — now honoured by **both** pages:
-`index.html?deck=<slug>` enters the Deck Lens with that deck loaded rather than dropping
+`index.html?deck=<slug>` enters **Build** with that deck loaded rather than dropping
 the reader on an unfiltered map with a query string they cannot see.
 
 | Panel | Artifact | Tier |
@@ -749,7 +748,7 @@ re-fetched 17 MB and gave the same card different answers depending on the view.
 to claim `cosineSimilarity` and the sort inside `findSimilarCards` had been consolidated into
 it. They had not — that scan was still live, sorting all 34,322 rows to take 20, with
 different filter semantics. Both are gone. `respectFilters` defaults to true so a
-neighbourhood will not walk you into a supertype you have hidden; The Walk passes `false`,
+neighbourhood will not walk you into a supertype you have hidden; the graph passes `false`,
 because a graph you are branching through should not change shape when a toolbar toggle
 flips. It also excludes by **name**, not just row: `cards.csv` carries 51 duplicate names, so
 self-exclusion alone let a card return its own twin at cosine 1.0.
@@ -867,7 +866,7 @@ scrolled into view as it appears.
 
 ES-module migration / splitting the IIFEs, moving the ~17 inline styles in generated HTML into CSS, content-hash cache busting. Lint/format/CI intentionally not set up.
 
-## The Walk (`viz/js/force.js`) — the first thing here that is not Plotly
+## The graph engine (`viz/js/force.js`) — the first thing here that was not Plotly
 
 A fourth map mode, and the opening move of the renderer migration. Cards become nodes,
 128-d cosine distance becomes link length, and a velocity-Verlet simulation gives the

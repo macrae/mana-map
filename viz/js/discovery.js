@@ -7,10 +7,13 @@
  * Two artifacts make that cheap enough to feel instant:
  *
  *   viz_index.json   0.56 MB gz   name/type/colour/rarity/cmc/roles per card
- *   neighbours.bin   1.70 MB gz   12 similar + 10 synergy + 5 obsoleted-by row ids
+ *   neighbours.bin   1.27 MB gz   12 similar + 10 synergy + 5 obsoleted-by row ids
  *
- * 2.26 MB against the 18.4 MB it used to take to reach a first branch (12.9 MB
- * projection, then 16.8 MB of incompressible float32 embeddings on the first click).
+ * 1.83 MB to be USABLE, against the 18.4 MB it used to take to reach a first branch
+ * (12.9 MB projection, then 16.8 MB of incompressible float32 embeddings on the first
+ * click). Measured, and worth stating precisely: the page also fetches the projection
+ * (2.90 gz) and region labels (0.06 gz) unconditionally behind the landing, so 4.80 MB
+ * crosses the wire in total — discovery is simply usable long before that lands.
  * The point is not the megabytes — it is that branching becomes **synchronous**. An
  * await inside a click is what makes a graph feel laggy instead of physical.
  *

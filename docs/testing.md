@@ -1,12 +1,12 @@
 # Testing
 
 ```bash
-.venv/bin/python -m pytest              # everything (1,137, ~7 min)
+.venv/bin/python -m pytest              # everything (1,139, ~7 min)
 .venv/bin/python -m pytest -m "not browser"   # fast suite (1,042, ~70 s)
 .venv/bin/python -m pytest -m browser         # the 80 browser tests (~340 s)
 ```
 
-1,137 tests in `tests/`: 438 card-pipeline + 601 pilot-subsystem + **98 browser**.
+1,139 tests in `tests/`: 438 card-pipeline + 601 pilot-subsystem + **100 browser**.
 One is a still-unmet `xfail(strict=True)` ship gate in `test_embedding_quality.py` — see below.
 
 ## Source assertions do not catch regressions
@@ -51,7 +51,7 @@ matched literal indentation and broke the moment the key handler was rewritten t
 gate — while the invariant it cared about was untouched. It now asserts the delegation
 (`cycleSelection` is called; the handler does not recompute an index) rather than the text.
 
-### Browser tests (98) — `tests/test_viz_behaviour.py` + `test_decklist_parity.py`
+### Browser tests (100) — `tests/test_viz_behaviour.py` + `test_decklist_parity.py`
 
 The session fixtures `browser` and `viz_server` live in `tests/conftest.py` — see the
 section below for why they cannot live anywhere else. `conftest_viz.py` still holds the
@@ -78,8 +78,8 @@ be relied on in a background tab at all.
 
 Covers: boot, plot geometry, drill render + return, the accordion, browse mode holding a
 whole selection, browse cycling, camera preservation across filter and search, camera
-*refit* on a map switch, Deck Lens, mode exclusivity, two perf ceilings (render budget,
-and that a render is exactly one `Plotly.react`), and **The Walk** — that the graph
+*refit* on a map switch, Build's map view, mode exclusivity, two perf ceilings (render
+budget, and that a render is exactly one `setLayers`), and **the graph** — that it
 resolves rather than collapsing, that link lengths stay inside the chord range `[0, 2]`
 (screen distance is not bounded, so this fails the moment 2-D positions leak in), that
 branching grows the graph and records the trail, and that leaving restores the map.
@@ -104,7 +104,7 @@ instantly and measures a `display:none` box as 0×0 — a green-looking wait tha
 nothing. The condition that actually means "ready" is `style.display === 'block'`, and then
 the image.
 
-The earlier instance was node labels in The Walk, measured mid-settle when every label
+The earlier instance was node labels in the graph, measured mid-settle when every label
 legitimately collides; that one produced a confident and completely wrong conclusion that
 labelling was broken. **If an assertion depends on layout, network, or a simulation
 settling, wait for that thing — a `setTimeout` long enough to usually work is a flake with
