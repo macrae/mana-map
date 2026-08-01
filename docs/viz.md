@@ -266,6 +266,38 @@ no-ops in Discover *and* the browse panel (both clear it), acted on the **wrong 
 Walk while drawing onto a hidden Plotly surface, and threw outright under `?renderer=canvas`
 where `#plot` has no `.data`. Their highlight-trace machinery is gone with them.
 
+### session.js — one answer to "what am I holding"
+
+Eight "set of cards" containers, seven answers to "which card is selected", nothing
+reconciling them. That is not untidiness, it is the mechanism behind the complaint: a click
+was a *read* in Explore (`clearSelection` + `addToSelection`, opens a panel), a *write to a
+list* in Build, and a *structural mutation of a graph* in Discover — because each mode wrote
+somewhere different.
+
+`Session` owns the **focus** and the **tray**, and is the interface everything asks.
+
+**It does not own the graph's storage, deliberately.** `force.js` holds nodes as live d3
+bodies whose x/y/vx/vy are mutated every tick and whose identity d3 owns; a second
+membership array would be exactly the duplicate model this exists to delete. So force
+registers itself via `Session.useGraph({rows, links, has, grow})` and Session delegates.
+One interface, one storage, nothing to drift. `Session.links()` returns links as **rows**
+rather than node objects, so a consumer with no simulation — the atlas — can read the same
+relations and draw them at world positions.
+
+Out of scope on purpose: `deckState`, `DeckMap.active` and `Drill.indices` are different
+concepts (a deck under construction, a published decklist, a re-layout subset). `browseSet`
+stays too: box-select answers a different question and keeps its arrow-key walk.
+
+### The orientation lens is live
+
+`orientation` held `{rows: Set, label, anchor}` **copied out of `Force.rows()` at the moment
+you entered Explore**, and never updated. Grow the graph and the atlas showed the old one
+until you left and came back — a photograph of your walk. It now holds only `{label}`;
+membership is `Session.rows()` read on every render and the anchor is `Session.focus`.
+
+`test_the_orientation_lens_is_live_not_a_snapshot` grows the graph *while Explore is on
+screen* and fails if the lit set does not move: 18 → 24 when measured.
+
 ### stage.js — what the two canvas renderers stopped writing twice
 
 There are two canvas renderers and there always will be: the atlas draws 34,322 cards at

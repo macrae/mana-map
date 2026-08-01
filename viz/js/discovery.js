@@ -295,8 +295,8 @@ window.Discovery = (function () {
 
     html += '<div class="discover-tray">' +
       '<button class="lens-btn" onclick="Discovery.toggleImport()">Paste a decklist</button>' +
-      '<span class="discover-traycount">' + tray.length + ' in tray</span>' +
-      (tray.length ? '<button class="lens-btn" onclick="Discovery.exportBrief()">Export brief</button>' +
+      '<span class="discover-traycount">' + Session.tray.size + ' in tray</span>' +
+      (Session.tray.size ? '<button class="lens-btn" onclick="Discovery.exportBrief()">Export brief</button>' +
                      '<button class="lens-btn" onclick="Discovery.tray.clear()">Clear</button>' : '') +
       '</div>';
     html += '<div id="dcImportWrap" style="display:none">' +
@@ -348,6 +348,7 @@ window.Discovery = (function () {
    * picking a relation grows what is already on screen instead of swapping views. */
   function show(row) {
     current = row;
+    Session.setFocus(row);
     if (row >= 0 && window.Force) {
       Force.newWalk(true);
       Force.enter([row], index[row].n, { chrome: 'discovery' });
@@ -373,6 +374,8 @@ window.Discovery = (function () {
   function focus(row) {
     if (row < 0 || row === current) { render(); return; }
     current = row;
+    // One answer to "which card am I looking at", written where the answer changes.
+    Session.setFocus(row);
     render();
   }
 
@@ -401,20 +404,22 @@ window.Discovery = (function () {
    * are looking; the tray is what you are keeping. Four other "set of cards" ideas
    * already exist in this codebase (selectedCards, browseSet, deck-builder seeds,
    * Deck Lens) — this is not another one of those, it is the thing you export. */
-  const tray = [];
-
-  function inTray(row) { return tray.indexOf(row) !== -1; }
+  // The tray moved to Session. Its own comment here used to say it was "not another one
+  // of those" four set-of-cards ideas — which was true of its purpose and not of its
+  // storage, since it was a fifth array all the same. Session owns it now; this is the
+  // Discovery-flavoured view of it, and the repaint stays here because only Discovery
+  // knows which panel is showing.
+  function inTray(row) { return Session.tray.has(row); }
 
   function toggleTray(row) {
-    const at = tray.indexOf(row);
-    if (at === -1) tray.push(row); else tray.splice(at, 1);
+    Session.tray.toggle(row);
     render();
     if (window.Force && Force.isActive()) Force.renderPanel();
   }
 
-  function clearTray() { tray.length = 0; render(); }
+  function clearTray() { Session.tray.clear(); render(); }
 
-  function trayNames() { return tray.map(r => index[r].n); }
+  function trayNames() { return Session.tray.list.map(r => index[r].n); }
 
   /* The hand-off to the pilot loop. There is no backend and this plan does not add one:
    * the manuals are 6-10 serially dependent LLM subagents costing ~330k-1.7M tokens, and
@@ -422,7 +427,7 @@ window.Discovery = (function () {
    * human pastes into Claude Code, where that loop already works. */
   function brief() {
     const cards = trayNames();
-    const commanderish = tray.filter(r => (index[r].g || []).length &&
+    const commanderish = Session.tray.list.filter(r => (index[r].g || []).length &&
                                           index[r].s === 'Creature');
     return {
       generated_by: 'manamap discovery tray',
@@ -471,7 +476,7 @@ window.Discovery = (function () {
       return { resolved: 0, missing: missing, total: entries.length };
     }
 
-    for (const r of rows) if (!inTray(r)) tray.push(r);
+    for (const r of rows) if (!inTray(r)) Session.tray.toggle(r);
 
     if (window.Force) {
       Force.newWalk(true);
@@ -526,7 +531,7 @@ window.Discovery = (function () {
         if (cmdr < 0 && entry && entry.commander) cmdr = rowByName(entry.commander);
         if (!rows.length) { MM.setStatus('Could not resolve any of ' + slug); return null; }
 
-        for (const r of rows) if (!inTray(r)) tray.push(r);
+        for (const r of rows) if (!inTray(r)) Session.tray.toggle(r);
 
         const seeds = cmdr >= 0 ? [cmdr].concat(rows.filter(r => r !== cmdr)) : rows;
         const deck = { rows: new Set(rows), commander: cmdr };
@@ -596,7 +601,7 @@ window.Discovery = (function () {
     enter, exit: exitMode, land, show, focus, reroll, walk, onFilter, render,
     loadManifest, loadDeck, onDeckPick,
     get decks() { return manifest || []; },
-    tray: { get list() { return tray.slice(); }, has: inTray, toggle: toggleTray,
+    tray: { get list() { return Session.tray.list; }, has: inTray, toggle: toggleTray,
             clear: clearTray, names: trayNames },
     brief, exportBrief, importText, onImport, toggleImport, rowByName,
     get current() { return current; },

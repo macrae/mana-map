@@ -1029,6 +1029,23 @@
 
   window.addEventListener('resize', function () { if (active) resize(); });
 
+  // force.js is where the graph physically lives — d3 owns these nodes and mutates them
+  // every tick — so it registers itself as Session's storage rather than Session keeping a
+  // second copy that could drift. Session is the interface everything else asks.
+  if (window.Session) {
+    Session.useGraph({
+      rows: function () { return nodes.map(function (n) { return n.row; }); },
+      links: function () {
+        return links.map(function (l) {
+          return { a: l.source.row, b: l.target.row, rel: l.rel || 'similar',
+                   reason: l.reason || null, d: l.d };
+        });
+      },
+      has: hasRow,
+      grow: branchByRow,
+    });
+  }
+
   window.Force = {
     enter, exit, isActive, seedFrom, focusCard, pinCard,
     reheat, freeze, clearTrail, newWalk, tune, close, renderPanel, bbox,
@@ -1037,6 +1054,15 @@
     // adjacency and has no absolute position, so "where does this sit in card space" is a
     // question only the world map can answer.
     rows() { return nodes.map(function (n) { return n.row; }); },
+    // The typed links, as ROWS rather than node objects — so a consumer that has no
+    // simulation (the atlas, which draws the same relations at world positions) can read
+    // them without touching d3's mutable bodies.
+    links() {
+      return links.map(function (l) {
+        return { a: l.source.row, b: l.target.row, rel: l.rel || 'similar',
+                 reason: l.reason || null, d: l.d };
+      });
+    },
     pinnedRow() { return pinned ? pinned.row : -1; },
     // An explicit request, so it overrides "the user has taken the camera".
     fit: function () { userAdjusted = false; fitToGraph(true); userAdjusted = true; },

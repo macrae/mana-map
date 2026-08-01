@@ -2082,8 +2082,11 @@ def test_leaving_a_graph_for_the_atlas_shows_where_it_sits(discover_page):
         return {
             built: built,
             active: !!MM.orientation,
-            rows: MM.orientation ? MM.orientation.rows.size : 0,
-            anchored: MM.orientation ? MM.orientation.anchor >= 0 : false,
+            // Membership is read live from Session now rather than snapshotted into
+            // `orientation.rows`, and the anchor is `Session.focus`. The lens object
+            // holds only whether the lens is on.
+            rows: MM.orientation ? Session.size() : 0,
+            anchored: Session.focus >= 0,
             status: document.getElementById('status').textContent,
         };
     }""")
@@ -2284,3 +2287,50 @@ def test_the_atlas_draws_typed_edges(page):
     assert r["red"] > 0, f"no obsolescence-inked edge pixels ({r['red']})"
     assert r["legendRows"] == 7, f"an edge layer took a legend row ({r['legendRows']})"
     assert r["picksACard"], "the quadtree lost its points to the edge layer"
+
+
+def test_the_orientation_lens_is_live_not_a_snapshot(discover_page):
+    """Explore must show the graph you have, not the one you had when you arrived.
+
+    `orientation` used to hold `{rows: Set, label, anchor}` copied out of `Force.rows()`
+    at the moment you entered Explore. Anything that changed the graph afterwards was
+    invisible until you left and came back — the atlas was a photograph of your walk. That
+    is a large part of why it felt inert next to Discover, and no amount of styling would
+    have fixed it.
+
+    Membership now reads through `Session` on every render, so growing the graph while
+    Explore is showing lights up more of the map.
+    """
+    r = discover_page.evaluate("""async () => {
+        for (let i = 0; i < 3; i++) {
+            const rows = Session.rows();
+            MM.relate(rows[rows.length - 1], 'similar');
+            await new Promise(r => setTimeout(r, 500));
+        }
+        document.getElementById('modeSelect').value = 'explore';
+        MM.setMode('explore');
+        await new Promise(r => setTimeout(r, 3500));
+
+        const lit = () => {
+            const l = MM.mapRenderer.layers.find(
+                t => t._isOrientation && t.name && t.name.indexOf('On your graph') === 0);
+            return l ? l.x.length : 0;
+        };
+        const before = lit();
+        const beforeSize = Session.size();
+
+        // Grow while Explore is on screen. A snapshot cannot move.
+        Session.grow(Session.rows()[0], 'synergy');
+        await new Promise(r => setTimeout(r, 600));
+        MM.render();
+        await new Promise(r => setTimeout(r, 600));
+        return {before: before, after: lit(),
+                beforeSize: beforeSize, afterSize: Session.size()};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["before"] > 1, f"the lens lit nothing on entry ({r['before']})"
+    assert r["afterSize"] > r["beforeSize"], "the graph did not actually grow"
+    assert r["after"] > r["before"], (
+        f"the lens stayed at {r['before']} while the graph went to {r['afterSize']} — "
+        f"it is still a snapshot"
+    )

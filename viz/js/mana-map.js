@@ -289,13 +289,23 @@
   // are actually holding and dims the other 34,000, so the atlas answers the one question
   // the graph structurally cannot: WHERE this sits. `force.js` says so in its own header —
   // it encodes adjacency, not absolute position.
-  let orientation = null;   // { rows: Set, label, anchor }
+  // LIVE, not a snapshot. This used to hold `{rows: Set, label, anchor}` copied out of
+  // `Force.rows()` at the moment you entered Explore — so the atlas showed a photograph
+  // of your walk, and anything you did afterwards was invisible until you left and came
+  // back. That is a large part of why Explore felt inert next to Discover.
+  //
+  // Now it holds only whether the lens is ON; membership is read from Session on every
+  // render, and Session reads it from wherever the graph actually lives.
+  let orientation = null;   // { label } | null
 
-  function orientTo(rows, label, anchor) {
-    const live = (rows || []).filter(i => allData[i]);
-    if (!live.length) { orientation = null; return false; }
-    orientation = { rows: new Set(live), label: label || 'your graph',
-                    anchor: typeof anchor === 'number' ? anchor : -1 };
+  function orientationRows() {
+    if (!orientation) return [];
+    return Session.rows().filter(i => allData[i]);
+  }
+
+  function orientTo(rows, label) {
+    orientation = { label: label || 'your graph' };
+    if (!orientationRows().length) { orientation = null; return false; }
     render();          // render() writes the status line for this mode
     return true;
   }
@@ -311,7 +321,7 @@
   const OrientationOverlay = {
     getOverlayTraces() {
       if (!orientation) return [];
-      const rows = Array.from(orientation.rows);
+      const rows = orientationRows();
       const out = [{
         type: 'scattergl', mode: 'markers',
         name: 'On your graph (' + rows.length + ')',
@@ -320,11 +330,12 @@
         marker: { size: 8, color: '#c4a747', line: { color: '#fff', width: 0.7 } },
         hoverinfo: 'none', _isOrientation: true,
       }];
-      if (orientation.anchor >= 0 && allData[orientation.anchor]) {
-        const a = allData[orientation.anchor];
+      const anchor = Session.focus;
+      if (anchor >= 0 && allData[anchor]) {
+        const a = allData[anchor];
         out.push({
           type: 'scattergl', mode: 'markers', name: 'Where you are',
-          x: [a.x], y: [a.y], customdata: [orientation.anchor],
+          x: [a.x], y: [a.y], customdata: [anchor],
           marker: { size: 16, color: '#fff', symbol: 'star',
                     line: { color: '#c4a747', width: 1.5 } },
           hoverinfo: 'none', _isOrientation: true,
@@ -1053,7 +1064,7 @@
     // The tray follows the card, not the mode. Keeping something you found in the atlas
     // is the same act as keeping something you walked to, so the control lives here
     // rather than only in the Discover panel.
-    const kept = Discovery.tray.has(row);
+    const kept = Session.tray.has(row);
     html += '<button class="lens-btn discover-keep" onclick="MM.keep(' + row + ')">'
           + (kept ? '✓ In tray' : '+ Keep this card') + '</button>';
     return html;
@@ -1062,7 +1073,7 @@
   // Toggle a card in the tray from any panel, then repaint whichever one is showing.
   function keep(row) {
     if (!window.Discovery || !Discovery.isReady()) return;
-    Discovery.tray.toggle(row);
+    Session.tray.toggle(row);
     if (currentMode === 'explore' || currentMode === 'deck' || currentMode === 'build') {
       updateViewerPanel();
     }
@@ -1560,8 +1571,9 @@
       // NOT gated on Force.isActive(): the exit above already flipped it false, and
       // `exit()` deliberately keeps the nodes so the walk can be resumed. The graph you
       // just left is exactly the thing you want to locate.
-      const live = window.Force ? Force.rows() : [];
-      if (live.length) orientTo(live, 'your walk', Force.pinnedRow());
+      // Membership is read live from Session now, so this only decides whether the lens
+      // is on. The anchor comes from Session.focus rather than being frozen here.
+      if (Session.size()) orientTo(null, 'your walk');
       else clearOrientation();
     } else if (mode !== 'force' && mode !== 'discover') {
       orientation = null;
@@ -1829,7 +1841,7 @@
     } else if (currentMode === 'explore' && orientation) {
       // The bare card count is the wrong answer while the lens is on — you came here to
       // see where YOUR cards are, not to be told how many exist.
-      setStatus(orientation.rows.size + ' cards from ' + orientation.label +
+      setStatus(orientationRows().length + ' cards from ' + orientation.label +
                 ' — highlighted in the full map · Esc to see everything');
     } else if (currentMode === 'explore') {
       setStatus(`${filtered.length.toLocaleString()} cards shown`);
