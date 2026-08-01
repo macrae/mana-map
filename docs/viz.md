@@ -266,6 +266,36 @@ no-ops in Discover *and* the browse panel (both clear it), acted on the **wrong 
 Walk while drawing onto a hidden Plotly surface, and threw outright under `?renderer=canvas`
 where `#plot` has no `.data`. Their highlight-trace machinery is gone with them.
 
+### A cluster label is a camera move
+
+Clicking a region label runs `focusRegion(id)`: frame the region from its members' **real**
+extent (not the stored `w`/`h`, so the camera agrees with what is drawn after the supertype
+filters) and draw only its members. Same points, same world coordinates, closer camera —
+which is why picking keeps working.
+
+It used to run **drill**, a different operation wearing the same gesture: drill re-embeds
+the subset from the 128-d vectors with stress majorization, so points fly out of their world
+positions over 90 frames and land somewhere new. Right when you want local structure
+revealed; disorienting when you clicked a name expecting to look closer. Drill stays on the
+toolbar and box-select, where a re-layout is an explicit request.
+
+Escape peels outermost-first: focused region → orientation lens → selection.
+
+**Two bugs fell out of building it, both of the same shape — two places deciding one thing.**
+
+`render()`'s group loop re-tested `activeSupertypes` against `allData`, while `filtered` (fed
+to the contours and the status count) applied its own copy. Adding the region filter to
+`filtered` therefore changed nothing on screen: 34,322 points still drawn for an 875-card
+region. They now share one `visible(d, i)`.
+
+And `updateLayerBy` moves points without telling the quadtree. The tree signature is layer
+lengths plus endpoint ids — cheap on purpose, since a rebuild is 23.5 ms and `setLayers`
+runs on every keystroke — and therefore blind to positions. A drill mutates coordinates for
+90 frames with every one of those fields unchanged, so the tree went on answering with the
+world-seeded positions it started from and hit-testing landed on nothing. That is exactly
+"the points settle and then I can't interact with them". `mapRenderer.reindex()` is the
+explicit "positions moved" signal, called once at settle and never per frame.
+
 ### The constellation: Explore grows in place
 
 Clicking a relation in Explore adds the card and its relations to the graph **and stays

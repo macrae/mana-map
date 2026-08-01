@@ -190,6 +190,15 @@
     // set at all. Key on what the tree actually depends on and skip the rest.
     let treeKey = null;
 
+    // The signature is deliberately cheap — layer lengths and endpoint ids — because a
+    // rebuild costs 23.5 ms and `setLayers` runs on every filter and search keystroke.
+    // The cost of cheap is that it cannot see POSITIONS move: drill mutates coordinates
+    // in place through `updateLayerBy` for 90 frames while every one of these fields
+    // stays identical, so the tree kept answering with where the cards used to be and the
+    // map stopped hit-testing. `reindex()` is the explicit "positions moved" signal, for
+    // callers that know they did it. Called once at settle, never per frame.
+    function reindex() { treeKey = null; buildTree(); }
+
     function treeSignature() {
       let sig = '';
       for (const l of layers) {
@@ -574,7 +583,7 @@
       init, destroy, resize, setLayers,
       draw: schedule, drawNow: draw,
       pick, pickRect, getCamera, setCamera, dataToPixel,
-      setAnnotations, updateLayerBy,
+      setAnnotations, updateLayerBy, reindex,
       get visibleLabelCount() { return lastVisibleLabels; },
       setSelectMode: function (on) { selectMode = !!on; if (canvas) canvas.style.cursor = on ? 'crosshair' : 'grab'; },
       setContours: function (on) {

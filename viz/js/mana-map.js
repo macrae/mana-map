@@ -201,6 +201,9 @@
   }
 
   function clearSelection() {
+    // Escape peels one layer at a time, outermost first: a focused region, then the
+    // orientation lens, then the selection. Each press does one visible thing.
+    if (regionFocus) { clearRegionFocus(); return; }
     if (orientation) { clearOrientation(); return; }
     selectedCards = [];
     topCardIndex = 0;
@@ -315,6 +318,73 @@
     orientation = null;
     render();
     setStatus(allData.length.toLocaleString() + ' cards shown');
+  }
+
+  // ── Zoom to a region ────────────────────────────────────────────────────
+  //
+  // Clicking a cluster label frames that cluster and shows only its cards. Position is
+  // preserved: these are the same points at the same world coordinates, just closer.
+  //
+  // This used to run DRILL, which is a different thing wearing the same gesture. Drill
+  // re-embeds the subset from the 128-d vectors with stress majorization, so the points
+  // fly out of their world positions over 90 frames and land somewhere new — informative
+  // when you *want* local structure, disorienting when you clicked a label expecting to
+  // look closer. It also left the map uninteractable afterwards, because the drill
+  // animation pushes new coordinates through `updateLayerBy` while the quadtree still
+  // holds the world positions it was built from, so every hit-test was against where the
+  // cards used to be.
+  //
+  // Drill is still reachable from the toolbar and from box-select, where asking for a
+  // re-layout is explicit. A label click is a camera move.
+  let regionFocus = null;   // { id, label, rows: Set }
+
+  async function focusRegion(regionId) {
+    const data = await loadRegionData(currentMap);
+    if (!data || !data.membership) {
+      setStatus('This map has no region membership — re-run `manamap cluster-regions`.');
+      return;
+    }
+    const m = /^l(\d)_(\d+)$/.exec(regionId);
+    if (!m) return;
+    const labels = data.membership['l' + m[1]];
+    const cid = parseInt(m[2], 10);
+    if (!labels) return;
+    const rows = new Set();
+    for (let i = 0; i < labels.length; i++) if (labels[i] === cid) rows.add(i);
+    if (!rows.size) { setStatus('That region has no cards on this map.'); return; }
+
+    const region = data.regions.find(r => r.id === regionId);
+    regionFocus = { id: regionId, label: (region && region.label) || regionId, rows: rows };
+    render();
+
+    // Frame it from the members' real extent rather than the stored w/h, so the camera
+    // agrees with what is actually drawn after the supertype filters have had their say.
+    let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+    for (const i of rows) {
+      const d = allData[i];
+      if (!d) continue;
+      if (d.x < x0) x0 = d.x;
+      if (d.x > x1) x1 = d.x;
+      if (d.y < y0) y0 = d.y;
+      if (d.y > y1) y1 = d.y;
+    }
+    if (isFinite(x0) && mapCanvas) {
+      const padX = Math.max((x1 - x0) * 0.12, 0.5);
+      const padY = Math.max((y1 - y0) * 0.12, 0.5);
+      mapCanvas.setCamera({ x: [x0 - padX, x1 + padX], y: [y0 - padY, y1 + padY] },
+                          { animate: true });
+    }
+    setStatus(rows.size.toLocaleString() + ' cards in ' + regionFocus.label +
+              ' · Esc for the whole map');
+  }
+
+  function clearRegionFocus() {
+    if (!regionFocus) return false;
+    regionFocus = null;
+    render();
+    if (mapCanvas) mapCanvas.fitToData();
+    setStatus(allData.length.toLocaleString() + ' cards shown');
+    return true;
   }
 
   // WHICH RELATIONS EARN AN ARC ON WHICH MAP — measured, not chosen.
@@ -1702,8 +1772,11 @@
         // `Drill.enterRegion` through a 30-line d2p hit-test against annotation anchors;
         // a real button hands it over for free.
         if (ev.regionId != null) {
-          if (typeof window.Drill !== 'undefined' && !window.Drill.isActive() &&
-              currentMode !== 'build') window.Drill.enterRegion(ev.regionId);
+          // Zoom and filter, not re-embed. See `focusRegion`.
+          if (currentMode !== 'build' &&
+              !(typeof window.Drill !== 'undefined' && window.Drill.isActive())) {
+            focusRegion(ev.regionId);
+          }
           return;
         }
         if (ev.row == null || !allData[ev.row]) return;
@@ -1780,7 +1853,15 @@
     const drilling = typeof window.Drill !== 'undefined' && window.Drill.hidesWorld();
     if (drilling) overlayTraces = overlayTraces.concat(window.Drill.getOverlayTraces());
 
-    const filtered = allData.filter(d => activeSupertypes.has(d.s));
+    // A focused region is a filter, which is what makes "show me this cluster" mean the
+    // same thing as every other way of narrowing the map.
+    // One predicate, used by BOTH the group loop below and the contour source. They used
+    // to disagree: `filtered` fed contours and the status count while the group loop
+    // re-tested `activeSupertypes` against `allData` itself, so adding a filter here
+    // silently did nothing to what was drawn.
+    const visible = (d, i) => activeSupertypes.has(d.s) &&
+                              (!regionFocus || regionFocus.rows.has(i));
+    const filtered = allData.filter(visible);
 
     // Contour trace (prepended before scatter so it renders beneath). While drilling it
     // re-bins over the local layout — histogram2dcontour auto-bins to whatever extent it
@@ -1802,7 +1883,7 @@
     const groups = {};
     for (let i = 0; i < allData.length; i++) {
       const d = allData[i];
-      if (!activeSupertypes.has(d.s)) continue;
+      if (!visible(d, i)) continue;
       const { key } = getCategoryInfo(d);
       if (!groups[key]) groups[key] = { x: [], y: [], customdata: [], key };
       groups[key].x.push(d.x);
@@ -1987,6 +2068,9 @@
       return selectedCards.map(c => c.idx);
     },
     selectByName,
+    focusRegion,
+    clearRegionFocus,
+    get regionFocus() { return regionFocus; },
     relate,
     keep,
     orientTo,

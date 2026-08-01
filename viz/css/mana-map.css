@@ -457,9 +457,24 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .force-canvas { position: absolute; inset: 0; width: 100%; height: 100%;
   z-index: 10; display: block; cursor: grab; }
 .force-canvas:active { cursor: grabbing; }
-#plot.force-mode > .js-plotly-plot,
-#plot.force-mode > .plot-container,
-#plot.force-mode > .svg-container { visibility: hidden; }
+/* One surface at a time.
+ *
+ * These rules named `.js-plotly-plot`, `.plot-container` and `.svg-container` — Plotly
+ * elements that stopped existing when Plotly was deleted. Nothing then hid the canvas that
+ * replaced them, so in Discover and The Walk the 34,322-point atlas kept drawing UNDER the
+ * graph, with its region labels and legend still on screen. Both views at once.
+ *
+ * It survived a mode-by-mode check because `.map-canvas` is created lazily on the first
+ * Explore render: boot straight into Discover and there is nothing to leak. You only see it
+ * after visiting Explore and coming back, which is the ordinary way to use the thing.
+ *
+ * `display: none` rather than `visibility: hidden` on purpose — a hidden canvas still
+ * occupies layout and still answers hit-tests through its host. The atlas keeps its state:
+ * re-entering Explore calls `render()` and the ResizeObserver restores the backing store.
+ */
+#plot.force-mode .map-canvas,
+#plot.force-mode .map-labels,
+#plot.force-mode .map-legend { display: none; }
 #plot:not(.force-mode) .force-canvas { display: none; }
 
 .force-slider { margin-bottom: 10px; }

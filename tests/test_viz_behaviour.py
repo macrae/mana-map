@@ -1491,9 +1491,15 @@ def test_the_hover_card_stays_inside_the_frame(discover_page):
             out.push({
                 at: label, height: Math.round(pr.height),
                 // Scryfall can fail or rate-limit under a full-suite run, and the popup
-                // then renders `.card-popup-failed` — a legitimately short text box. The
-                // clamp still has to work for it; its HEIGHT just is not the card's.
-                failed: !!p.querySelector('.card-popup-failed'),
+                // then collapses to the card's name — a legitimately short box. The clamp
+                // still has to work for it; its HEIGHT just is not the card's.
+                //
+                // The class goes on the POPUP itself: the onerror handler does
+                // `this.parentElement.classList.add('card-popup-failed')`, where `this` is
+                // the <img> and the parent is `.card-popup`. Checking with querySelector
+                // looks for a descendant and never matches — which is why this test kept
+                // failing on the height assertion with `failed` reading false.
+                failed: p.classList.contains('card-popup-failed'),
                 insideFrame: pr.bottom <= rect.bottom + 1 && pr.top >= rect.top - 1,
                 insideViewport: pr.bottom <= window.innerHeight + 1 && pr.top >= 0,
             });
@@ -2460,3 +2466,148 @@ def test_the_ability_map_draws_no_similarity_arcs(page):
     assert r["onAbility"] == 0, f"the ability map drew {r['onAbility']} similarity arcs"
     assert r["stillHeld"] >= r["held"], "the map switch lost the graph"
     assert "drill" in r["status"].lower(), f"no drill affordance offered: {r['status']}"
+
+
+def test_only_one_surface_draws_per_mode(page):
+    """Discover and The Walk must not leave the atlas drawing underneath them.
+
+    The mode CSS named `.js-plotly-plot`, `.plot-container` and `.svg-container` — Plotly
+    elements that stopped existing when Plotly was deleted. Nothing then hid the canvas
+    that replaced them, so in the graph modes the 34,322-point atlas kept drawing under the
+    graph with its region labels and legend still on screen. Both views at once.
+
+    It survived a mode-by-mode check because `.map-canvas` is created lazily on the first
+    Explore render: boot straight into Discover and there is nothing to leak. The bug only
+    appears once you have visited Explore and come back, which is the ordinary way to use
+    it — so this test goes through Explore FIRST on purpose.
+    """
+    r = page.evaluate("""async () => {
+        const plot = document.getElementById('plot');
+        const shown = sel => {
+            const el = plot.querySelector(sel);
+            return !!el && getComputedStyle(el).display !== 'none';
+        };
+        const look = mode => ({
+            mode: mode,
+            map: shown('.map-canvas'),
+            force: shown('.force-canvas'),
+            labels: Array.from(document.querySelectorAll('.map-label'))
+                         .filter(e => e.offsetParent !== null).length,
+        });
+        // Explore first, so `.map-canvas` exists before the graph modes are entered.
+        const out = [look('explore')];
+        for (const m of ['discover', 'force', 'explore']) {
+            document.getElementById('modeSelect').value = m;
+            MM.setMode(m);
+            await new Promise(r => setTimeout(r, 2800));
+            out.push(look(m));
+        }
+        return out;
+    }""")
+    assert page.js_errors == []
+    by = {row["mode"]: row for row in r}
+    for m in ("discover", "force"):
+        assert not by[m]["map"], f"the atlas was still drawing in {m}"
+        assert by[m]["labels"] == 0, f"{by[m]['labels']} region labels survived into {m}"
+        assert by[m]["force"], f"the graph canvas was not drawing in {m}"
+    # And coming back restores it — hiding must not cost the atlas its state.
+    back = r[-1]
+    assert back["map"] and not back["force"], "returning to Explore did not restore the map"
+    assert back["labels"] > 0, "region labels did not come back with the atlas"
+
+
+def test_clicking_a_cluster_label_zooms_and_filters(page):
+    """A label click is a camera move, not a re-layout.
+
+    It used to run DRILL, which is a different thing wearing the same gesture: drill
+    re-embeds the subset from the 128-d vectors with stress majorization, so the points fly
+    out of their world positions over 90 frames and land somewhere new. Informative when
+    you asked for local structure; disorienting when you clicked a label expecting to look
+    closer. It also left the map uninteractable, because the drill animation pushes new
+    coordinates through `updateLayerBy` while the quadtree still holds the world positions
+    it was built from — so every hit-test was against where the cards used to be.
+
+    Now the camera frames the region's real extent and the map draws only its members. The
+    positions never move, so picking keeps working, which is what this asserts last. Drill
+    is still reachable from the toolbar and from box-select, where a re-layout is an
+    explicit request.
+    """
+    r = page.evaluate("""async () => {
+        const span = () => {
+            const c = MM.mapRenderer.getCamera();
+            return Math.abs(c.x[1] - c.x[0]);
+        };
+        const points = () => MM.mapRenderer.layers
+            .filter(l => l.customdata && l.mode !== 'edges')
+            .reduce((n, l) => n + l.x.length, 0);
+
+        const before = {span: span(), points: points()};
+        const label = document.querySelector('.map-label');
+        label.click();
+        await new Promise(r => setTimeout(r, 2500));
+
+        const members = MM.regionFocus ? MM.regionFocus.rows.size : 0;
+        // Picking must still work: same points, same coordinates, closer camera.
+        const row = MM.regionFocus ? Array.from(MM.regionFocus.rows)[0] : -1;
+        const d = MM.allData[row];
+        const p = MM.mapRenderer.dataToPixel(d.x, d.y);
+        const picked = MM.mapRenderer.pick(p[0], p[1], 12);
+
+        const after = {span: span(), points: points(), members: members,
+                       picked: picked === row,
+                       drilling: typeof Drill !== 'undefined' && Drill.isActive()};
+
+        document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', bubbles: true}));
+        await new Promise(r => setTimeout(r, 1500));
+        return {before: before, after: after,
+                escaped: {span: span(), points: points(), focused: !!MM.regionFocus}};
+    }""")
+    assert page.js_errors == []
+    assert r["after"]["span"] < r["before"]["span"] / 2, "the camera did not zoom to the region"
+    assert r["after"]["points"] == r["after"]["members"] > 0, (
+        f"drew {r['after']['points']} points for a {r['after']['members']}-card region"
+    )
+    assert not r["after"]["drilling"], "a label click started a drill"
+    assert r["after"]["picked"], "the map stopped hit-testing after focusing a region"
+    assert not r["escaped"]["focused"]
+    assert r["escaped"]["points"] == r["before"]["points"], "Escape did not restore the map"
+    assert abs(r["escaped"]["span"] - r["before"]["span"]) < 1, "Escape did not restore the camera"
+
+
+def test_a_settled_drill_is_still_clickable(page):
+    """After a drill settles, the map must hit-test against where the cards ARE.
+
+    The quadtree signature is deliberately cheap — layer lengths plus endpoint ids —
+    because a rebuild costs 23.5 ms and `setLayers` runs on every filter and search
+    keystroke. The cost of cheap is that it cannot see positions move, and a drill moves
+    every position: it mutates coordinates in place through `updateLayerBy` for 90 frames
+    while every field in the signature stays identical. So the tree went on answering with
+    the world-seeded positions the drill started from, and hovering or clicking a drilled
+    card hit whatever used to be at those coordinates, or nothing.
+
+    `reindex()` is the explicit "positions moved" signal, called once at settle and never
+    per frame.
+    """
+    r = page.evaluate("""async () => {
+        const rd = await MM.getRegionData();
+        const reg = rd.regions.find(r => r.level === 1 && r.count > 100 && r.count < 600);
+        await Drill.enterRegion(reg.id);
+        await new Promise(r => setTimeout(r, 4000));   // the 90-frame settle
+        const layer = MM.mapRenderer.layers.find(l => l._isDrill);
+        if (!layer) return {noLayer: true};
+        let tried = 0, hits = 0;
+        for (let i = 0; i < Math.min(12, layer.x.length); i++) {
+            const p = MM.mapRenderer.dataToPixel(layer.x[i], layer.y[i]);
+            tried++;
+            if (MM.mapRenderer.pick(p[0], p[1], 14) === layer.customdata[i]) hits++;
+        }
+        return {drilling: Drill.isActive(), points: layer.x.length,
+                tried: tried, hits: hits};
+    }""")
+    assert page.js_errors == []
+    assert not r.get("noLayer"), "the drill layer never appeared"
+    assert r["drilling"] and r["points"] > 50
+    assert r["hits"] == r["tried"] > 0, (
+        f"only {r['hits']}/{r['tried']} drilled cards were pickable — the quadtree is "
+        f"still holding pre-drill positions"
+    )

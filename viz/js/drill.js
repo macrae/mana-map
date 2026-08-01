@@ -193,6 +193,12 @@
   // once, together, and that lands as arriving somewhere.
   function settle() {
     MM.render();
+    // Tell the renderer the positions moved. Its quadtree signature is layer lengths plus
+    // endpoint ids — none of which change while a drill mutates coordinates in place — so
+    // without this the tree still holds the world-seeded positions the drill started from
+    // and every hover and click lands on the wrong card, or on nothing. That is what "the
+    // points settle and then I can't interact with them" was.
+    if (MM.mapRenderer) MM.mapRenderer.reindex();
     renderBar();
   }
 
