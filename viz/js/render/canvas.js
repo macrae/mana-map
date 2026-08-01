@@ -32,7 +32,8 @@
   const SYMBOL = { circle: 0, square: 1, diamond: 2, star: 3 };
 
   function create() {
-    let host = null, canvas = null, ctx = null, dpr = 1;
+    let host = null, canvas = null, ctx = null;
+    let surface = null, cam = null;
     let layers = [];
     let transform = null;
     let zoomBehaviour = null;
@@ -55,23 +56,25 @@
 
     function init(hostEl) {
       host = hostEl;
-      canvas = document.createElement('canvas');
-      canvas.className = 'map-canvas';
-      host.appendChild(canvas);
-      ctx = canvas.getContext('2d');
-      transform = d3.zoomIdentity;
+      // Surface and camera come from Stage — the canvas element, the devicePixelRatio
+      // resize and the d3-zoom wiring were identical to The Walk's, down to the comment
+      // about <canvas> being a replaced element.
+      surface = Stage.surface(hostEl, 'map-canvas');
+      canvas = surface.canvas;
+      ctx = surface.ctx;
 
-      zoomBehaviour = d3.zoom().scaleExtent([0.2, 400]).on('zoom', function (ev) {
-        transform = ev.transform;
-        schedule();
-        emit('camera', getCamera());
+      cam = Stage.camera({
+        canvas: canvas,
+        scaleExtent: [0.2, 400],
+        onZoom: function (t) { transform = t; schedule(); emit('camera', getCamera()); },
+        // Shift takes the drag away from the zoom behaviour so it can draw a marquee.
+        filter: function (ev) {
+          if (selectMode && (ev.type === 'mousedown' || ev.type === 'touchstart')) return false;
+          return !ev.ctrlKey && !ev.button;
+        },
       });
-      // Shift takes the drag away from the zoom behaviour so it can draw a marquee.
-      zoomBehaviour.filter(function (ev) {
-        if (selectMode && (ev.type === 'mousedown' || ev.type === 'touchstart')) return false;
-        return !ev.ctrlKey && !ev.button;
-      });
-      d3.select(canvas).call(zoomBehaviour);
+      zoomBehaviour = cam.behaviour;
+      transform = cam.transform;
 
       canvas.addEventListener('mousedown', function (e) {
         if (!selectMode) return;
@@ -111,23 +114,15 @@
       return api;
     }
 
-    // Only the backing store is set here — the element's size comes from CSS. A <canvas>
-    // is a replaced element, so an inline width decouples it from its parent and it stops
-    // following the layout. That cost an afternoon in The Walk; it is not repeated.
+    // The DPR-correct resize lives in Stage now; the "a <canvas> is a replaced element,
+    // so an inline width stops it following the layout" lesson is recorded there.
     function resize() {
-      if (!canvas) return;
-      const w = canvas.clientWidth, h = canvas.clientHeight;
-      if (!w || !h) return;
-      dpr = window.devicePixelRatio || 1;
-      canvas.width = Math.round(w * dpr);
-      canvas.height = Math.round(h * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      draw();
+      if (surface) surface.resize(draw);
     }
 
     function destroy() {
-      if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas);
-      canvas = ctx = host = tree = null;
+      if (surface) surface.destroy();
+      surface = cam = canvas = ctx = host = tree = null;
       layers = [];
     }
 
@@ -239,11 +234,9 @@
 
     function draw() {
       if (!ctx || !canvas || !baseFit) return;
-      const w = canvas.width / dpr, h = canvas.height / dpr;
-      ctx.clearRect(0, 0, w, h);
-      ctx.save();
-      ctx.translate(transform.x, transform.y);
-      ctx.scale(transform.k, transform.k);
+      const w = surface.width, h = surface.height;
+      // Shared prologue — clear, save, translate, scale — and its matching close.
+      const close = surface.open(transform);
 
       if (showContours && contour) drawContours();
 
@@ -252,7 +245,7 @@
         if (l.mode === 'lines') drawLines(l);
         else drawMarkers(l);
       }
-      ctx.restore();
+      close();
 
       if (marquee) drawMarquee();
       positionLabels();
@@ -442,26 +435,26 @@
     function positionLabels() {
       if (!labelHost || !labels.length || !baseFit) return;
       const kids = labelHost.children;
-      const placed = [];
-      for (let i = 0; i < kids.length && i < labels.length; i++) {
+      const n = Math.min(kids.length, labels.length);
+      const boxes = [];
+      for (let i = 0; i < n; i++) {
         const el = kids[i];
         const p = dataToPixel(labels[i].x, labels[i].y);
         el.style.transform = 'translate(-50%,-50%) translate(' +
           Math.round(p[0]) + 'px,' + Math.round(p[1]) + 'px)';
-        // offsetWidth is 0 while hidden, so measure before deciding.
+        // offsetWidth is 0 while hidden, so un-hide before measuring.
         el.style.display = '';
         const w = el.offsetWidth || (labels[i].text || '').length * 7;
         const h = el.offsetHeight || 16;
-        const box = { x0: p[0] - w / 2, x1: p[0] + w / 2, y0: p[1] - h / 2, y1: p[1] + h / 2 };
-        let clash = false;
-        for (const b of placed) {
-          if (box.x0 < b.x1 + 3 && box.x1 > b.x0 - 3 &&
-              box.y0 < b.y1 + 3 && box.y1 > b.y0 - 3) { clash = true; break; }
-        }
-        if (clash) { el.style.display = 'none'; continue; }
-        placed.push(box);
+        boxes.push({ x0: p[0] - w / 2, x1: p[0] + w / 2, y0: p[1] - h / 2, y1: p[1] + h / 2 });
       }
-      lastVisibleLabels = placed.length;
+      // The greedy AABB pass is `Stage.placeLabels` — the same one The Walk uses for node
+      // and edge labels. It was copied here by hand when this renderer was written, and a
+      // comment said so; now there is one of it. Screen space, always: an earlier version
+      // compared world centroids against pixel widths and 2 of 19 labels survived.
+      const ok = Stage.placeLabels(boxes, 3);
+      for (let i = 0; i < n; i++) if (!ok[i]) kids[i].style.display = 'none';
+      lastVisibleLabels = ok.placed;
     }
 
     // Move one layer's points without rebuilding anything else. This is what

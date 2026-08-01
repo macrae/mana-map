@@ -69,7 +69,8 @@
   // Set by any real pan/zoom/drag. While false the graph may frame itself; once true it
   // never moves the camera again without being asked.
   let userAdjusted = false;
-  let canvas = null, ctx = null, dpr = 1;
+  let canvas = null, ctx = null;
+  let surface = null, cam = null;
   let sim = null, nodes = [], links = [], byIdx = new Map();
   let transform = null;          // d3.zoomIdentity once d3 is loaded
   let zoomBehaviour = null;      // the ONE instance — programmatic transforms must
@@ -171,22 +172,29 @@
 
   function ensureCanvas() {
     if (canvas) return;
-    canvas = document.createElement('canvas');
+    // Surface and camera from Stage — identical to the atlas renderer's, which is why
+    // they are no longer written twice. Only the scale extent differs: a 500-node graph
+    // has no business zooming to 400x.
+    surface = Stage.surface(document.getElementById('plot'), 'force-canvas');
+    canvas = surface.canvas;
     canvas.id = 'forceCanvas';
-    canvas.className = 'force-canvas';
-    document.getElementById('plot').appendChild(canvas);
-    ctx = canvas.getContext('2d');
-    transform = d3.zoomIdentity;
+    ctx = surface.ctx;
 
-    zoomBehaviour = d3.zoom().scaleExtent([0.02, 12]).on('zoom', function (ev) {
-      transform = ev.transform;
-      // `sourceEvent` is null for programmatic transforms and set for real gestures. Once
-      // you have touched the camera it is yours: auto-fit stops competing with you. This
-      // is the whole of "zooming while the graph moves zooms back out" — a settle-time
-      // fit was overwriting the transform mid-gesture.
-      if (ev.sourceEvent) userAdjusted = true;
-      draw();
+    cam = Stage.camera({
+      canvas: canvas,
+      scaleExtent: [0.02, 12],
+      onZoom: function (t, byUser) {
+        transform = t;
+        // Once you have touched the camera it is yours: auto-fit stops competing with
+        // you. This is the whole of "zooming while the graph moves zooms back out" — a
+        // settle-time fit was overwriting the transform mid-gesture. Stage reports
+        // whether the transform came from a real gesture or from code.
+        if (byUser) userAdjusted = true;
+        draw();
+      },
     });
+    zoomBehaviour = cam.behaviour;
+    transform = cam.transform;
 
     // drag before zoom, and `subject` returns undefined on empty space so the gesture
     // falls through to the zoom behaviour. This is the standard way to let one canvas
@@ -280,14 +288,7 @@
   // exactly like rAF and CSS transitions, so the overhang can outlive them. CSS geometry
   // cannot get out of sync; a JS mirror of it always can.
   function resize() {
-    if (!canvas) return;
-    const w = canvas.clientWidth, h = canvas.clientHeight;
-    if (!w || !h) return;
-    dpr = window.devicePixelRatio || 1;
-    canvas.width = Math.round(w * dpr);
-    canvas.height = Math.round(h * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);   // crisp on retina; without this it is soft
-    draw();
+    if (surface) surface.resize(draw);
   }
 
   // Frame the whole graph. Called after the layout settles and from the Fit button —
@@ -343,11 +344,8 @@
 
   function draw() {
     if (!ctx || !canvas) return;
-    const w = canvas.width / dpr, h = canvas.height / dpr;
-    ctx.clearRect(0, 0, w, h);
-    ctx.save();
-    ctx.translate(transform.x, transform.y);
-    ctx.scale(transform.k, transform.k);
+    const w = surface.width, h = surface.height;
+    const closeWorld = surface.open(transform);
 
     // Links, faint, brighter the closer the pair. A short bright edge is the model
     // saying "these two are nearly the same card".
@@ -355,28 +353,15 @@
     // Deck edges — both ends from a loaded decklist — are drawn warm and heavier, so the
     // deck reads as a structure you can see through the exploration rather than dissolving
     // into it the moment you branch. Everything cool and thin is something you found.
-    for (const l of links) {
-      const inDeck = l.source.deck && l.target.deck;
-      const closeness = Math.max(0, 1 - l.d / 1.4);
-      ctx.lineWidth = (inDeck ? 1.7 : 1) / transform.k;
-      // Three relations, three inks: deck structure warm gold, synergy violet,
-      // similarity the default cool blue. Colour carries the relation so the reason
-      // labels below only have to carry the detail.
-      if (inDeck) {
-        ctx.strokeStyle = 'rgba(196,167,71,' + (0.22 + closeness * 0.45).toFixed(3) + ')';
-      } else if (l.rel === 'synergy') {
-        ctx.strokeStyle = 'rgba(168,120,214,0.55)';
-      } else if (l.rel === 'obsolete') {
-        ctx.strokeStyle = 'rgba(214,120,120,0.5)';
-      } else {
-        ctx.strokeStyle = 'rgba(122,138,196,' + (0.08 + closeness * 0.42).toFixed(3) + ')';
-      }
-      ctx.beginPath();
-      ctx.moveTo(l.source.x, l.source.y);
-      ctx.lineTo(l.target.x, l.target.y);
-      ctx.stroke();
-    }
-    ctx.lineWidth = 1 / transform.k;
+    // The relation inks live in Stage now, so the atlas can draw the same edge and mean
+    // the same thing by it. Deck edges — both ends from a loaded decklist — stay warm and
+    // heavier, so the deck reads as a structure you can see through the exploration
+    // rather than dissolving into it the moment you branch.
+    Stage.drawEdges(ctx, links, function (n) { return [n.x, n.y]; }, transform.k, {
+      width: 1,
+      relOf: function (l) { return (l.source.deck && l.target.deck) ? 'deck' : l.rel; },
+      weightOf: function (l, rel) { return rel === 'deck' ? 1.7 : 1; },
+    });
 
     // The trail — where the walk has been.
     if (trail.length > 1) {
@@ -427,7 +412,7 @@
         ctx.stroke();
       }
     }
-    ctx.restore();
+    closeWorld();
 
     // Labels in screen space so they stay legible at any zoom — the thing Plotly's
     // annotations could never do without a relayout.
@@ -454,7 +439,11 @@
     for (const n of nodes) if (n.seed && priority.indexOf(n) === -1) priority.push(n);
     for (const n of nodes) if (priority.indexOf(n) === -1) priority.push(n);
 
-    const placed = [];
+    // One collision set, shared by edge labels and node labels, so a synergy reason can
+    // never sit on top of a card name. `Stage.placer` is the same greedy AABB pass the
+    // atlas uses for region labels — it was copied there by hand when that renderer was
+    // written, and there is one of it now.
+    const place = Stage.placer(LABEL_GAP);
     let drawn = 0;
     lastLabelCount = 0;
 
@@ -473,13 +462,7 @@
         if (mx < 0 || mx > w || my < 0 || my > h) continue;
         const tw = ctx.measureText(l.reason).width;
         const box = { x0: mx - tw / 2 - 4, x1: mx + tw / 2 + 4, y0: my - 8, y1: my + 5 };
-        let clash = false;
-        for (const bb of placed) {
-          if (box.x0 < bb.x1 + LABEL_GAP && box.x1 > bb.x0 - LABEL_GAP &&
-              box.y0 < bb.y1 + LABEL_GAP && box.y1 > bb.y0 - LABEL_GAP) { clash = true; break; }
-        }
-        if (clash) continue;
-        placed.push(box);
+        if (!place.claim(box)) continue;
         lastEdgeLabelCount++;
         ctx.fillStyle = 'rgba(22,33,62,0.82)';
         ctx.fillRect(box.x0, box.y0, tw + 8, 13);
@@ -494,14 +477,8 @@
       if (p[0] < 0 || p[0] > w || p[1] < 0 || p[1] > h) continue;
       const tw = ctx.measureText(n.name).width;
       const box = { x0: p[0] - tw / 2 - 5, x1: p[0] + tw / 2 + 5, y0: p[1] - 26, y1: p[1] - 10 };
-      let clash = false;
-      for (const b of placed) {
-        if (box.x0 < b.x1 + LABEL_GAP && box.x1 > b.x0 - LABEL_GAP &&
-            box.y0 < b.y1 + LABEL_GAP && box.y1 > b.y0 - LABEL_GAP) { clash = true; break; }
-      }
       // The hovered and pinned cards are never suppressed — you asked about those.
-      if (clash && n !== hovered && n !== pinned) continue;
-      placed.push(box);
+      if (!place.claim(box, n === hovered || n === pinned)) continue;
       drawn++;
       lastLabelCount = drawn;
 

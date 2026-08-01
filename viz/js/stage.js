@@ -131,22 +131,35 @@ window.Stage = (function () {
   // Callers pass boxes in draw priority order — the first to ask for space gets it — and
   // may mark an entry `keep` to make it un-rejectable (the hovered and pinned cards are
   // never suppressed; you asked about those). Returns a boolean per input.
-  function placeLabels(boxes, gap) {
+  /* Incremental: ask for space one box at a time and draw as you go. The Walk needs this
+   * shape rather than a batch — it draws each label the moment it is accepted, caps on
+   * the number *accepted* rather than attempted, and shares ONE collision set between
+   * edge labels and node labels so a synergy reason can never sit on a card name. */
+  function placer(gap) {
     const g = gap == null ? 6 : gap;
     const placed = [];
+    return {
+      /* `keep` forces acceptance — the hovered and pinned cards are never suppressed,
+       * because you asked about those. */
+      claim: function (b, keep) {
+        for (const p of placed) {
+          if (b.x0 < p.x1 + g && b.x1 > p.x0 - g &&
+              b.y0 < p.y1 + g && b.y1 > p.y0 - g) { if (!keep) return false; break; }
+        }
+        placed.push(b);
+        return true;
+      },
+      get count() { return placed.length; },
+    };
+  }
+
+  /* Batch convenience over the same placer, for callers that know every box up front —
+   * the atlas measures all its region labels in the DOM before deciding. */
+  function placeLabels(boxes, gap) {
+    const p = placer(gap);
     const out = new Array(boxes.length);
-    for (let i = 0; i < boxes.length; i++) {
-      const b = boxes[i];
-      let clash = false;
-      for (const p of placed) {
-        if (b.x0 < p.x1 + g && b.x1 > p.x0 - g &&
-            b.y0 < p.y1 + g && b.y1 > p.y0 - g) { clash = true; break; }
-      }
-      if (clash && !b.keep) { out[i] = false; continue; }
-      placed.push(b);
-      out[i] = true;
-    }
-    out.placed = placed.length;
+    for (let i = 0; i < boxes.length; i++) out[i] = p.claim(boxes[i], boxes[i].keep);
+    out.placed = p.count;
     return out;
   }
 
@@ -184,8 +197,12 @@ window.Stage = (function () {
       const a = at(e.source), b = at(e.target);
       if (!a || !b) continue;
       const closeness = e.d == null ? 0.5 : Math.max(0, 1 - e.d / 1.4);
-      ctx.lineWidth = (e.weight || base) / k;
-      ctx.strokeStyle = e.ink || edgeInk(e.rel, closeness);
+      // `relOf` lets the caller decide an edge's kind from context rather than storing it.
+      // The Walk needs it: an edge is a *deck* edge when both endpoints came from a loaded
+      // decklist, which is a property of the graph, not of the link.
+      const rel = o.relOf ? o.relOf(e) : e.rel;
+      ctx.lineWidth = ((o.weightOf ? o.weightOf(e, rel) : e.weight) || base) / k;
+      ctx.strokeStyle = e.ink || edgeInk(rel, closeness);
       ctx.beginPath();
       if (o.curve) {
         // A straight line between two far-apart cards reads as an assertion about the
@@ -209,6 +226,7 @@ window.Stage = (function () {
   return {
     surface: surface,
     camera: camera,
+    placer: placer,
     placeLabels: placeLabels,
     edgeInk: edgeInk,
     drawEdges: drawEdges,
