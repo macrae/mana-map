@@ -1,18 +1,37 @@
-/* deck-map.js — the Deck Lens.
+/* build.js — one mode for looking at a set of cards and changing it.
  *
- * Overlays a published deck's 99 onto the card map: the deck lights up, the other
- * ~34,200 cards dim, and the shape of the deck in card space becomes visible. A storm
- * deck is a tight blob; a goodstuff pile is scattered. That is a claim about archetype
- * you cannot read off a decklist.
+ * This is Deck Lens and Build Deck merged. They were halves of one activity: you load a
+ * set of cards, you look at it, you change it, you ship it. Splitting that across two
+ * modes meant a published deck could be inspected but not edited, and a deck under
+ * construction had no roles, no curve and no verified lines.
  *
- * This is the third consumer of the pilot subsystem's artifacts, after the magazine
- * (manuals/<slug>.html) and the dossier (viz/deck.html). It reads the same tracked JSON
- * all three read, so a figure cannot drift between them — there is no computation here
- * beyond a name -> row-index lookup and a role histogram.
+ * WHAT CAME FROM DECK LENS (and is the reason this file starts from it): `card_roles.json`
+ * in the browser, `FAMILY_PRIORITY`/`FAMILY_COLOR`, the role histogram, the Short List, the
+ * verified-lines list, the copies-vs-dots discipline, `dimsAll()`'s scalar-opacity fast
+ * path (~100 ms of a 133 ms render), and the `?deck=<slug>` deep link that the dossier and
+ * every published manual emit. That last one is an inbound contract in shipped HTML.
  *
- * Contract with mana-map.js, identical to deck-builder.js's:
- *   getOverlayTraces()  -> Plotly traces drawn above the base scatter
- *   getDimmedIndices()  -> Set of row indices to render at low opacity, or null
+ * WHAT CAME FROM THE BUILDER: colour identity, format legality, the mana curve and colour
+ * distribution, the mana-base generator.
+ *
+ * WHAT WAS DELETED WITH IT, deliberately:
+ *   - The six-factor recommender. Measured against `config.DECK_BUILD_WEIGHTS`, two of its
+ *     six factors had no counterpart on the Python side (JS had keyword-Jaccard, Python
+ *     has castability), three of the four shared weights differed, and two shared factors
+ *     used different curves. Python's `synergy_affinity` docstring says outright that the
+ *     synergy graph "is a retrieval aid and not a scoring function — you cannot ask it
+ *     'how well does X fit deck D'", which is exactly what the JS did. It cost ~50 MB of
+ *     lazy downloads (embeddings + synergy + combo) to be wrong differently from the
+ *     pipeline. Suggestions now come from the same precomputed relations Discover uses,
+ *     and real evaluation comes from the sub-agent routine via the exported brief.
+ *   - `localStorage['manamap-deck']`. It stored raw positional row indices with no schema
+ *     version, so a Scryfall refresh that reorders cards.csv silently reinterpreted a
+ *     saved deck as a different set of cards. Restore did no range check either, so
+ *     entering Build before the 2.9 MB projection landed threw.
+ *
+ * Contract with mana-map.js:
+ *   getOverlayTraces()  -> layers drawn above the base scatter
+ *   getDimmedIndices()  -> Set of rows to draw dim, or null (see dimsAll)
  *   enter() / exit()    -> called by MM.setMode
  *
  * Every index here is a row index into MM.allData, which is projection_2d.json, which is
@@ -61,6 +80,9 @@
   let showCandidates = true;
   let showSideboard = false;
   let dimOthers = true;
+  // Off-limits highlighting is opt-in: it costs the per-point opacity array.
+  let showIllegal = false;
+  let format = 'commander';
 
   // ── Helpers ──
 
@@ -101,6 +123,86 @@
   // A card entry is in the maindeck unless it says otherwise. Copies matter for counts
   // (see CLAUDE.md: count copies, not decklist entries) but a point on the map is a
   // position, so eleven Islands are one dot and the quantity rides along in the panel.
+  // ── Colour identity and legality, from the builder ──────────────────────
+  //
+  // Cheap, correct, and the only part of the old builder that was not competing with the
+  // Python. `d.ci` and `d.f` are packed by export/reduce.py; nothing here needs a fetch.
+
+  function parseColorIdentity(ciStr) {
+    if (!ciStr) return new Set();
+    return new Set(String(ciStr).split(',').map(function (x) { return x.trim(); }).filter(Boolean));
+  }
+
+  /* A Commander deck's colour identity is its COMMANDER's, not the union of what is in
+   * it — that is the rule, and it is why an off-colour card is a violation rather than a
+   * widening. With no commander set there is no restriction at all. */
+  function deckColorIdentity() {
+    const ci = new Set();
+    if (!active) return ci;
+    const cmdIdx = active.commanderName && nameToIdx ? nameToIdx.get(active.commanderName) : null;
+    if (cmdIdx != null && MM.allData[cmdIdx]) {
+      parseColorIdentity(MM.allData[cmdIdx].ci).forEach(function (c) { ci.add(c); });
+    }
+    return ci;
+  }
+
+  function isColorIdentitySubset(cardCI, deckCI) {
+    if (!deckCI.size) return true;
+    for (const c of parseColorIdentity(cardCI)) if (!deckCI.has(c)) return false;
+    return true;
+  }
+
+  function isLegalInFormat(d, format) {
+    if (!d || !d.f) return false;
+    return d.f.split(',').includes(format);
+  }
+
+  // ── Curve and colour, from the builder ──────────────────────────────────
+
+  function renderManaCurve(indices) {
+    const buckets = [0, 0, 0, 0, 0, 0, 0];
+    for (const idx of indices) {
+      const d = MM.allData[idx];
+      if (!d || d.s === 'Land') continue;
+      buckets[Math.min(Math.floor(d.m || 0), 6)]++;
+    }
+    const max = Math.max.apply(null, buckets.concat([1]));
+    let html = '<div class="deck-section"><div class="deck-section-title">Mana curve</div>' +
+               '<div class="mana-curve">';
+    for (let i = 0; i < buckets.length; i++) {
+      const pct = (buckets[i] / max) * 100;
+      html += '<div style="flex:1;display:flex;flex-direction:column;align-items:center;">' +
+        '<div style="height:40px;width:100%;display:flex;align-items:flex-end;">' +
+        '<div style="width:100%;background:#c4a747;border-radius:2px 2px 0 0;height:' + pct +
+        '%;min-height:' + (buckets[i] > 0 ? '2px' : '0') + ';"></div></div>' +
+        '<div class="curve-label">' + (i === 6 ? '6+' : i) + '</div></div>';
+    }
+    return html + '</div></div>';
+  }
+
+  function renderColorDist(indices) {
+    const pips = { W: 0, U: 0, B: 0, R: 0, G: 0 };
+    let total = 0;
+    for (const idx of indices) {
+      const d = MM.allData[idx];
+      if (!d || d.s === 'Land') continue;
+      for (const tok of String(d.mc || '').match(/\{([^}]+)\}/g) || []) {
+        const inner = tok.slice(1, -1);
+        if ('WUBRG'.includes(inner)) { pips[inner]++; total++; }
+      }
+    }
+    if (!total) return '';
+    let html = '<div class="deck-section"><div class="deck-section-title">Colour load</div>' +
+               '<div class="color-dist">';
+    for (const c of 'WUBRG') {
+      if (!pips[c]) continue;
+      html += '<div class="color-dist-item"><span class="mana-sym mana-' + c +
+        '" style="width:14px;height:14px;font-size:0.5rem;">' + c + '</span>' +
+        Math.round(pips[c] / total * 100) + '%</div>';
+    }
+    return html + '</div></div>';
+  }
+
   function isMain(card) { return !card.is_sideboard; }
   function qty(card) { return parseInt(card.quantity, 10) || 1; }
 
@@ -331,9 +433,25 @@
   // The Lens dims the whole world and redraws the deck as overlay traces on top, so
   // render() can use one scalar opacity instead of a 34,000-entry per-point array.
   // Returning the index Set at all was the expensive half of Deck Lens mode.
-  function dimsAll() { return !!(active && dimOthers); }
+  // `dimsAll` says "one scalar opacity for everything", which lets mana-map.js skip
+  // building a 34,322-entry per-point array — measured at ~100 ms of a 133 ms render.
+  // `getDimmedIndices` is the per-point path, and it is only worth paying for when a
+  // GENUINE SUBSET is dim: showing what you may not legally play.
+  function dimsAll() { return !!(active && dimOthers && !showIllegal); }
 
-  function getDimmedIndices() { return null; }
+  function getDimmedIndices() {
+    if (!active || !showIllegal) return null;
+    // Everything you could not legally put in this deck: wrong format, or outside the
+    // commander's colour identity. The builder computed this; the Lens never did, so a
+    // published deck could not show you what was off-limits.
+    const ci = deckColorIdentity();
+    const out = new Set();
+    for (let i = 0; i < MM.allData.length; i++) {
+      const d = MM.allData[i];
+      if (!isLegalInFormat(d, format) || !isColorIdentitySubset(d.ci, ci)) out.add(i);
+    }
+    return out;
+  }
 
   // ── Panel ──
 
@@ -361,12 +479,12 @@
     let html =
       '<div class="deck-header">' +
         '<h2>Deck Lens</h2>' +
-        '<button class="detail-close" onclick="DeckMap.close()" title="Close">×</button>' +
+        '<button class="detail-close" onclick="Build.close()" title="Close">×</button>' +
       '</div>' +
       '<div class="deck-section">' +
         '<div class="deck-format-row">' +
           '<label for="deckLensSelect">Deck</label>' +
-          '<select id="deckLensSelect" onchange="DeckMap.select(this.value)">' +
+          '<select id="deckLensSelect" onchange="Build.select(this.value)">' +
             '<option value="">Choose a deck…</option>' + picker +
           '</select>' +
         '</div>' +
@@ -407,7 +525,7 @@
           statBox(active.candidates.length, 'short list') +
           statBox(active.side.length, 'bench') +
         '</div>' +
-        '<button class="lens-btn" onclick="DeckMap.zoomToDeck()">Zoom to the deck</button>' +
+        '<button class="lens-btn" onclick="Build.zoomToDeck()">Zoom to the deck</button>' +
       '</div>' +
 
       '<div class="deck-section">' +
@@ -416,7 +534,15 @@
         toggleRow('showEdges', showEdges, 'Verified lines (' + drawnEdges().length + ' drawn)') +
         toggleRow('showCandidates', showCandidates, 'Short List (' + active.candidates.length + ')') +
         toggleRow('showSideboard', showSideboard, 'Sideboard (' + active.side.length + ')') +
+        toggleRow('showIllegal', showIllegal, 'Grey out what you cannot play') +
       '</div>';
+
+    // Curve and colour load, from the builder half. These are about the deck as a
+    // machine — what it costs and what it demands — where the role budget is about what
+    // the cards DO. Both are cheap: `d.m` and `d.mc` are already in the projection row.
+    const mainIdx = active.main.map(function (x) { return x.idx; })
+                               .filter(function (i) { return i !== null; });
+    html += renderManaCurve(mainIdx) + renderColorDist(mainIdx);
 
     // Role budget, which is also the map legend.
     const counts = familyCounts();
@@ -444,7 +570,7 @@
           '<div class="deck-section-title">Verified lines <span>✓ rules-verified</span></div>' +
           active.edges.map((edge, i) =>
             '<div class="lens-line' + (edge.pairs.length ? '' : ' lens-line-nodraw') +
-              '" onclick="DeckMap.focusLine(' + i + ')">' +
+              '" onclick="Build.focusLine(' + i + ')">' +
               '<div class="lens-line-title">' + esc(edge.title) + '</div>' +
               '<div class="lens-line-cards">' +
                 (edge.cards.length ? edge.cards.map(esc).join(' · ') : 'no deck card named — no line drawn') +
@@ -484,7 +610,7 @@
   function toggleRow(key, on, label) {
     return '<label class="lens-toggle">' +
       '<input type="checkbox"' + (on ? ' checked' : '') +
-      ' onchange="DeckMap.toggle(\'' + key + '\', this.checked)"> ' + esc(label) + '</label>';
+      ' onchange="Build.toggle(\'' + key + '\', this.checked)"> ' + esc(label) + '</label>';
   }
 
   // ── Actions ──
@@ -507,6 +633,7 @@
   }
 
   function toggle(key, value) {
+    if (key === 'showIllegal') { showIllegal = !!value; renderPanel(); MM.render(); return; }
     if (key === 'dimOthers') dimOthers = value;
     else if (key === 'showEdges') showEdges = value;
     else if (key === 'showCandidates') showCandidates = value;
@@ -590,7 +717,34 @@
     MM.setMode('explore');
   }
 
-  window.DeckMap = {
+  // ── Adding cards to the loaded set ──────────────────────────────────────
+  //
+  // The builder had `addSeed` writing into `deckState.seeds`, one of eight "set of cards"
+  // containers. That container is gone with the scorer it fed. A card you want goes into
+  // the TRAY — which is Session's, is shared with Discover and Explore, and is the thing
+  // the brief exports to the sub-agent routine.
+
+  function addCard(row) {
+    if (typeof row !== 'number' || row < 0) return;
+    if (!Session.tray.has(row)) Session.tray.toggle(row);
+    if (active) renderPanel();
+    MM.setStatus((MM.cardRecord(row) || {}).n + ' added — ' + Session.tray.size +
+                 ' in the tray · Export brief hands them to the build loop');
+  }
+
+  /* Is this card already accounted for — in the loaded deck, or in the tray? Read by the
+   * card panel's "+ Deck" button so it can say so rather than offering a no-op. */
+  function isInDeck(row) {
+    if (Session.tray.has(row)) return true;
+    if (!active || !nameToIdx) return false;
+    const d = MM.allData[row];
+    if (!d) return false;
+    return active.main.some(function (slot) { return slot.name === d.n; });
+  }
+
+  window.Build = {
+    addCard,
+    isInDeck,
     enter,
     exit,
     close,

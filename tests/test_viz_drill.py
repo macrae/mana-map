@@ -184,4 +184,4 @@ def test_escape_pops_the_drill_before_anything_else():
     escape_block = src[src.index("if (e.key === 'Escape')"):]
     escape_block = escape_block[:escape_block.index("return;")]
     assert "window.Drill.isActive()" in escape_block
-    assert escape_block.index("window.Drill") < escape_block.index("DeckBuilder")
+    assert escape_block.index("window.Drill") < escape_block.index("window.Build")

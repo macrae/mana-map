@@ -751,11 +751,11 @@
       html += '</span>';
     }
     // In-deck badge or add-to-deck button
-    if (typeof window.DeckBuilder !== 'undefined' && window.DeckBuilder.isInDeck) {
-      if (window.DeckBuilder.isInDeck(topCard.idx)) {
+    if (typeof window.Build !== 'undefined' && window.Build.isInDeck) {
+      if (window.Build.isInDeck(topCard.idx)) {
         html += '<span class="in-deck-badge">\u2713 In Deck</span>';
       } else {
-        html += '<button class="btn-add-deck" onclick="DeckBuilder.addSeed(' + topCard.idx + '); MM.render(); MM.bringToTop(' + topCardIndex + ')">+ Deck</button>';
+        html += '<button class="btn-add-deck" onclick="Build.addCard(' + topCard.idx + '); MM.render(); MM.bringToTop(' + topCardIndex + ')">+ Deck</button>';
       }
     }
     html += '<button class="detail-close" onclick="MM.closeDetail()" title="Close (ESC)">\u00d7</button>';
@@ -1230,7 +1230,7 @@
   function keep(row) {
     if (!window.Discovery || !Discovery.isReady()) return;
     Session.tray.toggle(row);
-    if (currentMode === 'explore' || currentMode === 'deck' || currentMode === 'build') {
+    if (currentMode === 'explore' || currentMode === 'build') {
       updateViewerPanel();
     }
   }
@@ -1499,8 +1499,10 @@
       // magazine's Back Page both use it. Honour it by entering the Lens, not by
       // dropping the reader on an unfiltered map with a query string they can't see.
       if (wantedDeck) {
-        document.getElementById('modeSelect').value = 'deck';
-        setMode('deck');
+        // `?deck=<slug>` is an inbound contract: the dossier and every published manual
+        // link to it. Deck Lens and Build Deck are one mode now, so it lands in Build.
+        document.getElementById('modeSelect').value = 'build';
+        setMode('build');
       }
       // Load region data in background, then re-render with labels
       loadRegionData('default').then(data => {
@@ -1598,8 +1600,8 @@
       if (typeof window.Drill !== 'undefined' && window.Drill.isActive()) {
         window.Drill.back();
       } else if (currentMode === 'build') {
-        if (typeof window.DeckBuilder !== 'undefined') {
-          window.DeckBuilder.handleEscape();
+        if (typeof window.Build !== 'undefined' && window.Build.handleEscape) {
+          window.Build.handleEscape();
         }
       } else {
         escapeOnce();
@@ -1704,8 +1706,7 @@
     const detail = document.getElementById('detailPanel');
 
     if (mode !== 'discover' && typeof window.Discovery !== 'undefined') window.Discovery.exit();
-    if (mode !== 'build' && typeof window.DeckBuilder !== 'undefined') window.DeckBuilder.exit();
-    if (mode !== 'deck' && typeof window.DeckMap !== 'undefined') window.DeckMap.exit();
+    if (mode !== 'build' && typeof window.Build !== 'undefined') window.Build.exit();
     // Discovery and The Walk are the same engine with different chrome, so entering
     // discovery must not tear the graph down.
     if (mode !== 'discover' && typeof window.Force !== 'undefined') {
@@ -1745,12 +1746,12 @@
     }
 
     if (mode === 'build') {
-      clearSelection();
-      detail.style.display = 'none';
-      if (typeof window.DeckBuilder !== 'undefined') window.DeckBuilder.enter();
-    } else if (mode === 'deck') {
+      // Build KEEPS the detail panel. Deck Lens did and the builder did not, and the Lens
+      // was right: clicking a lit card to read it is the whole interaction. The builder
+      // hid it because its own panel carried the card, which is why adding a card there
+      // felt like filing rather than looking at anything.
       detail.style.display = '';
-      if (typeof window.DeckMap !== 'undefined') window.DeckMap.enter();
+      if (typeof window.Build !== 'undefined') window.Build.enter();
     } else {
       detail.style.display = '';
     }
@@ -1790,7 +1791,7 @@
         }
         if (ev.row == null || !allData[ev.row]) return;
         if (currentMode === 'build') {
-          if (typeof window.DeckBuilder !== 'undefined') window.DeckBuilder.addSeed(ev.row);
+          if (typeof window.Build !== 'undefined') window.Build.addCard(ev.row);
           return;
         }
         if (ev.shiftKey) {
@@ -1846,8 +1847,7 @@
     // same two-method contract; see docs/viz.md.
     let overlayTraces = [];
     let dimmedIndices = null;
-    const overlay = currentMode === 'build' ? window.DeckBuilder
-      : currentMode === 'deck' ? window.DeckMap
+    const overlay = currentMode === 'build' ? window.Build
       : (currentMode === 'explore' && orientation) ? OrientationOverlay
       : null;
     if (overlay) {

@@ -249,10 +249,10 @@ def test_map_switch_refits_the_camera(page):
 
 def test_deck_lens_lights_a_deck(page):
     result = page.evaluate("""async () => {
-        document.getElementById('modeSelect').value = 'deck';
-        MM.setMode('deck');
+        document.getElementById('modeSelect').value = 'build';
+        MM.setMode('build');
         await new Promise(r => setTimeout(r, 4000));
-        await DeckMap.select('edgar-vampires');
+        await Build.select('edgar-vampires');
         await new Promise(r => setTimeout(r, 2000));
         const gd = document.getElementById('plot');
         const base = MM.mapRenderer.layers.find(t => !t._isDeckOverlay && t.marker);
@@ -274,7 +274,7 @@ def test_deck_lens_lights_a_deck(page):
 def test_mode_switches_are_exclusive(page):
     result = page.evaluate("""async () => {
         const out = {};
-        document.getElementById('modeSelect').value = 'deck'; MM.setMode('deck');
+        document.getElementById('modeSelect').value = 'build'; MM.setMode('build');
         await new Promise(r => setTimeout(r, 3000));
         out.deckPanelOpen = document.getElementById('deckPanel').classList.contains('open');
         document.getElementById('modeSelect').value = 'explore'; MM.setMode('explore');
@@ -1022,16 +1022,16 @@ def test_deck_lens_and_drill_run_on_canvas(canvas_page):
     could not draw. Drill pushes 90 frames through updateLayerBy rather than rebuilding
     every layer per frame."""
     r = canvas_page.evaluate("""async () => {
-        document.getElementById('modeSelect').value = 'deck'; MM.setMode('deck');
+        document.getElementById('modeSelect').value = 'build'; MM.setMode('build');
         await new Promise(r => setTimeout(r, 4000));
-        await DeckMap.select('edgar-vampires');
+        await Build.select('edgar-vampires');
         await new Promise(r => setTimeout(r, 2500));
         const lens = {deck: (document.querySelector('.lens-title') || {}).textContent};
 
         const span = () => { const c = MM.mapRenderer.getCamera();
                              return Math.abs(c.x[1] - c.x[0]); };
         const before = span();
-        DeckMap.focusLine(0);
+        Build.focusLine(0);
         await new Promise(r => setTimeout(r, 1200));
         const zoomed = span();
 
