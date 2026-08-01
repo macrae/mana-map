@@ -29,7 +29,7 @@ first place.
 [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-1,139 tests (1,039 fast + 100 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
+1,144 tests (1,042 fast + 102 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
 
 > ### ⚠ OPEN: 23 agent-cache routines are deliberately MISSed
 >
@@ -412,6 +412,35 @@ decision**: mode CSS naming Plotly elements after Plotly was gone; the quadtree 
 blind to positions `updateLayerBy` mutates; `clearSelection` meaning both "clear" and
 "peel"; panel ownership collapsed to one owner the moment a second appeared.
 
+## Decided — the frontend stays LLM-free (2026-08-01)
+
+A conversational agent UI inside Build was scoped and **declined**. The reasoning is worth
+keeping, because the question will come back.
+
+**The decision:** the deployed static site and the local checkout run the same code. The
+frontend is exploration plus artifact reads; the agent loop stays in Claude Code, reached by
+the exported brief. No local bridge, no LLM provider in the browser.
+
+**What the costing found:**
+
+- The repo has **two disjoint layers with a human as the only bridge**. The deterministic
+  layer is 34 CLI subcommands, 1.5–9s, JSON out, zero LLM — `deck-facts`, `bracket-check`,
+  `manabase`, `goldfish`, `impact`, and `query-rules`/`query-strategy` as pure local RAG over
+  a MiniLM index. The judgment layer is 12 agent charters that only a Claude Code session can
+  spawn.
+- **Agent spawns are not chat.** Cheapest routine is `coach-prose` at 54,515 tokens;
+  `candidate-pool` is 235,579; stack resolution is 2–6 serial spawns with one measured
+  outlier near 600k. They write whole artifacts and return a path, and the cache refuses to
+  record anything without a validated artifact — `docs/agent-cost.md` already says ad-hoc
+  consults have nothing to key against.
+- So the "fast, conversational" half of the ask was mostly answerable **without an LLM**, and
+  the half that needed one was minutes-long and artifact-shaped. Those are two different
+  products, and only one of them belongs in a static page.
+
+**If it is revisited**, the honest version is: make the deterministic commands the interactive
+surface (memoise the SentenceTransformer first — it is reconstructed per call, ~8.6s cold, and
+is the single change that makes RAG interactive), and keep agents on the brief handoff.
+
 ## Future — what is not started
 
 ### Frontend, in order
@@ -480,21 +509,45 @@ that failure mode.
   trigger fire twice; whether that yields a second full copy set is the question) and the
   Past in Flames ritual rebuild.
 
+### The cache board, and why it is green
+
+The 23 MISSes left by the embedding rebuild were **re-blessed**, not re-spawned. The
+reasoning, so the record is a judgement rather than a shrug:
+
+- What changed: `synergy_graph.json` and `obsolescence_index.json` were regenerated.
+- What MISSed: `writer-prose`, `the-ten`, `issue-plan` (×7), plus hapatra's
+  `candidate-pool` and `deck-build`. Prose and packaging.
+- What did **not** miss: every `stack:NNN`, `strategic-frame`, `coach-prose`. Nothing
+  rules-verified depends on those graphs, which is the whole reason the tiers exist.
+- Re-spawning was ~2.46M tokens to re-derive body copy that cites no synergy rank.
+
+`the-ten` is the one with a real claim on it — a Short List *is* a ranking, and the synergy
+graph's median partner rank moved 9,397 → 737. It was blessed on the judgement that the
+published tens were curated against evidence the analyst cited individually, not against
+the ranking wholesale. **If that turns out wrong, `the-ten` is the routine to re-spawn
+first**, and `--force` is how.
+
 ### Known-wrong, found and left alone deliberately
 
-**Verified-line edges are string-matched against scenario prose** (`build.js:buildEdges`),
-and it shows. Run over the tracked decks: heliod's Approach-of-the-Second-Sun scenario draws
-"verified" edges to **Ancient Tomb** and **Howling Mine** — bystanders that happen to be on
-the board — while **Swan Song**, the actual interaction, is cut by the 4-card cap, because
-the cap truncates in *name-length* order. gishath's headline stack draws nothing at all: its
-partner card is benched and only the maindeck is searched. The file is honest about the
-trade in its own header ("the scenario block has no card list"), and the real fix is a card
-list on the scenario schema — a Python change, not a frontend one.
+~~Verified-line edges string-matched from scenario prose~~ — **fixed.**
+`build_index.py:line_cards` derives them from the scenario's structure and the manifest
+carries them per stack file, so the browser stopped guessing. The rule that gets both
+shapes right: **if the stack and hand name the line, `board` is context; if they name
+nothing, the line is on the board.** heliod's Approach scenario has its line in hand and
+its furniture on the board (Ancient Tomb, Howling Mine — both were being drawn as
+"verified" edges while Swan Song, the real interaction, was cut by a cap that truncated in
+name-length order). edgar's combo loops are the mirror image: the pieces are already
+resolved permanents and the stack object is a prose sentence about a trigger. Deriving in
+Python also left the tracked stack artifacts untouched — adding a field to them would have
+changed their digests and invalidated every agent-cache routine on the deck. Result: 29 of
+32 published lines now draw, with the right cards.
 
-**`Force.fit` caps zoom at 1.6×**, so a small graph renders tiny. Measured: a 31-node graph
-whose bbox is 42×49 world units frames at ~70px wide, and every label collides, so
-`labelCount` reads 1. Confirmed pre-existing by A/B against the committed file. It does not
-bite at deck scale (a 251-card pool fits at k≈0.19), which is why it stayed open.
+~~`Force.fit` caps zoom at 1.6×~~ — **fixed.** The cap is now the zoom behaviour's own
+ceiling (12), so a fit may go wherever a drag could. It bit hardest on the commonest state
+in Discover: a landing card plus one branch, 7 nodes spanning 20.7×26 world units, wanting
+k≈19 and allowed 1.6 — so the graph drew ~33px wide and every label collided. The original
+reasoning ("blown up is not more readable, just bigger") was wrong here because node radius
+and label text are drawn in SCREEN space; zooming in enlarges nothing, it only spreads.
 
 ### Known-wrong artifacts
 

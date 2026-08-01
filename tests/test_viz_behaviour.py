@@ -3050,3 +3050,99 @@ def test_naming_a_commander_refreshes_build(page):
         "Build.onCommanderChange is called by MM.setCommander but never defined"
     )
     assert r["sections"] >= 5, "Build's panel did not render its analysis"
+
+
+def test_fit_frames_a_small_graph_instead_of_leaving_it_tiny(discover_page):
+    """`Fit` must fill the canvas, and the cap must not stop it short.
+
+    The zoom-in was capped at 1.6 on the reasoning that "a 59-unit-wide graph blown up to
+    fill a 1439px canvas is not more readable, just bigger". That is wrong here, because
+    node radius and label text are drawn in SCREEN space (`r / transform.k`) — zooming in
+    enlarges nothing, it only spreads the nodes apart, which is exactly what a label needs.
+
+    It bites hardest on the commonest state in Discover: a landing card plus one branch.
+    Measured at 7 nodes spanning 20.7x26 world units — filling the canvas wants k≈19, the
+    cap allowed 1.6, so the graph rendered ~33px wide and every label collided. The cap is
+    now the zoom behaviour's own ceiling, so a fit may go wherever a drag could.
+    """
+    r = discover_page.evaluate("""async () => {
+        Discovery.show(Discovery.rowByName('Sol Ring'));
+        await new Promise(r => setTimeout(r, 900));
+        MM.relate(Force.rows()[0], 'similar');
+        await new Promise(r => setTimeout(r, 4000));
+        // Freeze BEFORE measuring: the simulation keeps expanding the bbox, and reading it
+        // mid-settle is how this was misdiagnosed twice.
+        Force.freeze();
+        await new Promise(r => setTimeout(r, 400));
+        const b = Force.bbox();
+        const cv = document.getElementById('forceCanvas');
+        const wanted = Math.min(cv.clientWidth / (b.w * 1.18),
+                                cv.clientHeight / (b.h * 1.18));
+        Force.fit();
+        await new Promise(r => setTimeout(r, 1200));
+        return {nodes: Force.nodeCount, bw: b.w, bh: b.h,
+                wanted: wanted, labels: Force.labelCount,
+                onScreenWidthAtOldCap: b.w * 1.6};
+    }""")
+    assert discover_page.js_errors == []
+    assert 2 < r["nodes"] < 30, "this test is about a SMALL graph"
+    assert r["wanted"] > 1.6, (
+        "this graph is not small enough to exercise the cap — pick a smaller one"
+    )
+    # Not a fixed pixel count: branching is random, so the bbox varies run to run and an
+    # exact threshold is a flake waiting to happen. What is invariant is the RATIO — the
+    # old cap framed the graph at a small fraction of what filling the canvas wants.
+    assert r["wanted"] / 1.6 > 3, (
+        f"the old cap was {r['wanted'] / 1.6:.1f}x too small here; this graph does not "
+        f"demonstrate the problem"
+    )
+    assert r["labels"] >= 3, (
+        f"only {r['labels']} labels placed — the fit is still leaving the graph too small "
+        f"for any of them to clear each other"
+    )
+
+
+def test_both_panels_draw_the_same_card_header(page):
+    """One header, two panels. There were two headers and they had drifted.
+
+    The browse panel's copy lost the loyalty and defense branches and the in-deck control,
+    so the SAME planeswalker showed `Loyalty: 4` when selected and nothing when browsed.
+    Neither omission was a decision — they were copies that stopped being copied.
+    """
+    r = page.evaluate("""async () => {
+        const q = () => (document.querySelector('#detailInner .viewer-quickstats') || {}).textContent;
+        const nHeaders = () => document.querySelectorAll('#detailInner .viewer-header').length;
+
+        MM.selectByName('Teferi, Hero of Dominaria');
+        await new Promise(r => setTimeout(r, 1000));
+        const selected = {stats: q(), headers: nHeaders()};
+
+        const pw = MM.allData.findIndex(d => d.n === 'Teferi, Hero of Dominaria');
+        await MM.enterBrowse([pw, 10, 20, 30, 40], 'Header check');
+        await new Promise(r => setTimeout(r, 2000));
+        // enterBrowse orders by distance from the set's centroid, so walk to the card
+        // rather than assuming it is first — comparing two different cards proves nothing.
+        let guard = 0;
+        while (MM.browseSet.indices[MM.browseSet.pos] !== pw && guard++ < 10) {
+            MM.cycleNext();
+            await new Promise(r => setTimeout(r, 300));
+        }
+        await new Promise(r => setTimeout(r, 600));
+        return {
+            selected: selected,
+            browsed: {stats: q(), headers: nHeaders(),
+                      card: MM.allData[MM.browseSet.indices[MM.browseSet.pos]].n,
+                      inDeckControl: !!document.querySelector(
+                          '#detailInner .btn-add-deck, #detailInner .in-deck-badge')},
+        };
+    }""")
+    assert page.js_errors == []
+    assert r["browsed"]["card"] == "Teferi, Hero of Dominaria", "did not reach the card"
+    assert "Loyalty" in r["selected"]["stats"], "the selection panel lost loyalty"
+    assert r["browsed"]["stats"] == r["selected"]["stats"], (
+        f"the two panels disagree about the same card: "
+        f"{r['selected']['stats']!r} vs {r['browsed']['stats']!r}"
+    )
+    assert r["browsed"]["inDeckControl"], "the browse panel still has no in-deck control"
+    for where in ("selected", "browsed"):
+        assert r[where]["headers"] == 1, f"{where} rendered {r[where]['headers']} headers"

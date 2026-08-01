@@ -8,6 +8,7 @@ A deck without an `issue.json` sorts last under a sentinel volume of 999.
 """
 
 import json
+import re
 
 from manamap.pilot.common import checker_passed, load_json
 from manamap.config import DECKS_DIR, MANUALS_DIR
@@ -35,6 +36,85 @@ a.issue .tag { color:var(--ink-soft); font-size:.9em; margin-bottom:10px; }
 a.issue .stats { display:flex; flex-wrap:wrap; gap:5px; }
 .stand-foot { text-align:center; margin-top:44px; font-size:.86em; color:var(--ink-soft); }
 """
+
+
+
+# A stack scenario names its cards in STRUCTURED fields — the ordered stack, the hand, the
+# graveyard — and also in prose all over `board`. The browser used to guess the line by
+# substring-matching every deck card name against the whole scenario blob, which is how
+# heliod's Approach-of-the-Second-Sun line drew "verified" edges to Ancient Tomb and
+# Howling Mine (lands that happened to be on the board) while missing Swan Song, the actual
+# interaction, because a 4-card cap truncated in NAME-LENGTH order.
+#
+# The line is what is on the stack and in hand. `board` is furniture: it is what the line
+# happens in front of, not what it is made of. Deriving here rather than in the browser
+# also means the tracked stack artifacts are untouched — rewriting them to add a field
+# would change their digests and invalidate every agent-cache routine on the deck.
+_STACK_TEXT_KEYS = ("object", "card", "name", "source")
+# Generic board words that survive annotation-stripping and name nothing.
+_COUNT_PHRASE = re.compile(
+    r"^(\\d+|one|two|three|four|five|six|seven|eight|nine|ten|a|an)\\s", re.I)
+_NOT_A_CARD = {"lands", "untapped lands", "tapped lands", "creature", "creatures",
+               "token", "tokens", "a land", "basic land", "basics"}
+
+
+def line_cards(scenario):
+    """The cards a verified line is actually made of, from the scenario's structure.
+
+    The ordered stack, the hand and the graveyard name the line directly. `board` is
+    ambiguous: for heliod's Approach-of-the-Second-Sun scenario it is furniture (Ancient
+    Tomb, Howling Mine, basics), but for edgar's combo loops the pieces are ALREADY
+    RESOLVED PERMANENTS and the board is the only place they appear — the stack object
+    there is a prose sentence about a trigger, not a card name.
+
+    So: if the stack and hand name the line, the board is context and is skipped. If they
+    name nothing, the line is on the board and the board is all there is. That rule gets
+    both cases right, where "board is always furniture" got edgar wrong and "board is
+    always cards" got heliod wrong.
+    """
+    def collect(sources):
+        out, seen = [], set()
+
+        def add(value):
+            # Scenario entries carry annotations a card name never has: "Polyraptor
+            # (creature spell)", "Island x5", "untapped lands x2". Strip them, then drop
+            # anything that is plainly not a card.
+            name = str(value or "").strip()
+            name = re.sub(r"\s*\([^)]*\)\s*$", "", name)
+            name = re.sub(r"\s+x\s*\d+$", "", name, flags=re.I).strip()
+            if not name or name in seen or name.lower() in _NOT_A_CARD:
+                return
+            # A stack object is often a sentence about a trigger rather than a card name.
+            # Card names do not contain these.
+            if len(name) > 60 or any(t in name for t in (";", " has just ", " trigger")):
+                return
+            # Board entries are sometimes a count rather than a card: "five lands, all
+            # untapped", "2 Vampire tokens". A card name never opens with a number word.
+            if _COUNT_PHRASE.match(name) or " lands" in name.lower():
+                return
+            seen.add(name)
+            out.append(name)
+
+        for entry in sources:
+            if isinstance(entry, dict):
+                for key in _STACK_TEXT_KEYS:
+                    if entry.get(key):
+                        add(entry[key])
+                        break
+            else:
+                add(entry)
+        return out
+
+    stack_objs = scenario.get("stack") or []
+    named = collect(list(stack_objs)
+                    + list(scenario.get("hand") or [])
+                    + list(scenario.get("graveyard") or []))
+    if len(named) >= 2:
+        return named
+
+    # Nothing on the stack or in hand — the line is already on the battlefield.
+    board = (scenario.get("board") or {}).get("you") or []
+    return collect(list(named) + list(board))
 
 
 def gather_entries():
@@ -77,6 +157,16 @@ def gather_entries():
             p.name for p in (deck_path / "stacks").glob("*.json")
             if checker_passed(load_json(p, {})))
 
+        # What each passing line is MADE OF, so the browser can draw an edge that means
+        # something instead of substring-matching prose. Keyed by filename, since that is
+        # what `stack_files` hands the browser.
+        stack_cards = {}
+        for name in stack_files:
+            doc_stack = load_json(deck_path / "stacks" / name, {})
+            cards = line_cards(doc_stack.get("scenario") or {})
+            if cards:
+                stack_cards[name] = cards
+
         entries.append({
             "slug": slug,
             "volume": issue.get("volume", 999),   # sentinel: un-numbered issues sort last
@@ -89,6 +179,7 @@ def gather_entries():
             "decisions": decisions,
             "mean_cast": mean_cast,
             "stack_files": stack_files,
+            "stack_cards": stack_cards,
         })
     return sorted(entries, key=lambda e: (e["volume"], e["slug"]))
 
@@ -159,7 +250,8 @@ def write_manifest(entries):
     manifest = {
         "decks": [
             {k: e[k] for k in ("slug", "volume", "deck_name", "commander",
-                               "coverline", "verified", "decisions", "stack_files")}
+                               "coverline", "verified", "decisions", "stack_files",
+                               "stack_cards")}
             for e in entries
         ]
     }

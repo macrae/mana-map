@@ -45,13 +45,12 @@
   const MANIFEST_URL = DECK_BASE + 'index.json';
   const ROLES_URL = '../data/card_roles.json';
 
-  // A stack scenario names its cards in prose. Match deck card names against that prose
-  // rather than trusting a schema field, because the scenario block has no card list —
-  // board entries carry annotations ("Vampire Nighthawk (lifelink, 2/3)") and filler
-  // ("lands"). Guard rails: skip basics, skip short names, cap the pairs we draw.
-  const MIN_EDGE_NAME_LEN = 6;
+  // The scenario DOES have a card list now: `build_index.py:line_cards` derives it from the
+  // ordered stack, the hand and the graveyard, and the manifest carries it per stack file.
+  // `MIN_EDGE_NAME_LEN` and `BASIC_LANDS` went with the prose matching they existed to make
+  // survivable — you no longer need to skip basics and short names when you are not
+  // searching a haystack. The cap stays: a clique of five is unreadable regardless.
   const MAX_EDGE_CARDS = 4;
-  const BASIC_LANDS = new Set(['Plains', 'Island', 'Swamp', 'Mountain', 'Forest', 'Wastes']);
 
   // One card carries several roles; the lens paints it with the most decision-relevant
   // one. Order matters: threat:body sits on 19,032 of 34,322 cards, so it must lose every
@@ -118,8 +117,18 @@
     return 'unclassified';
   }
 
+  /* Every deck artifact goes through here, and every one of them is now cache-busted.
+   * They were not: `index.json`, `cards.json`, `considering.json` and each stack were
+   * fetched at bare URLs, so adding `stack_cards` to the manifest served the old copy and
+   * every verified line drew nothing while reporting six of them. The failure was silent
+   * and looked like a logic bug — I spent four probes on it before checking the bytes. */
+  function bust(url) {
+    const version = (window.MM && MM.DATA_VERSION) || 0;
+    return url + (url.indexOf('?') === -1 ? '?v=' : '&v=') + version;
+  }
+
   async function getJSON(url) {
-    const res = await fetch(url);
+    const res = await fetch(bust(url));
     if (!res.ok) throw new Error(url + ' -> ' + res.status);
     return res.json();
   }
@@ -235,7 +244,13 @@
     // a browser can list neither data/decks/ nor stacks/.
     const stacks = [];
     for (const file of (entry.stack_files || [])) {
-      try { stacks.push(await getJSON(DECK_BASE + slug + '/stacks/' + file)); } catch (e) { /* skip */ }
+      try {
+        const doc = await getJSON(DECK_BASE + slug + '/stacks/' + file);
+        // Keep the filename: it is the key `stack_cards` is stored under, since that is
+        // what the manifest hands the browser.
+        doc.__file = file;
+        stacks.push(doc);
+      } catch (e) { /* skip */ }
     }
     return buildActive(entry, deckDoc, considering, stacks);
   }
@@ -280,7 +295,7 @@
       side,
       candidates,
       unmapped,
-      edges: buildEdges(stacks, main),
+      edges: buildEdges(stacks, main, entry),
       copies: main.reduce((n, s) => n + s.qty, 0),
     };
   }
@@ -288,25 +303,28 @@
   // Each verified stack becomes a small clique between the deck cards it names, so a
   // rules-verified line reads as geometry: which corners of the deck actually talk to
   // each other.
-  function buildEdges(stacks, main) {
+  function buildEdges(stacks, main, entry) {
     const byName = new Map();
     for (const s of main) if (s.idx !== null) byName.set(s.name, s);
-
-    // Longest first so "Sanguine Bond" cannot shadow a longer name containing it.
-    const searchable = Array.from(byName.keys())
-      .filter(n => n.length >= MIN_EDGE_NAME_LEN && !BASIC_LANDS.has(n))
-      .sort((a, b) => b.length - a.length);
+    const derived = (entry && entry.stack_cards) || {};
 
     const edges = [];
     for (const stack of stacks) {
-      const hay = (stack.title || '') + ' ' + JSON.stringify(stack.scenario || {});
+      // The cards the line is MADE OF, derived in Python from the scenario's structured
+      // fields (the ordered stack, the hand, the graveyard) and carried in the manifest.
+      //
+      // This used to substring-match every deck card name against the whole scenario blob,
+      // `board` included. `board` is where a line is cast, not what it is made of, so
+      // heliod's Approach-of-the-Second-Sun line drew "verified" edges to Ancient Tomb and
+      // Howling Mine — lands that happened to be on the table — while Swan Song, the actual
+      // interaction, was cut by a 4-card cap that truncated in NAME-LENGTH order.
+      const named = derived[stack.__file] || [];
       const hit = [];
-      for (const name of searchable) {
-        if (hay.indexOf(name) !== -1) {
-          hit.push(name);
-          if (hit.length >= MAX_EDGE_CARDS) break;
-        }
+      for (const name of named) {
+        if (byName.has(name) && hit.indexOf(name) === -1) hit.push(name);
+        if (hit.length >= MAX_EDGE_CARDS) break;
       }
+
       // A stack that names fewer than two deck cards draws no line — a scenario can be
       // about one card. Keep it in the list anyway: the panel's count must agree with
       // the manifest's `verified`, or the lens quietly loses a verified line.

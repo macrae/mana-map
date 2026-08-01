@@ -28,6 +28,9 @@
   // not scale is *reading* the thing. Past a few hundred nodes the graph is a hairball
   // and the walk stops being legible. The cap is announced, never silent.
   const MAX_NODES = 500;
+  // The zoom behaviour's own ceiling — `scaleExtent([0.02, 12])`. Fit may go
+  // wherever a drag could; anything less makes the button refuse to do its job.
+  const MAX_FIT_SCALE = 12;
   const LINKS_PER_NODE = 3;      // k-nearest within the graph, so structure is visible
   const BRANCH_K = 6;            // neighbours pulled in when you branch from a card
   const TRAIL_MAX = 40;
@@ -312,9 +315,17 @@
     const minX = b.minX, maxX = b.maxX, minY = b.minY, maxY = b.maxY;
     const w = canvas.clientWidth, h = canvas.clientHeight;
     const gw = Math.max(maxX - minX, 1), gh = Math.max(maxY - minY, 1);
-    // Cap the zoom-in: a 59-unit-wide graph blown up to fill a 1439px canvas is not
-    // more readable, just bigger.
-    const k = Math.min(w / (gw * 1.18), h / (gh * 1.18), 1.6);
+    // Cap the zoom-in at the zoom behaviour's OWN ceiling, so a fit can go anywhere the
+    // user could drag to. It used to cap at 1.6 on the reasoning that "a 59-unit-wide
+    // graph blown up to fill a 1439px canvas is not more readable, just bigger" — which
+    // is wrong here, because node radius and label text are drawn in SCREEN space
+    // (`r / transform.k`). Zooming in does not enlarge anything; it only spreads the
+    // nodes apart, which is exactly what a label needs.
+    //
+    // Measured: a 31-node graph spanning 42x49 world units framed at k=1.6 is ~67px
+    // wide, its neighbours ~12px apart against ~100px labels, so every label collided
+    // and `labelCount` read 1. The cap, not the collision rule, was the problem.
+    const k = Math.min(w / (gw * 1.18), h / (gh * 1.18), MAX_FIT_SCALE);
     const t2 = d3.zoomIdentity
       .translate(w / 2 - k * (minX + maxX) / 2, h / 2 - k * (minY + maxY) / 2)
       .scale(k);

@@ -687,7 +687,7 @@ window.Discovery = (function () {
 
   function loadManifest() {
     if (manifest) return Promise.resolve(manifest);
-    return fetch(urls.deckIndex)
+    return fetch(urls.deckIndex + '?v=' + ((window.MM && MM.DATA_VERSION) || 0))
       .then(r => (r.ok ? r.json() : { decks: [] }))
       .then(doc => { manifest = doc.decks || []; return manifest; })
       .catch(() => { manifest = []; return manifest; });
@@ -695,7 +695,7 @@ window.Discovery = (function () {
 
   function loadDeck(slug) {
     const entry = (manifest || []).find(d => d.slug === slug);
-    return fetch(urls.deckBase + slug + '/cards.json')
+    return fetch(urls.deckBase + slug + '/cards.json?v=' + ((window.MM && MM.DATA_VERSION) || 0))
       .then(r => { if (!r.ok) throw new Error(slug + ' ' + r.status); return r.json(); })
       .then(doc => {
         const rows = [];

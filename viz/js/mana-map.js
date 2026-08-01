@@ -52,8 +52,12 @@
   // neighbours for Doubling Season while a cache-busted fetch of the same URL returned
   // the new ones. Bump whenever a consumer would draw a different conclusion from the
   // bytes, not only when the parser would.
-  const DATA_VERSION = 3;
+  const DATA_VERSION = 4;
   const v = url => url + '?v=' + DATA_VERSION;
+  // Exported because the deck manifest and per-deck artifacts are fetched by
+  // build.js and discovery.js, which had NO cache-busting at all — adding a key to
+  // `index.json` served the old copy and every verified line silently drew nothing.
+  // Same class as the `membership` incident: a schema change, politely stale.
   const DATA = {
     projection: v(DATA_BASE + 'projection_2d.json'),
     projectionAbility: v(DATA_BASE + 'projection_2d_ability.json'),
@@ -729,6 +733,55 @@
     return html;
   }
 
+  /* ONE card header, for both panels that draw one.
+   *
+   * There were two, and they had drifted: the browse panel lost the loyalty and defense
+   * branches (so a planeswalker showed no loyalty while browsing but did while selected)
+   * and the in-deck badge. Neither omission was a decision — they were copies that
+   * stopped being copied.
+   *
+   * `nav` is the prev/next block, which differs in what it counts (stack position vs
+   * browse position), and `extra` is whatever the caller needs between the nav and the
+   * close button. Everything else is the same card, so it is written once.
+   */
+  function cardHeaderHtml(d, row, nav, extra) {
+    let html = '<div class="viewer-header">';
+    html += '<h2>' + escHtml(d.n) + '</h2>';
+    if (nav) {
+      html += '<span class="viewer-nav">' +
+        '<button class="viewer-arrow" onclick="MM.cyclePrev()" title="Previous (\u2190)">\u2039</button>' +
+        '<span class="viewer-count">' + nav + '</span>' +
+        '<button class="viewer-arrow" onclick="MM.cycleNext()" title="Next (\u2192)">\u203a</button>' +
+        '</span>';
+    }
+    if (extra) html += extra;
+    if (typeof row === 'number' && typeof window.Build !== 'undefined' && Build.isInDeck) {
+      if (Build.isInDeck(row)) {
+        html += '<span class="in-deck-badge">\u2713 In Deck</span>';
+      } else {
+        html += '<button class="btn-add-deck" onclick="Build.addCard(' + row +
+                '); MM.render()">+ Deck</button>';
+      }
+    }
+    html += '<button class="detail-close" onclick="MM.closeDetail()" title="Close (ESC)">\u00d7</button>';
+    html += '<div class="viewer-quickstats">';
+    if (d.mc) html += renderManaSymbols(d.mc);
+    if (d.p != null && d.th != null) {
+      html += '<span class="stat-divider">\u00b7</span><strong>' + escHtml(d.p) + '/' + escHtml(d.th) + '</strong>';
+    } else if (d.l != null) {
+      html += '<span class="stat-divider">\u00b7</span><strong>Loyalty: ' + escHtml(String(d.l)) + '</strong>';
+    } else if (d.d != null) {
+      html += '<span class="stat-divider">\u00b7</span><strong>Defense: ' + escHtml(String(d.d)) + '</strong>';
+    }
+    if (d.r) {
+      const rc = ['mythic', 'rare', 'uncommon', 'common'].indexOf(d.r) !== -1 ? d.r : '';
+      html += '<span class="stat-divider">\u00b7</span><span class="rarity-pill ' + rc + '">' +
+              escHtml(d.r) + '</span>';
+    }
+    html += '</div></div>';
+    return html;
+  }
+
   function updateViewerPanel() {
     if (browseSet) { renderBrowsePanel(); return; }
     if (selectedCards.length === 0) {
@@ -741,43 +794,8 @@
     const topCard = selectedCards[topCardIndex];
     const d = topCard.data;
 
-    // Header with card name, count, in-deck badge, close
-    let html = '<div class="viewer-header">';
-    html += '<h2>' + escHtml(d.n) + '</h2>';
-    if (selectedCards.length > 1) {
-      // The arrows live in the sticky header so they stay reachable no matter how far
-      // down the list you have scrolled. Same action as ← / →.
-      html += '<span class="viewer-nav">';
-      html += '<button class="viewer-arrow" onclick="MM.cyclePrev()" title="Previous (←)">‹</button>';
-      html += '<span class="viewer-count">' + (topCardIndex + 1) + '/' + selectedCards.length + '</span>';
-      html += '<button class="viewer-arrow" onclick="MM.cycleNext()" title="Next (→)">›</button>';
-      html += '</span>';
-    }
-    // In-deck badge or add-to-deck button
-    if (typeof window.Build !== 'undefined' && window.Build.isInDeck) {
-      if (window.Build.isInDeck(topCard.idx)) {
-        html += '<span class="in-deck-badge">\u2713 In Deck</span>';
-      } else {
-        html += '<button class="btn-add-deck" onclick="Build.addCard(' + topCard.idx + '); MM.render(); MM.bringToTop(' + topCardIndex + ')">+ Deck</button>';
-      }
-    }
-    html += '<button class="detail-close" onclick="MM.closeDetail()" title="Close (ESC)">\u00d7</button>';
-    // Quickstats line: mana + P/T + rarity
-    html += '<div class="viewer-quickstats">';
-    if (d.mc) html += renderManaSymbols(d.mc);
-    if (d.p != null && d.th != null) {
-      html += '<span class="stat-divider">\u00b7</span><strong>' + escHtml(d.p) + '/' + escHtml(d.th) + '</strong>';
-    } else if (d.l != null) {
-      html += '<span class="stat-divider">\u00b7</span><strong>Loyalty: ' + escHtml(String(d.l)) + '</strong>';
-    } else if (d.d != null) {
-      html += '<span class="stat-divider">\u00b7</span><strong>Defense: ' + escHtml(String(d.d)) + '</strong>';
-    }
-    if (d.r) {
-      const rarityClass = (d.r === 'mythic' || d.r === 'rare' || d.r === 'uncommon' || d.r === 'common') ? d.r : '';
-      html += '<span class="stat-divider">\u00b7</span><span class="rarity-pill ' + rarityClass + '">' + escHtml(d.r) + '</span>';
-    }
-    html += '</div>';
-    html += '</div>';
+    let html = cardHeaderHtml(d, topCard.idx,
+      selectedCards.length > 1 ? (topCardIndex + 1) + '/' + selectedCards.length : null);
 
     // One card: no list to navigate, so the detail is the panel.
     //
@@ -834,28 +852,12 @@
     if (!d) { closeViewerPanel(); return; }
     const n = browseSet.indices.length;
 
-    let html = '<div class="viewer-header">';
-    html += '<h2>' + escHtml(d.n) + '</h2>';
-    html += '<span class="viewer-nav">';
-    html += '<button class="viewer-arrow" onclick="MM.cyclePrev()" title="Previous (←)">‹</button>';
-    html += '<span class="viewer-count">' + (browseSet.pos + 1) + ' / ' + n.toLocaleString() + '</span>';
-    html += '<button class="viewer-arrow" onclick="MM.cycleNext()" title="Next (→)">›</button>';
-    html += '</span>';
-    if (browseSet.anchor != null && browseSet.pos !== 0) {
-      html += '<div class="browse-anchor">near <strong>' +
-        escHtml(allData[browseSet.anchor].n) + '</strong></div>';
-    }
-    html += '<button class="detail-close" onclick="MM.closeDetail()" title="Close (ESC)">×</button>';
-    html += '<div class="viewer-quickstats">';
-    if (d.mc) html += renderManaSymbols(d.mc);
-    if (d.p != null && d.th != null) {
-      html += '<span class="stat-divider">·</span><strong>' + escHtml(d.p) + '/' + escHtml(d.th) + '</strong>';
-    }
-    if (d.r) {
-      const rc = ['mythic', 'rare', 'uncommon', 'common'].includes(d.r) ? d.r : '';
-      html += '<span class="stat-divider">·</span><span class="rarity-pill ' + rc + '">' + escHtml(d.r) + '</span>';
-    }
-    html += '</div></div>';
+    let html = cardHeaderHtml(d, browseSet.indices[browseSet.pos],
+      (browseSet.pos + 1) + ' / ' + n.toLocaleString(),
+      (browseSet.anchor != null && browseSet.pos !== 0)
+        ? '<div class="browse-anchor">near <strong>' +
+          escHtml(allData[browseSet.anchor].n) + '</strong></div>'
+        : '');
 
     // Say what the order is. An unexplained sequence through 400 cards is just a shuffle
     // with extra steps, and the ordering is the only thing making this browsable.
@@ -1664,12 +1666,16 @@
       return;
     }
 
-    // Stack navigation: only in explore mode, not typing in an input
-    if (currentMode !== 'explore') return;
+    // NO BLANKET MODE GATE. This was `if (currentMode !== 'explore') return;`, which
+    // killed every key below in every other mode — including `/` for search, which is in
+    // the toolbar and visible from everywhere. It was also redundant: each branch already
+    // refuses when its own data is absent (`browseSet`, `selectedCards`), so the gate was
+    // doing nothing except making three modes feel keyboard-dead. That asymmetry is a real
+    // part of why the modes felt like different products.
     const tag = (e.target.tagName || '').toLowerCase();
     if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
 
-    // / to focus search
+    // Search is in the toolbar and reachable from every mode, so its shortcut is too.
     if (e.key === '/') {
       e.preventDefault();
       const searchInput = document.getElementById('search');
@@ -1715,8 +1721,18 @@
   // ── Shift+Drag Box Select ──
   let shiftHeld = false;
 
+  /* Is the 34K atlas the surface under the cursor? Explore always; Build only in its map
+   * view, since its graph view hands the canvas to force.js. */
+  function mapSurfaceShowing() {
+    if (currentMode === 'explore') return true;
+    return currentMode === 'build' && window.Build && Build.view === 'map';
+  }
+
   document.addEventListener('keydown', e => {
-    if (e.key === 'Shift' && !shiftHeld && currentMode === 'explore') {
+    // Box-select needs the atlas under the cursor, which is Explore and Build's map view.
+    // The graph modes have their own drag (fling a node), so arming a marquee there would
+    // fight it.
+    if (e.key === 'Shift' && !shiftHeld && mapSurfaceShowing()) {
       shiftHeld = true;
       setCanvasSelectMode(true);          // arms the marquee
       const plotDiv = document.getElementById('plot');
@@ -2150,6 +2166,7 @@
     setMode,
     MAP_CONFIGS,
     DATA,
+    DATA_VERSION,
     EMBED_DIM,
     get obsolescence() { return obsolescenceIndex; },
     // Shared big-data loaders: the deck builder awaits these instead of
