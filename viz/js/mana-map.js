@@ -200,16 +200,27 @@
     updateSelectionHighlight();
   }
 
+  // TWO JOBS, TWO FUNCTIONS. These used to be one, and the overload was a real bug:
+  // every plain click runs "replace the selection" first, so clicking a point while a
+  // region was focused ran the Escape chain instead — clearing the focus and refitting
+  // the camera, i.e. the map zoomed out from under you as you selected a card. The
+  // `orientation` branch had done the same thing for longer and less visibly.
+  //
+  // `clearSelection` now only clears the selection. Peeling belongs to the key.
   function clearSelection() {
-    // Escape peels one layer at a time, outermost first: a focused region, then the
-    // orientation lens, then the selection. Each press does one visible thing.
-    if (regionFocus) { clearRegionFocus(); return; }
-    if (orientation) { clearOrientation(); return; }
     selectedCards = [];
     topCardIndex = 0;
     browseSet = null;
     closeViewerPanel();
     updateSelectionHighlight();
+  }
+
+  // Escape peels ONE layer at a time, outermost first: a focused region, then the
+  // orientation lens, then the selection. Each press does exactly one visible thing.
+  function escapeOnce() {
+    if (regionFocus) { clearRegionFocus(); return; }
+    if (orientation) { clearOrientation(); return; }
+    clearSelection();
   }
 
   function bringToTop(stackIndex) {
@@ -1591,7 +1602,7 @@
           window.DeckBuilder.handleEscape();
         }
       } else {
-        clearSelection();
+        escapeOnce();
       }
       return;
     }

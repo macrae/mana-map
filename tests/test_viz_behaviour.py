@@ -2611,3 +2611,65 @@ def test_a_settled_drill_is_still_clickable(page):
         f"only {r['hits']}/{r['tried']} drilled cards were pickable — the quadtree is "
         f"still holding pre-drill positions"
     )
+
+
+def test_selecting_a_card_does_not_leave_the_region(page):
+    """Clicking a point while a region is focused must not move the camera.
+
+    `clearSelection()` was doing two jobs. Every plain click runs "replace the selection"
+    first, and that function also carried the Escape peel chain — so clicking a point while
+    a region was focused cleared the focus and refit the camera, and the map zoomed out from
+    under you as you selected a card. The `orientation` branch had done the same thing for
+    longer and less visibly: clicking a point while the lens was on just turned the lens
+    off.
+
+    They are two jobs and are now two functions. `clearSelection` clears the selection;
+    `escapeOnce` peels one layer, and only the Escape key calls it.
+    """
+    r = page.evaluate("""async () => {
+        const span = () => {
+            const c = MM.mapRenderer.getCamera();
+            return Math.abs(c.x[1] - c.x[0]);
+        };
+        document.querySelector('.map-label').click();
+        await new Promise(r => setTimeout(r, 2500));
+        const points = () => MM.mapRenderer.layers
+            .filter(l => l.customdata && l.mode !== 'edges')
+            .reduce((n, l) => n + l.x.length, 0);
+        const zoomed = {span: span(), region: !!MM.regionFocus, points: points()};
+
+        const row = Array.from(MM.regionFocus.rows)[0];
+        const d = MM.allData[row];
+        const p = MM.mapRenderer.dataToPixel(d.x, d.y);
+        const rect = document.getElementById('plot').getBoundingClientRect();
+        MM.mapRenderer.canvas.dispatchEvent(new MouseEvent('click',
+            {bubbles: true, clientX: rect.left + p[0], clientY: rect.top + p[1]}));
+        await new Promise(r => setTimeout(r, 1200));
+        const picked = {span: span(), region: !!MM.regionFocus, points: points(),
+                        card: (document.querySelector('#detailInner h2') || {}).textContent};
+
+        // Escape still peels the region — the behaviour that was borrowed, not deleted.
+        document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', bubbles: true}));
+        await new Promise(r => setTimeout(r, 1200));
+        return {zoomed: zoomed, picked: picked,
+                escaped: {span: span(), region: !!MM.regionFocus}};
+    }""")
+    assert page.js_errors == []
+    assert r["zoomed"]["region"] and r["zoomed"]["span"] < 40
+    assert r["picked"]["region"], "selecting a card cleared the region focus"
+    # Deliberately NOT an equality check on the span. Opening the detail panel narrows
+    # `#plot` at this viewport, so the same zoom transform covers less world width — two
+    # viewports, not two cameras. (Verified in a wider window where the panel overlays
+    # instead of pushing: the span is identical to three decimals.) The bug was a reset to
+    # the global view, so that is what this asserts.
+    assert r["picked"]["span"] < r["zoomed"]["span"] * 1.5, (
+        f"the camera zoomed out on select: {r['zoomed']['span']:.2f} -> "
+        f"{r['picked']['span']:.2f}"
+    )
+    assert r["picked"]["points"] == r["zoomed"]["points"] + 1, (
+        "selecting a card changed which cards are drawn (+1 is the highlight layer)"
+    )
+    assert r["picked"]["card"], "no card was actually selected"
+    assert not r["escaped"]["region"] and r["escaped"]["span"] > r["picked"]["span"] * 2, (
+        "Escape no longer peels the region"
+    )
