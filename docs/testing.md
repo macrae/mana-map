@@ -1,12 +1,12 @@
 # Testing
 
 ```bash
-.venv/bin/python -m pytest              # everything (1,136, ~7 min)
+.venv/bin/python -m pytest              # everything (1,137, ~7 min)
 .venv/bin/python -m pytest -m "not browser"   # fast suite (1,042, ~70 s)
 .venv/bin/python -m pytest -m browser         # the 80 browser tests (~340 s)
 ```
 
-1,136 tests in `tests/`: 438 card-pipeline + 601 pilot-subsystem + **97 browser**.
+1,137 tests in `tests/`: 438 card-pipeline + 601 pilot-subsystem + **98 browser**.
 One is a still-unmet `xfail(strict=True)` ship gate in `test_embedding_quality.py` — see below.
 
 ## Source assertions do not catch regressions
@@ -51,7 +51,7 @@ matched literal indentation and broke the moment the key handler was rewritten t
 gate — while the invariant it cared about was untouched. It now asserts the delegation
 (`cycleSelection` is called; the handler does not recompute an index) rather than the text.
 
-### Browser tests (97) — `tests/test_viz_behaviour.py` + `test_decklist_parity.py`
+### Browser tests (98) — `tests/test_viz_behaviour.py` + `test_decklist_parity.py`
 
 The session fixtures `browser` and `viz_server` live in `tests/conftest.py` — see the
 section below for why they cannot live anywhere else. `conftest_viz.py` still holds the
@@ -109,6 +109,22 @@ legitimately collides; that one produced a confident and completely wrong conclu
 labelling was broken. **If an assertion depends on layout, network, or a simulation
 settling, wait for that thing — a `setTimeout` long enough to usually work is a flake with
 a delay on it.**
+
+## Do not assert on things outside the code's control
+
+The same shape has now cost three debugging sessions, one layer apart each time.
+
+1. A **fixed timer** waiting for a Scryfall image, then asserting the popup's height.
+2. Waiting for the popup **element** rather than its visible state — it is created once and
+   reused, so from the second hover it is already in the DOM while still hidden.
+3. **Console noise from a third-party host.** `js_errors` captured every console error,
+   including failed fetches of card art, so one `ERR_CONNECTION_RESET` failed
+   `test_escape_returns_the_whole_atlas` — a test that loads no image on purpose and has
+   nothing to do with Scryfall.
+
+`conftest_viz._record` now filters `Failed to load resource`, and **narrowly**: a
+`ReferenceError`, a `TypeError`, or a failed fetch of our OWN data still fails the test,
+which is the entire point of capturing them.
 
 ## Session fixtures belong in `conftest.py`, not in an imported module
 

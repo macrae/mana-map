@@ -722,6 +722,7 @@
     const seeds = cmdIdx >= 0
       ? [cmdIdx].concat(rows.filter(function (r) { return r !== cmdIdx; }))
       : rows;
+    if (cmdIdx >= 0) Session.setCommander(cmdIdx);   // one answer, read by the brief
     Promise.resolve(Force.enter(seeds, active.entry.deck_name,
       { chrome: 'discovery', deck: { rows: new Set(rows), commander: cmdIdx } }))
       .then(function () { if (cmdIdx >= 0) Force.pinCard(cmdIdx); });

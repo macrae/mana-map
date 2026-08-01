@@ -502,19 +502,104 @@ window.Discovery = (function () {
    * the manuals are 6-10 serially dependent LLM subagents costing ~330k-1.7M tokens, and
    * a static page on Pages cannot run Python. So the tray produces a BRIEF — the thing a
    * human pastes into Claude Code, where that loop already works. */
+  /* THE BRIEF IS THE SCHEMA `build-deck` ALREADY READS, not a description of it.
+   *
+   * `pilot/build_deck.py:load_brief` wants `{slug, commander, bracket}` with optional
+   * `must_include` / `must_exclude`. What this used to emit — `{generated_by, card_count,
+   * cards, commander_candidates, next_step}` — was none of that, so every export had to be
+   * hand-translated before the loop could run, and the browser's own answers (which card
+   * IS the commander, how many copies, what you brought versus what you found) were thrown
+   * away and re-derived.
+   *
+   * Two rules from the Python side, honoured here rather than guessed at:
+   *   - Colour identity is DERIVED from the commander, never authored. It rides in the
+   *     provenance block as information, and the builder ignores it.
+   *   - Budget is unsupported: prices are stripped from the card data. Saying so beats
+   *     approximating it.
+   *
+   * `must_include` is the TRAY — cards you deliberately kept — not the whole pool. The
+   * pool is context for the analyst; the tray is a claim that these belong in the 99.
+   */
+  const BRACKET_DEFAULT = 3;      // mirrors config.py:BRACKET_DEFAULT
+  const COMMANDER_SLOTS = 99;
+
+  function slugify(name) {
+    return String(name || 'untitled').toLowerCase()
+      .replace(/\s*\/\/.*$/, '')            // DFCs: the front face names the deck
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'untitled';
+  }
+
   function brief() {
-    const cards = trayNames();
-    const commanderish = Session.tray.list.filter(r => (index[r].g || []).length &&
-                                          index[r].s === 'Creature');
-    return {
-      generated_by: 'manamap discovery tray',
-      card_count: cards.length,
-      cards: cards,
-      commander_candidates: commanderish.slice(0, 8).map(r => index[r].n),
-      next_step: 'Run the build loop in Claude Code: /build-deck with these cards as the '
-               + 'pool. The pilot subsystem is 6-10 serial subagent spawns and cannot run '
-               + 'in a browser.',
+    const cmdRow = Session.commander;
+    const cmd = cmdRow >= 0 && index[cmdRow] ? index[cmdRow].n : null;
+
+    // What you brought vs what you found. The graph knows; the agent should not have to
+    // guess from a flat name list which cards were your idea.
+    const onGraph = window.Force ? Force.rows() : [];
+    const pool = onGraph.map(function (r) {
+      const rec = index[r];
+      return rec ? { name: rec.n, source: Session.tray.has(r) ? 'kept' : 'found' } : null;
+    }).filter(Boolean);
+
+    const must = Session.tray.list.filter(function (r) { return r !== cmdRow; })
+                                  .map(function (r) { return index[r].n; });
+
+    const ci = [];
+    if (cmdRow >= 0) {
+      const full = MM.cardRecord(cmdRow);
+      if (full && full.ci) String(full.ci).split(',').forEach(function (c) {
+        c = c.trim(); if (c) ci.push(c);
+      });
+    }
+
+    const doc = {
+      // ── what build_deck.py reads ──
+      slug: slugify(cmd || 'untitled'),
+      commander: cmd,
+      bracket: BRACKET_DEFAULT,
+      must_include: must.slice(0, COMMANDER_SLOTS),
+      must_exclude: [],
+
+      // ── what the agents can use, and the builder ignores ──
+      _manamap: {
+        generated_by: 'manamap Build',
+        commander_row: cmdRow,
+        colour_identity: ci,          // DERIVED, informational — build_deck derives its own
+        budget: 'unsupported — prices are stripped from the card data',
+        kept: must.length,
+        pool_size: pool.length,
+        pool: pool,
+      },
     };
+
+    if (!cmd) {
+      doc._manamap.blocked = 'No commander set. `build-deck` requires one — open a '
+        + 'legendary creature and choose "Set as commander".';
+      // Keep the old heuristic as a suggestion, clearly labelled as a guess.
+      doc._manamap.commander_candidates = Session.tray.list
+        .filter(function (r) { return index[r] && index[r].s === 'Creature'; })
+        .slice(0, 8).map(function (r) { return index[r].n; });
+    }
+    if (must.length > COMMANDER_SLOTS) {
+      doc._manamap.truncated_must_include = must.length;
+    }
+    // Loading a deck puts all 99 in the tray, so a rebuild can arrive with `must_include`
+    // pinning almost every slot and the builder left with nothing to decide. Say so rather
+    // than letting the loop discover it: the fix is to Clear the tray and keep only what
+    // you actually insist on.
+    if (must.length >= COMMANDER_SLOTS - 10) {
+      doc._manamap.note = must.length + ' of ' + COMMANDER_SLOTS + ' slots are pinned by '
+        + 'must_include, leaving ' + Math.max(0, COMMANDER_SLOTS - must.length)
+        + ' for the builder. Clear the tray and keep only what you insist on if you want '
+        + 'it to actually build.';
+    }
+
+    doc.next_step = cmd
+      ? 'Save as data/decks/' + doc.slug + '/brief.json, then run /build-deck in Claude '
+        + 'Code. Check `bracket` first — the browser cannot know your target. The pilot '
+        + 'subsystem is 6-10 serial subagent spawns and cannot run in a browser.'
+      : 'Set a commander, then export again — build-deck cannot start without one.';
+    return doc;
   }
 
   function exportBrief() {
@@ -523,11 +608,14 @@ window.Discovery = (function () {
     const blob = new Blob([text], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'manamap-brief.json';
+    a.download = (doc.slug || 'manamap') + '-brief.json';
     a.click();
     URL.revokeObjectURL(a.href);
     if (navigator.clipboard) navigator.clipboard.writeText(text).catch(() => {});
-    MM.setStatus(doc.card_count + ' cards exported — paste the brief into Claude Code.');
+    MM.setStatus(doc.commander
+      ? doc.must_include.length + ' cards for ' + doc.commander + ' — save as data/decks/'
+        + doc.slug + '/brief.json and run /build-deck'
+      : 'Exported, but no commander is set — build-deck needs one.');
     return doc;
   }
 
@@ -566,6 +654,11 @@ window.Discovery = (function () {
       // how a bulk pool arrives — got a pinned commander and none of the visual language:
       // no gold ring, no deck ink, no warm deck edges, every card washed out as if you had
       // wandered into it. The cards you brought must look different from the cards you find.
+      // ONE ANSWER to "who is the commander". The graph learned it from `opts.deck` and
+      // the brief reads Session, so writing only the graph meant an imported deck named
+      // its commander and the exported brief came out with `commander: null` — which
+      // `build-deck` refuses.
+      if (commanderRow >= 0) Session.setCommander(commanderRow);
       Promise.resolve(Force.enter(seeds, 'Imported pool', {
         chrome: 'discovery',
         deck: { rows: new Set(rows), commander: commanderRow },
@@ -618,6 +711,9 @@ window.Discovery = (function () {
         for (const r of rows) if (!inTray(r)) Session.tray.toggle(r);
 
         const seeds = cmdr >= 0 ? [cmdr].concat(rows.filter(r => r !== cmdr)) : rows;
+        // Session is the one answer to "who is the commander" — the ring, the colour
+        // identity and the exported brief all read it from there.
+        if (cmdr >= 0) Session.setCommander(cmdr);
         const deck = { rows: new Set(rows), commander: cmdr };
         Force.newWalk(true);
         return Promise.resolve(

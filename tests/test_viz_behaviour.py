@@ -1329,19 +1329,33 @@ def test_the_tray_is_its_own_thing(discover_page):
 
 def test_the_brief_is_the_hand_off_not_a_backend(discover_page):
     """There is no server and this does not add one. The pilot loop is 6-10 serial
-    subagent spawns costing ~330k-1.7M tokens; a static page cannot run it. So the tray
-    emits a brief for a human to paste into Claude Code, and says so."""
+    subagent spawns costing ~330k-1.7M tokens; a static page cannot run it. So Build emits
+    a brief for a human to run in Claude Code, and says so.
+
+    An imported list carries its own commander (`*CMDR*` in the decklist), so this also
+    covers the path where the commander is NOT chosen by hand — the brief must still come
+    out in the shape `load_brief` reads.
+    """
     r = discover_page.evaluate("""async () => {
         const text = await (await fetch('../data/decks/heliod/decklist.txt')).text();
-        Discovery.importText(text);
+        const res = Discovery.importText(text);
         await new Promise(r => setTimeout(r, 2500));
-        return Discovery.brief();
+        const b = Discovery.brief();
+        return {resolved: res.resolved, importedCommander: res.commander,
+                commander: b.commander, slug: b.slug, bracket: b.bracket,
+                mustInclude: b.must_include.length, poolSize: b._manamap.pool_size,
+                next: b.next_step};
     }""")
     assert discover_page.js_errors == []
-    assert r["card_count"] > 50
-    assert len(r["cards"]) == r["card_count"]
-    assert r["commander_candidates"], "a brief with no commander candidates is not useful"
-    assert "Claude Code" in r["next_step"], "the brief must say where it gets run"
+    assert r["resolved"] > 50
+    assert r["poolSize"] > 50, "the pool is the graph you are holding"
+    assert r["mustInclude"] > 50, "importing fills the tray, which is what must_include is"
+    assert r["bracket"] in range(1, 6)
+    # The decklist names its own commander, so the brief should not need one chosen.
+    if r["importedCommander"] is not None and r["importedCommander"] >= 0:
+        assert r["commander"], "an imported commander did not reach the brief"
+        assert r["slug"] != "untitled"
+    assert "Claude Code" in r["next"], "the brief must say where it gets run"
 
 
 def test_import_does_not_go_through_deck_lens(discover_page):
@@ -2914,3 +2928,75 @@ def test_leaving_build_hands_the_canvas_back(page):
     assert r["throughExplore"] >= r["mine"], (
         "Explore cleared the walk — it is a lens, not a workspace"
     )
+
+
+def test_the_brief_is_the_schema_build_deck_reads(discover_page):
+    """The export must BE `brief.json`, not a description of one.
+
+    It used to emit `{generated_by, card_count, cards, commander_candidates, next_step}`,
+    which is none of the shape `pilot/build_deck.py:load_brief` requires — so every export
+    had to be hand-translated before the loop could run, and the browser's own answers
+    (which card IS the commander, what you kept versus what you found) were thrown away
+    and re-derived by the agent.
+
+    Two rules come from the Python side and are honoured rather than guessed: colour
+    identity is DERIVED from the commander and never authored, so it rides in the
+    provenance block the builder ignores; and budget is unsupported because prices are
+    stripped from the card data.
+
+    Round-tripped for real: `load_brief` accepts this document unchanged, tolerates the
+    `_manamap` and `next_step` extras, and its derived identity for Edgar Markov ({B,R,W})
+    matches what the browser emits.
+    """
+    r = discover_page.evaluate("""async () => {
+        const edgar = MM.allData.findIndex(d => d.n === 'Edgar Markov');
+
+        // With no commander the brief must refuse rather than emit an unusable document.
+        const blocked = Discovery.brief();
+
+        Discovery.show(edgar);
+        await new Promise(r => setTimeout(r, 1200));
+        MM.setCommander(edgar);
+        await new Promise(r => setTimeout(r, 600));
+        for (let i = 0; i < 3; i++) {
+            MM.relate(Force.rows()[Force.nodeCount - 1], 'similar');
+            await new Promise(r => setTimeout(r, 700));
+        }
+        Force.rows().filter(r => r !== edgar).slice(0, 6).forEach(function (r) {
+            if (!Session.tray.has(r)) Session.tray.toggle(r);
+        });
+        const b = Discovery.brief();
+        return {
+            blocked: {commander: blocked.commander, hasBlocked: !!blocked._manamap.blocked},
+            keys: Object.keys(b),
+            slug: b.slug, commander: b.commander, bracket: b.bracket,
+            mustInclude: b.must_include, mustExclude: b.must_exclude,
+            ci: b._manamap.colour_identity,
+            budget: b._manamap.budget,
+            sources: Array.from(new Set(b._manamap.pool.map(p => p.source))).sort(),
+            commanderInMustInclude: b.must_include.indexOf('Edgar Markov') !== -1,
+        };
+    }""")
+    assert discover_page.js_errors == []
+
+    # Blocked without a commander — `build-deck` cannot start without one.
+    assert r["blocked"]["commander"] is None and r["blocked"]["hasBlocked"]
+
+    # The three keys `load_brief` requires, in the shape it requires them.
+    for key in ("slug", "commander", "bracket", "must_include", "must_exclude"):
+        assert key in r["keys"], f"brief is missing {key} — load_brief will reject it"
+    assert r["slug"] == "edgar-markov", f"slug not derived from the commander: {r['slug']}"
+    assert r["commander"] == "Edgar Markov"
+    assert r["bracket"] in range(1, 6), "bracket must be 1-5"
+    assert isinstance(r["mustInclude"], list) and isinstance(r["mustExclude"], list)
+    assert len(r["mustInclude"]) == 6, "the tray is what must_include means"
+    assert not r["commanderInMustInclude"], (
+        "the commander occupies its own slot and must not also be in must_include"
+    )
+
+    # Derived, informational, and correct — Edgar Markov is Mardu.
+    assert sorted(r["ci"]) == ["B", "R", "W"]
+    assert "unsupported" in r["budget"], "budget must say it is unsupported, not guess"
+
+    # What you brought vs what you found: the graph knows, so the agent should not guess.
+    assert r["sources"] == ["found", "kept"], f"pool provenance lost: {r['sources']}"

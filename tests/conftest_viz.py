@@ -18,6 +18,27 @@ from __future__ import annotations
 
 import pytest
 
+# Card art comes from Scryfall over the public internet. A failed image fetch surfaces as
+# a console error, so a rate-limit or a dropped connection failed whichever browser test
+# happened to be running — `ERR_CONNECTION_RESET` took out `test_escape_returns_the_whole_atlas`,
+# which does not load an image on purpose and has nothing to do with Scryfall.
+#
+# Filtered NARROWLY, and only for resource loads the app does not control. A ReferenceError,
+# a TypeError, a failed fetch of our OWN data — all still fail the test, which is the whole
+# point of capturing these. See docs/testing.md on waiting for conditions rather than timers:
+# this is the same lesson one layer down, about not asserting on the network.
+_EXTERNAL_NOISE = ("Failed to load resource",)
+
+
+def _record(errors):
+    """Console/page error sink that ignores third-party resource failures."""
+    def add(text):
+        text = str(text)
+        if any(marker in text for marker in _EXTERNAL_NOISE):
+            return
+        errors.append(text)
+    return add
+
 # The map eagerly fetches a 12.9 MB projection before it renders anything, then loads
 # region labels in the background. Every wait below is generous on purpose: a flaky
 # browser test is worse than a slow one, because it teaches you to ignore red.
@@ -70,8 +91,9 @@ def _wait_for_boot(page, condition, what):
 def _boot(browser, viz_server, query=""):
     page = browser.new_page(viewport={"width": 1440, "height": 900})
     errors: list[str] = []
-    page.on("pageerror", lambda e: errors.append(str(e)))
-    page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+    _add = _record(errors)
+    page.on("pageerror", lambda e: _add(e))
+    page.on("console", lambda m: _add(m.text) if m.type == "error" else None)
     page.goto(f"{viz_server}/viz/index.html{query}")
     page.add_style_tag(content="*, *::before, *::after {"
                                " transition: none !important; animation: none !important; }")
@@ -79,6 +101,8 @@ def _boot(browser, viz_server, query=""):
     _wait_for_boot(page, "() => window.MM && MM.allData && MM.allData.length > 0",
                    "the projection to load")
     return page
+
+
 
 
 @pytest.fixture
@@ -91,8 +115,9 @@ def discover_page(browser, viz_server):
     """
     page = browser.new_page(viewport={"width": 1440, "height": 900})
     errors: list[str] = []
-    page.on("pageerror", lambda e: errors.append(str(e)))
-    page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+    _add = _record(errors)
+    page.on("pageerror", lambda e: _add(e))
+    page.on("console", lambda m: _add(m.text) if m.type == "error" else None)
     page.goto(f"{viz_server}/viz/index.html?card=Craterhoof%20Behemoth")
     page.add_style_tag(content="*, *::before, *::after {"
                                " transition: none !important; animation: none !important; }")
@@ -130,8 +155,9 @@ def page(browser, viz_server):
     """
     page = browser.new_page(viewport={"width": 1440, "height": 900})
     errors: list[str] = []
-    page.on("pageerror", lambda e: errors.append(str(e)))
-    page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+    _add = _record(errors)
+    page.on("pageerror", lambda e: _add(e))
+    page.on("console", lambda m: _add(m.text) if m.type == "error" else None)
     page.goto(f"{viz_server}/viz/index.html{EXPLORE}")
     # Kill CSS transitions. Playwright pages run backgrounded, and Chrome throttles
     # transitions there — the side panels' `transition: width 0.25s` never advances, so
