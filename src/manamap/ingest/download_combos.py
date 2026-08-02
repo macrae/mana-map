@@ -5,6 +5,7 @@ import time
 
 import requests
 
+from manamap.ingest.common import dump_exists, dump_size_mb, open_dump
 from manamap.config import (
     COMBOS_API_URL,
     COMBOS_META_PATH,
@@ -27,7 +28,7 @@ def is_up_to_date():
     refreshes once present. Delete the artifacts to force a re-download.
 
     Original note: check sidecar metadata to skip re-download."""
-    if not COMBOS_META_PATH.exists() or not COMBOS_RAW_PATH.exists():
+    if not COMBOS_META_PATH.exists() or not dump_exists(COMBOS_RAW_PATH):
         return False
     return True
 
@@ -69,17 +70,17 @@ def main():
 
     if is_up_to_date():
         print("  combos_raw.json already exists — skipping download.")
-        print("  (Delete data/combos_raw.json to force re-download.)")
+        print(f"  (Delete {COMBOS_RAW_PATH} to force re-download.)")
         return
 
     print("Downloading combo variants from Commander Spellbook...")
     combos = download_all_combos()
 
-    with open(COMBOS_RAW_PATH, "w") as f:
+    with open_dump(COMBOS_RAW_PATH, "wt") as f:
         json.dump(combos, f, separators=(",", ":"))
     print(f"  Saved {len(combos):,} combos to {COMBOS_RAW_PATH}")
 
-    size_mb = COMBOS_RAW_PATH.stat().st_size / (1024 * 1024)
+    size_mb = dump_size_mb(COMBOS_RAW_PATH)
     print(f"  File size: {size_mb:.1f} MB")
 
     save_meta(len(combos))

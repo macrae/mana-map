@@ -1,0 +1,338 @@
+{
+  "id": "002",
+  "slug": "yawgmoth-swarm",
+  "deck": "YAWGMOTH — THE SCARAB SWARM",
+  "title": "Yawgmoth + Nest of Scarabs + Bastion of Remembrance: what bounds the engine?",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Yawgmoth, Thran Physician (2/4, untapped, no counters)",
+        "Nest of Scarabs (enchantment)",
+        "Bastion of Remembrance (enchantment)",
+        "Insect token A (1/1 black Insect, no counters)",
+        "Insect token B (1/1 black Insect, no counters)",
+        "Human Soldier token (1/1 white, no counters)",
+        "Swamp (untapped)",
+        "Swamp (untapped)",
+        "Swamp (untapped)"
+      ],
+      "opponent_a": [
+        "Grizzly Bears (2/2, untapped, no counters)"
+      ],
+      "opponent_b": [
+        "no permanents"
+      ],
+      "opponent_c": [
+        "no permanents"
+      ],
+      "opponent_d": [
+        "no permanents"
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "{B}{B}{B} from three untapped Swamps",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Yawgmoth, Thran Physician's activated ability — 'Pay 1 life, Sacrifice another creature: Put a -1/-1 counter on up to one target creature and draw a card.' Cost already paid: 1 life paid (you are at 39) and Insect token A sacrificed. Target chosen: Grizzly Bears.",
+        "controller": "you"
+      }
+    ],
+    "extras": {
+      "life_totals": {
+        "you": 39,
+        "opponent_a": 40,
+        "opponent_b": 40,
+        "opponent_c": 40,
+        "opponent_d": 40
+      },
+      "pod_size": "Five players — you and four opponents, 160 opposing life in total.",
+      "library": "You have 60 cards in your library.",
+      "assumptions": [
+        "No player responds to anything; every opponent passes priority throughout.",
+        "No permanent enters or leaves the battlefield except as described by the cards named here.",
+        "Insect tokens created by Nest of Scarabs are 1/1 black Insect creature tokens with no abilities.",
+        "It is your precombat main phase."
+      ],
+      "note_for_the_resolver": "Yawgmoth is a Human with protection from Humans, so his own ability can never target him. Targets are chosen as the ability is put on the stack, and Nest of Scarabs' replacement Insect is created only when its trigger RESOLVES — so the new Insect is not available as a target on the iteration that created it. Bastion of Remembrance is an ENCHANTMENT, so it can never be a legal target for Yawgmoth's ability. Its enters-the-battlefield Human Soldier token is already on the battlefield below."
+    },
+    "question": "Resolve the stack, then run the engine as far as the rules allow. (a) Is this loop unbounded? Name precisely what Yawgmoth's ability can legally target on each iteration, given that Nest of Scarabs' replacement Insect does not exist when the target is chosen, and state the exact number of completed activations from this board and what ends it. (b) What is the net change to your life total per completed activation, and how much total life do all four opponents lose?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Account for what already happened during the activation itself: Yawgmoth's ability was put on the stack, its target (Grizzly Bears) was chosen, and only then were its costs paid - 1 life (you 40 -> 39) and the sacrifice of Insect token A. Insect token A therefore already died, before anything on the stack resolves.",
+        "effect": "Insect token A was a creature you control that died, so Bastion of Remembrance's ability ('Whenever a creature you control dies, each opponent loses 1 life and you gain 1 life') has triggered. It triggered during the process of activating an ability, so it did nothing at that moment; it waits and is put on the stack the next time a player would receive priority, which is immediately after the activation is complete. It goes on top of Yawgmoth's ability. That the sacrificed creature was a TOKEN does not suppress this: a dying token still triggers leave-the-battlefield abilities before it ceases to exist. Stack, bottom to top: [0] Yawgmoth's ability targeting Grizzly Bears, [1] Bastion's drain trigger.",
+        "citations": [
+          {
+            "rule": "602.2b",
+            "quote": "The remainder of the process for activating an ability is identical to the process for casting a spell listed in rules 601.2b–i."
+          },
+          {
+            "rule": "701.21a",
+            "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner’s graveyard. A player can’t sacrifice something that isn’t a permanent, or something that’s a permanent they don’t control."
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers. The ability doesn’t do anything at this point."
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority. See rule 117, “Timing and Priority.” The ability becomes the topmost object on the stack."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "All players pass; the top object - Bastion of Remembrance's drain trigger - resolves. This is drain #1.",
+        "effect": "Each of the four opponents loses 1 life: 40 -> 39 each. You gain 1 life: 39 -> 40. Opposing life in the pod: 160 -> 156.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "All players pass again; Yawgmoth's activated ability resolves. 'Put a -1/-1 counter on up to one target creature and draw a card.' Target: Grizzly Bears.",
+        "effect": "You put one -1/-1 counter on Grizzly Bears, which becomes 1/1. You draw a card (library 60 -> 59, hand 0 -> 1). Because YOU put a -1/-1 counter on a creature, Nest of Scarabs triggers ('Whenever you put one or more -1/-1 counters on a creature, create that many 1/1 black Insect creature tokens'). It has triggered and has done nothing yet - no token exists.",
+        "citations": [
+          {
+            "rule": "122.1a",
+            "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object’s power and Y to that object’s toughness. Similarly, -X/-Y counters subtract from power and toughness."
+          },
+          {
+            "rule": "121.1",
+            "quote": "A player draws a card by putting the top card of their library into their hand."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "A player would receive priority, so the game runs state-based actions first, then puts waiting triggered abilities on the stack.",
+        "effect": "Grizzly Bears is 1/1 - toughness above 0 - so no state-based action applies to it. Nest of Scarabs' trigger is then put on the stack and resolves, creating Insect token C under your control. ACTIVATION 1 COMPLETE. Bodies you control other than Yawgmoth: Insect B, Human Soldier token, Insect C = 3 (you spent Insect A and got Insect C: net zero, because the counter went onto an opponent's creature). You: 40 life, 59 cards in library, 1 card in hand. Opponents: 39 each.",
+        "citations": [
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack (see rule 603, “Handling Triggered Abilities”)."
+          },
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "ACTIVATION 2, same shape: activate Yawgmoth targeting Grizzly Bears again, pay 1 life (40 -> 39), sacrifice Insect B. Bastion's trigger from Insect B's death resolves first (drain #2: opponents 39 -> 38, you 39 -> 40), then Yawgmoth's ability resolves, putting a second -1/-1 counter on Grizzly Bears (now 0/0) and drawing a card.",
+        "effect": "Nest of Scarabs triggers again but has not resolved. Before that trigger can be put on the stack, state-based actions run: Grizzly Bears has toughness 0 and is put into its owner's graveyard - it dies. Bastion of Remembrance does NOT trigger for it, because Bastion reads 'Whenever a creature you control dies' and Grizzly Bears was controlled by opponent A. Only then is Nest's trigger put on the stack; it resolves and creates Insect token D. This is the same ordering that refuted the near-infinite claim in stack 001: the replacement Insect is created strictly after the death it is supposed to replace, and it never exists while that iteration's target is being chosen. ACTIVATION 2 COMPLETE. Bodies other than Yawgmoth: Human Soldier, Insect C, Insect D = 3 (again net zero - the opponent's creature absorbed the counter). You: 40 life, library 58, 2 cards in hand. Opponents: 38 each.",
+        "citations": [
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack (see rule 603, “Handling Triggered Abilities”)."
+          },
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+          },
+          {
+            "rule": "700.4",
+            "quote": "The term dies means “is put into a graveyard from the battlefield.”"
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Census of legal targets for every subsequent activation, now that no opponent controls a creature. Targets for an activated ability are chosen as the ability is activated, from what exists at that moment.",
+        "effect": "Three candidates are ruled out and one class remains. (i) Yawgmoth himself is NEVER a legal target of his own ability: he has protection from Humans and he is a Human Cleric, so the ability's source has the stated quality and cannot target him. (ii) Bastion of Remembrance and Nest of Scarabs are Enchantments, not creatures, so they are not 'target creature' at all. (iii) The Insect that Nest of Scarabs will create does not exist when the target is chosen, so it can never be the target of the same activation that creates it. What remains: only the 1/1 tokens you already control - the Human Soldier token (a Human, but protection is a property of Yawgmoth, not a restriction on whom Yawgmoth may target) and any Insect tokens from earlier iterations. The ability also says 'up to one target creature', so choosing ZERO targets is legal.",
+        "citations": [
+          {
+            "rule": "702.16b",
+            "quote": "A permanent or player with protection can’t be targeted by spells with the stated quality and can’t be targeted by abilities from a source with the stated quality."
+          },
+          {
+            "rule": "115.1c",
+            "quote": "An activated ability is targeted if it identifies something it will affect by using the phrase “target [something],” where the “something” is a phrase that describes an object and/or player. The target(s) are chosen as the ability is activated; see rule 602.2b."
+          },
+          {
+            "rule": "115.6",
+            "quote": "A spell or ability that requires targets may allow zero targets to be chosen. Such a spell or ability is still said to require targets, but that spell or ability is targeted only if one or more targets have been chosen for it."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "ACTIVATIONS 3 and 4 - the true engine iteration, where the counter must land on one of your own bodies. Activation 3: pay 1 life (40 -> 39), sacrifice Insect C, target Insect D. Activation 4: pay 1 life (41 -> 40), sacrifice the Human Soldier token, target Insect E.",
+        "effect": "Each such activation produces TWO Bastion drains, not one. First the sacrificed creature dies during cost payment (drain), and that trigger resolves before Yawgmoth's ability. Then Yawgmoth's ability resolves and puts a -1/-1 counter on your own 1/1, making it 0/0; Nest of Scarabs triggers. State-based actions then kill that 1/1 - a second creature you control dying, so Bastion triggers again (a token still triggers this before it ceases to exist). Bastion's new trigger and Nest's waiting trigger go on the stack together and you order them freely; both resolve. Net per iteration: minus 2 bodies (one sacrificed, one counter-killed) plus 1 Insect = NET MINUS ONE BODY; 2 drains minus the 1 life paid = NET PLUS 1 LIFE for you and MINUS 2 for each opponent. Activation 3 (drains #3, #4): opponents 38 -> 36, you 39 -> 41; bodies left = Human Soldier, Insect E = 2. Activation 4 (drains #5, #6): opponents 36 -> 34, you 40 -> 42; bodies left = Insect F = 1. Library 56, 4 cards in hand.",
+        "citations": [
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+          },
+          {
+            "rule": "111.7",
+            "quote": "A token that’s in a zone other than the battlefield ceases to exist. This is a state-based action; see rule 704. (Note that if a token changes zones, applicable triggered abilities will trigger before the token ceases to exist.)"
+          },
+          {
+            "rule": "603.3b",
+            "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+          },
+          {
+            "rule": "118.3b",
+            "quote": "Paying life is done by subtracting the indicated amount of life from a player’s life total."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "ACTIVATION 5 - one body left (Insect F), and it is the same body the cost must eat. Targets are announced during the proposal of the ability and costs are paid afterward, so Insect F is still on the battlefield and IS a legal target choice when targets are declared. Two lines exist; take the better one.",
+        "effect": "Line A (target Insect F, then sacrifice it to pay the cost): on resolution the ability's only target is no longer in the zone it was in, every instance of 'target' is illegal, and the ability does not resolve - no counter, no Nest trigger, and NO CARD DRAWN. Line B (declare zero targets, which 'up to one' permits): the ability resolves, the counter instruction does nothing for want of a target, and you still draw a card; Nest of Scarabs does not trigger because no counter was put on anything, so no Insect replaces Insect F. Line B is strictly better and is the line taken. Either way Insect F's sacrifice gives exactly ONE Bastion drain (#7): pay 1 life (42 -> 41), drain back to 42; opponents 34 -> 33. ACTIVATION 5 COMPLETE. Library 55, 5 cards in hand. Bodies other than Yawgmoth: ZERO.",
+        "citations": [
+          {
+            "rule": "601.2c",
+            "quote": "If the spell has a variable number of targets, the player announces how many targets they will choose before they announce those targets."
+          },
+          {
+            "rule": "601.2h",
+            "quote": "The player pays the total cost. First, they pay all costs that don’t involve random elements or moving objects from the library to a public zone, in any order."
+          },
+          {
+            "rule": "115.6",
+            "quote": "A spell or ability that requires targets may allow zero targets to be chosen. Such a spell or ability is still said to require targets, but that spell or ability is targeted only if one or more targets have been chosen for it."
+          },
+          {
+            "rule": "608.2b",
+            "quote": "If the spell or ability specifies targets, it checks whether the targets are still legal. A target that’s no longer in the zone it was in when it was targeted is illegal. Other changes to the game state may cause a target to no longer be legal; for example, its characteristics may have changed or an effect may have changed the text of the spell. If the source of an ability has left the zone it was in, its last known information is used during this process. If all its targets, for every instance of the word “target,” are now illegal, the spell or ability doesn’t resolve."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Attempt a sixth activation. The only creature on the battlefield is Yawgmoth himself, and his cost reads 'Sacrifice another creature'.",
+        "effect": "THE LOOP IS BOUNDED AND IT ENDS HERE, on running out of creatures to sacrifice. You control no creature other than Yawgmoth, so the sacrifice cost is unpayable; partial payment is not allowed, and an activation begun and not legally completable is reversed in full with no abilities triggering. Note precisely what did NOT end it: (i) not your life - you paid 5 life across five activations and gained 7, ending HIGHER than you started; (ii) not your library - 55 cards remain and the draw-from-an-empty-library loss never comes near; (iii) not the opponent's creature toughness - Grizzly Bears' 2 toughness only EXTENDED the engine, absorbing two counters and letting activations 1 and 2 cost zero net bodies; (iv) not running out of targets in the abstract, since your own Insects are always legal targets - you run out of bodies. The general rule for this board: completed activations = (sacrificeable bodies you start with) + (total toughness of opposing creatures you can put counters on) = 3 + 2 = 5.",
+        "citations": [
+          {
+            "rule": "601.2h",
+            "quote": "Partial payments are not allowed. Unpayable costs can’t be paid."
+          },
+          {
+            "rule": "733.1",
+            "quote": "If a player takes an illegal action or starts to take an action but can’t legally complete it, the entire action is reversed and any payments already made are canceled."
+          },
+          {
+            "rule": "121.4",
+            "quote": "A player who attempts to draw a card from a library with no cards in it loses the game the next time a player would receive priority."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "Stated for completeness, because the board lists three untapped Swamps: Yawgmoth's SECOND ability, '{B}{B}, Discard a card: Proliferate', is activatable exactly once in this sequence - after activation 1 you hold a drawn card to discard and {B}{B}{B} is available. It does NOT change the answer to (a).",
+        "effect": "Proliferating the Grizzly Bears (the only permanent that survives carrying a -1/-1 counter) adds a second -1/-1 counter, which triggers Nest of Scarabs for one Insect and kills the Bears. That converts the Bears' remaining toughness into a BODY instead of into a free activation, so the total is still five completed sacrifice activations - but because the Bears dies without a sacrifice being spent on it, one more iteration lands its counter on your own creature: 8 Bastion drains instead of 7 (you 43, each opponent 32, 32 total drained). The main line reported here is the sacrifice engine on its own, without proliferate; the orchestrator should decide which figure the manual quotes.",
+        "citations": [
+          {
+            "rule": "701.34a",
+            "quote": "To proliferate means to choose any number of permanents and/or players that have a counter, then give each one additional counter of each kind that permanent or player already has."
+          },
+          {
+            "rule": "601.2h",
+            "quote": "Partial payments are not allowed. Unpayable costs can’t be paid."
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "Final accounting over all five completed activations.",
+        "effect": "Bastion of Remembrance triggered SEVEN times: one per sacrificed creature (5) plus one per creature counter-killed on your own side (2, on activations 3 and 4). You paid 1 life five times and gained 1 life seven times: from the 40 you had before activation 1 (39 as the scenario states it, with the first payment already made) you finish at 42 - net +2 over the whole engine, +3 from the stated board. Per completed activation the net change to YOUR life is: 0 on activations 1, 2 and 5 (one drain, one life paid) and +1 on activations 3 and 4, which are the only iterations running in true engine mode (two drains, one life paid). Each of the four opponents loses exactly 7 life, 40 -> 33. Total life removed from the pod: 7 x 4 = 28, from 160 down to 132. Nobody is close to dead; this is a value engine and a sacrifice outlet, not a kill.",
+        "citations": [
+          {
+            "rule": "118.3b",
+            "quote": "Paying life is done by subtracting the indicated amount of life from a player’s life total."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "NOT unbounded. Once Grizzly Bears is dead, every legal target for Yawgmoth's ability is one of your own 1/1 tokens (Yawgmoth cannot target himself through protection from Humans; the two enchantments are not creatures; Nest's replacement Insect does not exist when the target is chosen), so each iteration costs two bodies and returns one - net minus one body per activation. From this board there are exactly FIVE completed activations, ended by having no other creature to sacrifice. The opponent's 2-toughness creature does not bound the engine, it EXTENDS it by two activations; your life goes UP, and your library is untouched at 55. Bastion of Remembrance triggers 7 times: your life 39 -> 42, each opponent 40 -> 33, 28 total life removed from a pod of 160. Net life per activation for you is 0 while the counter goes onto the opponent's creature or nowhere, and +1 on the two true engine iterations. (A single available proliferate would make it 8 drains / 32 total without changing the five-activation count; see step 10.)",
+      "you": {
+        "life": 42,
+        "library": 55,
+        "hand": "5 cards drawn (activations 1-5 each resolved and drew); none cast, per the scenario's assumption that no permanent enters or leaves except as described",
+        "battlefield": [
+          "Yawgmoth, Thran Physician (2/4, untapped, no counters, no longer activatable)",
+          "Nest of Scarabs",
+          "Bastion of Remembrance",
+          "Swamp (untapped)",
+          "Swamp (untapped)",
+          "Swamp (untapped)"
+        ],
+        "creatures_other_than_commander": 0,
+        "graveyard": "no cards; all six creatures of yours that died were tokens and ceased to exist",
+        "completed_activations": 5,
+        "bastion_triggers": 7,
+        "life_paid": 5,
+        "life_gained": 7,
+        "net_life_change_per_activation": {
+          "activation_1": 0,
+          "activation_2": 0,
+          "activation_3": 1,
+          "activation_4": 1,
+          "activation_5": 0,
+          "engine_mode_steady_state": 1
+        }
+      },
+      "opponents": [
+        {
+          "name": "opponent_a",
+          "life": 33,
+          "life_lost": 7,
+          "battlefield": [
+            "no permanents"
+          ],
+          "graveyard": [
+            "Grizzly Bears"
+          ]
+        },
+        {
+          "name": "opponent_b",
+          "life": 33,
+          "life_lost": 7,
+          "battlefield": [
+            "no permanents"
+          ]
+        },
+        {
+          "name": "opponent_c",
+          "life": 33,
+          "life_lost": 7,
+          "battlefield": [
+            "no permanents"
+          ]
+        },
+        {
+          "name": "opponent_d",
+          "life": 33,
+          "life_lost": 7,
+          "battlefield": [
+            "no permanents"
+          ]
+        }
+      ],
+      "total_opposing_life_lost": 28,
+      "pod_opposing_life_remaining": 132,
+      "loop_terminator": "No creature other than Yawgmoth remains to pay 'Sacrifice another creature'; the cost is unpayable and a sixth activation is reversed."
+    }
+  }
+}

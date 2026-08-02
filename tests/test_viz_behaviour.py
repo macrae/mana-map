@@ -231,10 +231,14 @@ def test_map_switch_refits_the_camera(page):
     result = page.evaluate("""async () => {
         const span = () => { const c = MM.mapRenderer.getCamera();
                              return Math.abs(c.x[1] - c.x[0]); };
+        // Start on the OTHER map: the app boots on Abilities, so switching to Abilities
+        // is a no-op that returns before doing anything and refits nothing.
+        const ms = document.getElementById('mapSelect');
+        ms.value = 'default'; ms.dispatchEvent(new Event('change'));
+        await new Promise(r => setTimeout(r, 8000));
         MM.mapRenderer.setCamera({x: [-5, 5], y: [-5, 5]});
         await new Promise(r => setTimeout(r, 300));
         const zoomed = span();
-        const ms = document.getElementById('mapSelect');
         ms.value = 'ability'; ms.dispatchEvent(new Event('change'));
         await new Promise(r => setTimeout(r, 12000));
         return {zoomed, after: span(), status: document.getElementById('status').textContent};
@@ -501,8 +505,16 @@ def test_the_panel_always_offers_somewhere_to_go(page):
             saysZeroCards: (el.innerText || '').indexOf('0 CARDS') !== -1,
         };
     }""")
+    # Derived from the manifest, never hardcoded: this asserted a literal 7 and broke
+    # the moment an eighth deck was built. A count of a growing artifact is a
+    # maintenance tax that teaches nothing — what matters is that the picker offers
+    # EVERY loadable deck, published or not.
+    import json
+    from manamap.config import DECKS_DIR
+    expected = len(json.loads((DECKS_DIR / "index.json").read_text())["decks"])
+
     assert page.js_errors == []
-    assert r["decks"] == 7, "every published deck should be one click from a graph"
+    assert r["decks"] == expected, "every loadable deck should be one click from a graph"
     assert r["regions"] > 0, "regions come from the HDBSCAN membership"
     assert not r["saysZeroCards"], "an empty graph rendered the dead-end scoreboard"
 
@@ -864,6 +876,32 @@ def test_capping_samples_evenly_rather_than_taking_a_prefix(page):
 # on identical data; these assert the canvas path draws, picks and stays within budget.
 
 
+def _ink_strength(page):
+    """Sampled ALPHA: how much is drawn, and how strongly.
+
+    Alpha and not luminance, and this is not a detail. The canvas has a transparent
+    background — the dark page shows through — so a point drawn at 0.09 alpha lands as
+    (full colour, alpha 23), and `getImageData` returns colour UN-premultiplied. Read RGB
+    and a dimmed map looks identical to a lit one; the dimming lives entirely in the alpha
+    channel. Measured on a legend spotlight: RGB luminance moved 6.88 -> 6.85 while the
+    composited image lost 63% of its bright pixels.
+
+    `lit` counts anything drawn at all (the `_ink` question: did it draw); `solid` counts
+    pixels drawn at close to full strength, which is what separates spotlit from muted.
+    """
+    return page.evaluate("""() => {
+        const c = document.querySelector('.map-canvas');
+        const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+        let lit = 0, solid = 0, n = 0;
+        for (let i = 3; i < d.length; i += 4 * 30) {
+            n++;
+            if (d[i] > 10) lit++;
+            if (d[i] > 150) solid++;
+        }
+        return {lit: 100 * lit / n, solid: 100 * solid / n};
+    }""")
+
+
 def _ink(page):
     """Percentage of sampled pixels that are not transparent — "did anything draw"."""
     return page.evaluate("""() => {
@@ -983,12 +1021,35 @@ def test_canvas_has_its_own_legend(canvas_page):
     })""")
     assert canvas_page.js_errors == []
     assert r["present"] and r["rows"] >= 6, "no legend under the canvas renderer"
-    assert "Multicolor" in r["text"] or "Colorless" in r["text"]
+    # Named after whatever the colour mode groups by. Pinned to Primary Color rather than
+    # asserting the shipped default, so recolouring the map is not a legend regression.
+    canvas_page.evaluate("""() => {
+        const s = document.getElementById('colorBy');
+        s.value = 'color'; s.dispatchEvent(new Event('change'));
+    }""")
+    canvas_page.wait_for_timeout(1200)
+    text = canvas_page.evaluate("() => document.getElementById('mapLegend').innerText")
+    assert "Multicolor" in text or "Colorless" in text
 
 
 def test_canvas_draws_density_contours(canvas_page):
     """d3-contourDensity replaces histogram2dcontour. Plotly auto-binned to whatever
-    extent it was handed, which is why its levels were never comparable between filters."""
+    extent it was handed, which is why its levels were never comparable between filters.
+
+    Measured ZOOMED IN, where the atmospheric halo is switched off by design (see
+    `auraLevel` in render/canvas.js). At the fitted view the halo already covers ~36% of
+    the canvas and the contours draw over the same clusters, so switching them on moved
+    total ink by 2.8 points and no ratio test could survive — not because the contours had
+    stopped drawing, but because the measure had saturated. Zoomed in the halo is absent
+    and the same toggle is a 7.6x change.
+    """
+    canvas_page.evaluate(
+        """() => {
+            const d = MM.allData[100];
+            MM.mapRenderer.setCamera({x: [d.x - 6, d.x + 6], y: [d.y - 3.6, d.y + 3.6]});
+        }"""
+    )
+    canvas_page.wait_for_timeout(1200)
     before = _ink(canvas_page)
     canvas_page.evaluate("document.getElementById('toggleContours').click()")
     canvas_page.wait_for_timeout(1800)
@@ -2135,8 +2196,17 @@ def test_leaving_a_graph_for_the_atlas_shows_where_it_sits(discover_page):
         document.getElementById('modeSelect').value = 'explore';
         MM.setMode('explore');
         await new Promise(r => setTimeout(r, 4000));
+        // Arriving in Explore no longer auto-orients — a clean atlas is the entry state,
+        // by design. The lens is engaged from INSIDE Explore, which is what `MM.relate`
+        // does here.
+        MM.relate(Session.rows()[0], 'synergy');
+        await new Promise(r => setTimeout(r, 1500));
         return {
-            built: built,
+            // Re-read AFTER engaging the lens: the relate above grows the graph, and the
+            // invariant under test is "the lens lights the whole graph", not "the graph
+            // never changed".
+            built: Force.nodeCount,
+            grownFrom: built,
             active: !!MM.orientation,
             // Membership is read live from Session now rather than snapshotted into
             // `orientation.rows`, and the anchor is `Session.focus`. The lens object
@@ -2167,6 +2237,11 @@ def test_escape_returns_the_whole_atlas(discover_page):
         document.getElementById('modeSelect').value = 'explore';
         MM.setMode('explore');
         await new Promise(r => setTimeout(r, 3500));
+        // Arriving in Explore no longer auto-orients — a clean atlas is the entry state,
+        // by design. The lens is engaged from INSIDE Explore, which is what `MM.relate`
+        // does here.
+        MM.relate(Session.rows()[0], 'similar');
+        await new Promise(r => setTimeout(r, 1500));
         const on = !!MM.orientation;
         MM.clearOrientation();
         await new Promise(r => setTimeout(r, 800));
@@ -2334,6 +2409,8 @@ def test_the_atlas_draws_typed_edges(page):
             // An edge layer carries no customdata, so it must stay out of the quadtree
             // and out of the legend — a swatch for it would be a dot standing for a line.
             legendRows: document.querySelectorAll('.map-legend-row').length,
+            markerLayers: MM.mapRenderer.layers.filter(l => l.mode !== 'edges'
+                          && l.mode !== 'lines' && l.name).length,
             picksACard: MM.mapRenderer.pointCount > 0,
         };
     }""")
@@ -2341,7 +2418,11 @@ def test_the_atlas_draws_typed_edges(page):
     assert r["byRel"].get("synergy", 0) > 0 and r["byRel"].get("similar", 0) > 0
     assert r["violet"] > 20, f"no synergy-inked edge pixels on the map ({r['violet']})"
     assert r["red"] > 0, f"no obsolescence-inked edge pixels ({r['red']})"
-    assert r["legendRows"] == 7, f"an edge layer took a legend row ({r['legendRows']})"
+    # One row per MARKER layer. Was pinned at 7, the size of the colour palette, which made
+    # recolouring the map by supertype look like an edge layer had leaked into the legend.
+    assert r["legendRows"] == r["markerLayers"], (
+        f"legend has {r['legendRows']} rows for {r['markerLayers']} marker layers — "
+        "an edge layer took one")
     assert r["picksACard"], "the quadtree lost its points to the edge layer"
 
 
@@ -2366,6 +2447,11 @@ def test_the_orientation_lens_is_live_not_a_snapshot(discover_page):
         document.getElementById('modeSelect').value = 'explore';
         MM.setMode('explore');
         await new Promise(r => setTimeout(r, 3500));
+        // Arriving in Explore no longer auto-orients — a clean atlas is the entry state,
+        // by design. Engage the lens from INSIDE Explore, which is the whole point: what
+        // this test measures is that it then tracks the graph rather than freezing it.
+        MM.relate(Session.rows()[0], 'similar');
+        await new Promise(r => setTimeout(r, 1500));
 
         const lit = () => {
             const l = MM.mapRenderer.layers.find(
@@ -2406,6 +2492,13 @@ def test_explore_grows_in_place_and_draws_the_arcs(page):
     the force layout structurally cannot show.
     """
     r = page.evaluate("""async () => {
+        // Pinned to the colour+type map. Which relations earn an arc is per-map and
+        // MEASURED (`MAP_ARC_RELATIONS`): this map draws similarity, the ability map
+        // deliberately draws none. Inheriting the map from the boot default made that
+        // implicit, so changing the default turned a correct renderer into a red test.
+        const pinSel = document.getElementById('mapSelect');
+        pinSel.value = 'default'; pinSel.dispatchEvent(new Event('change'));
+        await new Promise(r => setTimeout(r, 9000));
         const edgeLayer = () => MM.mapRenderer.layers.find(l => l.mode === 'edges');
         const row = MM.allData.findIndex(d => d.n === "Ashnod's Altar");
         MM.selectByName("Ashnod's Altar");
@@ -2478,6 +2571,13 @@ def test_the_ability_map_draws_no_similarity_arcs(page):
     information, so none is drawn and the status points at drill, which already exists and
     is the honest answer to "these are all on top of each other"."""
     r = page.evaluate("""async () => {
+        // Pinned to the colour+type map. Which relations earn an arc is per-map and
+        // MEASURED (`MAP_ARC_RELATIONS`): this map draws similarity, the ability map
+        // deliberately draws none. Inheriting the map from the boot default made that
+        // implicit, so changing the default turned a correct renderer into a red test.
+        const pinSel = document.getElementById('mapSelect');
+        pinSel.value = 'default'; pinSel.dispatchEvent(new Event('change'));
+        await new Promise(r => setTimeout(r, 9000));
         const edgeLayer = () => MM.mapRenderer.layers.find(l => l.mode === 'edges');
         const row = MM.allData.findIndex(d => d.n === "Ashnod's Altar");
         MM.relate(row, 'similar');
@@ -2598,8 +2698,14 @@ def test_clicking_a_cluster_label_zooms_and_filters(page):
     }""")
     assert page.js_errors == []
     assert r["after"]["span"] < r["before"]["span"] / 2, "the camera did not zoom to the region"
-    assert r["after"]["points"] == r["after"]["members"] > 0, (
-        f"drew {r['after']['points']} points for a {r['after']['members']}-card region"
+    # SPOTLIT, not filtered: every point stays drawn and the non-members recede. Removing
+    # them left a cluster alone in a void, which answers none of the questions the atlas
+    # exists for. `test_focusing_a_region_dims_the_map_instead_of_erasing_it` asserts the
+    # ink; this asserts the point count is untouched.
+    assert r["after"]["members"] > 0, "no region was focused"
+    assert r["after"]["points"] == r["before"]["points"], (
+        f"focusing dropped points ({r['before']['points']} -> {r['after']['points']}) — "
+        f"non-members must dim, not disappear"
     )
     assert not r["after"]["drilling"], "a label click started a drill"
     assert r["after"]["picked"], "the map stopped hit-testing after focusing a region"
@@ -3146,3 +3252,756 @@ def test_both_panels_draw_the_same_card_header(page):
     assert r["browsed"]["inDeckControl"], "the browse panel still has no in-deck control"
     for where in ("selected", "browsed"):
         assert r[where]["headers"] == 1, f"{where} rendered {r[where]['headers']} headers"
+
+
+# ── The dossier's issue link ─────────────────────────────────────────────
+
+
+def _dossier(browser, viz_server, slug):
+    page = browser.new_page()
+    page.goto(f"{viz_server}/viz/deck.html?deck={slug}")
+    page.wait_for_timeout(2500)
+    return page
+
+
+def test_dossier_hides_the_issue_link_for_an_unpublished_deck(browser, viz_server):
+    """A deck is loadable as soon as it has a cards.json; an issue comes later.
+
+    `build-index` used to gate the whole manifest on `manuals/<slug>.html`, so an
+    unpublished deck was simply invisible. Admitting it exposed the other half:
+    the dossier linked to `../manuals/<slug>.html` unconditionally, sending every
+    unpublished deck to a 404. Source-assertion tests pass through this — the
+    string is still there, it just points at nothing.
+    """
+    import json
+    from manamap.config import DECKS_DIR
+
+    manifest = json.loads((DECKS_DIR / "index.json").read_text())
+    unpublished = [d for d in manifest["decks"] if d.get("published") is False]
+    if not unpublished:
+        pytest.skip("no unpublished deck in the manifest to check")
+
+    page = _dossier(browser, viz_server, unpublished[0]["slug"])
+    try:
+        assert page.is_visible("#issueLink") is False
+        assert page.get_attribute("#issueLink", "href") is None
+    finally:
+        page.close()
+
+
+def test_dossier_keeps_the_issue_link_for_a_published_deck(browser, viz_server):
+    """The guard must not fire on decks that did go to press."""
+    import json
+    from manamap.config import DECKS_DIR
+
+    manifest = json.loads((DECKS_DIR / "index.json").read_text())
+    published = [d for d in manifest["decks"] if d.get("published")]
+    if not published:
+        pytest.skip("no published deck in the manifest to check")
+
+    slug = published[0]["slug"]
+    page = _dossier(browser, viz_server, slug)
+    try:
+        assert page.is_visible("#issueLink") is True
+        assert page.get_attribute("#issueLink", "href") == f"../manuals/{slug}.html"
+    finally:
+        page.close()
+
+
+# ── The verified-line spotlight ──────────────────────────────────────────
+#
+# `Build.focusLine` existed and was wired to the sidebar click, but all it did was
+# `MM.mapRenderer.setCamera(...)`. Build defaults to the GRAPH, where the map canvas is
+# `display:none` — so the click panned a hidden canvas and changed a status string. Every
+# source-assertion test passed: the handler was there, the markup was there, the function
+# ran. Nothing was visible. That is why these read state and pixels.
+
+_INK = """
+() => {
+  const c = document.querySelector('canvas.force-canvas');
+  if (!c) return null;
+  const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+  let lit = 0, sum = 0, green = 0;
+  for (let i = 0; i < d.length; i += 4) {
+    const r = d[i], g = d[i+1], b = d[i+2], a = d[i+3];
+    const v = r + g + b;
+    if (a > 8 && v > 40) { lit++; sum += v; }
+    // The #4CAF50 emphasis ink: green clearly dominant and bright.
+    if (a > 60 && g > 110 && g > r + 40 && g > b + 40) green++;
+  }
+  return { lit, mean: lit ? sum / lit : 0, green };
+}
+"""
+
+
+def _build_page(browser, viz_server, slug):
+    from conftest_viz import _boot
+    page = _boot(browser, viz_server, f"?deck={slug}")
+    page.wait_for_function("() => window.Force && Force.nodeCount > 0", timeout=BOOT_TIMEOUT_MS)
+    page.wait_for_timeout(1500)
+    return page
+
+
+def _a_deck_with_a_drawable_line():
+    import json
+    from manamap.config import DECKS_DIR
+    manifest = json.loads((DECKS_DIR / "index.json").read_text())
+    for d in manifest["decks"]:
+        if any(len(v) >= 2 for v in (d.get("stack_cards") or {}).values()):
+            return d["slug"]
+    return None
+
+
+def test_verified_lines_become_edges_in_the_graph(browser, viz_server):
+    """The graph's links come only from embedding similarity, so two combo pieces that
+    are not near-neighbours had no edge at all. A verified line is a claim about which
+    cards talk to each other; the graph must be able to say it."""
+    slug = _a_deck_with_a_drawable_line()
+    if not slug:
+        pytest.skip("no deck with a drawable verified line")
+    page = _build_page(browser, viz_server, slug)
+    try:
+        assert page.js_errors == []
+        assert page.evaluate("Force.verifiedLinkCount") > 0
+    finally:
+        page.close()
+
+
+def test_clicking_a_verified_line_spotlights_it(browser, viz_server):
+    """Click the line: its rows go under a spotlight and the row marks itself."""
+    slug = _a_deck_with_a_drawable_line()
+    if not slug:
+        pytest.skip("no deck with a drawable verified line")
+    page = _build_page(browser, viz_server, slug)
+    try:
+        assert page.evaluate("Build.activeLine") == -1
+        page.click(".lens-line")
+        page.wait_for_timeout(900)
+
+        assert page.evaluate("Build.activeLine") == 0
+        assert page.evaluate("Force.activeLine") is not None
+        assert page.evaluate("Force.lineRowCount") >= 2
+        assert page.evaluate(
+            "document.querySelector('.lens-line').classList.contains('is-on')")
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_the_spotlight_actually_dims_the_canvas(browser, viz_server):
+    """Pixels, not state. A layer being present passes while nothing draws.
+
+    Compared at the SAME camera — clearing does not refit — so the difference is the
+    dimming and nothing else.
+    """
+    slug = _a_deck_with_a_drawable_line()
+    if not slug:
+        pytest.skip("no deck with a drawable verified line")
+    page = _build_page(browser, viz_server, slug)
+    try:
+        page.click(".lens-line")
+        page.wait_for_timeout(1500)          # includes the 450ms fit transition
+        spotlit = page.evaluate(_INK)
+
+        page.click(".lens-line")             # clear; camera stays put
+        page.wait_for_timeout(900)
+        cleared = page.evaluate(_INK)
+
+        assert spotlit and cleared
+        # Lifting the spotlight brings the rest of the deck back: more ink, brighter ink.
+        assert cleared["lit"] > spotlit["lit"] * 1.15, (spotlit, cleared)
+        assert cleared["mean"] > spotlit["mean"] * 1.05, (spotlit, cleared)
+        # And the line itself must stop shouting. Verified edges are drawn ALWAYS, so
+        # without a resting ink they stayed at full spotlight intensity and deselecting
+        # deselected nothing visible — measured at 2813 green px spotlit vs 2513 cleared,
+        # which this assertion would have caught and the earlier one did not.
+        assert cleared["green"] < spotlit["green"] * 0.6, (spotlit, cleared)
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_clicking_the_same_line_again_clears_it(browser, viz_server):
+    slug = _a_deck_with_a_drawable_line()
+    if not slug:
+        pytest.skip("no deck with a drawable verified line")
+    page = _build_page(browser, viz_server, slug)
+    try:
+        page.click(".lens-line"); page.wait_for_timeout(800)
+        assert page.evaluate("Force.lineRowCount") >= 2
+        page.click(".lens-line"); page.wait_for_timeout(800)
+        assert page.evaluate("Build.activeLine") == -1
+        assert page.evaluate("Force.lineRowCount") == 0
+        assert not page.evaluate(
+            "document.querySelector('.lens-line').classList.contains('is-on')")
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_escape_peels_the_spotlight_first(browser, viz_server):
+    """Escape peels outermost-first, and a line is the innermost thing you are inside."""
+    slug = _a_deck_with_a_drawable_line()
+    if not slug:
+        pytest.skip("no deck with a drawable verified line")
+    page = _build_page(browser, viz_server, slug)
+    try:
+        page.click(".lens-line"); page.wait_for_timeout(800)
+        assert page.evaluate("Build.activeLine") == 0
+        page.keyboard.press("Escape"); page.wait_for_timeout(600)
+        assert page.evaluate("Build.activeLine") == -1
+        assert page.evaluate("Force.lineRowCount") == 0
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_escape_reframes_the_whole_deck(browser, viz_server):
+    """Escape means "get me back out".
+
+    Dropping the spotlight without moving the camera left you zoomed into two cards
+    with no way back except a manual pan.
+    """
+    slug = _a_deck_with_a_drawable_line()
+    if not slug:
+        pytest.skip("no deck with a drawable verified line")
+    page = _build_page(browser, viz_server, slug)
+    try:
+        page.click(".lens-line")
+        page.wait_for_timeout(1600)          # the 450ms fit transition, settled
+        k_line = page.evaluate(
+            "() => d3.zoomTransform(document.querySelector('canvas.force-canvas')).k")
+
+        page.keyboard.press("Escape")
+        page.wait_for_timeout(1400)
+        k_deck = page.evaluate(
+            "() => d3.zoomTransform(document.querySelector('canvas.force-canvas')).k")
+
+        assert page.evaluate("Build.activeLine") == -1
+        # Framing four cards is a closer camera than framing the whole deck.
+        assert k_deck < k_line, (k_line, k_deck)
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+# ── Nodes must not overlap on screen ─────────────────────────────────────
+
+
+def test_graph_nodes_do_not_overlap_on_screen(browser, viz_server):
+    """A node is drawn at a SCREEN-constant radius; d3's collide works in WORLD units.
+
+    With a fixed world radius the on-screen gap depends on whatever zoom the graph was
+    fitted at. Measured on a 78-node deck at k=0.505, `radius(n => n.r + 3)` gave 9 world
+    units = **4.5 screen px** between nodes drawn **12 px wide** — they overlapped, which
+    shrinks each node's pickable region because `pick` awards the hover to the nearest
+    centre.
+
+    THIS ASSERTION DISCRIMINATES AND A REACHABILITY ONE DOES NOT. Checked against the
+    broken revision: every node still had *some* winning cursor position (2 px of overlap
+    narrows a target without removing it), so "every node is reachable" passed on both and
+    would have been decoration. The minimum gap is the number that moves: −2.4 px broken,
+    +8.6 px fixed.
+    """
+    slug = _a_deck_with_a_drawable_line()
+    if not slug:
+        pytest.skip("no deck to load")
+    page = _build_page(browser, viz_server, slug)
+    try:
+        r = page.evaluate("""() => {
+            const ns = Force.screenNodes();
+            let minGap = Infinity;
+            for (const a of ns) for (const b of ns) {
+              if (a === b) continue;
+              const g = Math.hypot(a.x - b.x, a.y - b.y) - (a.r + b.r);
+              if (g < minGap) minGap = g;
+            }
+            return { n: ns.length, minGap };
+        }""")
+        assert r["n"] > 10, "need a real deck-sized graph for this to mean anything"
+        assert r["minGap"] > 0, (
+            f"nodes overlap on screen by {-r['minGap']:.1f}px — collide radius is not "
+            f"tracking the zoom")
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+# ── Click to select, double-click to expand ──────────────────────────────
+
+
+def _a_node_position(page):
+    """A node comfortably inside the canvas, in page coordinates."""
+    return page.evaluate("""() => {
+        const c = document.querySelector('canvas.force-canvas');
+        const r = c.getBoundingClientRect();
+        const ns = Force.screenNodes();
+        const n = ns.find(n => n.x > 80 && n.y > 80 && n.x < r.width - 80 && n.y < r.height - 80)
+                  || ns[0];
+        return { x: r.left + n.x, y: r.top + n.y, name: n.name };
+    }""")
+
+
+def _nodes_outside_viewport(page):
+    return page.evaluate("""() => {
+        const c = document.querySelector('canvas.force-canvas');
+        const r = c.getBoundingClientRect();
+        return Force.screenNodes()
+            .filter(n => n.x < -4 || n.y < -4 || n.x > r.width + 4 || n.y > r.height + 4).length;
+    }""")
+
+
+def test_single_click_selects_without_growing_the_graph(browser, viz_server):
+    """Expanding on a single click meant there was no way to just READ a card:
+    every look cost six new nodes and a re-layout."""
+    slug = _a_deck_with_a_drawable_line()
+    if not slug:
+        pytest.skip("no deck to load")
+    page = _build_page(browser, viz_server, slug)
+    try:
+        before = page.evaluate("({n: Force.nodeCount, t: Force.trailLength})")
+        pos = _a_node_position(page)
+        page.mouse.click(pos["x"], pos["y"])
+        page.wait_for_timeout(900)
+
+        assert page.evaluate("Force.nodeCount") == before["n"], "a click grew the graph"
+        # The breadcrumb records where you WENT, not everything you looked at.
+        assert page.evaluate("Force.trailLength") == before["t"], "a click joined the trail"
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_double_click_expands(browser, viz_server):
+    slug = _a_deck_with_a_drawable_line()
+    if not slug:
+        pytest.skip("no deck to load")
+    page = _build_page(browser, viz_server, slug)
+    try:
+        before = page.evaluate("Force.nodeCount")
+        pos = _a_node_position(page)
+        page.mouse.dblclick(pos["x"], pos["y"])
+        page.wait_for_timeout(3000)
+        assert page.evaluate("Force.nodeCount") > before
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_a_click_does_not_claim_the_camera_but_a_drag_does(browser, viz_server):
+    """`drag.on('start')` fires on mousedown over a node, BEFORE any movement, and it
+    used to set `userAdjusted`. One click therefore disabled every auto-fit for the rest
+    of the session — which is why an expansion's neighbours went off screen and never
+    came back. Ownership belongs to movement, not to pressing the button."""
+    slug = _a_deck_with_a_drawable_line()
+    if not slug:
+        pytest.skip("no deck to load")
+    page = _build_page(browser, viz_server, slug)
+    try:
+        pos = _a_node_position(page)
+        page.mouse.click(pos["x"], pos["y"])
+        page.wait_for_timeout(500)
+        assert page.evaluate("Force.cameraOwnedByUser") is False, "a click claimed the camera"
+
+        page.mouse.move(pos["x"], pos["y"])
+        page.mouse.down()
+        page.mouse.move(pos["x"] + 120, pos["y"] + 90, steps=8)
+        page.mouse.up()
+        page.wait_for_timeout(500)
+        assert page.evaluate("Force.cameraOwnedByUser") is True, "a real drag must own it"
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_expansion_keeps_every_card_on_screen(browser, viz_server):
+    """The regression this whole change exists for.
+
+    The only refit after a branch was the simulation's `end` handler ~1.3 s later, and
+    with the camera wrongly marked user-owned it never ran at all. On the Discover
+    landing — fitted to ONE card at the k=12 ceiling — six neighbours arrived entirely
+    outside the viewport and stayed there.
+    """
+    from conftest_viz import _boot
+    page = _boot(browser, viz_server, "?card=Craterhoof%20Behemoth")
+    page.wait_for_function("() => window.Force && Force.nodeCount > 0", timeout=BOOT_TIMEOUT_MS)
+    page.wait_for_timeout(1500)
+    try:
+        pos = _a_node_position(page)
+        page.mouse.dblclick(pos["x"], pos["y"])
+        page.wait_for_timeout(2600)
+
+        assert page.evaluate("Force.nodeCount") > 1, "nothing expanded"
+        assert page.evaluate("Force.followCount") > 0, "the follow camera never ran"
+        assert _nodes_outside_viewport(page) == 0
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_zoom_to_the_deck_works_in_graph_view(browser, viz_server):
+    """The button called `zoomToDeck`, which only drives the MAP camera — and Build
+    defaults to the graph, where the map canvas is display:none."""
+    slug = _a_deck_with_a_drawable_line()
+    if not slug:
+        pytest.skip("no deck to load")
+    page = _build_page(browser, viz_server, slug)
+    try:
+        pos = _a_node_position(page)
+        page.mouse.move(pos["x"], pos["y"])
+        page.mouse.wheel(0, -600)          # take the camera somewhere else
+        page.wait_for_timeout(600)
+        moved = page.evaluate("() => d3.zoomTransform(document.querySelector('canvas.force-canvas')).k")
+
+        page.evaluate("Build.fitDeck()")
+        page.wait_for_timeout(1200)
+        framed = page.evaluate("() => d3.zoomTransform(document.querySelector('canvas.force-canvas')).k")
+
+        assert framed != moved, "zoom-to-the-deck did not move the graph camera"
+        assert _nodes_outside_viewport(page) == 0
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_focusing_a_region_dims_the_map_instead_of_erasing_it(browser, viz_server):
+    """A region only means something against its neighbours.
+
+    `visible()` used to exclude every non-member, so clicking a region left a cluster
+    floating in a void with no way to tell where on the map it sat.
+
+    Measured in a PATCH OF CANVAS THAT CONTAINS ONLY NON-MEMBERS, and that is the whole
+    design of this test. Measuring the full canvas does not discriminate: the focused
+    region keeps its own points at full strength, and with the halo they carry enough ink
+    that the totals still clear any sane threshold even when every non-member has been
+    erased — verified by setting the unlit alpha to 0, where the whole-canvas version
+    passed happily. A patch with no members in it can only be lit by the cards this test
+    is about.
+
+    The camera is also restored before measuring: `focusRegion` frames the region, so the
+    two readings would otherwise differ by zoom as well as by dimming, and zoom changes
+    the ink on its own through the atmospheric halo.
+    """
+    from conftest_viz import _boot
+    page = _boot(browser, viz_server, "?mode=explore")
+    page.wait_for_timeout(4000)
+
+    # Alpha, not luminance: the canvas background is transparent, so `getImageData`
+    # returns colour un-premultiplied and a point at 0.09 alpha reads as full-brightness
+    # RGB. All of the dimming lives in the alpha channel.
+    patch_ink = """(box) => {
+      const c = document.querySelector('.map-canvas');
+      const d = c.getContext('2d').getImageData(box.x, box.y, box.w, box.h).data;
+      let lit = 0, solid = 0;
+      for (let i = 3; i < d.length; i += 4) { if (d[i] > 8) lit++; if (d[i] > 150) solid++; }
+      return {lit: lit, solid: solid};
+    }"""
+    try:
+        # Pick a patch that is dense with cards and holds no member of the region we are
+        # about to focus. Chosen from the data, not hardcoded, so a re-cluster or a new
+        # projection cannot quietly point it at empty space.
+        box = page.evaluate(
+            """() => {
+                const rows = MM.regionRows ? MM.regionRows('l0_0') : null;
+                return {rows: rows ? rows.length : 0};
+            }"""
+        )
+        page.evaluate("MM.focusRegion('l0_0')")
+        page.wait_for_timeout(2000)
+        members = page.evaluate("() => [...MM.regionFocus.rows]")
+        page.evaluate("MM.clearRegionFocus()")
+        page.wait_for_timeout(1500)
+
+        box = page.evaluate(
+            """(members) => {
+                const mem = new Set(members);
+                const S = 120;                       // patch size in CSS pixels
+                const c = document.querySelector('.map-canvas');
+                const W = c.clientWidth, H = c.clientHeight;
+                // Bin every drawn card into S-sized cells, counting members separately.
+                const cells = new Map();
+                for (let i = 0; i < MM.allData.length; i++) {
+                    const d = MM.allData[i];
+                    const p = MM.mapRenderer.dataToPixel(d.x, d.y);
+                    if (!p || p[0] < 0 || p[1] < 0 || p[0] >= W || p[1] >= H) continue;
+                    const key = Math.floor(p[0] / S) + ',' + Math.floor(p[1] / S);
+                    let cell = cells.get(key);
+                    if (!cell) { cell = {n: 0, mem: 0}; cells.set(key, cell); }
+                    cell.n++;
+                    if (mem.has(i)) cell.mem++;
+                }
+                // The densest cell with NO members in it.
+                let best = null, bestKey = null;
+                cells.forEach((cell, key) => {
+                    if (cell.mem > 0) return;
+                    if (!best || cell.n > best.n) { best = cell; bestKey = key; }
+                });
+                if (!best) return null;
+                const [cx, cy] = bestKey.split(',').map(Number);
+                return {x: cx * S, y: cy * S, w: S, h: S, cards: best.n};
+            }""",
+            members,
+        )
+        assert box and box["cards"] > 200, f"no dense member-free patch found: {box}"
+
+        before = page.evaluate(patch_ink, box)
+        assert before["lit"] > 500, f"the chosen patch was not drawn: {before}"
+
+        cam = page.evaluate("() => MM.mapRenderer.getCamera()")
+        page.evaluate("MM.focusRegion('l0_0')")
+        page.wait_for_timeout(2200)
+        page.evaluate("(c) => MM.mapRenderer.setCamera(c)", cam)
+        page.wait_for_timeout(1200)
+        after = page.evaluate(patch_ink, box)
+
+        # Dimmed...
+        assert after["solid"] < before["solid"] * 0.5, (
+            f"focusing a region did not dim the cards outside it "
+            f"({before['solid']} -> {after['solid']} px at full strength)")
+        # ...but still THERE. This is the load-bearing half: these pixels are exclusively
+        # non-members, so if the region focus erased them this patch goes black.
+        assert after["lit"] > before["lit"] * 0.5, (
+            f"non-members vanished from a patch that contains only them "
+            f"({after['lit']} of {before['lit']} px) — orientation is lost")
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_regions_are_named_three_levels_deep(browser, viz_server):
+    """Countries, states and neighbourhoods, each with a hand-authored or inherited name
+    rather than the machine label."""
+    import json
+    from manamap.config import DATA_DIR
+
+    doc = json.loads((DATA_DIR / "regions_default.json").read_text())
+    levels = {r["level"] for r in doc["regions"]}
+    assert levels == {0, 1, 2}, levels
+    # Every L0/L1 carries the authored name, with the machine one kept alongside.
+    for r in doc["regions"]:
+        if r["level"] <= 1:
+            assert r.get("mechanical"), f"{r['id']} lost its mechanical label"
+            assert r["label"] != r["mechanical"], f"{r['id']} kept the machine name"
+
+
+@pytest.mark.browser
+def test_explore_boots_on_the_ability_map(page):
+    """The shipping default is the ability map, and `currentMap` alone does not deliver it.
+
+    The boot fetch was hardcoded to `MAP_CONFIGS.default.projection`, so flipping the
+    default would have left `currentMap` reporting 'ability' while `allData` held the
+    colour+type coordinates — every position wrong, nothing on screen to say so, and the
+    selector still reading Abilities.
+    """
+    assert page.evaluate("() => MM.currentMap") == "ability"
+    assert page.evaluate("() => document.getElementById('mapSelect').value") == "ability"
+    # The projection actually loaded is the ability one. Compared against the OTHER map's
+    # coordinates for the same row: identical values would mean the wrong file was fetched.
+    same = page.evaluate("""async () => {
+      const before = MM.allData.slice(0, 40).map(d => [d.x, d.y]);
+      document.getElementById('mapSelect').value = 'default';
+      document.getElementById('mapSelect').dispatchEvent(new Event('change'));
+      await new Promise(r => setTimeout(r, 2500));
+      const after = MM.allData.slice(0, 40).map(d => [d.x, d.y]);
+      return before.filter((p, i) => p[0] === after[i][0] && p[1] === after[i][1]).length;
+    }""")
+    assert same < 5, f"{same}/40 points identical across maps — the boot fetched one map twice"
+
+
+@pytest.mark.browser
+def test_switching_maps_reindexes_the_hit_test(page):
+    """`applyProjection` moves every point in place, and the quadtree cannot tell.
+
+    Its signature is layer lengths plus endpoint ids — all identical across a map switch,
+    the same 34,322 cards in the same groups — so it never rebuilds on its own. The rebuild
+    also has to happen AFTER `render()` installs the new layers: `buildTree` copies
+    coordinates out of the layer arrays, so reindexing first rebuilds from the outgoing
+    ones and `setLayers` then skips its own rebuild against that unchanged signature. The
+    stale positions survive the very call meant to remove them.
+
+    Asserted through `pick` directly rather than through a hover, because the hover path
+    adds interference this invariant has nothing to do with: at the whole-map fit
+    neighbouring cards are sub-pixel apart (measured: `pick(845.1, 653.7)` and
+    `pick(845, 654)` return different rows), and region labels are real DOM buttons layered
+    over the canvas, so a card under one cannot be hovered at all. Framing each card first
+    removes the density ambiguity; `test_hovering_names_the_card_under_the_cursor` covers
+    the hover pipeline itself.
+    """
+    rows = [100, 9000, 20000, 31000]
+
+    def picks_itself():
+        return page.evaluate(
+            """(rows) => rows.map(row => {
+                const d = MM.allData[row];
+                // Frame the card so it owns its pixels — otherwise the answer is a
+                // statement about point density, not about the index.
+                MM.mapRenderer.setCamera({x: [d.x - 1.2, d.x + 1.2], y: [d.y - 0.8, d.y + 0.8]});
+                const px = MM.mapRenderer.dataToPixel(d.x, d.y);
+                return [row, MM.mapRenderer.pick(px[0], px[1])];
+            })""",
+            rows,
+        )
+
+    assert [r for r, got in picks_itself() if r != got] == [], "hit test wrong before any switch"
+
+    # ability -> default -> ability. Switching to the map you are already on is a no-op and
+    # proves nothing; the bug needs the coordinates to actually change.
+    for target in ("default", "ability"):
+        page.evaluate(
+            """(m) => {
+                const s = document.getElementById('mapSelect');
+                s.value = m;
+                s.dispatchEvent(new Event('change'));
+            }""",
+            target,
+        )
+        page.wait_for_timeout(3000)
+        assert page.evaluate("() => MM.currentMap") == target
+        wrong = [(r, got) for r, got in picks_itself() if r != got]
+        assert not wrong, (
+            f"after switching to the {target} map, rows {wrong} no longer hit-test to "
+            "themselves — the quadtree still holds the previous map's positions"
+        )
+    assert page.js_errors == []
+
+
+@pytest.mark.browser
+def test_hovering_names_the_card_under_the_cursor(page):
+    """The popup must name whatever `pick` reports at the cursor.
+
+    Driven by the real mouse on purpose: a synthetic `MouseEvent` leaves `offsetX`/`offsetY`
+    at 0 and the hover handler picks on exactly those, so a synthetic probe reports the card
+    at the canvas origin and passes on completely broken code. Asserted against `pick` at
+    the same coordinates rather than against a chosen row, so point density cannot make a
+    correct popup look wrong.
+    """
+    page.wait_for_timeout(800)
+    box = page.evaluate(
+        """() => {
+            const r = document.querySelector('.map-canvas').getBoundingClientRect();
+            return {l: r.left, t: r.top, w: r.width, h: r.height};
+        }"""
+    )
+    checked = 0
+    for fx, fy in ((0.42, 0.45), (0.55, 0.60), (0.62, 0.38)):
+        x = round(box["l"] + box["w"] * fx)
+        y = round(box["t"] + box["h"] * fy)
+        # Park in the corner first so the hover genuinely re-fires rather than being
+        # deduped by `hoverRow === row`.
+        page.mouse.move(round(box["l"] + 6), round(box["t"] + 6))
+        page.wait_for_timeout(150)
+        page.mouse.move(x, y)
+        page.wait_for_timeout(600)
+        state = page.evaluate(
+            """([x, y]) => {
+                const c = document.querySelector('.map-canvas');
+                const r = c.getBoundingClientRect();
+                const top = document.elementFromPoint(x, y);
+                const row = MM.mapRenderer.pick(x - r.left, y - r.top);
+                const e = document.querySelector('.card-popup');
+                const img = e && e.style.display !== 'none' ? e.querySelector('img') : null;
+                return {
+                    onCanvas: !!top && top.classList.contains('map-canvas'),
+                    expected: row == null ? null : MM.cardRecord(row).n,
+                    shown: img ? img.getAttribute('alt') : null,
+                };
+            }""",
+            [x, y],
+        )
+        # Region labels are DOM buttons over the canvas; a sample that lands on one is
+        # testing the label, not the hover.
+        if not state["onCanvas"] or state["expected"] is None:
+            continue
+        checked += 1
+        assert state["shown"] == state["expected"], (
+            f"cursor at ({x}, {y}) is over {state['expected']!r} but the popup shows "
+            f"{state['shown']!r}"
+        )
+    assert checked, "every sample landed on a region label — nothing was actually tested"
+    assert page.js_errors == []
+
+
+@pytest.mark.browser
+def test_clicking_a_legend_row_spotlights_that_group(page):
+    """The legend is a control, not a caption.
+
+    Asserted on drawn ALPHA (see `_ink_strength`): the canvas background is transparent, so
+    dimming a group changes the alpha channel and leaves `getImageData`'s un-premultiplied
+    RGB untouched — an RGB probe reports a spotlight as no change at all.
+
+    Two assertions, because a spotlight has two halves. `solid` must collapse, or nothing
+    was dimmed; `lit` must hold, or the surroundings were erased rather than muted — which
+    is the failure this map already made once with region focus, and the reason you could
+    not tell where anything was.
+    """
+    page.wait_for_timeout(800)
+    before = _ink_strength(page)
+
+    page.evaluate(
+        """() => {
+            const row = [...document.querySelectorAll('.map-legend-row')]
+                .find(r => r.dataset.key === 'Planeswalker');
+            row.click();
+        }"""
+    )
+    page.wait_for_timeout(1000)
+    during = _ink_strength(page)
+
+    assert page.evaluate("() => MM.legendFocus && MM.legendFocus.key") == "Planeswalker"
+    assert page.evaluate("() => document.querySelectorAll('.map-legend-row.is-active').length") == 1
+    # Planeswalkers are 1.0% of the corpus, so spotlighting them takes nearly all the
+    # full-strength ink out of the map.
+    assert during["solid"] < before["solid"] * 0.3, (
+        f"legend focus barely dimmed anything ({before['solid']:.2f}% -> "
+        f"{during['solid']:.2f}% drawn at full strength)"
+    )
+    # ...and the rest is still on screen. Muted, not erased.
+    assert during["lit"] > before["lit"] * 0.8, (
+        f"the muted points vanished ({before['lit']:.2f}% -> {during['lit']:.2f}% drawn)"
+    )
+
+    page.keyboard.press("Escape")
+    page.wait_for_timeout(900)
+    assert page.evaluate("() => MM.legendFocus") is None
+    assert page.evaluate("() => document.querySelectorAll('.map-legend-row.is-active').length") == 0
+    after = _ink_strength(page)
+    assert after["solid"] > before["solid"] * 0.8, "Escape did not restore the map"
+    assert page.js_errors == []
+
+
+@pytest.mark.browser
+def test_entering_explore_shows_the_whole_map(discover_page):
+    """Arriving in Explore is not asking for the lens.
+
+    It used to auto-orient on a non-empty tray, so walking a few cards in Discover and
+    switching opened the atlas with almost all of it at 8% alpha and the camera somewhere
+    else — which reads as a rendering fault, not as a lens.
+    """
+    page = discover_page
+    # Hold something, so the old auto-orient path would have fired.
+    # A grown graph is what Session.size() counts, and it is what the old auto-orient
+    # branch keyed on.
+    page.evaluate("() => MM.relate(Discovery.current, 'similar')")
+    page.wait_for_timeout(400)
+
+    page.evaluate(
+        """() => {
+            const s = document.getElementById('modeSelect');
+            s.value = 'explore';
+            s.dispatchEvent(new Event('change'));
+        }"""
+    )
+    page.wait_for_timeout(3500)
+
+    assert page.evaluate("() => MM.orientation") is None, "Explore auto-oriented on entry"
+    assert page.evaluate("() => MM.regionFocus") is None
+    assert page.evaluate("() => MM.legendFocus") is None
+    # The camera shows the whole map, not a corner of it.
+    span = page.evaluate(
+        """() => {
+            const cam = MM.mapRenderer.getCamera();
+            return Math.abs(cam.x[1] - cam.x[0]);
+        }"""
+    )
+    assert span > 40, f"Explore opened zoomed in (camera span {span:.1f})"
+    assert page.js_errors == []

@@ -52,10 +52,34 @@ a.issue .stats { display:flex; flex-wrap:wrap; gap:5px; }
 # would change their digests and invalidate every agent-cache routine on the deck.
 _STACK_TEXT_KEYS = ("object", "card", "name", "source")
 # Generic board words that survive annotation-stripping and name nothing.
+#
+# NOTE the single backslashes. This was written `r"^(\\d+|...)\\s"`, which in a raw
+# string is a LITERAL backslash followed by `d` — so the pattern only ever matched
+# text containing a real backslash, i.e. nothing. The "a card name never opens with a
+# number word" guard was dead from the day it was written; "2 Vampire tokens" sailed
+# through it. Verified against the real scenarios before and after.
 _COUNT_PHRASE = re.compile(
-    r"^(\\d+|one|two|three|four|five|six|seven|eight|nine|ten|a|an)\\s", re.I)
+    r"^(\d+|one|two|three|four|five|six|seven|eight|nine|ten|a|an)\s", re.I)
 _NOT_A_CARD = {"lands", "untapped lands", "tapped lands", "creature", "creatures",
                "token", "tokens", "a land", "basic land", "basics"}
+
+# A line is made of the cards that DO something in it. Two kinds of entry look like
+# card names, pass every other filter, and are furniture:
+#
+#   Tokens — "Insect token X", "Snake token B". They are not cards, they have no row
+#   in cards.csv, and a graph edge to one cannot be drawn.
+#
+#   Basic lands — a scenario states its mana, so "Swamp" and "Forest" appear on nearly
+#   every board. Unlike a token, a basic IS in the deck, so it survives the browser's
+#   `byName` check and draws a real edge to a real card that had nothing to do with the
+#   line. That is the Ancient-Tomb-and-Howling-Mine failure this function exists to
+#   prevent, recurring one level down: yawgmoth-swarm's line derived
+#   [Fume Spitter, Blowfly Infestation, Nest of Scarabs, Zulaport Cutthroat,
+#   "Insect token X", "Swamp"] and escaped only because a 4-card cap truncated first.
+_BASIC_LANDS = {"plains", "island", "swamp", "mountain", "forest", "wastes",
+                "snow-covered plains", "snow-covered island", "snow-covered swamp",
+                "snow-covered mountain", "snow-covered forest"}
+_TOKEN_WORD = re.compile(r"\btokens?\b", re.I)
 
 
 def line_cards(scenario):
@@ -92,6 +116,9 @@ def line_cards(scenario):
             # untapped", "2 Vampire tokens". A card name never opens with a number word.
             if _COUNT_PHRASE.match(name) or " lands" in name.lower():
                 return
+            # Furniture that survives every filter above — see _BASIC_LANDS.
+            if name.lower() in _BASIC_LANDS or _TOKEN_WORD.search(name):
+                return
             seen.add(name)
             out.append(name)
 
@@ -118,17 +145,29 @@ def line_cards(scenario):
 
 
 def gather_entries():
-    """Gallery entries for every deck with a built issue, by volume then slug."""
+    """One scan, two questions — and they are not the same question.
+
+    The newsstand asks "which decks have a published issue?"; the viz asks
+    "which decks can the browser load?". Both used to be answered by the same
+    gate (does `manuals/<slug>.html` exist), which meant a deck could be fully
+    built, validated and rules-verified and still be invisible in the frontend
+    until someone spent an agent budget on magazine prose for it.
+
+    So the scan now admits every deck with a `cards.json` and records
+    `published` per entry. `render_index` filters on it; `write_manifest` does
+    not. Ordered by volume then slug.
+    """
     entries = []
     if not DECKS_DIR.is_dir():
         return entries
     for deck_path in sorted(DECKS_DIR.iterdir()):
-        slug = deck_path.name
-        if not (MANUALS_DIR / f"{slug}.html").exists():
+        if not deck_path.is_dir():
             continue
+        slug = deck_path.name
         cards_path = deck_path / "cards.json"
         if not cards_path.exists():
             continue
+        published = (MANUALS_DIR / f"{slug}.html").exists()
         doc = load_json(cards_path)
         commanders = [c for c in doc["cards"] if c.get("is_commander")]
         commander = commanders[0] if commanders else {}
@@ -169,6 +208,7 @@ def gather_entries():
 
         entries.append({
             "slug": slug,
+            "published": published,
             "volume": issue.get("volume", 999),   # sentinel: un-numbered issues sort last
             "issue_date": issue.get("issue_date", ""),
             "deck_name": issue.get("deck_name") or commander.get("name", slug),
@@ -185,8 +225,9 @@ def gather_entries():
 
 
 def render_index(entries):
+    # The rack shows what actually went to press.
     issues = []
-    for e in entries:
+    for e in [x for x in entries if x["published"]]:
         image = (f'<img src="{esc(e["image"])}" alt="{esc(e["commander"])}" loading="lazy">'
                  if e["image"] else "")
         stats = [f'{badge("verified")}' if e["verified"] else ""]
@@ -251,7 +292,7 @@ def write_manifest(entries):
         "decks": [
             {k: e[k] for k in ("slug", "volume", "deck_name", "commander",
                                "coverline", "verified", "decisions", "stack_files",
-                               "stack_cards")}
+                               "stack_cards", "published")}
             for e in entries
         ]
     }
@@ -268,7 +309,8 @@ def main(args=None):
     out = MANUALS_DIR / "index.html"
     out.write_text(render_index(entries), encoding="utf-8")
     manifest = write_manifest(entries)
-    print(f"Wrote {out} ({len(entries)} issue(s) on the rack)")
+    published = [e for e in entries if e["published"]]
+    print(f"Wrote {out} ({len(published)} issue(s) on the rack)")
     print(f"Wrote {manifest} (deck manifest for viz/deck.html)")
 
 

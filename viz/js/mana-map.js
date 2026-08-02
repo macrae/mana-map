@@ -6,7 +6,32 @@
 (function () {
   // ── Palettes ──
   const COLOR_PALETTE = { W: '#F0E68C', U: '#4A90D9', B: '#8B5CF6', R: '#DC2626', G: '#22C55E', Colorless: '#9CA3AF', Multicolor: '#D4A017' };
-  const SUPERTYPE_PALETTE = { Creature: '#22C55E', Instant: '#4A90D9', Sorcery: '#8B5CF6', Enchantment: '#EC4899', Artifact: '#9CA3AF', Land: '#92400E', Planeswalker: '#F59E0B', Battle: '#DC2626', Unknown: '#555' };
+  /* Supertype colours, with SATURATION RUNNING INVERSE TO FREQUENCY.
+   *
+   * Measured over the 34,322-card corpus: Creature 55.5%, Instant 11.2%, Sorcery 10.6%,
+   * Enchantment 10.4%, Artifact 7.5%, Land 3.4%, Planeswalker 1.0% (329 cards),
+   * Unknown 0.3%, Battle 0.1% (39 cards). A palette that ignores that spread gives the
+   * majority class the loudest ink and buries the 39 cards you would actually hunt for.
+   *
+   * The previous palette also collided head-on with COLOR_PALETTE — Creature was `#22C55E`,
+   * the exact green that means "green card" in the other colour mode, on 55% of the points.
+   * The supertype map looked like a broken colour-identity map.
+   *
+   * Three families, so the legend teaches itself: SPELLS are a chroma sweep (azure ->
+   * violet -> rose), PERMANENTS are material tones (bone, steel, earth), and the two rare
+   * types are hot accents that stay findable at 3px among 34,000 neighbours.
+   */
+  const SUPERTYPE_PALETTE = {
+    Creature: '#A8977F',      // 55% of the map — muted bone, the substrate
+    Instant: '#3FA9F5',       // azure: reactive, at instant speed
+    Sorcery: '#D1497F',       // rose-magenta: the deliberate half of the pair
+    Enchantment: '#9B7BE8',   // Nyx violet — Theros starfield
+    Artifact: '#9FB0BC',      // Mirrodin steel; neutral, NOT cyan, to stay clear of Instant
+    Land: '#8C6B34',          // earth ochre, darkened so it cannot read as Planeswalker gold
+    Planeswalker: '#FFC94A',  // 329 cards: the spark, bright enough to spot
+    Battle: '#FF4A34',        // 39 cards: the hottest thing on the map
+    Unknown: '#4A5058',       // recedes
+  };
   const RARITY_PALETTE = { common: '#9CA3AF', uncommon: '#C0C0C0', rare: '#C4A747', mythic: '#EA580C', bonus: '#A855F7', special: '#F472B6' };
 
   const ALL_FORMATS = ['standard', 'modern', 'legacy', 'vintage', 'commander', 'pioneer', 'pauper', 'historic'];
@@ -23,14 +48,18 @@
 
   let allData = [];
   let activeSupertypes = new Set(SUPERTYPES);
-  let currentColorBy = 'color';
+  let currentColorBy = 'supertype';   // see SUPERTYPE_PALETTE for why this is the default
   let searchTerm = '';
   let searchTimeout = null;
   let plotInitialized = false;
   let currentMode = 'discover';
   let embeddings = null; // Float32Array, loaded lazily for Find Similar
   const EMBED_DIM = 128; // mirrors FINAL_EMBEDDING_DIM in config.py
-  let currentMap = 'default'; // 'default' or 'ability'
+  // The ABILITY map is the default. It is the space that answers "what does this card
+  // DO" — the same embedding Find Similar, the walk and drill all read regardless of
+  // which map is displayed. Colour+Type is a projection of information already on the
+  // card face; abilities is the one you cannot get by reading the card.
+  let currentMap = 'ability'; // 'ability' or 'default'
   const projectionCache = {}; // { default: [...], ability: [...] }
   const embeddingsCache = {}; // { function: Float32Array } — one space, not one per map
   // All data files the viz fetches, relative to viz/index.html. The server
@@ -52,7 +81,7 @@
   // neighbours for Doubling Season while a cache-busted fetch of the same URL returned
   // the new ones. Bump whenever a consumer would draw a different conclusion from the
   // bytes, not only when the parser would.
-  const DATA_VERSION = 4;
+  const DATA_VERSION = 5;   // regions gained a third level and every label was renamed
   const v = url => url + '?v=' + DATA_VERSION;
   // Exported because the deck manifest and per-deck artifacts are fetched by
   // build.js and discovery.js, which had NO cache-busting at all — adding a key to
@@ -71,6 +100,9 @@
     // The discovery front door — small enough to land on before anything else arrives.
     vizIndex: v(DATA_BASE + 'viz_index.json'),
     neighbours: v(DATA_BASE + 'neighbours.bin'),
+    // Lazy: only fetched when the Role grouping is selected. 0.39 MB gzipped against a
+    // 1.83 MB discovery boot is not something to spend before someone asks for it.
+    cardRoles: v(DATA_BASE + 'card_roles.json'),
   };
   const MAP_CONFIGS = {
     default: { projection: DATA.projection, embeddings: DATA.embeddings, regions: DATA.regionsDefault },
@@ -165,7 +197,7 @@
     if (existing !== -1) {
       topCardIndex = existing;
       updateViewerPanel();
-      updateSelectionHighlight();
+    updateSelectionHighlight();
       return;
     }
 
@@ -219,10 +251,12 @@
     updateSelectionHighlight();
   }
 
-  // Escape peels ONE layer at a time, outermost first: a focused region, then the
-  // orientation lens, then the selection. Each press does exactly one visible thing.
+  // Escape peels ONE layer at a time, outermost first: a focused region, then a clicked
+  // legend group, then the orientation lens, then the selection. Each press does exactly
+  // one visible thing.
   function escapeOnce() {
     if (regionFocus) { clearRegionFocus(); return; }
+    if (legendFocus) { clearLegendFocus(); return; }
     if (orientation) { clearOrientation(); return; }
     clearSelection();
   }
@@ -352,6 +386,18 @@
   // Drill is still reachable from the toolbar and from box-select, where asking for a
   // re-layout is explicit. A label click is a camera move.
   let regionFocus = null;   // { id, label, rows: Set }
+  /* A legend row you clicked. Deliberately a GROUP key and not a row set: the traces are
+   * already partitioned by category, so "light up Planeswalkers" is one scalar per group
+   * rather than a 34,322-entry array — the same distinction `dimsAll()` exists to make.
+   * It composes with `regionFocus` through `spotlight()`, which is the single place that
+   * decides whether a point is lit. */
+  let legendFocus = null;   // { key } | null
+
+  function clearLegendFocus() {
+    if (!legendFocus) return;
+    legendFocus = null;
+    render();
+  }
 
   async function focusRegion(regionId) {
     const data = await loadRegionData(currentMap);
@@ -369,7 +415,10 @@
     if (!rows.size) { setStatus('That region has no cards on this map.'); return; }
 
     const region = data.regions.find(r => r.id === regionId);
-    regionFocus = { id: regionId, label: (region && region.label) || regionId, rows: rows };
+    // `level` rides along so the label pass can ask "is this region INSIDE what is
+    // focused?" — which is what makes zooming into a country reveal its states.
+    regionFocus = { id: regionId, label: (region && region.label) || regionId, rows: rows,
+                    level: region ? region.level : 0 };
     render();
 
     // Frame it from the members' real extent rather than the stored w/h, so the camera
@@ -1367,13 +1416,50 @@
     // Pre-load region data so it's ready when render() builds annotations
     if (showRegionLabels) await loadRegionData(mapName);
     await loadProjection(mapName);
-    // Re-apply selection highlight after map switch (positions changed).
+    // Re-apply selection highlight after map switch (positions changed). This is also
+    // what re-runs `render()`, and therefore what installs layers holding the NEW
+    // coordinates — which is why the reindex below has to come after it.
     updateSelectionHighlight();
+
+    // THE POSITIONS ALL MOVED, SO THE QUADTREE IS NOW WRONG.
+    //
+    // `applyProjection` mutates x/y on the existing `allData` in place. The tree's
+    // signature is layer lengths plus endpoint ids — all identical across a map switch,
+    // same 34,322 cards in the same groups in the same order — so it never rebuilds and
+    // keeps answering with where the cards were on the OTHER map. Every hover and click
+    // on the Abilities map missed, which read as "the card images are broken" because the
+    // popup simply never opened.
+    //
+    // ORDER IS THE WHOLE FIX. `buildTree` copies coordinates out of the LAYER arrays, and
+    // `render()` rebuilds those arrays from scratch. Reindexing before the render rebuilds
+    // the tree from the outgoing layers, and then `setLayers` computes that same unchanged
+    // signature and skips its own rebuild — so the stale positions survive a call whose
+    // entire purpose was to remove them. It looks fixed and measures broken.
+    //
+    // Deliberately NOT solved by making `treeSignature()` position-aware: drill mutates
+    // coordinates in place for 90 frames with the endpoints unchanged, so that would
+    // rebuild the tree every frame at 23.5 ms a go — the exact cost the cheap signature
+    // exists to avoid.
+    if (mapCanvas) mapCanvas.reindex();
+
     // ...and restate which map you are on, because the highlight now goes through
     // `render()`, which writes its own status line and would otherwise leave you looking
     // at the Abilities map being told how many cards are shown. Under Plotly this was an
     // addTraces/deleteTraces pair that touched no status.
     setMapStatus();
+  }
+
+  /* Changing the grouping changes a LANGUAGE, not just the map's colours.
+   *
+   * Every surface that aggregates cards and reports them back — the legend, and Build's
+   * segmented curve and role bars — has to repaint together, or the swatch beside a bar
+   * means one thing while the identical swatch on the atlas means another. Repainting
+   * only the map is what made the curve keep answering in supertypes after the overlay
+   * had been switched to roles.
+   */
+  function regroup() {
+    render();
+    if (window.Build && typeof Build.renderPanel === 'function') Build.renderPanel();
   }
 
   function setMapStatus() {
@@ -1447,31 +1533,105 @@
   // renderer as DOM instead of Plotly annotations — so the crossfade is a CSS transition
   // rather than an rgba() alpha rebuilt on a 150 ms debounce, and each label is a real
   // button rather than something a 30-line d2p hit-test has to find.
+  /* Region parentage, indexed once per map. `regions_*.json` already carries `parent` on
+   * every entry, so the hierarchy needs no new data — only a lookup. */
+  const regionIndexCache = {};
+  function regionIndex() {
+    if (regionIndexCache[currentMap]) return regionIndexCache[currentMap];
+    const data = regionDataCache[currentMap];
+    if (!data) return null;
+    const byId = {};
+    for (const r of data.regions) byId[r.id] = r;
+    regionIndexCache[currentMap] = byId;
+    return byId;
+  }
+
+  /* THE TELESCOPE: which names are on screen is a question about DEPTH, not only zoom.
+   *
+   * Before this, every level answered from absolute camera span alone. Two consequences.
+   * Neighbourhoods (L2) needed span < 6 while their own spans are ~0.6, so in practice
+   * they never appeared — 168 of the 227 names on the ability map were unreachable.
+   * And focusing a region framed it without naming a single thing inside it, so clicking
+   * into a country told you less than standing outside it did.
+   *
+   * Now the span bands still decide the unfocused case, but a focused region promotes its
+   * OWN descendants: its children are always named, its grandchildren once the camera is
+   * close enough to tell them apart. Everything outside keeps a faint L0 label so you can
+   * still see which country you left — the same reason focusing mutes points instead of
+   * hiding them.
+   */
   function refreshCanvasLabels() {
     if (!mapCanvas) return;
     const cam = mapCanvas.getCamera();
     const span = cam ? Math.abs(cam.x[1] - cam.x[0]) : 70;
     const data = regionDataCache[currentMap];
     if (!data || !showRegionLabels) { mapCanvas.setAnnotations([]); return; }
+    const byId = regionIndex();
+    const focusId = regionFocus ? regionFocus.id : null;
+
+    // 0 = the focused region, 1 = child, 2 = grandchild, -1 = elsewhere, null = no focus.
+    function depthFromFocus(region) {
+      if (!focusId) return null;
+      if (region.id === focusId) return 0;
+      if (region.parent === focusId) return 1;
+      const parent = byId && byId[region.parent];
+      if (parent && parent.parent === focusId) return 2;
+      return -1;
+    }
+
     const out = [];
     for (const region of data.regions) {
-      let opacity = 0, size = 11;
-      if (region.level === 0) {
-        if (span > 25) opacity = 1;
-        else if (span > 15) opacity = (span - 15) / 10;
-        size = 16;
-      } else {
-        if (region.span < span * 0.05) continue;
-        if (span < 20) opacity = 1;
-        else if (span < 30) opacity = (30 - span) / 10;
+      const depth = depthFromFocus(region);
+      let opacity = 0;
+      const size = region.level === 0 ? 16 : region.level === 1 ? 11 : 9;
+
+      if (depth === null) {
+        // Nothing focused: the plain span bands. L2 fades in far earlier than it used to
+        // — its own span is a fraction of a unit, so gating on `region.span` at 4% of the
+        // camera meant a neighbourhood had to fill the screen to be allowed a name.
+        if (region.level === 0) {
+          if (span > 25) opacity = 1;
+          else if (span > 15) opacity = (span - 15) / 10;
+        } else if (region.level === 1) {
+          if (region.span < span * 0.05) continue;
+          if (span < 20) opacity = 1;
+          else if (span < 30) opacity = (30 - span) / 10;
+        } else {
+          if (span < 9) opacity = 1;
+          else if (span < 16) opacity = (16 - span) / 7;
+        }
+      } else if (depth === 0) {
+        // Where you are. Named, but quieter than its children — it is the title of the
+        // view, not a thing to click into again.
+        opacity = 0.55;
+      } else if (depth === 1) {
+        opacity = 1;                                   // what is inside: always named
+      } else if (depth === 2) {
+        if (span < 10) opacity = 0.9;                  // one level further in
+        else if (span < 20) opacity = (20 - span) / 10 * 0.9;
+      } else if (region.level === 0) {
+        opacity = 0.28;                                // context: the countries you left
       }
-      if (opacity <= 0) continue;
+
+      /* An invisible label is worse than no label: placement is greedy and sorted
+       * big-first, so a country name fading through 0.03 alpha still claims the largest
+       * collision box on screen and suppresses the readable neighbourhood name underneath
+       * it. Cut the band off where the text stops being legible rather than where it
+       * reaches zero. Measured at span 15.3, where the L0 band sits at 0.03. */
+      if (opacity < 0.09) continue;
       out.push({
-        x: region.cx, y: region.cy, id: region.id, size: size,
+        x: region.cx, y: region.cy, id: region.id, size: size, level: region.level,
+        // The outline has to fade WITH the text. A fixed-alpha dark ring under a 0.28
+        // label is more opaque than the label itself, so the faint context names rendered
+        // as dark smudges — legible only as "something is wrong there". Scaled here rather
+        // than in CSS because CSS cannot see the per-label opacity.
+        outline: opacity,
         text: region.level === 0 ? region.label : region.short,
         colour: region.level === 0
           ? 'rgba(196,167,71,' + opacity.toFixed(2) + ')'
-          : 'rgba(200,200,200,' + opacity.toFixed(2) + ')',
+          : region.level === 1
+            ? 'rgba(232,236,244,' + opacity.toFixed(2) + ')'
+            : 'rgba(198,210,232,' + opacity.toFixed(2) + ')',
       });
     }
     mapCanvas.setAnnotations(out);
@@ -1492,11 +1652,27 @@
       .map(tr => {
         const m = tr.marker || {};
         const c = Array.isArray(m.color) ? '#8a8a8a' : (m.color || '#666');
-        return '<div class="map-legend-row"><span class="map-legend-dot" style="background:' +
+        const on = legendFocus && legendFocus.key === tr.name;
+        return '<div class="map-legend-row' + (on ? ' is-active' : '') +
+          '" role="button" tabindex="0" data-key="' + escHtml(tr.name) +
+          '"><span class="map-legend-dot" style="background:' +
           (c === 'rgba(0,0,0,0)' ? 'transparent;border:2px solid ' +
             ((m.line && m.line.color) || '#888') : c) +
           '"></span>' + escHtml(tr.name) + '</div>';
       }).join('');
+
+    // Bound once on the container, not per row: the rows are replaced on every render,
+    // so per-row listeners would be re-attached 34,000-point-render after render.
+    if (!el._legendBound) {
+      el._legendBound = true;
+      el.addEventListener('click', function (ev) {
+        const row = ev.target.closest('.map-legend-row');
+        if (!row) return;
+        const key = row.getAttribute('data-key');
+        legendFocus = (legendFocus && legendFocus.key === key) ? null : { key: key };
+        render();
+      });
+    }
   }
 
   // ── Load data ──
@@ -1539,11 +1715,22 @@
     })
     .catch(err => setStatus('Discovery unavailable: ' + err.message));
 
-  fetch(MAP_CONFIGS.default.projection)
+  // Boot the map the app actually opens on. This was hardcoded to `default`, so flipping
+  // the default to Abilities would have left `currentMap` saying one thing while
+  // `allData` held the other map's coordinates — every position wrong and nothing to
+  // indicate it.
+  fetch(MAP_CONFIGS[currentMap].projection)
     .then(r => r.json())
     .then(data => {
       allData = data;
-      projectionCache['default'] = data;
+      projectionCache[currentMap] = data;
+      const sel = document.getElementById('mapSelect');
+      if (sel) sel.value = currentMap;
+      // Same for the colour mode. Both selects are pinned from the JS defaults rather than
+      // left to option order: markup order and a `let` default are two places deciding one
+      // thing, and they drift the moment someone reorders the list for readability.
+      const colourSel = document.getElementById('colorBy');
+      if (colourSel) colourSel.value = currentColorBy;
       initToggles();
       refreshDrillButton();
       // Only paint the scatter if that is what the user is looking at. Rendering 34,322
@@ -1561,8 +1748,12 @@
         document.getElementById('modeSelect').value = 'build';
         setMode('build');
       }
-      // Load region data in background, then re-render with labels
-      loadRegionData('default').then(data => {
+      // Load region data in background, then re-render with labels. `currentMap`, not a
+      // hardcoded 'default' — the second place the boot map was written as a literal, and
+      // like the projection fetch above it failed silently: `regions_ability.json` was
+      // never requested, `refreshCanvasLabels` found no data, and the map simply had no
+      // names on it. Nothing errors when the answer is an empty list.
+      loadRegionData(currentMap).then(data => {
         if (data && currentMode === 'explore') render();
       });
     })
@@ -1617,6 +1808,20 @@
   // ── Event listeners ──
   document.getElementById('colorBy').addEventListener('change', e => {
     currentColorBy = e.target.value;
+    // A grouping whose data is not in the boot payload loads here, once. Selecting Role
+    // before `card_roles.json` lands would otherwise colour all 34,322 cards
+    // 'unclassified' and look like the roles file was wrong rather than absent.
+    const g = grouping();
+    if (g.ensure) {
+      setStatus('Loading ' + g.label.toLowerCase() + ' data…');
+      g.ensure().then(ok => {
+        if (!ok) setStatus('Could not load ' + g.label.toLowerCase() + ' data');
+        else setMapStatus();
+        regroup();
+      });
+    } else {
+      regroup();
+    }
     render();
   });
 
@@ -1797,16 +2002,22 @@
     // deleted mode — and Discover is the only mode that shows it.
     plotEl.classList.toggle('force-mode', mode === 'discover');
 
-    // Leaving a graph for the atlas is a question about position, so answer it: carry the
-    // graph's cards across and light them up. Entering explore any other way clears it.
+    // ARRIVING IN EXPLORE SHOWS THE WHOLE MAP, EVERY TIME.
+    //
+    // This used to auto-orient: `if (Session.size()) orientTo(null, 'your walk')` — walk a
+    // few cards in Discover, switch to Explore, and the atlas opened with 97% of itself
+    // dimmed to 8% alpha and the camera somewhere else. The intent was good (locate what
+    // you hold) but as an ENTRY state it means the atlas almost never gets to be the atlas,
+    // and the dimming reads as a rendering fault rather than as a lens.
+    //
+    // The lens is not gone — `orientTo` still runs when you ask for it from inside Explore
+    // (clicking a card, following a relation). What changed is that arriving is not asking.
     if (mode === 'explore') {
-      // NOT gated on Force.isActive(): the exit above already flipped it false, and
-      // `exit()` deliberately keeps the nodes so the walk can be resumed. The graph you
-      // just left is exactly the thing you want to locate.
-      // Membership is read live from Session now, so this only decides whether the lens
-      // is on. The anchor comes from Session.focus rather than being frozen here.
-      if (Session.size()) orientTo(null, 'your walk');
-      else clearOrientation();
+      clearOrientation();
+      regionFocus = null;
+      legendFocus = null;
+      clearSelection();
+      if (mapCanvas) mapCanvas.fitToData();
     } else if (mode !== 'discover') {
       orientation = null;
     }
@@ -1837,10 +2048,83 @@
   // itself, so the canvas gets pinch for free and the hand-rolled version is gone.
 
   // ── Get category key and palette for current color mode ──
+  /* ── The grouping registry ────────────────────────────────────────────
+   *
+   * ONE definition of "how are cards grouped, in what order, and what colour is each
+   * group" — because a colour only carries meaning if it means the same thing on every
+   * surface that reports it. Before this there were two taxonomies with no relationship:
+   * the map coloured by `COLOR_PALETTE`/`SUPERTYPE_PALETTE`/`RARITY_PALETTE` here, and
+   * Build's role-budget bars coloured by a `FAMILY_COLOR` table of its own. Same screen,
+   * same cards, two unrelated colour languages and two legends that could never agree.
+   *
+   * A grouping is `{label, keyOf(d), palette, order, ensure?}`. `order` is authoritative
+   * for legend and stack order; `ensure` is for groupings whose data is not in the boot
+   * payload. Roles are the only one today: `card_roles.json` is 0.39 MB gzipped against a
+   * 1.83 MB discovery boot, so it loads when the grouping is SELECTED and never before.
+   */
+  const ROLE_ORDER = [
+    'wincon', 'doubler', 'tutor', 'counterspell', 'stax', 'hate', 'removal', 'ramp',
+    'draw', 'recursion', 'protection', 'sac-outlet', 'payoff', 'land', 'value', 'buff',
+    'utility', 'sac-cost', 'threat', 'unclassified',
+  ];
+  const ROLE_PALETTE = {
+    wincon: '#FFD700', doubler: '#22D3EE', tutor: '#E879F9', counterspell: '#38BDF8',
+    stax: '#94A3B8', hate: '#CBD5E1', removal: '#EF4444', ramp: '#22C55E',
+    draw: '#3B82F6', recursion: '#A78BFA', protection: '#FDE68A', 'sac-outlet': '#FB923C',
+    payoff: '#EC4899', land: '#A16207', value: '#14B8A6', buff: '#84CC16',
+    utility: '#64748B', 'sac-cost': '#78716C', threat: '#F59E0B', unclassified: '#6B7280',
+  };
+
+  let rolesByName = null;   // card_roles.json .roles — lazy, see GROUPINGS.role.ensure
+
+  // Lands fall back to their supertype: ROLE_PATTERNS does not classify every card, and a
+  // Land is a land whatever else is true of it. Everything else stays unclassified rather
+  // than being given a role the roles file never claimed.
+  function roleOf(d) {
+    const roles = (rolesByName && rolesByName[d.n]) || [];
+    if (roles.length) {
+      const families = new Set(roles.map(r => r.split(':')[0]));
+      for (const f of ROLE_ORDER) if (families.has(f)) return f;
+    }
+    return d.s === 'Land' ? 'land' : 'unclassified';
+  }
+
+  const GROUPINGS = {
+    supertype: {
+      label: 'Supertype', palette: SUPERTYPE_PALETTE,
+      order: SUPERTYPES, keyOf: function (d) { return d.s; },
+    },
+    color: {
+      label: 'Primary Color', palette: COLOR_PALETTE,
+      order: ['W', 'U', 'B', 'R', 'G', 'Multicolor', 'Colorless'],
+      keyOf: function (d) { return d.c; },
+    },
+    rarity: {
+      label: 'Rarity', palette: RARITY_PALETTE,
+      order: ['common', 'uncommon', 'rare', 'mythic', 'special', 'bonus'],
+      keyOf: function (d) { return d.r; },
+    },
+    role: {
+      label: 'Role', palette: ROLE_PALETTE, order: ROLE_ORDER, keyOf: roleOf,
+      ensure: async function () {
+        if (rolesByName) return true;
+        try {
+          const r = await fetch(DATA.cardRoles);
+          rolesByName = (await r.json()).roles || {};
+          return true;
+        } catch (e) {
+          rolesByName = null;
+          return false;
+        }
+      },
+    },
+  };
+
+  function grouping() { return GROUPINGS[currentColorBy] || GROUPINGS.supertype; }
+
   function getCategoryInfo(d) {
-    if (currentColorBy === 'color') return { key: d.c, palette: COLOR_PALETTE };
-    if (currentColorBy === 'supertype') return { key: d.s, palette: SUPERTYPE_PALETTE };
-    return { key: d.r, palette: RARITY_PALETTE };
+    const g = grouping();
+    return { key: g.keyOf(d), palette: g.palette };
   }
 
   // Canvas wiring, done once. This lived inside `render()` behind the renderer fork;
@@ -1941,16 +2225,24 @@
     // to disagree: `filtered` fed contours and the status count while the group loop
     // re-tested `activeSupertypes` against `allData` itself, so adding a filter here
     // silently did nothing to what was drawn.
-    const visible = (d, i) => activeSupertypes.has(d.s) &&
-                              (!regionFocus || regionFocus.rows.has(i));
+    // A focused region no longer HIDES the rest of the map. It used to: `visible`
+    // excluded every non-member, so clicking a region left you staring at a cluster with
+    // no idea where it sat. Orientation is the whole point of the atlas — a region only
+    // means something against its neighbours — so non-members stay drawn and recede.
+    const visible = (d) => activeSupertypes.has(d.s);
     const filtered = allData.filter(visible);
+    // Contours and the status count still speak for the focused region only, so
+    // "1,234 cards in Swolesville" keeps meaning the region rather than the map.
+    const focused = regionFocus
+      ? allData.filter((d, i) => visible(d) && regionFocus.rows.has(i))
+      : filtered;
 
     // Contour trace (prepended before scatter so it renders beneath). While drilling it
     // re-bins over the local layout — histogram2dcontour auto-bins to whatever extent it
     // is handed, so levels are relative to the current selection and are NOT comparable
     // across drills.
     const contourTraces = [];
-    const contourSource = drilling ? window.Drill.getContourSource() : filtered;
+    const contourSource = drilling ? window.Drill.getContourSource() : focused;
     if (showContours && contourSource && contourSource.length > 0) {
       contourTraces.push(buildContourTrace(contourSource));
     }
@@ -1973,9 +2265,7 @@
       groups[key].customdata.push(i);
     }
 
-    const palette = currentColorBy === 'color' ? COLOR_PALETTE
-      : currentColorBy === 'supertype' ? SUPERTYPE_PALETTE
-      : RARITY_PALETTE;
+    const palette = grouping().palette;
 
     // Build traces with optional per-point opacity for dimming. `visible: false` keeps
     // the trace (and its legend entry order) while drilling instead of rebuilding the
@@ -1990,14 +2280,45 @@
     // illegal, colour-identity violations) with nothing drawn over it, so it still needs
     // the per-point array — `dimsAll()` is how a mode says which it is.
     const dimsAll = !!(overlay && overlay.dimsAll && overlay.dimsAll());
-    const traces = Object.values(groups).map(g => {
+    /* ONE spotlight, however many things are pointing it.
+     *
+     * A focused region and a clicked legend row are the same gesture — "show me this,
+     * keep the rest for context" — and they compose: hold both and you get that region's
+     * Planeswalkers. Deciding it in two places is how the atlas ends up with two
+     * disagreeing answers to whether a point is lit, which this file has been bitten by
+     * before (`visible()` vs `filtered`).
+     *
+     * A region is per-point and costs the 34K array; a legend row is per-GROUP and costs
+     * one comparison, so the group case is hoisted out and never touches the array path.
+     */
+    const LIT = 0.95, UNLIT = 0.09;
+    function spotlightFor(g) {
+      const groupLit = !legendFocus || g.key === legendFocus.key;
+      if (!regionFocus) return groupLit ? LIT : UNLIT;          // scalar, free
+      if (!groupLit) return UNLIT;                              // scalar, free
+      return g.customdata.map(idx => regionFocus.rows.has(idx) ? LIT : UNLIT);
+    }
+    /* Registry order, not hash order. `groups` is keyed by category, so `Object.values`
+     * hands back whatever order the cards happened to arrive in — which made the legend
+     * shuffle between renders and bear no relation to the order the same groups appear in
+     * anywhere else. The registry's `order` is the one answer, and every surface that
+     * reports these groups sorts by it. Unknown keys sort last rather than being dropped. */
+    const groupOrder = grouping().order || [];
+    const orderedGroups = Object.values(groups).sort(
+      (a, b) => (groupOrder.indexOf(a.key) + 1 || 999) - (groupOrder.indexOf(b.key) + 1 || 999));
+    const traces = orderedGroups.map(g => {
       let opacity;
       if (dimsAll) {
         opacity = 0.08;
+      } else if (regionFocus || legendFocus) {
+        // A spotlight, not a filter. Everything stays on screen at a low alpha so you can
+        // still see WHERE the lit set sits — the question the atlas exists to answer, and
+        // the one that hiding everything else destroyed.
+        opacity = spotlightFor(g);
       } else if (dimmedIndices) {
-        opacity = g.customdata.map(idx => dimmedIndices.has(idx) ? 0.08 : 0.7);
+        opacity = g.customdata.map(idx => dimmedIndices.has(idx) ? 0.08 : 0.85);
       } else {
-        opacity = 0.7;
+        opacity = 0.85;
       }
       return {
         type: 'scattergl',
@@ -2008,7 +2329,10 @@
         customdata: g.customdata,
         hoverinfo: 'none',
         visible: drilling ? false : true,
-        marker: { size: 3, opacity, color: palette[g.key] || '#666' },
+        // `glow` opts this layer into the renderer's zoom-responsive halo. Only the base
+        // scatter takes it: the overlays (search, selection, deck) are already at full
+        // alpha and a halo on them would read as a second, wrong highlight.
+        marker: { size: 3, opacity, color: palette[g.key] || '#666', glow: true },
       };
     });
 
@@ -2126,6 +2450,7 @@
     buildHoverTextMinimal,
     renderManaSymbols,
     closeDetail: clearSelection,
+    escapeOnce: escapeOnce,
     removeFromSelection,
     bringToTop,
     cyclePrev: () => cycleSelection(-1),
@@ -2155,7 +2480,14 @@
     setCommander,
     focusRegion,
     clearRegionFocus,
+    // The registry, exported so aggregate views (Build's curve and role bars) colour by
+    // the SAME definition the map and its legend use, rather than keeping a second table.
+    GROUPINGS: GROUPINGS,
+    get grouping() { return currentColorBy; },
+    groupKey: function (d) { return grouping().keyOf(d); },
+    groupColour: function (d) { const g = grouping(); return g.palette[g.keyOf(d)] || '#666'; },
     get regionFocus() { return regionFocus; },
+    get legendFocus() { return legendFocus; },
     relate,
     keep,
     orientTo,

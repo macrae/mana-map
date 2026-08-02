@@ -130,6 +130,27 @@ def is_land(card):
     return "Land" in str(card.get("type_line", "")).split(" // ")[0]
 
 
+def commander_rejection(row):
+    """Why this card can't start in the command zone, or None if it can.
+
+    One predicate, two callers with different needs: `build_deck` raises with
+    the reason, `pool_facts` just filters a box of cards down to its legal
+    commanders. Written twice, these drift — and the failure is silent in the
+    direction that matters, since a filter that is quietly wrong about
+    "can be your commander" simply omits the card from a shortlist.
+
+    `row` is anything with .get: a cards.csv row, a cards.json record.
+    """
+    front = str(row.get("type_line", "") or "").split(" // ")[0]
+    text = str(row.get("oracle_text", "") or "").lower()
+    if not ("Legendary" in front and "Creature" in front) and "can be your commander" not in text:
+        return ("not a legal commander (needs to be a legendary creature, "
+                "or say 'can be your commander')")
+    if row.get("legal_commander") != "legal":
+        return "not legal in Commander"
+    return None
+
+
 def checker_passed(doc):
     """The publication gate: only a checker-passed artifact may be stated as fact.
 

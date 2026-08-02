@@ -1,0 +1,334 @@
+{
+  "id": "003",
+  "slug": "yawgmoth-swarm",
+  "deck": "YAWGMOTH — THE SCARAB SWARM",
+  "title": "Yawgmoth + Nest of Scarabs + Zulaport Cutthroat: does a creature drain survive its own engine?",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Yawgmoth, Thran Physician (2/4, untapped, no counters)",
+        "Nest of Scarabs (enchantment)",
+        "Zulaport Cutthroat (1/1, no counters)",
+        "Insect token A (1/1 black Insect, no counters)",
+        "Insect token B (1/1 black Insect, no counters)",
+        "Swamp (untapped)",
+        "Swamp (untapped)",
+        "Swamp (untapped)"
+      ],
+      "opponent_a": [
+        "Grizzly Bears (2/2, untapped, no counters)"
+      ],
+      "opponent_b": [
+        "no permanents"
+      ],
+      "opponent_c": [
+        "no permanents"
+      ],
+      "opponent_d": [
+        "no permanents"
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "{B}{B}{B} from three untapped Swamps",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Yawgmoth, Thran Physician's activated ability — 'Pay 1 life, Sacrifice another creature: Put a -1/-1 counter on up to one target creature and draw a card.' Cost already paid: 1 life paid (you are at 39) and Insect token A sacrificed. Target chosen: Grizzly Bears.",
+        "controller": "you"
+      }
+    ],
+    "extras": {
+      "life_totals": {
+        "you": 39,
+        "opponent_a": 40,
+        "opponent_b": 40,
+        "opponent_c": 40,
+        "opponent_d": 40
+      },
+      "pod_size": "Five players — you and four opponents, 160 opposing life in total.",
+      "library": "You have 60 cards in your library.",
+      "assumptions": [
+        "No player responds to anything; every opponent passes priority throughout.",
+        "No permanent enters or leaves the battlefield except as described by the cards named here.",
+        "Insect tokens created by Nest of Scarabs are 1/1 black Insect creature tokens with no abilities.",
+        "It is your precombat main phase."
+      ],
+      "note_for_the_resolver": "Yawgmoth is a Human with protection from Humans, so his own ability can never target him. Targets are chosen as the ability is put on the stack, and Nest of Scarabs' replacement Insect is created only when its trigger RESOLVES — so the new Insect is not available as a target on the iteration that created it. Yawgmoth's ability reads 'up to one target creature', so zero targets is a legal choice. Zulaport Cutthroat drains EACH opponent, unlike Blood Artist which targets one player."
+    },
+    "question": "Resolve the stack, then run the engine as far as the rules allow, playing to kill the table. (a) Zulaport Cutthroat is a CREATURE and therefore a legal target for Yawgmoth's ability and a legal sacrifice for its cost. State whether the pilot is ever FORCED to consume it, or whether it can be preserved throughout, and give the exact number of completed activations from this board. (b) Zulaport drains EACH opponent. How much total life do all four opponents lose, and is that lethal?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Before anyone receives priority, resolve the bookkeeping the scenario's stack picture omits: paying Yawgmoth's cost sacrificed Insect token A, and that death has already triggered Zulaport Cutthroat. That trigger goes on the stack ABOVE the activated ability and therefore resolves first.",
+        "effect": "Stack (top-down): Zulaport Cutthroat's death trigger; Yawgmoth's -1/-1 ability targeting Grizzly Bears. You are at 39 (1 life paid); opponents at 40 each. Insect A is in your graveyard.",
+        "citations": [
+          {
+            "rule": "701.21a",
+            "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner’s graveyard."
+          },
+          {
+            "rule": "700.4",
+            "quote": "The term dies means “is put into a graveyard from the battlefield.”"
+          },
+          {
+            "rule": "603.6c",
+            "quote": "Leaves-the-battlefield abilities trigger when a permanent moves from the battlefield to another zone, or when a phased-in permanent leaves the game because its owner leaves the game."
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Zulaport Cutthroat's trigger resolves: 'each opponent loses 1 life and you gain 1 life.' Four opponents, so four separate life losses.",
+        "effect": "Opponent A/B/C/D: 40 -> 39 each (4 total life lost). You: 39 -> 40. Death count of creatures you control: 1.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Yawgmoth's activated ability resolves. Grizzly Bears is still a legal target, so put one -1/-1 counter on it and draw a card.",
+        "effect": "Grizzly Bears is 1/1 with one -1/-1 counter — toughness above 0, so it survives. Library 60 -> 59, hand 1. Putting that counter triggers Nest of Scarabs.",
+        "citations": [
+          {
+            "rule": "122.1a",
+            "quote": "Similarly, -X/-Y counters subtract from power and toughness."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "State-based actions are checked (nothing dies: Bears is 1/1), then Nest of Scarabs' trigger is put on the stack and resolves, creating one 1/1 black Insect token (Insect C).",
+        "effect": "Your board: Yawgmoth 2/4, Nest of Scarabs, Zulaport Cutthroat 1/1, Insect B, Insect C. Critically, Insect C could NOT have been the target of the activation that produced it — targets for that ability were announced when it was put on the stack, when Insect C did not exist. This is the same lock that refuted stack 001.",
+        "citations": [
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack (see rule 603, “Handling Triggered Abilities”)."
+          },
+          {
+            "rule": "601.2c",
+            "quote": "The player announces their choice of an appropriate object or player for each target the spell requires."
+          },
+          {
+            "rule": "602.2b",
+            "quote": "The remainder of the process for activating an ability is identical to the process for casting a spell listed in rules 601.2b–i. Those rules apply to activating an ability just as they apply to casting a spell."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Answer (a), the load-bearing question: is the pilot ever FORCED to consume Zulaport Cutthroat? No — on three independent grounds. (i) Yawgmoth's ability is an ACTIVATED ability: the pilot may activate it, and is never compelled to, unlike stack 001's mandatory triggered ability. (ii) The cost is 'Sacrifice another creature': the pilot pays the cost and any creature they control other than Yawgmoth is a full payment, so an Insect token satisfies it whenever one exists. (iii) The effect is 'up to one target creature', so choosing ZERO targets is legal — the counter can never be forced onto Zulaport.",
+        "effect": "Zulaport Cutthroat is preserved through every iteration in which any Insect token exists. It is consumed only at the very end, and only because the pilot ELECTS to cash it in for one final drain once it is the last sacrificeable body. Nothing in the engine can take it involuntarily.",
+        "citations": [
+          {
+            "rule": "113.3b",
+            "quote": "A player may activate such an ability whenever they have priority."
+          },
+          {
+            "rule": "601.2h",
+            "quote": "The player pays the total cost."
+          },
+          {
+            "rule": "115.6",
+            "quote": "A spell or ability that requires targets may allow zero targets to be chosen."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Establish the loop's hard ceiling before running it. The engine is body-neutral only while some creature can absorb a -1/-1 counter and live: each activation spends one body (sacrifice) and Nest returns at most one body (one counter, one token). Every creature you control except Yawgmoth is a 1/1, so a counter on your own board kills the body it lands on. Yawgmoth is 2/4 and could absorb three counters — but he has protection from Humans and the source of his own activated ability is Yawgmoth, a Human Cleric, so he can never be targeted by it.",
+        "effect": "The only sink that can take a counter and survive is Grizzly Bears (2/2), and it can absorb exactly two -1/-1 counters before dying. After Bears is gone every activation is net -1 body. The loop is therefore strictly FINITE, not 'near-infinite'.",
+        "citations": [
+          {
+            "rule": "702.16b",
+            "quote": "A permanent or player with protection can’t be targeted by spells with the stated quality and can’t be targeted by abilities from a source with the stated quality."
+          },
+          {
+            "rule": "113.7",
+            "quote": "The source of an activated ability on the stack is the object whose ability was activated."
+          },
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Convert the three untapped Swamps — the resource the scenario deliberately supplies, since the -1/-1 ability costs no mana. Activate Yawgmoth's second ability: {B}{B}, Discard a card (the card drawn in step 3): Proliferate. Choose Grizzly Bears, the only permanent in the game with a counter on it, and give it a second -1/-1 counter.",
+        "effect": "Bears becomes 0/0. You put a -1/-1 counter on a creature, so Nest of Scarabs triggers. SBAs run first and Bears is put into its owner's graveyard — it is an OPPONENT'S creature, so Zulaport does not trigger — then the Nest trigger resolves for Insect token D. Net: one extra body for {B}{B} and a discard, with no sacrifice spent. Mana remaining {B} (a second proliferate is unaffordable). Your bodies: Insect B, C, D + Zulaport = 4.",
+        "citations": [
+          {
+            "rule": "701.34a",
+            "quote": "To proliferate means to choose any number of permanents and/or players that have a counter, then give each one additional counter of each kind that permanent or player already has."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack (see rule 603, “Handling Triggered Abilities”)."
+          },
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Activation #2 of the -1/-1 ability. Pay 1 life, sacrifice Insect B, target Insect C. Insect B's death triggers Zulaport. On resolution, put a -1/-1 counter on Insect C and draw. SBAs then kill Insect C (0/0), triggering Zulaport a second time; Nest's trigger creates Insect E.",
+        "effect": "Two drains this activation. Opponents 39 -> 37 each; you 40 -> 41 (paid 1, gained 2). Library 58, hand 1. Bodies: Insect D, Insect E + Zulaport. Death count 3.",
+        "citations": [
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack (see rule 603, “Handling Triggered Abilities”)."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Activation #3, identical shape. Pay 1 life, sacrifice Insect D, target Insect E; counter kills Insect E; Nest creates Insect F.",
+        "effect": "Two more drains. Opponents 37 -> 35 each; you 41 -> 42. Library 57, hand 2. Bodies: Insect F + Zulaport. Death count 5.",
+        "citations": [
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "Activation #4. Pay 1 life, sacrifice Insect F. Now the target choice matters: the only creatures left would be Zulaport Cutthroat and Yawgmoth. Yawgmoth cannot be targeted, and the pilot declines to kill Zulaport, so choose ZERO targets — legal because the ability reads 'up to one target creature'.",
+        "effect": "One drain (Insect F). No counter is placed, so Nest of Scarabs does not trigger and no token is made. Opponents 35 -> 34 each; you 42 -> 42. Library 56, hand 3. Bodies: Zulaport Cutthroat only. Death count 6. (Targeting Zulaport here instead would trade the same total — it dies for a drain and Nest replaces it with a body that can no longer drain — so 7 is the ceiling either way.)",
+        "citations": [
+          {
+            "rule": "115.6",
+            "quote": "A spell or ability that requires targets may allow zero targets to be chosen."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "Activation #5, the final one. Pay 1 life, sacrifice Zulaport Cutthroat itself — its ability reads 'Whenever this creature or another creature you control dies', a leaves-the-battlefield trigger that sees its own death. Zero targets again (only Yawgmoth remains and he is untargetable). Draw. Then the loop ENDS: Yawgmoth is the only creature you control and the cost demands ANOTHER creature, so activation #6 has no legal payment.",
+        "effect": "Seventh and last drain. Opponents 34 -> 33 each; you 42. Library 55, hand 4. Board: Yawgmoth, Nest of Scarabs, three tapped-or-untapped Swamps. Total completed activations: FIVE of the -1/-1 ability (including the one that started on the stack) plus ONE proliferate activation. What ends the loop is body exhaustion under 'Sacrifice ANOTHER creature' — not life, not the library.",
+        "citations": [
+          {
+            "rule": "603.6c",
+            "quote": "Leaves-the-battlefield abilities trigger when a permanent moves from the battlefield to another zone, or when a phased-in permanent leaves the game because its owner leaves the game."
+          },
+          {
+            "rule": "118.3",
+            "quote": "A player can’t pay a cost without having the necessary resources to pay it fully."
+          },
+          {
+            "rule": "601.2h",
+            "quote": "Unpayable costs can’t be paid."
+          }
+        ]
+      },
+      {
+        "n": 12,
+        "action": "Final state-based-action check and the arithmetic for (b). Seven creatures you controlled died while Zulaport Cutthroat was on the battlefield (Insect A, B, C, D, E, F and Zulaport itself). Each death drained EACH of four opponents for 1.",
+        "effect": "Each opponent loses 7 life: 40 -> 33. Total life removed from the table: 7 x 4 = 28. Opposing life 160 -> 132. No opponent is at 0 or less life, so no player loses the game; you never came near decking (60 -> 55). NOT lethal, and not close — the line removes 17.5% of the table's life. The 'near-infinite' family tag is wrong here for the second time on this deck.",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "The pilot is NEVER forced to consume Zulaport Cutthroat: Yawgmoth's -1/-1 ability is a cost-paid activation (113.3b), the pilot chooses which creature pays 'Sacrifice another creature', and 'up to one target creature' permits zero targets (115.6) — so neither the cost nor the effect can reach Zulaport against the pilot's will. Zulaport survives every iteration and is spent only as the deliberate final sacrifice. The engine is nonetheless strictly finite: each activation consumes one body and Nest of Scarabs returns at most one, so the loop is body-neutral only while a creature can take a -1/-1 counter and live. Grizzly Bears (2/2) is the only such sink and absorbs exactly two counters; Yawgmoth is 2/4 but his protection from Humans makes him untargetable by his own ability (702.16b, 113.7). Optimal line: resolve the stacked activation, then spend {B}{B} + a discard on Yawgmoth's proliferate to put the second counter on Bears — that buys a free Insect token without spending a sacrifice, and is worth exactly one extra drain over using an activation's counter on Bears (7 vs 6). Result: FIVE completed activations of the -1/-1 ability plus one proliferate; SEVEN deaths of creatures you control; each opponent loses 7 life; 28 total life across the table. 160 opposing life becomes 132. NOT LETHAL.",
+      "you": {
+        "life": 42,
+        "life_change": "+3 from the scenario's stated 39 (+2 from the turn's start of 40)",
+        "battlefield": [
+          "Yawgmoth, Thran Physician (2/4, no counters)",
+          "Nest of Scarabs",
+          "Swamp",
+          "Swamp",
+          "Swamp"
+        ],
+        "creatures_remaining": 1,
+        "hand": 4,
+        "library": 55,
+        "cards_drawn": 5,
+        "cards_discarded": 1,
+        "graveyard_additions": [
+          "Zulaport Cutthroat",
+          "1 discarded card"
+        ],
+        "tokens_created": 4,
+        "tokens_remaining": 0,
+        "activations_completed": {
+          "minus_one_minus_one_ability": 5,
+          "proliferate": 1
+        },
+        "creature_deaths_you_controlled": 7,
+        "zulaport_forced_to_die": false,
+        "zulaport_note": "Preserved through activations 1-4; sacrificed voluntarily on activation 5 as the last available body, where its own leaves-the-battlefield trigger banks the seventh drain."
+      },
+      "opponents": [
+        {
+          "name": "opponent_a",
+          "life": 33,
+          "life_lost": 7,
+          "battlefield": [],
+          "note": "Grizzly Bears died to its second -1/-1 counter (from proliferate); as an opponent's creature it gave Zulaport no trigger."
+        },
+        {
+          "name": "opponent_b",
+          "life": 33,
+          "life_lost": 7,
+          "battlefield": []
+        },
+        {
+          "name": "opponent_c",
+          "life": 33,
+          "life_lost": 7,
+          "battlefield": []
+        },
+        {
+          "name": "opponent_d",
+          "life": 33,
+          "life_lost": 7,
+          "battlefield": []
+        }
+      ],
+      "answers": {
+        "a_forced_to_consume_zulaport": "No. The pilot is never forced. Three independent rules: 113.3b (the ability is activated at the pilot's option, not a mandatory trigger), 601.2h + 118.3 (the pilot pays 'Sacrifice another creature' and any other creature they control is a full payment, so an Insect token pays it whenever one exists), and 115.6 ('up to one target creature' allows zero targets, so the counter can never be forced onto Zulaport). Completed activations from the stated board: 5 of the -1/-1 ability (counting the one already on the stack) plus 1 proliferate. The loop ends on BODY EXHAUSTION — Yawgmoth alone remains and the cost requires ANOTHER creature (601.2h, 118.3) — not on life and not on library.",
+        "b_total_drain_and_lethality": "Seven deaths of creatures you control x 4 opponents = 28 total life lost. Each opponent falls 40 -> 33; 160 opposing life becomes 132. NOT lethal, and not close (17.5% of the table). No opponent reaches 0 or less life, so 704.5a is never met.",
+        "why_not_infinite": "Nest of Scarabs replaces exactly one body per activation, but each activation also spends one — so the loop only breaks even while some creature can absorb a -1/-1 counter and survive. Every creature the pilot controls except Yawgmoth is a 1/1, and Yawgmoth's protection from Humans locks him out as a sink (702.16b, 113.7). Grizzly Bears is the sole legal absorber and holds exactly two counters. The 'Near-infinite' family tag is refuted for the second time on this deck."
+      }
+    }
+  }
+}

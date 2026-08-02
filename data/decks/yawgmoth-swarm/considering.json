@@ -1,0 +1,188 @@
+{
+  "slug": "yawgmoth-swarm",
+  "assessment": "The twelve cards behind this deck's Considering: marker are a purchase list, not a bench — the pilot owns none of them, and every entry below is a card to buy. Two never reach the ten: Mana Crypt is banned in Commander, and Phyrexian Altar would be a sixth sacrifice outlet behind five already sleeved. Bloodghast loses the last fodder slot to a pool card, Pawn of Ulamog, which replaces fodder on every nontoken death instead of once per land drop. The ranking answers the two structural holes: renewable bodies for Yawgmoth, whose ability eats a creature per activation, and a second kill that does not run through Blowfly Infestation plus Nest of Scarabs.",
+  "ten": [
+    {
+      "card": "Exquisite Blood",
+      "source": "sideboard",
+      "role": "wincon:drain",
+      "cmc": 5.0,
+      "type_line": "Enchantment",
+      "evidence": {
+        "combo_lines_opened": [
+          {"cards": ["Exquisite Blood", "Enduring Tenacity"], "produces": "Infinite lifegain triggers, infinite lifeloss, infinite lifegain", "status": "needs a stack scenario"},
+          {"cards": ["Exquisite Blood", "South Wind Avatar"], "produces": "Infinite lifegain, infinite lifegain triggers, infinite lifeloss", "status": "needs a stack scenario"}
+        ],
+        "edhrec_rank": 509,
+        "game_changer": false
+      },
+      "why": "Not owned — this is the first card to buy. Enduring Tenacity and South Wind Avatar are both already in the 100 and both convert lifegain into opponent life loss; Exquisite Blood is the missing return half, so one purchase turns two sleeved cards into a second kill that never touches Nest of Scarabs.",
+      "when": "Buy it first if games are ending with the table pointing removal at Nest of Scarabs — this closes on a different axis with cards already in the deck.",
+      "natural_cut": "Virtue's Ruin",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Reassembling Skeleton",
+      "source": "sideboard",
+      "role": "recursion",
+      "cmc": 2.0,
+      "type_line": "Creature — Skeleton Warrior",
+      "evidence": {
+        "combo_lines_opened": [
+          {"cards": ["Pitiless Plunderer", "Ashnod's Altar", "Reassembling Skeleton"], "produces": "Infinite colorless mana, infinite death triggers, infinite ETB, infinite LTB, infinite sacrifice triggers", "status": "needs a stack scenario"}
+        ],
+        "synergy_partners_in_deck": ["Stitcher's Supplier"],
+        "edhrec_rank": 767,
+        "game_changer": false
+      },
+      "why": "Not owned. Yawgmoth's ability is 'pay 1 life, sacrifice another creature' and the deck holds two self-returning bodies — Butcher Ghoul and Geralf's Messenger, both undying — so a Skeleton that comes back for {1}{B} with no condition is the cheapest way to make a turn-five Yawgmoth repeatable instead of a one-shot.",
+      "when": "Buy it the first time a game ends with Yawgmoth on the battlefield, mana up, and nothing left to sacrifice.",
+      "natural_cut": "Iron-Shield Elf",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Mikaeus, the Unhallowed",
+      "source": "sideboard",
+      "role": "threat:body",
+      "cmc": 6.0,
+      "type_line": "Legendary Creature — Zombie Cleric",
+      "evidence": {
+        "combo_lines_opened": [
+          {"cards": ["Mikaeus, the Unhallowed", "Ashnod's Altar"], "produces": "Infinite LTB, infinite ETB, infinite sacrifice triggers, infinite death triggers, infinite colorless mana", "status": "needs a stack scenario"},
+          {"cards": ["Mikaeus, the Unhallowed", "Carrion Feeder"], "produces": "Infinite LTB, infinite ETB, infinite sacrifice triggers, infinite death triggers, infinite +1/+1 counters on a creature", "status": "needs a stack scenario"},
+          {"cards": ["Mikaeus, the Unhallowed", "Viscera Seer"], "produces": "Infinite LTB, infinite ETB, infinite sacrifice triggers, infinite death triggers, infinite scry 1", "status": "needs a stack scenario"},
+          {"cards": ["Mikaeus, the Unhallowed", "Woe Strider"], "produces": "Infinite LTB, infinite ETB, infinite sacrifice triggers, infinite death triggers, infinite scry 1", "status": "needs a stack scenario"}
+        ],
+        "edhrec_rank": 1278,
+        "game_changer": false
+      },
+      "why": "Not owned. Undying on every non-Human hands Butcher Ghoul, Carrion Feeder, Viscera Seer and Woe Strider a second life each, and four separate two-card lines pair Mikaeus with a sacrifice outlet already sleeved — but read the cost and the type line: {3}{B}{B}{B} sits two above a curve that peaks at three, and Yawgmoth is a Human, so the commander gets nothing from it.",
+      "when": "Buy it after the mana, not before — Sol Ring, Ancient Tomb, one Signet and three rituals is the whole acceleration ceiling, and a triple-black six-drop is a turn-seven card without more.",
+      "natural_cut": "Baron Strucker, HYDRA Overlord",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Cabal Coffers",
+      "source": "sideboard",
+      "role": "land:untapped-dual",
+      "cmc": 0.0,
+      "type_line": "Land",
+      "evidence": {"edhrec_rank": 190, "game_changer": false},
+      "why": "Not owned. Twenty-three basic Swamps stand behind it, so from the mid-game onward {2} and a tap is the largest single mana gain available to this list, and being a land it costs no spell slot — it swaps against the worst land in the 100 rather than against a threat.",
+      "when": "Buy it in the same order as Reassembling Skeleton: the recursion loops are what convert surplus black mana into extra Yawgmoth activations.",
+      "natural_cut": "Archway Commons",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Grave Pact",
+      "source": "sideboard",
+      "role": "removal:edict",
+      "cmc": 4.0,
+      "type_line": "Enchantment",
+      "evidence": {"edhrec_rank": 574, "game_changer": false},
+      "why": "Not owned, and the deck runs zero edict effects. This list sacrifices a creature nearly every turn by design, so Grave Pact makes each Yawgmoth activation strip a blocker from all three opponents — the answer to the green stompy seat whose one enormous creature the deck otherwise cannot remove.",
+      "when": "Buy it when the losses are to a bigger board rather than to a faster combo: it converts an engine you already run into table control.",
+      "natural_cut": "Blood Pact",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Pawn of Ulamog",
+      "source": "pool",
+      "role": "ramp:dork",
+      "cmc": 3.0,
+      "type_line": "Creature — Vampire Shaman",
+      "evidence": {
+        "combo_lines_opened": [
+          {"cards": ["Yawgmoth, Thran Physician", "Pawn of Ulamog", "Zulaport Cutthroat", "Butcher Ghoul"], "produces": "Infinite card draw, infinite draw triggers, near-infinite death triggers, near-infinite lifeloss", "status": "needs a stack scenario"}
+        ],
+        "edhrec_rank": 1563,
+        "game_changer": false
+      },
+      "why": "Not owned and not on the purchase list, but it beats Bloodghast for the last fodder slot: every nontoken creature death makes a 0/1 Eldrazi Spawn that sacrifices for {C}, so Yawgmoth's fodder replaces itself and pays toward the next spell, where Bloodghast returns only once per land drop.",
+      "unlocks": "A four-card line whose other three cards — Yawgmoth, Zulaport Cutthroat and Butcher Ghoul — are already in the 100, and it fills ramp:dork, one of the five role groups the pool brief names as gaps.",
+      "natural_cut": "Moonglove Extractor",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Gravecrawler",
+      "source": "sideboard",
+      "role": "threat:body",
+      "cmc": 1.0,
+      "type_line": "Creature — Zombie",
+      "evidence": {
+        "combo_lines_opened": [
+          {"cards": ["Gravecrawler", "Pitiless Plunderer", "Ashnod's Altar"], "produces": "Infinite colorless mana, infinite death triggers, infinite ETB, infinite LTB, infinite sacrifice triggers, infinite storm count", "status": "needs a stack scenario"},
+          {"cards": ["Gravecrawler", "Pitiless Plunderer", "Carrion Feeder"], "produces": "Infinite +1/+1 counters on a creature, infinite death triggers, infinite ETB, infinite LTB, infinite sacrifice triggers, infinite storm count", "status": "needs a stack scenario"}
+        ],
+        "synergy_partners_in_deck": ["Stitcher's Supplier", "Takenuma, Abandoned Mire"],
+        "edhrec_rank": 687,
+        "game_changer": false
+      },
+      "why": "Not owned. One black mana recasts it from the graveyard while you control a Zombie, and the deck runs five — Butcher Ghoul, Carrion Feeder, Geralf's Messenger, Midnight Reaper and Stitcher's Supplier — so on any normal board it is a one-mana Yawgmoth activation every turn.",
+      "when": "Buy it after Reassembling Skeleton: the Skeleton needs no Zombie and uses an activated ability rather than the stack, which is what matters against a seat holding counterspells.",
+      "natural_cut": "Oft-Nabbed Goat",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Dictate of Erebos",
+      "source": "sideboard",
+      "role": "removal:edict",
+      "cmc": 5.0,
+      "type_line": "Enchantment",
+      "evidence": {"edhrec_rank": 982, "game_changer": false},
+      "why": "Not owned. Same edict engine as Grave Pact one mana higher, and flash is the whole difference: land it on the turn before the Yawgmoth turn and the table sacrifices before anyone gets a sorcery-speed window to answer the enchantment.",
+      "when": "Buy it second, behind Grave Pact — an effect class the deck currently holds none of is worth two copies before a third fodder creature is.",
+      "natural_cut": "Hoarder's Greed",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Ophiomancer",
+      "source": "sideboard",
+      "role": "threat:tokens",
+      "cmc": 3.0,
+      "type_line": "Creature — Human Shaman",
+      "evidence": {"edhrec_rank": 668, "game_changer": false},
+      "why": "Not owned. A 1/1 deathtouch Snake at the beginning of each upkeep is four free Yawgmoth activations per turn cycle at a four-player table — but read the trigger's condition, 'if you control no Snakes': Enduring Tenacity and South Wind Avatar are both Snakes, so it goes silent for as long as either is on the battlefield as a creature.",
+      "when": "Buy it once fodder is the binding constraint and you accept the dead turns while Enduring Tenacity is a creature; the two edict enchantments above it are better with the same mana.",
+      "natural_cut": "Audacious Thief",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Imp's Mischief",
+      "source": "sideboard",
+      "role": "protection:redirect",
+      "cmc": 2.0,
+      "type_line": "Instant",
+      "evidence": {"edhrec_rank": 685, "game_changer": false},
+      "why": "Not owned, and mono-black cannot counter. The deck's protection is Malakir Rebirth, Supernatural Stamina and Lightning Greaves, all of which save a creature and none of which save Nest of Scarabs from a Disenchant or Yawgmoth from a Counterspell; Imp's Mischief changes that spell's target instead.",
+      "when": "Buy it once the kill routinely runs through a two-card enchantment pair worth defending — and price the life, because Necropotence, Ad Nauseam, City of Brass and the commander are all already charging it.",
+      "natural_cut": "Survivors' Encampment",
+      "bracket_delta": {"before": 4, "after": 4}
+    }
+  ],
+  "bench_verdicts": [
+    {
+      "card": "Mana Crypt",
+      "verdict": "off-list",
+      "why": "Banned in Commander — cards.csv records legal_commander: banned. It is not a purchase at any price for this deck, and the acceleration slot goes to Cabal Coffers instead."
+    },
+    {
+      "card": "Phyrexian Altar",
+      "verdict": "off-list",
+      "why": "A sixth sacrifice outlet behind Yawgmoth, Ashnod's Altar, Carrion Feeder, Viscera Seer and Woe Strider. Its only edge over Ashnod's Altar is coloured mana, which Pitiless Plunderer's Treasures already supply in a deck with one colour to make."
+    },
+    {
+      "card": "Bloodghast",
+      "verdict": "off-list",
+      "why": "Free recursion, but the landfall trigger caps it at one return per land drop, so it buys one Yawgmoth activation a turn. Pawn of Ulamog buys one per nontoken creature death and took the slot."
+    }
+  ],
+  "gaps": [
+    "Every line named here is a candidate. The one checker-passed artifact this deck holds is stack 001 (Blowfly Infestation + Nest of Scarabs); nothing on this list is verified. The two highest-value /resolve-stack targets are Exquisite Blood + Enduring Tenacity and Exquisite Blood + South Wind Avatar — Enduring Tenacity's trigger says 'target opponent loses that much life' while South Wind Avatar's says 'each opponent loses 1 life', so the two lines may not close a four-player table the same way, and only a stack scenario settles which.",
+    "Mikaeus is worth a stack run of its own. Undying returns a creature with a +1/+1 counter, and whether Yawgmoth's -1/-1 counter cancels that counter — making the loop repeatable rather than once-only — is a state-based-action question, not a data one.",
+    "sideboard-facts reports no EDHREC rank for any of the twelve, but data/cards.csv carries one for each. Every rank quoted in evidence above is read from cards.csv, not from the facts tool.",
+    "Cabal Coffers is tagged land:untapped-dual in card_roles.json. The taxonomy has no pattern for a mana-doubling land; do not read that role as a claim about colour fixing.",
+    "The deck's self-returning bodies number two — Butcher Ghoul and Geralf's Messenger, both undying — with Victimize and Animate Dead as one-shot reanimation. Any count of three should be re-checked against cards.json before it is printed.",
+    "Two cards a reader may reach for and should not buy: Cursed Totem shuts off Yawgmoth's own activated ability, which is the entire deck; Grafdigger's Cage blanks Butcher Ghoul, Geralf's Messenger, Animate Dead and Victimize, and would blank Reassembling Skeleton and Gravecrawler the moment they are bought. Neither is on the purchase list and neither should join it."
+  ]
+}

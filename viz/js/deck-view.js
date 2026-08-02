@@ -278,8 +278,18 @@
     document.getElementById('commanderLine').textContent =
       (issue.commander || '') + (issue.volume ? ' · Pilot\'s Manual Vol. ' +
         String(issue.volume).padStart(3, '0') : '');
+    // A deck is loadable here as soon as it has a cards.json; a magazine issue is a
+    // separate, later, expensive step. Linking to `../manuals/<slug>.html`
+    // unconditionally sent every unpublished deck to a 404 — the manifest carries
+    // `published` precisely so this link can tell the two apart.
     var link = document.getElementById('issueLink');
-    link.href = '../manuals/' + slug + '.html';
+    if (!d.published) {
+      link.hidden = true;
+      link.removeAttribute('href');
+    } else {
+      link.hidden = false;
+      link.href = '../manuals/' + slug + '.html';
+    }
     // The map's Deck Lens reads ?deck=<slug> on entry, so this deep-links straight
     // into the overlay rather than dropping the reader on an unfiltered map.
     document.getElementById('lensLink').href = 'index.html?deck=' + encodeURIComponent(slug);
@@ -328,6 +338,10 @@
         .then(function (both) {
           var d = { stacks: both[1].filter(Boolean) };
           both[0].forEach(function (p) { d[p[0]] = p[1]; });
+          // From the MANIFEST, not from issue.json — an unpublished deck has no
+          // issue.json at all, so reading the flag off `d.issue` would always be
+          // undefined and the dead-link guard would never fire.
+          d.published = entry.published !== false;
           render(entry.slug, d);
         });
     }).catch(function (e) {

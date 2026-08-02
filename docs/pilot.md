@@ -32,6 +32,7 @@ manamap pilot build-deck <slug> [--write-decklist]  # brief.json → build_plan.
 manamap pilot validate-build <slug>     # form gate over a build plan
 manamap pilot bracket-check <slug> [--target N] [--json]  # bracket floor → bracket_report.json
 manamap pilot deck-facts <slug> [--out F]  # the deterministic brief agents read first
+manamap pilot pool-facts <paths…> [--exclude F] [--json] [--out F]  # a BOX OF CARDS → which deck to build
 manamap pilot sideboard-facts <slug> [--json]  # per-sideboard-card roles, legality, bracket-if-added
 manamap pilot validate-sideboard <slug>  # swap form + recomputed bracket deltas
 manamap pilot upgrade-facts <slug> [--json]    # pool-scout brief for a deck with NO sideboard
@@ -313,6 +314,44 @@ pre-answers the traps agents kept rediscovering:
   does **not** count — colourless pays no coloured pip. Getting this wrong is worse than
   saying nothing: sisay's strategic frame asserted Secluded Courtyard was dead to its own
   commander, and it isn't.
+
+## Pool facts — building from parts
+
+`manamap pilot pool-facts <paths…>` answers the question a physical collection asks:
+*what deck should I build from these cards?* It takes files or directories rather than a
+slug, on purpose — a collection is not a deck, and putting one in `data/decks/<slug>/`
+would place it in reach of validators that assume a legal 100. `deck-facts` on a 764-card
+box reports hypergeometrics against a 99-card library and `validate-deck` emits roughly a
+thousand errors; both answer a question nobody asked. Output is **computed on demand,
+never committed**, the same rule `deck-facts` and `artist-credits` follow.
+
+It reports per-source contribution (what a box supplies that nothing else does), name
+resolution including the front-face → `" // "` translation, every legal commander in the
+box, per-identity depth **and** castable sources, role coverage against `DECK_ROLE_BUDGET`,
+fully-contained combo lines, the bracket floor, in-box upgrades from
+`obsolescence_index.json`, and mechanical-tag concentrations.
+
+Three things it exists to get right, each learned the expensive way on the first real box:
+
+- **Depth is not castability.** Depth — owned cards inside a commander's colour identity —
+  ranked Atraxa first at 663, the deepest in the box. Her W and U have 10 sources each
+  against B's 44. Ranking a shortlist on depth alone recommends a deck that cannot cast
+  its own spells, and does it confidently. Both numbers are reported per commander, and
+  `notes[]` names any identity where they disagree.
+- **Count sources with `manabase.land_colors`.** A hand-rolled count — `{U}` appears in the
+  oracle text, or the type line says Island — put that same box at **1 blue source**. The
+  real figure is **10**: a bulk collection's fixing is overwhelmingly generic (Command
+  Tower, City of Brass, Exotic Orchard, Path of Ancestry, Ash Barrens, tri-lands), and
+  none of those name a colour. A factor-of-ten error pointing the wrong way, killing an
+  archetype that was live. `land_colors` is also restriction-aware, so a Dragon-only land
+  is not counted as five sources.
+- **Dedupe combo containment.** `combo_details.json` carries several records per
+  interaction, so a straight containment read double-counts — 33 lines where the box holds
+  31. Dedupe on `frozenset(cards)` and keep the most popular record.
+
+Every line it reports carries `verified: false`. Containment is not verification:
+Commander Spellbook is format-agnostic, its bracket tags are not gospel, and a line only
+becomes evidence after a resolve-stack run.
 
 ## The Short List (`considering.json`, tiers ◆ + ★)
 

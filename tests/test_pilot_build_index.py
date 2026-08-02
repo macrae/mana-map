@@ -5,7 +5,10 @@ list, each deck's passing stack filenames, and — since a scenario's cards used
 guessed from prose — the cards each verified line is actually made of.
 """
 
+import json
+
 from conftest import requires_deck
+from manamap.pilot import build_index
 
 # ── The cards a verified line is made of ────────────────────────────────
 
@@ -51,6 +54,61 @@ def test_line_cards_strips_annotations_and_quantities():
 
 
 @requires_deck
+def test_line_cards_drops_basic_lands_and_tokens():
+    """Furniture that looks like a card name and passes every other filter.
+
+    A scenario states its mana, so basics appear on nearly every board. Unlike a
+    token, a basic IS in the deck, so it survives the browser's name check and
+    draws a real edge to a real card that had nothing to do with the line — the
+    Ancient-Tomb-and-Howling-Mine failure recurring one level down. Measured on
+    yawgmoth-swarm, whose line derived "Insect token X" and "Swamp" and escaped
+    only because a four-card cap truncated before reaching the Swamp.
+    """
+    from manamap.pilot.build_index import line_cards
+
+    scenario = {
+        "stack": [],
+        "hand": [],
+        "graveyard": ["Fume Spitter"],
+        "board": {"you": [
+            "Blowfly Infestation (enchantment)",
+            "Nest of Scarabs (enchantment)",
+            "Zulaport Cutthroat (1/1, no counters)",
+            "Insect token X (1/1 black Insect, no counters)",
+            "Snake token B",
+            "Swamp (untapped)",
+            "Snow-Covered Forest",
+        ]},
+    }
+    assert line_cards(scenario) == [
+        "Fume Spitter", "Blowfly Infestation", "Nest of Scarabs", "Zulaport Cutthroat",
+    ]
+
+
+def test_line_cards_keeps_nonbasic_lands():
+    """Only BASICS are furniture. A utility land can genuinely be part of a line."""
+    from manamap.pilot.build_index import line_cards
+
+    scenario = {"stack": [], "hand": [], "graveyard": [],
+                "board": {"you": ["Phyrexian Tower", "Ancient Tomb", "Swamp"]}}
+    assert line_cards(scenario) == ["Phyrexian Tower", "Ancient Tomb"]
+
+
+def test_the_count_phrase_guard_actually_matches():
+    """It was written `r"^(\\d+|...)\\s"` — a literal backslash — and matched nothing.
+
+    The guard was dead from the day it was written, so "2 Vampire tokens" passed
+    straight through it. Assert on the behaviour, not the pattern.
+    """
+    from manamap.pilot.build_index import _COUNT_PHRASE
+
+    for furniture in ("2 Vampire tokens", "five lands, all untapped", "a land",
+                      "one Swamp", "10 Forests"):
+        assert _COUNT_PHRASE.match(furniture), furniture
+    for real in ("Blowfly Infestation", "Ancient Tomb", "Sol Ring"):
+        assert not _COUNT_PHRASE.match(real), real
+
+
 def test_the_manifest_carries_the_line_cards():
     """The browser cannot list `stacks/`, and it must not guess at their contents either."""
     import json
@@ -68,3 +126,68 @@ def test_the_manifest_carries_the_line_cards():
                 f"{deck['slug']}: stack_cards names {name}, which is not a passing stack"
             )
             assert cards and all(isinstance(c, str) and c.strip() for c in cards)
+
+
+# ── The rack and the manifest answer different questions ────────────────
+
+
+def _deck(tmp_path, slug, published, manuals):
+    d = tmp_path / slug
+    (d / "stacks").mkdir(parents=True)
+    (d / "decisions").mkdir()
+    (d / "cards.json").write_text(json.dumps(
+        {"cards": [{"name": "Yawgmoth, Thran Physician", "is_commander": True}]}))
+    if published:
+        (manuals / f"{slug}.html").write_text("<html></html>")
+    return d
+
+
+def test_a_deck_without_a_manual_is_still_in_the_manifest(tmp_path, monkeypatch):
+    """A built, validated, rules-verified deck must be loadable in the viz.
+
+    Gating the manifest on `manuals/<slug>.html` meant a deck stayed invisible in
+    the frontend until someone spent an agent budget on magazine prose for it.
+    """
+    manuals = tmp_path / "manuals"; manuals.mkdir()
+    _deck(tmp_path, "published-deck", True, manuals)
+    _deck(tmp_path, "unpublished-deck", False, manuals)
+    monkeypatch.setattr(build_index, "DECKS_DIR", tmp_path)
+    monkeypatch.setattr(build_index, "MANUALS_DIR", manuals)
+
+    entries = build_index.gather_entries()
+    slugs = {e["slug"]: e["published"] for e in entries}
+    assert slugs == {"published-deck": True, "unpublished-deck": False}
+
+
+def test_the_rack_shows_only_published_issues(tmp_path, monkeypatch):
+    manuals = tmp_path / "manuals"; manuals.mkdir()
+    _deck(tmp_path, "published-deck", True, manuals)
+    _deck(tmp_path, "unpublished-deck", False, manuals)
+    monkeypatch.setattr(build_index, "DECKS_DIR", tmp_path)
+    monkeypatch.setattr(build_index, "MANUALS_DIR", manuals)
+
+    html = build_index.render_index(build_index.gather_entries())
+    assert "published-deck" in html
+    assert "unpublished-deck" not in html
+
+
+def test_the_manifest_carries_the_published_flag(tmp_path, monkeypatch):
+    """The browser needs to tell a loadable deck from one that went to press."""
+    manuals = tmp_path / "manuals"; manuals.mkdir()
+    _deck(tmp_path, "unpublished-deck", False, manuals)
+    monkeypatch.setattr(build_index, "DECKS_DIR", tmp_path)
+    monkeypatch.setattr(build_index, "MANUALS_DIR", manuals)
+
+    entries = build_index.gather_entries()
+    manifest = {k: v for k, v in ((e["slug"], e) for e in entries)}
+    assert "published" in manifest["unpublished-deck"]
+
+
+def test_a_stray_file_in_decks_dir_is_ignored(tmp_path, monkeypatch):
+    """`data/decks/index.json` lives beside the deck directories."""
+    manuals = tmp_path / "manuals"; manuals.mkdir()
+    _deck(tmp_path, "a-deck", False, manuals)
+    (tmp_path / "index.json").write_text("{}")
+    monkeypatch.setattr(build_index, "DECKS_DIR", tmp_path)
+    monkeypatch.setattr(build_index, "MANUALS_DIR", manuals)
+    assert [e["slug"] for e in build_index.gather_entries()] == ["a-deck"]

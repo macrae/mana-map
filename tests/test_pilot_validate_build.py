@@ -2,6 +2,7 @@
 
 import pytest
 
+from manamap.pilot import validate_build
 from manamap.pilot.validate_build import deck_card_names, validate
 
 
@@ -311,3 +312,49 @@ def test_verbatim_quote_is_accepted():
 def test_a_clean_plan_validates():
     plan, cards = _sized(_plan(), _cards())
     assert validate(plan, cards) == []
+
+
+# ── The pool contract: a build must stay inside the collection it declared ──
+
+
+def _pool_plan(names, files, cards=None):
+    return {
+        "slug": "x", "commander": "Hapatra, Vizier of Poisons", "color_identity": ["B", "G"],
+        "pool": {"files": files, "size": 2},
+        "slots": [{"name": n, "role": "flex"} for n in names],
+        "land_counts": {},
+    }
+
+
+def test_a_card_outside_the_declared_pool_is_an_error(tmp_path):
+    box = tmp_path / "box.txt"
+    box.write_text("1 Hapatra, Vizier of Poisons\n1 Blood Artist\n")
+    errors = validate_build._validate_pool(
+        _pool_plan(["Blood Artist", "Black Lotus"], [str(box)]),
+        {"Black Lotus": {"type_line": "Artifact"}},
+    )
+    assert errors == ["card outside the declared pool: Black Lotus"]
+
+
+def test_a_build_inside_its_pool_passes(tmp_path):
+    box = tmp_path / "box.txt"
+    box.write_text("1 Hapatra, Vizier of Poisons\n1 Blood Artist\n1 Zulaport Cutthroat\n")
+    assert validate_build._validate_pool(
+        _pool_plan(["Blood Artist", "Zulaport Cutthroat"], [str(box)]), {}
+    ) == []
+
+
+def test_basics_are_exempt_from_the_pool_check(tmp_path):
+    """You always own another Swamp; a pool listing four must not cap the base."""
+    box = tmp_path / "box.txt"
+    box.write_text("1 Hapatra, Vizier of Poisons\n1 Blood Artist\n")
+    assert validate_build._validate_pool(
+        _pool_plan(["Blood Artist", "Swamp"], [str(box)]),
+        {"Swamp": {"type_line": "Basic Land — Swamp"}},
+    ) == []
+
+
+def test_no_declared_pool_means_no_pool_check(tmp_path):
+    plan = _pool_plan(["Black Lotus"], [])
+    plan["pool"] = None
+    assert validate_build._validate_pool(plan, {}) == []

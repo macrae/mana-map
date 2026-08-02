@@ -208,7 +208,7 @@ def test_fill_slots_respects_the_budget():
     scored = _scored([f"C{i}" for i in range(200)])
     roles = {f"C{i}": ["ramp:rock"] for i in range(200)}
     budget = {"lands": 36, "ramp": 5, "flex": 3}
-    slots, _ = fill_slots(scored, roles, budget, [])
+    slots, _, _budget = fill_slots(scored, roles, budget, [])
     assert sum(1 for s in slots if s["role"] == "ramp") == 5
     assert len(slots) == 8
 
@@ -216,7 +216,7 @@ def test_fill_slots_respects_the_budget():
 def test_fill_slots_never_repeats_a_card():
     scored = _scored([f"C{i}" for i in range(50)])
     roles = {f"C{i}": ["ramp:rock"] for i in range(50)}
-    slots, _ = fill_slots(scored, roles, {"lands": 36, "ramp": 5, "flex": 5}, [])
+    slots, _, _budget = fill_slots(scored, roles, {"lands": 36, "ramp": 5, "flex": 5}, [])
     names = [s["name"] for s in slots]
     assert len(names) == len(set(names))
 
@@ -224,14 +224,14 @@ def test_fill_slots_never_repeats_a_card():
 def test_fill_slots_honours_must_include_regardless_of_score():
     scored = _scored([f"C{i}" for i in range(50)])
     roles = {f"C{i}": ["ramp:rock"] for i in range(50)}
-    slots, _ = fill_slots(scored, roles, {"lands": 36, "ramp": 2}, ["C49"])
+    slots, _, _budget = fill_slots(scored, roles, {"lands": 36, "ramp": 2}, ["C49"])
     assert any(s["name"] == "C49" and s["reason"] == "must_include" for s in slots)
 
 
 def test_fill_slots_keeps_alternates():
     scored = _scored([f"C{i}" for i in range(20)])
     roles = {f"C{i}": ["ramp:rock"] for i in range(20)}
-    slots, _ = fill_slots(scored, roles, {"lands": 36, "ramp": 3}, [])
+    slots, _, _budget = fill_slots(scored, roles, {"lands": 36, "ramp": 3}, [])
     ramp = [s for s in slots if s["role"] == "ramp"]
     assert all(s["alternates"] for s in ramp)
     assert all("delta" in alt for s in ramp for alt in s["alternates"])
@@ -240,7 +240,7 @@ def test_fill_slots_keeps_alternates():
 def test_fill_slots_alternate_deltas_are_non_negative():
     scored = _scored([f"C{i}" for i in range(20)])
     roles = {f"C{i}": ["ramp:rock"] for i in range(20)}
-    slots, _ = fill_slots(scored, roles, {"lands": 36, "ramp": 2}, [])
+    slots, _, _budget = fill_slots(scored, roles, {"lands": 36, "ramp": 2}, [])
     assert all(alt["delta"] >= 0 for s in slots for alt in s["alternates"])
 
 
@@ -248,8 +248,8 @@ def test_fill_slots_is_deterministic():
     scored = _scored([f"C{i}" for i in range(30)])
     roles = {f"C{i}": ["ramp:rock"] for i in range(30)}
     budget = {"lands": 36, "ramp": 4, "flex": 4}
-    first, _ = fill_slots(scored, roles, budget, [])
-    second, _ = fill_slots(scored, roles, budget, [])
+    first, _, _b1 = fill_slots(scored, roles, budget, [])
+    second, _, _b2 = fill_slots(scored, roles, budget, [])
     assert [s["name"] for s in first] == [s["name"] for s in second]
 
 
@@ -424,3 +424,205 @@ def test_a_preserved_sideboard_reparses_into_the_same_cards():
 def test_no_sideboard_means_no_trailing_blank_section():
     out = build_deck.decklist_text(TOY_PLAN, {}, "")
     assert out.endswith("2 Mountain\n") and "SIDEBOARD" not in out
+
+
+# ── Building from a physical collection, not the format ─────────────────
+
+
+def _pool_brief(**kw):
+    brief = {"commander": "Hapatra, Vizier of Poisons", "must_include": [], "must_exclude": []}
+    brief.update(kw)
+    return brief
+
+
+def test_no_pool_declared_means_the_whole_format():
+    assert build_deck.resolve_pool(_pool_brief()) is None
+
+
+def test_an_explicit_name_list_becomes_the_pool():
+    pool = build_deck.resolve_pool(
+        _pool_brief(pool=["Hapatra, Vizier of Poisons", "Blood Artist"])
+    )
+    assert pool == {"Hapatra, Vizier of Poisons", "Blood Artist"}
+
+
+def test_a_pool_without_the_commander_is_rejected():
+    """Building a deck you cannot lead is worse than not building it."""
+    with pytest.raises(BriefError, match="does not contain the commander"):
+        build_deck.resolve_pool(_pool_brief(pool=["Blood Artist"]))
+
+
+def test_must_include_outside_the_pool_is_rejected():
+    with pytest.raises(BriefError, match="must_include names outside the pool"):
+        build_deck.resolve_pool(_pool_brief(
+            pool=["Hapatra, Vizier of Poisons"], must_include=["Black Lotus"],
+        ))
+
+
+def test_pool_files_are_parsed_by_the_same_reader_pool_facts_uses(tmp_path):
+    """A box analysed and a box built from must never disagree about its contents."""
+    lst = tmp_path / "box.txt"
+    lst.write_text("1 Hapatra, Vizier of Poisons (ECC) 123\n1 Blood Artist *F*\n")
+    pool = build_deck.resolve_pool(_pool_brief(pool_files=[str(lst)]))
+    assert pool == {"Hapatra, Vizier of Poisons", "Blood Artist"}
+
+
+def test_an_unresolvable_pool_card_is_rejected_not_ignored(tmp_path):
+    lst = tmp_path / "box.txt"
+    lst.write_text("1 Hapatra, Vizier of Poisons\n1 Not A Real Card\n")
+    with pytest.raises(BriefError, match="did not resolve"):
+        build_deck.resolve_pool(_pool_brief(pool_files=[str(lst)]))
+
+
+def test_candidate_pool_is_restricted_to_the_declared_collection():
+    df = pd.DataFrame([
+        {"name": "Blood Artist", "type_line": "Creature — Vampire", "color_identity": "B",
+         "legal_commander": "legal", "game_changer": False, "supertype": "Creature"},
+        {"name": "Zulaport Cutthroat", "type_line": "Creature — Human", "color_identity": "B",
+         "legal_commander": "legal", "game_changer": False, "supertype": "Creature"},
+    ])
+    brief = _pool_brief()
+    brief["_pool"] = {"Hapatra, Vizier of Poisons", "Blood Artist"}
+    pool = candidate_pool(df, {"B", "G"}, 4, brief)
+    assert sorted(pool["name"]) == ["Blood Artist"]
+
+
+def test_candidate_pool_without_a_pool_key_keeps_every_legal_card():
+    df = pd.DataFrame([
+        {"name": "Blood Artist", "type_line": "Creature — Vampire", "color_identity": "B",
+         "legal_commander": "legal", "game_changer": False, "supertype": "Creature"},
+        {"name": "Zulaport Cutthroat", "type_line": "Creature — Human", "color_identity": "B",
+         "legal_commander": "legal", "game_changer": False, "supertype": "Creature"},
+    ])
+    pool = candidate_pool(df, {"B", "G"}, 4, _pool_brief())
+    assert len(pool) == 2
+
+
+# ── must_include overflow: the 101-card plan ────────────────────────────
+
+
+def test_must_include_overflow_is_charged_to_flex():
+    """Pinning past a role's allowance must not grow the deck.
+
+    Must-includes are pinned before any budget line is consulted, and the
+    per-group `max(0, count - filled)` only stops the builder ADDING more — it
+    never gives the slot back. A brief pinning 23 cards put `wincon` at 4
+    against a budget of 3 and produced a 101-card plan.
+    """
+    roles = {"W1": ["wincon:drain"], "W2": ["wincon:drain"], "F1": [], "F2": [], "F3": []}
+    scored = [{"name": n, "score": 1.0, "components": {}} for n in ["F1", "F2", "F3"]]
+    budget = {"lands": 36, "wincon": 1, "flex": 3}
+    slots, _, effective = fill_slots(scored, roles, budget, ["W1", "W2"])
+
+    assert len(slots) == 4                    # not 5: one wincon over, one flex fewer
+    assert effective["wincon"] == 2           # what was actually filled
+    assert effective["flex"] == 2             # the overflow is charged here
+    assert sum(v for k, v in effective.items() if k != "lands") == len(slots)
+
+
+def test_effective_budget_matches_the_slots_it_describes():
+    """`validate_build._validate_budget` compares them; they must agree."""
+    roles = {"A": ["ramp:rock"], "B": []}
+    scored = [{"name": n, "score": 1.0, "components": {}} for n in ["A", "B"]]
+    budget = {"lands": 36, "ramp": 1, "flex": 1}
+    slots, _, effective = fill_slots(scored, roles, budget, [])
+    counts = {}
+    for s in slots:
+        counts[s["role"]] = counts.get(s["role"], 0) + 1
+    for group, want in effective.items():
+        if group == "lands":
+            continue
+        assert counts.get(group, 0) == want, group
+
+
+def test_no_overflow_leaves_the_budget_untouched():
+    roles = {"A": ["ramp:rock"], "B": []}
+    scored = [{"name": n, "score": 1.0, "components": {}} for n in ["A", "B"]]
+    budget = {"lands": 36, "ramp": 1, "flex": 1}
+    _, _, effective = fill_slots(scored, roles, budget, [])
+    assert effective == budget
+
+
+def test_a_group_that_runs_dry_gives_its_slots_to_flex():
+    """The other half of the wrong-size-plan bug, and it shipped a 99.
+
+    Mono-black held only 2 cards the taxonomy calls `sweeper` against a budget of
+    3. The group under-filled and nothing gave the slot back, so the plan came
+    out one card short. Flex is filled last precisely so it can absorb this.
+    """
+    roles = {"S1": ["removal:sweeper"], "F1": [], "F2": [], "F3": [], "F4": []}
+    scored = [{"name": n, "score": 1.0, "components": {}}
+              for n in ["S1", "F1", "F2", "F3", "F4"]]
+    budget = {"lands": 36, "sweeper": 3, "flex": 2}
+    slots, _, effective = fill_slots(scored, roles, budget, [])
+
+    assert effective["sweeper"] == 1          # only one candidate existed
+    assert effective["flex"] == 4             # 2 budgeted + 2 the sweeper line could not use
+    assert len(slots) == 5                    # the non-land total is still 3 + 2
+    assert sum(v for k, v in effective.items() if k != "lands") == len(slots)
+
+
+def test_overflow_and_shortfall_together_still_hit_the_total():
+    """Both failure modes at once must still land on the non-land total."""
+    roles = {"W1": ["wincon:drain"], "W2": ["wincon:drain"], "S1": ["removal:sweeper"],
+             "F1": [], "F2": [], "F3": []}
+    scored = [{"name": n, "score": 1.0, "components": {}} for n in ["S1", "F1", "F2", "F3"]]
+    budget = {"lands": 36, "wincon": 1, "sweeper": 3, "flex": 2}
+    slots, _, effective = fill_slots(scored, roles, budget, ["W1", "W2"])
+
+    assert effective["wincon"] == 2           # pinned over budget
+    assert effective["sweeper"] == 1          # ran dry
+    assert sum(v for k, v in effective.items() if k != "lands") == len(slots)
+    assert len(slots) == 6                    # 1 + 3 + 2 non-land slots
+
+
+# ── A deck built from a collection names the PHYSICAL card ───────────────
+
+
+def test_decklist_renders_the_owned_printing():
+    """Bare names let Scryfall pick a default for every card.
+
+    A Sol Ring built from a pool that holds ECC #58 came back as Marvel Super
+    Heroes Commander #211 — and Featured Artist credits artists per printing, so
+    the manual credited someone who painted none of the pilot's cards.
+    """
+    plan = {
+        "commander": "Yawgmoth, Thran Physician",
+        "slots": [{"name": "Sol Ring"}, {"name": "Blowfly Infestation"}],
+        "land_counts": {"Swamp": 3},
+        "printings": {
+            "Yawgmoth, Thran Physician": {"set": "dmr", "collector_number": "110", "foil": False},
+            "Sol Ring": {"set": "ecc", "collector_number": "58", "foil": False},
+            "Swamp": {"set": "ecl", "collector_number": "271", "foil": False},
+        },
+    }
+    text = decklist_text(plan)
+    assert "1 Yawgmoth, Thran Physician (DMR) 110 *CMDR*" in text
+    assert "1 Sol Ring (ECC) 58" in text
+    assert "3 Swamp (ECL) 271" in text
+    # No printing known for this one — it must still render, just bare.
+    assert "1 Blowfly Infestation\n" in text
+
+
+def test_foil_marker_survives_the_round_trip():
+    """`*F*` must come off before the $-anchored printing regex — the parser's
+    own hazard, and the writer has to emit it in an order the parser accepts."""
+    from manamap.pilot.fetch_deck import parse_decklist
+
+    plan = {
+        "commander": "Zada, Hedron Grinder",
+        "slots": [], "land_counts": {},
+        "printings": {"Zada, Hedron Grinder": {"set": "sld", "collector_number": "2406", "foil": True}},
+    }
+    text = decklist_text(plan)
+    assert "(SLD) 2406 *F*" in text
+    entry = parse_decklist(text)[0]
+    assert entry["set"] == "sld"
+    assert entry["collector_number"] == "2406"
+    assert entry["foil"] is True
+    assert entry["is_commander"] is True
+
+
+def test_no_pool_means_no_printings_and_bare_names():
+    plan = {"commander": "Sol Ring", "slots": [], "land_counts": {}}
+    assert decklist_text(plan).strip() == "1 Sol Ring *CMDR*"

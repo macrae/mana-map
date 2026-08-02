@@ -19,6 +19,7 @@ from collections import defaultdict
 
 import pandas as pd
 
+from manamap.ingest.common import open_dump
 from manamap.config import (
     COMBO_BANNED_TAG,
     COMBO_BRACKET_TAGS,
@@ -150,7 +151,7 @@ def bracket_summary(combo_list):
 
 def main():
     print("Loading raw combos...")
-    with open(COMBOS_RAW_PATH, "r") as f:
+    with open_dump(COMBOS_RAW_PATH, "rt") as f:
         combos = json.load(f)
     print(f"  {len(combos):,} raw combo variants")
 

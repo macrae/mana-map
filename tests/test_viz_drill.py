@@ -101,7 +101,7 @@ def test_selection_highlight_follows_the_active_coordinate_system():
 
 def test_contours_rebin_over_the_drilled_subset():
     src = _map()
-    assert "drilling ? window.Drill.getContourSource() : filtered" in src
+    assert "drilling ? window.Drill.getContourSource() : focused" in src
 
 
 def test_status_line_reports_the_local_count():

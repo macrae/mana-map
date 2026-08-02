@@ -177,11 +177,20 @@ verbs, and the second one felt worse.
 
 So Explore was given the job it is uniquely good at. `force.js` states in its own header
 that the graph encodes **adjacency, not absolute position** — so "where does this sit in
-card space" is precisely what it cannot answer. Entering Explore from a graph now calls
-`MM.orientTo(rows, label, anchor)`: your cards light up gold, the card you were on gets a
-white star, the other 34,000 dim to texture, and the status says what you are looking at.
-Esc restores the whole atlas. It participates in the same
-`getOverlayTraces` / `getDimmedIndices` / `dimsAll` contract as Build.
+card space" is precisely what it cannot answer. `MM.orientTo(rows, label, anchor)` lights
+your cards gold, gives the card you were on a white star, dims the other 34,000 to texture,
+and says in the status what you are looking at. Esc restores the whole atlas. It
+participates in the same `getOverlayTraces` / `getDimmedIndices` / `dimsAll` contract as
+Build.
+
+**Arriving is not asking for it.** `setMode('explore')` used to auto-orient on a non-empty
+tray — `if (Session.size()) orientTo(null, 'your walk')` — so walking three cards in
+Discover and switching opened the atlas with almost all of itself at 8% alpha and the camera
+somewhere else. The lens is right; as an *entry* state it meant the atlas almost never got
+to be the atlas, and the dimming read as a rendering fault rather than as a lens. Entry now
+clears the lens, the region focus, the legend focus and the selection, and refits. Every
+other `orientTo` caller stays: the lens re-engages the moment you ask from inside Explore,
+which is what `MM.relate` does.
 
 **Region labels now reject overlaps**, which `force.js` has done for node labels since the
 graph shipped. The map emitted every label unconditionally, so the atlas was a pile of
@@ -366,7 +375,117 @@ until you left and came back — a photograph of your walk. It now holds only `{
 membership is `Session.rows()` read on every render and the anchor is `Session.focus`.
 
 `test_the_orientation_lens_is_live_not_a_snapshot` grows the graph *while Explore is on
-screen* and fails if the lit set does not move: 18 → 24 when measured.
+screen* and fails if the lit set does not move: 18 → 24 when measured. It engages the lens
+explicitly first, because entry no longer does.
+
+### One grouping registry — `MM.GROUPINGS`
+
+A colour is a language, and this app was speaking two of them. The map coloured by
+`COLOR_PALETTE` / `SUPERTYPE_PALETTE` / `RARITY_PALETTE` in `mana-map.js`; `build.js` kept
+its own `FAMILY_COLOR` table for the role-budget bars. Same screen, same cards, two
+unrelated palettes and two legends that could never agree.
+
+`MM.GROUPINGS` is now the one definition: four groupings (`supertype`, `role`, `color`,
+`rarity`), each `{label, keyOf(d), palette, order, ensure?}`.
+
+- **`order` is authoritative.** `Object.values(groups)` is hash order, which made the legend
+  shuffle between renders and match nothing else. Every surface that reports these groups
+  sorts by it.
+- **`ensure()` is for data outside the boot payload.** `role` lazy-loads `card_roles.json`
+  (0.39 MB gz) when the grouping is *selected* — never inside the 1.83 MB discovery boot.
+- **Build reads the registry through functions, not constants.** `familyColour()` /
+  `familyPriority()` defer the `MM.*` read to first use; reading it at module scope would
+  make `build.js` depend on script order in `index.html`, and touching `MM.*` before
+  `mana-map.js` has exported it aborts the IIFE and takes every later file with it.
+- **Changing the overlay calls `regroup()`**, which repaints the map *and* Build's panel.
+  Repainting only the map left the mana curve answering in supertypes after the overlay had
+  been switched to roles.
+
+Build's mana curve is **segmented by the current grouping** with a key, instead of one flat
+gold bar. The legend rows are controls: clicking one spotlights that group, composed with a
+focused region through a single `spotlightFor(g)` predicate — a group focus is one scalar
+per trace and never touches the 34K per-point array.
+
+The default overlay is **supertype**, with a frequency-aware palette: Creature is 55.5% of
+the corpus (19,050 of 34,322), Planeswalker 1.0%, Battle 39 cards, so saturation runs
+*inverse* to frequency. The previous palette gave Creature `#22C55E` — the exact green
+`COLOR_PALETTE` uses for G — on more than half the points, so the supertype map read as a
+broken colour-identity map.
+
+### Atmosphere at altitude, crisp up close
+
+Two ramps in `render/canvas.js`, pulling opposite ways, because zooming changes two things.
+
+`closeness()` (0 at the whole-map fit, 1 by neighbourhood scale) drives point size and
+alpha: points draw at a constant *screen* size, so without it a dense field reads as grey
+haze far out and as sparse grey dots up close — the same dimness twice.
+
+`auraLevel()` is its inverse and drives the additive halo and the radial vignette. Zoomed
+in, Explore has to converge on Discover and Build, which are the same force engine drawing
+plain dots with **no halo at all** — there is no `shadowBlur` in `force.js`. A halo that
+grew as you approached broke that parity and sat on top of the points you were reading.
+
+Both ramps use `transform.k`, which is **relative to `baseFit`** — k=1 is the whole-map fit,
+not an absolute data→pixel scale. Constants written in absolute scale leave the ramp flat at
+0 everywhere, and on/off then measures pixel-identical, which reads as "the halo does
+nothing" rather than "the halo never ran".
+
+The halo's cap is measured, because "some aura" and "a wash" are a factor of two apart.
+Alpha coverage of the canvas at the fitted view, against a 4.5% no-halo baseline:
+
+| cap / radius | canvas coverage | full-strength ink |
+|---|---|---|
+| 0.55 / 3.2x | 68.4% | 4.3% |
+| 0.35 / 2.4x | 50.9% | 4.2% |
+| **0.25 / 1.9x** (shipped) | **35.9%** | 4.2% |
+| no halo | 4.5% | 4.1% |
+
+Full-strength ink is flat across all of them: this only ever moves the halo, never the
+cards.
+
+### Telescopic labels
+
+Which names are on screen is a question about **depth relative to what is focused**, not
+only about camera span. Every level used to answer from absolute span alone, with two
+consequences: L2 needed span < 6 while L2 spans are ~0.6, so 168 of the ability map's 227
+names were effectively unreachable; and focusing a region framed it without naming a single
+thing inside it, so clicking into a country told you less than standing outside it did.
+
+`regions_*.json` already carries `parent` on every entry, so the hierarchy needed no new
+data. With nothing focused the span bands decide, L2 fading in far earlier than before. With
+a region focused, its children are always named and its grandchildren appear once the camera
+is close enough; everything outside keeps a faint L0 label, for the same reason focusing
+mutes points instead of hiding them.
+
+Two things fell out of it:
+
+- **Labels below 0.09 alpha are dropped, not drawn.** Placement is greedy and sorted
+  big-first, so a country name fading through 0.03 alpha still claimed the largest collision
+  box on screen and suppressed the readable neighbourhood name underneath it.
+- **The outline is written inline, scaled to each label's opacity.** Names sit at cluster
+  centroids — on top of the densest colour — so they need a ring, not a drop shadow. But a
+  fixed 0.95-alpha ring under a 0.28-alpha context label is more opaque than the text and
+  renders as a dark smudge. CSS cannot see the per-label opacity, so `setAnnotations` emits
+  the `text-shadow`. L2 labels also get `pointer-events: none`: every label is a DOM button
+  over the canvas and therefore a hole in the map — a card underneath one cannot be hovered,
+  because the pointer lands on the button and the canvas gets `mouseleave`. Countries and
+  states keep their events because clicking them navigates.
+
+### The boot map is `currentMap`, in both places
+
+Explore opens on the **ability** map. Two literals had the boot map hardcoded —
+`fetch(MAP_CONFIGS.default.projection)` and `loadRegionData('default')` — so changing the
+default left `currentMap` saying one thing while the coordinates, and then the region names,
+came from the other. Neither errors: the projection silently draws the wrong positions, and
+the label pass silently finds no data and emits an empty list. Both read `currentMap` now,
+and both `<select>` elements are pinned from the JS defaults at boot rather than from markup
+order.
+
+A map switch must also `reindex()` the quadtree, **after** the render that installs the new
+layers. `buildTree` copies coordinates out of the *layer* arrays and `render()` rebuilds
+those arrays, so reindexing first rebuilds from the outgoing layers and `setLayers` then
+skips its own rebuild against an unchanged signature — the stale positions survive the very
+call meant to remove them. It looks fixed and measures broken.
 
 ### stage.js — what the two canvas renderers stopped writing twice
 

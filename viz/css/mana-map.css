@@ -395,6 +395,13 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
  * still belongs in the list — greyed, not hidden. */
 .lens-line-nodraw { border-left-color: #3a3a5a; }
 .lens-line-nodraw .lens-line-cards { color: #666; font-style: italic; }
+/* The line currently under the spotlight in the graph. The panel is re-rendered
+ * wholesale on every state change, so this class is re-emitted from `focusedLine`
+ * rather than toggled on the element. */
+.lens-line.is-on { background: #223a24; border-left-width: 5px;
+  box-shadow: inset 0 0 0 1px rgba(76,175,80,0.45); }
+.lens-line.is-on .lens-line-title { color: #fff; }
+.lens-line.is-on .lens-line-cards { color: #7fd483; }
 
 /* ── Drill bar ────────────────────────────────────────────────────────────
  * Overlays the plot while a local layout is on screen. It is not decoration:
@@ -525,15 +532,27 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
  * of an rgba() alpha rebuilt on a 150 ms debounce — they fade rather than pop —
  * and each one is a button, which deletes the 30-line annotation hit-test.
  */
-.map-labels { position: absolute; inset: 0; z-index: 20; pointer-events: none; }
+/* `overflow: hidden` clips labels to the plot. Placement is by world position, so a region
+   whose centroid sits above the viewport still gets a label — translated to a negative y,
+   where it drew *over the toolbar* as free-floating text. It was always possible; the
+   telescopic label pass, which puts three levels on screen instead of one, made it routine. */
+.map-labels { position: absolute; inset: 0; z-index: 20; pointer-events: none; overflow: hidden; }
 .map-label {
   position: absolute; left: 0; top: 0; white-space: nowrap;
   background: none; border: none; padding: 2px 6px; cursor: pointer;
   font-family: system-ui, -apple-system, sans-serif; font-weight: 500;
-  pointer-events: auto; transition: color 0.25s ease, text-shadow 0.2s ease;
-  text-shadow: 0 1px 4px rgba(10,10,26,0.9);
+  pointer-events: auto; transition: color 0.25s ease;
+  /* The outline is written INLINE per label by `setAnnotations`, scaled to that label's
+     opacity — CSS cannot see it, and a fixed-alpha ring under a faint label reads as a
+     dark blob. This is only the fallback for a label rendered without one. */
+  text-shadow: 0 0 6px rgba(8, 10, 20, 0.85);
 }
-.map-label:hover { text-shadow: 0 0 10px rgba(196,167,71,0.9); }
+.map-label:hover {
+  text-shadow:
+    -1px -1px 0 rgba(8, 10, 20, 0.95), 1px -1px 0 rgba(8, 10, 20, 0.95),
+    -1px  1px 0 rgba(8, 10, 20, 0.95), 1px  1px 0 rgba(8, 10, 20, 0.95),
+     0    0   10px rgba(196, 167, 71, 0.9);
+}
 
 .map-legend {
   position: absolute; top: 10px; right: 10px; z-index: 25;
@@ -541,7 +560,17 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
   padding: 8px 12px; font-size: 0.75rem; color: #ccc; pointer-events: none;
   max-height: 60%; overflow: hidden;
 }
-.map-legend-row { display: flex; align-items: center; gap: 7px; padding: 1px 0; white-space: nowrap; }
+/* The legend is a control, not a caption: clicking a row spotlights that group. It has to
+   look clickable and it has to show which row is holding the spotlight, or the map dims
+   for no visible reason. */
+.map-legend-row {
+  display: flex; align-items: center; gap: 7px; padding: 1px 4px; white-space: nowrap;
+  cursor: pointer; border-radius: 3px; opacity: 0.82;
+  transition: opacity 120ms ease, background 120ms ease;
+}
+.map-legend-row:hover { opacity: 1; background: rgba(255, 255, 255, 0.07); }
+.map-legend-row:focus-visible { outline: 1px solid #c4a747; outline-offset: 1px; }
+.map-legend-row.is-active { opacity: 1; background: rgba(196, 167, 71, 0.18); font-weight: 600; }
 .map-legend-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 
 /* Discovery — the landing. Few controls on purpose: a type, a colour, a cost band,
@@ -580,3 +609,15 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
   width: 100%; background: #16213e; color: #ddd; border: 1px solid #3a3a5a;
   border-radius: 4px; padding: 6px; font-size: 0.8rem;
 }
+
+/* Neighbourhood labels are captions, not controls. Every label is a DOM button layered
+   over the canvas, and therefore a hole in the map — a card underneath one cannot be
+   hovered, because the pointer lands on the button and the canvas gets `mouseleave`.
+   The telescopic label pass puts many more L2 names on screen, so they hand the pixels
+   back; L0 and L1 keep pointer events because clicking them navigates. */
+.map-label-l2 { pointer-events: none; }
+
+/* Key for the segmented mana curve. Same swatch element as the role bars, because they
+   are now the same colour language — see MM.GROUPINGS. */
+.curve-key { display: flex; flex-wrap: wrap; gap: 4px 10px; margin-top: 8px; }
+.curve-key-item { display: inline-flex; align-items: center; gap: 5px; font-size: 0.7rem; color: #aaa; }

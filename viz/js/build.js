@@ -55,18 +55,19 @@
   // One card carries several roles; the lens paints it with the most decision-relevant
   // one. Order matters: threat:body sits on 19,032 of 34,322 cards, so it must lose every
   // tie or the map turns into one colour.
-  const FAMILY_PRIORITY = [
-    'wincon', 'doubler', 'tutor', 'counterspell', 'stax', 'hate', 'removal', 'ramp',
-    'draw', 'recursion', 'protection', 'sac-outlet', 'payoff', 'land', 'value', 'buff',
-    'utility', 'sac-cost', 'threat',
-  ];
-  const FAMILY_COLOR = {
-    wincon: '#FFD700', doubler: '#22D3EE', tutor: '#E879F9', counterspell: '#38BDF8',
-    stax: '#94A3B8', hate: '#CBD5E1', removal: '#EF4444', ramp: '#22C55E',
-    draw: '#3B82F6', recursion: '#A78BFA', protection: '#FDE68A', 'sac-outlet': '#FB923C',
-    payoff: '#EC4899', land: '#A16207', value: '#14B8A6', buff: '#84CC16',
-    utility: '#64748B', 'sac-cost': '#78716C', threat: '#F59E0B', unclassified: '#6B7280',
-  };
+  /* The role taxonomy now lives in ONE place — `MM.GROUPINGS.role` — because it is a
+   * colour language, and a colour language that is defined twice is two languages. These
+   * two names are the local aliases so the rest of this file reads unchanged; the tables
+   * themselves are the map's, so a role is the same colour on the atlas, in this panel's
+   * bars, and in the curve below. */
+  // LAZY, not top-level constants. Reading `MM.GROUPINGS` while this file is being
+  // evaluated would make Build depend on script ORDER in index.html, and this repo has
+  // already paid for that once: anything that touches `MM.*` before mana-map.js has
+  // exported it throws at module scope, which aborts the IIFE and takes every later file
+  // with it. Functions defer the read to first use, by which time boot is long done.
+  function roleGroup() { return MM.GROUPINGS.role; }
+  function familyPriority() { return roleGroup().order.filter(f => f !== 'unclassified'); }
+  function familyColour(f) { return roleGroup().palette[f] || '#6B7280'; }
 
   // ── State ──
   let manifest = null;       // index.json {decks:[...]}
@@ -83,6 +84,10 @@
   // always was — position, roles and verified lines drawn where the cards actually live.
   // The graph answers the other question: what is next to what, and what could join.
   let view = 'graph';
+  // Which verified line is under the spotlight, as an index into `active.edges`, or -1.
+  // Lives here rather than in the DOM because `renderPanel` replaces the panel's
+  // innerHTML wholesale, so any selection state has to be re-emitted on every render.
+  let focusedLine = -1;
   // Off-limits highlighting is opt-in: it costs the per-point opacity array.
   let showIllegal = false;
   let format = 'commander';
@@ -111,7 +116,7 @@
     const roles = (rolesByName && rolesByName[name]) || [];
     if (roles.length) {
       const families = new Set(roles.map(r => r.split(':')[0]));
-      for (const f of FAMILY_PRIORITY) if (families.has(f)) return f;
+      for (const f of familyPriority()) if (families.has(f)) return f;
     }
     if (idx !== null && idx !== undefined && MM.allData[idx] && MM.allData[idx].s === 'Land') return 'land';
     return 'unclassified';
@@ -174,23 +179,59 @@
 
   function renderManaCurve(indices) {
     const buckets = [0, 0, 0, 0, 0, 0, 0];
+    const byBucket = [{}, {}, {}, {}, {}, {}, {}];
     for (const idx of indices) {
       const d = MM.allData[idx];
       if (!d || d.s === 'Land') continue;
-      buckets[Math.min(Math.floor(d.m || 0), 6)]++;
+      const b = Math.min(Math.floor(d.m || 0), 6);
+      buckets[b]++;
+      const key = MM.groupKey(d);
+      byBucket[b][key] = (byBucket[b][key] || 0) + 1;
     }
+    // Registry order, not insertion order, so the stacks read consistently across
+    // buckets and match the legend top-to-bottom.
+    const order = MM.GROUPINGS[MM.grouping].order;
+    const palette = MM.GROUPINGS[MM.grouping].palette;
+    const segments = byBucket.map(counts => {
+      const keys = Object.keys(counts).sort(
+        (a, b) => (order.indexOf(a) + 1 || 99) - (order.indexOf(b) + 1 || 99));
+      return keys.map(k => ({ key: k, n: counts[k], colour: palette[k] || '#6B7280' }));
+    });
     const max = Math.max.apply(null, buckets.concat([1]));
     let html = '<div class="deck-section"><div class="deck-section-title">Mana curve</div>' +
                '<div class="mana-curve">';
     for (let i = 0; i < buckets.length; i++) {
       const pct = (buckets[i] / max) * 100;
+      // Segmented by the CURRENT overlay, in the registry's order, using the registry's
+      // colours — so the curve answers "what is this deck made of at each cost" in the
+      // same visual language as the map and the legend, and switching the overlay
+      // recolours every surface at once.
+      const seg = segments[i];
+      let stack = '';
+      for (const s of seg) {
+        stack += '<div title="' + esc(s.key) + ' \u00d7 ' + s.n + '" style="width:100%;' +
+          'background:' + s.colour + ';height:' + ((s.n / (buckets[i] || 1)) * 100) + '%;"></div>';
+      }
       html += '<div style="flex:1;display:flex;flex-direction:column;align-items:center;">' +
         '<div style="height:40px;width:100%;display:flex;align-items:flex-end;">' +
-        '<div style="width:100%;background:#c4a747;border-radius:2px 2px 0 0;height:' + pct +
-        '%;min-height:' + (buckets[i] > 0 ? '2px' : '0') + ';"></div></div>' +
+        '<div style="width:100%;display:flex;flex-direction:column;justify-content:flex-end;' +
+        'border-radius:2px 2px 0 0;overflow:hidden;height:' + pct +
+        '%;min-height:' + (buckets[i] > 0 ? '2px' : '0') + ';">' + stack + '</div></div>' +
         '<div class="curve-label">' + (i === 6 ? '6+' : i) + '</div></div>';
     }
-    return html + '</div></div>';
+    html += '</div>';
+    // A stacked bar without a key is decoration. Only the groups actually present, in
+    // registry order, using registry colours — the same swatches the map legend shows,
+    // which is the whole point of grouping through one definition.
+    const present = [];
+    for (const seg of segments) for (const s of seg) if (!present.some(x => x.key === s.key)) present.push(s);
+    present.sort((a, b) => (order.indexOf(a.key) + 1 || 99) - (order.indexOf(b.key) + 1 || 99));
+    if (present.length > 1) {
+      html += '<div class="curve-key">' + present.map(s =>
+        '<span class="curve-key-item"><span class="lens-swatch" style="background:' +
+        s.colour + '"></span>' + esc(s.key) + '</span>').join('') + '</div>';
+    }
+    return html + '</div>';
   }
 
   function renderColorDist(indices) {
@@ -233,6 +274,9 @@
   async function loadDeck(slug) {
     const entry = manifest.decks.find(d => d.slug === slug);
     if (!entry) throw new Error('unknown deck: ' + slug);
+    // A line index means nothing against a different deck's `edges` array.
+    focusedLine = -1;
+    if (window.Force && Force.clearLine) Force.clearLine();
 
     const deckDoc = await getJSON(DECK_BASE + slug + '/cards.json');
 
@@ -377,7 +421,7 @@
       if (!byFamily.has(slot.family)) byFamily.set(slot.family, []);
       byFamily.get(slot.family).push(slot);
     }
-    const ordered = FAMILY_PRIORITY.concat(['unclassified']).filter(f => byFamily.has(f));
+    const ordered = familyPriority().concat(['unclassified']).filter(f => byFamily.has(f));
     for (const family of ordered) {
       const slots = byFamily.get(family);
       traces.push({
@@ -389,7 +433,7 @@
         customdata: slots.map(s => s.idx),
         hoverinfo: 'none',
         marker: {
-          size: 9, opacity: 1, color: FAMILY_COLOR[family] || '#6B7280',
+          size: 9, opacity: 1, color: familyColour(family),
           line: { color: '#0d0d1a', width: 1 },
         },
         _isDeckOverlay: true,
@@ -484,7 +528,7 @@
     for (const slot of active.main) {
       counts.set(slot.family, (counts.get(slot.family) || 0) + slot.qty);
     }
-    return FAMILY_PRIORITY.concat(['unclassified'])
+    return familyPriority().concat(['unclassified'])
       .filter(f => counts.has(f))
       .map(f => ({ family: f, n: counts.get(f) }))
       .sort((a, b) => b.n - a.n);
@@ -547,7 +591,7 @@
           statBox(active.candidates.length, 'short list') +
           statBox(active.side.length, 'bench') +
         '</div>' +
-        '<button class="lens-btn" onclick="Build.zoomToDeck()">Zoom to the deck</button>' +
+        '<button class="lens-btn" onclick="Build.fitDeck()">Zoom to the deck</button>' +
       '</div>' +
 
       '<div class="deck-section">' +
@@ -589,13 +633,29 @@
         '<div class="lens-note">Bars count copies · map dots count distinct cards</div>' +
         counts.map(c =>
           '<div class="lens-bar-row">' +
-            '<span class="lens-swatch" style="background:' + FAMILY_COLOR[c.family] + '"></span>' +
+            '<span class="lens-swatch" style="background:' + familyColour(c.family) + '"></span>' +
             '<span class="lens-bar-label">' + esc(c.family) + '</span>' +
             '<span class="lens-bar-track"><span class="lens-bar-fill" style="width:' +
-              Math.round((c.n / max) * 100) + '%;background:' + FAMILY_COLOR[c.family] + '"></span></span>' +
+              Math.round((c.n / max) * 100) + '%;background:' + familyColour(c.family) + '"></span></span>' +
             '<span class="lens-bar-n">' + c.n + '</span>' +
           '</div>').join('') +
       '</div>';
+
+    /* THE SELECTED CARD.
+     *
+     * Build's panel showed roles, a curve and the verified lines, and never once showed a
+     * CARD — so single-clicking a node in the deck graph had nowhere to put what you
+     * selected. `MM.buildCardDetailHtml` is the shared block Discovery already renders,
+     * and it carries the relation controls and Keep, so a card behaves identically in
+     * both modes rather than being a second, poorer card view.
+     *
+     * The row comes from Session, which owns "which card am I looking at" — the same
+     * value `Discovery.setCurrent` writes when the graph selects one. */
+    const selected = window.Session ? Session.focus : -1;
+    if (selected >= 0 && MM.buildCardDetailHtml) {
+      html += '<div class="deck-section">' +
+        MM.buildCardDetailHtml(MM.cardRecord(selected), selected) + '</div>';
+    }
 
     if (active.edges.length) {
       html +=
@@ -603,7 +663,8 @@
           '<div class="deck-section-title">Verified lines <span>✓ rules-verified</span></div>' +
           active.edges.map((edge, i) =>
             '<div class="lens-line' + (edge.pairs.length ? '' : ' lens-line-nodraw') +
-              '" onclick="Build.focusLine(' + i + ')">' +
+              (i === focusedLine ? ' is-on' : '') +
+          '" onclick="Build.focusLine(' + i + ')">' +
               '<div class="lens-line-title">' + esc(edge.title) + '</div>' +
               '<div class="lens-line-cards">' +
                 (edge.cards.length ? edge.cards.map(esc).join(' · ') : 'no deck card named — no line drawn') +
@@ -701,20 +762,96 @@
     setTimeout(() => { if (MM.mapRenderer) MM.mapRenderer.resize(); }, 260);
   }
 
-  function focusLine(i) {
-    if (!active || !active.edges[i]) return;
-    const edge = active.edges[i];
-    const all = MM.allData;
-    const pts = edge.cards
+  /* The rows a verified line is made of. One resolver for both surfaces — the map wants
+   * their world positions, the graph wants their row ids, and deriving each separately is
+   * how the two drift. */
+  function lineRows(edge) {
+    if (!edge) return [];
+    return edge.cards
       .map(n => active.main.find(s => s.name === n))
       .filter(s => s && s.idx !== null)
-      .map(s => all[s.idx]);
+      .map(s => s.idx);
+  }
+
+  /* The deck's lines in the shape `Force.enter` injects: pairs of ROWS. Only lines that
+   * actually name two deck cards produce edges — a scenario can be about a single card,
+   * and those stay in the sidebar list but draw nothing. */
+  function graphLines() {
+    if (!active) return [];
+    return active.edges.map((edge, i) => ({
+      id: edge.id || String(i),
+      title: edge.title || '',
+      pairs: edge.pairs.map(pr => [pr[0].idx, pr[1].idx]),
+    })).filter(l => l.pairs.length);
+  }
+
+  /* Click a verified line to put it under a spotlight.
+   *
+   * This only ever moved the MAP camera, and Build defaults to the GRAPH — where the map
+   * canvas is `display:none`. So the click panned a hidden canvas and changed a status
+   * string, which is why it read as doing nothing. Clicking the same line again clears it.
+   */
+  function focusLine(i) {
+    if (!active || !active.edges[i]) return;
+    focusedLine = (focusedLine === i) ? -1 : i;
+    const edge = focusedLine === -1 ? null : active.edges[i];
+    applyLine(edge);
+    renderPanel();
+    MM.setStatus(edge ? edge.title : (active.entry.deck_name || ''));
+  }
+
+  function applyLine(edge) {
+    const rows = lineRows(edge);
+    if (view === 'graph') {
+      if (window.Force && Force.setLine) {
+        Force.setLine(rows, edge ? (edge.id || String(focusedLine)) : null, { fit: !!edge });
+      }
+      return;
+    }
+    // Map view keeps the behaviour it always had: frame the line's cards on the atlas.
+    if (!edge) return;
+    const all = MM.allData;
+    const pts = rows.map(r => all[r]).filter(Boolean);
     if (!pts.length) return;
     const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
     const pad = 4;
     setCamera([Math.min(...xs) - pad, Math.max(...xs) + pad],
               [Math.min(...ys) - pad, Math.max(...ys) + pad]);
-    MM.setStatus(edge.title);
+  }
+
+  /* Drop the spotlight without touching the panel's other state. Called when the view
+   * changes, when a different deck loads, when Build is left, and from the Escape chain. */
+  /* Escape, in Build.
+   *
+   * `mana-map.js` has called `Build.handleEscape()` in build mode since the mode existed
+   * — and it was never defined, so the call was a silent no-op behind its own `&&` guard.
+   * Escape simply did nothing here. Same shape as `Build.onCommanderChange`, which was
+   * also called-but-undefined and also invisible for exactly that reason.
+   *
+   * Peel outermost-first, then hand the rest to the shared chain. */
+  function handleEscape() {
+    // Escape means "get me back out". Dropping the spotlight without moving the camera
+    // left you zoomed into two cards with no way back except a manual pan, so it also
+    // reframes whatever surface you are on.
+    if (focusedLine !== -1) { clearLine(); fitDeck(); return; }
+    if (window.MM && MM.escapeOnce) MM.escapeOnce();
+  }
+
+  /* Frame the whole deck on whichever surface is showing. The graph's extent is emergent
+   * and can only be measured; the map's is the deck's world positions. */
+  function fitDeck() {
+    if (view === 'graph') {
+      if (window.Force && Force.fit) Force.fit();
+      return;
+    }
+    zoomToDeck();
+  }
+
+  function clearLine() {
+    if (focusedLine === -1) return;
+    focusedLine = -1;
+    if (window.Force && Force.clearLine) Force.clearLine();
+    renderPanel();
   }
 
   /* Seed the force graph from the loaded deck — the same call Discovery makes, with
@@ -742,7 +879,8 @@
       : rows;
     if (cmdIdx >= 0) Session.setCommander(cmdIdx);   // one answer, read by the brief
     Promise.resolve(Force.enter(seeds, active.entry.deck_name,
-      { chrome: 'discovery', deck: { rows: new Set(rows), commander: cmdIdx } }))
+      { chrome: 'discovery',
+        deck: { rows: new Set(rows), commander: cmdIdx, lines: graphLines() } }))
       .then(function () { if (cmdIdx >= 0) Force.pinCard(cmdIdx); });
   }
 
@@ -757,6 +895,9 @@
 
   function setView(v) {
     if (v === view) return;
+    // The spotlight is a property of one surface's rendering, and the other surface has
+    // no idea it exists. Drop it rather than leave a highlighted row pointing at nothing.
+    clearLine();
     view = v;
     applyView();
     renderPanel();
@@ -787,6 +928,8 @@
   function exit() {
     const plot = document.getElementById('plot');
     if (plot) plot.classList.remove('force-mode');
+    // `Force.newWalk` below clears the graph's half of this; the index is ours.
+    focusedLine = -1;
     // BUILD OWNS ITS GRAPH, so leaving takes it with you. Everywhere else the rule is
     // "growing must never be able to delete" — a walk you grew is yours and survives a
     // round trip through Explore. A loaded DECK is not that: it is Build's subject, and
@@ -854,7 +997,11 @@
     select,
     toggle,
     zoomToDeck,
+    fitDeck,
     focusLine,
+    clearLine,
+    handleEscape,
+    get activeLine() { return focusedLine; },
     getOverlayTraces,
     getDimmedIndices,
     dimsAll,

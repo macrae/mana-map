@@ -62,6 +62,28 @@
   // out and find their place, then stop. Dragging is unaffected — it holds alphaTarget
   // above zero for as long as you hold the node.
   const PHYSICS = { velocityDecay: 0.22, alphaDecay: 0.08, charge: -110, linkScale: 190 };
+  // Verified-line edges are short on purpose: `d` drives both ink brightness and the
+  // link force's target distance, so combo pieces sit together and read as a unit.
+  const VERIFIED_EDGE_LENGTH = 0.35;
+
+  // Clear space a node needs around its DRAWN edge, in screen pixels.
+  //
+  // A node is drawn at a SCREEN-CONSTANT radius (`n.r / transform.k`) while d3's collide
+  // force works in WORLD units, so a fixed world radius makes the on-screen gap depend on
+  // whatever zoom the graph happened to be fitted at. Measured on a 78-node deck fitted at
+  // k=0.505: collide radius `n.r + 3` = 9 world units = **4.5 screen px** between nodes
+  // drawn **12 px wide**. They overlapped, and because `pick` awards the hover to the
+  // nearest CENTRE, a node buried in a dense patch could never win: 20 of 78 were
+  // unreachable at any cursor position, Sol Ring among them.
+  //
+  // The radius is therefore derived from the live zoom — see `collideRadius`.
+  const NODE_CLEARANCE_PX = 5;
+
+  // Camera motion. A slight overshoot — the camera passes its target and settles back —
+  // reads as physical on a surface that is itself moving. d3's default overshoot (1.70)
+  // is a bounce you notice; this is one you only feel.
+  const FIT_MS = 520;
+  const FIT_OVERSHOOT = 0.9;
 
   // Which rows came from a loaded deck, and which one is its commander. Nodes pulled in
   // by branching are deliberately NOT in here — that difference is the whole point of
@@ -81,6 +103,13 @@
   let emb = null, dim = 0;
   let active = false;
   let hovered = null, pinned = null;
+  // The verified line under the spotlight: a Set of rows and the line's id, or null.
+  // Deliberately NOT node references (unlike `hovered`/`pinned`) — a line is chosen in
+  // the sidebar from a manifest that speaks rows, and nodes are rebuilt on every reseed.
+  let lineRows = null, lineId = null;
+  // The deck's verified lines, as {id, title, pairs:[[rowA,rowB],…]}. Held so a reseed
+  // can re-inject them — links point at live node objects, so they cannot outlive nodes.
+  let deckLines = null;
   let trail = [];
   let label = '';
   let truncatedFrom = 0;
@@ -185,13 +214,27 @@
     cam = Stage.camera({
       canvas: canvas,
       scaleExtent: [0.02, 12],
+      // Double-click expands a card's neighbours here, so d3-zoom must not also
+      // zoom on it. Suppressed where the behaviour is installed, not at a distance.
+      dblclickZoom: false,
       onZoom: function (t, byUser) {
+        const prev = transform;
         transform = t;
-        // Once you have touched the camera it is yours: auto-fit stops competing with
-        // you. This is the whole of "zooming while the graph moves zooms back out" — a
-        // settle-time fit was overwriting the transform mid-gesture. Stage reports
-        // whether the transform came from a real gesture or from code.
-        if (byUser) userAdjusted = true;
+        // Once you have MOVED the camera it is yours: auto-fit stops competing with you.
+        //
+        // "Moved" is load-bearing, and it was missing. d3-zoom treats a bare mousedown as
+        // the start of a pan and fires a zoom event for it with `sourceEvent` set — so a
+        // plain CLICK marked the camera user-owned and silently disabled every auto-fit
+        // for the rest of the session. That is why the first expansion on the Discover
+        // landing left its neighbours off screen and never recovered: the graph had grown
+        // past a k=12 single-card fit, and nothing was allowed to reframe it.
+        //
+        // A gesture that does not change the transform is not an adjustment.
+        if (byUser && prev &&
+            (Math.abs(t.k - prev.k) > 1e-6 ||
+             Math.abs(t.x - prev.x) > 0.5 || Math.abs(t.y - prev.y) > 0.5)) {
+          userAdjusted = true;
+        }
         draw();
       },
     });
@@ -204,12 +247,18 @@
     const drag = d3.drag()
       .subject(function (ev) { return pick(ev.x, ev.y); })
       .on('start', function (ev) {
-        userAdjusted = true;
+        // NOT `userAdjusted = true` here. Drag-start fires on mousedown over a node,
+        // before any movement — so a plain CLICK claimed the camera and disabled every
+        // auto-fit for the rest of the session. That is the whole of "the neighbours are
+        // off screen and never come back": one click, and nothing was allowed to reframe
+        // the graph again. Ownership is claimed in `drag` below, once something moves.
         if (!ev.active) sim.alphaTarget(0.25).restart();
         ev.subject.fx = ev.subject.x;
         ev.subject.fy = ev.subject.y;
       })
       .on('drag', function (ev) {
+        // A real drag IS a deliberate arrangement of the view: stop auto-fitting under it.
+        userAdjusted = true;
         const p = transform.invert([ev.x, ev.y]);
         ev.subject.fx = p[0];
         ev.subject.fy = p[1];
@@ -234,6 +283,18 @@
     // 6px is a deliberate tap tolerance: below it you meant to click, above it you meant
     // to fling the card.
     d3.select(canvas).call(drag.clickDistance(6)).call(zoomBehaviour);
+    /* AND TAKE dblclick.zoom BACK OFF, AGAIN.
+     *
+     * Stage already removed it when it created the behaviour, but the line above
+     * re-installs the whole behaviour to get drag ordered before zoom — and a
+     * re-install restores every listener it owns, including this one. Removing it once,
+     * at the source, looked correct and was silently undone one line later.
+     *
+     * It is not only a stray zoom: d3's handler runs first and moves `transform`, so the
+     * expand handler's `pick` then resolves stale click coordinates against a camera that
+     * has already jumped, and finds nothing. The double-click appeared to do nothing at
+     * all while the view zoomed in — which is exactly how it was reported. */
+    d3.select(canvas).on('dblclick.zoom', null);
 
     canvas.addEventListener('mousemove', function (e) {
       const r = canvas.getBoundingClientRect();
@@ -257,6 +318,20 @@
       // so a node can drift out from under the cursor between press and release. The
       // highlighted card is the one the user was aiming at.
       const hit = pick(e.clientX - r.left, e.clientY - r.top) || hovered;
+      // SELECT, do not grow. Expanding on a single click meant there was no way to
+      // simply read a card: every look cost you six new nodes and a re-layout.
+      if (hit) selectCard(hit.row);
+    });
+
+    /* Double-click EXPANDS. The first click of the double has already selected the card,
+     * so the intermediate state is the correct one rather than merely harmless — no
+     * debounce timer is needed and the select feels instant.
+     *
+     * d3-zoom installs its own `dblclick.zoom`; Stage is told not to (see
+     * `dblclickZoom: false` below), or every expand would also zoom the camera. */
+    canvas.addEventListener('dblclick', function (e) {
+      const r = canvas.getBoundingClientRect();
+      const hit = pick(e.clientX - r.left, e.clientY - r.top) || pinned || hovered;
       if (hit) branchFrom(hit);
     });
 
@@ -295,15 +370,56 @@
 
   // Frame the whole graph. Called after the layout settles and from the Fit button —
   // the extent is emergent, so it can only be measured, never predicted.
-  function bbox() {
+  function bbox(only) {
     let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
     for (const n of nodes) {
+      if (only && !only.has(n.row)) continue;
       if (n.x < minX) minX = n.x;
       if (n.x > maxX) maxX = n.x;
       if (n.y < minY) minY = n.y;
       if (n.y > maxY) maxY = n.y;
     }
     return { minX, maxX, minY, maxY, w: maxX - minX, h: maxY - minY };
+  }
+
+  /* Keep the growing graph in frame WHILE it settles.
+   *
+   * The only refit after a branch was the simulation's `end` handler, and `restart(0.6)`
+   * at `alphaDecay 0.08` takes about 1.3 seconds to get there. For that whole second the
+   * six cards you just asked for are outside the viewport — which is not a slow fit, it
+   * is a missing one. Easing the camera toward the live extent on the way makes the
+   * expansion read as the graph growing out to meet you.
+   *
+   * Throttled because a bbox per frame at 60fps is wasted work at this size, and eased
+   * rather than snapped so the motion is continuous with the simulation's own.
+   * `userAdjusted` gates it: once the camera is yours nothing competes for it. */
+  const FOLLOW_EVERY = 4;        // ticks
+  const FOLLOW_EASE = 0.18;      // fraction of the remaining distance per update
+  let followTick = 0;
+  let followRuns = 0;    // test visibility: how often the follow camera actually moved
+
+  function followGraph() {
+    if (userAdjusted || !canvas || !nodes.length || !transform) return;
+    if (++followTick % FOLLOW_EVERY) return;
+    const b = bbox();
+    if (!isFinite(b.w) || !isFinite(b.h)) return;
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    if (!w || !h) return;
+    const gw = Math.max(b.w, 1) * 1.18, gh = Math.max(b.h, 1) * 1.18;
+    const k = Math.min(w / gw, h / gh, MAX_FIT_SCALE);
+    const tx = w / 2 - k * (b.minX + b.maxX) / 2;
+    const ty = h / 2 - k * (b.minY + b.maxY) / 2;
+    // Nothing to chase: within a pixel and a per-mille of scale, leave it alone so a
+    // settled graph is not permanently nudged.
+    if (Math.abs(k - transform.k) < transform.k * 0.001 &&
+        Math.abs(tx - transform.x) < 1 && Math.abs(ty - transform.y) < 1) return;
+    const e = FOLLOW_EASE;
+    const next = d3.zoomIdentity
+      .translate(transform.x + (tx - transform.x) * e, transform.y + (ty - transform.y) * e)
+      .scale(transform.k + (k - transform.k) * e);
+    // Through the behaviour, never by assignment — d3 keeps its own copy on the node.
+    followRuns++;
+    d3.select(canvas).call(zoomBehaviour.transform, next);
   }
 
   function fitToGraph(animate, auto) {
@@ -331,11 +447,23 @@
       .scale(k);
     const sel = d3.select(canvas);
     if (animate === false) sel.call(zoomBehaviour.transform, t2);
-    else sel.transition().duration(450).call(zoomBehaviour.transform, t2);
+    else sel.transition().duration(FIT_MS).ease(d3.easeBackOut.overshoot(FIT_OVERSHOOT))
+            .call(zoomBehaviour.transform, t2);
   }
 
   // Screen pixel -> node, through the zoom transform. A linear scan is honest at 500
   // nodes (0.02 ms); the quadtree earns its keep at 34,322, which is where it goes next.
+  /* Collide radius in WORLD units for the zoom the graph is currently viewed at.
+   *
+   * `n.r` is a screen radius, so the world radius it occupies is `n.r / k`. Adding the
+   * clearance in the same space keeps the on-screen gap constant however the graph is
+   * framed, which is what makes every node reachable by `pick`. Guarded against a
+   * missing/zero transform because forces are constructed before the first fit. */
+  function collideRadius(n) {
+    const k = (transform && transform.k) ? transform.k : 1;
+    return (n.r + NODE_CLEARANCE_PX) / k;
+  }
+
   function pick(px, py) {
     if (!nodes.length) return null;
     const p = transform.invert([px, py]);
@@ -369,8 +497,22 @@
     // rather than dissolving into it the moment you branch.
     Stage.drawEdges(ctx, links, function (n) { return [n.x, n.y]; }, transform.k, {
       width: 1,
-      relOf: function (l) { return (l.source.deck && l.target.deck) ? 'deck' : l.rel; },
-      weightOf: function (l, rel) { return rel === 'deck' ? 1.7 : 1; },
+      relOf: function (l) {
+        // With a line under the spotlight, an edge is either part of it or it is
+        // scenery. `relOf` is the documented hook for deciding an edge's kind from
+        // context rather than storing it, and "which line am I looking at" is context.
+        if (lineRows) return l.line === lineId ? 'verified' : 'muted';
+        // At rest a verified edge is still visible — you should be able to see the deck's
+        // lines without clicking — but quiet, so selecting one is a visible change.
+        if (l.rel === 'verified') return 'verifiedQuiet';
+        return (l.source.deck && l.target.deck) ? 'deck' : l.rel;
+      },
+      weightOf: function (l, rel) {
+        if (rel === 'verified') return 2.4;
+        if (rel === 'verifiedQuiet') return 1.4;
+        if (rel === 'muted') return 1;
+        return rel === 'deck' ? 1.7 : 1;
+      },
     });
 
     // The trail — where the walk has been.
@@ -394,7 +536,10 @@
       ctx.closePath();
       // Cards you brought keep their full colour; cards you found are washed out, so a
       // loaded deck stays legible as you explore outward from it.
-      ctx.globalAlpha = (deckRows && !n.deck) ? 0.5 : 1;
+      // Spotlight: with a line active everything else recedes so the line reads at a
+      // glance. Otherwise the original two states — what you brought vs what you found.
+      ctx.globalAlpha = lineRows ? (lineRows.has(n.row) ? 1 : 0.15)
+                                 : ((deckRows && !n.deck) ? 0.5 : 1);
       ctx.fillStyle = n.color;
       ctx.fill();
       ctx.globalAlpha = 1;
@@ -416,6 +561,11 @@
       }
       // Ring only what is meaningful right now. Ringing every seed was noise: on a fresh
       // walk every node is a seed, so the ring said nothing.
+      if (lineRows && lineRows.has(n.row)) {
+        ctx.lineWidth = 2.5 / transform.k;
+        ctx.strokeStyle = '#4CAF50';
+        ctx.stroke();
+      }
       if (n === hovered || n === pinned || onTrail.has(n)) {
         ctx.lineWidth = (n === hovered ? 2.5 : 1.6) / transform.k;
         ctx.strokeStyle = n === hovered ? '#fff' : '#c4a747';
@@ -439,6 +589,13 @@
     const priority = [];
     if (hovered) priority.push(hovered);
     if (pinned && pinned !== hovered) priority.push(pinned);
+    // A line you asked to see must be named. Ahead of the trail and the commander,
+    // because while the spotlight is on it is the only thing being asked about.
+    if (lineRows) {
+      for (const n of nodes) {
+        if (lineRows.has(n.row) && priority.indexOf(n) === -1) priority.push(n);
+      }
+    }
     for (let i = trail.length - 1; i >= 0; i--) {
       if (priority.indexOf(trail[i]) === -1) priority.push(trail[i]);
     }
@@ -488,7 +645,9 @@
       const tw = ctx.measureText(n.name).width;
       const box = { x0: p[0] - tw / 2 - 5, x1: p[0] + tw / 2 + 5, y0: p[1] - 26, y1: p[1] - 10 };
       // The hovered and pinned cards are never suppressed — you asked about those.
-      if (!place.claim(box, n === hovered || n === pinned)) continue;
+      // Nor is a card in the line under the spotlight, for the same reason.
+      const keep = n === hovered || n === pinned || !!(lineRows && lineRows.has(n.row));
+      if (!place.claim(box, keep)) continue;
       drawn++;
       lastLabelCount = drawn;
 
@@ -507,11 +666,11 @@
       sim = d3.forceSimulation(nodes)
         .force('link', d3.forceLink(links).distance(l => l.d * PHYSICS.linkScale).strength(0.55))
         .force('charge', d3.forceManyBody().strength(PHYSICS.charge).distanceMax(900))
-        .force('collide', d3.forceCollide().radius(n => n.r + 3).strength(0.85))
+        .force('collide', d3.forceCollide().radius(collideRadius).strength(0.85))
         .force('center', d3.forceCenter(0, 0).strength(0.04))
         .velocityDecay(PHYSICS.velocityDecay)
         .alphaDecay(PHYSICS.alphaDecay)
-        .on('tick', draw)
+        .on('tick', function () { draw(); followGraph(); })
         // Fit when the layout stops, not on a timer. alphaDecay 0.015 gives an ~8 s
         // settle, so an early fit frames a graph that then grows out of the viewport —
         // which is exactly what left the canvas looking empty the first time.
@@ -533,8 +692,9 @@
     if (opts && opts.deck) {
       deckRows = opts.deck.rows || null;
       commanderRow = typeof opts.deck.commander === 'number' ? opts.deck.commander : -1;
+      deckLines = opts.deck.lines || null;
     } else if (opts && opts.deck === null) {
-      deckRows = null; commanderRow = -1;
+      deckRows = null; commanderRow = -1; deckLines = null;
     }
     // Re-entering with no explicit seed and a graph already built: pick up where you
     // left off rather than starting over.
@@ -596,6 +756,7 @@
     nodes = rows.map(r => makeNode(r, true));
     byIdx = new Map(nodes.map(n => [n.row, n]));
     links = linkWithin(nodes);
+    injectLines();
     trail = [];
     pinned = null;
     hovered = null;
@@ -623,6 +784,22 @@
     for (let i = 0; i < ticks; i++) sim.tick();
 
     fitToGraph(false, true);   // one fit, on a layout that is already still
+
+    // SECOND PASS, and it is not optional. `collideRadius` is expressed in world units
+    // derived from the live zoom, but the zoom is only known once the graph has been
+    // framed — the first settle above ran at the identity transform. Re-settle against
+    // the scale the graph is actually viewed at, then reframe. Two passes converge; a
+    // third moved nothing measurable. Without this the collide is computed for a zoom
+    // nobody is looking at and nodes overlap on screen exactly as before.
+    // `d3.forceCollide` reads its radius accessor once, in `initialize` — NOT per tick.
+    // Re-setting the force is therefore the only thing that re-evaluates it against the
+    // new zoom. Merely calling `sim.alpha().restart()` left the radii computed at the
+    // identity transform, which is why the first attempt at this changed nothing.
+    sim.force('collide', d3.forceCollide().radius(collideRadius).strength(0.85));
+    sim.alpha(0.3).restart();
+    sim.stop();
+    for (let i = 0; i < Math.min(SETTLE_TICKS, 40 + nodes.length * 2); i++) sim.tick();
+    fitToGraph(false, true);
     draw();
     // Left stopped on purpose. Dragging reheats it (`alphaTarget` on drag start) and
     // branching reheats it (`restart(0.6)`), so it is alive exactly when something is
@@ -816,6 +993,42 @@
     return n;
   }
 
+  /* A rules-verified line is a claim about which cards talk to each other, and the graph
+   * had no way to say it: its links come only from embedding similarity, so two combo
+   * pieces that are not near-neighbours had no edge at all. These are injected as real
+   * links, so they join the simulation and pull their endpoints together — which is the
+   * point. Deduped against similarity links via `hasLink`, so a pair that is already
+   * connected keeps one edge and gains the line's identity. */
+  function injectLines() {
+    if (!deckLines) return;
+    for (const line of deckLines) {
+      for (const pair of (line.pairs || [])) {
+        const a = byIdx.get(pair[0]), b = byIdx.get(pair[1]);
+        if (!a || !b || a === b) continue;
+        const existing = findLink(a, b);
+        if (existing) {
+          // Keep the geometry, adopt the meaning: a verified line outranks "these two
+          // cards are similar" as a reason for an edge to exist.
+          existing.rel = 'verified';
+          existing.line = line.id;
+          existing.reason = line.title || existing.reason;
+          continue;
+        }
+        links.push({ source: a, target: b, d: VERIFIED_EDGE_LENGTH,
+                     rel: 'verified', reason: line.title || null, line: line.id });
+      }
+    }
+  }
+
+  function findLink(a, b) {
+    for (const l of links) {
+      const s = l.source.row !== undefined ? l.source.row : l.source;
+      const t2 = l.target.row !== undefined ? l.target.row : l.target;
+      if ((s === a.row && t2 === b.row) || (s === b.row && t2 === a.row)) return l;
+    }
+    return null;
+  }
+
   function branchByRow(row, relation) {
     if (nodes.length >= MAX_NODES && !byIdx.has(row)) {
       MM.setStatus('At the ' + MAX_NODES + '-card cap — trim the walk or start a new one.');
@@ -834,7 +1047,9 @@
     hovered = null; pinned = null;
     truncatedFrom = 0;
     label = '';
-    deckRows = null; commanderRow = -1;
+    deckRows = null; commanderRow = -1; deckLines = null;
+    // A spotlight must not survive into a graph that no longer contains its line.
+    lineRows = null; lineId = null;
     userAdjusted = false;
     if (canvas) { transform = d3.zoomIdentity; draw(); }
     if (quiet) return;
@@ -864,12 +1079,74 @@
   // did: importing a 129-card deck produced a 135-node graph.
   /* Move the gold ring without touching the graph. Re-seeding to change a commander
    * would throw away everything you had branched to. */
+  /* Put a rules-verified line under a spotlight. A restyle, never a reseed — the same
+   * discipline as `setCommander` below, and for the same reason: rebuilding the graph to
+   * answer "show me this line" would throw away everything branched to since it loaded.
+   * No reheat either. The nodes must not move, or the click reads as the graph exploding
+   * rather than as an answer.
+   *
+   * Rows, not node objects: the line is picked in the sidebar from a manifest that speaks
+   * row indices, and nodes are rebuilt on every reseed. */
+  function setLine(rows, id, opts) {
+    lineRows = (rows && rows.length) ? new Set(rows) : null;
+    lineId = lineRows ? (id == null ? null : id) : null;
+    if (lineRows && opts && opts.fit) {
+      // Frame the line itself, not the deck. `userAdjusted` is deliberately ignored:
+      // this is an explicit request, not an automatic fit.
+      fitToRows(lineRows);
+    }
+    draw();
+    renderPanel();
+  }
+
+  function clearLine() { setLine(null); }
+
+  /* Frame a subset. Same maths as `fitToGraph`, which drives the camera through
+   * `zoomBehaviour.transform` rather than `Stage.camera` — programmatic transforms have
+   * to go through the one zoom instance or its internal state desyncs and the next wheel
+   * event snaps the view back. */
+  function fitToRows(rowSet) {
+    if (!canvas || !nodes.length) return;
+    const b = bbox(rowSet);
+    if (!isFinite(b.w) || !isFinite(b.h)) return;
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    // A line can be two adjacent cards, which would otherwise frame at absurd zoom.
+    // Pad generously so the line lands in the middle of its neighbourhood, in context.
+    const pad = Math.max(b.w, b.h, 1) * 0.6 + 8;
+    const minX = b.minX - pad, maxX = b.maxX + pad;
+    const minY = b.minY - pad, maxY = b.maxY + pad;
+    const gw = Math.max(maxX - minX, 1), gh = Math.max(maxY - minY, 1);
+    const k = Math.min(w / (gw * 1.18), h / (gh * 1.18), MAX_FIT_SCALE);
+    const t2 = d3.zoomIdentity
+      .translate(w / 2 - k * (minX + maxX) / 2, h / 2 - k * (minY + maxY) / 2)
+      .scale(k);
+    d3.select(canvas).transition().duration(FIT_MS)
+      .ease(d3.easeBackOut.overshoot(FIT_OVERSHOOT))
+      .call(zoomBehaviour.transform, t2);
+  }
+
   function setCommander(row) {
     commanderRow = typeof row === 'number' ? row : -1;
     for (const n of nodes) {
       n.commander = n.row === commanderRow;
       n.r = n.commander ? 9 : (n.deck ? 6 : 4.5);
     }
+    draw();
+    renderPanel();
+  }
+
+  /* SELECT a card without growing the graph.
+   *
+   * The sibling of `pinCard`, minus the trail push. A single click is "let me look at
+   * this", and the breadcrumb records where you WENT — expansions. Clicking around a
+   * 78-node deck to read cards would otherwise fill the trail with places you never
+   * travelled to, and the gold path stops meaning anything.
+   */
+  function selectCard(row) {
+    const n = byIdx.get(row);
+    if (!n) return;
+    pinned = n;
+    if (window.Discovery) Discovery.setCurrent(row);
     draw();
     renderPanel();
   }
@@ -960,6 +1237,7 @@
   window.Force = {
     enter, exit, isActive, seedFrom, focusCard, pinCard,
     reheat, freeze, clearTrail, newWalk, tune, renderPanel, bbox,
+    setLine, clearLine, selectCard,
     walkRegion, branchByRow, hasRow, setCommander,
     // The rows currently on the graph, for Explore's orientation lens: the graph encodes
     // adjacency and has no absolute position, so "where does this sit in card space" is a
@@ -971,10 +1249,33 @@
     links() {
       return links.map(function (l) {
         return { a: l.source.row, b: l.target.row, rel: l.rel || 'similar',
-                 reason: l.reason || null, d: l.d };
+                 reason: l.reason || null, d: l.d, line: l.line || null };
       });
     },
     pinnedRow() { return pinned ? pinned.row : -1; },
+    /* Node positions in SCREEN space, for the browser tests. Whether a card can be
+     * hovered is decided by whether its drawn circle is buried under a neighbour's —
+     * `pick` awards the hover to the nearest centre — and that is a geometric fact the
+     * canvas cannot be asked about directly. */
+    screenNodes() {
+      return nodes.map(function (n) {
+        const p = transform ? transform.apply([n.x, n.y]) : [n.x, n.y];
+        // The drawn screen radius IS n.r — world radius is n.r/k and screen = world*k.
+        return { row: n.row, name: n.name, x: p[0], y: p[1], r: n.r };
+      });
+    },
+    // Which verified line is under the spotlight, and how many of its cards are on the
+    // graph. Canvas ink is unassertable, so the browser tests read state through here.
+    /* Has the user taken the camera? Auto-fit and the follow camera both stand down
+     * when this is true, so a test that cannot see it cannot tell "the fit is broken"
+     * from "the fit correctly declined". */
+    get cameraOwnedByUser() { return userAdjusted; },
+    get followCount() { return followRuns; },
+    get activeLine() { return lineId; },
+    get lineRowCount() { return lineRows ? lineRows.size : 0; },
+    get verifiedLinkCount() {
+      return links.filter(function (l) { return l.rel === 'verified'; }).length;
+    },
     // An explicit request, so it overrides "the user has taken the camera".
     fit: function () { userAdjusted = false; fitToGraph(true); userAdjusted = true; },
     get nodeCount() { return nodes.length; },

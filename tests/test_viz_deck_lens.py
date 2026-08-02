@@ -34,11 +34,22 @@ def _lens_source() -> str:
     return LENS_JS.read_text(encoding="utf-8")
 
 
+def _map_source() -> str:
+    return (VIZ_DIR / "js" / "mana-map.js").read_text(encoding="utf-8")
+
+
 def _lens_families() -> set[str]:
-    """The families FAMILY_COLOR paints, parsed from the source."""
-    src = _lens_source()
-    block = re.search(r"const FAMILY_COLOR = \{(.*?)\n  \};", src, re.DOTALL)
-    assert block, "FAMILY_COLOR block not found in build.js"
+    """The families the role palette paints.
+
+    Parsed from mana-map.js, not build.js: the role taxonomy moved into the grouping
+    registry (`MM.GROUPINGS.role`) so that a role is the same colour on the atlas, in the
+    role-budget bars and in the segmented mana curve. Build now reads it rather than
+    keeping a second table — which is exactly what these tests exist to protect, since two
+    tables are how a family ends up coloured in one place and grey in another.
+    """
+    src = _map_source()
+    block = re.search(r"const ROLE_PALETTE = \{(.*?)\n  \};", src, re.DOTALL)
+    assert block, "ROLE_PALETTE block not found in mana-map.js"
     return set(re.findall(r"'?([a-z-]+)'?\s*:", block.group(1)))
 
 
@@ -65,7 +76,7 @@ def test_every_role_family_has_a_colour_in_the_lens():
     families = {r.split(":")[0] for card_roles in roles.values() for r in card_roles}
     missing = families - _lens_families()
     assert not missing, (
-        f"role families with no colour in build.js: {sorted(missing)} — "
+        f"role families with no colour in MM.GROUPINGS.role: {sorted(missing)} — "
         "they would render grey and be indistinguishable from unclassified"
     )
 
@@ -73,12 +84,17 @@ def test_every_role_family_has_a_colour_in_the_lens():
 @requires_roles
 def test_family_priority_covers_every_coloured_family():
     """A family with a colour but no priority entry can never win a tie."""
-    src = _lens_source()
-    block = re.search(r"const FAMILY_PRIORITY = \[(.*?)\];", src, re.DOTALL)
-    assert block, "FAMILY_PRIORITY block not found"
-    priority = set(re.findall(r"'([a-z-]+)'", block.group(1)))
-    # 'unclassified' is the fallback, never a priority entry.
-    assert _lens_families() - {"unclassified"} == priority
+    src = _map_source()
+    block = re.search(r"const ROLE_ORDER = \[(.*?)\];", src, re.DOTALL)
+    assert block, "ROLE_ORDER block not found in mana-map.js"
+    order = set(re.findall(r"'([a-z-]+)'", block.group(1)))
+    # 'unclassified' is in the order (it is a real bucket) but is the fallback family, so
+    # Build filters it out of its priority list rather than letting it win a tie.
+    assert _lens_families() == order
+    assert "unclassified" in order
+    assert "familyPriority()" in _lens_source(), (
+        "build.js must derive its priority from the registry, not keep its own list"
+    )
 
 
 @requires_data
@@ -149,6 +165,8 @@ def test_build_picks_the_cheap_dimming_path_when_it_can():
 
     map_src = (VIZ_DIR / "js" / "mana-map.js").read_text(encoding="utf-8")
     assert "overlay.dimsAll && overlay.dimsAll()" in map_src
-    assert "dimmedIndices.has(idx) ? 0.08 : 0.7" in map_src, (
+    # The SHAPE, not the brightness: this test is about the per-point path existing, and
+    # pinning the lit alpha made a visual-tuning change look like the path had been deleted.
+    assert re.search(r"dimmedIndices\.has\(idx\) \? 0\.08 : 0\.\d+", map_src), (
         "the per-point path must survive — it is the whole point of getDimmedIndices"
     )

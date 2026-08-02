@@ -86,6 +86,7 @@ def validate(plan, cards=None, rules=None, strategy_sections=None, bracket_repor
                     f"commander identity {sorted(identity) or ['C']}"
                 )
 
+    errors.extend(_validate_pool(plan, cards))
     errors.extend(_validate_bracket(plan, bracket_report))
     errors.extend(_validate_budget(plan))
     errors.extend(_validate_land_list(plan))
@@ -104,6 +105,39 @@ def validate(plan, cards=None, rules=None, strategy_sections=None, bracket_repor
             validate_citations(plan[key], rules or {}, key, errors, strategy_sections)
 
     return errors
+
+
+def _validate_pool(plan, cards):
+    """If the build declared a collection, prove it stayed inside it.
+
+    Re-derives the pool from the decklist files the plan names rather than
+    trusting a count written by the thing being validated. Basics are exempt:
+    `build_deck` deliberately draws them from the format, because you always own
+    another Swamp and a pool that happens to list four should not cap the mana
+    base at four.
+    """
+    pool_spec = plan.get("pool")
+    if not pool_spec or not pool_spec.get("files"):
+        return []
+    try:
+        from manamap.pilot.pool_facts import collect_paths, load_cards, read_sources
+
+        per_file, _ = read_sources(collect_paths(pool_spec["files"], []), load_cards())
+    except SystemExit as exc:
+        return [f"pool files named by the plan could not be read: {exc}"]
+
+    owned = set()
+    for counts in per_file.values():
+        owned.update(counts)
+
+    outside = []
+    for name in sorted(set(deck_card_names(plan))):
+        if name in owned:
+            continue
+        if "Basic" in (cards or {}).get(name, {}).get("type_line", ""):
+            continue
+        outside.append(name)
+    return [f"card outside the declared pool: {n}" for n in outside]
 
 
 def _validate_bracket(plan, bracket_report=None):

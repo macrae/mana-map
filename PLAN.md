@@ -29,7 +29,7 @@ first place.
 [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-1,144 tests (1,042 fast + 102 browser). 33 `manamap pilot` subcommands. 12 agents, 15 skills.
+1,289 tests (1,179 fast + 110 browser). 35 `manamap pilot` subcommands. 12 agents, 15 skills.
 
 > ### ⚠ OPEN: 23 agent-cache routines are deliberately MISSed
 >
@@ -424,7 +424,7 @@ the exported brief. No local bridge, no LLM provider in the browser.
 **What the costing found:**
 
 - The repo has **two disjoint layers with a human as the only bridge**. The deterministic
-  layer is 34 CLI subcommands, 1.5–9s, JSON out, zero LLM — `deck-facts`, `bracket-check`,
+  layer is 35 CLI subcommands, 1.5–9s, JSON out, zero LLM — `deck-facts`, `bracket-check`,
   `manabase`, `goldfish`, `impact`, and `query-rules`/`query-strategy` as pure local RAG over
   a MiniLM index. The judgment layer is 12 agent charters that only a Claude Code session can
   spawn.

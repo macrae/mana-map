@@ -6,7 +6,7 @@ Everything lives in `data/`. Most files are gitignored (regenerable via `manamap
 
 | File | Producer (step) | Shape / size | Git | Consumed by |
 |------|-----------------|--------------|-----|-------------|
-| `oracle-cards.json` | download (1) | ~200MB | ignored | extract |
+| `oracle-cards.json.gz` | download (1) | ~22MB gz (172MB raw) | ignored | extract |
 | `.download-meta.json` | download (1) | tiny | ignored | download (idempotency) |
 | `cards.csv` | extract (2) | ~34,300 rows | ignored | preprocess, train×2, embed, synergy, power_creep, cluster_regions |
 | `text_embeddings.npy` | preprocess (3) | (N, 384) ~50MB | ignored | train×2, embed |
@@ -20,7 +20,7 @@ Everything lives in `data/`. Most files are gitignored (regenerable via `manamap
 | `card_metadata.csv` | embed (5) | ~3MB | ignored | reduce |
 | `projection_2d.json` | reduce (6) | ~13MB | **tracked** | viz (Color+Type map) |
 | `projection_2d_ability.json` | reduce (6) | ~13MB | **tracked** | viz (Abilities map) |
-| `combos_raw.json` | download-combos (7) | **~430MB** | ignored | process-combos |
+| `combos_raw.json.gz` | download-combos (7) | **~34MB gz** (428MB raw) | ignored | process-combos |
 | `combo_graph.json` | process-combos (8) | ~4.5MB, `{"partners": {name: [names]}}` **only** | **tracked** | viz deck builder, synergy (exclusions) |
 | `combo_details.json` | process-combos (8) | ~25.7MB, `{combos, by_card, meta}`; per-combo `bracket` (1–4), `mana_value_needed`, `popularity`, banned flag | **tracked** | `pilot/bracket.py`, `pilot/build_deck.py`, `deck-analyst` — **never fetched by the viz** |
 | `embeddings.bin` | export (9) | ~17MB | **tracked** | viz (Find Similar, deck builder) |
@@ -33,7 +33,7 @@ Everything lives in `data/`. Most files are gitignored (regenerable via `manamap
 `membership` is two positional arrays (`l0`, `l1`), one entry per card in `cards.csv` row order, `-1` for noise — so it inherits the index-alignment invariant and `membership.l0[i]` describes `cards.csv[i]`. Cluster id *n* at level *L* is the region with `id == "lL_n"`. This is the only thing in the repo that can answer *which region is this card in*; before it existed the viz could draw a region's name but never its members. **Noise is a real answer, not a gap**: 29% of cards on the default map belong to no L0 region, and they are left at `-1` rather than snapped to a nearest centroid they were never clustered into.
 
 `w` and `h` are the bounding box beside `span` (which stays `max(w, h)` and still drives label culling). Collapsing them discarded aspect ratio, the one signal distinguishing a filament from a blob — a 20×1 streak and a 20×20 cloud serialised identically. With both axes kept, the map's roads are measurable: `White Enchantments — Auras — ETB` is 209 cards at 1.6 × 0.1, a 16:1 streak.
-| `card_roles.json` | card-roles (13) | ~1.9MB, `{roles, meta}`; 30,563 of 34,322 cards classified (31,622 Commander-legal), **53 roles in 19 families**, coverage 89.5% / 73.2% specific | **tracked** | `pilot/build_deck.py`, `pilot/bracket.py` (tutor density), `deck-analyst`, **and `viz/js/deck-map.js`** — the Deck Lens colours the 99 by role family |
+| `card_roles.json` | card-roles (13) | ~1.9MB, `{roles, meta}`; 30,563 of 34,322 cards classified (31,622 Commander-legal), **53 roles in 19 families**, coverage 89.5% / 73.2% specific | **tracked** | `pilot/build_deck.py`, `pilot/bracket.py` (tutor density), `deck-analyst`, **and the viz** — `build.js` colours the 99 by role family, and `MM.GROUPINGS.role` makes it a map overlay. Fetched **lazily**, only when the Role grouping is selected: 0.39 MB gzipped is not something to spend inside the 1.83 MB discovery boot |
 | `viz_index.json` | viz-index (14) | 3.4 MB / **0.56 MB gzipped**, one slim record per card: name, supertype, colour, rarity, CMC, role tags. Deliberately **no oracle text** — the Scryfall card image already shows it | **tracked** | the discovery landing: random pick, coarse filters, name→row resolution for imports |
 | `neighbours.bin` | viz-index (14) | 2.6 MB / **1.27 MB gzipped** (format v2 — smaller than v1's 1.70 MB despite the extra block, because playability-ranked partners repeat across anchors and compress), uint16 row ids: 12 similar + 10 synergy + 5 obsoleted-by per card, uint8 quantised similarity, **uint8 synergy-reason codes plus the 24-entry vocabulary appended**, sha256 of the source embeddings in the header. **Pre-sorted — never re-sort client-side** | **tracked** | synchronous branching without the 16.8 MB embedding matrix |
 | `eval/similarity_golden.json` | **hand-authored** (never generated) | ~6KB, 40 groups / 163 cards of functional equivalents, `dev`/`test` split | **tracked** | `analysis/eval_embeddings.py` (step 14), `tests/test_embedding_quality.py` — must stay independent of tags/roles/synergy/combos, which training mines for positives |

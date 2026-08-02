@@ -4,14 +4,14 @@ Thirteen steps orchestrated by `src/manamap/pipeline.py`. Run everything with `m
 
 | # | CLI step | Module | What it does | Output |
 |---|----------|--------|--------------|--------|
-| 1 | `download` | `ingest/download.py` | Fetches Scryfall oracle_cards bulk JSON (idempotent via `.download-meta.json` sidecar) | `data/oracle-cards.json` |
+| 1 | `download` | `ingest/download.py` | Fetches Scryfall oracle_cards bulk JSON (idempotent via `.download-meta.json` sidecar) | `data/oracle-cards.json.gz` |
 | 2 | `extract` | `ingest/extract.py` | Parses JSON → flat CSV (35 cols) with derived columns (supertype, primary_color, mechanical_tags, embedding_text) and Scryfall's `game_changer` flag | `data/cards.csv` |
 | 3 | `preprocess` | `ingest/preprocess.py` | Sentence embeddings (all-MiniLM-L6-v2, frozen), categorical encoding, keyword + tag multi-hot | `data/text_embeddings.npy`, `data/card_features.npz`, `data/color_vectors.npy`, `data/mechanical_tags.npy` |
 | 4a | `train` | `training/train.py` | Triplet training — positives by (supertype, primary_color) | `data/model.pt` |
 | 4b | `train-ability` | `training/train_ability.py` | Triplet training — positives by tag overlap (>= 2 shared) | `data/model_ability.pt` |
 | 5 | `embed` | `training/embed.py` | Runs all cards through both models, builds metadata CSV | `data/embeddings.npy`, `data/embeddings_ability.npy`, `data/card_metadata.csv` |
 | 6 | `reduce` | `export/reduce.py` | PaCMAP 128D → 2D, both projections | `data/projection_2d.json`, `data/projection_2d_ability.json` |
-| 7 | `download-combos` | `ingest/download_combos.py` | Paginates Commander Spellbook API (~2.5 min, internet) | `data/combos_raw.json` |
+| 7 | `download-combos` | `ingest/download_combos.py` | Paginates Commander Spellbook API (~2.5 min, internet) | `data/combos_raw.json.gz` |
 | 8 | `process-combos` | `ingest/process_combos.py` | Builds the partner adjacency map **and** the per-combo detail index (Spellbook bracket tag, mana value needed, popularity, `by_card`) | `data/combo_graph.json`, `data/combo_details.json` |
 | 9 | `export` | `export/export_embeddings.py` | Both embeddings → raw Float32 binary for JS | `data/embeddings.bin`, `data/embeddings_ability.bin` |
 | 10 | `synergy` | `analysis/synergy.py` | Synergy partner graph from complementary tag rules | `data/synergy_graph.json` |

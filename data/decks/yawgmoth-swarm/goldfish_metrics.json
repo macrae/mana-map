@@ -1,0 +1,145 @@
+{
+  "meta": {
+    "commander": "Yawgmoth, Thran Physician",
+    "commander_cmc": 4,
+    "deck": "yawgmoth-swarm",
+    "decklist_sha256": "2bdc3803d45d49074f4e441436d3adb51d7ca439af1e86c5babd223c2ef511db",
+    "iterations": 10000,
+    "max_turn": 10,
+    "model_assumptions": [
+      "Simulates resource development, not full games (no interaction, no removal).",
+      "Draw every turn including turn 1 (multiplayer Commander).",
+      "Mulligan: keep 7-card hands with 2-5 lands; up to 2 fresh redraws, keep the last.",
+      "One land drop per turn when available.",
+      "Mana rocks ('{T}: Add') contribute from the turn after they are cast.",
+      "Commander cast on first affordable turn (highest spending priority).",
+      "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
+      "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+      "Cost reducers, rituals, and extra card draw are not modeled (conservative)."
+    ],
+    "seed": 42
+  },
+  "metrics": {
+    "commander": {
+      "cast_by_turn_6_rate": 0.911,
+      "cast_turn_histogram": {
+        "10": 85,
+        "2": 754,
+        "3": 99,
+        "4": 7128,
+        "5": 662,
+        "6": 471,
+        "7": 298,
+        "8": 205,
+        "9": 156,
+        "not_by_max_turn": 142
+      },
+      "mean_cast_turn": 4.304,
+      "median_cast_turn": 4
+    },
+    "iterations": 10000,
+    "land_drop_hit_rate_by_turn": {
+      "1": 1.0,
+      "10": 0.396,
+      "2": 0.999,
+      "3": 0.919,
+      "4": 0.803,
+      "5": 0.69,
+      "6": 0.589,
+      "7": 0.507,
+      "8": 0.453,
+      "9": 0.429
+    },
+    "mean_available_mana_by_turn": {
+      "1": 1.0,
+      "10": 7.094,
+      "2": 2.15,
+      "3": 3.088,
+      "4": 3.913,
+      "5": 4.608,
+      "6": 5.23,
+      "7": 5.757,
+      "8": 6.23,
+      "9": 6.679
+    },
+    "mean_bodies_by_turn": {
+      "1": 0.312,
+      "10": 5.686,
+      "2": 0.8,
+      "3": 1.81,
+      "4": 2.076,
+      "5": 3.063,
+      "6": 3.816,
+      "7": 4.388,
+      "8": 4.861,
+      "9": 5.284
+    },
+    "opening_hand": {
+      "first_seven_land_histogram": {
+        "0": 268,
+        "1": 1324,
+        "2": 2904,
+        "3": 2928,
+        "4": 1831,
+        "5": 619,
+        "6": 119,
+        "7": 7
+      },
+      "keep_first_seven_rate": 0.828,
+      "kept_hand_land_histogram": {
+        "0": 3,
+        "1": 50,
+        "2": 3503,
+        "3": 3531,
+        "4": 2158,
+        "5": 751,
+        "6": 4
+      },
+      "mean_mulligans": 0.201
+    },
+    "targets": [
+      {
+        "assembled_rate": 0.026,
+        "by_turn_6_rate": 0.015,
+        "label": "Both halves of the verified kill drawn (Blowfly + Nest)",
+        "mean_turn": 5.54
+      },
+      {
+        "assembled_rate": 0.521,
+        "by_turn_6_rate": 0.422,
+        "label": "A drain drawn — Bastion is the only one that survives the loop",
+        "mean_turn": 3.272
+      },
+      {
+        "assembled_rate": 0.612,
+        "by_turn_6_rate": 0.503,
+        "label": "An ignition source drawn (something that places the first -1/-1 counter)",
+        "mean_turn": 3.141
+      },
+      {
+        "assembled_rate": 0.531,
+        "by_turn_6_rate": 0.431,
+        "label": "A tutor drawn (any of five can fetch a missing combo half)",
+        "mean_turn": 3.184
+      },
+      {
+        "assembled_rate": 0.611,
+        "by_turn_6_rate": 0.505,
+        "label": "Fast mana drawn (the turn-2-Yawgmoth enabler)",
+        "mean_turn": 3.058
+      },
+      {
+        "assembled_rate": 0.006,
+        "by_turn_6_rate": 0.002,
+        "label": "THE FULL KILL: Blowfly + Nest + a drain + an igniter",
+        "mean_turn": 7.321
+      },
+      {
+        "assembled_rate": 0.611,
+        "by_turn_6_rate": 0.502,
+        "label": "Card advantage engine drawn (Necropotence / Ad Nauseam / Skullclamp)",
+        "mean_turn": 3.165
+      }
+    ]
+  }
+}

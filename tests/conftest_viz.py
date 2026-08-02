@@ -140,6 +140,17 @@ def canvas_page(browser, viz_server):
     page = _boot(browser, viz_server, "?renderer=canvas&mode=explore")
     _wait_for_boot(page, "() => !!document.querySelector('.map-canvas')",
                    "the canvas renderer to attach")
+    # PIN THE MAP. Every test on this fixture was written against the colour+type map —
+    # its contour density, its region label layout, and the fact that it is the one map
+    # that draws similarity arcs (`MAP_ARC_RELATIONS`; the ability map deliberately draws
+    # none). Inheriting the map from the boot default made all of that implicit, so
+    # flipping the app's default to Abilities silently repointed ten tests at a map whose
+    # answers are different by design — they failed as if the renderer had broken.
+    # A test that cares which map it is on has to say so.
+    page.select_option("#mapSelect", "default")
+    _wait_for_boot(page, "() => window.MM && MM.currentMap === 'default' && MM.allData.length",
+                   "the colour+type map to load")
+    page.wait_for_timeout(600)
     try:
         yield page
     finally:

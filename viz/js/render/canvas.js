@@ -256,6 +256,7 @@
         else drawMarkers(l);
       }
       close();
+      drawFalloff(w, h);
 
       if (marquee) drawMarquee();
       positionLabels();
@@ -350,17 +351,110 @@
 
     // Batched: one path per colour, filled once. Measured 7.8 ms for 34,322 points versus
     // 16.9 ms issuing a fill per point — the difference between 128 fps and 59.
+    /* TWO ramps, pulling opposite ways, because zooming in changes two things.
+     *
+     * Points draw at a constant SCREEN size, so zooming spreads them apart without making
+     * any of them brighter — a dense field reads as grey haze far out and as sparse grey
+     * dots up close, which is the same dimness twice. `closeness` fixes that: the further
+     * in you are, the fewer cards are on screen and the more each can assert itself.
+     *
+     * `aura` runs the OTHER way, and that is the correction. Zoomed in, this view has to
+     * converge on Discover and Build — one force engine, drawing plain crisp dots with no
+     * halo at all (grep force.js for shadowBlur: there is none). A halo that grew as you
+     * approached made close-up Explore look like a different application from the two
+     * modes it hands off to, and it sat on top of exactly the points you were trying to
+     * read. Atmosphere belongs at altitude: far out, where a single card is a pixel and
+     * the shape of the cloud is the only readable thing.
+     *
+     * Both are in the units `transform.k` actually uses: this zoom is RELATIVE TO
+     * `baseFit`, so k=1 is the whole-map fit, not an absolute data→pixel scale (see
+     * `pick`, which multiplies the two back together). Measured on the atlas: fit k=1, a
+     * region fills the screen near k=3, a neighbourhood near k=15, a street near k=45.
+     * Getting the units wrong is silent — constants in absolute scale (25/240) leave the
+     * ramp flat at 0 everywhere, and on/off then measures pixel-identical, which reads as
+     * "the halo does nothing" rather than "the halo never ran".
+     */
+    const CLOSE_K0 = 1.6, CLOSE_K1 = 15;   // brightness: none at the fit, full by a neighbourhood
+    const AURA_K1 = 6;                     // atmosphere: full at the fit, gone by a region
+
+    function ramp(k, k0, k1) {
+      if (k <= k0) return 0;
+      if (k >= k1) return 1;
+      return Math.log(k / k0) / Math.log(k1 / k0);
+    }
+
+    // 0 at the whole-map fit, 1 once a neighbourhood fills the screen.
+    function closeness() { return ramp(transform.k, CLOSE_K0, CLOSE_K1); }
+
+    /* The inverse, and capped LOW — measured, because "some aura" and "a wash" are only a
+     * factor of two apart. Alpha coverage of the canvas at the fitted view, against a
+     * 4.5% no-aura baseline: cap 0.55 / radius 3.2x gave 68.4%, i.e. two thirds of the
+     * screen carrying ink and the clusters lost inside it; 0.35/2.4x gave 50.9%;
+     * 0.25/1.9x gives 35.9%, where each cluster reads as a lit island and the space
+     * between them stays black. Full-strength ink is 4.2% in every case — this only ever
+     * moves the halo, never the cards. */
+    function auraLevel() { return 0.25 * (1 - ramp(transform.k, 1.0, AURA_K1)); }
+
+    /* Distance falloff — the other half of "brighter the closer, fading further out".
+     *
+     * The halo above makes everything brighter at once; this puts the brightness
+     * somewhere, by letting the field fall off toward the edges of the viewport so what
+     * you have centred reads as the thing you are looking at.
+     *
+     * It is drawn in SCREEN space as one radial gradient rather than as a per-point
+     * alpha, and that is the whole reason it is affordable: a distance-from-centre ramp
+     * computed per point is 34,322 distances plus a rebuilt colour bucket every frame,
+     * on the same array path `dimsAll()` exists to avoid. One gradient fill is O(1) and
+     * says the same thing.
+     *
+     * Tied to the same boost, so at the whole-map fit it does not draw at all — a
+     * vignette over the entire atlas would just be a dimmer atlas.
+     */
+    function drawFalloff(w, h) {
+      // Rides the aura, not the closeness: the vignette is atmosphere too, and Discover
+      // and Build have none. Zoomed in it must be gone.
+      const boost = auraLevel();
+      if (boost < 0.02) return;
+      const cx = w / 2, cy = h / 2;
+      const inner = Math.min(w, h) * 0.28;
+      const outer = Math.hypot(w, h) / 2;
+      const g = ctx.createRadialGradient(cx, cy, inner, cx, cy, outer);
+      g.addColorStop(0, 'rgba(0,0,0,0)');
+      g.addColorStop(0.55, 'rgba(0,0,0,' + (boost * 0.16).toFixed(3) + ')');
+      g.addColorStop(1, 'rgba(0,0,0,' + (boost * 0.46).toFixed(3) + ')');
+      ctx.save();
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, w, h);
+      ctx.restore();
+    }
+
     function drawMarkers(l) {
       const m = l.marker || {};
-      const size = (m.size == null ? 3 : m.size) / transform.k;
+      const near = closeness();
+      const aura = m.glow ? auraLevel() : 0;
+      // Up to +60% radius and a brighter core as you close in — this half is unchanged,
+      // and is what "brighter the closer" asked for.
+      const size = (m.size == null ? 3 : m.size) * (1 + near * 0.6) / transform.k;
+      const lift = (a) => Math.min(1, a * (1 + near * 0.55));
       const sym = SYMBOL[m.symbol] == null ? 0 : SYMBOL[m.symbol];
       const perColour = Array.isArray(m.color);
       const perAlpha = Array.isArray(m.opacity);
 
       if (!perColour && !perAlpha) {
-        ctx.globalAlpha = m.opacity == null ? 1 : m.opacity;
+        const base = m.opacity == null ? 1 : m.opacity;
         const idx = new Array(l.x.length);
         for (let i = 0; i < l.x.length; i++) idx[i] = i;
+        // The halo, drawn first and underneath: same points, wider and faint. Additive
+        // blending makes overlapping haloes pool where the space is dense, so a cluster
+        // glows as a region rather than as a heap of separate dots.
+        if (aura > 0.02) {
+          ctx.save();
+          ctx.globalCompositeOperation = 'lighter';
+          ctx.globalAlpha = base * aura * 0.20;
+          strokeFill(l, idx, m.color || '#666', size * 1.9, sym, m);
+          ctx.restore();
+        }
+        ctx.globalAlpha = lift(base);
         strokeFill(l, idx, m.color || '#666', size, sym, m);
         ctx.globalAlpha = 1;
         return;
@@ -379,7 +473,14 @@
         b.idx.push(i);
       }
       buckets.forEach(function (b) {
-        ctx.globalAlpha = b.a;
+        if (aura > 0.02 && b.a > 0.2) {
+          ctx.save();
+          ctx.globalCompositeOperation = 'lighter';
+          ctx.globalAlpha = b.a * aura * 0.20;
+          strokeFill(l, b.idx, b.c, size * 1.9, sym, m);
+          ctx.restore();
+        }
+        ctx.globalAlpha = lift(b.a);
         strokeFill(l, b.idx, b.c, size, sym, m);
       });
       ctx.globalAlpha = 1;
@@ -430,6 +531,12 @@
     function setAnnotations(list) {
       // Sorted big-first: size tracks region level, so the L0 headline labels claim their
       // space before the L1 detail labels compete for it.
+      //
+      // A `priority` term was tried here, to let a focused region's children outrank the
+      // faint context labels around them. Measured on the densest case available (l0_4,
+      // six L1 children): 6 children placed with it and 6 without — identical. The
+      // collision pass was not what was limiting them, so the knob went back out rather
+      // than ship as an unfalsifiable improvement.
       labels = (list || []).slice().sort((a, b) => (b.size || 0) - (a.size || 0));
       if (!labelHost) {
         labelHost = document.createElement('div');
@@ -437,8 +544,27 @@
         host.appendChild(labelHost);
       }
       labelHost.innerHTML = labels.map(function (a, i) {
-        return '<button class="map-label" data-i="' + i + '" data-id="' + (a.id || '') + '"' +
-          ' style="font-size:' + a.size + 'px;color:' + a.colour + '">' +
+        // The level rides through as a class so CSS can decide which labels are CONTROLS.
+        // They are DOM buttons over the canvas, so every label is also a hole in the map:
+        // a card underneath one cannot be hovered at all — the move lands on the button
+        // and the canvas gets `mouseleave`. Countries and states earn that cost because
+        // clicking them navigates; neighbourhoods are captions and give the pixels back.
+        // The dark ring that keeps a name legible over a dense cluster, at the label's own
+        // strength so a faint label stays faint instead of becoming a dark blob.
+        const oa = (a.outline == null ? 1 : a.outline);
+        const ring = 'rgba(8,10,20,' + (0.95 * oa).toFixed(2) + ')';
+        const soft = 'rgba(8,10,20,' + (0.8 * oa).toFixed(2) + ')';
+        const shadow = [
+          '-1px -1px 0 ' + ring, '1px -1px 0 ' + ring,
+          '-1px 1px 0 ' + ring, '1px 1px 0 ' + ring,
+          '0 -1px 0 ' + ring, '0 1px 0 ' + ring,
+          '-1px 0 0 ' + ring, '1px 0 0 ' + ring,
+          '0 0 6px ' + soft,
+        ].join(',');
+        return '<button class="map-label map-label-l' + (a.level == null ? 1 : a.level) +
+          '" data-i="' + i + '" data-id="' + (a.id || '') + '"' +
+          ' style="font-size:' + a.size + 'px;color:' + a.colour +
+          ';text-shadow:' + shadow + '">' +
           (a.text || '').replace(/[&<>"]/g, function (c) {
             return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c];
           }) + '</button>';

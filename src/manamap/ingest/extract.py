@@ -4,6 +4,7 @@ import json
 
 import pandas as pd
 
+from manamap.ingest.common import open_dump
 from manamap.config import (
     EXCLUDED_LAYOUTS,
     LEGALITY_FORMATS,
@@ -219,7 +220,7 @@ def process_card(card):
 
 def main():
     print("Loading JSON...")
-    with open(RAW_JSON_PATH, "r") as f:
+    with open_dump(RAW_JSON_PATH, "rt") as f:
         cards = json.load(f)
     print(f"  Loaded {len(cards):,} total entries.")
 

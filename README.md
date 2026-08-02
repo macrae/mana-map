@@ -233,7 +233,7 @@ cache-busters stripped.
 ## Testing
 
 ```bash
-.venv/bin/python -m pytest        # 1,144 tests (1,042 fast + 102 browser)
+.venv/bin/python -m pytest        # 1,289 tests (1,179 fast + 110 browser)
 ```
 
 325 card-pipeline + 601 pilot. Five skip markers in `tests/conftest.py` gate on the last

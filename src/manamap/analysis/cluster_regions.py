@@ -17,12 +17,16 @@ from manamap.config import (
     REGION_L0_MIN_SAMPLES,
     REGION_L1_MIN_CLUSTER_SIZE,
     REGION_L1_MIN_SAMPLES,
+    REGION_L2_MIN_CLUSTER_SIZE,
+    REGION_L2_MIN_PARENT_SIZE,
+    REGION_L2_MIN_SAMPLES,
     REGION_COLOR_DOMINANCE,
     REGION_TYPE_DOMINANCE,
     REGION_TAG_DISPLAY_NAMES,
     REGION_COLOR_DISPLAY_NAMES,
     REGION_GUILD_NAMES,
     REGION_MIN_TAG_PRESENCE,
+    REGION_NAMES_PATH,
 )
 
 
@@ -275,6 +279,172 @@ def assign_parents(l0_regions, l1_regions):
         l1["parent"] = best_parent
 
 
+def cluster_within(coords, labels_parent, min_cluster_size, min_samples, min_parent_size):
+    """Sub-cluster INSIDE each parent cluster. Returns a label array over all points.
+
+    Clustering globally at a smaller `min_cluster_size` and hoping the result lands
+    inside the parents is not the same thing: it nests by luck. Running the clusterer
+    separately on each parent's own points makes containment structural — a child
+    cannot span two parents because it never sees the other parent's points.
+
+    Parents below `min_parent_size` are left alone: a 100-card region is already a
+    neighbourhood, and splitting it produces names nobody needs.
+    """
+    out = np.full(len(coords), -1, dtype=int)
+    next_id = 0
+    for parent in sorted(set(labels_parent)):
+        if parent == -1:
+            continue
+        idx = np.where(labels_parent == parent)[0]
+        if len(idx) < min_parent_size:
+            continue
+        sub = hdbscan.HDBSCAN(
+            min_cluster_size=min_cluster_size, min_samples=min_samples,
+        ).fit_predict(coords[idx])
+        for local in sorted(set(sub)):
+            if local == -1:
+                continue
+            out[idx[sub == local]] = next_id
+            next_id += 1
+    return out
+
+
+def fill_nearest(coords, labels, centroids):
+    """A copy of `labels` with every noise point snapped to the nearest centroid.
+
+    Kept SEPARATE from the real membership on purpose. The truthful answer to "which
+    region is this card in" is sometimes "none" — a quarter of the cards sit in the
+    thin space between clusters, and this file has always said so rather than inventing
+    a home for them. But a country/state/neighbourhood *address* has to be total: you
+    cannot zoom in and be told you are nowhere.
+
+    So both are published. `membership` is what HDBSCAN found; `nearest` is where a card
+    would post its letters. A consumer that conflates them is claiming more than the
+    clustering supports.
+    """
+    if not centroids:
+        return [int(v) for v in labels]
+    ids = sorted(centroids)
+    pts = np.array([centroids[c] for c in ids], dtype=np.float64)
+    out = np.asarray(labels).copy()
+    noise = np.where(out == -1)[0]
+    if len(noise):
+        d = ((coords[noise][:, None, :] - pts[None, :, :]) ** 2).sum(axis=2)
+        out[noise] = np.array(ids)[d.argmin(axis=1)]
+    return [int(v) for v in out]
+
+
+def load_region_names():
+    """Hand-authored names, keyed by content signature. Absent file is not an error."""
+    if not REGION_NAMES_PATH.exists():
+        return {}
+    with open(REGION_NAMES_PATH) as f:
+        return json.load(f).get("names", {})
+
+
+def apply_region_names(regions, map_type, names):
+    """Swap in the hand-authored name where the signature matches.
+
+    The mechanical label is kept as `mechanical` — it is what the signature is built
+    from, so losing it would make the names file unmaintainable, and it is the honest
+    description of what the cluster actually contains.
+
+    Returns the regions that found no name, so the caller can report them. A silent
+    fallback is how a re-cluster quietly reverts the whole map to machine names.
+    """
+    unmatched = []
+    for r in regions:
+        key = f"{map_type}|{r['level']}|{r['label']}"
+        hit = names.get(key)
+        if not hit:
+            unmatched.append(r)
+            continue
+        r["mechanical"] = r["label"]
+        r["label"] = hit[0]
+        r["short"] = hit[1] if len(hit) > 1 else hit[0]
+    return unmatched
+
+
+def name_neighbourhoods(l2_regions, by_id):
+    """Neighbourhoods are named FROM THEIR PARENT, procedurally.
+
+    410 of them across both maps. Hand-authoring that many produces a long tail of bad
+    jokes; deriving them keeps every name true and lets the parent's authored character
+    carry down — 'Swolesville' subdivides into 'Swolesville — Counters', not into a
+    fresh invention that has to be remembered separately.
+    """
+    # Deduped HERE rather than by `_deduplicate_labels`, which runs before naming and so
+    # sees the mechanical labels, not these. Two neighbourhoods of one parent can easily
+    # share a top tag; without this the map shows the same name twice a few pixels apart.
+    used = Counter()
+    for r in l2_regions:
+        parent = by_id.get(r.get("parent"))
+        base = parent["short"] if parent else r["short"]
+        tag = (r.get("top_tags") or [None])[0]
+        detail = REGION_TAG_DISPLAY_NAMES.get(tag, tag) if tag else None
+        label = f"{base} — {detail}" if detail else base
+        used[label] += 1
+        if used[label] > 1:
+            label = f"{label} {used[label]}"
+        r["mechanical"] = r["label"]
+        r["label"] = label
+        r["short"] = f"{detail} {used[label.rsplit(' ', 1)[0]]}" if False else (detail or base)
+        r["short"] = label.split(" — ", 1)[-1] if " — " in label else label
+
+
+def build_regions(level, labels, xs, ys, projection_data, proj_tags,
+                  map_type, global_tag_freq):
+    """Region records for one clustering level. One loop, three levels.
+
+    This body existed twice, character for character apart from the level and the id
+    prefix, and adding neighbourhoods would have made it three. Every field a region
+    carries — centroid, span, count, top tags, the generated name — is derived the same
+    way whatever level it sits at.
+    """
+    out = []
+    for cluster_id in sorted(set(labels)):
+        if cluster_id == -1:
+            continue
+        mask = labels == cluster_id
+        cluster_xs, cluster_ys = xs[mask], ys[mask]
+        cx, cy = compute_centroid(cluster_xs, cluster_ys)
+        span, width, height = compute_span(cluster_xs, cluster_ys)
+        count = int(mask.sum())
+
+        indices = np.where(mask)[0]
+        cluster_colors = [projection_data[i]["c"] for i in indices]
+        cluster_types = [projection_data[i]["s"] for i in indices]
+        cluster_tags = [proj_tags[i] for i in indices]
+
+        if map_type == "default":
+            label, short = name_cluster_colortype(cluster_colors, cluster_types)
+        else:
+            label, short = name_cluster_ability(
+                cluster_tags, global_tag_freq, cluster_colors, cluster_types
+            )
+
+        tag_counts, _ = _count_cluster_tags(cluster_tags)
+        top_tags = [
+            tg for tg, c in tag_counts.most_common()
+            if c / count >= REGION_MIN_TAG_PRESENCE
+        ][:3]
+
+        out.append({
+            "id": f"l{level}_{cluster_id}",
+            "level": level,
+            "label": label,
+            "short": short,
+            "cx": round(cx, 2),
+            "cy": round(cy, 2),
+            "span": round(span, 1),
+            "w": round(width, 1),
+            "h": round(height, 1),
+            "count": count,
+            "top_tags": top_tags,
+        })
+    return out
+
+
 def cluster_map(projection_data, cards_df, map_type, output_path):
     """Run HDBSCAN clustering on a single map projection.
 
@@ -328,104 +498,27 @@ def cluster_map(projection_data, cards_df, map_type, output_path):
     n_l1 = len(set(labels_l1)) - (1 if -1 in labels_l1 else 0)
     print(f"  L1: {n_l1} clusters ({(labels_l1 == -1).sum()} noise points)")
 
-    # Build region data
-    regions = []
+    print(f"  Clustering L2 within each L1 (min_cluster_size={REGION_L2_MIN_CLUSTER_SIZE})...")
+    labels_l2 = cluster_within(
+        coords, labels_l1,
+        REGION_L2_MIN_CLUSTER_SIZE, REGION_L2_MIN_SAMPLES, REGION_L2_MIN_PARENT_SIZE,
+    )
+    n_l2 = len(set(labels_l2)) - (1 if -1 in labels_l2 else 0)
+    print(f"  L2: {n_l2} neighbourhoods ({(labels_l2 == -1).sum()} not in one)")
 
-    # Process L0 clusters
-    for cluster_id in sorted(set(labels_l0)):
-        if cluster_id == -1:
-            continue
-        mask = labels_l0 == cluster_id
-        cluster_xs = xs[mask]
-        cluster_ys = ys[mask]
-        cx, cy = compute_centroid(cluster_xs, cluster_ys)
-        span, width, height = compute_span(cluster_xs, cluster_ys)
-        count = int(mask.sum())
+    # Build region data — one loop, three levels (see build_regions).
+    args = (xs, ys, projection_data, proj_tags, map_type, global_tag_freq)
+    l0_regions = build_regions(0, labels_l0, *args)
+    l1_regions = build_regions(1, labels_l1, *args)
+    l2_regions = build_regions(2, labels_l2, *args)
+    regions = list(l0_regions)
 
-        # Gather metadata for naming
-        indices = np.where(mask)[0]
-        cluster_colors = [projection_data[i]["c"] for i in indices]
-        cluster_types = [projection_data[i]["s"] for i in indices]
-        cluster_tags = [proj_tags[i] for i in indices]
-
-        if map_type == "default":
-            label, short = name_cluster_colortype(cluster_colors, cluster_types)
-        else:
-            label, short = name_cluster_ability(
-                cluster_tags, global_tag_freq, cluster_colors, cluster_types
-            )
-
-        # Top tags for this cluster (only tags with >= minimum presence)
-        tag_counts, _ = _count_cluster_tags(cluster_tags)
-        top_tags = [
-            t for t, c in tag_counts.most_common()
-            if c / count >= REGION_MIN_TAG_PRESENCE
-        ][:3]
-
-        regions.append({
-            "id": f"l0_{cluster_id}",
-            "level": 0,
-            "label": label,
-            "short": short,
-            "cx": round(cx, 2),
-            "cy": round(cy, 2),
-            "span": round(span, 1),
-            "w": round(width, 1),
-            "h": round(height, 1),
-            "count": count,
-            "top_tags": top_tags,
-        })
-
-    # Process L1 clusters
-    l0_regions = [r for r in regions if r["level"] == 0]
-    l1_regions = []
-
-    for cluster_id in sorted(set(labels_l1)):
-        if cluster_id == -1:
-            continue
-        mask = labels_l1 == cluster_id
-        cluster_xs = xs[mask]
-        cluster_ys = ys[mask]
-        cx, cy = compute_centroid(cluster_xs, cluster_ys)
-        span, width, height = compute_span(cluster_xs, cluster_ys)
-        count = int(mask.sum())
-
-        indices = np.where(mask)[0]
-        cluster_colors = [projection_data[i]["c"] for i in indices]
-        cluster_types = [projection_data[i]["s"] for i in indices]
-        cluster_tags = [proj_tags[i] for i in indices]
-
-        if map_type == "default":
-            label, short = name_cluster_colortype(cluster_colors, cluster_types)
-        else:
-            label, short = name_cluster_ability(
-                cluster_tags, global_tag_freq, cluster_colors, cluster_types
-            )
-
-        tag_counts, _ = _count_cluster_tags(cluster_tags)
-        top_tags = [
-            t for t, c in tag_counts.most_common()
-            if c / count >= REGION_MIN_TAG_PRESENCE
-        ][:3]
-
-        region = {
-            "id": f"l1_{cluster_id}",
-            "level": 1,
-            "label": label,
-            "short": short,
-            "cx": round(cx, 2),
-            "cy": round(cy, 2),
-            "span": round(span, 1),
-            "w": round(width, 1),
-            "h": round(height, 1),
-            "count": count,
-            "top_tags": top_tags,
-        }
-        l1_regions.append(region)
-
-    # Assign parents
+    # Assign parents. L1→L0 is a proximity match; L2→L1 is exact by construction,
+    # since a neighbourhood was clustered from its parent's own points.
     assign_parents(l0_regions, l1_regions)
+    assign_parents(l1_regions, l2_regions)
     regions.extend(l1_regions)
+    regions.extend(l2_regions)
 
     # Deduplicate labels — append tag descriptors where names collide.
     # These mutate the region dicts in place, and `regions` holds the same
@@ -434,6 +527,23 @@ def cluster_map(projection_data, cards_df, map_type, output_path):
     # a label because they are drawn at different zooms.
     _deduplicate_labels(l0_regions, max_suffixes=2)
     _deduplicate_labels(l1_regions, max_suffixes=3)
+    _deduplicate_labels(l2_regions, max_suffixes=3)
+
+    # Names LAST, after dedup — the signature is built from the deduplicated mechanical
+    # label, so "Blue Creatures — Flyers — ETB (East)" and its West twin are two distinct
+    # keys rather than one ambiguous one.
+    names = load_region_names()
+    unmatched = apply_region_names(l0_regions, map_type, names)
+    unmatched += apply_region_names(l1_regions, map_type, names)
+    by_id = {r["id"]: r for r in l0_regions + l1_regions}
+    name_neighbourhoods(l2_regions, by_id)
+    if unmatched:
+        print(f"  {len(unmatched)} region(s) have no hand-authored name and kept the "
+              f"machine one — add them to {REGION_NAMES_PATH.name}:")
+        for r in unmatched[:6]:
+            print(f"      {map_type}|{r['level']}|{r['label']}")
+        if len(unmatched) > 6:
+            print(f"      … and {len(unmatched) - 6} more")
 
     # Build output.
     #
@@ -447,17 +557,31 @@ def cluster_map(projection_data, cards_df, map_type, output_path):
     # id "l0_3". Noise is a real answer, not a gap — 29% of cards belong to no
     # L0 region at all, and the honest thing is to say so rather than snap them
     # to a nearest centroid they were never clustered into.
+    # `nearest` is NOT membership and must never be read as it. See `fill_nearest`:
+    # membership is what the clusterer found, noise included, because "this card sits in
+    # the thin space between clusters" is a true and useful answer. But an ADDRESS has to
+    # be total — you cannot zoom in and be told you are nowhere — so the snapped version
+    # is published beside it under a name that cannot be mistaken for the real one.
+    centroids_l0 = {int(r["id"].split("_")[1]): (r["cx"], r["cy"]) for r in l0_regions}
+    centroids_l1 = {int(r["id"].split("_")[1]): (r["cx"], r["cy"]) for r in l1_regions}
+
     output = {
         "meta": {
             "map": map_type,
             "card_count": len(projection_data),
             "l0_count": n_l0,
             "l1_count": n_l1,
+            "l2_count": n_l2,
         },
         "regions": regions,
         "membership": {
             "l0": [int(v) for v in labels_l0],
             "l1": [int(v) for v in labels_l1],
+            "l2": [int(v) for v in labels_l2],
+        },
+        "nearest": {
+            "l0": fill_nearest(coords, labels_l0, centroids_l0),
+            "l1": fill_nearest(coords, labels_l1, centroids_l1),
         },
     }
 
@@ -465,7 +589,8 @@ def cluster_map(projection_data, cards_df, map_type, output_path):
         json.dump(output, f, separators=(",", ":"))
 
     size_kb = output_path.stat().st_size / 1024
-    print(f"  Wrote {output_path} ({size_kb:.1f} KB, {n_l0} L0 + {n_l1} L1 regions)")
+    print(f"  Wrote {output_path} ({size_kb:.1f} KB, "
+          f"{n_l0} L0 + {n_l1} L1 + {n_l2} L2 regions)")
 
 
 def main():

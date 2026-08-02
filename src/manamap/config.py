@@ -5,7 +5,10 @@ from pathlib import Path
 # so modules work regardless of CWD. Overridable for sandboxed runs.
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = Path(os.environ.get("MANAMAP_DATA_DIR", _REPO_ROOT / "data"))
-RAW_JSON_PATH = DATA_DIR / "oracle-cards.json"
+# Raw dumps are stored gzipped: JSON compresses ~8.5x and these two are 600 MB
+# uncompressed. `ingest/common.open_dump` reads either form, so an existing
+# uncompressed file keeps working until the next download replaces it.
+RAW_JSON_PATH = DATA_DIR / "oracle-cards.json.gz"
 DOWNLOAD_META_PATH = DATA_DIR / ".download-meta.json"
 OUTPUT_CSV_PATH = DATA_DIR / "cards.csv"
 
@@ -106,7 +109,7 @@ VIZ_DIR = Path(os.environ.get("MANAMAP_VIZ_DIR", _REPO_ROOT / "viz"))
 
 # ── Combo / Deck Builder Data ────────────────────────────────────────────
 COMBOS_API_URL = "https://backend.commanderspellbook.com/variants/"
-COMBOS_RAW_PATH = DATA_DIR / "combos_raw.json"
+COMBOS_RAW_PATH = DATA_DIR / "combos_raw.json.gz"
 COMBOS_META_PATH = DATA_DIR / ".combos-meta.json"
 COMBO_GRAPH_PATH = DATA_DIR / "combo_graph.json"
 COMBO_DETAILS_PATH = DATA_DIR / "combo_details.json"
@@ -570,6 +573,16 @@ REGION_L0_MIN_CLUSTER_SIZE = 800
 REGION_L0_MIN_SAMPLES = 50
 REGION_L1_MIN_CLUSTER_SIZE = 100
 REGION_L1_MIN_SAMPLES = 15
+# L2 — neighbourhoods. Clustered WITHIN each L1 rather than globally, so nesting is a
+# property of the construction instead of something to check afterwards. The two global
+# passes above nest by luck: measured on the 2026-07-31 map, zero of 106 L1 clusters
+# straddled an L0 boundary, but nothing prevents it.
+REGION_L2_MIN_CLUSTER_SIZE = 25
+REGION_L2_MIN_SAMPLES = 5
+# Below this an L1 region is already a neighbourhood and is not subdivided.
+REGION_L2_MIN_PARENT_SIZE = 120
+# Hand-authored region names, keyed by content signature. Tracked, human-editable.
+REGION_NAMES_PATH = DATA_DIR / "region_names.json"
 
 REGION_COLOR_DOMINANCE = 0.40
 REGION_TYPE_DOMINANCE = 0.30

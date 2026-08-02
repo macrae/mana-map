@@ -53,7 +53,13 @@ from manamap.config import (
 )
 from manamap.pilot import bracket as bracket_mod
 from manamap.pilot import manabase
-from manamap.pilot.common import SIDEBOARD_SECTION_MARKERS, deck_dir
+from manamap.pilot.common import (
+    SIDEBOARD_SECTION_MARKERS,
+    commander_rejection,
+    deck_dir,
+    load_card_roles,
+    load_combo_details,
+)
 
 BASIC_LANDS = {"W": "Plains", "U": "Island", "B": "Swamp", "R": "Mountain", "G": "Forest"}
 
@@ -80,7 +86,63 @@ def load_brief(slug):
     brief["bracket"] = target
     brief.setdefault("must_include", [])
     brief.setdefault("must_exclude", [])
+    brief["_pool"] = resolve_pool(brief)
     return brief
+
+
+def deck_printings(brief, names):
+    """The owned printing for each name in the deck, when the brief names a pool.
+
+    A build from a physical collection has to name the physical card. Without this
+    the decklist carries bare names, `fetch-deck` takes whatever Scryfall considers
+    default, and the manual illustrates and credits cards the pilot does not own.
+    """
+    files = brief.get("pool_files") or []
+    if not files:
+        return {}
+    from manamap.pilot.pool_facts import collect_paths, load_cards, pool_printings
+
+    owned = pool_printings(collect_paths(files, []), load_cards())
+    return {n: owned[n] for n in names if n in owned}
+
+
+def resolve_pool(brief):
+    """The names a build may draw from, or None for the whole format.
+
+    Two ways to say it, because they answer different questions. `pool` is an
+    explicit name list. `pool_files` points at decklists — your collection as
+    exported from paper — and is parsed by the same reader `pool-facts` uses, so
+    a box analysed and a box built from can never disagree about what is in it.
+
+    Basics are deliberately NOT constrained (see `build`): you always own more
+    Swamps, and a paper pool that happens to list four of them should not cap
+    the mana base at four.
+    """
+    names = set(brief.get("pool") or [])
+    files = brief.get("pool_files") or []
+    if files:
+        # Imported lazily: pool_facts imports this module for `role_group`, so a
+        # module-level import here would be a cycle.
+        from manamap.pilot.pool_facts import collect_paths, load_cards, read_sources
+
+        per_file, unresolved = read_sources(collect_paths(files, []), load_cards())
+        if unresolved:
+            raise BriefError(
+                f"{len(unresolved)} pool card(s) did not resolve against cards.csv: "
+                + ", ".join(sorted(unresolved)[:5])
+            )
+        for counts in per_file.values():
+            names.update(counts)
+    if not names:
+        return None
+    if brief["commander"] not in names:
+        raise BriefError(
+            f"the pool does not contain the commander ({brief['commander']})"
+        )
+    missing = [n for n in brief["must_include"] if n not in names]
+    if missing:
+        raise BriefError(f"must_include names outside the pool: {', '.join(missing)}")
+    return names
 
 
 def commander_identity(row):
@@ -89,17 +151,9 @@ def commander_identity(row):
     Rejects anything that can't actually be a commander. Planeswalkers and
     other non-creatures qualify only via explicit "can be your commander" text.
     """
-    type_line = str(row.get("type_line", "") or "")
-    text = str(row.get("oracle_text", "") or "")
-    front = type_line.split(" // ")[0]
-    is_legendary_creature = "Legendary" in front and "Creature" in front
-    if not is_legendary_creature and "can be your commander" not in text.lower():
-        raise BriefError(
-            f"{row['name']} is not a legal commander "
-            f"(needs to be a legendary creature, or say 'can be your commander')"
-        )
-    if row.get("legal_commander") != "legal":
-        raise BriefError(f"{row['name']} is not legal in Commander")
+    reason = commander_rejection(row)
+    if reason:
+        raise BriefError(f"{row['name']} is {reason}")
     return parse_color_identity(row.get("color_identity", ""))
 
 
@@ -121,6 +175,12 @@ def candidate_pool(df, identity, target_bracket, brief):
     # surfaced Familiar Beeble Mascot as a wincon before this. They are not
     # castable cards. Any consumer filtering on legality alone hits this.
     mask &= ~df["type_line"].fillna("").str.contains("Stickers", regex=False).to_numpy()
+
+    # Build from a physical collection rather than the format. A hard filter on
+    # the pool, alongside the others, so the scorer never wants what you cannot
+    # sleeve — the same reason the bracket limits are applied here.
+    if brief.get("_pool") is not None:
+        mask &= df["name"].isin(brief["_pool"]).to_numpy()
 
     excluded = set(brief.get("must_exclude", []))
     if excluded:
@@ -241,8 +301,15 @@ def score_candidates(pool, embeddings, name_index, commander_name, identity,
 def fill_slots(scored, roles, budget, must_include):
     """Fill each budget line with the best-scoring cards that satisfy it.
 
-    Returns (slots, leftovers). Each slot carries its runners-up so the plan
-    reads as a starting point rather than a verdict.
+    Returns (slots, taken, effective_budget). Each slot carries its runners-up so
+    the plan reads as a starting point rather than a verdict.
+
+    `effective_budget` is what was actually filled to, which is not always what
+    was asked for: must-includes are pinned before any budget line is consulted,
+    so a brief can force a group over its allowance. It is returned rather than
+    recomputed from the slots because `validate_build._validate_budget` compares
+    the two, and a budget derived from the slots it is meant to check would make
+    that comparison vacuous.
     """
     by_group = {group: [] for group in budget}
     for entry in scored:
@@ -259,18 +326,19 @@ def fill_slots(scored, roles, budget, must_include):
         slots.append({"name": name, "role": group, "reason": "must_include", "alternates": []})
         taken.add(name)
 
-    for group, count in budget.items():
-        if group == "lands":
-            continue
-        filled = sum(1 for s in slots if s["role"] == group)
-        pool = [e for e in by_group.get(group, []) if e["name"] not in taken]
-        # Flex absorbs anything left over, so it draws from every group.
-        if group == "flex":
-            pool = [e for e in scored if e["name"] not in taken]
-        for entry in pool[: max(0, count - filled)]:
+    def count_in(group):
+        return sum(1 for s in slots if s["role"] == group)
+
+    def take(group, want):
+        """Fill `want` more slots from `group`, best score first."""
+        if want <= 0:
+            return
+        available = ([e for e in scored if e["name"] not in taken] if group == "flex"
+                     else [e for e in by_group.get(group, []) if e["name"] not in taken])
+        for i, entry in enumerate(available[:want]):
             alternates = [
                 {"name": alt["name"], "delta": round(entry["score"] - alt["score"], 4)}
-                for alt in pool[pool.index(entry) + 1: pool.index(entry) + 1 + DECK_BUILD_ALTERNATES]
+                for alt in available[i + 1: i + 1 + DECK_BUILD_ALTERNATES]
                 if alt["name"] not in taken
             ]
             slots.append({
@@ -282,7 +350,37 @@ def fill_slots(scored, roles, budget, must_include):
             })
             taken.add(entry["name"])
 
-    return slots, taken
+    # `flex` is the slack line and is filled LAST, because it is the only group
+    # that can absorb the other two failure modes. Both are real and both shipped
+    # a wrong-size plan before they were caught:
+    #
+    #   OVERFLOW — must-includes are pinned before any budget is consulted, so a
+    #   brief can push a group past its allowance. A 23-card pin list put `wincon`
+    #   at 4 against a budget of 3 and produced a 101-card plan.
+    #
+    #   SHORTFALL — a group can run out of candidates. Mono-black held only 2
+    #   cards the taxonomy calls `sweeper` against a budget of 3, and the plan
+    #   came out at 99. Nothing gave the missing slot back.
+    #
+    # Filling non-flex groups first, then giving flex whatever is left of the
+    # non-land total, handles both without special-casing either.
+    for group, count in budget.items():
+        if group in ("lands", "flex"):
+            continue
+        take(group, count - count_in(group))
+
+    effective = dict(budget)
+    for group in budget:
+        if group not in ("lands", "flex"):
+            effective[group] = count_in(group)
+
+    if "flex" in budget:
+        nonland_target = sum(v for k, v in budget.items() if k != "lands")
+        placed = sum(effective[g] for g in effective if g not in ("lands", "flex"))
+        take("flex", (nonland_target - placed) - count_in("flex"))
+        effective["flex"] = count_in("flex")
+
+    return slots, taken, effective
 
 
 def enforce_bracket(slots, scored, roles, card_flags, details, commanders, target):
@@ -383,7 +481,7 @@ def build(slug):
     )
 
     budget = dict(DECK_ROLE_BUDGET)
-    slots, _ = fill_slots(scored, roles, budget, brief["must_include"])
+    slots, _, effective_budget = fill_slots(scored, roles, budget, brief["must_include"])
     slots, cut, report = enforce_bracket(
         slots, scored, roles, card_flags, details, {commander["name"]}, target
     )
@@ -411,8 +509,28 @@ def build(slug):
             "drivers": report["drivers"],
             "within_target": report["floor"] <= target,
         },
-        "role_budget": budget,
+        "role_budget": effective_budget,
+        "role_budget_target": budget,
+        # Non-empty when must_include forced a group past its allowance. Recorded
+        # rather than smoothed over: a deviation the brief caused should be
+        # visible to whoever reads the plan.
+        "role_budget_deviation": {
+            g: {"target": budget[g], "actual": effective_budget[g]}
+            for g in budget if effective_budget.get(g) != budget[g]
+        },
         "role_budget_grounding": "provisional — pending strategy:deckbuilding.ratios",
+        # Recorded so `validate-build` can re-derive the pool and prove every
+        # non-basic name was actually owned. A build that silently reached
+        # outside the collection is the one failure a paper pilot cannot use.
+        # Only for the cards in this deck — the whole 764-entry map would bloat the
+        # plan and say nothing about the build.
+        "printings": deck_printings(brief, [commander["name"]]
+                                    + [s["name"] for s in slots]
+                                    + list(_land_counts(lands))),
+        "pool": (
+            None if brief.get("_pool") is None
+            else {"files": brief.get("pool_files") or [], "size": len(brief["_pool"])}
+        ),
         "slots": sorted(slots, key=lambda s: (s["role"], s["name"])),
         "lands": sorted({land["name"] for land in lands}),
         "land_counts": _land_counts(lands),
@@ -470,8 +588,24 @@ def decklist_text(plan, layouts=None, sideboard=""):
     """
     layouts = layouts or {}
 
+    # The PRINTING, not just the card. A deck built from a physical collection is a
+    # list of specific objects: this art, this set, this foil. Writing bare names let
+    # Scryfall pick a default for every one of them — a Sol Ring came back as Marvel
+    # Super Heroes Commander — and Featured Artist credits artists per printing, so
+    # the manual ended up crediting artists who painted none of the cards you own.
+    printings = plan.get("printings") or {}
+
     def render(name):
-        return decklist_name(name, layouts.get(name, ""))
+        base = decklist_name(name, layouts.get(name, ""))
+        pr = printings.get(name)
+        if not pr or not pr.get("set"):
+            return base
+        suffix = f" ({pr['set'].upper()})"
+        if pr.get("collector_number"):
+            suffix += f" {pr['collector_number']}"
+        if pr.get("foil"):
+            suffix += " *F*"
+        return base + suffix
 
     lines = [f"1 {render(plan['commander'])} *CMDR*"]
     for slot in sorted(plan["slots"], key=lambda s: s["name"]):

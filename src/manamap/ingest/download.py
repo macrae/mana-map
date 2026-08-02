@@ -5,6 +5,7 @@ import sys
 
 import requests
 
+from manamap.ingest.common import dump_exists, open_dump
 from manamap.config import (
     BULK_DATA_TYPE,
     BULK_DATA_URL,
@@ -44,7 +45,7 @@ def download_file(url):
     downloaded = 0
     chunk_size = 1024 * 1024  # 1 MB
 
-    with open(RAW_JSON_PATH, "wb") as f:
+    with open_dump(RAW_JSON_PATH, "wb") as f:
         for chunk in resp.iter_content(chunk_size=chunk_size):
             f.write(chunk)
             downloaded += len(chunk)
@@ -69,7 +70,7 @@ def main():
     download_uri, updated_at = get_bulk_data_info()
     print(f"  Latest update: {updated_at}")
 
-    if RAW_JSON_PATH.exists() and is_up_to_date(updated_at):
+    if dump_exists(RAW_JSON_PATH) and is_up_to_date(updated_at):
         print("  Already up to date — skipping download.")
         return
 

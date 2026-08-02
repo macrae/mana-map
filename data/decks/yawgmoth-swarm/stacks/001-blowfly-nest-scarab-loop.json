@@ -1,0 +1,578 @@
+{
+  "id": "001",
+  "slug": "yawgmoth-swarm",
+  "deck": "YAWGMOTH — THE SCARAB SWARM",
+  "title": "Blowfly Infestation + Nest of Scarabs: unbounded, and does it need the drain?",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Blowfly Infestation (enchantment)",
+        "Nest of Scarabs (enchantment)",
+        "Zulaport Cutthroat (1/1, no counters)",
+        "Fume Spitter (1/1) — already sacrificed to pay the cost of the ability now on the stack",
+        "Insect token X (1/1 black Insect, no counters)",
+        "Swamp (untapped)",
+        "Swamp (untapped)"
+      ],
+      "opponent_a": [
+        "no permanents"
+      ],
+      "opponent_b": [
+        "no permanents"
+      ],
+      "opponent_c": [
+        "no permanents"
+      ],
+      "opponent_d": [
+        "no permanents"
+      ]
+    },
+    "hand": [],
+    "graveyard": [
+      "Fume Spitter"
+    ],
+    "mana_available": "{B}{B} from two untapped Swamps",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Fume Spitter's activated ability — 'Sacrifice this creature: Put a -1/-1 counter on target creature.' Cost already paid (Fume Spitter sacrificed). Target chosen: Insect token X.",
+        "controller": "you"
+      },
+      {
+        "pos": 1,
+        "object": "Zulaport Cutthroat's triggered ability — 'Whenever this creature or another creature you control dies, each opponent loses 1 life and you gain 1 life.' Triggered on Fume Spitter's death during cost payment.",
+        "controller": "you"
+      }
+    ],
+    "extras": {
+      "life_totals": {
+        "you": 40,
+        "opponent_a": 40,
+        "opponent_b": 40,
+        "opponent_c": 40,
+        "opponent_d": 40
+      },
+      "pod_size": "Five players — you and four opponents, 160 opposing life in total.",
+      "library": "You have 60 cards in your library.",
+      "assumptions": [
+        "No player responds to anything; every opponent passes priority throughout.",
+        "No permanent enters or leaves the battlefield except as described by the cards named here.",
+        "Insect tokens created by Nest of Scarabs are 1/1 black Insect creature tokens with no abilities.",
+        "It is your precombat main phase."
+      ],
+      "note_for_the_resolver": "Blowfly Infestation's trigger carries an intervening-if clause ('if it had a -1/-1 counter on it') and its effect is mandatory with a target. Nest of Scarabs triggers on YOU putting counters on a creature. Zulaport Cutthroat drains EACH opponent, unlike Blood Artist which targets one player."
+    },
+    "question": "Resolve the stack and then the resulting loop. (a) Is the loop unbounded, and what exactly sustains it — name the object that dies each iteration and why Blowfly Infestation's intervening-if condition is met every time? State how many completed iterations are required to reduce all four opponents from 40 to 0, and what ends the loop. (b) If Zulaport Cutthroat were NOT on the battlefield and no other life-loss effect existed, would this be a mandatory loop with no way to stop it, and does that make the game a draw under CR 104.4b?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Resolve the top object of the stack (pos 1): Zulaport Cutthroat's death trigger from Fume Spitter having been sacrificed to pay the activation cost.",
+        "effect": "Each opponent loses 1 life and you gain 1 life. Opponents A-D: 40 -> 39 each. You: 40 -> 41. This is drain #1. Nothing else changes; Blowfly Infestation did NOT trigger on Fume Spitter's death, because Fume Spitter had no -1/-1 counter on it and Blowfly's intervening-'if' condition was false when the trigger event occurred.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Resolve pos 0: Fume Spitter's activated ability, 'Put a -1/-1 counter on target creature,' targeting Insect token X.",
+        "effect": "YOU are the ability's controller, so YOU put the -1/-1 counter on Insect token X. Two consequences fire at once: (i) Insect token X, a 1/1, now has a -1/-1 counter and is 0/0; (ii) Nest of Scarabs' ability ('Whenever you put one or more -1/-1 counters on a creature, create that many 1/1 black Insect creature tokens') triggers. It has triggered but is not yet on the stack and has done nothing yet.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "122.1a",
+            "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object’s power and Y to that object’s toughness. Similarly, -X/-Y counters subtract from power and toughness."
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers. The ability doesn’t do anything at this point."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "The stack is now empty and a player would receive priority, so state-based actions are performed FIRST, before any waiting trigger is put on the stack.",
+        "effect": "Insect token X has toughness 0, so it is put into its owner's graveyard - it dies. On the repeated SBA check the token, now in a zone other than the battlefield, ceases to exist. Critically, Nest of Scarabs' waiting trigger has NOT resolved; no new token exists yet. Battlefield creatures after this step: Zulaport Cutthroat, and nothing else.",
+        "citations": [
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack (see rule 603, “Handling Triggered Abilities”)."
+          },
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+          },
+          {
+            "rule": "700.4",
+            "quote": "The term dies means “is put into a graveyard from the battlefield.”"
+          },
+          {
+            "rule": "704.5d",
+            "quote": "If a token is in a zone other than the battlefield, it ceases to exist."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Determine which abilities trigger on Insect token X's death, and test Blowfly Infestation's intervening-'if' condition.",
+        "effect": "Blowfly Infestation reads 'Whenever a creature dies, if it had a -1/-1 counter on it, put a -1/-1 counter on target creature.' 'Whenever a creature dies' is a leaves-the-battlefield ability, so the game looks back in time and uses the appearance of Insect token X immediately prior to the event - at which point it carried the -1/-1 counter placed in step 2. The intervening-'if' condition is therefore TRUE and Blowfly triggers. Zulaport Cutthroat also triggers ('or another creature you control dies'). Pending triggers: Nest of Scarabs (from step 2), Blowfly Infestation, Zulaport Cutthroat.",
+        "citations": [
+          {
+            "rule": "603.10",
+            "quote": "However, some triggered abilities are exceptions to this rule; the game “looks back in time” to determine if those abilities trigger, using the existence of those abilities and the appearance of objects immediately prior to the event."
+          },
+          {
+            "rule": "603.10a",
+            "quote": "Some zone-change triggers look back in time. These are leaves-the-battlefield abilities, abilities that trigger when a player sacrifices a permanent, abilities that trigger when a card leaves a graveyard, and abilities that trigger when an object that all players can see is put into a hand or library."
+          },
+          {
+            "rule": "603.6c",
+            "quote": "Leaves-the-battlefield abilities trigger when a permanent moves from the battlefield to another zone, or when a phased-in permanent leaves the game because its owner leaves the game."
+          },
+          {
+            "rule": "603.4",
+            "quote": "When the trigger event occurs, the ability checks whether the stated condition is true. The ability triggers only if it is; otherwise it does nothing."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "THE PIVOT. All three waiting triggers are put on the stack in one batch, before any player receives priority. Blowfly Infestation's target must be chosen NOW, as it is put on the stack.",
+        "effect": "You control all three triggers and may order them freely, but ordering cannot help: no ability resolves until the whole batch is on the stack, so Nest of Scarabs' token does not exist when Blowfly's target is locked in. The only creature on the battlefield is ZULAPORT CUTTHROAT. Blowfly says 'target creature', not 'up to one target creature' (contrast your commander Yawgmoth, which does say 'up to one'), so it does not permit zero targets and you must announce a legal target when one exists; the ability is removed from the stack only if NO legal choice can be made. A legal choice can be made - Zulaport Cutthroat - so Blowfly's trigger goes on the stack targeting your own drain creature. You cannot decline.",
+        "citations": [
+          {
+            "rule": "603.3b",
+            "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+          },
+          {
+            "rule": "115.1d",
+            "quote": "The target(s) are chosen as the ability is put on the stack; see rule 603.3d."
+          },
+          {
+            "rule": "601.2c",
+            "quote": "The player announces their choice of an appropriate object or player for each target the spell requires."
+          },
+          {
+            "rule": "115.6",
+            "quote": "A spell or ability that requires targets may allow zero targets to be chosen."
+          },
+          {
+            "rule": "603.3d",
+            "quote": "If a choice is required when the triggered ability goes on the stack but no legal choices can be made for it, or if a rule or a continuous effect otherwise makes the ability illegal, the ability is simply removed from the stack."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Resolve the batch in the best available order for you: Blowfly placed on the stack first (bottom), then Zulaport's drain, then Nest of Scarabs on top, so Nest resolves first.",
+        "effect": "Nest of Scarabs resolves: create one 1/1 black Insect token, call it Y. Board creatures: Zulaport Cutthroat, Insect Y. Zulaport's trigger resolves: drain #2 - opponents 39 -> 38 each, you 41 -> 42. Blowfly Infestation resolves: its intervening-'if' is re-checked and is still true (Insect token X's having had a -1/-1 counter is a completed past fact that cannot become false), so it resolves and YOU put a -1/-1 counter on Zulaport Cutthroat. Zulaport is now 0/0, and Nest of Scarabs triggers again because you put that counter.",
+        "citations": [
+          {
+            "rule": "608.2a",
+            "quote": "If a triggered ability has an intervening “if” clause, it checks whether the clause’s condition is true. If it isn’t, the ability is removed from the stack and does nothing. Otherwise, it continues to resolve."
+          },
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "State-based actions: Zulaport Cutthroat has toughness 0 and is put into your graveyard. Determine what triggers.",
+        "effect": "Zulaport's own ability sees its own death ('Whenever this creature or another creature you control dies') and triggers - drain #3, resolving to opponents 38 -> 37 each, you 42 -> 43. Blowfly triggers again: looking back in time, Zulaport had a -1/-1 counter on it, so the condition holds. Blowfly's new trigger is put on the stack and the only creature on the battlefield is Insect token Y, so it targets Y. THE DRAIN IS NOW OVER: Zulaport Cutthroat is in the graveyard, no Blood Artist / Bastion of Remembrance effect is on the battlefield in this scenario, and every subsequent death produces no life loss.",
+        "citations": [
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+          },
+          {
+            "rule": "603.10a",
+            "quote": "Some zone-change triggers look back in time. These are leaves-the-battlefield abilities, abilities that trigger when a player sacrifices a permanent, abilities that trigger when a card leaves a graveyard, and abilities that trigger when an object that all players can see is put into a hand or library."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Characterize the steady-state loop that now runs (Blowfly Infestation + Nest of Scarabs + Insect tokens only), and prove the intervening-'if' is satisfied on every iteration.",
+        "effect": "Invariant at the start of each iteration: exactly two 1/1 Insect tokens A and B on the battlefield, and one Blowfly trigger on the stack targeting A. (1) Blowfly resolves; you put a -1/-1 counter on A; A becomes 0/0 and Nest of Scarabs triggers. (2) SBA: A dies. The object that dies EVERY iteration is the Insect token Blowfly just targeted, and the counter Blowfly placed is still on it - nothing in this loop removes counters and no +1/+1 counter is ever present to annihilate it - so 'if it had a -1/-1 counter on it' is true on the look-back check and true again on resolution. (3) Blowfly re-triggers; the Nest token from (1) does not exist yet, so the only creature is B, and Blowfly targets B - a legal target always exists, so the trigger is never removed. (4) You place Blowfly's trigger on the stack first and Nest's on top; Nest resolves, creating token C. Board is now {B, C} with a Blowfly trigger targeting B: the invariant, re-established. The loop is therefore unbounded - it can be repeated arbitrarily many times, consumes no mana, touches no library, and its net creature count never changes.",
+        "citations": [
+          {
+            "rule": "603.4",
+            "quote": "If the ability triggers, it checks the stated condition again as it resolves. If the condition isn’t true at that time, the ability is removed from the stack and does nothing."
+          },
+          {
+            "rule": "122.1a",
+            "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object’s power and Y to that object’s toughness. Similarly, -X/-Y counters subtract from power and toughness."
+          },
+          {
+            "rule": "603.3b",
+            "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "ANSWER (a), part 1: how many completed iterations take all four opponents from 40 to 0?",
+        "effect": "NONE. No finite number exists, and the line as a win condition on THIS board is refuted. The loop is unbounded but it is DRAINLESS: Zulaport Cutthroat is killed by Blowfly Infestation on the very first loop iteration, because at the instant Blowfly's first trigger is placed (step 5) Zulaport is the only creature on the battlefield and Blowfly's mandatory target must be chosen then. Total life loss dealt is exactly 3 per opponent (Fume Spitter's death, Insect token X's death, Zulaport's own death); opponents finish at 37, not 0, and no ordering of the triggers can do better than 3, since the alternative order kills Zulaport with zero creatures left and ends the loop one iteration sooner. THE FIX, stated precisely: the loop needs the battlefield to hold the drain creature plus TWO other creatures when it starts (this board has the drainer plus one). With one additional creature, Blowfly always has a spare token to target and the drainer is never the only legal target; each iteration then kills exactly one creature and fires Zulaport once. Forty deaths are required to take an opponent from 40 to 0; Fume Spitter and Insect token X supply the first two, so 38 COMPLETED LOOP ITERATIONS finish it, and all four opponents reach 0 simultaneously and lose as a state-based action.",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "ANSWER (a), part 2: what ends the loop?",
+        "effect": "Nothing external ends it - no mana is spent, no card is drawn, no life is lost, and the token count is conserved. The loop ends only by YOUR choice, and the choice is the ordering of the two simultaneous triggers you control each iteration. Put Blowfly's trigger ON TOP of Nest of Scarabs' trigger instead of underneath it: Blowfly then resolves first, kills the last remaining Insect token, and at the moment its next trigger would be put on the stack there are ZERO creatures on the battlefield, so no legal choice can be made for its target and the trigger is simply removed from the stack. The two outstanding Nest triggers then resolve into two fresh Insect tokens and the game continues normally. This exit is available on every single iteration.",
+        "citations": [
+          {
+            "rule": "603.3b",
+            "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+          },
+          {
+            "rule": "603.3d",
+            "quote": "If a choice is required when the triggered ability goes on the stack but no legal choices can be made for it, or if a rule or a continuous effect otherwise makes the ability illegal, the ability is simply removed from the stack."
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "ANSWER (b), literal reading: delete Zulaport Cutthroat from the board, change nothing else, and run the same stack.",
+        "effect": "The loop never starts. Fume Spitter's ability resolves and puts a -1/-1 counter on Insect token X; Nest of Scarabs triggers; SBA puts the 0/0 token into the graveyard. Blowfly Infestation triggers with its condition satisfied - but the battlefield now contains NO creatures at all (Zulaport is absent and Nest's token has not been created yet), so no legal target can be chosen and the trigger is removed from the stack. Nest's trigger then resolves for one Insect token and the game moves on. Exactly one -1/-1 counter was placed and exactly one token was made. There is no loop, so CR 104.4b is not reached.",
+        "citations": [
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+          },
+          {
+            "rule": "603.3d",
+            "quote": "If a choice is required when the triggered ability goes on the stack but no legal choices can be made for it, or if a rule or a continuous effect otherwise makes the ability illegal, the ability is simply removed from the stack."
+          }
+        ]
+      },
+      {
+        "n": 12,
+        "action": "ANSWER (b), general reading: a Blowfly + Nest loop already running with no life-loss effect (which is exactly the state this board reaches after step 7). Is it a mandatory loop, and does CR 104.4b make the game a draw?",
+        "effect": "NO on both counts. CR 104.4b requires a loop of mandatory actions 'repeating a sequence of events with no way to stop', and its own second sentence exempts loops containing an optional action; CR 732.4 draws only a loop that 'contains only mandatory actions'. This loop does not qualify. Blowfly's effect is mandatory and its target is forced whenever only one creature is available, but the loop also contains a free game choice its controller makes every iteration: the relative order in which the simultaneous Blowfly and Nest of Scarabs triggers are placed on the stack. One of the two available orders sustains the loop and the other terminates it (step 10). CR 732.5's protection - that no player can be forced to take a loop-breaking action outside the loop - does not rescue the draw claim here, because the terminating choice is made entirely among objects involved in the loop itself, not by sacrificing some unrelated permanent. Verdict: there IS a way to stop, so the antecedent of 104.4b fails and the game is NOT a draw. The controller is obliged to make the choice that ends it rather than shortcut an infinite repetition. Practically: without a life-loss effect the loop accomplishes nothing but a pile of Insect tokens, and you should end it deliberately.",
+        "citations": [
+          {
+            "rule": "104.4b",
+            "quote": "If a game that’s not using the limited range of influence option (including a two-player game) somehow enters a “loop” of mandatory actions, repeating a sequence of events with no way to stop, the game is a draw. Loops that contain an optional action don’t result in a draw."
+          },
+          {
+            "rule": "732.4",
+            "quote": "If a loop contains only mandatory actions, the game is a draw."
+          },
+          {
+            "rule": "732.5",
+            "quote": "No player can be forced to perform an action that would end a loop other than actions called for by objects involved in the loop."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "REFUTED AS A KILL ON THIS BOARD. The Blowfly Infestation + Nest of Scarabs engine is genuinely unbounded - the object that dies each iteration is the Insect token Blowfly just targeted, and the -1/-1 counter Blowfly placed is still on it when it dies, so the intervening-'if' is satisfied on both the look-back check and the resolution check every time. But the engine is drainless here. State-based actions kill the counter-bearing token BEFORE Nest of Scarabs' trigger resolves, so at the instant Blowfly's first trigger is put on the stack the only creature on the battlefield is Zulaport Cutthroat; Blowfly says 'target creature' and is mandatory, a legal target exists, so Zulaport must be targeted and dies on iteration one. Total drain: exactly 3 per opponent (Fume Spitter, Insect token X, Zulaport itself). Opponents end at 37, not 0; no finite number of iterations gets them to 0. The deficiency is one body: the loop needs the drain creature plus TWO other creatures on the battlefield when it starts, at which point Blowfly always has a spare token to eat and the drainer is never the forced target - 38 completed iterations then take four opponents from 40 to 0. Nothing external ends the loop; the controller ends it by ordering Blowfly's trigger above Nest of Scarabs', which empties the battlefield of creatures so Blowfly's next trigger has no legal target and is removed from the stack. Because that choice is available every iteration, CR 104.4b does not apply and the drainless version is not a draw.",
+      "you": {
+        "life": 43,
+        "battlefield": [
+          "Blowfly Infestation (enchantment)",
+          "Nest of Scarabs (enchantment)",
+          "two 1/1 black Insect tokens (the residue of exiting the loop via the Blowfly-above-Nest ordering)",
+          "Swamp (untapped)",
+          "Swamp (untapped)"
+        ],
+        "graveyard": [
+          "Fume Spitter",
+          "Zulaport Cutthroat"
+        ],
+        "hand": [],
+        "stack": "empty",
+        "notes": [
+          "Life went 40 -> 41 -> 42 -> 43 from the three Zulaport triggers.",
+          "No mana was spent; both Swamps are still untapped.",
+          "Insect token X, Insect token Y and every later loop token ceased to exist on leaving the battlefield (704.5d); only the two tokens created after the loop was broken remain.",
+          "Yawgmoth, Thran Physician is NOT on this battlefield; it does not participate in this scenario."
+        ]
+      },
+      "opponents": [
+        {
+          "name": "opponent_a",
+          "life": 37,
+          "battlefield": [],
+          "lost_this_turn": false
+        },
+        {
+          "name": "opponent_b",
+          "life": 37,
+          "battlefield": [],
+          "lost_this_turn": false
+        },
+        {
+          "name": "opponent_c",
+          "life": 37,
+          "battlefield": [],
+          "lost_this_turn": false
+        },
+        {
+          "name": "opponent_d",
+          "life": 37,
+          "battlefield": [],
+          "lost_this_turn": false
+        }
+      ],
+      "verdict": {
+        "a_loop_unbounded": true,
+        "a_loop_lethal_on_this_board": false,
+        "a_dying_object_each_iteration": "the 1/1 black Insect token that Blowfly Infestation's previous trigger targeted, which is 0/0 from that -1/-1 counter and is put into the graveyard by state-based action 704.5f",
+        "a_total_drain_per_opponent": 3,
+        "a_iterations_to_zero_on_this_board": null,
+        "a_iterations_to_zero_with_one_more_creature": 38,
+        "a_what_ends_the_loop": "the controller's own trigger-ordering choice: Blowfly's trigger placed above Nest of Scarabs', so Blowfly resolves first, the last creature dies, and Blowfly's next trigger has no legal target and is removed from the stack under 603.3d",
+        "b_mandatory_loop_with_no_way_to_stop": false,
+        "b_game_is_a_draw_under_104_4b": false,
+        "build_requirement": "The requirement is a BODY COUNT, not a card. Blowfly Infestation's target is chosen as the trigger is put on the stack, at which moment the counter-bearing creature is already in the graveyard and Nest of Scarabs' token does not yet exist - so whatever creature is on the battlefield at that instant is what Blowfly eats. (1) If the drain is a CREATURE (Zulaport Cutthroat), the board must hold the drain creature PLUS TWO OTHER CREATURES when the loop starts - the counter-bearing creature that dies to start the loop, and one spare body that absorbs Blowfly's forced first counter - three creatures total. With only one other creature - this board - Blowfly is forced onto the drain creature and eats it, which is exactly why the drain stops at 3. (2) If the drain is a NONCREATURE permanent (Bastion of Remembrance), the board needs the counter-bearing creature PLUS ONE OTHER CREATURE, because the drain itself is not a legal target and so can never be eaten. Bastion of Remembrance is the right card because it satisfies BOTH halves of case (2): it is an Enchantment, so Blowfly cannot target it, AND its enters-the-battlefield trigger ('When this enchantment enters, create a 1/1 white Human Soldier creature token') supplies the one other creature itself. Naming Bastion without naming that token would be wrong, because a noncreature drain is NOT sufficient on its own: Bastion alongside only the counter-bearing creature FIZZLES - when Blowfly's first trigger is put on the stack there are zero creatures on the battlefield, no legal choice can be made, the trigger is removed from the stack under 603.3d, total drain is 2 (Fume Spitter's death and the counter-bearing token's death) and no loop ever starts.",
+        "build_requirement_citations": [
+          {
+            "rule": "115.1d",
+            "quote": "The target(s) are chosen as the ability is put on the stack; see rule 603.3d."
+          },
+          {
+            "rule": "603.3d",
+            "quote": "If a choice is required when the triggered ability goes on the stack but no legal choices can be made for it, or if a rule or a continuous effect otherwise makes the ability illegal, the ability is simply removed from the stack."
+          },
+          {
+            "rule": "603.6a",
+            "quote": "Enters-the-battlefield abilities trigger when a permanent enters the battlefield."
+          }
+        ]
+      }
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Correctly identifies pos 1 (Zulaport's trigger, added last) as the top object. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 2,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Makes YOU the player who puts the counter, which is what Nest of Scarabs keys off. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 2,
+        "rule": "122.1a",
+        "status": "supported",
+        "note": "-1/-1 counter takes Insect token X to 0/0. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 2,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "'The ability doesn't do anything at this point' - Nest has triggered but created nothing yet. Load-bearing premise of the refutation. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 3,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "THE CENTRAL CITATION. SBAs are performed and repeated before waiting triggers go on the stack, so the 0/0 token is in the graveyard before Nest's trigger reaches the stack. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 3,
+        "rule": "704.5f",
+        "status": "supported",
+        "note": "Toughness 0 or less -> graveyard. Correct SBA (not 704.5g, which is lethal damage). Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 3,
+        "rule": "700.4",
+        "status": "supported",
+        "note": "Establishes the move to graveyard is a 'dies' event. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 3,
+        "rule": "704.5d",
+        "status": "supported",
+        "note": "Token that has left the battlefield ceases to exist; correctly paired with 603.10a look-back in step 4 so it does not defeat the death triggers. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 4,
+        "rule": "603.10",
+        "status": "supported",
+        "note": "Look-back-in-time: 'the appearance of objects immediately prior to the event'. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 4,
+        "rule": "603.10a",
+        "status": "supported",
+        "note": "Its printed example is structurally identical to Blowfly and Zulaport. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 4,
+        "rule": "603.6c",
+        "status": "supported",
+        "note": "'Whenever a creature dies' is a leaves-the-battlefield ability, so it is inside 603.10a's list. Chain 603.6c -> 603.10a -> 603.10 is complete. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 4,
+        "rule": "603.4",
+        "status": "supported",
+        "note": "Intervening-'if' trigger-time check. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 5,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "All three waiting triggers go on the stack in one batch, in controller's order, with no resolution in between - so ordering cannot rescue the line. Verified against the full rule including the part the quote omits. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 5,
+        "rule": "115.1d",
+        "status": "supported",
+        "note": "Targets chosen as the ability is PUT on the stack, not on resolution. Decisive. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 5,
+        "rule": "601.2c",
+        "status": "supported",
+        "note": "Reached legitimately via 603.3d's pointer to 601.2c-d; carries the must-announce-a-target claim. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 5,
+        "rule": "115.6",
+        "status": "supported",
+        "note": "Creates the zero-targets permission at all, so 'target creature' (no 'up to') cannot take zero. Yawgmoth contrast confirmed against cards.json ('up to one target creature'). Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 5,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "Removal is conditional on NO legal choice existing; here Zulaport is the sole creature, so Blowfly is forced onto it. Re-confirmed against cards.json: Blowfly and Nest are Enchantments, Fume Spitter is in the graveyard, Insect X has ceased to exist, opponents control nothing. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 6,
+        "rule": "608.2a",
+        "status": "supported",
+        "note": "Resolution-time intervening-'if' re-check; 'had a -1/-1 counter' is a completed past fact. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 6,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Carries 'YOU put a -1/-1 counter on Zulaport', which re-triggers Nest. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 7,
+        "rule": "704.5f",
+        "status": "supported",
+        "note": "Zulaport 1/1 with a -1/-1 counter is 0/0 and dies. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 7,
+        "rule": "603.10a",
+        "status": "supported",
+        "note": "Zulaport sees its own death ('this creature or another creature you control' - confirmed verbatim in cards.json this iteration). Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 8,
+        "rule": "603.4",
+        "status": "supported",
+        "note": "Resolution-time re-check; the two-token invariant reproduces with the counter still on the dying token every iteration. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 8,
+        "rule": "122.1a",
+        "status": "supported",
+        "note": "Nothing in the loop creates a +1/+1 counter, so no counter is ever annihilated. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 8,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Free ordering of the two simultaneous triggers each iteration re-establishes the invariant. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 9,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Correct SBA for the lethal branch. Arithmetic re-derived a third time and unchanged: drain is exactly 3 on this board (Fume Spitter, Insect token X, Zulaport itself), and 38 completed iterations on the three-creature board (40 deaths needed, Fume Spitter and Insect X supply drains 1 and 2, iteration k yields drain k+2, so drain 40 lands on k=38). Step 9's prose still reads 'the drain creature plus TWO other creatures ... (this board has the drainer plus one)' - identical to iteration 2 and now identical in sense to the reworded build_requirement case (1). Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 10,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "The exit is real: Nest's trigger placed first, Blowfly on top, so Blowfly resolves first and kills the last token while Nest's trigger is still unresolved. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 10,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "Zero creatures at that instant, so Blowfly's next trigger is removed; the two outstanding Nest triggers then resolve into the two tokens final_state reports. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 11,
+        "rule": "704.5f",
+        "status": "supported",
+        "note": "Correct for the Zulaport-deleted board. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 11,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "With Zulaport absent, after Insect X dies there are NO creatures, so Blowfly's only trigger is removed and no loop forms - 104.4b is never reached. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 12,
+        "rule": "104.4b",
+        "status": "supported",
+        "note": "Entire rule quoted verbatim including the optional-action sentence; the stronger argument (the antecedent 'with no way to stop' fails outright) is sound. Correctly scoped - Commander does not use the limited range of influence option, so 104.4f is inapplicable. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 12,
+        "rule": "732.4",
+        "status": "supported",
+        "note": "Correctly read as requiring ONLY mandatory actions for a draw. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": 12,
+        "rule": "732.5",
+        "status": "supported",
+        "note": "Applied correctly, not backwards: the terminating choice is called for by objects involved in the loop, so 732.5 does not shield the controller. Re-confirmed unchanged from iterations 1 and 2: quote verbatim per the mechanical gate, and judged against the full rule text in context. Step body is byte-identical; nothing in this iteration touched it."
+      },
+      {
+        "step": null,
+        "rule": "115.1d",
+        "status": "supported",
+        "note": "Quote verbatim and in context. 115.1d is specifically the TRIGGERED-ability targeting rule ('The target(s) are chosen as the ability is put on the stack; see rule 603.3d.'), which is exactly the premise the whole body-count argument rests on: the target is locked at the instant the ignition absorber is already dead and Nest's replacement token does not yet exist. Unchanged from iteration 2 and still correct under the reworded case (1). (build_requirement citation, not a step citation; recorded with step:null per the iteration-2 encoding. This is NOT a missing-step finding.)"
+      },
+      {
+        "step": null,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "Quote verbatim and in context. Establishes the fizzle the clause claims: with zero creatures on the battlefield when Blowfly's trigger goes on the stack, no legal choice can be made and the ability is simply removed. This is what makes case (2)'s 'Bastion alongside only the counter-bearing creature FIZZLES ... total drain is 2' true, and it is unchanged. THE ITERATION-2 DEFECT IS CURED AT THIS EXACT CLAUSE: case (1) now reads 'the board must hold the drain creature PLUS TWO OTHER CREATURES when the loop starts - the counter-bearing creature that dies to start the loop, and one spare body that absorbs Blowfly's forced first counter - three creatures total.' The base noun is now 'drain creature' (was 'counter-bearing creature'), the enumeration no longer double-counts the base, and 'three creatures total' is stated explicitly. I re-derived the minimum from scratch a third time and 3 is both sufficient and necessary: with {drain, counter-bearer X, spare S}, X dies to Fume Spitter's counter, Blowfly's first trigger sees {drain, S} and takes S, then N1 resolves into token T1 so the board is {drain, S, T1} with Blowfly targeting S - which is exactly the sustaining invariant {drain, 2 bodies}; with only {drain, X} the trigger sees {drain} alone and eats it, which is the refuted board. The three named roles are the correct three and none is double-counted: the counter-bearer dies to the Fume Spitter counter before Blowfly's first target choice, the spare absorbs Blowfly's first counter and is loop iteration 1's death, and the drain creature is never a forced target once a spare exists. 'Forced' in 'Blowfly's forced first counter' correctly denotes the mandatory ability (no 'up to' - see 115.6 at step 5), not a forced choice of the spare, and the next sentence disambiguates by contrasting the board where Blowfly IS forced onto the drain creature. (build_requirement citation, not a step citation; recorded with step:null per the iteration-2 encoding. This is NOT a missing-step finding.)"
+      },
+      {
+        "step": null,
+        "rule": "603.6a",
+        "status": "supported",
+        "note": "Quote verbatim and in context. Establishes that an enters-the-battlefield ability triggers when the permanent enters, which is the rules content case (2) needs for Bastion of Remembrance's Soldier token; the token creation itself is quoted card text resolving under the already-cited 608.2c, so the citation is scoped correctly rather than overreaching. Re-verified against cards.json this iteration: Bastion of Remembrance is an Enchantment (so Blowfly's 'target creature' can never eat it) reading 'When this enchantment enters, create a 1/1 white Human Soldier creature token. / Whenever a creature you control dies, each opponent loses 1 life and you gain 1 life.' Case (2) is unchanged and still correct at TWO creatures (counter-bearer plus one other), and 2 is minimal: with the counter-bearer alone, Blowfly's trigger sees zero creatures and is removed under 603.3d. (build_requirement citation, not a step citation; recorded with step:null per the iteration-2 encoding. This is NOT a missing-step finding.)"
+      }
+    ],
+    "summary": "PASS. The mechanical gate passes (validate-stack: contract holds) and the one remaining iteration-2 defect is cured with no new gap opened. (1) CASE (1) NOW STATES THREE AND IS INTERNALLY CONSISTENT. It reads 'the board must hold the drain creature PLUS TWO OTHER CREATURES when the loop starts - the counter-bearing creature that dies to start the loop, and one spare body that absorbs Blowfly's forced first counter - three creatures total.' The base noun is the drain creature, the two others are distinct from it and from each other, and the total is stated numerically. This now agrees verbatim in sense with step 9 ('the loop needs the battlefield to hold the drain creature plus TWO other creatures when it starts (this board has the drainer plus one)'), with final_state.summary ('the loop needs the drain creature plus TWO other creatures'), and with the untouched key a_iterations_to_zero_with_one_more_creature=38 (this board holds 2 creatures; +1 = 3). The artifact now answers 'how many bodies' exactly one way. THE THREE ROLES ARE THE CORRECT THREE AND NONE IS DOUBLE-COUNTED, re-derived from scratch: the counter-bearing creature absorbs Fume Spitter's counter and dies to ignite Blowfly; the spare absorbs Blowfly's first counter and is loop iteration 1's death; the drain creature is the third body and, once a spare exists, is never the only legal target. I re-traced ignition on {drain, X, S}: X dies, Blowfly's first trigger sees {drain, S} (Nest's token does not exist yet) and takes S, N1 then resolves into T1 giving {drain, S, T1} with Blowfly targeting S - which is exactly the sustaining invariant, one death and one drain per iteration, drain never forced. 3 is necessary as well as sufficient; 2 is the refuted board. (2) CASE (2) IS UNCHANGED AND STILL CORRECT AT TWO: counter-bearer plus one other creature, because a noncreature drain is not a legal Blowfly target; Bastion of Remembrance satisfies both halves (Enchantment, and its ETB Soldier supplies the one other creature), and the artifact still correctly says a Bastion-plus-counter-bearer board FIZZLES for a total drain of 2. I re-confirmed 2 is minimal. (3) ZERO DRIFT. 12 steps; the (step, rule) multiset is EXACTLY the same 32 pairs verified in iterations 1 and 2 - I compared it programmatically against both prior finding lists and the difference is empty in both directions, with every quote still verbatim per the gate. The three build_requirement_citations are unchanged (115.1d, 603.3d, 603.6a), all three re-looked-up in full this iteration and all three in context. a_total_drain_per_opponent=3, a_iterations_to_zero_with_one_more_creature=38, a_iterations_to_zero_on_this_board=null, opponents at 37, you at 43, b_mandatory_loop_with_no_way_to_stop=false and b_game_is_a_draw_under_104_4b=false - all unchanged. I re-derived 38 independently once more (40 deaths needed; Fume Spitter and Insect X supply drains 1 and 2; iteration k yields drain k+2). (4) NO NEW GAP. The rewording adds no claim requiring a citation that is not already present: target locking (115.1d), the zero-target fizzle (603.3d) and the ETB Soldier (603.6a) are exactly the three rules the sentence needs. Card names and oracle text re-checked against cards.json and all match verbatim - Blowfly Infestation and Nest of Scarabs are Enchantments, Zulaport Cutthroat reads 'this creature or another creature you control', Bastion of Remembrance is an Enchantment carrying the Soldier ETB and is in the deck at quantity 1, and Yawgmoth's contrasting 'up to one target creature' is confirmed. Missing-step audit re-run and still clean: triggered abilities are put on the stack correctly (603.2/603.3b), SBAs are checked and repeated in the right order relative to waiting triggers (117.5/704.5f/704.5d), priority is handled (405.5 plus the stated no-response assumption), and no replacement effect is in play. ONE MERGE NOTE FOR THE ORCHESTRATOR, not a finding against the resolution: the artifact's embedded 'checker' block is still the ITERATION-1 record (verdict fail, iterations 1), whose prose contains the older and itself-ambiguous phrasing 'the counter-bearing creature plus two others'. This block must be REPLACED by this one, not appended to, or the published artifact will carry a stale fail verdict and a phrasing that contradicts the corrected build_requirement.",
+    "iterations": 3
+  }
+}

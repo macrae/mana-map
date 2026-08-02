@@ -1,12 +1,12 @@
 # Testing
 
 ```bash
-.venv/bin/python -m pytest              # everything (1,144, ~7 min)
-.venv/bin/python -m pytest -m "not browser"   # fast suite (1,042, ~70 s)
+.venv/bin/python -m pytest              # everything (1,305, ~10 min)
+.venv/bin/python -m pytest -m "not browser"   # fast suite (1,182, ~80 s)
 .venv/bin/python -m pytest -m browser         # the 80 browser tests (~340 s)
 ```
 
-1,144 tests in `tests/`: 438 card-pipeline + 604 pilot-subsystem + **102 browser**.
+1,305 tests in `tests/`: 438 card-pipeline + 744 pilot-subsystem + **123 browser**.
 One is a still-unmet `xfail(strict=True)` ship gate in `test_embedding_quality.py` — see below.
 
 ## Source assertions do not catch regressions
@@ -51,14 +51,14 @@ matched literal indentation and broke the moment the key handler was rewritten t
 gate — while the invariant it cared about was untouched. It now asserts the delegation
 (`cycleSelection` is called; the handler does not recompute an index) rather than the text.
 
-### Browser tests (102) — `tests/test_viz_behaviour.py` + `test_decklist_parity.py`
+### Browser tests (123) — `tests/test_viz_behaviour.py` + `test_decklist_parity.py`
 
 The session fixtures `browser` and `viz_server` live in `tests/conftest.py` — see the
 section below for why they cannot live anywhere else. `conftest_viz.py` still holds the
 page-level helpers: an ephemeral `http.server` rooted at the repo — `viz/` and `data/` must
 be siblings, the same constraint GitHub Pages imposes — plus a booted page that waits on
 `MM.allData` rather than a timer, because the projection is 12.9 MB. Playwright is imported
-lazily, so the other 1,042 tests never pay for it.
+lazily, so the other 1,182 tests never pay for it.
 
 Every test asserts `page.js_errors == []`. That list collects `pageerror` and console
 errors, and it is what catches the class of bug above.
@@ -85,7 +85,54 @@ resolves rather than collapsing, that link lengths stay inside the chord range `
 branching grows the graph and records the trail, and that leaving restores the map.
 
 Setup, one time: `.venv/bin/python -m playwright install chromium` (~94 MB). Without it the
-whole file skips cleanly, so a fresh clone still runs the other 1,042.
+whole file skips cleanly, so a fresh clone still runs the other 1,182.
+
+## A passing check proves nothing until you have seen it fail
+
+Three measurements in one session agreed with the code for the wrong reason. Each looked
+like a green test.
+
+**Synthetic mouse events do not carry `offsetX`/`offsetY`.** The canvas hover handler picks
+on exactly those, and a hand-built `MouseEvent` leaves them at 0 — so every probe was
+reporting the card at the canvas origin rather than the one under the cursor, and passed
+against completely broken hit-testing. Use `page.mouse.move`. Anything driven through
+`dispatchEvent` is testing a different code path from the one users take.
+
+**`getImageData` returns colour un-premultiplied.** The map canvas has a transparent
+background — the dark page shows through — so a point drawn at 0.09 alpha lands as *full
+colour, alpha 23*. Read RGB and a fully dimmed map is indistinguishable from a lit one:
+measured, luminance moved 6.88 → 6.85 while the composited image lost 63% of its bright
+pixels. **Dimming lives in the alpha channel.** `_ink` counts alpha > 10 ("did anything
+draw"); `_ink_strength` adds alpha > 150 ("is it drawn at full strength"), which is what
+separates spotlit from muted.
+
+**A total can be dominated by the term you are not testing.**
+`test_focusing_a_region_dims_the_map_instead_of_erasing_it` measured ink over the whole
+canvas and passed with the unlit alpha set to **0** — the exact regression it exists to
+catch. The focused region's own points, at full strength and haloed, carry enough ink that
+the total clears any threshold no matter what happens to everything else. It now picks the
+densest 120px patch containing *no member* of the focused region, chosen from the data at
+runtime so a re-cluster cannot point it at empty space. Erased: 0 of 5,442 px.
+
+The corollary: **when an effect shares pixels with what you are measuring, move the camera
+rather than lower the bar.** `test_canvas_draws_density_contours` asserts topo triples the
+ink. At the fitted view the atmospheric halo already covers ~36% of the canvas and the
+contours draw over the same clusters, so the toggle moved total ink by 2.8 points — not
+because contours had stopped drawing but because the measure had saturated. Zoomed in, where
+`auraLevel()` is 0 by design, the same toggle is 7.6x.
+
+## A test that inherits a default is testing the default
+
+Ten browser tests took their map from whatever the app booted on. Flipping the default to
+the ability map silently repointed all of them at a map whose answers differ *by design* —
+`MAP_ARC_RELATIONS` draws similarity arcs on the colour/type map and none on the ability map
+— and they failed as though the renderer had broken. `canvas_page` now pins the map, and
+tests that care which map they are on say so in their own body.
+
+The same applies to constants borrowed from a palette: `test_the_atlas_draws_typed_edges`
+asserted exactly `7` legend rows, which was the size of the colour palette rather than
+anything about edges. It compares legend rows against the marker-layer count now — the
+invariant it was actually trying to state.
 
 ## Wait for the condition, never for a timer
 

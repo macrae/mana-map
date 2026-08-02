@@ -1,0 +1,339 @@
+{
+  "id": "005",
+  "slug": "yawgmoth-swarm",
+  "deck": "YAWGMOTH — THE SCARAB SWARM",
+  "title": "Yawgmoth + Nest of Scarabs + South Wind Avatar: a lifegain-triggered drain, and a 4-toughness body",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Yawgmoth, Thran Physician (2/4, untapped, no counters)",
+        "Nest of Scarabs (enchantment)",
+        "South Wind Avatar (3/4, no counters)",
+        "Insect token A (1/1 black Insect, no counters)",
+        "Insect token B (1/1 black Insect, no counters)",
+        "Swamp (untapped)",
+        "Swamp (untapped)",
+        "Swamp (untapped)"
+      ],
+      "opponent_a": [
+        "Grizzly Bears (2/2, untapped, no counters)"
+      ],
+      "opponent_b": [
+        "no permanents"
+      ],
+      "opponent_c": [
+        "no permanents"
+      ],
+      "opponent_d": [
+        "no permanents"
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "{B}{B}{B} from three untapped Swamps",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Yawgmoth, Thran Physician's activated ability — 'Pay 1 life, Sacrifice another creature: Put a -1/-1 counter on up to one target creature and draw a card.' Cost already paid: 1 life paid (you are at 39) and Insect token A sacrificed. Target chosen: Grizzly Bears.",
+        "controller": "you"
+      }
+    ],
+    "extras": {
+      "life_totals": {
+        "you": 39,
+        "opponent_a": 40,
+        "opponent_b": 40,
+        "opponent_c": 40,
+        "opponent_d": 40
+      },
+      "pod_size": "Five players — you and four opponents, 160 opposing life in total.",
+      "library": "You have 60 cards in your library.",
+      "assumptions": [
+        "No player responds to anything; every opponent passes priority throughout.",
+        "No permanent enters or leaves the battlefield except as described by the cards named here.",
+        "Insect tokens created by Nest of Scarabs are 1/1 black Insect creature tokens with no abilities.",
+        "It is your precombat main phase."
+      ],
+      "note_for_the_resolver": "Yawgmoth is a Human with protection from Humans, so his own ability can never target him. Targets are chosen as the ability is put on the stack, and Nest of Scarabs' replacement Insect is created only when its trigger RESOLVES — so the new Insect is not available as a target on the iteration that created it. An Insect token that dies from a -1/-1 counter has toughness 0 when it dies, not 1. South Wind Avatar's drain is per LIFEGAIN EVENT (1 life per opponent), not per life gained."
+    },
+    "question": "Resolve the stack, then run the engine as far as the rules allow. (a) South Wind Avatar reads 'Whenever another creature you control dies, you gain life equal to its toughness' and 'Whenever you gain life, each opponent loses 1 life'. A dying 1/1 Insect has toughness 1 at the moment it dies only if it carries no -1/-1 counter — state what its toughness actually is when it dies here, and therefore whether the lifegain trigger fires at all. Give the exact number of completed activations and what ends the loop. (b) South Wind Avatar is a 3/4 — the only body on this board that can absorb more than one -1/-1 counter. Does that change the bound, and by how much?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Account for the cost already paid. Yawgmoth's ability was activated by paying 1 life (you 40 -> 39) and sacrificing Insect token A. Sacrificing A moved it from the battlefield to the graveyard, so A died, and South Wind Avatar's first ability ('Whenever another creature you control dies, you gain life equal to its toughness') triggered on that cost payment.",
+        "effect": "The Avatar's death trigger is waiting to be put on the stack. It goes on the stack the next time a player would receive priority - which is immediately after activation finishes - so it sits ABOVE Yawgmoth's activated ability and will resolve FIRST. The scenario's stack listing (one object) is therefore incomplete: the true stack is [pos 0: Yawgmoth's ability, pos 1: Avatar lifegain trigger].",
+        "citations": [
+          {
+            "rule": "701.21a",
+            "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner’s graveyard."
+          },
+          {
+            "rule": "700.4",
+            "quote": "The term dies means “is put into a graveyard from the battlefield.”"
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Fix the targets and the permanent targeting constraint. Yawgmoth's ability reads 'Put a -1/-1 counter on up to one target creature and draw a card.' Its target (Grizzly Bears) was locked in as the ability was activated, not on resolution. Yawgmoth himself has protection from Humans and is the source of a Human's ability, so he is never a legal target for it.",
+        "effect": "Grizzly Bears is the target for this activation. For every later activation, the legal target pool is: Grizzly Bears (while alive), South Wind Avatar (while alive), and Insect tokens - never Yawgmoth. Nest of Scarabs is an enchantment, not a creature, so it is never a target either. This is the constraint that ultimately ends the engine.",
+        "citations": [
+          {
+            "rule": "115.1c",
+            "quote": "The target(s) are chosen as the ability is activated; see rule 602.2b."
+          },
+          {
+            "rule": "702.16b",
+            "quote": "A permanent or player with protection can’t be targeted by spells with the stated quality and can’t be targeted by abilities from a source with the stated quality."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Resolve the top object: South Wind Avatar's lifegain trigger for Insect token A. This is a leaves-the-battlefield/dies trigger, one of the trigger classes that looks back in time, and 'its toughness' is information about an object no longer on the battlefield, so the value comes from last known information. Insect A carried NO -1/-1 counter - it was sacrificed as a cost, not killed by a counter - so its last known toughness on the battlefield was 1.",
+        "effect": "You gain 1 life. Life: you 39 -> 40.",
+        "citations": [
+          {
+            "rule": "603.6c",
+            "quote": "Leaves-the-battlefield abilities trigger when a permanent moves from the battlefield to another zone, or when a phased-in permanent leaves the game because its owner leaves the game."
+          },
+          {
+            "rule": "603.10a",
+            "quote": "Some zone-change triggers look back in time. These are leaves-the-battlefield abilities, abilities that trigger when a player sacrifices a permanent, abilities that trigger when a card leaves a graveyard, and abilities that trigger when an object that all players can see is put into a hand or library."
+          },
+          {
+            "rule": "608.2h",
+            "quote": "If the effect requires information from a specific object, including the source of the ability itself, the effect uses the current information of that object if it’s in the public zone it was expected to be in; if it’s no longer in that zone, or if the effect has moved it from a public zone to a hidden zone, the effect uses the object’s last known information."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "The life gain is a real (nonzero) life gain event, so South Wind Avatar's second ability ('Whenever you gain life, each opponent loses 1 life') triggers. It goes on the stack and resolves.",
+        "effect": "Each of the four opponents loses 1 life. Opponents: 40 -> 39 each. Four life lost in total from this one drain. Note the ability is per lifegain EVENT, not per point gained - one event, 1 life per opponent.",
+        "citations": [
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Resolve Yawgmoth's activated ability: put a -1/-1 counter on Grizzly Bears and draw a card. The counter subtracts from power and toughness, making Grizzly Bears 1/1. Putting that counter matches Nest of Scarabs' trigger condition ('Whenever you put one or more -1/-1 counters on a creature, create that many 1/1 black Insect creature tokens'), which triggers on a counter placed on ANY creature, including an opponent's.",
+        "effect": "Grizzly Bears is 1/1 with one -1/-1 counter. You draw a card (library 60 -> 59). Nest of Scarabs triggers once for one counter.",
+        "citations": [
+          {
+            "rule": "122.1a",
+            "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object’s power and Y to that object’s toughness. Similarly, -X/-Y counters subtract from power and toughness."
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Resolve the Nest of Scarabs trigger: create one 1/1 black Insect creature token (call it C).",
+        "effect": "ACTIVATION 1 COMPLETE. You control Yawgmoth, Nest of Scarabs, South Wind Avatar (3/4), Insect B and Insect C. Body count is NET NEUTRAL: one Insect was consumed as a cost and one was created by the counter. Life is also net neutral (paid 1, gained 1). This is why the engine is a loop rather than a one-shot - and why neither life nor the library is what bounds it. The bound is the supply of -1/-1 counter targets that can absorb a counter without costing you a body.",
+        "citations": [
+          {
+            "rule": "111.1",
+            "quote": "Some effects put tokens onto the battlefield. A token is a marker used to represent any permanent that isn’t represented by a card."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "ACTIVATION 2. Pay 1 life (you 39), sacrifice Insect B - it has no counters, so its last known toughness is 1: the Avatar gains you 1 life (you 40), which drains each opponent for 1 (opponents 38 each). The ability resolves putting the second -1/-1 counter on Grizzly Bears, making it 0/0. Before any player gets priority, state-based actions run first and put it in the graveyard; only then do triggered abilities go on the stack.",
+        "effect": "Grizzly Bears dies. It is an OPPONENT'S creature, so South Wind Avatar's 'another creature YOU CONTROL dies' ability does not trigger for it - no life, no drain from its death. The Nest of Scarabs trigger from the counter still happened at the moment the counter was placed and is unaffected by the subsequent death: Insect D is created. Draw (library 58). Insects: C, D. Grizzly Bears has now absorbed its full 2 toughness worth of counters - 2 activations' worth of replacement Insects.",
+        "citations": [
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack (see rule 603, “Handling Triggered Abilities”)."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "THE CRUX - what an Insect's toughness actually is when a -1/-1 counter kills it. ACTIVATIONS 3, 4 and 5 each sacrifice a counterless Insect (Avatar gains 1, each opponent loses 1) and put counters 1, 2 and 3 on South Wind Avatar (3/3, then 3/2, then 3/1), each making one replacement Insect. ACTIVATION 6 has to spend its counter on one of your own Insects. That Insect becomes 0/0, dies to a state-based action, and - being a token - ceases to exist in the graveyard. The Avatar's first ability DOES trigger on that death, and DOES resolve; but 'its toughness' is read from last known information, and the Insect's last known toughness on the battlefield was 0, not 1, because the counter was already on it.",
+        "effect": "You gain 0 life from that death. Gaining 0 life is not a life gain event, so South Wind Avatar's SECOND ability does not trigger at all: no opponent loses life for that Insect. Stated plainly - a counter-killed Insect is worth 0 life and 0 drain; only a SACRIFICED (counterless) Insect, toughness 1, is worth 1 life and 4 opposing life. Exactly one death in the optimal line is of the counter-killed kind. Running totals after activation 6: opponents 34 each, you 40, library 54, Insects: one (H). South Wind Avatar is 3/1 with three counters.",
+        "citations": [
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+          },
+          {
+            "rule": "111.7",
+            "quote": "A token that’s in a zone other than the battlefield ceases to exist."
+          },
+          {
+            "rule": "113.7a",
+            "quote": "In both instances, if the source is no longer in the zone it’s expected to be in at that time, its last known information is used."
+          },
+          {
+            "rule": "608.2h",
+            "quote": "If the effect requires information from a specific object, including the source of the ability itself, the effect uses the current information of that object if it’s in the public zone it was expected to be in; if it’s no longer in that zone, or if the effect has moved it from a public zone to a hidden zone, the effect uses the object’s last known information."
+          },
+          {
+            "rule": "119.9",
+            "quote": "If a player gains 0 life, no life gain event has occurred, and these abilities won’t trigger."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "ACTIVATION 7 - the Avatar's fourth toughness point, and its own death. Pay 1 life (you 39), sacrifice Insect H (counterless, toughness 1): Avatar gains you 1 life (you 40) and each opponent loses 1 (opponents 33 each). Critically, the Avatar is still on the battlefield when that sacrifice happens - the cost is paid before the ability resolves - so this drain is collected in full. The ability then resolves, putting the FOURTH -1/-1 counter on South Wind Avatar, making it -1/0. State-based actions put it into the graveyard.",
+        "effect": "South Wind Avatar dies. Its own ability reads 'Whenever ANOTHER creature you control dies', so its own death does not match its trigger event and it does not trigger for itself - no final life, no final drain. The Nest of Scarabs trigger from that fourth counter still resolves and makes Insect J. Draw (library 53). The lifegain/drain engine is now off permanently: every later sacrifice gains nothing and drains nothing.",
+        "citations": [
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "ACTIVATION 8 and the terminus. Pay 1 life (you 39) and sacrifice Insect J. No Avatar is on the battlefield, so no lifegain trigger and no drain. Now choose targets: the only creature on the battlefield is Yawgmoth, who cannot be targeted by his own ability. 'Up to one target creature' permits choosing zero targets, so the ability is activated with no target - which means no -1/-1 counter is placed, Nest of Scarabs does not trigger, and no replacement Insect is created. The ability resolves and draws a card (library 52).",
+        "effect": "LOOP ENDS. You now control only Yawgmoth, Nest of Scarabs and three Swamps - no other creature. The activation cost is 'Pay 1 life, Sacrifice another creature'; with no other creature to sacrifice, the cost is unpayable and the ability cannot be activated again. The terminus is BODIES, not life (net zero while the Avatar lived, then -1 per activation from a 40 life total) and not the library (8 cards drawn out of 60 - decking would have needed 60 activations).",
+        "citations": [
+          {
+            "rule": "115.6",
+            "quote": "A spell or ability that requires targets may allow zero targets to be chosen."
+          },
+          {
+            "rule": "601.2h",
+            "quote": "Partial payments are not allowed. Unpayable costs can’t be paid."
+          },
+          {
+            "rule": "702.16b",
+            "quote": "A permanent or player with protection can’t be targeted by spells with the stated quality and can’t be targeted by abilities from a source with the stated quality."
+          },
+          {
+            "rule": "104.3c",
+            "quote": "If a player is required to draw more cards than are left in their library, they draw the remaining cards and then lose the game the next time a player would receive priority."
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "State the bound and the Avatar's contribution to it (question b). Every activation consumes exactly one creature (the sacrifice) and returns exactly one Insect - but only if its -1/-1 counter goes on a creature you are willing to lose that is NOT one of your own Insects. A counter spent on your own Insect kills that Insect, so the token it makes only breaks even and the activation is body-negative. So the ceiling is: initial sacrificeable bodies (Insect A, Insect B, South Wind Avatar = 3) + counters absorbable by non-Insect creatures (Grizzly Bears 2 + South Wind Avatar 4 = 6) - 1 for the Avatar being removed as a sacrificeable body by the very counter that kills it = 8.",
+        "effect": "(b) YES, the 4-toughness body extends the bound, by exactly +4 activations. South Wind Avatar contributes 4 of the 6 non-Insect counter slots (+4), adds itself as a sacrificeable body (+1), and loses itself as a body when its fourth counter kills it (-1): net +4. Without it, the ceiling is 4 activations (2 starting Insects + 2 Grizzly Bears counters) and ZERO drains. It is also the only source of lifegain on the board, so it supplies 100% of the damage. Alternative orderings (sacrificing the Avatar rather than counter-killing it, or spending the insect-target activation earlier) all converge on the same two numbers: 8 activations, 7 drains. No line reaches 8 drains - an eighth drain would require the Avatar alive at the eighth sacrifice, which caps activations at 7.",
+        "citations": [
+          {
+            "rule": "601.2h",
+            "quote": "Partial payments are not allowed. Unpayable costs can’t be paid."
+          },
+          {
+            "rule": "115.6",
+            "quote": "A spell or ability that requires targets may allow zero targets to be chosen."
+          }
+        ]
+      },
+      {
+        "n": 12,
+        "action": "Tally. South Wind Avatar's first ability triggered 8 times over the run: seven sacrifices of counterless 1/1 Insects (1 life each) plus one counter-killed Insect at toughness 0 (0 life). Its second ability triggered 7 times, once per nonzero lifegain event, draining 1 from each of four opponents each time.",
+        "effect": "(a) 8 completed activations, ended by having no creature other than Yawgmoth left to sacrifice. The Avatar's drain DOES fire - 7 times, not 8 and not 10 - for 7 x 4 = 28 total opposing life. Each opponent goes 40 -> 33; 160 opposing life becomes 132. You end at 39 (40 - 8 paid + 7 gained), having drawn 8 cards. This is decisively NOT infinite and not near-infinite: the deaths that would have to be free are the counter-killed Insects, and those gain 0 life and drain nothing.",
+        "citations": [
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          },
+          {
+            "rule": "104.3c",
+            "quote": "If a player is required to draw more cards than are left in their library, they draw the remaining cards and then lose the game the next time a player would receive priority."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "8 completed Yawgmoth activations, ended by body exhaustion (no creature other than Yawgmoth left to sacrifice - not life, not library). South Wind Avatar's dies-trigger fired 8 times but produced only 7 nonzero lifegain events: a sacrificed counterless Insect dies at toughness 1 (gain 1), while an Insect killed by its own -1/-1 counter dies at toughness 0 (gain 0, and per CR 119.9 that is not a lifegain event, so no drain). The drain therefore fired 7 times for 1 life per opponent: 28 total opposing life, each opponent 40 -> 33. The Avatar's 4 toughness extends the bound by exactly +4 activations (4 of 8) and supplies all of the damage. Spellbook's 'Near-infinite' tag is wrong for this board.",
+      "you": {
+        "life": 39,
+        "life_math": "40 start, -1 per activation x8 = -8, +1 per lifegain event x7 = +7",
+        "battlefield": [
+          "Yawgmoth, Thran Physician (2/4, no counters, untapped)",
+          "Nest of Scarabs",
+          "Swamp (untapped)",
+          "Swamp (untapped)",
+          "Swamp (untapped)"
+        ],
+        "graveyard": [
+          "South Wind Avatar (died to its fourth -1/-1 counter)"
+        ],
+        "cards_drawn": 8,
+        "library": 52,
+        "hand": "8 cards drawn this turn",
+        "notes": [
+          "All Insect tokens have ceased to exist (CR 111.7); 9 Insects existed across the run (2 starting + 7 created by Nest of Scarabs).",
+          "Activations 1-7 each sacrificed a counterless Insect while the Avatar was on the battlefield: 7 lifegain events.",
+          "Activation 6 spent its counter on an Insect, killing it at toughness 0: the Avatar's ability triggered and resolved for 0 life, and its drain did not trigger.",
+          "Activation 7's fourth counter killed the Avatar; its own death did not trigger its 'another creature you control dies' ability.",
+          "Activation 8 was made with zero targets (CR 115.6), so it produced no replacement Insect - that is the last activation."
+        ]
+      },
+      "opponents": [
+        {
+          "name": "opponent_a",
+          "life": 33,
+          "life_lost": 7,
+          "battlefield": [],
+          "notes": "Grizzly Bears died to its second -1/-1 counter on activation 2; as an opponent's creature its death gave no life and no drain, but the counter still made an Insect."
+        },
+        {
+          "name": "opponent_b",
+          "life": 33,
+          "life_lost": 7,
+          "battlefield": []
+        },
+        {
+          "name": "opponent_c",
+          "life": 33,
+          "life_lost": 7,
+          "battlefield": []
+        },
+        {
+          "name": "opponent_d",
+          "life": 33,
+          "life_lost": 7,
+          "battlefield": []
+        }
+      ],
+      "totals": {
+        "completed_activations": 8,
+        "lifegain_events": 7,
+        "avatar_dies_triggers": 8,
+        "zero_life_gains": 1,
+        "drain_triggers": 7,
+        "total_opposing_life_lost": 28,
+        "opposing_life_remaining": 132,
+        "loop_terminus": "No creature other than Yawgmoth remains to pay 'Sacrifice another creature'; unpayable costs can't be paid (CR 601.2h).",
+        "infinite": false
+      }
+    }
+  }
+}

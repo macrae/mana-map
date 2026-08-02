@@ -87,14 +87,26 @@ window.Stage = (function () {
       });
     if (opts.filter) behaviour.filter(opts.filter);
     d3.select(canvas).call(behaviour);
+    /* d3-zoom binds its own `dblclick.zoom`, which zooms in one step on every double
+     * click. A surface that gives double-click a meaning of its own — the graph expands
+     * a card's neighbours — has to take it back, and the right place is here, beside the
+     * call that installed it, rather than as a removal at a distance that reads as
+     * arbitrary. */
+    if (opts.dblclickZoom === false) d3.select(canvas).on('dblclick.zoom', null);
 
     /* ALWAYS go through the behaviour, never assign `transform` directly: d3 keeps its
      * own copy on the node, so a direct assignment is silently reverted by the next
      * gesture. Both renderers hit this and both left a comment about it. */
-    function set(t, animate) {
+    /* `ease` is optional and the default is untouched, so the atlas keeps the motion it
+     * has always had. The graph passes `d3.easeBackOut` for a slight overshoot: the
+     * camera passes its target and settles back, which reads as physical rather than
+     * mechanical on a surface that is itself moving. */
+    function set(t, animate, ease) {
       const sel = d3.select(canvas);
-      if (animate) sel.transition().duration(animate === true ? 450 : animate).call(behaviour.transform, t);
-      else sel.call(behaviour.transform, t);
+      if (!animate) { sel.call(behaviour.transform, t); return; }
+      const tr = sel.transition().duration(animate === true ? 450 : animate);
+      if (ease) tr.ease(ease);
+      tr.call(behaviour.transform, t);
     }
 
     return {
@@ -180,6 +192,17 @@ window.Stage = (function () {
     synergy: function () { return 'rgba(168,120,214,0.55)'; },
     obsolete: function () { return 'rgba(214,120,120,0.5)'; },
     similar: function (c) { return 'rgba(122,138,196,' + (0.08 + c * 0.42).toFixed(3) + ')'; },
+    // A rules-verified line, under the spotlight. The same green the atlas overlay has
+    // always used for verified lines, so the claim looks the same on both surfaces.
+    verified: function () { return 'rgba(76,175,80,0.85)'; },
+    // The same line at rest. Verified edges are drawn ALWAYS, so without a quiet state
+    // they sit at full spotlight intensity permanently and deselecting a line does not
+    // visibly deselect anything — measured, the green pixel count barely moved.
+    verifiedQuiet: function () { return 'rgba(76,175,80,0.28)'; },
+    // Everything that is not the line you are looking at. Not a relation — a
+    // spotlight state, which is why it is decided by `relOf` from context rather
+    // than stored on the edge.
+    muted: function () { return 'rgba(122,138,196,0.06)'; },
   };
 
   function edgeInk(rel, closeness) {
