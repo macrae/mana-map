@@ -29,6 +29,7 @@ PILOT_STEPS = [
     ("validate-upgrade-watch", "manamap.pilot.validate_upgrade_watch", "Form-check an upgrade-watch scout report"),
     ("validate-considering", "manamap.pilot.validate_considering", "Form-check The Short List (the ten)"),
     ("validate-diagnosis", "manamap.pilot.validate_diagnosis", "Form-check a deck diagnosis (axes re-derived, cuts checked against verified stacks)"),
+    ("diagnosis-report", "manamap.pilot.diagnosis_report", "Render a deck diagnosis as readable markdown"),
     ("validate-tutor-guide", "manamap.pilot.validate_tutor_guide", "Form-check the Fetch Quests tutor guide"),
     ("validate-strategic-frame", "manamap.pilot.validate_strategic_frame", "Form-check a strategic frame"),
     ("artist-credits", "manamap.pilot.artist_credits", "Standout artists and art themes in a deck"),
@@ -57,8 +58,8 @@ _DECK_COMMANDS = {
     "bracket-check", "build-deck", "validate-build", "deck-facts", "deck-audit",
     "mana-analysis", "sideboard-facts", "validate-sideboard",
     "validate-strategic-frame", "upgrade-facts", "validate-upgrade-watch",
-    "validate-considering", "validate-diagnosis", "validate-tutor-guide",
-    "impact", "scenario-facts",
+    "validate-considering", "validate-diagnosis", "diagnosis-report",
+    "validate-tutor-guide", "impact", "scenario-facts",
 }
 
 
@@ -139,6 +140,9 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--json", action="store_true", dest="as_json")
             cmd.add_argument("--out", default=None,
                              help="Write JSON here as well (a view, never tracked)")
+        if name == "diagnosis-report":
+            cmd.add_argument("--out", default=None,
+                             help="Write markdown here instead of stdout (a view, never tracked)")
         if name == "deck-audit":
             cmd.add_argument("--archetype", default=None,
                              help="aggro|control|combo|voltron — overrides what "
