@@ -934,3 +934,89 @@ def test_card_refs_version_is_stamped_and_reseeds_without_invalidating(deck, mon
             == ac.CARD_REFS_VERSION)
     # ...and it settles: a second sweep has nothing to do.
     assert "stack:001" not in ac.rebless(SLUG)[0]
+
+
+# ── Bulk re-record: the gates are the feature ────────────────────────────
+
+
+def _snap_of(slug):
+    return ac.snapshot(slug)
+
+
+def test_snapshot_captures_status_and_artifact_digest(deck):
+    _two_card_deck(deck)
+    ac.record(SLUG, "stack:001")
+    snap = _snap_of(SLUG)
+    assert snap["stack:001"]["status"] == "HIT"
+    assert snap["stack:001"]["artifact_sha256"]
+
+
+def test_rerecord_refixes_what_a_format_change_invalidated(deck, monkeypatch):
+    """The intended path: HIT before, MISS purely because inputs were rescoped."""
+    _two_card_deck(deck)
+    ac.record(SLUG, "stack:001")
+    snap = _snap_of(SLUG)
+
+    # Simulate a cache-format change: same artifact, different fingerprint.
+    real = ac.fingerprint
+    monkeypatch.setattr(ac, "fingerprint", lambda *a, **k: "deadbeef" + real(*a, **k)[:8])
+    assert ac.status(SLUG, "stack:001")["status"] == "MISS"
+
+    planned, refused, done = ac.rerecord(SLUG, snap)
+    assert planned == ["stack:001"] and done == ["stack:001"]
+    # Every OTHER routine in the fixture was never recorded, so it was MISS in the
+    # snapshot too — and is correctly refused rather than swept along.
+    assert "stack:001" not in dict(refused)
+    assert all("real work" in why for _, why in refused)
+    assert ac.status(SLUG, "stack:001")["status"] == "HIT"
+
+
+def test_rerecord_REFUSES_a_routine_that_was_already_miss(deck, monkeypatch):
+    """The gate that matters: never freeze genuinely stale work as a HIT."""
+    _two_card_deck(deck)
+    # Never recorded -> MISS in the snapshot.
+    snap = _snap_of(SLUG)
+    assert snap["stack:001"]["status"] == "MISS"
+
+    planned, refused, done = ac.rerecord(SLUG, snap)
+    assert planned == [] and done == []
+    assert ("stack:001", "was MISS before the change — real work") in refused
+
+
+def test_rerecord_REFUSES_when_the_artifact_changed_since_the_snapshot(deck, monkeypatch):
+    _two_card_deck(deck)
+    ac.record(SLUG, "stack:001")
+    snap = _snap_of(SLUG)
+
+    # Someone edited the artifact after the snapshot — that is real content movement.
+    doc = stack_doc("001")
+    doc["resolution"]["final_state"]["summary"] = "rewritten by hand"
+    write_json(deck / "stacks" / "001-first.json", doc)
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    ac.record(SLUG, "stack:001")          # re-record so artifact_sha256 moves
+    real = ac.fingerprint
+    monkeypatch.setattr(ac, "fingerprint", lambda *a, **k: "deadbeef" + real(*a, **k)[:8])
+
+    planned, refused, done = ac.rerecord(SLUG, snap)
+    assert planned == [] and done == []
+    assert any("artifact changed" in why for _, why in refused)
+
+
+def test_rerecord_dry_run_changes_nothing(deck, monkeypatch):
+    _two_card_deck(deck)
+    ac.record(SLUG, "stack:001")
+    snap = _snap_of(SLUG)
+    before = json.dumps(ac.load_cache(SLUG), sort_keys=True)
+    real = ac.fingerprint
+    monkeypatch.setattr(ac, "fingerprint", lambda *a, **k: "deadbeef" + real(*a, **k)[:8])
+
+    planned, refused, done = ac.rerecord(SLUG, snap, dry_run=True)
+    assert planned == ["stack:001"] and done == []
+    assert json.dumps(ac.load_cache(SLUG), sort_keys=True) == before
+
+
+def test_rerecord_without_a_snapshot_refuses_outright(deck):
+    _two_card_deck(deck)
+    ac.record(SLUG, "stack:001")
+    with pytest.raises(ac.MissingInput, match="no snapshot entry"):
+        ac.rerecord(SLUG, None)

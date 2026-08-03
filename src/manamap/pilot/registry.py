@@ -37,6 +37,8 @@ PILOT_STEPS = [
     ("cache-record", "manamap.pilot.agent_cache", "Record the fingerprint that produced an artifact"),
     ("cache-clear", "manamap.pilot.agent_cache", "Drop cache records for a deck or routine"),
     ("cache-rebless", "manamap.pilot.agent_cache", "Re-record every STALE_OK routine without spawning"),
+    ("cache-snapshot", "manamap.pilot.agent_cache", "Record every routine's status BEFORE a cache-format change"),
+    ("cache-rerecord", "manamap.pilot.agent_cache", "Re-fingerprint what a format change invalidated (gated on a snapshot)"),
     ("impact", "manamap.pilot.impact", "What does the latest deck change touch? Deterministic, report-only"),
     ("validate-strategy", "manamap.pilot.validate_strategy", "Form-check strategy.md + CHANGELOG"),
     ("build-strategy-db", "manamap.pilot.build_strategy_db", "Chunk + embed strategy.md into the strategy DB"),
@@ -47,6 +49,7 @@ PILOT_STEPS = [
 _DECK_COMMANDS = {
     "fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual",
     "validate-issue", "cache-status", "cache-record", "cache-clear", "cache-rebless",
+    "cache-snapshot", "cache-rerecord",
     "artist-credits",
     "bracket-check", "build-deck", "validate-build", "deck-facts", "mana-analysis", "sideboard-facts", "validate-sideboard",
     "validate-strategic-frame", "upgrade-facts", "validate-upgrade-watch",
@@ -95,6 +98,14 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--routine", default=None,
                              help="Routine id (e.g. writer-prose, stack:001); omit for all")
             cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "cache-snapshot":
+            cmd.add_argument("--out", required=True,
+                             help="Snapshot file; merged across decks so one file covers the fleet")
+        if name == "cache-rerecord":
+            cmd.add_argument("--snapshot", required=True,
+                             help="Snapshot taken BEFORE the change")
+            cmd.add_argument("--dry-run", action="store_true", dest="dry_run",
+                             help="Report what would be re-recorded and change nothing")
             cmd.add_argument("--force", action="store_true",
                              help="Always report MISS (deliberate rebuild)")
         if name == "cache-record":

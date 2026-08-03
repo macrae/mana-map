@@ -22,6 +22,7 @@ transfer someone else's regeneration as a cache hit).
 
 import hashlib
 import json
+import pathlib
 import re
 import sys
 
@@ -768,6 +769,82 @@ def rebless(slug):
     return reblessed, skipped
 
 
+def snapshot(slug):
+    """Every routine's status and artifact digest, right now.
+
+    Taken BEFORE a change that will move fingerprints, so `rerecord` afterwards
+    can tell "this went MISS because I changed the cache format" from "this was
+    already stale and needs a real spawn". Without that distinction a bulk
+    re-record would freeze genuinely stale artifacts as permanent HITs, which is
+    the one failure mode of this tool that produces wrong published content
+    rather than merely wasted tokens.
+    """
+    out, sidecar = {}, load_cache(slug)
+    for routine in discover_routines(slug):
+        try:
+            result = status(slug, routine, cache=sidecar)
+        except (UnknownRoutine, MissingInput):
+            continue
+        rec = (sidecar.get("routines") or {}).get(routine) or {}
+        out[routine] = {
+            "status": result["status"],
+            # The artifact's own digest, not the fingerprint. A fingerprint moves
+            # when INPUTS move — which is exactly what the format change does. The
+            # artifact digest moves only when the artifact itself was rewritten,
+            # which is the thing that must veto a re-record.
+            "artifact_sha256": rec.get("artifact_sha256"),
+        }
+    return out
+
+
+def rerecord(slug, snap, dry_run=False):
+    """Re-fingerprint routines a format change invalidated. Never spawns.
+
+    Two gates, both mandatory:
+      1. the routine was HIT in `snap` — it was current before the change;
+      2. its artifact is byte-identical to what `snap` recorded — nobody edited
+         the content in between.
+
+    A routine failing either gate is left MISS for a human. Re-recording is an
+    attestation ("this artifact is still what I would accept"), so the tool
+    refuses to make that claim on anything it cannot prove was already good.
+    """
+    planned, refused = [], []
+    if not snap:
+        raise MissingInput(
+            f"no snapshot entry for {slug} — take one BEFORE the change with "
+            f"`manamap pilot cache-snapshot {slug} --out <path>`. Re-recording "
+            f"without a baseline cannot distinguish a format change from real staleness."
+        )
+    sidecar = load_cache(slug)
+    for routine in discover_routines(slug):
+        try:
+            result = status(slug, routine, cache=sidecar)
+        except (UnknownRoutine, MissingInput):
+            continue
+        was = snap.get(routine)
+        if result["status"] != "MISS":
+            continue                                    # nothing to do
+        if was is None:
+            refused.append((routine, "absent from the snapshot"))
+        elif was.get("status") != "HIT":
+            refused.append((routine, f'was {was.get("status")} before the change — real work'))
+        else:
+            rec = (sidecar.get("routines") or {}).get(routine) or {}
+            if rec.get("artifact_sha256") != was.get("artifact_sha256"):
+                refused.append((routine, "artifact changed since the snapshot"))
+            else:
+                planned.append(routine)
+
+    if dry_run:
+        return planned, refused, []
+    done = []
+    for routine in planned:
+        record(slug, routine)
+        done.append(routine)
+    return planned, refused, done
+
+
 # ── CLI ─────────────────────────────────────────────────────────────────
 
 _SYMBOL = {"added": "+", "removed": "-", "modified": "~", "appeared": "+",
@@ -829,6 +906,37 @@ def main(args):
                   f'fingerprint {entry["fingerprint"][:12]}, {len(entry["inputs"])} input(s).')
         else:
             print(f"{args.routine} already recorded at this fingerprint — skipping write.")
+        return
+
+    if command == "cache-snapshot":
+        out = pathlib.Path(args.out)
+        doc = json.loads(out.read_text()) if out.exists() else {}
+        doc[slug] = snapshot(slug)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(doc, indent=2, sort_keys=True) + "\n")
+        hits = sum(1 for v in doc[slug].values() if v["status"] == "HIT")
+        print(f"Snapshot {slug}: {hits}/{len(doc[slug])} HIT -> {out}")
+        return
+
+    if command == "cache-rerecord":
+        snap_path = pathlib.Path(args.snapshot)
+        if not snap_path.exists():
+            raise SystemExit(f"FAIL snapshot {snap_path} does not exist")
+        snap = (json.loads(snap_path.read_text()) or {}).get(slug)
+        try:
+            planned, refused, done = rerecord(slug, snap, dry_run=args.dry_run)
+        except MissingInput as e:
+            raise SystemExit(f"FAIL {e}")
+        verb = "Would re-record" if args.dry_run else "Re-recorded"
+        for routine in planned:
+            print(f"  {verb} {routine}")
+        if not planned:
+            print(f"  {slug}: nothing to re-record")
+        for routine, why in refused:
+            print(f"  REFUSED {routine} — {why}")
+        if refused:
+            print(f"  {len(refused)} routine(s) left MISS on purpose — they need a human, "
+                  f"not a re-fingerprint.")
         return
 
     if command == "cache-rebless":
