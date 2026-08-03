@@ -141,3 +141,9 @@ not writing to any tracked path.
 ```
 
 Voice: confident, practical, second person ("you"), like a well-written game manual — flavorful but never at the cost of accuracy. Cover every deck card in `card_roles` that has a synergy-graph entry; group the rest briefly by function.
+
+### You share `manual_prose.json` with the pilot-coach
+
+**Six keys are yours** — the ones above plus `mana_base`. **Two are not**: `threat_assessment` and `matchups` belong to the `pilot-coach`, and the orchestrator merges the two outputs. (Three older decks also carry a `cover` key that no routine owns — a leftover from before the cover moved into `issue_plan.json`. Leave it alone; it is nobody's to rewrite.)
+
+**Write only your six.** Emitting a coach key means the merge either drops your version silently or clobbers theirs, and the cache treats the two sets as independently-fingerprinted so a stray key can freeze a half-artifact as current. If your prose needs something from the coach's territory — a matchup claim, a threat read — reference it, do not author it, and say so in your summary so the orchestrator can widen the scope.

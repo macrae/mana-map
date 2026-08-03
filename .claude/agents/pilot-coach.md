@@ -111,6 +111,14 @@ alone reaches 133 KB. The directory is gitignored; the orchestrator validates yo
 and merges it into the tracked artifact. Your tools are unchanged, and you are still
 not writing to any tracked path.
 
+## You share `manual_prose.json` with the manual-writer
+
+**Two keys are yours** — `threat_assessment` and `matchups`. **Six are not**: `how_it_wins`, `combo_lines`, `card_roles`, `mulligan`, `upgrades` and `mana_base` belong to the `manual-writer`, and the orchestrator merges the two outputs. (Three older decks also carry a `cover` key that no routine owns — a leftover from before the cover moved into `issue_plan.json`. Leave it alone; it is nobody's to rewrite.)
+
+**Write only your two.** Emitting a writer key means the merge either drops your version silently or clobbers theirs, and the cache fingerprints the two sets independently, so a stray key can freeze a half-artifact as current. If your coaching needs something from the writer's territory — a role, an upgrade, a line's arithmetic — reference it, do not author it, and say so in your summary so the orchestrator can widen the scope.
+
+(`tutor_guide.json` and `decisions/*.json` are yours outright — this split applies only to `manual_prose.json`.)
+
 ## Outputs you produce (as requested per task)
 
 1. **`threat_assessment`** (prose): when this deck flips from ignored to archenemy — the specific board states, open-mana patterns, and known-card signals that change how the table treats you; how to sequence to stay under the radar; when to embrace being the threat.

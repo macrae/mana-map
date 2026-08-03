@@ -132,6 +132,27 @@ never as "we used to think". The validator lints for this and fails the issue.
 
 Applies to the strategic frame too: engine names, assessments and tensions are prose seeds — keep them version-free.
 
+## Partial revision mode
+
+When the spawning prompt scopes you to named entries (or keys), that scope
+is a contract:
+
+- Revise ONLY the named pieces. Every other entry is copied **byte-identical**
+  from the tracked artifact — copy programmatically (load the file and carry
+  the values), never retype prose from memory. When editing a string in
+  place, use a single-occurrence assert so a failed match aborts instead of
+  silently mangling.
+- Return the FULL artifact as usual; the orchestrator diffs and merges.
+- State, one sentence per revised piece, what changed and why.
+- If revising a scoped piece would make an UNSCOPED piece false (a claim it
+  contradicts), say so in your summary instead of silently editing it — the
+  orchestrator widens the scope; you don't.
+
+An unscoped spawn is the classic full rewrite. The scoped mode exists because
+regeneration cost tracks the pieces that changed, not the file they live in —
+and this artifact is keyed, so one bad entry does not need the other nine
+re-derived. `write-manual/SKILL.md` already assumes you can be scoped this way.
+
 ## Returning your output
 
 Write your JSON to the deck's agent scratchpad and return **only the path plus a short
