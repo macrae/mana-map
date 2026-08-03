@@ -33,6 +33,7 @@ PILOT_STEPS = [
     ("build-manual", "manamap.pilot.build_manual", "Render a deck's magazine issue (sections per issue_spec)"),
     ("build-index", "manamap.pilot.build_index", "Render manuals/index.html — the newsstand"),
     ("validate-issue", "manamap.pilot.validate_issue", "Form-check issue.json + issue_plan.json"),
+    ("scenario-facts", "manamap.pilot.scenario_facts", "Deterministic brief for a stack scenario (board, bodies, drain arithmetic)"),
     ("cache-status", "manamap.pilot.agent_cache", "Have an agent routine's inputs changed?"),
     ("cache-record", "manamap.pilot.agent_cache", "Record the fingerprint that produced an artifact"),
     ("cache-clear", "manamap.pilot.agent_cache", "Drop cache records for a deck or routine"),
@@ -53,7 +54,7 @@ _DECK_COMMANDS = {
     "artist-credits",
     "bracket-check", "build-deck", "validate-build", "deck-facts", "mana-analysis", "sideboard-facts", "validate-sideboard",
     "validate-strategic-frame", "upgrade-facts", "validate-upgrade-watch",
-    "validate-considering", "validate-tutor-guide", "impact",
+    "validate-considering", "validate-tutor-guide", "impact", "scenario-facts",
 }
 
 
@@ -98,6 +99,9 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--routine", default=None,
                              help="Routine id (e.g. writer-prose, stack:001); omit for all")
             cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "scenario-facts":
+            cmd.add_argument("--stack", default=None, help="Only this scenario id (e.g. 001)")
+            cmd.add_argument("--out", default=None, help="Also write JSON here (a view, never tracked)")
         if name == "cache-snapshot":
             cmd.add_argument("--out", required=True,
                              help="Snapshot file; merged across decks so one file covers the fleet")
