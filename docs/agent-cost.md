@@ -56,6 +56,26 @@ From the session that built the deck builder and built hapatra (2026-07-25):
 | `the-ten` | sideboard-analyst | 76,000–115,000 (7 spawns, the fleet batch) | new sideboard card, new pilot feedback, pool refresh |
 | `tutor-guide` | pilot-coach | 60,000–90,000 (7 spawns) | a tutor enters or leaves the 99 |
 
+The diagnosis loop (2026-08-03), **estimates until the first run measures them** —
+recorded here as estimates on purpose, so the gap between the guess and the real
+number is visible rather than quietly overwritten:
+
+| Routine | Agent | Tokens (est.) | Typical trigger |
+|---|---|---|---|
+| `deck-recon` | deck-doctor (MODE recon) | 60,000–90,000 | age, not inputs — see below |
+| `deck-diagnosis` | deck-doctor ⇄ deck-skeptic | 200,000–300,000 | decklist edit, new verified stack, goldfish re-run |
+
+`deck-recon` is the only routine in `AGENT_ROUTINES` whose staleness is **time**
+rather than inputs. A decklist edit does not change what strong lists for that
+commander run, so hashing `cards.json` here would buy a web pass on every swap;
+its declared input is `deck:brief.json?` and `RECON_MAX_AGE_DAYS` is judged by the
+skill. It is also deliberately not an input to any manual routine — a recon
+refresh should cost one diagnosis, not a regeneration.
+
+The deterministic half costs **zero**: `manamap pilot deck-audit` joins five
+existing artifacts into sixteen cited axes plus the engine-activation read, and a
+cache miss on both routines still leaves the whole measurement on the table.
+
 `the-ten` replaced the retired `sideboard-analysis`/`upgrade-watch` pair (one routine, one
 artifact — `considering.json`). It costs more than the old bench-only read because its pool
 is the whole card database when the bench cannot fill ten, but `sideboard-facts` and

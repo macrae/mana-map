@@ -770,12 +770,20 @@ DECK_ROLE_BUDGET = {
 # Which classifier roles satisfy each budget line. `flex` takes anything and is
 # what makes the deck feel like the commander rather than a checklist.
 DECK_ROLE_GROUPS = {
-    "ramp": ("ramp:rock", "ramp:dork", "ramp:ritual", "ramp:land", "ramp:cost-reduction"),
+    # ramp:treasure was missing until deck-audit counted a Treasure maker as
+    # `flex`. It is a real classifier role on 364 cards (4 of them in
+    # yawgmoth-swarm) and it accelerates mana, which is the only question this
+    # group asks.
+    "ramp": ("ramp:rock", "ramp:dork", "ramp:ritual", "ramp:land",
+             "ramp:cost-reduction", "ramp:treasure"),
     "draw": ("draw:engine", "draw:burst", "draw:impulse", "draw:wheel", "draw:cantrip"),
     "removal": ("removal:spot", "removal:damage", "removal:edict", "removal:fight",
                 "removal:debuff", "removal:bounce", "counterspell"),
     "sweeper": ("removal:sweeper",),
-    "protection": ("protection:self", "protection:granted", "protection:fog"),
+    # protection:redirect likewise — a card that redirects a removal spell is
+    # protection by any reading, and it was falling to flex.
+    "protection": ("protection:self", "protection:granted", "protection:fog",
+                   "protection:redirect"),
     "recursion": ("recursion",),
     "tutor": ("tutor:unrestricted", "tutor:narrow"),
     "wincon": ("wincon:alt", "wincon:drain", "wincon:combat"),
@@ -785,6 +793,193 @@ DECK_ROLE_GROUPS = {
     "flex": ("payoff:counters", "payoff:typal", "sac-cost",
              "doubler:tokens", "doubler:counters", "doubler:triggers"),
 }
+
+# ── Pilot: Deck Audit (the diagnosis substrate) ──────────────────────────
+# `deck-audit` joins deck-facts, mana_analysis, goldfish, bracket_report and
+# card_roles into one axis table. Every axis carries a target the corpus can
+# actually support, so an agent reading the audit can cite the number instead
+# of inventing it — the failure mode DECK_ROLE_BUDGET was built to have.
+#
+# `quote` is a VERBATIM span of the named section (whitespace-normalized at
+# comparison, the same gate validate_stack.validate_citations applies).
+# tests/test_pilot_deck_audit.py fails if the doc drifts away from any of
+# them — which is the point: a target nobody can quote is not a target.
+#
+# `low`/`high` are inclusive; `None` means the corpus states no bound in that
+# direction. Draw has no ceiling in the literature and this does not invent one.
+DECK_AXIS_TARGETS = {
+    "mana-base": {
+        # LAND copies against the format's conventional band. Burgess's formula
+        # lives on `mana-sources` below, not here: it budgets sources and counts
+        # 0-mana rocks as lands, so applying it to the land count alone asks a
+        # 5-colour deck with a 9-mana commander for 45 lands.
+        "low": 36, "high": 38,
+        "source": "strategy:deckbuilding.ratios",
+        "quote": ("36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted "
+                  "removal, 3–4 board wipes"),
+    },
+    "mana-sources": {
+        # "Budget mana *sources*, not lands" is the section's first sentence, and
+        # this is that instruction made literal: lands plus the PERSISTENT
+        # producers (rocks, dorks, land ramp). Rituals and Treasures are one-shot
+        # and are deliberately not sources.
+        "low": None, "high": None, "formula": "burgess",
+        "source": "strategy:deckbuilding.mana-base",
+        "quote": ("lands = 31 + colours in the commander's identity + the "
+                  "commander's mana value, counting 0-mana rocks as lands"),
+    },
+    "creatures": {
+        # No base target — the corpus sets a creature count only per archetype
+        # (aggro 26-32), so unarchetyped decks get the number reported, not judged.
+        "low": None, "high": None,
+        "source": "strategy:deckbuilding.archetype-selection",
+        "quote": ("aggro 26-32 creatures / 5-6 removal / 34-36 lands, control "
+                  "12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and "
+                  "4-6 protection, Voltron 12-16 equipment and auras"),
+    },
+    "taplands": {
+        "low": None, "high": 8,
+        "source": "strategy:deckbuilding.mana-base",
+        "quote": ("around eight taplands is comfortable in a slow deck, near "
+                  "zero in an aggressive one"),
+    },
+    "colour-sources": {
+        # Target is per colour, computed by manabase.source_targets from the
+        # deck's own pip load. The quote is the yardstick that produces it.
+        "low": None, "high": None, "formula": "karsten",
+        "source": "strategy:deckbuilding.mana-base.color-sources",
+        "quote": ('his 99-card column assumes 40 lands, on the play, casting '
+                  'on curve, "consistently" ≈ 90%'),
+    },
+    "ramp": {
+        "low": 10, "high": 12,
+        "source": "strategy:deckbuilding.ratios",
+        "quote": ("36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted "
+                  "removal, 3–4 board wipes"),
+    },
+    "card-advantage": {
+        "low": 10, "high": None,
+        "source": "strategy:deckbuilding.ratios",
+        "quote": ("36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted "
+                  "removal, 3–4 board wipes"),
+    },
+    "interaction": {
+        "low": 8, "high": None,
+        "source": "strategy:deckbuilding.interaction-suite",
+        "quote": ('Walser\'s baseline is "at least 8-10 removal spells" inside '
+                  'a "15- to 20-card interactive suite"'),
+    },
+    "interaction-breadth": {
+        # Five permanent classes; the measure is how many are answered at all.
+        "low": 5, "high": None,
+        "source": "strategy:deckbuilding.interaction-suite",
+        "quote": ("cover the classes — creature, artifact, enchantment, "
+                  "graveyard, land — before doubling any"),
+    },
+    "sweepers": {
+        "low": 1, "high": 3,
+        "source": "strategy:deckbuilding.interaction-suite",
+        "quote": 'wipes "one or two max" (Zupke caps at 3)',
+    },
+    "protection": {
+        "low": 5, "high": 7,
+        "source": "strategy:deckbuilding.threat-density",
+        "quote": ('3-5 finishers, "at least 3 finishers in your deck", 5-7 '
+                  "protection slots, 20-25 flexible strategy cards"),
+    },
+    "threat-density": {
+        "low": 3, "high": None,
+        "source": "strategy:deckbuilding.threat-density",
+        "quote": ('Countable floor, Zupke\'s structure: 3-5 finishers, "at '
+                  'least 3 finishers in your deck"'),
+    },
+    "consistency": {
+        # Roach goldfished 100 real decks; the complement of his 26% miss rate
+        # is the only turn-3 bound the corpus actually states. Engine redundancy
+        # is reported separately, per component, under ENGINE_REDUNDANCY_CITATION
+        # — one number for "does the deck function" and one for "does the engine".
+        "low": 0.74, "high": None, "unit": "rate",
+        "source": "strategy:deckbuilding.mana-base",
+        "quote": ("had 26% miss the turn-3 land drop with no mana source at all"),
+    },
+    "curve": {
+        "low": None, "high": None, "formula": "modal-two",
+        "source": "strategy:deckbuilding.curve",
+        "quote": ("puts the modal mana value at 2, with 15.7 two-drops and "
+                  "15.4 three-drops in the average deck and only ~1.5 cards at "
+                  "mana value 8+"),
+    },
+    "tutors": {
+        # No base bound, deliberately. WotC removed the tutor restriction on
+        # 2025-10-21 and bracket.py reports tutor density without scoring it; the
+        # corpus gives a count only inside the combo archetype's spread. An axis
+        # with no number to cite gets none rather than an invented one.
+        "low": None, "high": None,
+        "source": "strategy:deckbuilding.archetype-selection",
+        "quote": ("aggro 26-32 creatures / 5-6 removal / 34-36 lands, control "
+                  "12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and "
+                  "4-6 protection, Voltron 12-16 equipment and auras"),
+    },
+    "power": {
+        # Reported, never scored: the bracket engine computes a floor and WotC
+        # is explicit that contents are not a verdict.
+        "low": None, "high": None,
+        "source": "strategy:deckbuilding.power-level",
+        "quote": "Contents give a floor, never a verdict.",
+    },
+}
+
+# Per-archetype overrides on the axis targets above. `strategy:deckbuilding.ratios`
+# ends by saying templates are "counts of *functions*, not cards" and that the
+# right move is to "derive the counts from the deck's actual failure modes";
+# `.archetype-selection` is where the corpus actually varies them, so these are
+# its numbers and nothing else. An archetype with no entry keeps the base targets
+# and the audit says so rather than guessing.
+# NOTE aggro's 26-32 lands on `creatures`, not on `threat-density`: it is a
+# creature count, and threat-density counts wincon:* roles. Comparing the two
+# told edgar-vampires it was thirteen finishers short of an aggro deck.
+DECK_ARCHETYPE_BUDGETS = {
+    "aggro":   {"mana-base": (34, 36), "interaction": (5, 6), "creatures": (26, 32)},
+    "control": {"mana-base": (37, 39), "interaction": (12, 15), "sweepers": (5, 7)},
+    "combo":   {"tutors": (4, 8), "protection": (4, 6)},
+    "voltron": {"protection": (6, 8)},
+}
+DECK_ARCHETYPE_BUDGET_CITATION = {
+    "rule": "strategy:deckbuilding.archetype-selection",
+    "quote": ("aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 "
+              "removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 "
+              "protection, Voltron 12-16 equipment and auras"),
+}
+
+# The engine block reads each goldfish target's `any_of` groups as the engine's
+# components and prices their size through the hypergeometric. The computed odds
+# REPRODUCE this quote (5 -> 0.312, 7 -> 0.412, 10 -> 0.537 in an opening seven),
+# which is why the corpus line is carried as corroboration rather than as the
+# source of the numbers — a test asserts they still agree.
+ENGINE_REDUNDANCY_CITATION = {
+    "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+    "quote": ("5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the "
+              "singleton 4-of, 41.1%), 10 is 54%"),
+}
+
+# An `any_of` group this small is a single point of failure worth naming. Not a
+# probability threshold on purpose: the odds are reported per group and the
+# reader can see them, but "one card" and "two cards" are the cases where a
+# closer is worth looking for at all.
+ENGINE_THIN_GROUP = 3
+# Closers are ranked lists, not exhaustive ones — the whole pool is one
+# `upgrade-facts` away.
+ENGINE_MAX_CLOSERS = 8
+
+# How stale a `deck_recon.json` may be before the diagnose loop re-runs it.
+# Enforced by the SKILL, not by deck_audit: the audit is deterministic and
+# never reads the clock, so it reports `as_of` verbatim and the caller judges.
+RECON_MAX_AGE_DAYS = 120
+
+# The diagnose loop's bound — doctor ⇄ skeptic, mirroring RESOLVE_MAX_ITERATIONS
+# and DECK_BUILD_MAX_ITERATIONS. A diagnosis that cannot satisfy the skeptic in
+# three passes is a finding about the deck's artifacts, not a reason to keep paying.
+DIAGNOSE_MAX_ITERATIONS = 3
 
 # Scoring weights. Sum to 1.0. Three deliberate departures from the prototype:
 # EDHREC rank is log-scaled and bracket-damped (a uniform global popularity
@@ -912,8 +1107,13 @@ AGENT_ROUTINES = {
     "the-ten": {
         "agent": "sideboard-analyst",
         "artifact": "considering.json",
+        # deck:diagnosis.json? was added 2026-08-03: when a diagnosis exists the
+        # ten answer its NAMED deficits instead of index hits, so a re-diagnosis
+        # must MISS this routine. Optional, because most decks have none yet and
+        # the bench-first contract stands on its own without one.
         "inputs": ["cards:semantic", "stacks:passing", "deck:strategic_frame.json?",
                    "deck:bracket_report.json?", "deck:pilot_feedback.md?",
+                   "deck:diagnosis.json?",
                    "global:COMBO_DETAILS_PATH", "global:SYNERGY_GRAPH_PATH",
                    "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
     },
@@ -934,6 +1134,35 @@ AGENT_ROUTINES = {
                    "decisions:all", "deck:goldfish_metrics.json!meta.decklist_sha256",
                    "deck:strategic_frame.json?", "prose:shape", "cards:printing",
                    "global:COMBO_GRAPH_PATH", "global:SYNERGY_GRAPH_PATH",
+                   "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
+    },
+    # The diagnosis loop. `deck-recon` is the one routine in this registry whose
+    # staleness is TIME rather than inputs: a decklist edit does not change what
+    # strong lists for this commander run, so hashing cards.json here would MISS a
+    # web pass on every swap and cost a research round for nothing. Its declared
+    # input is the brief (commander + target bracket — the only things that change
+    # what recon should look for); age is judged by the SKILL against
+    # RECON_MAX_AGE_DAYS, because deck_audit is deterministic and never reads the
+    # clock. Deliberately NOT an input to deck-diagnosis's siblings: a recon
+    # refresh should cost one diagnosis, not a manual regeneration.
+    "deck-recon": {
+        "agent": "deck-doctor",
+        "artifact": "deck_recon.json",
+        "inputs": ["deck:brief.json?"],
+    },
+    "deck-diagnosis": {
+        "agent": "deck-doctor+deck-skeptic",
+        "artifact": "diagnosis.json",
+        # bracket_report and mana_analysis are declared because the audit reads
+        # them for the power and mana axes — re-running either must MISS this
+        # routine rather than flip a recorded diagnosis from true to false in
+        # silence. Same reasoning validate-build's bracket_report input carries.
+        "inputs": ["cards:semantic", "stacks:passing",
+                   "deck:goldfish_metrics.json!meta.decklist_sha256",
+                   "deck:goldfish_targets.json?", "deck:bracket_report.json?",
+                   "deck:mana_analysis.json?", "deck:strategic_frame.json?",
+                   "deck:deck_recon.json?", "deck:pilot_feedback.md?",
+                   "global:CARD_ROLES_PATH", "global:COMBO_DETAILS_PATH",
                    "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
     },
     # Deck construction. Note none of these take `cards:semantic` — it digests a

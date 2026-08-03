@@ -49,6 +49,22 @@ candidates, and the role budget's shortfalls. `deck-facts` gives the maindeck
 frame. Do not recompute any of it by hand — but **read the oracle text in
 `data/cards.csv` before trusting an index hit**: a hit is a lead, not a verdict.
 
+**When `diagnosis.json` exists, the ten answer its named deficits.** Run
+`.venv/bin/manamap pilot deck-audit <slug>` and read the diagnosis alongside it.
+Every pick should close something the diagnosis actually named — an axis it calls
+a `weakness` or a `liability`, or an engine `single_points_of_failure` entry — and
+say which, in an optional `"closes"` field naming the axis or component. A pick
+that closes nothing named is competing on taste against picks that are answering
+a measured hole.
+
+Two limits on that, both load-bearing. The diagnosis's `cut_candidates` are its
+opinion, not a fact about the deck: a `natural_cut` you propose is still yours to
+justify, and if the diagnosis prices a cut as `painful` you should not spend it
+casually. And an axis reading UNDER with a probe note under it is a **question**,
+not a hole — the audit says out loud which cards show a function the taxonomy
+filed elsewhere, and sleeving a card to fix a gap that isn't there is worse than
+leaving the slot alone.
+
 **Pilot feedback sets your appetite.** Read `pilot_feedback.md` first when it
 exists. Absent feedback, default to the **forward-looking half-step posture**
 (the pilot's standing mandate): read the current tier honestly, then answer
@@ -138,6 +154,7 @@ anything the orchestrator must decide. That is the whole final message.
        "obsoletes": ["<deck card the index lists>"],
        "synergy_partners_in_deck": ["<partner>"],
        "edhrec_rank": 1234, "game_changer": false},
+     "closes": "<axis or engine component the diagnosis named, when one exists>",
      "why": "one specific sentence — card, turn, matchup",
      "when": "bench pick: the condition that makes it right",
      "unlocks": "pool pick: what it opens",
@@ -152,8 +169,9 @@ anything the orchestrator must decide. That is the whole final message.
 }
 ```
 
-Every `evidence` field is optional; every claim in one is validated. `when`,
-`unlocks`, `natural_cut`, `bracket_delta`, and `bench_verdicts` are optional.
+Every `evidence` field is optional; every claim in one is validated. `closes`,
+`when`, `unlocks`, `natural_cut`, `bracket_delta`, and `bench_verdicts` are
+optional — `closes` only when a diagnosis exists to name something.
 
 ## Voice
 

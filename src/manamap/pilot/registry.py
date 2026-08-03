@@ -18,6 +18,7 @@ PILOT_STEPS = [
     ("goldfish", "manamap.pilot.goldfish", "Seeded Monte Carlo resource-development metrics"),
     ("bracket-check", "manamap.pilot.bracket", "Computed bracket floor and its evidence"),
     ("deck-facts", "manamap.pilot.deck_facts", "Deterministic deck facts agents would else re-derive"),
+    ("deck-audit", "manamap.pilot.deck_audit", "Cited axis targets + engine activation: is this deck any good?"),
     ("mana-analysis", "manamap.pilot.mana_analysis", "Deterministic mana/land analysis behind Sources Say"),
     ("sideboard-facts", "manamap.pilot.sideboard_facts", "What each sideboard card would do if run"),
     ("upgrade-facts", "manamap.pilot.upgrade_facts", "Pool-scout brief for a deck with no sideboard"),
@@ -27,6 +28,7 @@ PILOT_STEPS = [
     ("validate-sideboard", "manamap.pilot.validate_sideboard", "Form-check a sideboard analysis"),
     ("validate-upgrade-watch", "manamap.pilot.validate_upgrade_watch", "Form-check an upgrade-watch scout report"),
     ("validate-considering", "manamap.pilot.validate_considering", "Form-check The Short List (the ten)"),
+    ("validate-diagnosis", "manamap.pilot.validate_diagnosis", "Form-check a deck diagnosis (axes re-derived, cuts checked against verified stacks)"),
     ("validate-tutor-guide", "manamap.pilot.validate_tutor_guide", "Form-check the Fetch Quests tutor guide"),
     ("validate-strategic-frame", "manamap.pilot.validate_strategic_frame", "Form-check a strategic frame"),
     ("artist-credits", "manamap.pilot.artist_credits", "Standout artists and art themes in a deck"),
@@ -52,9 +54,11 @@ _DECK_COMMANDS = {
     "validate-issue", "cache-status", "cache-record", "cache-clear", "cache-rebless",
     "cache-snapshot", "cache-rerecord",
     "artist-credits",
-    "bracket-check", "build-deck", "validate-build", "deck-facts", "mana-analysis", "sideboard-facts", "validate-sideboard",
+    "bracket-check", "build-deck", "validate-build", "deck-facts", "deck-audit",
+    "mana-analysis", "sideboard-facts", "validate-sideboard",
     "validate-strategic-frame", "upgrade-facts", "validate-upgrade-watch",
-    "validate-considering", "validate-tutor-guide", "impact", "scenario-facts",
+    "validate-considering", "validate-diagnosis", "validate-tutor-guide",
+    "impact", "scenario-facts",
 }
 
 
@@ -135,7 +139,11 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--json", action="store_true", dest="as_json")
             cmd.add_argument("--out", default=None,
                              help="Write JSON here as well (a view, never tracked)")
-        if name in ("sideboard-facts", "upgrade-facts", "impact"):
+        if name == "deck-audit":
+            cmd.add_argument("--archetype", default=None,
+                             help="aggro|control|combo|voltron — overrides what "
+                                  "strategic_frame.json says; omit for the base targets")
+        if name in ("sideboard-facts", "upgrade-facts", "impact", "deck-audit"):
             cmd.add_argument("--json", action="store_true", dest="as_json")
             cmd.add_argument("--out", default=None,
                              help="Write JSON here instead of stdout (a view, never tracked)")

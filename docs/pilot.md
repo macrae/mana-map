@@ -32,6 +32,8 @@ manamap pilot build-deck <slug> [--write-decklist]  # brief.json → build_plan.
 manamap pilot validate-build <slug>     # form gate over a build plan
 manamap pilot bracket-check <slug> [--target N] [--json]  # bracket floor → bracket_report.json
 manamap pilot deck-facts <slug> [--out F]  # the deterministic brief agents read first
+manamap pilot deck-audit <slug> [--archetype A] [--json] [--out F]  # cited axis targets + engine activation
+manamap pilot validate-diagnosis <slug>    # diagnosis form; axes re-derived, cuts checked against verified stacks
 manamap pilot pool-facts <paths…> [--exclude F] [--json] [--out F]  # a BOX OF CARDS → which deck to build
 manamap pilot sideboard-facts <slug> [--json]  # per-sideboard-card roles, legality, bracket-if-added
 manamap pilot validate-sideboard <slug>  # swap form + recomputed bracket deltas
@@ -83,6 +85,8 @@ data/decks/<slug>/             all tracked:
                                mana_analysis.json    mana-analysis (deterministic, no agent)
                                tutor_guide.json      pilot-coach (Fetch Quests)
                                considering.json      sideboard-analyst (The Short List — ten)
+                               diagnosis.json        deck-doctor ⇄ deck-skeptic (the improvement loop)
+                               deck_recon.json       deck-doctor MODE recon (dated; perishable)
                                issue.json            authored (never generated)
                                issue_plan.json       magazine-editor
                                .agent-cache.json     cache-record
@@ -365,6 +369,96 @@ Three things it exists to get right, each learned the expensive way on the first
 Every line it reports carries `verified: false`. Containment is not verification:
 Commander Spellbook is format-agnostic, its bracket tags are not gospel, and a line only
 becomes evidence after a resolve-stack run.
+
+## Deck audit — is this deck any good? (`deck-audit`, tier ◆)
+
+Five commands measure a deck and nothing joined them. `deck-facts` reports composition,
+`mana-analysis` castability, `goldfish` speed, `bracket-check` power, `upgrade-facts`
+what is better out there. Ask "is my card draw enough" and nothing answered.
+
+`deck-audit` is the join, and it is **computed on demand, never committed** — it embeds
+goldfish and bracket figures, so a tracked copy would be a second source of truth that
+goes stale the moment the decklist moves. Two blocks:
+
+**Sixteen axes**, each `{measured, target, verdict, gap}`. The point is not the arithmetic
+— every figure already existed somewhere — but that each target carries the **verbatim
+quote** from `strategy.md` that supports it, so an agent cites a number instead of
+inventing one. `DECK_AXIS_TARGETS` in `config.py` holds them, and
+`tests/test_pilot_deck_audit.py` fails if any quote drifts out of the doc. That is the
+gap `DECK_ROLE_BUDGET` was built to have: one flat uncited budget handed to every deck,
+its own comment calling it "PROVISIONAL", `upgrade_facts` printing its shortfalls as
+"Context, not evidence". `DECK_ARCHETYPE_BUDGETS` varies the targets per archetype from
+`strategy:deckbuilding.archetype-selection`'s own spread, and the archetype is taken from
+`strategic_frame.json` or `--archetype` — **never guessed from the cards**, because a
+budget silently attributed to the wrong archetype is worse than no budget.
+
+Three details that cost a fleet survey to find:
+
+- **Burgess's land formula budgets *sources*, not lands.** Applied to the land count
+  alone it asks a five-colour deck with a nine-mana commander for 45 lands. So
+  `mana-base` takes the conventional 36–38 band and `mana-sources` takes Burgess,
+  counting lands plus persistent producers (rocks, dorks, land ramp — rituals and
+  Treasures are one-shot and are not sources).
+- **Aggro's "26-32" is a creature count**, not a finisher count. Overriding
+  `threat-density` with it told edgar-vampires it was thirteen finishers short.
+- **An axis count is a floor, and the audit says which cards make it one.** Oracle-text
+  probes name cards showing an axis's function that the taxonomy filed elsewhere —
+  `card_roles.json` calls Yawgmoth, Thran Physician `removal:debuff` and his ability
+  draws a card per activation. The probes never change a count; they stop an agent
+  reading UNDER as a finding when it is a question.
+
+**Engine activation.** `goldfish_targets.json` is already a machine-readable declaration
+of what the deck is trying to assemble and nothing had ever read it as one. Its
+`need: [{any_of: […]}]` groups ARE the engine's components, and a group's size IS that
+component's redundancy — priced through `manabase.hypergeometric_at_least` (which
+reproduces `strategy:deckbuilding.redundancy-vs-tutors`'s cited 31% / 41% / 54%, asserted
+by test), set beside the rate the simulation measured. The thinnest group is where the
+deck fails first, and "what would activate the engine" becomes "which pool cards would
+join that group": by shared role signature, or — when the component is a named combo half
+with no shared role — through `combo_details.by_card`. **The role route needs a SHARED
+role, not a modal one**: run off one card's roles, a component holding only Blowfly
+Infestation returns Massacre Wurm and Dismember, because the roles describe the card
+rather than the group's job.
+
+Reported honestly and never papered over: each target is an AND of ORs, so the schema
+cannot express the UNION of several independent kills. A deck with four kills has no
+single assembled rate, and averaging them would invent a number the simulation never
+measured.
+
+## The diagnosis (`diagnosis.json`, tiers ◆ + ★)
+
+`deck-doctor` ⇄ `deck-skeptic`, bounded at `DIAGNOSE_MAX_ITERATIONS = 3` like the other
+two loops, driven by the `/diagnose-deck` skill. The doctor is adversarial toward the
+deck; the skeptic is adversarial toward the doctor. Output: an axis-by-axis reading, the
+engine's single points of failure, `lean_into`, a ranked `add_candidates`, an argued
+`cut_candidates`, and `open_questions` carrying a `settled_by` that routes each one back
+into `/resolve-stack`, `/research-strategy` or a goldfish-target edit. **Analysis-only** —
+nothing in the loop edits a decklist.
+
+`deck-doctor` has two modes. **MODE recon** is the only place in this subsystem that
+touches the web: it fills a hole `docs/deck-builder-v2.md` names outright — there are no
+per-commander inclusion rates in any bulk data we have, and inclusion rate is the real
+staples signal. Its `deck_recon.json` is dated (`as_of`) and deliberately kept **out of
+`strategy.md`**: durable theory and perishable meta claims must invalidate differently,
+the lesson recorded when `meta-analyst` was traded away. Its cache routine `deck-recon`
+is therefore the one routine in the registry whose staleness is **time**, not inputs —
+its declared input is the brief, and `RECON_MAX_AGE_DAYS` is judged by the skill, because
+`deck_audit` is deterministic and never reads the clock. **MODE diagnose** is strictly
+read-only and artifact-grounded; recon is evidence there, never authority.
+
+`validate_diagnosis.py` recomputes rather than trusts: every `axes[].measured.value` is
+re-derived from `deck-audit`, every citation goes through the shared verbatim gate, every
+`bracket_delta` is recomputed through `bracket.assess()`, and — the check nothing else in
+the repo performs — **`orphans_stack` is computed**. If a proposed cut names a card that
+appears in a checker-passed stack's scenario, the entry must list those stack ids. That is
+the Ophiomancer / South Wind Avatar class of finding made mechanical: a cut list will
+otherwise propose the one card a verified line rests on, in a confident sentence. The
+probe reads the **scenario block only** — a checker note may discuss a card the board
+never held, and a discussion is not a dependency.
+
+No L10 rule applies, deliberately: the diagnosis is a working artifact and is never
+rendered into an issue. It may name a weakness plainly, which is the one thing
+every-issue-is-the-reader's-first would forbid.
 
 ## The Short List (`considering.json`, tiers ◆ + ★)
 
