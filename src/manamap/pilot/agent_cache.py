@@ -116,11 +116,43 @@ def artifact_digest(path, keys=None):
 # The cards.json fields agents actually read. Printing metadata (art, artist,
 # set, collector number, finishes) is presentation for the renderer — enriching
 # it must not cost a 330k-token regeneration of prose that would be identical.
+# Top-level artifact keys that are review apparatus rather than published content.
+# Excluded from card_refs for the reason spelled out at the extraction site: a
+# checker's notes ABOUT a card are not the artifact USING that card, and treating
+# them as such let orchestrator-written audit prose pin cards it merely mentioned.
+_REFS_EXCLUDED_KEYS = frozenset({"checker"})
+
 CARD_SEMANTIC_FIELDS = (
     "name", "quantity", "is_commander", "is_sideboard", "mana_cost", "cmc",
     "type_line", "oracle_text", "colors", "color_identity", "keywords",
     "power", "toughness", "loyalty", "layout",
 )
+
+
+def file_digest_excluding(path, exclude):
+    """Hash a JSON file with `exclude` dotted paths removed.
+
+    `goldfish_metrics.json` embeds `meta.decklist_sha256`, so ANY decklist edit
+    changed the file's bytes and MISSed every routine that declares it —
+    strategic-frame, coach-prose, writer-prose, tutor-guide, issue-plan and every
+    decision — even when not one metric had moved. Observed directly: restoring
+    comment lines in a decklist re-MISSed five prose routines whose figures were
+    byte-identical. The provenance stamp is worth keeping in the artifact; it just
+    is not an input to whether the prose about those figures is still true.
+    """
+    if not path.exists():
+        return None
+    doc = load_json_memo(path)
+    doc = json.loads(json.dumps(doc))          # deep copy; never mutate the memo
+    for dotted in exclude:
+        node, *rest = dotted.split(".")
+        cursor = doc
+        while rest and isinstance(cursor, dict) and node in cursor:
+            cursor = cursor[node]
+            node, rest = rest[0], rest[1:]
+        if isinstance(cursor, dict):
+            cursor.pop(node, None)
+    return json_sha256(doc)
 
 
 def cards_semantic_digest(path):
@@ -304,17 +336,28 @@ def resolve_inputs(slug, spec):
     base = deck_dir(slug)
     entries, extra = [], {}
 
-    def add(path):
-        entries.append({"path": rel(path), "sha256": cached_file_sha256(path)})
+    def add(path, exclude=()):
+        entries.append({
+            "path": rel(path) + ("!" + ",".join(exclude) if exclude else ""),
+            "sha256": (file_digest_excluding(path, exclude) if exclude
+                       else cached_file_sha256(path)),
+        })
 
     for token in spec["inputs"]:
         if token.startswith("deck:"):
             name = token[len("deck:"):]
+            # `deck:<file>!<dotted.path>[,<dotted.path>]` hashes the file with those
+            # paths removed. EXCLUSION, not inclusion, on purpose: an inclusion list
+            # silently stops covering any field added to the artifact later, which is
+            # a false-negative generator with a long fuse. Naming what does NOT matter
+            # keeps everything new covered by default.
+            name, _, excl = name.partition("!")
+            exclude = tuple(p for p in excl.split(",") if p)
             optional = name.endswith("?")
             path = base / name.rstrip("?")
             if not path.exists() and not optional:
                 raise MissingInput(f"{rel(path)} is required by this routine but missing")
-            add(path)
+            add(path, exclude)
         elif token == "stacks:passing":
             for path in passing_stacks(base):
                 add(path)
@@ -648,9 +691,17 @@ def record(slug, routine):
             artifact_card_refs, artifact_card_refs_by_key, deck_card_names,
         )
         deck_names = deck_card_names(load_json_memo(cards_path))
-        entry["card_refs"] = artifact_card_refs(
-            {k: v for k, v in doc.items() if k in keys} if keys else doc,
-            deck_names)
+        # Refs describe what the artifact SAYS, so they are taken over its published
+        # content. `checker` is excluded: it is review apparatus, not output, and
+        # `scenario_block_digest` already excludes it from the fingerprint for the
+        # same reason. Leaving it in made the block that is explicitly untrusted for
+        # invalidation the thing that DEFINED what the artifact references — and
+        # orchestrator prose written into `checker.iteration_bound_override.reason`
+        # named the very cards a swap had just changed, so those stacks could never
+        # be STALE_OK for that swap. A note about a card is not a use of it.
+        scoped = ({k: v for k, v in doc.items() if k in keys} if keys
+                  else {k: v for k, v in doc.items() if k not in _REFS_EXCLUDED_KEYS})
+        entry["card_refs"] = artifact_card_refs(scoped, deck_names)
         # Stamp the extraction rules these refs were computed under, so a later
         # fix to the extractor can re-seed them. Outside the fingerprint, like
         # the refs themselves.

@@ -874,14 +874,14 @@ AGENT_ROUTINES = {
     "strategic-frame": {
         "agent": "strategy-researcher",
         "artifact": "strategic_frame.json",
-        "inputs": ["cards:semantic", "deck:goldfish_metrics.json",
+        "inputs": ["cards:semantic", "deck:goldfish_metrics.json!meta.decklist_sha256",
                    "stacks:passing", "strategy:doc"],
     },
     "coach-prose": {
         "agent": "pilot-coach",
         "artifact": "manual_prose.json",
         "artifact_keys": ["threat_assessment", "matchups"],
-        "inputs": ["cards:semantic", "deck:goldfish_metrics.json", "stacks:passing",
+        "inputs": ["cards:semantic", "deck:goldfish_metrics.json!meta.decklist_sha256", "stacks:passing",
                    "deck:strategic_frame.json?", "strategy:doc"],
     },
     # deck:goldfish_metrics.json was added 2026-07-28: the writer quotes
@@ -899,7 +899,7 @@ AGENT_ROUTINES = {
         # 4.5 MB graph is a faithful invalidation proxy for the 25.7 MB details and
         # costs far less to hash.
         "inputs": ["cards:semantic", "stacks:passing", "deck:strategic_frame.json?",
-                   "deck:goldfish_metrics.json", "deck:mana_analysis.json?",
+                   "deck:goldfish_metrics.json!meta.decklist_sha256", "deck:mana_analysis.json?",
                    "global:COMBO_GRAPH_PATH", "global:SYNERGY_GRAPH_PATH",
                    "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
     },
@@ -924,14 +924,14 @@ AGENT_ROUTINES = {
         "agent": "pilot-coach",
         "artifact": "tutor_guide.json",
         "inputs": ["cards:semantic", "stacks:passing", "deck:strategic_frame.json?",
-                   "deck:goldfish_metrics.json", "strategy:doc"],
+                   "deck:goldfish_metrics.json!meta.decklist_sha256", "strategy:doc"],
     },
     "issue-plan": {
         "agent": "magazine-editor",
         "artifact": "issue_plan.json",
         "inputs": ["repo:STYLE_DOC_PATH", "repo:ISSUE_SPEC_PATH",
                    "deck:issue.json", "cards:semantic", "stacks:passing",
-                   "decisions:all", "deck:goldfish_metrics.json",
+                   "decisions:all", "deck:goldfish_metrics.json!meta.decklist_sha256",
                    "deck:strategic_frame.json?", "prose:shape", "cards:printing",
                    "global:COMBO_GRAPH_PATH", "global:SYNERGY_GRAPH_PATH",
                    "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
@@ -971,7 +971,7 @@ AGENT_ROUTINE_STACK_AGENT = "stack-resolver+rules-checker"
 AGENT_ROUTINE_STACK_INPUTS = ["scenario:self", "cards:semantic", "rules:version"]
 AGENT_ROUTINE_DECISION_AGENT = "pilot-coach"
 AGENT_ROUTINE_DECISION_INPUTS = ["scenario:self", "cards:semantic",
-                                 "deck:goldfish_metrics.json",
+                                 "deck:goldfish_metrics.json!meta.decklist_sha256",
                                  "deck:strategic_frame.json?", "strategy:doc"]
 
 # What each manual_prose key ACTUALLY depends on — the per-key refinement of
@@ -984,15 +984,15 @@ PROSE_KEY_INPUTS = {
     "card_roles": ["cards:semantic"],
     "combo_lines": ["stacks:passing"],
     "how_it_wins": ["cards:semantic", "deck:strategic_frame.json?",
-                    "deck:goldfish_metrics.json", "stacks:passing"],
-    "mulligan": ["cards:semantic", "deck:goldfish_metrics.json"],
+                    "deck:goldfish_metrics.json!meta.decklist_sha256", "stacks:passing"],
+    "mulligan": ["cards:semantic", "deck:goldfish_metrics.json!meta.decklist_sha256"],
     "upgrades": ["cards:semantic", "deck:strategic_frame.json?", "stacks:passing"],
     "mana_base": ["cards:semantic", "deck:mana_analysis.json?",
-                  "deck:goldfish_metrics.json"],
+                  "deck:goldfish_metrics.json!meta.decklist_sha256"],
     # coach-prose
-    "threat_assessment": ["cards:semantic", "deck:goldfish_metrics.json",
+    "threat_assessment": ["cards:semantic", "deck:goldfish_metrics.json!meta.decklist_sha256",
                           "stacks:passing", "deck:strategic_frame.json?",
                           "strategy:doc"],
-    "matchups": ["cards:semantic", "deck:goldfish_metrics.json",
+    "matchups": ["cards:semantic", "deck:goldfish_metrics.json!meta.decklist_sha256",
                  "stacks:passing", "deck:strategic_frame.json?", "strategy:doc"],
 }

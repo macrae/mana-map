@@ -1020,3 +1020,74 @@ def test_rerecord_without_a_snapshot_refuses_outright(deck):
     ac.record(SLUG, "stack:001")
     with pytest.raises(ac.MissingInput, match="no snapshot entry"):
         ac.rerecord(SLUG, None)
+
+
+def test_refs_ignore_the_checker_block(deck):
+    """A checker's notes ABOUT a card are not the artifact USING that card.
+
+    Observed on yawgmoth-swarm: an `iteration_bound_override.reason` written by the
+    orchestrator named the cards a swap had just added, so those cards entered the
+    stack's refs and it could never be STALE_OK for that swap — the artifact was
+    pinned by prose describing the very change being evaluated. `checker` is already
+    excluded from the fingerprint by `scenario_block_digest`; refs now agree.
+    """
+    _two_card_deck(deck)
+    doc = stack_doc("001")
+    doc["scenario"]["question"] = "What does Sac Outlet do here?"
+    doc["checker"]["iteration_bound_override"] = {
+        "reason": "the deck changed (Filler Land in) and re-MISSed this routine"
+    }
+    write_json(deck / "stacks" / "001-first.json", doc)
+    ac._SHA_MEMO.clear(); common.clear_memo()
+
+    entry, _ = ac.record(SLUG, "stack:001")
+    assert "Sac Outlet" in entry["card_refs"]          # named by the scenario
+    assert "Filler Land" not in entry["card_refs"]     # named ONLY by checker prose
+
+    # ...so a change to that card is now correctly STALE_OK rather than a MISS.
+    cards = json.loads((deck / "cards.json").read_text())
+    cards["cards"][1]["oracle_text"] = "T: Add one mana of any color."
+    write_json(deck / "cards.json", cards)
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    assert ac.status(SLUG, "stack:001")["status"] == "STALE_OK"
+
+
+def test_goldfish_provenance_stamp_is_excluded_from_the_fingerprint(deck):
+    """A decklist edit that moves no metric must not MISS the prose routines.
+
+    goldfish_metrics.json embeds meta.decklist_sha256, so ANY decklist change
+    rewrote the file and invalidated strategic-frame, coach-prose, writer-prose,
+    tutor-guide, issue-plan and every decision — regardless of whether a single
+    figure moved. Observed directly: restoring comment lines to a decklist
+    re-MISSed five prose routines whose numbers were byte-identical.
+    """
+    gf = deck / "goldfish_metrics.json"
+    write_json(gf, {"meta": {"seed": 42, "decklist_sha256": "aaa"},
+                    "metrics": {"commander": {"mean_cast_turn": 4.2}}})
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    before = fp(SLUG, "coach-prose")
+
+    # Same metrics, new provenance stamp — the decklist changed, the maths did not.
+    write_json(gf, {"meta": {"seed": 42, "decklist_sha256": "bbb"},
+                    "metrics": {"commander": {"mean_cast_turn": 4.2}}})
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    assert fp(SLUG, "coach-prose") == before, "provenance stamp still invalidates"
+
+    # But a real metric moving must still invalidate.
+    write_json(gf, {"meta": {"seed": 42, "decklist_sha256": "bbb"},
+                    "metrics": {"commander": {"mean_cast_turn": 5.9}}})
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    assert fp(SLUG, "coach-prose") != before, "a changed metric must invalidate"
+
+
+def test_exclusion_is_by_omission_so_new_fields_stay_covered(deck):
+    """Exclusion, not inclusion: a field added later is covered by default."""
+    gf = deck / "goldfish_metrics.json"
+    write_json(gf, {"meta": {"decklist_sha256": "aaa"}, "metrics": {"a": 1}})
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    before = fp(SLUG, "coach-prose")
+    # A metric nobody anticipated appears. An inclusion list would ignore it.
+    write_json(gf, {"meta": {"decklist_sha256": "aaa"},
+                    "metrics": {"a": 1}, "brand_new_section": {"x": 1}})
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    assert fp(SLUG, "coach-prose") != before
