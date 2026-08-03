@@ -148,11 +148,24 @@ def drain_arithmetic(opponents):
     }
 
 
+_IS_TOKEN = re.compile(r"\btokens?\b", re.I)
+
+
 def membership(names, deck_names):
-    """Which named cards are actually in this deck's 99 right now."""
-    present = sorted(n for n in names if n in deck_names)
-    absent = sorted(n for n in names if n not in deck_names)
-    return {"in_the_deck": present, "NOT_IN_THE_DECK": absent}
+    """Which named cards are actually in this deck's 99 right now.
+
+    Tokens are excluded from the check rather than reported absent: they are
+    never in a decklist, so flagging them made the "not in the deck" warning
+    fire on every scenario with nothing wrong. A signal that is always noise is
+    one an agent learns to skip, which would waste the one warning here that
+    matters — a real card of yours that has left the 99.
+    """
+    checkable = [n for n in names if not _IS_TOKEN.search(n)]
+    return {
+        "in_the_deck": sorted(n for n in checkable if n in deck_names),
+        "NOT_IN_THE_DECK": sorted(n for n in checkable if n not in deck_names),
+        "tokens_not_checked": sorted({n for n in names if _IS_TOKEN.search(n)}),
+    }
 
 
 def comparable_siblings(this_id, all_scenarios):

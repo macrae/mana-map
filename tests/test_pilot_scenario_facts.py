@@ -104,6 +104,19 @@ def test_membership_names_what_left_the_deck():
     assert got["NOT_IN_THE_DECK"] == ["Ad Nauseam"]
 
 
+def test_tokens_are_not_reported_as_missing_cards():
+    """A warning that fires on every scenario is one an agent learns to skip.
+
+    Tokens are never in a decklist, so membership-checking them made the
+    "not in the deck" note fire with nothing wrong — burying the one case that
+    matters, a real card of yours that has left the 99.
+    """
+    got = sf.membership(["Insect token A", "Human Soldier token", "Ad Nauseam"],
+                        {"Nest of Scarabs"})
+    assert got["NOT_IN_THE_DECK"] == ["Ad Nauseam"]
+    assert got["tokens_not_checked"] == ["Human Soldier token", "Insect token A"]
+
+
 # ── Against the real committed decks ─────────────────────────────────────
 
 
