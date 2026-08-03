@@ -6,6 +6,7 @@ import json
 import pytest
 
 from manamap.config import DECKS_DIR
+from manamap.pilot import validate_stack as vs
 from manamap.pilot.validate_stack import validate_any, validate_decision, validate_scenario
 
 from conftest import requires_deck, requires_rules
@@ -219,3 +220,87 @@ def test_all_committed_stacks_validate_and_pass():
             doc = json.load(f)
         assert validate_scenario(doc, rules) == [], f"{path.name} violates the contract"
         assert doc["checker"]["verdict"] == "pass", f"{path.name} is not checker-verified"
+
+
+# ── Preflight: format conventions, warn-for-published ────────────────────
+
+
+def _scenario(**over):
+    doc = {
+        "id": "900", "slug": "x", "deck": "X", "title": "t",
+        "scenario": {"board": {"you": []}, "hand": [], "mana_available": "{0}",
+                     "stack": [{"pos": 0, "object": "o"}], "question": "What?"},
+    }
+    doc["scenario"].update(over)
+    return doc
+
+
+def test_preflight_errors_on_prose_in_hand_for_an_unresolved_scenario():
+    """The exact bug that shipped: a placeholder sentence written into `hand`.
+
+    `build_index.line_cards` read it as a card name and put it in the deck
+    manifest. Caught here for free, before a ~35k-token resolver spawn.
+    """
+    errors, _ = vs.validate_preflight(
+        _scenario(hand=["no cards relevant to this question."]))
+    assert any("looks like prose" in e for e in errors)
+
+
+def test_preflight_errors_on_empty_mana_available():
+    errors, _ = vs.validate_preflight(_scenario(mana_available=""))
+    assert any('use "{0}"' in e for e in errors)
+
+
+def test_preflight_only_WARNS_once_a_resolution_exists():
+    """Published work is warned about, never blocked.
+
+    `scenario:self` is a fingerprint input, so normalising a committed scenario
+    costs a respawn. The gate exists to stop a wasted spawn; against work already
+    done it has no spawn left to save.
+    """
+    doc = _scenario(mana_available="", hand=["a whole sentence that is not a card."])
+    doc["resolution"] = {"steps": [], "final_state": {}}
+    errors, warnings = vs.validate_preflight(doc)
+    assert errors == []
+    assert any('use "{0}"' in w for w in warnings)
+    assert any("looks like prose" in w for w in warnings)
+
+
+def test_preflight_warns_on_the_outlier_board_shape():
+    _, warnings = vs.validate_preflight(
+        _scenario(board={"you": [], "opponent_a": ["x"]}))
+    assert any("opponent_a..d" in w for w in warnings)
+
+
+@requires_deck
+def test_every_committed_scenario_preflights_without_errors():
+    """The corpus predates these rules and must not be blocked by them."""
+    from manamap.config import DECKS_DIR
+    checked = 0
+    for deck in sorted(DECKS_DIR.iterdir()):
+        stacks = deck / "stacks"
+        if not stacks.is_dir():
+            continue
+        for path in sorted(stacks.glob("*.json")):
+            doc = json.loads(path.read_text())
+            if doc.get("kind") == "decision":
+                continue
+            errors, _ = vs.validate_preflight(doc)
+            card_errors, _ = vs.unknown_cards(doc, deck.name)
+            if "resolution" not in doc:
+                errors = errors + card_errors
+            assert errors == [], f"{path.name}: {errors}"
+            checked += 1
+    assert checked >= 40
+
+
+@requires_deck
+def test_unknown_cards_separates_benched_from_never_heard_of():
+    """A sideboard card is known and deliberately benched — a different finding."""
+    from manamap.config import DECKS_DIR
+    path = DECKS_DIR / "edgar-vampires" / "stacks" / "001-exquisite-vito-drain-loop.json"
+    if not path.exists():
+        pytest.skip("edgar-vampires/001 not present")
+    errors, warnings = vs.unknown_cards(json.loads(path.read_text()), "edgar-vampires")
+    assert errors == []
+    assert any("SIDEBOARD" in w for w in warnings)

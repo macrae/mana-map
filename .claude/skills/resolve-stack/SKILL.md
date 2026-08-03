@@ -12,6 +12,65 @@ Runs the resolver→checker loop for one scenario and saves the artifact at
 
 1. **Scenario**: create or receive the scenario block (`id`, `slug`, `deck`, `title`, `scenario{board, hand, mana_available, stack[], extras, question}`). Stack is ordered, `pos` 0 = bottom. Number scenarios `NNN` zero-padded in authoring order.
 
+   ### The scenario format (this is a spec, not a suggestion)
+
+   Everything below was a de-facto convention nobody wrote down, and each gap cost
+   real rounds. `validate-stack --scenario-only` now enforces the parts it can, for
+   free, before a ~35k-token spawn.
+
+   **`hand`: a JSON list, `[]` when empty.** All 42 committed stacks use a list;
+   26 are empty. Never prose. A placeholder sentence written into `hand` was read
+   by `build_index.line_cards` as a card name and shipped into the deck manifest.
+
+   **`board`: `{you: [...], opponents: [{life, board}]}`.** Seven decks use this;
+   yawgmoth-swarm's `opponent_a..d` is the outlier and needs a compatibility read
+   in every consumer. New scenarios use the list shape.
+
+   **A permanent already sacrificed to pay a cost stays LISTED, annotated:**
+
+   ```
+   "Fume Spitter (1/1) — already sacrificed to pay the cost of the ability now on the stack"
+   ```
+
+   It is on the board list and **NOT on the battlefield**. This is the single most
+   consequential reading in the corpus: it sets the body count, and every engine in
+   these decks is bounded by bodies. Undeclared, it cost a resolver two separate
+   arguments *inside resolution prose* for the reading it had already used, and a
+   checker flagged the same scenario as self-contradictory. If you omit the
+   annotation the board says a creature is present that the stack says is gone.
+
+   **`mana_available`: symbols first, optional gloss in parentheses.**
+
+   ```
+   "{B}{B}{B} from three untapped Swamps"      good
+   "{0}"                                        none available
+   ""                                           NO — 16 of 42 files do this
+   ```
+
+   `""` and `"{0}"` mean the same thing on some boards and opposite things on
+   others. Do not normalise the existing files — a scenario edit is a fingerprint
+   input, so tidying 42 of them costs 42 respawns. Apply this going forward.
+
+   **Every card named on a board, in hand, or on the stack must resolve against
+   `cards.json`** — except tokens, and except an opponent's permanent that is
+   deliberately not yours. The preflight errors on anything else, because a
+   scenario naming a card the deck does not have describes a line nobody can play.
+
+   **`extras` is non-normative.** `note_for_the_resolver`, `assumptions` and
+   `life_totals` are scaffolding for the agent, not part of the question. Say
+   anything there that helps; it does not change the rules problem.
+
+   ### Before you write one: `manamap pilot scenario-facts <slug> [--stack NNN]`
+
+   The deterministic brief for this scenario — board split into creature bodies /
+   other permanents / lands / the already-paid cost payment, opponent seats and
+   life, the per-opponent vs pod-total arithmetic, which named cards are actually
+   in the 99, and which sibling scenarios are comparable and how they differ.
+   Read it instead of recalling figures. Five errors reached agent briefs in one
+   session and every one was a correct-sounding number remembered rather than
+   looked up — most damagingly a pod total quoted as a per-seat figure, which
+   overstates a kill by 4×.
+
    **Keep it to one rules domain.** This is the single biggest lever on cost and
    success, and it is entirely in your hands. The checker's verdict is atomic over the
    whole artifact, so every extra citation is another chance for the whole thing to

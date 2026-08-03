@@ -114,6 +114,94 @@ def validate_preflight(doc):
             f"artifact, so one weak sub-answer discards the rest. Prefer one rules domain "
             f"per scenario and split the others into their own files."
         )
+
+    # Format conventions (see .claude/skills/resolve-stack/SKILL.md step 1).
+    #
+    # WARN on an artifact that already carries a resolution, ERROR on one that does
+    # not. The gate exists to stop a ~35k spawn being wasted, and it does that job
+    # fully in warn-mode against work already done. Erroring on the committed corpus
+    # would force normalising 42 scenarios — and `scenario:self` is a fingerprint
+    # input, so tidying them costs 42 respawns to fix formatting nobody misread.
+    authored = "resolution" not in doc
+    def flag(msg):
+        (errors if authored else warnings).append(msg)
+
+    hand = scenario.get("hand")
+    if hand is not None and not isinstance(hand, list):
+        flag(f"scenario.hand must be a list ([] when empty), got {type(hand).__name__}. "
+             f"Prose here has been read as a card name and shipped into the manifest.")
+    elif isinstance(hand, list):
+        for entry in hand:
+            if isinstance(entry, str) and (len(entry) > 60 or entry.rstrip().endswith(".")):
+                flag(f"scenario.hand entry looks like prose, not a card: {entry[:60]!r}. "
+                     f"Use [] for an empty hand.")
+
+    mana = scenario.get("mana_available")
+    if isinstance(mana, str) and mana.strip() == "":
+        flag('scenario.mana_available is "" — use "{0}" for none. Empty string and '
+             '"{0}" have meant opposite things on different boards.')
+
+    board = scenario.get("board")
+    if isinstance(board, dict) and any(k.startswith("opponent_") for k in board):
+        warnings.append(
+            "board uses the `opponent_a..d` shape; the documented shape is "
+            "`opponents: [{life, board}]`. Both are read, but every consumer needs "
+            "a compatibility branch for the second one.")
+
+    return errors, warnings
+
+
+def unknown_cards(doc, slug):
+    """Cards named on YOUR board or in hand that this deck does not have.
+
+    `validate_stack` never opened `cards.json` — card-name verification was left
+    entirely to the LLM (`rules-checker.md`: "verify card names ... match reality").
+    That is a ~30k-token spawn doing a set membership test, and it only happens
+    after the resolver has already spent ~35k answering a question that may be
+    unanswerable. A scenario naming a card of yours that is not in the 99 describes
+    a line nobody can play.
+
+    Deliberately narrow, because a false error here blocks legitimate work:
+    only `board.you` and `hand`, never the opponents' boards (their permanents are
+    not in your deck by definition) and never tokens (never in a decklist).
+    """
+    from manamap.pilot.common import load_deck_cards, mainboard
+    from manamap.pilot.scenario_facts import board_bodies, membership
+
+    scenario = doc.get("scenario") or {}
+    try:
+        cards = load_deck_cards(slug)["cards"]
+    except Exception:
+        return [], []                   # no cards.json yet — not this check's job
+    main_names = {c["name"] for c in mainboard(cards)}
+    all_names = {c["name"] for c in cards}
+
+    you = board_bodies((scenario.get("board") or {}).get("you"))
+    named = you["creature_bodies"] + you["other_permanents"] + you["spent_paying_a_cost"]
+    named += [h for h in (scenario.get("hand") or []) if isinstance(h, str)]
+
+    # Three outcomes, not two. A card in the SIDEBOARD is known and deliberately
+    # benched — a scenario exploring one is legitimate work, and three committed
+    # artifacts across two decks do exactly that. Only a card the deck has never
+    # heard of is unambiguously wrong, and even that warns on published artifacts:
+    # sisay/003 names Esika, God of the Tree, which is in neither list, and
+    # erroring there would block a checker-passed line to fix a scenario edit that
+    # would cost a respawn.
+    unknown = [c for c in membership(named, all_names)["NOT_IN_THE_DECK"]]
+    benched = [c for c in membership(named, main_names)["NOT_IN_THE_DECK"]
+               if c not in unknown]
+    errors = [
+        f"scenario names {c!r} on your board or in hand, and this deck has no such "
+        f"card in the 99 OR the sideboard — the line as written cannot be played. "
+        f"Check `manamap pilot scenario-facts {slug}`."
+        for c in unknown
+    ]
+    warnings = [
+        f"scenario names {c!r}, which is in the SIDEBOARD rather than the 99 — the "
+        f"line explores a benched card. Fine to author; do not present it as a line "
+        f"the current deck can run."
+        for c in benched
+    ]
     return errors, warnings
 
 
@@ -268,6 +356,12 @@ def main(args):
             if kind == "decision":
                 continue
             errors, warnings = validate_preflight(doc)
+            card_errors, card_warnings = unknown_cards(doc, args.slug)
+            # Same warn-for-published rule as the format checks: an artifact that
+            # already carries a resolution is finished work, and blocking it costs
+            # a respawn to fix a scenario nobody misread.
+            (errors if "resolution" not in doc else warnings).extend(card_errors)
+            warnings += card_warnings
             if errors:
                 failed = True
                 print(f"FAIL {path.name} (scenario preflight):")

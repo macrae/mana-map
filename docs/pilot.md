@@ -116,6 +116,19 @@ checker:    verdict (pass|fail), iterations, findings[] {step, rule,
             status ∈ supported|unsupported|irrelevant|misquoted, note}
 ```
 
+**Scenario format.** The keys above are the shape; the conventions are in
+`.claude/skills/resolve-stack/SKILL.md` step 1 and enforced as far as they can be
+by `validate-stack --scenario-only`. The four that cost real rounds when unwritten:
+`hand` is a list and `[]` when empty (never prose — a placeholder sentence was
+once read as a card name and shipped into the deck manifest); a permanent already
+sacrificed to pay a cost stays LISTED with the `— already sacrificed to pay the
+cost of the ability now on the stack` annotation and is NOT on the battlefield;
+`mana_available` leads with symbols (`"{0}"` for none, never `""`); and every card
+named must resolve against `cards.json` apart from tokens and opponents' permanents.
+`extras` is non-normative scaffolding. Run `manamap pilot scenario-facts <slug>`
+before authoring — it derives the board split, the per-opponent vs pod-total
+arithmetic, deck membership, and which siblings are comparable.
+
 Verdict `pass` requires all findings `supported` **and** the mechanical validator passing. Failed artifacts are saved (they document open questions) but never published.
 
 ## Goldfish metrics (`goldfish_metrics.json`, tier ◆)

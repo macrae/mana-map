@@ -86,7 +86,11 @@ def board_bodies(entries):
             others.append(name)
         elif _PT.search(raw):
             bodies.append(name)          # tokens included: they are bodies
-        elif _LAND_WORDS.search(name) and len(name.split()) <= 3:
+        elif _LAND_WORDS.search(name):
+            # No word-count cap. Boards describe their mana in prose —
+            # "five lands (can produce {3}{R}{R}), all untapped" — and a <=3-word
+            # rule dropped those into `other_permanents`, where the membership
+            # check then reported a whole sentence as a card missing from the deck.
             lands.append(name)
         else:
             others.append(name)
