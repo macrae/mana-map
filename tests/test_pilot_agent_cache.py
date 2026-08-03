@@ -767,6 +767,49 @@ def test_rebless_clears_stale_ok_and_seeds_refs(deck):
     assert ac.status(SLUG, "stack:001")["status"] == "HIT"
 
 
+def test_rebless_clears_EVERY_stale_ok_routine_not_just_the_first(deck):
+    """The sweep used to bless exactly one routine per invocation.
+
+    `record()` rewrites the deck-wide `cards_map` baseline, and STALE_OK requires
+    that baseline to still match the record's own `extra.cards_semantic`. The old
+    loop classified inside the record pass, so the first record moved the baseline
+    and every routine after it saw `changed_cards is None` and fell to MISS —
+    permanently, because nothing can restore the old baseline. One routine is
+    exactly the case the original test covered, which is why it never showed.
+    """
+    _two_card_deck(deck)
+    for sid in ("002", "003", "004"):
+        write_json(deck / "stacks" / f"{sid}-more.json", stack_doc(sid))
+    ac._SHA_MEMO.clear(); common.clear_memo()
+
+    stacks = ["stack:001", "stack:002", "stack:003", "stack:004"]
+    for r in stacks:
+        ac.record(SLUG, r)
+
+    # Touch only the card NO stack references.
+    cards = json.loads((deck / "cards.json").read_text())
+    cards["cards"][1]["oracle_text"] = "T: Add one mana of any color."
+    write_json(deck / "cards.json", cards)
+    ac._SHA_MEMO.clear(); common.clear_memo()
+
+    assert [ac.status(SLUG, r)["status"] for r in stacks] == ["STALE_OK"] * 4
+
+    reblessed, skipped = ac.rebless(SLUG)
+    missed = [r for r in stacks if r not in reblessed]
+    assert not missed, (
+        f"swept {len(reblessed)}, missed {missed} — the baseline advanced mid-sweep. "
+        f"skipped={skipped}")
+    assert [ac.status(SLUG, r)["status"] for r in stacks] == ["HIT"] * 4
+
+    # `discover_routines` yields the non-stack routines first, and the ones that do
+    # not declare `cards:semantic` (candidate-pool, deck-build) are HIT-without-refs,
+    # so they are re-recorded for migration BEFORE any stack is reached. Under the old
+    # loop each of those advanced the baseline too, which is how a sweep could consume
+    # itself on migration work and never reach the artifacts it existed to clear.
+    order = ac.discover_routines(SLUG)
+    assert order.index("stack:001") > 0, "stacks should not sort first"
+
+
 def test_keyed_routine_records_refs_by_key(deck):
     _two_card_deck(deck)
     prose = json.loads((deck / "manual_prose.json").read_text())
@@ -862,3 +905,32 @@ def test_referenced_card_change_names_the_stale_keys(deck):
     assert "mulligan" in result["stale_keys"]
     assert "card_roles" in result["stale_keys"]
     assert "how_it_wins" not in result["stale_keys"]
+
+
+def test_card_refs_version_is_stamped_and_reseeds_without_invalidating(deck, monkeypatch):
+    """Bumping CARD_REFS_VERSION must re-seed refs and invalidate nothing.
+
+    Refs ride outside the fingerprint, so a change to the EXTRACTION rules has to
+    be able to reach already-recorded routines without costing a spawn. Before
+    this marker, `rebless` skipped any HIT that merely had refs — however stale
+    their derivation — so an extractor fix was inert on all 106 live records.
+    """
+    _two_card_deck(deck)
+    entry, _ = ac.record(SLUG, "stack:001")
+    assert entry["card_refs_version"] == ac.CARD_REFS_VERSION
+
+    before = ac.status(SLUG, "stack:001")
+    monkeypatch.setattr(ac, "CARD_REFS_VERSION", ac.CARD_REFS_VERSION + 1)
+    after = ac.status(SLUG, "stack:001")
+
+    # The bump changes NOTHING about the fingerprint or the verdict.
+    assert after["status"] == before["status"] == "HIT"
+    assert after["fingerprint"] == before["fingerprint"]
+
+    # But the sweep now re-seeds it.
+    reblessed, _ = ac.rebless(SLUG)
+    assert "stack:001" in reblessed
+    assert (ac.load_cache(SLUG)["routines"]["stack:001"]["card_refs_version"]
+            == ac.CARD_REFS_VERSION)
+    # ...and it settles: a second sweep has nothing to do.
+    assert "stack:001" not in ac.rebless(SLUG)[0]

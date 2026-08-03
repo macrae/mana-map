@@ -35,6 +35,7 @@ from manamap.config import (
     AGENT_ROUTINE_STACK_AGENT,
     AGENT_ROUTINE_STACK_INPUTS,
     AGENT_ROUTINES,
+    CARD_REFS_VERSION,
     CR_RULES_META_PATH,
     PROSE_KEY_INPUTS,
     RESOLVE_MAX_ITERATIONS,
@@ -649,6 +650,10 @@ def record(slug, routine):
         entry["card_refs"] = artifact_card_refs(
             {k: v for k, v in doc.items() if k in keys} if keys else doc,
             deck_names)
+        # Stamp the extraction rules these refs were computed under, so a later
+        # fix to the extractor can re-seed them. Outside the fingerprint, like
+        # the refs themselves.
+        entry["card_refs_version"] = CARD_REFS_VERSION
         if keys:
             entry["card_refs_by_key"] = artifact_card_refs_by_key(doc, keys, deck_names)
     if keys:
@@ -728,19 +733,38 @@ def rebless(slug):
     """
     reblessed, skipped = [], []
     sidecar = load_cache(slug)
+
+    # Classify EVERY routine against the pristine sidecar BEFORE recording any of
+    # them. `record()` rewrites the deck-wide `cards_map` baseline (see the block
+    # above it), and STALE_OK requires that baseline to still match the record's
+    # own `extra.cards_semantic`. Classifying inside the record loop therefore made
+    # the first record poison every routine after it: the baseline had moved on, so
+    # `changed_cards` came back None and a genuinely-STALE_OK artifact fell to MISS
+    # — permanently, since re-running could never restore the old baseline. The
+    # symptom was a sweep that reblessed exactly one routine and reported "nothing
+    # to rebless" on decks where six artifacts referenced nothing that had changed.
+    # `status()` is read-only, so one pass to plan and one pass to write is safe.
+    plan = []
     for routine in discover_routines(slug):
         try:
             result = status(slug, routine, cache=sidecar)
         except (UnknownRoutine, MissingInput):
             continue
-        needs_refs = (result["status"] == "HIT"
-                      and (sidecar.get("routines", {}).get(routine) or {}).get("card_refs") is None)
+        rec = sidecar.get("routines", {}).get(routine) or {}
+        # Two migration cases, both pure re-fingerprints with no spawn: a record
+        # written before refs existed, and one whose refs predate a change to the
+        # extraction rules. Missing version == 0, i.e. older than any bump.
+        needs_refs = result["status"] == "HIT" and (
+            rec.get("card_refs") is None
+            or rec.get("card_refs_version", 0) < CARD_REFS_VERSION)
         if result["status"] == "STALE_OK" or needs_refs:
-            record(slug, routine)
-            sidecar = load_cache(slug)  # records update the shared cards_map
-            reblessed.append(routine)
+            plan.append(routine)
         else:
             skipped.append((routine, result["status"]))
+
+    for routine in plan:
+        record(slug, routine)
+        reblessed.append(routine)
     return reblessed, skipped
 
 

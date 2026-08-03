@@ -836,7 +836,21 @@ STRATEGY_SECTION_WARN_CHARS = 1200
 # tracked artifact; if none of its declared inputs changed, the skill reuses
 # the artifact instead of paying for the spawn. See docs/agent-cost.md.
 AGENT_CACHE_VERSION = 1        # bump to invalidate every routine everywhere
+# ...and be sure you mean it: a bump produces no *input* changes, so it can never
+# be STALE_OK and `rebless` cannot rescue it. Every routine on every deck becomes
+# a real spawn. There is no partial setting. Use CARD_REFS_VERSION below instead
+# whenever the question is "which cards does this artifact reference", which is
+# the only thing most changes to this machinery actually alter.
 AGENT_CACHE_FILENAME = ".agent-cache.json"
+
+# Bumped when the card-reference EXTRACTION changes (what counts as a mention),
+# not when a deck changes. Refs ride outside the fingerprint — they refine
+# invalidation without defining a HIT — so bumping this invalidates NOTHING. It
+# only tells `rebless` that existing records carry refs computed under older
+# rules and should be re-seeded, which is a pure re-fingerprint with no spawn.
+# Without it, a fix to the extractor is inert on every already-recorded routine:
+# rebless skips any HIT that merely *has* refs, however stale their derivation.
+CARD_REFS_VERSION = 1
 AGENT_PROMPTS_DIR = _REPO_ROOT / ".claude" / "agents"
 STYLE_DOC_PATH = _REPO_ROOT / "STYLEv3.md"
 ISSUE_SPEC_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "issue_spec.py"
