@@ -1,0 +1,226 @@
+{
+  "slug": "yawgmoth-swarm",
+  "commander": "Yawgmoth, Thran Physician",
+  "as_of": "2026-08-03",
+  "consensus": "Strong Yawgmoth lists are aristocrats-combo decks that treat the commander as a free, repeatable sacrifice outlet stapled to a card-draw engine, then loop a renewable body into a death-trigger drain until the table is dead. The near-universal core across 6,961 EDHREC lists is a counter-payoff that converts Yawgmoth's -1/-1 counter into more fodder (Nest of Scarabs, 81.4%), two undying bodies that come back for free (Butcher Ghoul 72.8%, Geralf's Messenger 68.3%), a passive fodder factory (Ophiomancer 73.5%, Pawn of Ulamog 68.5%, Pitiless Plunderer 70.4%), and stacked drains so one loop kills the whole table (Zulaport Cutthroat 84.7%, Blood Artist 84.5%, Bastion of Remembrance 67.5%). Mana is front-loaded and colour-specific rather than generic: Dark Ritual 79.7%, Jet Medallion 74.2%, Cabal Coffers 64.5%, Urborg 54.2%, Nykthos 42.5%. The combo-tagged subset (446 decks) runs the same shell at higher density and adds reanimation as a second tutor layer (Reanimate 73.8%, Entomb 45.3% of those lists) plus Game Changers. What these lists do NOT do is diversify: they run one plan and five ways to find it.",
+  "findings": [
+    {
+      "claim": "The most-included cards in the whole archetype are the renewable-fodder engines, and this deck runs neither of the top two. Ophiomancer makes a free deathtouch Snake every upkeep you have none; Pawn of Ulamog makes a 0/1 that taps for mana on every nontoken death. Both are 'the fodder problem solves itself' cards, and the audit already names the fodder component as this deck's measured bottleneck.",
+      "cards": ["Ophiomancer", "Pawn of Ulamog", "Nether Traitor", "Forsaken Miner", "Genesis Chamber"],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician.json",
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician/combo.json",
+        "https://json.edhrec.com/pages/average-decks/yawgmoth-thran-physician/combo.json"
+      ],
+      "detail": "Ophiomancer 5,116/6,961 = 73.5% (synergy 0.562), and 82.96% of the 446 combo-tagged lists. Pawn of Ulamog 4,769/6,961 = 68.5% (synergy 0.585), 80.04% of combo lists, 76.0% of the 768 optimized lists. Nether Traitor 3,095/6,961 = 44.5%, 53.36% of combo lists. Forsaken Miner 3,392/6,961 = 48.7%, 58.97% of combo lists. Genesis Chamber 2,192/6,961 = 31.5%, 41.48% of combo lists. The one card in this class the deck DOES cover is Bitterblossom (33.6% overall), already in the 99 and therefore deliberately excluded from the cards list above."
+    },
+    {
+      "claim": "Drain redundancy is treated as the win condition itself, not as a payoff slot: strong lists stack four to six independent 'a creature died, you lose life' effects so any single loop is lethal and no one removal spell turns a completed loop into a fizzle. This deck runs four (Blood Artist, Zulaport Cutthroat, Bastion of Remembrance, Mirkwood Bats); the archetype's standard adds cheaper and wider ones.",
+      "cards": ["Vengeful Bloodwitch", "Deathgreeter", "Marionette Apprentice", "The Meathook Massacre", "Blight Mound", "Falkenrath Noble"],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician.json",
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician/combo.json",
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician/optimized.json",
+        "https://draftsim.com/yawgmoth-thran-physician-edh-deck/"
+      ],
+      "detail": "Vengeful Bloodwitch 2,637/6,906 = 38.2% (synergy 0.321). Deathgreeter 272/446 = 60.99% of combo lists (synergy 0.575) - it gains life rather than drains, which is how these lists pay for Yawgmoth's per-activation life cost. Marionette Apprentice 2,109/6,961 = 30.3%. The Meathook Massacre 2,275/6,961 = 32.7%, 44.9% of optimized lists - it is a drain AND a sweeper on the same card. Blight Mound 2,856/6,961 = 41.0% (synergy 0.386), 48.2% optimized, 56.95% of combo lists; its Pest token is fodder and its own death gains life, so it is a drain and a fodder engine at once. Draftsim's guide names Blood Artist, Zulaport Cutthroat and Falkenrath Noble together as the aristocrat payoff class. All six are mono-black colour identity, Commander-legal, and absent from the 99."
+    },
+    {
+      "claim": "Mono-black lists solve their mana with colour-specific cost reduction and rituals rather than generic rocks, because Yawgmoth's own cost and the combo turns are BB-heavy. Jet Medallion is the third-most-included card in the whole archetype and one of the few artifacts these lists agree on.",
+      "cards": ["Jet Medallion", "Culling the Weak", "Cabal Ritual", "Lotus Petal", "Songs of the Damned", "K'rrik, Son of Yawgmoth"],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician.json",
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician/optimized.json",
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician/combo.json"
+      ],
+      "detail": "Jet Medallion 5,164/6,961 = 74.2%, 82.2% of optimized lists, 83.63% of combo lists. Culling the Weak 3,165/6,961 = 45.5%, 64.34% of combo lists - it converts a creature the deck wants dead anyway into {B}{B}{B}{B}. Cabal Ritual 2,543/6,961 = 36.5%, 50.4% optimized, 54.26% of combo lists. Lotus Petal 30.3% of optimized lists, 35.87% of combo lists. Songs of the Damned 25.0% of optimized lists. K'rrik, Son of Yawgmoth 3,309/6,961 = 47.5% - pays life for black mana, which is the same resource Yawgmoth already spends. This deck runs Dark Ritual, Sol Ring, Arcane Signet and Ancient Tomb; it runs no cost reducer and one ritual."
+    },
+    {
+      "claim": "Reanimation is the archetype's second tutor layer, not a value package. Strong lists pair a cheap graveyard-filler with a one-mana reanimation spell so a discarded or milled Mikaeus / Grave Titan is as findable as a tutored one, at a fraction of the mana.",
+      "cards": ["Reanimate", "Entomb", "Unearth", "Buried Alive", "Living Death", "Blood for Bones"],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician.json",
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician/optimized.json",
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician/combo.json",
+        "https://tappedout.net/mtg-decks/yawgmoth-combo-with-guide/"
+      ],
+      "detail": "Reanimate 4,373/6,961 = 62.8%, 73.8% of optimized lists, 73.77% of combo lists. Entomb 2,238/6,961 = 32.2%, 46.1% optimized, 45.29% combo. Unearth 2,097/6,961 = 30.1%, 32.7% optimized, 36.55% combo. Zarvan's TappedOut guide lists Entomb and Buried Alive alongside Demonic Tutor and Vampiric Tutor under the same 'tutors' heading, which is the point - Entomb IS a tutor in this shell. This deck runs Animate Dead, Victimize, Persist and Phyrexian Reclamation, and has Stitcher's Supplier as its only self-mill; it runs no Reanimate, Entomb or Unearth."
+    },
+    {
+      "claim": "Cabal Coffers plus Urborg is the most-included mana engine in the archetype, and this deck runs neither in the 99 - both are sitting on its bench. Nykthos is the same effect for a deck this creature-dense.",
+      "cards": ["Cabal Coffers", "Urborg, Tomb of Yawgmoth", "Nykthos, Shrine to Nyx", "Cabal Stronghold", "Deserted Temple", "Crypt Ghast"],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician.json",
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician/optimized.json",
+        "https://json.edhrec.com/pages/average-decks/yawgmoth-thran-physician/combo.json"
+      ],
+      "detail": "Cabal Coffers 4,487/6,961 = 64.5%, 78.1% of optimized lists, 66.82% of combo lists. Urborg 3,769/6,961 = 54.2%, 69.9% optimized, 65.47% combo. Nykthos 2,956/6,961 = 42.5%, 52.9% optimized, 51.35% combo. Crypt Ghast 3,685/6,961 = 52.9%, 56.1% of optimized lists. Cabal Stronghold appears in the average combo decklist (446 decks). VERIFIED AGAINST THE 99: Cabal Coffers, Urborg and Crypt Ghast are all present in this deck's cards.json but flagged is_sideboard - they are on the bench, not in the maindeck 99. Nykthos, Cabal Stronghold and Deserted Temple are absent entirely. This is a recorded fact about other people's decks, not a prescription: a 36-land deck adding Coffers+Urborg+Nykthos is three lands of commitment."
+    },
+    {
+      "claim": "Mono-black's one real answer to noncreature permanents is Feed the Swarm, and the archetype runs it at a rate that makes it look like a staple rather than a tech card. This is the format's standard patch for exactly the interaction-breadth hole a mono-black list has by construction.",
+      "cards": ["Feed the Swarm", "Withering Torment", "Nihil Spellbomb", "Dismember", "Tragic Slip", "Infernal Grasp"],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician.json",
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician/combo.json",
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician/optimized.json"
+      ],
+      "detail": "Feed the Swarm 3,996/6,961 = 57.4%, 58.74% of combo lists; it is the only common mono-black card that destroys an enchantment. Withering Torment 2,166/6,961 = 31.1%, 32.74% of combo lists (creature or enchantment, and it can't be countered). Tragic Slip 2,185/6,961 = 31.4%. Dismember 22.9% of optimized lists. deck-audit reports this deck at 1 interaction class answered against a target of >= 5, with artifact / enchantment / graveyard / land all flagged unanswered by the oracle heuristic - the archetype's own answer to that is Feed the Swarm."
+    },
+    {
+      "claim": "The combo-tagged lists (446 decks) reach for Game Changers as a group, which is the single clearest signal that the tuned version of this deck lives at bracket 4 rather than bracket 3. None of these six is in this deck.",
+      "cards": ["Bolas's Citadel", "Orcish Bowmasters", "Imperial Seal", "Opposition Agent", "Chrome Mox", "Mana Vault"],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician/combo.json",
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician.json",
+        "https://magic.wizards.com/en/news/announcements/introducing-commander-brackets-beta"
+      ],
+      "detail": "Within the 446 combo-tagged lists: Demonic Tutor 61.21%, Vampiric Tutor 54.04%, Bolas's Citadel 44.39%, Orcish Bowmasters 42.60%, Necropotence 37.89%, Ancient Tomb 36.10%, Chrome Mox 31.84%, Imperial Seal 28.03%, Mana Vault 26.46%, Opposition Agent 25.11%. This deck already runs four of that list (Demonic Tutor, Vampiric Tutor, Necropotence, Ancient Tomb); cards.csv confirms Bolas's Citadel, Orcish Bowmasters, Imperial Seal, Opposition Agent, Chrome Mox and Mana Vault are all game_changer=True, mono-black or colourless, and Commander-legal. Adding any of them moves the Game Changer count, which is the bracket-3 ceiling (three) per the WotC beta article."
+    },
+    {
+      "claim": "A meaningful share of this deck's slots are off-archetype - cards that appear in under 15% of Yawgmoth lists. That is not automatically wrong, but each is a slot the consensus spends elsewhere, and one of them (Exquisite Blood) has no partner in the 99 that turns it into a kill.",
+      "cards": ["Sanguine Bond", "Marauding Blight-Priest", "Vito, Thorn of the Dusk Rose", "Bloodthirsty Conqueror"],
+      "confidence": "one source",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician.json"
+      ],
+      "detail": "Inclusion rates for cards this deck DOES run: Exquisite Blood 498/6,961 = 7.2% (synergy -0.060), Blowfly Infestation 810/6,961 = 11.6%, Carrion Feeder 789/6,961 = 11.3%, Beseech the Mirror 780/6,961 = 11.2%, Insatiable Avarice 471/6,961 = 6.8%, Supernatural Stamina 466/6,961 = 6.7%, Persist 551/6,961 = 7.9%, Fatal Push 513/6,961 = 7.4%, Black Sun's Zenith 915/6,961 = 13.2%, Black Market Connections 1,341/6,961 = 19.3%. Exquisite Blood's classic partner Sanguine Bond is 369/6,961 = 5.3% (synergy -0.060) - the archetype does not run this pair. The four named cards are the lifegain-triggered drains that would make Exquisite Blood a kill; all four are mono-black, Commander-legal, and absent from the 99. Whether the right move is to add a partner or to cut Exquisite Blood is a diagnose-mode question, not a recon one."
+    },
+    {
+      "claim": "The archetype's standard top-end is one planeswalker and one or two high-value legends, not a suite of six-drops. Liliana, Dreadhorde General is the only planeswalker any meaningful number of lists agree on, and Sheoldred, the Apocalypse (not Whispering One) is the praetor of choice.",
+      "cards": ["Liliana, Dreadhorde General", "Sheoldred, the Apocalypse", "Dauthi Voidwalker", "Grim Hireling"],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician.json",
+        "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician/optimized.json",
+        "https://json.edhrec.com/pages/average-decks/yawgmoth-thran-physician/combo.json"
+      ],
+      "detail": "Liliana, Dreadhorde General 2,038/6,961 = 29.3%, 27.6% of optimized lists, 24.66% of combo lists - by a wide margin the archetype's most-played planeswalker (next is Tevesh Szat at 12.9%). Sheoldred, the Apocalypse 2,226/6,961 = 32.0%, 41.0% of optimized lists; this deck carries the DIFFERENT card Sheoldred, Whispering One, and that card does not appear in EDHREC's cardlists for this commander at all. Dauthi Voidwalker appears in the average combo decklist. Grim Hireling is named here as a mono-black fodder/treasure body verified legal and absent, not as a cited inclusion rate - EDHREC does not list it for this commander."
+    }
+  ],
+  "known_failure_modes": [
+    "Removal on the commander stops the deck outright. Every named win condition in every primer fetched routes through Yawgmoth himself as the free sacrifice outlet; the TappedOut community guidance is blunt that 'you don't want a deck too reliant on the commander to combo off'. Protection from Humans dodges a narrow slice of removal and nothing else. Source: draftsim.com guide, tappedout.net/mtg-decks/yawgmoth-combo-with-guide/.",
+    "No bodies, no engine. MTG Salvation poster GloriousGoose states the structural version: 'without lots of food to feed Yawgmoth, he isn't killing much' - black cannot generate creatures at the rate green or white token strategies can, so the deck's whole consistency question is whether renewable fodder is on board. This is the archetype's known load-bearing weakness, and it is the same component deck-audit measures at 73.6%. Source: mtgsalvation.com thread 812161.",
+    "The engine is mana-intensive and slow to turn on. Tears of Tomorrow, arguing the PRO-Yawgmoth side of the same thread, still concedes the combo lines take 'a lot of mana to pull off' - a four-mana commander that must survive a rotation before it does anything is a turn-6-or-later plan in practice. Source: mtgsalvation.com thread 812161.",
+    "Graveyard hate blanks the recursion half. Reanimate/Entomb/Unearth, Gravecrawler, Nether Traitor, Forsaken Miner and Phyrexian Reclamation all read from the yard; a Rest in Peace or a Bojuka Bog on the wrong deck removes the redundancy that makes the loop repeatable. Both TappedOut guides name graveyard hate as the archetype's primary hoser. Sources: tappedout.net/mtg-decks/yawgmoth-combo-with-guide/, draftsim.com guide.",
+    "Life is a real resource and the deck spends it four ways. Yawgmoth costs 1 life per activation, Necropotence costs 1 per card, Feed the Swarm and Toxic Deluge cost life, and the archetype's own Game Changers (Bolas's Citadel, K'rrik, Ad Nauseam) all pay in life too. A combo turn that draws twenty cards costs twenty life; that is why the consensus runs a lifegain drain like Deathgreeter or Vengeful Bloodwitch rather than a pure drain. Source: card oracle text via data/cards.csv, plus Deathgreeter at 60.99% of combo lists (json.edhrec.com combo page).",
+    "One -1/-1 counter per activation is not removal against big creatures. Yawgmoth's kill mode is efficient only against x/1s and x/2s; against a table of fatties he is a draw engine that costs a creature and a life, and provides no board control at all. Source: oracle text, data/cards.csv.",
+    "Interaction on a combo piece mid-line. MTG Salvation posters name counterspells, creature removal on the enabler and artifact removal as the interruptions that matter - the deck's loops have no protection built in and mono-black cannot hold up a counterspell. Source: mtgsalvation.com thread 812161.",
+    "Structural: the answer set is narrow by colour. The same thread's pro-Yawgmoth poster concedes 'the lack of diverse answers to enemy strategies might hurt' and that Yawgmoth's problems 'are exacerbated by his color identity'. Mono-black cannot answer a resolved artifact or enchantment except through Feed the Swarm / Withering Torment, and cannot answer anything on the stack. Source: mtgsalvation.com thread 812161."
+  ],
+  "contested": [
+    "WHERE YAWGMOTH SITS ON THE BRACKET LADDER. The WotC bracket beta defines bracket 3 as allowing up to three Game Changers and 'no early-game two-card combos', and bracket 4 as 'cheap combos that end games... no restrictions beyond the banned list'. Yawgmoth decks straddle this: the core kill is three cards (Yawgmoth + an undying body + a drain), which the community reads as legal at any bracket, but a tuned list also contains two-card infinites (Mikaeus + a self-shrinking body; Mikaeus + Walking Ballista) that are bracket-4 markers on their own. clayperce's position in the TappedOut bracket thread is that 'infinite alone is enough to bump the deck up a bracket'. There is no authoritative ruling for this commander and none was found. Sources: magic.wizards.com brackets beta; tappedout.net bracket forum thread.",
+    "HOW A COMBO PIECE IS COUNTED. The TappedOut forum thread shows the community does not agree what makes a 'two-card' combo. DreadKhan argues 'ramp should generally be discounted from the discussion'; legendofa argues sacrificed permanents 'shouldn't count toward the combo requirements' when they are easily obtained; DreadKhan counters that needing something to sacrifice 'is ANOTHER piece MINIMUM'; SaberTech calls the discounting argument 'trying to skirt the rules'. This matters directly for a Yawgmoth list, whose lines all consume a body that is generically available. Source: tappedout.net bracket forum thread.",
+    "HOW MANY INFINITE LINES A LIST SHOULD ACTUALLY RUN. Levi Perry's EDHREC piece argues the count is the wrong question: he distinguishes 'organic combos' (cards the deck wants anyway - 'we would almost have to go out of our way to exclude one of them just to avoid creating a combo') from 'inorganic' ones, and concludes 'the biggest factor in determining a Combo deck's power level isn't necessarily the combo itself. It's how consistently the deck can assemble it.' Under that reading a Yawgmoth list with many contained lines is not automatically higher-powered - and the contrary bracket-thread reading treats each line as a separate flag. These two positions are not reconcilable and both are widely held. Sources: edhrec.com/articles/building-combos-for-casual-commander; tappedout.net bracket forum thread.",
+    "TUTOR DENSITY AT BRACKET 4. Kristen Gregory's Card Kingdom piece argues bracket-4 decks should probably maximise tutors but that this creates 'a linear experience' blurring bracket 4 into cEDH, and that decks whose commander is itself part of the winning combo need FEWER tutors than decks without that A+B structure. Yawgmoth is squarely an A+B commander, which by her argument cuts against loading up on tutors. This deck runs five. Source: blog.cardkingdom.com/should-you-always-tutor-in-bracket-4/.",
+    "WHETHER YAWGMOTH IS COMPETITIVE AT ALL. Genuine, unresolved split on MTG Salvation. Tears of Tomorrow: Yawgmoth is 'as competitive as a monocolored deck can be in this format' and 'the best mono-black commander by a mile', holding his own at 75% tables. GloriousGoose: he 'is not cEDH viable' and proposes a 12.5% win rate against tier-1 decks as the bar. The disagreement is definitional - whether strength at optimized-casual tables counts as competitiveness. Tournament data is thin in Yawgmoth's favour: MTGTop8's cEDH Yawgmoth archetype page shows a single listed decklist, a 17-32 finish at a $20,000 cEDH Invitational Qualifier on 2026-01-08. Sources: mtgsalvation.com thread 812161; mtgtop8.com/archetype?a=1198.",
+    "WHICH DECK THIS EVEN IS. EDHREC's own theme tags split the 6,961 lists into Aristocrats (1.1K), -1/-1 Counters (491), Combo (446) and Reanimator (161), and the card lists diverge sharply between them - Butcher Ghoul is 72.8% overall but 91.93% of combo lists; Cabal Ritual is 36.5% overall but 54.26% of combo lists. A recommendation drawn from the aggregate page is an average of four different decks. This deck's own strategic_frame declares archetype 'combo', so the combo and optimized subsets are the fairer comparison and are quoted separately throughout this artifact. Source: edhrec.com/commanders/yawgmoth-thran-physician and its combo/optimized JSON pages."
+  ],
+  "sources": [
+    {
+      "title": "Yawgmoth, Thran Physician (Commander) | EDHREC",
+      "author": "EDHREC (aggregate of 6,961 decklists)",
+      "url": "https://edhrec.com/commanders/yawgmoth-thran-physician",
+      "contributed": "Deck count, theme tag split (Aristocrats 1.1K / -1/-1 Counters 491 / Combo 446 / Reanimator 161), commander rank #381."
+    },
+    {
+      "title": "EDHREC JSON: commanders/yawgmoth-thran-physician",
+      "author": "EDHREC",
+      "url": "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician.json",
+      "contributed": "Every archetype-wide inclusion percentage quoted in this artifact, with num_decks/potential_decks and synergy scores. Also the low-inclusion figures for the off-archetype cards this deck runs."
+    },
+    {
+      "title": "EDHREC JSON: yawgmoth-thran-physician / optimized",
+      "author": "EDHREC (768 decklists)",
+      "url": "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician/optimized.json",
+      "contributed": "Inclusion rates conditioned on high-power builds - the fairer comparison for a bracket-4 list. Source of the Cabal Coffers 78.1% / Urborg 69.9% / Phyrexian Tower 68.2% land figures."
+    },
+    {
+      "title": "EDHREC JSON: yawgmoth-thran-physician / combo",
+      "author": "EDHREC (446 decklists)",
+      "url": "https://json.edhrec.com/pages/commanders/yawgmoth-thran-physician/combo.json",
+      "contributed": "The combo-subset inclusion rates and the Game Changers block (Bolas's Citadel 44.39%, Orcish Bowmasters 42.60%, Imperial Seal 28.03%, Opposition Agent 25.11%, Chrome Mox 31.84%, Mana Vault 26.46%)."
+    },
+    {
+      "title": "EDHREC JSON: average deck, yawgmoth-thran-physician / combo",
+      "author": "EDHREC (446 decklists)",
+      "url": "https://json.edhrec.com/pages/average-decks/yawgmoth-thran-physician/combo.json",
+      "contributed": "The aggregate 100 a combo-tagged Yawgmoth list looks like - 31 creatures, 32 lands including Cabal Coffers / Cabal Stronghold / Nykthos / Urborg, and only one planeswalker."
+    },
+    {
+      "title": "Yawgmoth, Thran Physician Commander Deck Guide",
+      "author": "Ignacio (Inaki), Draftsim",
+      "url": "https://draftsim.com/yawgmoth-thran-physician-edh-deck/",
+      "contributed": "Named combo lines (Yawgmoth + Zulaport + Nest of Scarabs + Butcher Ghoul/Geralf's Messenger; Yawgmoth + Mikaeus + Ayara/Gray Merchant; Pawn of Ulamog + Phyrexian Altar + Nether Traitor), the essential-cards list including Falkenrath Noble, and the author's own warning: 'I'd advise you to not even bother to take this deck to your very-casual playgroup.'"
+    },
+    {
+      "title": "[PRIMER] Yawgmoth, Thran Physician",
+      "author": "shade1400, TappedOut",
+      "url": "https://tappedout.net/mtg-decks/primer-yawgmoth-thran-physician/",
+      "contributed": "A grindier, non-combo build of the commander - edicts, Lifeline locks, Gray Merchant recursion. Useful mainly as evidence that the aggregate EDHREC page averages several distinct decks. Contains no failure-mode discussion."
+    },
+    {
+      "title": "Yawgmoth Combo (with guide)",
+      "author": "Zarvan, TappedOut",
+      "url": "https://tappedout.net/mtg-decks/yawgmoth-combo-with-guide/",
+      "contributed": "Combo lines including Mikaeus + Walking Ballista and Bolas's Citadel + Aetherflux Reservoir + Sensei's Divining Top; the tutor list treating Entomb and Buried Alive as tutors; graveyard hate and creature removal named as the deck's hosers."
+    },
+    {
+      "title": "Is Yawgmoth Thran Physician competitive?",
+      "author": "MTG Salvation forum (Tears of Tomorrow, GloriousGoose et al.)",
+      "url": "https://www.mtgsalvation.com/forums/the-game/commander-edh/812161-is-yawgmoth-thran-physician-competitive",
+      "contributed": "The competitiveness split, the fodder-shortage argument ('without lots of food to feed Yawgmoth, he isn't killing much'), the mana-intensity concession, and the colour-identity answer-diversity weakness."
+    },
+    {
+      "title": "Introducing Commander Brackets Beta",
+      "author": "Wizards of the Coast",
+      "url": "https://magic.wizards.com/en/news/announcements/introducing-commander-brackets-beta",
+      "contributed": "The bracket definitions used in `contested` - bracket 3 (up to three Game Changers, no early two-card combos) versus bracket 4 ('cheap combos that end games', no restrictions beyond the banned list)."
+    },
+    {
+      "title": "What exactly is the hard and fast rule on 2-card combos under the bracket system?",
+      "author": "TappedOut forum (legendofa, DreadKhan, clayperce, SaberTech, RiotRunner789)",
+      "url": "https://tappedout.net/mtg-forum/commander/what-exactly-is-the-hard-and-fast-rule-on-2-card-combos-under-the-bracket-system-game-conflict/",
+      "contributed": "The live community disagreement about what counts as a combo piece and what counts as 'early' - the direct evidence that bracket placement for a combo-dense list is contested rather than settled."
+    },
+    {
+      "title": "Building Combos for Casual Commander",
+      "author": "Levi Perry, EDHREC",
+      "url": "https://edhrec.com/articles/building-combos-for-casual-commander",
+      "contributed": "The organic/inorganic combo distinction and the argument that assembly consistency, not combo count, determines a combo deck's power level."
+    },
+    {
+      "title": "Should You Always Tutor in Bracket 4?",
+      "author": "Kristen Gregory, Card Kingdom Blog",
+      "url": "https://blog.cardkingdom.com/should-you-always-tutor-in-bracket-4/",
+      "contributed": "The argument that A+B commanders (which Yawgmoth is) need fewer tutors than commanders without an inherent combo, and that heavy tutoring creates 'spikes in performance' rather than raising a deck's average."
+    },
+    {
+      "title": "cEDH Yawgmoth, Thran Physician decklists (archetype page)",
+      "author": "MTGTop8",
+      "url": "https://mtgtop8.com/archetype?a=1198",
+      "contributed": "The only tournament evidence found: one listed decklist, player Joda, 17-32 finish at $20,000 cEDH Invitational Qualifier #3, 2026-01-08. Grounds the claim that Yawgmoth is fringe in cEDH rather than absent from it."
+    },
+    {
+      "title": "Yawgmoth (mono-black Commander deck)",
+      "author": "Archidekt user deck 1808760",
+      "url": "https://archidekt.com/decks/1808760/yawgmoth",
+      "contributed": "A self-labelled 'Optimized power level (4)' list; corroborates the drain/recursion/big-mana shape. No primer text, so contributed nothing on failure modes."
+    }
+  ],
+  "gaps": [
+    "The two most detailed strategy writeups the search surfaced could not be fetched: the cEDH 'Yawgmoth Xerox' primer (moxfield.com/decks/SzdzUYguo0CqlPzxSMjI2Q) and 'Yawgmoth, Thran Physician for Perfection' (moxfield.com/decks/N0fDE7PHXkKuejI5GNKDWg/primer) both returned HTTP 403, as did the MTGGoldfish aristocrats list. Moxfield is where the archetype's best primers live and none of it is recorded here.",
+    "EDHTop16's commander page for Yawgmoth (edhtop16.com/commander/Yawgmoth,%20Thran%20Physician) returned HTTP 504, so there is no entry count, conversion rate or win rate in this artifact. The only tournament datum is MTGTop8's single archetype entry. Any claim about Yawgmoth's competitive win rate would be invented.",
+    "EDHREC gives inclusion, never performance. Nothing here says a card WINS more games in a Yawgmoth deck - only that more people put it in. The 68% on Pawn of Ulamog is a popularity fact.",
+    "EDHREC's JSON cardlists are truncated below a display threshold, so a card reported 'not present' (Carnifex Demon, Blasting Station, Woe Strider, Grave Titan, Mirkwood Bats, Sedgemoor Witch, Nim Deathmantle, Sheoldred Whispering One, Plumb the Forbidden and others this deck runs) is BELOW that threshold, not necessarily at zero. Do not quote those as 0%.",
+    "No source was found that brackets a Yawgmoth deck specifically. The bracket discussion in `contested` is general-format reasoning applied to this commander, not a ruling about it.",
+    "No dated source discusses whether the -1/-1-counter subtheme this deck leans on (Blowfly Infestation, Necroskitter, Nest of Scarabs, Soul Snuffers, Carnifex Demon) is competitive with the pure aristocrats build; EDHREC tags it as a separate 491-deck theme but its card list was not fetched. Fetching json.edhrec.com/pages/commanders/yawgmoth-thran-physician/-1-1-counters.json would settle it.",
+    "This artifact records what other lists run. Whether any of it belongs in THIS deck is a diagnose-mode question, decided against deck-audit's measured axes - not by inclusion rate."
+  ]
+}
