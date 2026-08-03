@@ -21,7 +21,6 @@ from collections import Counter
 
 import numpy as np
 import pandas as pd
-from sentence_transformers import SentenceTransformer
 
 from manamap.config import (
     CARD_FEATURES_PATH,
@@ -63,6 +62,12 @@ def compute_text_embeddings(texts, model_name=TEXT_MODEL_NAME, batch_size=512):
     are frozen, so a cached instance cannot change any output.
     """
     if model_name not in _MODEL_CACHE:
+        # Imported HERE, not at module scope. `import sentence_transformers` costs
+        # ~3.5 s and it pulls in torch; at module scope every consumer of this file
+        # paid it, including pytest COLLECTION — so the price was on `-k`, on
+        # `--collect-only`, on a single-file run, on everything. Nothing outside
+        # this branch needs the symbol, and the vocab/encoding tests never reach it.
+        from sentence_transformers import SentenceTransformer
         _MODEL_CACHE[model_name] = SentenceTransformer(model_name)
     model = _MODEL_CACHE[model_name]
     embeddings = model.encode(

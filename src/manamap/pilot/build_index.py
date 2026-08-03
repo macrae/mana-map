@@ -82,7 +82,7 @@ _BASIC_LANDS = {"plains", "island", "swamp", "mountain", "forest", "wastes",
 _TOKEN_WORD = re.compile(r"\btokens?\b", re.I)
 
 
-def line_cards(scenario):
+def line_cards(scenario, deck_names=None):
     """The cards a verified line is actually made of, from the scenario's structure.
 
     The ordered stack, the hand and the graveyard name the line directly. `board` is
@@ -108,6 +108,23 @@ def line_cards(scenario):
             name = re.sub(r"\s+x\s*\d+$", "", name, flags=re.I).strip()
             if not name or name in seen or name.lower() in _NOT_A_CARD:
                 return
+            # Two filters below answer "is this even a card"; two answer "is this
+            # card part of the LINE". Only the first kind may be short-circuited.
+            # A basic land is a real card in the 99 and still furniture — that is
+            # the whole reason _BASIC_LANDS exists — so it is checked first, and
+            # naming it in cards.json must not resurrect it.
+            if name.lower() in _BASIC_LANDS:
+                return
+            # Now: an EXACT match against this deck's own cards beats the card-ness
+            # heuristics, each of which also rejects a class of real card.
+            # `_COUNT_PHRASE` drops anything opening "A "/"An " (An Offer You Can't
+            # Refuse, A Killer Among Us); `_TOKEN_WORD` substring-matches, so any
+            # card with Token in its printed name was unreachable. A name literally
+            # in the 99 is not a guess — check reality before heuristics.
+            if deck_names and name in deck_names:
+                seen.add(name)
+                out.append(name)
+                return
             # A stack object is often a sentence about a trigger rather than a card name.
             # Card names do not contain these.
             if len(name) > 60 or any(t in name for t in (";", " has just ", " trigger")):
@@ -117,7 +134,7 @@ def line_cards(scenario):
             if _COUNT_PHRASE.match(name) or " lands" in name.lower():
                 return
             # Furniture that survives every filter above — see _BASIC_LANDS.
-            if name.lower() in _BASIC_LANDS or _TOKEN_WORD.search(name):
+            if _TOKEN_WORD.search(name):
                 return
             seen.add(name)
             out.append(name)
@@ -202,7 +219,8 @@ def gather_entries():
         stack_cards = {}
         for name in stack_files:
             doc_stack = load_json(deck_path / "stacks" / name, {})
-            cards = line_cards(doc_stack.get("scenario") or {})
+            cards = line_cards(doc_stack.get("scenario") or {},
+                               deck_names={c["name"] for c in doc["cards"]})
             if cards:
                 stack_cards[name] = cards
 

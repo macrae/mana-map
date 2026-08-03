@@ -2,6 +2,10 @@
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Always revalidate the HTML; its versioned assets may cache forever. See the
+     matching note in index.html — a cached page pins the script ?v=, which pins
+     DATA_VERSION, which pins every data fetch, and the deck silently goes stale. -->
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>Deck Dossier — Mana Map</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

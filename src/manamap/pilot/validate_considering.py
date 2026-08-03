@@ -30,6 +30,7 @@ from manamap.pilot.common import (
     deck_dir,
     load_deck_cards,
     load_json,
+    load_json_memo,
     mainboard,
     report_errors,
     sideboard,
@@ -112,8 +113,23 @@ def _validate_entry_lines(i, entry, deck_path):
     return errors
 
 
+def _big_graph(path):
+    """A large SHARED graph, parsed once per process.
+
+    `load_json` is documented "for small per-deck artifacts" and does not memoize.
+    These two are the format-wide graphs — obsolescence at 3 MB and synergy at
+    27.8 MB — and every validate() call re-parsed both. The suite noticed before a
+    human did: nine tests validating ten synthetic card names cost 7.8 seconds,
+    almost all of it re-reading 31 MB of JSON that never changes within a run.
+    """
+    try:
+        return load_json_memo(path)
+    except FileNotFoundError:
+        return None
+
+
 def _validate_obsolescence(doc):
-    index = load_json(OBSOLESCENCE_INDEX_PATH, default=None)
+    index = _big_graph(OBSOLESCENCE_INDEX_PATH)
     if index is None:
         return []
     errors = []
@@ -130,7 +146,7 @@ def _validate_obsolescence(doc):
 
 
 def _validate_synergy(doc, deck_names):
-    graph = load_json(SYNERGY_GRAPH_PATH, default=None)
+    graph = _big_graph(SYNERGY_GRAPH_PATH)
     if graph is None:
         return []
     errors = []

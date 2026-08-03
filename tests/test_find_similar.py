@@ -110,31 +110,49 @@ def test_cosine_similarity_on_real_embeddings(embeddings_bin):
 # ── 128D cosine vs 2D Euclidean produce different rankings ──
 
 
+# These two were per-card Python loops calling `cosine_similarity` 34,322 times
+# each. Across the three tests below that is 3.09M scalar cosines and 3.09M scalar
+# distances — 33 seconds, 41% of the entire fast suite, to compute what numpy does
+# in one matvec. The maths is identical; only the loop moved into numpy.
+#
+# `_coords` is cached because the projection is 13.5 MB of dicts and rebuilding the
+# array per call would hand back most of the win.
+_COORDS_CACHE = {}
+
+
+def _coords(projection):
+    key = id(projection)
+    if key not in _COORDS_CACHE:
+        _COORDS_CACHE[key] = np.array([[d["x"], d["y"]] for d in projection],
+                                      dtype=np.float64)
+    return _COORDS_CACHE[key]
+
+
+def _top_k_excluding_self(scores, ref_idx, top_k, descending):
+    """Rank by `scores`, drop the reference row, take `top_k`."""
+    scores = scores.copy()
+    scores[ref_idx] = -np.inf if descending else np.inf
+    order = np.argsort(-scores if descending else scores, kind="stable")
+    return [int(i) for i in order[:top_k]]
+
+
 def find_similar_2d(ref_idx, projection, top_k=20):
     """Find similar by 2D Euclidean distance (old method)."""
-    ref = projection[ref_idx]
-    rx, ry = ref["x"], ref["y"]
-    dists = []
-    for i, d in enumerate(projection):
-        if i == ref_idx:
-            continue
-        dist = np.sqrt((d["x"] - rx) ** 2 + (d["y"] - ry) ** 2)
-        dists.append((i, dist))
-    dists.sort(key=lambda x: x[1])
-    return [idx for idx, _ in dists[:top_k]]
+    xy = _coords(projection)
+    dists = np.linalg.norm(xy - xy[ref_idx], axis=1)
+    return _top_k_excluding_self(dists, ref_idx, top_k, descending=False)
 
 
 def find_similar_128d(ref_idx, embeddings, top_k=20):
     """Find similar by 128D cosine similarity (new method)."""
-    ref = embeddings[ref_idx]
-    sims = []
-    for i in range(len(embeddings)):
-        if i == ref_idx:
-            continue
-        sim = cosine_similarity(ref, embeddings[i])
-        sims.append((i, sim))
-    sims.sort(key=lambda x: -x[1])
-    return [idx for idx, _ in sims[:top_k]]
+    emb = np.asarray(embeddings, dtype=np.float64)
+    norms = np.linalg.norm(emb, axis=1)
+    ref = emb[ref_idx]
+    ref_norm = np.linalg.norm(ref)
+    denom = norms * ref_norm
+    with np.errstate(invalid="ignore", divide="ignore"):
+        sims = np.where(denom == 0, 0.0, (emb @ ref) / denom)
+    return _top_k_excluding_self(sims, ref_idx, top_k, descending=True)
 
 
 def test_2d_vs_128d_differ_for_sample_cards(embeddings_bin, projection):

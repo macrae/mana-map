@@ -1,12 +1,13 @@
 # Testing
 
 ```bash
-.venv/bin/python -m pytest              # everything (1,305, ~10 min)
-.venv/bin/python -m pytest -m "not browser"   # fast suite (1,182, ~80 s)
+.venv/bin/python -m pytest              # everything (1,312, ~10 min)
+.venv/bin/python -m pytest -m "not browser"   # fast suite (1,189, ~35 s)
+.venv/bin/python -m pytest -m "not browser" -n auto   # same, ~19 s
 .venv/bin/python -m pytest -m browser         # the 80 browser tests (~340 s)
 ```
 
-1,305 tests in `tests/`: 438 card-pipeline + 744 pilot-subsystem + **123 browser**.
+1,312 tests in `tests/`: 438 card-pipeline + 751 pilot-subsystem + **123 browser**.
 One is a still-unmet `xfail(strict=True)` ship gate in `test_embedding_quality.py` — see below.
 
 ## Source assertions do not catch regressions
@@ -58,7 +59,7 @@ section below for why they cannot live anywhere else. `conftest_viz.py` still ho
 page-level helpers: an ephemeral `http.server` rooted at the repo — `viz/` and `data/` must
 be siblings, the same constraint GitHub Pages imposes — plus a booted page that waits on
 `MM.allData` rather than a timer, because the projection is 12.9 MB. Playwright is imported
-lazily, so the other 1,182 tests never pay for it.
+lazily, so the other 1,189 tests never pay for it.
 
 Every test asserts `page.js_errors == []`. That list collects `pageerror` and console
 errors, and it is what catches the class of bug above.
@@ -85,7 +86,7 @@ resolves rather than collapsing, that link lengths stay inside the chord range `
 branching grows the graph and records the trail, and that leaving restores the map.
 
 Setup, one time: `.venv/bin/python -m playwright install chromium` (~94 MB). Without it the
-whole file skips cleanly, so a fresh clone still runs the other 1,182.
+whole file skips cleanly, so a fresh clone still runs the other 1,189.
 
 ## A passing check proves nothing until you have seen it fail
 

@@ -191,3 +191,33 @@ def test_a_stray_file_in_decks_dir_is_ignored(tmp_path, monkeypatch):
     monkeypatch.setattr(build_index, "DECKS_DIR", tmp_path)
     monkeypatch.setattr(build_index, "MANUALS_DIR", manuals)
     assert [e["slug"] for e in build_index.gather_entries()] == ["a-deck"]
+
+
+def test_line_cards_prefers_reality_over_its_own_heuristics():
+    """An exact deck-card match beats the card-ness guesses; furniture still loses.
+
+    Two filters answer "is this even a card" and both reject a class of real one:
+    `_COUNT_PHRASE` drops any name opening "A "/"An " (An Offer You Can't Refuse),
+    and `_TOKEN_WORD` substring-matches, so a card with Token in its printed name
+    was unreachable. Two other filters answer "is this part of the LINE" — basics
+    and tokens — and those must survive, because a basic IS a real card in the 99
+    and drawing an edge to it is exactly the noise this function exists to prevent.
+    """
+    from manamap.pilot.build_index import line_cards
+
+    deck = {"An Offer You Can't Refuse", "Cryptic Token Machine", "Swamp", "Mountain"}
+    scenario = {
+        "stack": [{"object": "An Offer You Can't Refuse"}],
+        "hand": ["Cryptic Token Machine"],
+        "board": {"you": ["Swamp (untapped)", "Mountain", "Insect token X"]},
+    }
+    cards = line_cards(scenario, deck_names=deck)
+
+    assert "An Offer You Can't Refuse" in cards      # the A/An guard must not eat it
+    assert "Cryptic Token Machine" in cards          # nor the Token substring
+    assert "Swamp" not in cards and "Mountain" not in cards   # basics stay furniture
+    assert "Insect token X" not in cards             # tokens stay furniture
+
+    # Without the deck names the heuristics run alone and both real cards are lost —
+    # which is the behaviour that shipped, and why the call site now passes them.
+    assert line_cards(scenario) == []

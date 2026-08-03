@@ -1,5 +1,6 @@
 """Integration tests: validate that pipeline outputs are consistent."""
 
+import functools
 import json
 from pathlib import Path
 
@@ -42,6 +43,27 @@ def requires_file(path):
     )
 
 
+# ── Shared artifact parses ──
+#
+# The autouse fixtures below bind these to `self`; they used to do the reading
+# themselves, at function scope. cards.csv is 24.7 MB and synergy_graph.json is
+# 27.8 MB, so a nine-test class re-parsed the same 25 MB nine times — 7.3 s in a
+# file whose assertions are all count checks. The fixtures stay autouse (they
+# must, to populate `self`); only the parse is hoisted. Every consumer below is
+# read-only — they filter and index, never mutate — so one shared object is safe.
+
+
+@functools.lru_cache(maxsize=None)
+def _read_csv_once(path):
+    return pd.read_csv(path)
+
+
+@functools.lru_cache(maxsize=None)
+def _read_json_once(path):
+    with open(path) as f:
+        return json.load(f)
+
+
 # ── Card count consistency ──
 
 
@@ -51,7 +73,7 @@ class TestCardCountConsistency:
 
     @pytest.fixture(autouse=True)
     def load_card_count(self):
-        self.df = pd.read_csv(OUTPUT_CSV_PATH)
+        self.df = _read_csv_once(OUTPUT_CSV_PATH)
         self.n = len(self.df)
         assert self.n > 0, "cards.csv is empty"
 
@@ -115,7 +137,7 @@ class TestMechanicalTagQuality:
 
     @pytest.fixture(autouse=True)
     def load_data(self):
-        self.df = pd.read_csv(OUTPUT_CSV_PATH)
+        self.df = _read_csv_once(OUTPUT_CSV_PATH)
 
     def test_mechanical_tags_column_exists(self):
         assert "mechanical_tags" in self.df.columns
@@ -160,8 +182,7 @@ class TestSynergyGraph:
 
     @pytest.fixture(autouse=True)
     def load_graph(self):
-        with open(SYNERGY_GRAPH_PATH, "r") as f:
-            self.graph = json.load(f)
+        self.graph = _read_json_once(SYNERGY_GRAPH_PATH)
 
     def test_graph_not_empty(self):
         assert len(self.graph) > 0
@@ -189,8 +210,7 @@ class TestObsolescenceIndex:
 
     @pytest.fixture(autouse=True)
     def load_index(self):
-        with open(OBSOLESCENCE_INDEX_PATH, "r") as f:
-            self.index = json.load(f)
+        self.index = _read_json_once(OBSOLESCENCE_INDEX_PATH)
 
     def test_index_not_empty(self):
         assert len(self.index) > 0
@@ -273,11 +293,9 @@ class TestRegions:
 
     @pytest.fixture(autouse=True)
     def load_regions(self):
-        with open(REGIONS_DEFAULT_PATH, "r") as f:
-            self.default = json.load(f)
+        self.default = _read_json_once(REGIONS_DEFAULT_PATH)
         if REGIONS_ABILITY_PATH.exists():
-            with open(REGIONS_ABILITY_PATH, "r") as f:
-                self.ability = json.load(f)
+            self.ability = _read_json_once(REGIONS_ABILITY_PATH)
         else:
             self.ability = None
 

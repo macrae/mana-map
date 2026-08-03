@@ -21,7 +21,12 @@ dependencies = [
 # playwright drives the behavioural viz tests (tests/test_viz_behaviour.py). It needs a
 # one-time browser download: `.venv/bin/python -m playwright install chromium`. Those
 # tests skip cleanly without it, so the suite still runs on a fresh clone.
-dev = ["pytest", "playwright"]
+# pytest-xdist is opt-in, not a default. `pytest -m "not browser" -n auto` runs the
+# fast suite in ~19 s against ~35 s single-process; both report identically. It is NOT
+# in addopts because the browser suite has never been exercised under parallelism
+# (session-scoped server, one BrowserContext per test) and a perf change should not
+# silently alter how everyone's tests execute.
+dev = ["pytest", "pytest-xdist", "playwright"]
 
 [project.scripts]
 manamap = "manamap.cli:main"
