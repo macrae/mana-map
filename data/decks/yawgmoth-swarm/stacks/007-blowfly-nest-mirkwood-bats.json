@@ -1,0 +1,533 @@
+{
+  "id": "007",
+  "slug": "yawgmoth-swarm",
+  "deck": "YAWGMOTH \u2014 THE SCARAB SWARM",
+  "title": "Blowfly Infestation + Nest of Scarabs + Mirkwood Bats: does a creation-triggered drain monetise the loop that a death-triggered drain cannot?",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Blowfly Infestation (enchantment)",
+        "Nest of Scarabs (enchantment)",
+        "Mirkwood Bats (2/3, no counters)",
+        "Fume Spitter (1/1) \u2014 already sacrificed to pay the cost of the ability now on the stack",
+        "Insect token X (1/1 black Insect, no counters)",
+        "Swamp (untapped)",
+        "Swamp (untapped)"
+      ],
+      "opponent_a": [
+        "no permanents"
+      ],
+      "opponent_b": [
+        "no permanents"
+      ],
+      "opponent_c": [
+        "no permanents"
+      ],
+      "opponent_d": [
+        "no permanents"
+      ]
+    },
+    "hand": [],
+    "graveyard": [
+      "Fume Spitter"
+    ],
+    "mana_available": "{B}{B} from two untapped Swamps",
+    "stack": [
+      {
+        "pos": 0,
+        "controller": "you",
+        "object": "Fume Spitter's activated ability \u2014 'Sacrifice this creature: Put a -1/-1 counter on target creature.' Cost already paid (Fume Spitter sacrificed). Target chosen: Insect token X."
+      }
+    ],
+    "extras": {
+      "life_totals": {
+        "you": 40,
+        "opponent_a": 40,
+        "opponent_b": 40,
+        "opponent_c": 40,
+        "opponent_d": 40
+      },
+      "pod_size": "Five players \u2014 you and four opponents, 160 opposing life in total.",
+      "library": "You have 60 cards in your library.",
+      "assumptions": [
+        "No player responds to anything; every opponent passes priority throughout.",
+        "No permanent enters or leaves the battlefield except as described by the cards named here.",
+        "Insect tokens created by Nest of Scarabs are 1/1 black Insect creature tokens with no abilities.",
+        "It is your precombat main phase."
+      ],
+      "note_for_the_resolver": "This board is verified stack 001's board with ONE card changed: Mirkwood Bats (2/3) stands where Zulaport Cutthroat (1/1) stood. Stack 001 is checker-passed and found the loop genuinely UNBOUNDED but nearly drainless \u2014 total drain exactly 3 per opponent \u2014 because Blowfly's mandatory 'put a -1/-1 counter on target creature' eventually has only the drainer left to target, so the drainer dies early. Zulaport meters DEATHS. Mirkwood Bats reads 'Whenever you create or sacrifice a token, each opponent loses 1 life' and meters CREATION and SACRIFICE, not deaths. Nothing in this loop is sacrificed \u2014 the tokens die to state-based actions from -1/-1 counters \u2014 so only the CREATION half can fire here. Do not assume Bats collects both halves on this line. Bats is also 2/3 rather than 1/1, so it absorbs more counters than Zulaport did before dying. Do NOT re-litigate stack 001's unboundedness; take it as established and answer only what Bats collects."
+    },
+    "question": "Resolve the stack and then the resulting loop. (a) How many times does Mirkwood Bats' ability trigger before the loop ends, how much total life does each opponent lose, and what exactly ends it \u2014 name the object that must be targeted when no other creature remains. (b) State plainly whether this is more or less than stack 001's verified 3 per opponent, and identify the single property of Mirkwood Bats that accounts for the difference."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Before resolving anything, establish what is (and is not) waiting to go on the stack alongside Fume Spitter's ability. Fume Spitter was sacrificed to pay the activation cost. Did Mirkwood Bats trigger on that sacrifice?",
+        "effect": "NO. Mirkwood Bats reads 'Whenever you create or sacrifice a token, each opponent loses 1 life.' A sacrifice did occur - Fume Spitter moved from the battlefield to its owner's graveyard as a cost - but Fume Spitter is a card, not a token, so the game event does not match Bats' trigger condition and Bats does not trigger. (Contrast verified stack 001, where Zulaport Cutthroat's death trigger DID fire here and was drain #1.) Blowfly Infestation likewise does NOT trigger on Fume Spitter's death: it reads 'Whenever a creature dies, IF it had a -1/-1 counter on it,' and that intervening-'if' condition is checked when the trigger event occurs - Fume Spitter carried no -1/-1 counter when it was sacrificed, so the condition was false and the ability did not trigger at all. (Verified stack 001 makes the same check at the same point and reaches the same answer.) The stack therefore contains exactly one object: Fume Spitter's activated ability, targeting Insect token X. Bats trigger count so far: 0. Opponents: 40 each.",
+        "citations": [
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability"
+          },
+          {
+            "rule": "701.21a",
+            "quote": "its controller moves it from the battlefield directly to its owner"
+          },
+          {
+            "rule": "603.4",
+            "quote": "The ability triggers only if it is; otherwise it does nothing."
+          },
+          {
+            "rule": "111.1",
+            "quote": "A token is a marker used to represent any permanent"
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Resolve pos 0: Fume Spitter's activated ability, 'Put a -1/-1 counter on target creature,' targeting Insect token X.",
+        "effect": "You are the ability's controller, so you put the -1/-1 counter on Insect token X. Two consequences: (i) Insect token X, a 1/1, now has a -1/-1 counter and is 0/0; (ii) Nest of Scarabs ('Whenever you put one or more -1/-1 counters on a creature, create that many 1/1 black Insect creature tokens') triggers once, for one counter. Mirkwood Bats does NOT trigger - no token was created and no token was sacrificed by this resolution. Nest's trigger has triggered but is not yet on the stack and has created nothing.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written"
+          },
+          {
+            "rule": "122.1a",
+            "quote": "counters subtract from power and toughness"
+          },
+          {
+            "rule": "603.2",
+            "quote": "that ability automatically triggers"
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "The stack is now empty and a player would receive priority, so state-based actions are performed FIRST, before Nest of Scarabs' waiting trigger is put on the stack. Also determine whether Insect token X's departure is a sacrifice.",
+        "effect": "Insect token X has toughness 0, so it is put into its owner's graveyard - it dies. On the repeated check, the token, now in a zone other than the battlefield, ceases to exist. This is NOT a sacrifice: a sacrifice is an action a permanent's controller takes on instruction from a cost or effect, and nothing here instructed you to move anything; the token was put into the graveyard by a state-based action. Mirkwood Bats' sacrifice half therefore never fires on this line - not now and not on any later iteration, since every death in this engine happens the same way. Nest's trigger still has not resolved, so no new token exists. Creatures on the battlefield: MIRKWOOD BATS, and nothing else.",
+        "citations": [
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event"
+          },
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less"
+          },
+          {
+            "rule": "704.5d",
+            "quote": "If a token is in a zone other than the battlefield, it ceases to exist."
+          },
+          {
+            "rule": "701.21a",
+            "quote": "its controller moves it from the battlefield directly to its owner"
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Determine what triggers on Insect token X's death and test Blowfly Infestation's intervening-'if' condition.",
+        "effect": "Blowfly Infestation reads 'Whenever a creature dies, if it had a -1/-1 counter on it, put a -1/-1 counter on target creature.' 'Whenever a creature dies' is a leaves-the-battlefield ability, so the game looks back in time and uses the appearance of Insect token X immediately prior to the event - at which point it carried the -1/-1 counter placed in step 2. The condition is true, so Blowfly triggers. Two abilities are now waiting to be put on the stack: Nest of Scarabs' token-creation trigger and Blowfly Infestation's counter trigger. Bats trigger count so far: 0.",
+        "citations": [
+          {
+            "rule": "603.10a",
+            "quote": "These are leaves-the-battlefield abilities"
+          },
+          {
+            "rule": "603.4",
+            "quote": "When the trigger event occurs, the ability checks whether the stated condition is true. The ability triggers only if it is"
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "THE PIVOT. Both waiting triggers are put on the stack in one batch, before any player receives priority. Blowfly's target must be chosen NOW, as its trigger goes on the stack.",
+        "effect": "You control both triggers and may order them freely, but ordering cannot help: neither ability resolves until the whole batch is on the stack, so Nest of Scarabs' token does not exist when Blowfly's target is locked in. The only creature on the battlefield at that instant is MIRKWOOD BATS. Blowfly says 'target creature', not 'up to one target creature', and the ability is mandatory; a legal target exists, so one must be chosen, and Mirkwood Bats is the only candidate. Blowfly's trigger is locked onto your own drainer. This is the same forced targeting that killed Zulaport Cutthroat in stack 001 - but Bats is a 2/3.",
+        "citations": [
+          {
+            "rule": "603.3b",
+            "quote": "If multiple abilities have triggered since the last time a player received priority, the abilities are placed on the stack in a two-part process"
+          },
+          {
+            "rule": "115.1d",
+            "quote": "The target(s) are chosen as the ability is put on the stack"
+          },
+          {
+            "rule": "603.3d",
+            "quote": "If a choice is required when the triggered ability goes on the stack but no legal choices can be made for it"
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Order the batch in the best available order for you: Blowfly's trigger on the stack first (bottom), Nest of Scarabs' on top, so Nest resolves first. Resolve Nest of Scarabs.",
+        "effect": "Nest of Scarabs resolves: you create one 1/1 black Insect creature token, call it Y, by putting it onto the battlefield. Creating a token is exactly Mirkwood Bats' first trigger condition, so BATS TRIGGERS - trigger #1, the creation half. Board creatures: Mirkwood Bats (2/3, no counters), Insect token Y (1/1).",
+        "citations": [
+          {
+            "rule": "701.7a",
+            "quote": "To create one or more tokens with certain characteristics, put the specified number of tokens with the specified characteristics onto the battlefield."
+          },
+          {
+            "rule": "603.2",
+            "quote": "that ability automatically triggers"
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Mirkwood Bats' trigger #1 is put on the stack and resolves.",
+        "effect": "Each opponent loses 1 life. Opponents A-D: 40 -> 39 each. Note what does NOT happen: Bats gives you no life (Zulaport's 'and you gain 1 life' has no counterpart here), so your total stays at 40. Running total: 1 Bats trigger, 1 life lost per opponent.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written"
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life"
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Resolve Blowfly Infestation's trigger, whose target was locked onto Mirkwood Bats in step 5.",
+        "effect": "The intervening-'if' is re-checked on resolution and is still true (Insect token X's having had a -1/-1 counter is a completed past fact that cannot become false), and the target is still legal, so the ability resolves. You put a -1/-1 counter on MIRKWOOD BATS. Bats is a 2/3, so with one -1/-1 counter it is a 1/2. Putting a -1/-1 counter on a creature triggers Nest of Scarabs again, for one counter.",
+        "citations": [
+          {
+            "rule": "608.2a",
+            "quote": "the ability is removed from the stack and does nothing. Otherwise, it continues to resolve."
+          },
+          {
+            "rule": "122.1a",
+            "quote": "counters subtract from power and toughness"
+          },
+          {
+            "rule": "603.2",
+            "quote": "that ability automatically triggers"
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "THE HALT. State-based actions are checked before Nest's new trigger goes on the stack. Does anything die?",
+        "effect": "NO. Mirkwood Bats has toughness 2 (base 3, minus one -1/-1 counter), which is not 0 or less, so the state-based action that kills 0-toughness creatures does not apply to it; Insect token Y is an untouched 1/1. No creature is put into a graveyard. Therefore Blowfly Infestation's trigger event - 'whenever a creature dies' - does not occur, and Blowfly does not trigger again. This is the exact point at which stack 001 diverges: there, Zulaport Cutthroat was a 1/1, the same forced counter made it 0/0, it died, that death paid Zulaport's own drain #3 AND re-triggered Blowfly onto the surviving Insect token, which is what carried the engine into its unbounded steady state. Bats' third point of toughness absorbs the counter instead, and the death chain that powers the whole engine is severed here.",
+        "citations": [
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less"
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability"
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "Resolve the only ability left waiting: Nest of Scarabs' second trigger (from the counter put on Bats in step 8).",
+        "effect": "You create one 1/1 black Insect creature token, call it Z. Mirkwood Bats triggers again - trigger #2, the creation half. That trigger resolves: each opponent loses 1 life. Opponents A-D: 39 -> 38 each. Your life is unchanged at 40. Board creatures: Mirkwood Bats (1/2, one -1/-1 counter), Insect token Y (1/1), Insect token Z (1/1). Running total: 2 Bats triggers, 2 life lost per opponent.",
+        "citations": [
+          {
+            "rule": "701.7a",
+            "quote": "To create one or more tokens with certain characteristics, put the specified number of tokens with the specified characteristics onto the battlefield."
+          },
+          {
+            "rule": "603.2",
+            "quote": "that ability automatically triggers"
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "Check the ordering alternative before answering: does putting Blowfly's trigger on TOP of Nest's in step 5 change the count?",
+        "effect": "No. Blowfly resolves first and puts its counter on Mirkwood Bats (the target was still locked in step 5 with Bats the only creature), Bats becomes 1/2 and survives, Nest triggers a second time; that second Nest trigger goes on the stack above the first, and the two resolve in turn creating two Insect tokens, each of which triggers Mirkwood Bats once. Two creations, two Bats triggers, 2 life per opponent - identical. The result is ordering-independent, so no line available to you does better.",
+        "citations": [
+          {
+            "rule": "603.3b",
+            "quote": "each player, in APNAP order, puts all remaining triggered abilities they control on the stack in any order they choose"
+          }
+        ]
+      },
+      {
+        "n": 12,
+        "action": "ANSWER (a) and (b). How many times does Mirkwood Bats trigger, how much life does each opponent lose, what ends the loop - and is that more or less than stack 001's verified 3 per opponent, by which single property of Mirkwood Bats?",
+        "effect": "TWO triggers, and 2 life lost per opponent (8 across the four-opponent pod); opponents finish at 38, you finish at 40 with no life gained. Both triggers are the CREATION half - one for each of the two Insect tokens Nest of Scarabs makes. The sacrifice half never fires at all, because nothing on this line is sacrificed: the only creature that leaves the battlefield is Insect token X, and it goes to the graveyard as a state-based action for having 0 toughness. What ends it: MIRKWOOD BATS ITSELF is the object that must be targeted. When Blowfly Infestation's mandatory trigger goes on the stack in step 5, Insect token X is already dead and Nest of Scarabs' token does not exist yet, so Bats is the only creature on the battlefield and Blowfly's 'target creature' has exactly one legal choice. Bats then survives the counter at 1/2. No creature dies, so Blowfly never triggers again, and the engine does not merely stop draining - it STOPS. Final board: Bats at 1/2 plus two idle Insect tokens, both Swamps still untapped, no way to restart without an outside -1/-1 counter or death. ANSWER (b): LESS. 2 per opponent against Zulaport Cutthroat's verified 3, and no life gained where Zulaport gained 3. The creation-triggered drain does NOT monetise this loop better than the death-triggered one; it monetises it worse, and it also turns the engine off. The single property that accounts for the difference is BATS' TOUGHNESS OF 3. Zulaport was a 1/1: the forced Blowfly counter made it 0/0, and that death both paid a third drain and re-triggered Blowfly onto the surviving Insect token, which is what made 001's loop unbounded. Bats at 2/3 becomes a 1/2 and lives, so no death occurs, Blowfly gets no further trigger event, and the line ends one drain short. The arithmetic is checkable by counterfactual: give Zulaport's death trigger a 2/3 body and it collects 2 (Fume Spitter and Insect X, then it survives and the engine halts); give Bats' creation trigger a 1/1 body and it collects only 1 (one token created, then the counter kills Bats before the second creation). Bats' metering half is the secondary factor - the loop's currency is deaths and Bats is blind to all of them, seeing only the two tokens Nest makes - but toughness is what moves the count away from 3 and what stops the engine. Practical consequence for the deck: Bats is not a fix for stack 001's drainlessness. The fix named in 001 is unchanged - the loop needs the drainer plus TWO other creatures on the battlefield when it starts, so Blowfly always has a spare token to eat and the drainer is never the forced target.",
+        "citations": [
+          {
+            "rule": "603.3d",
+            "quote": "If a choice is required when the triggered ability goes on the stack but no legal choices can be made for it"
+          },
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less"
+          },
+          {
+            "rule": "122.1a",
+            "quote": "counters subtract from power and toughness"
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "NOT AN UPGRADE - IT IS WORSE, AND IT SWITCHES THE ENGINE OFF. Mirkwood Bats triggers exactly TWICE on this board, both times on the creation half, once for each of the two Insect tokens Nest of Scarabs creates. Each opponent loses 2 life (40 -> 38); you gain none and finish at 40. The sacrifice half never fires: nothing on this line is sacrificed, because Insect token X goes to the graveyard as a state-based action for having 0 toughness, not by anyone's instruction - so crediting Bats with two triggers per iteration on this board would be wrong. What ends it is the object Blowfly Infestation is forced to target: MIRKWOOD BATS ITSELF, the only creature on the battlefield at the instant Blowfly's mandatory trigger is put on the stack (Insect X is already dead, Nest's token is not yet created). Bats is a 2/3, so the counter leaves it a 1/2 and it survives - and that survival is what kills the line, because no creature dies, Blowfly never triggers again, and the loop halts entirely rather than running unbounded. Against stack 001's verified 3 per opponent this is LESS, by one, and the single property responsible is Bats' toughness of 3: Zulaport Cutthroat's 1/1 body died to the same forced counter, which paid a third drain and re-triggered Blowfly onto a surviving token, carrying 001's loop into its unbounded steady state. Stack 001's prescription stands untouched: the engine needs the drainer plus two other creatures on the battlefield at the start, so the drainer is never the forced target.",
+      "you": {
+        "life": 40,
+        "battlefield": [
+          "Blowfly Infestation (enchantment)",
+          "Nest of Scarabs (enchantment)",
+          "Mirkwood Bats (1/2 - a 2/3 with one -1/-1 counter on it)",
+          "Insect token Y (1/1 black Insect)",
+          "Insect token Z (1/1 black Insect)",
+          "Swamp (untapped)",
+          "Swamp (untapped)"
+        ],
+        "graveyard": [
+          "Fume Spitter"
+        ],
+        "hand": [],
+        "stack": "empty",
+        "notes": [
+          "Your life never moves: Mirkwood Bats drains opponents only and has no 'you gain 1 life' clause, unlike Zulaport Cutthroat, who took you to 43 in stack 001.",
+          "No mana was spent; both Swamps are still untapped.",
+          "Insect token X ceased to exist on leaving the battlefield (704.5d); tokens Y and Z remain, idle.",
+          "The board is stable and the engine is off. Restarting it requires an outside source of -1/-1 counters or a creature death; neither is available here (hand empty, Fume Spitter already in the graveyard).",
+          "Yawgmoth, Thran Physician is NOT on this battlefield and does not participate in this scenario. The sibling question of what Bats collects off a genuine sacrifice cost belongs to scenario 008."
+        ]
+      },
+      "opponents": [
+        {
+          "name": "opponent_a",
+          "life": 38,
+          "battlefield": [],
+          "lost_this_turn": false
+        },
+        {
+          "name": "opponent_b",
+          "life": 38,
+          "battlefield": [],
+          "lost_this_turn": false
+        },
+        {
+          "name": "opponent_c",
+          "life": 38,
+          "battlefield": [],
+          "lost_this_turn": false
+        },
+        {
+          "name": "opponent_d",
+          "life": 38,
+          "battlefield": [],
+          "lost_this_turn": false
+        }
+      ],
+      "verdict": {
+        "bats_triggers": 2,
+        "bats_trigger_half_that_fires": "creation only - 'whenever you create ... a token'; the sacrifice half never fires because the tokens die to state-based actions, which is not a sacrifice",
+        "life_lost_per_opponent": 2,
+        "life_lost_across_pod": 8,
+        "beats_stack_001_three_per_opponent": false,
+        "object_that_must_be_targeted_when_nothing_else_remains": "Mirkwood Bats itself",
+        "what_ends_the_loop": "Blowfly Infestation's mandatory trigger is forced onto Mirkwood Bats (the only creature on the battlefield when the trigger is put on the stack); Bats is a 2/3, survives at 1/2, so no creature dies, Blowfly never triggers again, and the engine halts",
+        "single_property_accounting_for_the_difference": "Mirkwood Bats' toughness of 3 - it survives the forced -1/-1 counter that killed Zulaport Cutthroat's 1/1 body, and that death was both stack 001's third drain and the event that re-triggered Blowfly to sustain the loop",
+        "loop_unbounded_here": false,
+        "cover_claim_of_stack_001_still_stands": true
+      }
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "iterations": 2,
+    "summary": "PASS. Judged from scratch, not from iteration 1's block. Mechanical gate: OK (contract holds; 12 steps / 31 citations, one under the 32-citation budget). All 31 citations were fetched in full with lookup-rule and judged against the ENTIRE rule text: 31 supported, 0 unsupported, 0 irrelevant, 0 misquoted. (1) THE NEW STEP-1 603.4 CITATION HOLDS AND IS NOT A DUPLICATE. The quote 'The ability triggers only if it is; otherwise it does nothing.' is verbatim in 603.4 including terminal period, and 603.4 is exactly the intervening-'if' rule ('this rule only applies to an \"if\" that immediately follows a trigger condition'), whose first check is at TRIGGER TIME - 'When the trigger event occurs, the ability checks whether the stated condition is true' - and whose Felidar Sovereign example says in terms that a false condition means 'the ability doesn't trigger at all'. Blowfly Infestation's cards.json text is verbatim 'Whenever a creature dies, if it had a -1/-1 counter on it, put a -1/-1 counter on target creature', so the 'if' does immediately follow the trigger condition and the rule applies. Fume Spitter carried no -1/-1 counter, so the condition was false at trigger time and Blowfly did not trigger. The step-4 citation of the same rule quotes a DIFFERENT sentence pair ('When the trigger event occurs, the ability checks whether the stated condition is true. The ability triggers only if it is') and applies it to the opposite outcome on a different object (Insect token X, condition TRUE). Two verbatim quotes, two objects, two outcomes, one rule: legitimate, not a duplicate. It also matches verified stack 001's step 1, which reaches the same answer on the same event. Step 1 now disposes of BOTH Bats and Blowfly, which is what iteration 1 blocked on; the 'exactly one object on the stack' claim is now fully discharged. (2) THE 12/13 MERGE LOST NOTHING AND (b) IS ANSWERED IN TERMS. Question (a)'s four demands are all met in the merged step: trigger count (TWO), life per opponent (2, 8 pod-wide), what ends it (the forced Blowfly target), and the named object (MIRKWOOD BATS ITSELF). The 'ANSWER (b):' marker is followed by a plain verdict ('LESS. 2 per opponent against Zulaport Cutthroat's verified 3') and a named single property (toughness of 3), plus both counterfactuals and the practical consequence. No claim is orphaned by de-duplicating 704.5f: the citation contract is per (step, rule), one citation of 704.5f in the merged step covers every claim in that step it supports (Insect X leaving via SBA, and Bats at toughness 2 surviving), and the third distinct rule the second half needs - 122.1a for 2/3 -> 1/2 - is carried alongside it. Step 11 survives and does its job: it recomputes the reversed batch order (Blowfly on top) and gets 2 either way, which is what makes 'TWO' a maximum and not merely one line. I recomputed that order independently and confirm 2. (3) I RE-DERIVED THE WHOLE SCENARIO INDEPENDENTLY AND REACH THE SAME ANSWER. 117.5 (and 704.3, not cited but not needed) performs SBAs and repeats them BEFORE waiting triggers go on the stack, so Insect X is in the graveyard (704.5f) and has ceased to exist (704.5d) while Nest's trigger has created nothing (603.2: 'The ability doesn't do anything at this point'). Both waiting triggers are part-ONE abilities under 603.3b (neither triggers on another ability triggering), so the controller orders the whole batch freely and nothing resolves mid-batch; 115.1d locks Blowfly's target at that instant, when Mirkwood Bats is the only creature on the battlefield. Bats is a 2/3 (confirmed in cards.json), goes to 1/2, and 704.5f does not apply. Nothing dies, Blowfly gets no further trigger event, the engine halts. Two Nest tokens, two creation-half Bats triggers, 2 per opponent, 8 pod-wide, opponents at 38, you at 40 with no life gained (Mirkwood Bats has no lifegain clause; Zulaport Cutthroat's 'and you gain 1 life' is real and 001 took you to 43). Both step-12 counterfactuals check out arithmetically: a 2/3 death-metering drainer collects 2 (Fume Spitter, Insect X, then survives), and a 1/1 creation-metering drainer collects 1 (token Y, then the forced counter kills it before token Z). (4) CARD TEXT VERIFIED AGAINST cards.json. Mirkwood Bats {3}{B} 2/3 'Flying / Whenever you create or sacrifice a token, each opponent loses 1 life' - quoted verbatim in step 1. Blowfly Infestation, Nest of Scarabs, Fume Spitter (1/1, 'Sacrifice this creature: Put a -1/-1 counter on target creature') and Zulaport Cutthroat (1/1) all match. Flying is correctly ignored: precombat main phase, no combat. The stipulated {B}{B} and 60-card library are correctly left untouched - nothing on this line spends mana or draws. (5) CROSS-STACK CONSISTENCY IS CLEAN IN BOTH DIRECTIONS. Against 001 (checker-passed): 007 reinforces it - it takes unboundedness as established, does not re-litigate it, reproduces 001's 3 drains and +3 life correctly, and restates 001's build_requirement for the CREATURE-drain case verbatim in substance ('the drainer plus TWO other creatures'). 001's own step 1 makes the identical Blowfly no-trigger finding on Fume Spitter, so the new step-1 text agrees with a verified stack rather than inventing a reading. Against 008 (13 Bats triggers on the Yawgmoth line): no contradiction, and 007 does not generalise. Every claim about the sacrifice half is explicitly scoped - 'on this line', 'in this engine', 'on this board' - and a final_state note names 008 as the owner of the genuine-sacrifice question and states that Yawgmoth is not on this battlefield. The shared premise (a counter-killed token is NOT sacrificed, 701.21a) is the SAME in both stacks; 008 differs only because Yawgmoth's cost is a real sacrifice of a real token. THREE ADVISORIES, none of which can change an answer and none of which is a defect: (i) 700.4 ('The term dies means \"is put into a graveyard from the battlefield.\"') is not cited, though verified stack 001 cites it at the same point; the bridge from 704.5f's 'it's put into its owner's graveyard' to Blowfly's 'whenever a creature dies' is therefore left to the reader. It is a one-line identity and the budget has exactly one slot free if the resolver wants to close it. (ii) Step 11's 603.3b quote is the SECOND-part sentence ('all remaining triggered abilities'), while Nest's and Blowfly's triggers are both first-part abilities; the ordering freedom it is cited for is granted identically by the first-part sentence in the same rule, and step 5 already quotes the correct two-part framing, so the conclusion stands - but a reader could misclassify the two triggers from this quote alone. (iii) Naming toughness as 'the single property' is defensible and transparently argued, but the resolver's own counterfactuals show the metering half moves the count further in isolation (3 -> 1) than toughness does (3 -> 2); the step discloses this and calls metering 'the secondary factor', and toughness is uniquely what HALTS the engine, which is the other half of the question. MISSING-STEP AUDIT: none. State-based actions are checked at every point a player would receive priority (steps 3 and 9, 117.5), triggered abilities are put on the stack in the correct batch at the correct moment (steps 4-5, 603.3b), targets are locked at the correct instant (115.1d), stack resolution order is correct and is additionally shown to be irrelevant to the count (step 11), no replacement effect (614) exists anywhere on this board, and 704.5a is correctly not reached - no player is at or below 0 life.",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Quote verbatim. 'Whenever a game event or game state matches a triggered ability's trigger event, that ability automatically triggers' is the rule that makes MATCHING the test, which is precisely the argument: Fume Spitter's sacrifice is a real game event but does not match 'whenever you create or sacrifice a TOKEN', so Bats does not trigger. Full-text read confirms no clause broadens the match."
+      },
+      {
+        "step": 1,
+        "rule": "701.21a",
+        "status": "supported",
+        "note": "Quote verbatim. The full rule ('To sacrifice a permanent, its controller moves it from the battlefield directly to its owner's graveyard') establishes that a sacrifice DID occur when the cost was paid - the step concedes this rather than denying it, and then defeats the trigger on the token/card distinction instead. Correct and honest use."
+      },
+      {
+        "step": 1,
+        "rule": "603.4",
+        "status": "supported",
+        "note": "THE NEW CITATION, and it holds. Quote 'The ability triggers only if it is; otherwise it does nothing.' is verbatim including the period. 603.4 is the intervening-'if' rule by name and applies only to an 'if' immediately following a trigger condition - which Blowfly's is, per cards.json. Its check is at TRIGGER TIME ('When the trigger event occurs...'), and its Felidar example spells out that a false condition means the ability 'doesn't trigger at all'. Fume Spitter had no -1/-1 counter, so no trigger. Distinct from the step-4 use: different verbatim sentence, different object, opposite outcome. Not a duplicate."
+      },
+      {
+        "step": 1,
+        "rule": "111.1",
+        "status": "supported",
+        "note": "Quote verbatim. The truncated fragment alone is weak, but the FULL rule is what decides it: 'A token is a marker used to represent any permanent that isn't represented by a card.' Fume Spitter is a card, therefore not a token, therefore outside Bats' trigger condition. Judged on the whole rule as required."
+      },
+      {
+        "step": 2,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Quote verbatim. Makes YOU the player who follows the instruction and therefore YOU who puts the counter - load-bearing, because Nest of Scarabs keys on 'whenever YOU put one or more -1/-1 counters'. Same use as verified stack 001's step 2."
+      },
+      {
+        "step": 2,
+        "rule": "122.1a",
+        "status": "supported",
+        "note": "Quote verbatim ('Similarly, -X/-Y counters subtract from power and toughness'). Takes the 1/1 Insect token X to 0/0. Correct."
+      },
+      {
+        "step": 2,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Quote verbatim. Cited for Nest triggering once for one counter, and the rule's second sentence - 'The ability doesn't do anything at this point' - is the premise the entire pivot rests on: Nest has triggered but has created nothing. Exactly on point."
+      },
+      {
+        "step": 3,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "Quote verbatim and this is the decisive rule of the scenario: SBAs are performed and REPEATED first, and only 'then triggered abilities are put on the stack'. That ordering is what puts Insect X in the graveyard before Blowfly's target is chosen. 704.3 says the same and is not needed."
+      },
+      {
+        "step": 3,
+        "rule": "704.5f",
+        "status": "supported",
+        "note": "Quote verbatim. Toughness 0 sends the token to its owner's graveyard. ADVISORY: 700.4 ('The term dies means \"is put into a graveyard from the battlefield.\"') is not cited here, and it is the definitional bridge to Blowfly's 'whenever a creature dies' used in step 4; verified stack 001 cites it at this exact point. The identity is trivial and the answer cannot change, but one citation slot remains under the 32-citation budget if the resolver wants the chain closed."
+      },
+      {
+        "step": 3,
+        "rule": "704.5d",
+        "status": "supported",
+        "note": "Quote verbatim and complete. The repeated SBA check makes the token cease to exist. Correctly sequenced AFTER the graveyard move, which is what preserves the death (and therefore Blowfly's look-back) rather than erasing it."
+      },
+      {
+        "step": 3,
+        "rule": "701.21a",
+        "status": "supported",
+        "note": "Quote verbatim, and this is the load-bearing negative of the whole stack. The full rule makes sacrificing an action the permanent's CONTROLLER takes; an SBA is the game moving the object, on nobody's instruction. So Insect X's death is not a sacrifice and Bats' sacrifice half never fires here. Identical premise to sibling 008, which reaches 13 triggers only because Yawgmoth's cost IS a genuine sacrifice of a token - the two stacks agree on the rule and differ only on the facts."
+      },
+      {
+        "step": 4,
+        "rule": "603.10a",
+        "status": "supported",
+        "note": "Quote verbatim. The rule names leaves-the-battlefield abilities as look-back-in-time triggers, and its own Example uses literally 'Whenever a creature dies, you gain 1 life' - so the full rule text, example included, establishes that Blowfly's trigger is of that class and sees Insect X as it last existed, carrying the -1/-1 counter. (001 additionally cited 603.6c; 603.10a's example carries it alone.)"
+      },
+      {
+        "step": 4,
+        "rule": "603.4",
+        "status": "supported",
+        "note": "Quote verbatim, and a DIFFERENT sentence pair from the step-1 use. Here the condition is TRUE at trigger time on the look-back appearance, so Blowfly triggers. Same rule, opposite outcome, different object - the pair of citations is coherent rather than redundant."
+      },
+      {
+        "step": 5,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Quote verbatim and this is the correct framing sentence: the whole batch is placed in a two-part process, and nothing resolves during it. I verified independently that BOTH triggers are part-ONE abilities (neither has a trigger condition that is another ability triggering), which is what makes the step's 'you may order them freely' claim true and what keeps Nest's token nonexistent when Blowfly's target is locked."
+      },
+      {
+        "step": 5,
+        "rule": "115.1d",
+        "status": "supported",
+        "note": "Quote verbatim. 115.1d is specifically the TRIGGERED-ability targeting rule and locks the target as the ability is put on the stack - the exact instant at which Insect X is gone and Nest's token does not exist. This is the hinge of the answer and it is cited correctly."
+      },
+      {
+        "step": 5,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "Quote verbatim. Used by contrapositive - a legal choice CAN be made (Mirkwood Bats), so the ability is not removed and the required target must be announced. The full rule carries the announcement requirement by explicit reference ('identical to the process for casting a spell listed in rules 601.2c-d'), so the claim does not need 601.2c cited separately, though 001 chose to. Blowfly's cards.json text says 'target creature', not 'up to one', confirming the choice is not optional."
+      },
+      {
+        "step": 6,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": "Quote verbatim and complete. Nest resolves by PUTTING a token onto the battlefield, which is 'creating' it - the event Bats meters. Correct."
+      },
+      {
+        "step": 6,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Quote verbatim. The creation matches Bats' first trigger condition, so it triggers. Trigger #1 correctly attributed to the creation half, not the sacrifice half."
+      },
+      {
+        "step": 7,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Quote verbatim. Bats' instruction is followed as written: each opponent loses 1 life. The step's negative claim - no life gained - is verified against cards.json, where Mirkwood Bats has no lifegain clause and Zulaport Cutthroat does."
+      },
+      {
+        "step": 7,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Quote verbatim. Life totals are adjusted accordingly: four opponents 40 -> 39. Arithmetic correct."
+      },
+      {
+        "step": 8,
+        "rule": "608.2a",
+        "status": "supported",
+        "note": "Quote verbatim. The intervening-'if' is re-checked on resolution; it is still true because Insect X's having had a counter is a completed past fact. The rule's own cross-reference to 603.4 confirms the two-check structure the resolution uses. Target still legal, so the ability resolves rather than being removed."
+      },
+      {
+        "step": 8,
+        "rule": "122.1a",
+        "status": "supported",
+        "note": "Quote verbatim. One -1/-1 counter on a 2/3 gives 1/2. Bats' 2/3 body confirmed in cards.json."
+      },
+      {
+        "step": 8,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Quote verbatim. Putting the counter on Bats matches Nest's condition, so Nest triggers a second time. This is the trigger that produces token Z and therefore Bats trigger #2."
+      },
+      {
+        "step": 9,
+        "rule": "704.5f",
+        "status": "supported",
+        "note": "Quote verbatim, and read in full: toughness 2 is not 'toughness 0 or less', so the SBA does not apply to Bats. This is THE HALT, and the rule genuinely establishes it. Insect token Y is an untouched 1/1 and equally unaffected."
+      },
+      {
+        "step": 9,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Quote verbatim. No creature is put into a graveyard, so no game event matches 'whenever a creature dies' and Blowfly does not trigger again. The absence of a match is exactly what 603.2 governs; correct use of the rule in the negative."
+      },
+      {
+        "step": 10,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": "Quote verbatim. Nest's second trigger creates token Z. Correct."
+      },
+      {
+        "step": 10,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Quote verbatim. Token Z's creation is Bats trigger #2, the second and last. Opponents 39 -> 38. I re-derived the full sequence and confirm 2 is the total."
+      },
+      {
+        "step": 11,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Quote verbatim, and the ordering-independence conclusion is CORRECT - I recomputed the reversed order myself: Blowfly resolves first onto the already-locked Bats, Bats survives at 1/2, Nest triggers a second time, the two Nest triggers resolve into two tokens, and Bats triggers twice. 2 either way. ADVISORY on the quote choice: this is the SECOND-part sentence ('all remaining triggered abilities'), while both triggers here are first-part abilities that go on the stack in the first pass. The first-part sentence in the same rule grants the identical 'in any order they choose' freedom, so the claim is genuinely established by 603.3b and step 5 already quotes the correct framing - but taken alone this quote would misclassify the two triggers."
+      },
+      {
+        "step": 12,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "Quote verbatim. Carries the answer to 'name the object that must be targeted': a legal choice exists (Bats), so the trigger is NOT removed and Bats must be taken. Correctly contrasted with 001's counterfactual step 11, where zero creatures remain and the trigger IS removed - the two stacks use the same rule for opposite fact patterns without contradiction."
+      },
+      {
+        "step": 12,
+        "rule": "704.5f",
+        "status": "supported",
+        "note": "Quote verbatim. Carries BOTH halves of the merged step with a single citation, which is correct under a per-(step, rule) contract: Insect X leaves the battlefield by state-based action rather than by sacrifice (the ANSWER (a) half), and Bats at toughness 2 survives the forced counter (the ANSWER (b) half). Nothing was orphaned by de-duplicating the two identical quotes the pre-merge steps carried; I checked every claim in the merged step against the three rules it cites and found no uncovered claim."
+      },
+      {
+        "step": 12,
+        "rule": "122.1a",
+        "status": "supported",
+        "note": "Quote verbatim. Supplies the ANSWER (b) arithmetic that the merge had to preserve - 2/3 minus one -1/-1 counter is 1/2, which is why Bats lives where Zulaport's 1/1 died. Its presence in the merged step is what confirms the second half was carried over with its own support rather than folded in as unsupported prose."
+      }
+    ]
+  }
+}

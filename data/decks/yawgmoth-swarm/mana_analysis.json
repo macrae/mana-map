@@ -1,6 +1,6 @@
 {
   "slug": "yawgmoth-swarm",
-  "decklist_sha256": "3f1962ccf462ede2a4bf563b9e781c20ac51bbae37a53953e92bb75173659c07",
+  "decklist_sha256": "41b28f27d1470b6d57c96ee0e81e3519d2d8ad51b1effa0d4bd6c34fa30cf684",
   "lands": {
     "total": 36,
     "entries": 15,
@@ -185,14 +185,14 @@
     "nonland": {
       "W": 0,
       "U": 0,
-      "B": 10,
+      "B": 8,
       "R": 0,
       "G": 0
     },
     "total": {
       "W": 0,
       "U": 0,
-      "B": 45,
+      "B": 43,
       "R": 0,
       "G": 0
     },
@@ -218,30 +218,6 @@
         "kind": "ramp:rock",
         "cmc": 3.0,
         "produces": []
-      },
-      {
-        "name": "Cabal Ritual",
-        "kind": "ramp:ritual",
-        "cmc": 2.0,
-        "produces": [
-          "B"
-        ]
-      },
-      {
-        "name": "Carrier Thrall",
-        "kind": "ramp:dork",
-        "cmc": 2.0,
-        "produces": [
-          "B"
-        ]
-      },
-      {
-        "name": "Culling the Weak",
-        "kind": "ramp:ritual",
-        "cmc": 1.0,
-        "produces": [
-          "B"
-        ]
       },
       {
         "name": "Dark Ritual",
@@ -288,14 +264,22 @@
         "kind": "ramp:rock",
         "cmc": 1.0,
         "produces": []
+      },
+      {
+        "name": "Warren Soultrader",
+        "kind": "ramp:dork",
+        "cmc": 3.0,
+        "produces": [
+          "B"
+        ]
       }
     ]
   },
   "pips": {
     "B": {
-      "total_pips": 70.0,
+      "total_pips": 75.0,
       "max_pips": 3,
-      "cards": 53,
+      "cards": 54,
       "earliest_turn": 1,
       "effective_pips": 2
     }
@@ -314,38 +298,38 @@
       "B": 0.895
     },
     "with_rocks_and_dorks": {
-      "B": 0.97
+      "B": 0.96
     }
   },
   "ramp": {
     "ramp:dork": 2,
-    "ramp:ritual": 6,
+    "ramp:ritual": 4,
     "ramp:rock": 4
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 1.0,
-      "10": 0.399,
-      "2": 0.998,
-      "3": 0.924,
-      "4": 0.812,
-      "5": 0.689,
-      "6": 0.587,
-      "7": 0.506,
-      "8": 0.451,
+      "10": 0.404,
+      "2": 0.999,
+      "3": 0.923,
+      "4": 0.807,
+      "5": 0.695,
+      "6": 0.584,
+      "7": 0.501,
+      "8": 0.459,
       "9": 0.429
     },
     "mean_available_mana_by_turn": {
       "1": 1.0,
-      "10": 7.109,
-      "2": 2.15,
-      "3": 3.094,
-      "4": 3.927,
-      "5": 4.621,
-      "6": 5.241,
-      "7": 5.766,
-      "8": 6.24,
-      "9": 6.691
+      "10": 7.103,
+      "2": 2.14,
+      "3": 3.083,
+      "4": 3.91,
+      "5": 4.611,
+      "6": 5.228,
+      "7": 5.75,
+      "8": 6.226,
+      "9": 6.677
     }
   },
   "assumptions": [
@@ -355,6 +339,6 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 35 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 45."
+    "B: 35 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 43."
   ]
 }

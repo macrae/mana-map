@@ -81,7 +81,11 @@
   // neighbours for Doubling Season while a cache-busted fetch of the same URL returned
   // the new ones. Bump whenever a consumer would draw a different conclusion from the
   // bytes, not only when the parser would.
-  const DATA_VERSION = 5;   // regions gained a third level and every label was renamed
+  // 6: yawgmoth-swarm's 99 changed by twenty cards and gained two verified lines. The
+  // deck artifacts are cache-busted through this constant, so a deck edit that does not
+  // bump it serves the OLD 99 from cache — silently, and looking exactly like a render
+  // bug: cut cards keep drawing and the panel counts a sideboard that no longer exists.
+  const DATA_VERSION = 6;   // regions gained a third level and every label was renamed
   const v = url => url + '?v=' + DATA_VERSION;
   // Exported because the deck manifest and per-deck artifacts are fetched by
   // build.js and discovery.js, which had NO cache-busting at all — adding a key to

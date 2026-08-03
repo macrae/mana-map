@@ -1,0 +1,124 @@
+{
+  "id": "001",
+  "slug": "which-payoff-under-sweeper-mana",
+  "deck": "yawgmoth-swarm",
+  "kind": "decision",
+  "title": "Grave Pact is down, three payoffs are in hand, and Player 3 has five lands open \u2014 which one hits the table?",
+  "scenario": {
+    "board": {
+      "you": "Turn six, your precombat main, 30 life. Battlefield: Yawgmoth, Thran Physician (2/4, untapped, no summoning sickness \u2014 he came down on turn four, which the goldfish does in 7,249 of 10,000 games), Nest of Scarabs, Grave Pact, Bitterblossom, three 1/1 black Insect tokens and one 1/1 black Faerie Rogue token with flying. Five lands, all untapped; the sim's mean available mana on turn six is 5.228, so you are exactly on curve. Two things about that board matter more than anything else on it. First, every body you control is a TOKEN. Second, you own no drain \u2014 nothing on your side converts a death into life loss, so the engine you have been running for two turns has removed zero life from anybody. It has drawn you cards and, since Grave Pact landed, it has been quietly eating the table's creatures.",
+      "table": "Player 2 \u2014 Selesnya tokens, 36 life, tapped out after an anthem, with two 2/2 Cat tokens and a 1/1 Soldier. Player 3 \u2014 Azorius control, 40 life, no creatures, FIVE untapped lands, and they have held that mana through two full rotations while drawing an extra card at your end step. Stated archetypal assumption: a sorcery-speed sweeper in hand, and at least one counterspell held. Player 4 \u2014 Rakdos aggro, 27 life, tapped out after swinging at Player 2, with a 3/2 and a 2/1. This is a bracket 4 pod and the pregame was honest: four Game Changers, eleven two-card infinites, and Mikaeus, the Unhallowed is the shared half of seven of them. So the table's cheapest correct answer to your entire deck is one exile effect pointed at one creature. Nobody has spent removal on you yet."
+    },
+    "hand": [
+      "Mirkwood Bats",
+      "Bastion of Remembrance",
+      "Blowfly Infestation"
+    ],
+    "mana_available": "Five untapped lands, all producing {B}. Mirkwood Bats costs {3}{B}. Bastion of Remembrance and Blowfly Infestation cost {2}{B} each. You can cast exactly one of the three \u2014 two three-drops is six mana and you have five.",
+    "stack": [],
+    "extras": "Carry the verified arithmetic exactly, because two of these branches live or die on it. A fully assembled drain engine \u2014 Yawgmoth, Nest of Scarabs, and a death-metering drain \u2014 produces SEVEN drains, and a drain is one life from EACH opponent. Stack 002 measures it with Bastion of Remembrance and stack 003 measures it with Zulaport Cutthroat; both land on seven per opponent, and both report 28 as the POD TOTAL across the four opponents those boards carried. This table has three opponents, so the same seven drains are 21 across the pod and each seat goes down 7. Nowhere is 28 a per-opponent figure. Stack 008 is the like-for-like comparison with Mirkwood Bats in the drainer slot on stack 003's board: THIRTEEN triggers, 13 per opponent, 52 across that four-opponent pod, because one Yawgmoth activation paid with a token pays Bats twice \u2014 once for the sacrifice, once for the Insect that Nest of Scarabs creates. That is an 86% margin and it is the widest measured gap on the deck. Stack 007 is the other half of the same lesson: on a Blowfly Infestation board, Bats triggered exactly twice and switched the loop off, because a token put into the graveyard by a state-based action for having 0 toughness was not SACRIFICED by anybody and pays Bats nothing. Stack 001 found the Blowfly Infestation plus Nest of Scarabs loop genuinely unbounded and, on a board where the drain was the only spare body, drained exactly 3 per opponent. Stack 004 is the guardrail on payoff choice: Blood Artist on the verified engine board removes EIGHT LIFE IN TOTAL, checker verdict 'NOT A KILL, AND NOT EVEN CLOSE', because it drains one target player rather than each opponent. And know the shape of your own deck: four named kills, tutor-assisted by turn 10 at 32.1% (Blowfly plus Nest), 26.2% (the Mikaeus package), 32.5% (Exquisite Blood plus South Wind Avatar) and 20.0% (Warren Soultrader plus Gravecrawler plus a drain). They overlap, so the union is unmeasured and strictly greater than 32.5%. Grave Pact reads 'Whenever a creature you control dies, each other player sacrifices a creature of their choice' \u2014 and it is on the battlefield right now, which changes what a Yawgmoth activation costs and what it buys.",
+    "question": "You cannot kill anyone this turn from this board, and Player 3 untaps into a live sweeper. So which of the three payoffs goes down \u2014 the biggest number, the safest number, or the famous one? Or none of them, and you simply take the edicts?"
+  },
+  "branches": [
+    {
+      "choice": "Cast Blowfly Infestation and ignite the chain",
+      "line": "Cast Blowfly Infestation for {2}{B}, leaving {B}{B}. Activate Yawgmoth: pay 1 life, sacrifice an Insect, put the counter on another of your own Insects. That Insect dies, Blowfly triggers, the counter moves to the next body, and the chain runs \u2014 with Grave Pact out, every one of those deaths makes Player 2 and Player 4 sacrifice a creature.",
+      "signals": "The loudest card in the 99, deployed on the turn it removes zero life. Blowfly Infestation sitting beside Nest of Scarabs is the exact picture this table was warned about in the pregame, and Player 3 has five lands open to answer the picture.",
+      "coalition_risk": "The highest available to you, and it buys perception rather than position. You would be showing the combo face without the combo, into the one seat holding interaction, on a turn when nobody's life total moves. That is how a table decides the quiet black deck is the archenemy and then acts on it for three consecutive turns.",
+      "coaching": "The card is a closer. This is not a closing turn.\n\nStart with what the chain actually removes. You control no each-opponent drain, so the loop takes zero life off anybody. Stack 001 already measured the near-miss version: with the drain as the only spare body, the whole unbounded engine drained exactly 3 per opponent. Here there is no drain at all, so the figure is zero.\n\nWhat you would really be buying is the edict chain, and I want to be straight with you about its status. Grave Pact running under this engine is not a resolved line \u2014 the deck's own frame files it as needing a stack scenario, and I will not hand you a table-wide board wipe as a fact when nobody has checked the count.\n\nYou also do not need Blowfly to get edicts. Grave Pact already pays you one round of them per activation, for free, with the four tokens you are holding.\n\nAnd mind the targeting. Blowfly's trigger is mandatory and it demands a target; once your spare bodies run down, the counter lands on whatever is left standing, which is how stack 007's version of this loop ate its own payoff. An ability with no legal choice is simply removed from the stack \u2014 that is your only exit, and exiting is not a plan.\n\nMy call, and it is judgement: Blowfly goes down when a drain is already on the battlefield and you can count the iterations out loud. Tonight it is a three-mana enchantment that announces you and does nothing.",
+      "citations": [
+        {
+          "rule": "603.3d",
+          "quote": "If a choice is required when the triggered ability goes on the stack but no legal choices can be made for it, or if a rule or a continuous effect otherwise makes the ability illegal, the ability is simply removed from the stack."
+        },
+        {
+          "rule": "strategy:multiplayer.threat-deflection",
+          "quote": "Know your deck's tells \u2014 the cards everyone fears \u2014 and time them for the turn they win, not the turn they impress."
+        }
+      ]
+    },
+    {
+      "choice": "Cast Mirkwood Bats and take the biggest measured number",
+      "line": "Cast Mirkwood Bats for {3}{B}, tapping four of your five lands. Pass with one land up. From next turn, every Yawgmoth activation paid with a token pays Bats twice \u2014 once for the sacrifice, once for the Insect Nest of Scarabs creates.",
+      "signals": "A four-mana flier on an empty-handed turn, into five open lands. It reads as a threat before it reads as a payoff, and it taps you out to do it. Player 3 learns that you were holding something and that you are no longer holding mana.",
+      "coalition_risk": "High, and mistimed rather than wrong. Bats is the one payoff shape every deck at this table already has an answer for \u2014 a creature. Your other two payoffs are enchantments. Presenting the creature first spends your deflection budget on the piece that is cheapest to remove.",
+      "coaching": "The number is real and it is the best one you own. On the like-for-like board, Bats is thirteen triggers where a death-metering drain is seven \u2014 stack 008 against stack 003, 13 per opponent against 7, an 86% margin. On a clear turn, Bats is the card.\n\nThis is not a clear turn, and the reason is mechanical rather than political.\n\nBats reads 'Whenever you create or sacrifice a token.' A sweeper destroys; it does not sacrifice. To sacrifice a permanent, its controller moves it from the battlefield to the graveyard on an instruction \u2014 nobody instructs anything when a wrath resolves. Stack 007 settled the general form of this on a token that died to a state-based action: not sacrificed, so Bats collects nothing.\n\nSo run the bad case. Player 3 wraths, your four tokens and your Bats die, and Bats pays you exactly zero. You spent four mana and your best payoff to lose both.\n\nThen count what you gave up to do it. Four lands tapped means no {B}{B} for the proliferate, which is worth a full extra drain on the verified board.\n\nBats is next turn's card, or the card after the sweeper is spent. Sequence it late, on purpose. You are not passing on the thirteen \u2014 you are collecting it on a turn where nothing takes it away from you.",
+      "citations": [
+        {
+          "rule": "701.21a",
+          "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner\u2019s graveyard."
+        },
+        {
+          "rule": "700.4",
+          "quote": "The term dies means \u201cis put into a graveyard from the battlefield.\u201d"
+        },
+        {
+          "rule": "strategy:multiplayer.pivot-window",
+          "quote": "Prefer win attempts that leave a rebuilt position if they fail, and sequence the scariest piece last"
+        }
+      ]
+    },
+    {
+      "choice": "Cast Bastion of Remembrance and keep {B}{B} up",
+      "line": "Cast Bastion of Remembrance for {2}{B}. Its enters trigger makes a 1/1 white Human Soldier token, so you end the turn on five bodies rather than four. Hold {B}{B} for Yawgmoth's proliferate and do nothing else on your own turn. From this point every creature you control that dies drains each opponent for 1 and gains you 1 \u2014 whether you sacrificed it, whether a -1/-1 counter killed it, or whether Player 3 wraths it away.",
+      "signals": "Modest, and modest is a lie you are allowed to tell. An enchantment and a 1/1 token, cast with two mana still up, beside a board that has been making people sacrifice creatures all game. Player 3 has to decide whether the two open lands are a trick, and you have not shown them a creature to point removal at.",
+      "coalition_risk": "Moderate and falling. This is the payoff that does not present a target: creature removal cannot touch an enchantment, and the drain arrives without giving the table a new thing to kill. The edicts stay the visible half of your board, and edicts read as fair.",
+      "coaching": "This is the branch, and the reason is not the size of the number. It is which number survives contact with the seat holding five lands.\n\nBastion meters DEATHS. That is precisely why it is right into open sweeper mana and Mirkwood Bats is not. Dying is being put into a graveyard from the battlefield, and a wrath does that to everything you own at once.\n\nSo run the bad case again. Player 3 wraths. Your four tokens and the Human Soldier die \u2014 five deaths, five drains, five life from every seat and five back to you, paid for by their card. Bastion is an enchantment and is still there afterwards. Yawgmoth is a sixth drain only if you let him hit the graveyard; sending him to the command zone means he never died, and the cheaper recast is usually worth more than the point.\n\nBetter still, do not wait. Yawgmoth's ability costs no mana and you may activate it any time you have priority. Hold priority when the sweeper goes on the stack and convert every token into a card and a Bastion drain before it resolves.\n\nNow the trap this board is really teaching, because Grave Pact changes what an activation costs. Yawgmoth's ability becomes the topmost object on the stack when you announce it, and the cost \u2014 the life and the body \u2014 is paid after that. So your token's death triggers Grave Pact while your ability is still sitting there, and nothing happens at the moment an ability triggers: it goes on the stack the next time a player would get priority, which puts it ABOVE your ability. The edicts resolve first.\n\nRead what that means. If you targeted Player 4's 2/1 and Player 4 chooses that same 2/1 for the edict, your ability has no legal target when it tries to resolve, so it does not resolve at all. No counter, no Insect, no card \u2014 and you already paid the life and the body. They get to choose. Assume they choose well.\n\nThe fix is written into your commander. 'Up to one target creature' lets you choose ZERO targets, and an ability with no target cannot be fizzled by their choice. You give up the Nest token; take that trade every time the edict can reach what you were aiming at.\n\nThe better technique when you want the body too: target one of your own tokens. They cannot sacrifice it, so the card is guaranteed, Nest still pays you an Insect, and the counter-killed token is a second Grave Pact round. It costs you a net body and buys two rounds of edicts.\n\nOne political caution, judgement rather than measurement. Player 3 controls no creatures, so every edict you fire hits the two decks that are pressuring Player 3 for you. Spend edicts on the seat that is coming for you, and let the aggro deck keep swinging at somebody else.",
+      "citations": [
+        {
+          "rule": "700.4",
+          "quote": "The term dies means \u201cis put into a graveyard from the battlefield.\u201d"
+        },
+        {
+          "rule": "117.1b",
+          "quote": "A player may activate an activated ability any time they have priority."
+        },
+        {
+          "rule": "602.2a",
+          "quote": "It becomes the topmost object on the stack."
+        },
+        {
+          "rule": "117.2a",
+          "quote": "nothing actually happens at the time an ability triggers. Each time a player would receive priority, each ability that has triggered but hasn\u2019t yet been put on the stack is put on the stack."
+        },
+        {
+          "rule": "603.3",
+          "quote": "The ability becomes the topmost object on the stack."
+        },
+        {
+          "rule": "608.2b",
+          "quote": "If all its targets, for every instance of the word \u201ctarget,\u201d are now illegal, the spell or ability doesn\u2019t resolve."
+        },
+        {
+          "rule": "115.6",
+          "quote": "A spell or ability that requires targets may allow zero targets to be chosen."
+        },
+        {
+          "rule": "strategy:resource-hedging.wrath-math",
+          "quote": "buy resilience instead of restraint where you can"
+        }
+      ]
+    },
+    {
+      "choice": "Cast nothing, hold all three payoffs, and take the edicts at instant speed",
+      "line": "Pass with five lands up and three payoffs in hand. At each opponent's end step, activate Yawgmoth once: pay 1 life, sacrifice an Insect, choose zero targets, draw. Grave Pact makes Player 2 and Player 4 each sacrifice a creature every time. Three activations across the rotation empties both boards and puts three cards in your hand for three life.",
+      "signals": "Nothing about your hand, and a great deal about your board. Five open lands say interaction; three edicts say the sacrifice deck is running. Player 3 reads the open mana correctly \u2014 as a player who did not want to commit \u2014 and takes the free turn.",
+      "coalition_risk": "Low on you and badly aimed. The edicts land on the two seats putting pressure on Player 3, and Player 3 has no creatures to lose. You would spend a full rotation clearing the board for the deck that beats you.",
+      "coaching": "The instinct is right and the execution hands Player 3 the game.\n\nHolding is what a control deck sells you. Buying time is their plan, so a turn where you spend nothing and they spend nothing is a turn they won. Playing safe from ahead is correct; this is playing scared, and it is paying real equity to dodge a card they may not have.\n\nYour five open mana is a bluff, and you should know that when you make it. There is not an instant in your hand. A bluff is a fine thing to run \u2014 paying an entire turn for one is not.\n\nThen look at where the edicts go. Player 2 and Player 4 lose creatures; Player 3 loses nothing and keeps drawing. You are doing the control deck's board management for it, with your own life total.\n\nThe technique inside this branch is correct and belongs in your hands: zero targets under Grave Pact is exactly right, because it makes the card draw unfizzleable. Right technique, wrong turn.\n\nAnd here is the part that makes this branch unnecessary. Bastion of Remembrance costs three of your five mana. It does not stop you taking a single one of these end-step activations \u2014 it just makes each of them remove life as well as a creature.",
+      "citations": [
+        {
+          "rule": "strategy:resource-hedging",
+          "quote": "playing *scared* is paying real equity to dodge specific cards"
+        },
+        {
+          "rule": "strategy:resource-hedging.wrath-math",
+          "quote": "against a control deck, holding back often IS the loss, because buying time is exactly their plan"
+        }
+      ]
+    }
+  ],
+  "recommendation": {
+    "choice": "Cast Bastion of Remembrance and keep {B}{B} up",
+    "rationale": "Refuse the framing first. None of these three cards kills anybody tonight, so stop asking which one is biggest and start asking which one is still there on your next turn.\n\nThe biggest is Mirkwood Bats and I am not talking you out of it forever. Thirteen triggers against seven on the like-for-like board, stack 008 against stack 003 \u2014 13 from each opponent against 7, an 86% margin, the widest measured gap the deck owns. That card is coming down. It comes down after Player 3's five lands have been spent.\n\nBecause the sweeper is the whole question, and the two payoffs answer it in opposite directions. Bats is paid when you CREATE or SACRIFICE a token; a wrath does neither, so it pays Bats nothing. Bastion is paid when a creature you control DIES, and a wrath is nothing but deaths. Cast Bastion and their sweeper becomes five drains \u2014 five life from every seat, fifteen across this three-opponent table \u2014 on their card, not yours.\n\nKeep the numbers straight while you say it out loud. The verified engine is seven drains, seven from EACH opponent; 28 is the pod total across the four opponents stacks 002 and 003 measured. Three opponents here means 21 across the table, and Player 4 goes from 27 to 20. That is a clock, not a kill, and a clock is what you want tonight.\n\nHold the {B}{B}. It is Yawgmoth's proliferate, worth a full extra drain on the verified board, and it is a second turn of open mana that Player 3 has to respect.\n\nThen play the activations properly, because Grave Pact rewrote them. The edicts resolve before your counter does, so anything you target can be sacrificed out from under you \u2014 and the ability that loses its only target does not resolve, which means no counter, no Insect, and no card after you already paid. Choose zero targets when the edict can reach your target. Target your own token when you want the Insect and a second round of edicts. Both are free, and only one of them is what most pilots do by reflex.\n\nOne last read to keep you out of trouble: fire those edicts at the seat that is coming for you. Player 3 owns no creatures, so every edict you spend on Player 2 and Player 4 clears the board for the deck you least want untapping.\n\nYou are three quarters of the way to a fully assembled engine with three payoffs in hand and nobody has spent a removal spell on you yet. Put down the one they cannot kill, keep two mana up, and let their sweeper pay you."
+  }
+}

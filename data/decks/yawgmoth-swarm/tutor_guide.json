@@ -1,181 +1,265 @@
 {
-  "slug": "yawgmoth-swarm",
-  "assessment": "Five wishes, and the sim priced them for you: by turn 10 you assemble one of your two kills in 4.6% of games on your own draws, and in 31.4% once a tutor is allowed to fetch the missing half. That 27-point gap IS these five slots. Nothing else in the 99 buys a number like it, and it is why this section is the deck's instruction manual and not a footnote. Now spend them correctly. The deck finds its own staples without help: renewable fodder is in hand by turn 10 in 78.6% of games unassisted, a free sacrifice outlet in 78.0%, an ignition source in 73.5%, and Yawgmoth himself casts by turn 6 in 91.3% at a mean of turn 4.29. Those classes do not need a wish. Two things do: Nest of Scarabs, the singleton hub every loop routes through, and a drain — the drain class is 60.8% unassisted, the lowest number on the sheet that the engine actually needs. Fetch the RIGHT drain. Carry this one to every table. On the same verified board, Bastion of Remembrance removes 7 life from each opponent, 28 across the pod (stack 002); Zulaport Cutthroat does the same 7 / 28 (stack 003); Blood Artist removes EIGHT LIFE TOTAL (stack 004, checker verdict: not a kill, and not even close). That is a 3.5x penalty for 'target player' over 'each opponent'. Fetching Blood Artist as your payoff is the single most expensive mistake this section can save you from. Then know your delivery speeds, because they decide when each wish is live. Demonic Tutor and Diabolic Intent put the card in your HAND. Vampiric Tutor and Insatiable Avarice put it on TOP — appointments, not arrivals. Vampiric is an instant, so fire it at the end step before your turn and the transit costs you nothing; Avarice is a sorcery whose tutor mode is +{2} on top of {B}, a three-mana wish that lands next draw. Beseech the Mirror is four mana and, bargained, CASTS the card free at mana value 4 or less — which is every piece that matters except Mikaeus. One cap to keep you honest: a tutor is only as good as its arrival, and you draw one of the five in 61.7% of games by turn 10, mean turn 3.10. Every assisted figure above already lives inside that ceiling. And one standing order before any kill fetch: count bodies first. Stack 001 proved the Blowfly loop unbounded and then named its price — the drain plus TWO other creatures on the battlefield when it starts. Short a body, the wish is a three-mana enchantment that does nothing. Count, then wish, then win.",
-  "tutors": [
+ "slug": "yawgmoth-swarm",
+ "assessment": "Five wishes, and the first thing to understand is what they are NOT for. This engine finds itself. By turn 10 the sim has you holding renewable fodder in 73.6% of games, a free sacrifice outlet in 73.8%, an ignition source in 73.0% and a drain in 66.9% — no tutor involved (goldfish_metrics.json, 10,000 iterations, seed 42). A tutor lifts each of those to roughly 90%. That is a seventeen-point gain on a class you already had. Do not spend a wish there.\n\nNow look at what a tutor actually buys. Blowfly Infestation + Nest of Scarabs: 2.6% on your own draws, 32.1% with a tutor allowed to fill the hole. Mikaeus plus a self-shrinking body plus a free outlet: 1.7% to 26.2%. Exquisite Blood + South Wind Avatar: 2.9% to 32.5%. Warren Soultrader + Gravecrawler + any drain: 1.1% to 20.0%. Roughly tenfold, four separate times. That is the whole job. You are not tutoring to make the deck function — you are tutoring to convert.\n\nFOUR kills, and they are independent and overlapping. The sheet has no target that spans all four, so the union is unmeasured and strictly greater than 32.5%. Never quote the composite figure as your kill rate: it covers two of the four and sells you short. When someone asks how often you can kill from here, the honest answer is 'four independent lines, the best of them a third of games by turn ten, and more than that together.'\n\nTwo fetch heuristics travel with you to every table.\n\nFIRST — fetch the right drain. On the verified board, Bastion of Remembrance removes 7 life from EACH opponent, 28 across the pod (stack 002). Zulaport Cutthroat does the same 7 and 28 (stack 003). Blood Artist, same slot, same board, removes EIGHT LIFE TOTAL and is refuted as a kill (stack 004). 'Target player' against 'each opponent' is a factor of 3.5. Fetching Blood Artist as your payoff is the most expensive mistake this section can save you from.\n\nSECOND — fetch the right drain FOR THE ENGINE YOU ARE ON. Mirkwood Bats on the Yawgmoth line yields THIRTEEN triggers, 13 per opponent, 52 across the pod — the biggest verified number on this deck (stack 008). The same Bats on the Blowfly line yields TWO, and halts the loop outright: its 2/3 body survives the forced -1/-1 counter, so nothing dies and Blowfly never re-triggers (stack 007). Same card, same body, opposite verdicts. Which engine is on the battlefield decides whether Bats is the best drain in your library or the worst.\n\nThen the delivery costs, because they decide which wish is live. Vampiric Tutor is {B} at instant speed but lands on TOP — an appointment, not an arrival, and free of charge if you fire it at the end step before your turn. Demonic Tutor is {2}{B} straight to hand, no conditions, and the only one that does not care what the card costs. Diabolic Intent is {1}{B} plus a creature, and in this deck that sacrifice is frequently a trigger rather than a price. Beseech the Mirror is {1}{B}{B}{B}, and bargained it CASTS the fetched card free at mana value 4 or less — which reaches Nest of Scarabs, Blowfly Infestation, South Wind Avatar, Mirkwood Bats and Grave Pact, and does not reach Exquisite Blood at 5 or Mikaeus at 6. Insatiable Avarice is a Spree card: {2}{B} for the tutor mode alone, or {2}{B}{B}{B} for tutor plus 'target player draws three cards and loses 3 life' — pointed at yourself, that draws the card you just booked, in the same turn.\n\nTwo ceilings keep you honest. You draw one of the five in 60.8% of games by turn 10, mean turn 3.09, and every assisted figure above already lives under that. And fast mana sits at 43.5% unassisted — thin for a deck whose best opening is a turn-two commander, which happens in 707 of 10,000 games. An early wish spent on acceleration is a real option now, not a luxury.\n\nOne standing order before any kill fetch: count bodies first. Stack 001 proved the Blowfly loop genuinely unbounded and then named its price — the drain plus TWO other creatures on the battlefield when it starts, at which point 38 iterations take four opponents from 40 to 0. Short a body, the wish is a three-mana enchantment that does nothing.\n\nAnd one label to carry into the Rule 0 conversation. The Blowfly line is resolved and bounded by the checker. The Mikaeus family, Exquisite Blood + South Wind Avatar, and Warren Soultrader + Gravecrawler are measured assemblies whose lines still need a stack scenario. Fetch them — they are the strongest cards in the wish list. Just do not announce a loop nobody has signed.",
+ "tutors": [
+  {
+   "card": "Vampiric Tutor",
+   "targets": [
     {
-      "card": "Vampiric Tutor",
-      "targets": [
-        {
-          "scenario": "End step of the opponent before you, turn 3 or 4. Yawgmoth is down or coming down next turn — 72.1% of goldfish games cast him exactly on turn four. You have fodder and a sacrifice outlet. What you do not have is the hub.",
-          "fetch": "Nest of Scarabs",
-          "why": "The cheapest route to the card the whole deck is built around. One black mana at instant speed on someone else's turn means your own turn stays completely free to cast the three-drop you just booked. Nest is what makes the loop body-neutral instead of body-negative: stack 004 spells the arithmetic out — without a counter landing on something that lives, two of your creatures leave and Nest returns one. Fetch it before anything else and every later wish gets cheaper."
-        },
-        {
-          "scenario": "Yawgmoth and Nest of Scarabs are both on the battlefield, four or five bodies around them, and the table is at healthy life totals. Nothing converts deaths into damage yet.",
-          "fetch": "Bastion of Remembrance",
-          "why": "The drain is the class the deck genuinely fails at — 60.8% unassisted against 78.6% for fodder — so this is a wish worth spending. Fetch Bastion specifically. It removes 7 life from EACH opponent on the verified board (stack 002), 28 across the pod, and 8 / 32 if you spend {B}{B} and a discard on Yawgmoth's proliferate. It is an enchantment, so the creature removal pointed at your board cannot touch it, and it arrives with a 1/1 Human Soldier token — one more body is one more activation. Blood Artist is the same slot for 8 total life (stack 004). Do not take the 3.5x pay cut.",
-          "citations": [
-            {
-              "rule": "strategy:multiplayer.asymmetry",
-              "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
-            }
-          ]
-        },
-        {
-          "scenario": "Player 3 is the combo deck. They untap into six mana with two cards in hand and have been quietly assembling all game. You have {B} open and a stocked board.",
-          "fetch": "Deadly Rollick",
-          "why": "Your worst matchup is combo, and the interaction suite is four answers that all target a creature. Vampiric at their end step books Rollick onto your draw; you cast it for ZERO with your commander on the battlefield and still deploy your whole turn. This is the wish you make early rather than perfectly — the answer you save is the answer you never cast.",
-          "citations": [
-            {
-              "rule": "strategy:threat-assessment.answer-economy",
-              "quote": "held answers rot — against combo, or lethal already on board, the last profitable moment is now"
-            }
-          ]
-        },
-        {
-          "scenario": "Turn 5, three lands, you missed your drop last turn — the sim hits the turn-5 land drop only 68.9% of the time. Your hand holds a four-drop you cannot cast and a spare body on board.",
-          "fetch": "Phyrexian Tower",
-          "why": "The wish nobody at the table expects, because nobody tutors a land with Vampiric. Vampiric searches for a card, not a spell, so the Tower is fair game: it fixes the drop AND it is a free sacrifice outlet that turns any body into {B}{B}. That is engine mana and a land in one slot, on a turn where the alternative was holding a card you cannot cast. Take the land. The kill still needs a turn to be alive for."
-        }
-      ],
-      "notes": "Two life is not free in this deck. You are already paying Yawgmoth 1 per activation, plus Bitterblossom, Necropotence, Black Market Connections, City of Brass, Ancient Tomb, Cabal Pit and Ifnir Deadlands. Cast Vampiric while your total is comfortable, and remember it is an instant — the end step before your turn is almost always the right moment."
+     "scenario": "End step of the player before you, turn three or four. Yawgmoth is on the battlefield or is your next play — the sim casts him on turn four in 7,249 of 10,000 games, mean 4.283. You have bodies and an outlet. You do not have the hub.",
+     "fetch": "Nest of Scarabs",
+     "why": "The cheapest possible route to the card every loop in this deck routes through. One black mana at instant speed on someone else's turn leaves your entire turn free to cast the three-drop you just booked. Nest is what makes an activation body-neutral instead of body-negative: stack 004 states the arithmetic flatly — kill one of your own creatures and two of your creatures leave while Nest returns one. Every later wish gets cheaper once this one lands.",
+     "citations": [
+      {
+       "rule": "strategy:tempo.sequencing",
+       "quote": "cast early when the spell informs the rest of your turn"
+      }
+     ]
     },
     {
-      "card": "Demonic Tutor",
-      "targets": [
-        {
-          "scenario": "Turn 5 or 6, your own main phase. Yawgmoth is on the battlefield, bodies are flowing, and you have six mana. Nest of Scarabs is nowhere.",
-          "fetch": "Nest of Scarabs",
-          "why": "Your strongest unconditional wish, spent on the deck's most irreplaceable card. Three mana finds it and three mana casts it in the same turn once you are at six — mean available mana is 5.24 on turn six and 6.24 on turn eight, so this is a real sequence, not a fantasy. Nest is the hub both kills share, and the tutor is exactly what makes a singleton behave like a playset.",
-          "citations": [
-            {
-              "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-              "quote": "k tutors plus the card act like k+1 copies of *every* card"
-            }
-          ]
-        },
-        {
-          "scenario": "Yawgmoth has been killed twice. He is in your graveyard rather than the command zone, the tax is climbing, and Player 2 still holds up removal every turn.",
-          "fetch": "Phyrexian Reclamation",
-          "why": "The behind fetch, and it is a rebuild rather than a haymaker. One black mana buys an enchantment that returns Yawgmoth — or any creature — from graveyard to hand for {1}{B} and 2 life, forever, at instant speed. That is the commander tax deleted and every removal spell they own turned into a two-mana inconvenience. Against a table that has decided you are the threat, the card that answers the SECOND and third removal spell is worth more than the card that wins if nobody interacts."
-        },
-        {
-          "scenario": "Nest of Scarabs is on the battlefield. An each-opponent drain is on the battlefield. You have three spare creatures beyond the drain and enough mana to cast a three-drop. Nobody is holding up enchantment removal.",
-          "fetch": "Blowfly Infestation",
-          "why": "This is the closing fetch, and the board state above is not decoration — it is the price stack 001 named. The Blowfly plus Nest loop is genuinely unbounded, but on a board where the drain was the only spare creature it drained for THREE and stalled, because Blowfly's trigger is mandatory and had to eat the payoff. With the drainer plus two other creatures, 38 completed iterations take four opponents from 40 to 0. Count the bodies out loud before you tap. Coaching call: Bastion of Remembrance is the safest partner here precisely because it is an enchantment and Blowfly can never be forced to target it — that reading is judgement built on stack 001's finding, not a separately verified line."
-        },
-        {
-          "scenario": "Turn 7. You have six bodies on the battlefield — the sim's mean is 4.80 by turn seven — an empty hand, and no engine online yet. The board is ahead of the hand.",
-          "fetch": "Skullclamp",
-          "why": "The wish that turns a board into a hand. Every token you make is a 1/1: equip for one, it becomes a 2/0, dies immediately, and you draw two. That is a one-mana artifact refilling you at two cards a body while your drains meter every death. One precision point to keep you out of trouble at the table: Skullclamp's +1/-1 is a static modification, not a counter, so it does NOT trigger Nest of Scarabs. Clamp for cards, not for Insects."
-        }
-      ],
-      "notes": "No conditions, no delay, no life. This is the tutor you fire at the first genuine hole rather than saving for a cleverer turn — and per the strategy on tutoring, the cost you are paying is board impact and a turn of tempo, which means the card you name has to be worth a turn."
+     "scenario": "Turn one. One Swamp, {B} open, and a hand with a second land and no acceleration. Nobody has committed anything yet.",
+     "fetch": "Dark Ritual",
+     "why": "This is the wish that changes the whole game, and it is available on turn one only with this tutor. Book the Ritual, draw it turn two, play your second land: Swamp into Ritual gives {B}{B}{B} and the untapped land gives the fourth — Yawgmoth on turn two, which the histogram records in 707 of 10,000 games. Fast mana is drawn unassisted in only 43.5% of games by turn 10, so this is genuinely the class most worth a wish outside the kills. Judgement, clearly labelled: the goldfish explicitly does not model rituals, so this line sits above the sheet rather than inside it.",
+     "citations": [
+      {
+       "rule": "strategy:critical-mass",
+       "quote": "know your number — the count of bodies, spells, or mana at which the deck actually goes over the top"
+      }
+     ]
     },
     {
-      "card": "Diabolic Intent",
-      "targets": [
-        {
-          "scenario": "Turn 4 or 5. Bitterblossom has been making a Faerie every upkeep, or Nest has left you an Insect, or Ophiomancer's Snake is sitting there doing nothing. Yawgmoth is down and the table is at 40.",
-          "fetch": "Bastion of Remembrance",
-          "why": "The default Intent, because the cost is genuinely free here. A spare token is not a card — it is a renewable by-product, and the deck makes 6.63 bodies by turn 10 on average. Trade it for the class the deck is worst at finding: the drain, 60.8% unassisted. Bastion is the one to name for the reasons the verified boards give — 7 from each opponent, 28 across the pod (stack 002), an enchantment that dodges creature removal, and a free Human Soldier body on entry."
-        },
-        {
-          "scenario": "Nest of Scarabs is already on the battlefield and you are hunting the kill. On board: Bloodghast, or Butcher Ghoul, or Carrier Thrall — a body that pays you back when it leaves.",
-          "fetch": "Blowfly Infestation",
-          "why": "This is the pairing the deck was built for and almost nobody makes on purpose. Intent is the only wish that costs you the exact resource the Blowfly kill needs — bodies — so pay it with a body that returns. Bloodghast comes back on your next land drop. Butcher Ghoul comes back with undying. Carrier Thrall leaves an Eldrazi Scion behind. Your body count survives the tutor, which is what keeps stack 001's requirement intact: the drain plus two other creatures on the battlefield when the loop starts, then 38 iterations from 40 to 0."
-        },
-        {
-          "scenario": "A sweeper just resolved. You have one creature left — Grave Titan, or any nonlegendary body — and Nest of Scarabs somehow survived because it is an enchantment.",
-          "fetch": "Persist",
-          "why": "The rebuild that eats your own additional cost. Sacrifice the last body to Intent, then cast the two-mana sorcery that brings it straight back with a -1/-1 counter on it. Stack 006 verified the part that matters: a creature ENTERING with a -1/-1 counter does trigger Nest of Scarabs, via rule 122.6 — so Persist is reanimation and ignition in one card. Grave Titan returns as a 5/5 deathtoucher with two 2/2 Zombies and an Insect riding along. Know the trap the same stack found: Persist on Fume Spitter gives you the Insect and NOT the body, because a 1/1 entering as a 0/0 dies to state-based actions before the trigger resolves. Aim it at something with toughness to spare."
-        },
-        {
-          "scenario": "Mikaeus, the Unhallowed is on the battlefield. Your non-Human creatures all have undying and +1/+1. You want a second engine and the table is watching Yawgmoth, not you.",
-          "fetch": "Carnifex Demon",
-          "why": "The wish nobody sees coming, because under Mikaeus the additional cost stops being a cost at all — sacrifice any non-Human and undying hands it straight back. Carnifex Demon is a Phyrexian Demon, so it joins that family, and its {B}, remove a -1/-1 counter ability puts a counter on EACH other creature: a table-wide shrink that is also a pile of Insects with Nest out. Straight talk about the ceiling: the Mikaeus two-card infinites this family implies set the deck's bracket floor and NOT ONE of them has been verified on this list, while three of the source's claims about this exact deck have already been overturned by the checker. Fetch the Demon for the board it builds. Treat the loop as a candidate, not a plan."
-        }
-      ],
-      "notes": "The cost is upside when you have a token, a returning body, or a drain on the battlefield turning the sacrifice into damage. It is a tax in exactly three spots: when your only creature is the engine that makes the others, when you control no creature at all and the spell is simply uncastable, and on turn three — the sim has you at a mean of 1.70 bodies there, so Intent is often a dead card in an opening hand. And if Nest of Scarabs is the missing piece, it outranks everything on this list; make that wish with Vampiric or Demonic and keep your bodies."
+     "scenario": "Yawgmoth and Nest of Scarabs are both down with three or more spare bodies around them, the table is in the low twenties, and you will untap into five or more mana. No drain on the battlefield.",
+     "fetch": "Mirkwood Bats",
+     "why": "The largest verified number on this deck. On exactly this board Bats collects both halves of every activation — the sacrifice is an activation cost paid after the ability is already on the stack, and the Nest token is a later creation — for THIRTEEN triggers, 13 per opponent, 52 across the pod (stack 008). Against a death-metering drain's verified 7 and 28, that is 86% more. Read the condition before you wish: this is the Yawgmoth line. On the Blowfly line the same card triggers twice and switches the engine off (stack 007), because its 2/3 survives the forced counter.",
+     "citations": [
+      {
+       "rule": "strategy:multiplayer.asymmetry",
+       "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
+      }
+     ]
     },
     {
-      "card": "Beseech the Mirror",
-      "targets": [
-        {
-          "scenario": "Turn 5 or 6 with four mana up and a token to spare — a Faerie, an Insect, a Treasure from Deadly Dispute or Black Market Connections. Yawgmoth is on the battlefield. The hub is missing.",
-          "fetch": "Nest of Scarabs",
-          "why": "The default, and it is the best four mana in the deck. Bargain the token, search up Nest at mana value 3, and cast it FREE from exile — hub online the same turn, one card spent, and the token you paid was going to die to Yawgmoth anyway. The free-cast clause is capped at mana value 4 or less, which happens to cover every piece that matters: Nest, Blowfly Infestation, Bastion of Remembrance, Bitterblossom, both Altars, Toxic Deluge."
-        },
-        {
-          "scenario": "You are behind. Player 1 has a wide board of tokens, Player 3 has two fat creatures, and the damage is coming at you. You have four mana, a spare token, and a drain already on the battlefield.",
-          "fetch": "Toxic Deluge",
-          "why": "The behind fetch. Bargain, find Deluge, cast it without paying its mana cost — you still pay the X life, because an additional cost is not the mana cost and the alternative cost does not touch it. Set X to whatever the table needs. Your board dies too, and that is the point: with an each-opponent drain out, your own sweeper meters every one of your deaths into damage, and your recursion rebuilds. One accuracy note so you sequence it right: Deluge gives -X/-X until end of turn, NOT -1/-1 counters, so it triggers nothing on Nest of Scarabs and returns nothing with Necroskitter.",
-          "citations": [
-            {
-              "rule": "118.8",
-              "quote": "An additional cost is a cost listed in a spell’s rules text, or applied to a spell or ability from another effect, that its controller must pay at the same time they pay the spell’s mana cost or the ability’s activation cost."
-            },
-            {
-              "rule": "118.9c",
-              "quote": "An alternative cost doesn’t change a spell’s mana cost, only what its controller has to pay to cast it."
-            }
-          ]
-        },
-        {
-          "scenario": "Yawgmoth is online and drawing you cards — the verified boards run him to eight activations and eight cards in one turn — and your hand is now full of spells you cannot cast. Four mana, one spare token.",
-          "fetch": "Phyrexian Altar",
-          "why": "The odd wish, and it is the one that unlocks the turn you are actually having. Engine mana is a real hole on the sheet, 53.0% unassisted against 82.0% assisted, and it is the class that converts Yawgmoth's draws into castable spells. Bargain, find the Altar at mana value 3, cast it free: now every body you sacrifice is a black mana, and the cards Yawgmoth hands you stop being decoration. Ashnod's Altar is the fallback and pays colourless, which this mono-black list minds more than most."
-        },
-        {
-          "scenario": "Late, grindy, and you are down to your last token. No fodder engine on the battlefield, no bodies in hand, four mana available.",
-          "fetch": "Bitterblossom",
-          "why": "Spend your last body to buy a body every upkeep. Bargaining away the final token feels wrong and is right: Bitterblossom at mana value 2 comes in free and makes a 1/1 flier on every one of your upkeeps forever, for 1 life a turn. It is also an enchantment, so it survives the sweeper that is coming. Normally you never spend a wish on fodder — the class is 78.6% unassisted and the deck finds it alone — but a board with zero renewable bodies is outside that distribution, and the fodder is the enabler that gates everything else."
-        }
-      ],
-      "notes": "Two disciplines. First, bargain fodder is a token or a Treasure, never Nest of Scarabs, never Bitterblossom, never the drain you just landed — sacrificing the engine to find the engine is the trap the card sets. Second, Mikaeus is mana value 6, so Beseech can never free-cast him; if Mikaeus is the wish, make it with Demonic, Vampiric or Insatiable Avarice and keep Beseech for a piece at 4 or less. And your commander lives in the command zone, not the library — no search in this deck finds Yawgmoth."
-    },
-    {
-      "card": "Insatiable Avarice",
-      "targets": [
-        {
-          "scenario": "Turn 6 or 7, five or six mana, board stable, engine grinding. Nothing in your hand costs more than three and you want a second axis.",
-          "fetch": "Mikaeus, the Unhallowed",
-          "why": "The default, once you understand what this tutor is actually for. Avarice is the slow wish — {B} plus {2} for the search mode, sorcery speed, to the TOP — so the transit turn is a real cost when the card is cheap and NO cost at all when the card is expensive. Mikaeus costs six; you were going to spend that turn making mana anyway. He hands every non-Human you control +1/+1 and undying, which is renewable fodder, free Diabolic Intent costs, and the second kill the sim tracks at 1.8% unassisted and 24.8% assisted. Take the honest caveat with him: that kill's two-card infinites are unverified on this list.",
-          "citations": [
-            {
-              "rule": "702.172a",
-              "quote": "Spree means “Choose one or more modes. As an additional cost to cast this spell, pay the costs associated with those modes.”"
-            }
-          ]
-        },
-        {
-          "scenario": "Turn 7 or later with five mana up. Yawgmoth and Nest are online, bodies are stacked, and the pod is still at 40 because nothing converts deaths into damage.",
-          "fetch": "Zulaport Cutthroat",
-          "why": "Pay for both Spree modes — {B} plus {2} to search, plus {B}{B} for the draw — and the wish stops being an appointment. The modes execute in the order printed, so the search puts Zulaport on top and the draw-three picks it straight back up, with two extra cards and 3 life as the toll. That mode ordering is a coaching read on the printed sequence rather than a checker-verified ruling, so treat the sequencing as judgement. Zulaport itself is verified: 7 drains, 28 across the pod, and it caps at 7 precisely because it is a body that must eventually be sacrificed and banks its own death trigger last (stack 003). Two mana to deploy makes it the drain you can actually cast on the same turn you find it."
-        },
-        {
-          "scenario": "A sweeper resolved two turns ago. Your graveyard is stocked, you are at seven-plus lands, and the table has moved on to fighting each other.",
-          "fetch": "Grave Titan",
-          "why": "The behind fetch that fits Avarice's shape. Six mana, three bodies on entry — a 6/6 deathtoucher and two 2/2 Zombies — and the transit turn overlaps the turn you spend getting to six anyway. It refills the fodder engine in one card, it blocks anything, and it is nonlegendary, so Persist and Victimize can bring it back after the NEXT sweeper. Board quantity is not usually how this deck wins, but after a wrath the fastest route back to a working engine is one card that is three bodies."
-        },
-        {
-          "scenario": "Turn 5, three lands, you missed a drop and have a fistful of three-drops. Your graveyard already holds two or three creatures.",
-          "fetch": "Agadeem's Awakening // Agadeem, the Undercrypt",
-          "why": "The wish nobody sees coming, because it is two cards. Put it on top and next turn it is simply the land you needed — pay 3 life and it even enters untapped. Later in the game the same card is the front face: return any number of creatures from your graveyard that each have a different mana value X or less, which on a curve of 1s, 2s and 3s is a whole board off one spell. A tutor that fixes your mana now and rebuilds your board later is the best rate on the sheet when the sim has you hitting the turn-5 land drop only 68.9% of the time."
-        }
-      ],
-      "notes": "Do not read this as a one-mana tutor. The search mode is {B} plus {2}, so it is three mana at sorcery speed and it cannot be fired at an end step the way Vampiric can. The {B}{B} mode also targets any player: pointed at an opponent it is three cards and 3 life for them, which is the cheapest political favour in the deck — and worth remembering when you need one seat to leave you alone for a turn."
+     "scenario": "Player 3 is the combo seat. They untapped into six mana, held three cards through their turn, and cast nothing — and they are one seat away from you. Your board is fine and you have {B} open at their end step.",
+     "fetch": "Deadly Rollick",
+     "why": "You book the answer one turn before you need it, which is the only way a top-of-library tutor ever answers anything. It arrives on your draw and then costs you ZERO with Yawgmoth on the battlefield, so the turn you actually cast it you still deploy everything else. Your interaction suite is three spot-removal instants and an edict against a linear engine — narrow enough that the answer you save is the answer you never cast.",
+     "citations": [
+      {
+       "rule": "strategy:threat-assessment.answer-economy",
+       "quote": "held answers rot — against combo, or lethal already on board, the last profitable moment is now"
+      }
+     ]
     }
-  ],
-  "gaps": [
-    "No wish in this deck finds an artifact or enchantment answer, because none exists to find. The library has no counterspell, no artifact removal and no enchantment removal, and one graveyard answer in Bojuka Bog. Against a resolved Cursed Totem, Pithing Needle or Rest in Peace your outs are speed, politics and somebody else's removal. The tutors make you faster. They cannot make you broader.",
-    "No search finds your commander. Yawgmoth lives in the command zone, and every one of these five cards searches your LIBRARY. If he is answered, the wish is Phyrexian Reclamation while he is in the graveyard, or Lightning Greaves before he is targeted at all. Plan the insurance before the removal, not after.",
-    "Two of the five deliver to the top of the library. Vampiric Tutor is an instant, so its transit turn costs nothing when you fire it at the end step before your turn; Insatiable Avarice is a sorcery and cannot do that, so its wish is genuinely a turn away unless you pay for the draw mode too. A wish in transit can be answered — discard, a Bojuka Bog on your yard, a sweeper that changes what you needed. Fetch what is right for the board you will have, not the board you have.",
-    "Ophiomancer only makes a Snake 'if you control no Snakes', and South Wind Avatar is a Snake Spirit Avatar. Fetching one while the other is on the battlefield switches your largest renewable fodder source off. If the Avatar is already down, wish for a different drain; if Ophiomancer is ticking, the Avatar's 4 toughness — worth exactly +4 activations on the verified board, and its 'near-infinite' billing refuted (stack 005) — is not worth the Snake it costs you.",
-    "The Mikaeus family is a candidate, not a plan. Eight two-card infinites involving Mikaeus set this deck's bracket floor and not one has been verified on this list, while the checker has already overturned three of the source's claims about these exact cards — the Blowfly kill as printed (stack 001, unbounded but drainless on that board), Blood Artist as 'near-infinite' (stack 004, eight life), and South Wind Avatar's 'near-infinite' tag (stack 005, +4 activations). Fetch Mikaeus for undying and bodies, which are real. Do not announce a loop nobody has signed.",
-    "The Blowfly kill has a body tax and the tutor does not pay it. Stack 001 is precise: the loop needs the drain plus TWO other creatures on the battlefield when it starts, and then 38 iterations take four opponents from 40 to 0. Short a body, Blowfly Infestation is a three-mana enchantment that drains for three and stops. Count before you wish.",
-    "Nothing here fetches Mirkwood Bats as a payoff. Its trigger reads on token CREATION rather than death, which is the half of the Nest of Scarabs engine that currently goes unpaid, and that is exactly why the rate it would pay is loop-specific and still unverified. It is a fine card to draw. It is not yet a card to spend a wish on.",
-    "Necropotence and a top-of-library tutor argue with each other. Necropotence skips your draw step, so a card booked to the top by Vampiric Tutor or Insatiable Avarice does not simply arrive next turn — you pay life to exile it and it reaches your hand at your next end step. Sequence the wish before the enchantment, or use a tutor that delivers to hand.",
-    "Whether Spree's modes execute in printed order — search first, then draw three, so the Avarice both-modes line delivers to hand the same turn — is a plain reading of the card that no stack has settled here. The line is worth the mana either way; the timing claim deserves a scenario before it is printed as fact."
-  ]
+   ],
+   "notes": "Two life is never free here. You already pay Yawgmoth 1 per activation, plus Bitterblossom, Necropotence, Black Market Connections, City of Brass, Ancient Tomb, Cabal Pit and Ifnir Deadlands. Fire this while your total is comfortable. And fire it as an instant: the end step before your turn is almost always the right moment, because the transit turn then costs you nothing at all."
+  },
+  {
+   "card": "Demonic Tutor",
+   "targets": [
+    {
+     "scenario": "Yawgmoth and Nest of Scarabs are on the battlefield with four bodies around them, six mana available, and nothing converting deaths into damage. The table is at healthy totals and nobody has pointed anything at you yet.",
+     "fetch": "Bastion of Remembrance",
+     "why": "The drain is the class this deck genuinely under-delivers — 66.9% unassisted against 73.6% for fodder — so it is worth a wish, and the specific card matters more than the class. Bastion removes 7 life from each opponent on the verified board, 28 across the pod (stack 002), and it arrives with its own 1/1 Human Soldier: one more body is one more activation. It is an enchantment, so the creature removal aimed at your board cannot touch it. Blood Artist is the same slot for eight life total (stack 004). Do not take the 3.5x pay cut.",
+     "citations": [
+      {
+       "rule": "strategy:multiplayer.asymmetry",
+       "quote": "Winning consistently means preferring asymmetric board wipes, repeatable value engines that out-scale three players, and effects that tax or drain every opponent at once"
+      }
+     ]
+    },
+    {
+     "scenario": "Your board is four creatures and an enchantment. Player 2 plays a control deck, has left four-plus mana untapped for two turns running, and refused a profitable attack. Assume a sweeper is in that hand.",
+     "fetch": "Plumb the Forbidden",
+     "why": "This wish only works from a to-hand tutor, which is precisely why it belongs to this one — an instant you have to draw off the top next turn is an instant you do not have when the wrath resolves. Plumb turns the wave into cards: sacrifice N creatures in response, copy it N times, draw N+1. That is the rebuild package the theory asks for, bought as a single card rather than as restraint. Keep deploying.",
+     "citations": [
+      {
+       "rule": "strategy:resource-hedging.wrath-math",
+       "quote": "assume the wrath — over a four-player game one is near-certain — so deploy in waves, hold a rebuild package"
+      }
+     ]
+    },
+    {
+     "scenario": "Turn eight or later, seven-plus mana, a free repeatable sacrifice outlet already on the battlefield — Carrion Feeder, Viscera Seer, Woe Strider, Blasting Station or either Altar — and a board of small bodies you are happy to feed it.",
+     "fetch": "Mikaeus, the Unhallowed",
+     "why": "This is the fetch nothing else in the suite can make. Mikaeus is mana value 6, so bargained Beseech can never free-cast him and a top-of-library tutor costs you the turn you needed to cast him — Demonic simply does not care what the card costs. The package is measured at 26.2% tutor-assisted by turn 10 (mean turn 6.5), and undying on every non-Human you control is real value the moment he lands. Label it correctly at the table: the Mikaeus loops are containment records that still need a stack scenario, so present him as a body-doubler, not as an announced win.",
+     "citations": [
+      {
+       "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+       "quote": "a tutor is an enabler only if you can cast it and still deploy"
+      }
+     ]
+    },
+    {
+     "scenario": "A creature table. Player 1 is going wide with tokens, Player 4 has two large blockers, and your drain math does not reach anyone this turn. You have the engine but not the tempo.",
+     "fetch": "Grave Pact",
+     "why": "The wish nobody expects from a combo-shaped deck: fetch the board control instead of the damage. Every creature you control that dies makes each other player sacrifice one, so the chains the checker scored at 7 and 13 drains are simultaneously 7 and 13 edicts per seat. That is the half that decides fair games, and it converts an engine that was merely draining into one that dismantles three boards at once while yours stands. It is also mana value 4, so bargained Beseech can free-cast it if you draw that one instead.",
+     "citations": [
+      {
+       "rule": "strategy:multiplayer.asymmetry",
+       "quote": "Your cards should do something to all three seats or win the game; anything else is someone else's job"
+      }
+     ]
+    }
+   ],
+   "notes": "No condition, no delay, no life, no mana-value cap. This is the tutor you fire at the first genuine hole rather than saving for a cleverer turn — and it is the only one of the five you should ever spend on a card costing five or more. The price you pay is a turn of board impact, so the card you name has to be worth a turn."
+  },
+  {
+   "card": "Diabolic Intent",
+   "targets": [
+    {
+     "scenario": "Turn five or six, five mana, Yawgmoth down and drawing. You have three or four bodies including a spare Insect, a Faerie or a Reassembling Skeleton. Nest of Scarabs is the hole.",
+     "fetch": "Nest of Scarabs",
+     "why": "Intent is the only tutor cheap enough to find the hub AND cast it in the same turn: {1}{B} for the wish, {2}{B} for the enchantment, five mana total, against the 4.611 the sim gives you on turn five and 5.228 on turn six. Pay the additional cost with the body you were going to feed Yawgmoth anyway, or with a Reassembling Skeleton you rebuy for {1}{B} later. The sacrifice is not a tax when the creature was fodder in the first place.",
+     "citations": [
+      {
+       "rule": "strategy:critical-mass.storm-math",
+       "quote": "Count only hand and board; expected draws are a bonus, not a plan."
+      }
+     ]
+    },
+    {
+     "scenario": "The wrath resolved. You have one creature left, two cards in hand, four mana, and the table is rebuilding around you. Yawgmoth is castable but you have nothing to feed him.",
+     "fetch": "Bitterblossom",
+     "why": "Sacrifice the survivor — it was doing nothing — and buy a body every upkeep forever, for no mana, at 1 life a turn. Renewable fodder is the class the engine spends fastest and this is its cheapest permanent answer: two mana, no board condition, and it feeds Yawgmoth, Skullclamp, an outlet and any creation-side drain at once. Initiative after a sweeper goes to whoever rebuilds cheapest, and nobody in the pod rebuilds cheaper than a one-card token faucet.",
+     "citations": [
+      {
+       "rule": "strategy:resource-hedging.playing-to-outs",
+       "quote": "aggressive lines often *create* outs that passive lines close off"
+      }
+     ]
+    },
+    {
+     "scenario": "Yawgmoth, a drain and five or six bodies on the battlefield, five mana up, and you are one piece from converting rather than grinding. Gravecrawler is already in your graveyard from an earlier activation.",
+     "fetch": "Warren Soultrader",
+     "why": "Three jobs in one slot and the fetch reads as a value play right up until it is not. Soultrader is a free repeatable sacrifice outlet, a Treasure maker that solves engine mana, and a Zombie — which switches Gravecrawler back on from the graveyard for {B}, paid by the Treasure Soultrader just made. That is the fourth named kill, measured at 20.0% tutor-assisted by turn 10. State it as what it is: a contained, measured assembly whose line still needs a stack scenario, so count your drains and stop at lethal rather than announcing an infinite.",
+     "citations": [
+      {
+       "rule": "strategy:multiplayer.pivot-window",
+       "quote": "Prefer win attempts that leave a rebuilt position if they fail"
+      }
+     ]
+    },
+    {
+     "scenario": "Gray Merchant of Asphodel is on the battlefield, having already drained once. Nest of Scarabs is out, you have four mana, and the table is between 8 and 14 life.",
+     "fetch": "Persist",
+     "why": "The wish nobody sees coming, because it turns Intent's cost into the setup. Sacrifice Gray Merchant to pay for the tutor, fetch Persist, return him with a -1/-1 counter for a second devotion-sized drain against a pip load of 75 black pips across 54 cards. The counter is not a downside: stack 006 settled that a creature ENTERING with a -1/-1 counter does trigger Nest of Scarabs under CR 122.6, so Persist is a reanimation AND an ignition source, and the 2/2 Merchant survives at 1/1 as fodder afterwards.",
+     "citations": [
+      {
+       "rule": "122.6",
+       "quote": "This refers to putting counters on that object while it’s on the battlefield and also to an object that’s given counters as it enters the battlefield."
+      }
+     ]
+    }
+   ],
+   "notes": "The additional cost is upside almost everywhere in this deck — with any drain out it is damage, with Grave Pact it is a table-wide edict, with a token it is a Mirkwood Bats trigger. It is a genuine tax in exactly three spots: when your only creature is the engine that makes the others, when you control no creature at all and the spell is simply uncastable, and on turn three, where the sim has you at a mean of 1.565 bodies. Read the board before you keep it in an opener."
+  },
+  {
+   "card": "Beseech the Mirror",
+   "targets": [
+    {
+     "scenario": "Turn five, four mana, a Treasure or a spare token on the battlefield, Yawgmoth resolved and drawing. Nest of Scarabs has not appeared and you want it working this turn, not next.",
+     "fetch": "Nest of Scarabs",
+     "why": "Bargain a token or a Treasure and Beseech does not fetch the hub — it PLAYS it, free, at mana value 3, for the four mana you already spent. That is the whole reason to run a four-mana tutor. The bargain is itself upside if a creation-side drain is out: sacrificing a token is exactly what Mirkwood Bats is paid for. Never bargain the engine to find the engine — the fodder is a token, a Treasure or nothing.",
+     "citations": [
+      {
+       "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+       "quote": "k tutors plus the card act like k+1 copies of *every* card"
+      }
+     ]
+    },
+    {
+     "scenario": "Nest of Scarabs is already on the battlefield alongside a drain and at least two other creatures. You have four mana and a token to bargain, and the lowest life total at the table is under 40 with nobody holding up instant-speed removal.",
+     "fetch": "Blowfly Infestation",
+     "why": "This is the conversion fetch: mana value 3, free-cast off the bargain, and the missing half of a line measured at 32.1% tutor-assisted. The body condition is not optional and stack 001 is exact about it — the loop needs the drain plus TWO other creatures on the battlefield when it starts, or Blowfly's mandatory trigger is forced onto your own drainer and the engine ends at three per opponent. With the bodies, 38 completed iterations take four opponents from 40 to 0. Count first, wish second.",
+     "citations": [
+      {
+       "rule": "strategy:critical-mass.storm-math",
+       "quote": "the go decision is arithmetic done *before* the first spell"
+      }
+     ]
+    },
+    {
+     "scenario": "Exquisite Blood is already on the battlefield — you cast it off six mana two turns ago, or it came off a Demonic Tutor. You have four mana and a token to bargain.",
+     "fetch": "South Wind Avatar",
+     "why": "Know your own mana-value cap and fetch the half that fits under it. Exquisite Blood is mana value 5 and Beseech can never free-cast it; South Wind Avatar is mana value 4 and sits exactly at the line. The pair is the highest-bracket line in this list and the sim measures it at 32.5% tutor-assisted by turn 10, the best of your four. Two disciplines when you assemble it: it still needs a stack scenario, so do not announce it — and stack 005 already found the zero-magnitude edge on this Avatar, where a creature dying at toughness 0 gains you 0 life under CR 119.9 and triggers no drain at all. Gain of zero is not a gain.",
+     "citations": [
+      {
+       "rule": "strategy:multiplayer.pivot-window",
+       "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
+      }
+     ]
+    },
+    {
+     "scenario": "You are behind on board. Player 1 has eight creatures, Player 4 has two commanders' worth of stats, and your own board is two 1/1s and a drain you would happily trade. Four mana, a Treasure to bargain, life total above 30.",
+     "fetch": "Toxic Deluge",
+     "why": "Free-cast the sweeper and pay for it in the currency you have most of. Beseech pays the mana, Deluge's additional cost is X life, and with any drain on the battlefield the wipe is a drain for every creature of yours that dies. Fetch Deluge rather than Black Sun's Zenith for this specific job: casting a spell without paying its mana cost forces X to 0, which makes the Zenith a blank. The trade-off worth knowing — the Zenith puts counters and therefore triggers Nest of Scarabs, while Deluge's -X/-X is a static modification and triggers nothing. When you want the wipe, take Deluge; when you want the wipe to build your board, pay full price for the Zenith.",
+     "citations": [
+      {
+       "rule": "107.3b",
+       "quote": "the only legal choice for X is 0"
+      }
+     ]
+    }
+   ],
+   "notes": "Two hard edges. The free cast caps at mana value 4, which reaches Nest of Scarabs, Blowfly Infestation, Grave Pact, Mirkwood Bats and South Wind Avatar — and never reaches Exquisite Blood at 5, Gray Merchant at 5 or Mikaeus at 6. And the bargain fodder must be a token, a Treasure or a spare artifact: sacrificing Nest of Scarabs, Bitterblossom or the drain you just landed to find the next piece is the trap the card sets. Unbargained, this is a four-mana Demonic Tutor that puts the card in your hand — still fine, never the plan."
+  },
+  {
+   "card": "Insatiable Avarice",
+   "targets": [
+    {
+     "scenario": "Turn five or six with three mana to spare, Yawgmoth drawing and a stable board. You are grinding, not converting, and your deaths are not producing mana.",
+     "fetch": "Phyrexian Altar",
+     "why": "The slowest tutor should fetch the piece you were going to cast next turn anyway, and engine mana is that piece — it sits at 60.6% unassisted by turn 10, the lowest number the engine actually needs. Three mana books the Altar on top, you draw it, and it turns every sacrifice into castable black for the rest of the game. Take the tutor mode alone here; the draw mode costs {B}{B} and 3 life you have no reason to spend while nothing is on fire.",
+     "citations": [
+      {
+       "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+       "quote": "stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable"
+      }
+     ]
+    },
+    {
+     "scenario": "Turn eight or later, six-plus mana available, a free sacrifice outlet and a drain already on the battlefield, and a Zombie among your creatures. You want a body you can spend and re-spend this turn.",
+     "fetch": "Gravecrawler",
+     "why": "This is the wish only Spree can make: {2}{B}{B}{B} for both modes, tutor mode first, then point 'target player draws three cards and loses 3 life' at YOURSELF. You fetch it and draw it in the same spell, then cast it for {B} — six mana total, plus two extra cards, at the cost of 3 life. Every other tutor in this deck would have made you wait a turn for that. Gravecrawler is renewable fodder that recasts from the graveyard for {B} while you control a Zombie, and Warren Soultrader, Gray Merchant, Mikaeus, a Grave Titan token and a Nim Deathmantle-equipped creature all satisfy the condition.",
+     "citations": [
+      {
+       "rule": "strategy:life-as-resource",
+       "quote": "your life total is a resource too, though with some important differences"
+      }
+     ]
+    },
+    {
+     "scenario": "Yawgmoth has been answered twice, your hand is one card, your board is three small bodies, and no engine is drawing you anything. Three or six mana available and your life total is comfortably above 30.",
+     "fetch": "Necropotence",
+     "why": "The refuel wish, and the one card in the library that replaces the commander's whole function without asking for a body. It exiles a card per life paid, which in a deck that regains life from every drain is the cheapest draw rate you own. If you can afford the full Spree, take the draw mode too and point it at yourself: you arrive at the same turn holding Necropotence plus two more cards. This is the line you take when no fair line beats their best case.",
+     "citations": [
+      {
+       "rule": "strategy:resource-hedging.playing-to-outs",
+       "quote": "identify the card or event that saves you and play as if it's coming"
+      }
+     ]
+    },
+    {
+     "scenario": "Endgame. The lowest life total at the table is 3 or less — say Player 3 at 3 after paying for their own fetches and a Necropotence of their own — the other two seats are in the high teens, and you have five mana and a board of black permanents.",
+     "fetch": "Gray Merchant of Asphodel",
+     "why": "Nobody sees this one coming, and it is a kill nobody counts. Cast the full Spree for five: the tutor mode books Gray Merchant, and the draw mode targets PLAYER 3 — they draw three cards and lose 3 life, and the game ends for that seat before the cards matter. Then the Merchant lands next turn against a devotion the deck is built for, 75 black pips across 54 cards with a maximum of 3. One seat removed by the tutor itself, the rest drained by what it fetched. Watch the coalition math: this is the turn you stop being invisible.",
+     "citations": [
+      {
+       "rule": "strategy:multiplayer.threat-deflection",
+       "quote": "time them for the turn they win, not the turn they impress"
+      }
+     ]
+    }
+   ],
+   "notes": "Read the card as two tutors. At {2}{B} it is a slower Demonic that lands on top and takes a turn — fine when you have the turn. At {2}{B}{B}{B} it is the only card in the deck that fetches and delivers in the same breath, and 3 life is the correct price for that in a shell that gains 1 back per drain trigger. The mode order matters and is in your favour: the search resolves before the draw, so pointing the draw at yourself always finds what you just booked."
+  }
+ ],
+ "gaps": [
+  "No wish finds an artifact or enchantment answer, because none exists to find. The library has no counterspell, no artifact removal, no enchantment removal, and exactly one graveyard answer in Bojuka Bog. Against a resolved Cursed Totem, Pithing Needle or Rest in Peace your outs are speed, politics and somebody else's removal. These five cards make you faster. They cannot make you broader.",
+  "No search finds your commander. Yawgmoth sits in the command zone and all five of these cards search your LIBRARY. If he is answered, the wish is Phyrexian Reclamation while he is in the graveyard, or Lightning Greaves before he is targeted at all. Buy the insurance before the removal, not after.",
+  "Three of the four named kills are measured assemblies with no resolved line. Exquisite Blood + South Wind Avatar, the Mikaeus family and Warren Soultrader + Gravecrawler are all fully contained and all still need a stack scenario. The checker has already overturned confident claims about these exact cards twice — Blood Artist billed as near-infinite and refuted at eight life (stack 004), and South Wind Avatar's near-infinite tag refuted at +4 activations (stack 005). Fetch them. Do not narrate them.",
+  "The tutor-assisted figures model ONE wish. The sim fills a single missing group with a single drawn, affordable tutor, which is why 32.1%, 26.2%, 32.5% and 20.0% are floors for a hand holding two tutors and ceilings for a hand holding none. The union across the four kills is not measured anywhere, and no target on the sheet spans more than two of them.",
+  "Nobody has measured Ayara, First of Locthwain on the engine. She pays on the creation half — Nest of Scarabs makes BLACK Insect tokens — and her second ability is a free outlet that draws, so she plausibly sits between a death-drain's verified 7 and Mirkwood Bats' verified 13. 'Between' is not a number, and stack 008's answer was surprising precisely because the naive count was wrong. Until that scenario exists, fetch Bastion or Bats when the number has to be right, and Ayara when you want the body and the second outlet.",
+  "The Black Sun's Zenith token count is open. Stack 006 settled that counters you place on a creature already on the battlefield trigger Nest of Scarabs, so the wipe is an ignition; how many Insects one multi-creature, multi-counter event actually creates is not resolved. Fetch the Zenith as a sweeper that probably rebuilds you, not as a token engine you can count on.",
+  "Nothing here prices a tutor against a resolved tax effect. Every mana figure quoted is the goldfish's, which models no opponents at all — under a Sphere, a Thalia or a Winter Orb the two-mana tutors are the only ones still live, and Yawgmoth's own ability, which costs no mana, remains your best card by a wider margin than any of these five."
+ ]
 }

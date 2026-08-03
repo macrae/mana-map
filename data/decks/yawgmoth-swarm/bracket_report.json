@@ -1,7 +1,7 @@
 {
   "banned": [],
-  "combo_bracket_floor": 1,
-  "combo_count": 20,
+  "combo_bracket_floor": 3,
+  "combo_count": 42,
   "drivers": [
     {
       "detail": "4 Game Changer(s): Ancient Tomb, Demonic Tutor, Necropotence, Vampiric Tutor",
@@ -9,7 +9,12 @@
       "signal": "game_changers"
     },
     {
-      "detail": "8 two-card infinite(s); 8 assemble at mana value <= 6. e.g. Mikaeus, the Unhallowed + Ashnod's Altar",
+      "detail": "highest-bracket line present: Exquisite Blood + South Wind Avatar",
+      "forces": 3,
+      "signal": "combo_content"
+    },
+    {
+      "detail": "11 two-card infinite(s); 11 assemble at mana value <= 6. e.g. Gravecrawler + Phyrexian Altar",
       "forces": 4,
       "signal": "two_card_infinite"
     }
@@ -38,6 +43,21 @@
     "Vampiric Tutor"
   ],
   "two_card_infinites": [
+    {
+      "bracket": 1,
+      "cards": [
+        "Gravecrawler",
+        "Phyrexian Altar"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite death triggers",
+        "Infinite ETB",
+        "Infinite LTB",
+        "Infinite sacrifice triggers",
+        "Infinite storm count"
+      ]
+    },
     {
       "bracket": 1,
       "cards": [
@@ -114,6 +134,20 @@
     {
       "bracket": 1,
       "cards": [
+        "Nim Deathmantle",
+        "Ashnod's Altar"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB",
+        "Infinite sacrifice triggers",
+        "Infinite death triggers"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
         "Mikaeus, the Unhallowed",
         "Yahenni, Undying Partisan"
       ],
@@ -153,6 +187,19 @@
         "Infinite sacrifice triggers",
         "Infinite death triggers",
         "Infinite damage"
+      ]
+    },
+    {
+      "bracket": 3,
+      "cards": [
+        "Exquisite Blood",
+        "South Wind Avatar"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite lifegain",
+        "Infinite lifegain triggers",
+        "Infinite lifeloss"
       ]
     }
   ]

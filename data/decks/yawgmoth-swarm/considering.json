@@ -1,235 +1,237 @@
 {
   "slug": "yawgmoth-swarm",
-  "assessment": "The engine wins the board and then asks how to close. Four bench cards make the ten because each completes a line whose other pieces are already sleeved: Gravecrawler, Reassembling Skeleton, Exquisite Blood, Grave Pact. Six pool cards beat the bench tail — Nim Deathmantle, Warren Soultrader, Ayara, Black Sun's Zenith and Gray Merchant of Asphodel over Cabal Coffers, Crypt Ghast, Sheoldred and Urborg, and Plumb the Forbidden over Imp's Mischief. Ownership is the uncomfortable part: nine of the ten cards behind the Considering: marker appear in none of the pilot's seven decklist files, and only Black Sun's Zenith and Plumb the Forbidden below are already in the box.",
+  "assessment": "The engine is fed; the mana and the payoff surface are not. Four of the six bench cards make the ten and six pool cards join them: the mana package (Cabal Coffers, Urborg, Crypt Ghast, Culling the Weak) attacks the 43.5% fast-mana figure and the 60.6% engine-mana figure directly, while Pawn of Ulamog, Marauding Blight-Priest, Starscape Cleric, Bontu's Monument and Drivnod buy bodies and pod-wide conversion. Mikaeus carries seven of eleven infinites, and the answer is NOT to buy more Mikaeus dependents — Plague Belcher, Walking Ballista, Triskelion and Altar of Dementia all fail that test and none is here. Pawn of Ulamog and Drivnod each complete five to seven lines that never name him, Exquisite Blood goes from one partner to three, and Imp's Mischief covers the targeted-removal case. Two bench cards stayed in the box; two of the ten (Urborg, Culling the Weak) are already in the share files and cost nothing.",
   "ten": [
     {
-      "card": "Gravecrawler",
+      "card": "Cabal Coffers",
       "source": "sideboard",
-      "role": "threat:body",
-      "cmc": 1.0,
-      "type_line": "Creature — Zombie",
+      "role": "land:untapped-dual",
+      "cmc": 0.0,
+      "type_line": "Land",
+      "acquisition": {"status": "purchase", "file": null},
       "evidence": {
-        "combo_lines_opened": [
-          {"cards": ["Gravecrawler", "Phyrexian Altar"], "produces": "Infinite death triggers, Infinite ETB, Infinite LTB, Infinite sacrifice triggers", "status": "needs a stack scenario"},
-          {"cards": ["Gravecrawler", "Pitiless Plunderer", "Carrion Feeder"], "produces": "Infinite death triggers, Infinite ETB, Infinite LTB, Infinite sacrifice triggers", "status": "needs a stack scenario"},
-          {"cards": ["Gravecrawler", "Pitiless Plunderer", "Ashnod's Altar"], "produces": "Infinite colorless mana, Infinite death triggers, Infinite ETB, Infinite LTB", "status": "needs a stack scenario"}
-        ],
-        "synergy_partners_in_deck": ["Stitcher's Supplier"],
-        "edhrec_rank": 687,
+        "edhrec_rank": 190,
         "game_changer": false
       },
-      "why": "Six Zombies are already in the 99 — Butcher Ghoul, Carrion Feeder, Geralf's Messenger, Mikaeus, Skinrender, Stitcher's Supplier — so {B} recasts it from the graveyard after every sacrifice, and Pitiless Plunderer pays that {B} out of the death that just happened.",
-      "when": "Buy this one first. It is the shortest route from a board to a loop: eight of the combo DB's lines name it and every other named piece is already maindeck, so it needs no second purchase.",
-      "natural_cut": "Retched Wretch",
+      "why": "The deck runs 22 Swamps, so Coffers taps for more black than the rest of the manabase combined by turn 5, and it costs a land slot rather than a spell slot — that is the cheapest possible answer to engine mana sitting at 60.6% unassisted by turn 10 (goldfish_metrics.json, 10,000 iterations, seed 42).",
+      "when": "Buy it first. It is the only card here that fixes mana without competing with the engine for a turn: it comes down on a land drop and turns on the same turn Yawgmoth does.",
+      "natural_cut": "Survivors' Encampment",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:deckbuilding.mana-base", "quote": "a utility land that can't produce the colour you need is not a source"}
+      ]
+    },
+    {
+      "card": "Bontu's Monument",
+      "source": "pool",
+      "role": "ramp:cost-reduction",
+      "cmc": 3.0,
+      "type_line": "Legendary Artifact",
+      "acquisition": {"status": "purchase", "file": null},
+      "evidence": {
+        "combo_lines_opened": [
+          {"cards": ["Warren Soultrader", "Gravecrawler", "Bontu's Monument"], "produces": "Infinite LTB, infinite ETB, infinite sacrifice triggers, infinite death triggers, infinite lifegain triggers, infinite lifegain, infinite storm count, infinite lifeloss", "status": "needs a stack scenario"}
+        ],
+        "edhrec_rank": 666,
+        "game_changer": false
+      },
+      "why": "The fourth named kill is Warren Soultrader + Gravecrawler + a drain at 20.0% tutor-assisted by turn 10, and every drain in that target's any_of is a death trigger — Bontu's Monument pays on the CAST instead, so the Treasure-funded recast of Gravecrawler drains each opponent rather than one seat, and its cost reduction shaves {1} off 28 creature bodies on the way there.",
+      "unlocks": "The loop that closes a table instead of a seat, plus the deck's only ramp that is also a payoff. It is colourless, so nothing about identity or tribal text can turn it off.",
+      "natural_cut": "Sinister Gnarlbark",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:multiplayer.asymmetry", "quote": "each-opponent drains are the payoffs that actually scale"}
+      ]
+    },
+    {
+      "card": "Pawn of Ulamog",
+      "source": "pool",
+      "role": "threat:tokens",
+      "cmc": 3.0,
+      "type_line": "Creature — Vampire Shaman",
+      "acquisition": {"status": "purchase", "file": null},
+      "evidence": {
+        "combo_lines_opened": [
+          {"cards": ["Pitiless Plunderer", "Viscera Seer", "Reassembling Skeleton", "Pawn of Ulamog"], "produces": "Infinite colored mana, infinite colorless mana, infinite death triggers, infinite ETB, infinite LTB, infinite sacrifice triggers, infinite scry 1, infinite Treasure tokens, infinite creature tokens", "status": "needs a stack scenario"},
+          {"cards": ["Reassembling Skeleton", "Phyrexian Altar", "Pawn of Ulamog"], "produces": "Infinite death triggers, infinite ETB, infinite LTB, infinite sacrifice triggers", "status": "needs a stack scenario"},
+          {"cards": ["Pitiless Plunderer", "Carrion Feeder", "Reassembling Skeleton", "Pawn of Ulamog"], "produces": "Infinite LTB, infinite ETB, infinite colored mana, infinite sacrifice triggers, infinite death triggers, infinite colorless mana, infinite creature tokens, infinite Treasure tokens", "status": "needs a stack scenario"}
+        ],
+        "edhrec_rank": 1563,
+        "game_changer": false
+      },
+      "why": "Seven combo lines in combo_details.json are completed by this one card and NOT ONE of them names Mikaeus — every piece is already sleeved (Pitiless Plunderer, Reassembling Skeleton, Viscera Seer, Carrion Feeder, Phyrexian Altar, Woe Strider, Blasting Station), so it is a whole second infinite family bought with a single {1}{B}{B}.",
+      "unlocks": "The off-Mikaeus branch. Exile Mikaeus and seven of eleven infinites go with him; Pawn of Ulamog rebuilds that count from a different root, and its Eldrazi Spawn are fodder and mana at the same time.",
+      "natural_cut": "Necroskitter",
       "bracket_delta": {"before": 4, "after": 4},
       "citations": [
         {"rule": "strategy:deckbuilding.threat-density", "quote": "Layering reconciles them: overlap pieces"}
       ]
     },
     {
-      "card": "Nim Deathmantle",
+      "card": "Marauding Blight-Priest",
       "source": "pool",
-      "role": "buff:attached",
-      "cmc": 2.0,
-      "type_line": "Artifact — Equipment",
+      "role": "wincon:drain",
+      "cmc": 3.0,
+      "type_line": "Creature — Vampire Cleric",
+      "acquisition": {"status": "purchase", "file": null},
       "evidence": {
         "combo_lines_opened": [
-          {"cards": ["Nim Deathmantle", "Ashnod's Altar", "Grave Titan"], "produces": "Infinite colorless mana, Infinite creature tokens, Infinite death triggers, Infinite ETB, Infinite LTB", "status": "needs a stack scenario"},
-          {"cards": ["Nim Deathmantle", "Ashnod's Altar", "Woe Strider"], "produces": "Infinite death triggers, Infinite ETB, Infinite LTB, Infinite sacrifice triggers", "status": "needs a stack scenario"}
+          {"cards": ["Exquisite Blood", "Marauding Blight-Priest"], "produces": "Infinite lifegain triggers, infinite lifeloss, infinite lifegain", "status": "needs a stack scenario"}
         ],
-        "edhrec_rank": 3452,
+        "synergy_partners_in_deck": ["Blood Artist", "Zulaport Cutthroat", "Bastion of Remembrance", "Pitiless Plunderer", "Skullclamp"],
+        "edhrec_rank": 1108,
         "game_changer": false
       },
-      "why": "Grave Titan and Ashnod's Altar are both maindeck and the Titan's two Zombies are the mana that pays Deathmantle's {4}; the goldfish puts either existing kill at 4.6% assembled by turn 10 unassisted, so a third route is worth more than a seventh sacrifice outlet.",
-      "unlocks": "A kill that runs through neither Blowfly Infestation nor Mikaeus. It is colourless, so identity is never the problem, and it costs {2}, so it lands on the turn before the engine turn rather than instead of it.",
-      "natural_cut": "Spawning Pit",
+      "why": "The third named kill is Exquisite Blood plus a lifegain-triggered drain at 32.5% tutor-assisted by turn 10, and the goldfish target's any_of holds exactly ONE card — South Wind Avatar; Blight-Priest is a second, and its 'each opponent loses 1' is the pod-wide side of the trigger rather than the single-target side stack 004 measured at a 3.5x penalty.",
+      "unlocks": "A second lock on the deck's highest-bracket line, and a multiplier on every drain already in the 99 — stack 003's seven Zulaport drains each gain you 1 life, and whether Blight-Priest converts each of those into another pod-wide drain is the trigger-ordering question stack 008 answered for Bats and nobody has answered here.",
+      "natural_cut": "Geralf's Messenger",
       "bracket_delta": {"before": 4, "after": 4},
       "citations": [
-        {"rule": "strategy:deckbuilding.threat-density", "quote": "a Plan A and Plan B"}
+        {"rule": "strategy:multiplayer.asymmetry", "quote": "each-opponent drains are the payoffs that actually scale"}
       ]
     },
     {
-      "card": "Reassembling Skeleton",
+      "card": "Urborg, Tomb of Yawgmoth",
       "source": "sideboard",
-      "role": "recursion",
-      "cmc": 2.0,
-      "type_line": "Creature — Skeleton Warrior",
+      "role": "land:fixing",
+      "cmc": 0.0,
+      "type_line": "Legendary Land",
+      "acquisition": {"status": "owned", "file": "share/Hapatra.txt"},
       "evidence": {
-        "combo_lines_opened": [
-          {"cards": ["Pitiless Plunderer", "Ashnod's Altar", "Reassembling Skeleton"], "produces": "Infinite colorless mana, Infinite death triggers, Infinite ETB, Infinite LTB, Infinite sacrifice triggers", "status": "needs a stack scenario"},
-          {"cards": ["Pitiless Plunderer", "Phyrexian Altar", "Reassembling Skeleton"], "produces": "Infinite death triggers, Infinite ETB, Infinite LTB, Infinite sacrifice triggers", "status": "needs a stack scenario"}
-        ],
-        "synergy_partners_in_deck": ["Stitcher's Supplier"],
-        "edhrec_rank": 767,
+        "edhrec_rank": 73,
         "game_changer": false
       },
-      "why": "Both named partners are maindeck, and unlike Gravecrawler the Skeleton asks for nothing on the battlefield — {1}{B} returns it from an empty board, which is precisely the board a sweeper leaves behind.",
-      "when": "Against pods that wrath. It is the fodder that survives Toxic Deluge, Damnation and a Massacre Girl turn, and it is the cheapest card on this list.",
-      "natural_cut": "Carrier Thrall",
-      "bracket_delta": {"before": 4, "after": 4}
+      "why": "It is in share/Hapatra.txt, so it is free stock, and it makes Command Tower, City of Brass, Ancient Tomb, Bojuka Bog and Takenuma into Swamps — which is roughly +12 to whatever Cabal Coffers taps for and +12 lands that Crypt Ghast doubles.",
+      "when": "Sleeve it the same day as Coffers. On its own in a mono-black list it is a Swamp with legend rules attached; alongside Coffers or Ghast it is the multiplier.",
+      "natural_cut": "Archway Commons",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:deckbuilding.mana-base", "quote": "Duke treats entering tapped as a real drawback"}
+      ]
     },
     {
-      "card": "Exquisite Blood",
+      "card": "Culling the Weak",
+      "source": "pool",
+      "role": "ramp:ritual",
+      "cmc": 1.0,
+      "type_line": "Instant",
+      "acquisition": {"status": "owned", "file": "share/Hapatra.txt"},
+      "evidence": {
+        "edhrec_rank": 551,
+        "game_changer": false
+      },
+      "why": "Fast mana sits at 43.5% unassisted by turn 10 against a commander that wants to be cast on turn 2, and this converts a Bitterblossom Faerie or a Nest Insect into {B}{B}{B}{B} at instant speed — a net +3 off a body the deck manufactures for free.",
+      "unlocks": "The turn-2 and turn-3 Yawgmoth. It is also the only card on this list that is both fast mana AND a sacrifice, so it feeds Blood Artist, Bastion of Remembrance and Zulaport Cutthroat on the way through.",
+      "natural_cut": "Supernatural Stamina",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:deckbuilding.redundancy-vs-tutors", "quote": "So stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable"}
+      ]
+    },
+    {
+      "card": "Starscape Cleric",
+      "source": "pool",
+      "role": "wincon:drain",
+      "cmc": 2.0,
+      "type_line": "Creature — Bat Cleric",
+      "acquisition": {"status": "purchase", "file": null},
+      "evidence": {
+        "combo_lines_opened": [
+          {"cards": ["Exquisite Blood", "Starscape Cleric"], "produces": "Infinite lifegain triggers, infinite lifeloss, infinite lifegain", "status": "needs a stack scenario"}
+        ],
+        "edhrec_rank": 2002,
+        "game_changer": false
+      },
+      "why": "Same each-opponent text as Marauding Blight-Priest for one mana less, and its Offspring cost creates a 1/1 token copy — a Mirkwood Bats creation trigger and a second body, on a card whose whole job is converting the pod's life total.",
+      "unlocks": "A third partner for Exquisite Blood, which turns the third kill's any_of from a named card into a class. Two copies of an effect and a tutor behave like three; that is how a 32.5% line stops being a specific pair of cards.",
+      "natural_cut": "Victimize",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:deckbuilding.redundancy-vs-tutors", "quote": "a tutor is \"essentially an additional copy of any card in our deck\""}
+      ]
+    },
+    {
+      "card": "Drivnod, Carnage Dominus",
+      "source": "pool",
+      "role": "doubler:triggers",
+      "cmc": 5.0,
+      "type_line": "Legendary Creature — Phyrexian Horror",
+      "acquisition": {"status": "purchase", "file": null},
+      "evidence": {
+        "combo_lines_opened": [
+          {"cards": ["Pitiless Plunderer", "Reassembling Skeleton", "Viscera Seer", "Drivnod, Carnage Dominus"], "produces": "Infinite LTB, infinite ETB, infinite sacrifice triggers, infinite death triggers, infinite scry 1", "status": "needs a stack scenario"},
+          {"cards": ["Pitiless Plunderer", "Reassembling Skeleton", "Carrion Feeder", "Drivnod, Carnage Dominus"], "produces": "Infinite ETB, infinite +1/+1 counters on a creature, infinite LTB, infinite sacrifice triggers, infinite death triggers", "status": "needs a stack scenario"}
+        ],
+        "edhrec_rank": 1801,
+        "game_changer": false
+      },
+      "why": "'If a creature dying causes a triggered ability of a permanent you control to trigger, that ability triggers an additional time' hits Bastion of Remembrance, Zulaport Cutthroat, Blood Artist, Grave Pact and Pitiless Plunderer at once — stack 003 proved seven drains is a ceiling on that board, and this is the only card in the pool that attacks the ceiling itself rather than the pieces.",
+      "unlocks": "Five more infinite lines, all of them rooted in Pitiless Plunderer plus Reassembling Skeleton and none of them naming Mikaeus. Doubled Plunderer Treasures also mean the loops pay for themselves in black mana.",
+      "natural_cut": "Phyrexian Reclamation",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:multiplayer.asymmetry", "quote": "Your cards should do something to all three seats or win the game"}
+      ]
+    },
+    {
+      "card": "Crypt Ghast",
       "source": "sideboard",
       "role": "wincon:drain",
-      "cmc": 5.0,
-      "type_line": "Enchantment",
-      "evidence": {
-        "combo_lines_opened": [
-          {"cards": ["Exquisite Blood", "South Wind Avatar"], "produces": "Infinite lifegain, Infinite lifegain triggers, Infinite lifeloss", "status": "needs a stack scenario"}
-        ],
-        "edhrec_rank": 509,
-        "game_changer": false
-      },
-      "why": "South Wind Avatar is already in the 99 and stack 005 measured it honestly — four extra Yawgmoth activations, its 'Near-infinite' tag refuted — and where stack 004 found Blood Artist paying a 3.5x single-target penalty at a four-player table, the Avatar's trigger reads 'each opponent loses 1 life'.",
-      "when": "When the seat keeps assembling a board and dying to the life total instead of the clock. One card, one already-sleeved partner, and the loop reads the whole table.",
-      "natural_cut": "Necropede",
-      "bracket_delta": {"before": 4, "after": 4}
-    },
-    {
-      "card": "Warren Soultrader",
-      "source": "pool",
-      "role": "sac-outlet",
-      "cmc": 3.0,
-      "type_line": "Creature — Zombie Goblin Wizard",
-      "evidence": {
-        "combo_lines_opened": [
-          {"cards": ["Mikaeus, the Unhallowed", "Warren Soultrader", "Blood Artist"], "produces": "Infinite colored mana, Infinite death triggers, Infinite lifeloss, Infinite Treasure tokens", "status": "needs a stack scenario"},
-          {"cards": ["Mikaeus, the Unhallowed", "Warren Soultrader", "Zulaport Cutthroat"], "produces": "Infinite colored mana, Infinite death triggers, Infinite lifeloss, Infinite Treasure tokens", "status": "needs a stack scenario"},
-          {"cards": ["Mikaeus, the Unhallowed", "Warren Soultrader", "Bastion of Remembrance"], "produces": "Infinite colored mana, Infinite death triggers, Infinite lifeloss, Infinite Treasure tokens", "status": "needs a stack scenario"}
-        ],
-        "edhrec_rank": 419,
-        "game_changer": false
-      },
-      "why": "Death-triggered mana is the deck's weakest measured resource — 53.0% drawn by turn 10 unassisted against 78.6% for fodder — and Soultrader is the one card that is a free sacrifice outlet and a mana producer in the same body; it is also a Zombie, so it switches Gravecrawler on.",
-      "unlocks": "Three Mikaeus lines whose third piece is already sleeved, and a Treasure per sacrifice, which is what turns a wide board into a castable turn rather than a parked one.",
-      "natural_cut": "Culling the Weak",
-      "bracket_delta": {"before": 4, "after": 4}
-    },
-    {
-      "card": "Grave Pact",
-      "source": "sideboard",
-      "role": "removal:edict",
       "cmc": 4.0,
-      "type_line": "Enchantment",
+      "type_line": "Creature — Spirit",
+      "acquisition": {"status": "purchase", "file": null},
       "evidence": {
-        "edhrec_rank": 574,
+        "edhrec_rank": 525,
         "game_changer": false
       },
-      "why": "The 99 holds no edict at all — Dismember, Fatal Push, Snuff Out, Deadly Rollick and Toxic Deluge all target or sweep — and this deck sacrifices a creature on nearly every turn it does anything, so Grave Pact charges the table for a cost the pilot already pays.",
-      "when": "Creature pods, and any table where a hexproof or a recursive commander keeps walking through spot removal.",
-      "natural_cut": "Dismember",
+      "why": "With Urborg out it doubles every land in the deck, not just the 22 Swamps, and extort turns each spare {B} into a pod-wide drain — so a Ghast that survives one turn cycle pays for Gray Merchant of Asphodel, Exquisite Blood or a hard-cast Mikaeus on turn 6.",
+      "when": "Sleeve it once Coffers or Urborg is in. It is also a body, so a removal spell aimed at it is a removal spell not aimed at Yawgmoth, and if it dies it is fodder.",
+      "natural_cut": "Path of Ancestry",
       "bracket_delta": {"before": 4, "after": 4},
       "citations": [
-        {"rule": "strategy:deckbuilding.interaction-suite", "quote": "Breadth before depth:"}
+        {"rule": "strategy:multiplayer.asymmetry", "quote": "effects that tax or drain every opponent at once"}
       ]
     },
     {
-      "card": "Ayara, First of Locthwain",
-      "source": "pool",
-      "role": "wincon:drain",
-      "cmc": 3.0,
-      "type_line": "Legendary Creature — Elf Noble",
-      "evidence": {
-        "combo_lines_opened": [
-          {"cards": ["Yawgmoth, Thran Physician", "Mikaeus, the Unhallowed", "Ayara, First of Locthwain"], "produces": "Infinite card draw, Near-infinite death triggers, Near-infinite lifegain, Near-infinite lifeloss", "status": "needs a stack scenario"}
-        ],
-        "edhrec_rank": 831,
-        "game_changer": false
-      },
-      "why": "Mirkwood Bats is the only payoff in the 99 that reads token creation; Bastion of Remembrance, Zulaport Cutthroat, Blood Artist and South Wind Avatar all wait for a death. Ayara reads every black creature entering — the Nest of Scarabs Insects, the Bitterblossom Faeries, the Grave Titan Zombies — and pays in life, which is the resource Yawgmoth's ability spends.",
-      "unlocks": "The creation half of the engine, and a clean end to a live exclusion in the 99: Ophiomancer makes a Snake only 'if you control no Snakes', and South Wind Avatar is a Snake Spirit Avatar, so the Ophiomancer upkeep trigger does nothing while the Avatar is on the battlefield. The Avatar carries stack 005 and the Exquisite Blood line; Ophiomancer carries neither, so Ophiomancer is the half to move.",
-      "natural_cut": "Ophiomancer",
-      "bracket_delta": {"before": 4, "after": 4}
-    },
-    {
-      "card": "Black Sun's Zenith",
-      "source": "pool",
-      "role": "removal:sweeper",
-      "cmc": 2.0,
-      "type_line": "Sorcery",
-      "evidence": {
-        "edhrec_rank": 1946,
-        "game_changer": false
-      },
-      "why": "Toxic Deluge is the list's only sweeper and it works in -X/-X, which the engine cannot read; Black Sun's Zenith puts -1/-1 counters instead, so the same sweep is Nest of Scarabs ignition (stack 006 established that -1/-1 counters arriving on a creature do trigger the Nest) and Necroskitter returns every opponent's creature that dies holding one.",
-      "unlocks": "A sweeper that is a payoff rather than a cost. It is in the box — Hapatra.txt — so it costs nothing but a slot.",
-      "natural_cut": "Cabal Ritual",
-      "bracket_delta": {"before": 4, "after": 4}
-    },
-    {
-      "card": "Gray Merchant of Asphodel",
-      "source": "pool",
-      "role": "wincon:drain",
-      "cmc": 5.0,
-      "type_line": "Creature — Zombie",
-      "evidence": {
-        "combo_lines_opened": [
-          {"cards": ["Mikaeus, the Unhallowed", "Yawgmoth, Thran Physician", "Gray Merchant of Asphodel"], "produces": "Infinite card draw, Near-infinite death triggers, Near-infinite lifegain, Near-infinite lifeloss", "status": "needs a stack scenario"}
-        ],
-        "edhrec_rank": 242,
-        "game_changer": false
-      },
-      "why": "A drain is drawn 60.8% of the time by turn 10 unassisted — the weakest payoff axis the goldfish measures — and every drain the deck does draw is a per-death trickle; Gray Merchant is one lump at each opponent that refunds the life Yawgmoth spends, and it is a creature, so Victimize, Animate Dead, Persist and Phyrexian Reclamation all return it.",
-      "unlocks": "Reach that does not need a loop. It is also a Zombie, so it is a Gravecrawler enabler on the turn it lands.",
-      "natural_cut": "Bloodghast",
-      "bracket_delta": {"before": 4, "after": 4}
-    },
-    {
-      "card": "Plumb the Forbidden",
-      "source": "pool",
+      "card": "Imp's Mischief",
+      "source": "sideboard",
+      "role": "protection:redirect",
       "cmc": 2.0,
       "type_line": "Instant",
+      "acquisition": {"status": "purchase", "file": null},
       "evidence": {
-        "edhrec_rank": 1148,
+        "edhrec_rank": 685,
         "game_changer": false
       },
-      "why": "This deck loses to one resolved sweeper; Plumb answers it at instant speed by sacrificing the board in response, drawing a card for each creature, and running every one of those deaths through Bastion of Remembrance, Zulaport Cutthroat, Blood Artist and Mirkwood Bats on the way out.",
-      "unlocks": "Insurance the protection budget is short of, paid for in cards rather than in a counterspell mono-black does not have. It is in the box — Black.txt.",
-      "natural_cut": "Village Rites",
-      "bracket_delta": {"before": 4, "after": 4}
+      "why": "Mikaeus carries seven of the eleven two-card infinites and Yawgmoth carries the draw, and both die to a single Swords to Plowshares or Anguished Unmaking — this changes that spell's target at instant speed for {1}{B}, which is the only mono-black answer that works against exile.",
+      "when": "Hold it in any pod with a white or blue seat. It also steals a Demonic Tutor or a Vampiric Tutor off an opponent's stack when the life is affordable.",
+      "natural_cut": "Gemstone Mine",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:deckbuilding.threat-density", "quote": "5-7 protection slots"}
+      ]
     }
   ],
   "bench_verdicts": [
     {
-      "card": "Urborg, Tomb of Yawgmoth",
-      "verdict": "off-list",
-      "why": "The one bench card the pilot already owns, and the one that does least: mana_analysis counts 35 of the deck's 36 lands already producing black, so Urborg's marginal contribution is making Ancient Tomb tap for {B}. It earns a slot the day Cabal Coffers or Crypt Ghast is sleeved."
-    },
-    {
-      "card": "Cabal Coffers",
-      "verdict": "off-list",
-      "why": "Twenty-two Swamps make it a genuine engine, but the goldfish says the shortage is death-triggered mana at 53.0%, not total mana — mean available mana is 5.2 by turn 6 against a curve that stops at 6. Warren Soultrader took the slot because it fixes the number that is actually low."
-    },
-    {
-      "card": "Crypt Ghast",
-      "verdict": "off-list",
-      "why": "Same axis as Cabal Coffers, one turn later and on a body that dies to everything. The provisional role budget already has the deck over on ramp at 11 against 10."
-    },
-    {
       "card": "Dictate of Erebos",
       "verdict": "off-list",
-      "why": "The same effect as Grave Pact one mana higher, and flash is a real difference — but Grave Pact is on the ten, so this is duplicated function, and the corpus is blunt about which to cut first."
-    },
-    {
-      "card": "Imp's Mischief",
-      "verdict": "off-list",
-      "why": "Mono-black's only answer to a counterspell, and the protection budget is short by one. It loses to Plumb the Forbidden, which answers the card that actually ends this deck — a sweeper — and draws a handful doing it."
+      "why": "Grave Pact is already sleeved and this is the same effect one mana dearer; Drivnod, Carnage Dominus costs the same five and makes that Grave Pact fire twice per death while also doubling four drains, so the slot is spent better."
     },
     {
       "card": "Sheoldred, Whispering One",
       "verdict": "off-list",
-      "why": "Seven mana on a list whose curve stops at six, in a seat with 5.8 mean available mana on turn 7. Reanimation plus an upkeep edict is exactly what the deck wants; the cost is a turn it usually does not get."
+      "why": "Seven mana on a deck whose commander lands turn 4 and whose kills mean-assemble on turns 5.5 to 6.7 — a card you cast after the game has been decided is not a card. Everything it does (reanimation, edicts, a body) is already in the 99 at three to five mana."
     }
   ],
   "gaps": [
-    "Ownership is the finding, not a footnote. Nine of the ten cards behind the Considering: marker appear in none of the pilot's seven decklist files — Reassembling Skeleton and Gravecrawler among them — so the bench is a shopping list rather than a box. Only Urborg, Tomb of Yawgmoth is owned (Hapatra.txt). Of the ten above, Black Sun's Zenith (Hapatra.txt) and Plumb the Forbidden (Black.txt) are in the box; the other eight are purchases.",
-    "Not one line on this list is verified. Six stacks pass — 001 through 006 — and they cover the Blowfly Infestation loop, the four drains and the entering-counter rules question; none of them touches a card named above. The two highest-value /resolve-stack targets are Exquisite Blood + South Wind Avatar (does the loop terminate, and does it close a four-player table) and Nim Deathmantle + Ashnod's Altar + Grave Titan (does the Titan's own tokens pay the {4}).",
-    "The combo DB's card lists are not always complete, and this deck is where that shows. It records Gravecrawler + Phyrexian Altar as a two-card infinite, but the oracle text needs a second Zombie on the battlefield before the recast is legal — the record is missing a piece the deck happens to have six of. Same class of gap: it records Thran Vigil + Viscera Seer as a two-card infinite, but Thran Vigil only loops with a persist creature and the 99 holds none, so that hit is not a pick.",
-    "An obsolescence hit refuted by reading the card: obsolescence_index.json lists Postmortem Professor, Tunnel Rats, Purple Pentapus and Cantor of the Refrain as strictly better than Reassembling Skeleton on power and toughness. Only Postmortem Professor is in the box (Black.txt), and its recursion exiles an instant or sorcery from the graveyard each time — a finite resource, so it cannot loop, which is the only job the Skeleton is on this list for.",
-    "Two more index hits that should not be acted on. Boggart Mischief (Auntie Ool.txt) is listed as an upgrade over Bastion of Remembrance, but its drain triggers only on Goblin deaths and the 99 holds one Goblin, while Bastion reads every creature the pilot controls. Last Gasp (Black.txt, Auntie Ool.txt) is listed as an upgrade over Dismember on 'Lower CMC', but Dismember's Phyrexian pips cast it for {1} and 4 life and kill a larger body — and neither card places -1/-1 counters, so neither feeds Nest of Scarabs.",
-    "How many Insects one Black Sun's Zenith makes depends on whether Nest of Scarabs triggers once per creature or once per counter-placing event. That is a triggered-ability question, not a data one, and no figure should be printed until /resolve-stack settles it.",
-    "Ad Nauseam is in the box (Hapatra.txt) and the computed floor tolerates it — 4 before, 4 after. It is off the ten anyway: this list already pays life to Yawgmoth, Necropotence, Toxic Deluge, Bitterblossom, Black Market Connections, Ancient Tomb and City of Brass, and nothing measured here says how much life is spare.",
-    "card_roles.json has no entry for Plumb the Forbidden, so its role chip is blank. Absence of a role is not absence of the function — the taxonomy simply has no pattern for a scaling instant-speed sacrifice draw spell."
+    "Ophiomancer is NOT on this list, and the reason is a tribal line the indexes cannot see. Its ability is 'At the beginning of each upkeep, IF YOU CONTROL NO SNAKES, create a 1/1 black Snake creature token with deathtouch' — and South Wind Avatar is a Creature — Snake Spirit Avatar in the maindeck, the only Snake in the 100. While the Avatar is on the battlefield Ophiomancer makes nothing at all, so it is blank on exactly the board you most want: the Avatar is the sole partner for Exquisite Blood, the third named kill at 32.5% tutor-assisted by turn 10, a pod-wide lifegain payoff, and the 4-toughness counter sink stack 005 (pass) measured at exactly +4 activations. Cutting the Avatar to make Ophiomancer live would trade a verified, load-bearing card for a conditional one and orphan a checker-passed stack; the fodder slot goes to Bontu's Monument instead, which no card in the 99 can switch off.",
+    "Not one line on this list is verified. Exquisite Blood + Marauding Blight-Priest and Exquisite Blood + Starscape Cleric are recorded infinite in combo_details.json (bracket 3, popularity 50,637 and 21,354) and both need a resolve-stack run before anyone prints them as kills — particularly whether the mandatory loop terminates only under state-based actions in a four-player pod.",
+    "The obsolescence index lists Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel as a strictly-better replacement for BOTH Ayara, First of Locthwain and Mirkwood Bats. Reading the cards refutes that here: Sephiroth's drain is single-target, and stack 004 measured a single-target drain at a 3.5x penalty against the each-opponent class, while stack 008 measured Bats at 13 triggers / 52 pod life. The index is format-agnostic and does not know which side of the trigger this deck is paid on. That is why Sephiroth is not in the ten.",
+    "Mirkwood Bats is not uniformly a creation-side payoff and no pick here should be priced as if it were: stack 008 (pass) measured 13 triggers on the Yawgmoth line, stack 007 (pass) measured 2 on the Blowfly line and found Bats HALTS that loop, because its 2/3 body survives the forced counter. Starscape Cleric's Offspring token is a one-time creation event, not a loop claim; anything stronger needs its own scenario.",
+    "Whether Drivnod doubles Mirkwood Bats is unsettled and should not be assumed. Bats triggers on 'you create or sacrifice a token'; Drivnod's replacement is worded around 'a creature dying'. A sacrifice causes a death, but the trigger condition is the sacrifice — that distinction decides the answer and only a stack scenario settles it.",
+    "Pawn of Ulamog's clause is 'another NONTOKEN creature you control dies', so its own Eldrazi Spawn do not feed it. Every one of its seven lines therefore leans on a recursive nontoken body (Reassembling Skeleton) rather than on token fodder; none is verified.",
+    "The goldfish 'fast mana' target's any_of is Sol Ring, Ancient Tomb and Dark Ritual only. Culling the Weak, Cabal Coffers and Crypt Ghast are not in it, so their effect on the 43.5% figure is unmeasured — widening that target is a goldfish_targets.json edit and a re-run, not a claim this analysis can make.",
+    "As cut, the ten drops four lands (Survivors' Encampment, Archway Commons, Path of Ancestry, Gemstone Mine) and adds two (Cabal Coffers, Urborg), taking the list from 38 land entries to 36 while adding Crypt Ghast and Culling the Weak as mana. Every natural_cut here is a suggestion; mana-analysis and goldfish both need re-running before any of these rates are quoted again."
   ]
 }
