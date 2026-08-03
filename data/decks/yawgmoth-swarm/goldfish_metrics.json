@@ -3,7 +3,7 @@
     "commander": "Yawgmoth, Thran Physician",
     "commander_cmc": 4,
     "deck": "yawgmoth-swarm",
-    "decklist_sha256": "2bdc3803d45d49074f4e441436d3adb51d7ca439af1e86c5babd223c2ef511db",
+    "decklist_sha256": "3f1962ccf462ede2a4bf563b9e781c20ac51bbae37a53953e92bb75173659c07",
     "iterations": 10000,
     "max_turn": 10,
     "model_assumptions": [
@@ -15,130 +15,179 @@
       "Commander cast on first affordable turn (highest spending priority).",
       "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
       "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+      "Unrestricted tutors ('search your library for a card') are modeled as wildcards: a tutor that has been drawn and is affordable fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
       "Cost reducers, rituals, and extra card draw are not modeled (conservative)."
     ],
     "seed": 42
   },
   "metrics": {
     "commander": {
-      "cast_by_turn_6_rate": 0.911,
+      "cast_by_turn_6_rate": 0.913,
       "cast_turn_histogram": {
-        "10": 85,
-        "2": 754,
-        "3": 99,
-        "4": 7128,
-        "5": 662,
-        "6": 471,
-        "7": 298,
-        "8": 205,
-        "9": 156,
+        "10": 92,
+        "2": 761,
+        "3": 101,
+        "4": 7208,
+        "5": 616,
+        "6": 446,
+        "7": 285,
+        "8": 207,
+        "9": 142,
         "not_by_max_turn": 142
       },
-      "mean_cast_turn": 4.304,
+      "mean_cast_turn": 4.287,
       "median_cast_turn": 4
     },
     "iterations": 10000,
     "land_drop_hit_rate_by_turn": {
       "1": 1.0,
-      "10": 0.396,
-      "2": 0.999,
-      "3": 0.919,
-      "4": 0.803,
-      "5": 0.69,
-      "6": 0.589,
-      "7": 0.507,
-      "8": 0.453,
+      "10": 0.399,
+      "2": 0.998,
+      "3": 0.924,
+      "4": 0.812,
+      "5": 0.689,
+      "6": 0.587,
+      "7": 0.506,
+      "8": 0.451,
       "9": 0.429
     },
     "mean_available_mana_by_turn": {
       "1": 1.0,
-      "10": 7.094,
+      "10": 7.109,
       "2": 2.15,
-      "3": 3.088,
-      "4": 3.913,
-      "5": 4.608,
-      "6": 5.23,
-      "7": 5.757,
-      "8": 6.23,
-      "9": 6.679
+      "3": 3.094,
+      "4": 3.927,
+      "5": 4.621,
+      "6": 5.241,
+      "7": 5.766,
+      "8": 6.24,
+      "9": 6.691
     },
     "mean_bodies_by_turn": {
-      "1": 0.312,
-      "10": 5.686,
-      "2": 0.8,
-      "3": 1.81,
-      "4": 2.076,
-      "5": 3.063,
-      "6": 3.816,
-      "7": 4.388,
-      "8": 4.861,
-      "9": 5.284
+      "1": 0.236,
+      "10": 6.625,
+      "2": 0.803,
+      "3": 1.703,
+      "4": 1.983,
+      "5": 2.97,
+      "6": 3.984,
+      "7": 4.797,
+      "8": 5.474,
+      "9": 6.075
     },
     "opening_hand": {
       "first_seven_land_histogram": {
-        "0": 268,
-        "1": 1324,
-        "2": 2904,
-        "3": 2928,
-        "4": 1831,
-        "5": 619,
-        "6": 119,
-        "7": 7
+        "0": 265,
+        "1": 1425,
+        "2": 2744,
+        "3": 3111,
+        "4": 1746,
+        "5": 593,
+        "6": 107,
+        "7": 9
       },
-      "keep_first_seven_rate": 0.828,
+      "keep_first_seven_rate": 0.819,
       "kept_hand_land_histogram": {
-        "0": 3,
-        "1": 50,
-        "2": 3503,
-        "3": 3531,
-        "4": 2158,
-        "5": 751,
+        "0": 9,
+        "1": 48,
+        "2": 3319,
+        "3": 3791,
+        "4": 2114,
+        "5": 715,
         "6": 4
       },
-      "mean_mulligans": 0.201
+      "mean_mulligans": 0.21
     },
     "targets": [
       {
-        "assembled_rate": 0.026,
-        "by_turn_6_rate": 0.015,
-        "label": "Both halves of the verified kill drawn (Blowfly + Nest)",
-        "mean_turn": 5.54
+        "assembled_rate": 0.027,
+        "assembled_rate_assisted": 0.321,
+        "by_turn_6_rate": 0.016,
+        "by_turn_6_rate_assisted": 0.199,
+        "label": "Both halves of the original kill drawn (Blowfly + Nest)",
+        "mean_turn": 5.278,
+        "mean_turn_assisted": 5.872
       },
       {
-        "assembled_rate": 0.521,
-        "by_turn_6_rate": 0.422,
-        "label": "A drain drawn — Bastion is the only one that survives the loop",
-        "mean_turn": 3.272
+        "assembled_rate": 0.018,
+        "assembled_rate_assisted": 0.248,
+        "by_turn_6_rate": 0.008,
+        "by_turn_6_rate_assisted": 0.126,
+        "label": "THE SECOND KILL: Mikaeus + a self-shrinking body + a free sac outlet",
+        "mean_turn": 6.362,
+        "mean_turn_assisted": 6.551
       },
       {
-        "assembled_rate": 0.612,
-        "by_turn_6_rate": 0.503,
-        "label": "An ignition source drawn (something that places the first -1/-1 counter)",
-        "mean_turn": 3.141
-      },
-      {
-        "assembled_rate": 0.531,
-        "by_turn_6_rate": 0.431,
-        "label": "A tutor drawn (any of five can fetch a missing combo half)",
-        "mean_turn": 3.184
-      },
-      {
-        "assembled_rate": 0.611,
+        "assembled_rate": 0.608,
+        "assembled_rate_assisted": 0.854,
         "by_turn_6_rate": 0.505,
+        "by_turn_6_rate_assisted": 0.761,
+        "label": "A drain drawn — the payoff every loop routes through",
+        "mean_turn": 3.059,
+        "mean_turn_assisted": 3.047
+      },
+      {
+        "assembled_rate": 0.786,
+        "assembled_rate_assisted": 0.923,
+        "by_turn_6_rate": 0.682,
+        "by_turn_6_rate_assisted": 0.851,
+        "label": "RENEWABLE FODDER drawn (the measured bottleneck)",
+        "mean_turn": 2.671,
+        "mean_turn_assisted": 2.545
+      },
+      {
+        "assembled_rate": 0.53,
+        "assembled_rate_assisted": 0.82,
+        "by_turn_6_rate": 0.429,
+        "by_turn_6_rate_assisted": 0.713,
+        "label": "ENGINE MANA drawn — turns a creature death into castable black",
+        "mean_turn": 3.235,
+        "mean_turn_assisted": 3.299
+      },
+      {
+        "assembled_rate": 0.78,
+        "assembled_rate_assisted": 0.921,
+        "by_turn_6_rate": 0.675,
+        "by_turn_6_rate_assisted": 0.846,
+        "label": "A free repeatable sacrifice outlet drawn (not counting Yawgmoth)",
+        "mean_turn": 2.682,
+        "mean_turn_assisted": 2.564
+      },
+      {
+        "assembled_rate": 0.735,
+        "assembled_rate_assisted": 0.906,
+        "by_turn_6_rate": 0.624,
+        "by_turn_6_rate_assisted": 0.822,
+        "label": "An ignition source drawn (something that places the first -1/-1 counter)",
+        "mean_turn": 2.895,
+        "mean_turn_assisted": 2.78
+      },
+      {
+        "assembled_rate": 0.617,
+        "assembled_rate_assisted": 0.617,
+        "by_turn_6_rate": 0.511,
+        "by_turn_6_rate_assisted": 0.511,
+        "label": "A tutor drawn (any of five can fetch a missing combo half)",
+        "mean_turn": 3.096,
+        "mean_turn_assisted": 3.096
+      },
+      {
+        "assembled_rate": 0.618,
+        "assembled_rate_assisted": 0.858,
+        "by_turn_6_rate": 0.513,
+        "by_turn_6_rate_assisted": 0.759,
         "label": "Fast mana drawn (the turn-2-Yawgmoth enabler)",
-        "mean_turn": 3.058
+        "mean_turn": 3.011,
+        "mean_turn_assisted": 3.022
       },
       {
-        "assembled_rate": 0.006,
-        "by_turn_6_rate": 0.002,
-        "label": "THE FULL KILL: Blowfly + Nest + a drain + an igniter",
-        "mean_turn": 7.321
-      },
-      {
-        "assembled_rate": 0.611,
-        "by_turn_6_rate": 0.502,
-        "label": "Card advantage engine drawn (Necropotence / Ad Nauseam / Skullclamp)",
-        "mean_turn": 3.165
+        "assembled_rate": 0.046,
+        "assembled_rate_assisted": 0.314,
+        "by_turn_6_rate": 0.022,
+        "by_turn_6_rate_assisted": 0.163,
+        "label": "EITHER kill assembled by this turn (both halves of one of the two)",
+        "mean_turn": 6.271,
+        "mean_turn_assisted": 6.354
       }
     ]
   }

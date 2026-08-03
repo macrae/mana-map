@@ -15,6 +15,7 @@
       "Commander cast on first affordable turn (highest spending priority).",
       "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
       "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+      "Unrestricted tutors ('search your library for a card') are modeled as wildcards: a tutor that has been drawn and is affordable fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
       "Cost reducers, rituals, and extra card draw are not modeled (conservative)."
     ],
     "seed": 42
@@ -95,39 +96,57 @@
     "targets": [
       {
         "assembled_rate": 0.423,
+        "assembled_rate_assisted": 0.423,
         "by_turn_6_rate": 0.332,
+        "by_turn_6_rate_assisted": 0.332,
         "label": "Cost reducer drawn (the deck's real curve fixer)",
-        "mean_turn": 3.494
+        "mean_turn": 3.494,
+        "mean_turn_assisted": 3.494
       },
       {
         "assembled_rate": 0.817,
+        "assembled_rate_assisted": 0.817,
         "by_turn_6_rate": 0.716,
+        "by_turn_6_rate_assisted": 0.716,
         "label": "Ramp or fixing drawn",
-        "mean_turn": 2.588
+        "mean_turn": 2.588,
+        "mean_turn_assisted": 2.588
       },
       {
         "assembled_rate": 0.731,
+        "assembled_rate_assisted": 0.731,
         "by_turn_6_rate": 0.622,
+        "by_turn_6_rate_assisted": 0.622,
         "label": "Dragon payoff drawn (per-dragon trigger engine)",
-        "mean_turn": 2.865
+        "mean_turn": 2.865,
+        "mean_turn_assisted": 2.865
       },
       {
         "assembled_rate": 0.339,
+        "assembled_rate_assisted": 0.339,
         "by_turn_6_rate": 0.231,
+        "by_turn_6_rate_assisted": 0.231,
         "label": "Reducer + ramp assembled (the turn-5-Ur-Dragon hand)",
-        "mean_turn": 4.645
+        "mean_turn": 4.645,
+        "mean_turn_assisted": 4.645
       },
       {
         "assembled_rate": 0.401,
+        "assembled_rate_assisted": 0.401,
         "by_turn_6_rate": 0.268,
+        "by_turn_6_rate_assisted": 0.268,
         "label": "Payoff + a castable dragon by mid-game",
-        "mean_turn": 4.721
+        "mean_turn": 4.721,
+        "mean_turn_assisted": 4.721
       },
       {
         "assembled_rate": 0.771,
+        "assembled_rate_assisted": 0.771,
         "by_turn_6_rate": 0.66,
+        "by_turn_6_rate_assisted": 0.66,
         "label": "Protection held for the big turn",
-        "mean_turn": 2.778
+        "mean_turn": 2.778,
+        "mean_turn_assisted": 2.778
       }
     ]
   }

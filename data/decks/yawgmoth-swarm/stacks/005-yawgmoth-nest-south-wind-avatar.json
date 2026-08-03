@@ -1,7 +1,7 @@
 {
   "id": "005",
   "slug": "yawgmoth-swarm",
-  "deck": "YAWGMOTH — THE SCARAB SWARM",
+  "deck": "YAWGMOTH \u2014 THE SCARAB SWARM",
   "title": "Yawgmoth + Nest of Scarabs + South Wind Avatar: a lifegain-triggered drain, and a 4-toughness body",
   "rules_version": "June 19, 2026",
   "scenario": {
@@ -10,7 +10,7 @@
         "Yawgmoth, Thran Physician (2/4, untapped, no counters)",
         "Nest of Scarabs (enchantment)",
         "South Wind Avatar (3/4, no counters)",
-        "Insect token A (1/1 black Insect, no counters)",
+        "Insect token A (1/1 black Insect) \u2014 already sacrificed to pay the cost of the ability now on the stack",
         "Insect token B (1/1 black Insect, no counters)",
         "Swamp (untapped)",
         "Swamp (untapped)",
@@ -35,7 +35,7 @@
     "stack": [
       {
         "pos": 0,
-        "object": "Yawgmoth, Thran Physician's activated ability — 'Pay 1 life, Sacrifice another creature: Put a -1/-1 counter on up to one target creature and draw a card.' Cost already paid: 1 life paid (you are at 39) and Insect token A sacrificed. Target chosen: Grizzly Bears.",
+        "object": "Yawgmoth, Thran Physician's activated ability \u2014 'Pay 1 life, Sacrifice another creature: Put a -1/-1 counter on up to one target creature and draw a card.' Cost already paid: 1 life paid (you are at 39) and Insect token A sacrificed. Target chosen: Grizzly Bears.",
         "controller": "you"
       }
     ],
@@ -47,7 +47,7 @@
         "opponent_c": 40,
         "opponent_d": 40
       },
-      "pod_size": "Five players — you and four opponents, 160 opposing life in total.",
+      "pod_size": "Five players \u2014 you and four opponents, 160 opposing life in total.",
       "library": "You have 60 cards in your library.",
       "assumptions": [
         "No player responds to anything; every opponent passes priority throughout.",
@@ -55,35 +55,35 @@
         "Insect tokens created by Nest of Scarabs are 1/1 black Insect creature tokens with no abilities.",
         "It is your precombat main phase."
       ],
-      "note_for_the_resolver": "Yawgmoth is a Human with protection from Humans, so his own ability can never target him. Targets are chosen as the ability is put on the stack, and Nest of Scarabs' replacement Insect is created only when its trigger RESOLVES — so the new Insect is not available as a target on the iteration that created it. An Insect token that dies from a -1/-1 counter has toughness 0 when it dies, not 1. South Wind Avatar's drain is per LIFEGAIN EVENT (1 life per opponent), not per life gained."
+      "note_for_the_resolver": "Yawgmoth is a Human with protection from Humans, so his own ability can never target him. Targets are chosen as the ability is put on the stack, and Nest of Scarabs' replacement Insect is created only when its trigger RESOLVES \u2014 so the new Insect is not available as a target on the iteration that created it. An Insect token that dies from a -1/-1 counter has toughness 0 when it dies, not 1. South Wind Avatar's drain is per LIFEGAIN EVENT (1 life per opponent), not per life gained."
     },
-    "question": "Resolve the stack, then run the engine as far as the rules allow. (a) South Wind Avatar reads 'Whenever another creature you control dies, you gain life equal to its toughness' and 'Whenever you gain life, each opponent loses 1 life'. A dying 1/1 Insect has toughness 1 at the moment it dies only if it carries no -1/-1 counter — state what its toughness actually is when it dies here, and therefore whether the lifegain trigger fires at all. Give the exact number of completed activations and what ends the loop. (b) South Wind Avatar is a 3/4 — the only body on this board that can absorb more than one -1/-1 counter. Does that change the bound, and by how much?"
+    "question": "Resolve the stack, then run the engine as far as the rules allow. (a) South Wind Avatar reads 'Whenever another creature you control dies, you gain life equal to its toughness' and 'Whenever you gain life, each opponent loses 1 life'. A dying 1/1 Insect has toughness 1 at the moment it dies only if it carries no -1/-1 counter \u2014 state what its toughness actually is when it dies here, and therefore whether the lifegain trigger fires at all. Give the exact number of completed activations and what ends the loop. (b) South Wind Avatar is a 3/4 \u2014 the only body on this board that can absorb more than one -1/-1 counter. Does that change the bound, and by how much?"
   },
   "resolution": {
     "steps": [
       {
         "n": 1,
-        "action": "Account for the cost already paid. Yawgmoth's ability was activated by paying 1 life (you 40 -> 39) and sacrificing Insect token A. Sacrificing A moved it from the battlefield to the graveyard, so A died, and South Wind Avatar's first ability ('Whenever another creature you control dies, you gain life equal to its toughness') triggered on that cost payment.",
+        "action": "Account for the cost that has already been paid. The scenario's board list annotates Insect token A as \"already sacrificed to pay the cost of the ability now on the stack\", so A is NOT on the battlefield as this resolution begins: Yawgmoth's ability was activated by paying 1 life (you 40 -> 39) and sacrificing Insect token A. Sacrificing A moved it from the battlefield directly to its owner's graveyard, so A died, and South Wind Avatar's first ability ('Whenever another creature you control dies, you gain life equal to its toughness') triggered on that cost payment. Stated explicitly so nothing is left to inference: every number below is computed from that reading of the board, which is the same house convention this deck's stack 001 uses for a sacrifice paid as a cost.",
         "effect": "The Avatar's death trigger is waiting to be put on the stack. It goes on the stack the next time a player would receive priority - which is immediately after activation finishes - so it sits ABOVE Yawgmoth's activated ability and will resolve FIRST. The scenario's stack listing (one object) is therefore incomplete: the true stack is [pos 0: Yawgmoth's ability, pos 1: Avatar lifegain trigger].",
         "citations": [
           {
             "rule": "701.21a",
-            "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner’s graveyard."
+            "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner\u2019s graveyard."
           },
           {
             "rule": "700.4",
-            "quote": "The term dies means “is put into a graveyard from the battlefield.”"
+            "quote": "The term dies means \u201cis put into a graveyard from the battlefield.\u201d"
           },
           {
             "rule": "603.3",
-            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that\u2019s not a card the next time a player would receive priority."
           }
         ]
       },
       {
         "n": 2,
-        "action": "Fix the targets and the permanent targeting constraint. Yawgmoth's ability reads 'Put a -1/-1 counter on up to one target creature and draw a card.' Its target (Grizzly Bears) was locked in as the ability was activated, not on resolution. Yawgmoth himself has protection from Humans and is the source of a Human's ability, so he is never a legal target for it.",
-        "effect": "Grizzly Bears is the target for this activation. For every later activation, the legal target pool is: Grizzly Bears (while alive), South Wind Avatar (while alive), and Insect tokens - never Yawgmoth. Nest of Scarabs is an enchantment, not a creature, so it is never a target either. This is the constraint that ultimately ends the engine.",
+        "action": "Fix the targets and the permanent targeting constraint. Yawgmoth's ability reads 'Put a -1/-1 counter on up to one target creature and draw a card.' Its target (Grizzly Bears) was locked in as the ability was activated, not on resolution - and 115.1c points at 602.2b, which makes the whole 601.2b-i announcement sequence apply to activating an ability. Yawgmoth himself has protection from Humans and is the source of a Human's ability, so he is never a legal target for it.",
+        "effect": "Grizzly Bears is the target for this activation. For every later activation, the legal target pool is: Grizzly Bears (while alive), South Wind Avatar (while alive), and Insect tokens on the battlefield at the moment targets are announced - never Yawgmoth. Nest of Scarabs is an enchantment, not a creature, so it is never a target either. The supply of creatures that can absorb a counter without costing you a body is what ultimately ends the engine.",
         "citations": [
           {
             "rule": "115.1c",
@@ -91,7 +91,7 @@
           },
           {
             "rule": "702.16b",
-            "quote": "A permanent or player with protection can’t be targeted by spells with the stated quality and can’t be targeted by abilities from a source with the stated quality."
+            "quote": "A permanent or player with protection can\u2019t be targeted by spells with the stated quality and can\u2019t be targeted by abilities from a source with the stated quality."
           }
         ]
       },
@@ -110,168 +110,172 @@
           },
           {
             "rule": "608.2h",
-            "quote": "If the effect requires information from a specific object, including the source of the ability itself, the effect uses the current information of that object if it’s in the public zone it was expected to be in; if it’s no longer in that zone, or if the effect has moved it from a public zone to a hidden zone, the effect uses the object’s last known information."
+            "quote": "If the effect requires information from a specific object, including the source of the ability itself, the effect uses the current information of that object if it\u2019s in the public zone it was expected to be in; if it\u2019s no longer in that zone, or if the effect has moved it from a public zone to a hidden zone, the effect uses the object\u2019s last known information."
           },
           {
             "rule": "119.3",
-            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+            "quote": "If an effect causes a player to gain life or lose life, that player\u2019s life total is adjusted accordingly."
           }
         ]
       },
       {
         "n": 4,
-        "action": "The life gain is a real (nonzero) life gain event, so South Wind Avatar's second ability ('Whenever you gain life, each opponent loses 1 life') triggers. It goes on the stack and resolves.",
-        "effect": "Each of the four opponents loses 1 life. Opponents: 40 -> 39 each. Four life lost in total from this one drain. Note the ability is per lifegain EVENT, not per point gained - one event, 1 life per opponent.",
+        "action": "The life gain is a real (nonzero) life gain event, so South Wind Avatar's second ability ('Whenever you gain life, each opponent loses 1 life') triggers. Cited here rather than assumed: an ability written 'whenever you gain life' is treated as though it read 'whenever a source causes you to gain life', so it keys on the EVENT and fires once per gain, whatever the size of the gain. It goes on the stack and resolves.",
+        "effect": "Each of the four opponents loses 1 life. Opponents: 40 -> 39 each. Four life lost in total from this one drain - 1 per opponent per lifegain event, never 1 per point of life gained.",
         "citations": [
           {
             "rule": "603.2",
-            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+            "quote": "Whenever a game event or game state matches a triggered ability\u2019s trigger event, that ability automatically triggers."
+          },
+          {
+            "rule": "119.9",
+            "quote": "Some triggered abilities are written, \u201cWhenever [a player] gains life, . . . .\u201d Such abilities are treated as though they are written, \u201cWhenever a source causes [a player] to gain life, . . . .\u201d"
           },
           {
             "rule": "119.3",
-            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+            "quote": "If an effect causes a player to gain life or lose life, that player\u2019s life total is adjusted accordingly."
           }
         ]
       },
       {
         "n": 5,
-        "action": "Resolve Yawgmoth's activated ability: put a -1/-1 counter on Grizzly Bears and draw a card. The counter subtracts from power and toughness, making Grizzly Bears 1/1. Putting that counter matches Nest of Scarabs' trigger condition ('Whenever you put one or more -1/-1 counters on a creature, create that many 1/1 black Insect creature tokens'), which triggers on a counter placed on ANY creature, including an opponent's.",
-        "effect": "Grizzly Bears is 1/1 with one -1/-1 counter. You draw a card (library 60 -> 59). Nest of Scarabs triggers once for one counter.",
+        "action": "Resolve Yawgmoth's activated ability: put a -1/-1 counter on Grizzly Bears and draw a card. The counter subtracts from power and toughness, making Grizzly Bears 1/1. Nest of Scarabs reads 'Whenever YOU put one or more -1/-1 counters on a creature, create that many 1/1 black Insect creature tokens', and that condition has two halves, both of which must be shown. (i) A counter is put on a creature: Grizzly Bears is a creature, and the trigger is unrestricted as to whose creature it is, so an opponent's creature counts. (ii) YOU put it: the counter is placed by a resolving activated ability you control, and it is the controller of an ability who follows its instructions, so you are the player putting the counter. Both halves are met, so Nest triggers (trigger matching per CR 603.2, cited at step 4). Then resolve that Nest of Scarabs trigger, the next object on the stack: create one 1/1 black Insect creature token (call it C).",
+        "effect": "Grizzly Bears is 1/1 with one -1/-1 counter. You draw a card (library 60 -> 59). Nest of Scarabs triggered once, for one counter, and that trigger resolves into Insect C. ACTIVATION 1 COMPLETE: you control Yawgmoth, Nest of Scarabs, South Wind Avatar (3/4), Insect B and Insect C. Body count is NET NEUTRAL - one Insect was consumed as a cost and one was created by the counter - and life is net neutral too (paid 1, gained 1). This is why the engine is a loop rather than a one-shot, and why neither life nor the library is what bounds it. The bound is the supply of -1/-1 counter targets that can absorb a counter without costing you a body.",
         "citations": [
           {
             "rule": "122.1a",
-            "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object’s power and Y to that object’s toughness. Similarly, -X/-Y counters subtract from power and toughness."
+            "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object\u2019s power and Y to that object\u2019s toughness. Similarly, -X/-Y counters subtract from power and toughness."
           },
           {
-            "rule": "603.2",
-            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "111.1",
+            "quote": "Some effects put tokens onto the battlefield. A token is a marker used to represent any permanent that isn\u2019t represented by a card."
           }
         ]
       },
       {
         "n": 6,
-        "action": "Resolve the Nest of Scarabs trigger: create one 1/1 black Insect creature token (call it C).",
-        "effect": "ACTIVATION 1 COMPLETE. You control Yawgmoth, Nest of Scarabs, South Wind Avatar (3/4), Insect B and Insect C. Body count is NET NEUTRAL: one Insect was consumed as a cost and one was created by the counter. Life is also net neutral (paid 1, gained 1). This is why the engine is a loop rather than a one-shot - and why neither life nor the library is what bounds it. The bound is the supply of -1/-1 counter targets that can absorb a counter without costing you a body.",
-        "citations": [
-          {
-            "rule": "111.1",
-            "quote": "Some effects put tokens onto the battlefield. A token is a marker used to represent any permanent that isn’t represented by a card."
-          }
-        ]
-      },
-      {
-        "n": 7,
         "action": "ACTIVATION 2. Pay 1 life (you 39), sacrifice Insect B - it has no counters, so its last known toughness is 1: the Avatar gains you 1 life (you 40), which drains each opponent for 1 (opponents 38 each). The ability resolves putting the second -1/-1 counter on Grizzly Bears, making it 0/0. Before any player gets priority, state-based actions run first and put it in the graveyard; only then do triggered abilities go on the stack.",
         "effect": "Grizzly Bears dies. It is an OPPONENT'S creature, so South Wind Avatar's 'another creature YOU CONTROL dies' ability does not trigger for it - no life, no drain from its death. The Nest of Scarabs trigger from the counter still happened at the moment the counter was placed and is unaffected by the subsequent death: Insect D is created. Draw (library 58). Insects: C, D. Grizzly Bears has now absorbed its full 2 toughness worth of counters - 2 activations' worth of replacement Insects.",
         "citations": [
           {
             "rule": "704.5f",
-            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+            "quote": "If a creature has toughness 0 or less, it\u2019s put into its owner\u2019s graveyard."
           },
           {
             "rule": "117.5",
-            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack (see rule 603, “Handling Triggered Abilities”)."
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, \u201cState-Based Actions\u201d), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack (see rule 603, \u201cHandling Triggered Abilities\u201d)."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "THE CRUX - what an Insect's toughness actually is when a -1/-1 counter kills it. ACTIVATIONS 3, 4 and 5 each sacrifice a counterless Insect (the Avatar gains you 1, each opponent loses 1) and put counters 1, 2 and 3 on South Wind Avatar - a 3/4, and -1/-1 counters subtract from POWER as well as toughness (122.1a, cited at step 5), so it goes 2/3, then 1/2, then 0/1, never dying, because a 4-toughness body absorbs 3 counters and is still alive at 1 toughness - each counter making one replacement Insect. ACTIVATION 6 has THREE legal targets at announcement - South Wind Avatar, still alive at 0/1 with three counters, and BOTH Insects then on the battlefield, F and G. F counts precisely because targets are announced at 601.2c before the cost is paid at 601.2h (step 9): F is still on the battlefield when targets are chosen, so it is a legal target, even though paying the cost is about to sacrifice it. Targeting F is NOT self-defeating, and the reason step 9 gives for declining to target Insect J does not carry here. Step 9's argument works only because J is at that point the ONLY sacrificeable body, so targeting it forces the cost to sacrifice the very permanent it targeted. At activation 6 there are two counterless Insects, and the sacrifice is chosen at 601.2h - AFTER targets are announced at 601.2c (step 9) - so targeting F simply means you pay the cost with G instead. F and G are interchangeable counterless 1/1 tokens, so the two options are EQUIVALENT by F-G symmetry, not one good and one self-defeating. Activation 6's real choice is therefore binary: spend the counter on an Insect (F or G, identically) or on the Avatar, and it is decided on other grounds - the Avatar line is already costed below. The best line spends the counter on one of your own Insects, say G, sacrificing F. It is not compelled to. (The alternative is legal and instructive: spending the Avatar's fourth counter here still reaches 8 activations, but it retires the drain two activations early and yields only 6 drains, 24 opposing life instead of 28. That choice is where 4 points of drain live.) The targeted Insect becomes 0/0 and is put into the graveyard by the same state-based action that killed Grizzly Bears at step 6 (CR 704.5f), and - being a token - it then ceases to exist. The Avatar's first ability DOES trigger on that death and DOES resolve; but 'its toughness' is information about an object no longer on the battlefield, so it is read from last known information, and the Insect's last known toughness ON the battlefield was 0, not 1, because the counter was already on it. TRIGGER ORDERING, since two of your triggered abilities are waiting at that same moment: Nest of Scarabs (triggered mid-resolution, when the counter was placed) and the Avatar's dies-trigger (triggered during the state-based action check that killed the Insect). Neither has 'another ability triggering' as its trigger condition, so both go on the stack together in the first part of the 603.3b process, in whichever order you choose. The order is outcome-neutral here: the Nest trigger creates its token either way, and the Avatar's trigger gains 0 either way.",
+        "effect": "You gain 0 life from that death. Gaining 0 life is not a life gain event, so South Wind Avatar's SECOND ability does not trigger at all: no opponent loses life for that Insect. Stated plainly - a counter-killed Insect is worth 0 life and 0 drain; only a SACRIFICED (counterless) Insect, last known toughness 1, is worth 1 life and 4 opposing life. Exactly one death in the optimal line is of the counter-killed kind. Running totals after activation 6: opponents 34 each, you 40, library 54, Insects: one (H). South Wind Avatar is 0/1 with three counters (a 3/4 reduced by three -1/-1 counters, power and toughness alike).",
+        "citations": [
+          {
+            "rule": "111.7",
+            "quote": "A token that\u2019s in a zone other than the battlefield ceases to exist."
+          },
+          {
+            "rule": "608.2h",
+            "quote": "If the effect requires information from a specific object, including the source of the ability itself, the effect uses the current information of that object if it\u2019s in the public zone it was expected to be in; if it\u2019s no longer in that zone, or if the effect has moved it from a public zone to a hidden zone, the effect uses the object\u2019s last known information."
+          },
+          {
+            "rule": "119.9",
+            "quote": "If a player gains 0 life, no life gain event has occurred, and these abilities won\u2019t trigger."
+          },
+          {
+            "rule": "603.3b",
+            "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn\u2019t another ability triggering on the stack in any order they choose."
           }
         ]
       },
       {
         "n": 8,
-        "action": "THE CRUX - what an Insect's toughness actually is when a -1/-1 counter kills it. ACTIVATIONS 3, 4 and 5 each sacrifice a counterless Insect (Avatar gains 1, each opponent loses 1) and put counters 1, 2 and 3 on South Wind Avatar (3/3, then 3/2, then 3/1), each making one replacement Insect. ACTIVATION 6 has to spend its counter on one of your own Insects. That Insect becomes 0/0, dies to a state-based action, and - being a token - ceases to exist in the graveyard. The Avatar's first ability DOES trigger on that death, and DOES resolve; but 'its toughness' is read from last known information, and the Insect's last known toughness on the battlefield was 0, not 1, because the counter was already on it.",
-        "effect": "You gain 0 life from that death. Gaining 0 life is not a life gain event, so South Wind Avatar's SECOND ability does not trigger at all: no opponent loses life for that Insect. Stated plainly - a counter-killed Insect is worth 0 life and 0 drain; only a SACRIFICED (counterless) Insect, toughness 1, is worth 1 life and 4 opposing life. Exactly one death in the optimal line is of the counter-killed kind. Running totals after activation 6: opponents 34 each, you 40, library 54, Insects: one (H). South Wind Avatar is 3/1 with three counters.",
+        "action": "ACTIVATION 7 - the Avatar's fourth toughness point, and its own death. Pay 1 life (you 39), sacrifice Insect H (counterless, toughness 1): the Avatar gains you 1 life (you 40) and each opponent loses 1 (opponents 33 each). Critically, the Avatar is still on the battlefield when that sacrifice happens - the cost is paid before the ability resolves - so this drain is collected in full. The ability then resolves, putting the FOURTH -1/-1 counter on South Wind Avatar, making it -1/0. State-based actions put it into the graveyard.",
+        "effect": "South Wind Avatar dies. Its own ability reads 'Whenever ANOTHER creature you control dies', so its own death does not match its trigger event and it does not trigger for itself - no final life, no final drain. This is a permanent fact about the Avatar and it is load-bearing for the ceiling proved at step 11: the Avatar can never be its own drain. The Nest of Scarabs trigger from that fourth counter still resolves and makes Insect J - a body that is created AFTER the Avatar has already been put into the graveyard. Draw (library 53). The lifegain/drain engine is now off permanently: every later sacrifice gains nothing and drains nothing.",
         "citations": [
           {
             "rule": "704.5f",
-            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+            "quote": "If a creature has toughness 0 or less, it\u2019s put into its owner\u2019s graveyard."
           },
           {
-            "rule": "111.7",
-            "quote": "A token that’s in a zone other than the battlefield ceases to exist."
-          },
-          {
-            "rule": "113.7a",
-            "quote": "In both instances, if the source is no longer in the zone it’s expected to be in at that time, its last known information is used."
-          },
-          {
-            "rule": "608.2h",
-            "quote": "If the effect requires information from a specific object, including the source of the ability itself, the effect uses the current information of that object if it’s in the public zone it was expected to be in; if it’s no longer in that zone, or if the effect has moved it from a public zone to a hidden zone, the effect uses the object’s last known information."
-          },
-          {
-            "rule": "119.9",
-            "quote": "If a player gains 0 life, no life gain event has occurred, and these abilities won’t trigger."
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability\u2019s trigger event, that ability automatically triggers."
           }
         ]
       },
       {
         "n": 9,
-        "action": "ACTIVATION 7 - the Avatar's fourth toughness point, and its own death. Pay 1 life (you 39), sacrifice Insect H (counterless, toughness 1): Avatar gains you 1 life (you 40) and each opponent loses 1 (opponents 33 each). Critically, the Avatar is still on the battlefield when that sacrifice happens - the cost is paid before the ability resolves - so this drain is collected in full. The ability then resolves, putting the FOURTH -1/-1 counter on South Wind Avatar, making it -1/0. State-based actions put it into the graveyard.",
-        "effect": "South Wind Avatar dies. Its own ability reads 'Whenever ANOTHER creature you control dies', so its own death does not match its trigger event and it does not trigger for itself - no final life, no final drain. The Nest of Scarabs trigger from that fourth counter still resolves and makes Insect J. Draw (library 53). The lifegain/drain engine is now off permanently: every later sacrifice gains nothing and drains nothing.",
+        "action": "ACTIVATION 8 and the terminus, narrated in the order the rules actually run. Activating an ability follows the 601.2 sequence (step 2's 115.1c points at 602.2b for exactly this), and in that sequence targets are ANNOUNCED at 601.2c and the total cost is paid five lettered steps later at 601.2h, with 601.2d (dividing or distributing an effect), 601.2e (the legality check), 601.2f (determining the total cost) and 601.2g (activating mana abilities) all intervening. The only thing the argument needs is the DIRECTION - announcement precedes payment - and that direction is what 601.2c and 601.2h jointly fix. So at the moment targets are chosen for activation 8, Insect J is still on the battlefield and IS a legal target; Yawgmoth is not (step 2). Choosing zero targets is therefore a CHOICE the ability permits ('up to one target creature'), not a compulsion forced by an empty target pool. It is the correct choice: had J been targeted, paying the cost would then have sacrificed J, moving it off the battlefield (step 1's 701.21a), and on resolution the ability's only target would have been illegal - so the ability would not have resolved at all and you would have lost the card. With no target chosen, the cost is paid: 1 life (you 39) and Insect J sacrificed. No Avatar is on the battlefield, so no lifegain trigger and no drain. The ability resolves; no counter is placed, so Nest of Scarabs does not trigger and no replacement Insect is created; you draw a card (library 53 -> 52).",
+        "effect": "LOOP ENDS. You now control only Yawgmoth, Nest of Scarabs and three Swamps - no other creature. The activation cost is 'Pay 1 life, Sacrifice another creature'; with no other creature on the battlefield, that cost is unpayable and cannot be paid, so there is no ninth activation. Note what the terminus rests on: the SACRIFICE COST becoming unpayable, not the target pool being empty. The engine is bounded by BODIES - not by life, which was net zero for as long as the Avatar lived and then cost 1 per activation out of a 40 life total.",
         "citations": [
           {
-            "rule": "704.5f",
-            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+            "rule": "601.2c",
+            "quote": "The player announces their choice of an appropriate object or player for each target the spell requires."
           },
           {
-            "rule": "603.2",
-            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+            "rule": "115.6",
+            "quote": "A spell or ability that requires targets may allow zero targets to be chosen."
+          },
+          {
+            "rule": "608.2b",
+            "quote": "If the spell or ability specifies targets, it checks whether the targets are still legal. A target that\u2019s no longer in the zone it was in when it was targeted is illegal."
+          },
+          {
+            "rule": "608.2b",
+            "quote": "If all its targets, for every instance of the word \u201ctarget,\u201d are now illegal, the spell or ability doesn\u2019t resolve."
+          },
+          {
+            "rule": "601.2h",
+            "quote": "Partial payments are not allowed. Unpayable costs can\u2019t be paid."
           }
         ]
       },
       {
         "n": 10,
-        "action": "ACTIVATION 8 and the terminus. Pay 1 life (you 39) and sacrifice Insect J. No Avatar is on the battlefield, so no lifegain trigger and no drain. Now choose targets: the only creature on the battlefield is Yawgmoth, who cannot be targeted by his own ability. 'Up to one target creature' permits choosing zero targets, so the ability is activated with no target - which means no -1/-1 counter is placed, Nest of Scarabs does not trigger, and no replacement Insect is created. The ability resolves and draws a card (library 52).",
-        "effect": "LOOP ENDS. You now control only Yawgmoth, Nest of Scarabs and three Swamps - no other creature. The activation cost is 'Pay 1 life, Sacrifice another creature'; with no other creature to sacrifice, the cost is unpayable and the ability cannot be activated again. The terminus is BODIES, not life (net zero while the Avatar lived, then -1 per activation from a 40 life total) and not the library (8 cards drawn out of 60 - decking would have needed 60 activations).",
+        "action": "DISPOSE OF PROLIFERATE - Yawgmoth's OTHER activated ability, which the scenario's mana line invites. Yawgmoth, Thran Physician also reads '{B}{B}, Discard a card: Proliferate.' The scenario grants {B}{B}{B} from three untapped Swamps, which the first ability never spends, and the hand starts empty but holds a card from activation 1's draw onward - so exactly ONE proliferate is available in this sequence (three Swamps cannot make a second {B}{B}). To proliferate is to choose any number of permanents and/or players that have a counter and give each one more counter of each kind it already has. What that can reach here: Grizzly Bears while it carries one counter, and South Wind Avatar once it carries counters. It can NEVER reach one of your Insects - a 1/1 Insect that takes a -1/-1 counter is 0/0 and is put into the graveyard by a state-based action before any player receives priority to activate anything (step 6's 704.5f), so no Insect ever bears a counter at a time when proliferate could be activated. No player here has poison or any other counter.",
+        "effect": "It does NOT change either number. A proliferated -1/-1 counter is a counter YOU put on a creature, so Nest of Scarabs triggers and makes a token for free - no sacrifice, no life paid (step 5). But the token comes out of the SAME fixed pool the ceiling is computed from: the only creatures that can absorb a counter without costing you a body are Grizzly Bears and the Avatar, and their printed toughness caps that pool at 2 + 4 = 6 counters no matter who places them. A counter proliferate places is a counter no later activation can place, so it buys a body 1-for-1 out of capacity already counted at step 11. Activations stay at 8. Drains stay at 7 as well, because proliferate produces no death of a creature YOU control that gains nonzero life: it cannot kill an Insect (it can never target one), Grizzly Bears is an opponent's, and if it is used to finish the Avatar, the Avatar's death never triggers the Avatar's own ability (step 8). So: {B}{B}{B} on the board is real and the ability is genuinely activatable, and the answer to (a) and (b) is unchanged at 8 activations and 7 drains. (Sister stack 002, where proliferate DOES move the drain count from 7 to 8, differs precisely because that board's drain fires on your creatures dying at any toughness; here a counter-killed body gains 0 and drains nothing.)",
         "citations": [
           {
-            "rule": "115.6",
-            "quote": "A spell or ability that requires targets may allow zero targets to be chosen."
-          },
-          {
-            "rule": "601.2h",
-            "quote": "Partial payments are not allowed. Unpayable costs can’t be paid."
-          },
-          {
-            "rule": "702.16b",
-            "quote": "A permanent or player with protection can’t be targeted by spells with the stated quality and can’t be targeted by abilities from a source with the stated quality."
-          },
-          {
-            "rule": "104.3c",
-            "quote": "If a player is required to draw more cards than are left in their library, they draw the remaining cards and then lose the game the next time a player would receive priority."
+            "rule": "701.34a",
+            "quote": "To proliferate means to choose any number of permanents and/or players that have a counter, then give each one additional counter of each kind that permanent or player already has."
           }
         ]
       },
       {
         "n": 11,
-        "action": "State the bound and the Avatar's contribution to it (question b). Every activation consumes exactly one creature (the sacrifice) and returns exactly one Insect - but only if its -1/-1 counter goes on a creature you are willing to lose that is NOT one of your own Insects. A counter spent on your own Insect kills that Insect, so the token it makes only breaks even and the activation is body-negative. So the ceiling is: initial sacrificeable bodies (Insect A, Insect B, South Wind Avatar = 3) + counters absorbable by non-Insect creatures (Grizzly Bears 2 + South Wind Avatar 4 = 6) - 1 for the Avatar being removed as a sacrificeable body by the very counter that kills it = 8.",
-        "effect": "(b) YES, the 4-toughness body extends the bound, by exactly +4 activations. South Wind Avatar contributes 4 of the 6 non-Insect counter slots (+4), adds itself as a sacrificeable body (+1), and loses itself as a body when its fourth counter kills it (-1): net +4. Without it, the ceiling is 4 activations (2 starting Insects + 2 Grizzly Bears counters) and ZERO drains. It is also the only source of lifegain on the board, so it supplies 100% of the damage. Alternative orderings (sacrificing the Avatar rather than counter-killing it, or spending the insect-target activation earlier) all converge on the same two numbers: 8 activations, 7 drains. No line reaches 8 drains - an eighth drain would require the Avatar alive at the eighth sacrifice, which caps activations at 7.",
+        "action": "PROVE THE BOUND, by case exhaustion over how the Avatar leaves the battlefield - and answer (b). (i) THE BODY LEDGER. Every completed activation consumes exactly one creature other than Yawgmoth (the sacrifice) and returns exactly one Insect for each -1/-1 counter placed on a creature. A counter placed on one of YOUR Insects is body-neutral: +1 token, -1 Insect (step 7). A counter placed on Grizzly Bears or on the Avatar adds a body without removing one of yours - except the counter that finally kills the Avatar, which removes the Avatar itself as a sacrificeable body. Absorption is capped by printed toughness: Bears 2, Avatar 4. So the total number of creatures you can ever sacrifice is 3 (Insect A, Insect B, the Avatar) + (counters on Bears, at most 2) + (counters on the Avatar, at most 4) - (1 if the Avatar's counters killed it). Enumerate the cases: [A] the Avatar takes 4 counters and dies to them - 3 + 2 + 4 - 1 = 8; [B] the Avatar takes at most 3 counters and is SACRIFICED instead - 3 + 2 + 3 - 0 = 8; [C] the Avatar neither dies to a counter nor is sacrificed - it is then not a sacrificeable body at all, giving 2 + 2 + 3 = 7. No case exceeds 8, and steps 1-9 attain 8, so the bound is tight at 8. (This replaces the earlier claim that an eighth drain 'would require the Avatar alive at the eighth sacrifice, which caps activations at 7' - that reasoning is false, and case [B] is the counterexample: leave the Avatar on three counters and sacrifice it as activation 8 and you have 8 activations with the Avatar alive at the eighth sacrifice.) (ii) THE DRAIN CEILING IS 7, and the correct reason has two parts. A drain requires a nonzero lifegain event, which requires a creature you control to die with last known toughness at least 1 while the Avatar is on the battlefield; the only deaths that qualify are sacrifices of counterless Insects, because a counter-killed Insect dies at toughness 0 (step 7), Grizzly Bears is not yours (step 6), and the Avatar's own death never triggers its own 'another creature you control dies' ability (step 8). So drains are at most one per sacrifice, at most 8. That 8 is unreachable, and the proof is by SUPPLY OF BODIES - not by any claim that an 8-activation line sacrifices everything it has, which is FALSE: Insect G is consumed by a counter-kill and never sacrificed at all, which is the whole content of step 7. Suppose instead, for contradiction, that all 8 sacrifices drained. Each would then have to be the sacrifice of a counterless INSECT made while the Avatar was still on the battlefield - the Avatar itself can never be one of them, since its own death does not trigger its own 'another creature you control dies' ability (step 8). Now count how many Insect bodies can exist under that supposition. You start with 2 (A and B). Every further Insect is a Nest token, one per -1/-1 counter placed, and a counter placed on one of your own Insects is exactly body-neutral - it kills one and creates one (step 7) - so only counters placed on Grizzly Bears or on the Avatar can grow the supply. Bears absorbs at most 2. The Avatar can have absorbed at most 3 while still being on the battlefield, because a fourth counter kills it (step 8) and the supposition requires it alive at every one of the 8 sacrifices. That is at most 2 + 3 = 5 supply-growing counters, hence at most 5 tokens, hence at most 2 + 5 = 7 Insect bodies exist in time to be sacrificed - one short of the 8 the supposition demands. Contradiction, so at most 7 drains. The count is unchanged if proliferate places some of those counters (step 10), since they come out of the same fixed 2 + 4 absorption pool. The case split says the same thing concretely: in case [B] the Avatar leaves by being sacrificed and that sacrifice is its own death, which does not trigger it; in case [A] it is counter-killed, and the Nest token made by the killing counter is created after the Avatar is already in the graveyard (step 8) - a body that, being a token from a counter-kill rather than the last body standing, still has to be disposed of with no Avatar on the battlefield. Either way at least one of the 8 sacrifices is drainless, which is what the supply count proves in general - and the line in steps 1-9 attains 7, simultaneously with 8 activations.",
+        "effect": "(b) YES, the 4-toughness body extends the bound, by exactly +4 activations. South Wind Avatar contributes 4 of the 6 non-Insect counter slots (+4), adds itself as a sacrificeable body (+1), and loses itself as a body to the very counter that kills it (-1): net +4. Without it, the ledger reads 2 starting Insects + 2 Grizzly Bears counters = 4 activations, and ZERO drains, since it is also the only source of lifegain on the board - so it supplies 100% of the damage. The library is not the constraint either: 8 draws against a stated 60-card library, where the rule that punishes an empty library would need roughly 60 activations against a hard ceiling of 8.",
         "citations": [
           {
             "rule": "601.2h",
-            "quote": "Partial payments are not allowed. Unpayable costs can’t be paid."
-          },
-          {
-            "rule": "115.6",
-            "quote": "A spell or ability that requires targets may allow zero targets to be chosen."
-          }
-        ]
-      },
-      {
-        "n": 12,
-        "action": "Tally. South Wind Avatar's first ability triggered 8 times over the run: seven sacrifices of counterless 1/1 Insects (1 life each) plus one counter-killed Insect at toughness 0 (0 life). Its second ability triggered 7 times, once per nonzero lifegain event, draining 1 from each of four opponents each time.",
-        "effect": "(a) 8 completed activations, ended by having no creature other than Yawgmoth left to sacrifice. The Avatar's drain DOES fire - 7 times, not 8 and not 10 - for 7 x 4 = 28 total opposing life. Each opponent goes 40 -> 33; 160 opposing life becomes 132. You end at 39 (40 - 8 paid + 7 gained), having drawn 8 cards. This is decisively NOT infinite and not near-infinite: the deaths that would have to be free are the counter-killed Insects, and those gain 0 life and drain nothing.",
-        "citations": [
-          {
-            "rule": "119.3",
-            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+            "quote": "Partial payments are not allowed. Unpayable costs can\u2019t be paid."
           },
           {
             "rule": "104.3c",
             "quote": "If a player is required to draw more cards than are left in their library, they draw the remaining cards and then lose the game the next time a player would receive priority."
           }
         ]
+      },
+      {
+        "n": 12,
+        "action": "Tally. South Wind Avatar's first ability triggered 8 times over the run: seven sacrifices of counterless 1/1 Insects (last known toughness 1, so 1 life each) plus one counter-killed Insect at toughness 0 (0 life). Its second ability triggered 7 times, once per nonzero lifegain event, draining 1 from each of four opponents each time.",
+        "effect": "(a) 8 completed activations, ended by having no creature other than Yawgmoth left to sacrifice. The Avatar's drain DOES fire - 7 times, not 8 and not 10 - for 7 x 4 = 28 total opposing life. Each opponent goes 40 -> 33; 160 opposing life becomes 132. You end at 39 (40 - 8 paid + 7 gained), having drawn 8 cards (library 52). This is decisively NOT infinite and not near-infinite: the deaths that would have to be free are the counter-killed Insects, and those gain 0 life and drain nothing. Commander Spellbook's 'Near-infinite' tag is wrong for this board.",
+        "citations": [
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player\u2019s life total is adjusted accordingly."
+          }
+        ]
       }
     ],
     "final_state": {
-      "summary": "8 completed Yawgmoth activations, ended by body exhaustion (no creature other than Yawgmoth left to sacrifice - not life, not library). South Wind Avatar's dies-trigger fired 8 times but produced only 7 nonzero lifegain events: a sacrificed counterless Insect dies at toughness 1 (gain 1), while an Insect killed by its own -1/-1 counter dies at toughness 0 (gain 0, and per CR 119.9 that is not a lifegain event, so no drain). The drain therefore fired 7 times for 1 life per opponent: 28 total opposing life, each opponent 40 -> 33. The Avatar's 4 toughness extends the bound by exactly +4 activations (4 of 8) and supplies all of the damage. Spellbook's 'Near-infinite' tag is wrong for this board.",
+      "summary": "8 completed Yawgmoth activations, ended by body exhaustion (no creature other than Yawgmoth left to sacrifice - not life, not library). South Wind Avatar's dies-trigger fired 8 times but produced only 7 nonzero lifegain events: a sacrificed counterless Insect dies at last known toughness 1 (gain 1), while an Insect killed by its own -1/-1 counter dies at toughness 0 (gain 0, and per CR 119.9 that is not a lifegain event, so no drain). The drain therefore fired 7 times for 1 life per opponent: 28 total opposing life, each opponent 40 -> 33. The Avatar's 4 toughness extends the bound by exactly +4 activations (4 of 8) and supplies all of the damage. The ceiling is proved by case exhaustion over how the Avatar leaves the battlefield (step 11), and Yawgmoth's second ability, '{B}{B}, Discard a card: Proliferate', is explicitly ruled out as a way to beat it (step 10). Spellbook's 'Near-infinite' tag is wrong for this board.",
       "you": {
         "life": 39,
         "life_math": "40 start, -1 per activation x8 = -8, +1 per lifegain event x7 = +7",
@@ -289,11 +293,13 @@
         "library": 52,
         "hand": "8 cards drawn this turn",
         "notes": [
+          "The scenario annotates Insect token A as already sacrificed to pay the cost of the ability on the stack; step 1 works from exactly that reading, and every figure here follows from it.",
           "All Insect tokens have ceased to exist (CR 111.7); 9 Insects existed across the run (2 starting + 7 created by Nest of Scarabs).",
           "Activations 1-7 each sacrificed a counterless Insect while the Avatar was on the battlefield: 7 lifegain events.",
-          "Activation 6 spent its counter on an Insect, killing it at toughness 0: the Avatar's ability triggered and resolved for 0 life, and its drain did not trigger.",
+          "Activation 6 spent its counter on an Insect, killing it at toughness 0: the Avatar's ability triggered and resolved for 0 life, and its drain did not trigger. That was an optimal CHOICE, not a compulsion - three targets were legal (both Insects and the Avatar, which was at 0/1 with three counters). The two Insects are equivalent by symmetry, since the sacrifice is chosen at CR 601.2h after targets are announced at CR 601.2c; targeting the Avatar instead is legal and still yields 8 activations, but only 6 drains (24 opposing life).",
           "Activation 7's fourth counter killed the Avatar; its own death did not trigger its 'another creature you control dies' ability.",
-          "Activation 8 was made with zero targets (CR 115.6), so it produced no replacement Insect - that is the last activation."
+          "Activation 8 was made with zero targets (CR 115.6). Insect J was a LEGAL target at the moment targets were announced (CR 601.2c, which precedes cost payment at CR 601.2h); choosing it would have made the ability's only target illegal on resolution, so the ability would not have resolved and the draw would have been lost (CR 608.2b). Zero targets is optimal, not forced.",
+          "Yawgmoth's second ability, '{B}{B}, Discard a card: Proliferate', is activatable exactly once from three Swamps once the first draw has filled the hand. It changes neither number - see step 10."
         ]
       },
       "opponents": [
@@ -334,6 +340,208 @@
         "loop_terminus": "No creature other than Yawgmoth remains to pay 'Sacrifice another creature'; unpayable costs can't be paid (CR 601.2h).",
         "infinite": false
       }
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "summary": "Judged from scratch and adversarially; no prior checker block was read as evidence. Mechanical gate: OK (contract holds). All 32 (step, rule) citations were fetched in full with `lookup-rule` against the June 19, 2026 CR and judged against the ENTIRE rule text, not the quoted fragment: 32 supported, 0 unsupported, 0 irrelevant, 0 misquoted. No missing-step findings. INDEPENDENT P/T SWEEP (regex over every string field in the artifact, 44 hits): every figure is now correct. South Wind Avatar 3/4 -> 2/3 -> 1/2 -> 0/1 -> -1/0 (step 7 action, step 7 effect, step 8 action, final_state.you.notes[3] 'at 0/1 with three counters', final_state.you.graveyard 'died to its fourth -1/-1 counter'); Grizzly Bears 2/2 -> 1/1 -> 0/0; Insects 1/1 -> 0/0; Yawgmoth 2/4 throughout. No residue of the old '3/3 -> 3/2 -> 3/1' error survives anywhere, including final_state. Card reality checked against data/decks/yawgmoth-swarm/cards.json: South Wind Avatar is {3}{B} Snake Spirit Avatar 3/4 with deathtouch and exactly the two quoted abilities; Yawgmoth is 2/4 with protection from Humans and both quoted activated abilities; Nest of Scarabs' text matches verbatim. INDEPENDENT LINE RECONSTRUCTION reproduces every number: 8 activations; 9 Insects (A,B + 7 Nest tokens); Avatar dies-trigger fires 8 times (A,B,C,D,E,F sacrificed, G counter-killed, H sacrificed) with 7 nonzero gains and 1 zero gain; 7 drains x 4 opponents = 28, opponents 40 -> 33, pod 160 -> 132; you 40 - 8 + 7 = 39; library 60 - 8 = 52; step 7's running totals (opponents 34, you 40, library 54, one Insect H) reproduce exactly. The 119.9 crux is correct: a counter-killed 1/1 Insect has last known toughness 0 (122.1a + 608.2h), the gain is 0, and 119.9's final sentence -- 'If a player gains 0 life, no life gain event has occurred, and these abilities won't trigger' -- is verbatim and exactly on point. SUPPLY PROOF re-derived independently and holds: body conservation gives sacrifices <= 2 + (counters on Bears <= 2) + (counters on Avatar <= 4) + (1 if Avatar sacrificed), so cases [A] 8, [B] 8, [C] 7 -- ceiling 8, attained. Case [B] independently constructed and it too attains 8 activations / 7 drains, corroborating the ceiling. The drain ceiling of 7 follows because supply-growing counters placed IN TIME to be sacrificed are at most 2 (Bears) + 3 (Avatar, alive) = 5, giving at most 7 Insect bodies against a supposition demanding 8. Step 11's revised phrasing 'exist in time to be sacrificed' is the correct fix: a fourth Avatar counter placed during activation 8 would produce a token AFTER the eighth sacrifice, and 'ever exist' did not exclude it. F-G SYMMETRY JUDGED CORRECT: the sacrifice is chosen at 601.2h, five lettered steps after targets are announced at 601.2c (601.2d/e/f/g intervene, and I verified all four descriptions against the rules); 602.2b (step 2, via 115.1c) extends 601.2b-i to activated abilities. At activation 6 both F and G are counterless 1/1 tokens with no abilities (scenario assumption 3), so targeting F merely means paying with G -- genuinely equivalent, not self-defeating. The distinction from step 9 is real and correctly stated: at activation 8, J is the ONLY sacrificeable body ('another creature' bars Yawgmoth), so targeting J FORCES the cost to consume its own target and 608.2b makes the ability fail to resolve. The word doing the work is 'forces', and it is used correctly. The Avatar-target alternative at activation 6 was reconstructed independently: 8 activations, 6 drains, 24 opposing life -- the parenthetical is right. Zero targets at activation 8 still draws, because 115.6's second sentence makes an ability with no targets chosen non-targeted, so 608.2b's fizzle never applies. TRIGGER ORDERING at activation 6 is right: Nest's trigger (mid-resolution) and the Avatar's dies-trigger (during the SBA check) both go in the FIRST batch of 603.3b since neither keys on another ability triggering, and the outcome is order-neutral. NO MISSING RULES AREAS: triggered abilities are put on the stack (603.3, 603.3b), SBAs are checked before triggers reach the stack (117.5, 704.5f), priority is handled under the stated no-response assumption, and no replacement effect (614) applies -- Nest of Scarabs is a triggered ability, nothing enters with counters, no +1/+1 counters exist so 704.5q is inert, and the Avatar's deathtouch is inert with no damage dealt. Token 'dies then ceases to exist' ordering is carried by 111.7's own parenthetical plus 700.4/701.21a at step 1. 104.3c correctly retires the library as a constraint; the life-total SBA never fires (lowest total 33, you 39) and the totals make that visible. CROSS-STACK LEDGER: no contradiction. This board's 7 drains / 28 coexists with 002 (5 activations, 7 drains / 28 no-proliferate, 8 / 32 with) and 003 (7 drains / 28 including a proliferate) because the boards differ, and step 10's account of the 002 difference was verified against 002 itself -- Bastion of Remembrance is an enchantment whose drain fires on any death of a creature you control regardless of toughness, so a proliferate-bought free body converts into an eighth drain there; here the same free body dies at toughness 0, gains 0 life and drains nothing, so proliferate moves neither number. Proliferate was independently re-tested: it draws on the same fixed 2 + 4 absorption pool, so both the activation ceiling (8) and the drain ceiling (7) are source-agnostic and unchanged. 004 is not referenced and is not contradicted. The 'Near-infinite' refutation is sound and correctly scoped to this board: the loop is body-bounded because only Bears and the Avatar absorb a counter without costing a body, and a counter on your own Insect is exactly body-neutral. TWO NON-BLOCKING OBSERVATIONS, neither a finding: (1) step 9 names 601.2d/e/f/g in prose without citing them, though the load-bearing direction claim rests on 601.2c and 601.2h, which ARE cited, and I verified all four descriptions are accurate; (2) step 7's phrase 'retires the drain two activations early' is loose -- the Avatar dies one activation earlier than in the optimal line, leaving two drainless activations -- but the numbers it reports (8 activations, 6 drains, 24) are correct.",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "701.21a",
+        "status": "supported",
+        "note": "Full rule confirms a sacrificed permanent moves from the battlefield directly to its owner's graveyard; correctly establishes that Insect A left the battlefield during cost payment."
+      },
+      {
+        "step": 1,
+        "rule": "700.4",
+        "status": "supported",
+        "note": "Verbatim. 'Dies' = put into a graveyard from the battlefield, which is exactly what 701.21a produced for Insect A."
+      },
+      {
+        "step": 1,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Verbatim, and the unquoted remainder ('The ability becomes the topmost object on the stack') independently carries the claim that the Avatar trigger sits ABOVE Yawgmoth's ability and resolves first."
+      },
+      {
+        "step": 2,
+        "rule": "115.1c",
+        "status": "supported",
+        "note": "Verbatim; targets for an activated ability are chosen as it is activated, and the cross-reference to 602.2b is the hinge the 601.2c-before-601.2h argument at steps 7 and 9 depends on."
+      },
+      {
+        "step": 2,
+        "rule": "702.16b",
+        "status": "supported",
+        "note": "Verbatim. Yawgmoth is a Human Cleric (verified in cards.json) with protection from Humans and is the source of his own ability, so he can never be its target."
+      },
+      {
+        "step": 3,
+        "rule": "603.6c",
+        "status": "supported",
+        "note": "A 'whenever another creature you control dies' ability is a leaves-the-battlefield ability under this rule's non-exhaustive wording ('whenever [something] is put into a graveyard from the battlefield')."
+      },
+      {
+        "step": 3,
+        "rule": "603.10a",
+        "status": "supported",
+        "note": "Verbatim; LTB abilities are named as look-back-in-time triggers, which is what lets the Avatar's ability see a creature that is already gone."
+      },
+      {
+        "step": 3,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": "Verbatim. Supplies last known information for 'its toughness'; Insect A carried no counter, so its last known toughness was 1 and the gain is 1."
+      },
+      {
+        "step": 3,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Verbatim; life total adjusted by the gain."
+      },
+      {
+        "step": 4,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Verbatim; the lifegain event matches the Avatar's second ability's trigger event."
+      },
+      {
+        "step": 4,
+        "rule": "119.9",
+        "status": "supported",
+        "note": "Verbatim first two sentences. Confirms 'whenever you gain life' keys on the EVENT, not on the amount, so one drain per gain regardless of size."
+      },
+      {
+        "step": 4,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Verbatim; each opponent's life total is adjusted down by 1, four opponents, four total."
+      },
+      {
+        "step": 5,
+        "rule": "122.1a",
+        "status": "supported",
+        "note": "Verbatim, and this is the rule the corrected P/T figures rest on: -X/-Y counters subtract from POWER and toughness. Bears 2/2 -> 1/1 and Avatar 3/4 -> 2/3 -> 1/2 -> 0/1 -> -1/0 all follow correctly."
+      },
+      {
+        "step": 5,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "The controller of the ability follows its instructions, so YOU are the player putting the counter -- the second half of the Nest of Scarabs trigger condition."
+      },
+      {
+        "step": 5,
+        "rule": "111.1",
+        "status": "supported",
+        "note": "Verbatim; establishes what a token is and that effects put them onto the battlefield. Thin but genuinely on point for the Nest token."
+      },
+      {
+        "step": 6,
+        "rule": "704.5f",
+        "status": "supported",
+        "note": "Verbatim; Grizzly Bears at 0/0 is put into its owner's graveyard by SBA. Bears is an opponent's creature, so the Avatar's 'another creature you control dies' correctly does not trigger."
+      },
+      {
+        "step": 6,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "Verbatim; SBAs run as a single event before triggered abilities go on the stack, which is exactly the ordering the step asserts."
+      },
+      {
+        "step": 7,
+        "rule": "111.7",
+        "status": "supported",
+        "note": "Verbatim first sentence, and the unquoted parenthetical ('applicable triggered abilities will trigger before the token ceases to exist') independently protects the claim that the counter-killed token's death still triggers the Avatar."
+      },
+      {
+        "step": 7,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": "THE CRUX and it holds. Last known information for the counter-killed Insect is its on-battlefield state of 0/0, so 'its toughness' is 0, not 1."
+      },
+      {
+        "step": 7,
+        "rule": "119.9",
+        "status": "supported",
+        "note": "The quote is the rule's third sentence, verbatim, and is precisely on point: gaining 0 life is not a life gain event, so the Avatar's second ability does not trigger and there is no drain for the counter-killed Insect."
+      },
+      {
+        "step": 7,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Verbatim first-part sentence. Neither the Nest trigger nor the Avatar's dies-trigger keys on another ability triggering, so both go on the stack in the first part in an order you choose; the step's 'outcome-neutral' assessment is correct."
+      },
+      {
+        "step": 8,
+        "rule": "704.5f",
+        "status": "supported",
+        "note": "Verbatim; the Avatar at -1/0 (fourth counter on a 3/4) has toughness 0 and is put into the graveyard."
+      },
+      {
+        "step": 8,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Trigger events must MATCH; 'another creature you control dies' does not match the Avatar's own death, so it never drains for itself. Load-bearing for the ceiling at step 11 and correctly cited."
+      },
+      {
+        "step": 9,
+        "rule": "601.2c",
+        "status": "supported",
+        "note": "Verbatim first sentence. Targets are announced at this step; extended to activated abilities by 602.2b via 115.1c at step 2, which the step explicitly notes rather than assuming."
+      },
+      {
+        "step": 9,
+        "rule": "115.6",
+        "status": "supported",
+        "note": "Verbatim, and the unquoted second sentence is what makes the zero-target activation 8 NON-targeted, so 608.2b's fizzle cannot apply and the draw is still collected."
+      },
+      {
+        "step": 9,
+        "rule": "608.2b",
+        "status": "supported",
+        "note": "First citation: a target no longer in the zone it was in when targeted is illegal -- Insect J sacrificed to pay the cost would be exactly that."
+      },
+      {
+        "step": 9,
+        "rule": "608.2b",
+        "status": "supported",
+        "note": "Second citation: if all targets are illegal the ability does not resolve, so targeting J would have cost the draw. This is the published Yawgmoth interaction and the step states it correctly."
+      },
+      {
+        "step": 9,
+        "rule": "601.2h",
+        "status": "supported",
+        "note": "Verbatim. Fixes cost payment AFTER target announcement (the direction the F-G symmetry argument needs) and supplies 'unpayable costs can't be paid' for the terminus."
+      },
+      {
+        "step": 10,
+        "rule": "701.34a",
+        "status": "supported",
+        "note": "Verbatim. Proliferate requires an existing counter, which correctly excludes your 1/1 Insects (they die to SBA at 0/0 before any player could receive priority to proliferate)."
+      },
+      {
+        "step": 11,
+        "rule": "601.2h",
+        "status": "supported",
+        "note": "Correctly identifies the terminus as the SACRIFICE cost becoming unpayable rather than the target pool emptying."
+      },
+      {
+        "step": 11,
+        "rule": "104.3c",
+        "status": "supported",
+        "note": "Full rule confirms the empty-library penalty is a draw-from-empty loss, so 8 draws against 60 cards is nowhere near the constraint."
+      },
+      {
+        "step": 12,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Supports the final tally of life adjustments: 7 drains x 4 opponents = 28, opponents 40 -> 33, you 40 - 8 + 7 = 39. Thin for a summary step but genuine."
+      }
+    ],
+    "iterations": 4,
+    "iteration_bound_override": {
+      "reason": "Iterations 1-3 were spent against the pre-swap decklist; the 3-card swap (Enduring Tenacity, Nantuko Husk, Grim Poppet out; Mirkwood Bats, Carrier Thrall, Retched Wretch in) changed cards.json and re-MISSed this routine under a new fingerprint, so pass 4 opened a new loop rather than extending the old one. The user was told 004 and 005 sat at the cap and chose to finish them. Pass 4 earned itself: the third checker found a POWER/TOUGHNESS error that the first two had missed \u2014 -1/-1 counters reduce power as well as toughness, so a 3/4 South Wind Avatar is 2/3 -> 1/2 -> 0/1, not the 3/3 -> 3/2 -> 3/1 the artifact printed in three places, contradicting its own step 8. No count moved, but those figures would have gone to print. Retiring the line at iteration 3 would have published them."
     }
   }
 }

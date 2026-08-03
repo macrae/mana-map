@@ -15,6 +15,7 @@
       "Commander cast on first affordable turn (highest spending priority).",
       "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
       "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+      "Unrestricted tutors ('search your library for a card') are modeled as wildcards: a tutor that has been drawn and is affordable fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
       "Cost reducers, rituals, and extra card draw are not modeled (conservative)."
     ],
     "seed": 42
@@ -62,16 +63,16 @@
       "9": 6.812
     },
     "mean_bodies_by_turn": {
-      "1": 0.396,
-      "10": 6.354,
-      "2": 0.892,
-      "3": 1.766,
-      "4": 2.737,
-      "5": 3.591,
-      "6": 4.111,
-      "7": 4.845,
-      "8": 5.389,
-      "9": 5.894
+      "1": 0.371,
+      "10": 6.343,
+      "2": 0.837,
+      "3": 1.69,
+      "4": 2.631,
+      "5": 3.498,
+      "6": 4.04,
+      "7": 4.795,
+      "8": 5.361,
+      "9": 5.875
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -98,45 +99,66 @@
     "targets": [
       {
         "assembled_rate": 0.772,
+        "assembled_rate_assisted": 0.875,
         "by_turn_6_rate": 0.663,
+        "by_turn_6_rate_assisted": 0.782,
         "label": "Vampire payoff or lord drawn (the go-wide engine)",
-        "mean_turn": 2.737
+        "mean_turn": 2.737,
+        "mean_turn_assisted": 2.576
       },
       {
         "assembled_rate": 0.521,
+        "assembled_rate_assisted": 0.727,
         "by_turn_6_rate": 0.422,
+        "by_turn_6_rate_assisted": 0.617,
         "label": "Token amplifier drawn",
-        "mean_turn": 3.292
+        "mean_turn": 3.292,
+        "mean_turn_assisted": 3.187
       },
       {
         "assembled_rate": 0.742,
+        "assembled_rate_assisted": 0.856,
         "by_turn_6_rate": 0.627,
+        "by_turn_6_rate_assisted": 0.759,
         "label": "Drain engine drawn",
-        "mean_turn": 2.853
+        "mean_turn": 2.853,
+        "mean_turn_assisted": 2.67
       },
       {
         "assembled_rate": 0.094,
+        "assembled_rate_assisted": 0.309,
         "by_turn_6_rate": 0.054,
+        "by_turn_6_rate_assisted": 0.191,
         "label": "The two-piece infinite assembled (a lose-half + a gain-half)",
-        "mean_turn": 5.357
+        "mean_turn": 5.357,
+        "mean_turn_assisted": 5.324
       },
       {
         "assembled_rate": 0.609,
+        "assembled_rate_assisted": 0.783,
         "by_turn_6_rate": 0.502,
+        "by_turn_6_rate_assisted": 0.673,
         "label": "Ramp or fixing drawn",
-        "mean_turn": 3.108
+        "mean_turn": 3.108,
+        "mean_turn_assisted": 2.991
       },
       {
         "assembled_rate": 0.615,
+        "assembled_rate_assisted": 0.784,
         "by_turn_6_rate": 0.506,
+        "by_turn_6_rate_assisted": 0.674,
         "label": "Draw engine drawn",
-        "mean_turn": 3.105
+        "mean_turn": 3.105,
+        "mean_turn_assisted": 2.999
       },
       {
         "assembled_rate": 0.68,
+        "assembled_rate_assisted": 0.826,
         "by_turn_6_rate": 0.575,
+        "by_turn_6_rate_assisted": 0.725,
         "label": "Protection held for the swarm",
-        "mean_turn": 2.915
+        "mean_turn": 2.915,
+        "mean_turn_assisted": 2.801
       }
     ]
   }

@@ -15,6 +15,7 @@
       "Commander cast on first affordable turn (highest spending priority).",
       "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
       "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+      "Unrestricted tutors ('search your library for a card') are modeled as wildcards: a tutor that has been drawn and is affordable fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
       "Cost reducers, rituals, and extra card draw are not modeled (conservative)."
     ],
     "seed": 42
@@ -100,21 +101,30 @@
     "targets": [
       {
         "assembled_rate": 0.661,
+        "assembled_rate_assisted": 0.661,
         "by_turn_6_rate": 0.496,
+        "by_turn_6_rate_assisted": 0.496,
         "label": "Zada online with a cantrip drawn",
-        "mean_turn": 5.266
+        "mean_turn": 5.266,
+        "mean_turn_assisted": 5.266
       },
       {
         "assembled_rate": 0.6,
+        "assembled_rate_assisted": 0.6,
         "by_turn_6_rate": 0.487,
+        "by_turn_6_rate_assisted": 0.487,
         "label": "Early token maker drawn",
-        "mean_turn": 3.184
+        "mean_turn": 3.184,
+        "mean_turn_assisted": 3.184
       },
       {
         "assembled_rate": 0.152,
+        "assembled_rate_assisted": 0.152,
         "by_turn_6_rate": 0.091,
+        "by_turn_6_rate_assisted": 0.091,
         "label": "Storm payoff plus ritual drawn",
-        "mean_turn": 5.222
+        "mean_turn": 5.222,
+        "mean_turn_assisted": 5.222
       }
     ]
   }

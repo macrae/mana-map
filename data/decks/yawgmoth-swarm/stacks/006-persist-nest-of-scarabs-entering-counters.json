@@ -1,0 +1,250 @@
+{
+  "id": "006",
+  "slug": "yawgmoth-swarm",
+  "deck": "YAWGMOTH \u2014 THE SCARAB SWARM",
+  "title": "Persist + Nest of Scarabs: does a creature that ENTERS with a -1/-1 counter trigger the Nest?",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Nest of Scarabs (enchantment)",
+        "Swamp (untapped)",
+        "Swamp (untapped)",
+        "Swamp (untapped)"
+      ],
+      "opponent_a": [
+        "no permanents"
+      ],
+      "opponent_b": [
+        "no permanents"
+      ],
+      "opponent_c": [
+        "no permanents"
+      ],
+      "opponent_d": [
+        "no permanents"
+      ]
+    },
+    "hand": [
+      "no cards relevant to this question"
+    ],
+    "graveyard": [
+      "Fume Spitter (creature card, nonlegendary)"
+    ],
+    "mana_available": "{B}{B}{B} from three untapped Swamps (Persist's cost is already paid)",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Persist \u2014 'Return target nonlegendary creature card from your graveyard to the battlefield with a -1/-1 counter on it.' Cost already paid ({1}{B}). Target chosen: Fume Spitter in your graveyard.",
+        "controller": "you"
+      }
+    ],
+    "extras": {
+      "life_totals": {
+        "you": 40,
+        "opponent_a": 40,
+        "opponent_b": 40,
+        "opponent_c": 40,
+        "opponent_d": 40
+      },
+      "pod_size": "Five players \u2014 you and four opponents.",
+      "library": "You have 60 cards in your library.",
+      "assumptions": [
+        "No player responds to anything; every opponent passes priority throughout.",
+        "No permanent enters or leaves the battlefield except as described by the cards named here.",
+        "Insect tokens created by Nest of Scarabs are 1/1 black Insect creature tokens with no abilities.",
+        "It is your precombat main phase.",
+        "Yawgmoth, Thran Physician is NOT on the battlefield \u2014 this scenario deliberately isolates the entering-with-counters question from Yawgmoth's activated ability."
+      ],
+      "note_for_the_resolver": "Nest of Scarabs reads 'Whenever you put one or more -1/-1 counters on a creature, create that many 1/1 black Insect creature tokens.' Persist returns the creature WITH a counter already on it. The whole question is whether that is a player putting a counter on a creature, or the permanent entering with one. Stacks 001-005 in this deck all cite 608.2c to establish that YOU are the actor when an ability you control places a counter; this scenario asks whether that reasoning reaches a permanent that enters with counters. Keep to ONE rules domain: entering-with-counters and the trigger condition. Do not branch into undying, persist-the-keyword, or Yawgmoth's ability."
+    },
+    "question": "Persist resolves and returns Fume Spitter to the battlefield with a -1/-1 counter on it. Does Nest of Scarabs trigger and create an Insect token? Cite the rule that decides whether a permanent entering the battlefield with counters counts as a player putting those counters on it, and state explicitly whether the answer would differ if an effect instead placed a counter on a creature already on the battlefield."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Persist resolves. Its one target is rechecked for legality first: Fume Spitter is still a nonlegendary creature card in your graveyard, so the target is legal and the spell resolves. You follow its instruction in the order written: return Fume Spitter from your graveyard to the battlefield with a -1/-1 counter on it. Persist does not name a controller, so Fume Spitter enters under YOUR control (you are the player the effect instructed to put it onto the battlefield). Persist itself is then put into your graveyard as the final part of its resolution.",
+        "effect": "Fume Spitter is on the battlefield under your control with one -1/-1 counter on it. Persist is in your graveyard. Nothing has been targeted or damaged; life totals are unchanged at 40 apiece.",
+        "citations": [
+          {
+            "rule": "608.2b",
+            "quote": "If the spell or ability specifies targets, it checks whether the targets are still legal."
+          },
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "110.2a",
+            "quote": "If an effect instructs a player to put an object onto the battlefield, that object enters the battlefield under that player\u2019s control unless the effect states otherwise."
+          },
+          {
+            "rule": "608.2n",
+            "quote": "As the final part of an instant or sorcery spell\u2019s resolution, the spell is put into its owner\u2019s graveyard."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "THE RULING, and it is decided by one rule: 122.6. Nest of Scarabs asks 'Whenever you put one or more -1/-1 counters on a creature.' Rule 122.6 says that a spell or ability referring to counters being put on an object refers BOTH to putting counters on it while it is on the battlefield AND to an object that is given counters as it enters the battlefield. So 'entering with a -1/-1 counter' is not a separate, exempt category \u2014 it is inside the reference. The second half of the question, WHO put it, is answered by 122.6a: the effect may specify a player, and Persist does not, so the object's controller puts those counters on it. Fume Spitter's controller is you (step 1). Therefore YOU put one -1/-1 counter on a creature, and Nest of Scarabs' trigger condition is satisfied. ANSWER: YES, Nest of Scarabs triggers.",
+        "effect": "The trigger condition of Nest of Scarabs is met. Note the citation this step deliberately does NOT lean on: sibling stacks 001-005 reach 'you are the actor' through 608.2c, because there the counter is placed by an ability you control following its instructions on a creature already on the battlefield. That reasoning does not by itself reach a permanent entering with counters \u2014 no instruction is being followed against an object on the battlefield at that moment. It is 122.6 that brings the entering case inside the phrase, and 122.6a that names you rather than 608.2c. Both roads arrive at the same place here, but only 122.6/122.6a is load-bearing for THIS scenario.",
+        "citations": [
+          {
+            "rule": "122.6",
+            "quote": "This refers to putting counters on that object while it\u2019s on the battlefield and also to an object that\u2019s given counters as it enters the battlefield."
+          },
+          {
+            "rule": "122.6a",
+            "quote": "the effect causing the object to be given counters may specify which player puts those counters on it"
+          },
+          {
+            "rule": "122.6a",
+            "quote": "If the effect doesn\u2019t specify a player, the object\u2019s controller puts those counters on it."
+          },
+          {
+            "rule": "110.2a",
+            "quote": "If an effect instructs a player to put an object onto the battlefield, that object enters the battlefield under that player\u2019s control unless the effect states otherwise."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "The trigger fires. The game event (you putting one -1/-1 counter on a creature) matches Nest of Scarabs' trigger condition, so the ability triggers automatically at that moment. It does nothing yet and is not yet on the stack.",
+        "effect": "One Nest of Scarabs trigger is waiting to be put on the stack. 'That many' is locked to the number of -1/-1 counters in the event: ONE.",
+        "citations": [
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability\u2019s trigger event, that ability automatically triggers. The ability doesn\u2019t do anything at this point."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "State-based actions are checked BEFORE the waiting trigger goes on the stack. Fume Spitter is a 1/1 with one -1/-1 counter on it, which subtracts from power and toughness, making it 0/0. A creature with toughness 0 or less is put into its owner's graveyard \u2014 Fume Spitter dies immediately, without ever having been available to sacrifice. The check is then repeated; nothing more is performed, and the Nest of Scarabs trigger is put on the stack. Fume Spitter dying does NOT undo the trigger: it had already triggered in step 3, and the trigger is an independent object on the stack that no longer depends on its source event or on Fume Spitter.",
+        "effect": "Fume Spitter is in your graveyard. Your battlefield: Nest of Scarabs, three untapped Swamps. Stack: one Nest of Scarabs trigger. This is the pilot's real lesson \u2014 Persist on a 1-toughness creature returns it and kills it in the same breath, and what you actually keep is the Insect.",
+        "citations": [
+          {
+            "rule": "122.1a",
+            "quote": "Similarly, -X/-Y counters subtract from power and toughness."
+          },
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it\u2019s put into its owner\u2019s graveyard."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, \u201cState-Based Actions\u201d), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack (see rule 603, \u201cHandling Triggered Abilities\u201d)."
+          },
+          {
+            "rule": "704.3",
+            "quote": "If any state-based actions are performed as a result of a check, the check is repeated; otherwise all triggered abilities that are waiting to be put on the stack are put on the stack, then the check is repeated."
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that\u2019s not a card the next time a player would receive priority."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "You receive priority and pass; every opponent passes in succession (the scenario's stated assumption), so the Nest of Scarabs trigger resolves. It creates that many \u2014 one \u2014 1/1 black Insect creature tokens: put one token with those characteristics onto the battlefield under your control. The ability then leaves the stack.",
+        "effect": "One 1/1 black Insect creature token enters the battlefield under your control. State-based actions are checked again and none apply (the Insect is 1/1, nothing else is on the battlefield to check). You receive priority in your precombat main phase with the stack empty.",
+        "citations": [
+          {
+            "rule": "117.4",
+            "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+          },
+          {
+            "rule": "701.7a",
+            "quote": "To create one or more tokens with certain characteristics, put the specified number of tokens with the specified characteristics onto the battlefield."
+          },
+          {
+            "rule": "111.1",
+            "quote": "Some effects put tokens onto the battlefield. A token is a marker used to represent any permanent that isn\u2019t represented by a card."
+          },
+          {
+            "rule": "608.2n",
+            "quote": "As the final part of an ability\u2019s resolution, the ability is removed from the stack and ceases to exist."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "THE CONTRAST THE QUESTION ASKS FOR: would the answer differ if an effect instead placed a -1/-1 counter on a creature ALREADY on the battlefield? No. The answer is YES in both cases, and 122.6 is precisely the rule that makes them the same \u2014 it names both halves in one sentence. What changes is only which rule identifies YOU as the actor. For a creature already on the battlefield, an ability you control instructs you to put the counter and you follow that instruction (608.2c) \u2014 that is the route stacks 001-005 take. For a permanent entering with counters, no instruction is being followed against an on-battlefield object, so the actor comes from 122.6a's default: the object's controller. THE ONE PLACE THE TWO GENUINELY DIVERGE, and a pilot should know it: because 122.6a hands the counters to the object's CONTROLLER, a nonlegendary creature returned to the battlefield under an OPPONENT's control with a -1/-1 counter would have that counter put on by that opponent, not by you, and Nest of Scarabs \u2014 which says 'whenever YOU put' \u2014 would not trigger. In this scenario Fume Spitter enters under your control, so that caveat does not bite.",
+        "effect": "Ruling for the deck: Persist IS a legitimate ignition source for Nest of Scarabs \u2014 the -1/-1 counter it brings along counts as you putting a counter on a creature, and the Nest pays out one Insect. The goldfish_targets.json listing of Persist as an ignition source is NOT overstated on the rules. The honest caveat is a different one and it is about the BODY, not the trigger: Persist returning a 1-toughness creature (Fume Spitter) yields the Insect and immediately loses the creature to state-based actions, so it ignites without leaving a sacrifice body behind.",
+        "citations": [
+          {
+            "rule": "122.6",
+            "quote": "Some spells and abilities refer to counters being put on an object. This refers to putting counters on that object while it\u2019s on the battlefield and also to an object that\u2019s given counters as it enters the battlefield."
+          },
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "122.6a",
+            "quote": "If the effect doesn\u2019t specify a player, the object\u2019s controller puts those counters on it."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "YES \u2014 Nest of Scarabs triggers, and rule 122.6 is what decides it: a reference to counters being put on an object covers an object that is GIVEN counters as it enters the battlefield, not only counters placed on something already there. Persist names no player, so 122.6a assigns the counter to Fume Spitter's controller, which is you \u2014 satisfying 'whenever you put one or more -1/-1 counters on a creature.' You get one 1/1 black Insect token. The counter also kills the creature it rode in on: Fume Spitter is a 1/1, enters as a 0/0, and is put into the graveyard by state-based actions before the trigger even reaches the stack \u2014 the trigger is unaffected because it had already triggered. The answer does NOT differ for a counter placed on a creature already on the battlefield: that case is YES too, via 608.2c naming you as the actor instead of 122.6a. The single divergence between the two cases is controller-dependent \u2014 a creature entering under an opponent's control with a -1/-1 counter has that counter put on by THAT player, so 'whenever you put' would not trigger; that does not apply here.",
+      "you": {
+        "life": 40,
+        "battlefield": [
+          "Nest of Scarabs (enchantment)",
+          "Swamp (untapped)",
+          "Swamp (untapped)",
+          "Swamp (untapped)",
+          "1/1 black Insect creature token (created by Nest of Scarabs)"
+        ],
+        "graveyard": [
+          "Fume Spitter (died to state-based actions as a 0/0 immediately after entering)",
+          "Persist (sorcery, put into graveyard as the final part of its resolution)"
+        ],
+        "hand": [],
+        "library": 60,
+        "stack": [],
+        "phase": "precombat main phase, stack empty, you have priority",
+        "notes": [
+          "Insect tokens created: 1.",
+          "Net permanents gained from Persist: one 1/1 Insect token; the returned creature did not survive."
+        ]
+      },
+      "opponents": [
+        {
+          "name": "opponent_a",
+          "life": 40,
+          "battlefield": [],
+          "notes": "Passed priority throughout; unaffected."
+        },
+        {
+          "name": "opponent_b",
+          "life": 40,
+          "battlefield": [],
+          "notes": "Passed priority throughout; unaffected."
+        },
+        {
+          "name": "opponent_c",
+          "life": 40,
+          "battlefield": [],
+          "notes": "Passed priority throughout; unaffected."
+        },
+        {
+          "name": "opponent_d",
+          "life": 40,
+          "battlefield": [],
+          "notes": "Passed priority throughout; unaffected."
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "summary": "Iteration 2: 21/21 citations supported, 0 unsupported, no missing steps. YES independently confirmed via 122.6 (entering-with-counters is inside the reference) + 122.6a (no player named -> object's controller -> you, per 110.2a). The 608.2c refusal is correct and load-bearing: 608.2c names the spell's controller, 122.6a the object's, and they diverge in step 6's opponent case. 614.1c does not apply (self-replacement only). Both orchestrator edits clean: deleting step 4's '(0/0)' orphans nothing, so 122.2/400.7 stays optional; mana_available now matches board.you and no step depends on it. One rules domain held.",
+    "findings": [],
+    "iterations": 2
+  }
+}

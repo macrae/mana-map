@@ -15,6 +15,7 @@
       "Commander cast on first affordable turn (highest spending priority).",
       "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
       "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+      "Unrestricted tutors ('search your library for a card') are modeled as wildcards: a tutor that has been drawn and is affordable fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
       "Cost reducers, rituals, and extra card draw are not modeled (conservative)."
     ],
     "seed": 42
@@ -99,39 +100,57 @@
     "targets": [
       {
         "assembled_rate": 0.939,
+        "assembled_rate_assisted": 0.939,
         "by_turn_6_rate": 0.869,
+        "by_turn_6_rate_assisted": 0.869,
         "label": "Ramp or fixing drawn",
-        "mean_turn": 2.044
+        "mean_turn": 2.044,
+        "mean_turn_assisted": 2.044
       },
       {
         "assembled_rate": 0.673,
+        "assembled_rate_assisted": 0.673,
         "by_turn_6_rate": 0.562,
+        "by_turn_6_rate_assisted": 0.562,
         "label": "Cost reducer or cheat-into-play drawn",
-        "mean_turn": 3.039
+        "mean_turn": 3.039,
+        "mean_turn_assisted": 3.039
       },
       {
         "assembled_rate": 0.737,
+        "assembled_rate_assisted": 0.737,
         "by_turn_6_rate": 0.623,
+        "by_turn_6_rate_assisted": 0.623,
         "label": "Dinosaur payoff drawn (per-dino trigger engine)",
-        "mean_turn": 2.883
+        "mean_turn": 2.883,
+        "mean_turn_assisted": 2.883
       },
       {
         "assembled_rate": 0.622,
+        "assembled_rate_assisted": 0.622,
         "by_turn_6_rate": 0.514,
+        "by_turn_6_rate_assisted": 0.514,
         "label": "The Gishath connection kit (haste or evasion for the 7/6)",
-        "mean_turn": 3.034
+        "mean_turn": 3.034,
+        "mean_turn_assisted": 3.034
       },
       {
         "assembled_rate": 0.824,
+        "assembled_rate_assisted": 0.824,
         "by_turn_6_rate": 0.726,
+        "by_turn_6_rate_assisted": 0.726,
         "label": "Enrage engine drawn",
-        "mean_turn": 2.543
+        "mean_turn": 2.543,
+        "mean_turn_assisted": 2.543
       },
       {
         "assembled_rate": 0.59,
+        "assembled_rate_assisted": 0.59,
         "by_turn_6_rate": 0.485,
+        "by_turn_6_rate_assisted": 0.485,
         "label": "Protection held for the board",
-        "mean_turn": 3.099
+        "mean_turn": 3.099,
+        "mean_turn_assisted": 3.099
       }
     ]
   }

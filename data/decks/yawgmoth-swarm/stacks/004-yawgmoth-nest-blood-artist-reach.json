@@ -1,7 +1,7 @@
 {
   "id": "004",
   "slug": "yawgmoth-swarm",
-  "deck": "YAWGMOTH — THE SCARAB SWARM",
+  "deck": "YAWGMOTH \u2014 THE SCARAB SWARM",
   "title": "Yawgmoth + Nest of Scarabs + Blood Artist: can a single-target drain close a four-player table?",
   "rules_version": "June 19, 2026",
   "scenario": {
@@ -10,7 +10,7 @@
         "Yawgmoth, Thran Physician (2/4, untapped, no counters)",
         "Nest of Scarabs (enchantment)",
         "Blood Artist (0/1, no counters)",
-        "Insect token A (1/1 black Insect, no counters)",
+        "Insect token A (1/1 black Insect) \u2014 already sacrificed to pay the cost of the ability now on the stack",
         "Insect token B (1/1 black Insect, no counters)",
         "Swamp (untapped)",
         "Swamp (untapped)",
@@ -35,7 +35,7 @@
     "stack": [
       {
         "pos": 0,
-        "object": "Yawgmoth, Thran Physician's activated ability — 'Pay 1 life, Sacrifice another creature: Put a -1/-1 counter on up to one target creature and draw a card.' Cost already paid: 1 life paid (you are at 39) and Insect token A sacrificed. Target chosen: Grizzly Bears.",
+        "object": "Yawgmoth, Thran Physician's activated ability \u2014 'Pay 1 life, Sacrifice another creature: Put a -1/-1 counter on up to one target creature and draw a card.' Cost already paid: 1 life paid (you are at 39) and Insect token A sacrificed. Target chosen: Grizzly Bears.",
         "controller": "you"
       }
     ],
@@ -47,7 +47,7 @@
         "opponent_c": 40,
         "opponent_d": 40
       },
-      "pod_size": "Five players — you and four opponents, 160 opposing life in total.",
+      "pod_size": "Five players \u2014 you and four opponents, 160 opposing life in total.",
       "library": "You have 60 cards in your library.",
       "assumptions": [
         "No player responds to anything; every opponent passes priority throughout.",
@@ -55,36 +55,36 @@
         "Insect tokens created by Nest of Scarabs are 1/1 black Insect creature tokens with no abilities.",
         "It is your precombat main phase."
       ],
-      "note_for_the_resolver": "Yawgmoth is a Human with protection from Humans, so his own ability can never target him. Targets are chosen as the ability is put on the stack, and Nest of Scarabs' replacement Insect is created only when its trigger RESOLVES — so the new Insect is not available as a target on the iteration that created it. Blood Artist targets ONE player per trigger; Zulaport Cutthroat and Bastion of Remembrance drain each opponent. That difference is the whole question here."
+      "note_for_the_resolver": "Yawgmoth is a Human with protection from Humans, so his own ability can never target him. Targets are chosen as the ability is put on the stack, and Nest of Scarabs' replacement Insect is created only when its trigger RESOLVES \u2014 so the new Insect is not available as a target on the iteration that created it. Blood Artist targets ONE player per trigger; Zulaport Cutthroat and Bastion of Remembrance drain each opponent. That difference is the whole question here."
     },
-    "question": "Resolve the stack, then run the engine as far as the rules allow. (a) Blood Artist's trigger reads 'target player loses 1 life and you gain 1 life' — a single target chosen per trigger. State the exact number of completed activations from this board and what ends it. (b) Given that each trigger drains only ONE player, how much life can be removed in total, and can this line reduce all four opponents from 40 to 0?"
+    "question": "Resolve the stack, then run the engine as far as the rules allow. (a) Blood Artist's trigger reads 'target player loses 1 life and you gain 1 life' \u2014 a single target chosen per trigger. State the exact number of completed activations from this board and what ends it. (b) Given that each trigger drains only ONE player, how much life can be removed in total, and can this line reduce all four opponents from 40 to 0?"
   },
   "resolution": {
     "steps": [
       {
         "n": 1,
-        "action": "Before anything resolves, put the waiting triggered ability on the stack. Insect token A was sacrificed to pay Yawgmoth's activation cost; that sacrifice moved a creature from the battlefield to the graveyard, which is a creature dying, and Blood Artist triggered on it. No player had priority during the activation, so the trigger has been waiting. It is now put on the stack ABOVE Yawgmoth's ability, and its one target player is chosen at that moment.",
-        "effect": "Stack, bottom to top: (pos 0) Yawgmoth's activated ability targeting Grizzly Bears; (pos 1) Blood Artist's trigger for Insect A's death, targeting opponent A. Insect A is a token: it hit the graveyard (so it died) and then ceased to exist, which does not undo the trigger. All players pass priority.",
+        "action": "Nothing has resolved yet; put the waiting triggered ability on the stack \u2014 but state-based actions go FIRST. Insect token A was sacrificed to pay Yawgmoth's activation cost, which moved it from the battlefield directly to its owner's graveyard, i.e. it died, and Blood Artist triggered on that death. No player had priority during the activation, so the trigger has been waiting. Each time a player would get priority the game performs all applicable state-based actions as a single event and repeats until none are performed, and ONLY THEN are waiting triggered abilities put on the stack.",
+        "effect": "Order on this board: (i) Insect A is in the graveyard; (ii) SBA check \u2014 a token in a zone other than the battlefield ceases to exist, so Insect A CEASES TO EXIST here, before any trigger reaches the stack; (iii) the check is repeated, nothing further is performed, and Blood Artist's waiting trigger is then put on the stack above Yawgmoth's ability, its one target player chosen at that moment (targets are declared as part of putting an ability on the stack \u2014 cited at step 11, where that timing does the work). Insect A ceasing to exist does not undo the trigger \u2014 the ability had already triggered on the death. Stack, bottom to top: (pos 0) Yawgmoth's activated ability targeting Grizzly Bears; (pos 1) Blood Artist's trigger for Insect A's death, targeting opponent A. All players pass priority.",
         "citations": [
           {
             "rule": "701.21a",
-            "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner’s graveyard."
+            "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner\u2019s graveyard."
           },
           {
             "rule": "700.4",
-            "quote": "The term dies means “is put into a graveyard from the battlefield.”"
+            "quote": "The term dies means \u201cis put into a graveyard from the battlefield.\u201d"
           },
           {
-            "rule": "603.3",
-            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
-          },
-          {
-            "rule": "115.1",
-            "quote": "These targets are declared as part of the process of putting the spell or ability on the stack."
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, \u201cState-Based Actions\u201d), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack"
           },
           {
             "rule": "704.5d",
             "quote": "If a token is in a zone other than the battlefield, it ceases to exist."
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that\u2019s not a card the next time a player would receive priority."
           }
         ]
       },
@@ -102,11 +102,15 @@
       {
         "n": 3,
         "action": "Resolve pos 0: Yawgmoth's activated ability, putting a -1/-1 counter on Grizzly Bears and drawing a card.",
-        "effect": "Grizzly Bears becomes 1/1 and SURVIVES — this is the only creature on the table that can absorb a counter and live, and that fact is the entire engine. You draw a card (library 60 -> 59, hand 0 -> 1). Because YOU put a -1/-1 counter on a creature, Nest of Scarabs triggers. State-based actions are checked: Grizzly Bears at 1/1 is not put into a graveyard, nothing else is illegal. Nest's trigger then goes on the stack and resolves: create Insect token C. Your Insects: B and C.",
+        "effect": "Grizzly Bears becomes 1/1 and SURVIVES \u2014 this is the only creature on the table that can absorb a counter and live, and that fact is the entire engine. You draw a card (library 60 -> 59, hand 0 -> 1). Because YOU put a -1/-1 counter on a creature, Nest of Scarabs triggers \u2014 and the actor is established, not assumed: this is your activated ability and the controller of an ability is the player who follows its instructions, so the player putting the counter on is you. Nest of Scarabs' trigger condition is literally 'Whenever you put one or more -1/-1 counters on a creature', so the identity of that actor is the whole of the condition. State-based actions are checked first: Grizzly Bears at toughness 1 is not put into a graveyard, nothing else is illegal. Nest's trigger is then put on the stack and resolves: create Insect token C. Your Insects: B and C.",
         "citations": [
           {
             "rule": "122.1a",
             "quote": "Similarly, -X/-Y counters subtract from power and toughness."
+          },
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
           },
           {
             "rule": "704.3",
@@ -114,14 +118,14 @@
           },
           {
             "rule": "704.5f",
-            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+            "quote": "If a creature has toughness 0 or less, it\u2019s put into its owner\u2019s graveyard."
           }
         ]
       },
       {
         "n": 4,
-        "action": "STRUCTURAL FINDING — why the engine is body-negative the moment Grizzly Bears is gone. Yawgmoth's ability costs one creature (sacrifice) and Nest of Scarabs returns exactly one Insect per counter placed, so the engine is body-NEUTRAL only while the creature receiving the counter survives it. Two timing rules make every other target a net loss of one body.",
-        "effect": "First: targets for an activated ability are locked in when the ability is ACTIVATED, and the cost is paid later in the same activation process — so at the instant you choose a target, (i) the creature you are about to sacrifice is still on the battlefield but will be gone at resolution, and (ii) the Insect that Nest is about to make does not exist yet. Second: when a 1/1 Insect or the 0/1 Blood Artist takes a -1/-1 counter it becomes 0/0 or -1/0 and state-based actions bury it BEFORE Nest's trigger is even put on the stack, so the replacement Insect is always one iteration behind the death it is replacing. Consequence: an activation whose target survives is body-neutral (-1 sacrificed, +1 token); an activation whose target dies is -1 body and yields 2 drains; an activation with zero targets is -1 body and yields 1 drain. Grizzly Bears' toughness of 2 supplies exactly ONE survivable counter, and it has already been spent in step 3.",
+        "action": "STRUCTURAL FINDING \u2014 why the engine is body-negative once Grizzly Bears is gone. The cause is ARITHMETIC, not timing: the activation cost is one of your creatures and Nest of Scarabs returns exactly one Insect per counter placed, so the moment the counter also kills one of YOUR creatures, two of your creatures leave and one token arrives \u2014 net minus one. That holds identically even if the token appeared instantly; the token's lateness is a true but separate fact and is NOT the cause of the body loss.",
+        "effect": "What the timing does cost you is a target, not a body. Targets for an activated ability are chosen as the ability is ACTIVATED and the cost is paid later in the same process, so at the instant you choose a target (i) the creature you are about to sacrifice is still on the battlefield but will be gone at resolution, and (ii) the Insect that Nest is about to make does not exist yet and therefore can never be that same activation's target. Taxonomy for this board, stated exactly: an activation targeting one of YOUR 1/1 Insects (or the 0/1 Blood Artist) is minus one body and yields 2 drains; an activation targeting Grizzly Bears while it already holds one counter is BODY-NEUTRAL for you \u2014 you sacrifice one, Nest returns one, and the Bears is not your creature \u2014 and yields 2 drains; an activation targeting Grizzly Bears at 2/2 (it survives) is body-neutral and yields 1 drain; an activation choosing zero targets is minus one body, makes no token, and yields 1 drain. Grizzly Bears' toughness of 2 supplies exactly ONE survivable counter, and step 3 has already spent it.",
         "citations": [
           {
             "rule": "115.1c",
@@ -129,7 +133,7 @@
           },
           {
             "rule": "602.2b",
-            "quote": "The remainder of the process for activating an ability is identical to the process for casting a spell listed in rules 601.2b–i."
+            "quote": "The remainder of the process for activating an ability is identical to the process for casting a spell listed in rules 601.2b\u2013i."
           },
           {
             "rule": "601.2c",
@@ -138,25 +142,25 @@
           {
             "rule": "601.2h",
             "quote": "The player pays the total cost."
-          },
-          {
-            "rule": "117.5",
-            "quote": "These steps repeat in order until no further state-based actions are performed and no abilities trigger."
           }
         ]
       },
       {
         "n": 5,
-        "action": "Best line: spend Yawgmoth's SECOND ability now. Activate '{B}{B}, Discard a card: Proliferate' — tap two Swamps and discard the card you just drew. Grizzly Bears is the only permanent or player in the game with a counter on it, so it is the only legal proliferate choice, and it is chosen on resolution, not targeted.",
-        "effect": "Grizzly Bears gets a second -1/-1 counter and becomes 0/0. You put a -1/-1 counter on a creature, so Nest of Scarabs triggers. State-based actions then bury Grizzly Bears, and Blood Artist triggers on its death (Blood Artist reads 'this creature or another creature dies' with no controller restriction, so an opponent's creature counts). Both triggers are yours and you order them. Resolve: Insect token D is created; DRAIN 2 — opponent B loses 1 life (40 -> 39), you gain 1 (40 -> 41). Your Insects: B, C, D. Mana left: one untapped Swamp. Hand: 0. Library: 59. This proliferate is worth exactly one extra drain over simply killing Grizzly Bears with an activation, because it kills the Bears and makes an Insect without spending a body.",
+        "action": "Best line: spend Yawgmoth's SECOND ability now. Activate '{B}{B}, Discard a card: Proliferate' \u2014 tap two Swamps and discard the card you just drew. Grizzly Bears is the only permanent or player in the game with a counter on it, so it is the only legal proliferate choice, and it is chosen on resolution, not targeted.",
+        "effect": "Grizzly Bears gets a second -1/-1 counter and becomes 0/0. This is the non-obvious half of the Nest interaction, so state it in full: the definition of proliferate says what is done but never names who does it, and the actor comes from resolution instead \u2014 the controller of the ability follows its instructions, and you control this proliferate ability, so YOU are the player who puts that counter on. That is exactly Nest of Scarabs' trigger condition ('Whenever you put one or more -1/-1 counters on a creature'), so Nest of Scarabs triggers. State-based actions then bury Grizzly Bears, and Blood Artist triggers on its death (Blood Artist reads 'this creature or another creature dies' with no controller restriction, so an opponent's creature counts). Both triggers are yours and you order them. Resolve: Insect token D is created; DRAIN 2 \u2014 opponent B loses 1 life (40 -> 39), you gain 1 (40 -> 41). Your Insects: B, C, D. Mana left: one untapped Swamp. Hand: 0. Library: 59. The point of this activation is that its cost is mana and a card, NOT a creature: it removes the Bears and still makes an Insect without spending a body.",
         "citations": [
           {
             "rule": "701.34a",
             "quote": "To proliferate means to choose any number of permanents and/or players that have a counter, then give each one additional counter of each kind that permanent or player already has."
           },
           {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
             "rule": "704.5f",
-            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+            "quote": "If a creature has toughness 0 or less, it\u2019s put into its owner\u2019s graveyard."
           },
           {
             "rule": "603.3b",
@@ -166,76 +170,72 @@
       },
       {
         "n": 6,
-        "action": "ACTIVATION 2 of the sacrifice ability: pay 1 life (41 -> 40), sacrifice Insect B, target Insect C. (Targeting the Insect you are sacrificing would be legal to announce but the ability would then not resolve at all, so the target must be a DIFFERENT Insect — which is why this mode needs two Insects on the battlefield.)",
-        "effect": "Blood Artist triggers on Insect B's death and goes on the stack above Yawgmoth's ability; it resolves first — DRAIN 3, opponent C 40 -> 39, you 40 -> 41. Yawgmoth's ability then resolves: -1/-1 counter on Insect C (1/1 -> 0/0), draw a card (library 58, hand 1). Nest triggers. State-based actions bury Insect C, and Blood Artist triggers again — DRAIN 4, opponent D 40 -> 39, you 41 -> 42. Nest's trigger resolves: Insect token E. Net for the activation: two drains, one card drawn, and your Insect count fell from 3 to 2 (D and E).",
+        "action": "ACTIVATION 2 of the sacrifice ability: pay 1 life (41 -> 40), sacrifice Insect B, target Insect C. (Targeting the very Insect you are sacrificing would be legal to announce, but at resolution that target is no longer where it was when targeted, so the ability would not resolve at all \u2014 which is why this mode needs two Insects on the battlefield.)",
+        "effect": "Blood Artist triggers on Insect B's death and goes on the stack above Yawgmoth's ability; it resolves first \u2014 DRAIN 3, opponent C 40 -> 39, you 40 -> 41. Yawgmoth's ability then resolves: -1/-1 counter on Insect C (1/1 -> 0/0), draw a card (library 58, hand 1). Nest triggers. State-based actions bury Insect C for toughness 0, and Blood Artist triggers again \u2014 DRAIN 4, opponent D 40 -> 39, you 41 -> 42. Nest's trigger resolves: Insect token E. Net for the activation: two drains, one card drawn, and your Insect count fell from 3 to 2 (D and E).",
         "citations": [
           {
             "rule": "608.2b",
-            "quote": "A target that’s no longer in the zone it was in when it was targeted is illegal."
-          },
-          {
-            "rule": "704.5f",
-            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+            "quote": "A target that\u2019s no longer in the zone it was in when it was targeted is illegal."
           }
         ]
       },
       {
         "n": 7,
         "action": "ACTIVATION 3: pay 1 life (42 -> 41), sacrifice Insect D, target Insect E. Same shape as activation 2.",
-        "effect": "DRAIN 5 (Insect D dies): opponent A 39 -> 38, you 41 -> 42. Counter on Insect E kills it; DRAIN 6: opponent B 39 -> 38, you 42 -> 43. Draw (library 57, hand 2). Nest makes Insect token F. Your Insect count: 1.",
+        "effect": "DRAIN 5 (Insect D dies): opponent A 39 -> 38, you 41 -> 42. The counter makes Insect E 0/0 and state-based actions bury it; DRAIN 6: opponent B 39 -> 38, you 42 -> 43. Draw (library 57, hand 2). Nest makes Insect token F. Your Insect count: 1.",
         "citations": [
           {
-            "rule": "405.5",
-            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
-          },
-          {
             "rule": "704.5f",
-            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+            "quote": "If a creature has toughness 0 or less, it\u2019s put into its owner\u2019s graveyard."
           }
         ]
       },
       {
         "n": 8,
-        "action": "ACTIVATION 4 — the last one that drains. With a single Insect left there is no second Insect to target, and Yawgmoth cannot be targeted by his own ability: he is a Human Cleric and has protection from Humans, so his ability's source has the stated quality. The only remaining legal creature target is Blood Artist itself. Pay 1 life (43 -> 42), sacrifice Insect F, target Blood Artist.",
-        "effect": "DRAIN 7 (Insect F dies): opponent C 39 -> 38, you 42 -> 43. Yawgmoth's ability resolves: a -1/-1 counter on Blood Artist makes it -1/0. Draw (library 56, hand 3). Nest triggers. State-based actions bury Blood Artist for having toughness 0 — and Blood Artist's own trigger is a leaves-the-battlefield ability, so it sees its own death: DRAIN 8, opponent D 39 -> 38, you 43 -> 44. Nest's trigger resolves into Insect token G. Blood Artist is now in the graveyard and NO further death in this line drains anyone.",
+        "action": "ACTIVATION 4 in this line \u2014 the one that consumes the payoff. With a single Insect left there is no second Insect to target, and Yawgmoth cannot be targeted by his own ability: he is a Human Cleric permanent, so his ability is an ability from a source with the stated quality and his protection from Humans forbids it. The only remaining legal creature target is Blood Artist itself. Pay 1 life (43 -> 42), sacrifice Insect F, target Blood Artist.",
+        "effect": "DRAIN 7 (Insect F dies): opponent C 39 -> 38, you 42 -> 43. Yawgmoth's ability resolves: a -1/-1 counter makes Blood Artist -1/0. Draw (library 56, hand 3). Nest triggers. State-based actions bury Blood Artist for toughness 0. Blood Artist's ability is a leaves-the-battlefield ability, and leaves-the-battlefield abilities are among the zone-change triggers that LOOK BACK IN TIME. The mechanism is the general rule those exceptions hang off: for such an ability the game looks back in time to determine if it triggers, using the existence of those abilities and the appearance of objects immediately prior to the event. So Blood Artist sees its own death: DRAIN 8, opponent D 39 -> 38, you 43 -> 44. Nest's trigger resolves into Insect token G. Blood Artist is now in the graveyard and NO further death in this line drains anyone.",
         "citations": [
           {
             "rule": "702.16b",
-            "quote": "A permanent or player with protection can’t be targeted by spells with the stated quality and can’t be targeted by abilities from a source with the stated quality."
-          },
-          {
-            "rule": "122.1a",
-            "quote": "Similarly, -X/-Y counters subtract from power and toughness."
+            "quote": "A permanent or player with protection can\u2019t be targeted by spells with the stated quality and can\u2019t be targeted by abilities from a source with the stated quality."
           },
           {
             "rule": "704.5f",
-            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+            "quote": "If a creature has toughness 0 or less, it\u2019s put into its owner\u2019s graveyard."
           },
           {
             "rule": "603.6c",
             "quote": "Leaves-the-battlefield abilities trigger when a permanent moves from the battlefield to another zone, or when a phased-in permanent leaves the game because its owner leaves the game."
+          },
+          {
+            "rule": "603.10a",
+            "quote": "Some zone-change triggers look back in time. These are leaves-the-battlefield abilities"
+          },
+          {
+            "rule": "603.10",
+            "quote": "the game \u201clooks back in time\u201d to determine if those abilities trigger, using the existence of those abilities and the appearance of objects immediately prior to the event"
           }
         ]
       },
       {
         "n": 9,
-        "action": "ANSWER (a), part 1 — exact activation count, and why the alternatives do not extend it.",
-        "effect": "FOUR completed activations of 'Pay 1 life, Sacrifice another creature' drain (the one already on the stack plus three more), together with ONE completed activation of the proliferate ability. A fifth sacrifice activation is legal and pointless: sacrifice Insect G choosing zero targets — 'up to one target creature' permits zero, so the ability is not targeted and cannot fail for want of a target — but Blood Artist is dead, so it drains nobody, and afterwards Yawgmoth is your only creature and the cost 'Sacrifice another creature' can no longer be paid. So: 4 draining activations, 5 sacrifice activations in total, 6 activations of Yawgmoth's abilities in all. Two alternatives were checked and are worse or equal, never better. (i) Skipping proliferate: kill Grizzly Bears with activation 2 instead. That still gives 4 draining sacrifice activations but only SEVEN drains, because the Bears kill then costs a body. (ii) Zero-target activations: each yields one drain instead of two while costing the same body, so they never beat targeting an Insect. (iii) Targeting the very Insect being sacrificed: that target is in the graveyard at resolution, so the ability does not resolve at all — no counter, no Nest token, one drain instead of two.",
+        "action": "ANSWER (a), part 1 \u2014 separate what the BOARD fixes from what the LINE chooses.",
+        "effect": "BOARD-LEVEL INVARIANT (the answer to 'how far does this board go'): a maximum of EIGHT creature deaths occur while Blood Artist is on the battlefield, hence EIGHT Blood Artist triggers and EIGHT life removed. That number is a property of the board and every optimal line reaches it. THE ACTIVATION COUNT IS LINE-DEPENDENT and is not a board property. Line 1, the one resolved in steps 1-8: four draining sacrifice activations plus one proliferate, after which a fifth sacrifice activation (sacrifice Insect G, zero targets \u2014 'up to one target creature' permits zero, so the ability is not targeted at all) is legal but drains nobody because Blood Artist is already dead; that leaves Yawgmoth as your only creature and 'Sacrifice another creature' can never be paid again. Line 2, equally optimal: at step 8 instead sacrifice Insect F choosing ZERO targets (DRAIN 7; Blood Artist survives, no counter and so no Nest token), then as a fifth activation sacrifice BLOOD ARTIST itself with zero targets \u2014 its own leaves-the-battlefield trigger sees its death, DRAIN 8. That line runs FIVE draining sacrifice activations for the same eight drains, and ends at 43 life, library 55, with no Insect token G. So: 8 drains is the board's number; '4 draining activations' belongs to line 1 and '5' to line 2. ALTERNATIVES CHECKED AND REJECTED. (i) Skipping proliferate yields SEVEN drains, and the reason previously given \u2014 that killing the Bears with an activation 'costs a body' \u2014 is WITHDRAWN as false: that activation is body-NEUTRAL for you (sacrifice one Insect, Nest returns one, and the Bears was never yours). The true reason is that proliferate removes the Bears while spending no creature at all, so you enter the rest of the line one body richer, and on this board the remaining reach from any state is (drains so far) + 2 x (your Insects), because each Insect converts into its own death plus the death of whatever your counter kills. Proliferate branch: 2 + 2x3 = 8. Activation branch: 3 + 2x2 = 7. The extra body is worth 2 and the forgone activation only bought 1. (ii) Zero-target activations taken mid-line yield 1 drain instead of 2 for the same body, so they never beat targeting an Insect while a second Insect exists. (iii) Targeting the very creature you are sacrificing: the sacrifice puts it into the graveyard, so by the time the ability resolves it is no longer in the zone it was in when it was targeted and the only target is illegal, so the ability does not resolve (and being a token it has by then ceased to exist as well \u2014 704.5d, cited at step 1 \u2014 which is stronger than the illegality needs), costing you the counter, the Nest token AND the card draw, for one drain instead of two.",
         "citations": [
           {
             "rule": "115.6",
-            "quote": "A spell or ability that requires targets may allow zero targets to be chosen."
+            "quote": "A spell or ability that requires targets may allow zero targets to be chosen. Such a spell or ability is still said to require targets, but that spell or ability is targeted only if one or more targets have been chosen for it."
           },
           {
             "rule": "608.2b",
-            "quote": "If all its targets, for every instance of the word “target,” are now illegal, the spell or ability doesn’t resolve."
+            "quote": "If all its targets, for every instance of the word \u201ctarget,\u201d are now illegal, the spell or ability doesn\u2019t resolve."
           }
         ]
       },
       {
         "n": 10,
-        "action": "ANSWER (a), part 2 — what ends it. Test each candidate bound named in the question.",
-        "effect": "NOT your library: you drew 4 cards and 56 of 60 remain, so the deck-out state-based action is never approached. NOT your life: you paid 1 life per sacrifice activation and gained 1 life per drain, 4 paid against 8 gained, so you finish at 44, HIGHER than you started — life is a net gain and can never be the constraint while Blood Artist lives. NOT the opponent's creature toughness in the sense of a long grind: Grizzly Bears' toughness of 2 sets the size of the free window at exactly ONE body-neutral activation, and that window closes in step 3. What actually ends the engine is RUNNING OUT OF LEGAL TARGETS AND BODIES: once Grizzly Bears is dead, every remaining creature target (1/1 Insect, 0/1 Blood Artist) dies to a single counter and is buried by state-based action before Nest's replacement token is even on the stack, so each activation nets minus one creature; Yawgmoth's protection from Humans forbids him as a target and 'another creature' forbids him as the sacrifice; and the last legal target is Blood Artist, so the engine's final act is eating its own payoff. This is a strictly finite chain, not a loop with no way to stop, so no draw question arises.",
+        "action": "ANSWER (a), part 2 \u2014 what ends it. Test each candidate bound named in the question.",
+        "effect": "NOT your library: line 1 draws 4 cards and 56 of 60 remain (line 2 draws 5 and leaves 55), so the deck-out state-based action is never approached. NOT your life: you pay 1 life per sacrifice activation and gain 1 life per drain, 4 paid against 8 gained, so you finish at 44 \u2014 HIGHER than you started. Life is a net gain and can never be the constraint while Blood Artist lives. NOT opposing toughness as a grind: Grizzly Bears' toughness of 2 supplies exactly ONE survivable counter, and that window closes in step 3. What ends the engine is RUNNING OUT OF BODIES AND LEGAL TARGETS, by arithmetic: once Grizzly Bears is dead, every remaining creature target (a 1/1 Insect, the 0/1 Blood Artist) dies to a single counter, so such an activation removes two of your creatures while Nest returns one \u2014 net minus one. (Separately and truly: state-based actions bury the target before Nest's trigger is put on the stack, which is why the replacement Insect always arrives after the death it replaces and can never be that activation's target. That is a targeting fact, not the source of the minus one.) Yawgmoth's protection from Humans forbids him as a target and 'another creature' forbids him as the sacrifice, so the last legal target is Blood Artist and the engine's final act is eating its own payoff. This is a strictly finite chain, not a loop with no way to stop, so no draw question arises.",
         "citations": [
           {
             "rule": "704.5b",
@@ -249,12 +249,12 @@
       },
       {
         "n": 11,
-        "action": "ANSWER (b) — total reach across the pod, and the straight yes/no.",
-        "effect": "EIGHT life total is removed from the opposing side, out of 160. Blood Artist's ability contains one instance of the word 'target' and the targets are declared when the trigger is put on the stack, so exactly one player is chosen per trigger and one player loses exactly 1 life per creature death. Eight creature deaths occurred while Blood Artist was on the battlefield (Insect A, Grizzly Bears, Insect B, Insect C, Insect D, Insect E, Insect F, Blood Artist itself), so there were eight triggers and eight points of life loss, no matter how they are aimed. Spread evenly the pilot takes 2 from each opponent: 38 / 38 / 38 / 38. Concentrated on one player it takes that player from 40 to 32 and leaves the other three untouched at 40. NO — this line cannot reduce all four opponents from 40 to 0. It falls short by 152 life, and the requirement is not a few more iterations but 160 creature deaths with Blood Artist on the battlefield against the 8 this board produces. The single-target wording is doing a quarter of the work of a wording like 'each opponent loses 1 life': the same 8 deaths through Zulaport Cutthroat or Bastion of Remembrance would remove 32 life from the table rather than 8, and even that does not kill a five-player pod. Without proliferate the figure is 7, distributed 2 / 2 / 2 / 1, and the answer is the same NO.",
+        "action": "ANSWER (b) \u2014 total reach across the pod, and the straight yes/no.",
+        "effect": "EIGHT life total is removed from the opposing side, out of 160. Blood Artist's ability says 'target player loses 1 life' \u2014 one instance of the word target, singular \u2014 and a triggered ability's targets are declared when it is put on the stack, by the same announcement process a spell uses. Each of the eight triggers is therefore a SEPARATE ability object making its own single choice, so the eight may be spread or all aimed at one player, but no single trigger can ever reach more than one. Eight creature deaths occurred while Blood Artist was on the battlefield (Insect A, Grizzly Bears, Insect B, Insect C, Insect D, Insect E, Insect F, Blood Artist itself), so eight triggers and eight points of life loss. Spread evenly the pilot takes 2 from each opponent: 38 / 38 / 38 / 38. Concentrated on one player it takes that player from 40 to 32 and leaves the other three at 40. NO \u2014 this line cannot reduce all four opponents from 40 to 0. It falls short by 152, and the requirement is not a few more iterations but 160 creature deaths with Blood Artist on the battlefield against the 8 this board produces. The single-target wording is doing a fraction of the work of 'each opponent loses 1 life', but the substitute figure is NOT one number, and the reason is BODIES rather than the Bears. This board holds three creature bodies: Blood Artist, Insect A (already sacrificed to pay the cost) and Insect B. Both substitutes read 'creature you control' \u2014 Zulaport Cutthroat 'this creature or another creature you control dies', Bastion of Remembrance 'a creature you control dies' \u2014 so both miss Grizzly Bears, opponent A's creature, identically; that is the same one death for each and it is not what separates them. ZULAPORT CUTTHROAT IS ITSELF A CREATURE. Substituted into Blood Artist's slot it preserves all three bodies, so the terminal activation still has a legal creature target (Zulaport itself), Zulaport dies as the engine's final act and its own leaves-the-battlefield trigger sees that death: SEVEN deaths of creatures you control, the seventh being the drainer itself, and 7 x 4 = 28 life removed. Penalty against Blood Artist's 8: 3.5x. BASTION OF REMEMBRANCE IS AN ENCHANTMENT AND NEVER DIES. Substituted into that same slot it REMOVES a body and leaves two, so the terminal activation has no legal creature target at all \u2014 Yawgmoth is unreachable through protection from Humans \u2014 it takes zero targets, Bastion is never on the receiving end of anything, and only Insects A through F die: SIX deaths of creatures you control, and 6 x 4 = 24 life removed. Penalty: 3.0x. SISTER-STACK RECONCILIATION, stated LIKE-FOR-LIKE so this does not read as self-contradiction. Both substitution figures above are computed on a WITH-proliferate line (the proliferate of step 5), so each may only be set against a with-proliferate figure. Stack 003's board is identical to this one but for the drainer slot and it also runs the proliferate, so its 28 for Zulaport IS the 28 reached here \u2014 like-for-like, and it stands. Stack 002's headline 28 is a DIFFERENT QUANTITY: it is 002's NO-proliferate board invariant, and 002 carries a separate proliferate_variant reporting 8 deaths of creatures you control, 32 life removed, each opponent at 32 and you at 43, with the explicit instruction that the two are never blended. So the like-for-like Bastion comparison is this board's 24 against 002's 32, NOT against 002's 28. The whole of that 8-life gap is ONE BODY: 002's board carries a 1/1 white Human Soldier token \u2014 the very token Bastion's own enters-the-battlefield ability creates \u2014 which this board does not, so 002 runs its with-proliferate line from three creature bodies (Insect A, Insect B, the Soldier) where this board has two (Insect A, Insect B). Under step 9's own rule an extra body on this engine is worth TWO deaths, its own plus the death of whatever its counter kills, so the delta is +2 deaths and +2 x 4 = +8 life: 6 deaths / 24 life here, 8 deaths / 32 life there. The +2 holds exactly even though a Bastion line's TERMINAL body yields only one death (with no creature drainer to receive the last counter, the final activation takes zero targets), because both boards pay that same terminal penalty once. It is a two-death delta, not the one-death 'restored seventh death' asserted in the previous iteration, which is withdrawn as false. Neither figure is a correction to 002. Without the proliferate the Blood Artist figure is 7, distributed 2 / 2 / 2 / 1, and the answer is the same NO.",
         "citations": [
           {
-            "rule": "601.2c",
-            "quote": "The same target can’t be chosen multiple times for any one instance of the word “target” on the spell."
+            "rule": "603.3d",
+            "quote": "The remainder of the process for putting a triggered ability on the stack is identical to the process for casting a spell listed in rules 601.2c\u2013d."
           },
           {
             "rule": "115.1",
@@ -268,7 +268,7 @@
       }
     ],
     "final_state": {
-      "summary": "NOT A KILL, AND NOT EVEN CLOSE — a second refutation of the 'near-infinite' family on this deck, for a different reason than stack 001. The Yawgmoth + Nest of Scarabs engine is body-neutral only while some creature can absorb a -1/-1 counter and survive it. On this board exactly one creature can: Grizzly Bears, toughness 2, and its single survivable counter is spent by the ability already on the stack. After that every legal target is a 1/1 Insect or the 0/1 Blood Artist, each of which dies to one counter and is buried by state-based action BEFORE Nest of Scarabs' trigger is even put on the stack, so the replacement Insect is permanently one iteration behind and each activation nets minus one creature. Yawgmoth's protection from Humans bars him as a target and 'another creature' bars him as the sacrifice, so the last legal target is Blood Artist itself and the engine ends by eating its own payoff. Best line, using the {B}{B} proliferate on Grizzly Bears while it holds exactly one counter (the only permanent in the game with a counter, and the only use that turns a card into a body): FOUR draining activations of the sacrifice ability plus ONE proliferate, a fifth non-draining sacrifice activation available afterward, EIGHT creature deaths and therefore EIGHT Blood Artist triggers. Without proliferate the figure is seven. The engine is bounded by legal targets and bodies — not by your library (56 of 60 cards remain), not by your life (40 -> 44, a net gain, since you pay 1 and gain 1 per activation and most activations drain twice), and not by any mandatory-loop draw, because the chain terminates on its own. Total reach: 8 life out of 160, spread 2 / 2 / 2 / 2 or concentrated for 40 -> 32 on one player. The answer to (b) is NO, short by 152. The single-target wording costs a factor of four against a four-opponent pod: the same 8 deaths routed through Zulaport Cutthroat or Bastion of Remembrance would remove 32. Deckbuilding consequence: Blood Artist is a reach card only against ONE player, and the Yawgmoth engine needs a high-toughness creature (or a recursive body) to be more than a five-death burst — no amount of table presence fixes a drain that divides by four.",
+      "summary": "NOT A KILL, AND NOT EVEN CLOSE \u2014 a further refutation of the 'near-infinite' family on this deck, for a different reason than stack 001. This file claims NO ordinal: sister stack 003 holds the 'second time' on this deck and this refutation comes after it. The Yawgmoth + Nest of Scarabs engine is body-neutral only while the creature taking the -1/-1 counter either survives it or is not yours. On this board exactly one creature survives a counter: Grizzly Bears, toughness 2, and its single survivable counter is spent by the ability already on the stack. After that every legal target is a 1/1 Insect or the 0/1 Blood Artist, and killing one of your own creatures makes the activation minus one body by plain arithmetic \u2014 two of your creatures leave, Nest returns one. (The replacement token also arrives after the death, since state-based actions run before waiting triggers reach the stack; that is why it can never be the same activation's target, but it is not what makes the engine body-negative.) Yawgmoth's protection from Humans bars him as a target and 'another creature' bars him as the sacrifice, so the last legal target is Blood Artist itself and the engine ends by eating its own payoff. THE BOARD'S NUMBER IS EIGHT: eight creature deaths with Blood Artist on the battlefield, eight triggers, eight life removed, and exhaustive line-space search finds nothing better. The ACTIVATION COUNT is line-dependent and is not a property of the board: the line resolved here runs four draining sacrifice activations plus one proliferate (and a fifth, non-draining sacrifice activation is then available), while an equally optimal zero-target line runs FIVE draining sacrifice activations for the same eight drains, ending at 43 life with 55 cards and no Insect token G. The proliferate is worth exactly one extra drain because its cost is mana and a card rather than a creature: it removes the Bears while spending no body, and on this board remaining reach is (drains so far) + 2 x (your Insects). Without it the figure is seven. The engine is bounded by bodies and legal targets \u2014 not by your library (56 of 60 remain in the line shown), not by your life (40 -> 44, a net gain), and not by any mandatory loop, because the chain terminates on its own. Total reach: 8 life out of 160, spread 2 / 2 / 2 / 2 or concentrated for 40 -> 32 on one player. The answer to (b) is NO, short by 152. The single-target penalty is two different factors, and the split is about BODIES, not about Grizzly Bears: both substitutes read 'creature you control' and both miss the Bears identically. This board holds three creature bodies (Blood Artist, Insect A, Insect B). Zulaport Cutthroat IS a creature, so swapping it in keeps three bodies, it dies as the engine's final act and sees its own death \u2014 seven own-creature deaths, 7 x 4 = 28 life, a 3.5x penalty, and the same 28 sister stack 003 reaches on a board of this shape. Bastion of Remembrance is an ENCHANTMENT and never dies, so swapping it in removes a body: the terminal activation has no legal creature target, takes zero targets, and only six own creatures die \u2014 6 x 4 = 24 life, a 3.0x penalty. Both substitution figures are WITH-proliferate and therefore compare only against with-proliferate figures. 003's Zulaport 28 is like-for-like \u2014 identical board but for the drainer slot, proliferate also taken \u2014 and agrees exactly. Sister stack 002's headline 28 is its NO-proliferate BOARD INVARIANT; 002's comparable figure is its own proliferate_variant of 8 deaths / 32 life / opponents at 32, and 002 states the two are never blended \u2014 so the like-for-like Bastion comparison is 24 against 32, not against 28. That 8-life gap is exactly ONE BODY: 002's board carries a 1/1 white Human Soldier token (the token Bastion's own ETB makes) that this board does not, so 002 runs three creature bodies to this board's two, and by step 9's own rule a body is worth +2 deaths / +8 life \u2014 6 deaths / 24 here becomes 8 deaths / 32 there. It is a two-death delta, not a one-death 'restored seventh death'. Neither figure corrects 002. Deckbuilding consequence: Blood Artist is a reach card only against ONE player, and the Yawgmoth engine needs a high-toughness creature (or a recursive body) to be more than a five-death burst \u2014 no amount of table presence fixes a drain that divides by four.",
       "you": {
         "life": 44,
         "battlefield": [
@@ -284,15 +284,16 @@
           "the card discarded to proliferate"
         ],
         "hand": [
-          "3 cards drawn from the four sacrifice activations, minus the one discarded to proliferate"
+          "3 cards \u2014 4 drawn across the four sacrifice activations, minus the 1 discarded to proliferate"
         ],
         "library": 56,
         "stack": "empty",
         "notes": [
-          "Life path: 40 start, minus 1 per sacrifice activation (4 total), plus 1 per Blood Artist trigger (8 total) = 44.",
-          "Every Insect token that left the battlefield ceased to exist (704.5d); only Insect token G remains.",
-          "One Swamp is still untapped; the {B}{B} proliferate was the only mana spent, and there is no second proliferate available.",
-          "A fifth sacrifice activation (sacrifice Insect G, zero targets, draw a card) is legal and drains nobody; taking it leaves you with no creature other than Yawgmoth and no way to pay the cost again."
+          "THIS IS ONE OF TWO EQUALLY OPTIMAL OUTCOMES. It is the end state of line 1 (step 8 targets Blood Artist). Line 2 (step 8 takes zero targets, then a fifth activation sacrifices Blood Artist itself) removes the same 8 life but ends at 43 life, library 55, hand 4 cards (5 drawn across five sacrifice activations, minus the 1 discarded to proliferate), and no Insect token G on the battlefield. Both lines cap at 8 drains.",
+          "Life path for line 1: 40 before the on-stack activation's cost, minus 1 per sacrifice activation (4 total), plus 1 per Blood Artist trigger (8 total) = 44.",
+          "Every Insect token that left the battlefield ceased to exist (704.5d); only Insect token G remains in line 1.",
+          "One Swamp is still untapped; the {B}{B} proliferate was the only mana spent. There is no second proliferate available, and the bar is MANA \u2014 one untapped Swamp against a {B}{B} activation cost. The discard is NOT the bar: the hand shown holds 3 cards, any of which could pay it. Secondarily, even with the mana a second proliferate would find nothing on this board: proliferate can only add to counters already present, and once Grizzly Bears is dead no permanent or player in the game has a counter.",
+          "In line 1 a fifth sacrifice activation (sacrifice Insect G, zero targets, draw a card) is legal and drains nobody; taking it leaves you with no creature other than Yawgmoth and no way to pay the cost again. The board reported above is the state BEFORE that optional fifth activation, which is why verdict.a_line1_total_sacrifice_activations reads 5 (four taken plus this one available) while the battlefield still shows Insect token G and the library still reads 56."
         ]
       },
       "opponents": [
@@ -301,7 +302,7 @@
           "life": 38,
           "battlefield": [],
           "lost_this_turn": false,
-          "notes": "Grizzly Bears died to its second -1/-1 counter (from proliferate) and is in the graveyard."
+          "notes": "Grizzly Bears died to its second -1/-1 counter (from proliferate) and is in the graveyard. It was never your creature, which is why a 'creature you control' drainer would not have triggered on it."
         },
         {
           "name": "opponent_b",
@@ -323,11 +324,17 @@
         }
       ],
       "verdict": {
-        "a_completed_sacrifice_activations_that_drain": 4,
-        "a_completed_sacrifice_activations_total": 5,
-        "a_completed_proliferate_activations": 1,
-        "a_completed_activations_without_using_proliferate": 4,
-        "a_what_ends_it": "running out of legal targets and bodies — once Grizzly Bears is dead every legal creature target dies to a single -1/-1 counter and state-based actions bury it before Nest of Scarabs' trigger reaches the stack, so each activation nets minus one creature; Yawgmoth cannot be targeted (protection from Humans) or sacrificed ('another creature'), so the final legal target is Blood Artist itself",
+        "a_board_level_invariant_max_blood_artist_triggers": 8,
+        "a_activation_count_is_line_dependent": true,
+        "a_line1_draining_sacrifice_activations": 4,
+        "a_line1_total_sacrifice_activations": 5,
+        "a_line1_proliferate_activations": 1,
+        "a_line2_draining_sacrifice_activations": 5,
+        "a_line2_total_sacrifice_activations": 5,
+        "a_line2_end_state": "same 8 drains; you end at 43 life, library 55, no Insect token G",
+        "a_draining_sacrifice_activations_without_proliferate": 4,
+        "a_total_sacrifice_activations_without_proliferate": 5,
+        "a_what_ends_it": "running out of bodies and legal targets \u2014 once Grizzly Bears is dead, every legal creature target is one of yours and dies to a single -1/-1 counter, so two of your creatures leave while Nest of Scarabs returns one: net minus one per activation, by arithmetic. Yawgmoth cannot be targeted (protection from Humans) or sacrificed ('another creature'), so the final legal target is Blood Artist itself.",
         "a_bounded_by_library": false,
         "a_bounded_by_your_life": false,
         "a_bounded_by_opponent_creature_toughness": "only in the sense that Grizzly Bears' toughness of 2 sets the free window at exactly one body-neutral activation, which is the activation already on the stack",
@@ -335,254 +342,215 @@
         "b_total_life_removed": 8,
         "b_total_life_removed_without_proliferate": 7,
         "b_opposing_life_pool": 160,
-        "b_distribution_if_spread": "2 / 2 / 2 / 2 — all four opponents end at 38",
-        "b_distribution_if_concentrated": "8 on one opponent — that player ends at 32, the other three at 40",
+        "b_distribution_if_spread": "2 / 2 / 2 / 2 \u2014 all four opponents end at 38",
+        "b_distribution_if_concentrated": "8 on one opponent \u2014 that player ends at 32, the other three at 40",
         "b_can_it_take_all_four_from_40_to_0": false,
         "b_shortfall": 152,
         "b_deaths_required_for_the_table_kill": 160,
-        "b_single_target_penalty": "Blood Artist converts 8 creature deaths into 8 life lost across the pod; a drainer worded 'each opponent loses 1 life' (Zulaport Cutthroat, Bastion of Remembrance) converts the same 8 deaths into 32"
+        "b_single_target_penalty": "Blood Artist converts 8 creature deaths into 8 life lost across the pod. The substitute figure splits on whether the drainer is itself a BODY; both substitutes read 'creature you control' and both miss Grizzly Bears (opponent A's) identically, so the Bears is not what separates them. Zulaport Cutthroat IS a creature: swapped into Blood Artist's slot it keeps this board at three creature bodies, dies as the engine's final act and sees its own death, converting 7 deaths of creatures you control into 7 x 4 = 28 life \u2014 factor 3.5, the same 28 sister stack 003 reaches on a board of this shape. Bastion of Remembrance is an ENCHANTMENT and never dies: swapped into that slot it removes a body, the terminal activation has no legal creature target (Yawgmoth is unreachable through protection from Humans) and takes zero targets, so only 6 creatures you control die \u2014 6 x 4 = 24 life, factor 3.0. BOTH substitution figures are WITH-proliferate and must be set only against with-proliferate figures. 003's Zulaport 28 is like-for-like (identical board but for the drainer slot, proliferate also taken) and agrees. Sister stack 002's headline 28 is its NO-proliferate BOARD INVARIANT; 002's own proliferate_variant reports 8 deaths / 32 life / opponents at 32, and 002 states the two are never blended \u2014 so the like-for-like Bastion comparison is this board's 24 against 002's 32, not against 28. The gap is one body: 002's board carries the 1/1 white Human Soldier token Bastion's ETB makes and this board does not, giving 002 three creature bodies to this board's two, and by step 9's own rule that body is worth +2 deaths / +8 life (6 deaths / 24 here, 8 deaths / 32 there), NOT the +1 death asserted previously. Neither figure corrects 002."
       }
     }
   },
   "checker": {
-    "verdict": "fail",
-    "summary": "Mechanical gate passes. The HEADLINE REFUTATION IS CORRECT and was independently reproduced by exhaustive search over the whole line space: 8 creature deaths, 8 Blood Artist triggers, 8 life removed from a 160-life pod, bounded by bodies/legal targets rather than by library (56 of 60) or life (40 -> 44 in the stated line), and 7 without the proliferate. Every one of the 30 citations is a real rule quoted verbatim, and 28 of them carry their claim. The artifact nevertheless fails on six substantive defects, none of which overturn the NO: (1) the Zulaport/Bastion comparison figure of 32 is wrong -- both cards read 'creature you control', Grizzly Bears is opponent A's, so the same board yields 28, which is what sister stack 003 computes; (2) step 9's reason for the no-proliferate figure ('the Bears kill then costs a body') is disproved -- that activation is body-NEUTRAL for you; (3) '4 draining activations / the fifth is pointless' is line-dependent, not a property of the board, and the question asked for the board's number; (4) 603.6c does not carry 'sees its own death' (603.10a does, uncited); (5) 601.2c in step 11 is a mid-paragraph fragment that does not establish one-player-per-trigger and sits next to the claim it superficially contradicts; (6) step 1 narrates the SBA check after the trigger reaches the stack, reversing the 117.5 ordering that sister stack 001 established. Fix and re-issue; do not soften the verdict.",
+    "verdict": "pass",
+    "summary": "Judged from scratch, adversarially; the prior checker block was not read as evidence. Mechanical gate: OK (contract holds), and --scenario-only also OK. All 32 (step, rule) citations fetched in full with lookup-rule against the June 19, 2026 CR and judged against ENTIRE rule texts, not the quoted fragments: 32 supported, 0 unsupported, 0 irrelevant, 0 misquoted. Citation count unchanged at 32 (5/1/4/4/4/1/1/5/2/2/3 by step). No missing-step findings. CARD TEXT VERIFIED against data/decks/yawgmoth-swarm/cards.json: Yawgmoth 2/4 Legendary Creature - Human Cleric with protection from Humans and both quoted abilities; Blood Artist 0/1 Creature - Vampire, 'Whenever this creature or another creature dies, target player loses 1 life and you gain 1 life' (no controller restriction, ONE instance of 'target'); Zulaport Cutthroat 1/1 with 'another creature you control'; Bastion of Remembrance an Enchantment whose ETB creates a 1/1 white Human Soldier token; Nest of Scarabs 'Whenever you put one or more -1/-1 counters on a creature'. Every substantive reading in the file matches. FIGURES INDEPENDENTLY REPRODUCED, not accepted. I wrote an exhaustive depth-first search over the whole move space (every sacrifice choice x every target choice including zero-target and the fizzle case, x proliferate timing, bounded by the single {B}{B} the three Swamps allow), and re-ran it with memoisation disabled to confirm the memo was not masking a better line. Results: Blood Artist 8 deaths WITH proliferate and 7 without; Zulaport substituted into Blood Artist's slot 7 deaths = 28 life with proliferate (6 = 24 without); Bastion substituted into that slot 6 deaths = 24 life with proliferate (5 = 20 without); and, as an independent control, 002's ACTUAL board (Bastion plus the Soldier token) 8 deaths = 32 with proliferate and 7 = 28 without. Every headline figure in the file is confirmed: 8, 7, 28, 24, and the 3.5x / 3.0x penalty factors. The line-1 and line-2 ledgers also reconcile exactly on life (44 / 43), library (56 / 55), hand (3 / 4) and the 2/2/2/2 distribution. SISTER-STACK RECONCILIATION: VERIFIED BY READING 002 AND 003 THEMSELVES, and it is now correct in all three places (steps[10].effect, final_state.summary, verdict.b_single_target_penalty), which I checked are mutually consistent. (1) Both substitution figures here are with-proliferate - confirmed by my search, since the no-proliferate values would be 24 and 20, not 28 and 24. (2) 003's board is byte-for-byte 004's but for the drainer slot (Zulaport 1/1 for Blood Artist 0/1, both 1-counter-lethal, so body-equivalent), 003 takes the same proliferate, and 003's own summary reports SEVEN deaths / 28 life. Like-for-like and it agrees exactly. 003's checker verdict is 'pass'. (3) 002's headline 28 is verifiably its NO-proliferate board invariant: 002's line_described says so in terms and adds 'the two are never blended', and its proliferate_variant reports creature_deaths_you_controlled 8, total_opposing_life_lost 32, each_opponent_life 32, your_life 43 - all four figures matching 004's characterisation word for word. So the like-for-like Bastion comparison is 24 against 32, not 28. CORRECT. THE +2-PER-BODY MECHANISM: CORRECT, and I verified it structurally rather than by arithmetic coincidence. On a Bastion board (no creature drainer) the closed form is deaths = d + 2n - 1, where n is the body count after the proliferate: 004's substitution has n=3 (Insects A, B and the Nest token) giving 1 + 6 - 1 = 6, and 002 has n=4 (the same three plus Bastion's own ETB Human Soldier) giving 1 + 8 - 1 = 8. The delta is exactly 2 deaths / 8 life and is attributable to exactly one body, as claimed. My exhaustive search independently returns 6 and 8 for those two boards, so the formula is not just plausible, it is the true maximum. The withdrawal of the previous 'restored seventh own-creature death' one-death explanation is correct: the delta is 2, not 1. THE TERMINAL-PENALTY CLAUSE - the subtlest claim in the file - HOLDS. The claim is that +2 per body survives even though a Bastion line's last body yields only one death, because both boards pay that penalty once. Checked: the penalty is the '-1' term in d + 2n - 1, it arises because at n=1 the final activation has no legal creature target (the last body is itself sacrificed, Yawgmoth is barred by 702.16b, and Bastion is an enchantment so 'target creature' cannot reach it) and so takes zero targets and makes no Nest token; both boards are Bastion boards and therefore each subtract exactly one such penalty, which cancels in the difference. The step-9 marginal rule is invoked legitimately: d + 2n and d + 2n - 1 have the same derivative in n, so the +2 marginal value is common to both, and the file discloses the constant-term difference in the very next clause rather than hiding it. One precision note, non-blocking: step 9's rule as literally written ('remaining reach is drains so far + 2 x your Insects') is the Blood-Artist-board closed form and would give 8 rather than 6 if applied to a Bastion board as a TOTAL; the file uses it only for the marginal value, which is valid, and states the terminal caveat explicitly. ORDINAL FIX: RESOLVED, no collision remains. 004 now claims no ordinal and defers ('sister stack 003 holds the second time on this deck and this refutation comes after it'). I grepped the whole file: every other occurrence of 'second' is innocuous (Yawgmoth's SECOND ability, the second -1/-1 counter, a second Insect, a second proliferate). 003 does claim 'for the second time on this deck' twice (step 12 effect and answers.why_not_infinite) and has passed, so the deference is to the file that holds the claim - which is also the disposition 003's own checker recommended when it flagged this conflict. 'For a different reason than stack 001' is accurate: 001's engine is genuinely UNBOUNDED but drainless (forced targeting eats the drainer on iteration one), whereas 004's is bounded by bodies and legal targets. Different refutation, correctly distinguished. HEADLINE SURVIVES: Blood Artist's reach is 8 life from a 160-life pod (7 without the proliferate), bounded by bodies and legal targets - not by library (56 of 60 remain), not by life (40 -> 44, a net gain), not by any mandatory loop. Shortfall 152; a table kill would need 160 creature deaths with Blood Artist on the battlefield. NOT LETHAL. Confirmed. MISSING-STEP AUDIT: I walked the scenario independently. Triggered abilities are put on the stack correctly and at the right moment (603.3, 603.3b, 603.3d, 117.5, 704.3); SBAs are checked at every point they matter and in the right order relative to waiting triggers, including the 704.5f-then-704.5d token ordering at step 1 that the whole death count depends on; priority is covered by 405.5 plus the scenario's stated pass-throughout assumption; no replacement effect (614) is in play, since Nest of Scarabs is a triggered ability. NO OMISSIONS FOUND. ONE NON-BLOCKING WORDING OBSERVATION, offered to the orchestrator rather than as a finding: the prose calls the Nest token the 'replacement Insect' in three places (once in the scenario's note_for_the_resolver, twice in the resolution). This is colloquial - the body that replaces the sacrificed one - and NOT a 614 replacement-effect claim: the file consistently and correctly treats Nest as a triggered ability, cites no 614, and derives the token's LATENESS, which is the triggered-ability conclusion and the opposite of what a genuine replacement effect would produce. No rules claim depends on the word. Worth a copy-edit if the manual quotes the phrase; it does not affect the verdict. VERDICT: PASS. 32 supported, 0 unsupported, 0 missing steps, all three sister-stack claims verified against the sibling files, and all figures independently reproduced by exhaustive search.",
     "findings": [
       {
         "step": 1,
         "rule": "701.21a",
         "status": "supported",
-        "note": "Verbatim; sacrifice moves the permanent from battlefield to graveyard, which is what makes Insect A's sacrifice a death."
+        "note": "Antecedent met: Insect A was sacrificed to pay the activation cost, and the rule makes that a move from the battlefield DIRECTLY to the owner's graveyard. That is what makes the next citation (700.4) apply. Full text adds only the can't-sacrifice-what-you-don't-control and no-regeneration clauses, neither of which disturbs the claim."
       },
       {
         "step": 1,
         "rule": "700.4",
         "status": "supported",
-        "note": "Verbatim; 'dies' = put into a graveyard from the battlefield. Carries the claim for a sacrificed token."
+        "note": "Converts the 701.21a zone change into a 'dies' event, which is Blood Artist's literal trigger condition. Whole rule is one sentence; no context to lose."
+      },
+      {
+        "step": 1,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "Carries the ordering claim exactly: SBAs as a single event, repeated to a fixed point, and ONLY THEN triggered abilities on the stack. The quote stops mid-sentence but the continuation ('These steps repeat in order...') strengthens rather than qualifies the claim."
+      },
+      {
+        "step": 1,
+        "rule": "704.5d",
+        "status": "supported",
+        "note": "Antecedent genuinely met: Insect A is a token now in the graveyard, a zone other than the battlefield. Correctly ordered AFTER the death, so the death event is not erased. This is the same 704.5f/701.21a-then-704.5d ordering stack 003 was passed on."
       },
       {
         "step": 1,
         "rule": "603.3",
         "status": "supported",
-        "note": "Verbatim; the trigger waits and is put on the stack the next time a player would receive priority, above the already-stacked activated ability."
-      },
-      {
-        "step": 1,
-        "rule": "115.1",
-        "status": "supported",
-        "note": "Verbatim; targets declared as part of putting the ability on the stack, which fixes Blood Artist's one target player at that moment."
-      },
-      {
-        "step": 1,
-        "rule": "704.5d",
-        "status": "supported",
-        "note": "Verbatim; the token ceases to exist in the graveyard. Correctly used to show the trigger is not undone."
-      },
-      {
-        "step": null,
-        "rule": "117.5",
-        "status": "unsupported",
-        "note": "MISSING ORDERING IN STEP 1. 117.5 and 704.3 perform state-based actions FIRST and only then put waiting triggers on the stack, so Insect A ceases to exist (704.5d) BEFORE Blood Artist's trigger reaches the stack. Step 1 narrates it the other way ('It is now put on the stack ... Insect A ... then ceased to exist') and cites neither 117.5 nor 704.3. Outcome is unchanged, but this is the exact mechanism sister stack 001 established and it is stated backwards here. State the SBA check explicitly."
+        "note": "Carries two distinct claims in this step and both are in the rule: the trigger WAITS until a player would receive priority, and it 'becomes the topmost object on the stack' \u2014 which is why Blood Artist's trigger sits above Yawgmoth's ability at pos 1 and resolves first."
       },
       {
         "step": 2,
         "rule": "405.5",
         "status": "supported",
-        "note": "Verbatim; top object resolves after all players pass. Drain 1 (opponent A 40->39, you 39->40) is correct."
+        "note": "Universal in form ('When all players pass in succession, the top (last-added) spell or ability on the stack resolves'), and the scenario's stated assumption ('every opponent passes priority throughout') supplies the antecedent at every resolution in the file. Correctly identifies pos 1 as top because it was added last."
       },
       {
         "step": 3,
         "rule": "122.1a",
         "status": "supported",
-        "note": "Verbatim; -X/-Y counters subtract from power and toughness, so Grizzly Bears becomes 1/1 and survives."
+        "note": "Directly carries 2/2 -> 1/1. Quote is the -X/-Y half of a rule whose first half is the +X/+Y case; taking the second sentence alone is not out of context, since 'Similarly' makes it a parallel statement, not a dependent one."
+      },
+      {
+        "step": 3,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "THE ACTOR CLAIM, and it holds. Nest of Scarabs' condition is 'Whenever YOU put one or more -1/-1 counters', so the identity of the actor is the whole antecedent. 608.2c's first sentence makes the CONTROLLER the one who follows the instructions; you activated Yawgmoth's ability, so you are the one putting the counter on. The rest of the rule (replacement effects, later-text-modifies-earlier) neither narrows nor contradicts this."
       },
       {
         "step": 3,
         "rule": "704.3",
         "status": "supported",
-        "note": "Verbatim; SBA check then triggers to the stack. Correctly shows Grizzly at 1/1 is not buried and Nest's trigger then goes on the stack."
+        "note": "Supports 'state-based actions are checked first'. Full text confirms the check-repeat-then-triggers loop the step relies on."
       },
       {
         "step": 3,
         "rule": "704.5f",
         "status": "supported",
-        "note": "Verbatim; used negatively (toughness 1 is not 0 or less). The rule establishes the condition being tested."
+        "note": "Used in the NEGATIVE here \u2014 Bears at toughness 1 is not 0 or less, so the SBA does not fire and it survives. The antecedent is genuinely unmet, which is the claim being made; that is a correct use of the rule, not a stretch."
       },
       {
         "step": 4,
         "rule": "115.1c",
         "status": "supported",
-        "note": "Verbatim; an activated ability's targets are chosen as it is activated. Carries 'targets locked before the cost is paid'."
+        "note": "Carries 'targets are chosen as the ability is ACTIVATED', which is the whole of the step's targeting finding \u2014 the Nest Insect does not exist yet at that moment and so can never be that activation's target."
       },
       {
         "step": 4,
         "rule": "602.2b",
         "status": "supported",
-        "note": "Verbatim; routes activation through 601.2b-i, which is what makes 601.2c and 601.2h applicable to Yawgmoth's ability."
+        "note": "The load-bearing bridge: activation follows 601.2b\u2013i, which puts target announcement (601.2c) strictly BEFORE cost payment (601.2h). Without this rule the step's ordering claim would be asserted; with it, it is derived."
       },
       {
         "step": 4,
         "rule": "601.2c",
         "status": "supported",
-        "note": "Verbatim opening sentence; target announcement precedes cost payment (601.2h), so the creature about to be sacrificed is still on the battlefield when targets are chosen and Nest's token does not yet exist."
+        "note": "Establishes target announcement as its own numbered sub-step. The long remainder (variable target counts, same-target restrictions) is irrelevant here but does not make the quoted sentence misleading."
       },
       {
         "step": 4,
         "rule": "601.2h",
         "status": "supported",
-        "note": "Verbatim; cost paid at step h, after targets at step c. Correct ordering claim."
-      },
-      {
-        "step": 4,
-        "rule": "117.5",
-        "status": "misquoted",
-        "note": "Quote is the verbatim tail sentence of 117.5 and the rule as a whole does establish 'SBAs bury the 0-toughness creature before Nest's trigger reaches the stack'. But the step deploys it as the CAUSE of 'each activation nets minus one creature' ('so the replacement Insect is always one iteration behind', repeated in step 10 and the final summary). That is a non sequitur: the -1 is pure arithmetic -- two creatures leave (the sacrifice and the killed target) and Nest returns exactly one -- and would hold identically if the token appeared instantly. Verified by exhaustive search over the line space: the token's lateness changes no body count. The lateness is a true and separate fact (it is why the fresh token cannot be that activation's target, per 115.1c); it is not why the engine is body-negative. Re-word the causal claim."
+        "note": "Establishes cost payment as a LATER sub-step than 601.2c, completing the ordering. Correctly supports 'the creature you are about to sacrifice is still on the battlefield' at target-choice time."
       },
       {
         "step": 5,
         "rule": "701.34a",
         "status": "supported",
-        "note": "Verbatim; proliferate chooses permanents/players that ALREADY have a counter, which is why Grizzly Bears (the only counter-bearing object in the game) is the only choice and why it is chosen on resolution rather than targeted."
+        "note": "Does triple duty and carries all three: (i) proliferate adds one counter of each kind already there, so Bears' single -1/-1 becomes two and it is 0/0; (ii) it says 'choose', not 'target', supporting 'chosen on resolution, not targeted'; (iii) the definition genuinely never names an actor, which is the premise the step then resolves with 608.2c. Checked the whole rule text for an actor and there is none."
+      },
+      {
+        "step": 5,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "THE SECOND ACTOR CLAIM, and the subtler one. 701.34a leaves the actor unnamed, so it must come from resolution: you control the proliferate ability, therefore you are the player who puts the counter on, therefore Nest of Scarabs' 'whenever YOU put' is satisfied. This is the correct rules route to the well-known Yawgmoth-proliferate/Nest interaction, and the rule genuinely establishes it rather than merely touching the topic."
       },
       {
         "step": 5,
         "rule": "704.5f",
         "status": "supported",
-        "note": "Verbatim; second -1/-1 counter makes Grizzly 0/0 and SBA buries it."
+        "note": "Antecedent met: Bears is now 0/0, toughness 0, so the SBA buries it. This is the death Blood Artist then triggers on."
       },
       {
         "step": 5,
         "rule": "603.3b",
         "status": "supported",
-        "note": "Verbatim; both Nest's trigger (from the counter, during resolution) and Blood Artist's trigger (from the SBA death) are waiting at the same moment, both are yours, and you order them. Correct."
+        "note": "Antecedent met: two abilities (Nest's and Blood Artist's) triggered since the last time a player received priority. Both have trigger conditions that are not 'another ability triggering', so both go on in the first part of the two-part process, and the full rule's 'in any order they choose' is what licenses 'Both triggers are yours and you order them'."
       },
       {
         "step": 6,
         "rule": "608.2b",
         "status": "supported",
-        "note": "Verbatim; a target no longer in the zone it was in is illegal, which is why the sacrificed Insect cannot be its own activation's target."
-      },
-      {
-        "step": 6,
-        "rule": "704.5f",
-        "status": "supported",
-        "note": "Verbatim; Insect C at 0/0 is buried. Drains 3 and 4 and the 3->2 Insect count are arithmetically correct."
-      },
-      {
-        "step": 7,
-        "rule": "405.5",
-        "status": "supported",
-        "note": "Verbatim. Drains 5 and 6, library 57, Insect F: all correct."
+        "note": "Carries the parenthetical exactly: the sacrificed creature is no longer in the zone it was in when targeted, so it is an illegal target. Full text's 'If all its targets ... are now illegal, the spell or ability doesn't resolve' completes the consequence, and with one instance of 'target' the 'all' is satisfied."
       },
       {
         "step": 7,
         "rule": "704.5f",
         "status": "supported",
-        "note": "Verbatim; Insect E buried."
+        "note": "Antecedent met: Insect E at 1/1 takes a -1/-1 counter, becomes 0/0, is buried. Same correct use as steps 3, 5 and 8."
       },
       {
         "step": 8,
         "rule": "702.16b",
         "status": "supported",
-        "note": "Verbatim, and it carries the claim: Yawgmoth is a Human Cleric permanent, so his own activated ability is 'from a source with the stated quality' (702.16a confirms a creature subtype quality applies to permanent sources). This is the load-bearing citation of the whole refutation -- Yawgmoth is 2/4 and could otherwise absorb three counters and turn the engine body-positive. The 'another creature' half of the claim is uncited but is plain cost text on the card and is correct."
-      },
-      {
-        "step": 8,
-        "rule": "122.1a",
-        "status": "supported",
-        "note": "Verbatim; Blood Artist 0/1 becomes -1/0."
+        "note": "Antecedent genuinely met, and the step states why rather than asserting it: Yawgmoth is a Human Cleric (verified against cards.json), the ability's source is Yawgmoth, and the protection quality is Humans \u2014 so it is 'an ability from a source with the stated quality'. This is what forces Blood Artist to be the last legal creature target."
       },
       {
         "step": 8,
         "rule": "704.5f",
         "status": "supported",
-        "note": "Verbatim; toughness 0 buries Blood Artist."
+        "note": "Antecedent met: Blood Artist is 0/1, the counter makes it -1/0, toughness 0, buried. Verified 0/1 against cards.json."
       },
       {
         "step": 8,
         "rule": "603.6c",
-        "status": "misquoted",
-        "note": "Quote is verbatim and 603.6c does establish that Blood Artist's 'whenever this creature or another creature dies' is a leaves-the-battlefield ability. But it does NOT establish the step's actual claim, 'so it sees its own death'. 603.6c only classifies; the look-back is 603.10 / 603.10a ('Some zone-change triggers look back in time. These are leaves-the-battlefield abilities...'), which is uncited even though 603.6c's own text points at it ('See also rule 603.10'). The conclusion is correct -- drain 8 is real -- but the cited rule does not carry it. Add 603.10a."
+        "status": "supported",
+        "note": "Establishes that Blood Artist's ability IS a leaves-the-battlefield ability. Checked against the rule's own template list: 'Whenever [something] is put into a graveyard from the battlefield' is named explicitly, and 700.4 (step 1) makes 'dies' exactly that phrase. The rule's exclusion ('from anywhere' triggers are never LTB) does not apply, since Blood Artist says 'dies', not 'put into a graveyard from anywhere'. Antecedent met on the text, not by analogy."
+      },
+      {
+        "step": 8,
+        "rule": "603.10a",
+        "status": "supported",
+        "note": "Puts leaves-the-battlefield abilities first on the enumerated look-back list, so the classification established by 603.6c delivers the look-back. Its worked example is this exact shape \u2014 a 'whenever a creature dies' permanent triggering even as it goes to the graveyard itself."
+      },
+      {
+        "step": 8,
+        "rule": "603.10",
+        "status": "supported",
+        "note": "Correctly cited as the general rule the 603.10a exceptions hang off, and the step says so in as many words. The quoted clause ('using the existence of those abilities and the appearance of objects immediately prior to the event') is precisely what lets Blood Artist, already gone, see its own death. Quote is a mid-sentence fragment but the surrounding text ('some triggered abilities are exceptions to this rule') makes it stronger, not weaker."
       },
       {
         "step": 9,
         "rule": "115.6",
         "status": "supported",
-        "note": "Verbatim; 'up to one target' permits zero targets and the ability is then not targeted, so it cannot fail for want of a legal target. Carries the zero-target claim."
+        "note": "Carries both halves of the zero-target claim: 'up to one target creature' may take zero, AND the ability is then not targeted at all \u2014 which is why the fifth activation and line 2 need no legal creature on the board."
       },
       {
         "step": 9,
         "rule": "608.2b",
         "status": "supported",
-        "note": "Verbatim; if all targets are illegal the ability doesn't resolve. Carries alternative (iii)."
-      },
-      {
-        "step": 9,
-        "rule": "704.5d",
-        "status": "unsupported",
-        "note": "Step 9(iii) says of targeting the creature you are sacrificing that 'that target is in the graveyard at resolution'. It is a TOKEN: by 704.5d (which this artifact itself cites in step 1) it has already ceased to exist and is in no zone at all. The conclusion still holds via 608.2b's 'no longer in the zone it was in', but the stated fact is wrong and contradicts step 1. The step also omits that a non-resolving ability costs you the card draw as well as the counter and the Nest token."
-      },
-      {
-        "step": 9,
-        "rule": null,
-        "status": "unsupported",
-        "note": "DISPROVED REASON. Step 9(i) says skipping proliferate gives seven drains 'because the Bears kill then costs a body'. It does not. Concrete line: sacrifice an Insect and target Grizzly Bears while it holds one counter -- you lose one body to the cost, Grizzly (which is NOT your body) dies, and Nest returns one token, so your body count is unchanged and the activation still yields two drains. That activation is body-NEUTRAL. The figure 7 is correct, but the real reason is the opposite: proliferate kills the Bears without spending an activation at all, so you end one body richer, and on this board a body converts to 2 drains against the 1 drain forgone -- net +1. This also contradicts step 4's own taxonomy, which is scoped to 'once Grizzly Bears is gone' but is applied here to a board where it is alive."
-      },
-      {
-        "step": 9,
-        "rule": null,
-        "status": "unsupported",
-        "note": "LINE-DEPENDENT COUNT PRESENTED AS A BOARD PROPERTY. The question asks for 'the exact number of completed activations from this board'. The artifact answers 4 draining / 5 sacrifice / 6 total and asserts the fifth sacrifice activation is 'legal and pointless' and 'drains nobody'. That is true only of the chosen line. An equally optimal line reaches the same 8 drains with FIVE draining sacrifice activations: ... activation 4 = sacrifice Insect F with ZERO targets (drain 7, Blood Artist still alive), activation 5 = sacrifice Blood Artist itself with zero targets, whose own leaves-the-battlefield trigger sees its death (drain 8). Exhaustive search confirms both lines cap at 8. Under that branch the final state differs: 5 life paid so you end at 43 not 44, library 55 not 56, and no Insect token G remains. Either state the count as line-dependent and label final_state as one of two optimal outcomes, or state the maximum drain (8) as the board-level invariant and the activation count as a property of the chosen line."
+        "note": "Supports rejected alternative (iii): the sole target is illegal, so the ability does not resolve, costing the counter, the Nest token and the draw. Correct that with one instance of 'target' the rule's 'all its targets' condition is met."
       },
       {
         "step": 10,
         "rule": "704.5b",
         "status": "supported",
-        "note": "Verbatim; the deck-out SBA. Correctly used to rule out the library as the bound -- 4 draws, 56 of 60 remain."
+        "note": "Cited to REJECT a candidate bound, and that is legitimate: the antecedent (drawing from an empty library) is never approached at 56 of 60 remaining. Naming the rule is what makes 'not your library' a checked claim rather than an assertion."
       },
       {
         "step": 10,
         "rule": "704.3",
         "status": "supported",
-        "note": "Verbatim; SBAs before triggers reach the stack. Carries 'the replacement Insect arrives after the death'."
+        "note": "Supports the separately-stated timing fact that SBAs bury the target before Nest's trigger reaches the stack. The step is careful to label this a targeting fact and NOT the cause of the body loss, which matches the rule's actual reach."
       },
       {
         "step": 11,
-        "rule": "601.2c",
-        "status": "misquoted",
-        "note": "Quote is verbatim but is a mid-paragraph fragment ('The same target can't be chosen multiple times for any one instance of the word target on the spell') pulled from a long rule about casting SPELLS, and it does not establish the claim it is attached to ('exactly one player is chosen per trigger'). That comes from the card's singular 'target player' plus 115.1. Worse, read on its own the quoted sentence is the rule nearest to CONTRADICTING the same step's b_distribution_if_concentrated claim that all eight triggers may name one player -- which is legal precisely because each trigger is a separate ability with its own instance of 'target', not because of anything in this sentence. The rule that routes a triggered ability's target choice through 601.2c-d is 603.3d, uncited. The substantive conclusion (one player per trigger; the same player may be chosen by every trigger; 8 concentrated takes 40->32) is CORRECT -- only the citation fails."
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "Carries the claim that a triggered ability's targets are declared by the same 601.2c\u2013d announcement a spell uses, which is what makes each of the eight Blood Artist triggers a separate object with its own single choice."
       },
       {
         "step": 11,
         "rule": "115.1",
         "status": "supported",
-        "note": "Verbatim; targets declared when the ability is put on the stack. This is the citation that actually carries the per-trigger target claim."
+        "note": "Directly supports 'targets are declared as part of the process of putting the spell or ability on the stack'. Combined with Blood Artist's single instance of 'target player' (verified against cards.json), this is what bounds one trigger to one player."
       },
       {
         "step": 11,
         "rule": "704.5a",
         "status": "supported",
-        "note": "Verbatim; 0 or less life loses the game. Correctly frames what a table kill would require."
-      },
-      {
-        "step": 11,
-        "rule": null,
-        "status": "unsupported",
-        "note": "WRONG NUMBER, REPEATED THREE TIMES. Step 11, final_state.summary and verdict.b_single_target_penalty all claim 'the same 8 deaths through Zulaport Cutthroat or Bastion of Remembrance would remove 32 life from the table rather than 8'. Checked against data/decks/yawgmoth-swarm/cards.json: Zulaport Cutthroat reads 'Whenever this creature or another creature YOU CONTROL dies' and Bastion of Remembrance reads 'Whenever a creature YOU CONTROL dies'. Grizzly Bears belongs to opponent A, so only 7 of the 8 deaths (Insects A-F plus the drainer itself) would trigger either card: 7 x 4 opponents = 28, not 32. Sister stack 003, on an all-but-identical board, computes exactly 28 ('SEVEN deaths of creatures you control ... 28 total life across the table'), so this artifact contradicts its own sibling. The single-target penalty on this board is a factor of 3.5, not 4. The NO verdict is unaffected."
-      },
-      {
-        "step": 11,
-        "rule": null,
-        "status": "unsupported",
-        "note": "CONFLATED VERDICT KEY. verdict.a_completed_activations_without_using_proliferate = 4 has no _that_drain / _total qualifier, unlike its two siblings a_completed_sacrifice_activations_that_drain (4) and a_completed_sacrifice_activations_total (5). Read as a total it is wrong: the no-proliferate line also runs five sacrifice activations (four draining plus one non-draining, or five draining under the alternative ordering above). Rename it to a_draining_sacrifice_activations_without_proliferate, or give both figures."
-      },
-      {
-        "step": 11,
-        "rule": null,
-        "status": "unsupported",
-        "note": "GARBLED FINAL_STATE.HAND. It reads '3 cards drawn from the four sacrifice activations, minus the one discarded to proliferate'. Four cards were drawn, not three, and the sentence as written computes to 2 while the correct end-of-line hand is 3 (4 drawn - 1 discarded), which is what step 8 says. Fix the wording."
+        "note": "Correctly supplies the win condition the answer to (b) is measured against: to kill the pod each opponent must reach 0 or less life, i.e. 160 life removed against the 8 produced."
       }
     ],
-    "iterations": 1
+    "iterations": 4,
+    "iteration_bound_override": {
+      "reason": "Iterations 1-3 were spent against the pre-swap decklist. The deck then changed (Enduring Tenacity, Nantuko Husk, Grim Poppet out; Mirkwood Bats, Carrier Thrall, Retched Wretch in), which changed cards.json and re-MISSed this routine under a new fingerprint \u2014 so pass 4 opened a genuinely new loop rather than extending the old one. The user was told explicitly that 004 sat at the cap and chose to finish it. The defect that survived iteration 3 was a CROSS-ARTIFACT CONSISTENCY claim (this file compared its with-proliferate 24 against sibling 002's without-proliferate 28, and mis-stated the mechanism as +1 per body instead of +2), not a rules or arithmetic error: the ruling itself \u2014 Blood Artist bounded at 8 life, NOT lethal \u2014 was independently reproduced in all four passes, twice by exhaustive search over the whole move space, once with a control run on 002's actual board."
+    }
   }
 }

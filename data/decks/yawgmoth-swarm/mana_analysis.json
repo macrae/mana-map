@@ -1,12 +1,12 @@
 {
   "slug": "yawgmoth-swarm",
-  "decklist_sha256": "2bdc3803d45d49074f4e441436d3adb51d7ca439af1e86c5babd223c2ef511db",
+  "decklist_sha256": "3f1962ccf462ede2a4bf563b9e781c20ac51bbae37a53953e92bb75173659c07",
   "lands": {
-    "total": 37,
+    "total": 36,
     "entries": 15,
     "enters_tapped": 4,
     "classes": {
-      "basic": 23,
+      "basic": 22,
       "fixing": 7,
       "tapped": 4,
       "untapped-dual": 5,
@@ -154,7 +154,7 @@
       },
       {
         "name": "Swamp",
-        "copies": 23,
+        "copies": 22,
         "classes": [
           "basic"
         ],
@@ -178,25 +178,33 @@
     "lands": {
       "W": 0,
       "U": 0,
-      "B": 36,
+      "B": 35,
       "R": 0,
       "G": 0
     },
     "nonland": {
       "W": 0,
       "U": 0,
-      "B": 7,
+      "B": 10,
       "R": 0,
       "G": 0
     },
     "total": {
       "W": 0,
       "U": 0,
-      "B": 43,
+      "B": 45,
       "R": 0,
       "G": 0
     },
     "producers": [
+      {
+        "name": "Agadeem's Awakening // Agadeem, the Undercrypt",
+        "kind": "ramp:ritual",
+        "cmc": 3.0,
+        "produces": [
+          "B"
+        ]
+      },
       {
         "name": "Arcane Signet",
         "kind": "ramp:rock",
@@ -214,6 +222,14 @@
       {
         "name": "Cabal Ritual",
         "kind": "ramp:ritual",
+        "cmc": 2.0,
+        "produces": [
+          "B"
+        ]
+      },
+      {
+        "name": "Carrier Thrall",
+        "kind": "ramp:dork",
         "cmc": 2.0,
         "produces": [
           "B"
@@ -252,6 +268,14 @@
         ]
       },
       {
+        "name": "Phyrexian Altar",
+        "kind": "ramp:rock",
+        "cmc": 3.0,
+        "produces": [
+          "B"
+        ]
+      },
+      {
         "name": "Pitiless Plunderer",
         "kind": "ramp:dork",
         "cmc": 4.0,
@@ -269,11 +293,11 @@
   },
   "pips": {
     "B": {
-      "total_pips": 65.0,
+      "total_pips": 70.0,
       "max_pips": 3,
-      "cards": 54,
+      "cards": 53,
       "earliest_turn": 1,
-      "effective_pips": 1
+      "effective_pips": 2
     }
   },
   "shares": {
@@ -283,46 +307,45 @@
     }
   },
   "source_targets": {
-    "B": 22
+    "B": 36
   },
   "on_curve_probability": {
     "lands_only": {
-      "B": 0.986
+      "B": 0.895
     },
     "with_rocks_and_dorks": {
-      "B": 0.996
+      "B": 0.97
     }
   },
   "ramp": {
-    "ramp:cost-reduction": 1,
-    "ramp:dork": 1,
-    "ramp:ritual": 5,
-    "ramp:rock": 3
+    "ramp:dork": 2,
+    "ramp:ritual": 6,
+    "ramp:rock": 4
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 1.0,
-      "10": 0.396,
-      "2": 0.999,
-      "3": 0.919,
-      "4": 0.803,
-      "5": 0.69,
-      "6": 0.589,
-      "7": 0.507,
-      "8": 0.453,
+      "10": 0.399,
+      "2": 0.998,
+      "3": 0.924,
+      "4": 0.812,
+      "5": 0.689,
+      "6": 0.587,
+      "7": 0.506,
+      "8": 0.451,
       "9": 0.429
     },
     "mean_available_mana_by_turn": {
       "1": 1.0,
-      "10": 7.094,
+      "10": 7.109,
       "2": 2.15,
-      "3": 3.088,
-      "4": 3.913,
-      "5": 4.608,
-      "6": 5.23,
-      "7": 5.757,
-      "8": 6.23,
-      "9": 6.679
+      "3": 3.094,
+      "4": 3.927,
+      "5": 4.621,
+      "6": 5.241,
+      "7": 5.766,
+      "8": 6.24,
+      "9": 6.691
     }
   },
   "assumptions": [
@@ -331,5 +354,7 @@
     "Hybrid pips charge half a pip to each side.",
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
-  "notes": []
+  "notes": [
+    "B: 35 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 45."
+  ]
 }

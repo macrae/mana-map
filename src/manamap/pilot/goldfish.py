@@ -43,6 +43,11 @@ MODEL_ASSUMPTIONS = [
     "Commander cast on first affordable turn (highest spending priority).",
     "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
     "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+    "Unrestricted tutors ('search your library for a card') are modeled as "
+    "wildcards: a tutor that has been drawn and is affordable fills ONE missing "
+    "any_of group. Consumed once, mana paid, and a tutor that puts the card on "
+    "top of the library costs a turn. Reported as the *_assisted figures; the "
+    "unassisted figures beside them exclude tutors entirely.",
     "Cost reducers, rituals, and extra card draw are not modeled (conservative).",
 ]
 
@@ -53,6 +58,27 @@ _NUMBER_WORDS = {
 
 _TOKEN_RE = re.compile(r"create (\w+)(?: [\w/+-]+)* tokens?", re.IGNORECASE)
 _TAP_ADD_RE = re.compile(r"\{T\}: Add ((?:\{[WUBRGC0-9]\})+)")
+
+# Deliberately the SAME pattern as ROLE_PATTERNS["tutor:unrestricted"] in
+# config.py. A second definition of "what is a tutor" would let the sim and the
+# role histogram disagree about the same 99, which is the class of bug this repo
+# has paid for before. Narrow tutors ("search your library for a LAND card") are
+# excluded on purpose — they cannot fetch a missing combo half.
+_TUTOR_RE = re.compile(r"search your library for a card", re.IGNORECASE)
+# Vampiric Tutor and Insatiable Avarice fetch to the TOP of the library, not to
+# hand: the card arrives on the next draw, so the wildcard lands a turn later.
+# The printed wording is "put that card on top." with no "of your library", so
+# match the bare phrase — an "on top of" pattern silently matches neither.
+_TUTOR_TO_TOP_RE = re.compile(r"\bon top\b", re.IGNORECASE)
+# Spree/modal tutors ("+ {2} — Search your library for a card") charge the mode
+# cost ON TOP of the card's mana value. Insatiable Avarice is cmc 1 but cannot
+# tutor for less than 3, and billing it at 1 would overstate how early the
+# wildcard is live.
+_TUTOR_MODE_COST_RE = re.compile(r"\+\s*\{(\d+)\}[^\n]{0,4}—[^\n]{0,40}search your library for a card",
+                                 re.IGNORECASE)
+# Diabolic Intent's additional cost. A tutor you cannot pay for is not a wildcard.
+_TUTOR_SAC_RE = re.compile(r"as an additional cost.{0,40}sacrifice a creature",
+                           re.IGNORECASE | re.DOTALL)
 
 
 def produced_mana(oracle_text):
@@ -74,12 +100,23 @@ def body_count(card):
 def classify(card):
     """Return a compact sim-card dict for one physical copy."""
     type_line = card.get("type_line", "")
+    text = card.get("oracle_text") or ""
+    is_land = "Land" in type_line and "Creature" not in type_line.split("//")[0]
+    is_tutor = bool(not is_land and _TUTOR_RE.search(text))
+    mode_cost = _TUTOR_MODE_COST_RE.search(text) if is_tutor else None
     return {
         "name": card["name"],
-        "is_land": "Land" in type_line and "Creature" not in type_line.split("//")[0],
+        "is_land": is_land,
         "cmc": int(card.get("cmc") or 0),
+        # What it actually costs to USE the tutor mode, which is what decides
+        # when the wildcard comes online.
+        "tutor_cmc": int(card.get("cmc") or 0) + (int(mode_cost.group(1)) if mode_cost else 0),
         "produces": 0 if "Land" in type_line else produced_mana(card.get("oracle_text")),
         "bodies": 0 if "Land" in type_line else body_count(card),
+        "tutor": is_tutor,
+        # A top-of-library tutor delivers on the next draw step, not this turn.
+        "tutor_delay": 1 if is_tutor and _TUTOR_TO_TOP_RE.search(text) else 0,
+        "tutor_needs_body": bool(is_tutor and _TUTOR_SAC_RE.search(text)),
     }
 
 
@@ -102,13 +139,20 @@ def keepable(hand):
     return GOLDFISH_MULLIGAN_MIN_LANDS <= lands <= GOLDFISH_MULLIGAN_MAX_LANDS
 
 
-def _target_met(target, names_in_hand, commander_cast):
+def _target_met(target, names_in_hand, commander_cast, tutors=0):
+    """Is this target assembled, allowing `tutors` wildcards to fill holes?
+
+    `tutors` is applied per target independently — each target is a separate
+    counterfactual ("could this have been assembled by now"), exactly as the
+    unassisted metric already treats them. It is NOT a shared pool drained
+    across targets, which would make one target's rate depend on the order the
+    others happen to be listed in.
+    """
     if target.get("commander") and not commander_cast:
         return False
-    for need in target["need"]:
-        if not any(name in names_in_hand for name in need["any_of"]):
-            return False
-    return True
+    unmet = sum(1 for need in target["need"]
+                if not any(name in names_in_hand for name in need["any_of"]))
+    return unmet <= tutors
 
 
 def simulate_once(rng, library, commander_cmc, targets, max_turn):
@@ -145,6 +189,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn):
     bodies_cum = 0
     bodies_by_turn = []
     target_turns = [None] * len(targets)
+    target_turns_unassisted = [None] * len(targets)
+    tutor_ready_turns = []
 
     for turn in range(1, max_turn + 1):
         if deck:
@@ -174,6 +220,18 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn):
                 rock_production += card["produces"]
                 hand.remove(card)
 
+        # Cast tutors before bodies: a tutor is a setup spell, and it competes
+        # for the same mana. Previously tutors had bodies=0 and produces=0, so
+        # they were never cast at all and their mana silently went to creatures.
+        for card in sorted((c for c in hand if c["tutor"]), key=lambda c: c["tutor_cmc"]):
+            if card["tutor_cmc"] > pool:
+                continue
+            if card["tutor_needs_body"] and bodies_cum < 1:
+                continue
+            pool -= card["tutor_cmc"]
+            hand.remove(card)
+            tutor_ready_turns.append(turn + card["tutor_delay"])
+
         # Spend what's left on bodies, cheapest-first.
         for card in sorted((c for c in hand if c["bodies"] > 0), key=lambda c: c["cmc"]):
             if card["cmc"] <= pool:
@@ -182,9 +240,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn):
                 hand.remove(card)
         bodies_by_turn.append(bodies_cum)
 
+        tutors = sum(1 for t in tutor_ready_turns if t <= turn)
         for i, target in enumerate(targets):
-            if target_turns[i] is None and _target_met(target, seen, commander_turn is not None):
+            commander_cast = commander_turn is not None
+            if target_turns[i] is None and _target_met(target, seen, commander_cast, tutors):
                 target_turns[i] = turn
+            if target_turns_unassisted[i] is None and _target_met(target, seen, commander_cast):
+                target_turns_unassisted[i] = turn
 
     return {
         "first_seven_lands": first_seven_lands,
@@ -195,6 +257,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn):
         "commander_turn": commander_turn,
         "bodies_by_turn": bodies_by_turn,
         "target_turns": target_turns,
+        "target_turns_unassisted": target_turns_unassisted,
     }
 
 
@@ -215,13 +278,24 @@ def aggregate(results, targets, max_turn):
 
     target_stats = []
     for i, target in enumerate(targets):
-        assembled = sorted(r["target_turns"][i] for r in results if r["target_turns"][i] is not None)
-        target_stats.append({
-            "label": target["label"],
-            "assembled_rate": _round(len(assembled) / n),
-            "mean_turn": _round(sum(assembled) / len(assembled)) if assembled else None,
-            "by_turn_6_rate": _round(sum(1 for t in assembled if t <= 6) / n),
+        def _rates(key):
+            got = sorted(r[key][i] for r in results if r[key][i] is not None)
+            return {
+                "assembled_rate": _round(len(got) / n),
+                "mean_turn": _round(sum(got) / len(got)) if got else None,
+                "by_turn_6_rate": _round(sum(1 for t in got if t <= 6) / n),
+            }
+        # The unassisted figures keep the historical key names, so every
+        # existing consumer and every published figure still means what it
+        # meant. Tutor-assisted estimates sit beside them under _assisted.
+        assisted = _rates("target_turns")
+        stats = {"label": target["label"], **_rates("target_turns_unassisted")}
+        stats.update({
+            "assembled_rate_assisted": assisted["assembled_rate"],
+            "mean_turn_assisted": assisted["mean_turn"],
+            "by_turn_6_rate_assisted": assisted["by_turn_6_rate"],
         })
+        target_stats.append(stats)
 
     def _histogram(key):
         counts = {}

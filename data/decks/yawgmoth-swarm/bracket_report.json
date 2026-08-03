@@ -1,16 +1,15 @@
 {
   "banned": [],
   "combo_bracket_floor": 1,
-  "combo_count": 5,
-  "cut_candidates": [],
+  "combo_count": 20,
   "drivers": [
     {
-      "detail": "5 Game Changer(s): Ad Nauseam, Ancient Tomb, Demonic Tutor, Necropotence, Vampiric Tutor",
+      "detail": "4 Game Changer(s): Ancient Tomb, Demonic Tutor, Necropotence, Vampiric Tutor",
       "forces": 4,
       "signal": "game_changers"
     },
     {
-      "detail": "1 two-card infinite(s); 1 assemble at mana value <= 6. e.g. Blowfly Infestation + Nest of Scarabs",
+      "detail": "8 two-card infinite(s); 8 assemble at mana value <= 6. e.g. Mikaeus, the Unhallowed + Ashnod's Altar",
       "forces": 4,
       "signal": "two_card_infinite"
     }
@@ -19,7 +18,6 @@
   "floor": 4,
   "floor_name": "Optimized",
   "game_changers": [
-    "Ad Nauseam",
     "Ancient Tomb",
     "Demonic Tutor",
     "Necropotence",
@@ -32,7 +30,6 @@
     "Mass land denial is checked against a curated list and is incomplete by construction."
   ],
   "slug": "yawgmoth-swarm",
-  "target": 4,
   "tutors": [
     "Beseech the Mirror",
     "Demonic Tutor",
@@ -41,6 +38,66 @@
     "Vampiric Tutor"
   ],
   "two_card_infinites": [
+    {
+      "bracket": 1,
+      "cards": [
+        "Mikaeus, the Unhallowed",
+        "Ashnod's Altar"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB",
+        "Infinite sacrifice triggers",
+        "Infinite death triggers",
+        "Infinite colorless mana"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Mikaeus, the Unhallowed",
+        "Phyrexian Altar"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB",
+        "Infinite colored mana",
+        "Infinite sacrifice triggers",
+        "Infinite death triggers"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Mikaeus, the Unhallowed",
+        "Carrion Feeder"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB",
+        "Infinite sacrifice triggers",
+        "Infinite death triggers",
+        "Infinite +1/+1 counters on a creature"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Mikaeus, the Unhallowed",
+        "Viscera Seer"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB",
+        "Infinite sacrifice triggers",
+        "Infinite death triggers",
+        "Infinite scry 1"
+      ]
+    },
     {
       "bracket": 1,
       "cards": [
@@ -53,7 +110,50 @@
         "Infinite ETB",
         "Infinite LTB"
       ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Mikaeus, the Unhallowed",
+        "Yahenni, Undying Partisan"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB",
+        "Infinite sacrifice triggers",
+        "Infinite death triggers"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Mikaeus, the Unhallowed",
+        "Woe Strider"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB",
+        "Infinite sacrifice triggers",
+        "Infinite death triggers",
+        "Infinite scry 1"
+      ]
+    },
+    {
+      "bracket": 1,
+      "cards": [
+        "Mikaeus, the Unhallowed",
+        "Blasting Station"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite LTB",
+        "Infinite ETB",
+        "Infinite sacrifice triggers",
+        "Infinite death triggers",
+        "Infinite damage"
+      ]
     }
-  ],
-  "within_target": true
+  ]
 }

@@ -15,6 +15,7 @@
       "Commander cast on first affordable turn (highest spending priority).",
       "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
       "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+      "Unrestricted tutors ('search your library for a card') are modeled as wildcards: a tutor that has been drawn and is affordable fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
       "Cost reducers, rituals, and extra card draw are not modeled (conservative)."
     ],
     "seed": 42
@@ -100,27 +101,39 @@
     "targets": [
       {
         "assembled_rate": 0.679,
+        "assembled_rate_assisted": 0.679,
         "by_turn_6_rate": 0.558,
+        "by_turn_6_rate_assisted": 0.558,
         "label": "Sisay online with a five-colour mana source",
-        "mean_turn": 4.219
+        "mean_turn": 4.219,
+        "mean_turn_assisted": 4.219
       },
       {
         "assembled_rate": 0.525,
+        "assembled_rate_assisted": 0.525,
         "by_turn_6_rate": 0.419,
+        "by_turn_6_rate_assisted": 0.419,
         "label": "Sisay online with a three-colour legend to grow her",
-        "mean_turn": 4.395
+        "mean_turn": 4.395,
+        "mean_turn_assisted": 4.395
       },
       {
         "assembled_rate": 0.747,
+        "assembled_rate_assisted": 0.747,
         "by_turn_6_rate": 0.638,
+        "by_turn_6_rate_assisted": 0.638,
         "label": "Early accelerant drawn",
-        "mean_turn": 2.836
+        "mean_turn": 2.836,
+        "mean_turn_assisted": 2.836
       },
       {
         "assembled_rate": 0.884,
+        "assembled_rate_assisted": 0.884,
         "by_turn_6_rate": 0.798,
+        "by_turn_6_rate_assisted": 0.798,
         "label": "Commander protection available",
-        "mean_turn": 2.3
+        "mean_turn": 2.3,
+        "mean_turn_assisted": 2.3
       }
     ]
   }

@@ -1,7 +1,7 @@
 {
   "targets": [
     {
-      "label": "Both halves of the verified kill drawn (Blowfly + Nest)",
+      "label": "Both halves of the original kill drawn (Blowfly + Nest)",
       "need": [
         {
           "any_of": [
@@ -16,14 +16,88 @@
       ]
     },
     {
-      "label": "A drain drawn — Bastion is the only one that survives the loop",
+      "label": "THE SECOND KILL: Mikaeus + a self-shrinking body + a free sac outlet",
+      "need": [
+        {
+          "any_of": [
+            "Mikaeus, the Unhallowed"
+          ]
+        },
+        {
+          "any_of": [
+            "Carnifex Demon"
+          ]
+        },
+        {
+          "any_of": [
+            "Viscera Seer",
+            "Carrion Feeder",
+            "Woe Strider",
+            "Ashnod's Altar",
+            "Phyrexian Altar",
+            "Blasting Station",
+            "Yahenni, Undying Partisan"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A drain drawn \u2014 the payoff every loop routes through",
       "need": [
         {
           "any_of": [
             "Bastion of Remembrance",
             "Zulaport Cutthroat",
             "Blood Artist",
-            "Enduring Tenacity"
+            "South Wind Avatar",
+            "Mirkwood Bats"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "RENEWABLE FODDER drawn (the measured bottleneck)",
+      "need": [
+        {
+          "any_of": [
+            "Nest of Scarabs",
+            "Ophiomancer",
+            "Bitterblossom",
+            "Bloodghast",
+            "Spawning Pit",
+            "Grave Titan",
+            "Sedgemoor Witch",
+            "Black Market Connections"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "ENGINE MANA drawn \u2014 turns a creature death into castable black",
+      "need": [
+        {
+          "any_of": [
+            "Phyrexian Altar",
+            "Pitiless Plunderer",
+            "Phyrexian Tower",
+            "Black Market Connections"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A free repeatable sacrifice outlet drawn (not counting Yawgmoth)",
+      "need": [
+        {
+          "any_of": [
+            "Viscera Seer",
+            "Carrion Feeder",
+            "Woe Strider",
+            "Ashnod's Altar",
+            "Phyrexian Altar",
+            "Blasting Station",
+            "Yahenni, Undying Partisan",
+            "Spawning Pit"
           ]
         }
       ]
@@ -36,9 +110,11 @@
             "Yawgmoth, Thran Physician",
             "Fume Spitter",
             "Necropede",
-            "Contagion Clasp",
-            "Grim Poppet",
-            "Massacre Girl, Known Killer"
+            "Carnifex Demon",
+            "Soul Snuffers",
+            "Skinrender",
+            "Massacre Girl, Known Killer",
+            "Persist"
           ]
         }
       ]
@@ -51,7 +127,8 @@
             "Demonic Tutor",
             "Vampiric Tutor",
             "Beseech the Mirror",
-            "Diabolic Intent"
+            "Diabolic Intent",
+            "Insatiable Avarice"
           ]
         }
       ]
@@ -71,47 +148,27 @@
       ]
     },
     {
-      "label": "THE FULL KILL: Blowfly + Nest + a drain + an igniter",
+      "label": "EITHER kill assembled by this turn (both halves of one of the two)",
       "need": [
         {
           "any_of": [
-            "Blowfly Infestation"
+            "Nest of Scarabs",
+            "Mikaeus, the Unhallowed"
           ]
         },
         {
           "any_of": [
-            "Nest of Scarabs"
+            "Blowfly Infestation",
+            "Carnifex Demon"
           ]
         },
         {
           "any_of": [
             "Bastion of Remembrance",
             "Zulaport Cutthroat",
-            "Blood Artist"
-          ]
-        },
-        {
-          "any_of": [
-            "Yawgmoth, Thran Physician",
-            "Fume Spitter",
-            "Necropede",
-            "Contagion Clasp",
-            "Grim Poppet",
-            "Massacre Girl, Known Killer"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "Card advantage engine drawn (Necropotence / Ad Nauseam / Skullclamp)",
-      "need": [
-        {
-          "any_of": [
-            "Necropotence",
-            "Ad Nauseam",
-            "Skullclamp",
-            "Night's Whisper",
-            "Deadly Dispute"
+            "Blood Artist",
+            "South Wind Avatar",
+            "Mirkwood Bats"
           ]
         }
       ]

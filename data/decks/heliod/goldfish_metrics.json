@@ -15,6 +15,7 @@
       "Commander cast on first affordable turn (highest spending priority).",
       "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
       "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+      "Unrestricted tutors ('search your library for a card') are modeled as wildcards: a tutor that has been drawn and is affordable fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
       "Cost reducers, rituals, and extra card draw are not modeled (conservative)."
     ],
     "seed": 42
@@ -64,15 +65,15 @@
     },
     "mean_bodies_by_turn": {
       "1": 0.0,
-      "10": 2.538,
-      "2": 0.255,
-      "3": 0.488,
-      "4": 0.729,
-      "5": 1.174,
-      "6": 1.523,
-      "7": 1.816,
-      "8": 2.066,
-      "9": 2.308
+      "10": 2.537,
+      "2": 0.254,
+      "3": 0.471,
+      "4": 0.709,
+      "5": 1.156,
+      "6": 1.513,
+      "7": 1.81,
+      "8": 2.063,
+      "9": 2.305
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -100,39 +101,57 @@
     "targets": [
       {
         "assembled_rate": 0.852,
+        "assembled_rate_assisted": 0.88,
         "by_turn_6_rate": 0.754,
+        "by_turn_6_rate_assisted": 0.786,
         "label": "Table draw engine drawn",
-        "mean_turn": 2.507
+        "mean_turn": 2.507,
+        "mean_turn_assisted": 2.496
       },
       {
         "assembled_rate": 0.672,
+        "assembled_rate_assisted": 0.729,
         "by_turn_6_rate": 0.559,
+        "by_turn_6_rate_assisted": 0.614,
         "label": "Draw punisher drawn",
-        "mean_turn": 3.045
+        "mean_turn": 3.045,
+        "mean_turn_assisted": 3.095
       },
       {
         "assembled_rate": 0.567,
+        "assembled_rate_assisted": 0.635,
         "by_turn_6_rate": 0.412,
+        "by_turn_6_rate_assisted": 0.469,
         "label": "Engine + punisher assembled (the deck's core two-piece)",
-        "mean_turn": 4.215
+        "mean_turn": 4.215,
+        "mean_turn_assisted": 4.232
       },
       {
         "assembled_rate": 0.71,
+        "assembled_rate_assisted": 0.757,
         "by_turn_6_rate": 0.54,
+        "by_turn_6_rate_assisted": 0.588,
         "label": "Heliod down with an asymmetric card engine",
-        "mean_turn": 5.07
+        "mean_turn": 5.07,
+        "mean_turn_assisted": 5.011
       },
       {
         "assembled_rate": 0.781,
+        "assembled_rate_assisted": 0.817,
         "by_turn_6_rate": 0.672,
+        "by_turn_6_rate_assisted": 0.711,
         "label": "Free or cheap interaction held",
-        "mean_turn": 2.764
+        "mean_turn": 2.764,
+        "mean_turn_assisted": 2.77
       },
       {
         "assembled_rate": 0.612,
+        "assembled_rate_assisted": 0.68,
         "by_turn_6_rate": 0.505,
+        "by_turn_6_rate_assisted": 0.569,
         "label": "Win condition access",
-        "mean_turn": 3.083
+        "mean_turn": 3.083,
+        "mean_turn_assisted": 3.159
       }
     ]
   }

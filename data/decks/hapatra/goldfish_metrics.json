@@ -15,6 +15,7 @@
       "Commander cast on first affordable turn (highest spending priority).",
       "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
       "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+      "Unrestricted tutors ('search your library for a card') are modeled as wildcards: a tutor that has been drawn and is affordable fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
       "Cost reducers, rituals, and extra card draw are not modeled (conservative)."
     ],
     "seed": 42
@@ -62,16 +63,16 @@
       "9": 7.755
     },
     "mean_bodies_by_turn": {
-      "1": 0.283,
-      "10": 4.589,
-      "2": 0.413,
-      "3": 1.214,
-      "4": 2.101,
-      "5": 2.74,
-      "6": 3.224,
-      "7": 3.604,
-      "8": 3.955,
-      "9": 4.272
+      "1": 0.258,
+      "10": 4.585,
+      "2": 0.369,
+      "3": 1.068,
+      "4": 1.942,
+      "5": 2.632,
+      "6": 3.162,
+      "7": 3.569,
+      "8": 3.937,
+      "9": 4.264
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -99,33 +100,48 @@
     "targets": [
       {
         "assembled_rate": 0.672,
+        "assembled_rate_assisted": 0.877,
         "by_turn_6_rate": 0.557,
+        "by_turn_6_rate_assisted": 0.783,
         "label": "Commander plus any -1/-1 payoff",
-        "mean_turn": 3.623
+        "mean_turn": 3.623,
+        "mean_turn_assisted": 3.319
       },
       {
         "assembled_rate": 0.163,
+        "assembled_rate_assisted": 0.667,
         "by_turn_6_rate": 0.125,
+        "by_turn_6_rate_assisted": 0.553,
         "label": "Hapatra + Blowfly Infestation (two-card kill)",
-        "mean_turn": 4.102
+        "mean_turn": 4.102,
+        "mean_turn_assisted": 4.076
       },
       {
         "assembled_rate": 0.095,
+        "assembled_rate_assisted": 0.504,
         "by_turn_6_rate": 0.058,
+        "by_turn_6_rate_assisted": 0.351,
         "label": "Mikaeus + a free sacrifice outlet",
-        "mean_turn": 5.092
+        "mean_turn": 5.092,
+        "mean_turn_assisted": 5.083
       },
       {
         "assembled_rate": 0.519,
+        "assembled_rate_assisted": 0.816,
         "by_turn_6_rate": 0.415,
+        "by_turn_6_rate_assisted": 0.709,
         "label": "Any drain converter",
-        "mean_turn": 3.339
+        "mean_turn": 3.339,
+        "mean_turn_assisted": 3.248
       },
       {
         "assembled_rate": 0.78,
+        "assembled_rate_assisted": 0.78,
         "by_turn_6_rate": 0.676,
+        "by_turn_6_rate_assisted": 0.676,
         "label": "Any tutor drawn",
-        "mean_turn": 2.695
+        "mean_turn": 2.695,
+        "mean_turn_assisted": 2.695
       }
     ]
   }
