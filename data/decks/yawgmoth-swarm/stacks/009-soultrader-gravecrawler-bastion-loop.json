@@ -1,0 +1,776 @@
+{
+  "id": "009",
+  "slug": "yawgmoth-swarm",
+  "deck": "YAWGMOTH — THE SCARAB SWARM",
+  "title": "Warren Soultrader + Gravecrawler + Bastion of Remembrance: is the drain unbounded, and what does one iteration cost?",
+  "scenario": {
+    "board": {
+      "you": [
+        "Warren Soultrader (3/3)",
+        "Bastion of Remembrance (enchantment)",
+        "Gravecrawler (2/1) — already sacrificed to pay the cost of the ability now on the stack",
+        "Swamp (tapped)",
+        "Swamp (tapped)",
+        "Swamp (tapped)"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": [
+            "no permanents"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "no permanents"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "no permanents"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "no permanents"
+          ]
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [
+      "Gravecrawler"
+    ],
+    "mana_available": "{0} (all three Swamps are tapped and nothing else produces mana)",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Warren Soultrader's activated ability — 'Pay 1 life, Sacrifice another creature: Create a Treasure token.' Both costs already paid: 1 life paid, Gravecrawler sacrificed.",
+        "controller": "you"
+      },
+      {
+        "pos": 1,
+        "object": "Bastion of Remembrance's triggered ability — 'Whenever a creature you control dies, each opponent loses 1 life and you gain 1 life.' Triggered on Gravecrawler's death during cost payment.",
+        "controller": "you"
+      }
+    ],
+    "extras": {
+      "life_totals": {
+        "you": 39
+      },
+      "pod_size": "Five players — you and four opponents, 160 opposing life in total (opponent life is on the board block). Your 39 is 40 less the 1 life already paid for the ability on the stack.",
+      "library": "You have 60 cards in your library.",
+      "assumptions": [
+        "No player responds to anything; every opponent passes priority throughout.",
+        "No permanent enters or leaves the battlefield except as described by the cards named here.",
+        "It is your precombat main phase, so you have sorcery-speed permission when you hold priority with an empty stack.",
+        "Warren Soultrader is a Zombie Goblin Wizard — it is a Zombie."
+      ],
+      "note_for_the_resolver": "This is the deck's declared FOURTH KILL and it has never been resolved. combo_details.json records the line as 'Infinite lifeloss'; that is a containment tag from Commander Spellbook and not a verification. The board is deliberately minimal — no Nest of Scarabs, no Blowfly Infestation, no commander, no floating mana — because the question is whether the loop funds itself. Note the Treasure token created by the ability on the stack is an artifact, not a creature."
+    },
+    "question": "Resolve the stack, then resolve one full further iteration of the loop. (1) Can the loop be repeated an unbounded number of times from this board with no mana or life from outside it — specifically, does casting Gravecrawler from the graveyard have a legal permission each time, and does the Treasure created by each activation pay for that cast? (2) What is the exact net change per completed iteration to your life total, to each opponent's life total, and to the number of Treasures you control?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Establish the stack order before anyone passes priority. Warren Soultrader's activated ability was put on the stack first (pos 0); its costs — pay 1 life, sacrifice another creature — were then paid, and Gravecrawler's death during that cost payment triggered Bastion of Remembrance. A triggered ability does nothing at the moment it triggers; it is put on the stack the next time a player would receive priority, i.e. after activation is complete, so it lands ON TOP of the ability that caused it (pos 1).",
+        "effect": "Stack from bottom to top: [0] Warren Soultrader's ability (create a Treasure token), [1] Bastion of Remembrance's trigger (each opponent loses 1 life and you gain 1 life). You are at 39 (the 1 life is already paid). Battlefield bodies: Warren Soultrader only — Gravecrawler is in your graveyard, not on the battlefield. Opponents: 40 / 40 / 40 / 40.",
+        "citations": [
+          {
+            "rule": "602.2a",
+            "quote": "That ability is created on the stack as an object that’s not a card. It becomes the topmost object on the stack."
+          },
+          {
+            "rule": "117.2a",
+            "quote": "Triggered abilities can trigger at any time, including while a spell is being cast, an ability is being activated, or a spell or ability is resolving."
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "405.2",
+            "quote": "Each time an object is put on the stack, it’s put on top of all objects already there."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Confirm the cost payment that produced this stack was legal, and locate Gravecrawler. Gravecrawler is a creature you control other than Warren Soultrader, so it satisfies 'another creature'; sacrificing it moved it from the battlefield directly to its owner's graveyard. You had 40 life and the life component of the cost was 1, so that payment was legal.",
+        "effect": "Gravecrawler is in your graveyard and no longer on the battlefield; your only body is Warren Soultrader. Your life is 39. (Whether the graveyard copy can be cast again is not decided here — that permission is established at step 6.)",
+        "citations": [
+          {
+            "rule": "701.21a",
+            "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner’s graveyard."
+          },
+          {
+            "rule": "119.4",
+            "quote": "If a cost or effect allows a player to pay an amount of life greater than 0, the player may do so only if their life total is greater than or equal to the amount of the payment."
+          },
+          {
+            "rule": "118.3b",
+            "quote": "Paying life is done by subtracting the indicated amount of life from a player’s life total."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "All players pass priority. The TOP object resolves first: Bastion of Remembrance's triggered ability.",
+        "effect": "Each opponent loses 1 life and you gain 1 life. Per opponent: 40 → 39, for all four seats. Across the pod that is 4 life removed in total (160 → 156 opposing life) — the per-seat figure (1) and the pod figure (4) are not interchangeable. You: 39 → 40.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "State-based actions are checked before any player receives priority again. No player is at 0 or less life (you 40; opponents 39 each), no creature has lethal damage, and nothing else on this board qualifies. No state-based action is performed and no ability has triggered, so the active player (you) receives priority with Warren Soultrader's ability still on the stack.",
+        "effect": "No state-based action occurs. You hold priority; the Soultrader ability is the only object on the stack.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event"
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "All players pass again. Warren Soultrader's activated ability resolves: create a Treasure token. Establish here, once, why nothing further triggers — this is what caps the drain at exactly 1 per iteration. A triggered ability triggers only when a game event or game state MATCHES its trigger event. Bastion of Remembrance has exactly two triggered abilities: 'When this enchantment enters, create a 1/1 white Human Soldier creature token' (its entry is long past) and 'Whenever a creature you control dies, each opponent loses 1 life and you gain 1 life'. Bastion has no trigger event of the form 'a permanent enters' or 'a creature enters' at all, so creating a token — of any kind — matches neither ability. Creating the Treasure is therefore not a trigger event for Bastion, and the same rule governs steps 7 and 8 below.",
+        "effect": "You create one Treasure token, an artifact token you control with \"{T}, Sacrifice this token: Add one mana of any color.\" No ability triggers on its creation. Because the Treasure is an artifact and not a creature, its later sacrifice will not be a creature you control dying either, so it will not match Bastion's death trigger (applied at step 7). Treasures: 0 → 1. The stack is now empty. STACK AS GIVEN IS FULLY RESOLVED: you 40, each opponent 39, Treasures 1, Gravecrawler in graveyard, Warren Soultrader and Bastion of Remembrance on the battlefield.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "701.7a",
+            "quote": "put the specified number of tokens with the specified characteristics onto the battlefield"
+          },
+          {
+            "rule": "111.2",
+            "quote": "The player who creates a token is its owner. The token enters the battlefield under that player’s control."
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "ITERATION 1, part (1) of the question — permission to cast Gravecrawler from the graveyard. Before you receive that priority the game checks state-based actions and performs none: with the stack empty the board is you at 40, each opponent at 39, Warren Soultrader and Bastion of Remembrance on the battlefield and the newly created Treasure on the battlefield as well, so no listed condition is met and no triggered ability is waiting to be put on the stack; the check therefore performs nothing and priority is handed back. You then receive priority with an empty stack in your precombat main phase; the phase does not end merely because the stack emptied. Gravecrawler's own static ability reads 'You may cast this card from your graveyard as long as you control a Zombie.' Two rules are needed, not one. 113.6f is the rule that makes an ability of this kind — one that modifies which zones that object can be cast from — function everywhere, including from the graveyard; without it, appealing to 604.6 alone would be circular, since the graveyard is a zone you could cast Gravecrawler from ONLY because of this very ability. 604.6 then describes the ordinary operation of such a static ability in that zone, and 601.3 is what the permission is needed for. The Zombie condition is met by Warren Soultrader, whose printed type line is Creature — Zombie Goblin Wizard; Soultrader is never sacrificed by this loop (its own ability requires sacrificing ANOTHER creature), so the permission is available on every iteration.",
+        "effect": "Casting Gravecrawler from the graveyard is legal now and on every future iteration: a noninstant spell, your main phase, stack empty, priority held, permission granted by the card's own ability, which functions in the graveyard by 113.6f, with the Zombie requirement satisfied by the untouched Warren Soultrader.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event"
+          },
+          {
+            "rule": "601.3",
+            "quote": "A player can begin to cast a spell only if a rule or effect allows that player to cast it and no rule or effect prohibits that player from casting it."
+          },
+          {
+            "rule": "113.6f",
+            "quote": "An object’s ability that restricts or modifies what zones that particular object can be played or cast from functions everywhere, even outside the game."
+          },
+          {
+            "rule": "604.6",
+            "quote": "Some static abilities apply while a card is in any zone that you could cast or play it from (usually your hand)."
+          },
+          {
+            "rule": "117.1a",
+            "quote": "A player may cast a noninstant spell during their main phase any time they have priority and the stack is empty."
+          },
+          {
+            "rule": "500.2",
+            "quote": "A phase or step in which players receive priority ends when the stack is empty and all players pass in succession."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "ITERATION 1, part (1) continued — does the Treasure pay for the cast? Gravecrawler's mana cost is {B}. First establish that the Treasure's ability, '{T}, Sacrifice this token: Add one mana of any color', qualifies as a mana ability: it is an activated ability, it requires no target, it could add mana to your mana pool when it resolves, and it is not a loyalty ability — the three criteria of 605.1a, all met. Because it IS a mana ability, you may activate it while casting Gravecrawler, before costs are paid, and it does not use the stack. The Treasure is an artifact token, not a creature, so the summoning-sickness restriction — written only for a creature's activated ability with the tap symbol — does not reach it even though it was created this turn. Sacrificing it is not a creature you control dying, so no game event matches Bastion's trigger event (the rule stated at step 5) and Bastion does not trigger.",
+        "effect": "{B} is added to your mana pool and spent on Gravecrawler's total cost. Treasures: 1 → 0. The sacrificed Treasure is a TOKEN now in a zone other than the battlefield, so it ceases to exist — this is the one state-based action this loop actually performs, and it happens at the next check, i.e. when a player would next receive priority once the cast is complete (the check stated at step 8). Nothing in part (2)'s ledger turns on that timing: the number of Treasures you control fell to 0 the moment the token left the battlefield. The same rule's parenthetical is why the trigger analysis above is safe — any applicable triggered ability would trigger BEFORE the token ceased to exist, and none is applicable, because Bastion's trigger event is a creature you control dying. No Bastion trigger. Gravecrawler is on the stack. Exactly one Treasure funds exactly one cast — the mana ledger of one iteration balances at zero.",
+        "citations": [
+          {
+            "rule": "605.1a",
+            "quote": "An activated ability is a mana ability if it meets all of the following criteria: it doesn’t require a target (see rule 115.6), it could add mana to a player’s mana pool when it resolves, and it’s not a loyalty ability."
+          },
+          {
+            "rule": "601.2g",
+            "quote": "the player then has a chance to activate mana abilities"
+          },
+          {
+            "rule": "605.3b",
+            "quote": "An activated mana ability doesn’t go on the stack, so it can’t be targeted, countered, or otherwise responded to. Rather, it resolves immediately after it is activated."
+          },
+          {
+            "rule": "302.6",
+            "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          },
+          {
+            "rule": "106.4",
+            "quote": "When an effect instructs a player to add mana, that mana goes into a player’s mana pool. From there, it can be used to pay costs immediately"
+          },
+          {
+            "rule": "601.2h",
+            "quote": "The player pays the total cost."
+          },
+          {
+            "rule": "111.7",
+            "quote": "A token that’s in a zone other than the battlefield ceases to exist. This is a state-based action"
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "All players pass. Gravecrawler, a permanent spell with no targets, resolves and enters the battlefield under your control. It is a new object with no relation to the card that was in the graveyard. Nothing dies during this cast or resolution, so no game event matches Bastion's 'Whenever a creature you control dies' trigger event, and Bastion does not trigger.",
+        "effect": "Gravecrawler (2/1 Zombie) is on the battlefield. Bodies: Warren Soultrader + Gravecrawler = 2. Treasures 0. No Bastion trigger. Gravecrawler entering is a zone change, so before any player receives priority again the game checks state-based actions: nobody is at 0 or less life (you 40, each opponent 39), no creature has lethal damage, and no token is in any zone other than the battlefield — the Treasure ceased to exist at the previous check (step 7) and no token remains. Nothing applies and no ability is waiting, so the active player — you — receives priority.",
+        "citations": [
+          {
+            "rule": "608.3a",
+            "quote": "If the object that’s resolving has no targets, it becomes a permanent and enters the battlefield under the control of the spell’s controller."
+          },
+          {
+            "rule": "400.7",
+            "quote": "An object that moves from one zone to another becomes a new object with no memory of, or relation to, its previous existence."
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          },
+          {
+            "rule": "704.3",
+            "quote": "the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event"
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "You receive priority and activate Warren Soultrader's ability again. Costs: pay 1 life (you have 40, so this is payable) and sacrifice another creature — Gravecrawler, which you control and which is not Soultrader itself. Summoning sickness is irrelevant: the sacrifice is a cost of Soultrader's ability, not of any ability of Gravecrawler with a tap symbol.",
+        "effect": "You: 40 → 39. Gravecrawler moves from the battlefield to your graveyard — it dies, and it is a card, so it rests on top of that graveyard. Soultrader's ability is on the stack.",
+        "citations": [
+          {
+            "rule": "602.2a",
+            "quote": "That ability is created on the stack as an object that’s not a card. It becomes the topmost object on the stack."
+          },
+          {
+            "rule": "119.4",
+            "quote": "If a cost or effect allows a player to pay an amount of life greater than 0, the player may do so only if their life total is greater than or equal to the amount of the payment."
+          },
+          {
+            "rule": "701.21a",
+            "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner’s graveyard."
+          },
+          {
+            "rule": "404.1",
+            "quote": "Any object that’s countered, discarded, destroyed, or sacrificed is put on top of its owner’s graveyard"
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "Gravecrawler dying is a creature you control dying, so Bastion of Remembrance triggers. The trigger is put on the stack the next time a player would receive priority — after the activation is complete — so it goes above Soultrader's ability, exactly as in step 1.",
+        "effect": "Stack: [0] Soultrader's ability, [1] Bastion's trigger. State-based actions are checked first and none apply (you 39, opponents 39 each).",
+        "citations": [
+          {
+            "rule": "700.4",
+            "quote": "The term dies means"
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority. See rule 117, “Timing and Priority.” The ability becomes the topmost object on the stack."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "All players pass; Bastion's trigger resolves.",
+        "effect": "Each opponent loses 1 life: 39 → 38, per seat, for all four. Pod total removed this iteration: 4 (156 → 152 opposing life). You gain 1: 39 → 40, which exactly refunds the 1 life paid in step 9.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 12,
+        "action": "State-based actions are checked — nobody is at 0 or less — the active player receives priority, all players pass, and Warren Soultrader's ability resolves, creating a Treasure token.",
+        "effect": "Treasures: 0 → 1. ONE FULL ITERATION IS COMPLETE. The board is identical to the end of step 5 in every respect except opponents' life: you 40, Warren Soultrader and Bastion of Remembrance on the battlefield, Gravecrawler in the graveyard, exactly 1 Treasure, stack empty, still your precombat main phase, still your priority.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event"
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          },
+          {
+            "rule": "701.7a",
+            "quote": "put the specified number of tokens with the specified characteristics onto the battlefield"
+          }
+        ]
+      },
+      {
+        "n": 13,
+        "action": "ANSWER TO PART (2) — the net ledger of one completed iteration, read off steps 6–12. Life paid: 1 (step 9). Life gained: 1 (step 11). Treasures created: 1 (step 12). Treasures sacrificed: 1 (step 7). Drain: 1 per opponent (step 11), and exactly one drain per iteration because the only event matching Bastion's trigger is Gravecrawler's death (steps 5, 7, 8, 10).",
+        "effect": "Per completed iteration — YOUR life total: net 0 (transient dip to 39 between step 9 and step 11; you never fall below 39 and never approach 0). EACH OPPONENT'S life total: −1. TREASURES you control: net 0 (steady state exactly 1 at the top of each iteration). Pod-wide, one iteration removes 4 life across the four seats; that pod figure must never be quoted as a per-seat figure.",
+        "citations": [
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          },
+          {
+            "rule": "118.3b",
+            "quote": "Paying life is done by subtracting the indicated amount of life from a player’s life total."
+          },
+          {
+            "rule": "701.7a",
+            "quote": "put the specified number of tokens with the specified characteristics onto the battlefield"
+          },
+          {
+            "rule": "701.21a",
+            "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner’s graveyard."
+          }
+        ]
+      },
+      {
+        "n": 14,
+        "action": "ANSWER TO PART (1) — is the loop unbounded from this board with no outside mana or life? Every resource an iteration consumes it also replaces, in the same iteration, from inside the loop: the {B} for Gravecrawler comes from the Treasure the previous activation made, whose ability is a mana ability (steps 5, 7, 12); the 1 life for Soultrader comes back from Bastion (steps 9, 11); Gravecrawler is a card, so it returns to the graveyard each time and its own ability functions there (steps 6, 9); the Zombie that grants the graveyard permission is Warren Soultrader, which the loop never sacrifices (step 6). Nothing in the loop draws on the three tapped Swamps, the empty hand, or the library. The loop is therefore repeatable an unbounded number of times, and because it can be repeated indefinitely the shortcut rules let you declare a number of iterations rather than perform them.",
+        "effect": "YES on both halves of part (1): the graveyard cast has a legal permission on every iteration, and each activation's Treasure exactly funds the next cast. The loop is self-funding and unbounded in the rules sense; in practice it terminates because the drain is not — the operative threshold is 0 life, so 40 drain events bring a 40-life opponent to exactly 0, and one drain has already resolved on the stack as given, leaving 39 further iterations after step 5 to put all four opponents at 0 simultaneously, whereupon each of them loses the game. 'Infinite lifeloss' as a containment tag is CONFIRMED for this board, with the arithmetic that matters: 1 life per opponent per iteration, 4 across the pod per iteration, 40 drain events to kill each seat.",
+        "citations": [
+          {
+            "rule": "732.1b",
+            "quote": "the shortcut rules can be used to determine how many times those actions are repeated without having to actually perform them, and how the loop is broken"
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "The stack as given resolves top-down: Bastion of Remembrance's trigger first (each opponent 40 → 39, you 39 → 40), then Warren Soultrader's ability, creating one Treasure. One full further iteration — cast Gravecrawler from the graveyard for {B} paid by sacrificing that Treasure, then pay 1 life and sacrifice Gravecrawler to Soultrader — leaves each opponent at 38 and returns the board to an identical state. Both halves of part (1) are YES: Gravecrawler's own ability modifies which zone it can be cast from and so functions in the graveyard (113.6f), granting permission on every iteration with its Zombie condition met by Warren Soultrader, which the loop never sacrifices ('another creature'); and each activation's Treasure exactly funds the next {B}, its ability meeting the definition of a mana ability (605.1a) and being unrestricted because a Treasure is an artifact, not a creature. Exactly one Bastion trigger occurs per iteration: only Gravecrawler's death matches its trigger event, so neither creating nor sacrificing a Treasure adds drain (603.2). Part (2): per completed iteration your life is net 0 (dipping to 39 and refunded), each opponent is −1, and Treasures are net 0 (steady state 1). The loop is self-funding and unbounded; 40 drain events bring a seat to exactly 0 — one has already resolved, so 39 further iterations take all four opponents to 0 at once. The Commander Spellbook tag 'Infinite lifeloss' is confirmed for this exact board.",
+      "you": {
+        "life_after_stack_as_given": 40,
+        "life_after_one_further_iteration": 40,
+        "life_floor_during_a_iteration": 39,
+        "battlefield": [
+          "Warren Soultrader (3/3)",
+          "Bastion of Remembrance",
+          "Treasure token (1)",
+          "Swamp (tapped)",
+          "Swamp (tapped)",
+          "Swamp (tapped)"
+        ],
+        "graveyard": [
+          "Gravecrawler"
+        ],
+        "hand": [],
+        "treasures_after_stack_as_given": 1,
+        "treasures_after_one_further_iteration": 1,
+        "net_per_iteration": {
+          "your_life": 0,
+          "each_opponent_life": -1,
+          "treasures": 0
+        }
+      },
+      "opponents": [
+        {
+          "seat": "opponent_1",
+          "life_at_start": 40,
+          "life_after_stack_as_given": 39,
+          "life_after_one_further_iteration": 38
+        },
+        {
+          "seat": "opponent_2",
+          "life_at_start": 40,
+          "life_after_stack_as_given": 39,
+          "life_after_one_further_iteration": 38
+        },
+        {
+          "seat": "opponent_3",
+          "life_at_start": 40,
+          "life_after_stack_as_given": 39,
+          "life_after_one_further_iteration": 38
+        },
+        {
+          "seat": "opponent_4",
+          "life_at_start": 40,
+          "life_after_stack_as_given": 39,
+          "life_after_one_further_iteration": 38
+        }
+      ],
+      "pod_arithmetic": {
+        "opponents": 4,
+        "per_opponent_drain_per_iteration": 1,
+        "pod_total_drain_per_iteration": 4,
+        "opposing_life_at_start": 160,
+        "opposing_life_after_one_further_iteration": 152,
+        "iterations_to_kill_each_seat": 40,
+        "further_iterations_needed_after_the_given_stack": 39,
+        "note": "1 per seat and 4 across the pod are not interchangeable figures."
+      }
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "602.2a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 1,
+        "rule": "117.2a",
+        "status": "supported",
+        "note": "RETAINED HERE AND LOAD-BEARING. Full text expressly covers triggering 'while an ability is being activated' — the exact circumstance (Gravecrawler died during cost payment). This is the artifact's single establishment of that proposition; step 10 back-references it explicitly ('exactly as in step 1'), which is what makes the step-10 drop sound."
+      },
+      {
+        "step": 1,
+        "rule": "603.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 1,
+        "rule": "405.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 2,
+        "rule": "701.21a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 2,
+        "rule": "119.4",
+        "status": "supported",
+        "note": "Full text carries both halves: the legality condition (40 >= 1) and 'the payment is subtracted from their life total'."
+      },
+      {
+        "step": 2,
+        "rule": "118.3b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 3,
+        "rule": "405.5",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 3,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Per-seat (1, each 40 -> 39) and pod (4, 160 -> 156) stated separately and both match scenario-facts (4 opponents, 160 opposing life)."
+      },
+      {
+        "step": 4,
+        "rule": "704.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 5,
+        "rule": "405.5",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 5,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 5,
+        "rule": "111.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 5,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Re-verified against cards.json: Bastion of Remembrance is 'When this enchantment enters, create a 1/1 white Human Soldier creature token. / Whenever a creature you control dies, each opponent loses 1 life and you gain 1 life.' — quoted verbatim, no 'another' clause, and no permanent-enters trigger of any kind. The step's reason for the cap of one drain per iteration is the right one."
+      },
+      {
+        "step": 6,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "PRIOR OPEN FINDING (a) CLOSED. The missing pre-priority check is now folded into step 6's action, before the casting analysis: it names the board state, states that no listed condition is met AND that no triggered ability is waiting to be put on the stack (704.3's second sentence), and concludes the check performs nothing. No new step was created, step 5 still ends with the stack empty and the same totals, and no stated outcome moved."
+      },
+      {
+        "step": 6,
+        "rule": "601.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "113.6f",
+        "status": "supported",
+        "note": "Chain intact: 113.6f (a zone-modifying ability of this kind functions everywhere) -> 604.6 (how such a static ability operates in that zone) -> 601.3 (casting requires a permission). The step names the circularity 604.6 alone would create, correctly."
+      },
+      {
+        "step": 6,
+        "rule": "604.6",
+        "status": "supported",
+        "note": "604.6 is limited to abilities reading 'You may [cast] [this card] . . .'. Gravecrawler's oracle text in cards.json is 'You may cast this card from your graveyard as long as you control a Zombie' — an exact match to the enumerated form."
+      },
+      {
+        "step": 6,
+        "rule": "117.1a",
+        "status": "supported",
+        "note": "Gravecrawler is a creature spell (noninstant), cast in the precombat main phase with the stack empty and priority held. Casting from the graveyard changes the zone, not the timing permission."
+      },
+      {
+        "step": 6,
+        "rule": "500.2",
+        "status": "supported",
+        "note": "Load-bearing: the loop depends on the precombat main phase NOT ending each time the stack empties, and 500.2 says so in its second sentence."
+      },
+      {
+        "step": 7,
+        "rule": "605.1a",
+        "status": "supported",
+        "note": "All three criteria enumerated against the Treasure's ability and each holds: no target, could add mana on resolution, not a loyalty ability. Mana-ability status is derived, not assumed, so 601.2g and 605.3b rest on an established premise."
+      },
+      {
+        "step": 7,
+        "rule": "601.2g",
+        "status": "supported",
+        "note": "Full text adds 'Mana abilities must be activated before costs are paid' — the sequencing the step claims."
+      },
+      {
+        "step": 7,
+        "rule": "605.3b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 7,
+        "rule": "302.6",
+        "status": "supported",
+        "note": "Scoped to 'A creature's activated ability with the tap symbol...'. A Treasure is an artifact token, so the restriction does not reach it. Citing the rule to establish the negative is legitimate. (The token entering untapped is rule 110.6b's universal default and is not the kind of background premise this contract requires a citation for — checked, harmless.)"
+      },
+      {
+        "step": 7,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Applied correctly: sacrificing an artifact token is not a creature you control dying, so nothing matches Bastion's trigger event."
+      },
+      {
+        "step": 7,
+        "rule": "106.4",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 7,
+        "rule": "601.2h",
+        "status": "supported",
+        "note": "Gravecrawler's mana cost in cards.json is {B}, with no additional cost; one Treasure produces one mana of any colour, so exactly one Treasure funds exactly one cast."
+      },
+      {
+        "step": 7,
+        "rule": "111.7",
+        "status": "supported",
+        "note": "PRIOR OPEN FINDING CLOSED. 111.7 is now cited where the token actually leaves the battlefield. Quote is verbatim; the step states the Treasure ceases to exist, that this is the one state-based action the loop performs, and that part (2)'s ledger is unaffected because 'Treasures you control' fell to 0 the moment it left the battlefield — correct, and the sacrifice mechanic itself is carried by 701.21a at step 13, which cites this step by number. The rule's parenthetical (applicable triggers fire before the token ceases to exist) is used accurately to protect the trigger analysis. ONE EDITORIAL WART, not a rules defect: step 7 locates the check as '(the check stated at step 8)' while step 8 says the Treasure 'ceased to exist at the previous check (step 7)'. The two prose descriptions AGREE and are both right — the check is the one after the cast completes (117.3c priority), before Gravecrawler resolves — so only the pointers are circular. No number, outcome or ledger entry turns on it, and the artifact says as much."
+      },
+      {
+        "step": 8,
+        "rule": "608.3a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 8,
+        "rule": "400.7",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 8,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Applied correctly: nothing dies during the cast or its resolution."
+      },
+      {
+        "step": 8,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "PRIOR OPEN FINDING (b) CLOSED. The check after Gravecrawler's zone change is now performed in step 8's effect and enumerated against all three conditions that could apply on this board (life, lethal damage, tokens off the battlefield), concluding correctly that nothing applies and no ability is waiting. Folded into the existing step; step 9 still opens on the same priority with the same totals."
+      },
+      {
+        "step": 8,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": "Added alongside 704.3; the priority hand-off step 9 formerly assumed is now stated and cited."
+      },
+      {
+        "step": 9,
+        "rule": "602.2a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 9,
+        "rule": "119.4",
+        "status": "supported",
+        "note": "Payment legal at 40 life; the earlier 118.3 drop stays sound because 119.4 carries both the legality condition and the subtraction."
+      },
+      {
+        "step": 9,
+        "rule": "701.21a",
+        "status": "supported",
+        "note": "Sacrificing a summoning-sick Gravecrawler as a cost of Soultrader's ability is legal — 302.6 restricts only a creature's own tap/untap ability, as step 7 already established."
+      },
+      {
+        "step": 9,
+        "rule": "404.1",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 10,
+        "rule": "700.4",
+        "status": "supported",
+        "note": "Right rule for the claim: Gravecrawler moving battlefield -> graveyard is 'dies', which is Bastion's trigger event. The quote is STILL truncated to 'The term dies means', stopping immediately before the definition it is cited to supply, so the quoted fragment alone carries no proposition. Carried over from the previous pass unaddressed. It does not change the verdict — the rule is short, unambiguous and genuinely establishes the claim, and the step's own prose states it — but it is the one remaining editorial defect in the artifact and should be completed to '...is put into a graveyard from the battlefield.' if the file is ever touched again."
+      },
+      {
+        "step": 10,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "DROP VERIFIED (117.2a removed). The fuller quote now carries BOTH propositions the step makes: timing ('the next time a player would receive priority') and placement ('The ability becomes the topmost object on the stack'), the latter also making the step-1-only 405.2 unnecessary here. The one proposition unique to 117.2a — that an ability may trigger WHILE an ability is being activated — is established at step 1 with 117.2a cited, and step 10 back-references it in so many words ('exactly as in step 1'). Nothing at step 10 stands uncited. Ordering also correct and subtle: the step performs the SBA check BEFORE the trigger is put on the stack, which is what 704.3's second sentence prescribes."
+      },
+      {
+        "step": 10,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Carries the only listed condition in play (you 39, opponents 39 each — none at 0 or less). That a check occurs at all is 704.3, cited four times elsewhere (steps 4, 6, 8, 12); not re-citing it here is citation economy on an already-established mechanism, not a gap."
+      },
+      {
+        "step": 11,
+        "rule": "405.5",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 11,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Arithmetic correct and the two figures stay separate: 39 -> 38 per seat, 4 removed across the pod, 156 -> 152."
+      },
+      {
+        "step": 12,
+        "rule": "704.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 12,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 12,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": "The 111.2 drop remains sound (retained at step 5, where the identical token-creation event first establishes owner and controller). Loop closure re-verified independently: end of step 12 matches end of step 5 in every listed respect — you 40, Soultrader + Bastion on the battlefield, Gravecrawler in the graveyard, exactly 1 Treasure, stack empty, precombat main phase, your priority — differing only in opponents' life, exactly as claimed."
+      },
+      {
+        "step": 13,
+        "rule": "119.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 13,
+        "rule": "118.3b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 13,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 13,
+        "rule": "701.21a",
+        "status": "supported",
+        "note": "Ledger re-derived from scratch rather than read off: life -1 (step 9) +1 (step 11) = 0, floor 39, never near 0; Treasures +1 (step 12) -1 (step 7) = 0 with steady state 1; drain exactly 1 per seat, 4 across the pod, and the 'exactly one' claim rests on the 603.2 citations at steps 5, 7 and 8. Per-seat and pod figures are stated separately at every point they appear (steps 3, 11, 13, 14 and pod_arithmetic) and are never conflated."
+      },
+      {
+        "step": 14,
+        "rule": "732.1b",
+        "status": "supported",
+        "note": "The step's only shortcut claim — that you may declare a number of iterations rather than perform them — is stated almost verbatim in 732.1b. Correctly does not invoke 732.4: the loop is optional (every iteration begins with an activation you choose to make), so there is no draw, and the artifact claims none."
+      },
+      {
+        "step": 14,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "DROP VERIFIED (704.3 removed). The reworded sentence claims only that the operative threshold is 0 life and that a seat reaching exactly 0 loses the game — which 704.5a states outright. Step 14 no longer narrates a check, so 704.3 carried nothing here; the check mechanism is established at steps 4, 6, 8 and 12. Kill arithmetic re-verified against scenario-facts: 4 opponents at 40 each; the drain already on the stack takes each to 39; 39 further iterations bring all four to exactly 0 simultaneously, for 40 total drain events. 'iterations_to_kill_each_seat: 40' and 'further_iterations_needed_after_the_given_stack: 39' are both correct, and the self-funding claim holds on every resource independently (mana: Treasure per activation = {B} per cast; life: 1 paid, 1 refunded; body: Gravecrawler recurs, Soultrader survives on 'another creature'; timing: 500.2 keeps the phase alive). Nothing draws on the three tapped Swamps, the empty hand or the library, as claimed. SIBLING CHECK: scenario-facts reports 009 comparable to no sibling (body count 1 vs 0-3, zero shared bodies with all eight), and the artifact quotes no figure from any other stack — I grepped the full text; there is no cross-stack reference to make. The already-sacrificed-Gravecrawler trap is handled correctly at step 1, which counts one battlefield body."
+      }
+    ]
+  }
+}
