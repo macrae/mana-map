@@ -1,0 +1,554 @@
+{
+  "id": "012",
+  "slug": "yawgmoth-swarm",
+  "deck": "YAWGMOTH — THE SCARAB SWARM",
+  "title": "Exquisite Blood + South Wind Avatar: the loop is mandatory — does it kill the pod or draw the game?",
+  "scenario": {
+    "board": {
+      "you": [
+        "Exquisite Blood (enchantment)",
+        "South Wind Avatar (3/4, deathtouch)",
+        "Carrion Feeder (1/1, no counters)",
+        "Insect token X (1/1 black Insect, no abilities) — already sacrificed to Carrion Feeder to pay the cost of the ability now on the stack",
+        "Swamp (tapped)",
+        "Swamp (tapped)"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": [
+            "no permanents"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "no permanents"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "no permanents"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "no permanents"
+          ]
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "{0} (both Swamps are tapped and nothing else produces mana)",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Carrion Feeder's activated ability — 'Sacrifice a creature: Put a +1/+1 counter on this creature.' Cost already paid: Insect token X sacrificed.",
+        "controller": "you"
+      },
+      {
+        "pos": 1,
+        "object": "South Wind Avatar's triggered ability — 'Whenever another creature you control dies, you gain life equal to its toughness.' Triggered on Insect token X's death during cost payment. Insect token X had toughness 1.",
+        "controller": "you"
+      }
+    ],
+    "extras": {
+      "life_totals": {
+        "you": 40
+      },
+      "pod_size": "Five players — you and four opponents, 160 opposing life in total (opponent life is on the board block).",
+      "library": "You have 60 cards in your library.",
+      "assumptions": [
+        "No player responds to anything; every opponent passes priority throughout.",
+        "No permanent enters or leaves the battlefield except as described by the cards named here.",
+        "It is your precombat main phase.",
+        "No opponent has any effect that changes life loss, life gain, or replaces either.",
+        "Nest of Scarabs is NOT on the battlefield."
+      ],
+      "note_for_the_resolver": "bracket-check names this the highest-bracket combo line the deck contains, and goldfish_targets.json declares it as one of four kills. It has never been resolved. Neither card says 'may'. The whole question is what a mandatory loop does in a four-player pod: whether it is a draw under the rule for a mandatory loop that would continue forever, or whether something ends it. Note South Wind Avatar's second ability triggers on YOU gaining life, and Exquisite Blood triggers on an OPPONENT losing life."
+    },
+    "question": "Resolve the stack. Once South Wind Avatar's lifegain trigger resolves, Exquisite Blood and South Wind Avatar's second ability form a mandatory loop. Does that loop continue forever and draw the game, or does something end it — and if it ends, what exactly ends it and at what life totals?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Starting position. Carrion Feeder's activated ability is on the stack at pos 0 (bottom). Activation put the ability on the stack FIRST, as the topmost object at that moment; the activation cost (sacrifice a creature) was then paid as part of the same activation process, which is why Insect token X is NOT on the battlefield. Your bodies are South Wind Avatar and Carrion Feeder (2 creatures). Exquisite Blood is your only other permanent. Opponents: 4 seats at 40 life each (per-seat 40; pod total 160). You are at 40.",
+        "effect": "The ability is on the stack and the Insect has already been sacrificed. No player received priority at any point during the activation process, so nothing has resolved and no state-based action has yet been checked.",
+        "citations": [
+          {
+            "rule": "602.2a",
+            "quote": "It becomes the topmost object on the stack."
+          },
+          {
+            "rule": "602.2b",
+            "quote": "The remainder of the process for activating an ability is identical to the process for casting a spell listed in rules 601.2b–i"
+          },
+          {
+            "rule": "601.2h",
+            "quote": "The player pays the total cost."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Insect token X died on the battlefield during cost payment, so South Wind Avatar's first ability ('Whenever another creature you control dies, you gain life equal to its toughness') triggered at that moment. The next time a player would receive priority, the game FIRST performs state-based actions and only THEN puts waiting triggered abilities on the stack (117.5) -- that ordering is what makes the following two things happen in this order. State-based action: the token is now in the graveyard, a zone other than the battlefield, so it ceases to exist. Then the already-triggered death trigger is put on the stack above the Carrion Feeder ability, so it is at pos 1 (top) and resolves first.",
+        "effect": "Insect token X ceases to exist (it is not in the graveyard thereafter). Stack top-down: [South Wind Avatar death trigger] over [Carrion Feeder activated ability]. The trigger is unaffected: it triggered on the death event, which happened while the token was on the battlefield. Because the token is gone before the trigger resolves, its toughness must come from last known information -- see step 3.",
+        "citations": [
+          {
+            "rule": "603.2",
+            "quote": "that ability automatically triggers"
+          },
+          {
+            "rule": "704.5d",
+            "quote": "If a token is in a zone other than the battlefield, it ceases to exist."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack"
+          },
+          {
+            "rule": "603.3",
+            "quote": "the next time a player would receive priority"
+          },
+          {
+            "rule": "603.3",
+            "quote": "The ability becomes the topmost object on the stack."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Every opponent passes priority (scenario assumption: 'No player responds to anything; every opponent passes priority throughout'). All players having passed in succession, the top object resolves: the death trigger. It requires information from a specific object -- the dead Insect token -- which is no longer in the zone it was expected to be in (it ceased to exist at step 2), so the effect uses that object's LAST KNOWN INFORMATION: toughness 1. You therefore gain 1 life. This same pass-and-resolve mechanism drives every one of the roughly eighty resolutions in steps 5 through 10 below; it is not restated at each one.",
+        "effect": "You: 40 -> 41, on the token's last known toughness of 1. Opponents unchanged (40 each; pod 160).",
+        "citations": [
+          {
+            "rule": "117.4",
+            "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+          },
+          {
+            "rule": "608.2h",
+            "quote": "if it’s in the public zone it was expected to be in; if it’s no longer in that zone, or if the effect has moved it from a public zone to a hidden zone, the effect uses the object’s last known information."
+          },
+          {
+            "rule": "608.2c",
+            "quote": "follows its instructions in the order written"
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life"
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "That life gain is a life-gain event for you, so South Wind Avatar's SECOND ability ('Whenever you gain life, each opponent loses 1 life') triggers once. It is put on the stack above the Carrion Feeder ability. Note the direction: this ability watches YOU gaining life, not opponents losing it.",
+        "effect": "Stack top-down: [South Wind Avatar drain trigger #1] over [Carrion Feeder activated ability].",
+        "citations": [
+          {
+            "rule": "603.2",
+            "quote": "that ability automatically triggers"
+          },
+          {
+            "rule": "117.5",
+            "quote": "Then triggered abilities are put on the stack"
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "All players pass again (step 3) and drain #1 resolves: each opponent loses 1 life. This is one effect hitting all four seats at once.",
+        "effect": "Per seat: 40 -> 39. Pod total: 160 -> 156 (4 life removed across the pod, 1 per seat). You are still at 41.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "follows its instructions in the order written"
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life"
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Exquisite Blood ('Whenever an opponent loses life, you gain that much life') sees four opponents losing life. That one happening contains four occurrences of its trigger event -- one per opponent -- so it triggers four times, each for 1 life. Note the direction: Exquisite Blood watches an OPPONENT losing life, not you gaining it. Because these four have triggered simultaneously, they are placed on the stack by their controller, in APNAP order, in any order that player chooses; you control all four and they are identical (each gains you 1 life), so the ordering choice changes nothing.",
+        "effect": "Four Exquisite Blood triggers are put on the stack above the Carrion Feeder ability, in an order you choose that is immaterial. Stack top-down: [EB x4] over [Carrion Feeder ability].",
+        "citations": [
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+          },
+          {
+            "rule": "700.1",
+            "quote": "Anything that happens in a game is an event. Multiple events may take place during the resolution of a spell or ability."
+          },
+          {
+            "rule": "603.3b",
+            "quote": "each player, in APNAP order, puts each triggered ability they control"
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "The loop's shape. Resolving ONE Exquisite Blood trigger gains you 1 life; that life gain triggers South Wind Avatar's second ability, which is put on the stack ON TOP of the remaining Exquisite Blood triggers and therefore resolves next. So the sequence alternates strictly: one Exquisite Blood resolution, then one drain, then one Exquisite Blood resolution, then one drain. Each cycle nets +3 unresolved Exquisite Blood triggers on the stack, and neither card says 'may', so no player may decline any of it.",
+        "effect": "Exactly one drain resolves per cycle. Each drain removes 1 life per seat (4 across the pod) and each cycle gains you exactly 1 life -- not 4, because the other three Exquisite Blood triggers from that drain are still waiting under the newer objects.",
+        "citations": [
+          {
+            "rule": "603.3",
+            "quote": "The ability becomes the topmost object on the stack."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Then triggered abilities are put on the stack"
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "The loop is mandatory but it is NOT a draw, and the limiter has a name. A 'loop' in the rules is a state in which a set of actions could be repeated INDEFINITELY, and the draw rule applies only to a loop 'repeating a sequence of events with no way to stop'. Neither condition is met here: every iteration changes the game state irreversibly -- each drain lowers every opponent's life by 1, adjusting four life totals that never rise again -- so the sequence cannot be repeated indefinitely and there IS a way to stop. It terminates after a finite, computable number of iterations when a state-based action ends the game. 732.4's bare 'only mandatory actions' sentence therefore does not reach this sequence, both because it imports 104.4b by its own cross-reference and because 732.1b's definition of a loop is unsatisfied.",
+        "effect": "No draw. The loop runs to a forced conclusion instead.",
+        "citations": [
+          {
+            "rule": "732.1b",
+            "quote": "a set of actions could be repeated indefinitely"
+          },
+          {
+            "rule": "104.4b",
+            "quote": "repeating a sequence of events with no way to stop, the game is a draw"
+          },
+          {
+            "rule": "732.4",
+            "quote": "If a loop contains only mandatory actions, the game is a draw."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life"
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Count the iterations. Opponents start at 40 and each drain removes exactly 1 from each seat, so drain #40 is the one that brings all four seats to 0 simultaneously. Drain #1 followed the death trigger's life gain; every later drain #k (k >= 2) is preceded by exactly one Exquisite Blood resolution, so 39 Exquisite Blood triggers resolve before drain #40.",
+        "effect": "Your life at the moment drain #40 resolves: 40 + 1 (death trigger) + 39 (Exquisite Blood resolutions) = 80. Per opponent: 40 - 40 = 0. Pod total: 160 - 160 = 0. 160 life removed across the pod, 40 per seat -- the two figures are not interchangeable.",
+        "citations": [
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life"
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "Drain #40 finishes resolving and a player would receive priority. State-based actions are checked FIRST, before the four new Exquisite Blood triggers from that drain are put on the stack (704.3, the same ordering cited at step 2). All four opponents have 0 life, so all four lose the game as a single simultaneous state-based action; because state-based actions were performed, the check repeats, and the waiting triggers never get put on the stack.",
+        "effect": "Opponents 1-4 each at 0 life and each loses the game. Those four pending Exquisite Blood triggers never reach the stack, so your life stops at 80.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "704.3",
+            "quote": "otherwise all triggered abilities that are waiting to be put on the stack are put on the stack"
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "Each opponent that lost the game leaves the game. You are the only player left, so you win immediately and the game ends immediately. Nothing still on the stack resolves.",
+        "effect": "You win. Carrion Feeder's activated ability (pos 0) never resolves, so Carrion Feeder never gets its +1/+1 counter and stays a 1/1. The 117 Exquisite Blood triggers still on the stack never resolve. The opponents controlled no objects, so 800.4a removes nothing.",
+        "citations": [
+          {
+            "rule": "104.5",
+            "quote": "If a player loses the game, that player leaves the game."
+          },
+          {
+            "rule": "104.2a",
+            "quote": "This happens immediately and overrides all effects that would preclude that player from winning the game."
+          },
+          {
+            "rule": "104.1",
+            "quote": "A game ends immediately when a player wins, when the game is a draw, or when the game is restarted."
+          },
+          {
+            "rule": "800.4a",
+            "quote": "When a player leaves the game, all objects (see rule 109) owned by that player leave the game"
+          }
+        ]
+      },
+      {
+        "n": 12,
+        "action": "Robustness note, and the one figure that is reading-dependent. Even if one insisted Exquisite Blood saw the drain as a single event and triggered only once, the alternation in step 7 is unchanged -- one Exquisite Blood resolution between successive drains -- so the drain count (40), the final per-seat total (0) and the pod total (0) are identical under every reading. YOUR final life is not: under the four-triggers reading and under a once-for-1 reading it is 80, but under a once-for-the-full-4-life-lost reading it would be 40 + 1 + 39x4 = 197. The kill does not depend on the reading; your life total does.",
+        "effect": "Opponent figures and the win are reading-independent. Your final life is 80 on the reading resolved in step 6, and only that figure would move under an alternative reading.",
+        "citations": [
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+          },
+          {
+            "rule": "700.1",
+            "quote": "Anything that happens in a game is an event. Multiple events may take place during the resolution of a spell or ability."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Not a draw -- you win. South Wind Avatar's death trigger gains you 1 life, which turns on the mandatory Exquisite Blood + South Wind Avatar loop. Because South Wind Avatar's second ability triggers on YOU gaining life and Exquisite Blood triggers on an OPPONENT losing life, each cycle resolves exactly one drain: 1 life per seat, 4 across the four-opponent pod. The loop is mandatory (neither card says 'may') but it is not the CR 104.4b / 732.4 draw case, because every iteration lowers every opponent's life by 1: the sequence is not one that could be repeated indefinitely (732.1b) and there is a way to stop (104.4b). Drain #40 takes all four opponents from 1 to 0 simultaneously; state-based actions are checked before the resulting Exquisite Blood triggers reach the stack, so all four lose at once (704.5a), leave the game, and you win immediately (104.2a, 104.1). Final: you at 80 life; each opponent at 0 (per seat 40 life removed, 160 across the pod). Carrion Feeder's activated ability at pos 0 never resolves, so it never gets its +1/+1 counter.",
+      "you": {
+        "life": 80,
+        "battlefield": [
+          "Exquisite Blood",
+          "South Wind Avatar (3/4, deathtouch)",
+          "Carrion Feeder (1/1, no counters -- its activated ability never resolved)",
+          "Swamp (tapped)",
+          "Swamp (tapped)"
+        ],
+        "hand": [],
+        "graveyard": [
+          "(empty -- Insect token X went to the graveyard on being sacrificed and then ceased to exist at the next state-based action check, step 2, CR 704.5d)"
+        ],
+        "stack_at_game_end": "Carrion Feeder's activated ability plus 117 unresolved Exquisite Blood triggers; none of them resolve because the game ended immediately.",
+        "result": "wins the game"
+      },
+      "opponents": [
+        {
+          "seat": "opponent_1",
+          "life": 0,
+          "result": "loses the game (704.5a)"
+        },
+        {
+          "seat": "opponent_2",
+          "life": 0,
+          "result": "loses the game (704.5a)"
+        },
+        {
+          "seat": "opponent_3",
+          "life": 0,
+          "result": "loses the game (704.5a)"
+        },
+        {
+          "seat": "opponent_4",
+          "life": 0,
+          "result": "loses the game (704.5a)"
+        }
+      ],
+      "life_arithmetic": {
+        "per_opponent_life_removed": 40,
+        "pod_total_life_removed": 160,
+        "note": "Per-seat and pod-total are not interchangeable: each drain removes 1 per seat and 4 across the pod; 40 drains remove 40 per seat and 160 across the pod.",
+        "drains_resolved": 40,
+        "your_life_gained": 40
+      }
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "602.2a",
+        "status": "supported",
+        "note": "Verbatim. Establishes the ability is created on the stack as the topmost object at announcement, i.e. BEFORE the cost is paid, which is what step 1's ordering prose asserts."
+      },
+      {
+        "step": 1,
+        "rule": "602.2b",
+        "status": "supported",
+        "note": "EXTENSION VERIFIED. Quote now reads '...listed in rules 601.2b-i' (en dash, verbatim against the rule text). The prior fragment stopped at '601.2b' and on its face excluded 601.2h; the extended quote now reaches the 601.2h citation sitting beside it. The extension says strictly more than the short one and nothing it says is unneeded."
+      },
+      {
+        "step": 1,
+        "rule": "601.2h",
+        "status": "supported",
+        "note": "'The player pays the total cost.' Verbatim opening sentence. Establishes that the sacrifice happens inside the activation process, which is why Insect token X is off the battlefield with nothing resolved. Matches scenario-facts, which lists the token under spent_paying_a_cost and excludes it from the 2-body count that step 1 states."
+      },
+      {
+        "step": 2,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "The death event matches South Wind Avatar's first ability's trigger event. Card text re-verified against cards.json: 'Whenever another creature you control dies, you gain life equal to its toughness.' Full oracle also confirms deathtouch and 3/4, as the scenario block states."
+      },
+      {
+        "step": 2,
+        "rule": "704.5d",
+        "status": "supported",
+        "note": "Quote is the entire rule and exactly establishes the claim: the token, now in the graveyard, ceases to exist. This is what makes final_state.you.graveyard empty."
+      },
+      {
+        "step": 2,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "THE MOVE, RECEIVING END - RESOLVES MY PRIOR OPEN FINDING. The quote runs from 'Each time a player would get priority...' through 'Then triggered abilities are put on the stack' and is verbatim against 117.5. It establishes exactly the ordering step 2 needed and previously asserted uncited: SBAs are performed first, repeated to fixpoint, and only THEN are waiting triggered abilities put on the stack. That ordering is the sole basis for the token ceasing to exist before the trigger is placed, and hence for the empty graveyard. Step 2's prose now names 117.5 inline and says the ordering 'is what makes the following two things happen in this order', so the citation is load-bearing rather than decorative."
+      },
+      {
+        "step": 2,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Both quotes verbatim ('the next time a player would receive priority', 'The ability becomes the topmost object on the stack') and jointly place the death trigger above the already-on-stack Carrion Feeder ability, matching the scenario's pos 0 / pos 1 listing."
+      },
+      {
+        "step": 3,
+        "rule": "117.4",
+        "status": "supported",
+        "note": "Verbatim, and correctly generalised to 'every one of the roughly eighty resolutions in steps 5 through 10' (40 drains + 39 Exquisite Blood + 1 death trigger = 80). Converts the scenario assumption 'every opponent passes priority throughout' into resolution by rule."
+      },
+      {
+        "step": 3,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": "THE ADDITION - RESOLVES MY PRIOR OPEN FINDING, and it is the right rule in the right step. Quote is a verbatim substring of 608.2h ('if it's in the public zone it was expected to be in; if it's no longer in that zone... the effect uses the object's last known information'). Judged against the FULL rule, not the fragment: the sentence before it scopes this to effects requiring information from a specific object, which is precisely 'you gain life equal to its toughness' asking the dead token for its toughness. The token ceased to exist at step 2, so it is not in the zone the effect expected, so LKI applies and LKI is toughness 1. The '1 life' at step 3 is the seed of the entire loop and is no longer an uncited assertion. Step 2 now hands off explicitly ('its toughness must come from last known information -- see step 3'), so the two steps read as one argument. 603.10a/603.6c (look-back-in-time for leaves-the-battlefield triggers) would be additional depth but is not required: step 2's claim that the ability triggered is established by 603.2 on the event itself, and the value question is what 608.2h now answers."
+      },
+      {
+        "step": 3,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Accurate and now no longer carrying weight it could not bear - 608.2h carries the load-bearing part of this step. Thin but not wrong for a one-instruction trigger."
+      },
+      {
+        "step": 3,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Establishes 40 -> 41."
+      },
+      {
+        "step": 4,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Direction verified against cards.json: South Wind Avatar's third line is 'Whenever you gain life, each opponent loses 1 life', so YOUR life gain is the trigger event, not an opponent's loss. The step states the direction explicitly, which is the trap this board is built on."
+      },
+      {
+        "step": 4,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "'Then triggered abilities are put on the stack' - verbatim. Establishes the placement; the 'above the Carrion Feeder ability' refinement is 603.3's topmost rule, quoted in this artifact at steps 2 and 7 and trivially satisfied here since the Carrion Feeder ability is the only other object on the stack. Judged the same way on all three passes."
+      },
+      {
+        "step": 5,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 5,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Per-seat 40 -> 39 and pod 160 -> 156 are stated as separate figures and both are correct against scenario-facts.drain_arithmetic (4 opponents, 40 per seat, 160 opposing life). Swept the whole artifact for per-seat/pod conflation: steps 5, 9, 12, the summary and life_arithmetic all keep the two quantities distinct and life_arithmetic states the non-interchangeability outright. None found."
+      },
+      {
+        "step": 6,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "Verbatim including the second sentence. One drain is four occurrences of 'an opponent loses life', so Exquisite Blood ('Whenever an opponent loses life, you gain that much life', re-verified against cards.json) triggers four times for 1 each. Direction correct: EB watches opponent life LOSS, not your gain."
+      },
+      {
+        "step": 6,
+        "rule": "700.1",
+        "status": "supported",
+        "note": "Supported on the full rule text. As on the prior pass, the operative sentence is the later 'One \"happening\" may be treated as a single event by one ability and as multiple events by another' rather than the two quoted; the quoted sentences are true and on-topic, so this is a quote-selection preference, not a defect."
+      },
+      {
+        "step": 6,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Verbatim substring. The truncation drops 'with a trigger condition that isn't another ability triggering', but that qualifier is satisfied - all four EB triggers trigger on life loss, not on another ability triggering - so they belong in 603.3b's first part. You control all four and they are identical, so the ordering choice is immaterial as claimed."
+      },
+      {
+        "step": 7,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "'The ability becomes the topmost object on the stack' is what forces each new drain trigger above the unresolved EB triggers, giving strict alternation and +1 life per cycle rather than +4. Independently re-simulated in full: entering drain k the stack carries 3(k-1) EB triggers, hence 117 at drain 40."
+      },
+      {
+        "step": 7,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "Carries the placement half of the alternation claim. The mandatoriness claim rests on the verified card text (neither card says 'may'), which I checked directly in cards.json."
+      },
+      {
+        "step": 8,
+        "rule": "732.1b",
+        "status": "supported",
+        "note": "Verbatim. 732.1b sits in the same section as 732.4, so its parenthetical definition - a set of actions that 'could be repeated indefinitely (thus creating a \"loop\")' - is what the word 'loop' in 732.4 means. The step measures 732.4 against a named definition instead of asserting non-application."
+      },
+      {
+        "step": 8,
+        "rule": "104.4b",
+        "status": "supported",
+        "note": "Full text read: '...repeating a sequence of events with no way to stop, the game is a draw. Loops that contain an optional action don't result in a draw.' The 'no way to stop' qualifier is the rule's own and is genuinely unmet - each drain lowers four life totals monotonically and irreversibly. 104.4b's leading condition ('a game that's not using the limited range of influence option') is satisfied by a normal five-player pod, so 104.4b and not 104.4f is the right branch. 104.4a is unreachable since you never lose."
+      },
+      {
+        "step": 8,
+        "rule": "732.4",
+        "status": "supported",
+        "note": "Verbatim, and properly bounded. Read bare, this sentence would make the artifact's own scenario a draw, since every action here is mandatory; it survives via its own cross-reference to 104.4b and via 732.1b's definition of 'loop', and the step names both in prose rather than leaving the escape hatch implicit. This is the artifact's central question and it is answered with the rule that most threatens the answer quoted in full."
+      },
+      {
+        "step": 8,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Establishes that each iteration actually adjusts life totals - the irreversible state change the whole termination argument rests on."
+      },
+      {
+        "step": 9,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Sole citation and sufficient: step 9 makes only counting and life-total claims, with the alternation it counts established at step 7. Arithmetic independently re-derived by simulation: 40 drains; per seat 40 - 40 = 0; pod 160 - 160 = 0; your life 40 + 1 + 39 = 80; 117 EB triggers stranded. All four figures match the artifact."
+      },
+      {
+        "step": 10,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "THE MOVE, LOSING END - STEP 10 IS STILL FULLY GROUNDED WITHOUT 117.5. Checked claim by claim. (a) 'a player would receive priority' and SBAs checked at that moment: first quote, verbatim. (b) SBAs checked BEFORE the four new EB triggers are put on the stack: the second quote, 'otherwise all triggered abilities that are waiting to be put on the stack are put on the stack', is verbatim and its 'otherwise' is exactly the conditional the step needs - triggers are placed only when no SBA was performed. (c) 'because state-based actions were performed, the check repeats': the clause 'If any state-based actions are performed as a result of a check, the check is repeated' is in 704.3 immediately before the quoted fragment and I judged it against the full rule text as required. (d) 'simultaneously as a single event' for the four losses: first quote. 117.5 was redundant here - 704.3 is the more specific rule and states the same ordering plus the repeat condition that 117.5 does not spell out in the quoted form. The extension is what makes the move safe; the short quote alone would have left (b) and (c) hanging. Step 10's prose also back-references '(704.3, the same ordering cited at step 2)', which is accurate: step 2 cites 117.5 for the same ordering and the two rules agree."
+      },
+      {
+        "step": 10,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Entire rule quoted. All four seats reach 0 in the same check - they started at 40 each and every drain removes 1 from each - so 704.3's 'simultaneously as a single event' makes this one loss, not four sequential ones. This step is the only thing holding your life at 80 rather than 84."
+      },
+      {
+        "step": 11,
+        "rule": "104.5",
+        "status": "supported",
+        "note": "Verbatim; losing the game makes each opponent leave it."
+      },
+      {
+        "step": 11,
+        "rule": "104.2a",
+        "status": "supported",
+        "note": "'This happens immediately and overrides all effects that would preclude that player from winning the game' - and the sentence before it in the full rule is the operative one ('A player still in the game wins the game if that player's opponents have all left the game'), which the step's prose states. You are the only player left."
+      },
+      {
+        "step": 11,
+        "rule": "104.1",
+        "status": "supported",
+        "note": "Establishes that the 117 stranded EB triggers and the Carrion Feeder ability never resolve, hence Carrion Feeder keeps no +1/+1 counter and stays a 1/1 - which final_state states."
+      },
+      {
+        "step": 11,
+        "rule": "800.4a",
+        "status": "supported",
+        "note": "Opponents control no permanents (scenario: 'no permanents' on all four boards) and no objects on the stack - every trigger and the activated ability is yours - so 800.4a removes nothing, as claimed."
+      },
+      {
+        "step": 12,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "The alternative-reading arithmetic is correct and I re-derived it: under a once-per-drain-for-the-full-4 reading each cycle is one EB resolution gaining 4, so 40 + 1 + 39x4 = 197; under a once-for-1 reading it is 80. The step correctly scopes what is reading-dependent (your life only) and what is not (40 drains, 0 per seat, 0 pod, the win). UNCHANGED FROM MY PRIOR PASS, DELIBERATELY LEFT BY THE RESOLVER: the stranded-trigger count is also reading-dependent - both alternatives leave 0 EB triggers on the stack rather than 117 - and final_state.you.stack_at_game_end states 117 flatly. This is not an error: 117 is correct under the reading the artifact actually resolves at step 6, and step 12 never claims the stranded count is reading-independent. It is a completeness nicety and it is the orchestrator's call, not a finding."
+      },
+      {
+        "step": 12,
+        "rule": "700.1",
+        "status": "supported",
+        "note": ""
+      }
+    ]
+  }
+}

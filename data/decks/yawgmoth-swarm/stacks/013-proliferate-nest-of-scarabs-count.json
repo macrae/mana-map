@@ -1,0 +1,447 @@
+{
+  "id": "013",
+  "slug": "yawgmoth-swarm",
+  "deck": "YAWGMOTH — THE SCARAB SWARM",
+  "title": "Nest of Scarabs against a multi-creature counter event: how many Insects does one proliferate make?",
+  "scenario": {
+    "board": {
+      "you": [
+        "Yawgmoth, Thran Physician (2/4) — your commander",
+        "Nest of Scarabs (enchantment)",
+        "Skinrender (3/3) — carries TWO -1/-1 counters, so it is currently 1/1",
+        "Grave Titan (6/6) — carries TWO -1/-1 counters, so it is currently 4/4",
+        "Necroskitter (1/4) — carries ONE -1/-1 counter, so it is currently 0/3",
+        "Swamp (tapped)",
+        "Swamp (tapped)"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": [
+            "no permanents"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "no permanents"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "no permanents"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "no permanents"
+          ]
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [
+      "Swamp"
+    ],
+    "mana_available": "{0} (both Swamps are tapped; the {B}{B} for the proliferate ability has already been paid)",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Yawgmoth, Thran Physician's second activated ability — '{B}{B}, Discard a card: Proliferate.' All costs already paid: {B}{B} paid and a card discarded. No choices have been made yet; proliferate chooses its permanents on resolution.",
+        "controller": "you"
+      }
+    ],
+    "extras": {
+      "life_totals": {
+        "you": 40
+      },
+      "pod_size": "Five players — you and four opponents, 160 opposing life in total (opponent life is on the board block).",
+      "library": "You have 60 cards in your library.",
+      "assumptions": [
+        "No player responds to anything; every opponent passes priority throughout.",
+        "It is your precombat main phase.",
+        "You will choose all three of your counter-bearing creatures when proliferate resolves.",
+        "Every creature listed is alive and legal as the board stands: 1/1, 4/4 and 0/3 respectively. Skinrender is the one that will not survive the proliferate, and that is part of the question rather than an error in the board.",
+        "Opponents control no permanents, so Necroskitter's ability — which returns creatures an OPPONENT controlled — never triggers here.",
+        "The card discarded to pay the proliferate ability's cost was a Swamp; it is in your graveyard and is inert here."
+      ],
+      "note_for_the_resolver": "Stack 006 on this deck is checker-passed and settles that -1/-1 counters placed on a creature ALREADY on the battlefield do trigger Nest of Scarabs. What it does not settle is the COUNT on an event touching several creatures at once, and that is the whole question here. It decides whether Carnifex Demon's activated ability and Black Sun's Zenith are ignition sources or army-makers, which in turn decides whether either is a cut candidate. Nest of Scarabs reads 'Whenever you put one or more -1/-1 counters on a creature' — note the singular."
+    },
+    "question": "Resolve the proliferate, choosing all three counter-bearing creatures. How many separate Nest of Scarabs triggers are created, how many Insect tokens result in total given that Grave Titan already carries two counters, and does Skinrender dying to a state-based action before those triggers resolve change either number?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "The stack holds one object: Yawgmoth, Thran Physician's activated ability '{B}{B}, Discard a card: Proliferate.' Costs are already paid — the {B}{B} from the two now-tapped Swamps and a discarded card, a Swamp, which is in your graveyard and inert here — your hand is empty, and every player passes priority in succession, so the top (and only) object of the stack resolves. You, as its controller, follow its instructions.",
+        "effect": "The proliferate ability begins to resolve. Your board is Yawgmoth (2/4), Nest of Scarabs, Skinrender (3/3 base, two -1/-1 counters, currently 1/1), Grave Titan (6/6 base, two -1/-1 counters, currently 4/4), Necroskitter (1/4 base, one -1/-1 counter, currently 0/3) and two tapped Swamps. Four opponents at 40 life each control no permanents.",
+        "citations": [
+          {
+            "rule": "117.4",
+            "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves or, if the stack is empty, the phase or step ends."
+          },
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Proliferate resolves. You choose any number of permanents and/or players that have a counter; per the scenario you choose all three counter-bearing creatures: Skinrender, Grave Titan and Necroskitter. Each chosen permanent is given ONE additional counter of each KIND already on it — not one per existing counter.",
+        "effect": "Grave Titan carries two -1/-1 counters, but that is two counters of a single kind, so it receives exactly one new -1/-1 counter — the same number Skinrender and Necroskitter receive. Yawgmoth and the Swamps have no counters and cannot be chosen; the opponents have no counters either.",
+        "citations": [
+          {
+            "rule": "701.34a",
+            "quote": "To proliferate means to choose any number of permanents and/or players that have a counter, then give each one additional counter of each kind that permanent or player already has."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "The three -1/-1 counters are put onto the three creatures simultaneously, as part of this single resolution. Counter totals become: Skinrender 3, Grave Titan 3, Necroskitter 2.",
+        "effect": "-1/-1 counters subtract from power and toughness in layer 7c, so the creatures are now Skinrender 3/3 base with three counters = 0/0; Grave Titan 6/6 base with three counters = 3/3; Necroskitter 1/4 base with two counters = -1/2. A power of -1 is a legal game value and is used as-is.",
+        "citations": [
+          {
+            "rule": "122.1a",
+            "quote": "Similarly, -X/-Y counters subtract from power and toughness."
+          },
+          {
+            "rule": "613.4c",
+            "quote": "Layer 7c: Effects and counters that modify power and/or toughness (but don’t set power and/or toughness to a specific number or value) are applied."
+          },
+          {
+            "rule": "107.1b",
+            "quote": "However, it’s possible for a game value, such as a creature’s power, to be less than zero."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Nest of Scarabs reads 'Whenever you put one or more -1/-1 counters on a creature, create that many 1/1 black Insect creature tokens.' Its trigger condition is written per creature ('a creature'), and this one proliferate event contains three occurrences of it — one for each creature you put counters on. The count therefore has TWO independent inputs: the number of creatures you put counters on (how many times it triggers) and the number of counters put on each of those creatures (each trigger's 'that many').",
+        "effect": "Nest of Scarabs triggers THREE separate times, once for Skinrender, once for Grave Titan and once for Necroskitter. Each instance looks only at the counters put on its own creature, and that number is one in every case — including Grave Titan, whose two pre-existing counters are irrelevant to 'that many'. So the three triggers will make one Insect each: three tokens in total, not four and not six. The abilities have merely triggered at this point and do nothing yet.",
+        "citations": [
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers. The ability doesn’t do anything at this point."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Having put the counters on, the proliferate ability has completed its instructions and is removed from the stack. No player received priority at any point during its resolution, so nothing has yet been put on the stack and no state-based action has yet been checked.",
+        "effect": "The stack is empty. Three Nest of Scarabs triggers are waiting to be put on the stack, and Skinrender is on the battlefield at 0/0.",
+        "citations": [
+          {
+            "rule": "608.2n",
+            "quote": "As the final part of an ability’s resolution, the ability is removed from the stack and ceases to exist."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack (see rule 603, “Handling Triggered Abilities”)."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "A player would now receive priority, so state-based actions are checked first — before the waiting triggers go on the stack. Skinrender's toughness is 0.",
+        "effect": "Skinrender is put into your graveyard as a state-based action. Grave Titan (3/3) and Necroskitter (-1/2) both have toughness greater than 0 and survive. Skinrender's death does not reduce the count: all three Nest of Scarabs abilities had already triggered during the proliferate's resolution, and once an ability has triggered its controller puts it on the stack the next time a player would receive priority — which is this same moment, immediately after these state-based actions. Note also that Skinrender is not any trigger's source; Nest of Scarabs is, and it never leaves the battlefield. Even if it had, a triggered ability exists on the stack independently of its source. The count stays at three triggers and three Insects.",
+        "citations": [
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard. Regeneration can’t replace this event."
+          },
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "113.7a",
+            "quote": "Once activated or triggered, an ability exists on the stack independently of its source. Destruction or removal of the source after that time won’t affect the ability."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Check whether Skinrender's death matches any trigger event on the battlefield. Necroskitter reads 'Whenever a creature an opponent controls with a -1/-1 counter on it dies, you may return that card to the battlefield under your control.' Skinrender was controlled by YOU, and the four opponents control no permanents at all.",
+        "effect": "Necroskitter does not trigger. Skinrender's own ability is an enters-the-battlefield trigger and does not trigger on death either. Grave Titan's ability triggers only on entering or attacking. No new abilities trigger from the state-based action.",
+        "citations": [
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "With state-based actions complete, the three waiting Nest of Scarabs triggers are put on the stack. All three are controlled by you, so you choose the order among them.",
+        "effect": "Three identical triggered abilities sit on the stack, each reading 'create that many 1/1 black Insect creature tokens' with that many = 1. Their source, Nest of Scarabs, is still on the battlefield, and in any case each ability now exists on the stack independently of its source.",
+        "citations": [
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "603.3b",
+            "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+          },
+          {
+            "rule": "113.7a",
+            "quote": "Once activated or triggered, an ability exists on the stack independently of its source. Destruction or removal of the source after that time won’t affect the ability."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "All players pass on each trigger in turn; the three triggers resolve one at a time, each creating one 1/1 black Insect creature token.",
+        "effect": "Three 1/1 black Insect creature tokens are put onto the battlefield under your control — one per trigger. Answer to the scenario's question: 3 triggers, 3 Insect tokens, and Skinrender dying to a state-based action before those triggers resolve changes neither number.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "701.7a",
+            "quote": "To create one or more tokens with certain characteristics, put the specified number of tokens with the specified characteristics onto the battlefield."
+          },
+          {
+            "rule": "111.2",
+            "quote": "The player who creates a token is its owner. The token enters the battlefield under that player’s control."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "The stack is empty. State-based actions are checked once more before you receive priority: no creature has toughness 0 or less, no player is at 0 life, and no abilities are waiting.",
+        "effect": "Nothing further happens. You retain priority in your precombat main phase with {0} available.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "Once no more state-based actions have been performed as the result of a check and no triggered abilities are waiting to be put on the stack, the appropriate player gets priority."
+          },
+          {
+            "rule": "117.5",
+            "quote": "These steps repeat in order until no further state-based actions are performed and no abilities trigger. Then the player who would have received priority does so."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "One proliferate, choosing all three counter-bearing creatures, puts exactly one -1/-1 counter on each of Skinrender, Grave Titan and Necroskitter. That single event contains three occurrences of Nest of Scarabs' 'Whenever you put one or more -1/-1 counters on a creature' condition, so the Nest triggers THREE times, once per creature. Each trigger's 'that many' counts only the counters put on its own creature — one — so the result is three 1/1 black Insect tokens, not four and not six. Grave Titan's two pre-existing counters are two counters of one KIND, and proliferate gives one additional counter per kind, so it gains one counter like everything else. Skinrender (3/3 base) reaches three counters, becomes 0/0 and is put into your graveyard by a state-based action that is performed BEFORE the triggers are put on the stack — but all three abilities had already triggered during the proliferate's resolution, and their source, Nest of Scarabs, never left the battlefield, so neither the trigger count nor the token count changes. Necroskitter does not trigger: it wants a creature an OPPONENT controls, and the opponents control no permanents. WHAT THIS BOARD ESTABLISHES, PRECISELY: the Nest's output has two independent inputs — the number of creatures you put counters on sets the number of TRIGGERS (step 4), and the number of counters put on each of those creatures sets that trigger's 'that many' (step 4). This scenario cannot distinguish those two scalings, because proliferate fixes counters-per-creature at exactly one for every chosen permanent (step 2), so every proliferate answers creatures x 1 and the two readings coincide at three. It would be wrong to generalise from here to 'scales with creatures touched rather than counters added'. THE TWO DECK CARDS THE SCENARIO NAMES DIFFER FROM EACH OTHER, and only one of them matches this board's shape: Carnifex Demon's '{B}, Remove a -1/-1 counter from this creature: Put a -1/-1 counter on each other creature' places exactly one counter per creature, so it has the same arithmetic as this proliferate — triggers x 1 token. Black Sun's Zenith reads 'Put X -1/-1 counters on each creature', which places X counters on each creature at once; applying step 4's cited reading to a board of three of your creatures at X=3 gives three triggers of THREE tokens each — nine Insects, not three. That arithmetic is stated here as the consequence of this resolution's reading and is NOT itself resolved on this board; the cut-candidacy question for Black Sun's Zenith should be settled by a scenario that actually resolves a Zenith (multiple counters per creature in one event, plus the Zenith hitting every creature on every board, not only yours).",
+      "you": {
+        "life": 40,
+        "battlefield": [
+          "Yawgmoth, Thran Physician (2/4, commander)",
+          "Nest of Scarabs",
+          "Grave Titan (6/6 base, three -1/-1 counters, currently 3/3)",
+          "Necroskitter (1/4 base, two -1/-1 counters, currently -1/2)",
+          "1/1 black Insect token",
+          "1/1 black Insect token",
+          "1/1 black Insect token",
+          "Swamp (tapped)",
+          "Swamp (tapped)"
+        ],
+        "graveyard": [
+          "Swamp (discarded to pay the proliferate ability's cost)",
+          "Skinrender"
+        ],
+        "hand": [],
+        "library": 60,
+        "mana_available": "{0}",
+        "stack": "empty",
+        "insect_tokens_created": 3,
+        "nest_of_scarabs_triggers": 3
+      },
+      "opponents": [
+        {
+          "seat": "opponent_1",
+          "life": 40,
+          "battlefield": []
+        },
+        {
+          "seat": "opponent_2",
+          "life": 40,
+          "battlefield": []
+        },
+        {
+          "seat": "opponent_3",
+          "life": 40,
+          "battlefield": []
+        },
+        {
+          "seat": "opponent_4",
+          "life": 40,
+          "battlefield": []
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "summary": "Second pass. 24 citations checked against full rule text: 24 supported, 0 unsupported, 0 irrelevant, 0 misquoted, no missing steps. BOTH prior findings are resolved. (1) Step 6's 603.2c is gone, replaced by 603.3 + 113.7a, which do carry the claim. (2) The 'scales with creatures touched rather than counters added' clause is deleted and replaced by a correct two-input framing with an explicit statement that this board cannot distinguish the two. The nine-Insect Black Sun's Zenith figure is arithmetically CORRECT (3 triggers x 3 counters each) and is correctly hedged as unresolved; cut candidacy is explicitly deferred, so it is not an over-correction either. The scenario amendment (discarded card named as a Swamp, in the graveyard) IS folded in: step 1 names it and final_state's graveyard carries it alongside Skinrender, and the scenario and resolution now agree on their own terms. Sibling comparability clean; no per-seat/pod claim is made.",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "117.4",
+        "status": "supported",
+        "note": "Sole object on the stack resolves after all players pass in succession; matches the scenario's stated pass assumption."
+      },
+      {
+        "step": 1,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Verbatim first sentence of a longer rule about instruction order, replacement effects and whole-text reading. The narrow use here is squarely inside it, and it carries the 'YOU, as controller, follow its instructions' actor that Nest of Scarabs' 'Whenever YOU put' condition needs. AMENDMENT FOLDED IN: this step now names the discarded card ('a discarded card, a Swamp, which is in your graveyard and inert here') and states the hand is empty, matching the scenario's amended graveyard block ['Swamp'] and hand []. The claim of inertness is correct — no card on either battlefield, and nothing in the deck on this board, cares about a land in a graveyard."
+      },
+      {
+        "step": 2,
+        "rule": "701.34a",
+        "status": "supported",
+        "note": "Full rule quoted verbatim. 'Give each one additional counter of each KIND that permanent or player already has' establishes both halves: only counter-bearing permanents/players may be chosen (Yawgmoth, the two Swamps, you and the four opponents are all ineligible), and Grave Titan's two -1/-1 counters are two counters of ONE kind, so it gains exactly one. This is the rule that makes the answer three rather than four, and it is also the rule the corrected final_state leans on to say proliferate FIXES counters-per-creature at one."
+      },
+      {
+        "step": 3,
+        "rule": "122.1a",
+        "status": "supported",
+        "note": "'Similarly, -X/-Y counters subtract from power and toughness' is verbatim and on topic; the rule itself forwards to 613.4c, the next citation."
+      },
+      {
+        "step": 3,
+        "rule": "613.4c",
+        "status": "supported",
+        "note": "Layer 7c is the correct layer for counters that modify rather than set P/T. Arithmetic re-checked: Skinrender 3/3 base at three counters = 0/0, Grave Titan 6/6 at three = 3/3, Necroskitter 1/4 at two = -1/2. All three match cards.json base stats (3/3, 6/6, 1/4)."
+      },
+      {
+        "step": 3,
+        "rule": "107.1b",
+        "status": "supported",
+        "note": "Full rule confirms a game value such as power may be less than zero and is used as-is, so Necroskitter at -1/2 is legal. The rule's 'zero is used instead' clause governs calculations determining an effect's result, and nothing on this board reads Necroskitter's power, so the quote is not taken out of context."
+      },
+      {
+        "step": 4,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "The load-bearing citation and it holds on the full text, whose example is structurally identical: 'Whenever a land is put into a graveyard' triggers once per land when one spell destroys them all. Nest of Scarabs' 'on a creature' is likewise per creature, so one proliferate containing three counter placements yields three occurrences. Three triggers CONFIRMED. The step's new sentence — 'the count therefore has TWO independent inputs: the number of creatures you put counters on (how many times it triggers) and the number of counters put on each of those creatures (each trigger's that many)' — attributes only the first input to 603.2c, which is exactly what the rule governs; the second input is Nest of Scarabs' own card text, quoted verbatim against cards.json."
+      },
+      {
+        "step": 4,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "'The ability doesn't do anything at this point' supports the step's closing claim that the abilities have merely triggered."
+      },
+      {
+        "step": 5,
+        "rule": "608.2n",
+        "status": "supported",
+        "note": "Verbatim substring; ability removed from the stack and ceases to exist as the final part of resolution."
+      },
+      {
+        "step": 5,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "Establishes that nothing is checked or stacked mid-resolution because no player receives priority during it, which is why Skinrender sits at 0/0 on the battlefield at the end of this step."
+      },
+      {
+        "step": 6,
+        "rule": "704.5f",
+        "status": "supported",
+        "note": "Skinrender at 0 toughness goes to the graveyard; Grave Titan (3/3) and Necroskitter (-1/2) both have toughness above 0 and correctly survive — there is no state-based action for negative power."
+      },
+      {
+        "step": 6,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Full text explicitly orders the check — state-based actions first, and only when a check performs none are waiting triggered abilities put on the stack — which is precisely the ordering the step asserts. The full text's repeat-the-check clause also covers the pass that step 7 performs and finds empty."
+      },
+      {
+        "step": 6,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "PRIOR FINDING RESOLVED. This replaces the 603.2c that my last pass marked unsupported here. The verbatim first sentence — 'Once an ability has triggered, its controller puts it on the stack as an object that's not a card the next time a player would receive priority' — is exactly the rule that establishes a trigger, once triggered, survives to reach the stack, which is the claim the step makes. It does the primary work; 603.2c never could."
+      },
+      {
+        "step": 6,
+        "rule": "113.7a",
+        "status": "supported",
+        "note": "PRIOR FINDING RESOLVED. Correctly framed as a counterfactual belt-and-braces: the step first notes that Skinrender is not any trigger's source (Nest of Scarabs is, and it never leaves the battlefield), then says 'even if it had'. One nuance, not load-bearing and not a defect: at this instant the three triggers are WAITING, not yet on the stack, and 113.7a's first sentence literally speaks of an ability that 'exists on the stack'. Its second sentence — 'Destruction or removal of the source after that time won't affect the ability', where 'that time' is once triggered — does reach the waiting case, and 603.3 is cited alongside and independently settles it. No number depends on this citation."
+      },
+      {
+        "step": 7,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Used to establish a negative — nothing on the battlefield has a trigger condition matching Skinrender's death — and the definitional rule is the right one for that. Re-verified against cards.json: Necroskitter is 'Whenever a creature an OPPONENT controls with a -1/-1 counter on it dies', and Skinrender was yours while the four opponents control no permanents; Skinrender's own ability is 'When this creature enters, put three -1/-1 counters on target creature' (an ETB, not a death trigger); Grave Titan's is 'Whenever this creature enters or attacks'. All three characterisations are accurate."
+      },
+      {
+        "step": 8,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Waiting triggers go on the stack the next time a player would receive priority."
+      },
+      {
+        "step": 8,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Verbatim substring of the two-part process. All three abilities are yours and none has a trigger condition that is another ability triggering, so all three go on in the first part and you order them; APNAP is moot with a single controller."
+      },
+      {
+        "step": 8,
+        "rule": "113.7a",
+        "status": "supported",
+        "note": "Correctly framed as belt-and-braces — the step notes Nest of Scarabs is still on the battlefield anyway — and here the abilities genuinely ARE on the stack, so the rule applies on its own terms."
+      },
+      {
+        "step": 9,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Each trigger's controller follows its instructions on resolution."
+      },
+      {
+        "step": 9,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": "Create means put the specified number of tokens with the specified characteristics onto the battlefield; 'that many' = 1 per trigger, so one Insect each, three in total."
+      },
+      {
+        "step": 9,
+        "rule": "111.2",
+        "status": "supported",
+        "note": "Tokens enter under your control as their creator."
+      },
+      {
+        "step": 10,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "A different sentence of the same rule, verbatim; it establishes the final check before priority returns."
+      },
+      {
+        "step": 10,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "The tail of the same rule, verbatim; the repeat-until-quiescent loop is correctly invoked and correctly finds nothing — no creature at toughness 0 or less, no player at 0 life, and the three entering Insects trigger nothing (Grave Titan triggers on ITSELF entering or attacking)."
+      },
+      {
+        "step": null,
+        "rule": "701.34a",
+        "status": "supported",
+        "note": "PRIOR FINDING RESOLVED — this is the overreach I opened last pass, and the replacement holds. The false clause ('scaling with the number of creatures touched RATHER THAN the number of counters added') is deleted. final_state now states the two-input rule correctly, says outright that 'this scenario cannot distinguish those two scalings, because proliferate fixes counters-per-creature at exactly one for every chosen permanent', names 701.34a's step as the reason, and adds 'it would be wrong to generalise from here'. That is the correct reading of 701.34a and it no longer contradicts step 4. Checked for over-correction in the other direction and found none: the summary still answers the scenario's question unambiguously (3 triggers, 3 Insects, Skinrender's death changes neither) and does not hedge the resolved figures."
+      }
+    ],
+    "notes": [
+      "BLACK SUN'S ZENITH FIGURE IS CORRECT AND CORRECTLY FENCED. Oracle text verified against cards.json: 'Put X -1/-1 counters on each creature. Shuffle Black Sun's Zenith into its owner's library.' — the summary's quoted fragment is verbatim, and the card IS in this deck. Arithmetic: X=3 on three creatures puts three counters on each in one event, so 603.2c gives three occurrences and each trigger's 'that many' is three, for nine Insects. Nine is right. The fencing is sufficient on three counts: the figure is labelled 'the consequence of this resolution's reading and is NOT itself resolved on this board'; the cut-candidacy question is explicitly handed to 'a scenario that actually resolves a Zenith'; and the caveat names the two factors that separate the hypothetical from a real board (multiple counters per creature in one event, and the Zenith hitting every creature on every board). It therefore states an arithmetic consequence and declines the cut decision, which is the right posture — not an over-correction.",
+      "ONE READING HAZARD, DELIBERATELY NOT RAISED TO A FINDING. The Zenith hypothetical is 'a board of three of your creatures at X=3'. THIS board has FOUR of your creatures (Yawgmoth has no counters, so proliferate could not choose it, but a Zenith hits every creature regardless) — so applying the same reading to the actual board gives four triggers of three, i.e. TWELVE, not nine. The text is self-consistent and unambiguously hypothetical (this board is not 'three of your creatures'), and the caveat names exactly the proliferate/Zenith asymmetry that produces the difference. A downstream writer skimming the summary next to a board of three counter-bearing creatures could still carry 'nine' across. If the orchestrator wants belt-and-braces, changing 'a board of three of your creatures' to 'a hypothetical board with exactly three creatures on it, all yours' would close it. Not a defect as written.",
+      "SCENARIO AMENDMENT VERIFIED FOLDED IN, NOT IGNORED. The scenario now carries graveyard ['Swamp'] and an assumption 'The card discarded to pay the proliferate ability's cost was a Swamp; it is in your graveyard and is inert here.' Step 1 names it in the action text; final_state.you.graveyard is ['Swamp (discarded to pay the proliferate ability's cost)', 'Skinrender']. The scenario-block inconsistency I raised last pass (cost stated as paid, graveyard listed as empty, final_state silently adding the card) is gone — the two artifacts now agree on their own terms. Inertness re-checked independently: no landfall, no graveyard-count, no delirium-style card is on either battlefield, hand is empty, and library is unchanged at 60 because the cost was a discard rather than a draw.",
+      "SIBLING COMPARABILITY CLEAN. scenario-facts reports NO comparable sibling — all twelve of 001-012 differ in body count from 013's four. The resolution quotes no sibling's figure anywhere and names no sibling stack in any step. Stack 006 appears only in the scenario's note_for_the_resolver, and the resolution does not lean on it: step 1's 608.2c supplies the 'you are the actor' half of Nest of Scarabs' trigger condition on its own. Re-read 006 independently again this pass; nothing in 013 contradicts it.",
+      "PER-SEAT/POD ARITHMETIC NOT AT RISK. The resolution makes no drain, damage or life-loss claim of any kind. All four opponents correctly remain at 40 in final_state, and the scenario's '160 opposing life in total' is stated in the extras block as a pod total and is never quoted as a per-seat figure or reused in the resolution.",
+      "MISSING-STEP AUDIT, RUN INDEPENDENTLY OF THE FIRST PASS, FOUND NOTHING. Triggers put on the stack (603.3 / 603.3b): step 8. State-based actions checked at the right moment and in the right order relative to triggers (704.3 / 117.5): steps 5, 6, 10. Priority (117): steps 1, 5, 9, 10. Replacement effects (614): none apply — Carnifex Demon's 'enters with two -1/-1 counters' is the deck's only counter-related replacement and it is not on this board; nothing here enters with counters. Counter annihilation (704.5q / 122.3): correctly absent, there are no +1/+1 counters anywhere. Legend rule (704.5j): Yawgmoth is the only legendary permanent. Proliferate does not target, so there is no target-legality check to have missed. The three Insects entering trigger nothing. Simultaneity of the three counter placements — the premise 603.2c needs — follows from 701.34a's single 'give each' instruction and is stated in step 3."
+    ]
+  }
+}

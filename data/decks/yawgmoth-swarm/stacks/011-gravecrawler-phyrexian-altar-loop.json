@@ -1,0 +1,600 @@
+{
+  "id": "011",
+  "slug": "yawgmoth-swarm",
+  "deck": "YAWGMOTH — THE SCARAB SWARM",
+  "title": "Gravecrawler + Phyrexian Altar + Carrion Feeder + Bastion of Remembrance: is the drain unbounded and does it cost anything?",
+  "scenario": {
+    "board": {
+      "you": [
+        "Phyrexian Altar (artifact)",
+        "Carrion Feeder (1/1, no counters)",
+        "Bastion of Remembrance (enchantment)",
+        "Gravecrawler (2/1) — already sacrificed to pay the cost of the ability now on the stack",
+        "Swamp (tapped)",
+        "Swamp (tapped)"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": [
+            "no permanents"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "no permanents"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "no permanents"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "no permanents"
+          ]
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [
+      "Gravecrawler"
+    ],
+    "mana_available": "{B} in your mana pool (both Swamps are tapped; the {B} is the mana Phyrexian Altar's ability has already produced)",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Bastion of Remembrance's triggered ability — 'Whenever a creature you control dies, each opponent loses 1 life and you gain 1 life.' Triggered on Gravecrawler's death, which paid the cost of Phyrexian Altar's mana ability.",
+        "controller": "you"
+      }
+    ],
+    "extras": {
+      "life_totals": {
+        "you": 40
+      },
+      "pod_size": "Five players — you and four opponents, 160 opposing life in total (opponent life is on the board block).",
+      "library": "You have 60 cards in your library.",
+      "assumptions": [
+        "No player responds to anything; every opponent passes priority throughout.",
+        "No permanent enters or leaves the battlefield except as described by the cards named here.",
+        "It is your precombat main phase, so you have sorcery-speed permission when you hold priority with an empty stack.",
+        "Carrion Feeder is a Zombie and stays on the battlefield throughout — it is never the sacrifice.",
+        "Phyrexian Altar's ability is a mana ability, so it never used the stack and has already resolved; its mana is in your pool."
+      ],
+      "note_for_the_resolver": "This is the most-played combo line the deck contains (Commander Spellbook popularity 60,592) and it has never been resolved. Stack 009 on this deck is checker-passed and establishes the Gravecrawler graveyard-cast machinery — 113.6f, 604.6, 601.3 — for a board where the Zombie condition is met by Warren Soultrader. Here the Zombie is Carrion Feeder and the mana comes from Phyrexian Altar rather than a Treasure, so the sacrifice pays for the recast directly. Reuse that established chain; do not re-derive it at length."
+    },
+    "question": "Resolve the stack, then resolve one full further iteration. Can the loop be repeated an unbounded number of times from this board with no mana and no life from outside it, and what is the exact net change per completed iteration to your life total and to each opponent's life total?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Establish what is on the stack, and check it against the corrected scenario. Phyrexian Altar's ability — 'Sacrifice a creature: Add one mana of any color.' — requires no target, could add mana when it resolves, and is not a loyalty ability, so it is a mana ability. A mana ability never uses the stack: it resolved immediately when it was activated and put {B} into your mana pool, where it stays as unspent mana until the end of the step or phase. Bastion of Remembrance's ability triggered on Gravecrawler's death, and that death happened DURING the payment of the Altar's activation cost — i.e. while an ability was being activated, which is expressly a time at which an ability may trigger. Nothing happened at that moment; the trigger was held and put on the stack the next time a player would receive priority.",
+        "effect": "The scenario now matches the rules and scenario-facts, so there is nothing to report as a disagreement: the stack holds exactly ONE object — Bastion of Remembrance's triggered ability at pos 0 — and {B} of your chosen colour (black, for Gravecrawler) is already in your mana pool with both Swamps tapped. Board entering the resolution: ONE creature body, Carrion Feeder; Phyrexian Altar and Bastion of Remembrance are the other permanents; Gravecrawler is listed only as the permanent already sacrificed to pay the cost and is in the graveyard, not on the battlefield. Four opponents at 40 each.",
+        "citations": [
+          {
+            "rule": "605.1a",
+            "quote": "An activated ability is a mana ability if it meets all of the following criteria: it doesn’t require a target"
+          },
+          {
+            "rule": "605.3b",
+            "quote": "An activated mana ability doesn’t go on the stack, so it can’t be targeted, countered, or otherwise responded to. Rather, it resolves immediately after it is activated."
+          },
+          {
+            "rule": "106.4",
+            "quote": "When an effect instructs a player to add mana, that mana goes into a player’s mana pool. From there, it can be used to pay costs immediately, or it can stay in the player’s mana pool as unspent mana. Each player’s mana pool empties at the end of each step and phase"
+          },
+          {
+            "rule": "117.2a",
+            "quote": "Triggered abilities can trigger at any time, including while a spell is being cast, an ability is being activated, or a spell or ability is resolving. (See rule 603, “Handling Triggered Abilities.”) However, nothing actually happens at the time an ability triggers. Each time a player would receive priority, each ability that has triggered but hasn’t yet been put on the stack is put on the stack."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Confirm the cost that produced this stack and locate every permanent. Phyrexian Altar's only activation cost is 'Sacrifice a creature'; Gravecrawler was that creature, so it moved from the battlefield to your graveyard and is NOT on the battlefield. No life was paid — the Altar's cost contains no life component. The bodies remaining on your battlefield number ONE: Carrion Feeder (1/1, no counters), which is never the sacrifice.",
+        "effect": "Battlefield: Carrion Feeder (Zombie 1/1), Phyrexian Altar, Bastion of Remembrance, two tapped Swamps. Graveyard: Gravecrawler. Hand: empty. Your life is still 40 — unlike a Warren Soultrader activation, nothing here charges life. Gravecrawler's move from battlefield to graveyard is the game event 'dies', which is what Bastion's trigger condition matched.",
+        "citations": [
+          {
+            "rule": "701.21a",
+            "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner’s graveyard."
+          },
+          {
+            "rule": "700.4",
+            "quote": "The term dies means"
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "All players pass priority. The top (and only) object on the stack resolves: Bastion of Remembrance's triggered ability — 'each opponent loses 1 life and you gain 1 life.' Four opponents each lose 1; you gain 1.",
+        "effect": "Each opponent 40 -> 39 (per seat -1; across the four-seat pod -4, 160 -> 156). You 40 -> 41. The stack is now empty and {B} is still unspent in your mana pool.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "State-based actions are checked before any player receives priority again. No player is at 0 or less life (you 41, each opponent 39). Carrion Feeder is a 1/1 with no counters and no damage. No other listed condition applies. The active player — you — then receives priority with an empty stack, in your precombat main phase.",
+        "effect": "No state-based action is performed, no player loses the game, nothing is put on the stack. You hold priority at sorcery speed. Note that no step or phase has ended, so the {B} from step 1 has not been lost.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event"
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "ONE FULL FURTHER ITERATION, part 1 — permission to cast Gravecrawler from the graveyard. Casting requires a rule or effect to allow it. Gravecrawler's own ability, 'You may cast this card from your graveyard as long as you control a Zombie,' is an ability that modifies what zone the card can be cast from, so it functions in the graveyard, and it is one of the limited static abilities that apply outside the hand. Its condition is checked now: you control Carrion Feeder, whose type line is Creature — Zombie. Timing is satisfied: Gravecrawler is a creature (noninstant) spell, it is your precombat main phase, you have priority and the stack is empty.",
+        "effect": "Permission granted on this iteration and on every future one, because the Zombie condition is met by Carrion Feeder, which this loop never sacrifices. This is the same machinery verified on stack 009, where the Zombie was Warren Soultrader; here the qualifying Zombie is Carrion Feeder and it costs nothing to maintain.",
+        "citations": [
+          {
+            "rule": "601.3",
+            "quote": "A player can begin to cast a spell only if a rule or effect allows that player to cast it and no rule or effect prohibits that player from casting it."
+          },
+          {
+            "rule": "113.6f",
+            "quote": "An object’s ability that restricts or modifies what zones that particular object can be played or cast from functions everywhere, even outside the game."
+          },
+          {
+            "rule": "604.6",
+            "quote": "Some static abilities apply while a card is in any zone that you could cast or play it from (usually your hand)."
+          },
+          {
+            "rule": "117.1a",
+            "quote": "A player may cast a noninstant spell during their main phase any time they have priority and the stack is empty."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "ONE FULL FURTHER ITERATION, part 2 — paying for the cast. Gravecrawler's mana cost is {B}. The total cost is {B} with no additional or alternative costs. You pay it with the {B} already in your mana pool — the mana the Altar made from sacrificing the previous Gravecrawler. No mana ability needs to be activated during the casting process, and no land needs to untap: both Swamps stay tapped and you never draw mana from outside this board.",
+        "effect": "Mana pool: {B} -> empty. Gravecrawler is on the stack as a creature spell. THIS is why the line is self-funding: the sacrifice that kills Gravecrawler is the same act that pays to bring it back.",
+        "citations": [
+          {
+            "rule": "601.2h",
+            "quote": "The player pays the total cost."
+          },
+          {
+            "rule": "106.4",
+            "quote": "it can be used to pay costs immediately, or it can stay in the player’s mana pool as unspent mana"
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "All players pass. Gravecrawler, a permanent spell with no targets, resolves and enters the battlefield under your control. It is a new object with no memory of having been in the graveyard. Check every trigger condition on the board against this event: cards.json gives Bastion of Remembrance TWO triggered abilities — 'When this enchantment enters, create a 1/1 white Human Soldier creature token.' and 'Whenever a creature you control dies, each opponent loses 1 life and you gain 1 life.' An ability triggers only when a game event matches ITS trigger event: the first names Bastion's own entry, and Bastion is already on the battlefield and does not re-enter, while the second names a death, not an entry. State-based actions are checked and the active player receives priority.",
+        "effect": "Battlefield: Carrion Feeder, Gravecrawler (2/1), Phyrexian Altar, Bastion of Remembrance, two tapped Swamps. Graveyard: empty. Bodies: TWO. Nothing triggers on Gravecrawler entering — NOT because Bastion has only one trigger condition (it has two), but because neither of its two conditions matches a creature other than Bastion entering. The board as given, and scenario-facts, list Carrion Feeder as the only creature body, so no Human Soldier token from Bastion's enters trigger is present on this board; that trigger is spent regardless, since Bastion is not entering. Life totals unchanged: you 41, each opponent 39.",
+        "citations": [
+          {
+            "rule": "608.3a",
+            "quote": "If the object that’s resolving has no targets, it becomes a permanent and enters the battlefield under the control of the spell’s controller."
+          },
+          {
+            "rule": "400.7",
+            "quote": "An object that moves from one zone to another becomes a new object with no memory of, or relation to, its previous existence."
+          },
+          {
+            "rule": "704.3",
+            "quote": "the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event"
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "ONE FULL FURTHER ITERATION, part 3 — activate Phyrexian Altar again with priority, paying its cost by sacrificing Gravecrawler (not Carrion Feeder). The ability is a mana ability, so it does not go on the stack and resolves immediately; you choose black.",
+        "effect": "Gravecrawler moves from the battlefield to your graveyard. {B} is added to your mana pool, funding the NEXT cast. Carrion Feeder is untouched and gains no counter — it is not the sacrifice outlet in this line, only the Zombie that grants permission. No opponent ever gets a window to respond to the mana ability itself.",
+        "citations": [
+          {
+            "rule": "605.3a",
+            "quote": "A player may activate an activated mana ability whenever they have priority"
+          },
+          {
+            "rule": "605.3b",
+            "quote": "An activated mana ability doesn’t go on the stack, so it can’t be targeted, countered, or otherwise responded to. Rather, it resolves immediately after it is activated."
+          },
+          {
+            "rule": "701.21a",
+            "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner’s graveyard."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Gravecrawler being put into the graveyard from the battlefield is a creature you control dying, which matches Bastion of Remembrance's trigger event, so the ability triggers. As in step 1, this death occurs while an ability is being activated — it is the payment of Phyrexian Altar's cost — and a triggered ability may trigger at such a time; nothing happens at that moment. The mana ability's resolution gives no player priority, so the trigger waits. You activated the mana ability while you had priority, so you receive priority again immediately afterward, and that is the next time a player would receive priority: the trigger goes on the stack then.",
+        "effect": "Bastion's triggered ability is the only object on the stack. Exactly ONE trigger occurs per iteration: of Bastion's two triggered abilities only the death trigger can match here (its enters trigger needs Bastion itself to enter, and Bastion has not moved), Carrion Feeder's counter ability is activated rather than triggered and is never used in this line, so nothing else in the loop adds drain.",
+        "citations": [
+          {
+            "rule": "700.4",
+            "quote": "The term dies means"
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          },
+          {
+            "rule": "117.2a",
+            "quote": "Triggered abilities can trigger at any time, including while a spell is being cast, an ability is being activated, or a spell or ability is resolving. (See rule 603, “Handling Triggered Abilities.”) However, nothing actually happens at the time an ability triggers. Each time a player would receive priority, each ability that has triggered but hasn’t yet been put on the stack is put on the stack."
+          },
+          {
+            "rule": "117.3c",
+            "quote": "If a player has priority when they cast a spell, activate an ability, or take a special action, that player receives priority afterward."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "All players pass; Bastion's trigger resolves. Each opponent loses 1 life, you gain 1 life. State-based actions are then checked before priority is passed again.",
+        "effect": "Each opponent 39 -> 38 (per seat -1; pod 156 -> 152). You 41 -> 42. No player is at 0 or less, so no player loses the game yet. The board is now EXACTLY the state at step 4: Carrion Feeder, Phyrexian Altar, Bastion of Remembrance, two tapped Swamps, Gravecrawler in the graveyard, {B} in the pool, stack empty, you holding sorcery-speed priority. One full iteration is complete.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          },
+          {
+            "rule": "704.3",
+            "quote": "the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event"
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "ANSWER — is the loop unbounded, and what does one iteration cost? Read the ledger off steps 5-10. Mana: {B} spent on the cast, {B} produced by the sacrifice — net 0, and no land ever untaps. Life paid: none (Phyrexian Altar's cost is a sacrifice only). Cards: none drawn, so the 60-card library is never touched. Bodies: Gravecrawler leaves the graveyard and returns to it; Carrion Feeder never moves and never gains a counter. Nothing in the iteration is consumed, so the set of actions can be repeated indefinitely and the shortcut rules apply.",
+        "effect": "YES, unbounded with no mana and no life from outside the board. Exact net change per completed iteration: YOUR life +1; EACH opponent -1 per seat, which is -4 across the four-seat pod — the per-seat and pod figures are not interchangeable and neither may be quoted as the other. Kill maths, per seat: each opponent starts at 40 and needs 40 drain events. The trigger already on the stack was event 1 (step 3), so 39 further iterations reduce all four opponents to 0 simultaneously; the state-based-action check after that 40th trigger resolves makes all four lose the game at once. You finish at 40 + 40 = 80 life. The Commander Spellbook line (popularity 60,592) is CONFIRMED as a true unbounded drain for this exact board.",
+        "citations": [
+          {
+            "rule": "732.1b",
+            "quote": "the shortcut rules can be used to determine how many times those actions are repeated without having to actually perform them, and how the loop is broken."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Phyrexian Altar's ability is a mana ability, so it never used the stack (605.3b) — it resolved on activation and put {B} in the mana pool. The corrected scenario says exactly that, so the stack holds ONE object: Bastion of Remembrance's trigger, which resolves for each opponent 40 -> 39 (pod 160 -> 156) and you 40 -> 41. One full further iteration then runs on nothing but this board: cast Gravecrawler from the graveyard for the {B} already in pool (permission from its own zone-modifying ability — 601.3 / 113.6f / 604.6 — with the Zombie condition met by Carrion Feeder, which the loop never sacrifices), let it resolve, sacrifice it to Phyrexian Altar for a fresh {B}, and let the single Bastion trigger resolve — each opponent 39 -> 38 (pod 156 -> 152), you 41 -> 42. The board returns to an identical state, so the loop is unbounded. Net per completed iteration: YOUR LIFE +1; EACH OPPONENT -1 per seat, -4 across the pod; mana 0; cards drawn 0; board unchanged; no life paid at any point. Per seat, 40 drain events are lethal; one has already resolved, so 39 further iterations put all four opponents at 0 at the same state-based-action check, and you end at 80 life. Bastion has TWO triggered abilities (an enters trigger making a 1/1 white Human Soldier token, and the death trigger); only the death trigger can fire in this loop, because Bastion never re-enters — so one trigger, one drain, per iteration. Bodies on your battlefield entering the resolution: one (Carrion Feeder) — Gravecrawler was spent paying the cost. Stack 009 shares this board's body count but not its composition (Warren Soultrader, not Carrion Feeder), so no figure is imported from it.",
+      "you": {
+        "life_before": 40,
+        "life_after_stack_as_given": 41,
+        "life_after_one_further_iteration": 42,
+        "life_floor_during_an_iteration": 41,
+        "battlefield": [
+          "Carrion Feeder (1/1, no counters)",
+          "Phyrexian Altar",
+          "Bastion of Remembrance",
+          "Swamp (tapped)",
+          "Swamp (tapped)"
+        ],
+        "graveyard": [
+          "Gravecrawler"
+        ],
+        "hand": [],
+        "mana_pool_after_one_further_iteration": "{B} (unspent, funds the next cast)",
+        "creature_bodies_on_battlefield": 1,
+        "net_per_iteration": {
+          "your_life": 1,
+          "each_opponent_life": -1,
+          "pod_life_total": -4,
+          "mana": 0,
+          "cards_drawn": 0,
+          "board": "unchanged"
+        },
+        "life_if_loop_run_to_lethal": 80
+      },
+      "opponents": [
+        {
+          "seat": "opponent_1",
+          "life_before": 40,
+          "life_after_stack_as_given": 39,
+          "life_after_one_further_iteration": 38
+        },
+        {
+          "seat": "opponent_2",
+          "life_before": 40,
+          "life_after_stack_as_given": 39,
+          "life_after_one_further_iteration": 38
+        },
+        {
+          "seat": "opponent_3",
+          "life_before": 40,
+          "life_after_stack_as_given": 39,
+          "life_after_one_further_iteration": 38
+        },
+        {
+          "seat": "opponent_4",
+          "life_before": 40,
+          "life_after_stack_as_given": 39,
+          "life_after_one_further_iteration": 38
+        }
+      ],
+      "pod_arithmetic": {
+        "opponents": 4,
+        "opposing_life_before": 160,
+        "opposing_life_after_stack_as_given": 156,
+        "opposing_life_after_one_further_iteration": 152,
+        "per_seat_drain_per_iteration": 1,
+        "pod_drain_per_iteration": 4
+      },
+      "kill": {
+        "drain_events_needed_per_seat": 40,
+        "already_resolved": 1,
+        "further_iterations_needed": 39,
+        "all_four_opponents_reach_zero": "simultaneously, at the state-based-action check after the 40th trigger resolves"
+      },
+      "unbounded": true
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "605.1a",
+        "status": "supported",
+        "note": "Full text carries all three criteria (no target, could add mana, not a loyalty ability) and step 1 states all three. Phyrexian Altar's cards.json text is exactly 'Sacrifice a creature: Add one mana of any color.' - meets each."
+      },
+      {
+        "step": 1,
+        "rule": "605.3b",
+        "status": "supported",
+        "note": "Establishes the corrected board: the Altar's ability never used the stack and resolved on activation. Step 1 resolves against the corrected board."
+      },
+      {
+        "step": 1,
+        "rule": "106.4",
+        "status": "supported",
+        "note": "Full text also carries 'empties at the end of each step and phase', which step 4 relies on when it notes no step or phase has ended. Consistent use across steps 1, 4 and 6."
+      },
+      {
+        "step": 1,
+        "rule": "117.2a",
+        "status": "supported",
+        "note": "PRIOR FINDING 2, FIRST HALF - RESOLVED. The rule that was missing is now present at the step that needs it. Its first sentence licenses the trigger occurring 'while ... an ability is being activated' (the Altar's cost payment), its second says nothing happens at that moment, and its third puts the trigger on the stack at the next priority. Step 1 asserts exactly those three things and nothing more."
+      },
+      {
+        "step": 2,
+        "rule": "701.21a",
+        "status": "supported",
+        "note": "Confirms Gravecrawler is in the graveyard and NOT on the battlefield, matching scenario-facts' spent_paying_a_cost block. Body count entering the resolution is correctly stated as ONE (Carrion Feeder)."
+      },
+      {
+        "step": 2,
+        "rule": "700.4",
+        "status": "supported",
+        "note": "UNCHANGED ADVISORY FROM PASS 1, still not a defect. The quote is truncated to 'The term dies means' and says nothing standing alone, but the full rule ('is put into a graveyard from the battlefield') is exactly the claim, and the mechanical gate accepts it. Recommend quoting the whole rule at steps 2 and 9 in any future edit; do not fail an iteration on it."
+      },
+      {
+        "step": 3,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "One object on the stack, so 'top (last-added)' is unambiguous."
+      },
+      {
+        "step": 3,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Per-seat (-1, each 40->39) and pod (-4, 160->156) stated separately and both match scenario-facts (4 opponents, 160 opposing life). No conflation."
+      },
+      {
+        "step": 4,
+        "rule": "704.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": "You are the active player in your own precombat main phase, so the rule delivers priority to you as claimed after a non-mana ability resolves."
+      },
+      {
+        "step": 5,
+        "rule": "601.3",
+        "status": "supported",
+        "note": "GRAVEYARD-CAST CHAIN, TRANSFER FROM 009 RE-VERIFIED. Carrion Feeder's type line in cards.json is 'Creature - Zombie', so Gravecrawler's 'as long as you control a Zombie' condition is met exactly as 009 met it with Warren Soultrader (Zombie Goblin Wizard). The chain is card-agnostic in the Zombie slot."
+      },
+      {
+        "step": 5,
+        "rule": "113.6f",
+        "status": "supported",
+        "note": "Gravecrawler's ability modifies which zone the card can be cast from, so it functions in the graveyard."
+      },
+      {
+        "step": 5,
+        "rule": "604.6",
+        "status": "supported",
+        "note": "Full text limits the applicable abilities to those reading 'You may [cast] [this card] ...'. cards.json gives Gravecrawler 'You may cast this card from your graveyard as long as you control a Zombie' - inside the enumerated form."
+      },
+      {
+        "step": 5,
+        "rule": "117.1a",
+        "status": "supported",
+        "note": "Noninstant spell, your main phase, you have priority, stack empty - all four conditions stated."
+      },
+      {
+        "step": 6,
+        "rule": "601.2h",
+        "status": "supported",
+        "note": "Total cost is {B} with no additional or alternative costs; the step does not overreach into 601.2a-g."
+      },
+      {
+        "step": 6,
+        "rule": "106.4",
+        "status": "supported",
+        "note": "SELF-FUNDING CLAIM: verified. Phyrexian Altar's only cost is 'Sacrifice a creature' (cards.json) - no life component anywhere in the loop - and Gravecrawler's mana cost is {B}, paid by the {B} the previous sacrifice produced. Net mana 0, no land untaps."
+      },
+      {
+        "step": 7,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "PRIOR FINDING 1 - RESOLVED, AND THE FIX IS THE RIGHT ONE. Step 7 now reads BOTH of Bastion's triggered abilities out of cards.json verbatim ('When this enchantment enters, create a 1/1 white Human Soldier creature token.' / 'Whenever a creature you control dies, ...' - both confirmed against cards.json), and gives the true reason nothing fires: the enters trigger names Bastion's OWN entry and Bastion does not re-enter, and the death trigger names a death, not an entry. 603.2 ('a game event ... matches a triggered ability's trigger event') is the rule that establishes matching, and it was the citation the claim previously lacked. The cross-artifact contradiction with checker-passed 009 step 5 ('exactly two triggered abilities') and 004's references to the Human Soldier token is gone."
+      },
+      {
+        "step": 7,
+        "rule": "608.3a",
+        "status": "supported",
+        "note": "Read in the context of 608.3; Gravecrawler is an untargeted permanent spell."
+      },
+      {
+        "step": 7,
+        "rule": "400.7",
+        "status": "supported",
+        "note": "Checked the exceptions - 400.7a concerns effects changing a permanent spell's characteristics or controller and does not apply here."
+      },
+      {
+        "step": 7,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "ADVISORY, NOT A DEFECT, and I am recording it so a third pass does not re-open it. Step 7 asserts 'the active player receives priority'. 704.3's final clause does establish that 'the appropriate player gets priority' after the SBA check, and WHICH player is 117.3b - cited in this same artifact at step 4 for the identical post-resolution transition, and cited by checker-passed 009 at its parallel step 8. The proposition is true, load-bearing for step 8 (605.3a needs you to have priority), and established inside the artifact. Adding 117.3b to step 7 would take the artifact from 34 to 35 citations against a budget of 40 and would restore symmetry with 009; it is a polish item, not a reason to fail."
+      },
+      {
+        "step": 8,
+        "rule": "605.3a",
+        "status": "supported",
+        "note": "You hold priority after Gravecrawler resolves (step 7), so the mana ability may be activated. Note 605.3a's breadth (also during a mana payment) is not needed here and is not claimed."
+      },
+      {
+        "step": 8,
+        "rule": "605.3b",
+        "status": "supported",
+        "note": "Supports the narrow claim that no opponent gets a window to respond to the MANA ABILITY. Opponents do get windows while Gravecrawler and while Bastion's trigger are on the stack; the assumption block covers that and the step does not overreach."
+      },
+      {
+        "step": 8,
+        "rule": "701.21a",
+        "status": "supported",
+        "note": "Correctly sacrifices Gravecrawler and not Carrion Feeder. cards.json gives Carrion Feeder 'Sacrifice a creature' (not 'another creature'), so it COULD eat itself - the resolution is right that it simply is not the outlet in this line, and it is right that it gains no counter, since its counter ability is never activated."
+      },
+      {
+        "step": 9,
+        "rule": "700.4",
+        "status": "supported",
+        "note": "Same truncated-quote advisory as step 2."
+      },
+      {
+        "step": 9,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Establishes that Gravecrawler's death matches Bastion's death trigger, and - with the step's enumeration of both abilities - that the enters trigger does not match. Consistent with the rewritten step 7."
+      },
+      {
+        "step": 9,
+        "rule": "117.2a",
+        "status": "supported",
+        "note": "PRIOR FINDING 2, SECOND HALF - RESOLVED. This is the harder of the two placements and it is now right: the death occurs during the cost payment of a MANA ability, so no resolution ever hands out priority, and 117.2a is what licenses a trigger to occur at that moment and then wait."
+      },
+      {
+        "step": 9,
+        "rule": "117.3c",
+        "status": "supported",
+        "note": "The correct rule, and notably NOT 117.3b. 117.3b excludes mana abilities from its post-resolution priority grant, so it cannot close this gap; 117.3c ('If a player has priority when they ... activate an ability ... that player receives priority afterward') carries no such exclusion and is exactly what makes 'the next time a player would receive priority' concrete here. Step 8 states you activated the Altar while holding priority, so the premise 117.3c needs is established on the board."
+      },
+      {
+        "step": 10,
+        "rule": "405.5",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 10,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Bastion's oracle text is 'each opponent loses 1 life and you gain 1 life' and exactly one trigger fires per iteration, so your life is +1 and each opponent -1. Your life is monotonically increasing - nothing in this loop subtracts from it - so life_floor_during_an_iteration of 41 is right."
+      },
+      {
+        "step": 10,
+        "rule": "704.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 10,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 11,
+        "rule": "732.1b",
+        "status": "supported",
+        "note": "Full text is about a state where a set of actions could be repeated indefinitely and the shortcut rules determining how many times. Correctly applied: the artifact gives a finite iteration count rather than leaning on the rule to assert a win, and the loop is optional and state-changing, so no draw rule is implicated."
+      },
+      {
+        "step": 11,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Kill arithmetic recomputed independently and it is correct. Each seat starts at 40 and loses 1 per drain event, so 40 events per seat; the trigger already on the stack is event 1, leaving 39 further iterations; all four seats reach 0 at the same SBA check. You end at 40 + 40 = 80. Per-seat (-1) and pod (-4, 160 -> 156 -> 152) are stated separately in every step and in final_state.pod_arithmetic, and never interchanged."
+      },
+      {
+        "step": null,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "THE SWAP THE RESOLVER FLAGGED: JUDGED SOUND, NOT A SHORTCUT. 603.3 was dropped from steps 1 and 9 in favour of 117.2a. Compared the two full texts. 117.2a contains the whole put-on-the-stack sentence ('Each time a player would receive priority, each ability that has triggered but hasn't yet been put on the stack is put on the stack') AND the two propositions 603.3 lacks entirely: that a trigger may occur mid-activation, and that nothing happens when it does. What 603.3 uniquely carries is (a) 'The ability becomes the topmost object on the stack', (b) 'as an object that's not a card', (c) that it remains until countered or resolved, and (d) controller, which is actually 603.3a. NONE of that is load-bearing on this board: at step 1 and again at step 9 the stack is EMPTY when the trigger goes on it (step 8's mana ability never uses the stack), and both steps say only that Bastion's trigger is 'the only object on the stack' - a claim about count, not order. The contrast with 009 is the proof: 009 cited 603.3 at its steps 1 and 10 precisely BECAUSE ordering mattered there - its trigger had to go on the stack ABOVE Warren Soultrader's still-pending activated ability. 011 has no second stack object, so 603.3's unique sentence has nothing to do. The swap loses no support and adds the licence step 9 could not otherwise get. Keep it."
+      },
+      {
+        "step": null,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "PREMISE-CONSISTENCY SWEEP OF THE WHOLE ARTIFACT, not just step 7 - passes. Searched every string field for trigger-count phrasing. Three places speak to it and all three now state the same premise: step 7 effect ('NOT because Bastion has only one trigger condition (it has two), but because neither of its two conditions matches a creature other than Bastion entering'), step 9 effect ('of Bastion's two triggered abilities only the death trigger can match here (its enters trigger needs Bastion itself to enter, and Bastion has not moved)'), and final_state.summary ('Bastion has TWO triggered abilities (an enters trigger making a 1/1 white Human Soldier token, and the death trigger); only the death trigger can fire in this loop, because Bastion never re-enters'). Nothing anywhere still asserts a single trigger condition. The absent Human Soldier token is also reconciled rather than ignored: step 7 notes the board as given and scenario-facts list Carrion Feeder as the only creature body, and the token's absence is legal - nothing requires a token made when Bastion entered, before this scenario begins, to still be there."
+      },
+      {
+        "step": null,
+        "rule": "605.3b",
+        "status": "supported",
+        "note": "SCENARIO-CORRECTION CHECK - passes. The resolution resolves against the corrected board, not the old one: step 1 states the stack holds exactly ONE object (Bastion's trigger at pos 0) with {B} already in the pool, matching both the scenario block on disk and scenario-facts' mana_available string verbatim. No step treats the Altar's ability as a stack object or gives anyone a window to respond to it."
+      },
+      {
+        "step": null,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "SIBLING-COMPARABILITY CHECK - passes, no finding. scenario-facts marks 009 as the only same-body-count sibling (1 each) but with shared_bodies 0 (Warren Soultrader vs Carrion Feeder) and every other sibling as NOT like-for-like. The artifact imports NO figure: final_state says 'Stack 009 shares this board's body count but not its composition (Warren Soultrader, not Carrion Feeder), so no figure is imported from it', which names the difference in BOTH directions exactly as scenario-facts computes it. The two qualitative references are both true and both name what differs - step 2's 'unlike a Warren Soultrader activation, nothing here charges life' is confirmed against cards.json (Warren Soultrader: 'Pay 1 life, Sacrifice another creature: Create a Treasure token') and against 009's own verified ledger (net life 0 per iteration, dipping to 39 and refunded, against 011's +1 with a floor of 41), and step 5's reuse of 009's permission chain names Carrion Feeder as the substituted Zombie. The 40 / 39 kill figures coincide with 009's but are re-derived here from this board's own 40-life seats and -1 per iteration; that is convergence, not import."
+      },
+      {
+        "step": null,
+        "rule": "302.6",
+        "status": "supported",
+        "note": "OMISSION CHECK ON A RULE 009 CITED AND 011 DOES NOT - correctly omitted. 009 had to dispose of summoning sickness at its step 9 because Gravecrawler is sacrificed the turn it enters. Nothing in 011 taps: Phyrexian Altar's cost is 'Sacrifice a creature' with no {T}, and Carrion Feeder's ability is never activated. Sacrifice is not affected by summoning sickness, and the artifact makes no claim that would need 302.6. Independent walk of the loop found no other omitted procedure - every resolution is followed by an SBA check (704.3 at steps 4, 7, 10), every trigger is put on the stack (117.2a at 1 and 9), priority is accounted for at every transition, and no replacement effect (614) or continuous effect (613) is in play on this board."
+      }
+    ]
+  }
+}

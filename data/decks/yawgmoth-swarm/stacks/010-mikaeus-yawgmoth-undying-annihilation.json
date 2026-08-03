@@ -1,0 +1,594 @@
+{
+  "id": "010",
+  "slug": "yawgmoth-swarm",
+  "deck": "YAWGMOTH — THE SCARAB SWARM",
+  "title": "Mikaeus + Yawgmoth: does the -1/-1 counter annihilate undying's +1/+1 and re-arm the body, and what bounds the loop?",
+  "scenario": {
+    "board": {
+      "you": [
+        "Yawgmoth, Thran Physician (2/4) — your commander",
+        "Mikaeus, the Unhallowed (5/5)",
+        "Gravecrawler (2/1 printed; 3/2 with Mikaeus's +1/+1; carries ONE +1/+1 counter from a previous undying return, so it is currently 4/3)",
+        "Bastion of Remembrance (enchantment)",
+        "Viscera Seer (1/1 printed; 2/2 with Mikaeus's +1/+1; no counters) — already sacrificed to pay the cost of the ability now on the stack",
+        "Swamp (tapped)",
+        "Swamp (tapped)",
+        "Swamp (tapped)",
+        "Swamp (tapped)"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": [
+            "no permanents"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "no permanents"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "no permanents"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "no permanents"
+          ]
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [
+      "Viscera Seer"
+    ],
+    "mana_available": "{0} (all four Swamps are tapped and nothing else produces mana)",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Yawgmoth, Thran Physician's activated ability — 'Pay 1 life, Sacrifice another creature: Put a -1/-1 counter on up to one target creature and draw a card.' Both costs already paid: 1 life paid, Viscera Seer sacrificed. Target chosen: Gravecrawler.",
+        "controller": "you"
+      },
+      {
+        "pos": 1,
+        "object": "Bastion of Remembrance's triggered ability — 'Whenever a creature you control dies, each opponent loses 1 life and you gain 1 life.' Triggered on Viscera Seer's death during cost payment.",
+        "controller": "you"
+      },
+      {
+        "pos": 2,
+        "object": "Undying triggered ability granted to Viscera Seer by Mikaeus, the Unhallowed — 'When a creature with undying dies, if it had no +1/+1 counters on it, return it to the battlefield under its owner's control with a +1/+1 counter on it.' Triggered on Viscera Seer's death during cost payment.",
+        "controller": "you"
+      }
+    ],
+    "extras": {
+      "life_totals": {
+        "you": 39
+      },
+      "pod_size": "Five players — you and four opponents, 160 opposing life in total (opponent life is on the board block). Your 39 is 40 less the 1 life already paid for the ability on the stack.",
+      "library": "You have 60 cards in your library.",
+      "assumptions": [
+        "No player responds to anything; every opponent passes priority throughout.",
+        "No permanent enters or leaves the battlefield except as described by the cards named here.",
+        "It is your precombat main phase.",
+        "Nest of Scarabs is NOT on the battlefield, so no Insect tokens are created by anything here.",
+        "Viscera Seer is a Vampire Wizard and Gravecrawler is a Zombie — both are non-Human, so Mikaeus grants both +1/+1 and undying."
+      ],
+      "note_for_the_resolver": "This deck's declared SECOND KILL is built on Mikaeus, and Mikaeus carries more contained combo lines than any other card in the 99 — nineteen. None has ever been resolved. The board is deliberately minimal: two non-Human bodies, the commander, a drain that cannot be eaten, and no Nest of Scarabs. The crux is what happens to Gravecrawler's counters when the ability resolves."
+    },
+    "question": "Resolve the stack. When Yawgmoth's ability puts a -1/-1 counter on Gravecrawler, which already carries a +1/+1 counter, what does the next state-based-action check do to those counters — and is Gravecrawler afterwards eligible for undying the next time it dies? Then state what bounds repetition of this loop."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "No player responds; priority passes and the stack resolves top-down (last in, first out). The topmost object is pos 2, the undying triggered ability granted to Viscera Seer by Mikaeus. Below it sit pos 1 (Bastion of Remembrance's death trigger) and pos 0 (Yawgmoth's activated ability, both of whose costs — 1 life, sacrifice Viscera Seer — are already paid).",
+        "effect": "Resolution order is: undying trigger, then Bastion trigger, then Yawgmoth's ability. Viscera Seer is in the graveyard and is NOT a body on the battlefield; the board entering this resolution is three creatures — Yawgmoth 2/4, Mikaeus 5/5, Gravecrawler (2/1 printed, +1/+1 from Mikaeus, one +1/+1 counter = 4/3).",
+        "citations": [
+          {
+            "rule": "608.1",
+            "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+          },
+          {
+            "rule": "117.4",
+            "quote": "the spell or ability on top of the stack resolves"
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "The undying trigger resolves. Undying is a leaves-the-battlefield ability with an intervening 'if' clause: 'if it had no +1/+1 counters on it'. Viscera Seer is now a new object in the graveyard, so the condition is evaluated against the creature as it last existed ON THE BATTLEFIELD — where it had no counters at all (it was 1/1 printed, 2/2 only because of Mikaeus's static +1/+1, which is not a counter).",
+        "effect": "The condition is true both at trigger time and again on resolution, so the ability resolves: Viscera Seer returns to the battlefield under its owner's control with a +1/+1 counter on it. It returns as a new object with no memory of its previous existence.",
+        "citations": [
+          {
+            "rule": "702.93a",
+            "quote": "if it had no +1/+1 counters on it, return it to the battlefield under its owner’s control with a +1/+1 counter on it"
+          },
+          {
+            "rule": "603.4",
+            "quote": "If the ability triggers, it checks the stated condition again as it resolves. If the condition isn’t true at that time, the ability is removed from the stack and does nothing."
+          },
+          {
+            "rule": "603.10a",
+            "quote": "Some zone-change triggers look back in time. These are leaves-the-battlefield abilities"
+          },
+          {
+            "rule": "608.2h",
+            "quote": "if it’s no longer in that zone, or if the effect has moved it from a public zone to a hidden zone, the effect uses the object’s last known information"
+          },
+          {
+            "rule": "400.7",
+            "quote": "An object that moves from one zone to another becomes a new object with no memory of, or relation to, its previous existence."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Before any player receives priority again, state-based actions are checked. The returned Viscera Seer is 1/1 printed with one +1/+1 counter and Mikaeus's +1/+1 static bonus, both applied in layer 7c, so it is 3/3. Its toughness is above 0 and no other SBA condition applies.",
+        "effect": "No state-based action is performed. The board is now four bodies: Yawgmoth 2/4, Mikaeus 5/5, Gravecrawler 4/3 (one +1/+1 counter), Viscera Seer 3/3 (one +1/+1 counter). Because Viscera Seer now HAS a +1/+1 counter, it is not eligible for undying if it dies again in this state.",
+        "citations": [
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event"
+          },
+          {
+            "rule": "613.4c",
+            "quote": "Layer 7c: Effects and counters that modify power and/or toughness (but don’t set power and/or toughness to a specific number or value) are applied."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Bastion of Remembrance's trigger resolves: 'each opponent loses 1 life and you gain 1 life.' It triggered on Viscera Seer's death during cost payment.",
+        "effect": "PER SEAT: each of the four opponents loses 1 life, 40 -> 39. POD TOTAL: 4 life removed across the pod, 160 -> 156. These are not interchangeable figures. You gain 1 life: 39 -> 40. No opponent is at 0 or less, so no player loses the game on the following state-based-action check.",
+        "citations": [
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Yawgmoth's activated ability resolves. Its target, Gravecrawler, never left the battlefield and its characteristics have not changed in any way that matters to 'up to one target creature', so the target is still legal. The ability puts a -1/-1 counter on Gravecrawler and you draw a card.",
+        "effect": "Gravecrawler now carries one +1/+1 counter AND one -1/-1 counter. Its power/toughness at this instant: 2/1 printed, +1/+1 from Mikaeus and the two counters all applied in layer 7c, netting 3/2. You draw one card: hand 0 -> 1, library 60 -> 59.",
+        "citations": [
+          {
+            "rule": "608.2b",
+            "quote": "If the spell or ability specifies targets, it checks whether the targets are still legal."
+          },
+          {
+            "rule": "121.1",
+            "quote": "A player draws a card by putting the top card of their library into their hand."
+          },
+          {
+            "rule": "613.4c",
+            "quote": "Effects and counters that modify power and/or toughness"
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "THE CRUX. The stack is now empty and you would receive priority, so state-based actions are checked first. Gravecrawler has both a +1/+1 counter and a -1/-1 counter on it.",
+        "effect": "N = 1 (the smaller of the two counts), so one +1/+1 counter and one -1/-1 counter are removed from Gravecrawler simultaneously as a state-based action. Gravecrawler ends the check with ZERO counters of either kind, at 3/2 (2/1 printed plus Mikaeus's static +1/+1). The 0-or-less-toughness SBA does NOT apply: its toughness is 2. The -1/-1 counter therefore did not shrink Gravecrawler at all in net terms — it annihilated the +1/+1 counter and both were removed.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event"
+          },
+          {
+            "rule": "704.5q",
+            "quote": "If a permanent has both a +1/+1 counter and a -1/-1 counter on it, N +1/+1 and N -1/-1 counters are removed from it, where N is the smaller of the number of +1/+1 and -1/-1 counters on it."
+          },
+          {
+            "rule": "122.3",
+            "quote": "as a state-based action, where N is the smaller of the number of +1/+1 and -1/-1 counters on it"
+          },
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Undying eligibility for Gravecrawler is re-armed. Gravecrawler is a Zombie (non-Human), so Mikaeus continues to grant it undying. Undying's intervening 'if' clause asks whether it had no +1/+1 counters on it, evaluated against the creature as it last existed on the battlefield.",
+        "effect": "YES — Gravecrawler is eligible for undying the next time it dies. It now has no +1/+1 counters, so if it is sacrificed in this state the condition is true both when the trigger would go on the stack and again on resolution, and it returns with a fresh +1/+1 counter. Symmetrically, Viscera Seer is currently NOT eligible: it carries the +1/+1 counter from step 2 until something removes it. Exactly one of the two non-Human bodies is armed at any time, and Yawgmoth's -1/-1 counter is what flips which one.",
+        "citations": [
+          {
+            "rule": "702.93a",
+            "quote": "if it had no +1/+1 counters on it, return it to the battlefield under its owner’s control with a +1/+1 counter on it"
+          },
+          {
+            "rule": "603.4",
+            "quote": "it checks the stated condition again as it resolves"
+          },
+          {
+            "rule": "608.2h",
+            "quote": "the effect uses the object’s last known information"
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "THE SWAP, VERIFIED ON THE OTHER BODY. Each further iteration is one activation of Yawgmoth: pay 1 life, sacrifice the body that currently carries NO +1/+1 counter (it returns via undying with one), and put the -1/-1 counter on the OTHER body. On the very first swap that other body is VISCERA SEER, which is printed 1/1 — smaller than Gravecrawler — so the step-6 state-based-action check must be re-performed for it rather than assumed. At that check Viscera Seer is 1/1 printed, +1/+1 from Mikaeus, one +1/+1 counter and one -1/-1 counter, all in layer 7c: power 1+1+1-1 = 2, toughness 1+1+1-1 = 2.",
+        "effect": "Toughness is 2, not 0 or less, so the creature-death state-based action does NOT apply to Viscera Seer and it survives the check. In that same single state-based-action event established in step 6, N = 1 counter of each kind is removed, leaving Viscera Seer a 2/2 with ZERO counters — re-armed for undying exactly as Gravecrawler was in step 6, while Gravecrawler now carries the +1/+1 counter from its own undying return. The alternation therefore holds in both directions: the pair swaps roles every activation, and neither body ever dies to the counter itself.",
+        "citations": [
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard. Regeneration can’t replace this event."
+          },
+          {
+            "rule": "704.5q",
+            "quote": "N +1/+1 and N -1/-1 counters are removed from it, where N is the smaller of the number of +1/+1 and -1/-1 counters on it"
+          },
+          {
+            "rule": "613.4c",
+            "quote": "Effects and counters that modify power and/or toughness"
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "WHAT BOUNDS REPETITION, AND THE ONE TRAP ON THIS BOARD. First, that the line repeats at all: after step 6's state-based-action check the stack is empty, it is your precombat main phase and priority returns to you, and a player may activate an activated ability any time they have priority. Yawgmoth's ability carries no mana symbol in its cost and no activation restriction, so it may be activated again at {0} available — that is what makes steps 8-10 repetition claims rather than a one-shot. Three quantities then bound the repetition, and the one further free sacrifice outlet on this board is a TRAP, not a bonus.",
+        "effect": "(1) LIFE is not the bound: you pay 1 life per activation and Bastion returns exactly 1 life per creature death, so your total is flat at 40 and the 119.4 requirement that you have at least the life you are paying is never threatened. (2) DRAIN is the clock: one creature dies per activation, so each activation removes 1 life PER OPPONENT and 4 across the pod. From the post-resolution 39 per seat, 39 further activations put every opponent at 0 and they lose to state-based actions; that is 156 pod life removed. (3) The LIBRARY is the hard bound and it is finite: Yawgmoth's ability reads 'Put a -1/-1 counter on up to one target creature and draw a card' with no 'may', and its controller follows those instructions in the order written, so the draw is MANDATORY and cannot be declined. With 59 cards left you may activate at most 59 more times; a 60th activation would attempt a draw from an empty library and YOU lose the game at the next state-based-action check. The loop is therefore NOT infinite — a 59-activation engine that needs 39, with 20 activations of margin. (4) THE SECOND OUTLET IS A TRAP — CORRECTED FROM THE PREVIOUS PASS, WHICH CALLED IT 'STRICTLY FAVOURABLE'. Viscera Seer is back on the battlefield from step 2 and has its own activated ability, 'Sacrifice a creature: Scry 1' — an activated ability written cost-then-effect whose cost contains no mana symbol, so it is free even at {0} available, and each use kills a creature and so triggers Bastion for another 1 per seat while consuming no library. READ THE COST EXACTLY, BECAUSE THE PREVIOUS PASS DID NOT: the Seer's cost is 'Sacrifice A creature', NOT 'another creature' as Yawgmoth's cost is. The Seer may therefore eat ANY creature you control — including Mikaeus, including Yawgmoth, and including ITSELF. That distinction is what makes the finisher count 5 rather than 3. It is nevertheless ENGINE-ENDING if used mid-loop, and a pilot who reads 'free extra drain' and fires it kills their own combo. WHY: the engine's steady state is exactly one ARMED body (no +1/+1 counter, undying-eligible) and one LOADED body (one +1/+1 counter, not eligible), and only Yawgmoth's -1/-1 counter can strip a +1/+1 counter — it does so via the step-6 state-based action, one counter per activation, which is why one Yawgmoth activation re-arms exactly one body. The Seer's ability places no counter at all. So if you sacrifice the ARMED body to the Seer, undying returns it WITH a +1/+1 counter and now BOTH bodies are loaded and NEITHER is undying-eligible; and if you sacrifice the LOADED body to the Seer, its undying trigger's intervening 'if' is false and that body is gone PERMANENTLY. THE TWO BRANCHES DIFFER IN WHERE THE PERMANENT LOSS FALLS, AND THE PREVIOUS PASS'S 'either way the next Yawgmoth activation must sacrifice a counter-bearing body' IS FALSE IN THE SECOND: in branch A (armed body eaten) nothing is lost yet, both bodies carry counters, and the NEXT Yawgmoth activation must sacrifice a counter-bearing body, which dies for good; in branch B (loaded body eaten) the permanent loss has ALREADY happened and the survivor is ARMED, so the next Yawgmoth sacrifice loses nothing permanently — it returns loaded. THE CONCLUSION IS UNCHANGED, because both branches converge on the same state, ONE alternation body, and one body can never sustain the alternation. An activation kills exactly one body and yields exactly one -1/-1 counter, which strips exactly one +1/+1 counter, and it can never strip the counter on the body it just ate: that body was sacrificed to pay the cost, so if you had targeted it, on resolution it is no longer in the zone it was in when it was targeted and is an illegal target; and if you targeted anything else, its +1/+1 counter simply stays. Re-arming therefore always costs a DIFFERENT body's death, and with one alternation body left the only other creatures are Mikaeus — whose death removes undying from that body entirely, since the grant is his — and Yawgmoth, which its own 'another creature' cost may not sacrifice. The alternation is over within one or two further activations in both branches. ONE mid-loop Seer sacrifice therefore buys 1 drain per seat and costs you roughly 34 of the 39 activations you still need: you collect about five drains from the collapsing board instead of the 39 the intact alternation would have delivered. THE ONLY SAFE USE IS AS A FINISHER, after the alternation is no longer needed — and at that point at most FIVE free Seer sacrifices exist in total, CORRECTED FROM THREE, which omitted Mikaeus and Yawgmoth. The finisher board is exactly four bodies: Yawgmoth, Mikaeus, and the two alternation bodies, one armed and one loaded, one of which is the Seer itself. Order it so the SEER EATS ITSELF LAST, since its outlet leaves the battlefield with it: (1) sacrifice the ARMED body — it dies for a Bastion drain and undying returns it LOADED, no permanent loss; (2)-(4) sacrifice, in any order, the three bodies other than the Seer that are now on the battlefield — the loaded alternation body (its intervening 'if' is false, permanent), Mikaeus (his own grant reads 'OTHER non-Human creatures you control get +1/+1 and have undying', so it excludes himself and he has no undying, permanent) and Yawgmoth (a Legendary Creature — Human Cleric per cards.json, so Mikaeus's non-Human grant never reached it, permanent); (5) sacrifice the Seer to itself, permanent. Five deaths, five Bastion drains, zero library consumed. The count is the same 5 in EITHER orientation of which alternation body is armed: if the Seer is the armed body, it is step (1) and it comes straight back to keep working. SIX IS IMPOSSIBLE: four bodies plus exactly ONE undying return, because only one body is armed at a time and neither Yawgmoth (Human) nor Mikaeus (excluded by his own 'Other') can undy. ACCOUNTING CONSEQUENCE: margin = 59 - (39 - k) = 20 + k, where k is the number of finisher Seer sacrifices taken and 0 <= k <= 5. The margin is 20 activations clean and at most 25 with all five finisher sacrifices — a bounded range, NOT an open-ended lower bound as an earlier pass asserted, and NOT the 20-23 the previous pass computed from a count of three. Nothing else on this board caps the loop: the loop costs no mana, Gravecrawler cannot be recast from the graveyard because that requires {B} and mana available is {0}, and Mikaeus need only remain on the battlefield, which it does because Yawgmoth's cost sacrifices 'another creature' and you always choose one of the two designated bodies.",
+        "citations": [
+          {
+            "rule": "117.1b",
+            "quote": "A player may activate an activated ability any time they have priority."
+          },
+          {
+            "rule": "119.4",
+            "quote": "If a player pays life, the payment is subtracted from their life total; in other words, the player loses that much life."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "704.5b",
+            "quote": "If a player attempted to draw a card from a library with no cards in it since the last time state-based actions were checked, that player loses the game."
+          },
+          {
+            "rule": "602.1",
+            "quote": "Activated abilities have a cost and an effect. They are written as “[Cost]: [Effect.] [Activation instructions (if any).]”"
+          },
+          {
+            "rule": "702.93a",
+            "quote": "if it had no +1/+1 counters on it, return it to the battlefield under its owner’s control with a +1/+1 counter on it"
+          },
+          {
+            "rule": "704.5q",
+            "quote": "N +1/+1 and N -1/-1 counters are removed from it, where N is the smaller of the number of +1/+1 and -1/-1 counters on it"
+          },
+          {
+            "rule": "608.2b",
+            "quote": "A target that’s no longer in the zone it was in when it was targeted is illegal."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "HOW THE KILL BECOMES A WIN. The 39th further activation brings every opponent from 1 to 0 life; the drain is one simultaneous event per Bastion resolution, so all four seats reach 0 together and all four lose the game at the next state-based-action check. You are still in the game at that moment: your life is flat at 40 (step 9, item 1), and you have used 39 of the 59 draws the library permits, so the deck-out state-based action has not been met.",
+        "effect": "With all four of your opponents having left the game and you still in it, you win the game immediately. This is the rule that converts four simultaneous losses in a five-player pod into a win; the loss of the opponents alone does not state it. The Mikaeus + Yawgmoth line is a verified kill on this board.",
+        "citations": [
+          {
+            "rule": "104.2a",
+            "quote": "A player still in the game wins the game if that player’s opponents have all left the game. This happens immediately and overrides all effects that would preclude that player from winning the game."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "The stack fully resolves. Undying returns Viscera Seer (its condition read off the creature as it last existed on the battlefield, where it had no counters) with a +1/+1 counter, so it is 3/3. Bastion drains 1 life PER OPPONENT (4 seats x 1 = 4 across the pod, 160 -> 156) and gains you 1, putting you back to 40. Yawgmoth's ability then resolves on its still-legal target: Gravecrawler takes a -1/-1 counter and you draw. THE CRUX: the next state-based-action check removes one +1/+1 and one -1/-1 counter from Gravecrawler simultaneously (704.5q), leaving it with ZERO counters at 3/2 and alive — so YES, Gravecrawler is eligible for undying the next time it dies. The -1/-1 counter is not a shrink, it is a RESET. The same check is verified on the other body: Viscera Seer, printed 1/1, is 2/2 when it holds both counters, so toughness 2 clears 704.5f and it survives to be re-armed in its turn — the alternation holds in both directions. Repetition is legal: priority returns to you with the stack empty and a player may activate an activated ability any time they have priority (117.1b), and the ability needs no mana. The loop is FINITE: life is flat (pay 1, Bastion returns 1), the drain clock needs 39 more activations to zero all four opponents, and the draw is mandatory (608.2c — no 'may' on the card), capping the engine at 59 more activations before you deck yourself. THE TRAP, corrected from the previous pass: Viscera Seer's own free 'Sacrifice a creature: Scry 1' outlet is NOT a strictly favourable bonus. It places no counter, and only Yawgmoth's -1/-1 counter can strip the +1/+1 counter an undying return leaves behind, one per activation — so a mid-loop Seer sacrifice either loads BOTH bodies (sac the armed one; 702.93a returns it with a counter) or permanently loses one (sac the loaded one; undying's intervening 'if' fails). The two branches differ in WHERE the permanent loss falls, and the previous pass's 'either way' sentence was wrong about it: in branch A (armed body eaten) nothing is lost yet and the NEXT Yawgmoth sacrifice is the one that loses a body for good; in branch B (loaded body eaten) the loss has ALREADY happened and the survivor is armed, so the next Yawgmoth sacrifice loses nothing permanently. The conclusion is unchanged because both branches converge on ONE alternation body, and one body can never be re-armed: an activation's single -1/-1 counter can never land on the body that same activation sacrificed to pay its cost — that body is no longer in the zone it was in when it was targeted, so it is an illegal target (608.2b) — and re-arming therefore always costs a different body's death, which with one body left means eating Mikaeus (who is the source of undying) or nothing. Fire the Seer mid-loop and you trade 1 drain per seat for roughly 34 of the 39 activations you need. Use it ONLY as a finisher, where at most FIVE such sacrifices exist — CORRECTED from three: the Seer's cost is 'Sacrifice a creature', NOT 'another creature', so it also eats Mikaeus (whose 'Other non-Human' grant excludes himself) and Yawgmoth (a Human Cleric, whom that grant never reached), and finally itself; four bodies plus the one available undying return is 5, and six is impossible. Margin is therefore 20 activations clean and at most 25 with all five finisher sacrifices — a bounded range, not an open lower bound. All four opponents reach 0 together and leave the game; you are still in it, so you win (104.2a). VERDICT on the deck's declared second kill: the Mikaeus + Yawgmoth line is REAL and lethal on this board, but it is a library-bounded loop, not an infinite combo. A containment record is not a verification; this resolves one of the nineteen and it holds with 20 activations of margin (20-25 depending on finisher Seer sacrifices).",
+      "you": {
+        "life": 40,
+        "hand": 1,
+        "library": 59,
+        "graveyard": [],
+        "battlefield": [
+          "Yawgmoth, Thran Physician (2/4, commander)",
+          "Mikaeus, the Unhallowed (5/5)",
+          "Gravecrawler (3/2 — 2/1 printed +1/+1 from Mikaeus; NO counters; undying re-armed — this is the ARMED body)",
+          "Viscera Seer (3/3 — 1/1 printed, one +1/+1 counter, +1/+1 from Mikaeus; undying NOT available while that counter remains — this is the LOADED body; its own free sacrifice outlet is live but is a TRAP mid-loop, see step 9 item 4; at most FIVE free Seer sacrifices exist as a finisher)",
+          "Bastion of Remembrance",
+          "Swamp (tapped) x4"
+        ],
+        "mana_available": "{0}"
+      },
+      "opponents": [
+        {
+          "seat": "opponent_1",
+          "life": 39,
+          "board": [
+            "no permanents"
+          ]
+        },
+        {
+          "seat": "opponent_2",
+          "life": 39,
+          "board": [
+            "no permanents"
+          ]
+        },
+        {
+          "seat": "opponent_3",
+          "life": 39,
+          "board": [
+            "no permanents"
+          ]
+        },
+        {
+          "seat": "opponent_4",
+          "life": 39,
+          "board": [
+            "no permanents"
+          ]
+        }
+      ],
+      "drain_accounting": {
+        "per_opponent_this_resolution": 1,
+        "pod_total_this_resolution": 4,
+        "opposing_life_remaining_per_seat": 39,
+        "opposing_life_remaining_pod_total": 156,
+        "further_activations_to_kill_the_pod": 39,
+        "further_activations_the_library_permits": 59,
+        "margin_note": "20 further activations of margin (59 library-permitted minus 39 needed) is the working figure and it assumes Viscera Seer's free sacrifice outlet is NEVER used mid-loop: a mid-loop Seer sacrifice either loads both bodies (branch A, and the NEXT Yawgmoth sacrifice is then the permanent loss) or immediately loses the body it ate (branch B, after which the survivor is armed and the next Yawgmoth sacrifice loses nothing). Both branches converge on one alternation body, which can never be re-armed, so the engine ends either way. Used only as a finisher, at most FIVE Seer sacrifices exist — the Seer's cost is 'Sacrifice a creature', not 'another creature', so it eats Mikaeus and Yawgmoth as well as the two alternation bodies, and exactly one undying return is available — and each substitutes for one Yawgmoth activation, so margin = 20 + k for 0 <= k <= 5, i.e. 20-25. It is NOT an open-ended lower bound.",
+        "margin_range": {
+          "clean": 20,
+          "with_finisher_seer_sacrifices": 25,
+          "max_free_seer_sacrifices": 5,
+          "note": "Seer sacrifices are safe only after the alternation is no longer needed. The maximum of 5 = four bodies at the finisher board (Yawgmoth, Mikaeus, and the two alternation bodies) plus the single available undying return; Yawgmoth is a Human and Mikaeus's grant reads 'Other', so neither of them undies. Six is impossible."
+        }
+      }
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "608.1",
+        "status": "supported",
+        "note": "Verbatim. Top-down resolution; pos 2 (undying) is correctly topmost because both cost-payment triggers went on the stack above the already-activated ability."
+      },
+      {
+        "step": 1,
+        "rule": "117.4",
+        "status": "supported",
+        "note": "Verbatim substring; consistent with the scenario's 'every opponent passes' assumption."
+      },
+      {
+        "step": 2,
+        "rule": "702.93a",
+        "status": "supported",
+        "note": "Quote is a verbatim substring of the full rule. cards.json: Mikaeus grants 'Other non-Human creatures you control get +1/+1 and have undying'; Viscera Seer is a Vampire Wizard, so the grant reaches it."
+      },
+      {
+        "step": 2,
+        "rule": "603.4",
+        "status": "supported",
+        "note": "Intervening-'if'; the Felidar Sovereign example confirms the condition is checked at trigger time and again on resolution."
+      },
+      {
+        "step": 2,
+        "rule": "603.10a",
+        "status": "supported",
+        "note": "Full text names leaves-the-battlefield abilities as look-back-in-time triggers; undying is one, so the counter check reads the creature as it last existed on the battlefield, where Mikaeus's +1/+1 was a static bonus, not a counter."
+      },
+      {
+        "step": 2,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": "The last-known-information sentence itself is quoted and carries the claim on its own."
+      },
+      {
+        "step": 2,
+        "rule": "400.7",
+        "status": "supported",
+        "note": "Verbatim first sentence. The omitted 'This rule has the following exceptions' does not bite; no exception contradicts 'new object'. This citation also closes the step-9 targeting argument (see the step-9 608.2b finding)."
+      },
+      {
+        "step": 3,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "Verbatim. SBAs are performed before any player gets priority."
+      },
+      {
+        "step": 3,
+        "rule": "613.4c",
+        "status": "supported",
+        "note": "Verbatim. Seer 1/1 printed + Mikaeus's +1/+1 + one +1/+1 counter, all layer 7c = 3/3. Printed 1/1 confirmed against cards.json."
+      },
+      {
+        "step": 4,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Verbatim. Bastion of Remembrance's oracle text in cards.json is 'Whenever a creature you control dies, each opponent loses 1 life and you gain 1 life' — NOT 'another creature', which I checked specifically because the finisher line depends on the Seer's own death draining. The artifact quotes it exactly."
+      },
+      {
+        "step": 4,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Verbatim; correctly used to show no seat is at 0. Per seat (40->39) and pod (160->156) are stated separately and both match scenario-facts (4 opponents, 160 opposing life)."
+      },
+      {
+        "step": 5,
+        "rule": "608.2b",
+        "status": "supported",
+        "note": "Gravecrawler never changed zones and nothing relevant changed its characteristics, so the target is still legal. Full rule incl. the Sorin's Thirst example confirms."
+      },
+      {
+        "step": 5,
+        "rule": "121.1",
+        "status": "supported",
+        "note": "Narrowed quote carries only hand 0->1 / library 60->59, which is exactly what 121.1 establishes."
+      },
+      {
+        "step": 5,
+        "rule": "613.4c",
+        "status": "supported",
+        "note": "2/1 printed + Mikaeus's +1/+1 + one +1/+1 + one -1/-1 = 3/2 at that instant. Recomputed independently."
+      },
+      {
+        "step": 6,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Verbatim. Establishes the simultaneous single-event check and the repeat; the repeated check finds Gravecrawler at 3/2 with nothing applicable."
+      },
+      {
+        "step": 6,
+        "rule": "704.5q",
+        "status": "supported",
+        "note": "THE CRUX and it is correct. N = 1, so exactly one +1/+1 and one -1/-1 are removed simultaneously; Gravecrawler ends with ZERO counters at 3/2 and is re-armed. Verified against the full rule with no truncation."
+      },
+      {
+        "step": 6,
+        "rule": "122.3",
+        "status": "supported",
+        "note": "Verbatim substring of the counters-chapter statement of the same SBA; corroborates 704.5q rather than duplicating it."
+      },
+      {
+        "step": 6,
+        "rule": "704.5f",
+        "status": "supported",
+        "note": "Correctly invoked and correctly ruled inapplicable: toughness at the check is 2."
+      },
+      {
+        "step": 7,
+        "rule": "702.93a",
+        "status": "supported",
+        "note": "Re-arming claim is correct: zero +1/+1 counters makes the intervening 'if' true both at trigger time and on resolution."
+      },
+      {
+        "step": 7,
+        "rule": "603.4",
+        "status": "supported",
+        "note": "Verbatim substring; the double check is exactly what the rule prescribes."
+      },
+      {
+        "step": 7,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": "Same corrected quote as step 2; the cited sentence carries the claim directly."
+      },
+      {
+        "step": 8,
+        "rule": "704.5f",
+        "status": "supported",
+        "note": "The load-bearing direction of the alternation, demonstrated rather than asserted: Viscera Seer at the crux check is 1/1 printed + Mikaeus's static +1/+1 + one +1/+1 + one -1/-1, all layer 7c, = 2/2. Recomputed independently; printed 1/1 confirmed against cards.json. Toughness 2 clears the SBA and the smaller body survives."
+      },
+      {
+        "step": 8,
+        "rule": "704.5q",
+        "status": "supported",
+        "note": "Same SBA event: N = 1, both counters come off, leaving the Seer 2/2 with zero counters and re-armed while Gravecrawler holds the counter from its own undying return. I retraced the second iteration end to end and the roles do swap exactly as claimed; exactly one body is armed after every activation."
+      },
+      {
+        "step": 8,
+        "rule": "613.4c",
+        "status": "supported",
+        "note": "All four modifiers sit in layer 7c, so the sum is order-independent; applied correctly."
+      },
+      {
+        "step": 9,
+        "rule": "117.1b",
+        "status": "supported",
+        "note": "Verbatim; the rule that licenses repetition. The omission of 117.3c remains acceptable on merits: 704.3 (step 6) ends 'the appropriate player gets priority' and 117.5 (step 3) ends 'Then the player who would have received priority does so', and the scenario fixes your precombat main phase."
+      },
+      {
+        "step": 9,
+        "rule": "119.4",
+        "status": "supported",
+        "note": "Verbatim second sentence. Life is genuinely flat: 1 paid at activation, 1 gained per death via Bastion, one death per activation; the full rule's life-total >= payment requirement is never threatened at 39/40."
+      },
+      {
+        "step": 9,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Supports the Bastion life gain that keeps the total flat."
+      },
+      {
+        "step": 9,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Drain arithmetic re-verified against scenario-facts: 39 further activations x 1 per seat zeroes all four from 39; 39 x 4 = 156 pod life. Per-seat and pod figures are kept rigorously separate at step 4, step 9, final_state and drain_accounting. Re-grepped the whole artifact for every sibling stack id (001-013) and for 'sibling': NO sibling figure is quoted anywhere, which is correct — scenario-facts marks none of them like-for-like."
+      },
+      {
+        "step": 9,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "'The controller of the spell or ability follows its instructions in the order written' is what makes the draw binding; cards.json confirms no 'may' ('Put a -1/-1 counter on up to one target creature and draw a card'). Judged against the whole rule; the replacement-effect and later-text remainder does not weaken it and no replacement effect on this board touches the draw."
+      },
+      {
+        "step": 9,
+        "rule": "704.5b",
+        "status": "supported",
+        "note": "Verbatim. 59 cards remain; activations 1-59 each draw, a 60th draws from an empty library and you lose. The 'NOT infinite' verdict is sound for the right reason: sustaining the alternation REQUIRES the ability to RESOLVE so the -1/-1 lands, and every resolution draws. (Unchanged minor, allowed in the two previous passes and still not load-bearing: 'you may activate at most 59 more times' is loose, because an activation whose sole target is the body it then sacrifices fizzles under 608.2b and draws nothing. Such activations cannot re-arm anything, so they are exactly the finisher deaths already counted in k below and the loop bound is unaffected.)"
+      },
+      {
+        "step": 9,
+        "rule": "602.1",
+        "status": "supported",
+        "note": "PREVIOUS FINDING CLOSED — AND THE RESOLVER IS RIGHT THAT MY ENUMERATION, NOT ITS TOTAL, WAS THE ERROR. I re-derived the finisher count from cards.json rather than from my own last pass. cards.json: Viscera Seer 'Sacrifice a creature: Scry 1' (cost is 'a creature', not 'another' — so it eats Mikaeus, Yawgmoth and itself); Yawgmoth 'Legendary Creature - Human Cleric' (Mikaeus's non-Human grant never reaches it); Mikaeus 'Other non-Human creatures you control get +1/+1 and have undying' (excludes himself). Finisher board = 4 bodies (scenario-facts: 3 on the battlefield plus the Seer returning; no Bastion token on this board). My previous enumeration listed the two alternation bodies, then Mikaeus, then the Seer AGAIN — the Seer IS one of the two alternation bodies — and omitted Yawgmoth entirely. Two errors that cancelled to the right total of 5. The artifact's rewritten enumeration is correct and correct in BOTH orientations: (1) armed body dies and returns loaded; (2)-(4) the loaded alternation body, Mikaeus, Yawgmoth in any order (safe, because the only undying return already happened at (1), so Mikaeus's death cannot strand it, and no body drops below toughness 1 when his +1/+1 leaves); (5) the Seer last, because the outlet leaves with it. 602.1 now carries only the cost/effect division that makes the Seer's outlet free at {0}, which it does establish. INDEPENDENT PROOF OF THE BOUND, stronger than the artifact's: total deaths = 4 bodies + R undying returns; each return needs a body to die ARMED, and only a RESOLVING (i.e. drawing) activation's -1/-1 counter can arm one, so R <= A_draw + 1 (the +1 is the body already armed here). Needing 39 drains gives 39 = 4 + R <= A_draw + 5, so A_draw >= 34 and margin = 59 - A_draw <= 25. This also covers fizzled activations, which the artifact does not consider: they are free drains too, and they change nothing. margin_range 20-25, max 5, and 'roughly 34 of 39' mid-loop are all confirmed."
+      },
+      {
+        "step": 9,
+        "rule": "702.93a",
+        "status": "supported",
+        "note": "PREVIOUS FINDING CLOSED. The over-general 'either way' sentence is gone and is replaced by an explicit split in all three places it mattered — step 9, final_state and drain_accounting.margin_note. Verified branch by branch: (A) eat the ARMED body -> 702.93a returns it WITH a counter, both bodies loaded, nothing lost yet, and the NEXT Yawgmoth activation is the one that loses a body for good; (B) eat the LOADED body -> its intervening 'if' is false and the loss has ALREADY happened, leaving an ARMED survivor whose next sacrifice loses nothing permanently. The artifact now states exactly this in both directions and correctly notes both branches converge on ONE alternation body."
+      },
+      {
+        "step": 9,
+        "rule": "704.5q",
+        "status": "supported",
+        "note": "Correctly used for the trap's mechanism: only Yawgmoth's -1/-1 counter can strip an undying return's +1/+1 counter, one per activation, so one activation re-arms exactly one body and the Seer's outlet — which places no counter — cannot re-arm anything."
+      },
+      {
+        "step": 9,
+        "rule": "608.2b",
+        "status": "supported",
+        "note": "THE NEW CITATION CARRIES THE BRANCH ARGUMENT. Read in full: 'A target that's no longer in the zone it was in when it was targeted is illegal... If all its targets... are now illegal, the spell or ability doesn't resolve.' The claim it is asked to carry is that an activation can never strip the counter on the body it just ate, because the target is locked in at activation (601.2c) before costs are paid (601.2h). For the LOADED body this is literal — it is in the graveyard at the check. For the ARMED body, which undying has already returned before Yawgmoth's ability resolves, the card is physically back on the battlefield, and the argument closes only because the returned permanent is a NEW OBJECT with no relation to the one that was targeted — 400.7, which the artifact does cite (step 2). This is the standard blink-in-response-to-removal reading and 608.2b is its canonical citation, so the claim holds; I note the dependency because the sentence is doing more work than its quoted clause looks like it is doing."
+      },
+      {
+        "step": 10,
+        "rule": "104.2a",
+        "status": "supported",
+        "note": "Quoted in full including 'This happens immediately and overrides all effects that would preclude that player from winning the game.' Bastion's 'each opponent loses 1 life' is one resolution, so all four seats reach 0 simultaneously and leave together; step 10 correctly ties the flat life total and the 39-of-59 draw margin to your still being in the game when the four losses land."
+      },
+      {
+        "step": null,
+        "rule": "903.9a",
+        "status": "supported",
+        "note": "MISSING-STEP SWEEP, AUDITED AND FOUND NOT TO BE A GAP — the one place I expected to fail the artifact. The finisher counts Yawgmoth's own death as one of five Bastion drains, and Yawgmoth is the commander. Under an older replacement-effect reading, moving it to the command zone would mean it never hit the graveyard, never 'died', and the count would be 4. The current CR is decisive the other way: 903.9a is a STATE-BASED ACTION ('If a commander is in a graveyard or in exile and that object was put into that zone since the last time state-based actions were checked, its owner may put it into the command zone'), so Yawgmoth is put into the graveyard first, Bastion's 'dies' trigger fires unconditionally, and where the card goes afterwards is irrelevant at {0} mana. The artifact's silence on it changes no figure. No other replacement effect (614) exists on this board; Nest of Scarabs is excluded by assumption."
+      },
+      {
+        "step": null,
+        "rule": "704.5",
+        "status": "supported",
+        "note": "MISSING-STEP SWEEP, CLEAN. Walked the board myself: every death puts its trigger on the stack (Bastion, undying) via 603/117.5; SBAs are checked at steps 3, 6 and 8 and at the two places a check could kill a body (704.5f on the 1/1 Seer, and the deck-out check at 704.5b); priority is accounted for at 117.4/117.5/117.1b; the 704.5q annihilation is checked in both orientations. Card names, printed stats, type lines and oracle text for all five cards verified against cards.json, and scenario-facts confirms all five are in the deck with none missing. The Viscera Seer is correctly treated as OFF the battlefield entering the resolution (spent paying a cost), which is what makes the finisher board four bodies rather than five."
+      }
+    ],
+    "iteration_bound_override": {
+      "reason": "RESOLVE_MAX_ITERATIONS = 3 was reached with the verdict at fail. Overridden for one further round on narrow grounds: the checker's own summary states the crux is verified and unchanged — 704.5q annihilating the counter pair, the alternation shown in both directions, the kill arithmetic, and 104.2a. Both open findings sit inside step 9 and neither opens a new rules domain: a miscounted free-sacrifice ceiling (Viscera Seer's cost says 'a creature', not 'another creature', so it can also eat Mikaeus and Yawgmoth, making the margin 20-25 rather than 20-23) and one over-general sentence describing the trap. This is the deck's declared SECOND KILL and its first verified Mikaeus interaction; abandoning it two sentences short would leave nineteen contained lines unverified over an arithmetic slip.",
+      "iterations_used": 3,
+      "granted": 1
+    }
+  }
+}
