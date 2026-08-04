@@ -18,6 +18,7 @@ PILOT_STEPS = [
     ("goldfish", "manamap.pilot.goldfish", "Seeded Monte Carlo resource-development metrics"),
     ("bracket-check", "manamap.pilot.bracket", "Computed bracket floor and its evidence"),
     ("deck-facts", "manamap.pilot.deck_facts", "Deterministic deck facts agents would else re-derive"),
+    ("deck-history", "manamap.pilot.deck_history", "Applied swaps (from git) + the swaps still pending"),
     ("deck-audit", "manamap.pilot.deck_audit", "Cited axis targets + engine activation: is this deck any good?"),
     ("mana-analysis", "manamap.pilot.mana_analysis", "Deterministic mana/land analysis behind Sources Say"),
     ("sideboard-facts", "manamap.pilot.sideboard_facts", "What each sideboard card would do if run"),
@@ -55,7 +56,7 @@ _DECK_COMMANDS = {
     "validate-issue", "cache-status", "cache-record", "cache-clear", "cache-rebless",
     "cache-snapshot", "cache-rerecord",
     "artist-credits",
-    "bracket-check", "build-deck", "validate-build", "deck-facts", "deck-audit",
+    "bracket-check", "build-deck", "validate-build", "deck-facts", "deck-audit", "deck-history",
     "mana-analysis", "sideboard-facts", "validate-sideboard",
     "validate-strategic-frame", "upgrade-facts", "validate-upgrade-watch",
     "validate-considering", "validate-diagnosis", "diagnosis-report",
@@ -147,7 +148,8 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--archetype", default=None,
                              help="aggro|control|combo|voltron — overrides what "
                                   "strategic_frame.json says; omit for the base targets")
-        if name in ("sideboard-facts", "upgrade-facts", "impact", "deck-audit"):
+        if name in ("sideboard-facts", "upgrade-facts", "impact", "deck-audit",
+                    "deck-history"):
             cmd.add_argument("--json", action="store_true", dest="as_json")
             cmd.add_argument("--out", default=None,
                              help="Write JSON here instead of stdout (a view, never tracked)")
