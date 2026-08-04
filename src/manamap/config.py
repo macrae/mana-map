@@ -1045,7 +1045,7 @@ AGENT_CACHE_FILENAME = ".agent-cache.json"
 # rules and should be re-seeded, which is a pure re-fingerprint with no spawn.
 # Without it, a fix to the extractor is inert on every already-recorded routine:
 # rebless skips any HIT that merely *has* refs, however stale their derivation.
-CARD_REFS_VERSION = 1
+CARD_REFS_VERSION = 2
 AGENT_PROMPTS_DIR = _REPO_ROOT / ".claude" / "agents"
 STYLE_DOC_PATH = _REPO_ROOT / "STYLEv3.md"
 ISSUE_SPEC_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "issue_spec.py"

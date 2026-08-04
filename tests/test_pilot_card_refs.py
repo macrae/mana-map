@@ -123,3 +123,49 @@ def test_card_roles_keys_count_as_refs():
 def test_deck_card_names():
     deck_doc = {"cards": [{"name": "Sol Ring"}, {"name": "Beast Within"}, {"name": None}]}
     assert cr.deck_card_names(deck_doc) == ["Beast Within", "Sol Ring"]
+
+
+# ── Ambiguous tokens (2026-08-03) ────────────────────────────────────────
+
+def test_a_token_two_deck_cards_share_counts_for_neither():
+    """`yawgmoth` is a token of the commander AND of Urborg, Tomb of Yawgmoth.
+
+    Counting it made every artifact naming the commander look like it
+    referenced Urborg — so moving Urborg between zones MISSed thirteen verified
+    stacks, a decision spread and the strategic frame at once.
+    """
+    from manamap.pilot import card_refs
+    names = ("Yawgmoth, Thran Physician", "Urborg, Tomb of Yawgmoth")
+    assert "yawgmoth" in card_refs.ambiguous_tokens(names)
+    hits = card_refs.text_refs("Yawgmoth, Thran Physician activates.", names)
+    assert hits == {"Yawgmoth, Thran Physician"}
+
+
+def test_full_name_still_matches_when_every_token_is_ambiguous():
+    """Dropping ambiguous tokens must never make a card unfindable."""
+    from manamap.pilot import card_refs
+    names = ("Yawgmoth, Thran Physician", "Urborg, Tomb of Yawgmoth")
+    hits = card_refs.text_refs("You control Urborg, Tomb of Yawgmoth.", names)
+    assert "Urborg, Tomb of Yawgmoth" in hits
+
+
+def test_a_token_only_one_card_carries_is_kept():
+    from manamap.pilot import card_refs
+    names = ("Gravecrawler", "Yawgmoth, Thran Physician")
+    assert card_refs.ambiguous_tokens(names) == frozenset()
+    assert card_refs.text_refs("the gravecrawler loop", names) == {"Gravecrawler"}
+
+
+def test_creature_types_and_rules_words_are_stopworded():
+    """A resolution quoting a type line is not naming a card.
+
+    `cleric` alone made six stacks look like they referenced Starscape Cleric,
+    because Mikaeus is a Zombie Cleric and Yawgmoth a Human Cleric.
+    """
+    from manamap.pilot import card_refs
+    names = ("Starscape Cleric", "Mikaeus, the Unhallowed")
+    hits = card_refs.text_refs(
+        "Mikaeus, the Unhallowed is a Legendary Creature - Zombie Cleric.", names)
+    assert hits == {"Mikaeus, the Unhallowed"}
+    for word in ("graveyard", "sacrifice", "permanent", "trigger", "zombie"):
+        assert word in card_refs.TOKEN_STOPWORDS
