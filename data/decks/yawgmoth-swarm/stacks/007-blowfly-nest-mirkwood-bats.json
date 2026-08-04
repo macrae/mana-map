@@ -1,7 +1,7 @@
 {
   "id": "007",
   "slug": "yawgmoth-swarm",
-  "deck": "YAWGMOTH \u2014 THE SCARAB SWARM",
+  "deck": "YAWGMOTH — THE SCARAB SWARM",
   "title": "Blowfly Infestation + Nest of Scarabs + Mirkwood Bats: does a creation-triggered drain monetise the loop that a death-triggered drain cannot?",
   "rules_version": "June 19, 2026",
   "scenario": {
@@ -10,7 +10,7 @@
         "Blowfly Infestation (enchantment)",
         "Nest of Scarabs (enchantment)",
         "Mirkwood Bats (2/3, no counters)",
-        "Fume Spitter (1/1) \u2014 already sacrificed to pay the cost of the ability now on the stack",
+        "Fume Spitter (1/1) — already sacrificed to pay the cost of the ability now on the stack",
         "Insect token X (1/1 black Insect, no counters)",
         "Swamp (untapped)",
         "Swamp (untapped)"
@@ -37,7 +37,7 @@
       {
         "pos": 0,
         "controller": "you",
-        "object": "Fume Spitter's activated ability \u2014 'Sacrifice this creature: Put a -1/-1 counter on target creature.' Cost already paid (Fume Spitter sacrificed). Target chosen: Insect token X."
+        "object": "Fume Spitter's activated ability — 'Sacrifice this creature: Put a -1/-1 counter on target creature.' Cost already paid (Fume Spitter sacrificed). Target chosen: Insect token X."
       }
     ],
     "extras": {
@@ -48,7 +48,7 @@
         "opponent_c": 40,
         "opponent_d": 40
       },
-      "pod_size": "Five players \u2014 you and four opponents, 160 opposing life in total.",
+      "pod_size": "Five players — you and four opponents, 160 opposing life in total.",
       "library": "You have 60 cards in your library.",
       "assumptions": [
         "No player responds to anything; every opponent passes priority throughout.",
@@ -56,9 +56,9 @@
         "Insect tokens created by Nest of Scarabs are 1/1 black Insect creature tokens with no abilities.",
         "It is your precombat main phase."
       ],
-      "note_for_the_resolver": "This board is verified stack 001's board with ONE card changed: Mirkwood Bats (2/3) stands where Zulaport Cutthroat (1/1) stood. Stack 001 is checker-passed and found the loop genuinely UNBOUNDED but nearly drainless \u2014 total drain exactly 3 per opponent \u2014 because Blowfly's mandatory 'put a -1/-1 counter on target creature' eventually has only the drainer left to target, so the drainer dies early. Zulaport meters DEATHS. Mirkwood Bats reads 'Whenever you create or sacrifice a token, each opponent loses 1 life' and meters CREATION and SACRIFICE, not deaths. Nothing in this loop is sacrificed \u2014 the tokens die to state-based actions from -1/-1 counters \u2014 so only the CREATION half can fire here. Do not assume Bats collects both halves on this line. Bats is also 2/3 rather than 1/1, so it absorbs more counters than Zulaport did before dying. Do NOT re-litigate stack 001's unboundedness; take it as established and answer only what Bats collects."
+      "note_for_the_resolver": "This board is verified stack 001's board with ONE card changed: Mirkwood Bats (2/3) stands where Zulaport Cutthroat (1/1) stood. Stack 001 is checker-passed and found the loop genuinely UNBOUNDED but nearly drainless — total drain exactly 3 per opponent — because Blowfly's mandatory 'put a -1/-1 counter on target creature' eventually has only the drainer left to target, so the drainer dies early. Zulaport meters DEATHS. Mirkwood Bats reads 'Whenever you create or sacrifice a token, each opponent loses 1 life' and meters CREATION and SACRIFICE, not deaths. Nothing in this loop is sacrificed — the tokens die to state-based actions from -1/-1 counters — so only the CREATION half can fire here. Do not assume Bats collects both halves on this line. Bats is also 2/3 rather than 1/1, so it absorbs more counters than Zulaport did before dying. Do NOT re-litigate stack 001's unboundedness; take it as established and answer only what Bats collects."
     },
-    "question": "Resolve the stack and then the resulting loop. (a) How many times does Mirkwood Bats' ability trigger before the loop ends, how much total life does each opponent lose, and what exactly ends it \u2014 name the object that must be targeted when no other creature remains. (b) State plainly whether this is more or less than stack 001's verified 3 per opponent, and identify the single property of Mirkwood Bats that accounts for the difference."
+    "question": "Resolve the stack and then the resulting loop. (a) How many times does Mirkwood Bats' ability trigger before the loop ends, how much total life does each opponent lose, and what exactly ends it — name the object that must be targeted when no other creature remains. (b) State plainly whether this is more or less than stack 001's verified 3 per opponent, and identify the single property of Mirkwood Bats that accounts for the difference."
   },
   "resolution": {
     "steps": [
@@ -529,5 +529,7 @@
         "note": "Quote verbatim. Supplies the ANSWER (b) arithmetic that the merge had to preserve - 2/3 minus one -1/-1 counter is 1/2, which is why Bats lives where Zulaport's 1/1 died. Its presence in the merged step is what confirms the second half was carried over with its own support rather than folded in as unsupported prose."
       }
     ]
-  }
+  },
+  "presentable": false,
+  "presentable_note": "Blowfly Infestation is on this board and is no longer in the 99. The resolution stands as a rules finding; it is not a line this deck can assemble, so it is withheld from the issue rather than reverified."
 }

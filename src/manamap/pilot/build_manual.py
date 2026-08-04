@@ -26,6 +26,7 @@ from manamap.config import MANUALS_DIR, SYNERGY_GRAPH_PATH
 from manamap.pilot.artist_credits import is_accessory
 from manamap.pilot.common import (
     checker_passed,
+    presentable,
     deck_dir,
     load_deck_cards,
     load_json,
@@ -87,12 +88,16 @@ TODO = '<p><span class="todo">TODO</span> This section is awaiting content.</p>'
 
 
 def load_verified_stacks(slug):
-    """Checker-passed stacks only, in id order — the publication gate."""
+    """Presentable stacks only, in id order — the publication gate.
+
+    Two conditions, not one: the checker must have passed it AND the board must
+    still be one this deck can make. See `common.presentable`.
+    """
     stacks = []
     for path in sorted((deck_dir(slug) / "stacks").glob("*.json")):
         with open(path) as f:
             doc = json.load(f)
-        if checker_passed(doc):
+        if presentable(doc):
             stacks.append(doc)
     return stacks
 
@@ -104,7 +109,9 @@ def load_decisions(slug):
         return decisions
     for path in sorted(directory.glob("*.json")):
         with open(path) as f:
-            decisions.append(json.load(f))
+            doc = json.load(f)
+        if doc.get("presentable", True) is not False:
+            decisions.append(doc)
     return decisions
 
 

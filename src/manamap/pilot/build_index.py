@@ -10,7 +10,7 @@ A deck without an `issue.json` sorts last under a sentinel volume of 999.
 import json
 import re
 
-from manamap.pilot.common import checker_passed, load_json
+from manamap.pilot.common import load_json, presentable, withheld
 from manamap.config import DECKS_DIR, MANUALS_DIR
 from manamap.pilot.design import stylesheet_link, write_stylesheet
 from manamap.pilot.design import FONT_LINK, badge, barcode, esc
@@ -104,6 +104,20 @@ def line_cards(scenario, deck_names=None):
             # (creature spell)", "Island x5", "untapped lands x2". Strip them, then drop
             # anything that is plainly not a card.
             name = str(value or "").strip()
+            # Three passes, and the ORDER is load-bearing in both directions.
+            #
+            # An em-dash annotation is prose about the permanent, not part of its
+            # name: "Yawgmoth, Thran Physician (2/4) — your commander", or the
+            # already-sacrificed marker. No Magic card name contains " — " and
+            # DFCs use " // ", so cutting there is safe.
+            #
+            # But the em-dash can live INSIDE the parenthetical —
+            # "Bloodletter of Aclazotz (UNTAPPED — it did not attack)" — where
+            # cutting first leaves the unbalanced "Bloodletter of Aclazotz (UNTAPPED".
+            # So strip a trailing parenthetical FIRST, then cut the annotation,
+            # then strip again for the parenthetical the cut just exposed.
+            name = re.sub(r"\s*\([^)]*\)\s*$", "", name)
+            name = name.split(" — ")[0].strip()
             name = re.sub(r"\s*\([^)]*\)\s*$", "", name)
             name = re.sub(r"\s+x\s*\d+$", "", name, flags=re.I).strip()
             if not name or name in seen or name.lower() in _NOT_A_CARD:
@@ -127,7 +141,16 @@ def line_cards(scenario, deck_names=None):
                 return
             # A stack object is often a sentence about a trigger rather than a card name.
             # Card names do not contain these.
-            if len(name) > 60 or any(t in name for t in (";", " has just ", " trigger")):
+            # `" ability"` matters more than it looks. A stack object reads
+            # "Yawgmoth, Thran Physician's activated ability — 'Pay 1 life…'",
+            # which the length guard used to reject at 130 characters — until
+            # the em-dash strip above cut it to 45 and let it through. The stack
+            # then "named the line" and the board was skipped, losing three real
+            # cards from a line that lives entirely on the battlefield. Rejecting
+            # on the phrase is what the length guard was accidentally doing.
+            # Safe because the exact-match against `deck_names` runs first.
+            if len(name) > 60 or any(t in name.lower() for t in
+                                     (";", " has just ", " trigger", " ability")):
                 return
             # Board entries are sometimes a count rather than a card: "five lands, all
             # untapped", "2 Vampire tokens". A card name never opens with a number word.
@@ -196,8 +219,10 @@ def gather_entries():
 
         verified = sum(
             1 for stack_path in sorted((deck_path / "stacks").glob("*.json"))
-            if checker_passed(load_json(stack_path, {})))
-        decisions = len(list((deck_path / "decisions").glob("*.json")))
+            if presentable(load_json(stack_path, {})))
+        decisions = sum(
+            1 for p in (deck_path / "decisions").glob("*.json")
+            if not withheld(load_json(p, {})))
         mean_cast = None
         goldfish_path = deck_path / "goldfish_metrics.json"
         if goldfish_path.exists():
@@ -211,7 +236,7 @@ def gather_entries():
         # filenames. Passing verdicts only — the dossier renders what publishes.
         stack_files = sorted(
             p.name for p in (deck_path / "stacks").glob("*.json")
-            if checker_passed(load_json(p, {})))
+            if presentable(load_json(p, {})))
 
         # What each passing line is MADE OF, so the browser can draw an edge that means
         # something instead of substring-matching prose. Keyed by filename, since that is

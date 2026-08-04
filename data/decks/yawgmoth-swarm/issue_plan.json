@@ -1,383 +1,804 @@
 {
-  "slug": "yawgmoth-swarm",
-  "angle": "This is a control deck that happens to own eleven infinite lines — the engine assembles itself in roughly three games out of four while every named kill needs a wish, so the issue teaches you to pilot the draw engine and hold the four ceilings until the arithmetic says go.",
-  "cover": {
-    "kicker": "VERIFIED BOTH WAYS",
-    "dominant_coverline": "THIRTEEN, OR TWO",
-    "teases": [
-      "MIRKWOOD BATS: 13 DRAINS ON ONE ENGINE, 2 ON THE OTHER — AND ON THE SECOND IT SWITCHES THE ENGINE OFF",
-      "BLOOD ARTIST REFUTED AS A KILL: 8 LIFE TOTAL, A 3.5x PENALTY FOR ONE WORD OF TEMPLATING",
-      "THE ENGINE NEEDS NO TUTOR — 73 TO 74% BY TURN TEN WITH NO WISHES SPENT",
-      "FOUR NAMED KILLS, ONE OF THEM VERIFIED — AND THE HONEST NUMBER IS A UNION NOBODY MEASURED"
-    ],
-    "violators": [
-      {"text": "8 VERIFIED LINES!", "tone": "extreme"},
-      {"text": "52 LIFE OFF THE POD", "tone": "extreme"}
-    ]
-  },
-  "departments": [
-    {"id": "cover"},
-    {"id": "contents"},
-    {
-      "id": "first-turns",
-      "kicker": "TURNS ONE TO FOUR",
-      "headline": "DRAW FIRST. DRAIN SECOND.",
-      "dek": "Why does a deck holding eleven infinite lines want you spending turn four drawing cards? Because the engine turns up on its own in three games out of four, and the kills only turn up when you go and fetch them.",
-      "components": ["callout-step", "pilot-tip", "pull-quote"],
-      "callouts": [
-        {"n": 1, "title": "BUY A BODY", "text": "Renewable fodder is the class the sim finds earliest — mean turn 2.796, and you have it by turn ten in 73.6% of games with no tutor involved. Bitterblossom, Reassembling Skeleton and Gravecrawler are the three you most want to see."},
-        {"n": 2, "title": "OPEN THE VALVE", "text": "A free sacrifice outlet arrives at mean turn 2.803 and sits at 73.8% by turn ten unassisted. Carrion Feeder and Viscera Seer cost one mana and never ask for another one."},
-        {"n": 3, "title": "LAND THE PHYSICIAN", "text": "The commander hits the battlefield on turn four in 7,249 games out of 10,000, mean 4.283, and he is down by turn six in 91.7%. From that turn on, every spare creature is a card."},
-        {"n": 4, "title": "HOLD THE PAYOFF", "text": "You have a drain by turn ten in 66.9% of games unassisted. Keep it in hand until the turn it converts — a deployed drain is a target and an undeployed one is a surprise."}
-      ],
-      "captions": {
-        "Yawgmoth, Thran Physician": "**THE ENGINE:** no mana anywhere in the cost, so no tax and no Winter Orb effect ever touches it — the price is one life and one spare body, at instant speed, on anybody's turn.",
-        "Bitterblossom": "**THE BEST TURN TWO IN THE DECK:** a Faerie every upkeep for 1 life and no card spent, and it rebuilds through a sweeper by itself.",
-        "Nest of Scarabs": "**THE HUB:** it hands back one body for the counter each activation spends — one only, and only after the death, so the chain is body-neutral just while the counter lands on something that lives."
-      },
-      "pilot_tips": [
-        {"card": "Yawgmoth, Thran Physician", "text": "Activate him on the end step before your untap — the ability costs no mana, so holding it up all round costs you nothing."},
-        {"card": "Reassembling Skeleton", "text": "Keep two mana open on an empty board; the Skeleton alone makes it an engine turn."}
-      ],
-      "pull_quote": "Three games in four hand you the engine off the top of your library. Pace for that game — it is the median one."
-    },
-    {
-      "id": "keep-or-ship",
-      "kicker": "SEVEN CARDS",
-      "headline": "CAN IT MAKE A BODY AND KILL IT?",
-      "dek": "The keep test is not whether you have the kill, because on seven cards you almost never do. It is whether the hand makes bodies and can spend one for free.",
-      "components": ["power-meter", "pilot-tip", "pull-quote"],
-      "hands": [
-        {
-          "verdict": "KEEP",
-          "cards": ["Swamp", "Swamp", "Swamp", "Bitterblossom", "Carrion Feeder", "Fume Spitter", "Zulaport Cutthroat"],
-          "why": "Three lands is the modal kept hand — 3,586 of the sim's keeps hold exactly three. Fodder, a free outlet, an ignition source and a drain are the four classes the model finds earliest at mean turns 2.796, 2.803, 2.868 and 3.014, and this hand already holds all four."
-        },
-        {
-          "verdict": "KEEP",
-          "cards": ["Swamp", "Swamp", "Dark Ritual", "Sol Ring", "Reassembling Skeleton", "Vampiric Tutor", "Skullclamp"],
-          "why": "Fast mana with a black source is a hand ahead of the curve it was dealt. It is the thinnest class on the sheet at 43.5% unassisted by turn ten, and 707 games out of 10,000 cast the commander on turn two — every one of them started here."
-        },
-        {
-          "verdict": "SHIP",
-          "cards": ["Swamp", "Swamp", "Swamp", "Bastion of Remembrance", "Blood Artist", "Mikaeus, the Unhallowed", "Toxic Deluge"],
-          "why": "Payoffs with nothing underneath them are blanks until something is dying, and enablers at least dig toward a payoff. Then price the top end: {3}{B}{B}{B} against 3.910 mean available mana on turn four is a turn-seven card, not a keep."
-        },
-        {
-          "verdict": "SHIP",
-          "cards": ["Swamp", "Swamp", "Blowfly Infestation", "Nest of Scarabs", "Carnifex Demon", "Grave Titan", "Skinrender"],
-          "why": "The dream pair with nothing under it. Stack 001 proved that loop unbounded and then named its price — the drain plus two other creatures on the battlefield when it starts. The rest of this hand costs four and six."
-        }
-      ],
-      "captions": {
-        "Dark Ritual": "**THE TURN-TWO HAND:** one black into three, which is the whole early-commander plan in a single card. Fast mana is 43.5% unassisted, so a hand already holding it is ahead of a curve most of your games never get.",
-        "Skullclamp": "**KEEPABLE ON ITS OWN:** one mana, and every 1/1 the deck manufactures becomes two cards. It is the draw engine that still works on the turns the commander is answered."
-      },
-      "pilot_tips": [
-        {"card": "Vampiric Tutor", "text": "Never mulligan a hand for lacking the commander — he is in the command zone, not in your library."}
-      ],
-      "pull_quote": "Two to five lands is your band. The sim keeps its first seven 82.3% of the time at a mean of 0.209 mulligans — you get to be picky, and you almost never have to be."
-    },
-    {
-      "id": "whats-your-play",
-      "kicker": "COMMIT FIRST",
-      "headline": "THREE PAYOFFS, FIVE OPEN LANDS",
-      "dek": "Grave Pact is on the battlefield, three payoffs are in your hand, and the Azorius seat has held five untapped lands through two rotations. Pick one before you read a word of the Coach's answer.",
-      "components": ["scenario-box", "pull-quote"],
-      "pull_quote": "You cannot kill anybody this turn. So stop asking which payoff is biggest and start asking which one is still there next turn.",
-      "note": "Renderer: the issue's only decision spread. Branch cards must stay ahead of the recommendation — the reader commits before the Coach shows his hand (STYLEv3 §5.1). The pull quote is deliberately non-telegraphing because dept_furniture prints above the spread."
-    },
-    {
-      "id": "politics-table",
-      "kicker": "THREE OPPONENTS",
-      "headline": "THE QUIET SEAT NOBODY BELIEVES",
-      "dek": "You arrive on the table's radar at turn four, because that is when your best card lands. So what do three opponents actually read off your board — and how do you spend that reading instead of resenting it?",
-      "components": ["callout-step", "pilot-tip", "pull-quote"],
-      "callouts": [
-        {"n": 1, "title": "THREAT WINDOW: THE BATS BOARD", "text": "Mirkwood Bats beside Yawgmoth and Nest of Scarabs is thirteen triggers — 13 from every seat, 52 across a four-opponent pod, verified five separate ways. Present that board on a turn you can act, never a turn earlier."},
-        {"n": 2, "title": "THREAT WINDOW: THE BLOWFLY BOARD", "text": "Blowfly Infestation beside Nest of Scarabs, with a death-metering drain and two spare bodies already down, is the real thing: 38 completed iterations take four opponents from 40 to 0."},
-        {"n": 3, "title": "THE TELL YOU CANNOT HIDE", "text": "Mikaeus is the shared half of seven of the eleven two-card infinites on the bracket sheet. The table's cheapest correct answer to your whole deck is one exile effect pointed at one creature. Do not teach them that."},
-        {"n": 4, "title": "LEAD FODDER, HOLD THE HUB", "text": "Cast Nest of Scarabs on the turn it pays, not the turn you can first afford it. With a three-card assembly, the last piece down is the one everybody would have answered."}
-      ],
-      "captions": {
-        "Grave Pact": "**THE ROOM-CHANGER:** a drain takes life quietly and privately; an edict takes a creature from three players in front of everybody, every turn, forever.",
-        "Exquisite Blood": "**THE ONE NOBODY SEES COMING:** it does nothing visible on the turn it lands. Deploy South Wind Avatar first — a 3/4 deathtouch body reads as fair.",
-        "Necropotence": "**WHAT ACTUALLY DRAINS YOU:** the engine is roughly life-neutral once a drain is out. This, Bitterblossom and Black Market Connections are the cards taking your life total down."
-      },
-      "pilot_tips": [
-        {"card": "Vampiric Tutor", "text": "Fire it on the end step before your untap — the table watches a card leave your hand for a reason they cannot name until it is too late."}
-      ],
-      "pull_quote": "A scary board is a clock and the table will price it as a kill. That is a sequencing problem, which is the good kind — you solve those for free."
-    },
-    {
-      "id": "know-your-enemy",
-      "kicker": "THE SEATS ACROSS FROM YOU",
-      "headline": "WHO WANTS YOU DEAD",
-      "dek": "Assign your role at the start of every game and re-ask it after every board change. Against a fair pod you own the long game — and against exactly one archetype you are the beatdown, while staying the control against everyone else at the same table.",
-      "components": ["threat-box", "pilot-tip", "pull-quote"],
-      "threats": [
-        {
-          "archetype": "Sweeper control",
-          "meter_label": "Threat",
-          "rate": 0.2,
-          "read": "Your best matchup, and you are allowed to look cheerful about it. Two decks both claiming inevitability means the cheaper rebuild wins, and yours is structural rather than held: Reassembling Skeleton returns for {1}{B} forever with no board condition, Gravecrawler recasts for {B} while a Zombie is out, and Bitterblossom and Black Market Connections make a body a turn without spending a card. Deploy the fodder freely and keep the drain in hand until the turn it converts. The one board that genuinely costs you is enchantment removal on Nest of Scarabs, because nothing in the 99 rebuys an enchantment — that is the case where your tutor is a rebuild rather than a finish, and you spend it that way without flinching.",
-          "outs": ["Plumb the Forbidden", "Reassembling Skeleton", "Gravecrawler", "Bitterblossom", "Black Market Connections", "Persist", "Victimize", "Animate Dead", "Phyrexian Reclamation"]
-        },
-        {
-          "archetype": "Stax and tax",
-          "meter_label": "Threat",
-          "rate": 0.75,
-          "read": "Split this one in half before you panic. Pay 1 life, sacrifice another creature — that costs no mana, so a Sphere effect never touches the engine once the commander has resolved. Deployment is the vulnerable window, not operation. Two real exposures remain: fast mana is three cards at 43.5% unassisted, so a tax landing before turn four genuinely delays a commander whose mean cast turn is 4.283; and a resolved Cursed Totem or a Pithing Needle switches off every creature outlet at once. Your outlets underneath those are the ones that are not creatures, and the Blowfly loop is triggered rather than activated, so it runs under both.",
-          "outs": ["Ashnod's Altar", "Phyrexian Altar", "Blasting Station", "Phyrexian Tower", "Blowfly Infestation", "Nest of Scarabs"]
-        },
-        {
-          "archetype": "Aggro",
-          "meter_label": "Threat",
-          "rate": 0.3,
-          "read": "You are the aggressor's target and the pod's stabiliser at once, and this deck is unusually good at holding both jobs. Grave Pact is the card that does it — every creature you sacrifice edicts every other player, so an aggressive board is dismantled by an engine you were running anyway. Answer boards, not threats: four sweepers plus nine debuff effects is the breadth you lack everywhere else, while three dedicated instants means the bar for spot removal is 'ends the game or ends my deck's function'. And stop spending life one turn early — the commander's cost, Warren Soultrader's cost, Bitterblossom and Black Market Connections all draw from the pool the aggro deck is attacking.",
-          "outs": ["Grave Pact", "Toxic Deluge", "Black Sun's Zenith", "Soul Snuffers", "Carnifex Demon", "Gray Merchant of Asphodel", "Fatal Push"]
-        },
-        {
-          "archetype": "Combo",
-          "meter_label": "Threat",
-          "rate": 0.9,
-          "read": "The unfavourable one, and against that seat you are the beatdown while remaining the control against everyone else. Your interaction on a combo turn is three instants, two of which only answer creatures, and there are no counterspells to go and find. That is what the engine costs and it is a fair price you pay with speed. So hold nothing: against combo, the last profitable moment for an answer is now. Then be the faster clock with a floor — the four enabler classes sit at 73 to 74% unassisted and around 90% tutor-assisted by turn ten, and one Mirkwood Bats assembly removes 52 of the pod's 160 life. Pace for the engine, not for the tutored kill.",
-          "outs": ["Deadly Rollick", "Fatal Push", "Snuff Out", "Bojuka Bog"]
-        },
-        {
-          "archetype": "Graveyard hate",
-          "meter_label": "Threat",
-          "rate": 0.55,
-          "read": "This one earns its own box because it costs you quality rather than function. Gravecrawler, Reassembling Skeleton, Persist, Victimize, Animate Dead and Phyrexian Reclamation all read from the graveyard, so a Rest in Peace effect converts renewable fodder back into one-shot fodder — precisely the axis your consistency is bought on. Know which half goes quiet, because it is not the half people assume: dies means is put into a graveyard from the battlefield, so under a graveyard replacement your death-metered payoffs stop, and Grave Pact stops with them. Your creation-side payoffs keep paying. That is a read from oracle text rather than a checked line, and it tells you which drain to fetch.",
-          "outs": ["Mirkwood Bats", "Ayara, First of Locthwain", "Nest of Scarabs", "Bitterblossom", "Black Market Connections", "Bojuka Bog"]
-        }
-      ],
-      "captions": {
-        "Plumb the Forbidden": "**THE WRATH, CONVERTED:** sacrifice any number of creatures in response and the spell copies itself once each — their sweeper announcement becomes your draw step.",
-        "Bojuka Bog": "**A FREE ANSWER IN A LAND SLOT:** it enters tapped, so bank it for the turn their graveyard matters instead of spending it on curve."
-      },
-      "pilot_tips": [
-        {"card": "Toxic Deluge", "text": "Do not wait for Nest of Scarabs to pay you off this one — minus X/minus X is not counters, so the hub stays silent."}
-      ],
-      "pull_quote": "Held answers rot. Against combo, or against lethal already on the board, the last profitable moment is now."
-    },
-    {
-      "id": "fetch-quests",
-      "kicker": "ONE WISH EACH",
-      "headline": "DON'T TUTOR FOR THE ENGINE",
-      "dek": "Five wishes, and the first thing to understand is what they are not for. This engine finds itself in roughly three games out of four. So what do you actually go and get — and why does the answer change with which loop is already on the battlefield?",
-      "components": ["callout-step", "pilot-tip", "pull-quote"],
-      "callouts": [
-        {"n": 1, "title": "NEVER WISH FOR A CLASS YOU ALREADY GET", "text": "Renewable fodder, a free outlet and an ignition source each sit at 73 to 74% unassisted by turn ten. A tutor lifts them to roughly 90% — a seventeen-point gain on a class the deck was handing you anyway."},
-        {"n": 2, "title": "FETCH THE RIGHT DRAIN", "text": "On the verified board, Bastion of Remembrance removes 7 life from each opponent, 28 across a four-opponent pod. Zulaport Cutthroat does the same 7 and 28 by a different route. Blood Artist in the same slot removes eight life in total. Target player against each opponent is a factor of 3.5."},
-        {"n": 3, "title": "FETCH FOR THE ENGINE YOU ARE ON", "text": "Mirkwood Bats is thirteen triggers on the Yawgmoth line and two on the Blowfly line, where it also halts the loop outright. Which engine is on the battlefield decides whether it is the best drain in your library or the worst."},
-        {"n": 4, "title": "COUNT BODIES BEFORE YOU WISH", "text": "The Blowfly loop needs the drain plus two other creatures already on the battlefield when it starts. Short one body, your wish is a three-mana enchantment that does nothing."}
-      ],
-      "captions": {
-        "Beseech the Mirror": "**THE WISH THAT CASTS:** bargained, it plays what it finds for free at mana value 4 or less — which reaches Nest of Scarabs, Mirkwood Bats and Grave Pact, and does not reach Exquisite Blood at five.",
-        "Diabolic Intent": "**THE COST THAT ISN'T:** the creature you sacrifice is a death trigger here, so the best tutoring rate in the deck is the one everybody else files as a drawback.",
-        "Demonic Tutor": "**NO CONDITIONS, NO CEILING:** the only wish that does not care what the card costs — and one of the four Game Changers driving the bracket floor."
-      },
-      "pilot_tips": [
-        {"card": "Insatiable Avarice", "text": "Cast both Spree modes in one go and point the draw at yourself — you book the card and draw it on the same turn."}
-      ],
-      "pull_quote": "You are not tutoring to make this deck function. You are tutoring to convert."
-    },
-    {
-      "id": "command-zone",
-      "kicker": "THE ZONE",
-      "headline": "THE CARD YOU NEVER HAVE TO DRAW",
-      "dek": "One card in this deck is exempt from variance and the rules say so in a single sentence. What is that guarantee worth to a mono-black engine — and what does the second trip actually cost?",
-      "components": ["fast-facts", "tax-ladder", "pilot-tip"],
-      "body": "Begin with the clause that makes this format unlike every other one. CR 903.8: \"A player may cast a commander they own from the command zone.\" Yawgmoth is therefore not a card you draw. He is a card you have. The simulation puts him on the battlefield in 9,847 of 10,000 games, mean turn 4.283, and 7,249 of those cast him on turn four exactly.\n\nThe exhibit beside it is the price of the guarantee, and it compounds. The same rule adds \"an additional {2} for each previous time the player casting it has cast it from the command zone that game.\" Four mana, then six, then eight, then ten. Set that schedule against mean available mana of 3.910 on turn four and 7.103 on turn ten. The plain-English holding is short. The first recast costs you a turn. The second costs you the whole turn. The third is a turn nobody is going to give you.\n\nColour identity is CR 903.4, and it is the constraint that built the other ninety-eight cards. One black symbol in the cost, one colour in the deck — and the audit comes back clean: black is 100% of the pip load and 100% of the sources, on curve at 96.0% once ramp is counted. What it costs is breadth. This library holds no counterspell, no artifact removal and no enchantment removal, and none of the five tutors can find one, because there is none to find. That is the format's bargain stated as a rule rather than as a complaint.\n\nCommander damage next, because the record disposes of it quickly. CR 903.10a removes a player who has been dealt 21 or more combat damage by the same commander. Yawgmoth is a 2/4 who would very much rather be sacrificing than attacking, and twenty-one damage is eleven connections. Commander damage is a coincidence in this deck, not a clock.\n\nNow the clause to memorise, because it cuts in both directions. CR 702.16b: \"A permanent or player with protection can't be targeted by spells with the stated quality and can't be targeted by abilities from a source with the stated quality.\" Yawgmoth has protection from Humans and is himself a Human Cleric, so his own ability can never target him. Read that twice — it is the exact clause that bounds every engine in The Kill, because the 2/4 who could comfortably absorb four counters is not allowed to take one. In the other direction it is free armour in a format thick with Human commanders, and CR 702.16f keeps Human creatures from blocking him besides.\n\nOne last fact about the zone before the corner office speaks. Three opponents can see it. They cannot see your hand. What they price when this commander resolves is a reputation rather than a board — and the bracket sheet agrees with them, landing at floor 4 on four Game Changers and eleven two-card infinites.\n\nCOACH'S READ. One decision, and you make it early: buy the insurance before the removal, never after. Lightning Greaves equips at sorcery speed only, so the turn to arm him is the turn before you need him. Malakir Rebirth and Supernatural Stamina both return him to the battlefield rather than to the zone, which means the tax never advances at all — they are the cheapest recasts in the deck precisely because they are not recasts. And price the second trip before you make the first: six mana spent getting him back is six mana not spent on the hub. Then remember what he is for. Use him as a draw engine for three or four turns before you ever use him as a kill.",
-      "captions": {
-        "Lightning Greaves": "**INSURANCE, NOT ARMOUR:** it equips at sorcery speed only, so the turn to arm him is the turn before you need it — and the shroud cuts you off from your own tricks too."
-      },
-      "pilot_tips": [
-        {"card": "Malakir Rebirth // Malakir Mire", "text": "Return him to the battlefield rather than to the command zone — a rescue is not a recast, so the tax never advances."}
-      ]
-    },
-    {
-      "id": "the-99",
-      "kicker": "ROLL CALL",
-      "headline": "WHAT EVERY SEAT IS FOR",
-      "dek": "Ten groups, and the order is the order they matter in. Read the first three and you know how this deck works; read the rest and you know why it keeps working after somebody answers one of them.",
-      "components": ["callout-step", "pilot-tip", "pull-quote"],
-      "roster": [
-        {
-          "role": "The hub — everything routes here",
-          "cards": ["Nest of Scarabs", "Blowfly Infestation", "Mikaeus, the Unhallowed", "Necroskitter"]
-        },
-        {
-          "role": "The payoffs — creation side and death side",
-          "cards": ["Mirkwood Bats", "Ayara, First of Locthwain", "Bastion of Remembrance", "Zulaport Cutthroat", "South Wind Avatar", "Exquisite Blood", "Blood Artist", "Gray Merchant of Asphodel", "Grave Pact"]
-        },
-        {
-          "role": "Free sacrifice outlets",
-          "cards": ["Carrion Feeder", "Viscera Seer", "Woe Strider", "Yahenni, Undying Partisan", "Warren Soultrader", "Ashnod's Altar", "Phyrexian Altar", "Blasting Station"]
-        },
-        {
-          "role": "Renewable fodder — the measured bottleneck",
-          "cards": ["Gravecrawler", "Reassembling Skeleton", "Bitterblossom", "Sedgemoor Witch", "Butcher Ghoul", "Geralf's Messenger", "Stitcher's Supplier", "Grave Titan", "Black Market Connections"]
-        },
-        {
-          "role": "Ignition — the first counter",
-          "cards": ["Fume Spitter", "Soul Snuffers", "Carnifex Demon", "Skinrender", "Massacre Girl, Known Killer", "Sinister Gnarlbark", "Black Sun's Zenith"]
-        },
-        {
-          "role": "The five wishes",
-          "cards": ["Demonic Tutor", "Vampiric Tutor", "Beseech the Mirror", "Diabolic Intent", "Insatiable Avarice"]
-        },
-        {
-          "role": "Interaction — all of it aimed at creatures",
-          "cards": ["Deadly Rollick", "Snuff Out", "Fatal Push", "Toxic Deluge"]
-        },
-        {
-          "role": "The rebuild package",
-          "cards": ["Victimize", "Persist", "Animate Dead", "Phyrexian Reclamation", "Nim Deathmantle", "Supernatural Stamina", "Malakir Rebirth // Malakir Mire", "Plumb the Forbidden"]
-        },
-        {
-          "role": "Draw, engine mana and insurance",
-          "cards": ["Necropotence", "Skullclamp", "Deadly Dispute", "Pitiless Plunderer", "Dark Ritual", "Sol Ring", "Arcane Signet", "Lightning Greaves"]
-        },
-        {
-          "role": "The mana — 36 copies, 35 of them black",
-          "cards": ["Swamp", "Ancient Tomb", "Phyrexian Tower", "Cabal Pit", "Ifnir Deadlands", "Takenuma, Abandoned Mire", "Castle Locthwain", "City of Brass", "Command Tower", "Exotic Orchard", "Gemstone Mine", "Survivors' Encampment", "Path of Ancestry", "Archway Commons", "Bojuka Bog", "Agadeem's Awakening // Agadeem, the Undercrypt"]
-        }
-      ],
-      "callouts": [
-        {"n": 1, "title": "THE HUB HAS NO SPARE", "text": "Nest of Scarabs is a singleton enchantment, and nothing in the 99 rebuys an enchantment — Persist, Victimize, Animate Dead, Phyrexian Reclamation and Agadeem's Awakening all read creature card. That is the one removal spell that costs you a tutor."},
-        {"n": 2, "title": "CREATION SIDE VERSUS DEATH SIDE", "text": "Bastion of Remembrance, Zulaport Cutthroat, Blood Artist and South Wind Avatar all meter deaths. Mirkwood Bats and Ayara get paid when a body arrives. On the same board that is thirteen triggers against seven, and it is the widest measured gap the deck owns."},
-        {"n": 3, "title": "WHERE THE GRAPH IS BLIND", "text": "Seven cards in this 99 have no entry in the retrieval graph at all, and one of them is Nest of Scarabs. Thirty-nine synergy edges fall inside the deck. A shortlist selected over every tagged card in the format cannot tell you how well a card fits this list, and it does not pretend to."}
-      ],
-      "captions": {
-        "Ayara, First of Locthwain": "**PAID ON ARRIVAL:** Nest of Scarabs makes black Insects and Ayara reads 'another black creature you control enters', so she collects where the death-metered drains starve. Her tap ability is a second free outlet that draws.",
-        "Warren Soultrader": "**THREE JOBS, ONE SLOT:** a free repeatable outlet, a Treasure per body, and a Zombie that switches Gravecrawler on. Its cost is 1 life — the same currency the commander spends.",
-        "Massacre Girl, Known Killer": "**WITHER AS A BUSINESS MODEL:** your combat damage arrives as -1/-1 counters, and every one of them is a Nest trigger. The draw clause only reads opponents' creatures, so point it outward."
-      },
-      "pilot_tips": [
-        {"card": "Black Sun's Zenith", "text": "Size X for the board you want gone and treat the Insects as upside — the token count from one multi-creature X has not been settled."}
-      ],
-      "pull_quote": "Forty-two contained lines over about twenty pieces. Answer one kill and you have rarely answered only one."
-    },
-    {
-      "id": "upgrade-watch",
-      "kicker": "THE ONLY TEN",
-      "headline": "BUY THE MANA, THEN BUY THE BRANCH",
-      "dek": "Ten cards, ranked, and not one of them names Mikaeus. Two are free stock sitting in another box; the rest are the cheapest way to stop seven of your eleven infinites resting on a single body.",
-      "components": ["callout-step", "pull-quote"],
-      "callouts": [
-        {"n": 1, "title": "WHY THE LIST ROUTES AROUND ONE CARD", "text": "Mikaeus carries seven of eleven two-card infinites, so the answer is not to buy more cards that need him. Plague Belcher, Walking Ballista and Triskelion all top the combo-opener list and none of them is here. Pawn of Ulamog completes seven lines that never name him; Drivnod completes five."},
-        {"n": 2, "title": "AN INDEX CANNOT SEE A CREATURE TYPE", "text": "The first fodder recommendation off the machine was Ophiomancer, whose token only arrives if you control no Snakes — and South Wind Avatar is the only Snake in the 100. It would go blank on exactly the board you most want. Bontu's Monument took the slot instead, and nothing in the 99 can switch it off."},
-        {"n": 3, "title": "THE OBSOLESCENCE INDEX IS WRONG ABOUT TWO CARDS", "text": "It lists a strictly-better replacement for both Ayara and Mirkwood Bats. Reading the cards refutes it here: that replacement's drain is single-target, and a single-target drain was measured at a 3.5x penalty against the each-opponent class. The index is format-agnostic and does not know which side of the trigger this deck is paid on."},
-        {"n": 4, "title": "NOT ONE LINE ON THIS LIST IS VERIFIED", "text": "Every combo a pick would open is recorded, contained and unresolved. They stay candidates until a stack passes — which is exactly the standing this magazine gives them."}
-      ],
-      "captions": {
-        "Cabal Coffers": "**FIRST BUY:** 22 Swamps means Coffers taps for more black than the rest of the mana base by turn five, and it costs a land slot rather than a spell slot.",
-        "Urborg, Tomb of Yawgmoth": "**THE MULTIPLIER:** on its own in mono-black it is a Swamp with legend rules attached. Beside Coffers or Crypt Ghast it turns every land in the deck into one."
-      },
-      "pull_quote": "What raises this deck's power is verification, not addition. A twelfth two-card infinite moves nothing — the floor is already there."
-    },
-    {
-      "id": "sources-say",
-      "kicker": "PIPS VERSUS SOURCES",
-      "headline": "ONE COLOUR, ONE QUESTION",
-      "dek": "Mono-black makes half of this audit trivial — pip share and source share cannot disagree when there is only one colour to be short of. So the only question left is how many, and the yardstick answers it with a caveat worth reading twice.",
-      "components": ["fast-facts", "power-meter", "callout-step", "pull-quote"],
-      "callouts": [
-        {"n": 1, "title": "THE HALF-POINT SHORTFALL", "text": "The audit wants 36 black sources for a 90% on-curve rate. Thirty-five of the deck's 36 land copies make black — Ancient Tomb is the one that does not — so lands alone land at 89.5%. That gap is arithmetic, not a build error, and in a 36-land deck the target is a yardstick rather than a possibility."},
-        {"n": 2, "title": "TEN NONLAND PRODUCERS CLOSE IT", "text": "Four rocks, four rituals and two dorks lift the count to 43 sources and on-curve black to 96.0%. Read what each class buys: the rituals are early-commander mana, and the dorks are engine mana, which is a different resource — they turn a creature dying into castable black."},
-        {"n": 3, "title": "THREE PRODUCERS THAT SCORE ZERO", "text": "Sol Ring, Ancient Tomb and Ashnod's Altar make nothing coloured under the unconditional-mana rule. They buy speed, never fixing. Restricted mana anywhere in the 99: none."},
-        {"n": 4, "title": "FOUR ENTER TAPPED, AND IT MATTERS HERE", "text": "Archway Commons, Bojuka Bog, Castle Locthwain and Path of Ancestry are the whole tapped list. That is about as low a tap rate as a mana base gets, and it counts double for a deck whose commander activates at instant speed for no mana. An untapped land is an activation you can hold up."}
-      ],
-      "captions": {
-        "Swamp": "**TWENTY-TWO OF THEM:** the untapped backbone, and the reason Snuff Out costs four life instead of four mana. In mono-black the basic is the best land in the deck.",
-        "Phyrexian Tower": "**A LAND THAT SACRIFICES:** a free outlet that makes {B}{B} while it does it. Where a spare body is a resource, this is one of the best untapped lands you can draw."
-      },
-      "pull_quote": "Seventy-five black pips across 54 cards, up to triple-black in one cost — and the first pip is demanded on turn one."
-    },
-    {
-      "id": "by-the-numbers",
-      "kicker": "TEN THOUSAND HANDS",
-      "headline": "THE ENGINE SHOWS UP. THE KILL GETS FETCHED.",
-      "dek": "Ten thousand simulated openings, one fixed seed, no interaction and no opponents. What they measure is which half of this deck you can count on — and the gap between the two columns is the deck's whole personality.",
-      "components": ["power-meter", "fast-facts", "callout-step", "pull-quote"],
-      "callouts": [
-        {"n": 1, "title": "READ EVERY FIGURE AS A PAIR", "text": "The first number excludes tutors, rituals and cost reducers entirely; the second lets one drawn, affordable tutor fill one missing half. Renewable fodder 73.6% / 90.3%. A free outlet 73.8% / 90.0%. An ignition source 73.0% / 90.2%. A drain 66.9% / 87.7%. Engine mana 60.6% / 85.0%."},
-        {"n": 2, "title": "FOUR KILLS, NOT ONE", "text": "Tutor-assisted by turn ten: Blowfly Infestation plus Nest of Scarabs 32.1%, the Mikaeus package 26.2%, Exquisite Blood plus South Wind Avatar 32.5%, Warren Soultrader plus Gravecrawler plus a drain 20.0%. Unassisted they are 2.6%, 1.7%, 2.9% and 1.1% — which is what a tutor is really buying."},
-        {"n": 3, "title": "THE NUMBER WE REFUSE TO PRINT", "text": "Those four lines are independent and overlapping, so the honest quantity is their union — and nothing computes one, because the target schema is an AND of ORs and cannot express a union. It is unmeasured and strictly greater than 32.5%. The sheet's one composite row spans two of the four; it is not this deck's kill rate and we will not quote it as one."},
-        {"n": 4, "title": "THE COMMANDER'S HISTOGRAM", "text": "Turn four in 7,249 games out of 10,000, mean 4.283, median 4, on the battlefield by turn six in 91.7%. Turn two happens 707 times, and every one of those games opened with fast mana."},
-        {"n": 5, "title": "WHAT THE SIM IS NOT", "text": "It models resource development, not games — no interaction, no removal, no politics, and a target counts as assembled when the cards are drawn. Read it as a floor on what turns up, never as a prediction of what happens."}
-      ],
-      "pull_quote": "Three quarters unassisted for the engine. A fifth to a third, with a wish spent, for any one kill."
-    },
-    {
-      "id": "the-kill",
-      "kicker": "ON THE RECORD",
-      "headline": "EIGHT LINES, ARGUED AND AFFIRMED",
-      "dek": "Eight scenarios went to the checker and eight came back signed. Three of them say a famous line does not do what the database promised — and those three are the most useful pages in this issue.",
-      "components": ["callout-step", "pilot-tip", "pull-quote"],
-      "callouts": [
-        {"n": 1, "title": "THE LOOP THAT RUNS FOREVER, AND PAYS THREE", "text": "Blowfly Infestation plus Nest of Scarabs is genuinely unbounded — the counter is still on the Insect when it dies, so the intervening 'if' is satisfied every time. On a thin board it is also nearly drainless: the drain is the only creature left, Blowfly is mandatory and needs a target, so it eats your payoff on iteration one for a total of 3 per opponent. Give it the drain plus two other bodies and 38 completed iterations take four opponents from 40 to 0. Stack 001."},
-        {"n": 2, "title": "WHAT BOUNDS THE ENGINE IS BODIES", "text": "Protection from Humans makes a 2/4 Human Cleric untargetable by his own ability, so every counter has to land somewhere else — and once the opponent's creature is gone, that is your own tokens. Five completed activations, seven of your creatures dead, seven Bastion of Remembrance triggers, 28 life off a four-opponent pod, and your own total goes up. Spend the proliferate and it is eight and 32, a property of the line rather than the board. The two figures are never blended. Stack 002."},
-        {"n": 3, "title": "THE DRAIN THAT MUST EVENTUALLY DIE", "text": "Zulaport Cutthroat is a creature, so it is both a legal target and a legal sacrifice — and you are never forced to spend it, because the sacrifice is chosen when the cost is paid and 'up to one target creature' permits zero targets. Keep it through four activations, then feed it deliberately and its own leaves-the-battlefield trigger banks the seventh drain. Seven and 28 again, by a completely different route — a coincidence of arithmetic, not corroboration. Stack 003."},
-        {"n": 4, "title": "ONE WORD, A FACTOR OF 3.5", "text": "Blood Artist reads 'target player loses 1 life', and at a four-player table that is one seat per trigger where the others charge all of them. Eight creature deaths, eight triggers, eight life, and an exhaustive search of the line space finds nothing better. Refuted as a kill, and not narrowly: 8 against the 28 the same board produces with an each-opponent drain. Play it as reach and insurance, never as the finish. Stack 004."},
-        {"n": 5, "title": "GAINING NOTHING IS NOT GAINING", "text": "The sharpest edge in the deck. An Insect you sacrifice dies at toughness 1, so South Wind Avatar gains 1 and drains the table. An Insect killed by its own -1/-1 counter dies at toughness 0 — you gain 0, and gaining 0 is not a life gain event, so nothing drains. Eight death triggers, seven nonzero gains, seven drains, 28 opposing life. The Avatar's 4 toughness is worth exactly plus four activations. The database tags this pairing 'Near-infinite'; on this board that tag is wrong. Stack 005."},
-        {"n": 6, "title": "ENTERING COUNTS AS PUTTING", "text": "A creature that enters the battlefield already wearing a -1/-1 counter does trigger Nest of Scarabs, and the rule that decides it is the one about counters given as an object enters — not the rule the other lines lean on. So Persist is a Nest trigger as well as a reanimation, and Fume Spitter comes back as a 0/0 and dies immediately without the trigger caring. Stack 006."},
-        {"n": 7, "title": "THE BAT THAT BROKE THE LOOP", "text": "Mirkwood Bats on the Blowfly line triggers exactly twice, both times on the creation half, for 2 life from each opponent — worse than a death-metering drain by one. Nothing on that line is sacrificed; the Insects go to the graveyard as state-based actions for having 0 toughness, which is the game moving a permanent rather than you sacrificing one. Then the finding that should reorganise how you sequence: Bats is a 2/3, so when Blowfly is forced to target it, it survives at 1/2. Nothing dies. An unbounded engine simply switches off. Stack 007."},
-        {"n": 8, "title": "THE BAT THAT PAID TWICE", "text": "Activating the commander puts the ability on the stack first; the cost is paid last. So sacrificing an Insect triggers Bats while the ability is already the topmost object, that trigger goes on above it and resolves first, and the Nest token does not arrive until two resolutions later. One activation, two drains. Thirteen triggers, 13 per opponent, 52 life off a four-player table against the like-for-like 7 and 28. Thirteen is a ceiling proved five separate ways, and the last check solved the line varying only the Bat's toughness: 8, 10, 13 and 15 triggers at zero, one, two and three counter slots. Stack 008."}
-      ],
-      "captions": {
-        "Mirkwood Bats": "**SAME CARD, OPPOSITE VERDICTS:** thirteen triggers on the commander's line, two on the Blowfly line — and on the second it switches the engine off, because its 2/3 body survives the forced counter.",
-        "Blood Artist": "**REFUTED, NOT DEMOTED:** eight life in total against the 28 an each-opponent drain removes from the identical board. One word of templating, a factor of 3.5.",
-        "South Wind Avatar": "**FOUR TOUGHNESS, FOUR ACTIVATIONS:** the sink is worth exactly plus four — and a token killed by its own counter dies at toughness 0, gains you nothing, and drains nobody."
-      },
-      "pilot_tips": [
-        {"card": "Zulaport Cutthroat", "text": "Feed it last, on purpose — 'up to one target creature' lets you choose zero targets, so nothing can force your drain into the engine early."}
-      ],
-      "pull_quote": "Surviving the forced counter is fatal to a loop that needs something to die, and free money on a line that sacrifices deliberately."
-    },
-    {
-      "id": "judges-desk",
-      "kicker": "THE CASE FILES",
-      "headline": "READ IT TWICE, THEN READ THE QUOTES",
-      "dek": "Eight files, every citation verbatim, the checker's verdict and iteration count printed as case status. This is the section that makes the rest of the issue worth believing.",
-      "components": ["dossier-file"],
-      "pull_quote": "Where the record is silent, the record is silent. Three of these eight files say a famous line does not work."
-    },
-    {
-      "id": "featured-artist",
-      "kicker": "EIGHTY-FIVE CARDS",
-      "headline": "SEVENTY-THREE HANDS, NO HEADLINER",
-      "dek": "There is no standout in this deck and we are not going to invent one. The deepest credit here is two cards and twelve artists are tied at exactly that — so the feature goes to the hand that painted the face of the issue.",
-      "components": ["artist-gallery", "fast-facts"],
-      "featured": {
-        "artist": "Mark Winters",
-        "note": "Start with the number that decides this section. Eighty-five cards counted, seventy-three different signatures, and the deepest single credit is two cards — twelve artists are tied there. Nobody dominates this deck, so nobody is going to be told they did.\n\nMark Winters' Yawgmoth is the Dominaria Remastered printing: the physician mid-experiment, lit from below, more surgeon than devil. It is the right read of a card whose rules text is a laboratory. Pay a life, spend a body, learn something.\n\nOne figure needs saying out loud because it is the one that lies. Jorge Jacinto's Swamp appears twenty-two times in this deck and counts once. Authorship is per card, never per copy — count it the other way and a basic land wins this section every single issue.\n\nThe printings cluster where recent Commander product does: fifteen cards from Lorwyn Eclipsed Commander, eight from Secrets of Strixhaven Commander, seven from Tarkir: Dragonstorm Commander, six from Commander Masters. Nobody curated that, and the analysis is specific about it — there is no contiguous collector-number run anywhere in the deck. This is not a drop bought whole. It is simply where the cardboard comes from, and it is most of why no single hand gets ahead.\n\nAnd nothing here is foil and nothing is borderless. Eighty-two black borders and three white ones left over from Fifth and Sixth Edition. This is a working deck, sleeved at working prices, and it looks like one on purpose."
-      },
-      "also_worth_noting": [
-        {"artist": "Anson Maddocks", "note": "Animate Dead and Ashnod's Altar — two of the three white-bordered cards in the box, and both still do exactly what they did when they were printed."},
-        {"artist": "Billy Christian", "note": "Grave Pact and Massacre Girl, Known Killer: the edict and the wither engine, one hand. Both of them make somebody else's board smaller."},
-        {"artist": "Chris Rahn", "note": "Crypt Ghast and Mikaeus, the Unhallowed — the same appetite twice, once starving and once very well fed."},
-        {"artist": "Christopher Moeller", "note": "Butcher Ghoul and Supernatural Stamina: a body that refuses to stay dead, and the trick that makes another one refuse."},
-        {"artist": "Cynthia Sheppard", "note": "Beseech the Mirror and Exquisite Blood — the wish, and the thing worth wishing for."},
-        {"artist": "Daniel Ljunggren", "note": "Black Sun's Zenith and Skullclamp: a sweeper that pays you and an equipment that kills your own tokens for cards. Two advantages wearing a disadvantage's clothes."}
-      ]
-    },
-    {
-      "id": "back-page",
-      "note": "Renderer: NEXT ISSUE reads 'TO BE ANNOUNCED' from issue.json — print it as authored rather than inventing a deck. Colophon carries the rules version, the decklist sha and the generation provenance."
-    }
+ "slug": "yawgmoth-swarm",
+ "angle": "This is a combo deck wearing a value engine's clothes: four checker-passed kills that take all four opponents from 40 to 0 at the same state-based-action check, three of them unbounded and two naming neither the commander nor Nest of Scarabs — and every one of them is a small pile of permanents sitting in the open, in a deck holding exactly one card that destroys a noncreature permanent an opponent controls.",
+ "cover": {
+  "kicker": "FOUR SIGNED KILLS",
+  "dominant_coverline": "ALL FOUR SEATS. ONE CHECK.",
+  "teases": [
+   "VERIFIED LINE 011: unbounded, free, no life paid — and you finish at 80",
+   "Three of the four kills never name your commander. Stop protecting him.",
+   "The mandatory loop that looks like a draw and isn't — CR 732.1b, and drain #40",
+   "One card in the 99 destroys a noncreature permanent. Your kill is four permanents."
   ],
-  "rhythm_notes": "The arc peaks twice, as designed. The Game Plan opens high and narrative; Keep or Ship steps down into practice; What's Your Play? takes it back to high participation — and this issue is the first with a real decision spread, so Act I actually delivers the participation beat instead of a [TODO]. Act II runs medium the whole way (reflection, reference, instruction) on purpose: it is the long browsing stretch between the two peaks. Act III steps down further — instruction, then browsing in The 99, then imagination in The Short List — which is the lowest point of the book and the right place for it, immediately before the density arrives. Act IV is the only dense adjacency in the issue: Sources Say (analysis) into By the Numbers (analysis), and the renderer's declared full-bleed art break sits between them, which is why the pair is legal. The Kill is the late peak and reads as narrative even though it carries the most technical content — eight callout-steps, one per verified line, is the densest furniture in the issue and it is placed where the reader has the most momentum. Act V descends cleanly: Judge's Desk is opt-in deep reference, Featured Artist is the palate cleanser, and the Back Page closes. Two deliberate breathers beyond the declared one: The Short List before Sources Say, and Featured Artist between the case files and the door out.",
-  "gaps": [
-    "BLOCKING: issue.json stamps decklist_sha256 3f1962cc… while cards.json, goldfish_metrics.json and mana_analysis.json all carry 41b28f27…. validate-issue will fail on the identity check. issue.json is human-authored and I do not write it — the orchestrator must restamp the hash deliberately before the manual builds.",
-    "L10 CONFLICT, DECIDED AND FLAGGED: the brief supplies before/after deltas (combos 20 to 42, infinites 8 to 11, drains 6 to 9, fast mana 61.8% to 43.5%, fodder 78.6% to 73.6%) and a list of cards that left the deck. None of that appears anywhere in this plan, because L10 forbids describing a list the reader never saw and the validator lints for it. The current-state halves of those facts are printed instead — 42 contained lines, 11 two-card infinites, nine drains, fast mana 43.5% / 78.2%, fodder 73.6% / 90.3% — and the ten cards the pilot added are carried as ordinary members of the 99 (Gravecrawler and Reassembling Skeleton lead the fodder group, Grave Pact and Ayara are load-bearing in Table Manners and The 99, Warren Soultrader takes a caption, Exquisite Blood and Gray Merchant sit in the payoffs group). If the orchestrator wants the swap story in print, that is a constitutional amendment, not an editing note.",
-    "TIER DISCIPLINE, ENFORCED: only ONE of the four named kills is checker-verified (Blowfly Infestation + Nest of Scarabs, stack 001, and even that is verified as unbounded-and-conditional rather than as a clean kill). The Mikaeus package, Exquisite Blood + South Wind Avatar and Warren Soultrader + Gravecrawler + a drain are ◆ measured assemblies only, and every mention of them in this plan is phrased as an assembly rate or a candidate. The Kill and Judge's Desk carry the eight verified lines and nothing else.",
-    "THE BIGGEST OPEN QUESTION IS STILL OPEN: seven of the eleven two-card infinites forcing the bracket-4 floor name Mikaeus, none is verified, and on plain oracle reading undying returns a body with a +1/+1 counter that a second sacrifice would find — so they are plausibly three-card lines routing through the commander's -1/-1. Half the bracket floor rests on unresolved lines. That is printed as a finding in Table Manners and The 99; it wants a stack scenario.",
-    "STACK SCENARIOS WORTH SPAWNING, RANKED: (1) the Mikaeus family, because it decides the bracket conversation; (2) Grave Pact under the verified engine — every engine stack measured the drain and none measured the board, and seven activations is either seven edicts per seat or fourteen; (3) Exquisite Blood + South Wind Avatar, the only bracket-3 line in the 99 and the one the goldfish already credits at 32.5%; (4) Warren Soultrader + Gravecrawler + a drain, a 20.0% kill nobody has resolved in any of its four variants; (5) Ayara's exact per-activation rate against the verified 13 and 7, on stack 003's board so the figure is comparable; (6) Black Sun's Zenith + Nest of Scarabs — how many Insects does one multi-creature X actually make?",
-    "STRATEGY DB HOLES THE ISSUE HAD TO WRITE AROUND: there is no aristocrats / outlet-fodder-payoff section anywhere in the doc, nothing on what BOUNDS an iterative engine (every stack here ended by body exhaustion), no theory of trigger SURFACE (creation-side versus death-side, which is this issue's central finding), no vocabulary for a recursive copy being worth more than a one-shot one, nothing on mana-free activated abilities as a class, and nothing on how to read several partially-overlapping win conditions as one probability. The last one is why By the Numbers has to decline to print a kill rate rather than compute one.",
-    "THIN, BUT NOT EMPTY: The Short List's ten are all unverified candidates by construction, and two of them (Urborg, Culling the Weak) are owned rather than bought — the section says so. Featured Artist has no standout at all (lead credit is two cards, twelve artists tied), so it runs as a breadth feature keyed to the commander's painter; that is the honest shape, not a gap to fill.",
-    "PUN BUDGET: four, all in furniture — 'THE BAT THAT BROKE THE LOOP' / 'THE BAT THAT PAID TWICE' as a pair, 'THE COST THAT ISN'T', and 'SEVENTY-THREE HANDS, NO HEADLINER'. No pun sits in a rules explanation or a data caption."
+  "violators": [
+   {
+    "text": "10 VERIFIED LINES!",
+    "tone": "extreme"
+   },
+   {
+    "text": "0 MANA. 0 LIFE.",
+    "tone": "extreme"
+   }
   ]
+ },
+ "departments": [
+  {
+   "id": "cover"
+  },
+  {
+   "id": "contents"
+  },
+  {
+   "id": "first-turns",
+   "kicker": "THE PLAN",
+   "headline": "YOUR COMMANDER IS NOT THE PLAN",
+   "dek": "Three of the four kills a checker has signed never name Yawgmoth, and one of them costs you nothing at all. So what is he actually for on turns one through five?",
+   "components": [
+    "callout-step",
+    "pilot-tip",
+    "pull-quote"
+   ],
+   "callouts": [
+    {
+     "n": 1,
+     "title": "BUY CHEAP, BUY EARLY",
+     "text": "Your three cheapest classes arrive first and they arrive on their own: a free repeatable sacrifice outlet at a mean draw turn of 2.718, an ignition source at 2.802, renewable fodder at 2.859. Carrion Feeder, Viscera Seer, Fume Spitter, Bitterblossom and Reassembling Skeleton all cost one or two mana. Put them down and stop admiring them."
+    },
+    {
+     "n": 2,
+     "title": "LAND HIM ON CURVE, THEN DRAW",
+     "text": "The commander hits the battlefield on turn four in 7,220 of 10,000 goldfished games, mean 4.294, median 4, and 91.1% by turn six. From that turn on every spare body is a card, and the ability costs no mana at all — so you can hold it up on somebody else's turn for free."
+    },
+    {
+     "n": 3,
+     "title": "HOLD THE PAYOFF",
+     "text": "You draw some drain by turn ten in 82.4% of games unassisted. You draw Bastion of Remembrance specifically in 16.7%. Those are different facts. The class is deep, the card that loops in three of the four verified kills is one card, and a drain in hand is a surprise while a drain on the battlefield is a target."
+    },
+    {
+     "n": 4,
+     "title": "NAME THE SHAPE BEFORE YOU GO",
+     "text": "There are exactly four shapes. Warren Soultrader plus Gravecrawler plus an each-opponent drain. Gravecrawler plus Phyrexian Altar plus a second Zombie plus a drain. Exquisite Blood plus a body that reads 'Whenever you gain life, each opponent loses 1 life.' Mikaeus plus your commander plus a non-Human body plus a drain. Extra creatures do not move that answer."
+    }
+   ],
+   "captions": {
+    "Yawgmoth, Thran Physician": "**THE DRAW ENGINE:** 'Pay 1 life, Sacrifice another creature' has no mana anywhere in the cost, so no tax and no lock reaches it. Use him to draw for three or four turns before you use him for anything else.",
+    "Gravecrawler": "**THE HUB IN FURNITURE'S CLOTHES:** a one-mana 2/1 that cannot block, in a deck full of them — and the recursive half of both unbounded kills. Nobody spends removal on it. Deploy it turn one.",
+    "Bastion of Remembrance": "**THE PAYOFF THAT LOOPS:** the drain in three of the four verified kills, and an enchantment, so your own engine can never eat it and your own creature removal never has to."
+   },
+   "pilot_tips": [
+    {
+     "card": "Gravecrawler",
+     "text": "Play it on turn one and let the table file it as a body — the tell in this deck is never Gravecrawler, it is whatever you play beside it."
+    },
+    {
+     "card": "Bitterblossom",
+     "text": "Cast it on turn two even with nothing to sacrifice; a body every upkeep for 1 life is the cheapest fodder you will ever buy."
+    }
+   ],
+   "pull_quote": "You are nothing, and then you are the whole table. There is no board in between."
+  },
+  {
+   "id": "keep-or-ship",
+   "kicker": "SEVEN CARDS",
+   "headline": "SHAPE, NOT NAMES",
+   "dek": "You keep your opening seven 81.8% of the time, so you get to be picky and you almost never have to be. The question is never which card you hold — it is whether the hand makes bodies and can spend one for free.",
+   "components": [
+    "power-meter",
+    "pilot-tip",
+    "pull-quote"
+   ],
+   "hands": [
+    {
+     "verdict": "KEEP",
+     "cards": [
+      "Swamp",
+      "Swamp",
+      "Swamp",
+      "Carrion Feeder",
+      "Bitterblossom",
+      "Fume Spitter",
+      "Zulaport Cutthroat"
+     ],
+     "why": "Three lands is the modal kept hand — 3,640 of the simulator's keeps hold exactly three. This one already holds a free outlet, renewable fodder, an ignition source and an each-opponent drain, which are the four classes the model finds earliest at mean turns 2.718, 2.859, 2.802 and 2.570. Nothing costs more than two."
+    },
+    {
+     "verdict": "KEEP",
+     "cards": [
+      "Swamp",
+      "Swamp",
+      "Sol Ring",
+      "Dark Ritual",
+      "Reassembling Skeleton",
+      "Vampiric Tutor",
+      "Skullclamp"
+     ],
+     "why": "Fast mana is the thinnest class on the sheet at 42.7% unassisted by turn ten, and 712 of 10,000 games cast the commander on turn two — every one of them opened like this. The Skeleton gives him something to eat the moment he lands, and the tutor turns a 1.1% kill into an 18.0% one."
+    },
+    {
+     "verdict": "SHIP",
+     "cards": [
+      "Swamp",
+      "Swamp",
+      "Swamp",
+      "Mikaeus, the Unhallowed",
+      "Grave Titan",
+      "Exquisite Blood",
+      "Toxic Deluge"
+     ],
+     "why": "All payoff, nothing underneath it. Mean available mana is 3.911 on turn four and 4.603 on turn five, so a six-drop and a five-drop with no enabler in front of them means you do nothing for half the game. Enablers dig toward payoffs; payoffs sit there until the engine exists."
+    },
+    {
+     "verdict": "SHIP",
+     "cards": [
+      "Swamp",
+      "Gravecrawler",
+      "Phyrexian Altar",
+      "Bastion of Remembrance",
+      "Demonic Tutor",
+      "Grave Pact",
+      "Necropotence"
+     ],
+     "why": "This is a kill in your hand and it is still a ship. One land, no fast mana, and the second Zombie the Phyrexian Altar loop needs is not here — 1,401 of 10,000 first sevens hold exactly one land, and one land is a mulligan unless Sol Ring, Ancient Tomb or Dark Ritual is sitting beside it. Ship it and you will draw into a shape; keep it and you will watch one."
+    }
+   ],
+   "captions": {
+    "Dark Ritual": "**ONE BLACK INTO THREE:** a ritual is not a source and the audit never counts it as one. It buys a specific turn, so keep it for the turn that matters and spend it there.",
+    "Skullclamp": "**KEEPABLE ON ITS OWN:** one mana, and every 1/1 you make becomes two cards. It is the draw engine that still works on the turns your commander is answered."
+   },
+   "pilot_tips": [
+    {
+     "card": "Yawgmoth, Thran Physician",
+     "text": "Never ship a hand for lacking him — he arrives on turn four in 7,220 of 10,000 games without any help from you."
+    }
+   ],
+   "pull_quote": "Two to five lands and a cheap enabler. Keep first seven 81.8%, mean 0.216 mulligans — the deck is not asking you to gamble."
+  },
+  {
+   "id": "whats-your-play",
+   "kicker": "COMMIT FIRST",
+   "headline": "WHICH SHAPE ARE YOU CHASING?",
+   "dek": "You are one card away from something lethal, the control seat has held five lands through two rotations, and none of the three cards in your hand kills anybody this turn. Pick one before you read a word of the Coach's answer.",
+   "components": [
+    "scenario-box",
+    "pull-quote"
+   ],
+   "pull_quote": "Stop asking which payoff is biggest. Ask which one is still on the battlefield next turn.",
+   "note": "EDITOR/ORCHESTRATOR: the issue's decision spread must resolve a board drawn entirely from the current 99. The kicker, headline, dek and pull quote above are deliberately non-telegraphing (dept_furniture prints above the spread) and are written for a configuration-check scenario — three payoffs in hand, an assembling board, and a control seat holding sweeper mana. If the section renders with no spread, that is the gap named below, not an editing note."
+  },
+  {
+   "id": "politics-table",
+   "kicker": "THREE OPPONENTS",
+   "headline": "NOTHING, THEN EVERYTHING",
+   "dek": "There is no board state where you are lethal against one seat and merely scary to the rest. So what do three opponents actually read off your permanents — and how do you spend the misread?",
+   "components": [
+    "callout-step",
+    "pilot-tip",
+    "pull-quote"
+   ],
+   "callouts": [
+    {
+     "n": 1,
+     "title": "THREAT WINDOW: THE SHAPE, NOT THE SWARM",
+     "text": "The table counts creatures. Goldfish has you at a mean of 3.903 bodies by turn six, which reads as a fair swarm and is not the plan. The board that ends the game is two to four specific permanents, and nobody at a Commander table audits permanents for a shape. Let them count."
+    },
+    {
+     "n": 2,
+     "title": "THREAT WINDOW: MIKAEUS RESOLVES",
+     "text": "He is half of seven of the eleven two-card infinite records the bracket sheet names, so he draws exile on sight from anyone who reads. He is also attached to your slowest kill — 39 activations needed against the 59 your mandatory draw permits. Cast him when you want the answer spent, and be pleased when it is."
+    },
+    {
+     "n": 3,
+     "title": "THE TWO PERMANENTS NOBODY PRICES",
+     "text": "Gravecrawler and Bastion of Remembrance carry three of the four verified kills between them, and you draw them by turn ten in 16.5% and 16.7% of games unassisted. One is a 2/1 that cannot block. The other is an enchantment that gave you a 1/1 when it landed. Neither has ever been the target of a removal spell."
+    },
+    {
+     "n": 4,
+     "title": "SAY IT STRAIGHT AT RULE ZERO",
+     "text": "Bracket floor 4, Optimized, forced independently by four Game Changers — Ancient Tomb, Demonic Tutor, Necropotence, Vampiric Tutor — and by eleven two-card infinite records. Then the sentence that matters: four rules-verified kills, three unbounded, each ending all four opponents at once. Nobody can turn that into a turn number, and you have told them the truth."
+    }
+   ],
+   "captions": {
+    "Grave Pact": "**THE ROOM-CHANGER:** a drain takes life quietly; an edict takes a creature from three players in front of everybody, every time a body of yours dies. Expect to be priced on the edicts, not the drains.",
+    "Exquisite Blood": "**IT DOES NOTHING THE TURN IT LANDS:** which is exactly why it resolves. Deploy the lifegain body first — a 3/4 deathtouch or a two-mana cleric reads as fair — and let the enchantment look like a lifegain card.",
+    "Necropotence": "**WHAT ACTUALLY TAKES YOUR LIFE:** not the engine. This, Bitterblossom, Black Market Connections, City of Brass and Ancient Tomb. Two of the verified loops end you at 80."
+   },
+   "pilot_tips": [
+    {
+     "card": "Lightning Greaves",
+     "text": "Equip it at sorcery speed the turn before you need it — after the removal is announced it is decoration."
+    }
+   ],
+   "pull_quote": "You get no warning turn, so neither does the table. Sequence the scariest piece last and present at the end step before your own."
+  },
+  {
+   "id": "know-your-enemy",
+   "kicker": "THE SEATS ACROSS FROM YOU",
+   "headline": "WHO ACTUALLY BEATS YOU",
+   "dek": "It is not the wrath — the wrath pays you four different ways. Assign your role at the start of every game, then re-ask it after every board change, because the seat that beats you is the one holding a permanent you cannot destroy.",
+   "components": [
+    "threat-box",
+    "pilot-tip",
+    "pull-quote"
+   ],
+   "threats": [
+    {
+     "archetype": "Sweeper control",
+     "meter_label": "Threat",
+     "rate": 0.2,
+     "read": "Be visibly happy here. A wrath does not touch a single one of your kills: the critical permanents in every verified line are noncreature — Bastion of Remembrance, Exquisite Blood, Phyrexian Altar — and the board they blow up is decoration. Meanwhile Bastion of Remembrance, Zulaport Cutthroat and The Meathook Massacre each bill every opponent when a creature you control dies, Blood Artist bills one seat whenever any creature dies at all, and your rebuild is structural rather than held: Reassembling Skeleton returns for {1}{B} forever, Gravecrawler recasts for {B} while a Zombie is out, Bitterblossom and Black Market Connections make a body a turn without spending a card. Hold two mana whenever the control seat untaps with four or more open and let Plumb the Forbidden turn the announcement into your draw step.",
+     "outs": [
+      "Plumb the Forbidden",
+      "Reassembling Skeleton",
+      "Gravecrawler",
+      "Bitterblossom",
+      "Black Market Connections",
+      "Victimize",
+      "Animate Dead",
+      "Phyrexian Reclamation",
+      "Bastion of Remembrance"
+     ]
+    },
+    {
+     "archetype": "Stax and tax",
+     "meter_label": "Threat",
+     "rate": 0.35,
+     "read": "This is the matchup the deck is quietly built for, and the reason is verified rather than argued. Three of the four kills need essentially no external mana once assembled: stack 009's Treasure exactly funds the next cast, stack 011's Phyrexian Altar is a mana ability that never uses the stack and refunds its own {B}, stack 012 spends nothing at all. The commander's ability costs no mana in the first place. So recount your hand under a tax, never your board — deployment is the vulnerable window, operation is not. Against a Cursed Totem or a Needle pointed at a creature, your outlets are the ones that are not creatures, and one of those is a kill piece anyway.",
+     "outs": [
+      "Phyrexian Altar",
+      "Ashnod's Altar",
+      "Blasting Station",
+      "Phyrexian Tower",
+      "Exquisite Blood",
+      "Carrion Feeder"
+     ]
+    },
+    {
+     "archetype": "Aggro",
+     "meter_label": "Threat",
+     "rate": 0.25,
+     "read": "You are the pod's stabiliser and you should stop apologising for the sweepers. Four scalable wipes, 13 interaction copies, 28 creature copies to chump or eat, and Grave Pact converting every death you were causing anyway into a table-wide edict. Point the commander's -1/-1 counters at opponents' creatures whenever a legal target exists — on the grinding board a 2-toughness creature of theirs extends the engine by two activations instead of bounding it. And stop defending your life total a turn early: two of the verified loops finish you at 80, so early points are cheap here in a way they are not in most decks.",
+     "outs": [
+      "Toxic Deluge",
+      "Black Sun's Zenith",
+      "The Meathook Massacre",
+      "Soul Snuffers",
+      "Grave Pact",
+      "Fatal Push",
+      "Gray Merchant of Asphodel"
+     ]
+    },
+    {
+     "archetype": "Combo",
+     "meter_label": "Threat",
+     "rate": 0.9,
+     "read": "Your hardest seat, and meet it head-on rather than hedge. You cannot interact on the stack at all: no counterspells, and every instant you hold points at a creature. That is the price a linear deck pays for its engine and you pay it with speed. So hold nothing — against combo the last profitable moment for an answer is now. Deadly Rollick is free while your commander is out, which is most turns from four onward; spend it on the enabler the moment it lands, not on the payoff. Then race with the shape you can finish rather than the one you would prefer.",
+     "outs": [
+      "Deadly Rollick",
+      "Snuff Out",
+      "Fatal Push",
+      "Bojuka Bog",
+      "Beseech the Mirror"
+     ]
+    },
+    {
+     "archetype": "Graveyard hate",
+     "meter_label": "Threat",
+     "rate": 0.6,
+     "read": "It earns its own box because it hits you asymmetrically, and knowing which half stays live is worth a whole game. Stacks 009 and 011 cast Gravecrawler out of the graveyard on every single iteration, so a Rest in Peace effect blanks both unbounded loops outright. Stack 012 touches no graveyard whatsoever, and stack 010 runs on undying returns from the battlefield. The read is therefore instant: abandon the recursion shape and go get Exquisite Blood plus a body reading 'Whenever you gain life, each opponent loses 1 life.' That is also your fastest line at a mean assembly turn of 5.301.",
+     "outs": [
+      "Exquisite Blood",
+      "South Wind Avatar",
+      "Marauding Blight-Priest",
+      "Starscape Cleric",
+      "Mikaeus, the Unhallowed",
+      "Feed the Swarm",
+      "Bojuka Bog"
+     ]
+    }
+   ],
+   "captions": {
+    "Plumb the Forbidden": "**THE WRATH, CONVERTED:** sacrifice any number of creatures as an additional cost and copy it once for each — their announcement becomes your draw step, and every sacrifice fires whatever drain you have down.",
+    "Feed the Swarm": "**THE WHOLE ANSWER TO A CLASS:** the only card in the 99 that destroys a noncreature permanent an opponent controls, and it reads creature or enchantment. A resolved artifact aimed at you has no answer in this library."
+   },
+   "pilot_tips": [
+    {
+     "card": "Bojuka Bog",
+     "text": "Bank it — it enters tapped anyway, so play it on the turn their graveyard matters rather than the turn it is convenient."
+    }
+   ],
+   "pull_quote": "Interaction slots are the price of the engine. You paid it, and the bill arrives as an artifact you cannot remove."
+  },
+  {
+   "id": "fetch-quests",
+   "kicker": "FIVE WISHES",
+   "headline": "WISH FOR THE KILL, NOT THE ENGINE",
+   "dek": "Your enabler classes turn up on their own in three games out of four. Your kills do not — so what is a tutor actually buying, and which single card completes two of them?",
+   "components": [
+    "callout-step",
+    "pilot-tip",
+    "pull-quote"
+   ],
+   "callouts": [
+    {
+     "n": 1,
+     "title": "NEVER WISH FOR A CLASS YOU ALREADY GET",
+     "text": "By turn ten, with no tutor involved: a drain 82.4%, a free repeatable sacrifice outlet 77.9%, renewable fodder 73.6%, an ignition source 73.1%. A wish lifts those to 94.1%, 92.0%, 90.0% and 90.0%. That is twelve to seventeen points on something the deck was handing you anyway."
+    },
+    {
+     "n": 2,
+     "title": "THE KILLS ARE WHAT MOVES",
+     "text": "Exquisite Blood's pairing goes 6.9% to 42.5%. The Mikaeus line 4.6% to 33.7%. The Soultrader loop 1.1% to 18.0%. The Phyrexian Altar loop 0.5% to 12.3%. Six-fold, seven-fold, sixteen-fold, twenty-four-fold — that is the entire job of these five cards."
+    },
+    {
+     "n": 3,
+     "title": "POINT IT AT THE CARD IN THE MOST LINES",
+     "text": "A wish on Gravecrawler completes two unbounded kills. A wish on Bastion of Remembrance completes the payoff half of three. A wish on Warren Soultrader or Phyrexian Altar completes exactly one. The fetch priority is arithmetic, not taste."
+    },
+    {
+     "n": 4,
+     "title": "KNOW YOUR OWN CAP",
+     "text": "Beseech the Mirror's bargained free cast stops at mana value 4. It reaches Gravecrawler, Carrion Feeder, Starscape Cleric, Bastion of Remembrance, Warren Soultrader, Phyrexian Altar, Marauding Blight-Priest, Grave Pact and South Wind Avatar. It never reaches Exquisite Blood at 5 or Mikaeus at 6 — those two belong to Demonic Tutor."
+    }
+   ],
+   "captions": {
+    "Diabolic Intent": "**THE COST THAT ISN'T:** the creature you sacrifice is a drain trigger with any payoff down, an edict with Grave Pact, and an undying return under Mikaeus. Pay it with a token, never with a piece.",
+    "Demonic Tutor": "**NO CONDITIONS, NO CEILING:** the only wish that does not care what the card costs, which makes it the only route to Exquisite Blood or Mikaeus on curve.",
+    "Vampiric Tutor": "**AN APPOINTMENT, NOT AN ARRIVAL:** it lands on top, so fire it at the end step before your own turn and the transit costs you nothing."
+   },
+   "pilot_tips": [
+    {
+     "card": "Insatiable Avarice",
+     "text": "Cast both Spree modes at once and point the draw at yourself — the search resolves first, so you draw exactly what you just booked."
+    }
+   ],
+   "pull_quote": "You are not tutoring to make this deck function. You are tutoring to convert."
+  },
+  {
+   "id": "command-zone",
+   "kicker": "THE ZONE",
+   "headline": "THE CARD YOU NEVER HAVE TO DRAW",
+   "dek": "One card in this deck is exempt from variance, and a single rule says so. What is that guarantee worth to a mono-black engine whose best kills do not use it?",
+   "components": [
+    "fast-facts",
+    "tax-ladder",
+    "pilot-tip"
+   ],
+   "body": "Begin with the clause that makes this format unlike every other one. CR 903.8: \"A player may cast a commander they own from the command zone.\" Yawgmoth is therefore not a card you draw. He is a card you have. The simulation puts him on the battlefield in 9,846 of 10,000 games, mean turn 4.294, median 4, with 7,220 of those casting him on turn four exactly.\n\nThe price of that guarantee is in the same rule, and it compounds: \"an additional {2} for each previous time the player casting it has cast it from the command zone that game.\" Four mana, then six, then eight, then ten. Set that schedule beside mean available mana of 3.911 on turn four, 5.223 on turn six and 7.1 on turn ten. The holding is short. The first recast costs you a turn. The second costs you the whole turn. The third is a turn nobody is going to give you.\n\nColour identity is CR 903.4, and it is the rule that built the other ninety-eight cards. One black symbol in the cost, one colour in the deck — and the audit comes back with nothing to reconcile: black is 100% of the pip load and 100% of the sources, on curve at 95.5% once ramp is counted. What it costs is breadth. This library holds no counterspell and no artifact removal, and none of the five tutors can find one, because there is none to find. That is the format's bargain stated as a rule rather than as a complaint.\n\nCommander damage next, because the record disposes of it quickly. CR 903.10a removes a player who has been dealt 21 or more combat damage by the same commander. Yawgmoth is a 2/4 who would much rather be sacrificing than attacking, and 21 damage is eleven connections. Commander damage is a coincidence in this deck, not a clock.\n\nNow the clause to memorise, because it cuts both ways. CR 702.16b: \"A permanent or player with protection can't be targeted by spells with the stated quality and can't be targeted by abilities from a source with the stated quality.\" Yawgmoth has protection from Humans and is himself a Human Cleric, so his own ability can never target him — the 2/4 who could comfortably absorb four counters is not allowed to take one. Five checker-passed files turn on that clause: once an opponent's creature is gone, every legal target is one of your own tokens, which is what bounds the grinding board at five to eight activations. In the other direction it is free armour in a format thick with Human commanders.\n\nOne last fact about the zone. Three opponents can see it. They cannot see your hand. What they price when this commander resolves is a reputation rather than a board — and the bracket sheet agrees with them, landing at floor 4 on four Game Changers and eleven two-card infinite records.\n\nCOACH'S READ. Here is the part that will feel wrong and is right: do not buy the insurance. Three of your four verified kills name him nowhere. He is a draw engine, a second free outlet and a removal magnet, and you should be pleased to trade him — cast him on curve, draw four or five cards, and let somebody spend a card on him. Do not hold mana to protect him and do not mulligan toward him. When you do want him back, notice which routes are not recasts at all: Malakir Rebirth and Supernatural Stamina return him to the battlefield, so the tax never advances, and Animate Dead and Victimize reach him in the graveyard. Price the second trip before you make the first — six mana spent getting him back is six mana not spent assembling.",
+   "captions": {
+    "Malakir Rebirth // Malakir Mire": "**A RESCUE IS NOT A RECAST:** it returns him to the battlefield, so the command tax never advances — and the return is one more death trigger for everything on your board.",
+    "Lightning Greaves": "**INSURANCE, NOT ARMOUR:** sorcery-speed equip, so the turn to arm him is the turn before you need it. The shroud cuts you off from your own tricks too."
+   },
+   "pilot_tips": [
+    {
+     "card": "Deadly Rollick",
+     "text": "The best reason to have him on the battlefield is this card — free removal, exile rather than destroy, on any turn you spent assembling."
+    }
+   ]
+  },
+  {
+   "id": "the-99",
+   "kicker": "ROLL CALL",
+   "headline": "ELEVEN GROUPS, IN ORDER OF MATTERING",
+   "dek": "Read the first two groups and you know how this deck ends a game. Read the rest and you know why it keeps working after somebody answers one of them.",
+   "components": [
+    "callout-step",
+    "pilot-tip",
+    "pull-quote"
+   ],
+   "roster": [
+    {
+     "role": "The four kills — the cards that actually end games",
+     "cards": [
+      "Gravecrawler",
+      "Bastion of Remembrance",
+      "Warren Soultrader",
+      "Phyrexian Altar",
+      "Exquisite Blood",
+      "South Wind Avatar",
+      "Marauding Blight-Priest",
+      "Starscape Cleric",
+      "Mikaeus, the Unhallowed"
+     ]
+    },
+    {
+     "role": "The other drains — each opponent, or one",
+     "cards": [
+      "Zulaport Cutthroat",
+      "Ayara, First of Locthwain",
+      "The Meathook Massacre",
+      "Mirkwood Bats",
+      "Blood Artist",
+      "Gray Merchant of Asphodel"
+     ]
+    },
+    {
+     "role": "Free sacrifice outlets — 77.9% by turn ten",
+     "cards": [
+      "Carrion Feeder",
+      "Viscera Seer",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Blasting Station",
+      "Ashnod's Altar",
+      "Phyrexian Tower"
+     ]
+    },
+    {
+     "role": "Renewable fodder — the bodies that come back",
+     "cards": [
+      "Reassembling Skeleton",
+      "Bitterblossom",
+      "Butcher Ghoul",
+      "Stitcher's Supplier",
+      "Geralf's Messenger",
+      "Sedgemoor Witch",
+      "Grave Titan",
+      "Black Market Connections"
+     ]
+    },
+    {
+     "role": "Counters, and what they make",
+     "cards": [
+      "Nest of Scarabs",
+      "Fume Spitter",
+      "Skinrender",
+      "Soul Snuffers",
+      "Sinister Gnarlbark",
+      "Massacre Girl, Known Killer"
+     ]
+    },
+    {
+     "role": "Mana that is not a land",
+     "cards": [
+      "Sol Ring",
+      "Arcane Signet",
+      "Dark Ritual",
+      "Pitiless Plunderer"
+     ]
+    },
+    {
+     "role": "Draw, priced in life",
+     "cards": [
+      "Necropotence",
+      "Skullclamp",
+      "Deadly Dispute",
+      "Plumb the Forbidden"
+     ]
+    },
+    {
+     "role": "The five wishes",
+     "cards": [
+      "Demonic Tutor",
+      "Vampiric Tutor",
+      "Diabolic Intent",
+      "Beseech the Mirror",
+      "Insatiable Avarice"
+     ]
+    },
+    {
+     "role": "Interaction — and where it stops",
+     "cards": [
+      "Feed the Swarm",
+      "Deadly Rollick",
+      "Snuff Out",
+      "Fatal Push",
+      "Toxic Deluge",
+      "Black Sun's Zenith",
+      "Grave Pact"
+     ]
+    },
+    {
+     "role": "The rebuild package",
+     "cards": [
+      "Victimize",
+      "Persist",
+      "Animate Dead",
+      "Phyrexian Reclamation",
+      "Supernatural Stamina",
+      "Malakir Rebirth // Malakir Mire",
+      "Lightning Greaves"
+     ]
+    },
+    {
+     "role": "The mana — 36 copies, one colour",
+     "cards": [
+      "Urborg, Tomb of Yawgmoth",
+      "Cabal Coffers",
+      "Swamp",
+      "Ancient Tomb",
+      "Cabal Pit",
+      "Ifnir Deadlands",
+      "Castle Locthwain",
+      "Takenuma, Abandoned Mire",
+      "Bojuka Bog",
+      "Command Tower",
+      "City of Brass",
+      "Exotic Orchard",
+      "Survivors' Encampment",
+      "Path of Ancestry",
+      "Agadeem's Awakening // Agadeem, the Undercrypt"
+     ]
+    }
+   ],
+   "callouts": [
+    {
+     "n": 1,
+     "title": "TWO CARDS CARRY THREE KILLS",
+     "text": "Gravecrawler is named in three verified files and is the recursive half of both unbounded loops; Bastion of Remembrance is the drain in three. Each is one card, each is 7.1% of an opening seven, and each shows up by turn ten in about one game in six unassisted. Five tutors are the only redundancy either of them has."
+    },
+    {
+     "n": 2,
+     "title": "EACH OPPONENT, OR TARGET PLAYER",
+     "text": "On the identical grinding board, a drain reading 'each opponent' removed 7 life from every seat — 28 across a four-opponent pod. Blood Artist, which reads 'target player loses 1 life', removed eight life in total. One word of templating, and the checker called the second one not a kill and not even close."
+    },
+    {
+     "n": 3,
+     "title": "WHERE THE MACHINE CANNOT SEE",
+     "text": "The synergy graph places 71 of this deck's cards and finds 57 edges falling inside it — but it is a top-ten shortlist selected over every tagged card in the format, not a fit score for this list. Eight cards have no entry at all, and two of them are Nest of Scarabs and Exquisite Blood."
+    },
+    {
+     "n": 4,
+     "title": "TWO CARDS THE TAXONOMY HAS NO PATTERN FOR",
+     "text": "Role coverage is 97.5%. The two it misses are Plumb the Forbidden and Supernatural Stamina — an instant-speed answer to a wrath and a two-mana protection trick that hands you an extra death trigger. Absence of a role is not absence of the function; read the card."
+    }
+   ],
+   "captions": {
+    "Nest of Scarabs": "**SETTLED ARITHMETIC:** the number of creatures you put counters on sets the number of triggers, and the counters on each of those creatures set that trigger's 'that many'. One proliferate across three counter-bearing creatures makes three Insects, not six.",
+    "Grave Pact": "**ONE ACTIVATION, THREE BOARDS:** every sacrifice that feeds a drain also strips a creature from all three opponents. It is the deck's only repeatable answer to a creature it cannot target.",
+    "Reassembling Skeleton": "**THE PUREST BODY IN THE DECK:** {1}{B} from the graveyard, forever, asking nothing but mana. It never runs out and it never needs a board."
+   },
+   "pilot_tips": [
+    {
+     "card": "Ashnod's Altar",
+     "text": "Never plan to fund the recursion loops with it — colorless mana does not cast Gravecrawler for {B}. Use it as an outlet and for bulk mana."
+    }
+   ],
+   "pull_quote": "Thirty-two combo lines are fully contained in this list. Four of them are verified. Containment is a shortlist, never evidence."
+  },
+  {
+   "id": "upgrade-watch",
+   "kicker": "THE ONLY TEN",
+   "headline": "BUY ANSWERS, NOT A FIFTH KILL",
+   "dek": "Six of the ten close a hole in what this deck can answer and four widen a component measured at one card. Not one of them is a new combo, and that is the argument.",
+   "components": [
+    "callout-step",
+    "pull-quote"
+   ],
+   "callouts": [
+    {
+     "n": 1,
+     "title": "THE AXIS THAT ACTUALLY BINDS",
+     "text": "Interaction-breadth reads 2 answered classes against a target of 5. Reading the cards narrows the gap honestly — Bojuka Bog exiles a graveyard even though the taxonomy files it as a tapland — and leaves artifact and land genuinely uncovered. Every kill you own is a pile of permanents in the open."
+    },
+    {
+     "n": 2,
+     "title": "WIDTH MOVES FOUR NUMBERS AT ONCE",
+     "text": "Three of the four kills share a drain slot. Widening that class from three cards to four moves four separate assembly rates in one purchase. A fifth independent kill moves one. That is why the list ranks a redundant drain above a new combo every time."
+    },
+    {
+     "n": 3,
+     "title": "THREE OF THE TEN ARE ALREADY IN THE BOX",
+     "text": "Imp's Mischief, Crypt Ghast and Dictate of Erebos are sideboard cards, chipped as such. Sheoldred, Whispering One is the one bench card the list declines: seven mana against a mean 5.223 available on turn six, in a deck whose four verified kills cost three to five."
+    },
+    {
+     "n": 4,
+     "title": "NOT ONE LINE ON THIS PAGE IS VERIFIED",
+     "text": "Every combo a pick would open carries 'needs a stack scenario' by construction. Two are worth a resolve run before anything else, because both claim to widen a component a checker-passed stack already depends on — Pawn of Ulamog's Reassembling Skeleton loop, and Bloodthirsty Conqueror beside Marauding Blight-Priest."
+    }
+   ],
+   "pull_quote": "Bracket floor 4 is already forced twice over, so the slot maths is free. Judge every candidate on whether it widens a verified kill or covers a class you cannot answer."
+  },
+  {
+   "id": "sources-say",
+   "kicker": "PIPS VERSUS SOURCES",
+   "headline": "ONE COLOUR, NOTHING TO RECONCILE",
+   "dek": "Pip share and source share cannot disagree when there is only one colour to be short of. So the audit narrows to a single number — and the yardstick it is measured against is not reachable in a deck built like this one.",
+   "components": [
+    "fast-facts",
+    "power-meter",
+    "callout-step",
+    "pull-quote"
+   ],
+   "callouts": [
+    {
+     "n": 1,
+     "title": "THE YARDSTICK YOU CANNOT HIT",
+     "text": "The model wants 36 black sources for a 90% on-curve rate. Thirty-four of your 36 land copies make black — Ancient Tomb and Urborg are the two that do not — so lands alone land at 88.2%. The audit says it plainly: in a 36-land deck the target is a yardstick, not a possibility."
+    },
+    {
+     "n": 2,
+     "title": "EIGHT NONLAND PRODUCERS CLOSE IT",
+     "text": "Agadeem's Awakening, Arcane Signet, Dark Ritual, Deadly Dispute, Malakir Rebirth, Phyrexian Altar, Pitiless Plunderer and Warren Soultrader all make black, lifting the count to 42 sources and on-curve black to 95.5%. Sol Ring and Ashnod's Altar make none: they buy speed, never fixing. Restricted mana anywhere in the 99 — none."
+    },
+    {
+     "n": 3,
+     "title": "MOST OF THE RAMP IS NOT RAMP",
+     "text": "Eleven ramp copies, and four of the eight coloured producers are sacrifice engines first and mana second. That is why the simulation separates engine mana — the class that turns a creature death into castable black — at 61.9% by turn ten from fast mana at 42.7%. They are different resources and they buy different turns."
+    },
+    {
+     "n": 4,
+     "title": "TWO LANDS THE COUNT TREATS ODDLY",
+     "text": "Urborg, Tomb of Yawgmoth produces no mana of its own and therefore counts for zero sources, while making every land in the game a Swamp. Cabal Coffers counts as exactly one source and taps for {B} per Swamp you control, beside 22 basics. One source is the accounting, not the experience."
+    }
+   ],
+   "captions": {
+    "Swamp": "**TWENTY-TWO OF THEM:** the untapped backbone, the reason Snuff Out costs four life instead of four mana, and the multiplier under Cabal Coffers. In mono-black the basic is one of the best lands in the deck.",
+    "Phyrexian Tower": "**A LAND THAT SACRIFICES:** a free outlet that makes {B}{B} while it does it. Where a spare body is a resource, this is one of the best untapped lands you can draw."
+   },
+   "pilot_tips": [
+    {
+     "card": "Urborg, Tomb of Yawgmoth",
+     "text": "Play it before Cabal Coffers, not after — every land you already control becomes a Swamp the Coffers can count."
+    }
+   ],
+   "pull_quote": "Seventy-five black pips across 55 cards, up to three in a single cost — and the first one is demanded on turn one."
+  },
+  {
+   "id": "by-the-numbers",
+   "kicker": "TEN THOUSAND HANDS",
+   "headline": "THE ENGINE ARRIVES. THE KILL IS FETCHED.",
+   "dek": "Ten thousand openings, one fixed seed, no opponents and no interaction. The gap between the enabler bars and the kill bars is this deck's whole personality — and there is one number in here we refuse to print.",
+   "components": [
+    "power-meter",
+    "fast-facts",
+    "callout-step",
+    "pull-quote"
+   ],
+   "callouts": [
+    {
+     "n": 1,
+     "title": "READ EVERY BAR AS A PAIR",
+     "text": "The first figure excludes tutors entirely; the second lets one drawn, affordable tutor fill a single missing requirement. By turn ten: a drain 82.4% / 94.1%. A free repeatable sacrifice outlet 77.9% / 92.0%. Renewable fodder 73.6% / 90.0%. An ignition source 73.1% / 90.0%. Engine mana 61.9% / 85.1%. A tutor itself, 60.6%."
+    },
+    {
+     "n": 2,
+     "title": "FOUR KILLS, FOUR NUMBERS",
+     "text": "Exquisite Blood plus a lifegain drain 6.9% / 42.5%, mean turn 5.301 — the fastest. Mikaeus plus the commander 4.6% / 33.7%. Warren Soultrader plus Gravecrawler plus a drain 1.1% / 18.0%. Gravecrawler plus Phyrexian Altar plus a second Zombie plus a drain 0.5% / 12.3%. Seven of the sheet's components rest on one named card, and a named card is 7.1% of an opening seven."
+    },
+    {
+     "n": 3,
+     "title": "THE NUMBER THAT DOES NOT EXIST",
+     "text": "There is no union. The simulator scores each requirement group on its own, so a hand holding Exquisite Blood, Gravecrawler and Zulaport Cutthroat would satisfy three groups while assembling no kill at all. Nothing on this sheet means 'any kill assembled', we will not compute one, and you should not add these four together either."
+    },
+    {
+     "n": 4,
+     "title": "THE COMMANDER'S HISTOGRAM",
+     "text": "Turn four in 7,220 games of 10,000, mean 4.294, median 4, and on the battlefield by turn six in 91.1%. Turn two happens 712 times, every one of them off fast mana. He never arrives at all in 154."
+    },
+    {
+     "n": 5,
+     "title": "WHAT THE SIMULATION IS NOT",
+     "text": "It models resource development, not games. No opponents, no removal, no politics, and a target counts as assembled the moment the cards are drawn rather than cast and protected. Read every bar as a floor on what turns up, never as a prediction of what happens."
+    }
+   ],
+   "pull_quote": "Four kills. Four numbers. Adding them would be the only lie in this issue."
+  },
+  {
+   "id": "the-kill",
+   "kicker": "ON THE RECORD",
+   "headline": "FOUR WAYS TO END A TABLE",
+   "dek": "Ten scenarios went to the checker and ten came back signed. Four of them take all four opponents from 40 to 0 at the same state-based-action check. The other six tell you which boards only look like they do.",
+   "components": [
+    "callout-step",
+    "pilot-tip",
+    "pull-quote"
+   ],
+   "callouts": [
+    {
+     "n": 1,
+     "title": "KILL ONE: IT PAYS FOR ITSELF",
+     "text": "Warren Soultrader, Gravecrawler and Bastion of Remembrance. Gravecrawler's own ability modifies the zone it can be cast from, so its permission is live in the graveyard every iteration, with the Zombie condition met by Soultrader — whom the loop never eats, because the cost says 'another creature'. Each activation's Treasure exactly funds the next cast. Net per iteration: your life 0 with a floor of 39, each opponent −1. Unbounded. Verified line 009."
+    },
+    {
+     "n": 2,
+     "title": "KILL TWO: IT PAYS NOTHING AT ALL",
+     "text": "Swap the Treasure for Phyrexian Altar and the loop gets cleaner. The Altar's ability needs no target and could add mana, so it is a mana ability and never uses the stack — it cannot be responded to, and its {B} is in your pool before anyone gets priority. Carrion Feeder holds the Zombie condition and is never the sacrifice. Each iteration is +1 life for you and −1 for every seat. Thirty-nine further iterations put all four at 0 together and you finish at 80. Verified line 011."
+    },
+    {
+     "n": 3,
+     "title": "KILL THREE: MANDATORY, AND NOT A DRAW",
+     "text": "Exquisite Blood beside a body reading 'Whenever you gain life, each opponent loses 1 life.' Neither card says 'may', so the loop is compulsory — and the Counselor's favourite question is whether that makes it a draw. It does not: a draw needs a sequence that could be repeated indefinitely, and every cycle here takes 1 life from every opponent, so there is a way to stop. Drain #40 takes all four from 1 to 0 at once. You end at 80, with 117 triggers on the stack that never resolve. Verified line 012."
+    },
+    {
+     "n": 4,
+     "title": "KILL FOUR: LETHAL, AND FINITE",
+     "text": "Mikaeus grants undying, and your commander's -1/-1 counter does not shrink an undying body — it annihilates the +1/+1 undying left behind and re-arms the creature to die again. The counter is a reset, not a shrink. But the commander's draw is mandatory, so the library is the clock: 39 further activations needed against the 59 it permits, a margin of 20 and at most 25. Verified line 010."
+    },
+    {
+     "n": 5,
+     "title": "THE BOARD THAT LOOKS LIKE A KILL",
+     "text": "Your commander plus Nest of Scarabs plus a death-metered drain is bounded by bodies, and protection from Humans is why: he cannot target himself, so once the opponent's creature is gone every legal target is one of your own tokens. Five completed activations, seven of your creatures dead, seven drains, 28 life removed from a four-opponent pod, and your own total going up. A value engine that draws you five cards. No ordering makes it a kill."
+    },
+    {
+     "n": 6,
+     "title": "ONE WORD, AND THE POD SURVIVES",
+     "text": "Blood Artist reads 'target player loses 1 life' where the drains that close games read each opponent. On that same bounded board: eight creature deaths, eight triggers, eight life removed of a pod's 160, with an exhaustive search of the line space finding nothing better. Refuted as a kill, and not narrowly. Play it as reach, never as the finish."
+    },
+    {
+     "n": 7,
+     "title": "THREE EDGES WORTH CARRYING TO THE TABLE",
+     "text": "Gaining zero is not gaining — an Insect killed by its own counter dies at toughness 0, so a lifegain drain sees nothing and eight death triggers pay only seven times. Entering counts as putting — a creature that arrives already wearing a -1/-1 counter does trigger Nest of Scarabs. And one activation can pay a drain twice: the sacrifice is an activation cost paid while the ability is already topmost, so a creation-and-sacrifice drain collects on both halves, thirteen times on the board the checker measured."
+    }
+   ],
+   "captions": {
+    "Phyrexian Altar": "**IT NEVER USES THE STACK:** a mana ability resolves on activation, so the {B} that recasts Gravecrawler is in your pool before anyone can respond. That is what makes this line free and uncounterable.",
+    "South Wind Avatar": "**FOUR TOUGHNESS, FOUR ACTIVATIONS:** on the bounded board its size buys the last four activations. And a token that dies at toughness 0 gains you nothing, so it drains nobody — gaining zero is not gaining.",
+    "Blood Artist": "**REFUTED, NOT DEMOTED:** eight life in total against the 28 an each-opponent drain removes from the identical board. He is still a fine body that pays you for every death; he is simply not the drain you fetch."
+   },
+   "pilot_tips": [
+    {
+     "card": "Viscera Seer",
+     "text": "Do not spend her mid-loop under Mikaeus — her sacrifice places no counter, and only your commander's counter can strip an undying return, so the spare activation costs you a body for good."
+    }
+   ],
+   "pull_quote": "Forty drain events take a seat to zero. One has already resolved. Thirty-nine more, and nobody is left to respond."
+  },
+  {
+   "id": "judges-desk",
+   "kicker": "THE CASE FILES",
+   "headline": "TEN FILES, EVERY QUOTE VERBATIM",
+   "dek": "Ten complete resolutions, each citation reproduced exactly as the Comprehensive Rules prints it, with the checker's verdict and review count as case status. This is the section that makes everything before it worth believing.",
+   "components": [
+    "dossier-file"
+   ],
+   "pull_quote": "Where the record is silent, the record is silent. Six of these ten files exist to tell you that a board is not a kill."
+  },
+  {
+   "id": "featured-artist",
+   "kicker": "EIGHTY-THREE CARDS",
+   "headline": "SEVENTY-ONE HANDS, NO HEADLINER",
+   "dek": "Nobody painted more than two cards in this deck and twelve artists are tied at exactly that, so there is no standout and we are not going to invent one. The feature goes to the pair whose two cards happen to include the commander's own tomb.",
+   "components": [
+    "artist-gallery",
+    "fast-facts"
+   ],
+   "featured": {
+    "artist": "John Avon",
+    "note": "Start with the number that decides this section. Eighty-three cards counted, seventy-one different signatures, and the deepest single credit is two cards — twelve artists are tied there. Nobody dominates this deck, so nobody is going to be told they did.\n\nJohn Avon is one of those twelve, and his pair is the one worth stopping on: Urborg, Tomb of Yawgmoth and Cabal Pit. Two black landscapes, thirty years of the same eye, and one of them is named after the man on the cover. Urborg makes every land in the game a Swamp and produces no mana of its own; Cabal Pit charges you a life for its black and then sacrifices itself to shrink something. Both of them are places that cost you something to stand in, which is the correct read of a mana base for this deck.\n\nOne figure needs saying out loud because it is the one that lies. Jorge Jacinto's Swamp appears twenty-two times here and counts once. Authorship is per card, never per copy — count it the other way and a basic land wins this section every single issue. Copies across the whole box: 104.\n\nThe printings cluster where recent Commander product does. Twelve cards from Lorwyn Eclipsed Commander, eight from Secrets of Strixhaven Commander, seven from Tarkir: Dragonstorm Commander, six from Commander Masters. Nobody curated that, and the analysis is specific about it: there is no contiguous collector-number run anywhere in the deck, so nothing here was bought whole as a sealed product and shuffled in. It is simply where the cardboard comes from, and it is most of why no single hand gets ahead.\n\nAnd nothing here is foil and nothing is borderless. Eighty black borders and three white ones left over from Fifth and Sixth Edition. This is a working deck, sleeved at working prices, and it looks like one on purpose."
+   },
+   "also_worth_noting": [
+    {
+     "artist": "Cynthia Sheppard",
+     "note": "Beseech the Mirror and Exquisite Blood — the wish, and one of the two cards it can never free-cast. Mana value 5 is exactly one over the bargain cap."
+    },
+    {
+     "artist": "Anson Maddocks",
+     "note": "Animate Dead and Ashnod's Altar: two of the three white-bordered cards in the box, and both still do precisely what they did when they were printed."
+    },
+    {
+     "artist": "Billy Christian",
+     "note": "Grave Pact and Massacre Girl, Known Killer. One hand, two cards, and both of them make somebody else's board smaller."
+    },
+    {
+     "artist": "Nils Hamm",
+     "note": "Fume Spitter and Grave Titan — the cheapest ignition in the deck and the biggest body in it, a one-drop and a six-drop from the same brush."
+    },
+    {
+     "artist": "Izzy",
+     "note": "Deadly Rollick and Soul Snuffers: the free removal spell and the sweeper that lights your own engine on the way past."
+    },
+    {
+     "artist": "Scott Murphy",
+     "note": "Gray Merchant of Asphodel and Insatiable Avarice — devotion in a deck carrying 75 black pips, and the tutor that hands you the card in the same breath."
+    }
+   ]
+  },
+  {
+   "id": "back-page",
+   "note": "Renderer: NEXT ISSUE reads 'TO BE ANNOUNCED' from issue.json — print it as authored rather than inventing a deck. Colophon carries the rules version, the decklist sha and the generation provenance."
+  }
+ ],
+ "rhythm_notes": "Two peaks, as the arc asks. Act I opens high and narrative in The Game Plan, steps down into practice in Keep or Ship, then back to high participation in What's Your Play?. Act II runs medium the whole way on purpose — reflection, then reference, then instruction — and that is the long browsing stretch between the peaks; Table Manners (reflection) sits deliberately between the two heaviest coaching sections so Know Your Enemy's five threat boxes are not the reader's second dense spread in a row. Act III descends: instruction in The Command Zone, browsing in The 99 (eleven roster groups, the lowest-effort page in the issue), then imagination in The Short List, which is the trough and sits immediately before the density arrives. Act IV carries the only dense adjacency, Sources Say (analysis) into By the Numbers (analysis), and it is legal because the renderer emits its declared full-bleed art break between them. The Kill is the late peak: seven callout-steps plus ten spreads is the heaviest furniture in the issue and it goes where the reader has the most momentum. Act V descends cleanly — Judge's Desk is opt-in deep reference with one component and no callouts, Featured Artist is the palate cleanser, the Back Page closes. Deliberate breathers beyond the declared one: The Short List before Sources Say, and Featured Artist between the case files and the door out. Furniture is thinnest exactly where intensity is lowest: Judge's Desk carries a pull quote and nothing else, and The Short List carries no captions or tips at all.",
+ "gaps": [
+  "BLOCKING, RENDERER SCOPE: build_manual's load_verified_stacks takes every checker-passed file in stacks/, so The Kill and Judge's Desk will render THIRTEEN spreads while this plan, manual_prose.combo_lines and every figure above are written against TEN. Files 001 and 007 resolve a Blowfly Infestation board and 013's board carries Necroskitter and Carnifex Demon — none of those cards is in the 99, so none of the three can be presented as a line this list assembles. They remain valid rules findings. The orchestrator must move or gate those three before the issue builds; my headlines say ten and my Judge's Desk pull quote counts six non-kill findings of ten.",
+  "BLOCKING, WHAT'S YOUR PLAY?: decisions/001 names Blowfly Infestation on its board and in hand, so it is in exactly the position of stacks 001 and 007 and cannot render. The section's copy above is written for a replacement scenario — a configuration check with three payoffs in hand, an assembling board and a control seat holding sweeper mana — and is deliberately non-telegraphing so it survives whichever branch set the replacement carries. If no decision spread exists at build time the section renders a TODO and Act I loses its participation beat.",
+  "BLOCKING, IDENTITY: issue.json stamps decklist_sha256 41b28f27… while cards.json, goldfish_metrics.json and mana_analysis.json all carry 61868aea…. validate-issue fails on the identity check. issue.json is authored and I do not write it; the orchestrator must restamp it deliberately. issue.json's cover_tagline, 'Four combos walked in. One walked out.', also no longer describes the evidence — four kills walked in and four walked out — and it is printed on the cover.",
+  "L10 HELD THROUGHOUT: nothing in this plan describes a card that is not currently in the 99 or the sideboard, no figure is presented as having changed, and no section carries a before/after. The three stack files and the one decision named above are excluded on the same principle rather than described as retired — a card is in the 99, in the sideboard, or not in the deck.",
+  "TIER DISCIPLINE: the four kills are ✓ and are stated as fact with their stack numbers. Every assembly percentage in this plan is ◆ and phrased as a draw rate, never as a win rate. The Short List's ten and every combo they would open are ★/candidate — 'needs a stack scenario' — and the copy says so on the page. The 32 contained combo lines and 11 two-card infinite records are named as containment, never as evidence.",
+  "THE UNION IS NOT A NUMBER AND THIS PLAN NEVER PRINTS ONE. goldfish._target_met scores each need group independently, so no target expresses 'any kill assembled'; goldfish_targets.json says so in its own note, and a first draft of that file carried such a target and removed it. By the Numbers makes the absence the callout rather than hiding it.",
+  "STACK SCENARIOS WORTH SPAWNING, RANKED: (1) The Meathook Massacre as a fourth substitute drain in the two recursion loops — it would widen the slot that three verified kills share, which is the single highest-leverage unresolved question on the deck; (2) Exquisite Blood beside Marauding Blight-Priest or Starscape Cleric, since both carry the identical clause but neither gains life by itself and the verified board ignited from the Avatar's own dies-trigger; (3) the bare Mikaeus two-card records — seven of the eleven two-card infinite records forcing the bracket floor belong to that family and none is resolved; (4) Grave Pact under a verified loop, because no stack has ever measured the edicts; (5) Black Sun's Zenith at X greater than 1 into Nest of Scarabs, which file 013 explicitly declines to resolve; (6) Pitiless Plunderer plus Ashnod's Altar plus Reassembling Skeleton, a fifth kill the moment any of nine drains is out.",
+  "STRATEGY DB HOLES THE ISSUE WROTE AROUND: no aristocrats section exists anywhere in the corpus — no outlet / fodder / payoff triad, which is this deck's entire architecture; no vocabulary for what BOUNDS an iterative engine (library, bodies, or nothing at all — this issue has one of each); nothing pricing a RECURSIVE copy above a one-shot one, which is the whole reason Gravecrawler has no substitute; nothing treating mana-free or self-funding lines as a class, which is this deck's best property under a lock; and nothing on how to read several partially-overlapping win conditions as one probability, which is why By the Numbers has to decline rather than compute.",
+  "THIN BUT HONEST: Featured Artist has no standout at all — the lead credit is two cards and twelve artists are tied there — so it runs as a breadth feature with an authored pick from among the twelve, and the note says plainly that no product was bought whole and that no contiguous collector-number run exists. The Short List's ten are unverified candidates by construction and three of them are sideboard cards; the section chips them as such.",
+  "PUN BUDGET: three, all in furniture — 'THE HUB IN FURNITURE'S CLOTHES', 'THE COST THAT ISN'T', and 'SEVENTY-ONE HANDS, NO HEADLINER'. None sits in a rules explanation or a data caption."
+ ]
 }

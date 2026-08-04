@@ -221,3 +221,62 @@ def test_line_cards_prefers_reality_over_its_own_heuristics():
     # Without the deck names the heuristics run alone and both real cards are lost —
     # which is the behaviour that shipped, and why the call site now passes them.
     assert line_cards(scenario) == []
+
+
+# ── The publication gate (2026-08-03) ────────────────────────────────────
+
+def test_line_cards_strips_an_em_dash_annotation():
+    """"Yawgmoth, Thran Physician (2/4) - your commander" is one card, not a sentence."""
+    from manamap.pilot.build_index import line_cards
+    scenario = {"board": {"you": [
+        "Yawgmoth, Thran Physician (2/4) — your commander",
+        "Gravecrawler (2/1) — already sacrificed to pay the cost",
+    ]}, "stack": [], "hand": []}
+    assert line_cards(scenario) == ["Yawgmoth, Thran Physician", "Gravecrawler"]
+
+
+def test_an_em_dash_inside_a_parenthetical_does_not_split_the_name():
+    """Order matters: cutting on the dash first leaves an unbalanced paren.
+
+    edgar-vampires 007 carries "Bloodletter of Aclazotz (UNTAPPED - it did not
+    attack)", which a dash-first strip turned into "Bloodletter of Aclazotz (UNTAPPED".
+    """
+    from manamap.pilot.build_index import line_cards
+    scenario = {"board": {"you": [
+        "Bloodletter of Aclazotz (UNTAPPED — it did not attack)"]},
+        "stack": [], "hand": []}
+    assert line_cards(scenario) == ["Bloodletter of Aclazotz"]
+
+
+def test_an_ability_object_is_not_a_card():
+    """A stack object naming an ability must not become a card in the manifest.
+
+    The length guard used to reject these at 130 characters; once the em-dash
+    strip cut them to 45 they sailed through, the stack then "named the line",
+    and the board — where the line actually lived — was skipped entirely.
+    """
+    from manamap.pilot.build_index import line_cards
+    scenario = {"stack": [{"object": "Yawgmoth, Thran Physician's activated ability "
+                                     "— 'Pay 1 life, Sacrifice another creature'"}],
+                "board": {"you": ["Nest of Scarabs (enchantment)"]}, "hand": []}
+    assert line_cards(scenario) == ["Nest of Scarabs"]
+
+
+def test_presentable_needs_both_gates():
+    from manamap.pilot.common import presentable, withheld
+    passing = {"checker": {"verdict": "pass"}}
+    assert presentable(passing)
+    assert not withheld(passing)
+    gated = {"checker": {"verdict": "pass"}, "presentable": False}
+    assert not presentable(gated), "a passing stack on an unreachable board must not publish"
+    assert withheld(gated)
+    assert not presentable({"checker": {"verdict": "fail"}})
+
+
+def test_withheld_works_without_a_checker_block():
+    """Decisions carry no checker block and still need to be withholdable."""
+    from manamap.pilot.common import presentable, withheld
+    decision = {"kind": "decision", "presentable": False}
+    assert withheld(decision)
+    assert not presentable(decision)
+    assert not withheld({"kind": "decision"})

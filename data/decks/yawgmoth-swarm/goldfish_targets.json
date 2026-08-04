@@ -1,5 +1,6 @@
 {
   "_note": "Re-derived 2026-08-03 against the thirteen checker-passed stacks and the six applied swaps. The previous file declared four kills built on Blowfly Infestation and Carnifex Demon (both now cut), required a self-shrinking body for the Mikaeus line that stack 010 disproved, and omitted the Phyrexian Altar loop entirely. Each kill target names the stack that verified it; each any_of group is the redundancy deck-audit prices through the hypergeometric.",
+  "_no_union_target": "A first draft of this file carried an 'ANY verified kill's pieces drawn' target, intended as the union of the four kills. It is not one and it was removed. `goldfish._target_met` counts each `need` group independently, so a hand holding Exquisite Blood, Gravecrawler and Zulaport Cutthroat satisfies all three groups while assembling no kill whatsoever. The schema is an AND of ORs and genuinely cannot express an OR of ANDs; a deck with four independent kills therefore has no single assembled_rate here, and any figure presented as one is wrong. Quote the per-kill rates.",
   "targets": [
     {
       "label": "KILL A (stack 009, unbounded): Warren Soultrader + Gravecrawler + an each-opponent drain",
@@ -32,14 +33,6 @@
         {"any_of": ["Mikaeus, the Unhallowed"]},
         {"any_of": ["Viscera Seer", "Carrion Feeder", "Woe Strider", "Gravecrawler", "Butcher Ghoul", "Reassembling Skeleton", "Yahenni, Undying Partisan"]},
         {"any_of": ["Bastion of Remembrance", "Zulaport Cutthroat", "Ayara, First of Locthwain"]}
-      ]
-    },
-    {
-      "label": "ANY verified kill's pieces drawn (the union the per-target rates cannot express)",
-      "need": [
-        {"any_of": ["Warren Soultrader", "Phyrexian Altar", "Exquisite Blood", "Mikaeus, the Unhallowed"]},
-        {"any_of": ["Gravecrawler", "South Wind Avatar", "Marauding Blight-Priest", "Starscape Cleric"]},
-        {"any_of": ["Bastion of Remembrance", "Zulaport Cutthroat", "Ayara, First of Locthwain", "Exquisite Blood"]}
       ]
     },
     {

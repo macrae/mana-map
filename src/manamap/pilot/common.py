@@ -160,6 +160,36 @@ def checker_passed(doc):
     return (doc.get("checker") or {}).get("verdict") == "pass"
 
 
+def withheld(doc):
+    """Explicitly withheld from publication — the board is no longer reachable.
+
+    Separate from `presentable` because a decision scenario carries no checker
+    block, so it can be withheld without ever having been checker-passed.
+    """
+    return doc.get("presentable", True) is False
+
+
+def presentable(doc):
+    """Can this verified artifact be shown as something THIS deck can do?
+
+    Passing the checker makes a scenario a true rules answer forever. It does
+    not make the board reachable: cut a card off the board and the artifact
+    still holds as a finding while describing a game this 99 can no longer
+    produce. Yawgmoth's stacks 001 and 007 resolve a Blowfly Infestation board
+    and Blowfly was cut; 013's board carries Necroskitter and Carnifex Demon.
+
+    So publication needs two gates, not one — `checker_passed` for "is it true"
+    and this for "is it ours". Set `presentable: false` with a
+    `presentable_note` saying which card left. The flag is top-level on purpose:
+    `scenario:self` fingerprints only `{title, scenario}`, so marking one costs
+    no re-verification.
+
+    One predicate, three consumers (the renderer, the newsstand manifest and the
+    deck dossier) — if the gate ever changes shape, it changes for all of them.
+    """
+    return checker_passed(doc) and not withheld(doc)
+
+
 def try_load_rules_db():
     """Best-effort rules for citation checks: real rules, or {} when the DB is absent.
 
