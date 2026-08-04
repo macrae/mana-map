@@ -355,5 +355,7 @@
     ],
     "summary": "PASS, iteration 1. Mechanical gate clean. All 21 citations fetched in full and judged supported in context; no misquotes, no out-of-context fragments. Card facts match cards.json: Sanguine Bond (sideboard, enchantment, 'Whenever you gain life, target opponent loses that much life' — verbatim Vito's sentence), Exquisite Blood (maindeck, enchantment), Vampire Nighthawk (2-power lifelinker). Arithmetic independently re-derived and exact: opp2 17 -> -1 in 9 iterations (one overkill from 2-life granularity), opp1 34 -> 0 in exactly 17, 26 total Bond resolutions, EB triggers 26 times but resolves 25 — the 26th is correctly mooted because 104.2a's immediate win fires during the SBA step of the priority cycle, before pending triggers are placed. 29 + 2x25 = 79 confirmed. Per-iteration retargeting, killing-loss trigger survival, SBA/trigger ordering (117.5), and the removal-window analysis all verified. One narration nit recorded on step 1 (seed damage must have been to a now-dead blocking creature for the given single-trigger stack to be complete); it does not affect any resolved step or number.",
     "iterations": 1
-  }
+  },
+  "presentable": false,
+  "presentable_note": "Exquisite Blood is on this board and is no longer in the 99. The resolution stands as a rules finding; it is not a line this deck can assemble, so it is withheld from the issue."
 }

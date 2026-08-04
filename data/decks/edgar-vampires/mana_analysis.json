@@ -1,6 +1,6 @@
 {
   "slug": "edgar-vampires",
-  "decklist_sha256": "6047837e800ebf02721feb636c6f56658cb88752e4ea097478ef98325350e76b",
+  "decklist_sha256": "2c4ed3c3857c96b5c15ac0e16a7a918f3244eb499b4bc90702231ee222d9203a",
   "lands": {
     "total": 37,
     "entries": 34,
@@ -392,32 +392,42 @@
       "G": 0
     },
     "nonland": {
-      "W": 1,
+      "W": 3,
       "U": 0,
       "B": 3,
-      "R": 2,
+      "R": 3,
       "G": 0
     },
     "total": {
-      "W": 18,
+      "W": 20,
       "U": 0,
       "B": 25,
-      "R": 16,
+      "R": 17,
       "G": 0
     },
     "producers": [
       {
-        "name": "Agadeem's Awakening // Agadeem, the Undercrypt",
-        "kind": "ramp:ritual",
-        "cmc": 3.0,
-        "produces": [
-          "B"
-        ]
-      },
-      {
         "name": "Arcane Signet",
         "kind": "ramp:rock",
         "cmc": 2.0,
+        "produces": [
+          "B",
+          "R",
+          "W"
+        ]
+      },
+      {
+        "name": "Legion's Landing // Adanto, the First Fort",
+        "kind": "ramp:rock",
+        "cmc": 1.0,
+        "produces": [
+          "W"
+        ]
+      },
+      {
+        "name": "Patchwork Banner",
+        "kind": "ramp:rock",
+        "cmc": 3.0,
         "produces": [
           "B",
           "R",
@@ -443,38 +453,38 @@
   },
   "pips": {
     "B": {
-      "total_pips": 50.0,
+      "total_pips": 39.0,
       "max_pips": 3,
-      "cards": 36,
+      "cards": 29,
       "earliest_turn": 1,
       "effective_pips": 2
     },
     "R": {
-      "total_pips": 8.0,
+      "total_pips": 11.0,
       "max_pips": 1,
-      "cards": 8,
+      "cards": 11,
       "earliest_turn": 2,
       "effective_pips": 1
     },
     "W": {
-      "total_pips": 19.0,
+      "total_pips": 23.0,
       "max_pips": 2,
-      "cards": 18,
+      "cards": 21,
       "earliest_turn": 1,
       "effective_pips": 1
     }
   },
   "shares": {
     "B": {
-      "pip_share": 0.649,
+      "pip_share": 0.534,
       "source_share": 0.415
     },
     "R": {
-      "pip_share": 0.104,
+      "pip_share": 0.151,
       "source_share": 0.264
     },
     "W": {
-      "pip_share": 0.247,
+      "pip_share": 0.315,
       "source_share": 0.321
     }
   },
@@ -490,40 +500,39 @@
       "R": 0.762
     },
     "with_rocks_and_dorks": {
-      "W": 0.849,
+      "W": 0.881,
       "B": 0.718,
-      "R": 0.81
+      "R": 0.831
     }
   },
   "ramp": {
     "ramp:cost-reduction": 2,
-    "ramp:ritual": 1,
-    "ramp:rock": 3
+    "ramp:rock": 5
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
-      "1": 1.0,
-      "10": 0.399,
-      "2": 0.997,
-      "3": 0.916,
-      "4": 0.806,
-      "5": 0.694,
-      "6": 0.582,
-      "7": 0.505,
-      "8": 0.449,
-      "9": 0.42
+      "1": 0.999,
+      "10": 0.397,
+      "2": 0.998,
+      "3": 0.921,
+      "4": 0.813,
+      "5": 0.683,
+      "6": 0.586,
+      "7": 0.507,
+      "8": 0.452,
+      "9": 0.425
     },
     "mean_available_mana_by_turn": {
-      "1": 1.0,
-      "10": 7.239,
-      "2": 2.153,
-      "3": 3.173,
-      "4": 4.008,
-      "5": 4.728,
-      "6": 5.344,
-      "7": 5.873,
-      "8": 6.364,
-      "9": 6.812
+      "1": 0.999,
+      "10": 7.258,
+      "2": 2.149,
+      "3": 3.176,
+      "4": 4.022,
+      "5": 4.736,
+      "6": 5.35,
+      "7": 5.877,
+      "8": 6.37,
+      "9": 6.832
     }
   },
   "assumptions": [
@@ -534,8 +543,8 @@
   ],
   "notes": [
     "B: 22 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 37-land deck; rocks and dorks lift the count to 25.",
-    "R: 14 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 37-land deck; rocks and dorks lift the count to 16.",
-    "W: 17 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 37-land deck; rocks and dorks lift the count to 18.",
+    "R: 14 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 37-land deck; rocks and dorks lift the count to 17.",
+    "W: 17 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 37-land deck; rocks and dorks lift the count to 20.",
     "16 of 37 lands enter tapped (43%) — over the one-in-three budget the deck builder allows itself."
   ]
 }

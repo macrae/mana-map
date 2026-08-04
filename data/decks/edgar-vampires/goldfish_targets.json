@@ -1,110 +1,60 @@
 {
+  "_note": "Re-derived 2026-08-04 for the token plan. The previous file declared a half-aristocrats engine — a seven-card 'drain engine' and a two-piece infinite whose halves included Exquisite Blood — against a four-card token amplifier group. Exquisite Blood, Grave Pact, Black Market Connections and Agadeem's Awakening have left the deck, and the pilot's direction is tokens rather than the graveyard. The first target is the dimension the pilot asked about by name.",
   "targets": [
     {
-      "label": "Vampire payoff or lord drawn (the go-wide engine)",
+      "label": "TOKEN -> DAMAGE drawn (the dimension the pilot asked about)",
       "need": [
-        {
-          "any_of": [
-            "Legion Lieutenant",
-            "Stromkirk Captain",
-            "Captivating Vampire",
-            "Sanctum Seeker",
-            "Shared Animosity",
-            "Vampire Socialite",
-            "Cordial Vampire",
-            "Drana, Liberator of Malakir"
-          ]
-        }
+        {"any_of": ["Purphoros, God of the Forge", "Impact Tremors", "Warleader's Call"]}
       ]
     },
     {
-      "label": "Token amplifier drawn",
+      "label": "A token multiplier or extra token-maker drawn",
       "need": [
-        {
-          "any_of": [
-            "Anointed Procession",
-            "Mondrak, Glory Dominus",
-            "Ocelot Pride",
-            "Mavren Fein, Dusk Apostle",
-            "Bloodline Keeper"
-          ]
-        }
+        {"any_of": ["Anointed Procession", "Mondrak, Glory Dominus", "Elspeth, Storm Slayer", "Ocelot Pride", "Mavren Fein, Dusk Apostle", "Bloodline Keeper // Lord of Lineage", "Charismatic Conqueror", "Legion's Landing // Adanto, the First Fort"]}
       ]
     },
     {
-      "label": "Drain engine drawn",
+      "label": "THE GO-WIDE KILL: a token->damage payoff AND a multiplier",
       "need": [
-        {
-          "any_of": [
-            "Vito, Thorn of the Dusk Rose",
-            "Exquisite Blood",
-            "Bloodthirsty Conqueror",
-            "Sanctum Seeker",
-            "Bloodletter of Aclazotz",
-            "Twilight Prophet",
-            "Sanguine Bond"
-          ]
-        }
+        {"any_of": ["Purphoros, God of the Forge", "Impact Tremors", "Warleader's Call"]},
+        {"any_of": ["Anointed Procession", "Mondrak, Glory Dominus", "Elspeth, Storm Slayer", "Ocelot Pride", "Mavren Fein, Dusk Apostle", "Bloodline Keeper // Lord of Lineage", "Charismatic Conqueror", "Legion's Landing // Adanto, the First Fort"]}
       ]
     },
     {
-      "label": "The two-piece infinite assembled (a lose-half + a gain-half)",
+      "label": "A Vampire lord or anthem drawn (the combat plan)",
       "need": [
-        {
-          "any_of": [
-            "Vito, Thorn of the Dusk Rose",
-            "Sanguine Bond"
-          ]
-        },
-        {
-          "any_of": [
-            "Exquisite Blood",
-            "Bloodthirsty Conqueror"
-          ]
-        }
+        {"any_of": ["Legion Lieutenant", "Stromkirk Captain", "Captivating Vampire", "Sanctum Seeker", "Shared Animosity", "Vampire Socialite", "Cordial Vampire", "Drana, Liberator of Malakir", "Abzan Falconer"]}
+      ]
+    },
+    {
+      "label": "THE SURVIVING INFINITE (stacks 004 and 006): Bloodthirsty Conqueror + a lifegain-loss half",
+      "need": [
+        {"any_of": ["Bloodthirsty Conqueror"]},
+        {"any_of": ["Vito, Thorn of the Dusk Rose", "Sanguine Bond"]}
       ]
     },
     {
       "label": "Ramp or fixing drawn",
       "need": [
-        {
-          "any_of": [
-            "Sol Ring",
-            "Arcane Signet",
-            "Talisman of Indulgence",
-            "Bontu's Monument",
-            "Herald's Horn"
-          ]
-        }
+        {"any_of": ["Sol Ring", "Arcane Signet", "Talisman of Indulgence", "Bontu's Monument", "Herald's Horn", "Patchwork Banner"]}
       ]
     },
     {
-      "label": "Draw engine drawn",
+      "label": "A draw engine drawn",
       "need": [
-        {
-          "any_of": [
-            "Black Market Connections",
-            "Twilight Prophet",
-            "Welcoming Vampire",
-            "Preacher of the Schism",
-            "Night's Whisper"
-          ]
-        }
+        {"any_of": ["Caretaker's Talent", "Welcoming Vampire", "Preacher of the Schism", "Night's Whisper", "Twilight Prophet"]}
       ]
     },
     {
       "label": "Protection held for the swarm",
       "need": [
-        {
-          "any_of": [
-            "Teferi's Protection",
-            "Flawless Maneuver",
-            "Boros Charm",
-            "Akroma's Will",
-            "Deflecting Swat",
-            "Swiftfoot Boots"
-          ]
-        }
+        {"any_of": ["Teferi's Protection", "Flawless Maneuver", "Boros Charm", "Akroma's Will", "Deflecting Swat", "Swiftfoot Boots"]}
+      ]
+    },
+    {
+      "label": "An answer to a noncreature permanent drawn (the binding axis)",
+      "need": [
+        {"any_of": ["Cemetery Gatekeeper"]}
       ]
     }
   ]

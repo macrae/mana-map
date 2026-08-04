@@ -3,7 +3,7 @@
     "commander": "Edgar Markov",
     "commander_cmc": 6,
     "deck": "edgar-vampires",
-    "decklist_sha256": "6047837e800ebf02721feb636c6f56658cb88752e4ea097478ef98325350e76b",
+    "decklist_sha256": "2c4ed3c3857c96b5c15ac0e16a7a918f3244eb499b4bc90702231ee222d9203a",
     "iterations": 10000,
     "max_turn": 10,
     "model_assumptions": [
@@ -22,143 +22,163 @@
   },
   "metrics": {
     "commander": {
-      "cast_by_turn_6_rate": 0.512,
+      "cast_by_turn_6_rate": 0.522,
       "cast_turn_histogram": {
-        "10": 584,
-        "3": 56,
-        "4": 656,
-        "5": 646,
-        "6": 3764,
-        "7": 1001,
-        "8": 884,
-        "9": 753,
-        "not_by_max_turn": 1656
+        "10": 616,
+        "3": 52,
+        "4": 669,
+        "5": 687,
+        "6": 3817,
+        "7": 983,
+        "8": 839,
+        "9": 733,
+        "not_by_max_turn": 1604
       },
-      "mean_cast_turn": 6.628,
+      "mean_cast_turn": 6.613,
       "median_cast_turn": 6
     },
     "iterations": 10000,
     "land_drop_hit_rate_by_turn": {
-      "1": 1.0,
-      "10": 0.399,
-      "2": 0.997,
-      "3": 0.916,
-      "4": 0.806,
-      "5": 0.694,
-      "6": 0.582,
-      "7": 0.505,
-      "8": 0.449,
-      "9": 0.42
+      "1": 0.999,
+      "10": 0.397,
+      "2": 0.998,
+      "3": 0.921,
+      "4": 0.813,
+      "5": 0.683,
+      "6": 0.586,
+      "7": 0.507,
+      "8": 0.452,
+      "9": 0.425
     },
     "mean_available_mana_by_turn": {
-      "1": 1.0,
-      "10": 7.239,
-      "2": 2.153,
-      "3": 3.173,
-      "4": 4.008,
-      "5": 4.728,
-      "6": 5.344,
-      "7": 5.873,
-      "8": 6.364,
-      "9": 6.812
+      "1": 0.999,
+      "10": 7.258,
+      "2": 2.149,
+      "3": 3.176,
+      "4": 4.022,
+      "5": 4.736,
+      "6": 5.35,
+      "7": 5.877,
+      "8": 6.37,
+      "9": 6.832
     },
     "mean_bodies_by_turn": {
-      "1": 0.371,
-      "10": 6.343,
-      "2": 0.837,
-      "3": 1.69,
-      "4": 2.631,
-      "5": 3.498,
-      "6": 4.04,
-      "7": 4.795,
-      "8": 5.361,
-      "9": 5.875
+      "1": 0.376,
+      "10": 6.516,
+      "2": 0.908,
+      "3": 1.747,
+      "4": 2.662,
+      "5": 3.549,
+      "6": 4.117,
+      "7": 4.89,
+      "8": 5.498,
+      "9": 6.027
     },
     "opening_hand": {
       "first_seven_land_histogram": {
-        "0": 307,
-        "1": 1411,
-        "2": 2857,
-        "3": 2961,
-        "4": 1757,
-        "5": 591,
-        "6": 110,
-        "7": 6
+        "0": 330,
+        "1": 1383,
+        "2": 2864,
+        "3": 2918,
+        "4": 1753,
+        "5": 636,
+        "6": 112,
+        "7": 4
       },
       "keep_first_seven_rate": 0.817,
       "kept_hand_land_histogram": {
-        "0": 8,
-        "1": 66,
-        "2": 3472,
-        "3": 3587,
-        "4": 2139,
-        "5": 728
+        "0": 9,
+        "1": 45,
+        "2": 3461,
+        "3": 3581,
+        "4": 2134,
+        "5": 764,
+        "6": 5,
+        "7": 1
       },
-      "mean_mulligans": 0.219
+      "mean_mulligans": 0.214
     },
     "targets": [
       {
-        "assembled_rate": 0.772,
-        "assembled_rate_assisted": 0.875,
-        "by_turn_6_rate": 0.663,
-        "by_turn_6_rate_assisted": 0.782,
-        "label": "Vampire payoff or lord drawn (the go-wide engine)",
-        "mean_turn": 2.737,
-        "mean_turn_assisted": 2.576
+        "assembled_rate": 0.432,
+        "assembled_rate_assisted": 0.677,
+        "by_turn_6_rate": 0.341,
+        "by_turn_6_rate_assisted": 0.561,
+        "label": "TOKEN -> DAMAGE drawn (the dimension the pilot asked about)",
+        "mean_turn": 3.448,
+        "mean_turn_assisted": 3.408
       },
       {
-        "assembled_rate": 0.521,
-        "assembled_rate_assisted": 0.727,
-        "by_turn_6_rate": 0.422,
-        "by_turn_6_rate_assisted": 0.617,
-        "label": "Token amplifier drawn",
-        "mean_turn": 3.292,
-        "mean_turn_assisted": 3.187
+        "assembled_rate": 0.79,
+        "assembled_rate_assisted": 0.885,
+        "by_turn_6_rate": 0.686,
+        "by_turn_6_rate_assisted": 0.794,
+        "label": "A token multiplier or extra token-maker drawn",
+        "mean_turn": 2.679,
+        "mean_turn_assisted": 2.542
       },
       {
-        "assembled_rate": 0.742,
-        "assembled_rate_assisted": 0.856,
-        "by_turn_6_rate": 0.627,
-        "by_turn_6_rate_assisted": 0.759,
-        "label": "Drain engine drawn",
-        "mean_turn": 2.853,
-        "mean_turn_assisted": 2.67
+        "assembled_rate": 0.334,
+        "assembled_rate_assisted": 0.579,
+        "by_turn_6_rate": 0.225,
+        "by_turn_6_rate_assisted": 0.419,
+        "label": "THE GO-WIDE KILL: a token->damage payoff AND a multiplier",
+        "mean_turn": 4.662,
+        "mean_turn_assisted": 4.462
       },
       {
-        "assembled_rate": 0.094,
-        "assembled_rate_assisted": 0.309,
-        "by_turn_6_rate": 0.054,
-        "by_turn_6_rate_assisted": 0.191,
-        "label": "The two-piece infinite assembled (a lose-half + a gain-half)",
-        "mean_turn": 5.357,
-        "mean_turn_assisted": 5.324
+        "assembled_rate": 0.829,
+        "assembled_rate_assisted": 0.911,
+        "by_turn_6_rate": 0.726,
+        "by_turn_6_rate_assisted": 0.823,
+        "label": "A Vampire lord or anthem drawn (the combat plan)",
+        "mean_turn": 2.576,
+        "mean_turn_assisted": 2.437
       },
       {
-        "assembled_rate": 0.609,
-        "assembled_rate_assisted": 0.783,
-        "by_turn_6_rate": 0.502,
-        "by_turn_6_rate_assisted": 0.673,
+        "assembled_rate": 0.048,
+        "assembled_rate_assisted": 0.24,
+        "by_turn_6_rate": 0.026,
+        "by_turn_6_rate_assisted": 0.142,
+        "label": "THE SURVIVING INFINITE (stacks 004 and 006): Bloodthirsty Conqueror + a lifegain-loss half",
+        "mean_turn": 5.644,
+        "mean_turn_assisted": 5.602
+      },
+      {
+        "assembled_rate": 0.684,
+        "assembled_rate_assisted": 0.827,
+        "by_turn_6_rate": 0.575,
+        "by_turn_6_rate_assisted": 0.719,
         "label": "Ramp or fixing drawn",
-        "mean_turn": 3.108,
-        "mean_turn_assisted": 2.991
+        "mean_turn": 2.95,
+        "mean_turn_assisted": 2.833
       },
       {
-        "assembled_rate": 0.615,
-        "assembled_rate_assisted": 0.784,
-        "by_turn_6_rate": 0.506,
-        "by_turn_6_rate_assisted": 0.674,
-        "label": "Draw engine drawn",
-        "mean_turn": 3.105,
-        "mean_turn_assisted": 2.999
+        "assembled_rate": 0.602,
+        "assembled_rate_assisted": 0.773,
+        "by_turn_6_rate": 0.493,
+        "by_turn_6_rate_assisted": 0.661,
+        "label": "A draw engine drawn",
+        "mean_turn": 3.148,
+        "mean_turn_assisted": 3.036
       },
       {
         "assembled_rate": 0.68,
         "assembled_rate_assisted": 0.826,
-        "by_turn_6_rate": 0.575,
-        "by_turn_6_rate_assisted": 0.725,
+        "by_turn_6_rate": 0.566,
+        "by_turn_6_rate_assisted": 0.713,
         "label": "Protection held for the swarm",
-        "mean_turn": 2.915,
-        "mean_turn_assisted": 2.801
+        "mean_turn": 3.032,
+        "mean_turn_assisted": 2.911
+      },
+      {
+        "assembled_rate": 0.166,
+        "assembled_rate_assisted": 0.519,
+        "by_turn_6_rate": 0.126,
+        "by_turn_6_rate_assisted": 0.409,
+        "label": "An answer to a noncreature permanent drawn (the binding axis)",
+        "mean_turn": 3.747,
+        "mean_turn_assisted": 3.949
       }
     ]
   }
