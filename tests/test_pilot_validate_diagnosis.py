@@ -146,13 +146,18 @@ def test_cutting_a_verified_lines_card_must_be_priced(tmp_path):
     doc = _doc(cut_candidates=[_cut(card="South Wind Avatar", orphans_stack=None)])
     deck = _deck(main=("South Wind Avatar",))
     errors = vd.validate(doc, deck, deck_path=base)
-    assert any("checker-passed stack(s) 005" in e for e in errors)
+    expected = ", ".join(vd.stacks_naming(base, "South Wind Avatar"))
+    assert any(f"checker-passed stack(s) {expected}" in e for e in errors), errors
 
 
 @requires_deck
 def test_declaring_the_right_stack_passes():
+    """Derive the expected list rather than pinning it — see the note on
+    `test_stacks_naming_reads_the_scenario_only`."""
     base = deck_dir("yawgmoth-swarm")
-    doc = _doc(cut_candidates=[_cut(card="South Wind Avatar", orphans_stack=["005"])])
+    real = vd.stacks_naming(base, "South Wind Avatar")
+    assert real, "fixture assumes this card appears in at least one passing stack"
+    doc = _doc(cut_candidates=[_cut(card="South Wind Avatar", orphans_stack=real)])
     errors = vd.validate(doc, _deck(main=("South Wind Avatar",)), deck_path=base)
     assert errors == []
 
@@ -171,9 +176,16 @@ def test_stacks_naming_reads_the_scenario_only():
 
     A discussion is not a dependency, so the probe reads the scenario block and
     nothing else.
+
+    Deliberately does NOT pin the exact stack set: this deck gains verified
+    stacks, and an earlier version of this test asserted `== ["005"]` and broke
+    the day stack 012 put South Wind Avatar on a second board. The invariant is
+    "named in a scenario is found, absent is not" — not which scenarios exist.
     """
     base = deck_dir("yawgmoth-swarm")
-    assert vd.stacks_naming(base, "South Wind Avatar") == ["005"]
+    found = vd.stacks_naming(base, "South Wind Avatar")
+    assert "005" in found, found
+    assert found == sorted(found), "ids must come back ordered"
     assert vd.stacks_naming(base, "Skullclamp") == []
 
 
