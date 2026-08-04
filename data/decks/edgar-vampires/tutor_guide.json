@@ -1,15 +1,37 @@
 {
   "slug": "edgar-vampires",
-  "assessment": "Three unrestricted tutors — Demonic Tutor, Vampiric Tutor, Diabolic Intent — against four loop halves: that is this deck's consistency engine. A tutor is 'essentially an additional copy of any card in our deck', and here every tutor is a copy of whichever half completes a verified pairing. Natural assembly is 5.4% by turn 6 and 9.4% by turn 10 (goldfish, tutors unmodeled), so the tutors ARE the assembly. The fetch discipline is removal-window profiling: fetch toward the pairing the table's open mana cannot answer — stack 005's all-enchantment Bond+Exquisite against creature-removal seats, a creature half only when the coast is genuinely clear. And remember the second job: against lifegain hate or an assembling lock, the tutors fetch the answer, not the combo.",
+  "assessment": "Three unrestricted wishes: Demonic Tutor and Diabolic Intent at two mana to hand, Vampiric Tutor at one mana to the top. A tutor is \"essentially an additional copy of any card in our deck\", and the goldfish prices exactly that. TOKEN -> DAMAGE is drawn in 43.2% of games and 67.7% once the tutors are counted as wildcards. THE GO-WIDE KILL goes 33.4% to 57.9%. The deterministic loop goes 4.8% to 24.0%. Read those three numbers side by side and the fetch discipline writes itself: your wishes buy the race, not the loop. The strategic frame names your default role beatdown, and it is right — a finisher drawn one game in twenty is not inevitability. So the standing rule is: fetch the card that converts a token into damage at all three seats, and fetch a combo half only when the pivot window is genuinely open. One structural fact governs the loop wishes. Bloodthirsty Conqueror is half of BOTH surviving verified lines, stacks 004 and 006, so it is the half you fetch and never the half you wait on — and because it is a creature, every iteration of both loops sits inside a window instant-speed creature removal can enter. You have no removal-proof assembly to wish for. Count their open mana first.",
   "tutors": [
     {
       "card": "Demonic Tutor",
-      "notes": "Two mana, any card, to hand. The question is never 'what is the best card' — it is 'which half completes a pair the table's held interaction cannot break.' Cite the matrix, then count their open mana.",
+      "notes": "Two mana, any card, straight to hand — the workhorse, and the only tutor that can hand you a two-drop you cast the same turn. Mean available mana is 4.022 on turn four, so Tutor-plus-a-two-drop is a real turn-four play and Tutor-plus-a-three-drop is a turn-five one. Above that you are buying next turn, not this one, which is fine as long as you say so to yourself before you cast it. Your default question is never \"what is my best card\" — it is \"which missing piece turns my board into damage at three seats right now\".",
       "targets": [
         {
-          "scenario": "A gain-half is sleeved — Exquisite Blood or Bloodthirsty Conqueror on the battlefield — and the draw-go seat keeps passing with mana up.",
-          "fetch": "Sanguine Bond",
-          "why": "Bond is the lose-half with no body. With Exquisite Blood it assembles stack 005's all-enchantment loop — 26 iterations, deterministic, no per-iteration creature-removal window; with Conqueror it assembles stack 006. Fetch the half instant-speed creature removal cannot touch, hold it hidden, and cast it into the first tapped-out window.",
+          "scenario": "Turn four. You have Edgar in the command zone, two or three bodies down and a doubler resolved, but nothing converting an entry into damage. Player 2 is the durdle seat on four lands; Player 3 has a 4/4 and is looking at you.",
+          "fetch": "Impact Tremors",
+          "why": "The cheapest door into the plan. Two mana for the tutor plus two for Tremors is the whole of turn four, and from that point every eminence token is 1 damage to each seat — 3 across the table per body, with no combat step and no blocker to beat. TOKEN -> DAMAGE is drawn in 43.2% of games at a mean turn of 3.448; when it has not shown by turn four, this is the card that makes it show. Take Tremors over Warleader's Call and Purphoros here purely on cost: you want the layer online this turn, not next.",
+          "citations": [
+            {
+              "rule": "strategy:multiplayer.asymmetry",
+              "quote": "Your cards should do something to all three seats or win the game"
+            }
+          ]
+        },
+        {
+          "scenario": "Turn six or later. Two token doublers are on the battlefield — say Anointed Procession and Mondrak — you hold a two-mana Vampire, and every seat is above 20 life. Nobody is attacking you because your board is 1/1s.",
+          "fetch": "Purphoros, God of the Forge",
+          "why": "This is the closing wish, and the arithmetic is checked. Stack 008 verifies one {B}{B} Vampire cast through the 1->2->4 eminence doubling as five Purphoros triggers — 10 damage to each opponent from a single two-drop. That is the whole table taking a Lava Axe because you played a bear. He is indestructible and, at this deck's usual devotion, not even a creature, so the sweeper the control seat is holding does not touch him. THE GO-WIDE KILL target measures 33.4% drawn; when both doublers have already landed, you are one fetch from the half that pays.",
+          "citations": [
+            {
+              "rule": "strategy:life-as-resource.philosophy-of-fire",
+              "quote": "reach must scale (each-opponent drains, commander damage, damage doublers)"
+            }
+          ]
+        },
+        {
+          "scenario": "Vito has survived a full table rotation on your battlefield. Player 1 is tapped out from a six-drop, Player 2 has two untapped lands and has shown no instant-speed removal all game, Player 3 is at 9.",
+          "fetch": "Bloodthirsty Conqueror",
+          "why": "Conqueror is half of both surviving verified loops — stack 004 with Vito, stack 006 with Sanguine Bond — so a wish spent on him completes whichever half you already own and improves the hand you do not yet have. Reverse the order and you get one door instead of two, which is why you fetch Conqueror toward a lose-half and never the other way round. Stack 004 is a deterministic table-kill from a 3-life seed with zero mana needed. The whole cost is exposure: Conqueror is a 5/5 body, so every iteration admits instant-speed creature removal, and that is why this fetch is gated on the open-mana count above rather than on your excitement.",
           "citations": [
             {
               "rule": "strategy:multiplayer.pivot-window",
@@ -18,68 +40,98 @@
           ]
         },
         {
-          "scenario": "A lose-half is sleeved — Vito or Sanguine Bond has survived a table rotation — and you want the engine that closes.",
-          "fetch": "Exquisite Blood",
-          "why": "The gain-half with two living partners: it completes stack 001 with Vito and stack 005 with Bond, and any lifelink connect or Cruel Celebrant death seeds the loop. It is also the resilient gain-half — an enchantment, untouched by every kill spell aimed at your creatures.",
+          "scenario": "You are behind and it is not close. The other go-wide seat has nine bodies to your four, your lords are dead, and you are the one being raced.",
+          "fetch": "Olivia's Wrath",
+          "why": "The reset that only they pay for. Every non-Vampire creature gets -X/-X where X is your Vampire count, so with four Vampires out their board takes -4/-4 and yours takes nothing. Be honest about the collateral before you cast it: Mondrak, Abzan Falconer and Ocelot Pride are not Vampires and will die with everyone else. Five mana on top of the tutor means you are buying this for next turn — cast Demonic on the turn you can afford to, and keep the Wrath hidden until the board is worth the card.",
           "citations": [
             {
-              "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-              "quote": "essentially an additional copy of any card in our deck"
+              "rule": "strategy:multiplayer.asymmetry",
+              "quote": "preferring asymmetric board wipes"
             }
           ]
-        },
-        {
-          "scenario": "You are behind: the aggro seat has run you low behind a bigger board, and your drains cannot race it.",
-          "fetch": "Olivia's Wrath",
-          "why": "The asymmetric reset: every non-Vampire gets -X/-X where X is your Vampire count, so it wipes their board and misses your entire army. You keep the eminence tokens, they keep nothing, and the race restarts with you ahead."
-        },
-        {
-          "scenario": "Closing: six-plus attackers plus Sanctum Seeker, the alpha turn is next, and you want it to end the game rather than dent it.",
-          "fetch": "Bloodletter of Aclazotz",
-          "why": "The doubler that turns the swing lethal. Stack 003 verified seven attackers under Sanctum Seeker and Bloodletter drain each opponent 14 at declare — before blockers exist — and stack 007 adds another verified 14 per opponent at your end step through Throne of the God-Pharaoh. One fetch converts a good attack into a table-shaking one."
         }
       ]
     },
     {
       "card": "Diabolic Intent",
-      "notes": "The additional cost is nearly free — the engine prints the currency. Best body: Bloodghast if a land drop or fetch remains, because it returns on landfall for zero mana; otherwise a spare eminence token. Either death also pays out under Cruel Celebrant, Cordial Vampire, or Grave Pact: the tutor's cost becomes a drain, counters, and an edict on its way to the bin.",
+      "notes": "Two mana and a creature you sacrifice as an additional cost. Eminence prints the currency: every Vampire spell you cast mints a 1/1 from the command zone, so the correct body is almost always a spare token you were given for free. Two upgrades on that. With Cordial Vampire on the battlefield the sacrifice puts a +1/+1 counter on every Vampire you control, so the cost is an anthem. With Elenda, the Dusk Rose carrying counters, sacrificing HER creates X 1/1 lifelink Vampires equal to her power — doubled again by any doubler — and your tutor cost becomes a token wave. The one time Intent is the wrong tutor is the one time it looks tempting: when your board is a single blocker, that blocker is not spare, and Demonic exists.",
       "targets": [
         {
-          "scenario": "Vito is on the battlefield, the table is tapped out or spent, and the window is open now.",
-          "fetch": "Exquisite Blood",
-          "why": "Completes stack 001 on the spot — deterministic, 38 iterations from a 2-life seed, retargeted each trigger, unbroken by a mid-loop death. When the open-mana count passes, Intent is Demonic Tutor at a discount you pay with a token you got for free.",
+          "scenario": "Turn five or six. You have three or four bodies and a spare token, the board is developing on all four seats, and nobody has committed removal yet. Your creatures are 1/1s and 2/2s and every opponent's blockers are bigger.",
+          "fetch": "Warleader's Call",
+          "why": "The payoff that repays the cost. One damage to each opponent whenever a creature you control enters, plus a permanent +1/+1 to your whole board — so the token you sacrificed to cast Intent comes back as a point of power on everything you own. Take it over Impact Tremors here specifically because your problem is two-sided: you need the entry damage AND you need the swarm to stop bouncing off blockers. Three mana on top of the tutor is a turn-five cast at 4.736 mean available mana.",
           "citations": [
             {
-              "rule": "strategy:multiplayer.pivot-window",
-              "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
+              "rule": "strategy:critical-mass",
+              "quote": "know your number"
             }
           ]
         },
         {
-          "scenario": "Both boards went wide and theirs is winning the fair fight — you need the board broken on your terms.",
-          "fetch": "Toxic Deluge",
-          "why": "The scalable sweeper: pay life to set X, sized to kill their board while your lords keep the counters-and-anthem survivors alive. Sacrificing Bloodghast to Intent first costs nothing — it returns on your next land drop, after the dust settles."
+          "scenario": "A token->damage payoff is already on the battlefield and undisturbed. You have four or more bodies, a Vampire in hand, and the table's removal has been spent on each other.",
+          "fetch": "Mondrak, Glory Dominus",
+          "why": "The multiplier that doubles every future entry, on a 4/4 body rather than a do-nothing enchantment. Stack 002 verifies the doubling is one event and order-independent — one eminence trigger becomes two tokens, and two becomes four with a second doubler. The neat part is the currency: Mondrak's own indestructible ability sacrifices two other artifacts or creatures, the exact same tokens Intent spends, so the two costs share one bank. THE GO-WIDE KILL sits at 33.4% drawn and 57.9% once the tutors are counted; this fetch is what that second number is made of.",
+          "citations": [
+            {
+              "rule": "strategy:multiplayer.threat-deflection",
+              "quote": "time them for the turn they win, not the turn they impress"
+            }
+          ]
         },
         {
-          "scenario": "Closing through a stall: the swarm is big enough to win but chump-blockers keep it honest.",
-          "fetch": "Cover of Darkness",
-          "why": "Choose Vampire and the swarm gains fear — blockable only by artifact and black creatures. The sacrificed token is one fewer attacker, and it does not matter: the rest connect, and stack 003's declare-attackers drain math still fires per attacker."
+          "scenario": "Board stall. You have six or seven Vampires, so does Player 2, and nobody profitably attacks. All three opponents are above 25 life and the game is drifting toward the long game you do not own.",
+          "fetch": "Sanctum Seeker",
+          "why": "The card that unsticks a stall by making attacking pay whether or not it connects. Each Vampire you control that attacks drains every opponent for 1 and gains you 1, and it all happens at declare — stack 003 verifies seven attackers as seven separate triggers resolving before blockers exist. Suddenly your swarm threatens 7 to each seat per turn from a board that cannot win a single combat. Every point you gain is also a live Vito or Bloodthirsty Conqueror trigger if either is down.",
+          "citations": [
+            {
+              "rule": "strategy:combat-math.racing",
+              "quote": "attack early even from a defensive posture"
+            }
+          ]
         },
         {
-          "scenario": "A 'players can't gain life' piece landed and the whole 2×2 matrix is dark.",
-          "fetch": "Purphoros, God of the Forge",
-          "why": "The kill that ignores the hate: stack 008 verified 10 damage to each opponent per two-mana Vampire cast through both doublers, with no lifegain anywhere in the line. Indestructible and usually not a creature at this deck's devotion, he also ignores the wrath that seat is holding."
+          "scenario": "The wish nobody at the table sees coming. Turn four or five, your board is fine, your hand is two lands, and you are about to start topdecking into a table with more cards than you.",
+          "fetch": "Caretaker's Talent",
+          "why": "Fetching a draw engine with a tutor feels like a waste until you count the axis. The deck audit puts card advantage at 4 counted copies against a target of 10, and a draw engine is drawn in 60.2% of games — so the games where you need this are exactly the games where you do not have it. Talent draws whenever one or more tokens you control enter, which is a thing you do every single turn. Then it keeps going: level two copies a token, level three makes every creature token a 3/3, so the card that refills your hand also finishes the job of making 1/1s matter. Nobody points removal at a Class enchantment.",
+          "citations": [
+            {
+              "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+              "quote": "a tutor is an enabler only if you can cast it and still deploy"
+            }
+          ]
         }
       ]
     },
     {
       "card": "Vampiric Tutor",
-      "notes": "One mana, instant speed, top of library — not hand. The card arrives on your NEXT draw, so cast it at the end step of the player before you: minimum information leaked, minimum time for a shuffle or surprise mill to take the top. The 2 life is trivial currency in a deck whose engines drain the whole table — but respect it under pressure. At 6 life against a swarm, the honest fetch is the sweeper, not the combo half.",
+      "notes": "One mana, instant speed, 2 life — and the card goes on TOP of your library, not into your hand. Learn the one limitation that costs pilots games: this tutor cannot answer anything already on the stack. It buys the answer to a threat you have PREDICTED, never one you are watching resolve. Cast it in the end step of the player immediately before you, so you untap, draw it, and hold it for the whole rotation while the table saw you spend one mana and learned nothing. The 2 life is cheap in a deck whose drains refill it — but respect it at low totals, because Preacher of the Schism only draws you a card while you have the most life or are tied for it.",
       "targets": [
         {
-          "scenario": "A gain-half is on the battlefield and your next untap is the assembly window.",
-          "fetch": "Sanguine Bond",
-          "why": "One mana at their end step sets the resilient lose-half on top; you draw it and cast it into stack 005 or 006's verified loop. Vampiric's discount over Demonic is exactly what keeps the loop's cast mana free on the combo turn.",
+          "scenario": "The control seat has passed with four-plus untapped mana for two turn cycles and has cast nothing. Your board is the widest at the table by a distance, and it is the end step of the player before you.",
+          "fetch": "Teferi's Protection",
+          "why": "Buy the insurance before you need it, because a held answer you never bought is not an answer. Life total that cannot change, protection from everything, every permanent you control phased out — it beats the sweeper, the targeted removal and the alpha strike aimed at you, all on one card. Protection is drawn in 68.0% of games and 56.6% by turn six; this fetch is how you cover the other third. One mana at their end step is also the cheapest possible telegraph: you spend nothing on your own turn and keep committing.",
+          "citations": [
+            {
+              "rule": "strategy:resource-hedging.wrath-math",
+              "quote": "commit exactly as much as wins before it arrives, no further"
+            }
+          ]
+        },
+        {
+          "scenario": "Bloodthirsty Conqueror has been on your battlefield for a full rotation and nobody killed him. You have three mana available next turn and the table is spent.",
+          "fetch": "Vito, Thorn of the Dusk Rose",
+          "why": "This is the reverse of the Demonic wish, and the choice between the two lose-halves is not a coin flip. Vito is three mana against Sanguine Bond's five, and he is a Vampire — an eminence trigger on the way down, a lord target after, and his activated ability gives your whole swarm lifelink, which is itself loop ignition. Bond is five mana with no body and no type. With Conqueror already down, Vito completes stack 006's sibling line, stack 004, at the cheapest rate available and leaves you mana for Flawless Maneuver, which costs nothing while you control your commander.",
+          "citations": [
+            {
+              "rule": "strategy:deckbuilding.threat-density",
+              "quote": "a Plan A and Plan B"
+            }
+          ]
+        },
+        {
+          "scenario": "Edgar Markov is on the battlefield with seven attackers behind him and the alpha strike is next turn. Player 3 has four blockers and one untapped white source. It is the end step before your untap.",
+          "fetch": "Akroma's Will",
+          "why": "With your commander out you choose BOTH modes: flying, vigilance and double strike, plus lifelink, indestructible and protection from each colour. That is the swing going over four blockers, dealing damage twice, surviving anything they hold, and gaining you every point of it — and every point gained is a Vito or Bloodthirsty Conqueror trigger if either is down. Edgar's own attack trigger adds a +1/+1 counter to each Vampire before damage. Set it at their end step; the table watches you spend one mana and reads it as a durdle.",
           "citations": [
             {
               "rule": "strategy:multiplayer.threat-deflection",
@@ -88,27 +140,24 @@
           ]
         },
         {
-          "scenario": "The wrath is telegraphed — the control seat passes with 4+ mana and your board is the widest at the table.",
-          "fetch": "Teferi's Protection",
-          "why": "The total out: life locked, protection from everything, board phased out. Set it the end step before your draw and it is in hand before their sorcery-speed window opens — one mana and 2 life for the disaster policy exactly when the premium is highest."
-        },
-        {
-          "scenario": "Alpha-strike turn next: Edgar is castable, seven attackers ready, and the swing must stick.",
-          "fetch": "Akroma's Will",
-          "why": "With Edgar on the battlefield you take both modes — flying, double strike, protection AND lifelink-indestructible — and every lifelink point is a lose-half trigger. Set it at the last end step before yours; the table sees one mana spent and learns nothing."
-        },
-        {
-          "scenario": "Twilight Prophet is on the battlefield with the city's blessing and your upkeep is coming.",
-          "fetch": "Exquisite Blood",
-          "why": "The wish nobody sees coming. Prophet reveals the top card at your upkeep, drains each opponent for its mana value, and puts it in your hand. A five-mana card on top means each opponent loses 5 and the combo half lands in hand anyway — the tutor recoups its 2 life doubled per opponent and delivers the fetch without spending your draw."
+          "scenario": "The wish of last resort, and worth naming so you recognise it: Vito has been exiled by a Swords to Plowshares, Bloodthirsty Conqueror is on your battlefield, and you still want the deterministic kill.",
+          "fetch": "Sanguine Bond",
+          "why": "Now, and only now, Bond is the correct half — with Vito gone it is the sole remaining partner, and stack 006 verifies the pairing as a deterministic table-kill at zero mana needed. Understand why it is last: five mana, no body, no creature type, no contribution to a single token or lord trigger. And it buys you no resilience, because Conqueror is still a creature and the loop still opens a removal window at every iteration — the all-enchantment version of this kill is not in this deck. Fetch it when the alternative is nothing, not when the alternative is Vito.",
+          "citations": [
+            {
+              "rule": "strategy:threat-assessment.answer-economy",
+              "quote": "held answers rot"
+            }
+          ]
         }
       ]
     }
   ],
   "gaps": [
-    "No tutor puts a card onto the battlefield or fetches at instant speed to play — every assembly crosses at least one turn of exposure, which is why the hidden-hand discipline matters as much as the fetch choice.",
-    "Against a resolved 'players can't gain life' effect the tutors can only fetch the answer (Despark, Fracture) or the hate-proof plan (Purphoros) — no tutor line restores the matrix while the piece stands.",
-    "The aristocrats-ignition path — a Cruel Celebrant death seeding a full pair — is flagged by the strategic frame as needing a stack scenario; these wishes lean on lifelink connects, the verified seed.",
-    "None of the three tutors is mana fixing in practice: burning Demonic Tutor on a land is a losing wish, and the manabase math belongs to Sources Say."
+    "No tutor here puts a card onto the battlefield, and none finds a card you can cast in response. Demonic Tutor and Diabolic Intent are sorceries; Vampiric Tutor is an instant that delivers to the top of your library, so it buys the answer to a threat you predicted and never one already on the stack. Every wish costs at least one turn of exposure — sequence for that, not against it.",
+    "Both surviving verified loops run through Bloodthirsty Conqueror, a 5/5 creature, so there is no removal-proof assembly to fetch toward. Stacks 004 and 006 each name the same cost: instant-speed creature removal in any iteration's priority window breaks the chain. Choosing the enchantment lose-half buys you nothing the loop needs.",
+    "Three lines the strategic frame calls promising are marked 'needs a stack scenario' — three doublers stacked to 1->2->4->8, Bloodletter of Aclazotz doubling the entry-damage triggers rather than only the Throne drain, and an Impact Tremors token entry igniting the Conqueror loop. Do not spend a wish on the strength of arithmetic the checker has not run. Bloodletter is a fine card and an unverified multiplier.",
+    "Ramp counts 7 copies against a 10-12 target and card advantage counts 4 against 10 (deck audit). A tutor is a copy of a CARD, never a copy of a CLASS — it can hand you Caretaker's Talent, but it cannot raise the density that decides whether you have any draw engine at all. Fix that in the 99, not at the table.",
+    "None of the three is fixing. Colour sources sit under target on the worst colour, but burning a two-mana sorcery on a land is a losing wish at every point on the curve, and the manabase arithmetic belongs to Sources Say."
   ]
 }

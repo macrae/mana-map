@@ -296,11 +296,30 @@ def test_every_committed_scenario_preflights_without_errors():
 
 @requires_deck
 def test_unknown_cards_separates_benched_from_never_heard_of():
-    """A sideboard card is known and deliberately benched — a different finding."""
+    """A sideboard card is known and deliberately benched — a different finding.
+
+    Builds its scenario from a card that IS on the bench right now rather than
+    naming one. The earlier version hardcoded a stack whose board held Exquisite
+    Blood, and broke the day that card left edgar-vampires for another deck —
+    testing a decklist instead of the predicate.
+    """
     from manamap.config import DECKS_DIR
-    path = DECKS_DIR / "edgar-vampires" / "stacks" / "001-exquisite-vito-drain-loop.json"
-    if not path.exists():
-        pytest.skip("edgar-vampires/001 not present")
-    errors, warnings = vs.unknown_cards(json.loads(path.read_text()), "edgar-vampires")
-    assert errors == []
-    assert any("SIDEBOARD" in w for w in warnings)
+    from manamap.pilot.common import load_deck_cards
+
+    try:
+        cards = load_deck_cards("edgar-vampires")["cards"]
+    except FileNotFoundError:
+        pytest.skip("edgar-vampires not fetched")
+    benched = next((c["name"] for c in cards if c.get("is_sideboard")), None)
+    if benched is None:
+        pytest.skip("edgar-vampires has no sideboard")
+
+    doc = {"scenario": {"board": {"you": [benched]}, "hand": [], "stack": []}}
+    errors, warnings = vs.unknown_cards(doc, "edgar-vampires")
+    assert errors == [], f"a benched card must warn, not error: {errors}"
+    assert any("SIDEBOARD" in w for w in warnings), warnings
+
+    unknown = {"scenario": {"board": {"you": ["Nicol Bolas, Planeswalker"]},
+                            "hand": [], "stack": []}}
+    errors, _ = vs.unknown_cards(unknown, "edgar-vampires")
+    assert errors, "a card the deck has never had must be an error"
