@@ -347,6 +347,21 @@ def validate(doc, deck_doc, deck_path=None, measured_axes=None, rules=None,
         errors.append("verdict is empty — say what this deck is good at and what "
                       "actually limits it")
 
+    # A diagnosis states the decklist it described. If that is not the decklist
+    # on disk, its figures are answers about a different deck — and re-deriving
+    # them one by one produces a wall of mismatches that buries the actual
+    # problem. Yawgmoth's post-swap run emitted 26 figure errors for what is one
+    # fact. Say the fact, and stop re-deriving.
+    stamped = doc.get("as_of_decklist_sha256")
+    current = deck_doc.get("decklist_sha256")
+    if stamped and current and stamped != current:
+        errors.append(
+            f"diagnosis describes decklist {stamped[:12]} but cards.json is now "
+            f"{current[:12]} — every axis figure in it answers a question about a "
+            f"different deck. Re-run the diagnose-deck loop; axis re-derivation is "
+            f"skipped below because comparing the two would report noise.")
+        measured_axes = None
+
     cards = deck_doc.get("cards", [])
     main_names = {c["name"] for c in mainboard(cards)}
     bench_names = {c["name"] for c in sideboard(cards)}
