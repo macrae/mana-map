@@ -1,34 +1,25 @@
 {
   "slug": "edgar-vampires",
-  "decklist_sha256": "2c4ed3c3857c96b5c15ac0e16a7a918f3244eb499b4bc90702231ee222d9203a",
+  "decklist_sha256": "508f85940507668c42ed37c89f0f07dee7d42c98a83e69d71aed9d46286d384c",
   "lands": {
     "total": 37,
     "entries": 34,
-    "enters_tapped": 16,
+    "enters_tapped": 15,
     "enters_tapped_always": 3,
     "classes": {
       "basic": 5,
-      "fetch": 4,
-      "fixing": 3,
+      "fetch": 3,
+      "fixing": 5,
       "mdfc": 1,
-      "tapped": 16,
-      "untapped-dual": 8,
-      "utility": 16
+      "tapped": 15,
+      "untapped-dual": 10,
+      "utility": 14
     },
     "list": [
       {
         "name": "Ancient Tomb",
         "copies": 1,
         "classes": [
-          "utility"
-        ],
-        "produces": []
-      },
-      {
-        "name": "Arid Mesa",
-        "copies": 1,
-        "classes": [
-          "fetch",
           "utility"
         ],
         "produces": []
@@ -99,6 +90,15 @@
         ]
       },
       {
+        "name": "Cavern of Souls",
+        "copies": 1,
+        "classes": [
+          "fixing",
+          "untapped-dual"
+        ],
+        "produces": []
+      },
+      {
         "name": "Caves of Koilos",
         "copies": 1,
         "classes": [
@@ -111,6 +111,19 @@
         ]
       },
       {
+        "name": "Command Tower",
+        "copies": 1,
+        "classes": [
+          "fixing",
+          "untapped-dual"
+        ],
+        "produces": [
+          "B",
+          "R",
+          "W"
+        ]
+      },
+      {
         "name": "Concealed Courtyard",
         "copies": 1,
         "classes": [
@@ -119,17 +132,6 @@
         "produces": [
           "B",
           "W"
-        ]
-      },
-      {
-        "name": "Cori Mountain Monastery",
-        "copies": 1,
-        "classes": [
-          "tapped",
-          "utility"
-        ],
-        "produces": [
-          "R"
         ]
       },
       {
@@ -385,9 +387,9 @@
   },
   "sources": {
     "lands": {
-      "W": 17,
+      "W": 18,
       "U": 0,
-      "B": 22,
+      "B": 23,
       "R": 14,
       "G": 0
     },
@@ -399,9 +401,9 @@
       "G": 0
     },
     "total": {
-      "W": 20,
+      "W": 21,
       "U": 0,
-      "B": 25,
+      "B": 26,
       "R": 17,
       "G": 0
     },
@@ -453,9 +455,9 @@
   },
   "pips": {
     "B": {
-      "total_pips": 39.0,
+      "total_pips": 38.0,
       "max_pips": 3,
-      "cards": 29,
+      "cards": 28,
       "earliest_turn": 1,
       "effective_pips": 2
     },
@@ -467,25 +469,25 @@
       "effective_pips": 1
     },
     "W": {
-      "total_pips": 23.0,
+      "total_pips": 28.0,
       "max_pips": 2,
-      "cards": 21,
+      "cards": 25,
       "earliest_turn": 1,
       "effective_pips": 1
     }
   },
   "shares": {
     "B": {
-      "pip_share": 0.534,
-      "source_share": 0.415
+      "pip_share": 0.494,
+      "source_share": 0.418
     },
     "R": {
-      "pip_share": 0.151,
-      "source_share": 0.264
+      "pip_share": 0.143,
+      "source_share": 0.255
     },
     "W": {
-      "pip_share": 0.315,
-      "source_share": 0.321
+      "pip_share": 0.364,
+      "source_share": 0.327
     }
   },
   "source_targets": {
@@ -495,13 +497,13 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "W": 0.831,
-      "B": 0.639,
+      "W": 0.849,
+      "B": 0.667,
       "R": 0.762
     },
     "with_rocks_and_dorks": {
-      "W": 0.881,
-      "B": 0.718,
+      "W": 0.895,
+      "B": 0.742,
       "R": 0.831
     }
   },
@@ -511,28 +513,28 @@
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
-      "1": 0.999,
-      "10": 0.397,
-      "2": 0.998,
-      "3": 0.921,
-      "4": 0.813,
-      "5": 0.683,
-      "6": 0.586,
-      "7": 0.507,
+      "1": 1.0,
+      "10": 0.405,
+      "2": 0.999,
+      "3": 0.925,
+      "4": 0.809,
+      "5": 0.693,
+      "6": 0.587,
+      "7": 0.504,
       "8": 0.452,
-      "9": 0.425
+      "9": 0.422
     },
     "mean_available_mana_by_turn": {
-      "1": 0.999,
-      "10": 7.258,
-      "2": 2.149,
-      "3": 3.176,
-      "4": 4.022,
-      "5": 4.736,
-      "6": 5.35,
-      "7": 5.877,
-      "8": 6.37,
-      "9": 6.832
+      "1": 1.0,
+      "10": 7.251,
+      "2": 2.141,
+      "3": 3.168,
+      "4": 4.005,
+      "5": 4.728,
+      "6": 5.344,
+      "7": 5.869,
+      "8": 6.361,
+      "9": 6.814
     }
   },
   "assumptions": [
@@ -542,9 +544,9 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 22 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 37-land deck; rocks and dorks lift the count to 25.",
+    "B: 23 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 37-land deck; rocks and dorks lift the count to 26.",
     "R: 14 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 37-land deck; rocks and dorks lift the count to 17.",
-    "W: 17 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 37-land deck; rocks and dorks lift the count to 20.",
-    "16 of 37 lands enter tapped (43%) — over the one-in-three budget the deck builder allows itself."
+    "W: 18 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 37-land deck; rocks and dorks lift the count to 21.",
+    "15 of 37 lands enter tapped (41%) — over the one-in-three budget the deck builder allows itself."
   ]
 }

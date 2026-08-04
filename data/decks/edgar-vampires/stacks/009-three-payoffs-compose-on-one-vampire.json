@@ -1,0 +1,564 @@
+{
+  "id": "009",
+  "slug": "three-payoffs-compose-on-one-vampire",
+  "deck": "edgar-vampires",
+  "title": "The primary plan, composing: three token-to-damage payoffs on one two-mana Vampire",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Purphoros, God of the Forge",
+        "Impact Tremors",
+        "Warleader's Call",
+        "Anointed Procession",
+        "five lands (two tapped to cast Cordial Vampire, three untapped)"
+      ],
+      "opponents": [
+        {
+          "life": 12,
+          "board": [
+            "no instant-speed interaction held"
+          ]
+        },
+        {
+          "life": 12,
+          "board": [
+            "no instant-speed interaction held"
+          ]
+        },
+        {
+          "life": 12,
+          "board": [
+            "no instant-speed interaction held"
+          ]
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "{3}",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Cordial Vampire (Vampire creature spell)",
+        "controller": "you",
+        "note": "cast for {B}{B}; Edgar Markov is in the COMMAND ZONE, so his eminence ability has already triggered and that trigger is on the stack ABOVE this spell and will resolve first"
+      }
+    ],
+    "question": "The eminence trigger resolves first and creates a Vampire token, doubled by Anointed Procession; then the Cordial Vampire spell resolves. Counting every creature-entry event: how many separate triggered abilities do Purphoros, Impact Tremors and Warleader's Call put on the stack in total, how much damage does each opponent take, and does this kill a three-opponent pod at 12 life each?"
+  },
+  "extras": {
+    "context": "This is the deck's PRIMARY PLAN and nothing has verified it composing. Stack 008 (checker-passed) measured Purphoros ALONE through two doublers on a pre-swap board. Stack 002 (checker-passed) verified the eminence-token doubling math. This scenario asks the different question the coach's consult named: whether all three token-to-damage payoffs -- which the 2026-08-04 token pass deliberately assembled -- add on the same entry events, and whether one two-mana Vampire is therefore lethal to a pod. Deliberately uses ONE doubler (Anointed Procession) rather than stacking Mondrak and Elspeth: the claim under test is the composition of the payoffs, not the ceiling of the multipliers. Cordial Vampire replaces stack 008's Gifted Aetherborn, which left the 99 -- same {B}{B}, same mana value, same plain-Vampire body. Purphoros's devotion-dependent creature status is in scope: devotion to red here is 3 (Purphoros {3}{R}, Impact Tremors {1}{R}, Warleader's Call {1}{R}{W}), so Purphoros is NOT a creature, and the resolver should say what that does and does not change about its own trigger and about 'another creature you control'.",
+    "scope": "One rules domain: triggered abilities on creature-entry, simultaneous entry as one event with multiple occurrences, and the state-based-action check for a player at 0 life."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Fix the board and compute devotion to red before anything resolves.",
+        "effect": "You control four noncreature permanents (Purphoros, God of the Forge; Impact Tremors; Warleader's Call; Anointed Procession), five lands, and NO creature bodies. Devotion to red counts red mana symbols in the mana costs of permanents you control: Purphoros {3}{R} = 1, Impact Tremors {1}{R} = 1, Warleader's Call {1}{R}{W} = 1, Anointed Procession {3}{W} = 0. Devotion to red = 3, which is less than five, so Purphoros's own static ability ('As long as your devotion to red is less than five, Purphoros isn't a creature') applies in layer 4 and Purphoros is a Legendary Enchantment God, not a creature.",
+        "citations": [
+          {
+            "rule": "700.5",
+            "quote": "devotion to [color] is equal to the number of mana symbols of that color among the mana costs of permanents that player controls"
+          },
+          {
+            "rule": "613.1d",
+            "quote": "Layer 4: Type-changing effects are applied."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "State exactly what Purphoros not being a creature does and does not change.",
+        "effect": "It does NOT switch off 'Whenever another creature you control enters, Purphoros deals 2 damage to each opponent.' A permanent's abilities function because the permanent is on the battlefield, not because it is a creature, so the triggered ability of a non-creature Purphoros functions normally and triggers on every creature entry below. What it DOES change: Purphoros is not a body (it cannot attack or block, and it is not counted among creature bodies on this board), and it is not itself a creature that could ever satisfy Impact Tremors or Warleader's Call by entering. The word 'another' in Purphoros's trigger condition excludes only Purphoros itself; the two tokens and Cordial Vampire are all other objects, so each satisfies it regardless of Purphoros's own type. Devotion also cannot rise during this sequence: Cordial Vampire's mana cost is {B}{B} (no red symbols) and the Vampire tokens have no mana cost at all, since a token has only the characteristics the creating ability defines. Purphoros stays a non-creature throughout, and the trigger count would be identical either way. The same rule pair is what lets Edgar Markov operate this board at all: 113.6's battlefield-only default is a default, and an ability that states which zones it functions in functions only from those zones -- eminence names the command zone, so it functions from there while Edgar sits in it.",
+        "citations": [
+          {
+            "rule": "113.6",
+            "quote": "Abilities of all other objects usually function only while that object is on the battlefield."
+          },
+          {
+            "rule": "111.3",
+            "quote": "A token doesn’t have any characteristics not defined by the spell or ability that created it."
+          },
+          {
+            "rule": "113.6b",
+            "quote": "An ability that states which zones it functions in functions only from those zones."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Before the eminence trigger resolves, recheck its intervening 'if' clause.",
+        "effect": "Eminence reads 'Whenever you cast another Vampire spell, if Edgar is in the command zone or on the battlefield, create a 1/1 black Vampire creature token.' The 'if' immediately follows the trigger condition, so it is an intervening 'if': the condition was checked when you cast Cordial Vampire (a Vampire spell other than Edgar) and is checked AGAIN as the ability resolves. If it were false at that time the ability would be removed from the stack and do nothing -- and with no token created there would be no token entry event and none of the six triggers that come from it. On this board it is true in fact: Edgar Markov is in the command zone and nothing in this sequence moves him, so the condition holds on resolution and the trigger goes on to create its token.",
+        "citations": [
+          {
+            "rule": "603.4",
+            "quote": "If the ability triggers, it checks the stated condition again as it resolves. If the condition isn’t true at that time, the ability is removed from the stack and does nothing."
+          },
+          {
+            "rule": "113.6b",
+            "quote": "An ability that states which zones it functions in functions only from those zones."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Read the stack top-down, then resolve the eminence trigger. Anointed Procession replaces the token creation.",
+        "effect": "Cordial Vampire (the spell) is at pos 0 (bottom); Edgar Markov's eminence trigger sits above it, so the eminence trigger resolves first while the spell waits beneath it. No opponent holds instant-speed interaction, so every priority round passes in succession. On resolution the eminence ability would create one 1/1 black Vampire creature token. Anointed Procession is a replacement effect that applies to an effect that would create one or more tokens under your control and doubles it, so the event that actually happens is the creation of TWO 1/1 black Vampire creature tokens. Creating them puts both onto the battlefield as a single action: one event, two permanents. Only one doubler is on the board, so no further replacement applies.",
+        "citations": [
+          {
+            "rule": "608.1",
+            "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+          },
+          {
+            "rule": "117.4",
+            "quote": "the spell or ability on top of the stack resolves"
+          },
+          {
+            "rule": "614.1",
+            "quote": "Such effects watch for a particular event that would happen and completely or partially replace that event with a different event."
+          },
+          {
+            "rule": "614.16",
+            "quote": "These replacement effects apply if the effect of a resolving spell or ability creates a token"
+          },
+          {
+            "rule": "701.7a",
+            "quote": "To create one or more tokens with certain characteristics, put the specified number of tokens with the specified characteristics onto the battlefield."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Count the triggers from the two-token entry -- the arithmetic the scenario asks for.",
+        "effect": "The two tokens enter the battlefield as ONE event containing TWO occurrences. When that event puts permanents onto the battlefield, every permanent on the battlefield is checked for enters-the-battlefield triggers matching the event; and an ability triggers once per occurrence, not once per event. So each of the three payoffs triggers TWICE, once for each token -- this is precisely why two simultaneously created tokens produce two instances of each trigger rather than one shared instance. Impact Tremors ('Whenever a creature you control enters') x2, Warleader's Call ('Whenever a creature you control enters') x2, Purphoros ('Whenever another creature you control enters') x2. Total from this wave: 6 separate triggered abilities.",
+        "citations": [
+          {
+            "rule": "603.6a",
+            "quote": "Each time an event puts one or more permanents onto the battlefield, all permanents on the battlefield (including the newcomers) are checked for any enters-the-battlefield triggers that match the event."
+          },
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Put the 6 triggers on the stack.",
+        "effect": "They triggered during the eminence trigger's resolution, so they are put on the stack the next time a player would receive priority -- after that resolution finishes. State-based actions are performed first (none apply: no player is at 0 or less life, no creature has lethal damage), then the triggers go on the stack. All six trigger on a creature entering -- not on another ability triggering -- so they are placed in the FIRST part of the two-part process, and all six are controlled by you, so you choose their relative order among themselves; all sit ABOVE the Cordial Vampire spell, which still has not resolved. Order does not change the total: each deals a fixed amount of damage to each opponent and none of them targets.",
+        "citations": [
+          {
+            "rule": "603.3",
+            "quote": "The ability becomes the topmost object on the stack."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event"
+          },
+          {
+            "rule": "603.3b",
+            "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Resolve the 6 triggers one at a time. Per-opponent arithmetic for the token wave.",
+        "effect": "Purphoros deals 2 damage to each opponent, twice = 4 per opponent. Impact Tremors deals 1 damage to each opponent, twice = 2 per opponent. Warleader's Call deals 1 damage to each opponent, twice = 2 per opponent. Total 8 damage PER OPPONENT from the two tokens. Damage dealt to a player causes that player to lose that much life, so each opponent goes 12 -> 4. Across the three-seat pod that is 24 life removed in total; the per-seat figure is 8 and the two figures are not interchangeable.",
+        "citations": [
+          {
+            "rule": "608.1",
+            "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+          },
+          {
+            "rule": "119.2",
+            "quote": "Damage dealt to a player normally causes that player to lose that much life."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Check state-based actions between each of those six resolutions.",
+        "effect": "A player at 0 or less life loses the game as a state-based action, checked whenever a player would get priority -- i.e. after each of the six resolutions, and again before each player would act. The lowest any opponent reaches during this wave, in any ordering, is 4 (12 -> 4). No opponent is at 0 or less at any point in the token wave, so no player-loss state-based action is performed and all three opponents are still in the game when the wave finishes.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "The stack is now down to the Cordial Vampire spell. All players pass; it resolves.",
+        "effect": "Cordial Vampire is a creature spell, i.e. a permanent spell, so its resolution puts it onto the battlefield under your control. That is a THIRD creature-entry event -- one permanent this time, so one occurrence.",
+        "citations": [
+          {
+            "rule": "110.4b",
+            "quote": "a spell that will enter the battlefield as a permanent as part of its resolution"
+          },
+          {
+            "rule": "608.3",
+            "quote": "If the object that’s resolving is a permanent spell, its resolution may involve several steps."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "Count the triggers from Cordial Vampire's entry, and state the total.",
+        "effect": "All permanents on the battlefield are checked against this entry event: Impact Tremors triggers once, Warleader's Call triggers once, Purphoros triggers once (Cordial Vampire is 'another creature you control' -- an object other than Purphoros, and Purphoros's non-creature status is irrelevant to that reading). 3 more triggered abilities go on the stack above nothing else. GRAND TOTAL for the sequence: 6 + 3 = NINE separate triggered abilities -- three instances of Purphoros's ability, three of Impact Tremors's, three of Warleader's Call's.",
+        "citations": [
+          {
+            "rule": "603.6a",
+            "quote": "Each time an event puts one or more permanents onto the battlefield, all permanents on the battlefield (including the newcomers) are checked for any enters-the-battlefield triggers that match the event."
+          },
+          {
+            "rule": "603.3",
+            "quote": "The ability becomes the topmost object on the stack."
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "Two things on this board that contribute nothing: Cordial Vampire's own ability, and Warleader's Call's +1/+1.",
+        "effect": "Cordial Vampire reads 'Whenever this creature or another creature dies, put a +1/+1 counter on each Vampire you control.' Dies means put into a graveyard from the battlefield. In this sequence no creature is put into a graveyard from the battlefield -- no combat, no removal, no sacrifice -- so the ability never triggers. In particular an opponent losing the game is NOT a creature dying: a player leaving the game causes objects that player owns to leave the game, which is not a graveyard event. Cordial Vampire contributes zero triggers and zero damage here, and would add no damage even if it did trigger, since it only places +1/+1 counters. Separately, Warleader's Call's other half -- 'Creatures you control get +1/+1' -- is a static ability that modifies power and toughness only. It makes each Vampire token a 2/2 and Cordial Vampire a 2/2. No combat occurs in this sequence and no damage in this sequence is dealt by a creature: every point comes from the fixed numbers printed in the three triggered abilities (2, 1 and 1). The +1/+1 therefore changes no damage total in this scenario.",
+        "citations": [
+          {
+            "rule": "700.4",
+            "quote": "is put into a graveyard from the battlefield"
+          },
+          {
+            "rule": "800.4a",
+            "quote": "When a player leaves the game, all objects (see rule 109) owned by that player leave the game"
+          },
+          {
+            "rule": "302.4c",
+            "quote": "To determine a creature’s power and toughness, start with the numbers printed in its lower right corner, then apply any applicable continuous effects."
+          }
+        ]
+      },
+      {
+        "n": 12,
+        "action": "Resolve the final 3 triggers and step the life totals down.",
+        "effect": "Per opponent: Purphoros 2, Impact Tremors 1, Warleader's Call 1 = 4 more damage each, taking each opponent 4 -> 0. Stepping down one resolution at a time (order is yours; Purphoros first): 4 -> 2 -> 1 -> 0. State-based actions are checked after each; after the first two no opponent is at 0 or less, so nothing is performed. GRAND TOTAL PER OPPONENT: Purphoros 3 x 2 = 6, Impact Tremors 3 x 1 = 3, Warleader's Call 3 x 1 = 3, i.e. TWELVE damage per opponent. Pod total across three seats: 36. Against 12 life per seat this is EXACTLY lethal, with zero margin -- one fewer trigger and every opponent survives at 1 or 2.",
+        "citations": [
+          {
+            "rule": "119.2",
+            "quote": "Damage dealt to a player normally causes that player to lose that much life."
+          },
+          {
+            "rule": "608.1",
+            "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+          }
+        ]
+      },
+      {
+        "n": 13,
+        "action": "The final state-based-action check, and what happens to anything left on the stack.",
+        "effect": "After the ninth trigger resolves, the next state-based-action check finds all three opponents at 0 life. A player at 0 or less life loses the game as a state-based action, and all applicable state-based actions are performed simultaneously as a single event, so all three opponents lose at the same time rather than one at a time. Each player who loses the game leaves the game. No opponent reached 0 earlier in the sequence, so no trigger is ever orphaned mid-sequence on this board and the stack is already empty when the last damage is dealt. For completeness: the moment the last opponent leaves, you are a player still in the game whose opponents have all left, so you win immediately, and any object still on the stack at that moment would never resolve because the game has ended.",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "704.3",
+            "quote": "the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "104.3b",
+            "quote": "If a player’s life total is 0 or less, that player loses the game the next time a player would receive priority."
+          },
+          {
+            "rule": "104.5",
+            "quote": "If a player loses the game, that player leaves the game."
+          },
+          {
+            "rule": "104.2a",
+            "quote": "A player still in the game wins the game if that player’s opponents have all left the game. This happens immediately"
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "NINE separate triggered abilities go on the stack, and the line is EXACTLY lethal to a three-opponent pod at 12 life. Three creature-entry events occur: the eminence trigger creates two 1/1 Vampire tokens (one doubled by Anointed Procession) entering as ONE event with TWO occurrences, then the Cordial Vampire spell resolves and enters. An ability triggers once per occurrence, not once per event, so each payoff triggers twice off the tokens and once off Cordial Vampire: Purphoros x3, Impact Tremors x3, Warleader's Call x3 = 9 triggers. Per opponent: 3x2 (Purphoros) + 3x1 (Impact Tremors) + 3x1 (Warleader's Call) = 12 damage. Life steps 12 -> 4 after the six token triggers, then 4 -> 2 -> 1 -> 0 across the last three. Pod total is 36 damage across three seats; the per-seat figure is 12 and the two are not interchangeable. Exactly lethal, zero margin. Purphoros is NOT a creature here (devotion to red = 3: one red pip each from Purphoros, Impact Tremors and Warleader's Call). That costs you a body but does not touch its triggered ability: a permanent's abilities function from the battlefield regardless of card type, and 'another creature you control' excludes only Purphoros itself. Devotion cannot rise mid-sequence -- Cordial Vampire is {B}{B} and tokens have no mana cost. Cordial Vampire's own ability does NOT trigger: nothing dies, and an opponent losing the game is not a creature being put into a graveyard. Warleader's Call's +1/+1 makes the tokens 2/2 and Cordial Vampire 2/2 but is irrelevant to the totals, since no combat happens and all damage comes from fixed numbers in the triggers. After the ninth trigger all three opponents are at 0 and lose simultaneously as a single state-based-action event; the stack is empty at that moment, so nothing is orphaned, and you win as the only player left.",
+      "you": {
+        "life": 40,
+        "battlefield": [
+          "Purphoros, God of the Forge (not a creature; devotion to red = 3)",
+          "Impact Tremors",
+          "Warleader's Call",
+          "Anointed Procession",
+          "two 1/1 black Vampire creature tokens (2/2 with Warleader's Call)",
+          "Cordial Vampire (1/1, 2/2 with Warleader's Call)",
+          "five lands (two tapped, three untapped)"
+        ],
+        "hand": [],
+        "mana_unspent": "{3}",
+        "triggers_put_on_the_stack": {
+          "Purphoros, God of the Forge": 3,
+          "Impact Tremors": 3,
+          "Warleader's Call": 3,
+          "total": 9
+        },
+        "damage_per_opponent": 12,
+        "pod_total_damage": 36,
+        "result": "You win the game: all three opponents lose simultaneously to the 0-life state-based action."
+      },
+      "opponents": [
+        {
+          "seat": "opponent_1",
+          "life_start": 12,
+          "life_after_token_wave": 4,
+          "life_final": 0,
+          "status": "loses the game (state-based action, 0 life)"
+        },
+        {
+          "seat": "opponent_2",
+          "life_start": 12,
+          "life_after_token_wave": 4,
+          "life_final": 0,
+          "status": "loses the game (state-based action, 0 life)"
+        },
+        {
+          "seat": "opponent_3",
+          "life_start": 12,
+          "life_after_token_wave": 4,
+          "life_final": 0,
+          "status": "loses the game (state-based action, 0 life)"
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "iterations": 3,
+    "findings": [
+      {
+        "step": 1,
+        "rule": "700.5",
+        "status": "supported",
+        "note": "Full rule: devotion to [color] = mana symbols of that color among mana costs of permanents you control. Recomputed independently from cards.json every iteration: Purphoros {3}{R}=1, Impact Tremors {1}{R}=1, Warleader's Call {1}{R}{W}=1, Anointed Procession {3}{W}=0, lands 0 => 3. No hybrid symbols on this board, so the rule's second sentence is not engaged."
+      },
+      {
+        "step": 1,
+        "rule": "613.1d",
+        "status": "supported",
+        "note": "Full rule covers effects changing an object's card type. Purphoros's conditional 'isn't a creature' is a type-changing static ability, correctly placed in layer 4; it is not a characteristic-defining ability."
+      },
+      {
+        "step": 2,
+        "rule": "113.6",
+        "status": "supported",
+        "note": "Full rule conditions functioning on ZONE, not card type, and ends 'The exceptions are as follows:'. I read all eleven exceptions (113.6a-k) — none switches off a non-creature permanent's battlefield triggered ability. The iteration-1 concern (the default stated without its exception in a scenario driven by a command-zone ability) is cured: the step now calls it a default and names the exception in the same sentence."
+      },
+      {
+        "step": 2,
+        "rule": "111.3",
+        "status": "supported",
+        "note": "Full rule plus its Jade Mage example ('The resulting token has no mana cost') establishes the tokens contribute 0 to devotion. With Cordial Vampire at {B}{B}, devotion genuinely cannot rise mid-sequence."
+      },
+      {
+        "step": 2,
+        "rule": "113.6b",
+        "status": "supported",
+        "note": "The quote is the entire rule. Correctly applied: eminence names the command zone, so it functions from there. Cited twice (here and step 3); the step-3 copy is the operative one and this one is a forward-looking aside. Duplication, not error."
+      },
+      {
+        "step": 3,
+        "rule": "603.4",
+        "status": "supported",
+        "note": "Reasoned for eminence specifically, not copied from siblings. Quote is two consecutive verbatim sentences; judged against the FULL rule, which also supplies the trigger-time check the step asserts and the parenthetical limiting the rule to an 'if' that immediately follows a trigger condition. Verified against cards.json: 'Eminence — Whenever you cast another Vampire spell, if Edgar is in the command zone or on the battlefield, create a 1/1 black Vampire creature token' — the 'if' does immediately follow the trigger condition. Both checks are handled: true at cast (Edgar in the command zone) and true at resolution (nothing in the sequence moves him). Cordial Vampire correctly identified as 'another Vampire spell' (cards.json type line 'Creature — Vampire', and not Edgar). FINAL-ITERATION FIX VERIFIED: the counterfactual now reads 'no token entry event and none of the six triggers that come from it' — accurate and complete, since exactly six triggers arise from the two-token event and Cordial Vampire's three are no longer implicated."
+      },
+      {
+        "step": 3,
+        "rule": "113.6b",
+        "status": "supported",
+        "note": "Operative use — this is where the eminence zone question lives. Matches the treatment in checker-passed siblings 002 and 008, which I read rather than taking on the resolution's word. Step 3's 'effect' is now a plain string like every other step (verified programmatically), so the design.py:29 esc(str(value)) render defect from iteration 2 is gone."
+      },
+      {
+        "step": 4,
+        "rule": "608.1",
+        "status": "supported",
+        "note": "Unchanged and byte-identical to the version validated in iteration 2."
+      },
+      {
+        "step": 4,
+        "rule": "117.4",
+        "status": "supported",
+        "note": "Unchanged. Full rule's empty-stack clause is not engaged; redundant with 608.1 but not wrong."
+      },
+      {
+        "step": 4,
+        "rule": "614.1",
+        "status": "supported",
+        "note": "Unchanged. Anointed Procession (cards.json verified) is a replacement effect of exactly the kind described."
+      },
+      {
+        "step": 4,
+        "rule": "614.16",
+        "status": "supported",
+        "note": "Unchanged. Full rule covers a resolving ability's effect creating a token — the eminence case exactly."
+      },
+      {
+        "step": 4,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": "Unchanged. Supports the single put of the specified number of tokens: one event, two permanents."
+      },
+      {
+        "step": 5,
+        "rule": "603.6a",
+        "status": "supported",
+        "note": "Unchanged. LOAD-BEARING PAIR, half one: the full rule's final sentence establishes that every permanent on the battlefield is checked against the event. It does not on its own establish two triggers — the resolution correctly pairs it with 603.2c rather than resting on it alone."
+      },
+      {
+        "step": 5,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "Unchanged. LOAD-BEARING PAIR, half two: 'it can trigger repeatedly if one event contains multiple occurrences', and the rule's own example (one trigger per land destroyed during a single resolution) is structurally identical to two tokens entering during one resolution. The scenario's central claim survived attack in all three iterations."
+      },
+      {
+        "step": 6,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Unchanged. Establishes both the put-on-stack-at-next-priority timing and topmost placement."
+      },
+      {
+        "step": 6,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "Unchanged. SBAs first, then triggers — the order the step asserts."
+      },
+      {
+        "step": 6,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "The iteration-1 misquote stays fixed and the quote is unchanged from iteration 2: the verbatim FIRST-part sentence, correctly stopping before the '(See rule 101.4.)' parenthetical. The prose reasons correctly that six creature-entry triggers are not 'another ability triggering' and therefore go on in part one, and 'you choose their relative order among themselves' now rests on the sentence that governs them. APNAP is trivial here because only you control triggers."
+      },
+      {
+        "step": 7,
+        "rule": "608.1",
+        "status": "supported",
+        "note": "Unchanged."
+      },
+      {
+        "step": 7,
+        "rule": "119.2",
+        "status": "supported",
+        "note": "Unchanged. Nothing on any board modifies or prevents damage, so 'normally' holds."
+      },
+      {
+        "step": 7,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Unchanged. Token-wave arithmetic recomputed independently again: 2x2 + 1x2 + 1x2 = 8 per opponent, 12 -> 4, pod 24, with per-seat and pod explicitly kept apart."
+      },
+      {
+        "step": 8,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Unchanged."
+      },
+      {
+        "step": 8,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Unchanged. Re-verified across orderings: the minimum any opponent reaches during the six-trigger wave is 4 in EVERY ordering (worst case largest hit first: 8, 7, 6, 4), so no player-loss SBA fires mid-wave and nothing is orphaned."
+      },
+      {
+        "step": 9,
+        "rule": "110.4b",
+        "status": "supported",
+        "note": "Unchanged. Carries the step's load-bearing claim on its own: a permanent spell 'will enter the battlefield as a permanent as part of its resolution'."
+      },
+      {
+        "step": 9,
+        "rule": "608.3",
+        "status": "supported",
+        "note": "Unchanged. Accurately quoted and on topic; the operative subrule for a spell with no targets is 608.3a. Optional tightening only, never a blocker."
+      },
+      {
+        "step": 10,
+        "rule": "603.6a",
+        "status": "supported",
+        "note": "Unchanged. 'Another creature you control' correctly read as an identity constraint on the entering object, not a type constraint on the source."
+      },
+      {
+        "step": 10,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Unchanged. Independent recount this iteration: 2 tokens x 3 payoffs = 6, plus 1 creature x 3 payoffs = 3 = NINE, split 3/3/3, matching final_state."
+      },
+      {
+        "step": 11,
+        "rule": "700.4",
+        "status": "supported",
+        "note": "Unchanged. Cordial Vampire's dies-trigger correctly ruled out — nothing is put into a graveyard from the battlefield anywhere in this sequence, and it would add no damage regardless since it only places counters."
+      },
+      {
+        "step": 11,
+        "rule": "800.4a",
+        "status": "supported",
+        "note": "Unchanged. Objects leaving the game is not a graveyard event; also confirms the leave is not itself an SBA, consistent with step 13's treatment of the loss."
+      },
+      {
+        "step": 11,
+        "rule": "302.4c",
+        "status": "supported",
+        "note": "Unchanged. The +1/+1 changes no total because every point of damage comes from a fixed number printed in a triggered ability and no combat occurs."
+      },
+      {
+        "step": 12,
+        "rule": "119.2",
+        "status": "supported",
+        "note": "Unchanged. Life stepping re-verified against the stated order: 4 -> 2 (Purphoros) -> 1 (Tremors) -> 0 (Call); every other ordering also lands on exactly 0 with no intermediate 0."
+      },
+      {
+        "step": 12,
+        "rule": "608.1",
+        "status": "supported",
+        "note": "Unchanged. Totals re-verified: 12 per seat, 36 pod against 36 total opposing life (scenario-facts opposing_life_total = 36, identical across all three iterations). 'Exactly lethal, zero margin' is defended, not asserted — cashed out as 'one fewer trigger and every opponent survives at 1 or 2', which is arithmetically right — and remains conditioned on the scenario's stated 12-life seats rather than claimed as a general property."
+      },
+      {
+        "step": 13,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Unchanged."
+      },
+      {
+        "step": 13,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Unchanged. Simultaneous single-event SBA is what makes all three opponents lose together; the repeat-check clause is satisfied trivially because the stack is empty."
+      },
+      {
+        "step": 13,
+        "rule": "104.3b",
+        "status": "supported",
+        "note": "Unchanged. Its parenthetical confirms this is the same mechanism as 704.5a, not a second one."
+      },
+      {
+        "step": 13,
+        "rule": "104.5",
+        "status": "supported",
+        "note": "Unchanged."
+      },
+      {
+        "step": 13,
+        "rule": "104.2a",
+        "status": "supported",
+        "note": "Unchanged. The stack is genuinely empty when the ninth trigger finishes, so the 'anything left on the stack' aside is hypothetical and harmless."
+      }
+    ]
+  }
+}

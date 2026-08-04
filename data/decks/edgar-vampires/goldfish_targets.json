@@ -1,5 +1,5 @@
 {
-  "_note": "Re-derived 2026-08-04 for the token plan. The previous file declared a half-aristocrats engine — a seven-card 'drain engine' and a two-piece infinite whose halves included Exquisite Blood — against a four-card token amplifier group. Exquisite Blood, Grave Pact, Black Market Connections and Agadeem's Awakening have left the deck, and the pilot's direction is tokens rather than the graveyard. The first target is the dimension the pilot asked about by name.",
+  "_note": "Re-derived 2026-08-05 after the six-pair pass. Two groups moved and no others: Corpse Knight joins the token-to-damage payoff group (its 'whenever another creature you control enters, each opponent loses 1 life' is the same entry trigger the other three carry, and it is the only one that causes LIFE LOSS rather than damage, so Bloodletter of Aclazotz doubles it), and Anguished Unmaking joins the noncreature-answer group, which was a one-card component and is the deck's binding axis. No group named a cut card, so nothing was removed. Cathars' Crusade is deliberately NOT filed as a token multiplier — it puts counters on creatures, it does not create tokens. Forerunner of the Legion is deliberately NOT added to the infinite's group: it TUTORS Bloodthirsty Conqueror to the top rather than drawing it, and this file does not model tutors anywhere else (Vampiric Tutor and Demonic Tutor are in the 99 and appear in no group). Stack 009 verified the payoff group composing: nine triggers, 12 damage per opponent off one two-mana Vampire through a single doubler.",
   "targets": [
     {
       "label": "TOKEN -> DAMAGE drawn (the dimension the pilot asked about)",
@@ -8,7 +8,8 @@
           "any_of": [
             "Purphoros, God of the Forge",
             "Impact Tremors",
-            "Warleader's Call"
+            "Warleader's Call",
+            "Corpse Knight"
           ]
         }
       ]
@@ -37,7 +38,8 @@
           "any_of": [
             "Purphoros, God of the Forge",
             "Impact Tremors",
-            "Warleader's Call"
+            "Warleader's Call",
+            "Corpse Knight"
           ]
         },
         {
@@ -133,11 +135,12 @@
       ]
     },
     {
-      "label": "An answer to a noncreature permanent drawn — Despark is the only one (Cemetery Gatekeeper is graveyard exile plus a ping, not removal)",
+      "label": "An answer to a noncreature permanent drawn — Despark and Anguished Unmaking (Cemetery Gatekeeper is graveyard exile plus a ping, not removal)",
       "need": [
         {
           "any_of": [
-            "Despark"
+            "Despark",
+            "Anguished Unmaking"
           ]
         }
       ]
