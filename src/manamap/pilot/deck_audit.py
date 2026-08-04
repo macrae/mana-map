@@ -67,7 +67,10 @@ from manamap.pilot.common import (
     load_json,
     mainboard,
 )
-from manamap.pilot.manabase import DECK_SIZE_AFTER_COMMANDER, cards_seen, hypergeometric_at_least
+from manamap.pilot.manabase import (
+    DECK_SIZE_AFTER_COMMANDER, cards_seen, enters_tapped,
+    enters_tapped_unconditionally, hypergeometric_at_least,
+)
 
 # Which classifier roles each axis counts. Deliberately NOT DECK_ROLE_GROUPS:
 # that dict partitions the 99 for a slot filler (every card lands in exactly one
@@ -290,11 +293,24 @@ def build_axes(slug, cards, roles, facts, mana, goldfish, bracket, overrides):
                "note": "rituals and Treasure makers are one-shot and are not "
                        "counted as sources"}))
 
-    # 2. Taplands.
-    tapped = (mana or {}).get("lands", {}).get("enters_tapped")
-    if tapped is not None:
-        axes.append(_axis("taplands", tapped, "copies", [],
-                          "mana_analysis.lands.enters_tapped"))
+    # 2. Taplands — the ones that ALWAYS enter tapped.
+    #
+    # `mana_analysis.lands.enters_tapped` is a substring count and a superset:
+    # it sweeps in shocklands (a choice at two life) and every "enters tapped
+    # unless…" land, including the "unless you have two or more opponents"
+    # cycle, which in Commander is always true. Reading that as tempo cost
+    # overstates it by a factor of five on a three-colour deck.
+    lands = [c for c in expand_copies(cards) if is_land(c)]
+    always = [c["name"] for c in lands if enters_tapped_unconditionally(c)]
+    conditional = [c["name"] for c in lands
+                   if enters_tapped(c) and not enters_tapped_unconditionally(c)]
+    axes.append(_axis(
+        "taplands", len(always), "copies", sorted(set(always)),
+        "land copies that enter tapped with no condition and no pay-life escape",
+        extra={"conditional_or_shock": len(conditional),
+               "conditional_cards": sorted(set(conditional)),
+               "note": "mana_analysis.lands.enters_tapped is a substring superset "
+                       "and counts both groups together"}))
 
     # 3. Colour sources — per colour, against the deck's own computed target.
     if mana:

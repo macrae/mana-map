@@ -229,8 +229,40 @@ def land_colors(card):
 
 
 def enters_tapped(card):
+    """Does this land's text mention entering tapped AT ALL?
+
+    A deliberate superset: the land selector uses it as a tapped BUDGET, where
+    counting a conditional land against the budget is the conservative choice.
+    Do not use it to measure tempo — see `enters_tapped_unconditionally`.
+    """
     text = str(card.get("oracle_text", "") or "").lower()
     return "enters tapped" in text or "enters the battlefield tapped" in text
+
+
+def enters_tapped_unconditionally(card):
+    """Does it ALWAYS enter tapped, with no escape and no condition?
+
+    The substring test above is a superset and reading it as a tempo cost
+    overstates badly. Of edgar-vampires' sixteen matches, three are
+    unconditional; three are shocks where entering tapped is a choice you make
+    at two life; and ten carry an "unless" clause — three of those being
+    "unless you have two or more opponents", which in Commander is ALWAYS true,
+    so they are untapped duals being counted as taplands.
+
+    `strategy:deckbuilding.mana-base` prices taplands as a real drawback
+    ("around eight is comfortable in a slow deck, near zero in an aggressive
+    one"), and that clearly means lands that actually enter tapped. Sixteen
+    against a cap of eight is a finding; three is not.
+    """
+    text = str(card.get("oracle_text", "") or "").lower()
+    if not enters_tapped(card):
+        return False
+    if "unless" in text:
+        return False
+    # Shocklands: "you may pay 2 life. If you don't, it enters tapped."
+    if "you may pay" in text:
+        return False
+    return True
 
 
 def land_quality(card):

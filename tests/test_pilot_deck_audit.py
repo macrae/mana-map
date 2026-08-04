@@ -346,3 +346,40 @@ def test_audit_reports_freshness_against_the_current_decklist():
     # Whatever the answer, it must be a real comparison rather than an assumption.
     for name, state in fresh["artifacts"].items():
         assert set(state) >= {"present"}, name
+
+
+# ── Taplands: "enters tapped" is a superset (2026-08-03) ─────────────────
+
+def test_a_shockland_does_not_always_enter_tapped():
+    """"you may pay 2 life. If you don't, it enters tapped" is a CHOICE."""
+    from manamap.pilot.manabase import enters_tapped, enters_tapped_unconditionally
+    shock = {"oracle_text": "({T}: Add {W} or {B}.) As this land enters, you may "
+                            "pay 2 life. If you don't, it enters tapped."}
+    assert enters_tapped(shock)
+    assert not enters_tapped_unconditionally(shock)
+
+
+def test_unless_you_have_two_or_more_opponents_is_not_a_tapland():
+    """In Commander that condition is ALWAYS true — it is an untapped dual.
+
+    Three of these were being counted against edgar-vampires' tapland budget,
+    and sisay was flagged OVER at seventeen with zero lands that always enter
+    tapped.
+    """
+    from manamap.pilot.manabase import enters_tapped_unconditionally
+    assert not enters_tapped_unconditionally(
+        {"oracle_text": "This land enters tapped unless you have two or more "
+                        "opponents. {T}: Add {B} or {R}."})
+
+
+def test_an_unconditional_tapland_counts():
+    from manamap.pilot.manabase import enters_tapped_unconditionally
+    assert enters_tapped_unconditionally(
+        {"oracle_text": "This land enters tapped. {T}: Add {R}, {W}, or {B}."})
+
+
+def test_an_untapped_land_counts_as_neither():
+    from manamap.pilot.manabase import enters_tapped, enters_tapped_unconditionally
+    plain = {"oracle_text": "{T}: Add {B}."}
+    assert not enters_tapped(plain)
+    assert not enters_tapped_unconditionally(plain)

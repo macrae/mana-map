@@ -36,9 +36,9 @@
       "axis": "taplands",
       "verdict": "strength",
       "measured": {
-        "value": 3
+        "value": 2
       },
-      "reading": "Three taplands against a ceiling of eight. Archway Commons and Gemstone Mine leaving took this from 4 to 3.",
+      "reading": "Two lands always enter tapped, Bojuka Bog and Path of Ancestry, against a ceiling of eight. Castle Locthwain is the only conditional one and 22 Swamps plus Urborg make its condition close to automatic, so there is nothing here worth a slot to fix.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base",
@@ -502,7 +502,7 @@
       ]
     },
     {
-      "what": "A finished mana base: 42 sources, 3 taplands, 0.919 on the turn-3 land drop.",
+      "what": "A finished mana base: 42 sources, 2 taplands, 0.919 on the turn-3 land drop.",
       "why": "Six sources above the Karsten target on the only colour in the deck. This is the one part of the list nothing on this page should be allowed to touch — except to spend the headroom on a utility land, which is the cheapest change available.",
       "evidence": {
         "consistency": 0.919,
@@ -725,7 +725,8 @@
     "NONE OF THE FOUR ADDS IS OWNED. owned_candidates.json lists 148 cards the pilot already holds and Gate to Phyrexia, Strip Mine and Bloodthirsty Conqueror are not among them; Ophiomancer is (in 'Golgari Parts'). Prices are stripped from cards.csv, so nothing here weighs acquisition cost, and Strip Mine in particular is a real purchase for a land slot.",
     "EVERY LINE THIS PAGE OPENS IS UNVERIFIED. Bloodthirsty Conqueror's pairings carry 'needs a stack scenario' by design, and so does the Plunderer/Ashnod's/Skeleton mana line. 32 combo lines are contained in this deck and 11 are tagged two-card infinites; containment is a shortlist, and the checker has already refuted a Commander Spellbook tag on this deck once.",
     "THE -1/-1 SUBTHEME IS UNADJUDICATED. Nest of Scarabs, Soul Snuffers, Skinrender, Black Sun's Zenith, Massacre Girl, Sinister Gnarlbark, Persist, Fume Spitter and Ifnir Deadlands serve an engine that stacks 002 and 005 cap at 5 to 8 activations — a value ceiling, not a kill — while three of the four verified kills never touch it. deck_recon's own gaps say no dated source compares that subtheme to pure aristocrats. I am not proposing to unpick it: Nest of Scarabs is on the board in nine checker-passed scenarios, six of them presentable (its name appears in twelve, nine of them presentable — 009, 010 and 012 name it only as absent from the board), and cutting it would cost more than it could plausibly buy. But that is the largest unexamined block in the list and it is why my cut list is three cards long rather than eight.",
-    "RECON IS DATED. deck_recon.json carries as_of 2026-08-03 and no artifact in this repo holds per-commander inclusion rates. The Ophiomancer case leans on it and is ranked last for exactly that reason: an inclusion rate is a fact about other people's decks."
+    "RECON IS DATED. deck_recon.json carries as_of 2026-08-03 and no artifact in this repo holds per-commander inclusion rates. The Ophiomancer case leans on it and is ranked last for exactly that reason: an inclusion rate is a fact about other people's decks.",
+    "THE TAPLAND FIGURE MOVED WITHOUT THE DECKLIST MOVING. manabase.enters_tapped was a substring match that swept in shocklands and every 'enters tapped unless' land; enters_tapped_unconditionally now backs the axis and deck-audit reads 2 with 1 conditional (Castle Locthwain). The prior reading's '4 to 3' delta was measured with the old function against a decklist that no longer exists and cannot be re-derived, so it is dropped rather than restated. mana_analysis.json still carries lands.enters_tapped 3 — the audit names it a superset in its own note — so anything quoting that field, including strategic_frame.json's '3 taplands', is quoting the old measure."
   ],
   "skeptic": {
     "verdict": "fail",

@@ -33,6 +33,7 @@ from manamap.pilot.manabase import (
     WUBRG,
     achieved_probability,
     enters_tapped,
+    enters_tapped_unconditionally,
     land_colors,
     pip_requirements,
     source_targets,
@@ -100,12 +101,14 @@ def analyze(slug):
     land_entries = sorted((c for c in entries if is_land(c)),
                           key=lambda c: c["name"])
     class_counts, land_sources = {}, {c: 0 for c in WUBRG}
-    tapped = 0
+    tapped = always_tapped = 0
     for card in lands:
         for cls in land_classes(card):
             class_counts[cls] = class_counts.get(cls, 0) + 1
         if enters_tapped(card):
             tapped += 1
+        if enters_tapped_unconditionally(card):
+            always_tapped += 1
         for colour in land_colors(card) & (identity or set(WUBRG)):
             land_sources[colour] += 1
     # The table lists one row per distinct land, with its copy count — a reader
@@ -180,7 +183,16 @@ def analyze(slug):
             # never be confused again.
             "total": len(lands),
             "entries": len(land_entries),
+            # Two numbers because they answer two questions, and reporting
+            # only the first made a reader say "3 taplands" about a deck with
+            # two. `enters_tapped` is a substring superset — it counts
+            # shocklands (a choice at two life) and every "enters tapped
+            # unless…" land, including the "unless you have two or more
+            # opponents" cycle, which in Commander is always true. That is the
+            # right budget for the land SELECTOR, which should be conservative.
+            # It is the wrong number for tempo, and deck-audit uses the second.
             "enters_tapped": tapped,
+            "enters_tapped_always": always_tapped,
             "classes": dict(sorted(class_counts.items())),
             "list": land_rows,
         },
@@ -227,7 +239,9 @@ def main(args):
     lands = result["lands"]
     probs = result["on_curve_probability"]["lands_only"]
     print(
-        f"Wrote {out}: {lands['total']} lands ({lands['enters_tapped']} tapped), "
+        f"Wrote {out}: {lands['total']} lands "
+        f"({lands['enters_tapped_always']} always tapped, "
+        f"{lands['enters_tapped']} incl. conditional), "
         f"sources {'/'.join(f'{c}{n}' for c, n in result['sources']['lands'].items() if n)}, "
         f"on-curve (lands only) "
         f"{', '.join(f'{c} {p:.0%}' for c, p in sorted(probs.items()))}"
