@@ -85,7 +85,7 @@
   // deck artifacts are cache-busted through this constant, so a deck edit that does not
   // bump it serves the OLD 99 from cache — silently, and looking exactly like a render
   // bug: cut cards keep drawing and the panel counts a sideboard that no longer exists.
-  const DATA_VERSION = 6;   // regions gained a third level and every label was renamed
+  const DATA_VERSION = 7;   // yawgmoth-swarm: six swaps, so cards.json and its derived artifacts all changed
   const v = url => url + '?v=' + DATA_VERSION;
   // Exported because the deck manifest and per-deck artifacts are fetched by
   // build.js and discovery.js, which had NO cache-busting at all — adding a key to
