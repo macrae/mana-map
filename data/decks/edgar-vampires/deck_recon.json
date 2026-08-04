@@ -1,0 +1,197 @@
+{
+  "slug": "edgar-vampires",
+  "commander": "Edgar Markov",
+  "as_of": "2026-08-03",
+  "consensus": "Strong Edgar lists treat the eminence trigger as the deck and everything else as a multiplier on it: a dense curve of cheap Vampires so every cast is two bodies, then creature lords to make the 1/1s matter. The community's non-negotiables are the lords, not the anthems — Cordial Vampire, Captivating Vampire, Stromkirk Captain, Legion Lieutenant, Bloodline Keeper and Welcoming Vampire all sit between 68% and 86% of the 2,041 EDHREC decks tagged Tokens, and this deck runs every one of them. Below that, two packages are near-universal and this deck runs neither: typal mana (Command Tower 94.4%, Voldaren Estate 65.1%, Path of Ancestry 61.3%) and a second, non-eminence source of Vampire tokens. The go-wide finisher the sources agree on is Shared Animosity plus an alpha strike, not a stack of anthems — no noncreature anthem clears 25% inclusion in the Tokens theme. Where the field genuinely divides is on whether tokens are bodies or fuel: even the Tokens-tagged average list runs Blood Artist at 83.0%, so the community's 'token Edgar' is not the graveyard-free deck the pilot is asking for.",
+  "findings": [
+    {
+      "claim": "Typal mana is the single largest package this deck runs none of. Command Tower is in 94.4% of Tokens-tagged Edgar decks (1,927/2,041) and 97.5% of Aggro-tagged ones (1,499/1,537); Voldaren Estate 65.1%, Path of Ancestry 61.3%, Secluded Courtyard 44.3%, Unclaimed Territory 41.5%, Cavern of Souls 40.7%, Three Tree City 34.3%. The deck's 36-land base has zero of the seven. Three Tree City is the one that also pays the width plan back — Owain Roberts calls it easy to get net positive on thanks to eminence — and Cavern of Souls is the community's answer to having a key lord countered.",
+      "cards": ["Command Tower", "Path of Ancestry", "Voldaren Estate", "Secluded Courtyard", "Unclaimed Territory", "Cavern of Souls", "Three Tree City"],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/edgar-markov/tokens.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/aggro.json",
+        "https://edhrec.com/articles/giving-edgar-markov-commander-decks-some-new-bite",
+        "https://tappedout.net/mtg-decks/the-ancient-house-of-markov-primer-1/"
+      ]
+    },
+    {
+      "claim": "Strong lists carry a SECOND source of Vampire tokens so the board does not stop growing when the pilot stops casting. This deck's only non-eminence Vampire-makers in the 99 are Bloodline Keeper and Mavren Fein, Dusk Apostle (Ocelot Pride makes Cats). Charismatic Conqueror is in 64.1% of Tokens decks and 67.1% of Aggro decks and is sitting in this deck's own sideboard. Edgar, Charmed Groom is 57.7% and is the most token-skewed card in the whole comparison (57.7% Tokens vs 49.1% Aristocrats): a Vampire lord that comes back as an upkeep token engine when it dies. Baron Bertram Graywater (28.2%) makes a lifelink Vampire whenever tokens enter — Roberts describes it as getting two tokens for one eminence trigger.",
+      "cards": ["Charismatic Conqueror", "Edgar, Charmed Groom", "Baron Bertram Graywater", "Sorin, Lord of Innistrad", "Legion's Landing", "March of the Canonized"],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/edgar-markov/tokens.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/aggro.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/aristocrats.json",
+        "https://edhrec.com/articles/giving-edgar-markov-commander-decks-some-new-bite"
+      ]
+    },
+    {
+      "claim": "Token doubling is where the archetype is actively growing, and every new doubler is white and cheap enough to matter. The deck already runs Anointed Procession (32.4%, its most token-skewed enchantment) and Mondrak. Elspeth, Storm Slayer doubles token creation on a planeswalker body and Roberts notes it means two Vampire tokens per Vampire cast; Renewed Solidarity is an anthem that copies each token that entered this turn at end step, which Roberts frames as Anointed Procession with the doubling delayed so you keep blockers; Caretaker's Talent draws on token entry and at level 3 gives creature tokens +2/+2. Inclusion is still low (6.2%, 11.2%, 7.3%) because all three are 2025-2026 printings — this is a trend claim, not a staple claim.",
+      "cards": ["Elspeth, Storm Slayer", "Renewed Solidarity", "Caretaker's Talent"],
+      "confidence": "one source",
+      "sources": [
+        "https://edhrec.com/articles/giving-edgar-markov-commander-decks-some-new-bite",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/tokens.json"
+      ]
+    },
+    {
+      "claim": "The anthem slot is a wide, low-conviction field — not a package. In the 2,041 Tokens-tagged decks, no noncreature anthem clears 25%: Patchwork Banner 22.5%, Cathars' Crusade 21.3%, Door of Destinies 17.1%, Banner of Kinship 16.0%, Etchings of the Chosen 12.8%, March of the Canonized 11.6%, Coat of Arms 11.3%, Chronicle of Victory 10.1%, Radiant Destiny 7.5%. The consensus mass-pump card is Shared Animosity (35.2% Tokens, 49.8% Aggro), which this deck already runs. Joshua Wood pairs it with Mirror Entity and Mercadia's Downfall as the pump package; PapLaRiviere flags Coat of Arms explicitly as double-edged because it pumps opposing tribes too. If the pilot wants 'more that cares how many you have', the evidence says pick one or two of these on fit, not on inclusion rate — there is no rate to appeal to.",
+      "cards": ["Patchwork Banner", "Cathars' Crusade", "Door of Destinies", "Banner of Kinship", "Chronicle of Victory", "Coat of Arms", "Radiant Destiny", "Mirror Entity", "Mercadia's Downfall"],
+      "confidence": "contested",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/edgar-markov/tokens.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/aggro.json",
+        "https://edhrec.com/articles/nearly-identical-edgar-or-edgar",
+        "https://tappedout.net/mtg-decks/the-ancient-house-of-markov-primer-1/"
+      ]
+    },
+    {
+      "claim": "Non-combat width payoffs — 'whenever a creature you control enters, ping each opponent' — are the go-wide answer that does not need combat and cannot be blocked. Warleader's Call is an anthem AND a pinger for {1}{R}{W} (21.9% Tokens, 24.7% Aggro); Impact Tremors is the two-mana version (22.0% / 24.6%). This deck already runs Purphoros, God of the Forge for the same effect at 2 damage, so these are redundancy on an axis the deck has exactly one card on, and Warleader's Call is the only card in the archetype that is an anthem and a width payoff in one slot.",
+      "cards": ["Warleader's Call", "Impact Tremors"],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/edgar-markov/tokens.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/aggro.json",
+        "https://draftsim.com/edgar-markov-edh-deck/"
+      ]
+    },
+    {
+      "claim": "There is a width-scaling card-draw package that never touches a graveyard, and the community runs it. Champion of Dusk draws X where X is your Vampire count (38.7% Tokens, 48.7% Aggro); Pact of the Serpent does the same as an instant-speed-free sorcery for {2}{B} (23.5% / 33.4%); Caretaker's Talent draws once per turn on token entry; Chronicle of Victory draws on every Vampire cast on top of +2/+2, first strike and trample. This matters because the community's default Edgar draw engine is Skullclamp, which is a sacrifice card in disguise — see contested.",
+      "cards": ["Champion of Dusk", "Pact of the Serpent", "Caretaker's Talent", "Chronicle of Victory"],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/edgar-markov/tokens.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/aggro.json",
+        "https://www.hipstersofthecoast.com/2020/06/__trashed/",
+        "https://edhrec.com/articles/giving-edgar-markov-commander-decks-some-new-bite"
+      ]
+    },
+    {
+      "claim": "The Aggro tag (1,537 decks) is a closer read on 'win with a board' than the Tokens tag, and it leans harder on lords and combat than on doublers. Every lord is higher there: Captivating Vampire 91.0% vs 84.4%, Stromkirk Captain 85.2% vs 77.3%, Legion Lieutenant 79.9% vs 68.2%, Sanctum Seeker 76.6% vs 67.1%, Drana 61.7% vs 52.5%, Shared Animosity 49.8% vs 35.2%. The bodies it adds that this deck lacks are big width payoffs on a Vampire: Malakir Bloodwitch drains for your Vampire count on ETB and has protection from white (56.5% Aggro); Clavileño turns an attacker into a Demon that leaves a 4/3 flier and a card behind (56.1%); Patron of the Vein removes a creature and grows every Vampire on each opposing death (32.5%); Crossway Troublemakers gives attacking Vampires deathtouch and lifelink (23.9%).",
+      "cards": ["Malakir Bloodwitch", "Clavileño, First of the Blessed", "Patron of the Vein", "Crossway Troublemakers", "Rakish Heir"],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/edgar-markov/aggro.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/tokens.json",
+        "https://edhrec.com/articles/nearly-identical-edgar-or-edgar"
+      ]
+    },
+    {
+      "claim": "PapLaRiviere's primer names Reconnaissance as the card built for this exact shell, on the grounds that it is incredible in any deck with attack triggers — he names Edgar Markov, Sanctum Seeker and Drana specifically — and doubly so in a go-wide deck. Edgar's attack trigger puts a +1/+1 counter on each Vampire, so the primer's claim is that you bank the counters and the Sanctum Seeker drain and then remove the team from combat. The same primer holds Scapegoat alongside Teferi's Protection as the wrath answer, since it returns any number of your creatures to hand for {W}. Both are one-mana white permanents/instants, both are non-graveyard, and this repo has verified nothing about the Reconnaissance line — it would need a stack scenario before anyone presents it as fact.",
+      "cards": ["Reconnaissance", "Scapegoat"],
+      "confidence": "one source",
+      "sources": ["https://tappedout.net/mtg-decks/the-ancient-house-of-markov-primer-1/"]
+    },
+    {
+      "claim": "Removal breadth is the quiet gap the sources treat as automatic. Anguished Unmaking is in 55.6% of Aggro-tagged and 45.8% of Tokens-tagged Edgar decks — higher than any anthem, higher than Shared Animosity in the Tokens theme — and this deck does not run it. It is the only catch-all in Mardu that answers an enchantment, an artifact, a planeswalker or a creature at instant speed for three mana, which for a go-wide deck means answering the anti-token permanent that turns off the whole plan.",
+      "cards": ["Anguished Unmaking"],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/edgar-markov/aggro.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/tokens.json"
+      ]
+    }
+  ],
+  "known_failure_modes": [
+    "The community's primary read is NOT the sweeper — it is spot removal on the lords. Kristen Gregory states it plainly: 'our Lords tend to eat removal', and her answer is +1/+1 counters, because '+1/+1 Counters are a great way to keep our team threatening when our Lords eat removal'. A 1/1 token army with three anthems is one Swords to Plowshares away from a 1/1 token army; a 1/1 token army with counters on it is not. This deck already has the counter half via Edgar's attack trigger, Drana and Vampire Socialite, but it has no way to put counters on the board without attacking.",
+    "The wrath is treated as something you hold up an answer for, not something you rebuild from. PapLaRiviere: 'In most cases, I hold Teferi's Protection and Scapegoat in reserve for that moment when someone (perhaps Me) casts a board wipe.' Gregory reaches the same conclusion from the other direction — 'prevention is ultimately better than cure' — and reaches for Etchings of the Chosen to keep a lord alive. This deck is already unusually well set up for that read: Teferi's Protection, Flawless Maneuver, Akroma's Will, Boros Charm and Deflecting Swat are five protection pieces, more than the Tokens-theme average carries.",
+    "Overextension into the wrath, which is a deckbuilding-shaped failure rather than a card-shaped one: eminence pays you for emptying your hand, so the deck is structurally inclined to commit everything and then get punished. Draftsim's guide answers it with hand discipline rather than a card — it advises holding back your generators and anthems, on the grounds that losing tokens and creatures is fine if the engine is still in hand.",
+    "The rebuild answers the community actually reaches for are graveyard cards, which is a direct collision with this pilot's direction. Roberts recommends Bloodline Bidding precisely because it 'will bring back our creatures, should we get wiped'; the Tokens theme also carries Patriarch's Bidding (8.2%), Victimize (8.3%) and Reanimate (11.1%). A go-wide Edgar that refuses the graveyard is refusing the archetype's standard insurance policy and has to buy protection instead — which is what the five protection spells above are.",
+    "Being the archenemy. Edgar's Tokens-tagged average list runs 33 creatures and the board is visible from turn two, so the table's threat assessment arrives before the payoff does. Every primer fetched treats an unanswered Edgar board as lethal within a turn cycle; the unattributed TappedOut primer puts it as: if your opponents don't have any boardwipes, things get out of control fast. The corollary is that they will find one."
+  ],
+  "contested": [
+    "Where a go-wide Edgar sits on the bracket ladder. EDHREC's self-reported bracket counts across all 12,816 Edgar decks that declared one are 3: 5,135 / 4: 3,820 / 2: 3,604 / 5: 169 / 1: 88 — so bracket 3 is modal and bracket 4 is a close second. Game Changer density in the Tokens theme is low and tutor-shaped rather than fast-mana-shaped: Teferi's Protection 34.5%, Vampiric Tutor 34.4%, Demonic Tutor 31.4%, Ancient Tomb 10.6%. This deck runs all four, which places it at the top of a very populated band rather than in rare air. No source I could fetch argues a go-wide Edgar is a bracket 5 deck, and none argues it is capped at 3.",
+    "Skullclamp. It is the community's default Edgar draw engine at 62.5% of Tokens decks — but it is the single most aristocrats-skewed card in the comparison after Viscera Seer, at 76.7% of Aristocrats decks, because what it actually does is kill your own 1/1 to draw two. It is either the best card the deck is not playing or a sacrifice engine wearing a token deck's clothes, depending on which half of the pilot's direction you weight. The evidence does not resolve it; the pilot's stated preference does.",
+    "Whether EDHREC's 'Tokens' tag describes the deck the pilot wants at all. Inside those 2,041 decks, Blood Artist is 83.0%, Cruel Celebrant 64.7% and Viscera Seer 49.6% — the drain-on-death package is nearly as standard in the token build as in the sacrifice build. The tags separate on emphasis, not on principle. A genuinely graveyard-free, drain-free Edgar is a minority build that no fetched primer actually presents.",
+    "Coat of Arms versus Shared Animosity as the mass-pump slot. PapLaRiviere argues Coat of Arms is double-edged in a format full of typal decks because it pumps every shared type on the table, and prefers Shared Animosity for pumping only his attacking Vampires. Inclusion agrees with him — Shared Animosity 35.2% against Coat of Arms 11.3% in the Tokens theme — but the sources disagree on whether the ceiling justifies the symmetry.",
+    "Edgar, Charmed Groom's role. Joshua Wood's comparison concludes that as a COMMANDER the Charmed Groom cannot compete with the original because he has to be cast, and builds him as an aristocrats deck instead. That verdict is about the command zone, not about the 99 — inside a Markov deck he is a +1/+1 lord that returns as a token engine when he dies, and he is the most token-skewed inclusion in the data (57.7% Tokens vs 49.1% Aristocrats). Reading Wood's article as an argument against the card would be reading it backwards."
+  ],
+  "sources": [
+    {
+      "title": "Edgar Markov (Commander) — EDHREC commander page",
+      "author": "EDHREC (aggregated deck data)",
+      "url": "https://edhrec.com/commanders/edgar-markov",
+      "contributed": "Theme tag distribution (Vampires 7,117 / Lifegain 3,692 / Tokens 2,041 / Aggro 1,537 / Aristocrats 1,435 / +1/+1 Counters 1,383) and the self-reported bracket split. Data refreshed through 2026-08-03."
+    },
+    {
+      "title": "Edgar Markov (Commander) — EDHREC page data (JSON)",
+      "author": "EDHREC (aggregated deck data)",
+      "url": "https://json.edhrec.com/pages/commanders/edgar-markov.json",
+      "contributed": "Machine-readable source for the tag counts and bracket_counts quoted above, so every percentage in this artifact is num_decks/potential_decks rather than a page summary."
+    },
+    {
+      "title": "Edgar Markov — Tokens theme data (JSON)",
+      "author": "EDHREC (aggregated deck data, n=2,041)",
+      "url": "https://json.edhrec.com/pages/commanders/edgar-markov/tokens.json",
+      "contributed": "Every Tokens-theme inclusion rate cited: lands, lords, anthems, doublers, draw, Game Changers."
+    },
+    {
+      "title": "Edgar Markov — Aggro theme data (JSON)",
+      "author": "EDHREC (aggregated deck data, n=1,537)",
+      "url": "https://json.edhrec.com/pages/commanders/edgar-markov/aggro.json",
+      "contributed": "The closest tag to 'win with a board'; supplied the lord-density and Shared Animosity contrast against the Tokens theme, and the Anguished Unmaking figure."
+    },
+    {
+      "title": "Edgar Markov — Aristocrats theme data (JSON)",
+      "author": "EDHREC (aggregated deck data, n=1,435)",
+      "url": "https://json.edhrec.com/pages/commanders/edgar-markov/aristocrats.json",
+      "contributed": "The other side of the split; supplied the per-card skew that separates the two builds (Viscera Seer +20.2pt, Bartolomé del Presidio +15.4, Phyrexian Altar +14.5, Skullclamp +14.1, Blood Artist +10.0 toward Aristocrats)."
+    },
+    {
+      "title": "Edgar Markov — Anthems theme data (JSON)",
+      "author": "EDHREC (aggregated deck data, n=106)",
+      "url": "https://json.edhrec.com/pages/commanders/edgar-markov/anthems.json",
+      "contributed": "Checked whether a dedicated anthem build exists as a distinct thing. It barely does — 106 decks — and its card list is the Tokens list with the lords weighted higher. Used only as a negative result."
+    },
+    {
+      "title": "Average Deck for Edgar Markov — Vampires",
+      "author": "EDHREC (aggregated from 7,117 decks)",
+      "url": "https://edhrec.com/average-decks/edgar-markov/vampires",
+      "contributed": "The 33-creature, 36-land average shape, and confirmation that the typal lands and Skullclamp sit in the average list this deck does not run."
+    },
+    {
+      "title": "Giving Edgar Markov Commander Decks Some New Bite",
+      "author": "Owain Roberts (EDHREC), 6 March 2026",
+      "url": "https://edhrec.com/articles/giving-edgar-markov-commander-decks-some-new-bite",
+      "contributed": "The most recent go-wide-specific card evaluation found: Elspeth Storm Slayer, Renewed Solidarity, Caretaker's Talent, Banner of Kinship, Baron Bertram Graywater, Chronicle of Victory, Three Tree City — and the convoke rebuild framing for Bloodline Bidding, which is the graveyard answer the pilot is steering away from."
+    },
+    {
+      "title": "Midrange Markov: Edgar Markov Vampires",
+      "author": "Kristen Gregory (Hipsters of the Coast), 5 June 2020",
+      "url": "https://www.hipstersofthecoast.com/2020/06/__trashed/",
+      "contributed": "The failure-mode read that reframes the question: the lords eat removal, +1/+1 counters are what keeps the team threatening through it, and prevention (Etchings of the Chosen) beats cure. Also the observation that competitive Edgar lists go wide fast and then lock down with anthems."
+    },
+    {
+      "title": "The Ancient House of Markov [Primer]",
+      "author": "PapLaRiviere (TappedOut)",
+      "url": "https://tappedout.net/mtg-decks/the-ancient-house-of-markov-primer-1/",
+      "contributed": "A self-described aggressive go-wide all-Vampire list. Supplied the wrath posture (hold Teferi's Protection and Scapegoat in reserve), the Reconnaissance attack-trigger argument, the Coat of Arms symmetry warning, and the Shared Animosity preference."
+    },
+    {
+      "title": "Nearly Identical — Edgar or Edgar?",
+      "author": "Joshua Wood (EDHREC), 13 October 2022",
+      "url": "https://edhrec.com/articles/nearly-identical-edgar-or-edgar",
+      "contributed": "The clearest statement of the archetype split, and the article that deliberately builds Edgar Markov as the go-wide half and Edgar, Charmed Groom as the aristocrats half. Named Mirror Entity and Mercadia's Downfall as the pump package alongside Shared Animosity."
+    },
+    {
+      "title": "Edgar Markov Commander Deck Guide",
+      "author": "Pedro Furtado (djorso), Draftsim, updated 27 February 2025",
+      "url": "https://draftsim.com/edgar-markov-edh-deck/",
+      "contributed": "The go-wide-not-tall framing, Warleader's Call and Patchwork Banner as the anthem picks, and the hand-discipline answer to overextension (hold back generators and anthems)."
+    },
+    {
+      "title": "Edgar Markov Primer (Updated)",
+      "author": "unattributed (TappedOut; thread activity under user redblackmage20)",
+      "url": "https://tappedout.net/mtg-decks/edgar-markov-primer-updated/",
+      "contributed": "One casual-tier data point on the archenemy failure mode and on Teferi's Protection as the standing wrath answer. Weak source, used only where a stronger one agrees."
+    }
+  ],
+  "gaps": [
+    "Reddit is not fetchable by this crawler (r/EDH and r/CompetitiveEDH both blocked at the search layer and via JSON), so there is no thread-level community sentiment in this artifact. Everything here is primers, articles and aggregate inclusion. If the orchestrator wants the 'what does the table actually do about it' read, that is where it lives and it is missing.",
+    "No source anywhere measures whether a go-wide Edgar loses to sweepers more often than to spot removal. Gregory asserts the lords-eat-removal read and PapLaRiviere asserts the hold-protection read, but both are qualitative. Settling it would need goldfishing against a modelled removal-density opponent, which this repo does not simulate.",
+    "I could not find a single fetchable primer for a genuinely graveyard-free, drain-free Edgar. Every go-wide list I fetched still runs Blood Artist, Cruel Celebrant, Viscera Seer or a sac outlet. The pilot's direction is more purist than the archetype's published examples, so several findings here are 'the go-wide community does X, minus the parts you have excluded' rather than 'here is a list built the way you want it'.",
+    "The TCGplayer Edgar Markov deck guide returned an empty body on fetch and is not cited. Mulligan Labs and mtgbudgetcommander.com both surfaced in search with specific-sounding numbers (an '84% turn-1 Vampire probability', a 'Power Level 8.5') but carry no named author and no verifiable methodology, so nothing from either is recorded.",
+    "No per-commander inclusion data exists for this deck's most distinctive cards — Bloodletter of Aclazotz, Throne of the God-Pharaoh and Purphoros do not appear in any EDHREC theme list for Edgar at all. Whether that is a signal (nobody plays them) or an artifact (the lists truncate at ~50 per type) cannot be told from the outside, and it means recon can say nothing about the deck's existing noncombat-damage axis except that Warleader's Call and Impact Tremors are the community's version of it."
+  ]
+}

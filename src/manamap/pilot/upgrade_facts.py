@@ -33,6 +33,7 @@ from manamap.config import (
     OBSOLESCENCE_INDEX_PATH,
     OUTPUT_CSV_PATH,
 )
+from manamap.analysis.common import parse_color_identity
 from manamap.pilot.artist_credits import is_accessory
 from manamap.pilot.bracket import is_infinite, load_reference
 from manamap.pilot.common import (
@@ -77,7 +78,16 @@ def load_pool():
             if "Stickers" in (row.get("type_line") or ""):
                 continue
             pool[row["name"]] = {
-                "color_identity": set(row.get("color_identity") or ""),
+                # cards.csv stores this as "B, R, W" — comma AND space separated.
+                # `set(...)` on the raw string yields {' ', ',', 'B', 'R', 'W'},
+                # which can never be a subset of a commander's identity, so
+                # `_eligible` silently rejected EVERY multicoloured card in the
+                # format. Mono-coloured and colourless cards have no separator
+                # and worked, which is exactly why it survived: the mono-black
+                # decks this brief was built on could not see the difference.
+                # `analysis.common.parse_color_identity` has always been the
+                # right parser; build_deck uses it.
+                "color_identity": parse_color_identity(row.get("color_identity")),
                 "legal": row.get("legal_commander") == "legal",
                 "edhrec_rank": int(float(row["edhrec_rank"])) if row.get("edhrec_rank") else None,
                 "game_changer": (row.get("game_changer") or "").lower() == "true",
