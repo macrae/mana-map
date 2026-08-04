@@ -3,7 +3,6 @@
 1 Ancient Tomb (UMA) 236
 1 Animate Dead (5ED) 140
 1 Arcane Signet (ECC) 56
-1 Archway Commons (STX) 263
 1 Ashnod's Altar (6ED) 274
 1 Ayara, First of Locthwain
 1 Bastion of Remembrance (TDC) 171
@@ -13,11 +12,10 @@
 1 Black Sun's Zenith (ECC) 71
 1 Blasting Station (5DN) 107
 1 Blood Artist (SOC) 209
-1 Blowfly Infestation (ECC) 46
 1 Bojuka Bog (SOC) 363
 1 Butcher Ghoul (INR) 99
+1 Cabal Coffers
 1 Cabal Pit (ODY) 315
-1 Carnifex Demon
 1 Carrion Feeder (EMA) 84
 1 Castle Locthwain (CLB) 884
 1 City of Brass (MB2) 240
@@ -30,8 +28,8 @@
 1 Exotic Orchard (ECC) 148
 1 Exquisite Blood
 1 Fatal Push (ACR) 90
+1 Feed the Swarm
 1 Fume Spitter (UMA) 95
-1 Gemstone Mine (DMR) 247
 1 Geralf's Messenger (DKA) 63
 1 Grave Pact
 1 Grave Titan
@@ -41,13 +39,12 @@
 1 Insatiable Avarice (OTJ) 91
 1 Lightning Greaves (OTC) 260
 1 Malakir Rebirth (ZNR) 111
+1 Marauding Blight-Priest
 1 Massacre Girl, Known Killer (ECC) 79
 1 Mikaeus, the Unhallowed (CMM) 173
 1 Mirkwood Bats (LTR) 95
 1 Necropotence (IMA) 98
-1 Necroskitter (ECC) 48
 1 Nest of Scarabs (AKH) 101
-1 Nim Deathmantle
 1 Path of Ancestry (SOC) 393
 1 Persist
 1 Phyrexian Altar (2X2) 311
@@ -64,12 +61,15 @@
 1 Sol Ring (ECC) 58
 1 Soul Snuffers
 1 South Wind Avatar (TMT) 78
+1 Starscape Cleric
 1 Stitcher's Supplier (TDC) 196
 1 Supernatural Stamina (CMM) 188
 1 Survivors' Encampment (HOU) 184
 22 Swamp (ECL) 271
 1 Takenuma, Abandoned Mire (NEO) 278
+1 The Meathook Massacre
 1 Toxic Deluge (MH3) 277
+1 Urborg, Tomb of Yawgmoth
 1 Vampiric Tutor (6ED) 161
 1 Victimize (TDC) 198
 1 Viscera Seer (SOC) 229
@@ -88,10 +88,18 @@
 #
 # Mana Crypt was on this list and has been removed: cards.csv records it
 # legal_commander=banned. A banned card cannot be bought and played.
+#
+# 2026-08-03: six swaps applied on the re-diagnosis run against thirteen
+# checker-passed stacks. OUT Archway Commons, Blowfly Infestation, Carnifex
+# Demon, Gemstone Mine, Necroskitter, Nim Deathmantle. IN Urborg and Cabal
+# Coffers (promoted off this list, so they leave it below), plus four
+# purchases: Feed the Swarm, Marauding Blight-Priest, Starscape Cleric and
+# The Meathook Massacre. The 100 therefore now ASSUMES four bought cards.
+# Phyrexian Reclamation was kept: cutting it and Nim Deathmantle together
+# strips the deck's repeatable recursion and diagnosis gaps[11] declares
+# that pair unpriced.
 Considering:
-1 Cabal Coffers
 1 Crypt Ghast
 1 Dictate of Erebos
 1 Imp's Mischief
 1 Sheoldred, Whispering One
-1 Urborg, Tomb of Yawgmoth

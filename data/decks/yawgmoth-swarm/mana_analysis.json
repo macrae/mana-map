@@ -1,16 +1,16 @@
 {
   "slug": "yawgmoth-swarm",
-  "decklist_sha256": "41b28f27d1470b6d57c96ee0e81e3519d2d8ad51b1effa0d4bd6c34fa30cf684",
+  "decklist_sha256": "61868aea541588d08b4c9fc3c710de73d2de74fa98945ed50d82691306be6afc",
   "lands": {
     "total": 36,
     "entries": 15,
-    "enters_tapped": 4,
+    "enters_tapped": 3,
     "classes": {
       "basic": 22,
-      "fixing": 7,
-      "tapped": 4,
+      "fixing": 6,
+      "tapped": 3,
       "untapped-dual": 5,
-      "utility": 9
+      "utility": 8
     },
     "list": [
       {
@@ -22,10 +22,9 @@
         "produces": []
       },
       {
-        "name": "Archway Commons",
+        "name": "Bojuka Bog",
         "copies": 1,
         "classes": [
-          "fixing",
           "tapped"
         ],
         "produces": [
@@ -33,10 +32,10 @@
         ]
       },
       {
-        "name": "Bojuka Bog",
+        "name": "Cabal Coffers",
         "copies": 1,
         "classes": [
-          "tapped"
+          "untapped-dual"
         ],
         "produces": [
           "B"
@@ -92,18 +91,6 @@
         "classes": [
           "fixing",
           "untapped-dual"
-        ],
-        "produces": [
-          "B"
-        ]
-      },
-      {
-        "name": "Gemstone Mine",
-        "copies": 1,
-        "classes": [
-          "fixing",
-          "untapped-dual",
-          "utility"
         ],
         "produces": [
           "B"
@@ -171,6 +158,14 @@
         "produces": [
           "B"
         ]
+      },
+      {
+        "name": "Urborg, Tomb of Yawgmoth",
+        "copies": 1,
+        "classes": [
+          "fixing"
+        ],
+        "produces": []
       }
     ]
   },
@@ -178,7 +173,7 @@
     "lands": {
       "W": 0,
       "U": 0,
-      "B": 35,
+      "B": 34,
       "R": 0,
       "G": 0
     },
@@ -192,7 +187,7 @@
     "total": {
       "W": 0,
       "U": 0,
-      "B": 43,
+      "B": 42,
       "R": 0,
       "G": 0
     },
@@ -279,7 +274,7 @@
     "B": {
       "total_pips": 75.0,
       "max_pips": 3,
-      "cards": 54,
+      "cards": 55,
       "earliest_turn": 1,
       "effective_pips": 2
     }
@@ -295,10 +290,10 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "B": 0.895
+      "B": 0.882
     },
     "with_rocks_and_dorks": {
-      "B": 0.96
+      "B": 0.955
     }
   },
   "ramp": {
@@ -308,28 +303,28 @@
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
-      "1": 1.0,
-      "10": 0.404,
-      "2": 0.999,
-      "3": 0.923,
-      "4": 0.807,
-      "5": 0.695,
-      "6": 0.584,
-      "7": 0.501,
-      "8": 0.459,
-      "9": 0.429
+      "1": 0.999,
+      "10": 0.403,
+      "2": 0.997,
+      "3": 0.919,
+      "4": 0.808,
+      "5": 0.684,
+      "6": 0.588,
+      "7": 0.503,
+      "8": 0.46,
+      "9": 0.427
     },
     "mean_available_mana_by_turn": {
-      "1": 1.0,
-      "10": 7.103,
-      "2": 2.14,
-      "3": 3.083,
-      "4": 3.91,
-      "5": 4.611,
-      "6": 5.228,
-      "7": 5.75,
-      "8": 6.226,
-      "9": 6.677
+      "1": 0.999,
+      "10": 7.1,
+      "2": 2.139,
+      "3": 3.082,
+      "4": 3.911,
+      "5": 4.603,
+      "6": 5.223,
+      "7": 5.747,
+      "8": 6.228,
+      "9": 6.675
     }
   },
   "assumptions": [
@@ -339,6 +334,6 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 35 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 43."
+    "B: 34 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 42."
   ]
 }
