@@ -1,0 +1,84 @@
+{
+  "id": "002",
+  "slug": "go-now-or-hold-for-a-bigger-count",
+  "deck": "edgar-vampires",
+  "kind": "decision",
+  "title": "The sweeper is up and lethal is one Vampire away: fire now, or wait for the bigger count?",
+  "scenario": {
+    "board": {
+      "you": "Turn 7, precombat main, 29 life, land drop already made. Battlefield: Corpse Knight, Mondrak, Glory Dominus, Abzan Falconer, Vampire Socialite, Legion Lieutenant, and four 1/1 black Vampire tokens that each entered with a +1/+1 counter from Vampire Socialite — so each token is a 3/3 with flying, because Abzan Falconer gives flying to every creature you control with a counter on it. Also Arcane Signet and six untapped lands: Command Tower, Godless Shrine, Blood Crypt, Sacred Foundry, Swamp, Plains. Seven mana available. Edgar Markov is in the command zone.",
+      "table": "Player 2 (Azorius control) is at 33 with five untapped lands and nothing on the battlefield. Stated assumption: a control seat at this bracket sitting on five untapped lands after seven turns of doing nothing is holding a sweeper, and that sweeper is sorcery-speed. Player 3 (Rakdos midrange) is at 3, tapped out, with a lone 5/5 — your engine put them there. Player 4 (Simic ramp) is at 38 with two untapped lands and two ground blockers, a 4/4 and a 2/2."
+    },
+    "hand": [
+      "Knight of the Ebon Legion",
+      "Olivia's Wrath",
+      "Night's Whisper"
+    ],
+    "mana_available": "7 (six untapped lands + Arcane Signet)",
+    "stack": [],
+    "extras": "Corpse Knight converts and Mondrak doubles, so one Vampire spell cast is one eminence token doubled to two, then the creature itself — three separate creature entries, three Corpse Knight triggers, three life from every opponent. Verified stack 009 counted this entry shape; verified stack 002 is where the doubling math sits on the record. Corpse Knight causes life loss rather than damage, so nothing about it can be prevented or redirected. And know what your own Olivia's Wrath eats: five of the thirty creatures in your 99 are not Vampires, and three of them — Corpse Knight, Mondrak and Abzan Falconer — are standing on this battlefield right now.",
+    "question": "Player 3 is at three and one Vampire spell kills them outright. Player 2 has held five lands for two turns. Do you cast the Knight now and take the kill on a three-trigger count, hold the card and go bigger next turn, or cast the Knight and clear the ground with your own Olivia's Wrath?"
+  },
+  "branches": [
+    {
+      "choice": "Cast Knight of the Ebon Legion, take the kill, and send the fliers at Player 2",
+      "line": "One black mana. The eminence trigger makes a token, Mondrak makes it two, and those two plus the Knight are three creature entries. Corpse Knight fires three times: every opponent loses three, and Player 3 was at three. They are gone before you touch combat.\n\nThen attack Player 2 with the four 3/3 fliers. They control no creatures at all, so that is twelve unblockable damage and the seat holding the sweeper goes from thirty-three to eighteen.\n\nSpend two of the remaining six on Night's Whisper, then keep {2}{B} up so the Knight can become a 4/5 with deathtouch on somebody else's turn. You end with a card in hand, an engine intact, and one fewer opponent.",
+      "signals": "Killing a player who is at three is the least controversial kill in Commander. Nobody at the table thinks you were unfair; two of them are quietly relieved.\n\nThe fliers pointed at the control seat are the real statement, and it is the one you want to make. You are telling Player 2 that their sweeper is now a defensive card.\n\nWhat you are not telling anyone is how much worse this gets. Two more Vampires and a second converter is a table kill, and none of that is visible from a board that just cast a one-drop.",
+      "coalition_risk": "Moderate and shrinking. You remove a seat, and the two who remain have thirty-three and thirty-eight life — neither of them feels like the game just ended.\n\nThe cost is that Player 2 now has a reason to wrath on their own turn rather than wait for a better one. Accept that. You want their sweeper spent on a board you have already converted, not on the bigger one you build over the next two turns.\n\nPlayer 4 stays comfortable and unbothered, which is exactly where you want the ramp deck while you are trading with the control deck.",
+      "coaching": "Take the kill. Always take the kill when it costs one mana.\n\nThe part players get wrong here is which seat to attack. Player 4 has thirty-eight life and two blockers. Player 2 has thirty-three, no creatures, and the one card that unmakes your board. Twelve in the air turns their sweeper from a tempo play into a panic button.\n\nHere is a sequencing habit worth keeping for every turn of this deck: the first Vampire you cast in a turn makes ground tokens, and every Vampire after it makes fliers. Vampire Socialite adds her extra counter only while an opponent has lost life this turn, and that clause is checked as the token enters — your Knight's two tokens arrive before anyone has lost anything, and any Vampire that Night's Whisper finds arrives after, with a counter, flying.\n\nYes, you are adding to a board a sweeper is coming for. You are adding one mana of board and taking a player off the table with it. That is committing exactly as much as wins before the wrath arrives, and not one card further — the rest of your turn is a draw spell and a deathtouch blocker.\n\nAnd keep Olivia's Wrath in hand. It is your answer to whatever Player 2 rebuilds into, and it is worth far more pointed at their board than at your own.",
+      "citations": [
+        {
+          "rule": "704.5a",
+          "quote": "If a player has 0 or less life, that player loses the game."
+        },
+        {
+          "rule": "614.1c",
+          "quote": "Effects that read “[This permanent] enters with . . . ,” “As [this permanent] enters . . . ,” or “[This permanent] enters as . . . “ are replacement effects."
+        },
+        {
+          "rule": "strategy:resource-hedging.wrath-math",
+          "quote": "commit exactly as much as wins before it arrives, no further"
+        }
+      ]
+    },
+    {
+      "choice": "Hold the Knight and pass with seven mana up",
+      "line": "Cast nothing. Keep Knight of the Ebon Legion in hand so a sweeper cannot two-for-one you, leave the board exactly as the table has already priced it, and plan to go next turn with eight mana — the Knight plus Olivia's Wrath in one turn, or whatever the draw step adds to the count.\n\nPlayer 3 survives at three. Player 2 untaps with five lands and a board they have had a full rotation to plan against.",
+      "signals": "Passing with seven untapped is meant to read as held interaction. Now look at your hand: a creature and two sorceries. There is not one instant in it.\n\nA control player who has been counting your mana since turn three reads that bluff correctly, and the read they take away is that you flinched. That is the most expensive free information you can give a draw-go seat.",
+      "coalition_risk": "Lowest this turn and highest across the next one. Player 3 lives at three, and a midrange deck with nothing left to lose spends its turn making somebody else's problem worse — usually yours, because your board is the one that killed them.\n\nAnd you hand Player 2 the cleanest possible sweeper: eleven of your permanents, none of them spent, all of them still worth a card.",
+      "coaching": "This is the branch that loses quietly, so let us be exact about how.\n\nYour converter and your doubler are creatures on this board. Corpse Knight, Mondrak and Abzan Falconer are the entire conversion layer and the entire evasion package, and all three are standing inside the sweeper's range right now. Waiting does not move them out of range. It only guarantees the sweeper takes them before you have spent them.\n\nAgainst a control deck, holding back often is the loss, because buying time is precisely their plan. Every turn you do not convert is a turn they draw closer to the card that makes your board irrelevant.\n\nAnd the rescue you are implicitly hoping for is not in your hand. Across your games you are holding protection for the swarm about two-thirds of the time, and this is one of the other third — nothing here answers a wrath. So the board you are protecting is a board you cannot protect.\n\nTake this branch on the day the extra turn genuinely buys a bigger count: a second converter in hand, or a doubler you have not deployed. You have neither. What you have is a one-mana spell that kills a player.",
+      "citations": [
+        {
+          "rule": "strategy:resource-hedging.wrath-math",
+          "quote": "against a control deck, holding back often IS the loss, because buying time is exactly their plan"
+        }
+      ]
+    },
+    {
+      "choice": "Cast the Knight, then clear the ground with your own Olivia's Wrath",
+      "line": "Knight for one, Olivia's Wrath for five. Player 3 dies to the Corpse Knight triggers first, so their 5/5 leaves with them.\n\nThe Wrath then resolves with nine Vampires on your side — four old tokens, two new ones, the Knight, Vampire Socialite and Legion Lieutenant — so every non-Vampire creature gets minus nine minus nine. That is Player 4's 4/4 and 2/2, and your Corpse Knight, your Mondrak and your Abzan Falconer.\n\nSwing into an empty board with the four tokens, Socialite and Legion Lieutenant for seventeen and put Player 4 at eighteen. You end with one mana up, no cards in hand, and a board of Vampires.",
+      "signals": "Firing your own sweeper tells the table you will burn your engine for damage, which is genuinely intimidating and genuinely expensive information to give away.\n\nIt also tells Player 2 that your best defensive card is gone. A control player who was weighing whether to wrath now or later stops weighing.",
+      "coalition_risk": "You point seventeen at the highest life total at the table and leave that player alive at eighteen. That is the specific shape of threat that gets you focused without getting you a kill.\n\nAnd you do it with no converter, no doubler and no sweeper left, into an untapped control seat. The next wrath ends your board with nothing behind it.",
+      "coaching": "This is a trap with excellent manners, and I want you to see exactly where it lies.\n\nYour tokens already fly. Abzan Falconer gives flying to everything with a counter on it and Player 4's blockers are on the ground. The Wrath is buying you evasion you already own, and paying for it with the card that grants it.\n\nNow count the rest of the price. Corpse Knight is why Player 3 died and why every future Vampire is three life off every seat. Mondrak is why one token is two. Falconer is why nothing you attack with can be blocked. You spend all three, plus your only sweeper, to move seventeen damage onto a player at thirty-eight.\n\nSeventeen does not kill anybody. Commit exactly as much as wins before the wrath arrives, no further — and this commits everything and wins nothing.\n\nBoard quality beats board quantity in a four-player game, and you would be trading three scaling permanents for a pile of 3/3s that fold to the next sweeper anyway.\n\nSave Olivia's Wrath for the board it was written for: an opponent's creature deck, with your own non-Vampires either uncast or already spent. It is a one-sided sweeper only on the turn you make it one.",
+      "citations": [
+        {
+          "rule": "704.5f",
+          "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+        },
+        {
+          "rule": "strategy:multiplayer.asymmetry",
+          "quote": "board quality beats board quantity (Walser), because a single scaling permanent out-values a fair board against three players"
+        },
+        {
+          "rule": "strategy:resource-hedging.wrath-math",
+          "quote": "commit exactly as much as wins before it arrives, no further"
+        }
+      ]
+    }
+  ],
+  "recommendation": {
+    "choice": "Cast Knight of the Ebon Legion, take the kill, and send the fliers at Player 2",
+    "rationale": "One black mana removes a player from the game. There is no version of this turn where that is the wrong first act.\n\nThe sweeper fear is the thing worth arguing with, because on this board it points the other way. Your converter and your doubler are creatures, so waiting does not protect them — it only means they die unspent. A converter that has already killed a player is a card you got full value from; a converter sitting on the battlefield when the wrath resolves is a card you paid for and never cashed.\n\nThat is the difference between this turn and a turn where holding is correct. Nothing in your hand answers a sweeper, so restraint buys you exactly nothing you can name.\n\nThe direction of the attack is the other half of the call. Player 2 has no creatures and holds the answer; four fliers put them at eighteen and turn their sweeper into a card they need rather than a card they choose. Player 4 has two blockers, thirty-eight life and no interaction showing — let them stay comfortable.\n\nAnd leave Olivia's Wrath in your hand. Firing it here kills three of your own permanents to clear blockers that your Falconer has already made irrelevant, and it deals seventeen to a player at thirty-eight. That is everything committed for nothing won.\n\nGo now. Take the kill, keep the engine, keep the sweeper, and make the control seat spend their card on a board that has already paid you."
+  },
+  "presentable": true
+}
