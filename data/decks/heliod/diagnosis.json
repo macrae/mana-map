@@ -1,677 +1,792 @@
 {
- "slug": "heliod",
- "as_of_decklist_sha256": "204691428da1a176a8adf3d367b7554463563058142a6f9a8d7a98d728c9b838",
- "archetype": "A WU generosity-punisher control deck: symmetric table-draw engines (Howling Mine, Font of Mythos, Dictate of Kruphix, Temple Bell, Kami of the Crescent Moon) feeding asymmetric hand-size punishers (Iron Maiden, Ebony Owl Netsuke, Viseling), with a checker-passed Aetherflux Reservoir storm kill and a checker-passed Approach of the Second Sun line behind it. deck-audit reads `control` from strategic_frame.json and applies the control overrides, and the frame agrees with the deck. The overrides do not: they ask for 5-7 wipes and 37-39 lands from a deck that kills off a life ledger and an upkeep clock, and they cannot see the punishers at all, because card_roles.json has no entry for Iron Maiden, Ebony Owl Netsuke, Howling Mine, Font of Mythos, Dictate of Kruphix or Propaganda.",
- "verdict": "It functions and it never runs out of cards: turn-three land drops at 0.866, the commander available in 90.2% of goldfish games by turn six, 22 card-advantage copies against a floor of 10, and six checker-passed stacks including a complete table kill. What limits it is the payoff half of its own engine. The gift arrives at mean turn 2.507 and the pair only at mean turn 4.215; by turn six the deck holds a draw engine in 75.4% of games and an engine plus a punisher in 41.2% — so in roughly a third of games it has spent real cards accelerating three opponents with nothing charging them for it. Everything else the audit flags under is either answered by a second axis (33 lands against 39 mana sources) or is a taxonomy floor (one protection card, next to Grand Abolisher and eight counterspells).",
- "axes": [
-  {
-   "axis": "mana-base",
-   "verdict": "adequate",
-   "measured": {
-    "value": 33
-   },
-   "reading": "33 land copies against the control override's 37-39. The gap is on paper only: mana-sources reads 39 against Burgess's 37, and turn-three land drops land at 0.866. Do not spend a slot here.",
-   "citations": [
+  "slug": "heliod",
+  "as_of_decklist_sha256": "204691428da1a176a8adf3d367b7554463563058142a6f9a8d7a98d728c9b838",
+  "archetype": "A WU generosity-punisher control deck: symmetric table-draw engines (Howling Mine, Font of Mythos, Dictate of Kruphix, Temple Bell, Kami of the Crescent Moon) feeding asymmetric hand-size punishers (Iron Maiden, Ebony Owl Netsuke, Viseling), with a checker-passed Aetherflux Reservoir storm kill and a checker-passed Approach of the Second Sun line behind it. deck-audit reads `control` from strategic_frame.json and applies the control overrides, and the frame agrees with the deck. The overrides do not: they ask for 5-7 wipes and 37-39 lands from a deck that kills off a life ledger and an upkeep clock, and they cannot see the punishers at all, because card_roles.json has no entry for Iron Maiden, Ebony Owl Netsuke, Howling Mine, Font of Mythos, Dictate of Kruphix or Propaganda.",
+  "verdict": "It functions and it never runs out of cards: turn-three land drops at 0.866, the commander available in 90.2% of goldfish games by turn six, 22 card-advantage copies against a floor of 10, and six checker-passed stacks including a complete table kill. What limits it is the payoff half of its own engine. By turn six the deck has DRAWN a draw engine in 75.4% of games and drawn both halves in 41.2%; the pair event is a strict subset of the engine event, so 34.2 points of games reach turn six holding an engine and no punisher. Over the full ten-turn simulation the gap narrows — 85.2% against 56.7% — so about half that band gets its punisher late rather than never. The simulation counts cards drawn, not cast: whether a Howling Mine actually hits the battlefield without a punisher is the pilot's choice, which is why the prescription below is a sequencing and mulligan rule and a widening of the six-card payoff group, not a claim that the deck has already given the cards away. The audit flags five axes under. Two are genuine and each gets a slot below: colour-sources, and interaction-breadth, where the graveyard class is uncovered in all 146 entries. Two are taxonomy floors — protection reads 1 next to Grand Abolisher and eight counterspells, sweepers reads 1 against an override that contradicts its own citation. One, mana-base, is answered by a second axis: 33 lands, 39 mana sources.",
+  "axes": [
     {
-     "rule": "strategy:deckbuilding.ratios",
-     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
-    }
-   ]
-  },
-  {
-   "axis": "mana-sources",
-   "verdict": "strength",
-   "measured": {
-    "value": 39
-   },
-   "reading": "39 sources against a Burgess target of 37 — 33 lands plus six persistent producers (Sol Ring, Arcane Signet, Azorius Signet, Talisman of Progress, Thought Vessel, Smothering Tithe). This is the axis that decides whether the deck casts its spells, and it is over target.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "lands = 31 + colours in the commander's identity + the commander's mana value, counting 0-mana rocks as lands"
-    }
-   ]
-  },
-  {
-   "axis": "taplands",
-   "verdict": "strength",
-   "measured": {
-    "value": 2
-   },
-   "reading": "Only Irrigated Farmland and Temple of Enlightenment enter tapped unconditionally; the other five (Deserted Beach, Glacial Fortress, Hallowed Fountain, Prairie Stream, Seachrome Coast) are conditional or pay-life. A deck that wants to hold Swan Song on turn two cannot afford tapped lands, and it does not have them.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "around eight taplands is comfortable in a slow deck, near zero in an aggressive one"
-    }
-   ]
-  },
-  {
-   "axis": "colour-sources",
-   "verdict": "weakness",
-   "measured": {
-    "value": -5
-   },
-   "reading": "U sits at 31 sources against Karsten's 36; W at 20 against 22. The pip load is 61 U pips across 40 cards, and Archmage's Charm is the only UUU card in the 99. Treat the Charm as a turn-four spell, not a turn-three one; the rest of the curve is single-pip and survives the shortfall.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base.color-sources",
-     "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
-    }
-   ]
-  },
-  {
-   "axis": "ramp",
-   "verdict": "adequate",
-   "measured": {
-    "value": 10
-   },
-   "reading": "Ten copies, at the low end of the band, and three of them (Pearl Medallion, Sapphire Medallion, Heliod's back face) are cost reduction rather than mana. That is the right shape for a deck whose commander discounts every spell for each card an opponent drew this turn.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.ratios",
-     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
-    }
-   ]
-  },
-  {
-   "axis": "card-advantage",
-   "verdict": "liability",
-   "measured": {
-    "value": 22
-   },
-   "reading": "22 copies against a floor of 10, and the number understates the deck: Howling Mine, Font of Mythos, Dictate of Kruphix and Mikokoro are not counted at all. That is exactly the problem. At least eight of the counted copies draw for every seat — Temple Bell, Folio of Fancies, Prosperity, Skyscribing, Jace Beleren, Scrawling Crawler, The Second Doctor, and Forced Fruition, which draws only for opponents — and the four uncounted engines give one card to you and three to the table per turn cycle. The axis says the deck has more draw than it needs; the deck's own goldfish says the payoff that makes that draw asymmetric is present alongside it in 41.2% of games by turn six.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.ratios",
-     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+      "axis": "mana-base",
+      "verdict": "adequate",
+      "measured": {
+        "value": 33
+      },
+      "reading": "33 land copies against the control override's 37-39. The gap is on paper only: mana-sources reads 39 against Burgess's 37, and turn-three land drops land at 0.866. Do not spend a slot here.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+        }
+      ]
     },
     {
-     "rule": "strategy:multiplayer.asymmetry",
-     "quote": "Your cards should do something to all three seats or win the game; anything else is someone else's job."
-    }
-   ]
-  },
-  {
-   "axis": "interaction",
-   "verdict": "weakness",
-   "measured": {
-    "value": 14
-   },
-   "reading": "Read the fourteen. Eight are counterspells (An Offer You Can't Refuse, Swan Song, Arcane Denial, Counterspell, Dovin's Veto, Archmage's Charm, Fierce Guardianship, Force of Negation). Two are not interaction at all in this deck: Aetherflux Reservoir carries removal:damage because it reads 'deals 50 damage to any target' and is in fact the verified win condition, and Hullbreaker Horror carries removal:bounce and is the seven-mana creature the kill is built on. That leaves Path to Exile, Swords to Plowshares, Cyclonic Rift and Teferi, Hero of Dominaria's -3 as the answers to a permanent that has already resolved — six with Supreme Verdict and Loran of the Third Path's untagged ETB. Six answers, in a deck that speeds three opponents toward their own bombs.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
-    }
-   ]
-  },
-  {
-   "axis": "sweepers",
-   "verdict": "adequate",
-   "measured": {
-    "value": 1
-   },
-   "reading": "One Supreme Verdict, against an archetype override asking 5-7. The quote the axis carries says the opposite — wipes one or two max — and this deck taxes attackers with Propaganda and The Second Doctor rather than clearing boards, then wins from a life ledger. Cyclonic Rift's overload is the second reset. One is a choice, not a hole.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+      "axis": "mana-sources",
+      "verdict": "strength",
+      "measured": {
+        "value": 39
+      },
+      "reading": "39 sources against a Burgess target of 37 — 33 lands plus six persistent producers (Sol Ring, Arcane Signet, Azorius Signet, Talisman of Progress, Thought Vessel, Smothering Tithe). This is the axis that decides whether the deck casts its spells, and it is over target.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "lands = 31 + colours in the commander's identity + the commander's mana value, counting 0-mana rocks as lands"
+        }
+      ]
     },
     {
-     "rule": "strategy:card-advantage.virtual",
-     "quote": "one tax or pillow-fort effect can blank attack plans from three players at once"
-    }
-   ]
-  },
-  {
-   "axis": "protection",
-   "verdict": "adequate",
-   "measured": {
-    "value": 1
-   },
-   "reading": "The count sees only Teferi's Protection because card_roles.json files Grand Abolisher as threat:body. The corpus's own accounting closes the gap: the combo budget is 4-6 and counterspells fill it, and the deck holds eight of them at 67.2% by turn six, plus Grand Abolisher, plus Hullbreaker Horror, which cannot be countered. The real uncovered case is narrower — targeted removal aimed at Hullbreaker on the turn you tapped out to assemble.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "Answers to answers are a separate budget — Commander Deck Maker: 2-4 protection generic, 4-6 combo, 6-8 Voltron; counterspells do both jobs."
-    }
-   ]
-  },
-  {
-   "axis": "threat-density",
-   "verdict": "strength",
-   "measured": {
-    "value": 4
-   },
-   "reading": "Four counted (Approach of the Second Sun, Jace Wielder of Mysteries, Psychosis Crawler, Scrawling Crawler) and the count is a floor: Aetherflux Reservoir is filed as removal, and Iron Maiden, Ebony Owl Netsuke and Viseling carry no role at all. The deck has two checker-passed kills (stacks 002 and 006) plus an upkeep clock verified in stack 003. Conversion is not this deck's problem.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
+      "axis": "taplands",
+      "verdict": "strength",
+      "measured": {
+        "value": 2
+      },
+      "reading": "Only Irrigated Farmland and Temple of Enlightenment enter tapped unconditionally; the other five (Deserted Beach, Glacial Fortress, Hallowed Fountain, Prairie Stream, Seachrome Coast) are conditional or pay-life. A deck that wants to hold Swan Song on turn two cannot afford tapped lands, and it does not have them.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "around eight taplands is comfortable in a slow deck, near zero in an aggressive one"
+        }
+      ]
     },
     {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "Value is not a win."
-    }
-   ]
-  },
-  {
-   "axis": "creatures",
-   "verdict": "adequate",
-   "measured": {
-    "value": 15
-   },
-   "reading": "Fifteen creature copies in a deck whose attack step is ceremonial. They are engines and static abilities (Kami of the Crescent Moon, Kwain, Faerie Mastermind, Grand Abolisher, Drannith Magistrate, Consecrated Sphinx), which is why Supreme Verdict is castable at all — four planeswalkers survive it.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.archetype-selection",
-     "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
-    }
-   ]
-  },
-  {
-   "axis": "interaction-breadth",
-   "verdict": "weakness",
-   "measured": {
-    "value": 4
-   },
-   "reading": "Four of five classes; graveyard is genuinely uncovered — I read the 99 and there is no graveyard answer in it, main or bench. Counterspells do not close it, because a counter answers a permanent only on the way in, and this deck's plan hands a reanimator or a delve deck extra cards every turn cycle.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any; catch-all removal earns its premium"
+      "axis": "colour-sources",
+      "verdict": "weakness",
+      "measured": {
+        "value": -5
+      },
+      "reading": "U sits at 31 sources against Karsten's 36; W at 20 against 22. I re-counted the pips from cards.json rather than trusting my first read of them, and the first read was wrong. Twenty-two of the 85 maindeck entries want two or more pips of a single colour: two at three (Archmage's Charm {U}{U}{U} and Jace, Wielder of Mysteries {1}{U}{U}{U} — the latter a counted finisher and a member of the 'Win condition access' component), seventeen at UU (Counterspell, Kami of the Crescent Moon, Force of Negation, Dictate of Kruphix, Jace Beleren, Teferi's Ageless Insight, Consecrated Sphinx, Forced Fruition, Metallurgic Summonings, Leyline of Anticipation, Teferi Temporal Pilgrim, Torrential Gearhulk, Hullbreaker Horror, Braingeyser, Skyscribing, Mathemagics, Dig Through Time) and three at WW (Grand Abolisher, Supreme Verdict, and the commander itself). Four more want one of each. So this is not a one-card problem sized to Archmage's Charm; it reaches the turn-two Counterspell hold and the turn-two Kami. The deck's own measurement agrees: on-curve off lands alone is U 74.2% / W 78.7%, U 83.9% with rocks. The count is also generous by one — An Offer You Can't Refuse is inside mana_analysis's five nonland colour producers, and its two Treasures go to the countered spell's controller. This is the deck's one real mana weakness and it earns a slot; see the Hengegate Pathway add.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
+        }
+      ]
     },
     {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "a counter answers a lock piece only on the way in"
-    }
-   ]
-  },
-  {
-   "axis": "consistency",
-   "verdict": "strength",
-   "measured": {
-    "value": 0.866
-   },
-   "reading": "0.866 turn-three land drops against a 0.74 floor, on a 73.8% first-seven keep rate. The mana works; nothing below this line is a mana problem wearing a costume.",
-   "citations": [
+      "axis": "ramp",
+      "verdict": "adequate",
+      "measured": {
+        "value": 10
+      },
+      "reading": "Ten copies by the axis, and the axis is one too many. An Offer You Can't Refuse is in deck-audit's ramp list on a ramp:ritual tag, but its text is 'Counter target noncreature spell. Its controller creates two Treasure tokens' — the Treasures go to the opponent. Real acceleration for you is the six persistent producers plus three cost reducers (Pearl Medallion, Sapphire Medallion, and Heliod's back face, which discounts by {1} per card an opponent drew this turn) — nine, at the floor of the band rather than inside it. Worth saying plainly in a diagnosis whose thesis is that this deck spends cards accelerating opponents: the one card in its ramp count that literally does that is a counterspell. The mana-sources axis already excludes it, so 39 stands.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+        },
+        {
+          "rule": "strategy:multiplayer.asymmetry",
+          "quote": "Your cards should do something to all three seats or win the game; anything else is someone else's job."
+        }
+      ]
+    },
     {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "had 26% miss the turn-3 land drop with no mana source at all"
-    }
-   ]
-  },
-  {
-   "axis": "curve",
-   "verdict": "adequate",
-   "measured": {
-    "value": 2
-   },
-   "reading": "Modal mana value 2 with 21 two-drops and 15 three-drops, and one card at mana value 8. Textbook, and Heliod's back face discounts the top end by one per card an opponent drew this turn.",
-   "citations": [
+      "axis": "card-advantage",
+      "verdict": "liability",
+      "measured": {
+        "value": 22
+      },
+      "reading": "22 copies against a floor of 10, and the number understates the deck: Howling Mine, Font of Mythos, Dictate of Kruphix, Kami of the Crescent Moon and Mikokoro are not counted at all, four of them because card_roles.json has no entry for them and Kami because it is filed threat:body. That is exactly the problem. At least eight of the counted copies draw for every seat — Temple Bell, Folio of Fancies, Prosperity, Skyscribing, Jace Beleren, Scrawling Crawler, The Second Doctor, and Forced Fruition, which draws only for opponents — and the four uncounted draw-step engines give one card to you and three to the table per turn cycle. The axis says the deck has more draw than it needs; the deck's own goldfish says the payoff that makes that draw asymmetric has been drawn alongside it in 41.2% of games by turn six.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+        },
+        {
+          "rule": "strategy:multiplayer.asymmetry",
+          "quote": "Your cards should do something to all three seats or win the game; anything else is someone else's job."
+        }
+      ]
+    },
     {
-     "rule": "strategy:deckbuilding.curve",
-     "quote": "puts the modal mana value at 2, with 15.7 two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana value 8+"
-    }
-   ]
-  },
-  {
-   "axis": "power",
-   "verdict": "adequate",
-   "measured": {
-    "value": 4
-   },
-   "reading": "Floor 4 on ten Game Changers, and it would be 4 on the Game Changers alone. Note the second driver is honestly stale: bracket-check names Hullbreaker Horror + Sol Ring as a two-card infinite, and this deck's own stack 001 refuted that pair. Stack 006 verifies the four-card version, so the floor stands either way.",
-   "citations": [
+      "axis": "interaction",
+      "verdict": "weakness",
+      "measured": {
+        "value": 14
+      },
+      "reading": "Read the fourteen. Eight are counterspells (An Offer You Can't Refuse, Swan Song, Arcane Denial, Counterspell, Dovin's Veto, Archmage's Charm, Fierce Guardianship, Force of Negation). Two are not interaction at all in this deck: Aetherflux Reservoir carries removal:damage because it reads 'deals 50 damage to any target' and is in fact the verified win condition, and Hullbreaker Horror carries removal:bounce and is the seven-mana creature the kill is built on. I then enumerated everything in the 99 that answers a permanent which has already resolved, rather than subtracting: Path to Exile, Swords to Plowshares, Supreme Verdict, Cyclonic Rift, Teferi Hero of Dominaria's −3, Loran of the Third Path's ETB, Otawara's channel, Eiganjo's channel against an attacker, and Hullbreaker's own cast trigger — nine, plus Teferi Temporal Pilgrim's −12, which is not a plan. But only two of the nine are cheap unconditional removal spells, two are channel abilities that cost you the land, and three ride on cards at five mana or more. The suite is wide and slow, in a deck that speeds three opponents toward their own bombs.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
+        }
+      ]
+    },
     {
-     "rule": "strategy:deckbuilding.power-level",
-     "quote": "Contents give a floor, never a verdict."
-    }
-   ]
-  },
-  {
-   "axis": "tutors",
-   "verdict": "adequate",
-   "measured": {
-    "value": 3
-   },
-   "reading": "Enlightened Tutor, Mystical Tutor, Long-Term Plans. Between them they reach every piece of the verified kill except Hullbreaker Horror, which only Long-Term Plans can find — and it arrives third from the top.",
-   "citations": [
+      "axis": "sweepers",
+      "verdict": "adequate",
+      "measured": {
+        "value": 1
+      },
+      "reading": "One Supreme Verdict, against an archetype override asking 5-7. The quote the axis carries says the opposite — wipes one or two max — and this deck taxes attackers with Propaganda and The Second Doctor rather than clearing boards, then wins from a life ledger. Cyclonic Rift's overload is the second reset. One is a choice, not a hole.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+        },
+        {
+          "rule": "strategy:card-advantage.virtual",
+          "quote": "one tax or pillow-fort effect can blank attack plans from three players at once"
+        }
+      ]
+    },
     {
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-     "quote": "A tutor is \"essentially an additional copy of any card in our deck\" (Commander Mechanic): k tutors plus the card act like k+1 copies of *every* card."
+      "axis": "protection",
+      "verdict": "adequate",
+      "measured": {
+        "value": 1
+      },
+      "reading": "The count sees only Teferi's Protection because card_roles.json files Grand Abolisher as threat:body. The corpus's own accounting closes the gap: the combo budget is 4-6 and counterspells fill it, and the deck holds eight of them at 67.2% by turn six, plus Grand Abolisher, plus Hullbreaker Horror, which cannot be countered. The real uncovered case is narrower — targeted removal aimed at Hullbreaker on the turn you tapped out to assemble.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Answers to answers are a separate budget — Commander Deck Maker: 2-4 protection generic, 4-6 combo, 6-8 Voltron; counterspells do both jobs."
+        }
+      ]
+    },
+    {
+      "axis": "threat-density",
+      "verdict": "strength",
+      "measured": {
+        "value": 4
+      },
+      "reading": "Four counted (Approach of the Second Sun, Jace Wielder of Mysteries, Psychosis Crawler, Scrawling Crawler) and the count is a floor: Aetherflux Reservoir is filed removal:damage, Iron Maiden and Ebony Owl Netsuke carry no role at all, and Viseling is filed threat:body. The deck has two checker-passed kills (stack 002's Approach, stack 006's Reservoir ledger) plus an upkeep clock verified in stack 003. Conversion is not this deck's problem.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
+        },
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Value is not a win."
+        }
+      ]
+    },
+    {
+      "axis": "creatures",
+      "verdict": "adequate",
+      "measured": {
+        "value": 15
+      },
+      "reading": "Fifteen creature copies in a deck whose attack step is ceremonial. They are engines and static abilities (Kami of the Crescent Moon, Kwain, Faerie Mastermind, Grand Abolisher, Drannith Magistrate, Consecrated Sphinx), which is why Supreme Verdict is castable at all — four planeswalkers survive it.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.archetype-selection",
+          "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
+        }
+      ]
+    },
+    {
+      "axis": "interaction-breadth",
+      "verdict": "weakness",
+      "measured": {
+        "value": 4
+      },
+      "reading": "Four of five classes; graveyard is genuinely uncovered — I read the 99 and there is no graveyard answer in it, main or bench. Counterspells do not close it, because a counter answers a permanent only on the way in, and this deck's plan hands a reanimator or a delve deck extra cards every turn cycle.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any; catch-all removal earns its premium"
+        },
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "a counter answers a lock piece only on the way in"
+        }
+      ]
+    },
+    {
+      "axis": "consistency",
+      "verdict": "strength",
+      "measured": {
+        "value": 0.866
+      },
+      "reading": "0.866 turn-three land drops against a 0.74 floor, on a 73.8% first-seven keep rate. The mana works; nothing below this line is a mana problem wearing a costume.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "had 26% miss the turn-3 land drop with no mana source at all"
+        }
+      ]
+    },
+    {
+      "axis": "curve",
+      "verdict": "adequate",
+      "measured": {
+        "value": 2
+      },
+      "reading": "Modal mana value 2 with 21 two-drops and 15 three-drops, and one card at mana value 8. Textbook, and Heliod's back face discounts the top end by one per card an opponent drew this turn.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.curve",
+          "quote": "puts the modal mana value at 2, with 15.7 two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana value 8+"
+        }
+      ]
+    },
+    {
+      "axis": "power",
+      "verdict": "adequate",
+      "measured": {
+        "value": 4
+      },
+      "reading": "Floor 4 on ten Game Changers, and it would be 4 on the Game Changers alone. Note the second driver is honestly stale: bracket-check names Hullbreaker Horror + Sol Ring as a two-card infinite, and this deck's own stack 001 refuted that pair. Stack 006 verifies the four-card version, so the floor stands either way.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.power-level",
+          "quote": "Contents give a floor, never a verdict."
+        }
+      ]
+    },
+    {
+      "axis": "tutors",
+      "verdict": "adequate",
+      "measured": {
+        "value": 3
+      },
+      "reading": "Enlightened Tutor, Mystical Tutor, Long-Term Plans. Between them they reach every piece of the verified kill except Hullbreaker Horror, which only Long-Term Plans can find — and it arrives third from the top.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "A tutor is \"essentially an additional copy of any card in our deck\" (Commander Mechanic): k tutors plus the card act like k+1 copies of *every* card."
+        }
+      ]
     }
-   ]
-  }
- ],
- "engine": {
-  "declared": "goldfish_targets.json declares six targets; the deck is a symmetric table-draw engine plus an asymmetric payoff, with two independent kills and a counterspell shell holding the door.",
-  "components": [
-   {
-    "role": "ignition",
-    "have": [
-     "Howling Mine",
-     "Font of Mythos",
-     "Temple Bell",
-     "Dictate of Kruphix",
-     "Kami of the Crescent Moon",
-     "Folio of Fancies",
-     "Forced Fruition",
-     "Kwain, Itinerant Meddler",
-     "The Second Doctor",
-     "Jace Beleren"
-    ],
-    "count": 10,
-    "thinnest": false,
-    "measured_rate": 0.754,
-    "reading": "The gift. Ten copies, 53.7% of openers, drawn by turn six in 75.4% of games (85.2% ever), mean turn 2.507. This is the fattest component in the deck and the one that arrives first — which is the whole problem, because on its own it is a donation."
-   },
-   {
-    "role": "payoff",
-    "have": [
-     "Iron Maiden",
-     "Ebony Owl Netsuke",
-     "Viseling",
-     "Psychosis Crawler",
-     "Sphinx's Tutelage",
-     "Scrawling Crawler"
-    ],
-    "count": 6,
-    "thinnest": true,
-    "measured_rate": 0.559,
-    "reading": "The bill. Six copies, 36.4% of openers, 55.9% by turn six, mean turn 3.045 — the thinnest declared component in the deck and the one that decides whether the gift was a plan or a gift. The audit does not flag it thin only because its threshold is a group of one."
-   },
-   {
-    "role": "piece",
-    "have": [
-     "Howling Mine",
-     "Font of Mythos",
-     "Temple Bell",
-     "Dictate of Kruphix",
-     "Kami of the Crescent Moon",
-     "Folio of Fancies",
-     "Forced Fruition",
-     "Kwain, Itinerant Meddler",
-     "The Second Doctor",
-     "Jace Beleren",
-     "Iron Maiden",
-     "Ebony Owl Netsuke",
-     "Viseling",
-     "Psychosis Crawler",
-     "Sphinx's Tutelage",
-     "Scrawling Crawler"
-    ],
-    "count": 16,
-    "thinnest": false,
-    "measured_rate": 0.412,
-    "reading": "The conjunction the deck is actually named after: 41.2% by turn six, 56.7% ever, mean turn 4.215. Against 75.4% for the engine half alone, that is 34.2 points of games where the deck has an engine out and no payoff for it."
-   },
-   {
-    "role": "payoff",
-    "have": [
-     "Rhystic Study",
-     "Mystic Remora",
-     "Smothering Tithe",
-     "Consecrated Sphinx",
-     "Teferi's Ageless Insight",
-     "Faerie Mastermind",
-     "Alhammarret's Archive"
-    ],
-    "count": 7,
-    "thinnest": true,
-    "measured_rate": 0.54,
-    "reading": "The second, softer tax on the same gift — Consecrated Sphinx and Smothering Tithe convert opponents' draws directly. Seven copies (41.2% of openers, the corpus's cited 7-of rate) but commander-gated: 54.0% by turn six against the commander's own 90.2%."
-   },
-   {
-    "role": "protection",
-    "have": [
-     "Fierce Guardianship",
-     "Force of Negation",
-     "Swan Song",
-     "An Offer You Can't Refuse",
-     "Counterspell",
-     "Dovin's Veto",
-     "Arcane Denial",
-     "Archmage's Charm"
-    ],
-    "count": 8,
-    "thinnest": true,
-    "measured_rate": 0.672,
-    "reading": "Eight copies, 67.2% held by turn six, mean turn 2.764. This is the deck's protection budget in fact if not in the taxonomy, and it is healthy — but every one of them competes with the commit turn for the same untapped mana."
-   },
-   {
-    "role": "ignition",
-    "have": [
-     "Approach of the Second Sun",
-     "Aetherflux Reservoir",
-     "Mystical Tutor",
-     "Jace, Wielder of Mysteries",
-     "Enlightened Tutor"
-    ],
-    "count": 5,
-    "thinnest": true,
-    "measured_rate": 0.505,
-    "reading": "The smallest group in the whole declaration, at 31.2% of openers and 50.5% by turn six — and two of the five are tutors, not kills. It also does not name Hullbreaker Horror, without which Aetherflux Reservoir is a 4-mana artifact that gains a little life."
-   }
   ],
-  "single_points_of_failure": [
-   {
-    "component": "Hullbreaker Horror (the verified kill's only irreplaceable card)",
-    "why": "Stacks 001, 004, 005 and 006 all place Hullbreaker Horror on the board, and stack 006 is the deck's complete table kill. Nothing else in the 99 does its job — the loop is the Horror's cast trigger, not the rocks, which stack 004 shows are interchangeable. It costs seven mana, it is the one piece Enlightened Tutor cannot fetch (it is a creature) and Mystical Tutor cannot fetch (it is not an instant or sorcery), so Long-Term Plans is its only tutor and puts it third from the top. Singleton means you mulligan to classes, and this class has one member.",
-    "closers": [
-     "Long-Term Plans",
-     "Lightning Greaves"
+  "engine": {
+    "declared": "goldfish_targets.json declares six targets; the deck is a symmetric table-draw engine plus an asymmetric payoff, with two independent kills and a counterspell shell holding the door.",
+    "components": [
+      {
+        "role": "ignition",
+        "have": [
+          "Howling Mine",
+          "Font of Mythos",
+          "Temple Bell",
+          "Dictate of Kruphix",
+          "Kami of the Crescent Moon",
+          "Folio of Fancies",
+          "Forced Fruition",
+          "Kwain, Itinerant Meddler",
+          "The Second Doctor",
+          "Jace Beleren"
+        ],
+        "count": 10,
+        "thinnest": false,
+        "measured_rate": 0.754,
+        "reading": "The gift. Ten copies, 53.7% of openers, drawn by turn six in 75.4% of games (85.2% ever), mean turn 2.507. This is the fattest component in the deck and the one that arrives first — which is the whole problem, because on its own it is a donation."
+      },
+      {
+        "role": "payoff",
+        "have": [
+          "Iron Maiden",
+          "Ebony Owl Netsuke",
+          "Viseling",
+          "Psychosis Crawler",
+          "Sphinx's Tutelage",
+          "Scrawling Crawler"
+        ],
+        "count": 6,
+        "thinnest": true,
+        "measured_rate": 0.559,
+        "reading": "The bill. Six copies, 36.4% of openers, 55.9% drawn by turn six, mean turn 3.045 — the thinnest component of the deck's core two-piece target, and the one that decides whether the gift was a plan or a gift. It is not the smallest group in the declaration; that is the five-card 'Win condition access' group below. deck-audit flags neither, and correctly: its `thin` flag is size <= ENGINE_THIN_GROUP = 3 and its single_points_of_failure filter is size <= 1, so a six-card group sits outside both thresholds by design. The audit's silence here is its thresholds working, not an oversight — the judgment that six is too few for this component is mine."
+      },
+      {
+        "role": "piece",
+        "have": [
+          "Howling Mine",
+          "Font of Mythos",
+          "Temple Bell",
+          "Dictate of Kruphix",
+          "Kami of the Crescent Moon",
+          "Folio of Fancies",
+          "Forced Fruition",
+          "Kwain, Itinerant Meddler",
+          "The Second Doctor",
+          "Jace Beleren",
+          "Iron Maiden",
+          "Ebony Owl Netsuke",
+          "Viseling",
+          "Psychosis Crawler",
+          "Sphinx's Tutelage",
+          "Scrawling Crawler"
+        ],
+        "count": 16,
+        "thinnest": false,
+        "measured_rate": 0.412,
+        "reading": "The conjunction the deck is actually named after: 41.2% drawn by turn six, 56.7% ever, mean turn 4.215. The pair target's first any_of group is character-identical to the whole of the engine target, so the pair event is a strict subset and 0.754 − 0.412 = 0.342 is exact: 34.2 points of games reach turn six having drawn an engine and no punisher. Ever-rates narrow that to 85.2% against 56.7%. These count cards drawn, not cast — the simulation never decides whether a Mine gets played."
+      },
+      {
+        "role": "payoff",
+        "have": [
+          "Rhystic Study",
+          "Mystic Remora",
+          "Smothering Tithe",
+          "Consecrated Sphinx",
+          "Teferi's Ageless Insight",
+          "Faerie Mastermind",
+          "Alhammarret's Archive"
+        ],
+        "count": 7,
+        "thinnest": true,
+        "measured_rate": 0.54,
+        "reading": "The second, softer tax on the same gift — Consecrated Sphinx and Smothering Tithe convert opponents' draws directly. Seven copies (41.2% of openers, the corpus's cited 7-of rate) but commander-gated: 54.0% by turn six against the commander's own 90.2%."
+      },
+      {
+        "role": "protection",
+        "have": [
+          "Fierce Guardianship",
+          "Force of Negation",
+          "Swan Song",
+          "An Offer You Can't Refuse",
+          "Counterspell",
+          "Dovin's Veto",
+          "Arcane Denial",
+          "Archmage's Charm"
+        ],
+        "count": 8,
+        "thinnest": true,
+        "measured_rate": 0.672,
+        "reading": "Eight copies, 67.2% held by turn six, mean turn 2.764. This is the deck's protection budget in fact if not in the taxonomy, and it is healthy — but every one of them competes with the commit turn for the same untapped mana."
+      },
+      {
+        "role": "ignition",
+        "have": [
+          "Approach of the Second Sun",
+          "Aetherflux Reservoir",
+          "Mystical Tutor",
+          "Jace, Wielder of Mysteries",
+          "Enlightened Tutor"
+        ],
+        "count": 5,
+        "thinnest": true,
+        "measured_rate": 0.505,
+        "reading": "The smallest group in the whole declaration, at 31.2% of openers and 50.5% by turn six — and two of the five are tutors, not kills. It also does not name Hullbreaker Horror, without which Aetherflux Reservoir is a 4-mana artifact that gains a little life."
+      }
     ],
-    "citations": [
-     {
-      "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-      "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-     },
-     {
-      "rule": "strategy:mulligans.engine-hands",
-      "quote": "100-card singleton means you mulligan to enabler *classes*, not named cards; build the redundancy your keeps depend on."
-     }
+    "single_points_of_failure": [
+      {
+        "component": "Hullbreaker Horror (the verified kill's only irreplaceable card)",
+        "why": "Stacks 001, 004, 005 and 006 all place Hullbreaker Horror on the board, and stack 006 is the deck's complete table kill. Nothing else in the 99 does its job — the loop is the Horror's cast trigger, not the rocks, which stack 004 shows are interchangeable. It costs seven mana, it is the one piece Enlightened Tutor cannot fetch (it is a creature) and Mystical Tutor cannot fetch (it is not an instant or sorcery), so Long-Term Plans is its only tutor and puts it third from the top. Singleton means you mulligan to classes, and this class has one member.",
+        "closers": [
+          "Long-Term Plans",
+          "Lightning Greaves"
+        ],
+        "citations": [
+          {
+            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+            "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+          },
+          {
+            "rule": "strategy:mulligans.engine-hands",
+            "quote": "100-card singleton means you mulligan to enabler *classes*, not named cards; build the redundancy your keeps depend on."
+          }
+        ]
+      },
+      {
+        "component": "The draw punisher group (6 cards — thinnest component of the core two-piece target)",
+        "why": "It is the thinnest component of the 'Engine + punisher assembled' target and the one that converts a symmetric engine into an asymmetric one. Six copies is 36.4% of openers; the corpus prices the next slot exactly — seven copies is 41%. Nothing else in the deck taxes hand size, and the value tax that partially substitutes for it is gated behind the commander. deck-audit does not name it: its thin threshold is three and its single-point filter is one, so this is my judgment on top of its measurement, not its finding.",
+        "closers": [
+          "Black Vise"
+        ],
+        "citations": [
+          {
+            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+            "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+          },
+          {
+            "rule": "strategy:deckbuilding.threat-density",
+            "quote": "the enabler slots fail first"
+          },
+          {
+            "rule": "strategy:mulligans.engine-hands",
+            "quote": "100-card singleton means you mulligan to enabler *classes*, not named cards; build the redundancy your keeps depend on."
+          }
+        ]
+      }
     ]
-   },
-   {
-    "component": "The draw punisher group (6 cards)",
-    "why": "It is the thinnest declared component and the one that converts a symmetric engine into an asymmetric one. Six copies is 36.4% of openers; the corpus prices the next slot exactly — seven copies is 41%. Nothing else in the deck taxes hand size, and the value tax that partially substitutes for it is gated behind the commander.",
-    "closers": [
-     "Black Vise"
-    ],
-    "citations": [
-     {
-      "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-      "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-     },
-     {
-      "rule": "strategy:deckbuilding.threat-density",
-      "quote": "the enabler slots fail first"
-     }
-    ]
-   }
-  ]
- },
- "lean_into": [
-  {
-   "what": "Sequence the punisher before the engine, and mulligan on that axis.",
-   "why": "The deck's usual asymmetry runs backwards. Duke's rule holds that enablers at least dig toward payoffs, which is why enabler-heavy keeps win — but this deck's enablers dig for all four seats at once, one card to you and three to the table per cycle. A turn-two Ebony Owl Netsuke does nothing and costs nothing; a turn-two Howling Mine with no punisher is a gift to whoever is fastest. Keep the hand with the punisher and a land, not the hand with two Mines.",
-   "evidence": {
-    "engine_mean_turn": 2.507,
-    "punisher_mean_turn": 3.045,
-    "pair_mean_turn": 4.215,
-    "pair_by_turn_6": 0.412,
-    "engine_by_turn_6": 0.754
-   },
-   "citations": [
+  },
+  "lean_into": [
     {
-     "rule": "strategy:mulligans.engine-hands",
-     "quote": "Payoffs without the enabler are blanks until the engine exists; enablers without payoffs at least dig toward them — an asymmetry that usually favors keeping the enabler-heavy hand."
+      "what": "Sequence the punisher before the engine, and mulligan on that axis.",
+      "why": "The deck's usual asymmetry runs backwards. Duke's rule holds that enablers at least dig toward payoffs, which is why enabler-heavy keeps win — but this deck's enablers dig for all four seats at once, one card to you and three to the table per cycle. A turn-two Ebony Owl Netsuke does nothing and costs nothing; a turn-two Howling Mine with no punisher is a gift to whoever is fastest. Keep the hand with the punisher and a land, not the hand with two Mines.",
+      "evidence": {
+        "engine_mean_turn": 2.507,
+        "punisher_mean_turn": 3.045,
+        "pair_mean_turn": 4.215,
+        "pair_by_turn_6": 0.412,
+        "engine_by_turn_6": 0.754
+      },
+      "citations": [
+        {
+          "rule": "strategy:mulligans.engine-hands",
+          "quote": "Payoffs without the enabler are blanks until the engine exists; enablers without payoffs at least dig toward them — an asymmetry that usually favors keeping the enabler-heavy hand."
+        },
+        {
+          "rule": "strategy:multiplayer.asymmetry",
+          "quote": "Every single-target card you cast is a net loss against the table: you spend a card, one opponent loses a card, and two bystanders profit from the exchange for free."
+        }
+      ]
     },
     {
-     "rule": "strategy:multiplayer.asymmetry",
-     "quote": "Every single-target card you cast is a net loss against the table: you spend a card, one opponent loses a card, and two bystanders profit from the exchange for free."
-    }
-   ]
-  },
-  {
-   "what": "Stop reading threat-density as 4. The deck has more finishers than any axis can see.",
-   "why": "Aetherflux Reservoir is filed under removal because it reads 'deals 50 damage to any target'; Iron Maiden, Ebony Owl Netsuke and Viseling carry no role at all. Two of the deck's kills are checker-passed (Approach in stack 002, the Reservoir ledger in stack 006) and its upkeep clock is checker-passed too (stack 003). Play it as a deck that already knows how it wins, and spend deckbuilding attention on getting there rather than on adding a fifth way.",
-   "evidence": {
-    "verified_stacks": [
-     "002",
-     "003",
-     "006"
-    ],
-    "measured_threat_density": 4,
-    "untagged_finishers": [
-     "Aetherflux Reservoir",
-     "Iron Maiden",
-     "Ebony Owl Netsuke",
-     "Viseling"
-    ]
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "Value is not a win."
+      "what": "Stop reading threat-density as 4. The deck has more finishers than any axis can see.",
+      "why": "Aetherflux Reservoir is filed under removal because it reads 'deals 50 damage to any target'; Iron Maiden, Ebony Owl Netsuke and Viseling carry no role at all. Two of the deck's kills are checker-passed (Approach in stack 002, the Reservoir ledger in stack 006) and its upkeep clock is checker-passed too (stack 003). Play it as a deck that already knows how it wins, and spend deckbuilding attention on getting there rather than on adding a fifth way.",
+      "evidence": {
+        "verified_stacks": [
+          "002",
+          "003",
+          "006"
+        ],
+        "measured_threat_density": 4,
+        "untagged_finishers": [
+          "Aetherflux Reservoir",
+          "Iron Maiden",
+          "Ebony Owl Netsuke",
+          "Viseling"
+        ]
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Value is not a win."
+        },
+        {
+          "rule": "strategy:critical-mass",
+          "quote": "know your number — the count of bodies, spells, or mana at which the deck actually goes over the top"
+        }
+      ]
     },
     {
-     "rule": "strategy:critical-mass",
-     "quote": "know your number — the count of bodies, spells, or mana at which the deck actually goes over the top"
+      "what": "The counterspell suite is the protection budget — stop trying to fix a protection count of 1.",
+      "why": "Eight counterspells held at 67.2% by turn six, next to Grand Abolisher's static and a Hullbreaker Horror that cannot be countered. The corpus puts a combo deck's answers-to-answers budget at 4-6 and says counterspells do both jobs. The slot to spend is not a fifth protection card; it is the one case counterspells cannot cover, which is targeted removal on the Horror after you have tapped out.",
+      "evidence": {
+        "protection_axis": 1,
+        "counterspells": 8,
+        "interaction_held_by_turn_6": 0.672
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Answers to answers are a separate budget — Commander Deck Maker: 2-4 protection generic, 4-6 combo, 6-8 Voltron; counterspells do both jobs."
+        },
+        {
+          "rule": "strategy:multiplayer.pivot-window",
+          "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
+        }
+      ]
     }
-   ]
-  },
-  {
-   "what": "The counterspell suite is the protection budget — stop trying to fix a protection count of 1.",
-   "why": "Eight counterspells held at 67.2% by turn six, next to Grand Abolisher's static and a Hullbreaker Horror that cannot be countered. The corpus puts a combo deck's answers-to-answers budget at 4-6 and says counterspells do both jobs. The slot to spend is not a fifth protection card; it is the one case counterspells cannot cover, which is targeted removal on the Horror after you have tapped out.",
-   "evidence": {
-    "protection_axis": 1,
-    "counterspells": 8,
-    "interaction_held_by_turn_6": 0.672
-   },
-   "citations": [
+  ],
+  "cut_candidates": [
     {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "Answers to answers are a separate budget — Commander Deck Maker: 2-4 protection generic, 4-6 combo, 6-8 Voltron; counterspells do both jobs."
+      "card": "Mathemagics",
+      "why": "{X}{X}{U}{U} for 2^X cards to one player: six mana to give somebody four cards, at sorcery speed, in a deck that already draws the table twelve different ways. It has no role in card_roles.json and it is not in any declared engine component. The cheapest slot in the 99.",
+      "cost_of_cutting": "It is the fastest-scaling single-target hand-filler in the deck: 2^X where Braingeyser and Stroke of Genius pay X, so past about eight total mana it puts more cards into one chosen opponent's hand than anything else in the 99 — the biggest single push above the Ebony Owl Netsuke seven-card threshold, and the biggest one-card self-refill for Psychosis Crawler. Both of those jobs have understudies (Braingeyser, Stroke of Genius, Prosperity, Skyscribing), which is why this is the easy cut and not a painful one; what goes is the ceiling, not the function.",
+      "difficulty": "easy",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.cutting",
+          "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
+        }
+      ]
     },
     {
-     "rule": "strategy:multiplayer.pivot-window",
-     "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
-    }
-   ]
-  }
- ],
- "cut_candidates": [
-  {
-   "card": "Mathemagics",
-   "why": "{X}{X}{U}{U} for 2^X cards to one player: six mana to give somebody four cards, at sorcery speed, in a deck that already draws the table twelve different ways. It has no role in card_roles.json and it is not in any declared engine component. The cheapest slot in the 99.",
-   "cost_of_cutting": "It is the deck's largest single-target hand-filler — the only card that can put one chosen opponent above the Iron Maiden and Ebony Owl Netsuke thresholds by itself at arbitrary size, and the only way to refill your own hand to eight-plus for Psychosis Crawler in one card.",
-   "difficulty": "easy",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.cutting",
-     "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
-    }
-   ]
-  },
-  {
-   "card": "Leyline of Anticipation",
-   "why": "'You may cast spells as though they had flash' is the same sentence as Heliod, the Warped Eclipse's first line. Four mana for an effect the commander already grants, in a deck whose commander is available in 90.2% of games by turn six. It carries no role either.",
-   "cost_of_cutting": "The Leyline is free from the opening hand and Heliod is not: the front face is {2}{W}{W} and the flip is another {3}{U/P} at sorcery speed, so the redundancy is only redundant from about turn eight. Cutting it means the turn-three-to-seven counterspell-holding posture depends on cards that already have flash.",
-   "difficulty": "contested",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.cutting",
-     "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
-    }
-   ]
-  },
-  {
-   "card": "Metallurgic Summonings",
-   "why": "Five mana to make X/X Constructs off instants and sorceries, in a deck with no attack plan, mean bodies of 1.513 by turn six, and two attack taxes already blanking combat. Its recursion mode needs six artifacts on the battlefield before it can be activated.",
-   "cost_of_cutting": "It is the deck's only recursion role and its only way to rebuild a spent instant suite after a wrath — which matters in a deck that will be the archenemy. The Construct tokens are also real chump blockers on the turns you are tapped out assembling.",
-   "difficulty": "contested",
-   "citations": [
-    {
-     "rule": "strategy:resource-hedging.wrath-math",
-     "quote": "buy resilience instead of restraint where you can"
-    }
-   ]
-  },
-  {
-   "card": "Forced Fruition",
-   "why": "Six mana to give an opponent seven cards every time they cast a spell. The deck's own strategic_frame names it as a trap in two of its four matchup frames — the aggro frame ('Forced Fruition refuels their hand') and the combo frame ('hands a storm pilot seven cards per spell'). Opponents discard to seven at cleanup, so the payoff stack 003 verifies is 3 from Iron Maiden plus 4 from Ebony Owl Netsuke on that opponent's upkeep — a table where you have paid seven cards for seven damage, and only when both punishers are already down, which is 41.2% by turn six. At bracket 4, with ten Game Changers across the pod's likely lists, seven fresh cards is the most efficient thing this deck does for anybody else.",
-   "cost_of_cutting": "This is real. It is the deck's biggest single engine, the only card that fills hands without waiting for a draw step, and stack 003 — one of six checker-passed artifacts and the only one that proves the punisher clock — is built on a board containing it. Cutting it drops the table-draw component from ten copies to nine and takes the deck's most spectacular turn off the table. A reasonable pilot keeps it and plays around it by holding it until both punishers are down; I am recommending the cut because the card is at its most dangerous in exactly the games where the punishers have not arrived.",
-   "orphans_stack": [
-    "003"
-   ],
-   "difficulty": "painful",
-   "citations": [
-    {
-     "rule": "strategy:multiplayer.asymmetry",
-     "quote": "Your cards should do something to all three seats or win the game; anything else is someone else's job."
+      "card": "Leyline of Anticipation",
+      "why": "'You may cast spells as though they had flash' is the same sentence as Heliod, the Warped Eclipse's first line. Four mana for an effect the commander already grants, in a deck whose commander is available in 90.2% of games by turn six. It carries no role either.",
+      "cost_of_cutting": "The Leyline is free from the opening hand and Heliod is not: the front face is {2}{W}{W} and the flip is another {3}{U/P} at sorcery speed, so the redundancy is only redundant from about turn eight. Cutting it means the turn-three-to-seven counterspell-holding posture depends on cards that already have flash.",
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.cutting",
+          "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
+        }
+      ]
     },
     {
-     "rule": "strategy:multiplayer.threat-deflection",
-     "quote": "The deflection budget spends down as your engine shows; plan the pivot before it runs out"
-    }
-   ]
-  }
- ],
- "add_candidates": [
-  {
-   "card": "Black Vise",
-   "closes": "engine component: draw punisher (the thinnest, 6 cards)",
-   "source": "pool",
-   "why": "A one-mana fourth copy of Iron Maiden's exact text: at the chosen opponent's upkeep, damage equal to their hand size minus four. It takes the thinnest declared component from six copies to seven — the corpus's cited step from 31%/36% openers to 41% — for one mana, and Enlightened Tutor fetches it because it is an artifact. Read the difference honestly: 'As this artifact enters, choose an opponent' locks it to one seat, where Iron Maiden and Viseling hit each opponent. It is a copy of the effect aimed at the archenemy, not a fourth Iron Maiden.",
-   "evidence": {
-    "thinnest_component_size": 6,
-    "opening_seven_at_6": 0.364,
-    "by_turn_three_at_6": 0.444
-   },
-   "natural_cut": "Mathemagics",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
+      "card": "Metallurgic Summonings",
+      "why": "Five mana to make X/X Constructs off instants and sorceries, in a deck with no attack plan, mean bodies of 1.513 by turn six, and two attack taxes already blanking combat. Its recursion mode needs six artifacts on the battlefield before it can be activated.",
+      "cost_of_cutting": "It is the only card carrying the recursion role — but not the only recursion in the 99, and I should not price it as if it were: Torrential Gearhulk's ETB recasts an instant from your graveyard and Heliod's front face returns an enchantment from it. What is genuinely lost is bulk — a mass return of every instant and sorcery in one activation, which matters in a deck that will be the archenemy — and real chump blockers on the turns you are tapped out assembling.",
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:resource-hedging.wrath-math",
+          "quote": "buy resilience instead of restraint where you can"
+        }
+      ]
+    },
     {
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-    }
-   ]
-  },
-  {
-   "card": "Soul-Guide Lantern",
-   "closes": "interaction-breadth",
-   "source": "pool",
-   "why": "The one uncovered class, closed for one mana without costing the deck anything. Its sacrifice mode exiles each opponent's graveyard — not yours — so Torrential Gearhulk's flashback ETB, Dig Through Time's delve and Metallurgic Summonings' recursion all keep working; Rest in Peace, the obvious alternative, would blank all three. When the matchup does not want it, {1} and a sacrifice draws a card. It is an artifact, so Enlightened Tutor reaches it. Scavenger Grounds is the land-slot alternative and I am not recommending it: it makes only colourless mana in a deck already five U sources short, and it exiles your graveyard too.",
-   "evidence": {
-    "uncovered_classes": [
-     "graveyard"
-    ],
-    "interaction_breadth": 4
-   },
-   "natural_cut": "Metallurgic Summonings",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any; catch-all removal earns its premium"
-    }
-   ]
-  },
-  {
-   "card": "Lightning Greaves",
-   "closes": "protection",
-   "source": "sideboard",
-   "why": "The single point of failure named above is Hullbreaker Horror, and the one thing eight counterspells cannot do is stop a removal spell aimed at it on the turn you tapped out for seven mana. Equip {0} means the shroud goes on the same turn the Horror lands, and the Horror never needs to be targeted by you. It moves the protection axis from 1 to 2 honestly. It does not answer Supreme Verdict, edicts, or a sweeper — say so out loud rather than treating shroud as protection.",
-   "evidence": {
-    "protection_axis": 1,
-    "spof": "Hullbreaker Horror",
-    "stacks_naming_hullbreaker": [
-     "001",
-     "004",
-     "005",
-     "006"
-    ]
-   },
-   "natural_cut": "Leyline of Anticipation",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "Answers to answers are a separate budget — Commander Deck Maker: 2-4 protection generic, 4-6 combo, 6-8 Voltron; counterspells do both jobs."
-    }
-   ]
-  },
-  {
-   "card": "Windfall",
-   "closes": "engine component: table draw engine (replacing Forced Fruition)",
-   "source": "pool",
-   "why": "The same gift, given on your clock instead of theirs. Forced Fruition pays out whenever an opponent chooses to cast a spell; Windfall pays out when you cast it, for three mana instead of six, which means you can hold it until Iron Maiden and Ebony Owl Netsuke are already on the battlefield and fire it in your second main phase before their upkeeps. It also appears in upgrade-facts' combo_openers with three unverified lines. The cost is real and cuts against the deck's hoarding posture: Windfall discards your own hand, including held counterspells, and this deck runs three separate 'no maximum hand size' effects precisely so it can hoard. A pilot who would rather not throw away a held Fierce Guardianship should spend this slot on a second punisher instead.",
-   "evidence": {
-    "combo_lines_opened": [
-     {
-      "cards": [
-       "Approach of the Second Sun",
-       "Windfall"
+      "card": "Forced Fruition",
+      "why": "Six mana to give an opponent seven cards every time they cast a spell. The deck's own strategic_frame names it as a trap in two of its four matchup frames — the aggro frame ('Forced Fruition refuels their hand') and the combo frame ('hands a storm pilot seven cards per spell'). Opponents discard to seven at cleanup, so the payoff stack 003 verifies is 3 from Iron Maiden plus 4 from Ebony Owl Netsuke on that opponent's upkeep — a table where you have paid seven cards for seven damage, and only when both punishers are already down, which is 41.2% by turn six. At bracket 4, with ten Game Changers across the pod's likely lists, seven fresh cards is the most efficient thing this deck does for anybody else.",
+      "cost_of_cutting": "This is real. No other card in the 99 puts seven cards into an opponent's hand from one trigger, repeatedly, at no mana cost to you: Font of Mythos gives two a turn, Howling Mine and Dictate of Kruphix one, Temple Bell one per activation, and Prosperity, Skyscribing, Braingeyser, Stroke of Genius and Mathemagics each do it once for real mana. That is the effect being given up. Stack 003 — one of six checker-passed artifacts and the only one that proves the punisher clock — is built on a board containing it. Cutting it drops the table-draw component from ten copies to nine and takes the deck's most spectacular turn off the table. A reasonable pilot keeps it and plays around it by holding it until both punishers are down; I am recommending the cut because the card is at its most dangerous in exactly the games where the punishers have not arrived.",
+      "orphans_stack": [
+        "003"
       ],
-      "status": "needs a stack scenario"
-     },
-     {
-      "cards": [
-       "Psychosis Crawler",
-       "Scrawling Crawler",
-       "Windfall",
-       "Teferi's Ageless Insight"
-      ],
-      "status": "needs a stack scenario"
-     },
-     {
-      "cards": [
-       "Psychosis Crawler",
-       "Scrawling Crawler",
-       "Windfall",
-       "Alhammarret's Archive"
-      ],
-      "status": "needs a stack scenario"
-     }
-    ]
-   },
-   "natural_cut": "Forced Fruition",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
+      "difficulty": "painful",
+      "citations": [
+        {
+          "rule": "strategy:multiplayer.asymmetry",
+          "quote": "Your cards should do something to all three seats or win the game; anything else is someone else's job."
+        },
+        {
+          "rule": "strategy:multiplayer.threat-deflection",
+          "quote": "The deflection budget spends down as your engine shows; plan the pivot before it runs out"
+        }
+      ]
+    },
     {
-     "rule": "strategy:multiplayer.pivot-window",
-     "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
+      "card": "Braingeyser",
+      "why": "{X}{U}{U} sorcery, 'Target player draws X cards' — the same sentence as Stroke of Genius, which the deck also runs at instant speed for one more generic and one fewer blue pip. Duplicated function, and the copy that duplicates costs the extra blue pip in a deck 5 U sources short of target. The corpus's cutting order puts duplicated function ahead of everything.",
+      "cost_of_cutting": "Braingeyser is a mana cheaper than Stroke of Genius at the same X, so the biggest self-refill the deck can make on a given turn shrinks by one card, and the redundancy that lets you point an X-draw at an opponent's head to fill it for Iron Maiden drops from two copies to one. In a singleton deck, cutting the second copy of anything is cutting redundancy, which is the thing this whole diagnosis says the deck is short of elsewhere.",
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.cutting",
+          "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
+        }
+      ]
     }
-   ]
+  ],
+  "add_candidates": [
+    {
+      "card": "Black Vise",
+      "closes": "engine component: draw punisher (6 cards — thinnest component of the core two-piece target)",
+      "source": "pool",
+      "why": "A one-mana fourth copy of Iron Maiden's exact text: at the chosen opponent's upkeep, damage equal to their hand size minus four. It takes the core two-piece target's thinnest component from six copies to seven — the corpus's cited step to 41% of openers — for one mana, and Enlightened Tutor fetches it because it is an artifact. Read the difference honestly: 'As this artifact enters, choose an opponent' locks it to one seat, where Iron Maiden and Viseling hit each opponent. It is a copy of the effect aimed at the archenemy, not a fourth Iron Maiden.",
+      "evidence": {
+        "thinnest_component_size": 6,
+        "opening_seven_at_6": 0.364,
+        "by_turn_three_at_6": 0.444
+      },
+      "natural_cut": "Mathemagics",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+        }
+      ]
+    },
+    {
+      "card": "Soul-Guide Lantern",
+      "closes": "interaction-breadth",
+      "source": "pool",
+      "why": "The one uncovered class, closed for one mana without costing the deck anything. Its sacrifice mode exiles each opponent's graveyard — not yours — so Torrential Gearhulk's flashback ETB, Dig Through Time's delve and Metallurgic Summonings' recursion all keep working; Rest in Peace, the obvious alternative, would blank all three. When the matchup does not want it, {1} and a sacrifice draws a card. It is an artifact, so Enlightened Tutor reaches it. Scavenger Grounds is the land-slot alternative and I am not recommending it: it makes only colourless mana in a deck already five U sources short, and it exiles your graveyard too.",
+      "evidence": {
+        "uncovered_classes": [
+          "graveyard"
+        ],
+        "interaction_breadth": 4
+      },
+      "natural_cut": "Metallurgic Summonings",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any; catch-all removal earns its premium"
+        }
+      ]
+    },
+    {
+      "card": "Lightning Greaves",
+      "closes": "protection",
+      "source": "sideboard",
+      "why": "The single point of failure named above is Hullbreaker Horror, and the one thing eight counterspells cannot do is stop a removal spell aimed at it on the turn you tapped out for seven mana. Equip {0} means the shroud goes on the same turn the Horror lands, and the Horror never needs to be targeted by you. It moves the protection axis from 1 to 2 honestly. It does not answer Supreme Verdict, edicts, or a sweeper — say so out loud rather than treating shroud as protection.",
+      "evidence": {
+        "protection_axis": 1,
+        "spof": "Hullbreaker Horror",
+        "stacks_naming_hullbreaker": [
+          "001",
+          "004",
+          "005",
+          "006"
+        ]
+      },
+      "natural_cut": "Leyline of Anticipation",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Answers to answers are a separate budget — Commander Deck Maker: 2-4 protection generic, 4-6 combo, 6-8 Voltron; counterspells do both jobs."
+        }
+      ]
+    },
+    {
+      "card": "Windfall",
+      "closes": "engine component: table draw engine (replacing Forced Fruition)",
+      "source": "pool",
+      "why": "The same gift, given on your clock instead of theirs. Forced Fruition pays out whenever an opponent chooses to cast a spell; Windfall pays out when you cast it, for three mana instead of six, which means you can hold it until Iron Maiden and Ebony Owl Netsuke are already on the battlefield and fire it in your second main phase before their upkeeps. It also appears in upgrade-facts' combo_openers with three unverified lines. The cost is real and cuts against the deck's hoarding posture: Windfall discards your own hand, including held counterspells, and this deck runs three separate 'no maximum hand size' effects precisely so it can hoard. A pilot who would rather not throw away a held Fierce Guardianship should spend this slot on a second punisher instead.",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": [
+              "Approach of the Second Sun",
+              "Windfall"
+            ],
+            "status": "needs a stack scenario"
+          },
+          {
+            "cards": [
+              "Psychosis Crawler",
+              "Scrawling Crawler",
+              "Windfall",
+              "Teferi's Ageless Insight"
+            ],
+            "status": "needs a stack scenario"
+          },
+          {
+            "cards": [
+              "Psychosis Crawler",
+              "Scrawling Crawler",
+              "Windfall",
+              "Alhammarret's Archive"
+            ],
+            "status": "needs a stack scenario"
+          }
+        ]
+      },
+      "natural_cut": "Forced Fruition",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:multiplayer.pivot-window",
+          "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
+        }
+      ]
+    },
+    {
+      "card": "Hengegate Pathway // Mistgate Pathway",
+      "closes": "colour-sources",
+      "source": "pool",
+      "why": "The colour weakness I wrongly waved away in the first draft, answered in the slot the cut frees. It enters untapped on either face and manabase.land_colors reads it as {U, W}, so by the deck's own counting method it adds one source to each colour and moves mana-base from 33 lands to 34 at the same time. Two honest caveats: it is a modal card, so a single copy produces exactly one of the two colours for the rest of the game — counting it for both is the repo's convention and is generous by construction; and one land does not close a five-source gap, it starts closing it. If the pilot wants a second, the untapped-dual class is where to look, not another tapland — the taplands axis is at 2 and that is worth protecting.",
+      "evidence": {
+        "colour_sources_axis": -5,
+        "u_have": 31,
+        "u_target": 36,
+        "w_have": 20,
+        "w_target": 22,
+        "land_colors": [
+          "U",
+          "W"
+        ],
+        "enters_tapped_unconditionally": false,
+        "on_curve_lands_only": {
+          "U": 0.742,
+          "W": 0.787
+        }
+      },
+      "natural_cut": "Braingeyser",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
+        },
+        {
+          "rule": "strategy:deckbuilding.cutting",
+          "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
+        }
+      ]
+    }
+  ],
+  "open_questions": [
+    {
+      "question": "goldfish_targets.json declares no target for the deck's primary verified kill. 'Win condition access' lists Approach of the Second Sun, Aetherflux Reservoir, Mystical Tutor, Jace Wielder of Mysteries and Enlightened Tutor, and never names Hullbreaker Horror — without which the Reservoir is not a kill. Add a target requiring Hullbreaker Horror AND Sol Ring AND a two-mana rock AND Aetherflux Reservoir, and measure how often the deck's headline line is actually available.",
+      "settled_by": "goldfish",
+      "why_it_matters": "The deck's most-cited number, 50.5% wincon access by turn six, is measuring a group that contains two tutors and does not contain the creature the kill runs on. Blast radius, for the orchestrator rather than for me: 50.5% is quoted in strategic_frame.json (three places), manual_prose.json, tutor_guide.json and the rendered manuals/heliod.html. Re-declaring the target moves all of them. I have not touched any of those artifacts and I am not proposing that this diagnosis be the thing that edits them."
+    },
+    {
+      "question": "Re-run goldfish with Black Vise added to the punisher any_of group and Forced Fruition removed from the table-draw group, and report the new 'Engine + punisher assembled' by-turn-six rate against the current 41.2%.",
+      "settled_by": "goldfish",
+      "why_it_matters": "The two changes push the conjunction in opposite directions and the sign of the net is the whole case for the swap. I will not guess at it."
+    },
+    {
+      "question": "Teferi's Protection cast on the turn before yours: 'Until your next turn, your life total can't change' and the permanents phase in before your untap step. Does the restriction and the phased-out board both end before your first main phase, so that it can be held on an opponent's end step and the Aetherflux Reservoir ledger still runs on your own turn?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "manual_prose currently says the card 'cannot share a turn with a ledger that pays 50 life three times.' On your own turn that is plainly right — the life total cannot change and the Reservoir is phased out. Whether the preceding-turn cast is a genuine exception decides whether the deck's only true protection card is also usable the turn before the kill, which is when the table's interaction actually shows up."
+    },
+    {
+      "question": "Does Grand Abolisher's static actually close every priority window stack 006 leaves open, including a channel ability activated from a card in hand (Otawara, Soaring City)?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "strategic_frame carries this as the deck's protection plan for its own kill and simultaneously flags it as unverified. The kill is checker-passed; the shield around it is not, and every extra loop iteration is another open window."
+    },
+    {
+      "question": "Is there a strategy section to be written on forced-draw / group-hug punisher archetypes — specifically, the arithmetic of when a symmetric draw effect pays for itself against three opponents?",
+      "settled_by": "research-strategy",
+      "why_it_matters": "strategic_frame lists this as its own first gap. Every judgment in this diagnosis about the gift-versus-payoff timing leans on multiplayer.asymmetry and mulligans.engine-hands, neither of which was written about a deck whose enablers help the table."
+    }
+  ],
+  "gaps": [
+    "No deck_recon.json exists for this deck (deck-audit freshness reports recon.present false), so nothing here is weighed against what strong Heliod, the Radiant Dawn lists actually run. The Forced Fruition cut in particular is argued from this deck's own artifacts and the corpus, not from inclusion rates. A deck-recon pass would settle whether the punisher package is conventionally 6 or conventionally 8.",
+    "card_roles.json classifies 85.9% of this deck, and the twelve unclassified cards are not incidental — Howling Mine, Font of Mythos, Dictate of Kruphix, Iron Maiden, Ebony Owl Netsuke and Propaganda are the deck's identity. Every axis count above is a floor and I have said so where it changes the reading.",
+    "The sweepers axis carries a target of 5-7 from the control archetype override while quoting a source that says one or two max. The corpus cannot settle which applies to a deck that never needs the board clear; I called it adequate on the quote rather than the override, and a reader may reasonably disagree.",
+    "bracket_report.json carries no decklist_sha256, so deck-audit could not confirm it describes the current 99. I re-ran bracket-check: floor 4, ten Game Changers, unchanged.",
+    "The claim that Windfall fills opponents' hands to your pre-Windfall hand size before their upkeeps is untested here — it is the mechanism the swap rests on and it is not in any checker-passed artifact.",
+    "Iteration 1 of this diagnosis dismissed the colour-sources weakness on a false enumeration — it claimed Archmage's Charm was the only UUU card and the rest of the curve single-pip. Jace, Wielder of Mysteries is the second UUU card and 20 further maindeck entries are double-pip. The pip counts above are re-derived from cards.json; the axis is now read as a genuine weakness with a slot spent on it.",
+    "Counting a modal double-faced land as a source of both its colours is this repo's convention (manabase.land_colors returns {U, W} for Hengegate Pathway) and is optimistic: one copy makes one colour per game. The Hengegate add is argued on that convention, so a reader who rejects it should discount that add by roughly half a source."
+  ],
+  "skeptic": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "where": "axes[3]",
+        "status": "supported",
+        "note": "The dismissal is withdrawn and the replacement count is exact. I re-derived every pip from cards.json: 22 of the 85 maindeck entries want two or more pips of one colour, and the breakdown matches card for card - two at three pips (Archmage's Charm {U}{U}{U}, Jace Wielder of Mysteries {1}{U}{U}{U}), seventeen at UU (the seventeen it names, no more, no fewer), and three at WW (Grand Abolisher, Supreme Verdict, and the commander's {2}{W}{W} front face, which my own iteration-1 scan missed because the top-level mana_cost on a transform DFC is empty). 'Four more want one of each' is also exact: Dovin's Veto, Kwain, The Second Doctor, Teferi Hero of Dominaria. mana_analysis on-curve figures quoted (U 74.2% / W 78.7% lands-only, U 83.9% with rocks) reproduce exactly. The axis now reads weakness and costs a slot."
+      },
+      {
+        "where": "add_candidates[4]",
+        "status": "supported",
+        "note": "Hengegate Pathway // Mistgate Pathway: cards.csv gives colour identity U,W, legal_commander legal, not a Game Changer, absent from the 99, and no enters-tapped clause on either face. I ran the repo's own function - manabase.land_colors returns {'W', 'U'} for it - so 'by the deck's own counting method' is literally true. The entry pre-empts its own weak point rather than hiding it: it states that one modal copy makes one colour per game, that counting it for both is the repo's convention and generous by construction, and that one land starts closing a five-source gap rather than closing it. gaps[6] repeats the caveat and tells a dissenting reader how to discount it. The Braingeyser cut behind it holds: Stroke of Genius IS in the 99 (is_sideboard false, and separately on the bench), it is an Instant, {X}{2}{U} against {X}{U}{U} - one more generic, one fewer blue pip, one mana dearer at the same X, exactly as written."
+      },
+      {
+        "where": "engine.components[1]",
+        "status": "supported",
+        "note": "The thinnest claim is now correctly scoped and the mechanism correctly named. It reads 'the thinnest component of the deck's core two-piece target', explicitly says 'It is not the smallest group in the declaration; that is the five-card Win condition access group below', and names the real thresholds - `thin` is size <= ENGINE_THIN_GROUP = 3 and single_points_of_failure is size <= 1. I verified both in source: config.py:969 sets ENGINE_THIN_GROUP = 3, deck_audit.py:491 applies it, deck_audit.py:629 filters SPOFs on thinnest_size <= 1, and deck-audit emits zero single_points_of_failure for this deck. The artifact now owns the judgment as the doctor's rather than attributing it to the audit, and single_points_of_failure[1] and add_candidates[0].closes carry the same corrected scoping."
+      },
+      {
+        "where": "axes[4]",
+        "status": "supported",
+        "note": "The ramp reading is corrected against oracle text: An Offer You Can't Refuse is in deck-audit's ramp list on a ramp:ritual tag and reads 'Counter target noncreature spell. Its controller creates two Treasure tokens' - the Treasures go to the opponent. Real acceleration is restated as nine (the six persistent producers deck-audit counts for mana-sources, plus Pearl Medallion, Sapphire Medallion and Heliod's back face), at the floor of the band. It also correctly notes the mana-sources axis already excludes it, so 39 stands - I confirmed that from the audit's own mana-sources card list, which does not contain it."
+      },
+      {
+        "where": "verdict",
+        "status": "supported",
+        "note": "The over-claim is fully retired and replaced with the honest form. It now says the deck has DRAWN an engine in 75.4% and both halves in 41.2%, names the strict-subset property that makes the subtraction legitimate, gives the ever-rates (85.2% against 56.7%) so the reader can see that about half the band gets its punisher late rather than never, and states outright that 'The simulation counts cards drawn, not cast' and that deployment is the pilot's choice - which is why the prescription is a sequencing rule plus a widening of the payoff group. engine.components[2] carries the same correction. I re-derived 0.754 - 0.412 = 0.342 and both mean turns against goldfish_metrics.json."
+      },
+      {
+        "where": "open_questions[0]",
+        "status": "supported",
+        "note": "The blast radius is carried explicitly and scoped to the orchestrator: it names strategic_frame.json (three places), manual_prose.json, tutor_guide.json and manuals/heliod.html, and states that it has not touched any of them and is not proposing that this diagnosis edit them. I confirmed that claim against git - only the three diagnosis.json files are modified in the working tree; every artifact it names is untouched. The underlying finding still holds: goldfish_targets.json's 'Win condition access' any_of does not contain Hullbreaker Horror, and stack 006's checker-passed Reservoir kill is built on the Horror loop with stack 005 refuting the Displacer Kitten alternative."
+      },
+      {
+        "where": "cut_candidates[2]",
+        "status": "supported",
+        "note": "A self-caught absence that landed. cost_of_cutting now reads 'It is the only card carrying the recursion role - but not the only recursion in the 99, and I should not price it as if it were', naming Torrential Gearhulk's ETB and Heliod's front face. I checked both against card_roles.json (Metallurgic Summonings is indeed the only card in the 99 with a recursion role) and against oracle text (Gearhulk casts an instant from your graveyard; Heliod, the Radiant Dawn returns a non-God enchantment from it). cut_candidates[3]'s superlative is scoped the same careful way - 'No other card in the 99 puts seven cards into an opponent's hand from one trigger, repeatedly, at no mana cost to you: Font of Mythos gives two a turn' - and is true."
+      },
+      {
+        "where": "cut_candidates[3]",
+        "status": "supported",
+        "note": "Forced Fruition is unchanged and still holds on re-check. orphans_stack ['003'] recomputed from stack 003's scenario board, checker.verdict pass, and it remains the only one of the five cuts appearing in any passing stack's scenario. Both matchup-frame quotes are verbatim in strategic_frame.json, which has exactly four frames and names the card in exactly two. Still the list's one painful entry."
+      },
+      {
+        "where": "axes[5]",
+        "status": "supported",
+        "note": "The card-advantage reading holds and I verified all eight symmetric draws individually (Temple Bell, Folio of Fancies, Prosperity, Skyscribing, Jace Beleren, Scrawling Crawler, The Second Doctor, and Forced Fruition drawing only for opponents), plus the four draw-step engines. One imprecision I checked and am recording rather than raising, because it changes no count, axis, cut or add: the reading says four of the five uncounted cards are uncounted 'because card_roles.json has no entry for them'. Three have no entry (Howling Mine, Font of Mythos, Dictate of Kruphix); Mikokoro has an entry, land:utility, which simply is not a draw role. All five are correctly identified as uncounted and the axis conclusion is unaffected. Worth a copy-edit, not a revision."
+      },
+      {
+        "where": "axes",
+        "status": "supported",
+        "note": "No regression while fixing. All 16 measured values reproduce deck-audit exactly, the decklist sha256 matches, goldfish_metrics.json and mana_analysis.json are current, all 44 citations are verbatim, all five cuts are in the 99 and none is the commander, no add is already in the deck, orphans recompute correctly, and the cut list still carries a painful entry. axes[11] re-verified: I read all 85 maindeck and 61 bench entries and there is no graveyard answer in any of the 146, so the uncovered class and the Soul-Guide Lantern add both stand. gaps[1] re-verified exactly: 12 unclassified cards, 85.9%, and the six it names are all in that list. gaps[5] records the iteration-1 error in the artifact itself."
+      }
+    ],
+    "iterations": 3
   }
- ],
- "open_questions": [
-  {
-   "question": "goldfish_targets.json declares no target for the deck's primary verified kill. 'Win condition access' lists Approach of the Second Sun, Aetherflux Reservoir, Mystical Tutor, Jace Wielder of Mysteries and Enlightened Tutor, and never names Hullbreaker Horror — without which the Reservoir is not a kill. Add a target requiring Hullbreaker Horror AND Sol Ring AND a two-mana rock AND Aetherflux Reservoir, and measure how often the deck's headline line is actually available.",
-   "settled_by": "goldfish",
-   "why_it_matters": "The deck's most-cited number, 50.5% wincon access by turn six, is measuring a group that contains two tutors and does not contain the creature the kill runs on. Every plan built on that figure is built on the wrong measurement."
-  },
-  {
-   "question": "Re-run goldfish with Black Vise added to the punisher any_of group and Forced Fruition removed from the table-draw group, and report the new 'Engine + punisher assembled' by-turn-six rate against the current 41.2%.",
-   "settled_by": "goldfish",
-   "why_it_matters": "The two changes push the conjunction in opposite directions and the sign of the net is the whole case for the swap. I will not guess at it."
-  },
-  {
-   "question": "Teferi's Protection cast on the turn before yours: 'Until your next turn, your life total can't change' and the permanents phase in before your untap step. Does the restriction and the phased-out board both end before your first main phase, so that it can be held on an opponent's end step and the Aetherflux Reservoir ledger still runs on your own turn?",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "manual_prose currently says the card 'cannot share a turn with a ledger that pays 50 life three times.' On your own turn that is plainly right — the life total cannot change and the Reservoir is phased out. Whether the preceding-turn cast is a genuine exception decides whether the deck's only true protection card is also usable the turn before the kill, which is when the table's interaction actually shows up."
-  },
-  {
-   "question": "Does Grand Abolisher's static actually close every priority window stack 006 leaves open, including a channel ability activated from a card in hand (Otawara, Soaring City)?",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "strategic_frame carries this as the deck's protection plan for its own kill and simultaneously flags it as unverified. The kill is checker-passed; the shield around it is not, and every extra loop iteration is another open window."
-  },
-  {
-   "question": "Is there a strategy section to be written on forced-draw / group-hug punisher archetypes — specifically, the arithmetic of when a symmetric draw effect pays for itself against three opponents?",
-   "settled_by": "research-strategy",
-   "why_it_matters": "strategic_frame lists this as its own first gap. Every judgment in this diagnosis about the gift-versus-payoff timing leans on multiplayer.asymmetry and mulligans.engine-hands, neither of which was written about a deck whose enablers help the table."
-  }
- ],
- "gaps": [
-  "No deck_recon.json exists for this deck (deck-audit freshness reports recon.present false), so nothing here is weighed against what strong Heliod, the Radiant Dawn lists actually run. The Forced Fruition cut in particular is argued from this deck's own artifacts and the corpus, not from inclusion rates. A deck-recon pass would settle whether the punisher package is conventionally 6 or conventionally 8.",
-  "card_roles.json classifies 85.9% of this deck, and the twelve unclassified cards are not incidental — Howling Mine, Font of Mythos, Dictate of Kruphix, Iron Maiden, Ebony Owl Netsuke and Propaganda are the deck's identity. Every axis count above is a floor and I have said so where it changes the reading.",
-  "The sweepers axis carries a target of 5-7 from the control archetype override while quoting a source that says one or two max. The corpus cannot settle which applies to a deck that never needs the board clear; I called it adequate on the quote rather than the override, and a reader may reasonably disagree.",
-  "bracket_report.json carries no decklist_sha256, so deck-audit could not confirm it describes the current 99. I re-ran bracket-check: floor 4, ten Game Changers, unchanged.",
-  "The claim that Windfall fills opponents' hands to your pre-Windfall hand size before their upkeeps is untested here — it is the mechanism the swap rests on and it is not in any checker-passed artifact."
- ]
 }
