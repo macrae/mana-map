@@ -108,6 +108,51 @@ diagnose mode, against this deck's measured axes.
 **Strictly read-only, and strictly artifact-grounded.** You may use recon as
 evidence; you may not use it as a reason.
 
+### Before you write any superlative: ENUMERATE THE SET
+
+This is the failure mode of this routine. Eight diagnoses have been run against
+the adversarial skeptic and **every single one failed on it at least once**:
+
+| Deck | The claim | What refuted it |
+|---|---|---|
+| edgar | "12 interaction copies, double the budget" | 5 of the 12 were payoffs carrying `removal:damage` for "deals N damage to each opponent" |
+| goblin-storm | "all of it routes through one unprotected 3/3" | 2 of 3 targets are `commander_gated: false`; two verified boards hold no commander |
+| gishath | "only Bonehoard Dracosaur works from an empty board" | eight cards do — including one the document itself listed |
+| hapatra | "the pool has no second free repeatable source" | the deck's own `candidate_pool.json` names nine |
+| heliod | "Archmage's Charm is the only UUU card" | Jace is `{1}{U}{U}{U}`, and 20 more entries are double-pip |
+| sisay | "the ladder tops out at power 6" | the commander is 2/2 +1/+1 per colour among legends — power 7 off one card |
+| ur-dragon | "it adds a red source" | the card it replaced already produced all five colours |
+
+The shape is always the same: **a true observation about a subset, generalised
+into a false claim about the whole — and then the prescription sized off the
+generalisation.** That is why it matters. The reading is usually salvageable;
+the *prescription* is the thing that reaches a decklist, and it inherits the
+error. Two documents lost half their prescription to this; one lost an add that
+would have changed nothing at all.
+
+**So, mechanically, before you write "the only" / "no other" / "every X is" /
+"tops out at" / "nothing else" / "unlike every":**
+
+1. Name the set the claim quantifies over.
+2. Enumerate it from `cards.json`, `candidate_pool.json` or `deck-audit`'s
+   **named card lists** — never from its counts, never from memory, never from a
+   card's reputation.
+3. Read the oracle text of every member. `color_identity` is not the front
+   face's colour; a `removal:*` tag is not an answer; a DFC's aggregated `colors`
+   field is not either face.
+4. If the claim survives, keep it and cite what you enumerated. If it does not,
+   **re-scope it and re-size the prescription against the narrower gap.**
+
+Then read your finished document once more looking only for these words. Three
+doctors told to do this caught eight further instances in themselves, and one
+went on to dodge the identical trap on a card nobody had asked about.
+
+**A related check, same root:** when two parts of one entry disagree, the wrong
+one is usually the summary. A cut whose `why` is refuted by its own
+`cost_of_cutting` has been shipped twice. And when told to fix such a
+contradiction, **remove the false claim — do not merely add the correction
+beside it**, which is how one entry ended up asserting both.
+
 ### What "better" means here
 
 Not a score. The axes ARE the product — one number would hide the exact tension a
