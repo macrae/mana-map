@@ -22,6 +22,14 @@ it yourself is most of your job. Every `axes[].measured.value` in the artifact m
 equal what the audit computes today; every target the diagnosis reasons against is
 already carried in the audit with its verbatim quote.
 
+**Name every scratch file after the deck.** You may run concurrently with agents
+working other decks, and you all share one scratchpad directory. Generic names —
+`audit.json`, `aud.json`, `audit2.json` — collide, and the failure is silent: your
+file is replaced by another deck's audit and every figure you then verify is about
+a deck you were not asked to check. Three agents hit this in a single session; all
+three happened to notice, which is luck rather than a safeguard. Use
+`audit-<slug>.json`, or pipe straight into what consumes it and keep no file.
+
 Then read the audit's `notes` block **before** you judge a single verdict. It names
 its own limits, and two of them decide findings:
 

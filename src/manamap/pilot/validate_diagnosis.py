@@ -39,6 +39,7 @@ from manamap.pilot import deck_audit as audit_mod
 from manamap.pilot.common import (
     checker_passed,
     deck_dir,
+    load_card_roles,
     load_deck_cards,
     load_json,
     load_rules_db,
@@ -230,6 +231,158 @@ def _validate_adds(doc, main_names, bench_names, commander_names):
     return errors
 
 
+# ── Does the prescription do what it says? ───────────────────────────────
+#
+# An add's `closes` names what the card is bought for, and four adds across three
+# decks in one fleet run named an axis the axis does not credit them for: Nature's
+# Claim doubled two covered classes, Walking Ballista carries no `wincon:*` role so
+# threat-density could not see it, Bojuka Bog is only `land:tapped` so the breadth
+# function skips it before reading its text. In every case the card does the thing
+# in Magic terms and the MEASURE does not move — so the prescription was sized
+# against a number buying it would not change.
+#
+# Only axes computable from (cards, roles) alone are checked. colour-sources and
+# mana-base need mana_analysis and goldfish, and a half-recomputed axis would be a
+# worse answer than no answer. `closes` is free prose on most entries, so an entry
+# that does not name a known axis is skipped rather than failed — the field is a
+# sentence, not an enum, and forcing it into one would be a schema change.
+_BREADTH_AXIS = "interaction-breadth"
+
+
+def _computable_axes():
+    return set(audit_mod.AXIS_ROLES) | {_BREADTH_AXIS}
+
+
+def _axis_value(axis, cards, roles):
+    """Recompute one axis from (cards, roles), or None if it needs more."""
+    if axis in audit_mod.AXIS_ROLES:
+        copies, _ = audit_mod._count_copies(cards, roles, audit_mod.AXIS_ROLES[axis])
+        return copies
+    if axis == _BREADTH_AXIS:
+        breadth = audit_mod._interaction_breadth(cards, roles)
+        return sum(1 for names in breadth.values() if names)
+    return None
+
+
+def _named_axis(closes):
+    """The axis `closes` names, if it names one. Prose entries return None.
+
+    LONGEST match wins. `interaction` is an axis and so is `interaction-breadth`,
+    and a shortest-first scan resolves the latter to the former — which silently
+    checks the wrong axis and reports the wrong number in the error text.
+    """
+    text = str(closes or "").strip()
+    for axis in sorted(_computable_axes(), key=len, reverse=True):
+        if text == axis or text.startswith(axis):
+            return axis
+    return None
+
+
+def _corpus_card(name, roles):
+    """A minimal card record for a card outside the deck, or None if unknown."""
+    oracle = _corpus_oracle().get(name)
+    if oracle is None:
+        return None
+    return {"name": name, "oracle_text": oracle, "quantity": 1,
+            "type_line": "", "is_sideboard": False}
+
+
+_ORACLE_MEMO = {}
+
+
+def _corpus_oracle():
+    """{name: oracle_text} from cards.csv, once per process. {} if absent."""
+    if not _ORACLE_MEMO:
+        try:
+            import pandas as pd
+
+            from manamap.config import OUTPUT_CSV_PATH
+            df = pd.read_csv(OUTPUT_CSV_PATH, usecols=["name", "oracle_text"])
+            _ORACLE_MEMO.update(
+                {n: (t if isinstance(t, str) else "")
+                 for n, t in zip(df["name"], df["oracle_text"])})
+        except Exception:                  # pragma: no cover — fresh clone
+            _ORACLE_MEMO["__absent__"] = ""
+    return _ORACLE_MEMO
+
+
+def _validate_prescription_moves(doc, deck_doc, roles):
+    """Each add's named axis must move, and the whole swap set must clear floors."""
+    if not roles or _corpus_oracle().get("__absent__") is not None and len(
+            _corpus_oracle()) <= 1:
+        return []                          # no roles or no corpus: skip, never fail
+    errors = []
+    main_cards = [c for c in mainboard(deck_doc.get("cards", []))]
+    adds = [a for a in doc.get("add_candidates") or [] if isinstance(a, dict)]
+
+    # (a) MARGINAL contribution: does this card move its axis GIVEN the rest of the
+    # prescription? Isolation is the wrong frame and misses the commonest shape of
+    # the defect — Nature's Claim alone takes hapatra's breadth 1 -> 3, so it looks
+    # fine tested by itself, but Assassin's Trophy is bought in the same package and
+    # already covers both classes, so the pair is 4 and the trio is also 4. The card
+    # earns a slot only if the axis it names is different with it than without it.
+    records = {}
+    for add in adds:
+        rec = _corpus_card(add.get("card"), roles)
+        if rec is not None:
+            records[add.get("card")] = rec
+    for i, add in enumerate(adds):
+        axis = _named_axis(add.get("closes"))
+        name = add.get("card")
+        if not axis or name not in records:
+            continue                       # prose `closes`, or unknown to the corpus
+        others = [r for n, r in records.items() if n != name]
+        without = _axis_value(axis, main_cards + others, roles)
+        with_it = _axis_value(axis, main_cards + others + [records[name]], roles)
+        if without is None or with_it is None or with_it != without:
+            continue
+        alone = _axis_value(axis, main_cards + [records[name]], roles)
+        base = _axis_value(axis, main_cards, roles)
+        detail = (f" (it moves the axis {base} -> {alone} on its own, so the "
+                  f"other adds in this prescription already cover what it covers)"
+                  if others and alone != base else "")
+        errors.append(
+            f"add_candidates[{i}] ({name}): closes {axis!r}, but with the rest of "
+            f"this prescription applied that axis is {without} with or without it"
+            f"{detail} — the slot buys no movement on the axis it names")
+
+    # (b) the PAIRED SWAPS together, against the floors the doc itself cites.
+    # sisay's swaps each looked sound and landed threat-density at 2 because Beast
+    # Within's single removal:spot was spent covering two different cuts.
+    #
+    # Only (add, natural_cut) pairs are applied, NOT every listed candidate. Two
+    # skeptics adjudicated that distinction independently: cut_candidates is a
+    # RANKED LIST, not a mandated set, and sisay deliberately lists a `painful` cut
+    # it simultaneously holds — stated three times with a lift condition, and with
+    # no natural_cut pointing at it. Applying every listed cut would fail that
+    # document for a swap it does not prescribe, which is the check firing on
+    # correct data.
+    pairs = [(a, a.get("natural_cut")) for a in adds if a.get("natural_cut")]
+    if not pairs:
+        return errors
+    paired_cuts = {cut for _, cut in pairs}
+    swapped = [c for c in main_cards if c["name"] not in paired_cuts]
+    for add, _ in pairs:
+        record = _corpus_card(add.get("card"), roles)
+        if record is not None:
+            swapped.append(record)
+    cited = {a.get("axis") for a in doc.get("axes") or [] if isinstance(a, dict)}
+    for axis in sorted(cited & _computable_axes()):
+        low = (DECK_AXIS_TARGETS.get(axis) or {}).get("low")
+        if low is None:
+            continue
+        before = _axis_value(axis, main_cards, roles)
+        after = _axis_value(axis, swapped, roles)
+        if before is None or after is None:
+            continue
+        if after < low <= before:
+            errors.append(
+                f"applying every cut and add together takes {axis} from {before} "
+                f"to {after}, under the floor of {low} this diagnosis cites for it "
+                f"— each swap may be sound alone and the set still not be")
+    return errors
+
+
 def _validate_bracket_deltas(doc, main_names, commander_names):
     """Recompute every claimed delta. Trusting one would be laundering ◆."""
     claimed = [(i, a) for i, a in enumerate(doc.get("add_candidates", []))
@@ -371,6 +524,7 @@ def validate(doc, deck_doc, deck_path=None, measured_axes=None, rules=None,
     errors += _validate_cuts(doc, main_names, commander_names, deck_path)
     errors += _validate_adds(doc, main_names, bench_names, commander_names)
     errors += _validate_bracket_deltas(doc, main_names, commander_names)
+    errors += _validate_prescription_moves(doc, deck_doc, load_card_roles())
     errors += _validate_questions(doc)
     errors += _validate_skeptic(doc)
     errors += _validate_all_citations(doc, rules or {}, strategy_sections)

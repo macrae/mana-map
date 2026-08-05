@@ -309,6 +309,21 @@ def main(args):
     target = getattr(args, "target", None)
 
     report["slug"] = args.slug
+    out = deck_dir(args.slug) / "bracket_report.json"
+
+    # A deck's target bracket is a property of the DECK, not of this invocation.
+    # Without this, `bracket-check <slug>` with no --target silently rewrote the
+    # tracked report and dropped `target`, `within_target` and `cut_candidates` —
+    # the file went from answering "is this deck inside its bracket" to answering
+    # only "what is its floor", and nothing said so. It happened twice to hapatra
+    # in one session, each time as a side effect of an agent re-deriving a figure.
+    if target is None and out.exists():
+        try:
+            with open(out) as f:
+                target = json.load(f).get("target")
+        except (OSError, ValueError):      # pragma: no cover — unreadable report
+            target = None
+
     if target is not None:
         report["target"] = target
         report["within_target"] = report["floor"] <= target
@@ -317,7 +332,6 @@ def main(args):
     # Write the assessment as a ◆ artifact, not just stdout. A floor that only
     # exists in a terminal cannot be cited by validate-build, cached as a
     # routine input, or rendered into a manual.
-    out = deck_dir(args.slug) / "bracket_report.json"
     with open(out, "w") as f:
         json.dump(report, f, indent=2, sort_keys=True, ensure_ascii=False)
         f.write("\n")

@@ -304,3 +304,74 @@ class TestGoblinStorm:
         report = self._report()
         assert report["game_changers"] == []
         assert report["mass_land_denial"] == []
+
+
+# ── The report is a deck property, not an invocation's output ─────────────
+
+_STUB_REPORT = {
+    "floor": 4, "floor_name": "Optimized", "drivers": [], "notes": [],
+    "combo_count": 0, "two_card_infinites": [], "tutors": [],
+    "excluded_commander_assumption": [], "banned": [],
+}
+
+def test_a_bare_rerun_inherits_the_recorded_target(tmp_path, monkeypatch):
+    """`bracket-check <slug>` with no --target must not strip the target.
+
+    It silently rewrote the tracked report without `target`, `within_target` or
+    `cut_candidates` — the file stopped answering "is this deck inside its
+    bracket" and nothing said so. It happened twice to hapatra in one session,
+    each time as a side effect of an agent re-deriving an unrelated figure.
+    """
+    import json as _json
+    from types import SimpleNamespace
+
+    from manamap.pilot import bracket as bracket_mod
+
+    deck = tmp_path / "somedeck"
+    deck.mkdir()
+    (deck / "bracket_report.json").write_text(_json.dumps(
+        {"slug": "somedeck", "floor": 4, "target": 4, "within_target": True,
+         "cut_candidates": []}))
+
+    monkeypatch.setattr(bracket_mod, "deck_dir", lambda slug: deck)
+    monkeypatch.setattr(bracket_mod, "load_deck_cards",
+                        lambda slug: {"cards": [{"name": "Sol Ring",
+                                                 "quantity": 1}]})
+    monkeypatch.setattr(bracket_mod, "load_reference", lambda: ({}, {}, {}))
+    monkeypatch.setattr(bracket_mod, "assess",
+                        lambda *a, **k: dict(_STUB_REPORT))
+
+    bracket_mod.main(SimpleNamespace(slug="somedeck", target=None, as_json=False))
+
+    written = _json.loads((deck / "bracket_report.json").read_text())
+    assert written["target"] == 4, "the recorded target must survive a bare re-run"
+    assert written["within_target"] is True
+    assert "cut_candidates" in written
+
+
+def test_an_explicit_target_still_overrides_the_recorded_one(tmp_path, monkeypatch):
+    import json as _json
+    from types import SimpleNamespace
+
+    from manamap.pilot import bracket as bracket_mod
+
+    deck = tmp_path / "somedeck"
+    deck.mkdir()
+    (deck / "bracket_report.json").write_text(_json.dumps(
+        {"slug": "somedeck", "floor": 4, "target": 4, "within_target": True}))
+
+    monkeypatch.setattr(bracket_mod, "deck_dir", lambda slug: deck)
+    monkeypatch.setattr(bracket_mod, "load_deck_cards",
+                        lambda slug: {"cards": [{"name": "Sol Ring",
+                                                 "quantity": 1}]})
+    monkeypatch.setattr(bracket_mod, "load_reference", lambda: ({}, {}, {}))
+    monkeypatch.setattr(bracket_mod, "assess",
+                        lambda *a, **k: dict(_STUB_REPORT))
+    monkeypatch.setattr(bracket_mod, "offending_cards", lambda *a, **k: [])
+
+    with pytest.raises(SystemExit):
+        bracket_mod.main(SimpleNamespace(slug="somedeck", target=3, as_json=False))
+
+    written = _json.loads((deck / "bracket_report.json").read_text())
+    assert written["target"] == 3
+    assert written["within_target"] is False

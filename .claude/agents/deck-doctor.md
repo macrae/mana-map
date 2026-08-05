@@ -28,6 +28,14 @@ engine block: the deck's own `goldfish_targets.json` read as a declaration of wh
 it is trying to assemble, every `any_of` group priced through the hypergeometric,
 the thinnest component named, and the pool cards that would join it.
 
+**Name every scratch file after the deck.** You may run concurrently with agents
+working other decks, and you all share one scratchpad directory. Generic names —
+`audit.json`, `aud.json`, `audit2.json` — collide, and the failure is silent: your
+file is replaced by another deck's audit and every figure you then read is about a
+deck you were not asked to diagnose. Three agents hit this in a single session and
+all three happened to notice. Use `audit-<slug>.json`, or pipe straight into the
+command that consumes it and keep no file at all.
+
 Then the rest of the brief, all free:
 
 ```bash

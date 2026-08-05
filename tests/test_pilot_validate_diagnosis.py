@@ -359,3 +359,97 @@ def test_a_diagnosis_that_retypes_a_figure_is_caught():
     errors = vd.validate(doc, load_deck_cards("yawgmoth-swarm"),
                          measured_axes=measured)
     assert any(f"deck-audit computes {real!r}" in e for e in errors)
+
+
+# ── Does the prescription do what it says? ───────────────────────────────
+
+def test_named_axis_prefers_the_longest_match():
+    """`interaction` and `interaction-breadth` are both axes.
+
+    A shortest-first scan resolves the latter to the former, then silently
+    checks the wrong axis and prints the wrong number in the error.
+    """
+    assert vd._named_axis("interaction-breadth") == "interaction-breadth"
+    assert vd._named_axis("interaction") == "interaction"
+
+
+def test_prose_closes_is_skipped_not_failed():
+    """`closes` is a sentence on most entries, not an enum.
+
+    Forcing it into one would be a schema change; an entry that names no known
+    axis is simply not checkable.
+    """
+    assert vd._named_axis(
+        "An answer to a noncreature permanent drawn (the binding axis)") is None
+    assert vd._named_axis("engine component: ignition") is None
+
+
+@requires_deck
+@requires_roles
+def test_an_add_that_does_not_move_its_named_axis_is_caught():
+    """ur-dragon proposed Bojuka Bog to close interaction-breadth.
+
+    The card really does hit graveyards; `_interaction_breadth` gates on
+    SUITE_ROLES and card_roles.json gives Bojuka Bog only `land:tapped`, so the
+    MEASURE never moves and the prescription was sized against it.
+    """
+    from manamap.pilot.common import load_card_roles, load_deck_cards
+    doc = {"add_candidates": [{"card": "Bojuka Bog",
+                               "closes": "interaction-breadth"}],
+           "cut_candidates": [], "axes": []}
+    errors = vd._validate_prescription_moves(
+        doc, load_deck_cards("ur-dragon"), load_card_roles())
+    assert any("Bojuka Bog" in e and "interaction-breadth" in e for e in errors)
+
+
+@requires_deck
+@requires_roles
+def test_an_add_redundant_within_its_own_package_is_caught():
+    """hapatra proposed Assassin's Trophy AND Nature's Claim, both for breadth.
+
+    Nature's Claim passes an isolation test — alone it takes breadth 1 -> 3. It
+    fails the only question that matters: Trophy is bought in the same
+    prescription and already covers both classes, so the pair and the trio are
+    both 4. Marginal contribution is the right frame; isolation misses this.
+    """
+    from manamap.pilot.common import load_card_roles, load_deck_cards
+    doc = {"add_candidates": [
+               {"card": "Assassin's Trophy", "closes": "interaction-breadth"},
+               {"card": "Nature's Claim", "closes": "interaction-breadth"}],
+           "cut_candidates": [], "axes": []}
+    errors = vd._validate_prescription_moves(
+        doc, load_deck_cards("hapatra"), load_card_roles())
+    assert any("Nature's Claim" in e for e in errors)
+    assert not any("Assassin's Trophy" in e for e in errors), (
+        "the add that does the work must not be flagged")
+
+
+@requires_deck
+@requires_roles
+def test_an_add_that_does_move_its_axis_is_silent():
+    from manamap.pilot.common import load_card_roles, load_deck_cards
+    doc = {"add_candidates": [{"card": "Assassin's Trophy",
+                               "closes": "interaction-breadth"}],
+           "cut_candidates": [], "axes": []}
+    assert vd._validate_prescription_moves(
+        doc, load_deck_cards("hapatra"), load_card_roles()) == []
+
+
+@requires_deck
+@requires_roles
+def test_only_paired_swaps_are_applied_for_the_floor_check():
+    """A cut list is a RANKED LIST, not a mandated set.
+
+    Two skeptics adjudicated this independently, and sisay deliberately lists a
+    `painful` cut it simultaneously HOLDS, with a lift condition and no
+    natural_cut pointing at it. Applying every listed cut fails that document
+    for a swap it does not prescribe — the check firing on correct data.
+    """
+    from manamap.pilot.common import load_card_roles, load_deck_cards
+    doc = {"add_candidates": [{"card": "Beast Within", "closes": "prose only"}],
+           "cut_candidates": [{"card": "Sol Ring"}, {"card": "Arcane Signet"}],
+           "axes": [{"axis": "interaction"}]}
+    # no natural_cut anywhere -> nothing is prescribed -> no floor check runs
+    errors = vd._validate_prescription_moves(
+        doc, load_deck_cards("hapatra"), load_card_roles())
+    assert errors == []
