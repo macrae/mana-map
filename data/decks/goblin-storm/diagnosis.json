@@ -1,0 +1,742 @@
+{
+ "slug": "goblin-storm",
+ "as_of_decklist_sha256": "c8c1c7ddaa72bfbcd2c88894246939bd4088f2abcd99ec3324e380d4ef1e57fa",
+ "archetype": "A mono-red critical-mass copy engine wearing an aggro costume. deck-audit matches it to `aggro` from strategic_frame.json and the creature count agrees (27, inside 26-32), but the frame's own reading is right: the 1/1s are not the clock, they are Zada's copy multiplier, Skirk Prospector's mana and Skullclamp's fuel. The kill is a single spell copied N times, not combat.",
+ "verdict": "This deck functions and it converts: the mana base is at every target, the turn-3 land drop lands 90% of the time, and five checker-passed stacks show what one red mana does once Zada is out — five cards for {R} (001), 8 damage to each opponent off one storm turn (002), 30 trample damage from four 1/1s (003), and a genuinely infinite Storm-Kiln Artist + Haze of Rage loop (005). What limits it is that all of that routes through one unprotected 3/3. The protection axis measures 2, and one of those two — Roaming Throne — wards only itself, so the deck's real insurance on its commander is Swiftfoot Boots and nothing else.",
+ "axes": [
+  {
+   "axis": "mana-base",
+   "verdict": "adequate",
+   "measured": {
+    "value": 36
+   },
+   "reading": "36 land copies from 15 entries, exactly at the aggro override's 34-36 band. Nothing to fix here.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.ratios",
+     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+    }
+   ]
+  },
+  {
+   "axis": "mana-sources",
+   "verdict": "adequate",
+   "measured": {
+    "value": 41
+   },
+   "reading": "41 sources against Burgess's 36 for a mono-coloured identity and a 4-mana commander. The five persistent producers are all Goblin-adjacent bodies, so they double as copy fodder.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.mana-base",
+     "quote": "lands = 31 + colours in the commander's identity + the commander's mana value, counting 0-mana rocks as lands"
+    }
+   ]
+  },
+  {
+   "axis": "taplands",
+   "verdict": "adequate",
+   "measured": {
+    "value": 5
+   },
+   "reading": "5 unconditional taplands plus 3 conditional, under the 8 ceiling but not under the clause that matters — this is the aggressive deck the quote's second half describes, and Forgotten Cave, Smoldering Crater and Spinerock Knoll all cost a tempo turn in a deck whose whole game is casting several cheap spells in one turn.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.mana-base",
+     "quote": "around eight taplands is comfortable in a slow deck, near zero in an aggressive one"
+    }
+   ]
+  },
+  {
+   "axis": "colour-sources",
+   "verdict": "strength",
+   "measured": {
+    "value": 7
+   },
+   "reading": "43 red sources against Karsten's 36. One colour, 69 red pips, no fixing problem to solve — the deck never loses to colour.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.mana-base.color-sources",
+     "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
+    }
+   ]
+  },
+  {
+   "axis": "ramp",
+   "verdict": "strength",
+   "measured": {
+    "value": 15
+   },
+   "reading": "15 copies against a 10-12 band, and the overage is the point: six of them are rituals (Battle Hymn, Brightstone Ritual, Seething Song, Mana Geyser and friends) that exist to fund a storm turn, not to accelerate a curve. Reading this as bloat would be reading it against the wrong archetype.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.ratios",
+     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+    },
+    {
+     "rule": "strategy:critical-mass.storm-math",
+     "quote": "Enabler density is the deckbuilding half"
+    }
+   ]
+  },
+  {
+   "axis": "card-advantage",
+   "verdict": "adequate",
+   "measured": {
+    "value": 8
+   },
+   "reading": "8 counted against a floor of 10, but the audit's own probe names ten more copies whose oracle text draws or cycles — Crimson Wisps, Expedite, Renegade Tactics, Fists of Flame, Forgotten Cave, Smoldering Crater, Fountainport, War Room, Idol of Oblivion, Gempalm Incinerator — and stack 001 shows one {R} Crimson Wisps drawing five cards once Zada is out. Raw draw is thin; draw conditional on the commander is enormous, which makes this axis a restatement of the one that binds.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.ratios",
+     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+    }
+   ]
+  },
+  {
+   "axis": "interaction",
+   "verdict": "adequate",
+   "measured": {
+    "value": 13
+   },
+   "reading": "13 copies against a 5-6 aggro band, but three of the thirteen answer nothing: Impact Tremors and Boggart Shenanigans hit players only, and Grapeshot is the storm kill. The deck's real answers are Chaos Warp, Vandalblast, Goblin Trashmaster, Gempalm Incinerator, Goblin Negotiation, Siege-Gang Commander and Goblin Bombardment — Walser's 8-10 is met, but by damage-based effects that scale with the board, not by catch-alls.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.interaction-suite",
+     "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
+    }
+   ]
+  },
+  {
+   "axis": "sweepers",
+   "verdict": "adequate",
+   "measured": {
+    "value": 0
+   },
+   "reading": "0 is a taxonomy artifact, not a fact: Blasphemous Act deals 13 damage to each creature and `card_roles.json` files it `removal:damage`. The deck has exactly one wipe, which is inside the 'one or two max' band — the real question is whether a symmetric wipe belongs in a deck of 1/1s at all.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.interaction-suite",
+     "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+    }
+   ]
+  },
+  {
+   "axis": "protection",
+   "verdict": "liability",
+   "measured": {
+    "value": 2
+   },
+   "reading": "2 against a 5-7 band, and the true figure is 1: Roaming Throne's Ward {2} protects Roaming Throne, so Swiftfoot Boots is the only card in the 99 that keeps Zada alive. Every commander-gated line the deck owns — stacks 001 and 003 — dies to one removal spell held for the turn you commit.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.threat-density",
+     "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
+    },
+    {
+     "rule": "strategy:multiplayer.commander-insurance",
+     "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn — assume every held answer appears the moment you commit"
+    }
+   ]
+  },
+  {
+   "axis": "threat-density",
+   "verdict": "strength",
+   "measured": {
+    "value": 2
+   },
+   "reading": "2 is a floor and a misleading one — Goblin Dark-Dwellers (`wincon:combat`) and Witch's Mark (`wincon:drain`) are not this deck's finishers. The checker-passed kills are Fists of Flame (003), Empty the Warrens into Impact Tremors (002), Grapeshot, and the verified Storm-Kiln Artist + Haze of Rage infinite (005). Conversion is the part of this deck that is already solved.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.threat-density",
+     "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
+    },
+    {
+     "rule": "strategy:deckbuilding.threat-density",
+     "quote": "Value is not a win."
+    }
+   ]
+  },
+  {
+   "axis": "creatures",
+   "verdict": "adequate",
+   "measured": {
+    "value": 27
+   },
+   "reading": "27 front-face creatures, inside 26-32. They are not the clock — mean bodies is 2.698 on turn 4, the turn Zada lands 70% of the time, so an early cantrip copies fewer than twice.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.archetype-selection",
+     "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
+    }
+   ]
+  },
+  {
+   "axis": "interaction-breadth",
+   "verdict": "weakness",
+   "measured": {
+    "value": 2
+   },
+   "reading": "2 classes answered, and the heuristic missed the one card that matters: Chaos Warp has no entry at all in `card_roles.json`, and it answers any permanent — enchantment, land, graveyard hate piece included. Real breadth is four classes at one copy each, which is thin rather than absent; graveyard is genuinely uncovered.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.interaction-suite",
+     "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
+    },
+    {
+     "rule": "strategy:deckbuilding.interaction-suite",
+     "quote": "Breadth before depth"
+    }
+   ]
+  },
+  {
+   "axis": "consistency",
+   "verdict": "strength",
+   "measured": {
+    "value": 0.9
+   },
+   "reading": "90% turn-3 land drop against a 74% floor, with a 79.1% keep-first-seven rate. The deck's modal mana value is 2 and it almost never stumbles on mana.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.mana-base",
+     "quote": "had 26% miss the turn-3 land drop with no mana source at all"
+    }
+   ]
+  },
+  {
+   "axis": "curve",
+   "verdict": "strength",
+   "measured": {
+    "value": 2
+   },
+   "reading": "Modal mana value 2 with 19 two-drops and 13 three-drops against the format's 15.7 and 15.4, and one card at mana value 8+. This is exactly the curve a many-spells-per-turn deck wants.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.curve",
+     "quote": "puts the modal mana value at 2, with 15.7 two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana value 8+"
+    }
+   ]
+  },
+  {
+   "axis": "power",
+   "verdict": "adequate",
+   "measured": {
+    "value": 4
+   },
+   "reading": "Bracket floor 4, driven by combo content and one two-card infinite — Storm-Kiln Artist + Haze of Rage, which stack 005 verifies rather than merely claims. Zero Game Changers, so the floor is contents, not staples.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.power-level",
+     "quote": "Contents give a floor, never a verdict."
+    }
+   ]
+  },
+  {
+   "axis": "tutors",
+   "verdict": "adequate",
+   "measured": {
+    "value": 2
+   },
+   "reading": "2, both narrow: Goblin Matron and Moggcatcher search for Goblins. Neither can find Storm-Kiln Artist (a Dwarf Shaman), Haze of Rage, or any of the six one-target enablers — so the deck's redundancy has to be built, not fetched.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.archetype-selection",
+     "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
+    },
+    {
+     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+     "quote": "a named card is 7.1% of your opening seven"
+    }
+   ]
+  }
+ ],
+ "engine": {
+  "declared": "Land Zada, cast a one-target spell at her, and let the copy trigger turn every other body into a card, a Treasure or a point of damage — with a ritual-funded storm turn as the ceiling.",
+  "components": [
+   {
+    "role": "ignition",
+    "have": [
+     "Crimson Wisps",
+     "Expedite",
+     "Renegade Tactics",
+     "Ancestors' Aid",
+     "Fists of Flame",
+     "Wild Ride"
+    ],
+    "count": 6,
+    "thinnest": true,
+    "measured_rate": 0.661,
+    "reading": "The one-target enabler class, and the thinnest component of the commander-gated target: 6 cards, 36.4% of opening sevens and 44.4% by turn three. The redundancy table puts 6 between 31% and 41%; getting to 10 would buy 54%."
+   },
+   {
+    "role": "fodder",
+    "have": [
+     "Dragon Fodder",
+     "Krenko's Command",
+     "Mogg War Marshal",
+     "Skirk Prospector",
+     "Searslicer Goblin"
+    ],
+    "count": 5,
+    "thinnest": true,
+    "measured_rate": 0.6,
+    "reading": "Five early body-makers, 31.2% of openers, drawn by mean turn 3.184 in 60% of runs. The deck has many more bodies later (Siege-Gang Commander, Krenko, Empty the Warrens); what is thin is bodies BEFORE Zada, and mean bodies on turn 4 is 2.698."
+   },
+   {
+    "role": "payoff",
+    "have": [
+     "Grapeshot",
+     "Empty the Warrens"
+    ],
+    "count": 2,
+    "thinnest": true,
+    "measured_rate": 0.152,
+    "reading": "Two cards, 13.7% of opening sevens — the thinnest group in the whole declared engine, and the reason the storm target assembles in 15.2% of runs (9.1% by turn 6). This is the ceiling plan and it is priced like one."
+   },
+   {
+    "role": "mana",
+    "have": [
+     "Battle Hymn",
+     "Brightstone Ritual",
+     "Mana Geyser",
+     "Seething Song"
+    ],
+    "count": 4,
+    "thinnest": false,
+    "measured_rate": 0.152,
+    "reading": "The ritual half of the storm target, 25.8% of openers. Not the binding half — the payoff group is half its size."
+   },
+   {
+    "role": "protection",
+    "have": [
+     "Swiftfoot Boots"
+    ],
+    "count": 1,
+    "thinnest": true,
+    "measured_rate": null,
+    "reading": "Undeclared by goldfish_targets.json and therefore never simulated. One card in 99 keeps the hub alive; the audit's protection count of 2 includes Roaming Throne, whose Ward {2} is on itself."
+   },
+   {
+    "role": "piece",
+    "have": [
+     "Storm-Kiln Artist",
+     "Haze of Rage"
+    ],
+    "count": 2,
+    "thinnest": true,
+    "measured_rate": null,
+    "reading": "The deck's only checker-verified infinite (stack 005) and the driver of its bracket-4 floor — and it is not a declared target, so no simulation prices how often it comes together. Two singletons, neither findable by either tutor."
+   }
+  ],
+  "single_points_of_failure": [
+   {
+    "component": "Zada, Hedron Grinder — the copy hub",
+    "why": "Both lethal stacks (001, 003) and the entire ignition component require her on the battlefield, and the correct play makes it worse: mean bodies rises from 2.698 on turn 4 to 5.257 by turn 6, so the pilot is rewarded for waiting — which is exactly the window a held removal spell wants. The deck holds one answer to that (Swiftfoot Boots). The obvious closer is a trap: Lightning Greaves grants shroud, which would stop YOUR cantrip from targeting her, so the engine cannot use the format's default protection.",
+    "closers": [
+     "Deflecting Swat",
+     "Mithril Coat"
+    ],
+    "citations": [
+     {
+      "rule": "strategy:multiplayer.commander-insurance",
+      "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn — assume every held answer appears the moment you commit"
+     },
+     {
+      "rule": "strategy:multiplayer.commander-insurance",
+      "quote": "protection slots and held mana cost you every game, removal only costs you some"
+     }
+    ]
+   },
+   {
+    "component": "Storm payoff (Grapeshot, Empty the Warrens)",
+    "why": "Two cards, 13.7% of opening sevens, and the full storm target assembles in 15.2% of goldfish runs. That is a ceiling plan behaving like a ceiling plan, not a defect — but it means the storm half cannot be leaned on, and any card that copies a payoff is worth more than a third payoff.",
+    "closers": [
+     "Reiterate"
+    ],
+    "citations": [
+     {
+      "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+      "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+     },
+     {
+      "rule": "strategy:critical-mass.storm-math",
+      "quote": "the full storm kill is the ceiling; the median game is the value engine under it — pace for the median, hold the ceiling as opportunism"
+     }
+    ]
+   },
+   {
+    "component": "Storm-Kiln Artist — the only magecraft engine",
+    "why": "It is one half of the deck's only verified infinite (stack 005), the sole Treasure-per-cast source, and a singleton no tutor in the deck can find: Goblin Matron and Moggcatcher both search for Goblins, and Storm-Kiln Artist is a Dwarf Shaman. A named card is 7.1% of an opening seven and there is no second copy of the effect.",
+    "closers": [
+     "Birgi, God of Storytelling // Harnfel, Horn of Bounty"
+    ],
+    "citations": [
+     {
+      "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+      "quote": "a named card is 7.1% of your opening seven"
+     },
+     {
+      "rule": "strategy:mulligans.engine-hands",
+      "quote": "you mulligan to enabler *classes*, not named cards; build the redundancy your keeps depend on"
+     }
+    ]
+   }
+  ]
+ },
+ "lean_into": [
+  {
+   "what": "Deepen the one-target enabler class before anything else in the 99.",
+   "why": "It is the thinnest component of the plan that actually happens (66.1% assembled, mean turn 5.266) and every card in it is a one-mana cantrip that becomes a mass draw, a mass pump or a lethal alpha the moment Zada is out. Frontline Heroism already pays off the same class without Zada — it makes a hasty Soldier for any spell targeting one of your creatures.",
+   "evidence": {
+    "component": "ignition",
+    "size": 6,
+    "opening_seven": 0.364,
+    "by_turn_three": 0.444,
+    "assembled_rate": 0.661,
+    "verified_lines": [
+     "001",
+     "003"
+    ]
+   },
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.threat-density",
+     "quote": "the enabler slots fail first"
+    },
+    {
+     "rule": "strategy:critical-mass.storm-math",
+     "quote": "Enabler density is the deckbuilding half"
+    }
+   ]
+  },
+  {
+   "what": "Pace for the Zada value engine and treat the storm kill as opportunism.",
+   "why": "The storm target assembles in 15.2% of runs against 66.1% for Zada-plus-a-cantrip. The corpus already names this shape, and it argues against spending more slots on storm payoffs to force the ceiling up.",
+   "evidence": {
+    "storm_assembled_rate": 0.152,
+    "storm_by_turn_6": 0.091,
+    "zada_assembled_rate": 0.661,
+    "zada_by_turn_6": 0.496
+   },
+   "citations": [
+    {
+     "rule": "strategy:critical-mass.storm-math",
+     "quote": "the full storm kill is the ceiling; the median game is the value engine under it — pace for the median, hold the ceiling as opportunism"
+    }
+   ]
+  },
+  {
+   "what": "Buy the commander insurance the deck has never bought.",
+   "why": "Protection measures 2 against a 5-7 band and one of the two protects itself. The corpus's own escape hatch — skip the insurance against light-interaction pods — does not apply to a bracket-4 deck whose every verified line needs one 3/3 to survive the turn it telegraphs the pivot.",
+   "evidence": {
+    "protection_measured": 2,
+    "actually_protects_zada": [
+     "Swiftfoot Boots"
+    ],
+    "counted_but_self_warding": [
+     "Roaming Throne"
+    ],
+    "target_band": [
+     5,
+     7
+    ]
+   },
+   "citations": [
+    {
+     "rule": "strategy:multiplayer.commander-insurance",
+     "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn — assume every held answer appears the moment you commit"
+    },
+    {
+     "rule": "strategy:deckbuilding.threat-density",
+     "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
+    }
+   ]
+  }
+ ],
+ "cut_candidates": [
+  {
+   "card": "Quest for the Goblin Lord",
+   "why": "It does nothing until five Goblins have entered and then gives creatures +2/+0. This deck's damage comes from copies, from each-opponent triggers (Impact Tremors, Boggart Shenanigans) and from trample math on a single pumped body (stack 003), not from a team anthem.",
+   "cost_of_cutting": "A one-mana card that, in the games where the token board IS the plan, turns eight 1/1s into eight 3/1s — real damage the deck otherwise has to buy with a spell.",
+   "orphans_stack": null,
+   "difficulty": "easy",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.cutting",
+     "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
+    }
+   ]
+  },
+  {
+   "card": "Spreading Insurrection",
+   "why": "Five mana, sorcery, and it targets a creature you do not control — so Zada never copies it, the deck's single largest multiplier is off. Mean available mana is 4.589 on turn 5 against a modal mana value of 2.",
+   "cost_of_cutting": "A storm payoff that steals every blocker on the alpha turn; with a live storm count it is a one-card kill against a board the deck otherwise cannot get through.",
+   "orphans_stack": null,
+   "difficulty": "contested",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.curve",
+     "quote": "puts the modal mana value at 2, with 15.7 two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana value 8+"
+    }
+   ]
+  },
+  {
+   "card": "Moggcatcher",
+   "why": "Four mana for a 2/2 Human Mercenary — not a Goblin, so Goblin Warchief does not discount it, Skirk Prospector cannot eat it, and Rundvelt Hordemaster, Pashalik Mons and Boggart Shenanigans never see it die. Its ability then costs {3} and a turn of summoning sickness: seven mana across two turns for one Goblin, in a deck whose curve peaks at 2.",
+   "cost_of_cutting": "One of only two tutors, and the only repeatable one — it puts Krenko, Mob Boss or Siege-Gang Commander straight onto the battlefield, and nothing else in the 99 does that.",
+   "orphans_stack": null,
+   "difficulty": "contested",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+     "quote": "a named card is 7.1% of your opening seven"
+    }
+   ]
+  },
+  {
+   "card": "Goblin Negotiation",
+   "why": "Sorcery-speed X removal in a suite the audit already scores at 13 copies against a 5-6 band; killing a 4-toughness creature costs six mana against a mean 5.182 available on turn 6.",
+   "cost_of_cutting": "The deck's only scalable answer to a genuinely large creature, and its excess damage makes Goblin tokens, so it is the one removal spell that also feeds the swarm.",
+   "orphans_stack": null,
+   "difficulty": "contested",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.interaction-suite",
+     "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
+    }
+   ]
+  },
+  {
+   "card": "Blasphemous Act",
+   "why": "13 damage to each creature kills Zada, every 1/1 and every body the engine is built on, and the cost reduction is driven by the number of creatures on the battlefield — so it is cheapest exactly when your own board is widest. The deck owns no indestructible, no protection and nothing above 4 toughness; there is no asymmetric way to cast it.",
+   "cost_of_cutting": "This is the deck's only sweeper — the audit reads 0 because `card_roles.json` files it `removal:damage`, not because the effect is absent — and the strategic frame's anti-aggro plan names it explicitly. With Boggart Shenanigans or Pashalik Mons out it converts your own dying board into direct damage, which is a real line and the reason this cut is painful rather than obvious.",
+   "orphans_stack": null,
+   "difficulty": "painful",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.interaction-suite",
+     "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+    },
+    {
+     "rule": "strategy:deckbuilding.cutting",
+     "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
+    }
+   ]
+  }
+ ],
+ "add_candidates": [
+  {
+   "card": "Deflecting Swat",
+   "closes": "protection",
+   "source": "pool",
+   "why": "Free while you control a commander, which is precisely the window the engine lives in. It answers the removal spell aimed at Zada and the counterspell aimed at the cantrip without costing a mana on the pivot turn — the corpus's 'held response on the pivot turn' at zero cost.",
+   "evidence": {
+    "protection_axis": {
+     "measured": 2,
+     "target_band": [
+      5,
+      7
+     ]
+    },
+    "note": "Requires Zada on the battlefield, so it is dead in the games where she has not landed yet."
+   },
+   "natural_cut": "Quest for the Goblin Lord",
+   "bracket_delta": {
+    "before": 4,
+    "after": 4
+   },
+   "citations": [
+    {
+     "rule": "strategy:multiplayer.commander-insurance",
+     "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn — assume every held answer appears the moment you commit"
+    },
+    {
+     "rule": "strategy:deckbuilding.threat-density",
+     "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
+    }
+   ]
+  },
+  {
+   "card": "Mithril Coat",
+   "closes": "protection",
+   "source": "pool",
+   "why": "Flash, colourless, and it attaches to a legendary creature on entry — cast it in response to the removal spell rather than telegraphing it a turn early, and it stays on Zada afterwards. Indestructible does not stop exile, bounce or an edict, and saying so is the honest version of this add.",
+   "evidence": {
+    "protection_axis": {
+     "measured": 2,
+     "target_band": [
+      5,
+      7
+     ]
+    },
+    "covers": [
+     "destroy",
+     "damage-based removal"
+    ],
+    "does_not_cover": [
+     "exile",
+     "bounce",
+     "edict",
+     "-X/-X"
+    ]
+   },
+   "natural_cut": "Moggcatcher",
+   "bracket_delta": {
+    "before": 4,
+    "after": 4
+   },
+   "citations": [
+    {
+     "rule": "strategy:multiplayer.commander-insurance",
+     "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn — assume every held answer appears the moment you commit"
+    }
+   ]
+  },
+  {
+   "card": "Seething Anger",
+   "closes": "engine component: ignition (one-target enabler)",
+   "source": "pool",
+   "why": "A {R} sorcery that targets a single creature, so Zada copies it for every other body, and Buyback {3} makes it a repeatable storm engine instead of a one-shot. It takes the ignition component from 6 to 7 — the redundancy table's 31%-to-41% step — and `combo_details.json` records Seething Anger + Zada + Storm-Kiln Artist as an infinite line.",
+   "evidence": {
+    "component": "ignition",
+    "size_before": 6,
+    "size_after": 7,
+    "opening_seven_before": 0.364,
+    "combo_lines_opened": [
+     {
+      "cards": [
+       "Seething Anger",
+       "Zada, Hedron Grinder",
+       "Storm-Kiln Artist"
+      ],
+      "status": "needs a stack scenario"
+     }
+    ]
+   },
+   "combo_lines_opened": [
+    {
+     "cards": [
+      "Seething Anger",
+      "Zada, Hedron Grinder",
+      "Storm-Kiln Artist"
+     ],
+     "status": "needs a stack scenario"
+    }
+   ],
+   "natural_cut": "Spreading Insurrection",
+   "bracket_delta": {
+    "before": 4,
+    "after": 4
+   },
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+    },
+    {
+     "rule": "strategy:deckbuilding.threat-density",
+     "quote": "the enabler slots fail first"
+    }
+   ]
+  },
+  {
+   "card": "Reiterate",
+   "closes": "engine component: payoff (storm kill)",
+   "source": "pool",
+   "why": "Buyback on 'copy target instant or sorcery spell' makes it a third member of the two-card payoff group — a copied Grapeshot is a Grapeshot — and it copies a ritual just as happily. `combo_details.json` records Reiterate + Mana Geyser as an infinite, the highest-popularity line the pool opens for this deck.",
+   "evidence": {
+    "component": "payoff",
+    "size_before": 2,
+    "opening_seven_before": 0.137,
+    "combo_lines_opened": [
+     {
+      "cards": [
+       "Reiterate",
+       "Mana Geyser"
+      ],
+      "status": "needs a stack scenario"
+     }
+    ],
+    "note": "bracket_delta recomputed: the engine records a second two-card infinite and the floor is unchanged at 4."
+   },
+   "combo_lines_opened": [
+    {
+     "cards": [
+      "Reiterate",
+      "Mana Geyser"
+     ],
+     "status": "needs a stack scenario"
+    }
+   ],
+   "natural_cut": "Blasphemous Act",
+   "bracket_delta": {
+    "before": 4,
+    "after": 4
+   },
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+    },
+    {
+     "rule": "strategy:critical-mass.storm-math",
+     "quote": "the full storm kill is the ceiling; the median game is the value engine under it — pace for the median, hold the ceiling as opportunism"
+    }
+   ]
+  },
+  {
+   "card": "Hordeling Outburst",
+   "closes": "engine component: fodder (early token maker)",
+   "source": "pool",
+   "why": "Three bodies on one card for {1}{R}{R}, taking the fodder group from 5 to 6. Mean bodies on turn 4 — the turn Zada lands in 7,002 of 10,000 goldfish runs — is 2.698, so the first cantrip copies fewer than twice; width before the pivot is what converts the engine from value into lethal.",
+   "evidence": {
+    "component": "fodder",
+    "size_before": 5,
+    "size_after": 6,
+    "opening_seven_before": 0.312,
+    "mean_bodies_turn_4": 2.698,
+    "commander_cast_turn_4_count": 7002
+   },
+   "natural_cut": "Goblin Negotiation",
+   "bracket_delta": {
+    "before": 4,
+    "after": 4
+   },
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+    }
+   ]
+  }
+ ],
+ "open_questions": [
+  {
+   "question": "Cast Daring Discovery targeting only Zada: does her trigger copy it for each other creature, and does each copy's Discover 4 resolve?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "Daring Discovery has no entry in `card_roles.json` and is counted by no axis. If the copies each Discover, it is quietly the deck's largest single card-advantage burst and a lean-into; if they do not, it is a five-mana sorcery in a modal-2 deck and the next cut."
+  },
+  {
+   "question": "With Roaming Throne naming Goblin, does Zada's copy trigger triggering an additional time produce a second full set of copies?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "strategic_frame.json already queues this as a candidate line. It decides whether Roaming Throne is a four-mana doubler of the deck's best effect or a 4/4 body whose Ward {2} the protection axis is miscounting as commander insurance."
+  },
+  {
+   "question": "Is Seething Anger + Zada + Storm-Kiln Artist actually infinite, and at what mana?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "It is the only pool line that both deepens the thinnest engine component and adds a second verified kill; without a passing stack it stays a candidate and the add rests on the redundancy argument alone."
+  },
+  {
+   "question": "Should goldfish_targets.json declare a fourth target for Storm-Kiln Artist + Haze of Rage?",
+   "settled_by": "goldfish",
+   "why_it_matters": "Stack 005 verifies that pair as a true infinite and it is what drives the bracket-4 floor, yet no declared target contains either card — so the deck's best kill has no measured assembly rate and the 15.2% storm figure is being read as if it were the deck's ceiling when it is not."
+  }
+ ],
+ "gaps": [
+  "No `deck_recon.json` exists for this deck, so nothing here is grounded in what strong Zada lists actually run — there are no per-commander inclusion rates in any artifact in this repo. Every add is argued from this deck's own measurements. Settled by a `deck-recon` pass.",
+  "Goldfish models resource development only — no removal, no interaction. Nothing in any artifact measures how often Zada actually survives to the pivot turn, so the protection finding is an argument from card counts and the corpus, not a simulated rate.",
+  "`Chaos Warp` has no entry in `card_roles.json`, so the deck's only catch-all answer is invisible to both `interaction` and `interaction-breadth`. The breadth figure of 2 cannot be read as a count of this deck's answers. Same class of miss: `Daring Discovery`, `Spreading Insurrection`, `Fists of Flame` and `Wild Ride` are all unclassified.",
+  "strategic_frame.json lists 'No storm/critical-mass theory section' and 'No commander-protection/insurance section' among its gaps. Both sections now exist — `strategy:critical-mass.storm-math` and `strategy:multiplayer.commander-insurance` — and are cited throughout this diagnosis, so the frame's gap list is stale on those two entries.",
+  "The corpus has no section on a commander whose own ability requires you to target it. That is why Lightning Greaves, the format's default protection, is anti-synergistic here, and no cited rule says so — it is read off the card. Settled by a `research-strategy` pass.",
+  "The bench holds one card (Sazacap's Brew) and strategic_frame.json already records why it is not a Zada enabler: it targets a player, so the copy trigger never fires. There is effectively no sideboard to draw on."
+ ]
+}
