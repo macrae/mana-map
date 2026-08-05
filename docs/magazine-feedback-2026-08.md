@@ -1,5 +1,10 @@
 # Pilot's Manual — founder feedback, 2026-08-05
 
+> **STATUS: shipped 2026-08-05** in `fc2277b`, `25f7378`, `233722a`, `9a7ff81`.
+> What landed against each thread is recorded at the bottom of this file. Kept as
+> the record of what was asked for, in the founder's own words, and of what was
+> traded away to deliver it.
+
 Captured from the pilot after reading through the published issues. This is a
 **feedback record, not a decision** — it is the input to a working pass with the
 `magazine-editor`, and nothing in `STYLEv3.md` or `issue_spec.DEPARTMENTS` has
@@ -131,3 +136,49 @@ Nothing here has been changed. For sizing:
 - Combo-line presentation is largely a **renderer** change (`build_manual.py` +
   `design.py`) working off scenario fields that already exist — the cheapest item
   on this list, and the one with no agent cost at all.
+
+
+---
+
+## What shipped, thread by thread
+
+**§1 Too long** — The Kill is **27,872 → 22,033 words fleet-wide (-21%)**. Two
+causes, one per phase: combo-line prose roughly halved once the renderer showed the
+board, and `scenario.question` moved out of the read-through (below). A single
+gishath Kill entry runs 393 words against a 426 pre-work baseline — shorter than
+before, while now showing a board it never showed. Judge's Desk was not shortened;
+it is collapsed by default and its weight is opt-in.
+
+**§2 Running order** — shipped whole as STYLEv3 **v3.4**. The Command Zone opens
+the book, The Game Plan segues, The 99 follows, and Keep or Ship is read after the
+roster. The Kill closes Act II. *Traded away:* v3.2's "stop at any act boundary and
+get a complete, shallower book" property — the depth ramp no longer rises
+monotonically. *Bought:* the first three sections answer the question a player asks
+first, and Acts III/IV became single-voice.
+
+**§3 Combo lines** — the board block renders in the order asked for: what you have
+→ what each opponent has → mana → the stack, top-first. It reuses `scenario_facts`,
+which already parsed all of it. Rules links and accordions kept, untouched.
+*Additional finding:* `scenario.question` was a **resolver brief** being published
+verbatim ("confirm each is a Dinosaur creature card…"), so it moved to Judge's Desk.
+
+**§4 Cover and titles** — "VERIFIED"/"BOUNDED" removed from all kickers by deletion
+only; the rule is now in STYLEv3 §5.1 and the editor charter. Dates run Vol. 004
+November 2026 → Vol. 008 March 2027. Coverlines were not touched — the ones named
+as landing are the register the charter now points at.
+
+**§5 Three voices** — the cause was structural: `manual-writer` writes under all
+three bylines in one pass, and its charter contradicted itself. Fixed by making the
+personas mechanically separable — chiefly **what each does with a number** — and all
+eight decks re-voiced.
+
+## Still open
+
+- **`pilot-coach` was deliberately not touched.** It owns four routines and would
+  cost roughly 1M; Coach is the one voice already authored by a single persona.
+- **`magazine-editor`'s per-columnist guidance is still a name-check.** It writes
+  every kicker, headline, dek and caption in the issue, so the packaging layer is
+  still monovocal.
+- **Nothing validates that prose matches its byline** and nothing mechanically can.
+- **The founder raised adding columnists beyond the three.** Not acted on.
+- **edgar-vampires** still has four stale non-prose artifacts from the swap pass.
