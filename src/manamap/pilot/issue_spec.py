@@ -17,28 +17,51 @@ may not override its tier — costume never earns the badge (STYLEv3 §10).
 # `needs_copy`: section requires kicker/headline/dek from the issue plan.
 # `byline`: the signing columnist(s), reader-facing; None = unsigned furniture.
 #
-# Order is the STYLEv3 §5 five-act flight plan (v3.2 amendment): fly the deck,
-# work the table, zoom out to the long game, then descend into the numbers and
-# the case law — depth and rigor rise monotonically through the book, and the
-# appendix holds the proof. Position in this literal IS the canonical order —
-# nothing else encodes it. Promises are written in the signing columnist's
-# voice; the renderer prints them verbatim in the Flight Plan.
+# Order is the STYLEv3 §5 five-act flight plan (v3.4 amendment): meet the deck,
+# fly it, work the table, show the work, and leave the proof in the appendix.
+# Position in this literal IS the canonical order — nothing else encodes it.
+# Promises are written in the signing columnist's voice; the renderer prints
+# them verbatim in the Flight Plan.
+#
+# v3.4 replaced a monotonic depth ramp with an identity-first one, on the
+# founder's reading of the shipped issues (docs/magazine-feedback-2026-08.md).
+# The argument, in his words: "all commanders are built around a commander —
+# when you ask somebody what deck are you playing, they lead with who the
+# commander is." The book now opens the way a player hands you their deck. You
+# read the commander, you hear the plan, you flip through the 99 — and only THEN
+# are you asked to mulligan, because "once somebody has actually had the
+# opportunity to look through the 99, those mulligans make a lot more sense."
+# The Kill follows the decision spread for the same reason: here is how you fly
+# it, and here is what it kills with. Judge's Desk does NOT move — the proof
+# still lives at the back, which is the one part of the old depth ramp the
+# resequence preserves rather than inverts.
 DEPARTMENTS = [
     ("cover", "The Cover",
      "Why should I care about this deck?", (), False, None),
     ("contents", "The Flight Plan",
      "You are here. Everything else is one tap away.", (), False, None),
-    # Act I — In the Cockpit: what to do, from turn one.
+    # Act I — Meet the Deck: who is in charge, what they want, what they brought.
+    ("command-zone", "The Command Zone",
+     "Why this commander is exactly where you want to be — on the record.",
+     ("verified", "coach"), True,
+     "Counselor Vera Dictum with Coach Sunny Brightside"),
     ("first-turns", "The Game Plan",
      "What this deck wants to do — and why it's going to work.",
      ("coach",), True, "Coach Sunny Brightside"),
+    ("the-99", "The 99",
+     "Roll call. Every card earns its seat — or hears about it.",
+     ("coach",), True, "Coach Sunny Brightside"),
+    # Act II — Fly It: the hand, the hard call, the kill.
     ("keep-or-ship", "Keep or Ship",
      "Seven cards, one call. The Coach trusts your gut; Ledger brought receipts.",
      ("coach", "data"), True, 'Coach Sunny Brightside with "Ledger" Lin Marginal'),
     ("whats-your-play", "What's Your Play?",
      "Real board, real stakes. Commit before the Coach shows his hand.",
      ("coach",), True, "Coach Sunny Brightside"),
-    # Act II — At the Table: tactics against three live opponents.
+    ("the-kill", "The Kill",
+     "The winning lines, argued and affirmed. Every step on the record.",
+     ("verified",), True, "Counselor Vera Dictum"),
+    # Act III — At the Table: tactics against three live opponents. Pure Coach.
     ("politics-table", "Table Manners",
      "Three opponents, one you. How to win friends and eliminate people.",
      ("coach",), True, "Coach Sunny Brightside"),
@@ -48,27 +71,16 @@ DEPARTMENTS = [
     ("fetch-quests", "Fetch Quests",
      "You get one wish per tutor. Here's how not to waste it.",
      ("coach",), True, "Coach Sunny Brightside"),
-    # Act III — The Long Game: the zoomed-out view, then the future.
-    ("command-zone", "The Command Zone",
-     "Why this commander is exactly where you want to be — on the record.",
-     ("verified", "coach"), True,
-     "Counselor Vera Dictum with Coach Sunny Brightside"),
-    ("the-99", "The 99",
-     "Roll call. Every card earns its seat — or hears about it.",
-     ("coach",), True, "Coach Sunny Brightside"),
-    ("upgrade-watch", "The Short List",
-     "Ten cards — in the box or on the wish list — the only ten worth your sleeves.",
-     ("data",), True, '"Ledger" Lin Marginal'),
-    # Act IV — Show Your Work: the mana, the stats, then the verified lines.
+    # Act IV — Show Your Work: the mana, the stats, the future. Pure Ledger.
     ("sources-say", "Sources Say",
      "Pips versus sources — does this mana base keep its promises?",
      ("data",), True, '"Ledger" Lin Marginal'),
     ("by-the-numbers", "By the Numbers",
      "Ten thousand opening hands don't lie.",
      ("data",), True, '"Ledger" Lin Marginal'),
-    ("the-kill", "The Kill",
-     "The winning lines, argued and affirmed. Every step on the record.",
-     ("verified",), True, "Counselor Vera Dictum"),
+    ("upgrade-watch", "The Short List",
+     "Ten cards — in the box or on the wish list — the only ten worth your sleeves.",
+     ("data",), True, '"Ledger" Lin Marginal'),
     # Act V — The Appendix: the proof, the paint, the door out.
     ("judges-desk", "Judge's Desk",
      "The full case files. The Counselor read them twice.",
@@ -83,11 +95,14 @@ DEPARTMENTS = [
 # The five acts (STYLEv3 §5): the Flight Plan groups its rows under these
 # headers, in this order. Every section after cover/contents belongs to
 # exactly one act — a test asserts the flattened acts equal DEPARTMENT_IDS.
+#
+# Acts III and IV are single-voice by construction, which the old grouping never
+# managed: three consecutive Coach sections, then three consecutive Ledger ones.
 ACTS = [
-    ("In the Cockpit", ("first-turns", "keep-or-ship", "whats-your-play")),
+    ("Meet the Deck", ("command-zone", "first-turns", "the-99")),
+    ("Fly It", ("keep-or-ship", "whats-your-play", "the-kill")),
     ("At the Table", ("politics-table", "know-your-enemy", "fetch-quests")),
-    ("The Long Game", ("command-zone", "the-99", "upgrade-watch")),
-    ("Show Your Work", ("sources-say", "by-the-numbers", "the-kill")),
+    ("Show Your Work", ("sources-say", "by-the-numbers", "upgrade-watch")),
     ("The Appendix", ("judges-desk", "featured-artist", "back-page")),
 ]
 
@@ -145,7 +160,7 @@ MODE = {
 # and may not invent furniture.
 COMPONENTS = {
     "violator", "pilot-tip", "fast-facts", "power-meter", "callout-step",
-    "threat-box", "scenario-box", "dossier-file", "map-key", "pull-quote",
+    "threat-box", "scenario-box", "dossier-file", "pull-quote",
     "folio", "tax-ladder", "artist-gallery",
 }
 

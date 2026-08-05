@@ -3,7 +3,7 @@
   "angle": "The whole table is pricing a nine-mana commander who averages a turn-8.967 arrival — while the deck's real clock is one enchantment, Aggravated Assault plus a connecting Dragon, verified twice over and payable only in Treasures because five of the deck's own mana sources legally cannot fund it.",
   "cover": {
     "dominant_coverline": "ONE DRAGON FUNDS THE NIGHT",
-    "kicker": "VERIFIED TABLE-KILL",
+    "kicker": "TABLE-KILL",
     "teases": [
       "Old Gnawbone + Aggravated Assault: net +2 Treasures a cycle, opponents dead on combats 6 and 12 (stack 006)",
       "REFUTED: Sneak Attack cannot cheat out your commander — CR 903.6, on the record (stack 005)",
@@ -11,14 +11,22 @@
       "Tiamat's five-name package: both kill halves, the doubler, the haste, the courier"
     ],
     "violators": [
-      { "text": "6 VERIFIED LINES!", "tone": "extreme" },
-      { "text": "39 DAMAGE FROM THE GRAVE!", "tone": "extreme" }
+      {
+        "text": "6 VERIFIED LINES!",
+        "tone": "extreme"
+      },
+      {
+        "text": "39 DAMAGE FROM THE GRAVE!",
+        "tone": "extreme"
+      }
     ]
   },
   "departments": [
     {
       "id": "cover",
-      "components": ["violator"],
+      "components": [
+        "violator"
+      ],
       "note": "Full-bleed The Ur-Dragon art_crop (Jaime Jones) as the hero; masthead, volume block, and coverline furniture come from the top-level cover block. The dominant coverline names stack 006 — the single most exciting verified thing in the issue. Both violators are verified facts: six checker-passed stacks, and stack 004's 39-point redirect."
     },
     {
@@ -27,11 +35,37 @@
       "note": "Five-act Flight Plan, tier legend, and the masthead trio render from issue_spec. Nothing to author."
     },
     {
+      "id": "command-zone",
+      "kicker": "COMMANDER FILE",
+      "headline": "WORKING FROM THE ZONE",
+      "dek": "Most commanders must resolve to matter. Yours bills the table from the command zone all game — and the record shows the discount, the tax, and the rental clause all favor rarely casting him at all.",
+      "components": [
+        "tax-ladder",
+        "fast-facts",
+        "pilot-tip",
+        "pull-quote"
+      ],
+      "body": "Start with what the zone guarantees: your commander is always available to cast from the command zone (CR 903.4). This deck files that guarantee differently from every other list at the table. The Ur-Dragon's eminence ability works while he sits in the zone — every Dragon spell you cast costs {1} less, from turn zero, for as long as the game lasts. The guarantee is not that you will draw him. It is that you are always being paid.\n\nNow the tax. Each cast from the zone after the first costs an additional {2} (CR 903.8). The ladder reads nine, eleven, thirteen — against a deck whose mean available mana on turn nine is 6.165. The record is blunt: the first cast is an event, the second is a stretch, the third is fiction. Protection is therefore the better spend, and the deck's own insurance argues the same — Deflecting Swat is free only while a commander is on your battlefield, so landing him once and keeping him is worth more than any recast plan.\n\nThere is a rental clause, and the Counselor commends it to your attention. Hellkite Courser's enters-trigger puts The Ur-Dragon onto the battlefield from the command zone, hasty, for exactly one attack — a card per attacking Dragon plus a free permanent from hand — then returns him at end step. The tax counts casts (CR 903.8), and this never was one. The zone gets its tenant back untaxed. The route everyone assumes works, Sneak Attack, does not: it reaches creature cards in your hand, and the command zone is not your hand (CR 903.6; the full holding is case A-005).\n\nColor identity: five colours costs you nothing in exclusions — every card in the format's identity rules is available to this list — and everything in logistics. The 99 pays for WUBRG with sixteen tapped lands and an eleven-source black column; Sources Say prices that bill in full.\n\nThe 21-point clock (CR 903.10a) is arithmetic worth savoring: a 10/10 commander deals 20 commander damage in two connections — one point short. Three clean hits close it, and a Thrakkus the Butcher doubling still stops at 20 on one swing. The holding: commander damage here is a coincidence, not a plan. The deck's real kills are filed under The Kill.\n\nThe Coach's close: cast him when the table's interaction is spent, shield him once he lands, and never mulligan a hand looking for him. The zone already holds him — and the zone is where he earns.",
+      "captions": {
+        "Hellkite Courser": "**THE RENTAL CLAUSE:** his enters-trigger borrows The Ur-Dragon from the command zone with haste for one attack — a draw per attacking Dragon plus a free permanent, returned untaxed at end step."
+      },
+      "pilot_tips": [
+        {
+          "card": "Teferi's Protection",
+          "text": "Save Teferi's Protection for the turn The Ur-Dragon finally lands — a nine-mana body with no shield is the most expensive way to donate a wrath."
+        }
+      ],
+      "pull_quote": "The guarantee is not that you will draw him. It is that you are always being paid."
+    },
+    {
       "id": "first-turns",
       "kicker": "THE PLAN",
       "headline": "LET THEM WATCH THE WRONG CLOCK",
       "dek": "The table budgets its answers for a nine-mana commander who averages a turn-8.967 arrival. Your actual clock is one enchantment and a connecting Dragon — and the checker already signed off on it.",
-      "components": ["pilot-tip", "pull-quote"],
+      "components": [
+        "pilot-tip",
+        "pull-quote"
+      ],
       "pilot_tips": [
         {
           "card": "Korlessa, Scale Singer",
@@ -45,30 +79,228 @@
       "pull_quote": "Nobody watching for The Ur-Dragon is watching the actual clock."
     },
     {
+      "id": "the-99",
+      "kicker": "THE ROSTER",
+      "headline": "NINETY-NINE SEATS, RANKED",
+      "dek": "The engine room first — eleven cards the checker already put on the record — then the payoffs, the discounts, the wallet, and a mana base carrying five colours' worth of bills.",
+      "components": [
+        "pilot-tip",
+        "pull-quote"
+      ],
+      "roster": [
+        {
+          "role": "The engine room — on the record",
+          "cards": [
+            "Aggravated Assault",
+            "Old Gnawbone",
+            "Savage Ventmaw",
+            "Dragon Tempest",
+            "Ancient Gold Dragon",
+            "Miirym, Sentinel Wyrm",
+            "Panharmonicon",
+            "Sneak Attack",
+            "Wrathful Red Dragon",
+            "Blasphemous Act",
+            "Hellkite Courser"
+          ]
+        },
+        {
+          "role": "The payoff layer",
+          "cards": [
+            "Scourge of Valkas",
+            "Terror of the Peaks",
+            "Lathliss, Dragon Queen",
+            "Utvara Hellkite",
+            "Garruk's Uprising",
+            "Temur Ascendancy",
+            "Thrakkus the Butcher",
+            "Scourge of the Throne"
+          ]
+        },
+        {
+          "role": "The capstones and haymakers",
+          "cards": [
+            "The Ur-Dragon",
+            "Tiamat",
+            "Dracogenesis",
+            "Drakuseth, Maw of Flames",
+            "Klauth, Unrivaled Ancient",
+            "Cavern-Hoard Dragon",
+            "Dragonlord Dromoka",
+            "Dragonlord Kolaghan",
+            "Atsushi, the Blazing Sky",
+            "Goldspan Dragon",
+            "Breaching Dragonstorm",
+            "Dragonback Assault"
+          ]
+        },
+        {
+          "role": "Discounts, velocity, and the refills",
+          "cards": [
+            "Dragonspeaker Shaman",
+            "Herald's Horn",
+            "Urza's Incubator",
+            "Korlessa, Scale Singer",
+            "Rivaz of the Claw",
+            "Encroaching Dragonstorm",
+            "Roiling Dragonstorm",
+            "Return of the Wildspeaker",
+            "Rishkar's Expertise"
+          ]
+        },
+        {
+          "role": "The wallet: ramp and fixing",
+          "cards": [
+            "Sol Ring",
+            "Arcane Signet",
+            "Chromatic Lantern",
+            "Dragon's Hoard",
+            "Relic of Legends",
+            "Mox Jasper",
+            "Farseek",
+            "Nature's Lore",
+            "Skyshroud Claim"
+          ]
+        },
+        {
+          "role": "The couriers",
+          "cards": [
+            "Enlightened Tutor",
+            "Sarkhan's Triumph",
+            "Worldly Tutor"
+          ]
+        },
+        {
+          "role": "Interaction",
+          "cards": [
+            "Counterspell",
+            "Swan Song",
+            "Dovin's Veto",
+            "Deflecting Swat",
+            "Swords to Plowshares",
+            "Generous Gift",
+            "Chaos Warp",
+            "Crux of Fate"
+          ]
+        },
+        {
+          "role": "The insurance desk",
+          "cards": [
+            "Teferi's Protection",
+            "Heroic Intervention",
+            "Flawless Maneuver",
+            "Boros Charm",
+            "Eerie Interlude",
+            "Patriarch's Bidding"
+          ]
+        },
+        {
+          "role": "The mana",
+          "cards": [
+            "Blood Crypt",
+            "Breeding Pool",
+            "Canopy Vista",
+            "Cinder Glade",
+            "City of Brass",
+            "Clifftop Retreat",
+            "Command Tower",
+            "Exotic Orchard",
+            "Fabled Passage",
+            "Forbidden Orchard",
+            "Forest",
+            "Glacial Fortress",
+            "Haven of the Spirit Dragon",
+            "Island",
+            "Jetmir's Garden",
+            "Maelstrom of the Spirit Dragon",
+            "Mountain",
+            "Overgrown Tomb",
+            "Path of Ancestry",
+            "Reflecting Pool",
+            "Rootbound Crag",
+            "Savage Lands",
+            "Steam Vents",
+            "Stomping Ground",
+            "Sulfur Falls",
+            "Swamp",
+            "The World Tree",
+            "Unclaimed Territory",
+            "Ziatora's Proving Ground"
+          ]
+        }
+      ],
+      "captions": {
+        "Atsushi, the Blazing Sky": "**THE WALKING BANK:** his death mints three unrestricted Treasures — exactly the mana the spells-only sources can never provide for Aggravated Assault."
+      },
+      "pilot_tips": [
+        {
+          "card": "Klauth, Unrivaled Ancient",
+          "text": "Cast your whole hand with Klauth's attack mana — but never budget it for Aggravated Assault: it pays for spells only, and an activated ability is not a spell."
+        }
+      ],
+      "pull_quote": "Every sleeve either feeds the threshold or funds the exit."
+    },
+    {
       "id": "keep-or-ship",
       "kicker": "THE DRILL",
       "headline": "MULLIGAN FOR FUNCTION",
       "dek": "The simulation keeps 75.1% of opening sevens, so your gut is usually right. Call these four out loud, then check the receipts — a cost reducer reaches your hand by turn six in only 33.2% of games, and it is the keep that matters.",
-      "components": ["power-meter", "pilot-tip", "pull-quote"],
+      "components": [
+        "power-meter",
+        "pilot-tip",
+        "pull-quote"
+      ],
       "hands": [
         {
           "verdict": "KEEP — the one-in-three hand",
-          "cards": ["Urza's Incubator", "Sol Ring", "Command Tower", "Mountain", "Forest", "Miirym, Sentinel Wyrm", "Old Gnawbone"],
+          "cards": [
+            "Urza's Incubator",
+            "Sol Ring",
+            "Command Tower",
+            "Mountain",
+            "Forest",
+            "Miirym, Sentinel Wyrm",
+            "Old Gnawbone"
+          ],
           "why": "A cost reducer plus Sol Ring is the hand the deck is thirsting for: reducers show by turn six in just 33.2% of games, and they — not land drops — compress a nine-drop curve into a castable one."
         },
         {
           "verdict": "KEEP — the engine-first hand",
-          "cards": ["Dragon Tempest", "Farseek", "Steam Vents", "Forest", "Command Tower", "Korlessa, Scale Singer", "Drakuseth, Maw of Flames"],
+          "cards": [
+            "Dragon Tempest",
+            "Farseek",
+            "Steam Vents",
+            "Forest",
+            "Command Tower",
+            "Korlessa, Scale Singer",
+            "Drakuseth, Maw of Flames"
+          ],
           "why": "The payoff layer pays per Dragon and wants to be down before the first one lands. A payoff is drawn by turn six in 62.2% of games; this hand starts one on turn two."
         },
         {
           "verdict": "KEEP — the loud card, held quietly",
-          "cards": ["Aggravated Assault", "Nature's Lore", "Blood Crypt", "Mountain", "Forest", "Atsushi, the Blazing Sky", "Savage Ventmaw"],
+          "cards": [
+            "Aggravated Assault",
+            "Nature's Lore",
+            "Blood Crypt",
+            "Mountain",
+            "Forest",
+            "Atsushi, the Blazing Sky",
+            "Savage Ventmaw"
+          ],
           "why": "Assault in the opener is a hold, not a keep-reason — it wins with a board and funding, and it is the deck's loudest tell. The keep is the ramp, the engine half, and Atsushi's three unrestricted Treasures."
         },
         {
           "verdict": "SHIP — the museum",
-          "cards": ["Island", "Swamp", "Dracogenesis", "Utvara Hellkite", "Patriarch's Bidding", "Scourge of the Throne", "Rishkar's Expertise"],
+          "cards": [
+            "Island",
+            "Swamp",
+            "Dracogenesis",
+            "Utvara Hellkite",
+            "Patriarch's Bidding",
+            "Scourge of the Throne",
+            "Rishkar's Expertise"
+          ],
           "why": "Two lands and five cards costing five-plus, no bridge between them. Mean available mana on turn six is 4.937 — this hand starts working around turn eight, and the game will not wait."
         }
       ],
@@ -85,259 +317,23 @@
       "kicker": "YOUR CALL",
       "headline": "COMMIT BEFORE YOU PEEK",
       "dek": "Two real boards from this exact 99: a castable commander staring down five untapped control lands, and a Tiamat pile you must design into telegraphed sweeper mana. Decide out loud first — the Coach shows his hand after you show yours.",
-      "components": ["scenario-box", "pull-quote"],
+      "components": [
+        "scenario-box",
+        "pull-quote"
+      ],
       "pull_quote": "A good read costs nothing. A bad commit costs the game.",
       "note": "Render decisions 001 then 002. Recommendations stay below the branches per STYLEv3 section 5.1 — no caption, callout, or dek may telegraph either answer."
-    },
-    {
-      "id": "politics-table",
-      "kicker": "TABLE READS",
-      "headline": "THE SLOWEST DECK IN THE ROOM",
-      "dek": "Five-colour Dragons reads as battlecruiser, and your first four turns confirm the story. Keep it that way — your real tells are two enchantments, and bracket-4 tables answer them on sight.",
-      "components": ["callout-step", "pilot-tip", "pull-quote"],
-      "callouts": [
-        {
-          "n": 1,
-          "title": "THREAT WINDOW",
-          "text": "You flip to archenemy the turn Aggravated Assault is live with a connecting Old Gnawbone or Savage Ventmaw — funding on the table, protection held. The shield is in hand by turn six in 66.0% of games. Choose that turn; never drift into it."
-        },
-        {
-          "n": 2,
-          "title": "THE SECOND WINDOW",
-          "text": "With Wrathful Red Dragon out, welcome the damage sweeper: stack 004 verified 39 redirected at one face. Quote it honestly at the table — it executes one player, never three, and destroy-all wraths feed it nothing."
-        }
-      ],
-      "captions": {
-        "Sneak Attack": "**THE TELL YOU CAN AFFORD:** an enchantment the wraths never touch — but the table prices {R} Drakuseths the moment it lands, so land it the turn it deals 17, not before.",
-        "Dragonlord Dromoka": "**THE QUIET COMMIT:** opponents cannot cast spells during your turn — sequence her first on the pivot turn, and everything after her resolves in peace."
-      },
-      "pilot_tips": [
-        {
-          "card": "Deflecting Swat",
-          "text": "Hold Deflecting Swat for the removal spell aimed at Aggravated Assault mid-combo — never spend it saving a Signet's worth of value."
-        }
-      ],
-      "pull_quote": "Stay boring until the turn you aren't."
-    },
-    {
-      "id": "know-your-enemy",
-      "kicker": "SCOUTING REPORT",
-      "headline": "FOUR FIGHTS, NAMED OUTS",
-      "dek": "Sweepers, stax, aggro, and faster combo — each one beats you a different way, and every out below is actually sleeved in this 99.",
-      "components": ["threat-box", "pilot-tip"],
-      "threats": [
-        {
-          "archetype": "Sweeper Control",
-          "meter_label": "Danger to you",
-          "rate": 0.55,
-          "read": "Your board is thin by design — 1.463 mean bodies at turn six — so waves cost you little, and your rebuild is enchantment-shaped: Assault, Sneak Attack, and the draw layer never die to a wrath. With Wrathful Red Dragon out, a damage sweeper is their mistake (stack 004). Destroy-all effects still trade clean — hold one shield for the board that actually wins.",
-          "outs": ["Wrathful Red Dragon", "Teferi's Protection", "Heroic Intervention", "Flawless Maneuver", "Boros Charm", "Patriarch's Bidding"]
-        },
-        {
-          "archetype": "Stax & Taxes",
-          "meter_label": "Danger to you",
-          "rate": 0.7,
-          "read": "Taxes punish a 23-card five-to-seven shelf, but eminence accrues from the command zone where permanent-hate cannot reach, Treasure bursts pay in lump sums, and the Ventmaw loop needs exactly one clean combat (stack 003). Aim your removal at whatever taxes untaps or activations — Assault is the whole exit.",
-          "outs": ["Generous Gift", "Chaos Warp", "Swords to Plowshares", "Goldspan Dragon", "Savage Ventmaw"]
-        },
-        {
-          "archetype": "Aggro Swarm",
-          "meter_label": "Danger to you",
-          "rate": 0.35,
-          "read": "You are the control seat: roughly 120 combined life stands behind three defenses, and your fliers blank ground boards. Crux of Fate spares every Dragon you own. Do not race — the long game belongs to your engine.",
-          "outs": ["Crux of Fate", "Blasphemous Act", "Drakuseth, Maw of Flames", "Dragonback Assault"]
-        },
-        {
-          "archetype": "Faster Combo",
-          "meter_label": "Danger to you",
-          "rate": 0.8,
-          "read": "Spend answers at the win attempt, never earlier. The suite is real coverage — and you race credibly, since your own two-card lines assemble at six mana or less. In the counter-war, Dovin's Veto has the last word.",
-          "outs": ["Counterspell", "Swan Song", "Dovin's Veto", "Deflecting Swat", "Chaos Warp", "Teferi's Protection"]
-        }
-      ],
-      "pilot_tips": [
-        {
-          "card": "Crux of Fate",
-          "text": "Cast Crux of Fate as your one-sided wrath — all non-Dragons die, your whole board stays — and save Blasphemous Act for the turns Wrathful Red Dragon is watching."
-        }
-      ]
-    },
-    {
-      "id": "fetch-quests",
-      "kicker": "WISH LIST",
-      "headline": "FOUR ROADS, ONE CITY",
-      "dek": "Four tutors, thirteen wishes, and nearly every road leads to Aggravated Assault plus a connecting Dragon. Tiamat headlines: one resolved cast hands you a five-name package — both kill halves, the doubler, the haste anthem, and the commander's courier.",
-      "components": ["pilot-tip", "pull-quote"],
-      "pilot_tips": [
-        {
-          "card": "Enlightened Tutor",
-          "text": "Cast Enlightened Tutor at the end of the turn before you win — the reveal announces Aggravated Assault to the whole table, so buy it with Deflecting Swat held."
-        }
-      ],
-      "pull_quote": "A wish is also an announcement — shop the turn before, never two."
-    },
-    {
-      "id": "command-zone",
-      "kicker": "COMMANDER FILE",
-      "headline": "WORKING FROM THE ZONE",
-      "dek": "Most commanders must resolve to matter. Yours bills the table from the command zone all game — and the record shows the discount, the tax, and the rental clause all favor rarely casting him at all.",
-      "components": ["tax-ladder", "fast-facts", "pilot-tip", "pull-quote"],
-      "body": "Start with what the zone guarantees: your commander is always available to cast from the command zone (CR 903.4). This deck files that guarantee differently from every other list at the table. The Ur-Dragon's eminence ability works while he sits in the zone — every Dragon spell you cast costs {1} less, from turn zero, for as long as the game lasts. The guarantee is not that you will draw him. It is that you are always being paid.\n\nNow the tax. Each cast from the zone after the first costs an additional {2} (CR 903.8). The ladder reads nine, eleven, thirteen — against a deck whose mean available mana on turn nine is 6.165. The record is blunt: the first cast is an event, the second is a stretch, the third is fiction. Protection is therefore the better spend, and the deck's own insurance argues the same — Deflecting Swat is free only while a commander is on your battlefield, so landing him once and keeping him is worth more than any recast plan.\n\nThere is a rental clause, and the Counselor commends it to your attention. Hellkite Courser's enters-trigger puts The Ur-Dragon onto the battlefield from the command zone, hasty, for exactly one attack — a card per attacking Dragon plus a free permanent from hand — then returns him at end step. The tax counts casts (CR 903.8), and this never was one. The zone gets its tenant back untaxed. The route everyone assumes works, Sneak Attack, does not: it reaches creature cards in your hand, and the command zone is not your hand (CR 903.6; the full holding is case A-005).\n\nColor identity: five colours costs you nothing in exclusions — every card in the format's identity rules is available to this list — and everything in logistics. The 99 pays for WUBRG with sixteen tapped lands and an eleven-source black column; Sources Say prices that bill in full.\n\nThe 21-point clock (CR 903.10a) is arithmetic worth savoring: a 10/10 commander deals 20 commander damage in two connections — one point short. Three clean hits close it, and a Thrakkus the Butcher doubling still stops at 20 on one swing. The holding: commander damage here is a coincidence, not a plan. The deck's real kills are filed under The Kill.\n\nThe Coach's close: cast him when the table's interaction is spent, shield him once he lands, and never mulligan a hand looking for him. The zone already holds him — and the zone is where he earns.",
-      "captions": {
-        "Hellkite Courser": "**THE RENTAL CLAUSE:** his enters-trigger borrows The Ur-Dragon from the command zone with haste for one attack — a draw per attacking Dragon plus a free permanent, returned untaxed at end step."
-      },
-      "pilot_tips": [
-        {
-          "card": "Teferi's Protection",
-          "text": "Save Teferi's Protection for the turn The Ur-Dragon finally lands — a nine-mana body with no shield is the most expensive way to donate a wrath."
-        }
-      ],
-      "pull_quote": "The guarantee is not that you will draw him. It is that you are always being paid."
-    },
-    {
-      "id": "the-99",
-      "kicker": "THE ROSTER",
-      "headline": "NINETY-NINE SEATS, RANKED",
-      "dek": "The engine room first — eleven cards the checker already put on the record — then the payoffs, the discounts, the wallet, and a mana base carrying five colours' worth of bills.",
-      "components": ["pilot-tip", "pull-quote"],
-      "roster": [
-        {
-          "role": "The engine room — on the record",
-          "cards": ["Aggravated Assault", "Old Gnawbone", "Savage Ventmaw", "Dragon Tempest", "Ancient Gold Dragon", "Miirym, Sentinel Wyrm", "Panharmonicon", "Sneak Attack", "Wrathful Red Dragon", "Blasphemous Act", "Hellkite Courser"]
-        },
-        {
-          "role": "The payoff layer",
-          "cards": ["Scourge of Valkas", "Terror of the Peaks", "Lathliss, Dragon Queen", "Utvara Hellkite", "Garruk's Uprising", "Temur Ascendancy", "Thrakkus the Butcher", "Scourge of the Throne"]
-        },
-        {
-          "role": "The capstones and haymakers",
-          "cards": ["The Ur-Dragon", "Tiamat", "Dracogenesis", "Drakuseth, Maw of Flames", "Klauth, Unrivaled Ancient", "Cavern-Hoard Dragon", "Dragonlord Dromoka", "Dragonlord Kolaghan", "Atsushi, the Blazing Sky", "Goldspan Dragon", "Breaching Dragonstorm", "Dragonback Assault"]
-        },
-        {
-          "role": "Discounts, velocity, and the refills",
-          "cards": ["Dragonspeaker Shaman", "Herald's Horn", "Urza's Incubator", "Korlessa, Scale Singer", "Rivaz of the Claw", "Encroaching Dragonstorm", "Roiling Dragonstorm", "Return of the Wildspeaker", "Rishkar's Expertise"]
-        },
-        {
-          "role": "The wallet: ramp and fixing",
-          "cards": ["Sol Ring", "Arcane Signet", "Chromatic Lantern", "Dragon's Hoard", "Relic of Legends", "Mox Jasper", "Farseek", "Nature's Lore", "Skyshroud Claim"]
-        },
-        {
-          "role": "The couriers",
-          "cards": ["Enlightened Tutor", "Sarkhan's Triumph", "Worldly Tutor"]
-        },
-        {
-          "role": "Interaction",
-          "cards": ["Counterspell", "Swan Song", "Dovin's Veto", "Deflecting Swat", "Swords to Plowshares", "Generous Gift", "Chaos Warp", "Crux of Fate"]
-        },
-        {
-          "role": "The insurance desk",
-          "cards": ["Teferi's Protection", "Heroic Intervention", "Flawless Maneuver", "Boros Charm", "Eerie Interlude", "Patriarch's Bidding"]
-        },
-        {
-          "role": "The mana",
-          "cards": ["Blood Crypt", "Breeding Pool", "Canopy Vista", "Cinder Glade", "City of Brass", "Clifftop Retreat", "Command Tower", "Exotic Orchard", "Fabled Passage", "Forbidden Orchard", "Forest", "Glacial Fortress", "Haven of the Spirit Dragon", "Island", "Jetmir's Garden", "Maelstrom of the Spirit Dragon", "Mountain", "Overgrown Tomb", "Path of Ancestry", "Reflecting Pool", "Rootbound Crag", "Savage Lands", "Steam Vents", "Stomping Ground", "Sulfur Falls", "Swamp", "The World Tree", "Unclaimed Territory", "Ziatora's Proving Ground"]
-        }
-      ],
-      "captions": {
-        "Atsushi, the Blazing Sky": "**THE WALKING BANK:** his death mints three unrestricted Treasures — exactly the mana the spells-only sources can never provide for Aggravated Assault."
-      },
-      "pilot_tips": [
-        {
-          "card": "Klauth, Unrivaled Ancient",
-          "text": "Cast your whole hand with Klauth's attack mana — but never budget it for Aggravated Assault: it pays for spells only, and an activated ability is not a spell."
-        }
-      ],
-      "pull_quote": "Every sleeve either feeds the threshold or funds the exit."
-    },
-    {
-      "id": "upgrade-watch",
-      "kicker": "THE SHORT LIST",
-      "headline": "TEN SCOUTS, NO SPARES",
-      "dek": "This deck carries no sideboard, so all ten picks are scouted from the wider pool. Seven buy a second card name for the verified Assault architecture — led by Hellkite Charger and The Reaver Cleaver — because one enchantment currently carries all three infinites.",
-      "components": ["fast-facts", "pilot-tip", "pull-quote"],
-      "callouts": [
-        {
-          "n": 1,
-          "title": "THE STANDING RULE",
-          "text": "Every combo line a pick opens is a candidate — needs a stack scenario, pick by pick — and no pick moves the computed floor off 4. Buy the scenario before you lean a game on the line."
-        },
-        {
-          "n": 2,
-          "title": "THE PILOT'S NAMES",
-          "text": "Hellkite Tyrant and Faeburrow Elder appear in no evidence channel. Tyrant's theft line is live in Treasure pods but competes with picks that end games through the verified architecture; Faeburrow fights the deck's shape twice — ramp is over budget and {W} is the thinnest colour. Overriding the data is a pilot call; the ledger just prices it."
-        }
-      ],
-      "pilot_tips": [
-        {
-          "card": "Skyshroud Claim",
-          "text": "If Three Visits earns a sleeve, cut Skyshroud Claim — the obsolescence trace reads similarity 0.9983 at two mana less, and the ramp budget is already the deck's fattest line."
-        }
-      ],
-      "pull_quote": "When one card carries three infinites, redundancy is the cheapest insurance on the market."
-    },
-    {
-      "id": "sources-say",
-      "kicker": "THE AUDIT",
-      "headline": "RED WRITES THE CHECKS",
-      "dek": "Red is 46.5% of the pip bill on 26.2% of the land sources. Black runs eleven lands against a double-black lump. Sixteen of twenty-nine lands arrive tapped. The audit prices all of it — and names the Treasury that never appears on the books.",
-      "components": ["pilot-tip", "pull-quote"],
-      "captions": {
-        "The World Tree": "**THE SECOND LANTERN:** at six lands, every land you control taps for any colour — five separate shortfalls collapse into one solved number."
-      },
-      "pilot_tips": [
-        {
-          "card": "Fabled Passage",
-          "text": "Fetch the Swamp with Fabled Passage the turn before Patriarch's Bidding — black is the thinnest column at eleven land sources, and its eight pips arrive in double-black lumps."
-        }
-      ],
-      "pull_quote": "This deck doesn't miss colours so much as it misses tempo."
-    },
-    {
-      "id": "by-the-numbers",
-      "kicker": "THE LEDGER",
-      "headline": "EIGHT POINT NINE SIX SEVEN",
-      "dek": "Ten thousand seeded games put the commander on the stand: mean cast turn 8.967, 0.0% by turn six, cast at all by turn ten in just 13.7% of runs. That is not an indictment — it is the case for the engines.",
-      "components": ["power-meter", "fast-facts", "pilot-tip", "pull-quote"],
-      "callouts": [
-        {
-          "n": 1,
-          "title": "EARLY MONEY",
-          "text": "Ramp or fixing is drawn by turn six in 71.6% of games, mean arrival turn 2.588. The first act funds itself."
-        },
-        {
-          "n": 2,
-          "title": "THE RARE FIXER",
-          "text": "A cost reducer shows by turn six in just 33.2% of games — and the model does not even simulate the discount. When you hold one, build the turn around it."
-        },
-        {
-          "n": 3,
-          "title": "THE FADE",
-          "text": "Land drops decay to 49.7% by turn six while mean mana sits at 4.937 — from there the deck climbs on rocks, Treasures, and discounts."
-        },
-        {
-          "n": 4,
-          "title": "THE SHIELD RATE",
-          "text": "Protection is in hand by turn six in 66.0% of games. The plan asks for exactly one shielded turn; the ledger says you will usually have it."
-        }
-      ],
-      "captions": {
-        "Urza's Incubator": "**OFF THE BOOKS:** cost reducers go unmodeled, so 8.967 is the floor of the problem, not your ceiling.",
-        "Old Gnawbone": "**ALSO OFF THE BOOKS:** the model mints no Treasures — the deck's single richest income line is invisible to every number on this page."
-      },
-      "pilot_tips": [
-        {
-          "card": "Mox Jasper",
-          "text": "Play Mox Jasper the moment a Dragon hits your board — the mana table counts it from that turn on, and banking it early costs you nothing."
-        }
-      ],
-      "pull_quote": "The commander is an event. The engines are the schedule."
     },
     {
       "id": "the-kill",
       "kicker": "THE DOCKET",
       "headline": "SIX VERDICTS, ONE PAYROLL",
       "dek": "Two true infinites, a d20 burst, a doubling audit, a sweeper turned execution, and a famous cheat denied in court. Every line below survived the adversarial checker — nothing here is hope.",
-      "components": ["callout-step", "map-key", "pilot-tip", "pull-quote"],
+      "components": [
+        "callout-step",
+        "pilot-tip",
+        "pull-quote"
+      ],
       "callouts": [
         {
           "n": 1,
@@ -380,11 +376,230 @@
       "note": "Feature spread order: 006 (the cover line, walked in the callout-steps), 003, 001, 002, 004, 005. Dossier pointers to cases A-001 through A-006 are renderer-standing."
     },
     {
+      "id": "politics-table",
+      "kicker": "TABLE READS",
+      "headline": "THE SLOWEST DECK IN THE ROOM",
+      "dek": "Five-colour Dragons reads as battlecruiser, and your first four turns confirm the story. Keep it that way — your real tells are two enchantments, and bracket-4 tables answer them on sight.",
+      "components": [
+        "callout-step",
+        "pilot-tip",
+        "pull-quote"
+      ],
+      "callouts": [
+        {
+          "n": 1,
+          "title": "THREAT WINDOW",
+          "text": "You flip to archenemy the turn Aggravated Assault is live with a connecting Old Gnawbone or Savage Ventmaw — funding on the table, protection held. The shield is in hand by turn six in 66.0% of games. Choose that turn; never drift into it."
+        },
+        {
+          "n": 2,
+          "title": "THE SECOND WINDOW",
+          "text": "With Wrathful Red Dragon out, welcome the damage sweeper: stack 004 verified 39 redirected at one face. Quote it honestly at the table — it executes one player, never three, and destroy-all wraths feed it nothing."
+        }
+      ],
+      "captions": {
+        "Sneak Attack": "**THE TELL YOU CAN AFFORD:** an enchantment the wraths never touch — but the table prices {R} Drakuseths the moment it lands, so land it the turn it deals 17, not before.",
+        "Dragonlord Dromoka": "**THE QUIET COMMIT:** opponents cannot cast spells during your turn — sequence her first on the pivot turn, and everything after her resolves in peace."
+      },
+      "pilot_tips": [
+        {
+          "card": "Deflecting Swat",
+          "text": "Hold Deflecting Swat for the removal spell aimed at Aggravated Assault mid-combo — never spend it saving a Signet's worth of value."
+        }
+      ],
+      "pull_quote": "Stay boring until the turn you aren't."
+    },
+    {
+      "id": "know-your-enemy",
+      "kicker": "SCOUTING REPORT",
+      "headline": "FOUR FIGHTS, NAMED OUTS",
+      "dek": "Sweepers, stax, aggro, and faster combo — each one beats you a different way, and every out below is actually sleeved in this 99.",
+      "components": [
+        "threat-box",
+        "pilot-tip"
+      ],
+      "threats": [
+        {
+          "archetype": "Sweeper Control",
+          "meter_label": "Danger to you",
+          "rate": 0.55,
+          "read": "Your board is thin by design — 1.463 mean bodies at turn six — so waves cost you little, and your rebuild is enchantment-shaped: Assault, Sneak Attack, and the draw layer never die to a wrath. With Wrathful Red Dragon out, a damage sweeper is their mistake (stack 004). Destroy-all effects still trade clean — hold one shield for the board that actually wins.",
+          "outs": [
+            "Wrathful Red Dragon",
+            "Teferi's Protection",
+            "Heroic Intervention",
+            "Flawless Maneuver",
+            "Boros Charm",
+            "Patriarch's Bidding"
+          ]
+        },
+        {
+          "archetype": "Stax & Taxes",
+          "meter_label": "Danger to you",
+          "rate": 0.7,
+          "read": "Taxes punish a 23-card five-to-seven shelf, but eminence accrues from the command zone where permanent-hate cannot reach, Treasure bursts pay in lump sums, and the Ventmaw loop needs exactly one clean combat (stack 003). Aim your removal at whatever taxes untaps or activations — Assault is the whole exit.",
+          "outs": [
+            "Generous Gift",
+            "Chaos Warp",
+            "Swords to Plowshares",
+            "Goldspan Dragon",
+            "Savage Ventmaw"
+          ]
+        },
+        {
+          "archetype": "Aggro Swarm",
+          "meter_label": "Danger to you",
+          "rate": 0.35,
+          "read": "You are the control seat: roughly 120 combined life stands behind three defenses, and your fliers blank ground boards. Crux of Fate spares every Dragon you own. Do not race — the long game belongs to your engine.",
+          "outs": [
+            "Crux of Fate",
+            "Blasphemous Act",
+            "Drakuseth, Maw of Flames",
+            "Dragonback Assault"
+          ]
+        },
+        {
+          "archetype": "Faster Combo",
+          "meter_label": "Danger to you",
+          "rate": 0.8,
+          "read": "Spend answers at the win attempt, never earlier. The suite is real coverage — and you race credibly, since your own two-card lines assemble at six mana or less. In the counter-war, Dovin's Veto has the last word.",
+          "outs": [
+            "Counterspell",
+            "Swan Song",
+            "Dovin's Veto",
+            "Deflecting Swat",
+            "Chaos Warp",
+            "Teferi's Protection"
+          ]
+        }
+      ],
+      "pilot_tips": [
+        {
+          "card": "Crux of Fate",
+          "text": "Cast Crux of Fate as your one-sided wrath — all non-Dragons die, your whole board stays — and save Blasphemous Act for the turns Wrathful Red Dragon is watching."
+        }
+      ]
+    },
+    {
+      "id": "fetch-quests",
+      "kicker": "WISH LIST",
+      "headline": "FOUR ROADS, ONE CITY",
+      "dek": "Four tutors, thirteen wishes, and nearly every road leads to Aggravated Assault plus a connecting Dragon. Tiamat headlines: one resolved cast hands you a five-name package — both kill halves, the doubler, the haste anthem, and the commander's courier.",
+      "components": [
+        "pilot-tip",
+        "pull-quote"
+      ],
+      "pilot_tips": [
+        {
+          "card": "Enlightened Tutor",
+          "text": "Cast Enlightened Tutor at the end of the turn before you win — the reveal announces Aggravated Assault to the whole table, so buy it with Deflecting Swat held."
+        }
+      ],
+      "pull_quote": "A wish is also an announcement — shop the turn before, never two."
+    },
+    {
+      "id": "sources-say",
+      "kicker": "THE AUDIT",
+      "headline": "RED WRITES THE CHECKS",
+      "dek": "Red is 46.5% of the pip bill on 26.2% of the land sources. Black runs eleven lands against a double-black lump. Sixteen of twenty-nine lands arrive tapped. The audit prices all of it — and names the Treasury that never appears on the books.",
+      "components": [
+        "pilot-tip",
+        "pull-quote"
+      ],
+      "captions": {
+        "The World Tree": "**THE SECOND LANTERN:** at six lands, every land you control taps for any colour — five separate shortfalls collapse into one solved number."
+      },
+      "pilot_tips": [
+        {
+          "card": "Fabled Passage",
+          "text": "Fetch the Swamp with Fabled Passage the turn before Patriarch's Bidding — black is the thinnest column at eleven land sources, and its eight pips arrive in double-black lumps."
+        }
+      ],
+      "pull_quote": "This deck doesn't miss colours so much as it misses tempo."
+    },
+    {
+      "id": "by-the-numbers",
+      "kicker": "THE LEDGER",
+      "headline": "EIGHT POINT NINE SIX SEVEN",
+      "dek": "Ten thousand seeded games put the commander on the stand: mean cast turn 8.967, 0.0% by turn six, cast at all by turn ten in just 13.7% of runs. That is not an indictment — it is the case for the engines.",
+      "components": [
+        "power-meter",
+        "fast-facts",
+        "pilot-tip",
+        "pull-quote"
+      ],
+      "callouts": [
+        {
+          "n": 1,
+          "title": "EARLY MONEY",
+          "text": "Ramp or fixing is drawn by turn six in 71.6% of games, mean arrival turn 2.588. The first act funds itself."
+        },
+        {
+          "n": 2,
+          "title": "THE RARE FIXER",
+          "text": "A cost reducer shows by turn six in just 33.2% of games — and the model does not even simulate the discount. When you hold one, build the turn around it."
+        },
+        {
+          "n": 3,
+          "title": "THE FADE",
+          "text": "Land drops decay to 49.7% by turn six while mean mana sits at 4.937 — from there the deck climbs on rocks, Treasures, and discounts."
+        },
+        {
+          "n": 4,
+          "title": "THE SHIELD RATE",
+          "text": "Protection is in hand by turn six in 66.0% of games. The plan asks for exactly one shielded turn; the ledger says you will usually have it."
+        }
+      ],
+      "captions": {
+        "Urza's Incubator": "**OFF THE BOOKS:** cost reducers go unmodeled, so 8.967 is the floor of the problem, not your ceiling.",
+        "Old Gnawbone": "**ALSO OFF THE BOOKS:** the model mints no Treasures — the deck's single richest income line is invisible to every number on this page."
+      },
+      "pilot_tips": [
+        {
+          "card": "Mox Jasper",
+          "text": "Play Mox Jasper the moment a Dragon hits your board — the mana table counts it from that turn on, and banking it early costs you nothing."
+        }
+      ],
+      "pull_quote": "The commander is an event. The engines are the schedule."
+    },
+    {
+      "id": "upgrade-watch",
+      "kicker": "THE SHORT LIST",
+      "headline": "TEN SCOUTS, NO SPARES",
+      "dek": "This deck carries no sideboard, so all ten picks are scouted from the wider pool. Seven buy a second card name for the verified Assault architecture — led by Hellkite Charger and The Reaver Cleaver — because one enchantment currently carries all three infinites.",
+      "components": [
+        "fast-facts",
+        "pilot-tip",
+        "pull-quote"
+      ],
+      "callouts": [
+        {
+          "n": 1,
+          "title": "THE STANDING RULE",
+          "text": "Every combo line a pick opens is a candidate — needs a stack scenario, pick by pick — and no pick moves the computed floor off 4. Buy the scenario before you lean a game on the line."
+        },
+        {
+          "n": 2,
+          "title": "THE PILOT'S NAMES",
+          "text": "Hellkite Tyrant and Faeburrow Elder appear in no evidence channel. Tyrant's theft line is live in Treasure pods but competes with picks that end games through the verified architecture; Faeburrow fights the deck's shape twice — ramp is over budget and {W} is the thinnest colour. Overriding the data is a pilot call; the ledger just prices it."
+        }
+      ],
+      "pilot_tips": [
+        {
+          "card": "Skyshroud Claim",
+          "text": "If Three Visits earns a sleeve, cut Skyshroud Claim — the obsolescence trace reads similarity 0.9983 at two mana less, and the ramp budget is already the deck's fattest line."
+        }
+      ],
+      "pull_quote": "When one card carries three infinites, redundancy is the cheapest insurance on the market."
+    },
+    {
       "id": "judges-desk",
       "kicker": "CASE FILES",
       "headline": "SIX CASES, VERBATIM",
       "dek": "Every citation quoted in full, every verdict stamped after an adversarial second read. Case A-005 alone is worth the visit: the famous cheat, denied, with the rule that denies it.",
-      "components": ["dossier-file"],
+      "components": [
+        "dossier-file"
+      ],
       "note": "Cases A-001 through A-006 render from checker-passed stacks, citations untouched. A-006 backs the cover; A-005 carries the CR 903.6 refutation the teases sell."
     },
     {
@@ -392,7 +607,11 @@
       "kicker": "ART FILE",
       "headline": "A HOARD OF HANDS",
       "dek": "No painter owns this deck: 76 artists across 95 cards, and the largest single hand is four. The ledger calls that breadth, not indecision — and it credits every hand per card, never per copy.",
-      "components": ["artist-gallery", "fast-facts", "pull-quote"],
+      "components": [
+        "artist-gallery",
+        "fast-facts",
+        "pull-quote"
+      ],
       "featured": {
         "artist": "Jaime Jones",
         "note": "The hero seat goes to Jaime Jones, who painted the face of the franchise: The Ur-Dragon himself, plus Dragonlord Kolaghan's haste anthem and the Temur Ascendancy that turns your board into cards. Three cards — and honesty first: that is not even the deck's largest hand. Adam Paquette holds four, and every one of them is mana.\n\nRead the counts for what they are: per card, never per copy — the four Mountains share one Jonas De Ro painting and count once. The 95 cards arrive from 41 different products, the largest cluster is eight cards from Tarkir: Dragonstorm Commander spread across eight different painters, and no collector-number run suggests a box bought whole. This collection was assembled the slow way, one Dragon at a time, and the ledger shows it: breadth all the way down, with exactly one foil in the stack."

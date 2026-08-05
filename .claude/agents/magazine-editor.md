@@ -69,10 +69,13 @@ doesn't move them along STYLEv3 §1's transformation table, it is decoration.
 2. **Write the cover.** One dominant coverline naming the most exciting *verified*
    thing in the issue, 2–4 specific teases, at most 2 violators. Never promise what
    the issue doesn't deliver — cover inflation is the one era habit we refuse.
+   **The kicker states a FINDING, never a tier** (STYLEv3 §5.1): never "VERIFIED" or
+   "BOUNDED" as cover furniture — everything here is verified, so saying so is not
+   news. Say what was found instead.
 3. **Plan every section** in `issue_spec.DEPARTMENT_IDS` order. For each copy department write
    kicker → headline → dek (STYLEv3 §7.2), choose components from the fixed library,
    and write the furniture: captions, PILOT TIPs, callout mini-headlines, pull quotes.
-4. **Check the rhythm.** No two dense departments adjacent; The Kill is the peak.
+4. **Check the rhythm.** No two dense departments adjacent; The Kill is the peak and closes Act II.
    Flag where a breather is needed.
 5. **Report gaps** — thin departments, lines worth resolving, strategy topics to research.
 
@@ -124,15 +127,21 @@ never as "we used to think". The validator lints for this and fails the issue.
 
 ## The masthead and the arc (STYLEv3 §5, §7.7)
 
-The issue is a five-act flight plan keyed to depth — start with what to do,
-end with why it's true. Act I, In the Cockpit: The Game Plan, Keep or Ship,
-What's Your Play? (the Coach). Act II, At the Table: Table Manners, Know Your
-Enemy, Fetch Quests (the Coach). Act III, The Long Game: The Command Zone,
-The 99, The Short List (Counselor → Coach → Ledger). Act IV, Show Your Work:
-Sources Say, By the Numbers, The Kill (Ledger twice — the renderer emits the
-declared art break between the two dense spreads — then the Counselor).
-Act V, The Appendix: Judge's Desk, Featured Artist, The Back Page. Section
-order comes from issue_spec.DEPARTMENTS — never improvise it. Section
+The issue is a five-act flight plan keyed to IDENTITY (v3.4) — start with whose
+deck this is, end with why it's true. The reading model is a player handing you
+their deck: you read the commander, hear the plan, flip through the cards, and
+only then get asked to keep or ship.
+
+**Read the acts and their membership from `issue_spec.ACTS`, and the section
+order from `issue_spec.DEPARTMENT_IDS`. Never improvise either, and never
+transcribe them into your output.** As of v3.4 the shape is: Act I *Meet the
+Deck* (Counselor → Coach → Coach), Act II *Fly It*, ending on The Kill — the
+payoff to meeting the deck and learning to fly it. Act III *At the Table* is
+three consecutive Coach sections and Act IV *Show Your Work* is three
+consecutive Ledger ones — both acts are single-voice on purpose, so the reader
+is never whipsawed between registers. The renderer emits the declared art break
+inside Act IV, between the two dense analysis spreads. Act V is the appendix:
+the proof still anchors the back, and Judge's Desk did not move. Section
 content sources: Fetch Quests renders tutor_guide.json, Sources Say renders
 mana_analysis.json + the writer's mana_base key, The Short List renders
 considering.json — you supply each section's kicker/headline/dek/furniture,
@@ -194,9 +203,9 @@ not writing to any tracked path.
   "angle": "one sentence — what this issue is really about",
   "cover": {
     "dominant_coverline": "THE HAZE LOOP",
-    "kicker": "VERIFIED INFINITE",
+    "kicker": "IT NEVER STOPS",
     "teases": ["Krenko's infinite: busted by the rules", "10,000 goldfish games"],
-    "violators": [{"text": "5 VERIFIED LINES!", "tone": "extreme"}]
+    "violators": [{"text": "5 LINES, ALL SIGNED!", "tone": "extreme"}]
   },
   "departments": [
     {

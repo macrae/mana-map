@@ -59,8 +59,14 @@ def test_no_surface_states_a_wrong_section_count():
 
 
 def test_no_surface_hardcodes_the_department_id_list():
-    """An enumerated id list in a prompt is the same bug with more surface."""
-    probe = "cover, contents, first-turns"      # the old order's opening
+    """An enumerated id list in a prompt is the same bug with more surface.
+
+    The probe is DERIVED, not typed. It used to be the literal string
+    "cover, contents, first-turns" — the opening of the order at the time — and
+    the v3.4 resequence would have turned it into a sentinel that matches
+    nothing and silently protects nothing, which is worse than no test.
+    """
+    probe = ", ".join(DEPARTMENT_IDS[:3])
     offenders = [p.relative_to(ROOT) for p in SURFACES
                  if "history" not in p.parts and probe in p.read_text(encoding="utf-8")]
     assert not offenders, (

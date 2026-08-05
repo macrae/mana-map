@@ -229,17 +229,32 @@ contents page groups sections under act headers and calls itself **The Flight Pl
 "Department" survives only as internal vocabulary (code identifiers, plan schema,
 agent contracts), where renaming would churn every artifact for zero reader value.
 
-The order is a **five-act flight plan keyed to depth (v3.2 amendment)**: start
-with what to do, end with why it's true. Act I puts you in the cockpit (pilot the
-deck, from turn one). Act II works the table (tactics against three live
-opponents). Act III zooms out (the commander, the roster, the future). Act IV
-shows its work (the stats, then the verified lines). Act V is the appendix (the
-case files, the paint, the door out). Rigor rises monotonically — a reader can
-stop at any act boundary and have gotten a complete, shallower book.
+The order is a **five-act flight plan keyed to identity (v3.4 amendment)**: start
+with whose deck this is, end with why it's true. Act I introduces the deck (the
+commander, the plan, the roster). Act II flies it (the opening hand, the hard
+call, the kill). Act III works the table (tactics against three live opponents).
+Act IV shows its work (the mana, the stats, the future). Act V is the appendix
+(the case files, the paint, the door out).
+
+**The reading model is a player handing you their deck.** You look at the
+commander and read their abilities, you hear what the deck wants to do, and then
+you flip through the cards — which the magazine has already sorted and labelled
+for you. Only then does anyone ask you to keep or ship a hand, because a mulligan
+decision is unreadable until you know what the distribution behind it looks like.
+
+**v3.4 replaced the monotonic depth ramp of v3.2**, which ran what-to-do → table
+→ zoom-out → numbers → proof, and put the commander ninth and the roster tenth.
+It read as a manual for a deck the reader had not met. Rigor no longer rises
+strictly through the book; instead **identity front-loads and proof still
+anchors the back** — Judge's Desk does not move, and the appendix remains the
+place a claim goes to be checked. What was lost is the "stop at any act boundary
+and get a shallower complete book" property; what was bought is that the first
+three sections answer the question a player actually asks first.
 (Constitutional note: §13's "section drift" anti-pattern forbids per-issue
 reordering, not constitutional amendment. Every act is signed — see the byline
 column; one voice speaks for whole stretches, and the reader is never whipsawed
-between registers page to page.)
+between registers page to page. **Acts III and IV are now single-voice**: three
+consecutive Brightside sections, then three consecutive Marginal ones.)
 
 Promises are written in the signing columnist's voice and printed verbatim in the
 Flight Plan — they are copy, not metadata. `issue_spec.py` is their single source.
@@ -248,23 +263,23 @@ Flight Plan — they are copy, not metadata. `issue_spec.py` is their single sou
 |---|---|---|---|---|---|
 | 1 | **The Cover** | "Why should I care about this deck?" | — | commander art, verified-line count | — |
 | 2 | **The Flight Plan** | "You are here. Everything else is one tap away." | — | acts + tier legend + masthead | — |
-| — | *Act I — In the Cockpit* | | | | |
-| 3 | **The Game Plan** | "What this deck wants to do — and why it's going to work." | Brightside | `how_it_wins` | ★ |
-| 4 | **Keep or Ship** | "Seven cards, one call. The Coach trusts your gut; Ledger brought receipts." | Brightside + Marginal | `mulligan` + goldfish | ★◆ |
-| 5 | **What's Your Play?** | "Real board, real stakes. Commit before the Coach shows his hand." | Brightside | `decisions/*.json` | ★ |
-| — | *Act II — At the Table* | | | | |
-| 6 | **Table Manners** | "Three opponents, one you. How to win friends and eliminate people." | Brightside | `threat_assessment` | ★ |
-| 7 | **Know Your Enemy** | "The decks that want you dead, and how to disappoint them." | Brightside | `matchups` | ★ |
-| 8 | **Fetch Quests** | "You get one wish per tutor. Here's how not to waste it." | Brightside | `tutor_guide.json` | ★ |
-| — | *Act III — The Long Game* | | | | |
-| 9 | **The Command Zone** | "Why this commander is exactly where you want to be — on the record." | Dictum + Brightside | commander card + CR + strategy DB | ✓★ |
-| 10 | **The 99** | "Roll call. Every card earns its seat — or hears about it." | Brightside | `card_roles` + graphs | ★ |
-| 11 | **The Short List** | "Ten cards — in the box or on the wish list — the only ten worth your sleeves." | Marginal | `considering.json` | ◆ |
+| — | *Act I — Meet the Deck* | | | | |
+| 3 | **The Command Zone** | "Why this commander is exactly where you want to be — on the record." | Dictum + Brightside | commander card + CR + strategy DB | ✓★ |
+| 4 | **The Game Plan** | "What this deck wants to do — and why it's going to work." | Brightside | `how_it_wins` | ★ |
+| 5 | **The 99** | "Roll call. Every card earns its seat — or hears about it." | Brightside | `card_roles` + graphs | ★ |
+| — | *Act II — Fly It* | | | | |
+| 6 | **Keep or Ship** | "Seven cards, one call. The Coach trusts your gut; Ledger brought receipts." | Brightside + Marginal | `mulligan` + goldfish | ★◆ |
+| 7 | **What's Your Play?** | "Real board, real stakes. Commit before the Coach shows his hand." | Brightside | `decisions/*.json` | ★ |
+| 8 | **The Kill** | "The winning lines, argued and affirmed. Every step on the record." | Dictum | verified `stacks/*.json` | ✓ |
+| — | *Act III — At the Table* | | | | |
+| 9 | **Table Manners** | "Three opponents, one you. How to win friends and eliminate people." | Brightside | `threat_assessment` | ★ |
+| 10 | **Know Your Enemy** | "The decks that want you dead, and how to disappoint them." | Brightside | `matchups` | ★ |
+| 11 | **Fetch Quests** | "You get one wish per tutor. Here's how not to waste it." | Brightside | `tutor_guide.json` | ★ |
 | — | *Act IV — Show Your Work* | | | | |
 | 12 | **Sources Say** | "Pips versus sources — does this mana base keep its promises?" | Marginal | `mana_analysis.json` | ◆ |
 | — | *(full-bleed art break — the declared §6 breather)* | | | | |
 | 13 | **By the Numbers** | "Ten thousand opening hands don't lie." | Marginal | `goldfish_metrics.json` | ◆ |
-| 14 | **The Kill** | "The winning lines, argued and affirmed. Every step on the record." | Dictum | verified `stacks/*.json` | ✓ |
+| 14 | **The Short List** | "Ten cards — in the box or on the wish list — the only ten worth your sleeves." | Marginal | `considering.json` | ◆ |
 | — | *Act V — The Appendix* | | | | |
 | 15 | **Judge's Desk** | "The full case files. The Counselor read them twice." | Dictum | full stack resolutions | ✓ |
 | 16 | **Featured Artist** | "The hands that painted your deck — counted and credited." | Marginal | `cards.json` printing metadata | ◆★ |
@@ -282,8 +297,15 @@ the table above. "Failure mode" is what the review in §12 looks for.
 - **Shape**: Full-bleed commander art; masthead top; volume/date/price block; one
   dominant coverline; 2–4 secondary teases; 1–2 violators maximum.
 - **Copy rules**: The dominant coverline names the single most exciting *verified* thing
-  in the issue. Secondary teases are specific, never generic ("THE HAZE LOOP: VERIFIED
-  INFINITE" not "COMBO STRATEGIES INSIDE").
+  in the issue. Secondary teases are specific, never generic ("THE HAZE LOOP" not
+  "COMBO STRATEGIES INSIDE").
+- **The kicker states a finding, never a tier (v3.4).** "VERIFIED" and "BOUNDED" are
+  badge vocabulary and do not belong in cover furniture: **everything in this magazine
+  is verified — that is the baseline promise, not the news.** A kicker reading
+  "VERIFIED BOUNDED" spends the reader's first three words restating the contract
+  instead of telling them what was found. Say the finding: "IT TERMINATES AT SEVEN",
+  "ONE TWO-DROP", "STACK 002". Boundedness *is* sayable when it is the finding about a
+  specific line — say it there, on that line, where it means something.
 - **Never**: promise something the issue doesn't deliver. Cover-line inflation is how
   90s magazines lost their readers; it is the one era habit we refuse to inherit.
 - **Failure mode**: a cover that could belong to any deck.
@@ -303,68 +325,7 @@ the table above. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**3. The Game Plan** — *the thesis* (signed: Coach Sunny Brightside)
-
-- **Promise**: Every issue, this section tells you what game this deck is playing.
-- **Shape**: Feature splash — big deck logotype, hero card image, kicker/headline/dek,
-  3–4 short paragraphs. Open with a question (L1).
-- **Voice**: Second person, confident, no hedging. This is the issue's thesis statement.
-- **Failure mode**: reading like a card-by-card summary instead of a plan.
-
----
-
-**4. Keep or Ship** — *the drill*
-
-- **Shape**: 3–4 sample opening hands as quiz cards, each with a verdict and a one-line
-  reason citing the goldfish keep rate. Then the general heuristic.
-- **Failure mode**: heuristics with no hands to practice on.
-
----
-
-**5. What's Your Play?** — *the challenge*
-
-- **Promise**: Every issue, this department makes you decide before it tells you.
-- **Shape**: Board-state box → the question → 2–4 branch cards (line, signals,
-  coalition risk, coaching) → **the recommendation revealed after the branches**.
-- **Rule**: The reader must be able to commit to an answer before seeing ours. This is
-  L1 in its purest form; never lead with the recommendation.
-- **Failure mode**: a decision spread that telegraphs its answer in the headline.
-
----
-
-**6. Table Manners** — *the multiplayer section* (signed: Coach Sunny Brightside)
-
-- **Promise**: Every issue, this section tells you when the table turns on you.
-- **Shape**: Threat-assessment prose with a **THREAT WINDOW** callout naming the exact
-  board state that flips you to archenemy, plus signaling and sequencing guidance.
-- **Failure mode**: generic politics advice that isn't about *this* deck's tells.
-
----
-
-**7. Know Your Enemy** — *matchups*
-
-- **Shape**: One **THREAT BOX** per archetype (sweeper control, stax, aggro, combo):
-  what their board looks like, what beats you, your named outs, and a threat meter.
-- **Failure mode**: naming a card as an out that isn't in the 99.
-
----
-
-**8. Fetch Quests** — *what to tutor* (signed: Coach Sunny Brightside)
-
-- **Promise**: Every issue, this section tells you what to actually go get.
-- **Shape**: One entry per maindeck tutor: the card, then numbered scenario
-  steps (board state → **Fetch:** the target → why). Rendered from
-  `tutor_guide.json`; the validator holds every fetch to the deck and the
-  tutor's own search constraint.
-- **Rule**: One wish per tutor — every library-search tutor in the 99 gets an
-  entry, and fetch lands belong to Sources Say, not here. A deck with zero
-  tutors keeps the section with its standing no-tutors copy (L8).
-- **Failure mode**: a generic "tutor for your best card" — the scenarios must
-  name real boards and real targets from *this* 99.
-
----
-
-**9. The Command Zone** — *the format department* (see §3.3)
+**3. The Command Zone** — *the format department* (see §3.3)
 
 - **Promise**: Every issue, this department teaches you what your commander means in
   the format, not just on the battlefield.
@@ -377,7 +338,17 @@ the table above. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**10. The 99** — *the roster*
+**4. The Game Plan** — *the thesis* (signed: Coach Sunny Brightside)
+
+- **Promise**: Every issue, this section tells you what game this deck is playing.
+- **Shape**: Feature splash — big deck logotype, hero card image, kicker/headline/dek,
+  3–4 short paragraphs. Open with a question (L1).
+- **Voice**: Second person, confident, no hedging. This is the issue's thesis statement.
+- **Failure mode**: reading like a card-by-card summary instead of a plan.
+
+---
+
+**5. The 99** — *the roster*
 
 - **Promise**: Every issue, this department explains why each card earned its slot.
 - **Shape**: Card-tile grid with role chips (engine / payoff / interaction / ramp /
@@ -388,24 +359,66 @@ the table above. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**11. The Short List** — *the ten*
+**6. Keep or Ship** — *the drill*
 
-- **Promise**: Every issue, this section names the only ten cards worth the
-  reader's sleeves — bench picks and pool scouts on one ranked list.
-- **Shape**: Ten entries from `considering.json`, each chipped **In the box**
-  (a real sideboard card) or **Scouted** (a pool candidate), with ◆ evidence
-  bullets (combo lines opened, obsolescence, synergy partners, EDHREC rank),
-  the ★ why, the when/unlocks, and a natural cut where one exists. A bench
-  bigger than ten is pruned to its best ten; a smaller one is topped up from
-  the pool; the leftovers worth a line get a "rest of the bench" verdict strip.
-- **Rule**: Exactly ten, enforced in code (`validate-considering`) — ten is
-  the section, not a budget. Computed deltas are ◆; every recommendation is ★;
-  a line the list would open stays a candidate until a stack passes.
-- **Rule (L10, absolute)**: strictly forward-looking, from the current list
-  only. Analysis-only: the physical sideboard in `cards.json` is never
-  rewritten by this section.
-- **Failure mode**: parroting machine suggestions that ignore the deck's
-  identity — or padding to ten with picks the analyst wouldn't sleeve.
+- **Shape**: 3–4 sample opening hands as quiz cards, each with a verdict and a one-line
+  reason citing the goldfish keep rate. Then the general heuristic.
+- **Failure mode**: heuristics with no hands to practice on.
+
+---
+
+**7. What's Your Play?** — *the challenge*
+
+- **Promise**: Every issue, this department makes you decide before it tells you.
+- **Shape**: Board-state box → the question → 2–4 branch cards (line, signals,
+  coalition risk, coaching) → **the recommendation revealed after the branches**.
+- **Rule**: The reader must be able to commit to an answer before seeing ours. This is
+  L1 in its purest form; never lead with the recommendation.
+- **Failure mode**: a decision spread that telegraphs its answer in the headline.
+
+---
+
+**8. The Kill** — *the payoff*
+
+- **Promise**: Every issue, this department shows you exactly how the deck wins.
+- **Shape**: One feature spread per verified line. Scene-setting box → numbered play
+  sequence with card images → payoff callout → coaching read → **dossier pointer**
+  (`FULL DOSSIER: JUDGE'S DESK A-00N →`).
+- **Rule**: Only checker-passed stacks appear here. A refuted line is *also* a feature
+  (see §7.6) — it is one of the best stories we have.
+- **Failure mode**: dumping rules citations into the body. They live in Judge's Desk.
+
+---
+
+**9. Table Manners** — *the multiplayer section* (signed: Coach Sunny Brightside)
+
+- **Promise**: Every issue, this section tells you when the table turns on you.
+- **Shape**: Threat-assessment prose with a **THREAT WINDOW** callout naming the exact
+  board state that flips you to archenemy, plus signaling and sequencing guidance.
+- **Failure mode**: generic politics advice that isn't about *this* deck's tells.
+
+---
+
+**10. Know Your Enemy** — *matchups*
+
+- **Shape**: One **THREAT BOX** per archetype (sweeper control, stax, aggro, combo):
+  what their board looks like, what beats you, your named outs, and a threat meter.
+- **Failure mode**: naming a card as an out that isn't in the 99.
+
+---
+
+**11. Fetch Quests** — *what to tutor* (signed: Coach Sunny Brightside)
+
+- **Promise**: Every issue, this section tells you what to actually go get.
+- **Shape**: One entry per maindeck tutor: the card, then numbered scenario
+  steps (board state → **Fetch:** the target → why). Rendered from
+  `tutor_guide.json`; the validator holds every fetch to the deck and the
+  tutor's own search constraint.
+- **Rule**: One wish per tutor — every library-search tutor in the 99 gets an
+  entry, and fetch lands belong to Sources Say, not here. A deck with zero
+  tutors keeps the section with its standing no-tutors copy (L8).
+- **Failure mode**: a generic "tutor for your best card" — the scenarios must
+  name real boards and real targets from *this* 99.
 
 ---
 
@@ -437,15 +450,24 @@ the table above. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**14. The Kill** — *the payoff*
+**14. The Short List** — *the ten*
 
-- **Promise**: Every issue, this department shows you exactly how the deck wins.
-- **Shape**: One feature spread per verified line. Scene-setting box → numbered play
-  sequence with card images → payoff callout → coaching read → **dossier pointer**
-  (`FULL DOSSIER: JUDGE'S DESK A-00N →`).
-- **Rule**: Only checker-passed stacks appear here. A refuted line is *also* a feature
-  (see §7.6) — it is one of the best stories we have.
-- **Failure mode**: dumping rules citations into the body. They live in Judge's Desk.
+- **Promise**: Every issue, this section names the only ten cards worth the
+  reader's sleeves — bench picks and pool scouts on one ranked list.
+- **Shape**: Ten entries from `considering.json`, each chipped **In the box**
+  (a real sideboard card) or **Scouted** (a pool candidate), with ◆ evidence
+  bullets (combo lines opened, obsolescence, synergy partners, EDHREC rank),
+  the ★ why, the when/unlocks, and a natural cut where one exists. A bench
+  bigger than ten is pruned to its best ten; a smaller one is topped up from
+  the pool; the leftovers worth a line get a "rest of the bench" verdict strip.
+- **Rule**: Exactly ten, enforced in code (`validate-considering`) — ten is
+  the section, not a budget. Computed deltas are ◆; every recommendation is ★;
+  a line the list would open stays a candidate until a stack passes.
+- **Rule (L10, absolute)**: strictly forward-looking, from the current list
+  only. Analysis-only: the physical sideboard in `cards.json` is never
+  rewritten by this section.
+- **Failure mode**: parroting machine suggestions that ignore the deck's
+  identity — or padding to ten with picks the analyst wouldn't sleeve.
 
 ---
 
@@ -502,32 +524,37 @@ and the sequence must alternate.
 |---|---|---|
 | Cover | Peak | Anticipation |
 | The Flight Plan | Low | Orientation |
+| The Command Zone | Medium | Instruction |
 | The Game Plan | High | Narrative |
+| The 99 | Low | Browsing |
 | Keep or Ship | Medium | Practice |
 | What's Your Play? | High | Active participation |
+| The Kill | **Peak** | Narrative (carrying technical content) |
 | Table Manners | Medium | Reflection |
 | Know Your Enemy | Medium | Reference |
 | Fetch Quests | Medium | Instruction |
-| The Command Zone | Medium | Instruction |
-| The 99 | Low | Browsing |
-| The Short List | Low | Imagination |
 | Sources Say | Medium | Analysis (dense) |
 | *(art break)* | — | *the declared breather* |
 | By the Numbers | Medium | Analysis (dense) |
-| The Kill | **Peak** | Narrative (carrying technical content) |
+| The Short List | Low | Imagination |
 | Judge's Desk | Low (opt-in) | Deep reference |
 | Featured Artist | Low | Appreciation |
 | The Back Page | Low | Closure |
 
 Two rules fall out of this table:
 
-- **The Kill is the late peak.** It is the issue's biggest promise and gets the most
-  ambitious layout — the summit the depth-ramp climbs to. Everything before it
-  builds; the appendix after it holds the proof.
-- **Never place two dense sections adjacent — or declare the breather.** By the
-  Numbers (analysis) is followed by The Kill (narrative); Know Your Enemy
-  (reference) sits between participation and instruction; Judge's Desk
-  (reference) is buffered by narrative before and appreciation after. Where the
+- **The Kill is the mid-book peak (v3.4).** It is the issue's biggest promise and
+  gets the most ambitious layout. Under v3.2 it was the late peak a monotonic depth
+  ramp climbed to; it now closes Act II as the *payoff* to meeting the deck and
+  learning to fly it — you have met the commander, heard the plan, read the roster
+  and made a hard call, and this is what all of that was for. What follows is not
+  anticlimax but consequence: the table you must survive to get there (Act III),
+  the numbers underneath it (Act IV), and the proof (Act V). **Judge's Desk still
+  anchors the back** — a claim goes to the appendix to be checked, and that has not
+  moved.
+- **Never place two dense sections adjacent — or declare the breather.** Know Your
+  Enemy (reference) sits between instruction and instruction; Judge's Desk
+  (reference) is buffered by imagination before and appreciation after. Where the
   arc genuinely needs two dense spreads in a row — Sources Say into By the
   Numbers — the renderer emits a **declared full-bleed art break** between them
   (`issue_spec.BREATHER_AFTER`; commander art + one computed Ledger line), and
