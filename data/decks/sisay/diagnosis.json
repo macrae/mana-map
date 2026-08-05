@@ -1,8 +1,8 @@
 {
   "slug": "sisay",
   "as_of_decklist_sha256": "a4bcbd509313b155837b838367691f794ef8f03f6640e22cc71a7e1164e62f4d",
-  "archetype": "Five-colour legendary-permanent toolbox. strategic_frame.json calls it exactly that, and the audit agrees by declining to name an archetype at all — base targets apply, so every template figure below is a starting point rather than a verdict. The deck's currency is access: Sisay, Weatherlight Captain is a repeatable, self-escalating battlefield tutor whose gate widens as the board's colour count grows.",
-  "verdict": "The mana works and the commander lands: 93.5% turn-3 land drops, zero unconditional taplands, commander cast a mean 2.963 and 99.1% by turn 6. What limits the deck is conversion. threat-density counts three finishers and none of Boros Charm, Kambal or Samut closes three opponents; the only checker-passed kill in the deck is stack 002's Najeela + Derevi combat loop, which needs {W}{U}{B}{R}{G} every single combat — the same five-pip, zero-generic cost Sisay's own activation needs. One resource gates both the engine and the only verified win, and some of the deck's own mana is barred from supplying it: Sol Ring makes colourless, and mana_analysis names Delighted Halfling and Unclaimed Territory as restricted to casting spells, which an activated ability is not.",
+  "archetype": "A five-colour legendary toolbox built around one repeatable battlefield tutor, closed by a checker-passed unbounded combat loop (stack 002, Najeela + Derevi). deck-audit reports 'archetype unestablished (none — base targets apply)', so the frame does NOT agree: no archetype override was applied and every target below is the base template. That matters most for threat-density and creatures, where a combo-toolbox and a creature deck want different numbers.",
+  "verdict": "It functions and it converts: 0.935 turn-3 land-drop rate, commander cast on a mean turn of 2.963, and a rules-verified unbounded kill already in the 99. What limits it is a cost, not a card. FIVE cards in the 99 carry the string {W}{U}{B}{R}{G}. I matched three fields across every entry in cards.json — mana_cost, oracle_text and each face of card_faces — because Esika, God of the Tree // The Prismatic Bridge has an EMPTY top-level mana_cost and carries the string on card_faces[1]. Four of the five SPEND it: Sisay's activation, Najeela's activation, Jodah, the Unifier's printed cast cost, and The Prismatic Bridge's cast cost. Exactly one PRODUCES it: Jegantha, the Wellspring. Every other route to that five-pip, zero-generic bill is board-conditional, enumerated card by card in the engine block — and it is the bill the deck cannot count on paying twice in a turn cycle.",
   "axes": [
     {
       "axis": "mana-base",
@@ -10,7 +10,7 @@
       "measured": {
         "value": 40
       },
-      "reading": "Two over the conventional band, and bought on purpose. Burgess's own formula asks 31 + 5 colours + 3 for the commander = 39, so 40 is one land past the formula written for exactly this shape of deck.",
+      "reading": "Two over the 36–38 band, and correctly so: Burgess's own formula asks 39 for a five-colour identity and a three-mana commander. Not a problem to fix.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.ratios",
@@ -28,7 +28,7 @@
       "measured": {
         "value": 55
       },
-      "reading": "40 lands plus 15 persistent producers against a Burgess target of 39. Raw quantity of mana is not this deck's problem and no prescription below should treat it as one.",
+      "reading": "40 land copies plus 15 persistent producers against a Burgess target of 39. Raw mana volume is not this deck's problem; the colour and the timing of it are.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base",
@@ -42,15 +42,11 @@
       "measured": {
         "value": 0
       },
-      "reading": "Zero lands enter tapped unconditionally. All 17 the audit lists as conditional are nine shocklands (pay 2 life) or eight two-opponent duals that enter untapped in any real four-player pod — a 42%-tapped reading of this manabase is a substring artifact, not a fact about the deck.",
+      "reading": "Zero unconditional taplands. All 17 the audit lists as conditional are 9 shocks (pay 2 life) and 8 crowd lands reading 'This land enters tapped unless you have two or more opponents' — Bountiful Promenade, Luxury Suite, Rejuvenating Springs, Sea of Clouds, Spectator Seating, Spire Garden, Undergrowth Stadium, Vault of Champions — which is never true at a four-player table. mana_analysis's '42%, over the one-in-three budget' note is the substring superset the audit warns about; ignore it.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base",
           "quote": "around eight taplands is comfortable in a slow deck, near zero in an aggressive one"
-        },
-        {
-          "rule": "strategy:deckbuilding.mana-base.color-sources",
-          "quote": "Only untapped sources count for turn one, and Karsten caps pure taplands at about four"
         }
       ]
     },
@@ -60,7 +56,7 @@
       "measured": {
         "value": -15
       },
-      "reading": "Black is the shortfall: 21 sources against a target of 36, and 29.9% on-curve from lands alone. That 36 is Karsten's double-pip number, and Dauthi Voidwalker at {B}{B} is the deck's only mana value 2 double-black card — one splash card is setting the whole axis. Every other colour is at or over.",
+      "reading": "The headline -15 is one card: Dauthi Voidwalker is the only {B}{B} two-drop in the list (Sheoldred, {2}{B}{B}, is the only other multi-black card), and the audit's 36-source black target is this repo's own recomputation: mana_analysis.pips.B carries earliest_turn 2 and effective_pips 2, manabase.source_targets clamps the planning turn to max(earliest_turn, effective_pips, MIN_PLANNING_TURN) with MIN_PLANNING_TURN = 3, so the figure is sources_needed(2, 3) = 36 — two black pips by turn THREE — and it is carried as mana_analysis source_targets.B under formula 'karsten'. Sizing the same two pips for turn two would ask for 40, not 36. Karsten's printed column is lower: 'Double pip: 33 for {C}{C}'. Either way his text says the cheap pips are the expensive ones — for the single {B} that Sisay and Najeela each need on turn five or later, 21 sources is fine. What the axis cannot see is the real bill, and that is where the deck actually loses: it needs W, U, B, R and G SIMULTANEOUSLY, repeatedly, from a mana base in which exactly one permanent — Jegantha — makes the conjunction regardless of board, and every other producer needs a board first.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base.color-sources",
@@ -68,21 +64,33 @@
         },
         {
           "rule": "strategy:deckbuilding.mana-base.color-sources",
-          "quote": "Read them as a budget, not a table: 37 sources of one colour is a mono-coloured mana base, so triple pips and three colours do not coexist"
+          "quote": "Double pip: 33 for {C}{C}, 29 for 1{C}{C}, 26 for 2{C}{C}"
+        },
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "triple pips and three colours do not coexist, and the cheap pips are the expensive ones — the requirement falls fast as the spell gets later"
+        },
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "Read them as a budget, not a table"
         }
       ]
     },
     {
       "axis": "ramp",
-      "verdict": "weakness",
+      "verdict": "adequate",
       "measured": {
         "value": 17
       },
-      "reading": "Five over template, and the overage is the wrong shape. Sol Ring is colourless, and mana_analysis names Delighted Halfling and Unclaimed Territory as restricted to casting SPELLS — an activated ability is not a spell, so neither can pay one pip of Sisay's or Najeela's {W}{U}{B}{R}{G}. They accelerate toward the commander without accelerating anything the commander then does.",
+      "reading": "Five over the band on paper, and less over it than that: the 17 include An Offer You Can't Refuse, whose Treasures go to the countered spell's controller — an opponent — and Sol Ring and Delighted Halfling, neither of which can pay a single pip of the deck's two {W}{U}{B}{R}{G} activations — Sol Ring makes {C}{C}, and the Halfling's coloured mana reads 'Spend this mana only to cast a legendary spell'. (Unclaimed Territory is restricted the same way and is just as unable to pay, but it is a land and is counted on mana-base, not here.) Counted as functions rather than cards, this is not an overweight class.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.ratios",
           "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+        },
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "they are counts of *functions*, not cards, so a card doing two jobs fills two slots"
         }
       ]
     },
@@ -92,15 +100,15 @@
       "measured": {
         "value": 7
       },
-      "reading": "Three short on the taxonomy, but the count is a floor and the commander is not in it. Sisay converts mana into a card from the library every activation; Loran of the Third Path, Kutzil, Kenrith and Teferi each show draw in oracle text the taxonomy filed elsewhere. The deck is not starved for cards — it is starved for cards it can find.",
+      "reading": "Under target only in the taxonomy. The audit's own probe names four uncounted (Kenrith, Kutzil, Loran, Teferi), and reading the list adds two more the probe missed — Jodah, the Unifier casts a free legend off every legendary spell, and Dihada's -3 puts every legend in the top four into hand. Do not spend a slot here.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.ratios",
           "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
         },
         {
-          "rule": "strategy:card-advantage.virtual",
-          "quote": "Card count doesn't tell the whole story: a card that blanks several opposing cards generates advantage without drawing anything."
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "they are counts of *functions*, not cards, so a card doing two jobs fills two slots"
         }
       ]
     },
@@ -110,7 +118,7 @@
       "measured": {
         "value": 8
       },
-      "reading": "Exactly on Walser's floor, and 15 copies in the wider interactive suite. Six of the eight are counterspells, which means the deck answers spells well and permanents already on the battlefield badly — one Path to Exile, one Toxic Deluge.",
+      "reading": "Exactly on Walser's floor, and six of the eight the audit names are counterspells (An Offer You Can't Refuse, Arcane Denial, Dispel, Fierce Guardianship, Negate, Swan Song). The other two answer a permanent already on the battlefield: Path to Exile exiles a creature, and Boros Charm's first mode deals 4 damage to a target player or planeswalker. Two further answers sit outside the axis — Loran of the Third Path destroys an artifact or enchantment on entry, and Teferi's -3 bounces an artifact, creature or enchantment; Toxic Deluge is counted on sweepers. The permanent taxes (Drannith Magistrate, Grand Abolisher, Kutzil, Thalia, Silence, Teferi) carry the rest of the interactive suite, which is why the count reads thin without playing thin.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.interaction-suite",
@@ -124,7 +132,7 @@
       "measured": {
         "value": 1
       },
-      "reading": "Toxic Deluge alone, inside the 1-3 band. It is the right single wipe here: X is chosen, so the deck can size it under its own board.",
+      "reading": "Toxic Deluge alone, inside the cited 1-3 band. Correct for a deck whose own board is the engine.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.interaction-suite",
@@ -138,37 +146,33 @@
       "measured": {
         "value": 7
       },
-      "reading": "Top of the 5-7 band, and the goldfish agrees: protection is available in 88.4% of games at a mean turn 2.3. For a deck whose engine is its commander and whose recast tax compounds, this is the right place to be over-invested.",
+      "reading": "Top of the 5-7 band, and the audit names two more it did not count (Katilda, Plaza of Heroes). For an engine that routes through one 2/2 body, this is the right place to be over rather than under.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.threat-density",
           "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
-        },
-        {
-          "rule": "strategy:multiplayer.commander-insurance",
-          "quote": "each return trip to the command zone adds {2} per prior command-zone cast (Miljkovac)"
         }
       ]
     },
     {
       "axis": "threat-density",
-      "verdict": "liability",
+      "verdict": "weakness",
       "measured": {
         "value": 3
       },
-      "reading": "Nominally at Zupke's floor, functionally empty. Boros Charm's 4 damage, Kambal's 2-per-noncreature-spell and Samut are what the taxonomy counted, and none of them beats three opponents at 40 life. The deck's real kill is stack 002's Najeela + Derevi loop — checker-passed, deterministic, lethal — and it is a combo, not a finisher count. This is the axis that binds.",
+      "reading": "On the floor by count, but the three counted cards — Boros Charm (4 damage), Kambal (2 life a spell) and Samut — are not what kills anybody here; the kill is stack 002's unbounded combat loop and the nine other contained lines. The real exposure is that the counted three are filler and the uncounted kill needs a specific two-card assembly, so answering the assembly answers the deck.",
       "citations": [
-        {
-          "rule": "strategy:deckbuilding.threat-density",
-          "quote": "Value is not a win."
-        },
         {
           "rule": "strategy:deckbuilding.threat-density",
           "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
         },
         {
           "rule": "strategy:deckbuilding.threat-density",
-          "quote": "Separate ceiling from median: the ceiling build runs one spectacular finisher and loses when it's answered"
+          "quote": "Value is not a win."
+        },
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "the ceiling build runs one spectacular finisher and loses when it's answered"
         }
       ]
     },
@@ -178,7 +182,7 @@
       "measured": {
         "value": 39
       },
-      "reading": "Informational, and high because the fetch pool is made of bodies: 34 of the 100 copies are legendary permanents. The creature count is the tutor's target list, not an aggro plan.",
+      "reading": "Reported against a template for a creature-aggro deck this is not. 30 of the 39 front-face creature entries are legendary and one of those is Sisay herself, so 29 are tutor targets — a different job from a creature count. The 34 in deck-facts is legendary_permanents, a different set: it adds four noncreature legends (Mox Amber, Flowering of the White Tree, Teferi, Time Raveler, Dihada, Binder of Wills) and counts the commander, who is not a fetch target.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.archetype-selection",
@@ -192,7 +196,7 @@
       "measured": {
         "value": 3
       },
-      "reading": "The audit calls graveyard uncovered; read Dauthi Voidwalker and it is not — \"If a card would be put into an opponent's graveyard from anywhere, instead exile it with a void counter on it\" is a blanket replacement effect over every opponent's graveyard. Three other cards in the 99 touch a graveyard (Dihada mills you, Saffi returns your own creature, Kenrith's {4}{B} returns one from any graveyard under its owner's control), but Dauthi is the only one that ANSWERS an opponent's. Real coverage is four of five classes; only land is genuinely open, and that is the class this deck least needs.",
+      "reading": "Really four of five. The heuristic missed graveyard: Dauthi Voidwalker exiles every card that would hit an opponent's graveyard from anywhere. Four cards in the 99 mention a graveyard and it is the only one that denies an opponent theirs — Dihada and Saffi fill and use your own, and Kenrith's {4}{B} reanimates from any graveyard 'under its owner's control', handing the creature back. Land is genuinely uncovered — nothing in the 99 destroys, exiles or bounces one.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.interaction-suite",
@@ -206,7 +210,7 @@
       "measured": {
         "value": 0.935
       },
-      "reading": "93.5% of games make the turn-3 land drop against a 74% floor, on 0.183 mean mulligans. The five-colour manabase is not costing this deck its opening turns.",
+      "reading": "Well clear of the 0.74 floor, with an 84.2% first-seven keep rate and 0.183 mean mulligans. The deck does not miss land drops; stop looking here.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base",
@@ -220,7 +224,7 @@
       "measured": {
         "value": 3
       },
-      "reading": "Modal 3 against a format mode of 2, with 20 three-drops and nothing above mana value 5. The truncation is NOT forced by the tutor, and an earlier draft of this reading said it was. Sisay is a printed 2/2 with \"+1/+1 for each color among other legendary permanents you control\", so five colours is power 7 and the gate — mana value less than her power — reaches mana value 6. Power 6, i.e. four distinct colours, already reaches every card in the deck, because the highest nonland mana value here is 5. So the deck's top rung is empty by choice: it declines a mana value 6 slot that its own commander could fetch.",
+      "reading": "One step above the format mode, with 20 three-drops against 17 two-drops and nothing above mana value 5. The ceiling is a choice, not a constraint: Sisay is a 2/2 with +1/+1 per colour among other legendary permanents, so Jodah, the Unifier — a five-colour permanent she can already fetch at power 6 — puts her at power 7 on his own, and power 7 fetches mana value 6. The deck simply owns nothing at that mana value, which is why the access ladder saturates.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.curve",
@@ -234,7 +238,7 @@
       "measured": {
         "value": 4
       },
-      "reading": "Floor 4 on three independent drivers: four Game Changers, a bracket-3 combo line, and four two-card infinites. Reported, never scored — and note that the driver named for the infinite, Najeela + Derevi, is the one line a checker has actually passed.",
+      "reading": "Floor 4 on four Game Changers (Drannith Magistrate, Fierce Guardianship, Rhystic Study, Seedborn Muse) and four two-card infinites. The Game Changer count alone forces 4, so the floor survives even if every combo line is refuted.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.power-level",
@@ -244,39 +248,26 @@
     },
     {
       "axis": "tutors",
-      "verdict": "weakness",
+      "verdict": "adequate",
       "measured": {
         "value": 2
       },
-      "reading": "Two, and one of them IS the commander. Sisay reaches only legendary permanents at mana value less than her power, and puts them onto the battlefield uncast; Kodama of the West Tree reaches only a basic land, tapped, and only when a modified creature connects. Neither can reach the 26 non-legendary nonland cards — which is every counterspell, both free protection instants, all four Game Changers, and three of the six cards that can pay her activation.",
+      "reading": "Reported, never scored — and it undercounts the thing that matters, because the commander herself is the tutor and she is on that list. Kodama of the West Tree is the other, and it fetches one of six basics tapped after a modified creature connects.",
       "citations": [
         {
-          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-          "quote": "A tutor is \"essentially an additional copy of any card in our deck\" (Commander Mechanic): k tutors plus the card act like k+1 copies of *every* card."
+          "rule": "strategy:deckbuilding.archetype-selection",
+          "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
         },
         {
           "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-          "quote": "So stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable"
+          "quote": "A tutor is \"essentially an additional copy of any card in our deck\""
         }
       ]
     }
   ],
   "engine": {
-    "declared": "Cast Sisay, grow her power by putting colour-diverse legendary permanents on the battlefield, then convert {W}{U}{B}{R}{G} into a fetched legend every turn until one of them is Najeela.",
+    "declared": "Sisay's {W}{U}{B}{R}{G} activation puts a legendary permanent with mana value below her power onto the battlefield, each fetch adding colours that raise her power and widen the next fetch, until the ladder reaches Najeela and the combat loop.",
     "components": [
-      {
-        "role": "ignition",
-        "have": [
-          "Derevi, Empyrial Tactician",
-          "Dihada, Binder of Wills",
-          "Jodah, the Unifier",
-          "Surrak Dragonclaw"
-        ],
-        "count": 4,
-        "thinnest": true,
-        "measured_rate": 0.525,
-        "reading": "The thinnest declared group in the deck: four cards, 25.8% of openers, assembling in 52.5% of games and only 41.9% by turn 6. But read the declaration before you trust it — Sisay counts distinct colours among OTHER legendary permanents, and 33 of them qualify, so two mono-coloured legends of different colours climb the same rung. Enumerated over cards.json battlefield colours, the 99 holds one five-colour legend (Jodah, the Unifier), three at three colours and ten at two. This group is a one-card shortcut, not the requirement. See open_questions."
-      },
       {
         "role": "mana",
         "have": [
@@ -290,7 +281,20 @@
         "count": 6,
         "thinnest": false,
         "measured_rate": 0.679,
-        "reading": "The pip battery, and the real bottleneck. Six cards, 36.4% of openers, 67.9% assembled and only 55.8% by turn 6 — so in nearly half of games the deck reaches turn 6 with a tutor it cannot repeatedly activate. Three of the six (Bloom Tender, Faeburrow Elder, Relic of Legends) are non-legendary and therefore invisible to Sisay herself."
+        "reading": "Declared as the five-colour battery, and only one member is one. Read from cards.json oracle text: Jegantha adds {W}{U}{B}{R}{G} off one tap regardless of board; Bloom Tender and Faeburrow Elder add one mana per colour among permanents you control (beside Sisay alone that is {W}{G}); Esika adds one mana of any colour and grants the same ability to OTHER legendary creatures; Relic of Legends adds one per activation, tapping a legend; Selvala adds X in any combination where X is the greatest power among your creatures and costs {G} to fire. So 67.9% is the rate at which one of six cards is drawn, not the rate at which the deck can pay the bill."
+      },
+      {
+        "role": "ignition",
+        "have": [
+          "Derevi, Empyrial Tactician",
+          "Dihada, Binder of Wills",
+          "Jodah, the Unifier",
+          "Surrak Dragonclaw"
+        ],
+        "count": 4,
+        "thinnest": true,
+        "measured_rate": 0.525,
+        "reading": "The thinnest declared group and the one under-declared: it is four cards at a 25.8% opener, but the FUNCTION — raise Sisay's power so the fetch is worth making — is also served by Flowering of the White Tree (+2/+1 to legendary creatures, mana value 2 and itself fetchable) and by five counter sources (Bristly Bill, Mikaeus, Katilda, Shalai, Heliod). Treat 52.5% as a floor on the wrong set."
       },
       {
         "role": "mana",
@@ -306,7 +310,7 @@
         "count": 7,
         "thinnest": false,
         "measured_rate": 0.747,
-        "reading": "Seven cards, 41.2% of openers, 74.7% assembled at a mean turn 2.836 — this is why the commander lands on turn 2.963. It does its job. Two of the seven, Sol Ring and Delighted Halfling, cannot contribute a single pip to what the commander does next."
+        "reading": "Seven cards, 74.7% assembled, mean turn 2.836 — this is why the commander lands on turn 2.963. Note that Sol Ring and Delighted Halfling accelerate toward Sisay without being able to pay one pip of what she then does."
       },
       {
         "role": "protection",
@@ -326,15 +330,16 @@
         "count": 11,
         "thinnest": false,
         "measured_rate": 0.884,
-        "reading": "Eleven cards, 57.4% of openers, 88.4% assembled at mean turn 2.3 — the deck's healthiest component. Ten of the eleven are non-legendary; Shalai, Voice of Plenty is the only one Sisay can go and fetch. So this is very nearly a class the tutor cannot reach, which is exactly why it is built wide rather than deep."
+        "reading": "Eleven cards, 88.4% assembled, mean turn 2.3 — the deck is holding an answer for its commander in 88.4% of games. This part is finished."
       }
     ],
     "single_points_of_failure": [
       {
-        "component": "{W}{U}{B}{R}{G}, produced repeatedly",
-        "why": "Sisay's activation is five coloured pips with zero generic, and Najeela's untap — the payment step of the one checker-passed kill — is the identical cost, once per combat. The declared proxy for having it assembles in 67.9% of games and 55.8% by turn 6, and 6 cards is the whole redundancy behind it. Three of the deck's own sources are barred from it outright — Sol Ring produces colourless, and Delighted Halfling and Unclaimed Territory read \"Spend this mana only to cast\", which an activated ability is not — and Plaza of Heroes can contribute only through its third mode, the colours among legendary permanents you control, because its any-colour mode carries the same casting restriction.",
+        "component": "five-colour mana source",
+        "why": "FIVE cards in the 99 carry the string {W}{U}{B}{R}{G}, matched over mana_cost, oracle_text and every face of card_faces in cards.json. Four spend it — Sisay's activation, Najeela's activation, Jodah, the Unifier's cast cost, and The Prismatic Bridge's cast cost on card_faces[1] of Esika, God of the Tree // The Prismatic Bridge, whose top-level mana_cost is the empty string. One produces it: Jegantha, the Wellspring, {4}{R/G}, fetchable only at Sisay power 6, and the only permanent here that adds all five colours from a single activation REGARDLESS of board. The other five members of this component all reach the conjunction, and every one of them needs a board first: Bloom Tender and Faeburrow Elder tap once for one mana of each colour among permanents you control, so they are the whole bill only after the board already shows five colours; Selvala, Heart of the Wilds pays it in one activation for {G} and a tap once any creature has power 5 (bracket_report lists Najeela + Selvala as one of the deck's four two-card infinites); Relic of Legends' second ability carries no tap symbol on Relic, so it fires once per untapped legendary creature you control; Esika grants '{T}: Add one mana of any color' to OTHER legendary creatures, one mana per body. Against a goldfished 5.869 mean available mana at turn 6, none of that is a second activation you can count on — one, and the turn is gone.",
         "closers": [
-          "Enduring Vitality"
+          "Chromatic Lantern",
+          "Cryptolith Rite"
         ],
         "citations": [
           {
@@ -342,21 +347,26 @@
             "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
           },
           {
-            "rule": "strategy:deckbuilding.threat-density",
-            "quote": "Engine density — Nicol asks 7-8 enablers and 10-12 enhancers against ~25 standalone cards, and the enabler slots fail first"
+            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+            "quote": "So stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable"
+          },
+          {
+            "rule": "strategy:deckbuilding.mana-base.color-sources",
+            "quote": "triple pips and three colours do not coexist, and the cheap pips are the expensive ones — the requirement falls fast as the spell gets later"
           }
         ]
       },
       {
-        "component": "The cold-start rung",
-        "why": "With no other legendary permanent out Sisay is a 2/2 and her gate is mana value less than 2 — three cards in the whole deck, and the deck runs zero legendary lands, the mana value 0 targets that would otherwise always be live. A tutor that cannot be activated profitably on the turn it lands is a three-mana 2/2.",
+        "component": "the loop's per-combat cost",
+        "why": "Stack 002 passed the checker and its own final_state states the loop 'needs a mana base that can produce {W}{U}{B}{R}{G} every combat and at least five creatures connecting with a player', break-even only on combat 2. The kill therefore competes with Sisay for the same five-colour bill, and the deck has one of them.",
         "closers": [
-          "Gaea's Cradle"
+          "Chromatic Lantern",
+          "Cryptolith Rite"
         ],
         "citations": [
           {
-            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-            "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+            "rule": "strategy:deckbuilding.threat-density",
+            "quote": "the enabler slots fail first"
           }
         ]
       }
@@ -364,166 +374,174 @@
   },
   "lean_into": [
     {
-      "what": "Cast her on curve and protect her rather than rebuilding her.",
-      "why": "Commander mean cast turn 2.963, 99.1% by turn 6, on 0.183 mean mulligans, with protection available in 88.4% of games at mean turn 2.3. Both halves of commander insurance are already paid for; the recast tax is the thing to avoid, not the thing to plan around.",
+      "what": "Fetch Flowering of the White Tree before you fetch a body.",
+      "why": "It is a legendary enchantment at mana value 2, so Sisay reaches it at power 3 — one colour among other legendary permanents. It then gives her +2/+1, two ladder rungs bought with no new colour, plus ward {1} on the creature the whole deck routes through. It is not the only mana-value-2-or-less fetch that takes her 3 → 5: on a mono-white board Kinnan, Bonder Prodigy ({G}{U}, two new colours) does it too, and on a mono-blue board Katilda, Lotho and Saffi each do. What is true of Flowering alone, across all ten legal targets at that power, is that its gain is board-INDEPENDENT — +2 on every board and +3 on a board with no white — while every other target's gain is a colour count and nothing else: it adds power only for a colour not already among her other legendary permanents, and Mox Amber, being colourless, never adds one.",
       "evidence": {
-        "commander_mean_cast_turn": 2.963,
-        "commander_cast_by_turn_6_rate": 0.991,
-        "protection_assembled_rate": 0.884,
-        "mean_mulligans": 0.183
+        "oracle_text": "Legendary creatures you control get +2/+1 and have ward {1}.",
+        "ladder": "fetchable targets by Sisay power 2/3/4/5/6 = 3/10/23/28/33, computed over the 33 non-commander legendary permanents in cards.json (mana value histogram 0:1, 1:2, 2:7, 3:13, 4:5, 5:5)",
+        "mana_value_2_or_less_targets": [
+          "Mox Amber — colourless, +0 on every board",
+          "Mikaeus, the Lunarch — W, and fetched he is a 0/0 that dies on arrival",
+          "Yoshimaru, Ever Faithful — W, +1 only if W is absent",
+          "Bristly Bill, Spine Sower — G, +1 only if G is absent; its counters need a later land drop",
+          "Flowering of the White Tree — W, +2 always from the anthem, +3 if W is absent",
+          "Katilda, Dawnhart Prime — W/G, +1 or +2; its counters cost {4}{G}{W} and a tap",
+          "Kinnan, Bonder Prodigy — U/G, +1 or +2",
+          "Lotho, Corrupt Shirriff — W/B, +1 or +2",
+          "Rona, Herald of Invasion // Rona, Tolarian Obliterator — the FRONT face is mono-blue ({1}{U}), so it adds one colour, not two; the card's aggregated colors field reads [U, B] and is not either face",
+          "Saffi Eriksdotter — W/G, +1 or +2"
+        ]
       },
       "citations": [
         {
-          "rule": "strategy:multiplayer.commander-insurance",
-          "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn"
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "A tutor is \"essentially an additional copy of any card in our deck\""
         }
       ]
     },
     {
-      "what": "Buy answers virtually, through the fetchable tax shell, instead of counting removal spells.",
-      "why": "The interaction axis reads exactly 8 and six of those are counterspells, which looks thin. It undercounts what the deck actually does: Thalia, Heretic Cathar, Kutzil, Teferi, Time Raveler, Kambal and Sheoldred are all legendary, all mana value 2-4, and all sit inside the fetch pool once the ladder reaches two or three colours. One of them blanks plans at three seats at once, and Sisay can go and get it on demand.",
+      "what": "Stop treating the fifth colour as the goal; four is the whole ladder.",
+      "why": "Sisay fetches strictly below her power and nothing in the deck exceeds mana value 5, so power 6 — four colours among other legendary permanents — already reaches all 33 targets. Power can go higher (Jodah, the Unifier is a five-colour permanent and takes her to 7 on his own, before his anthem), but access saturates at 6. Spend the fifth colour on stats, not on waiting.",
       "evidence": {
-        "interaction_measured": 8,
-        "interactive_suite_copies": 15,
-        "tax_pieces_all_legendary_and_fetchable": true
+        "curve": "deck-facts curve over 60 nonland entries: {0:1, 1:11, 2:17, 3:20, 4:5, 5:6} — no card above mana value 5"
       },
       "citations": [
         {
-          "rule": "strategy:card-advantage.virtual",
-          "quote": "one tax or pillow-fort effect can blank attack plans from three players at once, the cheapest way to \"answer\" ~120 life worth of aggression"
+          "rule": "strategy:deckbuilding.curve",
+          "quote": "puts the modal mana value at 2, with 15.7 two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana value 8+"
         }
       ]
     },
     {
-      "what": "Treat Najeela + Derevi as the plan, and count its requirements out loud.",
-      "why": "It is the only line in this deck a checker has passed. Stack 002's own verdict is that it is 'a genuine, deterministic, unbounded combat loop, but not a self-contained two-card infinite' — it needs a manabase producing {W}{U}{B}{R}{G} every combat and at least five creatures connecting, and it only breaks even on combat 2. Both pieces are mana value 3 and therefore fetchable once the ladder reaches two colours.",
+      "what": "The mana base is fast and it should stay fast.",
+      "why": "Zero unconditional taplands, 0.935 turn-3 land drops and 0.842 at turn 4. Any fix for the colour problem should not be bought with lands that enter tapped.",
       "evidence": {
-        "verified_stack": "002",
-        "checker_verdict": "pass",
-        "najeela_mana_value": 3,
-        "derevi_mana_value": 3
+        "goldfish": "land_drop_hit_rate_by_turn 3 = 0.935, 4 = 0.842; keep_first_seven_rate 0.842"
       },
       "citations": [
         {
-          "rule": "strategy:deckbuilding.threat-density",
-          "quote": "Value is not a win."
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "around eight taplands is comfortable in a slow deck, near zero in an aggressive one"
+        },
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "had 26% miss the turn-3 land drop with no mana source at all"
         }
       ]
     }
   ],
   "cut_candidates": [
     {
-      "card": "Dauthi Voidwalker",
-      "why": "A {B}{B} two-drop in a five-colour deck. It is the only mana value 2 double-black card in the 99, so it is what sets black's Karsten target at the turn-2 double-pip figure of 36 against 21 sources and 29.9% on-curve from lands — a card the deck casts on schedule almost never. It is also non-legendary, so Sisay can never go and find it when the graveyard deck is actually at the table.",
-      "cost_of_cutting": "The deck's only answer to an opponent's graveyard — Kenrith's {4}{B} reaches one, but it returns the creature under its OWNER's control, so aimed at an opponent's graveyard it hands them their own bomb rather than shutting the graveyard down. Real interaction-breadth drops from four classes to three, and the sacrifice mode that steals an exiled card goes with it. Be clear about what the cut does NOT do: Sheoldred, the Apocalypse is {2}{B}{B} and stays in the 99, so double black remains a requirement — the cut moves it from a turn-2 demand to a turn-4 one and lowers the shortfall, it does not clear the axis. The recommendation stands anyway: an answer you cannot cast on curve and cannot tutor for is not an answer you can plan on.",
+      "card": "Kodama of the West Tree",
+      "why": "Its trigger needs a modified creature to connect, and then finds one of six basics, tapped. The trample it grants is the fourth source in the deck — Surrak grants it to your other creatures, Najeela's activation grants it to the whole attacking army, Kenrith grants it for {R} — and the deck's kill already turns it on.",
+      "cost_of_cutting": "The tutors axis falls from 2 to 1 (informational either way), the deck loses its only way to find a basic land, and it loses a green mana-value-3 legend, which is a ladder rung and a green pip on the board.",
       "orphans_stack": [],
-      "difficulty": "painful",
+      "difficulty": "easy",
       "citations": [
         {
-          "rule": "strategy:deckbuilding.mana-base.color-sources",
-          "quote": "Read them as a budget, not a table: 37 sources of one colour is a mono-coloured mana base, so triple pips and three colours do not coexist"
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "Take the categories, derive the counts from the deck's actual failure modes."
+        }
+      ]
+    },
+    {
+      "card": "An Offer You Can't Refuse",
+      "why": "It counters a noncreature spell for {U} and gives two Treasure tokens to that spell's controller — an opponent. card_roles.json files it as this deck's ramp; it is an opponent's ramp. Six counterspells is more than the deck needs at 11 protection pieces.",
+      "cost_of_cutting": "One fewer one-mana answer, and the protection component drops from 11 cards to 10 against a measured 88.4% assembly. Against a table that combos through noncreature spells, the cheapest interaction in the deck is the one you miss.",
+      "orphans_stack": [],
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
         },
         {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "they are counts of *functions*, not cards, so a card doing two jobs fills two slots"
         }
       ]
     },
     {
       "card": "Boros Charm",
-      "why": "The taxonomy counts it as one of three finishers. Four damage to one player, in a pod with 120 life across three seats, is not a finisher — it is a rounding error. It is also non-legendary and unfetchable, so it cannot be found on the turn it would matter.",
-      "cost_of_cutting": "Less than it first appears, and I had it wrong: the indestructible mode is the third copy of that effect, not the only one. Heroic Intervention gives permanents you control hexproof AND indestructible — strictly wider — and Flawless Maneuver gives creatures indestructible for free while you control a commander; deck-audit lists both alongside Boros Charm in the same protection axis. What is genuinely lost is four points of reach and a double-strike mode. Cutting it takes the counted finisher total to two, below Zupke's floor — which is honest, because the deck was never at three.",
+      "why": "It is counted on three axes at once — threat-density, protection and interaction — and it is the weakest entry on each. Four damage against 120 opposing life is not a finisher, and the indestructible mode is the third-best protection spell in a deck holding Flawless Maneuver (free while the commander is out) and Heroic Intervention (hexproof as well as indestructible, and hexproof is what beats the targeted removal that actually kills Sisay).",
+      "cost_of_cutting": "Three axes move, not two, and each falls by one wherever the deck stands: interaction 8 → 7 (under the Walser floor of 8 this entry cites), protection 7 → 6 (inside the 5-7 band, so nothing downstream breaks) and threat-density 3 → 2 (under Zupke's cited floor of at least 3 finishers). The previous pass said Beast Within covered the interaction loss; run over the whole swap set it does not, and that claim is withdrawn. Beast Within's one removal:spot is already spent covering the An Offer You Can't Refuse cut, so the three prescribed swaps end at interaction 8 / protection 7 / threat-density 3, while pairing Beast Within with Boros Charm instead ends at 7 / 6 / 2 — two floors broken rather than none. Walking Ballista, which the previous pass paired here, carries buff:counters / removal:damage / threat:body and no wincon role, so it moves threat-density by zero. Boros Charm is also the only card in the 99 that grants double strike — Samut has it natively, nothing else hands it out. So this cut is HELD: make it only inside a swap whose add carries a wincon role AND a removal or counterspell role, and this diagnosis names no such card.",
       "orphans_stack": [],
-      "difficulty": "easy",
+      "difficulty": "painful",
       "citations": [
         {
           "rule": "strategy:deckbuilding.threat-density",
           "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
-        }
-      ]
-    },
-    {
-      "card": "Delighted Halfling",
-      "why": "mana_analysis names it explicitly: its mana is restricted to casting legendary SPELLS, and an activated ability is not a spell, so it cannot pay one pip of Sisay's activation or Najeela's untap. It is in the accelerant component and contributes nothing to the component that binds.",
-      "cost_of_cutting": "A turn-1 dork that casts Sisay on turn 2 and makes her uncounterable doing it. That is a real line and this cut gives it up; the trade is a card that funds the commander for a card that funds what she does afterwards.",
-      "orphans_stack": [],
-      "difficulty": "contested",
-      "citations": [
+        },
         {
-          "rule": "strategy:deckbuilding.ratios",
-          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
         }
       ]
     },
     {
-      "card": "Forbidden Orchard",
-      "why": "Its oracle text is \"Whenever you tap this land for mana, target opponent creates a 1/1 colorless Spirit creature token\" — one token, one opponent, and you pick which, so this is a third the size an earlier draft of this entry claimed. It still points the wrong way: stack 002's verified kill needs at least five of your creatures connecting with a player every combat, and it redirects the army to a second seat once the first dies, so a blocker parked at any seat is eventually a blocker in front of you. It is the one any-colour land here that pays its cost in bodies rather than life.",
-      "cost_of_cutting": "One of five untapped any-colour lands, in a deck that is already 15 sources short on black. Replacing it must not cost a black source.",
-      "orphans_stack": [],
-      "difficulty": "contested",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.mana-base.color-sources",
-          "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
-        }
-      ]
-    },
-    {
-      "card": "Kenrith, the Returned King",
-      "why": "Re-argued without the ceiling claim, which was wrong. Kenrith is mana value 5, so he needs Sisay at power 6 — four distinct colours among other legends. Five legendary permanents in the 99 sit at that rung (Jegantha, Jodah, Kenrith, Samut, Surrak) and Kenrith contributes the fewest colours back: one, against Jodah's five and Surrak's three. He is the option at the deck's most expensive rung that advances the ladder least, and his draw mode then costs {3}{U} per card. His {R} mode is redundant with the kill it would support — Najeela's own activation already reads \"They gain trample, lifelink, and haste until end of turn\".",
-      "cost_of_cutting": "The {4}{B} mode reaches any graveyard and needs no setup, unlike Saffi Eriksdotter's sacrifice-and-delayed-trigger recursion — though it returns the creature under its OWNER's control, so in practice it is a rebuy of your own dead body and not a way to take an opponent's, which makes this the smallest of the three losses; that flexibility is the real loss, along with a modal outlet for surplus mana in a deck that generates it.",
-      "orphans_stack": [],
-      "difficulty": "contested",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.ratios",
-          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
-        }
-      ]
-    },
-    {
-      "card": "Bristly Bill, Spine Sower",
-      "why": "The cheap legends are the ladder's rungs, and this is the least efficient one at its cost. Four of the seven mana value 2 legendary permanents in the 99 — Katilda, Kinnan, Lotho and Saffi — contribute two colours to Sisay's power; Bristly Bill is mono-green and contributes one. Its own output is a single +1/+1 counter per land drop, and the doubling ability costs {3}{G}{G}.",
-      "cost_of_cutting": "It does real work turning on Kutzil's \"power greater than its base power\" draw trigger and Kodama's modified-creature trigger, and it is an always-castable green body on a rung the deck wants filled. The colour contribution is the loss, not the card.",
+      "card": "Mikaeus, the Lunarch",
+      "why": "Sisay's activation puts a card onto the battlefield; it never casts it. Mikaeus is a base 0/0 whose only body is 'Mikaeus enters with X +1/+1 counters on it', and a card outside the stack has {X} = 0 — so fetched, he enters as a 0/0 and dies to state-based actions before he is a body, a colour or a tap. Cast for {X}{W} he is a mana sink competing with the {W}{U}{B}{R}{G} activation for the same mana, and his second ability wants a counter and a tap before it moves Sisay at all.",
+      "cost_of_cutting": "He is one of exactly three legendary permanents in the deck at mana value 1 or less — Mox Amber (0), Yoshimaru (1), Mikaeus (1) — so the fetch pool at Sisay's base power 2 falls from three to two. Only two of those three ever did anything on that line: Mox Amber adds mana but no colour (it is colourless, so her power does not move) and Yoshimaru adds a white body and one rung. The real loss is off the fetch line — cast on curve he is a counter source that can grow Sisay, and the engine block counts him among five. No axis moves: card_roles.json gives him buff:counters, threat:body and utility:activated, none of which any audit axis counts.",
       "orphans_stack": [],
       "difficulty": "easy",
       "citations": [
         {
+          "rule": "107.3g",
+          "quote": "If a card in any zone other than the stack has an {X} in its mana cost, the value of {X} is treated as 0"
+        },
+        {
           "rule": "strategy:deckbuilding.threat-density",
-          "quote": "Value is not a win."
+          "quote": "the enabler slots fail first"
         }
       ]
     }
   ],
   "add_candidates": [
     {
-      "card": "Enduring Vitality",
-      "closes": "engine component: Sisay online with a five-colour mana source",
+      "card": "Chromatic Lantern",
+      "closes": "colour-sources",
       "source": "pool",
-      "why": "\"Creatures you control have '{T}: Add one mana of any color.'\" in a deck with 39 creatures. It is the single card that converts the fetch pool itself into the pip battery, taking the binding component from 6 cards to 7 — 36% of openers to 41%, on the redundancy curve the corpus cites. The recursion clause means a wrath does not take it.",
+      "why": "'Lands you control have \"{T}: Add one mana of any color.\"' The deck has 40 land copies and 21 black sources against a 36 target; this makes all 40 a source of every colour, including the nine fetchlands' targets and the three non-fetch lands mana_analysis scores as producing nothing — Plaza of Heroes, Secluded Courtyard and Unclaimed Territory. Its second sentence, '{T}: Add one mana of any color', makes it a rock as well, so it is a 56th source too; that is a bonus and not the case for it, because the deck already has 55. What it is here to do is make the mana the correct colours, which is the bill the deck cannot pay.",
       "evidence": {
+        "axis_gap": "colour-sources short {B: 15, R: 1}; land sources W15/U12/B12/R12/G14",
+        "combo_lines_opened": [],
+        "recon_support": null
+      },
+      "natural_cut": "An Offer You Can't Refuse",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "triple pips and three colours do not coexist, and the cheap pips are the expensive ones — the requirement falls fast as the spell gets later"
+        },
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "Read them as a budget, not a table"
+        }
+      ]
+    },
+    {
+      "card": "Cryptolith Rite",
+      "closes": "engine component: five-colour mana source",
+      "source": "pool",
+      "why": "'Creatures you control have \"{T}: Add one mana of any color.\"' For two mana it does what the deck's two existing grants do narrowly: Esika gives '{T}: Add one mana of any color' to OTHER legendary creatures, and Katilda, Dawnhart Prime gives Human creatures a tap for one of that creature's own colours. Cryptolith Rite gives it to all 39 creature copies, in any colour, with no legendary or Human clause. Goldfish measures 4.066 mean bodies by turn 6 against a five-pip activation and 5.869 mean available mana — this is the card that makes the second activation exist.",
+      "evidence": {
+        "goldfish": "mean_bodies_by_turn 6 = 4.066; mean_available_mana_by_turn 6 = 5.869",
         "combo_lines_opened": [
           {
             "cards": [
-              "Emiel the Blessed",
-              "Enduring Vitality"
+              "Cryptolith Rite",
+              "Najeela, the Blade-Blossom"
             ],
             "status": "needs a stack scenario"
           }
         ],
-        "component_size_before": 6,
-        "component_size_after": 7
+        "recon_support": null
       },
-      "combo_lines_opened": [
-        {
-          "cards": [
-            "Emiel the Blessed",
-            "Enduring Vitality"
-          ],
-          "status": "needs a stack scenario"
-        }
-      ],
-      "natural_cut": "Delighted Halfling",
+      "natural_cut": "Kodama of the West Tree",
       "bracket_delta": {
         "before": 4,
         "after": 4
@@ -532,232 +550,146 @@
         {
           "rule": "strategy:deckbuilding.redundancy-vs-tutors",
           "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-        }
-      ]
-    },
-    {
-      "card": "Walking Ballista",
-      "closes": "threat-density",
-      "source": "pool",
-      "why": "The deck's counted finishers do not close a pod, and this is a second kill that does not route through combat at all — the deck already runs Heliod, Sun-Crowned, and the pool flags Walking Ballista + Heliod as a bracket-3 infinite-damage line with 45,021 popularity. It is also mana value 0 in the library, castable at any point on the curve, and doubles as creature-class removal.",
-      "evidence": {
-        "combo_lines_opened": [
-          {
-            "cards": [
-              "Walking Ballista",
-              "Heliod, Sun-Crowned"
-            ],
-            "status": "needs a stack scenario"
-          }
-        ],
-        "source_channel": "upgrade-facts combo_openers"
-      },
-      "combo_lines_opened": [
-        {
-          "cards": [
-            "Walking Ballista",
-            "Heliod, Sun-Crowned"
-          ],
-          "status": "needs a stack scenario"
-        }
-      ],
-      "natural_cut": "Boros Charm",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      },
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.threat-density",
-          "quote": "Separate ceiling from median: the ceiling build runs one spectacular finisher and loses when it's answered"
-        }
-      ]
-    },
-    {
-      "card": "Gaea's Cradle",
-      "closes": "mana-sources",
-      "source": "pool",
-      "why": "A legendary land at mana value 0. The deck runs zero of them, which is why Sisay's first activation at base power 2 has only three legal targets — this one is always legal, always in colour identity, and taps for {G} for each of the 39 creatures the deck is built out of. It closes the cold-start rung and the mass-mana problem with one card.",
-      "evidence": {
-        "combo_lines_opened": [
-          {
-            "cards": [
-              "Derevi, Empyrial Tactician",
-              "Emiel the Blessed",
-              "Gaea's Cradle"
-            ],
-            "status": "needs a stack scenario"
-          }
-        ],
-        "game_changer": true,
-        "note": "The bracket engine recomputes the floor at 4 with five Game Changers rather than four; the floor does not move."
-      },
-      "combo_lines_opened": [
-        {
-          "cards": [
-            "Derevi, Empyrial Tactician",
-            "Emiel the Blessed",
-            "Gaea's Cradle"
-          ],
-          "status": "needs a stack scenario"
-        }
-      ],
-      "natural_cut": "Forbidden Orchard",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      },
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.power-level",
-          "quote": "Contents give a floor, never a verdict."
-        }
-      ]
-    },
-    {
-      "card": "Jhoira, Weatherlight Captain",
-      "closes": "card-advantage",
-      "source": "pool",
-      "why": "\"Whenever you cast a historic spell, draw a card\" — historic is artifacts, legendaries and Sagas, which is most of this deck's 60 nonland cards. Reki already does the legendary half; Jhoira is the wider copy of the same effect, and the corpus's advice for a class you want every game is redundancy rather than a second tutor. She is legendary at mana value 4, so unlike every other draw engine here Sisay can actually go and get her, and she adds blue and red to the ladder.",
-      "evidence": {
-        "card_advantage_measured": 7,
-        "card_advantage_target": 10,
-        "fetchable_at_sisay_power": 5
-      },
-      "natural_cut": "Kenrith, the Returned King",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      },
-      "citations": [
+        },
         {
           "rule": "strategy:deckbuilding.redundancy-vs-tutors",
           "quote": "So stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable"
+        }
+      ]
+    },
+    {
+      "card": "Beast Within",
+      "closes": "interaction-breadth",
+      "source": "pool",
+      "why": "Land is the one permanent class nothing in the 99 answers — I read all 99 oracle texts; Path to Exile is creature-only, Loran and Teferi reach artifacts and enchantments, Toxic Deluge is creatures, Derevi taps and Thalia taxes. 'Destroy target permanent' covers land at instant speed for three mana, which is the premium the corpus says a catch-all earns. It does not cover every class: I ran deck_audit._interaction_breadth over the swapped list and it answers creature, artifact, enchantment and land, taking the axis from 3 to 4. The axis does not reach its target of 5: graveyard stays at 0 in the heuristic, because Dauthi Voidwalker — 'If a card would be put into an opponent's graveyard from anywhere, instead exile it with a void counter on it' — is filed threat:body / utility:activated, not hate:graveyard, so the count cannot see the deck's one real graveyard answer. Paired with Mikaeus, the Lunarch rather than Boros Charm: I ran the three role-counted axes over the whole swap set both ways, and this pairing ends at interaction 8 / protection 7 / threat-density 3, while pairing it with Boros Charm ends at 7 / 6 / 2. Its single removal:spot can cover the An Offer You Can't Refuse cut or the Boros Charm cut, not both.",
+      "evidence": {
+        "uncovered_before": [
+          "graveyard",
+          "land"
+        ],
+        "closed_by_this_add": [
+          "land"
+        ],
+        "axis_after_swap": "interaction-breadth 3 -> 4 classes (target >= 5); by_class creature 3->4, artifact 1->2, enchantment 1->2, land 0->1, graveyard 0->0",
+        "combo_lines_opened": [],
+        "recon_support": null
+      },
+      "natural_cut": "Mikaeus, the Lunarch",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
         },
         {
-          "rule": "strategy:deckbuilding.ratios",
-          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "catch-all removal earns its premium"
         }
       ]
     }
   ],
   "open_questions": [
     {
-      "question": "Can a legend Sisay puts onto the battlefield this turn be tapped to pay for the next activation — via Relic of Legends' cost, or via the '{T}: Add one mana of any color' Esika grants it?",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "It decides whether the deck chains fetches inside one turn or across two, which is the difference between a tutor and an engine. Stack 003 argues Relic works and Esika's grant does not, but its checker verdict is fail on the iteration bound, so nothing here is fact."
+      "question": "Does Zupke's 'at least 3 finishers' floor bind a deck whose only assertable kill is a checker-passed unbounded combat loop, and whose three counted finishers this diagnosis calls filler?",
+      "settled_by": "research-strategy",
+      "why_it_matters": "It is what holds Boros Charm in the 99. Cutting it moves three axes down by one — interaction 8 → 7, protection 7 → 6, threat-density 3 → 2 — and only protection stays inside its band. threat-density counts wincon:alt, wincon:drain and wincon:combat, and no card this diagnosis names restores it. The answer decides whether the weakest card in the deck is allowed to leave, and what its replacement has to do."
     },
     {
-      "question": "Does Mikaeus, the Lunarch arrive as a 0/0 and die immediately when put onto the battlefield by Sisay rather than cast, since X is never chosen?",
+      "question": "With Human chosen, does Secluded Courtyard's mana pay Sisay's {W}{U}{B}{R}{G} activation cost? Its clause reads 'or activate an ability of a creature source of the chosen type', and Sisay is a Human Soldier while Najeela is a Human Warrior.",
       "settled_by": "resolve-stack",
-      "why_it_matters": "Mikaeus is one of only three mana value 1 or less legendary permanents in the deck. If he is not a live target at Sisay's base power 2, the cold-start pool is two cards, not three, and the opening-turn sequencing advice changes."
+      "why_it_matters": "mana_analysis scores Secluded Courtyard as producing nothing, so if it pays the activation every colour count in the colour-sources axis is a floor by one land. Plaza of Heroes is NOT part of this question and is already settled: its third mode, '{T}: Add one mana of any color among legendary permanents you control', carries no spend restriction, and the deck's own checker-passed stack 002 pays an identical {W}{U}{B}{R}{G} activation cost with it."
     },
     {
-      "question": "Should the 'Sisay online with a three-colour legend to grow her' target be re-declared as any two legendary permanents of differing colours?",
+      "question": "Re-declare goldfish_targets.json's 'three-colour legend to grow her' group to include the cards that raise Sisay's power without adding a colour — Flowering of the White Tree, Bristly Bill, Mikaeus, Katilda, Shalai, Heliod — and re-run.",
       "settled_by": "goldfish",
-      "why_it_matters": "Sisay's power counts distinct colours among OTHER legendary permanents, and 33 of them qualify — the declared four-card group is one shortcut to power 5, not the requirement. Its 52.5% assembled rate is currently the thinnest figure in the audit, and it may be measuring the wrong question."
+      "why_it_matters": "The audit calls this the thinnest component at 4 cards and 52.5%, and the prescription for a thinnest component is usually 'add redundancy'. If the real group is ten cards the deck does not need that slot, and a card would be added for nothing."
     },
     {
-      "question": "Which face does Esika, God of the Tree // The Prismatic Bridge enter on when Sisay puts it onto the battlefield rather than casting it?",
+      "question": "Stacks 001 (can Sisay activate the turn she lands, and what may she fetch) and 003 (may a freshly fetched legend be tapped for Relic of Legends, and may it use Esika's granted ability) both carry checker.verdict 'fail'.",
       "settled_by": "resolve-stack",
-      "why_it_matters": "cards.json gives the front face as mono-green and The Prismatic Bridge side as all five colours. If a fetched copy could arrive on the Bridge side it would be a second one-card route to power 7 alongside Jodah; on the front face it advances the ladder by a single rung. It also decides whether the card is a five-colour mana source when fetched, which is the binding engine component."
+      "why_it_matters": "Both questions decide whether the deck chains two fetches in one turn or across two, which is the difference between the loop assembling on turn 6 and on turn 8. Nothing in this diagnosis rests on either, and nothing can until they pass."
     },
     {
-      "question": "Do Jodah, the Unifier's anthem and Flowering of the White Tree's +2/+1 stack on top of the colour count to raise Sisay's power beyond 7?",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "The colour arithmetic alone already puts the structural ceiling at power 7 and the gate at mana value 6, so this is no longer about whether the ladder exceeds power 6 — it does. It is about how far above 6 a future addition could sit and still be fetchable."
-    },
-    {
-      "question": "Does Najeela plus a single omni-mana body — Faeburrow Elder, Esika, or Selvala, Heart of the Wilds — loop without Derevi?",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "Three bracket-3 lines that would each give the verified kill a second assembly path off cards already in the 99. Stack 002 proved the Derevi version needs five different colours re-produced every combat; whether one permanent can supply that is the whole question."
-    },
-    {
-      "question": "Does Walking Ballista plus Heliod, Sun-Crowned close the game in this deck?",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "It is the justification for the threat-density add above. Until a checker passes it, the deck would still have exactly one verified kill and the recommendation is a bet rather than a fix."
-    },
-    {
-      "question": "Does the escalating Sisay activation chain in stack 001 hold, and can a fetch be re-chosen if a colour-contributing legend is removed in response?",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "Stack 001 is the deck's core sequencing document and its checker verdict is fail on the iteration bound with one unresolved finding at step 11. The pilot is making these decisions every turn on an artifact that did not pass."
+      "question": "strategy.md has no section on toolbox construction or on treating library ACCESS as the resource a deck spends.",
+      "settled_by": "research-strategy",
+      "why_it_matters": "redundancy-vs-tutors models a tutor as card selection — k tutors act like k+1 copies of every card — which is the wrong model for a free, repeatable, battlefield tutor. Every judgment here about how many one-of answers Sisay justifies is ungrounded for that reason."
     }
   ],
   "gaps": [
-    "No deck_recon.json exists for this deck (deck-audit freshness.recon.present is false), so nothing here is grounded in what strong Sisay lists actually run. Inclusion-rate evidence would change which of the four adds is ranked first.",
-    "No archetype is established, so every axis target is a base template rather than a fitted one. strategy:deckbuilding.ratios is explicit that its counts should come from the deck's actual failure modes.",
-    "9 of the 10 combo lines fully contained in the 99 are unadjudicated. Only stack 002 is checker-passed; stacks 001 and 003 read fail.",
-    "upgrade-facts' synergy channel returned only ramp:cost-reduction cards for this deck and surfaced no candidate for the thinnest engine component. The channel is a format-wide top-10 shortlist, not a fit score, and it found nothing usable here.",
-    "The obsolescence index proposes Elvish Mystic as an upgrade to both Bloom Tender and Faeburrow Elder on similarity 0.9755 and 0.9667. It is format-agnostic and does not know that this deck buys those two cards for five-colour output, not for a green mana; the recommendation is wrong and is recorded here rather than acted on.",
-    "DECK_ROLE_BUDGET's shortfalls (draw 4, sweeper 2, tutor 1, wincon 1) are labelled provisional and uncited by upgrade-facts itself and were not used as evidence anywhere above.",
-    "The deck has no sideboard, so every add is a pool proposal with no owned-card evidence behind it.",
-    "The ladder's top rung is empty and nothing here prices it. Sisay reaches mana value 6 at five distinct colours among other legends, and the deck's highest nonland mana value is 5. Whether a mana value 6 legendary permanent earns a slot depends on how often five colours is actually reached, which no artifact measures — the declared goldfish targets stop at 'a three-colour legend'."
+    "No data/decks/sisay/deck_recon.json (deck-audit freshness reports recon absent), so nothing here is weighed against per-commander inclusion rates. Every add is grounded in this deck's artifacts, not in what strong Sisay lists run. A deck-recon pass in MODE recon would settle it.",
+    "No candidate_pool.json for this deck, so the three adds come from upgrade-facts' pool channels and a direct cards.csv legality check rather than a scored pool. Legality, colour identity and not-already-in-the-99 were verified for all three; fit was not scored.",
+    "The audit ran with no archetype established, so base targets applied to threat-density, creatures and interaction. A combo-toolbox at bracket 4 plausibly wants different numbers on all three, and the diagnosis says so rather than pretending the base target is a verdict.",
+    "Nine of the ten contained combo lines are unverified. Only stack 002 (Najeela + Derevi) has checker.verdict 'pass', and its own final_state calls the pair 'not a self-contained two-card infinite'. Every other line in this document is named, never asserted.",
+    "The claim that Chromatic Lantern and Cryptolith Rite let the deck pay {W}{U}{B}{R}{G} twice in a turn cycle is arithmetic over the goldfish's mean available mana, not a simulated result — the goldfish models resource development, not activations. A goldfish target declaring 'two Sisay activations in one turn' would measure it.",
+    "threat-density is the one axis this prescription cannot improve. It measures exactly 3, this document's own reading calls all three counted cards filler, and none of the three adds carries a wincon role — Chromatic Lantern and Cryptolith Rite are ramp:rock / utility:activated, Beast Within is removal:spot / threat:tokens. Walking Ballista, proposed in the previous pass and withdrawn here, is buff:counters / removal:damage / threat:body and moves the axis by zero; I ran the count with and without it. Naming a finisher this deck actually wants needs a candidate_pool.json or a deck-recon pass, and this diagnosis has neither."
   ],
   "skeptic": {
     "verdict": "fail",
     "findings": [
       {
-        "where": "add_candidates[3].why",
-        "status": "contradicts-artifact",
-        "note": "\"She is legendary at mana value 4, so unlike every other draw engine here Sisay can actually go and get her\" is false, and the same sentence names its own counterexample. Reki, the History of Kamigawa is in cards.json at {2}{G}, mana value 3, Legendary Creature, \"Whenever you cast a legendary spell, draw a card\" — a draw engine, legendary, and fetchable at Sisay power 4 (gate is mana value LESS THAN power), a strictly LOWER rung than Jhoira's mana value 4 / power 5. The entry itself says \"Reki already does the legendary half\" two clauses earlier. Five more in-deck legendary draw pieces are also fetchable: Kutzil (mv 3), Loran of the Third Path (mv 3), Selvala, Heart of the Wilds (mv 3), Rona (mv 2) and Sheoldred (mv 4), plus Teferi, Time Raveler (mv 3). This also contradicts axes[5].reading of this same document, which names Loran, Kutzil, Kenrith and Teferi as showing draw in oracle text — all legendary, all fetchable. The claim does not merely overstate, it points the wrong way: Jhoira is the LEAST fetchable of the deck's legendary draw engines, sitting one rung above Reki. The redundancy argument beside it (strategy:deckbuilding.redundancy-vs-tutors, \"So stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable\") is quoted verbatim and in context and would carry the add on its own; the fetchability differentiator is the part a reader would act on and it is untrue. add_candidates is byte-identical to the committed version, so this survived the previous pass rather than being introduced by the fix."
+        "where": "add_candidates[0]",
+        "status": "over-claimed",
+        "note": "Chromatic Lantern is labelled `closes: \"colour-sources\"` and its `why` says the deck has \"21 black sources against a 36 target; this makes all 40 a source of every colour\". I recomputed mana_analysis's source counting (manabase.count_sources + land_colors, plus mana_analysis.nonland_producer_kind) over the deck and reproduced the tracked file EXACTLY (lands W15/U12/B12/R12/G14, nonland W11/U10/B9/R9/G13, total W26/U22/B21/R21/G27). Applying all three prescribed swaps the totals become W27/U23/B22/R22/G28 against unchanged targets B36/others22, so the colour-sources axis moves from -15 to -14 and STILL READS UNDER. The reason is that manabase.land_colors is per-card and models no static grant, so Lantern's 'Lands you control have \"{T}: Add one mana of any color\"' is invisible to the measure; Lantern and Cryptolith Rite each score as one any-colour rock (+2 per colour) and cutting An Offer You Can't Refuse removes one (-1), for a net +1. The card is correct, in identity, Commander-legal (cards.csv legal_commander == legal) and its mechanism is described accurately — the defect is that the entry names an axis the add will not close and supplies no post-swap figure, while the neighbouring add_candidates[2] supplies an exact one (`axis_after_swap`). It is also in tension with the document's own axes[3], which argues the -15 headline is one card (Dauthi Voidwalker) and that 21 sources is fine for the single {B} the deck actually needs — yet `evidence.axis_gap` leans on that same shortfall. The honest label is the one used for Cryptolith Rite: `engine component: five-colour mana source`, which is also where both single_points_of_failure entries already list it as a closer."
       },
       {
-        "where": "cut_candidates[4]",
-        "status": "supported",
-        "note": "The re-argument is sound and the Kenrith correction landed. cost_of_cutting now reads \"it returns the creature under its OWNER's control, so in practice it is a rebuy of your own dead body and not a way to take an opponent's\" — matches cards.json oracle exactly: \"{4}{B}: Put target creature card from a graveyard onto the battlefield under its owner's control.\" difficulty is still contested. why is verified line by line: Kenrith is mv 5 needing Sisay power 6; exactly five LEGENDARY permanents sit at mv 5 (Jegantha, Jodah, Kenrith, Samut, Surrak) — I recomputed the legendary-permanent curve and got {0:1, 1:2, 2:7, 3:14, 4:5, 5:5}, correctly excluding Seedborn Muse, which is mv 5 but not legendary; Kenrith is mono-white and contributes one colour against Jodah's five and Surrak's three. The {R}-mode redundancy claim is new relative to HEAD (it had been listed as a COST) and the migration is justified: Najeela's activation reads \"They gain trample, lifelink, and haste until end of turn\", quoted verbatim, so within the one checker-passed kill Kenrith's {R} adds nothing. Only observation not rising to a finding: \"the smallest of the three losses; that flexibility is the real loss\" has an ambiguous antecedent — the three losses are enumerable (graveyard reach, modality, mana sink) but a reader could take \"that flexibility\" to mean the {4}{B} mode just downgraded."
+        "where": "cut_candidates[0]",
+        "status": "over-claimed",
+        "note": "The Kodama of the West Tree entry prices the cut as \"the deck loses its only way to find a basic land\". Read against cards.json, that superlative fails on its own membership: the deck runs NINE fetchlands (Arid Mesa, Flooded Strand, Marsh Flats, Misty Rainforest, Polluted Delta, Scalding Tarn, Verdant Catacombs, Windswept Heath, Wooded Foothills), each reading 'Search your library for a <type> or <type> card', and all six basic copies (Forest, Island, Mountain, Plains x2, Swamp) are legal targets for at least one of them. The defensible claim is narrower — Kodama is the only card that finds a basic WITHOUT spending a land drop, a life and the land itself, and off a combat trigger. The error runs conservative (it overstates the cost of a cut the entry grades `easy`), so it pushes no bad swap, but it is a false superlative in the field the pilot reads to decide whether the cut hurts. Everything else in this entry checks out: card_roles gives Kodama ramp:land / threat:body / tutor:narrow, the tutors axis does fall 2 -> 1 under the swap set (recomputed), and the trample claim is exact — 'trample' appears on exactly four cards in the 99 (Kenrith, Kodama, Najeela, Surrak)."
       },
       {
-        "where": "$.diagnosis (all Kenrith occurrences)",
-        "status": "supported",
-        "note": "No incomplete fix. Programmatic sweep of every string field: exactly three describe the {4}{B} mode — axes[11].reading, cut_candidates[0].cost_of_cutting, cut_candidates[4].cost_of_cutting — and all three now say \"under its owner's control\". No fourth occurrence and no surviving \"steals from any graveyard\". The single remaining instance of the word \"steal\" in the whole document is cut_candidates[0]'s \"the sacrifice mode that steals an exiled card\", which is Dauthi Voidwalker's own ability and genuinely steals: \"{T}, Sacrifice this creature: Choose an exiled card an opponent owns with a void counter on it. You may play it this turn without paying its mana cost.\" Verified against cards.json."
+        "where": "axes[6]",
+        "status": "over-claimed",
+        "note": "Cosmetic but wrong, and in a graded axis's reading: \"The permanent taxes (Drannith Magistrate, Grand Abolisher, Kutzil, Thalia, Silence, Teferi) carry the rest of the interactive suite\". Silence is an Instant ('Your opponents can't cast spells this turn.') — a one-shot, not a permanent and not a persistent tax. The other five are permanents and do persist (Thalia here is Thalia, Heretic Cathar, the only Thalia in the 99). The axis verdict `adequate` at 8 does not depend on it, and every other figure in this reading is exact: the audit's eight interaction cards are the eight named, six of them counterspells, with Path to Exile and Boros Charm's 4-damage mode as the two that answer a resolved permanent, and Loran / Teferi / Toxic Deluge correctly placed outside the axis."
       },
       {
-        "where": "axes[0..15].measured",
+        "where": "cut_candidates[2]",
         "status": "supported",
-        "note": "Re-ran `manamap pilot deck-audit sisay`. All 16 measured.value figures match the audit exactly: mana-base 40, mana-sources 55, taplands 0, colour-sources -15, ramp 17, card-advantage 7, interaction 8, sweepers 1, protection 7, threat-density 3, creatures 39, interaction-breadth 3, consistency 0.935, curve 3, power 4, tutors 2. Freshness is clean — goldfish_metrics.json and mana_analysis.json both carry decklist_sha256 a4bcbd50... matching the audit and the artifact's own as_of_decklist_sha256, so no figure is stale. bracket_report.json carries no sha but no bracket figure is quoted from it beyond the floor of 4, which the audit recomputes."
+        "note": "THE LOAD-BEARING CLAIM, re-derived end to end. I rebuilt the swapped 99 (cuts: An Offer You Can't Refuse, Kodama of the West Tree, Mikaeus, the Lunarch; adds: Chromatic Lantern, Cryptolith Rite, Beast Within) and ran deck_audit._count_copies with AXIS_ROLES over the whole set at once. Result: interaction 8, protection 7, threat-density 3 — exactly as claimed, no floor broken. The counterfactual is also exact: pairing Beast Within with Boros Charm instead gives interaction 7 / protection 6 / threat-density 2, two floors broken. Cutting Boros Charm alone gives 7/6/2. The re-pairing the doctor performed against my pass-2 finding is arithmetically correct. Underlying roles verified in card_roles.json: Boros Charm protection:self + removal:damage + wincon:combat (hence three axes), Beast Within removal:spot + threat:tokens (one interaction slot, no wincon), Walking Ballista buff:counters + removal:damage + threat:body (moves threat-density by zero — the withdrawal was right), Chromatic Lantern and Cryptolith Rite both ramp:rock + utility:activated (no axis in the three). Both cited quotes are verbatim in strategy:deckbuilding.threat-density and strategy:deckbuilding.interaction-suite, and I read both sections whole. The withdrawal of the pass-2 'Beast Within covers interaction' claim is made in place rather than deleted."
       },
       {
-        "where": "axes[13]",
+        "where": "cut_candidates[3]",
         "status": "supported",
-        "note": "The inverted curve reading holds and is the document's best work. Sisay, Weatherlight Captain in cards.json is a printed 2/2 with \"Sisay gets +1/+1 for each color among other legendary permanents you control\" and \"{W}{U}{B}{R}{G}: Search your library for a legendary permanent card with mana value less than Sisay's power\". Five colours therefore gives power 7 and a gate of mana value 6; four colours gives power 6 and a gate of mana value 5. I recomputed the nonland curve from cards.json: {0:1, 1:11, 2:17, 3:20, 4:5, 5:6} — 20 three-drops, modal 3, highest nonland mana value 5. So power 6 already reaches every card in the deck and the top rung is empty by choice, not truncated by the tutor. gaps[7] and open_questions[4] carry the same arithmetic without contradicting it."
+        "note": "Mikaeus, the Lunarch re-graded `easy`. CR 107.3g fetched via lookup-rule and the quote is verbatim: 'If a card in any zone other than the stack has an {X} in its mana cost, the value of {X} is treated as 0, even if the value of X is defined somewhere within its text.' Sisay's activation (verified from cards.json) puts a card onto the battlefield and never casts it, Mikaeus is {X}{W} with a base 0/0 body and 'Mikaeus enters with X +1/+1 counters on it', so fetched he enters 0/0 and dies to state-based actions — the re-grade holds. His mana value in the library is 1, so he really is inside the base-power-2 fetch pool. The 'exactly three legendary permanents at mana value 1 or less' claim is exact: over the 33 non-commander legendary permanents in cards.json the mana-value histogram is {0:1, 1:2, 2:7, 3:13, 4:5, 5:5}. Roles buff:counters / threat:body / utility:activated appear in no AXIS_ROLES group, so 'no axis moves' is right, and I confirmed it in the swap run. The real cost — he is one of the five counter sources the engine block uses to argue the thinnest component is mis-declared — is named in the entry rather than hidden."
+      },
+      {
+        "where": "lean_into[0]",
+        "status": "supported",
+        "note": "The DFC trap is handled, not merely invoked. Enumerating cards.json, the mana-value-2-or-less legendary permanents are EXACTLY the ten listed, no more and no fewer. Rona, Herald of Invasion // Rona, Tolarian Obliterator: top-level mana_cost is '', card_faces[0] is '{1}{U}' with colors ['U'], and the aggregated `colors` field reads ['U','B'] — so the front face adds one colour, the aggregate would wrongly say two, and the entry says so verbatim. Kinnan is {G}{U} and does take Sisay 3 -> 5 on a mono-white board; Katilda ({G}{W}), Lotho ({W}{B}) and Saffi ({G}{W}) each do it on a mono-blue board. Flowering of the White Tree's oracle text is quoted verbatim and it gives Sisay +2 power from the anthem regardless of board. The ladder 3/10/23/28/33 reproduces exactly from the histogram under 'mana value less than Sisay's power'. The one imprecision is rhetorical, not factual: Mox Amber's gain is also board-independent (constant +0), so 'board-INDEPENDENT' alone is carried by the following clause classifying every other target's gain as a colour count — the operative and true claim is that Flowering is the only one of the ten with a nonzero floor."
+      },
+      {
+        "where": "axes[3]",
+        "status": "supported",
+        "note": "The 36-source target derivation is exact. mana_analysis.pips.B carries earliest_turn 2 and effective_pips 2; manabase.source_targets computes turn = max(earliest_turn, effective_pips, MIN_PLANNING_TURN) with MIN_PLANNING_TURN = 3; I called the functions directly: sources_needed(2,3) = 36 and sources_needed(2,2) = 40, matching the entry's 'turn two would ask for 40'. The other four colours land on sources_needed(1,3) = 22, matching source_targets. per_colour reproduces (B 21/36, R 21/22, U 22/22, W 26/22, G 27/22) and short = {B:15, R:1}. Dauthi Voidwalker is verifiably the only {B}{B} two-drop and Sheoldred ({2}{B}{B}) the only other multi-black card in the 99. All four Karsten quotes are verbatim in strategy:deckbuilding.mana-base.color-sources, which I read whole, including its own 'Read them as a budget, not a table' framing — the section is used as it asks to be used."
       },
       {
         "where": "axes[5]",
         "status": "supported",
-        "note": "Engages the probe rather than reading the count as a ceiling. The audit's probe note names Kenrith, Kutzil, Loran of the Third Path and Teferi, Time Raveler as showing draw in oracle text the taxonomy filed elsewhere; the reading names all four plus the commander's own library conversion and calls the axis adequate against an audit verdict of under. Correct use of the floor rule."
-      },
-      {
-        "where": "axes[11]",
-        "status": "supported",
-        "note": "Dauthi Voidwalker's quote is verbatim from cards.json — \"If a card would be put into an opponent's graveyard from anywhere, instead exile it with a void counter on it\" — and the corrected reading downgrades it from the previous draft's \"strongest graveyard answer in the format\" to \"a blanket replacement effect over every opponent's graveyard\", which is what the text supports. The three other graveyard-touching cards are correctly characterised: Dihada mills you, Saffi returns your own creature, Kenrith returns under owner's control. Overriding the audit's 3 to 4 of 5 classes is justified."
+        "note": "The probe rule is honoured in the direction it exists for. deck-audit reports card-advantage UNDER at 7 against a target of 10, and its notes name four uncounted probes (Kenrith, Kutzil, Loran, Teferi). The diagnosis grades the axis `adequate`, names all four, and adds two the probe missed which I verified in cards.json: Jodah, the Unifier ('you may cast that card without paying its mana cost' off a legendary spell) and Dihada's -3 ('Put any number of legendary cards from among them into your hand'). It then says 'Do not spend a slot here', and no add targets the axis. Both cited quotes, including the 'counts of *functions*, not cards' caveat, are verbatim in strategy:deckbuilding.ratios — the same section that ends 'Take the categories, derive the counts from the deck's actual failure modes', which the document quotes elsewhere. The Command Zone numbers are nowhere used as a rule."
       },
       {
         "where": "engine",
         "status": "supported",
-        "note": "All four component sizes and every rate match the audit: ignition 4 / 0.258 openers / 0.525 assembled / 0.419 by t6; pip battery 6 / 0.364 / 0.679 / 0.558; accelerant 7 / 0.412 / 0.747 / mean turn 2.836; protection 11 / 0.574 / 0.884 / mean 2.3. Both single_points_of_failure are genuine shared dependencies rather than mislabelled combo halves. SPOF[0] is verified card by card: Sol Ring adds {C}{C}; Delighted Halfling and Unclaimed Territory both read \"Spend this mana only to cast\", which an activated ability is not; and Plaza of Heroes genuinely contributes only via its third mode, \"{T}: Add one mana of any color among legendary permanents you control\", since its any-colour mode carries the casting restriction. SPOF[1]'s cold-start claim checks out: exactly three legendary permanents at mana value under 2, and counts.legendary_lands is 0."
+        "note": "Component sizes and rates match deck-audit exactly: mana 6 at 0.679, ignition 4 at 0.525 (opening_seven 0.258, the thinnest group in the audit), accelerant 7 at 0.747 mean turn 2.836, protection 11 at 0.884 mean turn 2.3. Neither single_points_of_failure entry is a named combo half dressed as a defect. SPOF 1 is verified card by card: matching mana_cost, oracle_text and every face, exactly FIVE cards in the 99 carry the string {W}{U}{B}{R}{G} — Sisay, Esika // The Prismatic Bridge (top-level mana_cost is '', the string is on card_faces[1]), Jegantha, Jodah and Najeela — and Jegantha alone adds all five from one activation with no board condition. Relic of Legends' second ability genuinely carries no {T} on Relic; Selvala's is '{G}, {T}: Add X mana in any combination of colors'; Esika grants only to OTHER legendary creatures; Bloom Tender and Faeburrow Elder are 'for each color among permanents you control'. SPOF 2's quotes are verbatim in stack 002's resolution.final_state.summary ('not a self-contained two-card infinite', 'needs a mana base that can produce {W}{U}{B}{R}{G} every combat and at least five creatures connecting with a player'), checker.verdict is 'pass', and the break-even-on-combat-2 concession is carried in the entry itself."
       },
       {
         "where": "cut_candidates",
         "status": "supported",
-        "note": "The list does not dodge: cut_candidates[0] Dauthi Voidwalker is marked painful and prices a real loss. Figures verified against mana_analysis.json — source_targets.B 36, sources.total.B 21, on_curve_probability.lands_only.B 0.299, and the 15-source shortfall matches axes[3]'s -15. Dauthi is confirmed the only mana value 2 double-black card in the 99 and Sheoldred the only other double-black card at all, so the \"turn-2 demand to turn-4\" framing is right. cut_candidates[5]'s colour arithmetic is exact: seven mana value 2 legendary permanents, of which Katilda (GW), Kinnan (GU), Lotho (WB) and Saffi (GW) contribute two colours and Bristly Bill one. cut_candidates[3] quotes Forbidden Orchard verbatim and correctly halves an earlier draft's claim. cut_candidates[1] self-corrects and is verified against the audit's protection axis, which does list Heroic Intervention and Flawless Maneuver alongside Boros Charm. orphans_stack is [] on all six and that is correct — stack 002 is the only checker-passed stack and its scenario board holds only Najeela, Derevi, Command Tower, City of Brass, Mana Confluence, Exotic Orchard and Plaza of Heroes, none of which is a cut candidate."
+        "note": "ADJUDICATION A — a cut that is listed and simultaneously held is coherent here, and it is the right call. Suppressing Boros Charm would hide the deck's weakest card, and a cut list with no `painful` entry has dodged the job; the schema's difficulty vocabulary is closed at {easy, contested, painful} and has no 'hold' value, so prose is the only channel available. The hold is not buried in one field — it is stated three times (cut_candidates[2].cost_of_cutting, open_questions[0], gaps[5]), each time with the same testable lift condition (an add carrying a wincon role AND a removal or counterspell role), and the machine-readable prescription is unambiguous because add_candidates[].natural_cut names An Offer You Can't Refuse, Kodama and Mikaeus and nothing points at Boros Charm. I verified the consequence a mis-applying pilot would suffer: cutting it takes interaction to 7 and threat-density to 2, two floors. Recommendation to the orchestrator, not a defect in this document: the diagnosis schema would benefit from an explicit `held: true` or a fourth difficulty value, so the hold survives a reader who scans `card` and `difficulty`. orphans_stack is [] on all four entries and is correct — none of the four appears in stack 002's scenario board or hand."
       },
       {
-        "where": "add_candidates[0..2]",
+        "where": "axes[9]",
         "status": "supported",
-        "note": "All three legal and in Sisay's five-colour identity. Enduring Vitality {1}{G}{G}, identity G, quote verbatim, and the wrath-resilience claim is right — \"When Enduring Vitality dies, if it was a creature, return it to the battlefield under its owner's control. It's an enchantment\", and the static \"Creatures you control have\" grant keeps working off a non-creature permanent. Taking the binding component 6 to 7 matches the cited redundancy curve (7 is 41%) and the audit's own 0.364 opening-seven for the 6-card group. Walking Ballista is colourless and mana value 0; Heliod, Sun-Crowned is confirmed in the 99. Gaea's Cradle is a Legendary Land at mana value 0, identity G, game_changer True in cards.csv; the deck currently runs exactly four Game Changers (Drannith Magistrate, Fierce Guardianship, Rhystic Study, Seedborn Muse), so the note that a fifth leaves the floor at 4 is correct. Both combo lines are labelled \"needs a stack scenario\" rather than asserted, and open_questions[6] repeats the caveat — no unverified-line finding."
+        "note": "ADJUDICATION B — the document states the limitation honestly, and the underlying question is only PARTLY settled by strategy.md, so route it rather than hold it against the document. The reading concedes the count ('On the floor by count'), names the three counted cards as filler, names the real kill as stack 002's loop, and names the exposure ('answering the assembly answers the deck'). gaps[5] says outright that this is the axis the prescription cannot improve, records that all three adds carry no wincon role (verified in card_roles.json), and says naming a finisher needs a candidate_pool.json or a deck-recon pass the deck does not have. That is the honest form. On the routing: strategy:deckbuilding.threat-density, which I read whole, ALREADY says 'cEDH compresses that, its finishers being combos' and gives Eisenherz's layering rule ('overlap pieces, so five cards support four combos') — which is literally this deck's shape, since bracket_report lists four two-card infinites all sharing Najeela, i.e. five cards supporting four combos. So the KB is not silent. But that guidance is explicitly scoped to cEDH and this deck's computed floor is bracket 4 Optimized, which strategy:deckbuilding.power-level distinguishes from 5 cEDH; whether a verified loop discharges Zupke's countable floor at bracket 4 is genuinely unsettled. The open question would be sharper if it named the Eisenherz sentence it has to get past."
       },
       {
-        "where": "verdict",
+        "where": "axes",
         "status": "supported",
-        "note": "Every figure traced to source: 93.5% turn-3 land drops = axes[12] 0.935; mean cast 2.963 and 99.1% by turn 6 = goldfish_metrics metrics.commander.mean_cast_turn and cast_by_turn_6_rate; zero taplands = axes[2]; three finishers = the audit's threat-density list (Boros Charm, Kambal, Samut). Stack 002 is the only checker-passed stack of three (001 and 003 both read fail), so \"the only checker-passed kill\" is accurate and gaps[2] says so. The previously-flagged \"17 of the deck's 55 mana sources cannot pay it\" figure is gone, replaced by three named cards verified against oracle text. Citations spot-checked in full section context: the redundancy-vs-tutors and threat-density quotes are verbatim and used as the section uses them, and the ratios template is explicitly framed as a starting point in the archetype field and gaps[1], which is what that section asks for."
-      },
-      {
-        "where": "$.diagnosis (edit scope)",
-        "status": "supported",
-        "note": "Partially verifiable only, and reported as such. The doctor's claim that no axis, count, figure, add or bracket delta moved is TRUE against the last commit: all 16 measured blocks are unchanged, add_candidates is byte-identical, engine component counts are [4,6,7,11] in both, and every bracket_delta is {before:4, after:4}. But the diff is wider than three string fields because HEAD predates earlier iterations — cut_candidates[1].difficulty moved contested to easy, and gaps[7] plus open_questions[7] are new. Those are substantive but defensible and outside the categories the doctor enumerated. The intermediate state the previous skeptic reviewed is not in git, so the narrow \"this edit touched three fields\" claim cannot be confirmed; I verified the current document's substance instead, which is the load-bearing question."
+        "note": "Every measured.value re-derived against a fresh `deck-audit sisay --json` run and every reading checked against its value, which is the check the validator cannot make. All sixteen agree: mana-base 40, mana-sources 55, taplands 0, colour-sources -15, ramp 17, card-advantage 7, interaction 8, sweepers 1, protection 7, threat-density 3, creatures 39, interaction-breadth 3, consistency 0.935, curve 3, power 4, tutors 2. Readings that quote further figures also hold: 0.842 turn-4 land drops, 0.842 keep rate, 0.183 mean mulligans, 2.963 mean commander cast turn, 5.869 mean mana and 4.066 mean bodies at turn 6 (goldfish_metrics); 39 front-face creature entries of which 30 are legendary, leaving 29 fetch targets, against deck-facts' legendary_permanents 34 whose four noncreature members are exactly Mox Amber, Flowering, Teferi and Dihada; the nonland curve {0:1, 1:11, 2:17, 3:20, 4:5, 5:6} over 60 entries; 9 shocks plus 8 crowd lands making the audit's 17 conditional taplands; four Game Changers and four two-card infinites in bracket_report with combo_count 10. FRESHNESS: goldfish_metrics.json and mana_analysis.json both carry decklist_sha256 a4bcbd50... , identical to the audit's and to the diagnosis's as_of_decklist_sha256, so nothing quoted here is stale. Superlatives enumerated against their membership and confirmed: five WUBRG cards, Boros Charm the only grant of double strike (Samut has it natively), land the only permanent class no card in the 99 answers, exactly four cards mentioning a graveyard with Dauthi Voidwalker the only one denying an opponent theirs. No combo line is asserted without a passing stack: the Cryptolith Rite + Najeela line carries status 'needs a stack scenario', and gaps[3] states nine of ten contained lines are unverified."
       }
     ],
-    "iterations": 3,
-    "note": "DIAGNOSE_MAX_ITERATIONS reached with one finding open of twelve. The Kenrith fix VERIFIED COMPLETE -- a programmatic sweep found exactly three descriptions of the {4}{B} mode and all three now say 'under its owner's control'. What remains is unrelated and survived the earlier pass: `add_candidates[3].why` says Jhoira is fetchable 'unlike every other draw engine here', and **Reki, the History of Kamigawa is in the 99 at mana value 3, legendary, and draws on every legendary cast** -- fetchable at a LOWER rung than Jhoira, and named two clauses earlier in the same sentence. Six more legendary draw pieces are fetchable and axes[5] lists four of them. Jhoira is the LEAST fetchable of them; the stated differentiator points the wrong way. The add may still stand on its redundancy citation, which is verbatim and in context -- but not on that clause. Not blessed: `deck-diagnosis` stays MISS."
+    "iterations": 3
   }
 }

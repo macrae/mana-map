@@ -1,16 +1,16 @@
 {
   "slug": "hapatra",
   "as_of_decklist_sha256": "824c1eebd641e9f210336fc33660ce5665b45905437071e12036849a443f1e2e",
-  "archetype": "BG -1/-1 counter aristocrats. deck-audit takes the frame's `combo` archetype and applies its overrides (tutors 4-8, protection 4-6); the deck meets both, at 8 tutors and 5 protection. But the measured behaviour is a converter engine, not a combo deck: 25 creatures, modal mana value 2, a 67.2% commander-plus-payoff assembly, and a headline kill that assembles 16.3% of the time. The frame's own line — 'a genuine but narrow combo ceiling sits above a grindy median' — is what the numbers show.",
-  "verdict": "This deck starts better than almost anything in the fleet: 36 land copies, zero unconditional taplands, 15 colour sources above Karsten's worst-colour target, a 90.2% turn-3 land drop and a commander on turn 2 in 9,970 of 10,000 runs. Its payoff class (6), converter class (4) and tutor class (8) are all deep. What binds is the class no axis measures: a repeatable -1/-1 counter SOURCE. Three of the six cards in deck-audit's payoff component — Nest of Scarabs, Flourishing Defenses and Obelisk Spider — do nothing at all until a counter is placed, and Hapatra's own token half is gated the same way; the other three drain on any death and run off a plain sacrifice. Free, repeatable and non-combat, the deck holds two sources: Yawgmoth, Thran Physician without limit, and Devoted Druid for exactly two placements before it kills itself. Both of the audit's flagged single points of failure are one card at 7.1% of an opening seven. Second, and compounding it: the engine is entirely creature activated abilities and the deck answers one permanent class.",
+  "archetype": "BG -1/-1 aristocrats. Hapatra converts other cards' -1/-1 counters into deathtouch bodies, and the bodies convert into cards and drain. deck-audit reads the frame's archetype as combo and applies the combo overrides (protection 4-6, tutors 4-8); the frame's own words are 'a converter engine, not a combo deck', and the measured rates agree with the frame — the median engine assembles at 67.2% while the two named kills sit at 16.3% and 9.5%.",
+  "verdict": "The deck functions and converts. Its mana is the best thing about it (36 lands, zero taplands, 90.2% on the turn-3 land drop, commander plus a payoff at 67.2%), and its median plan — mint Snakes, feed a drain converter — is genuinely redundant. What limits it is not a count anywhere near the engine: it is interaction-breadth, measured at 1 class of 5, and an enumeration of all 88 entries confirms rather than softens it. No card in the 99 destroys or exiles an artifact, an enchantment or a land, and exactly one touches an opponent's graveyard. Two other flagged axes are artifacts of the taxonomy and are named as such below.",
   "axes": [
     {
       "axis": "mana-base",
-      "verdict": "adequate",
+      "verdict": "strength",
       "measured": {
         "value": 36
       },
-      "reading": "36 land copies across 24 entries — the floor of the cited band, and correct for a deck with 14 persistent non-land producers behind it.",
+      "reading": "36 land copies, at the bottom of the band. With zero taplands under them, that is the right end of the range for a deck whose modal cost is 2.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.ratios",
@@ -24,7 +24,7 @@
       "measured": {
         "value": 50
       },
-      "reading": "50 sources against a Burgess target of 35. Fifteen above, which is why the turn-2 commander is near-certain rather than merely likely.",
+      "reading": "50 against a Burgess target of 35, from 36 lands plus 14 persistent producers. Nothing about this deck's early turns is a mana problem.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base",
@@ -38,7 +38,7 @@
       "measured": {
         "value": 0
       },
-      "reading": "Zero lands enter tapped unconditionally. Nothing in the mana base taxes the turn-2 Hapatra line.",
+      "reading": "Zero. Every land in the 99 can be used the turn it lands, which is what makes a 36-land base safe here.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base",
@@ -52,131 +52,11 @@
       "measured": {
         "value": 15
       },
-      "reading": "B 37 and G 39 against a Karsten target of 22 each — fifteen above on the worse colour. The deck is over-fixed, which is what makes Tarnished Citadel's 3 damage a cost with nothing bought by it.",
+      "reading": "The worst colour is 15 sources above its Karsten target (B 37 and G 39 against 22 each). Colour screw is not a failure mode this deck has.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base.color-sources",
           "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
-        }
-      ]
-    },
-    {
-      "axis": "ramp",
-      "verdict": "adequate",
-      "measured": {
-        "value": 16
-      },
-      "reading": "Nominally four over. But Ashnod's Altar and Phyrexian Altar are the free sacrifice outlets the engine block counts as a component (its shared_axes is literally 'ramp'), and Deadly Dispute also appears on the card-advantage list. The overage is double-counted engine, not surplus acceleration.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.ratios",
-          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
-        }
-      ]
-    },
-    {
-      "axis": "card-advantage",
-      "verdict": "adequate",
-      "measured": {
-        "value": 8
-      },
-      "reading": "UNDER by the taxonomy, at target by the cards. The audit's own probe names Grim Backwoods, The One Ring and Yawgmoth as excluded: Yawgmoth draws a card per activation, The One Ring draws for each burden counter, Grim Backwoods sacrifices a creature to draw. This is not the deck's problem.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.ratios",
-          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
-        }
-      ]
-    },
-    {
-      "axis": "interaction",
-      "verdict": "adequate",
-      "measured": {
-        "value": 14
-      },
-      "reading": "Above the floor of 8, but read the fourteen: Devoted Druid carries removal:debuff only because it puts a -1/-1 counter on ITSELF to untap, Blowfly Infestation is an engine piece, and Hapatra is the commander. Eleven of the fourteen are real answers, all of them creature answers. Necroskitter is not counted here and should be: a 1/4 wither blocker puts -1/-1 counters on what it blocks, which is both interaction and a source.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
-        }
-      ]
-    },
-    {
-      "axis": "sweepers",
-      "verdict": "adequate",
-      "measured": {
-        "value": 2
-      },
-      "reading": "Two, inside the cited band — but only one of them is a sweeper this deck is paid for. Black Sun's Zenith puts -1/-1 counters on each creature and triggers Hapatra, Nest of Scarabs, Flourishing Defenses and Obelisk Spider once per creature; Toxic Deluge gives -X/-X until end of turn and triggers none of them.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
-        }
-      ]
-    },
-    {
-      "axis": "protection",
-      "verdict": "adequate",
-      "measured": {
-        "value": 5
-      },
-      "reading": "Five, inside the band, but only two of them protect the card that matters. Lightning Greaves grants shroud, which locks Hapatra and Yawgmoth out of targeting the creature wearing it — verified stack 001 step 14 records exactly this for Devoted Druid.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.threat-density",
-          "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
-        }
-      ]
-    },
-    {
-      "axis": "threat-density",
-      "verdict": "strength",
-      "measured": {
-        "value": 6
-      },
-      "reading": "Six converters against a floor of three. Three of them hit the table — Zulaport Cutthroat, Bastion of Remembrance and Obelisk Spider each read 'each opponent loses 1 life'. Blood Artist drains a target player, Sephiroth a target opponent, and Mikaeus has no drain clause at all. Deep enough, but only half of it scales to three seats.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.threat-density",
-          "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
-        },
-        {
-          "rule": "strategy:multiplayer.asymmetry",
-          "quote": "Your cards should do something to all three seats or win the game"
-        }
-      ]
-    },
-    {
-      "axis": "creatures",
-      "verdict": "adequate",
-      "measured": {
-        "value": 25
-      },
-      "reading": "25 front-face creatures. Reported, not scored — for a combo-classified deck the count is fodder supply, and the goldfish measures 3.162 bodies on board by turn 6.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.archetype-selection",
-          "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
-        }
-      ]
-    },
-    {
-      "axis": "interaction-breadth",
-      "verdict": "weakness",
-      "measured": {
-        "value": 1
-      },
-      "reading": "I read all 88 entries rather than trusting the heuristic, and it is nearly right: nothing in the deck destroys or exiles an opponent's artifact, enchantment or land. Graveyard is covered once — Abstergo Entertainment exiles all graveyards, exiling itself to do it. So three classes are open, not four.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
-        },
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "Breadth before depth: three opponents mean every permanent type appears"
         }
       ]
     },
@@ -186,7 +66,7 @@
       "measured": {
         "value": 0.902
       },
-      "reading": "90.2% hit the turn-3 land drop against a 74% floor, on a 79.9% first-seven keep rate. The deck functions; nothing downstream is a mana problem.",
+      "reading": "90.2% hit the turn-3 land drop against a 74% floor, on a 79.9% keep rate. The deck starts on time essentially every game.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base",
@@ -200,7 +80,7 @@
       "measured": {
         "value": 2
       },
-      "reading": "Modal mana value 2, with 19 two-drops and 17 three-drops among 64 nonland entries and nothing at 8+. Textbook, and it is why the commander lands on turn 2.",
+      "reading": "Modal mana value 2, with 19 two-drops and 17 three-drops and nothing at 8+. The curve matches the template exactly.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.curve",
@@ -209,16 +89,122 @@
       ]
     },
     {
-      "axis": "power",
+      "axis": "ramp",
       "verdict": "adequate",
       "measured": {
-        "value": 4
+        "value": 16
       },
-      "reading": "Floor 4, and it holds on the 11 Game Changers alone. The third driver — '19 two-card infinites' — is inflated: stack 001 refuted six outright and downgraded Walking Ballista to a three-card line. The classification is right for a reason the report states wrongly.",
+      "reading": "Sixteen ramp functions against a 10-12 band, and the section that sets the band counts functions rather than cards: four of the sixteen simultaneously fill a second budget — Ashnod's Altar and Phyrexian Altar are the engine block's free sacrifice outlets, Devoted Druid is on the interaction axis's named 14 and is one of three at-will -1/-1 sources, and Deadly Dispute is already on the card-advantage axis's named 8. They count in both places; none of them is a spare acceleration slot. Derived from this deck's actual failure modes, mana is not one of them — 90.2% on the turn-3 land drop and 50 sources against a Burgess target of 35 — so do not cut ramp here.",
       "citations": [
         {
-          "rule": "strategy:deckbuilding.power-level",
-          "quote": "Contents give a floor, never a verdict."
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "they are counts of *functions*, not cards, so a card doing two jobs fills two slots"
+        },
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "Take the categories, derive the counts from the deck's actual failure modes."
+        }
+      ]
+    },
+    {
+      "axis": "card-advantage",
+      "verdict": "adequate",
+      "measured": {
+        "value": 8
+      },
+      "reading": "Under by two on the taxonomy's count, but the audit's own probe names three uncounted draw sources whose oracle text draws cards: Grim Backwoods, The One Ring, and Yawgmoth, whose sacrifice ability draws one per activation. This is not the deck's problem.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+        }
+      ]
+    },
+    {
+      "axis": "interaction",
+      "verdict": "adequate",
+      "measured": {
+        "value": 14
+      },
+      "reading": "14 copies inside a 20-card interactive suite, comfortably over Walser's floor of 8. The count is fine; what those 14 can point at is not.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
+        }
+      ]
+    },
+    {
+      "axis": "interaction-breadth",
+      "verdict": "liability",
+      "measured": {
+        "value": 1
+      },
+      "reading": "One class of five, and reading every card confirms it: of the 88 entries, none destroys or exiles an artifact, an enchantment or a land, and the only effect that touches an opponent's graveyard is Abstergo Entertainment, a land whose ability costs {3}, exiles itself, and exiles your own graveyard alongside theirs. This is the axis that binds — any resolved noncreature permanent that beats this deck stays on the table forever.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any; catch-all removal earns its premium"
+        },
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Stax is the hardest breadth test: a counter answers a lock piece only on the way in, so some answers must be castable under the tax"
+        }
+      ]
+    },
+    {
+      "axis": "sweepers",
+      "verdict": "adequate",
+      "measured": {
+        "value": 2
+      },
+      "reading": "Two, inside the 1-3 band. Black Sun's Zenith is also a mass -1/-1 placement, so it mints Snakes on the way through; Toxic Deluge is the answer to something Zenith is too slow for.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+        }
+      ]
+    },
+    {
+      "axis": "protection",
+      "verdict": "adequate",
+      "measured": {
+        "value": 5
+      },
+      "reading": "Five in the combo band of 4-6, and the probe adds Talon Gates of Madara and Yawgmoth on top. Enough to defend one pivot window.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
+        }
+      ]
+    },
+    {
+      "axis": "threat-density",
+      "verdict": "strength",
+      "measured": {
+        "value": 6
+      },
+      "reading": "Six finishers against Zupke's floor of three, and they layer rather than compete: the combo families draw on the same outlet, counter-source and converter pools rather than competing for slots (the one line that needs no converter at all is Mikaeus + Walking Ballista, which converts to damage directly per stack 001 step 15). This is the deck's median plan and it is well built.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Separate ceiling from median: the ceiling build runs one spectacular finisher and loses when it's answered; the median runs three cheap ones and closes from any board."
+        }
+      ]
+    },
+    {
+      "axis": "creatures",
+      "verdict": "adequate",
+      "measured": {
+        "value": 25
+      },
+      "reading": "25 front-face creatures. Reported, not scored — for an aristocrats deck the number that matters is bodies produced per turn, not bodies in the 99.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.archetype-selection",
+          "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
         }
       ]
     },
@@ -228,22 +214,43 @@
       "measured": {
         "value": 8
       },
-      "reading": "Eight, the top of the combo band, and they are doing the work redundancy cannot: tutor assistance moves the Blowfly kill from 16.3% to 66.7% and the Mikaeus line from 9.5% to 50.4%. That is a deck buying consistency it could not build.",
+      "reading": "Eight, at the top of the combo band, and a tutor is drawn in 78.0% of games at mean turn 2.70. With the deck's scarcest enabler class three cards deep, the tutors are that class's redundancy.",
       "citations": [
         {
-          "rule": "strategy:deckbuilding.archetype-selection",
-          "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
-        },
-        {
           "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-          "quote": "tutor only the irreplaceable"
+          "quote": "k tutors plus the card act like k+1 copies of *every* card"
+        }
+      ]
+    },
+    {
+      "axis": "power",
+      "verdict": "adequate",
+      "measured": {
+        "value": 4
+      },
+      "reading": "Floor 4, forced independently three times over — 11 Game Changers, the highest-bracket line present, and 19 two-card infinites. The floor is safe even though the infinite count is inflated; stack 001 refuted six of the Mikaeus entries.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.power-level",
+          "quote": "Contents give a floor, never a verdict."
         }
       ]
     }
   ],
   "engine": {
-    "declared": "Hapatra is a mint, not a source: she converts -1/-1 counters that OTHER cards place into 1/1 deathtouch Snakes, the Snakes become cards and drain through six converters, and two narrow combo kills sit above that median.",
+    "declared": "Hapatra mints a 1/1 deathtouch Snake every time you put one or more -1/-1 counters on a creature; the Snakes feed a free sacrifice outlet; a drain converter turns each death into life loss.",
     "components": [
+      {
+        "role": "ignition",
+        "have": [
+          "Yawgmoth, Thran Physician",
+          "Devoted Druid",
+          "Serrated Arrows"
+        ],
+        "count": 3,
+        "thinnest": true,
+        "reading": "The at-will, mana-free, repeatable -1/-1 sources, enumerated from every card in the 99 whose text contains '-1/-1', 'wither' or 'blight'. Only Yawgmoth is unbounded and it needs fodder; Devoted Druid can only counter itself and dies on its third activation (its second without Mikaeus); Serrated Arrows has exactly three arrowheads and then sacrifices itself. The four other repeatable sources — Hapatra herself, Blowfly Infestation, Obelisk Spider, Necroskitter — are all gated on combat damage or on a death. goldfish_targets.json does not declare this class, so no simulation has ever priced it."
+      },
       {
         "role": "payoff",
         "have": [
@@ -255,9 +262,9 @@
           "Bastion of Remembrance"
         ],
         "count": 6,
-        "thinnest": false,
+        "thinnest": true,
         "measured_rate": 0.672,
-        "reading": "Six deep, 36.4% of an opening seven, and assembled with the commander 67.2% of the time at mean turn 3.623. The abundant half."
+        "reading": "Six deep and the deck's most reliable target: commander plus any payoff assembles 67.2% of games at mean turn 3.62. This is the half that is not scarce."
       },
       {
         "role": "payoff",
@@ -268,9 +275,9 @@
           "Blasting Station"
         ],
         "count": 4,
-        "thinnest": false,
+        "thinnest": true,
         "measured_rate": 0.519,
-        "reading": "The drain converters, four deep, 51.9% assembled. Two of the four hit every seat — Zulaport Cutthroat and Bastion of Remembrance. Blood Artist drains one target player and Blasting Station deals 1 damage to any single target, so the component converts a loop into a three-player kill only half the time it assembles."
+        "reading": "Any drain converter, 51.9% assembled at mean turn 3.34. Note only two of the four hit every seat: Zulaport Cutthroat and Bastion of Remembrance say 'each opponent loses 1 life'. Blood Artist drains a single target player per death and Blasting Station pings one target per activation."
       },
       {
         "role": "outlet",
@@ -284,7 +291,27 @@
         "count": 5,
         "thinnest": false,
         "measured_rate": 0.095,
-        "reading": "Five free sacrifice outlets, 31.2% of an opening seven. Not thin — but stack 001 refuted the Mikaeus pairing for all five of them, so this component's declared job no longer exists."
+        "reading": "Five free sacrifice outlets, an adequate class on its own. But all five are named in checker-passed stack 001's step 10 as outlets that place no -1/-1 counter, so each yields exactly one extra undying return under Mikaeus, not a loop. The 9.5% figure prices an assembly the verified stack says does not loop."
+      },
+      {
+        "role": "piece",
+        "have": [
+          "Mikaeus, the Unhallowed"
+        ],
+        "count": 1,
+        "thinnest": true,
+        "measured_rate": 0.095,
+        "reading": "One copy, 7.1% of an opening seven. Its verified value in this list is Devoted Druid (a true two-card infinite of deaths, counters and Snakes, explicitly not of mana) and Walking Ballista plus any free outlet (a three-card kill) — neither of which the declared target names."
+      },
+      {
+        "role": "piece",
+        "have": [
+          "Blowfly Infestation"
+        ],
+        "count": 1,
+        "thinnest": true,
+        "measured_rate": 0.163,
+        "reading": "One copy carrying the deck's headline two-card kill at 16.3%. It has never been through a stack scenario, so it is a plausible line, not a fact."
       },
       {
         "role": "piece",
@@ -299,100 +326,54 @@
           "Grim Tutor"
         ],
         "count": 8,
-        "thinnest": false,
+        "thinnest": true,
         "measured_rate": 0.78,
-        "reading": "Eight tutors, 45.6% of an opening seven, 78% drawn. This is the deck's substitute for redundancy in the classes that have none."
-      },
-      {
-        "role": "ignition",
-        "have": [
-          "Blowfly Infestation"
-        ],
-        "count": 1,
-        "thinnest": true,
-        "measured_rate": 0.163,
-        "reading": "One card. 7.1% of an opening seven, 16.3% assembled beside the commander. The deck's headline two-card kill, and deck-audit's closer search found no pool card that joins it by role or by combo line."
-      },
-      {
-        "role": "piece",
-        "have": [
-          "Mikaeus, the Unhallowed"
-        ],
-        "count": 1,
-        "thinnest": true,
-        "measured_rate": 0.095,
-        "reading": "One card, at six mana, assembled 9.5% of the time. The audit surfaces 8 combo lines that would join it (of 75 candidates), every one of them unverified."
-      },
-      {
-        "role": "ignition",
-        "have": [
-          "Yawgmoth, Thran Physician",
-          "Devoted Druid"
-        ],
-        "count": 2,
-        "thinnest": true,
-        "measured_rate": null,
-        "reading": "UNDECLARED — goldfish_targets.json names no counter-source component, so nothing measures the class every counter-gated payoff depends on. Free, repeatable and non-combat: Yawgmoth without limit, and Devoted Druid for two placements (it is 0/2 and its untap cost is its own -1/-1 counter), unlimited only under Mikaeus. Around them sit metered sources (Serrated Arrows, three uses; Contagion Clasp at {4}, and proliferate cannot start from zero counters) and combat-gated ones (Hapatra's first ability, Obelisk Spider, Necroskitter's wither on a 1/4 blocker). Thin at the top, not empty."
+        "reading": "The deepest component in the deck, and the reason a three-card enabler class is playable at all. 78.0% of games see one, 67.6% by turn 6."
       }
     ],
     "single_points_of_failure": [
       {
-        "component": "ignition — a free, repeatable, non-combat -1/-1 counter source",
-        "why": "Three of the six payoff-component cards trigger only on counter placement — Nest of Scarabs ('Whenever you put one or more -1/-1 counters on a creature, create that many 1/1 black Insect creature tokens'), Flourishing Defenses ('Whenever a -1/-1 counter is put on a creature') and Obelisk Spider — as does Hapatra's own Snake half, which is the deck's body supply. Stack 001's 'exactly one' is scoped narrowly and must be quoted that way: 'exactly one of the deck's eight mana-free sacrifice OUTLETS qualifies: Yawgmoth'. The wider source class is two — Yawgmoth unlimited, Devoted Druid for two placements alone — with metered and combat-gated sources behind them. That is thin for the class the whole deck is downstream of, and the audit has no axis for it, so the sixteen numbers cannot see it. It is also fixable: candidate_pool.json carries at least nine in-identity cards that place -1/-1 counters repeatably.",
+        "component": "free repeatable -1/-1 source",
+        "why": "Everything downstream of Hapatra is a function of counter placements, and the class that supplies them at will without mana is three cards: Yawgmoth, Devoted Druid and Serrated Arrows. Two of the three are self-bounded — Devoted Druid can only place counters on itself, Serrated Arrows has exactly three activations. The corpus prices a 5-card class at 31% of openers; this one is smaller than that and is not even declared to the simulation. The pool cannot close it as defined. Of the 43 cards in candidate_pool.json whose oracle text places a -1/-1 counter, the mana-free at-will activations outside the three already in the 99 are Grim Poppet (enters with exactly three counters, at {7}), Cinderhaze Wretch (places counters on itself only, and its 3/2 body dies to the second, at {4}{B}) and Fume Spitter (sacrifices itself) — each reproducing the exact defect that disqualifies Devoted Druid or Serrated Arrows. Carnifex Demon charges {B} per activation and holds two counters. The closers below therefore meet weaker properties, and not the same one as each other. Sinister Gnarlbark and Persistent Constrictor are free, unbounded and repeat every turn, but on a fixed trigger rather than at will: Gnarlbark blights at your end step and draws a card; Constrictor blights at each opponent's upkeep, so three placements a turn cycle, gated on an opposing creature. Glistening Oil is weaker still and is not unbounded — it enchants one creature and places counters only on that creature, so a single casting yields at most that creature's toughness in placements, and each re-attachment after the Aura returns to your hand costs {B}{B} again; price it as the bounded, recastable member. The relaxation is real and worth naming: at-will matters for holding up a response and for a single-turn kill; free-per-turn still multiplies Snakes every turn. Harbinger of Night is excluded: its upkeep trigger is symmetric and puts a counter on each creature, which sweeps the 1/1 Snakes and Insects the payoff half is built on.",
         "closers": [
           "Sinister Gnarlbark",
-          "Harbinger of Night",
           "Persistent Constrictor",
-          "Midnight Banshee",
-          "Glistening Oil",
-          "Carnifex Demon",
-          "Contagion Engine",
-          "Soul Snuffers",
-          "Grim Poppet"
+          "Glistening Oil"
         ],
         "citations": [
           {
-            "rule": "strategy:mulligans.engine-hands",
-            "quote": "Payoffs without the enabler are blanks until the engine exists"
+            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+            "quote": "5 copies is 31% of openers, 7 is 41%"
           },
           {
             "rule": "strategy:deckbuilding.threat-density",
-            "quote": "the enabler slots fail first"
+            "quote": "Engine density — Nicol asks 7-8 enablers and 10-12 enhancers against ~25 standalone cards, and the enabler slots fail first"
           },
           {
             "rule": "strategy:mulligans.engine-hands",
-            "quote": "100-card singleton means you mulligan to enabler *classes*, not named cards; build the redundancy your keeps depend on"
-          }
-        ]
-      },
-      {
-        "component": "Blowfly Infestation",
-        "why": "deck-audit names it the thinnest declared component: size 1, 7.1% of an opening seven, 16.3% assembled. It is also the half of the deck's headline kill that has never been resolved — the Blowfly family is three of the nineteen claimed two-card infinites and no stack artifact touches any of them.",
-        "closers": [],
-        "citations": [
-          {
-            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-            "quote": "a named card is 7.1% of your opening seven, 10.1% by ten cards seen"
-          },
-          {
-            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-            "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+            "quote": "Payoffs without the enabler are blanks until the engine exists"
           }
         ]
       },
       {
         "component": "Mikaeus, the Unhallowed",
-        "why": "Size 1, six mana, 9.5% assembled unassisted. Stack 001 (checker verdict pass) refuted six of the eight two-card Mikaeus lines and downgraded Walking Ballista to three cards; what survives is Mikaeus + Devoted Druid, a true infinite of deaths, counters and Snakes but explicitly not of mana. A one-card component whose declared partner group was refuted is worse than a one-card component.",
+        "why": "A one-copy component at 7.1% of an opening seven, and the outlet component it is declared against is refuted: all five members — Ashnod's Altar, Phyrexian Altar, Viscera Seer, Carrion Feeder, Blasting Station — are named in checker-passed stack 001 as placing no -1/-1 counter, so each buys one extra death rather than a loop. The declared target is measuring the wrong assembly.",
         "closers": [
           "Gravecrawler",
           "Reassembling Skeleton",
-          "Nim Deathmantle",
-          "Forsaken Miner",
-          "The Great Henge",
-          "Plague Belcher",
-          "Thran Vigil",
-          "Living Death"
+          "Nim Deathmantle"
         ],
+        "citations": [
+          {
+            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+            "quote": "a named card is 7.1% of your opening seven, 10.1% by ten cards seen"
+          }
+        ]
+      },
+      {
+        "component": "Blowfly Infestation",
+        "why": "One copy at 7.1% of an opening seven carries the deck's headline kill, and the line has never had a stack scenario. Its two in-deck partners (Nest of Scarabs, Flourishing Defenses) deepen the payoff half, not the Blowfly half — Blowfly is the only card in the 99 whose -1/-1 placement chains off another creature's death, and none of candidate_pool.json's 229 listed candidates repeats that pattern — the nearest, Lockjaw Snapper, fires only when it itself dies.",
+        "closers": [],
         "citations": [
           {
             "rule": "strategy:deckbuilding.redundancy-vs-tutors",
@@ -404,163 +385,98 @@
   },
   "lean_into": [
     {
-      "what": "Tutor for the source, never the payoff.",
-      "why": "The payoff class is six deep and assembles at 67.2%; the source class is one or two deep and nothing measures it. A tutor spent on Nest of Scarabs buys a card the deck finds anyway; a tutor spent on Yawgmoth buys the one card that turns the others on without a limit. That ordering stands, but it is not a substitute for building the class: redundancy is the cheaper purchase and the pool sells it, which is what add_candidates[1] does.",
+      "what": "Play the median, not the ceiling.",
+      "why": "Commander plus a payoff assembles 67.2% at mean turn 3.62 and a drain converter 51.9% at mean turn 3.34, while the two named kills sit at 16.3% and 9.5% and neither has a verified stack. The grind is the plan; the kill is opportunism.",
       "evidence": {
-        "payoff_component_assembled_rate": 0.672,
-        "tutor_component_assembled_rate": 0.78,
-        "blowfly_kill_unassisted": 0.163,
-        "blowfly_kill_tutor_assisted": 0.667,
-        "mikaeus_line_unassisted": 0.095,
-        "mikaeus_line_tutor_assisted": 0.504
+        "commander_plus_payoff": 0.672,
+        "any_drain_converter": 0.519,
+        "blowfly": 0.163,
+        "mikaeus_plus_outlet": 0.095
       },
       "citations": [
         {
-          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-          "quote": "tutor only the irreplaceable"
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Separate ceiling from median: the ceiling build runs one spectacular finisher and loses when it's answered; the median runs three cheap ones and closes from any board."
         },
         {
-          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-          "quote": "Keep rates track enabler-class density, not tutor count"
-        },
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Value is not a win."
+        }
+      ]
+    },
+    {
+      "what": "Mulligan for a counter source, not for a payoff.",
+      "why": "The payoff class is six deep and assembles two-thirds of the time; the at-will free source class is three. A hand of Nest of Scarabs and Blood Artist is a hand of blanks until something places a counter.",
+      "evidence": {
+        "payoff_component_size": 6,
+        "at_will_free_source_size": 3,
+        "tutor_drawn_rate": 0.78
+      },
+      "citations": [
         {
           "rule": "strategy:mulligans.engine-hands",
           "quote": "Payoffs without the enabler are blanks until the engine exists"
         },
         {
           "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-          "quote": "redundancy is cheap per slot and live every game; tutoring is fewer slots but costs board impact and a turn of tempo"
+          "quote": "stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable"
         }
       ]
     },
     {
-      "what": "Black Sun's Zenith is a mass ignition wearing a sweeper's clothes.",
-      "why": "It puts -1/-1 counters on each creature, so Hapatra, Nest of Scarabs, Flourishing Defenses and Obelisk Spider each trigger once per creature killed — a wipe that refills your board and drains the table. Toxic Deluge, beside it, gives -X/-X until end of turn: no counters, no Snakes, no Insects, no drains, and it does not enable Crumbling Ashes or Necroskitter either.",
+      "what": "Trust the mana and spend the extra slots elsewhere.",
+      "why": "36 lands, zero taplands, 15 sources above target on the worse colour and 90.2% on the turn-3 drop. No further land or fixing slot buys anything measurable — the deck's next slot should buy an answer.",
       "evidence": {
-        "sweepers_axis_value": 2,
-        "payoffs_triggered_by_counters": [
-          "Nest of Scarabs",
-          "Flourishing Defenses",
-          "Obelisk Spider",
-          "Hapatra, Vizier of Poisons"
-        ]
+        "lands": 36,
+        "taplands": 0,
+        "turn_3_land_drop": 0.902,
+        "worst_colour_surplus": 15
       },
       "citations": [
         {
           "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
-        },
-        {
-          "rule": "strategy:multiplayer.asymmetry",
-          "quote": "Your cards should do something to all three seats or win the game"
-        }
-      ]
-    },
-    {
-      "what": "Play the median. The ceiling is one verified line and it is a three-mana creature away from being answered.",
-      "why": "Six converters, a 51.9% drain-converter assembly at mean turn 3.339, 3.162 bodies by turn 6 and a card layer that out-draws three players — that is the game this deck wins. The kills assemble at 16.3% and 9.5% unassisted, and exactly one of the nineteen claimed infinites has a checker-passed artifact behind it.",
-      "evidence": {
-        "threat_density": 6,
-        "drain_converter_rate": 0.519,
-        "drain_converter_mean_turn": 3.339,
-        "verified_lines": 1,
-        "claimed_two_card_infinites": 19
-      },
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.threat-density",
-          "quote": "Value is not a win."
-        },
-        {
-          "rule": "strategy:deckbuilding.threat-density",
-          "quote": "Separate ceiling from median: the ceiling build runs one spectacular finisher and loses when it's answered; the median runs three cheap ones and closes from any board."
+          "quote": "Breadth before depth: three opponents mean every permanent type appears"
         }
       ]
     }
   ],
   "cut_candidates": [
     {
-      "card": "Toxic Deluge",
-      "why": "It is the deck's only MASS removal that kills without placing a counter — Black Sun's Zenith, the other sweeper, places them on each creature. (Crumbling Ashes, Walking Ballista, Blasting Station and Orcish Bowmasters also kill counterlessly, but one at a time.) 'All creatures get -X/-X until end of turn' triggers none of the six payoffs, makes no Snakes, no Insects and no Elf Warriors, leaves nothing for Crumbling Ashes or Necroskitter, and eats your own fodder — 3.162 bodies on board by turn 6. Black Sun's Zenith sits beside it doing the same job and paying you for it.",
-      "cost_of_cutting": "The deck loses its cheapest sweeper and its only answer to a resolved fatty at three mana. Toxic Deluge is three mana for any X because X is paid in life; Black Sun's Zenith needs X+2 mana for the same X, which at turn 5's mean 5.497 available mana is X=3. That is a real efficiency loss and it is the strongest argument against this cut. Sweepers drops 2 to 1, still inside the cited 1-3 band, and against an indestructible board you now have nothing.",
+      "card": "Contagion Clasp",
+      "why": "Two mana for a single -1/-1 counter — one Snake, once — attached to a proliferate that costs {4} and a tap. It is a cuttable slot rather than the cheapest one: interaction sits at 14 copies against a floor of 8, so the axis can afford to lose a copy, and this is the copy whose loss costs no body and no free placement. The other thin slot on that named 14, Fume Spitter, is a {B} body Yawgmoth eats for a card and it places its counter for free, so it stays.",
+      "cost_of_cutting": "One ETB counter placement (so one Snake, or an Insect with Nest of Scarabs out), and one of the deck's two repeatable proliferate effects — the 99 holds exactly three proliferate cards, Grim Affliction (a one-shot instant), Contagion Clasp and Yawgmoth's {B}{B} discard. That costs more than the interaction count suggests: proliferate gives 'another counter of each kind already there', so Contagion Clasp is the only repeatable non-Yawgmoth way to put an arrowhead counter back on Serrated Arrows — one of the three cards in the ignition class, the engine's thinnest component. Grim Affliction can do it once.",
       "orphans_stack": [],
-      "difficulty": "painful",
+      "difficulty": "contested",
       "citations": [
         {
           "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
-        },
-        {
-          "rule": "strategy:deckbuilding.cutting",
-          "quote": "so cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
+          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any; catch-all removal earns its premium"
         }
       ]
     },
     {
       "card": "Crumbling Ashes",
-      "why": "Upkeep-only, one target per turn, and it needs an opposing creature already carrying a -1/-1 counter — so it spends the deck's scarcest resource, a source activation, to do what an instant does for the same mana. It is also not a 'may': if the only legal target on your upkeep is your own Devoted Druid sitting under its own -1/-1 counters, you must destroy it, and the Druid is half of the deck's one verified infinite.",
-      "cost_of_cutting": "A repeatable, uncounterable-by-cost removal engine that snowballs once any source is online, and one of the eleven real answers inside the interaction count (14 to 13, still above the floor of 8).",
+      "why": "Upkeep-only, one target a turn, and the trigger is mandatory: with a legal target it must be put on the stack, and this deck routinely leaves -1/-1 counters on its own creatures — Devoted Druid holds them by design, and Yawgmoth's target keeps one. Its removal job is redundant with Yawgmoth, which does the same thing at instant speed and draws a card.",
+      "cost_of_cutting": "The only card in the 99 that destroys a creature by targeting it — Mikaeus's destroy trigger is conditional and untargeted — and therefore the deck's one clean answer to a creature whose toughness is out of reach of a single counter. Toxic Deluge, Black Sun's Zenith, Walking Ballista and Yawgmoth all still scale to a large body.",
       "orphans_stack": [],
       "difficulty": "contested",
       "citations": [
         {
           "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "catch-all removal earns its premium"
-        },
-        {
-          "rule": "strategy:deckbuilding.cutting",
-          "quote": "so cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
+          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any; catch-all removal earns its premium"
         }
       ]
     },
     {
-      "card": "Scurry Oak",
-      "why": "Its only function is +1/+1 counters, which is the direction this deck does not want. It makes a Squirrel when +1/+1 counters are put on it, and the deck has three repeatable ways to do that, and two are conditional: Ivy Lane Denizen on every green creature entering, Scurry Oak's own evolve when a bigger creature enters, and Host of the Hereafter moving counters off a dying creature. A +1/+1 counter placed on a Snake also annihilates the -1/-1 counter that was going to kill it — the state-based action stack 001 leans on throughout — so the sub-theme fights the token loops it sits next to.",
-      "cost_of_cutting": "Scurry Oak + Ivy Lane Denizen is bracket_report's highest-bracket line and the deck's most compact claimed kill. It is unadjudicated, not refuted, and cutting it forecloses a line before anyone has priced it — which is why this cut should wait on the Ivy Lane scenario named in open_questions.",
+      "card": "Ivy Lane Denizen",
+      "why": "A mandatory +1/+1 counter engine inside a -1/-1 deck. Every green creature entering — every Snake, every Elf Warrior from Flourishing Defenses — forces a +1/+1 counter onto a target, and a +1/+1 counter either annihilates a -1/-1 counter this deck placed on purpose or lifts one of its own 1/1 tokens out of range of a single counter, which is what Blowfly chains need. Its payoff is Scurry Oak, and that pairing has never had a stack scenario.",
+      "cost_of_cutting": "Real and worth stating plainly: Ivy Lane Denizen appears in 10 of the deck's 32 deduped contained combo lines, including Scurry Oak + Ivy Lane Denizen, which bracket-check names as the highest-bracket line present. Scurry Oak keeps its other +1/+1 sources — its own evolve, Host of the Hereafter's counter transfer, Mikaeus's undying return, and every proliferate effect the deck still holds (Grim Affliction, Yawgmoth's {B}{B} ability) once it already carries one counter, since proliferate gives 'another counter of each kind already there'. Three Yawgmoth + Scurry Oak + drain lines, with Zulaport Cutthroat, Blood Artist and Bastion of Remembrance, survive the cut untouched. The bracket floor does not move — bracket-check shows game_changers forcing 4 on its own with 11 Game Changers — but the deck's combo census gets smaller and more honest.",
       "orphans_stack": [],
-      "difficulty": "contested",
+      "difficulty": "painful",
       "citations": [
         {
-          "rule": "strategy:deckbuilding.threat-density",
-          "quote": "Separate ceiling from median: the ceiling build runs one spectacular finisher and loses when it's answered; the median runs three cheap ones and closes from any board."
-        },
-        {
-          "rule": "strategy:deckbuilding.cutting",
-          "quote": "so cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
-        }
-      ]
-    },
-    {
-      "card": "Tarnished Citadel",
-      "why": "It deals you 3 to fix colours the deck does not need fixed. Worst-colour sources sit 15 above the Karsten target, and the deck already runs City of Brass, Mana Confluence, Spire of Industry and several other any-colour lands. Three life is also live: Yawgmoth costs 1 life per activation, The One Ring taxes an escalating amount, and Toxic Deluge and Phyrexian Reclamation both bill you.",
-      "cost_of_cutting": "One untapped any-colour source in a two-colour deck with heavy {B}{B} and {B}{B}{B} demands (Mikaeus is {3}{B}{B}{B}). The replacement must produce black or the mana-base figure moves.",
-      "orphans_stack": [],
-      "difficulty": "easy",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.mana-base.color-sources",
-          "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
-        },
-        {
-          "rule": "strategy:deckbuilding.cutting",
-          "quote": "so cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
-        }
-      ]
-    },
-    {
-      "card": "Carrion Feeder",
-      "why": "Verified stack 001 step 10 calls it out by name: 'Carrion Feeder is actively anti-synergistic — it ADDS +1/+1 counters.' In a deck whose payoffs pay for -1/-1 counters and whose one verified infinite turns on counter annihilation, a free outlet that grows itself the wrong way is the outlet to cut first. Its declared job in goldfish_targets.json — the Mikaeus pairing — is one of the six lines that stack refuted.",
-      "cost_of_cutting": "The deck's cheapest free sacrifice outlet, at one mana, and the free-outlet component drops from 5 to 4 — below the 31.2% opening-seven figure the audit computes for a five-card group. candidate_pool.json also lists Carrion Feeder as a node in 8 in-identity two-card combo entries, none of them adjudicated.",
-      "orphans_stack": [],
-      "difficulty": "contested",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.threat-density",
-          "quote": "unsynergistic win conditions dilute the list"
-        },
-        {
-          "rule": "strategy:deckbuilding.cutting",
-          "quote": "so cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
+          "rule": "strategy:deckbuilding.power-level",
+          "quote": "Contents give a floor, never a verdict."
         }
       ]
     }
@@ -570,15 +486,26 @@
       "card": "Assassin's Trophy",
       "closes": "interaction-breadth",
       "source": "pool",
-      "why": "One card, {B}{G}, instant speed, and it closes three of the deck's four open permanent classes at once: artifact, enchantment and land. The deck's entire engine is creature activated abilities — Yawgmoth, Devoted Druid, Viscera Seer, Carrion Feeder, Blasting Station — and it currently has no way to remove the artifact or enchantment that switches them off. Named in upgrade-facts' synergy candidates.",
+      "why": "Two mana at instant speed for 'Destroy target permanent an opponent controls'. I read all 25 entries of the upgrade-facts synergy_candidates list this comes from: exactly two of them answer every permanent type — this and Beast Within ({2}{G}, 'Destroy target permanent', EDHREC 25) — while Tear Asunder kicked reaches three and Abrupt Decay three at mana value 3 or less. Either of the two takes the deck from one answered class to four, so the prescription is the effect, not the card; Trophy is the pick at one mana less, and because Beast Within hands an opponent a 3/3, which costs three Yawgmoth activations or a sweeper to undo, where Trophy hands them a basic land. Neither covers graveyard, which stays uncovered.",
       "evidence": {
-        "axis_before": 1,
-        "classes_closed": [
+        "channel": "upgrade-facts synergy_candidates",
+        "edhrec_rank": 124,
+        "classes_covered_by_oracle_text": [
+          "creature",
           "artifact",
           "enchantment",
           "land"
         ],
-        "combo_lines_opened": []
+        "uncovered_before": [
+          "artifact",
+          "enchantment",
+          "graveyard",
+          "land"
+        ],
+        "peers_in_the_same_channel_covering_all_four": [
+          "Beast Within"
+        ],
+        "synergy_candidates_enumerated": 25
       },
       "natural_cut": "Crumbling Ashes",
       "bracket_delta": {
@@ -588,117 +515,26 @@
       "citations": [
         {
           "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "Breadth before depth: three opponents mean every permanent type appears"
+          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any; catch-all removal earns its premium"
         },
         {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "catch-all removal earns its premium"
-        },
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "a counter answers a lock piece only on the way in, so some answers must be castable under the tax"
+          "rule": "strategy:threat-assessment.resource-denial",
+          "quote": "Name your outs early — the removal or velocity that breaks the piece that beats *you*, not the scariest piece"
         }
       ]
     },
     {
       "card": "Sinister Gnarlbark",
-      "closes": "ignition — the free, repeatable, non-combat counter-source class (and card-advantage)",
+      "closes": "free repeatable -1/-1 source — the weaker property named in single_points_of_failure[0] (free once a turn on a fixed trigger), NOT the at-will ignition component, which this card does not close",
       "source": "pool",
-      "why": "The correction that matters. I had claimed the class could not be deepened; the deck's own candidate_pool.json refutes that, listing at least nine in-identity repeatable placers, and this is the cheapest of them at {2}{B}. 'At the beginning of your end step, draw a card and blight 1' is a free, repeatable, non-combat source that also draws a card every turn — the pool scores it 0.815 similarity, the highest of the nine, and files it draw:engine + removal:debuff for exactly that reason. The pool's own rules note settles the trigger: self-blight ('put a -1/-1 counter on a creature you control') satisfies Hapatra's 'you put', unlike High Perfect Morcant's opponent-blight. With Hapatra out it is body-neutral — blight a Snake, mint a Snake — while turning on Blowfly Infestation, the drains, Grim Haruspex and Morbid Opportunist. It is a 0/4, so it can absorb its own blight three times if the board is empty. The alternatives, judged rather than ignored: Harbinger of Night ({2}{B}{B}) and Midnight Banshee ({3}{B}{B}{B}) are larger but symmetric and eat your own tokens every upkeep, Persistent Constrictor ({4}{B}) is opponent-facing and doubles as removal but costs five, and Glistening Oil ({B}{B}) is cheapest of all but places only one counter a turn on a single creature. Gnarlbark does NOT win on cost: Glistening Oil is a mana cheaper and Gnarlbark is second of the nine at mana value 3. It wins on the card it draws — it is the only one of the nine the pool files draw:engine, so the only one that also touches card-advantage, the other axis reading under target — and on being body-neutral, since it picks a fresh target each end step instead of consuming the one creature it is attached to.",
+      "why": "{2}{B} for a 0/4 that, at each of your end steps, draws a card and blights 1 — a free, unbounded, once-a-turn -1/-1 placement. That is the weaker property named under the engine's first single point of failure, not the at-will one: it cannot be held up like Yawgmoth's activation, so it does not close the at-will gap. What it does buy is a Snake every turn for zero mana (an Insect too under Nest of Scarabs, an Elf Warrior under Flourishing Defenses, a drain under Obelisk Spider), plus a card every turn; the card-advantage axis reads 8 against a target of 10, though this diagnosis reads that count as understated by the taxonomy rather than binding, so the draw is a bonus and not the case for the card. The blight is mandatory and lands on a creature you control; its own 0/4 body absorbs three of them and dies to the fourth, which this deck reads as fodder.",
       "evidence": {
-        "pool_entry": "candidate_pool.json by_role/removal[22] — cmc 3, similarity 0.815, roles [draw:engine, removal:debuff, threat:body], why 'you put -1/-1 counters -> Hapatra snake trigger; blight N (you put the counter)'",
-        "class_size_before": 2,
-        "alternatives_in_pool": [
-          "Harbinger of Night",
-          "Persistent Constrictor",
-          "Midnight Banshee",
-          "Glistening Oil",
-          "Carnifex Demon",
-          "Contagion Engine",
-          "Soul Snuffers",
-          "Grim Poppet"
-        ],
-        "card_advantage_axis_before": 8,
-        "combo_lines_opened": []
+        "channel": "candidate_pool.json",
+        "ignition_component_size": 3,
+        "card_advantage_axis_value": 8,
+        "card_advantage_axis_target_low": 10
       },
-      "natural_cut": "Toxic Deluge",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      },
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-          "quote": "redundancy is cheap per slot and live every game; tutoring is fewer slots but costs board impact and a turn of tempo"
-        },
-        {
-          "rule": "strategy:mulligans.engine-hands",
-          "quote": "100-card singleton means you mulligan to enabler *classes*, not named cards; build the redundancy your keeps depend on"
-        },
-        {
-          "rule": "strategy:deckbuilding.ratios",
-          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
-        }
-      ]
-    },
-    {
-      "card": "Nature's Claim",
-      "closes": "interaction-breadth",
-      "source": "pool",
-      "why": "{G} for an artifact or enchantment. The four life matters less than the fact that it is castable under a tax — a one-mana answer resolves through the stax piece that a three-mana one does not. Second copy of the class the deck is most exposed in, at the cheapest rate in the pool.",
-      "evidence": {
-        "axis_before": 1,
-        "classes_closed": [
-          "artifact",
-          "enchantment"
-        ],
-        "combo_lines_opened": []
-      },
-      "natural_cut": "Carrion Feeder",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      },
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "a counter answers a lock piece only on the way in, so some answers must be castable under the tax"
-        },
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
-        }
-      ]
-    },
-    {
-      "card": "Reassembling Skeleton",
-      "closes": "engine component: Mikaeus, the Unhallowed (deck-audit single point of failure)",
-      "source": "pool",
-      "why": "deck-audit names it as a combo-line closer for the Mikaeus component, and the other two cards of that line — Pitiless Plunderer and Ashnod's Altar — are already in the 99. Independently of the line, it is the deck's only unconditional recurring fodder: stack 001 established that Yawgmoth's ability fizzles entirely without a second body, and the deck's other fodder (Snakes, Insects, Elf Warriors) all require a counter to have been placed first, which is circular.",
-      "evidence": {
-        "named_by": "deck-audit engine.single_points_of_failure[1].component.closers.by_combo_line",
-        "combo_lines_opened": [
-          {
-            "cards": [
-              "Pitiless Plunderer",
-              "Ashnod's Altar",
-              "Reassembling Skeleton"
-            ],
-            "status": "needs a stack scenario"
-          }
-        ]
-      },
-      "combo_lines_opened": [
-        {
-          "cards": [
-            "Pitiless Plunderer",
-            "Ashnod's Altar",
-            "Reassembling Skeleton"
-          ],
-          "status": "needs a stack scenario"
-        }
-      ],
-      "natural_cut": "Scurry Oak",
+      "natural_cut": "Ivy Lane Denizen",
       "bracket_delta": {
         "before": 4,
         "after": 4
@@ -706,130 +542,103 @@
       "citations": [
         {
           "rule": "strategy:deckbuilding.threat-density",
-          "quote": "the enabler slots fail first"
+          "quote": "Engine density — Nicol asks 7-8 enablers and 10-12 enhancers against ~25 standalone cards, and the enabler slots fail first"
         },
         {
           "rule": "strategy:mulligans.engine-hands",
-          "quote": "classify the hand's cards as enablers, payoffs, and glue, then ask whether the hand contains a route to the engine"
-        }
-      ]
-    },
-    {
-      "card": "Bojuka Bog",
-      "closes": "interaction-breadth",
-      "source": "pool",
-      "why": "The graveyard class is covered by exactly one card, Abstergo Entertainment, and it exiles itself to do it — a one-shot at {3} plus a land. Bojuka Bog is a free second answer that costs a land slot rather than a spell slot. It enters tapped, moving taplands from 0 to 1 against a comfort ceiling of 8.",
-      "evidence": {
-        "axis_before": 1,
-        "current_graveyard_answers": [
-          "Abstergo Entertainment"
-        ],
-        "taplands_before": 0,
-        "taplands_ceiling": 8,
-        "combo_lines_opened": []
-      },
-      "natural_cut": "Tarnished Citadel",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      },
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
-        },
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "Breadth before depth: three opponents mean every permanent type appears"
+          "quote": "Payoffs without the enabler are blanks until the engine exists"
         }
       ]
     }
   ],
   "open_questions": [
     {
-      "question": "Does the Blowfly family loop? Blowfly Infestation paired with Hapatra, with Nest of Scarabs, and with Flourishing Defenses are three of the nineteen claimed two-card infinites, and the pairing with Hapatra is the deck's declared headline kill that goldfish measures at 16.3%. No stack artifact touches any of them. A scenario must settle whether the loop is optional enough to avoid a draw, whether it needs a seed counter and a spare body, and what happens when no legal target remains.",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "This is the single thinnest declared component in the deck and its status is unknown. A pilot is currently being asked to mulligan toward a line nobody has adjudicated."
-    },
-    {
-      "question": "Does Mikaeus, the Unhallowed switch the token loops OFF? His anthem makes non-Human tokens — Snakes, Insects, Elf Warriors — 2/2, so a single -1/-1 counter no longer takes them to 0 toughness. If that holds, the deck's two flagship engines are mutually exclusive on the battlefield.",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "It decides whether Mikaeus is a combo piece or an anti-synergy, and therefore whether a six-mana single point of failure belongs in a deck whose modal mana value is 2. Stack 001 step 15 already showed his anthem changes exactly this arithmetic for Walking Ballista."
-    },
-    {
-      "question": "Does the Ivy Lane family work? Scurry Oak + Ivy Lane Denizen is bracket_report's highest-bracket line, and six further entries pair Ivy Lane with a sacrifice outlet that makes no green creature enter. Verify the Scurry Oak pairing; audit the other six.",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "Seven of the eleven unadjudicated lines sit here, and the Scurry Oak cut proposed above should not be applied until this returns."
-    },
-    {
-      "question": "Does Yawgmoth + Hapatra loop without Mikaeus, and what bounds it? Sacrifice a Snake, place the counter on a creature that survives it, Hapatra mints a replacement Snake — net body count flat, one card drawn and one life paid per activation.",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "On the evidence this is the line the deck actually wins with most often, it needs neither of the six-mana pieces, and it has never been resolved. Stack 001 verified Yawgmoth's mechanics only inside the Mikaeus line."
-    },
-    {
-      "question": "Should goldfish_targets.json declare a counter-SOURCE component, and should the 'Mikaeus + a free sacrifice outlet' target be retired? All five outlets in that target's any_of group — Ashnod's Altar, Phyrexian Altar, Viscera Seer, Carrion Feeder, Blasting Station — are on stack 001's refuted list, so the simulation is measuring the assembly rate of a line the deck's own verified artifact says does not loop.",
+      "question": "Re-declare goldfish_targets.json: the 'Mikaeus + a free sacrifice outlet' target pairs Mikaeus with Ashnod's Altar, Phyrexian Altar, Viscera Seer, Carrion Feeder and Blasting Station, and checker-passed stack 001 names all five as outlets that place no -1/-1 counter. The verified Mikaeus lines are Mikaeus + Devoted Druid and Mikaeus + Walking Ballista + any free outlet. A target for the at-will free -1/-1 source class (Yawgmoth, Devoted Druid, Serrated Arrows) should be declared at the same time.",
       "settled_by": "goldfish",
-      "why_it_matters": "Until a source component is declared, the engine block cannot see the class that binds this deck, and the 9.5% figure it does report describes a kill that is not there."
+      "why_it_matters": "9.5% is currently the deck's stated odds on an assembly a verified artifact says does not loop, and the class that actually gates the engine has no measured rate at all."
     },
     {
-      "question": "The corpus has no section on auditing a combo list — how to price a graph-listed two-card infinite against a verified line — and none on the aristocrats outlet/fodder/converter taxonomy or on -1/-1 counters as removal that pays you.",
-      "settled_by": "research-strategy",
-      "why_it_matters": "Every card-level judgment in this diagnosis about free versus costed outlets, and about counter annihilation as an anti-synergy, had to be derived from oracle text and one stack artifact rather than cited."
-    },
-    {
-      "question": "Does a single effect that puts a -1/-1 counter on EACH creature trigger Hapatra, Nest of Scarabs and Obelisk Spider once per creature, or once for the event? Black Sun's Zenith already in the deck turns on this, and it decides whether Harbinger of Night and Midnight Banshee are engines or merely sweepers.",
+      "question": "Does Hapatra + Blowfly Infestation actually loop, and can it be stopped short of a draw? The chain needs a seed -1/-1 counter and a token that dies to one counter, and Blowfly's placement is mandatory with a chosen target.",
       "settled_by": "resolve-stack",
-      "why_it_matters": "It is the difference between a four-mana card that makes one Snake and one that makes a Snake per creature on three boards, and it is the deciding argument between the three cheapest ignition adds available in the pool."
+      "why_it_matters": "It is the deck's headline kill and the better-rated of the two two-card kills goldfish tracks (16.3% against the Mikaeus target's 9.5%), and it has never been verified."
+    },
+    {
+      "question": "Does Mikaeus's anthem switch the Blowfly and Hapatra token loops off? Snakes, Insects and Elf Warriors are non-Human, so under Mikaeus they are 2/2 and a single -1/-1 counter no longer kills them.",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "If it holds, the deck's two flagship engines cannot share a battlefield, which changes both the tutor order and whether Mikaeus belongs in the 99 at all."
+    },
+    {
+      "question": "Verify Scurry Oak + Ivy Lane Denizen, and audit the six Ivy Lane entries paired with a sacrifice outlet — on the named pair alone none of those outlets causes a green creature to enter, so Ivy Lane never triggers.",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "The painful cut above rests on that pairing being unverified, and bracket-check names it as the highest-bracket line present."
+    },
+    {
+      "question": "Is Yawgmoth + Hapatra (no Mikaeus) the deck's real kill? Sacrifice a Snake, place the counter on a body that survives it, Hapatra replaces the Snake — flat board, one card drawn, one life paid, one death trigger per activation.",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "It needs neither of the two cards the deck's declared targets are built around, and if it works the mulligan and tutor priorities change."
     }
   ],
   "gaps": [
-    "No deck_recon.json exists for this deck (deck-audit freshness reports recon absent), so there is no inclusion-rate evidence for what strong Hapatra lists actually run. Every add above is argued from this deck's own artifacts; a recon pass would tell us whether the source class is thin by choice or by oversight.",
-    "CORRECTED from the previous iteration, which asserted that the in-colour pool held no second free repeatable non-combat source. It does. candidate_pool.json names Sinister Gnarlbark, Harbinger of Night, Midnight Banshee, Persistent Constrictor, Glistening Oil, Carnifex Demon, Contagion Engine, Soul Snuffers and Grim Poppet, each with a 'you put -1/-1 counters -> Hapatra snake trigger' note; its WEAKEST BUCKET note lists the sweeper subset by name. What remains genuinely unknown is which of them survives contact with the deck's own tokens — every mass placer is symmetric — and that is a goldfish and a resolve-stack question, not an absence.",
-    "deck-audit emits no axis for the counter-source class, so the constraint this diagnosis names as binding is invisible to all sixteen numbers. It is derived from the goldfish any_of groups plus oracle text plus stack 001, not measured.",
-    "bracket_report.json carries no decklist_sha256 (freshness reports it as unstamped), so its 19-infinite figure and its Game Changer list are not pinned to the current list the way goldfish_metrics.json and mana_analysis.json are.",
-    "The audit's engine schema cannot express the UNION of independent kills, so there is no single assembled_rate for 'this deck wins'. The 16.3% and 9.5% figures are per-line and must not be added.",
-    "Necroskitter is invisible to the role taxonomy: candidate_pool.json records the bug ('recursion requires a graveyard phrase'), so the card carries threat:body only and appears in no axis count, despite being a 1/4 wither blocker that places -1/-1 counters on what it blocks. An axis count is a floor and this is the clearest instance of it in this deck."
+    "candidate_pool.json excludes lands by construction, so the cheapest fixes for the two classes this deck cannot answer are invisible to every evidence channel this deck has. Bojuka Bog (exile an opponent's graveyard on ETB) and Boseiju, Who Endures (channel to destroy an artifact, enchantment or nonbasic land) are both Commander-legal, inside B/G identity and absent from the 99; they would close breadth from a land slot rather than a spell slot. Neither appears among candidate_pool.json's 229 listed candidates or in any of upgrade-facts' three channels for this deck, so neither can be cited as a pool candidate here.",
+    "No deck_recon.json exists for this deck (deck-audit freshness reports recon absent), so nothing in this diagnosis is grounded in what other Hapatra lists actually run. Inclusion rates would settle whether three answers is the norm or whether this list is an outlier.",
+    "strategy.md has no aristocrats or sacrifice-engine section and no counters-matter section. The outlet / fodder / converter taxonomy, the difference between a free and a costed outlet, and the +1/+1-versus--1/-1 annihilation tension that motivates the Ivy Lane Denizen cut were all derived from oracle text and stack 001, not from the corpus. research-strategy is the route.",
+    "The at-will free -1/-1 source class has no hypergeometric figure anywhere in the artifacts because goldfish_targets.json does not declare it. The 31%-at-5-copies line from strategy:deckbuilding.redundancy-vs-tutors is the nearest published anchor and it is for a different class size.",
+    "No card in candidate_pool.json meets the ignition component's full definition (at-will, mana-free, repeatable, unbounded, any target). That is an enumeration over the 43 pool cards whose oracle text places a -1/-1 counter, not a search of the whole format — the pool is built from owned and shortlisted cards and excludes lands, so a format-wide answer may exist and would not appear here. deck-recon is the route."
   ],
   "skeptic": {
     "verdict": "fail",
     "findings": [
       {
-        "where": "add_candidates[1]",
-        "status": "over-claimed",
-        "note": "The Sinister Gnarlbark case names three decision criteria and one of them is false, refuted inside the same field. It opens 'this is the cheapest of them at {2}{B}' and closes 'Gnarlbark wins on cost, on drawing a card, and on being the only one of the nine the pool files draw:engine' - but three sentences earlier it says 'Glistening Oil ({B}{B}) is cheapest of all'. cards.csv: Glistening Oil {B}{B} cmc 2, Sinister Gnarlbark {2}{B} cmc 3. Gnarlbark does not win on cost; it loses to the alternative the entry itself names. The other two criteria hold (I verified Gnarlbark is the only one of the nine with draw:engine, and its 0.815 pool similarity is the highest of the nine), so the add survives on a two-legged argument - but a reader comparing the nine is handed a false tiebreak. Corroborating, same sweep: engine.single_points_of_failure[0] calls the nine 'in-identity cards that place -1/-1 counters repeatably' and lists Soul Snuffers among the closers, whose entire text is 'When this creature enters, put a -1/-1 counter on each creature' - a pure ETB one-shot, filed value:etb in the pool's own roles. Contagion Engine's only repeatable mode is proliferate, which this same document says 'cannot start from zero counters'."
+        "where": "engine.single_points_of_failure[2]",
+        "status": "contradicts-artifact",
+        "note": "The superlative fails on oracle text against the deck's own artifacts. The entry says 'Blowfly is the only card in the 99 whose -1/-1 placement chains off another creature's death'. Host of the Hereafter is in the 99: 'Whenever this creature or another creature you control dies, if it had counters on it, put its counters on up to one target creature you control' — trigger on another creature's death, effect a -1/-1 counter placement, structurally the same conditional as Blowfly's own 'if it had a -1/-1 counter on it'. It is not a marginal reading: bracket_report.json's two_card_infinites list (the same list axes[15] takes its '19 two-card infinites' from, reproduced by a fresh `bracket-check`) carries {'bracket':1, 'cards':['Hapatra, Vizier of Poisons','Host of the Hereafter'], 'produces':['Infinite LTB','Infinite ETB','Infinite death triggers']} — the census pairs it with the commander exactly as it pairs Blowfly. The cause is the probe method the diagnosis states for itself in engine.components[0]: 'enumerated from every card in the 99 whose text contains -1/-1, wither or blight'. Host of the Hereafter's oracle text contains '+1/+1' and 'counters' but not '-1/-1', so the probe cannot see it, and the entry reads the probe's floor as a ceiling — which is the exact failure deck-audit's own notes block warns about ('An axis count is a floor'). The doctor read the card: cut_candidates[2] cites 'Host of the Hereafter's counter transfer' as a +1/+1 source for Scurry Oak. Consequences the entry then states as fact: 'closers: []' and 'none of candidate_pool.json's 229 listed candidates repeats that pattern' (the 229 count I reproduced exactly) present Blowfly as a chain with no partner anywhere, when a same-function partner is already sleeved and paired with the commander in the deck's own combo census. I am NOT asserting the Hapatra + Host line loops — no stack has run it — and the superlative fails on oracle text alone, before that question arises."
       },
       {
-        "where": "engine.single_points_of_failure[0]",
-        "status": "supported",
-        "note": "The correction I asked for landed and is real, not claimed. All nine closers exist in candidate_pool.json, in-identity, each annotated 'you put -1/-1 counters -> Hapatra snake trigger': Sinister Gnarlbark (removal[22], sim 0.815, draw:engine), Harbinger of Night (sweeper[10]), Persistent Constrictor (removal[19]), Midnight Banshee (removal[24]/sweeper[2]), Glistening Oil (removal[18]), Carnifex Demon, Contagion Engine, Soul Snuffers, Grim Poppet. The pool_entry evidence string reproduces the pool record verbatim. The class-cannot-be-deepened claim is gone and the prescription inverted from insurance to redundancy, which is the right conclusion from the evidence."
-      },
-      {
-        "where": "add_candidates[1]",
-        "status": "supported",
-        "note": "Sinister Gnarlbark itself checks out as a source. cards.csv: {2}{B}, colour identity B, legal_commander legal, 0/4, 'At the beginning of your end step, draw a card and blight 1. (Put a -1/-1 counter on a creature you control.)' The reminder text settles the trigger question the coordinator raised: blight is defined as YOU putting the counter, so Hapatra's 'Whenever you put one or more -1/-1 counters on a creature' is satisfied - unlike High Perfect Morcant's opponent-blight, which candidate_pool.json's own rules-hazard note distinguishes on exactly this wording. Free, repeatable, non-combat, and body-neutral with Hapatra out. The 0/4 absorbing three blights is right (0/4 -> -3/1 survives, dies on the fourth)."
-      },
-      {
-        "where": "verdict",
-        "status": "supported",
-        "note": "Both counting errors I raised are fixed and the fix is correct, not merely reworded. 'Three of the six cards in deck-audit's payoff component - Nest of Scarabs, Flourishing Defenses and Obelisk Spider' now matches the audit's actual six-card component with Hapatra correctly held outside it. The source class now reads two, not one: 'Yawgmoth, Thran Physician without limit, and Devoted Druid for exactly two placements before it kills itself' - Devoted Druid is 0/2 and its untap cost is its own -1/-1 counter, so two placements then death as a state-based action. engine.single_points_of_failure[0] now quotes stack 001's scoping verbatim ('exactly one of the deck's eight mana-free sacrifice OUTLETS qualifies: Yawgmoth') instead of widening it."
-      },
-      {
-        "where": "axes[9]",
-        "status": "supported",
-        "note": "The threat-density miscount is fixed against oracle text: 'Three of them hit the table - Zulaport Cutthroat, Bastion of Remembrance and Obelisk Spider each read each opponent loses 1 life. Blood Artist drains a target player, Sephiroth a target opponent, and Mikaeus has no drain clause at all.' I re-read all six; that is exactly right. engine.components[1] is fixed the same way ('Two of the four hit every seat ... Blasting Station deals 1 damage to any single target'). Both now read below the count instead of above it."
+        "where": "open_questions[0]",
+        "status": "contradicts-artifact",
+        "note": "The sentence 'The verified Mikaeus lines are Mikaeus + Devoted Druid and Mikaeus + Walking Ballista + any free outlet' is a closed enumeration, and stack 001 (checker.verdict == pass, 4 iterations) establishes a third that it omits. Step 12: 'Yawgmoth, Thran Physician is one of the deck's EIGHT mana-free sacrifice outlets and the only one that is also a repeatable reset', 'That counter annihilates an undying +1/+1 counter under 704.5q, so this outlet does not hit the step-10 wall', resolving to 'a FOUR-CARD assembly — Mikaeus + Yawgmoth + two non-Human creatures — collapsing to three cards plus the commander's Snakes when Hapatra is on the battlefield', 'A strong engine, not a true infinite' because it is library-bounded. The checker's own clean-pass finding lists 'the A/B Yawgmoth loop and its library bound' among the conclusions it independently re-derived, so this is checker-passed, not an aside. The omission is load-bearing because this open question is the instruction to re-declare goldfish_targets.json: handed this list, goldfish would re-declare Mikaeus targets that again exclude the single outlet in the deck that beats the step-10 wall. The same gap sits under engine.components[3]'s 'Five free sacrifice outlets' and engine.single_points_of_failure[1]'s 'all five members ... are named in checker-passed stack 001', both of which quote step 10's conclusion while step 10's own census — 'FULL OUTLET CENSUS, since my earlier counts were wrong twice: eight of this deck's sacrifice outlets have no mana in their activation cost' and 'Exactly one of the eight — Yawgmoth — also places a -1/-1 counter' — says the class is eight and names the exception in the sentence after the one quoted."
       },
       {
         "where": "cut_candidates",
         "status": "supported",
-        "note": "Necroskitter is withdrawn from the cut list entirely and now appears in engine.components[6] as 'Necroskitter's wither on a 1/4 blocker' - the toughness is right and the card is reclassified as a source rather than a dead body. Two further self-corrections landed and I checked both: cut_candidates[0] now reads 'the deck's only MASS removal that kills without placing a counter' and names Crumbling Ashes, Walking Ballista, Blasting Station and Orcish Bowmasters as the one-at-a-time exceptions (all four verified). The new Carrion Feeder cut quotes stack 001 step 10 verbatim - 'Carrion Feeder is actively anti-synergistic - it ADDS +1/+1 counters' - which I confirmed is in that step, and its 8 in-identity combo entries match candidate_pool.json's COMBO CLUSTERS note."
+        "note": "ADJUDICATING THE ARITHMETIC THE ORCHESTRATOR RAISED: considered and dismissed, not missed. It is NOT a defect. The deck is 88 entries / 100 copies (deck-audit counts, reproduced); 3 cuts and 2 adds applied together would leave 99 copies, i.e. a 98-card deck plus commander. But nothing in the contract makes these lists a mandated swap set that must balance. .claude/skills/diagnose-deck/SKILL.md:18-19 states 'Analysis-only. Nothing in this loop edits decklist.txt or cards.json. Applying a swap is a separate, human act.' The deck-doctor charter describes them as ranked lists and makes `natural_cut` — the per-add pairing — optional; validate_diagnosis.py enforces only that a natural_cut is a real maindeck card, not the commander, and not double-claimed. It nowhere compares len(cuts) to len(adds), and it passes this document. The document's own prescription IS balanced and IS one-for-one: add_candidates[0] Assassin's Trophy -> natural_cut Crumbling Ashes (= cut_candidates[1]), add_candidates[1] Sinister Gnarlbark -> natural_cut Ivy Lane Denizen (= cut_candidates[2]), both distinct singleton maindeck entries, so the prescribed swaps hold the deck at 88 entries / 100 copies. cut_candidates[0] Contagion Clasp is offered unpaired, which is what a candidate list is for. Requiring the two lists to balance would import a contract the artifact does not have and would penalise offering a cut candidate the doctor did not want to pair. Separately on this block: the charter's 'A cut list with no painful entry is a list that dodged the job' is satisfied — Ivy Lane Denizen is `painful` and argued at length, the other two are `contested` and neither is a disguised `easy`. orphans_stack is [] on all three and correct: stack 001's scenario board is Hapatra / Mikaeus / Ashnod's Altar / Blood Artist / one Snake token, and none of the three cut cards appears in it."
       },
       {
         "where": "axes",
         "status": "supported",
-        "note": "No regression while fixing. All 16 measured values still reproduce deck-audit exactly, the decklist sha256 still matches, goldfish_metrics.json and mana_analysis.json are both current, all 55 citations (two more than iteration 1) are verbatim substrings of the sections they name, all five cuts are in the 99 and none is the commander, no add is already in the deck, and orphans_stack recomputed from stack 001's scenario is [] for all five - correct. The cut list still carries one painful and one easy entry. axes[11] interaction-breadth is unchanged and still holds: I re-read all 88 entries and nothing destroys or exiles an opponent's artifact, enchantment or land."
+        "note": "All 16 measured.value figures reproduce a fresh `deck-audit hapatra` exactly: mana-base 36, mana-sources 50, taplands 0, colour-sources 15, consistency 0.902, curve 2, ramp 16, card-advantage 8, interaction 14, interaction-breadth 1, sweepers 2, protection 5, threat-density 6, creatures 25, tutors 8, power 4. More than the validator checks, every READING agrees with its value and with the underlying artifact: axes[5] '19 two-drops and 17 three-drops and nothing at 8+' matches the audit's two_drops 19 / three_drops 17 / mana_value_8_plus 0; axes[8] '14 copies inside a 20-card interactive suite' matches interactive_suite_copies 20; axes[14] '78.0% ... at mean turn 2.70' matches goldfish targets 0.780 / 2.695 and '67.6% by turn 6' matches by_turn_6_rate 0.676; axes[4]'s '79.9% keep rate' matches metrics.opening_hand.keep_first_seven_rate 0.799; axes[15]'s 11 Game Changers / 'highest-bracket line present' / 19 two-card infinites are verbatim the three bracket_report drivers, and 'stack 001 refuted six of the Mikaeus entries' matches step 10's 'This is the verdict for the six two-card entries whose outlet places no -1/-1 counter' exactly. FRESHNESS: goldfish_metrics.json and mana_analysis.json both carry the current decklist sha (824c1eeb...) per the audit's freshness block, so no figure is stale; bracket_report.json carries no sha, so I re-ran `bracket-check hapatra` and it reproduces floor 4, combo_count 32, two_card_infinites 19, game_changers 11, tutors 5 identically — the power axis is current in fact, not merely unfalsified. PROBES: the audit's probe note is engaged rather than ignored — axes[7] declines to call card-advantage a weakness at 8 and names Grim Backwoods, The One Ring and Yawgmoth (the audit's possible_uncounted, exactly), and axes[11] names Talon Gates of Madara and Yawgmoth. axes[6] engages the ratios section's own caveat rather than reading the Command Zone numbers as a rule, and its 'four of the sixteen fill a second budget' is exactly right: intersecting the ramp list against the other axes' named lists yields Ashnod's Altar and Phyrexian Altar (outlet component), Devoted Druid (interaction's 14) and Deadly Dispute (card-advantage's 8), and nothing else."
+      },
+      {
+        "where": "axes[9]",
+        "status": "supported",
+        "note": "The liability verdict and the verdict block's claim behind it are the strongest-supported things in the document, and I re-derived the enumeration rather than accepting it. Pulling oracle text for all 88 entries from cards.csv and grepping destroy|exile returns exactly two destroy effects in the 99 — Crumbling Ashes ('At the beginning of your upkeep, destroy target creature with a -1/-1 counter on it') and Mikaeus ('Whenever a Human deals damage to you, destroy it') — and no card destroys or exiles an artifact, an enchantment or a land, as the verdict states. The only card touching an opponent's graveyard is Abstergo Entertainment, and the reading describes it correctly: '{3}, {T}, Exile Abstergo Entertainment: Return up to one target historic card from your graveyard to your hand, then exile all graveyards' — self-exiling, and it takes your own graveyard with theirs. '88 entries' matches deck-audit counts.entries exactly. I also reproduced the metric itself by importing deck_audit._interaction_breadth with card_roles.json: base = {creature: 14}, one class."
+      },
+      {
+        "where": "add_candidates[0]",
+        "status": "supported",
+        "note": "Every countable claim checks out and the enumeration is exhaustive as stated. I ran `upgrade-facts hapatra --json`: synergy_candidates is exactly 25 entries ('synergy_candidates_enumerated: 25' correct), Assassin's Trophy is in it at edhrec_rank 124 and Beast Within at 25 — both verbatim. Reading all 25 oracle texts, exactly two answer every permanent type (Trophy 'Destroy target permanent an opponent controls' and Beast Within 'Destroy target permanent'); Tear Asunder kicked reaches three (exile target nonland permanent) and Abrupt Decay three at mana value 3 or less, exactly as the why says; nothing in the 25 touches a graveyard, so 'Neither covers graveyard, which stays uncovered' holds. The closes claim is real, not asserted: importing deck_audit._interaction_breadth, +Assassin's Trophy alone moves {creature:14} to {creature:15, artifact:1, enchantment:1, land:1} — one class to four — and +Beast Within alone does the same, which is why the entry correctly says 'the prescription is the effect, not the card'. Trophy is {B}{G}, cmc 2 against Beast Within's cmc 3 ('the pick at one mana less' correct), colour identity B/G, legal_commander legal, absent from the 99, game_changer False — so bracket_delta 4 -> 4 is right and the validator's independent recompute agrees. The Beast Within objection is sound too: undoing a 3/3 costs three Yawgmoth activations at one -1/-1 counter each."
+      },
+      {
+        "where": "add_candidates[1]",
+        "status": "supported",
+        "note": "The scoping fix landed and is correct, and the card checks out. cards.csv: Sinister Gnarlbark {2}{B}, cmc 3, Creature — Treefolk Warlock, 0/4, colour identity B, legal_commander legal, absent from the 99, game_changer False (bracket_delta 4 -> 4 correct), present in candidate_pool.json. Oracle text is exactly what the entry says: 'At the beginning of your end step, draw a card and blight 1. (Put a -1/-1 counter on a creature you control.)' — mandatory, free, once a turn, on a creature you control, all four stated correctly. '0/4 body absorbs three of them and dies to the fourth' is right (0/4 -> toughness 1 after three, 0 on the fourth). The downstream claims hold against oracle text: Hapatra's second ability is 'Whenever you put one or more -1/-1 counters on a creature', unrestricted as to whose creature, so a self-blight does mint a Snake; Nest of Scarabs and Obelisk Spider carry the same 'whenever you put one or more -1/-1 counters on a creature' wording and Flourishing Defenses 'whenever a -1/-1 counter is put on a creature'. The `closes` field is now honest in both directions — I re-ran _interaction_breadth with Gnarlbark added and it moves creature 14 -> 15 and leaves the class count at 1, so it makes no breadth claim it cannot meet, and it says outright it does NOT close the at-will ignition component. Scoping the card-advantage clause to a bonus rather than the case is consistent with axes[7] reading that axis as adequate; the entry no longer argues both sides of one number."
+      },
+      {
+        "where": "engine.single_points_of_failure[0]",
+        "status": "supported",
+        "note": "The property split is accurate against oracle text, which is what I asked for and it is not merely reworded. Sinister Gnarlbark and Persistent Constrictor are correctly described as free, unbounded, fixed-trigger rather than at-will: Constrictor is 'At the beginning of each opponent's upkeep, they lose 1 life and you put a -1/-1 counter on up to one target creature they control' — three placements a turn cycle and gated on an opposing creature, exactly as written. Glistening Oil is priced correctly as the bounded, recastable member: '{B}{B}, Enchant creature ... At the beginning of your upkeep, put a -1/-1 counter on enchanted creature. When this Aura is put into a graveyard from the battlefield, return it to its owner's hand' — placements bounded by that creature's toughness, {B}{B} per re-attachment. The Harbinger of Night exclusion is right ('put a -1/-1 counter on each creature', symmetric, sweeps the 1/1 Snakes and Insects). The disqualifications are right too, including one I expected to catch and could not: Grim Poppet's activation genuinely has no mana in it ('Remove a -1/-1 counter from this creature: Put a -1/-1 counter on another target creature'), so calling it a mana-free at-will source bounded at three counters at {7} is exact; Cinderhaze Wretch is {4}{B}, 3/2, self-only, dead to the second counter; Carnifex Demon does charge {B} and hold two. Most importantly the enumeration behind 'The pool cannot close it as defined' is complete: I pulled oracle text for all 229 pool candidates (229 reproduces exactly) and the only free, at-will -1/-1 placements outside the three in the 99 are Grim Poppet, Cinderhaze Wretch and Fume Spitter — the three named — so gaps[4]'s 'No card in candidate_pool.json meets the ignition component's full definition' holds. The in-deck side is right as well: Devoted Druid is 0/2, so it dies on its second activation bare and its third under Mikaeus's +1/+1, exactly as stated."
+      },
+      {
+        "where": "cut_candidates[2]",
+        "status": "supported",
+        "note": "The one painful cut is the best-evidenced entry in the document and its cost is a real cost, not a restatement of the why. Deduping combo_details.json on frozenset(cards) against the 99 gives 32 contained lines — matching bracket_report.combo_count and the entry's '32 deduped contained combo lines' — and Ivy Lane Denizen appears in exactly 10 of them, as claimed. 'Scurry Oak + Ivy Lane Denizen, which bracket-check names as the highest-bracket line present' is verbatim the combo_content driver, and it is the only bracket-4 line among the 19. 'Three Yawgmoth + Scurry Oak + drain lines, with Zulaport Cutthroat, Blood Artist and Bastion of Remembrance, survive the cut untouched' is exactly right — those three lines exist and none contains Ivy Lane. 'The bracket floor does not move' is right for the reason given: game_changers forces 4 on 11 cards independently of combo content. The mechanical argument holds on oracle text ('Whenever another green creature you control enters, put a +1/+1 counter on target creature' — mandatory, and Hapatra's Snakes and Flourishing Defenses' Elf Warriors are both green), and open_questions[3]'s 'six Ivy Lane entries paired with a sacrifice outlet' is exactly the six of the ten whose partner is a sac outlet. Also checked on the other two: cut_candidates[0]'s 'the 99 holds exactly three proliferate cards' is exactly right (Contagion Clasp, Grim Affliction, Yawgmoth and nothing else), which is what makes that cut genuinely contested rather than easy; cut_candidates[1]'s 'The only card in the 99 that destroys a creature by targeting it' is confirmed by the full 88-entry oracle scan."
+      },
+      {
+        "where": "add_candidates",
+        "status": "supported",
+        "note": "Nature's Claim is gone and no stale reference survives anywhere in diagnosis.json — grep for 'Nature' returns 0 hits — so the pass-2 finding is closed by deletion rather than by re-argument, which is the cleaner fix given I had reproduced the doctor's own figures (base 1 class, +Trophy 4, +Claim 3, +both 4). The residual mentions in the repo are in considering.json, manual_prose.json and .agent-out/sideboard-analyst.json, which are other agents' artifacts outside this document's scope. CITATIONS: I fetched all 11 cited sections whole via `lookup-strategy --json` and every one of the 35 quotes in the artifact is verbatim in its section. Checked for out-of-context use against the whole section rather than the fragment: axes[6] is the case the charter flags, and it is handled correctly — it quotes ratios' own 'counts of *functions*, not cards' caveat and 'Take the categories, derive the counts from the deck's actual failure modes', so it uses the section's closing instruction instead of reading the Command Zone template as a rule, and axes[0]/axes[7] likewise treat the template as a band to argue against rather than a verdict. interaction-suite's 'cover the classes ... before doubling any; catch-all removal earns its premium' is used correctly in three places at once: to call the breadth gap (axes[9]), to justify cutting inside the over-covered creature class (cut_candidates[0], [1]), and to buy the catch-all (add_candidates[0]). The archetype block's quoted frame words 'a converter engine, not a combo deck' are verbatim in strategic_frame.json. UNVERIFIED LINES: the document is scrupulous here and I found nothing to charge — engine.components[5] says of Blowfly 'It has never been through a stack scenario, so it is a plausible line, not a fact', lean_into[0] says 'neither has a verified stack', cut_candidates[2] says the Scurry Oak pairing 'has never had a stack scenario', and axes[15] discounts its own infinite count as inflated."
       }
     ],
-    "iterations": 3,
-    "note": "DIAGNOSE_MAX_ITERATIONS reached. The iteration-3 fix was INCOMPLETE: `add_candidates[1]` still opens 'this is the cheapest of them at {2}{B}' and later says 'Gnarlbark does NOT win on cost: Glistening Oil is a mana cheaper and Gnarlbark is second of the nine at mana value 3.' Both sentences are in the same field. The correction was ADDED without removing the claim it corrects -- the same two-halves-disagreeing defect that killed a cut on edgar-vampires. Gnarlbark is mana value 3 and Glistening Oil is {B}{B}; trust the later sentence. Everything else verified: the nine pool sources are real, the blight trigger is settled by reminder text, the Necroskitter withdrawal is correct, three drain miscounts fixed, and the prescription's inversion from insurance to redundancy is sound. Not blessed: `deck-diagnosis` stays MISS."
+    "iterations": 3
   }
 }

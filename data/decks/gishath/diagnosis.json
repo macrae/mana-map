@@ -1,24 +1,74 @@
 {
   "slug": "gishath",
   "as_of_decklist_sha256": "fb3507e3b705d6c525817d94b32f74d07a715dd7ec78f9d4de6d9319a345f9d0",
-  "archetype": "Naya Dinosaur battlecruiser, and strategic_frame.json's label — 'a linear critical-mass ramp deck whose payoff density is compressed into one commander combat trigger' — is right about the intent. The measurement disagrees about which engine carries the deck. The enrage web is drawn 82.4% of games and 72.6% by turn six; the commander is cast by turn six in 8.3%. On the numbers this is an enrage-value midrange deck that also happens to run an eight-mana commander, and it should be built that way.",
-  "verdict": "This deck interacts better than most typal lists and it converts: 11 removal copies inside an 18-card interactive suite, all five permanent classes covered, 34 creatures, and four checker-passed lines including a genuinely one-sided sweep. What limits it is card advantage, at a narrower scope than the raw count suggests. The axis reads 6 against a target of 10; reading the cards, eight of the 99 do refuel from an empty board, but exactly one of them repeats — Bonehoard Dracosaur, at five mana — and three of the four that cost three hand you a land rather than a spell. That matters because every one of the deck's six declared components is assembled by drawing cards, and four of them sit between 48.5% and 62.3% by turn six. Card flow is the one input upstream of all six at once.",
+  "archetype": "Naya Dinosaur battlecruiser. Plan A is an eight-mana commander's combat-damage trigger; plan B is an enrage web that needs no combat step but does need a damage source of its own on the board. strategic_frame.json calls it a 'linear critical-mass ramp deck'; deck-audit matched no archetype keyword, so BASE targets applied and no aggro or combo override was used — read the ratio targets as starting points, per the audit's own first note.",
+  "verdict": "The deck functions: it hits its turn-3 land drop 89.4% of the time, covers all five interaction classes, and carries 11 removal pieces inside an 18-card interactive suite — unusual for a linear typal list. What limits it is the top end. Six of the audit's 65 nonland entries sit at mana value 8+ — the commander among them — and goldfish puts Gishath's mean cast turn at 7.969 with 8.3% by turn 6, while exactly two maindeck cards can make him cheaper. The enrage web is not the ready fallback it looks like either: it is a conjunction of a converter body and a damage source, and no goldfish target measures the two together.",
   "axes": [
     {
-      "axis": "mana-base",
+      "axis": "curve",
+      "verdict": "liability",
+      "measured": {
+        "value": 3
+      },
+      "reading": "Modal mana value 3 is unremarkable; the tail is not. The audit counts 6 of 65 nonland entries at mana value 8+ — Gishath, Polyraptor and Wakening Sun's Avatar at 8, Blasphemous Act and Zacama at 9, Ghalta, Primal Hunger at 12 — against a corpus average near 1.5, and mean available mana is 5.486 at turn 6. This is the axis that binds: the deck's declared plan A is one of those six.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.curve",
+          "quote": "only ~1.5 cards at mana value 8+"
+        },
+        {
+          "rule": "strategy:deckbuilding.curve",
+          "quote": "you're probably only going to be able to cast ONE big-mana spell per game"
+        }
+      ]
+    },
+    {
+      "axis": "colour-sources",
       "verdict": "weakness",
+      "measured": {
+        "value": -16
+      },
+      "reading": "White and red sit at 20 sources each against a Karsten yardstick of 36; green has 26. mana_analysis puts the on-curve rate with rocks and dorks at 0.58 for both W and R. The yardstick is not reachable at 35 lands and the doc says so, but the shape is real: Wakening Sun's Avatar wants WWW, Austere Command and Trapjaw Tyrant want WW, off 20.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "Read them as a budget, not a table"
+        },
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "triple pips and three colours do not coexist"
+        }
+      ]
+    },
+    {
+      "axis": "consistency",
+      "verdict": "strength",
+      "measured": {
+        "value": 0.894
+      },
+      "reading": "89.4% of goldfish games make the turn-3 land drop against a 0.74 floor, and 77.1% of first sevens are keepable. The mana base is not what is wrong with this deck.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "had 26% miss the turn-3 land drop with no mana source at all"
+        }
+      ]
+    },
+    {
+      "axis": "mana-base",
+      "verdict": "adequate",
       "measured": {
         "value": 35
       },
-      "reading": "One copy under the 36-land floor, which is small on its own. It matters because the deck's deployment turn is late and its land-fetch package is Forest-first: Cultivate, Kodama's Reach, Topiary Stomper, Ranging Raptors and Huatli all fetch basics, and the deck runs 7 Forest against 4 Mountain and 3 Plains.",
+      "reading": "One copy under the 36-38 template across 24 land entries. Immaterial next to mana-sources at 48, which clears the Burgess target by six — the deck is short of colours, not of mana.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.ratios",
           "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
         },
         {
-          "rule": "strategy:deckbuilding.ratios",
-          "quote": "Take the categories, derive the counts from the deck's actual failure modes."
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "a utility land that can't produce the colour you need is not a source"
         }
       ]
     },
@@ -28,7 +78,7 @@
       "measured": {
         "value": 48
       },
-      "reading": "48 sources against a Burgess target of 42 — the deck bought its acceleration and the purchase landed. This is why the answer to the eight-mana problem is not another rock.",
+      "reading": "48 against a Burgess target of 42 (31 + 3 colours + a mana value 8 commander), 13 of them persistent nonland producers. The acceleration layer is built and it still does not get there — which is the point of the curve reading.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base",
@@ -42,33 +92,11 @@
       "measured": {
         "value": 7
       },
-      "reading": "Seven unconditional taplands is inside the comfortable band for a slow deck. Note the five conditional lands beside them (Canopy Vista, Cinder Glade, Clifftop Retreat, Rootbound Crag, Sunpetal Grove): mana_analysis counts the two groups together at 12 of 35 and flags that as over its own one-in-three budget.",
+      "reading": "Seven unconditional taplands against a budget of eight, plus five conditional or shock lands the audit counts separately. mana_analysis reads the superset at 12 of 35 (34%), which is the number to watch if any more tapped fixing goes in.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base",
           "quote": "around eight taplands is comfortable in a slow deck, near zero in an aggressive one"
-        }
-      ]
-    },
-    {
-      "axis": "colour-sources",
-      "verdict": "weakness",
-      "measured": {
-        "value": -16
-      },
-      "reading": "W and R sit at 20 sources each and G at 26, all against a 36-source Karsten yardstick, so the worst colour is 16 short. Lands-only on-curve rates are W 37.3%, R 44.6%, G 58.0%, and the rocks and dorks lift W and R to 58%. This is the runner-up to card advantage rather than the binding constraint: the commander asks for one pip of each colour, and the only triple-pip card in the deck is Wakening Sun's Avatar at {5}{W}{W}{W} — which this diagnosis proposes cutting.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.mana-base.color-sources",
-          "quote": "Duke's judgment layer, in 60-card terms: 17–18 sources for a colour you won't keep a hand without, 14–16 for a main colour, 10–13 for a secondary, 4–7 for a splash."
-        },
-        {
-          "rule": "strategy:deckbuilding.mana-base.color-sources",
-          "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
-        },
-        {
-          "rule": "strategy:deckbuilding.mana-base",
-          "quote": "a utility land that can't produce the colour you need is not a source"
         }
       ]
     },
@@ -78,55 +106,61 @@
       "measured": {
         "value": 17
       },
-      "reading": "Over the 10–12 template band, and correctly so for an eight-mana commander — but read the 17 before spending it: 13 are persistent producers and the other four are Blasphemous Act, Urza's Incubator, Otepec Huntmaster and Bonehoard Dracosaur, three of which reduce costs rather than make mana. The deck is not short of acceleration; it is short of cards to accelerate with.",
+      "reading": "Five over the 10-12 template, and correctly so for a deck whose commander costs eight — strategy:deckbuilding.curve tells ramp decks to count the ramp as curve. The over-read is a template artifact, not a fault.",
       "citations": [
         {
-          "rule": "strategy:deckbuilding.ratios",
-          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+          "rule": "strategy:deckbuilding.curve",
+          "quote": "ramp decks buy a payoff tier and must count the ramp itself as curve"
         },
         {
           "rule": "strategy:deckbuilding.ratios",
-          "quote": "they are counts of *functions*, not cards, so a card doing two jobs fills two slots"
+          "quote": "Take the categories, derive the counts from the deck's actual failure modes."
         }
       ]
     },
     {
       "axis": "card-advantage",
-      "verdict": "weakness",
+      "verdict": "adequate",
       "measured": {
         "value": 6
       },
-      "reading": "This is the axis that binds, at a scope narrower than the count. Read every card: eight refuel from an empty board — Huatli, Cultivate and Kodama's Reach at three for a land in hand, Monster Manual's Zoological Study at three for a creature, Pantlaza at five, Bonehoard Dracosaur at five, Trumpeting Carnosaur at six, Vaultborn Tyrant at seven, which does trigger on its own entry. But only Bonehoard Dracosaur REPEATS without a board; every other boardless refuel fires once, and everything that repeats — Garruk's Uprising, Curious Altisaur, Ripjaw Raptor, Selvala, Descendants' Path, and Pantlaza's and Vaultborn Tyrant's later triggers — wants a board, a connection or damage first. So the deck can find a land while stalled; it cannot find a second one cheaply, and it has one repeating engine to draw toward at five mana. (Jetmir's Garden, which the audit probes, cycles for {3}: card-neutral, not card advantage.)",
+      "reading": "The audit flags this UNDER with a probe note, and the probe is right. Reading oracle text across the 89 maindeck entries gives fourteen sources: Bonehoard Dracosaur, Curious Altisaur, Descendants' Path, Etali, Primal Storm, Garruk's Uprising, Hunter's Insight, Jetmir's Garden (Cycling {3}), Pantlaza, Sun-Favored, Regal Behemoth (monarch), Ripjaw Raptor, Rishkar's Expertise, Selvala, Heart of the Wilds, Trumpeting Carnosaur (ETB discover 5) and Vaultborn Tyrant. Eight of the fourteen carry no draw role, and three of those eight — Descendants' Path, Hunter's Insight and Rishkar's Expertise — have no entry in card_roles.json at all. This is a taxonomy floor, not a hole.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.ratios",
-          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
-        },
-        {
-          "rule": "strategy:deckbuilding.ratios",
-          "quote": "they are counts of *functions*, not cards, so a card doing two jobs fills two slots"
-        },
-        {
-          "rule": "strategy:mulligans.engine-hands",
-          "quote": "Payoffs without the enabler are blanks until the engine exists"
-        },
-        {
-          "rule": "strategy:deckbuilding.threat-density",
-          "quote": "the enabler slots fail first"
+          "quote": "they are counts of *functions*, not cards"
         }
       ]
     },
     {
       "axis": "interaction",
-      "verdict": "strength",
+      "verdict": "adequate",
       "measured": {
         "value": 11
       },
-      "reading": "11 removal copies inside an 18-card interactive suite — above Walser's floor and inside his band. Swords to Plowshares, Path to Exile and Beast Within answer anything; Trapjaw Tyrant and Bronzebeak Foragers answer on-theme.",
+      "reading": "Eleven removal pieces inside an 18-card interactive suite — squarely inside Walser's baseline, and unusually good for a linear typal deck.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.interaction-suite",
           "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
+        },
+        {
+          "rule": "strategy:critical-mass",
+          "quote": "linear strategies give up flexibility in exchange for power"
+        }
+      ]
+    },
+    {
+      "axis": "interaction-breadth",
+      "verdict": "strength",
+      "measured": {
+        "value": 5
+      },
+      "reading": "All five classes answered with nothing uncovered. Graveyard and land are one card each (Intrepid Paleontologist and Beast Within respectively) — those two are the fragile coverage, and neither should leave the 99 in a cut pass.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
         }
       ]
     },
@@ -136,7 +170,7 @@
       "measured": {
         "value": 2
       },
-      "reading": "Two by the taxonomy, three by the cards: Blasphemous Act deals 13 damage to each creature and the axis files it under interaction. Three is the cap, and stack 004 (checker pass) shows the Act is one-sided here rather than symmetrical.",
+      "reading": "Austere Command and Wakening Sun's Avatar, inside the 1-3 band. Cutting one leaves the deck at the floor, which is the whole cost of the Wakening cut below.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.interaction-suite",
@@ -150,15 +184,15 @@
       "measured": {
         "value": 6
       },
-      "reading": "Six is inside Zupke's 5–7. Note what it protects: Akroma's Will, Flawless Maneuver, Heroic Intervention and Boros Charm all cover the board, which is what a deck whose commander returns at {2} more each time actually needs.",
+      "reading": "Six, inside the 5-7 band, and the engine's own protection group of five is the lowest-measured group in the deck at 59.0% ever, 48.5% by turn 6. Of the five — Akroma's Will {3}{W}, Heroic Intervention {1}{G}, Flawless Maneuver, Boros Charm {R}{W}, Eerie Interlude {2}{W} — Flawless Maneuver is free the moment Gishath resolves ('If you control a commander, you may cast this spell without paying its mana cost'). So on the turn you tap out for the commander exactly one of the five is castable and the other four are not.",
       "citations": [
         {
-          "rule": "strategy:deckbuilding.threat-density",
-          "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
+          "rule": "strategy:multiplayer.commander-insurance",
+          "quote": "how critical is the commander to the plan"
         },
         {
-          "rule": "strategy:multiplayer.commander-insurance",
-          "quote": "each return trip to the command zone adds {2} per prior command-zone cast (Miljkovac)"
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots"
         }
       ]
     },
@@ -168,15 +202,11 @@
       "measured": {
         "value": 3
       },
-      "reading": "At the floor by count, but the count is the wrong instrument here — the taxonomy's three wincon cards are Akroma's Will, Boros Charm and Huatli, and none of them is how this deck wins. It wins with 34 creatures and combat damage, and it does convert.",
+      "reading": "Three is a taxonomy floor: the wincon roles land on Akroma's Will, Boros Charm and Huatli, while the actual finishers are bodies — 34 creature copies including two 12/12s and a 9/9. Conversion is not this deck's problem; getting to the turn where it converts is.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.threat-density",
           "quote": "Value is not a win."
-        },
-        {
-          "rule": "strategy:deckbuilding.threat-density",
-          "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
         }
       ]
     },
@@ -186,71 +216,11 @@
       "measured": {
         "value": 34
       },
-      "reading": "34 front-face creatures is the density that makes Gishath's reveal worth having — stack 001 (checker pass) turns one seven-damage connection into five bodies off a seven-card reveal. Reported, not scored.",
+      "reading": "29 of the 34 creature copies are Dinosaurs — Huatli, Intrepid Paleontologist, Otepec Huntmaster, Selvala and Forerunner of the Empire are the five that are not — so a reveal of seven cards is dense in cards the trigger may actually put onto the battlefield. It is also why the deck plays well without him.",
       "citations": [
         {
-          "rule": "strategy:deckbuilding.archetype-selection",
-          "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
-        }
-      ]
-    },
-    {
-      "axis": "interaction-breadth",
-      "verdict": "strength",
-      "measured": {
-        "value": 5
-      },
-      "reading": "All five classes answered, nothing uncovered, and the heuristic under-counts by construction. Breadth before depth is done here.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
-        }
-      ]
-    },
-    {
-      "axis": "consistency",
-      "verdict": "strength",
-      "measured": {
-        "value": 0.894
-      },
-      "reading": "89.4% hit the turn-3 land drop, comfortably clear of the 74% the corpus's cautionary figure implies — the turn-3 drop is not this deck's problem. The turn-6 rate is 52.6% and the turn-8 rate 40.5%, but those are draw-side figures: the simulator counts a land in hand, and it models none of the eight effects here that put lands onto the battlefield, so read them as a ceiling on the problem rather than the expectation.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.mana-base",
-          "quote": "had 26% miss the turn-3 land drop with no mana source at all"
-        }
-      ]
-    },
-    {
-      "axis": "curve",
-      "verdict": "weakness",
-      "measured": {
-        "value": 3
-      },
-      "reading": "Modal three with six entries at mana value 8+ against a format average of about 1.5 — and read the six: Gishath himself, Polyraptor, Wakening Sun's Avatar, Zacama, Ghalta and Blasphemous Act, whose printed {8}{R} is routinely {R} in practice. Gishath's reveal partly earns the rest, since a free-rolled 12/12 costs nothing, but only for cards that do something on arrival.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.curve",
-          "quote": "puts the modal mana value at 2, with 15.7 two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana value 8+"
-        },
-        {
-          "rule": "strategy:deckbuilding.curve",
-          "quote": "unless the majority of your deck is mana ramp... you're probably only going to be able to cast ONE big-mana spell per game"
-        }
-      ]
-    },
-    {
-      "axis": "power",
-      "verdict": "adequate",
-      "measured": {
-        "value": 4
-      },
-      "reading": "Floor 4, driven by the Polyraptor + Forerunner of the Empire pairing being tagged a two-card infinite, plus Enlightened Tutor and Worldly Tutor as Game Changers. Stack 003 (checker pass) verified that pairing as bounded at seven tokens and self-terminating, which is the pregame conversation, not a recomputation.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.power-level",
-          "quote": "Contents give a floor, never a verdict."
+          "rule": "strategy:critical-mass",
+          "quote": "the plan is reaching the threshold where the synergies take over"
         }
       ]
     },
@@ -260,27 +230,125 @@
       "measured": {
         "value": 11
       },
-      "reading": "Eleven is a large number that is doing a small job. Six fetch lands (Nature's Lore, Skyshroud Claim, Topiary Stomper, Ranging Raptors, Cultivate, Kodama's Reach), three reorder the top (Congregation at Dawn, Enlightened Tutor, Worldly Tutor, plus Forerunner of the Empire's ETB), and Huatli fetches a basic to hand. They reduce variance; they do not answer the card-advantage axis.",
+      "reading": "Eleven, and card_roles tags all eleven tutor:narrow with none tutor:unrestricted. Seven of them fetch lands — the verb, not the card type: Cultivate, Kodama's Reach, Nature's Lore, Skyshroud Claim, Ranging Raptors, Topiary Stomper and Huatli, Poet of Unity, whose Saga side also fetches a Dinosaur to hand at chapter III. The deck's two actual fetch lands, Windswept Heath and Krosan Verge, carry no tutor role and are not in this axis at all. The other four are Congregation at Dawn, Enlightened Tutor, Forerunner of the Empire and Worldly Tutor; Enlightened Tutor and Worldly Tutor are the deck's two Game Changers. Congregation at Dawn deserves a mention the taxonomy does not give it: stacking three creatures on top is Gishath's reveal, pre-loaded.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.redundancy-vs-tutors",
           "quote": "So stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable"
-        },
+        }
+      ]
+    },
+    {
+      "axis": "power",
+      "verdict": "adequate",
+      "measured": {
+        "value": 4
+      },
+      "reading": "Floor 4, driven by two Game Changers and by the combo DB tagging Polyraptor + Forerunner of the Empire a two-card infinite. Stack 003 (checker pass) resolved that pairing as bounded at seven tokens and self-terminating; the engine does not read passing stacks, so the report says 4 and the Rule 0 conversation says 3.",
+      "citations": [
         {
-          "rule": "strategy:deckbuilding.archetype-selection",
-          "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
+          "rule": "strategy:deckbuilding.power-level",
+          "quote": "Contents give a floor, never a verdict."
         }
       ]
     }
   ],
   "engine": {
-    "declared": "goldfish_targets.json declares six components: ramp/fixing, a cost reducer or cheat-into-play effect, a per-Dinosaur payoff, the Gishath connection kit, the enrage engine, and held protection — the last five all sitting under 75%.",
+    "declared": "Two engines: Gishath's combat-damage trigger free-rolling Dinosaurs off the top, and an enrage web that converts damage into removal, ramp, draw and tokens — needing no combat step, but needing a damage source the deck has to supply itself.",
     "components": [
       {
-        "role": "mana",
-        "count": 14,
+        "role": "ignition",
+        "have": [
+          "Otepec Huntmaster",
+          "Urza's Incubator"
+        ],
+        "count": 2,
+        "thinnest": true,
+        "reading": "Re-scoped from the deck's own 'Cost reducer or cheat-into-play drawn' group, which the audit sizes at 6 and measures at 67.3%. Reading all six: Descendants' Path casts off the top of the library, Belbe's Portal and Monster Manual put a creature from HAND onto the battlefield, and Huatli's Roar chapter III searches a Dinosaur to hand. None of those four can touch a card in the command zone. Only Otepec Huntmaster ({1} less on Dinosaur spells) and Urza's Incubator ({2} less on the chosen type) make Gishath cheaper — a grep of every maindeck oracle text for cost reduction returns exactly four hits, and the other two, Blasphemous Act and Ghalta, Primal Hunger, reduce only themselves. The 67.3% is a real figure about a group that mostly does something else."
+      },
+      {
+        "role": "outlet",
+        "have": [
+          "Regisaur Alpha",
+          "Otepec Huntmaster",
+          "Rogue's Passage",
+          "Kessig Wolf Run",
+          "Overwhelming Stampede"
+        ],
+        "count": 5,
         "thinnest": false,
-        "measured_rate": 0.939,
+        "measured_rate": 0.622,
+        "reading": "The declared connection kit: 5 cards, 62.2% assembled, 51.4% by turn 6. Two of the five are dead weight for the commander himself — Gishath already reads 'Vigilance, trample, haste', so Regisaur Alpha's 'Other Dinosaurs you control have haste' and Otepec Huntmaster's haste activation add nothing to his connection. The group also under-declares in the other direction: across all 89 maindeck entries only Rogue's Passage can make him unblockable and only Akroma's Will can grant him evasion at all (flying on one mode, protection from each colour on the other), and neither Akroma's Will nor Boros Charm nor Huatli's Roar chapter IV — the three double-strike grants — are group members."
+      },
+      {
+        "role": "protection",
+        "have": [
+          "Akroma's Will",
+          "Heroic Intervention",
+          "Flawless Maneuver",
+          "Boros Charm",
+          "Eerie Interlude"
+        ],
+        "count": 5,
+        "thinnest": false,
+        "measured_rate": 0.59,
+        "reading": "The lowest measured rate of the six declared groups: 59.0% ever, 48.5% by turn 6. Read the five: Heroic Intervention's hexproof and Akroma's Will's protection from each colour do answer targeted exile and bounce, so the group is broader than 'indestructible' — but Eerie Interlude is the only member that dodges a non-targeted mass exile or bounce, and Flawless Maneuver the only one castable for nothing."
+      },
+      {
+        "role": "payoff",
+        "have": [
+          "Pantlaza, Sun-Favored",
+          "Descendants' Path",
+          "Garruk's Uprising",
+          "Curious Altisaur",
+          "Regisaur Alpha",
+          "Quartzwood Crasher",
+          "Forerunner of the Empire"
+        ],
+        "count": 7,
+        "thinnest": false,
+        "measured_rate": 0.737,
+        "reading": "The declared group is seven and the simulation measures it at 73.7% assembled, 62.3% by turn 6. The 41.2% beside it in the audit is not a second measurement: it is `odds.opening_seven`, the closed-form hypergeometric for a 7-of, and it is the same calculation the redundancy citation's 41% comes from — the agreement is arithmetic, not corroboration. The label does not survive the same check. Reading all seven: only Pantlaza, Sun-Favored and Forerunner of the Empire trigger on each Dinosaur entering. Garruk's Uprising triggers on any creature entering with power 4 or greater, which many but not all of the deck's Dinosaurs are — in stack 001's stipulated reveal three of the four entering Dinosaurs qualified and Ravenous Sailback did not. Curious Altisaur and Quartzwood Crasher both require combat damage to a player. Descendants' Path is an upkeep trigger that casts off the top of the library, and Regisaur Alpha is a static haste anthem plus a single ETB token; neither is a per-Dinosaur trigger at all. Three of the seven pay off a Dinosaur entering, which is the event Gishath's trigger actually produces."
+      },
+      {
+        "role": "piece",
+        "have": [
+          "Ripjaw Raptor",
+          "Polyraptor",
+          "Ranging Raptors",
+          "Trapjaw Tyrant",
+          "Wrathful Raptors"
+        ],
+        "count": 5,
+        "thinnest": false,
+        "reading": "Re-scoped from the deck's own 'Enrage engine drawn' group, which the audit sizes at 9 and measures at 82.4% assembled, 72.6% by turn 6. Reading all nine oracle texts, five convert damage into value: Ripjaw Raptor draws, Polyraptor copies itself, Ranging Raptors fetches a basic, Trapjaw Tyrant exiles a creature, and Wrathful Raptors redirects the damage at 'any target that isn't a Dinosaur'. The other four do something else — Bonehoard Dracosaur is an upkeep impulse engine, Temple Altisaur is a prevention shield ('prevent all but 1 of that damage'), Pugnacious Hammerskull's whole text is a stun-counter drawback on attack, and Trumpeting Carnosaur is a discover-5 ETB plus a one-shot discard ping. Temple Altisaur is still load-bearing for the web without being a converter: stack 004 (checker pass) uses its damage floor to make Blasphemous Act one-sided for the rest of the board, with the checker's own correction that Temple Altisaur is not 'another Dinosaur' to itself, eats the unprevented 13 and dies. Five cards is a 31.2% opening-seven class — the rate the audit reports for both of its own size-5 groups — so the 82.4% is a real figure about a nine-card set that is not all one function."
+      },
+      {
+        "role": "fodder",
+        "have": [
+          "Forerunner of the Empire",
+          "Zacama, Primal Calamity",
+          "Blasphemous Act",
+          "Itzquinth, Firstborn of Gishath",
+          "Triumphant Chomp",
+          "Trumpeting Carnosaur"
+        ],
+        "count": 6,
+        "thinnest": false,
+        "reading": "Not a declared group, and that is the finding: no target in goldfish_targets.json pairs an enrage body with a source of damage, so the conjunction the web actually needs has never been simulated. Six maindeck cards can damage your own Dinosaurs. Four are one-shots and Zacama's is repeatable only at {2}{R} a shot off a nine-mana body, leaving Forerunner of the Empire as the only free repeatable source. A six-card class is a 36.4% opening seven — the audit's figure for its own size-6 group — and a single named card is 7.1% by the redundancy citation. Every enrage line in this deck's stack folder that a checker has passed is ignited by Forerunner or by the bench's Marauding Raptor (002, 003, 005), or by Blasphemous Act (004) — which stack 004's scenario casts for {R} off nine creatures, so cost is not the objection to it: it is a one-shot, and it sweeps your own board with everyone else's unless Temple Altisaur is out to floor the 13 at 1 for your other Dinosaurs — Altisaur itself, and any non-Dinosaur you control, still take the full amount. Filed as `fodder` because it supplies what the `piece` converters consume; `ignition` names the commander-cost class above, and the two are disjoint.",
+        "citations": [
+          {
+            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+            "quote": "a named card is 7.1% of your opening seven, 10.1% by\nten cards seen"
+          },
+          {
+            "rule": "strategy:mulligans.engine-hands",
+            "quote": "you mulligan to enabler\n*classes*, not named cards; build the redundancy your keeps depend on"
+          }
+        ]
+      },
+      {
+        "role": "mana",
         "have": [
           "Sol Ring",
           "Arcane Signet",
@@ -297,139 +365,48 @@
           "Regal Behemoth",
           "Ranging Raptors"
         ],
-        "reading": "Fourteen cards, 93.9% assembled, mean turn 2.0. This component is solved and needs nothing. It is also the component that cannot fix the deck: 86.9% by turn six and the commander is still cast by turn six 8.3% of the time."
-      },
-      {
-        "role": "ignition",
-        "count": 6,
+        "count": 14,
         "thinnest": false,
-        "measured_rate": 0.673,
-        "have": [
-          "Urza's Incubator",
-          "Otepec Huntmaster",
-          "Descendants' Path",
-          "Belbe's Portal",
-          "Monster Manual // Zoological Study",
-          "Huatli, Poet of Unity // Roar of the Fifth People"
-        ],
-        "reading": "Six cards, 67.3% assembled, 56.2% by turn six — and this is the only component that changes what the commander costs. The goldfish states it does not model cost reducers, so the 8.3%-by-turn-six figure is a floor rather than an expectation; that is a reason to thicken this group, not a reason to discount the problem."
-      },
-      {
-        "role": "payoff",
-        "count": 7,
-        "thinnest": false,
-        "measured_rate": 0.737,
-        "have": [
-          "Pantlaza, Sun-Favored",
-          "Descendants' Path",
-          "Garruk's Uprising",
-          "Curious Altisaur",
-          "Regisaur Alpha",
-          "Quartzwood Crasher",
-          "Forerunner of the Empire"
-        ],
-        "reading": "Seven cards, 73.7% assembled. Sits between the corpus's 7-copy and 10-copy landmarks and is the right size for what it does."
-      },
-      {
-        "role": "piece",
-        "count": 5,
-        "thinnest": true,
-        "measured_rate": 0.622,
-        "have": [
-          "Regisaur Alpha",
-          "Otepec Huntmaster",
-          "Rogue's Passage",
-          "Kessig Wolf Run",
-          "Overwhelming Stampede"
-        ],
-        "reading": "Five cards, 62.2% assembled — joint-thinnest, and the label 'haste or evasion for the 7/6' overstates it. Gishath has vigilance, trample and haste printed, so Regisaur Alpha's and Otepec Huntmaster's haste is redundant on the commander itself; Kessig Wolf Run and Overwhelming Stampede grant trample he already has. What they actually do is enlarge the reveal, and only Rogue's Passage makes him unblockable. Read as 'amplify the reveal' the group is honest; read as 'get him through' it is one card."
-      },
-      {
-        "role": "payoff",
-        "count": 9,
-        "thinnest": false,
-        "measured_rate": 0.824,
-        "have": [
-          "Ripjaw Raptor",
-          "Bonehoard Dracosaur",
-          "Temple Altisaur",
-          "Pugnacious Hammerskull",
-          "Trumpeting Carnosaur",
-          "Polyraptor",
-          "Wrathful Raptors",
-          "Ranging Raptors",
-          "Trapjaw Tyrant"
-        ],
-        "reading": "Nine cards, 82.4% assembled, 72.6% by turn six — the most available engine in the deck and the one that does not need eight mana. One correction: Pugnacious Hammerskull has no enrage trigger at all (its only text is a self-stun when it attacks alone), so the group's real enrage size is eight."
-      },
-      {
-        "role": "protection",
-        "count": 5,
-        "thinnest": true,
-        "measured_rate": 0.59,
-        "have": [
-          "Akroma's Will",
-          "Heroic Intervention",
-          "Flawless Maneuver",
-          "Boros Charm",
-          "Eerie Interlude"
-        ],
-        "reading": "Five cards, 59.0% assembled, 48.5% by turn six — joint-thinnest, and the one the deck's structure most depends on, because both its engines commit everything to the board at once and a wrath is near-certain over four players."
+        "measured_rate": 0.939,
+        "reading": "Fourteen cards, 93.9% assembled at mean turn 2.044. Nothing to fix here."
       }
     ],
     "single_points_of_failure": [
       {
-        "component": "Cost reducer or cheat-into-play drawn",
-        "why": "Six cards, 56.2% by turn six, and it is the only lever on what an eight-mana commander costs. The goldfish measures him cast by turn six 8.3% of the time and states outright that it models neither cost reducers nor land-fetch ramp, so that figure is a floor — but the 56.2% is not, because assembly counts cards drawn rather than mana. At six copies the corpus's own arithmetic puts this component between the 31% and 41% opening-hand landmarks; the deck buys its pivot turn at that rate.",
+        "component": "ignition — making Gishath castable",
+        "why": "Engine one is entirely a commander combat trigger, the commander costs {5}{R}{G}{W}, and only two maindeck cards reduce that cost. goldfish_metrics puts his mean cast turn at 7.969, median 8, with 8.3% by turn 6 and 5,533 of 10,000 iterations never casting him by turn 10 — and the simulation does not model cost reduction, so that is a conservative bound, not a verdict. Mean available mana is 5.486 at turn 6 and 7.321 at turn 10. Every recast after the first adds {2} on top.",
         "closers": [
           "Knight of the Stampede",
           "Herald's Horn",
-          "Kinjalli's Caller"
+          "Kinjalli's Caller",
+          "Goblin Anarchomancer"
         ],
         "citations": [
-          {
-            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-            "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-          },
           {
             "rule": "strategy:deckbuilding.curve",
-            "quote": "unless the majority of your deck is mana ramp... you're probably only going to be able to cast ONE big-mana spell per game"
-          }
-        ]
-      },
-      {
-        "component": "Forerunner of the Empire (the enrage web's hub)",
-        "why": "Both checker-passed enrage lines — stack 003 and stack 005 — route through one 1/3 Human Soldier that the deck's entire tribal apparatus ignores: Temple Altisaur prevents damage only to other Dinosaurs, Secluded Courtyard and Unclaimed Territory name a creature type, Gishath's reveal free-rolls only Dinosaur creature cards, and Forerunner's own sweep damages it (it died to its own third sweep in stack 003). The deck's most available engine has exactly one hub and no redundancy for it.",
-        "closers": [
-          "Akroma's Will",
-          "Heroic Intervention",
-          "Flawless Maneuver"
-        ],
-        "citations": [
-          {
-            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-            "quote": "Singleton kills the 4-of, so consistency has two purchases: redundancy (more cards doing the job) or tutoring (cards that fetch it)"
-          }
-        ]
-      },
-      {
-        "component": "Protection held for the board",
-        "why": "Five cards, 48.5% by turn six. Both engines are all-in board states — the Gishath turn puts five bodies down at once and the ping web needs its hub alive — so the deck cannot deploy in waves; the wave is the trigger.",
-        "closers": [
-          "Akroma's Will",
-          "Heroic Intervention",
-          "Flawless Maneuver",
-          "Boros Charm",
-          "Eerie Interlude"
-        ],
-        "citations": [
-          {
-            "rule": "strategy:resource-hedging.wrath-math",
-            "quote": "assume the wrath — over a four-player game one is near-certain — so deploy in waves, hold a rebuild package"
+            "quote": "Build to hit 2, 4 and 6 mana reliably"
           },
           {
-            "rule": "strategy:deckbuilding.threat-density",
-            "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
+            "rule": "strategy:multiplayer.commander-insurance",
+            "quote": "each return trip to the command zone adds {2} per prior command-zone cast (Miljkovac)"
+          },
+          {
+            "rule": "strategy:mulligans.engine-hands",
+            "quote": "Payoffs without the enabler are blanks until the engine exists"
+          }
+        ]
+      },
+      {
+        "component": "fodder — the free repeatable self-ping",
+        "why": "Six maindeck cards can deal damage to your own Dinosaurs: Forerunner of the Empire, Zacama, Primal Calamity, Blasphemous Act, Itzquinth, Firstborn of Gishath, Triumphant Chomp and Trumpeting Carnosaur. Four of those are one-shots, and Zacama's is repeatable only at {2}{R} a shot off a nine-mana body. Forerunner is the only free repeatable source — and it is a 1/3 Human Soldier standing outside every piece of tribal protection the deck owns, including its own sweep. Narrower than the frame's 'every ping line routes through Forerunner', but the conclusion survives the narrowing.",
+        "closers": [
+          "Marauding Raptor",
+          "Aether Flash"
+        ],
+        "citations": [
+          {
+            "rule": "strategy:critical-mass",
+            "quote": "the linear deck needs redundancy that shrugs off three answers"
           }
         ]
       }
@@ -437,15 +414,20 @@
   },
   "lean_into": [
     {
-      "what": "Pilot the enrage web as engine one and Gishath as the bonus.",
-      "why": "The web is drawn in 82.4% of games and 72.6% by turn six; the commander is cast by turn six in 8.3%. Stack 005 (checker pass) shows one optional Forerunner ping converting a single Dinosaur ETB into an exiled creature, a dead token, a card, a tapped Forest and a fresh 5/5 that re-arms the trigger — none of it needing eight mana or a combat step.",
+      "what": "Buy ignition rather than reordering the two plans. Both engines are gated on a card class the deck barely has.",
+      "why": "The earlier reading of this deck leaned on the 'Enrage engine drawn' group's 82.4% as a combat-free plan B. That group is nine bodies, only five of which convert damage, and it prices no damage source at all: the web is a conjunction of a five-card converter class (31.2% of openers, the audit's own size-5 figure) and a six-card damage class (36.4%), and no goldfish target measures the two together. Plan A is not cheap either — mean cast turn 7.969, median 8, 8.3% by turn 6. The verified record is not one-sided and the earlier survey of it was partial: five stacks carry checker passes. 001 verifies plan A's payoff on a board holding Gishath — one 7-damage connection into five new bodies, three draws and a discover at X=6. 004's board holds him too, though the line it resolves is Blasphemous Act through Temple Altisaur and does not use him. 002, 003 and 005 resolve enrage lines on boards with no Gishath, and every one of the three is ignited by Forerunner of the Empire or the bench's Marauding Raptor. Both plans are worth having; neither is cheap enough. The two cost reducers below are sized off the commander's measured cast turn, not off the enrage rate this entry withdraws.",
       "evidence": {
-        "enrage_assembled_rate": 0.824,
-        "enrage_by_turn_6": 0.726,
-        "commander_cast_by_turn_6_rate": 0.083,
-        "verified_lines": [
-          "stacks/005-forerunner-ping-web.json",
-          "stacks/003-forerunner-polyraptor-burst.json"
+        "declared_enrage_group_size": 9,
+        "declared_enrage_assembled_rate": 0.824,
+        "enrage_converters": 5,
+        "self_damage_sources": 6,
+        "commander_mean_cast_turn": 7.969,
+        "passing_stacks": [
+          "001",
+          "002",
+          "003",
+          "004",
+          "005"
         ]
       },
       "citations": [
@@ -454,96 +436,83 @@
           "quote": "Payoffs without the enabler are blanks until the engine exists"
         },
         {
-          "rule": "strategy:deckbuilding.threat-density",
-          "quote": "the enabler slots fail first"
+          "rule": "strategy:deckbuilding.curve",
+          "quote": "you're probably only going to be able to cast ONE big-mana spell per game"
+        },
+        {
+          "rule": "strategy:critical-mass",
+          "quote": "know your number — the count of bodies, spells,\nor mana at which the deck actually goes over the top"
         }
       ]
     },
     {
-      "what": "The interaction suite is finished. Stop adding to it.",
-      "why": "11 removal copies inside an 18-card suite with all five permanent classes answered. This is the part of the deck that needs no work, and slots spent here are slots not spent on the axis that binds.",
+      "what": "Keep the interaction. It is the deck's least typal virtue and its best one.",
+      "why": "11 removal pieces inside an 18-card suite, with all five permanent classes answered and nothing uncovered — rare for a linear typal list, which normally pays for its engine in answer slots.",
       "evidence": {
-        "interaction_copies": 11,
-        "interactive_suite_copies": 18,
-        "classes_answered": 5,
-        "uncovered": []
+        "interaction": 11,
+        "interaction_breadth": 5
       },
       "citations": [
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
-        },
         {
           "rule": "strategy:deckbuilding.interaction-suite",
           "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
+        },
+        {
+          "rule": "strategy:critical-mass",
+          "quote": "linear strategies give up flexibility in exchange for power"
         }
       ]
     },
     {
-      "what": "Blasphemous Act is a rebuild plan, not just removal.",
-      "why": "Stack 004 (checker pass) resolves it through Temple Altisaur into Wrathful Raptors: your Dinosaurs take exactly 1 each and live, the opponents' board dies, and 16 damage goes at a player. That is the one line in the deck that answers a table it cannot race, and it manufactures the enrage damage itself rather than waiting for an opponent to supply it.",
+      "what": "Congregation at Dawn is a Gishath enabler the taxonomy files as a tutor.",
+      "why": "It stacks three creature cards on top at instant speed. Gishath's trigger reveals from the top and may put every Dinosaur creature card among them onto the battlefield, so a Congregation stacking three Dinosaurs and held for the connection turn converts a 3-mana instant into three bodies. Stack anything that is not a Dinosaur creature card and the trigger sends it to the bottom instead.",
       "evidence": {
-        "verified_lines": [
-          "stacks/004-wrathful-blasphemous-temple.json"
-        ],
-        "sweeper_copies_by_taxonomy": 2
+        "tutors": 11
       },
       "citations": [
         {
-          "rule": "strategy:resource-hedging.wrath-math",
-          "quote": "assume the wrath — over a four-player game one is near-certain — so deploy in waves, hold a rebuild package"
-        },
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "So stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable"
         }
       ]
     }
   ],
   "cut_candidates": [
     {
-      "card": "Belbe's Portal",
-      "why": "Five mana to deploy a permanent that does nothing, then {3} and a tap per creature, and it only works on cards already in your hand — which is the resource this deck is shortest of. Monster Manual // Zoological Study performs the same job in the same deck for {3}{G} to deploy and {1}{G} per activation, and its Adventure half also puts a creature card in hand from an empty board. Duplicated function, cut the worse copy.",
-      "cost_of_cutting": "The cost-reducer/cheat component drops from six cards to five, which is the component this diagnosis is trying to thicken — the cut only holds if a cheaper reducer replaces it in the same slot.",
-      "orphans_stack": null,
-      "difficulty": "easy",
+      "card": "Wakening Sun's Avatar",
+      "why": "Eight mana at {5}{W}{W}{W} off 20 white sources, and its wipe reads 'if you cast it from your hand'. Gishath's trigger puts Dinosaurs onto the battlefield rather than casting them, so the deck's own engine turns this card into a vanilla 7/7 exactly when it finds it. It is also the deck's only triple-pip card, in its joint-worst colour.",
+      "cost_of_cutting": "The sweepers axis drops from 2 to 1 — still inside the 1-3 band, but at its floor — and the deck loses the one wipe that is one-sided with no setup. The two that remain both need something: Blasphemous Act is one-sided only through Temple Altisaur (verified in stack 004), and Austere Command's mana-value split is asymmetric only when your board happens to sit on one side of it. Note the decklist carries a second copy on the bench, so the effect is not gone from the pool.",
+      "orphans_stack": [],
+      "difficulty": "painful",
       "citations": [
         {
-          "rule": "strategy:deckbuilding.cutting",
-          "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
         },
         {
-          "rule": "strategy:deckbuilding.curve",
-          "quote": "unless the majority of your deck is mana ramp... you're probably only going to be able to cast ONE big-mana spell per game"
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "triple pips and three colours do not coexist"
         }
       ]
     },
     {
-      "card": "Wakening Sun's Avatar",
-      "why": "{5}{W}{W}{W} in a deck with 20 white sources against a 36-source yardstick and a 37.3% lands-only on-curve white rate — and its wipe reads 'if you cast it from your hand', so the deck's own signature deployment, Gishath's reveal, free-rolls it as a vanilla 7/7. Among the deck's mana-value-8-plus creatures it is the only one the reveal switches off entirely: Zacama loses just its untap clause and keeps three activated abilities, Polyraptor's enrage is unaffected, and Ghalta has nothing to lose.",
-      "cost_of_cutting": "The deck loses its only one-sided wipe — the wrath that spares every Dinosaur — and the sweepers axis drops from 2 to 1. Austere Command and Blasphemous Act remain, but neither is free of your own board. The card stays on the bench, so this is a slot decision, not a disposal.",
-      "orphans_stack": null,
+      "card": "Ghalta, Primal Hunger",
+      "why": "Mana value 12, and the discount needs the board that has already won. It has no ETB, no evasion beyond trample, and no protection — the ceiling card in a deck whose problem is the turn its plan arrives.",
+      "cost_of_cutting": "The deck's largest single body, and genuinely cheap once a wide board exists — with Gishath alone on the table it costs {3}{G}{G}. Losing it lowers the ceiling of the go-over-the-top draws that the enrage web sets up.",
+      "orphans_stack": [],
       "difficulty": "contested",
       "citations": [
         {
-          "rule": "strategy:deckbuilding.mana-base.color-sources",
-          "quote": "Duke's judgment layer, in 60-card terms: 17–18 sources for a colour you won't keep a hand without, 14–16 for a main colour, 10–13 for a secondary, 4–7 for a splash."
-        },
-        {
-          "rule": "strategy:deckbuilding.curve",
-          "quote": "puts the modal mana value at 2, with 15.7 two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana value 8+"
-        },
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+          "rule": "strategy:deckbuilding.cutting",
+          "quote": "cut the ceiling card before the median one"
         }
       ]
     },
     {
       "card": "Myriad Landscape",
-      "why": "It enters tapped, taps only for {C}, and converting it costs {2} plus its own sacrifice to produce two tapped basics that share a land type. It answers neither of the deck's two measured mana problems: it adds nothing to a colour count of 20/20/26 against 36, and it worsens the 12-of-35 tapland figure mana_analysis already flags as over its own budget.",
-      "cost_of_cutting": "Real two-for-one land ramp in a deck with 14 basics, and the mana-base axis falls from 35 to 34 — a further copy under the 36 floor — unless the slot goes back to a coloured source or a producer.",
-      "orphans_stack": null,
+      "why": "Enters tapped, taps for colourless only, and its fetch costs {2} to return two more tapped basics. In a deck 16 sources short in its worst colour and already at 12 of 35 lands entering tapped, this is the land least able to answer the colour question — it ramps, and the deck already clears its mana-source target by six.",
+      "cost_of_cutting": "The mana-base axis is already one copy under the 36-38 template and this takes it to 34; the deck also loses a late-game mana sink that turns a dead draw into two lands.",
+      "orphans_stack": [],
       "difficulty": "contested",
       "citations": [
         {
@@ -557,120 +526,35 @@
       ]
     },
     {
-      "card": "Ghalta, Primal Hunger",
-      "why": "A mana value 12 card whose only text beyond trample is its own cost reduction. It is a pure ceiling card: it needs a board to be cheap, needs a board to matter, and adds a 12/12 to a battlefield that already has twenty power. Nothing about it improves a stalled turn five, and when Gishath's reveal free-rolls it, it is the least eventful arrival in the deck — no trigger, no ability, no card.",
-      "cost_of_cutting": "This is a genuine cost. With four Dinosaurs out Ghalta is often a two-mana 12/12 trample, the single best mana-efficiency card in the deck, and it is the biggest body the reveal can produce. Cutting it lowers the deck's ceiling to raise its median, which is the trade being recommended.",
-      "orphans_stack": null,
-      "difficulty": "painful",
+      "card": "Zacama, Primal Calamity",
+      "why": "Nine mana in a deck whose mean available mana is 5.486 at turn 6 and 7.321 at turn 10. It is the second-most expensive card in the 99 and it competes for the same turn as the commander.",
+      "cost_of_cutting": "Real, and it argues against cutting it in the same pass as anything else that narrows the web: Zacama is the only maindeck card other than Forerunner of the Empire that can damage your own Dinosaurs repeatably, and its three activated abilities cover creature, artifact and enchantment on their own. Casting it also untaps all your lands, so its effective cost is far below nine. Cut this only if the ignition adds go in first.",
+      "orphans_stack": [],
+      "difficulty": "contested",
       "citations": [
         {
-          "rule": "strategy:deckbuilding.cutting",
-          "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
+          "rule": "strategy:deckbuilding.curve",
+          "quote": "Build to hit 2, 4 and 6 mana reliably"
         },
         {
-          "rule": "strategy:deckbuilding.curve",
-          "quote": "puts the modal mana value at 2, with 15.7 two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana value 8+"
+          "rule": "strategy:deckbuilding.cutting",
+          "quote": "cut duplicated function before any uncovered class"
         }
       ]
     }
   ],
   "add_candidates": [
     {
-      "card": "Herald's Horn",
-      "closes": "card-advantage",
-      "source": "pool",
-      "why": "It is the exact shape the deck has exactly one of: a repeating, board-independent refuel — its upkeep trigger looks at the top card and puts a Dinosaur into your hand — and it costs three rather than Bonehoard Dracosaur's five. That is the whole surviving gap on this axis, so this is the one card-advantage add being proposed rather than two. It also cuts {1} from every Dinosaur spell, taking the cost-reducer component from six cards to seven, i.e. from the corpus's 31% opening-hand landmark to its 41% one.",
-      "evidence": {
-        "closes_second_component": "Cost reducer or cheat-into-play drawn",
-        "only_repeating_boardless_refuel_now": "Bonehoard Dracosaur (5 mana)",
-        "combo_lines_opened": []
-      },
-      "natural_cut": "Wakening Sun's Avatar",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      },
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.ratios",
-          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
-        },
-        {
-          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-          "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-        },
-        {
-          "rule": "strategy:mulligans.engine-hands",
-          "quote": "Payoffs without the enabler are blanks until the engine exists"
-        }
-      ]
-    },
-    {
       "card": "Knight of the Stampede",
-      "closes": "Cost reducer or cheat-into-play drawn",
+      "closes": "engine component: ignition — making Gishath castable",
       "source": "sideboard",
-      "why": "Dinosaur spells cost {2} less, which prices Gishath at six rather than eight and every five-drop Dinosaur at three. It is a strictly cheaper, always-on version of what Belbe's Portal was trying to do, and it is already on this deck's bench.",
+      "why": "'Dinosaur spells you cast cost {2} less to cast' for {3}{G}. At {2} it matches Urza's Incubator, the largest reduction the deck already runs, and it takes the maindeck set that can touch a command-zone cast from two cards to three — 19.9% of openers by manabase.hypergeometric_at_least on 99 cards, and 25.8% at four once Herald's Horn goes in below. That is still short of the citation's 31% rung, which is the reason open_questions asks about a fifth. It also discounts the 29 Dinosaur creatures in the 99, the same axis the ramp count is already paying for.",
       "evidence": {
-        "component_size_before": 6,
-        "component_measured_rate": 0.673,
-        "combo_lines_opened": []
-      },
-      "natural_cut": "Belbe's Portal",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      },
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-          "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-        },
-        {
-          "rule": "strategy:deckbuilding.curve",
-          "quote": "unless the majority of your deck is mana ramp... you're probably only going to be able to cast ONE big-mana spell per game"
-        }
-      ]
-    },
-    {
-      "card": "Drover of the Mighty",
-      "closes": "colour-sources",
-      "source": "sideboard",
-      "why": "A two-mana {T}: Add one mana of any color body — it adds one source to each of W, R and G, the axis where the worst colour is 16 short, and unlike a tapland it is a persistent producer the goldfish's own '{T}: Add' rule counts. It is also a 3/3 whenever a Dinosaur is out, so it is not a dead card on the pivot turn.",
-      "evidence": {
-        "colour_sources_now": {
-          "W": 20,
-          "R": 20,
-          "G": 26
-        },
-        "target_per_colour": 36,
-        "combo_lines_opened": []
-      },
-      "natural_cut": "Myriad Landscape",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      },
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.mana-base.color-sources",
-          "quote": "Duke's judgment layer, in 60-card terms: 17–18 sources for a colour you won't keep a hand without, 14–16 for a main colour, 10–13 for a secondary, 4–7 for a splash."
-        },
-        {
-          "rule": "strategy:deckbuilding.mana-base",
-          "quote": "a utility land that can't produce the colour you need is not a source"
-        }
-      ]
-    },
-    {
-      "card": "Kinjalli's Caller",
-      "closes": "Cost reducer or cheat-into-play drawn",
-      "source": "sideboard",
-      "why": "One mana, on the bench, and it prices Gishath at seven — with Knight of the Stampede alongside it, at five. It takes the component from six copies toward the corpus's 41% landmark and it is the cheapest card in the deck's colours that does so. This slot deliberately goes to the cost-reducer component rather than to a second draw piece: the card-advantage gap, read card by card, is one repeating boardless refuel, and one add closes it.",
-      "evidence": {
-        "component_size_before": 6,
-        "component_measured_rate": 0.673,
-        "component_by_turn_6": 0.562,
-        "combo_lines_opened": []
+        "ignition_cards_today": [
+          "Otepec Huntmaster",
+          "Urza's Incubator"
+        ],
+        "declared_group_measured_rate": 0.673
       },
       "natural_cut": "Ghalta, Primal Hunger",
       "bracket_delta": {
@@ -680,107 +564,175 @@
       "citations": [
         {
           "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-          "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+          "quote": "5 copies is 31% of openers, 7 is 41%"
+        },
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "the enabler slots fail first"
+        }
+      ]
+    },
+    {
+      "card": "Herald's Horn",
+      "closes": "engine component: ignition — making Gishath castable",
+      "source": "pool",
+      "why": "Colourless, so it costs the colour-sources axis nothing, and it does two jobs the audit named: 'Creature spells you cast of the chosen type cost {1} less to cast' reduces the commander, and the upkeep look-at-top puts Dinosaurs in hand for free. It surfaced through upgrade-facts' synergy channel, which is not a fit signal: that command's own note says the synergy graph is \"a format-wide top-10 shortlist, not a per-deck fit score; partner counts locate candidates, they do not rank them\", and the five in-deck partners it lists are Sol Ring, Command Tower, Arcane Signet, Exotic Orchard and Path of Ancestry — every one a mana rock or land, not one of them a Dinosaur. The case for the card is its oracle text.",
+      "evidence": {
+        "ignition_cards_today": [
+          "Otepec Huntmaster",
+          "Urza's Incubator"
+        ]
+      },
+      "natural_cut": "Wakening Sun's Avatar",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "they are counts of *functions*, not cards"
         },
         {
           "rule": "strategy:deckbuilding.curve",
-          "quote": "unless the majority of your deck is mana ramp... you're probably only going to be able to cast ONE big-mana spell per game"
+          "quote": "ramp decks buy a payoff tier and must count the ramp itself as curve"
+        }
+      ]
+    },
+    {
+      "card": "Drover of the Mighty",
+      "closes": "colour-sources",
+      "source": "sideboard",
+      "why": "'{T}: Add one mana of any color' for {1}{G}, and a 3/3 while you control a Dinosaur. Swapping it for a colourless tapland adds a source to each of W, R and G and removes one card from the tapland count, which is the exact shape of the colour-sources gap — the deck's shortfall is coloured sources, not total mana.",
+      "evidence": {
+        "per_colour_have": {
+          "G": 26,
+          "R": 20,
+          "W": 20
+        },
+        "on_curve_with_rocks_and_dorks": {
+          "W": 0.58,
+          "R": 0.58,
+          "G": 0.742
+        }
+      },
+      "natural_cut": "Myriad Landscape",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "a utility land that can't produce the colour you need is not a source"
+        },
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "Read them as a budget, not a table"
         }
       ]
     }
   ],
   "open_questions": [
     {
-      "question": "Does a Forerunner of the Empire ping with Wrathful Raptors on the battlefield still mark damage on your own Dinosaurs — feeding Ranging Raptors, Ripjaw Raptor and Polyraptor enrage — or is that damage converted into redirects, so the reach comes at the cost of the engine?",
+      "question": "Does a double-strike grant produce two separate Gishath reveal triggers? Akroma's Will, Boros Charm and Huatli's Roar of the Fifth People chapter IV all grant it, and none of the three is a member of the declared connection kit.",
       "settled_by": "resolve-stack",
-      "why_it_matters": "All five cards are in the 99 and no checker-passed stack has ever had them share a board: stack 005 resolved the ping web without Wrathful Raptors, stack 004 resolved Wrathful Raptors without the web. The answer decides whether Wrathful Raptors is an engine piece or an engine-killer in the deck's most available component."
+      "why_it_matters": "If first-strike damage and regular damage each trigger 'Whenever Gishath deals combat damage to a player', those three cards are connection-kit members and the group's 62.2% understates the deck's reach badly. If they do not, the kit is genuinely five cards, and Rogue's Passage plus Akroma's Will are the deck's only two ways to give Gishath evasion."
     },
     {
-      "question": "What do Knight of the Stampede, Kinjalli's Caller, Herald's Horn and Drover of the Mighty do to the commander cast curve, and what do the eight unmodelled land-fetch effects do to the available-mana curve?",
+      "question": "What does the commander's cast turn look like once cost reduction is modelled? goldfish states outright that cost reducers are not simulated, yet Otepec Huntmaster and Urza's Incubator are in the 99 and two more are proposed above.",
       "settled_by": "goldfish",
-      "why_it_matters": "The simulator states it models neither cost reducers, nor extra card draw, nor the land-fetch ramp — only '{T}: Add' producers. So every mana-side figure about casting Gishath (8.3% by turn six, mean 7.969, available mana peaking at 7.321 on turn ten) is a floor, and this diagnosis deliberately grounds its binding claim on the draw-side assembly rates instead, which that gap does not touch. Extending the model would say how much of the eight-mana problem is real."
+      "why_it_matters": "The 7.969 mean cast turn is the load-bearing number in this diagnosis and it is a conservative bound. Re-declaring the 'Cost reducer' target as the two commander-applicable cards, and re-running with reducers on, would say whether the ignition adds move it by a turn or by three."
     },
     {
-      "question": "Do Selvala, Heart of the Wilds and Regal Behemoth pull the pivot turn forward, and by how much?",
+      "question": "Is Marauding Raptor boardable now that Polyraptor is maindeck, and does the 99 hold a loop-breaker?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "Stack 002 (checker pass) ends the pair in a mandatory loop and a drawn game unless the deck can break it. Marauding Raptor is the bench's only free repeatable self-ping and the obvious second closer for the Forerunner single point of failure; the same hazard applies to Aether Flash from the pool. Without a verified breaker, both are liabilities rather than redundancy."
+    },
+    {
+      "question": "Does the deck want a FIFTH commander-cost reducer — Kinjalli's Caller or Marauding Raptor from the bench, or a Medallion from the pool — once the two adds above have already taken the class from two to four?",
       "settled_by": "goldfish",
-      "why_it_matters": "strategic_frame.json leans on both as the answer to the 7.969 mean and the simulator models neither. If they are worth two turns, the eight-mana problem is smaller than the axis reading implies; if they are not, the cost-reducer component is the only lever left."
+      "why_it_matters": "The ladder is the sizing tool and the earlier version of this question misread it. manabase.hypergeometric_at_least on 99 cards puts three copies at 19.9% and four at 25.8%; the audit's own size-5 groups report 31.2%, which is the citation's 31% rung. So the two adds land the class at 25.8%, not at 31%, and a fifth is what buys the rung. Kinjalli's Caller costs {W} against 20 white sources, so the fix and the colour-sources weakness pull against each other; Marauding Raptor reduces every creature spell by {1} but carries the stack-002 loop hazard named above."
     },
     {
-      "question": "Is there doctrine on board-contingent card advantage — engines that draw only once the board exists — and on cheat-into-play as an archetype axis?",
-      "settled_by": "research-strategy",
-      "why_it_matters": "The binding finding here is not that the deck has 6 draw pieces but that nine of ten require a board. strategy:deckbuilding.ratios budgets card draw by count, and nothing in the corpus distinguishes refuel-while-behind from convert-while-ahead. strategic_frame.json's gaps list already names the cheat-into-play hole."
+      "question": "What does the enrage web actually assemble at once 'Enrage engine drawn' is re-declared as two components — a converter body AND a source of damage — instead of one any_of over nine bodies?",
+      "settled_by": "goldfish",
+      "why_it_matters": "A target's `need` is a list of any_of groups and the audit reads every target as an AND of ORs, so the conjunction is expressible today; nobody authored it. Until it is measured, no figure in this document says how often this deck can actually turn damage into value, and the 82.4% currently on the books describes a set that includes a prevention shield and an upkeep impulse engine."
+    },
+    {
+      "question": "Does a Gishath connection that puts several Dinosaurs onto the battlefield give Forerunner of the Empire a trigger per Dinosaur, and do the enrage converters that entered in that same event get pinged by it?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "If it does, plan A supplies plan B's damage in one event and the two engines stop competing for turns. Stack 001 verifies that a single put-onto-battlefield event is a simultaneous entry producing repeated triggers (603.2c, checker pass), but its board held neither Forerunner nor an enrage body, so the chain itself is unverified."
     }
   ],
   "gaps": [
-    "The goldfish models neither cost reducers, nor extra card draw, nor the eight effects here that put lands onto the battlefield (Cultivate, Kodama's Reach, Nature's Lore, Skyshroud Claim, Topiary Stomper, Ranging Raptors, Krosan Verge, Myriad Landscape), because it counts only '{T}: Add' producers — verbatim in meta.model_assumptions. Every mana-side commander-cast figure quoted here is therefore a ceiling on the problem, not the expectation, and no claim in this diagnosis rests on one alone. Settled by a goldfish model extension.",
-    "No deck_recon.json exists for this deck (deck-audit's freshness block reports recon absent), so nothing in this diagnosis leans on inclusion rates or on what other Gishath lists run. Every add is argued from this deck's own measured axes.",
-    "The obsolescence index proposes Three Visits over Skyshroud Claim and Farseek over Kodama's Reach on 'Lower CMC' alone. Read the cards: Skyshroud Claim fetches two Forests untapped and Kodama's Reach nets a land into hand, so the index's advantage is a mana-value comparison, not a fit judgment. No swap is proposed on that basis.",
-    "bracket_report.json carries no decklist_sha256, so deck-audit's freshness block cannot confirm it is current; the floor-4 figure here was re-derived by running bracket-check against the present 99 rather than read from the file.",
-    "card_roles.json classifies 94.4% of this deck; Descendants' Path, Hunter's Insight, Overwhelming Stampede, Rishkar's Expertise and Triumphant Chomp carry no role at all, so every axis count above is a floor. Two of those five (Hunter's Insight, Rishkar's Expertise) are card draw the card-advantage axis cannot see.",
-    "No checker-passed stack's scenario names any of the four proposed cuts, so none of them orphans a verified line. Blasphemous Act (004), Temple Altisaur (004, 005) and Polyraptor (002, 003, 005) do carry verified lines and were deliberately left alone.",
-    "SCOPE CORRECTION, iteration 2. An earlier draft of this diagnosis claimed only Bonehoard Dracosaur refuels from an empty board. That is false: Vaultborn Tyrant triggers on its own entry, and Huatli, Cultivate, Kodama's Reach, Zoological Study, Pantlaza and Trumpeting Carnosaur all work with no board. The surviving claim is narrower — one REPEATING boardless refuel, at five mana — and the prescription was resized to match: Guardian Project was dropped from the add list because it answers the count rather than the shape, leaving one card-advantage add (Herald's Horn) instead of two.",
-    "Whether the narrowed card-advantage gap or the 16-source colour shortfall is the larger real cost is not settled by any artifact here. Colour-sources is measured hypergeometrically and is immune to the goldfish's modelling gap; card-advantage is argued from the six components' draw-side assembly rates. Both readings are recorded; only one add is spent on each."
+    "There is no data/decks/gishath/deck_recon.json — the audit's freshness block reports recon absent. Nothing here is grounded in what strong Gishath lists actually run; the cost-reducer prescription is derived from this deck's own measured cast turn, not from inclusion rates. A recon pass would say whether the consensus fix is reducers, cheat-into-play effects, or simply more lands.",
+    "goldfish does not model cost reducers, rituals or extra card draw, and states so. Every commander-deployment figure in this document is therefore a conservative bound.",
+    "deck-audit matched no archetype from strategic_frame.json, so BASE ratio targets applied with no override. The frame calls the deck 'linear critical-mass ramp'; if it were re-tagged aggro, the creature and land targets would move and the ramp OVER reading would move with them.",
+    "bracket_report.json carries no decklist_sha256, so the floor of 4 is not staleness-checked against this list the way goldfish_metrics and mana_analysis are.",
+    "decklist.txt lists Wakening Sun's Avatar twice, once in the 99 and once on the bench. The audit counts the maindeck copy; the duplication is worth resolving before any swap touches that slot.",
+    "The card-advantage enumeration of fourteen sources is my reading of oracle text, not an audit figure. The audit's number is 6 and card_roles.json classifies 94.4% of this deck; Descendants' Path, Hunter's Insight, Overwhelming Stampede, Rishkar's Expertise and Triumphant Chomp have no role entry at all.",
+    "All six of this deck's goldfish targets are authored as a single any_of group, so not one of them expresses a conjunction — which is why the enrage web's two halves have never been priced together. The schema allows it; the declaration does not use it."
   ],
   "skeptic": {
     "verdict": "fail",
     "findings": [
       {
-        "where": "axes[5]",
+        "where": "engine.declared",
         "status": "over-claimed",
-        "note": "I read every maindeck card's oracle text again, this time matching on draw|discover|monarch|exile the top|you may play|into your hand|search|reveal|cycling rather than on 'draw', because the wide claim was refuted by cards the word 'draw' never appears on. The narrowed claim — 'only Bonehoard Dracosaur REPEATS without a board' — is refuted by REGAL BEHEMOTH, {4}{G}{G}, maindeck: 'When this creature enters, you become the monarch.' CR 725.2 gives the monarch an inherent triggered ability whose full text is 'At the beginning of the monarch's end step, that player draws a card' (glossary:monarch says the same). That is a repeating card every turn, requiring no board of yours, from a six-mana permanent — one mana more than Bonehoard Dracosaur and the same shape. It is also a Dinosaur, so Gishath's reveal can free-roll it. The document never mentions Regal Behemoth in the card-advantage discussion at all; it appears only in the mana component's have[] list, so this is not a judgement the doctor made and lost, it is a card the card-by-card read missed. Consequently the eight-card boardless list is also incomplete at nine. The retention caveat is real — combat damage steals the monarchy — and a diagnosis that named Regal Behemoth and argued retention would have been defensible; silence is the defect. This matters because the surviving clause is exactly what was used to SHRINK the prescription ('That is the whole surviving gap on this axis, so this is the one card-advantage add being proposed rather than two'), and the gap is two repeating boardless refuels at five and six mana, not one. Herald's Horn at three is still the shape-matching add, so the direction survives; the exhaustiveness does not."
+        "note": "The document's central framing — that the enrage web 'needs a damage source the deck has to supply itself' — states a necessity the oracle text does not support. Every enrage trigger in the `piece` component reads 'Whenever this creature is dealt damage' with no source restriction (Ripjaw Raptor, Polyraptor, Ranging Raptors, Trapjaw Tyrant, verified from cards.json), and Wrathful Raptors reads 'Whenever a Dinosaur you control is dealt damage'. Combat damage from an opponent's attacker or blocker, and any damage-based removal pointed at your board, fire all five. The claim is right about PROACTIVE, on-your-terms ignition and wrong as stated about the web's requirements, and it is load-bearing in six places: verdict ('not the ready fallback it looks like ... a conjunction of a converter body and a damage source'), archetype ('does need a damage source of its own on the board'), components[5] (`fodder`, whose reading withdraws the measured 82.4% on the conjunction argument), single_points_of_failure[1] ('fodder — the free repeatable self-ping'), lean_into[0], and open_questions[4]. Note the goldfish assumption block ('Simulates resource development, not full games (no interaction, no removal)') means no goldfish target could ever have measured opponent-sourced damage either way, so 'the conjunction the web actually needs has never been simulated' overstates what a re-declared target would settle. The enumerated facts underneath are all true and independently verified — six maindeck cards can damage your own Dinosaurs (Forerunner of the Empire, Zacama, Blasphemous Act, Itzquinth, Triumphant Chomp, Trumpeting Carnosaur; a regex over every maindeck oracle text returns no seventh, and Boros Charm and Wrathful Raptors are correctly excluded), four are one-shots, and Forerunner is the only free repeatable one. The defect is the modal leap from 'the only source you control' to 'the source the web needs'. The prescription survives: lean_into[0] already sizes the two adds off the commander's 7.969 cast turn, 'not off the enrage rate this entry withdraws'."
       },
       {
-        "where": "engine.components[4]",
-        "status": "miscounted",
-        "note": "Unchanged from iteration 2 and still wrong. 'Pugnacious Hammerskull has no enrage trigger at all... so the group's real enrage size is eight' — the Hammerskull catch is correct, but of the nine members only FOUR carry an Enrage trigger: Ripjaw Raptor, Polyraptor, Ranging Raptors and Trapjaw Tyrant. I re-read all nine: Bonehoard Dracosaur (upkeep impulse) and Trumpeting Carnosaur (ETB discover 5, plus a discard-to-damage activation) have no damage-triggered ability at all, and Temple Altisaur (damage prevention) and Wrathful Raptors (redirect) are web enabler and payoff rather than enrage cards. Presenting one subtraction as 'the' correction implies the other eight were checked, and this is the reading a pilot would use to decide how much the web can absorb."
-      },
-      {
-        "where": "engine.single_points_of_failure[0]",
-        "status": "over-claimed",
-        "note": "Still a six-card component in a field whose computed meaning in deck_audit.py is thinnest_size <= 1 (the audit returns [] for this deck). I applied the same test to ur-dragon and passed it there, so the line is not the field name: the audit marks this component size 6, thin: FALSE, thinnest: FALSE, and the diagnosis's own engine.components entry also marks it thinnest: false — while two other components in the same block sit at five cards and 48.5%/62.2% by turn six. An entry that is neither thin by the audit's test nor the thinnest thing in its own document is not a single point of failure; it is the component the doctor most wants to thicken, which is a different and legitimate claim the why already makes. The closers were improved this iteration and now name the three actual proposed adds, which is right."
-      },
-      {
-        "where": "engine.single_points_of_failure[2].closers",
-        "status": "unjustified",
-        "note": "Unchanged from iteration 2. The closers list for 'Protection held for the board' is still ['Akroma's Will', 'Heroic Intervention', 'Flawless Maneuver', 'Boros Charm', 'Eerie Interlude'] — character for character the component's own have[] list. Cards that already constitute the component cannot close it, and no add_candidate proposes any protection, so the entry names a 48.5%-by-turn-six problem and prescribes nothing. single_points_of_failure[1] has the same defect in weaker form: its closers are three protection spells already in the 99, which do not add redundancy for a one-card hub — and that entry's own argument is that Forerunner of the Empire has no replacement."
-      },
-      {
-        "where": "engine.single_points_of_failure[1]",
+        "where": "engine.components[5].role",
         "status": "supported",
-        "note": "Still the strongest analysis in either document, and I re-verified every leg against oracle text. Both checker-passed enrage lines (stacks 003 and 005, verdict pass) have Forerunner of the Empire on the board. Temple Altisaur reads 'If a source would deal damage to ANOTHER Dinosaur you control' and Forerunner is a Human Soldier, so it is protected by nothing. Gishath's trigger puts only 'Dinosaur creature cards' onto the battlefield, so the reveal cannot find it. Its own sweep hits itself and it is a 1/3. A genuine one-card hub inside components the audit sizes at 7 and 9 — precisely what a size-based test cannot see, and the reason the diagnosis's single_points_of_failure field is worth having at all."
+        "note": "ADJUDICATING THE JUDGEMENT CALL: `fodder` IS a legitimate charter value. .claude/agents/deck-doctor.md:235 gives the enum verbatim as \"role\": \"outlet|fodder|payoff|ignition|mana|protection|piece\". No role name was invented. Roles across the seven components are unique (ignition/outlet/protection/payoff/piece/fodder/mana at 2/5/5/7/5/6/14), `thinnest: true` sits on ignition at 2 which is the true minimum, and the two re-scoped classes are disjoint as the reading claims (ignition = Otepec Huntmaster + Urza's Incubator; fodder = the six self-damage sources, containing neither)."
       },
       {
-        "where": "verdict, axes[12]",
+        "where": "engine",
         "status": "supported",
-        "note": "The re-grounding is real, not the same reasoning in a new sentence. The claim now rests on the six components' draw-side assembly, and I checked both halves. The four rates cited as 'between 48.5% and 62.3% by turn six' are the audit's by_turn_6_rate for the reducer (0.562), Dinosaur payoff (0.623), connection kit (0.514) and protection (0.485) components — exactly four, and the stated bounds are exactly the min and max of them. And the independence claim holds: goldfish_metrics.json meta.model_assumptions says verbatim 'Target assembly counts cards DRAWN by a turn (cast cards still count)', so assembly is a draw-side measure that the 'Cost reducers, rituals, and extra card draw are not modeled' gap does not reach, while the commander-cast and available-mana figures it replaced are mana-side and do sit inside that gap. The consistency axis now labels the turn-6 land-drop rate a ceiling for the same reason, and open_questions[1] and gaps[0] both state the gap at the point of use rather than only in a summary."
+        "note": "REFERENCE SWEEP IS COMPLETE. Checked every site the orchestrator named and every other class-naming string. add_candidates[0].closes and [1].closes both read 'engine component: ignition — making Gishath castable' and both cards do reduce a Dinosaur/chosen-type creature spell, which Gishath is (Legendary Creature — Dinosaur Avatar); add_candidates[2].closes names the axis `colour-sources`, not a component. single_points_of_failure[0] resolves to ignition and [1] to fodder, and Forerunner of the Empire is in the fodder `have` list (it was not in `piece`, which is the pass-2 defect). cut_candidates[3] names Forerunner by card, not by class. open_questions[1] refers to the goldfish target label 'Cost reducer', open_questions[3] to 'the class ... from two to four' (ignition, 2+2=4, consistent), open_questions[4] to 'a converter body AND a source of damage' (piece + fodder), and open_questions[5] now reads \"plan A supplies plan B's damage\". lean_into[0]'s 'five-card converter class' / 'six-card damage class' match piece and fodder. No dangling reference to the old labelling survives."
       },
       {
-        "where": "gaps[5]",
+        "where": "axes",
         "status": "supported",
-        "note": "The dead universal is recorded as dead inside the artifact, which is what I asked for. The SCOPE CORRECTION gap names the refuted claim, names Vaultborn Tyrant's self-trigger and the six other boardless cards by name, and states that the prescription was resized because of it. The prescription really did shrink: Guardian Project is gone from add_candidates with the reason given ('it answers the count, and the count was the refuted half'), leaving one card-advantage add. The eight-effect land-fetch list in gaps[0] is also precise rather than approximate — I checked it, and Windswept Heath is correctly EXCLUDED because it sacrifices itself for one land (net zero) while Krosan Verge and Myriad Landscape sacrifice for two (net one)."
+        "note": "Re-ran `manamap pilot deck-audit gishath --json` and checked all 16 measured.value figures AND every number inside every `reading` against it — not just the values the validator re-derives. Matches: mana-base 35 copies / 24 entries; mana-sources 48 vs Burgess 42 (31+3+8) with 13 persistent producers; taplands 7 unconditional + 5 conditional, mana_analysis.lands.enters_tapped 12 of 35 = 34%; colour-sources W 20 / R 20 / G 26 against 36, on_curve_probability.with_rocks_and_dorks W 0.58 R 0.58 G 0.742; ramp 17 vs 10-12; card-advantage 6 with the audit's three-card probe; interaction 11 inside interactive_suite_copies 18; sweepers 2; protection 6; threat-density 3; creatures 34 (29 Dinosaur copies, and the five non-Dinosaurs named in the reading are exactly the five I get from the type lines); interaction-breadth 5 with uncovered []; consistency 0.894 with keep_first_seven_rate 0.771; curve modal 3 with mana_value_8_plus 6 of 65 nonland entries — and the six named cards (Gishath/Polyraptor/Wakening 8, Blasphemous Act/Zacama 9, Ghalta 12) are exactly the maindeck cards at cmc>=8; power floor 4 on game_changers [Enlightened Tutor, Worldly Tutor]. No reading disagrees with its own value in the way the validator cannot see."
       },
       {
-        "where": "add_candidates",
+        "where": "engine.components[3]",
         "status": "supported",
-        "note": "Re-attacked all four after the resize. None is in the current 99. Herald's Horn (colourless) and the two bench cards Knight of the Stampede ({3}{G}) and Kinjalli's Caller ({W}) and Drover of the Mighty ({1}{G}) are all Commander-legal, inside the Naya identity, and game_changer = False; I confirmed Knight of the Stampede, Kinjalli's Caller and Drover of the Mighty really are in this deck's sideboard in cards.json, matching their source: 'sideboard'. The reducer arithmetic checks out because Gishath's type line is 'Legendary Creature — Dinosaur Avatar': Kinjalli's Caller's {1} prices him at seven and Knight of the Stampede's {2} takes him to five alongside it, exactly as claimed. Herald's Horn's upkeep look-at-top is a repeating boardless refuel at three, which is the right shape even under my Regal Behemoth finding. The four natural_cuts are now one-to-one with the four cut_candidates, with no collision. bracket_delta 4 -> 4 re-derived by re-running bracket-check: floor 4, driven by Enlightened Tutor and Worldly Tutor plus the single Polyraptor + Forerunner of the Empire two-card infinite, none of which any add or cut touches."
+        "note": "PAYOFF PROVENANCE IS CORRECT BOTH WAYS. audit.engine.targets[2].components[0].odds.opening_seven == 0.412 and measured.assembled_rate == 0.737 / by_turn_6_rate == 0.623, so 41.2% is attributed to the closed form and 73.7% / 62.3% to the simulation exactly as the reading says. I reproduced the whole ladder with manabase.hypergeometric_at_least(k, 7, 1, 99): 1->7.07%, 3->19.94%, 4->25.77%, 5->31.24%, 6->36.36%, 7->41.15%. That confirms the 19.9%/25.8% in add_candidates[0] and open_questions[3], the 31.2% used for both size-5 groups, the 36.4% for the size-6 group, the 7.1% for a named card, and the claim that the audit's 41.2% and the redundancy citation's '7 is 41%' are the same arithmetic rather than two measurements."
+      },
+      {
+        "where": "engine.components[5]",
+        "status": "supported",
+        "note": "BLASPHEMOUS ACT OBJECTION VERIFIED against stacks/004-wrathful-blasphemous-temple.json (checker.verdict == pass, iterations 2). The scenario stack note reads 'cast for {R} (nine creatures on the battlefield reduce the {8} to nothing)' and the checker's iteration_2_note confirms the nine-creature count, so the removed 'nine-mana' claim was correctly removed and cost is correctly no longer the objection. The surviving objection holds: the checker finding at step 2 records \"Card text 'another Dinosaur you control' ... supports Altisaur self-exclusion: dealt 13; others dealt 1\", and step 4's SBA finding kills Altisaur at 13>=4 — the artifact's 'Altisaur itself, and any non-Dinosaur you control, still take the full amount' is exactly that. One-shot is true from the oracle text (Sorcery)."
+      },
+      {
+        "where": "add_candidates[1]",
+        "status": "supported",
+        "note": "HERALD'S HORN NOW RESTS ON ORACLE TEXT AND THE INDEX IS QUOTED AGAINST ITSELF CORRECTLY. `manamap pilot upgrade-facts gishath --json` gives partners_in_deck for Herald's Horn as exactly Sol Ring, Command Tower, Arcane Signet, Exotic Orchard, Path of Ancestry — five rocks and lands, every synergy reason 'Ramp + Cost Reduction', not one a Dinosaur — and the note quoted is verbatim from upgrade-facts: 'The synergy graph is a format-wide top-10 shortlist, not a per-deck fit score; partner counts locate candidates, they do not rank them.' The ranking clause is gone, and it needed to be: Herald's Horn ties at 5 partners with Goblin Anarchomancer, Bolt Bend and four Medallions. The oracle text quoted ('Creature spells you cast of the chosen type cost {1} less to cast') is verbatim from cards.csv, and the upkeep look-at-top is real."
       },
       {
         "where": "cut_candidates",
         "status": "supported",
-        "note": "All four re-checked. Every card is in the current 99, none is the commander, and I recomputed orphans_stack from the scenario blocks of all five stacks (001-005, all verdict pass): none of Belbe's Portal, Wakening Sun's Avatar, Myriad Landscape or Ghalta appears in any scenario, so null is right on all four, and gaps[5] states it. The list still has a painful entry and it is still the right one. Ghalta's why was rewritten to drop the inaccurate 'its body is board-contingent' and now reads 'it needs a board to be cheap, needs a board to matter', which is exactly right for a fixed 12/12 whose only other text is its own cost reduction; the cost_of_cutting still concedes it is the deck's best mana-efficiency card and names the ceiling-for-median trade outright. Wakening Sun's Avatar's 'if you cast it from your hand' clause, its 7/7 body, and the claim that it is the only mana-value-8+ creature the reveal switches off entirely all still verify."
+        "note": "Attacked all four. None of Wakening Sun's Avatar, Ghalta, Myriad Landscape or Zacama appears in any scenario block of the five checker-passed stacks (boards are: 001 Gishath/Pantlaza/Garruk's Uprising; 002 Marauding Raptor + Polyraptor in hand; 003 Forerunner/Polyraptor; 004 Wrathful/Temple Altisaur/Ripjaw/Gishath; 005 Forerunner/Ranging/Trapjaw/Ripjaw/Polyraptor), so orphans_stack [] is right on all four. Every cost_of_cutting is a real cost rather than a restatement of `why`: sweepers 2->1 at the band floor with Austere Command's asymmetry and Blasphemous Act's Altisaur dependency both true; Ghalta's discount named; mana-base 35->34 named; Zacama's untap-all-lands and three-mode coverage named. The list carries one `painful`, so it did not dodge the job, and the label survives: mana_analysis confirms Wakening Sun's Avatar is the deck's only card with a triple pip (W max_pips 3, R and G max 2) in a joint-worst colour (W 20 = R 20), and it is the only wipe that is one-sided with no setup."
       },
       {
-        "where": "axes[3]",
+        "where": "add_candidates",
         "status": "supported",
-        "note": "The colour-sources rewrite adds a checkable claim and it checks out. 'The only triple-pip card in the deck is Wakening Sun's Avatar at {5}{W}{W}{W}' — mana_analysis.json pips gives max_pips W 3, G 2, R 2, so W is the only colour with a three-pip demand and that card is its source. The commander asking one pip of each colour matches Gishath's {5}{R}{G}{W}. All the source figures are still the current ones (total W 20 / R 20 / G 26, lands-only on-curve W 0.373 / R 0.446 / G 0.580, rising to 0.58 for W and R) — none of the under-reported 12/14/13 figures was inherited. The new gap acknowledging that nothing here settles whether this axis or card-advantage is the larger real cost is the honest disposition."
+        "note": "All three adds are Commander-legal and inside the G/R/W identity (cards.csv: Knight of the Stampede {3}{G} ci G, Herald's Horn {3} colourless, Drover of the Mighty {1}{G} ci G; all legalities_commander == legal). Knight of the Stampede and Drover are genuinely on the bench (cards.json is_sideboard), Herald's Horn genuinely is not in the deck. The `closes` claims survive an oracle read: Knight reduces Dinosaur spells by {2} and Gishath is a Dinosaur creature spell, Herald's Horn reduces creature spells of the chosen type by {1}; Drover is tagged ramp:dork in card_roles.json and taps for any colour, so mana_analysis would count it as +1 W, +1 R and +1 G while Myriad Landscape it replaces contributes no coloured source — the mechanism is right even though the axis stays far under, and the entry states the magnitude rather than claiming closure. The ignition re-scope that all this rests on is verified independently: a regex for 'less to cast' over every maindeck oracle text returns exactly four cards (Otepec Huntmaster, Urza's Incubator, and Blasphemous Act and Ghalta which reduce only themselves), and Descendants' Path casts off the library, Belbe's Portal and Monster Manual put a creature from hand, and Huatli's Roar III searches to hand — none can touch the command zone."
       },
       {
-        "where": "axes[*].citations",
+        "where": "axes[10]",
         "status": "supported",
-        "note": "Re-fetched every cited section and re-read each whole, including the one citation the revision added (strategy:deckbuilding.ratios, 'they are counts of *functions*, not cards, so a card doing two jobs fills two slots') — verbatim, and used for exactly the function-versus-count argument that section makes, which is the right citation for a claim that the axis binds at a narrower scope than its number. Duke's judgment layer is still quoted WITH its 'in 60-card terms' qualifier. strategy:deckbuilding.cutting, strategy:resource-hedging.wrath-math and strategy:multiplayer.commander-insurance all verify verbatim and in context."
+        "note": "Fetched all thirteen cited strategy sections WHOLE, not the fragments. Every quote is verbatim and none is used against its section. The two traps the charter names are both avoided: `archetype` states up front that no archetype matched so BASE targets applied and that the ratio targets are 'starting points, per the audit's own first note', and axes[7] (card-advantage) quotes deckbuilding.ratios' own 'they are counts of *functions*, not cards' to engage the probe rather than to call the axis a weakness — the audit's probe (Jetmir's Garden, Rishkar's Expertise, Vaultborn Tyrant) is named and extended, and gaps[5] flags the fourteen-source enumeration as the doctor's oracle reading, not an audit figure. The superlatives in the engine block hold against their own membership: I grepped the maindeck and only Rogue's Passage can make a creature unblockable, only Akroma's Will grants Gishath evasion, and the three double-strike grants really are Akroma's Will, Boros Charm and Huatli's Roar IV; 0.590 really is the lowest of the six measured group rates; all eleven tutors carry tutor:narrow and none tutor:unrestricted."
+      },
+      {
+        "where": "open_questions",
+        "status": "supported",
+        "note": "No combo line is stated as fact without a pass. The Polyraptor + Forerunner two-card-infinite tag is disposed of by stack 003 (checker pass, 'maximum SEVEN Polyraptor tokens ... self-terminating'), the Marauding Raptor + Polyraptor mandatory loop is stack 002 (checker pass) and is left as open_questions[2] rather than asserted, and the two SPOF closers that carry the hazard (Marauding Raptor, Aether Flash — the latter also on upgrade-facts' infinite-flagged list) are named in that same question. lean_into[0]'s stack-by-stack account matches the artifacts: 001 and 004 hold Gishath, 002/003/005 do not, and 002/003/005 are ignited by Marauding Raptor or Forerunner. lean_into[2]'s Congregation at Dawn claim is compositional on stack 001's verified reveal mechanic and states its own failure mode. Freshness is clean and correctly reported: goldfish_metrics.json and mana_analysis.json both carry the current decklist sha256 fb3507e3, and gaps[3] volunteers that bracket_report.json carries none, so no figure in the document is stale."
       }
     ],
-    "iterations": 3,
-    "note": "DIAGNOSE_MAX_ITERATIONS reached with four findings open. The document FAILS ON SUBSTANCE, not on presentation: its narrowed card-advantage claim -- 'only Bonehoard Dracosaur repeats without a board' -- is still false. **Regal Behemoth** is maindeck at {4}{G}{G} and makes you the monarch, and CR 725.2 gives the monarch 'At the beginning of the monarch's end step, that player draws a card' -- a second repeating, board-independent refuel, on a Dinosaur the reveal can free-roll. The document never mentions it in the card-advantage discussion. Treat the binding-constraint argument as UNSETTLED and do not act on its adds until it is re-derived against Regal Behemoth. Not blessed: `deck-diagnosis` stays MISS."
+    "iterations": 3
   }
 }
