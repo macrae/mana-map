@@ -28,6 +28,7 @@ from manamap.pilot.common import (
     checker_passed,
     presentable,
     deck_dir,
+    load_card_roles,
     load_deck_cards,
     load_json,
     load_synergy_graph,
@@ -536,6 +537,40 @@ def render_by_the_numbers(issue, plan, goldfish, cards_by_name):
     )
 
 
+def _bench_line(card):
+    """What a bench card says when nobody has written it a blurb.
+
+    `manual_prose.card_roles` is the writer's key for THE 99, and the bench is
+    not the 99 — so on decks with a deep bench the tiles said "no role blurb
+    written yet" 48, 27 and 20 times. That placeholder was added deliberately,
+    to stop the gap being SILENT, and it did its job: the gap is real. But a
+    tile announcing its own incompleteness teaches nothing, and filling 95 of
+    them with prose would lengthen the issue the founder already called too
+    long.
+
+    `card_roles.json` — the pipeline artifact, not the prose key — already
+    classifies every card in the corpus. Rendering that is deterministic, free,
+    and true: "Protection · granted" tells a reader what the card is for, which
+    is all a bench tile owes them.
+    """
+    try:
+        tags = load_card_roles().get(card["name"]) or []
+    except (FileNotFoundError, KeyError):
+        tags = []
+    seen, parts = set(), []
+    for tag in tags:
+        family, _, detail = str(tag).partition(":")
+        label = f"{family.replace('-', ' ').capitalize()}" + (
+            f" · {detail.replace('-', ' ')}" if detail else "")
+        if label not in seen:
+            seen.add(label)
+            parts.append(label)
+    if parts:
+        return " / ".join(parts[:3]) + ". On the bench."
+    # No taxonomy entry at all: say what it is rather than what is missing.
+    return f"{card.get('type_line') or 'Card'}. On the bench."
+
+
 def _rows(pairs):
     """`<dt>/<dd>` rows for the pairs that actually have a value."""
     return "".join(f"<dt>{esc(k)}</dt><dd>{esc(v)}</dd>" for k, v in pairs if v)
@@ -827,9 +862,7 @@ def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
             # to bypass _card_tile entirely and render with an empty <p> when nobody
             # had written it a role blurb — silently, with no TODO.
             side_roles = dict(roles)
-            side_roles.setdefault(
-                card["name"],
-                f"{card.get('type_line', 'Sideboard card')} — no role blurb written yet.")
+            side_roles.setdefault(card["name"], _bench_line(card))
             side_anchor = (None if card["name"] in by_name
                            else CARD_ANCHORS.get(card["name"]))
             side_tiles.append(card_tile(card, side_roles, synergy,

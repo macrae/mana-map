@@ -541,14 +541,36 @@ def test_sideboard_tiles_get_synergy_chips_like_any_other_card():
     assert '<span class="chip">Tokens + Sacrifice</span>' in the_99
 
 
-def test_a_real_sideboard_card_without_a_blurb_says_so_instead_of_rendering_blank():
-    """An empty <p> reads as "needs no explanation", not "nobody wrote this"."""
+def test_a_bench_card_without_a_blurb_says_what_it_is_not_what_is_missing():
+    """An empty <p> reads as "needs no explanation", not "nobody wrote this" —
+    so the tile must always say something. It used to say "no role blurb written
+    yet", which made the gap visible but taught the reader nothing, and on decks
+    with a deep bench it said it 48, 27 and 20 times.
+
+    `manual_prose.card_roles` is the writer's key for THE 99 and the bench is not
+    the 99, so those blurbs were never in scope. The fallback is the pipeline's
+    own `card_roles.json` taxonomy, which classifies every card in the corpus.
+    """
     doc = deck_doc()
     doc["cards"].append(
         {"name": "Unblurbed Card", "is_commander": False, "is_sideboard": True,
          "type_line": "Instant", "mana_cost": "{R}", "cmc": 1.0,
          "image": "https://img/u.jpg", "quantity": 1})
-    assert "no role blurb written yet" in render(deck_doc=doc)
+    html_out = render(deck_doc=doc)
+    assert "no role blurb written yet" not in html_out
+    # Still not blank, and it names the card's own type when the taxonomy has
+    # nothing for it (this fixture name is not in the corpus).
+    assert esc("Instant. On the bench.") in html_out
+
+
+def test_bench_fallback_prefers_the_role_taxonomy_over_the_type_line():
+    from manamap.pilot.build_manual import _bench_line
+    line = _bench_line({"name": "Sol Ring", "type_line": "Artifact"})
+    assert "Ramp" in line and "rock" in line
+    assert "On the bench." in line
+    # A card the taxonomy has never heard of still gets a sentence.
+    assert _bench_line({"name": "Nonexistent Card XYZ",
+                        "type_line": "Enchantment"}) == "Enchantment. On the bench."
 
 
 def test_accessories_still_get_the_table_aid_treatment():
