@@ -79,12 +79,17 @@ def test_quorum_is_two_stacks():
 
 @requires_deck
 def test_heliod_primary_win_line_is_undeclared():
-    """The regression this module exists for.
+    """The regression this module exists for, now the other way round.
 
-    Hullbreaker Horror + Sol Ring + Arcane Signet + Aetherflux Reservoir is
-    heliod's primary win line, verified by a checker-passed stack and named in
-    four other artifacts — and no goldfish target mentions it, so the simulator
-    has never measured how the deck actually wins.
+    Hullbreaker Horror + a cheap rock + Aetherflux Reservoir is heliod's primary
+    win line, verified by checker-passed stacks 001 and 006 and named in four
+    other artifacts. No goldfish target mentioned it, so the simulator had never
+    measured how the deck actually wins — and when one was finally declared the
+    answer was 0.7% assembled, 0.3% by turn six.
+
+    This asserts the declaration STAYS. Deleting the target would restore the
+    blind spot silently: every rate the engine block prints would still be
+    correct, and the one that matters would simply be absent again.
     """
     from manamap.pilot.common import deck_dir
     base = deck_dir("heliod")
@@ -93,9 +98,11 @@ def test_heliod_primary_win_line_is_undeclared():
         pytest.skip("heliod goldfish_targets.json not present")
     with open(path) as f:
         doc = json.load(f)
-    errors = vgt.validate(doc, "heliod", base)
-    assert any("Hullbreaker Horror" in e for e in errors), (
-        "the primary win line must be reported as undeclared")
+    declared = vgt._declared_names(doc)
+    assert "Hullbreaker Horror" in declared, (
+        "the primary win line must stay declared — an undeclared win line is "
+        "measured by nothing")
+    assert not any("Hullbreaker Horror" in e for e in vgt.validate(doc, "heliod", base))
 
 
 @requires_deck
