@@ -60,8 +60,9 @@ def test_per_opponent_and_pod_total_are_stated_separately():
 
 def test_both_board_shapes_are_read():
     """Seven decks use `opponents: [...]`; yawgmoth uses `opponent_a..d`."""
-    listed = sf.opponents_of({"board": {"opponents": [{"name": "P2", "life": 33}]}})
-    assert listed == [{"seat": "P2", "life": 33}]
+    listed = sf.opponents_of(
+        {"board": {"opponents": [{"name": "P2", "life": 33, "board": ["a 4/4"]}]}})
+    assert listed == [{"seat": "P2", "life": 33, "board": ["a 4/4"]}]
 
     keyed = sf.opponents_of({
         "board": {"you": [], "opponent_a": ["no permanents"], "opponent_b": ["x"]},
@@ -69,6 +70,22 @@ def test_both_board_shapes_are_read():
     })
     assert [o["seat"] for o in keyed] == ["opponent_a", "opponent_b"]
     assert [o["life"] for o in keyed] == [40, 33]
+    # In the keyed shape the value under the key IS that seat's board.
+    assert [o["board"] for o in keyed] == [["no permanents"], ["x"]]
+
+
+def test_decision_scenarios_name_their_seats():
+    """Decision boards carry `seat`, not `name` — reading only `name` numbered
+    every seat generically and threw away the archetype the coach wrote."""
+    opps = sf.opponents_of({"board": {"opponents": [
+        {"seat": "A — Azorius flash control", "life": 35, "board": "four untapped lands"}]}})
+    assert opps[0]["seat"] == "A — Azorius flash control"
+    assert opps[0]["board"] == "four untapped lands"
+
+
+def test_a_string_extras_block_does_not_throw():
+    """`extras` is free-form and decisions write it as a string, not a dict."""
+    assert sf.opponents_of({"board": {"opponents": []}, "extras": "prose here"}) == []
 
 
 # ── Sibling comparability ────────────────────────────────────────────────

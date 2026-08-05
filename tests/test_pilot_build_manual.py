@@ -742,3 +742,73 @@ def test_art_break_renders_after_sources_say():
     pos_break = html_out.index('class="art-break"')
     pos_numbers = html_out.index('id="by-the-numbers"')
     assert pos_sources < pos_break < pos_numbers
+
+
+# ── The board, stated before anything argues about it ────────────────────
+#
+# Every stack file carries board / hand / graveyard / mana_available / stack.
+# Until the founder read a shipped issue, the renderer emitted exactly ONE of
+# them (`question`), so a reader met a hundred-word question about a board they
+# had never been shown. These pin the block and the two shapes it must survive.
+
+
+def test_board_block_renders_every_side_of_the_scenario():
+    from manamap.pilot.build_manual import render_board_block
+    out = render_board_block({
+        "board": {
+            "you": ["Sac Outlet (2/2)", "Payoff Engine (enchantment)", "Swamp",
+                    "Insect token (already sacrificed to pay the cost)"],
+            "opponents": [{"name": "P2", "life": 33, "board": ["a 4/4 creature"]}],
+        },
+        "hand": ["Dark Ritual"], "graveyard": ["Bloodghast"], "mana_available": "{2}{B}",
+        "stack": [{"pos": 0, "object": "Bottom thing"}, {"pos": 1, "object": "Top thing"}],
+    })
+    for expected in ("Sac Outlet", "Payoff Engine", "Swamp", "P2", "33 life",
+                     "a 4/4 creature", "Dark Ritual", "Bloodghast", "{2}{B}"):
+        assert esc(expected) in out, expected
+    # The cost payment is listed but is NOT on the battlefield — folding it in
+    # changes the body count, which is what these engines are bounded by.
+    assert "Already paid" in out
+    # pos 0 is the BOTTOM (docs/pilot.md), so the reader's first question —
+    # what resolves next — must be rendered first.
+    assert out.index("Top thing") < out.index("Bottom thing")
+    assert "resolves first" in out
+
+
+def test_board_block_survives_a_decision_scenario():
+    """Decisions write `you` as prose and their stack as bare strings; stacks
+    write `you` as entries and the stack as dicts. Both are in the corpus."""
+    from manamap.pilot.build_manual import render_board_block
+    out = render_board_block({
+        "board": {"you": "Turn 8, eight lands, Pantlaza out.",
+                  "table": "Two blue seats have passed."},
+        "stack": ["Eminence trigger — will create one token"],
+    })
+    assert "Turn 8, eight lands" in out
+    assert "Two blue seats have passed." in out
+    assert "Eminence trigger" in out
+
+
+def test_board_block_is_empty_rather_than_a_placeholder():
+    from manamap.pilot.build_manual import render_board_block
+    assert render_board_block({}) == ""
+    assert render_board_block(None) == ""
+
+
+def test_seat_keys_are_never_shown_to_the_reader():
+    """`scenario_facts` emits machine keys because agents read it. The page
+    must not carry a snake_case identifier."""
+    from manamap.pilot.build_manual import render_board_block
+    out = render_board_block({
+        "board": {"you": [], "opponent_a": ["no permanents"]},
+        "extras": {"life_totals": {"opponent_a": 40}},
+    })
+    assert "Opponent A" in out and "opponent_a" not in out
+
+
+def test_no_python_repr_reaches_the_page():
+    """The shipped bug: `", ".join(map(str, value))` over a list of dicts put
+    `{'seat': 'A — Azorius flash control', 'life': 35}` on the published page."""
+    html_out = render()
+    for leak in ("{'seat'", "{&#x27;seat&#x27;", "{'life'", "{&#x27;life&#x27;"):
+        assert leak not in html_out, leak

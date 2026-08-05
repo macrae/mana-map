@@ -46,7 +46,6 @@ from manamap.pilot.design import (
     esc,
     fast_facts,
     folio,
-    map_key,
     pilot_tip,
     power_meter,
     printing_credit,
@@ -54,6 +53,7 @@ from manamap.pilot.design import (
     threat_box,
     violator,
 )
+from manamap.pilot.scenario_facts import board_bodies, opponents_of
 from manamap.pilot.issue_spec import (
     ACTS,
     BREATHER_AFTER,
@@ -77,9 +77,6 @@ ACCENT = {
     "keep-or-ship": "var(--tier-coach)", "upgrade-watch": "var(--y2k-blue)",
     "judges-desk": "var(--stamp-red)", "back-page": "var(--ink)",
 }
-
-MAP_KEY_ENTRIES = [("⚡", "mana floated"), ("🜲", "storm count"),
-                   ("⛃", "treasure"), ("♥", "life")]
 
 TODO = '<p><span class="todo">TODO</span> This section is awaiting content.</p>'
 
@@ -539,6 +536,142 @@ def render_by_the_numbers(issue, plan, goldfish, cards_by_name):
     )
 
 
+def _rows(pairs):
+    """`<dt>/<dd>` rows for the pairs that actually have a value."""
+    return "".join(f"<dt>{esc(k)}</dt><dd>{esc(v)}</dd>" for k, v in pairs if v)
+
+
+def _seat_label(seat):
+    """`opponent_a` → "Opponent A". Seats the coach named keep their own name.
+
+    `scenario_facts` emits machine keys because it is read by agents; the reader
+    should not meet a snake_case identifier on the page.
+    """
+    seat = str(seat or "")
+    if re.fullmatch(r"opponent[_ ]?\w*", seat, re.I):
+        tail = seat.split("_", 1)[1] if "_" in seat else ""
+        return f"Opponent {tail.upper()}".strip()
+    return seat
+
+
+def _as_text(value):
+    """A board field is a list of entries or a prose blob. Render either."""
+    if isinstance(value, (list, tuple)):
+        return ", ".join(str(v) for v in value if v)
+    return str(value or "")
+
+
+def render_board_block(scenario, label="The board"):
+    """The board, stated before anything argues about it.
+
+    Every stack file carries `board`, `hand`, `graveyard`, `mana_available` and an
+    ordered `stack`, and until now the magazine rendered exactly one of them —
+    `question` — so the reader met a hundred-word question about a board they had
+    never been shown. Board parsing is NOT reimplemented here: `scenario_facts`
+    already splits a board into bodies/permanents/lands/spent and already reads both
+    corpus opponent shapes, and it was written because agents kept getting these
+    same lookups wrong in prose.
+
+    Two board shapes, both real: stack scenarios list `board.you` as entries, and
+    decision scenarios write it as one prose string with a `table` beside it.
+    Composed from existing furniture (`.scenario`, `.branches`/`.branch`) so it
+    costs no new CSS. Anything absent is omitted — never invented, never a
+    placeholder.
+    """
+    scenario = scenario or {}
+    board = scenario.get("board") or {}
+    seats = []
+
+    you = board.get("you")
+    if isinstance(you, (list, tuple)):
+        split = board_bodies(you)
+        your_rows = _rows((
+            ("Creatures", _as_text(split["creature_bodies"])),
+            ("Permanents", _as_text(split["other_permanents"])),
+            ("Lands", _as_text(split["lands"])),
+            # Listed but NOT on the battlefield — folding it into either side
+            # changes the body count, which is what these engines are bounded by.
+            ("Already paid", _as_text(split["spent_paying_a_cost"])),
+        ))
+    else:
+        your_rows = _rows((("Battlefield", _as_text(you)),))
+    your_rows += _rows((
+        ("Hand", _as_text(scenario.get("hand"))),
+        ("Graveyard", _as_text(scenario.get("graveyard"))),
+        ("Mana available", _as_text(scenario.get("mana_available"))),
+    ))
+    if your_rows:
+        seats.append(f'<div class="branch"><h4>You</h4><dl>{your_rows}</dl></div>')
+
+    for opp in opponents_of(scenario):
+        life = opp.get("life")
+        head = esc(_seat_label(opp["seat"])) + (
+            f" — {esc(life)} life" if life is not None else "")
+        body = _rows((("Board", _as_text(opp.get("board"))),))
+        seats.append(f'<div class="branch"><h4>{head}</h4><dl>{body}</dl></div>')
+
+    # Decision scenarios describe the rest of the pod as one prose `table` field.
+    table = board.get("table")
+    if table:
+        seats.append('<div class="branch"><h4>The table</h4>'
+                     f'<dl>{_rows(((" ", _as_text(table)),))}</dl></div>')
+
+    # `pos` 0 is the BOTTOM of the stack (docs/pilot.md, validate_stack), so the
+    # reader's first question — what resolves next — is the LAST entry.
+    entries = [s for s in (scenario.get("stack") or []) if s]
+    on_stack = ""
+    if entries:
+        items = []
+        for i, obj in enumerate(reversed(entries)):
+            # Stack scenarios carry {pos, object, controller, note}; decision
+            # scenarios carry a bare string per entry. Both are in the corpus.
+            if isinstance(obj, dict):
+                what, note, who = obj.get("object", ""), obj.get("note"), obj.get("controller")
+            else:
+                what, note, who = str(obj), None, None
+            meta = " · ".join(x for x in (f"controlled by {who}" if who else "", note) if x)
+            items.append(
+                f'<li><b>{esc(what)}</b>'
+                + (f'<div class="effect">{esc(meta)}</div>' if meta else "")
+                + ("" if i else '<span class="lbl"> — resolves first</span>')
+                + "</li>")
+        on_stack = ('<span class="lbl">On the stack, top first</span>'
+                    f'<ol>{"".join(items)}</ol>')
+
+    if not seats and not on_stack:
+        return ""
+    return (f'<div class="scenario"><span class="lbl">{esc(label)}</span>'
+            + (f'<div class="branches">{"".join(seats)}</div>' if seats else "")
+            + on_stack + "</div>")
+
+
+def render_after_block(final):
+    """What the board looks like when the line is done.
+
+    `final_state.you` is free-form — the corpus carries 80+ distinct keys across 48
+    files — so this reads only the three that are common and well-typed and skips
+    the rest rather than guessing at a schema that does not exist.
+    """
+    final = final or {}
+    you = final.get("you") if isinstance(final.get("you"), dict) else {}
+    rows = _rows((
+        ("Your life", you.get("life")),
+        ("Your battlefield", _as_text(you.get("battlefield"))),
+    ))
+    seats = []
+    for opp in final.get("opponents") or []:
+        if isinstance(opp, dict):
+            name = _seat_label(opp.get("seat") or opp.get("name") or "Opponent")
+            life = opp.get("life")
+            if life is not None:
+                seats.append(f"{name}: {life}")
+    rows += _rows((("Opponents", ", ".join(str(s) for s in seats)),))
+    if not rows:
+        return ""
+    return ('<div class="scenario"><span class="lbl">After the line</span>'
+            f'<dl class="branch">{rows}</dl></div>')
+
+
 def render_the_kill(issue, plan, stacks, prose_doc, cards_by_name):
     dept = plan_dept(plan, "the-kill")
     spreads = []
@@ -552,9 +685,11 @@ def render_the_kill(issue, plan, stacks, prose_doc, cards_by_name):
   <div class="kicker">Verified line {esc(sid)}</div>
   <h3 style="font-family:var(--display);font-size:1.5em">{esc(stack["title"])}</h3>
   <div class="body-copy">{intro}</div>
+  {render_board_block(stack.get("scenario"))}
   <div class="scenario"><span class="lbl">The question</span><br>
     {esc(stack["scenario"].get("question", ""))}</div>
   <p><b>Result.</b> {esc(final.get("summary", ""))}</p>
+  {render_after_block(final)}
   <a class="dossier-pointer" href="#case-{esc(sid)}">
     Full dossier: Judge's Desk, Case A-{esc(sid)} →</a>
   <span style="margin-left:10px">{badge("verified")} cleared in
@@ -562,7 +697,6 @@ def render_the_kill(issue, plan, stacks, prose_doc, cards_by_name):
 </article>""")
     return (
         dept_open("the-kill", plan)
-        + map_key(MAP_KEY_ENTRIES)
         + dept_captions(dept, cards_by_name)
         + dept_furniture(dept, cards_by_name)
         + ("".join(spreads) or TODO)
@@ -586,13 +720,6 @@ def render_whats_your_play(issue, plan, decisions, cards_by_name):
     spreads = []
     for decision in decisions:
         scenario = decision.get("scenario", {})
-        board = scenario.get("board", {})
-        bits = []
-        for label, key in (("You", "you"), ("Table", "opponents"), ("Hand", "hand")):
-            value = board.get(key) or scenario.get(key)
-            if value:
-                text = ", ".join(map(str, value)) if isinstance(value, list) else str(value)
-                bits.append(f'<span class="lbl">{label}</span> {esc(text)}')
         branches = "".join(f"""
 <div class="branch"><h4>{esc(b.get("choice", ""))}</h4>
   <dl><dt>The line</dt><dd>{esc_x_paras(b.get("line", ""))}</dd>
@@ -604,8 +731,8 @@ def render_whats_your_play(issue, plan, decisions, cards_by_name):
         spreads.append(f"""
 <article class="rule-top" id="play-{esc(decision.get("id", ""))}">
   <h3 style="font-family:var(--display);font-size:1.4em">{esc(decision["title"])}</h3>
-  <div class="scenario">{"<br>".join(bits)}<br><br>
-    <b>{esc(scenario.get("question", ""))}</b></div>
+  {render_board_block(scenario)}
+  <div class="scenario"><b>{esc(scenario.get("question", ""))}</b></div>
   <div class="branches">{branches}</div>
   <div class="verdict"><b>Our call: {esc(rec.get("choice", ""))}</b><br>
     {esc_x_paras(rec.get("rationale", ""))}</div>

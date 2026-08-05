@@ -99,30 +99,40 @@ def board_bodies(entries):
 
 
 def opponents_of(scenario):
-    """Opponent life totals, whichever board shape the scenario uses.
+    """Opponent life totals and boards, whichever board shape the scenario uses.
 
     Two shapes exist in the corpus: `opponents: [{life, board}]` on seven decks
     and `opponent_a..d` bare lists on yawgmoth-swarm. Reading only one silently
     reports zero opponents on the other.
+
+    `board` rides along because a life total is only half of what a seat is: the
+    magazine could not answer "what does the opponent have" without it, and the
+    entry that carries the life total is the entry that carries the permanents.
     """
     board = scenario.get("board") or {}
-    extras = scenario.get("extras") or {}
-    lives = (extras.get("life_totals") or {})
+    # `extras` is a free-form block and decision scenarios write it as a STRING.
+    # Reaching for .get() on one threw the moment the magazine started calling
+    # this on decisions rather than only on stacks.
+    extras = scenario.get("extras")
+    lives = (extras.get("life_totals") or {}) if isinstance(extras, dict) else {}
 
     out = []
     listed = board.get("opponents")
     if isinstance(listed, list):
         for i, opp in enumerate(listed):
             if isinstance(opp, dict):
-                out.append({"seat": opp.get("name") or f"opponent_{i + 1}",
-                            "life": opp.get("life")})
+                out.append({"seat": opp.get("name") or opp.get("seat")
+                            or f"opponent_{i + 1}",
+                            "life": opp.get("life"),
+                            "board": opp.get("board")})
     # `opponents` itself starts with "opponent" — matching on the prefix alone
     # invented a phantom seat with no life total on every deck using the list shape.
     for key in sorted(k for k in board if k.startswith("opponent_")):
-        out.append({"seat": key, "life": lives.get(key)})
+        # In this shape the value under the key IS the seat's board.
+        out.append({"seat": key, "life": lives.get(key), "board": board.get(key)})
     for key, life in sorted(lives.items()):
         if key.startswith("opponent") and not any(o["seat"] == key for o in out):
-            out.append({"seat": key, "life": life})
+            out.append({"seat": key, "life": life, "board": None})
     seen, unique = set(), []
     for o in out:
         if o["seat"] not in seen:
