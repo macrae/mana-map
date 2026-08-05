@@ -686,8 +686,6 @@ def render_the_kill(issue, plan, stacks, prose_doc, cards_by_name):
   <h3 style="font-family:var(--display);font-size:1.5em">{esc(stack["title"])}</h3>
   <div class="body-copy">{intro}</div>
   {render_board_block(stack.get("scenario"))}
-  <div class="scenario"><span class="lbl">The question</span><br>
-    {esc(stack["scenario"].get("question", ""))}</div>
   <p><b>Result.</b> {esc(final.get("summary", ""))}</p>
   {render_after_block(final)}
   <a class="dossier-pointer" href="#case-{esc(sid)}">
@@ -1333,6 +1331,14 @@ def render_judges_desk(issue, plan, stacks, cards_by_name):
     for stack in stacks:
         sid = stack["id"]
         checker = stack.get("checker", {})
+        # `scenario.question` is authored FOR THE RESOLVER, not for a reader —
+        # it carries instructions like "confirm each is a Dinosaur creature card
+        # and that Cultivate/Mountain/Path go to the bottom in random order".
+        # That is case-file material, so it lives here, in the collapsed record,
+        # rather than in the middle of the read-through.
+        asked = (stack.get("scenario") or {}).get("question", "")
+        question = (f'<div class="scenario"><span class="lbl">The question put to '
+                    f'the record</span><br>{esc(asked)}</div>') if asked else ""
         steps = []
         for step in stack.get("resolution", {}).get("steps", []):
             cites = "".join(
@@ -1356,6 +1362,7 @@ def render_judges_desk(issue, plan, stacks, cards_by_name):
       <span class="stamp">Verified</span>
     </span>
   </summary>
+  {question}
   <ol>{"".join(steps)}</ol>
   <p class="small"><a class="xref" href="#line-{esc(sid)}">↩ Back to this line in
     The Kill</a> · <a class="xref" href="#contents">↑ Contents</a></p>

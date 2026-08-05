@@ -812,3 +812,18 @@ def test_no_python_repr_reaches_the_page():
     html_out = render()
     for leak in ("{'seat'", "{&#x27;seat&#x27;", "{'life'", "{&#x27;life&#x27;"):
         assert leak not in html_out, leak
+
+
+def test_the_resolver_brief_lives_in_the_case_file_not_the_read_through():
+    """`scenario.question` is authored FOR THE RESOLVER, not for a reader.
+
+    A real one runs 113 words and says "confirm each is a Dinosaur creature card
+    and that Cultivate/Mountain/Path go to the bottom in random order" — an
+    instruction to an agent, printed verbatim in the middle of the cover story.
+    It belongs in Judge's Desk, which is the collapsed record and one tap away.
+    """
+    html_out = render()
+    kill = html_out[html_out.index('id="the-kill"'):html_out.index('id="judges-desk"')]
+    desk = html_out[html_out.index('id="judges-desk"'):]
+    assert esc("How many copies?") not in kill, "the resolver brief is in the read-through"
+    assert esc("How many copies?") in desk, "the resolver brief was dropped, not moved"
