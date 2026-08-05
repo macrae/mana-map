@@ -2,7 +2,7 @@
   "slug": "edgar-vampires",
   "as_of_decklist_sha256": "508f85940507668c42ed37c89f0f07dee7d42c98a83e69d71aed9d46286d384c",
   "archetype": "Mardu Vampire typal go-wide aggro that kills by trigger, not by combat. deck-audit matches aggro from strategic_frame.json and every structural axis agrees: 30 creatures inside the 26-32 band, 37 land copies, threat-density 11 against a floor of 3. The frame is right about what this deck is. The sixteen swaps moved it off the aristocrats build the commander is usually given and onto the entry-trigger build, and the artifacts now describe one deck rather than two.",
-  "verdict": "This is a genuinely good linear deck with one honest bottleneck. The bodies arrive — a lord or anthem lands in 83.2% of games, a token multiplier in 78.2% — and stack 009 verified the plan those bodies feed: one {B}{B} Vampire through one doubler and three payoffs is nine triggers and 12 damage at every seat. What binds is the payoff half. Four cards convert a creature entry into each-opponent damage, they are in hand in 52.5% of games, and the joint go-wide kill — a payoff AND a multiplier — is only 40.2% assembled and 27.5% by turn six. Everything else the deck could spend a slot on is worth less than a fifth converter.",
+  "verdict": "This is a genuinely good linear deck with two thin classes, and the order between them has to be argued rather than counted. The bodies arrive — a lord or anthem in 83.2% of games, a token multiplier in 78.2% — and stack 009 verified the plan they feed: one {B}{B} Vampire through one doubler and three payoffs is nine triggers and 12 damage at every seat. The payoff half binds. Four cards convert a creature entry into each-opponent damage, 25.8% of opening sevens, and the joint go-wide kill is 40.2% assembled and 27.5% by turn six. The noncreature answer is thinner still on raw draw odds — two cards, 13.7% of openers, and functionally one against a cheap permanent — but it is second because of what each gap costs. A missing payoff is paid in every game and drops the deck onto combat into ~120 life behind three defences. A missing answer is paid only when an opponent presents the permanent, and the trigger plan routes around most of what that permanent would do.",
   "axes": [
     {
       "axis": "mana-base",
@@ -98,15 +98,15 @@
       "measured": {
         "value": 12
       },
-      "reading": "Twelve copies against an aggro template of five or six. This is the deck spending double the archetype's budget on answers, in a colour budget already overdrawn on black. It is not a defect, but it is where the fifth converter's slot is going to come from.",
+      "reading": "The audit's 12 is a role-tag count and it over-reads by five. Reading the twelve cards: Impact Tremors, Purphoros and Warleader's Call carry removal:damage because their text says 'deals 1 damage to each opponent' — they are this diagnosis's binding PAYOFF class and they answer nothing; Boros Charm's damage mode hits a player or planeswalker and its other two modes are protection; Elspeth is a multiplier whose -3 is a conditional creature kill. The seven real answers are Swords to Plowshares, Path to Exile, Winds of Abandon, Despark, Anguished Unmaking, Henrika Domnathi's edict and Cemetery Gatekeeper's graveyard exile. Seven against an aggro template of 5-6 is at template, not double it.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.archetype-selection",
           "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
         },
         {
-          "rule": "strategy:critical-mass",
-          "quote": "interaction slots are the price of the engine, so the deck's defense is speed, redundancy, and resilience, not answers"
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
         }
       ]
     },
@@ -176,19 +176,19 @@
     },
     {
       "axis": "interaction-breadth",
-      "verdict": "adequate",
+      "verdict": "weakness",
       "measured": {
         "value": 5
       },
-      "reading": "All five classes covered, nothing uncovered — up from four before the swaps, and Anguished Unmaking is why. The strategic frame argues the honest number is the goldfish noncreature-answer rate of 23.8% by turn six rather than this verdict. That rate is real, but it is not what binds: interaction is already double the aggro template at 12 copies, and critical-mass prices answer slots as the thing a linear deck trades away. A two-card group answering a class the archetype tells you to under-invest in is thin by construction.",
+      "reading": "All five classes are covered and 'uncovered' is empty — the swaps earned that, and Anguished Unmaking is why. But the by_class counts inherit the same over-read as the interaction axis, and the noncreature depth underneath is worse than 2: Despark only exiles a permanent of mana value 4 or greater, so ANGUISHED UNMAKING IS THE DECK'S ONLY ANSWER to a Ghostly Prison, a Propaganda, a Rest in Peace or a Torpor Orb. One card, 30.8% assembled and 23.8% by turn six. That is thin by selection, not by construction, and this diagnosis's earlier claim that the deck was over-invested in answers was wrong.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.interaction-suite",
           "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
         },
         {
-          "rule": "strategy:critical-mass",
-          "quote": "interaction slots are the price of the engine, so the deck's defense is speed, redundancy, and resilience, not answers"
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
         }
       ]
     },
@@ -383,19 +383,27 @@
         "count": 2,
         "thinnest": true,
         "measured_rate": 0.308,
-        "reading": "The noncreature answer: two cards, 30.8% assembled, 23.8% by turn six. Genuinely thin, and second in line rather than binding — the deck already answers all five classes and is at double the aggro interaction budget."
+        "reading": "Two cards, 30.8% assembled, 13.7% of an opening seven — on raw odds thinner than the payoff class. Functionally thinner again: Despark's mana-value-4-or-greater clause means only Anguished Unmaking answers a cheap permanent. It is second, not dismissed, and this diagnosis now buys a slot for it."
       },
       {
         "role": "piece",
         "have": [
-          "Bloodthirsty Conqueror",
+          "Bloodthirsty Conqueror"
+        ],
+        "count": 1,
+        "thinnest": true,
+        "measured_rate": 0.046,
+        "reading": "The gain half of the surviving infinite, and the audit's one-card component: 7.1% of an opening seven, 9.1% by turn three. The target it gates is 4.6% assembled and 2.6% by turn six, 25.0% with tutors modelled as wildcards. That is the ceiling of a one-card group, not a defect."
+      },
+      {
+        "role": "piece",
+        "have": [
           "Vito, Thorn of the Dusk Rose",
           "Sanguine Bond"
         ],
-        "count": 3,
-        "thinnest": true,
-        "measured_rate": 0.046,
-        "reading": "The surviving infinite (stacks 004 and 006). 4.6% assembled, 2.6% by turn six, 25.0% with tutors modelled. A lottery ticket held by an aggro deck, priced correctly at one slot."
+        "count": 2,
+        "thinnest": false,
+        "reading": "The loss half: two cards, 13.7% of an opening seven, 17.4% by turn three. Twice the redundancy of the gain half, which is why cutting Sanguine Bond costs the pairing rather than the loop — Vito alone still closes with Conqueror on stack 004."
       }
     ],
     "single_points_of_failure": [
@@ -418,7 +426,7 @@
       },
       {
         "component": "The entry-trigger payoff class",
-        "why": "Not a single point — four cards — but the thinnest load-bearing class in the deck and the one gating its primary kill. Four copies is 25.8% of an opening seven; the corpus's next step up, five copies, is 31%. Every other class the deck could add to is already past that step.",
+        "why": "Not a single point — four cards — but the class gating the deck's primary kill. Four copies is 25.8% of an opening seven; the corpus's next step, five copies, is 31%. It is not the deck's only sub-five class: the noncreature answer sits at two, and on draw odds alone it is thinner. The payoff class is ranked first on consequence rather than on scarcity. Its gap is paid in every game and the fallback is combat that asymmetry calls a losing plan; the answer gap is paid only when an opponent presents the permanent, and trigger damage cannot be blocked, fogged or taxed by the Propaganda-shaped permanents that would otherwise be the reason to want it. A fifth payoff partly substitutes for a third answer; the reverse does not hold.",
         "closers": [
           "Mirkwood Bats",
           "Witty Roastmaster",
@@ -432,6 +440,10 @@
           {
             "rule": "strategy:deckbuilding.threat-density",
             "quote": "Engine density — Nicol asks 7-8 enablers and 10-12 enhancers against ~25 standalone cards, and the enabler slots fail first"
+          },
+          {
+            "rule": "strategy:multiplayer.asymmetry",
+            "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
           }
         ]
       }
@@ -644,42 +656,23 @@
       ]
     },
     {
-      "card": "Malakir Bloodwitch",
-      "closes": "engine component: the entry-trigger payoff class (burst conversion), and threat-density",
-      "source": "recon",
-      "why": "Five mana for the width-to-drain conversion in one shot: each opponent loses life equal to your Vampire count and you gain that much. It is a Vampire, so casting it triggers eminence and every lord pumps it, and it does not add to the Olivia's Wrath exposure the way Mirkwood Bats (a Bat) and Witty Roastmaster (a Devil) do. Protection from white blanks Swords to Plowshares, Path to Exile and the rest of the white spot removal a five-drop attracts. Stack 004's scenario seeds its verified loop with 'you just gained 3 life (any source)', which is what this card's own trigger produces.",
-      "evidence": {
-        "combo_lines_opened": [],
-        "recon_support": "deck_recon.json (as_of 2026-08-03): Malakir Bloodwitch is in 56.5% of the 1,537 Aggro-tagged Edgar decks on EDHREC, named as one of the big width payoffs on a Vampire body that this deck lacks."
-      },
-      "natural_cut": "Sanguine Bond",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      },
-      "citations": [
-        {
-          "rule": "strategy:multiplayer.asymmetry",
-          "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
-        },
-        {
-          "rule": "strategy:deckbuilding.threat-density",
-          "quote": "Value is not a win."
-        }
-      ]
-    },
-    {
       "card": "Phyrexian Arena",
       "closes": "card-advantage",
       "source": "pool",
-      "why": "The one draw source in Mardu that does not need a board. Four of the deck's five simulated draw engines are board-gated, so the refill is at its weakest on the turn after a sweeper — the turn wrath-math says initiative goes to whoever rebuilds cheapest. Three mana, no graveyard, and the life it costs is life the deck's own drain plan replenishes.",
+      "why": "Repeating, board-independent draw at a fixed cost. The deck is not without board-independent draw — the audit's probe names Castle Locthwain, Silent Clearing, Sunbaked Canyon and Savai Triome, and none of those needs a creature — but every one is either a one-shot that consumes the land or, in Castle Locthwain's case, {3}{B}{B} per card. This diagnosis also cuts Sunbaked Canyon, which removes one of them. What the deck has none of is a source that draws every upkeep whether or not the board survived, which is the turn wrath-math says initiative is decided on. Three mana, no graveyard, and the life is life the drain plan replenishes.",
       "evidence": {
         "axis": "card-advantage",
         "measured": 3,
         "goldfish": {
           "draw_engine_assembled": 0.603,
           "draw_engine_by_turn_6": 0.492
-        }
+        },
+        "board_independent_draw_already_in_deck": [
+          "Castle Locthwain",
+          "Silent Clearing",
+          "Sunbaked Canyon",
+          "Savai Triome"
+        ]
       },
       "natural_cut": "Swiftfoot Boots",
       "bracket_delta": {
@@ -744,6 +737,36 @@
           "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
         }
       ]
+    },
+    {
+      "card": "Generous Gift",
+      "closes": "engine component: the noncreature answer (Despark, Anguished Unmaking)",
+      "source": "pool",
+      "why": "Three mana at instant speed, destroys any permanent at any mana value, and it is named in deck-audit's own closers list for this component at EDHREC rank 58. It doubles the class the deck can actually reach a cheap permanent with, which is currently Anguished Unmaking alone — Despark cannot touch a mana value 3 Propaganda or a mana value 2 Torpor Orb. The 3/3 Elephant it gives back is the honest cost, and a deck that wins on triggers rather than on combat math cares about it less than most.",
+      "evidence": {
+        "combo_lines_opened": [],
+        "engine_component": "noncreature answer (Despark, Anguished Unmaking)",
+        "audit_closers": "deck-audit lists Generous Gift first in this component's by_role closers (removal:spot, 1091 candidates)",
+        "measured": {
+          "noncreature_answer_assembled": 0.308,
+          "noncreature_answer_by_turn_6": 0.238
+        }
+      },
+      "natural_cut": "Sanguine Bond",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
+        },
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+        }
+      ]
     }
   ],
   "open_questions": [
@@ -768,18 +791,87 @@
       "why_it_matters": "deck_recon.json carries it as a one-source claim about this exact shell. If it holds, a one-mana white enchantment converts every attack into a free drain with no combat risk, which is a different kind of add from anything in the list above. Nothing in this repo has verified it."
     },
     {
-      "question": "Does the corpus support a rule for pricing noncreature-answer DEPTH once breadth is covered, in a linear deck already over its interaction template?",
+      "question": "Does the corpus support a rule for ranking two thin classes against each other when one gates the win and the other gates a contingency — and for pricing noncreature-answer depth in a linear deck that is AT its interaction template rather than over it?",
       "settled_by": "research-strategy",
-      "why_it_matters": "This diagnosis overturns the strategic frame's claim that the 23.8% noncreature-answer rate is what binds, and the argument rests on critical-mass's general line about answer slots rather than on anything measuring the cost of an unanswered anti-token permanent. The frame's own gaps list names the same hole."
+      "why_it_matters": "The corrected count is seven real answers against an aggro template of 5-6, so the order between the payoff class and the noncreature answer no longer follows from over-investment. It now rests on a substitution argument — trigger damage routes around the permanents the answers exist for — which is reasoning this diagnosis makes rather than quotes. The frame's own gaps list names the same hole: there is no section on trigger-based kills versus combat kills."
     }
   ],
   "gaps": [
+    "The interaction axis counts role tags, and in this deck five of its twelve cards are not answers: Impact Tremors, Purphoros and Warleader's Call carry removal:damage for text that damages each opponent, Boros Charm for a mode that hits players, and Elspeth for a conditional -3. deck-audit says as much sideways — the payoff component's shared_axes is [\"interaction\"] — but nothing in the pipeline nets it out, and the interaction-breadth by_class counts inherit the same over-read. The first pass of this diagnosis took the 12 on trust and built an argument on it.",
     "The colour delta of the Brightclimb Pathway swap could not be measured. mana_analysis.json is tracked and this artifact is read-only, so the on-curve rates for the changed base were not computed. Running mana-analysis after the swap would settle it.",
     "goldfish_targets.json declares only entry-triggered conversion. Bontu's Monument (cast trigger), Sanctum Seeker (attack trigger) and Throne of the God-Pharaoh (end step, tapped creatures) also convert width into each-opponent life loss and are in no any_of group, so the measured 52.5% is the rate for the doubler-composing subset, not for conversion as such.",
     "considering.json and tutor_guide.json are stale against this decklist and were deliberately not read or cited.",
     "The synergy graph contributes nothing here: all 33 intra-deck edges are lands pointing at Herald's Horn under one Ramp + Cost Reduction rule, and its pool candidates for this deck are an aura package (All That Glitters, Ethereal Armor, Hyena Umbra) that belongs to a different archetype. deck-facts says why — it is a format-wide top-10 shortlist, not a fit score.",
     "The strategy corpus has no section on token doubling as a multiplicative resource, on converting board width into non-combat damage, or on typal critical mass. This deck's entire plan is those three things, so every axis reading above is borrowed from adjacent sections.",
     "deck_recon.json is dated as_of 2026-08-03 and two of the six adds lean on it. Several of its findings — Command Tower, Cavern of Souls, Charismatic Conqueror, Anguished Unmaking, Warleader's Call, Impact Tremors, Elspeth, Caretaker's Talent, Legion's Landing — have already been applied, so the remaining findings are what is left of a pass that was largely consumed.",
-    "No opposing-interaction model exists. Every assembly rate quoted is from a goldfish that simulates resource development with no removal and no sweeper, which is exactly the axis (card-advantage after a wrath) this diagnosis calls the second weakness."
-  ]
+    "No opposing-interaction model exists. Every assembly rate quoted is from a goldfish that simulates resource development with no removal and no sweeper, which is exactly the axis (card-advantage after a wrath) this diagnosis calls the second weakness.",
+    "No candidate was found for a one-shot width-to-drain burst (Malakir Bloodwitch was proposed and withdrawn). goldfish_targets.json declares no component such a card could join, so its value cannot be grounded against anything this repo measures — it would need a declared any_of group first."
+  ],
+  "skeptic": {
+    "verdict": "fail",
+    "findings": [
+      {
+        "where": "cut_candidates[3]",
+        "status": "contradicts-artifact",
+        "note": "The Abzan Falconer cut is justified on a false premise about the deck's own cards. The `why` says its flying grant is 'conditional on +1/+1 counters, which arrive from Edgar's attack trigger — i.e. after you have already committed to combat.' Counters do not principally arrive from Edgar's attack trigger. Cathars' Crusade is in the mainboard of cards.json and reads 'Whenever a creature you control enters, put a +1/+1 counter on each creature you control' — an entry-based, pre-combat source that fires on every eminence token and every Vampire cast, which is the deck's core event. Vampire Socialite has every other Vampire ENTER with an additional counter, and Elspeth's 0 puts a counter on each creature you control. So the whole board is flying before attackers are declared, not after. The entry's own `cost_of_cutting` names the card that refutes its `why` ('Cathars' Crusade plus Falconer is a real two-card sky'), so the two halves of the entry disagree. Two aggravating facts: strategic_frame.json carries this exact interaction as an UNRESOLVED rules question ('Cathars' Crusade into Abzan Falconer: does one doubled entry give the whole board flying?'), which this diagnosis does not carry forward into open_questions; and Abzan Falconer is a member of deck-audit's nine-card 'A Vampire lord or anthem drawn (the combat plan)' component whose 83.2% the verdict quotes as a strength, so the cut takes that component 9 -> 8 and the entry never prices it. difficulty 'contested' is right; the reason given for it is not."
+      },
+      {
+        "where": "engine.single_points_of_failure[1]",
+        "status": "over-claimed",
+        "note": "The re-argued priority now rests on a substitution claim: 'trigger damage cannot be blocked, fogged or taxed by the Propaganda-shaped permanents that would otherwise be the reason to want it. A fifth payoff partly substitutes for a third answer; the reverse does not hold.' The generalisation outruns its own example set. axes[11] names four permanents only Anguished Unmaking can answer — Ghostly Prison, Propaganda, Rest in Peace, Torpor Orb. Three are genuinely routed around: the two taxes hit attacking and this deck kills by triggers, and the deck barely uses its graveyard (deck_recon.json records that the community's graveyard rebuild cards were excluded). Torpor Orb is not Propaganda-shaped: 'Creatures entering the battlefield don't cause abilities to trigger' is aimed at exactly the wording every member of the payoff class shares ('Whenever a creature you control enters'). If it applies, a fifth payoff is blanked alongside the other four and the answer slot is the ONLY thing that restores the primary kill — the substitution runs backwards for the one case that matters most. I am not asserting the ruling: no stack tests it, `deck-audit` cannot, and that is the point — the document's central ordering depends on a rules question it raises the example for and never asks. The hedges ('most of what that permanent would do', 'Propaganda-shaped') scope the claim but quietly exclude the worst case that the sibling axis explicitly includes. The ordering may well still be right on consequence; the argument as written does not establish it."
+      },
+      {
+        "where": "axes[5]",
+        "status": "miscounted",
+        "note": "Unfixed from the previous iteration, and now internally inconsistent. The reading still says 'the audit's probe note lists six more the taxonomy filed elsewhere'. deck-audit's card-advantage axis carries EIGHT in measured.possible_uncounted: Castle Locthwain, Henrika Domnathi, Midgar City of Mako, Minas Tirith, Preacher of the Schism, Savai Triome, Silent Clearing, Sunbaked Canyon. Six is the count of the truncated notes[] string, which ends in an ellipsis. The reading also still says 'Night's Whisper is the only one that draws off an empty board', which add_candidates[2] — revised in this same pass — now flatly contradicts: 'The deck is not without board-independent draw — the audit's probe names Castle Locthwain, Silent Clearing, Sunbaked Canyon and Savai Triome, and none of those needs a creature.' The add entry is the correct one (I verified all four oracle texts; Castle Locthwain and the two horizon lands draw with no board, though Savai Triome's is cycling from hand and is selection rather than advantage). The axis reading was left behind when the add was fixed."
+      },
+      {
+        "where": "axes[11]",
+        "status": "over-claimed",
+        "note": "The substance is real and I verified it independently and more sharply than the document states — but it is attached to an axis that measures something else, and the verdict label is false about the thing measured. The claim 'ANGUISHED UNMAKING IS THE DECK'S ONLY ANSWER to a Ghostly Prison, a Propaganda, a Rest in Peace or a Torpor Orb' is TRUE: I regex-scanned all 97 mainboard entries for removal wording, and the only cards that can touch a noncreature permanent are Anguished Unmaking (any nonland permanent) and Despark (mana value 4+); Ghostly Prison and Propaganda are mana value 3, Rest in Peace and Torpor Orb 2, so Despark reaches none of them. Everything else — Swords, Path, Winds of Abandon, Elspeth's -3, Henrika's edict — is creature-only. deck-audit's component agrees it is thin (size 2, thin true, thinnest true, 0.308 / 0.238, opening_seven 0.137). But the AXIS is interaction-breadth, its measured value is 5 classes answered against a low of 5, deck-audit's verdict is 'at', and the reading concedes it outright: 'All five classes are covered and uncovered is empty.' Rating an at-target axis 'weakness' on the strength of a different quantity mislabels the measurement — and it is what moved the validator's weak count 2 -> 3, so any reader or downstream consumer scanning verdicts without readings learns something false about breadth. The finding belongs on the engine component, which already flags it, or on axes[6], which actually counts answers and is rated 'adequate'. Not an artefact of the composition fix; a real weakness filed on the wrong row."
+      },
+      {
+        "where": "axes[6]",
+        "status": "supported",
+        "note": "The headline correction is right and lands. The reading now re-derives from deck-audit's named card list rather than the count: it identifies the same five over-reads I did (Impact Tremors, Purphoros and Warleader's Call carrying removal:damage for 'deals 1 damage to each opponent' while being this diagnosis's own binding payoff class; Boros Charm's damage mode hitting a player or planeswalker; Elspeth being a multiplier), and 12 - 5 = 7 is arithmetically consistent with the seven it names. I checked the other direction for over-correction and it has not swung too far: my own independent list was also seven, differing only in membership — the doctor excludes Elspeth's -3 (genuine but conditional removal: destroy target creature an opponent controls with mana value 3 or greater, off a five-mana planeswalker) and includes Cemetery Gatekeeper's graveyard exile, where I did the reverse. Either composition gives 7, and at 8 the verdict would not move: 7 against the aggro override of 5-6 is at-to-slightly-over, 8 would be exactly Walser's '8-10 removal' floor, and 'adequate' is defensible on both. The exclusion of Elspeth is stated in the text so a reader can re-add her. The retraction in axes[11] — 'this diagnosis's earlier claim that the deck was over-invested in answers was wrong' — is explicit."
+      },
+      {
+        "where": "verdict",
+        "status": "supported",
+        "note": "The priority order is now argued rather than restated, and it concedes what it must. The verdict states plainly that the noncreature answer is thinner on raw draw odds (two cards, 13.7% of openers — matching deck-audit's opening_seven 0.137 exactly, and 'functionally one against a cheap permanent' which I verified), and ranks the payoff class first on consequence rather than scarcity, with the tradeoff stated in both directions: a missing payoff is paid every game, a missing answer only when the permanent appears. open_questions[4] then labels the substitution reasoning as 'reasoning this diagnosis makes rather than quotes' and routes it to research-strategy. That is the correct disposition for an unquoted argument, and it is a real corpus hole — nothing in the strategy DB ranks two thin classes against each other. One observation rather than a finding: strategy:deckbuilding.interaction-suite already answers the depth half of that question with 'Breadth before depth ... Depth is a meta call: copy the answer your table beats you with', the phrase appears nowhere in the diagnosis, and deck_recon.json is the meta artifact that would settle it. The spawn is still justified by the ranking half; the corpus sentence should be engaged before it is made."
+      },
+      {
+        "where": "add_candidates[5]",
+        "status": "supported",
+        "note": "Generous Gift is the strongest entry in the document and its audit claim is exact. I checked it against the audit rather than accepting it: deck-audit's noncreature-answer component carries a closers block, and Generous Gift is FIRST in by_role, edhrec_rank 58, signature removal:spot, by_role_total 1091 — verbatim what the evidence block asserts. Oracle text confirms the mechanical case: {2}{W} Instant, 'Destroy target permanent. Its controller creates a 3/3 green Elephant creature token' — any permanent at any mana value at instant speed, which is precisely the gap Despark's mana-value-4 floor leaves, and the mana values quoted for Propaganda (3) and Torpor Orb (2) are correct. Colour identity is W, inside Mardu, Commander-legal, and it is in neither the mainboard nor the 29-entry sideboard. The 3/3 Elephant is named as the honest cost rather than omitted. The closers list is a role-signature route scoped to this component, and the entry argues from the card's text rather than leaning on the rank."
+      },
+      {
+        "where": "add_candidates[2]",
+        "status": "supported",
+        "note": "Fully fixes the previous over-claim. 'The one draw source in Mardu that does not need a board' is gone; the entry now concedes the deck already has board-independent draw, names the four probe cards, records that this same diagnosis cuts one of them (Sunbaked Canyon), and narrows the claim to the defensible one — that the deck has no source drawing every upkeep regardless of the board, which is the wrath-math turn. It carries a machine-readable board_independent_draw_already_in_deck list. Oracle text checks out on all four: Castle Locthwain '{1}{B}{B}, {T}: Draw a card' (the entry's '{3}{B}{B} per card' counts the tap-land's own mana, which is fair), Silent Clearing and Sunbaked Canyon '{1}, {T}, Sacrifice this land: Draw a card' (one-shot, consumes the land, as stated)."
+      },
+      {
+        "where": "engine.components",
+        "status": "supported",
+        "note": "The 1+2 decomposition is fixed and now matches deck-audit exactly. components[9] is Bloodthirsty Conqueror alone, count 1, thinnest true, 0.046; components[10] is Vito + Sanguine Bond, count 2, thinnest false. That is the audit's structure for the 'THE SURVIVING INFINITE (stacks 004 and 006)' target — an AND of a one-card component and a two-card OR — rather than the merged three-card group that read as three interchangeable copies. All other component sizes and rates still match the audit target-for-target: 4/0.525, 8/0.782, 12/0.402, 9/0.832, 6/0.677, 5/0.603, 6/0.681, 2/0.308, and 0.046 with 0.250 assisted."
+      },
+      {
+        "where": "axes",
+        "status": "supported",
+        "note": "Re-ran deck-audit; the output is byte-identical to my iteration-1 run and decklist_sha256 is unchanged at 508f8594..., which still equals the diagnosis's as_of_decklist_sha256 — the deck did not move, only the document. All sixteen measured.value figures still equal the audit: 37 / 42 / 3 / -10 / 7 / 3 / 12 / 2 / 9 / 11 / 30 / 5 / 0.925 / 3 / 4 / 4. Freshness remains clean: goldfish_metrics.json and mana_analysis.json both current: true against that sha, so no quoted figure is stale. bracket_report.json still carries no sha but its contents match the live 99 (two infinites, Conqueror+Vito and Conqueror+Sanguine Bond). Nothing regressed in the source figures while the readings were revised."
+      },
+      {
+        "where": "cut_candidates",
+        "status": "supported",
+        "note": "Correcting a premise in the brief I was given: the cut list did NOT change this iteration. It is the identical six in identical order — Swiftfoot Boots, Sunbaked Canyon, Kalitas, Abzan Falconer, Toxic Deluge, Sanguine Bond — and Abzan Falconer was already cut_candidates[3] in the version I reviewed in iteration 1, not new to this list. Only add_candidates changed (Malakir Bloodwitch -> Generous Gift). Re-verified orphans_stack from scratch across all six cuts x all nine stacks' scenario blocks: the only cut card appearing in any scenario is Sanguine Bond, in 005 and 006 exactly, so the five nulls are correct and ['005','006'] remains complete. All six cuts are in the mainboard; the painful pair (Toxic Deluge, Sanguine Bond) is retained with cost_of_cutting distinct from why, so the list still does not dodge the job."
+      },
+      {
+        "where": "add_candidates",
+        "status": "supported",
+        "note": "All six adds are absent from both the mainboard and the 29-entry sideboard of cards.json, all are inside the Mardu identity and Commander-legal, and all six bracket_delta pairs remain 4 -> 4, consistent with bracket_report's floor of 4 forced by four Game Changers. Mirkwood Bats ('Whenever you create or sacrifice a token') is still correctly parked in open_questions[0] for a stack rather than asserted to compound with the doublers, and Witty Roastmaster's 'Whenever another creature you control enters, this creature deals 1 damage to each opponent' is the same trigger shape stack 009 verified. No combo line anywhere in the document is stated as fact without a checker-passed stack: stack 009's answer block confirms the 9 triggers / 12 damage per seat quoted in the verdict, stacks 002 and 008 back the doubler claims, and the Conqueror component's combo closers are still carried as closers only, matching deck-audit's 'needs a stack scenario' tag on every one."
+      }
+    ],
+    "iterations": 3,
+    "note": "DIAGNOSE_MAX_ITERATIONS reached with four findings open. The document is kept because 8 of 12 findings verified and the mechanical gate passes, but it is NOT blessed: `deck-diagnosis` stays MISS in the agent cache. Treat cut_candidates[3] (Abzan Falconer) as REFUTED — its stated reason is false about this deck, because Cathars' Crusade puts +1/+1 counters on every creature on ENTRY, so the board flies before attackers are declared. Do not act on it, and do not let a downstream routine inherit it."
+  }
 }

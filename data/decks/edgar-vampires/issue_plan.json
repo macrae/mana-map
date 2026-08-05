@@ -1,734 +1,786 @@
 {
-  "slug": "edgar-vampires",
-  "angle": "Edgar has always minted a free body for every Vampire you cast; this issue is about the three cards that make that body cost the whole table life the instant it lands — and about racing with them instead of waiting on a deterministic kill you draw one game in twenty.",
-  "cover": {
-    "kicker": "ONE TWO-DROP",
-    "dominant_coverline": "TEN TO EVERY SEAT",
-    "teases": [
-      "PURPHOROS, COUNTED: five triggers off one two-mana Vampire — 10 damage to every opponent, checker-cleared",
-      "TOKEN INTO DAMAGE: the layer that decides your game, drawn in 43.2% of games at a mean turn of 3.45",
-      "THE 4.8% LOTTERY TICKET: two zero-mana table-kills you should almost never play for",
-      "NOT A KILL: the end step that drains 14 from every seat and leaves a 15-life opponent alive at exactly 1"
-    ],
-    "violators": [
-      {
-        "text": "6 VERIFIED LINES!",
-        "tone": "extreme"
-      },
-      {
-        "text": "NO COMBAT REQUIRED!",
-        "tone": "extreme"
-      }
-    ]
-  },
-  "departments": [
-    {
-      "id": "cover",
-      "components": [
-        "violator"
-      ],
-      "note": "Edgar Markov at hero scale from the pilot's exact printing — art_crop, artist credit (Volkan Baǵa) with set and collector number beneath. Masthead top; identity block verbatim from issue.json: Vol. 006, August 2026, $4.95, authored tagline 'Every cast is two bodies.' under the deck name. The dominant coverline names the issue's most exciting verified fact: stack 008's count of one two-mana Vampire cast through two doublers as five entry triggers, 10 damage to every opponent. Two of the four teases are ◆ figures quoted exactly from goldfish_metrics.json; the fourth is the refutation, on the cover deliberately, because the checker is the credibility and a bounded line is the better story."
-    },
-    {
-      "id": "contents",
-      "note": "Generated table: five acts, sixteen rows, promises verbatim from issue_spec. The header line will read six verified lines and two decision spreads. Tier legend and masthead trio reprinted in full — a reader may be holding their first volume."
-    },
-    {
-      "id": "command-zone",
-      "kicker": "THE ZONE",
-      "headline": "THE ENGINE NEVER LEAVES",
-      "dek": "Edgar does not have to be on the battlefield to be working. Once you believe that, half of this deck's hardest decisions stop being decisions.",
-      "components": [
-        "tax-ladder",
-        "fast-facts",
-        "pilot-tip",
-        "pull-quote",
-        "folio"
-      ],
-      "body": "Start with the question the ladder beside this paragraph is really asking: what does it cost this deck when Edgar Markov dies? The answer is unusual, and it is the reason you may play him the way you do.\n\nEminence is a triggered ability that functions from the command zone, because the ability itself says which zones it works in — CR 113.6b, and stack 002 put it on the record. Your commander is the only card you are guaranteed to have access to (CR 903.4). In most decks that guarantee is a finisher. Here it is the engine, and it is running from turn one whether or not you ever pay six mana.\n\nSo read the tax ladder as a price you are usually right to refuse. The printed cost is {3}{R}{W}{B}; a second cast adds {2}, a third adds {2} again (CR 903.8). The simulation puts him at a median cast turn of six and never reaches a mean of eight available mana inside ten turns — 7.258 on turn ten is as high as it gets. A second Edgar is a whole turn you paid for. A third is a fantasy. Which reframes the protection question: your insurance is not covering an engine, it is covering one alpha strike.\n\nColour identity is what a Mardu commander charges you (CR 903.4). Three colours of Vampire — every lord, every drain, every entry-damage enchantment — and no green ramp and no blue counterspell for the life of the deck. That is why the ramp here is seven copies of rocks and rebates rather than a stack of land tutors, and why your answers are white exile and black sweepers.\n\nNow the clock nobody at this table is on. Twenty-one commander damage (CR 903.10a) asks for six connections from a 4/4, and this deck does not attack with Edgar six times. Commander damage is a coincidence here, not a plan — his attack trigger, a +1/+1 counter on each Vampire you control, is worth more in one swing than his own damage is all game.\n\nAnd the political read, which starts before you draw a card. The table sees a Vampire commander and prices you as a creature deck. They are wrong in the direction that helps you: the machine is made of enchantments, and eminence rebuilds the bodies for free. Let them hold the wrath. Cast the second Vampire.",
-      "captions": {
-        "Flawless Maneuver": "**INSURANCE, PRICED:** free while you control your commander, so the protection suite gets cheaper on exactly the turn Edgar is exposed — the one turn he is on the battlefield."
-      },
-      "pilot_tips": [
-        {
-          "card": "Swiftfoot Boots",
-          "text": "Equip the boots on the turn you attack, not the turn Edgar resolves — hexproof does nothing against a wrath, and the recast is {2} more than the first one."
-        }
-      ],
-      "pull_quote": "The only card you always have is the one you can most afford to leave where it is."
-    },
-    {
-      "id": "first-turns",
-      "kicker": "THE PLAN",
-      "headline": "TOKENS AS BURN SPELLS",
-      "dek": "Every Vampire you cast is two bodies before it does anything else. Three cards decide whether that second body is a chump blocker or a burn spell aimed at all three seats — and which one you find first is the game.",
-      "components": [
-        "pilot-tip",
-        "callout-step",
-        "pull-quote",
-        "folio"
-      ],
-      "callouts": [
-        {
-          "n": 1,
-          "title": "CAST CHEAP, CAST TWICE",
-          "text": "Nine one-drops and seventeen two-drops. Eminence pays per cast, not per mana, so two small Vampires beat one expensive one on almost every turn you have the choice."
-        },
-        {
-          "n": 2,
-          "title": "LAY THE PAYOFF EARLY",
-          "text": "Impact Tremors on turn two with one body is one damage and reads as durdle. Nobody spends removal on it. That is exactly why it goes down before the thing that makes it lethal."
-        },
-        {
-          "n": 3,
-          "title": "MULTIPLY LAST",
-          "text": "Anointed Procession and Elspeth, Storm Slayer are what turn a two-drop into a kill. Deploy them onto a board that already converts, on a turn you can also cast the Vampire."
-        }
-      ],
-      "captions": {
-        "Impact Tremors": "**THE TWO-MANA DOOR:** one damage to each opponent every time a creature you control enters — and an eminence token is a creature entering, on your turn or anyone else's.",
-        "Anointed Procession": "**ONE BECOMES TWO:** a replacement effect, so a second doubler makes four. Stack 002 verified the arithmetic and that the order you apply them in never changes the answer.",
-        "Purphoros, God of the Forge": "**THE CEILING, COUNTED:** four token entries plus the spell's own body is five triggers at 2 damage each — 10 to every opponent from one two-mana Vampire (stack 008)."
-      },
-      "pilot_tips": [
-        {
-          "card": "Warleader's Call",
-          "text": "Resolve Warleader's Call before the wide turn, not after — the +1/+1 is permanent, but the damage only counts creatures that enter once it is already on the battlefield."
-        },
-        {
-          "card": "Charismatic Conqueror",
-          "text": "Deploy Charismatic Conqueror into a developing table: every artifact or creature an opponent plays untapped either comes in tapped or hands you a lifelink Vampire on their turn."
-        }
-      ],
-      "pull_quote": "Your board does not have to survive to a combat step. It only has to enter."
-    },
-    {
-      "id": "the-99",
-      "kicker": "THE ROSTER",
-      "headline": "EVERY CAST COUNTS TWICE",
-      "dek": "Sixty-three spells with one hidden common cost: every Vampire among them also prints a body from the command zone. The conversion layer leads, because it is the difference between a board and a clock.",
-      "components": [
-        "pilot-tip",
-        "pull-quote",
-        "folio"
-      ],
-      "roster": [
-        {
-          "role": "The conversion layer: entries become damage",
-          "cards": [
-            "Purphoros, God of the Forge",
-            "Impact Tremors",
-            "Warleader's Call"
-          ]
-        },
-        {
-          "role": "The ignition and its multipliers",
-          "cards": [
-            "Anointed Procession",
-            "Mondrak, Glory Dominus",
-            "Elspeth, Storm Slayer",
-            "Caretaker's Talent",
-            "Ocelot Pride"
-          ]
-        },
-        {
-          "role": "The bodies that print bodies",
-          "cards": [
-            "Charismatic Conqueror",
-            "Legion's Landing // Adanto, the First Fort",
-            "Mavren Fein, Dusk Apostle",
-            "Bloodline Keeper // Lord of Lineage",
-            "Elenda, the Dusk Rose",
-            "Strefan, Maurer Progenitor",
-            "Preacher of the Schism",
-            "Kalitas, Traitor of Ghet"
-          ]
-        },
-        {
-          "role": "Lords, anthems and the alpha strike",
-          "cards": [
-            "Legion Lieutenant",
-            "Stromkirk Captain",
-            "Captivating Vampire",
-            "Vampire Socialite",
-            "Drana, Liberator of Malakir",
-            "Cordial Vampire",
-            "Patchwork Banner",
-            "Vanquisher's Banner",
-            "Shared Animosity",
-            "Abzan Falconer",
-            "Cover of Darkness",
-            "Akroma's Will"
-          ]
-        },
-        {
-          "role": "The attack-turn drains",
-          "cards": [
-            "Sanctum Seeker",
-            "Bloodletter of Aclazotz",
-            "Throne of the God-Pharaoh",
-            "Twilight Prophet"
-          ]
-        },
-        {
-          "role": "The deterministic kill, and its rent",
-          "cards": [
-            "Bloodthirsty Conqueror",
-            "Vito, Thorn of the Dusk Rose",
-            "Sanguine Bond"
-          ]
-        },
-        {
-          "role": "Cheap bodies that bank tokens",
-          "cards": [
-            "Knight of the Ebon Legion",
-            "Vampire of the Dire Moon",
-            "Viscera Seer",
-            "Welcoming Vampire",
-            "Henrika Domnathi // Henrika, Infernal Seer",
-            "Sorin, Imperious Bloodlord",
-            "Cemetery Gatekeeper"
-          ]
-        },
-        {
-          "role": "Interaction and protection",
-          "cards": [
-            "Swords to Plowshares",
-            "Path to Exile",
-            "Despark",
-            "Winds of Abandon",
-            "Olivia's Wrath",
-            "Toxic Deluge",
-            "Boros Charm",
-            "Deflecting Swat",
-            "Flawless Maneuver",
-            "Teferi's Protection",
-            "Swiftfoot Boots"
-          ]
-        },
-        {
-          "role": "Fuel: draw, rebates and rocks",
-          "cards": [
-            "Night's Whisper",
-            "Demonic Tutor",
-            "Vampiric Tutor",
-            "Diabolic Intent",
-            "Herald's Horn",
-            "Bontu's Monument",
-            "Sol Ring",
-            "Arcane Signet",
-            "Talisman of Indulgence"
-          ]
-        },
-        {
-          "role": "The manabase's marked cards",
-          "cards": [
-            "Ancient Tomb",
-            "Urborg, Tomb of Yawgmoth",
-            "Mana Confluence",
-            "Savai Triome",
-            "Nomad Outpost",
-            "Castle Locthwain",
-            "Minas Tirith",
-            "Takenuma, Abandoned Mire",
-            "Midgar, City of Mako // Reactor Raid",
-            "Cori Mountain Monastery",
-            "Reflecting Pool"
-          ]
-        }
-      ],
-      "captions": {
-        "Urborg, Tomb of Yawgmoth": "**THE PATCH:** black carries 39 of the deck's 73 pips on 22 land sources. With Urborg out, every land you control is a Swamp and the whole base pays the short colour.",
-        "Bontu's Monument": "**RENT ON THE CAST, NOT THE ENTRY:** it discounts your black creatures and drains each opponent when you cast one — the only payoff in the 99 that fires before the body exists.",
-        "Abzan Falconer": "**COUNTERS INTO EVASION:** Edgar's attack trigger puts a +1/+1 counter on every Vampire you control, and Falconer gives flying to every creature carrying one."
-      },
-      "pilot_tips": [
-        {
-          "card": "Cordial Vampire",
-          "text": "Cordial Vampire turns every death into an anthem — pay Diabolic Intent's sacrifice with a spare token and the whole board gets permanently bigger for free."
-        }
-      ],
-      "pull_quote": "Twenty-nine bodies, three ways to charge for them, and an engine no wrath can reach.",
-      "note": "Rank is the point: the conversion layer leads because it is what this issue is about, and the manabase closes. Card blurbs render from manual_prose.card_roles; the remaining lands fall into the Depth group. The 30-card box renders as its own labeled strip and points at The Short List for the rulings. Role coverage is 100% with no unclassified cards, so every tile carries a chip. No synergy-graph claim appears anywhere in this issue: 32 edges fall inside this deck, but the graph is a top-10 global shortlist over every tagged card in the format, not a per-deck fit score."
-    },
-    {
-      "id": "keep-or-ship",
-      "kicker": "THE DRILL",
-      "headline": "NEVER KEEP FOR EDGAR",
-      "dek": "He is face up in the command zone before your first decision, so an opener never needs him. The simulation keeps 81.7% of first sevens at 0.214 mulligans a game — the Coach grades four of them and overrules the machine once.",
-      "components": [
-        "power-meter",
-        "scenario-box",
-        "pilot-tip",
-        "pull-quote",
-        "folio"
-      ],
-      "hands": [
-        {
-          "verdict": "KEEP — the engine hand",
-          "cards": [
-            "Swamp",
-            "Concealed Courtyard",
-            "Caves of Koilos",
-            "Vampire of the Dire Moon",
-            "Knight of the Ebon Legion",
-            "Legion Lieutenant",
-            "Impact Tremors"
-          ],
-          "why": "Three lands that can all come in untapped, two one-mana Vampires worth two bodies each, a lord, and the two-mana payoff that turns the whole thing into damage. This is the enabler-heavy shape the drill is looking for — a lord or anthem finds you in 82.9% of games anyway."
-        },
-        {
-          "verdict": "KEEP — the two-lander that pays",
-          "cards": [
-            "Ancient Tomb",
-            "Swamp",
-            "Sol Ring",
-            "Cordial Vampire",
-            "Herald's Horn",
-            "Sanctum Seeker",
-            "Warleader's Call"
-          ],
-          "why": "Two lands reads risky until you price the mana: Ancient Tomb into Sol Ring is three available mana on turn one, and Herald's Horn rebates a mana off every Vampire behind it. Both lands enter untapped, which is the detail that saves this keep."
-        },
-        {
-          "verdict": "SHIP — the all-payoff mirage",
-          "cards": [
-            "Savai Triome",
-            "Nomad Outpost",
-            "Godless Shrine",
-            "Sanguine Bond",
-            "Bloodthirsty Conqueror",
-            "Vanquisher's Banner",
-            "Olivia's Wrath"
-          ],
-          "why": "Half a deterministic kill and four five-drops. Two of those lands enter tapped no matter what you do, nothing happens before turn five, and the eminence dividend for four whole turns is zero. Ship anything whose cheapest spell costs four."
-        },
-        {
-          "verdict": "SHIP — the hand the machine keeps",
-          "cards": [
-            "Swamp",
-            "Swamp",
-            "Caves of Koilos",
-            "Haunted Ridge",
-            "Sundown Pass",
-            "Teferi's Protection",
-            "Demonic Tutor"
-          ],
-          "why": "The simulation's rule keeps two to five lands, so this five-lander passes it — and the Coach ships it anyway. One castable spell before turn four, and protection plus a tutor are luxuries in an opener rather than a plan. The badges disagreeing in public is the honest version of this section."
-        }
-      ],
-      "captions": {
-        "Concealed Courtyard": "**THE FIRST-THREE-TURNS LAND:** untapped exactly while nine one-drops and seventeen two-drops need it. Sixteen of the 37 lands can enter tapped; only three of them always do."
-      },
-      "pilot_tips": [
-        {
-          "card": "Viscera Seer",
-          "text": "Grade a one-drop by casts, not by stats — Viscera Seer on turn one is a body, a banked eminence token, and a scry every time something of yours dies."
-        }
-      ],
-      "pull_quote": "He lives in the command zone. Mulligan like he does not exist."
-    },
-    {
-      "id": "whats-your-play",
-      "kicker": "YOUR CALL",
-      "headline": "COMMIT BEFORE WE DO",
-      "dek": "Two boards where the comfortable instinct is the losing one. Read the branches, say your answer out loud, and only then look at the verdict.",
-      "components": [
-        "scenario-box",
-        "callout-step",
-        "pilot-tip",
-        "pull-quote",
-        "folio"
-      ],
-      "callouts": [
-        {
-          "n": 1,
-          "title": "COUNT THE OPEN MANA FIRST",
-          "text": "Before you present anything that ends the game, count every untapped source at the table. A held answer appears the moment you commit and never the turn before."
-        },
-        {
-          "n": 2,
-          "title": "SEQUENCE BY WHAT IT LOOKS LIKE",
-          "text": "The enchantment that reads as durdle goes down first; the 5/5 flying deathtouch Vampire goes down last. You are not hiding a plan, you are choosing which piece eats the removal."
-        }
-      ],
-      "captions": {
-        "Flawless Maneuver": "**FREE, CONDITIONALLY:** it costs nothing while you control your commander — which is an argument for casting Edgar on the turn you intend to overcommit, not for casting him early."
-      },
-      "pilot_tips": [
-        {
-          "card": "Teferi's Protection",
-          "text": "Spend Teferi's Protection on the turn you commit the board, not the turn you fear the wrath — it answers the sweeper and the swing-back with one card."
-        }
-      ],
-      "pull_quote": "The window is not the turn you can win. It is the turn they cannot answer.",
-      "note": "EDITOR FLAG: decisions/002-vito-tutor-or-hold.json still describes a board containing Black Market Connections and Nighthawk Scavenger and a branch that tutors for Exquisite Blood — none of which is in this 99. The renderer prints decision scenarios verbatim and validate-issue does not check decision card names, so this spread will ship a board the reader cannot build. It needs regenerating against the current list before the issue is rendered; nothing in this plan's copy depends on it. Decision 001 (cast Edgar or keep casting) is clean and is the spread this section's copy is written around."
-    },
-    {
-      "id": "the-kill",
-      "kicker": "THE RECORD",
-      "headline": "SIX LINES, ONE NOT A KILL",
-      "dek": "Six resolutions cleared the checker, and the most instructive of them fails to end the game. An opponent at 15 survives the end step at exactly 1 — printed at full size, because that is the house style.",
-      "components": [
-        "callout-step",
-        "pull-quote",
-        "folio"
-      ],
-      "callouts": [
-        {
-          "n": 1,
-          "title": "WHAT THE CHECK MARK MEANS",
-          "text": "Every step in every file below cites the Comprehensive Rules, and an adversarial checker read each citation against the full rule text. Where the record is silent, this section says the record is silent."
-        },
-        {
-          "n": 2,
-          "title": "THE TWO THAT ACTUALLY END IT",
-          "text": "Bloodthirsty Conqueror with Vito, Thorn of the Dusk Rose, and Bloodthirsty Conqueror with Sanguine Bond. Both deterministic, both at zero mana needed, and both broken by one instant-speed removal spell in any iteration's priority window."
-        },
-        {
-          "n": 3,
-          "title": "THE ONE YOU WILL USE MOST",
-          "text": "Stack 008 is not a combo. It is a count: four token entries plus the cast body is five triggers, and 10 damage to every opponent from a two-mana Vampire. That line is available in almost every game the loop is not."
-        }
-      ],
-      "captions": {
-        "Bloodletter of Aclazotz": "**THE WORD IS INSTEAD:** that makes it a replacement effect, applied once per loss event rather than once per turn — so seven attack triggers get doubled seven separate times.",
-        "Throne of the God-Pharaoh": "**REACH, NOT LETHAL:** seven tapped creatures drain 14 from each opponent at your end step, and a seat at 15 is left alive at exactly 1. The game continues, and the file says so.",
-        "Vito, Thorn of the Dusk Rose": "**THE HALF THAT PAYS RENT:** three mana, a Vampire body, a lord target and lifelink for the swarm on demand. The loop is the bonus, not the reason he is in the 99."
-      },
-      "pull_quote": "A database calls it an infinite. The record calls it deterministic — and then tells you exactly where it breaks.",
-      "note": "Six checker-passed, presentable stacks render here: 002, 003, 004, 006, 007, 008. manual_prose.combo_lines carries an intro for exactly those six. No copy anywhere in this issue references any other case number, and nothing outside those six is stated as fact."
-    },
-    {
-      "id": "politics-table",
-      "kicker": "THE TELL",
-      "headline": "THE TURN THEY TURN ON YOU",
-      "dek": "Nobody fears a board of 1/1s. They fear the trigger that makes those 1/1s hit all three of them at once — and you get to choose which turn that is.",
-      "components": [
-        "callout-step",
-        "pilot-tip",
-        "pull-quote",
-        "folio"
-      ],
-      "callouts": [
-        {
-          "n": 1,
-          "title": "THE THREAT WINDOW",
-          "text": "You become the archenemy the first time a token entering the battlefield deals damage at every seat. Before that trigger you are a fair creature deck. After it, no combat step is required and the whole table knows it."
-        },
-        {
-          "n": 2,
-          "title": "PAYOFFS EARLY, MULTIPLIERS LATE",
-          "text": "Impact Tremors on turn two is one damage and reads as nothing. Elspeth, Storm Slayer is a five-mana planeswalker at an aggro table and gets attacked on sight. Deploy in that order every time."
-        },
-        {
-          "n": 3,
-          "title": "NAME THE SEAT THAT CAN SWITCH YOU OFF",
-          "text": "Your exposure is not the wrath. It is broad exile or artifact-and-enchantment removal. Track which player holds it and treat them as the one who can turn the machine off."
-        }
-      ],
-      "captions": {
-        "Sanguine Bond": "**THE CARD THAT ANNOUNCES ITSELF:** five mana, no body, no creature type. Every other piece of the deterministic kill pays rent as a Vampire; this one tells the table exactly what you are holding.",
-        "Elspeth, Storm Slayer": "**LAST, ALWAYS:** she doubles every token you make, and she is a planeswalker in a room full of attackers. She goes onto a board that already converts, never onto an empty one."
-      },
-      "pilot_tips": [
-        {
-          "card": "Bloodthirsty Conqueror",
-          "text": "Cast Bloodthirsty Conqueror as a 5/5 flying deathtouch body whenever you do not hold the other half — a card paying full rent tells the table nothing at all."
-        }
-      ],
-      "pull_quote": "A wrath is a bad card against you. Say so out loud — it is true, and true table talk is the only kind that keeps working."
-    },
-    {
-      "id": "know-your-enemy",
-      "kicker": "SCOUTING REPORT",
-      "headline": "WHO ACTUALLY BEATS YOU",
-      "dek": "It is not the sweeper and it is certainly not the graveyard hate. Find the seat holding broad enchantment removal, because that is the only player at the table who can switch the machine off.",
-      "components": [
-        "threat-box",
-        "pilot-tip",
-        "pull-quote",
-        "folio"
-      ],
-      "threats": [
-        {
-          "archetype": "Sweeper control",
-          "meter_label": "Threat to you",
-          "rate": 0.45,
-          "read": "The wrath is a worse card against you than against anyone else at the table, and you should build the whole matchup on that. Anointed Procession, Impact Tremors, Warleader's Call, Caretaker's Talent, Patchwork Banner, Legion's Landing and Elspeth all live through it; Purphoros is indestructible and, at this deck's usual devotion, not even a creature. Eminence rebuilds at one token per Vampire cast with no card spent and no tax. So commit exactly the width that converts now and keep the next multiplier in hand. A protection piece is held in 68.0% of games, 56.6% by turn six.",
-          "outs": [
-            "Teferi's Protection",
-            "Flawless Maneuver",
-            "Boros Charm",
-            "Akroma's Will",
-            "Impact Tremors",
-            "Caretaker's Talent"
-          ]
-        },
-        {
-          "archetype": "Stax and taxes",
-          "meter_label": "Threat to you",
-          "rate": 0.35,
-          "read": "Structurally your best matchup, and the reason is a rules detail worth knowing cold. Eminence is a triggered ability that works from the command zone, not a cast — a Sphere effect taxes the Vampire spell and never touches the token it makes. Nine one-drops and seventeen two-drops keep paying under the tax. Edgar at six mana is the first thing priced out and you do not need him on the battlefield, so leave him zoned longest here and aim Despark at the tax rather than the trophy.",
-          "outs": [
-            "Herald's Horn",
-            "Patchwork Banner",
-            "Bontu's Monument",
-            "Ancient Tomb",
-            "Despark"
-          ]
-        },
-        {
-          "archetype": "Aggro and creature mirrors",
-          "meter_label": "Threat to you",
-          "rate": 0.5,
-          "read": "Re-ask the role and take the other seat: against a faster board you are the control, without changing a card. Twenty-nine creatures, lifelink tokens off Charismatic Conqueror and Legion's Landing, deathtouch on Vampire of the Dire Moon and Preacher of the Schism, first strike from Edgar, Cemetery Gatekeeper and everything Stromkirk Captain touches. A wide board turns their small creatures into dead cards without you drawing anything. Track each opponent's clock separately — 40 life attacked from three directions is not 40 life.",
-          "outs": [
-            "Olivia's Wrath",
-            "Charismatic Conqueror",
-            "Vampire of the Dire Moon",
-            "Preacher of the Schism",
-            "Cemetery Gatekeeper",
-            "Toxic Deluge"
-          ]
-        },
-        {
-          "archetype": "Faster combo",
-          "meter_label": "Threat to you",
-          "rate": 0.8,
-          "read": "You are the clock and you are fast enough to be one: the lord package assembles at a mean turn of 2.58 and the conversion layer at 3.45. Held answers rot here, so spend the exile removal on the piece that ends the game rather than the piece that looks scary. Present the plan that survives being answered — a countered multiplier costs a card, an interrupted alpha strike costs the board. Do not steer toward the deterministic kill in this matchup: it is drawn in 4.8% of games and one instant-speed removal spell breaks it at any iteration.",
-          "outs": [
-            "Swords to Plowshares",
-            "Path to Exile",
-            "Despark",
-            "Deflecting Swat",
-            "Boros Charm"
-          ]
-        },
-        {
-          "archetype": "Graveyard hate",
-          "meter_label": "Threat to you",
-          "rate": 0.15,
-          "read": "This one is close to free and you should encourage it. There is no graveyard plan to attack — the kills are token entries, attack triggers and a lifegain loop, and every payoff is a permanent on the battlefield. A Rest in Peace effect costs the reanimator seat their whole deck and costs you one Cemetery Gatekeeper trigger. Say yes to that trade every time and help the hate resolve. Kalitas is your own flip card: their nontoken creatures get exiled instead of dying and you get a 2/2 for each.",
-          "outs": [
-            "Kalitas, Traitor of Ghet",
-            "Cemetery Gatekeeper"
-          ]
-        }
-      ],
-      "pilot_tips": [
-        {
-          "card": "Purphoros, God of the Forge",
-          "text": "Against a 'players can't gain life' effect, keep casting — Purphoros deals damage and Sanctum Seeker's half of the trade is life loss; only the Conqueror pairings notice the hate at all."
-        },
-        {
-          "card": "Olivia's Wrath",
-          "text": "Count your non-Vampires before you cast Olivia's Wrath — Mondrak, Abzan Falconer, Ocelot Pride and Elspeth's Soldiers die alongside everyone else's board."
-        }
-      ],
-      "pull_quote": "There is no graveyard to attack. Help the hate resolve, and thank them for it.",
-      "note": "Every card named in an 'outs' list is in the 99 — checked against cards.json. Threat rates are ★ judgment and are ordered by how much the matchup actually costs this list: combat-oriented decks and stax read low because the engine is noncreature and command-zone-fed; faster combo reads highest because the deck's answer to it is speed, not interaction."
-    },
-    {
-      "id": "fetch-quests",
-      "kicker": "THREE WISHES",
-      "headline": "BUY THE RACE, NOT THE LOOP",
-      "dek": "Counted as wildcards, your three tutors take the conversion layer from 43.2% to 67.7% and the deterministic kill from 4.8% to 24.0%. Only one of those numbers is worth spending a card on.",
-      "components": [
-        "callout-step",
-        "pilot-tip",
-        "pull-quote",
-        "folio"
-      ],
-      "captions": {
-        "Vampiric Tutor": "**TOP, NOT HAND:** it buys the answer to a threat you predicted and never one you are watching resolve. Cast it in the end step of the player before you, untap, and draw it.",
-        "Diabolic Intent": "**THE COST IS FREE:** eminence prints the body you sacrifice. The one time Intent is the wrong tutor is the one time it looks tempting — when your only creature is the blocker keeping you alive."
-      },
-      "pilot_tips": [
-        {
-          "card": "Demonic Tutor",
-          "text": "Ask which missing piece turns your board into damage at three seats this turn, never which card is best — mean available mana is 4.022 on turn four, so Tutor plus a two-drop is one real turn."
-        }
-      ],
-      "pull_quote": "A tutor is a copy of a card. It is never a copy of a class."
-    },
-    {
-      "id": "sources-say",
-      "kicker": "THE MANA",
-      "headline": "BEST IN THE COLOUR YOU NEED LEAST",
-      "dek": "Black carries 53.4% of your pips on 41.5% of your sources; white carries the lightest bill and always shows up. Here is exactly what that skew costs you on turn two.",
-      "components": [
-        "power-meter",
-        "fast-facts",
-        "pilot-tip",
-        "pull-quote",
-        "folio"
-      ],
-      "captions": {
-        "Caves of Koilos": "**PAY THE LIFE:** from lands alone black arrives on curve 63.9% of the time against white's 83.1%. The painlands and the fetches are how you close that gap, and the drains are how you pay for them."
-      },
-      "pilot_tips": [
-        {
-          "card": "Patchwork Banner",
-          "text": "Prioritise Patchwork Banner over the other rocks — it is the only one that fixes the short colour and pumps the whole tribe in the same slot."
-        }
-      ],
-      "pull_quote": "Thirty-six black sources in a 37-land deck is arithmetic that does not exist. Read the gap as posture, not as a defect.",
-      "note": "Section renders from mana_analysis.json; Ledger's mana_base prose narrates it. Two facts worth keeping visible in the furniture: nothing in this deck produces restricted mana, so every source can pay for an activated ability, and 16 of the 37 lands can enter tapped while only three always do. The renderer emits the declared full-bleed art break immediately after this section."
-    },
-    {
-      "id": "by-the-numbers",
-      "kicker": "THE RUNS",
-      "headline": "NINE TARGETS, NO AVERAGE",
-      "dek": "Ten thousand seeded games, and deliberately no single kill rate. Every target below is measured on its own, because averaging several independent kills would invent a number the simulation never produced.",
-      "components": [
-        "power-meter",
-        "fast-facts",
-        "callout-step",
-        "pull-quote",
-        "folio"
-      ],
-      "callouts": [
-        {
-          "n": 1,
-          "title": "READ THE MEAN TURN, NOT ONLY THE RATE",
-          "text": "A lord or anthem lands at a mean turn of 2.58 and the conversion layer at 3.45. The gap between those two numbers is precisely the stretch of the game where your board looks harmless."
-        },
-        {
-          "n": 2,
-          "title": "WHY THERE IS NO KILL RATE",
-          "text": "Each target is an AND of ORs, evaluated on its own terms. The model cannot express the union of several independent kills, so a deck with more than one has no single assembled figure — and we are not going to average one for you."
-        },
-        {
-          "n": 3,
-          "title": "ONE CARD IS 7.1% OF AN OPENER",
-          "text": "Two of these targets rest on a single named card. That is a ceiling on those lines rather than a defect in the simulation: 4.8% is simply what one card in a singleton deck looks like."
-        }
-      ],
-      "captions": {
-        "Herald's Horn": "**THE CURVE TAX, REBATED:** mean available mana is 2.149 on turn two and 3.176 on turn three against a modal mana value of 3 — a rebate on every Vampire buys more here than another rock would.",
-        "Sol Ring": "**SPEED, NEVER COLOUR:** it moves the mana curve and leaves the 63.9% on-curve figure for black exactly where it was."
-      },
-      "pull_quote": "Bodies: 1.75 by turn three, 4.12 by turn six, 6.52 by turn ten. The bodies were never the problem.",
-      "note": "Every figure quoted anywhere in this issue traces to goldfish_metrics.json at seed 42, 10,000 iterations, max turn 10, against the stamped decklist hash. Per the artifact's own note, target assembly counts cards DRAWN by a turn and the assisted figures model the three unrestricted tutors as wildcards; the unassisted number is the headline everywhere in this issue and the assisted one is always labelled as such."
-    },
-    {
-      "id": "upgrade-watch",
-      "kicker": "THE TEN",
-      "headline": "BUY THE RATE, NOT THE CARD",
-      "dek": "One question prices every entry on this list: how often does a token entering the battlefield cost the table life? Today, 43.2% of games — and roughly two in three reach turn six with the conversion layer still in the library.",
-      "components": [
-        "fast-facts",
-        "callout-step",
-        "pilot-tip",
-        "pull-quote",
-        "folio"
-      ],
-      "callouts": [
-        {
-          "n": 1,
-          "title": "THE BODIES ARE NOT THE CONSTRAINT",
-          "text": "A multiplier or extra token-maker shows up in 79.0% of games and a lord in 82.9%, both before turn three on average. The thing that turns those bodies into damage shows up in 43.2%. Spend there."
-        },
-        {
-          "n": 2,
-          "title": "THE BRACKET DOES NOT MOVE",
-          "text": "The floor is 4 and four Game Changers set it — Ancient Tomb, Demonic Tutor, Teferi's Protection, Vampiric Tutor — independently of any combo content. Nothing on this list changes the tier, and nothing on it was chosen to."
-        },
-        {
-          "n": 3,
-          "title": "THE CURRENCY IS THE ANSWER SLOTS",
-          "text": "Interaction counts 12 copies against an aggro template's five or six. Read the cards and the real answer count is nearer seven — so the list is spending two answer slots and seven cards that serve neither the width plan nor a verified line."
-        }
-      ],
-      "captions": {
-        "Night's Whisper": "**THE SHAPE SWAP:** two cards once, for two life. The counted card-advantage axis reads 4 against a target of 10, and the audit itself names six more draw functions sitting on cards it classifies elsewhere.",
-        "Nomad Outpost": "**THE UNCONDITIONAL TAPLAND:** one of only three lands here that always enter tapped, in a deck whose modal mana value is 3 and whose short colour is black."
-      },
-      "pilot_tips": [
-        {
-          "card": "Forerunner of the Legion",
-          "text": "Forerunner searches a Vampire onto the TOP of your library, so it replaces your draw instead of adding to it — sleeve it for the pods slow enough that you can afford to skip a card."
-        }
-      ],
-      "pull_quote": "Ten cards. Six are orders, four are already in the box."
-    },
-    {
-      "id": "judges-desk",
-      "kicker": "THE FILES",
-      "headline": "READ IT TWICE",
-      "dek": "Six case files, every citation verbatim, nothing paraphrased or summarised. If a claim in this issue wears a check mark, its complete record is sitting right here.",
-      "components": [
-        "dossier-file",
-        "folio"
-      ],
-      "pull_quote": "Where the record is silent, the record says so.",
-      "note": "Renderer-generated from the checker-passed artifacts; the plan supplies packaging only. The two partial findings are the ones worth the reader's time — stack 007's bounded end step, and stacks 004 and 006 each naming the removal window that breaks the loop."
-    },
-    {
-      "id": "featured-artist",
-      "kicker": "THE CREDITS",
-      "headline": "NINETY-TWO HANDS",
-      "dek": "Ninety-two artists split 127 cards and nobody holds more than four. There is no house style in this collection — so the feature goes to the hand that painted the card this issue is about.",
-      "components": [
-        "artist-gallery",
-        "fast-facts",
-        "pull-quote",
-        "folio"
-      ],
-      "featured": {
-        "artist": "Eric Deschamps",
-        "note": "Two cards out of 127, and one of them is the entire thesis. Eric Deschamps painted Purphoros, God of the Forge — the god who turns a creature entering the battlefield into 2 damage at every seat, and the card stack 008 counted trigger by trigger. He also painted Captivating Vampire, the lord that taps five untapped Vampires and takes something of theirs. A payoff and a lord: the two halves of what this deck does, from one hand.\n\nTwo of 127 is not a claim of dominance and we are not making one. The census reads as breadth, and the numbers say so plainly: ninety-two artists, 127 cards counted, and the leaders hold four apiece. Fifty-nine sets contribute; the largest single set gives twelve cards by twelve different artists, and the analysis found no contiguous collector-number runs anywhere in the collection.\n\nNobody bought this deck whole. It was assembled a card at a time across a decade of printings, and a credits page with ninety-two names on it is exactly what that looks like."
-      },
-      "also_worth_noting": [
-        {
-          "artist": "Titus Lunter",
-          "note": "Four cards, three of them lands — Castle Locthwain, Luxury Suite, Savai Triome. The fourth is Throne of the God-Pharaoh, the end-step drain the checker bounded in stack 007. The manabase's house painter, holding one artifact."
-        },
-        {
-          "artist": "Dan Murayama Scott",
-          "note": "The other leader at four: Arcane Signet and Diabolic Intent in the 99, Akroma's Memorial and Leering Onlooker in the box. Two shelves, one hand."
-        },
-        {
-          "artist": "Seb McKinnon",
-          "note": "Three cards, all in the 99, all nocturnes — Blood Crypt, Silent Clearing, Twilight Prophet. The closest this collection comes to a mood board."
-        },
-        {
-          "artist": "Jason A. Engle",
-          "note": "Three cards, one of them Mondrak, Glory Dominus — the doubler that appears inside two verified files, stacks 002 and 008."
-        },
-        {
-          "artist": "Raymond Swanland",
-          "note": "Three cards and four copies: Arid Mesa, Vampiric Tutor, and a Vampire Nocturnus that appears twice. Counted once, because authorship is per card and not per copy."
-        },
-        {
-          "artist": "Chris Rallis",
-          "note": "Three entries and two cards: Strefan, Maurer Progenitor sleeved and again in the box, plus Vampire Gourmand. The count is honest about printings, and we are honest about the count."
-        }
-      ],
-      "captions": {
-        "Captivating Vampire": "**THE OTHER DESCHAMPS:** a lord whose second ability is a removal spell you already paid for — tap five untapped Vampires and their best creature becomes one of yours."
-      },
-      "pull_quote": "We count cards, not copies. Four Swamps are one credit.",
-      "note": "artist-credits reports standout: null with the lead artists at four cards, and its own note says to tell a breadth story — so the feature is an editorial pick, chosen for the story, with every count recomputed by the renderer. Scope for the Art File box: the census covers the pilot's whole collection, the 99 plus the 30-card box, 127 cards and 132 copies across 92 artists. Respect the per-entry notes verbatim: Swamp is one card and four copies, Unholy Officiant and Vampire Nocturnus one card and two copies each. drop_runs is empty, so no bought-whole caveat applies and none is implied. Remaining Art File facts: 1 borderless, 0 foil, 20 legendary frames, 9 showcase."
-    },
-    {
-      "id": "back-page",
-      "components": [
-        "fast-facts",
-        "folio"
-      ],
-      "note": "Next issue verbatim from issue.json ('TO BE ANNOUNCED'). Colophon: volume, issue date, deck name, six verified lines, rules version from the case files, decklist sha. Then the deck dossier link and the Fan Content Policy line."
-    }
+ "slug": "edgar-vampires",
+ "angle": "Edgar's free tokens were never built to attack: four payoffs turn every creature that enters into life gone at all three seats at once, and one two-mana Vampire is verified to be exactly lethal to a pod at twelve.",
+ "cover": {
+  "kicker": "NINE TRIGGERS, NO COMBAT",
+  "dominant_coverline": "TWELVE TO EVERY SEAT",
+  "teases": [
+   "One {B}{B} Vampire, one doubler, three payoffs — and a pod at twelve is dead",
+   "Your own Olivia's Wrath eats a converter, a doubler and the flying enabler",
+   "Never keep a hand for Edgar: median cast turn six, out by then in 52.3% of games",
+   "The end-step drain that leaves a 15-life opponent alive at exactly 1"
   ],
-  "rhythm_notes": "The five acts run as specified and the depth ramp is monotonic. Act I opens high (The Game Plan, narrative) and steps down through practice into participation; Act II sits at medium the whole way — reflection, reference, instruction — so the reader is never asked to concentrate twice in a row. Act III drops to browsing for The 99 and imagination for The Short List, which is the deliberate trough before the two dense analysis spreads. Sources Say into By the Numbers is the one genuine dense adjacency in the book and it is covered by the declared breather: the renderer emits the full-bleed commander art break between them, so the reader gets a page with one line on it before the second table. The Kill is the peak, and it is placed after By the Numbers precisely because it reads as narrative — six stories carrying technical content. The appendix descends: deep reference (Judge's Desk, opt-in and collapsed by default), appreciation (Featured Artist), closure. Three additional breathers are built into the copy rather than the structure: the pull quote in The 99, the art-heavy artist gallery, and the graveyard-hate threat box, which is the shortest and funniest thing in Act II on purpose.",
-  "gaps": [
-    "decisions/002-vito-tutor-or-hold.json is stale and will render a board the reader cannot build: it names Black Market Connections and Nighthawk Scavenger on the battlefield and its first branch tutors for Exquisite Blood. None of the three is in this 99. validate-issue does not check decision card names, so this passes form and fails truth. Regenerate the decision against the current list before rendering — a natural replacement question is 'a payoff has resolved and you hold a multiplier: deploy it now into two open blue mana, or cast two more Vampires?', which is where the deck's real pivot lives.",
-    "No verified line exists for the deck's actual kill. Stacks 002, 003, 007 and 008 measure tokens per cast, drain per attack, drain per end step and damage per cast; none of them is a scenario in which the deck wins the game. The two candidates worth a resolve-stack run are the three-doubler stack (1->2->4->8 through Anointed Procession, Mondrak and Elspeth as one entry event) and the composition of all three entry-damage payoffs across a single token wave, which the strategic frame prices at 5 x (2+1+1) to each opponent and explicitly does not claim.",
-    "Bloodletter of Aclazotz doubling the ENTRY damage — not just the Throne drain — is unverified and would be the single most valuable new file in the book. Stack 007 verified the doubling for one loss source; the frame reasons by analogy to the entry triggers and stops there. Until it is resolved, no copy in this issue claims it, and the pilot should not sequence around it.",
-    "Abzan Falconer plus Edgar's attack trigger is an unresolved timing question with real table consequences: whether counters from a declare-attackers trigger are visible to Falconer's static ability before blockers are declared. It is flagged in the frame as needing a scenario and is written here only as what each card says, never as an outcome.",
-    "Strategy-DB gaps the frame names and this issue felt: there is no section on token doubling as a multiplicative rather than additive resource, and none on converting board width into non-combat damage. That second one is the whole deck — the corpus can only reach it through a burn-deck frame (philosophy-of-fire) and one clause of multiplayer.asymmetry. A section on trigger-based kills versus combat kills, covering sweeper exposure, the irrelevance of evasion and the fact that the payoff is a noncreature permanent, would be load-bearing for every token deck the magazine ever covers.",
-    "The interaction axis reads 12 against an aggro band of 5-6, but three of those copies are Impact Tremors, Warleader's Call and Purphoros carrying removal:damage tags — the token plan counted as answers. The Short List's own gaps note says the real answer count is about seven. Nothing in this issue quotes the 12 as an answer count; if the taxonomy is ever tightened, the axis reading and the prose that leans on it should be re-checked together.",
-    "Featured Artist has no standout by construction (lead artists at four cards of 127) so the pick is editorial and labelled as such. If a future pass wants a different lead, Volkan Baǵa painted both Edgar Markov and Sanctum Seeker, which is the commander-first version of the same breadth story."
+  "violators": [
+   {
+    "text": "EXACTLY LETHAL — ZERO MARGIN!",
+    "tone": "extreme"
+   },
+   {
+    "text": "SEVEN CASE FILES INSIDE!",
+    "tone": "extreme"
+   }
   ]
+ },
+ "departments": [
+  {
+   "id": "cover",
+   "components": [
+    "violator",
+    "folio"
+   ],
+   "note": "Hero is Edgar Markov's art_crop from the Innistrad Remastered printing in cards.json. The kicker states the finding from case 009 — nine triggers, no combat step — rather than a tier word. Coverline names the per-seat number, not the pod total: 12 each, 36 across the table, and the two are not interchangeable."
+  },
+  {
+   "id": "contents",
+   "components": [
+    "folio"
+   ],
+   "note": "Five acts, promises verbatim from issue_spec. No extra furniture — the map must read in one glance."
+  },
+  {
+   "id": "command-zone",
+   "kicker": "HE WORKS FROM HOME",
+   "headline": "THE ZONE IS THE ENGINE",
+   "dek": "Your commander costs six mana, and the best thing he does costs none of it. Read the tax ladder before you decide Edgar Markov is worth casting at all.",
+   "components": [
+    "fast-facts",
+    "tax-ladder",
+    "pilot-tip",
+    "pull-quote",
+    "folio"
+   ],
+   "body": "Which card do you always have? Not the one you drew — the one in the command zone. CR 903.6 puts Edgar Markov there face up before anybody has a hand, and that guarantee is the only one this format hands you.\n\nEminence is why it matters here. It reads “Whenever you cast another Vampire spell, if Edgar is in the command zone or on the battlefield, create a 1/1 black Vampire creature token.” An ability that states which zones it functions in functions only from those zones — CR 113.6b — and this one names the command zone out loud. Stack 002 confirms it firing from there.\n\nSo the engine is live on turn one and it costs nothing. Two riders travel with it. The tokens are created, not cast, so they never trigger eminence a second time. And casting Edgar is not casting another Vampire spell — he is the one Vampire in your deck that mints nothing.\n\nNow price the man himself. Six, then eight, then ten, then twelve: CR 903.8 adds {2} for every previous command-zone cast, and that cost compounds for the rest of the game. The ladder beside this column is the whole argument for leaving him home.\n\nColour identity is why the 99 looks the way it does. CR 903.4 reads mana symbols in the cost and in the rules text, so {3}{R}{W}{B} buys white's exile and board-wide protection, black's tutors and drains, and red's damage payoffs. It also shuts the door on blue counterspells and green ramp: this deck answers a permanent after it resolves, or it does not answer it.\n\nIs the 21-damage clock real? CR 903.10a ends a player dealt 21 combat damage by one commander, and Edgar is a 4/4 with first strike and haste who puts a +1/+1 counter on every Vampire he attacks alongside, himself included. Treat it as a coincidence you can cash. Commander damage points at one seat; this deck's kill points at three.\n\n★ Coach's read. The table re-prices you the moment the card is read out, so stop buying anonymity you cannot afford. Spend the budget on order instead: land the two-mana payoffs while they still look like durdle, and let the six-mana commander arrive last, to a board he makes lethal rather than one he has to build.\n\n★ And be honest about protection. Your engine does not route through Edgar — eminence keeps minting whatever happens to him — so insurance on him is insurance on the wrong thing. What his presence does buy is a discount: Flawless Maneuver costs {2}{W} while he waits in the zone and {0} the moment he is on the battlefield.",
+   "captions": {
+    "Flawless Maneuver": "**THE ZONE SETS THE PRICE:** {2}{W} while Edgar waits in the command zone, {0} the moment he is on the battlefield. Casting him is also a discount on protecting everything else you own."
+   },
+   "pilot_tips": [
+    {
+     "card": "Edgar Markov",
+     "text": "Cast Edgar for the attack trigger, never for the tokens — he is the one Vampire spell in your deck that mints nothing."
+    }
+   ],
+   "pull_quote": "The only card you always have is the one you never need to cast.",
+   "note": "Tax ladder and Commander File are renderer-computed from cards.json and goldfish_metrics.json: mean cast turn 6.639, out by turn six 52.3%. Coaching paragraphs are marked ★ in the body so the two voices stay separable on the page."
+  },
+  {
+   "id": "first-turns",
+   "kicker": "THE PLAN",
+   "headline": "NOBODY HAS TO BLOCK",
+   "dek": "Every Vampire you cast is two bodies, and every body that enters costs all three opponents life at once. Build the layer that charges for it and the combat step becomes optional.",
+   "components": [
+    "callout-step",
+    "pilot-tip",
+    "pull-quote",
+    "folio"
+   ],
+   "callouts": [
+    {
+     "n": 1,
+     "title": "LAND THE UGLY TWO-DROP",
+     "text": "Impact Tremors and Corpse Knight cost two and read as durdle. Play them into an empty board; one damage has never had a removal spell pointed at it."
+    },
+    {
+     "n": 2,
+     "title": "DOUBLE THE EVENT, DON'T ADD TO IT",
+     "text": "Anointed Procession, Mondrak, Glory Dominus and Elspeth, Storm Slayer replace the token creation rather than adding a token to it. Stack 002 has the arithmetic: one becomes two becomes four, and the order you pick cannot change the answer."
+    },
+    {
+     "n": 3,
+     "title": "THEN CAST ANYTHING",
+     "text": "With one doubler and three payoffs down, a {B}{B} Vampire is nine separate triggers and twelve damage at every seat — stack 009 counts it. The cheapest card in your hand is now the lethal one."
+    },
+    {
+     "n": 4,
+     "title": "KEEP COMBAT AS THE BACKUP",
+     "text": "A lord or anthem turns up in 83.2% of games at a mean turn of 2.60, so the alpha strike is always there. Take it after the entries have already done the work, not instead of them."
+    }
+   ],
+   "captions": {
+    "Impact Tremors": "**TWO MANA, ZERO RESPECT:** one damage to each opponent for every creature entering. It looks like nothing on turn two and it is the card that changes what your deck is.",
+    "Anointed Procession": "**REPLACEMENT, NOT ADDITION:** it does not hand you an extra token, it changes how many the effect makes — which is exactly why a second doubler multiplies instead of adding.",
+    "Purphoros, God of the Forge": "**THE BIG ONE:** 2 damage to each opponent per entry, on an indestructible permanent that usually is not even a creature. A creature sweeper does not touch him."
+   },
+   "pilot_tips": [
+    {
+     "card": "Corpse Knight",
+     "text": "Cast Corpse Knight early even though it is a Zombie and mints no token — it converts, and converting is the half you are short of."
+    }
+   ],
+   "pull_quote": "The cheapest card in your hand is the lethal one."
+  },
+  {
+   "id": "the-99",
+   "kicker": "ROLL CALL",
+   "headline": "SIXTY-THREE SPELLS, ONE EVENT",
+   "dek": "Sorted by what each card does when a creature enters the battlefield, because that is the moment this deck is built around. The four converters lead; almost everything else exists to feed them.",
+   "components": [
+    "pilot-tip",
+    "pull-quote",
+    "folio"
+   ],
+   "roster": [
+    {
+     "role": "The conversion layer: every entry is damage",
+     "cards": [
+      "Purphoros, God of the Forge",
+      "Impact Tremors",
+      "Warleader's Call",
+      "Corpse Knight"
+     ]
+    },
+    {
+     "role": "The multipliers: one token becomes four",
+     "cards": [
+      "Anointed Procession",
+      "Mondrak, Glory Dominus",
+      "Elspeth, Storm Slayer",
+      "Ocelot Pride",
+      "Caretaker's Talent"
+     ]
+    },
+    {
+     "role": "Bodies that print bodies, for free",
+     "cards": [
+      "Charismatic Conqueror",
+      "Legion's Landing // Adanto, the First Fort",
+      "Mavren Fein, Dusk Apostle",
+      "Bloodline Keeper // Lord of Lineage",
+      "Elenda, the Dusk Rose",
+      "Strefan, Maurer Progenitor",
+      "Preacher of the Schism",
+      "Kalitas, Traitor of Ghet",
+      "Forerunner of the Legion"
+     ]
+    },
+    {
+     "role": "Lords, anthems, and the counters that make them fly",
+     "cards": [
+      "Legion Lieutenant",
+      "Stromkirk Captain",
+      "Captivating Vampire",
+      "Vampire Socialite",
+      "Drana, Liberator of Malakir",
+      "Cordial Vampire",
+      "Patchwork Banner",
+      "Shared Animosity",
+      "Abzan Falconer",
+      "Cathars' Crusade",
+      "Akroma's Will"
+     ]
+    },
+    {
+     "role": "The attack-and-tap drains",
+     "cards": [
+      "Sanctum Seeker",
+      "Bloodletter of Aclazotz",
+      "Throne of the God-Pharaoh",
+      "Twilight Prophet"
+     ]
+    },
+    {
+     "role": "The deterministic kill, and the rent it pays",
+     "cards": [
+      "Bloodthirsty Conqueror",
+      "Vito, Thorn of the Dusk Rose",
+      "Sanguine Bond"
+     ]
+    },
+    {
+     "role": "Cheap Vampires that bank a token on the way down",
+     "cards": [
+      "Knight of the Ebon Legion",
+      "Vampire of the Dire Moon",
+      "Welcoming Vampire",
+      "Henrika Domnathi // Henrika, Infernal Seer",
+      "Cemetery Gatekeeper"
+     ]
+    },
+    {
+     "role": "Interaction, and insurance sized for a board",
+     "cards": [
+      "Swords to Plowshares",
+      "Path to Exile",
+      "Despark",
+      "Anguished Unmaking",
+      "Winds of Abandon",
+      "Olivia's Wrath",
+      "Toxic Deluge",
+      "Boros Charm",
+      "Deflecting Swat",
+      "Flawless Maneuver",
+      "Teferi's Protection",
+      "Swiftfoot Boots"
+     ]
+    },
+    {
+     "role": "Fuel: draw, wishes, rebates and rocks",
+     "cards": [
+      "Night's Whisper",
+      "Demonic Tutor",
+      "Vampiric Tutor",
+      "Diabolic Intent",
+      "Herald's Horn",
+      "Bontu's Monument",
+      "Sol Ring",
+      "Arcane Signet",
+      "Talisman of Indulgence"
+     ]
+    },
+    {
+     "role": "The manabase's marked cards",
+     "cards": [
+      "Ancient Tomb",
+      "Urborg, Tomb of Yawgmoth",
+      "Cavern of Souls",
+      "Mana Confluence",
+      "Command Tower",
+      "Savai Triome",
+      "Nomad Outpost",
+      "Castle Locthwain",
+      "Minas Tirith",
+      "Takenuma, Abandoned Mire",
+      "Midgar, City of Mako // Reactor Raid",
+      "Reflecting Pool"
+     ]
+    },
+    {
+     "role": "The rest of the base",
+     "cards": [
+      "Battlefield Forge",
+      "Blazemire Verge",
+      "Bleachbone Verge",
+      "Blood Crypt",
+      "Bloodstained Mire",
+      "Caves of Koilos",
+      "Concealed Courtyard",
+      "Godless Shrine",
+      "Haunted Ridge",
+      "Luxury Suite",
+      "Marsh Flats",
+      "Plains",
+      "Prismatic Vista",
+      "Sacred Foundry",
+      "Shattered Sanctum",
+      "Silent Clearing",
+      "Spectator Seating",
+      "Sulfurous Springs",
+      "Sunbaked Canyon",
+      "Sundown Pass",
+      "Swamp",
+      "Vault of Champions"
+     ]
+    }
+   ],
+   "captions": {
+    "Corpse Knight": "**THE ODD ONE OUT:** a Zombie Knight, so casting it mints no eminence token and no lord ever pumps it. It causes life loss rather than damage — the exact wording Bloodletter of Aclazotz doubles.",
+    "Olivia's Wrath": "**READ YOUR OWN BOARD FIRST:** every non-Vampire creature shrinks by your Vampire count, and five of your thirty creatures are not Vampires. Cast it before you deploy Corpse Knight, Abzan Falconer, Mondrak and Ocelot Pride, never after.",
+    "Cavern of Souls": "**THE ONE RESTRICTED SOURCE:** name Vampire and your Vampire spells cannot be countered — but that coloured mana casts creature spells only. It cannot pay for Castle Locthwain's draw or Bloodline Keeper's flip."
+   },
+   "pilot_tips": [
+    {
+     "card": "Diabolic Intent",
+     "text": "Pay Diabolic Intent's sacrifice with an eminence token and never with a lord — the token was free and the tutor is not."
+    }
+   ],
+   "pull_quote": "Thirty creatures, four ways to charge for them, and a machine no wrath can reach.",
+   "note": "Roster covers all 96 non-commander entries in eleven groups, load-bearing first; nothing falls through to the renderer's Depth bucket. Purphoros leads group one so the Featured Artist hero resolves to him. Counts to quote: 100 copies across 97 entries, 63 spells, 37 land copies, 30 creatures."
+  },
+  {
+   "id": "keep-or-ship",
+   "kicker": "THE DRILL",
+   "headline": "NEVER KEEP FOR EDGAR",
+   "dek": "You have just read the distribution — eight one-drops, seventeen two-drops, 37 lands. Now grade four openers against it, because the simulation keeps 81.8% of first sevens and the Coach ships one of them anyway.",
+   "components": [
+    "power-meter",
+    "scenario-box",
+    "pilot-tip",
+    "pull-quote",
+    "folio"
+   ],
+   "hands": [
+    {
+     "verdict": "KEEP — the engine hand",
+     "cards": [
+      "Swamp",
+      "Concealed Courtyard",
+      "Caves of Koilos",
+      "Vampire of the Dire Moon",
+      "Knight of the Ebon Legion",
+      "Legion Lieutenant",
+      "Impact Tremors"
+     ],
+     "why": "Three lands that can all arrive untapped, two one-mana Vampires worth two bodies each, a lord, and the two-mana payoff that turns the whole thing into damage. This is the shape the drill is looking for: something to cast on turn one, turn two and turn three, and a converter waiting behind it."
+    },
+    {
+     "verdict": "KEEP — the two-lander that pays",
+     "cards": [
+      "Ancient Tomb",
+      "Swamp",
+      "Sol Ring",
+      "Cordial Vampire",
+      "Herald's Horn",
+      "Sanctum Seeker",
+      "Warleader's Call"
+     ],
+     "why": "Two lands reads risky until you price the mana. Ancient Tomb into Sol Ring is three available on turn one against a simulated mean of 1.0, and Herald's Horn rebates {1} off every Vampire behind it. Both lands enter untapped, and that is the detail that saves the keep."
+    },
+    {
+     "verdict": "SHIP — the all-payoff mirage",
+     "cards": [
+      "Savai Triome",
+      "Nomad Outpost",
+      "Godless Shrine",
+      "Sanguine Bond",
+      "Bloodthirsty Conqueror",
+      "Cathars' Crusade",
+      "Olivia's Wrath"
+     ],
+     "why": "Half a deterministic kill and four five-drops. Two of those lands enter tapped no matter what you do, nothing happens before turn five, and your eminence dividend for four whole turns is zero. Ship anything whose cheapest spell costs four."
+    },
+    {
+     "verdict": "SHIP — the hand the machine keeps",
+     "cards": [
+      "Swamp",
+      "Swamp",
+      "Caves of Koilos",
+      "Haunted Ridge",
+      "Sundown Pass",
+      "Teferi's Protection",
+      "Demonic Tutor"
+     ],
+     "why": "The simulation's rule keeps any seven with two to five lands, so this five-lander passes it — and the Coach ships it anyway. One castable spell before turn four, and protection plus a tutor are luxuries in an opener rather than a plan. The badges disagreeing in public is the honest version of this section."
+    }
+   ],
+   "captions": {
+    "Concealed Courtyard": "**THE FIRST-THREE-TURNS LAND:** untapped exactly while eight one-drops and seventeen two-drops need it to be. Fifteen of the 37 lands can enter tapped; only three of them always do.",
+    "Ancient Tomb": "**TWO MANA FOR TWO LIFE:** the fastest land here, and your speed is worth the life. It is what turns a two-lander into a turn-two three-drop.",
+    "Herald's Horn": "**THE MARGINAL-HAND FIXER:** {1} off every Vampire spell and a free look at the top each upkeep. Ramp or fixing shows up in 67.7% of games at a mean turn of 2.98."
+   },
+   "pilot_tips": [
+    {
+     "card": "Vampire of the Dire Moon",
+     "text": "Grade a one-drop by casts, not by stats — Vampire of the Dire Moon on turn one is a deathtouch blocker plus a banked token before it does anything else."
+    }
+   ],
+   "pull_quote": "He is face up in the command zone before your first decision. Mulligan as though he does not exist."
+  },
+  {
+   "id": "whats-your-play",
+   "kicker": "YOUR CALL",
+   "headline": "COMMIT BEFORE YOU READ ON",
+   "dek": "Two boards, two hard reads: a turn six where your commander is finally castable, and a turn seven where lethal costs one black mana and the control seat has sat on five lands for two turns. Pick your line, then check ours.",
+   "components": [
+    "scenario-box",
+    "callout-step",
+    "pilot-tip",
+    "pull-quote",
+    "folio"
+   ],
+   "callouts": [
+    {
+     "n": 1,
+     "title": "COUNT ENTRIES, NOT CARDS",
+     "text": "One Vampire spell with a doubler down is three creature-entry events — two tokens and the body. Every converter on the battlefield reads each one separately."
+    },
+    {
+     "n": 2,
+     "title": "PRICE THE COMMANDER HONESTLY",
+     "text": "Six mana buys one attacker and a counter on each Vampire. The same six mana buys three cheap Vampires, six entries, and all the damage attached to them."
+    },
+    {
+     "n": 3,
+     "title": "A KILL THAT COSTS ONE MANA IS NEVER WRONG",
+     "text": "A converter that has already removed a seat is a card you cashed. A converter still sitting there when the wrath resolves is a card you paid for and never spent."
+    }
+   ],
+   "captions": {
+    "Knight of the Ebon Legion": "**ONE BLACK MANA, THREE ENTRIES:** with a doubler down, the cheapest Vampire in the deck is a token, a token and a body — and every converter counts all three.",
+    "Mondrak, Glory Dominus": "**THE SECOND BITE:** each replacement effect gets exactly one application, so two doublers take one token to four rather than to three (stack 002).",
+    "Abzan Falconer": "**COUNTERS BECOME EVASION:** every creature you control carrying a +1/+1 counter has flying, which is how a row of 1/1 tokens attacks a seat with two ground blockers."
+   },
+   "pilot_tips": [
+    {
+     "card": "Vampire Socialite",
+     "text": "Drain first, then deploy — Socialite's extra counter applies only while an opponent has already lost life this turn."
+    }
+   ],
+   "pull_quote": "Six mana for one attacker, or six mana for six entries. It is not close.",
+   "note": "Both spreads come from decisions/*.json. Never reveal the recommendation above the branches — the renderer places it last, and the callouts above must teach the arithmetic without naming the call."
+  },
+  {
+   "id": "the-kill",
+   "kicker": "THE RECORD",
+   "headline": "EXACTLY LETHAL, ZERO MARGIN",
+   "dek": "Seven case files, and the one that matters most is not an infinite. One {B}{B} Vampire, one doubler, three payoffs: nine triggers, twelve damage at every seat, and a pod at twelve is dead with no combat step anywhere in the sequence.",
+   "components": [
+    "callout-step",
+    "scenario-box",
+    "pull-quote",
+    "folio"
+   ],
+   "callouts": [
+    {
+     "n": 1,
+     "title": "THE PRIMARY PLAN, ON THE RECORD",
+     "text": "Stack 009 tests the deck's own world-view rather than its lottery ticket. Nine triggers, 12 damage per seat, 36 across the pod — and one trigger fewer leaves all three opponents standing at 1 or 2."
+    },
+    {
+     "n": 2,
+     "title": "THE BOUND, AND WE LEAD WITH IT",
+     "text": "Stack 007 is a refutation. Seven tapped creatures under Bloodletter of Aclazotz drain 14 apiece at your end step, and an opponent at 15 survives at exactly 1. That is reach, not a table kill, and the file says so."
+    },
+    {
+     "n": 3,
+     "title": "THE TICKET YOU HAPPEN TO BE HOLDING",
+     "text": "Stacks 004 and 006 are deterministic table-kills for zero mana. A complete pair is drawn in 4.6% of games, 2.6% by turn six — present it when a window opens, and never slow the board to protect it."
+    },
+    {
+     "n": 4,
+     "title": "WHAT EVERY ITERATION COSTS YOU",
+     "text": "Both loops hand the table a priority window, and Bloodthirsty Conqueror is a creature. Instant-speed creature removal breaks the chain at any iteration; the record names that price rather than hiding it."
+    }
+   ],
+   "captions": {
+    "Warleader's Call": "**THE PAYOFF THAT IMPROVES BOTH KILLS:** one damage to each opponent per entry, plus an anthem that makes your tokens 2/2. Stack 009 counts three of its triggers.",
+    "Bloodletter of Aclazotz": "**IT DOUBLES THEIRS, NEVER YOURS:** the clause replaces an opponent's life loss during your turn. Your own gain off the same trigger is untouched (stacks 003 and 007).",
+    "Bloodthirsty Conqueror": "**HONEST RENT:** a 5/5 flying deathtouch Vampire that pays full price on the nineteen games in twenty when the loop never happens."
+   },
+   "pull_quote": "Nine triggers off a two-drop. One fewer and everybody lives.",
+   "note": "Seven presentable files render here: 002, 003, 004, 006, 007, 008, 009. Lead the reader on 009 (the primary plan) and 007 (the refutation), not on the infinites — they assemble in 4.6% of games and the issue must not read as a combo primer."
+  },
+  {
+   "id": "politics-table",
+   "kicker": "THE FLIP POINT",
+   "headline": "WHEN THEY START COUNTING YOU",
+   "dek": "You stop being a creature deck the first time a creature entering costs all three seats life. That moment is exact, it is cheap, and you get to choose when it arrives.",
+   "components": [
+    "callout-step",
+    "pilot-tip",
+    "pull-quote",
+    "folio"
+   ],
+   "callouts": [
+    {
+     "n": 1,
+     "title": "THREAT WINDOW: THE CONVERTER LANDS",
+     "text": "Purphoros, Impact Tremors, Warleader's Call or Corpse Knight resolving onto a board that already holds a doubler. A converter is in hand in 52.5% of games at a mean turn of 3.28; paired with a multiplier it is 40.2% at mean turn 4.53. Plan your archenemy turn for four or five, not for whenever Edgar shows up."
+    },
+    {
+     "n": 2,
+     "title": "SAY WHAT THE WRATH COSTS YOU",
+     "text": "Your machine is enchantments and a command-zone trigger. Their sweeper is a bad trade against you and a fine one against the seat to your left — pointing that out is free, and it is true, which is the only table talk that keeps working."
+    },
+    {
+     "n": 3,
+     "title": "THE SEAT THAT CAN ACTUALLY BEAT YOU",
+     "text": "Broad exile and enchantment removal, not the wrath. Despark and Anguished Unmaking put one answer in hand in 30.8% of games and 23.8% by turn six, so hold them for the permanent that ends your function rather than the one that looks scary."
+    }
+   ],
+   "captions": {
+    "Elspeth, Storm Slayer": "**LAST PIECE DOWN, NEVER FIRST:** a five-mana planeswalker gets attacked on sight. Deploy her onto a board that converts immediately, or leave her in hand.",
+    "Teferi's Protection": "**ONE CARD, TWO PROBLEMS:** it answers the sweeper and the swing-back together. A protection piece is held in 68.1% of games, 56.7% by turn six.",
+    "Charismatic Conqueror": "**IT TAXES THEIR TURN:** every untapped artifact or creature an opponent plays either arrives tapped or hands you a lifelink Vampire. Tokens made on their turn, converted on yours."
+   },
+   "pilot_tips": [
+    {
+     "card": "Impact Tremors",
+     "text": "Land Impact Tremors on turn two into an empty board — one damage reads as durdle, and nobody has ever spent removal on it."
+    }
+   ],
+   "pull_quote": "Sequence the boring cards first. The scary ones are cheaper when nobody is holding an answer."
+  },
+  {
+   "id": "know-your-enemy",
+   "kicker": "SCOUTING REPORT",
+   "headline": "WHO ACTUALLY BEATS YOU",
+   "dek": "Not the sweeper, and certainly not the graveyard hate. Find the seat holding broad exile, because that is the only player at the table who can switch the machine off.",
+   "components": [
+    "threat-box",
+    "pilot-tip",
+    "pull-quote",
+    "folio"
+   ],
+   "threats": [
+    {
+     "archetype": "Sweeper control",
+     "meter_label": "Threat to you",
+     "rate": 0.45,
+     "read": "The wrath is a worse card against you than against anyone else at the table, and the whole matchup is built on that. Anointed Procession, Impact Tremors, Warleader's Call, Cathars' Crusade, Caretaker's Talent, Patchwork Banner, Herald's Horn, Legion's Landing and Elspeth all live through it, Purphoros is indestructible and usually not even a creature, and eminence rebuilds at a token per Vampire cast with nothing spent. One caveat: Corpse Knight is a creature, so every wrath trims your conversion layer by one. The toughness-based sweeper hurts more than the destroy-based one, and Cathars' Crusade counters are the answer to it.",
+     "outs": [
+      "Teferi's Protection",
+      "Flawless Maneuver",
+      "Akroma's Will",
+      "Boros Charm",
+      "Impact Tremors",
+      "Caretaker's Talent"
+     ]
+    },
+    {
+     "archetype": "Stax and taxes",
+     "meter_label": "Threat to you",
+     "rate": 0.3,
+     "read": "Structurally your best matchup, for a reason worth knowing cold: eminence is a triggered ability from the command zone, not a cast, so a Sphere taxes the Vampire spell and never touches the token it mints. Eight one-drops and seventeen two-drops keep paying under the tax, and two cost reducers lower the bill rather than raising your sources. Leave Edgar zoned longest here — six mana is the first thing a tax prices out, and the engine has been running since turn one anyway.",
+     "outs": [
+      "Herald's Horn",
+      "Bontu's Monument",
+      "Patchwork Banner",
+      "Ancient Tomb",
+      "Despark",
+      "Anguished Unmaking"
+     ]
+    },
+    {
+     "archetype": "Aggro and creature mirrors",
+     "meter_label": "Threat to you",
+     "rate": 0.5,
+     "read": "Re-ask the role and take the other seat: against a faster board you are the control, and you can be without changing a card. Lifelink tokens from Charismatic Conqueror, Legion's Landing and Mavren Fein, deathtouch from Vampire of the Dire Moon and Preacher of the Schism, first strike from Stromkirk Captain and Cemetery Gatekeeper. A wide board turns their small creatures into dead cards without you drawing anything. Sweep carefully — Olivia's Wrath is asymmetric only to the extent you stay on type.",
+     "outs": [
+      "Olivia's Wrath",
+      "Charismatic Conqueror",
+      "Vampire of the Dire Moon",
+      "Preacher of the Schism",
+      "Winds of Abandon",
+      "Toxic Deluge"
+     ]
+    },
+    {
+     "archetype": "Faster combo",
+     "meter_label": "Threat to you",
+     "rate": 0.8,
+     "read": "You are the clock and you are fast enough to be one: a lord or anthem at a mean turn of 2.60, a multiplier at 2.68, a converter at 3.28. Held answers rot, so spend the exile on the piece that ends the game rather than the piece that looks scary. Present the plan that survives being answered — a removed multiplier costs a card, an interrupted alpha strike costs the board. Do not steer toward the loop here: it is complete in 4.6% of games and one instant-speed removal spell breaks it at any iteration.",
+     "outs": [
+      "Swords to Plowshares",
+      "Path to Exile",
+      "Despark",
+      "Deflecting Swat",
+      "Boros Charm"
+     ]
+    },
+    {
+     "archetype": "Graveyard hate",
+     "meter_label": "Threat to you",
+     "rate": 0.15,
+     "read": "This one is close to free and you should encourage it. There is no graveyard plan to attack — the kills are creature entries, attack triggers and a lifegain loop, and every payoff sits on the battlefield as a permanent. A Rest in Peace effect costs the reanimator seat their whole deck and costs you one Cemetery Gatekeeper trigger and a channel from Takenuma. Say yes to that trade every time and help the hate resolve.",
+     "outs": [
+      "Kalitas, Traitor of Ghet",
+      "Cemetery Gatekeeper"
+     ]
+    }
+   ],
+   "pilot_tips": [
+    {
+     "card": "Despark",
+     "text": "Aim Despark at the tax piece rather than the trophy — it exiles mana value 4 or greater, so the cheap prison enchantment is exactly what it cannot touch."
+    }
+   ],
+   "pull_quote": "Help the graveyard hate resolve. It costs you one trigger and costs them a deck.",
+   "note": "Threat meters are editorial reads, not measured rates — they order the matchups by how much the archetype actually threatens this deck. Every named out is a card in the 99."
+  },
+  {
+   "id": "fetch-quests",
+   "kicker": "ONE WISH EACH",
+   "headline": "FOUR TUTORS, ONE DEFAULT ANSWER",
+   "dek": "Three blank cheques and one Vampire-only search that leaves a body behind. Your default wish is a converter — stop agonising over it and go get one.",
+   "components": [
+    "callout-step",
+    "pilot-tip",
+    "pull-quote",
+    "folio"
+   ],
+   "captions": {
+    "Demonic Tutor": "**THE ONLY WISH YOU CAN CAST BEHIND:** two mana plus a two-drop is a real turn four at 4.005 mean available mana. Anything dearer means you are buying next turn — say so before you cast it, not after.",
+    "Forerunner of the Legion": "**A BODY AND A SEARCH:** {2}{W} for a 2/2 Vampire Knight, an eminence token, and any Vampire put on top of your library. It spends your next draw, so cast it on a turn you wanted a body anyway.",
+    "Vampiric Tutor": "**CAST IT ON THEIR END STEP:** one mana, any card on top, one draw surrendered. Do it the turn before yours and the card is in hand when you untap."
+   },
+   "pilot_tips": [
+    {
+     "card": "Demonic Tutor",
+     "text": "Ask which missing piece turns your board into damage this turn — never which card in the deck is best."
+    }
+   ],
+   "pull_quote": "Tutor the irreplaceable. Stack the classes you want every game."
+  },
+  {
+   "id": "sources-say",
+   "kicker": "THE SHORT COLOUR",
+   "headline": "BLACK IS THE ONE THAT BINDS",
+   "dek": "Black carries 49.4% of this deck's coloured pips on 41.8% of its coloured sources, and it is the colour of the one-drops. You are best supported in the colour you need least.",
+   "components": [
+    "power-meter",
+    "fast-facts",
+    "pilot-tip",
+    "pull-quote",
+    "folio"
+   ],
+   "captions": {
+    "Urborg, Tomb of Yawgmoth": "**ONE CARD, ONE FIX:** every land you control becomes a Swamp, which repairs the shortest colour in the deck. Sequence it early whenever the hand is black-hungry.",
+    "Patchwork Banner": "**THE ROCK THAT IS ALSO A LORD:** name Vampire and it pumps the team while tapping for any colour. Five rocks lift black from 23 land sources to 26 in total, and 66.7% on curve to 74.2%.",
+    "Nomad Outpost": "**ONE OF ONLY THREE:** fifteen of the 37 lands can enter tapped, but only Nomad Outpost, Savai Triome and Midgar, City of Mako do it unconditionally. Everything else has a price you can choose to pay."
+   },
+   "pilot_tips": [
+    {
+     "card": "Cavern of Souls",
+     "text": "Never plan an activated ability around Cavern of Souls — its coloured mana casts creature spells only, and an ability is not a spell."
+    }
+   ],
+   "pull_quote": "A yardstick asking for 36 black sources inside a 37-land deck is arithmetic that does not exist.",
+   "note": "Quote lands.total (37), never lands.entries (34). The yardstick column is a yardstick and the prose must say what the gap costs — sequencing posture, not a shopping list. The declared art break follows this section."
+  },
+  {
+   "id": "by-the-numbers",
+   "kicker": "TEN THOUSAND HANDS",
+   "headline": "WHAT TO ACTUALLY EXPECT",
+   "dek": "Ten thousand seeded games with no opponents and no removal in them. The figure that decides this deck is 52.5% — how often a card that turns an entry into damage is in your hand at all.",
+   "components": [
+    "power-meter",
+    "fast-facts",
+    "callout-step",
+    "pull-quote",
+    "folio"
+   ],
+   "callouts": [
+    {
+     "n": 1,
+     "title": "THE HALF THAT BINDS",
+     "text": "TOKEN → DAMAGE is drawn in 52.5% of games, 42.3% by turn six, mean turn 3.28. A multiplier turns up in 78.2% at mean turn 2.68. The bodies are never the shortage — the charge for them is."
+    },
+    {
+     "n": 2,
+     "title": "THE JOINT NUMBER",
+     "text": "A converter and a multiplier together — the go-wide kill — is 40.2% assembled and 27.5% by turn six, mean turn 4.53. That is your archenemy turn, and it lands on four or five."
+    },
+    {
+     "n": 3,
+     "title": "THE ONE TO STOP WAITING FOR",
+     "text": "Edgar's mean cast is turn 6.639 and his median is six, with 52.3% of games having him out by then. Every plan that begins “once Edgar lands” actually begins on turn seven."
+    },
+    {
+     "n": 4,
+     "title": "WHAT A SIMULATION IS NOT",
+     "text": "No opponents, no removal, no blockers, no combat. These are resource-development rates and not win rates, and the assumptions box says so every issue because it is the only honest way to print them."
+    }
+   ],
+   "captions": {
+    "Sol Ring": "**THE ONE-CARD TURN:** mean available mana is 2.141 on turn two and 3.168 on turn three. Sol Ring moves you a whole row up that table.",
+    "Night's Whisper": "**THE ONLY DRAW THAT NEEDS NO BOARD:** a draw engine turns up in 60.3% of games, and four of the five want creatures on the table first. This one does not.",
+    "Twilight Prophet": "**TEN PERMANENTS:** the condition reads as demanding until you count tokens — mean bodies is 4.103 by turn six and 6.593 by turn ten."
+   },
+   "pull_quote": "One game in twenty is a ticket. Fifty-two in a hundred is a plan.",
+   "note": "Cite figures exactly as goldfish_metrics.json reports them. 52.5% and 40.2% are assembled-by-turn-10 rates; 42.3%, 27.5% and 23.8% are by-turn-six. Never blend the two in one sentence."
+  },
+  {
+   "id": "upgrade-watch",
+   "kicker": "THE ONLY TEN",
+   "headline": "BUY THE RATE, NOT THE CEILING",
+   "dek": "Ten cards, ranked, and three of them do the single thing this deck is short of. Five copies of an effect is 31% of opening sevens, seven copies is 41%, ten is 54% — that is what a slot actually purchases.",
+   "components": [
+    "callout-step",
+    "fast-facts",
+    "pull-quote",
+    "folio"
+   ],
+   "callouts": [
+    {
+     "n": 1,
+     "title": "WHERE THE SLOT GOES",
+     "text": "Four cards convert an entry into each-opponent damage, and that class is in hand in 52.5% of games — 25.8% of opening sevens. Another rung on that ladder moves the number you see every game rather than the ceiling you see occasionally."
+    },
+    {
+     "n": 2,
+     "title": "THE SECOND THIN CLASS",
+     "text": "An answer to a noncreature permanent is two cards: 30.8% assembled, 23.8% by turn six, 13.7% of opening sevens. Against three opponents that is the axis that binds second, and it is cheap to widen."
+    },
+    {
+     "n": 3,
+     "title": "WHAT NOT TO BUY",
+     "text": "Not a third copy of a two-card kill you draw one game in twenty, and not a fourth doubler — the multiplier half of this deck is finished at 78.2%. And not a bracket: the floor is 4 on four Game Changers, and nothing on this list moves it."
+    }
+   ],
+   "captions": {
+    "Kalitas, Traitor of Ghet": "**THE NAMED CUT:** a genuinely good card that converts no entry into damage, which is the only currency this list trades in. That is what makes it the slot the top pick asks for.",
+    "Sanguine Bond": "**FIVE MANA, NO BODY, NO TYPE:** the one slot the token plan genuinely subsidises. The list would trade it for a drain that arrives attached to a Vampire.",
+    "Sunbaked Canyon": "**THE COLOUR ARITHMETIC:** red gets 17 sources for eleven cards that never ask for more than one red pip. Black gets 26 for 28 cards that routinely ask for two."
+   },
+   "pull_quote": "Redundancy is a rate you can buy. Power is a ceiling you can only hope for.",
+   "note": "Exactly ten entries render from considering.json, each chipped In the box or Scouted. Every recommendation is ★; the counts and rates beside them are ◆. A line one of the ten would open stays a candidate until a stack passes."
+  },
+  {
+   "id": "judges-desk",
+   "kicker": "THE CASE FILES",
+   "headline": "READ THEM TWICE",
+   "dek": "Seven files, every citation verbatim, including the one that concludes the line does not kill the table. The refutation is filed on exactly the same terms as the kills, which is the entire point of keeping a record.",
+   "components": [
+    "dossier-file",
+    "folio"
+   ],
+   "pull_quote": "A record that only holds the wins is not a record.",
+   "note": "Renderer generates every case from checker-passed artifacts; no summarising, no truncation. Seven files are presentable: 002, 003, 004, 006, 007, 008, 009. Case A-009 cleared in three review cycles and A-003 in two — print the iteration counts, they are part of the story."
+  },
+  {
+   "id": "featured-artist",
+   "kicker": "NINETY-TWO HANDS",
+   "headline": "NOBODY PAINTED THIS DECK",
+   "dek": "Ninety-two artists split 126 cards and the two leaders hold four apiece. There is no house style in this collection — so the feature goes to the hand that painted the card the issue's centrepiece rests on.",
+   "components": [
+    "artist-gallery",
+    "fast-facts",
+    "pull-quote",
+    "folio"
+   ],
+   "featured": {
+    "artist": "Eric Deschamps",
+    "note": "Two cards out of 126, and one of them is the whole thesis. Eric Deschamps painted Purphoros, God of the Forge — the god who turns a creature entering the battlefield into 2 damage at every seat, and the card stacks 008 and 009 count trigger by trigger. He also painted Captivating Vampire, the lord that taps five Vampires and takes something of theirs.\n\nTwo of 126 is not dominance and we are not calling it that. The census reads as breadth and the numbers say so plainly: 92 artists, 126 cards counted, 131 copies, and the leaders holding four cards each. Fifty-nine sets contribute, and the largest single one gives eleven cards by eleven different artists.\n\nThe analysis found no contiguous collector-number runs anywhere in the collection. Nobody bought this deck whole. It was assembled a card at a time across a decade of printings, and a credits page with ninety-two names on it is exactly what that looks like."
+   },
+   "also_worth_noting": [
+    {
+     "artist": "Dan Murayama Scott",
+     "note": "A joint leader at four cards and no theme at all: Arcane Signet and Diabolic Intent sleeved, Akroma's Memorial and Leering Onlooker in the box."
+    },
+    {
+     "artist": "Titus Lunter",
+     "note": "The other leader at four, three of them lands — Castle Locthwain, Luxury Suite, Savai Triome. The fourth is Throne of the God-Pharaoh, the end-step drain case A-007 bounded."
+    },
+    {
+     "artist": "Chris Rallis",
+     "note": "Three entries but two cards: Strefan, Maurer Progenitor is counted twice because two printings are counted separately, and Vampire Gourmand is the third. The count is honest about printings, and we are honest about the count."
+    },
+    {
+     "artist": "Jason A. Engle",
+     "note": "Three cards and four copies, one of them Mondrak, Glory Dominus — the second doubler whose arithmetic case A-002 settled."
+    },
+    {
+     "artist": "Seb McKinnon",
+     "note": "Three cards, all of them night scenes — Blood Crypt, Silent Clearing, Twilight Prophet. The closest this collection comes to a mood board."
+    },
+    {
+     "artist": "Alayna Danner",
+     "note": "Two lands doing quiet jobs: Cavern of Souls, which makes your Vampire spells uncounterable, and Reflecting Pool."
+    }
+   ],
+   "captions": {
+    "Captivating Vampire": "**THE OTHER DESCHAMPS:** a lord whose second ability is a removal spell you already paid for — tap five untapped Vampires and take their best creature.",
+    "Throne of the God-Pharaoh": "**THE MANABASE'S HOUSE PAINTER, OFF DUTY:** Titus Lunter has four cards here and three are lands. This is the fourth, and it is the one the checker bounded.",
+    "Twilight Prophet": "**THREE FOR THREE:** every Seb McKinnon card in this deck is a nocturne, and this one drains the table at your upkeep once you control ten permanents."
+   },
+   "pull_quote": "We count cards, not copies. Four Swamps are one credit.",
+   "note": "artist-credits reports standout: null — the lead artists hold four cards and its own note says to tell a breadth story, so the feature is an editorial pick and every count is recomputed by the renderer. Scope is the pilot's whole collection: 126 cards, 131 copies, 92 artists, 59 sets, drop_runs empty so no bought-whole caveat applies and none is implied. Respect the per-entry notes: Swamp is one card and four copies; Unholy Officiant and Vampire Nocturnus are one card and two copies each. Art File extras: 1 borderless, 0 foil, 20 legendary frames, 9 showcase."
+  },
+  {
+   "id": "back-page",
+   "components": [
+    "folio"
+   ],
+   "note": "NEXT ISSUE is authored in issue.json and currently reads TO BE ANNOUNCED. Colophon carries the rules version and the decklist sha from cards.json."
+  }
+ ],
+ "rhythm_notes": "Act I opens on the commander, so The Command Zone is the reader's first contact with the deck and its body copy introduces the engine before it teaches the format — tax ladder and colour identity land after the reader knows what eminence does. The Game Plan is the high narrative beat, and The 99 is the deliberate browsing trough after it. Act II is practice → participation → peak: Keep or Ship now reads after the roster, so its openers are graded against a distribution the reader has already seen, and the two SHIP verdicts name cards from groups they just browsed. The Kill closes the act as the payoff, and it is the issue's biggest layout. Act III is three consecutive Coach sections and reads as one continuous voice: reflection (Table Manners), reference (Know Your Enemy), instruction (Fetch Quests) — no two dense modes adjacent. Act IV is three consecutive Ledger sections and contains the only genuine dense adjacency in the book, Sources Say into By the Numbers; the renderer's declared full-bleed art break sits between them, and The Short List (imagination) closes the act on a light note. Act V drops to opt-in reference, then appreciation, then closure. Judge's Desk did not move: a claim still goes to the back of the book to be checked.",
+ "gaps": [
+  "issue.json's decklist_sha256 (2c4ed3c3857c) does not match cards.json (508f85940507), so validate-issue fails on identity regardless of this plan. The stamp is an authored field in a tracked file and is outside an issue-plan rewrite — the orchestrator needs to re-stamp it deliberately, since the hash is what pins the issue to the list it describes.",
+  "Stack 008's scenario extras carry editorial continuity language — a dated promotion note and a changelog pointer — and its board names a card that is not in the 99. Judge's Desk prints scenarios verbatim, so that file's extras block should be rewritten in L10 terms before the issue ships; the resolution and every citation are unaffected.",
+  "The primary plan's ceiling is unverified. Stack 009 composes three payoffs through one doubler; the fourth converter (Corpse Knight) and the second and third doublers are extrapolations. 'All four converters on one Vampire' and 'the third doubler: does one eminence trigger make eight bodies?' both need stack scenarios before any spread states a number.",
+  "Whether Bloodletter of Aclazotz doubles a DAMAGE-sourced loss is not on the record — verified twice over pure life loss (stacks 003 and 007) and never over Purphoros, Impact Tremors or Warleader's Call. Every spread here treats it as unsettled; a stack would settle it and would change the ceiling arithmetic.",
+  "Elenda, the Dusk Rose under an exile-replacement effect is unresolved: if creatures are exiled instead of dying she may never cash out. Worth a scenario before a spread ever recommends letting her die into hate.",
+  "Strategy DB has no section on go-wide token conversion as such — nothing on replacement-effect doublers compounding rather than adding, on trigger-based kills versus combat kills, or on typal critical mass. Every coaching claim in this issue about the conversion layer is grounded in adjacent sections (multiplayer.asymmetry, life-as-resource.philosophy-of-fire, critical-mass) rather than a section about the thing itself.",
+  "The synergy graph contributes nothing to this issue: all 33 intra-deck edges are lands pointing at Herald's Horn under one ramp-plus-cost-reduction rule. No spread cites it, and none should."
+ ]
 }
