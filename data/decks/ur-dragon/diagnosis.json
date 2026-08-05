@@ -1,741 +1,803 @@
 {
- "slug": "ur-dragon",
- "as_of_decklist_sha256": "edc6644d0683b956d48876ce2b149fe13d0c3fe124f7865a479222126debc3ce",
- "archetype": "Five-colour Dragon typal battlecruiser with a combat-combo top end routed through Aggravated Assault. deck-audit matches it to the combo template (4-8 tutors, 4-6 protection) on strategic_frame.json's own say-so, and the deck answers with 7 tutors and 6 protection — the frame and the measurement agree.",
- "verdict": "This deck has already solved conversion: six checker-passed lines, two of them unbounded combat engines that close from one connecting attacker. What limits it is the fit between a 5-to-7-mana threat base and 4.937 mana on turn six, and the declared fix for that gap — cost reduction — lives on three cards that appear in 19.9% of opening sevens. Underneath that, red carries 46.5% of the pip load on 28.6% of the sources while black is a 7.9% splash paying for two double-black sorceries. Nothing here is broken; the cheapest available wins are two-mana cost reducers and one land swap.",
- "axes": [
-  {
-   "axis": "mana-base",
-   "verdict": "adequate",
-   "measured": {
-    "value": 34
-   },
-   "reading": "Two under the 36–38 template, but the deck pays the remainder in rocks — mana-sources sits at 46 against Burgess's 45. Quantity is not what is failing; 88.3% of games hit the turn-3 land drop.",
-   "citations": [
+  "slug": "ur-dragon",
+  "as_of_decklist_sha256": "edc6644d0683b956d48876ce2b149fe13d0c3fe124f7865a479222126debc3ce",
+  "archetype": "Five-colour Dragon typal battlecruiser with a combat-combo top end routed through Aggravated Assault. deck-audit matches it to the combo template (4-8 tutors, 4-6 protection) on strategic_frame.json's own say-so, and the deck answers with 7 tutors and 6 protection — the frame and the measurement agree.",
+  "verdict": "This deck has already solved conversion: six checker-passed lines, two of them unbounded combat engines that close from one connecting attacker. What limits it is the fit between a 5-to-7-mana threat base and 4.937 mana on turn six, and the declared fix for that gap — cost reduction — lives on three cards that appear in 19.9% of opening sevens. Underneath that, red carries 46.5% of the pip load on 28.6% of the sources while black is a 7.9% splash paying for two double-black sorceries. Nothing here is broken; the cheapest available wins are two-mana cost reducers and one land swap.",
+  "axes": [
     {
-     "rule": "strategy:deckbuilding.ratios",
-     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+      "axis": "mana-base",
+      "verdict": "adequate",
+      "measured": {
+        "value": 34
+      },
+      "reading": "Two under the 36–38 template, but the deck pays the remainder in rocks — mana-sources sits at 46 against Burgess's 45. Quantity is not what is failing; 88.3% of games hit the turn-3 land drop.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+        },
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "lands = 31 + colours in the commander's identity + the commander's mana value, counting 0-mana rocks as lands"
+        }
+      ]
     },
     {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "lands = 31 + colours in the commander's identity + the commander's mana value, counting 0-mana rocks as lands"
-    }
-   ]
-  },
-  {
-   "axis": "mana-sources",
-   "verdict": "strength",
-   "measured": {
-    "value": 46
-   },
-   "reading": "Burgess's formula asks a five-colour deck with a nine-mana commander for 45 sources and the deck has 46. Twelve of them are persistent nonland producers, which is exactly why 34 lands is enough here and would not be elsewhere.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "lands = 31 + colours in the commander's identity + the commander's mana value, counting 0-mana rocks as lands"
-    }
-   ]
-  },
-  {
-   "axis": "taplands",
-   "verdict": "adequate",
-   "measured": {
-    "value": 5
-   },
-   "reading": "Five lands enter tapped unconditionally — Jetmir's Garden, Path of Ancestry, Savage Lands, The World Tree, Ziatora's Proving Ground — against a budget of about eight. mana_analysis's 16-of-34 headline folds in eleven conditional lands, five of which are shocks you can always pay through, so the real tapland load is comfortable and the 47% figure overstates it.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "around eight taplands is comfortable in a slow deck, near zero in an aggressive one"
+      "axis": "mana-sources",
+      "verdict": "strength",
+      "measured": {
+        "value": 46
+      },
+      "reading": "Burgess's formula asks a five-colour deck with a nine-mana commander for 45 sources and the deck has 46. Twelve of them are persistent nonland producers, which is exactly why 34 lands is enough here and would not be elsewhere.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "lands = 31 + colours in the commander's identity + the commander's mana value, counting 0-mana rocks as lands"
+        }
+      ]
     },
     {
-     "rule": "strategy:deckbuilding.mana-base.color-sources",
-     "quote": "Only untapped sources count for turn one"
-    }
-   ]
-  },
-  {
-   "axis": "colour-sources",
-   "verdict": "weakness",
-   "measured": {
-    "value": -20
-   },
-   "reading": "The -20 is black, and black is 7.9% of the pip load across six cards — a splash being measured against a main-colour target, so the headline number is not the injury. The injury is red: 27 sources against a target of 36 while carrying 46.5% of the pips, an on-curve rate of 58.0% from lands alone and 76.4% once rocks and dorks are counted.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base.color-sources",
-     "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
+      "axis": "taplands",
+      "verdict": "adequate",
+      "measured": {
+        "value": 5
+      },
+      "reading": "Five lands enter tapped unconditionally — Jetmir's Garden, Path of Ancestry, Savage Lands, The World Tree, Ziatora's Proving Ground — against a budget of about eight. mana_analysis's 16-of-34 headline folds in eleven conditional lands, five of which are shocks you can always pay through, so the real tapland load is comfortable and the 47% figure overstates it.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "around eight taplands is comfortable in a slow deck, near zero in an aggressive one"
+        },
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "Only untapped sources count for turn one"
+        }
+      ]
     },
     {
-     "rule": "strategy:deckbuilding.mana-base.color-sources",
-     "quote": "17–18 sources for a colour you won't keep a hand without, 14–16 for a main colour, 10–13 for a secondary, 4–7 for a splash"
+      "axis": "colour-sources",
+      "verdict": "weakness",
+      "measured": {
+        "value": -20
+      },
+      "reading": "The -20 is black, and black is 7.9% of the pip load across six cards — a splash being measured against a main-colour target, so the headline number is not the injury. The injury is red: 27 sources against a target of 36 while carrying 46.5% of the pips, an on-curve rate of 58.0% from lands alone and 76.4% once rocks and dorks are counted.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
+        },
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "17–18 sources for a colour you won't keep a hand without, 14–16 for a main colour, 10–13 for a secondary, 4–7 for a splash"
+        },
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "Read them as a budget, not a table"
+        }
+      ]
     },
     {
-     "rule": "strategy:deckbuilding.mana-base.color-sources",
-     "quote": "Read them as a budget, not a table"
-    }
-   ]
-  },
-  {
-   "axis": "ramp",
-   "verdict": "strength",
-   "measured": {
-    "value": 20
-   },
-   "reading": "Eight over the 10–12 template, and correctly so: the threat base is 5-to-7-mana Dragons and the commander is nine. The template's own authors say to derive the count from the deck's failure modes rather than the table.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.ratios",
-     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+      "axis": "ramp",
+      "verdict": "strength",
+      "measured": {
+        "value": 20
+      },
+      "reading": "Eight over the 10–12 template, and correctly so: the threat base is 5-to-7-mana Dragons and the commander is nine. The template's own authors say to derive the count from the deck's failure modes rather than the table.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+        },
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "Take the categories, derive the counts from the deck's actual failure modes."
+        }
+      ]
     },
     {
-     "rule": "strategy:deckbuilding.ratios",
-     "quote": "Take the categories, derive the counts from the deck's actual failure modes."
-    }
-   ]
-  },
-  {
-   "axis": "card-advantage",
-   "verdict": "adequate",
-   "measured": {
-    "value": 4
-   },
-   "reading": "This is the axis where the count misleads most, and the audit says so itself: Dragon's Hoard, Return of the Wildspeaker and Rishkar's Expertise are draw the taxonomy filed elsewhere, and Jetmir's Garden and Ziatora's Proving Ground both cycle. The deck's largest draw engine is the commander's attack trigger, and that one really does arrive late — mean cast turn 8.967, 0.0% by turn six.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.ratios",
-     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
-    }
-   ]
-  },
-  {
-   "axis": "interaction",
-   "verdict": "adequate",
-   "measured": {
-    "value": 11
-   },
-   "reading": "Read the eleven before trusting them: Dragon Tempest, Scourge of Valkas, Drakuseth and Dragonback Assault are payoffs that happen to carry removal:damage, and Boros Charm's damage mode hits players and planeswalkers, not creatures. Chaos Warp is real interaction the taxonomy missed entirely. The dedicated answers are Counterspell, Dovin's Veto, Swan Song, Swords to Plowshares, Generous Gift, Chaos Warp, Crux of Fate and Blasphemous Act — eight, exactly Walser's floor, inside a 17-card interactive suite.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
-    }
-   ]
-  },
-  {
-   "axis": "sweepers",
-   "verdict": "strength",
-   "measured": {
-    "value": 1
-   },
-   "reading": "One counted sweeper and it is asymmetric — Crux of Fate's second mode destroys all non-Dragon creatures. Blasphemous Act is a second by function, and stack 004 verified that with Wrathful Red Dragon on board it becomes 39 damage aimed at one opponent.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "wipes \"one or two max\" (Zupke caps at 3)"
-    }
-   ]
-  },
-  {
-   "axis": "protection",
-   "verdict": "strength",
-   "measured": {
-    "value": 6
-   },
-   "reading": "Six counted, and the eight-card goldfish group assembles 77.1% of games and 66.0% by turn six. For a linear deck that must survive three players' answers to take one window, that is the right shape.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
+      "axis": "card-advantage",
+      "verdict": "adequate",
+      "measured": {
+        "value": 4
+      },
+      "reading": "This is the axis where the count misleads most, and the audit says so itself: Dragon's Hoard, Return of the Wildspeaker and Rishkar's Expertise are draw the taxonomy filed elsewhere, and Jetmir's Garden and Ziatora's Proving Ground both cycle. The deck's largest draw engine is the commander's attack trigger, and that one really does arrive late — mean cast turn 8.967, 0.0% by turn six.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+        }
+      ]
     },
     {
-     "rule": "strategy:critical-mass",
-     "quote": "the linear deck needs redundancy that shrugs off three answers, or a deflection posture that keeps them unspent"
-    }
-   ]
-  },
-  {
-   "axis": "threat-density",
-   "verdict": "adequate",
-   "measured": {
-    "value": 2
-   },
-   "reading": "wincon:* sees only Boros Charm and Dragonlord Kolaghan, which is a taxonomy artifact rather than a finding. The deck's finishers are checker-passed: stacks 003 and 006 are unbounded combat engines, 004 is a one-opponent kill, and Drakuseth, Utvara Hellkite and Thrakkus close from a board. Conversion is not this deck's problem.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
+      "axis": "interaction",
+      "verdict": "adequate",
+      "measured": {
+        "value": 11
+      },
+      "reading": "Read the eleven before trusting them: Dragon Tempest, Scourge of Valkas, Drakuseth and Dragonback Assault are payoffs that happen to carry removal:damage, and Boros Charm's damage mode hits players and planeswalkers, not creatures. Chaos Warp is real interaction the taxonomy missed entirely. The dedicated answers are Counterspell, Dovin's Veto, Swan Song, Swords to Plowshares, Generous Gift, Chaos Warp, Crux of Fate and Blasphemous Act — eight, exactly Walser's floor, inside a 17-card interactive suite.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
+        }
+      ]
     },
     {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "Value is not a win."
-    }
-   ]
-  },
-  {
-   "axis": "creatures",
-   "verdict": "adequate",
-   "measured": {
-    "value": 24
-   },
-   "reading": "Twenty-four bodies, informational under a combo frame. It matters here only because both verified Assault loops need a connecting attacker, and mean bodies by turn six is 1.463.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.archetype-selection",
-     "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
-    }
-   ]
-  },
-  {
-   "axis": "interaction-breadth",
-   "verdict": "weakness",
-   "measured": {
-    "value": 4
-   },
-   "reading": "Graveyard is genuinely uncovered — I read the 99 and there is no Bojuka Bog, no Relic, no Ooze, nothing that touches a yard. Worse, Patriarch's Bidding is the deck's one graveyard-facing card and it is symmetric, handing every opponent's yard back at the same time as your own.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
-    }
-   ]
-  },
-  {
-   "axis": "consistency",
-   "verdict": "strength",
-   "measured": {
-    "value": 0.883
-   },
-   "reading": "88.3% hit the turn-3 land drop against Roach's 26%-miss warning, and 75.1% of first sevens are keeps. The opening is not where this deck loses games.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "had 26% miss the turn-3 land drop with no mana source at all"
-    }
-   ]
-  },
-  {
-   "axis": "curve",
-   "verdict": "weakness",
-   "measured": {
-    "value": 3
-   },
-   "reading": "Modal mana value 3 against the format's 2, with 17 three-drops and five cards at mana value 8 or more. Set that beside 4.937 mana on turn six and the top end is affordable only through eminence plus a cost reducer — which is precisely the component that is thin.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.curve",
-     "quote": "puts the modal mana value at 2, with 15.7 two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana value 8+"
+      "axis": "sweepers",
+      "verdict": "strength",
+      "measured": {
+        "value": 1
+      },
+      "reading": "One counted sweeper and it is asymmetric — Crux of Fate's second mode destroys all non-Dragon creatures. Blasphemous Act is a second by function, and stack 004 verified that with Wrathful Red Dragon on board it becomes 39 damage aimed at one opponent.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+        }
+      ]
     },
     {
-     "rule": "strategy:deckbuilding.curve",
-     "quote": "Build to hit 2, 4 and 6 mana reliably, because four-player turn cycles are expensive"
+      "axis": "protection",
+      "verdict": "strength",
+      "measured": {
+        "value": 6
+      },
+      "reading": "Six counted, and the eight-card goldfish group assembles 77.1% of games and 66.0% by turn six. For a linear deck that must survive three players' answers to take one window, that is the right shape.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
+        },
+        {
+          "rule": "strategy:critical-mass",
+          "quote": "the linear deck needs redundancy that shrugs off three answers, or a deflection posture that keeps them unspent"
+        }
+      ]
     },
     {
-     "rule": "strategy:deckbuilding.curve",
-     "quote": "unless the majority of your deck is mana ramp... you're probably only going to be able to cast ONE big-mana spell per game"
-    }
-   ]
-  },
-  {
-   "axis": "power",
-   "verdict": "adequate",
-   "measured": {
-    "value": 4
-   },
-   "reading": "Bracket floor 4, forced by three two-card infinites that assemble at mana value 6 or less, on top of three Game Changers. That is the pilot's stated mandate, not a drift.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.power-level",
-     "quote": "Contents give a floor, never a verdict."
-    }
-   ]
-  },
-  {
-   "axis": "tutors",
-   "verdict": "adequate",
-   "measured": {
-    "value": 7
-   },
-   "reading": "Seven, inside the combo band, and mostly narrow Dragon tutors. Note what the simulation says: assisted and unassisted rates are identical at 0.423, so no tutor in this deck was modelled as finding a cost reducer — even though Worldly Tutor finds Dragonspeaker Shaman and Enlightened Tutor finds Urza's Incubator or Herald's Horn.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.archetype-selection",
-     "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
+      "axis": "threat-density",
+      "verdict": "adequate",
+      "measured": {
+        "value": 2
+      },
+      "reading": "wincon:* sees only Boros Charm and Dragonlord Kolaghan, which is a taxonomy artifact rather than a finding. The deck's finishers are checker-passed: stacks 003 and 006 are unbounded combat engines, 004 is a one-opponent kill, and Drakuseth, Utvara Hellkite and Thrakkus close from a board. Conversion is not this deck's problem.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
+        },
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Value is not a win."
+        }
+      ]
     },
     {
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-     "quote": "k tutors plus the card act like k+1 copies of *every* card"
+      "axis": "creatures",
+      "verdict": "adequate",
+      "measured": {
+        "value": 24
+      },
+      "reading": "Twenty-four bodies, informational under a combo frame. It matters here only because both verified Assault loops need a connecting attacker, and mean bodies by turn six is 1.463.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.archetype-selection",
+          "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
+        }
+      ]
+    },
+    {
+      "axis": "interaction-breadth",
+      "verdict": "weakness",
+      "measured": {
+        "value": 4
+      },
+      "reading": "Graveyard is genuinely uncovered — I read the 99 and there is no Bojuka Bog, no Relic, no Ooze, nothing that touches a yard. Worse, Patriarch's Bidding is the deck's one graveyard-facing card and it is symmetric, handing every opponent's yard back at the same time as your own.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
+        }
+      ]
+    },
+    {
+      "axis": "consistency",
+      "verdict": "strength",
+      "measured": {
+        "value": 0.883
+      },
+      "reading": "88.3% hit the turn-3 land drop against Roach's 26%-miss warning, and 75.1% of first sevens are keeps. The opening is not where this deck loses games.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "had 26% miss the turn-3 land drop with no mana source at all"
+        }
+      ]
+    },
+    {
+      "axis": "curve",
+      "verdict": "weakness",
+      "measured": {
+        "value": 3
+      },
+      "reading": "Modal mana value 3 against the format's 2, with 17 three-drops and five cards at mana value 8 or more. Set that beside 4.937 mana on turn six and the top end is affordable only through eminence plus a cost reducer — which is precisely the component that is thin.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.curve",
+          "quote": "puts the modal mana value at 2, with 15.7 two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana value 8+"
+        },
+        {
+          "rule": "strategy:deckbuilding.curve",
+          "quote": "Build to hit 2, 4 and 6 mana reliably, because four-player turn cycles are expensive"
+        },
+        {
+          "rule": "strategy:deckbuilding.curve",
+          "quote": "unless the majority of your deck is mana ramp... you're probably only going to be able to cast ONE big-mana spell per game"
+        }
+      ]
+    },
+    {
+      "axis": "power",
+      "verdict": "adequate",
+      "measured": {
+        "value": 4
+      },
+      "reading": "Bracket floor 4, forced by three two-card infinites that assemble at mana value 6 or less, on top of three Game Changers. That is the pilot's stated mandate, not a drift.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.power-level",
+          "quote": "Contents give a floor, never a verdict."
+        }
+      ]
+    },
+    {
+      "axis": "tutors",
+      "verdict": "adequate",
+      "measured": {
+        "value": 7
+      },
+      "reading": "Seven, inside the combo band, and mostly narrow Dragon tutors. Note what the simulation says: assisted and unassisted rates are identical at 0.423, so no tutor in this deck was modelled as finding a cost reducer — even though Worldly Tutor finds Dragonspeaker Shaman and Enlightened Tutor finds Urza's Incubator or Herald's Horn.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.archetype-selection",
+          "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
+        },
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "k tutors plus the card act like k+1 copies of *every* card"
+        }
+      ]
     }
-   ]
-  }
- ],
- "engine": {
-  "declared": "Eminence discounts every Dragon spell from the command zone for free; a cost reducer stacks on top to make 5-to-7-mana Dragons castable a turn or two early, ramp pays the rest, and the per-Dragon trigger payoffs convert each body that lands into damage.",
-  "components": [
-   {
-    "role": "ignition",
-    "have": [
-     "Urza's Incubator",
-     "Herald's Horn",
-     "Dragonspeaker Shaman"
-    ],
-    "count": 3,
-    "thinnest": true,
-    "measured_rate": 0.423,
-    "reading": "Three cards, and the deck's own targets file calls them 'the deck's real curve fixer'. 19.9% of opening sevens, 25.1% by turn three; the joint reducer-plus-ramp hand assembles 33.9% overall and only 23.1% by turn six. The corpus prices five copies at 31% of openers, so this component sits below the cheapest redundancy tier the doc names."
-   },
-   {
-    "role": "mana",
-    "have": [
-     "Sol Ring",
-     "Arcane Signet",
-     "Chromatic Lantern",
-     "Dragon's Hoard",
-     "Farseek",
-     "Nature's Lore",
-     "Skyshroud Claim",
-     "Relic of Legends",
-     "Mox Jasper"
-    ],
-    "count": 9,
-    "thinnest": false,
-    "measured_rate": 0.817,
-    "reading": "Nine cards, 81.7% assembled and 71.6% by turn six. This half of the engine is not the problem, which is what makes the reducer half so visible in the joint figure."
-   },
-   {
-    "role": "payoff",
-    "have": [
-     "Dragon Tempest",
-     "Terror of the Peaks",
-     "Scourge of Valkas",
-     "Lathliss, Dragon Queen",
-     "Miirym, Sentinel Wyrm",
-     "Temur Ascendancy",
-     "Garruk's Uprising"
-    ],
-    "count": 7,
-    "thinnest": false,
-    "measured_rate": 0.731,
-    "reading": "Seven per-Dragon trigger payoffs, 73.1% assembled and 62.2% by turn six. Four of them are also the deck's counted 'interaction', which is why that axis reads higher than the deck's real answer count."
-   },
-   {
-    "role": "piece",
-    "have": [
-     "Goldspan Dragon",
-     "Thrakkus the Butcher",
-     "Savage Ventmaw",
-     "Rivaz of the Claw",
-     "Lathliss, Dragon Queen",
-     "Tiamat"
-    ],
-    "count": 6,
-    "thinnest": false,
-    "measured_rate": 0.401,
-    "reading": "The castable-Dragon half of 'Payoff + a castable dragon by mid-game'. The 0.401 is that joint target's rate, not this group's alone — 26.8% by turn six, mean turn 4.721. A payoff with nothing to trigger it is the deck's most common awkward hand."
-   },
-   {
-    "role": "protection",
-    "have": [
-     "Teferi's Protection",
-     "Heroic Intervention",
-     "Flawless Maneuver",
-     "Boros Charm",
-     "Counterspell",
-     "Swan Song",
-     "Dovin's Veto",
-     "Deflecting Swat"
-    ],
-    "count": 8,
-    "thinnest": false,
-    "measured_rate": 0.771,
-    "reading": "Eight cards, 77.1% assembled and 66.0% by turn six. This is the deck's best-built component and it is what makes the Assault window takeable."
-   }
   ],
-  "single_points_of_failure": [
-   {
-    "component": "ignition — cost reducers",
-    "why": "Three cards carry the whole curve fix, and the deck's threats sit at mana value 5-7 against 4.937 mana on turn six. Eminence alone shaves one, so a {4}{R}{R} Lathliss is a five-mana card against 4.937 mana on turn six; with Urza's Incubator or Dragonspeaker Shaman on top she is a three-mana card. The group appears in 19.9% of opening sevens against the corpus's 31% for a 5-copy class, and the deck's own simulation does not model tutors finding it.",
-    "closers": [
-     "Dragonlord's Servant",
-     "Ruby Medallion",
-     "Goblin Anarchomancer"
+  "engine": {
+    "declared": "Eminence discounts every Dragon spell from the command zone for free; a cost reducer stacks on top to make 5-to-7-mana Dragons castable a turn or two early, ramp pays the rest, and the per-Dragon trigger payoffs convert each body that lands into damage.",
+    "components": [
+      {
+        "role": "ignition",
+        "have": [
+          "Urza's Incubator",
+          "Herald's Horn",
+          "Dragonspeaker Shaman"
+        ],
+        "count": 3,
+        "thinnest": true,
+        "measured_rate": 0.423,
+        "reading": "Three cards, and the deck's own targets file calls them 'the deck's real curve fixer'. 19.9% of opening sevens, 25.1% by turn three; the joint reducer-plus-ramp hand assembles 33.9% overall and only 23.1% by turn six. The corpus prices five copies at 31% of openers, so this component sits below the cheapest redundancy tier the doc names."
+      },
+      {
+        "role": "mana",
+        "have": [
+          "Sol Ring",
+          "Arcane Signet",
+          "Chromatic Lantern",
+          "Dragon's Hoard",
+          "Farseek",
+          "Nature's Lore",
+          "Skyshroud Claim",
+          "Relic of Legends",
+          "Mox Jasper"
+        ],
+        "count": 9,
+        "thinnest": false,
+        "measured_rate": 0.817,
+        "reading": "Nine cards, 81.7% assembled and 71.6% by turn six. This half of the engine is not the problem, which is what makes the reducer half so visible in the joint figure."
+      },
+      {
+        "role": "payoff",
+        "have": [
+          "Dragon Tempest",
+          "Terror of the Peaks",
+          "Scourge of Valkas",
+          "Lathliss, Dragon Queen",
+          "Miirym, Sentinel Wyrm",
+          "Temur Ascendancy",
+          "Garruk's Uprising"
+        ],
+        "count": 7,
+        "thinnest": false,
+        "measured_rate": 0.731,
+        "reading": "Seven per-Dragon trigger payoffs, 73.1% assembled and 62.2% by turn six. Four of them are also the deck's counted 'interaction', which is why that axis reads higher than the deck's real answer count."
+      },
+      {
+        "role": "piece",
+        "have": [
+          "Goldspan Dragon",
+          "Thrakkus the Butcher",
+          "Savage Ventmaw",
+          "Rivaz of the Claw",
+          "Lathliss, Dragon Queen",
+          "Tiamat"
+        ],
+        "count": 6,
+        "thinnest": false,
+        "measured_rate": 0.401,
+        "reading": "The castable-Dragon half of 'Payoff + a castable dragon by mid-game'. The 0.401 is that joint target's rate, not this group's alone — 26.8% by turn six, mean turn 4.721. A payoff with nothing to trigger it is the deck's most common awkward hand."
+      },
+      {
+        "role": "protection",
+        "have": [
+          "Teferi's Protection",
+          "Heroic Intervention",
+          "Flawless Maneuver",
+          "Boros Charm",
+          "Counterspell",
+          "Swan Song",
+          "Dovin's Veto",
+          "Deflecting Swat"
+        ],
+        "count": 8,
+        "thinnest": false,
+        "measured_rate": 0.771,
+        "reading": "Eight cards, 77.1% assembled and 66.0% by turn six. This is the deck's best-built component and it is what makes the Assault window takeable."
+      }
     ],
-    "citations": [
-     {
-      "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-      "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-     },
-     {
-      "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-      "quote": "So stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable"
-     },
-     {
-      "rule": "strategy:deckbuilding.threat-density",
-      "quote": "Engine density — Nicol asks 7-8 enablers and 10-12 enhancers against ~25 standalone cards, and the enabler slots fail first"
-     },
-     {
-      "rule": "strategy:mulligans.engine-hands",
-      "quote": "Payoffs without the enabler are blanks until the engine exists"
-     },
-     {
-      "rule": "strategy:mulligans.engine-hands",
-      "quote": "100-card singleton means you mulligan to enabler *classes*, not named cards; build the redundancy your keeps depend on"
-     }
+    "single_points_of_failure": [
+      {
+        "component": "ignition — cost reducers",
+        "why": "Three cards carry the whole curve fix, and the deck's threats sit at mana value 5-7 against 4.937 mana on turn six. Eminence alone shaves one, so a {4}{R}{R} Lathliss is a five-mana card against 4.937 mana on turn six; with Urza's Incubator or Dragonspeaker Shaman on top she is a three-mana card. The group appears in 19.9% of opening sevens against the corpus's 31% for a 5-copy class, and the deck's own simulation does not model tutors finding it.",
+        "closers": [
+          "Dragonlord's Servant",
+          "Ruby Medallion",
+          "Goblin Anarchomancer"
+        ],
+        "citations": [
+          {
+            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+            "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+          },
+          {
+            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+            "quote": "So stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable"
+          },
+          {
+            "rule": "strategy:deckbuilding.threat-density",
+            "quote": "Engine density — Nicol asks 7-8 enablers and 10-12 enhancers against ~25 standalone cards, and the enabler slots fail first"
+          },
+          {
+            "rule": "strategy:mulligans.engine-hands",
+            "quote": "Payoffs without the enabler are blanks until the engine exists"
+          },
+          {
+            "rule": "strategy:mulligans.engine-hands",
+            "quote": "100-card singleton means you mulligan to enabler *classes*, not named cards; build the redundancy your keeps depend on"
+          }
+        ]
+      }
     ]
-   }
-  ]
- },
- "lean_into": [
-  {
-   "what": "The Aggravated Assault package is the win condition, and unlike most decks' claimed kills this one is verified.",
-   "why": "Stacks 003 and 006 are checker-passed: Savage Ventmaw self-funds extra combats at +1 mana per cycle, Old Gnawbone funds them at net +2 Treasures per cycle and kills sequentially. Sequence toward that, and treat the Dragon board as the fuel rather than the plan.",
-   "evidence": {
-    "verified_stacks": [
-     "003",
-     "006"
+  },
+  "lean_into": [
+    {
+      "what": "The Aggravated Assault package is the win condition, and unlike most decks' claimed kills this one is verified.",
+      "why": "Stacks 003 and 006 are checker-passed: Savage Ventmaw self-funds extra combats at +1 mana per cycle, Old Gnawbone funds them at net +2 Treasures per cycle and kills sequentially. Sequence toward that, and treat the Dragon board as the fuel rather than the plan.",
+      "evidence": {
+        "verified_stacks": [
+          "003",
+          "006"
+        ],
+        "assault_pieces": [
+          "Aggravated Assault",
+          "Savage Ventmaw",
+          "Old Gnawbone"
+        ]
+      },
+      "citations": [
+        {
+          "rule": "strategy:critical-mass",
+          "quote": "know your number — the count of bodies, spells, or mana at which the deck actually goes over the top"
+        },
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Value is not a win."
+        }
+      ]
+    },
+    {
+      "what": "Build as if the commander is never cast — because measurably it is not.",
+      "why": "mean cast turn 8.967, 0.0% by turn six, and 8,634 of 10,000 simulated games never reach it by turn ten. Eminence works from the command zone regardless, so the nine-mana price buys a 10/10 and an attack-trigger draw, not the discount. Every slot spent chasing the cast is a slot not spent making the discount bigger.",
+      "evidence": {
+        "mean_cast_turn": 8.967,
+        "cast_by_turn_6_rate": 0.0,
+        "cheat": "Hellkite Courser"
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.curve",
+          "quote": "unless the majority of your deck is mana ramp... you're probably only going to be able to cast ONE big-mana spell per game"
+        }
+      ]
+    },
+    {
+      "what": "Protection is at the top of its band; spend it on the Assault turn, not on a Dragon.",
+      "why": "Six counted protection cards and an eight-card held-interaction group at 77.1%. A linear deck's defence is its ability to keep three opponents' answers unspent until the one window it needs.",
+      "evidence": {
+        "protection_axis_value": 6,
+        "assembled_rate": 0.771,
+        "by_turn_6_rate": 0.66
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
+        },
+        {
+          "rule": "strategy:critical-mass",
+          "quote": "the linear deck needs redundancy that shrugs off three answers, or a deflection posture that keeps them unspent"
+        },
+        {
+          "rule": "strategy:critical-mass",
+          "quote": "linear strategies give up flexibility in exchange for power"
+        }
+      ]
+    }
+  ],
+  "cut_candidates": [
+    {
+      "card": "Dracogenesis",
+      "why": "Eight mana for an enchantment that does nothing the turn it lands, and it is the only card at mana value 8 or more in the 99 that is neither a Dragon nor self-reducing. Eminence, Urza's Incubator, Herald's Horn and Dragonspeaker Shaman all miss it because it is not a Dragon spell; Blasphemous Act is also mana value 9 but costs {1} less per creature on the battlefield, Cavern-Hoard Dragon costs {X} less for opponents' artifacts and is a Dragon besides, and Utvara Hellkite is a Dragon. Dracogenesis pays the sticker price every game, against mean available mana of 6.539 on turn ten.",
+      "cost_of_cutting": "The deck loses its highest ceiling. When Dracogenesis resolves with a hand of Dragons the game ends shortly after, and no other card in the 99 does that.",
+      "orphans_stack": null,
+      "difficulty": "painful",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.curve",
+          "quote": "unless the majority of your deck is mana ramp... you're probably only going to be able to cast ONE big-mana spell per game"
+        },
+        {
+          "rule": "strategy:deckbuilding.curve",
+          "quote": "Build to hit 2, 4 and 6 mana reliably, because four-player turn cycles are expensive"
+        }
+      ]
+    },
+    {
+      "card": "Panharmonicon",
+      "why": "Four mana that adds no board and no mana, in a deck whose measured problem is having 4.937 mana on turn six. It is a multiplier, not an enabler, and it needs Miirym, Lathliss, Terror or Tempest already down to do anything.",
+      "cost_of_cutting": "It orphans stack 002, the deck's showcase Miirym cascade, and it removes the single largest single-turn swing the deck can manufacture. A reasonable pilot will fight this one and may be right.",
+      "orphans_stack": [
+        "002"
+      ],
+      "difficulty": "painful",
+      "citations": [
+        {
+          "rule": "strategy:mulligans.engine-hands",
+          "quote": "Payoffs without the enabler are blanks until the engine exists"
+        },
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Engine density — Nicol asks 7-8 enablers and 10-12 enhancers against ~25 standalone cards, and the enabler slots fail first"
+        }
+      ]
+    },
+    {
+      "card": "Patriarch's Bidding",
+      "why": "{3}{B}{B} in a colour with 11 land sources and a 26.1% lands-only on-curve rate, and it is symmetric — every opponent chooses a type too, at a table where the deck already has no graveyard answer.",
+      "cost_of_cutting": "The deck's only mass recursion after a wrath. Rivaz of the Claw and Haven of the Spirit Dragon rebuy one Dragon; Bidding rebuys all of them.",
+      "orphans_stack": null,
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
+        },
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "17–18 sources for a colour you won't keep a hand without, 14–16 for a main colour, 10–13 for a secondary, 4–7 for a splash"
+        }
+      ]
+    },
+    {
+      "card": "Dragonlord Kolaghan",
+      "why": "Six mana for a haste anthem the deck already has twice — Temur Ascendancy gives every creature haste and Dragon Tempest gives it to every flier that enters — attached to a punisher clause that almost never fires in singleton Commander.",
+      "cost_of_cutting": "A 6/5 flier and one of only two cards the taxonomy counts as a finisher, plus a black source of pressure in a deck whose black is otherwise all sorceries.",
+      "orphans_stack": null,
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
+        }
+      ]
+    },
+    {
+      "card": "Forbidden Orchard",
+      "why": "Every tap hands an opponent a 1/1 blocker, and both verified kill loops are bounded by blockers — stack 006's cycle needs a connecting attacker each combat. Paying for fixing in opposing bodies is the wrong currency for this deck specifically.",
+      "cost_of_cutting": "One of only four untapped five-colour lands in a five-colour deck, and mana_analysis counts it as a full source of all five — cutting it takes one source off every colour. Note the interaction: Mana Confluence is already spending the Glacial Fortress slot, so taking this cut as well puts the deck at 33 lands against a 36–38 target.",
+      "orphans_stack": null,
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "a utility land that can't produce the colour you need is not a source"
+        }
+      ]
+    },
+    {
+      "card": "Dragonback Assault",
+      "why": "Six mana across three specific colours, and its enters trigger deals 3 damage to each creature — which kills Dragonspeaker Shaman (2/2) and Rivaz of the Claw (3/3), two of the deck's own enablers, one of them a third of the binding cost-reducer component.",
+      "cost_of_cutting": "A repeatable 4/4 Dragon per land drop, which is genuine board width for Tempest and Scourge counts, and a partial sweeper in a deck that only counts one.",
+      "orphans_stack": null,
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Engine density — Nicol asks 7-8 enablers and 10-12 enhancers against ~25 standalone cards, and the enabler slots fail first"
+        },
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "Read them as a budget, not a table"
+        }
+      ]
+    },
+    {
+      "card": "Glacial Fortress",
+      "why": "It checks for a Plains or an Island, and the deck contains five lands with either type — one Island, Breeding Pool, Steam Vents, Canopy Vista and Jetmir's Garden. On an early board it is a tapland that produces the deck's two least-demanded colours.",
+      "cost_of_cutting": "It is one of only 10 white and 11 blue land sources, and the deck drops to 33 lands against a 36–38 target unless the slot is refilled with a land. Mana Confluence is that refill and restores both colours exactly (W 10→10, U 11→11); take this cut without it and white and blue each lose a source.",
+      "orphans_stack": null,
+      "difficulty": "easy",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+        },
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "Only untapped sources count for turn one"
+        }
+      ]
+    }
+  ],
+  "add_candidates": [
+    {
+      "card": "Dragonlord's Servant",
+      "closes": "engine component: ignition — cost reducers",
+      "source": "pool",
+      "why": "A two-mana body reading 'Dragon spells you cast cost {1} less to cast' — the same {1} discount as Herald's Horn, a mana cheaper, and it takes the thinnest component from 3 to 4. It is red, the colour with 27 sources, so it is the reducer this mana base can actually deploy on turn two.",
+      "evidence": {
+        "component_size_before": 3,
+        "opening_seven_before": 0.199,
+        "redundancy_reference": "5 copies is 31% of openers"
+      },
+      "natural_cut": "Dragonlord Kolaghan",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+        },
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "So stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable"
+        }
+      ]
+    },
+    {
+      "card": "Ruby Medallion",
+      "closes": "engine component: ignition — cost reducers",
+      "source": "pool",
+      "why": "'Red spells you cast cost {1} less to cast' reaches further here than a Dragon-only reducer: red is 46.5% of the pip load across 32 cards, so it also discounts Dragon Tempest, Aggravated Assault, Sneak Attack and Blasphemous Act, none of which Urza's Incubator touches.",
+      "evidence": {
+        "red_pip_share": 0.465,
+        "red_cards": 32,
+        "component_size_before": 3
+      },
+      "natural_cut": "Dracogenesis",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+        },
+        {
+          "rule": "strategy:deckbuilding.curve",
+          "quote": "Build to hit 2, 4 and 6 mana reliably, because four-player turn cycles are expensive"
+        }
+      ]
+    },
+    {
+      "card": "Goblin Anarchomancer",
+      "closes": "engine component: ignition — cost reducers",
+      "source": "pool",
+      "why": "'Each spell you cast that's red or green costs {1} less' covers 68.3% of the deck's pip load on a two-mana body, and it takes the binding component from 3 to 6 alongside the two above — the first tier the corpus prices at 31% of openers.",
+      "evidence": {
+        "red_pip_share": 0.465,
+        "green_pip_share": 0.218,
+        "component_size_after": 6
+      },
+      "natural_cut": "Dragonback Assault",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+        },
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Engine density — Nicol asks 7-8 enablers and 10-12 enhancers against ~25 standalone cards, and the enabler slots fail first"
+        }
+      ]
+    },
+    {
+      "card": "Mana Confluence",
+      "closes": "colour-sources",
+      "source": "pool",
+      "why": "Measured, not assumed: swapping it for Forbidden Orchard is exactly source-neutral, because mana_analysis.json already counts Forbidden Orchard as producing all five colours. Against Glacial Fortress it is not neutral. Glacial Fortress produces only W and U; Mana Confluence produces all five, so the land counts move W 10→10, U 11→11, B 11→12, R 20→21, G 18→19. Black is the colour the colour-sources axis is gated on, so its total goes 16→17 and the axis moves −20→−19 — land-for-land, with no change to the 34-land count. It also retires the deck's thinnest conditional tapland for one that is never tapped. Pair it with the Panharmonicon cut instead and the deck reaches 35 lands, at the price of a checker-passed line.",
+      "evidence": {
+        "land_sources_before": {
+          "W": 10,
+          "U": 11,
+          "B": 11,
+          "R": 20,
+          "G": 18
+        },
+        "land_sources_after": {
+          "W": 11,
+          "U": 11,
+          "B": 12,
+          "R": 21,
+          "G": 19
+        },
+        "gating_colour": "B",
+        "axis_before": -20,
+        "axis_after": -19,
+        "neutral_against": "Forbidden Orchard — mana_analysis counts it as producing B, G, R, U and W already",
+        "replaces": "Glacial Fortress"
+      },
+      "natural_cut": "Glacial Fortress",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "Only untapped sources count for turn one"
+        },
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "a utility land that can't produce the colour you need is not a source"
+        }
+      ]
+    },
+    {
+      "card": "Soul-Guide Lantern",
+      "closes": "interaction-breadth",
+      "source": "pool",
+      "why": "One colourless mana covers the only permanent class the deck cannot answer. It exiles on entry, exiles every opponent's graveyard on sacrifice, and cantrips when neither matters — so it is never a dead card in a deck that already has eight answers and no room for a ninth narrow one.",
+      "evidence": {
+        "uncovered_class": "graveyard",
+        "breadth_before": 4,
+        "breadth_target": 5
+      },
+      "natural_cut": "Patriarch's Bidding",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
+        }
+      ]
+    }
+  ],
+  "open_questions": [
+    {
+      "question": "Can Klauth, Unrivaled Ancient's attack-trigger mana pay for Aggravated Assault's {3}{R}{R} activation? The trigger says 'Spend this mana only to cast spells', and activating an ability is not casting a spell — if it cannot, Klauth is not a third Assault engine and the deck's Assault package is two cards deep, not three.",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "Both verified Assault loops (003, 006) depend on a specific funding source. Whether Klauth is a third one changes how many cards support the deck's only verified kill, which is the redundancy question the whole diagnosis turns on."
+    },
+    {
+      "question": "Hellkite Courser puts The Ur-Dragon onto the battlefield from the command zone and returns it there at the next end step. strategic_frame.json claims 'no recast tax accrued' — is that right, and does the commander's own attack trigger fire on the Courser turn?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "It is the deck's only route to a commander that is cast in 13.7% of simulated games by turn ten. If the line works as claimed, Courser is a four-mana capstone and the diagnosis's advice to ignore the nine-mana cast gets stronger, not weaker."
+    },
+    {
+      "question": "Re-declare the cost-reducer any_of group in goldfish_targets.json to include Worldly Tutor and Enlightened Tutor, both of which find a member, and re-run. What does the component's 42.3% become?",
+      "settled_by": "goldfish",
+      "why_it_matters": "The current assisted and unassisted rates are identical at 0.423, meaning the simulation modelled no tutor as reaching this group. If the real rate is materially higher, the reducer component is less thin than the audit shows and fewer of the three adds are needed."
+    },
+    {
+      "question": "Re-run the goldfish with the three proposed reducers substituted in, to measure the joint 'Reducer + ramp assembled' rate at component size 6 rather than 3.",
+      "settled_by": "goldfish",
+      "why_it_matters": "The prescription rests on 33.9% joint assembly being too low. The hypergeometric says the group's own odds roughly double; whether the joint target follows is a simulation question, and the answer decides whether three slots or one is the right price."
+    }
+  ],
+  "gaps": [
+    "No deck_recon.json exists for this commander, so nothing in this diagnosis is grounded in what strong Ur-Dragon lists actually run. Every add here comes from the pool and this deck's own measurements. A recon pass would test whether the cost-reducer prescription is the consensus fix or a local one.",
+    "The obsolescence index proposes Three Visits, Cultivate and Kodama's Reach as upgrades over Skyshroud Claim on lower mana value. Read the cards and that is wrong for this deck: Skyshroud Claim fetches two Forest-typed lands untapped, and the deck runs ten land copies with the Forest type. The index is format-agnostic and does not know that. No action taken.",
+    "DECK_ROLE_BUDGET reports the deck 6 short on draw and 2 short on wincon. Both are artifacts of the same taxonomy blind spot the audit's own notes flag, and the budget's docstring calls itself provisional and uncited. Not used as evidence anywhere above.",
+    "strategic_frame.json carries decklist_sha256_prefix 4a6369cc against a current cards.json of edc6644d. Its qualitative claims were used for archetype framing only; no figure in this diagnosis comes from it.",
+    "The 'Payoff + a castable dragon' target has no standalone rate for its second group, so that component's measured_rate carries the joint 0.401. The schema cannot express the union, which the audit's own notes say."
+  ],
+  "skeptic": {
+    "verdict": "fail",
+    "findings": [
+      {
+        "where": "add_candidates[3].evidence.land_sources_after",
+        "status": "miscounted",
+        "note": "I recomputed the tally rather than checking the prose, using manabase.land_colors over the modified 99 (Glacial Fortress removed, Mana Confluence added), expanded by copies. Result: BEFORE W 10 / U 11 / B 11 / R 20 / G 18 at 34 lands — exactly mana_analysis.json; AFTER W 10 / U 11 / B 12 / R 21 / G 19 at 34 lands. land_colors('Mana Confluence') returns all five, Glacial Fortress returns {W, U}, so W goes 10 -> 9 -> 10 and nets ZERO. evidence.land_sources_after.W = 11 is wrong by one. The entry's own prose has it right ('the land counts move W 10->10'), and so does cut_candidates[6].cost_of_cutting ('restores both colours exactly (W 10->10, U 11->11)') — so the machine-readable value is the one field in the document that disagrees with the two prose statements beside it, and it is the same field that carried the iteration-1 error. Everything else in the block is verified correct: B total 16->17, gating colour stays B, axis -20 -> -19 (I recomputed the worst-colour minimum over all five colours against the unchanged source_targets, since no nonland card moved and the pip requirements are therefore identical), and the 34-land count is unchanged."
+      },
+      {
+        "where": "add_candidates[3]",
+        "status": "supported",
+        "note": "The prescription itself is now sound and the previous contradicts-artifact finding is closed. Against Forbidden Orchard the swap was source-neutral and the document now says so in its own words ('swapping it for Forbidden Orchard is exactly source-neutral, because mana_analysis.json already counts Forbidden Orchard as producing all five colours'), which is the correction stated rather than quietly patched. Against Glacial Fortress it is not neutral, and closes: 'colour-sources' is now earned: the axis moves. The cross-references hold too — cut_candidates[6] Glacial Fortress is the natural_cut and its cost_of_cutting names Mana Confluence as the refill, cut_candidates[4] Forbidden Orchard now warns that taking both lands the deck at 33, and I confirmed that arithmetic (34 lands, land-for-land swap, minus one more land = 33). 'Pair it with the Panharmonicon cut instead and the deck reaches 35 lands' is also right — Panharmonicon is an artifact, so the Confluence is a net land addition."
+      },
+      {
+        "where": "cut_candidates[0]",
+        "status": "supported",
+        "note": "The narrowed superlative is true across the WHOLE 99, not just against the three cards it names. I sorted every entry in cards.json by mana value: at 8 or more there are exactly five, one of which is the commander. The other four are Cavern-Hoard Dragon (9, 'Creature — Dragon', and 'This spell costs {X} less to cast, where X is the greatest number of artifacts an opponent controls' — so both a Dragon AND self-reducing), Blasphemous Act (9, Sorcery, 'This spell costs {1} less to cast for each creature on the battlefield' — self-reducing), Utvara Hellkite (8, 'Creature — Dragon'), and Dracogenesis (8, Enchantment, no cost text). So Dracogenesis is the only mana-value-8+ card in the 99 that is neither a Dragon nor self-reducing, and the reducers' oracle text confirms why none reaches it: Urza's Incubator and Herald's Horn reduce creature spells of the chosen type, Dragonspeaker Shaman and eminence reduce Dragon spells. The mana-value-8+ scope is stated explicitly rather than smuggled in as 'expensive', which is what made the old wording false."
+      },
+      {
+        "where": "add_candidates[2]",
+        "status": "supported",
+        "note": "component_size_after is now 6 and the why reads 'from 3 to 6', which matches 3 existing reducers plus the 3 proposed and agrees with open_questions[3]'s 'component size 6 rather than 3'. Recomputed the consequence: 6 copies gives 1 - C(93,7)/C(99,7) = 0.3636 of opening sevens, past the 31% tier the corpus names rather than at it, so the redundancy claim is now conservative rather than overstated."
+      },
+      {
+        "where": "engine.single_points_of_failure[0]",
+        "status": "supported",
+        "note": "I am reversing my iteration-2 over-claimed call on this entry, and recording why rather than quietly dropping it. I had reasoned from the field NAME matching deck_audit's, which computes single_points_of_failure strictly as targets with thinnest_size <= 1 and returns [] here. But the doctor's schema in .claude/agents/deck-doctor.md types the field on 'component', not on a card, and the gishath diagnosis demonstrates the intended semantics: its Forerunner of the Empire entry is a genuine one-card hub sitting inside 7- and 9-card components, which the audit's size test cannot see at all. So the field carries doctor judgment about where the engine fails first, not a mirror of the audit's computation. On that reading this entry qualifies: it is the audit's only thin: true, thinnest: true component, it is labelled with its own count in the body ('Three cards carry the whole curve fix'), and the whole document turns on it. My reversal costs nothing here — this artifact fails on the tally finding regardless — which is why I can make the call on the merits."
+      },
+      {
+        "where": "engine.components[0]",
+        "status": "supported",
+        "note": "Re-ran deck-audit and re-derived the hypergeometrics from scratch. A 3-card group in a 99-card library: 1 - C(96,7)/C(99,7) = 0.1994 and 1 - C(96,9)/C(99,9) = 0.2510, matching the audit's opening_seven 0.199 and by_turn_three 0.251. The 5-copy comparator recomputes to 0.3124 under the identical quantity, so 'below the cheapest redundancy tier the doc names' remains a like-for-like comparison. Component sizes 3/9/7/6/8 and rates 0.423/0.817/0.731/0.401/0.771 still match the audit exactly; nothing in the engine block was touched by the revision."
+      },
+      {
+        "where": "axes[3]",
+        "status": "supported",
+        "note": "Unchanged by the revision and re-checked against a fresh deck-audit run. The -20 is black (mana_analysis short {B: 20}); pips.B is 8 pips over 6 cards with pip_share 0.079; R carries pip_share 0.465 over 32 cards at source_share 0.286 with lands-only on-curve 0.580 rising to 0.764. Declining the headline in favour of red is justified, and the Duke splash/main-colour quote is still used for the categorical distinction rather than to claim black meets a numeric splash target. Note the revision improves this axis indirectly: the Mana Confluence swap now moves it, so the document no longer proposes a colour-sources add that does nothing."
+      },
+      {
+        "where": "cut_candidates",
+        "status": "supported",
+        "note": "Re-attacked all seven after the revision. Every card is in the current 99 and none is the commander. Recomputed orphans_stack from all six stacks' scenario blocks (001-006, every one checker.verdict == pass): only Panharmonicon appears, in 002's scenario.board.you, and it is the only entry carrying orphans_stack. Two painful, four contested, one easy — the list does not dodge the job. The two cost_of_cutting fields the doctor rewrote now price the land interaction correctly and neither is a restatement of its why. The Glacial Fortress 'easy' label is now defensible in a way it was not last round: the slot is refilled by Mana Confluence in the same document, so the deck stays at 34 lands and W/U are restored exactly, which is what I verified above."
+      },
+      {
+        "where": "add_candidates",
+        "status": "supported",
+        "note": "All five adds re-checked. None is in the current 99. Dragonlord's Servant ({1}{R}), Ruby Medallion ({2}), Goblin Anarchomancer ({R}{G}), Mana Confluence and Soul-Guide Lantern are all Commander-legal, all inside the WUBRG identity, and all game_changer = False in cards.csv. Ruby Medallion and Goblin Anarchomancer both appear in deck-audit's own closers.by_role list for the thin component. Each oracle text matches the claim made about it. The five natural_cuts are distinct and all are cut_candidates entries, with Forbidden Orchard and Panharmonicon left as cuts with no paired add — which the document flags rather than hides. bracket_delta 4 -> 4 recomputed: bracket_report's floor is forced by 3 Game Changers plus three two-card infinites all routed through Aggravated Assault, and no add or cut touches any of them."
+      },
+      {
+        "where": "axes[*].citations",
+        "status": "supported",
+        "note": "Re-fetched every cited section with lookup-strategy and re-read each whole; the revision added no citations and changed none. All verbatim, and the context still holds: the ratios template is paired with its own 'Take the categories, derive the counts from the deck's actual failure modes' rather than used as a rule, the Karsten quotes keep their 90%-yardstick framing, and the redundancy tier is quoted at the quantity it was computed for."
+      },
+      {
+        "where": "freshness, open_questions",
+        "status": "supported",
+        "note": "Re-ran deck-audit today. goldfish_metrics.json and mana_analysis.json both stamp decklist_sha256 edc6644d... with current: true, matching as_of_decklist_sha256 — the decklist was not touched by the revision, so every figure sourced from them is still live. strategic_frame.json's staleness stays disclosed in gaps. No combo line is asserted without a passing stack: Klauth's 'Spend this mana only to cast spells' question and the Hellkite Courser line are both still open_questions settled_by resolve-stack, and the three closers.by_combo_line entries deck-audit marks 'needs a stack scenario' are quoted nowhere in the document."
+      }
     ],
-    "assault_pieces": [
-     "Aggravated Assault",
-     "Savage Ventmaw",
-     "Old Gnawbone"
-    ]
-   },
-   "citations": [
-    {
-     "rule": "strategy:critical-mass",
-     "quote": "know your number — the count of bodies, spells, or mana at which the deck actually goes over the top"
-    },
-    {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "Value is not a win."
-    }
-   ]
-  },
-  {
-   "what": "Build as if the commander is never cast — because measurably it is not.",
-   "why": "mean cast turn 8.967, 0.0% by turn six, and 8,634 of 10,000 simulated games never reach it by turn ten. Eminence works from the command zone regardless, so the nine-mana price buys a 10/10 and an attack-trigger draw, not the discount. Every slot spent chasing the cast is a slot not spent making the discount bigger.",
-   "evidence": {
-    "mean_cast_turn": 8.967,
-    "cast_by_turn_6_rate": 0.0,
-    "cheat": "Hellkite Courser"
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.curve",
-     "quote": "unless the majority of your deck is mana ramp... you're probably only going to be able to cast ONE big-mana spell per game"
-    }
-   ]
-  },
-  {
-   "what": "Protection is at the top of its band; spend it on the Assault turn, not on a Dragon.",
-   "why": "Six counted protection cards and an eight-card held-interaction group at 77.1%. A linear deck's defence is its ability to keep three opponents' answers unspent until the one window it needs.",
-   "evidence": {
-    "protection_axis_value": 6,
-    "assembled_rate": 0.771,
-    "by_turn_6_rate": 0.66
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
-    },
-    {
-     "rule": "strategy:critical-mass",
-     "quote": "the linear deck needs redundancy that shrugs off three answers, or a deflection posture that keeps them unspent"
-    },
-    {
-     "rule": "strategy:critical-mass",
-     "quote": "linear strategies give up flexibility in exchange for power"
-    }
-   ]
+    "iterations": 3,
+    "note": "DIAGNOSE_MAX_ITERATIONS reached with ONE finding open of eleven. The prose and the axis movement were independently recomputed by the skeptic and are CORRECT -- land_colors over the modified 99 gives B 11->12, R 20->21, G 18->19, so colour-sources really does move -20 -> -19. What is wrong is a single machine-readable value: `evidence.land_sources_after.W` reads 11 where the correct figure is 10, because Glacial Fortress produces W and cutting it for Mana Confluence nets zero white. Trust the prose over that field, and do not quote `land_sources_after.W` anywhere. Not blessed: `deck-diagnosis` stays MISS."
   }
- ],
- "cut_candidates": [
-  {
-   "card": "Dracogenesis",
-   "why": "Eight mana for an enchantment that does nothing the turn it lands, and it is the only card at mana value 8 or more in the 99 that is neither a Dragon nor self-reducing. Eminence, Urza's Incubator, Herald's Horn and Dragonspeaker Shaman all miss it because it is not a Dragon spell; Blasphemous Act is also mana value 9 but costs {1} less per creature on the battlefield, Cavern-Hoard Dragon costs {X} less for opponents' artifacts and is a Dragon besides, and Utvara Hellkite is a Dragon. Dracogenesis pays the sticker price every game, against mean available mana of 6.539 on turn ten.",
-   "cost_of_cutting": "The deck loses its highest ceiling. When Dracogenesis resolves with a hand of Dragons the game ends shortly after, and no other card in the 99 does that.",
-   "orphans_stack": null,
-   "difficulty": "painful",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.curve",
-     "quote": "unless the majority of your deck is mana ramp... you're probably only going to be able to cast ONE big-mana spell per game"
-    },
-    {
-     "rule": "strategy:deckbuilding.curve",
-     "quote": "Build to hit 2, 4 and 6 mana reliably, because four-player turn cycles are expensive"
-    }
-   ]
-  },
-  {
-   "card": "Panharmonicon",
-   "why": "Four mana that adds no board and no mana, in a deck whose measured problem is having 4.937 mana on turn six. It is a multiplier, not an enabler, and it needs Miirym, Lathliss, Terror or Tempest already down to do anything.",
-   "cost_of_cutting": "It orphans stack 002, the deck's showcase Miirym cascade, and it removes the single largest single-turn swing the deck can manufacture. A reasonable pilot will fight this one and may be right.",
-   "orphans_stack": [
-    "002"
-   ],
-   "difficulty": "painful",
-   "citations": [
-    {
-     "rule": "strategy:mulligans.engine-hands",
-     "quote": "Payoffs without the enabler are blanks until the engine exists"
-    },
-    {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "Engine density — Nicol asks 7-8 enablers and 10-12 enhancers against ~25 standalone cards, and the enabler slots fail first"
-    }
-   ]
-  },
-  {
-   "card": "Patriarch's Bidding",
-   "why": "{3}{B}{B} in a colour with 11 land sources and a 26.1% lands-only on-curve rate, and it is symmetric — every opponent chooses a type too, at a table where the deck already has no graveyard answer.",
-   "cost_of_cutting": "The deck's only mass recursion after a wrath. Rivaz of the Claw and Haven of the Spirit Dragon rebuy one Dragon; Bidding rebuys all of them.",
-   "orphans_stack": null,
-   "difficulty": "contested",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
-    },
-    {
-     "rule": "strategy:deckbuilding.mana-base.color-sources",
-     "quote": "17–18 sources for a colour you won't keep a hand without, 14–16 for a main colour, 10–13 for a secondary, 4–7 for a splash"
-    }
-   ]
-  },
-  {
-   "card": "Dragonlord Kolaghan",
-   "why": "Six mana for a haste anthem the deck already has twice — Temur Ascendancy gives every creature haste and Dragon Tempest gives it to every flier that enters — attached to a punisher clause that almost never fires in singleton Commander.",
-   "cost_of_cutting": "A 6/5 flier and one of only two cards the taxonomy counts as a finisher, plus a black source of pressure in a deck whose black is otherwise all sorceries.",
-   "orphans_stack": null,
-   "difficulty": "contested",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
-    }
-   ]
-  },
-  {
-   "card": "Forbidden Orchard",
-   "why": "Every tap hands an opponent a 1/1 blocker, and both verified kill loops are bounded by blockers — stack 006's cycle needs a connecting attacker each combat. Paying for fixing in opposing bodies is the wrong currency for this deck specifically.",
-   "cost_of_cutting": "One of only four untapped five-colour lands in a five-colour deck, and mana_analysis counts it as a full source of all five — cutting it takes one source off every colour. Note the interaction: Mana Confluence is already spending the Glacial Fortress slot, so taking this cut as well puts the deck at 33 lands against a 36–38 target.",
-   "orphans_stack": null,
-   "difficulty": "contested",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "a utility land that can't produce the colour you need is not a source"
-    }
-   ]
-  },
-  {
-   "card": "Dragonback Assault",
-   "why": "Six mana across three specific colours, and its enters trigger deals 3 damage to each creature — which kills Dragonspeaker Shaman (2/2) and Rivaz of the Claw (3/3), two of the deck's own enablers, one of them a third of the binding cost-reducer component.",
-   "cost_of_cutting": "A repeatable 4/4 Dragon per land drop, which is genuine board width for Tempest and Scourge counts, and a partial sweeper in a deck that only counts one.",
-   "orphans_stack": null,
-   "difficulty": "contested",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "Engine density — Nicol asks 7-8 enablers and 10-12 enhancers against ~25 standalone cards, and the enabler slots fail first"
-    },
-    {
-     "rule": "strategy:deckbuilding.mana-base.color-sources",
-     "quote": "Read them as a budget, not a table"
-    }
-   ]
-  },
-  {
-   "card": "Glacial Fortress",
-   "why": "It checks for a Plains or an Island, and the deck contains five lands with either type — one Island, Breeding Pool, Steam Vents, Canopy Vista and Jetmir's Garden. On an early board it is a tapland that produces the deck's two least-demanded colours.",
-   "cost_of_cutting": "It is one of only 10 white and 11 blue land sources, and the deck drops to 33 lands against a 36–38 target unless the slot is refilled with a land. Mana Confluence is that refill and restores both colours exactly (W 10→10, U 11→11); take this cut without it and white and blue each lose a source.",
-   "orphans_stack": null,
-   "difficulty": "easy",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.ratios",
-     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
-    },
-    {
-     "rule": "strategy:deckbuilding.mana-base.color-sources",
-     "quote": "Only untapped sources count for turn one"
-    }
-   ]
-  }
- ],
- "add_candidates": [
-  {
-   "card": "Dragonlord's Servant",
-   "closes": "engine component: ignition — cost reducers",
-   "source": "pool",
-   "why": "A two-mana body reading 'Dragon spells you cast cost {1} less to cast' — the same {1} discount as Herald's Horn, a mana cheaper, and it takes the thinnest component from 3 to 4. It is red, the colour with 27 sources, so it is the reducer this mana base can actually deploy on turn two.",
-   "evidence": {
-    "component_size_before": 3,
-    "opening_seven_before": 0.199,
-    "redundancy_reference": "5 copies is 31% of openers"
-   },
-   "natural_cut": "Dragonlord Kolaghan",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-    },
-    {
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-     "quote": "So stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable"
-    }
-   ]
-  },
-  {
-   "card": "Ruby Medallion",
-   "closes": "engine component: ignition — cost reducers",
-   "source": "pool",
-   "why": "'Red spells you cast cost {1} less to cast' reaches further here than a Dragon-only reducer: red is 46.5% of the pip load across 32 cards, so it also discounts Dragon Tempest, Aggravated Assault, Sneak Attack and Blasphemous Act, none of which Urza's Incubator touches.",
-   "evidence": {
-    "red_pip_share": 0.465,
-    "red_cards": 32,
-    "component_size_before": 3
-   },
-   "natural_cut": "Dracogenesis",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-    },
-    {
-     "rule": "strategy:deckbuilding.curve",
-     "quote": "Build to hit 2, 4 and 6 mana reliably, because four-player turn cycles are expensive"
-    }
-   ]
-  },
-  {
-   "card": "Goblin Anarchomancer",
-   "closes": "engine component: ignition — cost reducers",
-   "source": "pool",
-   "why": "'Each spell you cast that's red or green costs {1} less' covers 68.3% of the deck's pip load on a two-mana body, and it takes the binding component from 3 to 6 alongside the two above — the first tier the corpus prices at 31% of openers.",
-   "evidence": {
-    "red_pip_share": 0.465,
-    "green_pip_share": 0.218,
-    "component_size_after": 6
-   },
-   "natural_cut": "Dragonback Assault",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-    },
-    {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "Engine density — Nicol asks 7-8 enablers and 10-12 enhancers against ~25 standalone cards, and the enabler slots fail first"
-    }
-   ]
-  },
-  {
-   "card": "Mana Confluence",
-   "closes": "colour-sources",
-   "source": "pool",
-   "why": "Measured, not assumed: swapping it for Forbidden Orchard is exactly source-neutral, because mana_analysis.json already counts Forbidden Orchard as producing all five colours. Against Glacial Fortress it is not neutral. Glacial Fortress produces only W and U; Mana Confluence produces all five, so the land counts move W 10→10, U 11→11, B 11→12, R 20→21, G 18→19. Black is the colour the colour-sources axis is gated on, so its total goes 16→17 and the axis moves −20→−19 — land-for-land, with no change to the 34-land count. It also retires the deck's thinnest conditional tapland for one that is never tapped. Pair it with the Panharmonicon cut instead and the deck reaches 35 lands, at the price of a checker-passed line.",
-   "evidence": {
-    "land_sources_before": {
-     "W": 10,
-     "U": 11,
-     "B": 11,
-     "R": 20,
-     "G": 18
-    },
-    "land_sources_after": {
-     "W": 11,
-     "U": 11,
-     "B": 12,
-     "R": 21,
-     "G": 19
-    },
-    "gating_colour": "B",
-    "axis_before": -20,
-    "axis_after": -19,
-    "neutral_against": "Forbidden Orchard — mana_analysis counts it as producing B, G, R, U and W already",
-    "replaces": "Glacial Fortress"
-   },
-   "natural_cut": "Glacial Fortress",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base.color-sources",
-     "quote": "Only untapped sources count for turn one"
-    },
-    {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "a utility land that can't produce the colour you need is not a source"
-    }
-   ]
-  },
-  {
-   "card": "Soul-Guide Lantern",
-   "closes": "interaction-breadth",
-   "source": "pool",
-   "why": "One colourless mana covers the only permanent class the deck cannot answer. It exiles on entry, exiles every opponent's graveyard on sacrifice, and cantrips when neither matters — so it is never a dead card in a deck that already has eight answers and no room for a ninth narrow one.",
-   "evidence": {
-    "uncovered_class": "graveyard",
-    "breadth_before": 4,
-    "breadth_target": 5
-   },
-   "natural_cut": "Patriarch's Bidding",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
-    }
-   ]
-  }
- ],
- "open_questions": [
-  {
-   "question": "Can Klauth, Unrivaled Ancient's attack-trigger mana pay for Aggravated Assault's {3}{R}{R} activation? The trigger says 'Spend this mana only to cast spells', and activating an ability is not casting a spell — if it cannot, Klauth is not a third Assault engine and the deck's Assault package is two cards deep, not three.",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "Both verified Assault loops (003, 006) depend on a specific funding source. Whether Klauth is a third one changes how many cards support the deck's only verified kill, which is the redundancy question the whole diagnosis turns on."
-  },
-  {
-   "question": "Hellkite Courser puts The Ur-Dragon onto the battlefield from the command zone and returns it there at the next end step. strategic_frame.json claims 'no recast tax accrued' — is that right, and does the commander's own attack trigger fire on the Courser turn?",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "It is the deck's only route to a commander that is cast in 13.7% of simulated games by turn ten. If the line works as claimed, Courser is a four-mana capstone and the diagnosis's advice to ignore the nine-mana cast gets stronger, not weaker."
-  },
-  {
-   "question": "Re-declare the cost-reducer any_of group in goldfish_targets.json to include Worldly Tutor and Enlightened Tutor, both of which find a member, and re-run. What does the component's 42.3% become?",
-   "settled_by": "goldfish",
-   "why_it_matters": "The current assisted and unassisted rates are identical at 0.423, meaning the simulation modelled no tutor as reaching this group. If the real rate is materially higher, the reducer component is less thin than the audit shows and fewer of the three adds are needed."
-  },
-  {
-   "question": "Re-run the goldfish with the three proposed reducers substituted in, to measure the joint 'Reducer + ramp assembled' rate at component size 6 rather than 3.",
-   "settled_by": "goldfish",
-   "why_it_matters": "The prescription rests on 33.9% joint assembly being too low. The hypergeometric says the group's own odds roughly double; whether the joint target follows is a simulation question, and the answer decides whether three slots or one is the right price."
-  }
- ],
- "gaps": [
-  "No deck_recon.json exists for this commander, so nothing in this diagnosis is grounded in what strong Ur-Dragon lists actually run. Every add here comes from the pool and this deck's own measurements. A recon pass would test whether the cost-reducer prescription is the consensus fix or a local one.",
-  "The obsolescence index proposes Three Visits, Cultivate and Kodama's Reach as upgrades over Skyshroud Claim on lower mana value. Read the cards and that is wrong for this deck: Skyshroud Claim fetches two Forest-typed lands untapped, and the deck runs ten land copies with the Forest type. The index is format-agnostic and does not know that. No action taken.",
-  "DECK_ROLE_BUDGET reports the deck 6 short on draw and 2 short on wincon. Both are artifacts of the same taxonomy blind spot the audit's own notes flag, and the budget's docstring calls itself provisional and uncited. Not used as evidence anywhere above.",
-  "strategic_frame.json carries decklist_sha256_prefix 4a6369cc against a current cards.json of edc6644d. Its qualitative claims were used for archetype framing only; no figure in this diagnosis comes from it.",
-  "The 'Payoff + a castable dragon' target has no standalone rate for its second group, so that component's measured_rate carries the joint 0.401. The schema cannot express the union, which the audit's own notes say."
- ]
 }
