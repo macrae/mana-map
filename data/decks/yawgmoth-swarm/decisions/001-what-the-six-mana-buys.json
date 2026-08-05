@@ -1,0 +1,139 @@
+{
+  "id": "001",
+  "slug": "what-the-six-mana-buys",
+  "deck": "yawgmoth-swarm",
+  "kind": "decision",
+  "title": "The engine has paid you for three turns, no kill is in your hand, and six mana is asking what it buys",
+  "scenario": {
+    "board": {
+      "you": [
+        "Yawgmoth, Thran Physician (2/4, untapped, no summoning sickness) — your commander",
+        "Bastion of Remembrance (enchantment)",
+        "Bitterblossom (enchantment)",
+        "Carrion Feeder (1/1, no counters)",
+        "Reassembling Skeleton (1/1)",
+        "Faerie Rogue token (1/1 black, flying)",
+        "Faerie Rogue token (1/1 black, flying)",
+        "Swamp (untapped)",
+        "Swamp (untapped)",
+        "Swamp (untapped)",
+        "Swamp (untapped)",
+        "Swamp (untapped)",
+        "Phyrexian Tower, an untapped land"
+      ],
+      "opponents": [
+        {
+          "seat": "Player 2 (Golgari midrange)",
+          "life": 29,
+          "board": [
+            "two 3/3 creatures",
+            "a 1/1 mana dork",
+            "tapped out"
+          ]
+        },
+        {
+          "seat": "Player 3 (Azorius control)",
+          "life": 34,
+          "board": [
+            "no creatures",
+            "five untapped lands, held through two rotations",
+            "assume a sweeper and one counterspell"
+          ]
+        },
+        {
+          "seat": "Player 4 (Rakdos aggro)",
+          "life": 21,
+          "board": [
+            "a 2/1 attacker",
+            "a 3/2 attacker",
+            "tapped out after swinging at Player 2"
+          ]
+        }
+      ]
+    },
+    "hand": [
+      "Grave Pact",
+      "Exquisite Blood",
+      "Warren Soultrader"
+    ],
+    "graveyard": [
+      "Stitcher's Supplier",
+      "Fume Spitter",
+      "Swamp"
+    ],
+    "mana_available": "Six untapped lands producing {B}{B}{B}{B}{B} plus {C}. Grave Pact costs {1}{B}{B}{B}, Exquisite Blood {4}{B}, Warren Soultrader {2}{B} — you can cast exactly one of the three. Your life total is 32.",
+    "stack": [],
+    "question": "Nobody here is frightened of you, and nothing you are holding kills anybody. The machine is running and the ceiling is missing. So what do the six mana buy — the card that makes you the table's police, the loud half of your best kill, the quiet half of your fastest one, or nothing at all while you dig five cards deep?"
+  },
+  "branches": [
+    {
+      "choice": "Cast Grave Pact and become the table's police",
+      "line": "Grave Pact for {1}{B}{B}{B}, leaving {B}{B}. Sacrifice a Faerie to Yawgmoth on the end step before your turn and every other player gives up a creature of their choice. Do it again with the second Faerie. Spend the last {1}{B} returning Reassembling Skeleton and eat that too — three activations, three cards, three rounds of edicts, and both creature boards at this table are gone.",
+      "signals": "Enormous, and unmistakable. Forced sacrifices are the effect this format resents most, and three rounds of them inside one rotation says your engine converts into other people's permanents on demand.",
+      "coalition_risk": "The highest on the page, and pointed the wrong way. Every creature you take comes off the two seats that are pressuring the control player, and the control player is the one holding the answer to the plan you actually care about. You would be doing their board management with your own life total.",
+      "coaching": "The card is excellent and this is the wrong turn for it.\n\nStart with what it does not do. It advances no kill. Your problem tonight is not the board — the aggro seat is losing a race it started — your problem is that no configuration is on the table.\n\nThen look at who gets paid. The control seat owns no creatures, so every edict you fire is free value for the one deck that beats you.\n\nAnd price the attention. Nobody has spent removal on you yet, which is the most valuable thing you own. Three rounds of forced sacrifices is how a pod picks an archenemy, and it spends the deflection budget you will want on the turn you finally go.\n\nGrave Pact is a keeper for the turn an opposing board is genuinely killing you, or the turn it converts a kill you already hold. Play it then and it wins a game. Play it now and you are buying protection you already have.",
+      "citations": [
+        {
+          "rule": "strategy:multiplayer.asymmetry",
+          "quote": "hold removal until the threat is pointed at you, and let opponents spend their one-for-ones on each other"
+        }
+      ]
+    },
+    {
+      "choice": "Cast Exquisite Blood and commit the loud half of your best kill",
+      "line": "Exquisite Blood for {4}{B}, leaving {B}. Nothing happens this turn, and nothing happens next turn either unless a body shows up. From there South Wind Avatar turns it into the mandatory loop the checker settled — and Bastion of Remembrance is already on the table supplying the lifegain that lights it.",
+      "signals": "The most recognisable card in your deck, cast on a turn where it removes nobody's life. Everyone here has seen it before and everyone knows what it is waiting for. The control seat gets a full rotation, and every land it has been holding, to decide what to do about that.",
+      "coalition_risk": "High, and unusually survivable. Creature removal cannot touch it and only the Golgari seat is likely to hold anything that can. What it really costs is your cover: from here the table stops pricing you as a value deck.",
+      "coaching": "This is your best kill and I am not talking you out of it. I am talking you out of leading with it.\n\nTake the numbers first, because they should govern the rest of your game. The Exquisite Blood shape assembles in 6.9% of goldfished games by turn ten unassisted and 42.5% with a tutor, at a mean turn of 5.301 — the highest rate and the fastest clock of your four kills. Point every search you draw from here at that pair.\n\nNow the part that decides this turn. Five of your six mana buys a permanent that does nothing until a second card arrives, and no tutor has arrived: you are in the 39% of games that never sees one by turn ten.\n\nSo the enchantment sits. It sits through a whole rotation with your cover gone, and the only work it does in that time is tell three players what to hold.\n\nOne more caution, and it is about your own deck rather than the table. The checker resolved this loop on South Wind Avatar, whose own death trigger supplies the life that starts it. Marauding Blight-Priest and Starscape Cleric carry the identical drain text and gain no life themselves — Bastion covers that, but nobody has resolved it. Treat the Avatar as the sure thing and those two as candidates.\n\nCast this on the turn the body is already down, or on the turn you can cast both. Not on a turn where it is a five-mana billboard.",
+      "citations": [
+        {
+          "rule": "strategy:multiplayer.threat-deflection",
+          "quote": "Know your deck's tells — the cards everyone fears — and time them for the turn they win, not the turn they impress."
+        }
+      ]
+    },
+    {
+      "choice": "Cast Warren Soultrader and keep three mana up",
+      "line": "Warren Soultrader for {2}{B}, leaving {B}{B}{B}. Bastion of Remembrance is already down, so Gravecrawler is now the entire rest of the self-funding loop — one named card. Eat a Faerie with Yawgmoth on each opponent's end step for a card apiece, put the counters on the Rakdos attackers, and hold {1}{B} to return Reassembling Skeleton at instant speed if the digging is going well.",
+      "signals": "A 3/3 for three on a board that already has five bodies. It reads as a fair creature and a chump blocker. Nobody at this table has ever lost to a Warren Soultrader, and nobody is spending an exile effect on one.",
+      "coalition_risk": "Low, and it stays low. The loud cards stay in your hand, the open mana reads as interaction, and all the table sees is a value deck adding a body. That is a very small price for a permanent that narrows a kill to a single card.",
+      "coaching": "This is the play, and the reason is arithmetic rather than taste.\n\nCount what each option leaves you needing. Grave Pact leaves you needing an entire kill. Exquisite Blood leaves you needing one of three bodies. Soultrader leaves you needing Gravecrawler and nothing else, because the drain half is already on the battlefield.\n\nThat is the kill you most want to be one card away from. Each sacrifice makes the Treasure that pays for the next Gravecrawler, each iteration costs a life and hands it straight back, and when you take it every seat reaches zero at the same moment. It is the attempt you can make into open mana and still have a deck if it fails.\n\nNow the part most pilots give away for nothing. Your commander charges no mana at all, so the two Faerie activations are free in every branch on this page — you are not buying digging with these three mana, you already own it. What the three mana buy is an instant-speed Skeleton return, and the moment to spend it is the end step before your own turn, when the table's chances to respond are already gone.\n\nOne habit while you do it. Point the counters at the Rakdos attackers, never at your own bodies. Their 2/1 dies to a single activation you were making anyway.\n\nAnd keep one thing to yourself: Soultrader makes Treasures, so the permanent that reads as a chump blocker is also the engine mana your loops run on.",
+      "citations": [
+        {
+          "rule": "117.1b",
+          "quote": "A player may activate an activated ability any time they have priority."
+        },
+        {
+          "rule": "strategy:tempo.sequencing",
+          "quote": "prefer committing at the end step before your own turn so the table's chances to respond are spent"
+        },
+        {
+          "rule": "strategy:multiplayer.pivot-window",
+          "quote": "Prefer win attempts that leave a rebuilt position if they fail"
+        }
+      ]
+    },
+    {
+      "choice": "Cast nothing and dig five cards deep",
+      "line": "Spend all six mana on Reassembling Skeleton: feed it to Yawgmoth, return it for {1}{B}, repeat until the mana is gone. Then eat both Faeries. Five activations, five cards, five -1/-1 counters aimed at the Rakdos attackers, and five drains off Bastion of Remembrance — every opponent down five, you back where you started, because Bastion returns each life you pay.",
+      "signals": "Every life total at the table moves five points in one turn while your board drops from five bodies to two. That is the loudest thing this deck can do without killing anybody, and it reclassifies you from the value player to the drain player in one sitting.",
+      "coalition_risk": "Moderate, and it arrives late. Nobody dies, but the aggro seat falls to 16 with your blockers eaten, which invites the swing back. And you have shown three players that your engine converts bodies into life loss on demand — the read you have spent seven turns keeping off the table.",
+      "coaching": "The instinct is right and the price is wrong.\n\nDigging is what this deck does. Your commander turns a spare body into a card for no mana, and under Bastion of Remembrance the life you pay comes straight back, so the draw engine is genuinely free. Run it every single turn.\n\nBut look at what the six mana actually bought. Two of those five cards were free and the other three cost two mana each. You paid your whole turn for three cards and deployed nothing.\n\nThen count what you fed it. Reassembling Skeleton is renewable fodder and one of the few bodies that comes back forever — recycling it three times in one turn is the most expensive way to buy cards you already own.\n\nAnd you handed your blockers to an aggro seat with two attackers pointed somewhere.\n\nTake the free half, refuse the expensive half. Eat the two Faeries for two cards, and if nothing on the other side of the table is worth shrinking, choose no target at all — the draw does not depend on one. Then spend the mana on a permanent.",
+      "citations": [
+        {
+          "rule": "117.1b",
+          "quote": "A player may activate an activated ability any time they have priority."
+        },
+        {
+          "rule": "115.6",
+          "quote": "A spell or ability that requires targets may allow zero targets to be chosen."
+        }
+      ]
+    }
+  ],
+  "recommendation": {
+    "choice": "Cast Warren Soultrader and keep three mana up",
+    "rationale": "Nobody at this table thinks you are winning. Three turns of drawing cards and eating your own tokens reads as a value deck that never got there, and that belief is worth more to you right now than any card in your hand.\n\nSo refuse the framing. The question is not which of these three is the strongest card. It is which one leaves you closest to a shape you can finish.\n\nCount it out loud. Grave Pact leaves you needing a whole kill. Exquisite Blood leaves you needing one of three bodies. Warren Soultrader leaves you needing Gravecrawler, and nothing else, because the drain is already on the table.\n\nThat is the loop that pays for itself. Each sacrifice buys the Treasure that casts the next Gravecrawler, each iteration costs a life and gives it back, and all three seats hit zero together. It is the one attempt you can make into a live table and still have a deck afterwards.\n\nThen take the digging that was always free. Your commander costs no mana, so eat a Faerie on each opponent's end step for a card apiece and put the counters on the Rakdos attackers while you do it. Two cards, one dead attacker, no mana spent.\n\nHold the last {1}{B} for a Skeleton return and spend it at the end step before your own turn rather than now. Information first, commitment last.\n\nI will name the risk instead of hiding it. Soultrader is a creature and three seats can kill a creature; Exquisite Blood is an enchantment and one seat can. If the Golgari player spends removal on your 3/3, you have lost a turn and learned exactly where their answer went — and Exquisite Blood is still in your hand.\n\nThat is the whole trade. Three mana and a replaceable body to make your best loop one card wide, while looking exactly as harmless as you did an hour ago. Take it, and start digging for free."
+  },
+  "presentable": true
+}

@@ -1,0 +1,138 @@
+{
+  "id": "002",
+  "slug": "the-cage-you-cannot-break",
+  "deck": "yawgmoth-swarm",
+  "kind": "decision",
+  "title": "A one-mana artifact has switched off three of your four kills and nothing in the 99 destroys an artifact",
+  "scenario": {
+    "board": {
+      "you": [
+        "Yawgmoth, Thran Physician (2/4, untapped) — your commander",
+        "Bastion of Remembrance (enchantment)",
+        "Bitterblossom (enchantment)",
+        "Gravecrawler (2/1)",
+        "Reassembling Skeleton (1/1)",
+        "Faerie Rogue token (1/1 black, flying)",
+        "Faerie Rogue token (1/1 black, flying)",
+        "Swamp (untapped)",
+        "Swamp (untapped)",
+        "Swamp (untapped)",
+        "Swamp (untapped)",
+        "Swamp (untapped)",
+        "Phyrexian Tower, an untapped land"
+      ],
+      "opponents": [
+        {
+          "seat": "Player 2 (Golgari midrange)",
+          "life": 33,
+          "board": [
+            "two 3/3 creatures",
+            "a 1/1 mana dork",
+            "three untapped lands",
+            "assume a second naturalize-style answer; they spent one earlier this game"
+          ]
+        },
+        {
+          "seat": "Player 3 (mono-white hatebears)",
+          "life": 36,
+          "board": [
+            "Grafdigger's Cage",
+            "two 2/2 creatures",
+            "two untapped lands"
+          ]
+        },
+        {
+          "seat": "Player 4 (Rakdos reanimator)",
+          "life": 25,
+          "board": [
+            "a 2/2 blocker",
+            "tapped out",
+            "a 7/7 sitting in their graveyard",
+            "assume a reanimation spell in hand"
+          ]
+        }
+      ]
+    },
+    "hand": [
+      "Exquisite Blood",
+      "Vampiric Tutor",
+      "Feed the Swarm"
+    ],
+    "graveyard": [
+      "Stitcher's Supplier",
+      "Viscera Seer",
+      "Swamp",
+      "Swamp"
+    ],
+    "mana_available": "Six untapped lands producing {B}{B}{B}{B}{B} plus {C}. Exquisite Blood costs {4}{B}, Vampiric Tutor {B}, Feed the Swarm {1}{B}. Your life total is 34.",
+    "stack": [],
+    "question": "You cannot destroy an artifact — no card in the 99 does. Do you spend a real political favour buying an answer, commit your hand to the one kill the Cage cannot touch, hand the problem to the seat it hurts more, or say nothing at all and keep grinding?"
+  },
+  "branches": [
+    {
+      "choice": "Buy the break — pay the Golgari seat to destroy the Cage",
+      "line": "Name the Cage out loud and make Player 2 an offer. Their next artifact answer points at it; in exchange you spend Feed the Swarm on whatever is attacking them, you give them first refusal on your commander's counters for two turns, and you leave their board alone while the deal holds. Then rebuild the recursion plan behind it.",
+      "signals": "The most information you can give away in one sentence. Three players now know which single permanent switches your deck off, and one of them owns it.",
+      "coalition_risk": "Severe, and it outlives the game. The hatebears seat learns their one-mana artifact is beating you, so they protect it, replace it, or add the second one. You have also taught this pod that the cheapest possible answer to this deck is a cheap artifact, and pods remember.",
+      "coaching": "Before you spend a favour, price what you are buying back.\n\nThe Cage takes your three least-likely kills and leaves your most likely one alone. The Soultrader loop assembles in 1.1% of goldfished games unassisted and 18.0% with a tutor; the Phyrexian Altar loop 0.5% and 12.3%; the Mikaeus loop 4.6% and 33.7%. The Exquisite Blood loop is 6.9% and 42.5%, and the Cage does not see it.\n\nSo you are being asked to pay a real favour, plus your cover, to unlock the three routes you assemble least.\n\nBe accurate about the damage while you decide, because it is broad. Nothing that returns a creature from your graveyard to the battlefield works — that is your recursion, your reanimation, and every undying body you own, because undying is a return from the graveyard to the battlefield like any other.\n\nBroad is not the same as fatal. Your commander still draws. Bastion of Remembrance still drains. Bitterblossom still makes a body every upkeep. The machine that has paid you all game is untouched, and the kill you are most likely to assemble is untouched with it.\n\nSave the favour. You will want a genuine one later, and a table only lets you overpay once.",
+      "citations": [
+        {
+          "rule": "702.93a",
+          "quote": "When this permanent is put into a graveyard from the battlefield, if it had no +1/+1 counters on it, return it to the battlefield under its owner’s control with a +1/+1 counter on it."
+        },
+        {
+          "rule": "strategy:threat-assessment.resource-denial",
+          "quote": "Name your outs early — the removal or velocity that breaks the piece that beats *you*, not the scariest piece"
+        }
+      ]
+    },
+    {
+      "choice": "Cast Exquisite Blood now and buy the body at the end step",
+      "line": "Tap Phyrexian Tower and four Swamps for Exquisite Blood, keeping one Swamp up. On the last opponent's end step, Vampiric Tutor for South Wind Avatar for {B} and 2 life. Draw it, cast it for {3}{B} next turn, then sacrifice a Faerie to Yawgmoth before you pass: Bastion of Remembrance gains you a life, the Avatar drains each opponent, Exquisite Blood gains it straight back, and the loop is mandatory from there — every seat reaches zero at the same moment.",
+      "signals": "The most recognisable card in your deck, cast into a table that has just watched a one-mana artifact turn you off. Read that as cover rather than exposure — the seat that played the Cage believes it solved you, and this is the one thing it did not solve.",
+      "coalition_risk": "Real for one turn and for one seat. Creature removal cannot touch an enchantment, so the only player likely to answer it is Player 2, who has already spent one of those this game. Everyone else has to sit and watch it resolve.",
+      "coaching": "This is the play, and the reason is which half can afford to sit.\n\nThree seats at this table can kill a creature. One seat can kill an enchantment. So the enchantment is the piece you put down early, and the body is the piece that never spends a turn on the table at all.\n\nThat is why the order matters more than the cards do. Cast the Avatar last and you activate your commander the same turn it lands — his ability costs no mana and you may use it whenever you hold priority, so the pair exists for a few seconds instead of a rotation.\n\nIt is also a full turn faster. Buying the body first means casting a 3/4, passing, and asking it to survive three seats before the five-mana half even arrives.\n\nKeep one Swamp up when you tap out. That single black is your tutor, and casting it on the last end step before you untap means their answers are already spent when you take your turn.\n\nAnd know what you are fetching. The checker resolved this loop on South Wind Avatar specifically, whose own death trigger supplies the life that starts it. Marauding Blight-Priest and Starscape Cleric carry the same drain text and cost less, but nobody has resolved them and this is not the game to find out.",
+      "citations": [
+        {
+          "rule": "117.1b",
+          "quote": "A player may activate an activated ability any time they have priority."
+        },
+        {
+          "rule": "strategy:tempo.sequencing",
+          "quote": "prefer committing at the end step before your own turn so the table's chances to respond are spent"
+        }
+      ]
+    },
+    {
+      "choice": "Hide the famous card and put the body down first",
+      "line": "Vampiric Tutor for South Wind Avatar on the last opponent's end step for {B} and 2 life, and spend two mana this turn on Feed the Swarm to clear the Golgari mana dork. Draw the Avatar, cast it next turn as a 3/4 deathtouch blocker, and hold Exquisite Blood until a turn you can cast it with your commander untapped and a body to eat.",
+      "signals": "Almost nothing. A 3/4 deathtouch body on a board full of small ones reads as defence, and it will be the least interesting permanent anybody plays this rotation.",
+      "coalition_risk": "Low on the surface and mispriced underneath. The Avatar is a creature at a table where three seats hold creature removal, and the card you are carefully hiding is the one three of them cannot touch.",
+      "coaching": "The right instinct, applied to the wrong card.\n\nHiding the loud half is usually correct in this deck and I would tell you to do it with almost any other pair. It is wrong here because of who holds what.\n\nCreature removal is everywhere at this table. Enchantment removal is one seat, probably once. So the body is the fragile half and the enchantment is the durable one, which is the reverse of how the two cards feel in your hand.\n\nThere is a tempo cost stacked on top. This line spends a turn casting a 3/4 and then needs five more mana on the turn after, so you are asking to survive two windows where the other order asks for one.\n\nAnd the blocker is worth less than it looks. You already have a commander who eats attackers for free by putting counters on them, and you are not short of bodies.\n\nKeep the shape and fix the order. Same two cards, same tutor, one turn sooner and one fewer chance for anybody to act.",
+      "citations": [
+        {
+          "rule": "strategy:multiplayer.pivot-window",
+          "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
+        }
+      ]
+    },
+    {
+      "choice": "Say nothing to the Golgari seat and let the reanimator pay for it",
+      "line": "Spend no card and no favour on the Cage. Mention once, to Player 4 and without pressing it, that the creature in their graveyard is not coming back while that artifact is out. Then run the engine: eat both Faeries with Yawgmoth for two cards, put the counters on their blocker, cast Feed the Swarm on a Golgari 3/3, and pass with mana up.",
+      "signals": "Almost nothing about your deck, and one useful sentence about somebody else's. The table learns the Cage is a problem without learning it is your problem.",
+      "coalition_risk": "The lowest on the page, and that is exactly why it is tempting. The hatebears seat keeps believing the Cage is aimed at the graveyard deck, which is where they aimed it, and nobody reprices you at all.",
+      "coaching": "This is the cheapest correct sentence available and you should say it in every branch on this page. It simply is not a plan.\n\nThe trouble is what the turn does. You spend six mana on a removal spell and two free draws, and you finish exactly as far from a kill as you started.\n\nWaiting also idles the thing you are best at. A tutor takes the Exquisite Blood shape from 6.9% to 42.5%, only 60.6% of games see one by turn ten, and yours is in your hand doing nothing.\n\nAnd Player 4 may simply not hold an artifact answer. You would be spending a rotation on somebody else's draw step and calling it a plan.\n\nSay the sentence. Then spend the turn on the kill the Cage cannot touch.",
+      "citations": [
+        {
+          "rule": "strategy:multiplayer.threat-deflection",
+          "quote": "Forcing opponents to exhaust interaction on each other early is worth more than any single card you could cast."
+        }
+      ]
+    }
+  ],
+  "recommendation": {
+    "choice": "Cast Exquisite Blood now and buy the body at the end step",
+    "rationale": "The hatebears seat believes a one-mana artifact just switched you off, and they are three-quarters right. Let them keep the three quarters and take the one that matters.\n\nPrice what the Cage actually costs you. It takes the Soultrader loop at 1.1% unassisted, the Phyrexian Altar loop at 0.5% and the Mikaeus loop at 4.6% — your three least-likely routes. It leaves the Exquisite Blood loop at 6.9%, and 42.5% the moment you spend a tutor, at a mean assembly turn of 5.301. Your most-assembled and fastest kill is the one it does not see.\n\nYou are holding half of that kill and a tutor for the other half. That is not a deck that got answered. That is a deck one turn from being the favourite.\n\nSo spend the mana on the half that can afford to sit. An enchantment at this table can be answered by one player; a creature can be answered by three. Put Exquisite Blood down now, while your cover is a story about how badly you just got hosed.\n\nKeep one black up when you tap out and buy the Avatar on the last end step before you untap, so their mana is already spent when you draw it.\n\nThen take the whole thing in a single turn. Cast the Avatar, and before you pass, sacrifice a Faerie to your commander — the ability costs nothing and you may use it whenever you hold priority. The loop is mandatory from there and it ends with every seat at zero together, so the table never gets the turn where you are lethal on one player and merely frightening to the rest.\n\nTwo riders, both free. Tell the reanimator seat the Cage is eating their graveyard; it costs you nothing and might buy the answer you refused to pay for. And keep Feed the Swarm for the creature or enchantment that genuinely threatens you, because it was never going to touch that artifact.\n\nDo not buy the break. A favour is the most expensive currency you own, and you would be spending it to unlock the three kills you assemble least while telling three players precisely how to beat you. You already have the one they cannot switch off. Go and get the second half."
+  },
+  "presentable": true
+}

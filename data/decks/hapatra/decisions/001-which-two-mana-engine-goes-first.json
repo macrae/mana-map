@@ -1,0 +1,106 @@
+{
+  "id": "001",
+  "slug": "which-two-mana-engine-goes-first",
+  "deck": "hapatra",
+  "kind": "decision",
+  "presentable": true,
+  "title": "Turn two, and three of the cards you can reach cost exactly two — Player 3 has both lands up",
+  "scenario": {
+    "board": {
+      "you": [
+        "Swamp and Bayou, both untapped"
+      ],
+      "opponents": [
+        {
+          "seat": "Player 2",
+          "life": 40,
+          "board": "Boros aggro. A 2/1 with haste that attacked Player 3 on turn one. Two lands, tapped out."
+        },
+        {
+          "seat": "Player 3",
+          "life": 38,
+          "board": "Azorius control. No creatures, no permanents beyond lands. Two lands, both untapped, held through their entire turn."
+        },
+        {
+          "seat": "Player 4",
+          "life": 40,
+          "board": "Simic ramp. One untapped mana dork. Two lands, tapped."
+        }
+      ],
+      "table": "Bracket 4 pod, honest pregame: you named eleven Game Changers and one verified line, and nobody has pointed anything at anybody yet. Stated archetypal assumption running through every branch: Player 3 kept a two-mana counterspell and is representing it correctly by doing nothing on their own turn."
+    },
+    "hand": [
+      "Bitterblossom",
+      "Nest of Scarabs",
+      "Skullclamp",
+      "Elvish Mystic",
+      "Fume Spitter",
+      "Demonic Tutor"
+    ],
+    "graveyard": [],
+    "mana_available": "{B}{G} exactly, and no third land in hand.",
+    "stack": [],
+    "question": "Hapatra sits in the command zone at her printed two mana, and you are spending two mana this turn either way. The only live question is which two-mana card it is — the commander who converts counters into bodies, the enchantment that never stops making them, or two one-drops that fix a land drop you may not need. Two open lands at Player 3 are the entire problem."
+  },
+  "branches": [
+    {
+      "choice": "Cast Hapatra, Vizier of Poisons",
+      "line": "Swamp and Bayou for {B}{G}, commander on the battlefield, pass. Next turn she attacks the seat with no blockers, and her combat trigger points a -1/-1 counter at Player 2's 2/1 or Player 4's mana dork — a dead creature and a free Snake every turn she connects, with your third land still free for Skullclamp.",
+      "signals": "The most expected card in the deck arriving on its most expected turn. A two-mana legend with deathtouch is not a card anybody spends a counterspell on, and the table keeps filing you under snake deck for another rotation.",
+      "coalition_risk": "Lowest of the three, and it stays low for the wrong-looking reason: this play is so on-script it reads as having no plan behind it. You are the only player with a permanent that does something, and not one seat will care.",
+      "coaching": "She lands on turn two in 9,970 of 10,000 goldfish runs. Read that as a fact about your mana, not about her survival — the sim runs with no interaction and no removal in it at all.\n\nSo the number retires one question and not the other. You can cast her. Whether you should is about Player 3.\n\nHere is the inversion that decides the turn, and it runs against instinct. Hapatra is the only card in this hand you can buy back.\n\nWalk the rebuyable card into the open mana. If they counter her, you pay {2} more later and you have bought their whole hand for the price of a two-drop.\n\nOne piece of technique for next turn. Her combat trigger wants a creature to point at, and both live targets belong to other people — if the boards are empty when you swing, the trigger comes off the stack and you took two damage off a life total for nothing. Check for a target before you declare, not after.\n\nThen bank the tempo. Commander plus a payoff assembles by mean turn 3.6 in 67.2% of games, so put the converter down first and let every counter you place from here already be a Snake.",
+      "citations": [
+        {
+          "rule": "903.8",
+          "quote": "A commander cast from the command zone costs an additional {2} for each previous time the player casting it has cast it from the command zone that game."
+        },
+        {
+          "rule": "603.3d",
+          "quote": "If a choice is required when the triggered ability goes on the stack but no legal choices can be made for it, or if a rule or a continuous effect otherwise makes the ability illegal, the ability is simply removed from the stack."
+        },
+        {
+          "rule": "strategy:multiplayer.commander-insurance",
+          "quote": "A value commander can eat removal and re-buy — one recast of a cheap commander is a fine rate"
+        }
+      ]
+    },
+    {
+      "choice": "Cast Bitterblossom and hold Hapatra for turn three",
+      "line": "{1}{B} for Bitterblossom, and a 1/1 flier on every upkeep from here to the end of the game for a life apiece. Turn three you make your land drop, cast Hapatra for two and still hold a mana up.",
+      "signals": "The token half first, which is exactly how this deck likes to be read — an enchantment that makes chump blockers, and a pilot who still has not committed a creature to the board.",
+      "coalition_risk": "Low against creature decks and mis-aimed against this one. Player 2 and Player 4 cannot touch an enchantment and will not try. Player 3 is the only seat that can, and you are handing them the target on the turn their mana is up.",
+      "coaching": "This is the deck's default sequencing and it is right most turns. Lead with the half that reads defensive.\n\nThis turn it is wrong, and for one reason. Bitterblossom does not come back.\n\nRead the signal properly first. Player 3 held two lands through their entire turn, and inaction with mana available is the loudest thing anybody has done at this table.\n\nNow price the counterspell in each branch. On Bitterblossom it costs you a card permanently, plus every Faerie it would ever have made. On Hapatra it costs you {2}.\n\nThat is the whole argument, and it does not survive Player 3 tapping out. The moment they spend that mana, Bitterblossom is the correct first card again — usually one turn from now.",
+      "citations": [
+        {
+          "rule": "strategy:multiplayer.threat-deflection",
+          "quote": "deploy engines that read as defensive, sequence scary pieces after the table's removal is spent"
+        },
+        {
+          "rule": "strategy:information.range-tells",
+          "quote": "Weight inaction heaviest — what they did NOT do with mana available is the strongest signal"
+        }
+      ]
+    },
+    {
+      "choice": "Cast Elvish Mystic and Fume Spitter",
+      "line": "Two one-drops for {G} and {B}. Two bodies down, three mana on turn three whether or not you draw a land, and Fume Spitter waiting as a free -1/-1 counter you can aim at Player 4's mana dork whenever you like.",
+      "signals": "Nothing at all. Two 1/1s that no seat at a bracket 4 table has an opinion about, and a player who has visibly deployed no engine on the turn everyone expected one.",
+      "coalition_risk": "Zero, and that is the tell. You spent a whole turn buying invisibility you were already getting for free — the table was not looking at you anyway.",
+      "coaching": "The branch is not bad. It is timid, and timid has a price you can put a number on.\n\nYou are paying a full turn cycle of development to dodge a card you have not seen, insuring against a missed land drop that only happens 9.8% of the time — turn three hits its land in 90.2% of runs.\n\nSo run Duke's test on it. If Player 3 does have the counterspell and you would still be fine, stop paying to dodge it.\n\nThe deeper cost is the ordering. Elvish Mystic and Fume Spitter are both fodder, and fodder is worth more once a converter is on the battlefield than before one is.\n\nA deck whose entire function is turning counters into bodies should not deploy the bodies before the converter. Save this line for the turn it is genuinely good: third land down, Hapatra and Skullclamp in the same turn, Fume Spitter still in hand as a Snake on demand.",
+      "citations": [
+        {
+          "rule": "strategy:combat-math.probability",
+          "quote": "Play around a card only when respecting it is cheap or the card is actually likely"
+        },
+        {
+          "rule": "strategy:combat-math.probability",
+          "quote": "if you would still lose the games where they have it, stop paying to play around it"
+        }
+      ]
+    }
+  ],
+  "recommendation": {
+    "choice": "Cast Hapatra, Vizier of Poisons",
+    "rationale": "Cast her, and cast her because she is disposable, not because she is on curve.\n\nEvery other two-mana card in this hand is a singleton you lose forever. Your commander is the one permanent in the deck with a printed price for coming back, and {2} is a price this deck can pay twice.\n\nSo turn two is not a deliberation, it is an order of operations: send the rebuyable card into the open mana, and land Bitterblossom on the turn that mana is spent.\n\nAnd take the upside seriously while you are at it. She is your cheapest converter, a payoff joins her by mean turn 3.6 in 67.2% of games, and her combat trigger kills a one-toughness creature and mints a Snake every turn nobody blocks her. That is a real engine running from turn three at a table that has decided you are the snake deck.\n\nIf Player 3 counters her, smile and take the information. You now know the most dangerous seat is empty-handed, and everything else in your hand is safe."
+  }
+}

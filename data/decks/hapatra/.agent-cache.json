@@ -257,6 +257,86 @@
         "threat_assessment": "ecb8f9d1aa6ab8b1fccc14aefdfcfa3aa76001708fee2bf8fed83c6139d44abb"
       }
     },
+    "decision:001": {
+      "agent": "pilot-coach",
+      "agent_prompt_sha256": "ca52137635f4d43f40ba0008d7a6b2aecd066e7bf131ffec2213d5994fa59e43",
+      "artifact": "data/decks/hapatra/decisions/001-which-two-mana-engine-goes-first.json",
+      "artifact_sha256": "f84516225658801d905b99e4455a4dfd983a721188c1463e17a0ebccf00ece75",
+      "card_refs": [
+        "Bayou",
+        "Bitterblossom",
+        "Demonic Tutor",
+        "Elvish Mystic",
+        "Fume Spitter",
+        "Hapatra, Vizier of Poisons",
+        "Nest of Scarabs",
+        "Skullclamp",
+        "Survival of the Fittest",
+        "Swamp"
+      ],
+      "card_refs_version": 2,
+      "extra": {
+        "cards_semantic": "7733fe17b484c0a466bbfe347d3694529115013aa0d4979ac9ad3ca082fa4df4",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "ea805127e7ca30a0b4b6a78030336b8a8722c041624cfd5a10efd0a6dc7da747",
+      "inputs": [
+        {
+          "path": "data/decks/hapatra/decisions/001-which-two-mana-engine-goes-first.json#scenario",
+          "sha256": "255ebefc360507a14f5710a55bde25efc2aa90a5115f2e735737c7b97e30b22c"
+        },
+        {
+          "path": "data/decks/hapatra/goldfish_metrics.json!meta.decklist_sha256",
+          "sha256": "b9ef525ca8cd747b9f4f108759ed9bfbe731c73b46787086f6b6f9db9c43afb5"
+        },
+        {
+          "path": "data/decks/hapatra/strategic_frame.json",
+          "sha256": "f401740460c25d8d48352da3c15db4b87764580d434f07e544c7d9d9d52c5ed5"
+        }
+      ]
+    },
+    "decision:002": {
+      "agent": "pilot-coach",
+      "agent_prompt_sha256": "ca52137635f4d43f40ba0008d7a6b2aecd066e7bf131ffec2213d5994fa59e43",
+      "artifact": "data/decks/hapatra/decisions/002-the-famous-loop-and-the-checked-one.json",
+      "artifact_sha256": "24c80fc719a2df6df392b96a5da6eae970bc866481f004c62445f5b46d507be3",
+      "card_refs": [
+        "Bayou",
+        "Blasting Station",
+        "Blowfly Infestation",
+        "Command Tower",
+        "Devoted Druid",
+        "Forest",
+        "Grim Haruspex",
+        "Hapatra, Vizier of Poisons",
+        "Heroic Intervention",
+        "Mikaeus, the Unhallowed",
+        "Sol Ring",
+        "Swamp",
+        "Yahenni, Undying Partisan",
+        "Zulaport Cutthroat"
+      ],
+      "card_refs_version": 2,
+      "extra": {
+        "cards_semantic": "7733fe17b484c0a466bbfe347d3694529115013aa0d4979ac9ad3ca082fa4df4",
+        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+      },
+      "fingerprint": "8a85288ea4afbf0f15d2402bd9c3f4589e41a98711a1b31fa11f5c0f39ddf63f",
+      "inputs": [
+        {
+          "path": "data/decks/hapatra/decisions/002-the-famous-loop-and-the-checked-one.json#scenario",
+          "sha256": "dee4d7560530ea4e1ba7bb546d34d71bea0467258f76933d852268bea2193af6"
+        },
+        {
+          "path": "data/decks/hapatra/goldfish_metrics.json!meta.decklist_sha256",
+          "sha256": "b9ef525ca8cd747b9f4f108759ed9bfbe731c73b46787086f6b6f9db9c43afb5"
+        },
+        {
+          "path": "data/decks/hapatra/strategic_frame.json",
+          "sha256": "f401740460c25d8d48352da3c15db4b87764580d434f07e544c7d9d9d52c5ed5"
+        }
+      ]
+    },
     "deck-build": {
       "agent": "deck-architect+deck-critic",
       "agent_prompt_sha256": "ecc6e63bd8487688856cb7fe6a699cfc1529c786fe7a4f92d7e3b87afb0cb771",
@@ -722,9 +802,9 @@
     },
     "tutor-guide": {
       "agent": "pilot-coach",
-      "agent_prompt_sha256": "3638301b45ffc37938d533ec822a8bdf95383dc2fe8ed2e0fce8e072bd4b3aa1",
+      "agent_prompt_sha256": "ca52137635f4d43f40ba0008d7a6b2aecd066e7bf131ffec2213d5994fa59e43",
       "artifact": "data/decks/hapatra/tutor_guide.json",
-      "artifact_sha256": "e9c244cfa7e50f2e8995fd26452abb9bc8c04df3ebb130265e0c86bad3c22d20",
+      "artifact_sha256": "c4b23d911c91249733f1b4cfc46e88ee5db3960cedac428f327f5b0e7cfb95e5",
       "card_refs": [
         "Ashnod's Altar",
         "Birds of Paradise",
@@ -749,7 +829,6 @@
         "Necroskitter",
         "Nest of Scarabs",
         "Obelisk Spider",
-        "Phyrexian Altar",
         "Phyrexian Reclamation",
         "Skullclamp",
         "Survival of the Fittest",
@@ -761,12 +840,12 @@
         "Yawgmoth, Thran Physician",
         "Zulaport Cutthroat"
       ],
-      "card_refs_version": 1,
+      "card_refs_version": 2,
       "extra": {
         "cards_semantic": "7733fe17b484c0a466bbfe347d3694529115013aa0d4979ac9ad3ca082fa4df4",
         "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
       },
-      "fingerprint": "04c93d010aceb3bcc080f2a71ff800792c884bce2dc45a784cb2169dd29071d6",
+      "fingerprint": "27de0b0a22c4201599d91b6972467e4bbb1353028f7388a7f3eb6f07ac0e6eed",
       "inputs": [
         {
           "path": "data/decks/hapatra/goldfish_metrics.json!meta.decklist_sha256",

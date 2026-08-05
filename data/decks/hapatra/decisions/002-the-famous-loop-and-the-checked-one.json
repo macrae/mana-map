@@ -1,0 +1,122 @@
+{
+  "id": "002",
+  "slug": "the-famous-loop-and-the-checked-one",
+  "deck": "hapatra",
+  "kind": "decision",
+  "presentable": true,
+  "title": "Two loops in hand, one of them adjudicated — and Mikaeus will not be here next rotation",
+  "scenario": {
+    "board": {
+      "you": [
+        "Hapatra, Vizier of Poisons (2/2, deathtouch)",
+        "Mikaeus, the Unhallowed (5/5, intimidate, resolved unanswered last turn)",
+        "Zulaport Cutthroat (1/1)",
+        "Snake token (2/2 with deathtouch, undying under Mikaeus)",
+        "Snake token (2/2 with deathtouch, undying under Mikaeus)",
+        "Sol Ring (untapped)",
+        "Bayou, Swamp, Forest and Command Tower, all four untapped"
+      ],
+      "opponents": [
+        {
+          "seat": "Player 2",
+          "life": 31,
+          "board": "Boros equipment aggro. A 3/3 and a 2/2, both tapped after attacking Player 4. No mana up."
+        },
+        {
+          "seat": "Player 3",
+          "life": 40,
+          "board": "Azorius control. No creatures. Three untapped lands, held through two full rotations while drawing an extra card at your end step. Stated archetypal assumption: instant-speed interaction in hand."
+        },
+        {
+          "seat": "Player 4",
+          "life": 36,
+          "board": "Golgari midrange. One 4/4. Two untapped lands."
+        }
+      ],
+      "table": "Bracket 4, honest pregame. You said eleven Game Changers and one verified line, and the table believed you — which is most of why a six-mana Zombie resolved unanswered last turn. The record behind that sentence: thirty-two combo lines sit fully inside this deck, nineteen of them are two-card infinites, and exactly one carries a checker-passed stack."
+    },
+    "hand": [
+      "Devoted Druid",
+      "Blowfly Infestation",
+      "Heroic Intervention",
+      "Grim Haruspex"
+    ],
+    "graveyard": [],
+    "mana_available": "{6} — four untapped lands covering {B} and {G} freely, plus Sol Ring for {C}{C}. You missed your fifth land drop, which the sim does in 35.1% of games.",
+    "stack": [],
+    "question": "Turn five, six mana, and two infinite loops in hand — one of them famous and unresolved, the other checked line by line by a rules checker. Do you cast the famous one, cast the checked one and go this turn, or cast the checked one and wait for Player 3's three lands to mean something?"
+  },
+  "branches": [
+    {
+      "choice": "Cast Blowfly Infestation and go for the famous kill",
+      "line": "{2}{B} for Blowfly Infestation, three mana left, Devoted Druid stays in hand. Kill a body carrying a -1/-1 counter and the enchantment starts placing counters of its own; every placement Hapatra sees is another Snake, and the claim is that it never stops.",
+      "signals": "The loudest card you own, on the turn it removes nobody's life total. Blowfly Infestation beside Hapatra is the exact picture you described in the pregame, and Player 3 has three lands up to answer a picture.",
+      "coalition_risk": "The highest available to you tonight, and it buys perception rather than position. Showing the combo face without a kill behind it is how a table stops treating you as the snake deck and starts treating you as the archenemy for three consecutive turns.",
+      "coaching": "This is the line the deck is famous for and the one nobody has ever adjudicated. It assembles in 16.3% of games at mean turn 4.10, and not one stack artifact in this deck's record has resolved it.\n\nBefore you spend a mana, do the subtraction sitting in front of you. Mikaeus has your Snakes at 2/2. Blowfly places one counter.\n\nThat is arithmetic, not a ruling, and I will not hand you a ruling to make this feel safer than the record supports. Whether it stops the loop is precisely the question this deck's own frame files as its biggest open one.\n\nSo apply the table test. Never bet a turn on a line you cannot narrate to three opponents — the moment you say \"and then it loops\" and somebody asks how, you are adjudicating your own kill in front of a table that now knows your hand.\n\nThere is also a cost you carry every turn after this one. Blowfly's trigger is mandatory and it demands a target, so once the enchantment is out, every counter-killed body forces another placement whether you wanted it or not, and it stops only when nothing legal is left to point at.\n\nAnd count the mana. Blowfly plus the Druid is five of your six, which means the second loop and Heroic Intervention are mutually exclusive tonight.\n\nCast this card on a board where you can count it out loud. Not on the turn a checked line is sitting in the same hand.",
+      "citations": [
+        {
+          "rule": "603.3d",
+          "quote": "If a choice is required when the triggered ability goes on the stack but no legal choices can be made for it, or if a rule or a continuous effect otherwise makes the ability illegal, the ability is simply removed from the stack."
+        },
+        {
+          "rule": "strategy:multiplayer.pivot-window",
+          "quote": "Prefer win attempts that leave a rebuilt position if they fail"
+        }
+      ]
+    },
+    {
+      "choice": "Cast Devoted Druid, hold Heroic Intervention, and run the checked loop now",
+      "line": "{1}{G} for Devoted Druid, {1}{G} still up for Heroic Intervention. Under Mikaeus the Druid is a 1/3: three -1/-1 counters take it to zero toughness and it dies carrying no +1/+1 counter, so undying returns it. The next counter annihilates that +1/+1, three more kill it again. Four placements and one death per cycle — four Snakes off Hapatra, one life from every opponent off Zulaport Cutthroat, and one life back to you, repeated until the table is dead.",
+      "signals": "A two-mana mana elf, which is the most harmless card you could possibly have cast. By the time the second cycle resolves the table understands exactly what it is looking at, and the window to do anything about it has already closed.",
+      "coalition_risk": "You take the archenemy seat, once, on the turn you take the game with it. That is the only version of this seat worth having — and the Snakes, Hapatra and Zulaport Cutthroat are all still standing if somebody breaks the loop halfway.",
+      "coaching": "This is the one loop in the deck with a checker verdict behind it. Stack 001 ran it end to end: four -1/-1 placements and one death per cycle, and zero mana — the returned Druid is a new object and cannot tap for green.\n\nSummoning sickness does not touch it, so a Druid cast this turn loops this turn. The untap cost carries no tap or untap symbol at all.\n\nNow name the clock properly, because it is not Player 3. It is Mikaeus.\n\nHe is a six-mana permanent three opponents have now seen, and the entire line rests on his undying. Asking three seats to leave him alone for a rotation is asking one of them to decline.\n\nPrice the two commitments side by side. Going now risks a two-mana dork. Waiting risks a six-mana engine.\n\nHold the {1}{G}. Heroic Intervention covers targeted removal and the destruction sweeper, which is most of what three open lands actually represents — you are not waiting for their mana to be spent, you are making it not matter.\n\nThen say the number before you start. Name the cycles, name the drain, let the table check your arithmetic. A kill you can narrate is a kill that ends the game.",
+      "citations": [
+        {
+          "rule": "702.93a",
+          "quote": "if it had no +1/+1 counters on it, return it to the battlefield under its owner’s control with a +1/+1 counter on it."
+        },
+        {
+          "rule": "302.6",
+          "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+        },
+        {
+          "rule": "strategy:multiplayer.pivot-window",
+          "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
+        },
+        {
+          "rule": "strategy:resource-hedging",
+          "quote": "the pivot window still demands full commitment the turn it opens"
+        }
+      ]
+    },
+    {
+      "choice": "Cast Devoted Druid as a mana dork and hold the loop for instant speed",
+      "line": "{1}{G} for the Druid, {1}{G} held for Heroic Intervention, two spare from Sol Ring, and pass without activating anything. The untap ability is an activated ability, so the loop runs on Player 3's end step, or in response to the first removal spell aimed at Mikaeus.",
+      "signals": "A green two-drop and four open mana. You look like a player who durdled, which is a genuinely valuable thing to look like — and Player 3 learns nothing at all about what you were holding.",
+      "coalition_risk": "The lowest on the board this turn, and rising every turn after it. Nobody kills a mana elf. Everybody eventually kills a 5/5 that reads like a combo piece.",
+      "coaching": "The technique here is correct and you should own it permanently. The loop is an activated ability, so it can be run any time you hold priority — including in response to the removal spell that would otherwise end it.\n\nThe theory even backs the timing: commit at the end step before your own turn, when the table's chances to respond are spent.\n\nSo why is this not my call? Because waiting does not shrink Player 3's mana. They untap into four lands, not two.\n\nYou would be paying a full rotation to a threat that grows while you pay it.\n\nAnd the sweeper is what actually breaks this branch. Heroic Intervention answers destroy; it does not answer a -X/-X or an exile effect, and one of those on this board takes Mikaeus, Hapatra, Zulaport Cutthroat and the Druid in a single card.\n\nPlaying safe is correct from ahead, and this is not ahead — it is one turn of assembled kill on a board three people can dismantle.\n\nTake this branch only when you can point at a reason Mikaeus survives the rotation: their removal already spent, or a seat visibly closer to winning than you are.",
+      "citations": [
+        {
+          "rule": "117.1b",
+          "quote": "A player may activate an activated ability any time they have priority."
+        },
+        {
+          "rule": "strategy:tempo.sequencing",
+          "quote": "count each seat's open mana separately, and prefer committing at the end step before your own turn so the table's chances to respond are spent"
+        },
+        {
+          "rule": "strategy:resource-hedging",
+          "quote": "playing *safe* is correct risk-reduction from a winning position; playing *scared* is paying real equity to dodge specific cards"
+        },
+        {
+          "rule": "strategy:resource-hedging.playing-to-outs",
+          "quote": "aggressive lines often *create* outs that passive lines close off"
+        }
+      ]
+    }
+  ],
+  "recommendation": {
+    "choice": "Cast Devoted Druid, hold Heroic Intervention, and run the checked loop now",
+    "rationale": "Take the line somebody checked, and take it on the turn the piece it depends on is still on the battlefield.\n\nThe honest shape of this deck is thirty-two contained combo lines, nineteen claimed two-card infinites, and one that has been resolved step by step. That one is in your hand for two mana, and it converts through a Zulaport Cutthroat that is already down.\n\nThe famous line is not refuted and I am not telling you it is dead. I am telling you it is unadjudicated, and an unadjudicated line is a line you take with a spare body and a land still up — never the one you spend your pivot turn on.\n\nRead the clock right and the rest follows. Mikaeus is your window, not Player 3's mana, and a window made of a six-mana permanent at a four-player table closes on its own.\n\nSo pay two mana, keep two up, and go. Even if it breaks, you are still the pilot with Hapatra, two Snakes and a drain converter on an empty-handed board — and you will have spent a mana elf to find out exactly what Player 3 was holding."
+  }
+}

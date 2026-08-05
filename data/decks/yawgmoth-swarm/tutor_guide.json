@@ -1,266 +1,266 @@
 {
-  "slug": "yawgmoth-swarm",
-  "assessment": "Five wishes. Spend them on kills, not on classes — the classes already turn up on their own.\n\nBy turn ten, with no tutor involved, you are holding a drain in 82.4% of games, a free repeatable sacrifice outlet in 77.9%, renewable fodder in 73.6%, an ignition source in 73.1% and engine mana in 61.9% (goldfish_metrics.json, 10,000 iterations, seed 42). A wish moves each of those by twelve to twenty-three points. That is a rounding error on a class you already had.\n\nNow look at what a wish is actually worth. KILL C goes 6.9% to 42.5%. KILL D goes 4.6% to 33.7%. KILL A goes 1.1% to 18.0%. KILL B goes 0.5% to 12.3%. Six-fold, seven-fold, sixteen-fold, twenty-four-fold — that is the entire job of these five cards.\n\nFour kills, and the checker has signed all four. KILL A is Warren Soultrader plus Gravecrawler plus Bastion of Remembrance: unbounded and self-funding, each Treasure paying the next {B}, your life net zero, and 39 further iterations putting all four seats at 0 together (stack 009). KILL B is Gravecrawler plus Phyrexian Altar plus a Zombie that stays plus Bastion: unbounded and free, no life paid, you finish at 80 (stack 011). KILL C is Exquisite Blood plus South Wind Avatar: a mandatory two-card loop that is emphatically not a draw — drain #40 takes all four opponents from 1 to 0 at once (stack 012). KILL D is Mikaeus plus Yawgmoth plus two non-Human bodies plus Bastion: lethal but library-bounded, 39 activations needed against 59 the mandatory draw allows (stack 010).\n\nTwo cards carry three of those four, and deck-audit prices them. Gravecrawler sits at 16.5% by turn ten and 7.1% of an opening seven, with nothing else in its slot in either KILL A or KILL B. Bastion of Remembrance sits at 16.7% and 7.1%, and it is the drain the resolved boards of 009, 010 and 011 all name.\n\nSo the fetch priority is arithmetic, not taste. A wish on Gravecrawler completes two unbounded kills. A wish on Bastion completes the payoff half of three. A wish on Warren Soultrader or Phyrexian Altar completes exactly one. Point the cheap tutors at the card that appears in the most lines.\n\nFetch the right drain when the number has to be right. Bastion says each opponent and it is an enchantment — it can never be your sacrifice, never a -1/-1 target, and never eaten by your own engine, and it removes 28 life across the pod on the resolved board (stack 002). Blood Artist says target player: same slot, eight life in total, and stack 004 calls it not a kill and not even close.\n\nThe standing order before any kill fetch is two words: name the shape. Ask which of the four you are one card from, then check that shape's own precondition. KILL A and KILL B both cast Gravecrawler out of the graveyard, which needs a Zombie the loop never sacrifices — Warren Soultrader in 009, Carrion Feeder in 011. Fetching Gravecrawler with no second Zombie buys you a 2/1 that cannot block.\n\nDelivery decides which wish is live. Vampiric Tutor is {B} at instant speed and lands on top — an appointment, not an arrival, so fire it at the end step before your turn and the transit is free. Demonic Tutor is {1}{B} straight to hand and is the only one that does not care what the card costs. Diabolic Intent is {1}{B} plus a creature, and in this deck that sacrifice is usually a drain trigger rather than a price.\n\nBeseech the Mirror is {1}{B}{B}{B}, and bargained it CASTS the fetched card free at mana value 4 or less. That reaches Gravecrawler, Carrion Feeder, Starscape Cleric, Bastion of Remembrance, Warren Soultrader, Phyrexian Altar, Marauding Blight-Priest, Grave Pact and South Wind Avatar. It never reaches Exquisite Blood at 5 or Mikaeus at 6. Insatiable Avarice is {2}{B} for the search alone or {2}{B}{B}{B} for the search plus a target player drawing three and losing 3 — pointed at yourself, that draws the card you just booked in the same spell.\n\nOne ceiling to respect and one number never to invent. You draw a tutor in 60.6% of games by turn ten, mean turn 3.067, and every assisted figure above lives under that. And there is no union kill rate: goldfish evaluates each need group independently, so nothing on the sheet measures any kill assembled. Quote 42.5%, 33.7%, 18.0% and 12.3% separately, and never add them.",
-  "tutors": [
+ "slug": "yawgmoth-swarm",
+ "assessment": "The table watches you cast a tutor and assumes you just found the kill. Most of the time they are wrong, and the games where they are wrong are the games you play.\n\nStart with what turns up without any help, because it is nearly everything. By turn ten you are holding a drain 82.4% of the time, a free sacrifice outlet 77.9%, renewable fodder 73.6% and an ignition source 73.1% — so never spend a wish on a class. Those cards are already coming.\n\nNow price what a wish actually moves. KILL C goes from 6.9% to 42.5%, KILL D from 4.6% to 33.7%, KILL A from 1.1% to 18.0% and KILL B from 0.5% to 12.3% — so point every wish at a kill and refuse every other errand. Those four jumps are the entire job of these five cards.\n\nFour kills, and the checker has signed all four. Learn them by shape so you can name the one you are a card away from without stopping to think.\n\nKILL A is Warren Soultrader plus Gravecrawler plus Bastion of Remembrance — unbounded, self-funding, each Treasure paying the next black, your life net zero, and thirty-nine more iterations putting all four seats at zero together (stack 009). Attempt this one into a live table; it leaves you a deck.\n\nKILL B is Gravecrawler plus Phyrexian Altar plus a Zombie that stays plus Bastion — unbounded and free, no life paid, and you finish at 80 (stack 011). This is the one to go for when you cannot afford to pay for anything.\n\nKILL C is Exquisite Blood plus South Wind Avatar: a mandatory two-card loop that is emphatically not a draw, with drain forty taking all four opponents from 1 to 0 at once (stack 012). It assembles earliest, at a mean turn of 5.3, so make it your default target.\n\nKILL D is Mikaeus plus Yawgmoth plus two non-Human bodies plus Bastion — lethal but library-bounded, thirty-nine activations needed against the fifty-nine your own mandatory draw allows (stack 010). About twenty of margin, so count before you start rather than during.\n\nTwo cards carry three of those four, so let the arithmetic pick for you. Gravecrawler shows up on your own draws 16.5% of the time by turn ten and completes two unbounded kills; Bastion sits at 16.7% and completes the payoff half of three.\n\nA wish on Warren Soultrader or Phyrexian Altar completes exactly one. So point the cheap tutors at the card that appears in the most lines and stop treating the five as interchangeable.\n\nFetch the right drain when the number has to be right. Bastion says each opponent and it is an enchantment, so your own engine can never eat it, and it took 28 life across the pod on the resolved board (stack 002). Blood Artist says target player, totals eight, and stack 004 calls it not a kill and not close — so take Bastion whenever the wish is about closing.\n\nBefore any kill fetch, say two words to yourself: name the shape. Ask which of the four you are one card from, then check that shape's own precondition.\n\nHere is the one that catches people. KILL A and KILL B both cast Gravecrawler out of the graveyard, which needs a Zombie the loop never sacrifices — Warren Soultrader in 009, Carrion Feeder in 011. Fetch Gravecrawler with no second Zombie and you have bought a 2/1 that cannot block.\n\nDelivery decides which wish is live, so match it to the turn. Vampiric Tutor is one black at instant speed and lands on top — an appointment, not an arrival — so fire it at the end step before your turn and pay nothing for the transit.\n\nDemonic Tutor is two mana straight to hand and the only one that does not care what the card costs. Diabolic Intent is two mana plus a creature, and in this deck that sacrifice is usually a drain trigger rather than a price.\n\nBeseech the Mirror is four mana, and bargained it CASTS the card free at mana value four or less. Check the cap before you cast: it reaches Gravecrawler, Carrion Feeder, Starscape Cleric, Bastion, Warren Soultrader, Phyrexian Altar, Marauding Blight-Priest, Grave Pact and South Wind Avatar, and it never reaches Exquisite Blood or Mikaeus.\n\nInsatiable Avarice is the search alone for three mana, or the search plus a target player drawing three and losing 3 for five. Point that draw at YOURSELF and you take delivery of the booked card in the same spell.\n\nTwo limits to respect. You draw a tutor in 60.6% of games by turn ten, so build every plan to work without one and treat the wish as the upgrade rather than the plan.\n\nAnd there is no union kill rate anywhere on the sheet — each need group is evaluated independently. Quote 42.5%, 33.7%, 18.0% and 12.3% separately, and never add them.",
+ "tutors": [
+  {
+   "card": "Vampiric Tutor",
+   "targets": [
     {
-      "card": "Vampiric Tutor",
-      "targets": [
-        {
-          "scenario": "End step of the player before you, turn seven. Warren Soultrader and Bastion of Remembrance are both on the battlefield, you have {B} untapped and four other lands, and the table is spent — Player 2 tapped out for a six-drop, Player 4 is at two cards with a single untapped land.",
-          "fetch": "Gravecrawler",
-          "why": "This is the cheapest complete kill in the deck: one black mana at instant speed and 2 life. Book Gravecrawler, draw it, cast it for {B}, and stack 009 runs — sacrifice it to Soultrader, and the Treasure that activation makes pays for the next cast. Your life is net zero per iteration and each opponent is minus one, so 39 further iterations take all four seats to 0 at the same state-based-action check. Soultrader is the Zombie that switches Gravecrawler on and the loop never touches it, because the cost reads sacrifice ANOTHER creature.",
-          "citations": [
-            {
-              "rule": "strategy:multiplayer.pivot-window",
-              "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
-            }
-          ]
-        },
-        {
-          "scenario": "Turn three, end step before your turn, {B} open. Yawgmoth is your next play — the sim casts him on turn 4 in 7,220 of 10,000 games, mean 4.294 — and you have two spare bodies and an outlet. Nothing on your board converts a death into damage.",
-          "fetch": "Bastion of Remembrance",
-          "why": "You are buying the payoff half of three signed kills at the cheapest price on the sheet. Bastion is an enchantment, so your own engine can never eat it: not a legal sacrifice, not a legal -1/-1 target, and untouched by the creature removal aimed at your board. It arrives with its own 1/1 Human Soldier token, which is one more activation. And it costs you {B} on somebody else's turn, so your whole turn stays free for the three-drop you just booked.",
-          "citations": [
-            {
-              "rule": "strategy:multiplayer.asymmetry",
-              "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
-            }
-          ]
-        },
-        {
-          "scenario": "Turn one. One Swamp, {B} open, a second land in hand and no acceleration anywhere. Nobody has committed anything and nobody is watching you yet.",
-          "fetch": "Dark Ritual",
-          "why": "This wish exists on turn one and nowhere else, so take it. Book the Ritual, draw it turn two, play the second land: Swamp plus Ritual is {B}{B}{B} and the untapped land is the fourth, which is Yawgmoth on turn two — the histogram records that in 712 of 10,000 games. Fast mana is drawn unassisted in only 42.7% of games by turn ten, so acceleration is the one non-kill class genuinely worth a wish. Labelled judgment: the goldfish does not model rituals, so this line sits above the sheet rather than inside it.",
-          "citations": [
-            {
-              "rule": "strategy:mulligans.engine-hands",
-              "quote": "coming out too slowly is an easy way to lose a game"
-            }
-          ]
-        },
-        {
-          "scenario": "Player 2 resolves Rest in Peace with your Gravecrawler already in the graveyard. Your board is a sacrifice outlet and two bodies, Warren Soultrader is in your hand, and it is Player 2's end step with {B} open.",
-          "fetch": "Feed the Swarm",
-          "why": "Feed the Swarm is the only card in the 99 that destroys an enchantment, and deck-audit measures interaction-breadth at 2 classes answered against a target of 5. Two of your four kills cast Gravecrawler out of the graveyard, so a graveyard lock is not an inconvenience here — it deletes half your win conditions. Book the answer at their end step, cast it on yours, pay the life. That card is 17.3% unassisted by turn ten; this tutor is most of the rest.",
-          "citations": [
-            {
-              "rule": "strategy:threat-assessment.answer-economy",
-              "quote": "ends the game or ends my deck's function"
-            }
-          ]
-        }
-      ],
-      "notes": "Two life is never free in this deck. You already pay Yawgmoth 1 per activation, plus Bitterblossom, Necropotence, Black Market Connections, City of Brass, Ancient Tomb, Cabal Pit and Ifnir Deadlands. Fire this while your total is comfortable — and fire it as an instant. The end step before your own turn is almost always the moment, because the transit turn then costs you nothing at all."
+     "scenario": "End step of the player before you, turn seven. Warren Soultrader and Bastion of Remembrance are both on the battlefield, you have {B} untapped and four other lands, and the table is spent — Player 2 tapped out for a six-drop, Player 4 at two cards with a single untapped land.",
+     "fetch": "Gravecrawler",
+     "why": "Take the cheapest complete kill in the deck: one black at instant speed and 2 life. Book Gravecrawler, draw it, cast it for {B}, and stack 009 runs — sacrifice it to Soultrader and the Treasure that activation makes pays the next cast. Your life stays net zero per iteration while each opponent goes down one, so thirty-nine more iterations zero all four seats at the same check. Soultrader is the Zombie switching Gravecrawler on and the loop never touches him, because the cost reads sacrifice ANOTHER creature.",
+     "citations": [
+      {
+       "rule": "strategy:multiplayer.pivot-window",
+       "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
+      }
+     ]
     },
     {
-      "card": "Demonic Tutor",
-      "targets": [
-        {
-          "scenario": "Turn six, six mana available (the sim gives you a mean 5.223 on turn six). Marauding Blight-Priest is on the battlefield and nobody has pointed removal at it, the table is at healthy totals, and you are still being read as a value deck.",
-          "fetch": "Exquisite Blood",
-          "why": "KILL C is your earliest and best-assembling kill — 6.9% unassisted, 42.5% with a wish, mean turn 5.301 — and Exquisite Blood is the half no other tutor can deliver on curve. It is mana value 5, so a bargained Beseech can never free-cast it and a top-of-library tutor costs you the turn you need to cast it. Demonic does not care what the card costs. Stack 012 resolved this shape on South Wind Avatar's board: the loop is mandatory, it is not a draw, and drain #40 takes all four opponents from 1 to 0 at once while you finish at 80.",
-          "citations": [
-            {
-              "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-              "quote": "stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable"
-            }
-          ]
-        },
-        {
-          "scenario": "Turn eight, seven-plus mana. Yawgmoth and Bastion of Remembrance are on the battlefield and you have two non-Human bodies you are happy to feed him — Viscera Seer and Gravecrawler, say, or Carrion Feeder and Reassembling Skeleton.",
-          "fetch": "Mikaeus, the Unhallowed",
-          "why": "Mana value 6 puts him out of reach of every other wish in the suite. He turns the commander's own ability into a kill: the -1/-1 counter and undying's +1/+1 annihilate at the next state-based-action check, so the body resets to zero counters and is re-armed, and the two bodies alternate (stack 010). It is lethal but library-bounded — 39 activations to zero four seats against the 59 the mandatory draw allows, so about twenty of margin. Measured at 4.6% unassisted and 33.7% with a wish.",
-          "citations": [
-            {
-              "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-              "quote": "a tutor is an enabler only if you can cast it and still deploy"
-            }
-          ]
-        },
-        {
-          "scenario": "Your board is Yawgmoth, four creatures and a drain. Player 2 is the control seat, has left four-plus mana untapped for two turns running, and declined a profitable attack. Assume a sweeper in that hand.",
-          "fetch": "Plumb the Forbidden",
-          "why": "This wish only works from a to-hand tutor, which is exactly why it belongs here — an instant you have to draw off the top next turn is an instant you do not have when the wrath resolves. Plumb turns the wave into cards: sacrifice N creatures as an additional cost in response, copy it N times, draw N+1. With a drain out, every one of those sacrifices is also damage. Keep deploying. You bought the rebuild instead of the restraint.",
-          "citations": [
-            {
-              "rule": "strategy:resource-hedging.wrath-math",
-              "quote": "assume the wrath — over a four-player game one is near-certain — so deploy in waves, hold a rebuild package"
-            }
-          ]
-        },
-        {
-          "scenario": "A creature table. Player 1 has eight tokens, Player 4 has two fat blockers and a commander on top, and your drain math reaches nobody this turn. Six mana, Bastion of Remembrance on the battlefield, and you hold the engine but none of the tempo.",
-          "fetch": "Grave Pact",
-          "why": "The wish nobody expects from a combo deck: fetch board control instead of damage. Every creature you control that dies now makes each other player sacrifice one, so the same chain that drains is simultaneously a table-wide edict per death. That is the half that decides fair games, and it converts a value engine into three dismantled boards while yours stands. It is mana value 4, so a bargained Beseech can free-cast it if you draw that tutor instead.",
-          "citations": [
-            {
-              "rule": "strategy:multiplayer.asymmetry",
-              "quote": "Your cards should do something to all three seats or win the game; anything else is someone else's job"
-            }
-          ]
-        }
-      ],
-      "notes": "No condition, no delay, no life, no mana-value cap. Fire it at the first genuine hole rather than saving it for a cleverer turn. It is also the only one of the five you should ever spend on a card costing five or more — the price you pay is a turn of board impact, so the card you name has to be worth a turn."
+     "scenario": "Turn three, end step before your turn, {B} open. Yawgmoth is your next play, you have two spare bodies and an outlet, and nothing on your board converts a death into damage.",
+     "fetch": "Bastion of Remembrance",
+     "why": "Buy the payoff half of three signed kills at the cheapest price on the sheet. Bastion is an enchantment, so your own engine can never eat it — not a legal sacrifice, not a legal counter target, and untouched by the creature removal aimed at your board. It arrives with its own 1/1 token, which is one more activation before you have done anything. And it costs you one black on somebody else's turn, so your whole turn stays free for the commander who lands on turn four in 7,220 of 10,000 games.",
+     "citations": [
+      {
+       "rule": "strategy:multiplayer.asymmetry",
+       "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
+      }
+     ]
     },
     {
-      "card": "Diabolic Intent",
-      "targets": [
-        {
-          "scenario": "Turn five, five mana (the sim gives you a mean 4.603). Bastion of Remembrance is on the battlefield, Gravecrawler is in your graveyard, and you have three bodies including a token you were going to feed Yawgmoth anyway.",
-          "fetch": "Warren Soultrader",
-          "why": "Soultrader is three cards in one slot: the free repeatable sacrifice outlet, the Treasure that funds each recast, and the Zombie that lets Gravecrawler be cast from the graveyard. Fetch him and stack 009's board is complete — {1}{B} for the wish and {2}{B} for the body is five mana total, which you have. Pay Intent's additional cost with the token, never with a piece; with Bastion out that sacrifice is already a drain trigger. KILL A is 1.1% on your own draws and 18.0% with this wish.",
-          "citations": [
-            {
-              "rule": "strategy:critical-mass.storm-math",
-              "quote": "Count only hand and board; expected draws are a bonus, not a plan."
-            }
-          ]
-        },
-        {
-          "scenario": "Gravecrawler, Carrion Feeder and Bastion of Remembrance are all on the battlefield. You have five mana, Player 3 is at 12 with two cards and four mana up, and you would rather not hand anyone a turn to find an answer.",
-          "fetch": "Phyrexian Altar",
-          "why": "This is the kill that costs you nothing at all: no life, no cards, no net mana, and your life goes UP by 1 per iteration to 80 (stack 011). Carrion Feeder is the Zombie that stays and it is never the sacrifice; the Altar's mana ability never uses the stack, so each Gravecrawler recast is funded the instant it dies. Intent's own additional cost can be Gravecrawler itself — it comes straight back out of the graveyard for {B}. Never pay it with Carrion Feeder.",
-          "citations": [
-            {
-              "rule": "strategy:multiplayer.pivot-window",
-              "quote": "Prefer win attempts that leave a rebuilt position if they fail"
-            }
-          ]
-        },
-        {
-          "scenario": "The wrath resolved. You have one creature left, two cards in hand, four mana, and the table is rebuilding around you. Yawgmoth is castable but there is nothing to feed him.",
-          "fetch": "Bitterblossom",
-          "why": "Sacrifice the survivor — it was doing nothing — and buy a body every upkeep forever, for no mana, at 1 life a turn. Renewable fodder is the class this engine spends fastest, and this is its cheapest permanent answer: two mana, no board condition, and it feeds Yawgmoth, Skullclamp, any outlet and every drain at once. Nobody in the pod rebuilds cheaper than a one-card token faucet.",
-          "citations": [
-            {
-              "rule": "strategy:resource-hedging.wrath-math",
-              "quote": "After the wrath, initiative goes to whoever rebuilds cheapest"
-            }
-          ]
-        },
-        {
-          "scenario": "The sweeper already happened and it took the kill with it: Warren Soultrader and Gravecrawler are both in your graveyard, Bastion of Remembrance survived because it is an enchantment, and you have two small bodies left — a Bitterblossom Faerie and a Reassembling Skeleton you rebought. Five mana.",
-          "fetch": "Victimize",
-          "why": "The wish nobody sees coming, because it turns Intent's cost into the setup. Sacrifice the Faerie to Intent, fetch Victimize, then let Victimize sacrifice the Skeleton and return TWO creature cards from your graveyard tapped. Soultrader and Gravecrawler both come back off one card, and tapped costs you nothing — neither needs to tap and Gravecrawler cannot block anyway. That is a whole kill rebuilt out of the graveyard for five mana, and the Skeleton buys itself back later for {1}{B}.",
-          "citations": [
-            {
-              "rule": "strategy:resource-hedging.playing-to-outs",
-              "quote": "aggressive lines often *create* outs that passive lines close off"
-            }
-          ]
-        }
-      ],
-      "notes": "The additional cost is upside almost everywhere here — with any drain out it is damage, with Grave Pact it is a table-wide edict, with Mikaeus it is an undying return. It is a genuine tax in exactly three spots: when your only creature is the engine that makes the others, when you control no creature at all and the spell is simply uncastable, and on turn three, where the sim has you at a mean of 1.679 bodies. Read the board before you keep it in an opener."
+     "scenario": "Turn one. One Swamp, {B} open, a second land in hand and no acceleration anywhere. Nobody has committed anything and nobody is watching you.",
+     "fetch": "Dark Ritual",
+     "why": "This wish exists on turn one and nowhere else, so take it while it is live. Book the Ritual, draw it on turn two, play the second land: Swamp plus Ritual is three black and the untapped land is the fourth, which is Yawgmoth on turn two — the histogram records that in 712 of 10,000 games. Fast mana turns up on its own in only 42.7% of games by turn ten, which makes acceleration the one non-kill class worth a wish. Own it as judgment: the goldfish models no rituals, so this line sits above the sheet rather than inside it.",
+     "citations": [
+      {
+       "rule": "strategy:mulligans.engine-hands",
+       "quote": "coming out too slowly is an easy way to lose a game"
+      }
+     ]
     },
     {
-      "card": "Beseech the Mirror",
-      "targets": [
-        {
-          "scenario": "Turn five, exactly four mana, a Treasure on the battlefield to bargain. Gravecrawler is in your graveyard and Bastion of Remembrance is already down. You have no fifth mana this turn.",
-          "fetch": "Warren Soultrader",
-          "why": "Bargain the Treasure and Beseech does not fetch Soultrader — it PLAYS him, free, at mana value 3, for the four mana you already spent. That is the whole reason to run a four-mana tutor, and here it is the difference between assembling this turn and assembling next turn. The bargain fodder must be a token, a Treasure or something genuinely spare; the drain and the outlet are never the fuel.",
-          "citations": [
-            {
-              "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-              "quote": "k tutors plus the card act like k+1 copies of *every* card"
-            }
-          ]
-        },
-        {
-          "scenario": "Warren Soultrader and Bastion of Remembrance are already on the battlefield. You have exactly four mana and a Faerie token, and Player 4 untapped with two blue sources open, so a counterspell is live and you want the whole line inside one turn.",
-          "fetch": "Gravecrawler",
-          "why": "Mana value 1 sits comfortably under the free-cast cap, and the point is not the mana saved — it is that Beseech exiles the card and casts it, so the loop starts on the same turn without a second spell leaving your hand. This is the completion wish for the shape you are already in. Nothing else in the library fills Gravecrawler's slot: it is the single card KILL A and KILL B both route through, at 16.5% by turn ten on your own draws.",
-          "citations": [
-            {
-              "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-              "quote": "a named card is 7.1% of your opening seven"
-            }
-          ]
-        },
-        {
-          "scenario": "Exquisite Blood resolved two turns ago and the table let it. You have four mana and a spare token to bargain, and the lowest life total at the table is 31.",
-          "fetch": "South Wind Avatar",
-          "why": "Know your own cap and fetch the half that fits under it. Exquisite Blood is mana value 5 and Beseech can never free-cast it; South Wind Avatar is exactly 4 and sits on the line, with Marauding Blight-Priest at 3 and Starscape Cleric at 2 if you would rather leave mana up. Stack 012 resolved this exact pair — mandatory, not a draw, drain #40 zeroing all four seats at once and you at 80. Bargain a token, and with a drain out that sacrifice is already damage.",
-          "citations": [
-            {
-              "rule": "strategy:multiplayer.asymmetry",
-              "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
-            }
-          ]
-        },
-        {
-          "scenario": "You are behind on board. Player 1 has eight creatures, Player 4 has two commanders' worth of stats, your own board is two 1/1s and a drain you would happily trade. Four mana, a Treasure to bargain, your life above 30.",
-          "fetch": "Toxic Deluge",
-          "why": "Free-cast the sweeper and pay for it in the currency you hold most of. Beseech covers the mana, Deluge's additional cost is X life, and with a drain out the wipe drains for every creature of yours that dies. Take Deluge over Black Sun's Zenith for this specific job — casting a spell without paying its mana cost forces an X in the mana cost to zero, which makes the Zenith a blank. When you want the wipe to rebuild your board instead, pay full price for the Zenith and let the counters feed Nest of Scarabs.",
-          "citations": [
-            {
-              "rule": "107.3b",
-              "quote": "the only legal choice for X is 0"
-            }
-          ]
-        }
-      ],
-      "notes": "Two hard edges. The free cast caps at mana value 4: it reaches Gravecrawler, Carrion Feeder, Starscape Cleric, Bastion of Remembrance, Warren Soultrader, Phyrexian Altar, Marauding Blight-Priest, Grave Pact and South Wind Avatar, and it never reaches Exquisite Blood at 5 or Mikaeus at 6. And the bargain fodder is a token, a Treasure or a spare artifact — sacrificing Bastion, Bitterblossom or Nest of Scarabs to find the next piece is the trap the card sets. Unbargained it is a four-mana Demonic Tutor to hand: still fine, never the plan."
-    },
-    {
-      "card": "Insatiable Avarice",
-      "targets": [
-        {
-          "scenario": "Turn eight, six mana (the sim gives you a mean 6.228). Warren Soultrader and Bastion of Remembrance are on the battlefield, your hand is empty, and Player 3 at 14 is the seat most likely to answer you next turn.",
-          "fetch": "Gravecrawler",
-          "why": "This is the wish only Spree can make. Pay {2}{B}{B}{B}: the search mode resolves first and puts Gravecrawler on top, then the draw mode — pointed at YOURSELF — draws it plus two more for 3 life. Cast it for {B} and stack 009 runs the same turn. Six mana total, two extra cards, and no turn handed to the table. Every other tutor in this deck would have made you wait for it.",
-          "citations": [
-            {
-              "rule": "strategy:life-as-resource",
-              "quote": "its points appreciate as they dwindle, so early points are cheap and late points are priceless"
-            }
-          ]
-        },
-        {
-          "scenario": "Turn six, three mana to spare after your main play, Yawgmoth drawing and the board stable. You are grinding rather than converting, and your creature deaths produce no mana.",
-          "fetch": "Phyrexian Altar",
-          "why": "The slowest tutor should book the piece you were going to cast next turn anyway, and engine mana is that piece — 61.9% unassisted by turn ten, the thinnest class the engine actually needs. Three mana puts the Altar on top, you draw it, and every sacrifice becomes castable black for the rest of the game. Take the search mode alone here; the draw mode costs {B}{B} and 3 life you have no reason to spend while nothing is on fire.",
-          "citations": [
-            {
-              "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-              "quote": "stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable"
-            }
-          ]
-        },
-        {
-          "scenario": "Yawgmoth has been answered twice, your hand is one card, your board is three small bodies and nothing is drawing you anything. Five mana available and your life comfortably above 30.",
-          "fetch": "Necropotence",
-          "why": "The refuel wish, and deck-audit measures the hole it fills: card-advantage at 5 copies against a target of 10. Necropotence replaces the commander's entire function without asking for a body, and in a shell that gains life off every drain trigger it is the cheapest draw rate you own. Pay the full Spree and point the draw at yourself — you arrive at the same turn holding Necropotence plus two more cards.",
-          "citations": [
-            {
-              "rule": "strategy:resource-hedging.playing-to-outs",
-              "quote": "complicate the board, keep decisions in front of them, and never concede a game still being played"
-            }
-          ]
-        },
-        {
-          "scenario": "Endgame. Player 3 is at 3 after paying for their own fetches and a Necropotence of their own, the other two seats are in the high teens, and you have five mana and a board of black permanents.",
-          "fetch": "Gray Merchant of Asphodel",
-          "why": "Nobody counts this one. Cast the full Spree for five: the search mode books Gray Merchant, and the draw mode targets PLAYER 3 — they draw three cards and lose 3 life, and that seat is gone before the cards matter. Then the Merchant lands next turn for devotion in a list carrying 75 black pips across 55 cards (deck-facts). One seat removed by the tutor itself, the rest drained by what it fetched. Watch the coalition math: this is the turn you stop being invisible.",
-          "citations": [
-            {
-              "rule": "strategy:multiplayer.threat-deflection",
-              "quote": "time them for the turn they win, not the turn they impress"
-            }
-          ]
-        }
-      ],
-      "notes": "Read it as two tutors. At {2}{B} it is a slower Demonic that lands on top and costs you a turn — fine when you have the turn to spend. At {2}{B}{B}{B} it is the only card in the deck that fetches and delivers in one breath, and 3 life is the right price in a shell that gains 1 back per drain trigger. The mode order is in your favour: the search resolves before the draw, so pointing the draw at yourself always finds what you just booked."
+     "scenario": "Player 2 resolves Rest in Peace with your Gravecrawler already in the graveyard. Your board is a sacrifice outlet and two bodies, Warren Soultrader is in your hand, and it is Player 2's end step with {B} open.",
+     "fetch": "Feed the Swarm",
+     "why": "Stop the bleeding, because a graveyard lock is not an inconvenience here — two of your four kills cast Gravecrawler out of the graveyard, so it deletes half your win conditions. Feed the Swarm is the only card in the 99 that destroys an enchantment, and you draw it on your own in 17.3% of games by turn ten, so this wish is most of the rest. Book it at their end step, cast it on yours, pay the life without hesitating.",
+     "citations": [
+      {
+       "rule": "strategy:threat-assessment.answer-economy",
+       "quote": "ends the game or ends my deck's function"
+      }
+     ]
     }
-  ],
-  "gaps": [
-    "No wish finds an artifact answer, because none exists to find. deck-audit reports artifact, graveyard and land as classes with no answer detected, and interaction-breadth at 2 answered against a target of 5. Feed the Swarm covers creature and enchantment; Bojuka Bog is a single one-shot graveyard exile riding on a land. Against a resolved Cursed Totem, Pithing Needle or Grafdigger's Cage your outs are speed, politics and somebody else's removal. These five cards make you faster. They cannot make you broader.",
-    "No search finds your commander. All five say search your library, and Yawgmoth sits in the command zone. If he is answered the wish is Phyrexian Reclamation, Animate Dead or Victimize while he is in the graveyard, and Lightning Greaves before he is ever targeted. deck-audit puts protection at 3 copies against a target of 4-6. Buy the insurance before the removal, not after.",
-    "There is no union kill rate and one must never be quoted. goldfish evaluates each need group independently, so a hand holding Exquisite Blood, Gravecrawler and Zulaport Cutthroat satisfies three groups while assembling nothing at all. Quote 42.5% (KILL C), 33.7% (KILL D), 18.0% (KILL A) and 12.3% (KILL B) separately, and never add or average them.",
-    "The tutor-assisted figures model ONE wish. The sim fills a single missing any_of group with a single drawn, affordable tutor, and a tutor that puts the card on top of the library costs a turn. So those four numbers are floors for a hand holding two tutors and ceilings for a hand holding none.",
-    "Two components carry three of the four kills and both are one card deep. Gravecrawler and Bastion of Remembrance are each 7.1% of an opening seven and 9.1% by turn three (deck-audit). These five tutors are the only redundancy either one has, and you draw one of them in 60.6% of games by turn ten. Below that number there is nothing.",
-    "KILL C has three named partners and the checker has signed one board. Stack 012 resolved Exquisite Blood alongside South Wind Avatar. Marauding Blight-Priest and Starscape Cleric carry the identical whenever-you-gain-life clause and goldfish counts them in the same group, but no stack has run their boards. Fetch them freely; announce only the Avatar's.",
-    "Nothing here prices a tutor against a resolved tax effect. Every mana figure quoted is the goldfish's, and it models no opponents at all — under a Sphere, a Thalia or a Winter Orb only the two-mana tutors stay live, and Yawgmoth's own ability, which costs no mana at all, is your best card by a wider margin than any of these five.",
-    "The containment records name far more lines than the checker has signed: deck-facts counts 32 combo lines fully contained in this list and 11 two-card infinites. Four are resolved. Fetch into the other twenty-eight as value if the board asks for it, but do not narrate them as kills."
-  ]
+   ],
+   "notes": "Two life is never free in this deck. You are already paying Yawgmoth one per activation, plus Bitterblossom, Necropotence, Black Market Connections, City of Brass, Ancient Tomb, Cabal Pit and Ifnir Deadlands — so fire this while your total is comfortable and stop treating the cost as rounding. And fire it as the instant it is: the end step before your own turn is almost always the moment, because the transit turn then costs you nothing at all."
+  },
+  {
+   "card": "Demonic Tutor",
+   "targets": [
+    {
+     "scenario": "Turn six, six mana available. Marauding Blight-Priest is on the battlefield and nobody has pointed removal at it, the table is at healthy totals, and you are still being read as a value deck.",
+     "fetch": "Exquisite Blood",
+     "why": "Buy your earliest and best-assembling kill. KILL C runs 6.9% on your own draws and 42.5% with a wish at a mean turn of 5.3, and Exquisite Blood is the half no other tutor can deliver on curve — it is mana value 5, so a bargained Beseech can never free-cast it and a top-of-library tutor costs you the turn you need for the cast. Demonic does not care what the card costs, so this is the wish that fits. Stack 012 resolved the shape on South Wind Avatar's board: mandatory, not a draw, drain forty taking all four opponents from 1 to 0 while you finish at 80.",
+     "citations": [
+      {
+       "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+       "quote": "stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable"
+      }
+     ]
+    },
+    {
+     "scenario": "Turn eight, seven or more mana. Yawgmoth and Bastion of Remembrance are on the battlefield and you have two non-Human bodies you are happy to feed him — Viscera Seer and Gravecrawler, say, or Carrion Feeder and Reassembling Skeleton.",
+     "fetch": "Mikaeus, the Unhallowed",
+     "why": "Reach for the card no other wish in this suite can reach — mana value 6 puts him outside every cap you own. He turns your commander's own ability into a kill: the -1/-1 counter and undying's +1/+1 annihilate at the next check, so the body resets to zero counters, re-arms, and the two creatures alternate (stack 010). Count first, because it is lethal but library-bounded: thirty-nine activations to zero four seats against the fifty-nine your mandatory draw allows. Measured at 4.6% on your own draws and 33.7% with this wish, so when the board is set, spend it.",
+     "citations": [
+      {
+       "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+       "quote": "a tutor is an enabler only if you can cast it and still deploy"
+      }
+     ]
+    },
+    {
+     "scenario": "Your board is Yawgmoth, four creatures and a drain. Player 2 is the control seat, has left four or more mana untapped for two turns running, and declined a profitable attack. Assume a sweeper in that hand.",
+     "fetch": "Plumb the Forbidden",
+     "why": "Buy the rebuild instead of the restraint, and keep deploying. This wish only works from a to-hand tutor — an instant you have to draw off the top next turn is an instant you do not have when the wrath resolves — which is exactly why it belongs on Demonic. Plumb turns the wave into cards: sacrifice creatures as an additional cost in response, copy it once per body, draw one more than you sacrificed. With a drain already down, every one of those sacrifices is damage on the way past.",
+     "citations": [
+      {
+       "rule": "strategy:resource-hedging.wrath-math",
+       "quote": "assume the wrath — over a four-player game one is near-certain — so deploy in waves, hold a rebuild package"
+      }
+     ]
+    },
+    {
+     "scenario": "A creature table. Player 1 has eight tokens, Player 4 has two fat blockers, and your drain arithmetic reaches nobody this turn. Six mana, Bastion of Remembrance on the battlefield, and you hold the engine but none of the tempo.",
+     "fetch": "Grave Pact",
+     "why": "Fetch board control instead of damage, because nobody expects that from this seat. Every creature you control that dies now makes each other player sacrifice one, so the same chain that drains is a table-wide edict per death — that is the half that decides fair games, and it converts your value engine into three dismantled boards while yours stands. Sell it to whichever seat is being attacked and charge for it. It is mana value 4, so a bargained Beseech can free-cast it if that is the tutor you drew instead.",
+     "citations": [
+      {
+       "rule": "strategy:multiplayer.asymmetry",
+       "quote": "Your cards should do something to all three seats or win the game; anything else is someone else's job"
+      }
+     ]
+    }
+   ],
+   "notes": "No condition, no delay, no life, no mana-value cap — so fire it at the first genuine hole rather than saving it for a cleverer turn that may not come. It is also the only one of the five you should ever spend on a card costing five or more, because what you pay is a turn of board impact: make the card you name worth a turn."
+  },
+  {
+   "card": "Diabolic Intent",
+   "targets": [
+    {
+     "scenario": "Turn five, five mana. Bastion of Remembrance is on the battlefield, Gravecrawler is in your graveyard, and you have three bodies including a token you were going to feed Yawgmoth anyway.",
+     "fetch": "Warren Soultrader",
+     "why": "Take three cards in one slot: the free repeatable outlet, the Treasure that funds each recast, and the Zombie that lets Gravecrawler be cast from the graveyard. Fetch him and stack 009's board is complete — two for the wish and three for the body is the five mana you have, so do it in one turn. Pay Intent's cost with the token and never with a piece, and note that with Bastion out that sacrifice is already a drain trigger. KILL A is 1.1% on your own draws and 18.0% with this wish, which is the whole reason to spend it here.",
+     "citations": [
+      {
+       "rule": "strategy:critical-mass.storm-math",
+       "quote": "Count only hand and board; expected draws are a bonus, not a plan."
+      }
+     ]
+    },
+    {
+     "scenario": "Gravecrawler, Carrion Feeder and Bastion of Remembrance are all on the battlefield. You have five mana, Player 3 is at 12 with two cards and four mana up, and you would rather not hand anyone a turn to find an answer.",
+     "fetch": "Phyrexian Altar",
+     "why": "Take the kill that costs you nothing at all — no life, no cards, no net mana, and your total goes UP by one per iteration to 80 (stack 011). Carrion Feeder is the Zombie that stays and it is never the sacrifice; the Altar's mana ability never uses the stack, so each recast is funded the instant Gravecrawler dies. Pay Intent's own cost with Gravecrawler itself if you like — he comes straight back for one black. Never pay it with Carrion Feeder.",
+     "citations": [
+      {
+       "rule": "strategy:multiplayer.pivot-window",
+       "quote": "Prefer win attempts that leave a rebuilt position if they fail"
+      }
+     ]
+    },
+    {
+     "scenario": "The wrath resolved. You have one creature left, two cards in hand, four mana, and the table is rebuilding around you. Yawgmoth is castable but there is nothing to feed him.",
+     "fetch": "Bitterblossom",
+     "why": "Sacrifice the survivor — it was doing nothing — and buy a body every upkeep forever for no mana and one life a turn. Renewable fodder is the class this engine spends fastest, and this is its cheapest permanent answer: two mana, no board condition, and it feeds Yawgmoth, Skullclamp, every outlet and every drain at once. Nobody in this pod rebuilds cheaper than a one-card token faucet, so rebuild first and let them react to you.",
+     "citations": [
+      {
+       "rule": "strategy:resource-hedging.wrath-math",
+       "quote": "After the wrath, initiative goes to whoever rebuilds cheapest"
+      }
+     ]
+    },
+    {
+     "scenario": "The sweeper already happened and it took the kill with it. Warren Soultrader and Gravecrawler are both in your graveyard, Bastion of Remembrance survived because it is an enchantment, and you have two small bodies left — a Faerie token and a Reassembling Skeleton you rebought. Five mana.",
+     "fetch": "Victimize",
+     "why": "Take the wish nobody sees coming, because it turns Intent's cost into the setup. Sacrifice the Faerie to Intent, fetch Victimize, then let Victimize sacrifice the Skeleton and return TWO creature cards from your graveyard tapped — Soultrader and Gravecrawler both, off one card. Tapped costs you nothing here: neither needs to tap and Gravecrawler cannot block anyway. That is a whole kill rebuilt out of the graveyard for five mana, and the Skeleton buys itself back later.",
+     "citations": [
+      {
+       "rule": "strategy:resource-hedging.playing-to-outs",
+       "quote": "aggressive lines often *create* outs that passive lines close off"
+      }
+     ]
+    }
+   ],
+   "notes": "Treat the additional cost as upside almost everywhere: with any drain out it is damage, with Grave Pact it is a table-wide edict, with Mikaeus it is an undying return. It is a genuine tax in exactly three spots — when your only creature is the engine making the others, when you control no creature at all and the spell is simply uncastable, and on turn three, where the sim has you at a mean of 1.679 bodies. Read the board before you keep it in an opener."
+  },
+  {
+   "card": "Beseech the Mirror",
+   "targets": [
+    {
+     "scenario": "Turn five, exactly four mana, a Treasure on the battlefield to bargain. Gravecrawler is in your graveyard and Bastion of Remembrance is already down. There is no fifth mana this turn.",
+     "fetch": "Warren Soultrader",
+     "why": "Bargain the Treasure and stop thinking of this as a fetch — Beseech PLAYS him, free, at mana value 3, for the four mana you already spent. That is the entire reason to run a four-mana tutor, and here it is the difference between assembling this turn and assembling next turn. Keep the fuel honest: bargain a token, a Treasure or something genuinely spare, and never the drain or the outlet.",
+     "citations": [
+      {
+       "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+       "quote": "k tutors plus the card act like k+1 copies of *every* card"
+      }
+     ]
+    },
+    {
+     "scenario": "Warren Soultrader and Bastion of Remembrance are already on the battlefield. You have exactly four mana and a Faerie token, and Player 4 is untapped with two blue sources open, so a counterspell is live and you want the whole line inside one turn.",
+     "fetch": "Gravecrawler",
+     "why": "Complete the shape you are already standing in, and do it inside one spell. Mana value 1 sits comfortably under the free-cast cap, and the point is not the mana saved — Beseech exiles the card and casts it, so the loop starts on the same turn with nothing else leaving your hand for them to answer. Nothing in the library fills this slot: Gravecrawler is the single card both unbounded kills route through, and you find it on your own only 16.5% of the time by turn ten.",
+     "citations": [
+      {
+       "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+       "quote": "a named card is 7.1% of your opening seven"
+      }
+     ]
+    },
+    {
+     "scenario": "Exquisite Blood resolved two turns ago and the table let it. You have four mana and a spare token to bargain, and the lowest life total at the table is 31.",
+     "fetch": "South Wind Avatar",
+     "why": "Know your own cap and fetch the half that fits under it. Exquisite Blood is mana value 5 and Beseech can never free-cast it; South Wind Avatar is exactly 4 and sits right on the line, with Marauding Blight-Priest at 3 and Starscape Cleric at 2 if you would rather keep mana up. Stack 012 resolved this exact pair — mandatory, not a draw, drain forty zeroing all four seats at once and you at 80 — so bargain a token, and remember that with a drain out the bargain is already damage.",
+     "citations": [
+      {
+       "rule": "strategy:multiplayer.asymmetry",
+       "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
+      }
+     ]
+    },
+    {
+     "scenario": "You are behind on board. Player 1 has eight creatures, Player 4 has two commanders' worth of stats, your own board is two 1/1s and a drain you would happily trade. Four mana, a Treasure to bargain, your life above 30.",
+     "fetch": "Toxic Deluge",
+     "why": "Free-cast the sweeper and pay for it in the currency you hold most of. Beseech covers the mana, Deluge's additional cost is life, and with a drain out the wipe drains for every creature of yours that dies. Take Deluge over Black Sun's Zenith for this specific job — casting a spell without paying its mana cost forces an X in the mana cost to zero, which makes the Zenith a blank. When you want the wipe to rebuild your board instead, pay full price for the Zenith and let the counters feed Nest of Scarabs.",
+     "citations": [
+      {
+       "rule": "107.3b",
+       "quote": "the only legal choice for X is 0"
+      }
+     ]
+    }
+   ],
+   "notes": "Two hard edges, and both are yours to check before you cast. The free cast caps at mana value 4: it reaches Gravecrawler, Carrion Feeder, Starscape Cleric, Bastion of Remembrance, Warren Soultrader, Phyrexian Altar, Marauding Blight-Priest, Grave Pact and South Wind Avatar, and it never reaches Exquisite Blood or Mikaeus. And the bargain fodder is a token, a Treasure or a spare artifact — sacrificing Bastion, Bitterblossom or Nest of Scarabs to find the next piece is the trap this card sets, so decide the fuel before you decide the target. Unbargained it is a four-mana Demonic Tutor to hand: still fine, never the plan."
+  },
+  {
+   "card": "Insatiable Avarice",
+   "targets": [
+    {
+     "scenario": "Turn eight, six mana. Warren Soultrader and Bastion of Remembrance are on the battlefield, your hand is empty, and Player 3 at 14 is the seat most likely to answer you next turn.",
+     "fetch": "Gravecrawler",
+     "why": "Take the wish only Spree can make and take the whole turn with it. Pay both modes: the search resolves first and puts Gravecrawler on top, then the draw mode — pointed at YOURSELF — draws it plus two more for 3 life. Cast it for one black and stack 009 runs the same turn. Six mana, two extra cards, and no turn handed to the table, where every other tutor here would have made you wait.",
+     "citations": [
+      {
+       "rule": "strategy:life-as-resource",
+       "quote": "its points appreciate as they dwindle, so early points are cheap and late points are priceless"
+      }
+     ]
+    },
+    {
+     "scenario": "Turn six, three mana to spare after your main play, Yawgmoth drawing and the board stable. You are grinding rather than converting, and your creature deaths produce no mana.",
+     "fetch": "Phyrexian Altar",
+     "why": "Let the slowest tutor book the piece you were going to cast next turn anyway, and engine mana is that piece — 61.9% on your own draws by turn ten, the thinnest class this engine actually needs. Three mana puts the Altar on top, you draw it, and every sacrifice becomes castable black for the rest of the game. Take the search mode alone here and skip the draw: it costs two more black and 3 life you have no reason to spend while nothing is on fire.",
+     "citations": [
+      {
+       "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+       "quote": "stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable"
+      }
+     ]
+    },
+    {
+     "scenario": "Yawgmoth has been answered twice, your hand is one card, your board is three small bodies and nothing is drawing you anything. Five mana available and your life comfortably above 30.",
+     "fetch": "Necropotence",
+     "why": "Refuel, and pay the full Spree to do it in one turn. Necropotence replaces your commander's entire function without asking for a body, and in a shell that gains life off every drain trigger it is the cheapest draw rate you own. Point the draw mode at yourself and you arrive at the same turn holding Necropotence plus two more cards — which is the difference between grinding back and waiting to be finished.",
+     "citations": [
+      {
+       "rule": "strategy:resource-hedging.playing-to-outs",
+       "quote": "complicate the board, keep decisions in front of them, and never concede a game still being played"
+      }
+     ]
+    },
+    {
+     "scenario": "Endgame. Player 3 is at 3 after paying for their own fetches and a Necropotence of their own, the other two seats are in the high teens, and you have five mana and a board of black permanents.",
+     "fetch": "Gray Merchant of Asphodel",
+     "why": "Nobody counts this one, so count it: cast the full Spree, let the search book Gray Merchant, and point the draw mode at PLAYER 3, who draws three cards and loses 3 life and is gone before the cards matter. Then the Merchant lands next turn for devotion in a list carrying 75 black pips across 55 cards. One seat removed by the tutor itself, the rest drained by what it fetched. Expect the coalition to form on that turn and have your next two turns planned before you cast it.",
+     "citations": [
+      {
+       "rule": "strategy:multiplayer.threat-deflection",
+       "quote": "time them for the turn they win, not the turn they impress"
+      }
+     ]
+    }
+   ],
+   "notes": "Read it as two tutors and pick which one you are casting. At three mana it is a slower Demonic that lands on top and costs you a turn — fine when you have a turn to spend. At five it is the only card in the deck that fetches and delivers in one breath, and 3 life is the right price in a shell that gains one back per drain trigger. The mode order is in your favour: the search resolves before the draw, so pointing the draw at yourself always finds what you just booked."
+  }
+ ],
+ "gaps": [
+  "No wish finds an artifact answer, because none exists to find. Feed the Swarm covers creature and enchantment; Bojuka Bog is a single one-shot graveyard exile riding on a land. Against a resolved Cursed Totem, Pithing Needle or Grafdigger's Cage your outs are speed, politics and somebody else's removal — so buy that removal with your own spot answers and your silence, and overpay for it. These five cards make you faster; they cannot make you broader.",
+  "No search finds your commander, because all five say search your library and Yawgmoth sits in the command zone. When he is answered, the wish is Phyrexian Reclamation, Animate Dead or Victimize while he is in the graveyard — and Lightning Greaves before he is ever targeted. Buy the insurance before the removal, not after.",
+  "There is no union kill rate and you must never quote one. The goldfish evaluates each need group independently, so a hand holding Exquisite Blood, Gravecrawler and Zulaport Cutthroat satisfies three groups while assembling nothing at all. Quote 42.5%, 33.7%, 18.0% and 12.3% separately.",
+  "The tutor-assisted figures model ONE wish: the sim fills a single missing group with a single drawn, affordable tutor, and a top-of-library tutor costs a turn. Read those four numbers as floors when you hold two tutors and ceilings when you hold none, and plan the turn accordingly.",
+  "Two components carry three of the four kills and both are one card deep. Gravecrawler and Bastion of Remembrance are each 7.1% of an opening seven, and these five tutors are the only redundancy either one has — you draw one of them in 60.6% of games by turn ten. Below that number there is nothing, so keep a fair-game plan running underneath every kill plan.",
+  "KILL C has three named partners and the checker has signed one board. Stack 012 resolved Exquisite Blood alongside South Wind Avatar; Marauding Blight-Priest and Starscape Cleric carry the identical clause and the goldfish counts them in the same group, but no stack has run their boards. Fetch them freely and announce only the Avatar's.",
+  "Nothing here prices a tutor against a resolved tax effect. Every mana figure quoted is the goldfish's, and it models no opponents at all — so under a Sphere, a Thalia or a Winter Orb, keep only the two-mana tutors live and lean on your commander's ability, which costs no mana at all and is your best card by a wider margin than any of these five.",
+  "The containment records name far more lines than the checker has signed: 32 combo lines sit fully inside this list and 11 of them are two-card infinites, against four resolved. Fetch into the other twenty-eight as value when the board asks for it, and never narrate them as kills."
+ ]
 }
