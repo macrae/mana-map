@@ -1,0 +1,188 @@
+"""Pilot: mechanically check a deck's goldfish target declaration.
+
+`goldfish_targets.json` is a machine-readable ENGINE DECLARATION — its `any_of`
+groups are the engine's components and a group's SIZE is that component's
+redundancy. `deck_audit` prices those groups and quotes the rates in the engine
+block, and a diagnosis then sizes its prescription off them. Nothing checked the
+declaration itself, so the engine block could report an assembly rate with
+complete confidence for a component that cannot assemble.
+
+A seven-deck diagnosis run found the declaration wrong on six of eight decks, in
+four different shapes: a component every one of whose members a checker-passed
+stack refutes; a group declaring two cards where the deck holds four; a group
+whose members do not all perform the declared function; and — twice — a deck
+whose PRIMARY WIN LINE, verified by a passing stack, has no target at all. The
+last is the one this module is really for: heliod's Hullbreaker Horror line and
+ur-dragon's Aggravated Assault are each named in two passing stacks and in no
+component, so the simulator has never once measured how those decks actually win.
+
+Two checks, both measured against the whole fleet before being written:
+
+  * every declared card must still be in the 99 — the staleness guard, because a
+    swap silently strands the name it removed;
+  * a card appearing in TWO OR MORE checker-passed stacks and in no component is
+    reported as a likely omission. Commanders and basic lands are excluded: both
+    are on every board and neither says anything about the engine.
+
+A check deliberately NOT implemented: "members of a group should share a role
+axis". Prototyped against all eight decks, it fired hardest on the most correct
+groups — goblin-storm's cantrip group agreed 1/6 with every member right, and it
+flagged Howling Mine and Font of Mythos as outliers in heliod's draw engine,
+which they ARE. The taxonomy is the reason: `ROLE_PATTERNS` answers "what job
+does this card do in a 99", while a goldfish group is a deck-specific functional
+set with no taxonomy axis (there is no `cantrip` role). A validator that fires on
+correct data trains its reader to ignore it, which is worse than not having it.
+"""
+
+import json
+
+from manamap.pilot.agent_cache import passing_stacks
+from manamap.pilot.common import (
+    deck_dir,
+    load_deck_cards,
+    load_json,
+    mainboard,
+    report_errors,
+)
+
+# A card must appear in at least this many checker-passed stacks before its
+# absence from every component is worth reporting. One passing stack is a line;
+# two is a pattern, and both real omissions the fleet survey found clear it.
+WIN_LINE_QUORUM = 2
+
+
+def _declared_names(doc):
+    """Every card named anywhere in the declaration."""
+    names = set()
+    for target in doc.get("targets", []):
+        for need in target.get("need", []) or []:
+            names.update(need.get("any_of", []) or [])
+    return names
+
+
+def _validate_shape(doc):
+    errors = []
+    targets = doc.get("targets")
+    if not isinstance(targets, list) or not targets:
+        return ["targets must be a non-empty list — a deck with no declared "
+                "target has no engine block and no measured assembly rate"]
+    seen_labels = {}
+    for i, target in enumerate(targets):
+        label = target.get("label")
+        if not str(label or "").strip():
+            errors.append(f"targets[{i}]: label is empty — the engine block "
+                          f"prints it, and an unnamed component cannot be cited")
+            label = f"<targets[{i}]>"
+        if label in seen_labels:
+            errors.append(f"targets[{i}] ({label}): duplicate label, first used "
+                          f"at targets[{seen_labels[label]}]")
+        else:
+            seen_labels[label] = i
+
+        need = target.get("need")
+        if not isinstance(need, list) or not need:
+            errors.append(f"targets[{i}] ({label}): need must be a non-empty list")
+            continue
+        for j, group in enumerate(need):
+            members = group.get("any_of")
+            if not isinstance(members, list) or not members:
+                errors.append(f"targets[{i}] ({label}) need[{j}]: any_of must be "
+                              f"a non-empty list of card names")
+                continue
+            dupes = sorted({m for m in members if members.count(m) > 1})
+            if dupes:
+                errors.append(
+                    f"targets[{i}] ({label}) need[{j}]: {dupes} listed twice — a "
+                    f"group's size is its redundancy, so a duplicate overstates it")
+    return errors
+
+
+def _validate_membership(doc, main_names, commander_names):
+    """Every declared card must still be in the 99."""
+    errors = []
+    known = main_names | commander_names
+    for name in sorted(_declared_names(doc)):
+        if name not in known:
+            errors.append(
+                f"'{name}' is declared in a target but is not in the deck — a swap "
+                f"stranded the name, so this group's size overstates its redundancy")
+    return errors
+
+
+def _validate_win_line_coverage(doc, slug, main_names, commander_names, base):
+    """A card carrying two or more passing stacks belongs to some component."""
+    declared = _declared_names(doc)
+    deck_doc = None
+    basics = set()
+    try:
+        deck_doc = load_deck_cards(slug)
+        basics = {c["name"] for c in deck_doc.get("cards", [])
+                  if "Basic Land" in str(c.get("type_line", ""))}
+    except Exception:                      # pragma: no cover — fresh clone
+        pass
+
+    counts = {}
+    stacks = list(passing_stacks(base))
+    if not stacks:
+        return []                          # nothing verified yet; nothing to say
+    for path in stacks:
+        try:
+            blob = json.dumps(load_json(path).get("scenario", {}))
+        except Exception:                  # pragma: no cover
+            continue
+        for name in main_names:
+            if name in blob:
+                counts[name] = counts.get(name, 0) + 1
+
+    errors = []
+    for name, n in sorted(counts.items()):
+        if n < WIN_LINE_QUORUM or name in declared:
+            continue
+        if name in commander_names or name in basics:
+            continue                       # on every board; says nothing
+        errors.append(
+            f"'{name}' appears in {n} checker-passed stacks and in no target — "
+            f"the simulator never measures it, so the engine block reports rates "
+            f"for a plan this card is not part of")
+    return errors
+
+
+def validate(doc, slug, base):
+    """Return a list of error strings (empty = the declaration holds)."""
+    errors = _validate_shape(doc)
+    if errors:
+        return errors                      # shape first; the rest would cascade
+
+    try:
+        deck_doc = load_deck_cards(slug)
+    except Exception:                      # pragma: no cover — fresh clone
+        return errors
+    cards = deck_doc.get("cards", [])
+    main_names = {c["name"] for c in mainboard(cards)}
+    commander_names = {c["name"] for c in cards if c.get("is_commander")}
+
+    errors += _validate_membership(doc, main_names, commander_names)
+    errors += _validate_win_line_coverage(doc, slug, main_names,
+                                          commander_names, base)
+    return errors
+
+
+def main(args):
+    base = deck_dir(args.slug)
+    path = base / "goldfish_targets.json"
+    if not path.exists():
+        raise SystemExit(
+            f"{path} not found — a deck with no declared targets has no engine "
+            f"block. Author it before running `manamap pilot goldfish {args.slug}`.")
+    with open(path) as f:
+        doc = json.load(f)
+    errors = validate(doc, args.slug, base)
+    groups = sum(len(t.get("need", []) or []) for t in doc.get("targets", []))
+    report_errors(
+        path.name, errors,
+        f"OK   {path.name} — {len(doc.get('targets', []))} target(s), "
+        f"{groups} component group(s); sizes are redundancy claims ◆")
+
+
+if __name__ == "__main__":
+    raise SystemExit("Run via `manamap pilot validate-goldfish-targets <slug>`.")

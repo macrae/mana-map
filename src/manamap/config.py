@@ -1049,6 +1049,13 @@ CARD_REFS_VERSION = 2
 AGENT_PROMPTS_DIR = _REPO_ROOT / ".claude" / "agents"
 STYLE_DOC_PATH = _REPO_ROOT / "STYLEv3.md"
 ISSUE_SPEC_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "issue_spec.py"
+# The audit's CODE, for the same reason deck-diagnosis declares bracket_report and
+# mana_analysis: a diagnosis must carry deck-audit's figures, so a change to the
+# regexes that compute them can flip a recorded diagnosis from true to false. Fixing
+# the land-class false positives moved edgar's interaction-breadth 5 -> 4 while the
+# cache still read HIT, which is the "green board over a stale document" this
+# registry exists to prevent — the data inputs were declared and the measurer was not.
+DECK_AUDIT_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "deck_audit.py"
 
 # Input tokens resolved by agent_cache.resolve_inputs():
 #   deck:<name>[?]     file under data/decks/<slug>/ ('?' = optional; absence
@@ -1162,6 +1169,7 @@ AGENT_ROUTINES = {
                    "deck:goldfish_targets.json?", "deck:bracket_report.json?",
                    "deck:mana_analysis.json?", "deck:strategic_frame.json?",
                    "deck:deck_recon.json?", "deck:pilot_feedback.md?",
+                   "repo:DECK_AUDIT_PATH",
                    "global:CARD_ROLES_PATH", "global:COMBO_DETAILS_PATH",
                    "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
     },

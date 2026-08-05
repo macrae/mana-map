@@ -138,6 +138,63 @@ def test_destroy_target_permanent_answers_land_too():
     assert breadth["land"] == ["Beast Within"]
 
 
+def test_a_search_clause_does_not_make_a_creature_exile_land_removal():
+    """Winds of Abandon exiles CREATURES and ramps the opponents it hits.
+
+    `(destroy|exile)[^.]{0,90}\\bland` put "land" within 90 characters of "exile"
+    and credited the land class to a card that gives every opponent a basic land.
+    The direction matters: it was scored as ANSWERING the players it accelerates.
+    """
+    cards = [_card("Winds of Abandon",
+                   "Exile target creature you don't control. Overload {4}{W}{W} — "
+                   "Exile all creatures you don't control. For each creature "
+                   "exiled this way, its controller searches their library for a "
+                   "basic land card, puts it onto the battlefield, then shuffles.",
+                   type_line="Sorcery")]
+    roles = {"Winds of Abandon": ["removal:spot"]}
+    breadth = deck_audit._interaction_breadth(cards, roles)
+    assert breadth["land"] == []
+    assert breadth["creature"] == ["Winds of Abandon"]
+
+
+def test_a_search_clause_after_the_kill_still_counts():
+    """Ghost Quarter destroys a land and THEN offers the search — a true positive.
+
+    The tempered pattern must discriminate on whether the search redirects the
+    object, not on whether the word appears; excluding every card whose text says
+    "search" would drop Ghost Quarter, Sowing Salt and Mwonvuli Acid-Moss.
+    """
+    cards = [_card("Ghost Quarter",
+                   "{T}: Add {C}. {T}, Sacrifice this land: Destroy target land. "
+                   "Its controller may search their library for a basic land card, "
+                   "put it onto the battlefield, then shuffle.", type_line="Land")]
+    roles = {"Ghost Quarter": ["removal:spot"]}
+    assert deck_audit._interaction_breadth(cards, roles)["land"] == ["Ghost Quarter"]
+
+
+def test_an_exclusion_clause_spares_lands_rather_than_answering_them():
+    """"Destroy all other permanents except for lands" protects them."""
+    cards = [_card("Scourglass",
+                   "{T}, Sacrifice this artifact: Destroy all permanents except "
+                   "for artifacts and lands.", type_line="Artifact")]
+    roles = {"Scourglass": ["removal:sweeper"]}
+    assert deck_audit._interaction_breadth(cards, roles)["land"] == []
+
+
+def test_a_mana_value_floor_cannot_reach_a_land():
+    """A land has no mana cost, so it is always mana value 0.
+
+    Despark reads "exile target permanent", so the catch-all credited it with all
+    five classes — but "mana value 4 or greater" excludes every land in Magic.
+    """
+    cards = [_card("Despark", "Exile target permanent with mana value 4 or greater.",
+                   type_line="Instant")]
+    roles = {"Despark": ["removal:spot"]}
+    breadth = deck_audit._interaction_breadth(cards, roles)
+    assert breadth["land"] == []
+    assert breadth["creature"] == ["Despark"], "it still answers the nonland classes"
+
+
 def test_cannot_be_regenerated_is_not_protection():
     """A clause that REMOVES protection must not read as granting it."""
     assert not deck_audit._AXIS_PROBES["protection"].search("It can't be regenerated.")

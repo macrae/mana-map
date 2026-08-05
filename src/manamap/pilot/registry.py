@@ -30,6 +30,7 @@ PILOT_STEPS = [
     ("validate-upgrade-watch", "manamap.pilot.validate_upgrade_watch", "Form-check an upgrade-watch scout report"),
     ("validate-considering", "manamap.pilot.validate_considering", "Form-check The Short List (the ten)"),
     ("validate-diagnosis", "manamap.pilot.validate_diagnosis", "Form-check a deck diagnosis (axes re-derived, cuts checked against verified stacks)"),
+    ("validate-goldfish-targets", "manamap.pilot.validate_goldfish_targets", "Form-check the engine declaration goldfish and deck-audit price"),
     ("diagnosis-report", "manamap.pilot.diagnosis_report", "Render a deck diagnosis as readable markdown"),
     ("validate-tutor-guide", "manamap.pilot.validate_tutor_guide", "Form-check the Fetch Quests tutor guide"),
     ("validate-strategic-frame", "manamap.pilot.validate_strategic_frame", "Form-check a strategic frame"),
@@ -59,7 +60,8 @@ _DECK_COMMANDS = {
     "bracket-check", "build-deck", "validate-build", "deck-facts", "deck-audit", "deck-history",
     "mana-analysis", "sideboard-facts", "validate-sideboard",
     "validate-strategic-frame", "upgrade-facts", "validate-upgrade-watch",
-    "validate-considering", "validate-diagnosis", "diagnosis-report",
+    "validate-considering", "validate-diagnosis", "validate-goldfish-targets",
+    "diagnosis-report",
     "validate-tutor-guide", "impact", "scenario-facts",
 }
 

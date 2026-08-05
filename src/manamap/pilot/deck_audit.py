@@ -116,7 +116,23 @@ _CLASS_PATTERNS = {
     ),
     "artifact": (re.compile(r"(destroy|exile)[^.]{0,90}artifact", re.I | re.S),),
     "enchantment": (re.compile(r"(destroy|exile)[^.]{0,90}enchantment", re.I | re.S),),
-    "land": (re.compile(r"(destroy|exile)[^.]{0,90}\bland", re.I | re.S),),
+    # `land` must be the OBJECT of the verb. Two clause shapes put the word within
+    # 90 characters of a destroy/exile while meaning the opposite, and a bare
+    # proximity match scored all eleven of them as land removal:
+    #   a search redirects to a different object — Winds of Abandon exiles CREATURES
+    #     and its victims "search their library for a basic land", i.e. it ramps the
+    #     opponents it is credited with answering (also Sword of Hearth and Home,
+    #     Surveyor's Scope);
+    #   an exclusion SPARES lands — "Destroy all other permanents except for lands"
+    #     (Elspeth Tirel, Scourglass, Elesh Norn, Eye of Singularity), and
+    #     "other than a basic land card" is graveyard hate (Haunting Echoes, Kotose).
+    # Tempering the gap on both shapes drops 268 corpus matches to 257 and loses no
+    # real land destruction: Ghost Quarter, Sowing Salt and Mwonvuli Acid-Moss all
+    # keep, because their search clause follows the kill rather than redirecting it.
+    "land": (re.compile(
+        r"(destroy|exile)"
+        r"(?:(?!search(es)?\b[^.]{0,40}?\bfor\b|\bother than\b|\bexcept\b)[^.]){0,90}"
+        r"\bland", re.I | re.S),),
     # Someone ELSE'S graveyard. A bare `exile ... graveyard` matches Necropotence
     # exiling its own discards, delve, escape and flashback — self-exile is the
     # commonest use of the word in Magic and none of it is graveyard hate.
@@ -138,6 +154,18 @@ _CATCHALL_ANY = re.compile(
     _CATCHALL_VERB + r"[^.]{0,70}(target|each|all|any|another) permanent",
     re.I | re.S)
 _NONLAND_CLASSES = ("creature", "artifact", "enchantment")
+
+# A catch-all gated on a mana-value FLOOR cannot reach a land, because a land has no
+# mana cost and so is always mana value 0. Despark ("exile target permanent with mana
+# value 4 or greater") reads as answering every class including land, and it answers
+# four of five. Four cards in the corpus are gated this way; all four floor at 3+.
+_CATCHALL_MV_FLOOR = re.compile(r"mana value ([1-9]\d*) or greater", re.I)
+
+# ...and a catch-all that names lands in an EXCLUSION spares them. "Destroy all
+# permanents except for artifacts and lands" matches "(destroy) all permanent" and was
+# credited with the land class by the clause that protects it. Four cards: Scourglass,
+# Eye of Singularity, World-Bottling Kit, Cyclone Summoner.
+_CATCHALL_LAND_SPARED = re.compile(r"(except|other than)[^.]{0,60}\bland", re.I)
 
 # Which archetype an authored frame is talking about. The frame's `archetype` is
 # free prose, so this is a keyword read, and it says which word it matched rather
@@ -255,7 +283,9 @@ def _interaction_breadth(cards, roles):
             hits.update(_NONLAND_CLASSES)
         if _CATCHALL_ANY.search(text):
             hits.update(_NONLAND_CLASSES)
-            hits.add("land")
+            if not (_CATCHALL_MV_FLOOR.search(text)
+                    or _CATCHALL_LAND_SPARED.search(text)):
+                hits.add("land")
         for cls in hits:
             if card["name"] not in answered[cls]:
                 answered[cls].append(card["name"])
