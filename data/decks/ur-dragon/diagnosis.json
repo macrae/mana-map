@@ -453,7 +453,7 @@
  "cut_candidates": [
   {
    "card": "Dracogenesis",
-   "why": "Eight mana for an enchantment that does nothing the turn it lands, and it is the one expensive card in the deck that receives no discount at all — it is not a Dragon spell, so eminence, Urza's Incubator, Herald's Horn and Dragonspeaker Shaman all miss it. The deck's own simulation puts mean available mana at 6.539 on turn ten.",
+   "why": "Eight mana for an enchantment that does nothing the turn it lands, and it is the only card at mana value 8 or more in the 99 that is neither a Dragon nor self-reducing. Eminence, Urza's Incubator, Herald's Horn and Dragonspeaker Shaman all miss it because it is not a Dragon spell; Blasphemous Act is also mana value 9 but costs {1} less per creature on the battlefield, Cavern-Hoard Dragon costs {X} less for opponents' artifacts and is a Dragon besides, and Utvara Hellkite is a Dragon. Dracogenesis pays the sticker price every game, against mean available mana of 6.539 on turn ten.",
    "cost_of_cutting": "The deck loses its highest ceiling. When Dracogenesis resolves with a hand of Dragons the game ends shortly after, and no other card in the 99 does that.",
    "orphans_stack": null,
    "difficulty": "painful",
@@ -520,7 +520,7 @@
   {
    "card": "Forbidden Orchard",
    "why": "Every tap hands an opponent a 1/1 blocker, and both verified kill loops are bounded by blockers — stack 006's cycle needs a connecting attacker each combat. Paying for fixing in opposing bodies is the wrong currency for this deck specifically.",
-   "cost_of_cutting": "One of only four untapped five-colour lands in a five-colour deck. Cutting it without replacing it in kind makes every colour worse.",
+   "cost_of_cutting": "One of only four untapped five-colour lands in a five-colour deck, and mana_analysis counts it as a full source of all five — cutting it takes one source off every colour. Note the interaction: Mana Confluence is already spending the Glacial Fortress slot, so taking this cut as well puts the deck at 33 lands against a 36–38 target.",
    "orphans_stack": null,
    "difficulty": "contested",
    "citations": [
@@ -550,7 +550,7 @@
   {
    "card": "Glacial Fortress",
    "why": "It checks for a Plains or an Island, and the deck contains five lands with either type — one Island, Breeding Pool, Steam Vents, Canopy Vista and Jetmir's Garden. On an early board it is a tapland that produces the deck's two least-demanded colours.",
-   "cost_of_cutting": "The deck drops to 33 lands against a 36–38 target unless the slot is refilled with a land, and it is one of only 10 white and 11 blue land sources.",
+   "cost_of_cutting": "It is one of only 10 white and 11 blue land sources, and the deck drops to 33 lands against a 36–38 target unless the slot is refilled with a land. Mana Confluence is that refill and restores both colours exactly (W 10→10, U 11→11); take this cut without it and white and blue each lose a source.",
    "orphans_stack": null,
    "difficulty": "easy",
    "citations": [
@@ -622,11 +622,11 @@
    "card": "Goblin Anarchomancer",
    "closes": "engine component: ignition — cost reducers",
    "source": "pool",
-   "why": "'Each spell you cast that's red or green costs {1} less' covers 68.3% of the deck's pip load on a two-mana body, and it takes the binding component from 3 to 5 alongside the two above — the first tier the corpus prices at 31% of openers.",
+   "why": "'Each spell you cast that's red or green costs {1} less' covers 68.3% of the deck's pip load on a two-mana body, and it takes the binding component from 3 to 6 alongside the two above — the first tier the corpus prices at 31% of openers.",
    "evidence": {
     "red_pip_share": 0.465,
     "green_pip_share": 0.218,
-    "component_size_after": 5
+    "component_size_after": 6
    },
    "natural_cut": "Dragonback Assault",
    "bracket_delta": {
@@ -648,13 +648,29 @@
    "card": "Mana Confluence",
    "closes": "colour-sources",
    "source": "pool",
-   "why": "An untapped five-colour source that costs you one life instead of costing your opponents nothing and gifting them a blocker. Straight upgrade over Forbidden Orchard in a deck whose kills are combat damage, and it adds a red source where red is 27 against a target of 36.",
+   "why": "Measured, not assumed: swapping it for Forbidden Orchard is exactly source-neutral, because mana_analysis.json already counts Forbidden Orchard as producing all five colours. Against Glacial Fortress it is not neutral. Glacial Fortress produces only W and U; Mana Confluence produces all five, so the land counts move W 10→10, U 11→11, B 11→12, R 20→21, G 18→19. Black is the colour the colour-sources axis is gated on, so its total goes 16→17 and the axis moves −20→−19 — land-for-land, with no change to the 34-land count. It also retires the deck's thinnest conditional tapland for one that is never tapped. Pair it with the Panharmonicon cut instead and the deck reaches 35 lands, at the price of a checker-passed line.",
    "evidence": {
-    "red_sources": 27,
-    "red_target": 36,
-    "replaces": "Forbidden Orchard"
+    "land_sources_before": {
+     "W": 10,
+     "U": 11,
+     "B": 11,
+     "R": 20,
+     "G": 18
+    },
+    "land_sources_after": {
+     "W": 11,
+     "U": 11,
+     "B": 12,
+     "R": 21,
+     "G": 19
+    },
+    "gating_colour": "B",
+    "axis_before": -20,
+    "axis_after": -19,
+    "neutral_against": "Forbidden Orchard — mana_analysis counts it as producing B, G, R, U and W already",
+    "replaces": "Glacial Fortress"
    },
-   "natural_cut": "Forbidden Orchard",
+   "natural_cut": "Glacial Fortress",
    "bracket_delta": {
     "before": 4,
     "after": 4
