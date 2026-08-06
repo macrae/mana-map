@@ -395,7 +395,7 @@ def _walk(page, seed_js, settle=9000):
 
 DECK_SEED = """
     const deck = await (await fetch('../data/decks/edgar-vampires/cards.json')).json();
-    const names = new Set(deck.cards.filter(c => !c.is_sideboard).map(c => c.name));
+    const names = new Set(deck.cards.map(c => c.name));
     const rows = []; MM.allData.forEach((d, i) => { if (names.has(d.n)) rows.push(i); });
     return rows;
 """
@@ -426,7 +426,7 @@ def test_link_length_is_the_embedding_distance(page):
 def test_branching_grows_the_graph_and_records_the_walk(page):
     r = page.evaluate("""async () => {
         const deck = await (await fetch('../data/decks/edgar-vampires/cards.json')).json();
-        const names = new Set(deck.cards.filter(c => !c.is_sideboard).map(c => c.name));
+        const names = new Set(deck.cards.map(c => c.name));
         const rows = []; MM.allData.forEach((d, i) => { if (names.has(d.n)) rows.push(i); });
         document.getElementById('modeSelect').value = 'discover'; MM.setMode('discover');
         await new Promise(r => setTimeout(r, 200));
@@ -2873,12 +2873,12 @@ def test_the_cards_you_brought_are_inked_differently(page):
     """
     r = page.evaluate("""async () => {
         const d = await (await fetch('../data/decks/heliod/cards.json')).json();
-        const text = d.cards.filter(c => !c.is_sideboard)
+        const text = d.cards
                             .map(c => (c.quantity || 1) + ' ' + c.name).join('\\n');
         document.getElementById('modeSelect').value = 'discover';
         MM.setMode('discover');
         await new Promise(r => setTimeout(r, 2000));
-        const distinct = new Set(d.cards.filter(c => !c.is_sideboard).map(c => c.name)).size;
+        const distinct = new Set(d.cards.map(c => c.name)).size;
         const res = Discovery.importText(text);
         await new Promise(r => setTimeout(r, 9000));
         const imported = Force.membership();

@@ -123,7 +123,7 @@ def artifact_digest(path, keys=None):
 _REFS_EXCLUDED_KEYS = frozenset({"checker"})
 
 CARD_SEMANTIC_FIELDS = (
-    "name", "quantity", "is_commander", "is_sideboard", "mana_cost", "cmc",
+    "name", "quantity", "is_commander", "mana_cost", "cmc",
     "type_line", "oracle_text", "colors", "color_identity", "keywords",
     "power", "toughness", "loyalty", "layout",
 )
@@ -164,24 +164,26 @@ def cards_semantic_digest(path):
         {k: card.get(k) for k in CARD_SEMANTIC_FIELDS}
         for card in doc.get("cards", [])
     ]
-    cards.sort(key=lambda c: (str(c.get("name")), bool(c.get("is_sideboard"))))
+    cards.sort(key=lambda c: str(c.get("name")))
     return json_sha256(cards)
 
 
 def cards_semantic_card_map(path):
-    """Per-card semantic digests: {"<name>\\x00<0|1 sideboard>": sha}.
+    """Per-card semantic digests: {"<name>": sha}.
 
     The same rows `cards_semantic_digest` hashes as one opaque value, hashed
     individually — the primitive that lets a MISS name WHICH cards changed
     and lets unreferencing routines report STALE_OK instead. One extra hash
     per card on data already parsed and memoized.
+
+    Keys were once "<name>\\x00<0|1 sideboard>", because one name could occupy
+    two zones at once. With no sideboard a name is a name.
     """
     if not path.exists():
         return None
     doc = load_json_memo(path)
     return {
-        f"{card.get('name')}\x00{int(bool(card.get('is_sideboard')))}":
-            json_sha256({k: card.get(k) for k in CARD_SEMANTIC_FIELDS})
+        card.get("name"): json_sha256({k: card.get(k) for k in CARD_SEMANTIC_FIELDS})
         for card in doc.get("cards", [])
     }
 
@@ -189,9 +191,9 @@ def cards_semantic_card_map(path):
 def diff_card_maps(old_map, new_map):
     """Changed card NAMES between two per-card maps.
 
-    A zone move (main<->sideboard) appears as one key removed and one added
-    for the same name; either way the name lands in the changed set, which is
-    all invalidation needs. Returns a sorted list of names.
+    Returns a sorted list of names. Keys are bare names now; the `\\x00`-suffix
+    split is kept so a sidecar written before the sideboard was retired still
+    diffs against a current one instead of reporting every card as changed.
     """
     changed_keys = set(old_map or {}).symmetric_difference(set(new_map or {}))
     changed_keys |= {k for k in set(old_map or {}) & set(new_map or {})

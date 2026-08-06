@@ -26,7 +26,7 @@ artifacts could only ever desync.
 
 Everything here reads existing artifacts. No new analysis:
 
-    deck membership   pilot/common.py     load_deck_cards, mainboard
+    deck membership   pilot/common.py     load_deck_cards
     board parsing     this module         board_bodies (scenario shape only)
 """
 
@@ -34,7 +34,7 @@ import json
 import re
 from collections import Counter
 
-from manamap.pilot.common import deck_dir, load_deck_cards, mainboard
+from manamap.pilot.common import deck_dir, load_deck_cards
 
 # What a board entry IS, from how the scenario annotates it.
 #
@@ -227,7 +227,7 @@ def comparable_siblings(this_id, all_scenarios):
 def analyze(slug, stack_id=None):
     base = deck_dir(slug)
     doc = load_deck_cards(slug)
-    deck_names = {c["name"] for c in mainboard(doc["cards"])}
+    deck_names = {c["name"] for c in doc["cards"]}
 
     scenarios = {}
     for path in sorted((base / "stacks").glob("*.json")):

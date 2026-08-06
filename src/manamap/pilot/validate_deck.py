@@ -1,6 +1,6 @@
 """Pilot: validate a fetched deck's Commander invariants."""
 
-from manamap.pilot.common import load_deck_cards, mainboard, report_errors
+from manamap.pilot.common import load_deck_cards, report_errors
 
 
 def validate(doc):
@@ -10,7 +10,7 @@ def validate(doc):
     100-card, singleton, and color-identity checks.
     """
     errors = []
-    cards = mainboard(doc.get("cards", []))
+    cards = doc.get("cards", [])
     total = sum(c.get("quantity", 0) for c in cards)
     if total != 100:
         errors.append(f"Deck has {total} cards, expected exactly 100")

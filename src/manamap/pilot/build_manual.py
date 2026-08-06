@@ -32,8 +32,6 @@ from manamap.pilot.common import (
     load_deck_cards,
     load_json,
     load_synergy_graph,
-    mainboard,
-    sideboard,
 )
 from manamap.pilot.design import (
     card_tile,
@@ -537,40 +535,6 @@ def render_by_the_numbers(issue, plan, goldfish, cards_by_name):
     )
 
 
-def _bench_line(card):
-    """What a bench card says when nobody has written it a blurb.
-
-    `manual_prose.card_roles` is the writer's key for THE 99, and the bench is
-    not the 99 — so on decks with a deep bench the tiles said "no role blurb
-    written yet" 48, 27 and 20 times. That placeholder was added deliberately,
-    to stop the gap being SILENT, and it did its job: the gap is real. But a
-    tile announcing its own incompleteness teaches nothing, and filling 95 of
-    them with prose would lengthen the issue the founder already called too
-    long.
-
-    `card_roles.json` — the pipeline artifact, not the prose key — already
-    classifies every card in the corpus. Rendering that is deterministic, free,
-    and true: "Protection · granted" tells a reader what the card is for, which
-    is all a bench tile owes them.
-    """
-    try:
-        tags = load_card_roles().get(card["name"]) or []
-    except (FileNotFoundError, KeyError):
-        tags = []
-    seen, parts = set(), []
-    for tag in tags:
-        family, _, detail = str(tag).partition(":")
-        label = f"{family.replace('-', ' ').capitalize()}" + (
-            f" · {detail.replace('-', ' ')}" if detail else "")
-        if label not in seen:
-            seen.add(label)
-            parts.append(label)
-    if parts:
-        return " / ".join(parts[:3]) + ". On the bench."
-    # No taxonomy entry at all: say what it is rather than what is missing.
-    return f"{card.get('type_line') or 'Card'}. On the bench."
-
-
 def _rows(pairs):
     """`<dt>/<dd>` rows for the pairs that actually have a value."""
     return "".join(f"<dt>{esc(k)}</dt><dd>{esc(v)}</dd>" for k, v in pairs if v)
@@ -811,7 +775,7 @@ def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
     # to render a full grid of blank blurbs, which reads as "these cards need no
     # explanation" rather than "nobody wrote this yet". Say it out loud instead.
     roles_todo = "" if roles else TODO
-    main = mainboard(cards)
+    main = cards
     by_name = {c["name"]: c for c in main}
 
     groups, placed = [], set()
@@ -836,43 +800,10 @@ def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
         sections.append(f'{heading}<div class="card-grid">{tiles}</div>')
     tiles = "".join(sections)
 
-    side = sideboard(cards)
-    side_html = ""
-    if side:
-        side_tiles = []
-        for card in side:
-            # is_accessory imported rather than re-implemented — this predicate used
-            # to exist twice, here and in artist_credits, with nothing keeping them
-            # in step.
-            if is_accessory(card):
-                blurb = roles.get(card["name"]) or (
-                    "Table aid — no rules text. Use it to track game state on big turns.")
-                image = (f'<img src="{esc(card["image"])}" alt="{esc(card["name"])}" loading="lazy">'
-                         if card.get("image") else "")
-                aid = (None if card["name"] in by_name
-                       else CARD_ANCHORS.get(card["name"]))
-                anchor = f' id="{esc(aid)}"' if aid else ""
-                side_tiles.append(
-                    f'<div class="card-tile"{anchor}>{image}<h4>{esc(card["name"])}</h4>'
-                    f'<span class="chip">Table aid</span>'
-                    f"<p>{esc(blurb)}</p></div>"
-                )
-                continue
-            # A real sideboard card is a card: same tile, same synergy chips. It used
-            # to bypass _card_tile entirely and render with an empty <p> when nobody
-            # had written it a role blurb — silently, with no TODO.
-            side_roles = dict(roles)
-            side_roles.setdefault(card["name"], _bench_line(card))
-            side_anchor = (None if card["name"] in by_name
-                           else CARD_ANCHORS.get(card["name"]))
-            side_tiles.append(card_tile(card, side_roles, synergy,
-                                         anchor_id=side_anchor))
-        side_html = ("<h3>Sideboard &amp; table aids</h3>"
-                     f'<div class="card-grid">{"".join(side_tiles)}</div>')
     return (
         dept_open("the-99", plan)
         + roles_todo
-        + tiles + side_html
+        + tiles
         + dept_captions(dept, cards_by_name)
         + dept_furniture(dept, cards_by_name)
         + dept_close("the-99", issue)
@@ -1143,16 +1074,9 @@ def render_art_break(commander, mana):
     )
 
 
-def render_upgrade_watch(issue, plan, prose_doc, cards_by_name, sideboard=None,
-                         lookout=None, considering=None):
+def render_upgrade_watch(issue, plan, prose_doc, cards_by_name, considering=None):
     dept = plan_dept(plan, "upgrade-watch")
-    if considering:
-        body = render_short_list(considering)
-    else:
-        # Transitional: decks not yet regenerated under the Short List keep
-        # rendering their legacy artifact until the batch pass retires it.
-        body = (render_sideboard(sideboard) if sideboard
-                else render_lookout(lookout))
+    body = render_short_list(considering) if considering else ""
     return (
         dept_open("upgrade-watch", plan)
         + f'<div class="body-copy">{prose(prose_doc, "upgrades")}</div>'
@@ -1165,16 +1089,19 @@ def render_upgrade_watch(issue, plan, prose_doc, cards_by_name, sideboard=None,
 
 def render_short_list(analysis):
     """The Ten, straight from considering.json: the only ten cards worth the
-    reader's sleeves — bench picks and pool scouts on one list, evidence ◆,
-    verdicts ★, exactly ten by contract (validate_considering)."""
+    reader's sleeves — evidence ◆, verdicts ★, exactly ten by contract
+    (validate_considering).
+
+    No ownership chip. The list used to mark each pick "In the box" or "Scouted",
+    which asked the reader a question the section does not exist to answer: these
+    are ten cards worth knowing about, and whether one is already in a box is the
+    reader's business, not the magazine's."""
     parts = []
     if analysis.get("assessment"):
         parts.append(f'<div class="body-copy">'
                      f'{esc_x_paras(analysis["assessment"])}</div>')
     rows = []
     for i, entry in enumerate(analysis.get("ten") or [], 1):
-        source = entry.get("source", "pool")
-        chip = "In the box" if source == "sideboard" else "Scouted"
         evidence = entry.get("evidence") or {}
         ev_bits = []
         for line in evidence.get("combo_lines_opened") or []:
@@ -1201,159 +1128,12 @@ def render_short_list(analysis):
         cut_html = f'<br><em>Natural cut:</em> {esc_x(cut)}' if cut else ""
         rows.append(
             f'<li><b>{esc(i)}.</b> <strong>{esc_x(entry.get("card", "?"))}</strong>'
-            f' <span class="chip">{chip}</span>'
             f' <span class="chip">{esc(entry.get("role", ""))}</span>'
             f'{ev_html}'
             f'<br><span class="tier-coach">★</span> {esc_x(entry.get("why", ""))}'
             f'{when_html}{cut_html}</li>'
         )
     parts.append(f'<ul class="swap-list">{"".join(rows)}</ul>')
-    verdicts = analysis.get("bench_verdicts") or []
-    if verdicts:
-        items = "".join(
-            f'<li><strong>{esc_x(v.get("card", "?"))}</strong> — '
-            f'<span class="chip">{esc(v.get("verdict", ""))}</span> '
-            f'<span class="tier-coach">★</span> {esc_x(v.get("why", ""))}</li>'
-            for v in verdicts
-        )
-        parts.append(f'<h4>The rest of the bench</h4>'
-                     f'<ul class="swap-list">{items}</ul>')
-    return "".join(parts)
-
-
-def render_sideboard(analysis):
-    """The sideboard read, straight from sideboard_analysis.json.
-
-    Rendered from the artifact rather than a prose key on purpose: a new
-    manual_prose key would change prose:shape and invalidate both prose routines
-    and every issue plan, for a section the renderer can build itself.
-
-    Tiers are labelled inline because this section genuinely mixes them. The
-    bracket delta is ◆ — recomputed by validate-sideboard, not taken on trust.
-    The recommendation to make the swap is ★, and a line the sideboard opens is a
-    candidate until a stack passes. The department badge stays ◆; nothing here
-    wears costume it did not earn.
-    """
-    if not analysis:
-        return ""  # a deck with no sideboard simply has no section
-
-    parts = ['<h3>From the sideboard</h3>']
-    assessment = analysis.get("assessment")
-    if assessment:
-        parts.append(f'<div class="body-copy"><p>{esc_x(assessment)}</p></div>')
-
-    swaps = analysis.get("swaps") or []
-    if swaps:
-        rows = []
-        for swap in swaps:
-            delta = swap.get("bracket_delta") or {}
-            if delta.get("before") is not None and delta.get("after") is not None:
-                moved = delta["before"] != delta["after"]
-                bracket = (f'<span class="tier-data">◆</span> bracket '
-                           f'{delta["before"]}&nbsp;&rarr;&nbsp;{delta["after"]}' if moved
-                           else f'<span class="tier-data">◆</span> bracket '
-                                f'{delta["after"]}, unchanged')
-            else:
-                bracket = ""
-            rows.append(
-                '<li>'
-                f'<strong>{esc(swap.get("in", "?"))}</strong> in, '
-                f'<strong>{esc(swap.get("out", "?"))}</strong> out'
-                f' <span class="chip">{esc(swap.get("role", ""))}</span>'
-                f'<br><em>When:</em> {esc_x(swap.get("when", ""))}'
-                f'<br><span class="tier-coach">★</span> {esc_x(swap.get("why", ""))}'
-                + (f'<br>{bracket}' if bracket else "")
-                + '</li>'
-            )
-        parts.append(f'<ul class="swap-list">{"".join(rows)}</ul>')
-    else:
-        parts.append('<div class="body-copy"><p>No swap in this sideboard earns a '
-                     'maindeck slot as the deck currently stands.</p></div>')
-
-    lines = analysis.get("opens_lines") or []
-    if lines:
-        items = "".join(
-            f'<li><strong>{esc(" + ".join(line.get("cards", [])))}</strong> — '
-            f'{esc_x(line.get("why_plausible", ""))} '
-            f'<span class="chip">{esc(line.get("status", ""))}</span></li>'
-            for line in lines
-        )
-        parts.append(
-            '<h4>Lines this sideboard would open</h4>'
-            f'<ul class="swap-list">{items}</ul>'
-            '<div class="body-copy"><p>Unverified, every one: a line is fact only once a '
-            'resolution has passed the checker. These are the next Judge&rsquo;s Desk '
-            'candidates, not results.</p></div>'
-        )
-
-    defaults = analysis.get("long_term_defaults") or []
-    if defaults:
-        items = "".join(
-            f'<li><strong>{esc(d.get("card", "?"))}</strong> — '
-            f'<span class="chip">{esc(d.get("verdict", ""))}</span> '
-            f'<span class="tier-coach">★</span> {esc_x(d.get("why", ""))}</li>'
-            for d in defaults
-        )
-        parts.append(f'<h4>Belongs in the 99?</h4><ul class="swap-list">{items}</ul>')
-
-    return "".join(parts)
-
-
-def render_lookout(analysis):
-    """The pool-scout read, straight from upgrade_watch.json.
-
-    The empty-sideboard counterpart of render_sideboard, and the same tier
-    discipline: the evidence lines (obsolescence, synergy partners, combo
-    lines) are ◆ — re-checked by validate-upgrade-watch against the tracked
-    indexes, never taken on trust — while the pick itself is ★. A combo line a
-    candidate would open stays a candidate until a stack passes. Department
-    badge stays ◆.
-    """
-    if not analysis:
-        return ""  # no sideboard and no scout report: no section, same as ever
-
-    parts = ['<h3>On the Lookout</h3>']
-    assessment = analysis.get("assessment")
-    if assessment:
-        parts.append(f'<div class="body-copy"><p>{esc_x(assessment)}</p></div>')
-
-    rows = []
-    for entry in analysis.get("lookout") or []:
-        ev = entry.get("evidence") or entry
-        bits = []
-        for deck_card in ev.get("obsoletes") or []:
-            bits.append(f'<span class="tier-data">◆</span> straight upgrade over '
-                        f'<strong>{esc(deck_card)}</strong>')
-        partners = ev.get("synergy_partners_in_deck") or []
-        if partners:
-            names = ", ".join(esc(p.get("partner") if isinstance(p, dict) else p)
-                              for p in partners)
-            bits.append(f'<span class="tier-data">◆</span> synergy partners already '
-                        f'in the 99: {names}')
-        for line in ev.get("combo_lines_opened") or []:
-            bits.append(
-                f'<span class="tier-data">◆</span> completes '
-                f'<strong>{esc(" + ".join(line.get("cards", [])))}</strong> '
-                f'<span class="chip">{esc(line.get("status", ""))}</span>'
-            )
-        role = entry.get("role", "")
-        rows.append(
-            '<li>'
-            f'<strong>{esc(entry.get("card", "?"))}</strong>'
-            + (f' <span class="chip">{esc(role)}</span>' if role else "")
-            + "".join(f'<br>{bit}' for bit in bits)
-            + f'<br><span class="tier-coach">★</span> {esc(entry.get("why", ""))}'
-            + (f'<br><em>Natural cut:</em> {esc(entry["natural_cut"])}'
-               if entry.get("natural_cut") else "")
-            + '</li>'
-        )
-    if rows:
-        parts.append(f'<ul class="swap-list">{"".join(rows)}</ul>')
-        parts.append(
-            '<div class="body-copy"><p>Ten cards the deck does not own yet. Every '
-            'combo line above is a candidate until a resolution passes the checker; '
-            'every straight-upgrade and synergy claim traces to a tracked index.</p></div>'
-        )
     return "".join(parts)
 
 
@@ -1447,7 +1227,7 @@ def render_back_page(issue, plan, deck_doc, stacks, cards_by_name):
 
 
 def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
-                 goldfish=None, decisions=None, sideboard=None, lookout=None,
+                 goldfish=None, decisions=None,
                  considering=None, tutor_guide=None, mana=None):
     """Assemble a complete issue. Deterministic for fixed inputs."""
     cards = deck_doc["cards"]
@@ -1495,8 +1275,7 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
         "the-99": lambda: render_the_99(issue, plan, cards, prose_doc, synergy,
                                         cards_by_name),
         "upgrade-watch": lambda: render_upgrade_watch(issue, plan, prose_doc,
-                                                      cards_by_name, sideboard,
-                                                      lookout, considering),
+                                                      cards_by_name, considering),
         "by-the-numbers": lambda: render_by_the_numbers(issue, plan, goldfish,
                                                         cards_by_name),
         "the-kill": lambda: render_the_kill(issue, plan, stacks, prose_doc,
@@ -1559,18 +1338,12 @@ def main(args):
     prose_doc = load_json(base / "manual_prose.json", {})
     goldfish = load_json(base / "goldfish_metrics.json")
     synergy = load_synergy_graph() if SYNERGY_GRAPH_PATH.exists() else {}
-    # The Short List (considering.json) is the current contract; the legacy
-    # sideboard/lookout pair renders only for decks not yet regenerated under
-    # it (transitional — retired per-deck at batch time).
     considering = load_json(base / "considering.json")
-    sideboard = load_json(base / "sideboard_analysis.json")
-    lookout = load_json(base / "upgrade_watch.json")
     tutor_guide = load_json(base / "tutor_guide.json")
     mana = load_json(base / "mana_analysis.json")
 
     html_out = render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
-                            goldfish, decisions, sideboard, lookout,
-                            considering, tutor_guide, mana)
+                            goldfish, decisions, considering, tutor_guide, mana)
     MANUALS_DIR.mkdir(parents=True, exist_ok=True)
     sheet, wrote_sheet = write_stylesheet(MANUALS_DIR)
     if wrote_sheet:

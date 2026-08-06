@@ -279,7 +279,7 @@ class TestGoblinStorm:
 
     def _report(self):
         doc = load_deck_cards("goblin-storm")
-        cards = [c for c in doc["cards"] if not c.get("is_sideboard")]
+        cards = doc["cards"]
         flags, roles, details = load_reference()
         return assess(
             [c["name"] for c in cards],

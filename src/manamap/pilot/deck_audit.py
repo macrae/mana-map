@@ -2,7 +2,7 @@
 
 Five commands already measure a deck and none of them joins the answers.
 `deck-facts` reports composition, `mana-analysis` castability, `goldfish` speed,
-`bracket-check` power, `upgrade-facts` what is better out there. Ask "is my card
+`bracket-check` power. Ask "is my card
 draw enough" and nothing answers; ask "what is missing that would make the engine
 go" and nothing even represents the question.
 
@@ -13,7 +13,7 @@ This module is the join. Two blocks:
   not the arithmetic (every figure here already existed somewhere); it is that an
   agent reading this can cite the number instead of inventing one. That is the
   failure `DECK_ROLE_BUDGET` was built to have — one flat uncited budget handed to
-  every deck, its own comment calling it "PROVISIONAL", `upgrade_facts` printing
+  every deck, its own comment calling it "PROVISIONAL", the pool brief printing
   its shortfalls as "Context, not evidence."
 
   **engine** — `goldfish_targets.json` is already a machine-readable declaration
@@ -40,7 +40,7 @@ Composes primitives that already exist; no new analysis lives here:
     speed           goldfish_metrics.json   (artifact)
     power           bracket_report.json     (artifact)
     odds            pilot/manabase.py       hypergeometric_at_least, cards_seen
-    the pool        pilot/upgrade_facts.py  load_pool
+    the pool        pilot/card_pool.py      load_pool
 """
 
 import json
@@ -65,7 +65,6 @@ from manamap.pilot.common import (
     load_combo_details,
     load_deck_cards,
     load_json,
-    mainboard,
 )
 from manamap.pilot.manabase import (
     DECK_SIZE_AFTER_COMMANDER, cards_seen, enters_tapped,
@@ -793,10 +792,10 @@ def build_notes(audit):
 
 def analyze(slug, archetype=None, load_pool_fn=None):
     if load_pool_fn is None:
-        from manamap.pilot.upgrade_facts import load_pool as load_pool_fn
+        from manamap.pilot.card_pool import load_pool as load_pool_fn
 
     doc = load_deck_cards(slug)
-    cards = mainboard(doc.get("cards", []))
+    cards = doc.get("cards", [])
     facts = deck_facts_mod.analyze(slug)
     roles = load_card_roles() if CARD_ROLES_PATH.exists() else {}
     mana = load_json(deck_dir(slug) / "mana_analysis.json", default=None)

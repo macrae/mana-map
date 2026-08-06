@@ -195,8 +195,6 @@
       }
       if (ev.edhrec_rank) bits.push('◆ EDHREC rank ' + ev.edhrec_rank.toLocaleString());
       return '<li><span class="rank">' + (i + 1) + '.</span><b>' + esc(e.card) + '</b> ' +
-        '<span class="chip ' + (e.source === 'sideboard' ? 'chip-bench' : 'chip-pool') + '">' +
-        (e.source === 'sideboard' ? 'In the box' : 'Scouted') + '</span>' +
         (e.role ? '<span class="chip">' + esc(e.role) + '</span>' : '') +
         (bits.length ? '<span class="ev">' + esc(bits.join(' · ')) + '</span>' : '') +
         '<span class="ev">★ ' + esc(e.why) + '</span>' +

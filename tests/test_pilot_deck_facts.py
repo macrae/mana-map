@@ -14,7 +14,7 @@ from manamap.pilot import deck_facts as df
 
 def card(name, **overrides):
     base = {
-        "name": name, "quantity": 1, "is_commander": False, "is_sideboard": False,
+        "name": name, "quantity": 1, "is_commander": False,
         "mana_cost": "{1}{G}", "cmc": 2.0, "type_line": "Creature — Elf",
         "oracle_text": "", "colors": ["G"], "color_identity": ["G"], "layout": "normal",
     }

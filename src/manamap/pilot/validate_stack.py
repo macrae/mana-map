@@ -165,7 +165,7 @@ def unknown_cards(doc, slug):
     only `board.you` and `hand`, never the opponents' boards (their permanents are
     not in your deck by definition) and never tokens (never in a decklist).
     """
-    from manamap.pilot.common import load_deck_cards, mainboard
+    from manamap.pilot.common import load_deck_cards
     from manamap.pilot.scenario_facts import board_bodies, membership
 
     scenario = doc.get("scenario") or {}
@@ -173,36 +173,77 @@ def unknown_cards(doc, slug):
         cards = load_deck_cards(slug)["cards"]
     except Exception:
         return [], []                   # no cards.json yet — not this check's job
-    main_names = {c["name"] for c in mainboard(cards)}
-    all_names = {c["name"] for c in cards}
+    # Index each DFC face as well as the full name on BOTH sides. `cards.json`
+    # stores "Esika, God of the Tree // The Prismatic Bridge"; a scenario naming
+    # the front face is naming a card the deck runs, and matching full names only
+    # reported sisay/003 as exploring a card outside the 99 when it does not.
+    main_names = set()
+    for card in cards:
+        name = card["name"]
+        main_names.add(name)
+        if " // " in name:
+            main_names.update(part.strip() for part in name.split(" // "))
 
     you = board_bodies((scenario.get("board") or {}).get("you"))
     named = you["creature_bodies"] + you["other_permanents"] + you["spent_paying_a_cost"]
     named += [h for h in (scenario.get("hand") or []) if isinstance(h, str)]
 
-    # Three outcomes, not two. A card in the SIDEBOARD is known and deliberately
-    # benched — a scenario exploring one is legitimate work, and three committed
-    # artifacts across two decks do exactly that. Only a card the deck has never
-    # heard of is unambiguously wrong, and even that warns on published artifacts:
-    # sisay/003 names Esika, God of the Tree, which is in neither list, and
-    # erroring there would block a checker-passed line to fix a scenario edit that
-    # would cost a respawn.
-    unknown = [c for c in membership(named, all_names)["NOT_IN_THE_DECK"]]
-    benched = [c for c in membership(named, main_names)["NOT_IN_THE_DECK"]
-               if c not in unknown]
+    # Three outcomes, not two — but the third is now "a real card this deck does not
+    # run", not "a benched card". With no sideboard the zone cannot grade anything,
+    # so the question becomes whether the name is a Magic card at all: a scenario may
+    # legitimately name a card outside the 99 (an opponent's permanent, a card under
+    # consideration), while a name the corpus has never heard of is a typo and the
+    # line as written cannot be played.
+    #
+    # Faces are indexed as well as full names. `cards.csv` stores a DFC as
+    # "A // B", so an exact-match-only check calls the front face unknown —
+    # sisay/003 names "Esika, God of the Tree" and was reported as a card the deck
+    # does not have, when the deck runs the card it is the front of.
+    outside = membership(named, main_names)["NOT_IN_THE_DECK"]
+    corpus = _corpus_names()
+    if corpus is None:                  # no cards.csv (fresh clone): never error
+        unknown, elsewhere = [], outside
+    else:
+        unknown = [c for c in outside if c not in corpus]
+        elsewhere = [c for c in outside if c in corpus]
     errors = [
-        f"scenario names {c!r} on your board or in hand, and this deck has no such "
-        f"card in the 99 OR the sideboard — the line as written cannot be played. "
+        f"scenario names {c!r} on your board or in hand, and no such Magic card "
+        f"exists — the line as written cannot be played. "
         f"Check `manamap pilot scenario-facts {slug}`."
         for c in unknown
     ]
     warnings = [
-        f"scenario names {c!r}, which is in the SIDEBOARD rather than the 99 — the "
-        f"line explores a benched card. Fine to author; do not present it as a line "
-        f"the current deck can run."
-        for c in benched
+        f"scenario names {c!r}, which this deck does not run — the line explores a "
+        f"card outside the 99. Fine to author; do not present it as a line the "
+        f"current deck can run."
+        for c in elsewhere
     ]
     return errors, warnings
+
+
+_CORPUS_NAMES = {}
+
+
+def _corpus_names():
+    """Every card name in the corpus, plus each face of a DFC. None if absent."""
+    if not _CORPUS_NAMES:
+        try:
+            import csv as _csv
+            import sys as _sys
+
+            from manamap.config import OUTPUT_CSV_PATH
+            _csv.field_size_limit(_sys.maxsize)
+            names = set()
+            with open(OUTPUT_CSV_PATH) as f:
+                for row in _csv.DictReader(f):
+                    name = row["name"]
+                    names.add(name)
+                    if " // " in name:
+                        names.update(part.strip() for part in name.split(" // "))
+            _CORPUS_NAMES["names"] = names
+        except Exception:               # pragma: no cover — fresh clone
+            _CORPUS_NAMES["names"] = None
+    return _CORPUS_NAMES["names"]
 
 
 def scope_warnings(doc):

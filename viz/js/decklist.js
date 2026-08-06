@@ -7,7 +7,7 @@
  * `tests/test_decklist_parity.py` runs both against the same hand-authored fixtures in
  * `tests/fixtures/decklists/`.
  *
- * **The contract is a projection.** Only `{name, quantity, is_commander, is_sideboard}`
+ * **The contract is a projection.** Only `{name, quantity, is_commander}`
  * has to match. Python additionally resolves printings against Scryfall and tracks
  * `foil`; the viz has no use for any of it, so this strips the annotation and throws it
  * away. That is deliberate risk reduction rather than laziness — the printing regex is
@@ -50,7 +50,10 @@ window.Decklist = (function () {
       const lowered = line.toLowerCase().replace(/:+$/, '');
       if (COMMANDER.has(lowered)) { section = 'commander'; continue; }
       if (MAIN.has(lowered)) { section = 'deck'; continue; }
-      if (SIDEBOARD.has(lowered)) { section = 'sideboard'; continue; }
+      // There is no sideboard any more, but the MARKER still has to be consumed:
+      // a pasted list carrying one would otherwise file every card after it as
+      // mainboard. Stop reading — everything below the line is out of the deck.
+      if (SIDEBOARD.has(lowered)) break;
 
       let isCommander = section === 'commander';
       const cmdr = stripSuffix(line, '*CMDR*');
@@ -77,7 +80,6 @@ window.Decklist = (function () {
         name: name,
         quantity: quantity,
         is_commander: isCommander,
-        is_sideboard: section === 'sideboard',
       });
     }
     return entries;

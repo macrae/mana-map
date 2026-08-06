@@ -1,6 +1,6 @@
 {
   "slug": "heliod",
-  "as_of_decklist_sha256": "204691428da1a176a8adf3d367b7554463563058142a6f9a8d7a98d728c9b838",
+  "as_of_decklist_sha256": "2d7f07f993482fe0cacf3623e0b41061f6e37ef0bca55f645a1b3da9ef38b62b",
   "archetype": "A WU generosity-punisher control deck: symmetric table-draw engines (Howling Mine, Font of Mythos, Dictate of Kruphix, Temple Bell, Kami of the Crescent Moon) feeding asymmetric hand-size punishers (Iron Maiden, Ebony Owl Netsuke, Viseling), with a checker-passed Aetherflux Reservoir storm kill and a checker-passed Approach of the Second Sun line behind it. deck-audit reads `control` from strategic_frame.json and applies the control overrides, and the frame agrees with the deck. The overrides do not: they ask for 5-7 wipes and 37-39 lands from a deck that kills off a life ledger and an upkeep clock, and they cannot see the punishers at all, because card_roles.json has no entry for Iron Maiden, Ebony Owl Netsuke, Howling Mine, Font of Mythos, Dictate of Kruphix or Propaganda.",
   "verdict": "It functions and it never runs out of cards: turn-three land drops at 0.866, the commander available in 90.2% of goldfish games by turn six, 22 card-advantage copies against a floor of 10, and six checker-passed stacks including a complete table kill. What limits it is the payoff half of its own engine. By turn six the deck has DRAWN a draw engine in 75.4% of games and drawn both halves in 41.2%; the pair event is a strict subset of the engine event, so 34.2 points of games reach turn six holding an engine and no punisher. Over the full ten-turn simulation the gap narrows — 85.2% against 56.7% — so about half that band gets its punisher late rather than never. The simulation counts cards drawn, not cast: whether a Howling Mine actually hits the battlefield without a punisher is the pilot's choice, which is why the prescription below is a sequencing and mulligan rule and a widening of the six-card payoff group, not a claim that the deck has already given the cards away. The audit flags five axes under. Two are genuine and each gets a slot below: colour-sources, and interaction-breadth, where the graveyard class is uncovered in all 146 entries. Two are taxonomy floors — protection reads 1 next to Grand Abolisher and eight counterspells, sweepers reads 1 against an override that contradicts its own citation. One, mana-base, is answered by a second axis: 33 lands, 39 mana sources.",
   "axes": [
@@ -589,7 +589,7 @@
     {
       "card": "Lightning Greaves",
       "closes": "protection",
-      "source": "sideboard",
+      "source": "pool",
       "why": "The single point of failure named above is Hullbreaker Horror, and the one thing eight counterspells cannot do is stop a removal spell aimed at it on the turn you tapped out for seven mana. Equip {0} means the shroud goes on the same turn the Horror lands, and the Horror never needs to be targeted by you. It moves the protection axis from 1 to 2 honestly. It does not answer Supreme Verdict, edicts, or a sweeper — say so out loud rather than treating shroud as protection.",
       "evidence": {
         "protection_axis": 1,

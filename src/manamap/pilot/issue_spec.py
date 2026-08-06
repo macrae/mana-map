@@ -78,8 +78,10 @@ DEPARTMENTS = [
     ("by-the-numbers", "By the Numbers",
      "Ten thousand opening hands don't lie.",
      ("data",), True, '"Ledger" Lin Marginal'),
+    # The id stays `upgrade-watch`: it is the stable key `validate_issue`, the act
+    # table and every rendered manual are pinned to. The section is The Short List.
     ("upgrade-watch", "The Short List",
-     "Ten cards — in the box or on the wish list — the only ten worth your sleeves.",
+     "Ten cards worth knowing about. Whether you own them is your business.",
      ("data",), True, '"Ledger" Lin Marginal'),
     # Act V — The Appendix: the proof, the paint, the door out.
     ("judges-desk", "Judge's Desk",

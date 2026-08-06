@@ -40,8 +40,6 @@ Then the rest of the brief, all free:
 
 ```bash
 .venv/bin/manamap pilot deck-facts      <slug>   # composition, combos, the traps
-.venv/bin/manamap pilot upgrade-facts   <slug>   # the pool's three evidence channels
-.venv/bin/manamap pilot sideboard-facts <slug>   # the bench, one card at a time
 .venv/bin/manamap pilot impact          <slug>   # what the latest change touched
 ```
 
@@ -260,7 +258,7 @@ prose; it would forbid this artifact from describing what it is for.
   ],
   "add_candidates": [
     {"card": "...", "closes": "<axis name or engine component>",
-     "source": "pool|sideboard|recon", "why": "...",
+     "source": "pool|recon", "why": "...",
      "evidence": {"combo_lines_opened": [{"cards": ["A", "B"],
                                           "status": "needs a stack scenario"}],
                   "recon_support": "<a deck_recon finding, if that is why>"},

@@ -1112,7 +1112,7 @@ AGENT_ROUTINES = {
     # analysis, not a full manual regeneration — the renderer reads the
     # artifact directly, so the coupling stays one-way.
     "the-ten": {
-        "agent": "sideboard-analyst",
+        "agent": "short-list-analyst",
         "artifact": "considering.json",
         # deck:diagnosis.json? was added 2026-08-03: when a diagnosis exists the
         # ten answer its NAMED deficits instead of index hits, so a re-diagnosis

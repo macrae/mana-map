@@ -71,7 +71,6 @@ the dossier read, and computes nothing beyond a name→index lookup and a role h
 | Commander | `index.json` `commander` | large gold star |
 | Verified lines | `stacks/*.json` (manifest-listed, passing only) | green edges between the cards each scenario names |
 | The Short List | `considering.json` | open blue rings |
-| Sideboard (off by default) | `cards.json` `is_sideboard` | open gold rings |
 
 Three things worth knowing. **A card carries several roles**, so the lens paints it with
 one — `FAMILY_PRIORITY` decides, and `threat` loses every tie because it sits on 19,032 of
@@ -810,7 +809,7 @@ the reader on an unfiltered map with a query string they cannot see.
 | Bracket Floor + its named driver | `bracket_report.json` | ◆ |
 | Sources Say (pips vs sources, land classes, on-curve) | `mana_analysis.json` | ◆ |
 | By the Numbers (meters, turn table, assumptions) | `goldfish_metrics.json` | ◆ |
-| The Short List (ten, with source chips) | `considering.json` | ◆★ |
+| The Short List (ten) | `considering.json` | ◆★ |
 | Fetch Quests (collapsible per tutor) | `tutor_guide.json` | ★ |
 | The Kill (case files, citations verbatim) | `stacks/*.json`, passing only | ✓ |
 | The Builder's Record (slots, scores, runners-up) | `build_plan.json` | ◆ |

@@ -107,14 +107,6 @@ def test_report_errors_with_no_ok_line_prints_nothing(capsys):
 # ── The shared board-split and gates (common) ────────────────────────────
 
 
-def test_mainboard_sideboard_partition():
-    from manamap.pilot.common import mainboard, sideboard
-    cards = [{"name": "A"}, {"name": "B", "is_sideboard": True},
-             {"name": "C", "is_sideboard": False}]
-    assert [c["name"] for c in mainboard(cards)] == ["A", "C"]
-    assert [c["name"] for c in sideboard(cards)] == ["B"]
-
-
 def test_is_land_reads_the_front_face():
     from manamap.pilot.common import is_land
     assert is_land({"type_line": "Land — Mountain"})

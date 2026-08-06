@@ -49,8 +49,6 @@ def _entries(text):
     from manamap.pilot.fetch_deck import parse_decklist
     out = {}
     for e in parse_decklist(text):
-        if e.get("is_sideboard"):
-            continue
         out[e["name"]] = out.get(e["name"], 0) + int(e.get("quantity") or 1)
     return out
 
@@ -136,18 +134,19 @@ def pending(slug):
 
     Ownership is DERIVED when the artifact does not carry it. `acquisition` is
     optional and one regeneration dropped it from a deck that previously had it,
-    which made every pending swap read as "buy" — including three sitting on the
-    deck's own bench. An absent field is not evidence that a card is unowned, so
-    the bench and `share/` are checked before anything is called a purchase.
+    which made every pending swap read as "buy". An absent field is not evidence
+    that a card is unowned, so `share/` is checked before anything is called a
+    purchase.
+
+    Note this is the ONLY ownership question left in the repo, and it is about a
+    physical collection (`share/*.txt`), not about a deck. The Short List itself
+    is ownership-free by design: it names ten cards worth knowing about, and
+    whether one is already in a box is not what the list is for.
     """
-    from manamap.pilot.common import load_deck_cards, load_json, sideboard
+    from manamap.pilot.common import load_json
     doc = load_json(deck_dir(slug) / "considering.json", default=None)
     if not doc:
         return []
-    try:
-        bench = {c["name"] for c in sideboard(load_deck_cards(slug).get("cards", []))}
-    except FileNotFoundError:
-        bench = set()
     box = _owned_index()
 
     out = []
@@ -159,8 +158,6 @@ def pending(slug):
             files = box.get(name) or set()
             if files:
                 status, source = "owned", ", ".join(sorted(files))
-            elif name in bench:
-                status, source = "owned", "the deck's own bench"
             else:
                 status = "purchase"
             source = source or None

@@ -33,7 +33,7 @@ from manamap.pilot.agent_cache import (
     rel,
 )
 from manamap.pilot.card_refs import deck_card_names, text_refs
-from manamap.pilot.common import deck_dir, load_json, load_json_memo, mainboard
+from manamap.pilot.common import deck_dir, load_json, load_json_memo
 
 _NUMBER_RE = re.compile(r"\d+(?:\.\d+)?")
 
@@ -60,18 +60,10 @@ def deck_diff(base, cache):
                            f"{len(stale_records)} record(s) (a rebless ran before "
                            "impact — run impact FIRST next time): "
                            + ", ".join(stale_records[:6]))}
-    zone_moved = sorted({
-        key.split("\x00", 1)[0]
-        for key in set(baseline) ^ set(current)
-        if any(k.split("\x00", 1)[0] == key.split("\x00", 1)[0]
-               for k in (set(baseline) ^ set(current)) - {key})
-    })
-    added = sorted({k.split("\x00", 1)[0] for k in set(current) - set(baseline)}
-                   - set(zone_moved))
-    removed = sorted({k.split("\x00", 1)[0] for k in set(baseline) - set(current)}
-                     - set(zone_moved))
+    added = sorted({k.split("\x00", 1)[0] for k in set(current) - set(baseline)})
+    removed = sorted({k.split("\x00", 1)[0] for k in set(baseline) - set(current)})
     return {"available": True, "changed": changed, "added": added,
-            "removed": removed, "zone_moved": zone_moved}
+            "removed": removed}
 
 
 # ── 2. reference impact ──────────────────────────────────────────────────
@@ -263,7 +255,7 @@ def target_audit(base):
     cards = load_json(base / "cards.json")
     if not doc or not cards:
         return []
-    main = {c["name"] for c in mainboard(cards.get("cards", []))}
+    main = {c["name"] for c in cards.get("cards", [])}
     problems = []
     for target in doc.get("targets", []):
         for group in target.get("need", []):
@@ -275,24 +267,6 @@ def target_audit(base):
 
 
 # ── 5. zone framing ──────────────────────────────────────────────────────
-
-
-def zone_framing(base, zone_moved):
-    if not zone_moved:
-        return []
-    flags = []
-    for sub in ("stacks", "decisions"):
-        folder = base / sub
-        for path in sorted(folder.glob("*.json")) if folder.exists() else []:
-            hits = _hits(load_json(path, {}), zone_moved)
-            if hits:
-                flags.append({"artifact": rel(path), "zone_moved_cards": hits,
-                              "note": "review scenario framing — a VERIFIED "
-                                      "PRE-SWAP annotation may be needed"})
-    return flags
-
-
-# ── report ───────────────────────────────────────────────────────────────
 
 
 def analyze(slug):
@@ -309,7 +283,6 @@ def analyze(slug):
         "reference_impact": reference_impact(base, changed_known),
         "figure_audit": figure_audit(base),
         "target_audit": target_audit(base),
-        "zone_framing": zone_framing(base, diff.get("zone_moved", [])),
     }
 
 
@@ -320,8 +293,7 @@ def format_report(report):
         lines.append(f"  deck diff: unavailable — {diff['reason']}")
     else:
         lines.append(f"  deck diff: {len(diff['changed'])} changed "
-                     f"({len(diff['added'])} added, {len(diff['removed'])} removed, "
-                     f"{len(diff['zone_moved'])} zone-moved)")
+                     f"({len(diff['added'])} added, {len(diff['removed'])} removed)")
         for name in diff["changed"][:12]:
             lines.append(f"    ~ {name}")
     if report["reference_impact"]:
@@ -345,9 +317,6 @@ def format_report(report):
             lines.append(f"    X {t['target']}: {', '.join(t['not_in_maindeck'])}")
     else:
         lines.append("  goldfish targets: all members maindeck")
-    for z in report["zone_framing"]:
-        lines.append(f"    ? {z['artifact']}: zone-moved {', '.join(z['zone_moved_cards'])} "
-                     f"— {z['note']}")
     return "\n".join(lines)
 
 

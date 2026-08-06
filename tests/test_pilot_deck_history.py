@@ -13,7 +13,7 @@ from manamap.pilot import deck_history as dh
 from conftest import requires_deck
 
 
-def test_entries_ignores_the_sideboard():
+def test_entries_ignores_a_discarded_sideboard_section():
     """History is about the 99. A bench edit is not a swap."""
     text = ("Commander:\n1 Edgar Markov\n\nDeck:\n1 Sol Ring\n2 Swamp\n"
             "Sideboard:\n1 Bitterblossom\n")

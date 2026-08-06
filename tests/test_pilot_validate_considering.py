@@ -1,4 +1,10 @@
-"""The Short List contract: exactly ten, bench-first, claims verified."""
+"""The Short List contract: exactly ten, none already in the deck, claims verified.
+
+Ownership is not part of the contract. The list used to carry
+`source: "sideboard" | "pool"` and rank bench picks first; a card is now on the
+list because it is worth knowing about, and whether the pilot owns it is not a
+question the artifact asks.
+"""
 
 import copy
 
@@ -7,25 +13,18 @@ from manamap.pilot.validate_considering import validate
 
 def deck_doc():
     cards = [
-        {"name": "Test Commander", "is_commander": True, "is_sideboard": False,
+        {"name": "Test Commander", "is_commander": True,
          "type_line": "Legendary Creature"},
     ]
     for i in range(5):
         cards.append({"name": f"Main {i}", "is_commander": False,
-                      "is_sideboard": False, "type_line": "Creature"})
-    for i in range(12):
-        cards.append({"name": f"Bench {i}", "is_commander": False,
-                      "is_sideboard": True, "type_line": "Instant"})
-    cards.append({"name": "Storm Counter", "is_commander": False,
-                  "is_sideboard": True, "type_line": "Card"})
+                      "type_line": "Creature"})
     return {"cards": cards}
 
 
 def good_doc():
-    ten = [{"card": f"Bench {i}", "source": "sideboard",
-            "why": f"Specific reason {i}."} for i in range(7)]
-    ten += [{"card": f"Pool Pick {i}", "source": "pool",
-             "why": f"Specific reason {i}."} for i in range(3)]
+    ten = [{"card": f"Pool Pick {i}", "why": f"Specific reason {i}."}
+           for i in range(10)]
     return {"slug": "test", "assessment": "Ten cards, honestly ranked.",
             "ten": ten, "gaps": []}
 
@@ -40,18 +39,6 @@ def test_count_must_be_exactly_ten():
     assert any("exactly 10" in e for e in validate(doc, deck_doc()))
 
 
-def test_sideboard_source_must_be_on_the_bench():
-    doc = good_doc()
-    doc["ten"][0]["card"] = "Not A Bench Card"
-    assert any("bench holds no such card" in e for e in validate(doc, deck_doc()))
-
-
-def test_accessories_are_not_bench_cards():
-    doc = good_doc()
-    doc["ten"][0]["card"] = "Storm Counter"
-    assert any("bench holds no such card" in e for e in validate(doc, deck_doc()))
-
-
 def test_pool_source_must_not_be_in_the_deck():
     doc = good_doc()
     doc["ten"][7]["card"] = "Main 2"
@@ -60,13 +47,13 @@ def test_pool_source_must_not_be_in_the_deck():
 
 def test_duplicates_rejected():
     doc = good_doc()
-    doc["ten"][1]["card"] = "Bench 0"
+    doc["ten"][1]["card"] = doc["ten"][0]["card"]
     assert any("duplicate" in e for e in validate(doc, deck_doc()))
 
 
 def test_natural_cut_must_be_maindeck_and_unique():
     doc = good_doc()
-    doc["ten"][0]["natural_cut"] = "Bench 5"
+    doc["ten"][0]["natural_cut"] = "Not In The Deck"
     errors = validate(doc, deck_doc())
     assert any("not in the maindeck" in e for e in errors)
     doc = good_doc()

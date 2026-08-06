@@ -605,16 +605,6 @@ def test_fetch_lands_do_not_make_tutor_guide_applicable(deck):
         ac.status(SLUG, "tutor-guide")
 
 
-def test_the_ten_applies_to_every_deck(deck):
-    """Bench or no bench, the Short List routine is live (MISS, never N/A)."""
-    assert ac.status(SLUG, "the-ten")["status"] == "MISS"
-    doc = json.loads((deck / "cards.json").read_text())
-    doc["cards"].append({"name": "Sazacap's Brew", "type_line": "Instant",
-                         "is_sideboard": True})
-    write_json(deck / "cards.json", doc)
-    assert ac.status(SLUG, "the-ten")["status"] == "MISS"
-
-
 def test_record_refuses_the_inapplicable_tutor_guide(deck):
     write_json(deck / "tutor_guide.json",
                {"slug": SLUG, "assessment": "x", "tutors": [], "gaps": []})
@@ -659,7 +649,7 @@ def _two_card_deck(base):
     is not — the shape every STALE_OK test needs."""
     write_json(base / "cards.json", {"deck": SLUG, "decklist_sha256": "abc", "cards": [
         {"name": "Sac Outlet", "oracle_text": "Sacrifice a creature: draw."},
-        {"name": "Filler Land", "oracle_text": "T: Add C.", "is_sideboard": False},
+        {"name": "Filler Land", "oracle_text": "T: Add C."},
     ]})
     stack = stack_doc("001")
     stack["scenario"]["question"] = "What does Sac Outlet do here?"

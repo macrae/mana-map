@@ -99,14 +99,49 @@ def load_json(path, default=None):
         return json.load(f)
 
 
-def mainboard(cards):
-    """The cards actually in the deck — everything not behind a SIDEBOARD marker."""
-    return [c for c in cards if not c.get("is_sideboard")]
+# ── The opened-line status vocabulary ────────────────────────────────────
+#
+# A claim that a card "opens a line" is a candidate until a stack artifact passes
+# the checker. Three validators share this vocabulary — considering, diagnosis and
+# upgrade-watch — so it lives here rather than in any one of them. It used to live
+# in `validate_sideboard.py`, which made a retired sideboard validator a load-
+# bearing library for The Short List.
+
+# The magic string five agent prompts already use for an unproven line. Kept
+# identical so one grep finds every candidate claim in the repo.
+UNVERIFIED_STATUS = "needs a stack scenario"
+# An opened line may claim this only by pointing at a stack artifact whose checker
+# verdict is `pass` and which actually names the line's cards — the claim is
+# re-checked against the file, never trusted.
+VERIFIED_STATUS = "verified"
 
 
-def sideboard(cards):
-    """The cards behind a SIDEBOARD marker, accessories included."""
-    return [c for c in cards if c.get("is_sideboard")]
+def check_verified_line(i, line, deck_path, label="opens_lines"):
+    """A `verified` claim is re-checked against the stack artifact, never trusted."""
+    rel = line.get("stack_artifact")
+    if not rel:
+        return [f"{label} {i}: status {VERIFIED_STATUS!r} requires a "
+                f"`stack_artifact` path to a checker-passed stack"]
+    if deck_path is None:
+        return [f"{label} {i}: status {VERIFIED_STATUS!r} cannot be confirmed "
+                f"without the deck directory"]
+    path = deck_path / rel
+    if not path.exists():
+        return [f"{label} {i}: stack_artifact {rel!r} does not exist"]
+    with open(path) as f:
+        artifact = json.load(f)
+    if artifact.get("checker", {}).get("verdict") != "pass":
+        return [f"{label} {i}: stack_artifact {rel!r} has checker verdict "
+                f"{artifact.get('checker', {}).get('verdict')!r}, not 'pass' — "
+                f"only a passing stack verifies a line"]
+    body = json.dumps(artifact, ensure_ascii=False)
+    missing = [c for c in line.get("cards", []) if c not in body]
+    if missing:
+        return [f"{label} {i}: stack_artifact {rel!r} never mentions "
+                f"{missing} — it cannot verify this line"]
+    return []
+
+
 
 
 def expand_copies(cards):

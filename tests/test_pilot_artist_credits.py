@@ -16,7 +16,7 @@ def card(name, artist, **overrides):
         "name": name, "artist": artist, "quantity": 1, "type_line": "Creature — Goblin",
         "set": "sld", "set_name": "Secret Lair Drop", "collector_number": "100",
         "border_color": "black", "frame_effects": [], "finishes": ["nonfoil"],
-        "foil": False, "is_commander": False, "is_sideboard": False,
+        "foil": False, "is_commander": False,
     }
     base.update(overrides)
     return base

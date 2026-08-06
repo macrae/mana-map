@@ -25,8 +25,6 @@ Applying a swap is a separate, human act.
    ```bash
    .venv/bin/manamap pilot deck-audit      <slug>
    .venv/bin/manamap pilot deck-facts      <slug>
-   .venv/bin/manamap pilot upgrade-facts   <slug>
-   .venv/bin/manamap pilot sideboard-facts <slug>
    ```
 
    Read `deck-audit`'s `notes` yourself before spawning anything. An axis that
@@ -115,9 +113,9 @@ Applying a swap is a separate, human act.
 - **Recon is evidence, not authority.** "Most lists run this" is a fact about other
   people's decks. Whether it belongs in this one is decided against this deck's
   measured axes, and a recon-sourced add still needs a `closes`.
-- **Editing the sideboard invalidates everything.** `is_sideboard` is in
-  `CARD_SEMANTIC_FIELDS`: moving one card between zones MISSes every routine on the
-  deck, this one included. Expect it; do not re-record blindly.
+- **A decklist edit invalidates everything.** `cards.json`'s semantic fields feed
+  `cards:semantic`, so any change to the 99 MISSes every routine on the deck, this
+  one included. Expect it; do not re-record blindly.
 - **Do not commit `deck-audit` output.** It is a view, like `deck-facts`, and it
   embeds goldfish and bracket figures that go stale the moment the decklist moves.
 

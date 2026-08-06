@@ -27,7 +27,6 @@ from manamap.pilot.common import (
     is_land,
     load_deck_cards,
     load_json,
-    mainboard,
 )
 from manamap.pilot.manabase import (
     WUBRG,
@@ -85,7 +84,7 @@ def nonland_producer_kind(card):
 
 def analyze(slug):
     deck_doc = load_deck_cards(slug)
-    entries = mainboard(deck_doc["cards"])
+    entries = deck_doc["cards"]
     # Every count below is about the library the shuffler sees, so it runs on
     # COPIES: eleven Islands are eleven blue sources, not one. Counting entries
     # here understates the mana base by every duplicated basic (STYLEv3 §7.6 —

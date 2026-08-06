@@ -81,7 +81,7 @@ first place.
 | **Deck facts** | `deck-facts` — the deterministic brief every agent reads instead of re-deriving. Computed on demand, never committed |
 | **Fetch Quests** | `tutor-guide` routine → `tutor_guide.json` (all 7 decks), authored by `pilot-coach`, gated by `validate-tutor-guide`. One wish per maindeck tutor; per-clause search-constraint checking (a DFC's two faces carry two different clauses) |
 | **Sources Say** | `mana_analysis.py` + `manamap pilot mana-analysis` → `mana_analysis.json` (all 7 decks). Land classes, pips vs sources, hypergeometric on-curve probability, ramp census. No agent — deterministic Python, narrated by the writer's `mana_base` key |
-| **The Short List** | `considering.json` (all 7 decks) — exactly ten cards, bench-first, pool-filled, `validate-considering` enforcing the count and every evidence claim. Replaces both `sideboard_analysis.json` and `upgrade_watch.json` |
+| **The Short List** | `considering.json` (all 8 decks) — exactly ten cards scouted from the whole pool, ownership-free, `validate-considering` enforcing the count and every evidence claim. The last survivor of the retired sideboard apparatus |
 | **Card links** | Every card mention in body copy links to its tile in The 99 (commander → The Command Zone) with a CSS-only hover preview. Renderer-provided navigation; agents write plain names |
 | **Deck versioning** | `HISTORY.md` per deck (append-only: date · sha12 · floor · reason) on 4 decks; `decklist_sha256` stamped in `issue.json` **and asserted against `cards.json`** by `validate_issue.validate_identity()` |
 | **Deck dossier** | `viz/deck.html` — every deck's committed artifacts rendered as data: bracket floor + named driver, Sources Say, goldfish, the Short List, Fetch Quests, verified case files with citations, and the builder's record where one exists. Nothing recomputed in the browser, nothing hardcoded; `build-index` emits `data/decks/index.json` as the manifest. `viz/css/tokens.css` ports design.py's tokens to a dark register with the ✓/◆/★ colours fixed. Each issue's Back Page links to its dossier and back |
@@ -120,7 +120,7 @@ All read-only except where noted. Definitions in `.claude/agents/`.
 | `deck-analyst` | ◆ data layer; emits `candidate_pool.json` |
 | `deck-architect` | Improves the deterministic plan; every ratio cites `strategy:<id>` |
 | `deck-critic` | Adversarial verifier for build plans; report-only |
-| `sideboard-analyst` | **The Short List** — ten cards, bench-first, pool-filled, analysis-only |
+| `short-list-analyst` | **The Short List** — ten cards worth knowing about, pool-scouted, analysis-only |
 | `pipeline-runner` | Runs and diagnoses card-pipeline steps |
 | `viz-dev` | Frontend work (write-scoped to `viz/`) |
 
@@ -134,7 +134,7 @@ Build     brief.json → build-deck → validate-build → bracket-check
 Publish   fetch-deck → validate-deck → goldfish → mana-analysis
                      → /resolve-stack per line   (resolver → validate-stack → rules-checker, ≤3)
                      → /write-manual             (frame → coach → writer)
-                     → /analyse-sideboard        (the Short List)
+                     → /short-list               (the Short List)
                      → /design-issue             (magazine-editor → validate-issue)
                      → build-manual → build-index
 ```

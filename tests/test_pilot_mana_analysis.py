@@ -66,7 +66,7 @@ def _deck(tmp_path, monkeypatch, cards):
 
 def _land(name, oracle, quantity=1, type_line="Basic Land — Island"):
     return {"name": name, "type_line": type_line, "oracle_text": oracle,
-            "quantity": quantity, "is_commander": False, "is_sideboard": False,
+            "quantity": quantity, "is_commander": False,
             "color_identity": []}
 
 
@@ -77,7 +77,7 @@ def test_basic_land_copies_all_count_as_sources(tmp_path, monkeypatch):
 
     _deck(tmp_path, monkeypatch, [
         {"name": "Cmd", "type_line": "Legendary Creature", "oracle_text": "",
-         "quantity": 1, "is_commander": True, "is_sideboard": False,
+         "quantity": 1, "is_commander": True,
          "color_identity": ["U"], "mana_cost": "{1}{U}", "cmc": 2.0},
         _land("Island", "({T}: Add {U}.)", quantity=11),
         _land("Reliquary Tower", "{T}: Add {C}.", type_line="Land"),
@@ -100,7 +100,7 @@ def test_tapped_ratio_uses_copies_in_the_denominator(tmp_path, monkeypatch):
 
     _deck(tmp_path, monkeypatch, [
         {"name": "Cmd", "type_line": "Legendary Creature", "oracle_text": "",
-         "quantity": 1, "is_commander": True, "is_sideboard": False,
+         "quantity": 1, "is_commander": True,
          "color_identity": ["U"], "mana_cost": "{1}{U}", "cmc": 2.0},
         _land("Island", "({T}: Add {U}.)", quantity=11),
         _land("Sunken Hollow", "This land enters tapped.\n{T}: Add {U}.",

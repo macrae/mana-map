@@ -36,10 +36,6 @@ manamap pilot deck-history <slug> [--json]  # applied swaps (from git) + the pen
 manamap pilot deck-audit <slug> [--archetype A] [--json] [--out F]  # cited axis targets + engine activation
 manamap pilot validate-diagnosis <slug>    # diagnosis form; axes re-derived, cuts checked against verified stacks
 manamap pilot pool-facts <paths…> [--exclude F] [--json] [--out F]  # a BOX OF CARDS → which deck to build
-manamap pilot sideboard-facts <slug> [--json]  # per-sideboard-card roles, legality, bracket-if-added
-manamap pilot validate-sideboard <slug>  # swap form + recomputed bracket deltas
-manamap pilot upgrade-facts <slug> [--json]    # pool-scout brief for a deck with NO sideboard
-manamap pilot validate-upgrade-watch <slug>    # lookout form + claims re-checked against the indexes
 manamap pilot cache-rebless <slug>             # re-record every STALE_OK routine, zero spawns
 manamap pilot impact <slug> [--json]           # card/figure/target/zone staleness report (free)
 manamap pilot validate-strategic-frame <slug>  # frame form + candidate-line flags
@@ -85,7 +81,7 @@ data/decks/<slug>/             all tracked:
                                pilot_feedback.md     authored, OPTIONAL (free-text pilot notes)
                                mana_analysis.json    mana-analysis (deterministic, no agent)
                                tutor_guide.json      pilot-coach (Fetch Quests)
-                               considering.json      sideboard-analyst (The Short List — ten)
+                               considering.json      short-list-analyst (The Short List — ten)
                                diagnosis.json        deck-doctor ⇄ deck-skeptic (the improvement loop)
                                deck_recon.json       deck-doctor MODE recon (dated; perishable)
                                issue.json            authored (never generated)
@@ -301,7 +297,7 @@ histogram — if those two ever diverge, one of them is wrong.
 
 **Build side:** deck builder pool/scoring/slot-filling/emergent-combo pass (`test_pilot_build_deck`, 42), hypergeometric mana math and land selection (`test_pilot_manabase`, 36), bracket floor + drivers + the goblin-storm golden checks (`test_pilot_bracket`, 35), build-plan form gate (`test_pilot_validate_build`, 37).
 
-**Publish side:** agent cache incl. N/A scan semantics and memoized loaders (`test_pilot_agent_cache`, 57), renderer determinism/escaping/TOC/sideboard (`test_pilot_build_manual`, 42), issue form gate incl. the decklist_sha256 stamp (`test_pilot_validate_issue`, 29), artist analysis (`test_pilot_artist_credits`, 24), mocked Scryfall ingestion (`test_pilot_fetch_deck`, 24), sideboard analysis form (`test_pilot_validate_sideboard`, 22), citation contract incl. strategy-citation dispatch (`test_pilot_validate_stack`, 18), strategy form validator + changelog (`test_pilot_validate_strategy`, 18), goldfish determinism and the two opening-hand distributions (`test_pilot_goldfish`, 16), strategic-frame form (`test_pilot_validate_strategic_frame`, 15), deck facts (`test_pilot_deck_facts`, 14), sideboard facts (`test_pilot_sideboard_facts`, 14), CR chunker edge cases (`test_pilot_rules_db`, 12), strategy chunker + real-DB checks (`test_pilot_strategy_db`, 9), rules queries (`test_pilot_query_rules`, 5).
+**Publish side:** agent cache incl. N/A scan semantics and memoized loaders (`test_pilot_agent_cache`, 57), renderer determinism/escaping/TOC (`test_pilot_build_manual`, 42), issue form gate incl. the decklist_sha256 stamp (`test_pilot_validate_issue`, 29), artist analysis (`test_pilot_artist_credits`, 24), mocked Scryfall ingestion (`test_pilot_fetch_deck`, 24), citation contract incl. strategy-citation dispatch (`test_pilot_validate_stack`, 18), strategy form validator + changelog (`test_pilot_validate_strategy`, 18), goldfish determinism and the two opening-hand distributions (`test_pilot_goldfish`, 16), strategic-frame form (`test_pilot_validate_strategic_frame`, 15), deck facts (`test_pilot_deck_facts`, 14), CR chunker edge cases (`test_pilot_rules_db`, 12), strategy chunker + real-DB checks (`test_pilot_strategy_db`, 9), rules queries (`test_pilot_query_rules`, 5).
 
 Data-gated tests use `requires_rules` / `requires_deck` / `requires_strategy` / `requires_roles` markers from `tests/conftest.py`.
 
@@ -374,7 +370,7 @@ becomes evidence after a resolve-stack run.
 ## Deck audit — is this deck any good? (`deck-audit`, tier ◆)
 
 Five commands measure a deck and nothing joined them. `deck-facts` reports composition,
-`mana-analysis` castability, `goldfish` speed, `bracket-check` power, `upgrade-facts`
+`mana-analysis` castability, `goldfish` speed, `bracket-check` power
 what is better out there. Ask "is my card draw enough" and nothing answered.
 
 `deck-audit` is the join, and it is **computed on demand, never committed** — it embeds
@@ -465,20 +461,23 @@ every-issue-is-the-reader's-first would forbid.
 
 **Exactly ten cards**, ranked, that the pilot should be thinking about — one artifact and
 one routine (`the-ten`) for every deck, replacing the retired `sideboard_analysis.json` /
-`upgrade_watch.json` pair. Bench-first: every real sideboard card competes, a bench larger
-than ten is pruned to its best ten, a smaller or empty bench is topped up from the whole
-card pool, and each pick carries `source: "sideboard" | "pool"`. **Analysis-only** — the
-physical sideboard in `cards.json` is never rewritten.
+`upgrade_watch.json` pair — and, once the sideboard itself was retired, the last artifact
+standing on the question "what else could this deck play".
 
-`validate_considering.py` enforces the count and every claim: source membership (a
-`sideboard` pick must really be on the bench, and accessories are not cards; a `pool` pick
-must not already be in the deck), no duplicate picks or duplicate `natural_cut`s, a cut
+**Ownership is not a criterion.** Picks are scouted from the whole card pool and the list
+carries no `source`. It used to rank cards the pilot already owned first, which made an
+inventory question into a selection rule; a card is on the list because it is worth
+knowing about, or it is not on the list. **Analysis-only** — `cards.json` is never
+rewritten by this routine.
+
+`validate_considering.py` enforces the count and every claim: no pick may already be in
+the deck, no duplicate picks or duplicate `natural_cut`s, a cut
 that is a real maindeck card and never the commander, combo-line status vocabulary
 (`needs a stack scenario` unless a checker-passed artifact is named), obsolescence claims
 re-checked against `obsolescence_index.json`, synergy partners re-checked against the
 pick's own graph shortlist **and** the deck, and every claimed bracket delta recomputed
-through `bracket.assess()`. `sideboard-facts` and `upgrade-facts` are its deterministic
-pre-agent briefs.
+through `bracket.assess()`. `deck-facts` and `deck-audit` are its deterministic pre-agent
+briefs.
 
 Rendered as **The Short List**, straight from the artifact with no prose key — a new key
 would change `prose:shape` and invalidate both prose routines for no gain. The writer's
@@ -511,9 +510,8 @@ they can never be confused again. Three guards: a unit fixture (11 Islands = 11 
 sources), a staleness test recomputing every tracked artifact, and a `validate-issue` lint
 rejecting any reader-facing copy that quotes the entry count as a land count.
 
-**The trap this exists to catch.** Goblin-storm's one sideboard card is Sazacap's Brew,
-tagged `buff:pump` because its text contains "+2/+0", and Vol. 001 shipped advice to test
-it in the Witch's Mark slot. Both are wrong: the Brew's first target is a *player*, so
+**The trap this exists to catch.** Sazacap's Brew is tagged `buff:pump` because its text
+contains "+2/+0", and Vol. 001 shipped advice to test it in the Witch's Mark slot. Both are wrong: the Brew's first target is a *player*, so
 Zada — which copies instants targeting **only** Zada — never copies it, while Witch's Mark
 targets a creature and is copyable. Reading the card rather than its role tag inverted the
 recommendation, and the published prose was corrected to match. That is the whole value of

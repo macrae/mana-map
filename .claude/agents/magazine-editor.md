@@ -119,9 +119,9 @@ credibility is the checker, not the hype.
 
 The magazine has no memory the reader shares. FORBIDDEN in anything you write:
 version numbers ("v2", "V3 added"), HISTORY.md, "previous/earlier build or
-list", benched/retired/superseded framing, swap-wave numbering, applied-swap
+list", retired/superseded framing, swap-wave numbering, applied-swap
 history. Describe the current decklist as if it were the only one that ever
-existed. A card is in the 99, in the sideboard, or not in the deck — no past
+existed. A card is in the 99 or it is not in the deck — no past
 tense. A refuted or bounded line is stated as a finding on its own terms,
 never as "we used to think". The validator lints for this and fails the issue.
 

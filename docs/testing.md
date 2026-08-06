@@ -248,14 +248,12 @@ Both are skip-guarded: `test_pipeline_integration.py` skips per-file via `requir
 | `test_pilot_validate_strategy.py` | 18 | Doc form errors, changelog contract, strategy citations through `validate_citations` | — |
 | `test_pilot_validate_issue.py` | 29 | Issue identity incl. the decklist_sha256 stamp, department completeness/order, tier-costume integrity, card-name accuracy | — |
 | `test_pilot_artist_credits.py` | 24 | Standout detection, per-entry counting, drop runs, roster overlap | 1 behind `requires_deck` |
-| `test_pilot_agent_cache.py` | 57 | Fingerprint stability/order-independence, prose-shape semantics, staleness diffs, record guards, N/A scan semantics (incl. sideboard gating) and exit codes, memoized loaders | 5 behind `requires_deck` |
+| `test_pilot_agent_cache.py` | 57 | Fingerprint stability/order-independence, prose-shape semantics, staleness diffs, record guards, N/A scan semantics (incl. applicability gating) and exit codes, memoized loaders | 5 behind `requires_deck` |
 | `test_pilot_build_deck.py` | 48 | Pool hard filters (bracket, identity, bans), scoring components, slot filling with alternates, emergent-combo pass, decklist naming | — |
 | `test_pilot_manabase.py` | 40 | Hypergeometric source counts, pip counting incl. hybrid, effective-pip quorum, greedy land selection, land quality | — |
 | `test_pilot_bracket.py` | 35 | Floor drivers, commander-assumption exclusion (A-004), two-card infinites, tutors-never-scored, goblin-storm golden checks | 3 behind `requires_deck` + `requires_roles` |
 | `test_pilot_validate_build.py` | 37 | Card count, singleton, identity, per-role budget arithmetic, bracket cross-check, manabase staleness, critic verdict consistency | — |
 | `test_pilot_deck_facts.py` | 14 | Deterministic deck brief: DFC colours, curve, restricted-mana classes, notes | 4 behind `requires_deck` |
-| `test_pilot_sideboard_facts.py` | 14 | Board split, accessory exclusion, lines-opened set difference, bracket-if-added | 2 behind `requires_deck` |
-| `test_pilot_validate_sideboard.py` | 22 | Swap form (in/out/why/when), recomputed bracket deltas, verdict closed set | — |
 | `test_pilot_validate_strategic_frame.py` | 15 | Frame form, engine strategy_refs, candidate-line status, shared validator tail | — |
 
 ## conftest.py

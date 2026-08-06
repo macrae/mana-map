@@ -1,6 +1,6 @@
 {
   "slug": "gishath",
-  "as_of_decklist_sha256": "fb3507e3b705d6c525817d94b32f74d07a715dd7ec78f9d4de6d9319a345f9d0",
+  "as_of_decklist_sha256": "0480aaf7d19ef989e62c469d01a27eab471e80d6182dfefbefefd3a1579bd749",
   "archetype": "Naya Dinosaur battlecruiser. Plan A is an eight-mana commander's combat-damage trigger; plan B is an enrage web that needs no combat step but does need a damage source of its own on the board. strategic_frame.json calls it a 'linear critical-mass ramp deck'; deck-audit matched no archetype keyword, so BASE targets applied and no aggro or combo override was used — read the ratio targets as starting points, per the audit's own first note.",
   "verdict": "The deck functions: it hits its turn-3 land drop 89.4% of the time, covers all five interaction classes, and carries 11 removal pieces inside an 18-card interactive suite — unusual for a linear typal list. What limits it is the top end. Six of the audit's 65 nonland entries sit at mana value 8+ — the commander among them — and goldfish puts Gishath's mean cast turn at 7.969 with 8.3% by turn 6, while exactly two maindeck cards can make him cheaper. The enrage web is not the ready fallback it looks like either: it is a conjunction of a converter body and a damage source, and no goldfish target measures the two together.",
   "axes": [
@@ -547,7 +547,7 @@
     {
       "card": "Knight of the Stampede",
       "closes": "engine component: ignition — making Gishath castable",
-      "source": "sideboard",
+      "source": "pool",
       "why": "'Dinosaur spells you cast cost {2} less to cast' for {3}{G}. At {2} it matches Urza's Incubator, the largest reduction the deck already runs, and it takes the maindeck set that can touch a command-zone cast from two cards to three — 19.9% of openers by manabase.hypergeometric_at_least on 99 cards, and 25.8% at four once Herald's Horn goes in below. That is still short of the citation's 31% rung, which is the reason open_questions asks about a fifth. It also discounts the 29 Dinosaur creatures in the 99, the same axis the ramp count is already paying for.",
       "evidence": {
         "ignition_cards_today": [
@@ -602,7 +602,7 @@
     {
       "card": "Drover of the Mighty",
       "closes": "colour-sources",
-      "source": "sideboard",
+      "source": "pool",
       "why": "'{T}: Add one mana of any color' for {1}{G}, and a 3/3 while you control a Dinosaur. Swapping it for a colourless tapland adds a source to each of W, R and G and removes one card from the tapland count, which is the exact shape of the colour-sources gap — the deck's shortfall is coloured sources, not total mana.",
       "evidence": {
         "per_colour_have": {

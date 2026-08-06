@@ -54,7 +54,6 @@ from manamap.config import (
 from manamap.pilot import bracket as bracket_mod
 from manamap.pilot import manabase
 from manamap.pilot.common import (
-    SIDEBOARD_SECTION_MARKERS,
     commander_rejection,
     deck_dir,
     load_card_roles,
@@ -563,29 +562,8 @@ def decklist_name(name, layout):
     return name.split(" // ")[0]
 
 
-def extract_sideboard(text):
-    """The sideboard block of an existing decklist, verbatim, or "".
-
-    The builder only ever knows about the 99 it built, so rewriting decklist.txt
-    from a plan would silently delete a sideboard someone authored by hand. Lift
-    the block out and hand it back unchanged — the section markers and the exact
-    printing annotations are the pilot's, not ours to regenerate.
-    """
-    if not text:
-        return ""
-    lines = text.split("\n")
-    for i, line in enumerate(lines):
-        if line.strip().lower().rstrip(":") in SIDEBOARD_SECTION_MARKERS:
-            return "\n".join(lines[i:]).rstrip("\n")
-    return ""
-
-
-def decklist_text(plan, layouts=None, sideboard=""):
-    """Render the plan as a decklist.txt that fetch-deck can parse.
-
-    `sideboard` is appended verbatim; pass the result of extract_sideboard() on
-    the file being overwritten so a hand-authored sideboard survives a rebuild.
-    """
+def decklist_text(plan, layouts=None):
+    """Render the plan as a decklist.txt that fetch-deck can parse."""
     layouts = layouts or {}
 
     # The PRINTING, not just the card. A deck built from a physical collection is a
@@ -612,16 +590,13 @@ def decklist_text(plan, layouts=None, sideboard=""):
         lines.append(f"1 {render(slot['name'])}")
     for name, count in plan["land_counts"].items():
         lines.append(f"{count} {render(name)}")
-    body = "\n".join(lines)
-    if sideboard:
-        body += "\n\n" + sideboard
-    return body + "\n"
+    return "\n".join(lines) + "\n"
 
 
 # Keys the deck-architect / deck-critic loop merges into build_plan.json. The
 # deterministic builder never produces them, so a re-materialisation must carry
-# them forward — same rule as extract_sideboard(): the builder only rewrites
-# what it owns. (This is the fix for the two-writer bug that silently erased
+# them forward — the builder only rewrites what it owns. (This is the fix for
+# the two-writer bug that silently erased
 # hapatra's critic block: build-deck ran after the agent merge and dropped it.)
 AGENT_PLAN_KEYS = (
     "archetype", "gameplan", "role_budget_citations", "swaps",
@@ -678,11 +653,8 @@ def main(args):
         layouts = pd.read_csv(OUTPUT_CSV_PATH, usecols=["name", "layout"])
         layouts = dict(zip(layouts["name"], layouts["layout"]))
         path = base / "decklist.txt"
-        existing = path.read_text(encoding="utf-8") if path.exists() else ""
-        sideboard = extract_sideboard(existing)
-        path.write_text(decklist_text(plan, layouts, sideboard), encoding="utf-8")
-        print(f"  Wrote {path}"
-              + (" (sideboard preserved)" if sideboard else ""))
+        path.write_text(decklist_text(plan, layouts), encoding="utf-8")
+        print(f"  Wrote {path}")
 
 
 if __name__ == "__main__":

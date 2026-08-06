@@ -295,31 +295,66 @@ def test_every_committed_scenario_preflights_without_errors():
 
 
 @requires_deck
-def test_unknown_cards_separates_benched_from_never_heard_of():
-    """A sideboard card is known and deliberately benched — a different finding.
+def test_unknown_cards_separates_a_real_card_from_a_typo():
+    """Three outcomes, graded against the CORPUS rather than a zone.
 
-    Builds its scenario from a card that IS on the bench right now rather than
-    naming one. The earlier version hardcoded a stack whose board held Exquisite
-    Blood, and broke the day that card left edgar-vampires for another deck —
-    testing a decklist instead of the predicate.
+    With no sideboard the zone cannot grade anything, so the question becomes
+    whether the name is a Magic card at all. A scenario may legitimately name a
+    card outside the 99 — an opponent's permanent, or one under consideration —
+    while a name the corpus has never heard of is a typo, and the line as written
+    cannot be played.
+
+    Builds from live data rather than hardcoding a decklist: the earlier version
+    named Exquisite Blood and broke the day that card left edgar-vampires.
     """
-    from manamap.config import DECKS_DIR
     from manamap.pilot.common import load_deck_cards
 
     try:
         cards = load_deck_cards("edgar-vampires")["cards"]
     except FileNotFoundError:
         pytest.skip("edgar-vampires not fetched")
-    benched = next((c["name"] for c in cards if c.get("is_sideboard")), None)
-    if benched is None:
-        pytest.skip("edgar-vampires has no sideboard")
+    if vs._corpus_names() is None:
+        pytest.skip("cards.csv absent — the corpus check degrades to warnings")
 
-    doc = {"scenario": {"board": {"you": [benched]}, "hand": [], "stack": []}}
+    in_deck = cards[0]["name"]
+    doc = {"scenario": {"board": {"you": [in_deck]}, "hand": [], "stack": []}}
     errors, warnings = vs.unknown_cards(doc, "edgar-vampires")
-    assert errors == [], f"a benched card must warn, not error: {errors}"
-    assert any("SIDEBOARD" in w for w in warnings), warnings
+    assert errors == [] and warnings == [], (
+        f"a card the deck runs must be silent: {errors} {warnings}")
 
-    unknown = {"scenario": {"board": {"you": ["Nicol Bolas, Planeswalker"]},
+    # A real card this deck does not run — warn, never error.
+    outside = {"scenario": {"board": {"you": ["Black Lotus"]},
                             "hand": [], "stack": []}}
-    errors, _ = vs.unknown_cards(unknown, "edgar-vampires")
-    assert errors, "a card the deck has never had must be an error"
+    errors, warnings = vs.unknown_cards(outside, "edgar-vampires")
+    assert errors == [], f"a real card outside the 99 must warn, not error: {errors}"
+    assert any("does not run" in w for w in warnings), warnings
+
+    # Not a Magic card at all — that is a typo and it errors.
+    typo = {"scenario": {"board": {"you": ["Nicol Bolas, Planewalker"]},
+                         "hand": [], "stack": []}}
+    errors, _ = vs.unknown_cards(typo, "edgar-vampires")
+    assert errors, "a name no Magic card bears must be an error"
+
+
+@requires_deck
+def test_a_dfc_front_face_counts_as_the_card_the_deck_runs():
+    """`cards.json` stores "A // B"; a scenario names the front face.
+
+    Matching full names only reported sisay/003 as exploring a card outside the
+    99 when the deck runs the card that face belongs to.
+    """
+    from manamap.pilot.common import load_deck_cards
+
+    try:
+        cards = load_deck_cards("sisay")["cards"]
+    except FileNotFoundError:
+        pytest.skip("sisay not fetched")
+    dfc = next((c["name"] for c in cards if " // " in c["name"]), None)
+    if dfc is None:
+        pytest.skip("sisay runs no double-faced card")
+
+    front = dfc.split(" // ")[0].strip()
+    doc = {"scenario": {"board": {"you": [front]}, "hand": [], "stack": []}}
+    errors, warnings = vs.unknown_cards(doc, "sisay")
+    assert errors == [] and warnings == [], (
+        f"the front face of a card the deck runs must be silent: {errors} {warnings}")

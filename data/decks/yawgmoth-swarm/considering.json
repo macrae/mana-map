@@ -4,7 +4,6 @@
   "ten": [
     {
       "card": "Gate to Phyrexia",
-      "source": "pool",
       "role": "removal:spot",
       "cmc": 2.0,
       "type_line": "Enchantment",
@@ -23,24 +22,32 @@
     },
     {
       "card": "Bloodthirsty Conqueror",
-      "source": "pool",
       "role": "wincon:drain",
       "cmc": 5.0,
       "type_line": "Creature — Vampire Knight",
       "evidence": {
         "combo_lines_opened": [
           {
-            "cards": ["Bloodthirsty Conqueror", "Marauding Blight-Priest"],
+            "cards": [
+              "Bloodthirsty Conqueror",
+              "Marauding Blight-Priest"
+            ],
             "produces": "Infinite lifegain triggers, infinite lifeloss, infinite lifegain",
             "status": "needs a stack scenario"
           },
           {
-            "cards": ["Bloodthirsty Conqueror", "Starscape Cleric"],
+            "cards": [
+              "Bloodthirsty Conqueror",
+              "Starscape Cleric"
+            ],
             "produces": "Infinite lifegain triggers, infinite lifeloss, infinite lifegain",
             "status": "needs a stack scenario"
           },
           {
-            "cards": ["Bloodthirsty Conqueror", "South Wind Avatar"],
+            "cards": [
+              "Bloodthirsty Conqueror",
+              "South Wind Avatar"
+            ],
             "produces": "Infinite lifegain, infinite lifegain triggers, infinite lifeloss",
             "status": "needs a stack scenario"
           }
@@ -59,7 +66,6 @@
     },
     {
       "card": "Imp's Mischief",
-      "source": "sideboard",
       "role": "protection:redirect",
       "cmc": 2.0,
       "type_line": "Instant",
@@ -77,7 +83,6 @@
     },
     {
       "card": "Strip Mine",
-      "source": "pool",
       "role": "land:utility",
       "cmc": 0.0,
       "type_line": "Land",
@@ -96,14 +101,17 @@
     },
     {
       "card": "Bontu's Monument",
-      "source": "pool",
       "role": "wincon:drain",
       "cmc": 3.0,
       "type_line": "Legendary Artifact",
       "evidence": {
         "combo_lines_opened": [
           {
-            "cards": ["Warren Soultrader", "Gravecrawler", "Bontu's Monument"],
+            "cards": [
+              "Warren Soultrader",
+              "Gravecrawler",
+              "Bontu's Monument"
+            ],
             "produces": "Infinite lifeloss, infinite lifegain, infinite death and sacrifice triggers",
             "status": "needs a stack scenario"
           }
@@ -122,19 +130,27 @@
     },
     {
       "card": "Pawn of Ulamog",
-      "source": "pool",
       "role": "ramp:dork",
       "cmc": 3.0,
       "type_line": "Creature — Vampire Shaman",
       "evidence": {
         "combo_lines_opened": [
           {
-            "cards": ["Reassembling Skeleton", "Phyrexian Altar", "Pawn of Ulamog"],
+            "cards": [
+              "Reassembling Skeleton",
+              "Phyrexian Altar",
+              "Pawn of Ulamog"
+            ],
             "produces": "Infinite death triggers, ETB, LTB and sacrifice triggers",
             "status": "needs a stack scenario"
           },
           {
-            "cards": ["Pitiless Plunderer", "Viscera Seer", "Reassembling Skeleton", "Pawn of Ulamog"],
+            "cards": [
+              "Pitiless Plunderer",
+              "Viscera Seer",
+              "Reassembling Skeleton",
+              "Pawn of Ulamog"
+            ],
             "produces": "Infinite death triggers, infinite colored and colorless mana, infinite scry 1",
             "status": "needs a stack scenario"
           }
@@ -153,24 +169,33 @@
     },
     {
       "card": "Forsaken Miner",
-      "source": "pool",
       "role": "recursion",
       "cmc": 1.0,
       "type_line": "Creature — Skeleton Rogue",
       "evidence": {
         "combo_lines_opened": [
           {
-            "cards": ["Forsaken Miner", "Phyrexian Altar", "Blood Artist"],
+            "cards": [
+              "Forsaken Miner",
+              "Phyrexian Altar",
+              "Blood Artist"
+            ],
             "produces": "Infinite death triggers, ETB, LTB, lifeloss and lifegain",
             "status": "needs a stack scenario"
           },
           {
-            "cards": ["Warren Soultrader", "Forsaken Miner", "Blood Artist"],
+            "cards": [
+              "Warren Soultrader",
+              "Forsaken Miner",
+              "Blood Artist"
+            ],
             "produces": "Infinite death triggers, ETB, LTB, lifegain triggers and lifeloss",
             "status": "needs a stack scenario"
           }
         ],
-        "synergy_partners_in_deck": ["Stitcher's Supplier"],
+        "synergy_partners_in_deck": [
+          "Stitcher's Supplier"
+        ],
         "edhrec_rank": 2465,
         "game_changer": false
       },
@@ -184,7 +209,6 @@
     },
     {
       "card": "Withering Torment",
-      "source": "pool",
       "role": "removal:spot",
       "cmc": 3.0,
       "type_line": "Instant",
@@ -209,12 +233,13 @@
     },
     {
       "card": "Meteor Golem",
-      "source": "pool",
       "role": "removal:spot",
       "cmc": 7.0,
       "type_line": "Artifact Creature — Golem",
       "evidence": {
-        "synergy_partners_in_deck": ["Yahenni, Undying Partisan"],
+        "synergy_partners_in_deck": [
+          "Yahenni, Undying Partisan"
+        ],
         "edhrec_rank": 779,
         "game_changer": false
       },
@@ -228,7 +253,6 @@
     },
     {
       "card": "Ophiomancer",
-      "source": "pool",
       "role": "threat:tokens",
       "cmc": 3.0,
       "type_line": "Creature — Human Shaman",
@@ -243,23 +267,6 @@
         "before": 4,
         "after": 4
       }
-    }
-  ],
-  "bench_verdicts": [
-    {
-      "card": "Crypt Ghast",
-      "verdict": "off-list",
-      "why": "Every mana axis on this deck is adequate or a strength — 42 sources against a Burgess target of 36, 0.919 on the turn-three land drop — so a four-mana doubler closes nothing the audit names. Urborg does make it spectacular with Cabal Coffers; that is a reason to sleeve it in a pod that reaches turn eight, not a reason to rank it against the artifact class at zero."
-    },
-    {
-      "card": "Dictate of Erebos",
-      "verdict": "off-list",
-      "why": "Flash on a second Grave Pact, and Grave Pact is already sleeved. Five mana for duplicated function while two interaction classes sit at literal zero is precisely the trade the corpus warns off: 'cut duplicated function before any uncovered class'. Bring it in against a go-wide creature pod and nowhere else."
-    },
-    {
-      "card": "Sheoldred, Whispering One",
-      "verdict": "off-list",
-      "why": "Seven mana against 5.747 mean available mana on turn seven, in a list whose four checker-passed kills cost three to five. Every job it does is already in the 99 cheaper — Animate Dead, Persist and Victimize reanimate, Grave Pact edicts — and 28 bodies means you never needed to pay seven for one."
     }
   ],
   "gaps": [

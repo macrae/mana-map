@@ -9,7 +9,7 @@ Python parser would make Python the oracle and the parity property would be
 theatre — both sides would agree with each other's bugs.
 
 **The contract is a projection, not full equality.** Only
-`{name, quantity, is_commander, is_sideboard}` is compared. Python additionally
+`{name, quantity, is_commander}` is compared. Python additionally
 resolves printings against Scryfall (`set`, `collector_number`, `foil`); the viz
 has no use for those and deliberately strips-and-discards the annotation. That
 matters because the printing regex is exactly where the one real hazard lives —

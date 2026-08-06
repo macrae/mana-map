@@ -1,17 +1,16 @@
 """Pilot: mechanically enforce the contract on The Short List (considering.json).
 
-One artifact replaces the sideboard-analysis / upgrade-watch pair: the ten
-cards most worth the pilot's sleeves, bench-first, pool-filled. The checks are
-the union of both retired validators' contracts:
+Ten cards worth knowing about that could play well with this deck. One artifact,
+one question — and deliberately NOT "do you own it". The list used to carry
+`source: "sideboard" | "pool"` and rank bench cards first, which made ownership
+a selection rule; a card is now on the list because it is worth knowing about or
+it is not on the list. Whether it is already in a box is the reader's business.
 
   * exactly TEN entries, no duplicates — ten is the section, not a budget;
-  * `source: "sideboard"` → the card is really on this deck's bench (and not a
-    table accessory); `source: "pool"` → the card is NOT in the deck at all;
-  * a bench larger than ten must have every non-listed card either covered by
-    a `bench_verdicts` line or implicitly cut — the assessment carries the cut
-    rationale (editorial, not mechanical);
-  * combo-line claims stay candidates until a stack artifact passes — the
-    status vocabulary is imported from validate_sideboard, not duplicated;
+  * a pick is NOT already in the deck — the ten are cards to consider, not cards
+    you already run;
+  * combo-line claims stay candidates until a stack artifact passes — the status
+    vocabulary lives in `common`, shared with the diagnosis validator;
   * obsolescence / synergy-partner claims are re-checked against the indexes;
   * claimed bracket deltas are recomputed via bracket.assess();
   * `natural_cut` names a real maindeck card (never the commander), and no two
@@ -25,29 +24,23 @@ import json
 
 from manamap.config import OBSOLESCENCE_INDEX_PATH, SYNERGY_GRAPH_PATH
 from manamap.pilot import bracket as bracket_mod
-from manamap.pilot.artist_credits import is_accessory
 from manamap.pilot.common import (
+    UNVERIFIED_STATUS,
+    VERIFIED_STATUS,
+    check_verified_line,
     deck_dir,
     load_deck_cards,
     load_json,
     load_json_memo,
-    mainboard,
     report_errors,
-    sideboard,
-)
-from manamap.pilot.validate_sideboard import (
-    UNVERIFIED_STATUS,
-    VERIFIED_STATUS,
-    _check_verified_line,
 )
 
 REQUIRED_TOP_KEYS = {"slug", "assessment", "ten", "gaps"}
-REQUIRED_ENTRY_KEYS = {"card", "source", "why"}
+REQUIRED_ENTRY_KEYS = {"card", "why"}
 SHORT_LIST_SIZE = 10
-SOURCES = {"sideboard", "pool"}
 
 
-def _validate_entries(doc, main_names, bench_names, commander_names, deck_path):
+def _validate_entries(doc, main_names, commander_names, deck_path):
     errors = []
     ten = doc.get("ten", [])
     if not isinstance(ten, list):
@@ -55,8 +48,7 @@ def _validate_entries(doc, main_names, bench_names, commander_names, deck_path):
     if len(ten) != SHORT_LIST_SIZE:
         errors.append(
             f"`ten` has {len(ten)} entries — The Short List is exactly "
-            f"{SHORT_LIST_SIZE}: prune a big bench to its best ten, top a small "
-            f"one up from the pool")
+            f"{SHORT_LIST_SIZE} — ten is the section, not a budget")
     seen, cuts = {}, {}
     for i, entry in enumerate(ten):
         label = f"ten[{i}] ({entry.get('card')})"
@@ -64,16 +56,10 @@ def _validate_entries(doc, main_names, bench_names, commander_names, deck_path):
         if missing:
             errors.append(f"{label}: missing keys {sorted(missing)}")
             continue
-        name, source = entry["card"], entry["source"]
-        if source not in SOURCES:
-            errors.append(f"{label}: source must be one of {sorted(SOURCES)}, "
-                          f"got {source!r}")
-        elif source == "sideboard" and name not in bench_names:
-            errors.append(f"{label}: claims to be in the sideboard, but the "
-                          f"bench holds no such card (accessories don't count)")
-        elif source == "pool" and (name in main_names or name in bench_names):
-            errors.append(f"{label}: claims to be a pool scout, but the card "
-                          f"is already in the deck")
+        name = entry["card"]
+        if name in main_names:
+            errors.append(f"{label}: already in the deck — the ten are cards to "
+                          f"consider, not cards you already run")
         if name in seen:
             errors.append(f"{label}: duplicate of ten[{seen[name]}]")
         else:
@@ -104,7 +90,7 @@ def _validate_entry_lines(i, entry, deck_path):
         status = line.get("status")
         if status == VERIFIED_STATUS:
             errors += [e.replace("opens_lines", f"ten[{i}] line {j}")
-                       for e in _check_verified_line(j, line, deck_path)]
+                       for e in check_verified_line(j, line, deck_path)]
         elif status != UNVERIFIED_STATUS:
             errors.append(
                 f"ten[{i}] ({entry.get('card')}) line {j}: status must be "
@@ -207,12 +193,11 @@ def validate(doc, deck_doc, deck_path=None):
         errors.append("assessment is empty — say what these ten do for the deck")
 
     cards = deck_doc.get("cards", [])
-    main_names = {c["name"] for c in mainboard(cards)}
-    bench_names = {c["name"] for c in sideboard(cards) if not is_accessory(c)}
+    main_names = {c["name"] for c in cards}
     commander_names = {c["name"] for c in cards if c.get("is_commander")}
     deck_names = main_names | commander_names
 
-    errors += _validate_entries(doc, main_names, bench_names, commander_names,
+    errors += _validate_entries(doc, main_names, commander_names,
                                 deck_path)
     errors += _validate_obsolescence(doc)
     errors += _validate_synergy(doc, deck_names)
@@ -231,11 +216,9 @@ def main(args):
         doc = json.load(f)
     deck_doc = load_deck_cards(args.slug)
     errors = validate(doc, deck_doc, deck_path=base)
-    bench = sum(1 for e in doc.get("ten", []) if e.get("source") == "sideboard")
     report_errors(
         path.name, errors,
-        f"OK   {path.name} — the ten holds ({bench} from the bench, "
-        f"{len(doc.get('ten', [])) - bench} scouted); evidence ◆, verdicts ★")
+        f"OK   {path.name} — the ten holds; evidence ◆, verdicts ★")
 
 
 if __name__ == "__main__":

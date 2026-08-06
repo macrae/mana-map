@@ -19,7 +19,7 @@ It gives you, deterministically and for free, what you would otherwise reconstru
 - **the board split** — creature bodies (tokens included: in a sacrifice deck the tokens *are* the bodies), other permanents, lands, and the permanent **already sacrificed to pay a cost**, which is LISTED but NOT on the battlefield. That last one sets the body count, and body count is what bounds nearly every engine in these decks.
 - **opponent seats and life**, read correctly under both board shapes in the corpus.
 - **the drain arithmetic** — per-opponent versus pod total, stated as non-interchangeable. A drain of X "each opponent" removes X per seat and N×X across the pod. Quoting the pod figure per-seat overstates a kill by the pod size.
-- **card membership** — which named cards are actually in the 99 right now, with sideboard cards distinguished from cards the deck has never had.
+- **card membership** — which named cards are actually in the 99 right now, with real Magic cards the deck does not run distinguished from names no card bears.
 - **comparable siblings** — which other scenarios share this board, and *what differs in both directions*. Two boards can match on body count and still answer different questions.
 
 Prefer it to your own reading of the scenario. Five errors reached agent briefs in a single session and every one was a correct-sounding figure recalled rather than looked up — including a pod total quoted as a per-seat number, and two stacks described as sharing a board when one carried an extra body.

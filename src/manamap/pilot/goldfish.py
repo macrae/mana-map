@@ -125,8 +125,6 @@ def build_library(doc):
     library = []
     commanders = []
     for card in doc["cards"]:
-        if card.get("is_sideboard"):
-            continue
         if card.get("is_commander"):
             commanders.append(card)
             continue
@@ -355,12 +353,11 @@ def run(slug, iterations=None, seed=None, max_turn=None):
     if targets_path.exists():
         with open(targets_path) as f:
             targets = json.load(f)["targets"]
-        # A target member not in the maindeck can never be drawn — it silently
-        # deflates the assembly rate (a benched Goreclaw once cost ur-dragon
-        # a wrong "cost reducer drawn" figure). Warn loudly; the fix is
-        # authored, so this stays a warning rather than a hard error.
-        main_names = {c.get("name") for c in doc.get("cards", [])
-                      if not c.get("is_sideboard")}
+        # A target member not in the deck can never be drawn — it silently
+        # deflates the assembly rate (a target naming a card ur-dragon had moved
+        # out once cost it a wrong "cost reducer drawn" figure). Warn loudly; the
+        # fix is authored, so this stays a warning rather than a hard error.
+        main_names = {c.get("name") for c in doc.get("cards", [])}
         for target in targets:
             for group in target.get("need", []):
                 ghosts = [n for n in group.get("any_of", []) if n not in main_names]

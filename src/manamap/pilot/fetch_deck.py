@@ -46,7 +46,7 @@ _PRINTING_RE = re.compile(r"\s+\(([A-Z0-9]{2,6})\)\s+([\w-]+)$")
 def parse_decklist(text):
     """Parse a decklist into entries, order preserved.
 
-    Entry: {"name", "quantity", "is_commander", "is_sideboard", "foil"} plus
+    Entry: {"name", "quantity", "is_commander", "foil"} plus
     optional "set"/"collector_number" when a Moxfield printing annotation is
     present.
 
@@ -73,8 +73,11 @@ def parse_decklist(text):
             section = "deck"
             continue
         if lowered in SIDEBOARD_SECTION_MARKERS:
-            section = "sideboard"
-            continue
+            # There is no sideboard any more, but the MARKER still has to be
+            # consumed: a pasted list that carries one would otherwise file every
+            # card after it as maindeck and break the 100-card invariant. Stop
+            # reading — everything below the line is out of the deck.
+            break
 
         is_commander = section == "commander"
         if line.upper().endswith("*CMDR*"):
@@ -98,7 +101,6 @@ def parse_decklist(text):
             "name": name,
             "quantity": quantity,
             "is_commander": is_commander,
-            "is_sideboard": section == "sideboard",
             "foil": foil,
         }
         printing = _PRINTING_RE.search(name)
@@ -198,7 +200,7 @@ def _shape_face(face):
     }
 
 
-def shape_card(sc, quantity, is_commander, is_sideboard=False, foil=False):
+def shape_card(sc, quantity, is_commander, foil=False):
     """Project a Scryfall card object onto the cards.json schema.
 
     Printing metadata (set, collector number, artist, finishes, borderless/frame
@@ -224,7 +226,6 @@ def shape_card(sc, quantity, is_commander, is_sideboard=False, foil=False):
         "name": sc["name"],
         "quantity": quantity,
         "is_commander": is_commander,
-        "is_sideboard": is_sideboard,
         "mana_cost": sc.get("mana_cost", ""),
         "cmc": sc.get("cmc", 0.0),
         "type_line": sc.get("type_line", ""),
@@ -274,7 +275,7 @@ def resolve_entries(entries, by_name, by_printing=None):
             by_face.setdefault(face["name"].lower(), card)
 
     cards, unmatched = [], []
-    merged = {}  # (name_lower, is_sideboard) -> shaped card
+    merged = {}  # name_lower -> shaped card
     for entry in entries:
         key = entry["name"].lower()
         # The decklist's own printing annotation wins: it names the physical
@@ -288,13 +289,13 @@ def resolve_entries(entries, by_name, by_printing=None):
         if sc is None:
             unmatched.append(entry["name"])
             continue
-        merge_key = (sc["name"].lower(), entry["is_sideboard"])
+        merge_key = sc["name"].lower()
         if merge_key in merged:
             merged[merge_key]["quantity"] += entry["quantity"]
             merged[merge_key]["is_commander"] |= entry["is_commander"]
             continue
         shaped = shape_card(sc, entry["quantity"], entry["is_commander"],
-                            entry["is_sideboard"], entry.get("foil", False))
+                            entry.get("foil", False))
         merged[merge_key] = shaped
         cards.append(shaped)
     return cards, unmatched
@@ -353,11 +354,10 @@ def main(args):
     with open(out, "w") as f:
         json.dump(doc, f, indent=2, sort_keys=True, ensure_ascii=False)
         f.write("\n")
-    main_total = sum(c["quantity"] for c in cards if not c["is_sideboard"])
-    side_total = sum(c["quantity"] for c in cards if c["is_sideboard"])
+    total = sum(c["quantity"] for c in cards)
     commanders = [c["name"] for c in cards if c["is_commander"]]
     print(
-        f"Wrote {out}: {main_total} main + {side_total} sideboard, "
+        f"Wrote {out}: {total} cards, "
         f"commander: {', '.join(commanders) or 'NONE FLAGGED'}"
     )
 

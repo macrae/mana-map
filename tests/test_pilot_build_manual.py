@@ -20,13 +20,13 @@ def deck_doc():
     return {
         "decklist_sha256": "abc123def456789",
         "cards": [
-            {"name": "Test Commander", "is_commander": True, "is_sideboard": False,
+            {"name": "Test Commander", "is_commander": True,
              "quantity": 1, "mana_cost": "{3}{R}", "cmc": 4.0,
              "type_line": "Legendary Creature — Goblin", "image": "https://img/cmd.jpg",
              "color_identity": ["R"], "scryfall_uri": "https://scryfall/cmd"},
-            {"name": "Sac Outlet", "is_commander": False, "is_sideboard": False,
+            {"name": "Sac Outlet", "is_commander": False,
              "quantity": 1, "type_line": "Creature — Goblin", "image": "https://img/sac.jpg"},
-            {"name": "Payoff Engine", "is_commander": False, "is_sideboard": False,
+            {"name": "Payoff Engine", "is_commander": False,
              "quantity": 1, "type_line": "Enchantment", "image": "https://img/pay.jpg"},
         ],
     }
@@ -342,7 +342,7 @@ def artist_deck():
                     art_crop="https://img/crop.jpg")
     for i, name in enumerate(["Extra One", "Extra Two", "Extra Three"]):
         doc["cards"].append({
-            "name": name, "is_commander": False, "is_sideboard": False, "quantity": 1,
+            "name": name, "is_commander": False, "quantity": 1,
             "type_line": "Instant", "image": f"https://img/{i}.jpg",
             "artist": "Other Artist", "set": "plst", "set_name": "The List",
             "collector_number": f"X-{i}", "border_color": "black",
@@ -482,107 +482,6 @@ SIDEBOARD = {
 }
 
 
-def test_sideboard_section_renders_inside_upgrade_watch():
-    html_out = render(sideboard=SIDEBOARD)
-    upgrade = html_out.split('id="upgrade-watch"')[1].split("</section>")[0]
-    assert "From the sideboard" in upgrade
-    assert "Payoff Engine" in upgrade and "Sac Outlet" in upgrade
-
-
-def test_a_deck_with_no_sideboard_gets_no_section():
-    """Most decks have none; a TODO for a thing that doesn't exist is noise."""
-    html_out = render(sideboard=None)
-    assert "From the sideboard" not in html_out
-
-
-def test_bracket_delta_is_marked_as_computed_and_the_advice_as_coaching():
-    """The section mixes tiers, so it labels them. Costume never earns the badge."""
-    html_out = render(sideboard=SIDEBOARD)
-    upgrade = html_out.split('id="upgrade-watch"')[1].split("</section>")[0]
-    assert 'class="tier-data">◆' in upgrade      # the recomputed bracket move
-    assert 'class="tier-coach">★' in upgrade     # the recommendation
-    assert "3" in upgrade and "4" in upgrade
-
-
-def test_upgrade_watch_still_wears_only_its_spec_badge():
-    """A ★ block inside the section must not change the department's own badge."""
-    from manamap.pilot.issue_spec import DEPARTMENT_BY_ID
-
-    html_out = render(sideboard=SIDEBOARD)
-    head = html_out.split('id="upgrade-watch"')[1].split("</div></div>")[0]
-    assert DEPARTMENT_BY_ID["upgrade-watch"]["tiers"] == ("data",)
-    assert "badge-coach" not in head
-
-
-def test_opened_lines_render_as_candidates_not_results():
-    html_out = render(sideboard=SIDEBOARD)
-    assert "needs a stack scenario" in html_out
-    assert "fact only once a resolution has passed the checker" in html_out
-
-
-def test_an_empty_swap_list_says_so_rather_than_rendering_nothing():
-    html_out = render(sideboard=dict(SIDEBOARD, swaps=[], opens_lines=[],
-                                     long_term_defaults=[]))
-    assert "No swap in this sideboard earns a maindeck slot" in html_out
-
-
-def test_sideboard_tiles_get_synergy_chips_like_any_other_card():
-    """They used to bypass _card_tile entirely and render chipless."""
-    doc = deck_doc()
-    doc["cards"].append(
-        {"name": "Sideboard Bomb", "is_commander": False, "is_sideboard": True,
-         "type_line": "Creature — Goblin", "mana_cost": "{R}", "cmc": 1.0,
-         "image": "https://img/sb.jpg", "quantity": 1})
-    synergy = dict(SYNERGY, **{"Sideboard Bomb": [
-        {"partner": "Payoff Engine", "score": 3, "synergies": ["Tokens + Sacrifice"]}]})
-    html_out = render(deck_doc=doc, synergy=synergy)
-    the_99 = html_out.split('id="the-99"')[1].split("</section>")[0]
-    assert "Sideboard &amp; table aids" in the_99
-    assert '<span class="chip">Tokens + Sacrifice</span>' in the_99
-
-
-def test_a_bench_card_without_a_blurb_says_what_it_is_not_what_is_missing():
-    """An empty <p> reads as "needs no explanation", not "nobody wrote this" —
-    so the tile must always say something. It used to say "no role blurb written
-    yet", which made the gap visible but taught the reader nothing, and on decks
-    with a deep bench it said it 48, 27 and 20 times.
-
-    `manual_prose.card_roles` is the writer's key for THE 99 and the bench is not
-    the 99, so those blurbs were never in scope. The fallback is the pipeline's
-    own `card_roles.json` taxonomy, which classifies every card in the corpus.
-    """
-    doc = deck_doc()
-    doc["cards"].append(
-        {"name": "Unblurbed Card", "is_commander": False, "is_sideboard": True,
-         "type_line": "Instant", "mana_cost": "{R}", "cmc": 1.0,
-         "image": "https://img/u.jpg", "quantity": 1})
-    html_out = render(deck_doc=doc)
-    assert "no role blurb written yet" not in html_out
-    # Still not blank, and it names the card's own type when the taxonomy has
-    # nothing for it (this fixture name is not in the corpus).
-    assert esc("Instant. On the bench.") in html_out
-
-
-def test_bench_fallback_prefers_the_role_taxonomy_over_the_type_line():
-    from manamap.pilot.build_manual import _bench_line
-    line = _bench_line({"name": "Sol Ring", "type_line": "Artifact"})
-    assert "Ramp" in line and "rock" in line
-    assert "On the bench." in line
-    # A card the taxonomy has never heard of still gets a sentence.
-    assert _bench_line({"name": "Nonexistent Card XYZ",
-                        "type_line": "Enchantment"}) == "Enchantment. On the bench."
-
-
-def test_accessories_still_get_the_table_aid_treatment():
-    doc = deck_doc()
-    doc["cards"].append(
-        {"name": "Storm Counter", "is_commander": False, "is_sideboard": True,
-         "type_line": "Card", "mana_cost": "", "cmc": 0.0,
-         "image": "https://img/sc.jpg", "quantity": 1})
-    html_out = render(deck_doc=doc)
-    assert "Table aid" in html_out and "no rules text" in html_out
-
-
 # ── Evidence linkification (renderer-provided navigation, STYLEv3 §8.4) ──
 
 
@@ -714,33 +613,7 @@ def test_cite_blocks_carry_no_card_links():
         assert "cardref" not in cite and "xref" not in cite
 
 
-def test_tile_anchor_ids_are_unique_even_for_bench_duplicates():
-    import re as _re
-    from collections import Counter
-
-    doc = deck_doc()
-    doc["cards"].append({"name": "Sac Outlet", "is_commander": False,
-                         "is_sideboard": True, "quantity": 1,
-                         "type_line": "Creature — Goblin",
-                         "image": "https://img/sac.jpg"})
-    html_out = render(deck_doc=doc)
-    ids = _re.findall(r'id="(card-[a-z0-9-]+)"', html_out)
-    assert not [k for k, v in Counter(ids).items() if v > 1]
-
-
 # ── The three v3.3 sections ──────────────────────────────────────────────
-
-
-def test_short_list_renders_ten_with_source_chips():
-    considering = {"slug": "x", "assessment": "Ten, ranked.",
-                   "ten": ([{"card": f"Bench {i}", "source": "sideboard",
-                             "why": "w"} for i in range(4)] +
-                           [{"card": f"Pool {i}", "source": "pool",
-                             "why": "w", "unlocks": "u"} for i in range(6)]),
-                   "gaps": []}
-    html_out = render(considering=considering)
-    assert html_out.count('<span class="chip">In the box</span>') == 4
-    assert html_out.count('<span class="chip">Scouted</span>') == 6
 
 
 def test_fetch_quests_renders_wishes_and_no_tutor_fallback():

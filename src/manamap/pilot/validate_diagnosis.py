@@ -37,17 +37,16 @@ from manamap.config import DECK_AXIS_TARGETS
 from manamap.pilot import bracket as bracket_mod
 from manamap.pilot import deck_audit as audit_mod
 from manamap.pilot.common import (
+    UNVERIFIED_STATUS,
+    VERIFIED_STATUS,
     checker_passed,
     deck_dir,
     load_card_roles,
     load_deck_cards,
     load_json,
     load_rules_db,
-    mainboard,
     report_errors,
-    sideboard,
 )
-from manamap.pilot.validate_sideboard import UNVERIFIED_STATUS, VERIFIED_STATUS
 from manamap.pilot.validate_stack import load_strategy_sections, validate_citations
 
 REQUIRED_TOP_KEYS = {"slug", "verdict", "axes", "engine", "lean_into",
@@ -59,7 +58,7 @@ REQUIRED_QUESTION_KEYS = {"question", "settled_by", "why_it_matters"}
 
 AXIS_VERDICTS = {"strength", "adequate", "weakness", "liability"}
 CUT_DIFFICULTIES = {"easy", "contested", "painful"}
-ADD_SOURCES = {"pool", "sideboard", "recon"}
+ADD_SOURCES = {"pool", "recon"}
 SETTLED_BY = {"resolve-stack", "research-strategy", "goldfish"}
 SKEPTIC_STATUSES = {"supported", "unjustified", "miscounted", "mis-cited",
                     "over-claimed", "unverified-line", "contradicts-artifact"}
@@ -183,7 +182,7 @@ def _validate_cuts(doc, main_names, commander_names, deck_path):
 
 # ── Adds ─────────────────────────────────────────────────────────────────
 
-def _validate_adds(doc, main_names, bench_names, commander_names):
+def _validate_adds(doc, main_names, commander_names):
     errors = []
     adds = doc.get("add_candidates")
     if not isinstance(adds, list):
@@ -205,9 +204,6 @@ def _validate_adds(doc, main_names, bench_names, commander_names):
         if add["source"] not in ADD_SOURCES:
             errors.append(f"{label}: source must be one of {sorted(ADD_SOURCES)}, "
                           f"got {add['source']!r}")
-        elif add["source"] == "sideboard" and name not in bench_names:
-            errors.append(f"{label}: claims to come from the bench, but the "
-                          f"sideboard holds no such card")
         if not str(add.get("closes", "")).strip():
             errors.append(f"{label}: `closes` is empty — an add that closes "
                           f"nothing named is a preference, not a prescription")
@@ -284,7 +280,7 @@ def _corpus_card(name, roles):
     if oracle is None:
         return None
     return {"name": name, "oracle_text": oracle, "quantity": 1,
-            "type_line": "", "is_sideboard": False}
+            "type_line": ""}
 
 
 _ORACLE_MEMO = {}
@@ -312,7 +308,7 @@ def _validate_prescription_moves(doc, deck_doc, roles):
             _corpus_oracle()) <= 1:
         return []                          # no roles or no corpus: skip, never fail
     errors = []
-    main_cards = [c for c in mainboard(deck_doc.get("cards", []))]
+    main_cards = list(deck_doc.get("cards", []))
     adds = [a for a in doc.get("add_candidates") or [] if isinstance(a, dict)]
 
     # (a) MARGINAL contribution: does this card move its axis GIVEN the rest of the
@@ -516,13 +512,12 @@ def validate(doc, deck_doc, deck_path=None, measured_axes=None, rules=None,
         measured_axes = None
 
     cards = deck_doc.get("cards", [])
-    main_names = {c["name"] for c in mainboard(cards)}
-    bench_names = {c["name"] for c in sideboard(cards)}
+    main_names = {c["name"] for c in cards}
     commander_names = {c["name"] for c in cards if c.get("is_commander")}
 
     errors += _validate_axes(doc, measured_axes)
     errors += _validate_cuts(doc, main_names, commander_names, deck_path)
-    errors += _validate_adds(doc, main_names, bench_names, commander_names)
+    errors += _validate_adds(doc, main_names, commander_names)
     errors += _validate_bracket_deltas(doc, main_names, commander_names)
     errors += _validate_prescription_moves(doc, deck_doc, load_card_roles())
     errors += _validate_questions(doc)

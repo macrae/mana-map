@@ -41,7 +41,6 @@ from manamap.pilot.common import (
     deck_dir,
     load_deck_cards,
     load_json,
-    mainboard,
     report_errors,
 )
 
@@ -158,7 +157,7 @@ def validate(doc, slug, base):
     except Exception:                      # pragma: no cover — fresh clone
         return errors
     cards = deck_doc.get("cards", [])
-    main_names = {c["name"] for c in mainboard(cards)}
+    main_names = {c["name"] for c in cards}
     commander_names = {c["name"] for c in cards if c.get("is_commander")}
 
     errors += _validate_membership(doc, main_names, commander_names)

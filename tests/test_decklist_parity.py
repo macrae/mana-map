@@ -10,7 +10,7 @@ Three deliberate choices, each of which is the point of the file:
 
 - **The expected files are hand-authored.** Generating them from Python would make
   Python the oracle, and both parsers would then agree with Python's bugs.
-- **The contract is a projection**, `{name, quantity, is_commander, is_sideboard}`.
+- **The contract is a projection**, `{name, quantity, is_commander}`.
   Python also resolves printings against Scryfall and tracks `foil`; the viz needs none
   of it, so the JS side strips the annotation and discards it. The printing regex is
   where the one real hazard lives, and the safest way not to reimplement a hazard is not
@@ -33,7 +33,7 @@ from conftest_viz import BOOT_TIMEOUT_MS  # noqa: F401
 from manamap.pilot.fetch_deck import parse_decklist
 
 FIXTURES = Path(__file__).parent / "fixtures" / "decklists"
-CONTRACT = ("name", "quantity", "is_commander", "is_sideboard")
+CONTRACT = ("name", "quantity", "is_commander")
 CASES = sorted(p.stem for p in FIXTURES.glob("*.txt"))
 
 

@@ -41,7 +41,6 @@ from manamap.pilot.common import (
     load_combo_details,
     load_deck_cards,
     load_synergy_graph,
-    mainboard,
 )
 from manamap.pilot.manabase import (
     RESTRICTED_MANA as RESTRICTED_PHRASE,
@@ -335,7 +334,7 @@ def build_notes(facts):
 
 def analyze(slug):
     doc = load_deck_cards(slug)
-    cards = mainboard(doc.get("cards", []))
+    cards = doc.get("cards", [])
     names = [c["name"] for c in cards]
     commanders = [c["name"] for c in cards if c.get("is_commander")]
     legendary = [c for c in cards if _is_legendary(c)]

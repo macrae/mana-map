@@ -702,7 +702,6 @@ window.Discovery = (function () {
         const missing = [];
         let cmdr = -1;
         for (const card of doc.cards) {
-          if (card.is_sideboard) continue;          // the 100, not the maybeboard
           const row = rowByName(card.name);
           if (row < 0) { missing.push(card.name); continue; }
           if (rows.indexOf(row) === -1) rows.push(row);

@@ -12,7 +12,7 @@ from manamap.pilot.validate_deck import validate
 from conftest import requires_deck
 
 REQUIRED_FIELDS = {
-    "name", "quantity", "is_commander", "is_sideboard", "mana_cost", "cmc",
+    "name", "quantity", "is_commander", "mana_cost", "cmc",
     "type_line", "oracle_text", "colors", "color_identity", "keywords", "power",
     "toughness", "loyalty", "layout", "image", "scryfall_uri", "card_faces",
     # Printing identity — which physical card the pilot owns.
@@ -92,10 +92,10 @@ def test_parse_decklist_formats():
         "// comment\n"
     )
     assert entries[0] == {"name": "Wort, Boggart Auntie", "quantity": 1,
-                          "is_commander": True, "is_sideboard": False, "foil": False}
+                          "is_commander": True, "foil": False}
     assert entries[1]["name"] == "Skirk Prospector"
     assert entries[2] == {"name": "Mountain", "quantity": 10,
-                          "is_commander": False, "is_sideboard": False, "foil": False}
+                          "is_commander": False, "foil": False}
     assert entries[3]["name"] == "Empty the Warrens"
 
 
@@ -113,7 +113,7 @@ def test_parse_decklist_moxfield_annotations():
         "7 Mountain (SLD) 2418 *F*\n"
     )
     assert entries[0] == {"name": "Zada, Hedron Grinder", "quantity": 1,
-                          "is_commander": False, "is_sideboard": False,
+                          "is_commander": False,
                           "set": "sld", "collector_number": "2406", "foil": True}
     assert entries[1]["name"] == "Arena of Glory"
     assert entries[1]["set"] == "plst"
@@ -121,27 +121,12 @@ def test_parse_decklist_moxfield_annotations():
     assert entries[2]["quantity"] == 7
 
 
-def test_parse_decklist_sideboard_section():
-    entries = parse_decklist(
-        "1 Skirk Prospector\n"
-        "SIDEBOARD:\n"
-        "1 Sazacap's Brew (PLST) BLB-151\n"
-        "1 Storm Counter (SLD) 2422 *F*\n"
-    )
-    assert entries[0]["is_sideboard"] is False
-    assert entries[1] == {"name": "Sazacap's Brew", "quantity": 1,
-                          "is_commander": False, "is_sideboard": True,
-                          "set": "plst", "collector_number": "BLB-151", "foil": False}
-    assert entries[2]["name"] == "Storm Counter"
-    assert entries[2]["is_sideboard"] is True
-
-
 def test_duplicate_basic_printings_merge():
     by_name = {"mountain": scryfall_card("Mountain", type_line="Basic Land — Mountain")}
     entries = [
-        {"name": "Mountain", "quantity": 7, "is_commander": False, "is_sideboard": False},
-        {"name": "Mountain", "quantity": 8, "is_commander": False, "is_sideboard": False},
-        {"name": "Mountain", "quantity": 7, "is_commander": False, "is_sideboard": False},
+        {"name": "Mountain", "quantity": 7, "is_commander": False},
+        {"name": "Mountain", "quantity": 8, "is_commander": False},
+        {"name": "Mountain", "quantity": 7, "is_commander": False},
     ]
     shaped, unmatched = resolve_entries(entries, by_name)
     assert unmatched == []
@@ -178,9 +163,9 @@ def test_mocked_three_card_fetch_has_all_fields(monkeypatch, tmp_path):
         ["Skirk Prospector", "Mountain", "Bonecrusher Giant // Stomp"])
     assert not_found == []
     entries = [
-        {"name": "Skirk Prospector", "quantity": 1, "is_commander": True, "is_sideboard": False},
-        {"name": "Mountain", "quantity": 10, "is_commander": False, "is_sideboard": False},
-        {"name": "Bonecrusher Giant // Stomp", "quantity": 1, "is_commander": False, "is_sideboard": False},
+        {"name": "Skirk Prospector", "quantity": 1, "is_commander": True},
+        {"name": "Mountain", "quantity": 10, "is_commander": False},
+        {"name": "Bonecrusher Giant // Stomp", "quantity": 1, "is_commander": False},
     ]
     shaped, unmatched = resolve_entries(entries, by_name)
     assert unmatched == []
@@ -198,8 +183,7 @@ def test_mocked_three_card_fetch_has_all_fields(monkeypatch, tmp_path):
 def test_resolve_by_single_face_name():
     by_name = {"bonecrusher giant // stomp": ADVENTURE_CARD}
     shaped, unmatched = resolve_entries(
-        [{"name": "Bonecrusher Giant", "quantity": 1, "is_commander": False,
-          "is_sideboard": False}], by_name)
+        [{"name": "Bonecrusher Giant", "quantity": 1, "is_commander": False}], by_name)
     assert unmatched == []
     assert shaped[0]["name"] == "Bonecrusher Giant // Stomp"
 
@@ -255,9 +239,9 @@ def test_real_deck_is_100_with_commander():
     from manamap.pilot.common import load_deck_cards
 
     doc = load_deck_cards("goblin-storm")
-    main = [c for c in doc["cards"] if not c["is_sideboard"]]
-    assert sum(c["quantity"] for c in main) == 100
-    assert any(c["is_commander"] for c in main)
+    cards = doc["cards"]
+    assert sum(c["quantity"] for c in cards) == 100
+    assert any(c["is_commander"] for c in cards)
     assert validate(doc) == []
 
 
@@ -366,8 +350,7 @@ DEFAULT_PRINTING = dict(
 
 def test_printing_annotation_wins_over_name_lookup():
     """A Moxfield export names the physical card; a default reprint must lose."""
-    entry = {"name": "Zada, Hedron Grinder", "quantity": 1, "is_commander": True,
-             "is_sideboard": False, "foil": True, "set": "sld",
+    entry = {"name": "Zada, Hedron Grinder", "quantity": 1, "is_commander": True, "foil": True, "set": "sld",
              "collector_number": "2406"}
     shaped, unmatched = resolve_entries(
         [entry],
@@ -384,8 +367,7 @@ def test_printing_annotation_wins_over_name_lookup():
 
 
 def test_name_lookup_is_the_fallback_when_printing_unresolvable():
-    entry = {"name": "Zada, Hedron Grinder", "quantity": 1, "is_commander": True,
-             "is_sideboard": False, "foil": False, "set": "xxx",
+    entry = {"name": "Zada, Hedron Grinder", "quantity": 1, "is_commander": True, "foil": False, "set": "xxx",
              "collector_number": "999"}
     shaped, unmatched = resolve_entries(
         [entry], by_name={"zada, hedron grinder": DEFAULT_PRINTING}, by_printing={})
@@ -394,7 +376,7 @@ def test_name_lookup_is_the_fallback_when_printing_unresolvable():
 
 def test_image_urls_drop_cache_busting_query():
     """Scryfall's ?timestamp churns cards.json on every re-fetch for no visual change."""
-    card = shape_card(SECRET_LAIR, 1, True, False, foil=True)
+    card = shape_card(SECRET_LAIR, 1, True, foil=True)
     assert card["image"] == "https://cards.scryfall.io/normal/sld.jpg"
     assert card["art_crop"] == "https://cards.scryfall.io/art_crop/sld.jpg"
     assert "?" not in card["image"] and "?" not in card["art_crop"]
@@ -412,8 +394,8 @@ def test_printing_metadata_is_not_agent_semantic():
     """Enriching printings must not invalidate agent routines (docs/agent-cost.md)."""
     from manamap.pilot.agent_cache import CARD_SEMANTIC_FIELDS
 
-    plain = shape_card(DEFAULT_PRINTING, 1, True, False, foil=False)
-    fancy = shape_card(SECRET_LAIR, 1, True, False, foil=True)
+    plain = shape_card(DEFAULT_PRINTING, 1, True, foil=False)
+    fancy = shape_card(SECRET_LAIR, 1, True, foil=True)
     assert {k: plain[k] for k in CARD_SEMANTIC_FIELDS} == \
            {k: fancy[k] for k in CARD_SEMANTIC_FIELDS}
     assert plain["artist"] != fancy["artist"]     # but presentation differs

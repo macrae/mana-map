@@ -19,7 +19,7 @@ from conftest import requires_deck, requires_roles, requires_strategy
 def _deck(main=("Alpha", "Beta"), commander="Cmdr", bench=()):
     cards = [{"name": commander, "is_commander": True, "type_line": "Legendary Creature"}]
     cards += [{"name": n, "type_line": "Creature"} for n in main]
-    cards += [{"name": n, "type_line": "Creature", "is_sideboard": True} for n in bench]
+    cards += [{"name": n, "type_line": "Creature"} for n in bench]
     return {"cards": cards}
 
 
@@ -206,13 +206,6 @@ def test_add_already_in_the_deck_fails():
 def test_add_source_vocabulary_is_closed():
     assert any("source must be one of" in e
                for e in _errors(_doc(add_candidates=[_add(source="wishlist")])))
-
-
-def test_bench_source_must_really_be_on_the_bench():
-    doc = _doc(add_candidates=[_add(card="Gamma", source="sideboard")])
-    assert any("sideboard holds no such card" in e for e in _errors(doc))
-    deck = _deck(bench=("Gamma",))
-    assert vd.validate(doc, deck) == []
 
 
 def test_add_that_closes_nothing_fails():

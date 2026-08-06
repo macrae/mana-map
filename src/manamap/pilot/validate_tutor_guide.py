@@ -21,7 +21,6 @@ from manamap.pilot.common import (
     deck_dir,
     is_land,
     load_deck_cards,
-    mainboard,
     report_errors,
     try_load_rules_db,
 )
@@ -48,7 +47,7 @@ def deck_tutors(cards):
     """Maindeck nonland cards whose oracle searches the library for nonland
     targets — the cards Fetch Quests owes an entry."""
     names = []
-    for c in mainboard(cards):
+    for c in cards:
         text = str(c.get("oracle_text", "") or "")
         if is_land(c) or not SEARCH_RE.search(text):
             continue
@@ -91,7 +90,7 @@ def validate(doc, deck_doc, rules=None, strategy_sections=None):
 
     cards = deck_doc.get("cards", [])
     by_name = {c["name"]: c for c in cards}
-    deck_names = {c["name"] for c in mainboard(cards)}
+    deck_names = {c["name"] for c in cards}
     expected = deck_tutors(cards)
 
     entries = doc.get("tutors", [])

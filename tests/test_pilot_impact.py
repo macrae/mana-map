@@ -25,8 +25,8 @@ def deck(tmp_path, monkeypatch):
     monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", decks)
     write_json(base / "cards.json", {"deck": SLUG, "decklist_sha256": "abc", "cards": [
         {"name": "Loop Piece", "oracle_text": "Untap everything."},
-        {"name": "Plain Land", "oracle_text": "T: Add W.", "is_sideboard": False},
-        {"name": "Bench Card", "oracle_text": "Flash.", "is_sideboard": True},
+        {"name": "Plain Land", "oracle_text": "T: Add W."},
+        {"name": "Bench Card", "oracle_text": "Flash."},
     ]})
     write_json(base / "stacks" / "001-loop.json", {
         "id": "001", "title": "The Loop Piece line",
@@ -39,7 +39,7 @@ def deck(tmp_path, monkeypatch):
         "mulligan": "Keep lands.",
     })
     write_json(base / "goldfish_targets.json", {"targets": [
-        {"label": "Engine drawn", "need": [{"any_of": ["Loop Piece", "Bench Card"]}]},
+        {"label": "Engine drawn", "need": [{"any_of": ["Loop Piece", "Not In The Deck"]}]},
     ]})
     ac._SHA_MEMO.clear()
     common.clear_memo()
@@ -62,18 +62,6 @@ def test_no_baseline_is_reported_not_guessed(deck):
     report = impact.analyze(SLUG)
     assert report["deck_diff"]["available"] is False
     assert "cache-rebless" in report["deck_diff"]["reason"]
-
-
-def test_changed_and_zone_moved_cards_are_named(deck):
-    _seed_baseline(deck)
-    cards = json.loads((deck / "cards.json").read_text())
-    cards["cards"][0]["oracle_text"] = "Untap everything twice."
-    cards["cards"][2]["is_sideboard"] = False  # bench -> maindeck
-    write_json(deck / "cards.json", cards)
-    ac._SHA_MEMO.clear(); common.clear_memo()
-    diff = impact.analyze(SLUG)["deck_diff"]
-    assert "Loop Piece" in diff["changed"]
-    assert "Bench Card" in diff["zone_moved"]
 
 
 # ── reference impact ─────────────────────────────────────────────────────
@@ -108,16 +96,10 @@ def test_unreferenced_change_has_no_impact(deck):
 
 def test_target_audit_flags_non_maindeck_members(deck):
     problems = impact.target_audit(deck)
-    assert problems == [{"target": "Engine drawn", "not_in_maindeck": ["Bench Card"]}]
+    assert problems == [{"target": "Engine drawn", "not_in_maindeck": ["Not In The Deck"]}]
 
 
 # ── zone framing ─────────────────────────────────────────────────────────
-
-
-def test_zone_framing_flags_referencing_stacks(deck):
-    flags = impact.zone_framing(deck, ["Loop Piece"])
-    assert flags and "001-loop.json" in flags[0]["artifact"]
-    assert impact.zone_framing(deck, ["Plain Land"]) == []
 
 
 # ── figure audit ─────────────────────────────────────────────────────────

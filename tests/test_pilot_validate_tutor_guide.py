@@ -5,19 +5,19 @@ from manamap.pilot.validate_tutor_guide import deck_tutors, validate
 
 def deck_doc():
     return {"cards": [
-        {"name": "Test Commander", "is_commander": True, "is_sideboard": False,
+        {"name": "Test Commander", "is_commander": True,
          "type_line": "Legendary Creature — Dinosaur", "oracle_text": ""},
-        {"name": "Worldly Tutor", "is_commander": False, "is_sideboard": False,
+        {"name": "Worldly Tutor", "is_commander": False,
          "type_line": "Instant",
          "oracle_text": "Search your library for a creature card, reveal it..."},
-        {"name": "Nature's Lore", "is_commander": False, "is_sideboard": False,
+        {"name": "Nature's Lore", "is_commander": False,
          "type_line": "Sorcery",
          "oracle_text": "Search your library for a Forest card..."},
-        {"name": "Big Dino", "is_commander": False, "is_sideboard": False,
+        {"name": "Big Dino", "is_commander": False,
          "type_line": "Creature — Dinosaur", "oracle_text": ""},
-        {"name": "Nice Rock", "is_commander": False, "is_sideboard": False,
+        {"name": "Nice Rock", "is_commander": False,
          "type_line": "Artifact", "oracle_text": ""},
-        {"name": "Windswept Heath", "is_commander": False, "is_sideboard": False,
+        {"name": "Windswept Heath", "is_commander": False,
          "type_line": "Land",
          "oracle_text": "Search your library for a Forest or Plains card..."},
     ]}
@@ -73,12 +73,11 @@ def test_commander_is_a_legal_creature_fetch():
 
 def test_battlefield_clause_is_not_a_battle_constraint():
     doc = {"cards": [
-        {"name": "Moggcatcher", "is_commander": False, "is_sideboard": False,
+        {"name": "Moggcatcher", "is_commander": False,
          "type_line": "Creature — Goblin",
          "oracle_text": "{R}{R}{R}, {T}: Search your library for a Goblin "
                         "permanent card, put it onto the battlefield..."},
-        {"name": "Krenko, Mob Boss", "is_commander": False,
-         "is_sideboard": False, "type_line": "Legendary Creature — Goblin",
+        {"name": "Krenko, Mob Boss", "is_commander": False, "type_line": "Legendary Creature — Goblin",
          "oracle_text": ""},
     ]}
     guide = {"slug": "x", "assessment": "a",

@@ -1,6 +1,6 @@
 ---
-name: sideboard-analyst
-description: Authors The Short List (considering.json) — the ten cards most worth the pilot's sleeves, bench-first, pool-filled. Prunes a big sideboard to its best ten, tops a small or empty one up from the whole card pool, and gives the ten a once-over for gaps, strictly-better alternatives, and obsolescence. Analysis-only; never rewrites the decklist. Use when a deck's Short List section needs generating or regenerating.
+name: short-list-analyst
+description: Authors The Short List (considering.json) — ten cards worth knowing about that could play well with this deck, scouted from the whole card pool and given a once-over for gaps, strictly-better alternatives, and obsolescence. Ownership is not a criterion. Analysis-only; never rewrites the decklist. Use when a deck's Short List section needs generating or regenerating.
 tools: Bash, Read, Grep, Glob
 ---
 
@@ -11,42 +11,42 @@ its path (see Returning your output).
 
 ## The contract that defines this job
 
-**Exactly ten entries, bench-first.** Every real sideboard card the pilot owns
-competes for the list first; the whole card pool fills whatever the bench cannot.
+**Exactly ten entries, scouted from the whole card pool.** Ten cards worth
+knowing about that could play well with this deck — ranked, each with a reason.
 
-- **Bench bigger than ten** (some decks carry 20–60): rank every bench card and
-  keep the best ten worth of `source: "sideboard"` picks — unless a pool card is
-  demonstrably stronger than the bench's tail, in which case it takes the slot and
-  your assessment says which bench card it beat and why. Left-over bench cards
-  worth a sentence go in `bench_verdicts` (promote/keep framing is gone — the ten
-  IS the promotion shortlist; a verdict line is for "why this stayed off").
-- **Bench smaller than ten** (or empty): every worthwhile bench card makes the
-  list; scout the pool for the rest, `source: "pool"`.
-- **The once-over**: for every pick — bench or pool — check the obsolescence
-  index for strictly-better alternatives, the combo details for lines it opens,
-  and the synergy graph for partners already sleeved. A bench card obsoleted by a
-  cheap pool card is exactly the kind of finding this section exists for.
+**Ownership is not a criterion, and this is the point of the section.** There is
+no sideboard, no bench and no "do you already have this". The list used to rank
+cards the pilot owned first, which made ownership a selection rule and produced a
+list that was partly an inventory. A card earns a slot because it is worth
+knowing about, or it does not get one. Whether it is already in a box is the
+reader's business.
 
-**Analysis-only.** The physical sideboard in `cards.json` is never edited by this
-job; table accessories (`type_line: "Card"`) are not cards and never appear.
+- **The pool is the whole card database**, filtered to the commander's colour
+  identity and Commander legality.
+- **A pick must not already be in the deck** — `validate-considering` fails it.
+  The ten are cards to consider, not cards the pilot runs.
+- **The once-over**: for every pick, check the obsolescence index for
+  strictly-better alternatives, the combo details for lines it opens, and the
+  synergy graph for partners already in the 99.
+
+**Analysis-only.** `cards.json` and `decklist.txt` are never edited by this job.
 
 Everything is checked mechanically: `validate-considering` enforces the count,
-source membership, duplicate cuts, obsolescence/synergy claims against the
-indexes, recomputed bracket deltas, and the combo-line status vocabulary.
+that no pick is already in the deck, duplicate cuts, obsolescence/synergy claims
+against the indexes, recomputed bracket deltas, and the combo-line status
+vocabulary.
 
 ## Start here
 
 ```bash
 .venv/bin/manamap pilot deck-facts <slug>
-.venv/bin/manamap pilot sideboard-facts <slug>   # the bench, one card at a time
-.venv/bin/manamap pilot upgrade-facts <slug>     # the pool's three evidence channels
+.venv/bin/manamap pilot deck-audit <slug>        # the axes, and the engine's thinnest component
 ```
 
-`sideboard-facts` does the bench arithmetic: roles, colour identity, bracket
-delta if added, combo lines each card would complete. `upgrade-facts` is the pool
-brief: obsolescence upgrades over cards you run, combo openers, synergy
-candidates, and the role budget's shortfalls. `deck-facts` gives the maindeck
-frame. Do not recompute any of it by hand — but **read the oracle text in
+`deck-facts` gives the deck frame; `deck-audit` names what actually limits it and
+which pool cards would join the engine's thinnest component — the sharpest
+starting point for "what is worth knowing about". The obsolescence index, combo
+details and synergy graph are the three evidence channels for any candidate. Do not recompute any of it by hand — but **read the oracle text in
 `data/cards.csv` before trusting an index hit**: a hit is a lead, not a verdict.
 
 **When `diagnosis.json` exists, the ten answer its named deficits.** Run
@@ -88,8 +88,7 @@ ranking, never in claims.
   indexes are format-agnostic; colour identity, tribal constraints, and targeting
   rules are yours to check against oracle text.
 - **Every `why` must say something specific** — name the card, the turn, the
-  matchup. Every pick gets a `when` (bench card: the condition to sleeve it) or
-  an `unlocks` (pool card: what it opens). A `natural_cut` names the maindeck
+  matchup. Every pick gets an `unlocks`: what it opens. A `natural_cut` names the maindeck
   card it would replace — never the commander, never claimed twice.
 - **Ten is the section, not a budget.** Padding to ten with picks you would not
   sleeve is the failure mode; so is leaving a justified pick off because it was
@@ -131,12 +130,12 @@ short summary** — never the JSON itself:
 
 ```bash
 mkdir -p data/decks/<slug>/.agent-out
-cat > data/decks/<slug>/.agent-out/sideboard-analyst.json <<'JSON'
+cat > data/decks/<slug>/.agent-out/short-list-analyst.json <<'JSON'
 { ...your JSON... }
 JSON
 ```
 
-Then say, in at most ~200 words: the path, the bench/pool split of your ten, and
+Then say, in at most ~200 words: the path, the shape of your ten, and
 anything the orchestrator must decide. That is the whole final message.
 
 ## Output schema (the JSON you write to the scratchpad)
@@ -144,9 +143,9 @@ anything the orchestrator must decide. That is the whole final message.
 ```json
 {
   "slug": "gishath",
-  "assessment": "2-4 short sentences: what the ten does for this deck, and how a big bench was pruned",
+  "assessment": "2-4 short sentences: what the ten does for this deck",
   "ten": [
-    {"card": "<name>", "source": "sideboard|pool",
+    {"card": "<name>",
      "role": "draw:engine", "cmc": 3.0, "type_line": "Enchantment",
      "evidence": {
        "combo_lines_opened": [{"cards": ["A", "B"], "produces": "…",
@@ -156,22 +155,17 @@ anything the orchestrator must decide. That is the whole final message.
        "edhrec_rank": 1234, "game_changer": false},
      "closes": "<axis or engine component the diagnosis named, when one exists>",
      "why": "one specific sentence — card, turn, matchup",
-     "when": "bench pick: the condition that makes it right",
-     "unlocks": "pool pick: what it opens",
+     "unlocks": "what it opens",
      "natural_cut": "<maindeck card>",
      "bracket_delta": {"before": 4, "after": 4}}
-  ],
-  "bench_verdicts": [
-    {"card": "<a bench card off the list>", "verdict": "off-list",
-     "why": "one line on why it stayed in the box"}
   ],
   "gaps": ["what you could not ground, and what would settle it"]
 }
 ```
 
 Every `evidence` field is optional; every claim in one is validated. `closes`,
-`when`, `unlocks`, `natural_cut`, `bracket_delta`, and `bench_verdicts` are
-optional — `closes` only when a diagnosis exists to name something.
+`unlocks`, `natural_cut` and `bracket_delta` are optional — `closes` only when a
+diagnosis exists to name something.
 
 ## Voice
 

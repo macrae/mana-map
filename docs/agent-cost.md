@@ -53,7 +53,7 @@ From the session that built the deck builder and built hapatra (2026-07-25):
 | `deck-build` | deck-architect | 105,096 + 96,380 (revision) | new pool, critic findings |
 | `deck-build` | deck-critic | 94,468 | every architect iteration |
 | *(research pass)* | strategy-researcher (research) | 120,545 / 92,559 / 166,544 | the `strategy:deckbuilding` corpus, 3 passes |
-| `the-ten` | sideboard-analyst | 76,000–115,000 (7 spawns, the fleet batch) | new sideboard card, new pilot feedback, pool refresh |
+| `the-ten` | short-list-analyst | 76,000–115,000 (7 spawns, the fleet batch) | decklist edit, new pilot feedback, pool refresh |
 | `tutor-guide` | pilot-coach | 60,000–90,000 (7 spawns) | a tutor enters or leaves the 99 |
 
 The diagnosis loop (2026-08-03), **estimates until the first run measures them** —
@@ -76,14 +76,11 @@ The deterministic half costs **zero**: `manamap pilot deck-audit` joins five
 existing artifacts into sixteen cited axes plus the engine-activation read, and a
 cache miss on both routines still leaves the whole measurement on the table.
 
-`the-ten` replaced the retired `sideboard-analysis`/`upgrade-watch` pair (one routine, one
-artifact — `considering.json`). It costs more than the old bench-only read because its pool
-is the whole card database when the bench cannot fill ten, but `sideboard-facts` and
-`upgrade-facts` hand it the arithmetic (roles, colour legality, bracket-if-added,
-lines-opened, obsolescence, synergy shortlists) before it reads a single card. Note that
-editing a sideboard changes the deck's card digest — `is_sideboard` is in
-`CARD_SEMANTIC_FIELDS` — so a one-card sideboard change MISSes **every** routine on that
-deck, not just this one.
+`the-ten` is The Short List: ten cards worth knowing about that could play well with the
+deck, scouted from the whole card pool (one routine, one artifact — `considering.json`).
+It replaced the retired `sideboard-analysis`/`upgrade-watch` pair, and then the sideboard
+itself was retired: ownership is no longer a criterion, so the pool is always the whole
+card database rather than a bench topped up from it.
 
 `tutor-guide` reports `N/A` for a deck with no library-search tutors, so it never becomes a
 permanent MISS on a tutorless list.

@@ -108,10 +108,10 @@ this law breaks every tie.
 
 **L10 — Every issue is the reader's first.**
 The magazine has no memory the reader is expected to share. No version numbers ("v2's
-answer"), no HISTORY.md, no "previous build" or "earlier list," no benched/retired/
+answer"), no HISTORY.md, no "previous build" or "earlier list," no retired/
 superseded framing, no swap-wave numbering. Every sentence describes the current
 decklist as if it were the only one that has ever existed; the deck's evolution lives
-in git, not in print. A card is in the 99, in the sideboard, or not in the deck — it
+in git, not in print. A card is in the 99 or it is not in the deck — it
 has no past tense. When an analysis exists because something was once verified another
 way (a refuted line, a bounded "infinite"), state the finding on its own terms: the
 refutation is content; the revision history that produced it is not.
@@ -279,7 +279,7 @@ Flight Plan — they are copy, not metadata. `issue_spec.py` is their single sou
 | 12 | **Sources Say** | "Pips versus sources — does this mana base keep its promises?" | Marginal | `mana_analysis.json` | ◆ |
 | — | *(full-bleed art break — the declared §6 breather)* | | | | |
 | 13 | **By the Numbers** | "Ten thousand opening hands don't lie." | Marginal | `goldfish_metrics.json` | ◆ |
-| 14 | **The Short List** | "Ten cards — in the box or on the wish list — the only ten worth your sleeves." | Marginal | `considering.json` | ◆ |
+| 14 | **The Short List** | "Ten cards worth knowing about. Whether you own them is your business." | Marginal | `considering.json` | ◆ |
 | — | *Act V — The Appendix* | | | | |
 | 15 | **Judge's Desk** | "The full case files. The Counselor read them twice." | Dictum | full stack resolutions | ✓ |
 | 16 | **Featured Artist** | "The hands that painted your deck — counted and credited." | Marginal | `cards.json` printing metadata | ◆★ |
@@ -452,20 +452,21 @@ the table above. "Failure mode" is what the review in §12 looks for.
 
 **14. The Short List** — *the ten*
 
-- **Promise**: Every issue, this section names the only ten cards worth the
-  reader's sleeves — bench picks and pool scouts on one ranked list.
-- **Shape**: Ten entries from `considering.json`, each chipped **In the box**
-  (a real sideboard card) or **Scouted** (a pool candidate), with ◆ evidence
-  bullets (combo lines opened, obsolescence, synergy partners, EDHREC rank),
-  the ★ why, the when/unlocks, and a natural cut where one exists. A bench
-  bigger than ten is pruned to its best ten; a smaller one is topped up from
-  the pool; the leftovers worth a line get a "rest of the bench" verdict strip.
+- **Promise**: Every issue, this section names ten cards worth knowing about
+  that could play well with this deck — one ranked list, scouted from the whole
+  card pool.
+- **Shape**: Ten entries from `considering.json`, each with ◆ evidence bullets
+  (combo lines opened, obsolescence, synergy partners, EDHREC rank), the ★ why,
+  what it unlocks, and a natural cut where one exists.
 - **Rule**: Exactly ten, enforced in code (`validate-considering`) — ten is
   the section, not a budget. Computed deltas are ◆; every recommendation is ★;
   a line the list would open stays a candidate until a stack passes.
+- **Rule (ownership is not a criterion)**: the section never asks whether the
+  reader owns a card, and carries no "in the box" / "scouted" distinction. It
+  used to rank cards the pilot owned first, which made an inventory question
+  into a selection rule and turned half the page into a stock check.
 - **Rule (L10, absolute)**: strictly forward-looking, from the current list
-  only. Analysis-only: the physical sideboard in `cards.json` is never
-  rewritten by this section.
+  only. Analysis-only: `cards.json` is never rewritten by this section.
 - **Failure mode**: parroting machine suggestions that ignore the deck's
   identity — or padding to ten with picks the analyst wouldn't sleeve.
 
@@ -654,7 +655,7 @@ silent, she says the record is silent; she never speculates. Signs: The Command 
 Shark, politician, manager, motivator. Pushes you to the better line, names the trap
 you were about to walk into, and never once believes you're going to lose — a positive
 outlook breeds a positive outcome, and Sunny will tell you so while handing you the
-sideboard plan. Every judgment grounded in what Vera verified and Ledger measured, and
+upgrade plan. Every judgment grounded in what Vera verified and Ledger measured, and
 owned as judgment. Signs: The Game Plan, Keep or Ship (lead), Table Manners,
 What's Your Play?, Know Your Enemy, The 99, and the coaching half of every shared
 section.
@@ -872,7 +873,7 @@ Each of these has killed a publication that should have survived.
 - **Uniform emphasis** — every spread shouting, so nothing lands.
 - **Decoration without teaching** — a device that looks era-correct and does no work.
 - **Changelog voice** — writing to a reader who has read the previous versions.
-  "V2's answer", applied-swap history, benched-card ghosts. The deadliest form of
+  "V2's answer", applied-swap history, cut-card ghosts. The deadliest form of
   cover inflation: it promises context the reader cannot have.
 - **Machine parroting** — repeating a graph's suggestion without checking it against
   the deck's identity.

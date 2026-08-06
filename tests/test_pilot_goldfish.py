@@ -18,10 +18,10 @@ from conftest import requires_deck
 
 
 def card(name, type_line="Creature — Goblin", cmc=2, oracle="", quantity=1,
-         is_commander=False, is_sideboard=False):
+         is_commander=False):
     return {
         "name": name, "type_line": type_line, "cmc": cmc, "oracle_text": oracle,
-        "quantity": quantity, "is_commander": is_commander, "is_sideboard": is_sideboard,
+        "quantity": quantity, "is_commander": is_commander,
     }
 
 
@@ -36,7 +36,6 @@ def synthetic_deck():
         card("Goblin Grunt", "Creature — Goblin", cmc=1, quantity=20),
         card("Cantrip", "Instant", cmc=1, oracle="Draw a card.", quantity=15),
         card("Payoff", "Sorcery", cmc=2, oracle="Storm", quantity=5),
-        card("Sideboard Token", "Card", cmc=0, is_sideboard=True),
     ]}
 
 
@@ -64,11 +63,10 @@ def test_classify_land_and_creature_land():
     assert classify(card("Grunt", "Creature — Goblin"))["is_land"] is False
 
 
-def test_build_library_excludes_commander_and_sideboard():
+def test_build_library_excludes_the_commander():
     library, commanders = build_library(synthetic_deck())
     names = {c["name"] for c in library}
     assert "Test Commander" not in names
-    assert "Sideboard Token" not in names
     assert len(commanders) == 1
     assert len(library) == 95  # 40+1+4+10+20+15+5
 

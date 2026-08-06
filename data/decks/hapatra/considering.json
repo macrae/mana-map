@@ -4,21 +4,37 @@
   "ten": [
     {
       "card": "Gravecrawler",
-      "source": "pool",
       "role": "threat:body",
       "cmc": 1.0,
       "type_line": "Creature — Zombie",
       "evidence": {
         "combo_lines_opened": [
-          {"cards": ["Gravecrawler", "Pitiless Plunderer", "Carrion Feeder"],
-           "produces": "Infinite +1/+1 counters on a creature, death triggers, ETB, LTB, sacrifice triggers, storm count",
-           "status": "needs a stack scenario"},
-          {"cards": ["Gravecrawler", "Pitiless Plunderer", "Viscera Seer"],
-           "produces": "Infinite LTB, ETB, sacrifice triggers, death triggers, scry 1, storm count",
-           "status": "needs a stack scenario"},
-          {"cards": ["Gravecrawler", "Phyrexian Altar"],
-           "produces": "Infinite death triggers, ETB, LTB, sacrifice triggers, storm count",
-           "status": "needs a stack scenario"}
+          {
+            "cards": [
+              "Gravecrawler",
+              "Pitiless Plunderer",
+              "Carrion Feeder"
+            ],
+            "produces": "Infinite +1/+1 counters on a creature, death triggers, ETB, LTB, sacrifice triggers, storm count",
+            "status": "needs a stack scenario"
+          },
+          {
+            "cards": [
+              "Gravecrawler",
+              "Pitiless Plunderer",
+              "Viscera Seer"
+            ],
+            "produces": "Infinite LTB, ETB, sacrifice triggers, death triggers, scry 1, storm count",
+            "status": "needs a stack scenario"
+          },
+          {
+            "cards": [
+              "Gravecrawler",
+              "Phyrexian Altar"
+            ],
+            "produces": "Infinite death triggers, ETB, LTB, sacrifice triggers, storm count",
+            "status": "needs a stack scenario"
+          }
         ],
         "edhrec_rank": 687,
         "game_changer": false
@@ -27,16 +43,22 @@
       "why": "One mana that comes back every turn from the graveyard as long as a Zombie is out, and the deck already controls three — Carrion Feeder, Host of the Hereafter and Mikaeus — so it is permanent Yawgmoth fodder from turn 2 and the three-card lines with Pitiless Plunderer need nothing the deck does not already own.",
       "unlocks": "A recurring nontoken body: the sacrifice loops stop depending on Mikaeus's undying, which is the component the audit flags as one card deep.",
       "natural_cut": "Fume Spitter",
-      "bracket_delta": {"before": 4, "after": 4}
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
     },
     {
       "card": "Beast Within",
-      "source": "pool",
       "role": "removal:spot",
       "cmc": 3.0,
       "type_line": "Instant",
       "evidence": {
-        "synergy_partners_in_deck": ["Blood Artist", "Zulaport Cutthroat", "Bastion of Remembrance"],
+        "synergy_partners_in_deck": [
+          "Blood Artist",
+          "Zulaport Cutthroat",
+          "Bastion of Remembrance"
+        ],
         "edhrec_rank": 25,
         "game_changer": false
       },
@@ -44,19 +66,27 @@
       "why": "Recomputing the breadth axis with this one card added takes the deck from one class answered to four — creature, artifact, enchantment, land — because \"Destroy target permanent\" is the catch-all the strategy corpus says \"earns its premium\" [strategy:deckbuilding.interaction-suite]; without it a turn-3 Cursed Totem switches off Carrion Feeder, Viscera Seer, Yawgmoth and all four mana dorks and the deck simply loses.",
       "unlocks": "The first answer to a non-creature permanent this deck has ever had, at instant speed, and the 3/3 Beast it hands back is a legal Hapatra target.",
       "natural_cut": "Serrated Arrows",
-      "bracket_delta": {"before": 4, "after": 4}
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
     },
     {
       "card": "Ayara, First of Locthwain",
-      "source": "pool",
       "role": "wincon:drain",
       "cmc": 3.0,
       "type_line": "Legendary Creature — Elf Noble",
       "evidence": {
         "combo_lines_opened": [
-          {"cards": ["Yawgmoth, Thran Physician", "Mikaeus, the Unhallowed", "Ayara, First of Locthwain"],
-           "produces": "Infinite card draw, draw triggers; near-infinite ETB, LTB, death triggers, lifegain, lifeloss",
-           "status": "needs a stack scenario"}
+          {
+            "cards": [
+              "Yawgmoth, Thran Physician",
+              "Mikaeus, the Unhallowed",
+              "Ayara, First of Locthwain"
+            ],
+            "produces": "Infinite card draw, draw triggers; near-infinite ETB, LTB, death triggers, lifegain, lifeloss",
+            "status": "needs a stack scenario"
+          }
         ],
         "edhrec_rank": 831,
         "game_changer": false
@@ -64,11 +94,13 @@
       "why": "Yawgmoth is the deck's one free repeatable -1/-1 source and every pass of his loop costs 1 life and draws a card; Ayara puts a drain and a lifegain on each black body that re-enters, which is what turns that loop from a draw engine into a kill — and Nest of Scarabs' Insect tokens are black, so she also drains on every batch of counters.",
       "unlocks": "A life-neutral, table-wide drain attached to the loop the deck can actually run, plus a sacrifice outlet that draws.",
       "natural_cut": "Grim Monolith",
-      "bracket_delta": {"before": 4, "after": 4}
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
     },
     {
       "card": "Nature's Claim",
-      "source": "pool",
       "role": "removal:spot",
       "cmc": 1.0,
       "type_line": "Instant",
@@ -80,11 +112,13 @@
       "why": "One green mana, instant speed, artifact or enchantment: this is the card you hold up on the turn you combo, and it is the cheapest out to Grafdigger's Cage, Cursed Totem, Torpor Orb and Rest in Peace — the corpus caps interaction at \"essentially the most any player should pay\" of three mana [strategy:deckbuilding.interaction-suite] and this comes in at one.",
       "unlocks": "An answer castable under a stax tax, on the same turn as a two-mana commander.",
       "natural_cut": "Crumbling Ashes",
-      "bracket_delta": {"before": 4, "after": 4}
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
     },
     {
       "card": "Scavenging Ooze",
-      "source": "pool",
       "role": "hate:graveyard",
       "cmc": 2.0,
       "type_line": "Creature — Ooze",
@@ -96,22 +130,36 @@
       "why": "Graveyard is one of the four classes the audit reads as uncovered, and recomputing breadth with the Ooze added takes the deck to the fifth class and hits the target of five — \"cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any\" [strategy:deckbuilding.interaction-suite]; it is targeted rather than symmetric, which matters because this deck's own Gravecrawler, Reassembling Skeleton and Phyrexian Reclamation all live in the yard.",
       "unlocks": "Repeatable, one-mana-at-a-time yard exile that grows into a real body, without a Rest in Peace effect that would tax the deck's own recursion.",
       "natural_cut": "Llanowar Elves",
-      "bracket_delta": {"before": 4, "after": 4}
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
     },
     {
       "card": "Reassembling Skeleton",
-      "source": "pool",
       "role": "recursion",
       "cmc": 2.0,
       "type_line": "Creature — Skeleton Warrior",
       "evidence": {
         "combo_lines_opened": [
-          {"cards": ["Pitiless Plunderer", "Ashnod's Altar", "Reassembling Skeleton"],
-           "produces": "Infinite colorless mana, death triggers, ETB, LTB, sacrifice triggers",
-           "status": "needs a stack scenario"},
-          {"cards": ["Pitiless Plunderer", "Phyrexian Altar", "Reassembling Skeleton"],
-           "produces": "Infinite death triggers, ETB, LTB, sacrifice triggers",
-           "status": "needs a stack scenario"}
+          {
+            "cards": [
+              "Pitiless Plunderer",
+              "Ashnod's Altar",
+              "Reassembling Skeleton"
+            ],
+            "produces": "Infinite colorless mana, death triggers, ETB, LTB, sacrifice triggers",
+            "status": "needs a stack scenario"
+          },
+          {
+            "cards": [
+              "Pitiless Plunderer",
+              "Phyrexian Altar",
+              "Reassembling Skeleton"
+            ],
+            "produces": "Infinite death triggers, ETB, LTB, sacrifice triggers",
+            "status": "needs a stack scenario"
+          }
         ],
         "edhrec_rank": 767,
         "game_changer": false
@@ -120,22 +168,36 @@
       "why": "A sacrificed Snake token ceases to exist and comes back as nothing; the Skeleton is a nontoken body that returns for {1}{B} at instant speed, and both of its lines run off Pitiless Plunderer plus an altar the deck already sleeves.",
       "unlocks": "Fodder that survives the token rule, so Yawgmoth, Viscera Seer and Carrion Feeder have something to eat every turn without a board.",
       "natural_cut": "Flourishing Defenses",
-      "bracket_delta": {"before": 4, "after": 4}
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
     },
     {
       "card": "Forsaken Miner",
-      "source": "pool",
       "role": "recursion",
       "cmc": 1.0,
       "type_line": "Creature — Skeleton Rogue",
       "evidence": {
         "combo_lines_opened": [
-          {"cards": ["Forsaken Miner", "Phyrexian Altar", "Blood Artist"],
-           "produces": "Infinite death triggers, ETB, LTB, lifegain, lifegain triggers, lifeloss, sacrifice triggers",
-           "status": "needs a stack scenario"},
-          {"cards": ["Forsaken Miner", "Phyrexian Altar", "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel"],
-           "produces": "Infinite LTB, ETB, sacrifice triggers, death triggers, lifegain triggers, lifegain, lifeloss",
-           "status": "needs a stack scenario"}
+          {
+            "cards": [
+              "Forsaken Miner",
+              "Phyrexian Altar",
+              "Blood Artist"
+            ],
+            "produces": "Infinite death triggers, ETB, LTB, lifegain, lifegain triggers, lifeloss, sacrifice triggers",
+            "status": "needs a stack scenario"
+          },
+          {
+            "cards": [
+              "Forsaken Miner",
+              "Phyrexian Altar",
+              "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel"
+            ],
+            "produces": "Infinite LTB, ETB, sacrifice triggers, death triggers, lifegain triggers, lifegain, lifeloss",
+            "status": "needs a stack scenario"
+          }
         ],
         "edhrec_rank": 2465,
         "game_changer": false
@@ -144,16 +206,22 @@
       "why": "One mana, and both of its lines are two-in-deck already — Phyrexian Altar plus Blood Artist, or Phyrexian Altar plus Sephiroth — with the return gated on committing a crime, which Blood Artist's own trigger and Hapatra's combat trigger both do by targeting an opponent.",
       "unlocks": "A second {B}-to-rebuy body that never asks Mikaeus for undying, and the cheapest route to a drain loop from cards already in the 99.",
       "natural_cut": "Arcane Signet",
-      "bracket_delta": {"before": 4, "after": 4}
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
     },
     {
       "card": "Assassin's Trophy",
-      "source": "pool",
       "role": "removal:spot",
       "cmc": 2.0,
       "type_line": "Instant",
       "evidence": {
-        "synergy_partners_in_deck": ["Blood Artist", "Zulaport Cutthroat", "Bastion of Remembrance"],
+        "synergy_partners_in_deck": [
+          "Blood Artist",
+          "Zulaport Cutthroat",
+          "Bastion of Remembrance"
+        ],
         "edhrec_rank": 124,
         "game_changer": false
       },
@@ -161,47 +229,70 @@
       "why": "Coverage of a class by one card is coverage on paper; a second two-mana catch-all is what makes the answer live in the game where the first one was tutored away, and giving an opponent a basic land costs less than letting a Blood Moon or a Grafdigger's Cage sit for four turns.",
       "unlocks": "Depth on the axis Beast Within and Nature's Claim only reach the floor of, at a mana cost the combo turn can pay.",
       "natural_cut": "Grim Affliction",
-      "bracket_delta": {"before": 4, "after": 4}
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
     },
     {
       "card": "Plague Belcher",
-      "source": "pool",
       "role": "removal:debuff",
       "cmc": 3.0,
       "type_line": "Creature — Zombie Beast",
       "evidence": {
         "combo_lines_opened": [
-          {"cards": ["Mikaeus, the Unhallowed", "Carrion Feeder", "Plague Belcher"],
-           "produces": "Infinite +1/+1 counters on a creature, death triggers, ETB, LTB, sacrifice triggers",
-           "status": "needs a stack scenario"},
-          {"cards": ["Mikaeus, the Unhallowed", "Phyrexian Altar", "Plague Belcher"],
-           "produces": "Infinite colored mana, death triggers, ETB, LTB, sacrifice triggers",
-           "status": "needs a stack scenario"}
+          {
+            "cards": [
+              "Mikaeus, the Unhallowed",
+              "Carrion Feeder",
+              "Plague Belcher"
+            ],
+            "produces": "Infinite +1/+1 counters on a creature, death triggers, ETB, LTB, sacrifice triggers",
+            "status": "needs a stack scenario"
+          },
+          {
+            "cards": [
+              "Mikaeus, the Unhallowed",
+              "Phyrexian Altar",
+              "Plague Belcher"
+            ],
+            "produces": "Infinite colored mana, death triggers, ETB, LTB, sacrifice triggers",
+            "status": "needs a stack scenario"
+          }
         ],
-        "synergy_partners_in_deck": ["Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel"],
+        "synergy_partners_in_deck": [
+          "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel"
+        ],
         "edhrec_rank": 3639,
         "game_changer": false
       },
       "why": "Three mana whose entry alone puts two -1/-1 counters on a creature you control — one Hapatra trigger for a Snake, two Insects off Nest of Scarabs — and it is a Zombie, which is the permanent enabler Gravecrawler needs on the battlefield; the tagged Mikaeus lines are listed but they still name Mikaeus, so they thicken the kill rather than replace it.",
       "unlocks": "A menace body that pays the counter engines on entry and drains each opponent on every Zombie death.",
       "natural_cut": "Contagion Clasp",
-      "bracket_delta": {"before": 4, "after": 4}
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
     },
     {
       "card": "Mox Amber",
-      "source": "pool",
       "role": "ramp:rock",
       "cmc": 0.0,
       "type_line": "Legendary Artifact",
       "evidence": {
-        "obsoletes": ["Lotus Petal"],
+        "obsoletes": [
+          "Lotus Petal"
+        ],
         "edhrec_rank": 208,
         "game_changer": false
       },
       "why": "The obsolescence index calls this a strictly-better Lotus Petal, and the read holds here: a two-mana commander plus Mikaeus, Yawgmoth, Yahenni and Sephiroth means it taps for colour on every turn after the second instead of once, and the Petal's one-shot is worth least in a deck already over its ramp target.",
       "unlocks": "A repeatable colour source in a zero-mana slot, which is what a {B}{B}{B} Ayara and a {3}{B}{B}{B} Mikaeus actually want.",
       "natural_cut": "Lotus Petal",
-      "bracket_delta": {"before": 4, "after": 4}
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
     }
   ],
   "gaps": [

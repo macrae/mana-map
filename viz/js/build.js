@@ -78,7 +78,6 @@
 
   let showEdges = true;
   let showCandidates = true;
-  let showSideboard = false;
   let dimOthers = true;
   // Build opens on the GRAPH. The map is still one click away and is what Deck Lens
   // always was — position, roles and verified lines drawn where the cards actually live.
@@ -257,7 +256,6 @@
     return html + '</div></div>';
   }
 
-  function isMain(card) { return !card.is_sideboard; }
   function qty(card) { return parseInt(card.quantity, 10) || 1; }
 
   // ── Loading ──
@@ -315,9 +313,8 @@
       };
     }
 
-    const main = cards.filter(isMain).map(toSlot);
-    const side = cards.filter(c => !isMain(c)).map(toSlot);
-    const unmapped = main.concat(side).filter(s => s.idx === null).map(s => s.name);
+    const main = cards.map(toSlot);
+    const unmapped = main.filter(s => s.idx === null).map(s => s.name);
 
     // The Short List: ten cards the pilot might sleeve. Pool picks are the interesting
     // ones on a map — they are, literally, elsewhere.
@@ -336,7 +333,6 @@
       entry,
       commanderName,
       main,
-      side,
       candidates,
       unmapped,
       edges: buildEdges(stacks, main, entry),
@@ -440,25 +436,6 @@
       });
     }
 
-    if (showSideboard) {
-      const bench = active.side.filter(s => s.idx !== null);
-      if (bench.length) {
-        traces.push({
-          type: 'scattergl',
-          mode: 'markers',
-          name: 'Sideboard (' + bench.length + ')',
-          x: bench.map(s => all[s.idx].x),
-          y: bench.map(s => all[s.idx].y),
-          customdata: bench.map(s => s.idx),
-          hoverinfo: 'none',
-          marker: {
-            size: 7, opacity: 0.9, color: 'rgba(0,0,0,0)',
-            line: { color: '#D4AF4A', width: 1.5 },
-          },
-          _isDeckOverlay: true,
-        });
-      }
-    }
 
     if (showCandidates && active.candidates.length) {
       traces.push({
@@ -589,7 +566,6 @@
           statBox(active.copies, 'cards') +
           statBox(e.verified, 'verified') +
           statBox(active.candidates.length, 'short list') +
-          statBox(active.side.length, 'bench') +
         '</div>' +
         '<button class="lens-btn" onclick="Build.fitDeck()">Zoom to the deck</button>' +
       '</div>' +
@@ -610,7 +586,6 @@
         toggleRow('dimOthers', dimOthers, 'Dim the other cards') +
         toggleRow('showEdges', showEdges, 'Verified lines (' + drawnEdges().length + ' drawn)') +
         toggleRow('showCandidates', showCandidates, 'Short List (' + active.candidates.length + ')') +
-        toggleRow('showSideboard', showSideboard, 'Sideboard (' + active.side.length + ')') +
         toggleRow('showIllegal', showIllegal, 'Grey out what you cannot play') +
       '</div>';
 
@@ -731,7 +706,6 @@
     if (key === 'dimOthers') dimOthers = value;
     else if (key === 'showEdges') showEdges = value;
     else if (key === 'showCandidates') showCandidates = value;
-    else if (key === 'showSideboard') showSideboard = value;
     renderPanel();
     MM.render();
   }
