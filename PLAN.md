@@ -31,33 +31,28 @@ first place.
 
 1,289 tests (1,179 fast + 110 browser). 35 `manamap pilot` subcommands. 12 agents, 15 skills.
 
-> ### ⚠ OPEN: 23 agent-cache routines are deliberately MISSed
+> ### ⚠ OPEN: the cache board reads 73 MISS, and the cause is a sequencing error
 >
-> The embedding rebuild regenerated `synergy_graph.json` and `obsolescence_index.json`, which
-> are declared inputs of `writer-prose`, `the-ten` and `issue-plan` — so **every deck's copy of
-> those three is stale**, plus `candidate-pool` and `deck-build` on hapatra.
+> *(This callout previously described 23 MISSes from the embedding rebuild. Those were
+> resolved 2026-08-05–09: everything was re-authored or re-blessed with reasons during the
+> sideboard retirement and prose refresh. The current state is different and newer.)*
 >
-> | decks | routines MISSed |
-> |---|---|
-> | edgar-vampires, gishath, goblin-storm, heliod, sisay, ur-dragon | `writer-prose`, `the-ten`, `issue-plan` |
-> | hapatra | those three **plus** `candidate-pool`, `deck-build` |
+> Measured 2026-08-09: **73 MISSes across all 8 decks** — `strategic-frame`, `coach-prose`,
+> `writer-prose`, `the-ten`, `tutor-guide`, `deck-recon`, `deck-diagnosis`,
+> `decision:001/002` per deck, plus yawgmoth's `candidate-pool`. Every `stack:NNN` and every
+> `issue-plan` is HIT.
 >
-> `strategic-frame`, `coach-prose`, `tutor-guide` and every `stack:NNN` still HIT — the rules
-> and strategy inputs did not move.
+> **The cause is not stale content.** Commit `af7ded9` (the scratch-clobber fix) edited all
+> six deck charters **one commit after** `cae2e16` recorded the freshly regenerated fleet —
+> the exact sequencing mistake CLAUDE.md's "charter edits BEFORE cache-record" gotcha
+> records, made a second time. The charter diff is output-path mechanics only and cannot
+> change a figure in any artifact; the artifacts themselves were regenerated and validated
+> the same day.
 >
-> **This was left MISSed on purpose.** Re-spawning all 23 costs roughly **2.46M tokens**
-> (~1.74M for the six decks, ~725k for hapatra). The published issues are not wrong: the graphs
-> changed underneath the prose, but the prose's claims were validated when written. The choice
-> is deliberate and belongs to a human:
->
-> - **re-bless** — `manamap pilot cache-record <slug> --routine <name>` per routine, after
->   reading the prose and agreeing it still holds. Free. This is what `docs/pipeline.md`
->   recommends for a graph refresh.
-> - **re-spawn** — regenerate for real, at the cost above. Warranted if the new synergy and
->   obsolescence data would actually change what the sections say.
->
-> Do not `cache-record` blindly to make the status board green: the record is the claim that
-> someone checked. Until this is resolved, expect `cache-status` to report MISS on any deck.
+> Resolution is **decision D1 of the hygiene plan below** (re-record with documented
+> reasoning / re-spawn ~3M / leave amber). `deck-recon` (6 decks) and `deck-diagnosis`
+> (6 withheld + 2 superseded) are genuinely undone regardless and belong to the
+> diagnosis thread, not to this.
 
 
 ## Shipped
@@ -224,6 +219,183 @@ mechanically checkable and cheap:
   grep for moved numbers called gishath's frame clean while it discussed the "Enrage
   engine" four times and Temple Altisaur seven, with that group's membership just
   changed.
+
+## THE HYGIENE PLAN — optimize, clean, document (drafted 2026-08-09, not yet started)
+
+Three parallel surveys (Python health, docs drift, tests/data/frontend) plus direct
+verification produced this. Every figure was measured at draft time; where a survey claim
+was checked and found wrong, the correction is stated. **Zero agent spend** — all phases
+are deterministic work, roughly two focused sessions.
+
+### Ground truth at draft time
+
+18,646 lines Python · 8,541 lines JS · tests 18,598 lines (~1:1 with source) ·
+**1,469 tests** (1,346 fast @ 58s single-proc, 123 browser) · 38 pilot subcommands ·
+14 agents · 16 skills · 10 cached routines · 8 published decks · 131.8 MB tracked data ·
+`.git` 208 MB · cache board 73 MISS (see callout at top).
+
+### The defects, ranked
+
+1. **Cache board at 73 MISS** — my charter-edit-after-record sequencing error (see callout).
+2. **`impact --out` is accepted and silently ignored** — `impact.main` never reads
+   `args.out`. Confirmed live.
+3. **Docs state four different test totals across five files**; the board is called
+   "green" in 2 places and "23-MISSed" in 4 — none matches reality; `cli.py --help` says
+   "13-step pipeline" against a 15-step registry; **yawgmoth (Vol. 008) is absent from
+   this file's issue list, deck table and inventory**; "hapatra has no decision spreads"
+   and "deck-recon never run" (both above) are false.
+4. **Seven independent `cards.csv` parsers in the pilot layer** (24.65 MB/parse):
+   `card_pool` (unmemoized full parse), `bracket`, `pool_facts`, `validate_build`
+   (unmemoized), `validate_stack`, `validate_diagnosis`, `build_deck` (full 35-column
+   frame, twice in one process; build→validate = 3 parses). The `card_flags` dict is
+   built by identical comprehensions in 3 files; `pool_facts.py:358` carries a comment
+   begging for the shared loader.
+5. **Two unkeyed memos are stale-data hazards** — `validate_stack._CORPUS_NAMES`,
+   `validate_diagnosis._ORACLE_MEMO` lack the `(mtime_ns, size)` key every other memo
+   uses. Five hand-rolled implementations of the same memo pattern exist.
+6. **~73s floor of unconditional `wait_for_timeout` sleeps** in 24 browser tests; 62 of
+   118 browser tests re-parse the 12.9 MB projection per test (function-scoped pages).
+7. **Dead weight**: 6 zero-caller functions (`analysis/common.cosine_similarity`,
+   `viz_index.similar_rows`, `mechanical_tags.tag_oracle_text_from_row`,
+   `deck_audit._roles_for`, `design.map_key`, `agent_cache.file_sha256`); 14 unused
+   imports (one costs a pandas import); **63 of 212 CSS classes (~30%) referenced
+   nowhere** (remains of three deleted features); 5 duplicate test names;
+   `mana-map.js`'s docstring says it exists to serve deleted `deck-builder.js`;
+   `build_deck.py:261` cites `deck-builder.js:embeddingSim` (deleted);
+   `common.py:108` cites deleted `validate_sideboard.py`; permanently-no-op probes for
+   `sideboard_analysis.json`/`upgrade_watch.json` in `impact.py:94` +
+   `validate_issue.py:281`; 179 stale `.agent-out` files (3.4 MB); one merged branch.
+8. **Pattern fragmentation**: 20 DFC face-split sites in 3 semantics with no helper
+   (one layout-aware, its twin not); 5 JSON-writing styles; canonical-JSON implemented
+   twice ("local copy avoids a circular import"); `validate_stack` is the only validator
+   not using `report_errors`; out-path guarding covers 3 of 8 `--out` commands
+   (`diagnosis_report` hand-rolls a guardless copy).
+
+### The sequencing constraint that shapes everything
+
+The cache hashes three source files — `issue_spec.py`, `deck_audit.py`, `STYLEv3.md` —
+plus every `.claude/agents/*.md`. Therefore: **all edits to cache-hashed files batch
+into ONE phase** closed by exactly one snapshot → verify-artifacts-unchanged →
+re-record; **docs are written LAST** so they describe the end state once. `common.py`,
+`card_pool.py`, `config.py`, `build_manual.py`, `viz/**` are not hashed — free anytime.
+
+### Phase 0 — three decisions (pilot, before any work)
+
+- **D1 — the 73-MISS board**: (a) re-record with the reason documented (the `af7ded9`
+  diff is output-path mechanics only; artifacts regenerated and validated the same day) —
+  recommended; (b) re-spawn (~3M tokens for a filename-guidance diff); (c) leave amber.
+- **D2 — count-drift guard**: extend the proven `test_docs_section_count.py` pattern
+  into `tests/test_docs_counts.py` deriving test/subcommand/agent/skill/deck/routine
+  counts from the repo and failing any doc that states a different number — recommended
+  over stripping counts from prose (numbers are this repo's house style).
+- **D3 — `config.py` split** (1,235 lines, 8 unrelated concerns: paths, a binary format
+  spec, ML hyperparams, three regex rulebooks, UI display strings, editorial citations,
+  the routine graph): split into a `config/` package with `config.py` as a pure
+  re-export façade so no import breaks. Optional; own commit; full suite as gate.
+
+### Phase 1 — correctness + dead weight (small, safe; no cache-hashed file touched)
+
+Wire `impact --out` through `resolve_out_path` (it is per-deck and registry-grouped with
+the guarded trio) · route `diagnosis_report.py:225` and `scenario_facts.py:298` through
+the guard (`cache-snapshot`/`pool-facts` are fleet-wide by design — document that
+instead) · key the two unkeyed memos; extract one `common.mtime_memo` from the five
+hand-rolled copies; register all with `clear_memo()` · `cli.py` step count derived from
+the registry, never a literal · delete the dead functions (except `deck_audit._roles_for`
+— cache-hashed file, moves to Phase 2) and the 14 unused imports · delete the no-op
+legacy probes and fix the three stale cross-references · housekeeping: delete merged
+branch `diagnosis-rerun-charter-09ba08f` local+remote, rm the 179 stale `.agent-out`
+files, root `.DS_Store` · promote the recurring orchestrator helper to
+`manamap pilot merge-prose <slug> coach|writer` (~40 lines; ownership semantics from
+`AGENT_ROUTINES[r]["artifact_keys"]`).
+**Gate**: suite green; grep set for deleted names returns zero; `impact --out` writes.
+
+### Phase 2 — shared infrastructure (the perf phase; the ONE phase touching `deck_audit.py`)
+
+Grow `pilot/card_pool.py` into the single `cards.csv` reader — `(mtime_ns, size)`-
+memoized, union of needed columns, serving the three consumed shapes (name-keyed dicts /
+a DataFrame for `build_deck`'s positional alignment / flat name-set with DFC faces);
+port all seven pilot readers; delete the three `card_flags` comprehensions; kill
+`build_deck`'s second same-process parse (pipeline steps stay — one parse per one-shot
+process is correct) · DFC helpers in `common`: `front_face(type_line)`,
+`front_face_name(name, layout)` (fixing `pool_facts`'s layout-unaware twin),
+`expand_faces(name)`; port the ~20 sites · `common.write_json(path, doc, tracked=True)`
+(canonical tracked style vs compact pipeline style); move canonical-JSON to `common`,
+deleting `card_refs`' circular-import copy · fix `impact.py`'s double parses ·
+`validate_stack` adopts `report_errors` (exit semantics kept) · `deck_history`'s
+`DECKS_DIR.parent.parent` → `_REPO_ROOT` · `build_name_index` ×2 with opposite
+tie-breaks is **deliberate per consumer** — cross-reference, don't unify.
+**Gate**: fast-suite time (baseline 58s — the validate cluster should drop);
+`build-deck`+`validate-build` wall time before/after; artifacts byte-identical; then the
+single snapshot → re-record.
+
+### Phase 3 — frontend + browser suite
+
+Delete the 63 dead CSS classes (browser suite before/after as the gate) · dedup: `esc`
+(deck-view.js → `MM.escHtml`), the tray trio (Session is the owner; discovery.js keeps
+wrappers or loses them), the colour-ordering literal · **`setCommander` ×3 needs
+investigation before touching** — CLAUDE.md's gotcha says it must be written wherever a
+commander is learned; the three may be deliberate layers (Session=truth, Force=ring) ·
+fix comments naming dead files as live (`mana-map.js:4`, `discovery.js:485/629`); KEEP
+the "Plotly is gone" tombstones — they are load-bearing warnings · replace the 48 hard
+sleeps with condition waits where a real condition exists, measured per test; consider a
+module-scoped page for the 62 projection-loading tests only if that alone misses the
+budget (page reuse risks cross-test state, this repo's known enemy) · dedupe the two
+cache-bust assertions.
+**Gate**: browser suite green and timed; visual spot-check after CSS deletion.
+
+### Phase 4 — the documentation truth pass + guards (LAST, one commit per cluster)
+
+**This file**: the Decks table gains yawgmoth's row and drops the bench-split "Ten"
+column; roster 12→14 (+`deck-doctor`, +`deck-skeptic`); "seven issues"→8 at all 9 sites;
+artifact inventory (both `build_plan.json` holders; all 8 have `decisions/`; add
+`diagnosis.json`); "cache board is green" §rewritten; 32→46 verified lines; the false
+"hapatra has no decision spreads" and "deck-recon never run" rows; "8 static routines"→10.
+**CLAUDE.md**: counts; layout tree +`card_pool.py` +`validate_goldfish_targets.py`; fix
+the DIAGNOSE/PUBLISH heading boundary. **docs/testing.md**: full re-table (14 drifted
+counts, 19 missing files, the internal 80-vs-123 contradiction). **docs/pilot.md**:
+30→38 commands, 8→10 routines, test inventory. **docs/pipeline.md**: "thirteen"→15,
+triplet→InfoNCE at step 4b, 5→6 invalidated routines. **docs/architecture.md**: the
+:40-45 triplet description contradicts its own :77-86 — fix the former.
+**docs/data-artifacts.md**: region sizes/counts, obsolescence 2.9 MB, eval step 15,
+DATA map 9→12. **README.md**: 8 issues + Vol. 008 link, 26→38 subcommands, delete the
+"six-factor recommender" claim (that scorer is deleted), test counts. **docs/viz.md**:
+six-of-eight dossiers, 8-deck picker. **docs/agent-cost.md**: board state, 7→8 spawns,
+5.9→2.9 MB. **docs/frontend-v2.md**: extend the audit header — `deck-builder.js` no
+longer exists. Ship the D2 guard test. Correct this file's own SentenceTransformer
+claim: it **is** memoized per-process (`preprocess._MODEL_CACHE`); the cost is
+per-invocation because each CLI call is a fresh process — interactive RAG needs a
+long-lived process, a decision against the no-server stance, not a memoization task.
+Also: `show_progress_bar=True` leaks a progress bar into `--json` output — off for
+single-text queries.
+
+### Phase 5 — optional, each with its own go/no-go
+
+`config.py` package split (D3) · `build_manual.py` untangling — it contains a second,
+independently written card-name matcher beside `card_refs.py` plus a module-global
+mutable link registry; unify on `card_refs`, and collapse the
+`render_upgrade_watch`/`render_short_list` double name (the department **id** stays
+pinned) · int8-quantise `embeddings*.bin` (17.6→~4.4 MB each — the two largest tracked
+blobs and the Pages payload) · `.git` at 208 MB (four ~27 MB revisions of
+`synergy_graph.json` alone): **leave it**; history rewriting breaks every clone for
+~76 MB · the `embeddings.bin`/`.npy` duality is intentional (browser export vs pipeline
+working format) — document, keep.
+
+### Do-not-touch (verified during drafting)
+
+**`share/` is load-bearing** — `deck_history._owned_index` reads it for ownership
+derivation; a survey called it an orphan and was wrong (the path is built via
+`DECKS_DIR.parent.parent`, which greps miss) · frozen config (`MECHANICAL_TAGS`,
+model-facing dims) · stack preambles (separately planned per-file work; a regex dry-run
+ate substance on four files) · `SIDEBOARD_SECTION_MARKERS` (both parsers must keep
+consuming the marker) · `build_name_index` tie-breaks (opposite by design) ·
+`upgrade-watch` department id (pinned by `validate_issue`, the act table, every manual).
+
+### Ordering against the diagnosis thread
+
+The six withheld diagnoses (NEXT SESSION above) are orthogonal. If they run first,
+Phase 2's `deck_audit.py` edits wait until after their re-record; if hygiene runs
+first, the diagnoses inherit a faster, cleaner audit. Either order works — what is
+forbidden is interleaving Phase 2 with a diagnosis run mid-flight.
 
 ## Ongoing — what is in flight right now
 
