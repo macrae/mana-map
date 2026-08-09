@@ -424,6 +424,15 @@ def test_link_length_is_the_embedding_distance(page):
 
 
 def test_branching_grows_the_graph_and_records_the_walk(page):
+    """The walk is built from the deck's LIVE contents, never from card names.
+
+    This test used to name Edgar Markov, Sorin and Exquisite Blood. Two of the
+    three left the deck, so two of the three branches became no-ops and the graph
+    stopped growing — `assert 103 > 103`, reported as a rendering regression when
+    it was a decklist that had moved. `test_pilot_validate_stack` carries the same
+    lesson about the same card: a test that hardcodes a decklist is testing the
+    decklist, not the predicate.
+    """
     r = page.evaluate("""async () => {
         const deck = await (await fetch('../data/decks/edgar-vampires/cards.json')).json();
         const names = new Set(deck.cards.map(c => c.name));
@@ -434,22 +443,25 @@ def test_branching_grows_the_graph_and_records_the_walk(page):
         await new Promise(r => setTimeout(r, 2500));
         const before = Force.nodeCount;
         const steps = [];
-        for (const name of ['Edgar Markov', 'Sorin, Imperious Bloodlord', 'Exquisite Blood']) {
-            const i = MM.allData.findIndex(d => d.n === name);
+        // Three cards the deck really runs, spread across the list so their
+        // neighbourhoods do not collapse onto each other.
+        const walk = [rows[0], rows[Math.floor(rows.length / 2)], rows[rows.length - 1]];
+        for (const i of walk) {
             Force.focusCard(i);
             await new Promise(r => setTimeout(r, 700));
             steps.push(Force.nodeCount);
         }
         // A card that is not on the graph must be a no-op, not a crash and not a
-        // phantom trail entry. Bloodline Keeper is in Edgar's SIDEBOARD, which is
-        // exactly the kind of near-miss that finds this.
+        // phantom trail entry.
         const absent = MM.allData.findIndex(d => d.n === 'Black Lotus');
         Force.focusCard(absent);
         await new Promise(r => setTimeout(r, 300));
         Force.freeze();
-        return {before, steps, trail: Force.trailLength, afterAbsent: Force.nodeCount};
+        return {before, steps, walk: walk.length,
+                trail: Force.trailLength, afterAbsent: Force.nodeCount};
     }""")
     assert page.js_errors == []
+    assert r["walk"] == 3, "the deck must supply three distinct cards to walk"
     assert r["steps"][0] == r["before"] + 6, "a branch should pull in BRANCH_K neighbours"
     assert r["steps"][2] > r["steps"][0], "the graph must keep growing as you walk"
     assert r["trail"] == 3, "each distinct card visited should be recorded on the trail"
