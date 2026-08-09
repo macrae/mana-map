@@ -341,11 +341,13 @@
     },
     "deck-diagnosis": {
       "agent": "deck-doctor+deck-skeptic",
-      "agent_prompt_sha256": "ccacae5af82233946b65de29a95e78c7c3d9a11be1b01561e84ccbc91e8b73ff",
+      "agent_prompt_sha256": "7a651f0164c4c111a18411efd6e9d470d6570838c4682a3bbd1a071bc1593356",
       "artifact": "data/decks/yawgmoth-swarm/diagnosis.json",
-      "artifact_sha256": "34ae7a533e94270fb0243cb525bdd1d0919494bc2d4598510a34ff305e2a5fda",
+      "artifact_sha256": "2cfd9c107965db69460ebb2ae2595e370794f0ed5ed6209505aac70db529b14d",
       "card_refs": [
         "Ancient Tomb",
+        "Animate Dead",
+        "Arcane Signet",
         "Ashnod's Altar",
         "Ayara, First of Locthwain",
         "Bastion of Remembrance",
@@ -356,23 +358,23 @@
         "Blasting Station",
         "Blood Artist",
         "Bojuka Bog",
-        "Butcher Ghoul",
         "Cabal Coffers",
-        "Cabal Pit",
         "Carrion Feeder",
         "Castle Locthwain",
         "Dark Ritual",
-        "Deadly Dispute",
+        "Deadly Rollick",
+        "Demonic Tutor",
+        "Diabolic Intent",
         "Exquisite Blood",
         "Fatal Push",
         "Feed the Swarm",
         "Fume Spitter",
-        "Geralf's Messenger",
+        "Grave Pact",
         "Grave Titan",
         "Gravecrawler",
-        "Gray Merchant of Asphodel",
-        "Ifnir Deadlands",
+        "Insatiable Avarice",
         "Lightning Greaves",
+        "Malakir Rebirth // Malakir Mire",
         "Marauding Blight-Priest",
         "Massacre Girl, Known Killer",
         "Mikaeus, the Unhallowed",
@@ -389,16 +391,17 @@
         "Sedgemoor Witch",
         "Sinister Gnarlbark",
         "Skinrender",
+        "Snuff Out",
         "Sol Ring",
         "Soul Snuffers",
         "South Wind Avatar",
         "Starscape Cleric",
-        "Stitcher's Supplier",
+        "Supernatural Stamina",
         "Survivors' Encampment",
-        "Swamp",
         "The Meathook Massacre",
         "Toxic Deluge",
         "Urborg, Tomb of Yawgmoth",
+        "Vampiric Tutor",
         "Viscera Seer",
         "Warren Soultrader",
         "Woe Strider",
@@ -408,10 +411,10 @@
       ],
       "card_refs_version": 2,
       "extra": {
-        "cards_semantic": "ddb44a6f9f717764aae3fd2eb2d89f31c2c15559d93f4d2bf6ee4a5cfa4462cd",
+        "cards_semantic": "20d1c9ee33a7ad69fa9c6464340df56d05b8f6dd0013fc3b10cb0ca214de91a7",
         "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
       },
-      "fingerprint": "3baec7cf1921c31baf5f177f4087587aceafc311bb936e5679d81e4386f9110a",
+      "fingerprint": "0bd6fce7686fb3edc060e1cf84e8a605e7bec55eb55d567627ca153bb5fbf432",
       "inputs": [
         {
           "path": "data/card_roles.json",
@@ -423,7 +426,7 @@
         },
         {
           "path": "data/decks/yawgmoth-swarm/bracket_report.json",
-          "sha256": "5d2ca7a1f747b52d69aadf2f23546d8959a9a8cb3dbeda9add5d3d74b8a51b78"
+          "sha256": "6a2ba947a45d6dd3c502a382d82e1981071c2cd055e527cc5be7703764b4b635"
         },
         {
           "path": "data/decks/yawgmoth-swarm/deck_recon.json",
@@ -439,7 +442,7 @@
         },
         {
           "path": "data/decks/yawgmoth-swarm/mana_analysis.json",
-          "sha256": "b018ed8a32a158e5be87fbd88a759d8bb14339bb4f1a39e7a27e0e4302d3898f"
+          "sha256": "d53a2711c7c4c738ea1f8562bcf98721a5cde0d5574392244415c2ca8662e8fa"
         },
         {
           "path": "data/decks/yawgmoth-swarm/pilot_feedback.md",
@@ -504,6 +507,10 @@
         {
           "path": "data/obsolescence_index.json",
           "sha256": "c8923bd8a07feb14fe1f81e9c00435993794375c58b499387de75a8850615f68"
+        },
+        {
+          "path": "src/manamap/pilot/deck_audit.py",
+          "sha256": "a64da0cb9773d88fc7b4094bd79689491fbffacb64426152bc39f785b53bf68c"
         }
       ]
     },

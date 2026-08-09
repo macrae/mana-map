@@ -1,8 +1,8 @@
 {
   "slug": "goblin-storm",
   "as_of_decklist_sha256": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
-  "archetype": "Mono-red goblin swarm that converts a wide board into damage, with a storm sub-plan bolted on. strategic_frame.json calls it a 'storm-swarm' and deck-audit's override calls it aggro; the artifacts agree, because the swarm half is what the numbers show working — the token component assembles 60.0% at mean turn 3.184, the storm component 15.2%.",
-  "verdict": "This deck functions and it converts. Mana is at target on every axis, the turn-3 land drop lands 90% of the time, and five checker-passed stacks record what the board actually does — including an arbitrarily repeatable Haze of Rage loop that needs no commander. What limits it is not volume but coverage: 13 interaction copies against a 5-6 target, spread over two of the five permanent classes, with one card (Chaos Warp) answering an enchantment or a land and nothing answering a graveyard. The deck has already paid for interaction twice over; it has bought the same answer repeatedly.",
+  "archetype": "A mono-red Goblin swarm with a storm half bolted on. deck-audit establishes no archetype, so the BASE targets apply and no override was used; strategic_frame.json calls it \"Mono-red Goblin swarm with a storm half bolted to it\". The measured engine agrees with the frame's ordering: the token component assembles 60.0% at mean turn 3.184, the Zada component 66.1% at mean turn 5.266, and the storm component 26.5% at mean turn 4.914. Swarm is the floor, storm is the ceiling.",
+  "verdict": "This deck functions and it converts. Mana is at or over target on every mana axis, the turn-3 land drop lands 90% of the time, and five checker-passed stacks record what the board actually does — including a mana-positive Haze of Rage loop that needs no commander at all. What limits it is the shape of its interaction, not the amount. I read all 13 oracle texts on the audit's interaction axis: 11 can point at an opposing permanent, and nearly all of that is damage, which never touches an enchantment, a land or a graveyard. A search of all 79 entries for destroy / exile target / target permanent / gain control / counter / return target returns four cards, and only Chaos Warp answers an opposing enchantment or land — a named singleton, which the corpus prices at 10.1% by ten cards seen.",
   "axes": [
     {
       "axis": "mana-base",
@@ -10,7 +10,7 @@
       "measured": {
         "value": 36
       },
-      "reading": "36 land copies sits at the top of the aggro band. Nothing here needs touching.",
+      "reading": "36 land copies (15 entries, 22 of them Mountains) sits at the bottom of the cited band and at the aggro row's top. Nothing here needs touching.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.ratios",
@@ -24,7 +24,7 @@
       "measured": {
         "value": 41
       },
-      "reading": "41 copies against a Burgess target of 36, and the five persistent producers are Howlsquad Heavy, Impulsive Pilferer, Skirk Prospector, Sol Ring and Storm-Kiln Artist. The four rituals are counted nowhere and are extra on top.",
+      "reading": "41 copies against a Burgess target of 36, made of 36 lands plus five persistent producers (Howlsquad Heavy, Impulsive Pilferer, Skirk Prospector, Sol Ring, Storm-Kiln Artist). The four rituals are counted nowhere and are extra on top of that.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base",
@@ -38,7 +38,7 @@
       "measured": {
         "value": 5
       },
-      "reading": "Five counted, and the set is not homogeneous. Four enter tapped with no condition: Forgotten Cave, Hidden Volcano, Smoldering Crater, Spinerock Knoll. The fifth, Den of the Bugbear, is conditional and conditional backwards — \"If you control two or more other lands, this land enters tapped\" — untapped on turns one and two, tapped from turn three. Three more are conditional the usual way: Arena of Glory and Castle Embereth enter untapped if you control a Mountain, which 22 basics make routine, while Dwarven Mine wants three other Mountains and so is a tapland on turn two.",
+      "reading": "Five unconditional taplands plus three conditional ones (Arena of Glory, Castle Embereth, Dwarven Mine), against a comfort ceiling of eight. The same sentence wants near zero in an aggressive deck and this one puts a token maker down at mean turn 3.184 — but consistency says the taplands are not currently costing land drops.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base",
@@ -52,11 +52,139 @@
       "measured": {
         "value": 7
       },
-      "reading": "43 red sources against a Karsten target of 36 — seven clear. A mono-red deck with a double-pip maximum has no colour problem to solve.",
+      "reading": "43 red sources against a Karsten target of 36 — seven above, in a deck whose only colour is red. Casting cost is not a question this deck has.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base.color-sources",
           "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
+        }
+      ]
+    },
+    {
+      "axis": "ramp",
+      "verdict": "adequate",
+      "measured": {
+        "value": 15
+      },
+      "reading": "Over the 10–12 template, but the template counts functions and these are not one function: the mana-sources axis credits only five of the 15 as persistent producers, and the other ten are rituals, Treasure makers and cost reducers — one of which is Blasphemous Act, carried by ramp:cost-reduction because it costs {1} less per creature. That is why goldfish_metrics.json still reports mean available mana of 3.937 on turn 4. In a storm deck the rituals are engine, not acceleration.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "they are counts of *functions*, not cards, so a card doing two jobs fills two slots"
+        }
+      ]
+    },
+    {
+      "axis": "card-advantage",
+      "verdict": "adequate",
+      "measured": {
+        "value": 8
+      },
+      "reading": "Eight is a floor, not a ceiling. The audit's own probe names ten more cards whose oracle text draws and which the taxonomy files elsewhere — Crimson Wisps, Expedite, Fists of Flame, Forgotten Cave, Fountainport, Gempalm Incinerator, Idol of Oblivion, Renegade Tactics, Smoldering Crater, War Room. Three of those are one-mana cantrips the commander multiplies: stack 001 (checker pass) records five cards drawn off a single {R} on a five-body board.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "Take the categories, derive the counts from the deck's actual failure modes."
+        }
+      ]
+    },
+    {
+      "axis": "interaction",
+      "verdict": "strength",
+      "measured": {
+        "value": 13
+      },
+      "reading": "13 against a floor of 8, and 13 undercounts: Chaos Warp and Spreading Insurrection carry no role at all and so are invisible to the axis. I read every one of the 13 oracle texts. Eleven can point at an opposing permanent; the two that cannot are Impact Tremors and General Kreat, the Boltbringer, whose damage goes to each opponent and can only ever hit a player. Boggart Shenanigans reads \"target player or planeswalker\", and a planeswalker is a permanent. The volume is not the problem.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
+        }
+      ]
+    },
+    {
+      "axis": "sweepers",
+      "verdict": "adequate",
+      "measured": {
+        "value": 0
+      },
+      "reading": "Zero is a taxonomy artifact. I grepped all 79 entries for \"each creature\", \"all creatures\", \"all permanents\" and \"each nonland\": Blasphemous Act deals 13 damage to each creature, Battle Hymn only counts them and Great Train Heist only untaps yours. So the deck runs one mass-removal effect, filed as removal:damage — which is inside the cited 1–3, at the bottom.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+        }
+      ]
+    },
+    {
+      "axis": "protection",
+      "verdict": "adequate",
+      "measured": {
+        "value": 2
+      },
+      "reading": "Roaming Throne (ward {2}) and Swiftfoot Boots. The axis reads UNDER only because config.DECK_AXIS_TARGETS hardwires threat-density's unconditioned \"5-7 protection slots\"; strategy:deckbuilding.interaction-suite budgets the same slot by archetype at 2-4 generic, and 2 is inside that band. The two sections genuinely conflict and nothing in strategy.md reconciles them, so this axis is not scoreable today — it is routed, not prescribed against.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
+        },
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Answers to answers are a separate budget — Commander Deck Maker: 2-4 protection generic, 4-6 combo, 6-8 Voltron"
+        }
+      ]
+    },
+    {
+      "axis": "threat-density",
+      "verdict": "adequate",
+      "measured": {
+        "value": 2
+      },
+      "reading": "Only Goblin Dark-Dwellers and Witch's Mark carry a wincon:* role, so 2 is a floor over a taxonomy that cannot see this deck's kills: Grapeshot is filed removal:damage, Empty the Warrens threat:tokens, Haze of Rage buff:pump, and Spreading Insurrection carries no role at all. Three checker-passed stacks record conversion — 002 puts eight damage on each of two opponents, 003 is an outright lethal, 005 is a mana-positive loop. This deck closes.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
+        },
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Value is not a win."
+        }
+      ]
+    },
+    {
+      "axis": "creatures",
+      "verdict": "strength",
+      "measured": {
+        "value": 27
+      },
+      "reading": "27 creature copies sits inside the aggro row's 26-32, and mean bodies reach 5.257 by turn 6 before any token from a spell that resolves later. The board is the resource every other part of the deck spends.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.archetype-selection",
+          "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
+        }
+      ]
+    },
+    {
+      "axis": "interaction-breadth",
+      "verdict": "weakness",
+      "measured": {
+        "value": 2
+      },
+      "reading": "This is the axis that binds. The measured 2 is a floor — the heuristic reads only cards carrying a removal role, so it never sees Chaos Warp, which answers any permanent. Reading the cards, four of five classes are touched and only graveyard is empty; but enchantment and land are covered by Chaos Warp alone — artifact has three answers (Goblin Trashmaster, Vandalblast, Chaos Warp). Against three opponents that is one card for two whole classes, drawn 10.1% of the time by ten cards seen. A tax enchantment turns off the combat half of a deck whose reach is otherwise one damage at a time.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
+        },
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Breadth before depth: three opponents mean every permanent type appears"
+        },
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "a named card is 7.1% of your opening seven, 10.1% by ten cards seen"
         }
       ]
     },
@@ -66,7 +194,7 @@
       "measured": {
         "value": 0.9
       },
-      "reading": "90% hit the turn-3 land drop against a 74% floor, and 79.1% of first sevens are keepable. The deck starts on time.",
+      "reading": "90% hit the turn-3 land drop against a 74% floor, on a 79.1% keep rate for the first seven. The deck starts on time.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base",
@@ -80,143 +208,11 @@
       "measured": {
         "value": 2
       },
-      "reading": "Modal mana value 2, with 19 two-drops and 13 three-drops across 64 nonland entries and exactly one card at 8+. That is the format's own shape, and the right one for a deck that wants bodies early.",
+      "reading": "Modal mana value 2, with 19 two-drops and 13 three-drops across 64 nonland entries and exactly one card at 8+. That one card is Blasphemous Act, whose cost falls {1} for every creature on the battlefield — on this deck's board it is rarely a nine-drop.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.curve",
           "quote": "puts the modal mana value at 2, with 15.7 two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana value 8+"
-        }
-      ]
-    },
-    {
-      "axis": "ramp",
-      "verdict": "adequate",
-      "measured": {
-        "value": 15
-      },
-      "reading": "The three copies over budget are labelling, not surplus: of the 15 the axis names, Blasphemous Act's ramp role is a cost reduction on itself (it is a sweeper), Great Train Heist's Treasure mode fires only after a creature connects, and Glimpse the Impossible's Eldrazi Spawn appear only for cards you failed to play. Discount those and the deck sits at 12, the top of the band.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.ratios",
-          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
-        },
-        {
-          "rule": "strategy:deckbuilding.ratios",
-          "quote": "they are counts of *functions*, not cards, so a card doing two jobs fills two slots"
-        }
-      ]
-    },
-    {
-      "axis": "card-advantage",
-      "verdict": "adequate",
-      "measured": {
-        "value": 8
-      },
-      "reading": "The count of 8 is a floor and the audit says so: ten more cards draw, and four of them (Crimson Wisps, Expedite, Renegade Tactics, Fists of Flame) are the exact spells Zada multiplies into a draw-N — stack 001 records five cards off one {R}. Two of the ten (Forgotten Cave, Smoldering Crater) are cycling lands and are selection rather than advantage.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.ratios",
-          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
-        },
-        {
-          "rule": "strategy:card-advantage",
-          "quote": "The expert-level mistake is counting raw cards without weighing impact"
-        }
-      ]
-    },
-    {
-      "axis": "creatures",
-      "verdict": "strength",
-      "measured": {
-        "value": 27
-      },
-      "reading": "27 front-face creature copies inside the 26-32 aggro band, and 16 entries carry threat:tokens on top of that. The board is the deck's most reliable asset.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.archetype-selection",
-          "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
-        }
-      ]
-    },
-    {
-      "axis": "interaction",
-      "verdict": "adequate",
-      "measured": {
-        "value": 13
-      },
-      "reading": "13 copies against a 5-6 target, and the count needs reading. Three of the 13 cannot answer an opposing permanent at all: Impact Tremors and General Kreat hit only 'each opponent', Boggart Shenanigans only a player or planeswalker. Two more (Vandalblast, Goblin Trashmaster) can only destroy an artifact. Ten answer a permanent, and eight of those can point damage at a creature — still above the budget. The problem is where the interaction is spent, not how much.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
-        }
-      ]
-    },
-    {
-      "axis": "interaction-breadth",
-      "verdict": "weakness",
-      "measured": {
-        "value": 2
-      },
-      "reading": "This is the axis that binds, and the measured 2 is a floor the audit itself flags. Reading all 79 entries: Chaos Warp answers any permanent, so enchantment and land ARE covered — one card deep, and randomly, since the owner reveals until a permanent replaces what you removed. The deck answers four of the five classes; graveyard is the one nothing touches. What the count of 2 reports correctly is where the money went: all 13 copies the interaction axis counts point at a creature, an artifact, a player or a planeswalker, never at an enchantment, a land or a graveyard — Vandalblast's reach to an artifact land aside — and Chaos Warp is not among the 13, because card_roles.json gives it no role at all.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "Breadth before depth: three opponents mean every permanent type appears, so cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any; catch-all removal earns its premium."
-        }
-      ]
-    },
-    {
-      "axis": "sweepers",
-      "verdict": "adequate",
-      "measured": {
-        "value": 0
-      },
-      "reading": "The measured 0 is a taxonomy miss: Blasphemous Act deals 13 damage to each creature and is the only maindeck card that hits every creature on the battlefield in one resolution — Grapeshot's storm copies can spread 1 damage over several, and Vandalblast's overload does the same job to artifacts. One wipe is the right number here: a second, in a deck of 1/1 tokens, is a card that kills its own plan.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
-        }
-      ]
-    },
-    {
-      "axis": "protection",
-      "verdict": "weakness",
-      "measured": {
-        "value": 2
-      },
-      "reading": "Of the two counted, only Swiftfoot Boots protects anything else: Roaming Throne's Ward {2} taxes attempts on Roaming Throne. A regex over all 79 entries for hexproof, shroud, indestructible, protection-from, ward, regeneration and 'can't be the target' returns no third card. But the gap is smaller than 5-7 implies, because only one of the three engine targets is commander-gated.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.threat-density",
-          "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
-        },
-        {
-          "rule": "strategy:multiplayer.commander-insurance",
-          "quote": "His decision test: how critical is the commander to the plan, and what removal this table actually runs."
-        }
-      ]
-    },
-    {
-      "axis": "threat-density",
-      "verdict": "adequate",
-      "measured": {
-        "value": 2
-      },
-      "reading": "The count of 2 (Goblin Dark-Dwellers, Witch's Mark) is a floor the taxonomy produced; five checker-passed stacks record what actually converts, and 003 ends in a stated kill. The real precondition is bodies, and three of the four damage lines need them already on board — 002 is the exception, since Empty the Warrens builds its own.",
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.threat-density",
-          "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
-        },
-        {
-          "rule": "strategy:deckbuilding.threat-density",
-          "quote": "Value is not a win."
-        },
-        {
-          "rule": "strategy:deckbuilding.threat-density",
-          "quote": "the ceiling build runs one spectacular finisher and loses when it's answered; the median runs three cheap ones and closes from any board"
         }
       ]
     },
@@ -226,7 +222,7 @@
       "measured": {
         "value": 4
       },
-      "reading": "Bracket floor 4, driven by combo content and one two-card infinite — Storm-Kiln Artist plus Haze of Rage, which stack 005 verified. Zero Game Changers.",
+      "reading": "Floor 4, driven by combo_content and two_card_infinite — the Storm-Kiln Artist + Haze of Rage pair, which stack 005 verified. Zero Game Changers. bracket_report.json carries no target, so whether 4 is where the pilot wants to sit is not recorded anywhere.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.power-level",
@@ -240,21 +236,17 @@
       "measured": {
         "value": 2
       },
-      "reading": "Two: Goblin Matron to hand and Moggcatcher onto the battlefield. In a deck whose plan is a class of effects rather than a named card, that is the right count.",
+      "reading": "Goblin Matron and Moggcatcher, both Goblin-only. Reported, never scored — and low tutor density is a deliberate consequence of buying consistency through redundancy instead.",
       "citations": [
         {
-          "rule": "strategy:deckbuilding.archetype-selection",
-          "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
-        },
-        {
           "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-          "quote": "A tutor is \"essentially an additional copy of any card in our deck\" (Commander Mechanic)"
+          "quote": "So stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable"
         }
       ]
     }
   ],
   "engine": {
-    "declared": "Make goblins, then multiply one cheap spell across them — with Zada for the copies, rituals for the mana, and a storm payoff or a pump spell as the finish.",
+    "declared": "Three declared targets: get Zada online with a one-mana payload, get an early token maker down, or assemble a storm payoff behind a ritual — and two of the three need no commander.",
     "components": [
       {
         "role": "ignition",
@@ -269,7 +261,7 @@
         "count": 6,
         "thinnest": false,
         "measured_rate": 0.661,
-        "reading": "Six single-target spells Zada copies; the audit prices the group at 36.4% of opening sevens and the target it gates assembles in 66.1% of games, mean turn 5.266. Four of the six draw a card. Ancestors' Aid draws nothing, but its second line — \"Create a Treasure token\" — is untargeted, so every Zada copy makes another Treasure, which is why the ramp axis counts it. Wild Ride is the one that adds nothing but power and haste."
+        "reading": "Six payloads for the copy hub, 36.4% in an opening seven and 44.4% by turn three. The target assembles 66.1% of runs, 49.6% by turn 6, mean turn 5.266 — the slowest of the three and the only commander-gated one."
       },
       {
         "role": "fodder",
@@ -283,18 +275,20 @@
         "count": 5,
         "thinnest": false,
         "measured_rate": 0.6,
-        "reading": "Five early token makers, 31.2% of opening sevens, assembling in 60.0% of games at mean turn 3.184. This is the fastest thing the deck does and it is not commander-gated."
+        "reading": "Five early token makers, 31.2% in an opener — exactly the 31% the corpus prices a 5-copy class at. Assembles 60.0% of runs at mean turn 3.184. This is the deck's floor and it arrives on schedule."
       },
       {
         "role": "payoff",
         "have": [
           "Grapeshot",
-          "Empty the Warrens"
+          "Empty the Warrens",
+          "Haze of Rage",
+          "Spreading Insurrection"
         ],
-        "count": 2,
+        "count": 4,
         "thinnest": true,
-        "measured_rate": 0.152,
-        "reading": "Two cards, 13.7% of opening sevens, and the target they gate assembles in 15.2% of games — 9.1% by turn 6. The corpus's own ladder starts at 31% for five copies; two is below the bottom rung. The audit flags the group `thin` and still emits no single point of failure, correctly: Grapeshot or Empty the Warrens satisfies it on its own, so no one card is load-bearing. The declaration is also short two cards — Haze of Rage and Spreading Insurrection both carry Storm, and checker-passed stack 005 runs Haze of Rage as the payoff in an arbitrarily repeatable loop."
+        "measured_rate": 0.265,
+        "reading": "Four storm payoffs, 25.8% in an opener. The audit flags thinnest per target, so this is the thinnest of the storm target's two groups — but the ritual group beside it is also four cards, and the flag on that one is false only because the tie is resolved inside one target."
       },
       {
         "role": "mana",
@@ -306,126 +300,156 @@
         ],
         "count": 4,
         "thinnest": false,
-        "measured_rate": 0.152,
-        "reading": "Four rituals. The audit prices this group at 25.8% of opening sevens against the payoff group's 13.7%, so the ritual half is nearly twice as likely to show up as the half it is waiting on. `measured_rate` here is the whole target's 15.2%, the same figure the payoff component carries — the target is an AND of the two groups and the simulation measured one rate for it, not one per component."
+        "measured_rate": 0.265,
+        "reading": "Four rituals, 25.8% in an opener, and the storm target needs one of these AND one payoff. The conjunction is what the simulation measured at 26.5%."
       }
     ],
-    "single_points_of_failure": []
+    "single_points_of_failure": [
+      {
+        "component": "Storm payoff plus ritual — the two four-card groups, needed together",
+        "why": "The ceiling plan is an AND of two any_of groups and the deck holds four of each. The smallest step the corpus prices is five copies at 31% of openers; both groups sit under it, at 25.8% each. The measured conjunction is 26.5% assembled and 16.9% by turn 6 — of the three declared targets (0.661, 0.600, 0.265) it is the only one under half. Widening either group is the cheapest purchase in the deck, because the AND multiplies.",
+        "closers": [
+          "Jeska's Will",
+          "Pyretic Ritual",
+          "Desperate Ritual",
+          "Rite of Flame",
+          "Birgi, God of Storytelling // Harnfel, Horn of Bounty"
+        ],
+        "citations": [
+          {
+            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+            "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+          },
+          {
+            "rule": "strategy:critical-mass.storm-math",
+            "quote": "Enabler density is the deckbuilding half: Karsten's hypergeometric method answers \"how many rituals and cantrips until the engine assembles by turn X\""
+          }
+        ]
+      }
+    ]
   },
   "lean_into": [
     {
-      "what": "Pace for the swarm, hold the storm turn as opportunism.",
-      "why": "The token component assembles at 60.0% by mean turn 3.184 and the Zada-cantrip component at 66.1%; the storm component at 15.2%. The median game is the swarm plus a copied cantrip, and the deck should be built and mulliganed to that.",
+      "what": "The board is the payload, not just the clock.",
+      "why": "Every extra body multiplies a one-mana spell. Play the cantrips as engine cards, not as filler — and count bodies before you cast, not after.",
       "evidence": {
-        "token_component_rate": 0.6,
-        "token_mean_turn": 3.184,
-        "zada_component_rate": 0.661,
-        "storm_component_rate": 0.152
+        "stack": "001 (checker pass): Zada plus four Goblin tokens, Crimson Wisps for {R}, five cards drawn and the team hasted",
+        "goldfish": "mean bodies 4.068 on turn 5, 5.257 on turn 6"
       },
       "citations": [
         {
           "rule": "strategy:critical-mass.storm-math",
           "quote": "Separate ceiling from median: the full storm kill is the ceiling; the median game is the value engine under it — pace for the median, hold the ceiling as opportunism."
-        },
-        {
-          "rule": "strategy:mulligans.engine-hands",
-          "quote": "Payoffs without the enabler are blanks until the engine exists"
         }
       ]
     },
     {
-      "what": "The deck is built around Zada without being reliant on her — bank that.",
-      "why": "Of the five checker-passed stacks, two put Zada on the battlefield (001, 003) and three do not (002, 004 — which records her in the command zone — and 005). Of the three goldfish targets, one carries commander_gated true. And Frontline Heroism copies any spell targeting a single creature you control, so the copy effect itself has a second printing in the 99.",
+      "what": "Two of the three engine targets need no commander. Play them that way.",
+      "why": "Killing Zada does not turn this deck off, and it should not be piloted as though it does. The token target and the storm target are both commander_gated false in the audit, and the checker-passed stacks bear it out.",
       "evidence": {
-        "stacks_with_zada_on_board": [
-          "001",
-          "003"
-        ],
-        "stacks_without": [
-          "002",
-          "004",
-          "005"
-        ],
-        "commander_gated_targets": 1,
-        "targets_total": 3
+        "audit": "commander_gated false on \"Early token maker drawn\" and \"Storm payoff plus ritual\"",
+        "stacks": "002 resolves off Impact Tremors, 005 off Storm-Kiln Artist, and 004's scenario states outright that Zada is in the command zone"
       },
       "citations": [
         {
           "rule": "strategy:deckbuilding.archetype-selection",
-          "quote": "built around your commander is not reliant on it. A deck whose only payoff sits in the command zone hands three opponents one target"
+          "quote": "built around your commander is not reliant on it"
         }
       ]
     },
     {
-      "what": "Repoint interaction rather than adding to it.",
-      "why": "13 copies against a 5-6 target is already double, and six separate cards convert a goblin's death or sacrifice into damage — Goblin Bombardment, Pashalik Mons, Siege-Gang Commander, Siege-Gang Lieutenant, Broadside Bombardiers and Boggart Shenanigans. The sixth copy of one effect is where a class-covering answer comes from.",
+      "what": "Blasphemous Act is a payoff here, not only an answer.",
+      "why": "Its cost falls {1} for every creature on the battlefield and this deck builds the board that discounts it. It is also not blanked by dying alongside the swarm: CR 603.10a makes leaves-the-battlefield triggers look back in time, and its worked example is an artifact with a dies-trigger firing for creatures destroyed at the same moment. Pashalik Mons and Boggart Shenanigans are on the right side of that rule.",
       "evidence": {
-        "interaction_copies": 13,
-        "classes_answered": 2,
-        "death_to_damage_cards": [
-          "Goblin Bombardment",
-          "Pashalik Mons",
-          "Siege-Gang Commander",
-          "Siege-Gang Lieutenant",
-          "Broadside Bombardiers",
-          "Boggart Shenanigans"
-        ]
+        "oracle": "Blasphemous Act — \"This spell costs {1} less to cast for each creature on the battlefield. Blasphemous Act deals 13 damage to each creature.\"",
+        "enumeration": "grep of all 79 entries for \"each creature\" / \"all creatures\" / \"all permanents\" returns Blasphemous Act, Battle Hymn (counts them) and Great Train Heist (untaps yours)"
       },
       "citations": [
         {
+          "rule": "603.10a",
+          "quote": "Some zone-change triggers look back in time. These are leaves-the-battlefield abilities"
+        },
+        {
           "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "Breadth before depth: three opponents mean every permanent type appears, so cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any; catch-all removal earns its premium."
+          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
         }
       ]
     }
   ],
   "cut_candidates": [
     {
-      "card": "Boggart Shenanigans",
-      "why": "The sixth card converting goblin deaths into damage, and the only one of the six that cannot point at a creature — its text is 'target player or planeswalker'. Three mana for a trigger the deck already has five ways to produce, one of which (Goblin Bombardment) also serves as the sac outlet.",
-      "cost_of_cutting": "Free, automatic reach that outlives a wrath. Two of the six fire with no mana and no activation — this and Pashalik Mons — and Pashalik Mons is a creature, so the sweeper that kills six goblins kills the trigger along with them. Boggart Shenanigans is an enchantment and would still be there to convert them into six damage.",
+      "card": "Quest for the Goblin Lord",
+      "why": "One mana for an enchantment that does nothing until five Goblins have entered under your control, and then grants +2/+0 with no evasion — more power onto a board this deck is already good at making wide, and power is not what stops the swarm. On the turns it is live the deck usually already had enough damage; on turns 1 through 4 it is a blank.",
+      "cost_of_cutting": "I enumerated every card in the 99 whose text pumps creatures you control: Castle Embereth, Goblin Bushwhacker, Great Train Heist, Haze of Rage and Quest reach every creature; Goblin Chieftain, Rundvelt Hordemaster and Goblin Trashmaster read \"Other Goblins you control\" and leave the Rat, Dwarf, Kobold, Soldier, Fish and Eldrazi Spawn tokens this deck also makes untouched. Of the five that reach everything, Quest is the only one that is free and always on once its counters are there — the other four charge mana every time they are used.",
       "orphans_stack": [],
       "difficulty": "contested",
       "citations": [
         {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "Breadth before depth: three opponents mean every permanent type appears, so cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any; catch-all removal earns its premium."
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "the median runs three cheap ones and closes from any board"
         }
       ]
     },
     {
-      "card": "Quest for the Goblin Lord",
-      "why": "One mana for an enchantment that does nothing at all until it holds five quest counters, and then grants +2/+0 with no evasion — more power onto a board the deck is already good at making wide, since the token component assembles at 60.0% by mean turn 3.184. It is not a duplicate anthem: Goblin Chieftain, Goblin Trashmaster and Rundvelt Hordemaster each read \"Other Goblins you control get +1/+1\", while Quest reads \"creatures you control get +2/+0\" — twice the power, on every creature, including the non-Goblin bodies this deck makes. The case against the slot is the dead early turns and the shape of the buff, not redundancy — a thinner case than a duplicated effect would have been, and the grade reflects it.",
-      "cost_of_cutting": "A one-mana enchantment that switches on faster here than five counters sounds: stack 002 (checker-passed) casts Empty the Warrens as the fourth spell of the turn, and that stack's own resolution log records a \"final total: 8 tokens\" — five quest triggers and more off one spell. What it then does is what stack 003 (checker-passed) does: that stack attacks with Zada and four Goblin tokens for trample damage, and Quest would add +2/+0 to every creature in that attack. It also dodges creature removal in a way the three anthem bodies do not.",
+      "card": "Throne of Eldraine",
+      "why": "Five mana, and deck-facts flags the specific trap: its mana is restricted to casting spells, so it cannot pay for a single activated ability in a deck built on them — not Siege-Gang Commander's {1}{R} or Siege-Gang Lieutenant's {2} sacrifice, not Pashalik Mons, Fountainport, Kher Keep, Goblin Burrows, Moggcatcher, Den of the Bugbear, Hidden Volcano or Castle Embereth — and not even its own {3}, {T} draw, which demands mana of the chosen colour. Goldfish reports mean available mana of 4.589 on turn 5, so it is also often not castable on the turn it would matter.",
+      "cost_of_cutting": "It adds four mana of one colour in a deck where 57 of 64 nonland entries are monocoloured red, which is exactly what a burst turn spends, and its {3}, {T} draws two. It is also one of the eight cards the card-advantage axis counts, and that axis is already under target at 8.",
       "orphans_stack": [],
       "difficulty": "contested",
-      "citations": []
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "they are counts of *functions*, not cards, so a card doing two jobs fills two slots"
+        }
+      ]
     },
     {
       "card": "Moggcatcher",
-      "why": "Four mana, then {3} and a tap, on a body that is summoning-sick the turn it lands — seven mana across two turns for one Goblin permanent. It is a Human Mercenary, so Goblin Warchief's haste, Goblin Chieftain's anthem, Brightstone Ritual's count and Skirk Prospector's sacrifice all read past it.",
-      "cost_of_cutting": "This is the painful one. It halves the tutor count, and it is the only card that puts a Goblin permanent from the library straight onto the battlefield — Goblin Lackey does it from hand, and only after connecting with a player. The corpus's point is that a tutor acts as an extra copy of every card; cutting it makes every 1-of exactly as findable as its own draw step.",
+      "why": "Four mana for a Human Mercenary — not a Goblin, so Goblin Warchief's and Goblin Chieftain's and Howlsquad Heavy's haste grants all skip it and it is summoning-sick the turn it lands. Then {3} and a tap: seven mana across two turns for one Goblin permanent, against a deck that puts a token maker down at mean turn 3.184 and casts its commander at mean turn 4.352. It is off its own deck's clock.",
+      "cost_of_cutting": "This is a real loss and I am recommending it anyway. A regex for \"search your library\" across all 79 entries returns exactly two cards — Goblin Matron, which fetches to hand, and Moggcatcher, which is the only one that skips the cast and puts the permanent straight onto the battlefield. Repeatable, it is the deck's one recurring toolbox: Krenko, Siege-Gang Commander, Conspicuous Snoop or Boggart Shenanigans on demand, turn after turn. In singleton you buy that with a tutor or you do not have it.",
       "orphans_stack": [],
       "difficulty": "painful",
       "citations": [
         {
           "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-          "quote": "A tutor is \"essentially an additional copy of any card in our deck\" (Commander Mechanic)"
+          "quote": "So stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable"
+        },
+        {
+          "rule": "strategy:mulligans.engine-hands",
+          "quote": "100-card singleton means you mulligan to enabler *classes*, not named cards; build the redundancy your keeps depend on"
         }
       ]
     }
   ],
   "add_candidates": [
     {
+      "card": "Wild Magic Surge",
+      "closes": "interaction-breadth",
+      "source": "pool",
+      "why": "{R}{R} at instant speed, \"Destroy target permanent an opponent controls\" — a second catch-all beside Chaos Warp, at a price this curve can hold. Measured breadth goes 2 to 4 with it alone and 2 to 5 alongside Soul-Guide Lantern, which is the cited floor of five classes. The honest cost is the replacement clause — its controller reveals until they hit a permanent sharing a card type and puts that onto the battlefield, so a destroyed Ghostly Prison can be replaced by another enchantment. Chaos Warp has the same shape and this deck already accepted it once.",
+      "evidence": {
+        "axis_movement": "interaction-breadth 2 -> 4 alone; 2 -> 5 with Soul-Guide Lantern. by_class after both: creature 6, artifact 3, enchantment 1, land 1, graveyard 1",
+        "enumeration": "Search (reproducible over data/cards.csv): legal_commander == legal, color_identity in {'', 'R'}, cmc <= 4, type_line not Stickers, oracle text containing 'target permanent' or 'target nonland permanent' together with destroy/exile/shuffle/return/sacrifice/gain control. 26 hits. Wild Magic Surge is the only catch-all castable on demand among them that this deck does not already run — it answers an opposing permanent of any type the moment it resolves, for its printed {R}{R}, with no further activation and no charge-up. Chaos Warp is the deck's existing one, which is the point of adding a second. The other 24 fail on one of five counts. Reach only permanents you own or control: Despotic Scepter, Telim'Tor's Edict, Synod Sanctum, Obelisk of Undoing, Staff of Compleation, Scarab of the Unseen, Salvager of Ruin, Eden Seat of the Sanctum. Conditional on colour or type: Pyroblast (blue only), Fury Charm (artifact only). Demand a further {5}-{7} to activate: Universal Solvent, Unstable Obelisk, Goblin Firebomb, Lunatic Pandora, Thaumaton Torpedo, Bumbleflower's Sharepot, Oblivion Stone, HELIOS One, Clay Golem, Canoptek Tomb Sentinel. Fire on a schedule you do not choose: Lux Cannon (three turns of charge counters), Culling Scales (your upkeep, lowest mana value only), Star Athlete (needs an attack, and its controller chooses whether to sacrifice). Do not answer at all: Eldrazi Confluence exiles the permanent and returns it. Lux Cannon and Culling Scales do reach an opposing permanent without further mana — they are ruled out on timing, not on reach."
+      },
+      "natural_cut": "Quest for the Goblin Lord",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
+        }
+      ]
+    },
+    {
       "card": "Soul-Guide Lantern",
       "closes": "interaction-breadth",
       "source": "pool",
-      "why": "The only genuinely uncovered class, and therefore the first change to make: breadth before depth. One mana, exiles a card from a graveyard on entry, sacrifices to exile every opponent's graveyard — and if the table has no graveyard deck it sacrifices to draw a card instead, which is why it is the right shape here rather than Tormod's Crypt. It is the only add here that raises the measured class count.",
+      "why": "Graveyard is the one class nothing in the 99 touches — I grepped all 79 oracle texts for \"graveyard\" and every hit is self-referential (flashback on Faithless Looting, Past in Flames and Wild Ride, encore on Impulsive Pilferer, Goblin Dark-Dwellers casting from your own yard, Witch's Mark's Role token). One mana, exiles a card on entry, and when the table has no graveyard seat it cashes out for {1} and a card instead of rotting in hand. It is the marginal card that takes breadth to five: without it the prescription lands on 4.",
       "evidence": {
-        "classes_added": [
-          "graveyard"
-        ],
-        "cards_in_deck_touching_an_opponent_graveyard": []
+        "axis_movement": "interaction-breadth 2 -> 3 alone; 4 -> 5 given Wild Magic Surge is also bought"
       },
       "natural_cut": "Moggcatcher",
       "bracket_delta": {
@@ -435,97 +459,111 @@
       "citations": [
         {
           "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "Breadth before depth: three opponents mean every permanent type appears, so cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any; catch-all removal earns its premium."
+          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
+        },
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Depth is a meta call: copy the answer your table beats you with."
+        }
+      ]
+    },
+    {
+      "card": "Jeska's Will",
+      "closes": "engine component: Storm payoff plus ritual — the ritual group",
+      "source": "pool",
+      "why": "Takes the ritual group from four cards to five, which is the first step the corpus actually prices: 25.8% in an opener becomes the cited 31%, and because the storm target is an AND of two groups the whole conjunction moves with it. Three mana rather than Throne of Eldraine's five, unrestricted mana rather than spell-only, and with Zada on the battlefield you take both modes. It is a Game Changer and would be this deck's first; the recomputed bracket floor is unchanged at 4, because the floor is already forced by the verified Storm-Kiln Artist + Haze of Rage two-card infinite.",
+      "evidence": {
+        "component": "ritual group 4 -> 5 (Battle Hymn, Brightstone Ritual, Mana Geyser, Seething Song, Jeska's Will)",
+        "note": "the goldfish figure for the target is not re-simulated here — see open_questions"
+      },
+      "natural_cut": "Throne of Eldraine",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
         }
       ]
     }
   ],
   "open_questions": [
     {
-      "question": "goldfish_targets.json declares the storm payoff group as Grapeshot and Empty the Warrens, but the deck holds four cards with the Storm keyword — Haze of Rage and Spreading Insurrection are omitted. Re-declare the group and re-run the simulation: does the 15.2% assembled rate survive?",
+      "question": "Which section governs the protection budget? strategy:deckbuilding.threat-density states \"5-7 protection slots\" with no archetype condition, while strategy:deckbuilding.interaction-suite budgets answers-to-answers at 2-4 generic / 4-6 combo / 6-8 Voltron. config.DECK_AXIS_TARGETS['protection'] hardwires the former, which is why the axis reads UNDER at 2.",
+      "settled_by": "research-strategy",
+      "why_it_matters": "Under the first reading this deck is three protection slots short and should buy them; under the second it is already inside the band and the slots belong elsewhere. The two answers prescribe opposite things, and no diagnosis of this deck can size a protection package until strategy.md reconciles them."
+    },
+    {
+      "question": "On a board of Pashalik Mons, Boggart Shenanigans and N Goblin tokens, how much damage does casting Blasphemous Act actually convert into, and where can it be pointed? Boggart Shenanigans reads \"target player or planeswalker\" and Pashalik Mons reads \"any target\"; both are leaves-the-battlefield triggers under CR 603.10a.",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "It decides whether the deck's one mass-removal effect is a reset button or a finisher. No artifact settles the trigger count, the ordering, or whether the deck's own board survives what it just cast."
+    },
+    {
+      "question": "Does adding Jeska's Will to the ritual group move the \"Storm payoff plus ritual\" target's measured assembly, and by how much against the current 26.5% / 16.9% by turn 6?",
       "settled_by": "goldfish",
-      "why_it_matters": "15.2% is the number that makes the storm plan look broken and it is the number every prescription about that plan would be sized against. If the true group is four cards, the component is not the thinnest one and Reiterate is a want rather than a need."
+      "why_it_matters": "The whole case for that swap is that widening a four-card group in an AND multiplies. The hypergeometric says the group goes 25.8% to 31% in an opener; only a re-simulation says what the conjunction does, and the swap should be sized against that number rather than the component's."
     },
     {
-      "question": "Do Reiterate's three in-deck lines actually work — Mana Geyser + Reiterate, Storm-Kiln Artist + Seething Song + Reiterate, and Reiterate + Seething Song + Ruby Medallion?",
+      "question": "Do Reiterate's in-deck lines work in this 99 — Reiterate + Mana Geyser, Reiterate + Seething Song + Storm-Kiln Artist, Reiterate + Seething Song + Ruby Medallion?",
       "settled_by": "resolve-stack",
-      "why_it_matters": "All three are 'needs a stack scenario'. Stack 004 already refuted a popular combo-graph line for this deck by showing it presumed Krenko was the commander, so a popularity number is not evidence about this 99. Reiterate is not prescribed as an add here: deck-audit names it as the sole by_combo_line closer for the payoff group, but Reiterate copies a spell you already hold and so cannot satisfy an any_of group whose members are Grapeshot and Empty the Warrens. What it deepens is the ritual half, already the thicker of the two at 25.8% of opening sevens against 13.7%. If these lines resolve, that is the case for the card; the 15.2% assembled rate is not."
+      "why_it_matters": "considering.json ranks Reiterate on three unverified combo claims and this diagnosis declined to prescribe it for exactly that reason. A checker-passed stack would either make it the strongest add available to the storm half or retire it, the way stack 004 retired the popular Krenko line."
     },
     {
-      "question": "With Roaming Throne entering as a Goblin, does Zada's copy trigger trigger a second time, and what do the second trigger's copies target?",
+      "question": "When a spell targets only Zada and Frontline Heroism is on the battlefield, does the Heroism Soldier token exist in time to be a legal target for Zada's copies, and does Heroism's own copy trigger?",
       "settled_by": "resolve-stack",
-      "why_it_matters": "Roaming Throne is already in the 99 and doubling the copy trigger would roughly double every cantrip's draw and every pump spell's damage. If it does not work, Roaming Throne is a four-mana 4/4 with Ward {2} in a deck whose modal mana value is 2 — still one of the two cards the protection axis counts, but a body rather than an engine piece."
-    },
-    {
-      "question": "How do Zada and Frontline Heroism interact when one spell targets only Zada — does the Heroism token exist in time to be a legal target for Zada's copies, and in what order do the two triggers resolve?",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "Frontline Heroism is the deck's only second copy source, so what it is worth decides whether the protection gap is a 1-slot or a 2-slot problem."
-    },
-    {
-      "question": "Does Witch's Mark satisfy 'targets only Zada' given its 'up to one target creature you control', and does each Zada copy repeat the 'discard a card, draw two'?",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "If it does, Witch's Mark is a second Crimson Wisps at double rate and the card-advantage reading is understated; if it does not, it is a two-mana filter spell in a slot the ignition component was counted for."
+      "why_it_matters": "strategic_frame.json names Frontline Heroism as the redundancy for the copy hub — \"a second copy hub that routes through no legendary creature\" — but it appears in no goldfish component and no checker-passed stack. If the two do not stack cleanly, the frame's claim that the hub has a backup is unsupported."
     }
   ],
   "gaps": [
-    "There is no deck_recon.json for this deck, so nothing here is grounded in what strong Zada lists actually run. Every add is argued from this deck's own axes and the in-identity pool, not from inclusion rates.",
-    "goldfish models resource development, not games — its own assumptions say 'no interaction, no removal' — so mean_bodies_by_turn (4.068 at turn 5, 5.257 at turn 6) is an upper bound on what Zada would find on board, not a forecast.",
-    "The interaction-breadth heuristic excludes counterspells by construction; the deck runs none, so the measured 2 needs no correction in either direction on that account.",
-    "Nothing in the artifacts measures how often the deck kills, only how often components assemble. Whether Moggcatcher's tutor is worth more than a class of coverage is a judgment, not a measurement.",
-    "The obsolescence index emits six entries for this deck (five distinct cards) and none is prescribed here: Contract Hero over Storm-Kiln Artist and Krenko, Baron of Tin Street over Pashalik Mons both discard the specific text those cards are played for — magecraft Treasures, and a death trigger that costs nothing. The index is format-agnostic and does not know which side of a trigger this deck is paid on.",
-    "deck-facts flags Throne of Eldraine verbatim — \"Cannot pay an activated ability at all — the mana is restricted to casting SPELLS, and an activated ability is not a spell\" — and the flag is real but narrow. Enumerating the audit's 64 nonland entries: 57 are monocoloured red, so Throne's four mana casts every Goblin, every ritual, every removal spell and the commander. The restriction bites on exactly seven cards — Idol of Oblivion, Roaming Throne, Ruby Medallion, Skullclamp, Sol Ring, Swiftfoot Boots and Throne itself — and on activated abilities, of which the deck has 22 with a mana cost (10 nonland, 12 land), Moggcatcher {3}, Siege-Gang Commander {1}{R}, Siege-Gang Lieutenant {2}, Pashalik Mons {3}{R} and both Equip {1} costs among them. The deck's most-used activations are not sinks at all: Krenko, Mob Boss ({T}), Goblin Bombardment (sacrifice a creature) and Idol of Oblivion's draw ({T}) each cost zero mana, and Skirk Prospector is a mana SOURCE. Throne is also one of the eight cards on card-advantage, an axis already under its floor of 10. No cut is proposed. Whether five mana for a recurring four earns a slot at modal mana value 2 is a judgment nothing in these artifacts measures.",
-    "Wild Magic Surge could not be grounded as an add and is not prescribed. It destroys target permanent an opponent controls, so it answers enchantment and land — both of which Chaos Warp already answers — and it therefore closes no axis: interaction-breadth would not move, and the interaction axis is seven copies OVER target. `strategy:deckbuilding.interaction-suite` licenses it only as depth, and \"Depth is a meta call: copy the answer your table beats you with\", which needs meta evidence this deck does not have. Its replacement clause is also strictly more generous to the opponent than Chaos Warp's — the revealed permanent is guaranteed and shares a card type. A deck_recon.json pass naming what these tables actually deploy would settle it.",
-    "Champion's Helm could not be grounded as an add and is not prescribed. The card itself is fine and the wording read holds: it costs {3}, equips for {1}, and grants hexproof rather than the shroud Lightning Greaves grants, so your own Crimson Wisps would still be able to target Zada. What it cannot clear is the decision test in the section that would license it. `strategy:multiplayer.commander-insurance` is Cullen's taxonomy of options, and its rule is two halves: \"His decision test: how critical is the commander to the plan, and what removal this table actually runs.\" Half one is answered against the add by this deck's own numbers — one of the three goldfish targets is commander_gated, and three of the five checker-passed stacks (002, 004, 005) do not put Zada on the battlefield, which is lean_into[1]. Half two is unanswerable, because there is no deck_recon.json for this deck (gaps[0]). That is the exact ground on which Wild Magic Surge was withdrawn, and the same standard has to apply to a protection slot. The section's own racing clause points the same way: \"against light-interaction pods, skip the insurance, pay the tax, rebuild\". Two cited targets also disagree about how large the protection gap is, and nothing in these artifacts settles which one governs a swarm deck whose commander is an accelerant rather than the kill: `strategy:deckbuilding.threat-density` asks for 5-7 protection slots, while `strategy:deckbuilding.interaction-suite` says \"Answers to answers are a separate budget — Commander Deck Maker: 2-4 protection generic, 4-6 combo, 6-8 Voltron; counterspells do both jobs.\", under which the measured 2 sits at the bottom of the generic band instead of three to five slots short. A deck_recon.json pass naming what these tables actually deploy would settle both halves at once."
+    "There is no deck_recon.json for this deck (deck-audit reports recon present: false), so nothing here is grounded in what other Zada lists actually run. Whether graveyard hate earns a maindeck slot is a metagame call — strategy:deckbuilding.interaction-suite says depth is a meta call and copy the answer your table beats you with, and this artifact has no evidence about that table.",
+    "The audit's interaction-breadth heuristic reads only cards carrying a removal role, so Chaos Warp (no role at all) and Spreading Insurrection (no role at all) are invisible to it. The measured 2 is therefore a floor; reading the cards puts real coverage at four of five classes. That correction is in this document's prose and cannot be in the number, because the diagnosis must carry the audit's figure unchanged.",
+    "bracket_report.json has no target field and deck-audit reports it as not stamped with the current decklist sha, so \"is this deck inside its intended bracket\" is unanswered — only the floor of 4 is computed.",
+    "card_roles.json classifies 87.3% of this deck; ten entries have no role at all (Chaos Warp, Crimson Wisps, Daring Discovery, Expedite, Fists of Flame, Past in Flames, Reliquary Tower, Renegade Tactics, Spreading Insurrection, Wild Ride). Several are load-bearing, so every role-derived axis here is a floor rather than a count.",
+    "deck-facts reports 42 synergy edges falling inside this deck, but the synergy graph is a format-wide top-10 shortlist and not a fit score, so no claim in this document rests on it.",
+    "Four combo lines are contained in this deck. One — Storm-Kiln Artist + Haze of Rage — is verified to work by stack 005. The three Krenko lines were examined by stack 004, which is also checker-passed and which found they do not produce their advertised infinite here, because Zada is the commander and a sacrificed Krenko stays in the graveyard.",
+    "Roaming Throne is counted as one of the two protection copies on the strength of ward {2}; its actual job in this deck is doubling a chosen creature type's triggers, and no artifact settles which type it should name or whether Zada's copy trigger is doubled."
   ],
   "skeptic": {
-    "verdict": "fail",
+    "verdict": "pass",
     "findings": [
+      {
+        "where": "add_candidates[0].evidence.enumeration",
+        "status": "supported",
+        "note": "My prior open finding is cured, and the replacement claim survives attack. I ran the stated search over data/cards.csv myself (legal_commander == legal, color_identity in {'', 'R'}, cmc <= 4, type_line not Stickers, oracle text containing 'target permanent' or 'target nonland permanent' together with destroy|exile|shuffle|return|sacrifice|gain control): it returns exactly 26 rows. The five reasons partition those 26 EXACTLY — 8 own/control + 2 colour/type + 10 further-mana + 3 schedule + 1 no-answer = 24 non-hits, plus Wild Magic Surge and Chaos Warp; set equality against my search result holds with no duplicate across buckets, no card named that the search misses, and no card in the search left unnamed. The unreproducible '20 hits' figure is gone. The timing argument is true of the two cards I raised: Lux Cannon reads '{T}: Put a charge counter on this artifact. {T}, Remove three charge counters: Destroy target permanent' (any permanent, no further mana, but three turns of charge-up before the fourth tap kills), and Culling Scales reads 'At the beginning of your upkeep, destroy target nonland permanent with the lowest mana value' (your upkeep, mandatory, lowest-mv only). Both are ruled out on timing and not reach, exactly as the entry now concedes. Star Athlete verifies too — its trigger needs an attack and 'Its controller may sacrifice it', so the opponent chooses. The three cards the earlier query missed are handled correctly: Fury Charm's only destroy mode is 'Destroy target artifact' (it reaches the search on the unrelated time-counter mode), Oblivion Stone needs {5} to sacrifice, and Star Athlete is above. Canoptek Tomb Sentinel is subtly right — its exile trigger fires only 'when this creature enters from a graveyard', so the removal genuinely costs Unearth {7}. I also ran a WIDER net for on-demand catch-alls the stated query could miss (broad 'destroy target X or Y' / 'any permanent' phrasings in mono-red or colourless at cmc <= 4): 77 candidates, and every one is type-restricted (artifact, land, creature, blue permanent, or Goblin Cratermaker's colourless-only clause). No catch-all hides outside the query, so the re-scoped superlative — the only catch-all castable ON DEMAND among the 26 that this deck does not already run — is true. One immaterial imprecision inside a correct bucket: HELIOS One's activation is '{3}, {T}, Pay X {E}, Sacrifice' rather than a literal {5}-{7}, though each energy costs its own {1},{T} so the effective cost lands in that band, and the card is sorcery-only and kills only a permanent of mana value exactly X — it is correctly excluded, on a cost description that is loose by a few mana."
+      },
+      {
+        "where": "axes[11]",
+        "status": "supported",
+        "note": "The first announced correction verified. The reading now says 'artifact has three answers (Goblin Trashmaster, Vandalblast, Chaos Warp)' where it previously said two. All three genuinely answer an artifact: Goblin Trashmaster 'Sacrifice a Goblin: Destroy target artifact', Vandalblast 'Destroy target artifact you don't control', Chaos Warp any permanent. The correction is internally consistent with the rest of the reading, which states that the measured 2 is a floor because the heuristic reads only cards carrying a removal role and therefore never sees Chaos Warp (confirmed: card_roles.json gives Chaos Warp no role at all, and _interaction_breadth's baseline artifact list is exactly ['Goblin Trashmaster','Vandalblast']). The load-bearing prescription is untouched — it rests on enchantment, land and graveyard, and the correction moves a number in the direction UNFAVOURABLE to the doctor's own case. The '10.1% by ten cards seen' figure is verbatim from strategy:deckbuilding.redundancy-vs-tutors and is the correct singleton row for a one-card class."
+      },
+      {
+        "where": "axes[9]",
+        "status": "supported",
+        "note": "The second announced correction verified against card_roles.json directly. Every one of the four cards now carries its actual role: Grapeshot ['removal:damage'], Empty the Warrens ['threat:tokens'] (the correction — it was previously lumped into the removal/buff phrasing), Haze of Rage ['buff:pump'], Spreading Insurrection genuinely absent from the roles map. The load-bearing claim is unchanged and true: none of the four carries a wincon:* role. I enumerated wincon:* across the whole 99 and it returns exactly ['Goblin Dark-Dwellers', \"Witch's Mark\"], which is both the named pair and the measured value of 2, so the floor argument stands. The three cited stacks are all checker.verdict == pass."
+      },
       {
         "where": "axes",
         "status": "supported",
-        "note": "Re-ran `deck-audit goblin-storm --json` and compared all 16 measured.value fields: every one matches (mana-base 36, mana-sources 41, taplands 5, colour-sources 7, consistency 0.9, curve 2, ramp 15, card-advantage 8, creatures 27, interaction 13, interaction-breadth 2, sweepers 0, protection 2, threat-density 2, power 4, tutors 2). Readings re-derived independently from cards.json rather than trusted: 22 Mountains, 15 land / 64 nonland entries, curve 15/19/13/10/6 with exactly one card at 8+ (Blasphemous Act, cmc 9), 57 of 64 nonland entries mono-red and exactly 7 colourless (the seven named in gaps[5]). Every tapland clause in axes[2] is verbatim correct including Den of the Bugbear's backwards condition. Freshness clean: goldfish_metrics.json and mana_analysis.json both carry the current decklist sha c8c1c7dd; keep_first_seven_rate 0.791, mean_bodies 4.068/5.257 and land-drop t3 0.9 all check out; bracket-check re-run live returns floor 4 with game_changers [] , matching axes[14]."
-      },
-      {
-        "where": "axes[7]",
-        "status": "supported",
-        "note": "This is the probe test the charter names and the diagnosis passes it. The audit's probe note lists exactly ten cards (Crimson Wisps, Expedite, Fists of Flame, Forgotten Cave, Fountainport, Gempalm Incinerator, Idol of Oblivion, Renegade Tactics, Smoldering Crater, War Room) and the reading engages them by name, correctly separates the two cycling lands as selection, and grounds the Zada multiplication on stack 001 — whose resolution I read: 'five cards total (4 from copies + 1 from the original)' off scenario mana_available {R}. Reading 8 as a floor rather than a ceiling is the correct move, not an evasion."
-      },
-      {
-        "where": "engine",
-        "status": "supported",
-        "note": "All four component sizes and every rate match the audit: ignition 6 / 0.364 opener / 0.661 / mean turn 5.266; fodder 5 / 0.312 / 0.600 / 3.184; payoff 2 / 0.137 / 0.152 / 0.091 by turn 6; mana 4 / 0.258. single_points_of_failure [] matches the audit's [] and the reading explains why (either payoff card satisfies the group alone) — it does not manufacture a defect out of a named-combo half, which is the failure mode the charter warns about. One convention difference I checked and accepted: the diagnosis's `thinnest` flag is global across the flat four-component list (payoff true), where the audit marks thinnest per target (ignition and fodder are trivially thinnest of their one-component targets). The validator does not constrain the field and no reader is misled; the diagnosis separately quotes the audit's real `thin` flag, which is payoff-only."
+        "note": "Spot-check of the doctor's 'nothing validator-relevant moved' assertion, done by re-deriving rather than trusting. I re-ran deck-audit to a slug-scoped path (scratch/gs2/deck-audit-goblin-storm.json) and compared all 16 measured.value figures: every one matches (mana-base 36, mana-sources 41, taplands 5, colour-sources 7, ramp 15, card-advantage 8, interaction 13, sweepers 0, protection 2, threat-density 2, creatures 27, interaction-breadth 2, consistency 0.9, curve 2, power 4, tutors 2) — zero mismatches. Every axis target quote is byte-identical to the audit's. All 34 citations in the document resolve and every quote is a verbatim whitespace-normalised substring of its section, including the one CR citation (603.10a, 'Some zone-change triggers look back in time. These are leaves-the-battlefield abilities'). Freshness is unchanged and clean: goldfish_metrics.json and mana_analysis.json both report current=true against sha c8651652..., which matches as_of_decklist_sha256, so no stale figure is quoted; bracket_report.json's null sha remains disclosed in gaps. bracket_delta is 4 -> 4 on all three adds, consistent with the deck already being forced to 4 by its verified two-card infinite."
       },
       {
         "where": "cut_candidates",
         "status": "supported",
-        "note": "orphans_stack [] is correct for all three: I read the scenario block of all five stacks (all checker.verdict == pass) and none of Boggart Shenanigans, Quest for the Goblin Lord or Moggcatcher appears in any board, hand, graveyard or stack. The list has a real `painful` entry (Moggcatcher) so it did not dodge the job, and the superlative in it survives enumeration — a regex for 'search your library' over all 79 entries returns only Goblin Matron (library to hand) and Moggcatcher, so 'the only card that puts a Goblin permanent from the library straight onto the battlefield' holds. Quest's cost_of_cutting quotes are verbatim: stack 002's log contains 'final total: 8 tokens' and stack 003's board is Zada plus four Goblin tokens attacking with trample (Fists of Flame grants it). The three anthems are correctly distinguished from Quest's +2/+0 to all creatures."
+        "note": "Re-verified independently because the enumeration change repointed add_candidates[0].natural_cut to Quest for the Goblin Lord. I read all five stack scenarios: none of Quest for the Goblin Lord, Throne of Eldraine or Moggcatcher appears in any scenario block, so orphans_stack [] is correct on all three (all five stacks are checker.verdict == pass). The difficulty field is populated and honest — two 'contested' and one 'painful' (Moggcatcher, the deck's only library-to-battlefield toolbox); the list does not dodge the job by filing everything easy. I also recomputed the axis movement with deck_audit._interaction_breadth: baseline by_class {creature 5, artifact 2, enchantment 0, land 0, graveyard 0} = 2; Wild Magic Surge alone -> 4; Soul-Guide Lantern alone -> 3; both -> 5 with by_class {creature 6, artifact 3, enchantment 1, land 1, graveyard 1}, matching the evidence block character for character. The paired-swap floor holds: applying the adds with their natural cuts, and again with all three cuts, still lands on 5."
       },
       {
-        "where": "add_candidates[0]",
+        "where": "engine",
         "status": "supported",
-        "note": "Soul-Guide Lantern checks out on every axis I can test. cards.csv: colourless artifact, legal_commander 'legal', so it is inside a mono-red identity. Its ETB 'exile target card from a graveyard' matches deck_audit._CLASS_PATTERNS['graveyard'] verbatim, so it genuinely raises the measured class count — and a regex for 'graveyard' over all 79 deck entries returns only self-referential text (flashback, encore, harmonize, Goblin Dark-Dwellers, Witch's Mark's Role token), confirming graveyard is the one class nothing touches. bracket_delta 4->4 is right: bracket-check re-run gives floor 4 forced by the Storm-Kiln/Haze two-card infinite, which a Lantern does not move. natural_cut Moggcatcher is consistent with cut_candidates[2]. One imprecision worth noting, not a defect: the draw mode costs '{1}, {T}, Sacrifice', and the why says 'it sacrifices to draw a card instead' without the {1}."
+        "note": "Re-checked against the fresh audit because the doctor's scope claim could not be diffed. Every component figure still matches: ignition 6 cards / 0.364 opener / 0.661 assembled, fodder 5 / 0.312 / 0.600, payoff 4 / 0.258 / 0.265, mana 4 / 0.258 / 0.265, card lists identical, and the storm target's 0.265 assembled / 0.169 by turn 6 reproduce from goldfish_metrics.json. The 'thinnest' re-interpretation remains honest: the audit flags thinnest=True on payoff and False on the equal-sized ritual group purely because the tie resolves inside one target, which is exactly what the reading says. The SPOF is still declared as a conjunction of two four-card groups and explicitly named as such rather than as one card, so it is not the 'four independent kills called a defect' failure."
       },
       {
-        "where": "gaps[4]",
+        "where": "verdict",
         "status": "supported",
-        "note": "I initially read this as a miscount — the raw obsolescence_index.json carries 8 replacement suggestions across 7 deck cards. Running `upgrade-facts goblin-storm` reproduces the diagnosis's figure exactly: 'straight upgrades (obsolescence): 6' over five distinct deck cards (Storm-Kiln Artist, Broadside Bombardiers, Pashalik Mons, Throne of Eldraine, Idol of Oblivion). The card-level reads are also right against cards.csv: Contract Hero has no magecraft, and Krenko, Baron of Tin Street's triggers are artifact-death and a sacrifice-an-artifact activation, not Pashalik Mons's free Goblin-death trigger. The index-is-format-agnostic caveat is the correct one to draw."
-      },
-      {
-        "where": "cut_candidates[0]",
-        "status": "contradicts-artifact",
-        "note": "The cost_of_cutting rests on a false rules claim, stated as fact with no stack behind it: 'Pashalik Mons is a creature, so the sweeper that kills six goblins kills the trigger along with them. Boggart Shenanigans is an enchantment and would still be there to convert them into six damage.' CR 603.10a (rules DB) says leaves-the-battlefield abilities look back in time, and its worked example is this exact case: an artifact with 'Whenever a creature dies, you gain 1 life' triggers twice when a spell destroys all artifacts and creatures simultaneously. Pashalik Mons's 'Whenever Pashalik Mons or another Goblin you control dies' therefore fires for every Goblin that died with it AND for itself — seven triggers under Blasphemous Act to Boggart Shenanigans's six, since Boggart triggers only on 'another Goblin'. The wrath differential is inverted, not merely overstated; the real residual value is only post-wrath deaths. This matters because the claim is the whole basis for grading the cut `contested` rather than `easy` — with it removed, Boggart Shenanigans is the cleanest cut in the document and a better natural_cut for Soul-Guide Lantern than the tutor the diagnosis itself calls painful."
-      },
-      {
-        "where": "axes[12]",
-        "status": "over-claimed",
-        "note": "ADJUDICATION, both sections fetched whole. They do genuinely conflict as written and the doc defect should be ROUTED: strategy:deckbuilding.threat-density carries Zupke's unconditioned 99-card structure ('3-5 finishers, 5-7 protection slots, 20-25 flexible strategy cards') while strategy:deckbuilding.interaction-suite carries an archetype-conditioned band ('Commander Deck Maker: 2-4 protection generic, 4-6 combo, 6-8 Voltron'), and nothing in either reconciles them. config.DECK_AXIS_TARGETS['protection'] hardwires the former as a universal default, which is why the audit reads UNDER. My ruling for THIS deck: the interaction-suite generic band governs, on three grounds. (1) It is the specific rule; threat-density's number is a whole-deck template quoted inside a section about conversion. (2) strategy:deckbuilding.archetype-selection — already the audit's own archetype source for this deck — independently sets combo protection at 4-6, agreeing with interaction-suite and contradicting a universal 5-7 floor; a 5-7 default asks an aggro swarm for MORE protection than the corpus asks of a combo deck, which is backwards. (3) strategy:deckbuilding.ratios closes by saying templates are 'counts of *functions*, not cards', that Hinds' own verdict is 'too one size fits all', and to 'derive the counts from the deck's actual failure modes' — and this deck's failure mode is not commander removal: the audit emits zero single_points_of_failure, 2 of 3 goldfish targets are not commander_gated, and 3 of 5 checker-passed stacks hold no Zada. Under the governing band the measured 2 sits AT the floor, which is `adequate` in this document's own usage (cf. axes[0], 36 at the top of 34-36). Grading it one of only two weaknesses in the deck overstates a 3-to-5-slot shortfall the corpus does not ask for. Note the grade is also in tension with the document's own gaps[7], which withdraws Champion's Helm partly because the deck is not commander-reliant — under my ruling that withdrawal is correct and the grade is the thing that should move."
-      },
-      {
-        "where": "axes[9]",
-        "status": "miscounted",
-        "note": "'Three of the 13 cannot answer an opposing permanent at all: Impact Tremors and General Kreat hit only each opponent, Boggart Shenanigans only a player or planeswalker.' A planeswalker is a permanent. I read all 13 oracle texts from cards.json: only Impact Tremors and General Kreat can point at nothing but players, so 11 of 13 can touch an opposing permanent, not the stated 10. The companion figure is right — exactly eight can point damage at a creature (Blasphemous Act, Gempalm Incinerator, Goblin Bombardment, Goblin Negotiation, Grapeshot, Pashalik Mons, Siege-Gang Commander, Siege-Gang Lieutenant) — and the axis verdict `adequate` is unaffected. Low materiality, but it is a derived count that disagrees with the cards, and cut_candidates[0] leans on the same sentence."
+        "note": "SCOPE — reporting precisely what I could and could not confirm, for the orchestrator. The doctor's claim of 'exactly three strings changed, everything else byte-identical' is NOT mechanically verifiable from this repo: iteration 1's diagnosis.json was never committed and has been overwritten in place (diagnosis.json and .agent-out/deck-doctor.json are both 34,237 bytes, written today at 16:08 and 16:07). git HEAD holds a PRE-iteration-1 version — its add_candidates has length 1 with Soul-Guide Lantern at index 0, and neither of the two phrasings my previous report quoted verbatim ('artifact by two cards', 'filed under removal, buff and no role at all') appears in it — so a HEAD diff spans iterations 0->1->2 and cannot isolate this round. What I did instead is stronger than an identity check: I re-derived ground truth today and re-verified every claim I supported last round rather than assuming it survived. All 16 measured values, all 34 citation quotes, the engine block, the goldfish figures, the freshness block, orphans_stack on all three cuts and the bracket deltas all still hold, and the three announced changes are each present and correct. I found no unannounced substantive change. The residual risk is confined to prose I re-read and judged sound anyway. Process note the orchestrator may want to act on: iteration artifacts are not snapshotted, so 'I changed only X' is unfalsifiable at iteration N+1 — copying diagnosis.json to a per-iteration scratch path before each doctor revision would close this cheaply."
       }
     ],
-    "iterations": 3
+    "iterations": 2
   }
 }

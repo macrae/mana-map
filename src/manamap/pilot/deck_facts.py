@@ -294,10 +294,13 @@ def build_notes(facts):
     spells_only = [r["name"] for r in restricted if r["verdict"] == "spells_only"]
     if spells_only:
         notes.append(
-            "Cannot pay an activated ability at all — the mana is restricted to casting "
-            "SPELLS, and an activated ability is not a spell: "
+            "Their RESTRICTED mana pays for spells only, and an activated ability is not "
+            "a spell: "
             + ", ".join(spells_only)
-            + ". These accelerate toward a commander without accelerating anything the "
+            + ". Read the whole card before extending this: several also carry a plain "
+              "'{T}: Add {C}' mode, which is unrestricted and pays the generic part of "
+              "any cost. What they cannot do is pay a COLOURED activation cost, which is "
+              "why they accelerate toward a commander without accelerating what the "
               "commander then does."
         )
     nuanced = [r for r in restricted if r["verdict"] != "spells_only"]
