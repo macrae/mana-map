@@ -1,24 +1,155 @@
 {
   "slug": "gishath",
-  "assessment": "The bench is 21 fair conditional bodies; the maindeck already sleeves the verified engines (stacks 001, 003, 004, 005). Four bench cards earn Short List slots by plugging into those engines. Six pool cards demonstrably beat the bench tail — Terror of the Peaks over Goring Ceratops, Aggravated Assault over Rampaging Brontodon, Goblin Bombardment over Sunfrill Imitator, Repercussion over Zetalpa, Primal Dawn, Three Visits over Knight of the Stampede, Farseek over Earthshaker Dreadmaw — each on an index-backed or engine-extension claim the tail cannot match. The floor is 4 on the combo DB's infinite tag for Polyraptor + Forerunner of the Empire; stack 003 verifies that exact pair as a bounded, self-terminating burst of at most seven tokens, so no pick below moves the computed floor.",
+  "assessment": "Gishath costs {5}{R}{G}{W}, exactly two cards in the 99 make a command-zone cast cheaper, and goldfish puts his mean cast at turn 7.969. So four of these ten buy ignition, three buy colour, two widen the enrage web's damage class, and one is pure ceiling. The enrage web is the second engine and it is one free repeatable damage source deep — Forerunner of the Empire, a 1/3 — so three picks widen that class instead of adding another body that waits to be hurt. Nothing here moves the computed bracket floor: it is already 4, on a Polyraptor + Forerunner of the Empire infinite tag that stack 003 resolved as bounded at seven tokens.",
   "ten": [
     {
-      "card": "Bellowing Aegisaur",
-      "role": "buff:counters",
-      "cmc": 6.0,
+      "card": "Marauding Raptor",
+      "role": "ramp:cost-reduction",
+      "cmc": 2.0,
       "type_line": "Creature — Dinosaur",
-      "why": "The deck reliably hurts it: the enrage engine is drawn 72.6% by turn 6 (goldfish), and under the stack-005 ping web each optional Forerunner of the Empire ping would read 'put a +1/+1 counter on each other creature you control' — permanent counters that harden the fragile 1/3 Forerunner hub, while under the stack-004 one-sided Blasphemous Act its 1 damage turns the sweep into a team anthem; the anthem-per-ping composite and Aegisaur's own survival budget mid-burst need a stack scenario.",
-      "when": "Web-centric pods — damage-sweeper and attrition tables — as a trial sleeve until the survival-budget scenario runs.",
-      "natural_cut": "Pugnacious Hammerskull",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": ["Marauding Raptor", "Polyraptor"],
+            "produces": "a mandatory loop neither player can stop from inside — a drawn game unless the deck supplies its own loop-breaker",
+            "status": "verified",
+            "stack_artifact": "stacks/002-marauding-polyraptor-verdict.json"
+          }
+        ],
+        "edhrec_rank": 2967,
+        "game_changer": false
       },
+      "closes": "engine component: fodder — the free repeatable self-ping",
+      "why": "Two mana that answers both named single points of failure at once: 'Creature spells you cast cost {1} less to cast' reaches the command zone, and 'Whenever another creature you control enters, this creature deals 2 damage to it' is a second free repeatable ping beside Forerunner of the Empire — so a turn-7 Gishath connection that drops four Dinosaurs pings all four and fires Ripjaw Raptor, Ranging Raptors, Trapjaw Tyrant and Polyraptor in the same event, with no combat step needed for plan B.",
+      "unlocks": "Plan A feeding plan B: the reveal event becomes the damage event. The price is stated in stack 002 and is not small — Polyraptor resolving under it is a drawn game with no outlet on board, and the 2-damage ping kills Otepec Huntmaster (1/2) and Intrepid Paleontologist (2/2) on the way in, though Forerunner (1/3) survives.",
+      "natural_cut": "Pugnacious Hammerskull",
+      "bracket_delta": {"before": 4, "after": 4},
       "citations": [
-        {
-          "rule": "strategy:resource-hedging.wrath-math",
-          "quote": "buy resilience instead of restraint where you can"
-        }
+        {"rule": "strategy:critical-mass", "quote": "the linear deck needs\nredundancy that shrugs off three answers"}
+      ]
+    },
+    {
+      "card": "Herald's Horn",
+      "role": "ramp:cost-reduction",
+      "cmc": 3.0,
+      "type_line": "Artifact",
+      "evidence": {"edhrec_rank": 147, "game_changer": false},
+      "closes": "engine component: ignition — making Gishath castable",
+      "why": "Colourless, so it pays nothing into a mana base already 16 sources short in white and red, and it does two jobs: 'Creature spells you cast of the chosen type cost {1} less to cast' takes {1} off the command-zone cast every time including the tax on recast, and the upkeep look-at-top converts a dead draw step into a Dinosaur about three times in ten off 29 Dinosaur copies in 99.",
+      "unlocks": "Turn-3 Horn into turn-6 Gishath off seven lands rather than eight, and a free card-selection trickle for the turns you spend ramping.",
+      "natural_cut": "Ghalta, Primal Hunger",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:deckbuilding.curve", "quote": "ramp decks buy a payoff tier and must\ncount the ramp itself as curve"}
+      ]
+    },
+    {
+      "card": "Knight of the Stampede",
+      "role": "ramp:cost-reduction",
+      "cmc": 4.0,
+      "type_line": "Creature — Human Knight",
+      "evidence": {"edhrec_rank": 6977, "game_changer": false},
+      "closes": "engine component: ignition — making Gishath castable",
+      "why": "'Dinosaur spells you cast cost {2} less to cast' is the largest single discount available to this commander, matching Urza's Incubator at half the setup, and it discounts 29 other Dinosaurs on the same axis the ramp count is already paying for.",
+      "unlocks": "The three-reducer board — Otepec Huntmaster, Urza's Incubator and this — where Gishath costs {1}{R}{G}{W} — four mana, against a goldfish mean available mana of 4.895 at turn 5. The honest cost is that a Human Knight is not revealed by the trigger, not discounted by Incubator, and not shielded by Temple Altisaur.",
+      "natural_cut": "Belbe's Portal",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:deckbuilding.redundancy-vs-tutors", "quote": "5 copies is 31% of openers, 7\nis 41%"}
+      ]
+    },
+    {
+      "card": "Cavern of Souls",
+      "role": "land:fixing",
+      "cmc": 0.0,
+      "type_line": "Land",
+      "evidence": {"edhrec_rank": 114, "game_changer": false},
+      "closes": "colour-sources",
+      "why": "Naming Dinosaur gives an untapped source of any colour for Gishath and for 29 of the 34 creature copies, which is the exact shape of a shortfall that is 16 sources deep in white and red and not in total mana, and 'that spell can't be countered' protects the one cast the whole deck is built around against the blue seat.",
+      "unlocks": "An untapped triple-pip fixer that Secluded Courtyard and Unclaimed Territory only half provide, and a Gishath cast that a held counterspell cannot punish.",
+      "natural_cut": "Forbidden Orchard",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:deckbuilding.mana-base.color-sources", "quote": "Only untapped sources count for turn one"}
+      ]
+    },
+    {
+      "card": "Goblin Bombardment",
+      "role": "sac-outlet",
+      "cmc": 2.0,
+      "type_line": "Enchantment",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": ["Polyraptor", "Goblin Bombardment"],
+            "produces": "Infinite death triggers, Infinite ETB, Infinite LTB, Infinite sacrifice triggers",
+            "status": "needs a stack scenario"
+          },
+          {
+            "cards": ["Marauding Raptor", "Polyraptor", "Goblin Bombardment"],
+            "produces": "the free sacrifice outlet stack 002 names as the exit from its drawn game",
+            "status": "needs a stack scenario"
+          }
+        ],
+        "edhrec_rank": 458,
+        "game_changer": false
+      },
+      "closes": "engine component: fodder — the free repeatable self-ping",
+      "why": "Two mana for a damage source that costs no mana per use and can point at your own board: 'Sacrifice a creature: This enchantment deals 1 damage to any target' arms Ripjaw Raptor, Ranging Raptors, Trapjaw Tyrant, Wrathful Raptors and Polyraptor at instant speed, and the fodder is free once Polyraptor is making copies.",
+      "unlocks": "An enrage web that works on your turn or theirs with no combat step, plus the exit stack 002 asks for by name — it lists 'a free sacrifice outlet' as one of three ways to turn that mandatory loop into something other than a draw. Whether the three-card board is a kill rather than a longer loop needs /resolve-stack.",
+      "natural_cut": "Zacama, Primal Calamity",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:critical-mass", "quote": "know your number — the count of bodies, spells,\nor mana at which the deck actually goes over the top"}
+      ]
+    },
+    {
+      "card": "Birds of Paradise",
+      "role": "ramp:dork",
+      "cmc": 1.0,
+      "type_line": "Creature — Bird",
+      "evidence": {"edhrec_rank": 33, "game_changer": false},
+      "closes": "colour-sources",
+      "why": "'{T}: Add one mana of any color' for {G} on turn one adds a source to white and to red — the two colours sitting at 20 against a Karsten yardstick of 36 — and pulls the whole eight-mana clock forward a turn, which is the only thing that reliably beats the turn-8 median cast.",
+      "unlocks": "Turn-2 three-mana plays and a white source for Austere Command and Trapjaw Tyrant off a deck that fails to make WW about as often as it makes it. Note that a 0/1 dies to Marauding Raptor's ping if both are sleeved, and that this takes land copies from 35 to 34.",
+      "natural_cut": "Myriad Landscape",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:deckbuilding.mana-base.color-sources", "quote": "Read them as a budget, not a table"}
+      ]
+    },
+    {
+      "card": "Farseek",
+      "role": "ramp:land",
+      "cmc": 2.0,
+      "type_line": "Sorcery",
+      "evidence": {
+        "obsoletes": ["Kodama's Reach"],
+        "edhrec_rank": 23,
+        "game_changer": false
+      },
+      "closes": "colour-sources",
+      "why": "The obsolescence index lists Farseek as a replacement for Kodama's Reach, and in this 99 the reason is colour rather than cost: 'Search your library for a Plains, Island, Swamp, or Mountain card' fetches Jetmir's Garden, Canopy Vista or Cinder Glade, so it is one of the few ramp spells that answers white or red instead of the green the deck already has 26 sources of.",
+      "unlocks": "A turn-2 accelerant that also fixes the worst colour, and a turn-3 four-mana play toward the commander instead of a turn-3 Kodama's Reach that ends on the same three lands in play.",
+      "natural_cut": "Kodama's Reach",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:deckbuilding.mana-base.color-sources", "quote": "triple pips and three colours do not coexist"}
+      ]
+    },
+    {
+      "card": "Semblance Anvil",
+      "role": "ramp:cost-reduction",
+      "cmc": 3.0,
+      "type_line": "Artifact",
+      "evidence": {"edhrec_rank": 2108, "game_changer": false},
+      "closes": "curve",
+      "why": "Imprint any creature card and 'Spells you cast that share a card type with the exiled card cost {2} less to cast' applies to Gishath and to all 34 creature copies — the {2} that Knight of the Stampede gives, colourless, and reaching the six entries at mana value 8 or more that the curve reading names as the liability.",
+      "unlocks": "Taken with the three reducers ranked above it, a cost-reduction class the diagnosis sizes at two becomes six — past the five copies the redundancy citation prices at 31% of openers. The price is a card from hand at imprint and a fizzle if the Anvil eats artifact removal before the payoff.",
+      "natural_cut": "Monster Manual // Zoological Study",
+      "bracket_delta": {"before": 4, "after": 4},
+      "citations": [
+        {"rule": "strategy:deckbuilding.curve", "quote": "you're probably only going to be able to cast ONE big-mana spell per game"}
       ]
     },
     {
@@ -29,10 +160,7 @@
       "evidence": {
         "combo_lines_opened": [
           {
-            "cards": [
-              "Polyraptor",
-              "Terror of the Peaks"
-            ],
+            "cards": ["Polyraptor", "Terror of the Peaks"],
             "produces": "Infinite death triggers, Infinite ETB, Infinite LTB",
             "status": "needs a stack scenario"
           }
@@ -40,18 +168,13 @@
         "edhrec_rank": 517,
         "game_changer": false
       },
-      "why": "Every Gishath connect dumps Dinosaurs onto the battlefield (stack 001 verifies the cascade), and Terror converts each one into damage equal to its power at any target — a seven-power reveal off one swing becomes a kill shot at a creature or a face; it is off-tribe (the reveal skips it, Urza's Incubator will not discount it), which is the honest cost of the strongest payoff in the pool.",
-      "unlocks": "A wincon the role budget says the deck lacks (wincon -3), plus the Polyraptor damage loop — needs a stack scenario before any infinite claim.",
-      "natural_cut": "Quartzwood Crasher",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      },
+      "closes": "engine component: fodder — the free repeatable self-ping",
+      "why": "'Whenever another creature you control enters, this creature deals damage equal to that creature's power to any target' turns the stack-001 reveal — four Dinosaurs entering at once — into about twenty damage aimed wherever you like, including at your own Ripjaw Raptor or Polyraptor to open the enrage web without attacking.",
+      "unlocks": "A free repeatable damage source that scales with the bodies the commander is already producing, and a second use for every Dinosaur cast from hand. Off-tribe, so the reveal skips it, Urza's Incubator will not discount it, and Temple Altisaur will not shield it.",
+      "natural_cut": "Regal Imperiosaur",
+      "bracket_delta": {"before": 4, "after": 4},
       "citations": [
-        {
-          "rule": "strategy:multiplayer.pivot-window",
-          "quote": "late-game threat assessment collapses to \"does this card win the game if it resolves,\""
-        }
+        {"rule": "strategy:deckbuilding.threat-density", "quote": "Value is not a win."}
       ]
     },
     {
@@ -61,168 +184,31 @@
       "evidence": {
         "combo_lines_opened": [
           {
-            "cards": [
-              "Aggravated Assault",
-              "Selvala, Heart of the Wilds"
-            ],
-            "produces": "Infinite colored mana, Infinite combat phases, Infinite untap of creatures you control, Infinite mana creatures you control can produce",
+            "cards": ["Aggravated Assault", "Selvala, Heart of the Wilds"],
+            "produces": "Infinite combat phases, Infinite colored mana, Infinite untap of creatures you control",
             "status": "needs a stack scenario"
           }
         ],
         "edhrec_rank": 698,
         "game_changer": false
       },
-      "why": "Gishath's reveal triggers on every combat damage, so each {3}{R}{R} activation is a second connect per turn — the fair mode alone doubles the deck's verified payoff (stack 001) — and Selvala, Heart of the Wilds tapping for a big-power board plausibly pays the activation each combat for the flagged infinite.",
-      "unlocks": "Extra Gishath connects every turn, and the Selvala infinite-combat line — needs a stack scenario.",
-      "natural_cut": "Belbe's Portal",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Three Visits",
-      "role": "tutor:narrow",
-      "cmc": 2.0,
-      "type_line": "Sorcery",
-      "evidence": {
-        "obsoletes": [
-          "Skyshroud Claim",
-          "Kodama's Reach"
-        ],
-        "edhrec_rank": 42,
-        "game_changer": false
-      },
-      "why": "A second Nature's Lore: an untapped Forest-typed land — including Canopy Vista, Cinder Glade, or Jetmir's Garden — on turn 2 instead of Kodama's Reach's turn 3, in a 35-land deck whose commander's mean goldfish cast is turn 7.969; every turn shaved off the ramp step is a turn off that number.",
-      "unlocks": "The turn-2 ramp start the curve principle demands and the bench cannot offer.",
-      "natural_cut": "Kodama's Reach",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      },
+      "why": "The one pick here that closes nothing the diagnosis measured, and it is on the list because Selvala, Heart of the Wilds is already in the 99: she taps for mana equal to the greatest power among your creatures, so with a 7-power Gishath on board the {3}{R}{R} untap is mana-positive, and each extra combat is another Gishath reveal.",
+      "unlocks": "A second and third connection on the turn you finally cast him — the difference between one reveal of seven and a board that empties the library's Dinosaurs. The line is unverified: whether Selvala's X actually exceeds five reliably, and whether the loop terminates on your terms, needs a stack scenario.",
+      "natural_cut": "Overwhelming Stampede",
+      "bracket_delta": {"before": 4, "after": 4},
       "citations": [
-        {
-          "rule": "strategy:deckbuilding.curve",
-          "quote": "Build to hit 2, 4 and 6 mana reliably, because four-player turn cycles are expensive"
-        }
+        {"rule": "strategy:multiplayer.commander-insurance", "quote": "each return trip to the command zone adds {2} per\nprior command-zone cast (Miljkovac)"}
       ]
-    },
-    {
-      "card": "Farseek",
-      "cmc": 2.0,
-      "type_line": "Sorcery",
-      "evidence": {
-        "obsoletes": [
-          "Skyshroud Claim",
-          "Kodama's Reach"
-        ],
-        "edhrec_rank": 23,
-        "game_changer": false
-      },
-      "why": "Turn-2 ramp that fetches the non-Forest half of the mana base — Canopy Vista, Cinder Glade, Jetmir's Garden, Clifftop Retreat's shock-typed peers are out of reach of Forest ramp — fixing the W and R pips (23 and 19 total pips) that Gishath's {5}{R}{G}{W} cost and Wakening Sun's Avatar's {W}{W}{W} demand.",
-      "unlocks": "W/R pip fixing on turn 2 that the deck's Forest-only ramp package cannot provide.",
-      "natural_cut": "Skyshroud Claim",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Goblin Bombardment",
-      "role": "removal:damage",
-      "cmc": 2.0,
-      "type_line": "Enchantment",
-      "evidence": {
-        "combo_lines_opened": [
-          {
-            "cards": [
-              "Polyraptor",
-              "Goblin Bombardment"
-            ],
-            "produces": "Infinite death triggers, Infinite ETB, Infinite LTB, Infinite sacrifice triggers",
-            "status": "needs a stack scenario"
-          }
-        ],
-        "edhrec_rank": 458,
-        "game_changer": false
-      },
-      "why": "The free sacrifice outlet the 99 lacks: stack 002 verifies that Marauding Raptor + Polyraptor is a mandatory loop that draws the whole game precisely because nothing can break it — Bombardment is the loop-breaker class, and in fair play it converts each stack-003 burst token into a ping that re-arms the enrage web.",
-      "unlocks": "A loop-breaker, a repeatable enrage enabler, and the Polyraptor sacrifice line — needs a stack scenario.",
-      "natural_cut": "Hunter's Insight",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Repercussion",
-      "cmc": 3.0,
-      "type_line": "Enchantment",
-      "evidence": {
-        "combo_lines_opened": [
-          {
-            "cards": [
-              "Blasphemous Act",
-              "Repercussion"
-            ],
-            "produces": "Near-infinite damage to all players",
-            "status": "needs a stack scenario"
-          }
-        ],
-        "edhrec_rank": 2975,
-        "game_changer": false
-      },
-      "why": "The deck already runs the verified one-sided Blasphemous Act (stack 004: your Dinosaurs each take 1 under Temple Altisaur) — add Repercussion and the same sweep should deal 13 to each opponent per creature they control while your side reflects 1s; whether Temple's reduction and Wrathful Raptors' redirect interact with Repercussion the way that sketch assumes needs a stack scenario.",
-      "unlocks": "A table-kill mode bolted onto a sweep the deck already casts — needs a stack scenario.",
-      "natural_cut": "Triumphant Chomp",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Apex Altisaur",
-      "role": "value:etb",
-      "cmc": 9.0,
-      "type_line": "Creature — Dinosaur",
-      "why": "With the ping web in the 99, each optional Forerunner ping should read 'this 10/10 fights up to one target creature you don't control', and fight-back damage should chain its own enrage for a second fight — repeatable removal on every Dinosaur ETB, bounded by its 10-toughness budget; the chain needs a stack scenario.",
-      "when": "Creature-mirror pods where repeatable fights outbid another top-end body; at {7}{G}{G} against 5.486 mean available mana at turn 6, it is a late sleeve.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Silverclad Ferocidons",
-      "role": "removal:edict",
-      "cmc": 7.0,
-      "type_line": "Creature — Dinosaur",
-      "why": "Each optional Forerunner ping should make each opponent sacrifice a permanent of their choice — a repeatable triple edict per Dinosaur ETB that answers hexproof and protection boards targeted removal cannot touch; the composite needs a stack scenario.",
-      "when": "Pods where boards hide behind hexproof, ward, or indestructible and edicts are the only removal that connects.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Verdant Sun's Avatar",
-      "role": "threat:body",
-      "cmc": 7.0,
-      "type_line": "Creature — Dinosaur Avatar",
-      "why": "Each 5-toughness Polyraptor token of a verified stack-003 burst is 5 life — up to 35 off one ETB chain — and every Gishath reveal pays it again; it rebuilds nothing after a wrath, which is why it is a meta sleeve and not a default.",
-      "when": "Racing and burn pods where life total is the axis the table attacks.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
     }
   ],
   "gaps": [
-    "No bench card has an EDHREC rank (sideboard-facts note), so every bench verdict rests on the deck's needs, the five passing stacks, and oracle text rather than popularity.",
-    "The computed floor 4 rests on the combo DB's infinite tag for Polyraptor + Forerunner of the Empire, which stack 003 verifies as bounded at seven tokens and self-terminating; the bracket engine does not consult passing stacks, so every delta above reads 4 -> 4 with the verified-reality argument for 3 on record.",
-    "Five scenarios would settle the list's open claims, one rules domain each: Bellowing Aegisaur's survival budget under multi-ping; Terror of the Peaks x Polyraptor; Aggravated Assault x Selvala; Repercussion x Blasphemous Act under Temple Altisaur and Wrathful Raptors; Goblin Bombardment as breaker of the stack-002 loop.",
-    "The role budget's draw shortfall (-4) has no index-backed pool answer: the obsolescence index offers Harmonize over Rishkar's Expertise, rejected on oracle text — Expertise scales with Ghalta's 12 power and drops a free permanent, which Harmonize's flat three cards is not an upgrade over. A draw-package scout needs another evidence channel.",
-    "The provisional 36-land budget reads the deck's 35 lands as short by one — inside noise, and no pick below rests on a land-count argument.",
-    "The strategy corpus has no section on typal construction or enrage/self-damage engines; the citations above lean on curve, wrath-math, and pivot-window principles instead."
+    "No synergy-partner claim is made anywhere above, deliberately. The synergy graph returns the same five in-deck partners — Sol Ring, Command Tower, Arcane Signet, Exotic Orchard, Path of Ancestry — for Marauding Raptor, Herald's Horn, Knight of the Stampede, Kinjalli's Caller, Goblin Anarchomancer and all three Medallions, on a format-wide 'Ramp + Cost Reduction' rule. It locates cost reducers; it cannot rank them for this deck.",
+    "The obsolescence index also lists Farseek, Three Visits and Nature's Lore as replacements for Skyshroud Claim. That entry is a mana-value artifact and is not used above: Skyshroud Claim puts TWO Forest cards onto the battlefield untapped, which none of the three do.",
+    "Three Visits carries the same index hit against Kodama's Reach that Farseek does and is not on the list, because it searches a Forest card — green is the colour with 26 sources, and the shortfall is white and red at 20 each.",
+    "Aether Flash is the other free repeatable self-ping in the pool and is not on the list: the combo database gives it the same 'Draw the game' tag with Polyraptor that stack 002 verified for Marauding Raptor, and unlike Marauding Raptor it buys no cost reduction back. Chandra's Ignition and Star of Extinction are off for the opposite reason — one-shots that sweep the converters they are meant to arm.",
+    "Whether Gishath's simultaneous put-onto-the-battlefield event gives Marauding Raptor or Terror of the Peaks a trigger per Dinosaur, and whether enrage bodies entering in that same event get pinged, is unresolved — /resolve-stack would settle it. The ignition case for Marauding Raptor does not rest on it; the fodder case partly does.",
+    "Whether Marauding Raptor plus Goblin Bombardment converts stack 002's drawn game into a kill, and whether Aggravated Assault plus Selvala terminates on your terms, are both unverified. Two scenarios, one rules domain each.",
+    "There is no deck_recon.json for this deck, so nothing above is measured against what strong Gishath lists actually run — every pick is derived from this deck's own audit figures and oracle text.",
+    "No goldfish target prices a conjunction, so no measured rate says how often a converter body and a damage source arrive together. The three fodder picks are sized off the single-card class the diagnosis names, not off a simulated rate."
   ]
 }

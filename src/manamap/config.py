@@ -968,7 +968,7 @@ ENGINE_REDUNDANCY_CITATION = {
 # closer is worth looking for at all.
 ENGINE_THIN_GROUP = 3
 # Closers are ranked lists, not exhaustive ones — the whole pool is one
-# `upgrade-facts` away.
+# the pool brief away.
 ENGINE_MAX_CLOSERS = 8
 
 # How stale a `deck_recon.json` may be before the diagnose loop re-runs it.

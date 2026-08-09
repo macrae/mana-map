@@ -210,7 +210,7 @@ def main(args):
     path = base / "considering.json"
     if not path.exists():
         raise SystemExit(
-            f"{path} not found — run the analyse-sideboard skill (The Short "
+            f"{path} not found — run the short-list skill (The Short "
             f"List) for {args.slug} first.")
     with open(path) as f:
         doc = json.load(f)

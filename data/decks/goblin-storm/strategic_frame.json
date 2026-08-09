@@ -1,129 +1,124 @@
 {
   "slug": "goblin-storm",
-  "archetype": "Mono-red Zada spell-copy storm-swarm: goblin token aggro that pivots into a one-turn copy/draw/storm burst",
+  "archetype": "Mono-red Goblin swarm with a storm half bolted to it: token pressure and each-opponent reach on the floor, a copy/draw/storm burst turn as the ceiling",
   "schools": [
+    "strategy:critical-mass",
+    "strategy:critical-mass.storm-math",
     "strategy:whos-the-beatdown",
-    "strategy:life-as-resource.philosophy-of-fire",
     "strategy:multiplayer.asymmetry",
     "strategy:multiplayer.threat-deflection",
     "strategy:multiplayer.pivot-window",
+    "strategy:life-as-resource.philosophy-of-fire",
+    "strategy:card-advantage",
     "strategy:tempo.sequencing",
-    "strategy:card-advantage"
+    "strategy:mulligans.engine-hands",
+    "strategy:multiplayer.commander-insurance",
+    "strategy:threat-assessment.resource-denial"
   ],
   "role_assignment": {
-    "default_role": "Beatdown-leaning tempo swarm until Zada lands, then engine deck stalking a single explosive pivot turn. Per-seat correction applies: against slower engine decks this deck is the beatdown and must pressure early (goldfish: early token maker drawn by mean turn 3.18, 60% of games); against faster combo it is forced into the racing-control seat.",
-    "pivot_trigger": "Zada online with at least one cantrip and 3-4 bodies (goldfish: 49.6% by turn 6, 66.1% overall) — that is the verified one-mana mass-draw payload (stack 001) — or a ritual-fueled storm hand. Fire when the table's instant-speed interaction is spent or tapped; a telegraphed sweeper also forces the pivot early (decision 002 recommends firing the cantrip engine into sorcery-speed wrath decks and banking the draws).",
+    "default_role": "Beatdown-leaning swarm that paces toward one burst turn. Per-seat correction applies: against slower engine decks you are the beatdown and must pressure early (goldfish: early token maker drawn by mean turn 3.18, 60.0% of runs, 48.7% by turn 6); against a faster combo deck you are pushed into the racing-control seat and your reach has to be aimed rather than accumulated. Role is seat-relative and re-asked every turn cycle (strategy:whos-the-beatdown).",
+    "pivot_trigger": "Two independent triggers, and the deck does not need both. (a) Zada online with a payload spell — 66.1% of runs, 49.6% by turn 6, mean turn 5.27 — which is the verified one-mana mass-draw payload (stack 001). (b) A storm payoff with a ritual in hand — 26.5% of runs, 16.9% by turn 6, mean turn 4.91 — which needs no commander at all: of the passing stacks only 001 and 003 put Zada on the board, 002 resolves off Impact Tremors, 005 off Storm-Kiln Artist, and 004 states outright that she is in the command zone. Fire when the table's instant-speed interaction is spent or tapped; a telegraphed sweeper forces the half-go early, taking value or a wide board now rather than holding for a lethal that never gets cheaper (strategy:critical-mass.storm-math).",
     "strategy_ref": "strategy:multiplayer.pivot-window"
   },
   "engines": [
     {
       "piece": "Zada, Hedron Grinder",
-      "engine": "Copy multiplier: any instant/sorcery targeting only Zada is copied per other creature — with cantrips (Crimson Wisps, Expedite, Ancestors' Aid, Renegade Tactics, Wild Ride, Witch's Mark, Great Train Heist) each body becomes a card (Sazacap's Brew is NOT in this set — it targets a player, so Zada never copies it)",
-      "evidence": "verified stack 001 (four Goblins + one {R} Crimson Wisps = 5 cards drawn, team hasted); synergy_graph edge Zada→Frontline Heroism (Copy + ETB)",
+      "engine": "Copy hub: an instant or sorcery targeting only Zada is copied for each other creature you control. With the cantrips (Crimson Wisps, Expedite, Renegade Tactics, Witch's Mark, Fists of Flame) every body becomes a card; with Ancestors' Aid every body becomes a Treasure; with Wild Ride or Haze of Rage every body becomes damage.",
+      "evidence": "verified stack 001 — four Goblin tokens plus a one-mana Crimson Wisps targeting only Zada draws five cards and hastes the team; oracle text",
       "strategy_ref": "strategy:card-advantage"
     },
     {
-      "piece": "Empty the Warrens",
-      "engine": "Storm token burst converted to direct damage by Impact Tremors; Grapeshot rides the same storm count",
-      "evidence": "verified stack 002 (fourth spell = 3 storm copies, 8 tokens, 8 damage to each opponent via Impact Tremors, Grapeshot then sees storm 5)",
+      "piece": "Frontline Heroism",
+      "engine": "A second copy hub that routes through no legendary creature: it makes a hasty Soldier whenever you cast a spell targeting only a single creature you control, then copies that spell at the new token. It is the deck's answer to having its hub answered — redundancy in the effect class rather than a tutor for one card.",
+      "evidence": "oracle text (enchantment, {2}{R}); the redundancy pricing that makes an effect class rather than a named card the unit of consistency",
+      "strategy_ref": "strategy:deckbuilding.redundancy-vs-tutors"
+    },
+    {
+      "piece": "Storm-Kiln Artist + Haze of Rage",
+      "engine": "The self-sustaining storm loop: buyback Haze of Rage recast at a rising storm count, magecraft minting a Treasure on every cast and every copy. Cast #1 as the fourth spell makes 3 copies and 4 Treasures; cast #2 makes 4 copies and 5 Treasures; every iteration costs 4 Treasures and yields k+3, so the loop is mana-positive and strictly improves.",
+      "evidence": "verified stack 005 (checker verdict pass) — 'the loop is mana-positive from here (sacrifice 4 Treasures per cast, gain k+3) and strictly improves each iteration'; combo_details records this pair as a bracket-3 two-card infinite",
+      "strategy_ref": "strategy:critical-mass.storm-math"
+    },
+    {
+      "piece": "Empty the Warrens + Impact Tremors",
+      "engine": "Storm tokens converted straight into each-opponent damage. Impact Tremors is the payoff that scales against three seats; General Kreat, the Boltbringer is the same trigger on a body, and Grapeshot rides the same storm count from the other side.",
+      "evidence": "verified stack 002 — Empty the Warrens as the fourth spell storm-triggers for 3 copies, 8 Goblin tokens enter, Impact Tremors deals 8 to each opponent, and a following Grapeshot sees storm count 4",
       "strategy_ref": "strategy:multiplayer.asymmetry"
     },
     {
       "piece": "Fists of Flame",
-      "engine": "Finisher: copies resolve sequentially, each drawing a card, so later copies lock in bigger +1/+0 buffs with trample — burst lethal from an unassuming board",
-      "evidence": "verified stack 003 (sequential per-resolution buff sizing confirmed; buffs do not grow retroactively)",
+      "engine": "The finisher on top of the copy hub: copies resolve one at a time and each draws, so each later copy locks in a bigger +1/+0-per-card-drawn with trample. An unassuming board becomes burst lethal in one cast.",
+      "evidence": "verified stack 003 — sequential per-resolution buff sizing confirmed; earlier copies' buffs do not grow retroactively",
       "strategy_ref": "strategy:life-as-resource.philosophy-of-fire"
     },
     {
-      "piece": "Krenko, Mob Boss",
-      "engine": "Token doubler feeding every payoff: Prospector mana, Skullclamp draws, Bombardment/Pashalik Mons reach, wide attacks",
-      "evidence": "combo_graph: 3 full in-deck combos (Krenko + Skirk Prospector + each of Goblin Warchief / Goblin Chieftain / Howlsquad Heavy); no synergy_graph key exists for Krenko, Mob Boss (verified absent)",
-      "strategy_ref": "strategy:multiplayer.asymmetry"
+      "piece": "Krenko, Mob Boss + Skirk Prospector",
+      "engine": "A bounded burst, not a loop: Krenko cast for {1}{R}{R} under Goblin Warchief taps immediately for five tokens off a four-Goblin board, leaving ten Goblins with haste, and Prospector converts up to ten of them into one-shot red mana this phase. Treat it as a storm-count and mana spike aimed at a payoff already in hand.",
+      "evidence": "verified stack 004 — the combo_details 'infinite' presumes Krenko is the commander so 903.9a can loop him; Zada is the commander here, so a sacrificed Krenko stays in the graveyard and the line terminates after one cast, one activation, and at most ten red mana",
+      "strategy_ref": "strategy:critical-mass"
     },
     {
-      "piece": "Skirk Prospector",
-      "engine": "Bodies-to-mana converter alongside Battle Hymn, Brightstone Ritual, Seething Song, Mana Geyser — the ritual base that funds storm turns",
-      "evidence": "oracle text; combo_graph partners in deck: Snoop, Chieftain, Warchief, Howlsquad Heavy, Krenko, Mogg War Marshal, Pashalik Mons, Ruby Medallion, Rundvelt Hordemaster",
-      "strategy_ref": "strategy:tempo.sequencing"
+      "piece": "Battle Hymn / Brightstone Ritual / Seething Song / Mana Geyser",
+      "engine": "The ritual base, and it scales off the swarm rather than off lands: Battle Hymn adds {R} per creature and Brightstone Ritual {R} per Goblin on the battlefield, so bodies are mana. This is what makes the storm turn possible at 4.59 mean available mana on turn 5.",
+      "evidence": "oracle text; goldfish mean_available_mana_by_turn['5'] = 4.589 and land_drop_hit_rate_by_turn['5'] = 0.637; deck-audit engine component of 4 cards, 25.8% in an opener, 32.1% by turn three",
+      "strategy_ref": "strategy:critical-mass.storm-math"
     },
     {
       "piece": "Skullclamp",
-      "engine": "Attrition-proof draw: 1-toughness tokens convert to two cards each for {1}",
-      "evidence": "oracle text (equipped creature gets +1/-1; dies → draw two)",
+      "engine": "Attrition-proof draw: the 1/1 tokens the deck manufactures die to the -1 toughness and pay two cards each for {1}. It is the reason a sweeper is a draw step rather than a loss.",
+      "evidence": "oracle text (equipped creature gets +1/-1; whenever equipped creature dies, draw two cards; equip {1})",
       "strategy_ref": "strategy:card-advantage"
     },
     {
-      "piece": "Storm-Kiln Artist",
-      "engine": "Treasure per cast OR copy — every Zada cantrip mints one Treasure per body, funding the next spell",
-      "evidence": "combo_graph partners map lists Storm-Kiln Artist as Zada's only in-deck combo partner; oracle text (Magecraft on cast or copy)",
-      "strategy_ref": "strategy:tempo.sequencing"
+      "piece": "Goblin Bombardment + Pashalik Mons + Boggart Shenanigans",
+      "engine": "Free-outlet reach: leftover tokens become damage at instant speed, dodging exile and bounce answers to the board, and Boggart Shenanigans turns each Goblin death into a point aimed at a player. This is how a swept or chump-blocked swarm still converts.",
+      "evidence": "oracle text all three; Goblin Bombardment's one in-deck synergy_graph partner is Mogg War Marshal (Sac + Death Trigger, Tokens + Sacrifice, Sac + ETB)",
+      "strategy_ref": "strategy:multiplayer.asymmetry"
     },
     {
-      "piece": "Goblin Bombardment + Pashalik Mons",
-      "engine": "Death-trigger reach that converts leftover tokens to damage and dodges exile/bounce answers",
-      "evidence": "oracle text both cards; combo_graph partners map lists Bombardment with 7 in-deck partners incl. Impact Tremors, Krenko, Roaming Throne",
-      "strategy_ref": "strategy:multiplayer.asymmetry"
+      "piece": "Swiftfoot Boots + Roaming Throne",
+      "engine": "The whole protection budget: 2 copies against deck-audit's 5-7 target. The insurance question is priced against the recast tax rather than assumed — the storm half functions with Zada in the command zone, so hexproof is bought for the Zada draw turns specifically, not held every game.",
+      "evidence": "deck-audit protection axis: 2 copies, verdict under, target 5-7; oracle text (hexproof and haste, equip {1})",
+      "strategy_ref": "strategy:multiplayer.commander-insurance"
     }
   ],
   "candidate_missing_lines": [
     {
-      "title": "Krenko + Skirk Prospector + haste enabler: infinite tokens, mana, and storm",
-      "cards": [
-        "Krenko, Mob Boss",
-        "Skirk Prospector",
-        "Goblin Warchief",
-        "Goblin Chieftain",
-        "Howlsquad Heavy"
-      ],
-      "why_plausible": "combo_graph lists three FULL in-deck combos (Krenko+Prospector plus each haste enabler) producing infinite creature tokens with haste, infinite red mana, infinite death triggers, infinite storm count, infinite commander casts",
+      "title": "Past in Flames rebuilds the ritual chain for a second payoff",
+      "cards": ["Past in Flames", "Battle Hymn", "Brightstone Ritual", "Seething Song", "Mana Geyser", "Grapeshot", "Empty the Warrens"],
+      "why_plausible": "no combo_details record exists for Past in Flames (by_card lookup returns nothing), but the oracle text is direct — every instant and sorcery in the graveyard gains flashback at its mana cost — and stack 002's board already shows Battle Hymn and Brightstone Ritual in the graveyard mid-storm-turn. Recast rituals raise the storm count again for a second Grapeshot or Empty the Warrens. The open questions a scenario must settle are the exact storm count the second payoff sees and whether the mana actually nets positive",
       "status": "needs a stack scenario"
     },
     {
-      "title": "Storm-Kiln Artist + Haze of Rage buyback: self-sustaining storm loop",
-      "cards": [
-        "Storm-Kiln Artist",
-        "Haze of Rage"
-      ],
-      "why_plausible": "combo_graph FULL in-deck pair producing infinite colored mana, infinite storm count, infinite Treasures, infinitely powerful creatures until end of turn; oracle text checks out — Haze of Rage buyback is {2} (total {3}{R} per recast) and each cast plus its storm copies each mint a Treasure via Magecraft, so past a small storm count the loop nets mana. Note: the queued candidate said 'Mana Haze' — the actual card in cards.json is Haze of Rage",
+      "title": "Roaming Throne naming Goblin doubles Zada's copy trigger",
+      "cards": ["Roaming Throne", "Zada, Hedron Grinder", "Crimson Wisps"],
+      "why_plausible": "oracle text: Zada is a Legendary Creature — Goblin Ally and her copy ability is a triggered ability ('Whenever you cast an instant or sorcery spell that targets only Zada'); Roaming Throne makes a triggered ability of another creature of the chosen type trigger an additional time. Whether the second trigger produces a second full set of copies, and what each copy then targets, is exactly what a scenario must resolve. Roaming Throne appears in no combo line contained in this deck",
       "status": "needs a stack scenario"
     },
     {
-      "title": "Past in Flames ritual-and-payoff rebuild",
-      "cards": [
-        "Past in Flames",
-        "Battle Hymn",
-        "Brightstone Ritual",
-        "Seething Song",
-        "Mana Geyser",
-        "Grapeshot",
-        "Empty the Warrens"
-      ],
-      "why_plausible": "no combo_graph entry (Past in Flames absent from partners map — verified), but oracle text is direct: flashback every instant/sorcery in graveyard at mana cost, and stack 002's scenario already shows rituals accumulating in the graveyard mid-storm-turn; recast rituals re-raise storm count for a second Grapeshot/Empty the Warrens",
+      "title": "Frontline Heroism and Zada triggering off the same cantrip",
+      "cards": ["Frontline Heroism", "Zada, Hedron Grinder", "Crimson Wisps"],
+      "why_plausible": "both are cast-triggers on the same spell: Frontline Heroism creates a Soldier token and then copies the spell at that token, while Zada copies for each other creature that the spell could target. You control the order of your own triggers, so whether the Soldier that Frontline Heroism just made is counted by Zada's copy set depends on which trigger resolves first — a difference of one card per cast, and the kind of ordering question that decides a lethal turn",
       "status": "needs a stack scenario"
     },
     {
-      "title": "Roaming Throne (naming Goblin) doubles Zada's copy trigger",
-      "cards": [
-        "Roaming Throne",
-        "Zada, Hedron Grinder",
-        "Crimson Wisps"
-      ],
-      "why_plausible": "oracle text: Zada is a Goblin Ally and her copy ability is a triggered ability ('Whenever you cast...'); Throne makes it trigger an additional time, plausibly doubling the copy set per cantrip — exact interaction (does the second trigger produce a second full set of copies?) is precisely what a stack scenario must verify. Throne's only in-deck combo_graph partner is Goblin Bombardment, via combos requiring out-of-deck third cards",
+      "title": "Ancestors' Aid on Zada as a ritual rather than a pump spell",
+      "cards": ["Ancestors' Aid", "Zada, Hedron Grinder", "Storm-Kiln Artist"],
+      "why_plausible": "oracle text: Ancestors' Aid targets a creature and creates a Treasure token, so each Zada copy that resolves should create its own Treasure — {1}{R} for one Treasure per other creature, which on a four-body board is mana-positive and, with Storm-Kiln Artist out, adds a magecraft Treasure per copy on top (stack 005 establishes that magecraft sees copies, not only casts). The count of Treasures produced and whether the mana arrives in time to matter that turn is what needs resolving",
       "status": "needs a stack scenario"
     }
   ],
   "matchup_frames": {
-    "vs_sweeper_control": "Assume the wrath and size commitment to it: deploy token waves that replace themselves (Dragon Fodder, Mogg War Marshal, Krenko's Command), keep a rebuild package, and note the deck's resilience purchases — Skullclamp and Goblin Bombardment convert a swept board into cards and damage on the way out (strategy:resource-hedging.wrath-math). Decision 002 is the verified spot: with the engine online and the wrath telegraphed at sorcery speed, fire the cantrip engine now and bank the draws rather than hold.",
-    "vs_stax": "Taxes and lock pieces attack this deck's core math — many cheap spells per turn — so you do not own the long game under a lock: you are the beatdown and must race the lock's assembly (strategy:whos-the-beatdown.metagame-clock). Your outs are narrow and real: Vandalblast, Goblin Trashmaster, Chaos Warp; play to them rather than hedging (strategy:resource-hedging.playing-to-outs). The strategy doc has no dedicated stax section — flagged in gaps.",
-    "vs_aggro": "You hold inevitability: your engines out-scale combat damage and Blasphemous Act is near-free against wide boards, so take the control seat, chump with replaceable tokens, and let 40 life absorb the early turns (strategy:whos-the-beatdown). Goldfish mean bodies 4.07 by turn 5 gives you a real blocking wall while Zada sets up.",
-    "vs_combo": "Your interaction is thin (Chaos Warp, Gempalm Incinerator, Bombardment as trigger-response), so the answer-economy rule inverts: against combo, held answers rot and the last profitable moment is now (strategy:threat-assessment.answer-economy). Rank their combo proximity above every board threat (strategy:threat-assessment), apply pressure so their tapped-out setup turn is punished, and use Grenzo goads to keep other bodies pointed at them. Your own natural storm-kill assembly is slow (15.2% of goldfish runs) — do not plan to out-race a dedicated combo deck; plan to disrupt once, cheaply, at the decisive moment."
+    "vs_sweeper_control": "Assume the wrath and size the commitment to it — over a four-player game one is near-certain, so deploy in waves and hold a rebuild package (strategy:resource-hedging.wrath-math). This deck buys resilience rather than restraint: Skullclamp turns a swept board into cards, Goblin Bombardment and Pashalik Mons turn it into damage on the way out, and Mogg War Marshal and Rundvelt Hordemaster replace themselves. Against a control deck holding back IS the loss, because buying time is their plan. The telegraphed sweeper is also the canonical forced half-go — fire the cantrip engine now and bank the draws rather than hold for a lethal that never gets cheaper (strategy:critical-mass.storm-math).",
+    "vs_stax": "Taxes attack this deck's velocity math directly: the plan is many cheap spells per turn, and a two-spell turn becoming a one-spell turn halves the engine — recount your hand under the tax before you commit (strategy:threat-assessment.resource-denial). Role is forced: you do not own the long game under an assembling lock, so you are the beatdown racing the lock's completion (strategy:whos-the-beatdown.metagame-clock). Name the out early and sequence to protect it — Vandalblast (overload {4}{R}), Goblin Trashmaster, Chaos Warp — the piece that beats you, not the scariest piece (strategy:resource-hedging.playing-to-outs). Deck-audit's breadth axis is honest about the exposure: 2 classes answered against a 5 target, with enchantment, graveyard and land uncovered.",
+    "vs_aggro": "Take the control seat here. Your bodies are replaceable and theirs are not: goldfish mean bodies 4.07 by turn 5 and 5.26 by turn 6 gives you a blocking wall while the engine sets up, Blasphemous Act costs {1} less per creature on the battlefield and is near-free against a wide board, and Gempalm Incinerator cycles for damage equal to your Goblin count. Rank by clock and by what actually beats you rather than by what looks scary (strategy:threat-assessment), and let 40 life absorb the early turns while you keep the pivot window intact.",
+    "vs_combo": "Held answers rot against combo — the last profitable moment is now (strategy:threat-assessment.answer-economy). Rank combo proximity above every board threat and apply pressure so their tapped-out setup turn is punished; Grenzo, Havoc Raiser's goad mode points other players' creatures away from you and their cast-from-exile mode converts combat damage into resources. Your interaction is real but narrow — deck-audit counts 13 interactive copies across only two permanent classes, and zero sweepers — so plan to disrupt once, cheaply, at the decisive moment rather than to out-race a dedicated combo deck. Your own storm assembly is a 26.5% line at mean turn 4.91, which is a live ceiling and not a clock you can promise the table."
   },
-  "distribution_notes": "Curve is radically low and land-light-tolerant: outside Blasphemous Act (cmc 9, effectively cheap) and a handful of 4-5 drops, almost everything is cmc 1-3, matching the goldfish profile — keep-first-seven 79.1%, mean mulligans 0.26, commander mean cast turn 4.35 (90% by turn 6, median 4). Mean available mana is only 4.59 on turn 5 and land-drop hit rate falls to 63.7% by turn 5, so big storm turns are ritual-funded, not land-funded — which is why the 'storm payoff plus ritual drawn' target assembles in just 15.2% of runs (9.1% by turn 6). The deck's reliable curve-out is instead tokens-then-Zada: early token maker drawn by mean turn 3.18 (60%), Zada online with a cantrip 49.6% by turn 6, mean bodies 5.26 by turn 6. Read: the storm kill is the ceiling, the Zada draw engine plus wide goblin pressure is the floor and the actual median game plan.",
-  "overall_assessment": "This deck is playing the threat-deflection engine game wearing an aggro costume. Per the Philosophy of Fire it is a machine for converting cards into damage — but the multiplayer correction bites: incremental goblin combat cannot cross ~120 combined life, so the swarm's real job is to be Zada's copy fuel and Prospector's mana, while the payoffs that actually scale are the each-opponent effects (Impact Tremors seen dealing 8 to each opponent in verified stack 002, Grapeshot, wide hasted alpha strikes) (strategy:life-as-resource.philosophy-of-fire, strategy:multiplayer.asymmetry). Its verified identity is the one-mana explosion: stack 001 proves one {R} converts four bodies into five cards plus team haste, and stack 003 proves the same board presents burst lethal via sequential Fists of Flame draws — a board that reads as 'just some 1/1s' until the turn it wins, which is exactly the deflection posture to cultivate: sequence the scary pieces (Krenko, Storm-Kiln, Snoop) after the table's removal is spent, and time the engine for the turn it wins, not the turn it impresses (strategy:multiplayer.threat-deflection). The pilot's craft is pacing the pod toward one clean pivot window — count open interaction, prefer the attempt that leaves a rebuilt position (token makers, Bombardment, Skullclamp make failed attempts recoverable) — and re-asking the beatdown question per seat every turn cycle (strategy:multiplayer.pivot-window, strategy:multiplayer.pod-management, strategy:whos-the-beatdown). Politics is cheap for this deck: goads from Grenzo and an unthreatening board keep elimination of you as nobody's most profitable line until the turn it's too late (strategy:multiplayer.politics).",
+  "distribution_notes": "The curve is radically low: 15 one-drops, 19 twos, 13 threes, 10 fours, 6 fives and a single nine (Blasphemous Act, which costs {1} less per creature on the battlefield), modal mana value 2. Mana is 36 land copies across 15 entries plus 43 total red sources against a Karsten target of 36, with 5 lands that always enter tapped — deck-audit reads mana-base, mana-sources, taplands and colour-sources all at target under the aggro template, and creatures at 27 inside the 26-32 band. What is under target is the interaction profile: card-advantage 8 against 10 (with Crimson Wisps, Expedite, Fists of Flame, Fountainport, Gempalm Incinerator, Renegade Tactics and War Room drawing cards the taxonomy does not classify as draw), protection 2 against 5-7, threat-density 2 against 3, sweepers 0, and interaction-breadth 2 classes against 5. Ramp reads 15 against 10-12, which is the ritual base being counted as ramp rather than an excess. On speed: keep-first-seven 79.1%, mean mulligans 0.26, commander mean cast turn 4.35 (median 4, 90% by turn 6), mean available mana 4.59 on turn 5 with land-drop hit rate down to 63.7% — so the big turns are ritual-funded, not land-funded. The three declared engines sit at 66.1% (Zada plus a payload, 6 cards, thinnest component, 36.4% in an opener), 60.0% (early token maker, 5 cards, 31.2%) and 26.5% (storm payoff plus ritual, two 4-card components at 25.8% each). That last figure is the ceiling line and it is an AND of two independent draws, which is why it sits at a quarter of runs while each half sits near a third by turn three. Read against the redundancy table — 5 copies is 31% of openers, 7 is 41%, 10 is 54% (strategy:deckbuilding.redundancy-vs-tutors) — every component here is in the 4-6 band, i.e. built for one of the pieces to show up, not for a specific one.",
+    "overall_assessment": "This is a linear deck in Duke's sense — every card feeds one plan, and the plan is reaching the threshold where the synergies take over (strategy:critical-mass). Its interaction slots are the price of the engine, which is exactly what deck-audit measures when it puts breadth at two classes and sweepers at zero: the defense is speed, redundancy and resilience, not answers. The pilot's craft is separating ceiling from median and pacing for the median (strategy:critical-mass.storm-math). The median game is the goblin swarm plus the Zada draw engine — bodies by turn 3, a payload spell by turn 5, cards and haste for one red mana (verified stack 001). The ceiling is the storm turn: a payoff and a ritual together in 26.5% of runs at mean turn 4.91, and once Storm-Kiln Artist is on the board with Haze of Rage in hand it is not a burst but a loop that strictly improves each iteration (verified stack 005). Crucially the two halves are independent. Only one of the three declared engines is commander-gated, and three of the five passing stacks resolve without Zada on the battlefield — 002 off Impact Tremors, 005 off Storm-Kiln Artist, 004 with her explicitly in the command zone. That independence is the deck's real resilience: killing the hub costs you the draw engine and not the kill, and Frontline Heroism is a second hub in the same effect class. Against three seats the Philosophy of Fire's raw cards-to-damage math collapses at ~120 combined life, so the payoffs that count are the ones that hit every seat at once — Impact Tremors and General Kreat pinging each opponent per body, Grapeshot off the storm count, a wide hasted alpha strike (strategy:life-as-resource.philosophy-of-fire, strategy:multiplayer.asymmetry). Politically the board reads as 1/1s until the turn it wins, which is the deflection posture to cultivate: sequence Krenko, Storm-Kiln Artist and Conspicuous Snoop after the table's removal is spent, and time the tells for the turn they win rather than the turn they impress (strategy:multiplayer.threat-deflection). Mulligan to the enabler class, not the named card — a hand of payoffs with no ritual and no cantrip is a ship despite its card quality (strategy:mulligans.engine-hands) — and commit fully only in the window where the table's interaction is counted and accounted for (strategy:multiplayer.pivot-window).",
   "gaps": [
-    "No stax/resource-denial matchup section — playing many-cheap-spells decks under taxes and lock pieces needed dedicated theory; framed here only indirectly via metagame-clock and playing-to-outs",
-    "No storm/critical-mass theory section — spell-velocity math, storm-count thresholds, and 'how many enablers before you go' density reasoning had no doc grounding",
-    "No commander-protection/insurance section — when to pay for Swiftfoot Boots-style protection versus speed for a commander the entire engine routes through",
-    "No mulligan theory for engine decks — the keep/ship calculus for hands with payoffs but no enablers (or vice versa) is not covered by any current section"
+    "No goad or forced-combat section — Grenzo, Havoc Raiser compels an opponent's creature to attack elsewhere, which is compulsion rather than persuasion; strategy:multiplayer.politics covers deals and perceived threat but not effects that remove the choice",
+    "No aristocrats / sacrifice-conversion section — the theory of free outlets (Goblin Bombardment, Skirk Prospector, Skullclamp) turning a board that is about to die into mana, cards or damage, and how that changes overextension math, has no home in the doc",
+    "No section on hub redundancy for a copy or trigger engine specifically — strategy:deckbuilding.redundancy-vs-tutors prices effect classes and strategy:multiplayer.commander-insurance prices protecting the commander, but neither covers a non-legendary duplicate of the hub (Frontline Heroism standing in for Zada) as a distinct consistency purchase"
   ]
 }
