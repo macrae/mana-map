@@ -35,6 +35,7 @@ PILOT_STEPS = [
     ("build-index", "manamap.pilot.build_index", "Render manuals/index.html — the newsstand"),
     ("validate-issue", "manamap.pilot.validate_issue", "Form-check issue.json + issue_plan.json"),
     ("scenario-facts", "manamap.pilot.scenario_facts", "Deterministic brief for a stack scenario (board, bodies, drain arithmetic)"),
+    ("merge-prose", "manamap.pilot.merge_prose", "Merge an agent's .agent-out prose into manual_prose.json, keys it owns only"),
     ("cache-status", "manamap.pilot.agent_cache", "Have an agent routine's inputs changed?"),
     ("cache-record", "manamap.pilot.agent_cache", "Record the fingerprint that produced an artifact"),
     ("cache-clear", "manamap.pilot.agent_cache", "Drop cache records for a deck or routine"),
@@ -57,7 +58,7 @@ _DECK_COMMANDS = {
     "mana-analysis", "validate-strategic-frame",
     "validate-considering", "validate-diagnosis", "validate-goldfish-targets",
     "diagnosis-report",
-    "validate-tutor-guide", "impact", "scenario-facts",
+    "validate-tutor-guide", "impact", "scenario-facts", "merge-prose",
 }
 
 
@@ -70,6 +71,10 @@ def add_pilot_parser(subparsers):
         cmd = pilot_sub.add_parser(name, help=description)
         if name in _DECK_COMMANDS:
             cmd.add_argument("slug", help="Deck slug (kebab-case, e.g. goblin-storm)")
+        if name == "merge-prose":
+            cmd.add_argument("routine", choices=["coach-prose", "writer-prose"],
+                             help="Which routine's keys to merge; it may write "
+                                  "ONLY the keys that routine owns")
         if name == "query-rules":
             cmd.add_argument("query", help="Natural-language rules question")
             cmd.add_argument("--k", type=int, default=None, help="Number of results")

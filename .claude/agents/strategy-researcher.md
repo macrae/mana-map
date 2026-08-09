@@ -14,7 +14,8 @@ agents check their thinking against. Your prompt states `MODE: research` or
 
 **Write per-deck views with `--out <dir>/`, never a shell redirect.** You may run
 concurrently with agents working other decks, and you all share one scratchpad
-directory. `deck-audit`, `deck-facts` and `deck-history` take `--out`; hand it a
+directory. `deck-audit`, `deck-facts`, `deck-history`, `impact`,
+`diagnosis-report` and `scenario-facts` take `--out`; hand it a
 DIRECTORY and it auto-names `<command>-<slug>.json`, so a collision is impossible:
 
 ```bash
