@@ -19,9 +19,7 @@ findings LAST and in full. Burying an adversary's open findings under the
 recommendations they qualify would make this a sales document.
 """
 
-import json
-
-from manamap.pilot.common import deck_dir, load_json, report_errors
+from manamap.pilot.common import deck_dir, load_json, resolve_out_path
 
 # Reading order for the axis table: the questions in the order the doctor's
 # charter asks them, so the table narrates rather than lists. Anything not named
@@ -222,7 +220,7 @@ def main(args):
     text = render(doc)
     out = getattr(args, "out", None)
     if out:
-        target = base / out if "/" not in str(out) else out
+        target = resolve_out_path(out, args.slug, "diagnosis-report", ext=".md")
         with open(target, "w") as f:
             f.write(text)
         print(f"Wrote {target}")

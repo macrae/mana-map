@@ -53,3 +53,44 @@ def test_two_decks_cannot_resolve_to_one_path(tmp_path):
              "heliod", "sisay", "ur-dragon", "yawgmoth-swarm")
     paths = {resolve_out_path(tmp_path, s, "deck-audit") for s in slugs}
     assert len(paths) == len(slugs)
+
+
+def test_a_markdown_view_auto_names_with_its_own_extension(tmp_path):
+    """`diagnosis-report` emits markdown, and the guard must not name it .json.
+
+    The auto-name is the only place an extension is invented, so it is the only
+    place it can be wrong — a caller-chosen filename is never rewritten.
+    """
+    out = resolve_out_path(tmp_path, "heliod", "diagnosis-report", ext=".md")
+    assert out.name == "diagnosis-report-heliod.md"
+
+
+def test_the_refusal_message_quotes_the_right_extension(tmp_path):
+    """The error tells you what to do instead, so it must not suggest .json
+    for a markdown command."""
+    with pytest.raises(SystemExit) as e:
+        resolve_out_path(tmp_path / "report.md", "heliod",
+                         "diagnosis-report", ext=".md")
+    assert "diagnosis-report-heliod.md" in str(e.value)
+
+
+@pytest.mark.parametrize("command", ["impact", "diagnosis-report",
+                                     "scenario-facts", "deck-audit",
+                                     "deck-facts", "deck-history"])
+def test_every_per_deck_out_command_is_guarded(command, tmp_path):
+    """The guard is only a control if every per-deck `--out` goes through it.
+
+    `impact` declared `--out` and silently ignored it — the flag was accepted,
+    nothing was written, and no error said so. It was found by running the
+    command and looking for the file. `cache-snapshot` and `pool-facts` are
+    absent on purpose: the first is fleet-merged by design, the second takes
+    paths rather than a slug.
+    """
+    import importlib
+    module = importlib.import_module(
+        f"manamap.pilot.{command.replace('-', '_')}")
+    source = importlib.import_module(module.__name__).main.__code__
+    names = source.co_names
+    assert "resolve_out_path" in names, (
+        f"{command}.main does not call resolve_out_path — an unguarded per-deck "
+        f"--out either clobbers across decks or, as `impact` did, does nothing")

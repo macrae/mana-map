@@ -446,8 +446,9 @@ def test_load_cards_is_memoized(monkeypatch):
     inside `bracket.load_reference`. Same key discipline as `bracket._card_flags`."""
     import pandas as pd
     from manamap.pilot import pool_facts as pf
+    from manamap.pilot.common import clear_memo
 
-    pf._CARDS_MEMO.clear()
+    clear_memo()
     calls = []
     real = pd.read_csv
     monkeypatch.setattr(pd, "read_csv", lambda *a, **k: (calls.append(1), real(*a, **k))[1])
@@ -460,11 +461,16 @@ def test_load_cards_is_memoized(monkeypatch):
 
 @requires_data
 def test_load_cards_reparses_when_the_file_changes():
-    """Keyed on (mtime_ns, size), so a regenerated cards.csv is picked up."""
-    from manamap.pilot import pool_facts as pf
+    """Keyed on (mtime_ns, size), so a regenerated cards.csv is picked up.
 
-    pf._CARDS_MEMO.clear()
+    The storage moved to `common._MTIME_MEMO` when five hand-rolled copies of
+    this cache were consolidated; the property under test is unchanged.
+    """
+    from manamap.pilot import pool_facts as pf
+    from manamap.pilot.common import _MTIME_MEMO, clear_memo
+
+    clear_memo()
     pf.load_cards()
-    sig, _ = pf._CARDS_MEMO["cards"]
-    pf._CARDS_MEMO["cards"] = ((sig[0] - 1, sig[1]), {"stale": True})
+    sig, _ = _MTIME_MEMO["pool_facts:cards"]
+    _MTIME_MEMO["pool_facts:cards"] = ((sig[0] - 1, sig[1]), {"stale": True})
     assert "stale" not in pf.load_cards()

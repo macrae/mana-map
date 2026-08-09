@@ -6,7 +6,6 @@ list because it is worth knowing about, and whether the pilot owns it is not a
 question the artifact asks.
 """
 
-import copy
 
 from manamap.pilot.validate_considering import validate
 

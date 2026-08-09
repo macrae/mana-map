@@ -95,11 +95,6 @@ def build_viz_index(df, roles_by_name):
     return records
 
 
-def similar_rows(embeddings, row, k):
-    """Top-k by cosine, nearest first. Excludes self and same-name duplicates."""
-    return [i for i, _ in top_k_similar(embeddings, row, k)]
-
-
 def _pad(rows, k):
     """Fixed-width slot array; unused slots carry the sentinel."""
     out = list(rows[:k])

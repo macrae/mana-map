@@ -278,12 +278,10 @@ def validate_self_containment(base, plan):
 
     errors += _lint_strings(plan, "issue_plan.json", skip_key=plan_skip)
 
-    for fname in ("manual_prose.json", "sideboard_analysis.json",
-                  "upgrade_watch.json"):
-        path = base / fname
-        if path.exists():
-            with open(path) as f:
-                errors += _lint_strings(json.load(f), fname)
+    path = base / "manual_prose.json"
+    if path.exists():
+        with open(path) as f:
+            errors += _lint_strings(json.load(f), "manual_prose.json")
 
     decisions = base / "decisions"
     if decisions.exists():

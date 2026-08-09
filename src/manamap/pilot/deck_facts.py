@@ -35,7 +35,6 @@ from manamap.ingest.extract import get_colors
 from manamap.pilot.bracket import combos_in_deck, is_infinite
 from manamap.pilot.common import (
     resolve_out_path,
-    deck_dir,
     expand_copies,
     is_land,
     load_card_roles,

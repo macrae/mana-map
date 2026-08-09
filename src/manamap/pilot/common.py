@@ -65,9 +65,47 @@ def load_json_memo(path):
     return doc
 
 
+_MTIME_MEMO = {}
+
+
+def mtime_memo(path, key, build, absent=None):
+    """`build()`'s result, recomputed only when `path` changes on disk.
+
+    The same (mtime_ns, size) discipline as `load_json_memo`, for derived values
+    rather than raw parses — a name set, a flags dict, a digest.
+
+    It exists because the hand-rolled copies did not all get it right. Two gated
+    on truthiness instead (`if not _MEMO: ...`), which never notices a rewrite:
+    correct for a CLI process that exits in seconds, wrong for pytest, where one
+    process regenerates `cards.csv` and every later assertion in that session is
+    answered from the pre-edit copy. The failure is silent and reads as a stale
+    fixture rather than a caching bug.
+
+    `key` is explicit rather than derived from `build` because two different
+    builders legitimately read one file — `cards.csv` backs both a name set and
+    an oracle map — and a key taken from `__qualname__` would collide the moment
+    someone passed a lambda.
+
+    A missing file returns `absent` and caches nothing, so a fresh clone that
+    later generates the artifact picks it up without restarting.
+    """
+    try:
+        stat = path.stat()
+    except OSError:
+        return absent
+    sig = (stat.st_mtime_ns, stat.st_size)
+    hit = _MTIME_MEMO.get(key)
+    if hit is not None and hit[0] == sig:
+        return hit[1]
+    value = build()
+    _MTIME_MEMO[key] = (sig, value)
+    return value
+
+
 def clear_memo():
     """Drop all memoized parses (test teardown; mirrors _SHA_MEMO.clear())."""
     _JSON_MEMO.clear()
+    _MTIME_MEMO.clear()
     _STRATEGY_SHA_MEMO.clear()
 
 
@@ -104,10 +142,11 @@ def load_json(path, default=None):
 # ── The opened-line status vocabulary ────────────────────────────────────
 #
 # A claim that a card "opens a line" is a candidate until a stack artifact passes
-# the checker. Three validators share this vocabulary — considering, diagnosis and
-# upgrade-watch — so it lives here rather than in any one of them. It used to live
-# in `validate_sideboard.py`, which made a retired sideboard validator a load-
-# bearing library for The Short List.
+# the checker. Two validators share this vocabulary — considering and diagnosis —
+# so it lives here rather than in either of them. It used to live in
+# `validate_sideboard.py`, which made a retired sideboard validator a load-bearing
+# library for The Short List; `validate_upgrade_watch.py` was the third consumer
+# and went with the sideboard.
 
 # The magic string five agent prompts already use for an unproven line. Kept
 # identical so one grep finds every candidate claim in the repo.
@@ -146,7 +185,7 @@ def check_verified_line(i, line, deck_path, label="opens_lines"):
 
 
 
-def resolve_out_path(out, slug, command):
+def resolve_out_path(out, slug, command, ext=".json"):
     """Where a per-deck view should be written — slug-scoped, or a loud error.
 
     Concurrent deck agents share one scratchpad directory, and they were writing
@@ -162,15 +201,19 @@ def resolve_out_path(out, slug, command):
     unsafe one fail loudly.
 
       * a DIRECTORY (existing, or a trailing slash) auto-names
-        `<command>-<slug>.json` inside it — collisions become impossible;
+        `<command>-<slug><ext>` inside it — collisions become impossible;
       * a bare filename stays relative to the deck's own directory, as before;
       * an explicit path elsewhere must carry the slug in its basename, or this
         raises. That is the case that used to corrupt silently.
+
+    `ext` is the auto-naming suffix only; it never rewrites a name the caller
+    chose. Most views are JSON, but `diagnosis-report` emits markdown, and a
+    directory that auto-named its report `.json` would be lying about the bytes.
     """
     text = str(out)
     path = pathlib.Path(text)
     if text.endswith(("/", os.sep)) or path.is_dir():
-        return path / f"{command}-{slug}.json"
+        return path / f"{command}-{slug}{ext}"
     if "/" not in text and os.sep not in text:
         return deck_dir(slug) / text
     if slug not in path.name:
@@ -178,7 +221,7 @@ def resolve_out_path(out, slug, command):
             f"refusing to write {command} for {slug!r} to {path} — the filename does "
             f"not contain the slug, and concurrent deck agents share one scratch "
             f"directory. A generic name is how one deck's view silently overwrites "
-            f"another's. Pass a directory (auto-names {command}-{slug}.json), or a "
+            f"another's. Pass a directory (auto-names {command}-{slug}{ext}), or a "
             f"filename containing {slug!r}."
         )
     return path

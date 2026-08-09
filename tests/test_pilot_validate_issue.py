@@ -1,6 +1,5 @@
 """Issue-plan form validator: identity block, department system, contract integrity."""
 
-import copy
 
 from manamap.pilot.issue_spec import COPY_DEPARTMENTS, DEPARTMENT_IDS
 from manamap.pilot.validate_issue import validate_identity, validate_plan

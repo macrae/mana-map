@@ -36,8 +36,6 @@ from manamap.config import (
     BRACKET_DEFAULT,
     BRACKET_MAX,
     BRACKETS,
-    CARD_ROLES_PATH,
-    COMBO_DETAILS_PATH,
     DECK_BUILD_ALTERNATES,
     DECK_BUILD_EDHREC_BY_BRACKET,
     DECK_BUILD_MAX_BRACKET_PASSES,
@@ -258,9 +256,11 @@ def score_candidates(pool, embeddings, name_index, commander_name, identity,
     for row in pool.itertuples(index=False):
         idx = name_index.get(row.name)
         similarity = float(embeddings[idx] @ commander_vec) if idx is not None else 0.0
-        # Clamped, matching viz/js/deck-builder.js:embeddingSim. Deck scoring against a
-        # centroid wants "how much does this belong", so anti-correlated reads as zero
-        # rather than as a penalty large enough to swamp the other five factors.
+        # Clamped: deck scoring against a centroid wants "how much does this belong",
+        # so anti-correlated reads as zero rather than as a penalty large enough to
+        # swamp the other five factors. (This used to say it matched
+        # `viz/js/deck-builder.js:embeddingSim` — that file and its six-factor scorer
+        # are deleted, precisely because they diverged from this one.)
         # Retrieval paths (analysis/common.py, synergy, power_creep) deliberately do NOT
         # clamp — they need the true ordering. Consistent by role, enforced nowhere.
         similarity = max(0.0, similarity)

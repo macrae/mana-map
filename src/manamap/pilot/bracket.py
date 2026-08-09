@@ -22,7 +22,6 @@ Fully deterministic: set intersections over committed artifacts, no LLM calls,
 no randomness. The same deck always produces the same report (◆ evidence).
 """
 
-import atexit
 import json
 import sys
 
@@ -41,6 +40,7 @@ from manamap.pilot.common import (
     load_card_roles,
     load_combo_details,
     load_deck_cards,
+    mtime_memo,
 )
 
 INFINITE_PREFIX = "infinite"
@@ -72,24 +72,21 @@ def load_reference():
     return _card_flags(), load_card_roles(), load_combo_details()
 
 
-_FLAGS_MEMO = {}
-atexit.register(_FLAGS_MEMO.clear)  # see common.clear_memo — cheap now, costly at shutdown
+def _read_card_flags():
+    df = pd.read_csv(OUTPUT_CSV_PATH, usecols=["name", "game_changer", "legal_commander"])
+    return {
+        row.name_: {"game_changer": bool(row.game_changer), "legal_commander": row.legal_commander}
+        for row in df.rename(columns={"name": "name_"}).itertuples(index=False)
+    }
 
 
 def _card_flags():
     """{name: {game_changer, legal_commander}} from cards.csv, once per process."""
-    stat = OUTPUT_CSV_PATH.stat()
-    sig = (stat.st_mtime_ns, stat.st_size)
-    hit = _FLAGS_MEMO.get("flags")
-    if hit is not None and hit[0] == sig:
-        return hit[1]
-    df = pd.read_csv(OUTPUT_CSV_PATH, usecols=["name", "game_changer", "legal_commander"])
-    flags = {
-        row.name_: {"game_changer": bool(row.game_changer), "legal_commander": row.legal_commander}
-        for row in df.rename(columns={"name": "name_"}).itertuples(index=False)
-    }
-    _FLAGS_MEMO["flags"] = (sig, flags)
-    return flags
+    # `stat()` used to raise here on a fresh clone and callers depend on that;
+    # mtime_memo answers `absent` instead, so keep the raise explicit.
+    if not OUTPUT_CSV_PATH.exists():
+        raise FileNotFoundError(OUTPUT_CSV_PATH)
+    return mtime_memo(OUTPUT_CSV_PATH, "bracket:flags", _read_card_flags)
 
 
 def combos_in_deck(names, details):

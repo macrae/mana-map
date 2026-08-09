@@ -9,16 +9,14 @@ import pandas as pd
 
 from manamap.config import (
     EDHREC_RANK_SCALE,
-    ABILITY_EMBEDDINGS_PATH,
     COMBO_GRAPH_PATH,
-    EMBEDDINGS_PATH,
     MECHANICAL_TAG_NAMES,
     OUTPUT_CSV_PATH,
     SYNERGY_GRAPH_PATH,
     SYNERGY_MAX_PARTNERS,
     SYNERGY_RULES,
 )
-from manamap.analysis.common import load_first_embeddings, parse_tag_set
+from manamap.analysis.common import parse_tag_set
 
 
 def build_tag_index(df):

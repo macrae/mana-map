@@ -1,6 +1,5 @@
 """Tests for the comprehensive-rules chunker and rules DB (pilot subsystem)."""
 
-import pytest
 
 from manamap.pilot.build_rules_db import build_embed_text, kebab_term, parse_rules
 from manamap.pilot.common import RULE_ID_RE, load_rules_db

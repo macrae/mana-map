@@ -30,7 +30,6 @@ from manamap.pilot.common import (
     check_verified_line,
     deck_dir,
     load_deck_cards,
-    load_json,
     load_json_memo,
     report_errors,
 )

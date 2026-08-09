@@ -60,18 +60,13 @@ class MissingInput(ValueError):
 _SHA_MEMO = {}
 
 
-def file_sha256(path):
-    """sha256 of a file's bytes, or None if it doesn't exist."""
-    if not path.exists():
-        return None
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
 def cached_file_sha256(path):
-    """file_sha256 memoized on (path, mtime_ns, size) for this process.
+    """sha256 of a file's bytes (None if absent), memoized per (path, mtime, size).
 
     The global graphs are ~38MB combined and feed several routines; a
-    whole-deck status would otherwise hash them once per routine.
+    whole-deck status would otherwise hash them once per routine. An
+    unmemoized `file_sha256` sat beside this with an identical body and no
+    callers — one hashing function, so there is one answer.
     """
     if not path.exists():
         return None

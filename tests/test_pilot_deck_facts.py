@@ -6,7 +6,6 @@ so the tests assert on the traps, not just on the plumbing.
 
 import json
 
-import pytest
 
 from conftest import requires_deck
 from manamap.pilot import deck_facts as df

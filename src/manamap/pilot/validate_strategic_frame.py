@@ -1,8 +1,8 @@
 """Pilot: mechanically enforce the form of a strategic frame.
 
 strategic_frame.json is the highest-leverage unvalidated artifact in the
-system: it feeds five agent routines (coach, writer, editor, sideboard,
-decisions) and nothing checked its shape — a frame with a missing key or an
+system: it feeds four agent routines (coach, writer, editor, decisions) and
+nothing checked its shape — a frame with a missing key or an
 unflagged candidate line propagated silently into prose. Same division of
 labour as every other validator here: code enforces **form**, the consuming
 agents judge substance.

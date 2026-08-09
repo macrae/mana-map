@@ -1,6 +1,5 @@
 """Tests for extract.py — verifies derived columns and multi-face handling."""
 
-import pytest
 
 from manamap.ingest.extract import (
     build_embedding_text,

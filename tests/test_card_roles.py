@@ -3,7 +3,6 @@
 import json
 
 import pandas as pd
-import pytest
 
 from manamap.config import (
     CARD_ROLES_PATH,
@@ -15,7 +14,6 @@ from manamap.analysis.card_roles import (
     build_roles,
     classify_land,
     classify_row,
-    classify_spell,
 )
 from tests.conftest import requires_roles
 

@@ -6,9 +6,7 @@ to prevent, and nothing else in the repo detects it — `validate_considering`
 checks that a `natural_cut` is a real card and stops there.
 """
 
-import json
 
-import pytest
 
 from manamap.pilot import validate_diagnosis as vd
 from manamap.pilot.common import deck_dir

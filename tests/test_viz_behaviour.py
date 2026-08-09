@@ -21,6 +21,10 @@ from __future__ import annotations
 
 import pytest
 
+# F401: `page`, `discover_page` and `canvas_page` are pytest FIXTURES. They are
+# used by name in test signatures, never called here, so every unused-import
+# check reports all three — and removing them takes the whole browser suite
+# down with an unrelated-looking "fixture not found".
 from conftest_viz import (  # noqa: F401
     BOOT_TIMEOUT_MS, canvas_page, discover_page, page,
 )

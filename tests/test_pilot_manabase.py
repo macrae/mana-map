@@ -1,6 +1,5 @@
 """Tests for the mana base builder (pilot/manabase.py)."""
 
-import pytest
 
 from manamap.pilot.manabase import (
     build,

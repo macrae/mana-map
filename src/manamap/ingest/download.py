@@ -1,7 +1,6 @@
 """Step 1: Download Scryfall Oracle Cards bulk data."""
 
 import json
-import sys
 
 import requests
 

@@ -20,7 +20,8 @@ import re
 import sys
 
 from manamap.config import RESOLVE_SCOPE_BUDGET
-from manamap.pilot.common import RULE_ID_RE, STRATEGY_ID_RE, deck_dir, load_rules_db
+from manamap.pilot.common import (
+    RULE_ID_RE, STRATEGY_ID_RE, deck_dir, load_rules_db, mtime_memo)
 
 REQUIRED_TOP_KEYS = {"id", "slug", "deck", "title", "scenario", "resolution"}
 # A scenario can be checked before it has an answer — that is the whole point of the
@@ -221,29 +222,30 @@ def unknown_cards(doc, slug):
     return errors, warnings
 
 
-_CORPUS_NAMES = {}
+def _read_corpus_names():
+    import csv as _csv
+    import sys as _sys
+
+    from manamap.config import OUTPUT_CSV_PATH
+    _csv.field_size_limit(_sys.maxsize)
+    names = set()
+    with open(OUTPUT_CSV_PATH) as f:
+        for row in _csv.DictReader(f):
+            name = row["name"]
+            names.add(name)
+            if " // " in name:
+                names.update(part.strip() for part in name.split(" // "))
+    return names
 
 
 def _corpus_names():
     """Every card name in the corpus, plus each face of a DFC. None if absent."""
-    if not _CORPUS_NAMES:
-        try:
-            import csv as _csv
-            import sys as _sys
-
-            from manamap.config import OUTPUT_CSV_PATH
-            _csv.field_size_limit(_sys.maxsize)
-            names = set()
-            with open(OUTPUT_CSV_PATH) as f:
-                for row in _csv.DictReader(f):
-                    name = row["name"]
-                    names.add(name)
-                    if " // " in name:
-                        names.update(part.strip() for part in name.split(" // "))
-            _CORPUS_NAMES["names"] = names
-        except Exception:               # pragma: no cover — fresh clone
-            _CORPUS_NAMES["names"] = None
-    return _CORPUS_NAMES["names"]
+    from manamap.config import OUTPUT_CSV_PATH
+    try:
+        return mtime_memo(OUTPUT_CSV_PATH, "validate_stack:names",
+                          _read_corpus_names)
+    except Exception:                   # pragma: no cover — unreadable corpus
+        return None
 
 
 def scope_warnings(doc):

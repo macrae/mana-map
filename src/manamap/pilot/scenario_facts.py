@@ -34,7 +34,7 @@ import json
 import re
 from collections import Counter
 
-from manamap.pilot.common import deck_dir, load_deck_cards
+from manamap.pilot.common import deck_dir, load_deck_cards, resolve_out_path
 
 # What a board entry IS, from how the scenario annotates it.
 #
@@ -297,6 +297,6 @@ def main(args):
     print(text)
     out = getattr(args, "out", None)
     if out:
-        from pathlib import Path
-        Path(out).write_text(text + "\n")
-        print(f"\nWrote {out}")
+        path = resolve_out_path(out, args.slug, "scenario-facts")
+        path.write_text(text + "\n")
+        print(f"\nWrote {path}")

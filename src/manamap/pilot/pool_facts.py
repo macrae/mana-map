@@ -42,7 +42,6 @@ Composes primitives that already exist; no new analysis lives here:
     role budget    pilot/build_deck.py     role_group
 """
 
-import atexit
 import json
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -63,6 +62,7 @@ from manamap.pilot.common import (
     load_card_roles,
     load_combo_details,
     load_json_memo,
+    mtime_memo,
 )
 from manamap.pilot.fetch_deck import parse_decklist
 from manamap.pilot.manabase import land_colors
@@ -80,33 +80,25 @@ COMBO_REPORT_LIMIT = 25
 ARCHETYPE_REPORT_LIMIT = 18
 
 
-_CARDS_MEMO = {}
-atexit.register(_CARDS_MEMO.clear)  # see common.clear_memo — cheap now, costly at shutdown
+def _read_cards():
+    df = pd.read_csv(OUTPUT_CSV_PATH, usecols=_COLUMNS)
+    return {r["name"]: r for r in df.to_dict("records")}
 
 
 def load_cards():
     """The cards.csv slice this module reads, as {name: row-dict}.
 
-    Memoized on (mtime_ns, size), the same key discipline as `bracket._card_flags`
-    and `common.load_json_memo`. Without it a single `pool-facts` run scans the
-    24 MB CSV twice — once here and once inside `bracket.load_reference` — and
-    `build_deck` calls in through `resolve_pool` as well. Treat the result as
-    read-only; callers share one parse.
+    Memoized on (mtime_ns, size) via `common.mtime_memo`. Without it a single
+    `pool-facts` run scans the 24 MB CSV twice — once here and once inside
+    `bracket.load_reference` — and `build_deck` calls in through `resolve_pool`
+    as well. Treat the result as read-only; callers share one parse.
     """
     if not OUTPUT_CSV_PATH.exists():
         raise SystemExit(
             f"{OUTPUT_CSV_PATH} not found — run `manamap extract` first. "
             f"A pool cannot be analysed without the card database."
         )
-    stat = OUTPUT_CSV_PATH.stat()
-    sig = (stat.st_mtime_ns, stat.st_size)
-    hit = _CARDS_MEMO.get("cards")
-    if hit is not None and hit[0] == sig:
-        return hit[1]
-    df = pd.read_csv(OUTPUT_CSV_PATH, usecols=_COLUMNS)
-    cards = {r["name"]: r for r in df.to_dict("records")}
-    _CARDS_MEMO["cards"] = (sig, cards)
-    return cards
+    return mtime_memo(OUTPUT_CSV_PATH, "pool_facts:cards", _read_cards)
 
 
 def front_face_map(cards):

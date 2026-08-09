@@ -4,9 +4,7 @@ Every assertion here corresponds to an error that reached an agent brief during
 the Vol. 008 session and was refused by the agent rather than written down.
 """
 
-import json
 
-import pytest
 
 from conftest import requires_deck
 from manamap.pilot import scenario_facts as sf

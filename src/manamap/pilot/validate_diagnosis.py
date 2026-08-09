@@ -45,6 +45,7 @@ from manamap.pilot.common import (
     load_deck_cards,
     load_json,
     load_rules_db,
+    mtime_memo,
     report_errors,
 )
 from manamap.pilot.validate_stack import load_strategy_sections, validate_citations
@@ -283,29 +284,28 @@ def _corpus_card(name, roles):
             "type_line": ""}
 
 
-_ORACLE_MEMO = {}
+def _read_corpus_oracle():
+    import pandas as pd
+
+    from manamap.config import OUTPUT_CSV_PATH
+    df = pd.read_csv(OUTPUT_CSV_PATH, usecols=["name", "oracle_text"])
+    return {n: (t if isinstance(t, str) else "")
+            for n, t in zip(df["name"], df["oracle_text"])}
 
 
 def _corpus_oracle():
-    """{name: oracle_text} from cards.csv, once per process. {} if absent."""
-    if not _ORACLE_MEMO:
-        try:
-            import pandas as pd
-
-            from manamap.config import OUTPUT_CSV_PATH
-            df = pd.read_csv(OUTPUT_CSV_PATH, usecols=["name", "oracle_text"])
-            _ORACLE_MEMO.update(
-                {n: (t if isinstance(t, str) else "")
-                 for n, t in zip(df["name"], df["oracle_text"])})
-        except Exception:                  # pragma: no cover — fresh clone
-            _ORACLE_MEMO["__absent__"] = ""
-    return _ORACLE_MEMO
+    """{name: oracle_text} from cards.csv, once per (mtime, size). {} if absent."""
+    from manamap.config import OUTPUT_CSV_PATH
+    try:
+        return mtime_memo(OUTPUT_CSV_PATH, "validate_diagnosis:oracle",
+                          _read_corpus_oracle, absent={}) or {}
+    except Exception:                      # pragma: no cover — unreadable corpus
+        return {}
 
 
 def _validate_prescription_moves(doc, deck_doc, roles):
     """Each add's named axis must move, and the whole swap set must clear floors."""
-    if not roles or _corpus_oracle().get("__absent__") is not None and len(
-            _corpus_oracle()) <= 1:
+    if not roles or not _corpus_oracle():
         return []                          # no roles or no corpus: skip, never fail
     errors = []
     main_cards = list(deck_doc.get("cards", []))

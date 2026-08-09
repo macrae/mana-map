@@ -68,16 +68,6 @@ def top_k_similar(embeddings, idx, k, mask=None):
     return [(int(i), float(scores[i])) for i in top[np.argsort(-scores[top])]]
 
 
-def cosine_similarity(a, b):
-    """Cosine similarity between two vectors (0.0 if either has zero norm)."""
-    dot = np.dot(a, b)
-    norm_a = np.linalg.norm(a)
-    norm_b = np.linalg.norm(b)
-    if norm_a == 0 or norm_b == 0:
-        return 0.0
-    return float(dot / (norm_a * norm_b))
-
-
 def load_first_embeddings(*paths):
     """Load the first readable .npy among paths.
 

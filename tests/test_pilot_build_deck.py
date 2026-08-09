@@ -1,8 +1,6 @@
 """Tests for the deterministic deck builder (pilot/build_deck.py)."""
 
-import json
 
-import numpy as np
 import pandas as pd
 import pytest
 

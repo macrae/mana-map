@@ -3,7 +3,6 @@
 import re
 
 import numpy as np
-import pandas as pd
 
 from manamap.config import MECHANICAL_TAG_NAMES, MECHANICAL_TAGS
 
@@ -31,25 +30,6 @@ def tag_oracle_text(text):
         if pattern.search(text):
             tags.append(tag)
     return sorted(tags)
-
-
-def tag_oracle_text_from_row(row):
-    """Extract tags from a DataFrame row, combining oracle_text and keywords.
-
-    Also checks the type_line for Equipment/Aura supertypes.
-    """
-    text = str(row.get("oracle_text", "") or "")
-    keywords = str(row.get("keywords", "") or "")
-    type_line = str(row.get("type_line", "") or "")
-
-    # Append keywords as pseudo-oracle text so keyword-based tags fire
-    combined = text
-    if keywords:
-        combined += " " + keywords
-    if type_line:
-        combined += " " + type_line
-
-    return tag_oracle_text(combined)
 
 
 def encode_tags_multihot(df, tag_names=None):

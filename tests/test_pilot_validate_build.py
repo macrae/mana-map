@@ -1,6 +1,5 @@
 """Tests for the build-plan form gate (pilot/validate_build.py)."""
 
-import pytest
 
 from manamap.pilot import validate_build
 from manamap.pilot.validate_build import deck_card_names, validate

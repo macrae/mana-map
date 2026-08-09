@@ -563,12 +563,6 @@ def pull_quote(text):
     return f'<blockquote class="pull-quote">{esc(text)}</blockquote>'
 
 
-def map_key(entries):
-    """Icon legend — one consistent set across every issue."""
-    items = "".join(f"<span>{esc(icon)} {esc(label)}</span>" for icon, label in entries)
-    return f'<div class="map-key">{items}</div>'
-
-
 def printing_credit(card):
     """Artist + printing line — the Duelist convention, and the reason the
     manual shows *your* cards rather than default reprints."""

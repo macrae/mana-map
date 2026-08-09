@@ -33,7 +33,8 @@ from manamap.pilot.agent_cache import (
     rel,
 )
 from manamap.pilot.card_refs import deck_card_names, text_refs
-from manamap.pilot.common import deck_dir, load_json, load_json_memo
+from manamap.pilot.common import (
+    deck_dir, load_json, load_json_memo, resolve_out_path)
 
 _NUMBER_RE = re.compile(r"\d+(?:\.\d+)?")
 
@@ -91,7 +92,6 @@ def reference_impact(base, changed_names):
 
     for fname in ("strategic_frame.json", "considering.json",
                   "tutor_guide.json", "mana_analysis.json",
-                  "sideboard_analysis.json", "upgrade_watch.json",
                   "goldfish_targets.json"):
         doc = load_json(base / fname)
         if doc is None:
@@ -326,6 +326,13 @@ def main(args):
         print(json.dumps(report, indent=2, ensure_ascii=False))
     else:
         print(format_report(report))
+    out = getattr(args, "out", None)
+    if out:
+        path = resolve_out_path(out, args.slug, "impact")
+        with open(path, "w") as f:
+            json.dump(report, f, indent=2, sort_keys=True, ensure_ascii=False)
+            f.write("\n")
+        print(f"Wrote {path}")
 
 
 if __name__ == "__main__":

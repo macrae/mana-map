@@ -1,6 +1,5 @@
 """Tests for the citation contract enforcer (pilot validate_stack)."""
 
-import copy
 import json
 
 import pytest

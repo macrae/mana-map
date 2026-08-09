@@ -106,6 +106,9 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--stack", default=None, help="Only this scenario id (e.g. 001)")
             cmd.add_argument("--out", default=None, help="Also write JSON here (a view, never tracked)")
         if name == "cache-snapshot":
+            # NOT slug-guarded, deliberately: a snapshot is explicitly merged
+            # across decks, so one file covering the fleet is the intended use.
+            # `resolve_out_path` would forbid the correct filename.
             cmd.add_argument("--out", required=True,
                              help="Snapshot file; merged across decks so one file covers the fleet")
         if name == "cache-rerecord":
@@ -136,6 +139,8 @@ def add_pilot_parser(subparsers):
                              help="A file to leave out (repeatable) — e.g. a deck "
                                   "you are keeping assembled")
             cmd.add_argument("--json", action="store_true", dest="as_json")
+            # NOT slug-guarded: pool-facts takes paths, not a slug — there is no
+            # slug to scope the filename to. A collection is not a deck.
             cmd.add_argument("--out", default=None,
                              help="Write JSON here as well (a view, never tracked)")
         if name == "diagnosis-report":

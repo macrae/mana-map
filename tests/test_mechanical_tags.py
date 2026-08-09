@@ -2,7 +2,6 @@
 
 import numpy as np
 import pandas as pd
-import pytest
 
 from manamap.mechanical_tags import encode_tags_multihot, tag_oracle_text
 

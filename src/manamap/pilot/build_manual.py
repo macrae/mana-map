@@ -23,12 +23,9 @@ import json
 import re
 
 from manamap.config import MANUALS_DIR, SYNERGY_GRAPH_PATH
-from manamap.pilot.artist_credits import is_accessory
 from manamap.pilot.common import (
-    checker_passed,
     presentable,
     deck_dir,
-    load_card_roles,
     load_deck_cards,
     load_json,
     load_synergy_graph,

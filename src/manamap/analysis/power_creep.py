@@ -9,7 +9,6 @@ import pandas as pd
 from manamap.analysis.common import load_first_embeddings, parse_tag_set
 from manamap.config import (
     ABILITY_EMBEDDINGS_PATH,
-    MECHANICAL_TAG_NAMES,
     OBSOLESCENCE_INDEX_PATH,
     OBSOLESCENCE_MAX_REPLACEMENTS,
     OBSOLESCENCE_MIN_TAGS,
