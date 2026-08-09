@@ -41,7 +41,8 @@ from manamap.config import (
     PROSE_KEY_INPUTS,
     RESOLVE_MAX_ITERATIONS,
 )
-from manamap.pilot.common import checker_passed, deck_dir, load_json_memo
+from manamap.pilot.common import (
+    canonical_json, checker_passed, deck_dir, load_json_memo)
 
 _REPO_ROOT = config.DATA_DIR.parent
 _DYNAMIC_RE = re.compile(r"^(stack|decision):(\w+)$")
@@ -76,9 +77,6 @@ def cached_file_sha256(path):
         _SHA_MEMO[key] = hashlib.sha256(path.read_bytes()).hexdigest()
     return _SHA_MEMO[key]
 
-
-def canonical_json(obj):
-    return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
 
 
 def json_sha256(obj):

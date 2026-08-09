@@ -21,15 +21,12 @@ All matching is case-insensitive substring search over the artifact's
 canonical JSON. Pure functions, no I/O.
 """
 
-import json
 import re
 from collections import Counter
 from functools import lru_cache
 
+from manamap.pilot.common import canonical_json, expand_faces
 
-def canonical_json(obj):
-    """Same canonical form agent_cache uses; local copy avoids a circular import."""
-    return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
 
 # Words that appear in many card names or constantly in prose without naming a
 # specific card. Stopwording only reduces FALSE POSITIVES — full-name matching
@@ -63,7 +60,7 @@ _TOKEN_RE = re.compile(r"[A-Za-z']+")
 
 def _distinctive_tokens(name):
     """The candidate tokens of one name, before ambiguity is considered."""
-    faces = [f.strip() for f in name.split(" // ")] if " // " in name else [name]
+    faces = expand_faces(name)
     out = set()
     for face in faces:
         for token in _TOKEN_RE.findall(face):
@@ -100,10 +97,7 @@ def ambiguous_tokens(deck_names):
 
 def name_probes(name, ambiguous=frozenset()):
     """The lowercase substrings whose presence marks a reference to `name`."""
-    probes = {name.lower()}
-    faces = [f.strip() for f in name.split(" // ")] if " // " in name else [name]
-    for face in faces:
-        probes.add(face.lower())
+    probes = {face.lower() for face in expand_faces(name)}
     probes |= {t for t in _distinctive_tokens(name) if t not in ambiguous}
     return probes
 

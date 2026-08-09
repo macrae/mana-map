@@ -58,6 +58,7 @@ from manamap.config import (
 )
 from manamap.pilot import deck_facts as deck_facts_mod
 from manamap.pilot.common import (
+    front_face,
     resolve_out_path,
     deck_dir,
     expand_copies,
@@ -176,11 +177,6 @@ _ARCHETYPE_HINTS = (
     ("control", ("control", "attrition", "stax", "prison")),
     ("aggro", ("aggro", "aggressive", "beatdown", "voltron-lite")),
 )
-
-
-def _roles_for(cards, roles):
-    """name -> role list, for the cards actually in this deck."""
-    return {c["name"]: roles.get(c["name"], []) for c in cards}
 
 
 def _count_copies(cards, roles, wanted):
@@ -377,7 +373,7 @@ def build_axes(slug, cards, roles, facts, mana, goldfish, bracket, overrides):
 
     # 8b. Creature count — the aggro budget's actual unit.
     creature_copies = sum(1 for c in expand_copies(cards)
-                          if "Creature" in str(c.get("type_line", "")).split(" // ")[0])
+                          if "Creature" in front_face(c.get("type_line", "")))
     low, high = overrides.get("creatures", (None, None))
     axes.append(_axis("creatures", creature_copies, "copies", [],
                       "front-face creature copies", low=low, high=high))

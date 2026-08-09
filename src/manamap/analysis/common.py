@@ -30,6 +30,13 @@ def build_name_index(df):
     Names are not unique (Un-set variants collide), so this is last-write-wins
     and must never be used where positional identity matters. Embeddings index
     positionally: embeddings[i] is cards.csv row i.
+
+    NOT the same function as `export/viz_index.build_name_index`, which takes
+    FIRST-write-wins for the same 51 duplicate names. The divergence is
+    deliberate and per-consumer — viz_index matches
+    `analysis/eval_embeddings.resolve_groups` so the browser and the evaluator
+    resolve a duplicate to the same row. Unifying them would silently move one
+    side's answer; the rows carry identical oracle data, so neither is wrong.
     """
     return {name: i for i, name in enumerate(df["name"])}
 

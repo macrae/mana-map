@@ -21,7 +21,7 @@ import sys
 
 from manamap.config import RESOLVE_SCOPE_BUDGET
 from manamap.pilot.common import (
-    RULE_ID_RE, STRATEGY_ID_RE, deck_dir, load_rules_db)
+    RULE_ID_RE, STRATEGY_ID_RE, deck_dir, expand_faces, load_rules_db)
 
 REQUIRED_TOP_KEYS = {"id", "slug", "deck", "title", "scenario", "resolution"}
 # A scenario can be checked before it has an answer — that is the whole point of the
@@ -181,9 +181,7 @@ def unknown_cards(doc, slug):
     main_names = set()
     for card in cards:
         name = card["name"]
-        main_names.add(name)
-        if " // " in name:
-            main_names.update(part.strip() for part in name.split(" // "))
+        main_names.update(expand_faces(name))
 
     you = board_bodies((scenario.get("board") or {}).get("you"))
     named = you["creature_bodies"] + you["other_permanents"] + you["spent_paying_a_cost"]
@@ -412,6 +410,12 @@ def main(args):
             print(f"OK   {path.name} (contract holds; checker: {verdict})")
             for w in scope_warnings(doc):
                 print(f"  ! over scope budget: {w}")
+    # Deliberately NOT `common.report_errors`, though every other validator uses
+    # it: this command validates N artifacts per invocation and reports each by
+    # name. `report_errors` exits on the first error list it is handed, so
+    # calling it inside this loop would hide every failure after the first, and
+    # calling it after would lose the per-file attribution that makes the output
+    # actionable. Different shape, not an oversight.
     if failed:
         sys.exit(1)
 

@@ -139,6 +139,63 @@ def load_json(path, default=None):
         return json.load(f)
 
 
+def canonical_json(obj):
+    """Stable, compact JSON — the form things get HASHED in.
+
+    Key order and spacing must not move, or a fingerprint changes without the
+    content changing. `agent_cache` and `card_refs` each had their own copy;
+    `card_refs`' carried a comment saying a local copy "avoids a circular
+    import", which was true of neither module — `common` imports nothing from
+    either, and `agent_cache` already imports `common`.
+    """
+    return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+
+
+# ── Multi-face cards ─────────────────────────────────────────────────────
+#
+# `cards.csv` and every global graph key on the JOINED form, `"A // B"`. Three
+# different questions get asked of that string and they are NOT the same
+# operation, which is why this is three functions rather than one:
+#
+#   front_face(type_line)  — "is this a land?" asks about the FRONT face only.
+#                            A DFC land's back face may be a creature.
+#   expand_faces(name)     — "did anything mention this card?" wants the joined
+#                            form AND each face, because prose names either.
+#   the decklist form      — deliberately NOT here. `build_deck.decklist_name`
+#                            is layout-aware (split cards are written in full,
+#                            other multi-face cards by their front face) and
+#                            `pool_facts.front_face_map` builds the reverse
+#                            lookup. Merging those two would produce a function
+#                            that is right for neither.
+#
+# One measured caveat on that reverse lookup, recorded because it is invisible:
+# three front faces are claimed by two joined names each (`Royal`, `Monster`,
+# `Start`), so a bare front face resolves last-wins by corpus order. Two more
+# (`Smelt`, `Bind`) are also standalone cards, which is harmless because
+# `read_sources` prefers an exact corpus hit.
+
+
+def front_face(type_line):
+    """The front face of a type line — the one that answers "what IS this".
+
+    A DFC's back face is a different card and routinely a different type;
+    asking "is this a land" of the joined string finds "Land" on either side.
+    """
+    return str(type_line or "").split(" // ")[0]
+
+
+def expand_faces(name):
+    """{joined name} | {each face} — every string that could mean this card.
+
+    Prose, decklists and scenario boards each name whichever face the writer
+    had in front of them, so a membership test has to accept all of them.
+    """
+    name = str(name or "")
+    if " // " not in name:
+        return {name}
+    return {name} | {face.strip() for face in name.split(" // ")}
+
+
 # ── The opened-line status vocabulary ────────────────────────────────────
 #
 # A claim that a card "opens a line" is a candidate until a stack artifact passes
@@ -245,7 +302,7 @@ def expand_copies(cards):
 
 def is_land(card):
     """Land by front-face type line — the face that comes down on the battlefield."""
-    return "Land" in str(card.get("type_line", "")).split(" // ")[0]
+    return "Land" in front_face(card.get("type_line", ""))
 
 
 def commander_rejection(row):
@@ -259,7 +316,7 @@ def commander_rejection(row):
 
     `row` is anything with .get: a cards.csv row, a cards.json record.
     """
-    front = str(row.get("type_line", "") or "").split(" // ")[0]
+    front = front_face(row.get("type_line", ""))
     text = str(row.get("oracle_text", "") or "").lower()
     if not ("Legendary" in front and "Creature" in front) and "can be your commander" not in text:
         return ("not a legal commander (needs to be a legendary creature, "

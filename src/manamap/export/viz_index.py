@@ -65,6 +65,10 @@ def build_name_index(names):
     51 names duplicate across the corpus. Which row a duplicate resolves to only
     matters for consistency, not correctness — the rows carry identical oracle
     data — so this mirrors `analysis/eval_embeddings.resolve_groups`.
+
+    NOT the same function as `analysis/common.build_name_index`, which is
+    LAST-write-wins. Same name, opposite tie-break, on purpose: that one feeds
+    positional embedding lookups, this one feeds the browser. Do not unify.
     """
     index = {}
     for row, name in enumerate(names):

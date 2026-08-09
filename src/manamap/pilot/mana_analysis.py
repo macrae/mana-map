@@ -22,6 +22,7 @@ from manamap.config import (
     ROLE_MANA_SOURCE,
 )
 from manamap.pilot.common import (
+    front_face,
     deck_dir,
     expand_copies,
     is_land,
@@ -52,7 +53,7 @@ def land_classes(card):
     classes = set()
     type_line = str(card.get("type_line", "") or "")
     text = str(card.get("oracle_text", "") or "")
-    front_type = type_line.split(" // ")[0]
+    front_type = front_face(type_line)
     if "Basic" in front_type:
         classes.add("basic")
     if "Snow" in front_type:
@@ -75,7 +76,7 @@ def nonland_producer_kind(card):
         return None
     if not _MANA_SOURCE_RE.search(str(card.get("oracle_text", "") or "")):
         return None
-    front_type = str(card.get("type_line", "") or "").split(" // ")[0]
+    front_type = front_face(card.get("type_line", ""))
     for supertype, kind in ROLE_MANA_BY_SUPERTYPE.items():
         if supertype in front_type:
             return kind

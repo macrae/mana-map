@@ -25,13 +25,18 @@ second hand-kept file that would disagree with this one.
 import json
 import subprocess
 
-from manamap.pilot.common import deck_dir, resolve_out_path
+from manamap.config import DECKS_DIR
+from manamap.pilot.common import deck_dir, expand_faces, resolve_out_path
+
+# `share/` and the git root are siblings of `data/`, not of `data/decks/`.
+# Named once because `DECKS_DIR.parent.parent` read as an accident at both
+# call sites, and a wrong number of `.parent`s fails silently as "no history".
+_REPO_ROOT = DECKS_DIR.parent.parent
 
 
 def _git(*args):
     """Run a git command from the repo root; return stdout, or None on failure."""
-    from manamap.config import DECKS_DIR
-    root = DECKS_DIR.parent.parent
+    root = _REPO_ROOT
     try:
         out = subprocess.run(["git", "-C", str(root), *args],
                              capture_output=True, text=True, check=True)
@@ -105,9 +110,8 @@ def _owned_index():
 
     The pilot's box, read the same way `pool-facts` reads a collection.
     """
-    from manamap.config import DECKS_DIR
     from manamap.pilot.fetch_deck import parse_decklist
-    share = DECKS_DIR.parent.parent / "share"
+    share = _REPO_ROOT / "share"
     index = {}
     if not share.is_dir():
         return index
@@ -118,9 +122,7 @@ def _owned_index():
             continue
         for entry in entries:
             name = entry["name"]
-            faces = {name} | ({f.strip() for f in name.split(" // ")}
-                              if " // " in name else set())
-            for face in faces:
+            for face in expand_faces(name):
                 index.setdefault(face, set()).add(path.stem)
     return index
 

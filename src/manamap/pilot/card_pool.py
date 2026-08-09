@@ -7,12 +7,18 @@ the same bytes more than once in a single process: `build-deck` parsed it twice
 itself and a third time through `resolve_pool`, and `validate-build` parsed it
 once here and again inside `pool_facts`.
 
-Measured on this corpus, the cost is dominated by I/O and line parsing rather
-than column count — a 3-column read is 0.157s and the 13-column union of
-everything this layer wants is 0.235s. That is what makes one shared parse the
-right shape: the union costs +0.08s once, and every duplicate parse it removes
-saves a full 0.157–0.331s. A per-caller `usecols` memo would have kept the
-duplicates, since two callers wanting different columns would miss each other.
+**This is not primarily a speed win, and the numbers say so.** Measured best-of-3:
+`build-deck` 1.78 -> 1.55s (three parses became one), but `bracket-check`
+0.93 -> 1.00s and `validate-build` 0.64 -> 0.70s, because they only ever parsed
+once and the 13-column union costs +0.06s over the 3-column read they used to
+do. Everything else is flat. The cost is I/O and 34,322 rows rather than column
+count or type inference — `dtype=str`, `low_memory` and `na_filter` were all
+tried and are within noise.
+
+What it does buy is one place to fix a bug instead of eight, one `card_flags`
+dict instead of three identical comprehensions, and no more memos that were
+blind to a rewrite. A per-caller `usecols` memo would have kept every duplicate
+parse, since two callers wanting different columns would miss each other.
 
 Everything here is READ-ONLY and shared. `load_frame()` returns one DataFrame
 that callers must not mutate; the derived views are dicts built from it and
@@ -26,7 +32,7 @@ import csv
 
 from manamap.analysis.common import parse_color_identity
 from manamap.config import OUTPUT_CSV_PATH
-from manamap.pilot.common import mtime_memo
+from manamap.pilot.common import expand_faces, mtime_memo
 
 # Un-sets are not Commander-legal and their cards are joke designs; Stickers are
 # not cards at all. Both would otherwise rank as pool candidates.
@@ -156,9 +162,7 @@ def card_flags():
 def _build_names():
     names = set()
     for name in load_frame()["name"]:
-        names.add(name)
-        if " // " in name:
-            names.update(part.strip() for part in name.split(" // "))
+        names |= expand_faces(name)
     return names
 
 
