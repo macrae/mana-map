@@ -58,6 +58,7 @@ from manamap.config import (
 )
 from manamap.pilot import deck_facts as deck_facts_mod
 from manamap.pilot.common import (
+    resolve_out_path,
     deck_dir,
     expand_copies,
     is_land,
@@ -875,7 +876,7 @@ def main(args):
         print(format_report(audit))
     out = getattr(args, "out", None)
     if out:
-        path = deck_dir(args.slug) / out if "/" not in str(out) else out
+        path = resolve_out_path(out, args.slug, "deck-audit")
         with open(path, "w") as f:
             json.dump(audit, f, indent=2, sort_keys=True, ensure_ascii=False)
             f.write("\n")

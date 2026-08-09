@@ -25,7 +25,7 @@ second hand-kept file that would disagree with this one.
 import json
 import subprocess
 
-from manamap.pilot.common import deck_dir
+from manamap.pilot.common import deck_dir, resolve_out_path
 
 
 def _git(*args):
@@ -229,7 +229,7 @@ def main(args):
         print(format_report(doc))
     out = getattr(args, "out", None)
     if out:
-        path = deck_dir(args.slug) / out if "/" not in str(out) else out
+        path = resolve_out_path(out, args.slug, "deck-history")
         with open(path, "w") as f:
             json.dump(doc, f, indent=2, sort_keys=True, ensure_ascii=False)
             f.write("\n")

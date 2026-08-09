@@ -28,13 +28,20 @@ engine block: the deck's own `goldfish_targets.json` read as a declaration of wh
 it is trying to assemble, every `any_of` group priced through the hypergeometric,
 the thinnest component named, and the pool cards that would join it.
 
-**Name every scratch file after the deck.** You may run concurrently with agents
-working other decks, and you all share one scratchpad directory. Generic names —
-`audit.json`, `aud.json`, `audit2.json` — collide, and the failure is silent: your
-file is replaced by another deck's audit and every figure you then read is about a
-deck you were not asked to diagnose. Three agents hit this in a single session and
-all three happened to notice. Use `audit-<slug>.json`, or pipe straight into the
-command that consumes it and keep no file at all.
+**Write per-deck views with `--out <dir>/`, never a shell redirect.** You may run
+concurrently with agents working other decks, and you all share one scratchpad
+directory. `deck-audit`, `deck-facts` and `deck-history` take `--out`; hand it a
+DIRECTORY and it auto-names `<command>-<slug>.json`, so a collision is impossible:
+
+```bash
+.venv/bin/manamap pilot deck-audit <slug> --out "$SCRATCH/"
+```
+
+A generic name (`audit.json`, `aud.json`) is how one deck's view silently replaces
+another's — seven agents read the wrong deck's numbers under their own invocation
+before this was found, and every catch was someone noticing an implausible figure.
+`--out` now REFUSES a path whose filename omits the slug. A shell redirect (`>
+audit.json`) is not policed and must not be used for per-deck data.
 
 Then the rest of the brief, all free:
 

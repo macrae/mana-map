@@ -34,6 +34,7 @@ from manamap.config import CARD_ROLES_PATH, SYNERGY_GRAPH_PATH
 from manamap.ingest.extract import get_colors
 from manamap.pilot.bracket import combos_in_deck, is_infinite
 from manamap.pilot.common import (
+    resolve_out_path,
     deck_dir,
     expand_copies,
     is_land,
@@ -379,7 +380,7 @@ def main(args):
     text = json.dumps(facts, indent=2, sort_keys=True, ensure_ascii=False)
     out = getattr(args, "out", None)
     if out:
-        path = deck_dir(args.slug) / out if "/" not in str(out) else out
+        path = resolve_out_path(out, args.slug, "deck-facts")
         with open(path, "w") as f:
             f.write(text + "\n")
         print(f"Wrote {path}")

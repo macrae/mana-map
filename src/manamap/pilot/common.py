@@ -3,6 +3,8 @@
 import atexit
 import hashlib
 import json
+import os
+import pathlib
 import re
 import sys
 
@@ -142,6 +144,44 @@ def check_verified_line(i, line, deck_path, label="opens_lines"):
     return []
 
 
+
+
+def resolve_out_path(out, slug, command):
+    """Where a per-deck view should be written — slug-scoped, or a loud error.
+
+    Concurrent deck agents share one scratchpad directory, and they were writing
+    per-deck views to generic names: `audit.json`, `aud.json`, `audit2.json`. The
+    second write silently replaced the first, so an agent working heliod would read
+    goblin-storm's numbers under a heliod invocation and reason from them. It hit
+    seven agents across two sessions, and **every instance was caught by an agent
+    noticing an implausible figure, which is not a control** — the failure is
+    silent and the wrong deck's numbers are exactly the shape the reader expects.
+
+    The CLI cannot police a shell redirect (`deck-audit X > audit.json`), so this
+    does the two things it can: makes the SAFE path the easy one, and makes the
+    unsafe one fail loudly.
+
+      * a DIRECTORY (existing, or a trailing slash) auto-names
+        `<command>-<slug>.json` inside it — collisions become impossible;
+      * a bare filename stays relative to the deck's own directory, as before;
+      * an explicit path elsewhere must carry the slug in its basename, or this
+        raises. That is the case that used to corrupt silently.
+    """
+    text = str(out)
+    path = pathlib.Path(text)
+    if text.endswith(("/", os.sep)) or path.is_dir():
+        return path / f"{command}-{slug}.json"
+    if "/" not in text and os.sep not in text:
+        return deck_dir(slug) / text
+    if slug not in path.name:
+        raise SystemExit(
+            f"refusing to write {command} for {slug!r} to {path} — the filename does "
+            f"not contain the slug, and concurrent deck agents share one scratch "
+            f"directory. A generic name is how one deck's view silently overwrites "
+            f"another's. Pass a directory (auto-names {command}-{slug}.json), or a "
+            f"filename containing {slug!r}."
+        )
+    return path
 
 
 def expand_copies(cards):

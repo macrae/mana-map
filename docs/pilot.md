@@ -33,7 +33,7 @@ manamap pilot validate-build <slug>     # form gate over a build plan
 manamap pilot bracket-check <slug> [--target N] [--json]  # bracket floor → bracket_report.json
 manamap pilot deck-facts <slug> [--out F]  # the deterministic brief agents read first
 manamap pilot deck-history <slug> [--json]  # applied swaps (from git) + the pending ten
-manamap pilot deck-audit <slug> [--archetype A] [--json] [--out F]  # cited axis targets + engine activation
+manamap pilot deck-audit <slug> [--archetype A] [--json] [--out D/]  # cited axis targets + engine activation
 manamap pilot validate-diagnosis <slug>    # diagnosis form; axes re-derived, cuts checked against verified stacks
 manamap pilot pool-facts <paths…> [--exclude F] [--json] [--out F]  # a BOX OF CARDS → which deck to build
 manamap pilot cache-rebless <slug>             # re-record every STALE_OK routine, zero spawns

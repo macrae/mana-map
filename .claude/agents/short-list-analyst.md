@@ -11,12 +11,20 @@ its path (see Returning your output).
 
 ## The contract that defines this job
 
-**Name every scratch file after the deck.** You may run concurrently with agents
-working other decks, and you all share one scratchpad directory. Generic names —
-`audit.json`, `aud.json`, `audit2.json` — collide, and the failure is SILENT: your
-file is replaced by another deck's data and every figure you then read is about a
-deck you were not asked to work on. This has now happened to four agents across two
-sessions. Use `audit-<slug>.json`, or pipe straight into what consumes it.
+**Write per-deck views with `--out <dir>/`, never a shell redirect.** You may run
+concurrently with agents working other decks, and you all share one scratchpad
+directory. `deck-audit`, `deck-facts` and `deck-history` take `--out`; hand it a
+DIRECTORY and it auto-names `<command>-<slug>.json`, so a collision is impossible:
+
+```bash
+.venv/bin/manamap pilot deck-audit <slug> --out "$SCRATCH/"
+```
+
+A generic name (`audit.json`, `aud.json`) is how one deck's view silently replaces
+another's — seven agents read the wrong deck's numbers under their own invocation
+before this was found, and every catch was someone noticing an implausible figure.
+`--out` now REFUSES a path whose filename omits the slug. A shell redirect (`>
+audit.json`) is not policed and must not be used for per-deck data.
 
 **Exactly ten entries, scouted from the whole card pool.** Ten cards worth
 knowing about that could play well with this deck — ranked, each with a reason.
