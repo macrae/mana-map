@@ -3,7 +3,7 @@
 *The resume-here doc. Read `README.md` for orientation, `CLAUDE.md` for gotchas, this for
 what shipped and what's still open. Completed plans live in `docs/history/`.*
 
-Last updated 2026-07-30. All work below is committed, pushed, and deployed.
+Last updated 2026-08-09. All work below is committed, pushed, and deployed.
 Every figure here was derived from the repo at write time, not remembered.
 
 ## What this is now
@@ -183,6 +183,47 @@ quotes `lands.entries` as a land count. The lint found two survivors the greps h
 
 `goldfish.py` was already correct (it expands `quantity` when building the library), so no
 simulation figure was ever wrong.
+
+## NEXT SESSION — tighten what 2026-08-09 exposed
+
+That session set out to re-run seven withheld diagnoses and finished that in its first
+stretch (1 pass, 6 withheld). Everything after was scope approved a step at a time: the
+tooling bugs the run surfaced, the sideboard retirement, 46 re-authored prose routines,
+and a scratch-clobber fix. It is all shipped and green — this section is the tail it
+left, ordered by value, with the reason each one is worth doing rather than a wish list.
+
+**Start here — re-run the six withheld diagnoses.** They were judged against numbers
+this branch has since corrected, so several were arguably failed on bad inputs:
+gishath's skeptic killed its diagnosis over an 82.4% enrage figure that is now
+**60.8%** measured against the five cards that actually convert damage; hapatra's
+prescription was sized against a 9.5% Mikaeus loop that checker-passed stack 001
+refutes outright. The loop is `/diagnose-deck` per deck, ~250k each, ~1.5M for six.
+Do it as the session's GOAL, not as a tail — the last one inherited it at the end of a
+long session and that is why it never happened.
+
+| Thread | Why it is worth doing | Size |
+|---|---|---|
+| **Six withheld diagnoses** | judged against figures since corrected | ~1.5M |
+| **Stack artifact staleness** | 12 files carry `VERIFIED PRE-SWAP … HISTORY.md` preambles that violate L10, reference the deleted `sideboard-facts`, and say "benched" for a dead concept. edgar's presentable stacks 004/006 cite non-presentable 001 and Exquisite Blood 11 times, and it reaches the page. **DO NOT REGEX IT** — a dry run ate substance on four files (edgar 006 loses "with maindeck Bloodthirsty Conqueror — the third gain/loss"). Needs a per-file read, and it invalidates `stacks:passing` fleet-wide, so do it in one pass and re-record. | ~200k |
+| **Grafdigger's Cage stack** | three independent agents named it the fleet's highest-value unresolved line. Three of yawgmoth's four kills and most of its political advice rest on an oracle reading no checker has settled. | ~120k |
+| **Six bracket targets** | seven of eight decks compute a floor but never answer "is this deck inside its bracket". Not lost — never declared. yawgmoth's was recovered from its own `brief.json`. **This is a decision, not work**: a target bracket is the pilot's statement of intent and must not be inferred from a floor. | you |
+| **gishath's unmeasured conjunction** | its frame flagged that the enrage web is *five converters × a damage source* and no target measures the joint. Unlike the three win lines declared on 2026-08-09, no checker-passed stack names it, so declaring it is an authoring judgement — it belongs in a diagnosis pass, not a data edit. | with the diagnosis |
+| **`deck-recon` × 8** | never run on any deck. Absent, not stale — a feature nobody is waiting on. Needs dated web passes and `RECON_MAX_AGE_DAYS` judgement. | ~600k |
+
+**Three validator gaps are still open** and each caused a real defect, so each is
+mechanically checkable and cheap:
+
+- an add's `closes` must move the axis — FIXED for `(cards, roles)` axes; `colour-sources`
+  and `mana-base` still cannot be checked because they need `mana_analysis`;
+- `upgrades` prose must name the current ten. Regenerating `considering.json` orphaned
+  that paragraph on five of eight decks — hapatra's narrated a completely different list
+  above the one on the page. The check that works is *card names from the corpus in the
+  copy that are in neither the current ten nor the 99*; overlap counting and numeric
+  checks both missed it;
+- a routine's staleness check must look at **labels and members**, not only figures. A
+  grep for moved numbers called gishath's frame clean while it discussed the "Enrage
+  engine" four times and Temple Altisaur seven, with that group's membership just
+  changed.
 
 ## Ongoing — what is in flight right now
 
