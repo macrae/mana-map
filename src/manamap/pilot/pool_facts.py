@@ -56,6 +56,7 @@ from manamap.config import (
 )
 from manamap.pilot.bracket import assess, is_infinite
 from manamap.pilot.build_deck import role_group
+from manamap.pilot.card_pool import load_frame
 from manamap.pilot.common import (
     commander_rejection,
     is_land,
@@ -81,17 +82,21 @@ ARCHETYPE_REPORT_LIMIT = 18
 
 
 def _read_cards():
-    df = pd.read_csv(OUTPUT_CSV_PATH, usecols=_COLUMNS)
-    return {r["name"]: r for r in df.to_dict("records")}
+    # Slice to this module's columns rather than handing out the full union:
+    # these records are passed around as "a card row" and widening them would
+    # quietly change what downstream code sees in a `.keys()` or a dump.
+    return {r["name"]: r
+            for r in load_frame()[_COLUMNS].to_dict("records")}
 
 
 def load_cards():
     """The cards.csv slice this module reads, as {name: row-dict}.
 
-    Memoized on (mtime_ns, size) via `common.mtime_memo`. Without it a single
-    `pool-facts` run scans the 24 MB CSV twice — once here and once inside
-    `bracket.load_reference` — and `build_deck` calls in through `resolve_pool`
-    as well. Treat the result as read-only; callers share one parse.
+    Built from `card_pool.load_frame()`, so a `pool-facts` run parses the 24 MB
+    CSV once for this, the bracket engine and everything else together — it used
+    to be parsed here and again inside `bracket.load_reference`, with
+    `build_deck` calling in through `resolve_pool` for a third. Treat the result
+    as read-only; callers share one parse.
     """
     if not OUTPUT_CSV_PATH.exists():
         raise SystemExit(

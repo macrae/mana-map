@@ -15,7 +15,6 @@ no second citation implementation to drift.
 
 import json
 
-import pandas as pd
 
 from manamap.config import (
     BRACKETS,
@@ -23,7 +22,9 @@ from manamap.config import (
     OUTPUT_CSV_PATH,
 )
 from manamap.analysis.common import parse_color_identity
-from manamap.pilot.common import deck_dir, report_errors, try_load_rules_db
+from manamap.pilot.card_pool import load_frame
+from manamap.pilot.common import (
+    deck_dir, mtime_memo, report_errors, try_load_rules_db)
 from manamap.pilot.validate_stack import load_strategy_sections, validate_citations
 
 REQUIRED_TOP_KEYS = {"slug", "commander", "color_identity", "bracket", "slots", "land_counts"}
@@ -287,19 +288,25 @@ def _validate_critic(plan):
     return errors
 
 
+def _build_reference():
+    frame = load_frame()
+    return {
+        name: {"color_identity": ci, "legal_commander": legal, "type_line": tl}
+        for name, ci, legal, tl in zip(
+            frame["name"], frame["color_identity"],
+            frame["legal_commander"], frame["type_line"])
+    }
+
+
 def load_cards_reference():
-    """name -> {color_identity, legal_commander, type_line} from cards.csv."""
+    """name -> {color_identity, legal_commander, type_line} from cards.csv.
+
+    Shares `card_pool`'s single parse: `validate-build` used to read the CSV
+    here and again inside `pool_facts.load_cards` when the plan named a pool.
+    """
     if not OUTPUT_CSV_PATH.exists():
         return None
-    df = pd.read_csv(
-        OUTPUT_CSV_PATH, usecols=["name", "color_identity", "legal_commander", "type_line"]
-    )
-    return {
-        row.name_: {"color_identity": row.color_identity,
-                    "legal_commander": row.legal_commander,
-                    "type_line": row.type_line}
-        for row in df.rename(columns={"name": "name_"}).itertuples(index=False)
-    }
+    return mtime_memo(OUTPUT_CSV_PATH, "validate_build:reference", _build_reference)
 
 
 def main(args):

@@ -97,20 +97,40 @@ def test_clear_memo_drops_mtime_entries(tmp_path):
     assert not _MTIME_MEMO
 
 
-def test_the_real_corpus_readers_are_all_keyed():
-    """The four converted callers, by the key they register under.
+def test_only_card_pool_reads_the_corpus():
+    """One module opens cards.csv; everyone else takes a view from it.
 
-    A regression here means someone re-hand-rolled a memo; the names are
-    module-scoped so two readers of one file stay distinct.
+    Eight sites used to read it independently — three pandas reads with
+    different `usecols`, two `csv`-module readers, one with no `usecols` at all
+    — so a single process could pay for the same 24.7 MB three times. This is
+    the check that keeps them consolidated: a new `pd.read_csv(OUTPUT_CSV_PATH)`
+    anywhere in `pilot/` reintroduces exactly what Phase 2 removed.
+    """
+    import pathlib
+
+    allowed = {"card_pool.py"}
+    offenders = []
+    for path in sorted(pathlib.Path("src/manamap/pilot").glob("*.py")):
+        if path.name in allowed:
+            continue
+        text = path.read_text()
+        if "read_csv(OUTPUT_CSV_PATH" in text or "open(OUTPUT_CSV_PATH" in text:
+            offenders.append(path.name)
+    assert not offenders, (
+        f"{offenders} read cards.csv directly — take a view from card_pool "
+        f"instead, or the duplicate-parse problem is back")
+
+
+def test_every_corpus_view_is_mtime_keyed():
+    """`card_pool`'s views must all go through the shared memo.
+
+    Each view is derived from one frame, so an unkeyed one would not just be
+    slow — it would answer from a stale frame after a regeneration.
     """
     import inspect
 
-    from manamap.pilot import bracket, pool_facts, validate_diagnosis, validate_stack
-    for module, key in ((bracket, "bracket:flags"),
-                        (pool_facts, "pool_facts:cards"),
-                        (validate_stack, "validate_stack:names"),
-                        (validate_diagnosis, "validate_diagnosis:oracle")):
-        source = inspect.getsource(module)
-        assert f'"{key}"' in source, (
-            f"{module.__name__} no longer registers {key} — if it grew its own "
-            f"memo again, key it on (mtime_ns, size) via mtime_memo")
+    from manamap.pilot import card_pool
+    source = inspect.getsource(card_pool)
+    for key in ("corpus:frame", "corpus:pool", "corpus:flags",
+                "corpus:names", "corpus:oracle"):
+        assert f'"{key}"' in source, f"card_pool no longer registers {key}"

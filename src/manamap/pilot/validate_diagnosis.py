@@ -45,7 +45,6 @@ from manamap.pilot.common import (
     load_deck_cards,
     load_json,
     load_rules_db,
-    mtime_memo,
     report_errors,
 )
 from manamap.pilot.validate_stack import load_strategy_sections, validate_citations
@@ -284,21 +283,11 @@ def _corpus_card(name, roles):
             "type_line": ""}
 
 
-def _read_corpus_oracle():
-    import pandas as pd
-
-    from manamap.config import OUTPUT_CSV_PATH
-    df = pd.read_csv(OUTPUT_CSV_PATH, usecols=["name", "oracle_text"])
-    return {n: (t if isinstance(t, str) else "")
-            for n, t in zip(df["name"], df["oracle_text"])}
-
-
 def _corpus_oracle():
     """{name: oracle_text} from cards.csv, once per (mtime, size). {} if absent."""
-    from manamap.config import OUTPUT_CSV_PATH
+    from manamap.pilot.card_pool import corpus_oracle
     try:
-        return mtime_memo(OUTPUT_CSV_PATH, "validate_diagnosis:oracle",
-                          _read_corpus_oracle, absent={}) or {}
+        return corpus_oracle()
     except Exception:                      # pragma: no cover — unreadable corpus
         return {}
 

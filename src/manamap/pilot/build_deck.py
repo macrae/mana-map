@@ -23,7 +23,6 @@ import json
 import math
 
 import numpy as np
-import pandas as pd
 
 from manamap.analysis.common import (
     build_name_index,
@@ -45,12 +44,13 @@ from manamap.config import (
     DECK_ROLE_BUDGET,
     DECK_ROLE_GROUPS,
     EMBEDDINGS_PATH,
-    OUTPUT_CSV_PATH,
     SYNERGY_GRAPH_PATH,
     SYNERGY_RULES,
 )
 from manamap.pilot import bracket as bracket_mod
 from manamap.pilot import manabase
+from manamap.pilot.card_pool import card_flags as corpus_card_flags
+from manamap.pilot.card_pool import load_frame
 from manamap.pilot.common import (
     commander_rejection,
     deck_dir,
@@ -445,7 +445,7 @@ def build(slug):
     brief = load_brief(slug)
     target = brief["bracket"]
 
-    df = pd.read_csv(OUTPUT_CSV_PATH)
+    df = load_frame()
     roles = load_card_roles()
     details = load_combo_details()
     if not SYNERGY_GRAPH_PATH.exists():  # presence check; scoring uses the rules directly
@@ -463,10 +463,10 @@ def build(slug):
     name_index = build_name_index(df)
 
     pool = candidate_pool(df, identity, target, brief)
-    card_flags = {
-        row.name_: {"game_changer": bool(row.game_changer), "legal_commander": row.legal_commander}
-        for row in df.rename(columns={"name": "name_"}).itertuples(index=False)
-    }
+    # Aliased on import: `card_flags` is also the parameter name in
+    # `enforce_bracket` and `bracket.assess`, and a bare import would let a
+    # call site silently pass the FUNCTION where a dict is expected.
+    flags = corpus_card_flags()
     combo_partners = {
         name: {c for i in idxs for c in details["combos"][i]["cards"] if c != name}
         for name, idxs in details["by_card"].items()
@@ -482,7 +482,7 @@ def build(slug):
     budget = dict(DECK_ROLE_BUDGET)
     slots, _, effective_budget = fill_slots(scored, roles, budget, brief["must_include"])
     slots, cut, report = enforce_bracket(
-        slots, scored, roles, card_flags, details, {commander["name"]}, target
+        slots, scored, roles, flags, details, {commander["name"]}, target
     )
 
     # Mana base last: it needs the spells it has to cast.
@@ -650,8 +650,8 @@ def main(args):
         print(f"  mana base shortfalls: {short}")
 
     if getattr(args, "write_decklist", False):
-        layouts = pd.read_csv(OUTPUT_CSV_PATH, usecols=["name", "layout"])
-        layouts = dict(zip(layouts["name"], layouts["layout"]))
+        frame = load_frame()          # already parsed by build(); free here
+        layouts = dict(zip(frame["name"], frame["layout"]))
         path = base / "decklist.txt"
         path.write_text(decklist_text(plan, layouts), encoding="utf-8")
         print(f"  Wrote {path}")

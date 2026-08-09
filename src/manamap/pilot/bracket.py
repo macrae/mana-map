@@ -25,7 +25,6 @@ no randomness. The same deck always produces the same report (◆ evidence).
 import json
 import sys
 
-import pandas as pd
 
 from manamap.config import (
     BRACKET_EARLY_COMBO_MANA,
@@ -35,12 +34,12 @@ from manamap.config import (
     MASS_LAND_DENIAL,
     OUTPUT_CSV_PATH,
 )
+from manamap.pilot.card_pool import card_flags
 from manamap.pilot.common import (
     deck_dir,
     load_card_roles,
     load_combo_details,
     load_deck_cards,
-    mtime_memo,
 )
 
 INFINITE_PREFIX = "infinite"
@@ -72,21 +71,13 @@ def load_reference():
     return _card_flags(), load_card_roles(), load_combo_details()
 
 
-def _read_card_flags():
-    df = pd.read_csv(OUTPUT_CSV_PATH, usecols=["name", "game_changer", "legal_commander"])
-    return {
-        row.name_: {"game_changer": bool(row.game_changer), "legal_commander": row.legal_commander}
-        for row in df.rename(columns={"name": "name_"}).itertuples(index=False)
-    }
-
-
 def _card_flags():
-    """{name: {game_changer, legal_commander}} from cards.csv, once per process."""
-    # `stat()` used to raise here on a fresh clone and callers depend on that;
-    # mtime_memo answers `absent` instead, so keep the raise explicit.
-    if not OUTPUT_CSV_PATH.exists():
-        raise FileNotFoundError(OUTPUT_CSV_PATH)
-    return mtime_memo(OUTPUT_CSV_PATH, "bracket:flags", _read_card_flags)
+    """{name: {game_changer, legal_commander}} from cards.csv, once per process.
+
+    Three modules built this identical dict from three separate parses; it now
+    lives once in `card_pool`.
+    """
+    return card_flags()
 
 
 def combos_in_deck(names, details):
