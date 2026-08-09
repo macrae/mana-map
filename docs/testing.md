@@ -1,14 +1,29 @@
 # Testing
 
 ```bash
-.venv/bin/python -m pytest              # everything (1,312, ~10 min)
-.venv/bin/python -m pytest -m "not browser"   # fast suite (1,189, ~35 s)
-.venv/bin/python -m pytest -m "not browser" -n auto   # same, ~19 s
-.venv/bin/python -m pytest -m browser         # the 80 browser tests (~340 s)
+.venv/bin/python -m pytest                            # everything, ~10 min
+.venv/bin/python -m pytest -m "not browser"           # fast suite, ~58 s
+.venv/bin/python -m pytest -m "not browser" -n auto   # same, ~32 s (pytest-xdist)
+.venv/bin/python -m pytest -m browser                 # playwright, ~9 min
 ```
 
-1,312 tests in `tests/`: 438 card-pipeline + 751 pilot-subsystem + **123 browser**.
-One is a still-unmet `xfail(strict=True)` ship gate in `test_embedding_quality.py` — see below.
+**This file is the only place that states test counts.** They move on almost every commit,
+so restating them in `README.md` or `CLAUDE.md` guarantees drift; those files point here
+instead. To print the current numbers rather than trust a snapshot:
+
+```bash
+.venv/bin/python -m pytest -m "not browser" --collect-only -q | tail -1
+```
+
+As of 2026-08-09: **1,499 tests** across 59 files — 1,376 fast and 123 browser. One is a
+deliberately unmet `xfail(strict=True)` ship gate in `test_embedding_quality.py` (see
+below); it is a target the code has not reached, not a broken test.
+
+Why the count cannot be checked mechanically: 144 of those cases are parametrized over
+lists computed at collection time, so the only way to count them is to run pytest — and
+running pytest from inside pytest recurses. `tests/test_docs_counts.py` guards every count
+that *can* be derived cheaply (subcommands, agents, skills, decks, routines, pipeline
+steps) and deliberately leaves this one to editorial discipline.
 
 ## Source assertions do not catch regressions
 
@@ -59,7 +74,7 @@ section below for why they cannot live anywhere else. `conftest_viz.py` still ho
 page-level helpers: an ephemeral `http.server` rooted at the repo — `viz/` and `data/` must
 be siblings, the same constraint GitHub Pages imposes — plus a booted page that waits on
 `MM.allData` rather than a timer, because the projection is 12.9 MB. Playwright is imported
-lazily, so the other 1,189 tests never pay for it.
+lazily, so every non-browser test avoids paying for it.
 
 Every test asserts `page.js_errors == []`. That list collects `pageerror` and console
 errors, and it is what catches the class of bug above.
@@ -86,7 +101,7 @@ resolves rather than collapsing, that link lengths stay inside the chord range `
 branching grows the graph and records the trail, and that leaving restores the map.
 
 Setup, one time: `.venv/bin/python -m playwright install chromium` (~94 MB). Without it the
-whole file skips cleanly, so a fresh clone still runs the other 1,189.
+whole file skips cleanly, so a fresh clone still runs everything else.
 
 ## A passing check proves nothing until you have seen it fail
 
@@ -176,15 +191,16 @@ which is the entire point of capturing them.
 
 ## Session fixtures belong in `conftest.py`, not in an imported module
 
-`browser` and `viz_server` live in `tests/conftest.py`. They used to live in
-`conftest_viz.py` and be imported per test module — and a fixture imported into two
-modules is **registered twice**, so two files importing `browser` opened two concurrent
-`sync_playwright()` contexts and every browser test errored at setup.
+`browser` and `viz_server` live in `tests/conftest.py`, where pytest discovers them
+without an import. They must **not** live in `conftest_viz.py` to be imported per module:
+a fixture imported into two modules is **registered twice**, so two files importing
+`browser` open two concurrent `sync_playwright()` contexts and every browser test errors
+at setup.
 
-It only appeared in a full run. Each file passed alone, which is the worst shape a
+That failure only appears in a full run. Each file passes alone, which is the worst shape a
 failure can have: the obvious debugging move (run the failing file) makes it disappear.
 
-Playwright is still imported lazily inside the fixture body, so the 1,034 non-browser
+Playwright is still imported lazily inside the fixture body, so the non-browser
 tests pay nothing for its presence in `conftest.py`.
 
 ## Ship gates: `xfail(strict=True)` as a stated goal
@@ -207,54 +223,105 @@ Alongside them are ordinary **regression floors** set at 80% of measured values.
 change that makes things worse while the gates are still red, which is the window where a
 well-meant refactor would otherwise be invisible.
 
-## The rest of the suite
+## The whole suite, by file
 
-377 card-pipeline + 601 pilot-subsystem. Three categories:
+Descriptions rather than counts — a count next to a filename is a promise to update it on
+every commit, and that promise is not kept. Run `--collect-only -q` for live numbers.
 
-**Card-pipeline unit tests (281) — no data files needed, run anywhere:**
+**Card pipeline — pure functions, no artifacts needed:**
 
-| File | Tests | Covers |
-|------|-------|--------|
-| `test_extract.py` | 53 | Multi-face cards, derived columns, supertype classification |
-| `test_preprocess.py` | 23 | Vocab building, encoding, normalization, multi-hot |
-| `test_mechanical_tags.py` | 45 | All 33 tag regexes, removal edge cases, multi-hot |
-| `test_synergy.py` | 19 | Rule matching, bidirectionality, combo exclusion, ranking |
-| `test_power_creep.py` | 36 | Strictly-better detection, tiered similarity gate, stat parsing |
-| `test_combos.py` | 30 | Combo extraction, graph building, dedup |
-| `test_cluster_regions.py` | 31 | Region naming (color/type/guild/TF-IDF), geometry, dedup |
-| `test_card_roles.py` | 27 | Role classification, type-line mana disambiguation, coverage floors |
-| `test_analysis_common.py` | 17 | Colour-identity masks, name index, vectorized top-k |
+| File | Covers |
+|---|---|
+| `test_extract.py` | Multi-face cards, derived columns, supertype classification |
+| `test_preprocess.py` | Vocab building, encoding, normalisation, multi-hot |
+| `test_mechanical_tags.py` | Every tag regex, removal edge cases, multi-hot encoding |
+| `test_synergy.py` | Rule matching, bidirectionality, combo exclusion, playability ranking |
+| `test_power_creep.py` | Strictly-better detection, tiered similarity gate, stat parsing |
+| `test_combos.py` | Combo extraction, graph building, dedup |
+| `test_cluster_regions.py` | Region naming (colour/type/guild/TF-IDF), geometry, dedup |
+| `test_card_roles.py` | Role classification, type-line mana disambiguation, coverage floors |
+| `test_analysis_common.py` | Colour-identity masks, name index, vectorised top-k |
+| `test_ingest_common.py` | Gzipped raw dumps, with an uncompressed fallback |
 
-**Card-pipeline data-dependent tests (42) — need artifacts from a pipeline run:**
+**Card pipeline — needs a pipeline run (skip-guarded):**
 
-| File | Tests | Covers |
-|------|-------|--------|
-| `test_pipeline_integration.py` | 30 | Cross-artifact count consistency, output quality checks |
-| `test_find_similar.py` | 12 | Binary format fidelity, L2 normalization, 128D vs 2D ranking |
+| File | Covers | Gate |
+|---|---|---|
+| `test_pipeline_integration.py` | Cross-artifact count consistency, output quality | per-file `requires_file(...)` |
+| `test_find_similar.py` | Binary-format fidelity, L2 normalisation, 128D vs 2D ranking | module-level `requires_data` |
+| `test_embedding_quality.py` | Recall/rank floors against the golden set, plus one `xfail(strict=True)` ship gate | `requires_data` |
+| `test_viz_index.py` | `viz_index.json` + `neighbours.bin`: shape, ordering, embedding-sha agreement | `requires_data` |
 
-Both are skip-guarded: `test_pipeline_integration.py` skips per-file via `requires_file(...)`; `test_find_similar.py` uses the module-level `requires_data` marker from `tests/conftest.py` (gates on `embeddings.npy` existing).
+**Pilot — build:**
 
-**Pilot-subsystem tests (601) — mostly pure-function with inline fixtures; data-gated ones behind markers:**
+| File | Covers |
+|---|---|
+| `test_pilot_build_deck.py` | Pool hard filters (bracket, identity, bans), scoring, slot filling with alternates, decklist naming |
+| `test_pilot_manabase.py` | Hypergeometric source counts, hybrid pips, effective-pip quorum, greedy land selection |
+| `test_pilot_bracket.py` | Floor drivers, commander-assumption exclusion, two-card infinites, tutors-never-scored |
+| `test_pilot_validate_build.py` | Card count, singleton, identity, per-role budget arithmetic, bracket cross-check |
+| `test_pilot_pool_facts.py` | Depth vs castability, restriction-aware sources, combo containment dedup |
+| `test_pilot_card_pool.py` | The single corpus reader and its views, checked against the reader it replaced |
 
-| File | Tests | Covers | Data gate |
-|------|-------|--------|-----------|
-| `test_pilot_rules_db.py` | 12 | CR chunker edge cases (TOC, subrules, examples, glossary) | 2 behind `requires_rules` |
-| `test_pilot_query_rules.py` | 5 | Semantic top-k, exact lookup, suggestions | all behind `requires_rules` |
-| `test_pilot_fetch_deck.py` | 24 | Decklist parsing, mocked Scryfall, exact printings, decklist-hash short-circuit | 1 behind `requires_deck` |
-| `test_pilot_validate_stack.py` | 18 | Citation contract, decision form, strategy-citation dispatch, golden artifacts | golden test behind `requires_deck` **and** `requires_rules` |
-| `test_pilot_goldfish.py` | 16 | Seeded determinism, mulligan rule, target assembly | 1 behind `requires_deck` |
-| `test_pilot_build_manual.py` | 42 | Department completeness, contract integrity, furniture rendering, determinism, escaping | — |
-| `test_pilot_strategy_db.py` | 9 | Strategy chunker (IDs, sources, parents), real-DB alignment | 3 behind `requires_strategy` |
-| `test_pilot_validate_strategy.py` | 18 | Doc form errors, changelog contract, strategy citations through `validate_citations` | — |
-| `test_pilot_validate_issue.py` | 29 | Issue identity incl. the decklist_sha256 stamp, department completeness/order, tier-costume integrity, card-name accuracy | — |
-| `test_pilot_artist_credits.py` | 24 | Standout detection, per-entry counting, drop runs, roster overlap | 1 behind `requires_deck` |
-| `test_pilot_agent_cache.py` | 57 | Fingerprint stability/order-independence, prose-shape semantics, staleness diffs, record guards, N/A scan semantics (incl. applicability gating) and exit codes, memoized loaders | 5 behind `requires_deck` |
-| `test_pilot_build_deck.py` | 48 | Pool hard filters (bracket, identity, bans), scoring components, slot filling with alternates, emergent-combo pass, decklist naming | — |
-| `test_pilot_manabase.py` | 40 | Hypergeometric source counts, pip counting incl. hybrid, effective-pip quorum, greedy land selection, land quality | — |
-| `test_pilot_bracket.py` | 35 | Floor drivers, commander-assumption exclusion (A-004), two-card infinites, tutors-never-scored, goblin-storm golden checks | 3 behind `requires_deck` + `requires_roles` |
-| `test_pilot_validate_build.py` | 37 | Card count, singleton, identity, per-role budget arithmetic, bracket cross-check, manabase staleness, critic verdict consistency | — |
-| `test_pilot_deck_facts.py` | 14 | Deterministic deck brief: DFC colours, curve, restricted-mana classes, notes | 4 behind `requires_deck` |
-| `test_pilot_validate_strategic_frame.py` | 15 | Frame form, engine strategy_refs, candidate-line status, shared validator tail | — |
+**Pilot — publish:**
+
+| File | Covers |
+|---|---|
+| `test_pilot_fetch_deck.py` | Decklist parsing, mocked Scryfall, exact printings, decklist-hash short-circuit |
+| `test_pilot_rules_db.py` | CR chunker edge cases (TOC, subrules, examples, glossary) |
+| `test_pilot_query_rules.py` | Semantic top-k, exact lookup, suggestions |
+| `test_pilot_strategy_db.py` | Strategy chunker (ids, sources, parents), real-DB alignment |
+| `test_pilot_validate_strategy.py` | Doc form, changelog contract, strategy citations |
+| `test_pilot_validate_stack.py` | The citation contract, decision form, strategy dispatch, golden artifacts |
+| `test_pilot_goldfish.py` | Seeded determinism, mulligan rule, target assembly |
+| `test_pilot_mana_analysis.py` | Land classes, sources, producer kinds |
+| `test_pilot_build_manual.py` | Department completeness, contract integrity, furniture, determinism, escaping |
+| `test_pilot_build_index.py` | The manifest the browser reads instead of listing a directory |
+| `test_pilot_validate_issue.py` | Issue identity, department order, tier-costume integrity, card-name accuracy |
+| `test_pilot_artist_credits.py` | Standout detection, per-entry counting, drop runs |
+| `test_pilot_merge_prose.py` | Two agents writing one file, each confined to the keys it owns |
+| `test_pilot_validate_considering.py` | The Short List: exactly ten, none already in the deck, claims verified |
+| `test_pilot_validate_tutor_guide.py` | One wish per tutor, real fetches, legal targets |
+| `test_pilot_validate_strategic_frame.py` | Frame form, engine `strategy_refs`, candidate-line status |
+
+**Pilot — diagnose:**
+
+| File | Covers |
+|---|---|
+| `test_pilot_deck_audit.py` | The cited axis table and the engine-activation read |
+| `test_pilot_deck_facts.py` | DFC colours, curve, restricted-mana classes, the `notes` traps |
+| `test_pilot_deck_history.py` | Applied swaps derived from git, plus pending ones |
+| `test_pilot_scenario_facts.py` | The deterministic scenario brief |
+| `test_pilot_diagnosis_report.py` | The diagnosis rendered readable, deterministically |
+| `test_pilot_validate_diagnosis.py` | Axis re-derivation, marginal prescription frame, computed `orphans_stack` |
+| `test_pilot_validate_goldfish_targets.py` | Declared cards still in the 99; undeclared win lines reported |
+
+**Pilot — infrastructure:**
+
+| File | Covers |
+|---|---|
+| `test_pilot_agent_cache.py` | Fingerprint stability, prose-shape semantics, staleness diffs, record guards, exit codes |
+| `test_pilot_card_refs.py` | The card-reference matcher and its ambiguity handling |
+| `test_pilot_impact.py` | Reference/figure/target/zone staleness reporting |
+| `test_pilot_memo.py` | One memo discipline; a rewrite must be noticed |
+| `test_pilot_out_path_guard.py` | `--out` is slug-scoped, and every per-deck command uses the guard |
+| `test_pilot_imports.py` | Every pilot module can *run*, not merely import |
+| `test_pilot_artifact_freshness.py` | Every deterministic artifact equals a fresh recomputation |
+| `test_pilot_manual_freshness.py` | Every tracked manual equals a fresh render |
+| `test_pilot_tracked_artifacts_validate.py` | Every tracked agent artifact passes its own validator |
+| `test_pilot_deck_manifest.py` | The contract between pilot artifacts and `viz/deck.html` |
+
+**Docs and contracts:**
+
+| File | Covers |
+|---|---|
+| `test_docs_counts.py` | Prose counts match the repo; no doc names a deleted module |
+| `test_docs_section_count.py` | No prose restates the section count or enumerates department ids |
+| `test_decklist_parity.py` | The Python and JS decklist parsers agree on hand-authored fixtures |
+
+**Frontend:** `test_viz_behaviour.py` (playwright, the real gate) plus the source-assertion
+files `test_viz_{drill,deck_lens,viewer}.py` — see the section above on why the latter
+cannot catch a rendering regression.
 
 ## conftest.py
 

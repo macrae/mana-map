@@ -18,7 +18,7 @@ survived an adversarial checker, resource curves from a seeded simulation, and c
 that says out loud when it's coaching.
 
 The fastest way to understand the second one is to read an issue:
-**Seven issues live** — [001 Goblin Storm](https://macrae.github.io/mana-map/manuals/goblin-storm.html) · [002 Hapatra](https://macrae.github.io/mana-map/manuals/hapatra.html) · [003 Sisay](https://macrae.github.io/mana-map/manuals/sisay.html) · [004 Heliod](https://macrae.github.io/mana-map/manuals/heliod.html) · [005 Ur-Dragon](https://macrae.github.io/mana-map/manuals/ur-dragon.html) · [006 Edgar](https://macrae.github.io/mana-map/manuals/edgar-vampires.html) · [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html)
+**Eight issues live** — [001 Goblin Storm](https://macrae.github.io/mana-map/manuals/goblin-storm.html) · [002 Hapatra](https://macrae.github.io/mana-map/manuals/hapatra.html) · [003 Sisay](https://macrae.github.io/mana-map/manuals/sisay.html) · [004 Heliod](https://macrae.github.io/mana-map/manuals/heliod.html) · [005 Ur-Dragon](https://macrae.github.io/mana-map/manuals/ur-dragon.html) · [006 Edgar](https://macrae.github.io/mana-map/manuals/edgar-vampires.html) · [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) · [008 Yawgmoth](https://macrae.github.io/mana-map/manuals/yawgmoth-swarm.html)
 · [the newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
 Vol. 001 was hand-built. **Vol. 002 was not** — the deck was generated from a three-line
@@ -57,8 +57,13 @@ Three things to know:
 What you get: two maps (one clustered by color and type, one by what cards *do*), three
 relations on every card — **similar** via embedding neighbours, **synergy** via rule-based
 complementarity, **outclassed by** via the obsolescence index (these are different
-algorithms, see `docs/architecture.md`) — a deck builder across 8 formats with a six-factor
-recommender, and obsolescence badges for cards with strictly-better replacements.
+algorithms, see `docs/architecture.md`) — a **Build** mode that lights up a deck or a pool inside the 34K atlas, and obsolescence
+badges for cards with strictly-better replacements.
+
+Build shows a deck's footprint in card space — its role histogram, mana curve segmented by
+the current overlay, colour load and verified lines — and hands work back out as a
+`brief.json` the deterministic builder reads. It does **not** score cards: evaluation comes
+from the pipeline through the agent loop, so there is exactly one scorer.
 
 The atlas is a launchpad: clicking a relation there carries you into the walk seeded on that
 card, rather than doing something subtly different because you happened to be in a different
@@ -184,7 +189,7 @@ Manual     fetch-deck → goldfish + RAG DBs → agents author JSON
 ```
 
 `manamap run` drives the first (15 steps, ~40–60 min, internet at two of them).
-`manamap pilot <cmd>` drives the second (26 subcommands). All constants live in
+`manamap pilot <cmd>` drives the second (39 pilot subcommands). All constants live in
 `src/manamap/config.py`; both CLIs are registry-driven with lazy imports.
 
 Two lightweight fusion MLPs (~180K params each) produce the 128-dim embeddings; the text
@@ -196,7 +201,7 @@ similarity — the *similar* relation, the walk and drill all read it whichever 
 That split exists because the alternative was measured and was bad: when similarity followed
 the displayed map, the colour/type space was using 3.2 of its 128 dimensions and *Doubling
 Season*'s nearest neighbours came back as arbitrary green enchantments. `manamap
-eval-embeddings` (step 14) scores every space against a hand-authored golden set so a claim
+eval-embeddings` (step 15) scores every space against a hand-authored golden set so a claim
 like that is a number rather than an opinion.
 
 ## Extension points
@@ -233,10 +238,12 @@ cache-busters stripped.
 ## Testing
 
 ```bash
-.venv/bin/python -m pytest        # 1,289 tests (1,179 fast + 110 browser)
+.venv/bin/python -m pytest                     # everything
+.venv/bin/python -m pytest -m "not browser"    # skip the playwright suite
 ```
 
-325 card-pipeline + 601 pilot. Five skip markers in `tests/conftest.py` gate on the last
+Counts and the per-file inventory live in `docs/testing.md` — they move on almost every
+commit, so restating them here would be one more thing to drift. Five skip markers in `tests/conftest.py` gate on the last
 artifact of each stage, so **skips on a fresh clone are expected and correct**. Unit tests
 build inline fixtures — no fixture files. Paths always come from `manamap.config`, so the
 suite is CWD-independent and honours `MANAMAP_DATA_DIR`.
@@ -252,11 +259,11 @@ suite is CWD-independent and honours `MANAMAP_DATA_DIR`.
   (card names duplicate). Never partially regenerate after a card-count change.
 - **Cache ordering**: check → spawn → write → validate → **record last**. Recording before
   validating poisons the cache.
-- **23 cache routines are MISSed right now, deliberately.** The embedding rebuild regenerated
-  the synergy and obsolescence graphs, so `writer-prose`, `the-ten` and `issue-plan` are stale
-  on all seven decks (hapatra also `candidate-pool`, `deck-build`). Re-spawning is ~2.46M
-  tokens, so the re-bless-vs-re-spawn call was left to a human — see `PLAN.md`. A MISS on a
-  deck today is expected, not a bug.
+- **A cache MISS is information, not a bug.** `cache-status` reports MISS for a routine
+  that has never run as well as one whose inputs moved, and the two need opposite
+  responses. Check the `changed` list before spawning: an empty one means the routine was
+  never recorded and there is nothing to re-bless. Never `cache-record` to make the board
+  green — the record is the claim that a human read the artifact and agreed it holds.
 - **Bump `?v=N`** on the script and CSS tags in `viz/index.html` after any frontend edit.
 - **The combo graph is format-agnostic.** Commander Spellbook lines may quietly assume a
   card is *your commander* — `"Infinite commander casts"` in `produces` is the tell.

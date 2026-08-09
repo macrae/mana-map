@@ -1,6 +1,6 @@
 ---
 name: run-pipeline
-description: Run the Mana Map data pipeline — full 13-step run, resume from a step, or single steps. Use when the user wants to (re)generate data artifacts, refresh Scryfall data, or rebuild any data/ file.
+description: Run the Mana Map data pipeline — full 15-step run, resume from a step, or single steps. Use when the user wants to (re)generate data artifacts, refresh Scryfall data, or rebuild any data/ file.
 ---
 
 # Run the pipeline

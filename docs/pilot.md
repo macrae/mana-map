@@ -197,7 +197,8 @@ someone else's regeneration as a cache hit, and `git log` answers "which inputs
 produced this prose?"). `record()` refuses artifacts that are missing, lack their
 routine's keys, or have no checker block — a failed run can't poison the cache.
 
-Routines (8 static): `candidate-pool`, `deck-build`, `strategic-frame`, `coach-prose`,
+Routines (10 static): `candidate-pool`, `deck-build`, `deck-diagnosis`, `deck-recon`,
+`strategic-frame`, `coach-prose`,
 `writer-prose`, `the-ten` (The Short List — applies to every deck), `tutor-guide`
 (Fetch Quests — `N/A` for a deck with no library-search tutors, via the applicability
 gate in agent_cache), `issue-plan`, plus `stack:<NNN>` and `decision:<NNN>` discovered
@@ -293,7 +294,8 @@ histogram — if those two ever diverge, one of them is wrong.
 
 ## Tests
 
-`tests/test_pilot_*.py` — 601 tests across 27 files.
+`tests/test_pilot_*.py` — the largest group in the suite; see `docs/testing.md` for
+the per-file inventory.
 
 **Build side:** deck builder pool/scoring/slot-filling/emergent-combo pass (`test_pilot_build_deck`, 42), hypergeometric mana math and land selection (`test_pilot_manabase`, 36), bracket floor + drivers + the goblin-storm golden checks (`test_pilot_bracket`, 35), build-plan form gate (`test_pilot_validate_build`, 37).
 
@@ -465,9 +467,9 @@ one routine (`the-ten`) for every deck, replacing the retired `sideboard_analysi
 standing on the question "what else could this deck play".
 
 **Ownership is not a criterion.** Picks are scouted from the whole card pool and the list
-carries no `source`. It used to rank cards the pilot already owned first, which made an
-inventory question into a selection rule; a card is on the list because it is worth
-knowing about, or it is not on the list. **Analysis-only** — `cards.json` is never
+carries no `source`. Ranking owned cards first turns an inventory question into a
+selection rule: a card is on the list because it is worth knowing about, or it is not on
+the list. **Analysis-only** — `cards.json` is never
 rewritten by this routine.
 
 `validate_considering.py` enforces the count and every claim: no pick may already be in

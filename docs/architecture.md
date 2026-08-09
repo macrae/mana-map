@@ -37,12 +37,25 @@ Shared utilities (`get_device`, `collate_triplets`, `run_epoch`) live in `traini
 - Negatives = different supertype AND different color (rejection sampled, 50 attempts)
 - Fallback chain for positives: same group → same supertype → same color → random
 
-**`train_ability.py`** (Abilities):
-- Positives = share >= 2 mechanical tags (`MIN_SHARED_TAGS_POSITIVE`)
-- Negatives = share 0 mechanical tags
-- Fallback chain: >= 2 shared → >= 1 shared → random
+`train.py` uses a **triplet margin loss** (margin 0.3): the layout task is "same colour,
+same type", the supervision is exact, and a margin is the right shape for it.
 
-**Both:** triplet margin loss (margin 0.3), batch 256, Adam lr 1e-3, 90/10 split, early stopping patience 5. Color+Type converges near-zero loss by ~epoch 7; the ability model typically stops ~epoch 16 (best val_loss ~0.05).
+**`train_ability.py`** (Function) uses a different objective, because the function task is
+harder and a margin loss is the wrong instrument for it:
+
+- **In-batch InfoNCE** (`INFONCE_TEMPERATURE = 0.05`), symmetric, over L2-normalised
+  embeddings. A margin loss stops teaching the moment it is satisfied; a contrastive
+  softmax keeps ranking the whole batch. There is no explicit negative — every other item
+  in the batch is one.
+- **Positives mined from `card_roles.json`, rarest shared role first**, so the pairs that
+  teach most are the ones a common role would have drowned out. `ROLE_BODY_FALLBACK` is
+  excluded, because it labels all 19,050 creatures and would make "creature" the lesson.
+- **A fixed-weight text passthrough** makes similarity exactly
+  `0.7·cos_learned + 0.3·cos_text`. The weight is structural, not learned, so the model
+  *cannot* discard the frozen text it was built from — which is what the previous
+  architecture allowed and what made it lose to its own input.
+
+**Both:** batch 256, Adam lr 1e-3, 90/10 split, early stopping patience 5.
 
 ### The two spaces do different jobs
 
@@ -54,7 +67,7 @@ task whose whole content is "same colour, same type".
 **Function** (`train_ability.py` → `embeddings_ability.npy`) answers whether two cards do the
 same job. Every "find similar" answer in the product comes from here, on either map.
 
-### The function model was rebuilt — measured, step 14
+### The function model, measured (`manamap eval-embeddings`, step 15)
 
 Held-out `test` split of `data/eval/similarity_golden.json`:
 
@@ -62,32 +75,13 @@ Held-out `test` split of `data/eval/similarity_golden.json`:
 |---|---|---|---|---|---|---|
 | layout | 128 | 3.20 | 0.0041 | 0.090 | 0.142 | 1651 |
 | frozen MiniLM text (the input) | 384 | 50.41 | 0.1411 | 0.244 | 0.414 | 124 |
-| **function (before)** | 128 | 5.97 | 0.0236 | 0.093 | 0.190 | 995 |
-| **function (after)** | 128 | **27.87** | 0.0315 | **0.245** | **0.455** | **78** |
+| **function** | 128 | **27.87** | 0.0315 | **0.245** | **0.455** | **78** |
 
-Against the model it replaces that is 2.6× recall@10 and a 12.8× cut in median rank. Against
-the frozen text it is built from, **recall@10 is a tie** (0.245 vs 0.244 — noise across ~160
-queries); the real gains are recall@50 (+0.041) and median rank (124 → 78).
+Recall@10 ties the frozen text it is built from (0.245 vs 0.244 — noise across ~160
+queries); the function space earns its place on depth instead, recall@50 +0.041 and median
+rank 124 → 78.
 
-Three changes, and the reason each was needed:
-
-1. **In-batch InfoNCE replaces `TripletMarginLoss`.** A margin stops producing gradient once
-   satisfied, which for the old task happened almost immediately, so nothing preserved
-   within-class structure. InfoNCE ranks each anchor against all B−1 other positives and keeps
-   teaching after the easy pairs are solved. This is what reopened the space, 5.97 → 27.87
-   effective dimensions.
-2. **Positives come from roles, rarest first.** The old rule needed ≥2 shared mechanical tags
-   and only 46.9% of cards have two, so most positives were fallbacks or random draws. Roles
-   cover 72.6% at 1.62 specific roles per card. `ROLE_BODY_FALLBACK` is excluded deliberately —
-   it labels all 19,050 creatures, so "shares threat:body" would rebuild the trivial task.
-   Rarest-first because sharing `doubler:tokens` (11 cards) says far more than sharing
-   `value:etb` (5,580).
-3. **A fixed-weight text passthrough.** The output is two independently normalised halves —
-   96 learned dims and a 32-dim projection of the frozen text — scaled so similarity is exactly
-   `0.7·cos_learned + 0.3·cos_text`. The old model was free to discard the text and did exactly
-   that; now it structurally cannot.
-
-**The halves are complementary, which is the load-bearing result:**
+**The two halves are complementary, and that is the load-bearing result:**
 
 | | r@10 | r@50 | median rank |
 |---|---|---|---|
@@ -96,33 +90,35 @@ Three changes, and the reason each was needed:
 | combined (128d) | **0.245** | **0.455** | **78** |
 
 The learned half is *worse alone* than the text half, yet the combination beats both — and
-beats the full 384-dim frozen text at depth. That is why positives are deliberately **not**
-gated on text similarity: selecting pairs the text already scores highly would make the learned
-half a copy of the text half instead of a complement to it.
+beats the full 384-dim frozen text at depth. This is why positives are deliberately **not**
+gated on text similarity: selecting pairs the text already scores highly would make the
+learned half a copy of the text half instead of a complement to it.
 
-**Do not tune the mixing weight on this golden set.** Sweeping it looked productive — W=0.45
-scored 0.258 recall@10 on test — but selecting on the `dev` split picks W=0.15, and the two
-splits disagree. Everything in W ∈ [0.15, 0.6] falls inside noise at ~50 dev and ~160 test
-queries. The shipped 0.3 was chosen a priori and fitted to neither split; the 0.258 figure was
-the eval leaking into the decision.
+**Do not tune the mixing weight on this golden set.** Everything in W ∈ [0.15, 0.6] falls
+inside noise at ~50 dev and ~160 test queries, and the two splits disagree about the
+optimum — selecting on `test` picks 0.45, selecting on `dev` picks 0.15. The shipped 0.3
+was chosen a priori and fitted to neither.
 
-**Still unfixed:** neighbour spread is 0.0315 against a 0.05 target — better than the old
-0.0236, but the top-50 remain tighter than a well-separated space would put them.
-`tests/test_embedding_quality.py` keeps that gate failing as `xfail(strict=True)` rather than
-lowering the threshold to match the result.
+**Open:** neighbour spread is 0.0315 against a 0.05 target — the top-50 sit tighter than a
+well-separated space would put them. `tests/test_embedding_quality.py` keeps that gate
+failing as `xfail(strict=True)` rather than lowering the threshold to match the result.
+Hard-negative mining is the obvious next lever, and needs a similarity ceiling: 39% of
+cards have a text neighbour above 0.75, so unfiltered mining would label true synonyms as
+negatives.
 
 ### The input text (`ingest/extract.py:build_embedding_text`)
 
 `"{type}. Cost {mana_cost}. {P}/{T}. {oracle}. Keywords: …"` — **no card name.**
 
-The name used to lead the string and was buying similarity off shared words rather than shared
-function: *Rhystic Study* → *White Rhystic Study* at 0.951, *Sol Ring* → *Sisay's Ring*,
-*Llanowar Elves* → *Llanowar Tribe*. It is also a large fraction of a short card — `Sol Ring`'s
-entire text was eleven words, three of them its name. Measured on the held-out split:
+**The name is excluded on purpose.** Including it buys similarity off shared *words*
+rather than shared function — *Rhystic Study* → *White Rhystic Study* scores 0.951 that
+way, and *Sol Ring* → *Sisay's Ring*. It is also a large fraction of a short card: `Sol
+Ring`'s entire text is eleven words, three of them its name. Measured on the held-out
+split:
 
 | text | r@10 | r@50 | median rank |
 |---|---|---|---|
-| name-led (old) | 0.187 | 0.362 | 159 |
+| name-led | 0.187 | 0.362 | 159 |
 | no name | **0.248** | 0.407 | 129 |
 | no name + cost + P/T (shipped) | 0.244 | **0.414** | **124** |
 
@@ -221,12 +217,12 @@ Shared helpers (`parse_tag_set`, `top_k_similar`, `load_first_embeddings`) live 
 
 ### Partners are ranked by playability, not similarity
 
-Ranking is `(-score, -playability)`. It used to be `(-score, -embedding similarity)`, which
-was backwards: synergy is a **complementary** relation, so breaking a tie by similarity
-surfaces cards that resemble the anchor rather than cards that play with it.
+Ranking is `(-score, -playability)`. Breaking the tie by **embedding similarity would be
+backwards**: synergy is a *complementary* relation, so a similarity tiebreak surfaces cards
+that resemble the anchor rather than cards that play with it.
 
-A score tier is usually large — median 70 cards, p90 1,529 — so the tiebreak decides almost
-everything, and it was deciding it wrongly. Measured over 4,000 cards:
+The tiebreak decides almost everything, because a score tier is usually large — median 70
+cards, p90 1,529. Measured over 4,000 cards:
 
 | | median partner EDHREC rank | in the top 2,000 most-played |
 |---|---|---|

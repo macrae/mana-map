@@ -42,7 +42,7 @@ SIDEBOARD_SECTION_MARKERS = frozenset({"sideboard", "side", "maybeboard", "consi
 # ── Memoized artifact loading ───────────────────────────────────────────
 #
 # The global graphs are 1.9–27.8 MB and several modules parse the same file in
-# one process (deck-facts alone used to parse card_roles.json twice and pay
+# one process (deck-facts alone would otherwise parse card_roles.json twice and pay
 # 0.42 s for a synergy parse it printed one number from). Same key discipline
 # as agent_cache._SHA_MEMO: (mtime_ns, size) per path, so a rewrite in-process
 # is picked up and the stale copy is evicted rather than accumulated.
@@ -74,12 +74,11 @@ def mtime_memo(path, key, build, absent=None):
     The same (mtime_ns, size) discipline as `load_json_memo`, for derived values
     rather than raw parses — a name set, a flags dict, a digest.
 
-    It exists because the hand-rolled copies did not all get it right. Two gated
-    on truthiness instead (`if not _MEMO: ...`), which never notices a rewrite:
-    correct for a CLI process that exits in seconds, wrong for pytest, where one
-    process regenerates `cards.csv` and every later assertion in that session is
-    answered from the pre-edit copy. The failure is silent and reads as a stale
-    fixture rather than a caching bug.
+    **Key on the file signature, never on truthiness.** `if not _MEMO: build()`
+    looks equivalent and is not: it never notices a rewrite. That is harmless in
+    a CLI process that exits in seconds and wrong everywhere else — in pytest,
+    one test regenerates `cards.csv` and every later assertion in the session is
+    answered from the pre-edit copy, silently, looking like a stale fixture.
 
     `key` is explicit rather than derived from `build` because two different
     builders legitimately read one file — `cards.csv` backs both a name set and
@@ -143,10 +142,8 @@ def canonical_json(obj):
     """Stable, compact JSON — the form things get HASHED in.
 
     Key order and spacing must not move, or a fingerprint changes without the
-    content changing. `agent_cache` and `card_refs` each had their own copy;
-    `card_refs`' carried a comment saying a local copy "avoids a circular
-    import", which was true of neither module — `common` imports nothing from
-    either, and `agent_cache` already imports `common`.
+    content changing — which is why there is exactly one implementation. Anything
+    that hashes JSON must come through here.
     """
     return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
 
@@ -200,10 +197,8 @@ def expand_faces(name):
 #
 # A claim that a card "opens a line" is a candidate until a stack artifact passes
 # the checker. Two validators share this vocabulary — considering and diagnosis —
-# so it lives here rather than in either of them. It used to live in
-# `validate_sideboard.py`, which made a retired sideboard validator a load-bearing
-# library for The Short List; `validate_upgrade_watch.py` was the third consumer
-# and went with the sideboard.
+# so it lives here rather than in either of them: a vocabulary owned by one
+# validator makes that validator a library, and it cannot then be retired.
 
 # The magic string five agent prompts already use for an unproven line. Kept
 # identical so one grep finds every candidate claim in the repo.
@@ -261,7 +256,7 @@ def resolve_out_path(out, slug, command, ext=".json"):
         `<command>-<slug><ext>` inside it — collisions become impossible;
       * a bare filename stays relative to the deck's own directory, as before;
       * an explicit path elsewhere must carry the slug in its basename, or this
-        raises. That is the case that used to corrupt silently.
+        raises. That is the case that corrupts silently if allowed.
 
     `ext` is the auto-naming suffix only; it never rewrites a name the caller
     chose. Most views are JSON, but `diagnosis-report` emits markdown, and a

@@ -462,9 +462,9 @@ the table above. "Failure mode" is what the review in §12 looks for.
   the section, not a budget. Computed deltas are ◆; every recommendation is ★;
   a line the list would open stays a candidate until a stack passes.
 - **Rule (ownership is not a criterion)**: the section never asks whether the
-  reader owns a card, and carries no "in the box" / "scouted" distinction. It
-  used to rank cards the pilot owned first, which made an inventory question
-  into a selection rule and turned half the page into a stock check.
+  reader owns a card, and carries no "in the box" / "scouted" distinction.
+  Ranking owned cards first turns an inventory question into a selection rule
+  and half the page into a stock check.
 - **Rule (L10, absolute)**: strictly forward-looking, from the current list
   only. Analysis-only: `cards.json` is never rewritten by this section.
 - **Failure mode**: parroting machine suggestions that ignore the deck's

@@ -258,9 +258,10 @@ def score_candidates(pool, embeddings, name_index, commander_name, identity,
         similarity = float(embeddings[idx] @ commander_vec) if idx is not None else 0.0
         # Clamped: deck scoring against a centroid wants "how much does this belong",
         # so anti-correlated reads as zero rather than as a penalty large enough to
-        # swamp the other five factors. (This used to say it matched
-        # `viz/js/deck-builder.js:embeddingSim` — that file and its six-factor scorer
-        # are deleted, precisely because they diverged from this one.)
+        # swamp the other five factors. Retrieval paths (analysis/common, synergy,
+        # power_creep) deliberately do NOT clamp — they need the true ordering.
+        # This is the ONLY deck scorer in the repo; a second one in the browser
+        # diverged from these weights on five of six factors.
         # Retrieval paths (analysis/common.py, synergy, power_creep) deliberately do NOT
         # clamp — they need the true ordering. Consistent by role, enforced nowhere.
         similarity = max(0.0, similarity)

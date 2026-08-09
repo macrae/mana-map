@@ -26,17 +26,17 @@ Everything lives in `data/`. Most files are gitignored (regenerable via `manamap
 | `embeddings.bin` | export (9) | ~17MB | **tracked** | viz (Find Similar, deck builder) |
 | `embeddings_ability.bin` | export (9) | ~17MB | **tracked** | viz (Abilities map similarity) |
 | `synergy_graph.json` | synergy (10) | ~8–27MB | **tracked** | viz (Find Synergies, deck builder) |
-| `obsolescence_index.json` | power-creep (11) | ~5–8MB | **tracked** | viz (obsolescence panels) |
-| `regions_default.json` | cluster-regions (12) | ~212KB, `{meta, regions, membership}`; 15 L0 + 110 L1, each with `cx/cy/span/w/h/count/top_tags` | **tracked** | viz (region labels, drill-by-region) |
-| `regions_ability.json` | cluster-regions (12) | ~195KB, same shape; 12 L0 + 73 L1 | **tracked** | viz (region labels, drill-by-region) |
+| `obsolescence_index.json` | power-creep (11) | ~2.9MB | **tracked** | viz (obsolescence panels) |
+| `regions_default.json` | cluster-regions (12) | ~579KB, `{meta, regions, membership}`; 19 L0 + 106 L1, each with `cx/cy/span/w/h/count/top_tags` | **tracked** | viz (region labels, drill-by-region) |
+| `regions_ability.json` | cluster-regions (12) | ~502KB, same shape; 16 L0 + 43 L1 | **tracked** | viz (region labels, drill-by-region) |
 
 `membership` is two positional arrays (`l0`, `l1`), one entry per card in `cards.csv` row order, `-1` for noise — so it inherits the index-alignment invariant and `membership.l0[i]` describes `cards.csv[i]`. Cluster id *n* at level *L* is the region with `id == "lL_n"`. This is the only thing in the repo that can answer *which region is this card in*; before it existed the viz could draw a region's name but never its members. **Noise is a real answer, not a gap**: 29% of cards on the default map belong to no L0 region, and they are left at `-1` rather than snapped to a nearest centroid they were never clustered into.
 
 `w` and `h` are the bounding box beside `span` (which stays `max(w, h)` and still drives label culling). Collapsing them discarded aspect ratio, the one signal distinguishing a filament from a blob — a 20×1 streak and a 20×20 cloud serialised identically. With both axes kept, the map's roads are measurable: `White Enchantments — Auras — ETB` is 209 cards at 1.6 × 0.1, a 16:1 streak.
-| `card_roles.json` | card-roles (13) | ~1.9MB, `{roles, meta}`; 30,563 of 34,322 cards classified (31,622 Commander-legal), **53 roles in 19 families**, coverage 89.5% / 73.2% specific | **tracked** | `pilot/build_deck.py`, `pilot/bracket.py` (tutor density), `deck-analyst`, **and the viz** — `build.js` colours the 99 by role family, and `MM.GROUPINGS.role` makes it a map overlay. Fetched **lazily**, only when the Role grouping is selected: 0.39 MB gzipped is not something to spend inside the 1.83 MB discovery boot |
+| `card_roles.json` | card-roles (13) | ~1.9MB, `{roles, meta}`; 28,314 of 34,322 cards classified, 23,135 with a *specific* role, **53 roles in 19 families**, coverage 89.5% / 73.2% specific | **tracked** | `pilot/build_deck.py`, `pilot/bracket.py` (tutor density), `deck-analyst`, **and the viz** — `build.js` colours the 99 by role family, and `MM.GROUPINGS.role` makes it a map overlay. Fetched **lazily**, only when the Role grouping is selected: 0.39 MB gzipped is not something to spend inside the 1.83 MB discovery boot |
 | `viz_index.json` | viz-index (14) | 3.4 MB / **0.56 MB gzipped**, one slim record per card: name, supertype, colour, rarity, CMC, role tags. Deliberately **no oracle text** — the Scryfall card image already shows it | **tracked** | the discovery landing: random pick, coarse filters, name→row resolution for imports |
 | `neighbours.bin` | viz-index (14) | 2.6 MB / **1.27 MB gzipped** (format v2 — smaller than v1's 1.70 MB despite the extra block, because playability-ranked partners repeat across anchors and compress), uint16 row ids: 12 similar + 10 synergy + 5 obsoleted-by per card, uint8 quantised similarity, **uint8 synergy-reason codes plus the 24-entry vocabulary appended**, sha256 of the source embeddings in the header. **Pre-sorted — never re-sort client-side** | **tracked** | synchronous branching without the 16.8 MB embedding matrix |
-| `eval/similarity_golden.json` | **hand-authored** (never generated) | ~6KB, 40 groups / 163 cards of functional equivalents, `dev`/`test` split | **tracked** | `analysis/eval_embeddings.py` (step 14), `tests/test_embedding_quality.py` — must stay independent of tags/roles/synergy/combos, which training mines for positives |
+| `eval/similarity_golden.json` | **hand-authored** (never generated) | ~6KB, 40 groups / 163 cards of functional equivalents, `dev`/`test` split | **tracked** | `analysis/eval_embeddings.py` (step 15), `tests/test_embedding_quality.py` — must stay independent of tags/roles/synergy/combos, which training mines for positives |
 
 N = card count, ~34,300 as of July 2026; grows as Scryfall adds sets.
 
@@ -45,7 +45,7 @@ N = card count, ~34,300 as of July 2026; grows as Scryfall adds sets.
 the agents need them on a fresh clone, but which the browser never touches.
 
 **And "the viz" is now two pages with two registries.** The card map (`viz/index.html`)
-fetches the nine files in the `DATA` map in `viz/js/mana-map.js`. The deck dossier
+fetches from the twelve-entry `DATA` map in `viz/js/mana-map.js` (only three land on the discovery boot: `viz_index.json`, `neighbours.bin` and the projection; `card_roles.json` is lazy). The deck dossier
 (`viz/deck.html`) fetches a disjoint set through its own `FILES` map in
 `viz/js/deck-view.js`: `data/decks/index.json` first, then up to eight per-deck artifacts.
 Nine is no longer the total — see `docs/viz.md`.

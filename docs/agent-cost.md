@@ -4,13 +4,13 @@ Where LLM spend actually lives in this project, how much each routine costs, and
 the cache stops us paying twice for identical work.
 
 
-> **⚠ Outstanding as of the embedding rebuild: 23 routines are MISSed and were left that way
-> on purpose.** Regenerating `synergy_graph.json` and `obsolescence_index.json` invalidated
-> `writer-prose`, `the-ten` and `issue-plan` on all seven decks, plus `candidate-pool` and
-> `deck-build` on hapatra. At the per-routine costs tabulated below that is roughly **2.46M
-> tokens** to re-spawn — which is exactly why it is a human decision rather than a cleanup
-> task. `PLAN.md` holds the breakdown and the re-bless-vs-re-spawn reasoning. Do not
-> `cache-record` them just to clear the board: the record asserts that someone checked.
+> **Reading a MISS.** `cache-status` reports MISS both for a routine that has never run and
+> for one whose declared inputs moved, and those need opposite responses. The `changed` list
+> tells them apart: empty means never recorded, so there is nothing to re-bless and the only
+> option is to run it. A charter edit (`.claude/agents/*.md`) MISSes every routine that agent
+> owns and **disqualifies STALE_OK by construction**, which is why charter edits belong
+> *before* a `cache-record` pass, never after. Never `cache-record` to clear the board: the
+> record asserts that someone read the artifact and agreed it holds.
 
 ## The finding that shapes everything
 
@@ -226,7 +226,7 @@ Three consequences:
 
 - A deck change that touches no referenced card reports `STALE_OK` (exit 0);
   `manamap pilot cache-rebless <slug>` re-records the lot without a spawn.
-  What used to be a ~330k full sweep for a one-land swap is now zero spawns.
+  A one-land swap costs zero spawns rather than a ~330k full sweep.
 - A real MISS on a keyed routine names its `stale keys:`, and the charters'
   Partial revision mode scopes the spawn to exactly those keys — the writer
   costs what the stale keys cost, not the whole file.

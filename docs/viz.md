@@ -106,8 +106,8 @@ on the world map and **45.2 × 49.9** once re-mapped.
 
 Box-select **offers** rather than drills, because the same gesture already feeds the
 8-card detail stack; hijacking it silently would be worse than a button. It is also the
-only thing that reports how many cards the box actually caught — the handler used to
-truncate to 8 and say nothing.
+only thing that reports how many cards the box actually caught. Truncating to 8 without
+saying so is silent data loss.
 
 **The animation.** Points start at their world positions and relax toward the target
 layout over 90 frames of stochastic stress majorization against 128-d chord distance
@@ -182,9 +182,9 @@ and says in the status what you are looking at. Esc restores the whole atlas. It
 participates in the same `getOverlayTraces` / `getDimmedIndices` / `dimsAll` contract as
 Build.
 
-**Arriving is not asking for it.** `setMode('explore')` used to auto-orient on a non-empty
-tray — `if (Session.size()) orientTo(null, 'your walk')` — so walking three cards in
-Discover and switching opened the atlas with almost all of itself at 8% alpha and the camera
+**Arriving is not asking for it.** `setMode('explore')` must NOT auto-orient on a non-empty
+tray. Doing so — `if (Session.size()) orientTo(null, 'your walk')` — means walking three
+cards in Discover and switching opens the atlas with almost all of itself at 8% alpha and the camera
 somewhere else. The lens is right; as an *entry* state it meant the atlas almost never got
 to be the atlas, and the dimming read as a rendering fault rather than as a lens. Entry now
 clears the lens, the region focus, the legend focus and the selection, and refits. Every
@@ -203,7 +203,7 @@ for free: labels that collide zoomed out separate as you zoom in.
 
 ## Discovery — the front door (`viz/js/discovery.js`)
 
-The map used to be where you arrived. Now the landing is **one card**: hover it, click a
+The landing is **one card**, not the atlas: hover it, click a
 relation, and the graph grows from there. `?card=<name>` and `?seed=<n>` make a landing
 reproducible; `?mode=explore` goes straight to the atlas, which is what every existing
 browser fixture now asks for.
@@ -236,9 +236,9 @@ Discover, Build, the explore accordion and the browse panel all offer the same t
 From Explore that means switching modes — the click carries you into the walk, seeded on the
 card you clicked.
 
-That dispatch used to fork. Explore opened a linear **browse set** instead, on the reasoning
-that a scatter plot cannot grow. The reasoning was sound and the result was still wrong: one
-control meant two things, so the same button rewarded you differently depending on where you
+**That dispatch must not fork.** Opening a linear **browse set** in Explore instead is
+tempting — a scatter plot cannot grow — but sound reasoning gives the wrong result here: one
+control would mean two things, so the same button would reward you differently depending on where you
 happened to be standing, and the atlas was the version that felt dead. The fix is not to
 teach the scatter plot to grow — it is to treat Explore as a **launchpad**: you go there to
 see where things sit, then click to start walking from one. `Discovery.show` seeds the graph,
@@ -280,7 +280,7 @@ extent (not the stored `w`/`h`, so the camera agrees with what is drawn after th
 filters) and draw only its members. Same points, same world coordinates, closer camera —
 which is why picking keeps working.
 
-It used to run **drill**, a different operation wearing the same gesture: drill re-embeds
+It must not run **drill** — a different operation wearing the same gesture. Drill re-embeds
 the subset from the 128-d vectors with stress majorization, so points fly out of their world
 positions over 90 frames and land somewhere new. Right when you want local structure
 revealed; disorienting when you clicked a name expecting to look closer. Drill stays on the
@@ -445,9 +445,9 @@ cards.
 ### Telescopic labels
 
 Which names are on screen is a question about **depth relative to what is focused**, not
-only about camera span. Every level used to answer from absolute span alone, with two
-consequences: L2 needed span < 6 while L2 spans are ~0.6, so 168 of the ability map's 227
-names were effectively unreachable; and focusing a region framed it without naming a single
+only about camera span. Answering from absolute span alone has two
+consequences: L2 would need span < 6 while L2 spans are ~0.6, leaving 168 of the ability
+map's 227 names unreachable; and focusing a region frames it without naming a single
 thing inside it, so clicking into a country told you less than standing outside it did.
 
 `regions_*.json` already carries `parent` on every entry, so the hierarchy needed no new
@@ -556,9 +556,9 @@ all 500 nodes is a smear; labelling only the hovered one means the graph says no
 you touch it. The set thins when dense and fills in as you zoom, with no zoom logic of its own.
 `Force.labelCount` exists because canvas text cannot be queried by a test.
 
-**The hover card is bounded.** `positionPopup` clamps to the plot frame, but it used to
-measure the popup the instant the `<img>` was inserted — before the network returned
-anything — so the height read ~0, the bottom clamp had nothing to clamp, and a card hovered
+**The hover card is bounded.** `positionPopup` clamps to the plot frame, and must measure
+the popup only after the image has loaded. Measuring the instant the `<img>` is inserted —
+before the network returns — reads height ~0, so the bottom clamp has nothing to clamp and a card hovered
 near the foot of the page ran off it. The CSS now reserves the 488:680 card box so the height
 is known before load, and the fallback is explicit.
 
@@ -742,9 +742,10 @@ into its own trace list.
 `dimsAll()`. The deck builder dims a real subset (format-illegal, colour-identity
 violations) with nothing over it and keeps the array.
 
-**Do the work once per gesture.** Box-select used to build the 8-card stack, render the
-panel and rebuild the highlight, then — for a big box — throw all of it away and do it
-again as browse. One pass over the points, one destination.
+**Do the work once per gesture.** Box-select decides its destination before building
+anything: constructing the 8-card stack, rendering the panel and rebuilding the highlight,
+only to discard all of it for a big box, is three wasted passes. One pass over the points,
+one destination.
 
 Measured, same page, median of 7:
 
@@ -817,7 +818,7 @@ the reader on an unfiltered map with a query string they cannot see.
 **Nothing is recomputed in the browser and nothing is hardcoded.** The manual renders these
 same artifacts as ◆ reproducible evidence, so a second implementation that drifted would
 quietly break the tier contract. A missing artifact means an absent panel, not an error —
-only `hapatra` has a `build_plan.json` today, so six of seven dossiers show no builder
+only `hapatra` and `yawgmoth-swarm` have a `build_plan.json`, so six of eight dossiers show no builder
 panel. `tests/test_pilot_deck_manifest.py` asserts the manifest matches the artifacts and
 that every stack it lists is checker-passed.
 
@@ -853,9 +854,10 @@ own blue ring on the map, because otherwise nothing says whose neighbourhood you
 furthest-from-centroid ("least typical first"); a neighbourhood is nearest-first from its
 anchor, and shows the cosine as you step.
 
-**Similarity is not the displayed map.** `loadEmbeddings` used to read
-`MAP_CONFIGS[currentMap].embeddings`, so on the colour/type map "similar" meant "same colour
-and type" — a space measured at 3.05 of its 128 effective dimensions and 0.090 recall@10
+**Similarity is not the displayed map.** `loadEmbeddings` reads `SIMILARITY_EMBEDDINGS`,
+never `MAP_CONFIGS[currentMap].embeddings`. Reading the displayed map makes "similar" mean
+"same colour and type" on the default map — a space measured at 3.05 of its 128 effective
+dimensions and 0.090 recall@10
 against known functional equivalents, which is why *Doubling Season* returned arbitrary green
 enchantments. Find Similar, the walk and drill now all read `SIMILARITY_EMBEDDINGS` (the
 function space) whichever projection is on screen. The projection is a picture; similarity is
@@ -1001,7 +1003,7 @@ behaviour and the hit-test against real data before any of that goes under the m
 every existing way of picking cards feeds it: box-select, a region, a deck. Relations no
 longer seed a drill; they grow the graph instead, which is the same idea with physics.
 
-With **nothing** selected it shows an empty state offering all seven decks and the largest
+With **nothing** selected it shows an empty state offering every published deck and the largest
 L1 regions, one click each. That routing lives inside `renderPanel` rather than at each
 call site: an empty graph must never render as a `0 CARDS / 0 LINKS` scoreboard, and
 putting the check at the one place that draws the panel means a new caller cannot

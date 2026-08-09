@@ -1,31 +1,29 @@
-"""The corpus: one parse of cards.csv, and every view the pilot layer takes of it.
+"""The corpus: the ONLY reader of cards.csv, and every view taken from it.
 
-`cards.csv` is 24.7 MB across 35 columns and **eight** places in this subsystem
-were reading it independently — three with pandas and different `usecols`, two
-with the `csv` module, one with no `usecols` at all. Several commands paid for
-the same bytes more than once in a single process: `build-deck` parsed it twice
-itself and a third time through `resolve_pool`, and `validate-build` parsed it
-once here and again inside `pool_facts`.
+`cards.csv` is 24.7 MB across 35 columns. This module parses it once per process
+and derives every shape the pilot layer needs — a frame, a name-keyed pool, the
+bracket flags, the name set, the oracle map — each memoized on the same
+`(mtime_ns, size)` signature, so asking twice is free. Nothing else in `pilot/`
+may open the file; `tests/test_pilot_memo.py` fails if something does.
 
-**This is not primarily a speed win, and the numbers say so.** Measured best-of-3:
-`build-deck` 1.78 -> 1.55s (three parses became one), but `bracket-check`
-0.93 -> 1.00s and `validate-build` 0.64 -> 0.70s, because they only ever parsed
-once and the 13-column union costs +0.06s over the 3-column read they used to
-do. Everything else is flat. The cost is I/O and 34,322 rows rather than column
-count or type inference — `dtype=str`, `low_memory` and `na_filter` were all
-tried and are within noise.
+**One shared parse rather than a per-caller `usecols` memo**, because two callers
+wanting different columns would miss each other's cache and the duplicate parses
+would survive. The trade is measured and worth stating plainly: `build-deck`
+(which needs three of these views) runs 1.78 -> 1.55s, while `bracket-check`
+goes 0.93 -> 1.00s and `validate-build` 0.64 -> 0.70s, because each needs one
+view and the 13-column union costs ~0.06s more than a 3-column read. Everything
+else is flat. The cost is I/O and 34,322 rows, not column count or type
+inference — `dtype=str`, `low_memory` and `na_filter` all measure inside noise.
 
-What it does buy is one place to fix a bug instead of eight, one `card_flags`
-dict instead of three identical comprehensions, and no more memos that were
-blind to a rewrite. A per-caller `usecols` memo would have kept every duplicate
-parse, since two callers wanting different columns would miss each other.
+So this is a correctness-and-maintenance win with a small, known latency cost:
+one place to fix a bug rather than eight, and one `card_flags` dict rather than
+three copies of the same comprehension.
 
-Everything here is READ-ONLY and shared. `load_frame()` returns one DataFrame
-that callers must not mutate; the derived views are dicts built from it and
-memoized on the same file signature, so asking twice is free.
+Everything here is READ-ONLY and shared — `load_frame()` hands back one
+DataFrame that callers must not mutate.
 
-Naming: "pool" in this module means the *format-wide* corpus. Elsewhere in the
-repo — `pool_facts` — it means the cards you physically own. Different question.
+Naming: "pool" here means the *format-wide* corpus. In `pool_facts` it means the
+cards you physically own. Different question, deliberately different module.
 """
 
 import csv
@@ -106,8 +104,8 @@ def _build_pool():
 def _rows(frame, *columns):
     """Iterate `columns` as dicts — much cheaper than `itertuples` on a wide frame.
 
-    `itertuples` materialises a namedtuple carrying every column in the frame,
-    so a view needing three fields still paid for thirteen, 34,322 times.
+    `itertuples` materialises a namedtuple carrying every column in the frame, so
+    a view needing three fields pays for thirteen, once per row, 34,322 times.
     """
     keys = list(columns)
     for values in zip(*(frame[c] for c in keys)):
@@ -121,9 +119,9 @@ def _missing(value):
 def _text(value):
     """A cell as a string, with pandas' NaN read as empty.
 
-    The `csv` module this used to use yields '' for a blank cell and pandas
-    yields NaN, so a straight port would turn every empty `mana_cost` into the
-    string 'nan' — which is truthy, not empty, and would read as a real cost.
+    `csv.DictReader` yields '' for a blank cell and pandas yields NaN, so any
+    code moving between them must convert: an unconverted NaN becomes the string
+    'nan', which is truthy rather than empty and reads as a real value.
     """
     return "" if _missing(value) else str(value)
 
@@ -151,8 +149,8 @@ def _build_flags():
 def card_flags():
     """{name: {game_changer, legal_commander}} — the bracket engine's signal.
 
-    Three modules built this identical dict from three separate parses
-    (`bracket`, `build_deck`, and `validate_build`'s narrower cousin).
+    Built once here for the three modules that need it (`bracket`, `build_deck`,
+    `validate_build`), so a change to what "legal" means has one home.
     """
     if not OUTPUT_CSV_PATH.exists():
         raise FileNotFoundError(OUTPUT_CSV_PATH)
@@ -189,11 +187,11 @@ def corpus_oracle():
 def read_pool_with_csv_module():
     """The pre-consolidation `csv`-module reader, kept ONLY as a test oracle.
 
-    `load_pool` used to read cards.csv with `csv.DictReader`; it now slices the
-    shared pandas frame. The two libraries disagree about empty cells (''
-    versus NaN) and about numeric coercion, so the port is checked against this
-    rather than assumed — see `tests/test_pilot_card_pool.py`. Not called in
-    production; delete it only together with that test.
+`load_pool` slices the shared pandas frame; this reads the CSV directly with
+    the stdlib. `csv` and pandas disagree about empty cells ('' versus NaN) and
+    about numeric coercion, so `tests/test_pilot_card_pool.py` asserts the two
+    agree field-by-field across all 33,540 cards rather than assuming it. Not
+    called in production; delete it only together with that test.
     """
     if not OUTPUT_CSV_PATH.exists():
         return None

@@ -2,17 +2,22 @@
 
 *Status: proposed. Written 2026-07-26; **audited 2026-07-29; largely superseded 2026-07-31**.*
 
-> **Superseded in the parts that describe the surface.** The front end was reframed around
-> discovery — one card, typed relations, a graph you grow — and the map moved onto canvas.
-> `viz_index.json` now exists (pipeline step 14), though carrying discovery's fields rather
-> than the engine's. What still stands from this document is the *engine* analysis: the
-> scorer diverges from `config.py`, saved decks persist raw row indices, and the port is
-> still blocked on `data/cards.csv` being gitignored. Read `docs/viz.md` for what the front
-> end actually is now.
+> **A design record, kept for its reasoning, not as a description of the code.**
+> This document proposed a deck-building surface. What shipped instead was
+> discovery-first: one card, typed relations, a graph you grow, with Build as a lens over
+> the atlas. Read `docs/viz.md` for what the front end IS.
+>
+> Three of its premises have since been settled and no longer describe anything real:
+> the in-browser scorer it analyses **has been deleted** (it diverged from
+> `config.DECK_BUILD_WEIGHTS` on five of six factors), the `localStorage` deck persistence
+> it flags **is gone**, and `viz_index.json` **now exists** as pipeline step 14 — carrying
+> discovery's fields rather than the engine's, so the gap it names is smaller but real.
+>
+> What still stands: the engine-port analysis (`manabase` trivial, `bracket` and
+> `goldfish` easy, `build_deck` hardest), and the constraint that any browser-side engine
+> must generate its constants from `config.py` rather than duplicating them.
 
-> **Read this first.** The analysis below still holds — the engine is portable, the
-> scorer diverges from `config.py`, decks persist raw row indices. Two things have
-> changed since it was written:
+> **On the original sequencing.** Two things changed after it was written:
 >
 > 1. **The sequencing is wrong.** It orders M1 (data) → M2 (engine) → M6 (`deck.html`),
 >    but every deck artifact is already tracked and servable (~3.6 MB, seven decks,

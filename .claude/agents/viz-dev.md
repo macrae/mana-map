@@ -8,10 +8,12 @@ You develop the Mana Map frontend in `viz/`. Reference: `docs/viz.md`.
 
 ## Architecture you must respect
 
-- Two IIFE global scripts, load order fixed: `mana-map.js` (exposes `window.MM`) then `deck-builder.js` (exposes `window.DeckBuilder`, reads `MM.*` at load time). No modules, no build step, Plotly 2.35.2 from CDN.
-- All data URLs come from the `DATA` map at the top of `mana-map.js` (`DATA_BASE = '../data/'`), surfaced to deck-builder as `MM.DATA`. Never add an inline `'../data/...'` literal.
-- Cross-file access goes through `window.MM` / `window.DeckBuilder` only. mana-map's calls into DeckBuilder are guarded (`typeof window.DeckBuilder !== 'undefined'`) — keep that pattern.
-- Shared constants: `MM.EMBED_DIM` (mirrors `FINAL_EMBEDDING_DIM` in config.py), `SYNERGY_CAP` (mirrors `SYNERGY_MAX_PARTNERS`). If a JS number mirrors a Python config value, comment it.
+- **IIFE globals, no modules, no build step.** `viz/index.html` loads nine scripts in a fixed order: `stage.js`, `session.js`, `decklist.js`, `discovery.js`, `render/canvas.js`, `mana-map.js`, `drill.js`, `force.js`, `build.js`. `viz/deck.html` loads only `deck-view.js`. The single CDN dependency is d3 v7; there is no Plotly.
+- **Each file exports one global**: `Stage`, `Session`, `Decklist`, `Discovery`, `MM`, `Drill`, `Force`, `Build`. Cross-file access goes through those objects only.
+- **Anything that runs during `mana-map.js`'s boot runs INSIDE its IIFE, before `window.MM` exists.** Touching `MM.*` there throws, which aborts the IIFE, so `MM` is never exported and every later file fails at its own top level too — one ordering mistake breaks four files. Discovery takes its URLs by injection (`Discovery.configure`), and the boot mode is applied in a `queueMicrotask` for exactly this reason.
+- **All data URLs come from the `DATA` map at the top of `mana-map.js`** (`DATA_BASE = '../data/'`), surfaced as `MM.DATA`. Never add an inline `'../data/...'` literal.
+- **Two renderers, one surface owner.** `render/canvas.js` draws the 34K atlas and `force.js` draws the graph; both sit on `stage.js`, which owns canvas+DPR sizing, d3-zoom, world↔screen and label collision. Stage never stores a coordinate — force mutates node positions every tick, the atlas never mutates points and moves only the transform.
+- **Shared constants that mirror Python must say so in a comment**: `MM.EMBED_DIM` mirrors `FINAL_EMBEDDING_DIM`, `SYNERGY_CAP` mirrors `SYNERGY_MAX_PARTNERS`. A silent duplicate of a config value is how the two sides drift.
 
 ## Deployment invariants (GitHub Pages)
 
