@@ -12,6 +12,13 @@ agents check their thinking against. Your prompt states `MODE: research` or
 
 ## Start here: `deck-facts`
 
+**Name every scratch file after the deck.** You may run concurrently with agents
+working other decks, and you all share one scratchpad directory. Generic names —
+`audit.json`, `aud.json`, `audit2.json` — collide, and the failure is SILENT: your
+file is replaced by another deck's data and every figure you then read is about a
+deck you were not asked to work on. This has now happened to four agents across two
+sessions. Use `audit-<slug>.json`, or pipe straight into what consumes it.
+
 Before deriving anything about a deck's composition, run:
 
 ```bash

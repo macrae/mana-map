@@ -1,59 +1,77 @@
 {
   "slug": "goblin-storm",
-  "assessment": "The table sees Goblin Matron enter and assumes you went and got a lord. Let them assume it, then go and get the removal instead — Matron searches for a Goblin CARD, and both Gempalm Incinerator and Boggart Shenanigans wear that word. Two wishes, one creature type, and every wish is on plan.\n\nKnow the split cold, because it decides which card you name. Matron delivers to your hand, so the fetch still has to be cast — and kicker still works. Moggcatcher puts a Goblin permanent straight onto the battlefield, so there is no cast, no counterspell window, and no kicker. Send finishers to hand. Send engines to the battlefield.\n\nMoggcatcher taps to do it, so he does nothing the turn he lands. Deploy him a full rotation before you want the wish, on a turn nobody is watching you. And stop planning to cast and activate him in the same turn — your mean available mana does not reach the seven that would take at any point in ten turns.\n\nNeither wish touches the spell half of this deck, and that is fine. Wish for bodies and engines; let Zada's copied cantrips find the rest (stack 001).",
+  "assessment": "The table sees Goblin Matron enter and waits for you to go and get a lord. Let them wait. Then name the removal, or the mana, or the enchantment — Matron searches for a Goblin CARD, and Gempalm Incinerator and Boggart Shenanigans both wear the word.\n\nKnow the split cold, because it decides which card you name. Matron delivers to your hand, so the fetch still has to be cast — kicker still gets paid, cycling still works, and a counterspell still gets its window. Moggcatcher puts a Goblin permanent straight onto the battlefield: no cast, nothing to counter, no kicker. Send finishers to hand, send engines to the battlefield.\n\nNeither wish needs your commander, and that is the point. One of your three goldfish targets is gated on Zada; of five passing stacks only 001 and 003 put her on the board. So fetch for the swarm half and keep playing when she is answered — a wish spent insuring the commander is a wish spent on the smaller half of your deck.\n\nAim the wish at the group it can actually thicken. Your early-token component assembles in 60.0% of runs at mean turn 3.18, and three of its five cards are Goblins — so a turn-three Matron is a genuine extra copy of that component. The storm half is not reachable: at 26.5% of runs, 16.9% by turn six, it is built entirely out of sorceries, and no Goblin tutor has ever named one.\n\nTime Moggcatcher like a land, not a spell. Four mana to cast and three more to use is seven, and your mean available mana does not reach seven until turn ten — so deploy him a full rotation before you want the wish, on a turn nobody is watching you, and spend the activation on an end step.",
   "tutors": [
     {
       "card": "Goblin Matron",
       "targets": [
         {
-          "scenario": "The default. Turn 4-5, three or four Goblins on the battlefield, Goblin Warchief down or in hand, and nobody at the table pointing anything at you yet.",
-          "fetch": "Krenko, Mob Boss",
-          "why": "Take the burst, and build the whole turn around exactly one activation. Stack 004 walks it: under Warchief he costs {1}{R}{R}, arrives with haste, and taps the turn he lands — five Goblins become ten, 13 hasted power. Matron hands him over, so you cast him on your turn with the haste line intact. Never feed him to Skirk Prospector expecting him back."
+          "scenario": "The default. Turn 3, three lands, two Goblins on the battlefield, no ritual in hand and Zada still in the command zone. Nobody at the table is pointing anything at you yet.",
+          "fetch": "Goblin Warchief",
+          "why": "Buy the discount before you buy the payoff. Warchief makes every Goblin spell cost {1} less and hands the whole swarm haste, and at 4.59 mean available mana on turn five that {1} is a whole extra spell per turn — which is the only thing a storm count ever cared about. Stack 004 shows the discount doing its job: under Warchief, Krenko costs {1}{R}{R} and taps the turn he arrives. Name Warchief, cast him next turn, and let the discount pay back the tempo Matron cost you.",
+          "citations": [
+            {
+              "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+              "quote": "tutoring is fewer slots but costs board impact and a turn of tempo"
+            }
+          ]
         },
         {
-          "scenario": "Behind. The board just got wrathed, you are rebuilding on four lands, and a second sweeper is entirely plausible.",
+          "scenario": "Behind. The board just got swept, you are rebuilding on four lands, and the control player to your left has four mana open again — assume a second sweeper.",
           "fetch": "Mogg War Marshal",
-          "why": "Rebuild with the cheap card, not the best one. Marshal is three bodies on one card — a token when he enters, another when he dies — and the goldfish only has you back to 4.07 bodies by turn five, so he beats the whole rebuild curve by himself. Let the echo lapse when you want the second token now; pay it when the body is doing real blocking."
+          "why": "Rebuild with the cheap card, not the best one. Marshal is three bodies on one card — a token when he enters, another when he dies — and the goldfish only walks you back to 4.07 bodies by turn five, so he beats your whole rebuild curve on his own. Let the echo lapse when you want that second token immediately; pay it when the body is doing real blocking. Do not name your most expensive Goblin into an open sweeper.",
+          "citations": [
+            {
+              "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+              "quote": "k tutors plus the card act like k+1 copies of *every* card"
+            }
+          ]
         },
         {
-          "scenario": "Closing. A wide board and a lethal you can already count, and you need the team hasted this turn rather than next.",
+          "scenario": "Closing. Five bodies on the battlefield, an opponent at 11, one or two blockers in the way, and two mana up after Matron resolves.",
           "fetch": "Goblin Bushwhacker",
-          "why": "Name him and pay the kicker: your creatures get +1/+0 and haste the moment he enters. This is the wish only Matron can grant, because kicker is paid as you cast the spell — Moggcatcher would put an unkicked 1/1 onto the battlefield and hand you nothing. Count the damage before you fetch, not after."
+          "why": "Name him and pay the kicker: creatures you control get +1/+0 and gain haste the moment he enters. This is the wish only Matron can grant, because kicker is paid as you cast the spell — put him onto the battlefield instead and you get an unkicked 1/1 and nothing else. On the 5.26 bodies the goldfish has you holding at turn six, that is six extra points arriving with haste. Count the damage before you fetch, not after."
         },
         {
-          "scenario": "The one nobody sees coming. An opposing lord or a must-die blocker is holding your swarm hostage and your hand is all gas, no answers.",
+          "scenario": "The one nobody sees coming. An opposing lord or a fat blocker is holding your entire swarm hostage, your hand is all gas, and you have drawn no answers.",
           "fetch": "Gempalm Incinerator",
-          "why": "Pull removal out of a creature tutor. Cycle him for {1}{R} to deal damage equal to the number of Goblins on the battlefield — count their Goblins too, they add to it — and draw a card while you do it. Cycling only works from hand, so route this wish through Matron every time and never through Moggcatcher."
+          "why": "Pull removal out of a creature tutor. Cycle him for {1}{R} to deal damage equal to the number of Goblins on the battlefield — count their Goblins too, they add to your total — and draw a card on the way. Cycling only works from your hand, so route this wish through Matron every single time. Your interaction covers two permanent classes against a five-class target, so treat every answer you can manufacture as one you cannot replace."
         }
       ],
-      "notes": "Once the errand is run, Matron is a Goblin body: count her for Krenko, tap her for Brightstone Ritual, feed her to Prospector. And she finds Goblin cards, not Goblin creatures — Boggart Shenanigans is a Kindred Enchantment, and it is a perfectly legal wish on a grinding table."
+      "notes": "Once the errand is run she is just a Goblin body — count her for Krenko, tap her for Brightstone Ritual, feed her to Skirk Prospector. She finds Goblin cards, not Goblin creatures, so Boggart Shenanigans is a legal name on a grinding table. One card to skip while Zada sits in the command zone: Siege-Gang Lieutenant only makes its tokens if you control your commander, and you do not."
     },
     {
       "card": "Moggcatcher",
       "targets": [
         {
-          "scenario": "The default. Moggcatcher untapped from last turn, three mana spare, a Goblin board, and a haste lord already down — Warchief, Chieftain or Howlsquad Heavy.",
-          "fetch": "Krenko, Mob Boss",
-          "why": "Skip the cast entirely and give the table nothing to counter: there is no spell here, only the ability. With the haste lord already down he taps immediately for the stack 004 burst, five Goblins into ten. Without one he is next turn's doubling — on that board fetch something else and take Krenko when the lord arrives."
-        },
-        {
-          "scenario": "Behind. A stax artifact is throttling your spell count, or a Treasure deck is running away with the table.",
-          "fetch": "Goblin Trashmaster",
-          "why": "Go and get the repeatable out, and do it on the end step before your turn — this is an activated ability, so the wish happens at instant speed. Trashmaster sacrifices a Goblin to destroy target artifact, again and again, and buffs the team while he waits. Break the first lock piece cheaply; it is the second and third that actually end you."
-        },
-        {
-          "scenario": "Closing. Impact Tremors on the battlefield, an opponent in single digits, three mana and an untapped Moggcatcher.",
+          "scenario": "The default. Turn 6 or 7, Moggcatcher untapped from last turn, three mana spare at the end step before your turn, a couple of Goblins out and Impact Tremors or General Kreat already on the battlefield.",
           "fetch": "Siege-Gang Commander",
-          "why": "Win without declaring an attack. One activation puts four bodies onto the battlefield — the Commander plus three tokens — so Impact Tremors deals 4 to each opponent immediately, and then every spare Goblin converts at {1}{R} into 2 damage anywhere you point it. Fetch him on the board where blockers are the only reason you have not won."
+          "why": "Skip the cast and give the table nothing to answer: there is no spell here, only the ability. Four bodies land at once — the Commander plus three tokens — and stack 002 already settled the arithmetic that every body entering is a point at every seat, so with Impact Tremors down that is 4 to each opponent before your turn even begins. Then each spare Goblin converts at {1}{R} into 2 damage pointed anywhere. Do it on the end step, never on your own main phase."
         },
         {
-          "scenario": "The one nobody sees coming. A grinding table where your Goblins die in bulk every rotation, and you want reach that survives the next sweeper.",
+          "scenario": "Behind. A tax effect has turned your two-spell turns into one-spell turns, or an artifact deck is running away on Treasures.",
+          "fetch": "Goblin Trashmaster",
+          "why": "Go and get the repeatable out rather than a one-shot, and go and get it at instant speed — this is an activated ability, so the wish happens on their end step. Trashmaster sacrifices a Goblin to destroy target artifact, again and again, and you manufacture Goblins for a living. Break the first lock piece cheaply; it is the second and third that actually end you. Your answers cover two permanent classes against a five-class target, so buy the one that keeps answering."
+        },
+        {
+          "scenario": "Closing. A haste lord already down — Warchief, Chieftain or Howlsquad Heavy — four Goblins on the battlefield, an opponent at 20 with no untapped blockers, and three mana in your main phase.",
+          "fetch": "Krenko, Mob Boss",
+          "why": "Put him onto the battlefield with no cast and no counter window, and let the lord give him haste so he taps immediately. Stack 004 counts the swing on exactly this board: five Goblins become ten, 13 hasted power. Take the burst and build the whole turn around one activation — stack 004 is explicit that a Krenko fed to Skirk Prospector stays in the graveyard, because Zada is your commander and he is not. Without a haste lord down, fetch something else and take Krenko when the lord arrives.",
+          "citations": [
+            {
+              "rule": "strategy:multiplayer.threat-deflection",
+              "quote": "Know your deck's tells — the cards everyone fears — and time them for the turn they win, not the turn they impress."
+            }
+          ]
+        },
+        {
+          "scenario": "The one nobody sees coming. A grinding table where your tokens die in bulk every rotation, and Blasphemous Act is sitting in your hand.",
           "fetch": "Boggart Shenanigans",
-          "why": "Use a creature tutor to put an enchantment onto the battlefield — Shenanigans is a Kindred Enchantment, so Moggcatcher may legally go and get it, and nobody defends against that. Every Goblin funeral afterwards is a point of damage at any player. Fetch it before you cast Blasphemous Act, never after, and turn your own reset into a burn spell."
+          "why": "Use a creature tutor to put an enchantment onto the battlefield. Shenanigans is a Kindred Enchantment — Goblin, so it is a Goblin permanent card and a perfectly legal wish, and nobody at the table plays around it. Afterwards every Goblin funeral is a point of damage you may point at a player. Fetch it before you cast Blasphemous Act, never after, and turn your own reset into a burn spell."
         }
       ],
-      "notes": "The trap to never walk into: a permanent put onto the battlefield was never cast, so a fetched Goblin Bushwhacker enters unkicked — no pump, no haste, no kill. Finishers through Matron, engines through Moggcatcher. And Moggcatcher is a Human Mercenary, so neither tutor can find him, he adds nothing to Krenko's count, and Prospector cannot eat him."
+      "notes": "He taps to do it, so he does nothing the turn he lands — deploy him a rotation early, on a quiet turn, and hold the activation. He is a Human Mercenary, so neither tutor can find him, Krenko does not count him and Prospector cannot eat him. And never plan to cast and activate him in one turn: that is seven mana, and your curve does not get there until turn ten."
     }
   ],
-  "gaps": "Both wishes are Goblin-shaped, so the spell half of the list is unfetchable — nothing here finds Impact Tremors, Skullclamp, a ritual or a storm payoff. Stop waiting on a tutor to assemble the big turn: storm payoff plus ritual shows up in 15.2% of goldfish games and neither of these cards moves that number by a point. Assemble it the other way, through Zada's copied cantrips, Faithless Looting and Idol of Oblivion, and spend the wishes on the bodies those copies need. The turn the payoff is already in your hand is the turn a wish is worth the most — fetch the board, not the spell."
+  "gaps": "Both wishes are Goblin-shaped, so the entire spell half of this list is unreachable. Nothing here finds a ritual, a storm payoff, Impact Tremors, Skullclamp or Frontline Heroism — your second copy hub is a plain enchantment, so it arrives when you draw it and not a turn sooner. Stack 005's loop is the sharpest example: Haze of Rage is a sorcery and Storm-Kiln Artist is a Dwarf Shaman, so the best line in the deck can never be wished for.\n\nStop waiting on a tutor to assemble the big turn. Storm payoff plus ritual shows up in 26.5% of games, 16.9% of them by turn six, at mean turn 4.91 — and neither of these cards moves that number by a single point. Assemble it through draw instead: Faithless Looting, Idol of Oblivion, War Room, and the copied cantrips stack 001 verified.\n\nWhat the wishes do reach is the token component — 60.0% of runs at mean turn 3.18, and three of its five cards are Goblins. So spend them on the board the copies need, and spend them on a turn where the payoff is already in your hand."
 }

@@ -1,7 +1,60 @@
 {
   "slug": "ur-dragon",
-  "assessment": "The deck carries no sideboard, so all ten are pool scouts. The frame's stated weakness is structural: one Aggravated Assault carries every contained infinite, and the construction corpus is blunt about the fix — a linear deck 'needs redundancy that shrugs off three answers' and should 'sequence so one removal spell can't break the chain' (strategy:critical-mass). Seven of the ten are extra-combat or Treasure engines that give the verified 003/006 Assault architecture a second card name; the other three buy consistency where the role budget is shortest: draw (-6) and early ramp. No pick moves the computed floor off 4.",
+  "assessment": "Mana binds this deck, not power: 34 land copies against the 36-38 band, 28 of 66 nonland entries at mana value five or more, and land drops falling to 60.3% on turn five and 49.7% on turn six. Six of the ten buy mana or buy discount. Three answer the fact that every infinite in the 99 routes through one enchantment — the corpus's prescription for a linear deck is 'redundancy that shrugs off three answers' (strategy:critical-mass), and the extra-combat ignition currently assembles 6.4%, 3.6% by turn six. The tenth covers the graveyard, the only permanent class the deck answers with nothing. No pick moves the computed bracket floor off 4.",
   "ten": [
+    {
+      "card": "Ancient Tomb",
+      "role": "land:utility",
+      "cmc": 0.0,
+      "type_line": "Land",
+      "evidence": {
+        "edhrec_rank": 66,
+        "game_changer": true
+      },
+      "closes": "mana-base",
+      "why": "Two mana off one land is the only pool card that moves the number the audit blames — mean available mana 4.937 on turn six against a 28-card shelf at mana value five or more — and it turns turn five into an Old Gnawbone turn instead of a Farseek turn.",
+      "unlocks": "The deck's 5-to-9 drops start arriving on the turn the plan wants them rather than two turns late; the mana is unrestricted, so it also pays Aggravated Assault's {3}{R}{R}.",
+      "natural_cut": "Klauth, Unrivaled Ancient",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    },
+    {
+      "card": "Gamble",
+      "role": "tutor:unrestricted",
+      "cmc": 1.0,
+      "type_line": "Sorcery",
+      "evidence": {
+        "edhrec_rank": 236,
+        "game_changer": true
+      },
+      "closes": "Aggravated Assault (the extra-combat ignition)",
+      "why": "One red mana finds Aggravated Assault, which six of the deck's seven tutors cannot: Encroaching Dragonstorm and Skyshroud Claim fetch lands, Nature's Lore a Forest, Sarkhan's Triumph a Dragon creature, Worldly Tutor any creature, Tiamat Dragon cards — only Enlightened Tutor reaches an enchantment.",
+      "unlocks": "A named one-of stops being 7.1% of an opening seven; on a stalled turn six the same card fetches the land instead. The random discard is the price — cast it with cards in hand, not on an empty one, because Haven of the Spirit Dragon and Rivaz of the Claw only bring back Dragons.",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    },
+    {
+      "card": "Mana Confluence",
+      "role": "land:fixing",
+      "cmc": 0.0,
+      "type_line": "Land",
+      "evidence": {
+        "edhrec_rank": 119,
+        "game_changer": false
+      },
+      "closes": "colour-sources",
+      "why": "An untapped source of all five colours in a deck holding red at 27 sources against a 36 target while red carries 47 of 101 pips, and where The Ur-Dragon and Tiamat each want all five colours in one cost.",
+      "unlocks": "A land that is never the reason a turn-five Dragon sits in hand. The life beside City of Brass is real; the deck's turn-five and turn-six problem is land drops at 0.603 and 0.497, not life total.",
+      "natural_cut": "Patriarch's Bidding",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    },
     {
       "card": "Hellkite Charger",
       "role": "threat:body",
@@ -26,222 +79,61 @@
         "edhrec_rank": 2126,
         "game_changer": false
       },
-      "why": "★ The second Aggravated Assault the deck does not have — an extra-combat effect on a Dragon body, so the eminence discount, Sarkhan's Triumph, and all five spells-only Dragon sources (Haven, Klauth, Maelstrom, Rivaz, Unclaimed Territory) reach its cast; the {5}{R}{R} activation is an ability payment those sources still cannot make, and Treasures fund it exactly as verified stack 006 funds Assault.",
-      "unlocks": "One removal spell on Aggravated Assault no longer turns off every infinite at once; Old Gnawbone + Charger replays the 006 table-kill under a different card name.",
+      "closes": "Aggravated Assault (the extra-combat ignition)",
+      "why": "The second extra-combat effect the 99 does not have, and it is a Dragon: eminence and the three cost reducers cut its cast, and Sarkhan's Triumph, Worldly Tutor and Tiamat can all go get it.",
+      "unlocks": "One Disenchant no longer ends the combo plan. The honest price is the activation — {5}{R}{R} against Aggravated Assault's {3}{R}{R}, so Old Gnawbone's Treasures are the funding, exactly as in the certified Gnawbone loop.",
       "bracket_delta": {
         "before": 4,
         "after": 4
       }
     },
     {
-      "card": "The Reaver Cleaver",
-      "role": "buff:attached",
-      "cmc": 3.0,
-      "type_line": "Legendary Artifact — Equipment",
+      "card": "Ruby Medallion",
+      "role": "ramp:cost-reduction",
+      "cmc": 2.0,
+      "type_line": "Artifact",
       "evidence": {
-        "combo_lines_opened": [
-          {
-            "cards": [
-              "The Reaver Cleaver",
-              "Aggravated Assault"
-            ],
-            "produces": [
-              "Infinite colored mana",
-              "Infinite combat damage",
-              "Infinite combat phases",
-              "Infinite mana creatures you control can produce",
-              "Infinite Treasure tokens",
-              "Infinite untap of creatures you control"
-            ],
-            "status": "needs a stack scenario"
-          }
-        ],
-        "edhrec_rank": 565,
+        "edhrec_rank": 300,
         "game_changer": false
       },
-      "why": "★ Redundancy for the funding half of the verified engine: 'create that many Treasure tokens' on combat damage turns any equipped Dragon into an Old Gnawbone, and it pairs directly with the Assault already sleeved — the most popular line any candidate opens (popularity 34,407) — for three mana.",
-      "unlocks": "The 006 Treasure-funded loop stops requiring one specific 7-drop; a 3-mana equipment plus any large flier reproduces it.",
+      "closes": "engine component: cost reducers (Urza's Incubator, Herald's Horn, Dragonspeaker Shaman)",
+      "why": "The deck's declared curve fixer is three cards — 19.9% of openers, 42.3% measured — and this is a fourth that covers red, which sits on 32 of the deck's cards including the commander's own generic cost.",
+      "unlocks": "A discount that Crux of Fate's non-Dragon mode and Dragonback Assault's 3 damage cannot switch off, unlike Dragonspeaker Shaman at 2/2. The cut is priced painful and it is spent deliberately: an eight-mana enchantment no discount reaches, for a two-mana discount that reaches 32 cards.",
+      "natural_cut": "Dracogenesis",
       "bracket_delta": {
         "before": 4,
         "after": 4
       }
     },
     {
-      "card": "Sword of Feast and Famine",
-      "role": "buff:attached",
-      "cmc": 3.0,
-      "type_line": "Artifact — Equipment",
-      "evidence": {
-        "combo_lines_opened": [
-          {
-            "cards": [
-              "Sword of Feast and Famine",
-              "Aggravated Assault"
-            ],
-            "produces": [
-              "Infinite combat phases"
-            ],
-            "status": "needs a stack scenario"
-          }
-        ],
-        "edhrec_rank": 539,
-        "game_changer": false
-      },
-      "why": "★ Pays Assault with the one mana type nothing in the deck restricts — untapped lands: on combat damage you untap all lands, covering {3}{R}{R} for the next activation; and in the pilot's white-less pods, protection from black and from green blanks most of the removal that will aim at the engine's carrier.",
-      "unlocks": "Assault activations stop competing with the deck's spell mana; every connected hit refunds the combat and strips a card from the defender.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Ancient Copper Dragon",
+      "card": "Najeela, the Blade-Blossom",
       "role": "threat:body",
-      "cmc": 6.0,
-      "type_line": "Creature — Elder Dragon",
-      "evidence": {
-        "combo_lines_opened": [
-          {
-            "cards": [
-              "Ancient Copper Dragon",
-              "Aggravated Assault"
-            ],
-            "produces": [
-              "Near-infinite colored mana",
-              "Near-infinite combat damage",
-              "Near-infinite Treasure tokens",
-              "Near-infinite combat phases",
-              "Near-infinite untap of creatures you control",
-              "Near-infinite mana creatures you control can produce"
-            ],
-            "status": "needs a stack scenario"
-          }
-        ],
-        "edhrec_rank": 640,
-        "game_changer": false
-      },
-      "why": "★ A second Old Gnawbone for the verified 006 architecture: a d20 of Treasures per connection (mean 10.5, minimum 1 — hence 'near-infinite'; a low roll can undershoot Assault's five mana) on a Dragon body that eminence discounts, Sarkhan's Triumph tutors, and the restricted Dragon mana casts.",
-      "unlocks": "Doubles the in-99 count of Treasure engines that fund Assault, and its d20 stacks with Ancient Gold Dragon's in the same combat.",
-      "natural_cut": "Cavern-Hoard Dragon",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Bear Umbra",
-      "role": "buff:attached",
-      "cmc": 4.0,
-      "type_line": "Enchantment — Aura",
-      "evidence": {
-        "combo_lines_opened": [
-          {
-            "cards": [
-              "Aggravated Assault",
-              "Bear Umbra"
-            ],
-            "produces": [
-              "Infinite combat phases"
-            ],
-            "status": "needs a stack scenario"
-          }
-        ],
-        "edhrec_rank": 887,
-        "game_changer": false
-      },
-      "why": "★ Untaps all lands on attack — before blockers, not on damage — so it funds Assault even when the attacker is chumped by the token walls the pilot's pods are full of, and umbra armor eats the first removal spell aimed at the creature carrying the engine.",
-      "unlocks": "An extra-combat loop that never requires connecting — the one funding route no Treasure-based line can claim.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Selvala, Heart of the Wilds",
-      "role": "draw:engine",
       "cmc": 3.0,
-      "type_line": "Legendary Creature — Elf Scout",
+      "type_line": "Legendary Creature — Human Warrior",
       "evidence": {
         "combo_lines_opened": [
           {
             "cards": [
-              "Aggravated Assault",
-              "Selvala, Heart of the Wilds"
+              "Najeela, the Blade-Blossom",
+              "Old Gnawbone"
             ],
             "produces": [
               "Infinite colored mana",
               "Infinite combat phases",
-              "Infinite untap of creatures you control"
+              "Infinite lifegain",
+              "Infinite lifegain triggers",
+              "Infinite Treasure tokens"
             ],
             "status": "needs a stack scenario"
           }
         ],
-        "edhrec_rank": 438,
+        "edhrec_rank": 5412,
         "game_changer": false
       },
-      "why": "★ A turn-3 dork whose tap makes X unrestricted any-colour mana equal to your greatest power — any 5-power Dragon means Selvala alone pays Assault, and Assault untaps her for the next activation; her draw trigger fires on the deck's own biggest-body Dragons against the role budget's draw -6.",
-      "unlocks": "The curve-peak turn-3 play that later becomes both combo fuel and a draw engine; the draw trigger is symmetric, but this deck usually owns the biggest body.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Helm of the Host",
-      "role": "buff:attached",
-      "cmc": 4.0,
-      "type_line": "Legendary Artifact — Equipment",
-      "evidence": {
-        "combo_lines_opened": [
-          {
-            "cards": [
-              "Scourge of the Throne",
-              "Helm of the Host"
-            ],
-            "produces": [
-              "Infinite combat phases",
-              "Infinite creature tokens with haste",
-              "Infinite ETB"
-            ],
-            "status": "needs a stack scenario"
-          }
-        ],
-        "edhrec_rank": 395,
-        "game_changer": false
-      },
-      "why": "★ The only pick whose infinite does not route through Aggravated Assault at all — it pairs with the Scourge of the Throne already sleeved (each copy's dethrone grants another combat; the scenario must verify the attack-the-most-life condition holds each iteration) — and off-combo it stamps a nonlegendary Miirym, Terror of the Peaks, or Old Gnawbone copy every combat.",
-      "unlocks": "A second, fully independent extra-combat axis, plus a copy engine every verified ETB/damage-trigger stack (001, 002) scales with.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Neheb, the Eternal",
-      "role": "ramp:dork",
-      "cmc": 5.0,
-      "type_line": "Legendary Creature — Zombie Minotaur Warrior",
-      "evidence": {
-        "combo_lines_opened": [
-          {
-            "cards": [
-              "Neheb, the Eternal",
-              "Aggravated Assault"
-            ],
-            "produces": [
-              "Infinite combat phases",
-              "Infinite red mana",
-              "Infinite mana creatures you control can produce",
-              "Infinite untap of creatures you control"
-            ],
-            "status": "needs a stack scenario"
-          }
-        ],
-        "edhrec_rank": 1167,
-        "game_changer": false
-      },
-      "why": "★ Converts damage the Dragons already deal into postcombat red mana that legally pays Assault — five damage covers {3}{R}{R} on its own, and a Drakuseth attack banks ten; ranked below the Dragon-bodied engines because no typal support reaches a Minotaur.",
-      "unlocks": "Every combat becomes ramp: postcombat main phases cast eminence-discounted Dragons even on turns Assault never fires.",
+      "closes": "Aggravated Assault (the extra-combat ignition)",
+      "why": "A repeatable extra combat that is not an enchantment, so the answer that kills Aggravated Assault does not kill this too — and {W}{U}{B}{R}{G} is a cost a five-colour deck already making Treasures off Old Gnawbone, Goldspan Dragon, Atsushi and Cavern-Hoard Dragon can actually pay.",
+      "unlocks": "A second ignition at three mana instead of three-plus-five, and Treasure mana is legal for an activated ability where Klauth's and Unclaimed Territory's is not. It is a 3/2 non-Dragon: your own Crux of Fate non-Dragon mode and Dragonback Assault both kill it.",
+      "natural_cut": "Dragonlord Kolaghan",
       "bracket_delta": {
         "before": 4,
         "after": 4
@@ -259,8 +151,9 @@
         "edhrec_rank": 42,
         "game_changer": false
       },
-      "why": "★ Obsolescence-traced (similarity 0.9983, Lower CMC): fetches any Forest card untapped — including the deck's Forest-typed duals — two turns earlier than Skyshroud Claim, as functional copies three and four of the Nature's Lore/Farseek effect the goldfish shows the deck leaning on (71.6% ramp by t6).",
-      "unlocks": "A ramp spell at the curve's modal turn instead of turn 4, tightening the consistency number the whole wave-deployment plan sits on.",
+      "closes": "mana-base",
+      "why": "The obsolescence index lists it against Skyshroud Claim at similarity 0.9936 on lower mana value, and on turn two it fetches Stomping Ground, Breeding Pool or Overgrown Tomb — untapped for two life — rather than waiting until turn four for two Forest cards.",
+      "unlocks": "A third copy of the Farseek / Nature's Lore effect at the turn the deck can still afford it, which is where the land-drop curve breaks rather than where it starts.",
       "natural_cut": "Skyshroud Claim",
       "bracket_delta": {
         "before": 4,
@@ -268,16 +161,51 @@
       }
     },
     {
-      "card": "Ancient Silver Dragon",
-      "role": "draw:engine",
-      "cmc": 8.0,
-      "type_line": "Creature — Elder Dragon",
+      "card": "Bojuka Bog",
+      "role": "land:tapped",
+      "cmc": 0.0,
+      "type_line": "Land",
       "evidence": {
-        "edhrec_rank": 1421,
+        "edhrec_rank": 24,
         "game_changer": false
       },
-      "why": "★ The role budget's biggest hole is draw (-6) and this is the pool's largest Dragon-shaped patch: a d20 of cards on connection with no maximum hand size — and verified stack 005 establishes Sneak Attack cheats any 99 Dragon in for {R}, which is exactly how an 8-drop draw engine should arrive; the pilot asked for it by name (pilot_feedback.md).",
-      "unlocks": "One connection refuels the hand the wrath-math deployment plan spends; eminence, Korlessa, and the Dragon-restricted mana all discount or pay the honest cast.",
+      "closes": "mana-base",
+      "why": "A 35th land that is also the deck's first answer to an opposing graveyard: nothing in the 99 touches one, so a reanimator seat is currently beaten on speed or on the stack or not at all.",
+      "unlocks": "A land drop and a graveyard exile in the same slot, and a black source where black sits at 16. Read the measure honestly: card_roles gives this card land:tapped only, so a re-run of the audit will still report the graveyard class uncovered — the card answers it on the battlefield, the taxonomy cannot see it.",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    },
+    {
+      "card": "Sarkhan, Soul Aflame",
+      "role": "ramp:cost-reduction",
+      "cmc": 3.0,
+      "type_line": "Legendary Creature — Human Shaman",
+      "evidence": {
+        "edhrec_rank": 2053,
+        "game_changer": false
+      },
+      "closes": "engine component: cost reducers (Urza's Incubator, Herald's Horn, Dragonspeaker Shaman)",
+      "why": "Three mana discounts every Dragon spell including the commander, and its 2/4 body survives Dragonback Assault's 3 damage where Dragonspeaker Shaman at 2/2 and Rivaz of the Claw at 3/3 both die.",
+      "unlocks": "Beside Ruby Medallion the reducer group goes from three cards to five, which the corpus prices at 31% of openers against the 19.9% three buys. The copy trigger is the upside: on the turn Old Gnawbone lands you get a second Treasure engine, and Sarkhan is a Dragon while the copy lasts, so Dragon Tempest and Scourge of Valkas count it.",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    },
+    {
+      "card": "Soul-Guide Lantern",
+      "role": "hate:graveyard",
+      "cmc": 1.0,
+      "type_line": "Artifact",
+      "evidence": {
+        "edhrec_rank": 1359,
+        "game_changer": false
+      },
+      "closes": "interaction-breadth",
+      "why": "One mana, and it is the only pick that moves the axis: running deck_audit's breadth function over the 99 with this card added takes graveyard from 0 answers to 1 and the class count from 4 to 5.",
+      "unlocks": "An entry-trigger exile against the reanimator's target, a sacrifice that exiles every opponent's graveyard before their turn, and a card if neither matters. Small, cheap, and the class it covers is the one the deck currently has no card for at all.",
       "bracket_delta": {
         "before": 4,
         "after": 4
@@ -285,10 +213,10 @@
     }
   ],
   "gaps": [
-    "Every combo line above is unverified. Highest-value stack scenarios to buy, in order: The Reaver Cleaver + Aggravated Assault Treasure accounting (mirrors verified 006), Old Gnawbone + Hellkite Charger, and Helm of the Host + Scourge of the Throne — the copy's dethrone condition (must each extra combat attack the player with the most life?) decides whether that loop is real.",
-    "Ad Nauseam is the pool's only Game Changer candidate (line: Ad Nauseam + Teferi's Protection, infinite card draw, unverified). Excluded on fit, not on floor: the deck's heavy 5-7 shelf makes the life cost brutal, and the pilot's approved bracket 4 means the floor was never the objection.",
-    "Pilot feedback names Hellkite Tyrant and Faeburrow Elder; neither appears in any evidence channel. Honest reads: Tyrant's theft line is live in Treasure-token pods (Treasures are artifacts), but at {4}{R}{R} it competes with Hellkite Charger and Ancient Copper Dragon, which end games through the verified Assault architecture instead of borrowing mana from it. Faeburrow Elder fights the deck's shape twice — ramp is already over budget (13/10) and its {W} pip is the deck's thinnest colour (10 land sources). Overriding the data here is a pilot call.",
-    "The synergy channel produced only noise for this deck (format-wide 'Ramp + Cost Reduction' shortlists off Savage Ventmaw/Klauth) — no pick carries a synergy_partners_in_deck claim.",
-    "Role shorts in lands (-2), sweeper (-2), recursion (-2), and wincon (-3) have no evidenced pool candidate worth a slot: the lands figure is the builder's 36-land prior against the deck's 34 lands, a two-card gap, and the one evidenced wincon (Revel in Riches, line with Old Gnawbone) waits for an upkeep check the verified combat kills don't need."
+    "Every combo line above is unverified. Two are worth a stack scenario, in order: Old Gnawbone + Hellkite Charger, where the combo record itself lists mana_value_needed 7 and the question is whether one connection's Treasures cover the next activation the way they do for Aggravated Assault; and Najeela, the Blade-Blossom + Old Gnawbone, where the question is whether a Treasure-funded {W}{U}{B}{R}{G} sustains across combats when black sits at 16 sources.",
+    "The funding family did not make the ten and the reason is the same for all of it. The Reaver Cleaver opens the most popular Aggravated Assault line in the database (34,407) and Sword of Feast and Famine and Bear Umbra both untap lands to pay for the next activation — but none of them makes Aggravated Assault replaceable, which is the hole. Helm of the Host with Scourge of the Throne is the one line that skips Assault entirely; it costs 4 to cast plus 5 to equip against mean available mana of 4.937 on turn six, so the binding axis prices it out before its rules question is even asked.",
+    "Ancient Silver Dragon is named by the pilot and stays off. It is an eight-drop in the deck whose measured weakness is a five-plus shelf 28 entries deep, and the card-advantage count reads low mostly because the taxonomy cannot see Dragon's Hoard, Return of the Wildspeaker, Rishkar's Expertise, Tiamat or the commander's attack trigger — a probe note, not a hole. Sneak Attack does cheat it in for {R} (verified, stack 005), so the case is real; overriding the curve here is a pilot call and not a data one. Hellkite Tyrant and Faeburrow Elder return nothing in any evidence channel: Tyrant's theft line is live in Treasure pods, and Faeburrow's {W} pip sits on the deck's thinnest colour at 15 sources.",
+    "No pick carries a synergy claim. The synergy graph's shortlists for these ten return generic Ramp + Cost Reduction pairings scored 1 against in-deck rocks and lands, which is the format-wide top-10 doing its job and not a statement about this list.",
+    "goldfish_targets.json declares components by card name, so a swap silently shrinks one until the declaration is re-run: the ramp group names Skyshroud Claim, and the reducer group holds three cards that Ruby Medallion and Sarkhan, Soul Aflame do not join by themselves. Any measured rate quoted here is the rate for the declared cards, not for the deck after a swap."
   ]
 }

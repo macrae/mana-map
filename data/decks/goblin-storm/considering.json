@@ -1,29 +1,71 @@
 {
   "slug": "goblin-storm",
-  "assessment": "The bench holds one real card, so nine of the ten are pool scouts, ranked by how directly they plug into the deck's three verified engines: Zada's copy-draw (stack 001), the Empty the Warrens + Impact Tremors storm burst (stack 002), and the Haze of Rage + Storm-Kiln Artist loop (stack 005). Every combo pick here completes a line whose other pieces are already sleeved; none is asserted as working — each needs a stack scenario. Two famous pool hits stayed off on an oracle read: Repercussion pairs with Blasphemous Act but turns the sweeper self-lethal under your own 1/1 swarm, and Glacial Chasm (the pool's lone synergy candidate, a Game Changer) reads 'Creatures you control can't attack' in a deck that wins by attacking wide. The obsolescence channel's leads (Firebolt et al. over Past in Flames) are lower-CMC lookalikes, not replacements for a storm rebuild, and were rejected the same way. Cuts follow strategy:deckbuilding.cutting — 'cut duplicated function before any uncovered class, and cut the ceiling card before the median one.'",
+  "assessment": "Three of the ten answer an axis the diagnosis names as a weakness. Soul-Guide Lantern is the only pick here that raises the measured breadth count, and Deflecting Swat plus Champion's Helm are the protection budget. The other seven are engine depth ranked by what improves the median game before the ceiling, per strategy:critical-mass.storm-math — \"Separate ceiling from median: the full storm kill is the ceiling; the median game is the value engine under it — pace for the median, hold the ceiling as opportunism.\" Two famous cards are off the list on an oracle read: Lightning Greaves grants shroud, which stops your own Crimson Wisps from targeting Zada, and Repercussion turns Blasphemous Act's 13 damage into 13 per your own 1/1 aimed at your face.",
   "ten": [
     {
-      "card": "Seething Anger",
-      "role": "buff:pump",
-      "cmc": 1.0,
-      "type_line": "Sorcery",
+      "card": "Birgi, God of Storytelling // Harnfel, Horn of Bounty",
+      "role": "ramp:dork",
+      "cmc": 3.0,
+      "type_line": "Legendary Creature — God // Legendary Artifact",
       "evidence": {
-        "combo_lines_opened": [
-          {
-            "cards": [
-              "Zada, Hedron Grinder",
-              "Storm-Kiln Artist",
-              "Seething Anger"
-            ],
-            "produces": "Infinite colored mana; Infinitely powerful creatures you control until end of turn; Infinite magecraft triggers; Infinite storm count; Infinite Treasure tokens",
-            "status": "needs a stack scenario"
-          }
-        ],
-        "edhrec_rank": 13958,
+        "edhrec_rank": 488,
         "game_changer": false
       },
-      "why": "One red mana, targets only a creature, so Zada copies it per body — and with Storm-Kiln Artist each copy mints a Treasure, which is the same loop shape as the verified Haze of Rage engine (stack 005) at half the entry cost.",
-      "unlocks": "A second self-sustaining storm loop: buyback {3} recasts against Treasures made per creature, plus +3/+0 to the whole team on every pass. The break-even creature count is exactly what the stack scenario must settle.",
+      "why": "Every spell you cast refunds {R} and the mana survives the step change, so a turn-5 chain of Dragon Fodder, Krenko's Command and Grapeshot pays for its own fourth spell without drawing one of the four rituals.",
+      "unlocks": "A ritual that stays on the battlefield: the storm target's mana half stops being four one-shot cards. Harnfel, Horn of Bounty is the other face when the board is already wide and the hand is not. Throne of Eldraine is the slot — five mana for four mana that can only be spent on monocoloured spells, against three mana that pays on every cast.",
+      "natural_cut": "Throne of Eldraine",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    },
+    {
+      "card": "Purphoros, God of the Forge",
+      "role": "value:etb",
+      "cmc": 4.0,
+      "type_line": "Legendary Enchantment Creature — God",
+      "evidence": {
+        "edhrec_rank": 664,
+        "game_changer": false
+      },
+      "why": "Stack 002 records Empty the Warrens as the fourth spell of the turn and eight Goblin tokens entering; through Purphoros that is 2 damage each per opponent against Impact Tremors' 1, and with devotion under five he is an indestructible enchantment your own Blasphemous Act cannot kill.",
+      "unlocks": "A second token-to-damage converter that needs no Goblin to die and survives the wrath that clears the swarm. Boggart Shenanigans is the slot: it is the sixth card converting a Goblin death into damage and the only one that cannot point at a creature — strategy:deckbuilding.cutting, \"cut duplicated function before any uncovered class\".",
+      "natural_cut": "Boggart Shenanigans",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    },
+    {
+      "card": "Soul-Guide Lantern",
+      "role": "hate:graveyard",
+      "cmc": 1.0,
+      "type_line": "Artifact",
+      "evidence": {
+        "edhrec_rank": 1359,
+        "game_changer": false
+      },
+      "closes": "interaction-breadth",
+      "why": "Graveyard is the one permanent class no card in the 99 touches; one mana on turn one exiles a card on entry, and against a table with no graveyard seat it cashes out for {1} and a card instead of rotting in hand.",
+      "unlocks": "Class coverage — the measured breadth count goes from two answered classes to three, per strategy:deckbuilding.interaction-suite: \"Breadth before depth: three opponents mean every permanent type appears, so cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any\". Quest for the Goblin Lord is the slot: a one-mana enchantment that does nothing at all until it holds five quest counters.",
+      "natural_cut": "Quest for the Goblin Lord",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    },
+    {
+      "card": "Goblin Recruiter",
+      "role": "value:etb",
+      "cmc": 2.0,
+      "type_line": "Creature — Goblin",
+      "evidence": {
+        "edhrec_rank": 3370,
+        "game_changer": false
+      },
+      "why": "Two mana stacks the top of the library with any number of Goblins in the order you choose, and Conspicuous Snoop casts them off the top and borrows the activated ability of whichever one is showing — leave Krenko, Mob Boss on top and Snoop taps for tokens.",
+      "unlocks": "A tutor that is itself a Goblin: Warchief hastes it, Chieftain pumps it, Skirk Prospector eats it and Brightstone Ritual counts it. Moggcatcher is the slot — seven mana across two turns for one Goblin permanent, on a Human Mercenary that every Goblin anthem in the deck reads past. The tutor count does not move.",
+      "natural_cut": "Moggcatcher",
       "bracket_delta": {
         "before": 4,
         "after": 4
@@ -31,7 +73,7 @@
     },
     {
       "card": "Reiterate",
-      "role": "storm:copy (no taxonomy role)",
+      "role": "no taxonomy role",
       "cmc": 3.0,
       "type_line": "Instant",
       "evidence": {
@@ -41,7 +83,7 @@
               "Mana Geyser",
               "Reiterate"
             ],
-            "produces": "Infinite magecraft triggers; Infinite red mana; Infinite storm count",
+            "produces": "Infinite red mana; Infinite storm count; Infinite magecraft triggers",
             "status": "needs a stack scenario"
           },
           {
@@ -50,7 +92,7 @@
               "Seething Song",
               "Reiterate"
             ],
-            "produces": "Infinite colored mana; Infinite copies of instant and sorcery spells on the stack; Infinite power for any creature; Infinite magecraft triggers; Infinite storm count; Infinite Treasure tokens",
+            "produces": "Infinite colored mana; Infinite storm count; Infinite Treasure tokens",
             "status": "needs a stack scenario"
           },
           {
@@ -66,8 +108,62 @@
         "edhrec_rank": 2600,
         "game_changer": false
       },
-      "why": "Mana Geyser, Seething Song, Ruby Medallion and Storm-Kiln Artist are all already in the 99 — one pool card completes three separate infinite-flagged lines through the deck's existing ritual suite.",
-      "unlocks": "Buyback-copies any ritual mid-storm; even off-combo, copying Mana Geyser or Battle Hymn on the pivot turn (decision 002's fire-the-engine spot) roughly doubles the storm count.",
+      "why": "Mana Geyser, Seething Song, Ruby Medallion and Storm-Kiln Artist are all already sleeved, so one card sits at the end of three separate infinite-flagged lines — and off-combo, buyback-copying Mana Geyser on the pivot turn is the biggest single mana swing the deck can make.",
+      "unlocks": "Copies a ritual or a payoff mid-chain and returns to hand for {3}, so the same card raises the storm count twice. All three lines are candidates until a stack scenario settles them.",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    },
+    {
+      "card": "Jeska's Will",
+      "role": "ramp:ritual",
+      "cmc": 3.0,
+      "type_line": "Sorcery",
+      "evidence": {
+        "synergy_partners_in_deck": [
+          "Ruby Medallion"
+        ],
+        "edhrec_rank": 103,
+        "game_changer": true
+      },
+      "why": "With Zada on the battlefield you take both modes — {R} for each card in an opponent's hand plus three cards off the top playable this turn — and Ruby Medallion brings it down to {1}{R}, which is a turn-4 Empty the Warrens against a table still on three lands.",
+      "unlocks": "Ritual and fuel in one card, the shape the storm turn is short of. It is a Game Changer: the computed floor does not move, but the pilot should know it deepens the tier-4 read. Daring Discovery is the slot — five mana, and its \"up to three target creatures\" does not target only one creature you control, so neither Zada nor Frontline Heroism copies it.",
+      "natural_cut": "Daring Discovery",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    },
+    {
+      "card": "Deflecting Swat",
+      "role": "protection:redirect",
+      "cmc": 3.0,
+      "type_line": "Instant",
+      "evidence": {
+        "edhrec_rank": 76,
+        "game_changer": false
+      },
+      "closes": "protection",
+      "why": "Held for the turn you tap out to storm, it moves an opponent's removal spell off Zada or repoints their tutor trigger — and while you control Zada it costs no mana, which is exactly the turn you have none spare.",
+      "unlocks": "The single-use half of strategy:multiplayer.commander-insurance's taxonomy — \"single-use instants (cost held mana all game but protect at the decisive moment and can cover the board)\" — and the protection count goes from 2 to 3 without spending a permanent slot. Note the free cast needs Zada on the battlefield; from the command zone it is a {2}{R} instant.",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
+    },
+    {
+      "card": "Champion's Helm",
+      "role": "protection:self",
+      "cmc": 3.0,
+      "type_line": "Artifact — Equipment",
+      "evidence": {
+        "edhrec_rank": 761,
+        "game_changer": false
+      },
+      "closes": "protection",
+      "why": "It grants hexproof rather than shroud, so your own Crimson Wisps can still target the equipped Zada — which is why Lightning Greaves, cheaper and equip {0}, is the wrong equipment for a deck whose plan is targeting its own commander.",
+      "unlocks": "Constant protection for the copy hub at equip {1}, and it re-arms onto Krenko, Mob Boss, Grenzo, Havoc Raiser, General Kreat or Pashalik Mons — every one of them legendary. Taken with Deflecting Swat the protection count reads 4.",
       "bracket_delta": {
         "before": 4,
         "after": 4
@@ -84,6 +180,15 @@
             "cards": [
               "Krenko, Mob Boss",
               "Thornbite Staff",
+              "Goblin Bombardment"
+            ],
+            "produces": "Infinite creature tokens; Infinite damage; Infinite death triggers",
+            "status": "needs a stack scenario"
+          },
+          {
+            "cards": [
+              "Krenko, Mob Boss",
+              "Thornbite Staff",
               "Skirk Prospector"
             ],
             "produces": "Infinite creature tokens; Infinite damage; Infinite red mana",
@@ -93,170 +198,44 @@
             "cards": [
               "Krenko, Mob Boss",
               "Thornbite Staff",
-              "Goblin Bombardment"
-            ],
-            "produces": "Infinite creature tokens; Infinite damage; Infinite death triggers; Infinite ETB; Infinite LTB; Infinite sacrifice triggers",
-            "status": "needs a stack scenario"
-          },
-          {
-            "cards": [
-              "Krenko, Mob Boss",
-              "Thornbite Staff",
               "Goblin Trashmaster"
             ],
-            "produces": "Destroy all artifacts that enter the battlefield under an opponent's control; Destroy all artifacts opponents control; Infinite creature tokens; Infinite death triggers; Infinite ETB; Infinite LTB; Infinite sacrifice triggers; Lock",
+            "produces": "Infinite creature tokens; Infinite death triggers; destroy all artifacts opponents control",
             "status": "needs a stack scenario"
           }
         ],
         "edhrec_rank": 2607,
         "game_changer": false
       },
-      "why": "Stack 004 examined the combo graph's Krenko + Prospector 'infinite' in this deck and found it assumes Krenko is your commander; Thornbite Staff's death-untap on the equipped creature closes that loop with pieces the deck already runs and no command-zone assumption.",
-      "unlocks": "Equip Krenko ({4} — he is no Shaman), tap for tokens, Prospector sacrifices one, Krenko untaps: doubling tokens plus red mana, feeding the verified Impact Tremors damage engine (stack 002). Needs its own stack scenario before it is fact.",
+      "why": "Equipped Krenko untaps whenever a creature dies and Goblin Bombardment sacrifices for free, so the untap loop asks nothing of the command zone — where stack 004 found the popular Krenko line does, and terminates for this 99 because Zada is the commander.",
+      "unlocks": "A free-sacrifice untap engine on two cards already in the deck. Price it honestly: Krenko is a Warrior, so equip is {4} and the investment is six mana before the first untap. All three lines need a stack scenario.",
       "bracket_delta": {
         "before": 4,
         "after": 4
       }
     },
     {
-      "card": "Purphoros, God of the Forge",
-      "role": "value:etb",
-      "cmc": 4.0,
-      "type_line": "Legendary Enchantment Creature — God",
-      "evidence": {
-        "edhrec_rank": 664,
-        "game_changer": false
-      },
-      "why": "Stack 002 verified Empty the Warrens as the fourth spell dealing 8 to each opponent through Impact Tremors; Purphoros is a second, indestructible copy of that trigger at 2 damage per token — the same storm turn deals 24 per head instead of 8.",
-      "unlocks": "Redundancy for the deck's verified token-to-damage conversion, on a body sweepers and creature removal cannot touch while devotion stays low.",
-      "natural_cut": "Boggart Shenanigans",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Jeska's Will",
-      "role": "ramp:ritual",
-      "cmc": 3.0,
+      "card": "Seething Anger",
+      "role": "buff:pump",
+      "cmc": 1.0,
       "type_line": "Sorcery",
       "evidence": {
-        "edhrec_rank": 103,
-        "game_changer": true
-      },
-      "why": "With Zada on the field it is both modes: {R} per card in an opponent's hand plus impulse three — the single biggest storm-turn accelerant in the colour, and this deck's whole plan is one explosive pivot turn.",
-      "unlocks": "Ritual plus fuel in one card; a turn-4 Empty the Warrens for 10+ tokens becomes routine. It is a Game Changer — the computed floor stays 4, but the pilot should know it deepens the tier-4 read.",
-      "natural_cut": "Daring Discovery",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Temur Battle Rage",
-      "role": "wincon:combat",
-      "cmc": 2.0,
-      "type_line": "Instant",
-      "evidence": {
-        "edhrec_rank": 1412,
-        "game_changer": false
-      },
-      "why": "It targets only one creature, so cast on Zada it is copied to every attacker: team-wide double strike halves the board size the verified Fists of Flame lethal (stack 003) needs to close.",
-      "unlocks": "A one-card combat kill layer — mid-combat, after blocks, ten 1/1s hit for 20; stacked with a copied Fists of Flame the same swing is usually lethal to the table.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Aggravated Assault",
-      "role": "wincon:combat (no taxonomy role)",
-      "cmc": 3.0,
-      "type_line": "Enchantment",
-      "evidence": {
         "combo_lines_opened": [
           {
             "cards": [
-              "Skirk Prospector",
-              "Krenko, Mob Boss",
-              "Aggravated Assault"
+              "Zada, Hedron Grinder",
+              "Storm-Kiln Artist",
+              "Seething Anger"
             ],
-            "produces": "Infinite creature tokens; Infinite death triggers; Infinite ETB; Infinite LTB; Infinite sacrifice triggers; Infinite combat phases; Infinite red mana; Infinite untap of creatures you control; Infinite mana creatures you control can produce",
-            "status": "needs a stack scenario"
-          },
-          {
-            "cards": [
-              "Howlsquad Heavy",
-              "Aggravated Assault"
-            ],
-            "produces": "Infinite ETB; Infinite combat phases; Infinite red mana; Infinite creature tokens with haste; Infinite untap of creatures you control; Infinite mana creatures you control can produce",
+            "produces": "Infinite colored mana; Infinite magecraft triggers; Infinite storm count; Infinite Treasure tokens",
             "status": "needs a stack scenario"
           }
         ],
-        "edhrec_rank": 698,
+        "edhrec_rank": 13958,
         "game_changer": false
       },
-      "why": "Howlsquad Heavy's max-speed tap already makes {R} per Goblin, so five Goblins pay the {3}{R}{R} untap-and-extra-combat activation from creatures alone — a two-card combat engine with a piece the deck runs, filling the wincon shortfall the role budget flags.",
-      "unlocks": "Extra combats convert a wide board into wins without the storm count. Note the deck's own trap: Throne of Eldraine's mana is spells-only and cannot pay this activation.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Mana Echoes",
-      "role": "value:etb",
-      "cmc": 4.0,
-      "type_line": "Enchantment",
-      "evidence": {
-        "combo_lines_opened": [
-          {
-            "cards": [
-              "Skirk Prospector",
-              "Pashalik Mons",
-              "Mana Echoes"
-            ],
-            "produces": "Infinite colorless mana; Infinite creature tokens; Infinite damage; Infinite death triggers; Infinite ETB; Infinite LTB; Infinite red mana; Infinite sacrifice triggers",
-            "status": "needs a stack scenario"
-          }
-        ],
-        "edhrec_rank": 3948,
-        "game_changer": false
-      },
-      "why": "Every Goblin entering adds {C} per Goblin you control, so the verified Empty the Warrens turn (stack 002) pays for its own follow-up — eight tokens entering one at a time generate a rising flood of colorless for buybacks and Grapeshot recasts.",
-      "unlocks": "Storm mana that scales with the swarm, plus an infinite-flagged line with Prospector and Pashalik Mons, both already sleeved. Generic-heavy costs (buybacks, equip, activations) are the best sinks.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Deflecting Swat",
-      "role": "protection:self (no taxonomy role)",
-      "cmc": 3.0,
-      "type_line": "Instant",
-      "evidence": {
-        "edhrec_rank": 76,
-        "game_changer": false
-      },
-      "why": "The pivot trigger is Zada online with bodies and a cantrip; a spot-removal spell aimed at Zada in response undoes the whole turn, and Swat answers it for zero mana while every other resource is committed to the storm.",
-      "unlocks": "Free protection on the all-in turn — redirect the kill spell to another target, or retarget an opposing draw spell. Fills the protection shortfall the role budget flags without costing storm mana.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Sazacap's Brew",
-      "role": "draw:burst (tagged buff:pump off its conditional rider)",
-      "cmc": 2.0,
-      "type_line": "Instant",
-      "evidence": {
-        "game_changer": false
-      },
-      "why": "It targets a player, never only Zada, so it is storm fuel and card selection — one storm count plus draw-two at instant speed — not a copy payoff; its mandatory discard is the deck's cheapest way to bin Past in Flames or Wild Ride for later flashback and harmonize.",
-      "when": "Sleeve it against a creature-light pod (spellslinger, superfriends, stax) where Spreading Insurrection has nothing to steal — and never when an opponent runs graveyard exile, which turns the discard from deferred value into pure loss.",
-      "natural_cut": "Spreading Insurrection",
+      "why": "One red mana targeting a single creature is the cheapest payload Zada copies, and buyback {3} means the same card raises the storm count on every turn you can pay for it — a five-body board turns it into +3/+0 across the team for {R}.",
+      "unlocks": "A recurring Zada payload that Frontline Heroism also copies, and with Storm-Kiln Artist every copy mints a Treasure. Whether that pays for its own buyback is the question a stack scenario has to settle before the line is anything but a candidate.",
       "bracket_delta": {
         "before": 4,
         "after": 4
@@ -264,10 +243,10 @@
     }
   ],
   "gaps": [
-    "Every combo line the ten opens is unverified — a line is fact only once a stack artifact passes the checker. Highest-value scenario first: Seething Anger's loop arithmetic (Treasures per cast versus the {3}{R} buyback recast at N creatures — find N).",
-    "Aggravated Assault + Howlsquad Heavy assumes max speed is reached and five Goblins can tap; the start-your-engines timing needs a stack scenario before the two-card claim is presented as more than a lead.",
-    "The deck runs 36 lands against the provisional 36-land budget, so there is no land gap to argue about; the strategy corpus was not consulted for a storm-deck land floor either way.",
-    "sideboard-facts reports no EDHREC rank for Sazacap's Brew, so its popularity signal is absent; the keep case rests entirely on this deck's needs.",
-    "Underworld Breach is the full-step option beyond this ten — a Game Changer that rebuilds the storm from the graveyard alongside Past in Flames. It needs a graveyard-count plus Grapeshot stack scenario before it can be ranked honestly."
+    "The synergy graph carries a shortlist for nine of these ten cards and none of those shortlists names a card in this 99 — the one exception is Jeska's Will, whose shortlist includes Ruby Medallion and Blasphemous Act. Evidence here therefore rests on combo_details and oracle text, not on the synergy channel.",
+    "The obsolescence index lists none of these ten as a replacement for a deck card. Its entries for this deck point at cards whose specific text the deck is paid on — the index is format-agnostic and cannot know which side of a trigger you are on.",
+    "Reiterate's three lines, Thornbite Staff's three and Seething Anger's one are all candidates. Seven combo claims, zero verifications: /resolve-stack is what turns any of them into evidence.",
+    "How many protection slots to buy is unsettled. strategy:deckbuilding.threat-density asks for 5-7; strategy:deckbuilding.interaction-suite budgets \"2-4 protection generic\", under which 2 is already inside the band. One of the three engine targets is commander-gated and Deflecting Swat's free cast needs Zada on the battlefield, so the answer depends on what removal these tables actually run — a deck_recon pass would settle it.",
+    "Mana Echoes and Kiki-Jiki, Mirror Breaker both sit on in-deck combo lines and neither earned a slot: Mana Echoes is four mana that wants a board it does not build, and Kiki-Jiki's line with Conspicuous Snoop needs a third card to arrange the top of the library. If the pilot wants a twelfth and thirteenth card to watch, those are the two."
   ]
 }

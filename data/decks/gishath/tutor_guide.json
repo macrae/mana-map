@@ -1,136 +1,225 @@
 {
- "slug": "gishath",
- "assessment": "The table prices this seat off one number and stops thinking. Eight mana in the command zone, nothing scary until then. Do not correct them.\n\nThen go and read your own wish list, because half of it never mentions her. The enrage web runs on Dinosaurs entering, not on a commander connecting — stack 005 is the proof — so build that engine on the turns nobody is watching and let the 7/6 stay a rumour.\n\nLearn the delivery or you will misprice every wish you cast. Worldly Tutor, Congregation at Dawn, Enlightened Tutor and Forerunner of the Empire all put the card on TOP, one draw away. You are booking an appointment, not spending a card.\n\nThree of those four are instants, so cast them on the end step before your untap and the transit turn costs you nothing at all. Do that habitually and the reveal stops mattering.\n\nClock one is her arrival, and you should be buying it rather than waiting for it. She casts at a mean of turn 7.97 and shows up by turn six in only 8.3% of games, so when no reducer or cheat effect has appeared — and one shows by turn six in 56.2% of games — spend the wish there and nowhere else.\n\nClock two is the reveal, and it is the best exchange rate this deck offers. When she connects, every Dinosaur in the flipped cards hits the battlefield free; stack 001 turned one seven-damage swing into five bodies, three cards and a discover at six. Stack the top before combat and the flip stops being a gamble.\n\nSo stop treating a topdeck as a coin flip. Book the appointment, then keep the appointment.",
- "tutors": [
-  {
-   "card": "Worldly Tutor",
-   "targets": [
+  "slug": "gishath",
+  "assessment": "The table looks at eight mana in your command zone and files you under 'later'. Let them. You hold five wishes and only one of them is really about her.\n\nLearn what a wish buys before you spend one. Worldly Tutor, Congregation at Dawn, Enlightened Tutor and Forerunner of the Empire all put the card on TOP — you are booking an appointment for your next draw, not adding a card to hand. Three of the four are instants, so cast them at the end step before your untap and the appointment costs you nothing at all.\n\nNow the arithmetic that decides most of your wishes. She casts at a mean of turn 7.97 and arrives by turn six in 8.3% of games, and exactly two cards in this deck make a command-zone cast cheaper: Otepec Huntmaster and Urza's Incubator. Worldly Tutor and Congregation reach the first, Enlightened Tutor reaches the second, and no Dinosaur-only search reaches either. When turn six comes and neither has shown, spend the wish there and stop shopping.\n\nThe second engine does not need her at all. Five converters — Ripjaw Raptor, Polyraptor, Ranging Raptors, Trapjaw Tyrant, Wrathful Raptors — turn damage on your own board into cards, exile, lands and tokens, and they assemble in 60.8% of games at a mean of turn three. They convert nothing until a damage source is down, and Forerunner of the Empire is the only free repeatable one you own. So when the converters are already on the table, go and get the Human.\n\nThat is the whole discipline. Fetch the half you are missing, not the half that looks impressive. Book the appointment, then keep it.",
+  "tutors": [
     {
-     "scenario": "Turn two, end of an opponent's turn. Your hand is lands and mid-cost Dinosaurs with no acceleration in it. The table is developing quietly.",
-     "fetch": "Selvala, Heart of the Wilds",
-     "why": "Buy the clock before you buy anything to spend it on. One green at end of turn, draw her, cast her on turn three — her tap makes mana equal to your greatest power, so any five-power Dinosaur turns her into a rocket. This is the wish that drags a mean turn-8 commander forward by multiple turns, and the goldfish models no acceleration like her at all, so the number you are beating is already conservative."
+      "card": "Worldly Tutor",
+      "targets": [
+        {
+          "scenario": "End of the turn before your third, one green source up. Your hand is lands and four- and five-mana Dinosaurs, and nothing you control or hold makes a command-zone cast cheaper.",
+          "fetch": "Otepec Huntmaster",
+          "why": "Buy the discount before you buy anything to spend it on. Two cards in this deck cut the price of a command-zone cast and this is the one a creature tutor can reach — {1} off every Dinosaur spell you cast, plus a tap that hands any Dinosaur haste on the turn it lands. She casts at a mean of turn 7.97 and arrives by turn six in only 8.3% of games, so treat a missing reducer as the emergency and this as the answer. Wish at their end step, draw the Huntmaster, cast it on two mana and let it work for the next five turns.",
+          "citations": [
+            {
+              "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+              "quote": "a named card is 7.1% of your opening seven"
+            }
+          ]
+        },
+        {
+          "scenario": "A sweeper has just taken your board. You untap into six lands, one enrage converter still in your hand, and the table has already moved on to arguing about someone else's threat.",
+          "fetch": "Forerunner of the Empire",
+          "why": "Rebuild at two cards instead of eight plus a tax. This 1/3 is the only free repeatable damage source in the 99, and with it down every Dinosaur that enters offers you a ping that pays your converters — stack 005 banked five payoffs off one optional ping and left every one of your creatures alive. Recasting your commander costs eight and another {2} for every prior trip; this costs three. Take the cheap restart and let the eight-drop wait for a board that has already grown back.",
+          "citations": [
+            {
+              "rule": "strategy:resource-hedging.wrath-math",
+              "quote": "After the wrath, initiative goes to whoever rebuilds cheapest"
+            },
+            {
+              "rule": "strategy:mulligans.engine-hands",
+              "quote": "Payoffs without the enabler are blanks until the engine exists"
+            }
+          ]
+        },
+        {
+          "scenario": "You are ahead. Five bodies on the battlefield with Garruk's Uprising giving them trample, and the opponent to your left is at 14 with two 2/2s and no trick mana up.",
+          "fetch": "Ghalta, Primal Hunger",
+          "why": "Take the cheapest twelve power in the deck and end it. Ghalta costs ten less the total power of your creatures, and on the board goldfish gives you late — a mean of 5.07 bodies by turn ten — she is routinely two green mana for a 12/12 trampler. Wish at their end step, draw her, deploy on your untap and swing the same turn. When you are already ahead, buy damage, not options.",
+          "citations": [
+            {
+              "rule": "strategy:multiplayer.pivot-window",
+              "quote": "count the table's open mana before committing"
+            }
+          ]
+        },
+        {
+          "scenario": "Blasphemous Act is in your hand. Three opponents have committed wide — a dozen creatures across the table — and you are the player with the fewest bodies on it.",
+          "fetch": "Temple Altisaur",
+          "why": "This is not an enrage payoff and do not fetch it as one. It is a damage floor: any source dealing damage to another Dinosaur you control gets prevented down to 1, which is what turns a thirteen-point sweeper one-sided. Stack 004 resolved the whole line — Altisaur is not 'another Dinosaur' to itself, so it eats the unprevented thirteen and dies while your other Dinosaurs each take exactly 1 and live, and with Wrathful Raptors out the wreckage becomes sixteen damage at a player's face. Both halves land together on their own in 2.5% of games, so when you already hold one, tutoring the other is the only route there is. Cast the Altisaur first, sweep second.",
+          "citations": [
+            {
+              "rule": "strategy:resource-hedging.wrath-math",
+              "quote": "commit exactly as much as wins before it arrives, no further"
+            }
+          ]
+        }
+      ],
+      "notes": "The wish is revealed, so cast it at the last legal moment — their end step, not your main phase — and give the table one turn of warning instead of two. When your problem is mana rather than ignition, Selvala, Heart of the Wilds is the fetch instead: she taps for mana equal to your greatest power, and the deck's 5/5s make that a real acceleration."
     },
     {
-     "scenario": "You are behind. Two opponents have wide boards of tokens and small bodies, you hold eight lands and this tutor, and your next untap is the rebuild turn.",
-     "fetch": "Wakening Sun's Avatar",
-     "why": "Take the answer nobody expects from a beatdown deck. Top it, draw it, and cast it FROM HAND — that is the trigger condition — and every non-Dinosaur creature on the battlefield dies while your board stands. A one-sided apocalypse stapled to a 7/7 beats any blocker you were considering, so stop looking for a blocker."
+      "card": "Congregation at Dawn",
+      "targets": [
+        {
+          "scenario": "Your commander is on the battlefield and the player to your left has tapped low with no blocker worth respecting. It is their end step and you hold {1}{G}{W}.",
+          "fetch": "Polyraptor",
+          "why": "Stop treating the reveal as a coin flip and make it a certainty. Three known Dinosaurs on top means every card she flips free-rolls onto the battlefield — stack 001 turned one seven-damage connection into five new bodies, three Garruk's Uprising draws and a discover at six. Headline with Polyraptor and put Trapjaw Tyrant and Ripjaw Raptor behind it: an eight-drop, a five-drop and a four-drop for three mana and one connection, and three of your five converters arriving in a single combat step. Count their open mana before you swing, then swing.",
+          "citations": [
+            {
+              "rule": "strategy:multiplayer.pivot-window",
+              "quote": "count the table's open mana before committing"
+            }
+          ]
+        },
+        {
+          "scenario": "Two opponents have gone wide with tokens and small utility creatures, your board is three Dinosaurs, and you control three white sources with more mana than plays.",
+          "fetch": "Wakening Sun's Avatar",
+          "why": "Take the answer nobody expects from the beatdown seat. Top it, draw it and cast it FROM HAND — that is the trigger condition, so a reveal or a cheat effect gets you a 7/7 and nothing else — and every non-Dinosaur creature on the battlefield dies while your board stands. Count white before you wish: triple white off twenty total sources is the steepest colour ask in the deck, so only make this one when three white sources are already on the table. Stack Vaultborn Tyrant second and the following draw gains you three and replaces itself.",
+          "citations": [
+            {
+              "rule": "strategy:threat-assessment.answer-economy",
+              "quote": "killing the scariest creature instead of the one that beats you"
+            }
+          ]
+        },
+        {
+          "scenario": "You have five mana and a commander in the command zone you cannot yet cast. One opponent is holding up a sweeper's worth of mana every turn and you do not want your next board to depend on combat.",
+          "fetch": "Pantlaza, Sun-Favored",
+          "why": "Buy the payoff that keeps working the turn after a wipe. Pantlaza discovers X equal to the toughness of each Dinosaur that enters, once per turn, with no combat step and no eight mana attached — so a rebuilt board pays you immediately. Take two cards here rather than three: Pantlaza first, a fat Dinosaur second, and leave your third draw live. One sequencing rule from stack 001 that costs you real value if you forget it — when a Dinosaur enters alongside a token maker, let the discover resolve before the token enters or you take the small X instead of the big one."
+        },
+        {
+          "scenario": "The graveyard seat has been binning creatures for four turns and just cast their first reanimation spell. Nobody else at the table has an answer to a yard.",
+          "fetch": "Intrepid Paleontologist",
+          "why": "Go and get your only graveyard answer, because the deck has exactly one and it is this. {2} exiles a card from any graveyard, repeatable every turn, on a body that also taps for any colour and lets you cast your own exiled Dinosaurs. Do not bank this wish for a scarier-looking threat later — against a reanimator start the profitable moment is the turn before they get paid, not the turn after.",
+          "citations": [
+            {
+              "rule": "strategy:threat-assessment.answer-economy",
+              "quote": "the last profitable moment is now"
+            }
+          ]
+        }
+      ],
+      "notes": "You choose the order, so choose it as a schedule: card one is this turn's promise, cards two and three are your next two draws. It says up to three — take two whenever a live draw is worth more than a known one, and never stack a third card you would hate to topdeck with the game on fire."
     },
     {
-     "scenario": "Closing time. You have five bodies on the battlefield and you need one more haymaker to finish it.",
-     "fetch": "Ghalta, Primal Hunger",
-     "why": "Ghalta costs ten less the total power of your creatures, so on the board the goldfish gives you by turn ten — a mean of 5.07 bodies — she is routinely two green mana for a 12/12 trampler. This tutor is an instant, so wish at end of turn, draw, deploy and swing on the same untap. When you are already ahead, take the cheapest twelve power in the deck."
+      "card": "Enlightened Tutor",
+      "targets": [
+        {
+          "scenario": "Turn two or three with one white source up. Your hand is Dinosaurs at four and five mana, and no cost reducer has appeared.",
+          "fetch": "Urza's Incubator",
+          "why": "Fix the whole hand rather than the next card. Name Dinosaur and every Dinosaur spell costs {2} less across twenty-nine Dinosaur copies — your commander drops to six and the rest of your hand drops with her. This is the second of the only two cards in the 99 that discount a command-zone cast, and the artifact tutor is the only wish that reaches it. Against a mean cast turn of 7.97, buying two mana permanently is worth more than any single body you could fetch instead.",
+          "citations": [
+            {
+              "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+              "quote": "k tutors plus the card act like k+1 copies of *every* card"
+            }
+          ]
+        },
+        {
+          "scenario": "Turn one on the play with a white source and this in hand.",
+          "fetch": "Sol Ring",
+          "why": "Buy the earliest mana you will ever buy and do not overthink it. Goldfish gives you a mean 2.14 mana on turn two; Sol Ring makes it four and every turn after compounds off that. Cast the tutor at the end of turn one, draw the Ring on two, and let the whole curve slide forward a turn."
+        },
+        {
+          "scenario": "Mid-game, hand nearly empty after trading in an early skirmish, one four-power Dinosaur still on the battlefield.",
+          "fetch": "Garruk's Uprising",
+          "why": "Buy the grind instead of another body. It replaces itself the moment it enters with a four-power creature out, then draws on every four-power creature that enters afterwards — stack 001 counted three separate Uprising draws off one reveal — and the trample it grants turns their chump blocks back into damage. When the game is going long, keep your hand full and let the board rebuild itself."
+        },
+        {
+          "scenario": "The blue seat has held counter-mana for three turns running and has already eaten two of your threats on the stack. Your hand is full of Dinosaurs you cannot resolve.",
+          "fetch": "Belbe's Portal",
+          "why": "Stop casting spells at them. Resolve the Portal naming Dinosaur, and {3} plus a tap PUTS a Dinosaur from your hand onto the battlefield — no cast, nothing to counter, at instant speed on their end step. Mind which mana pays for it: Secluded Courtyard's clause explicitly permits activating an ability and does pay the {3}, while Unclaimed Territory is spells-only and will not. Let them hold the counter, then take your combat step."
+        }
+      ],
+      "notes": "This is your only wish that reaches a noncreature permanent, so do not spend it on a body a creature tutor could have found. Two more legitimate calls when the board demands them: Descendants' Path when your hand is empty and your board is not, and Mirari's Wake when the plan is one enormous turn."
     },
     {
-     "scenario": "Pantlaza's discover trigger is on the stack off a five-toughness Dinosaur. You hold one green mana and this tutor. The top of your library is unknown.",
-     "fetch": "Regisaur Alpha",
-     "why": "Cast the tutor in RESPONSE to the trigger and stop leaving the flip to chance. It resolves first, Regisaur Alpha goes on top, and discover five exiles it and casts it free — a 4/4, a 3/3 token and haste for the whole team, for one green mana. Control the timing and the discover stops being a lottery ticket."
+      "card": "Forerunner of the Empire",
+      "targets": [
+        {
+          "scenario": "Forerunner enters on turn four into an ordinary board — a couple of small creatures across the table, nothing pointed at you, and you expect to keep casting Dinosaurs every turn.",
+          "fetch": "Ripjaw Raptor",
+          "why": "Take the cheapest converter and start drawing. Ripjaw draws a card every time it is dealt damage and your own optional ping is the damage — stack 005 banked exactly that draw off one ping, with every one of your creatures surviving and the marks clearing at cleanup. Four mana turns every Dinosaur you cast afterwards into a cantrip, on a 4/5 that blocks the early board flat. This is the default and it should feel boring; make it anyway.",
+          "citations": [
+            {
+              "rule": "strategy:mulligans.engine-hands",
+              "quote": "Payoffs without the enabler are blanks until the engine exists"
+            }
+          ]
+        },
+        {
+          "scenario": "You are behind. One opponent has a suited-up creature two swings from eliminating you, your removal is spent, and Forerunner has just entered.",
+          "fetch": "Trapjaw Tyrant",
+          "why": "Install a turret, not a blocker. With Trapjaw on the battlefield every Forerunner ping exiles a creature an opponent controls until Trapjaw leaves — stack 005 put that exile on the record off one optional ping — so every Dinosaur you cast from then on is a removal spell with legs. Point the first exile at the fastest clock rather than the biggest creature, and hold a protection instant for Trapjaw, because the hostage walks home the moment it dies.",
+          "citations": [
+            {
+              "rule": "strategy:threat-assessment.answer-economy",
+              "quote": "killing the scariest creature instead of the one that beats you"
+            }
+          ]
+        },
+        {
+          "scenario": "Closing time. Forerunner is on the battlefield, you have eight mana available and one opponent is low enough that a wall of 5/5s finishes them next turn.",
+          "fetch": "Polyraptor",
+          "why": "Turn the dial and know exactly where it stops. Stack 003 resolved the real ceiling: a maximum of seven tokens, reached only by DECLINING one intermediate 'you may', six if you say yes to everything, and the chain self-terminates when Forerunner dies to its own third sweep. Every link is optional, so stop where the arithmetic peaks instead of riding it. Say it out loud at the table before you start — the databases file this pair as an infinite and the checker bounded it at seven, and you would rather have that conversation before the tokens than after.",
+          "citations": [
+            {
+              "rule": "strategy:multiplayer.pivot-window",
+              "quote": "count the table's open mana before committing"
+            }
+          ]
+        },
+        {
+          "scenario": "Forerunner enters on turn six or seven with a hand of expensive Dinosaurs and four lands on the battlefield. You have missed your last land drop.",
+          "fetch": "Ranging Raptors",
+          "why": "Turn the damage engine into a mana engine, which is the wish nobody at the table sees coming. Your land-drop rate falls to 52.6% by turn six, and once your drops dry up every ping puts a basic onto the battlefield tapped — stack 005 banked a Forest off a single ping. Nobody reads a 2/3 as ramp, and that is the point: take it when your hand is heavy and your lands are not, and let the next three Dinosaurs pay for themselves."
+        }
+      ],
+      "notes": "Budget for what Forerunner is: a Human Soldier running a Dinosaur company. The reveal never free-rolls him, the typal lands do not name him, and no Dinosaur-only search finds him — so when the web is your plan, Worldly Tutor and Congregation at Dawn are the only two couriers that can go and get the hub, and you should spend one of them on it rather than hoping. Opponents who read the board kill a 1/3 first and cheaply, so hold a board-wide instant for him: only the five protection spells cover a creature the tribal layers ignore, and one of them is in hand by turn six in 48.5% of games."
+    },
+    {
+      "card": "Huatli, Poet of Unity // Roar of the Fifth People",
+      "targets": [
+        {
+          "scenario": "Huatli enters on turn three off green and red mana, and you hold Trapjaw Tyrant and Wakening Sun's Avatar with a single white source on the battlefield.",
+          "fetch": "Plains",
+          "why": "Take the colour you are actually short. White runs fourteen land sources and twenty in total against a thirty-six-source yardstick — the thinnest of your three, behind green's twenty-six — and it comes on-curve only 58% of the time. Her search puts the basic in HAND, so it is a guaranteed land drop rather than a draw you might miss. Default here and only deviate when your hand argues otherwise.",
+          "citations": [
+            {
+              "rule": "strategy:mulligans.engine-hands",
+              "quote": "Payoffs without the enabler are blanks until the engine exists"
+            }
+          ]
+        },
+        {
+          "scenario": "You are two turns from casting your commander. Your lands make green and white comfortably and you control exactly one red source.",
+          "fetch": "Mountain",
+          "why": "Fetch the pip the plan is missing, not the pip you already own. She wants red, green and white all at once, and red sits at sixteen land sources and comes on-curve 58% of the time — it goes missing far more often than green does. Take the Mountain and get the eight-drop cast on schedule; a dead-on-colours turn eight beats a stranded turn seven every time."
+        },
+        {
+          "scenario": "Roar of the Fifth People reaches chapter three at your upkeep. The blue seat has held counter-mana every turn and your last two threats died on the stack.",
+          "fetch": "Carnage Tyrant",
+          "why": "Take the one they cannot touch. Chapter three puts any Dinosaur straight into your hand, and this one cannot be countered and has hexproof — so cast it into their open mana and let them keep the cards. One upkeep later chapter four hands your Dinosaurs double strike and trample, and fourteen uncounterable damage ends the control game. Stop playing around a counterspell and make them play around you.",
+          "citations": [
+            {
+              "rule": "strategy:threat-assessment.answer-economy",
+              "quote": "hold single-target removal until the threat is pointed at you"
+            }
+          ]
+        },
+        {
+          "scenario": "Chapter three triggers with three Dinosaurs already on the battlefield and chapter two turning your creatures into mana. One opponent is at 20 with two blockers.",
+          "fetch": "Ghalta, Primal Hunger",
+          "why": "Close it on a schedule you set three upkeeps ago. Ghalta costs ten less your creatures' total power, and chapter two's creature-mana pays whatever is left — so she lands the same turn you wish for her. Then chapter four gives everything double strike and trample, and a 12/12 with double strike is twenty-four damage through two blockers. Plan the flip so chapter four arrives on the turn you intend to swing, not a turn after it."
+        }
+      ],
+      "notes": "The real quest is the transformation, so pay the {3} and two hybrid at sorcery speed and start the countdown deliberately: two 3/3s, then creature-mana, then the Dinosaur wish, then double strike and trample on the whole board. On the land side, if Wayward Swordtooth is out the basic she hands you gets played the SAME turn as your normal drop — take a Forest there, because thirty-eight of your cards carry a green pip and it is never wasted."
     }
-   ],
-   "notes": "Every wish here is revealed, so the table sees Wakening Sun's Avatar coming a full turn out. Cast this at the last legal moment — their end step, not your main phase — and give them one turn of warning instead of two."
-  },
-  {
-   "card": "Congregation at Dawn",
-   "targets": [
-    {
-     "scenario": "Gishath is on the battlefield and the seat you want to attack has no profitable block. You are casting Congregation the night before the swing, or in the combat step itself.",
-     "fetch": "Polyraptor",
-     "why": "This is the signature play, so make it and stop hedging. Stack three Dinosaurs on top and her seven-damage reveal free-rolls all three — stack 001 is the proof of concept. Headline with Polyraptor and put Trapjaw Tyrant and Ripjaw Raptor behind it: that is the whole enrage web from stack 005 arriving in one combat step, an eight-drop and a five-drop and a four-drop for three mana and one connection."
-    },
-    {
-     "scenario": "A wrath just cost you the board. You will have eight mana next turn and the table smells blood.",
-     "fetch": "Wakening Sun's Avatar",
-     "why": "Counterattack on a schedule instead of recovering on hope. Top it, draw it, hand-cast it: every non-Dinosaur creature dies and you keep a 7/7. Stack Vaultborn Tyrant second so the following draw gains you three life and replaces itself. Congregation says up to three — here you want two known cards more than you want live draws, so take two and leave it."
-    },
-    {
-     "scenario": "Descendants' Path is on the battlefield, it is an opponent's end step, and your upkeep is next.",
-     "fetch": "Zacama, Primal Calamity",
-     "why": "Guarantee the reveal and take a nine-drop for free. Path reveals your top card at upkeep and casts it if it shares a type with your board — and because Path CASTS her, Zacama's untap-all-lands trigger fires, so you get a 9/9 with built-in removal and all your mana back before you have drawn for the turn. Three mana at instant speed does not buy more than that anywhere in this deck."
-    }
-   ],
-   "notes": "You choose the order of the three, so choose it deliberately: card one is this turn's promise and cards two and three are your next two draws. Never stack a third card you would be unhappy to topdeck in a fire."
-  },
-  {
-   "card": "Enlightened Tutor",
-   "targets": [
-    {
-     "scenario": "Turn one on the play, one white source, and a hand of lands and five-drops.",
-     "fetch": "Sol Ring",
-     "why": "Buy the earliest mana you will ever buy. The goldfish gives you a mean 2.14 mana on turn two; Sol Ring makes it four and every turn after compounds off that. Her mean cast turn is 7.97 and every early mana point is a direct attack on that number, so cast this at end of turn one and take the discount."
-    },
-    {
-     "scenario": "Mid-game, hand full of Dinosaurs, commander still in the zone. Your problem is that the whole hand is expensive, not that one card is wrong.",
-     "fetch": "Urza's Incubator",
-     "why": "Fix the hand, not the card. Name Dinosaur and every Dinosaur spell costs {2} less across a list carrying thirty-four bodies, which drops her to six mana and drops the rest of your hand with her. A reducer or cheat effect appears on its own by turn six in 56.2% of games — when it has not, this is the wish, so make it without agonising."
-    },
-    {
-     "scenario": "You are behind on cards after an early skirmish. One four-power body on the battlefield, hand thinning.",
-     "fetch": "Garruk's Uprising",
-     "why": "Buy the grind. It replaces itself on entry with a four-power creature out, then pays every time a big body lands — stack 001 shows a single reveal converting into three separate Uprising draws — and trample on the team turns their chump blocks back into damage. When the game goes long, keep your hand full instead of your board wide."
-    },
-    {
-     "scenario": "The blue seat has held counter-mana for three straight turns and already ate your Regisaur Alpha. Your hand is stocked and your spells keep dying on the stack.",
-     "fetch": "Belbe's Portal",
-     "why": "Stop casting spells at them. Resolve the Portal naming Dinosaur and {3} plus a tap PUTS a Dinosaur from your hand onto the battlefield — no cast, nothing to counter, at instant speed on their end step. Their held mana is paper from that moment, so watch them tap out and then take your combat step."
-    }
-   ]
-  },
-  {
-   "card": "Forerunner of the Empire",
-   "targets": [
-    {
-     "scenario": "Default. Forerunner enters on turn four, the board is developing, and nothing is pointed at you yet.",
-     "fetch": "Polyraptor",
-     "why": "Take the web's crown jewel while the table is bored. Stack 003 verified the whole line: Forerunner pings on each Dinosaur entering, each surviving Polyraptor copies itself, and every sweep is optional — the burst caps at seven tokens and you stop the chain wherever the arithmetic peaks. That is a dial, not a gamble, so turn it exactly as far as the board wants and no further."
-    },
-    {
-     "scenario": "Descendants' Path is on the battlefield and your upkeep is coming.",
-     "fetch": "Zacama, Primal Calamity",
-     "why": "Load the Path so the reveal cannot miss. Forerunner guarantees the top card is a Dinosaur, Path casts her for free, and because a Path cast is still a cast her untap-all-lands clause fires — a 9/9 with removal, life and enchantment hate at upkeep, mana refunded. Aim the Forerunner search at the Path, and let the Path do the paying."
-    },
-    {
-     "scenario": "You are behind. An opponent's Voltron creature is one swing from eliminating you and your removal is spent.",
-     "fetch": "Trapjaw Tyrant",
-     "why": "Install a turret rather than a blocker. Land it and every Forerunner ping exiles a creature an opponent controls — stack 005 puts exactly that exile on the record off one ping — so every Dinosaur you cast afterwards is a removal spell with legs. Point the first exile at the fastest clock at the table, not the biggest creature."
-    },
-    {
-     "scenario": "Gishath swings unblocked next turn and Forerunner has just entered. The reveal is coming.",
-     "fetch": "Vaultborn Tyrant",
-     "why": "Guarantee the first card she flips. Vaultborn hits the battlefield free off the reveal, gains you three, draws you a card, and its six power switches on every big-body payoff you have out — and when it dies it leaves a copy behind. The reveal was already good; spend the wish to make it certain."
-    }
-   ],
-   "notes": "Forerunner is a Human Soldier running a Dinosaur company, so budget for that: the reveal never free-rolls him, the typal lands do not name him, and no Dinosaur-only search finds him. When the web is your plan, Worldly Tutor and Congregation at Dawn are the only two couriers that can go and get the hub — spend one of them on it rather than hoping."
-  },
-  {
-   "card": "Huatli, Poet of Unity // Roar of the Fifth People",
-   "targets": [
-    {
-     "scenario": "Huatli enters on turn three and your hand is short a white source.",
-     "fetch": "Plains",
-     "why": "Take the colour you are actually short. White runs fourteen land sources against a thirty-six-source yardstick — the thinnest of your three, behind green's twenty and red's sixteen — and your steepest demand is Wakening Sun's Avatar at triple white, so default here and only deviate when your hand argues otherwise. Her search puts the basic in HAND, so it is a guaranteed land drop rather than a draw you might miss."
-    },
-    {
-     "scenario": "You are a turn or two from casting Gishath, your board makes green and white, and red is nowhere.",
-     "fetch": "Mountain",
-     "why": "Fetch the pip the plan is missing, not the pip you already have most of. She demands red, green and white exactly, and Trumpeting Carnosaur wants double red behind her — and red sits at sixteen land sources against a thirty-six-source yardstick, so it goes missing more often than green's twenty ever does. A dead-on-colours turn eight beats a stranded turn seven every time."
-    },
-    {
-     "scenario": "Roar of the Fifth People sits on chapter III at your upkeep. The blue seat has held counter-mana every turn and your last two threats died on the stack.",
-     "fetch": "Carnage Tyrant",
-     "why": "Take the one they cannot touch. Chapter III puts any Dinosaur straight into your hand, and Carnage Tyrant cannot be countered and has hexproof — so cast it into their open mana and let them hold the cards. One upkeep later chapter IV hands it double strike and trample, and fourteen uncounterable damage ends the control game."
-    },
-    {
-     "scenario": "Chapter III triggers with Forerunner of the Empire on the battlefield and chapter II already turning your creatures into mana.",
-     "fetch": "Polyraptor",
-     "why": "Close it. Chapter II's creature-mana pays the eight, Polyraptor entering hands Forerunner the dial from stack 003 — optional pings, self-copying raptors, stop where the arithmetic peaks — and chapter IV then gives every copy double strike and trample. You built the army and the kill turn off the same card, so plan the flip three upkeeps out and land chapter IV on the turn you swing."
-    }
-   ],
-   "notes": "The real quest is the transformation, so pay the {3} and two hybrid at sorcery speed and start the countdown deliberately: two 3/3s, then creature-mana, then the Dinosaur wish, then double strike and trample on everything. Two upgrades on the land side while you are counting: with Wayward Swordtooth out, the basic she puts in your hand gets played the SAME turn as your normal drop, so take a Forest there — thirty-eight of your cards carry green pips and it is never wasted."
-  }
- ],
- "gaps": [
-  "No wish here finds an instant or a sorcery, so the one-sided Blasphemous Act line — Temple Altisaur and Wrathful Raptors turning a wrath into sixteen at an opponent's face (stack 004) — can never be assembled on demand. Draw it or do not; when you draw it, protect it like the finisher it is.",
-  "Every creature wish is a delivery, not an arrival. Worldly Tutor, Congregation at Dawn and Forerunner of the Empire all put the card on TOP, one draw away, so against a table holding sweeper mana the wish can die in transit. Cast the instants at an end step and cut the exposure to zero turns; when you cannot, lean on Ripjaw Raptor and Curious Altisaur to draw you through it.",
-  "Forerunner of the Empire is the web's hub and a Human Soldier. The reveal never free-rolls him and no Dinosaur-only search reaches him, so when the web is the plan, commit Worldly Tutor or Congregation at Dawn to fetching him and do not spend both elsewhere.",
-  "Huatli's own search finds basic lands only. Treat her front face as fixing rather than as a wish, and wait for chapter III before you expect a Dinosaur out of her."
- ]
+  ],
+  "gaps": [
+    "No wish in this deck finds an instant or a sorcery. Blasphemous Act itself is unreachable, so the one-sided sweep can only ever be half-tutored — hold the Act and fetch Temple Altisaur, never the other way round. The same hole covers your protection: Flawless Maneuver, Akroma's Will, Heroic Intervention, Boros Charm and Eerie Interlude are in hand by turn six in 48.5% of games and no wish can change that number, so hold what you draw rather than spending it early.",
+    "Ignition is the axis your wishes cannot cover twice. Otepec Huntmaster and Urza's Incubator are the only cards that discount a command-zone cast; Worldly Tutor and Congregation reach the first, Enlightened Tutor reaches the second, and Forerunner and Huatli reach neither. If you have already spent both routes elsewhere, stop planning around the commander and play the enrage web instead.",
+    "Every wish here is a delivery, not an arrival. Worldly Tutor, Congregation at Dawn, Enlightened Tutor and Forerunner all put the card on TOP, one draw away, so against a table holding sweeper mana the wish can die in transit. Cast the three instants at an end step and cut the exposure to zero turns; when you cannot, lean on Ripjaw Raptor and Curious Altisaur to draw you through it.",
+    "Forerunner of the Empire is the hub of the web and a Human Soldier. No Dinosaur-only search reaches him and the reveal never free-rolls him, so when the web is the plan, commit Worldly Tutor or Congregation at Dawn to fetching him and do not spend both elsewhere.",
+    "Huatli's own entry search finds basic lands only. Treat her front face as fixing, not as a wish, and do not expect a Dinosaur out of her until chapter three — which means paying to transform her first and waiting three upkeeps. Start that countdown early or it never finishes."
+  ]
 }

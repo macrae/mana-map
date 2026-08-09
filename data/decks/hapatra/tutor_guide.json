@@ -1,165 +1,264 @@
 {
   "slug": "hapatra",
-  "assessment": "The table counts eight tutors and assumes you are hunting nineteen different kills. You are hunting one card. Stack 001 took the census: of the eight sacrifice outlets in this deck that cost no mana, exactly one — Yawgmoth, Thran Physician — also places a -1/-1 counter. He is the default wish almost everywhere in this book, and that is a strength rather than a rut.\n\nTrust the depth and stop hoarding. You draw a tutor in 78.0% of games at a mean of turn 2.695, so fire the first one at the first hole in the census instead of saving it for a clever turn that may never arrive.\n\nName the card knowing its delivery speed. Demonic Tutor, Diabolic Intent, Grim Tutor and Survival of the Fittest put the wish in your hand now. Vampiric Tutor, Imperial Seal and Worldly Tutor put it on TOP — those are appointments, not arrivals, so fire the two instants at the end step before your untap and cut the transit to nothing. Green Sun's Zenith is the only one that pays tempo rather than charging it.\n\nOne standing order for every entry below. Nothing here fetches on the promise of the Blowfly kill, because no checker has ever signed that line. Go and get Blowfly Infestation when the grind wants another counter source. Never go and get it as a two-card win.",
+  "assessment": "The table counts eight tutors and assumes you can find anything. Play like that is false, because it is. This library holds one card the deck cannot replace and almost no answers at all, so a wish here is a decision about which hole you are filling, not a blank cheque.\n\nThe scarce half is the counter SOURCE. Sacrifice outlets are everywhere — eight of them cost no mana — and exactly one of those also places a -1/-1 counter. That is Yawgmoth, Thran Physician, and he is the default wish in nearly every entry below. Fire the first tutor at that hole and stop hunting for something cleverer.\n\nKill one habit before you start. Do not send a tutor after an altar to loop with Mikaeus. Stack 001 checked all five — Ashnod's Altar, Phyrexian Altar, Viscera Seer, Carrion Feeder, Blasting Station — and each one gives you exactly one undying return and stops. With Mikaeus out, an altar activation is worth one extra death. Sequence it as one and never as a kill.\n\nThe line that actually loops is Mikaeus plus Devoted Druid, and here is the figure that should change how you play: you assemble it in one game in forty on your own, and roughly one game in three once a tutor is counted. So do not treat the tutor as a shortcut to that kill. The tutor IS that kill — when one half is on the board, spend the wish on the other half and stop waiting for a draw step to do it for you.\n\nTrust the depth and stop hoarding. You see a tutor in more than three quarters of your games, at a mean of turn 2.7, so cast the first one at the first hole instead of saving it for a clever turn that may never arrive.\n\nName the card knowing its delivery speed. Demonic Tutor, Diabolic Intent, Grim Tutor and Survival of the Fittest hand you the card now. Vampiric Tutor, Imperial Seal and Worldly Tutor put it on TOP — those are appointments, not arrivals — so fire the two instants at the end step before your untap and cut the transit to nothing. Green Sun's Zenith is the only one that puts a body straight onto the battlefield, and it shuffles itself back in, so spend it early without agonising.\n\nOne standing order for every entry below. Nothing here fetches on the promise of the Blowfly kill, because no checker has signed that line. Go and get Blowfly Infestation when the grind wants another counter source. Never go and get it as a two-card win.",
   "tutors": [
     {
       "card": "Demonic Tutor",
+      "notes": "Two mana, any card, no strings — and the only kind of wish here that can name a land. Point it at the hole and cast it; this is not the tutor you save.",
       "targets": [
         {
-          "scenario": "Turn 3. Hapatra landed on turn 2 — she does in 9,970 of 10,000 goldfish runs — a Snake or two on the board, and nothing in hand that places counters more than once.",
+          "scenario": "Turn 3. Hapatra came down on turn 2 as she does in almost every game, a Snake or two beside her, and nothing in hand places a counter more than once.",
           "fetch": "Yawgmoth, Thran Physician",
-          "why": "Take the default wish and take it now. Stack 001's census is blunt: of the eight sacrifice outlets that cost no mana, he is the only one that also places a counter, so he is a card, a removal ping and a Snake on every activation. Never aim that counter at the creature you are sacrificing — it is the ability's only target, so it goes illegal on resolution and you lose the counter and the draw together. Aim at something else, or choose no target at all and just take the card."
+          "why": "Take the default wish and take it now. Of the eight sacrifice outlets in this deck that cost no mana, he is the only one that also places a counter — that single asymmetry is the whole deck, and every activation of his is a card, a ping and a Snake. Never aim that counter at the creature you are sacrificing; stack 001 settled it as the ability's only target, so it goes illegal on resolution and you lose the counter and the draw together. Aim somewhere else, or choose no target at all and just take the card.",
+          "citations": [
+            {
+              "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+              "quote": "k tutors plus the card act like k+1 copies of *every* card."
+            },
+            {
+              "rule": "strategy:mulligans.engine-hands",
+              "quote": "Payoffs without the enabler are blanks until the engine exists"
+            }
+          ]
         },
         {
-          "scenario": "A free repeatable counter source is already running — Yawgmoth ticking, or the Druid loop live under Mikaeus — and three healthy life totals are the last thing between you and the game.",
-          "fetch": "Obelisk Spider",
-          "why": "Convert on placement, not on death, because placement is where your engine is loud. Stack 001 puts the Druid loop's steady state at four placements to one death per cycle, so the Spider drains the whole table four times where Zulaport Cutthroat drains it once. Take Cutthroat as the backup and rank Blood Artist under both — he bills one player."
+          "scenario": "Mikaeus, the Unhallowed is already on the battlefield and you have four mana untapped.",
+          "fetch": "Devoted Druid",
+          "why": "Fetch and cast in the same turn — two for the tutor, two for the Druid — so the loop is live before anyone gets a turn to answer the half you just showed them. Stack 001 signed this one: infinite deaths, placements, Snakes and drain, and explicitly not mana. It needs no haste, because the untap cost carries no tap symbol. Take the three green off the first pass, then run it as bodies and drain rather than as ramp."
         },
         {
           "scenario": "You are behind. Two wide boards across the table, your engine half-built, and real damage arriving next rotation.",
           "fetch": "Black Sun's Zenith",
-          "why": "Fetch the rebuild rather than the reset. X counters on each creature triggers Hapatra once per creature, fills Nest of Scarabs, and hands Necroskitter every opposing creature that dies carrying one — so you come out of your own sweeper wider than you went in. Your 1/1s die too, and you should be happy about it: you already banked the trigger. It shuffles itself back in, so spend it and know you can find it again."
+          "why": "Fetch the rebuild, not the reset. Counters on each creature trigger Hapatra once per creature, fill Nest of Scarabs, and hand Necroskitter every opposing creature that dies carrying one — you come out of your own sweeper wider than you went in. Your 1/1s die too and you should be delighted, because you already banked the triggers. Take Toxic Deluge instead only when you need the board gone regardless of value: it places nothing and pays you nothing."
+        },
+        {
+          "scenario": "A reanimator or graveyard seat is the actual problem — recursion every turn cycle, and killing the body has stopped meaning anything.",
+          "fetch": "Abstergo Entertainment",
+          "why": "Go and get a land, and do not feel strange about it. Your interaction answers creatures and nothing else, this is the one card in the 99 that touches a graveyard, and an unrestricted wish is the only thing that can name it. Budget the whole cost before you commit: the land, three mana and the land itself going to exile. Fire it before you need Phyrexian Reclamation or Eternal Witness, because it empties your yard along with theirs."
         }
-      ],
-      "notes": "Two mana, any card, no strings. This is the tutor you never save — point it at the census hole and cast it."
+      ]
     },
     {
       "card": "Diabolic Intent",
+      "notes": "The sacrifice is a cost, not a drawback — with a drain converter out you get paid to tutor. Run the death through your payoffs before you cast it, not after.",
       "targets": [
         {
-          "scenario": "Turn 3 with Hapatra out and a spare Snake standing around. Grim Haruspex or Blood Artist on the board makes it sweeter.",
+          "scenario": "Turn 3, Hapatra out, a spare Snake standing around, and Blood Artist or Grim Haruspex already on the battlefield.",
           "fetch": "Yawgmoth, Thran Physician",
-          "why": "Pay the additional cost with a body whose death already pays you. Sacrifice the Snake, collect the death triggers, take the one enabler the census says matters — the same wish as Demonic Tutor at roughly no cost. Sequence the sacrifice through your payoffs before you cast it, not after."
+          "why": "Same wish as Demonic Tutor at effectively no cost. Feed it a token whose death already pays you and take the one enabler the deck cannot replace. Check the order first — Bastion of Remembrance, Zulaport Cutthroat, Blood Artist and Morbid Opportunist all want to be on the battlefield before that Snake dies, so deploy them and tutor second."
         },
         {
-          "scenario": "Devoted Druid is on the battlefield and you have counted the table's creature removal and watched it get spent elsewhere.",
+          "scenario": "Devoted Druid has survived a turn on the battlefield, you are one land drop from six mana, and the table's creature removal has been counted and spent elsewhere.",
           "fetch": "Mikaeus, the Unhallowed",
-          "why": "This is the closing wish, so schedule it like one. Mikaeus plus Devoted Druid is the deck's one verified true two-card infinite (stack 001): infinite deaths, placements, Snakes and drain, and explicitly not mana. He costs six against a mean 6.150 available on turn six, so fetch him on turn five and cast him on turn six rather than hoping both fit in one turn."
+          "why": "Fetch him the turn BEFORE you can cast him. He costs six and you only reach six mana around turn six, so trying to tutor and cast in one turn is how the attempt slips a full rotation and hands three players a draw step to find an answer. Present the second half only once you have counted open mana at every seat.",
+          "citations": [
+            {
+              "rule": "strategy:multiplayer.pivot-window",
+              "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
+            }
+          ]
         },
         {
-          "scenario": "You are one untap from the pivot and a single open answer would break the attempt.",
-          "fetch": "Heroic Intervention",
-          "why": "Buy the turn, and only the turn you actually go — hexproof and indestructible beat a targeted answer and a destruction wrath in the same breath. Do not lean on it against a Toxic Deluge effect: whether it saves a creature being killed by toughness reduction is an open question that deserves its own stack scenario, so play as if it does not."
+          "scenario": "A control seat has held up four or more mana for two turns — assume the sweeper — and your board is wide.",
+          "fetch": "Bastion of Remembrance",
+          "why": "Fetch the converter that survives the wrath. It drains each opponent whenever a creature you control dies, so their sweeper becomes your table-wide hit, and an enchantment sits out of range of every creature removal spell they are holding. Zulaport Cutthroat does the same job on a body that dies to that same wrath — take Bastion when the sweeper is the read."
         }
       ]
     },
     {
       "card": "Green Sun's Zenith",
+      "notes": "It shuffles itself back in, so spending it at X=1 on turn 1 costs you nothing you cannot find again. It is also the only wish that puts a body onto the battlefield, which is why the enter trigger matters here and nowhere else. Know its ceiling: green creatures only, so it can never name Yawgmoth, Mikaeus or Walking Ballista, and it is never your closing wish.",
       "targets": [
         {
-          "scenario": "Turn 1, one green mana, an ordinary hand.",
+          "scenario": "Turn 1, one green source, an otherwise ordinary hand.",
           "fetch": "Llanowar Elves",
-          "why": "Cast it for X equals one and buy yourself a bigger turn 2. Hapatra already lands on turn 2 in 9,970 of 10,000 runs; this is how she lands with company instead of alone. Take Birds of Paradise instead when your colours are awkward."
+          "why": "Cast it for one and buy a bigger turn 2. Hapatra lands on turn 2 in nearly every game regardless; this is how she lands with company instead of alone, and it turns your turn 3 into a four-mana turn. Take Birds of Paradise instead when your black sources are the thin half of the hand."
         },
         {
-          "scenario": "Mikaeus, the Unhallowed is on the battlefield. Any table, any turn.",
+          "scenario": "Mikaeus, the Unhallowed is on the battlefield and you have three mana available.",
           "fetch": "Devoted Druid",
-          "why": "Deploy the combo piece straight onto the battlefield for X equals two and skip the turn you would otherwise spend holding it — this is the only tutor in the book that does that. The loop needs no haste: the untap cost carries no tap symbol, so summoning sickness never touches it. Stack 001 has three green on the first pass and zero after, so take the mana once and then play the loop as deaths, Snakes and drain."
+          "why": "This is the best card Zenith casts in this deck. It puts the verified other half straight onto the battlefield at X=2, so there is never a turn where you sit holding the Druid and telegraphing the kill. Take the three green from the first pass and then play the loop as deaths, Snakes and drain — stack 001 is explicit that it is not a mana loop."
         },
         {
-          "scenario": "A counter engine is running and the board needs to become a clock.",
+          "scenario": "A repeatable counter source is already running and the board needs to become a clock.",
           "fetch": "Obelisk Spider",
-          "why": "Go get the drain at X equals three, and remember most tables forget Zenith reaches it. Every placement drains each opponent — four per Druid cycle off stack 001's steady state — and nobody points removal at a Spider until it is far too late."
+          "why": "Buy the drain that triggers on placement rather than on death, because placement is where your engine is loud — it hits every opponent every time a counter goes anywhere. Most tables forget Zenith reaches X=3, and nobody points removal at a Spider until it is far too late."
+        },
+        {
+          "scenario": "Your sweeper or your best tutor is in the graveyard, the game has gone long, and you have four mana.",
+          "fetch": "Eternal Witness",
+          "why": "Zenith puts her onto the battlefield, so the enter trigger happens immediately — that is the whole difference between this tutor and Worldly Tutor, which would only put her on top of your library. Buy back Demonic Tutor or Black Sun's Zenith and collect a sacrifice body in the same card."
         }
-      ],
-      "notes": "Zenith shuffles itself back in, so spending it early costs you nothing but the mana. Cast it at X equals one on turn 1 without agonising; the deck can find it again."
+      ]
     },
     {
       "card": "Grim Tutor",
+      "notes": "Three mana and three life for a card you could have had for two. Cast it when the hole is genuinely the enabler, and remember this deck already bills you through Yawgmoth, Bitterblossom, Phyrexian Reclamation, The One Ring and three painlands.",
       "targets": [
         {
-          "scenario": "Turn 3-4, no repeatable counter source in hand, and the cheaper tutors are spent or absent.",
+          "scenario": "Turn 3 or 4, no repeatable counter source in hand, and the cheaper tutors are spent or absent.",
           "fetch": "Yawgmoth, Thran Physician",
-          "why": "Pay the three life for the enabler and never for a luxury. The surcharge is real in a deck that already bills you through Yawgmoth, Bitterblossom, Phyrexian Reclamation and three painlands, so cast this one on the turn the census hole is genuinely the enabler."
+          "why": "Pay the three life for the enabler and never for a luxury. You are buying the one card the census says has no replacement, and that is the only purchase worth this price. If the hand already contains a counter source, hold this and cast a body instead."
         },
         {
-          "scenario": "The engine is running, bodies are flowing, and your hand is empty.",
+          "scenario": "The engine is running, bodies are flowing, and your hand is empty while you top-deck.",
           "fetch": "Skullclamp",
-          "why": "Fetch the card that turns your board back into a grip. Every Snake, Insect, Faerie and Elf Warrior is a 1/1, so this is pay one, draw two, on repeat. When the board is ahead of the hand, take the engine over any single spell you could name instead."
+          "why": "Fetch the card that turns your board back into a grip. Every Snake, Insect, Faerie and Elf Warrior is a 1/1, so equipping is pay one, draw two, over and over. When the board is ahead of the hand, take the engine over any single spell you could name instead."
+        },
+        {
+          "scenario": "The game is long, your mana is untapped, and the cards left in your hand are creatures you no longer need.",
+          "fetch": "Survival of the Fittest",
+          "why": "Spend one wish to buy a repeatable one. This is the single time paying three mana and three life for a two-mana enchantment is right: you are not buying a card, you are buying every remaining tutor the game will ask you for, and your dead creature cards become the fuel.",
+          "citations": [
+            {
+              "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+              "quote": "k tutors plus the card act like k+1 copies of *every* card."
+            }
+          ]
         }
       ]
     },
     {
       "card": "Imperial Seal",
+      "notes": "Sorcery speed, and the wish arrives on your next draw. That makes it an early-game card and a scheduling tool — cast it before the game has a shape, never at the pivot, or you announce the pivot a full turn in advance.",
       "targets": [
         {
-          "scenario": "Turn 1 or 2, before the game has taken shape. It is sorcery speed and the wish arrives on your next draw, so it wants to be cast early rather than at the pivot.",
+          "scenario": "Turn 2, board empty, and nothing in hand places counters more than once.",
           "fetch": "Yawgmoth, Thran Physician",
-          "why": "Schedule the enabler; do not spend the Seal like a real tutor. Cast it on turn 2 and Yawgmoth is in hand on turn 3 and on the battlefield turn 4, on curve, for two life you barely notice that early. Fire it late and you have announced the pivot a full turn out and handed the table a draw step to answer it."
+          "why": "Schedule the enabler. Cast the Seal on turn 2, hold him on turn 3, deploy him on turn 4 on curve, for two life you will not feel that early. Do this and the Seal costs you a draw step nobody was watching; do it on turn 6 and it costs you the surprise."
         },
         {
-          "scenario": "A wrath is coming — a control seat is holding up mana, your board is wide, and your untap is the rebuild turn.",
-          "fetch": "Black Sun's Zenith",
-          "why": "Put the rebuild on top the night before and stop guessing. If the wrath comes, you untap into counters on each creature, a Snake per creature, food for Nest of Scarabs and a collection for Necroskitter. If it does not come, you cast the table's best sweeper on your schedule instead of theirs."
+          "scenario": "Turn 4 or 5, Devoted Druid or Walking Ballista already on the board, and the game is plainly going long.",
+          "fetch": "Mikaeus, the Unhallowed",
+          "why": "Let the Seal's slowness be free. He costs six and you reach roughly six mana on turn six, so name him a turn early and the transit costs you nothing you were going to spend. Then hold him until the table's answers are counted rather than casting him the moment the mana exists.",
+          "citations": [
+            {
+              "rule": "strategy:multiplayer.pivot-window",
+              "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
+            }
+          ]
+        },
+        {
+          "scenario": "Turn 1 on the play, a Swamp down, and a hand that already contains a counter source.",
+          "fetch": "Bitterblossom",
+          "why": "The odd one: name the enchantment nobody expects a tutor to find. A body every upkeep for one life feeds Skullclamp, feeds every sacrifice outlet, pays Diabolic Intent's cost forever and makes your first four turns cheap to survive. Take it only when the enabler is already handled — the source outranks the fodder every single time."
         }
       ]
     },
     {
       "card": "Survival of the Fittest",
+      "notes": "The most powerful card in this section, because it is the only wish you get more than once — and it reveals. After the second activation the table knows exactly what you are assembling, so spend your protection or your politics from that moment, not after the third.",
       "targets": [
         {
-          "scenario": "Any turn with {G} open and a spare creature card in hand — a dork whose job is done, a redundant body.",
+          "scenario": "Any turn with a green source open and a creature card in hand you no longer need — a spent mana dork, a redundant body.",
           "fetch": "Yawgmoth, Thran Physician",
-          "why": "Activate on the first turn you can and take the census answer, every time. The discard barely registers with Phyrexian Reclamation and Eternal Witness in the 99 to buy the card straight back. This is the most powerful card in the section because it is the only one that grants a wish more than once."
+          "why": "Activate on the first turn you can and take the census answer every time. The discard barely registers here: Phyrexian Reclamation buys a creature back for two mana and two life, and Eternal Witness buys the card back with a body attached. Do not save the activation for a better idea — you get another one next turn.",
+          "citations": [
+            {
+              "rule": "strategy:mulligans.engine-hands",
+              "quote": "Payoffs without the enabler are blanks until the engine exists"
+            }
+          ]
         },
         {
-          "scenario": "Late game, six-plus mana in sight, the table's removal counted and already spent.",
+          "scenario": "Late game, six mana in sight, and the table's creature removal has been counted and already spent.",
           "fetch": "Mikaeus, the Unhallowed",
-          "why": "Assemble across two activations rather than praying for a draw: Mikaeus now, Walking Ballista next. That package plus any free outlet is verified genuinely unbounded (stack 001), and it is three cards because Mikaeus's anthem keeps a counterless Ballista alive at 1/1 — so the outlet does the recycling. You already have eight of those."
+          "why": "Assemble across two activations instead of praying for a draw: Mikaeus now, Walking Ballista next turn. Stack 001 verified that package with any free outlet as genuinely unbounded, and it needs three cards rather than two because the anthem keeps a counterless Ballista alive — the outlet does the recycling the Ballista cannot do for itself. You own eight free outlets, so that third piece is the one you never have to look for."
         },
         {
-          "scenario": "A creature table is going wide and Black Sun's Zenith is in your hand.",
+          "scenario": "A creature deck is going wide across the table and Black Sun's Zenith is already in your hand.",
           "fetch": "Necroskitter",
-          "why": "Turn their board into yours: every creature an opponent controls that dies with a -1/-1 counter on it comes back under your control. Take the honest label with it — that read is oracle text with no stack scenario behind it, so plan around it and never promise it to yourself in a turn you have to win."
+          "why": "Turn their board into yours. Every creature an opponent controls that dies with a -1/-1 counter on it comes back under your control, and your sweeper puts a counter on every creature at once. Cast the Zenith for exactly enough — X of one collects every 1/1 they have and costs you the least of your own board."
+        },
+        {
+          "scenario": "A blue seat is untapped with a wheel or a big draw spell, and you have one green open plus a creature card you can bear to lose.",
+          "fetch": "Orcish Bowmasters",
+          "why": "Activate on their turn and answer the problem after it starts — no other tutor in this deck can do that. Survival puts the card in your hand immediately and Bowmasters has flash, so the extra draws cost them life and hand you an Army to sacrifice. Hold the green up whenever a draw seat is untapped and you have fodder to spare."
         }
-      ],
-      "notes": "Survival reveals each fetch. After the second activation the table knows exactly what you are assembling, so budget protection or politics from that moment rather than after the third."
+      ]
     },
     {
       "card": "Vampiric Tutor",
+      "notes": "Instant speed, two life, and it costs you your draw step. Fire it at the end step before your untap so the card is on top for your draw and nobody gets a turn to act on what you just told them.",
       "targets": [
         {
-          "scenario": "End step of the opponent before you, turn 2-3, engine incomplete.",
+          "scenario": "The end step of the opponent before you, turn 2 or 3, engine incomplete.",
           "fetch": "Yawgmoth, Thran Physician",
-          "why": "Fire it at the last legal moment and the top card is yours before anyone can act on the information — zero turns in transit, which is the entire card. It costs two life and your draw step, so spend it on the turn the answer matters and never on curiosity."
+          "why": "Fire it at the last legal moment and the wish is yours before anyone can respond to the information — zero turns in transit, which is the entire card. Spend it on the turn the answer matters and never on curiosity, because you are paying a draw step for it.",
+          "citations": [
+            {
+              "rule": "strategy:tempo.sequencing",
+              "quote": "prefer committing at the end step before your own turn so the table's chances to respond are spent"
+            }
+          ]
         },
         {
-          "scenario": "You are behind, the aggro seat is lethal-adjacent, and rebuilding is not going to be enough.",
+          "scenario": "The aggro seat is lethal-adjacent to somebody, your blockers do not stop it, and rebuilding will not be enough.",
           "fetch": "Toxic Deluge",
-          "why": "Reach for the panic button and sequence it as one. It places no counters, so Hapatra, Nest of Scarabs and Necroskitter all give you nothing — cast it for the board, not for value. Tutor at their end step so Deluge is in hand for your main phase, and pay the X out of a life total this deck already spends freely."
+          "why": "Reach for the panic button and sequence it as one. Deluge places no counters, so Hapatra, Nest of Scarabs and Necroskitter give you nothing — cast it for the board, not for value, and pay the life out of a total this deck spends freely anyway. Tutor at their end step so it is in hand for your main phase.",
+          "citations": [
+            {
+              "rule": "strategy:threat-assessment.answer-economy",
+              "quote": "spending removal on sight instead of at the last profitable moment"
+            }
+          ]
         },
         {
-          "scenario": "A counter source is online, the pivot is next turn, and the kill needs a table-wide clock.",
-          "fetch": "Obelisk Spider",
-          "why": "Put it on top tonight, cast it for three tomorrow, and drain every opponent on every placement from then on — four per cycle on the Druid loop. Prefer it to Mikaeus when you want the clock without the attention; nobody holds up removal for a Spider."
+          "scenario": "Mikaeus is on the battlefield with any free sacrifice outlet, and you can spare two mana next turn.",
+          "fetch": "Walking Ballista",
+          "why": "Name the third card and win. Stack 001 verified this one as genuinely unbounded and it needs no drain payoff at all: cast the Ballista with a counter, remove it for a damage, sacrifice the 1/1 to the outlet, undying returns it with a counter, remove that one, repeat. It needs the outlet precisely because Mikaeus's anthem keeps a counterless Ballista alive — it never gets to kill itself."
+        },
+        {
+          "scenario": "Turn 5 or later, four mana you can hold up, and one opponent's commander is the reason your creatures keep dying.",
+          "fetch": "Talon Gates of Madara",
+          "why": "Name a land and hold a trick nobody at this table is playing around. You can put it onto the battlefield from your hand for four at instant speed, no land drop required, and its arrival phases out a creature — theirs, to blank an attacker, or yours, to walk Yawgmoth out from under a wrath or a targeted kill. Buy the turn and know what you bought: it comes back on its controller's untap step, so this is a tempo answer, not a removal spell. It is the closest thing to a counterspell this library contains.",
+          "citations": [
+            {
+              "rule": "702.26b",
+              "quote": "Except for rules and effects that specifically mention phased-out permanents, a phased-out permanent is treated as though it does not exist."
+            },
+            {
+              "rule": "702.26a",
+              "quote": "Simultaneously, all phased-out permanents that had phased out under that player’s control “phase in.”"
+            }
+          ]
         }
       ]
     },
     {
       "card": "Worldly Tutor",
+      "notes": "One green mana at instant speed, and the reveal is public. Fire it on the end step before your untap so the card is in hand on your turn and the table has no window to act on what it just saw.",
       "targets": [
         {
-          "scenario": "Turn 2, end of turn, one mana open, no counter source in hand.",
+          "scenario": "Turn 2 or 3, one green open at the end of the turn before yours, no counter source in hand.",
           "fetch": "Yawgmoth, Thran Physician",
-          "why": "One mana at instant speed for the enabler, so fire it on the end step before your untap and the exposure is zero. The reveal is public: the table watches him coming, so hold a second body ready and expect the removal on the turn he lands."
+          "why": "Cheapest possible route to the card that matters, so take it and plan for the consequence. The reveal tells three players he is coming: hold a second body, keep Heroic Intervention up if you have it, and do not tap out on the turn he lands.",
+          "citations": [
+            {
+              "rule": "strategy:tempo.sequencing",
+              "quote": "prefer committing at the end step before your own turn so the table's chances to respond are spent"
+            }
+          ]
         },
         {
-          "scenario": "Mikaeus, the Unhallowed is on the battlefield with any free outlet — Ashnod's Altar, Viscera Seer, Carrion Feeder, take your pick of the eight.",
+          "scenario": "Mikaeus resolved this turn and survived, and you untap into three mana.",
+          "fetch": "Devoted Druid",
+          "why": "Name the other half of the only verified two-card loop in the deck. Draw it, cast it, and go on the same turn — it needs no haste, because the untap cost carries no tap symbol, which is exactly what makes this reveal worth the telegraph."
+        },
+        {
+          "scenario": "No engine yet, and the problem is a single small body — a mana dork, an Orcish Bowmasters, an opposing enabler.",
           "fetch": "Walking Ballista",
-          "why": "Close the game: Mikaeus plus Ballista plus a free outlet is verified unbounded at one damage a pass, no drain payoff required (stack 001). Remember why it needs the third card — the anthem keeps a counterless Ballista alive at 1/1, so the outlet does the recycling and the Ballista never gets to kill itself."
-        },
-        {
-          "scenario": "Targeted removal just clipped your enabler and the tutor that found him is in the graveyard.",
-          "fetch": "Eternal Witness",
-          "why": "Buy the card back and get a body doing it. Witness returns the tutor or the answered piece to your hand and is herself sacrifice fodder afterwards — two wishes for one draw step, and the second one is private."
+          "why": "Take the removal that is also a combo piece: it costs exactly the mana you can spare, kills the thing now, and stays on the board as the third piece of the Mikaeus kill later. Do not expect a Snake out of it — it deals damage rather than placing counters, so Hapatra sits this one out."
         }
       ]
     }
   ],
   "gaps": [
-    "Every default wish is the same card and the table learns that fast. Yawgmoth dies on sight against anyone competent, so decide your second fetch before the first one resolves. Devoted Druid under Mikaeus is the verified backup engine and Phyrexian Reclamation buys Yawgmoth back for {1}{B} and two life.",
-    "Three of these eight deliver to the top of your library, so the wish can die in transit to held interaction. Fire Vampiric Tutor and Worldly Tutor at the end step before your untap to cut the exposure to nothing, and treat the sorcery-speed Imperial Seal as an early-game card only.",
-    "No tutor here finds an artifact or enchantment answer, because none exists to find. Against a resolved prison piece the library has nothing for you — race, politick, or borrow somebody else's removal. These wishes make you faster; they cannot make you broader.",
-    "Point them at the engine and take the number the goldfish puts on it: modelled as wildcards, these eight take 'Mikaeus plus a free outlet' from 9.5% of games to 50.4%. They also take the Blowfly pairing from 16.3% to 66.7%, and you should refuse that trade every time — no checker has signed the line, so a tutor pointed at it is a card spent on a maybe."
+    "Every default wish in this book is the same card, and a table that watches you fetch Yawgmoth once will kill him on sight. Decide your second wish before the first one resolves: Devoted Druid under Mikaeus is the verified backup engine, and Phyrexian Reclamation buys Yawgmoth back for two mana and two life.",
+    "Three of these eight deliver to the top of your library, so the wish can be answered before it ever arrives. Fire Vampiric Tutor and Worldly Tutor at the end step before your untap, and treat Imperial Seal as an early-game card only.",
+    "No tutor here can find an artifact or an enchantment answer, because the library holds none — your interaction covers one class of five and it is creatures. The only breadth on this whole fetch list is two lands: Abstergo Entertainment against a graveyard, Talon Gates of Madara against one creature. Against a resolved prison piece the tutors are blank, so race it or politick it, and say which on turn one.",
+    "Do not spend a wish on an altar to loop with Mikaeus. Ashnod's Altar, Phyrexian Altar, Viscera Seer, Carrion Feeder and Blasting Station each give exactly one undying return with him out — stack 001 checked all five. Sacrificing to a free altar under Mikaeus is one extra death of value, and it should be sequenced as one.",
+    "Nothing in this section fetches on the promise of the Blowfly kill, the Ivy Lane pairings or Scurry Oak, because no checker has signed those lines. Go and get Blowfly Infestation when the grind wants another counter source, take the kill if the table hands it to you, and never build a turn around it.",
+    "Green Sun's Zenith cannot name Yawgmoth, Mikaeus or Walking Ballista — green creatures only. It is your tempo tutor and your cheapest one, and it is never the wish you close with."
   ]
 }

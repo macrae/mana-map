@@ -1,60 +1,30 @@
 {
   "slug": "edgar-vampires",
-  "assessment": "Edgar mints a Vampire on every Vampire cast; the deck's job is to make that entry hurt three seats at once. The measurement says the multiplier half is finished and the payoff half is not, so three of the ten are entry-trigger payoffs and none is a doubler. The bench is twenty-nine entries and it is a box of small Vampires: two of them duplicate cards already in the 99, one is outside the colour identity, and most of the rest convert Blood tokens or eat a creature. Three bench cards clear the bar on their own terms — Vampire Nocturnus, Akroma's Memorial and Markov Baron — and the tail loses its slots to the pool because nothing in the box converts a creature entry into damage, answers a two-mana permanent, or produces a black source. The floor is 4 before and after every one of the ten.",
+  "assessment": "The token engine is the best-assembling thing in the deck and needs no help: eight multipliers at 78.2%, nine lords at 83.2%. What binds is the answer suite. Reading all 97 maindeck cards, exactly one — Anguished Unmaking — removes an opposing artifact or enchantment of mana value 3 or less, and that is the mana value of Torpor Orb, Ghostly Prison, Propaganda and Ensnaring Bridge; Despark is gated to 4 or greater and nothing touches a land. So the top six are answers and converters, ranked so that the ones which also make a body or a token come first. Divine Visitation and Coat of Arms are the famous token cards that miss the cut: this deck kills by trigger, not by combat, and neither adds a trigger.",
   "ten": [
-    {
-      "card": "Witty Roastmaster",
-      "role": "payoff:entry-trigger",
-      "cmc": 3.0,
-      "type_line": "Creature — Devil Citizen",
-      "evidence": {
-        "edhrec_rank": 1384,
-        "game_changer": false
-      },
-      "closes": "engine component: the entry-trigger payoff class (Purphoros, Impact Tremors, Warleader's Call, Corpse Knight — 52.5% assembled, 25.8% of opening sevens)",
-      "why": "Its trigger is word-for-word the one stack 009 resolved — whenever another creature you control enters, deal 1 damage to each opponent — and 009 is checker-passed that an ability triggers once per occurrence, so a doubled eminence token on a two-mana Vampire pays it twice, not once. Four payoffs is 25.8% of an opening seven and five is 31%; this is the single cheapest way to buy that step, at {2}{R} in the colour the base over-serves (17 red sources for eleven cards that each want one red pip).",
-      "unlocks": "A fifth copy of the deck's primary kill condition, so the turn-three Cordial Vampire line from stack 009 stops needing Purphoros specifically.",
-      "natural_cut": "Kalitas, Traitor of Ghet",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Adeline, Resplendent Cathar",
-      "role": "threat:tokens",
-      "cmc": 3.0,
-      "type_line": "Legendary Creature — Human Knight",
-      "evidence": {
-        "edhrec_rank": 507,
-        "game_changer": false
-      },
-      "closes": "engine component: THE GO-WIDE KILL — a token-to-damage payoff AND a multiplier (40.2% assembled, 27.5% by turn six)",
-      "why": "Three tokens per combat in a four-player pod, tapped and attacking, is three creature-entry events every turn you attack — the event Impact Tremors, Purphoros, Corpse Knight and Warleader's Call all read, and the event Cathars' Crusade turns into a counter on every creature you control. This is not a ninth doubler: it raises the number of entries the four payoffs see rather than multiplying one of them, so it works on the 47.5% of boards where no payoff has shown up yet by giving Edgar's tokens a body count to hide behind.",
-      "unlocks": "A repeating token source on the attack step, which is the one timing the deck's eight multipliers do not cover.",
-      "natural_cut": "Olivia's Wrath",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
     {
       "card": "Generous Gift",
       "role": "removal:spot",
       "cmc": 3.0,
       "type_line": "Instant",
-      "evidence": {
-        "edhrec_rank": 58,
-        "game_changer": false
-      },
-      "closes": "engine component: the noncreature answer (Despark, Anguished Unmaking — two cards, 30.8% assembled, 13.7% of opening sevens)",
-      "why": "Anguished Unmaking is the deck's only answer to a cheap noncreature permanent: Despark exiles mana value 4 or greater, and Ghostly Prison and Propaganda are 3, Rest in Peace and Torpor Orb 2. Against a Torpor Orb the whole payoff class is blanked at once, so the answer slot is what restores the primary kill; Generous Gift destroys any permanent at instant speed for {2}{W} and doubles that class from one card to two.",
-      "unlocks": "An answer to a two-mana artifact or enchantment, which nothing in the 99 currently has.",
-      "natural_cut": "Swiftfoot Boots",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
+      "evidence": {"edhrec_rank": 58, "game_changer": false},
+      "closes": "interaction-breadth",
+      "why": "{2}{W} instant, destroy target permanent — the only card in the identity that reaches all four blanks (Torpor Orb at 2, Ghostly Prison, Propaganda and Ensnaring Bridge at 3) and also the land class, which no card in the 97 answers.",
+      "unlocks": "Instant-speed removal of the artifact that turns off the four-card conversion layer, held up on the same three mana the deck already keeps open for Boros Charm.",
+      "natural_cut": "Abzan Falconer",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Skyclave Apparition",
+      "role": "value:etb",
+      "cmc": 3.0,
+      "type_line": "Creature — Kor Spirit",
+      "evidence": {"edhrec_rank": 1195, "game_changer": false},
+      "closes": "interaction-breadth",
+      "why": "Exiles a nonland, nontoken permanent you don't control at mana value 4 or less — every one of the four cards that blanks a kill route — and it is a creature, so it also triggers Impact Tremors, Purphoros and Warleader's Call on the way in.",
+      "unlocks": "An answer that pays the conversion layer instead of costing it a turn; exile also beats indestructible and regeneration, which Anguished Unmaking's exile is currently the only other source of.",
+      "natural_cut": "Toxic Deluge",
+      "bracket_delta": {"before": 4, "after": 4}
     },
     {
       "card": "Mirkwood Bats",
@@ -63,149 +33,117 @@
       "type_line": "Creature — Bat",
       "evidence": {
         "combo_lines_opened": [
-          {
-            "cards": [
-              "Mirkwood Bats",
-              "Anointed Procession"
-            ],
-            "produces": "whether a doubled token-creation event drains once or twice",
-            "status": "needs a stack scenario"
-          }
+          {"cards": ["Mirkwood Bats", "Bloodletter of Aclazotz"], "produces": "each opponent's per-token life loss doubled", "status": "needs a stack scenario"},
+          {"cards": ["Mirkwood Bats", "Anointed Procession"], "produces": "whether a doubled token-creation event triggers the Bats once or twice", "status": "needs a stack scenario"}
         ],
         "edhrec_rank": 228,
         "game_changer": false
       },
-      "closes": "engine component: the entry-trigger payoff class (Purphoros, Impact Tremors, Warleader's Call, Corpse Knight — 52.5% assembled)",
-      "why": "A sixth converter that reads token creation rather than creature entry, on a 2/3 flier for {3}{B}, so it drains three seats off Legion's Landing, Bloodline Keeper's tap and Charismatic Conqueror's punish as well as off eminence. It ranks below Witty Roastmaster because its wording is not the one stack 009 verified: whether Anointed Procession's doubled creation gives it one trigger or two is an open question and it should be sleeved on the base rate, not on the doubled one.",
-      "unlocks": "Each-opponent drain from token-making that does not go through a creature spell, and a flying body the ground stall cannot block.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
+      "closes": "engine: THE DRAIN DOUBLER — the drain-source half beside Bloodletter of Aclazotz",
+      "why": "\"Whenever you create or sacrifice a token, each opponent loses 1 life\" is the only card in the identity that converts the eminence token itself into life loss at all three seats, and it is a third drain source for Bloodletter beside Sanctum Seeker and Throne of the God-Pharaoh — a component measured at 5.3% drawn, 2.9% by turn six.",
+      "unlocks": "A conversion trigger that fires off token creation rather than a creature entering, so it survives Torpor Orb, which blanks all four of the current converters at once.",
+      "natural_cut": "Cemetery Gatekeeper",
+      "bracket_delta": {"before": 4, "after": 4}
     },
     {
-      "card": "Vampire Nocturnus",
-      "role": "buff:pump",
-      "cmc": 4.0,
-      "type_line": "Creature — Vampire",
-      "evidence": {
-        "edhrec_rank": 8795,
-        "game_changer": false
-      },
-      "closes": "engine component: the combat kill (nine lords and anthems, 83.2% assembled) — the fallback the verdict prices as a losing plan into ~120 combined life",
-      "why": "The best card in the box by a distance: every eminence token is a Vampire, so a live Nocturnus turns a board of 1/1s into a board of 3/2 fliers and the combat plan stops caring about three walls of ground blockers. The honest price is the mana — {1}{B}{B}{B} against 26 black sources where Karsten asks 33 for that cost — so it is a turn-five card in practice, and its anthem is conditional on the top card of your library being black.",
-      "when": "Sleeve it when the pod is playing ground creatures and the games are ending in a stall rather than to a trigger; it is the bench's answer to boards you cannot get through.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Phyrexian Arena",
-      "role": "draw:engine",
+      "card": "Vindicate",
+      "role": "removal:spot",
       "cmc": 3.0,
-      "type_line": "Enchantment",
-      "evidence": {
-        "edhrec_rank": 100,
-        "game_changer": false
-      },
-      "closes": "card-advantage (axis reads 3 against a target of 10)",
-      "why": "Read the axis with its own probe before spending slots on it: deck-audit names eight more cards showing the function — Castle Locthwain, Henrika Domnathi, Midgar, Minas Tirith, Preacher of the Schism, Savai Triome, Silent Clearing and Sunbaked Canyon — and Caretaker's Talent plus Welcoming Vampire already convert a token wave into cards, so the count is a floor and 3-against-10 overstates it. What the deck genuinely has none of is a source that pays the turn after a wrath, when Caretaker's Talent and Welcoming Vampire both read zero; this draws every upkeep for three mana and never touches a graveyard. One such pick, not two — a second would be answering a question rather than a hole.",
-      "unlocks": "Draw that is live on an empty board, which is the turn the sweeper math says initiative is decided on.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
+      "type_line": "Sorcery",
+      "evidence": {"edhrec_rank": 1152, "game_changer": false},
+      "closes": "interaction-breadth",
+      "why": "{1}{W}{B}, destroy target permanent, no mana value gate and no nonland clause — the second card that can point at an opposing land, the one permanent class the 97 leaves entirely uncovered.",
+      "unlocks": "A turn-three answer to Ghostly Prison or a Maze of Ith on the turn the swarm wants to attack, on a white-black cost the deck's 21 white and 26 black sources both clear.",
+      "natural_cut": "Elenda, the Dusk Rose",
+      "bracket_delta": {"before": 4, "after": 4}
     },
     {
-      "card": "Malakir Bloodwitch",
-      "role": "wincon:drain",
-      "cmc": 5.0,
-      "type_line": "Creature — Vampire Shaman",
+      "card": "Stroke of Midnight",
+      "role": "removal:spot",
+      "cmc": 3.0,
+      "type_line": "Instant",
+      "evidence": {"edhrec_rank": 201, "game_changer": false},
+      "closes": "engine: An answer to a noncreature permanent (Despark, Anguished Unmaking)",
+      "why": "{2}{W} instant, destroy target nonland permanent, and the 1/1 it hands the opponent is the price for covering both artifacts and both enchantments in one card — Feed the Swarm misses Torpor Orb and Vandalblast misses the two enchantments.",
+      "unlocks": "The answer component goes from two cards to three, and Despark's mana-value-4 floor stops being the deck's only instant-speed line against a three-mana tax enchantment.",
+      "natural_cut": "Kalitas, Traitor of Ghet",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Witty Roastmaster",
+      "role": "value:etb",
+      "cmc": 3.0,
+      "type_line": "Creature — Devil Citizen",
+      "evidence": {"edhrec_rank": 1384, "game_changer": false},
+      "closes": "engine: the four-card conversion layer (TOKEN -> DAMAGE)",
+      "why": "\"Whenever another creature you control enters, this deals 1 damage to each opponent\" is Impact Tremors on a body, and it takes the conversion layer from four cards to five — the component measured at 52.5% drawn, mean turn 3.28, and the thinnest half of the go-wide kill at 40.2%.",
+      "unlocks": "A fifth converter that is itself a creature, so casting it under Purphoros or Warleader's Call already deals damage, and it arrives on the same three mana as the payoffs it joins.",
+      "natural_cut": "Vampire of the Dire Moon",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "City of Brass",
+      "role": "land:fixing",
+      "cmc": 0.0,
+      "type_line": "Land",
+      "evidence": {"edhrec_rank": 97, "game_changer": false},
+      "closes": "colour-sources",
+      "why": "Untapped, any colour, one damage — swapped for Spectator Seating it is a straight +1 black source with no white or red given back, moving the worst-colour figure from 26 against a target of 36 to 27, and it adds no tapland to a deck that keeps only three.",
+      "unlocks": "One more turn-one Swamp for Cordial Vampire's {B}{B} and one more line to Bloodletter of Aclazotz's {1}{B}{B}{B}, the two deepest pip demands in the deck.",
+      "natural_cut": "Spectator Seating",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Adeline, Resplendent Cathar",
+      "role": "threat:tokens",
+      "cmc": 3.0,
+      "type_line": "Legendary Creature — Human Knight",
+      "evidence": {"edhrec_rank": 507, "game_changer": false},
+      "closes": "engine: the eight-card token multiplier and extra-maker component",
+      "why": "Three tokens per attack in a four-player pod — six under Anointed Procession, nine under Ojer Taq — and every one of them is a creature entering, so a single attack step feeds Impact Tremors, Warleader's Call and Corpse Knight three to nine times over.",
+      "unlocks": "Width that does not need a Vampire spell to be cast, which is the one thing the eminence trigger cannot give you on a turn you hold up removal.",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Ojer Taq, Deepest Foundation // Temple of Civilization",
+      "role": "threat:body",
+      "cmc": 6.0,
+      "type_line": "Legendary Creature — God // Land",
       "evidence": {
         "combo_lines_opened": [
-          {
-            "cards": [
-              "Malakir Bloodwitch",
-              "Vito, Thorn of the Dusk Rose"
-            ],
-            "produces": "one opponent loses life equal to the Vampire count twice over",
-            "status": "needs a stack scenario"
-          }
+          {"cards": ["Ojer Taq, Deepest Foundation // Temple of Civilization", "Anointed Procession", "Mondrak, Glory Dominus"], "produces": "the token count from one Vampire cast when a tripler and two doublers all apply", "status": "needs a stack scenario"}
         ],
-        "edhrec_rank": 3472,
+        "edhrec_rank": 863,
         "game_changer": false
       },
-      "closes": "engine component: the entry-trigger payoff class (Purphoros, Impact Tremors, Warleader's Call, Corpse Knight) — deck-audit names it a closer for this component",
-      "why": "It is a Vampire, so casting it mints a token before its own entry resolves and that token counts toward X: on the turn-six board the simulation measures at 4.1 bodies it drains every seat for five or more and gains you the same. Protection from white is the second half of the pick — it walks past Swords to Plowshares, Path to Exile, Winds of Abandon and a white blocker, which is what a five-mana finisher has to survive to matter.",
-      "unlocks": "A one-shot each-opponent drain sized by width, and a lifegain event large enough that Vito's redirect is worth reading as a kill rather than a trickle.",
-      "natural_cut": "Sanguine Bond",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
+      "closes": "engine: the eight-card token multiplier and extra-maker component",
+      "why": "Triples every creature token instead of doubling it, so one eminence trigger under Anointed Procession is six bodies rather than two, and each body is another Impact Tremors trigger at all three seats.",
+      "unlocks": "The highest ceiling available on the trigger kill, and it comes back as a land when it dies, which is more than any other six-drop in the identity offers a board that just ate a wrath.",
+      "bracket_delta": {"before": 4, "after": 4}
     },
     {
-      "card": "Brightclimb Pathway // Grimclimb Pathway",
-      "role": "land",
-      "cmc": 0.0,
-      "type_line": "Land // Land",
+      "card": "Torbran, Thane of Red Fell",
+      "role": "threat:body",
+      "cmc": 4.0,
+      "type_line": "Legendary Creature — Dwarf Noble",
       "evidence": {
-        "edhrec_rank": 780,
+        "combo_lines_opened": [
+          {"cards": ["Torbran, Thane of Red Fell", "Purphoros, God of the Forge", "Bloodletter of Aclazotz"], "produces": "the per-opponent total when a damage bonus and a life-loss doubler apply to the same trigger", "status": "needs a stack scenario"}
+        ],
+        "edhrec_rank": 998,
         "game_changer": false
       },
-      "closes": "colour-sources (black reads 26 against a 36 target, the worst colour at −10)",
-      "why": "Black carries the deck's heaviest costs — Bloodthirsty Conqueror, Twilight Prophet, Sanctum Seeker and Bloodline Keeper all want two black pips — on 26 sources, while red gets 17 sources for eleven cards that never ask for more than one red pip. A pathway played on its Grimclimb face is an untapped black source in a slot that currently pays a life for red-or-white; call it one source, because the 36-source yardstick assumes 40 lands and a 37-land three-colour base cannot reach it.",
-      "unlocks": "An untapped black source with no life cost, in an aggro base already carrying three unconditional taplands.",
-      "natural_cut": "Sunbaked Canyon",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Akroma's Memorial",
-      "role": "protection:granted",
-      "cmc": 7.0,
-      "type_line": "Legendary Artifact",
-      "evidence": {
-        "edhrec_rank": 1219,
-        "game_changer": false
-      },
-      "closes": "engine component: the combat kill (nine lords and anthems, 83.2% assembled) — the fallback the verdict prices as a losing plan",
-      "why": "The box's one haymaker: flying, first strike, vigilance, trample and haste to a board of tokens ends a stalled game on the turn it resolves, and it is colourless so it costs the mana base nothing. Seven mana against 5.3 mean available mana at turn six is the whole argument against it — it is the card you want in the games the trigger plan did not close, not the card you want in the games it did.",
-      "when": "Sleeve it against pods that go long and defend on the ground; leave it in the box against fast tables, where a seven-drop is a mulligan you kept.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Markov Baron",
-      "role": "buff:pump",
-      "cmc": 3.0,
-      "type_line": "Creature — Vampire Noble",
-      "evidence": {
-        "edhrec_rank": 3552,
-        "game_changer": false
-      },
-      "closes": "engine component: the combat kill (nine lords and anthems, 83.2% assembled)",
-      "why": "Convoke is what earns it the last slot: on the wide board this deck is built to have, a third lord costs {B} or nothing, and casting a Vampire is itself an eminence trigger, so the anthem arrives with a body attached. It is ranked tenth honestly — the lord component is the deck's most reliable at 83.2% and a tenth anthem is the lowest-leverage add on this list.",
-      "when": "Sleeve it when the curve feels heavy and you want a three-drop that is free on a developed board; skip it if the payoff class is what you are short of.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
+      "why": "Impact Tremors is a red source and so are Purphoros, Warleader's Call and Witty Roastmaster: Torbran turns each of those triggers from 1 or 2 damage into 3 or 4, which is the difference between a two-mana Vampire dealing 12 to each opponent and dealing lethal on the spot. The cost is honest — {1}{R}{R}{R} against 17 red sources is the deepest pip demand anyone would add to this deck, and four maindeck red cards already sit under their line.",
+      "unlocks": "A ceiling raise on the kill route the deck already verifies, rather than a fourth copy of a component that assembles 78% of the time.",
+      "bracket_delta": {"before": 4, "after": 4}
     }
   ],
   "gaps": [
-    "No obsolescence claim is made. The index's 21 hits for this deck read Aerith Gainsborough and Syr Vondam as replacements for Elenda, Scrapwork Mutt and Fear of Missing Out for Cemetery Gatekeeper, and Hoofprints of the Stag for Caretaker's Talent; read the oracle text and none of them makes a Vampire, converts an entry into damage, or answers a permanent. None of the ten appears in the index as a replacement for anything in the 99.",
-    "No synergy claim is made either. All 25 pool candidates are Auras sharing the identical five 'Aura + Protection' partners — one rule firing on a type line, not a lead — and nine of the ten picks have no in-deck partner on their own shortlist at all. The tenth, Brightclimb Pathway, lists Herald's Horn, which is a cost-reduction artifact of the same rule set.",
-    "Mirkwood Bats' interaction with the doublers is unsettled. Stack 009 established that an ability reading 'whenever another creature you control enters' triggers once per occurrence, so Anointed Procession's second token pays it twice; Mirkwood Bats reads 'whenever you create or sacrifice a token', and whether one doubled creation event is one drain or two is a different question. A resolve-stack run would settle it, and the pick is ranked on the single-trigger reading.",
-    "Akroma's Memorial's protection from black and from red is not claimed as a sweeper answer. Protection stops damage, so it plausibly blanks a red damage-based wipe, but Toxic Deluge is -X/-X and Wrath of God destroys — neither is prevented. Which wipes it actually answers is a rules question no stack in this deck has asked.",
-    "Three of the ten are castability stretches and mana-analysis has not been re-run for them. Against Karsten, Adeline's {1}{W}{W} wants 29 sources and the base has 21, Phyrexian Arena's {1}{B}{B} wants 29 against 26, and Vampire Nocturnus's {1}{B}{B}{B} wants 33 against 26. All three are still castable a turn late; none is a turn-three play as often as its mana value suggests.",
-    "Five of the ten carry no natural_cut, deliberately. Five cuts are all this list can defend — Kalitas, Olivia's Wrath, Swiftfoot Boots, Sanguine Bond and Sunbaked Canyon — and two of those are priced rather than free: cutting Sanguine Bond takes the deck from two verified two-card infinites to one and strands stack 006, and cutting Olivia's Wrath takes the one-sided wipe out of a deck that will hold more non-Vampires than it does now. Toxic Deluge is the other sweeper and stays.",
-    "The card-advantage axis cannot be settled from the count. It reads 3 against a target of 10, but deck-audit's own probe names eight cards the taxonomy filed elsewhere and the draw-engine component measures 60.3% assembled. Only one draw pick is taken here; whether the deck wants a second is a question a goldfish re-run after Phyrexian Arena lands would answer better than any card list.",
-    "The bench's EDHREC ranks are absent from sideboard-facts for all 29 entries while cards.csv carries one for each (Vampire Nocturnus 8795, Markov Baron 3552, Akroma's Memorial 1219). The ranks quoted here come from cards.csv, and none of the three bench picks was chosen on popularity — sideboard-facts is right that the argument has to rest on the deck's own needs."
+    "The Bloodthirsty Conqueror singleton gets no pick and that is deliberate. The only true replacement for its half of the loop is a second 'whenever an opponent loses life, you gain that much life', and no other card in this colour identity reads that way — Marauding Blight-Priest, Epicure of Blood and Starscape Cleric are all the other half, the half Vito and Sanguine Bond already cover. Spending a slot there would buy redundancy on the wrong side.",
+    "Whether Bloodletter of Aclazotz doubles damage-sourced life loss is unsettled; the checker-passed lines cover pure life loss only. That decides both the Mirkwood Bats pairing and the Torbran arithmetic, and /resolve-stack is what settles it.",
+    "Whether a doubled token-creation event triggers Mirkwood Bats once or twice is the single figure that decides whether it is a fifth converter or a second Impact Tremors. It needs a stack scenario, not an assertion.",
+    "No artifact measures cast rates, only draw rates. The double-white picks (Skyclave Apparition, Adeline) and the triple-red one (Torbran) are priced against Karsten's rows — 21 white sources against the 26 a {1}{W}{W} card asks, 17 red against a triple pip — and not against any observed failure.",
+    "Nothing measures how often a land answer matters at this table. Generous Gift and Vindicate are the only two picks that reach the class, and the case for them rests on the tax permanents they also answer, not on land destruction.",
+    "The pilot named surviving a sweeper as a want and no pick answers it. The protection component is six cards at 68.1%, four of them board-wide, and every candidate that would deepen it — Clever Concealment, Unbreakable Formation — competes with an answer suite the diagnosis calls the binding constraint. Say the word and it becomes the eleventh pick."
   ]
 }

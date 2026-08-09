@@ -1,112 +1,75 @@
 {
   "slug": "sisay",
-  "assessment": "No bench exists, so all ten are pool scouts, ranked by one question: can the engine find it? Seven of ten are legendary and Sisay-fetchable, led by the two mv-0 legendary lands the deck currently has zero of — live targets even at base power 2. The other three (Walking Ballista, Staff of Domination, Aggravated Assault) each convert cards already sleeved into a named combo line. Nearest misses: Freed from the Real (eight lines, but non-legendary and dead without a drawn dork — exactly the blind spot the deck already suffers) and Basalt Monolith (the Kinnan line makes colourless mana, which a {W}{U}{B}{R}{G} activation cannot spend). The obsolescence index's 'upgrades' over Faeburrow Elder (Shang-Chi, Kami of Whispered Hopes, Mona Lisa, Frog Butler) all fail the oracle read — none makes multicoloured mana toward the five-pip activation, so none is on the list.",
+  "assessment": "One cost governs this deck: {W}{U}{B}{R}{G}, with no generic to pay around. Four cards in the 99 spend it and one produces it, so the deck buys one activation a turn and both its engine and its kill want more. Six of the ten below buy a second payment; the other four close the land class nothing in the 99 answers, add a finisher the count can see, and put a second, structurally different kill on the table. Two famous cards are deliberately absent: Gaea's Cradle, because raw mana volume is a strength here at 55 sources and colour is the constraint, and The One Ring, because the card-advantage axis reads under only in the taxonomy.",
   "ten": [
     {
-      "card": "Gaea's Cradle",
-      "role": "land:untapped-dual",
-      "cmc": 0.0,
-      "type_line": "Legendary Land",
+      "card": "Intruder Alarm",
+      "role": "stax",
+      "cmc": 3.0,
+      "type_line": "Enchantment",
       "evidence": {
         "combo_lines_opened": [
           {
-            "cards": [
-              "Derevi, Empyrial Tactician",
-              "Emiel the Blessed",
-              "Gaea's Cradle"
-            ],
-            "produces": "Infinite blinking, infinite ETB/LTB",
+            "cards": ["Intruder Alarm", "Sisay, Weatherlight Captain", "Faeburrow Elder"],
+            "produces": "Put a selection of creature cards from your library onto the battlefield",
+            "status": "needs a stack scenario"
+          },
+          {
+            "cards": ["Intruder Alarm", "Najeela, the Blade-Blossom", "Jegantha, the Wellspring"],
+            "produces": "Infinite combat phases, infinite creature tokens with haste, infinite untap of creatures",
             "status": "needs a stack scenario"
           }
         ],
-        "edhrec_rank": 448,
-        "game_changer": true
+        "edhrec_rank": 1720,
+        "game_changer": false
       },
-      "why": "The deck runs zero legendary lands, so a turn-3 Sisay at base power 2 has almost nothing legal to fetch — Cradle is an mv-0 legendary permanent, live at any power, and by midgame it taps for {G} per creature.",
-      "unlocks": "A guaranteed live fetch on the cold-start turn, plus a Derevi/Emiel line already fully sleeved around it.",
-      "natural_cut": "Forest",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
+      "closes": "engine component: five-colour mana source",
+      "why": "Every Sisay activation puts a creature onto the battlefield, and Intruder Alarm turns that entry into an untap of Bloom Tender, Faeburrow Elder, Relic of Legends and Jegantha — the fetch pays for the next fetch, which is the one thing the deck cannot do today.",
+      "unlocks": "Chained activations inside one turn, with five separate in-deck partners for the Sisay half and a Najeela line on top; the price is its first line, since your own dorks then stop untapping in your untap step and every opponent's creatures untap on each entry.",
+      "bracket_delta": {"before": 4, "after": 4}
     },
     {
-      "card": "Walking Ballista",
-      "role": "removal:damage",
-      "cmc": 0.0,
-      "type_line": "Artifact Creature — Construct",
+      "card": "Cryptolith Rite",
+      "role": "ramp:rock",
+      "cmc": 2.0,
+      "type_line": "Enchantment",
       "evidence": {
         "combo_lines_opened": [
           {
-            "cards": [
-              "Walking Ballista",
-              "Heliod, Sun-Crowned"
-            ],
-            "produces": "Infinite damage, infinite lifegain",
+            "cards": ["Cryptolith Rite", "Emiel the Blessed"],
+            "produces": "Infinite ETB, infinite colored mana, infinite creature tokens with haste, infinite blinking",
             "status": "needs a stack scenario"
           }
         ],
-        "edhrec_rank": 441,
+        "edhrec_rank": 710,
         "game_changer": false
       },
-      "why": "One card turns the already-sleeved Heliod, Sun-Crowned into the famous two-card kill (45,021 decks run the pair), and at worst it is repeatable removal in a deck holding 2 removal against a budget of 8.",
-      "unlocks": "A compact kill the toolbox can half-assemble — Sisay fetches Heliod at power 4; Ballista itself is non-legendary and must be drawn, the one thing keeping it out of the top slot.",
-      "natural_cut": "Mikaeus, the Lunarch",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
+      "closes": "engine component: five-colour mana source",
+      "why": "Two mana on turn two gives all 39 creature copies '{T}: Add one mana of any color', so the 4.066 bodies the goldfish has on board by turn six become the five distinct pips Sisay's activation demands.",
+      "unlocks": "A five-pip battery assembled out of bodies you were deploying anyway, plus an Emiel line with both halves cheap; unlike Esika it carries no legendary clause and unlike Katilda no Human clause.",
+      "natural_cut": "Kodama of the West Tree",
+      "bracket_delta": {"before": 4, "after": 4}
     },
     {
-      "card": "The One Ring",
-      "role": "draw:engine",
+      "card": "Bear Umbra",
+      "role": "buff:attached",
       "cmc": 4.0,
-      "type_line": "Legendary Artifact",
+      "type_line": "Enchantment — Aura",
       "evidence": {
-        "edhrec_rank": 92,
-        "game_changer": true
-      },
-      "why": "Sisay finds payoffs but not fuel — the deck's draw engines (Rhystic Study, Esper Sentinel) are non-legendary and unfetchable, while The One Ring is a legendary mv-4 draw engine she fetches at power 5; note the 'if you cast it' clause means a fetched Ring skips the protection turn.",
-      "unlocks": "A tutorable answer to the draw shortfall (6 held against a budget of 10) that also survives every wrath the deck expects.",
-      "natural_cut": "Reki, the History of Kamigawa",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Minamo, School at Water's Edge",
-      "role": "land:utility",
-      "cmc": 0.0,
-      "type_line": "Legendary Land",
-      "evidence": {
-        "edhrec_rank": 601,
+        "combo_lines_opened": [
+          {
+            "cards": ["Bear Umbra", "Najeela, the Blade-Blossom"],
+            "produces": "Infinite combat phases, infinite creature tokens, infinite ETB, infinite lifegain",
+            "status": "needs a stack scenario"
+          }
+        ],
+        "edhrec_rank": 887,
         "game_changer": false
       },
-      "why": "Sisay's activation has no tap symbol, so Minamo's untap points at the battery instead: {U},{T} untaps Jegantha for a second {W}{U}{B}{R}{G} — a second fetch or a Najeela activation in the same turn — and it is itself an mv-0 legendary land, fetchable at any power.",
-      "unlocks": "Doubled activations on the turn the ladder matures, from a land slot the engine can find on its own.",
-      "natural_cut": "Island",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Captain Sisay",
-      "role": "tutor:narrow",
-      "cmc": 4.0,
-      "type_line": "Legendary Creature — Human Soldier",
-      "evidence": {
-        "edhrec_rank": 4588,
-        "game_changer": false
-      },
-      "why": "The engine routes entirely through one creature whose loss costs the recast tax plus every ladder rung; the Captain is the same job on a second body — a repeatable legendary tutor, herself fetchable at power 5 — and tutor coverage sits at 1 against a budget of 2.",
-      "unlocks": "An engine that survives the commander being taxed out of the game.",
-      "natural_cut": "Raff Capashen, Ship's Mage",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
+      "closes": "engine component: the loop's per-combat cost",
+      "why": "The deck's kill re-buys {W}{U}{B}{R}{G} every combat and the deck can afford it once; Bear Umbra untaps all lands on the attack trigger, before the activation is due, so the toll is paid each iteration rather than once.",
+      "unlocks": "The verified Najeela combat loop stops being a board-state win and starts being a two-card one, and Umbra armor absorbs the first destroy aimed at whichever body wears it.",
+      "bracket_delta": {"before": 4, "after": 4}
     },
     {
       "card": "Marvin, Murderous Mimic",
@@ -116,138 +79,139 @@
       "evidence": {
         "combo_lines_opened": [
           {
-            "cards": [
-              "Marvin, Murderous Mimic",
-              "Ioreth of the Healing House"
-            ],
-            "produces": "Infinite untap of legendary creatures you control, infinite mana legendary creatures can produce",
+            "cards": ["Marvin, Murderous Mimic", "Ioreth of the Healing House"],
+            "produces": "Infinite untap of legendary creatures you control, infinite mana legendary creatures you control can produce",
             "status": "needs a stack scenario"
           }
         ],
         "edhrec_rank": 1132,
         "game_changer": false
       },
-      "why": "A legendary combo piece at mv 2 — fetchable at power 3, one colour on board — that borrows the activated abilities of every creature you control, including Ioreth's double untap; the deck's other combo pieces mostly cannot be fetched at all.",
-      "unlocks": "The Ioreth untap line with both halves inside Sisay's reach, unlike any line the deck currently runs.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
+      "closes": "engine component: five-colour mana source",
+      "why": "Marvin borrows Ioreth's '{T}: Untap two other target legendary creatures', and at mana value 2 he is legal the moment one colour sits beside Sisay — power 3, the second rung of the ladder — so this is the rare mana line the tutor can go and get.",
+      "unlocks": "An untap engine aimed straight at Jegantha, Bloom Tender, Faeburrow Elder and Relic of Legends, with the half you have to draw already sleeved.",
+      "bracket_delta": {"before": 4, "after": 4}
     },
     {
-      "card": "Kethis, the Hidden Hand",
-      "role": "ramp:cost-reduction",
-      "cmc": 3.0,
-      "type_line": "Legendary Creature — Elf Advisor",
-      "evidence": {
-        "edhrec_rank": 7342,
-        "game_changer": false
-      },
-      "why": "Recursion sits at 0 against a budget of 2 in a deck whose matchup frame says to assume the wrath; Kethis replays the wiped legends from the graveyard and discounts every legendary recast, and at mv 3 he is fetchable at power 4.",
-      "unlocks": "A rebuild plan after the sweeper that currently costs the deck its whole ladder.",
-      "natural_cut": "Saffi Eriksdotter",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "The Wandering Emperor",
-      "role": "buff:counters",
-      "cmc": 4.0,
-      "type_line": "Legendary Planeswalker",
-      "evidence": {
-        "edhrec_rank": 5581,
-        "game_changer": false
-      },
-      "why": "Removal sits at 2 against a budget of 8, and this is the removal the tutor can aim: Sisay's ability is activatable at instant speed, and an Emperor fetched mid-combat entered this turn, so her −2 exiles a tapped attacker on the spot.",
-      "unlocks": "Tutorable, instant-speed spot removal — the suite's biggest hole filled without spending a drawn card.",
-      "natural_cut": "Dispel",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
-    },
-    {
-      "card": "Staff of Domination",
-      "role": "utility:activated",
+      "card": "Chromatic Lantern",
+      "role": "ramp:rock",
       "cmc": 3.0,
       "type_line": "Artifact",
       "evidence": {
-        "combo_lines_opened": [
-          {
-            "cards": [
-              "Staff of Domination",
-              "Selvala, Heart of the Wilds"
-            ],
-            "produces": "Infinite card draw, infinite colored mana",
-            "status": "needs a stack scenario"
-          },
-          {
-            "cards": [
-              "Staff of Domination",
-              "Bloom Tender"
-            ],
-            "produces": "Infinite card draw, infinite lifegain",
-            "status": "needs a stack scenario"
-          },
-          {
-            "cards": [
-              "Staff of Domination",
-              "Faeburrow Elder"
-            ],
-            "produces": "Infinite card draw, infinite lifegain",
-            "status": "needs a stack scenario"
-          }
-        ],
-        "edhrec_rank": 1047,
+        "edhrec_rank": 84,
         "game_changer": false
       },
-      "why": "Three unverified infinite-draw lines with three separate sleeved dorks (Selvala, Bloom Tender, Faeburrow Elder), and short of the combo it untaps a dork for one more pip toward the five-pip activation.",
-      "unlocks": "Triple-redundant combo potential over pieces already in the 99 — one Staff, three partners.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
+      "closes": "engine component: five-colour mana source",
+      "why": "'Lands you control have \"{T}: Add one mana of any color\"' makes all 40 land copies produce every pip, including Plaza of Heroes, Secluded Courtyard and Unclaimed Territory, and it costs {3} so no colour has to exist before it lands.",
+      "unlocks": "A five-colour mana base that does not need a board first, which is what separates it from Bloom Tender and Faeburrow Elder; note the colour-sources axis will not move, because manabase counts sources per card and cannot read a static grant.",
+      "natural_cut": "An Offer You Can't Refuse",
+      "bracket_delta": {"before": 4, "after": 4}
     },
     {
-      "card": "Aggravated Assault",
+      "card": "Vito, Thorn of the Dusk Rose",
+      "role": "wincon:drain",
       "cmc": 3.0,
-      "type_line": "Enchantment",
+      "type_line": "Legendary Creature — Vampire Cleric",
       "evidence": {
         "combo_lines_opened": [
           {
-            "cards": [
-              "Aggravated Assault",
-              "Selvala, Heart of the Wilds"
-            ],
-            "produces": "Infinite combat phases, infinite colored mana",
-            "status": "needs a stack scenario"
-          },
-          {
-            "cards": [
-              "Aggravated Assault",
-              "Esika, God of the Tree // The Prismatic Bridge"
-            ],
-            "produces": "Infinite combat phases, infinite untap of creatures",
+            "cards": ["Vito, Thorn of the Dusk Rose", "Najeela, the Blade-Blossom"],
+            "produces": "Repeated life loss for one opponent from the combat loop's lifelink",
             "status": "needs a stack scenario"
           }
         ],
-        "edhrec_rank": 698,
+        "edhrec_rank": 492,
         "game_changer": false
       },
-      "why": "The deck's only verified line (stacks/002, Najeela + Derevi) wins through extra combats, and wincons sit at 1 against a budget of 3 — Aggravated Assault is the same wincon class again, with unverified lines through sleeved Selvala and Esika.",
-      "unlocks": "A second extra-combat engine that shares the pip battery Najeela already taxes, so no new mana ask.",
-      "bracket_delta": {
-        "before": 4,
-        "after": 4
-      }
+      "closes": "threat-density",
+      "why": "Najeela's activation hands every attacker lifelink, and Vito turns each of those life gains into life loss for a chosen opponent, so a loop that currently needs five creatures to connect with a player can instead kill through a wall of blockers.",
+      "unlocks": "A finisher the count can actually see — recomputed over the 99 with Vito added, threat-density goes 3 to 4 — on a mana-value-3 legend Sisay reaches at power 4, two colours in.",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Urborg, Tomb of Yawgmoth",
+      "role": "land:fixing",
+      "cmc": 0.0,
+      "type_line": "Legendary Land",
+      "evidence": {
+        "edhrec_rank": 73,
+        "game_changer": false
+      },
+      "closes": "engine component: five-colour mana source",
+      "why": "Black is the pinch at 21 sources against a 36 target, and 'Each land is a Swamp in addition to its other land types' makes every one of the 40 land copies produce the {B} that Sisay's and Najeela's activations both demand.",
+      "unlocks": "A live fetch on the cold-start turn as well — the deck runs zero legendary lands, so at base power 2 only three cards are legal targets, and this is a fourth that does work the moment it arrives.",
+      "natural_cut": "Plains",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Beast Within",
+      "role": "removal:spot",
+      "cmc": 3.0,
+      "type_line": "Instant",
+      "evidence": {
+        "edhrec_rank": 25,
+        "game_changer": false
+      },
+      "closes": "interaction-breadth",
+      "why": "Land is the one permanent class no card in the 99 answers — Path to Exile is creature-only, Loran reaches artifacts and enchantments, Toxic Deluge is creatures — and 'Destroy target permanent' covers it at instant speed for three mana.",
+      "unlocks": "Recomputed over the swapped 99, interaction-breadth goes 3 classes to 4, with land 0 to 1; the 3/3 it hands back is the price, and against a Cabal Coffers or a Field of the Dead it is cheap.",
+      "natural_cut": "Mikaeus, the Lunarch",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Freed from the Real",
+      "role": "buff:attached",
+      "cmc": 3.0,
+      "type_line": "Enchantment — Aura",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": ["Freed from the Real", "Bloom Tender"],
+            "produces": "Infinite mana of colors among permanents you control",
+            "status": "needs a stack scenario"
+          },
+          {
+            "cards": ["Freed from the Real", "Selvala, Heart of the Wilds"],
+            "produces": "Infinite colored mana",
+            "status": "needs a stack scenario"
+          }
+        ],
+        "synergy_partners_in_deck": ["Heroic Intervention"],
+        "edhrec_rank": 1594,
+        "game_changer": false
+      },
+      "closes": "engine component: five-colour mana source",
+      "why": "Four cards already in the 99 pair with it — Bloom Tender, Faeburrow Elder, Selvala and the Kinnan plus Birds of Paradise pair — and with three colours on board a Bloom Tender wearing it nets mana every untap, which is the second and third activation in one card.",
+      "unlocks": "The deepest redundancy available for the five-pip bill, at the cost of being an Aura on a creature: it is a two-for-one to any spot removal, which is why the deck's Heroic Intervention matters more once it is sleeved.",
+      "bracket_delta": {"before": 4, "after": 4}
+    },
+    {
+      "card": "Walking Ballista",
+      "role": "removal:damage",
+      "cmc": 0.0,
+      "type_line": "Artifact Creature — Construct",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": ["Walking Ballista", "Heliod, Sun-Crowned"],
+            "produces": "Infinite damage, infinite lifegain",
+            "status": "needs a stack scenario"
+          }
+        ],
+        "edhrec_rank": 441,
+        "game_changer": false
+      },
+      "why": "The deck's kill is one assembly, so answering the assembly answers the deck; Heliod, Sun-Crowned is already sleeved and Sisay fetches him at power 4, which makes Ballista half of a second kill that shares nothing with the combat loop.",
+      "unlocks": "A damage-based out against the fog, the wall of blockers and the extra-combat hate that beat Najeela — and short of the kill it is repeatable removal in a suite sitting exactly on Walser's floor of 8. Note that it carries no wincon role, so the threat-density count does not move.",
+      "bracket_delta": {"before": 4, "after": 4}
     }
   ],
   "gaps": [
-    "The claim that a repeatable battlefield tutor justifies one-of silver bullets cannot be cited: the strategy corpus has no toolbox section (best query hit 0.154 per the strategic frame). Until it exists, the removal/recursion picks here rest on the role budget, not on cited construction principle.",
-    "Every combo line above is a candidate: Ballista+Heliod, Marvin+Ioreth, Staff+Selvala and Assault+Selvala are the four highest-leverage /resolve-stack scenarios; only stacks/002 (Najeela+Derevi, already fully in-deck) carries a passing checker verdict.",
-    "Whether The Wandering Emperor's loyalty can be activated the turn she is fetched mid-combat is read straight off her oracle text ('entered this turn... any time you could cast an instant'), but a stack scenario would make it citable.",
-    "The role budget upgrade-facts reports (draw -4, removal -6, recursion -2, sweeper -2, tutor -1, wincon -2) is explicitly provisional and uncited; the sweeper shortfall went unaddressed here — Kagemaro, First to Suffer (legendary, mv 5, tutorable wipe) is the natural eleventh if the pilot weights it higher."
+    "Every line above is a candidate. Only stacks/002 (Najeela plus Derevi) carries a passing checker verdict in this deck, and its own final state calls the pair not self-contained. The four highest-leverage scenarios to settle are Bear Umbra plus Najeela, Marvin plus Ioreth, Intruder Alarm plus Sisay plus a mana body, and Walking Ballista plus Heliod.",
+    "Vito plus Najeela is read off oracle text, not off a combo record: Najeela's activation grants lifelink to attacking creatures and Vito converts life gained into life lost for a target opponent. No entry in the combo data pairs them, so treat it as the least-grounded line here until a stack scenario runs.",
+    "Bear Umbra, Nature's Will and Sword of Feast and Famine are three interchangeable answers to the same per-combat toll, each with a two-card record against Najeela. Bear Umbra is listed because its trigger is on attack rather than on damage and its Umbra armor covers the body; the other two are equally defensible and one slot, not three, should be spent.",
+    "Chromatic Lantern and Urborg both make mana the right colours without moving the colour-sources axis, because manabase counts sources per card and models no static grant. The axis is the wrong instrument for a static land grant, and nothing in the repo currently measures the thing they actually fix.",
+    "strategy.md has no section on toolbox construction or on treating library access as the resource a deck spends, so the ranking of fetchable picks over drawn ones — Marvin, Vito and Urborg over Intruder Alarm and Cryptolith Rite on that dimension alone — rests on the ladder arithmetic in this deck's own artifacts, not on cited principle. strategy:deckbuilding.redundancy-vs-tutors does ground the shape of the list: 'So stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable.'",
+    "No deck recon for this commander, so nothing here is weighed against what strong Sisay lists actually run; every pick is grounded in this deck's own audit, engine block and combo containment."
   ]
 }
