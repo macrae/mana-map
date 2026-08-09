@@ -217,7 +217,7 @@ Synergies are **complementary** — cards that *complete* each other (blink find
 
 The graph is **format-agnostic by design** — filtering happens at consumption time (deck builder filters by legality + color identity; explore mode shows everything).
 
-Shared helpers (`parse_tag_set`, `cosine_similarity`, `load_first_embeddings`) live in `analysis/common.py`.
+Shared helpers (`parse_tag_set`, `top_k_similar`, `load_first_embeddings`) live in `analysis/common.py`.
 
 ### Partners are ranked by playability, not similarity
 

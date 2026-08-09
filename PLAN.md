@@ -31,28 +31,30 @@ first place.
 
 1,289 tests (1,179 fast + 110 browser). 35 `manamap pilot` subcommands. 12 agents, 15 skills.
 
-> ### ⚠ OPEN: the cache board reads 73 MISS, and the cause is a sequencing error
+> ### The cache board reads 15 MISS, and every one is honest
 >
-> *(This callout previously described 23 MISSes from the embedding rebuild. Those were
-> resolved 2026-08-05–09: everything was re-authored or re-blessed with reasons during the
-> sideboard retirement and prose refresh. The current state is different and newer.)*
+> *(Resolved 2026-08-09. This callout previously described 23 MISSes from the embedding
+> rebuild, then 73 from a charter edit. Both are settled; the history is in the hygiene
+> plan's D1 below.)*
 >
-> Measured 2026-08-09: **73 MISSes across all 8 decks** — `strategic-frame`, `coach-prose`,
-> `writer-prose`, `the-ten`, `tutor-guide`, `deck-recon`, `deck-diagnosis`,
-> `decision:001/002` per deck, plus yawgmoth's `candidate-pool`. Every `stack:NNN` and every
-> `issue-plan` is HIT.
+> **15 non-HIT across 8 decks**, and none of them is a bookkeeping artefact:
 >
-> **The cause is not stale content.** Commit `af7ded9` (the scratch-clobber fix) edited all
-> six deck charters **one commit after** `cae2e16` recorded the freshly regenerated fleet —
-> the exact sequencing mistake CLAUDE.md's "charter edits BEFORE cache-record" gotcha
-> records, made a second time. The charter diff is output-path mechanics only and cannot
-> change a figure in any artifact; the artifacts themselves were regenerated and validated
-> the same day.
+> | routine | n | why |
+> |---|---|---|
+> | `deck-recon` | 6 | never run — absent, not stale |
+> | `deck-diagnosis` | 5 | never run — the withheld diagnoses |
+> | `deck-diagnosis` | 3 | inputs genuinely moved (`goldfish_targets`, `mana_analysis`, `deck_audit.py`) |
+> | `candidate-pool` | 1 | never run (yawgmoth) |
 >
-> Resolution is **decision D1 of the hygiene plan below** (re-record with documented
-> reasoning / re-spawn ~3M / leave amber). `deck-recon` (6 decks) and `deck-diagnosis`
-> (6 withheld + 2 superseded) are genuinely undone regardless and belong to the
-> diagnosis thread, not to this.
+> Everything else HITs. The 58 that missed on a **charter edit alone** were re-recorded
+> with the reasoning committed: `af7ded9`'s diff replaced "name your scratch file after
+> the deck" with "use `--out <dir>/`", which changes no analytical instruction, no
+> threshold and no schema, and therefore cannot move a figure. All eight validators pass
+> on all eight decks, checked *before* recording.
+>
+> **The rule is unchanged and was not bent:** never `cache-record` to make a board green.
+> The three `deck-diagnosis` entries whose real inputs moved were deliberately left MISS,
+> and the twelve never-recorded routines have no artifact to claim.
 
 
 ## Shipped
@@ -232,13 +234,13 @@ are deterministic work, roughly two focused sessions.
 18,646 lines Python · 8,541 lines JS · tests 18,598 lines (~1:1 with source) ·
 **1,469 tests** (1,346 fast @ 58s single-proc, 123 browser) · 38 pilot subcommands ·
 14 agents · 16 skills · 10 cached routines · 8 published decks · 131.8 MB tracked data ·
-`.git` 208 MB · cache board 73 MISS (see callout at top).
+`.git` 208 MB · cache board 73 MISS *(now 15 — see D1 and the callout at top)*.
 
 ### The defects, ranked
 
-1. **Cache board at 73 MISS** — my charter-edit-after-record sequencing error (see callout).
-2. **`impact --out` is accepted and silently ignored** — `impact.main` never reads
-   `args.out`. Confirmed live.
+1. ~~**Cache board at 73 MISS**~~ — **fixed.** My charter-edit-after-record sequencing
+   error; 58 re-recorded, 15 left honestly MISS. See D1.
+2. ~~**`impact --out` is accepted and silently ignored**~~ — **fixed** in `a831162`.
 3. **Docs state four different test totals across five files**; the board is called
    "green" in 2 places and "23-MISSed" in 4 — none matches reality; `cli.py --help` says
    "13-step pipeline" against a 15-step registry; **yawgmoth (Vol. 008) is absent from
@@ -281,33 +283,54 @@ re-record; **docs are written LAST** so they describe the end state once. `commo
 
 ### Phase 0 — three decisions (pilot, before any work)
 
-- **D1 — the 73-MISS board**: (a) re-record with the reason documented (the `af7ded9`
-  diff is output-path mechanics only; artifacts regenerated and validated the same day) —
-  recommended; (b) re-spawn (~3M tokens for a filename-guidance diff); (c) leave amber.
-- **D2 — count-drift guard**: extend the proven `test_docs_section_count.py` pattern
-  into `tests/test_docs_counts.py` deriving test/subcommand/agent/skill/deck/routine
-  counts from the repo and failing any doc that states a different number — recommended
-  over stripping counts from prose (numbers are this repo's house style).
+All three decided 2026-08-09: **take the recommendation in each case.**
+
+- **D1 — the 73-MISS board** ✅ **DONE.** Re-recorded with the reason documented — but
+  only **58 of the 73**. The board was never one thing, and framing it as one was this
+  plan's error. Classified by the cache's own declared cause: **58 charter-only** (the
+  only changed input is a `.claude/agents/*.md`), **12 never recorded** (`changed=[]`,
+  so there is nothing to re-record and no artifact to claim), and **3 real input
+  changes** where `goldfish_targets.json`, `mana_analysis.json`, `deck_audit.py` and
+  `cards_semantic` genuinely moved. Only the 58 were recorded. The 15 that remain are
+  honest: `deck-recon` ×6 and `deck-diagnosis` ×5 have never run, and the last three
+  `deck-diagnosis` missed on inputs this cleanup itself changed — re-recording those is
+  exactly the act the repo forbids.
+- **D2 — count-drift guard**: build `tests/test_docs_counts.py` on the proven
+  `test_docs_section_count.py` pattern. **Lands in Phase 4 by necessity** — a test that
+  fails on any doc stating a wrong count would fail instantly today, so the docs must be
+  true before the guard goes up.
 - **D3 — `config.py` split** (1,235 lines, 8 unrelated concerns: paths, a binary format
   spec, ML hyperparams, three regex rulebooks, UI display strings, editorial citations,
   the routine graph): split into a `config/` package with `config.py` as a pure
-  re-export façade so no import breaks. Optional; own commit; full suite as gate.
+  re-export façade so no import breaks. Own commit; full suite as gate. Phase 5.
 
-### Phase 1 — correctness + dead weight (small, safe; no cache-hashed file touched)
+### Phase 1 ✅ DONE (2026-08-09) — correctness + dead weight
 
-Wire `impact --out` through `resolve_out_path` (it is per-deck and registry-grouped with
-the guarded trio) · route `diagnosis_report.py:225` and `scenario_facts.py:298` through
-the guard (`cache-snapshot`/`pool-facts` are fleet-wide by design — document that
-instead) · key the two unkeyed memos; extract one `common.mtime_memo` from the five
-hand-rolled copies; register all with `clear_memo()` · `cli.py` step count derived from
-the registry, never a literal · delete the dead functions (except `deck_audit._roles_for`
-— cache-hashed file, moves to Phase 2) and the 14 unused imports · delete the no-op
-legacy probes and fix the three stale cross-references · housekeeping: delete merged
-branch `diagnosis-rerun-charter-09ba08f` local+remote, rm the 179 stale `.agent-out`
-files, root `.DS_Store` · promote the recurring orchestrator helper to
-`manamap pilot merge-prose <slug> coach|writer` (~40 lines; ownership semantics from
-`AGENT_ROUTINES[r]["artifact_keys"]`).
-**Gate**: suite green; grep set for deleted names returns zero; `impact --out` writes.
+Shipped in `a831162` and `e5e6b38`. `impact --out`, `diagnosis-report` and
+`scenario-facts` now go through `resolve_out_path`, which grew an `ext` argument
+because diagnosis-report emits markdown and a directory auto-naming its report `.json`
+would lie about the bytes; `cache-snapshot` and `pool-facts` stay unguarded on purpose
+and now say so in the registry · `common.mtime_memo` replaces five hand-rolled copies,
+two of which were truthiness-gated and therefore blind to a rewrite · five dead
+functions gone (`deck_audit._roles_for` waits for Phase 2 — cache-hashed) · `cli.py`
+derives its step count from the highest declared step NUMBER, not `len(STEPS)`, since
+4a/4b make 16 entries 15 steps · `merge-prose` promoted, verified by reproducing
+heliod's tracked `manual_prose.json` byte-for-byte from its two handoffs · merged
+branch deleted.
+
+**1,369 fast tests (+23) and 123 browser, green; no tracked artifact moved.**
+
+Two departures from the plan as written, both deliberate:
+
+- **42 unused imports, not 14** — the survey scanned only `src/`. Three were a trap:
+  `page`, `discover_page` and `canvas_page` in the browser suite are pytest FIXTURES,
+  invisible to a static check and load-bearing for 118 tests. They keep their `noqa`
+  and now carry the *reason*, since a bare `noqa` does not stop the next reader.
+- **The 179 `.agent-out` files were NOT deleted.** The plan called them stale working
+  files; they are the provenance of `manual_prose.json`, and `merge-prose`'s strongest
+  test reads them to prove the merge reproduces the tracked artifact exactly. Deleting
+  3.4 MB of gitignored files to lose a verification is a bad trade. Revisit only with
+  a rule that distinguishes a current handoff from debris.
 
 ### Phase 2 — shared infrastructure (the perf phase; the ONE phase touching `deck_audit.py`)
 
