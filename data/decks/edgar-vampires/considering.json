@@ -1,149 +1,229 @@
 {
-  "slug": "edgar-vampires",
-  "assessment": "The token engine is the best-assembling thing in the deck and needs no help: eight multipliers at 78.2%, nine lords at 83.2%. What binds is the answer suite. Reading all 97 maindeck cards, exactly one — Anguished Unmaking — removes an opposing artifact or enchantment of mana value 3 or less, and that is the mana value of Torpor Orb, Ghostly Prison, Propaganda and Ensnaring Bridge; Despark is gated to 4 or greater and nothing touches a land. So the top six are answers and converters, ranked so that the ones which also make a body or a token come first. Divine Visitation and Coat of Arms are the famous token cards that miss the cut: this deck kills by trigger, not by combat, and neither adds a trigger.",
-  "ten": [
-    {
-      "card": "Generous Gift",
-      "role": "removal:spot",
-      "cmc": 3.0,
-      "type_line": "Instant",
-      "evidence": {"edhrec_rank": 58, "game_changer": false},
-      "closes": "interaction-breadth",
-      "why": "{2}{W} instant, destroy target permanent — the only card in the identity that reaches all four blanks (Torpor Orb at 2, Ghostly Prison, Propaganda and Ensnaring Bridge at 3) and also the land class, which no card in the 97 answers.",
-      "unlocks": "Instant-speed removal of the artifact that turns off the four-card conversion layer, held up on the same three mana the deck already keeps open for Boros Charm.",
-      "natural_cut": "Abzan Falconer",
-      "bracket_delta": {"before": 4, "after": 4}
-    },
-    {
-      "card": "Skyclave Apparition",
-      "role": "value:etb",
-      "cmc": 3.0,
-      "type_line": "Creature — Kor Spirit",
-      "evidence": {"edhrec_rank": 1195, "game_changer": false},
-      "closes": "interaction-breadth",
-      "why": "Exiles a nonland, nontoken permanent you don't control at mana value 4 or less — every one of the four cards that blanks a kill route — and it is a creature, so it also triggers Impact Tremors, Purphoros and Warleader's Call on the way in.",
-      "unlocks": "An answer that pays the conversion layer instead of costing it a turn; exile also beats indestructible and regeneration, which Anguished Unmaking's exile is currently the only other source of.",
-      "natural_cut": "Toxic Deluge",
-      "bracket_delta": {"before": 4, "after": 4}
-    },
-    {
-      "card": "Mirkwood Bats",
-      "role": "wincon:drain",
-      "cmc": 4.0,
-      "type_line": "Creature — Bat",
-      "evidence": {
-        "combo_lines_opened": [
-          {"cards": ["Mirkwood Bats", "Bloodletter of Aclazotz"], "produces": "each opponent's per-token life loss doubled", "status": "needs a stack scenario"},
-          {"cards": ["Mirkwood Bats", "Anointed Procession"], "produces": "whether a doubled token-creation event triggers the Bats once or twice", "status": "needs a stack scenario"}
-        ],
-        "edhrec_rank": 228,
-        "game_changer": false
-      },
-      "closes": "engine: THE DRAIN DOUBLER — the drain-source half beside Bloodletter of Aclazotz",
-      "why": "\"Whenever you create or sacrifice a token, each opponent loses 1 life\" is the only card in the identity that converts the eminence token itself into life loss at all three seats, and it is a third drain source for Bloodletter beside Sanctum Seeker and Throne of the God-Pharaoh — a component measured at 5.3% drawn, 2.9% by turn six.",
-      "unlocks": "A conversion trigger that fires off token creation rather than a creature entering, so it survives Torpor Orb, which blanks all four of the current converters at once.",
-      "natural_cut": "Cemetery Gatekeeper",
-      "bracket_delta": {"before": 4, "after": 4}
-    },
-    {
-      "card": "Vindicate",
-      "role": "removal:spot",
-      "cmc": 3.0,
-      "type_line": "Sorcery",
-      "evidence": {"edhrec_rank": 1152, "game_changer": false},
-      "closes": "interaction-breadth",
-      "why": "{1}{W}{B}, destroy target permanent, no mana value gate and no nonland clause — the second card that can point at an opposing land, the one permanent class the 97 leaves entirely uncovered.",
-      "unlocks": "A turn-three answer to Ghostly Prison or a Maze of Ith on the turn the swarm wants to attack, on a white-black cost the deck's 21 white and 26 black sources both clear.",
-      "natural_cut": "Elenda, the Dusk Rose",
-      "bracket_delta": {"before": 4, "after": 4}
-    },
-    {
-      "card": "Stroke of Midnight",
-      "role": "removal:spot",
-      "cmc": 3.0,
-      "type_line": "Instant",
-      "evidence": {"edhrec_rank": 201, "game_changer": false},
-      "closes": "engine: An answer to a noncreature permanent (Despark, Anguished Unmaking)",
-      "why": "{2}{W} instant, destroy target nonland permanent, and the 1/1 it hands the opponent is the price for covering both artifacts and both enchantments in one card — Feed the Swarm misses Torpor Orb and Vandalblast misses the two enchantments.",
-      "unlocks": "The answer component goes from two cards to three, and Despark's mana-value-4 floor stops being the deck's only instant-speed line against a three-mana tax enchantment.",
-      "natural_cut": "Kalitas, Traitor of Ghet",
-      "bracket_delta": {"before": 4, "after": 4}
-    },
-    {
-      "card": "Witty Roastmaster",
-      "role": "value:etb",
-      "cmc": 3.0,
-      "type_line": "Creature — Devil Citizen",
-      "evidence": {"edhrec_rank": 1384, "game_changer": false},
-      "closes": "engine: the four-card conversion layer (TOKEN -> DAMAGE)",
-      "why": "\"Whenever another creature you control enters, this deals 1 damage to each opponent\" is Impact Tremors on a body, and it takes the conversion layer from four cards to five — the component measured at 52.5% drawn, mean turn 3.28, and the thinnest half of the go-wide kill at 40.2%.",
-      "unlocks": "A fifth converter that is itself a creature, so casting it under Purphoros or Warleader's Call already deals damage, and it arrives on the same three mana as the payoffs it joins.",
-      "natural_cut": "Vampire of the Dire Moon",
-      "bracket_delta": {"before": 4, "after": 4}
-    },
-    {
-      "card": "City of Brass",
-      "role": "land:fixing",
-      "cmc": 0.0,
-      "type_line": "Land",
-      "evidence": {"edhrec_rank": 97, "game_changer": false},
-      "closes": "colour-sources",
-      "why": "Untapped, any colour, one damage — swapped for Spectator Seating it is a straight +1 black source with no white or red given back, moving the worst-colour figure from 26 against a target of 36 to 27, and it adds no tapland to a deck that keeps only three.",
-      "unlocks": "One more turn-one Swamp for Cordial Vampire's {B}{B} and one more line to Bloodletter of Aclazotz's {1}{B}{B}{B}, the two deepest pip demands in the deck.",
-      "natural_cut": "Spectator Seating",
-      "bracket_delta": {"before": 4, "after": 4}
-    },
-    {
-      "card": "Adeline, Resplendent Cathar",
-      "role": "threat:tokens",
-      "cmc": 3.0,
-      "type_line": "Legendary Creature — Human Knight",
-      "evidence": {"edhrec_rank": 507, "game_changer": false},
-      "closes": "engine: the eight-card token multiplier and extra-maker component",
-      "why": "Three tokens per attack in a four-player pod — six under Anointed Procession, nine under Ojer Taq — and every one of them is a creature entering, so a single attack step feeds Impact Tremors, Warleader's Call and Corpse Knight three to nine times over.",
-      "unlocks": "Width that does not need a Vampire spell to be cast, which is the one thing the eminence trigger cannot give you on a turn you hold up removal.",
-      "bracket_delta": {"before": 4, "after": 4}
-    },
-    {
-      "card": "Ojer Taq, Deepest Foundation // Temple of Civilization",
-      "role": "threat:body",
-      "cmc": 6.0,
-      "type_line": "Legendary Creature — God // Land",
-      "evidence": {
-        "combo_lines_opened": [
-          {"cards": ["Ojer Taq, Deepest Foundation // Temple of Civilization", "Anointed Procession", "Mondrak, Glory Dominus"], "produces": "the token count from one Vampire cast when a tripler and two doublers all apply", "status": "needs a stack scenario"}
-        ],
-        "edhrec_rank": 863,
-        "game_changer": false
-      },
-      "closes": "engine: the eight-card token multiplier and extra-maker component",
-      "why": "Triples every creature token instead of doubling it, so one eminence trigger under Anointed Procession is six bodies rather than two, and each body is another Impact Tremors trigger at all three seats.",
-      "unlocks": "The highest ceiling available on the trigger kill, and it comes back as a land when it dies, which is more than any other six-drop in the identity offers a board that just ate a wrath.",
-      "bracket_delta": {"before": 4, "after": 4}
-    },
-    {
-      "card": "Torbran, Thane of Red Fell",
-      "role": "threat:body",
-      "cmc": 4.0,
-      "type_line": "Legendary Creature — Dwarf Noble",
-      "evidence": {
-        "combo_lines_opened": [
-          {"cards": ["Torbran, Thane of Red Fell", "Purphoros, God of the Forge", "Bloodletter of Aclazotz"], "produces": "the per-opponent total when a damage bonus and a life-loss doubler apply to the same trigger", "status": "needs a stack scenario"}
-        ],
-        "edhrec_rank": 998,
-        "game_changer": false
-      },
-      "why": "Impact Tremors is a red source and so are Purphoros, Warleader's Call and Witty Roastmaster: Torbran turns each of those triggers from 1 or 2 damage into 3 or 4, which is the difference between a two-mana Vampire dealing 12 to each opponent and dealing lethal on the spot. The cost is honest — {1}{R}{R}{R} against 17 red sources is the deepest pip demand anyone would add to this deck, and four maindeck red cards already sit under their line.",
-      "unlocks": "A ceiling raise on the kill route the deck already verifies, rather than a fourth copy of a component that assembles 78% of the time.",
-      "bracket_delta": {"before": 4, "after": 4}
-    }
-  ],
-  "gaps": [
-    "The Bloodthirsty Conqueror singleton gets no pick and that is deliberate. The only true replacement for its half of the loop is a second 'whenever an opponent loses life, you gain that much life', and no other card in this colour identity reads that way — Marauding Blight-Priest, Epicure of Blood and Starscape Cleric are all the other half, the half Vito and Sanguine Bond already cover. Spending a slot there would buy redundancy on the wrong side.",
-    "Whether Bloodletter of Aclazotz doubles damage-sourced life loss is unsettled; the checker-passed lines cover pure life loss only. That decides both the Mirkwood Bats pairing and the Torbran arithmetic, and /resolve-stack is what settles it.",
-    "Whether a doubled token-creation event triggers Mirkwood Bats once or twice is the single figure that decides whether it is a fifth converter or a second Impact Tremors. It needs a stack scenario, not an assertion.",
-    "No artifact measures cast rates, only draw rates. The double-white picks (Skyclave Apparition, Adeline) and the triple-red one (Torbran) are priced against Karsten's rows — 21 white sources against the 26 a {1}{W}{W} card asks, 17 red against a triple pip — and not against any observed failure.",
-    "Nothing measures how often a land answer matters at this table. Generous Gift and Vindicate are the only two picks that reach the class, and the case for them rests on the tax permanents they also answer, not on land destruction.",
-    "The pilot named surviving a sweeper as a want and no pick answers it. The protection component is six cards at 68.1%, four of them board-wide, and every candidate that would deepen it — Clever Concealment, Unbreakable Formation — competes with an answer suite the diagnosis calls the binding constraint. Say the word and it becomes the eleventh pick."
-  ]
+ "slug": "edgar-vampires",
+ "assessment": "The ten answer the diagnosis's two measured weaknesses and the deck's stated direction. Three picks move black mana, the binding axis (27/36 sources, 76.4% on-curve). One closes the single uncovered interaction class, the graveyard. The rest deepen the token-to-damage engine: two-card infinite halves that pair with Bloodthirsty Conqueror, Vito and Sanguine Bond, plus trigger doublers and width payoffs that scale with eminence tokens. One famous card deliberately absent: Rest in Peace would cover the graveyard class, but under it creatures exile instead of dying, so Blood Artist, Cruel Celebrant and Cordial Vampire never trigger — the cheap answer that blanks your own drain suite is not an answer.",
+ "ten": [
+  {
+   "card": "Exquisite Blood",
+   "role": "wincon:drain",
+   "cmc": 5.0,
+   "type_line": "Enchantment",
+   "evidence": {
+    "combo_lines_opened": [
+     {
+      "cards": [
+       "Exquisite Blood",
+       "Sanguine Bond"
+      ],
+      "produces": "Infinite lifeloss (each opponent's life to zero, one at a time)",
+      "status": "verified",
+      "stack_artifact": "stacks/005-sanguine-exquisite-loop.json"
+     },
+     {
+      "cards": [
+       "Exquisite Blood",
+       "Vito, Thorn of the Dusk Rose"
+      ],
+      "produces": "Infinite lifeloss",
+      "status": "verified",
+      "stack_artifact": "stacks/001-exquisite-vito-drain-loop.json"
+     }
+    ],
+    "edhrec_rank": 509,
+    "game_changer": false
+   },
+   "closes": "THE SURVIVING INFINITE (stacks 004 and 006): Bloodthirsty Conqueror + a lifegain-loss half",
+   "why": "The infinite plan currently rests on one 7.1%-of-openers body; with Vito, Sanguine Bond and Bloodthirsty Conqueror all in the 99, this single enchantment makes it four two-card pairings, and stacks 001 and 005 are checker-passed resolutions of both of its loops.",
+   "unlocks": "Any drain trigger — a Sanctum Seeker attack, one Blood Artist death — becomes a game-ending loop the moment the second half is on the battlefield.",
+   "natural_cut": "Vampire of the Dire Moon",
+   "bracket_delta": {
+    "before": 4,
+    "after": 4
+   }
+  },
+  {
+   "card": "Path of Ancestry",
+   "role": "land:fixing",
+   "cmc": 0.0,
+   "type_line": "Land",
+   "evidence": {
+    "synergy_partners_in_deck": [
+     "Herald's Horn"
+    ],
+    "edhrec_rank": 14,
+    "game_changer": false
+   },
+   "closes": "colour-sources",
+   "why": "The one land swap that gains a black source with red and white unchanged — Battlefield Forge out — and with 24 of the deck's 29 creatures sharing Edgar's Vampire type it scries on most creature casts; sized honestly, it closes 1 of the 9-source black gap.",
+   "unlocks": "A fourth tapland (cap is eight, aggro runs near zero — three is still comfortable) that smooths every eminence turn instead of just fixing one.",
+   "natural_cut": "Battlefield Forge",
+   "bracket_delta": {
+    "before": 4,
+    "after": 4
+   }
+  },
+  {
+   "card": "Marauding Blight-Priest",
+   "role": "wincon:drain",
+   "cmc": 3.0,
+   "type_line": "Creature — Vampire Cleric",
+   "evidence": {
+    "combo_lines_opened": [
+     {
+      "cards": [
+       "Marauding Blight-Priest",
+       "Bloodthirsty Conqueror"
+      ],
+      "produces": "Infinite lifegain triggers, infinite lifeloss",
+      "status": "needs a stack scenario"
+     }
+    ],
+    "synergy_partners_in_deck": [
+     "Blood Artist"
+    ],
+    "edhrec_rank": 1108,
+    "game_changer": false
+   },
+   "why": "A three-mana Vampire — eminence fuel — that turns every lifegain event into 1 life from each opponent: a Sanctum Seeker swing or a Blood Artist death now hits the whole table, and it forms a second two-card loop with Bloodthirsty Conqueror.",
+   "unlocks": "A gain-to-loss half on a typal body, so the drain web no longer routes exclusively through Vito and Sanguine Bond.",
+   "bracket_delta": {
+    "before": 4,
+    "after": 4
+   }
+  },
+  {
+   "card": "Soul-Guide Lantern",
+   "role": "hate:graveyard",
+   "cmc": 1.0,
+   "type_line": "Artifact",
+   "evidence": {
+    "edhrec_rank": 1359,
+    "game_changer": false
+   },
+   "closes": "interaction-breadth",
+   "why": "Graveyard is the one interaction class the deck answers zero times — confirmed at the oracle level — and this is the one-mana answer the breadth measure actually credits (hate:graveyard), where a Bojuka Bog-style utility land carries only land tags and moves nothing.",
+   "unlocks": "A line against reanimator and Yawgmoth-style tables: surgical exile on entry, whole-graveyard exile on demand, and a cantrip when nobody is playing that game.",
+   "bracket_delta": {
+    "before": 4,
+    "after": 4
+   }
+  },
+  {
+   "card": "Roaming Throne",
+   "role": "payoff:typal",
+   "cmc": 4.0,
+   "type_line": "Artifact Creature — Golem",
+   "evidence": {
+    "edhrec_rank": 133,
+    "game_changer": false
+   },
+   "why": "Name Vampire and the triggered abilities of Sanctum Seeker, Cordial Vampire, Champion of Dusk, Vampire Socialite and Blood Artist each trigger an additional time — on a colorless ward-{2} body the 27/36 black shortage never taxes.",
+   "unlocks": "Sanctum Seeker attacks drain twice per Vampire; one caution before counting tokens: whether it interacts with the command-zone eminence trigger at all needs a stack scenario — the ability doubles triggers of creatures you control, and a commander in the command zone is not one.",
+   "bracket_delta": {
+    "before": 4,
+    "after": 4
+   }
+  },
+  {
+   "card": "Mirkwood Bats",
+   "role": "wincon:drain",
+   "cmc": 4.0,
+   "type_line": "Creature — Bat",
+   "evidence": {
+    "edhrec_rank": 228,
+    "game_changer": false
+   },
+   "why": "Every token created — the eminence 1/1 on each Vampire cast, Bloodline Keeper activations, and every extra body Anointed Procession, Mondrak or Ocelot Pride adds — costs each opponent 1 life on creation; the audit's closer search ranks it the top pool card joining the drain component.",
+   "unlocks": "A flying converter that pays off token-MAKING rather than token combat — Impact Tremors redundancy that gets multiplied by the doublers instead of merely counting entries.",
+   "bracket_delta": {
+    "before": 4,
+    "after": 4
+   }
+  },
+  {
+   "card": "Isshin, Two Heavens as One",
+   "role": "doubler:triggers",
+   "cmc": 3.0,
+   "type_line": "Legendary Creature — Human Samurai",
+   "evidence": {
+    "edhrec_rank": 1457,
+    "game_changer": false
+   },
+   "why": "The deck's 13 wincon copies mostly cash out in the attack step, and Isshin doubles that step: Sanctum Seeker's per-Vampire drain, Drana's counters and Minas Tirith's draw each trigger an additional time on every swing — for {1}{R}{W}, costing nothing in the strained colour.",
+   "unlocks": "Attack-trigger doubling that turns a five-Vampire alpha strike into ten Sanctum Seeker drains before damage.",
+   "bracket_delta": {
+    "before": 4,
+    "after": 4
+   }
+  },
+  {
+   "card": "Enduring Tenacity",
+   "role": "wincon:drain",
+   "cmc": 4.0,
+   "type_line": "Enchantment Creature — Snake Glimmer",
+   "evidence": {
+    "combo_lines_opened": [
+     {
+      "cards": [
+       "Enduring Tenacity",
+       "Bloodthirsty Conqueror"
+      ],
+      "produces": "Infinite lifegain triggers, infinite lifeloss",
+      "status": "needs a stack scenario"
+     }
+    ],
+    "edhrec_rank": 827,
+    "game_changer": false
+   },
+   "why": "A Sanguine Bond that dies into itself — when killed as a creature it returns as an enchantment — so the gain-to-loss half survives exactly the sweeper a go-wide deck fears, and it pairs with Bloodthirsty Conqueror for another two-card loop; read the card: it drains one TARGET opponent, not each.",
+   "unlocks": "Wipe-resilient redundancy for the Sanguine Bond seat, which stack 006's lethal currently depends on.",
+   "bracket_delta": {
+    "before": 4,
+    "after": 4
+   }
+  },
+  {
+   "card": "Isolated Chapel",
+   "role": "land:fixing",
+   "cmc": 0.0,
+   "type_line": "Land",
+   "evidence": {
+    "synergy_partners_in_deck": [
+     "Herald's Horn"
+    ],
+    "edhrec_rank": 93,
+    "game_changer": false
+   },
+   "closes": "colour-sources",
+   "why": "The second black swap after Path of Ancestry: replacing the single Plains keeps white at 21 sources and adds a 28th black one, untapped whenever a Plains or Swamp is down — Godless Shrine and Savai Triome both satisfy it — at the real cost that Prismatic Vista then fetches only Swamps.",
+   "unlocks": "Progress on the binding axis by the only levers it has — the diagnosis prices the gap at 9 sources and no single-card cut re-prices it, so each credited land is a point of on-curve castability for the double-black drain quorum.",
+   "natural_cut": "Plains",
+   "bracket_delta": {
+    "before": 4,
+    "after": 4
+   }
+  },
+  {
+   "card": "Cathars' Crusade",
+   "role": "payoff:counters",
+   "cmc": 5.0,
+   "type_line": "Enchantment",
+   "evidence": {
+    "edhrec_rank": 555,
+    "game_changer": false
+   },
+   "why": "Five eminence tokens entering means five +1/+1 counters on every Vampire you control — width converts directly into mass pump, and the counters stay when a lord is shot, the same resilience argument the counters half of the combat plan already makes.",
+   "unlocks": "A payoff that scales with the number of tokens made per turn, which is the exact dimension Anointed Procession, Mondrak and Elspeth already multiply; the cost is real trigger bookkeeping on a five-mana double-white enchantment.",
+   "bracket_delta": {
+    "before": 4,
+    "after": 4
+   }
+  }
+ ],
+ "gaps": [
+  "The Bloodletter of Aclazotz drain-doubler line has zero pool closers — the audit's combo and role routes both return empty — so nothing on this list backs it up; a functional cousin (life-loss doubling on another body) could not be grounded in any index channel.",
+  "Whether the second fixing swap (Isolated Chapel for Plains) pays for itself is a goldfish question the diagnosis leaves open: black remains 8 sources short after Path of Ancestry, and only a seed-matched sandbox can price swap number two.",
+  "Roaming Throne's non-interaction with the command-zone eminence trigger is a rules read, not a verified fact — a stack scenario should settle it before any pilot counts on (or writes off) doubled tokens.",
+  "No candidate_pool.json exists for this deck, so the ten were scouted from the audit's closer search, the combo/synergy/obsolescence indexes and the colour-identity-filtered pool, not from a scored pool.",
+  "Whether Exquisite Blood's slot is best spent here at all is the diagnosis's open cross-deck question; this list ranks it on this deck's evidence alone and the orchestrator holds the allocation decision."
+ ]
 }
