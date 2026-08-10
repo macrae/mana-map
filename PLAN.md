@@ -136,17 +136,29 @@ the input first.
 
 ## The cache board
 
-15 non-HIT, and each one is honest:
+**Do not quote a number here from memory — run `cache-status` per deck.** The count moves
+whenever a *shared* input is edited, and the surfaces that do that are easy to forget:
+`STYLEv3.md`, `issue_spec.py`, `deck_audit.py` and every `.claude/agents/*.md` are all
+declared inputs. A doc pass that touches `STYLEv3.md` MISSes `issue-plan` on every deck in
+the fleet, and there is no warning at edit time.
+
+As of 2026-08-09, 29 non-HIT:
 
 | Routine | n | Why |
 |---|---|---|
+| `issue-plan` | 8 | `STYLEv3.md` edited in the documentation pass |
+| `the-ten` | 8 | `bracket_report.json` gained `target` / `within_target` |
 | `deck-recon` | 6 | Never run on those decks — absent, not stale |
-| `deck-diagnosis` | 5 | Never run — the withheld diagnoses below |
-| `deck-diagnosis` | 3 | Inputs genuinely moved (`goldfish_targets`, `mana_analysis`, `deck_audit.py`) |
+| `deck-diagnosis` | 6 | Same `bracket_report.json` change |
 | `candidate-pool` | 1 | Never run (yawgmoth) |
 
-Everything else HITs. **Never `cache-record` to make a board green** — the record is the
-claim that a human read the artifact and agreed it holds.
+None of these is a stale *figure*: no floor moved, no measurement changed. They are the
+cache correctly reporting that a declared input's bytes differ.
+
+**Never `cache-record` to make a board green** — the record is the claim that a human read
+the artifact and agreed it holds. Where an input changed but no figure did, the honest
+route is `cache-snapshot` → change → `cache-rerecord`, or a per-routine re-bless with the
+reasoning committed.
 
 ## Open work
 
