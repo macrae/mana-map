@@ -1,6 +1,6 @@
 {
   "slug": "edgar-vampires",
-  "decklist_sha256": "6f8c5208b0110d5ac6f51b5121d0aac696e00010e888fa30384ccb37ae9818dd",
+  "decklist_sha256": "bdaa14183bcd959c4c772153b8516f964ca2503b0fa39dd11c9bcfa202c7cc6e",
   "lands": {
     "total": 37,
     "entries": 34,
@@ -9,7 +9,7 @@
     "classes": {
       "basic": 5,
       "fetch": 3,
-      "fixing": 5,
+      "fixing": 6,
       "mdfc": 1,
       "tapped": 15,
       "untapped-dual": 10,
@@ -107,6 +107,20 @@
         ],
         "produces": [
           "B",
+          "W"
+        ]
+      },
+      {
+        "name": "City of Brass",
+        "copies": 1,
+        "classes": [
+          "fixing",
+          "untapped-dual",
+          "utility"
+        ],
+        "produces": [
+          "B",
+          "R",
           "W"
         ]
       },
@@ -322,18 +336,6 @@
         ]
       },
       {
-        "name": "Sunbaked Canyon",
-        "copies": 1,
-        "classes": [
-          "untapped-dual",
-          "utility"
-        ],
-        "produces": [
-          "R",
-          "W"
-        ]
-      },
-      {
         "name": "Sundown Pass",
         "copies": 1,
         "classes": [
@@ -389,7 +391,7 @@
     "lands": {
       "W": 18,
       "U": 0,
-      "B": 23,
+      "B": 24,
       "R": 14,
       "G": 0
     },
@@ -403,7 +405,7 @@
     "total": {
       "W": 21,
       "U": 0,
-      "B": 26,
+      "B": 27,
       "R": 17,
       "G": 0
     },
@@ -455,9 +457,9 @@
   },
   "pips": {
     "B": {
-      "total_pips": 38.0,
+      "total_pips": 39.0,
       "max_pips": 3,
-      "cards": 28,
+      "cards": 29,
       "earliest_turn": 1,
       "effective_pips": 2
     },
@@ -465,29 +467,29 @@
       "total_pips": 11.0,
       "max_pips": 1,
       "cards": 11,
-      "earliest_turn": 2,
+      "earliest_turn": 1,
       "effective_pips": 1
     },
     "W": {
-      "total_pips": 28.0,
+      "total_pips": 26.0,
       "max_pips": 2,
-      "cards": 25,
+      "cards": 24,
       "earliest_turn": 1,
       "effective_pips": 1
     }
   },
   "shares": {
     "B": {
-      "pip_share": 0.494,
-      "source_share": 0.418
+      "pip_share": 0.513,
+      "source_share": 0.429
     },
     "R": {
-      "pip_share": 0.143,
-      "source_share": 0.255
+      "pip_share": 0.145,
+      "source_share": 0.25
     },
     "W": {
-      "pip_share": 0.364,
-      "source_share": 0.327
+      "pip_share": 0.342,
+      "source_share": 0.321
     }
   },
   "source_targets": {
@@ -498,12 +500,12 @@
   "on_curve_probability": {
     "lands_only": {
       "W": 0.849,
-      "B": 0.667,
+      "B": 0.694,
       "R": 0.762
     },
     "with_rocks_and_dorks": {
       "W": 0.895,
-      "B": 0.742,
+      "B": 0.764,
       "R": 0.831
     }
   },
@@ -514,27 +516,27 @@
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 1.0,
-      "10": 0.405,
-      "2": 0.999,
-      "3": 0.925,
-      "4": 0.809,
-      "5": 0.693,
-      "6": 0.587,
-      "7": 0.504,
-      "8": 0.452,
-      "9": 0.422
+      "10": 0.397,
+      "2": 0.997,
+      "3": 0.919,
+      "4": 0.806,
+      "5": 0.692,
+      "6": 0.589,
+      "7": 0.509,
+      "8": 0.449,
+      "9": 0.417
     },
     "mean_available_mana_by_turn": {
       "1": 1.0,
-      "10": 7.251,
-      "2": 2.141,
+      "10": 7.247,
+      "2": 2.147,
       "3": 3.168,
-      "4": 4.005,
-      "5": 4.728,
-      "6": 5.344,
-      "7": 5.869,
-      "8": 6.361,
-      "9": 6.814
+      "4": 4.006,
+      "5": 4.729,
+      "6": 5.348,
+      "7": 5.879,
+      "8": 6.37,
+      "9": 6.82
     }
   },
   "assumptions": [
@@ -544,7 +546,7 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 23 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 37-land deck; rocks and dorks lift the count to 26.",
+    "B: 24 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 37-land deck; rocks and dorks lift the count to 27.",
     "R: 14 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 37-land deck; rocks and dorks lift the count to 17.",
     "W: 18 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 37-land deck; rocks and dorks lift the count to 21.",
     "15 of 37 lands enter tapped (41%) — over the one-in-three budget the deck builder allows itself."
