@@ -1,7 +1,13 @@
 /**
- * mana-map.js — Explore mode: map rendering, search, toggles, card viewer panel
- * with multi-card selection, pinch zoom.
- * Exposes shared state and helpers on window.MM for deck-builder.js.
+ * mana-map.js — Explore mode: the 34K atlas, search, overlays, and the card
+ * viewer panel with multi-card selection.
+ *
+ * Exposes shared state and helpers on `window.MM`, which `discovery.js`,
+ * `drill.js`, `force.js` and `build.js` all read. `deck-view.js` does NOT —
+ * `deck.html` loads it alone, so `MM` does not exist there and it carries its
+ * own `esc`. Anything that runs during this file's boot executes INSIDE the
+ * IIFE, before `window.MM` is assigned; touching `MM.*` there aborts the IIFE
+ * and every later file fails at its own top level.
  */
 (function () {
   // ── Palettes ──
@@ -1702,8 +1708,8 @@
   // queueMicrotask, not a direct call: every line in this file runs INSIDE the IIFE whose
   // return value becomes `window.MM`, so the global does not exist yet. Discovery touches
   // MM.setStatus, and calling it here threw — which aborted the IIFE, so MM was never
-  // exported and deck-builder.js failed at its own top level too. One ordering mistake,
-  // four broken files, twice. A microtask runs after the assignment completes.
+  // exported and every later file failed at its own top level too. One ordering
+  // mistake, four broken files, twice. A microtask runs after the assignment completes.
   if (!wantedDeck) queueMicrotask(function () {
     const sel = document.getElementById('modeSelect');
     if (sel) sel.value = currentMode;
@@ -2445,7 +2451,7 @@
   }
 
   // ── Expose shared state/functions on window.MM ──
-  // Only members with a live caller (deck-builder.js, generated onclick
+  // Only members with a live caller (the other eight scripts, generated onclick
   // handlers, or index.html) are exported — see docs/viz.md for the contract.
   window.MM = {
     get allData() { return allData; },

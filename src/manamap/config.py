@@ -1,3 +1,36 @@
+"""Every constant in the project, in one file on purpose.
+
+Two things make a single module the right shape here, and both would be weakened
+by splitting it behind a façade:
+
+**The frozen/mutable boundary is a rule, not a filing system.** Changing
+`MECHANICAL_TAGS` or any model-facing dimension invalidates `model_ability.pt`
+and forces a retrain of steps 3-5. Those constants sit together under one loud
+warning; spread across modules, the rule becomes something you have to remember
+rather than something you read. `ROLE_PATTERNS` is a SEPARATE dict for exactly
+this reason — roles change often, tags must not.
+
+**Seventy modules import from here.** A façade would mean two files to keep in
+sync forever, for no behaviour change.
+
+Sections, in file order:
+
+    paths            data artifacts, discovery bundle, eval, combo/deck data
+    FROZEN — model   text encoder, vocab sizes, embedding dims, feature dims,
+                     the function model's output split, fusion MLP, training
+                     hyperparameters, MECHANICAL_TAGS, the InfoNCE objective
+    rulebooks        SYNERGY_RULES (24), ROLE_PATTERNS and friends (53 roles in
+                     19 families), power-creep criteria, region clustering
+    pilot            rules DB, decks and manuals, Commander brackets, deck
+                     construction, DECK_AXIS_TARGETS (the diagnosis substrate),
+                     goldfish, strategy KB, AGENT_ROUTINES (the cache registry)
+
+Three source files and every agent charter are declared cache inputs
+(`repo:STYLE_DOC_PATH`, `repo:ISSUE_SPEC_PATH`, `repo:DECK_AUDIT_PATH`). This
+file is NOT one of them — editing it invalidates nothing by itself, but changing
+a VALUE an artifact was derived from does.
+"""
+
 import os
 from pathlib import Path
 

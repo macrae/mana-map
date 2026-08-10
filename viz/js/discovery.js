@@ -480,10 +480,10 @@ window.Discovery = (function () {
 
   // ── the tray ───────────────────────────────────────────────────────────
 
-  /* A deliberately light selected-set, separate from the graph. The graph is where you
-   * are looking; the tray is what you are keeping. Four other "set of cards" ideas
-   * already exist in this codebase (selectedCards, browseSet, deck-builder seeds,
-   * Deck Lens) — this is not another one of those, it is the thing you export. */
+  /* The tray is Session's; these are the mode's wrappers around it. The graph is
+   * where you are looking, the tray is what you are keeping, and it is the thing
+   * `brief()` exports. `toggleTray` and `clearTray` are NOT delegates — they add the
+   * repaint, because the panel belongs to the mode and not to Session. */
   // The tray moved to Session. Its own comment here used to say it was "not another one
   // of those" four set-of-cards ideas — which was true of its purpose and not of its
   // storage, since it was a fifth array all the same. Session owns it now; this is the
@@ -624,9 +624,9 @@ window.Discovery = (function () {
 
   // ── import ─────────────────────────────────────────────────────────────
 
-  /* Paste a Moxfield export, get your deck as a graph. Resolution is against viz_index,
-   * NOT data/decks/index.json — Deck Lens refuses any slug it does not already know
-   * (deck-map.js), and an imported deck has no slug and never will. */
+  /* Paste a Moxfield export, get your deck as a graph. Resolution is against
+   * `viz_index.json`, NOT `data/decks/index.json` — Build's deck picker refuses any
+   * slug it does not already know, and an imported deck has no slug and never will. */
   function importText(text) {
     if (!index) return { resolved: 0, missing: [], total: 0 };
     const entries = Decklist.parse(text);

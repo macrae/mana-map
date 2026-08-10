@@ -36,9 +36,6 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .detail-inner::-webkit-scrollbar { width: 6px; }
 .detail-inner::-webkit-scrollbar-track { background: #16213e; }
 .detail-inner::-webkit-scrollbar-thumb { background: #3a3a5a; border-radius: 3px; }
-
-.detail-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-.detail-header h2 { font-size: 1.1rem; color: #c4a747; line-height: 1.3; flex: 1; margin-right: 8px; }
 .detail-close { background: none; border: 1px solid #3a3a5a; color: #aaa; width: 28px; height: 28px; border-radius: 4px; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .detail-close:hover { border-color: #c4a747; color: #e0e0e0; }
 
@@ -46,17 +43,11 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .detail-card-image img { width: 100%; display: block; border-radius: 12px; }
 
 .detail-type { color: #aaa; font-size: 0.85rem; margin-bottom: 8px; }
-.detail-mana { margin-bottom: 12px; display: flex; align-items: center; gap: 3px; flex-wrap: wrap; }
 
 .detail-section { margin-bottom: 12px; }
 .detail-section-title { font-size: 0.7rem; text-transform: uppercase; color: #666; letter-spacing: 0.5px; margin-bottom: 4px; }
 
 .detail-oracle { font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; color: #ddd; background: #1a1a2e; padding: 10px; border-radius: 6px; border: 1px solid #2a2a4a; }
-
-.detail-stats { display: flex; gap: 16px; flex-wrap: wrap; }
-.detail-stat { text-align: center; }
-.detail-stat-value { font-size: 1.2rem; font-weight: bold; color: #e0e0e0; }
-.detail-stat-label { font-size: 0.65rem; color: #888; text-transform: uppercase; }
 
 .detail-meta { font-size: 0.8rem; color: #bbb; }
 .detail-meta span { display: block; margin-bottom: 2px; }
@@ -163,9 +154,6 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .obsolescence-advantages { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
 .obsolescence-badge { background: #3a1a1a; color: #F87171; border-radius: 3px; padding: 2px 6px; font-size: 0.65rem; }
 
-/* ── Active Stack Tab ─────────────────────────────────────────────────── */
-.stack-tab.active { border-color: #c4a747; background: #222244; border-left: 3px solid #c4a747; cursor: default; }
-
 /* ── Keyboard Hint ───────────────────────────────────────────────────── */
 .keyboard-hint { font-size: 0.6rem; color: #555; text-align: center; padding: 6px 0 2px; }
 
@@ -201,130 +189,18 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .deck-format-row select, .deck-format-row input { background: #1a1a2e; color: #e0e0e0; border: 1px solid #3a3a5a; border-radius: 4px; padding: 5px 8px; font-size: 0.85rem; flex: 1; }
 .deck-format-row select:focus, .deck-format-row input:focus { outline: none; border-color: #c4a747; }
 
-.deck-commander-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; position: relative; }
-.deck-commander-row input { flex: 1; }
-.deck-commander-row .btn-sm { flex-shrink: 0; }
-
-/* Seed card list */
-.seed-list { list-style: none; }
-.seed-item { display: flex; align-items: center; justify-content: space-between; padding: 6px 8px; margin-bottom: 4px; background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 4px; font-size: 0.85rem; }
-.seed-item:hover { border-color: #3a3a5a; }
-.seed-item .seed-name { flex: 1; color: #e0e0e0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.seed-item .seed-mana { display: flex; gap: 2px; margin: 0 8px; flex-shrink: 0; }
-.seed-item .seed-mana .mana-sym { width: 16px; height: 16px; font-size: 0.55rem; }
-.seed-remove { background: none; border: none; color: #666; cursor: pointer; font-size: 0.9rem; padding: 0 4px; }
-.seed-remove:hover { color: #DC2626; }
-.seed-item.format-warning { border-color: #DC2626; }
-
-/* Type distribution */
-.dist-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 0.8rem; }
-.dist-label { width: 90px; color: #aaa; }
-.dist-input { width: 40px; background: #1a1a2e; color: #e0e0e0; border: 1px solid #3a3a5a; border-radius: 3px; padding: 2px 4px; font-size: 0.8rem; text-align: center; }
-.dist-input:focus { outline: none; border-color: #c4a747; }
-.dist-bar { flex: 1; height: 8px; background: #2a2a4a; border-radius: 4px; overflow: hidden; }
-.dist-bar-fill { height: 100%; background: #c4a747; border-radius: 4px; transition: width 0.2s; }
-.dist-bar-fill.full { background: #4ade80; }
-.dist-bar-fill.over { background: #DC2626; }
-.dist-total { font-size: 0.8rem; color: #aaa; margin-top: 8px; }
-
-/* Buttons */
-.btn-sm { background: #2a2a4a; color: #ccc; border: 1px solid #3a3a5a; border-radius: 4px; padding: 4px 10px; font-size: 0.75rem; cursor: pointer; transition: all 0.15s; }
-.btn-sm:hover { border-color: #c4a747; color: #e0e0e0; }
-
-.btn-primary { width: 100%; padding: 10px; background: #2a2a4a; color: #c4a747; border: 1px solid #c4a747; border-radius: 6px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.15s; }
-.btn-primary:hover { background: #3a3a5a; }
-.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-
-.btn-danger { background: #3a1a1a; color: #DC2626; border-color: #DC2626; }
-.btn-danger:hover { background: #4a2a2a; }
-
-/* Recommendations */
-.rec-list { list-style: none; }
-.rec-item { display: flex; flex-direction: column; padding: 0; margin-bottom: 4px; background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 4px; font-size: 0.85rem; }
-.rec-item:hover { border-color: #3a3a5a; }
-
-.rec-header { display: flex; align-items: center; flex-wrap: wrap; padding: 8px; gap: 4px; }
-.rec-name-row { display: flex; align-items: center; gap: 6px; flex: 1; min-width: 0; }
-.rec-name { color: #e0e0e0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.rec-mana { display: flex; gap: 2px; flex-shrink: 0; }
-.rec-mana .mana-sym { width: 16px; height: 16px; font-size: 0.55rem; }
-.rec-type { font-size: 0.7rem; color: #888; width: 100%; }
-.rec-combo { font-size: 0.7rem; color: #F59E0B; margin-top: 2px; }
-.rec-score { font-size: 0.75rem; color: #c4a747; margin-right: 4px; flex-shrink: 0; font-weight: 600; }
-.rec-actions { display: flex; gap: 4px; flex-shrink: 0; align-items: center; }
-.rec-accept { background: #1a3a2a; color: #4ade80; border: 1px solid #2a5a3a; border-radius: 3px; width: 26px; height: 26px; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; }
-.rec-accept:hover { background: #2a5a3a; }
-.rec-reject { background: #3a1a1a; color: #DC2626; border: 1px solid #5a2a2a; border-radius: 3px; width: 26px; height: 26px; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; }
-.rec-reject:hover { background: #5a2a2a; }
-.rec-expand { background: #2a2a4a; color: #aaa; border: 1px solid #3a3a5a; border-radius: 3px; width: 26px; height: 26px; cursor: pointer; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; }
-.rec-expand:hover { border-color: #c4a747; color: #e0e0e0; }
-
-/* Expandable body — hidden by default */
-.rec-body { display: none; padding: 0 8px 8px; border-top: 1px solid #2a2a4a; }
-.rec-item.expanded .rec-body { display: block; padding-top: 8px; }
-
-.rec-scores { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
-.rec-score-chip { background: #2a2a4a; color: #ccc; border-radius: 3px; padding: 2px 6px; font-size: 0.65rem; }
-.rec-score-chip.chip-combo { background: #3a2a0a; color: #F59E0B; }
-.rec-score-chip.chip-synergy { background: #2a1a3a; color: #E040FB; }
-.rec-synergy { font-size: 0.7rem; color: #E040FB; margin-top: 2px; }
-
-.rec-keywords { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
-
-.rec-oracle { font-size: 0.75rem; line-height: 1.4; color: #bbb; background: #16213e; padding: 6px 8px; border-radius: 4px; margin-top: 6px; max-height: 100px; overflow-y: auto; white-space: pre-wrap; }
-.rec-oracle::-webkit-scrollbar { width: 4px; }
-.rec-oracle::-webkit-scrollbar-thumb { background: #3a3a5a; border-radius: 2px; }
-
-/* Deck list */
-.deck-group { margin-bottom: 10px; }
-.deck-group-header { font-size: 0.75rem; color: #aaa; text-transform: uppercase; margin-bottom: 4px; display: flex; justify-content: space-between; }
-.deck-group-header .group-progress { color: #666; }
-.deck-group-header .group-progress.complete { color: #4ade80; }
-.deck-card { display: flex; align-items: center; padding: 3px 8px; font-size: 0.8rem; color: #ddd; }
-.deck-card:hover { background: #2a2a4a; border-radius: 3px; }
-.deck-card-qty { width: 20px; color: #888; }
-.deck-card-name { flex: 1; }
-.deck-card-mana { display: flex; gap: 1px; flex-shrink: 0; margin: 0 4px; }
-.deck-card-mana .mana-sym { width: 14px; height: 14px; font-size: 0.5rem; }
-.deck-card-stats { font-size: 0.7rem; color: #888; flex-shrink: 0; margin-right: 4px; }
-.deck-card-remove { background: none; border: none; color: #555; cursor: pointer; font-size: 0.75rem; padding: 0 4px; visibility: hidden; }
-.deck-card:hover .deck-card-remove { visibility: visible; }
-.deck-card-remove:hover { color: #DC2626; }
-
 /* Mana curve mini chart */
 .mana-curve { display: flex; align-items: flex-end; gap: 3px; height: 40px; margin: 8px 0; }
-.curve-bar { flex: 1; background: #3a3a5a; border-radius: 2px 2px 0 0; min-height: 2px; position: relative; }
-.curve-bar-inner { position: absolute; bottom: 0; left: 0; right: 0; background: #c4a747; border-radius: 2px 2px 0 0; }
 .curve-label { text-align: center; font-size: 0.6rem; color: #666; margin-top: 2px; }
-.mana-curve-labels { display: flex; gap: 3px; }
 
 /* Color distribution */
 .color-dist { display: flex; gap: 4px; margin-top: 8px; }
 .color-dist-item { display: flex; align-items: center; gap: 3px; font-size: 0.7rem; color: #aaa; }
-
-/* Loading spinner */
-.deck-loading { text-align: center; padding: 24px; color: #888; }
-.deck-loading .spinner { width: 24px; height: 24px; border: 2px solid #3a3a5a; border-top-color: #c4a747; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 8px; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-/* Commander autocomplete */
-.autocomplete-list { position: absolute; top: 100%; left: 0; right: 0; background: #1a1a2e; border: 1px solid #3a3a5a; border-top: none; border-radius: 0 0 4px 4px; max-height: 200px; overflow-y: auto; z-index: 100; }
-.autocomplete-item { padding: 6px 8px; font-size: 0.8rem; cursor: pointer; color: #ddd; }
-.autocomplete-item:hover, .autocomplete-item.active { background: #2a2a4a; color: #c4a747; }
 
 /* Mode select styling */
 #modeSelect { font-weight: 600; }
 #modeSelect option[value="build"] { color: #c4a747; }
-
-/* ── Obsolescence Warning (Deck Builder) ─────────────────────────────── */
-.obs-warning { color: #d4a017; font-size: 0.8em; margin-top: 4px; }
-.obs-name { cursor: pointer; text-decoration: underline; }
-.obs-name:hover { color: #e0c040; }
-.obs-dot { color: #d4a017; font-size: 0.5rem; margin-left: 4px; flex-shrink: 0; }
-
-/* ── Clear Rejected Button ───────────────────────────────────────────── */
-.clear-rejected-btn { font-size: 0.75em; color: #888; background: none; border: 1px solid #444; border-radius: 4px; padding: 2px 8px; cursor: pointer; }
-.clear-rejected-btn:hover { border-color: #888; color: #ccc; }
 
 /* ── Mobile ───────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
@@ -477,16 +353,8 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
  * occupies layout and still answers hit-tests through its host. The atlas keeps its state:
  * re-entering Explore calls `render()` and the ResizeObserver restores the backing store.
  */
-#plot.force-mode .map-canvas,
-#plot.force-mode .map-labels,
-#plot.force-mode .map-legend { display: none; }
+#plot.force-mode .map-canvas, #plot.force-mode .map-labels, #plot.force-mode .map-legend { display: none; }
 #plot:not(.force-mode) .force-canvas { display: none; }
-
-.force-slider { margin-bottom: 10px; }
-.force-slider label { display: flex; justify-content: space-between; font-size: 0.7rem;
-  color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
-.force-slider label span { color: #c4a747; font-variant-numeric: tabular-nums; }
-.force-slider input[type=range] { width: 100%; accent-color: #c4a747; }
 /* Inline variant for the panel header — the walk's "New walk" sits beside the title. */
 .lens-btn-inline { width: auto; margin: 0 8px 0 auto; padding: 4px 10px; font-size: 0.72rem; }
 
@@ -607,13 +475,6 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
   width: 100%; background: #16213e; color: #ddd; border: 1px solid #3a3a5a;
   border-radius: 4px; padding: 6px; font-size: 0.8rem;
 }
-
-/* Neighbourhood labels are captions, not controls. Every label is a DOM button layered
-   over the canvas, and therefore a hole in the map — a card underneath one cannot be
-   hovered, because the pointer lands on the button and the canvas gets `mouseleave`.
-   The telescopic label pass puts many more L2 names on screen, so they hand the pixels
-   back; L0 and L1 keep pointer events because clicking them navigates. */
-.map-label-l2 { pointer-events: none; }
 
 /* Key for the segmented mana curve. Same swatch element as the role bars, because they
    are now the same colour language — see MM.GROUPINGS. */
