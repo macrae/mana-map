@@ -233,20 +233,41 @@ Four, all flagged by strategic frames and all load-bearing there: **auditing a c
 (annihilation as a resource, the anthem-versus-shrink anti-synergy); and **tutor
 sequencing**, doubly wanted since Fetch Quests is a whole section with no pillar behind it.
 
-### 8. Codebase hygiene — phases 3 and 5
+### 8. Codebase hygiene — what is left
 
-Phases 1, 2 and 4 are done. Remaining:
+Phases 1–4 are done. **Phase 3 shipped** (70 dead CSS classes, `mana-map.css` 621 → 482
+lines) and **Phase 5 is closed with two items deliberately declined.**
 
-- **Phase 3 (frontend)**: 63 of 212 CSS classes are referenced nowhere; ~73s of the browser
-  suite is unconditional `wait_for_timeout` sleeps in 24 tests; 62 of 118 browser tests
-  re-parse the 12.9 MB projection because pages are function-scoped. Investigate
-  `setCommander`'s three definitions before touching them — they may be deliberate layers
-  (Session owns truth, Force owns the ring).
-- **Phase 5 (optional)**: split `config.py` (1,235 lines, eight unrelated concerns) into a
-  package behind a re-export façade; unify `build_manual`'s second card-name matcher onto
-  `card_refs`; int8-quantise `embeddings*.bin` (17.6 MB → ~4.4 MB each, the two largest
-  tracked files). **Leave `.git` alone** — history rewriting breaks every clone to reclaim
-  ~76 MB.
+**`config.py` is NOT split, and should not be.** The plan recommended it; the
+recommendation was wrong. It is the most-imported file in the repo (70 modules), so a
+re-export façade means two files to keep in sync forever for no behaviour change. And the
+frozen/mutable boundary is a **rule**, not a filing system: changing `MECHANICAL_TAGS` or
+a model-facing dim invalidates `model_ability.pt`, and that is easier to enforce with
+those constants under one loud warning than spread across modules. It now carries a
+table-of-contents docstring stating that boundary explicitly, which addresses the real
+complaint — navigation — at no risk.
+
+**int8 embeddings: measured, and the decision is the pilot's.** Quantising takes each file
+17.6 MB → 4.4 MB, dropping 26.4 MB from the tracked set and the Pages payload. Measured
+cost over 400 sampled cards: **97.3% top-10 neighbour agreement**, so roughly one card in
+37 moves in a Find Similar result. The fetch is **lazy** — `embeddings` loads only for
+Find Similar, never on the discovery boot — so there is no first-paint win to weigh
+against it. A user-facing quality trade belongs to a person.
+
+**Five flagged "duplications" were false and none was touched**: `setCommander` ×3
+(deliberate layers), `esc` in `deck-view.js` (required — `deck.html` loads it alone, so
+`window.MM` does not exist there), discovery's tray trio (they add the repaint),
+`build_manual._card_probes` vs `card_refs.name_probes` (link insertion vs invalidation
+detection), and `build_name_index` ×2 (opposite tie-breaks per consumer). Name collision
+is not duplication, and this codebase collides a lot.
+
+Still open, and genuinely worth doing:
+
+- **Browser-suite runtime**: ~73s of unconditional `wait_for_timeout` in 24 tests, and 62
+  of 118 tests re-parse the 12.9 MB projection because pages are function-scoped. Replace
+  the sleeps with condition waits first; only consider page reuse if that misses the
+  budget, since cross-test state is this repo's known enemy.
+- **Leave `.git` alone** — history rewriting breaks every clone to reclaim ~76 MB.
 
 ### 9. Deck versioning — the remaining third
 
