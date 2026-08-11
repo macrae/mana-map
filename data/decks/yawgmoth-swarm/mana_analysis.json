@@ -1,17 +1,17 @@
 {
   "slug": "yawgmoth-swarm",
-  "decklist_sha256": "7eef02f1b9de6e4a4a8bb22f635543e952866335f6fb7d71b4a444d167332f06",
+  "decklist_sha256": "3ddfb869fa7b2ae006eeb0771c1ffb95aa9df8149fbc2ba3feae4edd2bcd2a59",
   "lands": {
     "total": 36,
-    "entries": 15,
+    "entries": 16,
     "enters_tapped": 3,
     "enters_tapped_always": 2,
     "classes": {
-      "basic": 22,
+      "basic": 21,
       "fixing": 6,
       "tapped": 3,
       "untapped-dual": 5,
-      "utility": 8
+      "utility": 9
     },
     "list": [
       {
@@ -108,6 +108,14 @@
         ]
       },
       {
+        "name": "Nykthos, Shrine to Nyx",
+        "copies": 1,
+        "classes": [
+          "utility"
+        ],
+        "produces": []
+      },
+      {
         "name": "Path of Ancestry",
         "copies": 1,
         "classes": [
@@ -142,7 +150,7 @@
       },
       {
         "name": "Swamp",
-        "copies": 22,
+        "copies": 21,
         "classes": [
           "basic"
         ],
@@ -174,7 +182,7 @@
     "lands": {
       "W": 0,
       "U": 0,
-      "B": 34,
+      "B": 33,
       "R": 0,
       "G": 0
     },
@@ -188,7 +196,7 @@
     "total": {
       "W": 0,
       "U": 0,
-      "B": 42,
+      "B": 41,
       "R": 0,
       "G": 0
     },
@@ -197,14 +205,6 @@
         "name": "Agadeem's Awakening // Agadeem, the Undercrypt",
         "kind": "ramp:ritual",
         "cmc": 3.0,
-        "produces": [
-          "B"
-        ]
-      },
-      {
-        "name": "Arcane Signet",
-        "kind": "ramp:rock",
-        "cmc": 2.0,
         "produces": [
           "B"
         ]
@@ -235,6 +235,14 @@
         "name": "Malakir Rebirth // Malakir Mire",
         "kind": "ramp:ritual",
         "cmc": 1.0,
+        "produces": [
+          "B"
+        ]
+      },
+      {
+        "name": "Pawn of Ulamog",
+        "kind": "ramp:dork",
+        "cmc": 3.0,
         "produces": [
           "B"
         ]
@@ -273,7 +281,7 @@
   },
   "pips": {
     "B": {
-      "total_pips": 75.0,
+      "total_pips": 76.0,
       "max_pips": 3,
       "cards": 55,
       "earliest_turn": 1,
@@ -291,41 +299,42 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "B": 0.882
+      "B": 0.869
     },
     "with_rocks_and_dorks": {
-      "B": 0.955
+      "B": 0.948
     }
   },
   "ramp": {
-    "ramp:dork": 2,
+    "ramp:cost-reduction": 1,
+    "ramp:dork": 3,
     "ramp:ritual": 4,
-    "ramp:rock": 4
+    "ramp:rock": 3
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
-      "1": 0.999,
-      "10": 0.403,
+      "1": 1.0,
+      "10": 0.399,
       "2": 0.997,
-      "3": 0.919,
-      "4": 0.808,
-      "5": 0.684,
-      "6": 0.588,
-      "7": 0.503,
-      "8": 0.46,
-      "9": 0.427
+      "3": 0.916,
+      "4": 0.807,
+      "5": 0.692,
+      "6": 0.589,
+      "7": 0.51,
+      "8": 0.455,
+      "9": 0.43
     },
     "mean_available_mana_by_turn": {
-      "1": 0.999,
-      "10": 7.1,
-      "2": 2.139,
-      "3": 3.082,
-      "4": 3.911,
-      "5": 4.603,
-      "6": 5.223,
-      "7": 5.747,
-      "8": 6.228,
-      "9": 6.675
+      "1": 1.0,
+      "10": 7.104,
+      "2": 2.141,
+      "3": 3.079,
+      "4": 3.908,
+      "5": 4.606,
+      "6": 5.23,
+      "7": 5.756,
+      "8": 6.233,
+      "9": 6.685
     }
   },
   "assumptions": [
@@ -335,6 +344,6 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 34 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 42."
+    "B: 33 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 41."
   ]
 }
