@@ -1,0 +1,395 @@
+{
+ "id": "014",
+ "slug": "yawgmoth-swarm",
+ "deck": "YAWGMOTH \u2014 THE SCARAB SWARM",
+ "title": "The undying pair: Butcher Ghoul + Geralf's Messenger under Yawgmoth \u2014 is the loop unbounded, and what does each opponent lose per cycle?",
+ "rules_version": "June 19, 2026",
+ "scenario": {
+  "board": {
+   "you": [
+    "Yawgmoth, Thran Physician (2/4) \u2014 your commander",
+    "Butcher Ghoul (1/1 printed; carries ONE +1/+1 counter from a previous undying return, so it is currently 2/2)",
+    "Zulaport Cutthroat (1/1)",
+    "Geralf's Messenger (3/2) \u2014 already sacrificed to pay the cost of the ability now on the stack",
+    "Swamp (tapped)",
+    "Swamp (tapped)",
+    "Swamp (tapped)",
+    "Swamp (tapped)"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": [
+      "no permanents"
+     ]
+    },
+    {
+     "life": 40,
+     "board": [
+      "no permanents"
+     ]
+    },
+    {
+     "life": 40,
+     "board": [
+      "no permanents"
+     ]
+    }
+   ]
+  },
+  "hand": [],
+  "graveyard": [
+   "Geralf's Messenger"
+  ],
+  "mana_available": "{0} (Yawgmoth's ability costs no mana to activate)",
+  "stack": [
+   {
+    "pos": 0,
+    "item": "Yawgmoth, Thran Physician's activated ability (its cost is already paid: 1 life was paid and Geralf's Messenger was sacrificed) \u2014 targeting Butcher Ghoul for the -1/-1 counter; will also draw a card"
+   },
+   {
+    "pos": 1,
+    "item": "Geralf's Messenger's undying trigger (it died with no +1/+1 counters on it)"
+   },
+   {
+    "pos": 2,
+    "item": "Zulaport Cutthroat's triggered ability (Geralf's Messenger, a creature you control, died) \u2014 each opponent loses 1 life and you gain 1 life"
+   }
+  ],
+  "extras": {
+   "life_totals": {
+    "you": 20,
+    "each_opponent": 40
+   },
+   "note_for_the_resolver": "Both triggers are controlled by the same player, who chose to put the Zulaport Cutthroat trigger on top. The deck's goldfish declaration (KILL F) currently labels this two-undying loop 'unbounded' \u2014 the point of this artifact is to verify or refute that word against the rules. Note that Yawgmoth's draw is mandatory ('and draw a card'), and note what Geralf's Messenger does when it re-enters. Sibling stack 010 settled the counter-annihilation SBA for the Mikaeus variant; this scenario is the tutor-free two-undying version the community lists treat as the deck's signature line.",
+   "assumptions": [
+    "Your library has roughly 55 cards remaining.",
+    "No opponent has a response; resolve in a vacuum."
+   ]
+  },
+  "question": "Resolve this stack. Then: can the pilot repeat the loop \u2014 alternating Yawgmoth activations that sacrifice whichever undying creature is counter-free while stripping the other's +1/+1 counter \u2014 indefinitely, or is 'unbounded' the wrong word? State precisely what bounds the loop, and how much life each opponent loses per full two-activation cycle."
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "Resolve the top object: Zulaport Cutthroat's triggered ability (Geralf's Messenger, a creature you control, died).",
+    "effect": "Each of the three opponents loses 1 life (40 -> 39, 40 -> 39, 40 -> 39) and you gain 1 life (20 -> 21; the 1 life for Yawgmoth's activation cost was already paid, per the scenario's stated life totals). Pod total so far: 3 life.",
+    "citations": [
+     {
+      "rule": "405.5",
+      "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+     },
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written."
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "Resolve the next object: Geralf's Messenger's undying trigger. Check its intervening 'if' clause on resolution.",
+    "effect": "The condition \u2014 it had no +1/+1 counters on it when it died \u2014 was true at the trigger event and remains true on resolution, so the ability resolves: Geralf's Messenger returns from your graveyard to the battlefield under your control with a +1/+1 counter on it. Its 'enters tapped' replacement effect applies, so it enters tapped. Its enters-the-battlefield ability triggers: 'When this creature enters, target opponent loses 2 life.'",
+    "citations": [
+     {
+      "rule": "702.93a",
+      "quote": "Undying is a triggered ability. \u201cUndying\u201d means \u201cWhen this permanent is put into a graveyard from the battlefield, if it had no +1/+1 counters on it, return it to the battlefield under its owner\u2019s control with a +1/+1 counter on it.\u201d"
+     },
+     {
+      "rule": "603.4",
+      "quote": "If the ability triggers, it checks the stated condition again as it resolves. If the condition isn\u2019t true at that time, the ability is removed from the stack and does nothing."
+     },
+     {
+      "rule": "614.1d",
+      "quote": "Continuous effects that read \u201c[This permanent] enters . . .\u201d or \u201c[Objects] enter [the battlefield] . . .\u201d are replacement effects."
+     },
+     {
+      "rule": "603.6a",
+      "quote": "Enters-the-battlefield abilities trigger when a permanent enters the battlefield."
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "Before any player receives priority, the Messenger's enters trigger is put on the stack \u2014 above Yawgmoth's still-pending activated ability. You choose a target: opponent 1.",
+    "effect": "The stack is now (top to bottom): Messenger's ETB trigger targeting opponent 1; Yawgmoth's activated ability targeting Butcher Ghoul.",
+    "citations": [
+     {
+      "rule": "603.3",
+      "quote": "Once an ability has triggered, its controller puts it on the stack as an object that\u2019s not a card the next time a player would receive priority."
+     },
+     {
+      "rule": "117.5",
+      "quote": "Then triggered abilities are put on the stack (see rule 603, \u201cHandling Triggered Abilities\u201d)."
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "Resolve Geralf's Messenger's enters-the-battlefield trigger.",
+    "effect": "Opponent 1 loses 2 life (39 -> 37). Opponents now at 37 / 39 / 39.",
+    "citations": [
+     {
+      "rule": "405.5",
+      "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+     },
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "Resolve Yawgmoth, Thran Physician's activated ability (bottom of the original stack). Target check first.",
+    "effect": "Butcher Ghoul is still on the battlefield and is a legal target. A -1/-1 counter is put on it \u2014 it now has one +1/+1 counter and one -1/-1 counter \u2014 and you draw a card. The draw is mandatory ('and draw a card', no 'may'). Library ~55 -> ~54.",
+    "citations": [
+     {
+      "rule": "608.2b",
+      "quote": "If the spell or ability specifies targets, it checks whether the targets are still legal."
+     },
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written."
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "State-based actions are checked before any player receives priority: counter annihilation on Butcher Ghoul.",
+    "effect": "N=1: one +1/+1 counter and one -1/-1 counter are removed from Butcher Ghoul. It is a 1/1 with NO counters \u2014 exactly the state undying needs for its next death. No player is at 0 or less life; no creature has lethal damage or 0 toughness. The stack is empty. Board: Yawgmoth, Butcher Ghoul (1/1, counter-free), Zulaport Cutthroat, Geralf's Messenger (tapped, one +1/+1 counter). You 21; opponents 37/39/39.",
+    "citations": [
+     {
+      "rule": "704.5q",
+      "quote": "If a permanent has both a +1/+1 counter and a -1/-1 counter on it, N +1/+1 and N -1/-1 counters are removed from it, where N is the smaller of the number of +1/+1 and -1/-1 counters on it."
+     },
+     {
+      "rule": "117.5",
+      "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, \u201cState-Based Actions\u201d), then repeats this process until no state-based actions are performed."
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "action": "LOOP ANALYSIS \u2014 the mirrored second activation. Pay 1 life, sacrifice Butcher Ghoul (now counter-free), targeting Geralf's Messenger with the -1/-1 counter.",
+    "effect": "Butcher Ghoul died with no +1/+1 counters, so undying triggers and returns it with a +1/+1 counter; Zulaport Cutthroat triggers again (each opponent loses 1, you gain 1); the -1/-1 counter annihilates the Messenger's +1/+1 counter via the same state-based action, leaving the Messenger counter-free for the next Messenger-sacrifice; you draw a second card. The counter-stripping is what keeps the loop alive: a creature that dies WITH a +1/+1 counter fails undying's intervening 'if' and never triggers at all. Butcher Ghoul has no enters trigger, so the Ghoul half of the cycle drains only via Zulaport. PER FULL TWO-ACTIVATION CYCLE: each opponent loses 2 (Zulaport, one per death); the opponent targeted by the Messenger's enters trigger loses 2 more (so 4 total for that seat); pod total 8 (6 Zulaport + 2 Messenger). You pay 2 life and gain 2 from Zulaport \u2014 net 0 \u2014 and draw 2 cards.",
+    "citations": [
+     {
+      "rule": "702.93a",
+      "quote": "\u201cUndying\u201d means \u201cWhen this permanent is put into a graveyard from the battlefield, if it had no +1/+1 counters on it, return it to the battlefield under its owner\u2019s control with a +1/+1 counter on it.\u201d"
+     },
+     {
+      "rule": "603.4",
+      "quote": "When the trigger event occurs, the ability checks whether the stated condition is true. The ability triggers only if it is; otherwise it does nothing."
+     },
+     {
+      "rule": "704.5q",
+      "quote": "If a permanent has both a +1/+1 counter and a -1/-1 counter on it, N +1/+1 and N -1/-1 counters are removed from it, where N is the smaller of the number of +1/+1 and -1/-1 counters on it."
+     }
+    ]
+   },
+   {
+    "n": 8,
+    "action": "LOOP BOUND \u2014 verify or refute 'unbounded'.",
+    "effect": "'Unbounded' is REFUTED. Yawgmoth's draw is not optional: the resolving ability's instructions must be followed, and 'and draw a card' contains no 'may'. Every activation therefore consumes one library card. With ~55 cards in the library, the pilot can make at most ~55 activations (including the one just resolved) \u2014 about 27 full two-activation cycles \u2014 before the library is empty; the next mandatory draw after that would be from an empty library, and the pilot loses the game as a state-based action. The loop is BOUNDED BY LIBRARY SIZE, not by life (net 0 per cycle) or by bodies (the two undying creatures recycle indefinitely in principle). It is also not a rules-mandated loop: each iteration begins with a discretionary activation, so the pilot simply stops before the last safe draw \u2014 but a set of actions that cannot be 'repeated indefinitely' is, by the CR's own definition of a loop, not unbounded.",
+    "citations": [
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written."
+     },
+     {
+      "rule": "121.4",
+      "quote": "A player who attempts to draw a card from a library with no cards in it loses the game the next time a player would receive priority. (This is a state-based action. See rule 704.)"
+     },
+     {
+      "rule": "704.5b",
+      "quote": "If a player attempted to draw a card from a library with no cards in it since the last time state-based actions were checked, that player loses the game."
+     },
+     {
+      "rule": "732.1b",
+      "quote": "Occasionally the game gets into a state in which a set of actions could be repeated indefinitely (thus creating a \u201cloop\u201d)."
+     }
+    ]
+   },
+   {
+    "n": 9,
+    "action": "LETHALITY WITHIN THE BOUND \u2014 does KILL F still kill?",
+    "effect": "Yes, comfortably. Over n activations each opponent loses n life to Zulaport (one death per activation) plus 2 per Messenger enters-trigger aimed at them; the Messenger trigger fires on every odd-numbered activation (ceil(n/2) times). At n = 30 activations (15 cycles), Zulaport alone deals 30 to each seat and the 15 Messenger triggers, spread 5/5/5, add 10 more \u2014 40 per opponent, exactly lethal from 40, with each opponent losing the game as a state-based action at 0 or less life. 30 activations cost 30 draws against a ~55-card library, leaving ~25 cards of margin. Correct label for KILL F: not 'unbounded' but 'library-bounded (~55 iterations available), lethal to the pod in ~30'.",
+    "citations": [
+     {
+      "rule": "704.5a",
+      "quote": "If a player has 0 or less life, that player loses the game."
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "Stack empty after the presented stack resolves: opponents at 37/39/39, you at 21, library ~54, board Yawgmoth + Butcher Ghoul (1/1, counter-free) + Zulaport Cutthroat + Geralf's Messenger (tapped, one +1/+1 counter) \u2014 the loop is primed for the mirrored Ghoul-sacrifice activation. VERDICT: 'unbounded' is the wrong word. The loop is bounded by the library, because Yawgmoth's draw is mandatory: ~55 activations maximum (~27 full cycles), after which the next mandatory draw loses the game (121.4 / 704.5b). Per full two-activation cycle: each opponent loses 2 (Zulaport), the Messenger-targeted opponent loses 4, pod total 8, you net 0 life and draw 2. The bound does not save the table: ~30 activations kill all three opponents from 40, ~25 draws inside the bound.",
+   "you": {
+    "life": 21,
+    "hand": 1,
+    "library_approx": 54,
+    "battlefield": [
+     "Yawgmoth, Thran Physician (2/4)",
+     "Butcher Ghoul (1/1, no counters)",
+     "Zulaport Cutthroat (1/1)",
+     "Geralf's Messenger (3/2 base, tapped, one +1/+1 counter)",
+     "Swamp x4 (tapped)"
+    ]
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life": 37,
+     "note": "targeted by Geralf's Messenger's enters trigger"
+    },
+    {
+     "seat": "opponent_2",
+     "life": 39
+    },
+    {
+     "seat": "opponent_3",
+     "life": 39
+    }
+   ]
+  }
+ },
+ "checker": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "step": 1,
+    "rule": "405.5",
+    "status": "supported",
+    "note": "Top object (Zulaport trigger, last-added per the scenario's stated ordering choice) resolves first."
+   },
+   {
+    "step": 1,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": "Each-opponent drain applied per seat (40->39 x3) AND pod total (3) stated separately; matches scenario-facts drain arithmetic and Zulaport's oracle text ('each opponent loses 1 life and you gain 1 life')."
+   },
+   {
+    "step": 2,
+    "rule": "702.93a",
+    "status": "supported",
+    "note": "Undying return with a +1/+1 counter under owner's control; owner is the pilot, so 'under your control' is correct here."
+   },
+   {
+    "step": 2,
+    "rule": "603.4",
+    "status": "supported",
+    "note": "Intervening-if re-check on resolution handled; the condition is past-tense (had no +1/+1 counters when it died), so it remains true. Full rule text confirms both the trigger-time and resolution-time checks."
+   },
+   {
+    "step": 2,
+    "rule": "614.1d",
+    "status": "supported",
+    "note": "'This creature enters tapped' is a replacement effect; Messenger enters tapped. Matches oracle text."
+   },
+   {
+    "step": 2,
+    "rule": "603.6a",
+    "status": "supported",
+    "note": "ETB trigger ('When this creature enters, target opponent loses 2 life') fires on the undying return."
+   },
+   {
+    "step": 3,
+    "rule": "603.3",
+    "status": "supported",
+    "note": "Trigger goes on the stack at next-priority, above the still-pending Yawgmoth ability; target (a player) chosen as it is put on the stack."
+   },
+   {
+    "step": 3,
+    "rule": "117.5",
+    "status": "supported",
+    "note": "Quote is the trigger-placement sentence of 117.5; full rule also mandates SBAs first, which are vacuous at this point (nothing applies)."
+   },
+   {
+    "step": 4,
+    "rule": "405.5",
+    "status": "supported",
+    "note": "ETB trigger is the top object and resolves. Target legality re-check (608.2b) is not cited here but is trivially satisfied: opponent 1 is still in the game, resolving in a vacuum."
+   },
+   {
+    "step": 4,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": "Target opponent loses 2 (39->37). Correctly single-seat, not each-opponent \u2014 the per-seat/pod distinction is maintained."
+   },
+   {
+    "step": 5,
+    "rule": "608.2b",
+    "status": "supported",
+    "note": "Explicit target legality re-check; Butcher Ghoul still on the battlefield. (Yawgmoth's ability is 'up to one target creature' \u2014 a target was chosen and remains legal, so the distinction does not matter here.)"
+   },
+   {
+    "step": 5,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": "Instructions in order: counter, then mandatory draw ('and draw a card', no 'may' \u2014 verified against oracle text). SBAs correctly deferred to after resolution."
+   },
+   {
+    "step": 6,
+    "rule": "704.5q",
+    "status": "supported",
+    "note": "N=1 annihilation leaves Butcher Ghoul 1/1 with zero counters \u2014 re-armed for undying. Consistent with sibling 010's settled mechanism (referenced as precedent only; no figures quoted across boards)."
+   },
+   {
+    "step": 6,
+    "rule": "117.5",
+    "status": "supported",
+    "note": "SBAs performed before priority, repeated until none apply; the other SBA checks (life, lethal damage, 0 toughness) correctly reported vacuous."
+   },
+   {
+    "step": 7,
+    "rule": "702.93a",
+    "status": "supported",
+    "note": "Mirrored half-cycle: Ghoul dies counter-free, returns with a counter; Ghoul has no ETB so its half drains via Zulaport only. Cycle arithmetic verified by independent simulation: each opponent -2/cycle, Messenger-targeted seat -4, pod 8 (6 Zulaport + 2 Messenger), pilot net 0 life, 2 draws."
+   },
+   {
+    "step": 7,
+    "rule": "603.4",
+    "status": "supported",
+    "note": "Correctly states that a creature dying WITH a +1/+1 counter fails the intervening if at trigger time and the ability never triggers \u2014 this is why the counter-stripping sustains the loop. The two death triggers of the mirrored activation are the same controller's; ordering is unstated but every claimed total is order-invariant."
+   },
+   {
+    "step": 7,
+    "rule": "704.5q",
+    "status": "supported",
+    "note": "The -1/-1 on Messenger annihilates its +1/+1 at the next SBA check, leaving it counter-free for the next Messenger sacrifice."
+   },
+   {
+    "step": 8,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": "The mandatory-draw premise of the bound: resolving ability's instructions must be followed."
+   },
+   {
+    "step": 8,
+    "rule": "121.4",
+    "status": "supported",
+    "note": "Drawing from an empty library loses the game via SBA. Bound arithmetic checks: 55-card library = ~55 activations max (draw 55 empties it; draw 56 loses), ~27 full cycles."
+   },
+   {
+    "step": 8,
+    "rule": "704.5b",
+    "status": "supported",
+    "note": "The SBA form of the empty-library loss; consistent with 121.4."
+   },
+   {
+    "step": 8,
+    "rule": "732.1b",
+    "status": "supported",
+    "note": "Used definitionally: the CR's loop concept is a set of actions repeatable indefinitely; this set is not (library-bounded), so 'unbounded' is refuted. Fair use of the full rule's context."
+   },
+   {
+    "step": 9,
+    "rule": "704.5a",
+    "status": "supported",
+    "note": "Lethality arithmetic verified by independent simulation: 30 activations, Messenger ETB on each odd activation (15 total) spread 5/5/5, leaves all three seats at exactly 0 (40 = 30 Zulaport + 10 Messenger each) with no seat reaching 0 before activation 30; library margin 25 of 55. Per-seat and pod figures never conflated."
+   }
+  ],
+  "iterations": 1
+ }
+}
