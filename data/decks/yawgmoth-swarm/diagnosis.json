@@ -1,7 +1,7 @@
 {
  "slug": "yawgmoth-swarm",
  "as_of_decklist_sha256": "3ddfb869fa7b2ae006eeb0771c1ffb95aa9df8149fbc2ba3feae4edd2bcd2a59",
- "archetype": "An aristocrats sacrifice engine that kills by drain; strategic_frame.json declares 'combo' and the artifacts agree \u2014 five tutors, six declared kill lines, thirteen checker-passed stacks. The 30 creatures read as an aggro count only because in this deck the fodder IS the combo. COUNTING CONVENTION, held on every axis below: every figure is deck-audit's, taken over all 100 copies. Where the audit files a card's function under possible_uncounted (card-advantage, protection) the number is carried unchanged and the reading says what the oracle text shows.",
+ "archetype": "An aristocrats sacrifice engine that kills by drain; strategic_frame.json declares 'combo' and the artifacts agree \u2014 five tutors, six declared kill lines, fourteen checker-passed stacks. The 30 creatures read as an aggro count only because in this deck the fodder IS the combo. COUNTING CONVENTION, held on every axis below: every figure is deck-audit's, taken over all 100 copies. Where the audit files a card's function under possible_uncounted (card-advantage, protection) the number is carried unchanged and the reading says what the oracle text shows.",
  "verdict": "The staples pass bought exactly what it claimed: RENEWABLE FODDER is now nine members drawn in 82.3% of games (72.2% by turn 6), the drain layer matches it at 82.3%, mean bodies at turn 6 is 4.239 in the committed artifact, and every mana axis is at target with the turn-3 land drop landing 91.6%. What binds is unchanged in name and narrower in content: interaction-breadth at 2 of 5 classes \u2014 zero artifact answers by enumeration of all 80 entries' oracle text \u2014 while three of the six declared kills are commander-gated and the recursion kills sit directly under the format's artifact-based graveyard hate. Behind it, fast mana (3 cards, 43.6%) is the smallest and lowest-rated multi-card engine class. The prescription is the prior diagnosis's two unapplied adds, re-validated against the new 99 with new natural cuts: Gate to Phyrexia and Culling the Weak.",
  "axes": [
   {
@@ -224,7 +224,7 @@
   }
  ],
  "engine": {
-  "declared": "Turn a renewable body into a death trigger, over and over, until nine stacked drains have taken the table's life total \u2014 Yawgmoth one free outlet among eight, and six declared kills on top: two Gravecrawler loops (A, B), the Exquisite Blood pair (C), the Mikaeus line (D), the Nest engine as primary (E, stacks 002/003/004), and the community undying pair (F, no local stack yet).",
+  "declared": "Turn a renewable body into a death trigger, over and over, until nine stacked drains have taken the table's life total \u2014 Yawgmoth one free outlet among eight, and six declared kills on top: two Gravecrawler loops (A, B), the Exquisite Blood pair (C), the Mikaeus line (D), the Nest engine as primary (E, stacks 002/003/004), and the undying pair (F, stack 014, library-bounded \u2014 lethal in ~30 activations).",
   "components": [
    {
     "role": "payoff",
@@ -395,7 +395,7 @@
    },
    {
     "component": "Yawgmoth on the engine turn",
-    "why": "Three of the six declared kills (D, E, F) are commander-gated, including the primary. The gate is a timing tax, not an access problem \u2014 he recasts from the zone \u2014 but KILL E's 38.9% by-turn-6 assisted rate assumes he survives a rotation, and the cards that can hold him on the battlefield through a removal spell number three: Lightning Greaves plus the two instants the taxonomy cannot see (Supernatural Stamina, Malakir Rebirth). Recovering him afterwards from the graveyard (Victimize, Animate Dead, Phyrexian Reclamation) exists but costs the turn the gate is taxing. Mikaeus remains the only undying-GRANTER in the 99 (only Butcher Ghoul and Geralf's Messenger carry undying natively), but KILL F \u2014 if its stack verifies; it has no checker-passed artifact yet (open_questions[0]) \u2014 would give the undying loop a route that does not need him, which would lower the single-point weight the prior diagnosis put on Mikaeus alone.",
+    "why": "Three of the six declared kills (D, E, F) are commander-gated, including the primary. The gate is a timing tax, not an access problem \u2014 he recasts from the zone \u2014 but KILL E's 38.9% by-turn-6 assisted rate assumes he survives a rotation, and the cards that can hold him on the battlefield through a removal spell number three: Lightning Greaves plus the two instants the taxonomy cannot see (Supernatural Stamina, Malakir Rebirth). Recovering him afterwards from the graveyard (Victimize, Animate Dead, Phyrexian Reclamation) exists but costs the turn the gate is taxing. Mikaeus remains the only undying-GRANTER in the 99 (only Butcher Ghoul and Geralf's Messenger carry undying natively), but KILL F (stack 014, checker-passed, library-bounded \u2014 lethal to the pod in ~30 activations of the ~55 available) gives the undying loop a route that does not need him, which lowers the single-point weight the prior diagnosis put on Mikaeus alone.",
     "closers": [],
     "citations": [
      {
@@ -563,9 +563,9 @@
  ],
  "open_questions": [
   {
-   "question": "KILL F (Butcher Ghoul + Geralf's Messenger + a drain, Yawgmoth from the zone) is declared with no local stack. Until a checker-passed artifact exists it is a community claim, not a fact \u2014 and it is currently carrying part of the argument that Mikaeus is no longer a single point of failure.",
+   "question": "RESOLVED by stack 014 (checker pass at iteration 1, 22 citations): does KILL F function as declared? Yes, with one correction \u2014 'unbounded' is REFUTED. Yawgmoth's draw is mandatory ('and draw a card', no 'may'), so every activation consumes a library card: ~55 activations available mid-game, lethal to the pod in ~30 (per two-activation cycle each opponent loses 2 to the drain and the Messenger-targeted seat 4, at net-zero life to the pilot), leaving ~25 cards of margin. goldfish_targets' KILL F label now carries the corrected wording: 'stack 014, library-bounded, lethal in ~30 activations'.",
    "settled_by": "resolve-stack",
-   "why_it_matters": "The deck's declared kill count is six only if F actually works as declared; its 1.8% assembled rate is measured against a line nobody has verified."
+   "why_it_matters": "All six declared kills are now grounded in checker-passed artifacts. KILL F is fact, but a library-bounded fact \u2014 it kills the pod with margin and must never be presented as an unbounded loop. The reduction of Mikaeus's single-point weight that leaned on this line now stands on a verified stack."
   },
   {
    "question": "Under Grafdigger's Cage, do KILL A (009), KILL B (011), KILL D (010) and now KILL F still function? A and B cast Gravecrawler from the graveyard, D and F return creature cards from the graveyard via undying \u2014 all four look Cage-shaped, which is the concrete case for Gate to Phyrexia.",
@@ -607,7 +607,7 @@
    {
     "where": "engine.single_points_of_failure[2]",
     "status": "supported",
-    "note": "RESOLVED iteration 2. The KILL F sentence now hedges inline where the claim is made: 'KILL F \u2014 if its stack verifies; it has no checker-passed artifact yet (open_questions[0]) \u2014 would give the undying loop a route that does not need him, which would lower the single-point weight'. Conditional mood throughout; the unverified line is no longer carried as evidence, and the SPOF weight reduction is explicitly contingent on resolve-stack. Matches open_questions[0], which stays open."
+    "note": "RESOLVED iteration 2 (conditional hedge), superseded iteration 3: stack 014 (checker pass, iteration 1, 22 citations, contract verified with validate-stack) now grounds the claim, and the sentence is correctly indicative \u2014 'KILL F (stack 014, checker-passed, library-bounded \u2014 lethal to the pod in ~30 activations of the ~55 available) gives the undying loop a route that does not need him'. Every figure matches the stack's own verdict block. unverified-line no longer applies: the line is verified, and the bound is stated wherever the line is used."
    },
    {
     "where": "axes",
@@ -643,8 +643,14 @@
     "where": "engine.components",
     "status": "supported",
     "note": "All ten component memberships and sizes match goldfish_targets.json declarations exactly (validate-goldfish-targets: OK, 16 targets / 27 groups); all measured rates match goldfish_metrics targets. Fast mana (3 cards, 0.436) is genuinely the smallest and lowest-rated multi-card component. The four one-card components are priced as the structural 7.1%-per-named-card floor, not called defects. All six kill-rate blocks in lean_into[1].evidence match the committed metrics digit for digit."
+   },
+   {
+    "where": "archetype + engine.declared + open_questions[0]",
+    "status": "supported",
+    "note": "Iteration 3, scoped to the stack-014 revision. Read the stack: checker verdict pass at iteration 1, 22 resolution citations; VERDICT verbatim: 'unbounded' refuted because Yawgmoth's draw is mandatory \u2014 ~55 activations available (~27 cycles), lethal to the pod in ~30 (per two-activation cycle: 2 each to Zulaport, +4 to the Messenger-targeted seat), ~25 cards of margin. All four edits state exactly this: archetype 'fourteen checker-passed stacks' (14 stack files, all pass), engine.declared '(F, stack 014, library-bounded \u2014 lethal in ~30 activations)', SPOF[2] indicative with the bound inline, open_questions[0] RESOLVED with the correct arithmetic and citation count. Cross-artifact consistency also checked: goldfish_targets.json KILL F label carries the corrected wording as open_questions[0] claims, goldfish_metrics.json carries the SAME updated label with rates unchanged (0.018/0.269/0.007/0.124/7.066 \u2014 membership untouched, so the measured figures legitimately stand), and a fresh deck-audit joins the new label cleanly. Nothing anywhere still calls F unbounded; 'unbounded' now attaches only to A and B (stacks 009/011), which is correct. Full re-read confirms every other leaf byte-identical to the iteration-2 review; validate-diagnosis OK."
    }
   ],
-  "iteration_2_note": "Re-read the full merged diagnosis.json after the two in-place corrections: every section other than cut_candidates[1].cost_of_cutting and engine.single_points_of_failure[2].why is byte-identical to the iteration-1 review (archetype, verdict, all 16 axes, all 10 engine components, SPOF[0]/[1], lean_into, cut_candidates[0], add_candidates, open_questions, gaps). validate-diagnosis: OK \u2014 16 axes (2 weak), 2 cut / 2 add, 5 open questions."
+  "iteration_2_note": "Re-read the full merged diagnosis.json after the two in-place corrections: every section other than cut_candidates[1].cost_of_cutting and engine.single_points_of_failure[2].why is byte-identical to the iteration-1 review (archetype, verdict, all 16 axes, all 10 engine components, SPOF[0]/[1], lean_into, cut_candidates[0], add_candidates, open_questions, gaps). validate-diagnosis: OK \u2014 16 axes (2 weak), 2 cut / 2 add, 5 open questions.",
+  "iteration_3_note": "Scoped verification of the stack-014 revision only. The four edited leaves accurately quote stack 014's verdict; goldfish_targets + goldfish_metrics label update is consistent and rate-preserving; validate-stack yawgmoth-swarm --stack 014: contract holds, checker pass; validate-diagnosis: OK. Final verdict pass."
  }
 }
