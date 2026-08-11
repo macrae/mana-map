@@ -1,99 +1,296 @@
 {
-  "_note": "Re-derived 2026-08-03 against the thirteen checker-passed stacks and the six applied swaps. The previous file declared four kills built on Blowfly Infestation and Carnifex Demon (both now cut), required a self-shrinking body for the Mikaeus line that stack 010 disproved, and omitted the Phyrexian Altar loop entirely. Each kill target names the stack that verified it; each any_of group is the redundancy deck-audit prices through the hypergeometric.",
-  "_no_union_target": "A first draft of this file carried an 'ANY verified kill's pieces drawn' target, intended as the union of the four kills. It is not one and it was removed. `goldfish._target_met` counts each `need` group independently, so a hand holding Exquisite Blood, Gravecrawler and Zulaport Cutthroat satisfies all three groups while assembling no kill whatsoever. The schema is an AND of ORs and genuinely cannot express an OR of ANDs; a deck with four independent kills therefore has no single assembled_rate here, and any figure presented as one is wrong. Quote the per-kill rates.",
-  "targets": [
+ "_note": "Re-derived 2026-08-03 against the thirteen checker-passed stacks and the six applied swaps. The previous file declared four kills built on Blowfly Infestation and Carnifex Demon (both now cut), required a self-shrinking body for the Mikaeus line that stack 010 disproved, and omitted the Phyrexian Altar loop entirely. Each kill target names the stack that verified it; each any_of group is the redundancy deck-audit prices through the hypergeometric.",
+ "_no_union_target": "A first draft of this file carried an 'ANY verified kill's pieces drawn' target, intended as the union of the four kills. It is not one and it was removed. `goldfish._target_met` counts each `need` group independently, so a hand holding Exquisite Blood, Gravecrawler and Zulaport Cutthroat satisfies all three groups while assembling no kill whatsoever. The schema is an AND of ORs and genuinely cannot express an OR of ANDs; a deck with four independent kills therefore has no single assembled_rate here, and any figure presented as one is wrong. Quote the per-kill rates.",
+ "targets": [
+  {
+   "label": "KILL A (stack 009, unbounded): Warren Soultrader + Gravecrawler + an each-opponent drain",
+   "need": [
     {
-      "label": "KILL A (stack 009, unbounded): Warren Soultrader + Gravecrawler + an each-opponent drain",
-      "need": [
-        {"any_of": ["Warren Soultrader"]},
-        {"any_of": ["Gravecrawler"]},
-        {"any_of": ["Bastion of Remembrance", "Zulaport Cutthroat", "Ayara, First of Locthwain"]}
-      ]
+     "any_of": [
+      "Warren Soultrader"
+     ]
     },
     {
-      "label": "KILL B (stack 011, unbounded and free): Gravecrawler + Phyrexian Altar + a second Zombie + an each-opponent drain",
-      "need": [
-        {"any_of": ["Gravecrawler"]},
-        {"any_of": ["Phyrexian Altar"]},
-        {"any_of": ["Carrion Feeder", "Warren Soultrader", "Mikaeus, the Unhallowed", "Gray Merchant of Asphodel", "Stitcher's Supplier"]},
-        {"any_of": ["Bastion of Remembrance", "Zulaport Cutthroat", "Ayara, First of Locthwain"]}
-      ]
+     "any_of": [
+      "Gravecrawler"
+     ]
     },
     {
-      "label": "KILL C (stack 012): Exquisite Blood + a you-gain-life-each-opponent-loses drain",
-      "need": [
-        {"any_of": ["Exquisite Blood"]},
-        {"any_of": ["South Wind Avatar", "Marauding Blight-Priest", "Starscape Cleric"]}
-      ]
-    },
-    {
-      "label": "KILL D (stack 010, lethal but library-bounded): Mikaeus + Yawgmoth + a non-Human body + an each-opponent drain",
-      "commander": true,
-      "need": [
-        {"any_of": ["Mikaeus, the Unhallowed"]},
-        {"any_of": ["Viscera Seer", "Carrion Feeder", "Woe Strider", "Gravecrawler", "Butcher Ghoul", "Reassembling Skeleton", "Yahenni, Undying Partisan"]},
-        {"any_of": ["Bastion of Remembrance", "Zulaport Cutthroat", "Ayara, First of Locthwain"]}
-      ]
-    },
-    {
-      "label": "GRAVECRAWLER — the single card two unbounded kills both route through",
-      "need": [
-        {"any_of": ["Gravecrawler"]}
-      ]
-    },
-    {
-      "label": "BASTION OF REMEMBRANCE — the drain that actually loops in three verified lines",
-      "need": [
-        {"any_of": ["Bastion of Remembrance"]}
-      ]
-    },
-    {
-      "label": "A drain drawn — the payoff every loop routes through",
-      "need": [
-        {"any_of": ["Bastion of Remembrance", "Zulaport Cutthroat", "Blood Artist", "South Wind Avatar", "Mirkwood Bats", "Ayara, First of Locthwain", "Marauding Blight-Priest", "Starscape Cleric", "The Meathook Massacre"]}
-      ]
-    },
-    {
-      "label": "RENEWABLE FODDER drawn",
-      "need": [
-        {"any_of": ["Nest of Scarabs", "Bitterblossom", "Grave Titan", "Sedgemoor Witch", "Black Market Connections", "Reassembling Skeleton", "Gravecrawler"]}
-      ]
-    },
-    {
-      "label": "ENGINE MANA drawn — turns a creature death into castable black",
-      "need": [
-        {"any_of": ["Phyrexian Altar", "Pitiless Plunderer", "Phyrexian Tower", "Black Market Connections", "Warren Soultrader"]}
-      ]
-    },
-    {
-      "label": "A free repeatable sacrifice outlet drawn (not counting Yawgmoth)",
-      "need": [
-        {"any_of": ["Viscera Seer", "Carrion Feeder", "Woe Strider", "Ashnod's Altar", "Phyrexian Altar", "Blasting Station", "Yahenni, Undying Partisan", "Warren Soultrader"]}
-      ]
-    },
-    {
-      "label": "An ignition source drawn (something that places the first -1/-1 counter)",
-      "need": [
-        {"any_of": ["Yawgmoth, Thran Physician", "Fume Spitter", "Soul Snuffers", "Skinrender", "Massacre Girl, Known Killer", "Persist", "Black Sun's Zenith", "The Meathook Massacre"]}
-      ]
-    },
-    {
-      "label": "An answer to a noncreature permanent drawn (the binding axis)",
-      "need": [
-        {"any_of": ["Feed the Swarm"]}
-      ]
-    },
-    {
-      "label": "Fast mana drawn (the turn-2-Yawgmoth enabler)",
-      "need": [
-        {"any_of": ["Sol Ring", "Ancient Tomb", "Dark Ritual"]}
-      ]
-    },
-    {
-      "label": "A tutor drawn (any of five can fetch a missing combo half)",
-      "need": [
-        {"any_of": ["Demonic Tutor", "Vampiric Tutor", "Beseech the Mirror", "Diabolic Intent", "Insatiable Avarice"]}
-      ]
+     "any_of": [
+      "Bastion of Remembrance",
+      "Zulaport Cutthroat",
+      "Ayara, First of Locthwain"
+     ]
     }
-  ]
+   ]
+  },
+  {
+   "label": "KILL B (stack 011, unbounded and free): Gravecrawler + Phyrexian Altar + a second Zombie + an each-opponent drain",
+   "need": [
+    {
+     "any_of": [
+      "Gravecrawler"
+     ]
+    },
+    {
+     "any_of": [
+      "Phyrexian Altar"
+     ]
+    },
+    {
+     "any_of": [
+      "Carrion Feeder",
+      "Warren Soultrader",
+      "Mikaeus, the Unhallowed",
+      "Gray Merchant of Asphodel",
+      "Stitcher's Supplier"
+     ]
+    },
+    {
+     "any_of": [
+      "Bastion of Remembrance",
+      "Zulaport Cutthroat",
+      "Ayara, First of Locthwain"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "KILL C (stack 012): Exquisite Blood + a you-gain-life-each-opponent-loses drain",
+   "need": [
+    {
+     "any_of": [
+      "Exquisite Blood"
+     ]
+    },
+    {
+     "any_of": [
+      "South Wind Avatar",
+      "Marauding Blight-Priest",
+      "Starscape Cleric"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "KILL D (stack 010, lethal but library-bounded): Mikaeus + Yawgmoth + a non-Human body + an each-opponent drain",
+   "commander": true,
+   "need": [
+    {
+     "any_of": [
+      "Mikaeus, the Unhallowed"
+     ]
+    },
+    {
+     "any_of": [
+      "Viscera Seer",
+      "Carrion Feeder",
+      "Woe Strider",
+      "Gravecrawler",
+      "Butcher Ghoul",
+      "Reassembling Skeleton",
+      "Yahenni, Undying Partisan"
+     ]
+    },
+    {
+     "any_of": [
+      "Bastion of Remembrance",
+      "Zulaport Cutthroat",
+      "Ayara, First of Locthwain"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "KILL E \u2014 THE ENGINE (stacks 002/003/004): Nest of Scarabs + a drain, Yawgmoth from the zone; ~two drains per body on board, the community's primary line",
+   "commander": true,
+   "need": [
+    {
+     "any_of": [
+      "Nest of Scarabs"
+     ]
+    },
+    {
+     "any_of": [
+      "Bastion of Remembrance",
+      "Zulaport Cutthroat",
+      "Blood Artist",
+      "South Wind Avatar",
+      "Mirkwood Bats",
+      "Ayara, First of Locthwain",
+      "Marauding Blight-Priest",
+      "Starscape Cleric",
+      "The Meathook Massacre"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "KILL F \u2014 THE UNDYING PAIR (community line, no local stack yet): Butcher Ghoul + Geralf's Messenger + a drain, unbounded with Yawgmoth from the zone",
+   "commander": true,
+   "need": [
+    {
+     "any_of": [
+      "Butcher Ghoul"
+     ]
+    },
+    {
+     "any_of": [
+      "Geralf's Messenger"
+     ]
+    },
+    {
+     "any_of": [
+      "Bastion of Remembrance",
+      "Zulaport Cutthroat",
+      "Blood Artist",
+      "South Wind Avatar",
+      "Mirkwood Bats",
+      "Ayara, First of Locthwain",
+      "Marauding Blight-Priest",
+      "Starscape Cleric",
+      "The Meathook Massacre"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "GRAVECRAWLER \u2014 the single card two unbounded kills both route through",
+   "need": [
+    {
+     "any_of": [
+      "Gravecrawler"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "BASTION OF REMEMBRANCE \u2014 the drain that actually loops in three verified lines",
+   "need": [
+    {
+     "any_of": [
+      "Bastion of Remembrance"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "A drain drawn \u2014 the payoff every loop routes through",
+   "need": [
+    {
+     "any_of": [
+      "Bastion of Remembrance",
+      "Zulaport Cutthroat",
+      "Blood Artist",
+      "South Wind Avatar",
+      "Mirkwood Bats",
+      "Ayara, First of Locthwain",
+      "Marauding Blight-Priest",
+      "Starscape Cleric",
+      "The Meathook Massacre"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "RENEWABLE FODDER drawn",
+   "need": [
+    {
+     "any_of": [
+      "Nest of Scarabs",
+      "Bitterblossom",
+      "Grave Titan",
+      "Sedgemoor Witch",
+      "Black Market Connections",
+      "Reassembling Skeleton",
+      "Gravecrawler"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "ENGINE MANA drawn \u2014 turns a creature death into castable black",
+   "need": [
+    {
+     "any_of": [
+      "Phyrexian Altar",
+      "Pitiless Plunderer",
+      "Phyrexian Tower",
+      "Black Market Connections",
+      "Warren Soultrader"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "A free repeatable sacrifice outlet drawn (not counting Yawgmoth)",
+   "need": [
+    {
+     "any_of": [
+      "Viscera Seer",
+      "Carrion Feeder",
+      "Woe Strider",
+      "Ashnod's Altar",
+      "Phyrexian Altar",
+      "Blasting Station",
+      "Yahenni, Undying Partisan",
+      "Warren Soultrader"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "An ignition source drawn (something that places the first -1/-1 counter)",
+   "need": [
+    {
+     "any_of": [
+      "Yawgmoth, Thran Physician",
+      "Fume Spitter",
+      "Soul Snuffers",
+      "Skinrender",
+      "Massacre Girl, Known Killer",
+      "Persist",
+      "Black Sun's Zenith",
+      "The Meathook Massacre"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "An answer to a noncreature permanent drawn (the binding axis)",
+   "need": [
+    {
+     "any_of": [
+      "Feed the Swarm"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "Fast mana drawn (the turn-2-Yawgmoth enabler)",
+   "need": [
+    {
+     "any_of": [
+      "Sol Ring",
+      "Ancient Tomb",
+      "Dark Ritual"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "A tutor drawn (any of five can fetch a missing combo half)",
+   "need": [
+    {
+     "any_of": [
+      "Demonic Tutor",
+      "Vampiric Tutor",
+      "Beseech the Mirror",
+      "Diabolic Intent",
+      "Insatiable Avarice"
+     ]
+    }
+   ]
+  }
+ ]
 }
