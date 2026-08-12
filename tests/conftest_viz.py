@@ -184,3 +184,20 @@ def page(browser, viz_server):
         yield page
     finally:
         page.close()
+
+
+@pytest.fixture(scope="session")
+def corpus_count():
+    """The corpus size the viz should display, DERIVED rather than hardcoded.
+
+    `projection_2d.json` is literally what boots into `MM.allData`, and by the
+    index-alignment invariant its length IS the corpus size — so asserting
+    against it keeps the browser suite honest across Scryfall refreshes instead
+    of failing on a stale literal every time the card count moves.
+    """
+    import json
+
+    from manamap.config import PROJECTION_PATH
+
+    with open(PROJECTION_PATH) as f:
+        return len(json.load(f))

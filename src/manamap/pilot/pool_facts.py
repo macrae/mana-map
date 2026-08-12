@@ -588,6 +588,11 @@ def main(args):
         print(format_report(facts))
     out = getattr(args, "out", None)
     if out:
+        # A pool has no slug, so `resolve_out_path`'s slug contract doesn't apply
+        # here — but a directory argument must still auto-name rather than crash
+        # (the other --out commands accept a directory, and callers expect parity).
+        if Path(out).is_dir():
+            out = str(Path(out) / "pool-facts.json")
         with open(out, "w") as f:
             json.dump(facts, f, indent=2, sort_keys=True, ensure_ascii=False)
             f.write("\n")

@@ -29,7 +29,7 @@ builder from a written brief.
 [008 Yawgmoth](https://macrae.github.io/mana-map/manuals/yawgmoth-swarm.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-Scale: 39 `manamap pilot` subcommands, 18 top-level subcommands, 14 agents, 16 skills,
+Scale: 39 `manamap pilot` subcommands, 18 top-level subcommands, 14 agents, 17 skills,
 10 cache-gated routines, 17 magazine sections. Test counts live in `docs/testing.md`,
 which states the command that prints them — they change too often to restate elsewhere.
 

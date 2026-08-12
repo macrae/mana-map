@@ -1,6 +1,6 @@
 # Pipeline
 
-Thirteen steps orchestrated by `src/manamap/pipeline.py`. Run everything with `manamap run`, resume with `manamap run --from STEP`, or run any single step with `manamap <step>` (see `manamap --help`).
+Fifteen numbered steps (sixteen registry entries — `train`/`train-ability` are 4a/4b) orchestrated by `src/manamap/pipeline.py`; the count is derived at runtime by `cli.pipeline_step_count()`, so trust the table below over any prose number. Run everything with `manamap run`, resume with `manamap run --from STEP`, or run any single step with `manamap <step>` (see `manamap --help`).
 
 | # | CLI step | Module | What it does | Output |
 |---|----------|--------|--------------|--------|

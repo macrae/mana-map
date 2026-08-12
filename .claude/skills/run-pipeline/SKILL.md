@@ -13,12 +13,12 @@ All commands use the project venv. Full step reference: `docs/pipeline.md`.
 .venv/bin/manamap <step>             # one step; `manamap --help` lists all 16
 ```
 
-Steps in order: `download`, `extract`, `preprocess`, `train`, `train-ability`, `embed`, `reduce`, `download-combos`, `process-combos`, `export`, `synergy`, `power-creep`, `cluster-regions`, `card-roles`.
+Steps in order: `download`, `extract`, `preprocess`, `train`, `train-ability`, `embed`, `reduce`, `download-combos`, `process-combos`, `export`, `synergy`, `power-creep`, `cluster-regions`, `card-roles`, `viz-index`, `eval-embeddings`. (For a Scryfall refresh specifically, use the `refresh-corpus` skill — it wraps this run in the gates, doc sweep, cache pass and deploy checklist a refresh needs.)
 
 ## Rules
 
 - **Never run `train`/`train-ability` casually** — retraining replaces `model.pt`/`model_ability.pt` (gitignored, unrecoverable) and every downstream artifact. Confirm with the user first unless they explicitly asked for a retrain.
-- **Index alignment**: if `download`/`extract` ran (card count may change), everything downstream is stale — you must continue through step 13 (`card-roles`; its output is a build-routine cache input). Never leave `data/` partially regenerated.
+- **Index alignment**: if `download`/`extract` ran (card count may change), everything downstream is stale — you must continue through step 14 (`viz-index`; it owns the `neighbours.bin` sha256 gate that `tests/test_viz_index.py` enforces, and `card_roles.json` is a build-routine cache input). Never leave `data/` partially regenerated.
 - Long steps (preprocess, train×2, reduce) → run in background and verify artifacts by timestamp/shape afterward.
 - Expected artifact per step is listed in `docs/pipeline.md`; spot-check with `ls -la data/`.
 

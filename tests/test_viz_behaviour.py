@@ -35,8 +35,8 @@ pytestmark = pytest.mark.browser
 # ── Boot ────────────────────────────────────────────────────────────────
 
 
-def test_map_boots_clean(page):
-    assert page.evaluate("MM.allData.length") == 34322
+def test_map_boots_clean(page, corpus_count):
+    assert page.evaluate("MM.allData.length") == corpus_count
     traces = page.evaluate("MM.mapRenderer.layers.length")
     assert traces >= 6, "base scatter did not render"
     assert page.js_errors == [], f"console/page errors at boot: {page.js_errors}"
@@ -832,7 +832,7 @@ def test_the_walk_shows_the_card_it_pinned(page):
 # ── Capping a set without biasing it ────────────────────────────────────
 
 
-def test_the_drill_button_reports_what_it_would_do(page):
+def test_the_drill_button_reports_what_it_would_do(page, corpus_count):
     """It used to read only "Drill ⤓". With no filters that meant "re-map all 34,322
     cards", which the cap truncated to an arbitrary 2,000 — a cross-section of the entire
     universe that flew in from everywhere and settled into an incoherent pile."""
@@ -855,7 +855,7 @@ def test_the_drill_button_reports_what_it_would_do(page):
         return {wide, refused, narrow, drilled: Drill.isActive()};
     }""")
     assert page.js_errors == []
-    assert "34,322" in r["wide"]["label"], "the button does not state its size"
+    assert f"{corpus_count:,}" in r["wide"]["label"], "the button does not state its size"
     assert r["wide"]["disabled"], "the button looks live when it would refuse"
     assert not r["refused"]["active"], "drilling the whole map should be refused"
     assert "too many" in r["refused"]["status"], "refusal must explain itself"
@@ -929,7 +929,7 @@ def _ink(page):
     }""")
 
 
-def test_canvas_renderer_draws_the_map_without_plotly(canvas_page):
+def test_canvas_renderer_draws_the_map_without_plotly(canvas_page, corpus_count):
     r = canvas_page.evaluate("""() => ({
         canvas: !!document.querySelector('.map-canvas'),
         plotlyDrew: !!document.querySelector('#plot .plot-container'),
@@ -937,7 +937,7 @@ def test_canvas_renderer_draws_the_map_without_plotly(canvas_page):
     })""")
     assert canvas_page.js_errors == [], f"canvas renderer threw: {canvas_page.js_errors}"
     assert r["canvas"] and not r["plotlyDrew"], "Plotly still drew under ?renderer=canvas"
-    assert r["cards"] == 34322
+    assert r["cards"] == corpus_count
     assert _ink(canvas_page) > 0.5, "the canvas is blank"
 
 
