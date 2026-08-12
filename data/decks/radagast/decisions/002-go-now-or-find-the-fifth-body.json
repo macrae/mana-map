@@ -1,0 +1,104 @@
+{
+  "id": "002",
+  "slug": "go-now-or-find-the-fifth-body",
+  "deck": "radagast",
+  "kind": "decision",
+  "title": "The Craterhoof count: go now over four bodies, or wait for the fifth?",
+  "scenario": {
+    "board": {
+      "you": "Turn 7, precombat main, 40 life, land drop made. Battlefield: Radagast of Rhosgobel (2/5), Scute Swarm (1/1), Wood Elves (1/1), Beast Whisperer (2/3), Fecundity, six untapped Forests and an untapped Castle Garenbrig. Four bodies — the exact board verified stack 003 priced.",
+      "table": "Player 2 (Izzet spellslinger) is at 40 with no creatures and no untapped lands — they emptied the tank last turn. Player 3 (Selesnya tokens) is at 40 with two 2/2s; stated assumption: they will not block for another seat. Player 4 (Azorius control) is at 40 with five untapped lands and nothing on the battlefield after seven turns; stated assumption: a control seat sitting on five lands this deep is holding a sweeper, and that sweeper is sorcery-speed. Turn order after you: Player 2, Player 3, Player 4."
+    },
+    "hand": [
+      "Craterhoof Behemoth",
+      "Sakura-Tribe Elder",
+      "Chord of Calling"
+    ],
+    "mana_available": "{G}{G}{G}{G}{G}{G} from six Forests, plus Castle Garenbrig untapped — its six-mana ability spends only on creature spells and creature abilities",
+    "stack": [],
+    "extras": "The arithmetic is already on the record. Stack 003 resolved Craterhoof over these exact four bodies: X=5, powers 7+6+6+7+10, 36 unblocked into one seat — a 40-life opponent survives at 4. Its checker signed the aside that a fifth pre-Craterhoof body makes X=6 and clears 40. Stack 001 verified the window that finds the fifth: Radagast's discount-plus-flash applies to the first creature spell you cast each turn — every player's turn — so Sakura-Tribe Elder costs {G} on an opponent's end step. Stack 004 verified the insurance: under a wrath, Fecundity offers every dying creature's controller a draw, tokens included, and Radagast's death is seen before he returns to the command zone (that board also held Toski, who skipped the wake entirely — indestructible; he is in the 99, not on this battlefield). Three traps to price before you choose: Castle Garenbrig's six mana cannot pay Chord of Calling, because Chord is an instant, not a creature spell; Radagast's timing gift is first-creature-spell-only, so a second creature cast in the same turn is sorcery-speed at full price; and the both-this-turn line is one mana short — Elder first for {G} makes Craterhoof your second creature spell at a full 8, and six Forests plus the Castle's net two reach 8 toward the 9 you would need. Beast Whisperer draws you a card on every creature cast, whichever branch you take.",
+    "question": "Stack 003 says going now is 36 — Player 2 lives at 4. A fifth body before the trigger resolves is 48 and a kill. Do you go now and leave a seat at 4, wait one round and flash Sakura-Tribe Elder on Player 4's end step, or force the fifth body in right now with Chord of Calling?"
+  },
+  "branches": [
+    {
+      "choice": "Go now: Craterhoof over four bodies, 36 into Player 2",
+      "line": "Cast Craterhoof Behemoth for {3}{G}{G}{G} — first creature spell, six Forests. Beast Whisperer draws you a card. The trigger counts five creatures, Craterhoof included: Radagast 7, Scute Swarm 6, Wood Elves 6, Beast Whisperer 7, Craterhoof 10, everything tramples. Send all five at Player 2, who has no blockers.\n\nThat is 36. Player 2 goes to 4 and stays in the game — stack 003 resolved this exact board and its verdict is NOT lethal. Do not let the size of the swing talk you into calling it a kill.\n\nYou end tapped down to the Castle, with your finisher spent, five pumped bodies on display, and three living opponents.",
+      "signals": "The table has been pricing you as the quiet ramp seat with mana up. Thirty-six damage in one combat repeals that instantly — you are the archenemy now, and you bought the title without removing anyone.\n\nPlayer 2 at 4 is a dead man who still gets to vote. A spellslinger with a full untap and nothing to lose points every spell at the player who put them there. That is you.\n\nAnd Player 4 has been waiting seven turns for a reason to wrath. You just handed them one the whole table will applaud.",
+      "coalition_risk": "Maximum. You showed the kill card, failed to kill, and united three seats. The wounded seat spends its whole turn on you, the sweeper seat gets consensus, and Player 3 finishes Player 2 at their leisure — you paid 36 damage for someone else's kill.\n\nFecundity still pays you through the wrath that follows, but you will be rebuilding toward a bar you already reached once, with the finisher gone.",
+      "coaching": "Count before you commit — that is the whole discipline of this deck, and the count is four. Craterhoof over four bodies is 36, and 36 into 40 is a favor to the other two seats, not a win for you.\n\nThe go-too-early tax is real and it is priced in the book: present a lethal-looking board that isn't, and three players' worth of interaction arrives to make sure it never is again.\n\nAsk what going now actually buys. Not safety from the sweeper — you cross Player 4's sorcery window either way, and this branch crosses it with five bodies, no kill banked, and the scariest card in your 99 already spent. You made the wrath better and the reward zero.\n\nThe fifth body is already in your hand. The only thing between you and 48 is one round of the posture you have played all game. Hold.",
+      "citations": [
+        {
+          "rule": "608.2h",
+          "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+        },
+        {
+          "rule": "119.2",
+          "quote": "Damage dealt to a player normally causes that player to lose that much life."
+        },
+        {
+          "rule": "704.5a",
+          "quote": "If a player has 0 or less life, that player loses the game."
+        },
+        {
+          "rule": "strategy:multiplayer.pivot-window",
+          "quote": "Go too early and the table unites to stop you with three players' worth of interaction"
+        }
+      ]
+    },
+    {
+      "choice": "Wait one round: flash Sakura-Tribe Elder on Player 4's end step, Craterhoof next turn for 48",
+      "line": "Pass with everything up. The board the table sees this round is the same board they have already decided how to handle — you add nothing to it while the sweeper window is open.\n\nOn Player 4's end step — the last window before your turn, after their sorcery-speed main has come and gone — cast Sakura-Tribe Elder for {G}: first creature spell of that turn, so Radagast's discount and flash both apply, exactly the mechanism stack 001 verified at {G} for Wood Elves. Beast Whisperer draws you a card on the cast.\n\nUntap. Craterhoof for {3}{G}{G}{G}, first creature spell of your turn — cast him HERE, never flashed on that end step alongside Elder: stack 005 verified the ambush Hoof is legal and refuted the payoff, because the pump dies in that turn's cleanup and dawn breaks on a 10-power attack, while stack 006 confirms the flashed Elder himself wakes free to swing. Beast Whisperer draws again. The trigger counts six: Radagast 8, Scute Swarm 7, Wood Elves 7, Beast Whisperer 8, Elder 7, Craterhoof 11 — 48 with trample. Send it at the seat with the least open mana. Forty-eight clears 40 with eight to spare, and trample means a chump block only eats its toughness.",
+      "signals": "An end-step Elder reads as a chump shield — a rattlesnake, not a kill piece. The table has watched you flash a body a turn all game; this one looks like all the others. Time your tells for the turn they win, not the turn they impress.\n\nKnow your margin: eight. One removal spell on a small body in response to the trigger puts you back on stack 003's 36 exactly. So present lethal at the tapped-out seat, and count every seat's open mana before you turn things sideways — assume the held answer appears the moment you go.",
+      "coalition_risk": "Lowest available. You threaten nobody this round, so nobody's wrath gets consensus and nobody's removal has a target worth the card.\n\nThe real risk is the sweeper landing anyway. If it does, all four bodies die, Fecundity offers you four draws — the stack 004 mechanism, tokens and commander included — Radagast returns to the command zone, and Elder plus Chord are still in hand to restart the metronome. You lose the round, not the game. But be honest about the cost: the goldfish says this deck averages 3.638 bodies by turn six, so a wrath pushes the next five-body board turns away, and this branch is the one that leaves it possible.",
+      "coaching": "This is not holding back — this is refusing to pay 36 for nothing. The wrath-math rule is to commit exactly as much as wins before the sweeper arrives, and nothing you can commit this turn wins. So commit zero, and land the fifth body after the window shuts. The flash posture IS the resilience the book tells you to buy.\n\nSequencing does the protecting for you: commit at the end step before your own turn and the table's chances to respond are already spent. Player 4 cannot wrath on their end step with a sorcery.\n\nTwo contingencies, both covered. If someone kills Elder before your turn, Chord of Calling is the backup fifth at instant speed — convoke it on that same end step, tapping bodies that untap before your combat, and the fetched creature has been under your control since before your turn began, so it attacks. If Radagast eats a spell mid-round, the Castle still pays a full-price Craterhoof — four Forests into six restricted green plus your last two Forests is exactly 8 — but you are back to five bodies and 35, so keep the commander insured before you keep anything else.\n\nOne round of patience turns a favor into a funeral. Wait, then go with the whole table's response mana spent.",
+      "citations": [
+        {
+          "rule": "601.3d",
+          "quote": "If a spell would have flash only if certain conditions are met, its controller may begin to cast that spell as though it had flash if those conditions are met."
+        },
+        {
+          "rule": "601.2f",
+          "quote": "The total cost is the mana cost or alternative cost (as determined in rule 601.2b), plus all additional costs and cost increases, and minus all cost reductions."
+        },
+        {
+          "rule": "500.1",
+          "quote": "A turn consists of five phases, in this order: beginning, precombat main, combat, postcombat main, and ending."
+        },
+        {
+          "rule": "strategy:tempo.sequencing",
+          "quote": "prefer committing at the end step before your own turn so the table's chances to respond are spent"
+        },
+        {
+          "rule": "strategy:resource-hedging.wrath-math",
+          "quote": "commit exactly as much as wins before it arrives, no further"
+        }
+      ]
+    },
+    {
+      "choice": "Chord of Calling for the fifth body this turn, then Craterhoof",
+      "line": "The mana forces one shape. Chord is an instant, so the Castle's restricted six cannot touch it and Radagast's discount does not apply. To keep Craterhoof castable you must reserve four Forests for the Castle's activation, leaving two Forests for Chord — so an X=1 Chord for Llanowar Elves needs convoke, tapping two of your four bodies while casting it.\n\nThen Craterhoof off the Castle's six restricted green. The trigger counts six creatures, tapped ones included: everything gets +6/+6. But attackers must be untapped, and the two convoked bodies are not; the fetched Llanowar Elves arrived this turn without haste and cannot attack either.\n\nBest case — convoke the 1-power bodies, Scute Swarm and Wood Elves — you attack with Radagast 8, Beast Whisperer 8 and Craterhoof 11. That is 27. You raised X and LOWERED the damage: nine short of the go-now line, thirteen short of the kill.",
+      "signals": "The table watches you tap your own attackers to cast the fetch spell, then swing with three. That reads as exactly what it is: a fumbled kill attempt.\n\nIt also burns the information Chord carries. Once the table has seen it, every open {G}{G}{G} for the rest of the game stops being a mystery — and Chord's best job in this deck is fetching a trap nobody saw coming.",
+      "coalition_risk": "Worst of both branches. You revealed the finisher AND the tutor, dealt 27, killed nobody, and stand tapped out through Player 4's sweeper window with six bodies on display. Every argument the wrath needed, you supplied; every card that could rebuild, you spent.",
+      "coaching": "Think through the entire turn before you touch a card — this branch dies in the arithmetic, not in the concept. Convoke pays mana by tapping creatures, and tapped creatures do not attack. The fifth body Chord buys costs you two attackers to get it. X goes to six while the damage drops to 27.\n\nThe concept itself is sound one window later. Chord on Player 4's end step is the good version: the convoked bodies untap before your combat, the fetched creature clears the since-the-turn-began test, and you arrive at your turn with six untapped bodies. That is branch two wearing a backup plan.\n\nSo file this line, don't play it. Chord in this deck is the fifth trap and the emergency fifth body — at instant speed, on someone else's turn, never as a same-turn combo with your own alpha strike.",
+      "citations": [
+        {
+          "rule": "702.51a",
+          "quote": "For each colored mana in this spell’s total cost, you may tap an untapped creature of that color you control rather than pay that mana."
+        },
+        {
+          "rule": "508.1a",
+          "quote": "The chosen creatures must be untapped, they can’t also be battles, and each one must either have haste or have been controlled by the active player continuously since the turn began."
+        },
+        {
+          "rule": "strategy:tempo.sequencing",
+          "quote": "think through the entire turn before doing anything"
+        }
+      ]
+    }
+  ],
+  "recommendation": {
+    "choice": "Wait one round: flash Sakura-Tribe Elder on Player 4's end step, Craterhoof next turn for 48",
+    "rationale": "The count is the decision, and the count is four. Stack 003 did this math with a checker watching: Craterhoof over four bodies is 36, and 36 leaves Player 2 alive at 4 with a full untap and a grudge. Never inflate that number into a kill — the record says it is not one.\n\nThe sweeper fear argues for waiting, not against it. Going now does not dodge Player 4's window; it decorates it. Either way your four bodies cross their sorcery-speed main — the only question is whether you cross it having spent the finisher for nothing. Commit exactly as much as wins before the wrath arrives: this turn, that amount is zero. And if the wrath does land, stack 004 already showed you the other side — Fecundity turns the funeral into four draws, Radagast comes home to the command zone, and Elder and Chord restart the machine.\n\nThe fifth body costs one green mana in a verified window. Stack 001 established the metronome under a checker: the discount and the flash reset on every player's turn, so Elder on Player 4's end step is {G} — after the sweeper window has closed, with Beast Whisperer paying you a card for showing up. Then six bodies, X=6, 48 with trample: a 40-life seat dies with eight to spare, and a chump block changes nothing that matters.\n\nThe Chord branch teaches why there is no shortcut: the Castle cannot pay an instant, the discount ignores non-creature spells, and convoke taps the very attackers the pump is for — 27 damage off a bigger X. The both-this-turn cast line is one mana short by simple addition. The game is telling you the same thing three ways: the fifth body arrives next window or not at all.\n\nSo wait the round you were always going to play anyway — mana up, traps priced, board unchanged. Then take the window with the table's response mana spent and the count at six. One round is not patience. It is the difference between a favor and a win."
+  },
+  "presentable": true
+}
