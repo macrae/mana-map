@@ -172,7 +172,7 @@ TEXT_EMBEDDING_DIM = 384
 SUPERTYPE_VOCAB_SIZE = 10
 RARITY_VOCAB_SIZE = 7
 COLOR_IDENTITY_VOCAB_SIZE = 33
-LAYOUT_VOCAB_SIZE = 17
+LAYOUT_VOCAB_SIZE = 18  # 17 layouts + 1 unknown as of the 2026-08-12 dump ('front_card' and 'prepare' arrived); the preprocess guard fires exactly when this needs raising, and raising it means retrain
 
 # ── Categorical Embedding Dims ────────────────────────────────────────────
 SUPERTYPE_EMBEDDING_DIM = 16

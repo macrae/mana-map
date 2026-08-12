@@ -310,9 +310,9 @@
     },
     "deck-diagnosis": {
       "agent": "deck-doctor+deck-skeptic",
-      "agent_prompt_sha256": "ccacae5af82233946b65de29a95e78c7c3d9a11be1b01561e84ccbc91e8b73ff",
+      "agent_prompt_sha256": "7a651f0164c4c111a18411efd6e9d470d6570838c4682a3bbd1a071bc1593356",
       "artifact": "data/decks/heliod/diagnosis.json",
-      "artifact_sha256": "73d4eec5106d9770871be711748712b6a868e8d971497fadf0480daa9608db17",
+      "artifact_sha256": "3c107bf8c2fe1ce8d11f8afe5492a9c23591e2543c030645b4f78b6c1d9340e3",
       "card_refs": [
         "Aetherflux Reservoir",
         "Alhammarret's Archive",
@@ -344,7 +344,6 @@
         "Glacial Fortress",
         "Grand Abolisher",
         "Hallowed Fountain",
-        "Hangarback Walker",
         "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
         "Howling Mine",
         "Hullbreaker Horror",
@@ -355,7 +354,6 @@
         "Kami of the Crescent Moon",
         "Kwain, Itinerant Meddler",
         "Leyline of Anticipation",
-        "Lightning Greaves",
         "Long-Term Plans",
         "Loran of the Third Path",
         "Mathemagics",
@@ -371,7 +369,6 @@
         "Prosperity",
         "Psychosis Crawler",
         "Rhystic Study",
-        "Run Behind",
         "Sapphire Medallion",
         "Scrawling Crawler",
         "Seachrome Coast",
@@ -393,19 +390,18 @@
         "The Second Doctor",
         "Thought Vessel",
         "Torrential Gearhulk",
-        "Viseling",
-        "Vision Skeins"
+        "Viseling"
       ],
       "card_refs_version": 2,
       "extra": {
-        "cards_semantic": "cdd8eaeca90d3bec35c035a2d56eae182458f39b7d7d43ffff376b82dfeebbc9",
+        "cards_semantic": "d5b335b8db5fe34869ae2b9e9e967466eadd6767f4d89681b485bf866d22a3e9",
         "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
       },
-      "fingerprint": "24e9b3c6422192ade939b46900c3b7596a9b6c1054ac2e9f96ce29ca4e25736c",
+      "fingerprint": "447c5e9513642f057ce5deee39c2f8f11dcd058f7c7241782e6fd550040e3bd4",
       "inputs": [
         {
           "path": "data/card_roles.json",
-          "sha256": "092654413933e0101e3fd40fd5473cc111382cb64e27127e69310d608a052c3e"
+          "sha256": "6f89de340174e7c28ecbba43fd75d41f33e78d7d951add33a09d8cc5926b46bc"
         },
         {
           "path": "data/combo_details.json",
@@ -413,7 +409,7 @@
         },
         {
           "path": "data/decks/heliod/bracket_report.json",
-          "sha256": "eb99300b056d2805d19f8ef9553e8225276b8126029f72c3561a143a1fe4fcbe"
+          "sha256": "c57fdb98e0e2c544edbe303b77bd0bd09de4eac03cbd80e43b327d00a16aa70a"
         },
         {
           "path": "data/decks/heliod/deck_recon.json",
@@ -421,15 +417,15 @@
         },
         {
           "path": "data/decks/heliod/goldfish_metrics.json!meta.decklist_sha256",
-          "sha256": "b075111f6121585560358ac7f38500d618f0593581433a6aaedb7630fe626717"
+          "sha256": "b955aa7898b51bae5ca81299d3e50ecb70264e7f1b2ce8703fab71d6a7f646ad"
         },
         {
           "path": "data/decks/heliod/goldfish_targets.json",
-          "sha256": "d54d249c2a1d42695c8a0b53ef3dc939d589e4ea21228394093f0d77cb35ada2"
+          "sha256": "2235df25e8fef84762cf98563d200fab110c8e169a4591b2ea5fee02e80d9816"
         },
         {
           "path": "data/decks/heliod/mana_analysis.json",
-          "sha256": "f08ed2fe06f29d8d8f681dffba520cce4e67d940d3fd6e56ceddda33fe1baa2f"
+          "sha256": "d09c1b5bcbe08ae536b8230c94f790037b8151afdf5385ecb9e99a71d663ca93"
         },
         {
           "path": "data/decks/heliod/pilot_feedback.md",
@@ -461,11 +457,15 @@
         },
         {
           "path": "data/decks/heliod/strategic_frame.json",
-          "sha256": "e84f9a432bad01df6e730bbc649094cce918077b41d512f0d9cf7e52f2ce94f6"
+          "sha256": "73cc653a9a9bd4bf83197cfae17171fc8de041aeefef77347c00a7eb20132619"
         },
         {
           "path": "data/obsolescence_index.json",
-          "sha256": "c8923bd8a07feb14fe1f81e9c00435993794375c58b499387de75a8850615f68"
+          "sha256": "4fbdea0366775b8d03636590e378d05b49230ba648ffe6792fcbd2936a99f8f5"
+        },
+        {
+          "path": "src/manamap/pilot/deck_audit.py",
+          "sha256": "a64da0cb9773d88fc7b4094bd79689491fbffacb64426152bc39f785b53bf68c"
         }
       ]
     },
@@ -667,7 +667,7 @@
         },
         "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
       },
-      "fingerprint": "25445ef4069f8d168bbdd5d7790c00f970f192ed9252c8bc68e9b1550a2c655b",
+      "fingerprint": "75506af579aa1f9a5de66d93083fadb9cab84cdfe883ad48f62c147a995ff653",
       "inputs": [
         {
           "path": "STYLEv3.md",
@@ -723,11 +723,11 @@
         },
         {
           "path": "data/obsolescence_index.json",
-          "sha256": "c8923bd8a07feb14fe1f81e9c00435993794375c58b499387de75a8850615f68"
+          "sha256": "4fbdea0366775b8d03636590e378d05b49230ba648ffe6792fcbd2936a99f8f5"
         },
         {
           "path": "data/synergy_graph.json",
-          "sha256": "7cbd1d769bb9468ee2bc3b0f430c595c1f302b0f393570f53567d55f43e620d8"
+          "sha256": "8f6726349fcf5baf2a5261b659da24c8862338386aa125b4705015a333ca0dee"
         },
         {
           "path": "src/manamap/pilot/issue_spec.py",
@@ -1087,7 +1087,7 @@
         "cards_semantic": "d5b335b8db5fe34869ae2b9e9e967466eadd6767f4d89681b485bf866d22a3e9",
         "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
       },
-      "fingerprint": "139d99c97d0e7d47cf6dfdba7366225406b935521944de2f01280d0ab2b5b645",
+      "fingerprint": "839a594b84c77145df6553d2bac7657ecce9c1690eeb671c4ef0310fb168a757",
       "inputs": [
         {
           "path": "data/combo_details.json",
@@ -1135,11 +1135,11 @@
         },
         {
           "path": "data/obsolescence_index.json",
-          "sha256": "c8923bd8a07feb14fe1f81e9c00435993794375c58b499387de75a8850615f68"
+          "sha256": "4fbdea0366775b8d03636590e378d05b49230ba648ffe6792fcbd2936a99f8f5"
         },
         {
           "path": "data/synergy_graph.json",
-          "sha256": "7cbd1d769bb9468ee2bc3b0f430c595c1f302b0f393570f53567d55f43e620d8"
+          "sha256": "8f6726349fcf5baf2a5261b659da24c8862338386aa125b4705015a333ca0dee"
         }
       ]
     },
@@ -1459,7 +1459,7 @@
         "cards_semantic": "d5b335b8db5fe34869ae2b9e9e967466eadd6767f4d89681b485bf866d22a3e9",
         "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
       },
-      "fingerprint": "e0b334338d58311ae75bd331d599da4f4b1466db67b7df75567319bd8795b06e",
+      "fingerprint": "ff37a891fdf06bc873ff43a3666d3036589fa5ba6532f408bcb6ce75766ee7e5",
       "inputs": [
         {
           "path": "data/combo_graph.json",
@@ -1503,11 +1503,11 @@
         },
         {
           "path": "data/obsolescence_index.json",
-          "sha256": "c8923bd8a07feb14fe1f81e9c00435993794375c58b499387de75a8850615f68"
+          "sha256": "4fbdea0366775b8d03636590e378d05b49230ba648ffe6792fcbd2936a99f8f5"
         },
         {
           "path": "data/synergy_graph.json",
-          "sha256": "7cbd1d769bb9468ee2bc3b0f430c595c1f302b0f393570f53567d55f43e620d8"
+          "sha256": "8f6726349fcf5baf2a5261b659da24c8862338386aa125b4705015a333ca0dee"
         }
       ],
       "key_fingerprints": {

@@ -4,7 +4,7 @@ import json
 
 import requests
 
-from manamap.ingest.common import dump_exists, open_dump
+from manamap.ingest.common import dump_exists, dump_paths, open_dump
 from manamap.config import (
     BULK_DATA_TYPE,
     BULK_DATA_URL,
@@ -19,12 +19,25 @@ SESSION.headers["User-Agent"] = USER_AGENT
 
 
 def get_bulk_data_info():
-    """Fetch the oracle_cards download URI and updated_at from Scryfall."""
+    """Fetch the oracle_cards download URI and updated_at from Scryfall.
+
+    Scryfall migrated bulk data in August 2026: catalog entries now expose only
+    `jsonl_download_uri` (a gzipped JSONL file, one card per line) — the old
+    `download_uri` single-JSON-array form is gone. Prefer the legacy key if it
+    ever returns; otherwise take the JSONL one. `extract` sniffs the on-disk
+    format, so either shape parses downstream.
+    """
     resp = SESSION.get(BULK_DATA_URL)
     resp.raise_for_status()
     for entry in resp.json()["data"]:
         if entry["type"] == BULK_DATA_TYPE:
-            return entry["download_uri"], entry["updated_at"]
+            uri = entry.get("download_uri") or entry.get("jsonl_download_uri")
+            if not uri:
+                raise ValueError(
+                    f"Bulk entry '{BULK_DATA_TYPE}' has neither download_uri nor "
+                    f"jsonl_download_uri — Scryfall changed the schema again: {sorted(entry)}"
+                )
+            return uri, entry["updated_at"]
     raise ValueError(f"No bulk data entry found for type '{BULK_DATA_TYPE}'")
 
 
@@ -37,14 +50,31 @@ def is_up_to_date(updated_at):
 
 
 def download_file(url):
-    """Stream-download a file with progress reporting."""
+    """Stream-download a file with progress reporting.
+
+    Scryfall's JSONL bulk files arrive ALREADY gzipped (`*.jsonl.gz`) — those
+    bytes are written verbatim to the canonical dump path, because routing them
+    through `open_dump`'s write mode would gzip a gzip. A plain-JSON URL (the
+    pre-2026-08 form) still streams through `open_dump`, which compresses it
+    locally. Either way exactly one dump file exists afterwards: the verbatim
+    path replicates `open_dump`'s delete-the-sibling rule.
+    """
     resp = SESSION.get(url, stream=True)
     resp.raise_for_status()
     total = int(resp.headers.get("content-length", 0))
     downloaded = 0
     chunk_size = 1024 * 1024  # 1 MB
 
-    with open_dump(RAW_JSON_PATH, "wb") as f:
+    already_gzipped = url.endswith(".gz")
+    if already_gzipped:
+        gz, legacy = dump_paths(RAW_JSON_PATH)
+        if legacy.exists():
+            legacy.unlink()
+        sink = open(gz, "wb")
+    else:
+        sink = open_dump(RAW_JSON_PATH, "wb")
+
+    with sink as f:
         for chunk in resp.iter_content(chunk_size=chunk_size):
             f.write(chunk)
             downloaded += len(chunk)

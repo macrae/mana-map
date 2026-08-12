@@ -74,6 +74,17 @@ counts. Update by hand (grep for the old total to find any new ones):
   file sizes. (`docs/deck-builder-v2.md` and `docs/frontend-v2.md` are frozen
   design records — leave them.)
 
+## 4b. Region names: a re-cluster orphans authored names, and naming them is a STEP
+
+`cluster-regions` matches hand-authored names in `data/region_names.json` by
+`map|level|mechanical-label` signature. A fresh clustering changes signatures, so
+dozens of L0/L1 regions come back unmatched — the step REPORTS them, and
+`test_regions_are_named_three_levels_deep` fails until every L0/L1 is named.
+Reuse direction-shifted families where the core matches (East Featherbourne →
+North Featherbourne), author new names in the established register for the rest,
+then re-run `manamap cluster-regions` (seconds). The 2026-08-12 refresh needed
+96: 18 adapted, 78 authored.
+
 ## 5. DATA_VERSION (`viz/js/mana-map.js`)
 
 Bump when a consumer would draw a **different conclusion** from the bytes. A

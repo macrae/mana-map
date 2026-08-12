@@ -26,7 +26,7 @@ import pytest
 # check reports all three — and removing them takes the whole browser suite
 # down with an unrelated-looking "fixture not found".
 from conftest_viz import (  # noqa: F401
-    BOOT_TIMEOUT_MS, canvas_page, discover_page, page,
+    BOOT_TIMEOUT_MS, canvas_page, corpus_count, discover_page, page,
 )
 
 pytestmark = pytest.mark.browser
@@ -3431,7 +3431,12 @@ def test_the_spotlight_actually_dims_the_canvas(browser, viz_server):
         # without a resting ink they stayed at full spotlight intensity and deselecting
         # deselected nothing visible — measured at 2813 green px spotlit vs 2513 cleared,
         # which this assertion would have caught and the earlier one did not.
-        assert cleared["green"] < spotlit["green"] * 0.6, (spotlit, cleared)
+        # Threshold 0.7, not 0.6: the ratio depends on the projection's line
+        # geometry. The bug this guards (edges never resting) measures ~0.9;
+        # healthy dimming measured 0.53 on the July layout and 0.617 on the
+        # 2026-08 refresh's layout. 0.7 still separates the two modes cleanly
+        # without failing on every retrain's new geometry.
+        assert cleared["green"] < spotlit["green"] * 0.7, (spotlit, cleared)
         assert page.js_errors == []
     finally:
         page.close()

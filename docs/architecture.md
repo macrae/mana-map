@@ -2,7 +2,7 @@
 
 ## Overview
 
-Mana Map embeds every Magic: The Gathering oracle card (~34,300 and growing) into a 128-dim vector space using two lightweight fusion MLPs, then projects to 2D with PaCMAP for the interactive map. On top of the embeddings sit four analysis layers: synergy detection, power-creep detection, region clustering, and the deckbuilding role taxonomy.
+Mana Map embeds every Magic: The Gathering oracle card (~34,900 and growing) into a 128-dim vector space using two lightweight fusion MLPs, then projects to 2D with PaCMAP for the interactive map. On top of the embeddings sit four analysis layers: synergy detection, power-creep detection, region clustering, and the deckbuilding role taxonomy.
 
 ## Models (`src/manamap/training/model.py`)
 
@@ -49,7 +49,7 @@ harder and a margin loss is the wrong instrument for it:
   in the batch is one.
 - **Positives mined from `card_roles.json`, rarest shared role first**, so the pairs that
   teach most are the ones a common role would have drowned out. `ROLE_BODY_FALLBACK` is
-  excluded, because it labels all 19,050 creatures and would make "creature" the lesson.
+  excluded, because it labels every creature and would make "creature" the lesson.
 - **A fixed-weight text passthrough** makes similarity exactly
   `0.7·cos_learned + 0.3·cos_text`. The weight is structural, not learned, so the model
   *cannot* discard the frozen text it was built from — which is what the previous

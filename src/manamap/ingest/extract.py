@@ -220,8 +220,16 @@ def process_card(card):
 
 def main():
     print("Loading JSON...")
+    # Sniff the dump format: pre-2026-08 dumps are one JSON array ('[' first),
+    # Scryfall's current bulk files are JSONL (one card object per line). The
+    # content decides, not the filename — the canonical path predates the switch.
     with open_dump(RAW_JSON_PATH, "rt") as f:
-        cards = json.load(f)
+        head = f.read(1)
+        f.seek(0)
+        if head == "[":
+            cards = json.load(f)
+        else:
+            cards = [json.loads(line) for line in f if line.strip()]
     print(f"  Loaded {len(cards):,} total entries.")
 
     # Filter excluded layouts

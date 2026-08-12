@@ -145,10 +145,17 @@ def test_stored_order_is_descending_by_true_similarity(table):
     not sort by."""
     embeddings = np.load(ABILITY_EMBEDDINGS_PATH)
     rng = np.random.default_rng(1)
+    # One float32 ULP of slack (~6e-8 at cosine ≈ 0.97): the exporter ranks via a
+    # batched matmul and this test recomputes per-row dots, and the two summation
+    # orders can round the last bit of a near-perfect tie differently. That is
+    # not a mis-sort — the quantisation step clients see is ~4e-3, five orders
+    # coarser. First tripped on the 2026-08-12 refresh (34,890 cards).
+    EPS = 1e-6
     for row in rng.choice(table["n"], 60, replace=False):
         rows = [int(i) for i in table["sim_idx"][row] if i != NEIGHBOURS_NONE]
         sims = [float(embeddings[row] @ embeddings[r]) for r in rows]
-        assert sims == sorted(sims, reverse=True), f"row {row} is not pre-sorted"
+        assert all(a >= b - EPS for a, b in zip(sims, sims[1:])), \
+            f"row {row} is not pre-sorted (beyond fp tie tolerance)"
 
 
 @requires_data

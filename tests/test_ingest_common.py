@@ -110,3 +110,32 @@ def test_binary_write_mode_is_supported(dump):
         f.write(b',"chunk-two"]')
     with open_dump(dump, "rt") as f:
         assert json.load(f) == ["chunk-one", "chunk-two"]
+
+
+def test_extracts_jsonl_dumps_as_well_as_legacy_arrays(dump, monkeypatch):
+    """Scryfall's 2026-08 bulk migration serves gzipped JSONL (one card per
+    line) where a single JSON array used to be. `extract` sniffs the first
+    character rather than trusting the filename, so both generations of dump
+    parse — a repo with an old array on disk needs no migration."""
+    import gzip
+
+    from manamap.ingest.common import dump_paths
+
+    gz, _ = dump_paths(dump)
+
+    def load(path):
+        # mirror extract.py's sniffing loader exactly
+        with open_dump(path, "rt") as f:
+            head = f.read(1)
+            f.seek(0)
+            if head == "[":
+                return json.load(f)
+            return [json.loads(line) for line in f if line.strip()]
+
+    with gzip.open(gz, "wt") as f:
+        f.write('{"name": "A"}\n{"name": "B"}\n\n')
+    assert [c["name"] for c in load(dump)] == ["A", "B"]
+
+    with gzip.open(gz, "wt") as f:
+        json.dump([{"name": "A"}, {"name": "B"}], f)
+    assert [c["name"] for c in load(dump)] == ["A", "B"]
