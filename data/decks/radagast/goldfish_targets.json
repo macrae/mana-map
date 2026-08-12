@@ -1,0 +1,170 @@
+{
+ "_note": "Authored 2026-08-12 with the first build (plan 33ed976), per the PRD v2 engine taxonomy. Group sizes are redundancy claims the audit prices hypergeometrically. The simulator models {T}:Add rocks and dorks but NOT aura ramp (Utopia Sprawl class), NOT Radagast's discount, and NOT opponent-turn flash casts \u2014 so every rate here is a floor for a deck whose whole design is spending mana on other players' turns. No local stacks exist yet; nothing here is checker-verified.",
+ "targets": [
+  {
+   "label": "A METRONOME body drawn (3-5 MV, >=2 generic \u2014 the full-value flash-in class)",
+   "need": [
+    {
+     "any_of": [
+      "Wood Elves",
+      "Nantuko Vigilante",
+      "Wickerbough Elder",
+      "Ohran Frostfang",
+      "Knight of the Stampede",
+      "Chomping Changeling",
+      "Mirkwood Pathmaker",
+      "Spineseeker Centipede",
+      "Sunfrill Imitator",
+      "Old Fat Spider",
+      "Summit Apes",
+      "Hookhand Mariner // Riphook Raider",
+      "Eternal Witness",
+      "Satyr Wayfinder"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "A FLASH TRAP drawn (instant-speed interaction wearing a creature body, or held protection)",
+   "need": [
+    {
+     "any_of": [
+      "Ohran Frostfang",
+      "Nantuko Vigilante",
+      "Wickerbough Elder",
+      "Caustic Caterpillar",
+      "Heroic Intervention",
+      "Veil of Summer",
+      "Tyvar's Stand",
+      "Inspiring Call",
+      "Chord of Calling"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "GAS drawn \u2014 a repeatable draw engine (all but Harmonize gate on power 4+ entering; the declared thin engine)",
+   "need": [
+    {
+     "any_of": [
+      "Selvala, Heart of the Wilds",
+      "Garruk's Uprising",
+      "Elemental Bond",
+      "Fecundity",
+      "Ohran Frostfang",
+      "Old Fat Spider",
+      "Harmonize",
+      "Cream of the Crop"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "RAMP drawn (either hump: a dork/rock-class accelerant or a land-ramp spell)",
+   "need": [
+    {
+     "any_of": [
+      "Birds of Paradise",
+      "Elvish Mystic",
+      "Llanowar Elves",
+      "Fyndhorn Elves",
+      "Scaled Nurturer",
+      "Devoted Druid",
+      "Rampant Growth",
+      "Sakura-Tribe Elder",
+      "Three Visits",
+      "Cultivate",
+      "Kodama's Reach",
+      "Tireless Provisioner",
+      "Wood Elves",
+      "Utopia Sprawl",
+      "Wild Growth",
+      "Fertile Ground",
+      "Elvish Spirit Guide"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "THE OVERRUN KILL: a mass-pump finisher drawn (Craterhoof class \u2014 needs a board, which the bodies rates price separately)",
+   "need": [
+    {
+     "any_of": [
+      "Craterhoof Behemoth",
+      "Overwhelming Stampede",
+      "Pathbreaker Ibex",
+      "Return of the Wildspeaker"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "THE OVERRUN ASSEMBLED: finisher AND a second wave to pump (a metronome body as proxy for board width)",
+   "need": [
+    {
+     "any_of": [
+      "Craterhoof Behemoth",
+      "Overwhelming Stampede",
+      "Pathbreaker Ibex",
+      "Return of the Wildspeaker"
+     ]
+    },
+    {
+     "any_of": [
+      "Wood Elves",
+      "Nantuko Vigilante",
+      "Wickerbough Elder",
+      "Ohran Frostfang",
+      "Knight of the Stampede",
+      "Chomping Changeling",
+      "Mirkwood Pathmaker",
+      "Spineseeker Centipede",
+      "Sunfrill Imitator",
+      "Old Fat Spider",
+      "Summit Apes",
+      "Hookhand Mariner // Riphook Raider",
+      "Eternal Witness",
+      "Satyr Wayfinder"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "An answer to an artifact or enchantment drawn (the breadth floor; Boseiju is a land the sim counts as drawn)",
+   "need": [
+    {
+     "any_of": [
+      "Caustic Caterpillar",
+      "Nantuko Vigilante",
+      "Wickerbough Elder",
+      "Chomping Changeling",
+      "Boseiju, Who Endures",
+      "Beast Within",
+      "Pick Your Poison"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "SELVALA \u2014 the single best engine card, drawn (a declared one-card class: no functional backup exists in the 99)",
+   "need": [
+    {
+     "any_of": [
+      "Selvala, Heart of the Wilds"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "A TUTOR drawn (Chord finds any trap at instant speed; Fauna Shaman loops spares into answers)",
+   "need": [
+    {
+     "any_of": [
+      "Chord of Calling",
+      "Fauna Shaman"
+     ]
+    }
+   ]
+  }
+ ]
+}

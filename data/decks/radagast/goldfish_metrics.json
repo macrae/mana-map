@@ -1,0 +1,184 @@
+{
+  "meta": {
+    "commander": "Radagast of Rhosgobel",
+    "commander_cmc": 4,
+    "deck": "radagast",
+    "decklist_sha256": "aa17a4506cc49641e13687ddf41cc0baad7ac9c9ebd583d06b1032d74f47692d",
+    "iterations": 10000,
+    "max_turn": 10,
+    "model_assumptions": [
+      "Simulates resource development, not full games (no interaction, no removal).",
+      "Draw every turn including turn 1 (multiplayer Commander).",
+      "Mulligan: keep 7-card hands with 2-5 lands; up to 2 fresh redraws, keep the last.",
+      "One land drop per turn when available.",
+      "Mana rocks ('{T}: Add') contribute from the turn after they are cast.",
+      "Commander cast on first affordable turn (highest spending priority).",
+      "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
+      "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+      "Unrestricted tutors ('search your library for a card') are modeled as wildcards: a tutor that has been drawn and is affordable fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
+      "Cost reducers, rituals, and extra card draw are not modeled (conservative)."
+    ],
+    "seed": 42
+  },
+  "metrics": {
+    "commander": {
+      "cast_by_turn_6_rate": 0.939,
+      "cast_turn_histogram": {
+        "10": 44,
+        "3": 3171,
+        "4": 5257,
+        "5": 589,
+        "6": 375,
+        "7": 218,
+        "8": 165,
+        "9": 109,
+        "not_by_max_turn": 72
+      },
+      "mean_cast_turn": 4.029,
+      "median_cast_turn": 4
+    },
+    "iterations": 10000,
+    "land_drop_hit_rate_by_turn": {
+      "1": 1.0,
+      "10": 0.385,
+      "2": 0.998,
+      "3": 0.91,
+      "4": 0.788,
+      "5": 0.668,
+      "6": 0.565,
+      "7": 0.483,
+      "8": 0.433,
+      "9": 0.414
+    },
+    "mean_available_mana_by_turn": {
+      "1": 1.0,
+      "10": 7.408,
+      "2": 2.2,
+      "3": 3.305,
+      "4": 4.134,
+      "5": 4.852,
+      "6": 5.492,
+      "7": 6.024,
+      "8": 6.506,
+      "9": 6.974
+    },
+    "mean_bodies_by_turn": {
+      "1": 0.28,
+      "10": 5.263,
+      "2": 0.757,
+      "3": 1.336,
+      "4": 1.84,
+      "5": 2.733,
+      "6": 3.423,
+      "7": 3.963,
+      "8": 4.436,
+      "9": 4.859
+    },
+    "opening_hand": {
+      "first_seven_land_histogram": {
+        "0": 309,
+        "1": 1436,
+        "2": 2945,
+        "3": 2932,
+        "4": 1723,
+        "5": 545,
+        "6": 104,
+        "7": 6
+      },
+      "keep_first_seven_rate": 0.815,
+      "kept_hand_land_histogram": {
+        "0": 6,
+        "1": 64,
+        "2": 3637,
+        "3": 3556,
+        "4": 2061,
+        "5": 673,
+        "6": 3
+      },
+      "mean_mulligans": 0.221
+    },
+    "targets": [
+      {
+        "assembled_rate": 0.941,
+        "assembled_rate_assisted": 0.941,
+        "by_turn_6_rate": 0.874,
+        "by_turn_6_rate_assisted": 0.874,
+        "label": "A METRONOME body drawn (3-5 MV, >=2 generic — the full-value flash-in class)",
+        "mean_turn": 2.031,
+        "mean_turn_assisted": 2.031
+      },
+      {
+        "assembled_rate": 0.826,
+        "assembled_rate_assisted": 0.826,
+        "by_turn_6_rate": 0.728,
+        "by_turn_6_rate_assisted": 0.728,
+        "label": "A FLASH TRAP drawn (instant-speed interaction wearing a creature body, or held protection)",
+        "mean_turn": 2.575,
+        "mean_turn_assisted": 2.575
+      },
+      {
+        "assembled_rate": 0.784,
+        "assembled_rate_assisted": 0.784,
+        "by_turn_6_rate": 0.683,
+        "by_turn_6_rate_assisted": 0.683,
+        "label": "GAS drawn — a repeatable draw engine (all but Harmonize gate on power 4+ entering; the declared thin engine)",
+        "mean_turn": 2.682,
+        "mean_turn_assisted": 2.682
+      },
+      {
+        "assembled_rate": 0.964,
+        "assembled_rate_assisted": 0.964,
+        "by_turn_6_rate": 0.915,
+        "by_turn_6_rate_assisted": 0.915,
+        "label": "RAMP drawn (either hump: a dork/rock-class accelerant or a land-ramp spell)",
+        "mean_turn": 1.797,
+        "mean_turn_assisted": 1.797
+      },
+      {
+        "assembled_rate": 0.53,
+        "assembled_rate_assisted": 0.53,
+        "by_turn_6_rate": 0.424,
+        "by_turn_6_rate_assisted": 0.424,
+        "label": "THE OVERRUN KILL: a mass-pump finisher drawn (Craterhoof class — needs a board, which the bodies rates price separately)",
+        "mean_turn": 3.305,
+        "mean_turn_assisted": 3.305
+      },
+      {
+        "assembled_rate": 0.495,
+        "assembled_rate_assisted": 0.495,
+        "by_turn_6_rate": 0.364,
+        "by_turn_6_rate_assisted": 0.364,
+        "label": "THE OVERRUN ASSEMBLED: finisher AND a second wave to pump (a metronome body as proxy for board width)",
+        "mean_turn": 4.115,
+        "mean_turn_assisted": 4.115
+      },
+      {
+        "assembled_rate": 0.743,
+        "assembled_rate_assisted": 0.743,
+        "by_turn_6_rate": 0.639,
+        "by_turn_6_rate_assisted": 0.639,
+        "label": "An answer to an artifact or enchantment drawn (the breadth floor; Boseiju is a land the sim counts as drawn)",
+        "mean_turn": 2.786,
+        "mean_turn_assisted": 2.786
+      },
+      {
+        "assembled_rate": 0.168,
+        "assembled_rate_assisted": 0.168,
+        "by_turn_6_rate": 0.134,
+        "by_turn_6_rate_assisted": 0.134,
+        "label": "SELVALA — the single best engine card, drawn (a declared one-card class: no functional backup exists in the 99)",
+        "mean_turn": 3.448,
+        "mean_turn_assisted": 3.448
+      },
+      {
+        "assembled_rate": 0.306,
+        "assembled_rate_assisted": 0.306,
+        "by_turn_6_rate": 0.237,
+        "by_turn_6_rate_assisted": 0.237,
+        "label": "A TUTOR drawn (Chord finds any trap at instant speed; Fauna Shaman loops spares into answers)",
+        "mean_turn": 3.551,
+        "mean_turn_assisted": 3.551
+      }
+    ]
+  }
+}
