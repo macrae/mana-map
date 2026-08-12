@@ -1,0 +1,438 @@
+{
+ "id": "001",
+ "slug": "radagast",
+ "deck": "RADAGAST — THE DISCOUNT BUNKER",
+ "title": "The metronome window: does Radagast's discount-plus-flash reset on every player's turn, and what does Wood Elves cost on an opponent's end step?",
+ "rules_version": "June 19, 2026",
+ "scenario": {
+  "board": {
+   "you": [
+    "Radagast of Rhosgobel (2/5) — your commander",
+    "Forest (untapped)",
+    "Forest (untapped)",
+    "Forest (tapped)",
+    "Forest (tapped)"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": [
+      "no permanents of consequence"
+     ]
+    },
+    {
+     "life": 40,
+     "board": [
+      "no permanents of consequence"
+     ]
+    },
+    {
+     "life": 40,
+     "board": [
+      "no permanents of consequence"
+     ]
+    }
+   ]
+  },
+  "hand": [
+   "Wood Elves"
+  ],
+  "graveyard": [],
+  "mana_available": "{G}{G} from two untapped Forests",
+  "stack": [
+   {
+    "pos": 0,
+    "item": "Wood Elves, cast from your hand during opponent 1's end step for {G} (Radagast's reduction applied to its {2}{G} cost)"
+   }
+  ],
+  "extras": {
+   "life_totals": {
+    "you": 40,
+    "each_opponent": 40
+   },
+   "note_for_the_resolver": "The deck's whole thesis rides on two readings: (1) 'the first creature spell you cast each turn' — you already cast a (discounted, flashed) creature during YOUROWN previous turn this round; does the count reset so this cast on opponent 1's turn is again 'the first this turn'? (2) both halves of Radagast's ability apply to the same first spell: the {2} reduction AND the as-though-flash timing permission. Also resolve Wood Elves' enters trigger: the fetched Forest enters untapped (the card does not say tapped).",
+   "assumptions": [
+    "It is opponent 1's end step; you have priority.",
+    "You cast one creature spell during your own turn earlier this round.",
+    "Your library contains basic Forests."
+   ]
+  },
+  "question": "Was this cast legal at this timing and at this cost? Resolve the spell fully, including the enters trigger. State plainly whether the discount-plus-flash window recurs on EVERY player's turn — the 'four windows per round' claim — with citations."
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "Timing legality: you cast Wood Elves (a creature spell, normally sorcery-speed) during opponent 1's end step. Once the end step begins the active player gets priority, and after each pass priority moves around the table, so you legitimately hold priority in that step.",
+    "effect": "You may act during opponent 1's end step, but a noninstant spell needs a timing permission to be cast there. Radagast of Rhosgobel supplies it: 'The first creature spell you cast each turn ... can be cast as though it had flash.' The permission is conditional, so its condition must be checked as you begin to cast.",
+    "citations": [
+     {
+      "rule": "513.1",
+      "quote": "The end step has no turn-based actions. Once it begins, the active player gets priority."
+     },
+     {
+      "rule": "117.1a",
+      "quote": "A player may cast an instant spell any time they have priority. A player may cast a noninstant spell during their main phase any time they have priority and the stack is empty."
+     },
+     {
+      "rule": "601.3",
+      "quote": "A player can begin to cast a spell only if a rule or effect allows that player to cast it and no rule or effect prohibits that player from casting it."
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "Check Radagast's condition: is Wood Elves 'the first creature spell you cast' this turn? You cast a (discounted, flashed) creature spell during YOUR OWN turn earlier this round — but that was a different turn. The current turn is opponent 1's turn, and during it you have cast zero creature spells.",
+    "effect": "The ability says 'each turn', not 'each of your turns'. A turn is a game-structural unit that every player takes in sequence — the active player is the one whose turn it is — so the count of 'creature spells you cast this turn' is evaluated within the current turn only. Within opponent 1's turn, Wood Elves is your first creature spell. The conditional flash permission's condition is met, so you may begin to cast it as though it had flash; as-though-flash means you may play it any time you could cast an instant, i.e. while you hold priority.",
+    "citations": [
+     {
+      "rule": "500.1",
+      "quote": "A turn consists of five phases, in this order: beginning, precombat main, combat, postcombat main, and ending. Each of these phases takes place every turn, even if nothing happens during the phase."
+     },
+     {
+      "rule": "102.1",
+      "quote": "The active player is the player whose turn it is."
+     },
+     {
+      "rule": "601.3d",
+      "quote": "If a spell would have flash only if certain conditions are met, its controller may begin to cast that spell as though it had flash if those conditions are met."
+     },
+     {
+      "rule": "702.8a",
+      "quote": "“Flash” means “You may play this card any time you could cast an instant.”"
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "Determine the total cost. Wood Elves' mana cost is {2}{G}. Both halves of Radagast's single ability apply to the same 'first creature spell': the {2} reduction AND the as-though-flash permission. Apply the reduction during cost determination.",
+    "effect": "Total cost = {2}{G} minus the {2} reduction = {G}. The cost locks in and you pay {G} from one of your two untapped Forests. Note the reduction changes only what you pay, not the spell's mana cost: Wood Elves' mana value remains 3.",
+    "citations": [
+     {
+      "rule": "601.2f",
+      "quote": "The total cost is the mana cost or alternative cost (as determined in rule 601.2b), plus all additional costs and cost increases, and minus all cost reductions."
+     },
+     {
+      "rule": "118.7",
+      "quote": "What a player actually needs to do to pay a cost may be changed or reduced by effects. If the mana component of a cost is reduced to nothing by cost reduction effects, it’s considered to be {0}. Paying a cost changed or reduced by an effect counts as paying the original cost."
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "Finish casting. Even if something removed Radagast mid-cast, the flash permission persists for this cast once legally begun.",
+    "effect": "Wood Elves is cast for {G} and sits on the stack (pos 0, the only object). You retain one untapped Forest.",
+    "citations": [
+     {
+      "rule": "601.6a",
+      "quote": "Once a player has begun casting a spell that had flash because certain conditions were met or that could be cast as though it had flash because certain conditions were met (see 601.3d), they may continue to cast that spell as though it had flash even if those conditions stop being met."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "All players pass priority in succession; Wood Elves resolves. It has no targets, so no targeting legality check applies on resolution.",
+    "effect": "Wood Elves becomes a permanent and enters the battlefield under your control as a 1/1 Elf Scout.",
+    "citations": [
+     {
+      "rule": "117.4",
+      "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves or, if the stack is empty, the phase or step ends."
+     },
+     {
+      "rule": "608.3a",
+      "quote": "If the object that’s resolving has no targets, it becomes a permanent and enters the battlefield under the control of the spell’s controller."
+     },
+     {
+      "rule": "302.2",
+      "quote": "When a creature spell resolves, its controller puts it onto the battlefield under their control."
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "Wood Elves' enters-the-battlefield ability triggers ('When this creature enters, search your library for a Forest card, put that card onto the battlefield, then shuffle.'). Before anyone receives priority, state-based actions are checked; then you, as the ability's controller, put the trigger on the stack.",
+    "effect": "No state-based action applies (Wood Elves is a 1/1 with no damage; no other SBA condition exists on this board). You put the triggered ability on the stack — the controller's act, independent of who receives priority — and then the ACTIVE player, opponent 1, receives priority, since the active player receives priority after a spell resolves. All players pass in succession.",
+    "citations": [
+     {
+      "rule": "603.6a",
+      "quote": "Enters-the-battlefield abilities trigger when a permanent enters the battlefield."
+     },
+     {
+      "rule": "117.5",
+      "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack (see rule 603, “Handling Triggered Abilities”)."
+     },
+     {
+      "rule": "603.3",
+      "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+     },
+     {
+      "rule": "117.3b",
+      "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "action": "The trigger resolves: search your library for a Forest card (your library contains basic Forests, per the scenario assumptions), put it onto the battlefield, then shuffle.",
+    "effect": "You find a basic Forest and put it onto the battlefield under your control. Wood Elves does not say 'tapped', and the default is untapped — the fetched Forest enters UNTAPPED. This is 'putting', not 'playing' a land, so it neither consumes a land drop nor is barred by it being an opponent's turn. Then you shuffle: the instructions are followed in the order written, so the Forest is already on the battlefield — outside the library — when the shuffle randomizes the remaining cards.",
+    "citations": [
+     {
+      "rule": "701.23a",
+      "quote": "To search for a card in a zone, look at all cards in that zone (even if it’s a hidden zone) and find a card that matches the given description."
+     },
+     {
+      "rule": "110.2a",
+      "quote": "If an effect instructs a player to put an object onto the battlefield, that object enters the battlefield under that player’s control unless the effect states otherwise."
+     },
+     {
+      "rule": "110.5b",
+      "quote": "Permanents enter the battlefield untapped, unflipped, face up, and phased in unless a spell or ability says otherwise."
+     },
+     {
+      "rule": "305.4",
+      "quote": "Effects may also allow players to “put” lands onto the battlefield. This isn’t the same as “playing a land” and doesn’t count as a land played during the current turn."
+     },
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written."
+     },
+     {
+      "rule": "701.24a",
+      "quote": "To shuffle a library or a face-down pile of cards, randomize the cards within it so that no player knows their order."
+     }
+    ]
+   },
+   {
+    "n": 8,
+    "action": "The metronome claim: does the discount-plus-flash window recur on EVERY player's turn? Radagast's ability is worded 'each turn'. Every player takes a turn in sequence (the active player is the player whose turn it is), and each such turn is a complete structural unit of five phases. The ability's condition — 'the first creature spell you cast' — is therefore satisfied afresh on each new turn by the first qualifying cast within that turn, exactly as it was here despite your cast on your own previous turn.",
+    "effect": "CONFIRMED with one precision: the window recurs once per TURN, so in a four-player pod that is four windows per ROUND (one on each player's turn, including your own). Both halves ride together on the same first spell: it is discounted {2} AND castable at instant speed. The window is per-turn and singular — your SECOND creature spell in any given turn gets neither the discount nor the flash. The CR has no single rule spelling out that an 'each turn' count restarts each turn; that reading follows from the ability's text ('each turn', not 'each of your turns') plus the CR's definition of a turn as a per-player structural unit, and this resolution just exercised it: the cast was legal on opponent 1's turn although you had already used the window on your own turn this round.",
+    "citations": [
+     {
+      "rule": "500.1",
+      "quote": "A turn consists of five phases, in this order: beginning, precombat main, combat, postcombat main, and ending."
+     },
+     {
+      "rule": "102.1",
+      "quote": "A player is one of the people in the game. The active player is the player whose turn it is. The other players are nonactive players."
+     },
+     {
+      "rule": "601.3d",
+      "quote": "If a spell would have flash only if certain conditions are met, its controller may begin to cast that spell as though it had flash if those conditions are met."
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "The cast was legal and cost exactly {G}: Radagast's single ability gave the turn's first creature spell both the {2} discount and as-though-flash, and on opponent 1's turn Wood Elves WAS the first — your cast on your own earlier turn belonged to a different turn. Wood Elves resolved as a 1/1, its enters trigger fetched a basic Forest that entered UNTAPPED (the card does not say tapped, and putting a land is not playing one), and the library was shuffled. The metronome reading is confirmed: one discounted flash window per turn, i.e. four windows per round in this four-player pod — but only the FIRST creature spell each turn gets it.",
+   "you": {
+    "life": 40,
+    "battlefield": [
+     "Radagast of Rhosgobel (2/5), commander",
+     "Wood Elves (1/1)",
+     "Forest (untapped — unspent from before the cast)",
+     "Forest (untapped — fetched by Wood Elves)",
+     "Forest (tapped — paid {G} for Wood Elves)",
+     "Forest (tapped)",
+     "Forest (tapped)"
+    ],
+    "hand": [],
+    "graveyard": [],
+    "library": "shuffled after the search",
+    "land_drop": "unused and unaffected — the fetched Forest was put, not played"
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life": 40,
+     "board": [
+      "no permanents of consequence"
+     ],
+     "note": "still the active player, in their end step"
+    },
+    {
+     "seat": "opponent_2",
+     "life": 40,
+     "board": [
+      "no permanents of consequence"
+     ]
+    },
+    {
+     "seat": "opponent_3",
+     "life": 40,
+     "board": [
+      "no permanents of consequence"
+     ]
+    }
+   ]
+  }
+ },
+ "checker": {
+  "verdict": "pass",
+  "iteration": 2,
+  "findings": [
+   {
+    "step": 1,
+    "rule": "513.1",
+    "status": "supported",
+    "note": "Establishes the active player gets priority once the end step begins. The 'after each pass priority moves around the table' clause is 117.3d, not cited, but the scenario assumption explicitly grants you priority — no outcome gap."
+   },
+   {
+    "step": 1,
+    "rule": "117.1a",
+    "status": "supported",
+    "note": "Default restriction that makes a timing permission necessary for a noninstant spell outside your main phase."
+   },
+   {
+    "step": 1,
+    "rule": "601.3",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 2,
+    "rule": "500.1",
+    "status": "supported",
+    "note": "Turn as a complete structural unit — one leg of the each-turn-reset derivation. Derivation judged SOUND: 'each turn' (contrast the printed 'each of your turns' template) plus 500.1+102.1's per-player turn unit. The step-8 hedge is the right amount."
+   },
+   {
+    "step": 2,
+    "rule": "102.1",
+    "status": "supported",
+    "note": "Identifies the current turn as opponent 1's — a distinct turn from yours earlier this round."
+   },
+   {
+    "step": 2,
+    "rule": "601.3d",
+    "status": "supported",
+    "note": "Radagast grants conditional as-though-flash rather than conditional flash; 601.6a's parenthetical '(see 601.3d)' confirms 601.3d governs this case."
+   },
+   {
+    "step": 2,
+    "rule": "702.8a",
+    "status": "supported",
+    "note": "Quote omits the static-ability first sentence; omission does not change the claim."
+   },
+   {
+    "step": 3,
+    "rule": "601.2f",
+    "status": "supported",
+    "note": "Full rule confirms reductions subtract during total-cost determination and the cost locks in. {2}{G} minus {2} = {G}."
+   },
+   {
+    "step": 3,
+    "rule": "118.7",
+    "status": "supported",
+    "note": "Supports 'changes only what you pay'; the mana-value-3 aside strictly rests on 202.3 but the pay-side framing is genuinely established here."
+   },
+   {
+    "step": 4,
+    "rule": "601.6a",
+    "status": "supported",
+    "note": "Exactly the persistence rule for mid-cast Radagast removal; explicitly covers the as-though-flash-conditional case."
+   },
+   {
+    "step": 5,
+    "rule": "117.4",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "608.3a",
+    "status": "supported",
+    "note": "Untargeted permanent spell; correct resolution rule."
+   },
+   {
+    "step": 5,
+    "rule": "302.2",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 6,
+    "rule": "603.6a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 6,
+    "rule": "117.5",
+    "status": "supported",
+    "note": "SBAs before priority, then triggers to the stack; nothing on this board meets any 704 condition."
+   },
+   {
+    "step": 6,
+    "rule": "603.3",
+    "status": "supported",
+    "note": "You, as the trigger's controller, put it on the stack — correctly framed as the controller's act."
+   },
+   {
+    "step": 6,
+    "rule": "117.3b",
+    "status": "supported",
+    "note": "FIXED in iteration 2: the step now gives priority to the active player (opponent 1) after Wood Elves resolves, exactly as 117.3b states. Quote is the full rule text. Prior iteration's misstatement is gone."
+   },
+   {
+    "step": 7,
+    "rule": "701.23a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 7,
+    "rule": "110.2a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 7,
+    "rule": "110.5b",
+    "status": "supported",
+    "note": "Fetched Forest enters untapped — Wood Elves' text says nothing otherwise; verified against cards.json."
+   },
+   {
+    "step": 7,
+    "rule": "305.4",
+    "status": "supported",
+    "note": "Put, not played: no land drop consumed, and the not-your-turn restriction on playing lands does not apply."
+   },
+   {
+    "step": 7,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": "FIXED in iteration 2: replaces the irrelevant 701.24b. Instructions followed in the order written — put onto the battlefield, THEN shuffle — so the Forest is outside the library at shuffle time. The rule's later-text-modifies-earlier caveat does not apply to Wood Elves' text; the fragment is used in context."
+   },
+   {
+    "step": 7,
+    "rule": "701.24a",
+    "status": "supported",
+    "note": "FIXED in iteration 2: plain shuffle definition, applied to the remaining library. Correct rule for this put-then-shuffle template."
+   },
+   {
+    "step": 8,
+    "rule": "500.1",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 8,
+    "rule": "102.1",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 8,
+    "rule": "601.3d",
+    "status": "supported",
+    "note": "The metronome claim is correct and correctly bounded: one window per turn, four per round in this four-player pod, first creature spell only, both halves on the same spell. The explicit acknowledgment that no single CR rule states the per-turn reset is the right amount of hedge; do not weaken the claim."
+   }
+  ],
+  "audit": {
+   "missing_steps": "None. SBAs checked (step 6), priority sequence now correct (117.3b), triggered ability handled (steps 6-7), land drop addressed (step 7), no other triggers exist on this board. Final-state arithmetic verified: 5 Forests (2 untapped incl. the fetch, 3 tapped), hand empty, all life totals unchanged.",
+   "iteration_2_diff": "Only steps 6 and 7 changed, exactly per the iteration-1 findings; steps 1-5, 8 and final_state are unchanged from the version already verified. New citations 117.3b, 608.2c, 701.24a fetched in full and judged in context — all supported.",
+   "sibling_check": "scenario-facts marks 002/003/004 NOT comparable (different body counts). The resolution quotes no sibling figures — clean.",
+   "card_texts": "Radagast of Rhosgobel and Wood Elves oracle text verified verbatim against cards.json."
+  },
+  "iterations": 2
+ }
+}

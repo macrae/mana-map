@@ -1,0 +1,304 @@
+{
+ "id": "003",
+ "slug": "radagast",
+ "deck": "RADAGAST — THE DISCOUNT BUNKER",
+ "title": "Craterhoof over a t7 board: the pump arithmetic, the Beast Whisperer cast trigger, and the unblocked total into one seat",
+ "rules_version": "June 19, 2026",
+ "scenario": {
+  "board": {
+   "you": [
+    "Radagast of Rhosgobel (2/5) — your commander",
+    "Scute Swarm (1/1)",
+    "Wood Elves (1/1)",
+    "Beast Whisperer (2/3)",
+    "Forest (untapped)",
+    "Forest (untapped)",
+    "Forest (untapped)",
+    "Forest (untapped)",
+    "Forest (untapped)",
+    "Forest (untapped)",
+    "Castle Garenbrig (untapped)"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": [
+      "no creatures — this seat is the target"
+     ]
+    },
+    {
+     "life": 40,
+     "board": [
+      "two irrelevant 2/2s, not blocking"
+     ]
+    },
+    {
+     "life": 40,
+     "board": [
+      "no creatures"
+     ]
+    }
+   ]
+  },
+  "hand": [
+   "Craterhoof Behemoth"
+  ],
+  "graveyard": [],
+  "mana_available": "{G}{G}{G}{G}{G}{G} from six Forests, plus Castle Garenbrig untapped",
+  "stack": [
+   {
+    "pos": 0,
+    "item": "Craterhoof Behemoth, cast from your hand during your first main phase for {3}{G}{G}{G} (Radagast's reduction applied to its {5}{G}{G}{G} cost; it is your first creature spell this turn)"
+   },
+   {
+    "pos": 1,
+    "item": "Beast Whisperer's triggered ability (you cast a creature spell) — draw a card"
+   }
+  ],
+  "extras": {
+   "life_totals": {
+    "you": 40,
+    "each_opponent": 40
+   },
+   "note_for_the_resolver": "Pure arithmetic verification for the manual's kill math. Craterhoof is a 5/5; on entering, X counts ALL creatures you control including Craterhoof itself. State each creature's power after the pump and the total unblocked combat damage into opponent 1 if everything attacks that seat and nothing blocks. Radagast has no haste-independence issue (he has been on the battlefield); Craterhoof has haste. Note honestly whether 40 life survives.",
+   "assumptions": [
+    "All your creatures are able to attack and you send everything at opponent 1.",
+    "No blocks at that seat; the 2/2s at seat 2 do not block for seat 1."
+   ]
+  },
+  "question": "Resolve the stack, then the attack: each creature's power after Craterhoof's trigger, the total combat damage to opponent 1, and whether one Craterhoof turn over this four-body board kills a 40-life seat. Include the card drawn from Beast Whisperer."
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "Verify the cast cost of Craterhoof Behemoth on the stack (pos 0): mana cost {5}{G}{G}{G}, reduced by {2} because Radagast of Rhosgobel's static ability ('The first creature spell you cast each turn costs {2} less to cast') applies — Craterhoof is your first creature spell this turn. Total cost {3}{G}{G}{G} = six mana, paid from six untapped Forests. Castle Garenbrig is not needed and stays untapped.",
+    "effect": "Craterhoof Behemoth is legally on the stack for {3}{G}{G}{G}. Casting a creature spell triggered Beast Whisperer, whose ability was put on the stack above the spell (pos 1).",
+    "citations": [
+     {
+      "rule": "601.2f",
+      "quote": "The total cost is the mana cost or alternative cost (as determined in rule 601.2b), plus all additional costs and cost increases, and minus all cost reductions."
+     },
+     {
+      "rule": "603.3",
+      "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "Resolve the top of the stack first: Beast Whisperer's triggered ability (pos 1), 'Whenever you cast a creature spell, draw a card.'",
+    "effect": "You draw a card (the top card of your library goes to your hand). The stack now holds only Craterhoof Behemoth.",
+    "citations": [
+     {
+      "rule": "405.5",
+      "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+     },
+     {
+      "rule": "121.1",
+      "quote": "A player draws a card by putting the top card of their library into their hand."
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "Resolve Craterhoof Behemoth (pos 0). It is a creature spell with no targets, so it becomes a permanent.",
+    "effect": "Craterhoof Behemoth (5/5, haste) enters the battlefield under your control. You now control five creatures.",
+    "citations": [
+     {
+      "rule": "608.3a",
+      "quote": "If the object that’s resolving has no targets, it becomes a permanent and enters the battlefield under the control of the spell’s controller."
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "Craterhoof's enters-the-battlefield ability triggers ('When this creature enters, creatures you control gain trample and get +X/+X until end of turn, where X is the number of creatures you control') and goes on the stack; no other cast trigger fires (Beast Whisperer triggers on casting, not entering, and no land entered, so Scute Swarm's landfall is silent).",
+    "effect": "The ETB trigger is the only object on the stack.",
+    "citations": [
+     {
+      "rule": "603.6a",
+      "quote": "Enters-the-battlefield abilities trigger when a permanent enters the battlefield."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "Resolve the ETB trigger. X is determined as the ability resolves: the number of creatures you control is five — Radagast of Rhosgobel, Scute Swarm, Wood Elves, Beast Whisperer, and Craterhoof Behemoth itself (it is on the battlefield and counts).",
+    "effect": "All five creatures gain trample and get +5/+5 until end of turn: Radagast 2/5 -> 7/10, Scute Swarm 1/1 -> 6/6, Wood Elves 1/1 -> 6/6, Beast Whisperer 2/3 -> 7/8, Craterhoof Behemoth 5/5 -> 10/10.",
+    "citations": [
+     {
+      "rule": "608.2h",
+      "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "Move to combat and declare all five creatures as attackers against opponent 1. Radagast, Scute Swarm, Wood Elves and Beast Whisperer have been controlled continuously since the turn began; Craterhoof Behemoth may attack the turn it arrived because it has haste.",
+    "effect": "Five attackers: Radagast (7), Scute Swarm (6), Wood Elves (6), Beast Whisperer (7), Craterhoof (10), all attacking opponent 1.",
+    "citations": [
+     {
+      "rule": "508.1a",
+      "quote": "The chosen creatures must be untapped, they can’t also be battles, and each one must either have haste or have been controlled by the active player continuously since the turn began."
+     },
+     {
+      "rule": "702.10b",
+      "quote": "If a creature has haste, it can attack even if it hasn’t been controlled by its controller continuously since their most recent turn began."
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "action": "Declare blockers: per the scenario, opponent 1 controls no creatures and nothing blocks. All five attackers are unblocked and assign their combat damage to opponent 1: 7 + 6 + 6 + 7 + 10 = 36.",
+    "effect": "36 combat damage is dealt simultaneously to opponent 1. (Trample never matters — no attacker is blocked.)",
+    "citations": [
+     {
+      "rule": "510.1b",
+      "quote": "An unblocked creature assigns its combat damage to the player, planeswalker, or battle it’s attacking."
+     },
+     {
+      "rule": "510.2",
+      "quote": "Second, all combat damage that’s been assigned is dealt simultaneously."
+     }
+    ]
+   },
+   {
+    "n": 8,
+    "action": "Apply the damage to opponent 1's life total and check state-based actions.",
+    "effect": "Opponent 1 loses 36 life: 40 - 36 = 4. The state-based action for losing the game does not apply, because 4 life is above 0. This attack is NOT lethal — opponent 1 survives on 4.",
+    "citations": [
+     {
+      "rule": "119.2",
+      "quote": "Damage dealt to a player normally causes that player to lose that much life."
+     },
+     {
+      "rule": "704.5a",
+      "quote": "If a player has 0 or less life, that player loses the game."
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "Beast Whisperer draws you a card; Craterhoof resolves and its ETB counts itself, so X=5. Powers after the pump: Radagast 7, Scute Swarm 6, Wood Elves 6, Beast Whisperer 7, Craterhoof 10 — 36 total unblocked damage into opponent 1's 40 life. NOT lethal: opponent 1 survives at 4. One Craterhoof over this four-body board is 4 damage short of a 40-life seat; a fifth pre-Craterhoof body (X=6, six attackers) would clear it.",
+   "you": {
+    "battlefield_creatures": [
+     "Radagast of Rhosgobel 7/10 (trample until end of turn)",
+     "Scute Swarm 6/6 (trample until end of turn)",
+     "Wood Elves 6/6 (trample until end of turn)",
+     "Beast Whisperer 7/8 (trample until end of turn)",
+     "Craterhoof Behemoth 10/10 (haste, trample until end of turn)"
+    ],
+    "lands": [
+     "6x Forest (tapped for Craterhoof)",
+     "Castle Garenbrig (untapped)"
+    ],
+    "hand": [
+     "1 card drawn from Beast Whisperer"
+    ],
+    "life": 40
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life": 4,
+     "note": "took 36 unblocked combat damage; survives"
+    },
+    {
+     "seat": "opponent_2",
+     "life": 40,
+     "note": "untouched; the 2/2s never block"
+    },
+    {
+     "seat": "opponent_3",
+     "life": 40,
+     "note": "untouched"
+    }
+   ]
+  }
+ },
+ "checker": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "step": 1,
+    "rule": "601.2f",
+    "status": "supported",
+    "note": "Full rule confirms total cost = mana cost minus reductions. Radagast's oracle text verified in cards.json: 'The first creature spell you cast each turn costs {2} less to cast'. {5}{G}{G}{G} - {2} = {3}{G}{G}{G}, payable from six Forests ({G} pays generic). Castle Garenbrig correctly unneeded."
+   },
+   {
+    "step": 1,
+    "rule": "603.3",
+    "status": "supported",
+    "note": "Rule establishes the trigger goes on the stack as topmost object at next priority, i.e. above the spell that caused it — the stated pos-1 placement is correct."
+   },
+   {
+    "step": 2,
+    "rule": "405.5",
+    "status": "supported",
+    "note": "Top (last-added) object resolves first: Beast Whisperer's trigger before Craterhoof. Order verified."
+   },
+   {
+    "step": 2,
+    "rule": "121.1",
+    "status": "supported",
+    "note": "Defines drawing as top card of library to hand; Beast Whisperer oracle ('Whenever you cast a creature spell, draw a card') verified in cards.json. Exactly one creature spell cast, one draw."
+   },
+   {
+    "step": 3,
+    "rule": "608.3a",
+    "status": "supported",
+    "note": "Craterhoof has no targets; becomes a permanent under caster's control. Haste is genuine oracle text (verified)."
+   },
+   {
+    "step": 4,
+    "rule": "603.6a",
+    "status": "supported",
+    "note": "ETB trigger fires on entry. Side-claims independently verified: Beast Whisperer triggers on CAST not entry (already fired), and Scute Swarm is landfall — no land entered, correctly silent."
+   },
+   {
+    "step": 5,
+    "rule": "608.2h",
+    "status": "supported",
+    "note": "Game information (number of creatures) determined once, when the effect is applied — Craterhoof is on the battlefield at trigger resolution and counts itself. X=5 is correct. Pump arithmetic independently recomputed: 2/5->7/10, 1/1->6/6, 1/1->6/6, 2/3->7/8, 5/5->10/10 against verified base P/T."
+   },
+   {
+    "step": 6,
+    "rule": "508.1a",
+    "status": "supported",
+    "note": "Attacker legality: untapped, haste-or-continuous-control. Four bodies predate the turn; all untapped (only Forests tapped for the cast)."
+   },
+   {
+    "step": 6,
+    "rule": "702.10b",
+    "status": "supported",
+    "note": "Haste lets Craterhoof attack the turn it entered. Verified no attack triggers exist on any attacker's oracle text (Radagast's only ability is the cost reduction), so no missed declare-attackers triggers."
+   },
+   {
+    "step": 7,
+    "rule": "510.1b",
+    "status": "supported",
+    "note": "Unblocked creatures assign damage to the player attacked. 7+6+6+7+10 = 36 recomputed independently; trample correctly noted as irrelevant with no blockers."
+   },
+   {
+    "step": 7,
+    "rule": "510.2",
+    "status": "supported",
+    "note": "Simultaneous damage, no stack, no priority window between assignment and dealing — matches the resolution's handling."
+   },
+   {
+    "step": 8,
+    "rule": "119.2",
+    "status": "supported",
+    "note": "Damage to a player causes life loss: 40 - 36 = 4. Arithmetic correct."
+   },
+   {
+    "step": 8,
+    "rule": "704.5a",
+    "status": "supported",
+    "note": "SBA checked and correctly found NOT to apply at 4 life. The honest NOT-lethal conclusion is the load-bearing claim and it holds: one Craterhoof over this four-body board is 4 short of 40. The 'X=6 would clear it' aside is sound (six bodies at +6 total 41+ before the sixth body's own power). No sibling stack figures quoted (003 has no comparable siblings per scenario-facts); per-seat vs pod never conflated — 36 is stated per-seat only."
+   }
+  ],
+  "iterations": 1
+ }
+}

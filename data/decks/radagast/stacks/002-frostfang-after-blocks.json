@@ -1,0 +1,367 @@
+{
+ "id": "002",
+ "slug": "radagast",
+ "deck": "RADAGAST — THE DISCOUNT BUNKER",
+ "title": "The Frostfang trap: flashed in after blockers are declared, does deathtouch apply to damage already lined up, and how many cards does one unblocked 1/1 draw?",
+ "rules_version": "June 19, 2026",
+ "scenario": {
+  "board": {
+   "you": [
+    "Radagast of Rhosgobel (2/5) — your commander",
+    "Toski, Bearer of Secrets (1/1, indestructible) — attacking opponent 1, blocked by Colossal Dreadmaw",
+    "Llanowar Elves (1/1) — attacking opponent 1, unblocked",
+    "Forest (untapped)",
+    "Forest (untapped)",
+    "Forest (untapped)",
+    "Forest (tapped)",
+    "Forest (tapped)"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": [
+      "Colossal Dreadmaw (6/6) — blocking Toski"
+     ]
+    },
+    {
+     "life": 40,
+     "board": [
+      "no creatures"
+     ]
+    },
+    {
+     "life": 40,
+     "board": [
+      "no creatures"
+     ]
+    }
+   ]
+  },
+  "hand": [
+   "Ohran Frostfang"
+  ],
+  "graveyard": [],
+  "mana_available": "{G}{G}{G} from three untapped Forests",
+  "stack": [
+   {
+    "pos": 0,
+    "item": "Ohran Frostfang, cast from your hand during the declare blockers step, after blockers were declared, for {1}{G}{G} (Radagast's reduction applied to its {3}{G}{G} cost; it is your first creature spell this turn)"
+   }
+  ],
+  "extras": {
+   "life_totals": {
+    "you": 40,
+    "each_opponent": 40
+   },
+   "note_for_the_resolver": "The trap claim: casting Frostfang AFTER blocks means its static ability ('attacking creatures you control have deathtouch') applies before combat damage, so blocked-by-a-6/6 Toski kills the Dreadmaw with 1 damage. Separately: Llanowar Elves is unblocked — when it deals 1 combat damage to opponent 1, BOTH Toski's triggered ability and Ohran Frostfang's triggered ability say 'whenever a creature you control deals combat damage to a player, draw a card'. Count the draws. Toski is blocked, so Toski itself deals no damage to a player.",
+   "assumptions": [
+    "It is your turn, declare blockers step, blockers just declared.",
+    "No opponent responds."
+   ]
+  },
+  "question": "Resolve the combat from here: does Toski's 1 damage destroy the 6/6 Dreadmaw? Does Toski survive the Dreadmaw's 6 damage? How much damage does opponent 1 take, and exactly how many cards do you draw from combat damage triggers?"
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "Confirm the cast was legal: Ohran Frostfang was cast during the declare blockers step, after blockers were declared, using the flash-casting permission from Radagast of Rhosgobel ('The first creature spell you cast each turn costs {2} less to cast and can be cast as though it had flash'). The active player receives priority in the declare blockers step, and flash permission means the card may be played any time its controller could cast an instant. {3}{G}{G} reduced by {2} is {1}{G}{G}, payable from the three untapped Forests.",
+    "effect": "Ohran Frostfang is legally on the stack as the only object on it. With no responses, it is ready to resolve.",
+    "citations": [
+     {
+      "rule": "702.8a",
+      "quote": "Flash is a static ability that functions in any zone from which you could play the card it’s on. “Flash” means “You may play this card any time you could cast an instant.”"
+     },
+     {
+      "rule": "509.2",
+      "quote": "Second, the active player gets priority. (See rule 117, “Timing and Priority.”)"
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "Ohran Frostfang resolves. It is a permanent spell with no targets.",
+    "effect": "Ohran Frostfang (2/6 Snow Creature — Snake) enters the battlefield under your control during the declare blockers step. It was never declared as an attacker, so it is not an attacking creature and will deal no combat damage this turn.",
+    "citations": [
+     {
+      "rule": "608.3a",
+      "quote": "If the object that’s resolving has no targets, it becomes a permanent and enters the battlefield under the control of the spell’s controller."
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "Frostfang's static ability ('Attacking creatures you control have deathtouch') takes effect immediately — this is the trap claim, and it is TRUE. Toski and Llanowar Elves were declared as attackers in the declare attackers step and remain attacking creatures: being blocked does not end attacking status, and nothing has removed either from combat.",
+    "effect": "Toski, Bearer of Secrets and Llanowar Elves both have deathtouch for the rest of combat (as long as Frostfang remains on the battlefield). The static ability applies to creatures that were already attacking before Frostfang arrived — a static ability's continuous effect is active from the moment the permanent is on the battlefield, with no need to have been present when attacks were declared.",
+    "citations": [
+     {
+      "rule": "604.2",
+      "quote": "Static abilities create continuous effects, some of which are prevention effects or replacement effects. These effects are active as long as the permanent with the ability remains on the battlefield and has the ability, or as long as the object with the ability remains in the appropriate zone, as described in rule 113.6."
+     },
+     {
+      "rule": "glossary:attacking-creature",
+      "quote": "It remains an attacking creature until it’s removed from combat or the combat phase ends, whichever comes first."
+     },
+     {
+      "rule": "506.4",
+      "quote": "A permanent is removed from combat if it leaves the battlefield, if its controller changes, if it phases out, if an effect specifically removes it from combat"
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "All players pass priority with an empty stack; the game proceeds to the combat damage step. Combat damage is assigned: Toski (power 1, blocked by exactly one creature) assigns 1 damage to Colossal Dreadmaw; Colossal Dreadmaw (power 6, blocking exactly one creature) assigns 6 damage to Toski; Llanowar Elves (power 1, unblocked) assigns 1 damage to opponent 1.",
+    "effect": "Assignments are fixed: 1 (deathtouch) to Dreadmaw, 6 to Toski, 1 to opponent 1. Toski's single point is considered lethal damage for assignment purposes because its source now has deathtouch — with only one blocker this changes nothing about where the damage goes, but it confirms 1 damage is a full lethal assignment.",
+    "citations": [
+     {
+      "rule": "510.1a",
+      "quote": "Each attacking creature and each blocking creature assigns combat damage equal to its power. Creatures that would assign 0 or less damage this way don’t assign combat damage at all."
+     },
+     {
+      "rule": "510.1c",
+      "quote": "A blocked creature assigns its combat damage to the creatures blocking it. If no creatures are currently blocking it (if, for example, they were destroyed or removed from combat), it assigns no combat damage. If exactly one creature is blocking it, it assigns all its combat damage to that creature."
+     },
+     {
+      "rule": "510.1d",
+      "quote": "A blocking creature assigns combat damage to the creatures it’s blocking. If it isn’t currently blocking any creatures (if, for example, they were destroyed or removed from combat), it assigns no combat damage. If it’s blocking exactly one creature, it assigns all its combat damage to that creature."
+     },
+     {
+      "rule": "510.1b",
+      "quote": "An unblocked creature assigns its combat damage to the player, planeswalker, or battle it’s attacking."
+     },
+     {
+      "rule": "702.2c",
+      "quote": "Any nonzero amount of combat damage assigned to a creature by a source with deathtouch is considered to be lethal damage for the purposes of determining if excess damage is being dealt."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "All assigned combat damage is dealt simultaneously as a turn-based action; no player can respond between assignment and dealing.",
+    "effect": "Simultaneously: Colossal Dreadmaw is dealt 1 damage by Toski (a source with deathtouch); Toski is dealt 6 damage by Colossal Dreadmaw; opponent 1 is dealt 1 damage by Llanowar Elves and goes from 40 to 39 life. Opponents 2 and 3 take nothing.",
+    "citations": [
+     {
+      "rule": "510.2",
+      "quote": "Second, all combat damage that’s been assigned is dealt simultaneously. This turn-based action doesn’t use the stack. No player has the chance to cast spells or activate abilities between the time combat damage is assigned and the time it’s dealt."
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "Triggered abilities trigger from the damage event. Llanowar Elves (a creature you control) dealt combat damage to a player, which matches the trigger condition of BOTH Toski's ability and Ohran Frostfang's ability ('Whenever a creature you control deals combat damage to a player, draw a card') — one trigger each. Toski dealt its combat damage to a creature (Colossal Dreadmaw), not a player, so Toski's damage matches neither trigger condition; the same is true of Dreadmaw's damage to Toski.",
+    "effect": "Exactly two draw triggers are waiting to go on the stack: one from Toski, one from Ohran Frostfang, both triggered by Llanowar Elves' 1 damage to opponent 1.",
+    "citations": [
+     {
+      "rule": "603.2",
+      "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers. The ability doesn’t do anything at this point."
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "action": "Before any player receives priority, state-based actions are checked. Colossal Dreadmaw (toughness 6, dealt 1 damage by a source with deathtouch since the last SBA check) is destroyed. Toski was dealt 6 damage — lethal for a 1-toughness creature — but Toski has indestructible: it can't be destroyed and ignores the lethal-damage check.",
+    "effect": "Colossal Dreadmaw is destroyed and put into its owner's graveyard: 1 deathtouch damage kills the 6/6. Toski survives with 6 damage marked on it (the damage wears off in the cleanup step). After the SBA check, the two waiting draw triggers are put on the stack; both are controlled by you, so you choose their order.",
+    "citations": [
+     {
+      "rule": "704.5h",
+      "quote": "If a creature has toughness greater than 0, and it’s been dealt damage by a source with deathtouch since the last time state-based actions were checked, that creature is destroyed. Regeneration can replace this event."
+     },
+     {
+      "rule": "702.2b",
+      "quote": "A creature with toughness greater than 0 that’s been dealt damage by a source with deathtouch since the last time state-based actions were checked is destroyed as a state-based action. See rule 704."
+     },
+     {
+      "rule": "702.12b",
+      "quote": "A permanent with indestructible can’t be destroyed. Such permanents aren’t destroyed by lethal damage, and they ignore the state-based action that checks for lethal damage (see rule 704.5g)."
+     },
+     {
+      "rule": "704.3",
+      "quote": "If any state-based actions are performed as a result of a check, the check is repeated; otherwise all triggered abilities that are waiting to be put on the stack are put on the stack, then the check is repeated."
+     },
+     {
+      "rule": "603.3b",
+      "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+     }
+    ]
+   },
+   {
+    "n": 8,
+    "action": "The two draw triggers resolve one at a time (no responses). Each instructs you to draw a card.",
+    "effect": "You draw exactly 2 cards from combat damage triggers: one from Toski's ability, one from Ohran Frostfang's ability. Not 4 — each ability triggered once, because only one creature (Llanowar Elves) dealt combat damage to a player.",
+    "citations": [
+     {
+      "rule": "603.2",
+      "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+     },
+     {
+      "rule": "510.3",
+      "quote": "Third, the active player gets priority. (See rule 117, “Timing and Priority.”)"
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "The trap works. Frostfang, flashed in after blocks, grants deathtouch to the already-attacking Toski and Llanowar Elves before combat damage (604.2 — a static ability is active the moment its permanent is on the battlefield). Toski's 1 damage destroys the 6/6 Colossal Dreadmaw via the deathtouch SBA (704.5h); Toski takes 6 lethal damage but survives via indestructible (702.12b). Opponent 1 takes exactly 1 combat damage (Llanowar Elves, unblocked) and drops to 39. That single hit triggers BOTH Toski's and Frostfang's draw abilities once each: you draw exactly 2 cards.",
+   "you": {
+    "life": 40,
+    "battlefield": [
+     "Radagast of Rhosgobel (2/5)",
+     "Toski, Bearer of Secrets (1/1, indestructible, 6 damage marked until cleanup)",
+     "Llanowar Elves (1/1)",
+     "Ohran Frostfang (2/6)",
+     "5 Forests (3 now tapped for Frostfang, 2 previously tapped)"
+    ],
+    "cards_drawn_this_combat": 2,
+    "hand": [
+     "2 cards drawn (unknown)"
+    ]
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life": 39,
+     "battlefield": [],
+     "graveyard": [
+      "Colossal Dreadmaw"
+     ]
+    },
+    {
+     "seat": "opponent_2",
+     "life": 40,
+     "battlefield": []
+    },
+    {
+     "seat": "opponent_3",
+     "life": 40,
+     "battlefield": []
+    }
+   ]
+  }
+ },
+ "checker": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "step": 1,
+    "rule": "702.8a",
+    "status": "supported",
+    "note": "Defines the flash permission Radagast grants ('as though it had flash'); declare blockers step with priority is a time an instant could be cast. Cost math {3}{G}{G}-{2}={1}{G}{G} matches oracle text and the three untapped Forests."
+   },
+   {
+    "step": 1,
+    "rule": "509.2",
+    "status": "supported",
+    "note": "Full rule confirms the active player gets priority in the declare blockers step after blockers are declared (post-2023 CR; no damage-assignment-order step exists in this version)."
+   },
+   {
+    "step": 2,
+    "rule": "608.3a",
+    "status": "supported",
+    "note": "No-target permanent spell enters under caster's control. The side-claim that Frostfang is not an attacking creature is established by glossary:attacking-creature (cited in step 3): it was neither declared in a legal attack nor put onto the battlefield attacking, so late attack declaration is impossible and it deals no combat damage."
+   },
+   {
+    "step": 3,
+    "rule": "604.2",
+    "status": "supported",
+    "note": "Full rule: the static ability's continuous effect is active as long as the permanent is on the battlefield — no requirement of presence at attack declaration. Core trap claim holds."
+   },
+   {
+    "step": 3,
+    "rule": "glossary:attacking-creature",
+    "status": "supported",
+    "note": "Full entry confirms attacking status persists until removal from combat or end of combat; being blocked is neither."
+   },
+   {
+    "step": 3,
+    "rule": "506.4",
+    "status": "supported",
+    "note": "Quote truncates the full removal list, but the omitted clauses (planeswalker/battle/regenerate/stops being a creature) also do not apply to Toski or Llanowar Elves; nothing on this board removes either from combat."
+   },
+   {
+    "step": 4,
+    "rule": "510.1a",
+    "status": "supported",
+    "note": "Power-based assignment: 1, 6, 1 are correct."
+   },
+   {
+    "step": 4,
+    "rule": "510.1c",
+    "status": "supported",
+    "note": "Exactly one blocker, so all of Toski's damage goes to Dreadmaw; no division choice exists."
+   },
+   {
+    "step": 4,
+    "rule": "510.1d",
+    "status": "supported",
+    "note": "Dreadmaw blocks exactly one creature; all 6 to Toski."
+   },
+   {
+    "step": 4,
+    "rule": "510.1b",
+    "status": "supported",
+    "note": "Unblocked Elves assigns to the player it is attacking (opponent 1)."
+   },
+   {
+    "step": 4,
+    "rule": "702.2c",
+    "status": "supported",
+    "note": "Quote is complete and carries the rule's true scope ('for the purposes of determining if excess damage is being dealt'). The step's paraphrase 'for assignment purposes' is loose — no excess-damage question exists on a one-blocker, no-trample board — and the step itself concedes it changes nothing. The destruction claim correctly rests on 704.5h in step 7, not on this rule. Decorative but not misleading; resolver could drop it."
+   },
+   {
+    "step": 5,
+    "rule": "510.2",
+    "status": "supported",
+    "note": "Simultaneous dealing, no priority window between assignment and dealing. 40 to 39 for opponent 1 only is correct; no first striker exists, so a single damage step is right."
+   },
+   {
+    "step": 6,
+    "rule": "603.2",
+    "status": "supported",
+    "note": "One damage event matches two independent abilities' identical conditions once each: Toski's and Frostfang's oracle texts both read 'Whenever a creature you control deals combat damage to a player, draw a card' (verified against cards.json). Toski's own damage went to a creature; Frostfang dealt none. Exactly two triggers."
+   },
+   {
+    "step": 7,
+    "rule": "704.5h",
+    "status": "supported",
+    "note": "Dreadmaw: toughness 6 > 0, dealt nonzero damage by a source with deathtouch (Toski, via Frostfang's static, held at the time damage was dealt) — destroyed. No regeneration effect available."
+   },
+   {
+    "step": 7,
+    "rule": "702.2b",
+    "status": "supported",
+    "note": "Restates the deathtouch destruction SBA; consistent with 704.5h."
+   },
+   {
+    "step": 7,
+    "rule": "702.12b",
+    "status": "supported",
+    "note": "Toski ignores the 704.5g lethal-damage check. Dreadmaw has no deathtouch, so 704.5h never applies to Toski; indestructible would block it regardless ('can't be destroyed')."
+   },
+   {
+    "step": 7,
+    "rule": "704.3",
+    "status": "supported",
+    "note": "Full rule confirms the sequence: SBAs performed (Dreadmaw destroyed), check repeated, then waiting triggers put on the stack, check repeated again. Step summarizes this correctly."
+   },
+   {
+    "step": 7,
+    "rule": "603.3b",
+    "status": "supported",
+    "note": "Both triggers controlled by the same player, who stacks them in any order. APNAP is trivial here."
+   },
+   {
+    "step": 8,
+    "rule": "603.2",
+    "status": "supported",
+    "note": "Re-cited to ground 'each ability triggered once'; same judgment as step 6."
+   },
+   {
+    "step": 8,
+    "rule": "510.3",
+    "status": "supported",
+    "note": "Active player gets priority third in the combat damage step, which is the 'would get priority' moment that drove the 704.3 process in step 7. Two draws resolve; neither Toski nor Frostfang triggers on draws, and no other board object does."
+   }
+  ],
+  "iterations": 1
+ }
+}

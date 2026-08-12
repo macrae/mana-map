@@ -1,0 +1,325 @@
+{
+ "id": "004",
+ "slug": "radagast",
+ "deck": "RADAGAST — THE DISCOUNT BUNKER",
+ "title": "Fecundity under a wrath: who may draw, per creature — and Toski does not go to the wake",
+ "rules_version": "June 19, 2026",
+ "scenario": {
+  "board": {
+   "you": [
+    "Radagast of Rhosgobel (2/5) — your commander",
+    "Toski, Bearer of Secrets (1/1, indestructible)",
+    "Wood Elves (1/1)",
+    "Scute Swarm (1/1)",
+    "Insect token (1/1, from Scute Swarm's landfall — a plain token at five lands)",
+    "Fecundity (enchantment)",
+    "Forest (tapped)",
+    "Forest (tapped)",
+    "Forest (tapped)",
+    "Forest (tapped)",
+    "Forest (tapped)"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": [
+      "Serra Angel (4/4)",
+      "Llanowar Elves (1/1)"
+     ]
+    },
+    {
+     "life": 40,
+     "board": [
+      "Day of Judgment on the stack — this seat is casting it",
+      "Grizzly Bears (2/2)"
+     ]
+    },
+    {
+     "life": 40,
+     "board": [
+      "no creatures"
+     ]
+    }
+   ]
+  },
+  "hand": [],
+  "graveyard": [],
+  "mana_available": "{0}",
+  "stack": [
+   {
+    "pos": 0,
+    "item": "Day of Judgment, cast by opponent 2 — destroy all creatures"
+   }
+  ],
+  "extras": {
+   "life_totals": {
+    "you": 40,
+    "each_opponent": 40
+   },
+   "note_for_the_resolver": "Fecundity reads 'Whenever a creature dies, that creature's controller may draw a card.' Three things to verify for the manual: (1) it triggers for EVERY player's dying creatures, not just yours — the drawback the deck accepts; (2) a creature TOKEN dying does trigger it (the token hits the graveyard before state-based actions remove it); (3) Toski is indestructible and survives 'destroy all creatures', so he neither dies nor draws anyone a card, and you keep a board. Count each player's optional draws.",
+   "assumptions": [
+    "No player responds to Day of Judgment.",
+    "Every 'may draw' is taken."
+   ]
+  },
+  "question": "Resolve Day of Judgment with Fecundity on the battlefield: which creatures die, which survive and why, and exactly how many cards does each of the four players draw?"
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "Day of Judgment (the only object on the stack, pos 0) resolves: 'Destroy all creatures.' Every creature on the battlefield without protection from being destroyed is moved to its owner's graveyard simultaneously.",
+    "effect": "Destroyed simultaneously: your Radagast of Rhosgobel, Wood Elves, Scute Swarm and the Insect token (a plain 1/1 token — Scute Swarm at five lands makes plain Insects, not copies); opponent 1's Serra Angel and Llanowar Elves; opponent 2's Grizzly Bears. Seven creatures are moved from the battlefield to their owners' graveyards as one event.",
+    "citations": [
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written."
+     },
+     {
+      "rule": "701.8a",
+      "quote": "To destroy a permanent, move it from the battlefield to its owner’s graveyard."
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "Toski, Bearer of Secrets is not destroyed. Its oracle text grants Indestructible, and 'destroy all creatures' is an effect that uses the word 'destroy'.",
+    "effect": "Toski stays on the battlefield. Because it never leaves the battlefield, it does not die, so Fecundity never sees a trigger event for it — Toski draws nobody anything. You keep a 1/1 board presence.",
+    "citations": [
+     {
+      "rule": "702.12b",
+      "quote": "A permanent with indestructible can’t be destroyed."
+     },
+     {
+      "rule": "701.8b",
+      "quote": "The only ways a permanent can be destroyed are as a result of an effect that uses the word “destroy” or as a result of the state-based actions that check for lethal damage (see rule 704.5g) or damage from a source with deathtouch (see rule 704.5h)."
+     },
+     {
+      "rule": "700.4",
+      "quote": "The term dies means “is put into a graveyard from the battlefield.”"
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "Each of the seven destroyed creatures 'dies' — it is put into a graveyard from the battlefield — and your Fecundity ('Whenever a creature dies, that creature's controller may draw a card.') triggers once per dying creature. The trigger condition says 'a creature', not 'a creature you control', so it triggers for EVERY player's dying creatures: this is the drawback the deck accepts.",
+    "effect": "Fecundity triggers seven times: four for your creatures (Radagast, Wood Elves, Scute Swarm, Insect token), two for opponent 1's (Serra Angel, Llanowar Elves), one for opponent 2's (Grizzly Bears). Opponent 3 controlled no creatures, so no trigger concerns that seat.",
+    "citations": [
+     {
+      "rule": "glossary:dies",
+      "quote": "A creature or planeswalker “dies” if it is put into a graveyard from the battlefield."
+     },
+     {
+      "rule": "603.2c",
+      "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "The Insect token's death DOES trigger Fecundity. The token changes zones (battlefield to graveyard) like any other creature; the rule that removes tokens from non-battlefield zones is a state-based action that happens only afterward, and the rules explicitly note that zone-change triggers fire before the token ceases to exist.",
+    "effect": "The Insect token's trigger is fully valid — one of your four draws comes from it. The token will be removed from the graveyard at the next state-based-action check, but the trigger already exists independently of the token.",
+    "citations": [
+     {
+      "rule": "111.7",
+      "quote": "A token that’s in a zone other than the battlefield ceases to exist. This is a state-based action; see rule 704. (Note that if a token changes zones, applicable triggered abilities will trigger before the token ceases to exist.)"
+     },
+     {
+      "rule": "704.5d",
+      "quote": "If a token is in a zone other than the battlefield, it ceases to exist."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "Day of Judgment finishes resolving and is put into its owner's (opponent 2's) graveyard. Before any player receives priority, state-based actions are performed: the Insect token in your graveyard ceases to exist, and — because Radagast is your commander and was just put into your graveyard — you may put him into the command zone (an optional state-based action; it does not undo the fact that he died).",
+    "effect": "Insect token gone from the game; Radagast moves to the command zone (recommended — he already died and triggered Fecundity, and from the command zone he can be recast). The wrath spell is in opponent 2's graveyard.",
+    "citations": [
+     {
+      "rule": "404.1",
+      "quote": "A player’s graveyard is their discard pile. Any object that’s countered, discarded, destroyed, or sacrificed is put on top of its owner’s graveyard, as is any instant or sorcery spell that’s finished resolving."
+     },
+     {
+      "rule": "903.9a",
+      "quote": "If a commander is in a graveyard or in exile and that object was put into that zone since the last time state-based actions were checked, its owner may put it into the command zone. This is a state-based action. See rule 704."
+     },
+     {
+      "rule": "117.5",
+      "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack (see rule 603, “Handling Triggered Abilities”)."
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "The seven Fecundity triggers are put on the stack. Each triggered ability is controlled by the player who controlled its SOURCE (Fecundity) when it triggered — that is you, for all seven, regardless of whose creature died. You therefore put all seven on the stack in any order you choose (only one player has triggers, so APNAP order is trivial).",
+    "effect": "Seven instances of 'that creature's controller may draw a card' on the stack, ordered at your discretion. No player responds (per the scenario's assumptions).",
+    "citations": [
+     {
+      "rule": "603.3a",
+      "quote": "A triggered ability is controlled by the player who controlled its source at the time it triggered, unless it’s a delayed triggered ability."
+     },
+     {
+      "rule": "603.3b",
+      "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "action": "The triggers resolve one at a time. Each resolves as 'that creature's controller may draw a card' for the specific creature whose death caused it; per the scenario's assumption, every optional draw is taken.",
+    "effect": "You draw 4 (Radagast, Wood Elves, Scute Swarm, Insect token). Opponent 1 draws 2 (Serra Angel, Llanowar Elves). Opponent 2 — the player who cast the wrath — draws 1 (Grizzly Bears). Opponent 3 draws 0 (controlled no creatures, and only a dying creature's controller is offered the draw). Pod-wide: 7 cards drawn across the four players, of which 4 are yours.",
+    "citations": [
+     {
+      "rule": "121.1",
+      "quote": "A player draws a card by putting the top card of their library into their hand. This is done as a turn-based action during each player’s draw step. It may also be done as part of a cost or effect of a spell or ability."
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "Day of Judgment destroys seven creatures; indestructible Toski survives and triggers nothing. Fecundity triggers once per dying creature regardless of controller — including the Insect token, whose zone-change trigger fires before the token ceases to exist. Taking every 'may': you draw 4, opponent 1 draws 2, opponent 2 (the caster) draws 1, opponent 3 draws 0. Radagast dies (triggering Fecundity) and returns to the command zone via the optional state-based action.",
+   "you": {
+    "life": 40,
+    "battlefield": [
+     "Toski, Bearer of Secrets (1/1, indestructible)",
+     "Fecundity",
+     "Forest x5 (tapped)"
+    ],
+    "command_zone": [
+     "Radagast of Rhosgobel (died, then moved from graveyard by 903.9a)"
+    ],
+    "graveyard": [
+     "Wood Elves",
+     "Scute Swarm"
+    ],
+    "cards_drawn": 4,
+    "hand": 4
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life": 40,
+     "battlefield": [],
+     "graveyard": [
+      "Serra Angel",
+      "Llanowar Elves"
+     ],
+     "cards_drawn": 2
+    },
+    {
+     "seat": "opponent_2",
+     "life": 40,
+     "battlefield": [],
+     "graveyard": [
+      "Grizzly Bears",
+      "Day of Judgment"
+     ],
+     "cards_drawn": 1
+    },
+    {
+     "seat": "opponent_3",
+     "life": 40,
+     "battlefield": [],
+     "graveyard": [],
+     "cards_drawn": 0
+    }
+   ]
+  }
+ },
+ "checker": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "step": 1,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": "Iteration-2 fix accepted: the controller carries out 'Destroy all creatures' as a single written instruction — one event — and step 3's 603.2c example (destroy-all triggers once per permanent in one event) closes the simultaneity chain. Replaces the misquoted 610.3d."
+   },
+   {
+    "step": 1,
+    "rule": "701.8a",
+    "status": "supported",
+    "note": "Destroy = move from battlefield to owner's graveyard. Token label also corrected: plain 1/1 Insect at five lands, not a copy."
+   },
+   {
+    "step": 2,
+    "rule": "702.12b",
+    "status": "supported",
+    "note": "A permanent with indestructible can't be destroyed."
+   },
+   {
+    "step": 2,
+    "rule": "701.8b",
+    "status": "supported",
+    "note": "'Destroy all creatures' is the destroy-word class indestructible negates; none of the three enumerated ways reaches Toski."
+   },
+   {
+    "step": 2,
+    "rule": "700.4",
+    "status": "supported",
+    "note": "Toski never leaves the battlefield, so he does not die and generates no draw. Oracle text confirmed indestructible, no death trigger."
+   },
+   {
+    "step": 3,
+    "rule": "glossary:dies",
+    "status": "supported",
+    "note": "Each destroyed creature is put into a graveyard from the battlefield."
+   },
+   {
+    "step": 3,
+    "rule": "603.2c",
+    "status": "supported",
+    "note": "Seven triggers from one event with multiple occurrences; the rule's own example is a mass-destruction event. Fecundity's unqualified 'Whenever a creature dies' verified against cards.json — symmetry claim genuine."
+   },
+   {
+    "step": 4,
+    "rule": "111.7",
+    "status": "supported",
+    "note": "Parenthetical explicitly: zone-change triggers fire before the token ceases to exist."
+   },
+   {
+    "step": 4,
+    "rule": "704.5d",
+    "status": "supported",
+    "note": "The SBA removing the token from the graveyard."
+   },
+   {
+    "step": 5,
+    "rule": "404.1",
+    "status": "supported",
+    "note": "Finished sorcery to its owner's graveyard."
+   },
+   {
+    "step": 5,
+    "rule": "903.9a",
+    "status": "supported",
+    "note": "Ordering verified hard: the commander move is an optional STATE-BASED ACTION after the zone change, not a replacement — Radagast genuinely reaches the graveyard during resolution, Fecundity triggers on that death, and the later move to the command zone cannot undo it."
+   },
+   {
+    "step": 5,
+    "rule": "117.5",
+    "status": "supported",
+    "note": "SBAs (token removal + commander move, one check) precede triggers going on the stack and any priority."
+   },
+   {
+    "step": 6,
+    "rule": "603.3a",
+    "status": "supported",
+    "note": "Says verbatim what the resolver claims: a triggered ability is controlled by the player who controlled its SOURCE at the time it triggered — Fecundity is yours, so all seven triggers are yours regardless of whose creature died. CHECKER CORRECTION: iteration 1's parenthetical pointed at 603.3d for this rule, which is wrong — 603.3d covers removal of illegal triggers. The resolver's reading and citation win; the substance (you control all seven) was never in dispute."
+   },
+   {
+    "step": 6,
+    "rule": "603.3b",
+    "status": "supported",
+    "note": "APNAP placement, controller orders their own triggers; one player with triggers makes ordering trivial."
+   },
+   {
+    "step": 7,
+    "rule": "121.1",
+    "status": "supported",
+    "note": "Defines drawing as an effect of an ability. 121.3 dropped as requested. Count re-verified independent of trigger control: the resolved instruction addresses 'that creature's controller', so draws are 4 (you) / 2 (opp 1) / 1 (opp 2, the caster) / 0 (opp 3), pod total 7 — per-seat and pod figures kept separate, matching scenario-facts (4 of your 5 bodies die; Toski survives)."
+   }
+  ],
+  "iterations": 2
+ }
+}
