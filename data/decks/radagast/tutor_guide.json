@@ -1,0 +1,83 @@
+{
+  "slug": "radagast",
+  "assessment": "The table sees a green deck with two tutors and figures you're fishing for the same card every game. Wrong — this deck stacked its classes instead (17 ramp, 15 metronome bodies, 8 gas engines), and it keeps exactly two wishes, both creature-only: Chord of Calling, the flash-speed toolbox, and Fauna Shaman, the repeatable filter. Play them as wishes for the irreplaceable, not as consistency crutches — the redundancy already carries the routine draws. Know the honest number: a tutor is in your hand by turn six in only 23.1% of goldfish runs, and the sim models neither of them (its wildcard assumption covers unrestricted tutors only — creature-restricted is not a wildcard), so every tutor-assisted rate in this deck is unmeasured. Treat these lines as judgment on top of measured floors. One mechanical law governs both: Chord PUTS the creature onto the battlefield — no cast, so no Radagast discount, no Castle Garenbrig mana, no Beast Whisperer draw — while Fauna fetches to HAND, so the card still gets cast, still gets the commander's discount and flash window, and still pays the gas engines. Fetch with Chord when the timing is the point; fetch with Fauna when the cast is the point.",
+  "tutors": [
+    {
+      "card": "Chord of Calling",
+      "targets": [
+        {
+          "scenario": "Turn 4-5, engine online, board of two or three bodies, and the table is durdling. You have {G}{G}{G} plus three convokers at an opponent's end step.",
+          "fetch": "Selvala, Heart of the Wilds",
+          "why": "Selvala is the deck's declared one-card class — drawn in 16.2% of goldfish runs with zero functional backup in the 99. Stop waiting on a one-in-six draw and go get her: Chord at X=3 on the end step before your turn puts her in untapped for your upkeep. She is the mana engine the big turns want and the draw engine the metronome feeds. This is the default fetch precisely because the deck tutors only what redundancy cannot replace — everything else in the list has seven backups; she has none.",
+          "citations": [
+            {"rule": "strategy:deckbuilding.redundancy-vs-tutors", "quote": "stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable"}
+          ]
+        },
+        {
+          "scenario": "Craterhoof Behemoth is in your hand, four bodies on board — stack 003's exact shape, where X=5 deals 36 into a 40-life seat and they survive at 4. The pivot bar is five bodies.",
+          "fetch": "Scute Swarm",
+          "why": "You are one body short of lethal, so buy the body, not the finisher. Chord at X=3 on the end step before your turn adds the fifth attacker after everyone's response mana is spent; untap, cast Craterhoof yourself at the discount, and X=6 clears the seat stack 003 says X=5 leaves standing. Scute Swarm is the pick because it keeps paying — every land drop after it is another body, and the goldfish says board density is what binds (3.35 bodies by turn six against a bar of five). Count the table's open mana before you take the window.",
+          "citations": [
+            {"rule": "strategy:multiplayer.pivot-window", "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"}
+          ]
+        },
+        {
+          "scenario": "Five-plus bodies on board, no finisher in hand — the pivot trigger is half-armed. The goldfish says this happens often: a finisher is drawn by turn six in only 42.7% of runs while the bodies keep coming.",
+          "fetch": "Craterhoof Behemoth",
+          "why": "This is the closing fetch and it is expensive, so price it honestly: X=8 makes Chord an eleven-mana instant, convoke pays one per body you tap, and your bodies untap before your combat — so tap them all. Do it on the end step before your turn: Craterhoof enters with haste, the ETB counts itself, and the trample math from stack 003 does the rest over a five-body board. Know what you give up by putting instead of casting: no Radagast discount, no Beast Whisperer draw, and Castle Garenbrig's six cannot pay for Chord — it is not a creature spell. The full flash-Craterhoof sequencing is flagged in the strategic frame as needing a stack scenario, so treat the payment stacking as coaching, not verified fact.",
+          "citations": []
+        },
+        {
+          "scenario": "An opponent points spot removal at Radagast. You have {G}{G}{G} plus a convoker open — which is exactly why you were passing with mana up.",
+          "fetch": "Sylvan Safekeeper",
+          "why": "The wish nobody sees coming: Chord at X=1 in response, Safekeeper lands, sacrifice a land to give Radagast shroud, and the removal spell fizzles. The whole deck is linear on the commander's window — without him every trap costs retail and the metronome stops — so one land is the cheapest insurance premium you will ever pay. After he sticks, Safekeeper stays as a standing tax on every targeted answer the table holds.",
+          "citations": []
+        },
+        {
+          "scenario": "An artifact or enchantment is about to win a game — a combo piece on the battlefield, an overloaded rock, a lock piece assembling — and it is not your turn.",
+          "fetch": "Wickerbough Elder",
+          "why": "Chord at instant speed IS removal when the bullet is a creature. Elder enters with its -1/-1 counter and the destroy is an activated ability with no tap symbol — pay {G}, pull the counter, kill the artifact or enchantment the moment Chord resolves. One trap to step around: do NOT Chord for Nantuko Vigilante expecting the same play. Vigilante's destroy triggers only when it is turned face up from a morph, and Chord puts it onto the battlefield face up — the trigger never happens. Elder is the Chord bullet; Vigilante is a Fauna fetch.",
+          "citations": []
+        }
+      ],
+      "notes": "Convoke changes the arithmetic every time: each body taps for {1} or {G}, so a wide board makes every X cheaper — but bodies tapped for Chord on your own precombat main are bodies not attacking. Fetch on end steps. And remember Chord puts, never casts: the enters-the-battlefield engines (Selvala, Elemental Bond, Garruk's Uprising) still trigger; the cast engines (Beast Whisperer, Tribute to the World Tree) stay silent."
+    },
+    {
+      "card": "Fauna Shaman",
+      "targets": [
+        {
+          "scenario": "Midgame, attackers lining up across the table, and your hand holds a spare dork or a redundant metronome body doing nothing.",
+          "fetch": "Ohran Frostfang",
+          "why": "The default fetch is the flagship trap. Stack 002 verifies the whole package: flashed after blockers are declared, Frostfang's deathtouch applies to damage already lined up — a blocked 1/1 kills a 6/6 — and one unblocked 1/1 draws two cards off Frostfang plus Toski. Fauna fetches to hand, so Radagast still casts it at the discount, in whichever of the four windows the table least wants it. Pitch the redundant dork, not a body you would deploy — the goldfish says board density binds, 3.35 bodies by turn six against a pivot bar of five, so every discard is priced against the board it could have been.",
+          "citations": []
+        },
+        {
+          "scenario": "A sweeper seat is representing wrath mana and your board is about to be the reason it gets cast.",
+          "fetch": "Toski, Bearer of Secrets",
+          "why": "The behind fetch is the creature that ignores being behind. Stack 004 verifies it: under Day of Judgment, indestructible Toski skips the wake entirely while Fecundity pays you for everyone's dead creatures. It cannot be countered on the way in either. Fetch Toski the turn before the wrath window, cast it in a flash window, and let the sweep resolve — you keep a draw engine on an empty table and rebuild first. That is buying resilience instead of restraint, and it is this deck's best posture against control.",
+          "citations": []
+        },
+        {
+          "scenario": "An artifact-mana table — treasure decks, rock ramp, or an artifact combo seat whose proximity outranks every board.",
+          "fetch": "Collector Ouphe",
+          "why": "This deck's own stax piece, named in the strategic frame's combo matchup. Ouphe shuts off activated abilities of artifacts — every Sol Ring, every treasure sacrifice, every combo rock — while your 36 Forests and eight dorks never notice. Fauna fetches it to hand so Radagast can flash it in on the combo player's upkeep, after they have committed mana and before they can go off. You are the beatdown in that matchup; Ouphe is the one card that also slows their clock while yours keeps ticking.",
+          "citations": []
+        },
+        {
+          "scenario": "You need an artifact or enchantment answer the table cannot see coming — or you want the discard back.",
+          "fetch": "Nantuko Vigilante",
+          "why": "The odd one: fetch Vigilante to HAND, cast it face down as a nameless 2/2 — the table reads a speed bump, and it still counts toward your five-body bar — then unmorph for {1}{G} the moment their enchantment actually matters. Face down is the only way Vigilante's destroy ever triggers, which is why it is a Fauna fetch and never a Chord target. Second string to the same bow: Fauna's discard is a loan, not a payment — fetch Eternal Witness instead, cast her at the discount, and return the exact card you pitched. A repeatable tutor whose cost refunds itself is the engine the table prices worst.",
+          "citations": []
+        }
+      ],
+      "notes": "Fauna Shaman is a mana-cheap, card-neutral loop: {G}, tap, pitch a creature, find a creature. Activate it at instant speed on end steps like everything else in this deck. The discipline is the discard — spare dorks and duplicate metronome bodies are fuel; anything that would be your fifth body is not."
+    }
+  ],
+  "gaps": [
+    "The goldfish models neither tutor: its wildcard assumption covers unrestricted 'search for a card' tutors only, and both of these are creature-restricted. Every tutor-assisted assembly rate for this deck is therefore unmeasured — the 42.7% finisher-by-six and 16.2% Selvala figures are unassisted floors, and Chord's real contribution to them is judgment, not data.",
+    "A tutor is drawn by turn six in only 23.1% of runs — three games in four, neither wish is available and the redundancy classes carry alone. Do not build a game plan that requires a tutor.",
+    "The tutor package reaches creatures only. Fecundity, Heroic Intervention, Tyvar's Stand and the other non-creature insurance must be drawn — nothing in the 99 searches for an enchantment or instant.",
+    "Two Chord lines lean on sequencing the checker has not seen: the strategic frame flags both the flash-speed Craterhoof setup and Chord-for-Frostfang-after-blocks as needing stack scenarios. The oracle-text reads here are straightforward, but promote them before publishing either as fact.",
+    "Wood Elves, Sakura-Tribe Elder and Elvish Reclaimer also search the library, but only for lands — that is mana, not a wish, and it belongs to Sources Say."
+  ]
+}

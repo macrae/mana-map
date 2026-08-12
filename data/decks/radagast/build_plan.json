@@ -50,21 +50,21 @@
     "lands_selected": 36,
     "method": "hypergeometric, P(pips by earliest castable turn) >= 90% over 99 cards",
     "on_curve_probability": {
-      "G": 0.986
+      "G": 0.906
     },
     "requirements": {
       "G": {
         "cards": 63,
         "earliest_turn": 1,
-        "effective_pips": 1,
+        "effective_pips": 2,
         "max_pips": 3,
-        "total_pips": 78.0
+        "total_pips": 80.0
       }
     },
     "shortfalls": {},
     "slots": 36,
     "source_targets": {
-      "G": 22
+      "G": 36
     },
     "sources": {
       "G": 36
@@ -80,13 +80,18 @@
     "files": [
       "data/decks/radagast/pool-green-bulk.txt"
     ],
-    "size": 253
+    "size": 252
   },
   "printings": {
     "Abundant Growth": {
       "collector_number": "97",
       "foil": false,
       "set": "ecc"
+    },
+    "Arasta of the Endless Web": {
+      "collector_number": "244",
+      "foil": false,
+      "set": "tdc"
     },
     "Bala Ged Recovery // Bala Ged Sanctuary": {
       "collector_number": "180",
@@ -137,6 +142,11 @@
       "collector_number": "103",
       "foil": false,
       "set": "ecc"
+    },
+    "Dawn's Light Archer": {
+      "collector_number": "174",
+      "foil": false,
+      "set": "ecl"
     },
     "Devoted Druid": {
       "collector_number": "104",
@@ -218,10 +228,10 @@
       "foil": false,
       "set": "ltc"
     },
-    "Hookhand Mariner // Riphook Raider": {
-      "collector_number": "203",
+    "Hornet Nest": {
+      "collector_number": "259",
       "foil": false,
-      "set": "vow"
+      "set": "tdc"
     },
     "Inspiring Call": {
       "collector_number": "226",
@@ -232,11 +242,6 @@
       "collector_number": "262",
       "foil": false,
       "set": "c18"
-    },
-    "Knight of the Stampede": {
-      "collector_number": "138",
-      "foil": false,
-      "set": "rix"
     },
     "Kodama's Reach": {
       "collector_number": "113",
@@ -303,6 +308,11 @@
       "foil": false,
       "set": "soc"
     },
+    "Saryth, the Viper's Fang": {
+      "collector_number": "185",
+      "foil": false,
+      "set": "mkc"
+    },
     "Satyr Wayfinder": {
       "collector_number": "106",
       "foil": false,
@@ -332,16 +342,6 @@
       "collector_number": "256",
       "foil": false,
       "set": "dmr"
-    },
-    "Summit Apes": {
-      "collector_number": "114",
-      "foil": false,
-      "set": "wwk"
-    },
-    "Sunfrill Imitator": {
-      "collector_number": "94",
-      "foil": false,
-      "set": "lcc"
     },
     "Sylvan Safekeeper": {
       "collector_number": "287",
@@ -406,7 +406,7 @@
   },
   "role_budget": {
     "draw": 10,
-    "flex": 26,
+    "flex": 28,
     "lands": 36,
     "protection": 3,
     "ramp": 10,
@@ -414,11 +414,11 @@
     "removal": 8,
     "sweeper": 0,
     "tutor": 2,
-    "wincon": 2
+    "wincon": 0
   },
   "role_budget_deviation": {
     "flex": {
-      "actual": 26,
+      "actual": 28,
       "target": 22
     },
     "sweeper": {
@@ -426,7 +426,7 @@
       "target": 3
     },
     "wincon": {
-      "actual": 2,
+      "actual": 0,
       "target": 3
     }
   },
@@ -633,6 +633,12 @@
       "score": 0.5116
     },
     {
+      "alternates": [],
+      "name": "Arasta of the Endless Web",
+      "reason": "must_include",
+      "role": "flex"
+    },
+    {
       "alternates": [
         {
           "delta": 0.0044,
@@ -689,6 +695,12 @@
     {
       "alternates": [],
       "name": "Craterhoof Behemoth",
+      "reason": "must_include",
+      "role": "flex"
+    },
+    {
+      "alternates": [],
+      "name": "Dawn's Light Archer",
       "reason": "must_include",
       "role": "flex"
     },
@@ -830,43 +842,16 @@
     {
       "alternates": [
         {
-          "delta": 0.0011,
-          "name": "Scute Swarm"
-        },
-        {
-          "delta": 0.0023,
-          "name": "Wood Elves"
-        },
-        {
-          "delta": 0.0039,
-          "name": "Fertile Ground"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.4798,
-        "similarity": 0.5963,
-        "synergy": 0.1667
-      },
-      "name": "Fyndhorn Elves",
-      "role": "flex",
-      "score": 0.5235
-    },
-    {
-      "alternates": [
-        {
           "delta": 0.0032,
           "name": "Utopia Sprawl"
         },
         {
-          "delta": 0.0052,
-          "name": "Fyndhorn Elves"
-        },
-        {
           "delta": 0.0063,
           "name": "Scute Swarm"
+        },
+        {
+          "delta": 0.0075,
+          "name": "Wood Elves"
         }
       ],
       "components": {
@@ -882,6 +867,12 @@
       "score": 0.5287
     },
     {
+      "alternates": [],
+      "name": "Hornet Nest",
+      "reason": "must_include",
+      "role": "flex"
+    },
+    {
       "alternates": [
         {
           "delta": 0.0004,
@@ -892,8 +883,8 @@
           "name": "Utopia Sprawl"
         },
         {
-          "delta": 0.0056,
-          "name": "Fyndhorn Elves"
+          "delta": 0.0067,
+          "name": "Scute Swarm"
         }
       ],
       "components": {
@@ -944,15 +935,15 @@
       "alternates": [
         {
           "delta": 0.0006,
-          "name": "Sunfrill Imitator"
-        },
-        {
-          "delta": 0.0006,
           "name": "Mirkwood Pathmaker"
         },
         {
           "delta": 0.0011,
           "name": "Shimmerwilds Growth"
+        },
+        {
+          "delta": 0.0014,
+          "name": "Spineseeker Centipede"
         }
       ],
       "components": {
@@ -978,8 +969,8 @@
           "name": "Satyr Wayfinder"
         },
         {
-          "delta": 0.0021,
-          "name": "Sunfrill Imitator"
+          "delta": 0.0022,
+          "name": "Mirkwood Pathmaker"
         }
       ],
       "components": {
@@ -1039,33 +1030,6 @@
       "alternates": [
         {
           "delta": 0.0001,
-          "name": "Mirkwood Pathmaker"
-        },
-        {
-          "delta": 0.0006,
-          "name": "Shimmerwilds Growth"
-        },
-        {
-          "delta": 0.0008,
-          "name": "Spineseeker Centipede"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.2065,
-        "similarity": 0.7511,
-        "synergy": 0.0
-      },
-      "name": "Sunfrill Imitator",
-      "role": "flex",
-      "score": 0.506
-    },
-    {
-      "alternates": [
-        {
-          "delta": 0.0001,
           "name": "Devoted Druid"
         },
         {
@@ -1119,16 +1083,16 @@
     {
       "alternates": [
         {
-          "delta": 0.002,
-          "name": "Fyndhorn Elves"
-        },
-        {
           "delta": 0.0031,
           "name": "Scute Swarm"
         },
         {
           "delta": 0.0043,
           "name": "Wood Elves"
+        },
+        {
+          "delta": 0.0059,
+          "name": "Fertile Ground"
         }
       ],
       "components": {
@@ -1146,16 +1110,43 @@
     {
       "alternates": [
         {
+          "delta": 0.0052,
+          "name": "Inspiring Call"
+        },
+        {
+          "delta": 0.0057,
+          "name": "Hardened Scales"
+        },
+        {
+          "delta": 0.0089,
+          "name": "Utopia Sprawl"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.3935,
+        "similarity": 0.7834,
+        "synergy": 0.0
+      },
+      "name": "Veil of Summer",
+      "role": "flex",
+      "score": 0.5344
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0034,
+          "name": "Veil of Summer"
+        },
+        {
           "delta": 0.0086,
           "name": "Inspiring Call"
         },
         {
           "delta": 0.0091,
           "name": "Hardened Scales"
-        },
-        {
-          "delta": 0.0123,
-          "name": "Utopia Sprawl"
         }
       ],
       "components": {
@@ -1231,31 +1222,10 @@
       "score": 0.5614
     },
     {
-      "alternates": [
-        {
-          "delta": 0.0052,
-          "name": "Inspiring Call"
-        },
-        {
-          "delta": 0.0199,
-          "name": "Tyvar's Stand"
-        },
-        {
-          "delta": 0.0207,
-          "name": "Sylvan Safekeeper"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.3935,
-        "similarity": 0.7834,
-        "synergy": 0.0
-      },
-      "name": "Veil of Summer",
-      "role": "protection",
-      "score": 0.5344
+      "alternates": [],
+      "name": "Saryth, the Viper's Fang",
+      "reason": "must_include",
+      "role": "protection"
     },
     {
       "alternates": [
@@ -1318,12 +1288,12 @@
           "name": "Tireless Provisioner"
         },
         {
-          "delta": 0.0066,
-          "name": "Knight of the Stampede"
-        },
-        {
           "delta": 0.0071,
           "name": "Fyndhorn Elves"
+        },
+        {
+          "delta": 0.0095,
+          "name": "Wood Elves"
         }
       ],
       "components": {
@@ -1341,29 +1311,29 @@
     {
       "alternates": [
         {
-          "delta": 0.0005,
-          "name": "Fyndhorn Elves"
-        },
-        {
-          "delta": 0.0028,
+          "delta": 0.0023,
           "name": "Wood Elves"
         },
         {
-          "delta": 0.0052,
+          "delta": 0.0047,
           "name": "Bala Ged Recovery // Bala Ged Sanctuary"
+        },
+        {
+          "delta": 0.01,
+          "name": "Devoted Druid"
         }
       ],
       "components": {
         "castability": 1.0,
         "combo": 0.0,
-        "curve": 0.8,
-        "edhrec": 0.146,
-        "similarity": 0.9382,
-        "synergy": 0.0
+        "curve": 1.0,
+        "edhrec": 0.4798,
+        "similarity": 0.5963,
+        "synergy": 0.1667
       },
-      "name": "Knight of the Stampede",
+      "name": "Fyndhorn Elves",
       "role": "ramp",
-      "score": 0.5241
+      "score": 0.5235
     },
     {
       "alternates": [
@@ -1457,8 +1427,8 @@
           "name": "Tireless Provisioner"
         },
         {
-          "delta": 0.0097,
-          "name": "Knight of the Stampede"
+          "delta": 0.0102,
+          "name": "Fyndhorn Elves"
         }
       ],
       "components": {
@@ -1482,16 +1452,16 @@
     {
       "alternates": [
         {
-          "delta": 0.0003,
-          "name": "Knight of the Stampede"
-        },
-        {
           "delta": 0.0008,
           "name": "Fyndhorn Elves"
         },
         {
           "delta": 0.0031,
           "name": "Wood Elves"
+        },
+        {
+          "delta": 0.0055,
+          "name": "Bala Ged Recovery // Bala Ged Sanctuary"
         }
       ],
       "components": {
@@ -1817,39 +1787,6 @@
       "name": "Fauna Shaman",
       "role": "tutor",
       "score": 0.4822
-    },
-    {
-      "alternates": [],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 0.8,
-        "edhrec": 0.0408,
-        "similarity": 0.7602,
-        "synergy": 0.0
-      },
-      "name": "Hookhand Mariner // Riphook Raider",
-      "role": "wincon",
-      "score": 0.4601
-    },
-    {
-      "alternates": [
-        {
-          "delta": 0.0191,
-          "name": "Hookhand Mariner // Riphook Raider"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 0.8,
-        "edhrec": 0.088,
-        "similarity": 0.8082,
-        "synergy": 0.0
-      },
-      "name": "Summit Apes",
-      "role": "wincon",
-      "score": 0.4792
     }
   ],
   "slug": "radagast"

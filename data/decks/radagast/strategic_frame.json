@@ -1,0 +1,93 @@
+{
+  "slug": "radagast",
+  "archetype": "Mono-green Draw-Go Stompy: a creature-dense midrange deck whose commander turns every creature into a potential instant, playing ambush-control until the overrun window opens.",
+  "schools": [
+    "strategy:whos-the-beatdown",
+    "strategy:pivot-point",
+    "strategy:multiplayer.pivot-window",
+    "strategy:multiplayer.threat-deflection",
+    "strategy:multiplayer.pod-management",
+    "strategy:tempo.sequencing",
+    "strategy:information",
+    "strategy:critical-mass",
+    "strategy:card-advantage",
+    "strategy:multiplayer.asymmetry"
+  ],
+  "role_assignment": {
+    "default_role": "Trap-holding developer. Early and midgame the deck passes with mana open and deploys on other players' turns — verified stack 001 establishes the mechanical basis: Radagast's discount-plus-flash applies to the first creature spell YOU cast each turn, on every player's turn, so a four-player round offers four windows and Wood Elves costs {G} on an opponent's end step. This is the posture strategy:multiplayer.pod-management names directly: 'Leaving instant-speed mana open forces three players, not one, to respect your possible interaction.' The role is seat-relative per strategy:whos-the-beatdown — against a faster combat seat this deck is the control (traps blank their attackers); against control or combo it must be the beatdown, because it does not own the long game against either.",
+    "pivot_trigger": "The pivot is a countable event, per strategy:pivot-point ('the pivot is usually triggered by a concrete event'): five-plus bodies on board with a mass-pump finisher in hand. Verified stack 003 sets the exact bar — Craterhoof over four bodies (X=5) deals 36 unblocked to one seat, honestly NOT lethal from 40; one more body clears it. So the trigger is bodies ≥5 and a finisher held, taken per strategy:multiplayer.pivot-window: count the table's open mana, hold Heroic Intervention or Tyvar's Stand for the turn you commit, and prefer the flashed end-step deployment so the table's response windows are already spent (strategy:tempo.sequencing).",
+    "strategy_ref": "strategy:pivot-point"
+  },
+  "engines": [
+    {
+      "piece": "Radagast of Rhosgobel",
+      "engine": "The metronome: discount+flash on the first creature spell each turn, recurring on every player's turn — four full-value windows per round, each casting a 3–5 MV body with ≥2 generic at maximum discount. 15 declared metronome bodies; one drawn by t6 in 89.2% of goldfish runs.",
+      "evidence": "verified stack 001",
+      "strategy_ref": "strategy:multiplayer.pod-management"
+    },
+    {
+      "piece": "Ohran Frostfang",
+      "engine": "Flash traps — interaction wearing creature bodies. Stack 002 verifies the flagship line: Frostfang flashed after blockers are declared applies deathtouch to combat damage already lined up, and its attack trigger draws two off one unblocked 1/1 plus indestructible Toski. The class (Nantuko Vigilante, Wickerbough Elder, Caustic Caterpillar, Heroic Intervention, Veil of Summer, Tyvar's Stand, Chord of Calling, Guardian Augmenter) is drawn by t6 at 76.4%. Every open {G}{G} is also a bluff the whole table must price (strategy:information: 'opponents who must respect tricks play slower and worse').",
+      "evidence": "verified stack 002",
+      "strategy_ref": "strategy:information"
+    },
+    {
+      "piece": "Beast Whisperer",
+      "engine": "Per-cast gas: Beast Whisperer, Tribute to the World Tree, Toski, Selvala, Garruk's Uprising, Elemental Bond, Fecundity, Harmonize — repeatable draw keyed to the thing the deck does anyway (casting creatures, often twice a round). GAS drawn by t6 at 76.0%. This is the format-defining shape per strategy:card-advantage: 'engines that out-draw three players are the format's defining advantage.' Stack 004 verifies the grimmest mode: under Day of Judgment, Fecundity is symmetric, tokens trigger it, indestructible Toski skips the wake, and the commander's death is seen before he moves to the command zone — the wrath itself refills the hand.",
+      "evidence": "verified stack 004; goldfish_metrics",
+      "strategy_ref": "strategy:card-advantage"
+    },
+    {
+      "piece": "Llanowar Elves",
+      "engine": "Two-humped ramp: eight 1-MV dork-class accelerants plus seven land-ramp spells plus aura ramp (Utopia Sprawl, Wild Growth, Fertile Ground) — 17+ cards, RAMP drawn by t6 at 91.8%, commander mean cast t4.01 and 94.1% by t6. Redundancy over tutors, per strategy:deckbuilding.redundancy-vs-tutors: 'stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable' — at ~17 copies the class clears the 54%-of-openers band the doc prices for 10 copies with room to spare.",
+      "evidence": "goldfish_metrics; mana_analysis (G36 sources, 90.6% lands-only on-curve, 97.4% with dorks)",
+      "strategy_ref": "strategy:deckbuilding.redundancy-vs-tutors"
+    },
+    {
+      "piece": "Guardian Augmenter",
+      "engine": "Commander insurance: Guardian Augmenter (flashed, grants the commander hexproof +2/+2), Heroic Intervention, Tyvar's Stand, Veil of Summer, Sylvan Safekeeper. The whole deck is linear on Radagast's window, and strategy:critical-mass names the price: 'sequence so one removal spell can't break the chain' — the linear deck's defense is 'speed, redundancy, and resilience, not answers.' Without Radagast the deck is fair stompy at retail prices; the insurance class keeps the threshold protected.",
+      "evidence": "oracle text (cards.json); goldfish flash-trap group includes the protection suite",
+      "strategy_ref": "strategy:critical-mass"
+    },
+    {
+      "piece": "Craterhoof Behemoth",
+      "engine": "The overrun kill: Craterhoof, Overwhelming Stampede, Pathbreaker Ibex, Return of the Wildspeaker — four finishers, exactly the 3–5 band strategy:deckbuilding.threat-density sets ('at least 3 finishers in your deck'). The wide alpha strike is the payoff that scales against ~120 combined life, per strategy:multiplayer.asymmetry: 'wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale.' Stack 003 verifies the arithmetic honestly: X=5 over four bodies is 36 into one seat — a finisher needs the board the bodies rates price separately (finisher+second-wave assembled by t6: 37.0%).",
+      "evidence": "verified stack 003; goldfish_metrics (finisher drawn 42.7% by t6 unassisted)",
+      "strategy_ref": "strategy:deckbuilding.threat-density"
+    }
+  ],
+  "candidate_missing_lines": [
+    {
+      "title": "Craterhoof at flash speed: the end-step alpha-strike setup",
+      "cards": ["Radagast of Rhosgobel", "Craterhoof Behemoth", "Castle Garenbrig"],
+      "why_plausible": "Oracle text: Radagast makes the first creature spell each turn castable as though it had flash and {2} cheaper; Castle Garenbrig's six mana is spendable on creature spells. Flashing Craterhoof on the end step before your own turn deploys the finisher after the table's response mana is spent, with haste live for your combat. Payment stacking (discount + Garenbrig's restricted six) and the trigger timing are unverified.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Selvala into the flashed giant: does the metronome feed her draw and mana",
+      "cards": ["Selvala, Heart of the Wilds", "Radagast of Rhosgobel", "Craterhoof Behemoth"],
+      "why_plausible": "Oracle text: Selvala draws whenever a creature with the highest power enters, and taps for mana equal to the greatest power among creatures you control — flashed 3–5 MV bodies on every player's turn are repeated triggers, and she is the declared big-mana-sink route. She is also the sim's single one-card class (drawn 16.2% overall, no functional backup in the 99). Whether her mana can pay a flashed cast in the same window is unverified.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Chord of Calling as the fifth trap: convoke after blocks",
+      "cards": ["Chord of Calling", "Ohran Frostfang"],
+      "why_plausible": "Oracle text: Chord is an instant with convoke that puts any creature onto the battlefield — fetching Frostfang after blockers are declared reproduces stack 002's trap without holding the card. Trap: Chord is an instant, NOT a creature spell, so neither Radagast's discount nor Castle Garenbrig's restricted mana applies to it, and deck-facts' restricted-mana note makes this exactly the clause-level distinction to verify.",
+      "status": "needs a stack scenario"
+    }
+  ],
+  "matchup_frames": {
+    "vs_sweeper_control": "The best matchup shape the deck's mechanics allow, and stack 004 is the proof of concept: Fecundity converts the wrath into a hand for you (your four wakes to their one), Toski survives it outright, and the commander insurance suite holds Radagast through targeted attempts. Play strategy:resource-hedging.wrath-math exactly as written — 'commit exactly as much as wins before it arrives, no further,' and 'buy resilience instead of restraint': flash deployment IS the resilience, because bodies cast on the end step after a wrath window closes were never exposed to it. Redeploy worst-first after the sweep, keeping the finisher for their second one.",
+    "vs_stax": "The deck is many cheap creature spells per turn — the profile strategy:threat-assessment.resource-denial says taxes hit hardest ('taxes attack the velocity math directly, so recount your hand under the tax'). Radagast's {2} discount partially rebates one tax on one spell per turn, but the doc's role rule binds: 'you rarely own the long game under an assembling lock, so you are the beatdown.' Name the out early — Boseiju, Beast Within, Caustic Caterpillar, Wickerbough Elder, Nantuko Vigilante break the piece that beats YOU — and note Collector Ouphe is this deck's own stax piece against artifact-mana tables.",
+    "vs_aggro": "Seat-relative control, per strategy:whos-the-beatdown's Commander correction. The traps are the plan: stack 002 verifies that Frostfang after blockers turns every lined-up blocker lethal, and strategy:card-advantage.virtual names the mechanism — 'a big blocker against an aggro deck turns their small creatures into dead cards.' Radagast's own 2/5 body, Old Fat Spider's reach and flash, and the deathtouch grant make attacking into open green mana unprofitable for three seats at once. Let the aggro seat spend itself on the table, then pivot the turn you stabilize — 'once you stabilize, every extra passive turn is a free draw step for the opponent' (strategy:pivot-point).",
+    "vs_combo": "You are the beatdown — the deck holds zero counterspells (Veil of Summer answers only blue/black targeting) and cannot win the long game against inevitability, so per strategy:whos-the-beatdown 'whoever loses the long game must be the beatdown.' The clock must be honest about its own arithmetic: stack 003 says one overrun into one seat from 40 needs five bodies, so combo assessment per strategy:threat-assessment ranks the combo player's proximity above every board. Creature-shaped interaction (Collector Ouphe against artifact combo, Caustic Caterpillar, Boseiju) flashed on the combo player's upkeep is the only disruption; spend it on the piece that wins, not the piece that impresses."
+  },
+  "distribution_notes": "36 lands (30 basics — mana_analysis: G36 sources against a G36 target, 90.6% lands-only on-curve, 97.4% counting dorks; the cleanest manabase a deck can have) over 64 spells. The curve is two-humped by design and deck-facts shows it: 15 at MV1 (the dork hump), 21 at MV3 (the metronome hump), then a deliberate taper — 3/2/1 across MV5-8, because the finishers are few and the doc's threat-density floor (3-5) is met at exactly four. Role histogram: 35 threat:body (the critical mass), 9 draw:engine, 17 ramp across five sub-roles, 9 removal-class entries clearing the brief's ≥5 breadth floor across artifact/enchantment/creature. Goldfish (10k seeded runs): commander mean t4.01, 94.1% by t6 — with keep-7 at 81.5% and mean mulligans 0.22. Bodies on board t6: 3.35 — one short of stack 003's lethal bar, and this is where the sim's three declared blind spots bind: it models neither Radagast's discount, nor opponent-turn flash casts, nor aura ramp, so every rate is a floor for a deck whose whole design is spending mana on other players' turns. Contained combos: zero — bracket_report floor 1 against a target of 3, within target, no game changers, no tutable compression. Five cards have no role entry (the four ramp auras and Overwhelming Stampede); absence of a role is not absence of the function.",
+  "overall_assessment": "This deck is playing the game strategy:multiplayer.pod-management describes in one sentence — 'Leaving instant-speed mana open forces three players, not one, to respect your possible interaction' — and it has built an entire 99 around making that sentence literally true four times a round. The world-view: pass with mana up, deploy a discounted body in whichever of the four windows the table least wants it, draw a card for the trouble, and let the traps make combat against you a losing proposition until five bodies and a finisher assemble; then take the pivot window once, protected, at the end step before your turn. It is a linear deck by strategy:critical-mass's definition — every card feeds the metronome, and its defense is redundancy (15 bodies, 17 ramp, 8 gas engines) and insurance rather than answers — wearing a deflection posture the doc explicitly endorses for linear decks in multiplayer ('a deflection posture that keeps them unspent'). Its honest weaknesses are equally legible: the kill needs a board the goldfish says arrives at 3.35 bodies by t6 (a floor, but the bar is 5), Selvala is a declared single point of failure at 16.2%, and combo inevitability is answered by exactly nothing but the clock. All of this is pre-flight: four checker-passed stacks and 10,000 goldfish runs, zero games played. The frames above are what the artifacts support; the pod will grade them.",
+  "gaps": [
+    "No section on rattlesnake/deterrence theory — visible open mana and trap density as a standing tax on the whole table's attacks is this deck's core defensive mechanism, and the doc reaches it only via one sentence in strategy:multiplayer.pod-management and the bluffing frame in strategy:information. The classic multiplayer archetype literature (rattlesnake cards) deserves its own child section.",
+    "No section on flash/draw-go as a multiplayer archetype — instant-speed deployment as deck identity (when to break the draw-go posture, how the table's wrath timing changes when your board grows on end steps) is distinct from 1v1 draw-go control and undocumented.",
+    "No section on mono-colour construction tradeoffs — utility lands vs basics when colour is free, and how a zero-fixing manabase changes the ramp package's job.",
+    "strategy:combat-math has no ambush-specific child — post-blocker-declaration flash timing windows and what declaring an attack into an open-mana seat should price in."
+  ]
+}
