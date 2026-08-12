@@ -487,7 +487,18 @@ def build(slug):
     )
 
     # Mana base last: it needs the spells it has to cast.
-    spell_rows = df[df["name"].isin([s["name"] for s in slots])].to_dict("records")
+    # The name-join must dedupe: card names collide with Mystery Booster playtest
+    # cards ("Pick Your Poison" exists as MKM's {G} sorcery AND a {3}{B}{G} cmb2
+    # playtest card), and a ghost row here invents pip requirements in colours
+    # the deck cannot produce. Playtest doubles are never commander-legal, so
+    # keeping legal rows first and deduping by name always picks the real card.
+    slot_names = [s["name"] for s in slots]
+    spell_rows = (
+        df[df["name"].isin(slot_names)]
+        .sort_values("legal_commander", key=lambda s: s != "legal")
+        .drop_duplicates("name")
+        .to_dict("records")
+    )
     land_pool = pool[(pool["supertype"] == "Land") & (~pool["type_line"].str.contains("Basic", na=False))]
     basics = {
         colour: df[df["name"] == BASIC_LANDS[colour]].iloc[0].to_dict()

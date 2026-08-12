@@ -19,6 +19,7 @@ import json
 from manamap.config import (
     BRACKETS,
     DECK_SIZE,
+    DECKS_DIR,
     OUTPUT_CSV_PATH,
 )
 from manamap.analysis.common import parse_color_identity
@@ -130,6 +131,16 @@ def _validate_pool(plan, cards):
     owned = set()
     for counts in per_file.values():
         owned.update(counts)
+
+    # The brief's explicit `pool` list is part of the declared pool too —
+    # `resolve_pool` merges it with the files (it exists for cards whose
+    # acquisition is the build's premise, like a just-released commander).
+    # Read it from the BRIEF, the authored input, never from the plan being
+    # validated.
+    brief_path = DECKS_DIR / plan.get("slug", "") / "brief.json"
+    if brief_path.exists():
+        with open(brief_path) as f:
+            owned.update(json.load(f).get("pool") or [])
 
     outside = []
     for name in sorted(set(deck_card_names(plan))):
