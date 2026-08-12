@@ -1,8 +1,8 @@
 {
  "slug": "radagast",
- "as_of_decklist_sha256": "9eb33f746b2c3b94126264523e0ee3a618846b6287f0416ea3d513e92f612872",
- "archetype": "Mono-green flash-ambush stompy: a 37-creature midrange deck wearing a draw-go posture. The strategic frame describes it correctly in prose, but its 'control' self-label made the audit's archetype matcher apply control overrides (37-39 lands, 12-15 removal, 5-7 wipes) that fit a wrath deck, not this one \u2014 three of the four UNDER verdicts are inflated by that override.",
- "verdict": "The mana is the best-measured in the fleet's terms (52 Burgess sources vs 36, turn-3 land hit 0.91, commander mean cast t4.0) and the ambush machinery is verified and dense (flash trap drawn 92.5%, metronome body 96.8%). What binds is still board WIDTH: the kill needs five bodies (stack 003) and the goldfish reaches a mean of 3.638 by t6, crossing the bar only around t8 (5.074), with finisher-plus-second-wave assembled 39.5% by t6. The applied swaps closed the graveyard hole (interaction-breadth 5/5) and widened the board for free; the one genuine coverage hole left is zero mass removal. Stack 005 sharpened the plan itself: the end-step Craterhoof is legal but its pump dies in that turn's cleanup \u2014 bodies deploy at end steps (006: they wake attack-ready), the finisher is an own-main cast.",
+ "as_of_decklist_sha256": "231d89abca22a6a3b6d9f98414f36a325342344ffecef6dfa1df1e3b49c612d2",
+ "archetype": "Mono-green flash-ambush stompy: a 40-creature midrange deck wearing a draw-go posture. The strategic frame describes it correctly in prose, but its 'control' self-label made the audit's archetype matcher apply control overrides (37-39 lands, 12-15 removal, 5-7 wipes) that fit a wrath deck, not this one \u2014 three of the four UNDER verdicts are inflated by that override.",
+ "verdict": "The mana is the best-measured in the fleet's terms (51 Burgess sources vs 36, turn-3 land hit 0.91, commander mean cast t4.0) and the ambush machinery is verified and dense (flash trap drawn 96.1%, metronome body 98.1%). What binds is still board WIDTH: the kill needs five bodies (stack 003) and the goldfish reaches a mean of 3.767 by t6, crossing the bar around t8 (5.313), with finisher-plus-second-wave assembled 40.2% by t6. Coverage is now complete: all five breadth classes answered, and Whiptongue Hydra gives the deck its first sweeper \u2014 within Zupke's cap, if far under the control-override band. Stack 005's lesson stands: bodies deploy at end steps (006: they wake attack-ready), the finisher is an own-main cast.",
  "axes": [
   {
    "axis": "mana-base",
@@ -10,7 +10,7 @@
    "measured": {
     "value": 36
    },
-   "reading": "The 37-39 band is the control-archetype override; the deck's own archetype is creature midrange, Burgess's source formula is cleared with 16 copies to spare, and the turn-3 land hit is 0.91 against a 0.74 floor. A 37th land is not the marginal use of a slot here.",
+   "reading": "The 37-39 band is the control-archetype override; the deck's own archetype is creature midrange, Burgess's source formula is cleared with 15 copies to spare, and the turn-3 land hit is 0.91 against a 0.74 floor. A 37th land is not the marginal use of a slot here.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.ratios",
@@ -22,9 +22,9 @@
    "axis": "mana-sources",
    "verdict": "strength",
    "measured": {
-    "value": 52
+    "value": 51
    },
-   "reading": "52 copies against a Burgess target of 36 (31 + 1 colour + commander MV 4). This is the axis that adjudicates the mana-base question, and it is not close.",
+   "reading": "51 copies against a Burgess target of 36 (31 + 1 colour + commander MV 4). This is the axis that adjudicates the mana-base question, and it is not close.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.mana-base",
@@ -44,17 +44,17 @@
    "axis": "colour-sources",
    "verdict": "strength",
    "measured": {
-    "value": 10
+    "value": 9
    },
-   "reading": "Ten sources above the Karsten target in the only colour. Mono-green makes this free; it is still true."
+   "reading": "Nine sources above the Karsten target in the only colour. Mono-green makes this free; it is still true."
   },
   {
    "axis": "ramp",
    "verdict": "adequate",
    "measured": {
-    "value": 18
+    "value": 17
    },
-   "reading": "Six over the band, but eight of the copies are dorks that also count toward the five-body bar and feed Chord's convoke; the seven land-ramp spells and three auras are the part that adds mana without adding board. If width needs slots, the pure-land-ramp end of this class is where they live.",
+   "reading": "Five over the band, but the class counts the commander himself, and the dork half doubles as bodies toward the five-body bar and as Chord convoke; the land-ramp spells are the part that adds mana without adding board, and remain where flex slots live if width needs them.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.ratios",
@@ -68,7 +68,7 @@
    "measured": {
     "value": 10
    },
-   "reading": "At the floor of 10, and the count overstates uniform quality: only Beast Whisperer draws on every creature cast ungated \u2014 Garruk's Uprising gates on power 4+ (three fixed bodies: Dawn's Light Archer, Old Fat Spider, Craterhoof \u2014 Wickerbough Elder enters with a -1/-1 counter as a 3/3 and never fires it \u2014 plus Mirkwood Pathmaker whenever lands \u22654), Elemental Bond and Tribute's draw half gate on power 3+ (nine fixed bodies plus Pathmaker), Selvala needs strictly-greatest power, Frostfang and Toski need combat damage to connect, Fecundity needs deaths, and Harmonize is one-shot. GAS drawn 85.3% is drawn, not firing.",
+   "reading": "At the floor of 10, and the count overstates uniform quality: only Beast Whisperer draws on every creature cast ungated \u2014 Glademuse (new) draws only on off-turn casts, native to this deck's posture but conditional; Garruk's Uprising gates on power 4+ (five fixed bodies now: Dawn's Light Archer, Craterhoof, Whiptongue Hydra, Indrik Stomphowler, Yeva, plus Mirkwood Pathmaker whenever lands \u22654 \u2014 Wickerbough Elder enters with a -1/-1 counter as a 3/3 and never fires it), Elemental Bond and Tribute's draw half gate on power 3+ (thirteen fixed bodies), Selvala needs strictly-greatest power, Frostfang and Toski need combat damage, Fecundity needs deaths, and Harmonize is one-shot. GAS drawn 85.4% is drawn, not firing.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.ratios",
@@ -82,7 +82,7 @@
    "measured": {
     "value": 10
    },
-   "reading": "Now 10, and still wrong in both directions: it includes Devoted Druid, whose removal:debuff tag is a misfile (its -1/-1 counter is a cost it puts on itself \u2014 it removes nothing of an opponent's), so the real removal-class count is 9 \u2014 while the flash-trap deterrence the deck leans on stays invisible to it. The applied swaps improved exactly the weak flank: Deathgorge Scavenger answers graveyards repeatably and Hornet Queen brings the deck's first deathtouch BLOCKERS beyond Hornet Nest's tokens (Frostfang's deathtouch is still attackers-only, Saryth's tapped-only). The residual gap to the 12-15 band is the control override already adjudicated under mana-base.",
+   "reading": "Now 10, and still wrong in both directions: it includes Devoted Druid, whose removal:debuff tag is a misfile (its -1/-1 counter is a cost it puts on itself \u2014 it removes nothing of an opponent's), so the real removal-class count is 9 \u2014 while the flash-trap deterrence the deck leans on stays invisible to it. The applied swaps improved exactly the weak flank: Deathgorge Scavenger answers graveyards repeatably, Indrik Stomphowler and Whiptongue Hydra put answers on flashable bodies, and Hornet Queen brings the deck's first deathtouch BLOCKERS beyond Hornet Nest's tokens (Frostfang's deathtouch is still attackers-only, Saryth's tapped-only). The residual gap to the 12-15 band is the control override already adjudicated under mana-base.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.interaction-suite",
@@ -92,11 +92,11 @@
   },
   {
    "axis": "sweepers",
-   "verdict": "weakness",
+   "verdict": "adequate",
    "measured": {
-    "value": 0
+    "value": 1
    },
-   "reading": "The 5-7 target is the control override and would be wrong for a 37-creature deck \u2014 Zupke's own line caps at 3 \u2014 but zero is below every band: the traps trade one-for-one and a resolved wide board out-scales them with nothing in the 99 able to reset it. Ravenous Sailback (in for Shimmerwilds Growth) added spot answers, not mass ones; the pool holds no sweeper, so closing this is a purchase (Whiptongue Hydra is the one the axis can see; Ezuri's Predation is the one the deck wants, filed threat:tokens).",
+   "reading": "CLOSED at the corpus's own cap: Whiptongue Hydra is the one sweeper the taxonomy credits (removal:sweeper), a flier-only wipe on a reach body the metronome can flash after attackers are declared. Zupke's line caps wipes at 3 for a creature deck \u2014 the 5-7 target is the control override, and one is the right number for a board the deck cannot afford to sweep itself.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.interaction-suite",
@@ -122,9 +122,9 @@
    "axis": "threat-density",
    "verdict": "adequate",
    "measured": {
-    "value": 2
+    "value": 1
    },
-   "reading": "A taxonomy artifact, not a deck defect: the axis sees Old Fat Spider (wincon:combat) and Pick Your Poison (wincon:drain \u2014 itself a misfile), while the audit's own engine block enumerates the real finisher class at four (Craterhoof, Overwhelming Stampede, Pathbreaker Ibex, Return of the Wildspeaker), inside the 3-5 band and drawn 53.2%. The bind is not finisher count; it is the board the finisher needs.",
+   "reading": "Still a taxonomy artifact, now down to one: the axis sees only Pick Your Poison (wincon:drain \u2014 a misfile), since Old Fat Spider's wincon:combat left with the Indrik swap. The audit's engine block still enumerates the real finisher class at four (Craterhoof, Overwhelming Stampede, Pathbreaker Ibex, Return of the Wildspeaker), inside the 3-5 band and drawn 52.3%. The bind remains the board, not the finisher count.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.threat-density",
@@ -136,9 +136,9 @@
    "axis": "creatures",
    "verdict": "adequate",
    "measured": {
-    "value": 37
+    "value": 40
    },
-   "reading": "Post-swaps 37: the critical mass the metronome needs; informational axis, reported."
+   "reading": "Post-swaps 40: the critical mass the metronome needs; informational axis, reported."
   },
   {
    "axis": "interaction-breadth",
@@ -146,7 +146,7 @@
    "measured": {
     "value": 5
    },
-   "reading": "CLOSED \u2014 all five classes now answered (audit by_class: artifact 5, creature 9, enchantment 6, graveyard 1, land 1). Deathgorge Scavenger, applied from the pool at zero cost, is the graveyard answer; this was the diagnosis's cheapest prescription and it landed.",
+   "reading": "CLOSED \u2014 all five classes now answered (audit by_class: artifact 6, creature 9, enchantment 6, graveyard 1, land 1). Deathgorge Scavenger, applied from the pool at zero cost, is the graveyard answer; this was the diagnosis's cheapest prescription and it landed.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.interaction-suite",
@@ -190,7 +190,7 @@
    "measured": {
     "value": 9
    },
-   "reading": "Seven of the nine are land-tutors (the Cultivate class); only Chord of Calling and Fauna Shaman can find an engine piece or a trap, and the audit prices that pair at 30.6% drawn. Compression is thin on purpose at bracket 3."
+   "reading": "Seven of the nine are land-tutors (the Cultivate class); only Chord of Calling and Fauna Shaman can find an engine piece or a trap, and the audit prices that pair at 30.2% drawn. Compression is thin on purpose at bracket 3."
   }
  ],
  "engine": {
@@ -199,21 +199,21 @@
    {
     "role": "piece",
     "have": [
-     "Metronome bodies (17: the prior 15 plus Deathgorge Scavenger and Hornet Queen)"
+     "Metronome bodies (19: the prior 17 plus Yeva, Whiptongue Hydra and Indrik Stomphowler, minus Old Fat Spider)"
     ],
-    "count": 17,
+    "count": 19,
     "thinnest": false,
-    "measured_rate": 0.968,
+    "measured_rate": 0.981,
     "reading": "The full-value flash class; drawn essentially always. Not the constraint."
    },
    {
     "role": "protection",
     "have": [
-     "Flash traps (13, incl. the protection suite)"
+     "Flash traps (16, incl. the protection suite and the new ETB-answer bodies)"
     ],
-    "count": 13,
+    "count": 16,
     "thinnest": false,
-    "measured_rate": 0.925,
+    "measured_rate": 0.961,
     "reading": "Verified by stack 002; the deterrence the interaction axis cannot count, and it is combat-facing only."
    },
    {
@@ -223,18 +223,18 @@
     ],
     "count": 10,
     "thinnest": false,
-    "measured_rate": 0.853,
+    "measured_rate": 0.854,
     "reading": "Drawn reliably; firing is gated (see card-advantage). Beast Whisperer is the only ungated per-cast engine."
    },
    {
     "role": "mana",
     "have": [
-     "Ramp (17)"
+     "Ramp (18)"
     ],
-    "count": 17,
+    "count": 18,
     "thinnest": false,
-    "measured_rate": 0.966,
-    "reading": "Clears the 54%-of-openers band the corpus prices for 10 copies, with room."
+    "measured_rate": 0.975,
+    "reading": "Castle Garenbrig now declared into the group; clears the 54%-of-openers band the corpus prices for 10 copies, with room."
    },
    {
     "role": "payoff",
@@ -243,8 +243,8 @@
     ],
     "count": 4,
     "thinnest": false,
-    "measured_rate": 0.532,
-    "reading": "Four finishers, but the redundancy is differently shaped: Craterhoof scales on creature COUNT and pumps everything; Stampede and Ibex scale on greatest power, which over a board of 1/1 dorks is small unless Old Fat Spider (the deck's only 6-power body) anchors it."
+    "measured_rate": 0.523,
+    "reading": "Four finishers, but the redundancy is differently shaped: Craterhoof scales on creature COUNT and pumps everything; Stampede and Ibex scale on greatest power, whose anchor since Old Fat Spider's departure is the 4/4 class (Whiptongue grows past it on ETB) and Craterhoof's own 5/5."
    },
    {
     "role": "payoff",
@@ -253,8 +253,8 @@
     ],
     "count": 4,
     "thinnest": true,
-    "measured_rate": 0.516,
-    "reading": "39.5% by t6, and goldfish mean bodies by t6 is 3.638 against stack 003's five-body bar \u2014 crossed around t8 (5.074, up from 4.44 pre-swap). Still the component the deck fails on first; still a floor, since the sim models neither the discount nor opponent-turn casts, and stack 006 now proves those end-step bodies attack the next morning."
+    "measured_rate": 0.513,
+    "reading": "40.2% by t6, and goldfish mean bodies by t6 is 3.767 against stack 003's five-body bar \u2014 crossed around t8 (5.313). Still the component the deck fails on first; still a floor, since the sim models neither the discount nor opponent-turn casts, and stack 006 proves those end-step bodies attack the next morning."
    },
    {
     "role": "ignition",
@@ -263,8 +263,8 @@
     ],
     "count": 1,
     "thinnest": false,
-    "measured_rate": 0.173,
-    "reading": "A declared one-card class at 17.3% \u2014 the ceiling of any named singleton, per the audit's own note. The engine demonstrably turns over without her (GAS 85.3%), so she is upside, not a dependency."
+    "measured_rate": 0.163,
+    "reading": "A declared one-card class at 16.3% \u2014 the ceiling of any named singleton, per the audit's own note. The engine demonstrably turns over without her (GAS 85.4%), so she is upside, not a dependency."
    },
    {
     "role": "piece",
@@ -273,21 +273,21 @@
     ],
     "count": 2,
     "thinnest": false,
-    "measured_rate": 0.306,
+    "measured_rate": 0.302,
     "reading": "The instant-speed fetch for any trap; the audit lists eight pool/role closers (Worldly Tutor the strongest, a Game Changer) if compression is ever wanted."
    }
   ],
   "single_points_of_failure": [
    {
     "component": "Radagast of Rhosgobel",
-    "why": "The whole posture \u2014 discount, flash, four windows a round \u2014 is commander-gated; without him every trap is a full-price sorcery-speed creature. The deck already prices this with 9 protection copies; Yeva, Nature's Herald (on the ten) is the only card that would replicate the flash half.",
+    "why": "The discount half is still commander-only, but the flash half now has in-deck redundancy: Yeva, Nature's Herald (applied from the ten) gives every green creature spell flash, so the draw-go posture survives Radagast being answered. The 9 protection copies remain the insurance on the discount and the per-turn window.",
     "closers": [
      "Guardian Augmenter",
      "Heroic Intervention",
      "Tyvar's Stand",
      "Sylvan Safekeeper",
      "Veil of Summer",
-     "Yeva, Nature's Herald (ten, purchase)"
+     "Yeva, Nature's Herald (in the 99)"
     ],
     "citations": [
      {
@@ -298,7 +298,7 @@
    },
    {
     "component": "Selvala, Heart of the Wilds",
-    "why": "Declared one-card class, assembled 17.3%. Castle Garenbrig covers the big-mana half for creature spells (restricted); nothing in the 99 covers the strict-greatest-power draw. The Great Henge (on the ten) is the named backup; nothing in the pool is. Stack 007 verifies the retrieval line: Chord of Calling at X=3 fetches her at instant speed \u2014 while also proving Chord takes none of Radagast's subsidies (no discount, no Garenbrig mana, no Whisperer draw).",
+    "why": "Declared one-card class, assembled 16.3%. Castle Garenbrig covers the big-mana half for creature spells (restricted); nothing in the 99 covers the strict-greatest-power draw. The Great Henge (on the ten) is the named backup; nothing in the pool is. Stack 007 verifies the retrieval line: Chord of Calling at X=3 fetches her at instant speed \u2014 while also proving Chord takes none of Radagast's subsidies (no discount, no Garenbrig mana, no Whisperer draw).",
     "closers": [
      "Castle Garenbrig (mana half only)",
      "The Great Henge (ten, purchase)",
@@ -316,7 +316,7 @@
  "lean_into": [
   {
    "what": "The four-window ambush posture \u2014 it is verified, dense, and the audit says it assembles near-universally.",
-   "why": "Stack 001 verifies the per-turn reset and the {G} Wood Elves; stack 002 verifies the after-blocks Frostfang trap; stack 006 verifies the end-step body attacks the next turn, summoning-sickness-free; metronome body 96.8% and flash trap 92.5% drawn. This is the deck's identity and its numbers are the best in the file.",
+   "why": "Stack 001 verifies the per-turn reset and the {G} Wood Elves; stack 002 verifies the after-blocks Frostfang trap; stack 006 verifies the end-step body attacks the next turn, summoning-sickness-free; metronome body 98.1% and flash trap 96.1% drawn. This is the deck's identity and its numbers are the best in the file.",
    "evidence": {
     "stacks": [
      "001",
@@ -324,8 +324,8 @@
      "006"
     ],
     "measured": {
-     "metronome_assembled": 0.968,
-     "flash_trap_assembled": 0.925
+     "metronome_assembled": 0.981,
+     "flash_trap_assembled": 0.961
     }
    },
    "citations": [
@@ -337,7 +337,7 @@
   },
   {
    "what": "The wrath-proof refill \u2014 play INTO sweeper-control seats, not around them.",
-   "why": "Stack 004 verifies Fecundity pays out on everyone's wake while Toski skips it; flash deployment means end-step bodies were never exposed to the wrath at all. This deck's worst axis (sweepers 0) matters least in exactly this matchup.",
+   "why": "Stack 004 verifies Fecundity pays out on everyone's wake while Toski skips it; flash deployment means end-step bodies were never exposed to the wrath at all. The deck's one sweeper (Whiptongue, fliers only) never answers a ground board \u2014 but against wrath decks it never needs to: their sweep is your refill.",
    "evidence": {
     "stacks": [
      "004"
@@ -348,17 +348,9 @@
  ],
  "cut_candidates": [
   {
-   "card": "Hardened Scales",
-   "why": "An amplifier with exactly two +1/+1 sources in the 99 \u2014 Tribute to the World Tree's counter half and Warg Tactics \u2014 and Inspiring Call reads counter PRESENCE, not quantity, so the payoff does not scale with it. The dead-clause purge's lesson says to keep hunting this class; this is the nearest surviving member.",
-   "cost_of_cutting": "Tribute-into-a-dork drops from a 4/4 to a 3/3 \u2014 real board quality in an overrun deck whose Stampede/Ibex X reads greatest power. Not dead, just thin.",
-   "orphans_stack": [],
-   "difficulty": "contested",
-   "citations": []
-  },
-  {
    "card": "Harmonize",
    "why": "The only one-shot in a ten-card engine suite; every other draw source compounds with the board. If a slot must be found for a body, this is the card whose job the engines already do when the deck is functioning.",
-   "cost_of_cutting": "It is the deck's ONLY unconditional draw \u2014 no board, no combat, no deaths required \u2014 which makes it the best card in exactly the games where the deck is losing. Cutting it also drops card-advantage from 10 to 9, below the ratios floor, unless the replacement draws.",
+   "cost_of_cutting": "It is still the deck's ONLY unconditional draw \u2014 no board, no combat, no deaths required; Glademuse, the nearest newcomer, draws only on off-turn casts \u2014 which makes it the best card in exactly the games where the deck is losing. Cutting it also drops card-advantage from 10 to 9, below the ratios floor, unless the replacement draws.",
    "orphans_stack": [],
    "difficulty": "painful",
    "citations": [
@@ -377,20 +369,15 @@
    "why_it_matters": "It decides whether Selvala is an engine multiplier or just a draw trigger \u2014 which prices whether The Great Henge purchase is backup or upgrade."
   },
   {
-   "question": "Does a 37-creature ambush deck want symmetric wraths at all, or is the sweeper hole properly closed by asymmetric bodies (Whiptongue Hydra, the only candidate the removal:sweeper axis can see) versus Ezuri's Predation (the better card, invisible to the axis as threat:tokens)?",
-   "settled_by": "research-strategy",
-   "why_it_matters": "Sweepers is the deck's worst measured axis and both closers are purchases; buying the axis-visible one when the axis-invisible one is better would be optimizing the validator, not the deck."
-  },
-  {
    "question": "How much do the goldfish's three declared blind spots (no discount, no opponent-turn flash casts, no aura ramp) understate board density?",
    "settled_by": "goldfish",
-   "why_it_matters": "Board width is the binding axis and its true value is unmeasured; stack 006 confirms end-step bodies fight the next turn, so the floor is real, but if true bodies-by-t6 is near 5 the deck needs nothing further, and if it is near the measured 3.638 it still wants Avenger-class width and possibly Seedborn Muse."
+   "why_it_matters": "Board width is the binding axis and its true value is unmeasured; stack 006 confirms end-step bodies fight the next turn, so the floor is real, but if true bodies-by-t6 is near 5 the deck needs nothing further, and if it is near the measured 3.767 it still wants Avenger-class width and possibly Seedborn Muse."
   }
  ],
  "gaps": [
   "deck_recon.json now exists (as_of 2026-08-12, merged with the round-two commit) \u2014 the no-meta caveat on this diagnosis's earlier iterations is lifted; purchases from the ten can now be recon-weighed.",
   "Two taxonomy misfiles feed the audit: Devoted Druid's removal:debuff (the -1/-1 counter is a self-inflicted cost, not removal) inflates interaction; Pick Your Poison's wincon:drain pollutes threat-density. Neither changes a verdict here, but both would mislead a reader who trusts the axis card lists.",
-  "The archetype matcher took 'control' from the frame's prose self-description, importing wrath-deck overrides for lands/removal/sweepers onto a 37-creature deck; mana-base UNDER and the sweeper target of 5-7 are artifacts of that match, adjudicated in the readings above."
+  "The archetype matcher took 'control' from the frame's prose self-description, importing wrath-deck overrides for lands/removal/sweepers onto a 40-creature deck; mana-base UNDER and the sweeper target of 5-7 are artifacts of that match, adjudicated in the readings above."
  ],
  "applied_prescriptions": [
   {
@@ -406,6 +393,41 @@
    "closed": "THE OVERRUN ASSEMBLED: finisher AND a second wave to pump",
    "status": "applied (commit acd4b15), verified by re-audit",
    "outcome": "Second-wave pool 16 -> 18 bodies; assembled by t6 0.373 -> 0.395; goldfish mean bodies t8 4.44 -> 5.074; first defensive deathtouch beyond Hornet Nest's tokens."
+  },
+  {
+   "card": "Whiptongue Hydra",
+   "for": "(the $4 trio; cuts: Hardened Scales, Abundant Growth, Unforgiving Aim)",
+   "closed": "sweepers",
+   "status": "applied, verified by re-audit",
+   "outcome": "Sweepers 0 -> 1 (the taxonomy-credited closer); flier profile trades Unforgiving Aim's spot shot for a mass wipe on a flashable reach body."
+  },
+  {
+   "card": "Glademuse",
+   "for": "(the $4 trio)",
+   "closed": "card-advantage quality",
+   "status": "applied, verified by re-audit",
+   "outcome": "Joins GAS in Old Fat Spider's slot; conditional-symmetric (off-turn casts), native to the flash posture. GAS by t6 75.9%."
+  },
+  {
+   "card": "Yeva, Nature's Herald",
+   "for": "(the $4 trio)",
+   "closed": "Radagast single point of failure",
+   "status": "applied, verified by re-audit",
+   "outcome": "In-deck redundancy for the flash half of the commander's ability; flash traps by t6 85.6 -> 91.3%."
+  },
+  {
+   "card": "Indrik Stomphowler",
+   "for": "Old Fat Spider",
+   "closed": "An answer to an artifact or enchantment drawn",
+   "status": "applied (scorer swap), verified by re-audit",
+   "outcome": "Breadth-answer group 6 -> 7 cards, by t6 57.0 -> 63.0%; costs the Stampede/Ibex 6-power anchor and drops the threat-density axis 2 -> 1 (Old Fat Spider carried its wincon:combat tag). Bodies t6 3.638 -> 3.767, t8 5.074 -> 5.313."
+  },
+  {
+   "card": "(cut) Hardened Scales",
+   "for": "\u2014",
+   "closed": "\u2014",
+   "status": "applied \u2014 this diagnosis's contested cut",
+   "outcome": "The two-source amplifier leaves; Tribute-into-a-dork makes a 3/3 rather than a 4/4, the cost priced in the original entry."
   }
  ],
  "skeptic": {
@@ -525,8 +547,33 @@
     "where": "(iteration 4 \u2014 final)",
     "status": "supported",
     "note": "Full-text sweep of the merged diagnosis for every pre-refresh figure from all three revision rounds (76.4/76.0/3.345/3.617/37.3/16.2/12.2/42.7/85.2/52.8/30.3/0.502/0.852/0.528/0.303/0.162, '35-creature', 'five UNDER', 'four fixed', 'five recorded'): all gone. The only old numbers remaining are the deliberate before-after records \u2014 applied_prescriptions outcomes ('interaction-breadth 4 -> 5', 'interaction 9 -> 10', 'assembled by t6 0.373 -> 0.395', 't8 4.44 -> 5.074', 'second-wave 16 -> 18') and the engine reading's 'up from 4.44 pre-swap' \u2014 each explicitly labeled as before-state and each verified: 0.373 was the pre-swap audit's t6 rate, 4.44 matches commit acd4b15's own subject line, and the after-values match today's audit and goldfish. validate-diagnosis passes; verdict-beside-open-finding consistency holds."
+   },
+   {
+    "where": "(iteration 5 \u2014 trio refresh, sha 231d89ab)",
+    "status": "supported",
+    "note": "Fresh audit reproduces every measured value (36/51/3/9/17/10/10/1/9/1/40/5/0.91/3/1/9); sweepers axis card list is exactly [Whiptongue Hydra] and the 'adequate at 1' verdict is grounded (Zupke cap 3, the 5-7 target being the adjudicated control override, the flier-only scope stated honestly in the reading). Engine block exact against the audit (19@0.981, traps 16@0.961 t6 0.913, GAS 10@0.854 t6 0.759, ramp count 18@0.975, kill 4@0.523, assembled 0.513/t6 0.402, Selvala 0.163, tutors 0.302); goldfish on disk reads 3.767 t6 / 5.313 t8, commander 4.015. Glademuse oracle is 'Whenever a player casts a spell, if it's not their turn, that player draws a card' \u2014 conditional-symmetric exactly as censused, carries draw:engine so CA holds at 10 with Old Fat Spider out; Harmonize's only-unconditional-draw painful flag stands and is STRONGER than before, since Abundant Growth (the nearest counterexample cantrip, flagged in iteration 1) left with the trio cuts. Power-4+ census: exactly five on entry (Craterhoof, Dawn's Light Archer, Indrik, Whiptongue, Yeva), Wickerbough still rightly excluded for its -1/-1 entry. applied_prescriptions honesty checks: Indrik's entry records its real costs (threat-density 2->1 matching the audit; the 6-power anchor loss is true \u2014 no 6-power body remains in the 99, and the kill-component reading was updated to the 4/4-class anchor); every before->after figure verified against the prior round's audit and commit acd4b15 (0.856->0.913 traps, 6@0.57->7@0.63 answer group, 0.373->0.395, 4.44->5.074->5.313); the trap-jump figure sits under Yeva's entry but is the trio's joint group effect (the group also gained Whiptongue and Indrik) \u2014 figures correct, attribution shared across the three jointly-labeled trio entries. Hardened Scales' cut is recorded with its originally-priced cost. Zero of the four cut cards (Old Fat Spider, Abundant Growth, Unforgiving Aim, Hardened Scales) appears in any of the seven checker-passed stacks \u2014 nothing orphaned. The Radagast SPOF correctly demoted to discount-half-only with Yeva '(in the 99)'; the Whiptongue-vs-Ezuri open question properly settled by purchase and removed."
+   },
+   {
+    "where": "axes[5]",
+    "status": "supported",
+    "note": "ITERATION 5: 'Elemental Bond and Tribute's draw half gate on power 3+ (eleven fixed bodies)' \u2014 the census on the current 99 is THIRTEEN (Arasta, Craterhoof, Dawn's Light Archer, Deathgorge, Indrik, Nantuko Vigilante, Pathbreaker Ibex, Ravenous Sailback, Saryth, Tireless Provisioner, Whiptongue, Wickerbough at its 3/3 entry, Yeva). Eleven was the correct count for the PREVIOUS list (the iteration-1 'nine' plus Deathgorge and Sailback); this round removed Old Fat Spider and added three 4/4s, so the figure is one refresh behind. (Candour: the intermediate staleness \u2014 'nine' persisting through iterations 2-4 \u2014 was also missed by this skeptic.) ITERATION 6: fixed \u2014 '(thirteen fixed bodies)', matching my census exactly (Wickerbough's -1/-1 entry-as-3/3 reasoning retained inline; it counts for the power-3 gates and not the power-4 one)."
+   },
+   {
+    "where": "lean_into[1]",
+    "status": "supported",
+    "note": "ITERATION 5: still says 'This deck's worst axis (sweepers 0) matters least in exactly this matchup' \u2014 sweepers is now 1 and adequate per this artifact's own axis and its own applied_prescriptions ('Sweepers 0 -> 1'). The strategic point survives rephrasing; the figure contradicts the same file. ITERATION 6: fixed \u2014 rewritten as 'The deck's one sweeper (Whiptongue, fliers only) never answers a ground board \u2014 but against wrath decks it never needs to: their sweep is your refill', which is grounded in the current sweepers axis (1, fliers-only per oracle) and stack 004's checker-passed content."
+   },
+   {
+    "where": "engine.components[3]",
+    "status": "supported",
+    "note": "ITERATION 5: the ramp component's have label still reads 'Ramp (17)' beside count: 18 and the reading's own 'Castle Garenbrig now declared into the group' \u2014 the label was not refreshed when the declaration landed (commit e4b1d9c). Audit confirms 18. ITERATION 6: fixed \u2014 label 'Ramp (18)' now agrees with count: 18 and the audit."
+   },
+   {
+    "where": "(iteration 6 \u2014 final)",
+    "status": "supported",
+    "note": "Single-occurrence sweep confirms all three stale strings gone ('eleven fixed', 'sweepers 0)', 'Ramp (17)'). Structural sweep confirms everything else untouched from the iteration-5 verification: same 16 axis values/verdicts (0 weak), same engine counts and rates, Harmonize sole cut (painful) with empty adds, 2 open questions, 3 gaps, 7 applied_prescriptions, sha 231d89ab. validate-diagnosis passes; verdict sits beside no open finding."
    }
   ],
-  "iteration": 4
+  "iteration": 6
  }
 }

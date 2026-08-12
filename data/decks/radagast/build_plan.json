@@ -80,14 +80,9 @@
     "files": [
       "data/decks/radagast/pool-green-bulk.txt"
     ],
-    "size": 252
+    "size": 255
   },
   "printings": {
-    "Abundant Growth": {
-      "collector_number": "97",
-      "foil": false,
-      "set": "ecc"
-    },
     "Arasta of the Endless Web": {
       "collector_number": "244",
       "foil": false,
@@ -208,11 +203,6 @@
       "foil": false,
       "set": "dmr"
     },
-    "Hardened Scales": {
-      "collector_number": "272",
-      "foil": false,
-      "set": "soc"
-    },
     "Harmonize": {
       "collector_number": "111",
       "foil": false,
@@ -232,6 +222,11 @@
       "collector_number": "172",
       "foil": false,
       "set": "mkc"
+    },
+    "Indrik Stomphowler": {
+      "collector_number": "297",
+      "foil": false,
+      "set": "ncc"
     },
     "Inspiring Call": {
       "collector_number": "226",
@@ -272,11 +267,6 @@
       "collector_number": "279",
       "foil": false,
       "set": "soc"
-    },
-    "Old Fat Spider": {
-      "collector_number": "132",
-      "foil": false,
-      "set": "hob"
     },
     "Overwhelming Stampede": {
       "collector_number": "254",
@@ -368,11 +358,6 @@
       "foil": false,
       "set": "soc"
     },
-    "Unforgiving Aim": {
-      "collector_number": "200",
-      "foil": false,
-      "set": "ecl"
-    },
     "Utopia Sprawl": {
       "collector_number": "9",
       "foil": true,
@@ -406,23 +391,23 @@
   },
   "role_budget": {
     "draw": 10,
-    "flex": 28,
+    "flex": 27,
     "lands": 36,
     "protection": 3,
     "ramp": 10,
     "recursion": 2,
     "removal": 8,
-    "sweeper": 0,
+    "sweeper": 1,
     "tutor": 2,
     "wincon": 0
   },
   "role_budget_deviation": {
     "flex": {
-      "actual": 28,
+      "actual": 27,
       "target": 22
     },
     "sweeper": {
-      "actual": 0,
+      "actual": 1,
       "target": 3
     },
     "wincon": {
@@ -528,6 +513,12 @@
       "score": 0.5364
     },
     {
+      "alternates": [],
+      "name": "Glademuse",
+      "reason": "must_include",
+      "role": "draw"
+    },
+    {
       "alternates": [
         {
           "delta": 0.1042,
@@ -551,20 +542,6 @@
       "name": "Ohran Frostfang",
       "reason": "must_include",
       "role": "draw"
-    },
-    {
-      "alternates": [],
-      "components": {
-        "castability": 0.75,
-        "combo": 0.0,
-        "curve": 0.4,
-        "edhrec": 0.0075,
-        "similarity": 0.7535,
-        "synergy": 0.0
-      },
-      "name": "Old Fat Spider",
-      "role": "draw",
-      "score": 0.3658
     },
     {
       "alternates": [
@@ -604,33 +581,6 @@
       "name": "Tribute to the World Tree",
       "reason": "must_include",
       "role": "draw"
-    },
-    {
-      "alternates": [
-        {
-          "delta": 0.0028,
-          "name": "Elvish Reclaimer"
-        },
-        {
-          "delta": 0.0035,
-          "name": "Scaled Nurturer"
-        },
-        {
-          "delta": 0.0036,
-          "name": "Nissa, Resurgent Animist"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.2477,
-        "similarity": 0.6339,
-        "synergy": 0.1667
-      },
-      "name": "Abundant Growth",
-      "role": "flex",
-      "score": 0.5116
     },
     {
       "alternates": [],
@@ -721,8 +671,8 @@
           "name": "Springheart Nantuko"
         },
         {
-          "delta": 0.002,
-          "name": "Abundant Growth"
+          "delta": 0.0048,
+          "name": "Elvish Reclaimer"
         }
       ],
       "components": {
@@ -771,12 +721,12 @@
           "name": "Springheart Nantuko"
         },
         {
-          "delta": 0.0007,
-          "name": "Abundant Growth"
-        },
-        {
           "delta": 0.0035,
           "name": "Elvish Reclaimer"
+        },
+        {
+          "delta": 0.0042,
+          "name": "Scaled Nurturer"
         }
       ],
       "components": {
@@ -819,33 +769,6 @@
       "score": 0.5196
     },
     {
-      "alternates": [
-        {
-          "delta": 0.0032,
-          "name": "Utopia Sprawl"
-        },
-        {
-          "delta": 0.0063,
-          "name": "Scute Swarm"
-        },
-        {
-          "delta": 0.0075,
-          "name": "Wood Elves"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.4954,
-        "similarity": 0.7306,
-        "synergy": 0.0
-      },
-      "name": "Hardened Scales",
-      "role": "flex",
-      "score": 0.5287
-    },
-    {
       "alternates": [],
       "name": "Hornet Nest",
       "reason": "must_include",
@@ -860,16 +783,16 @@
     {
       "alternates": [
         {
-          "delta": 0.0004,
-          "name": "Hardened Scales"
-        },
-        {
           "delta": 0.0036,
           "name": "Utopia Sprawl"
         },
         {
           "delta": 0.0067,
           "name": "Scute Swarm"
+        },
+        {
+          "delta": 0.0079,
+          "name": "Wood Elves"
         }
       ],
       "components": {
@@ -1072,12 +995,12 @@
           "name": "Inspiring Call"
         },
         {
-          "delta": 0.0057,
-          "name": "Hardened Scales"
-        },
-        {
           "delta": 0.0089,
           "name": "Utopia Sprawl"
+        },
+        {
+          "delta": 0.0119,
+          "name": "Scute Swarm"
         }
       ],
       "components": {
@@ -1103,8 +1026,8 @@
           "name": "Inspiring Call"
         },
         {
-          "delta": 0.0091,
-          "name": "Hardened Scales"
+          "delta": 0.0123,
+          "name": "Utopia Sprawl"
         }
       ],
       "components": {
@@ -1145,6 +1068,12 @@
       "name": "Wood Elves",
       "role": "flex",
       "score": 0.5212
+    },
+    {
+      "alternates": [],
+      "name": "Yeva, Nature's Herald",
+      "reason": "must_include",
+      "role": "flex"
     },
     {
       "alternates": [],
@@ -1522,12 +1451,12 @@
           "name": "Pick Your Poison"
         },
         {
-          "delta": 0.01,
-          "name": "Unforgiving Aim"
-        },
-        {
           "delta": 0.0256,
           "name": "Nantuko Vigilante"
+        },
+        {
+          "delta": 0.0373,
+          "name": "Wickerbough Elder"
         }
       ],
       "components": {
@@ -1541,6 +1470,25 @@
       "name": "Caustic Caterpillar",
       "role": "removal",
       "score": 0.4802
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0062,
+          "name": "Stingerfling Spider"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 0.6,
+        "edhrec": 0.0721,
+        "similarity": 0.6878,
+        "synergy": 0.0
+      },
+      "name": "Indrik Stomphowler",
+      "role": "removal",
+      "score": 0.4095
     },
     {
       "alternates": [
@@ -1572,16 +1520,16 @@
     {
       "alternates": [
         {
-          "delta": 0.0034,
-          "name": "Unforgiving Aim"
-        },
-        {
           "delta": 0.019,
           "name": "Nantuko Vigilante"
         },
         {
           "delta": 0.0308,
           "name": "Wickerbough Elder"
+        },
+        {
+          "delta": 0.0499,
+          "name": "Ravenous Sailback"
         }
       ],
       "components": {
@@ -1622,33 +1570,6 @@
     {
       "alternates": [
         {
-          "delta": 0.0156,
-          "name": "Nantuko Vigilante"
-        },
-        {
-          "delta": 0.0274,
-          "name": "Wickerbough Elder"
-        },
-        {
-          "delta": 0.0465,
-          "name": "Ravenous Sailback"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.0945,
-        "similarity": 0.6693,
-        "synergy": 0.0
-      },
-      "name": "Unforgiving Aim",
-      "role": "removal",
-      "score": 0.4702
-    },
-    {
-      "alternates": [
-        {
           "delta": 0.0013,
           "name": "Caustic Caterpillar"
         },
@@ -1657,8 +1578,8 @@
           "name": "Pick Your Poison"
         },
         {
-          "delta": 0.0113,
-          "name": "Unforgiving Aim"
+          "delta": 0.0269,
+          "name": "Nantuko Vigilante"
         }
       ],
       "components": {
@@ -1699,6 +1620,12 @@
       "name": "Wickerbough Elder",
       "role": "removal",
       "score": 0.4429
+    },
+    {
+      "alternates": [],
+      "name": "Whiptongue Hydra",
+      "reason": "must_include",
+      "role": "sweeper"
     },
     {
       "alternates": [

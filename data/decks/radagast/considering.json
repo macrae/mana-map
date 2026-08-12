@@ -1,55 +1,37 @@
 {
   "slug": "radagast",
-  "assessment": "The diagnosis says board WIDTH binds: mean 3.638 bodies by turn 6 against stack 003's five-body bar, finisher-plus-second-wave assembled 39.5%. So the ten leads with the one closer the worst axis can see (sweepers 0), then width and the field's consensus engine gaps — Silverback Elder 61%, Soul of the Harvest 59%, Glademuse 50%, The Great Henge 45% of recorded lists, all absent here. The back of the list is doors, not deficits: Seedborn Muse is a confirmed Game Changer that moves the computed floor to exactly the target, and Springheart Nantuko / Nissa, Resurgent Animist sit in the build's pool file carrying a recorded two-card infinite. No entry is premised on flashing a finisher: stack 005 refuted the end-step Craterhoof, and stack 006 verified that end-step BODIES attack at dawn — the ambush is for creatures and traps, the kill is a main-phase act.",
+  "assessment": "The measured holes are shut: Whiptongue closed sweepers, Deathgorge closed graveyard, Yeva removed the one-spell flash cap, and the goldfish now means 3.767 bodies by turn 6. What is left to buy is not consistency — it is unmodeled power and the field's table data, so the ten ranks the untap/flash engine class and the consensus payoffs the recon says 45-61% of Radagast lists run and this 99 still lacks. The back of the list stays doors: Seedborn Muse is the confirmed Game Changer whose pairing with the now-sleeved Yeva makes the whole hand castable on everyone's turn, and Springheart/Nissa carry the recorded bracket-4 infinite. No entry is premised on flashing a finisher — stack 005 settled that the kill is a main-phase act.",
   "ten": [
     {
-      "card": "Whiptongue Hydra",
-      "role": "removal:sweeper",
-      "cmc": 6.0,
-      "type_line": "Creature — Lizard Hydra",
+      "card": "Seedborn Muse",
+      "role": "threat:body",
+      "cmc": 5.0,
+      "type_line": "Creature — Spirit",
       "evidence": {
-        "edhrec_rank": 7065,
-        "game_changer": false
+        "edhrec_rank": 286,
+        "game_changer": true
       },
-      "closes": "sweepers",
-      "why": "Sweepers is the deck's worst measured axis at 0 and the diagnosis names Whiptongue as the one closer the axis can see; it wipes every flier on ETB — the exact attack the trap suite cannot block — and Radagast flashes it for {3}{G} into a declared air strike.",
-      "unlocks": "A board reset that is itself a metronome body: the sweeper the 99 lacks without sweeping the 35 creatures the plan needs.",
+      "why": "With Yeva in the 99 every green creature in hand has flash but the mana still refills once a round; Muse untaps it in every other untap step, so the pair converts a full grip into a cast on all four turns — the exact engine class the recon says the field runs and this 99 lacks, and nothing the goldfish can model.",
+      "unlocks": "The power door: floor moves 1 to 3, landing exactly on the target — a confirmed Game Changer, so it is a pod conversation before it is a purchase.",
       "natural_cut": "Fertile Ground",
       "bracket_delta": {
         "before": 1,
-        "after": 1
+        "after": 3
       }
     },
     {
-      "card": "Avenger of Zendikar",
-      "role": "threat:tokens",
-      "cmc": 7.0,
-      "type_line": "Creature — Elemental",
-      "evidence": {
-        "edhrec_rank": 287,
-        "game_changer": false
-      },
-      "closes": "Overrun ASSEMBLED (finisher + second wave)",
-      "why": "The thinnest engine component: finisher plus second wave is 39.5% by turn 6 and the goldfish means 3.638 bodies against the five-body bar; on this 36-land base Avenger makes six-plus Plants at once, and stack 006 says an end-step Avenger's tokens all attack at dawn.",
-      "unlocks": "The widest one-card second wave in the colour — one Avenger turn makes any Stampede or Ibex X lethal instead of close.",
-      "natural_cut": "Wild Growth",
-      "bracket_delta": {
-        "before": 1,
-        "after": 1
-      }
-    },
-    {
-      "card": "Soul of the Harvest",
+      "card": "The Great Henge",
       "role": "draw:engine",
-      "cmc": 6.0,
-      "type_line": "Creature — Elemental",
+      "cmc": 9.0,
+      "type_line": "Legendary Artifact",
       "evidence": {
-        "edhrec_rank": 1630,
+        "edhrec_rank": 235,
         "game_changer": false
       },
-      "why": "The diagnosis measured that only Beast Whisperer draws ungated on the creature plan — every other engine gates on power, combat or deaths; Soul draws on every nontoken body with no gate, on a 6/6 trample frame that keeps the greatest-power anchor Stampede and Ibex read when Old Fat Spider leaves. 59% of recorded Radagast lists run it.",
-      "unlocks": "A second ungated per-body draw engine, so the metronome pays a card even when the board's power is small.",
-      "natural_cut": "Old Fat Spider",
+      "closes": "Selvala, Heart of the Wilds",
+      "why": "Selvala is still the declared one-card class, drawn 12.3% by turn 6, and the diagnosis names Henge the only backup: a draw per nontoken body plus {G}{G} a turn, discounted toward five mana by any power-4 board. 45% of recorded lists run it; its cost reduction is exactly the kind of power the simulation cannot price.",
+      "unlocks": "The gas engine stops resting on one legend, and the {G}{G} funds the ambush on turns the lands are already spent.",
+      "natural_cut": "Wild Growth",
       "bracket_delta": {
         "before": 1,
         "after": 1
@@ -65,61 +47,60 @@
         "game_changer": false
       },
       "closes": "interaction",
-      "why": "The field's top add at 61% of recorded lists, and it answers the diagnosis's interaction reading directly: the trap suite is combat-facing only, while Elder destroys an artifact or enchantment on every creature cast — one answer per turn cycle in a deck that casts a creature on every turn, no combat required.",
-      "unlocks": "Interaction that scales with the deck's own metronome: four creature casts a round is four Naturalizes, or lands, or life.",
-      "natural_cut": "Unforgiving Aim",
+      "why": "The field's top absent add at 61% of ~800 lists: an artifact or enchantment dies (or a land lands, or 4 life) on every creature cast, which in a deck casting creatures on all four turns is the repeatable, non-combat-facing interaction the diagnosis says the trap suite lacks.",
+      "unlocks": "Interaction that scales with the metronome itself — Ravenous Sailback's one-shot mode, every single turn.",
+      "natural_cut": "Ravenous Sailback",
       "bracket_delta": {
         "before": 1,
         "after": 1
       }
     },
     {
-      "card": "The Great Henge",
+      "card": "Soul of the Harvest",
       "role": "draw:engine",
-      "cmc": 9.0,
-      "type_line": "Legendary Artifact",
+      "cmc": 6.0,
+      "type_line": "Creature — Elemental",
       "evidence": {
-        "edhrec_rank": 235,
+        "edhrec_rank": 1630,
         "game_changer": false
       },
-      "closes": "Selvala, Heart of the Wilds",
-      "why": "The diagnosis names Henge as the only backup for the Selvala single point of failure (drawn 13.2% by turn 6, nothing in the pool covers her): a draw per nontoken body plus {G}{G} a turn, and any power-4 board discounts it toward five mana. 45% of recorded lists run it.",
-      "unlocks": "The engine stops resting on one legend: draw, ramp and counters from a permanent removal answers far less easily.",
-      "natural_cut": "Hardened Scales",
+      "why": "59% of recorded lists run it and the diagnosis's card-advantage reading explains why: only Beast Whisperer draws ungated here — Soul draws on every nontoken body with no power gate, no combat, no deaths, on a 6/6 trample frame that anchors Stampede and Ibex's greatest-power X.",
+      "unlocks": "A second ungated per-body engine, so a board of small bodies still pays a card each.",
+      "natural_cut": "Satyr Wayfinder",
       "bracket_delta": {
         "before": 1,
         "after": 1
       }
     },
     {
-      "card": "Glademuse",
-      "role": "draw:engine",
-      "cmc": 3.0,
-      "type_line": "Creature — Beast",
+      "card": "Kogla, the Titan Ape",
+      "role": "removal:spot",
+      "cmc": 6.0,
+      "type_line": "Legendary Creature — Ape",
       "evidence": {
-        "edhrec_rank": 15200,
+        "edhrec_rank": 1212,
         "game_changer": false
       },
-      "why": "The recon calls it the archetype-specific engine — 50% of the upgraded lists: every spell cast outside its caster's turn draws, which pays this deck on three of every four turns while a sorcery-speed pod collects nothing. It is symmetric: an instant-heavy opponent draws too, and that is the honest price.",
-      "unlocks": "The draw-go posture itself becomes card advantage — each ambush cast cantrips, ungated by power or combat.",
-      "natural_cut": "Harmonize",
+      "why": "The aggregate's top flash trap at 48%: flashed for {2}{G}{G}{G} it fights a creature on arrival, smashes an artifact or enchantment on every attack — and the Human clause is live here, bouncing Eternal Witness to rebuy her recursion while Kogla goes indestructible, with Radagast discounting the recast.",
+      "unlocks": "An ambush that is removal, a 7/6 attacker, and a Witness engine in one slot — three unmodeled jobs the sim prices at zero.",
+      "natural_cut": "Pick Your Poison",
       "bracket_delta": {
         "before": 1,
         "after": 1
       }
     },
     {
-      "card": "Yeva, Nature's Herald",
-      "role": "threat:body",
-      "cmc": 4.0,
-      "type_line": "Legendary Creature — Elf Shaman",
+      "card": "Avenger of Zendikar",
+      "role": "threat:tokens",
+      "cmc": 7.0,
+      "type_line": "Creature — Elemental",
       "evidence": {
-        "edhrec_rank": 3419,
+        "edhrec_rank": 287,
         "game_changer": false
       },
-      "closes": "Radagast of Rhosgobel",
-      "why": "The diagnosis's first single point of failure is the commander himself — without him every trap is a full-price sorcery-speed creature — and it names Yeva as the only card that would replicate the flash half; she also lifts the one-creature-per-turn limit the recon lists as the commander's known failure mode.",
-      "unlocks": "The posture survives Radagast being answered twice, and with both out the second and third creatures of a turn also ambush.",
+      "closes": "Overrun ASSEMBLED (finisher + second wave)",
+      "why": "Still the thinnest engine component — finisher plus second wave 40.2% by turn 6, bodies at 3.767 against stack 003's five-body bar; Avenger makes six-plus Plants at once on this 36-land base, and stack 006 verified end-step tokens attack at dawn.",
+      "unlocks": "The widest one-card second wave in the colour: one Avenger end step makes the next main-phase Stampede lethal.",
       "natural_cut": "Utopia Sprawl",
       "bracket_delta": {
         "before": 1,
@@ -127,20 +108,37 @@
       }
     },
     {
-      "card": "Seedborn Muse",
-      "role": "threat:body",
-      "cmc": 5.0,
-      "type_line": "Creature — Spirit",
+      "card": "Disciple of Freyalise // Garden of Freyalise",
+      "role": "value:etb",
+      "cmc": 6.0,
+      "type_line": "Creature — Elf Druid // Land",
       "evidence": {
-        "edhrec_rank": 286,
-        "game_changer": true
+        "edhrec_rank": 479,
+        "game_changer": false
       },
-      "why": "The field's named 'obvious power add' and a confirmed Game Changer: untapping in every other untap step converts the once-a-round ambush into four full-price casts per cycle, the largest single multiplier on the 3.638-bodies figure. Sleeving it moves the computed floor from 1 to 3 — exactly the target, and a pod conversation before it is a purchase.",
-      "unlocks": "A power door rather than a gap-filler: the deck's whole mana base works on everyone's turn. The floor lands on 3; whether the pod reads a Muse deck as bracket 3 is the table's call, not the calculator's.",
-      "natural_cut": "Abundant Growth",
+      "why": "48% of recorded lists: a land drop in the opening hand, and late a flashed body that converts a doomed creature into its power in cards — the wrath-response the deck can cast in the sweeper's window, holding up exactly the mana it already banks.",
+      "unlocks": "A card that is never dead: mana when behind, a Craterhoof's worth of cards when the board is about to be taken anyway.",
+      "natural_cut": "Warg Tactics",
       "bracket_delta": {
         "before": 1,
-        "after": 3
+        "after": 1
+      }
+    },
+    {
+      "card": "Vigor",
+      "role": "buff:counters",
+      "cmc": 6.0,
+      "type_line": "Creature — Elemental Incarnation",
+      "evidence": {
+        "edhrec_rank": 1325,
+        "game_changer": false
+      },
+      "why": "The article's named flash trap: dropped before blocks, all combat damage to your other creatures becomes +1/+1 counters, turning any red sweeper or alpha strike into a bigger board — priced honestly, it also switches Hornet Nest OFF, since prevented damage makes no Insects.",
+      "unlocks": "Combat maths no opponent can read while four mana is open; the shuffle-home clause means it never stays dead.",
+      "natural_cut": "Inspiring Call",
+      "bracket_delta": {
+        "before": 1,
+        "after": 1
       }
     },
     {
@@ -163,7 +161,7 @@
         "game_changer": false
       },
       "why": "Held out of the 99 by the bracket-3 target: the combo index records a two-card infinite with Tireless Provisioner, who is in the deck, so sleeving it moves the computed floor from 1 to 4 — and it sits in the build's own pool file.",
-      "unlocks": "The bracket-4 door: bestowed on any body it makes a copy or an Insect on every land drop at bracket-3 tempo, and the recorded infinite waits behind it. The line needs a stack scenario before it is claimed as a kill.",
+      "unlocks": "The bracket-4 door: bestowed on any body it makes a copy or an Insect on every land drop at bracket-3 tempo, with the recorded infinite behind it. The line needs a stack scenario before it is claimed as a kill.",
       "natural_cut": "Scaled Nurturer",
       "bracket_delta": {
         "before": 1,
@@ -189,7 +187,7 @@
         "edhrec_rank": 2089,
         "game_changer": false
       },
-      "why": "The other half of the benched pair, also in the pool file: alone it moves no bracket signal and no weak axis — ramp already reads six over the band — and its recorded infinite needs Springheart, so it matters only if both come in together.",
+      "why": "The other half of the benched pair, also in the pool file: alone it fires no bracket signal and answers no measured deficit — its recorded infinite needs Springheart, so it matters only if both come in together.",
       "unlocks": "Mana on every land drop, an Elf or Elemental to hand on the second — and the second key to the bracket-4 door. Unverified until a stack scenario runs the loop.",
       "natural_cut": "Mirkwood Pathmaker",
       "bracket_delta": {
@@ -199,11 +197,11 @@
     }
   ],
   "gaps": [
-    "Ezuri's Predation is the diagnosis's own open question: the better sweeper for a 35-creature deck (a wipe that leaves 4/4 bodies) but filed threat:tokens, invisible to the axis. Whiptongue took the ranked slot because its claim is measurable; research-strategy settles whether the axis-invisible card is the right purchase.",
-    "End-Raze Forerunners left the ten: the diagnosis prices the finisher class adequate at four and moves the bind to board width, and stack 005 refuted the end-step-finisher line its ambush framing leaned on — a fifth overrun copy buys redundancy on a component that is not the thinnest.",
-    "Scavenging Ooze left for the marginal-frame reason: Deathgorge Scavenger now covers the graveyard class in the 99, so a second graveyard answer doubles a covered class before any uncovered one.",
-    "The Springheart + Tireless Provisioner line is the combo index's record and the index is format-agnostic; whether the loop's mana closes in this 99 needs a /resolve-stack run before anyone opens the bracket-4 door.",
-    "Whether Selvala's tapped mana can pay for a flashed cast in her own trigger window is an open diagnosis question settled by resolve-stack; its answer prices The Great Henge as backup versus upgrade, which could move Henge up this ranking.",
-    "Recon inclusion percentages describe first movers (~800 mostly-precon lists, 64 upgraded), not a settled meta — the 61/59/50/45% figures are leads the ranking uses, not verdicts."
+    "Temur Sabertooth is the highest-unmodeled-power card that missed the ten: the recon's bounce-to-recast engine (rebuy any ETB at Radagast's discount, protect any body) rests on one source — a stub list — and this ranking privileged the widely-agreed claims; table data would promote it.",
+    "Ezuri's Predation's open question is now moot in one direction — Whiptongue closed the sweeper axis — but whether a 35-creature deck wants a symmetric wipe AT ALL is still the research-strategy question; nothing here re-litigates it.",
+    "Mosswort Bridge (43%) was not ranked: the manabase's hypergeometric already declined a colourless utility land (Emergence Zone) in favour of a Forest, and no new evidence overturns that adjudication — hideaway's fit is real, but the scorer owns the land slots.",
+    "The Springheart + Tireless Provisioner line is the combo index's record and the index is format-agnostic; a /resolve-stack run settles whether the loop's mana closes in this 99 before the bracket-4 door opens.",
+    "Whether Selvala's tapped mana pays for a flashed cast in her own window remains the open diagnosis question; its answer prices The Great Henge as backup versus upgrade and could move it to first.",
+    "Recon percentages describe first movers (~800 mostly-precon lists, 64 upgraded); the 45-61% figures are leads, not verdicts."
   ]
 }
