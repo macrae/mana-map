@@ -16,20 +16,21 @@
       "reasons": [
         "two-card infinite with Springheart Nantuko + Nissa, Resurgent Animist"
       ],
-      "replaced_by": "Nessian Wanderer"
+      "replaced_by": "Mirkwood Pathmaker"
     },
     {
       "name": "Springheart Nantuko",
       "reasons": [
         "two-card infinite with Springheart Nantuko + Tireless Provisioner"
       ],
-      "replaced_by": "Chomping Changeling"
+      "replaced_by": "Shimmerwilds Growth"
     }
   ],
   "generated_by": "manamap pilot build-deck (deterministic; no agent involvement)",
   "land_counts": {
     "Boseiju, Who Endures": 1,
-    "Forest": 31,
+    "Castle Garenbrig": 1,
+    "Forest": 30,
     "Gemstone Mine": 1,
     "Khalni Garden": 1,
     "Slippery Karst": 1,
@@ -37,6 +38,7 @@
   },
   "lands": [
     "Boseiju, Who Endures",
+    "Castle Garenbrig",
     "Forest",
     "Gemstone Mine",
     "Khalni Garden",
@@ -44,7 +46,7 @@
     "Thriving Grove"
   ],
   "manabase": {
-    "enters_tapped": 3,
+    "enters_tapped": 4,
     "lands_selected": 36,
     "method": "hypergeometric, P(pips by earliest castable turn) >= 90% over 99 cards",
     "on_curve_probability": {
@@ -56,7 +58,7 @@
         "earliest_turn": 1,
         "effective_pips": 1,
         "max_pips": 3,
-        "total_pips": 75.0
+        "total_pips": 78.0
       }
     },
     "shortfalls": {},
@@ -78,7 +80,7 @@
     "files": [
       "data/decks/radagast/pool-green-bulk.txt"
     ],
-    "size": 247
+    "size": 253
   },
   "printings": {
     "Abundant Growth": {
@@ -116,11 +118,6 @@
       "foil": false,
       "set": "ori"
     },
-    "Chomping Changeling": {
-      "collector_number": "172",
-      "foil": false,
-      "set": "ecl"
-    },
     "Chord of Calling": {
       "collector_number": "158",
       "foil": false,
@@ -135,11 +132,6 @@
       "collector_number": "138",
       "foil": false,
       "set": "tdm"
-    },
-    "Cream of the Crop": {
-      "collector_number": "102",
-      "foil": false,
-      "set": "ecc"
     },
     "Cultivate": {
       "collector_number": "103",
@@ -271,11 +263,6 @@
       "foil": false,
       "set": "mkc"
     },
-    "Nessian Wanderer": {
-      "collector_number": "905",
-      "foil": false,
-      "set": "cmm"
-    },
     "Ohran Frostfang": {
       "collector_number": "279",
       "foil": false,
@@ -345,11 +332,6 @@
       "collector_number": "256",
       "foil": false,
       "set": "dmr"
-    },
-    "Spineseeker Centipede": {
-      "collector_number": "199",
-      "foil": false,
-      "set": "dsk"
     },
     "Summit Apes": {
       "collector_number": "114",
@@ -423,8 +405,8 @@
     }
   },
   "role_budget": {
-    "draw": 7,
-    "flex": 29,
+    "draw": 10,
+    "flex": 26,
     "lands": 36,
     "protection": 3,
     "ramp": 10,
@@ -435,12 +417,8 @@
     "wincon": 2
   },
   "role_budget_deviation": {
-    "draw": {
-      "actual": 7,
-      "target": 10
-    },
     "flex": {
-      "actual": 29,
+      "actual": 26,
       "target": 22
     },
     "sweeper": {
@@ -466,6 +444,12 @@
     "wincon": 3
   },
   "slots": [
+    {
+      "alternates": [],
+      "name": "Beast Whisperer",
+      "reason": "must_include",
+      "role": "draw"
+    },
     {
       "alternates": [
         {
@@ -610,6 +594,18 @@
       "score": 0.5229
     },
     {
+      "alternates": [],
+      "name": "Toski, Bearer of Secrets",
+      "reason": "must_include",
+      "role": "draw"
+    },
+    {
+      "alternates": [],
+      "name": "Tribute to the World Tree",
+      "reason": "must_include",
+      "role": "draw"
+    },
+    {
       "alternates": [
         {
           "delta": 0.0004,
@@ -664,20 +660,6 @@
       "score": 0.5188
     },
     {
-      "alternates": [],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.2201,
-        "similarity": 0.7382,
-        "synergy": 0.0
-      },
-      "name": "Chomping Changeling",
-      "role": "flex",
-      "score": 0.5035
-    },
-    {
       "alternates": [
         {
           "delta": 0.0002,
@@ -709,33 +691,6 @@
       "name": "Craterhoof Behemoth",
       "reason": "must_include",
       "role": "flex"
-    },
-    {
-      "alternates": [
-        {
-          "delta": 0.0006,
-          "name": "Nessian Wanderer"
-        },
-        {
-          "delta": 0.0011,
-          "name": "Chomping Changeling"
-        },
-        {
-          "delta": 0.0012,
-          "name": "Abundant Harvest"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.1641,
-        "similarity": 0.7607,
-        "synergy": 0.0
-      },
-      "name": "Cream of the Crop",
-      "role": "flex",
-      "score": 0.5046
     },
     {
       "alternates": [
@@ -929,18 +884,32 @@
     {
       "alternates": [
         {
-          "delta": 0.0005,
-          "name": "Shimmerwilds Growth"
+          "delta": 0.0004,
+          "name": "Hardened Scales"
         },
         {
-          "delta": 0.0008,
-          "name": "Spineseeker Centipede"
+          "delta": 0.0036,
+          "name": "Utopia Sprawl"
         },
         {
-          "delta": 0.0013,
-          "name": "Cream of the Crop"
+          "delta": 0.0056,
+          "name": "Fyndhorn Elves"
         }
       ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.4597,
+        "similarity": 0.744,
+        "synergy": 0.0
+      },
+      "name": "Inspiring Call",
+      "role": "flex",
+      "score": 0.5292
+    },
+    {
+      "alternates": [],
       "components": {
         "castability": 1.0,
         "combo": 0.0,
@@ -952,20 +921,6 @@
       "name": "Mirkwood Pathmaker",
       "role": "flex",
       "score": 0.5059
-    },
-    {
-      "alternates": [],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.1316,
-        "similarity": 0.7696,
-        "synergy": 0.0
-      },
-      "name": "Nessian Wanderer",
-      "role": "flex",
-      "score": 0.504
     },
     {
       "alternates": [],
@@ -1067,20 +1022,7 @@
       "score": 0.5224
     },
     {
-      "alternates": [
-        {
-          "delta": 0.0003,
-          "name": "Spineseeker Centipede"
-        },
-        {
-          "delta": 0.0008,
-          "name": "Cream of the Crop"
-        },
-        {
-          "delta": 0.0014,
-          "name": "Nessian Wanderer"
-        }
-      ],
+      "alternates": [],
       "components": {
         "castability": 1.0,
         "combo": 0.0,
@@ -1092,33 +1034,6 @@
       "name": "Shimmerwilds Growth",
       "role": "flex",
       "score": 0.5054
-    },
-    {
-      "alternates": [
-        {
-          "delta": 0.0005,
-          "name": "Cream of the Crop"
-        },
-        {
-          "delta": 0.0011,
-          "name": "Nessian Wanderer"
-        },
-        {
-          "delta": 0.0017,
-          "name": "Chomping Changeling"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.0832,
-        "similarity": 0.6672,
-        "synergy": 0.1667
-      },
-      "name": "Spineseeker Centipede",
-      "role": "flex",
-      "score": 0.5051
     },
     {
       "alternates": [
@@ -1231,16 +1146,16 @@
     {
       "alternates": [
         {
+          "delta": 0.0086,
+          "name": "Inspiring Call"
+        },
+        {
           "delta": 0.0091,
           "name": "Hardened Scales"
         },
         {
           "delta": 0.0123,
           "name": "Utopia Sprawl"
-        },
-        {
-          "delta": 0.0142,
-          "name": "Fyndhorn Elves"
         }
       ],
       "components": {
@@ -1283,6 +1198,12 @@
       "score": 0.5212
     },
     {
+      "alternates": [],
+      "name": "Guardian Augmenter",
+      "reason": "must_include",
+      "role": "protection"
+    },
+    {
       "alternates": [
         {
           "delta": 0.027,
@@ -1308,33 +1229,6 @@
       "name": "Heroic Intervention",
       "role": "protection",
       "score": 0.5614
-    },
-    {
-      "alternates": [
-        {
-          "delta": 0.0147,
-          "name": "Tyvar's Stand"
-        },
-        {
-          "delta": 0.0155,
-          "name": "Sylvan Safekeeper"
-        },
-        {
-          "delta": 0.031,
-          "name": "Royal Treatment"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.4597,
-        "similarity": 0.744,
-        "synergy": 0.0
-      },
-      "name": "Inspiring Call",
-      "role": "protection",
-      "score": 0.5292
     },
     {
       "alternates": [
