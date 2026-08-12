@@ -1,0 +1,79 @@
+{
+  "slug": "radagast",
+  "commander": "Radagast of Rhosgobel",
+  "as_of": "2026-08-12",
+  "commander_text_verified": "The first creature spell you cast each turn costs {2} less to cast and can be cast as though it had flash. ({2}{G}{G}, 2/5 Legendary Creature — Avatar Wizard; confirmed against this deck's cards.json Scryfall record.)",
+  "consensus": "The field read this commander the same way within days of preview: a mono-green 'flash value' deck that holds mana open and casts one discounted creature at instant speed on every turn, including each opponent's. The reference build (EDHREC's Levi Perry article) is Draw-Go plus Stompy at 36 creatures / 36 lands, creature-dense so the once-per-turn trigger never lacks fuel, with cast-trigger and ETB draw as the payoff class and 'flash trap' ambush creatures as the signature play. Most of the ~800 recorded lists are bracket-3 precon upgrades, not tuned brews, so inclusion percentages describe first movers, not a settled meta. This deck's 99 already holds a large slice of the consensus core — Beast Whisperer, Garruk's Uprising, Elemental Bond, Return of the Wildspeaker, Tribute to the World Tree, Craterhoof Behemoth, Guardian Augmenter, Ohran Frostfang, Castle Garenbrig, Boseiju — but lacks the field's untap/extra-flash engine class (Seedborn Muse, Yeva, Vedalken Orrery) and its top upgrade payoffs (Silverback Elder, Soul of the Harvest, Glademuse, The Great Henge); conversely its bulk-first spine (Scute Swarm, Hardened Scales, Selvala, Saryth, Devoted Druid) appears nowhere in the aggregate's top cards.",
+  "findings": [
+    {
+      "claim": "Cast-trigger and ETB draw payoffs are the consensus engine, and the field's top adds in this class are ones this 99 lacks: Silverback Elder (61% of 800 decks), Soul of the Harvest (59%), Glademuse (50% of the 64 upgraded lists), The Great Henge (45%), Guardian Project and Greater Good (article includes). Glademuse is the archetype-specific one: it pays you for casting on other players' turns, which is exactly what Radagast's flash mode does.",
+      "cards": ["Silverback Elder", "Soul of the Harvest", "Glademuse", "The Great Henge", "Guardian Project", "Greater Good"],
+      "confidence": "widely agreed",
+      "sources": ["https://edhrec.com/commanders/radagast-of-rhosgobel", "https://edhrec.com/commanders/radagast-of-rhosgobel/upgraded", "https://edhrec.com/articles/building-mono-green-flash-with-radagast-of-rhosgobel"]
+    },
+    {
+      "claim": "Seedborn Muse is named as the obvious power add: untapping during each other player's untap step converts the once-per-turn flash discount into a full four-casts-per-round engine. The article flags it as a potential Game Changer addition rather than a main-list include; our cards.csv confirms it carries the game_changer flag, so it moves the bracket conversation.",
+      "cards": ["Seedborn Muse"],
+      "confidence": "widely agreed",
+      "sources": ["https://edhrec.com/articles/building-mono-green-flash-with-radagast-of-rhosgobel"]
+    },
+    {
+      "claim": "'Flash trap' ambush creatures are the archetype's signature play — cast at instant speed into an attack or a greedy main phase. The article's named traps are Bane of Progress (ambush artifact/enchantment decks) and Vigor (flash in before blocks, damage becomes counters); the aggregate adds Kogla, the Titan Ape at 48%. This 99 already runs two of the article's traps (Ohran Frostfang, and Hornet Nest as a blocker-trap), so the gap is the named three.",
+      "cards": ["Bane of Progress", "Vigor", "Kogla, the Titan Ape"],
+      "confidence": "widely agreed",
+      "sources": ["https://edhrec.com/articles/building-mono-green-flash-with-radagast-of-rhosgobel", "https://edhrec.com/commanders/radagast-of-rhosgobel"]
+    },
+    {
+      "claim": "Redundant flash grantors extend past the commander's one-creature-per-turn limit: Yeva, Nature's Herald, Vivien, Champion of the Wilds, Vedalken Orrery, and Emergence Zone all give the rest of the hand flash. Sources agree they fit; they disagree on necessity, since the article's build leans on the once-per-turn discount and does not centre them. (Alchemist's Refuge checked and excluded: its colour identity is GU.)",
+      "cards": ["Yeva, Nature's Herald", "Vivien, Champion of the Wilds", "Vedalken Orrery", "Emergence Zone"],
+      "confidence": "contested",
+      "sources": ["https://edhrec.com/articles/building-mono-green-flash-with-radagast-of-rhosgobel", "https://www.wargamer.com/magic-the-gathering/mtg-hobbit-radagast-thranduil"]
+    },
+    {
+      "claim": "Bounce-to-hand recast engines reuse the discount every turn: Temur Sabertooth (article include) returns an ETB creature to re-flash it; the only individual Archidekt list found is a stub built entirely on upkeep-bounce creatures (Roaring Primadox, Stampeding Wildebeests) for the same loop.",
+      "cards": ["Temur Sabertooth", "Roaring Primadox", "Stampeding Wildebeests"],
+      "confidence": "one source",
+      "sources": ["https://edhrec.com/articles/building-mono-green-flash-with-radagast-of-rhosgobel", "https://archidekt.com/decks/25002524/radagast"]
+    },
+    {
+      "claim": "The field's instant-speed interaction/protection package beyond what this 99 runs: Archdruid's Charm (28% — modal tutor-to-battlefield at instant speed), Tamiyo's Safekeeping (23%), Kenrith's Transformation (20% — mono-green's answer to a problem creature that also cantrips), plus Asceticism and Rhonas's Monument from the article list. Mosswort Bridge (43%) is the top utility-land add: hideaway is trivially enabled by a deck that banks mana every turn.",
+      "cards": ["Archdruid's Charm", "Tamiyo's Safekeeping", "Kenrith's Transformation", "Asceticism", "Rhonas's Monument", "Mosswort Bridge"],
+      "confidence": "widely agreed",
+      "sources": ["https://edhrec.com/commanders/radagast-of-rhosgobel", "https://edhrec.com/articles/building-mono-green-flash-with-radagast-of-rhosgobel"]
+    },
+    {
+      "claim": "Disciple of Freyalise (48% of decks) is a first-mover staple here as a modal land drop early / sacrifice-draw engine late, converting a big flashed body into cards at instant speed.",
+      "cards": ["Disciple of Freyalise"],
+      "confidence": "widely agreed",
+      "sources": ["https://edhrec.com/commanders/radagast-of-rhosgobel"]
+    }
+  ],
+  "known_failure_modes": [
+    "One creature spell per turn gets the discount and flash — 'you can't really combo off with him' (Wargamer); the commander is a value piece, not an engine, and a hand full of creatures still deploys at one per turn unless a second flash/untap source is added.",
+    "The discount reduces only generic mana (rules clarification cited in spoiler coverage), so cheap heavy-pip creatures gain little; the article's answer is skewing the curve toward larger threats.",
+    "No haste anywhere in the command zone: flashed threats still wait a turn to attack, so the deck can be raced by faster boards.",
+    "Creature density (36 creatures) makes board wipes the classic loss condition; the field's answers are instant-speed protection (Heroic Intervention-class, Tamiyo's Safekeeping, Asceticism) and rebuild finishers (Craterhoof at 46%).",
+    "Mono-green interaction gap: open mana threatens a creature, never a counterspell — the archetype bluffs blue without being blue, and noncreature threats resolving at sorcery speed still go unanswered."
+  ],
+  "contested": [
+    "Radagast vs Yeva as the mono-green flash commander: initial community reads called him 'Yeva getting power crept'; the article and Wargamer both argue the opposite tension — Yeva flashes every green creature while Radagast flashes one but discounts it, so Yeva is the stronger flash enabler and Radagast the stronger value engine. Which matters more is genuinely unsettled.",
+    "Seedborn Muse: unanimously strong, contested on bracket grounds — it is a Game Changer and the article keeps it out of the main list; most recorded decks are bracket-3 precon upgrades.",
+    "How central the extra flash-grantor class (Yeva/Orrery/Vivien) should be: the article's build works within the once-per-turn frame; the redundancy argument appears in discussion but not in the reference list."
+  ],
+  "sources": [
+    {"title": "Building Mono-Green Flash with Radagast of Rhosgobel", "author": "Levi Perry", "url": "https://edhrec.com/articles/building-mono-green-flash-with-radagast-of-rhosgobel", "contributed": "The reference build: Draw-Go + Stompy frame, 36 creatures / 36 lands, the flash-trap concept (Bane of Progress, Vigor, Ohran Frostfang), Guardian Augmenter tech, Temur Sabertooth reuse, Seedborn Muse as a Game Changer question; dated 2026-08-06."},
+    {"title": "Radagast of Rhosgobel (Commander) | EDHREC", "author": "EDHREC (aggregate)", "url": "https://edhrec.com/commanders/radagast-of-rhosgobel", "contributed": "800 recorded decks; inclusion percentages: Beast Whisperer 82%, Silverback Elder 61%, Soul of the Harvest 59%, Kogla 48%, Disciple of Freyalise 48%, Craterhoof 46%, The Great Henge 45%, Mosswort Bridge 43%, Archdruid's Charm 28%, Tamiyo's Safekeeping 23%, Kenrith's Transformation 20%; themes Ramp/Flash/+1+1 Counters/Aggro."},
+    {"title": "Radagast of Rhosgobel (Commander) - Upgraded | EDHREC", "author": "EDHREC (aggregate)", "url": "https://edhrec.com/commanders/radagast-of-rhosgobel/upgraded", "contributed": "64 bracket-3 upgraded lists; top adds Beast Whisperer 88%, Glademuse 50%, Silverback Elder 58%, Defiler of Vigor 58%; implies the commander fronts a Hobbit precon (precon name not shown)."},
+    {"title": "MTG Hobbit has a great green wizard and an elf annoyingly locked to collector boosters", "author": "Matt Bassil (Wargamer)", "url": "https://www.wargamer.com/magic-the-gathering/mtg-hobbit-radagast-thranduil", "contributed": "Assessment: 'a fun take on a Yeva, Nature's Herald ability, powerful, without just being a straightforward replacement'; limits named: one creature per turn, no haste, no combo; updated 2026-07-30."},
+    {"title": "Radagast of Rhosgobel (Card) | EDHREC", "author": "EDHREC", "url": "https://edhrec.com/cards/radagast-of-rhosgobel", "contributed": "As a 99-card include: 1.72% inclusion across 3.69K eligible decks — first movers treat him as a commander, not an include."},
+    {"title": "Radagast (Archidekt deck 25002524)", "author": "unknown Archidekt user", "url": "https://archidekt.com/decks/25002524/radagast", "contributed": "A 7-card stub, cited only as evidence of the upkeep-bounce recast angle (Roaring Primadox, Stampeding Wildebeests, Mistbreath Elder); not a real list."}
+  ],
+  "gaps": [
+    "No tuned individual decklists were readable: Moxfield blocks crawlers, the only Archidekt hit is a 7-card stub, and no MTGGoldfish or TappedOut Radagast list surfaced in search.",
+    "No Reddit thread was reachable through search despite the prompt suggesting spoiler-season discussion exists; the Yeva-power-creep framing is attributed only via search-result summaries.",
+    "Went looking for a Winter Orb-adjacent draw-go stax build (the class this 99 deliberately lacks) and found no source advocating it for this commander; the article omits stax entirely.",
+    "The precon this commander fronts is implied by EDHREC's Upgraded page but its name and decklist were not confirmed, so 'what upgraders cut from the precon' is unknown.",
+    "Scryfall and magicspoiler.com returned 403, so exact oracle text was verified against this deck's own cards.json Scryfall record rather than a fetched card database page.",
+    "All percentages are from ~800 decks recorded within days of preview season — perishable even by recon standards; re-run after the set has a month of real play."
+  ]
+}

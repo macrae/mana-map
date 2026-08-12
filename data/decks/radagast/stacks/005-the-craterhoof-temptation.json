@@ -1,0 +1,365 @@
+{
+ "id": "005",
+ "slug": "radagast",
+ "deck": "RADAGAST — THE DISCOUNT BUNKER",
+ "title": "The Craterhoof temptation: flashed on the end step before yours, is the ambush Hoof legal — and does its pump survive to your combat?",
+ "rules_version": "June 19, 2026",
+ "scenario": {
+  "board": {
+   "you": [
+    "Radagast of Rhosgobel (2/5) — your commander",
+    "Scute Swarm (1/1)",
+    "Wood Elves (1/1)",
+    "Hornet Nest (0/2, defender)",
+    "Toski, Bearer of Secrets (1/1, indestructible)",
+    "Castle Garenbrig (untapped)",
+    "Forest (untapped)",
+    "Forest (untapped)",
+    "Forest (untapped)",
+    "Forest (untapped)"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": [
+      "no creatures"
+     ]
+    },
+    {
+     "life": 40,
+     "board": [
+      "no creatures"
+     ]
+    },
+    {
+     "life": 40,
+     "board": [
+      "no relevant permanents — it is THIS player's end step, and you are next in turn order"
+     ]
+    }
+   ]
+  },
+  "hand": [
+   "Craterhoof Behemoth"
+  ],
+  "graveyard": [],
+  "mana_available": "{G}{G}{G}{G} from four Forests, plus Castle Garenbrig untapped ({2}{G}{G}, {T}: Add six {G}. Spend this mana only to cast creature spells or activate abilities of creatures.)",
+  "stack": [
+   {
+    "pos": 0,
+    "item": "Craterhoof Behemoth, cast at instant speed during opponent 3's end step for {3}{G}{G}{G} (Radagast's reduction; his flash permission — first creature spell this turn), paid using Castle Garenbrig's six {G}"
+   }
+  ],
+  "extras": {
+   "life_totals": {
+    "you": 40,
+    "each_opponent": 40
+   },
+   "note_for_the_resolver": "Two questions the pilot's coaching depends on. (1) LEGALITY: Garenbrig's activation is a mana ability usable at instant speed, and its restricted mana says 'creature spells' — Craterhoof is one; verify the payment and the flash-timing cast are both legal. (2) THE TRAP: Craterhoof's trigger gives +X/+X and trample 'until end of turn' — if he enters during opponent 3's end step, state exactly when that bonus ends and what board you attack with on YOUR following turn. The suspected verdict: the ambush cast is legal but the pump expires at that turn's cleanup, so the 'end-step Hoof then swing' line attacks with an unpumped board and the correct kill line is casting him in your own precombat main (haste covers the attack). Say plainly which line is correct and what the flash cast IS still good for (dodging sorcery-speed wraths by deploying at the last safe moment).",
+   "assumptions": [
+    "You are next in turn order after opponent 3.",
+    "No responses."
+   ]
+  },
+  "question": "Is this cast legal at this timing with this payment? When exactly does Craterhoof's +X/+X and trample end, what do you attack with next turn, and which line — end-step flash or your own main phase — is the correct kill line?"
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "Verify the timing of the cast: Craterhoof Behemoth is proposed at instant speed during opponent 3's end step, via Radagast of Rhosgobel's static ability ('The first creature spell you cast each turn costs {2} less to cast and can be cast as though it had flash').",
+    "effect": "LEGAL TIMING. No creature spell has been cast by you this turn, so Craterhoof is your first creature spell and Radagast's condition is met; you may begin to cast it as though it had flash. Flash-speed casting means any time you could cast an instant, which requires only priority, and players receive priority during the end step of opponent 3's turn.",
+    "citations": [
+     {
+      "rule": "601.3d",
+      "quote": "If a spell would have flash only if certain conditions are met, its controller may begin to cast that spell as though it had flash if those conditions are met."
+     },
+     {
+      "rule": "702.8a",
+      "quote": "You may play this card any time you could cast an instant"
+     },
+     {
+      "rule": "117.1a",
+      "quote": "A player may cast an instant spell any time they have priority."
+     },
+     {
+      "rule": "513.1",
+      "quote": "The end step has no turn-based actions. Once it begins, the active player gets priority."
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "Determine Craterhoof's total cost with Radagast's reduction. Castle Garenbrig's oracle cost is '{2}{G}{G}, {T}: Add six {G}. Spend this mana only to cast creature spells or activate abilities of creatures.' — the four Forests cover the activation exactly.",
+    "effect": "Craterhoof's mana cost {5}{G}{G}{G} minus Radagast's {2} reduction = a total cost of {3}{G}{G}{G} (six mana). The reduction is applied while determining the total cost, before payment.",
+    "citations": [
+     {
+      "rule": "601.2f",
+      "quote": "The total cost is the mana cost or alternative cost (as determined in rule 601.2b), plus all additional costs and cost increases, and minus all cost reductions."
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "Pay the cost: during the casting process you activate mana abilities. Castle Garenbrig's ability is a mana ability (no target, adds mana, not a loyalty ability); you tap the four Forests for {G}{G}{G}{G}, pay {2}{G}{G} and tap Garenbrig, adding six {G} that can be spent only on creature spells or abilities of creatures.",
+    "effect": "LEGAL ACTIVATION AND PAYMENT. Mana abilities may be activated in the middle of casting a spell, and must be activated before costs are paid. All six restricted {G} are spent on the {3}{G}{G}{G} total cost of Craterhoof Behemoth, which is a creature spell, so the spending restriction is satisfied. Verdict on question (1): the ambush cast is fully legal at this timing with this payment.",
+    "citations": [
+     {
+      "rule": "605.1a",
+      "quote": "it doesn’t require a target (see rule 115.6), it could add mana to a player’s mana pool when it resolves, and it’s not a loyalty ability."
+     },
+     {
+      "rule": "605.3a",
+      "quote": "A player may activate an activated mana ability whenever they have priority, whenever they are casting a spell or activating an ability that requires a mana payment"
+     },
+     {
+      "rule": "601.2g",
+      "quote": "Mana abilities must be activated before costs are paid."
+     },
+     {
+      "rule": "106.6",
+      "quote": "Some spells or abilities that produce mana restrict how that mana can be spent"
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "Resolve Craterhoof Behemoth (only object on the stack; no responses per scenario). He enters the battlefield during opponent 3's end step, and his enters trigger ('creatures you control gain trample and get +X/+X until end of turn, where X is the number of creatures you control') goes on the stack.",
+    "effect": "Craterhoof enters as a 5/5 with haste. The trigger is put on the stack the next time a player would receive priority, then resolves: X = 6 (Radagast, Scute Swarm, Wood Elves, Hornet Nest, Toski, and Craterhoof itself), so your six creatures get +6/+6 and trample until end of turn — during opponent 3's turn, in which you cannot attack.",
+    "citations": [
+     {
+      "rule": "603.3",
+      "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+     },
+     {
+      "rule": "117.5",
+      "quote": "Then triggered abilities are put on the stack (see rule 603, “Handling Triggered Abilities”)."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "THE TRAP — track the duration of the +6/+6 and trample. Opponent 3's turn proceeds to its cleanup step.",
+    "effect": "During the cleanup step of opponent 3's turn — the very turn Craterhoof entered — all 'until end of turn' effects end simultaneously. The pump and trample expire before your turn ever begins. There is no window in which a pumped board of yours and your combat phase coexist.",
+    "citations": [
+     {
+      "rule": "514.2",
+      "quote": "Second, the following actions happen simultaneously: all damage marked on permanents (including phased-out permanents) is removed and all “until end of turn” and “this turn” effects end."
+     },
+     {
+      "rule": "703.4p",
+      "quote": "Immediately after the active player has discarded cards (if necessary) during the cleanup step, all damage is removed from permanents and all “until end of turn” and “this turn” effects end."
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "Your turn: declare attackers with the unpumped board. Craterhoof has been under your control continuously since your turn began, so summoning sickness is not even a question; Hornet Nest has defender and cannot attack.",
+    "effect": "You attack with Craterhoof Behemoth 5/5, Radagast 2/5, Scute Swarm 1/1, Wood Elves 1/1, and Toski 1/1 (Toski attacks each combat if able) — 10 total power, no trample, no pump. Even all sent at one 40-life opponent, 10 combat damage leaves them at 30; no state-based action fires. The end-step-flash line does NOT kill.",
+    "citations": [
+     {
+      "rule": "302.6",
+      "quote": "A creature can’t attack unless it has been under its controller’s control continuously since their most recent turn began."
+     },
+     {
+      "rule": "702.3b",
+      "quote": "A creature with defender can’t attack."
+     },
+     {
+      "rule": "704.5a",
+      "quote": "If a player has 0 or less life, that player loses the game."
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "action": "Compare the alternative line: cast Craterhoof in your own precombat main phase with the identical mana (four Forests pay Garenbrig's {2}{G}{G}, Garenbrig's six {G} pay the discounted {3}{G}{G}{G}).",
+    "effect": "A noninstant spell is castable in your main phase with priority and an empty stack. The trigger now resolves on YOUR turn: X = 6, all your creatures get +6/+6 and trample lasting through your combat. Haste lets the fresh Craterhoof attack. Attackers: Craterhoof 11/11, Radagast 8/11, Scute Swarm 7/7, Wood Elves 7/7, Toski 7/7 = 40 power with trample (Hornet Nest, a 6/8, still can't attack — defender). Aimed at one open 40-life seat, that is exactly 40 combat damage: that player's life is 0 and they lose to the state-based action. This is 40 to ONE seat, not the pod — it kills exactly one of the three opponents; the other two seats take nothing.",
+    "citations": [
+     {
+      "rule": "117.1a",
+      "quote": "A player may cast a noninstant spell during their main phase any time they have priority and the stack is empty."
+     },
+     {
+      "rule": "702.10b",
+      "quote": "If a creature has haste, it can attack even if it hasn’t been controlled by its controller continuously since their most recent turn began."
+     },
+     {
+      "rule": "508.1a",
+      "quote": "The chosen creatures must be untapped, they can’t also be battles, and each one must either have haste or have been controlled by the active player continuously since the turn began."
+     },
+     {
+      "rule": "704.5a",
+      "quote": "If a player has 0 or less life, that player loses the game."
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "VERDICTS. (1) LEGALITY: yes — the end-step flash cast is fully legal. Radagast's 'first creature spell' condition is met, flash permission lets you cast with priority on opponent 3's end step, Garenbrig's mana ability is activatable mid-cast, and all six restricted {G} land on a creature spell. (2) THE TRAP — the scenario's suspected refutation is CONFIRMED: the +6/+6 and trample end at the cleanup of OPPONENT 3's turn (rule 514.2), before your turn begins. The end-step-flash-then-swing line attacks with 10 unpumped power (Craterhoof 5/5, Radagast 2/5, three 1/1s; Hornet Nest can't attack) and kills nobody. The correct kill line is casting Craterhoof in your own precombat main phase: same mana, trigger resolves on your turn, haste covers his attack, and the board swings for 40 trampling power — exactly lethal to ONE 40-life opponent (per-seat, never the pod). What the flash cast IS still good for: deploying Craterhoof at the last safe moment — a sorcery-speed wrath can only be cast in its caster's main phase (rule 117.1a), so flashing him in on the end step directly before your turn exposes him only to instant-speed interaction; the pump is simply wasted defense on a turn nobody attacks you.",
+   "you": {
+    "life": 40,
+    "battlefield_after_flash_line": [
+     "Radagast of Rhosgobel 2/5",
+     "Scute Swarm 1/1",
+     "Wood Elves 1/1",
+     "Hornet Nest 0/2 (defender)",
+     "Toski 1/1 (indestructible)",
+     "Craterhoof Behemoth 5/5 (haste)",
+     "Castle Garenbrig (tapped)",
+     "4x Forest (tapped)"
+    ],
+    "note": "All until-end-of-turn effects from the flashed Craterhoof expired at opponent 3's cleanup; the board attacks unpumped on your turn."
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life": 40,
+     "note": "flash line: takes at most part of 10; main-phase line: dies to exactly 40 trample damage if chosen as the target seat"
+    },
+    {
+     "seat": "opponent_2",
+     "life": 40,
+     "note": "untouched in either line unless chosen"
+    },
+    {
+     "seat": "opponent_3",
+     "life": 40,
+     "note": "the flash cast resolves on this player's end step; untouched in either line unless chosen"
+    }
+   ]
+  }
+ },
+ "checker": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "step": 1,
+    "rule": "601.3d",
+    "status": "supported",
+    "note": "Radagast grants conditional 'as though it had flash' (first creature spell each turn); 601.3d is exactly the conditional-flash begin-to-cast permission. Condition verified met: no prior creature spell this turn per scenario."
+   },
+   {
+    "step": 1,
+    "rule": "702.8a",
+    "status": "supported",
+    "note": "Quote is the definitional fragment of flash; full rule confirms flash means 'any time you could cast an instant', which is what the step claims."
+   },
+   {
+    "step": 1,
+    "rule": "117.1a",
+    "status": "supported",
+    "note": "First sentence of the rule: instant-speed casting requires only priority."
+   },
+   {
+    "step": 1,
+    "rule": "513.1",
+    "status": "supported",
+    "note": "Players do receive priority during an end step; the flash window on opponent 3's end step exists."
+   },
+   {
+    "step": 2,
+    "rule": "601.2f",
+    "status": "supported",
+    "note": "Total cost = mana cost minus reductions: {5}{G}{G}{G} minus {2} = {3}{G}{G}{G} (six mana). Verified against cards.json: Craterhoof's printed cost is {5}{G}{G}{G} and Radagast's reduction is {2}."
+   },
+   {
+    "step": 2,
+    "rule": null,
+    "status": "supported",
+    "note": "RESOLVED (iteration 2): the stale misquote NOTE in step 2 was replaced with a neutral statement of Garenbrig's oracle cost; the quoted text matches cards.json byte-for-byte ('{2}{G}{G}, {T}: Add six {G}. Spend this mana only to cast creature spells or activate abilities of creatures.'), and '{2}{G}{G} = four Forests' is arithmetically right. The scenario's mana_available was also completed to the full restriction clause. Verified line-by-line: every other step, citation, quote and figure is byte-identical to the iteration-1 artifact this checker passed on substance."
+   },
+   {
+    "step": 3,
+    "rule": "605.1a",
+    "status": "supported",
+    "note": "Garenbrig's six-mana ability: no target, adds mana on resolution, not a loyalty ability — meets all three criteria; it is a mana ability."
+   },
+   {
+    "step": 3,
+    "rule": "605.3a",
+    "status": "supported",
+    "note": "Full rule explicitly permits activating mana abilities while casting a spell that requires a mana payment."
+   },
+   {
+    "step": 3,
+    "rule": "601.2g",
+    "status": "supported",
+    "note": "Mana abilities activated before costs are paid, within the casting process — matches the described sequence."
+   },
+   {
+    "step": 3,
+    "rule": "106.6",
+    "status": "supported",
+    "note": "Restricted mana rule; all six {G} land on the {3}{G}{G}{G} total cost of a creature spell, satisfying 'cast creature spells'. The rule's own example is this exact pattern."
+   },
+   {
+    "step": 4,
+    "rule": "603.3",
+    "status": "supported",
+    "note": "ETB trigger put on the stack the next time a player would receive priority; resolves with X=6 (Radagast, Scute Swarm, Wood Elves, Hornet Nest, Toski, Craterhoof) — count verified against scenario-facts' five bodies plus the entering Craterhoof."
+   },
+   {
+    "step": 4,
+    "rule": "117.5",
+    "status": "supported",
+    "note": "Triggered abilities placed on the stack before priority is received; used correctly for the trigger's timing."
+   },
+   {
+    "step": 5,
+    "rule": "514.2",
+    "status": "supported",
+    "note": "Cleanup turn-based action ends all 'until end of turn' effects — the pump granted during opponent 3's turn ends at opponent 3's cleanup, before your turn. Refutation core holds."
+   },
+   {
+    "step": 5,
+    "rule": "703.4p",
+    "status": "supported",
+    "note": "Turn-based-action summary corroborating 514.2; same content, correctly cited."
+   },
+   {
+    "step": 6,
+    "rule": "302.6",
+    "status": "supported",
+    "note": "Craterhoof entered during opponent 3's turn, so on your turn it has been controlled continuously since your turn began — it may attack regardless of haste. Correct use of the summoning-sickness rule."
+   },
+   {
+    "step": 6,
+    "rule": "702.3b",
+    "status": "supported",
+    "note": "Hornet Nest (defender, verified in cards.json) excluded from attackers. Unpumped total 5+2+1+1+1 = 10 verified; 40-10 = 30, no kill."
+   },
+   {
+    "step": 6,
+    "rule": "704.5a",
+    "status": "supported",
+    "note": "Cited to show the SBA does NOT fire at 30 life — legitimate use of the threshold rule; the SBA check the refutation depends on is performed, not skipped."
+   },
+   {
+    "step": 7,
+    "rule": "117.1a",
+    "status": "supported",
+    "note": "Second sentence of the rule: noninstant spell in own main phase with priority and empty stack. Correct for the precombat-main line."
+   },
+   {
+    "step": 7,
+    "rule": "702.10b",
+    "status": "supported",
+    "note": "Haste is genuinely required in this line (Craterhoof cast the same turn it attacks); cards.json confirms Craterhoof has haste."
+   },
+   {
+    "step": 7,
+    "rule": "508.1a",
+    "status": "supported",
+    "note": "Attack-declaration legality: all five attackers untapped, Craterhoof covered by haste, the rest controlled since turn began. Pumped totals verified: 11+8+7+7+7 = 40; Hornet Nest at 6/8 still defender-excluded."
+   },
+   {
+    "step": 7,
+    "rule": "704.5a",
+    "status": "supported",
+    "note": "40 damage to a 40-life seat = 0 life, loses to the SBA. The resolution correctly states this is 40 to ONE seat, never the pod — the per-seat/pod distinction scenario-facts requires (3 opponents, 120 pod total) is honoured."
+   }
+  ],
+  "iterations": 2
+ }
+}

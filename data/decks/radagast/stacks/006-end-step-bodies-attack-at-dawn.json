@@ -1,0 +1,245 @@
+{
+ "id": "006",
+ "slug": "radagast",
+ "deck": "RADAGAST — THE DISCOUNT BUNKER",
+ "title": "End-step bodies attack at dawn: does a creature flashed the turn before your own wake up free of summoning sickness?",
+ "rules_version": "June 19, 2026",
+ "scenario": {
+  "board": {
+   "you": [
+    "Radagast of Rhosgobel (2/5) — your commander",
+    "Forest (untapped)",
+    "Forest (untapped)",
+    "Forest (untapped)",
+    "Forest (tapped)"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": [
+      "no creatures"
+     ]
+    },
+    {
+     "life": 40,
+     "board": [
+      "no creatures"
+     ]
+    },
+    {
+     "life": 40,
+     "board": [
+      "no relevant permanents — it is THIS player's end step, and you are next in turn order"
+     ]
+    }
+   ]
+  },
+  "hand": [
+   "Sakura-Tribe Elder"
+  ],
+  "graveyard": [],
+  "mana_available": "{G} from one untapped Forest (the Elder costs {G} after Radagast's reduction)",
+  "stack": [
+   {
+    "pos": 0,
+    "item": "Sakura-Tribe Elder, cast at instant speed during opponent 3's end step for {G} (Radagast's reduction and flash permission — first creature spell this turn)"
+   }
+  ],
+  "extras": {
+   "life_totals": {
+    "you": 40,
+    "each_opponent": 40
+   },
+   "note_for_the_resolver": "This is the tempo half of the deck's thesis, completing stack 001. The claim: a creature that enters during the end step of the turn BEFORE yours has been under your control continuously since before your turn began, so on your turn it can attack AND activate {T} abilities exactly as if it had haste — the metronome's bodies are never summoning-sick on the turn you need them. Resolve the cast, then verify the claim against the summoning-sickness rules (302.6 and its activated-ability counterpart) with the timing stated precisely: what matters is control since the start of YOUR most recent turn, and this creature entered before that turn began.",
+   "assumptions": [
+    "You are next in turn order after opponent 3.",
+    "No responses."
+   ]
+  },
+  "question": "Resolve the cast. On your following turn, may Sakura-Tribe Elder attack, and could a {T} activated ability on such an end-step arrival be activated? State the exact rule boundary that makes end-step flash equivalent to haste."
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "Sakura-Tribe Elder (pos 0, the only object on the stack) resolves during opponent 3's end step.",
+    "effect": "The Elder is a creature spell with no targets; it becomes a permanent and enters the battlefield under your control. Its cast was legal at instant speed because Radagast of Rhosgobel's printed ability says the first creature spell you cast each turn 'costs {2} less to cast and can be cast as though it had flash' (oracle text), and flash means the card may be played any time you could cast an instant — an opponent's end step qualifies. The {G} Forest paid the reduced cost; your mana pool is now empty.",
+    "citations": [
+     {
+      "rule": "608.3a",
+      "quote": "If the object that’s resolving has no targets, it becomes a permanent and enters the battlefield under the control of the spell’s controller."
+     },
+     {
+      "rule": "702.8a",
+      "quote": "“Flash” means “You may play this card any time you could cast an instant.”"
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "State-based actions and triggers are checked before any player receives priority again.",
+    "effect": "Sakura-Tribe Elder is a 1/1 with no damage marked; no state-based action applies, and no ability triggers on its entry on this board. The stack is now empty. Priority returns to opponent 3 (the active player), who by the scenario's assumption takes no further action.",
+    "citations": [
+     {
+      "rule": "117.5",
+      "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed."
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "Opponent 3's ending phase completes and your turn begins.",
+    "effect": "The end step and cleanup step finish opponent 3's turn, and your turn begins with Sakura-Tribe Elder already on the battlefield under your control. This is the load-bearing timing fact: the Elder entered BEFORE your turn began, so at the moment your turn starts — and at every moment after — it has been under your control continuously since your most recent turn began. The clock that rule 302.6 reads starts at the beginning of your turn, and the Elder predates it.",
+    "citations": [
+     {
+      "rule": "500.1",
+      "quote": "A turn consists of five phases, in this order: beginning, precombat main, combat, postcombat main, and ending. Each of these phases takes place every turn, even if nothing happens during the phase."
+     },
+     {
+      "rule": "302.6",
+      "quote": "A creature can’t attack unless it has been under its controller’s control continuously since their most recent turn began."
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "Verify the attack half of the thesis: may the Elder attack on your turn?",
+    "effect": "Yes. Rule 302.6's attack restriction requires only continuous control 'since their most recent turn began.' Your most recent turn began after the Elder entered the battlefield, and control was never interrupted, so the condition is satisfied and Sakura-Tribe Elder may be declared as an attacker in your combat phase. Note the boundary precisely: a creature that enters at any point before your turn begins — including the end step of the turn immediately before yours — clears this test; a creature entering during your own turn does not (absent haste).",
+    "citations": [
+     {
+      "rule": "302.6",
+      "quote": "A creature can’t attack unless it has been under its controller’s control continuously since their most recent turn began. This rule is informally called the “summoning sickness” rule."
+     },
+     {
+      "rule": "702.10b",
+      "quote": "If a creature has haste, it can attack even if it hasn’t been controlled by its controller continuously since their most recent turn began. (See rule 302.6.)"
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "Verify the activated-ability half: could a {T} activated ability on such an end-step arrival be activated on your turn?",
+    "effect": "Yes. The activated-ability counterpart is not a separate rule number in this CR — it is the FIRST sentence of the same rule 302.6, which restricts only abilities whose activation cost includes the tap symbol or untap symbol, using the identical 'controlled continuously since their most recent turn began' test. An end-step arrival passes that test on your turn exactly as it passes the attack test, so a {T} ability on such a creature could be activated — the same permission haste would grant (702.10c), obtained by timing instead. Two precision notes: (a) the equivalence to haste holds only from your turn onward; during the remainder of opponent 3's turn the Elder still fails the test, whereas a hasty creature would not; (b) Sakura-Tribe Elder's own ability ('Sacrifice this creature: Search your library for a basic land card...') has no tap or untap symbol in its cost, so 302.6 never restricted it at all — it could legally be activated the moment the Elder resolved, even mid-end-step.",
+    "citations": [
+     {
+      "rule": "302.6",
+      "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+     },
+     {
+      "rule": "702.10c",
+      "quote": "If a creature has haste, its controller can activate its activated abilities whose cost includes the tap symbol or the untap symbol even if that creature hasn’t been controlled by that player continuously since their most recent turn began. (See rule 302.6.)"
+     },
+     {
+      "rule": "glossary:summoning-sickness-rule",
+      "quote": "Informal term for a player’s inability to attack with a creature or to activate its abilities that include the tap symbol or the untap symbol unless the creature has been under that player’s control since the beginning of that player’s most recent turn. See rule 302.6. See also Haste."
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "Sakura-Tribe Elder resolves during opponent 3's end step and enters the battlefield under your control; the stack empties with no SBAs or triggers. When your turn begins, the Elder has been under your control continuously since before your most recent turn began, so both prongs of rule 302.6 are satisfied: it may attack, and any activated ability with {T} or {Q} in its cost could be activated. End-step flash is functionally equivalent to haste on your following turn (702.10b/702.10c grant exactly these two permissions), though not during the opponent's turn itself. The thesis of stack 001 is confirmed on the attack side as well: the metronome's end-step bodies are never summoning-sick on the turn you need them.",
+   "you": {
+    "life": 40,
+    "battlefield": [
+     "Radagast of Rhosgobel (2/5)",
+     "Sakura-Tribe Elder (1/1, untapped, entered last turn)",
+     "Forest (tapped)",
+     "Forest (tapped)",
+     "Forest (untapped)",
+     "Forest (untapped)"
+    ],
+    "hand": [],
+    "mana_pool": "empty"
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life": 40,
+     "board": [
+      "no creatures"
+     ]
+    },
+    {
+     "seat": "opponent_2",
+     "life": 40,
+     "board": [
+      "no creatures"
+     ]
+    },
+    {
+     "seat": "opponent_3",
+     "life": 40,
+     "board": [
+      "no relevant permanents"
+     ]
+    }
+   ]
+  }
+ },
+ "checker": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "step": 1,
+    "rule": "608.3a",
+    "status": "supported",
+    "note": "Elder is a targetless creature spell; rule establishes it becomes a permanent under caster's control."
+   },
+   {
+    "step": 1,
+    "rule": "702.8a",
+    "status": "supported",
+    "note": "Full rule adds only that flash is a static ability functioning in any castable zone; the quoted definition carries the claim. Radagast's oracle text ('can be cast as though it had flash') matches cards.json verbatim, and {1}{G} minus a {2} reduction correctly leaves {G} (generic portion only)."
+   },
+   {
+    "step": 2,
+    "rule": "117.5",
+    "status": "supported",
+    "note": "Quote is the first sentence; the unquoted remainder covers triggered abilities being stacked, which the effect also addresses. Verified against cards.json: Radagast has no triggered ability and the 1/1 Elder trips no SBA, so 'no SBAs, no triggers' is factually right for this board."
+   },
+   {
+    "step": 3,
+    "rule": "500.1",
+    "status": "supported",
+    "note": "Establishes the ending phase completes and the next turn's phases begin."
+   },
+   {
+    "step": 3,
+    "rule": "302.6",
+    "status": "supported",
+    "note": "The 'clock starts at the beginning of your turn' reading is exactly what 'since their most recent turn began' says; the Elder entered before that boundary."
+   },
+   {
+    "step": 4,
+    "rule": "302.6",
+    "status": "supported",
+    "note": "Attack prong: continuous control since your most recent turn began is satisfied by a pre-turn arrival."
+   },
+   {
+    "step": 4,
+    "rule": "702.10b",
+    "status": "supported",
+    "note": "Correctly used as the haste counterpart establishing the equivalence for the attack permission."
+   },
+   {
+    "step": 5,
+    "rule": "302.6",
+    "status": "supported",
+    "note": "Structural claim VERIFIED against this CR (June 19, 2026 index): the tap/untap-symbol activated-ability restriction is the first sentence of 302.6 itself; 602.5g and 302.6a do not exist in the rules index. Caveat (b) is correct — the Elder's sacrifice ability ('Sacrifice this creature: ...', cards.json verbatim) has no tap or untap symbol, so 302.6 never restricted it."
+   },
+   {
+    "step": 5,
+    "rule": "702.10c",
+    "status": "supported",
+    "note": "Establishes the {T}/{Q}-ability half of the haste equivalence. One phrasing looseness in the effect prose, not outcome-affecting: a hasty creature does not 'pass the test' during the opponent's turn — it fails the continuous-control condition too but is exempted ('even if it hasn't been controlled...'). The practical claim (hasty creature could activate mid-end-step; the flashed Elder's {T} abilities could not until your turn) is correct."
+   },
+   {
+    "step": 5,
+    "rule": "glossary:summoning-sickness-rule",
+    "status": "supported",
+    "note": "Glossary text matches and points back to 302.6, corroborating the single-rule structure."
+   }
+  ],
+  "iterations": 1
+ }
+}

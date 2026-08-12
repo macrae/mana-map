@@ -1,0 +1,371 @@
+{
+ "id": "007",
+ "slug": "radagast",
+ "deck": "RADAGAST — THE DISCOUNT BUNKER",
+ "title": "What Chord is not: no discount, no Garenbrig mana, no Whisperer draw — the three ways Chord of Calling refuses Radagast's gifts",
+ "rules_version": "June 19, 2026",
+ "scenario": {
+  "board": {
+   "you": [
+    "Radagast of Rhosgobel (2/5) — your commander",
+    "Beast Whisperer (2/3)",
+    "Wood Elves (1/1)",
+    "Llanowar Elves (1/1)",
+    "Castle Garenbrig (untapped)",
+    "Forest (untapped)",
+    "Forest (untapped)",
+    "Forest (untapped)"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": [
+      "no creatures"
+     ]
+    },
+    {
+     "life": 40,
+     "board": [
+      "no creatures"
+     ]
+    },
+    {
+     "life": 40,
+     "board": [
+      "no relevant permanents — it is THIS player's end step"
+     ]
+    }
+   ]
+  },
+  "hand": [
+   "Chord of Calling"
+  ],
+  "graveyard": [],
+  "mana_available": "{G}{G}{G} from three Forests, plus Castle Garenbrig untapped, plus three untapped creatures for convoke",
+  "stack": [
+   {
+    "pos": 0,
+    "item": "Chord of Calling, cast during opponent 3's end step with X=3 (Selvala's mana value is 3 and Chord finds mana value X or less, so X must be at least 3), paying {G}{G}{G} from Forests and tapping Wood Elves, Llanowar Elves and Beast Whisperer to convoke the generic portion, searching for Selvala, Heart of the Wilds"
+   }
+  ],
+  "extras": {
+   "life_totals": {
+    "you": 40,
+    "each_opponent": 40
+   },
+   "note_for_the_resolver": "Three negative claims the tutor guide states as mechanical law — verify each with citations: (1) Chord is an INSTANT, not a creature spell, so Radagast's 'first creature spell' reduction does NOT apply and casting Chord does NOT consume the turn's discount window; (2) Castle Garenbrig's restricted mana ('creature spells' only) CANNOT pay for Chord — the stated payment correctly avoids it; (3) Beast Whisperer does NOT draw (cast trigger requires a creature spell), and Selvala arrives by 'put onto the battlefield', not cast — no cast triggers at all. Then the positive: Selvala entering on the end step before your turn can activate her {T} mana ability on your turn (the stack 006 boundary).",
+   "assumptions": [
+    "You are next in turn order after opponent 3.",
+    "Selvala is in the library.",
+    "No responses."
+   ]
+  },
+  "question": "Resolve the Chord. Which of Radagast's gifts (discount, flash window), Garenbrig's mana, and Beast Whisperer's draw apply to this cast — and which do not, each with the citation? May Selvala tap for mana on your following turn?"
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "Legality and announcement: Chord of Calling is cast during opponent 3's end step with X announced as 3.",
+    "effect": "Chord of Calling is an Instant ({X}{G}{G}{G}), so casting it on an opponent's end step needs only priority — no permission from Radagast is required or used. The value of X is announced during casting. Chord finds 'a creature card with mana value X or less' and Selvala, Heart of the Wilds costs {1}{G}{G} — mana value 3 — so X must be at least 3; the announced X=3 meets that minimum, for a total cost of {3}{G}{G}{G}.",
+    "citations": [
+     {
+      "rule": "304.1",
+      "quote": "A player who has priority may cast an instant card from their hand. Casting an instant as a spell uses the stack."
+     },
+     {
+      "rule": "601.2b",
+      "quote": "If the spell has a variable cost that will be paid as it’s being cast (such as an {X} in its mana cost; see rule 107.3), the player announces the value of that variable."
+     },
+     {
+      "rule": "202.3",
+      "quote": "The mana value of an object is a number equal to the total amount of mana in its mana cost, regardless of color."
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "Convoke payment: tap Wood Elves, Llanowar Elves and Beast Whisperer to cover the {3} generic portion; pay {G}{G}{G} from the three Forests.",
+    "effect": "Convoke applies after the total cost ({3}{G}{G}{G}) is determined. Each of Wood Elves, Llanowar Elves and Beast Whisperer is tapped in place of one generic mana; the three Forests' {G}{G}{G} covers the coloured portion. All three creatures are now tapped — they have 'convoked' Chord and are not available as blockers or convokers for the rest of the turn cycle. All payment happens while casting, before the spell can resolve. Radagast stays untapped, and Castle Garenbrig is never touched.",
+    "citations": [
+     {
+      "rule": "702.51a",
+      "quote": "For each generic mana in this spell’s total cost, you may tap an untapped creature you control rather than pay that mana."
+     },
+     {
+      "rule": "702.51b",
+      "quote": "The convoke ability isn’t an additional or alternative cost and applies only after the total cost of the spell with convoke is determined."
+     },
+     {
+      "rule": "702.51c",
+      "quote": "A creature tapped to pay for mana in a spell’s total cost this way is said to have “convoked” that spell."
+     },
+     {
+      "rule": "601.2h",
+      "quote": "The player pays the total cost. First, they pay all costs that don’t involve random elements or moving objects from the library to a public zone, in any order."
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "Negative claim 1 — Radagast's gift does not apply and is not consumed.",
+    "effect": "Radagast reads 'The first creature spell you cast each turn costs {2} less to cast and can be cast as though it had flash.' A description that includes the word 'spell' means a spell matching that description on the stack; Chord of Calling on the stack is an instant spell, never a creature spell, so it can never be 'the first creature spell you cast' — the {2} reduction does not apply to it, and casting it leaves the turn's discount window untouched for an actual creature spell. The flash grant is equally irrelevant: an instant already needs only priority to be cast.",
+    "citations": [
+     {
+      "rule": "109.2b",
+      "quote": "If a spell or ability uses a description of an object that includes the word “spell,” it means a spell matching that description on the stack."
+     },
+     {
+      "rule": "304.1",
+      "quote": "A player who has priority may cast an instant card from their hand."
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "Negative claim 2 — Castle Garenbrig's restricted mana cannot pay for Chord.",
+    "effect": "Garenbrig's second ability ('{2}{G}{G}, {T}: Add six {G}. Spend this mana only to cast creature spells or activate abilities of creatures.') produces mana with a spend restriction; Chord is an instant spell, so that mana is not legal payment for it, and the stated payment correctly avoids the Castle. One precision the tutor guide should keep: only the six-mana burst is restricted — Garenbrig's first ability, '{T}: Add {G}', carries no restriction and COULD legally pay for Chord.",
+    "citations": [
+     {
+      "rule": "106.6",
+      "quote": "Some spells or abilities that produce mana restrict how that mana can be spent, have an additional effect that affects the spell or ability that mana is spent on, or create a delayed triggered ability (see rule 603.7a) that triggers when that mana is spent."
+     },
+     {
+      "rule": "109.2b",
+      "quote": "If a spell or ability uses a description of an object that includes the word “spell,” it means a spell matching that description on the stack."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "Negative claim 3a — Beast Whisperer does not trigger on the cast of Chord.",
+    "effect": "Beast Whisperer reads 'Whenever you cast a creature spell, draw a card.' Chord is an instant spell on the stack, not a creature spell, so the trigger condition is not met and no card is drawn for casting Chord. Being tapped to convoke changes nothing here — the trigger fails on the spell's type, not on Beast Whisperer's tapped status.",
+    "citations": [
+     {
+      "rule": "109.2b",
+      "quote": "If a spell or ability uses a description of an object that includes the word “spell,” it means a spell matching that description on the stack."
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "All players pass; Chord of Calling resolves: search finds Selvala, shuffle, Chord to the graveyard.",
+    "effect": "With no responses, Chord resolves and its controller follows its instructions in order: 'Search your library for a creature card with mana value X or less, put it onto the battlefield, then shuffle.' Selvala, Heart of the Wilds (mana value 3) matches the description with X=3, is found, and is put onto the battlefield; the library is then shuffled and Chord is put into its owner's graveyard. (Note: an earlier draft of this scenario announced X=2, which could not have found a mana value 3 card; the scenario on disk now states X=3.)",
+    "citations": [
+     {
+      "rule": "117.4",
+      "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+     },
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written."
+     },
+     {
+      "rule": "701.23a",
+      "quote": "To search for a card in a zone, look at all cards in that zone (even if it’s a hidden zone) and find a card that matches the given description."
+     },
+     {
+      "rule": "701.24a",
+      "quote": "To shuffle a library or a face-down pile of cards, randomize the cards within it so that no player knows their order."
+     },
+     {
+      "rule": "304.2",
+      "quote": "When an instant spell resolves, the actions stated in its rules text are followed. Then it’s put into its owner’s graveyard."
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "action": "Negative claim 3b — Selvala is PUT onto the battlefield, not cast; no cast triggers fire.",
+    "effect": "Being put onto the battlefield by a resolving spell is not casting — casting means taking a card from where it is, putting it on the stack, and paying its costs, none of which happens here. The enter event is checked only for enters-the-battlefield triggers; Beast Whisperer's ability triggers on casting a creature spell, not on a creature entering, so it does not fire for Selvala's arrival either. Selvala's own trigger reads 'Whenever another creature enters' and does not trigger for her own arrival. No cast triggers, no draws.",
+    "citations": [
+     {
+      "rule": "glossary:cast",
+      "quote": "To take a card from where it is (usually the hand), put it on the stack, and pay its costs, so that it will eventually resolve and have its effect."
+     },
+     {
+      "rule": "603.6a",
+      "quote": "Enters-the-battlefield abilities trigger when a permanent enters the battlefield. These are written, “When [this object] enters, . . . “ or “Whenever a [type] enters, . . .” Each time an event puts one or more permanents onto the battlefield, all permanents on the battlefield (including the newcomers) are checked for any enters-the-battlefield triggers that match the event."
+     }
+    ]
+   },
+   {
+    "n": 8,
+    "action": "Positive claim — Selvala may activate her {G}, {T} mana ability on your following turn.",
+    "effect": "Selvala entered during opponent 3's end step and you are next in turn order. When your turn begins she is already under your control, so from that moment she has been under your control continuously since your most recent turn began — the tap-symbol restriction is satisfied for the whole of your turn. Her '{G}, {T}: Add X mana...' ability is therefore activatable on your turn (untap-step or later), producing mana equal to the greatest power among your creatures.",
+    "citations": [
+     {
+      "rule": "302.6",
+      "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+     },
+     {
+      "rule": "glossary:summoning-sickness-rule",
+      "quote": "Informal term for a player’s inability to attack with a creature or to activate its abilities that include the tap symbol or the untap symbol unless the creature has been under that player’s control since the beginning of that player’s most recent turn."
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "Chord of Calling (X=3, convoking Wood Elves, Llanowar Elves and Beast Whisperer, {G}{G}{G} from Forests) resolves and puts Selvala, Heart of the Wilds onto the battlefield. All three negative claims verified: (1) Radagast's reduction/flash applies only to a creature spell, so Chord — an instant — neither uses nor consumes the once-per-turn window (109.2b, 304.1); (2) Castle Garenbrig's six-{G} burst is spend-restricted to creature spells and cannot pay for Chord (106.6), though its plain {T}: Add {G} could; (3) Beast Whisperer's cast trigger does not fire for Chord, and Selvala arrives by being put onto the battlefield, not cast, so no cast triggers fire at all (glossary:cast, 603.6a). Selvala's mana value is 3 and Chord finds mana value X or less, so X must be at least 3 — the announced X=3 is that minimum. Positive claim verified: entering on the end step before your turn, Selvala satisfies 302.6 once your turn begins and may tap for mana that turn.",
+   "you": {
+    "life": 40,
+    "battlefield_after": "Radagast of Rhosgobel (untapped), Selvala, Heart of the Wilds (untapped, newly entered), Beast Whisperer (tapped, convoked), Wood Elves (tapped, convoked), Llanowar Elves (tapped, convoked), Castle Garenbrig (untapped), three Forests (tapped)",
+    "graveyard": [
+     "Chord of Calling"
+    ],
+    "hand": [],
+    "notes": "Radagast's first-creature-spell discount window remains unconsumed. No cards drawn. Selvala may activate {G}, {T} on your following turn."
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life": 40,
+     "board": "no creatures — unchanged"
+    },
+    {
+     "seat": "opponent_2",
+     "life": 40,
+     "board": "no creatures — unchanged"
+    },
+    {
+     "seat": "opponent_3",
+     "life": 40,
+     "board": "unchanged; it was this player's end step"
+    }
+   ]
+  }
+ },
+ "checker": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "step": 1,
+    "rule": "304.1",
+    "status": "supported",
+    "note": "Instant cast with priority on an opponent's end step; full rule confirms; no permission from Radagast needed."
+   },
+   {
+    "step": 1,
+    "rule": "601.2b",
+    "status": "supported",
+    "note": "Verbatim substring of the full rule; X announced during casting, and the announced X=3 now matches the scenario stack item."
+   },
+   {
+    "step": 1,
+    "rule": "202.3",
+    "status": "supported",
+    "note": "Selvala {1}{G}{G} = mana value 3 (cards.json cmc 3). Correctly used to establish the OR-LESS minimum: 'X must be at least 3', X=3 meets it. The iteration-1 'required/must match' overstatement is gone everywhere."
+   },
+   {
+    "step": 2,
+    "rule": "702.51a",
+    "status": "supported",
+    "note": "Generic-mana convoke clause quoted verbatim; three convokers (Wood Elves, Llanowar Elves, Beast Whisperer) cover {3}, matching the scenario exactly."
+   },
+   {
+    "step": 2,
+    "rule": "702.51b",
+    "status": "supported",
+    "note": "Convoke applies after total cost determined; matches full rule and its Heartless Summoning example."
+   },
+   {
+    "step": 2,
+    "rule": "702.51c",
+    "status": "supported",
+    "note": "'Convoked' terminology correct."
+   },
+   {
+    "step": 2,
+    "rule": "601.2h",
+    "status": "supported",
+    "note": "Payment during casting, before resolution."
+   },
+   {
+    "step": 3,
+    "rule": "109.2b",
+    "status": "supported",
+    "note": "'Creature spell' means a spell matching that description on the stack; Chord's type line is Instant (cards.json verified), so Radagast's discount neither applies nor is consumed. Radagast oracle quoted verbatim."
+   },
+   {
+    "step": 3,
+    "rule": "304.1",
+    "status": "supported",
+    "note": "Flash grant redundant for an instant; correct use."
+   },
+   {
+    "step": 4,
+    "rule": "106.6",
+    "status": "supported",
+    "note": "Spend-restricted mana rule; Garenbrig's burst reads 'Spend this mana only to cast creature spells or activate abilities of creatures' (oracle verified) and cannot pay for an instant."
+   },
+   {
+    "step": 4,
+    "rule": "109.2b",
+    "status": "supported",
+    "note": "Same description logic. Oracle nuance VERIFIED: Garenbrig's first ability is plain '{T}: Add {G}', unrestricted, and could legally pay for Chord."
+   },
+   {
+    "step": 5,
+    "rule": "109.2b",
+    "status": "supported",
+    "note": "Beast Whisperer's 'Whenever you cast a creature spell' (oracle verified) does not match an instant on the stack; no draw. The added tapped-status remark is correct — the trigger fails on spell type."
+   },
+   {
+    "step": 6,
+    "rule": "117.4",
+    "status": "supported",
+    "note": "All players pass, top of stack resolves."
+   },
+   {
+    "step": 6,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": "Follow instructions in order written: search, put, shuffle, graveyard."
+   },
+   {
+    "step": 6,
+    "rule": "701.23a",
+    "status": "supported",
+    "note": "MV-3 Selvala matches 'mana value X or less' with X=3; found legally."
+   },
+   {
+    "step": 6,
+    "rule": "701.24a",
+    "status": "supported",
+    "note": "Shuffle after search."
+   },
+   {
+    "step": 6,
+    "rule": "304.2",
+    "status": "supported",
+    "note": "Resolved instant goes to its owner's graveyard."
+   },
+   {
+    "step": 7,
+    "rule": "glossary:cast",
+    "status": "supported",
+    "note": "Put onto the battlefield by a resolving spell is not casting; no card goes to the stack, no costs paid. Beast Whisperer silent."
+   },
+   {
+    "step": 7,
+    "rule": "603.6a",
+    "status": "supported",
+    "note": "Enter event checked for ETB triggers; Beast Whisperer has a cast trigger, not an ETB trigger, and Selvala's own trigger reads 'Whenever ANOTHER creature enters' (oracle verified) — no triggers, no draws. The iteration-1 alternate-payment speculation and its 702.51a citation are correctly deleted."
+   },
+   {
+    "step": 8,
+    "rule": "302.6",
+    "status": "supported",
+    "note": "Selvala entered during opponent 3's end step; when your next turn begins she has been under your control continuously since it began, so her {G}, {T} ability (oracle verified) is activatable that turn."
+   },
+   {
+    "step": 8,
+    "rule": "glossary:summoning-sickness-rule",
+    "status": "supported",
+    "note": "Consistent with 302.6."
+   }
+  ],
+  "iteration_2_coherence_check": "RESOLVED. Iteration 1's three unsupported findings are all fixed: (1) steps 1-2 now announce X=3 and tap the scenario's three convokers, and step 6 resolves that cast — the phantom 'SCENARIO INCONSISTENCY' is demoted to a one-line historical note that accurately describes the artifact's history without contradicting the scenario on disk; (2) final_state no longer claims the scenario announces X=2 and lists Beast Whisperer tapped unconditionally, matching the scenario's definite convoke choice; battlefield_after, graveyard, hand, and all opponent seats are consistent with the resolution; (3) the or-less phrasing is correct everywhere — scenario, step 1, and final_state all say 'X must be at least 3', with 202.3 cited in support. Missing-step audit re-run: no triggered abilities missed (Selvala's own trigger correctly excluded as 'another creature'), no SBAs apply, priority handled via 117.4. All four claim verdicts stand: discount/window untouched, Garenbrig burst illegal while its plain {T}: Add {G} could pay, no cast triggers at all, Selvala live under 302.6 on your following turn.",
+  "iterations": 2
+ }
+}
