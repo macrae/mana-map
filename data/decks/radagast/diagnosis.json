@@ -1,0 +1,549 @@
+{
+ "slug": "radagast",
+ "as_of_decklist_sha256": "f20d4f05922df373ddbfcd5c1fc8bda7ddbe2895d9311401ce38c094148b9886",
+ "archetype": "Mono-green flash-ambush stompy: a 35-creature midrange deck wearing a draw-go posture. The strategic frame describes it correctly in prose, but its 'control' self-label made the audit's archetype matcher apply control overrides (37-39 lands, 12-15 removal, 5-7 wipes) that fit a wrath deck, not this one \u2014 three of the five UNDER verdicts are inflated by that override.",
+ "verdict": "The mana is the best-measured in the fleet's terms (52 Burgess sources vs 36, turn-3 land hit 0.91, commander mean cast t4.0) and the ambush machinery is verified and dense (flash trap drawn 92.5%, metronome body 94.8%). What binds is board WIDTH: the kill needs five bodies (stack 003) and the goldfish reaches a mean of 3.617 by t6, with finisher-plus-second-wave assembled only 37.3% by t6 \u2014 every other weakness is either an override artifact or downstream of this. The genuine coverage holes are zero mass removal and zero graveyard answers, both fixable, one of them free from the pool.",
+ "axes": [
+  {
+   "axis": "mana-base",
+   "verdict": "adequate",
+   "measured": {
+    "value": 36
+   },
+   "reading": "The 37-39 band is the control-archetype override; the deck's own archetype is creature midrange, Burgess's source formula is cleared with 16 copies to spare, and the turn-3 land hit is 0.91 against a 0.74 floor. A 37th land is not the marginal use of a slot here.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.ratios",
+     "quote": "36\u201338 lands, 10\u201312 ramp, 10 card draw, 10\u201312 targeted removal, 3\u20134 board wipes"
+    }
+   ]
+  },
+  {
+   "axis": "mana-sources",
+   "verdict": "strength",
+   "measured": {
+    "value": 52
+   },
+   "reading": "52 copies against a Burgess target of 36 (31 + 1 colour + commander MV 4). This is the axis that adjudicates the mana-base question, and it is not close.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.mana-base",
+     "quote": "lands = 31 + colours in the commander's identity + the commander's mana value, counting 0-mana rocks as lands"
+    }
+   ]
+  },
+  {
+   "axis": "taplands",
+   "verdict": "strength",
+   "measured": {
+    "value": 3
+   },
+   "reading": "Three unconditional taplands in a deck whose whole plan is holding mana open \u2014 well inside the band."
+  },
+  {
+   "axis": "colour-sources",
+   "verdict": "strength",
+   "measured": {
+    "value": 10
+   },
+   "reading": "Ten sources above the Karsten target in the only colour. Mono-green makes this free; it is still true."
+  },
+  {
+   "axis": "ramp",
+   "verdict": "adequate",
+   "measured": {
+    "value": 18
+   },
+   "reading": "Six over the band, but eight of the copies are dorks that also count toward the five-body bar and feed Chord's convoke; the seven land-ramp spells and three auras are the part that adds mana without adding board. If width needs slots, the pure-land-ramp end of this class is where they live.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.ratios",
+     "quote": "36\u201338 lands, 10\u201312 ramp, 10 card draw, 10\u201312 targeted removal, 3\u20134 board wipes"
+    }
+   ]
+  },
+  {
+   "axis": "card-advantage",
+   "verdict": "adequate",
+   "measured": {
+    "value": 10
+   },
+   "reading": "At the floor of 10, and the count overstates uniform quality: only Beast Whisperer draws on every creature cast ungated \u2014 Garruk's Uprising gates on power 4+ (three fixed bodies: Dawn's Light Archer, Old Fat Spider, Craterhoof \u2014 Wickerbough Elder enters with a -1/-1 counter as a 3/3 and never fires it \u2014 plus Mirkwood Pathmaker whenever lands \u22654), Elemental Bond and Tribute's draw half gate on power 3+ (nine fixed bodies plus Pathmaker), Selvala needs strictly-greatest power, Frostfang and Toski need combat damage to connect, Fecundity needs deaths, and Harmonize is one-shot. GAS drawn 85.2% is drawn, not firing.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.ratios",
+     "quote": "36\u201338 lands, 10\u201312 ramp, 10 card draw, 10\u201312 targeted removal, 3\u20134 board wipes"
+    }
+   ]
+  },
+  {
+   "axis": "interaction",
+   "verdict": "weakness",
+   "measured": {
+    "value": 9
+   },
+   "reading": "The 9 is wrong in both directions: it includes Devoted Druid, whose removal:debuff tag is a misfile (its -1/-1 counter is a cost it puts on itself \u2014 it removes nothing of an opponent's), so the real removal-class count is 8 \u2014 while the flash-trap deterrence the deck actually leans on is invisible to it. But the trap suite is combat-facing by oracle text (Frostfang's deathtouch is attackers-only, Saryth's is tapped-only, the only deathtouch BLOCKERS in the 99 are Hornet Nest's tokens), so against anything that does not attack \u2014 combo, superfriends, a resolved engine \u2014 the true suite is the 8, minus the counterspells it does not have.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.interaction-suite",
+     "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
+    }
+   ]
+  },
+  {
+   "axis": "sweepers",
+   "verdict": "weakness",
+   "measured": {
+    "value": 0
+   },
+   "reading": "The 5-7 target is the control override and would be wrong for a 35-creature deck \u2014 Zupke's own line caps at 3 \u2014 but zero is below every band: the traps trade one-for-one and a resolved wide board out-scales them with nothing in the 99 able to reset it. The pool holds no sweeper; closing this is a purchase (Whiptongue Hydra is the one the axis can see; Ezuri's Predation is the one the deck wants, filed threat:tokens).",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.interaction-suite",
+     "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+    }
+   ]
+  },
+  {
+   "axis": "protection",
+   "verdict": "adequate",
+   "measured": {
+    "value": 9
+   },
+   "reading": "Two over the band, deliberately: the deck is linear on Radagast's window and the frame prices that with the critical-mass rule. Over-target here is the insurance premium on a commander-gated posture, not slop.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.threat-density",
+     "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
+    }
+   ]
+  },
+  {
+   "axis": "threat-density",
+   "verdict": "adequate",
+   "measured": {
+    "value": 2
+   },
+   "reading": "A taxonomy artifact, not a deck defect: the axis sees Old Fat Spider (wincon:combat) and Pick Your Poison (wincon:drain \u2014 itself a misfile), while the audit's own engine block enumerates the real finisher class at four (Craterhoof, Overwhelming Stampede, Pathbreaker Ibex, Return of the Wildspeaker), inside the 3-5 band and drawn 52.8%. The bind is not finisher count; it is the board the finisher needs.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.threat-density",
+     "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
+    }
+   ]
+  },
+  {
+   "axis": "creatures",
+   "verdict": "adequate",
+   "measured": {
+    "value": 35
+   },
+   "reading": "The critical mass the metronome needs; informational axis, reported."
+  },
+  {
+   "axis": "interaction-breadth",
+   "verdict": "weakness",
+   "measured": {
+    "value": 4
+   },
+   "reading": "Graveyard is genuinely uncovered \u2014 I read the 99, and every graveyard clause it contains (Eternal Witness, Bala Ged Recovery, Life from the Loam) recurs YOUR cards; nothing touches an opponent's. Deathgorge Scavenger sits in the pool carrying hate:graveyard on a {2}{G} body, so this is the rare weakness that closes for free and moves both this axis (4\u21925) and interaction (9\u219210).",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.interaction-suite",
+     "quote": "cover the classes \u2014 creature, artifact, enchantment, graveyard, land \u2014 before doubling any"
+    }
+   ]
+  },
+  {
+   "axis": "consistency",
+   "verdict": "strength",
+   "measured": {
+    "value": 0.91
+   },
+   "reading": "0.91 turn-3 land hit against a 0.74 floor, keep-7 at 0.814. The deck functions.",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.mana-base",
+     "quote": "had 26% miss the turn-3 land drop with no mana source at all"
+    }
+   ]
+  },
+  {
+   "axis": "curve",
+   "verdict": "adequate",
+   "measured": {
+    "value": 3
+   },
+   "reading": "Modal 3 against the corpus's modal 2, by design: the 22-card three-drop hump is the metronome class, and the commander's {2} discount is the subsidy that makes the deviation priced rather than greedy."
+  },
+  {
+   "axis": "power",
+   "verdict": "adequate",
+   "measured": {
+    "value": 1
+   },
+   "reading": "Floor 1 against a target of 3, zero Game Changers, zero contained infinites. The gap is headroom the ten's bracket-4 door (Springheart/Nissa) deliberately does not spend at this target."
+  },
+  {
+   "axis": "tutors",
+   "verdict": "adequate",
+   "measured": {
+    "value": 9
+   },
+   "reading": "Seven of the nine are land-tutors (the Cultivate class); only Chord of Calling and Fauna Shaman can find an engine piece or a trap, and the audit prices that pair at 30.3% drawn. Compression is thin on purpose at bracket 3."
+  }
+ ],
+ "engine": {
+  "declared": "Radagast's metronome \u2014 the first creature spell each turn is {2} cheaper and flashable, on every player's turn \u2014 feeding flash traps, per-cast draw, and an overrun kill over five-plus bodies.",
+  "components": [
+   {
+    "role": "piece",
+    "have": [
+     "Metronome bodies (15: Wood Elves, Nantuko Vigilante, Wickerbough Elder, Ohran Frostfang, Mirkwood Pathmaker, Old Fat Spider, Eternal Witness, Satyr Wayfinder, Beast Whisperer, Toski, Guardian Augmenter, Arasta, Hornet Nest, Dawn's Light Archer, Saryth)"
+    ],
+    "count": 15,
+    "thinnest": false,
+    "measured_rate": 0.948,
+    "reading": "The full-value flash class; drawn essentially always. Not the constraint."
+   },
+   {
+    "role": "protection",
+    "have": [
+     "Flash traps (13, incl. the protection suite)"
+    ],
+    "count": 13,
+    "thinnest": false,
+    "measured_rate": 0.925,
+    "reading": "Verified by stack 002; the deterrence the interaction axis cannot count, and it is combat-facing only."
+   },
+   {
+    "role": "fodder",
+    "have": [
+     "GAS (10 draw engines)"
+    ],
+    "count": 10,
+    "thinnest": false,
+    "measured_rate": 0.852,
+    "reading": "Drawn reliably; firing is gated (see card-advantage). Beast Whisperer is the only ungated per-cast engine."
+   },
+   {
+    "role": "mana",
+    "have": [
+     "Ramp (17)"
+    ],
+    "count": 17,
+    "thinnest": false,
+    "measured_rate": 0.967,
+    "reading": "Clears the 54%-of-openers band the corpus prices for 10 copies, with room."
+   },
+   {
+    "role": "payoff",
+    "have": [
+     "Overrun kill (Craterhoof Behemoth, Overwhelming Stampede, Pathbreaker Ibex, Return of the Wildspeaker)"
+    ],
+    "count": 4,
+    "thinnest": false,
+    "measured_rate": 0.528,
+    "reading": "Four finishers, but the redundancy is differently shaped: Craterhoof scales on creature COUNT and pumps everything; Stampede and Ibex scale on greatest power, which over a board of 1/1 dorks is small unless Old Fat Spider (the deck's only 6-power body) anchors it."
+   },
+   {
+    "role": "payoff",
+    "have": [
+     "Overrun ASSEMBLED (finisher + second wave)"
+    ],
+    "count": 4,
+    "thinnest": true,
+    "measured_rate": 0.502,
+    "reading": "37.3% by t6, and goldfish mean bodies by t6 is 3.617 against stack 003's five-body bar \u2014 this is the component the deck fails on first. The sim models neither the discount nor opponent-turn casts, so it is a floor, but an unmeasured floor is not a plan."
+   },
+   {
+    "role": "ignition",
+    "have": [
+     "Selvala, Heart of the Wilds"
+    ],
+    "count": 1,
+    "thinnest": false,
+    "measured_rate": 0.162,
+    "reading": "A declared one-card class at 16.2% \u2014 the ceiling of any named singleton, per the audit's own note. The engine demonstrably turns over without her (GAS 85.2%), so she is upside, not a dependency."
+   },
+   {
+    "role": "piece",
+    "have": [
+     "Tutors (Chord of Calling, Fauna Shaman)"
+    ],
+    "count": 2,
+    "thinnest": false,
+    "measured_rate": 0.303,
+    "reading": "The instant-speed fetch for any trap; the audit lists eight pool/role closers (Worldly Tutor the strongest, a Game Changer) if compression is ever wanted."
+   }
+  ],
+  "single_points_of_failure": [
+   {
+    "component": "Radagast of Rhosgobel",
+    "why": "The whole posture \u2014 discount, flash, four windows a round \u2014 is commander-gated; without him every trap is a full-price sorcery-speed creature. The deck already prices this with 9 protection copies; Yeva, Nature's Herald (on the ten) is the only card that would replicate the flash half.",
+    "closers": [
+     "Guardian Augmenter",
+     "Heroic Intervention",
+     "Tyvar's Stand",
+     "Sylvan Safekeeper",
+     "Veil of Summer",
+     "Yeva, Nature's Herald (ten, purchase)"
+    ],
+    "citations": [
+     {
+      "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+      "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+     }
+    ]
+   },
+   {
+    "component": "Selvala, Heart of the Wilds",
+    "why": "Declared one-card class, assembled 16.2%. Castle Garenbrig covers the big-mana half for creature spells (restricted); nothing in the 99 covers the strict-greatest-power draw. The Great Henge (on the ten) is the named backup; nothing in the pool is.",
+    "closers": [
+     "Castle Garenbrig (mana half only)",
+     "The Great Henge (ten, purchase)"
+    ],
+    "citations": [
+     {
+      "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+      "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+     }
+    ]
+   }
+  ]
+ },
+ "lean_into": [
+  {
+   "what": "The four-window ambush posture \u2014 it is verified, dense, and the audit says it assembles near-universally.",
+   "why": "Stack 001 verifies the per-turn reset and the {G} Wood Elves; stack 002 verifies the after-blocks Frostfang trap; metronome body 94.8% and flash trap 92.5% drawn. This is the deck's identity and its numbers are the best in the file.",
+   "evidence": {
+    "stacks": [
+     "001",
+     "002"
+    ],
+    "measured": {
+     "metronome_assembled": 0.948,
+     "flash_trap_assembled": 0.925
+    }
+   },
+   "citations": [
+    {
+     "rule": "strategy:multiplayer.pod-management",
+     "quote": "Leaving instant-speed mana open forces three players, not one, to respect your possible interaction."
+    }
+   ]
+  },
+  {
+   "what": "The wrath-proof refill \u2014 play INTO sweeper-control seats, not around them.",
+   "why": "Stack 004 verifies Fecundity pays out on everyone's wake while Toski skips it; flash deployment means end-step bodies were never exposed to the wrath at all. This deck's worst axis (sweepers 0) matters least in exactly this matchup.",
+   "evidence": {
+    "stacks": [
+     "004"
+    ]
+   },
+   "citations": []
+  }
+ ],
+ "cut_candidates": [
+  {
+   "card": "Essence Warden",
+   "why": "A lifegain trigger in a deck with zero lifegain payoffs \u2014 I enumerated the 99's oracle text and nothing reads life gained. Power 1, no flash, no reach, triggers no draw gate, deters nothing.",
+   "cost_of_cutting": "One fewer 1-mana body: a convoke count for Chord and a unit toward the five-body bar, plus incidental life against aggro. That is the whole loss.",
+   "orphans_stack": [],
+   "difficulty": "easy",
+   "citations": []
+  },
+  {
+   "card": "Briar Patch",
+   "why": "-1/-0 to creatures attacking you is the weakest deterrent in a deck already selling deathtouch traps; it stops exactly the 1-power attackers the traps eat anyway.",
+   "cost_of_cutting": "It is one of the audit's 9 interaction copies (removal:debuff), so cutting it without an in-kind add drops the measured axis to 8; it is also the only repeatable effect against true 1/1 token swarms.",
+   "orphans_stack": [],
+   "difficulty": "contested",
+   "citations": []
+  },
+  {
+   "card": "Hardened Scales",
+   "why": "An amplifier with exactly two +1/+1 sources in the 99 \u2014 Tribute to the World Tree's counter half and Warg Tactics \u2014 and Inspiring Call reads counter PRESENCE, not quantity, so the payoff does not scale with it. The dead-clause purge's lesson says to keep hunting this class; this is the nearest surviving member.",
+   "cost_of_cutting": "Tribute-into-a-dork drops from a 4/4 to a 3/3 \u2014 real board quality in an overrun deck whose Stampede/Ibex X reads greatest power. Not dead, just thin.",
+   "orphans_stack": [],
+   "difficulty": "contested",
+   "citations": []
+  },
+  {
+   "card": "Harmonize",
+   "why": "The only one-shot in a ten-card engine suite; every other draw source compounds with the board. If a slot must be found for a body, this is the card whose job the engines already do when the deck is functioning.",
+   "cost_of_cutting": "It is the deck's ONLY unconditional draw \u2014 no board, no combat, no deaths required \u2014 which makes it the best card in exactly the games where the deck is losing. Cutting it also drops card-advantage from 10 to 9, below the ratios floor, unless the replacement draws.",
+   "orphans_stack": [],
+   "difficulty": "painful",
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.ratios",
+     "quote": "36\u201338 lands, 10\u201312 ramp, 10 card draw, 10\u201312 targeted removal, 3\u20134 board wipes"
+    }
+   ]
+  }
+ ],
+ "add_candidates": [
+  {
+   "card": "Deathgorge Scavenger",
+   "closes": "interaction-breadth",
+   "source": "pool",
+   "why": "The one uncovered class, closed for free: hate:graveyard on a {2}{G} 3/2 \u2014 a 3-MV, 2-generic metronome body Radagast flashes for {G}, power 3 fires Elemental Bond and Tribute, and the exile trigger repeats on attack in a deck that attacks. Moves interaction-breadth 4\u21925 AND interaction 9\u219210; no overlap with anything in the 99 (marginal, not isolated \u2014 it is the only graveyard card, so the two frames agree).",
+   "evidence": {
+    "pool_line": "1 Deathgorge Scavenger (LCC) 236",
+    "roles": [
+     "hate:graveyard",
+     "threat:body",
+     "value:etb",
+     "buff:pump"
+    ]
+   },
+   "natural_cut": "Essence Warden",
+   "bracket_delta": {
+    "before": 1,
+    "after": 1
+   },
+   "citations": [
+    {
+     "rule": "strategy:deckbuilding.interaction-suite",
+     "quote": "cover the classes \u2014 creature, artifact, enchantment, graveyard, land \u2014 before doubling any"
+    }
+   ]
+  },
+  {
+   "card": "Hornet Queen",
+   "closes": "THE OVERRUN ASSEMBLED: finisher AND a second wave to pump",
+   "source": "pool",
+   "why": "Five bodies from one card against the binding component (assembled 37.3% by t6; goldfish mean 3.617 bodies vs stack 003's five-body bar), flashed for {2}{G}{G}{G} under Radagast \u2014 and the only defensive deathtouch the deck would own beyond Hornet Nest's tokens, which is the mass-attack insurance the sweepers axis is crying about. Free, from the pool. Her 27 deduped recorded combo lines all need a partner this 99 does not hold (checked against combo_details), so the floor stays 1.",
+   "evidence": {
+    "pool_line": "1 Hornet Queen (MKC) 172",
+    "combo_lines_opened": []
+   },
+   "natural_cut": "Briar Patch",
+   "bracket_delta": {
+    "before": 1,
+    "after": 1
+   },
+   "citations": [
+    {
+     "rule": "strategy:multiplayer.asymmetry",
+     "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale."
+    }
+   ]
+  }
+ ],
+ "open_questions": [
+  {
+   "question": "Does Craterhoof resolve at flash speed off Radagast plus Castle Garenbrig's restricted six \u2014 the frame's own candidate line 'Craterhoof at flash speed'?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "The pivot plan claims a protected end-step alpha strike; if the payment stacking or timing fails, the pivot happens at sorcery speed into open mana and the whole pivot_trigger needs rewriting."
+  },
+  {
+   "question": "Can Selvala's tapped mana pay for the flashed cast in the same window (frame candidate line 2)?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "It decides whether Selvala is an engine multiplier or just a draw trigger \u2014 which prices whether The Great Henge purchase is backup or upgrade."
+  },
+  {
+   "question": "Does a 35-creature ambush deck want symmetric wraths at all, or is the sweeper hole properly closed by asymmetric bodies (Whiptongue Hydra, the only candidate the removal:sweeper axis can see) versus Ezuri's Predation (the better card, invisible to the axis as threat:tokens)?",
+   "settled_by": "research-strategy",
+   "why_it_matters": "Sweepers is the deck's worst measured axis and both closers are purchases; buying the axis-visible one when the axis-invisible one is better would be optimizing the validator, not the deck."
+  },
+  {
+   "question": "How much do the goldfish's three declared blind spots (no discount, no opponent-turn flash casts, no aura ramp) understate board density?",
+   "settled_by": "goldfish",
+   "why_it_matters": "Board width is the binding axis and its true value is unmeasured; if the real bodies-by-t6 is near 5, the deck needs nothing but the two free pool swaps \u2014 if it is near the measured 3.617, it needs Avenger/Hornet Queen class width and possibly Seedborn Muse."
+  }
+ ],
+ "gaps": [
+  "No deck_recon exists (2-day-old commander); every judgment here is artifact-grounded and none is meta-grounded. A recon pass is the prerequisite for any purchase from the ten.",
+  "considering.json is stale against the dead-clause purge: four of the ten's natural_cuts (Sunfrill Imitator, Summit Apes, Hookhand Mariner, Knight of the Stampede) name cards no longer in the 99, so the Hornet Queen, End-Raze, Avenger and Yeva entries currently have no legal cut. Needs a scoped regeneration.",
+  "strategic_frame.json and considering.json quote pre-purge figures \u2014 flash traps 76.4% by t6 (current 85.7%), GAS 76.0% by t6 (current 75.4%), bodies 3.345 (current 3.617) \u2014 so the purge commit's claim that merged prose 'remains accurate' is false on figures.",
+  "Two taxonomy misfiles feed the audit: Devoted Druid's removal:debuff (the -1/-1 counter is a self-inflicted cost, not removal) inflates interaction; Pick Your Poison's wincon:drain pollutes threat-density. Neither changes a verdict here, but both would mislead a reader who trusts the axis card lists.",
+  "The archetype matcher took 'control' from the frame's prose self-description, importing wrath-deck overrides for lands/removal/sweepers onto a 35-creature deck; mana-base UNDER and the sweeper target of 5-7 are artifacts of that match, adjudicated in the readings above."
+ ],
+ "skeptic": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "where": "axes[0]",
+    "status": "supported",
+    "note": "mana-base 'adequate' despite audit UNDER is grounded, not convenient: re-run audit confirms the 37-39 band is the control-archetype override (archetype.matched='control', source strategic_frame.json, overrides mana-base [37,39]); Burgess mana-sources 52 vs target 36 and turn-3 land hit 0.91 vs 0.74 floor both reproduce. The Burgess-adjudicates-sources convention is the fleet's documented rule."
+   },
+   {
+    "where": "axes[6]",
+    "status": "supported",
+    "note": "Devoted Druid dismissal-of-the-9 checks in substance: oracle is 'Put a -1/-1 counter on this creature: Untap this creature' \u2014 a cost placed on itself, touching nothing an opponent owns, so removal:debuff (confirmed in card_roles.json) is a misfile and 9-1=8. The word 'targets' is loose (a cost targets nothing) but the claim's substance is right, and the doctor kept the weakness verdict anyway \u2014 this is a correction, not a dismissal. Deathtouch geometry also verified: Frostfang grants attackers-only, Saryth tapped-only (tapped creatures cannot block), Hornet Nest tokens the only deathtouch blockers. ITERATION 2: 'targets itself' tightened to cost-not-targeting language in both sites (axes[6] reading and the taxonomy-misfile gap), matching the oracle exactly."
+   },
+   {
+    "where": "axes[9]",
+    "status": "supported",
+    "note": "threat-density dismissal grounded: audit wincon scan is exactly [Old Fat Spider, Pick Your Poison]=2; Pick Your Poison's oracle is a three-mode each-opponent-sacrifices sorcery with no drain clause, so wincon:drain (present in card_roles.json) is a real misfile; the engine block's overrun component is exactly the four named finishers at 0.528 drawn, inside the 3-5 band."
+   },
+   {
+    "where": "axes[5]",
+    "status": "supported",
+    "note": "ITERATION 2: corrected in place \u2014 reading now says 'three fixed bodies: Dawn's Light Archer, Old Fat Spider, Craterhoof' with the Wickerbough -1/-1-enters-as-3/3 reasoning inline. Matches my oracle re-check exactly. Original finding: Wickerbough Elder was listed among Garruk's Uprising's power-4+ fixed bodies despite entering with a -1/-1 counter."
+   },
+   {
+    "where": "engine",
+    "status": "supported",
+    "note": "All component sizes (15/13/10/17/4/4+16/1/2) and rates (0.948/0.925/0.852/0.967/0.528/0.502-0.373/0.162/0.303) equal today's audit. Both SPOFs are genuine one-card classes (the commander; declared singleton Selvala with audit closers empty), not combo halves mislabeled as defects. Old Fat Spider confirmed the deck's only fixed 6-power body; commander mean cast 4.002 matches the verdict's 't4.0'."
+   },
+   {
+    "where": "cut_candidates[0]",
+    "status": "supported",
+    "note": "Essence Warden: oracle census of the 99 finds zero payoffs reading life gained (the only 'life' clauses are sources: Warden, Scaled Nurturer, Food tokens). Power 1, no flash, fires no draw gate. Appears in no stack scenario; all four stacks pass and orphans_stack [] verified by grep."
+   },
+   {
+    "where": "cut_candidates[1]",
+    "status": "supported",
+    "note": "Briar Patch: oracle exactly '-1/-0 until end of turn' per attacker on you; carries removal:debuff so the priced interaction drop 9->8 is real; in no stack; 'contested' difficulty is honest since the paired add (Hornet Queen) is not in-kind \u2014 the entry says so."
+   },
+   {
+    "where": "cut_candidates[2]",
+    "status": "supported",
+    "note": "Hardened Scales: grep of the 99 finds exactly two +1/+1 sources (Tribute's counter half, Warg Tactics); Inspiring Call reads counter presence, not quantity; the Tribute arithmetic checks (2+1=3 counters: 1/1 dork is 4/4 with Scales, 3/3 without)."
+   },
+   {
+    "where": "cut_candidates[3]",
+    "status": "supported",
+    "note": "Harmonize as the painful cut survives the census: of the 10 counted draw sources it is the only one requiring no board, combat, deaths, or cast gate. Nearest counterexample is Abundant Growth (uncounted ETB cantrip) which nets zero cards, so 'only unconditional draw' holds in the card-advantage sense. The cut list contains a real painful entry; the job was not dodged."
+   },
+   {
+    "where": "add_candidates[0]",
+    "status": "supported",
+    "note": "Deathgorge Scavenger: pool line '1 Deathgorge Scavenger (LCC) 236' verbatim in pool-green-bulk.txt; mono-green {2}{G}, Commander-legal; roles exactly as quoted incl. hate:graveyard, which the interaction axis role list counts (9->10) and the breadth heuristic sees (graveyard by_class currently 0; it is the package's only graveyard card, so marginal == isolated as claimed); oracle repeats on attack; power 3 fires Bond and Tribute; {2} discount flashes it for {G}."
+   },
+   {
+    "where": "add_candidates[1]",
+    "status": "supported",
+    "note": "ITERATION 2: corrected \u2014 '27 deduped recorded combo lines all need a partner this 99 does not hold', matching my full enumeration of combo_details (27 deduped, zero partners in the 99); bracket_delta 1->1 stands. All other claims re-verified in iteration 1: {4}{G}{G}{G} -> {2}{G}{G}{G} under Radagast, pool line verbatim, five-bodies-vs-3.617 arithmetic against stack 003, deathtouch-blocker census."
+   },
+   {
+    "where": "gaps[2]",
+    "status": "supported",
+    "note": "ITERATION 2: corrected \u2014 now reads 'flash traps 76.4% by t6 (current 85.7%), GAS 76.0% by t6 (current 75.4%), bodies 3.345 (current 3.617)', each figure matching the artifacts on disk (frame lines 30/36, considering line 3, goldfish_metrics/audit). The staleness charge against commit 78e89ec's 'remain accurate' stands and is now stated with correctly attributed figures."
+   },
+   {
+    "where": "gaps[1]",
+    "status": "supported",
+    "note": "Verified against considering.json + decklist: the Hornet Queen, Avenger, End-Raze and Yeva entries name natural_cuts (Sunfrill Imitator, Hookhand Mariner, Summit Apes, Knight of the Stampede) that are no longer in the 99; the other six natural_cuts are still legal."
+   },
+   {
+    "where": "open_questions[2]",
+    "status": "supported",
+    "note": "Pool scan of all 249 entries against card_roles: zero removal:sweeper \u2014 'the pool holds no sweeper' is true. Whiptongue Hydra carries removal:sweeper (axis-visible), Ezuri's Predation carries only threat:tokens (axis-invisible). The question is real and correctly framed as validator-vs-deck."
+   },
+   {
+    "where": "axes[*].citations",
+    "status": "supported",
+    "note": "All seven cited sections fetched via lookup-strategy; every quote is verbatim and used in context: ratios is applied WITH its own 'derive the counts from the deck's actual failure modes' caveat (the doctor argues from failure modes, not the template); asymmetry's 'wide alpha strikes... scale' backs exactly a wide-alpha payoff; pod-management's open-mana line matches the verified flash posture; redundancy's 7.1% named-singleton figure matches the audit's Selvala note."
+   },
+   {
+    "where": "(whole artifact, iteration 2)",
+    "status": "supported",
+    "note": "Re-swept the corrected diagnosis.json: validate-diagnosis OK; all 16 axis values/verdicts, engine component counts and rates, SPOFs, the four cuts (difficulties, empty orphans_stack), both adds (natural_cuts, bracket_deltas), four open questions, five gaps and decklist sha f20d4f05... are byte-for-byte the iteration-1 claims \u2014 only the four flagged leaves changed, each to the value I verified against the artifacts."
+   }
+  ]
+ }
+}
