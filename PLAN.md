@@ -207,27 +207,33 @@ Four, all flagged by strategic frames and all load-bearing there: **auditing a c
 engine model's stage vocabulary, which is the better home for it); **counters-matter**; and
 **tutor sequencing**, doubly wanted since Fetch Quests is a whole section with no pillar.
 
-### 9. The 2026-08-13 cycle shipped with NO unit tests · **owed**
+### 9. Unit tests for the new subsystems · **partly paid**
 
-Recorded plainly because it is the kind of debt that becomes invisible: five new Python
-modules — `deck_map`, `merge_deck_map`, `engine_facts`, `validate_engine`, `deck_status` —
-are referenced by **zero** test files. The suite grew 1,524 → 1,530 this cycle and all six
-are the browser motion tests.
+**Done (sprint step 0):** `deck_map.json` and `engine.json` are now gated by
+`test_pilot_tracked_artifacts_validate.py` (45 → 55 cases), and both gates were proven to
+fire by sabotaging a real artifact and watching them fail. `tests/test_pilot_deck_map.py`
+adds determinism, orientation, the unit box, the balance bound, completeness and unique
+naming. Suite 1,530 → 1,547.
 
-They are not unexercised — every one was run repeatedly against all nine real decks, and the
-validators were each proven to fire by hand-breaking an artifact. But "I ran it" is not
-coverage, and the specific risks are known:
+**One correction came out of writing them, and it matters more than the tests.** The record
+credited Ward linkage with shrinking radagast's oversized city. It did not: at the k a
+divisor picks, Ward is 38/71 and average linkage 37/71 — *average is better*. Ward only
+leads once k grows (32% vs 49% at k=7), so the win belongs to **the balance bound**. Ward's
+other apparent advantage — no one-card cities — does not generalise either; on
+outlier-bearing data it strands strays exactly as average does. The test file asserts the
+bound and documents why it **refuses** to assert the linkage: three attempts each came back
+narrower than the last, and a test asserting it would look like a fact about the algorithm
+while being a fact about one deck. CLAUDE.md is corrected too.
 
-- **`test_pilot_tracked_artifacts_validate.py` covers five artifacts and neither new one.**
-  Adding `deck_map.json → validate_deck_map` and `engine.json → validate_engine` to its map
-  is the single highest-value line of test code available, and it is one line each.
-- `deck_map`'s determinism (`_orient` pinning rotation, reflection and scale) is asserted by
-  nothing. It was verified once by rerunning and diffing bytes; a regression there silently
-  redraws every map.
-- The measured clustering rules — Ward over average linkage, the 35% balance bound — have no
-  regression floor, so a linkage change would pass silently.
+**Still owed:**
 
-Do this before rolling `analyze-engine` to the other eight decks.
+- `merge_deck_map`, `engine_facts` and `deck_status` have no direct unit tests. The
+  tracked-artifact gate exercises the first indirectly; the other two do not appear in any
+  test.
+- No regression floor on the balance bound's *effect* — the test asserts the invariant holds
+  on a synthetic fixture, not that real decks stay balanced.
+
+Do the rest before rolling `analyze-engine` to the other eight decks.
 
 ### 10. Codebase hygiene
 

@@ -22,7 +22,9 @@ import pytest
 from manamap.config import DECKS_DIR
 from manamap.pilot import (
     validate_considering,
+    validate_deck_map,
     validate_diagnosis,
+    validate_engine,
     validate_issue,
     validate_strategic_frame,
     validate_tutor_guide,
@@ -37,6 +39,15 @@ GATED = {
     "strategic_frame.json": validate_strategic_frame,
     "issue_plan.json": validate_issue,
     "diagnosis.json": validate_diagnosis,
+    # Added 2026-08-13 with the subsystems that write them. Both were shipped a
+    # cycle earlier than this line and neither was gated, which is precisely the
+    # shape of the failure this file's docstring describes — a validator nothing
+    # runs is not a gate. `deck_map.json` carries agent-supplied names over a
+    # measured membership; `engine.json` carries `verified_by` claims against
+    # checker-passed stacks. Both are exactly the kind of artifact that rots
+    # silently, because both look complete when they are wrong.
+    "deck_map.json": validate_deck_map,
+    "engine.json": validate_engine,
 }
 
 
