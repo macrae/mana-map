@@ -595,6 +595,30 @@ Every feature opener carries all four, in this order:
    every loop after this one is better than the last."*
 4. **Byline/tier badge**: who is speaking and at what evidence tier.
 
+**A dek never opens by asking the reader a question.** Vol. 009 opened three
+departments with one and Vol. 004 opened five — *"What is a commander worth when you
+never have to draw him?"*, *"When does a green creature deck get to play control?"*,
+*"Which cards earned a chair?"* Each is fine alone; six in one issue is a formula, and
+a book that opens every section by posing a question teaches the reader that the answer
+is always three sentences away, so they stop reading the question.
+
+**Open on a moment instead.** A specific turn, a specific board, someone about to be
+wrong:
+
+> *Turn five. Dave has six Forests open and everyone at the table has decided he's the
+> ramp guy. He is not the ramp guy.*
+
+A question inside the copy is rhetoric and stays legal. A question in the **headline**
+is a different device this rule does not govern. `validate-issue` fails a dek whose
+first sentence is interrogative.
+
+**Internal ids never appear in copy.** `strategy:multiplayer.pod-management` is how an
+agent addresses the strategy database. The issue carries no bibliography for it to
+point at, so on the page it is punctuation the reader has to step over. Ground the
+claim, then say it in English in the columnist's own voice. Legitimate only in a
+citation's structured `rule` field and in editor-facing plan notes; `validate-issue`
+fails it anywhere else.
+
 ### 7.3 Puns — the discipline
 
 The era punned relentlessly and so do we, but under two constraints: puns live in

@@ -54,6 +54,7 @@ land whose clause explicitly permits activating abilities.
   `data/obsolescence_index.json` — evidence for roles/upgrades
 - `data/decks/<slug>/strategic_frame.json` (when present) — the strategy-researcher's archetype/role/engine assessment; let it shape how_it_wins and card-role framing, and check combo-line intros against its engine map
 - The strategy companion: `.venv/bin/manamap pilot query-strategy "…" --json` / `lookup-strategy <strategy:id> --json` — when prose leans on a named framework (tempo, role assignment, threat deflection), ground it in a real `strategy:<id>` section (★-tier grounding; never presents as rules-verified)
+  - **The id stays in your reasoning; it never reaches the page.** Grounding means you checked, not that the reader sees the receipt — the issue prints no strategy bibliography, so a `strategy:` tag in body copy points at nothing. Say the idea in English in the columnist's voice. `validate-issue` fails on any `strategy:` id in reader-facing copy (it is legitimate only in a citation's `rule` field and in editor-facing plan notes).
 - Spawnable evidence source: the `deck-analyst` agent for shortlists (synergy clusters, curve analysis)
 
 ## The zero-guessing rule

@@ -132,6 +132,15 @@ def validate_plan(plan, card_names=None, artists=None):
                     f"(cover bursts belong in the plan's top-level cover block)"
                 )
 
+        # A dek sells the department; it does not interview the reader (STYLEv3 §7.2).
+        dek = dept.get("dek")
+        if dek and _QUESTION_OPENER_RE.match(dek):
+            errors.append(
+                f"{where}: dek opens by asking the reader a question — "
+                f"{dek.split('?')[0][:60]!r}?. Open on a moment instead; six of "
+                f"these in one issue reads as a formula, not as six ideas."
+            )
+
         # Costume never earns the badge (STYLEv3 §10).
         claimed = dept.get("tiers")
         if claimed is not None and tuple(claimed) != tuple(spec["tiers"]):
@@ -198,8 +207,39 @@ _CONTINUITY_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Internal taxonomy ids, in copy a reader sees. `strategy:multiplayer.pod-management`
+# is how an agent addresses the strategy DB; it is not English and it is not a
+# citation the reader can follow — the manual has no strategy bibliography, so the
+# tag resolves to nothing on the page. Every prose agent is told to GROUND claims in
+# strategy sections, and the tag is what grounding looks like in the agent's own
+# reasoning, so it leaks by a very natural mistake and nothing caught it: 68
+# occurrences reached the rendered HTML of all eight published issues before this
+# existed (docs/magazine-feedback-2026-08-13.md §2).
+#
+# Matched anywhere, not just in parentheses. Every live occurrence happened to be a
+# trailing parenthetical, which made the cleanup mechanical — but a rule written to
+# the shape of the instances found once would miss the next one that arrives inline.
+_TAXONOMY_RE = re.compile(r"\bstrategy:[a-z][a-z0-9-]*(?:\.[a-z][a-z0-9-]*)*")
+
+# A dek that opens by asking the reader a question. Six of Vol. 009's departments
+# did, which reads as a formula rather than as six separate ideas — and a magazine
+# that opens every section by posing a question is teaching the reader that the
+# answer is always three sentences away. Open on a moment instead.
+#
+# Anchored to the START of the dek only: a question later in the copy is rhetoric,
+# and a question in a HEADLINE is a different device this does not govern.
+_QUESTION_OPENER_RE = re.compile(
+    r"^\s*(?:What|When|Which|Why|How|Who|Where|Is|Are|Does|Do|Can|Should)\b[^?]{0,200}\?"
+)
+
 # Plan fields the reader never sees; everything else in a department is copy.
-_EDITOR_ONLY_PLAN_KEYS = {"note", "components", "id", "tiers"}
+#
+# `gaps` and `rhythm_notes` are the editor talking to the next editor — what the
+# strategy DB was missing, why a spread sits where it does — and `build_manual`
+# renders neither (grep it: there is no reader-facing use of either key). They are
+# exactly where naming a `strategy:` id is CORRECT, so linting them as reader copy
+# flags the one honest note in the file.
+_EDITOR_ONLY_PLAN_KEYS = {"note", "components", "id", "tiers", "gaps", "rhythm_notes"}
 
 
 def _walk_strings(obj, path=""):
@@ -213,6 +253,19 @@ def _walk_strings(obj, path=""):
         yield path, obj
 
 
+# A citation's `rule` field is where a taxonomy id BELONGS: it is the structured
+# half of the citation contract, the renderer never prints it raw for a strategy
+# citation (only `CR <n>` for rules citations), and a decision branch citing a
+# strategy section is the contract working exactly as designed.
+#
+# This skip is the difference between a validator and a nuisance. Without it the
+# taxonomy rule fires on 51 correct decision citations across four decks, and a
+# check that fails on accurate data teaches everyone to ignore red — which is the
+# same lesson three rejected `validate-diagnosis` proposals were killed over.
+def _is_citation_id(path):
+    return path.endswith(".rule") and ".citations[" in path
+
+
 def _lint_strings(doc, label, skip_key=None):
     errors = []
     for path, text in _walk_strings(doc):
@@ -223,6 +276,13 @@ def _lint_strings(doc, label, skip_key=None):
             errors.append(
                 f"{label} [{path}]: changelog voice — {match.group()!r} "
                 f"(STYLEv3 L10: every issue is the reader's first)"
+            )
+        tag = _TAXONOMY_RE.search(text)
+        if tag and not _is_citation_id(path):
+            errors.append(
+                f"{label} [{path}]: internal taxonomy id in reader copy — "
+                f"{tag.group()!r}. Ground the claim, then say it in English; the "
+                f"issue has no strategy bibliography for the tag to point at."
             )
     return errors
 
@@ -264,19 +324,27 @@ def validate_land_counts(base, plan):
     return errors
 
 
+def _editor_only(path):
+    """Is this field the editor talking to the next editor, rather than to a reader?
+
+    Shared by every artifact linted below, not just the plan: `gaps` means the same
+    thing in `issue_plan.json` and in `considering.json` — an unrendered note about
+    what the evidence could not settle — and a rule that knew about only one of them
+    fired on the other the moment the lint widened.
+    """
+    last = path.rsplit(".", 1)[-1].split("[")[0]
+    # departments[].note is editor-facing except under featured/also_worth_noting,
+    # which build_manual renders. Keep the mechanical rule simple: skip bare
+    # `note` only when it is a department-level key.
+    return last in _EDITOR_ONLY_PLAN_KEYS and ".featured" not in path \
+        and "also_worth_noting" not in path
+
+
 def validate_self_containment(base, plan):
     """Reader-facing text must carry no memory of previous deck versions."""
     errors = []
 
-    def plan_skip(path):
-        last = path.rsplit(".", 1)[-1].split("[")[0]
-        # departments[].note is editor-facing except under featured/also_worth_noting,
-        # which build_manual renders. Keep the mechanical rule simple: skip bare
-        # `note` only when it is a department-level key.
-        return last in _EDITOR_ONLY_PLAN_KEYS and ".featured" not in path \
-            and "also_worth_noting" not in path
-
-    errors += _lint_strings(plan, "issue_plan.json", skip_key=plan_skip)
+    errors += _lint_strings(plan, "issue_plan.json", skip_key=_editor_only)
 
     path = base / "manual_prose.json"
     if path.exists():
@@ -288,6 +356,17 @@ def validate_self_containment(base, plan):
         for dec in sorted(decisions.glob("*.json")):
             with open(dec) as f:
                 errors += _lint_strings(json.load(f), f"decisions/{dec.name}")
+
+    # The Short List and Fetch Quests are rendered departments whose copy lives
+    # outside issue_plan.json, written by their own agents — so they were invisible
+    # to this check while being just as reader-facing as everything above. Nine
+    # taxonomy ids survived the first cleanup pass in exactly these two files, and
+    # the L10 changelog rule had never been applied to them at all.
+    for name in ("considering.json", "tutor_guide.json"):
+        path = base / name
+        if path.exists():
+            with open(path) as f:
+                errors += _lint_strings(json.load(f), name, skip_key=_editor_only)
     return errors
 
 

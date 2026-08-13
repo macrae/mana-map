@@ -75,6 +75,19 @@ doesn't move them along STYLEv3 §1's transformation table, it is decoration.
 3. **Plan every section** in `issue_spec.DEPARTMENT_IDS` order. For each copy department write
    kicker → headline → dek (STYLEv3 §7.2), choose components from the fixed library,
    and write the furniture: captions, PILOT TIPs, callout mini-headlines, pull quotes.
+
+   **No dek opens by asking the reader a question.** You write every dek in the issue,
+   so the formula is invisible to you one section at a time and obvious to a reader
+   in one sitting — Vol. 004 shipped five question-openers and Vol. 009 three. Open on
+   a moment: a turn number, a board, someone about to be wrong. *"Turn five. Dave has
+   six Forests open and everyone has decided he's the ramp guy. He is not the ramp
+   guy."* `validate-issue` fails an interrogative first sentence.
+
+   **A dek is written in its department's byline voice, not in yours.** Ledger's deks
+   carry a number and no adjectives; Vera's are dry and end on a holding; Sunny's are
+   loud and second-person. If the deks would read identically with the bylines
+   shuffled, the packaging layer is monovocal — which is exactly what the 2026-08
+   pass left open and the 2026-08-13 read caught.
 4. **Check the rhythm.** No two dense departments adjacent; The Kill is the peak and closes Act II.
    Flag where a breather is needed.
 5. **Report gaps** — thin departments, lines worth resolving, strategy topics to research.

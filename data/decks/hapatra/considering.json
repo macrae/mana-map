@@ -8,51 +8,76 @@
       "cmc": 2.0,
       "type_line": "Instant",
       "evidence": {
-        "synergy_partners_in_deck": ["Blood Artist", "Zulaport Cutthroat", "Bastion of Remembrance"],
+        "synergy_partners_in_deck": [
+          "Blood Artist",
+          "Zulaport Cutthroat",
+          "Bastion of Remembrance"
+        ],
         "edhrec_rank": 124,
         "game_changer": false
       },
       "closes": "interaction-breadth",
-      "why": "Recomputing interaction-breadth with this one card added takes the deck from one answered class to four — creature, artifact, enchantment, land — which is the difference between beating and losing to a turn-3 Cursed Totem, an artifact that switches off Yawgmoth, Carrion Feeder, Viscera Seer, Devoted Druid and every mana dork in one card; the corpus is blunt about the order to buy in: \"Breadth before depth: three opponents mean every permanent type appears, so cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any; catch-all removal earns its premium\" [strategy:deckbuilding.interaction-suite].",
+      "why": "Recomputing interaction-breadth with this one card added takes the deck from one answered class to four — creature, artifact, enchantment, land — which is the difference between beating and losing to a turn-3 Cursed Totem, an artifact that switches off Yawgmoth, Carrion Feeder, Viscera Seer, Devoted Druid and every mana dork in one card; the corpus is blunt about the order to buy in: \"Breadth before depth: three opponents mean every permanent type appears, so cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any; catch-all removal earns its premium\".",
       "unlocks": "The deck's first answer to a noncreature permanent, at instant speed and two mana — inside the three-mana ceiling the same section reports as \"essentially the most any player should pay for interaction\".",
       "natural_cut": "Crumbling Ashes",
-      "bracket_delta": {"before": 4, "after": 4}
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
     },
     {
       "card": "Dawnhand Dissident",
       "role": "hate:graveyard",
       "cmc": 1.0,
       "type_line": "Creature — Elf Warlock",
-      "evidence": {"edhrec_rank": 7302, "game_changer": false},
+      "evidence": {
+        "edhrec_rank": 7302,
+        "game_changer": false
+      },
       "closes": "interaction-breadth, and the engine's ignition component (free repeatable -1/-1 source, 3 cards)",
       "why": "One black mana buys both halves of what this deck is short of: \"{T}, Blight 1: Surveil 1\" is a free repeatable -1/-1 placement — put the counter on a Snake, Hapatra mints the replacement, Blood Artist drains, the board is flat and you filtered a card — and the second mode, \"{T}, Blight 2: Exile target card from a graveyard\", is the fifth permanent class, so the recomputed breadth with this beside Assassin's Trophy is five of five.",
       "unlocks": "Targeted graveyard hate that does not tax your own Eternal Witness, Phyrexian Reclamation or Svogthos the way a Rest in Peace effect would; one activation a turn, so the surveil and the exile compete for the same tap.",
       "natural_cut": "Elvish Mystic",
-      "bracket_delta": {"before": 4, "after": 4}
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
     },
     {
       "card": "Sinister Gnarlbark",
       "role": "removal:debuff",
       "cmc": 3.0,
       "type_line": "Creature — Treefolk Warlock",
-      "evidence": {"edhrec_rank": 5510, "game_changer": false},
+      "evidence": {
+        "edhrec_rank": 5510,
+        "game_changer": false
+      },
       "closes": "the engine's ignition component (free repeatable -1/-1 source, 3 cards)",
       "why": "A 0/4 for {2}{B} that draws a card and blights 1 at every one of your end steps: from turn 4 on that is a free Snake and a free card every turn cycle, an Insect too under Nest of Scarabs and a drain under Obelisk Spider, and its own body soaks three of the counters before it dies into an outlet.",
-      "unlocks": "A counter source that costs no mana on the turn you use it — but on a fixed trigger, so unlike Yawgmoth's activation you cannot hold it up in response to a removal spell; \"Payoffs without the enabler are blanks until the engine exists\" [strategy:mulligans.engine-hands], and this is an enabler.",
+      "unlocks": "A counter source that costs no mana on the turn you use it — but on a fixed trigger, so unlike Yawgmoth's activation you cannot hold it up in response to a removal spell; \"Payoffs without the enabler are blanks until the engine exists\", and this is an enabler.",
       "natural_cut": "Llanowar Elves",
-      "bracket_delta": {"before": 4, "after": 4}
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
     },
     {
       "card": "Evolution Sage",
       "role": "value:etb",
       "cmc": 3.0,
       "type_line": "Creature — Elf Druid",
-      "evidence": {"edhrec_rank": 405, "game_changer": false},
+      "evidence": {
+        "edhrec_rank": 405,
+        "game_changer": false
+      },
       "closes": "the engine's ignition component (free repeatable -1/-1 source, 3 cards)",
       "why": "Landfall proliferate is a free counter multiplier on a deck that makes its turn-3 land drop 90.2% of the time — every -1/-1 counter already on the board gets a twin and every twin is a Hapatra trigger — and because proliferate is chosen permanent by permanent you skip Devoted Druid and take Scurry Oak's +1/+1 while you are there.",
       "unlocks": "Repeatable arrowhead counters back onto Serrated Arrows for zero mana, which is the one job Contagion Clasp does that nothing else in the 99 repeats, and it does it without paying {4} and a tap.",
       "natural_cut": "Contagion Clasp",
-      "bracket_delta": {"before": 4, "after": 4}
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
     },
     {
       "card": "Gravecrawler",
@@ -61,12 +86,24 @@
       "type_line": "Creature — Zombie",
       "evidence": {
         "combo_lines_opened": [
-          {"cards": ["Gravecrawler", "Pitiless Plunderer", "Carrion Feeder"],
-           "produces": "Infinite +1/+1 counters on a creature, death triggers, ETB, LTB, sacrifice triggers, storm count",
-           "status": "needs a stack scenario"},
-          {"cards": ["Gravecrawler", "Pitiless Plunderer", "Viscera Seer"],
-           "produces": "Infinite LTB, ETB, sacrifice triggers, death triggers, scry 1, storm count",
-           "status": "needs a stack scenario"}
+          {
+            "cards": [
+              "Gravecrawler",
+              "Pitiless Plunderer",
+              "Carrion Feeder"
+            ],
+            "produces": "Infinite +1/+1 counters on a creature, death triggers, ETB, LTB, sacrifice triggers, storm count",
+            "status": "needs a stack scenario"
+          },
+          {
+            "cards": [
+              "Gravecrawler",
+              "Pitiless Plunderer",
+              "Viscera Seer"
+            ],
+            "produces": "Infinite LTB, ETB, sacrifice triggers, death triggers, scry 1, storm count",
+            "status": "needs a stack scenario"
+          }
         ],
         "edhrec_rank": 687,
         "game_changer": false
@@ -75,19 +112,28 @@
       "why": "No creature in the 99 returns itself, so Yawgmoth eats whatever the board happens to be holding; a one-mana Zombie you recast from the graveyard every turn — legal here because Carrion Feeder, Host of the Hereafter and Mikaeus are each Zombies — is fodder on tap from turn 2 and never asks Mikaeus for undying.",
       "unlocks": "A sacrifice loop that survives Mikaeus being answered, and two three-card lines whose other pieces are already sleeved.",
       "natural_cut": "Birds of Paradise",
-      "bracket_delta": {"before": 4, "after": 4}
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
     },
     {
       "card": "Boseiju, Who Endures",
       "role": "land:utility",
       "cmc": 0.0,
       "type_line": "Legendary Land",
-      "evidence": {"edhrec_rank": 79, "game_changer": false},
+      "evidence": {
+        "edhrec_rank": 79,
+        "game_changer": false
+      },
       "closes": "interaction-breadth — in Magic terms only; see the caveat in `why`",
-      "why": "Channel destroys an artifact, an enchantment or a nonbasic land at instant speed for {1}{G}, and {G} with Hapatra alone on the battlefield since the ability costs {1} less per legendary creature — that is an answer you can still cast under the tax, which the corpus names the hard case: \"Stax is the hardest breadth test: a counter answers a lock piece only on the way in, so some answers must be castable under the tax\" [strategy:deckbuilding.interaction-suite]; read the number honestly, though, because the breadth axis only reads cards carrying an interactive role and this one is filed land:utility, so adding it leaves the measured breadth at one.",
+      "why": "Channel destroys an artifact, an enchantment or a nonbasic land at instant speed for {1}{G}, and {G} with Hapatra alone on the battlefield since the ability costs {1} less per legendary creature — that is an answer you can still cast under the tax, which the corpus names the hard case: \"Stax is the hardest breadth test: a counter answers a lock piece only on the way in, so some answers must be castable under the tax\"; read the number honestly, though, because the breadth axis only reads cards carrying an interactive role and this one is filed land:utility, so adding it leaves the measured breadth at one.",
       "unlocks": "Three answered classes out of a land slot rather than a spell slot, at zero cost to the 36-land count and none to the zero-tapland count.",
       "natural_cut": "Hidden Grotto",
-      "bracket_delta": {"before": 4, "after": 4}
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
     },
     {
       "card": "Poison-Tip Archer",
@@ -95,15 +141,20 @@
       "cmc": 4.0,
       "type_line": "Creature — Elf Archer",
       "evidence": {
-        "synergy_partners_in_deck": ["Obelisk Spider"],
+        "synergy_partners_in_deck": [
+          "Obelisk Spider"
+        ],
         "edhrec_rank": 1628,
         "game_changer": false
       },
       "closes": "engine component: any drain converter (4 cards, 51.9% assembled)",
-      "why": "Of the four drain converters in the 99 only Zulaport Cutthroat and Bastion of Remembrance hit every seat — Blood Artist picks one player and Blasting Station pings one target — and this triggers on any creature dying anywhere, so a Toxic Deluge or an opponent's own wrath becomes table-wide life loss; \"each-opponent drains are the payoffs that actually scale\" [strategy:multiplayer.asymmetry].",
+      "why": "Of the four drain converters in the 99 only Zulaport Cutthroat and Bastion of Remembrance hit every seat — Blood Artist picks one player and Blasting Station pings one target — and this triggers on any creature dying anywhere, so a Toxic Deluge or an opponent's own wrath becomes table-wide life loss; \"each-opponent drains are the payoffs that actually scale\".",
       "unlocks": "A third table-wide converter that is also a deathtouch reach blocker, fetchable by Worldly Tutor, Green Sun's Zenith and Survival of the Fittest — the eight-card tutor class turns a creature into a toolbox slot in a way it cannot turn an enchantment.",
       "natural_cut": "Arcane Signet",
-      "bracket_delta": {"before": 4, "after": 4}
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
     },
     {
       "card": "Reassembling Skeleton",
@@ -112,12 +163,24 @@
       "type_line": "Creature — Skeleton Warrior",
       "evidence": {
         "combo_lines_opened": [
-          {"cards": ["Pitiless Plunderer", "Ashnod's Altar", "Reassembling Skeleton"],
-           "produces": "Infinite colorless mana, death triggers, ETB, LTB, sacrifice triggers",
-           "status": "needs a stack scenario"},
-          {"cards": ["Pitiless Plunderer", "Phyrexian Altar", "Reassembling Skeleton"],
-           "produces": "Infinite death triggers, ETB, LTB, sacrifice triggers",
-           "status": "needs a stack scenario"}
+          {
+            "cards": [
+              "Pitiless Plunderer",
+              "Ashnod's Altar",
+              "Reassembling Skeleton"
+            ],
+            "produces": "Infinite colorless mana, death triggers, ETB, LTB, sacrifice triggers",
+            "status": "needs a stack scenario"
+          },
+          {
+            "cards": [
+              "Pitiless Plunderer",
+              "Phyrexian Altar",
+              "Reassembling Skeleton"
+            ],
+            "produces": "Infinite death triggers, ETB, LTB, sacrifice triggers",
+            "status": "needs a stack scenario"
+          }
         ],
         "edhrec_rank": 767,
         "game_changer": false
@@ -126,31 +189,46 @@
       "why": "A sacrificed Snake token ceases to exist and comes back as nothing, so on an empty board Yawgmoth is a blank; {1}{B} at instant speed returns this one from the graveyard for the rest of the game, and both of its listed lines run off Pitiless Plunderer plus an altar already in the 99.",
       "unlocks": "Fodder that survives the token rule, so the free outlets have something to eat in the turns after a wrath.",
       "natural_cut": "Lotus Petal",
-      "bracket_delta": {"before": 4, "after": 4}
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
     },
     {
       "card": "Persistent Constrictor",
       "role": "removal:debuff",
       "cmc": 5.0,
       "type_line": "Creature — Zombie Snake",
-      "evidence": {"edhrec_rank": 2733, "game_changer": false},
+      "evidence": {
+        "edhrec_rank": 2733,
+        "game_changer": false
+      },
       "closes": "the engine's ignition component (free repeatable -1/-1 source, 3 cards)",
       "why": "Three opponents means three upkeeps, so this is up to three free -1/-1 placements and three points of life loss per turn cycle without ever asking you for mana — three Snakes, three Insects under Nest of Scarabs, three drains under Obelisk Spider — and when it finally dies persist returns it carrying a -1/-1 counter, which is one more Hapatra trigger on the way back.",
       "unlocks": "Counters placed on the opponents' side of the board, which no other source in the deck does at will; it is gated on each opponent controlling a creature, so it is worth most against a board and least against the combo deck racing you.",
       "natural_cut": "Flourishing Defenses",
-      "bracket_delta": {"before": 4, "after": 4}
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
     },
     {
       "card": "The Meathook Massacre",
       "role": "removal:sweeper",
       "cmc": 2.0,
       "type_line": "Legendary Enchantment",
-      "evidence": {"edhrec_rank": 506, "game_changer": false},
+      "evidence": {
+        "edhrec_rank": 506,
+        "game_changer": false
+      },
       "closes": "engine component: any drain converter (4 cards, 51.9% assembled)",
       "why": "Both sweepers in the 99 erase your own board and hand you nothing back; this one stays on the battlefield afterwards and drains every opponent for each creature you lose, so X=1 with six Snakes out is an eighteen-point swing across the table and the converter is still there for the rebuild.",
       "unlocks": "A drain converter no creature wrath can answer — and a caution: it modifies power and toughness rather than placing counters, so unlike Black Sun's Zenith it mints no Snakes and feeds neither Nest of Scarabs nor Necroskitter.",
       "natural_cut": "Toxic Deluge",
-      "bracket_delta": {"before": 4, "after": 4}
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      }
     }
   ],
   "gaps": [
