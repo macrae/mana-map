@@ -113,8 +113,10 @@ inverse so hit-testing keeps working.
 
 ### 1. Phase 3 — the Editor's Letter and the Pilot's Log · **next**
 
-The engine stages exist; this is where they become a vocabulary three voices argue in. Full
-plan in the session plan file. Four parts in order:
+The engine stages exist; this is where they become a vocabulary three voices argue in. The
+founder's framing is recorded verbatim in `docs/magazine-feedback-2026-08-13.md` §9 — the
+engine doc is scaffolding each columnist reads and interprets in character, never printed as
+prose. Four parts, in order:
 
 1. **Close the engine loop.** Radagast's `engine.json` carries a `critic: fail` — two
    clauses in one sentence of `stages[4]` (it cites CR 117.1a where stack 007 cites 304.1,
@@ -125,8 +127,20 @@ plan in the session plan file. Four parts in order:
 3. **Two departments**: `editors-letter` (cheap, the magazine-editor writes it) and
    `pilots-log` (an agentic three-way conversation, ~33% each, opening on a play moment).
    Both go into `DEPARTMENTS` **and** `OPTIONAL_DEPARTMENTS`.
-4. **Voice separation** — sentence-level register rules and a per-byline lint. The test is
-   the editor's: cover the bylines and attribute three paragraphs.
+4. **Voice separation** — sentence-level register rules in STYLEv3 §7.7 and a
+   banned-construction list per voice (Sunny may not write "posture", "prescribes",
+   "framework"; Ledger takes no adjectives; Vera keeps the legalese because she is the only
+   one who earns it), backed by a per-byline lint in `validate_issue`. The test is the
+   editor's: **cover the bylines and attribute three paragraphs.** If a reader cannot, the
+   phase is not done. The 2026-08 record predicted this round by leaving it open; do not
+   leave it open again.
+
+The Pilot's Log's requirements, from the founder's own words: it opens on a concrete play
+moment tied to a primary win line, segues off what the last voice said, touches three or four
+topics at roughly a third each, and every voice reads the same two inputs — `engine.json` and
+`strategic_frame.json`. **The tie worth building: a line drawn DASHED in the engine flow is a
+line the panel may not assert.** That is the evidence contract reaching into the prose
+instead of stopping at the picture.
 
 **The blocker is already removed.** `issue_spec.OPTIONAL_DEPARTMENTS` (empty today) lets a
 department be piloted on one deck instead of arriving on nine at once. Optional means "an
@@ -193,7 +207,29 @@ Four, all flagged by strategic frames and all load-bearing there: **auditing a c
 engine model's stage vocabulary, which is the better home for it); **counters-matter**; and
 **tutor sequencing**, doubly wanted since Fetch Quests is a whole section with no pillar.
 
-### 9. Codebase hygiene
+### 9. The 2026-08-13 cycle shipped with NO unit tests · **owed**
+
+Recorded plainly because it is the kind of debt that becomes invisible: five new Python
+modules — `deck_map`, `merge_deck_map`, `engine_facts`, `validate_engine`, `deck_status` —
+are referenced by **zero** test files. The suite grew 1,524 → 1,530 this cycle and all six
+are the browser motion tests.
+
+They are not unexercised — every one was run repeatedly against all nine real decks, and the
+validators were each proven to fire by hand-breaking an artifact. But "I ran it" is not
+coverage, and the specific risks are known:
+
+- **`test_pilot_tracked_artifacts_validate.py` covers five artifacts and neither new one.**
+  Adding `deck_map.json → validate_deck_map` and `engine.json → validate_engine` to its map
+  is the single highest-value line of test code available, and it is one line each.
+- `deck_map`'s determinism (`_orient` pinning rotation, reflection and scale) is asserted by
+  nothing. It was verified once by rerunning and diffing bytes; a regression there silently
+  redraws every map.
+- The measured clustering rules — Ward over average linkage, the 35% balance bound — have no
+  regression floor, so a linkage change would pass silently.
+
+Do this before rolling `analyze-engine` to the other eight decks.
+
+### 10. Codebase hygiene
 
 Still open and genuinely worth doing:
 
@@ -211,14 +247,14 @@ frozen/mutable boundary is a rule, not a filing system), **int8 embeddings** mea
 97.3% top-10 agreement with no first-paint win to weigh against it — a user-facing quality
 trade belongs to a person — and **five flagged "duplications" were false**.
 
-### 10. Deck versioning — the remaining third
+### 11. Deck versioning — the remaining third
 
 `HISTORY.md` and a validated `decklist_sha256` exist. Still open: **`supersedes` in
 `issue.json`**, so "Vol. 009 corrects Vol. 004" is expressible and `build_index` has
 something to key on besides the slug — it emits at most one entry per deck today, so a second
 issue for one deck would silently overwrite `manuals/<slug>.html`.
 
-### 11. Frontend engine port — not started
+### 12. Frontend engine port — not started
 
 `manabase` is trivial, `bracket` and `goldfish` are easy, `build_deck` is hardest because
 pandas is load-bearing in pool filtering. `viz/js/engine/constants.js` must be **generated

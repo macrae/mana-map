@@ -41,6 +41,8 @@ Real numbers from the session that built the magazine layer (2026-07-25):
 | *(research pass)* | strategy-researcher (research) | 117,827 / 91,332 | explicit research request |
 | `strategic-frame` | strategy-researcher (consult) | 80,948 | new decklist or newly verified line |
 | `coach-prose` | pilot-coach | 54,515 | frame change, new stack |
+| `deck-map-names` | deck-cartographer | ~60,000–93,000 (9 spawns, the fleet batch) | `deck-map` re-run: a decklist edit or a retrain moves the clusters |
+| `deck-engine` | deck-engineer ⇄ engine-critic | **~120k per engineer pass, ~140k per critic** — radagast took 4 spawns over 3 iterations | decklist edit, a newly passing stack (it may turn a dashed line solid) |
 | `writer-prose` | manual-writer | 47,188 | frame change, new stack, graph refresh |
 | `stack:<NNN>` resolve | stack-resolver | 35,278 / 38,231 | new or re-run scenario |
 | `stack:<NNN>` check | rules-checker | 29,625 / 28,097 | every resolver iteration |

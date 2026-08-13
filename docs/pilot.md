@@ -23,7 +23,11 @@ Enforcement is layered:
 
 ## Commands
 
+**`manamap pilot deck-status <slug>` first, always** — it says which of these a deck still
+needs, and `/publish-deck` sequences them.
+
 ```bash
+manamap pilot deck-status <slug> [--json]  # lifecycle completeness + STALENESS. Start here.
 manamap pilot download-rules            # CR txt (idempotent; sha256 sidecar)
 manamap pilot build-rules-db            # ~3.9K chunks → embeddings + index
 manamap pilot query-rules "…" --json    # semantic top-k (resolver's discovery path)
@@ -35,6 +39,11 @@ manamap pilot deck-facts <slug> [--out F]  # the deterministic brief agents read
 manamap pilot deck-history <slug> [--json]  # applied swaps (from git) + the pending ten
 manamap pilot deck-audit <slug> [--archetype A] [--json] [--out D/]  # cited axis targets + engine activation
 manamap pilot validate-diagnosis <slug>    # diagnosis form; axes re-derived, cuts checked against verified stacks
+manamap pilot deck-map <slug>           # the constellation: local layout + cities/neighbourhoods
+manamap pilot merge-deck-map <slug>     # cartographer's names in — `label`/`gloss` ONLY
+manamap pilot validate-deck-map <slug>  # names distinct, membership untouched
+manamap pilot engine-facts <slug> [--json] [--out D/]  # the deterministic engine brief
+manamap pilot validate-engine <slug>    # stages, completeness, verified_by re-checked
 manamap pilot pool-facts <paths…> [--exclude F] [--json] [--out F]  # a BOX OF CARDS → which deck to build
 manamap pilot cache-rebless <slug>             # re-record every STALE_OK routine, zero spawns
 manamap pilot impact <slug> [--json]           # card/figure/target/zone staleness report (free)
@@ -302,6 +311,88 @@ the per-file inventory.
 **Publish side:** agent cache incl. N/A scan semantics and memoized loaders (`test_pilot_agent_cache`, 57), renderer determinism/escaping/TOC (`test_pilot_build_manual`, 42), issue form gate incl. the decklist_sha256 stamp (`test_pilot_validate_issue`, 29), artist analysis (`test_pilot_artist_credits`, 24), mocked Scryfall ingestion (`test_pilot_fetch_deck`, 24), citation contract incl. strategy-citation dispatch (`test_pilot_validate_stack`, 18), strategy form validator + changelog (`test_pilot_validate_strategy`, 18), goldfish determinism and the two opening-hand distributions (`test_pilot_goldfish`, 16), strategic-frame form (`test_pilot_validate_strategic_frame`, 15), deck facts (`test_pilot_deck_facts`, 14), CR chunker edge cases (`test_pilot_rules_db`, 12), strategy chunker + real-DB checks (`test_pilot_strategy_db`, 9), rules queries (`test_pilot_query_rules`, 5).
 
 Data-gated tests use `requires_rules` / `requires_deck` / `requires_strategy` / `requires_roles` markers from `tests/conftest.py`.
+
+## Deck status — is this deck finished? (`deck-status`, tier ◆)
+
+**Run this first on any deck.** The lifecycle is dozens of skills and subcommands and until
+2026-08 nothing said what a COMPLETE deck looks like: each phase knew its own inputs, none
+knew the sequence. So a capability added in one development cycle was reachable only by
+somebody who remembered it existed, and a deck built the following month silently inherited
+the old pipeline. Three capabilities went in during August and every deck built before them
+was missing all three while looking complete from every angle.
+
+`pilot/deck_status.py:STAGES` is the single machine-readable statement of what a deck can
+have and in what order; `/publish-deck` sequences the work and reads the same list rather
+than restating it. **When you add a phase to the lifecycle, add it to `STAGES`** or the next
+person will not find it.
+
+It separates two things that look alike. **INCOMPLETE is a state** — a half-built deck is
+work in progress. **STALE is an error**: most artifacts stamp the `decklist_sha256` they were
+derived from, and one whose stamp no longer matches `cards.json` is not incomplete but
+CONFIDENT AND WRONG, which is worse and looks finished from every angle except this one.
+
+## The constellation (`deck_map.json`, tier ◆ + ★ names)
+
+`manamap pilot deck-map <slug>` re-lays-out ONE deck's cards from `embeddings_ability.npy` —
+the FUNCTION space; the layout space knows only colour and type, so a mono-green deck
+clusters there into a green blob and a land pile — and cuts two levels of cities and
+neighbourhoods. It is `viz/js/drill.js`'s argument applied to a decklist: a hundred cards
+scattered across the 34,890-card atlas are dust, because the structure that matters is
+exactly what a global projection compressed out.
+
+**Tracked**, because the embeddings are gitignored and a fresh clone must still render
+manuals — the same argument the projections are committed under. **Positions are LOCAL** and
+are not atlas positions; everything that draws it says so.
+
+Three parameters were measured rather than assumed:
+
+- **Ward, not average linkage.** Average linkage on cosine distance chains: on radagast it
+  put 37 of 71 cards in one city and 1 in another.
+- **The city count is chosen by BALANCE**, not by a cards-per-city divisor — that divisor
+  still put 54% in one city. Grow k until the largest holds under 35%, stop at seven, because
+  past seven regions a reader consults a key instead of seeing a shape. (Ward on radagast:
+  k=4 54%, k=6 42%, k=7 32%, k=9 14%.)
+- **Territories draw per NEIGHBOURHOOD.** A spread-out city's convex hull covered every other
+  city and the map read as one continent with labels floating on it.
+
+`deck-cartographer` then names each region for the job its cards do, and `merge-deck-map`
+writes **`label` and `gloss` and nothing else** — positions and membership are a measurement,
+and a whole-file copy from `.agent-out/` would let a model's paraphrase silently replace the
+map. `validate-deck-map` checks names are distinct within a level and that membership still
+totals.
+
+## The engine (`engine.json`, tiers ✓ ◆ ★)
+
+The constellation's own limit, found by the cartographers and then measured: **a card is
+clustered by what it SAYS, and an engine is what cards DO TO EACH OTHER.** On radagast only
+**4 of 10** declared components sit in a single city — the metronome class and the flash
+traps span five each — so a city name is the wrong address for a component.
+
+`manamap pilot engine-facts <slug>` is the deterministic brief: `deck_audit.engine_activation`
+(components already priced hypergeometrically), the verified pairings from checker-passed
+stacks via `build_index.line_cards`, the contained combo lines deduped on `frozenset`, and a
+**scatter table** so the agent starts from the disagreement rather than discovering it.
+Computed on demand, never committed.
+
+`/analyze-engine` runs `deck-engineer` ⇄ `engine-critic`, gated by `validate-engine`, into an
+eight-stage model: `mana · ignition · fuel · fodder · conversion · output · protection ·
+wincon`. Not every deck has all eight — radagast has no `fodder` because nothing in the 99
+sacrifices, and saying so is a finding.
+
+**The evidence ladder is the whole job.** A checker-passed stack is the only fact. A contained
+combo line is a candidate stamped "needs a stack scenario". A role is a property, not an
+interaction. The synergy graph is retrieval only and is deliberately absent from the brief.
+`lines[].verified_by` is nullable for exactly this reason, and the renderer draws a null one
+**dashed**.
+
+**What the gate cannot see, stated because it matters:** `validate-engine` checks that a
+cited stack NAMES a line's cards; it can never check that the stack SUPPORTS the line. Two
+real radagast lines passed every mechanical check while citing a stack that showed the
+opposite — one claimed Castle Garenbrig paid for Craterhoof, citing a stack that leaves
+Garenbrig untapped. Both rendered as solid green, the mark for proof. A passing stack is
+evidence a BOARD resolved a certain way; reading it as causation is inference, and inference
+is the critic's job. Do not close it with string matching — the same wrong line survives a
+rephrase.
 
 ## Deck facts — the brief agents read instead of re-deriving
 

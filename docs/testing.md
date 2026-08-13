@@ -15,7 +15,7 @@ instead. To print the current numbers rather than trust a snapshot:
 .venv/bin/python -m pytest -m "not browser" --collect-only -q | tail -1
 ```
 
-As of 2026-08-12: **1,524 tests** across 60 files — 1,394 fast and 130 browser. One is a
+As of 2026-08-13: **1,530 tests** across 60 files — 1,400 fast and 130 browser. One is a
 deliberately unmet `xfail(strict=True)` ship gate in `test_embedding_quality.py` (see
 below); it is a target the code has not reached, not a broken test.
 
