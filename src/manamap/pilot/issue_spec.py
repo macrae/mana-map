@@ -124,6 +124,21 @@ MASTHEAD_COLUMNISTS = [
 # declared breather, because the reader gets an art break between them.
 BREATHER_AFTER = frozenset({"sources-say"})
 
+# Departments an issue MAY carry but is not required to.
+#
+# The spec has had no such concept until now, and adding one is a real cost — a
+# reader's "fixed reading experience every issue delivers" (§5) is weakened by
+# every optional slot. It exists for exactly one reason: a new department is
+# otherwise a fleet-wide event. The moment an id lands in DEPARTMENTS, every
+# existing issue plan is missing it and fails `validate-issue`, so a department
+# cannot be piloted on one deck — it arrives on nine at once or not at all.
+#
+# So: optional means "an older plan without it stays valid", NOT "the editor may
+# skip it". Once a deck's plan carries the department it is validated exactly like
+# any other, and an id should be REMOVED from this set as soon as every deck has
+# it. A permanently optional department is a department nobody committed to.
+OPTIONAL_DEPARTMENTS = frozenset()
+
 DEPARTMENT_IDS = [d[0] for d in DEPARTMENTS]
 DEPARTMENT_BY_ID = {d[0]: {"title": d[1], "promise": d[2], "tiers": d[3],
                            "needs_copy": d[4], "byline": d[5]}

@@ -20,6 +20,7 @@ import json
 
 from manamap.pilot.common import deck_dir, load_deck_cards, report_errors
 from manamap.pilot.issue_spec import (
+    OPTIONAL_DEPARTMENTS,
     BREATHER_AFTER,
     COMPONENTS,
     DENSE_MODES,
@@ -97,10 +98,14 @@ def validate_plan(plan, card_names=None, artists=None):
     unknown = [i for i in seen if i not in DEPARTMENT_BY_ID]
     if unknown:
         errors.append(f"unknown department id(s): {unknown}")
-    absent = [i for i in DEPARTMENT_IDS if i not in seen]
+    # An optional department may be absent from an older plan; everything else is
+    # required. See `issue_spec.OPTIONAL_DEPARTMENTS` for why the concept exists
+    # and why an id should not stay in it.
+    required = [i for i in DEPARTMENT_IDS if i not in OPTIONAL_DEPARTMENTS]
+    absent = [i for i in required if i not in seen]
     if absent:
         errors.append(
-            f"missing department(s): {absent} — all {len(DEPARTMENT_IDS)} "
+            f"missing department(s): {absent} — all {len(required)} "
             f"render every issue")
     ordered = [i for i in seen if i in DEPARTMENT_BY_ID]
     if ordered != [i for i in DEPARTMENT_IDS if i in ordered]:
