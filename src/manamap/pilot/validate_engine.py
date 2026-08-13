@@ -186,6 +186,28 @@ def validate(slug, doc=None):
                 f"{where}: stack {sid} does not name {', '.join(absent)} in its "
                 f"scenario, so it cannot verify this line")
 
+    # A line's cards must live in the stages it connects, and this check exists
+    # because `engine-critic` found three lines without it. The stack check above
+    # proves the CARDS were on a verified board together; it says nothing about
+    # whether they are the cards of the stages the arrow is drawn between. A
+    # `fuel -> conversion` arrow whose via cards are both in `conversion` is a
+    # picture of a connection that the model does not actually claim, and it
+    # renders as solid green — proof, for a relation nobody asserted.
+    for i, line in enumerate(doc.get("lines") or []):
+        via = set(line.get("via") or [])
+        if not via:
+            continue
+        for end in ("from", "to"):
+            stage_name = line.get(end)
+            if stage_name not in STAGES:
+                continue
+            members = {c for c, st in placed.items() if st == stage_name}
+            if members and not (via & members):
+                errors.append(
+                    f"lines[{i}]: {end}={stage_name!r} contains none of "
+                    f"{', '.join(sorted(via))} — an arrow between two stages has "
+                    f"to be about a card in each of them")
+
     for i, q in enumerate(doc.get("open_questions") or []):
         missing_keys = REQUIRED_QUESTION_KEYS - set(q)
         if missing_keys:
