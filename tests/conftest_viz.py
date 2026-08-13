@@ -186,6 +186,30 @@ def page(browser, viz_server):
         page.close()
 
 
+@pytest.fixture
+def still_page(browser, viz_server):
+    """The map for a viewer who has asked their OS not to animate things.
+
+    A separate fixture rather than a flag on `page`, because `prefers-reduced-motion` is
+    read once at renderer construction — it decides a default, not a per-frame condition,
+    so it cannot be toggled after boot and a test that tried would be testing nothing.
+    """
+    page = browser.new_page(viewport={"width": 1440, "height": 900},
+                            reduced_motion="reduce")
+    errors: list[str] = []
+    _add = _record(errors)
+    page.on("pageerror", lambda e: _add(e))
+    page.on("console", lambda m: _add(m.text) if m.type == "error" else None)
+    page.goto(f"{viz_server}/viz/index.html{EXPLORE}")
+    page.js_errors = errors
+    _wait_for_boot(page, "() => window.MM && MM.allData && MM.allData.length > 0",
+                   "the projection to load")
+    try:
+        yield page
+    finally:
+        page.close()
+
+
 @pytest.fixture(scope="session")
 def corpus_count():
     """The corpus size the viz should display, DERIVED rather than hardcoded.

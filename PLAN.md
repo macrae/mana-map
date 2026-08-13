@@ -18,7 +18,7 @@ Two products in one repo, sharing a data layer and a CLI.
 three-tier evidence contract, and the deck itself can be produced by a deterministic
 builder from a written brief.
 
-**Eight issues published**, one per deck:
+**Nine issues published**, one per deck:
 [001 Goblin Storm](https://macrae.github.io/mana-map/manuals/goblin-storm.html) ·
 [002 Hapatra](https://macrae.github.io/mana-map/manuals/hapatra.html) ·
 [003 Sisay](https://macrae.github.io/mana-map/manuals/sisay.html) ·
@@ -27,6 +27,7 @@ builder from a written brief.
 [006 Edgar](https://macrae.github.io/mana-map/manuals/edgar-vampires.html) ·
 [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) ·
 [008 Yawgmoth](https://macrae.github.io/mana-map/manuals/yawgmoth-swarm.html) ·
+[009 Radagast](https://macrae.github.io/mana-map/manuals/radagast.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
 Scale: 39 `manamap pilot` subcommands, 18 top-level subcommands, 14 agents, 17 skills,

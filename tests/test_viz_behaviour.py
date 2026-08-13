@@ -26,7 +26,7 @@ import pytest
 # check reports all three — and removing them takes the whole browser suite
 # down with an unrelated-looking "fixture not found".
 from conftest_viz import (  # noqa: F401
-    BOOT_TIMEOUT_MS, canvas_page, corpus_count, discover_page, page,
+    BOOT_TIMEOUT_MS, canvas_page, corpus_count, discover_page, page, still_page,
 )
 
 pytestmark = pytest.mark.browser
@@ -4025,4 +4025,229 @@ def test_entering_explore_shows_the_whole_map(discover_page):
         }"""
     )
     assert span > 40, f"Explore opened zoomed in (camera span {span:.1f})"
+    assert page.js_errors == []
+
+
+# ── Ambient motion ──────────────────────────────────────────────────────
+#
+# The atlas drifts at altitude: a slow differential sway that reads as orbital motion.
+# Every test here exists because the obvious implementation of that is wrong in a way
+# nothing else in the suite would catch — motion in the DATA rather than in the
+# projection would leave the quadtree answering with stale positions, and a motion that
+# accumulated would pull PaCMAP neighbours apart while looking perfectly nice.
+
+
+def _excursion_track(page, seconds, step_ms=500):
+    """Peak distance, in px, between where cards are drawn and where they are stored.
+
+    Sampled through `dataToPixel`, which is what every overlay and every click aims
+    through — so this measures the thing users actually interact with rather than an
+    internal the renderer could be lying about.
+    """
+    return page.evaluate(
+        """async ([seconds, stepMs]) => {
+            const R = MM.mapRenderer;
+            const rows = [];
+            for (let i = 0; i < MM.allData.length; i += 997) rows.push(i);
+            R.setMotion(false);
+            await new Promise(r => setTimeout(r, 1200));   // let it ease home
+            const home = rows.map(i => R.dataToPixel(MM.allData[i].x, MM.allData[i].y));
+            R.setMotion(true);
+            const track = [];
+            for (let s = 0; s * stepMs < seconds * 1000; s++) {
+                await new Promise(r => setTimeout(r, stepMs));
+                let m = 0;
+                rows.forEach((i, j) => {
+                    const p = R.dataToPixel(MM.allData[i].x, MM.allData[i].y);
+                    m = Math.max(m, Math.hypot(p[0] - home[j][0], p[1] - home[j][1]));
+                });
+                track.push(m);
+            }
+            return track;
+        }""",
+        [seconds, step_ms],
+    )
+
+
+def test_the_atlas_drifts_at_altitude_and_holds_still_up_close(page):
+    """Motion is atmosphere, and rides the same altitude ramp the halo does.
+
+    Zoomed in, Explore has to converge on Discover and Build — and a card you are trying
+    to click must not be moving under the cursor. The ramp is what buys both.
+    """
+    at_fit = max(_excursion_track(page, seconds=6))
+    assert at_fit > 3, f"the map never moved at the fit (peak {at_fit:.1f}px)"
+
+    up_close = page.evaluate(
+        """async () => {
+            const R = MM.mapRenderer;
+            const d = MM.allData[MM.allData.findIndex(c => c.n === 'Sol Ring')];
+            R.setCamera({x: [d.x - 1.5, d.x + 1.5], y: [d.y - 1.0, d.y + 1.0]});
+            await new Promise(r => setTimeout(r, 1200));
+            const rows = [];
+            for (let i = 0; i < MM.allData.length; i += 997) rows.push(i);
+            const snap = () => rows.map(i => R.dataToPixel(MM.allData[i].x, MM.allData[i].y));
+            const a = snap();
+            await new Promise(r => setTimeout(r, 2000));
+            const b = snap();
+            let m = 0;
+            for (let i = 0; i < a.length; i++) {
+                m = Math.max(m, Math.hypot(a[i][0] - b[i][0], a[i][1] - b[i][1]));
+            }
+            return {level: R.motionLevel, movedPx: m};
+        }"""
+    )
+    assert up_close["level"] == 0, "ambient motion is still running zoomed in"
+    assert up_close["movedPx"] == 0, f"points moved {up_close['movedPx']:.2f}px up close"
+    assert page.js_errors == []
+
+
+def test_the_drift_is_bounded_and_returns(page):
+    """THE load-bearing test: this is a sway, not a rotation.
+
+    A galaxy that genuinely rotates winds up — inner orbits lap outer ones and, on a map
+    whose entire content is "what is near what", cards PaCMAP placed side by side end up
+    a quarter of the map apart. The picture would be lying, slowly, and it would still
+    look good the whole time. So the excursion is capped and the field comes home.
+    """
+    track = _excursion_track(page, seconds=16)
+    peak = max(track)
+    # Generous either side of the ~32px measured on a 900px viewport: the point is the
+    # ORDER OF MAGNITUDE — single-digit percent of the viewport, never a lap.
+    assert 3 < peak < 90, f"excursion {peak:.1f}px is not a slight drift: {track}"
+    # And it must come back. A monotonic rotation only ever grows away from home until it
+    # has gone most of the way round; a sway retreats from its own peak.
+    at_peak = track.index(peak)
+    after = track[at_peak:]
+    assert min(after) < peak * 0.8, (
+        f"the drift never retreated from its peak — it is accumulating: {track}")
+    assert page.js_errors == []
+
+
+def test_a_click_still_lands_on_the_card_it_aimed_at_while_the_map_moves(page):
+    """The reason the motion lives in the projection and not in the data.
+
+    `pick` inverts the swirl exactly — it is a rotation about a fixed centre, so radius is
+    preserved and the angle is recoverable from where the point landed. Hit-testing against
+    stored positions while drawing somewhere else would be off by tens of pixels at the
+    fit, which in this corpus is a different card entirely, and would look like a flaky
+    map rather than a coordinate bug.
+    """
+    hits = page.evaluate(
+        """async () => {
+            const R = MM.mapRenderer;
+            const names = ['Sol Ring', 'Llanowar Elves', 'Counterspell',
+                           'Craterhoof Behemoth', 'Wrath of God'];
+            const out = [];
+            for (const nm of names) {
+                const i = MM.allData.findIndex(d => d.n === nm);
+                if (i < 0) continue;
+                const p = R.dataToPixel(MM.allData[i].x, MM.allData[i].y);
+                out.push({aim: nm, exact: R.pick(p[0], p[1], 3) === i});
+                await new Promise(r => setTimeout(r, 700));   // sample several phases
+            }
+            return out;
+        }"""
+    )
+    assert hits, "no probe cards resolved"
+    missed = [h["aim"] for h in hits if not h["exact"]]
+    assert not missed, f"the pick inverse is off while the map drifts: {missed}"
+    assert page.js_errors == []
+
+
+def test_motion_stops_when_the_map_is_not_the_thing_on_screen(page):
+    """`#plot` is shared with the force graph and stays visible in Discover and Build; only
+    `.map-canvas` is hidden. Checking the host rather than the canvas animated 34,890
+    points into a surface nobody could see, in the two modes that do not use it."""
+    r = page.evaluate(
+        """async () => {
+            MM.setMode('discover');
+            await new Promise(r => setTimeout(r, 900));
+            const hidden = document.querySelector('.map-canvas').offsetParent === null;
+            const off = MM.mapRenderer.motionLevel;
+            MM.setMode('explore');
+            await new Promise(r => setTimeout(r, 1200));
+            return {hidden, off, back: MM.mapRenderer.motionLevel};
+        }"""
+    )
+    assert r["hidden"], "the map canvas was still displayed in Discover"
+    assert r["off"] == 0, "the ambient ticker kept running behind the graph modes"
+    assert r["back"] > 0, "motion did not resume on returning to Explore"
+    assert page.js_errors == []
+
+
+def test_the_motion_toggle_reports_the_renderer_not_the_markup(page):
+    r = page.evaluate(
+        """async () => {
+            const btn = document.getElementById('toggleMotion');
+            const on = {motion: MM.mapRenderer.motion,
+                        active: btn.classList.contains('active')};
+            btn.click();
+            await new Promise(r => setTimeout(r, 1400));
+            return {on, off: {motion: MM.mapRenderer.motion,
+                              active: btn.classList.contains('active'),
+                              level: MM.mapRenderer.motionLevel}};
+        }"""
+    )
+    assert r["on"] == {"motion": True, "active": True}
+    assert r["off"]["motion"] is False and r["off"]["active"] is False
+    assert r["off"]["level"] == 0, "the map kept drifting after motion was switched off"
+    assert page.js_errors == []
+
+
+def test_reduced_motion_is_honoured_at_boot(still_page):
+    """An ambient drift is precisely what `prefers-reduced-motion` is about, so it is the
+    DEFAULT that changes — not a hard override. Someone who asks for it explicitly still
+    gets it, and the toggle has to show which state they are actually in."""
+    r = still_page.evaluate(
+        """async () => {
+            const R = MM.mapRenderer, btn = document.getElementById('toggleMotion');
+            const rows = [];
+            for (let i = 0; i < MM.allData.length; i += 997) rows.push(i);
+            const snap = () => rows.map(i => R.dataToPixel(MM.allData[i].x, MM.allData[i].y));
+            const a = snap();
+            await new Promise(r => setTimeout(r, 2000));
+            const b = snap();
+            let moved = 0;
+            for (let i = 0; i < a.length; i++) {
+                moved = Math.max(moved, Math.hypot(a[i][0] - b[i][0], a[i][1] - b[i][1]));
+            }
+            // Snapshot the BOOTED state before opting in. Reading it after the click
+            // measures the click instead of the default, and passes either way.
+            const booted = {motion: R.motion, active: btn.classList.contains('active')};
+            btn.click();
+            await new Promise(r => setTimeout(r, 1500));
+            return {...booted, movedPx: moved, afterOptIn: R.motion};
+        }"""
+    )
+    assert r["motion"] is False, "reduced-motion was ignored"
+    assert r["active"] is False, "the toggle claimed motion was on while nothing moved"
+    assert r["movedPx"] == 0, f"the map drifted under reduced-motion ({r['movedPx']:.2f}px)"
+    assert r["afterOptIn"] is True, "an explicit opt-in was refused"
+    assert still_page.js_errors == []
+
+
+def test_box_select_catches_what_is_drawn_inside_the_marquee(page):
+    """A rotation maps a rectangle to something that is not a rectangle, so the stored
+    positions inside a screen box stop being an axis-aligned range. Pruning is padded by
+    the largest displacement in play and membership is decided by projecting each candidate
+    forward — otherwise the marquee quietly catches the wrong cards at the edges."""
+    r = page.evaluate(
+        """() => {
+            const R = MM.mapRenderer;
+            const c = document.querySelector('.map-canvas');
+            const w = c.clientWidth, h = c.clientHeight;
+            const box = [w * 0.35, h * 0.35, w * 0.65, h * 0.65];
+            const rows = R.pickRect(box[0], box[1], box[2], box[3]);
+            // Everything returned must actually be drawn inside the marquee.
+            const stray = rows.filter(i => {
+                const p = R.dataToPixel(MM.allData[i].x, MM.allData[i].y);
+                return p[0] < box[0] - 1 || p[0] > box[2] + 1
+                    || p[1] < box[1] - 1 || p[1] > box[3] + 1;
+            });
+            return {n: rows.length, stray: stray.length};
+        }"""
+    )
+    assert r["n"] > 50, f"the marquee caught almost nothing ({r['n']})"
+    assert r["stray"] == 0, f"{r['stray']} caught cards are drawn outside the marquee"
     assert page.js_errors == []

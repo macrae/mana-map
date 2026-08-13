@@ -38,6 +38,7 @@
     let transform = null;
     let zoomBehaviour = null;
     let tree = null;                 // d3.quadtree over every pickable point
+    let rowPos = new Map();          // row id → its stored {x, y}, rebuilt with the tree
     let baseFit = null;              // world→screen fit computed once from the data extent
     const handlers = { click: [], hover: [], unhover: [], camera: [], select: [] };
     let raf = null;
@@ -101,13 +102,30 @@
 
       canvas.addEventListener('mousemove', function (e) {
         const hit = pick(e.offsetX, e.offsetY);
+        setHover(hit);
+        // The cursor is the cheapest affordance on the surface and the map had none: 34,322
+        // points that all look equally inert until you happen to click one. `grab` says the
+        // canvas pans, which is true and is not the interesting half.
+        if (!selectMode) canvas.style.cursor = hit == null ? 'grab' : 'pointer';
         if (hit == null) emit('unhover', null);
         else emit('hover', { row: hit, clientX: e.clientX, clientY: e.clientY });
       });
-      canvas.addEventListener('mouseleave', function () { emit('unhover', null); });
+      canvas.addEventListener('mouseleave', function () { setHover(null); emit('unhover', null); });
       canvas.addEventListener('click', function (e) {
         const hit = pick(e.offsetX, e.offsetY);
-        if (hit != null) emit('click', { row: hit, shiftKey: e.shiftKey, event: e });
+        if (hit != null) {
+          const p = rowPos.get(hit);
+          if (p) { ripples.push({ x: p.x, y: p.y, t: performance.now() }); startTicking(); }
+          emit('click', { row: hit, shiftKey: e.shiftKey, event: e });
+        }
+      });
+
+      // rAF does not fire in a hidden tab, so the ticker stops on its own — but nothing
+      // restarts it, and the map would come back frozen. `clock` only advances while
+      // frames run, so it resumes in phase rather than snapping forward by however long
+      // the tab was in the background.
+      document.addEventListener('visibilitychange', function () {
+        if (!document.hidden) startTicking();
       });
 
       resize();
@@ -121,6 +139,9 @@
     }
 
     function destroy() {
+      ticking = false;               // or the loop keeps calling draw() against a null ctx
+      hoverRow = null;
+      ripples = [];
       if (surface) surface.destroy();
       surface = cam = canvas = ctx = host = tree = null;
       layers = [];
@@ -180,10 +201,223 @@
       baseFit.k = k;
       baseFit.tx = w / 2 - k * (minX + maxX) / 2;
       baseFit.ty = h / 2 - k * (minY + maxY) / 2;
+      // The pivot the ambient swirl turns about, and the radius that normalises it. Derived
+      // from tx/k rather than assumed to be the viewport centre — they coincide at the fit
+      // and stop coinciding the moment `resize` changes the box under a live camera.
+      baseFit.cx = baseFit.tx + k * (minX + maxX) / 2;
+      baseFit.cy = baseFit.ty + k * (minY + maxY) / 2;
+      baseFit.rMax = Math.hypot(k * (maxX - minX), k * (maxY - minY)) / 2 || 1;
     }
 
+    // The STATIC base-fit mapping: data units → fitted screen space, no time term. This is
+    // what the whole file used to mean by "world→screen". Anything that must be stable
+    // across frames — the cached density field, the camera target for a region, the span
+    // the label crossfade keys on — uses these two and not `proj` below.
     function wx(x) { return baseFit.tx + baseFit.k * x; }
     function wy(y) { return baseFit.ty + baseFit.k * y; }
+
+    // ── Ambient motion: the galaxy layer ─────────────────────────────────
+    //
+    // WHY THIS LIVES IN THE PROJECTION AND NOT IN THE DATA. The obvious way to make the
+    // atlas drift is to move the points. It is also the one way that cannot work here:
+    // `buildTree` costs 23.5 ms and its signature is deliberately blind to positions, so
+    // per-frame mutation either rebuilds the quadtree 30 times a second or leaves it
+    // answering with where the cards used to be — the exact failure `reindex()` exists to
+    // document. Everything anchored to world coordinates (region labels, the search
+    // highlight, the selection ring, drill's local layout) would detach for the same
+    // reason.
+    //
+    // So the points never move. `proj` is `wx`/`wy` plus a time term, and every consumer
+    // already goes through that one function. The cost is that `pick` has to invert it —
+    // which is why the motion is built to BE invertible.
+    //
+    // WHY IT IS A SWAY AND NOT A ROTATION. A galaxy that actually rotates winds up: give
+    // inner orbits a shorter period and after a few minutes the arms have wrapped and
+    // cards that PaCMAP placed side by side are a quarter of the map apart. That is the
+    // winding problem, and on a map whose entire content is "what is near what" it is not
+    // a cosmetic issue — the picture would be lying. A rigid rotation avoids the shear but
+    // costs the other thing: spatial memory. Turn the whole atlas 90° and the region you
+    // learned was north is now west.
+    //
+    // The motion here is therefore BOUNDED — a differential sway, a couple of degrees
+    // either side of home, that always returns. Kepler survives where it is legible: the
+    // PERIOD varies with radius (T ∝ a^1.5, so the rim is slower than the core) and phase
+    // lags outward, so at any instant the field is a shallow spiral, slowly unwinding and
+    // rewinding. That reads as orbital motion. It just never accumulates.
+    //
+    // WHERE IT APPLIES. The same argument the halo already makes, in the same units:
+    // atmosphere belongs at altitude, where a card is one pixel and only the shape of the
+    // cloud is legible. Zoomed in, Explore has to converge on Discover and Build — plain
+    // crisp dots, and a card you are trying to click must not be moving. `ambient()` is
+    // gone by the time a region fills the screen, so points slide home as you approach.
+    const MOTION = {
+      AMP: 0.145,        // rad — peak swirl angle before the radial falloff
+      SOFT: 0.5,         // A(u) = AMP · SOFT/(u+SOFT): outer arcs travel further in pixels
+      PERIOD: 27000,     // ms — the reference orbital period
+      KEP_U0: 0.35,      // softening, or the core would spin infinitely fast at u→0
+      KEP_EXP: 1.5,      // Kepler's third law: T ∝ a^(3/2)
+      PHASE: 2.4,        // rad of phase lag per unit radius — this is what makes it a spiral
+      DRIFT: 0.011,      // bounded Lissajous drift of the whole field, as a fraction of extent
+      DRIFT_PX: 41000, DRIFT_PY: 57000,   // deliberately not commensurate: it never loops
+      BREATHE: 0.12, BREATHE_MS: 31000,   // the halo inhales; one scalar, not 34,322
+      K1: 6,             // gone by a region — the same altitude the aura fades at
+      FRAME_MS: 32,      // ~30 fps while something is under the cursor
+      IDLE_MS: 50,       // ~20 fps for the ambient sway alone — see the pacing note in tick()
+      BINS: 96,          // radial bins for the rotation table (see below)
+      GAIN_MS: 700,      // how long motion takes to arrive or leave when toggled
+    };
+
+    // Reduced motion is a system-level request not to animate, and an ambient drift is
+    // exactly what it is about. Honoured as the DEFAULT rather than a hard override, so
+    // `setMotion(true)` still works for anyone who asks for it explicitly.
+    const reduceMotion = typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let motionEnabled = !reduceMotion;
+    let clock = 0;                   // accumulated ANIMATED ms — not wall time, so pausing
+    let lastTick = 0;                // in a hidden tab resumes in phase instead of jumping
+    let gain = 0, gainTarget = motionEnabled ? 1 : 0;
+    let ticking = false, lastDraw = 0;
+    let hoverRow = null, hoverAt = 0;
+    let ripples = [];                // {x, y, t} in base-fit space
+
+    // Per-point trigonometry would be 34,322 sin/cos per frame. It is not needed: the
+    // swirl angle is a function of RADIUS alone, so one table of (cos, sin) per radial bin
+    // is built once a frame and every point does a sqrt and a lookup.
+    const rotC = new Float32Array(MOTION.BINS), rotS = new Float32Array(MOTION.BINS);
+    let swirlLive = false, driftX = 0, driftY = 0;
+    // The largest distance any point can currently be drawn from where it is stored. Box
+    // select needs it to prune conservatively; it is a by-product of building the table.
+    let maxShift = 0;
+
+    // 1 at the whole-map fit, 0 once a region fills the screen — the inverse ramp the aura
+    // uses, times the eased on/off gain.
+    function ambient() {
+      if (gain <= 0.001 || !baseFit) return 0;
+      return gain * (1 - ramp(transform.k, 1.0, MOTION.K1));
+    }
+
+    function updateMotion() {
+      const a = ambient();
+      swirlLive = a > 0.002 && !!baseFit && baseFit.rMax > 0;
+      if (!swirlLive) { driftX = driftY = 0; maxShift = 0; return; }
+      const TAU = Math.PI * 2;
+      let worst = 0;
+      for (let i = 0; i < MOTION.BINS; i++) {
+        const u = i / (MOTION.BINS - 1);
+        const period = MOTION.PERIOD * Math.pow(u + MOTION.KEP_U0, MOTION.KEP_EXP);
+        const amp = a * MOTION.AMP * (MOTION.SOFT / (u + MOTION.SOFT));
+        const th = amp * Math.sin(TAU * clock / period + MOTION.PHASE * u);
+        rotC[i] = Math.cos(th);
+        rotS[i] = Math.sin(th);
+        // chord length for a rotation of th at this radius
+        const d = 2 * u * baseFit.rMax * Math.abs(Math.sin(th / 2));
+        if (d > worst) worst = d;
+      }
+      const ext = baseFit.rMax;
+      driftX = a * MOTION.DRIFT * ext * Math.sin(TAU * clock / MOTION.DRIFT_PX);
+      driftY = a * MOTION.DRIFT * ext * Math.sin(TAU * clock / MOTION.DRIFT_PY + 1.1);
+      maxShift = worst + Math.hypot(driftX, driftY);
+    }
+
+    // Scratch registers rather than a returned pair: this runs 34,322 times a frame, and a
+    // two-element array each time is a million short-lived objects a second.
+    let PX = 0, PY = 0;
+
+    function proj(x, y) {
+      const sx = baseFit.tx + baseFit.k * x, sy = baseFit.ty + baseFit.k * y;
+      if (!swirlLive) { PX = sx; PY = sy; return; }
+      const dx = sx - baseFit.cx, dy = sy - baseFit.cy;
+      let i = (Math.sqrt(dx * dx + dy * dy) / baseFit.rMax) * (MOTION.BINS - 1);
+      i = i > MOTION.BINS - 1 ? MOTION.BINS - 1 : (i > 0 ? i | 0 : 0);
+      const c = rotC[i], s = rotS[i];
+      PX = baseFit.cx + dx * c - dy * s + driftX;
+      PY = baseFit.cy + dx * s + dy * c + driftY;
+    }
+
+    function projPt(x, y) { proj(x, y); return [PX, PY]; }
+
+    // Hovering is a state, not an event: the ring animates, so entering a card has to start
+    // the clock and re-entering the SAME card must not restart it (a mousemove fires many
+    // times over one point, and a ring that restarts its grow-in on every pixel of travel
+    // flickers instead of settling).
+    function setHover(row) {
+      if (row === hoverRow) return;
+      hoverRow = row;
+      hoverAt = performance.now();
+      if (row != null) startTicking(); else schedule();
+    }
+
+    /* The exact inverse, and it exists BECAUSE the swirl is a rotation about a fixed
+     * centre: rotation preserves radius, so the bin a point landed in is recoverable from
+     * where it landed. Un-drift first (drift is applied last going forward), read the bin
+     * off the rotated radius, rotate back by the same angle. No search, no approximation —
+     * which is what lets hover and click keep hitting the card under the cursor while the
+     * field is moving. A displacement-based fudge here would be wrong exactly where the
+     * map is densest. */
+    function unproj(sx, sy) {
+      let px = sx, py = sy;
+      if (swirlLive) {
+        px -= driftX; py -= driftY;
+        const dx = px - baseFit.cx, dy = py - baseFit.cy;
+        let i = (Math.sqrt(dx * dx + dy * dy) / baseFit.rMax) * (MOTION.BINS - 1);
+        i = i > MOTION.BINS - 1 ? MOTION.BINS - 1 : (i > 0 ? i | 0 : 0);
+        const c = rotC[i], s = -rotS[i];
+        px = baseFit.cx + dx * c - dy * s;
+        py = baseFit.cy + dx * s + dy * c;
+      }
+      return [(px - baseFit.tx) / baseFit.k, (py - baseFit.ty) / baseFit.k];
+    }
+
+    // Is there anything to animate? A continuous rAF over 34,322 points is not free, so it
+    // runs only when it is both wanted and visible: `offsetParent` is null in the graph
+    // modes (`#plot.force-mode` hides this canvas) and rAF does not fire in a hidden tab
+    // anyway, so both are cheap outs rather than optimisations.
+    function wantsFrames() {
+      if (!canvas || !baseFit || document.hidden) return false;
+      // The CANVAS, not the host. `#plot` is shared: it hosts the force graph too and stays
+      // visible in Discover and Build, where `#plot.force-mode .map-canvas {display:none}`
+      // hides only this surface. Asking the host meant the ticker happily animated 34,890
+      // points into a canvas nobody could see, in the two modes that do not use it.
+      if (canvas.offsetParent === null) return false;
+      if (gain !== gainTarget) return true;
+      return (gainTarget > 0 && ambient() > 0.002) || hoverRow != null || ripples.length > 0;
+    }
+
+    function startTicking() {
+      if (ticking || !wantsFrames()) return;
+      ticking = true;
+      lastTick = performance.now();
+      requestAnimationFrame(tick);
+    }
+
+    function tick(now) {
+      if (!ticking) return;
+      /* Clamped so a backgrounded tab cannot fast-forward the sway by however many minutes
+       * it was away — but clamped LOOSELY. At 64 ms this doubles as a frame-rate governor:
+       * anything rendering slower than 15 fps (a headless browser throttles rAF to about
+       * 4) advances `clock` at a fraction of wall time, so the animation silently runs in
+       * slow motion on exactly the machines that are already struggling. 200 ms still
+       * bounds the return-from-hidden jump to something invisible. */
+      const dt = Math.min(200, now - lastTick);
+      lastTick = now;
+      if (gain !== gainTarget) {
+        const step = dt / MOTION.GAIN_MS;
+        gain = gainTarget > gain ? Math.min(gainTarget, gain + step)
+                                 : Math.max(gainTarget, gain - step);
+      }
+      if (gain > 0) clock += dt;
+      ripples = ripples.filter(function (r) { return now - r.t < 620; });
+      if (!wantsFrames()) { ticking = false; draw(); return; }
+      /* Frame pacing rather than every rAF, and the budget is spent where it shows. A full
+       * draw is ~9.9 ms over 34,890 points, so this loop is not free and should not pretend
+       * to be. The ambient sway travels 1–3 px per SECOND: at 20 fps that is a tenth of a
+       * pixel between frames, which is not a thing an eye can resolve, so paying 60 fps for
+       * it buys nothing. The ring and the ripple do move fast enough to judder — they get
+       * the higher rate, for the fraction of a second they exist. */
+      const budget = (hoverRow != null || ripples.length) ? MOTION.FRAME_MS : MOTION.IDLE_MS;
+      if (now - lastDraw >= budget) draw();
+      requestAnimationFrame(tick);
+    }
 
     // Rebuilding the quadtree costs 23.5 ms at 34,322 points, and setLayers runs on every
     // filter, search keystroke and panel change — most of which do not alter the pickable
@@ -214,11 +448,18 @@
       if (sig === treeKey && tree) return;
       treeKey = sig;
       const pts = [];
+      // row → stored position, for the things that know a card by id and have to draw AT
+      // it: the hover ring and the click ripple. The tree can answer "what is near here"
+      // and not "where is row 8,412", and a linear scan of 34,322 per frame to find out is
+      // the kind of thing that only shows up on someone else's laptop.
+      rowPos = new Map();
       for (const l of layers) {
         if (l.visible === false || !l.customdata || l.mode === 'lines' || l.mode === 'edges') continue;
         for (let i = 0; i < l.x.length; i++) {
           if (l.x[i] == null) continue;
-          pts.push({ x: l.x[i], y: l.y[i], row: l.customdata[i] });
+          const p = { x: l.x[i], y: l.y[i], row: l.customdata[i] };
+          pts.push(p);
+          rowPos.set(p.row, p);
         }
       }
       tree = d3.quadtree().x(function (d) { return d.x; }).y(function (d) { return d.y; }).addAll(pts);
@@ -243,6 +484,11 @@
 
     function draw() {
       if (!ctx || !canvas || !baseFit) return;
+      lastDraw = performance.now();
+      // The time term is resolved ONCE per frame and every projection in the frame reads
+      // the same table. Sampling the clock per layer would shear the overlays against the
+      // base scatter by however long the frame took to draw.
+      updateMotion();
       const w = surface.width, h = surface.height;
       // Shared prologue — clear, save, translate, scale — and its matching close.
       const close = surface.open(transform);
@@ -255,11 +501,16 @@
         else if (l.mode === 'lines') drawLines(l);
         else drawMarkers(l);
       }
+      drawHoverRing();
+      drawRipples();
       close();
       drawFalloff(w, h);
 
       if (marquee) drawMarquee();
       positionLabels();
+      // A draw can be what makes motion wanted again — the first paint after boot, a mode
+      // switch back to Explore, a hover. Cheaper to ask here than to remember every caller.
+      startTicking();
     }
 
     // Screen space, outside the transform — a selection rectangle is a gesture, not a
@@ -305,6 +556,19 @@
     function drawContours() {
       const path = d3.geoPath(null, ctx);
       const max = contour.length ? contour[contour.length - 1].value : 1;
+      // The density field is computed once and cached against the point-set signature, so
+      // it cannot follow a per-radius swirl — but it must not visibly detach from the
+      // points it describes either. It is carried by ONE rigid rotation taken at the bulk
+      // radius, which tracks the mass of the field; the residual at the extreme radii is
+      // bounded by the swirl amplitude, i.e. a few pixels at the fit, on a field whose
+      // kernel is 14 px wide. Recomputing contourDensity per frame is not on the table.
+      ctx.save();
+      if (swirlLive) {
+        const i = Math.round(0.55 * (MOTION.BINS - 1));
+        ctx.translate(baseFit.cx + driftX, baseFit.cy + driftY);
+        ctx.rotate(Math.atan2(rotS[i], rotC[i]));
+        ctx.translate(-baseFit.cx, -baseFit.cy);
+      }
       for (const c of contour) {
         const a = Math.min(0.34, 0.05 + 0.30 * (c.value / (max || 1)));
         ctx.fillStyle = 'rgba(120,100,200,' + a.toFixed(3) + ')';
@@ -312,6 +576,7 @@
         path(c);
         ctx.fill();
       }
+      ctx.restore();
     }
 
     // Typed edges: a relation drawn between two cards, coloured by what the relation IS.
@@ -328,7 +593,7 @@
     function drawTypedEdges(l) {
       if (!l.edges || !l.edges.length) return;
       ctx.globalAlpha = l.opacity == null ? 1 : l.opacity;
-      Stage.drawEdges(ctx, l.edges, function (pt) { return [wx(pt[0]), wy(pt[1])]; },
+      Stage.drawEdges(ctx, l.edges, function (pt) { return projPt(pt[0], pt[1]); },
                       transform.k, { width: (l.line && l.line.width) || 1, curve: l.curve });
       ctx.globalAlpha = 1;
     }
@@ -342,8 +607,8 @@
       let pen = false;
       for (let i = 0; i < l.x.length; i++) {
         if (l.x[i] == null) { pen = false; continue; }   // null separators break segments
-        const px = wx(l.x[i]), py = wy(l.y[i]);
-        if (pen) ctx.lineTo(px, py); else { ctx.moveTo(px, py); pen = true; }
+        proj(l.x[i], l.y[i]);
+        if (pen) ctx.lineTo(PX, PY); else { ctx.moveTo(PX, PY); pen = true; }
       }
       ctx.stroke();
       ctx.globalAlpha = 1;
@@ -393,7 +658,18 @@
      * 0.25/1.9x gives 35.9%, where each cluster reads as a lit island and the space
      * between them stays black. Full-strength ink is 4.2% in every case — this only ever
      * moves the halo, never the cards. */
-    function auraLevel() { return 0.25 * (1 - ramp(transform.k, 1.0, AURA_K1)); }
+    /* The breathe rides on top and is deliberately ONE SCALAR: the halo already pools
+     * additively where the field is dense, so modulating its strength makes the whole cloud
+     * inhale without touching a single per-point value. A per-card twinkle would mean
+     * rebuilding 34,322 alphas every frame on exactly the array path `dimsAll()` exists to
+     * avoid. Centred on 1.0, so the measured 0.25 cap is still the mean and the coverage
+     * figures above still describe the average frame. */
+    function auraLevel() {
+      const base = 0.25 * (1 - ramp(transform.k, 1.0, AURA_K1));
+      if (gain <= 0.001) return base;
+      const breathe = 1 + gain * MOTION.BREATHE * Math.sin(Math.PI * 2 * clock / MOTION.BREATHE_MS);
+      return base * breathe;
+    }
 
     /* Distance falloff — the other half of "brighter the closer, fading further out".
      *
@@ -486,11 +762,71 @@
       ctx.globalAlpha = 1;
     }
 
+    /* ── Touch: what the map does back ───────────────────────────────────
+     *
+     * Both of these are drawn INSIDE the world transform at a radius divided by
+     * `transform.k`, so they hold a constant size on screen at every zoom, and both are
+     * positioned through `proj` — a ring that did not carry the ambient term would sit
+     * beside the card it is meant to be pointing at.
+     *
+     * They are also the only two things in this renderer that animate on their own, which
+     * is why `wantsFrames` counts them: a hover or a click keeps the ticker alive for as
+     * long as the animation lasts and no longer.
+     */
+    function drawHoverRing() {
+      if (hoverRow == null) return;
+      const p = rowPos.get(hoverRow);
+      // The hovered card can stop being drawn under you — a filter toggle rebuilds the
+      // pickable set. Forget it rather than just skipping the ring, or `wantsFrames` keeps
+      // reporting a live hover and the ticker never stands down.
+      if (!p) { hoverRow = null; return; }
+      const age = performance.now() - hoverAt;
+      const grow = 1 - Math.exp(-age / 90);          // arrives quickly, settles
+      const pulse = 0.5 + 0.5 * Math.sin(age / 260); // and then breathes
+      const r = (7 + 2.2 * pulse) * grow / transform.k;
+      proj(p.x, p.y);
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.strokeStyle = 'rgba(196,167,71,' + (0.75 * grow).toFixed(3) + ')';
+      ctx.lineWidth = 1.6 / transform.k;
+      ctx.beginPath();
+      ctx.arc(PX, PY, r, 0, Math.PI * 2);
+      ctx.stroke();
+      // A second, fainter ring further out: one circle reads as a cursor, two read as a
+      // thing being lit up.
+      ctx.strokeStyle = 'rgba(196,167,71,' + (0.20 * grow * pulse).toFixed(3) + ')';
+      ctx.lineWidth = 1 / transform.k;
+      ctx.beginPath();
+      ctx.arc(PX, PY, r * 2.1, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawRipples() {
+      if (!ripples.length) return;
+      const now = performance.now();
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      for (const rp of ripples) {
+        const t = (now - rp.t) / 620;
+        if (t < 0 || t > 1) continue;
+        const ease = 1 - Math.pow(1 - t, 3);         // fast out, slow settle
+        proj(rp.x, rp.y);
+        ctx.strokeStyle = 'rgba(196,167,71,' + (0.55 * (1 - t)).toFixed(3) + ')';
+        ctx.lineWidth = 1.8 * (1 - t) / transform.k;
+        ctx.beginPath();
+        ctx.arc(PX, PY, (5 + 34 * ease) / transform.k, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
     function strokeFill(l, idx, colour, size, sym, m) {
       ctx.beginPath();
       for (const i of idx) {
         if (l.x[i] == null) continue;
-        addSymbol(wx(l.x[i]), wy(l.y[i]), size, sym);
+        proj(l.x[i], l.y[i]);
+        addSymbol(PX, PY, size, sym);
       }
       if (colour && colour !== 'rgba(0,0,0,0)') { ctx.fillStyle = colour; ctx.fill(); }
       if (m.line && m.line.color) {
@@ -538,6 +874,10 @@
       // collision pass was not what was limiting them, so the knob went back out rather
       // than ship as an unfalsifiable improvement.
       labels = (list || []).slice().sort((a, b) => (b.size || 0) - (a.size || 0));
+      // Drop any cached pixel size: callers may hand back the same objects with a new
+      // font-size (the level crossfade does exactly that), and a stale width silently
+      // mis-places the collision boxes rather than failing.
+      for (const a of labels) { a._w = null; a._h = null; }
       if (!labelHost) {
         labelHost = document.createElement('div');
         labelHost.className = 'map-labels';
@@ -587,6 +927,12 @@
     // Doing it here also makes it zoom-responsive for free: labels that collide zoomed out
     // separate as you zoom in, which is exactly the behaviour you want and what force.js
     // has always done for node labels.
+    /* MEASURING and PLACING are separated, and the split is what makes an animated map
+     * affordable. `offsetWidth` on a hidden element forces a synchronous layout; doing that
+     * for every label on every frame of a 30 fps ambient loop is a self-inflicted jank
+     * source that has nothing to do with the canvas. A label's PIXEL SIZE only changes when
+     * its text or font-size changes, so it is measured once and cached on the label; only
+     * its position, and therefore the collision pass, is recomputed per frame. */
     function positionLabels() {
       if (!labelHost || !labels.length || !baseFit) return;
       const kids = labelHost.children;
@@ -597,10 +943,15 @@
         const p = dataToPixel(labels[i].x, labels[i].y);
         el.style.transform = 'translate(-50%,-50%) translate(' +
           Math.round(p[0]) + 'px,' + Math.round(p[1]) + 'px)';
-        // offsetWidth is 0 while hidden, so un-hide before measuring.
+        // Un-hidden unconditionally: the collision pass below re-decides every frame, so a
+        // label rejected last frame has to be eligible again this one. This is a style
+        // WRITE, which is free; only the measurement below reads back and forces layout.
         el.style.display = '';
-        const w = el.offsetWidth || (labels[i].text || '').length * 7;
-        const h = el.offsetHeight || 16;
+        if (labels[i]._w == null) {
+          labels[i]._w = el.offsetWidth || (labels[i].text || '').length * 7;
+          labels[i]._h = el.offsetHeight || 16;
+        }
+        const w = labels[i]._w, h = labels[i]._h;
         boxes.push({ x0: p[0] - w / 2, x1: p[0] + w / 2, y0: p[1] - h / 2, y1: p[1] + h / 2 });
       }
       // The greedy AABB pass is `Stage.placeLabels` — the same one The Walk uses for node
@@ -635,10 +986,13 @@
     function pick(px, py, radiusPx) {
       if (!tree || !baseFit) return null;
       const p = transform.invert([px, py]);
-      const wxp = (p[0] - baseFit.tx) / baseFit.k;
-      const wyp = (p[1] - baseFit.ty) / baseFit.k;
+      // Undo the ambient swirl before asking the tree, which stores UNMOVED positions. The
+      // inverse is exact (see `unproj`), so this keeps working while the field drifts —
+      // the alternative, hit-testing against where the cards are stored while drawing them
+      // somewhere else, is off by several pixels at the fit, which is several cards.
+      const q = unproj(p[0], p[1]);
       const r = (radiusPx == null ? 8 : radiusPx) / (baseFit.k * transform.k);
-      const hit = tree.find(wxp, wyp, r);
+      const hit = tree.find(q[0], q[1], r);
       return hit ? hit.row : null;
     }
 
@@ -646,16 +1000,30 @@
     // 4.5 ms here over 22,161 caught points.
     function pickRect(x0, y0, x1, y1) {
       if (!tree || !baseFit) return [];
+      // `transform.invert` lands in base-fit space, which is where the swirl acts — so the
+      // marquee is already in the right coordinates to test against directly.
       const a = transform.invert([Math.min(x0, x1), Math.min(y0, y1)]);
       const b = transform.invert([Math.max(x0, x1), Math.max(y0, y1)]);
-      const wx0 = (a[0] - baseFit.tx) / baseFit.k, wy0 = (a[1] - baseFit.ty) / baseFit.k;
-      const wx1 = (b[0] - baseFit.tx) / baseFit.k, wy1 = (b[1] - baseFit.ty) / baseFit.k;
+      // A rotation maps a rectangle to something that is not a rectangle, so the stored
+      // positions inside a screen box are NOT an axis-aligned range any more. Pruning gets
+      // padded by the largest displacement the swirl can currently produce (conservative,
+      // never misses), and membership is then decided by projecting each candidate FORWARD
+      // and testing where it is actually drawn. Exact, and it costs one projection per
+      // point the quadtree already had to visit.
+      const pad = maxShift / baseFit.k;
+      const wx0 = (a[0] - baseFit.tx) / baseFit.k - pad;
+      const wy0 = (a[1] - baseFit.ty) / baseFit.k - pad;
+      const wx1 = (b[0] - baseFit.tx) / baseFit.k + pad;
+      const wy1 = (b[1] - baseFit.ty) / baseFit.k + pad;
       const out = [];
       tree.visit(function (node, nx0, ny0, nx1, ny1) {
         if (!node.length) {
           do {
             const d = node.data;
-            if (d.x >= wx0 && d.x < wx1 && d.y >= wy0 && d.y < wy1) out.push(d.row);
+            if (d.x >= wx0 && d.x < wx1 && d.y >= wy0 && d.y < wy1) {
+              proj(d.x, d.y);
+              if (PX >= a[0] && PX < b[0] && PY >= a[1] && PY < b[1]) out.push(d.row);
+            }
           } while (node = node.next);
         }
         return nx0 > wx1 || ny0 > wy1 || nx1 < wx0 || ny1 < wy0;
@@ -699,10 +1067,12 @@
       }
     }
 
-    // Data → screen pixels, for anything positioned over the map (region labels).
+    // Data → screen pixels, for anything positioned over the map (region labels) — and the
+    // canonical "where is this card right now" for callers and tests. It carries the
+    // ambient term, so a click aimed through it lands on the card it aimed at.
     function dataToPixel(x, y) {
       if (!baseFit) return null;
-      return transform.apply([wx(x), wy(y)]);
+      return transform.apply(projPt(x, y));
     }
 
     const api = {
@@ -712,6 +1082,30 @@
       setAnnotations, updateLayerBy, reindex,
       get visibleLabelCount() { return lastVisibleLabels; },
       setSelectMode: function (on) { selectMode = !!on; if (canvas) canvas.style.cursor = on ? 'crosshair' : 'grab'; },
+      /* Ambient motion, on or off, eased rather than snapped — dropping ~34,000 points back
+       * to their stored positions in one frame reads as a glitch, and turning it off is
+       * usually a deliberate act (a preference, a precision task) that deserves to look
+       * deliberate. Reading `motion` back reports what is CONFIGURED; `motionLevel` reports
+       * what is currently on screen, which is also zero when you are zoomed in. */
+      setMotion: function (on) {
+        motionEnabled = !!on;
+        gainTarget = motionEnabled ? 1 : 0;
+        if (motionEnabled) startTicking(); else schedule();
+      },
+      get motion() { return motionEnabled; },
+      // "Is the map moving right now" — which is false when it is zoomed in, switched off,
+      // in a background tab, or hidden behind the graph modes. Deliberately not just
+      // `ambient()`: a level of 1 on a canvas nobody is drawing to is not a true answer.
+      get motionLevel() { return wantsFrames() ? ambient() : 0; },
+      // Where a card is being drawn RIGHT NOW, in data units — the ambient term applied.
+      // Anything that has to align with a moving point and cannot go through
+      // `dataToPixel` (an overlay in world space) asks here rather than guessing.
+      projected: function (x, y) {
+        if (!baseFit) return null;
+        const p = projPt(x, y);
+        return [(p[0] - baseFit.tx) / baseFit.k, (p[1] - baseFit.ty) / baseFit.k];
+      },
+      setHover: setHover,
       setContours: function (on) {
         showContours = !!on;
         if (showContours) { contourKey = null; ensureContours(); }

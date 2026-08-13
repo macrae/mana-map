@@ -442,6 +442,83 @@ Alpha coverage of the canvas at the fitted view, against a 4.5% no-halo baseline
 Full-strength ink is flat across all of them: this only ever moves the halo, never the
 cards.
 
+### Ambient motion — the galaxy layer
+
+At altitude the atlas turns. The whole field carries a slow differential swirl about the
+fit's centre plus a bounded Lissajous drift, so clusters read as islands of a moving
+system rather than as a printed sheet.
+
+**The motion is in the projection, not in the data.** `wx`/`wy` are still the static
+base-fit mapping; `proj(x, y)` is those plus a time term, and since every drawn thing
+already funnelled through one function, adding it there moved the whole surface at once.
+Moving the points instead is the one implementation that cannot work here — `buildTree`
+is 23.5 ms and its signature is deliberately blind to positions, so per-frame mutation
+either rebuilds the quadtree 20 times a second or reproduces exactly the stale-hit-test
+bug `reindex()` exists to document, and every world-anchored overlay detaches with it.
+Two callers deliberately keep the static mapping: the cached contour field (carried by a
+single rigid rotation at the bulk radius instead) and `setCamera`'s target, which must
+not jitter.
+
+**`unproj` is an exact inverse, and the motion was designed so it could be.** The swirl
+is a rotation about a fixed centre, so it preserves radius — which means the angle a
+point was turned by is recoverable from where it landed. `pick` un-drifts, reads the
+radial bin off the rotated radius, and rotates back. Measured: five named cards, five
+exact hits at a 3 px pick radius, sampled across different phases of the sway. Hit-testing
+against stored positions while drawing elsewhere would be tens of pixels out at the fit,
+which in this corpus is a different card, and would present as a flaky map.
+
+**It is a sway, not a rotation, and that is a correctness decision.** A galaxy that
+genuinely rotates *winds up*: shorter inner periods wrap the arms, and cards PaCMAP
+placed side by side end up a quarter of the map apart — the picture keeps looking good
+while it stops being true. A rigid rotation avoids the shear and costs spatial memory
+instead (the region you learned was north ends up west). So the excursion is bounded and
+always returns: peak **32 px on a 900 px viewport**. Kepler survives where it is legible
+— period varies with radius (T ∝ a^1.5, so the rim is slower than the core) and phase
+lags outward, so each instant is a shallow spiral that unwinds and rewinds.
+`test_the_drift_is_bounded_and_returns` asserts both halves, because an accumulating
+motion passes "does it move" and fails only that one.
+
+**It rides the aura's ramp and stands down for anything precise.** `ambient()` is 1 at
+the fit and 0 by the time a region fills the screen (`K1: 6`, the same altitude the halo
+fades at), so points slide home as you approach and Explore still converges on Discover
+and Build up close. It also stops when the tab is hidden, when `prefers-reduced-motion`
+is set (the boot default — the **Motion** toolbar button reports the renderer's state
+rather than the markup's), and when the canvas is off screen. That last check reads
+`canvas.offsetParent`, **not** `host.offsetParent`: `#plot` is shared with the force
+graph and stays visible in Discover and Build, so asking the host animated 34,890 points
+into a surface nobody could see.
+
+Cost control, since this is the first continuously-animating thing in the app:
+
+| what | value | why |
+|---|---|---|
+| full draw | 9.9 ms | 34,890 points, unchanged from the static path |
+| ambient cadence | ~20 fps | the sway travels 1–3 px/**second**; 60 fps buys nothing |
+| hover/ripple cadence | ~30 fps | these do move fast enough to judder |
+| per-point trig | none | 96 radial (cos, sin) bins, tabulated once a frame |
+| label measurement | cached | `offsetWidth` forces layout; only position recomputes |
+
+**Box select had to change with it.** A rotation maps a rectangle to something that is
+not a rectangle, so the stored positions inside a screen marquee stop being an
+axis-aligned range. `pickRect` pads its quadtree pruning by the largest displacement
+currently in play and then decides membership by projecting each candidate *forward* —
+exact, and it costs one projection per point the tree already visited.
+
+### Touch: hover and click
+
+The map answers back. Hovering a card draws a two-ring highlight that grows in over
+~90 ms and then breathes; clicking one sends a ripple out from the point. Both are drawn
+inside the world transform at a radius divided by `transform.k`, so they hold a constant
+screen size at every zoom, and both are positioned through `proj` — a ring without the
+ambient term sits beside the card it is pointing at. The cursor also becomes `pointer`
+over a card and `grab` over empty space, which the surface previously never said: 34,890
+points that all looked equally inert until you happened to click one.
+
+These are the only self-animating elements in the renderer, so `wantsFrames()` counts
+them — a hover or a click keeps the ticker alive for exactly as long as the animation
+lasts. A hovered card that stops being drawn (a filter toggle rebuilds the pickable set)
+clears the hover rather than just skipping the ring, or the ticker never stands down.
+
 ### Telescopic labels
 
 Which names are on screen is a question about **depth relative to what is focused**, not

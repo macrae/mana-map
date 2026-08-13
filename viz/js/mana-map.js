@@ -1856,6 +1856,25 @@
     }
   });
 
+  /* Ambient motion is a preference, so the button reports the renderer's state rather than
+   * assuming it: `prefers-reduced-motion` means the map boots still, and a control that
+   * showed "on" while nothing moved would read as a broken toggle rather than an honoured
+   * system setting. The renderer owns the default; this only ever flips it. */
+  document.getElementById('toggleMotion').addEventListener('click', function () {
+    if (!mapCanvas) return;
+    mapCanvas.setMotion(!mapCanvas.motion);
+    syncMotionButton();
+  });
+
+  /* A function declaration, not `MM.something = ...`: this file's whole top level runs
+   * INSIDE the IIFE, before `window.MM` is exported, so touching `MM` here throws, aborts
+   * the module, and takes discovery, drill, force and build down with it — one ordering
+   * mistake, four broken files. Hoisted, so `initMapCanvas` can call it from above. */
+  function syncMotionButton() {
+    const b = document.getElementById('toggleMotion');
+    if (b && mapCanvas) b.classList.toggle('active', mapCanvas.motion);
+  }
+
   document.getElementById('search').addEventListener('input', e => {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(() => {
@@ -2193,6 +2212,9 @@
         }
       });
       plotInitialized = true;
+      // The renderer decides the default (it reads `prefers-reduced-motion`); the button
+      // reports it. Sync once the renderer exists, never guess from the markup.
+      syncMotionButton();
 
     // The side panels resize #plot through a CSS transition, so a one-shot timer can
     // fire mid-transition and leave a stale-width canvas painted over the open panel.

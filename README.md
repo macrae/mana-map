@@ -18,7 +18,7 @@ survived an adversarial checker, resource curves from a seeded simulation, and c
 that says out loud when it's coaching.
 
 The fastest way to understand the second one is to read an issue:
-**Eight issues live** — [001 Goblin Storm](https://macrae.github.io/mana-map/manuals/goblin-storm.html) · [002 Hapatra](https://macrae.github.io/mana-map/manuals/hapatra.html) · [003 Sisay](https://macrae.github.io/mana-map/manuals/sisay.html) · [004 Heliod](https://macrae.github.io/mana-map/manuals/heliod.html) · [005 Ur-Dragon](https://macrae.github.io/mana-map/manuals/ur-dragon.html) · [006 Edgar](https://macrae.github.io/mana-map/manuals/edgar-vampires.html) · [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) · [008 Yawgmoth](https://macrae.github.io/mana-map/manuals/yawgmoth-swarm.html)
+**Nine issues live** — [001 Goblin Storm](https://macrae.github.io/mana-map/manuals/goblin-storm.html) · [002 Hapatra](https://macrae.github.io/mana-map/manuals/hapatra.html) · [003 Sisay](https://macrae.github.io/mana-map/manuals/sisay.html) · [004 Heliod](https://macrae.github.io/mana-map/manuals/heliod.html) · [005 Ur-Dragon](https://macrae.github.io/mana-map/manuals/ur-dragon.html) · [006 Edgar](https://macrae.github.io/mana-map/manuals/edgar-vampires.html) · [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) · [008 Yawgmoth](https://macrae.github.io/mana-map/manuals/yawgmoth-swarm.html) · [009 Radagast](https://macrae.github.io/mana-map/manuals/radagast.html)
 · [the newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
 Vol. 001 was hand-built. **Vol. 002 was not** — the deck was generated from a three-line
