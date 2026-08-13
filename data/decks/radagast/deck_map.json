@@ -7,7 +7,18 @@
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
     "cards": 71,
     "unresolved": [],
-    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
+    "named_by": "deck-cartographer",
+    "cartographer_notes": [
+      "Four cities (city-2, city-4, city-5, city-6) have exactly one neighbourhood whose membership is IDENTICAL to the parent city. That is not a split, so there is nothing narrower to name and I have left all four unnamed. A renderer should suppress a single identical hood rather than print its fallback word under the city label — 'Interaction' set beneath THE TRAPS reads as two different places.",
+      "city-0 is the deck's mass at 23 of 71 entries and it is heterogeneous by construction: the commander, all four mass-pump finishers, all four token-makers and all the aura and land ramp sit together. The city name names the job the mass performs — build wide, then cash it — and the real distinctions live in its three neighbourhoods, which is where I spent the naming.",
+      "city-0-hood-0 is honest for eight of its ten cards: four finishers (Craterhoof Behemoth, Overwhelming Stampede, Pathbreaker Ibex, Return of the Wildspeaker) and four cards that buy one back (Bala Ged Recovery, Eternal Witness, Life from the Loam, Satyr Wayfinder). Harmonize and Deathgorge Scavenger are the loose members — neither pays off nor rebuys.",
+      "city-0-hood-2's loose members are Collector Ouphe, Mirkwood Pathmaker and Dawn's Light Archer: cheap green bodies with no ramp text at all, which is why its fallback word 'Ramp' fits them worse than the name does. Dawn's Light Archer at least has flash printed on it, so it belongs to the window if not to the engine.",
+      "city-3-hood-1 is Toski, Bearer of Secrets alone. The cluster is not wrong — he is the only card in the insurance city that protects himself rather than something else — but functionally he is city-6's business, a draw engine keyed to connecting. He is a card that belongs to two cities, not a misfile; I named the hood for the difference the map can actually see.",
+      "city-1-hood-1 is Tireless Provisioner alone. The 8-versus-1 split is thin but real: every other member taps for mana, and this one makes Treasures off land drops. Worth a name, not worth a territory.",
+      "city-2 carries verified_count 0 despite being the entire removal suite. Ohran Frostfang — the strategic frame's flagship flash trap — is filed in city-6 instead, because its text draws cards, and the verified stack that features it (002) therefore credits A CARD PER BODY rather than THE TRAPS. If the Coach says 'the traps' he means city-2; if he cites stack 002 he is pointing at city-6. Worth knowing before three voices use the word.",
+      "No membership was changed and none was renamed around. THE TRAPS and THE BODYGUARDS are both interaction-shaped names and could be confused in the abstract; on the map they are opposite corners (city-2 at -0.73,-0.54 and city-3 at -0.81,+0.36), and the distinction is real: city-2 answers the table, city-3 answers what the table does to you."
+    ]
   },
   "cards": [
     {
@@ -945,7 +956,7 @@
     {
       "id": "city-0",
       "level": 0,
-      "label": null,
+      "label": "THE WIDE BOARD",
       "fallback": "Bodies",
       "cx": -0.09807,
       "cy": -0.05781,
@@ -975,13 +986,14 @@
         "Wild Growth",
         "Yeva, Nature's Herald"
       ],
-      "verified_count": 4
+      "verified_count": 4,
+      "gloss": "Where the deck's mass lives: the bodies that go wide, and all four pump spells that cash them in."
     },
     {
       "id": "city-0-hood-0",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "PAYOFF AND REBUY",
       "fallback": "Bodies",
       "cx": -0.12555,
       "cy": 0.05335,
@@ -998,13 +1010,14 @@
         "Return of the Wildspeaker",
         "Satyr Wayfinder"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "The four mass pumps, plus the recursion that digs one back up after the table answers the first."
     },
     {
       "id": "city-0-hood-1",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "THE SWARM",
       "fallback": "Bodies II",
       "cx": -0.18344,
       "cy": -0.59213,
@@ -1015,13 +1028,14 @@
         "Hornet Queen",
         "Scute Swarm"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "Each of these brings more than one body, which is how the five-body bar gets cleared from a single card."
     },
     {
       "id": "city-0-hood-2",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "THE METRONOME",
       "fallback": "Ramp",
       "cx": -0.02959,
       "cy": 0.05617,
@@ -1037,12 +1051,13 @@
         "Wild Growth",
         "Yeva, Nature's Herald"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "The two cards that grant the flash window, and the cheap enchantment ramp that keeps mana open to use it."
     },
     {
       "id": "city-1",
       "level": 0,
-      "label": null,
+      "label": "MANA ON LEGS",
       "fallback": "Ramp",
       "cx": 0.88099,
       "cy": -0.00804,
@@ -1058,13 +1073,14 @@
         "Selvala, Heart of the Wilds",
         "Tireless Provisioner"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Nine accelerants that are also creatures: they buy the early turns and still count toward the board you need."
     },
     {
       "id": "city-1-hood-0",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "TAP FOR GREEN",
       "fallback": "Card Flow",
       "cx": 0.8921,
       "cy": 0.01794,
@@ -1079,13 +1095,14 @@
         "Scaled Nurturer",
         "Selvala, Heart of the Wilds"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": null
     },
     {
       "id": "city-1-hood-1",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "THE TREASURE ROUTE",
       "fallback": "Ramp II",
       "cx": 0.79208,
       "cy": -0.21588,
@@ -1093,12 +1110,13 @@
       "cards": [
         "Tireless Provisioner"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "The one accelerant that ramps off land drops instead of tapping for mana."
     },
     {
       "id": "city-2",
       "level": 0,
-      "label": null,
+      "label": "THE TRAPS",
       "fallback": "Interaction",
       "cx": -0.72637,
       "cy": -0.53967,
@@ -1113,7 +1131,8 @@
         "Whiptongue Hydra",
         "Wickerbough Elder"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Held up, not cast — green's answers, most of them wearing a creature body you can flash in after blockers."
     },
     {
       "id": "city-2-hood-0",
@@ -1139,7 +1158,7 @@
     {
       "id": "city-3",
       "level": 0,
-      "label": null,
+      "label": "THE BODYGUARDS",
       "fallback": "Insurance",
       "cx": -0.8129,
       "cy": 0.3649,
@@ -1155,7 +1174,8 @@
         "Veil of Summer",
         "Warg Tactics"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "You are all-in on one wizard and one board; these are what you hold so one removal spell never ends it."
     },
     {
       "id": "city-3-hood-0",
@@ -1182,7 +1202,7 @@
       "id": "city-3-hood-1",
       "level": 1,
       "parent": "city-3",
-      "label": null,
+      "label": "UNKILLABLE GAS",
       "fallback": "Bodies III",
       "cx": -0.60492,
       "cy": 0.58206,
@@ -1190,12 +1210,13 @@
       "cards": [
         "Toski, Bearer of Secrets"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Sits with the insurance because it protects itself; its actual job is drawing a card every time it connects."
     },
     {
       "id": "city-4",
       "level": 0,
-      "label": null,
+      "label": "GREEN ON CURVE",
       "fallback": "Mana",
       "cx": 0.82222,
       "cy": 0.70862,
@@ -1209,7 +1230,8 @@
         "Slippery Karst",
         "Thriving Grove"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Thirty-six lands with almost nothing to say: green on time, so a window never closes for want of mana."
     },
     {
       "id": "city-4-hood-0",
@@ -1234,7 +1256,7 @@
     {
       "id": "city-5",
       "level": 0,
-      "label": null,
+      "label": "THE SEARCH PARTY",
       "fallback": "Tutors",
       "cx": 0.40263,
       "cy": -0.8903,
@@ -1249,7 +1271,8 @@
         "Three Visits",
         "Wood Elves"
       ],
-      "verified_count": 3
+      "verified_count": 3,
+      "gloss": "Everything here searches your library — most for a land, two of them for the body the board is missing."
     },
     {
       "id": "city-5-hood-0",
@@ -1275,7 +1298,7 @@
     {
       "id": "city-6",
       "level": 0,
-      "label": null,
+      "label": "A CARD PER BODY",
       "fallback": "Card Flow",
       "cx": -0.21754,
       "cy": 0.65674,
@@ -1289,7 +1312,8 @@
         "Ohran Frostfang",
         "Tribute to the World Tree"
       ],
-      "verified_count": 3
+      "verified_count": 3,
+      "gloss": "Every body you deploy pays a card here, which is why the deck can afford to cast on other players' turns."
     },
     {
       "id": "city-6-hood-0",

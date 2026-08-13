@@ -850,8 +850,10 @@ def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
                 card_tile(c, roles, synergy, anchor_id=CARD_ANCHORS.get(c["name"]))
                 for c in members)
             sections.append(
-                city_head(index, region.get("label") or region.get("fallback") or "",
-                          len(members), region.get("verified_count", 0))
+                city_head(index,
+                          region.get("label") or region.get("fallback") or "",
+                          len(members), region.get("verified_count", 0),
+                          region.get("gloss"))
                 + f'<div class="card-grid">{tiles}</div>')
         # Any card the map could not place (an unresolved name) still gets a seat.
         stray = [c for c in main

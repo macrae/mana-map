@@ -1144,6 +1144,19 @@ AGENT_ROUTINES = {
     # input to writer-prose or issue-plan: a bench edit should cost one
     # analysis, not a full manual regeneration — the renderer reads the
     # artifact directly, so the coupling stays one-way.
+    "deck-map-names": {
+        "agent": "deck-cartographer",
+        "artifact": "deck_map.json",
+        # Names only. Membership is a MEASUREMENT this routine may not touch, so the
+        # merge writes `label`/`gloss` and nothing else (see pilot/merge_deck_map.py).
+        #
+        # `deck:deck_map.json` is the input rather than `cards:semantic`: a decklist
+        # edit changes the clusters, but so does a retrain, and the map is the thing
+        # that actually moved. Hashing the map catches both and nothing else — a
+        # re-render or a prose pass leaves these names alone, which is the point of
+        # naming places rather than describing contents.
+        "inputs": ["deck:deck_map.json", "deck:strategic_frame.json?"],
+    },
     "the-ten": {
         "agent": "short-list-analyst",
         "artifact": "considering.json",
