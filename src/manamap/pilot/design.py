@@ -11,6 +11,7 @@ hash of the content so the same input always renders the same page.
 """
 
 import hashlib
+import math
 import html
 
 # Google Fonts: Michroma (Eurostile-class display), Archivo Black + Oswald
@@ -228,6 +229,19 @@ a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
 .meter-seg.on { background:linear-gradient(180deg,var(--y2k-blue),var(--y2k-violet)); }
 /* The signature number. Full-bleed within the column, and big enough that a reader
    flipping past stops — which is the whole job, and the reason it may appear once. */
+.constellation-fig { margin:26px 0; }
+.constellation-fig .constellation { width:100%; height:auto; display:block;
+  border:3px solid var(--ink); box-shadow:6px 6px 0 rgba(0,0,0,.30); background:#0B0A14; }
+.ckeys { display:flex; flex-wrap:wrap; gap:14px; margin:10px 0 4px;
+  font-family:var(--condensed); text-transform:uppercase; letter-spacing:.06em;
+  font-size:.7rem; color:var(--ink-soft); }
+.ckeys .ck { display:flex; align-items:center; gap:6px; }
+.ckeys .dot { width:11px; height:11px; border-radius:50%; display:inline-block; }
+.ckeys .dot.cmdr { background:#FFD800; box-shadow:0 0 0 2px #C8A03C; }
+.ckeys .dot.ver { background:#E4007C; box-shadow:0 0 0 1.6px #fff, 0 0 0 2.6px var(--ink); }
+.ckeys .dot.plain { background:#8A93B5; }
+.ckeys .edge { width:22px; height:0; border-top:2px solid #8A93B5; display:inline-block; }
+.constellation-fig figcaption { font-size:.78rem; color:var(--ink-soft); margin-top:8px; }
 .stat-slab { margin:26px 0; padding:22px 18px; text-align:center; color:#fff;
   background:linear-gradient(160deg,var(--ink),#2a2440 62%,var(--y2k-violet));
   border:3px solid var(--ink); box-shadow:6px 6px 0 rgba(0,0,0,.30); }
@@ -511,6 +525,242 @@ def callout(n, title, text, esc_fn=esc):
         f'<div class="callout"><div class="n">{esc(n)}</div><div>'
         f'<span class="t">{esc(title)}</span>{esc_fn(text)}</div></div>'
     )
+
+
+# ── The deck constellation ──────────────────────────────────────────────
+#
+# One deck, re-laid-out from its own cards and clustered into cities. Drawn as
+# inline SVG rather than as a canvas or a chart library, for three reasons that
+# all matter here: the magazine must rebuild byte-identically (so no layout may be
+# computed at view time), the page must print, and an issue is a standalone file
+# with no scripts. Everything below is pure geometry over `deck_map.json`.
+#
+# The register is the poster, not the scatter plot. A card is a dot, a city is a
+# lit blob with its name across it, and the eye is meant to land on the SHAPE
+# before it reads anything — density first, structure second, labels third.
+
+# Seven, so the largest deck's cities each get one and no two neighbours collide.
+# Ordered by how loud they are: city-0 is the biggest cluster and takes the
+# strongest colour, which is also the order `deck_map` emits them in.
+CITY_INK = [
+    ("#E4007C", "#FF66B8"),   # magenta
+    ("#1B4FD8", "#6E93F5"),   # blue
+    ("#3FBF3F", "#8BE28B"),   # green
+    ("#C8A03C", "#EBD08A"),   # gold
+    ("#7B2D8B", "#B77BC4"),   # purple
+    ("#E4002B", "#FF7A93"),   # red
+    ("#0FA3A3", "#68DADA"),   # teal
+]
+
+
+def _hull(points):
+    """Convex hull, monotone chain. Returns the hull in order, or the input.
+
+    Hand-rolled rather than scipy: `design.py` renders and must import cheaply,
+    and a hull over at most ~35 points is fifteen lines. scipy also raises on
+    degenerate input (three collinear cards), which here is a normal deck.
+    """
+    pts = sorted(set(points))
+    if len(pts) <= 2:
+        return pts
+
+    def cross(o, a, b):
+        return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
+
+    lower = []
+    for p in pts:
+        while len(lower) >= 2 and cross(lower[-2], lower[-1], p) <= 0:
+            lower.pop()
+        lower.append(p)
+    upper = []
+    for p in reversed(pts):
+        while len(upper) >= 2 and cross(upper[-2], upper[-1], p) <= 0:
+            upper.pop()
+        upper.append(p)
+    return lower[:-1] + upper[:-1]
+
+
+def _blob(points, pad):
+    """A rounded, outward-padded hull as an SVG path.
+
+    A raw convex hull reads as a chart annotation — straight edges, sharp corners,
+    obviously computed. Pushing each vertex out from the centroid and joining them
+    with quadratic curves through the edge midpoints gives a soft territory, which
+    is what a map region looks like and what a reader recognises without a key.
+    """
+    hull = _hull(points)
+    if len(hull) < 3:
+        cx = sum(p[0] for p in points) / len(points)
+        cy = sum(p[1] for p in points) / len(points)
+        r = pad + max((math.hypot(p[0] - cx, p[1] - cy) for p in points), default=0)
+        return (f"M {cx - r:.1f} {cy:.1f} a {r:.1f} {r:.1f} 0 1 0 {2 * r:.1f} 0 "
+                f"a {r:.1f} {r:.1f} 0 1 0 {-2 * r:.1f} 0 Z")
+    cx = sum(p[0] for p in hull) / len(hull)
+    cy = sum(p[1] for p in hull) / len(hull)
+    out = []
+    for x, y in hull:
+        dx, dy = x - cx, y - cy
+        length = math.hypot(dx, dy) or 1.0
+        out.append((x + dx / length * pad, y + dy / length * pad))
+    mids = [((out[i][0] + out[(i + 1) % len(out)][0]) / 2,
+             (out[i][1] + out[(i + 1) % len(out)][1]) / 2) for i in range(len(out))]
+    path = [f"M {mids[-1][0]:.1f} {mids[-1][1]:.1f}"]
+    for i, (vx, vy) in enumerate(out):
+        path.append(f"Q {vx:.1f} {vy:.1f} {mids[i][0]:.1f} {mids[i][1]:.1f}")
+    return " ".join(path) + " Z"
+
+
+def deck_constellation(doc, width=1000, height=620):
+    """`deck_map.json` → one inline SVG.
+
+    Layers, back to front, and the order is the argument: density (what the deck
+    is made of), then structure (what sits beside what), then the cards, then the
+    names. A reader who looks for one second should get the shape; a reader who
+    looks for ten should get the cities; only then does a card name matter.
+    """
+    cards = doc.get("cards") or []
+    if not cards:
+        return ""
+    regions = doc.get("regions") or []
+    cities = [r for r in regions if r.get("level") == 0]
+
+    pad = 74
+    xs = [c["x"] for c in cards]
+    ys = [c["y"] for c in cards]
+    span_x = (max(xs) - min(xs)) or 1.0
+    span_y = (max(ys) - min(ys)) or 1.0
+    scale = min((width - 2 * pad) / span_x, (height - 2 * pad) / span_y)
+    ox = (width - span_x * scale) / 2 - min(xs) * scale
+    oy = (height - span_y * scale) / 2 - min(ys) * scale
+
+    def place(card):
+        return (card["x"] * scale + ox, card["y"] * scale + oy)
+
+    pts = [place(c) for c in cards]
+    by_city = {}
+    for card, point in zip(cards, pts):
+        by_city.setdefault(card["city"], []).append(point)
+
+    # Territories are drawn per NEIGHBOURHOOD, not per city, and that is the whole
+    # difference between a map and a smear. A city's convex hull is only tight when
+    # its members happen to be adjacent in the projection; radagast's 23-card city
+    # is spread right across the frame, so its hull covered every other city and
+    # the picture read as one magenta continent with labels floating on it. Its
+    # three neighbourhoods are compact, and a city drawn as a few lobes in one
+    # colour reads as territory — which is also truer, because the neighbourhoods
+    # are what the clustering actually found.
+    lobes = {}
+    for card, point in zip(cards, pts):
+        lobes.setdefault((card["city"], card.get("hood", 0)), []).append(point)
+
+    def trimmed(points, keep=0.85):
+        """Drop the farthest few from the centroid before hulling.
+
+        One card sitting out past the rest stretches a hull across empty space it
+        does not occupy. The card is still DRAWN — it is just not allowed to claim
+        territory on its own, which is the same judgment a cartographer makes about
+        a lighthouse.
+        """
+        if len(points) < 5:
+            return points
+        cx = sum(p[0] for p in points) / len(points)
+        cy = sum(p[1] for p in points) / len(points)
+        ranked = sorted(points, key=lambda p: math.hypot(p[0] - cx, p[1] - cy))
+        return ranked[:max(3, int(len(ranked) * keep))]
+
+    def ink(city, shade=0):
+        return CITY_INK[city % len(CITY_INK)][shade]
+
+    parts = [
+        f'<svg class="constellation" viewBox="0 0 {width} {height}" '
+        f'role="img" aria-label="Cluster map of this deck\'s cards" '
+        f'xmlns="http://www.w3.org/2000/svg">',
+        '<defs><filter id="cbloom" x="-30%" y="-30%" width="160%" height="160%">'
+        '<feGaussianBlur stdDeviation="16"/></filter></defs>',
+        f'<rect width="{width}" height="{height}" fill="#0B0A14"/>',
+    ]
+
+    # 1. Density — the blurred territory of each city, additively lit.
+    parts.append('<g filter="url(#cbloom)" opacity="0.5">')
+    for (city, _hood), members in sorted(lobes.items()):
+        parts.append(f'<path d="{_blob(trimmed(members), 30)}" fill="{ink(city)}"/>')
+    parts.append("</g>")
+
+    # 2. The territory outline, so each lobe has an edge to read against.
+    for (city, _hood), members in sorted(lobes.items()):
+        parts.append(f'<path d="{_blob(trimmed(members), 22)}" fill="{ink(city)}" '
+                     f'fill-opacity="0.14" stroke="{ink(city, 1)}" '
+                     f'stroke-opacity="0.42" stroke-width="1.4"/>')
+
+    # 3. Structure — within-deck nearest neighbours. Same-city edges take the
+    #    city's colour, cross-city edges stay pale: an edge that leaves its
+    #    cluster is the interesting one and should read as a bridge, not as noise.
+    for edge in doc.get("edges") or []:
+        a, b = edge["a"], edge["b"]
+        if a >= len(pts) or b >= len(pts):
+            continue
+        same = cards[a]["city"] == cards[b]["city"]
+        colour = ink(cards[a]["city"], 1) if same else "#8A93B5"
+        parts.append(
+            f'<line x1="{pts[a][0]:.1f}" y1="{pts[a][1]:.1f}" '
+            f'x2="{pts[b][0]:.1f}" y2="{pts[b][1]:.1f}" stroke="{colour}" '
+            f'stroke-opacity="{0.38 if same else 0.22}" stroke-width="1"/>')
+
+    # 4. The cards.
+    for card, (x, y) in zip(cards, pts):
+        colour = ink(card["city"], 1)
+        if card.get("commander"):
+            parts.append(
+                f'<circle cx="{x:.1f}" cy="{y:.1f}" r="11" fill="none" '
+                f'stroke="#FFD800" stroke-width="2.5"/>'
+                f'<circle cx="{x:.1f}" cy="{y:.1f}" r="5.5" fill="#FFD800"/>')
+        elif card.get("verified"):
+            parts.append(
+                f'<circle cx="{x:.1f}" cy="{y:.1f}" r="6.5" fill="{colour}" '
+                f'stroke="#FFFFFF" stroke-width="1.6"/>')
+        else:
+            parts.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="4.2" '
+                         f'fill="{colour}" fill-opacity="0.95"/>')
+
+    # 5. City names, across their own territory. Drawn last so nothing covers
+    #    them, with a dark halo because they sit on top of the brightest ink.
+    for region in cities:
+        members = by_city.get(int(region["id"].rsplit("-", 1)[-1]), [])
+        if not members:
+            continue
+        cx = sum(p[0] for p in members) / len(members)
+        cy = sum(p[1] for p in members) / len(members)
+        label = (region.get("label") or region.get("fallback") or "").upper()
+        city = int(region["id"].rsplit("-", 1)[-1])
+        parts.append(
+            f'<text x="{cx:.1f}" y="{cy:.1f}" text-anchor="middle" '
+            f'font-family="Oswald,Arial Narrow,sans-serif" font-size="21" '
+            f'font-weight="700" letter-spacing="1.6" '
+            f'stroke="#0B0A14" stroke-width="5" paint-order="stroke" '
+            f'fill="{ink(city, 1)}">{esc(label)}</text>'
+            f'<text x="{cx:.1f}" y="{cy + 17:.1f}" text-anchor="middle" '
+            f'font-family="Inter,system-ui,sans-serif" font-size="11.5" '
+            f'stroke="#0B0A14" stroke-width="4" paint-order="stroke" '
+            f'fill="#CFD3E6">{region["count"]} cards</text>')
+
+    parts.append("</svg>")
+    return "".join(parts)
+
+
+def constellation_figure(doc, caption):
+    """The constellation with its legend and the honesty line under it."""
+    svg = deck_constellation(doc)
+    if not svg:
+        return ""
+    keys = (
+        '<span class="ck"><i class="dot cmdr"></i>Commander</span>'
+        '<span class="ck"><i class="dot ver"></i>Named in a verified line</span>'
+        '<span class="ck"><i class="dot plain"></i>Everything else</span>'
+        '<span class="ck"><i class="edge"></i>Nearest neighbour in this deck</span>'
+    )
+    return (f'<figure class="constellation-fig">{svg}'
+            f'<div class="ckeys">{keys}</div>'
+            f'<figcaption>{esc(caption)}</figcaption></figure>')
 
 
 # A named constant, not an inline literal: `coach_gauge` escapes its own label, so

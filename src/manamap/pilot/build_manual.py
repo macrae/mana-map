@@ -45,6 +45,7 @@ from manamap.pilot.design import (
     pilot_tip,
     power_meter,
     stat_slab,
+    constellation_figure,
     printing_credit,
     pull_quote,
     threat_box,
@@ -77,6 +78,12 @@ ACCENT = {
 }
 
 TODO = '<p><span class="todo">TODO</span> This section is awaiting content.</p>'
+
+# Per-render holder for `deck_map.json`, set by render_issue. Module state for the
+# same reason `_CARD_LINKS` is: the renderer is single-threaded and deterministic,
+# and threading one artifact through every department signature to reach one
+# furniture call is worse than a holder that is cleared on the way out.
+_DECK_MAP = {"doc": None}
 
 
 # ── Loading ─────────────────────────────────────────────────────────────
@@ -308,6 +315,16 @@ def dept_furniture(dept, cards_by_name):
     # The signature number leads the department that earns it, before any callout —
     # it is the thing the reader is meant to stop on, and furniture that follows it
     # reads as elaboration rather than competition.
+    # The deck's own map, where the plan asks for it. Furniture rather than a
+    # department of its own for now: a new department is a structural change that
+    # re-plans every issue, and the picture is worth having in one before that.
+    if dept.get("constellation") and _DECK_MAP.get("doc"):
+        out.append(constellation_figure(
+            _DECK_MAP["doc"],
+            dept.get("constellation_caption")
+            or "The deck, re-laid-out from its own cards and clustered. "
+               "Positions are LOCAL to this deck — they are not atlas positions."))
+
     slab = dept.get("stat_slab")
     if slab:
         out.append(stat_slab(slab.get("figure", ""), slab.get("label", ""),
@@ -1381,9 +1398,13 @@ def main(args):
     considering = load_json(base / "considering.json")
     tutor_guide = load_json(base / "tutor_guide.json")
     mana = load_json(base / "mana_analysis.json")
+    _DECK_MAP["doc"] = load_json(base / "deck_map.json")
 
-    html_out = render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
-                            goldfish, decisions, considering, tutor_guide, mana)
+    try:
+        html_out = render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
+                                goldfish, decisions, considering, tutor_guide, mana)
+    finally:
+        _DECK_MAP["doc"] = None      # cleared like the card links, for the same reason
     MANUALS_DIR.mkdir(parents=True, exist_ok=True)
     sheet, wrote_sheet = write_stylesheet(MANUALS_DIR)
     if wrote_sheet:

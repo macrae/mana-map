@@ -189,6 +189,19 @@ a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
 .meter-seg.on { background:linear-gradient(180deg,var(--y2k-blue),var(--y2k-violet)); }
 /* The signature number. Full-bleed within the column, and big enough that a reader
    flipping past stops — which is the whole job, and the reason it may appear once. */
+.constellation-fig { margin:26px 0; }
+.constellation-fig .constellation { width:100%; height:auto; display:block;
+  border:3px solid var(--ink); box-shadow:6px 6px 0 rgba(0,0,0,.30); background:#0B0A14; }
+.ckeys { display:flex; flex-wrap:wrap; gap:14px; margin:10px 0 4px;
+  font-family:var(--condensed); text-transform:uppercase; letter-spacing:.06em;
+  font-size:.7rem; color:var(--ink-soft); }
+.ckeys .ck { display:flex; align-items:center; gap:6px; }
+.ckeys .dot { width:11px; height:11px; border-radius:50%; display:inline-block; }
+.ckeys .dot.cmdr { background:#FFD800; box-shadow:0 0 0 2px #C8A03C; }
+.ckeys .dot.ver { background:#E4007C; box-shadow:0 0 0 1.6px #fff, 0 0 0 2.6px var(--ink); }
+.ckeys .dot.plain { background:#8A93B5; }
+.ckeys .edge { width:22px; height:0; border-top:2px solid #8A93B5; display:inline-block; }
+.constellation-fig figcaption { font-size:.78rem; color:var(--ink-soft); margin-top:8px; }
 .stat-slab { margin:26px 0; padding:22px 18px; text-align:center; color:#fff;
   background:linear-gradient(160deg,var(--ink),#2a2440 62%,var(--y2k-violet));
   border:3px solid var(--ink); box-shadow:6px 6px 0 rgba(0,0,0,.30); }
