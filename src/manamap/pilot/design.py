@@ -230,6 +230,19 @@ a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
 /* The signature number. Full-bleed within the column, and big enough that a reader
    flipping past stops — which is the whole job, and the reason it may appear once. */
 .constellation-fig { margin:26px 0; }
+/* A 99 group heading wearing its city's colour, so the grid reads as the map's
+   legend rather than as a second taxonomy. */
+.city-head { display:flex; align-items:center; gap:10px; margin:1.9em 0 .6em;
+  padding-bottom:6px; border-bottom:3px solid var(--city,var(--ink));
+  font-family:var(--display); text-transform:uppercase; letter-spacing:.02em;
+  font-size:1.18em; color:var(--ink); }
+.city-head .city-chip { width:16px; height:16px; flex:0 0 16px; border-radius:3px;
+  background:var(--city); box-shadow:0 0 0 2px var(--ink), 3px 3px 0 var(--city-lt); }
+.city-head .city-count { margin-left:auto; font-family:var(--condensed);
+  font-weight:500; font-size:.62em; letter-spacing:.14em; color:var(--ink-soft); }
+.city-head .city-verified { font-family:var(--condensed); font-size:.6em;
+  letter-spacing:.08em; color:var(--tier-verified); border:2px solid currentColor;
+  padding:1px 5px; }
 .constellation-fig .constellation { width:100%; height:auto; display:block;
   border:3px solid var(--ink); box-shadow:6px 6px 0 rgba(0,0,0,.30); background:#0B0A14; }
 .ckeys { display:flex; flex-wrap:wrap; gap:14px; margin:10px 0 4px;
@@ -745,6 +758,22 @@ def deck_constellation(doc, width=1000, height=620):
 
     parts.append("</svg>")
     return "".join(parts)
+
+
+def city_head(index, name, count, verified=0):
+    """A 99 group heading that matches its territory on the map.
+
+    The colour is the load-bearing part. A grid grouped by city under plain black
+    headings is a second taxonomy the reader has to learn and reconcile; carrying
+    the map's ink onto the heading makes the grid the map's LEGEND, which is what
+    it is for. Same index, same colour, by construction — both read `CITY_INK`.
+    """
+    ink, light = CITY_INK[index % len(CITY_INK)]
+    seal = (f'<span class="city-verified" title="named in a verified line">'
+            f'✓{verified}</span>' if verified else "")
+    return (f'<h3 class="city-head" style="--city:{ink};--city-lt:{light}">'
+            f'<span class="city-chip"></span>{esc(name)}'
+            f'<span class="city-count">{count} cards</span>{seal}</h3>')
 
 
 def constellation_figure(doc, caption):

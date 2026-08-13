@@ -46,6 +46,7 @@ from manamap.pilot.design import (
     power_meter,
     stat_slab,
     constellation_figure,
+    city_head,
     printing_credit,
     pull_quote,
     threat_box,
@@ -828,6 +829,47 @@ def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
     roles_todo = "" if roles else TODO
     main = cards
     by_name = {c["name"]: c for c in main}
+
+    # THE CITIES ARE THE ROSTER, when the plan asks for it. The deck map already
+    # answers "which cards do the same job" from the embeddings; grouping the grid
+    # any other way means the reader meets two taxonomies on facing pages and has
+    # to reconcile them. Ordered by size, so the deck's centre of mass leads.
+    if dept.get("group_by") == "city" and (_DECK_MAP.get("doc") or {}).get("regions"):
+        doc = _DECK_MAP["doc"]
+        city_of = {c["name"]: c["city"] for c in doc["cards"]}
+        cities = sorted((r for r in doc["regions"] if r["level"] == 0),
+                        key=lambda r: (-r["count"], r["id"]))
+        sections = []
+        for region in cities:
+            index = int(region["id"].rsplit("-", 1)[-1])
+            members = [c for c in main
+                       if city_of.get(c["name"]) == index and not c["is_commander"]]
+            if not members:
+                continue
+            tiles = "".join(
+                card_tile(c, roles, synergy, anchor_id=CARD_ANCHORS.get(c["name"]))
+                for c in members)
+            sections.append(
+                city_head(index, region.get("label") or region.get("fallback") or "",
+                          len(members), region.get("verified_count", 0))
+                + f'<div class="card-grid">{tiles}</div>')
+        # Any card the map could not place (an unresolved name) still gets a seat.
+        stray = [c for c in main
+                 if c["name"] not in city_of and not c["is_commander"]]
+        if stray:
+            tiles = "".join(
+                card_tile(c, roles, synergy, anchor_id=CARD_ANCHORS.get(c["name"]))
+                for c in stray)
+            sections.append("<h3>Unmapped</h3>"
+                            f'<div class="card-grid">{tiles}</div>')
+        return (
+            dept_open("the-99", plan)
+            + roles_todo
+            + dept_furniture(dept, cards_by_name)
+            + "".join(sections)
+            + dept_captions(dept, cards_by_name)
+            + dept_close("the-99", issue)
+        )
 
     groups, placed = [], set()
     for entry in dept.get("roster", []):
