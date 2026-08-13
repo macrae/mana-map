@@ -74,7 +74,7 @@ the dossier read, and computes nothing beyond a name→index lookup and a role h
 
 Three things worth knowing. **A card carries several roles**, so the lens paints it with
 one — `FAMILY_PRIORITY` decides, and `threat` loses every tie because it sits on 19,032 of
-34,322 cards. Cards with no role fall back to the map's supertype for lands only.
+34,890 cards. Cards with no role fall back to the map's supertype for lands only.
 **Bars count copies, dots count distinct cards** — the panel says so out loud rather than
 letting the two numbers disagree in silence. **A verified line naming fewer than two deck
 cards draws no edge** but stays in the list, so the panel's count always agrees with the
@@ -90,7 +90,7 @@ colour, and `index.html` loads the script at a cache-bust matching its siblings.
 drill replaces the map's **coordinates**. It works from any mode and the base traces go
 `visible: false` while it is active.
 
-The world map is one PaCMAP layout of 34,322 cards at `n_neighbors=10` — the regime that
+The world map is one PaCMAP layout of 34,890 cards at `n_neighbors=10` — the regime that
 preserves global shape by compressing local shape. Drilling recomputes a layout for the
 selected cards alone from the 128-d embeddings, so the structure the projection squashed
 out becomes the whole view. Measured on a real region: 156 Aura cards occupy **0.3 × 0.7**
@@ -117,7 +117,7 @@ see which cards were already neighbours and which travel. `alpha` decays as `1 -
 the per-frame residual is the weight and bounce.
 
 Frames are driven by `requestAnimationFrame` and pushed with **`updateLayerBy('_isDrill',
-…)`**, never `setLayers`: it moves one layer's points and leaves the other 34,322 alone.
+…)`**, never `setLayers`: it moves one layer's points and leaves the other 34,890 alone.
 (Under Plotly this was `restyle` rather than `react`, for the same reason plus one that no
 longer applies — `react` also reset the axis range.) The whole subset is one layer with a
 per-point colour array so a frame is a *single* update; splitting by category would multiply
@@ -131,7 +131,7 @@ cards happened to be exported first. The breadcrumb was honest about the count a
 about the bias. The graph uses the same helper for its 500-node cap.
 
 **The `Drill ⤓` button states its size and refuses over the cap.** It reads
-`Drill 34,322 ⤓`, greyed, with no filters — because "re-map everything" is not a thing: a
+`Drill 34,890 ⤓`, greyed, with no filters — because "re-map everything" is not a thing: a
 2,000-card sample of the whole universe has no reason to cohere, and it flew in from all
 over the map and settled into a multicoloured pile. Filter below the cap (or box-select, or
 click a region label) and it goes live: `Drill 39 ⤓`. Clicking it while inert explains
@@ -170,7 +170,7 @@ lookup, the announced truncation, and the hidden-tab fallback.
 ## Explore is an orientation lens, not a second workspace
 
 Discovery is generative — you build something, and it responds. Explore was inspective: a
-fixed picture behind filters, opening on 34,322 points and the words "34,322 cards shown",
+fixed picture behind filters, opening on 34,890 points and the words "34,890 cards shown",
 where clicking added to an 8-card *list* rather than to a structure. Same app, two different
 verbs, and the second one felt worse.
 
@@ -292,7 +292,7 @@ Escape peels outermost-first: focused region → orientation lens → selection.
 
 `render()`'s group loop re-tested `activeSupertypes` against `allData`, while `filtered` (fed
 to the contours and the status count) applied its own copy. Adding the region filter to
-`filtered` therefore changed nothing on screen: 34,322 points still drawn for an 875-card
+`filtered` therefore changed nothing on screen: 34,890 points still drawn for an 875-card
 region. They now share one `visible(d, i)`.
 
 And `updateLayerBy` moves points without telling the quadtree. The tree signature is layer
@@ -406,7 +406,7 @@ focused region through a single `spotlightFor(g)` predicate — a group focus is
 per trace and never touches the 34K per-point array.
 
 The default overlay is **supertype**, with a frequency-aware palette: Creature is 55.5% of
-the corpus (19,050 of 34,322), Planeswalker 1.0%, Battle 39 cards, so saturation runs
+the corpus (19,050 of 34,890), Planeswalker 1.0%, Battle 39 cards, so saturation runs
 *inverse* to frequency. The previous palette gave Creature `#22C55E` — the exact green
 `COLOR_PALETTE` uses for G — on more than half the points, so the supertype map read as a
 broken colour-identity map.
@@ -565,7 +565,7 @@ call meant to remove them. It looks fixed and measures broken.
 
 ### stage.js — what the two canvas renderers stopped writing twice
 
-There are two canvas renderers and there always will be: the atlas draws 34,322 cards at
+There are two canvas renderers and there always will be: the atlas draws 34,890 cards at
 fixed world positions (*where does this sit*), `force.js` draws a few hundred at simulated
 positions (*what is this next to*). They shared **zero lines** while separately implementing
 canvas creation and DPR resize (character-identical, both carrying the same "cost an
@@ -734,7 +734,7 @@ already works. The brief says so in its own `next_step` field.
 `viz/js/render/canvas.js` draws the map. It is now the only renderer — the section below is
 the record of how it got there, when both were live at once:
 `?renderer=canvas` switched, so they could be compared on identical data. The graph engine proved the
-machinery on 500 nodes; this points it at 34,322.
+machinery on 500 nodes; this points it at 34,890.
 
 **The layer format IS the trace format.** A layer is a Plotly-shaped
 `{x, y, customdata, name, visible, mode, marker: {size, color, opacity, symbol, line}}`, so
@@ -748,7 +748,7 @@ Measured on this data *before* it was written, because the decision rested on th
 | `render()` | ~30 ms | **15 ms** |
 | Box-select (22,161 caught) | **138 ms** per mousemove | **4.5 ms** |
 | Hover pick | — | **~0 ms** |
-| Draw 34,322 points | — | 7.8 ms batched · 16.9 ms per-point |
+| Draw 34,890 points | — | 7.8 ms batched · 16.9 ms per-point |
 | Quadtree build | — | 23.5 ms, cached across renders |
 
 Two decisions worth keeping:
@@ -798,7 +798,7 @@ arrives without easing beats one that never arrives.
 
 ## Render cost — the rules that keep it snappy
 
-The map draws 34,322 WebGL points. Four rules, each of which was violated and measured:
+The map draws 34,890 WebGL points. Four rules, each of which was violated and measured:
 
 **Never build what nothing displays.** Every trace sets `hoverinfo: 'none'` and nothing
 reads `trace.text`, but all of them were building hover strings anyway — ~34,000 `escHtml`
@@ -835,7 +835,7 @@ Measured, same page, median of 7:
 | Plotly calls per arrow press | delete + add | **restyle** |
 
 **What is still slow, and is not ours.** A shift-drag fires `plotly_selecting` on every
-mousemove, and Plotly hit-tests all 34,322 scattergl points each time — **measured ~138 ms
+mousemove, and Plotly hit-tests all 34,890 scattergl points each time — **measured ~138 ms
 per event** with only the seven base traces loaded. That is the dominant cost of box-select
 and it is inside Plotly. Any large highlight trace left on the plot adds to it, which is
 why the browse selection is one trace rather than one per colour. Build's map view renders in the
@@ -884,6 +884,7 @@ the reader on an unfiltered map with a query string they cannot see.
 
 | Panel | Artifact | Tier |
 |---|---|---|
+| **The Constellation** (below) | `deck_map.json` | ◆ |
 | Bracket Floor + its named driver | `bracket_report.json` | ◆ |
 | Sources Say (pips vs sources, land classes, on-curve) | `mana_analysis.json` | ◆ |
 | By the Numbers (meters, turn table, assumptions) | `goldfish_metrics.json` | ◆ |
@@ -903,6 +904,30 @@ The three surfaces now form a cycle. Each issue's Back Page links to
 `../viz/deck.html?deck=<slug>`; the dossier links to the issue, the newsstand, and
 `index.html?deck=<slug>`; the Lens links back to both the issue and the dossier. Before
 the dossier shipped, the two products shared exactly one link, one-way.
+
+### The Constellation panel
+
+The same `deck_map.json` the magazine prints, drawn the same way, in the **same colours** —
+and the one thing print cannot do: hover a point and it names the card and its city.
+*"Ohran Frostfang — A CARD PER BODY."* That association is the whole reason the panel
+exists, since the city names are the vocabulary the issue's prose speaks in.
+
+The hover is a plain SVG `<title>` on a **transparent 11px disc** over each 4px dot. No
+tooltip layer, no JS, works with scripting off. A 4px hover target is not a target; the
+invisible disc is what makes it one.
+
+Density is one soft disc per neighbourhood rather than the magazine's convex hull. At this
+size it reads the same, and a hull the page also has to hit-test through is code bought for
+nothing.
+
+**`CITY_INK` in `deck-view.js` is a TRANSCRIPTION of `pilot/design.py`'s list, and that is a
+standing drift hazard.** There is no shared module: the magazine must render with no JS and
+the page with no Python. If the two lists diverge, the printed map and the site disagree
+about which territory is which **while both look perfectly correct**. Noted at both sites;
+change them together.
+
+A deck map position is **LOCAL** — the deck re-laid-out from its own cards — and is not an
+atlas position. The panel says so in its own body copy, for the same reason drill does.
 
 ## Explore mode highlights
 
@@ -943,7 +968,7 @@ re-fetched 17 MB and gave the same card different answers depending on the view.
 
 **One k-nearest, `MM.nearestTo(row, k, opts)`, and now genuinely one.** The header here used
 to claim `cosineSimilarity` and the sort inside `findSimilarCards` had been consolidated into
-it. They had not — that scan was still live, sorting all 34,322 rows to take 20, with
+it. They had not — that scan was still live, sorting all 34,890 rows to take 20, with
 different filter semantics. Both are gone. `respectFilters` defaults to true so a
 neighbourhood will not walk you into a supertype you have hidden; the graph passes `false`,
 because a graph you are branching through should not change shape when a toolbar toggle
@@ -972,7 +997,7 @@ to a static inline element. A point in a WebGL scatter is not an element, so onl
 transfers, not the mechanism.
 
 **Aiming at a card's pixel does not guarantee that card.** `hovermode: 'closest'` over
-34,322 points means a denser neighbour a pixel away wins — asking for Sol Ring's coordinates
+34,890 points means a denser neighbour a pixel away wins — asking for Sol Ring's coordinates
 returns Krark-Clan Ironworks. Tests assert the popup matches *what Plotly reported hovering*,
 not what they aimed at.
 
@@ -1068,7 +1093,7 @@ ES-module migration / splitting the IIFEs, moving the ~17 inline styles in gener
 A fourth map mode, and the opening move of the renderer migration. Cards become nodes,
 128-d cosine distance becomes link length, and a velocity-Verlet simulation gives the
 graph weight: it settles, it wobbles, you can grab a card and fling it and the rest
-follows. Click a card and its nearest neighbours in the full 34,322-card corpus are pulled
+follows. Click a card and its nearest neighbours in the full 34,890-card corpus are pulled
 in, the simulation reheats, and the graph grows toward whatever you were curious about.
 That is the walk. The path you took is drawn as a gold trail.
 

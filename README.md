@@ -2,11 +2,12 @@
 
 Two things live here, sharing one data layer and one CLI:
 
-**A card discovery tool** — every Magic: The Gathering oracle card (~34,300) embedded by
+**A card discovery tool** — every Magic: The Gathering oracle card (~34,900) embedded by
 two small neural nets. It opens on **one card**: hover it, click a relation, and its
 neighbours join a force-directed graph you grow by clicking. Load one of your own decks and
 it lights up with its commander ringed, so you can see where it sits in card space and walk
-outward from it. The 34,322-point atlas is still there, one click away.
+outward from it. The 34,890-point atlas is still there, one click away — and it drifts
+slowly at altitude, settling to a stop as you zoom in to read.
 
 Three relations, each precomputed so a click is instant: **similar** (embedding neighbours),
 **synergy** (rule-based complements, each edge labelled with the rule), and **outclassed by**
@@ -16,6 +17,12 @@ Three relations, each precomputed so a click is instant: **similar** (embedding 
 a self-contained web issue: combo lines whose every step cites the Comprehensive Rules and
 survived an adversarial checker, resource curves from a seeded simulation, and coaching
 that says out loud when it's coaching.
+
+An issue opens on two pictures of the deck. The **constellation** re-lays-out its cards from
+the embeddings and clusters them into named cities — what shape it is. The **engine flow**
+shows how it runs, stage by stage, with each connection drawn solid when a rules-verified
+line proves it and dashed when it is the analyst's reading. Those are different relations: a
+card clusters by what it *says*, and an engine is what cards *do to each other*.
 
 The fastest way to understand the second one is to read an issue:
 **Nine issues live** — [001 Goblin Storm](https://macrae.github.io/mana-map/manuals/goblin-storm.html) · [002 Hapatra](https://macrae.github.io/mana-map/manuals/hapatra.html) · [003 Sisay](https://macrae.github.io/mana-map/manuals/sisay.html) · [004 Heliod](https://macrae.github.io/mana-map/manuals/heliod.html) · [005 Ur-Dragon](https://macrae.github.io/mana-map/manuals/ur-dragon.html) · [006 Edgar](https://macrae.github.io/mana-map/manuals/edgar-vampires.html) · [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) · [008 Yawgmoth](https://macrae.github.io/mana-map/manuals/yawgmoth-swarm.html) · [009 Radagast](https://macrae.github.io/mana-map/manuals/radagast.html)
@@ -146,7 +153,9 @@ and the whole path from brief to published issue is proven: see Vol. 002.
 
 ### 5. The agent phases
 
-Run these from Claude Code in the repo root. Each is a skill in `.claude/skills/`:
+Run these from Claude Code in the repo root. Each is a skill in `.claude/skills/`.
+**`/publish-deck` sequences all of them** — start there, and run
+`manamap pilot deck-status <slug>` at any point to see what a deck still needs.
 
 | Step | Produces | Pure CLI? |
 |---|---|---|
@@ -154,6 +163,8 @@ Run these from Claude Code in the repo root. Each is a skill in `.claude/skills/
 | `manamap pilot bracket-check <slug>` | Computed bracket floor + its evidence | **yes** |
 | `/resolve-stack` | A verified combo line: resolver → validator → adversarial checker | no |
 | `manamap pilot goldfish <slug>` | Resource curves from 10k seeded games | **yes** |
+| `manamap pilot deck-map <slug>` | The constellation: local layout + clusters | **yes** |
+| `/analyze-engine` | The engine: stages, lines, what a stack actually proves | no |
 | `/write-manual` | Strategic frame, coaching, body prose | no |
 | `/design-issue` | The issue plan — cover, departments, headlines | no |
 | `manamap pilot validate-issue <slug>` | Form gate over the plan | **yes** |
@@ -210,7 +221,8 @@ like that is a number rather than an opinion.
 |---|---|
 | A pipeline step | `STEPS` in `pipeline.py`; the module exposes `main()` |
 | A pilot command | `PILOT_STEPS` + `_DECK_COMMANDS` + argparse in `pilot/registry.py`; module exposes `main(args)` |
-| A magazine department | `DEPARTMENTS` in `pilot/issue_spec.py` — changes every issue; treat it like `config.py` |
+| A magazine department | `DEPARTMENTS` in `pilot/issue_spec.py` — changes every issue; treat it like `config.py`. Add to `OPTIONAL_DEPARTMENTS` to pilot it on one deck first |
+| A deck lifecycle phase | `STAGES` in `pilot/deck_status.py`, or the next person will not find it |
 | A data file the viz reads | The `DATA` map in `viz/js/mana-map.js`, plus a `.gitignore` negation |
 | A synergy rule, tag, or threshold | `config.py`, nowhere else |
 | A deckbuilding role | `ROLE_PATTERNS` in `config.py`, then re-run `manamap card-roles` |
@@ -282,6 +294,7 @@ GitHub Pages serves the repo directly. There is no root index; the two entry poi
 |---|---|
 | `CLAUDE.md` | Orientation, environment, gotchas — the densest single page |
 | `PLAN.md` | Current state and what's next |
+| `/publish-deck` | The deck lifecycle: every phase in order, with its gate |
 | `STYLEv3.md` | The magazine's editorial and design constitution |
 | `docs/architecture.md` | Models, mechanical tags, synergy rules, power creep, regions |
 | `docs/pipeline.md` | All 15 steps: inputs, outputs, runtimes, when to re-run |

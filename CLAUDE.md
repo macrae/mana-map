@@ -42,9 +42,15 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #   artist_credits.py   Featured Artist
                       #   validate_issue / _considering / _tutor_guide / _strategy
                       # ---- DIAGNOSE — a finished deck -> what limits it ----
+                      #   deck_status.py   IS THIS DECK FINISHED? lifecycle +
+                      #                    staleness; STAGES is the sequence
                       #   deck_audit.py    16 cited axes + engine activation
-                      #   deck_map.py      the deck's OWN constellation:
-                      #                    local layout + cities/neighbourhoods
+                      #   deck_map.py      the deck's OWN constellation: local
+                      #                    layout + cities/neighbourhoods
+                      #   merge_deck_map.py  names ONLY; membership is measured
+                      #   engine_facts.py  the deterministic engine brief
+                      #   validate_engine.py  stages, completeness, verified_by
+                      #   validate_deck_map.py
                       #   deck_facts.py / deck_history.py / scenario_facts.py
                       #   diagnosis_report.py   the diagnosis, rendered readable
                       #   validate_diagnosis.py / validate_goldfish_targets.py
@@ -63,7 +69,9 @@ viz/                  # static frontend: index.html + deck.html (the dossier).
                       #   stage.js      shared canvas primitives for both renderers
                       #   force.js      the graph engine (canvas + d3-force)
                       #   decklist.js   Moxfield parser, fixture-locked to the Python one
-                      #   render/canvas.js  the map — the ONLY renderer; Plotly is gone
+                      #   render/canvas.js  the map — the ONLY renderer; Plotly
+                      #                    is gone. Drifts at altitude (see below)
+                      #   deck-view.js  the dossier + the interactive constellation
                       # d3 from CDN, IIFE, window.MM — see docs/viz.md
 docs/                 # reference docs (see Pointers below)
 ```
@@ -200,6 +208,8 @@ python -m http.server 8000    # serve viz FROM REPO ROOT
 - `docs/agent-cost.md` — where LLM spend lives, per-routine token sizing, the invocation cache
 - `docs/pilot.md` — pilot subsystem: three-tier evidence contract, citation contract, rules DB, strategy DB + strategy-researcher agent, resolve loop, build loop, goldfish, manual generation
 - `PLAN.md` — ACTIVE plan: current state, what's done, what's next (read this first when resuming work)
+- **`/publish-deck`** — the deck lifecycle end to end, every phase in dependency order with its gate. `manamap pilot deck-status <slug>` is its machine-readable half and the thing to run first on any deck.
 - `STYLEv3.md` — the magazine's editorial + design constitution (the 17-section five-act system, the Commander Mandate, the three columnists, L10, voice, component library); read before touching `build_manual.py`, `design.py`, or `issue_spec.py`
 - `docs/frontend-v2.md` — the deck-building surface: what shipped (the dossier), what's next (`viz_index.json`, the Worker port), and the audit header saying which of its premises expired
+- `docs/magazine-feedback-2026-08.md`, `docs/magazine-feedback-2026-08-13.md` — founder + editor feedback records, verbatim, each with what shipped against it. Read the later one before touching voice or department structure; its §0 shows how the previous round's "Still open" list became this round's complaints.
 - `docs/history/PLAN.md` — historical deck-builder planning doc (outdated, unmaintained)
