@@ -7,7 +7,18 @@
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
     "cards": 80,
     "unresolved": [],
-    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
+    "named_by": "deck-cartographer",
+    "cartographer_notes": [
+      "city-1, city-4 and city-1's single child are one-neighbourhood cities: hood-0 is byte-identical to its parent (8/8, 8/8). I left those hood ids unnamed rather than invent a synonym for the city above them; the renderer's fallback is the honest answer there.",
+      "city-3's split reads arbitrary to me. Thirteen lands sit in hood-0 and three in hood-1 (Bojuka Bog, Cabal Coffers, a Swamp), and I cannot state a job those three share that the other thirteen lack: Coffers is the deck's biggest mana engine, the Swamp is a Swamp, and the Bog is graveyard hate. Both hoods left to the fallback.",
+      "city-5-hood-1 is the two-card outlier and it is real, not noise. Neither Grave Pact nor Plumb the Forbidden drains, which is what every other card in that city does. Plumb the Forbidden is the deck's most unusual card by the map's own measure: card_roles.json assigns it no role at all (deck-facts lists it and Supernatural Stamina as the only two role-less cards), so it has nothing to be near. It belongs in the 99 as wrath insurance; it just has no neighbours.",
+      "city-2 is where the mass is (21 of 80 mapped entries) and the mass is doing one thing: manufacturing repeat deaths. Ten cards reuse a body, seven make bodies in batches, four buy a body back from the graveyard. Two of the three declared engine pieces live here, in different neighbourhoods (Gravecrawler in hood-0, Nest of Scarabs in hood-1); the third, the commander, is in city-0.",
+      "city-2-hood-0 has four members that are neither bodies nor recursion: Lightning Greaves, Jet Medallion, Necropotence, Skullclamp. Greaves and the Medallion are the least at home under any name I could give that neighbourhood; they are commander support (haste on the turn he lands, and a discount), not a second use of a creature. I named for the seven-card majority and am flagging the four.",
+      "Sol Ring is the odd member of city-0-hood-0: it is there as a mana rock beside Ashnod's Altar and Phyrexian Altar, which are outlets that also make mana. The clustering read the mana, not the outlet.",
+      "city-4 carries a verified_count of 1 (Fume Spitter) against city-5's 7 and city-0's 4. The interaction city is almost absent from the verified kill lines, which matches the deck's shape: the answers and the kill are separate machines, and only the counter-based half of the removal feeds the kill (Nest of Scarabs sits one city over).",
+      "city-3 is the only city with zero verified cards. That is expected of a land city and I read nothing into it."
+    ]
   },
   "cards": [
     {
@@ -1070,7 +1081,7 @@
     {
       "id": "city-0",
       "level": 0,
-      "label": null,
+      "label": "THE ON SWITCH",
       "fallback": "Tutors",
       "cx": -0.31727,
       "cy": 0.14082,
@@ -1091,13 +1102,14 @@
         "Yahenni, Undying Partisan",
         "Yawgmoth, Thran Physician"
       ],
-      "verified_count": 4
+      "verified_count": 4,
+      "gloss": "Nothing converts until one of these is down: the free sacrifice outlets, and the five tutors that go find one."
     },
     {
       "id": "city-0-hood-0",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "THE OUTLETS",
       "fallback": "Ramp",
       "cx": -0.34031,
       "cy": -0.18948,
@@ -1113,13 +1125,14 @@
         "Yahenni, Undying Partisan",
         "Yawgmoth, Thran Physician"
       ],
-      "verified_count": 4
+      "verified_count": 4,
+      "gloss": "Where the bodies go. Four of these nine are on the record inside rules-verified kill lines."
     },
     {
       "id": "city-0-hood-1",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "THE FINDERS",
       "fallback": "Tutors",
       "cx": -0.27578,
       "cy": 0.73537,
@@ -1131,12 +1144,13 @@
         "Insatiable Avarice",
         "Vampiric Tutor"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Five ways to fetch the missing piece: the outlet, the drain, or the body that starts the rotation."
     },
     {
       "id": "city-1",
       "level": 0,
-      "label": null,
+      "label": "THE FUEL",
       "fallback": "Ramp",
       "cx": 0.35165,
       "cy": -0.6906,
@@ -1151,7 +1165,8 @@
         "Pitiless Plunderer",
         "Warren Soultrader"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Mana that isn't land. Rituals, Treasures and dorks pay for the second and third activation in a turn."
     },
     {
       "id": "city-1-hood-0",
@@ -1177,7 +1192,7 @@
     {
       "id": "city-2",
       "level": 0,
-      "label": null,
+      "label": "THE FODDER",
       "fallback": "Bodies",
       "cx": -0.26634,
       "cy": 0.04952,
@@ -1205,13 +1220,14 @@
         "Victimize",
         "Woe Strider"
       ],
-      "verified_count": 5
+      "verified_count": 5,
+      "gloss": "The deck's mass: bodies to feed the outlet, most arriving in multiples or coming back for a second death."
     },
     {
       "id": "city-2-hood-0",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "TWICE FROM ONE BODY",
       "fallback": "Bodies",
       "cx": -0.36479,
       "cy": 0.12933,
@@ -1228,13 +1244,14 @@
         "Skullclamp",
         "Supernatural Stamina"
       ],
-      "verified_count": 3
+      "verified_count": 3,
+      "gloss": "Undying, reanimation, a Skullclamp: squeeze a second death, a second card or a second activation from one creature."
     },
     {
       "id": "city-2-hood-1",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "BODIES BY THE BATCH",
       "fallback": "Value",
       "cx": -0.31126,
       "cy": -0.34609,
@@ -1248,13 +1265,14 @@
         "Stitcher's Supplier",
         "Woe Strider"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "One card, several bodies, and they keep making more, so the outlet never runs out of things to eat."
     },
     {
       "id": "city-2-hood-2",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "BACK FROM THE YARD",
       "fallback": "Recursion",
       "cx": 0.05842,
       "cy": 0.54228,
@@ -1265,12 +1283,13 @@
         "Reassembling Skeleton",
         "Victimize"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Fodder you already paid for: the graveyard is a second hand you buy deaths out of."
     },
     {
       "id": "city-3",
       "level": 0,
-      "label": null,
+      "label": "THE WORKING LANDS",
       "fallback": "Mana",
       "cx": 0.88299,
       "cy": 0.17779,
@@ -1293,7 +1312,8 @@
         "Takenuma, Abandoned Mire",
         "Urborg, Tomb of Yawgmoth"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Your mana, and most of it holds a second job: a sacrifice, a kill, a card, a body back."
     },
     {
       "id": "city-3-hood-0",
@@ -1340,7 +1360,7 @@
     {
       "id": "city-4",
       "level": 0,
-      "label": null,
+      "label": "THE SUBTRACTION",
       "fallback": "Interaction",
       "cx": -0.40757,
       "cy": 0.54437,
@@ -1355,7 +1375,8 @@
         "Skinrender",
         "Soul Snuffers"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Your answers, and most shrink rather than destroy, on bodies you can feed to the outlet afterwards."
     },
     {
       "id": "city-4-hood-0",
@@ -1381,7 +1402,7 @@
     {
       "id": "city-5",
       "level": 0,
-      "label": null,
+      "label": "THE DEATH TAX",
       "fallback": "Finishers",
       "cx": -0.28044,
       "cy": -0.36048,
@@ -1401,7 +1422,8 @@
         "The Meathook Massacre",
         "Zulaport Cutthroat"
       ],
-      "verified_count": 7
+      "verified_count": 7,
+      "gloss": "Where a sacrifice becomes damage: every body you feed costs the table life, and seven appear in verified kills."
     },
     {
       "id": "city-5-hood-0",
@@ -1431,7 +1453,7 @@
       "id": "city-5-hood-1",
       "level": 1,
       "parent": "city-5",
-      "label": null,
+      "label": "DEATHS THAT AREN'T DAMAGE",
       "fallback": "Interaction II",
       "cx": -0.14993,
       "cy": -0.29093,
@@ -1440,7 +1462,8 @@
         "Grave Pact",
         "Plumb the Forbidden"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Grave Pact aims your dying board at their creatures; Plumb the Forbidden turns a wrath into a fistful of cards."
     }
   ],
   "edges": [

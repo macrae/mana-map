@@ -7,7 +7,18 @@
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
     "cards": 95,
     "unresolved": [],
-    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
+    "named_by": "deck-cartographer",
+    "cartographer_notes": [
+      "city-4 holds 33 of 95 cards and 9 of the deck's 13 verified cards — the mass and the engine are the same place. Its four neighbourhoods split cleanly by job (answers / payoffs / draw / cheats) rather than by card type, which is why the city name has to be about threshold rather than about creatures.",
+      "Aggravated Assault sits in city-4-hood-0 among the removal spells. It carries no role pattern at all (deck-facts lists six such cards), so the clustering had only its text to go on and filed the deck's entire combo plan with the answers. The membership is a measurement; read it as the map having no vocabulary for 'untap all attackers', not as a claim about what the card does.",
+      "Savage Lands is the only land outside city-1 — it landed in city-4-hood-3, 'CHEATING THE COST', where nothing else is a land. It is a plain tapped tri-land and this reads as the odd member rather than an insight; the honest home is with the fixing.",
+      "Miirym, Sentinel Wyrm is grouped with the four mass-protection instants in city-0-hood-1. She is a doubler, not protection — but the frame's read of her (rebuild in tokens so the wrath is survivable) is what that hood is for, so the placement is defensible about her JOB and wrong about her type. Named for the hood's four-card majority.",
+      "Blasphemous Act sits in the cost-reduction hood because the taxonomy tags its own shrinking cost as ramp:cost-reduction, not because it discounts anything you cast. Same shape as the Assault case: the split is clean, the reason is not the one a reader would assume.",
+      "The three Dragonstorm enchantments split three ways despite sharing an identical bounce clause — Breaching to the cheat hood, Roiling to the draw hood, Encroaching to the search city. The map read them by what they do on entry, which is the right read; a reader looking for them in one place will not find them.",
+      "city-2, city-3, city-5 and city-6 each contain exactly one neighbourhood coextensive with the city. Those four are left unnamed: a neighbourhood identical to its parent cannot be narrower than it, and a synonym would be worse than the deterministic word.",
+      "city-6 is three counterspells with zero verified cards and no second neighbourhood — the smallest city on the map and the whole of the deck's stack interaction. That is a real structural fact about a five-colour deck holding 16 blue sources, not a clustering artefact."
+    ]
   },
   "cards": [
     {
@@ -1208,7 +1219,7 @@
     {
       "id": "city-0",
       "level": 0,
-      "label": null,
+      "label": "ARRIVE AND SURVIVE",
       "fallback": "Insurance",
       "cx": -0.6908,
       "cy": -0.43417,
@@ -1225,13 +1236,14 @@
         "The Ur-Dragon",
         "Urza's Incubator"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "Overheads on a top-heavy plan: shave the cost off every Dragon, then refuse to let one wrath undo the board."
     },
     {
       "id": "city-0-hood-0",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "THE DISCOUNT RACK",
       "fallback": "Payoffs",
       "cx": -0.91987,
       "cy": -0.306,
@@ -1243,13 +1255,14 @@
         "The Ur-Dragon",
         "Urza's Incubator"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Eminence plus three reducers takes a mana off Dragon after Dragon, which is how the five-drop shelf gets cast on time."
     },
     {
       "id": "city-0-hood-1",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "THE WHOLE-BOARD SAVE",
       "fallback": "Insurance",
       "cx": -0.46172,
       "cy": -0.56235,
@@ -1261,12 +1274,13 @@
         "Miirym, Sentinel Wyrm",
         "Teferi's Protection"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Four instants that cover everything you control at once. Deploy in waves knowing one of these is behind them."
     },
     {
       "id": "city-1",
       "level": 0,
-      "label": null,
+      "label": "THE FIXING",
       "fallback": "Mana",
       "cx": 0.65752,
       "cy": -0.00154,
@@ -1301,13 +1315,14 @@
         "Unclaimed Territory",
         "Ziatora's Proving Ground"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Twenty-eight lands for five colours, and the deck's binding constraint: your land drop is the turn-five and turn-six coin flip."
     },
     {
       "id": "city-1-hood-0",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "THE RAINBOW WITH STRINGS",
       "fallback": "Mana II",
       "cx": 0.66207,
       "cy": 0.0857,
@@ -1322,13 +1337,14 @@
         "Reflecting Pool",
         "Unclaimed Territory"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Any colour, for a price: life, a token for an opponent, or mana restricted to one kind of spell."
     },
     {
       "id": "city-1-hood-1",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "PAY NOW, CAST LATER",
       "fallback": "Mana III",
       "cx": 0.66354,
       "cy": 0.21873,
@@ -1340,13 +1356,14 @@
         "The World Tree",
         "Ziatora's Proving Ground"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Tapped on arrival. Play these on the turn you had nothing to do, never on the turn the plan starts."
     },
     {
       "id": "city-1-hood-2",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "THE FOUR BASICS",
       "fallback": "Mana IIII",
       "cx": 0.53648,
       "cy": -0.15169,
@@ -1357,13 +1374,14 @@
         "Mountain",
         "Swamp"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "One each of blue, black, red and green, no Plains at all — what the land tutors can actually fetch."
     },
     {
       "id": "city-1-hood-3",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "TWO COLOURS, CONDITIONS APPLY",
       "fallback": "Mana",
       "cx": 0.69549,
       "cy": -0.1105,
@@ -1381,12 +1399,13 @@
         "Stomping Ground",
         "Sulfur Falls"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Shocks, battle lands and check lands. Each gives two colours untapped if you pay life or already met its clause."
     },
     {
       "id": "city-2",
       "level": 0,
-      "label": null,
+      "label": "DRAGONS THAT PAY",
       "fallback": "Ramp",
       "cx": -0.10571,
       "cy": 0.25635,
@@ -1400,7 +1419,8 @@
         "Rivaz of the Claw",
         "Savage Ventmaw"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "Bodies that fund the next spell. Two of them turn one repeatable enchantment into unbounded combats; the rest just refill you mid-turn."
     },
     {
       "id": "city-2-hood-0",
@@ -1425,7 +1445,7 @@
     {
       "id": "city-3",
       "level": 0,
-      "label": null,
+      "label": "MANA WITHOUT LANDS",
       "fallback": "Value",
       "cx": 0.23189,
       "cy": -0.66379,
@@ -1438,7 +1458,8 @@
         "Relic of Legends",
         "Sol Ring"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Six artifacts carrying the source count the land base cannot. Turn two here is what makes turn five castable."
     },
     {
       "id": "city-3-hood-0",
@@ -1462,7 +1483,7 @@
     {
       "id": "city-4",
       "level": 0,
-      "label": null,
+      "label": "THE CRITICAL MASS",
       "fallback": "Bodies",
       "cx": -0.30839,
       "cy": -0.05509,
@@ -1502,13 +1523,14 @@
         "Utvara Hellkite",
         "Wrathful Red Dragon"
       ],
-      "verified_count": 9
+      "verified_count": 9,
+      "gloss": "A third of the deck and most of its verified lines: the Dragons, the triggers pricing them, the spells clearing the way."
     },
     {
       "id": "city-4-hood-0",
       "level": 1,
       "parent": "city-4",
-      "label": null,
+      "label": "REMOVAL AND REBUILD",
       "fallback": "Interaction",
       "cx": -0.1675,
       "cy": -0.52808,
@@ -1521,13 +1543,14 @@
         "Patriarch's Bidding",
         "Swords to Plowshares"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "What you do about their board, and what you do about yours afterwards — one exile, one wipe, one mass return."
     },
     {
       "id": "city-4-hood-1",
       "level": 1,
       "parent": "city-4",
-      "label": null,
+      "label": "THE MEDIAN KILL",
       "fallback": "Bodies",
       "cx": -0.38773,
       "cy": 0.0324,
@@ -1547,13 +1570,14 @@
         "Utvara Hellkite",
         "Wrathful Red Dragon"
       ],
-      "verified_count": 6
+      "verified_count": 6,
+      "gloss": "How the deck usually wins: each Dragon that lands pings the table for the number of Dragons already there."
     },
     {
       "id": "city-4-hood-2",
       "level": 1,
       "parent": "city-4",
-      "label": null,
+      "label": "FAT INTO CARDS",
       "fallback": "Card Flow",
       "cx": -0.62149,
       "cy": 0.13254,
@@ -1565,13 +1589,14 @@
         "Roiling Dragonstorm",
         "Temur Ascendancy"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Your board is bigger than theirs, so make it draw. These price a five-power Dragon in cards rather than damage."
     },
     {
       "id": "city-4-hood-3",
       "level": 1,
       "parent": "city-4",
-      "label": null,
+      "label": "CHEATING THE COST",
       "fallback": "Value",
       "cx": -0.1138,
       "cy": 0.02964,
@@ -1587,12 +1612,13 @@
         "Savage Lands",
         "Sneak Attack"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "Routes onto the battlefield that skip the mana: cast from the top, cast for free, or put down for one red."
     },
     {
       "id": "city-5",
       "level": 0,
-      "label": null,
+      "label": "THE SEARCH PARTY",
       "fallback": "Tutors",
       "cx": -0.05775,
       "cy": 0.74827,
@@ -1607,7 +1633,8 @@
         "Tiamat",
         "Worldly Tutor"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Eight cards that go and find one. Seven fetch a land or a Dragon; exactly one can find an enchantment."
     },
     {
       "id": "city-5-hood-0",
@@ -1633,7 +1660,7 @@
     {
       "id": "city-6",
       "level": 0,
-      "label": null,
+      "label": "THE HARD NO",
       "fallback": "Bodies II",
       "cx": -0.50499,
       "cy": 0.80162,
@@ -1643,7 +1670,8 @@
         "Dovin's Veto",
         "Swan Song"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "All of the deck's stack interaction, in three cards. Hold the mana only for a turn that would otherwise end the game."
     },
     {
       "id": "city-6-hood-0",

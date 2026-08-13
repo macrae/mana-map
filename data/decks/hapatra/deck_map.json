@@ -7,7 +7,18 @@
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
     "cards": 88,
     "unresolved": [],
-    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
+    "named_by": "deck-cartographer",
+    "cartographer_notes": [
+      "The whole rules-verified record is four cards — Hapatra, Mikaeus, Ashnod's Altar and Blood Artist, the board of passing stack 001 — and they sit in three different regions: THE MINT, DRAIN AND REBUY (two of them) and THE FREE OUTLETS. The engine is an axis across the map, not a city. Worth saying out loud that stack 001 is a REFUTATION: it proved the Mikaeus-plus-altar pairings return once and stop, so those verified marks record what does not loop.",
+      "The mass is in the wrong half for the deck's own story, and the map shows it cleanly. THE BUSINESS END holds 26 of 88 entries, all payoff; THE COUNTER SUPPLY holds nine, and one of those nine places no counters. Nine sources feed twenty-six payoffs, which is the same asymmetry strategic_frame states as 'Hapatra is a mint, not a source'.",
+      "city-4-hood-1 groups Blowfly Infestation and Necroskitter — both of which trigger on a creature dying with a -1/-1 counter on it — with Toxic Deluge, which places no counters at all (it is -X/-X). Deluge is the misfit of the map: it mints no Snakes and turns on neither of its neighbours. The membership is defensible (all three are mass/dies-based black removal) but the hood's real job belongs to the other two, which is what the gloss says.",
+      "city-3 and city-5 each have exactly one neighbourhood whose membership is identical to the city's. There is no split to name, so both are left to the deterministic word rather than given a synonym of their parent.",
+      "Lazotep Quarry is filed in LANDS THAT DO MORE, but stack 001's outlet census counts it as one of the deck's eight mana-free sacrifice outlets. Anyone reading THE FREE OUTLETS as the complete list will count seven; the real number is eight, and the eighth is a land.",
+      "Ashnod's Altar and Phyrexian Altar are mana-producing artifacts and the space filed them with the sacrifice outlets, not with BORROWED SPEED. That is the ability space getting it right: their job is eating creatures, and the mana is the by-product.",
+      "Orcish Bowmasters in DEATHS INTO CARDS is the softest membership on the map — it draws you nothing and punishes opponents' draws instead. It keys off drawing, so the neighbourhood is not wrong, but it is the one card there that does not refill your hand.",
+      "Svogthos, the Restless Tomb has no entry in card_roles.json (deck-facts flags it), so it contributed nothing to its own placement. It landed in THE HOME COLOURS with the basics and the dual, which is where a B/G manland belongs anyway."
+    ]
   },
   "cards": [
     {
@@ -1180,7 +1191,7 @@
     {
       "id": "city-0",
       "level": 0,
-      "label": null,
+      "label": "THE ENGINE ROOM",
       "fallback": "Ramp",
       "cx": 0.00219,
       "cy": 0.34276,
@@ -1201,13 +1212,14 @@
         "Yahenni, Undying Partisan",
         "Yawgmoth, Thran Physician"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Every loop runs through here: mana that does not come from lands, and a way to sacrifice a creature for free."
     },
     {
       "id": "city-0-hood-0",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "MANA WITH A PULSE",
       "fallback": "Ramp",
       "cx": -0.33438,
       "cy": 0.41515,
@@ -1221,13 +1233,14 @@
         "Llanowar Elves",
         "Pitiless Plunderer"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Mostly creatures, so they accelerate you and then feed the altar; one card does both jobs."
     },
     {
       "id": "city-0-hood-1",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "THE FREE OUTLETS",
       "fallback": "Interaction",
       "cx": 0.33876,
       "cy": 0.27038,
@@ -1241,12 +1254,13 @@
         "Yahenni, Undying Partisan",
         "Yawgmoth, Thran Physician"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Sacrifice for no mana — every loop needs one, and only Yawgmoth also places a counter on the way."
     },
     {
       "id": "city-1",
       "level": 0,
-      "label": null,
+      "label": "UNTAPPED GROUND",
       "fallback": "Mana",
       "cx": -0.71784,
       "cy": -0.14873,
@@ -1277,13 +1291,14 @@
         "The Mycosynth Gardens",
         "Wastewood Verge"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Twenty-four lands and not one of them enters tapped, because a deck with turn-one plays cannot afford to skip a turn."
     },
     {
       "id": "city-1-hood-0",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "LANDS THAT DO MORE",
       "fallback": "Mana",
       "cx": -0.72284,
       "cy": -0.19273,
@@ -1302,13 +1317,14 @@
         "The Grey Havens",
         "The Mycosynth Gardens"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Half your lands carry a second ability, including a free sacrifice outlet the outlet count usually forgets."
     },
     {
       "id": "city-1-hood-1",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "THE HOME COLOURS",
       "fallback": "Mana II",
       "cx": -0.63255,
       "cy": -0.06451,
@@ -1321,13 +1337,14 @@
         "Swamp",
         "Wastewood Verge"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Your two colours and nothing else, free of charge — including the one land that stands up and attacks."
     },
     {
       "id": "city-1-hood-2",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "COLOUR AT A COST",
       "fallback": "Mana III",
       "cx": -0.79312,
       "cy": -0.14494,
@@ -1340,12 +1357,13 @@
         "Spire of Industry",
         "Tarnished Citadel"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Any colour you need, and four of the six charge you life or damage for it."
     },
     {
       "id": "city-2",
       "level": 0,
-      "label": null,
+      "label": "THE BUSINESS END",
       "fallback": "Bodies",
       "cx": 0.2673,
       "cy": -0.12301,
@@ -1378,13 +1396,14 @@
         "Walking Ballista",
         "Zulaport Cutthroat"
       ],
-      "verified_count": 3
+      "verified_count": 3,
+      "gloss": "The deck's mass: mint a body off a counter, cash it in when it dies, and protect whoever is doing it."
     },
     {
       "id": "city-2-hood-0",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "DRAIN AND REBUY",
       "fallback": "Bodies",
       "cx": 0.15805,
       "cy": -0.56326,
@@ -1400,13 +1419,14 @@
         "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
         "Zulaport Cutthroat"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "Every death here charges the table or buys something back — where a loop stops looping and becomes a win."
     },
     {
       "id": "city-2-hood-1",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "THE MINT",
       "fallback": "Payoffs",
       "cx": 0.2637,
       "cy": -0.5083,
@@ -1420,13 +1440,14 @@
         "Scurry Oak",
         "Walking Ballista"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Counters go in and bodies come out — the exchange rate the entire deck is built to run through."
     },
     {
       "id": "city-2-hood-2",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "THE BODYGUARDS",
       "fallback": "Insurance",
       "cx": 0.43657,
       "cy": 0.52267,
@@ -1437,13 +1458,14 @@
         "Swiftfoot Boots",
         "The One Ring"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Two of these also grant haste, which is how a freshly tutored engine piece works the turn it arrives."
     },
     {
       "id": "city-2-hood-3",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "DEATHS INTO CARDS",
       "fallback": "Card Flow",
       "cx": 0.32255,
       "cy": 0.55642,
@@ -1456,12 +1478,13 @@
         "Skullclamp",
         "Village Rites"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Your own creatures dying is how you refill; the tokens were free, so the cards they buy are nearly free."
     },
     {
       "id": "city-3",
       "level": 0,
-      "label": null,
+      "label": "FIND THE PIECE",
       "fallback": "Tutors",
       "cx": 0.81783,
       "cy": 0.14661,
@@ -1476,7 +1499,8 @@
         "Vampiric Tutor",
         "Worldly Tutor"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Eight tutors, because the ceiling rests on single cards; what you fetch and in what order is its own skill."
     },
     {
       "id": "city-3-hood-0",
@@ -1502,7 +1526,7 @@
     {
       "id": "city-4",
       "level": 0,
-      "label": null,
+      "label": "THE COUNTER SUPPLY",
       "fallback": "Interaction",
       "cx": 0.66145,
       "cy": -0.41095,
@@ -1518,13 +1542,14 @@
         "Serrated Arrows",
         "Toxic Deluge"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Hapatra mints Snakes, she does not make counters — these do, and every placement is also a piece of removal."
     },
     {
       "id": "city-4-hood-0",
       "level": 1,
       "parent": "city-4",
-      "label": null,
+      "label": "POINT AND SHRINK",
       "fallback": "Interaction II",
       "cx": 0.65401,
       "cy": -0.36958,
@@ -1537,13 +1562,14 @@
         "Grim Affliction",
         "Serrated Arrows"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Aim a counter, kill something small, take a Snake — and one of these does it to every creature at once."
     },
     {
       "id": "city-4-hood-1",
       "level": 1,
       "parent": "city-4",
-      "label": null,
+      "label": "DYING WITH COUNTERS",
       "fallback": "Interaction III",
       "cx": 0.67631,
       "cy": -0.49368,
@@ -1553,12 +1579,13 @@
         "Necroskitter",
         "Toxic Deluge"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "These want a creature to die carrying a counter, which is the one thing Toxic Deluge, sitting here, cannot arrange."
     },
     {
       "id": "city-5",
       "level": 0,
-      "label": null,
+      "label": "BORROWED SPEED",
       "fallback": "Value",
       "cx": -0.32115,
       "cy": 0.6421,
@@ -1572,7 +1599,8 @@
         "Mox Diamond",
         "Sol Ring"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Each of these buys you a turn and charges a card, an untap step or a land — spend the turn well."
     },
     {
       "id": "city-5-hood-0",

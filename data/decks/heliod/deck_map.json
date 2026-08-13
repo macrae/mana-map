@@ -7,7 +7,17 @@
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
     "cards": 85,
     "unresolved": [],
-    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
+    "named_by": "deck-cartographer",
+    "cartographer_notes": [
+      "The two-piece donation engine is SPLIT ACROSS TWO CITIES: Howling Mine, Kami of the Crescent Moon and the three upkeep punishers (Iron Maiden, Ebony Owl Netsuke, Viseling) sit in city-2's SET AND FORGET, while the rest of the give-and-charge machine sits in city-3. The split tracks cost and card type, not function — membership reads right, but anyone tracing the engine has to read both cities.",
+      "city-2-hood-1 is the most far-flung thing on the map: two cards (the Medallions) at cx -0.98 while their city's centroid is -0.15. They are unusual for this deck's space, not misplaced — per-spell cost reduction is the commander's own back-face text, so they are the only cards that stack with the deck's central asymmetry.",
+      "Mikokoro, Center of the Sea is an eleventh table-draw engine filed in the land city. The map is right that it is mana; the reader should know the giveaway count under GIVE THEN CHARGE understates by one because one of those effects is a land.",
+      "An Offer You Can't Refuse is the odd member of city-4 — a counterspell clustered with mana rocks, almost certainly on 'creates two Treasure tokens'. Functionally it belongs with THE HARD NO. Not a membership complaint: the ability space weighed the treasure clause over the counter clause, and Smothering Tithe next door makes the same treasure off the same donated draws.",
+      "city-3-hood-2 is the thinnest split on the map: three cards whose jobs genuinely differ (donate, break an artifact, untap lands). The label names the only shared shape I can see — permanents that arrive and keep working — rather than pretending the cluster has a single function.",
+      "city-0 and city-4 each contain exactly one neighbourhood identical to the parent city. Nothing narrower to say, so both are omitted and the deterministic word stands.",
+      "city-5 carries 4 of the map's 10 verified cards on 9 cards — the densest verified block. city-1 (18 lands) carries none, which is expected and not a gap."
+    ]
   },
   "cards": [
     {
@@ -1056,7 +1066,7 @@
     {
       "id": "city-0",
       "level": 0,
-      "label": null,
+      "label": "SEEK AND ERASE",
       "fallback": "Tutors",
       "cx": -0.05431,
       "cy": 0.69802,
@@ -1069,7 +1079,8 @@
         "Supreme Verdict",
         "Swords to Plowshares"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Half of these go find the card you need; the other half erase a threat that already resolved."
     },
     {
       "id": "city-0-hood-0",
@@ -1093,7 +1104,7 @@
     {
       "id": "city-1",
       "level": 0,
-      "label": null,
+      "label": "THE OPEN MANA",
       "fallback": "Mana",
       "cx": 0.80608,
       "cy": 0.08004,
@@ -1118,13 +1129,14 @@
         "Skycloud Expanse",
         "Temple of Enlightenment"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Eighteen lands feeding a mostly-blue deck, whose job is to be untapped on someone else's turn."
     },
     {
       "id": "city-1-hood-0",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "SECOND JOBS",
       "fallback": "Mana",
       "cx": 0.76541,
       "cy": 0.11313,
@@ -1140,13 +1152,14 @@
         "Mikokoro, Center of the Sea",
         "Otawara, Soaring City"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Lands that charge life, cycle, channel, fetch or hand the table a card — mana with a bill attached."
     },
     {
       "id": "city-1-hood-1",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "CONDITIONS APPLY",
       "fallback": "Mana II",
       "cx": 0.89222,
       "cy": 0.10928,
@@ -1159,13 +1172,14 @@
         "Seachrome Coast",
         "Temple of Enlightenment"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Six duals in both colours, five with a condition on entry; one checks for basics the deck runs two of."
     },
     {
       "id": "city-1-hood-2",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "JUST MANA",
       "fallback": "Mana III",
       "cx": 0.75581,
       "cy": -0.0777,
@@ -1175,12 +1189,13 @@
         "Plains",
         "Skycloud Expanse"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "The plain ones: two basics and a filter land, no life paid, no condition, nothing else printed."
     },
     {
       "id": "city-2",
       "level": 0,
-      "label": null,
+      "label": "THE FLASH FORT",
       "fallback": "Bodies",
       "cx": -0.14513,
       "cy": 0.08684,
@@ -1207,13 +1222,14 @@
         "Torrential Gearhulk",
         "Viseling"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "Your side of the board: it taxes their turns, and the flipped commander lets you add to it on theirs."
     },
     {
       "id": "city-2-hood-0",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "ON THEIR TURN",
       "fallback": "Bodies",
       "cx": -0.14047,
       "cy": 0.23702,
@@ -1229,13 +1245,14 @@
         "Teferi, Temporal Pilgrim",
         "Torrential Gearhulk"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Flash granters and the payoffs for having it: everything here can arrive on an opponent's end step."
     },
     {
       "id": "city-2-hood-1",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "THE DISCOUNT",
       "fallback": "Ramp II",
       "cx": -0.97937,
       "cy": -0.05541,
@@ -1244,13 +1261,14 @@
         "Pearl Medallion",
         "Sapphire Medallion"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Two artifacts that shave one generic off your white and blue spells, stacking with the commander's per-draw discount."
     },
     {
       "id": "city-2-hood-2",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "SET AND FORGET",
       "fallback": "Interaction",
       "cx": 0.03559,
       "cy": -0.03174,
@@ -1266,12 +1284,13 @@
         "Propaganda",
         "Viseling"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Play them once and never act again: they hand out cards, bill a full hand, and price attacking you."
     },
     {
       "id": "city-3",
       "level": 0,
-      "label": null,
+      "label": "GIVE THEN CHARGE",
       "fallback": "Card Flow",
       "cx": -0.30808,
       "cy": -0.35496,
@@ -1303,13 +1322,14 @@
         "Temple Bell",
         "The Second Doctor"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "The deck's mass, and its median win: hand the table free cards, then bill every one of them."
     },
     {
       "id": "city-3-hood-0",
       "level": 1,
       "parent": "city-3",
-      "label": null,
+      "label": "THE SURCHARGE",
       "fallback": "Finishers",
       "cx": -0.32322,
       "cy": -0.4724,
@@ -1323,13 +1343,14 @@
         "Scrawling Crawler",
         "The Second Doctor"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Everything here bills the table for drawing or casting; two of them simply end the game instead."
     },
     {
       "id": "city-3-hood-1",
       "level": 1,
       "parent": "city-3",
-      "label": null,
+      "label": "THE GIVEAWAY",
       "fallback": "Card Flow",
       "cx": -0.2485,
       "cy": -0.2256,
@@ -1346,13 +1367,14 @@
         "Stroke of Genius",
         "Temple Bell"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "The donation half: symmetric draw you deploy first, inert until a punisher lands to make it asymmetric."
     },
     {
       "id": "city-3-hood-2",
       "level": 1,
       "parent": "city-3",
-      "label": null,
+      "label": "PERMANENT STAFF",
       "fallback": "Value",
       "cx": -0.26766,
       "cy": -0.40114,
@@ -1362,13 +1384,14 @@
         "Loran of the Third Path",
         "Teferi, Hero of Dominaria"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Legends that land and keep working: one hands out cards, one breaks artifacts, one untaps your lands."
     },
     {
       "id": "city-3-hood-3",
       "level": 1,
       "parent": "city-3",
-      "label": null,
+      "label": "THE MULTIPLIERS",
       "fallback": "Card Flow III",
       "cx": -0.43031,
       "cy": -0.42157,
@@ -1380,12 +1403,13 @@
         "Sphinx's Tutelage",
         "Teferi's Ageless Insight"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Each triggers on a draw, yours or theirs, so the table's generosity compounds on your side only."
     },
     {
       "id": "city-4",
       "level": 0,
-      "label": null,
+      "label": "TWO SPELLS A TURN",
       "fallback": "Ramp",
       "cx": 0.19407,
       "cy": -0.52988,
@@ -1399,7 +1423,8 @@
         "Talisman of Progress",
         "Thought Vessel"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "Rocks bought so you can deploy an engine and still hold a counter; two also fund the verified kill."
     },
     {
       "id": "city-4-hood-0",
@@ -1424,7 +1449,7 @@
     {
       "id": "city-5",
       "level": 0,
-      "label": null,
+      "label": "THE HARD NO",
       "fallback": "Interaction",
       "cx": -0.5486,
       "cy": 0.57973,
@@ -1440,13 +1465,14 @@
         "Hullbreaker Horror",
         "Swan Song"
       ],
-      "verified_count": 4
+      "verified_count": 4,
+      "gloss": "Mana you keep open. Four of these sit in rules-verified lines, more than any other city here."
     },
     {
       "id": "city-5-hood-0",
       "level": 1,
       "parent": "city-5",
-      "label": null,
+      "label": "CHEAP OR FREE",
       "fallback": "Card Flow II",
       "cx": -0.46038,
       "cy": 0.62492,
@@ -1460,13 +1486,14 @@
         "Force of Negation",
         "Swan Song"
       ],
-      "verified_count": 3
+      "verified_count": 3,
+      "gloss": "Seven counters, two of them free, which is how you deploy an engine and still say no."
     },
     {
       "id": "city-5-hood-1",
       "level": 1,
       "parent": "city-5",
-      "label": null,
+      "label": "THE RESET",
       "fallback": "Interaction II",
       "cx": -0.85736,
       "cy": 0.42157,
@@ -1475,7 +1502,8 @@
         "Cyclonic Rift",
         "Hullbreaker Horror"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Both undo a board at seven mana; one is also the loop the verified kill runs on."
     }
   ],
   "edges": [

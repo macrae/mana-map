@@ -7,7 +7,17 @@
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
     "cards": 99,
     "unresolved": [],
-    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
+    "named_by": "deck-cartographer",
+    "cartographer_notes": [
+      "city-0 and city-1 are 30 cards each: 60% of the deck is what the commander fetches and what fetching costs. The mass is not payoffs — it is access and the price of access.",
+      "city-1-hood-1 carries 5 of the deck's 7 verified cards, and all five are lands. The rules-verified line's binding cost is mana, not more cards, and the map shows that as a single six-land neighbourhood.",
+      "An Offer You Can't Refuse is the map's odd member: it is the deck's sixth counterspell, but it sits in the toolbox city beside two Treasure makers instead of with the other five counters in city-4. It clusters on the Treasure it hands an opponent, not on the counter. Membership left alone; the name of city-0-hood-3 describes what the cluster actually shows.",
+      "city-6's split does not read. The two neighbourhood centroids are 0.04 apart, and Bloom Tender and Faeburrow Elder — which have the same Vivid mana ability word for word — land on opposite sides of it. Both neighbourhoods left unnamed rather than invent a difference.",
+      "city-3's split is the cleanest on the map and is worth reading as a fact: the three fetches that can find a Swamp separate from the six that cannot. That line falls exactly on the deck's short colour.",
+      "city-4 and city-5 each contain exactly one neighbourhood identical to the whole city. There is no internal structure to name; both left to the deterministic word.",
+      "THE TOOLBOX holds ten cards the tutor can never reach (Rhystic Study, Esper Sentinel, Path to Exile, Toxic Deluge, Silence, Drannith Magistrate, Grand Abolisher, Dauthi Voidwalker, Seedborn Muse, An Offer You Can't Refuse). The city is named for the job its mass does, not for what is fetchable — a reader who assumes every card in it is a fetch target will be wrong about a third of it."
+    ]
   },
   "cards": [
     {
@@ -1289,7 +1299,7 @@
     {
       "id": "city-0",
       "level": 0,
-      "label": null,
+      "label": "THE TOOLBOX",
       "fallback": "Bodies",
       "cx": 0.44715,
       "cy": -0.03886,
@@ -1326,13 +1336,14 @@
         "Thalia, Heretic Cathar",
         "Toxic Deluge"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "One answer at a time, chosen after you see the problem: the deck's mass, and most of what she can fetch."
     },
     {
       "id": "city-0-hood-0",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "THE ENGINE ROOM",
       "fallback": "Tutors",
       "cx": 0.49498,
       "cy": -0.0885,
@@ -1344,13 +1355,14 @@
         "Samut, Voice of Dissent",
         "Sisay, Weatherlight Captain"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "The commander plus the legends whose abilities you use every turn, including two that untap a mana body for a second payment."
     },
     {
       "id": "city-0-hood-1",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "THE TOLLBOOTHS",
       "fallback": "Card Flow",
       "cx": 0.76994,
       "cy": 0.13077,
@@ -1365,13 +1377,14 @@
         "Sheoldred, the Apocalypse",
         "Teferi, Time Raveler"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "They charge the table for playing Magic and pay you in cards; the deck's draw lives almost entirely here."
     },
     {
       "id": "city-0-hood-2",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "THINGS THAT SAY NO",
       "fallback": "Bodies",
       "cx": 0.24593,
       "cy": -0.26492,
@@ -1392,13 +1405,14 @@
         "Thalia, Heretic Cathar",
         "Toxic Deluge"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "Most of the deck's interaction is a cheap body that blanks a plan; the verified combat loop lives here too."
     },
     {
       "id": "city-0-hood-3",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "TREASURE EITHER WAY",
       "fallback": "Ramp II",
       "cx": 0.44573,
       "cy": 0.64646,
@@ -1408,12 +1422,13 @@
         "Dihada, Binder of Wills",
         "Lotho, Corrupt Shirriff"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Two make you Treasure to help pay the toll; the third hands an opponent Treasure to buy a counterspell."
     },
     {
       "id": "city-1",
       "level": 0,
-      "label": null,
+      "label": "THE COLOUR BATTERY",
       "fallback": "Mana",
       "cx": -0.5309,
       "cy": 0.11093,
@@ -1450,13 +1465,14 @@
         "Vault of Champions",
         "Watery Grave"
       ],
-      "verified_count": 5
+      "verified_count": 5,
+      "gloss": "Thirty lands assembling five distinct pips, because the activation you keep paying has no generic mana in it."
     },
     {
       "id": "city-1-hood-0",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "TWO AT A TIME",
       "fallback": "Mana",
       "cx": -0.5653,
       "cy": 0.03425,
@@ -1480,13 +1496,14 @@
         "Vault of Champions",
         "Watery Grave"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Each covers two of the five colours, so the battery is built from three of these, not one."
     },
     {
       "id": "city-1-hood-1",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "ANY COLOUR YOU NAME",
       "fallback": "Mana II",
       "cx": -0.52632,
       "cy": 0.17389,
@@ -1499,13 +1516,14 @@
         "Mana Confluence",
         "Plaza of Heroes"
       ],
-      "verified_count": 5
+      "verified_count": 5,
+      "gloss": "Five of these six appear in the verified combat loop — the lands that actually pay a five-pip cost."
     },
     {
       "id": "city-1-hood-2",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "ONE OF EACH",
       "fallback": "Mana IIII",
       "cx": -0.38838,
       "cy": 0.22896,
@@ -1517,13 +1535,14 @@
         "Plains",
         "Swamp"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": null
     },
     {
       "id": "city-1-hood-3",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "THE FINE PRINT",
       "fallback": "Mana IIIIII",
       "cx": -0.6086,
       "cy": 0.27872,
@@ -1532,12 +1551,13 @@
         "Secluded Courtyard",
         "Unclaimed Territory"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Both fix by naming a type, but only one of them makes mana that may legally pay an activated ability."
     },
     {
       "id": "city-2",
       "level": 0,
-      "label": null,
+      "label": "GROW HER, GUARD HER",
       "fallback": "Insurance",
       "cx": 0.68093,
       "cy": -0.30521,
@@ -1555,13 +1575,14 @@
         "Shalai, Voice of Plenty",
         "Yoshimaru, Ever Faithful"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Two jobs, one purpose: counters raise the mana value she can fetch, and shields keep the rungs you already climbed."
     },
     {
       "id": "city-2-hood-0",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "RAISING THE CEILING",
       "fallback": "Value",
       "cx": 0.70544,
       "cy": -0.24046,
@@ -1573,13 +1594,14 @@
         "Mikaeus, the Lunarch",
         "Yoshimaru, Ever Faithful"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Every +1/+1 counter is access: her power sets the mana value ceiling on the next thing you fetch."
     },
     {
       "id": "city-2-hood-1",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "THE SAVES",
       "fallback": "Insurance",
       "cx": 0.66051,
       "cy": -0.35916,
@@ -1592,12 +1614,13 @@
         "Heroic Intervention",
         "Shalai, Voice of Plenty"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Ward, hexproof, indestructible — cheap enough to hold up on the turn you commit her to the board."
     },
     {
       "id": "city-3",
       "level": 0,
-      "label": null,
+      "label": "THE MISSING PIP",
       "fallback": "Mana II",
       "cx": -0.76678,
       "cy": -0.34305,
@@ -1613,13 +1636,14 @@
         "Windswept Heath",
         "Wooded Foothills"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Nine lands that decide what colour they are after you know which pip the next activation is short."
     },
     {
       "id": "city-3-hood-0",
       "level": 1,
       "parent": "city-3",
-      "label": null,
+      "label": "EVERYTHING BUT BLACK",
       "fallback": "Mana III",
       "cx": -0.76349,
       "cy": -0.34833,
@@ -1632,13 +1656,14 @@
         "Windswept Heath",
         "Wooded Foothills"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": null
     },
     {
       "id": "city-3-hood-1",
       "level": 1,
       "parent": "city-3",
-      "label": null,
+      "label": "THE BLACK FETCHES",
       "fallback": "Mana IIIII",
       "cx": -0.77334,
       "cy": -0.33247,
@@ -1648,12 +1673,13 @@
         "Polluted Delta",
         "Verdant Catacombs"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "The only three that find black — the deck's thinnest colour, and the pip the activation most often lacks."
     },
     {
       "id": "city-4",
       "level": 0,
-      "label": null,
+      "label": "THE HELD ANSWERS",
       "fallback": "Card Flow",
       "cx": 0.07013,
       "cy": -0.92856,
@@ -1665,7 +1691,8 @@
         "Negate",
         "Swan Song"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Interaction you hold up, never fetch: none of these is legendary, so the commander cannot find one for you."
     },
     {
       "id": "city-4-hood-0",
@@ -1688,7 +1715,7 @@
     {
       "id": "city-5",
       "level": 0,
-      "label": null,
+      "label": "THE FAST START",
       "fallback": "Ramp II",
       "cx": 0.32337,
       "cy": 0.72839,
@@ -1700,7 +1727,8 @@
         "Relic of Legends",
         "Sol Ring"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Turn-one and turn-two acceleration; four of the five make colour, and the colourless one cannot pay the activation."
     },
     {
       "id": "city-5-hood-0",
@@ -1723,7 +1751,7 @@
     {
       "id": "city-6",
       "level": 0,
-      "label": null,
+      "label": "MANA ON LEGS",
       "fallback": "Ramp",
       "cx": -0.00492,
       "cy": 0.58705,
@@ -1739,7 +1767,8 @@
         "Kinnan, Bonder Prodigy",
         "Selvala, Heart of the Wilds"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Bodies that make coloured mana — the realistic way to pay five distinct pips before your lands can do it alone."
     },
     {
       "id": "city-6-hood-0",

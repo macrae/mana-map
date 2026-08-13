@@ -7,7 +7,21 @@
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
     "cards": 79,
     "unresolved": [],
-    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
+    "named_by": "deck-cartographer",
+    "cartographer_notes": [
+      "city-1's fallback reads 'Interaction' and would have misled: only Goblin Trashmaster answers an opposing permanent. The other twelve are reach — the deck's real interaction (Chaos Warp, Vandalblast) sits two cities away in city-5-hood-0, which is the whole of its two-class breadth in one neighbourhood.",
+      "city-5 is the mass (22 of 79 entries) and it is genuinely three things: the cards that hand you another cast, the pump that converts, and two tutors. The three-way split is the cleanest on the map; the parent name has to be about volume because that is the only thing all 22 share.",
+      "Blasphemous Act clusters into city-2 beside Sol Ring and Ruby Medallion because its cost-reduction line reads as a discount. It is the deck's only sweeper and it is a genuine outlier in DISCOUNTS AND INSURANCE — a measurement artifact, not a role. Named around it, not for it.",
+      "Sol Ring is the odd member of city-2-hood-1: five draw effects and a mana rock. It belongs to the deck, not to that neighbourhood's job.",
+      "city-0 carries the map's highest verified density (4 of 10 — Battle Hymn, Brightstone Ritual, Skirk Prospector, Storm-Kiln Artist). The ritual base is on the record, which is why the city is named for what the mana is FOR rather than for ramp.",
+      "The ritual base is split across cities: Seething Song sits in city-5-hood-0 rather than with the other rituals in city-0-hood-1. Glimpse the Impossible is the reverse case — impulse draw filed under THE RITUALS. Both look like the ability space reading a mode rather than a job; membership left alone.",
+      "Past in Flames is the odd member of city-5-hood-1: seven pump-and-haste effects and one graveyard recursion spell. It is the deck's most unusual card rather than a misfit — the strategic frame names it as an unresolved candidate line.",
+      "city-5-hood-2 (Goblin Matron, Moggcatcher) is the map's two-card island and it is real, not noise: nothing else in the 99 searches a library, so the tutoring axis has exactly two members and no near neighbours.",
+      "city-4 has a single neighbourhood identical to the city itself, all eight cards. No internal structure to name, so it is left to the deterministic fallback.",
+      "city-3 is the only city with zero verified cards, which is expected — no resolved stack turns on a land — and its two neighbourhoods split exactly on enters-tapped versus enters-untapped, which is a cleaner line than the fallback 'Mana / Mana II' suggests.",
+      "Zada sits in city-1-hood-0 with the damage payoffs rather than with the cantrips she copies, because her own text is a body and a trigger, not a payload. The map's centre being the commander is right; the neighbourhood she landed in is about what her tokens are worth, not about the copy engine."
+    ]
   },
   "cards": [
     {
@@ -1023,7 +1037,7 @@
     {
       "id": "city-0",
       "level": 0,
-      "label": null,
+      "label": "MANA FOR ONE TURN",
       "fallback": "Ramp",
       "cx": 0.23359,
       "cy": 0.68707,
@@ -1040,13 +1054,14 @@
         "Skirk Prospector",
         "Storm-Kiln Artist"
       ],
-      "verified_count": 4
+      "verified_count": 4,
+      "gloss": "None of this is a land: it converts bodies and cards into a burst big enough to empty your hand."
     },
     {
       "id": "city-0-hood-0",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "BODIES INTO MANA",
       "fallback": "Ramp",
       "cx": 0.19831,
       "cy": 0.48447,
@@ -1058,13 +1073,14 @@
         "Skirk Prospector",
         "Storm-Kiln Artist"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "Your board is the mana source here — sacrifice it, tap it or let it die, and it pays in red or Treasure."
     },
     {
       "id": "city-0-hood-1",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "THE RITUALS",
       "fallback": "Ramp II",
       "cx": 0.26887,
       "cy": 0.88967,
@@ -1076,12 +1092,13 @@
         "Glimpse the Impossible",
         "Mana Geyser"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "One card, one turn's worth of mana, nothing left afterwards. This is what funds a storm turn on four lands."
     },
     {
       "id": "city-1",
       "level": 0,
-      "label": null,
+      "label": "BODIES INTO DAMAGE",
       "fallback": "Interaction",
       "cx": -0.34692,
       "cy": 0.22387,
@@ -1101,13 +1118,14 @@
         "Siege-Gang Lieutenant",
         "Zada, Hedron Grinder"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "Where the swarm cashes out: every card here turns goblins you already have into damage without needing them to connect."
     },
     {
       "id": "city-1-hood-0",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "THE PINGS",
       "fallback": "Interaction",
       "cx": -0.19788,
       "cy": 0.05984,
@@ -1121,13 +1139,14 @@
         "Impact Tremors",
         "Zada, Hedron Grinder"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "Damage priced in goblins — per creature entering, per goblin dying, per spell already cast. No attack required."
     },
     {
       "id": "city-1-hood-1",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "THE SAC OUTLETS",
       "fallback": "Bodies II",
       "cx": -0.52082,
       "cy": 0.41524,
@@ -1140,12 +1159,13 @@
         "Siege-Gang Commander",
         "Siege-Gang Lieutenant"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "All six eat a goblin on demand, which is how a board that is about to be swept still converts."
     },
     {
       "id": "city-2",
       "level": 0,
-      "label": null,
+      "label": "THE STAYING POWER",
       "fallback": "Card Flow",
       "cx": -0.32224,
       "cy": -0.28785,
@@ -1163,13 +1183,14 @@
         "Throne of Eldraine",
         "Witch's Mark"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "Cheap spells, a full hand and the entire protection budget — why a sweeper is a setback here, not the game."
     },
     {
       "id": "city-2-hood-0",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "DISCOUNTS AND INSURANCE",
       "fallback": "Insurance",
       "cx": -0.63464,
       "cy": -0.65138,
@@ -1181,13 +1202,14 @@
         "Ruby Medallion",
         "Swiftfoot Boots"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Nothing here does anything alone: it makes your spells cost less and your commander harder to answer."
     },
     {
       "id": "city-2-hood-1",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "THE GAS",
       "fallback": "Finishers",
       "cx": -0.0619,
       "cy": 0.01509,
@@ -1200,12 +1222,13 @@
         "Throne of Eldraine",
         "Witch's Mark"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Refills you after a turn that empties your hand, and Fists of Flame turns the same draws into lethal damage."
     },
     {
       "id": "city-3",
       "level": 0,
-      "label": null,
+      "label": "THE RED FLOOR",
       "fallback": "Mana",
       "cx": 0.78356,
       "cy": -0.20742,
@@ -1227,13 +1250,14 @@
         "Spinerock Knoll",
         "War Room"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Thirty-six copies that mostly just make red: hit your drops and get out of the way. The big turns are ritual-funded."
     },
     {
       "id": "city-3-hood-0",
       "level": 1,
       "parent": "city-3",
-      "label": null,
+      "label": "TAPPED, WITH A REASON",
       "fallback": "Mana",
       "cx": 0.82781,
       "cy": -0.28024,
@@ -1248,13 +1272,14 @@
         "Smoldering Crater",
         "Spinerock Knoll"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Each one costs you a tempo point and pays it back later — cycling, a hideaway, a creature land, a haste engine."
     },
     {
       "id": "city-3-hood-1",
       "level": 1,
       "parent": "city-3",
-      "label": null,
+      "label": "UNTAPPED, MOSTLY COLOURLESS",
       "fallback": "Mana II",
       "cx": 0.73299,
       "cy": -0.12421,
@@ -1268,12 +1293,13 @@
         "Shinka, the Bloodsoaked Keep",
         "War Room"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Everything enters untapped, but five of the seven tap for colourless — the price of their abilities in a double-red deck."
     },
     {
       "id": "city-4",
       "level": 0,
-      "label": null,
+      "label": "THE TOKEN FACTORY",
       "fallback": "Value",
       "cx": -0.49264,
       "cy": 0.03863,
@@ -1288,7 +1314,8 @@
         "Mogg War Marshal",
         "Searslicer Goblin"
       ],
-      "verified_count": 3
+      "verified_count": 3,
+      "gloss": "Seven of these eight make bodies two at a time or every turn; Idol of Oblivion turns the tokens back into cards."
     },
     {
       "id": "city-4-hood-0",
@@ -1314,7 +1341,7 @@
     {
       "id": "city-5",
       "level": 0,
-      "label": null,
+      "label": "CRITICAL MASS",
       "fallback": "Bodies",
       "cx": -0.09516,
       "cy": -0.17329,
@@ -1343,13 +1370,14 @@
         "Vandalblast",
         "Wild Ride"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "The deck's biggest block, and it is all volume: cheap goblins, one-mana spells to point at them, and the pump."
     },
     {
       "id": "city-5-hood-0",
       "level": 1,
       "parent": "city-5",
-      "label": null,
+      "label": "THE NEXT SPELL",
       "fallback": "Bodies",
       "cx": 0.03865,
       "cy": -0.14877,
@@ -1368,13 +1396,14 @@
         "Seething Song",
         "Vandalblast"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Most of these hand you another card to cast: cantrips, discover, and casting off the top or out of the graveyard."
     },
     {
       "id": "city-5-hood-1",
       "level": 1,
       "parent": "city-5",
-      "label": null,
+      "label": "THE ALPHA STRIKE",
       "fallback": "Card Flow",
       "cx": -0.18166,
       "cy": -0.35326,
@@ -1389,13 +1418,14 @@
         "Spreading Insurrection",
         "Wild Ride"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Pump and haste, seven cards of eight — the turn the 1/1s stop looking like 1/1s and the table is dead."
     },
     {
       "id": "city-5-hood-2",
       "level": 1,
       "parent": "city-5",
-      "label": null,
+      "label": "THE SEARCH PARTY",
       "fallback": "Tutors",
       "cx": -0.55207,
       "cy": 0.39953,
@@ -1404,7 +1434,8 @@
         "Goblin Matron",
         "Moggcatcher"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "The deck's only two tutors, both of them fetching a Goblin. A two-card island because nothing else here searches."
     }
   ],
   "edges": [

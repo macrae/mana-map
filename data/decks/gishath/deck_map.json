@@ -7,7 +7,16 @@
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
     "cards": 89,
     "unresolved": [],
-    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
+    "named_by": "deck-cartographer",
+    "cartographer_notes": [
+      "city-0 holds 28 of 89 entries and 7 of the deck's verified cards — the mass and the rules-verified record are the same place, and its hood-3 is where the commander himself sits with the two other play-off-the-top engines.",
+      "Forerunner of the Empire is filed in city-5-hood-0 among the land fetchers, because the space read its entry trigger as a library search. The strategic frame calls it the enrage web's only free repeatable damage source, and all five converters it feeds (Ripjaw Raptor, Polyraptor, Ranging Raptors, Trapjaw Tyrant, Wrathful Raptors) are scattered across city-0, city-3 and city-5. The measurement is defensible; a reader hunting for 'the web' will not find it in one city, so any prose about that engine must name it across borders.",
+      "Blasphemous Act is the odd member of city-2, filed among four protection instants and two cost reducers. It is not insurance — stack 004 uses it as a damage source through Temple Altisaur. It still belongs to the turn you commit, which is why the city name covers it, but do not describe it as protection.",
+      "city-2, city-3, city-4 and city-6 each have a single neighbourhood with exactly their parent's membership. Those are left unnamed on purpose: a hood that repeats its city is not narrower than it, and the deterministic word is the honest fallback.",
+      "Kessig Wolf Run and Rogue's Passage sit in city-1-hood-1's fixing hood on a role tag; functionally they are the two lands that make a single connection happen, which is why the hood is named for both jobs. Also in that hood: Secluded Courtyard and Unclaimed Territory produce creature-restricted mana, so they cannot activate Belbe's Portal or Monster Manual in city-6.",
+      "city-6's five cards all route around a hard cast, and per the strategic frame none of them can reach the command zone — the side door opens for cards in hand and exile, not for the commander."
+    ]
   },
   "cards": [
     {
@@ -1154,7 +1163,7 @@
     {
       "id": "city-0",
       "level": 0,
-      "label": null,
+      "label": "WHAT THE MANA BUYS",
       "fallback": "Bodies",
       "cx": -0.20376,
       "cy": 0.11004,
@@ -1189,13 +1198,14 @@
         "Wayward Swordtooth",
         "Wrathful Raptors"
       ],
-      "verified_count": 7
+      "verified_count": 7,
+      "gloss": "Where the mana goes: twenty-eight Dinosaurs and the spells that turn a board of them into cards, tokens and damage."
     },
     {
       "id": "city-0-hood-0",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "PAYS ON ARRIVAL",
       "fallback": "Value",
       "cx": -0.28353,
       "cy": 0.24861,
@@ -1210,13 +1220,14 @@
         "Regisaur Alpha",
         "Trumpeting Carnosaur"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Each does something the turn it lands — a token, a ping, a discover — so cheating it in is enough."
     },
     {
       "id": "city-0-hood-1",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "SCALES WITH THE BOARD",
       "fallback": "Bodies",
       "cx": -0.01743,
       "cy": -0.04928,
@@ -1236,13 +1247,14 @@
         "Wayward Swordtooth",
         "Wrathful Raptors"
       ],
-      "verified_count": 3
+      "verified_count": 3,
+      "gloss": "These read the board you already have: anthems, damage prevention, and spells sized off the greatest power among your Dinosaurs."
     },
     {
       "id": "city-0-hood-2",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "BODIES INTO CARDS",
       "fallback": "Bodies II",
       "cx": -0.53104,
       "cy": 0.16437,
@@ -1253,13 +1265,14 @@
         "Ripjaw Raptor",
         "Vaultborn Tyrant"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "Four cards that convert creature entries and combat damage into draws, which is how the deck refuels after committing."
     },
     {
       "id": "city-0-hood-3",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "OFF THE TOP",
       "fallback": "Bodies III",
       "cx": -0.36214,
       "cy": 0.35849,
@@ -1269,12 +1282,13 @@
         "Etali, Primal Storm",
         "Gishath, Sun's Avatar"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Three engines that play your library from the top instead of casting it, including the commander's own trigger."
     },
     {
       "id": "city-1",
       "level": 0,
-      "label": null,
+      "label": "THE LONG RUNWAY",
       "fallback": "Mana",
       "cx": 0.6248,
       "cy": -0.05426,
@@ -1305,13 +1319,14 @@
         "Unclaimed Territory",
         "Windswept Heath"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Twenty-four lands, thirty-five copies: three colours to find and eight mana to climb before the headline play is castable."
     },
     {
       "id": "city-1-hood-0",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "BASICS AND PAIRS",
       "fallback": "Mana",
       "cx": 0.5839,
       "cy": -0.21268,
@@ -1329,13 +1344,14 @@
         "Rootbound Crag",
         "Sunpetal Grove"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": null
     },
     {
       "id": "city-1-hood-1",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "FIXING AND FINISHING",
       "fallback": "Mana II",
       "cx": 0.6551,
       "cy": 0.01073,
@@ -1352,13 +1368,14 @@
         "Secluded Courtyard",
         "Unclaimed Territory"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Eight lands make any colour you need; two push one attacker through, which is all the commander's trigger asks for."
     },
     {
       "id": "city-1-hood-2",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "LANDS THAT FIND LANDS",
       "fallback": "Mana III",
       "cx": 0.67377,
       "cy": 0.31001,
@@ -1368,12 +1385,13 @@
         "Myriad Landscape",
         "Windswept Heath"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Three lands that trade themselves for others — slow fixing bought with a turn you were spending anyway."
     },
     {
       "id": "city-2",
       "level": 0,
-      "label": null,
+      "label": "THE PIVOT TURN",
       "fallback": "Insurance",
       "cx": -0.73687,
       "cy": -0.11529,
@@ -1388,7 +1406,8 @@
         "Otepec Huntmaster",
         "Urza's Incubator"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "The turn you commit: two cards make the commander cheaper, four instants make sure the board survives the answer."
     },
     {
       "id": "city-2-hood-0",
@@ -1414,7 +1433,7 @@
     {
       "id": "city-3",
       "level": 0,
-      "label": null,
+      "label": "MAKING ROOM",
       "fallback": "Interaction",
       "cx": -0.43933,
       "cy": -0.53158,
@@ -1429,7 +1448,8 @@
         "Wakening Sun's Avatar",
         "Zacama, Primal Calamity"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Spot exile, artifact and enchantment answers, and two sweepers that spare Dinosaurs — you clear the lane, then connect once."
     },
     {
       "id": "city-3-hood-0",
@@ -1455,7 +1475,7 @@
     {
       "id": "city-4",
       "level": 0,
-      "label": null,
+      "label": "BUYING TURNS",
       "fallback": "Ramp",
       "cx": 0.11283,
       "cy": -0.64287,
@@ -1467,7 +1487,8 @@
         "Sol Ring",
         "Talisman of Unity"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Turns rather than colours: four artifacts and a doubler that move the eight-drop forward when the lands cannot."
     },
     {
       "id": "city-4-hood-0",
@@ -1490,7 +1511,7 @@
     {
       "id": "city-5",
       "level": 0,
-      "label": null,
+      "label": "THE SEARCH PARTY",
       "fallback": "Tutors",
       "cx": -0.05661,
       "cy": 0.65988,
@@ -1508,13 +1529,14 @@
         "Topiary Stomper",
         "Worldly Tutor"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "Every card here goes into your library — seven for lands, four for a card you name, three onto the top."
     },
     {
       "id": "city-5-hood-0",
       "level": 1,
       "parent": "city-5",
-      "label": null,
+      "label": "LANDS FROM THE LIBRARY",
       "fallback": "Tutors",
       "cx": -0.0478,
       "cy": 0.69356,
@@ -1529,13 +1551,14 @@
         "Skyshroud Claim",
         "Topiary Stomper"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "Green ramp fetching basics, plus one Human whose entry search happens to look for a Dinosaur instead."
     },
     {
       "id": "city-5-hood-1",
       "level": 1,
       "parent": "city-5",
-      "label": null,
+      "label": "STACKING THE TOP",
       "fallback": "Tutors II",
       "cx": -0.0801,
       "cy": 0.57007,
@@ -1545,12 +1568,13 @@
         "Enlightened Tutor",
         "Worldly Tutor"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "All three set a card on top of your library, which is exactly where the commander's reveal is looking."
     },
     {
       "id": "city-6",
       "level": 0,
-      "label": null,
+      "label": "THE SIDE DOOR",
       "fallback": "Card Flow",
       "cx": 0.03568,
       "cy": -0.12969,
@@ -1562,7 +1586,8 @@
         "Monster Manual // Zoological Study",
         "Selvala, Heart of the Wilds"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Ways onto the battlefield that skip the casting: two put a creature down from hand, three make outsized mana."
     },
     {
       "id": "city-6-hood-0",

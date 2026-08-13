@@ -7,7 +7,17 @@
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
     "cards": 97,
     "unresolved": [],
-    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
+    "named_by": "deck-cartographer",
+    "cartographer_notes": [
+      "city-1 is 34 of 97 cards, but the mass that does work is city-2 (28): the token makers, converters, refills and pumps all sit in one place, which is what a linear critical-mass deck looks like from above.",
+      "city-4 carries verified_count 5 of 8 — the densest verified block on the map. The drain is the engine on the record, not a theory; city-2's 5 verified sit across 28 cards.",
+      "Deflecting Swat is the map's odd member. It clusters into city-2-hood-0 among the token payoffs, but it is a free instant you hold up, and every other card that does that job is in city-6. I read this as a placement artifact, not a discovery — membership left untouched.",
+      "Olivia's Wrath is loose in the same neighbourhood for the same kind of reason: it is the one card in city-2 that removes bodies rather than adding or counting them. Worth knowing it lives inside the width engine, since five of the deck's creatures are not Vampires and the wrath hits them.",
+      "Vampire Socialite sits in city-2-hood-1 with two cost reducers and a one-drop; it is a +1/+1 counter payoff and reads closer to city-0's crew. The hood's other three do share the 'make the second cast happen' job, so the name holds for the majority.",
+      "city-3, city-4, city-5 and city-6 each contain exactly one neighbourhood identical to the city. There is no split to name, so those four hood ids are omitted deliberately rather than given a synonym of their parent.",
+      "city-1-hood-3 is the cleanest split on the map: the two basics and the two lands that check for a basic type. That is a real dependency, not a leftover bucket."
+    ]
   },
   "cards": [
     {
@@ -1266,7 +1276,7 @@
     {
       "id": "city-0",
       "level": 0,
-      "label": null,
+      "label": "TEETH AND TUTORS",
       "fallback": "Tutors",
       "cx": -0.5102,
       "cy": 0.02925,
@@ -1282,13 +1292,14 @@
         "Knight of the Ebon Legion",
         "Vampiric Tutor"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "Where the 1/1s learn to bite, plus the three searches that go get whichever half of the kill you lack."
     },
     {
       "id": "city-0-hood-0",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "COUNTERS AND COPIES",
       "fallback": "Payoffs",
       "cx": -0.60486,
       "cy": -0.3808,
@@ -1301,13 +1312,14 @@
         "Indulgent Aristocrat",
         "Knight of the Ebon Legion"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "Five of these leave permanent +1/+1 counters on the whole team; the sixth doubles every token the mint makes."
     },
     {
       "id": "city-0-hood-1",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "THE MISSING HALF",
       "fallback": "Tutors",
       "cx": -0.32089,
       "cy": 0.84936,
@@ -1317,12 +1329,13 @@
         "Diabolic Intent",
         "Vampiric Tutor"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Buy the payoff or the multiplier you are short, not a combo piece — the race is the plan."
     },
     {
       "id": "city-1",
       "level": 0,
-      "label": null,
+      "label": "THE MANA",
       "fallback": "Mana",
       "cx": 0.65239,
       "cy": -0.06053,
@@ -1363,13 +1376,14 @@
         "Urborg, Tomb of Yawgmoth",
         "Vault of Champions"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Thirty-four lands for the deck's short colour: black is half the pip load, and much of this fixing is bought with life."
     },
     {
       "id": "city-1-hood-0",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "COLOUR ON DEMAND",
       "fallback": "Mana",
       "cx": 0.66214,
       "cy": -0.01308,
@@ -1391,13 +1405,14 @@
         "Takenuma, Abandoned Mire",
         "Urborg, Tomb of Yawgmoth"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Broad fixers and painlands that say yes on the turn you need them, plus the few that also draw or regrow."
     },
     {
       "id": "city-1-hood-1",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "THE DUALS",
       "fallback": "Mana II",
       "cx": 0.59481,
       "cy": -0.21721,
@@ -1416,13 +1431,14 @@
         "Sundown Pass",
         "Vault of Champions"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "One named pair of colours each: some land untapped when it matters, some ask you to wait a turn."
     },
     {
       "id": "city-1-hood-2",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "THE FETCHES",
       "fallback": "Mana IIII",
       "cx": 0.93436,
       "cy": 0.1946,
@@ -1432,13 +1448,14 @@
         "Marsh Flats",
         "Prismatic Vista"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Pay a life, take the exact colour you are missing, and thin nothing worth counting."
     },
     {
       "id": "city-1-hood-3",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "THE BASIC TYPES",
       "fallback": "Mana III",
       "cx": 0.57712,
       "cy": 0.04022,
@@ -1449,12 +1466,13 @@
         "Plains",
         "Swamp"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Two basics and the two lands whose second colour only switches on when you control one."
     },
     {
       "id": "city-2",
       "level": 0,
-      "label": null,
+      "label": "THE WIDTH ENGINE",
       "fallback": "Bodies",
       "cx": -0.42428,
       "cy": -0.11093,
@@ -1489,13 +1507,14 @@
         "Welcoming Vampire",
         "Witty Roastmaster"
       ],
-      "verified_count": 5
+      "verified_count": 5,
+      "gloss": "The deck's working mass: bodies arrive, get doubled, get counted, and get bigger. Everything here scales with the board."
     },
     {
       "id": "city-2-hood-0",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "PAID BY THE HEAD",
       "fallback": "Bodies",
       "cx": -0.23877,
       "cy": -0.10035,
@@ -1515,13 +1534,14 @@
         "Voldaren Epicure",
         "Witty Roastmaster"
       ],
-      "verified_count": 3
+      "verified_count": 3,
+      "gloss": "Every card here bills by the body: entries convert to damage, tapped attackers drain, and two refills price width as cards."
     },
     {
       "id": "city-2-hood-1",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "TWO SPELLS A TURN",
       "fallback": "Finishers II",
       "cx": -0.71551,
       "cy": -0.2414,
@@ -1532,13 +1552,14 @@
         "Vampire Cutthroat",
         "Vampire Socialite"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Cost cuts and cheap Vampires. A second cast in one turn is a second eminence token, free."
     },
     {
       "id": "city-2-hood-2",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "THE ROLLING REFILL",
       "fallback": "Card Flow",
       "cx": -0.71403,
       "cy": -0.28108,
@@ -1550,13 +1571,14 @@
         "Skullclamp",
         "Welcoming Vampire"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Repeatable draw priced in life and bodies — the two resources you bank by the handful, and no graveyard involved."
     },
     {
       "id": "city-2-hood-3",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "EVERYONE GETS BIGGER",
       "fallback": "Value",
       "cx": -0.3906,
       "cy": 0.09494,
@@ -1569,12 +1591,13 @@
         "Stromkirk Captain",
         "Warleader's Call"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "The second kill: static pumps that turn the same width into attack damage when the triggers alone fall short."
     },
     {
       "id": "city-3",
       "level": 0,
-      "label": null,
+      "label": "THE ANSWERS",
       "fallback": "Interaction",
       "cx": -0.18961,
       "cy": 0.50864,
@@ -1588,7 +1611,8 @@
         "Swords to Plowshares",
         "Winds of Abandon"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Seven ways to delete one permanent. Spend them on the piece taxing your entries, not on the scariest board."
     },
     {
       "id": "city-3-hood-0",
@@ -1613,7 +1637,7 @@
     {
       "id": "city-4",
       "level": 0,
-      "label": null,
+      "label": "THE DRAIN",
       "fallback": "Finishers",
       "cx": -0.18553,
       "cy": -0.58511,
@@ -1628,7 +1652,8 @@
         "Sanguine Bond",
         "Vito, Thorn of the Dusk Rose"
       ],
-      "verified_count": 5
+      "verified_count": 5,
+      "gloss": "The kill itself: a body arriving or dying bills the whole table, and two pairs in here simply end it."
     },
     {
       "id": "city-4-hood-0",
@@ -1654,7 +1679,7 @@
     {
       "id": "city-5",
       "level": 0,
-      "label": null,
+      "label": "THE HEAD START",
       "fallback": "Ramp",
       "cx": 0.21697,
       "cy": 0.71827,
@@ -1666,7 +1691,8 @@
         "Sol Ring",
         "Talisman of Indulgence"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Cheap acceleration that lands Edgar a turn early; two of these also pay in a body or a typal buff."
     },
     {
       "id": "city-5-hood-0",
@@ -1689,7 +1715,7 @@
     {
       "id": "city-6",
       "level": 0,
-      "label": null,
+      "label": "HELD FOR THE WIPE",
       "fallback": "Insurance",
       "cx": -0.66383,
       "cy": 0.40496,
@@ -1702,7 +1728,8 @@
         "Purphoros, God of the Forge",
         "Teferi's Protection"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "Held, not cast — four saves for the turn you commit, plus two permanents built to walk out of a sweeper."
     },
     {
       "id": "city-6-hood-0",
