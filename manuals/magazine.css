@@ -189,7 +189,12 @@ a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
 .meter-seg.on { background:linear-gradient(180deg,var(--y2k-blue),var(--y2k-violet)); }
 /* The signature number. Full-bleed within the column, and big enough that a reader
    flipping past stops — which is the whole job, and the reason it may appear once. */
-.constellation-fig { margin:26px 0; }
+.constellation-fig, .engine-fig { margin:26px 0; }
+.engine-fig .engine-flow { width:100%; height:auto; display:block;
+  border:3px solid var(--ink); box-shadow:6px 6px 0 rgba(0,0,0,.30); background:#0B0A14; }
+.engine-fig figcaption { font-size:.78rem; color:var(--ink-soft); margin-top:8px; }
+.ckeys .eline { width:24px; height:0; border-top:2px dashed #8A93B5; display:inline-block; }
+.ckeys .eline.on { border-top:2px solid #4CAF50; }
 /* A 99 group heading wearing its city's colour, so the grid reads as the map's
    legend rather than as a second taxonomy. */
 .city-head { display:flex; align-items:center; gap:10px; margin:1.9em 0 .6em;

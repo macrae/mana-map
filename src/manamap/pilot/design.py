@@ -229,7 +229,12 @@ a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
 .meter-seg.on { background:linear-gradient(180deg,var(--y2k-blue),var(--y2k-violet)); }
 /* The signature number. Full-bleed within the column, and big enough that a reader
    flipping past stops — which is the whole job, and the reason it may appear once. */
-.constellation-fig { margin:26px 0; }
+.constellation-fig, .engine-fig { margin:26px 0; }
+.engine-fig .engine-flow { width:100%; height:auto; display:block;
+  border:3px solid var(--ink); box-shadow:6px 6px 0 rgba(0,0,0,.30); background:#0B0A14; }
+.engine-fig figcaption { font-size:.78rem; color:var(--ink-soft); margin-top:8px; }
+.ckeys .eline { width:24px; height:0; border-top:2px dashed #8A93B5; display:inline-block; }
+.ckeys .eline.on { border-top:2px solid #4CAF50; }
 /* A 99 group heading wearing its city's colour, so the grid reads as the map's
    legend rather than as a second taxonomy. */
 .city-head { display:flex; align-items:center; gap:10px; margin:1.9em 0 .6em;
@@ -540,6 +545,133 @@ def callout(n, title, text, esc_fn=esc):
         f'<div class="callout"><div class="n">{esc(n)}</div><div>'
         f'<span class="t">{esc(title)}</span>{esc_fn(text)}</div></div>'
     )
+
+
+
+# ── The engine flow ─────────────────────────────────────────────────────
+#
+# The constellation answers "what shape is this deck". This answers the harder
+# one: how does it RUN. They are different relations — a card is clustered by what
+# it says and an engine is defined by what cards do to each other — so this is a
+# second picture rather than a restyling of the first.
+#
+# THE SOLID/DASHED DISTINCTION IS THE WHOLE REASON TO DRAW IT. A line between two
+# stages is solid when a checker-passed stack names its cards and dashed when it
+# is the analyst's claim. That is the three-tier evidence contract rendered as
+# geometry: a reader can see, without reading a badge, which parts of the engine
+# are proven and which are argued. Everything else here is labelling.
+
+# The engine's running order. Not alphabetical and not the model's array order —
+# `validate_engine.STAGES` is the one place this sequence is decided.
+ENGINE_STAGE_INK = {
+    "mana": "#5B6B8C", "ignition": "#E4002B", "fuel": "#C8A03C",
+    "fodder": "#7B5E3C", "conversion": "#7B2D8B", "output": "#1B4FD8",
+    "protection": "#0FA3A3", "wincon": "#E4007C",
+}
+
+
+def engine_flow(doc, width=1000):
+    """`engine.json` → one inline SVG of the engine, left to right."""
+    stages = [s for s in (doc or {}).get("stages") or [] if s.get("stage")]
+    if not stages:
+        return ""
+    from manamap.pilot.validate_engine import STAGES as ORDER
+    stages.sort(key=lambda s: ORDER.index(s["stage"]) if s["stage"] in ORDER else 99)
+
+    n = len(stages)
+    gap, pad = 18, 16
+    box_w = (width - 2 * pad - gap * (n - 1)) / n
+    box_h, top = 128, 54
+    height = top + box_h + 96
+
+    at = {}
+    parts = [f'<svg class="engine-flow" viewBox="0 0 {width} {height}" role="img" '
+             f'aria-label="How this deck runs, stage by stage" '
+             f'xmlns="http://www.w3.org/2000/svg">',
+             f'<rect width="{width}" height="{height}" fill="#0B0A14"/>']
+
+    thinnest = min(stages, key=lambda s: len(s.get("cards") or []))
+
+    for i, stage in enumerate(stages):
+        x = pad + i * (box_w + gap)
+        ink = ENGINE_STAGE_INK.get(stage["stage"], "#8A93B5")
+        at[stage["stage"]] = (x + box_w / 2, top, top + box_h)
+        cards = stage.get("cards") or []
+        thin = stage is thinnest
+        parts.append(
+            f'<rect x="{x:.1f}" y="{top}" width="{box_w:.1f}" height="{box_h}" '
+            f'rx="4" fill="{ink}" fill-opacity="0.17" stroke="{ink}" '
+            f'stroke-width="{3 if thin else 1.6}"/>')
+        parts.append(
+            f'<text x="{x + 9:.1f}" y="{top + 21}" fill="{ink}" font-size="10.5" '
+            f'font-family="Oswald,Arial Narrow,sans-serif" letter-spacing="1.6">'
+            f'{esc(stage["stage"].upper())}</text>')
+        # The label wraps by hand: SVG has no flow, and a name clipped at the box
+        # edge reads as a rendering fault rather than as a long name.
+        words, line, lines = (stage.get("label") or "").split(), "", []
+        limit = max(8, int(box_w / 7.6))
+        for word in words:
+            trial = (line + " " + word).strip()
+            if len(trial) > limit and line:
+                lines.append(line); line = word
+            else:
+                line = trial
+        if line:
+            lines.append(line)
+        for j, text in enumerate(lines[:3]):
+            parts.append(
+                f'<text x="{x + 9:.1f}" y="{top + 44 + j * 17}" fill="#F2F0F7" '
+                f'font-size="14" font-weight="700" '
+                f'font-family="Oswald,Arial Narrow,sans-serif">{esc(text)}</text>')
+        parts.append(
+            f'<text x="{x + 9:.1f}" y="{top + box_h - 30}" fill="#AEB4CC" '
+            f'font-size="11.5" font-family="Inter,system-ui,sans-serif">'
+            f'{len(cards)} card{"" if len(cards) == 1 else "s"}</text>')
+        if stage.get("single_point_of_failure"):
+            parts.append(
+                f'<text x="{x + 9:.1f}" y="{top + box_h - 13}" fill="#FFD800" '
+                f'font-size="10" font-family="Oswald,Arial Narrow,sans-serif" '
+                f'letter-spacing=".6">ONE CARD DEEP</text>')
+        if thin:
+            parts.append(
+                f'<text x="{x + box_w - 9:.1f}" y="{top + 21}" fill="{ink}" '
+                f'text-anchor="end" font-size="10" '
+                f'font-family="Oswald,Arial Narrow,sans-serif">THINNEST</text>')
+
+    # Lines, below the boxes so they never cross a label.
+    base = top + box_h + 16
+    for k, line in enumerate(doc.get("lines") or []):
+        a, b = at.get(line.get("from")), at.get(line.get("to"))
+        if not a or not b or a[0] == b[0]:
+            continue
+        verified = bool(line.get("verified_by"))
+        dip = base + 10 + (k % 3) * 16
+        parts.append(
+            f'<path d="M {a[0]:.1f} {a[2]} C {a[0]:.1f} {dip:.1f}, '
+            f'{b[0]:.1f} {dip:.1f}, {b[0]:.1f} {b[2]}" fill="none" '
+            f'stroke="{"#4CAF50" if verified else "#8A93B5"}" '
+            f'stroke-width="{2 if verified else 1.4}" '
+            f'stroke-opacity="{0.9 if verified else 0.5}"'
+            + ('' if verified else ' stroke-dasharray="5 4"') + '/>')
+    parts.append("</svg>")
+    return "".join(parts)
+
+
+def engine_figure(doc, caption=""):
+    """The flow, its key, and the honesty line under it."""
+    svg = engine_flow(doc)
+    if not svg:
+        return ""
+    lines = doc.get("lines") or []
+    proven = sum(1 for l in lines if l.get("verified_by"))
+    keys = ('<span class="ck"><i class="eline on"></i>Proven by a rules-verified line</span>'
+            '<span class="ck"><i class="eline"></i>The analyst\'s reading, not yet verified</span>'
+            '<span class="ck"><i class="dot cmdr"></i>One card deep</span>')
+    return (f'<figure class="engine-fig">{svg}'
+            f'<div class="ckeys">{keys}</div>'
+            f'<figcaption>{esc(caption or "")} '
+            f'{proven} of {len(lines)} connections rest on a checker-passed stack.'
+            f'</figcaption></figure>')
 
 
 # ── The deck constellation ──────────────────────────────────────────────

@@ -117,6 +117,14 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--routine", default=None,
                              help="Routine id (e.g. writer-prose, stack:001); omit for all")
             cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "engine-facts":
+            # Both flags exist in `engine_facts.main` and neither was registered,
+            # so the agent this brief was built for could not reach the arrays it
+            # is meant to read and called `build()` directly. A CLI that ignores
+            # its own documented flags is worse than one that lacks them.
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+            cmd.add_argument("--out", default=None,
+                             help="Also write JSON here (a view, never tracked)")
         if name == "scenario-facts":
             cmd.add_argument("--stack", default=None, help="Only this scenario id (e.g. 001)")
             cmd.add_argument("--out", default=None, help="Also write JSON here (a view, never tracked)")

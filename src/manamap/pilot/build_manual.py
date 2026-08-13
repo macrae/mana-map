@@ -46,6 +46,7 @@ from manamap.pilot.design import (
     power_meter,
     stat_slab,
     constellation_figure,
+    engine_figure,
     city_head,
     printing_credit,
     pull_quote,
@@ -84,7 +85,7 @@ TODO = '<p><span class="todo">TODO</span> This section is awaiting content.</p>'
 # same reason `_CARD_LINKS` is: the renderer is single-threaded and deterministic,
 # and threading one artifact through every department signature to reach one
 # furniture call is worse than a holder that is cleared on the way out.
-_DECK_MAP = {"doc": None}
+_DECK_MAP = {"doc": None, "engine": None}
 
 
 # ── Loading ─────────────────────────────────────────────────────────────
@@ -319,6 +320,16 @@ def dept_furniture(dept, cards_by_name):
     # The deck's own map, where the plan asks for it. Furniture rather than a
     # department of its own for now: a new department is a structural change that
     # re-plans every issue, and the picture is worth having in one before that.
+    # The engine flow leads the constellation where both are asked for: HOW IT RUNS
+    # before WHAT SHAPE IT IS. The shape is the easier question and answering it
+    # first invites the reader to treat the clusters as the engine, which is the
+    # exact confusion this subsystem exists to undo.
+    if dept.get("engine_flow") and _DECK_MAP.get("engine"):
+        out.append(engine_figure(
+            _DECK_MAP["engine"],
+            dept.get("engine_caption")
+            or "How this deck runs, stage by stage."))
+
     if dept.get("constellation") and _DECK_MAP.get("doc"):
         out.append(constellation_figure(
             _DECK_MAP["doc"],
@@ -1443,12 +1454,13 @@ def main(args):
     tutor_guide = load_json(base / "tutor_guide.json")
     mana = load_json(base / "mana_analysis.json")
     _DECK_MAP["doc"] = load_json(base / "deck_map.json")
+    _DECK_MAP["engine"] = load_json(base / "engine.json")
 
     try:
         html_out = render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
                                 goldfish, decisions, considering, tutor_guide, mana)
     finally:
-        _DECK_MAP["doc"] = None      # cleared like the card links, for the same reason
+        _DECK_MAP["doc"] = _DECK_MAP["engine"] = None   # cleared like the card links
     MANUALS_DIR.mkdir(parents=True, exist_ok=True)
     sheet, wrote_sheet = write_stylesheet(MANUALS_DIR)
     if wrote_sheet:

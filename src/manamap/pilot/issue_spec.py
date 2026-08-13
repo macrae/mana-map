@@ -168,6 +168,8 @@ COMPONENTS = {
     # five-point scale with no printed percentage, because a percentage asserts a
     # measurement. `stat-slab` runs the issue's signature number once, full width.
     "coach-gauge", "stat-slab",
+    # The two pictures: how the deck RUNS, and what shape it is.
+    "engine-flow", "constellation",
 }
 
 # Issue identity fields required in data/decks/<slug>/issue.json.
