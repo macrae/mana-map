@@ -1145,6 +1145,17 @@ AGENT_ROUTINES = {
     # input to writer-prose or issue-plan: a bench edit should cost one
     # analysis, not a full manual regeneration — the renderer reads the
     # artifact directly, so the coupling stays one-way.
+    "deck-engine": {
+        "agent": "deck-engineer+engine-critic",
+        "artifact": "engine.json",
+        # `deck:deck_map.json?` is optional and `stacks:passing` is not: the map is
+        # an input the model may contradict, but the verified pairings are its only
+        # fact tier, so a newly passing stack must MISS this routine — it may be the
+        # thing that turns a dashed line solid.
+        "inputs": ["cards:semantic", "stacks:passing",
+                   "deck:goldfish_targets.json", "deck:deck_map.json?",
+                   "deck:strategic_frame.json?", "global:COMBO_DETAILS_PATH"],
+    },
     "deck-map-names": {
         "agent": "deck-cartographer",
         "artifact": "deck_map.json",

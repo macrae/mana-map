@@ -1,656 +1,579 @@
 {
- "slug": "radagast",
- "thesis": "This is a mono-green deck that spends the three turns which are not yours: Radagast opens one discounted flash window per player turn, a creature walks through each one, a card-per-body engine pays for the creature, and the accumulated board is cashed in by a mass-pump finisher — whose verified kill threshold is FIVE other bodies beside the finisher, not the finisher itself.",
- "stages": [
-  {
-   "stage": "mana",
-   "label": "MANA YOU DO NOT SPEND",
-   "what_it_does": "Thirty-six deliberately plain lands plus a two-humped ramp class (18 cards, RAMP drawn by t6 at 93.6%) — but the job is not casting bigger things sooner. The job is having something left over when it is somebody else's turn. A tapped-out Radagast deck has three dead windows a round, so this stage is measured by what stays UNSPENT. Castle Garenbrig is the emblem: its six {G} burst is spend-restricted to creature spells, which makes a liability elsewhere the best land here, and it is load-bearing in three passing stacks. Sakura-Tribe Elder, Elvish Reclaimer and Wood Elves sit on both sides of the ramp/body line; Wood Elves is filed under fuel because it is the canonical window body.",
-   "cards": [
-    "Forest",
-    "Boseiju, Who Endures",
-    "Castle Garenbrig",
-    "Gemstone Mine",
-    "Khalni Garden",
-    "Slippery Karst",
-    "Thriving Grove",
-    "Birds of Paradise",
-    "Elvish Mystic",
-    "Llanowar Elves",
-    "Fyndhorn Elves",
-    "Devoted Druid",
-    "Scaled Nurturer",
-    "Tireless Provisioner",
-    "Elvish Spirit Guide",
-    "Rampant Growth",
-    "Cultivate",
-    "Kodama's Reach",
-    "Three Visits",
-    "Sakura-Tribe Elder",
-    "Elvish Reclaimer",
-    "Utopia Sprawl",
-    "Wild Growth",
-    "Fertile Ground",
-    "Bala Ged Recovery // Bala Ged Sanctuary",
-    "Life from the Loam"
-   ],
-   "single_point_of_failure": null,
-   "evidence": [
+  "slug": "radagast",
+  "thesis": "This is a mono-green deck that spends the three turns which are not yours: Radagast opens one discounted flash window per player turn, a creature walks through each one, a card-per-body engine pays for the creature, and the accumulated board is cashed in by a mass-pump finisher — whose verified kill threshold is FIVE other bodies beside the finisher, not the finisher itself.",
+  "stages": [
     {
-     "kind": "stack",
-     "id": "007",
-     "note": "Garenbrig's six restricted {G} cannot pay for Chord of Calling (an instant) but its plain {T}: Add {G} can — the restriction is the deck's shape written onto a land"
+      "stage": "mana",
+      "label": "MANA YOU DO NOT SPEND",
+      "what_it_does": "Thirty-six deliberately plain lands plus a two-humped ramp class (18 cards, RAMP drawn by t6 at 93.6%) — but the job is not casting bigger things sooner. The job is having something left over when it is somebody else's turn. A tapped-out Radagast deck has three dead windows a round, so this stage is measured by what stays UNSPENT. Castle Garenbrig is the emblem: its six {G} burst is spend-restricted to creature spells, which makes a liability elsewhere the best land here. It APPEARS in three passing stacks (003, 005, 007) and it PAYS in exactly one of them — stack 005, where four Forests buy the activation and all six restricted {G} land on a discounted Craterhoof. In 003 the six Forests pay for Craterhoof directly and Garenbrig is explicitly left untapped; in 007 it cannot pay for Chord at all. An appearance count is not a load-bearing count, and iterations 1 and 2 reported it as one. Sakura-Tribe Elder, Elvish Reclaimer and Wood Elves sit on both sides of the ramp/body line; Wood Elves is filed under fuel because it is the canonical window body.",
+      "cards": [
+        "Forest",
+        "Boseiju, Who Endures",
+        "Castle Garenbrig",
+        "Gemstone Mine",
+        "Khalni Garden",
+        "Slippery Karst",
+        "Thriving Grove",
+        "Birds of Paradise",
+        "Elvish Mystic",
+        "Llanowar Elves",
+        "Fyndhorn Elves",
+        "Devoted Druid",
+        "Scaled Nurturer",
+        "Tireless Provisioner",
+        "Elvish Spirit Guide",
+        "Rampant Growth",
+        "Cultivate",
+        "Kodama's Reach",
+        "Three Visits",
+        "Sakura-Tribe Elder",
+        "Elvish Reclaimer",
+        "Utopia Sprawl",
+        "Wild Growth",
+        "Fertile Ground",
+        "Bala Ged Recovery // Bala Ged Sanctuary",
+        "Life from the Loam"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "007",
+          "note": "Garenbrig's six restricted {G} cannot pay for Chord of Calling (an instant) but its plain {T}: Add {G} can — the restriction is the deck's shape written onto a land"
+        },
+        {
+          "kind": "stack",
+          "id": "005",
+          "note": "Garenbrig pays for Craterhoof, verified here and NOT in 003: step 3 taps four Forests for the {2}{G}{G} activation and spends all six restricted {G} on the discounted {3}{G}{G}{G}, 'so the spending restriction is satisfied'. RE-CITED from 003, which iterations 1 and 2 cited for this claim and which says the opposite in as many words — 'Castle Garenbrig is not needed and stays untapped'"
+        },
+        {
+          "kind": "city",
+          "id": "city-4",
+          "agreement": "cuts-across",
+          "note": "CORRECTED from iteration 1, which said GREEN ON CURVE holds only the lands with text. It does not: city-4's card list contains the Forest entry and all seven land entries, and its own gloss reads 'Thirty-six lands with almost nothing to say'. This stage CONTAINS all of GREEN ON CURVE and then spans three cities more, because the ramp CLASS is what scatters, not the lands"
+        },
+        {
+          "kind": "city",
+          "id": "city-1",
+          "agreement": "cuts-across",
+          "note": "eight of this stage's cards are MANA ON LEGS — the dorks, which are also bodies"
+        },
+        {
+          "kind": "city",
+          "id": "city-5",
+          "agreement": "cuts-across",
+          "note": "five more are THE SEARCH PARTY — the land-ramp spells, which cluster on 'search your library' rather than on producing mana"
+        },
+        {
+          "kind": "city",
+          "id": "city-0",
+          "agreement": "cuts-across",
+          "note": "and six sit in THE WIDE BOARD: the three ramp auras, Rampant Growth, Bala Ged Recovery and Life from the Loam. Four cities for one stage"
+        }
+      ]
     },
     {
-     "kind": "stack",
-     "id": "003",
-     "note": "Garenbrig pays for Craterhoof; it is in three of seven passing stacks"
+      "stage": "ignition",
+      "label": "FOUR WINDOWS A ROUND",
+      "what_it_does": "Radagast has to resolve. His one ability — 'the first creature spell you cast each turn costs {2} less to cast and can be cast as though it had flash' — grants the turn's FIRST creature spell both prongs at once, and 'each turn' means every player's turn: four windows per round in a four-player pod, verified. Nothing else in the deck happens on schedule until he is down. Yeva is the only backup and the split is not the one iteration 1 stated: 'you may cast green creature spells as though they had flash' carries NO per-turn limit and this deck is mono-green, so on TIMING Yeva is strictly broader than Radagast — every green creature spell, every turn, not just the first. She is narrower on exactly one axis: no cost reduction. Answering Radagast therefore does not answer the timing; it answers the price, and only if Yeva is one of the 71.",
+      "cards": [
+        "Radagast of Rhosgobel",
+        "Yeva, Nature's Herald"
+      ],
+      "single_point_of_failure": "Radagast of Rhosgobel",
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "001",
+          "note": "the discount and the flash both applied on an opponent's turn; the window recurs per turn, not per round, and only for the FIRST creature spell"
+        },
+        {
+          "kind": "stack",
+          "id": "006",
+          "note": "a body flashed on the end step before yours satisfies both prongs of 302.6 — end-step flash is functionally haste, so the window costs no tempo"
+        },
+        {
+          "kind": "stack",
+          "id": "007",
+          "note": "the boundary, and the reason this is not drawn as a flow: stack 007 verifies three NEGATIVES about Chord of Calling — an instant takes no discount, consumes no window, cannot be paid with Garenbrig's restricted six, and the creature it finds is PUT onto the battlefield, so no cast trigger fires at all. Iteration 1 filed this under lines[] as an output-to-ignition arrow; a passing stack that refutes a flow cannot be cited beneath an arrow asserting one"
+        },
+        {
+          "kind": "city",
+          "id": "city-0",
+          "agreement": "full",
+          "note": "coincidental agreement worth naming: THE WIDE BOARD holds both because they are green creatures among green creatures, not because the map can see the window. City-0 holds 23 cards; 'full' here means only that neither commander-class card strays"
+        }
+      ]
     },
     {
-     "kind": "city",
-     "id": "city-4",
-     "agreement": "cuts-across",
-     "note": "CORRECTED from iteration 1, which said GREEN ON CURVE holds only the lands with text. It does not: city-4's card list contains the Forest entry and all seven land entries, and its own gloss reads 'Thirty-six lands with almost nothing to say'. This stage CONTAINS all of GREEN ON CURVE and then spans three cities more, because the ramp CLASS is what scatters, not the lands"
+      "stage": "fuel",
+      "label": "ONE BODY PER WINDOW",
+      "what_it_does": "The window consumes one creature per turn, and the declared METRONOME component — 19 cards, drawn by t6 in 94.5% of runs, mean turn 1.615 — is what it eats. The declaration labels that component '3-5 MV, >=2 generic — the full-value flash-in class', and four of its nineteen members fall outside the stated band: Satyr Wayfinder ({1}{G}, MV 2, one generic), Eternal Witness ({1}{G}{G}, MV 3, one generic), Whiptongue Hydra (MV 6) and Hornet Queen (MV 7). The membership is defensible — all four are still bodies the window can deploy — but the parenthetical does not describe it, and a goldfish edit is proposed for that. The ten cards listed HERE are the narrower set whose only job is to be a body at the right price. Mirkwood Pathmaker is the odd one and the important one: its power and toughness each equal the number of lands you control, which makes it the deck's greatest-power dial — see map_disagreements.",
+      "cards": [
+        "Wood Elves",
+        "Mirkwood Pathmaker",
+        "Eternal Witness",
+        "Satyr Wayfinder",
+        "Scute Swarm",
+        "Arasta of the Endless Web",
+        "Hornet Nest",
+        "Hornet Queen",
+        "Dawn's Light Archer",
+        "Deathgorge Scavenger"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "001",
+          "note": "Wood Elves cast for {G} on an opponent's turn — the class's canonical member, and the most load-bearing non-commander card at five passing stacks"
+        },
+        {
+          "kind": "stack",
+          "id": "005",
+          "note": "Hornet Nest and Scute Swarm on the board are what a finisher pumps; Scute Swarm appears in three passing stacks. Hornet Nest has defender, so it raises Craterhoof's X without ever attacking — a body that counts and cannot swing"
+        },
+        {
+          "kind": "city",
+          "id": "city-0",
+          "agreement": "partial",
+          "note": "Nine of these ten sit in THE WIDE BOARD and only Wood Elves strays (THE SEARCH PARTY), so the STAGE is nearly coherent. The declared 19-card METRONOME component is not: it scatters over five cities, 9/4/3/2/1. That gap between a coherent stage and an incoherent component is the finding, and it is why the component is also in map_disagreements."
+        }
+      ]
     },
     {
-     "kind": "city",
-     "id": "city-1",
-     "agreement": "cuts-across",
-     "note": "eight of this stage's cards are MANA ON LEGS — the dorks, which are also bodies"
+      "stage": "conversion",
+      "label": "A CARD PER BODY",
+      "what_it_does": "The engine proper: it turns bodies into cards, which become bodies. Eleven cards are filed here; ten of them are the declared GAS component (drawn by t6 at 75.9%, mean turn 2.467) and the eleventh, Fauna Shaman, belongs to the declared TUTOR component instead — it converts a spare creature in hand into the specific one. What the engine converts is a resource other decks throw away: mana still untapped when the turn passes. Glademuse is the purest statement of that ('whenever a player casts a spell, if it's not their turn, that player draws') and it is symmetric. There is no `fodder` stage in this deck — not because nothing sacrifices (Sakura-Tribe Elder, Caustic Caterpillar, Sylvan Safekeeper and Elvish Reclaimer all do, and Tireless Provisioner makes Food and Treasure to crack), but because none of it is a THEME: no card here eats a body for value on purpose, and the one board that gets consumed in a passing stack is consumed by an opponent's Day of Judgment. Selvala is the deck's only priced single point of failure — a one-card class at 12.3% by t6 — though stack 007 shows Chord finds her at instant speed.",
+      "cards": [
+        "Beast Whisperer",
+        "Ohran Frostfang",
+        "Toski, Bearer of Secrets",
+        "Selvala, Heart of the Wilds",
+        "Glademuse",
+        "Elemental Bond",
+        "Fecundity",
+        "Garruk's Uprising",
+        "Tribute to the World Tree",
+        "Harmonize",
+        "Fauna Shaman"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "003",
+          "note": "Beast Whisperer's cast trigger fires on the finisher itself — the kill spell also draws a card"
+        },
+        {
+          "kind": "stack",
+          "id": "004",
+          "note": "Fecundity converts a wrath into four cards; the token triggers before it ceases to exist and Radagast's death is seen before he moves to the command zone"
+        },
+        {
+          "kind": "stack",
+          "id": "002",
+          "note": "Frostfang plus Toski draw exactly 2 off one unblocked 1/1 — and Ohran Frostfang has no printed flash, so the trap and the gas are the same card only because the window puts it there"
+        },
+        {
+          "kind": "stack",
+          "id": "007",
+          "note": "Chord of Calling at X=3 puts Selvala onto the battlefield at instant speed, but triggers no Beast Whisperer: she is put, not cast"
+        },
+        {
+          "kind": "city",
+          "id": "city-6",
+          "agreement": "cuts-across",
+          "note": "7 of 11 sit in A CARD PER BODY — the whole of city-6. The four strays each show the map choosing one of a card's two jobs: Selvala files under MANA ON LEGS, Toski under THE BODYGUARDS, Harmonize under THE WIDE BOARD, Fauna Shaman under THE SEARCH PARTY"
+        }
+      ]
     },
     {
-     "kind": "city",
-     "id": "city-5",
-     "agreement": "cuts-across",
-     "note": "five more are THE SEARCH PARTY — the land-ramp spells, which cluster on 'search your library' rather than on producing mana"
+      "stage": "output",
+      "label": "ANSWERS THAT COME DOWN AT INSTANT SPEED",
+      "what_it_does": "What the window produces besides bodies: interaction on somebody else's turn, mostly wearing a creature. The declared FLASH TRAP component is 16 cards drawn by t6 at 91.3%, and it spans FIVE stages, not three: 6 here, 6 in protection, 2 in fuel (Hornet Nest, Dawn's Light Archer), 1 in conversion (Ohran Frostfang) and 1 in ignition (Yeva, Nature's Herald). CORRECTED from iteration 2, which said three and dropped exactly the two members this model leans on hardest — the only one with a passing stack, and the ignition backup. Whiptongue Hydra has no printed flash and costs six — it exists as a post-blockers sweeper only because the window makes it one. The label is loose in one direction only, and iteration 2 got the direction wrong. Exactly ONE of the ten cannot be held: Pick Your Poison, a sorcery. Beast Within and Chord of Calling are natively instants — stack 007 casts Chord during an opponent's end step and cites 117.1a for the timing, so the earlier claim that it 'does not come down at instant speed' is WITHDRAWN. What Chord does not do is take the discount, consume the window, spend Garenbrig's restricted mana or trigger Beast Whisperer, which is the different and correct claim. The other seven are creatures with no printed flash (Nantuko Vigilante, Wickerbough Elder, Indrik Stomphowler, Whiptongue Hydra, Caustic Caterpillar, Ravenous Sailback, Collector Ouphe) and they reach instant speed only through Radagast's once-per-turn window — which is this stage's whole thesis and the thing its label is genuinely loose about, since the window fits one of them per turn. Boseiju is filed under mana but the audit counts it as one of the seven artifact/enchantment answers (that component is drawn by t6 at 63.0%), and Collector Ouphe answers by disabling rather than destroying, so the declaration does not count it at all.",
+      "cards": [
+        "Nantuko Vigilante",
+        "Wickerbough Elder",
+        "Indrik Stomphowler",
+        "Whiptongue Hydra",
+        "Caustic Caterpillar",
+        "Ravenous Sailback",
+        "Beast Within",
+        "Pick Your Poison",
+        "Chord of Calling",
+        "Collector Ouphe"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "002",
+          "note": "the flagship trap: a creature flashed after blockers changes combat damage already lined up. Note the verified card is Ohran Frostfang, which this model files under conversion — no member of THIS stage has an interaction verified by any passing stack"
+        },
+        {
+          "kind": "stack",
+          "id": "007",
+          "note": "Chord of Calling: three separate ways the tutor refuses Radagast's gifts — the sharpest boundary of the engine"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across",
+          "note": "this stage CONTAINS all eight cards of THE TRAPS and adds two: Chord (THE SEARCH PARTY) and Collector Ouphe (THE WIDE BOARD). The deck's second most map-coherent stage, because 'destroy target artifact' is printed on the card"
+        }
+      ]
     },
     {
-     "kind": "city",
-     "id": "city-0",
-     "agreement": "cuts-across",
-     "note": "and six sit in THE WIDE BOARD: the three ramp auras, Rampant Growth, Bala Ged Recovery and Life from the Loam. Four cities for one stage"
+      "stage": "protection",
+      "label": "THE INSURANCE ON ONE WIZARD",
+      "what_it_does": "The deck is linear on Radagast and on one board, so this stage is what stops a single removal spell or a single wrath from being the whole game. Guardian Augmenter flashes in, pumps commander creatures +2/+2 and grants commanders hexproof; Saryth grants hexproof to OTHER untapped creatures you control and deathtouch to OTHER tapped ones — the 'other' matters twice, because Saryth protects neither herself nor a creature that has attacked, and an attacking Radagast is tapped and therefore uncovered. Sylvan Safekeeper, Heroic Intervention, Tyvar's Stand, Veil of Summer, Inspiring Call and Warg Tactics are held, not cast, which costs nothing here because the deck was holding mana anyway. Toski belongs functionally in this stage too and is filed under conversion; its indestructibility is verified in stack 004 and its draw in 002.",
+      "cards": [
+        "Guardian Augmenter",
+        "Saryth, the Viper's Fang",
+        "Sylvan Safekeeper",
+        "Heroic Intervention",
+        "Tyvar's Stand",
+        "Veil of Summer",
+        "Inspiring Call",
+        "Warg Tactics"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-3",
+          "agreement": "full",
+          "note": "exactly THE BODYGUARDS, minus Toski, which the map files here for its indestructibility and this model files under conversion for its draw. This is a CITY-ONLY evidence block, deliberately: iteration 1 cited stack 004 here, and stack 004's scenario names Fecundity, Radagast, Scute Swarm, Toski and Wood Elves — none of this stage's eight cards. Not one interaction involving any card in this stage is verified by any passing stack of this deck, and an open question now says so"
+        }
+      ]
+    },
+    {
+      "stage": "wincon",
+      "label": "FIVE BODIES AND THE HOOF",
+      "what_it_does": "A mass-pump alpha strike over a wide board. Four finishers, drawn by t6 at 42.4%; the declared ASSEMBLED target (finisher plus one metronome body) measures 40.2%. Two passing stacks bracket the real threshold and it is the most important arithmetic in the deck. Stack 003: Craterhoof over FOUR other bodies is X=5, five attackers, 36 unblocked into a 40-life seat — NOT lethal, the seat survives on 4. Stack 005: Craterhoof cast in your own precombat main over FIVE other bodies is X=6, exactly 40 trample power into one seat, lethal with zero margin and only per-seat, never the pod (one of the five, Hornet Nest, has defender and never attacks — it raises X without swinging). Stack 005 also names the one card the deck's signature verb is wrong for: flashed on the prior end step, Craterhoof's +6/+6 and trample expire at that turn's cleanup (514.2), the swing is 10 unpumped power and it kills nobody; the flash mode is a wrath-dodge only. The four finishers are not one class. Only Craterhoof scales on creature COUNT and brings its own haste and trample; Overwhelming Stampede and Pathbreaker Ibex multiply by the greatest power on your board; Return of the Wildspeaker is a flat +3/+3 for NON-HUMAN creatures with no trample, and its other mode is a draw spell. Radagast's discount is creature-spell-only, so Craterhoof and Ibex can ride the window and Stampede (sorcery) and Return (instant) never can. Iteration 1 called Craterhoof this stage's single point of failure; that is WITHDRAWN — no passing stack resolves any of the other three, so nothing establishes either that they work or that they do not, and an open question now asks.",
+      "cards": [
+        "Craterhoof Behemoth",
+        "Overwhelming Stampede",
+        "Pathbreaker Ibex",
+        "Return of the Wildspeaker"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "003",
+          "note": "X=5 over four other bodies is 36 unblocked and leaves the seat at 4 — the measured NOT-lethal board"
+        },
+        {
+          "kind": "stack",
+          "id": "005",
+          "note": "X=6 over five other bodies in your own precombat main is exactly 40 trample power — the measured lethal board, and the same stack shows the end-step flash line attacking with 10 unpumped power"
+        },
+        {
+          "kind": "city",
+          "id": "city-0",
+          "agreement": "full",
+          "note": "4 of 4 in THE WIDE BOARD, one of only four declared components that sit in a single city — because 'creatures you control get +X/+X' IS the function, printed on the card"
+        }
+      ]
     }
-   ]
-  },
-  {
-   "stage": "ignition",
-   "label": "FOUR WINDOWS A ROUND",
-   "what_it_does": "Radagast has to resolve. His one ability — 'the first creature spell you cast each turn costs {2} less to cast and can be cast as though it had flash' — grants the turn's FIRST creature spell both prongs at once, and 'each turn' means every player's turn: four windows per round in a four-player pod, verified. Nothing else in the deck happens on schedule until he is down. Yeva is the only backup and the split is not the one iteration 1 stated: 'you may cast green creature spells as though they had flash' carries NO per-turn limit and this deck is mono-green, so on TIMING Yeva is strictly broader than Radagast — every green creature spell, every turn, not just the first. She is narrower on exactly one axis: no cost reduction. Answering Radagast therefore does not answer the timing; it answers the price, and only if Yeva is one of the 71.",
-   "cards": [
-    "Radagast of Rhosgobel",
-    "Yeva, Nature's Herald"
-   ],
-   "single_point_of_failure": "Radagast of Rhosgobel",
-   "evidence": [
+  ],
+  "lines": [
     {
-     "kind": "stack",
-     "id": "001",
-     "note": "the discount and the flash both applied on an opponent's turn; the window recurs per turn, not per round, and only for the FIRST creature spell"
+      "from": "ignition",
+      "to": "fuel",
+      "via": [
+        "Radagast of Rhosgobel",
+        "Wood Elves"
+      ],
+      "verified_by": "001",
+      "note": "Cast on an opponent's turn for {G}: the discount and the flash both applied because Wood Elves was that turn's first creature spell. One window per turn, four per round."
     },
     {
-     "kind": "stack",
-     "id": "006",
-     "note": "a body flashed on the end step before yours satisfies both prongs of 302.6 — end-step flash is functionally haste, so the window costs no tempo"
+      "from": "ignition",
+      "to": "mana",
+      "via": [
+        "Radagast of Rhosgobel",
+        "Sakura-Tribe Elder"
+      ],
+      "verified_by": "006",
+      "note": "A body flashed on an opponent's end step meets both prongs of 302.6 by your untap: it attacks and it taps freely. Deploying on other people's turns costs no tempo, which is what makes holding mana affordable."
     },
     {
-     "kind": "stack",
-     "id": "007",
-     "note": "the boundary, and the reason this is not drawn as a flow: stack 007 verifies three NEGATIVES about Chord of Calling — an instant takes no discount, consumes no window, cannot be paid with Garenbrig's restricted six, and the creature it finds is PUT onto the battlefield, so no cast trigger fires at all. Iteration 1 filed this under lines[] as an output-to-ignition arrow; a passing stack that refutes a flow cannot be cited beneath an arrow asserting one"
+      "from": "wincon",
+      "to": "conversion",
+      "via": [
+        "Craterhoof Behemoth",
+        "Beast Whisperer"
+      ],
+      "verified_by": "003",
+      "note": "Retargeted from iteration 1's fuel->conversion, where neither via card lived in the `from` stage. The cast trigger fires on the finisher itself — the turn the deck tries to win, it also draws a card."
     },
     {
-     "kind": "city",
-     "id": "city-0",
-     "agreement": "full",
-     "note": "coincidental agreement worth naming: THE WIDE BOARD holds both because they are green creatures among green creatures, not because the map can see the window. City-0 holds 23 cards; 'full' here means only that neither commander-class card strays"
+      "from": "fuel",
+      "to": "conversion",
+      "via": [
+        "Scute Swarm",
+        "Fecundity",
+        "Toski, Bearer of Secrets"
+      ],
+      "verified_by": "004",
+      "note": "The only place bodies are consumed for cards, and the deck does not choose it: under an opponent's Day of Judgment you draw 4, because the Insect token's zone-change trigger fires before it ceases to exist and indestructible Toski skips the wake. This is what a fodder stage would look like if the deck had one."
+    },
+    {
+      "from": "ignition",
+      "to": "conversion",
+      "via": [
+        "Radagast of Rhosgobel",
+        "Ohran Frostfang",
+        "Toski, Bearer of Secrets"
+      ],
+      "verified_by": "002",
+      "note": "Retargeted from iteration 1's fuel->output, which contained none of its via cards. Ohran Frostfang has no printed flash: the window is what puts it on the battlefield after blockers, where its static deathtouch applies to damage already lined up, and one unblocked 1/1 then draws exactly 2 off Frostfang and Toski together."
+    },
+    {
+      "from": "mana",
+      "to": "wincon",
+      "via": [
+        "Castle Garenbrig",
+        "Craterhoof Behemoth"
+      ],
+      "verified_by": "005",
+      "note": "Garenbrig's six {G} is spend-restricted to creature spells, which is why a land that would be a liability in most decks is the best one here. RE-CITED from 003: that stack pays for Craterhoof out of six Forests and leaves Garenbrig untapped, so the arrow asserted a flow its own stack showed not happening. Stack 005 verifies the flow end to end — four Forests buy the activation, the six restricted {G} pay the discounted {3}{G}{G}{G}, and the same restriction is what stops it paying for Chord in 007. validate-engine cannot catch this: both via cards sit in 003's scenario and in the right endpoint stages, so the mechanical gate passes while the citation is wrong."
+    },
+    {
+      "from": "fuel",
+      "to": "wincon",
+      "via": [
+        "Scute Swarm",
+        "Wood Elves",
+        "Craterhoof Behemoth"
+      ],
+      "verified_by": "003",
+      "note": "THE FLOOR. Four other bodies under the Hoof is X=5 and 36 unblocked into 40 — the seat survives on 4. This board does not win."
+    },
+    {
+      "from": "fuel",
+      "to": "wincon",
+      "via": [
+        "Scute Swarm",
+        "Wood Elves",
+        "Hornet Nest",
+        "Craterhoof Behemoth"
+      ],
+      "verified_by": "005",
+      "note": "THE THRESHOLD, and it is the next body up. Five other bodies under the Hoof, cast in your own precombat main, is X=6 and exactly 40 trample power into one seat — lethal with no margin at all, and only ever to one seat."
+    },
+    {
+      "from": "ignition",
+      "to": "wincon",
+      "via": [
+        "Radagast of Rhosgobel",
+        "Craterhoof Behemoth"
+      ],
+      "verified_by": "005",
+      "note": "The one card the window is wrong for. Flashed on the prior end step, the +6/+6 and trample end at that turn's cleanup (514.2) and the swing is 10 unpumped power. The kill is cast in your own precombat main; the flash mode buys only a wrath-dodge, at the cost of the pump."
     }
-   ]
-  },
-  {
-   "stage": "fuel",
-   "label": "ONE BODY PER WINDOW",
-   "what_it_does": "The window consumes one creature per turn, and the declared METRONOME component — 19 cards, drawn by t6 in 94.5% of runs, mean turn 1.615 — is what it eats. The declaration labels that component '3-5 MV, >=2 generic — the full-value flash-in class', and four of its nineteen members fall outside the stated band: Satyr Wayfinder ({1}{G}, MV 2, one generic), Eternal Witness ({1}{G}{G}, MV 3, one generic), Whiptongue Hydra (MV 6) and Hornet Queen (MV 7). The membership is defensible — all four are still bodies the window can deploy — but the parenthetical does not describe it, and a goldfish edit is proposed for that. The ten cards listed HERE are the narrower set whose only job is to be a body at the right price. Mirkwood Pathmaker is the odd one and the important one: its power and toughness each equal the number of lands you control, which makes it the deck's greatest-power dial — see map_disagreements.",
-   "cards": [
-    "Wood Elves",
-    "Mirkwood Pathmaker",
-    "Eternal Witness",
-    "Satyr Wayfinder",
-    "Scute Swarm",
-    "Arasta of the Endless Web",
-    "Hornet Nest",
-    "Hornet Queen",
-    "Dawn's Light Archer",
-    "Deathgorge Scavenger"
-   ],
-   "single_point_of_failure": null,
-   "evidence": [
+  ],
+  "map_disagreements": [
     {
-     "kind": "stack",
-     "id": "001",
-     "note": "Wood Elves cast for {G} on an opponent's turn — the class's canonical member, and the most load-bearing non-commander card at five passing stacks"
+      "component": "A METRONOME body drawn (3-5 MV, >=2 generic — the full-value flash-in class)",
+      "cities": [
+        "THE WIDE BOARD",
+        "THE TRAPS",
+        "THE BODYGUARDS",
+        "A CARD PER BODY",
+        "THE SEARCH PARTY"
+      ],
+      "why": "Nineteen cards, five cities, 9/4/3/2/1. The class is defined by a COST BRACKET crossed with a permission printed on a different card. No member of it says anything about being a metronome body — they say 'draw a card', 'destroy target artifact', 'create a token' — so the map files each one under what it says. The law the scatter table demonstrates: a component is coherent on this map exactly when its defining property is printed on its members. THE OVERRUN KILL is 4-for-4 in one city because 'creatures you control get +X/+X' is the function; the metronome is invisible because the function lives on the commander."
     },
     {
-     "kind": "stack",
-     "id": "005",
-     "note": "Hornet Nest and Scute Swarm on the board are what a finisher pumps; Scute Swarm appears in three passing stacks. Hornet Nest has defender, so it raises Craterhoof's X without ever attacking — a body that counts and cannot swing"
+      "component": "A FLASH TRAP drawn (instant-speed interaction wearing a creature body, or held protection)",
+      "cities": [
+        "THE BODYGUARDS",
+        "THE TRAPS",
+        "THE WIDE BOARD",
+        "A CARD PER BODY",
+        "THE SEARCH PARTY"
+      ],
+      "why": "Sixteen cards, five cities, 6/5/3/1/1. The map splits cards that ARE instants (THE BODYGUARDS: Heroic Intervention, Veil of Summer, Tyvar's Stand) from cards the window MAKES into instants (THE TRAPS). The deck runs them as one class and pays for them with the same held mana. Whiptongue Hydra is the case in point: six mana, no printed flash, and the deck's premise card."
     },
     {
-     "kind": "city",
-     "id": "city-0",
-     "agreement": "partial",
-     "note": "Nine of these ten sit in THE WIDE BOARD and only Wood Elves strays (THE SEARCH PARTY), so the STAGE is nearly coherent. The declared 19-card METRONOME component is not: it scatters over five cities, 9/4/3/2/1. That gap between a coherent stage and an incoherent component is the finding, and it is why the component is also in map_disagreements."
+      "component": "GAS drawn — a repeatable draw engine",
+      "cities": [
+        "A CARD PER BODY",
+        "MANA ON LEGS",
+        "THE WIDE BOARD",
+        "THE BODYGUARDS"
+      ],
+      "why": "Seven of ten sit in A CARD PER BODY, so this one is nearly coherent. The three strays each show the map choosing one of a card's two jobs: Selvala files under mana because she taps for it, Harmonize files under the wide board as a plain draw sorcery, and Toski files under armour because its printed text leads with indestructible and unblockable. Toski is the sharp one — the map reads a bodyguard, the deck runs a draw engine, and both readings are verified: stack 002 for the draw, stack 004 for the armour."
+    },
+    {
+      "component": "RAMP drawn (either hump: a dork/rock-class accelerant or a land-ramp spell)",
+      "cities": [
+        "MANA ON LEGS",
+        "THE SEARCH PARTY",
+        "THE WIDE BOARD",
+        "GREEN ON CURVE"
+      ],
+      "why": "Eighteen cards, four cities, 8/5/4/1 — and only PART of it is a disagreement. The declaration itself says 'either hump', and the map found exactly those two humps: dorks in MANA ON LEGS, land ramp in THE SEARCH PARTY. That much is agreement by design. The four in THE WIDE BOARD are the real split: Utopia Sprawl, Wild Growth and Fertile Ground cluster as enchantments rather than as mana, and Rampant Growth joins them. The one in GREEN ON CURVE is Castle Garenbrig, which is a land. A component that spans cities BY DESIGN is a different finding from one that spans them because its function is unwritten, and this component does both."
+    },
+    {
+      "component": "(undeclared) THE GREATEST-POWER AXIS",
+      "cities": [
+        "THE WIDE BOARD",
+        "MANA ON LEGS"
+      ],
+      "why": "CORRECTED from iteration 1, which said this coupling sits in no city and called five cards its multipliers. FOUR cards read 'greatest power' and multiply by it — Overwhelming Stampede and Pathbreaker Ibex for their pump, Return of the Wildspeaker for both its modes (and its wording is 'greatest power among NON-HUMAN creatures you control'; the deck runs three Humans: Eternal Witness, Saryth and Sylvan Safekeeper), and Selvala for the size of her mana ability. A fifth card SETS the number rather than reading it: Mirkwood Pathmaker, whose power and toughness each equal your land count. Five cards in the coupling, four of them multipliers. No declared goldfish component groups them — that half of the iteration-1 claim stands. But the MAP has it four-fifths right: THE WIDE BOARD holds Stampede, Ibex, Return AND Pathmaker, and only Selvala strays to MANA ON LEGS. By this model's own coherence law that is nearly coherent, because 'greatest power among creatures you control' is printed on three of them. One thing the map cannot see and no component prices: Selvala's DRAW gate is 'if its power is greater than each other creature's power', which compares against opponents' creatures too — so a large Pathmaker may switch her draw trigger off for every subsequent body, and the coupling can run backwards."
     }
-   ]
-  },
-  {
-   "stage": "conversion",
-   "label": "A CARD PER BODY",
-   "what_it_does": "The engine proper: it turns bodies into cards, which become bodies. Eleven cards are filed here; ten of them are the declared GAS component (drawn by t6 at 75.9%, mean turn 2.467) and the eleventh, Fauna Shaman, belongs to the declared TUTOR component instead — it converts a spare creature in hand into the specific one. What the engine converts is a resource other decks throw away: mana still untapped when the turn passes. Glademuse is the purest statement of that ('whenever a player casts a spell, if it's not their turn, that player draws') and it is symmetric. There is no `fodder` stage in this deck — not because nothing sacrifices (Sakura-Tribe Elder, Caustic Caterpillar, Sylvan Safekeeper and Elvish Reclaimer all do, and Tireless Provisioner makes Food and Treasure to crack), but because none of it is a THEME: no card here eats a body for value on purpose, and the one board that gets consumed in a passing stack is consumed by an opponent's Day of Judgment. Selvala is the deck's only priced single point of failure — a one-card class at 12.3% by t6 — though stack 007 shows Chord finds her at instant speed.",
-   "cards": [
-    "Beast Whisperer",
-    "Ohran Frostfang",
-    "Toski, Bearer of Secrets",
-    "Selvala, Heart of the Wilds",
-    "Glademuse",
-    "Elemental Bond",
-    "Fecundity",
-    "Garruk's Uprising",
-    "Tribute to the World Tree",
-    "Harmonize",
-    "Fauna Shaman"
-   ],
-   "single_point_of_failure": null,
-   "evidence": [
+  ],
+  "unassigned": [],
+  "rebuttals": [
     {
-     "kind": "stack",
-     "id": "003",
-     "note": "Beast Whisperer's cast trigger fires on the finisher itself — the kill spell also draws a card"
+      "finding": "critic.findings[9] — stages[6].single_point_of_failure, 'over-claimed'",
+      "response": "accepted-and-withdrawn, with one figure disputed",
+      "what_i_did": "The SPOF claim is withdrawn: single_point_of_failure on the wincon stage is now null, and the prose says plainly that no passing stack resolves Overwhelming Stampede, Pathbreaker Ibex or Return of the Wildspeaker.",
+      "where_the_critic_overreaches": "The critic's replacement arithmetic is itself conditional and should not enter the record as established. It says 'on the eight-land board where an 8-MV Craterhoof is castable, Overwhelming Stampede pumps by ~8'. Stampede's X is the greatest power among creatures you control, not the land count — the two are equal only if Mirkwood Pathmaker is on the battlefield. On stack 003's actual board (Radagast 2/5, Scute Swarm 1/1, Wood Elves 1/1, Beast Whisperer 2/3) the greatest power without Craterhoof is 2, so Stampede over that board pumps by 2 and the swing is 14, not 36. The ~8 figure assumes exactly the Pathmaker coupling that no stack tests and that open_questions[2] exists to ask about. So neither 'Craterhoof is the only functional finisher' nor 'Stampede is comparable' is established. The file now asserts neither and asks instead."
     },
     {
-     "kind": "stack",
-     "id": "004",
-     "note": "Fecundity converts a wrath into four cards; the token triggers before it ceases to exist and Radagast's death is seen before he moves to the command zone"
+      "finding": "critic.findings[5] — stages[2], 'miscounted' band",
+      "response": "accepted, with the authorship of the error corrected",
+      "what_i_did": "The stage now quotes the declaration's own label verbatim and names the four members that fall outside it: Satyr Wayfinder ({1}{G}, MV 2, one generic), Eternal Witness ({1}{G}{G}, MV 3, one generic), Whiptongue Hydra (MV 6), Hornet Queen (MV 7). Verified card by card against cards.json. A sixth goldfish edit is now owed and filed.",
+      "where_the_critic_overreaches": "The critic calls 'the band the {2} discount pays off fully' the model's own added claim. It was a paraphrase of the declaration's own words — goldfish_targets.json labels the component 'the full-value flash-in class' — so the gloss was reporting, not inventing. The defect is real and it is the DECLARATION's, not a reading imposed on it, which is precisely why the remedy is a proposed edit to the label rather than a quieter sentence here."
     },
     {
-     "kind": "stack",
-     "id": "002",
-     "note": "Frostfang plus Toski draw exactly 2 off one unblocked 1/1 — and Ohran Frostfang has no printed flash, so the trap and the gas are the same card only because the window puts it there"
+      "finding": "critic.findings[13] — map_disagreements[4], 'five cards'",
+      "response": "accepted, with the sentence rebuilt rather than the count changed",
+      "what_i_did": "The verb was wrong, not the population. Four cards READ 'greatest power' and multiply by it (Overwhelming Stampede, Pathbreaker Ibex, Return of the Wildspeaker, Selvala); a fifth, Mirkwood Pathmaker, SETS the number. The coupling is five cards; 'five cards multiply by it' was false of one of them. The entry now says both halves explicitly, carries Return's non-Human qualifier, and adopts the critic's strengthening point about Selvala's 'each other creature's power' comparing against opponents' boards too."
     },
     {
-     "kind": "stack",
-     "id": "007",
-     "note": "Chord of Calling at X=3 puts Selvala onto the battlefield at instant speed, but triggers no Beast Whisperer: she is put, not cast"
+      "finding": "critic.findings[4] — stages[1] / open_questions[4], Yeva",
+      "response": "accepted, and taken further than the remedy proposed",
+      "what_i_did": "The critic asked to narrow open_questions[4] to the two-bodies-in-one-turn half. That half is also settled by the two oracle texts: Yeva grants flash to green creature spells with no per-turn limit, and Radagast's reduction applies only to the first creature spell each turn — so a second body in a turn is castable at instant speed for full price whenever Yeva is out. A question a card's text answers is not a question worth a stack spawn, so it is WITHDRAWN entirely rather than shortened, and the ignition stage now states the split the right way round: Yeva is broader than Radagast on timing and narrower only on price."
     },
     {
-     "kind": "city",
-     "id": "city-6",
-     "agreement": "cuts-across",
-     "note": "7 of 11 sit in A CARD PER BODY — the whole of city-6. The four strays each show the map choosing one of a card's two jobs: Selvala files under MANA ON LEGS, Toski under THE BODYGUARDS, Harmonize under THE WIDE BOARD, Fauna Shaman under THE SEARCH PARTY"
+      "finding": "critic.findings[8] — stages[5], protection evidenced by stack 004",
+      "response": "accepted in full",
+      "what_i_did": "The stack citation is removed. The stage now carries a city-only evidence block that says in as many words that not one interaction involving any of its eight cards is verified by any passing stack of this deck, and a new open question sends the two sharpest cases (Saryth's 'other' qualifier against an attacking, therefore tapped, Radagast; Guardian Augmenter's hexproof against a wrath) to resolve-stack. Saryth's 'other' is now stated rather than dropped."
     }
-   ]
-  },
-  {
-   "stage": "output",
-   "label": "ANSWERS THAT COME DOWN AT INSTANT SPEED",
-   "what_it_does": "What the window produces besides bodies: interaction on somebody else's turn, mostly wearing a creature. The declared FLASH TRAP component is 16 cards drawn by t6 at 91.3%, and it spans this stage, the protection stage and part of fuel. Whiptongue Hydra has no printed flash and costs six — it exists as a post-blockers sweeper only because the window makes it one. Two members do NOT come down at instant speed and the label should not be read as covering them: Pick Your Poison is a sorcery, and Chord of Calling is an instant that stands outside the engine entirely (stack 007: no discount, no window consumed, no Garenbrig mana, no Whisperer trigger). Boseiju is filed under mana but the audit counts it as one of the seven artifact/enchantment answers (that component is drawn by t6 at 63.0%), and Collector Ouphe answers by disabling rather than destroying, so the declaration does not count it at all.",
-   "cards": [
-    "Nantuko Vigilante",
-    "Wickerbough Elder",
-    "Indrik Stomphowler",
-    "Whiptongue Hydra",
-    "Caustic Caterpillar",
-    "Ravenous Sailback",
-    "Beast Within",
-    "Pick Your Poison",
-    "Chord of Calling",
-    "Collector Ouphe"
-   ],
-   "single_point_of_failure": null,
-   "evidence": [
+  ],
+  "open_questions": [
     {
-     "kind": "stack",
-     "id": "002",
-     "note": "the flagship trap: a creature flashed after blockers changes combat damage already lined up. Note the verified card is Ohran Frostfang, which this model files under conversion — no member of THIS stage has an interaction verified by any passing stack"
+      "question": "Whiptongue Hydra flashed in after blockers are declared: does its ETB sweep the fliers before combat damage, how many +1/+1 counters does it keep, and does it kill your own Hornet Nest tokens and Hornet Queen tokens in the process?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "This is the deck's premise card — a six-mana creature with no printed flash that is only an answer because the window makes it one — and no card in the output stage has an interaction verified by any passing stack. The premise is unverified, and the collateral question is live: Hornet Nest and Hornet Queen both make 1/1 fliers, and Arasta makes reach Spiders that would survive."
     },
     {
-     "kind": "stack",
-     "id": "007",
-     "note": "Chord of Calling: three separate ways the tutor refuses Radagast's gifts — the sharpest boundary of the engine"
+      "question": "Can Scute Swarm alone reach the fifth body BESIDE the finisher? With six or more lands its landfall creates a copy of itself per land entering; how many bodies does the board hold on the turn before Craterhoof, counting one land drop plus a fetch from Wood Elves or Sakura-Tribe Elder?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "Stack 003 measured four other bodies plus Craterhoof at 36 into 40 — not lethal — and stack 005 measured five other bodies plus Craterhoof at exactly 40. The gap between the two is one body, and Scute Swarm is the only card in the 71 that manufactures bodies without spending a window. It is the deck's cheapest route to the one threshold a verified stack has already priced."
     },
     {
-     "kind": "city",
-     "id": "city-2",
-     "agreement": "cuts-across",
-     "note": "this stage CONTAINS all eight cards of THE TRAPS and adds two: Chord (THE SEARCH PARTY) and Collector Ouphe (THE WIDE BOARD). The deck's second most map-coherent stage, because 'destroy target artifact' is printed on the card"
+      "question": "Does Mirkwood Pathmaker function as this deck's greatest-power dial? With N lands, what is the X on Overwhelming Stampede and Pathbreaker Ibex, how many cards does Return of the Wildspeaker draw, and does Selvala's 'power greater than each other creature's power' gate then shut off for every subsequent body — including against opponents' creatures?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "Three of the four finishers, the finisher-that-is-really-a-draw-spell and the deck's single priced point of failure all multiply by one number, and one card sets it. No declared component groups them, no passing stack touches it, and the map has it only four-fifths right. It is also the one place where the coupling may run backwards: Selvala's gate compares against EACH OTHER creature's power, opponents' included, so a large Pathmaker could suppress her draw trigger for the rest of the game."
+    },
+    {
+      "question": "Over the board this deck actually assembles, do the other three finishers close? Specifically: on stack 003's exact board (Radagast 2/5, Scute Swarm 1/1, Wood Elves 1/1, Beast Whisperer 2/3, seven lands), what does Overwhelming Stampede deal, what does Pathbreaker Ibex deal on the turn after it attacks, and what does Return of the Wildspeaker's +3/+3 mode deal given three Humans in the 71?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "This replaces a withdrawn claim. Iteration 1 called Craterhoof the wincon stage's single point of failure; the audit prices the class as four interchangeable cards at 42.4% by t6, and nothing in this deck's seven passing stacks resolves any of the other three. Both readings — 'the four are one class' and 'Craterhoof is the deck' — are currently unevidenced, and one number decides it: what X is without a Craterhoof on the board, since Stampede and Ibex read greatest power and Craterhoof reads creature count."
+    },
+    {
+      "question": "Does the protection stage hold up the two ways it will actually be attacked? (a) Saryth grants hexproof to OTHER UNTAPPED creatures you control — is an attacking Radagast, and Saryth herself, targetable by a removal spell during combat? (b) Guardian Augmenter grants commanders hexproof, not indestructible — does Radagast survive a Day of Judgment, and does Sylvan Safekeeper's shroud help against one?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "Eight cards in this deck exist to make one removal spell not be the whole game, and not one of them appears in the scenario of any passing stack. The stage is currently evidenced by a map city and by oracle text alone. Both sub-questions are cases where the printed wording is narrower than the job the stage is filed under, which is exactly the shape of coaching error that propagates."
+    },
+    {
+      "question": "Glademuse reads 'whenever a player casts a spell, if it's not their turn, THAT PLAYER draws a card.' Against a pod with instant-speed decks, does this deck net ahead on it?",
+      "settled_by": "research-strategy",
+      "why_it_matters": "The strategic frame calls Glademuse 'tuned to this deck exactly'. The oracle text is symmetric and pays whoever casts, so the claim is really that this deck casts off-turn more than the table does. That is a claim about the format, not about the card, and nothing in the artifacts checks it."
+    },
+    {
+      "question": "How much of the metronome's real output is the simulator missing? The declaration's own note says the sim models neither Radagast's discount, nor aura ramp (Utopia Sprawl, Wild Growth, Fertile Ground), nor opponent-turn flash casts.",
+      "settled_by": "goldfish",
+      "why_it_matters": "Every rate quoted in this model — 94.5%, 93.6%, 91.3%, 75.9%, 63.0%, 42.4%, 40.2%, 12.3% — is a floor for a deck whose entire design is the three things not being modelled, and the size of the gap is unknown. Three columnists will quote these figures; they should know which direction they are wrong in."
     }
-   ]
-  },
-  {
-   "stage": "protection",
-   "label": "THE INSURANCE ON ONE WIZARD",
-   "what_it_does": "The deck is linear on Radagast and on one board, so this stage is what stops a single removal spell or a single wrath from being the whole game. Guardian Augmenter flashes in, pumps commander creatures +2/+2 and grants commanders hexproof; Saryth grants hexproof to OTHER untapped creatures you control and deathtouch to OTHER tapped ones — the 'other' matters twice, because Saryth protects neither herself nor a creature that has attacked, and an attacking Radagast is tapped and therefore uncovered. Sylvan Safekeeper, Heroic Intervention, Tyvar's Stand, Veil of Summer, Inspiring Call and Warg Tactics are held, not cast, which costs nothing here because the deck was holding mana anyway. Toski belongs functionally in this stage too and is filed under conversion; its indestructibility is verified in stack 004 and its draw in 002.",
-   "cards": [
-    "Guardian Augmenter",
-    "Saryth, the Viper's Fang",
-    "Sylvan Safekeeper",
-    "Heroic Intervention",
-    "Tyvar's Stand",
-    "Veil of Summer",
-    "Inspiring Call",
-    "Warg Tactics"
-   ],
-   "single_point_of_failure": null,
-   "evidence": [
+  ],
+  "proposed_goldfish_edits": [
     {
-     "kind": "city",
-     "id": "city-3",
-     "agreement": "full",
-     "note": "exactly THE BODYGUARDS, minus Toski, which the map files here for its indestructibility and this model files under conversion for its draw. This is a CITY-ONLY evidence block, deliberately: iteration 1 cited stack 004 here, and stack 004's scenario names Fecundity, Radagast, Scute Swarm, Toski and Wood Elves — none of this stage's eight cards. Not one interaction involving any card in this stage is verified by any passing stack of this deck, and an open question now says so"
-    }
-   ]
-  },
-  {
-   "stage": "wincon",
-   "label": "FIVE BODIES AND THE HOOF",
-   "what_it_does": "A mass-pump alpha strike over a wide board. Four finishers, drawn by t6 at 42.4%; the declared ASSEMBLED target (finisher plus one metronome body) measures 40.2%. Two passing stacks bracket the real threshold and it is the most important arithmetic in the deck. Stack 003: Craterhoof over FOUR other bodies is X=5, five attackers, 36 unblocked into a 40-life seat — NOT lethal, the seat survives on 4. Stack 005: Craterhoof cast in your own precombat main over FIVE other bodies is X=6, exactly 40 trample power into one seat, lethal with zero margin and only per-seat, never the pod (one of the five, Hornet Nest, has defender and never attacks — it raises X without swinging). Stack 005 also names the one card the deck's signature verb is wrong for: flashed on the prior end step, Craterhoof's +6/+6 and trample expire at that turn's cleanup (514.2), the swing is 10 unpumped power and it kills nobody; the flash mode is a wrath-dodge only. The four finishers are not one class. Only Craterhoof scales on creature COUNT and brings its own haste and trample; Overwhelming Stampede and Pathbreaker Ibex multiply by the greatest power on your board; Return of the Wildspeaker is a flat +3/+3 for NON-HUMAN creatures with no trample, and its other mode is a draw spell. Radagast's discount is creature-spell-only, so Craterhoof and Ibex can ride the window and Stampede (sorcery) and Return (instant) never can. Iteration 1 called Craterhoof this stage's single point of failure; that is WITHDRAWN — no passing stack resolves any of the other three, so nothing establishes either that they work or that they do not, and an open question now asks.",
-   "cards": [
-    "Craterhoof Behemoth",
-    "Overwhelming Stampede",
-    "Pathbreaker Ibex",
-    "Return of the Wildspeaker"
-   ],
-   "single_point_of_failure": null,
-   "evidence": [
-    {
-     "kind": "stack",
-     "id": "003",
-     "note": "X=5 over four other bodies is 36 unblocked and leaves the seat at 4 — the measured NOT-lethal board"
+      "target": "THE OVERRUN ASSEMBLED: finisher AND a second wave to pump (a metronome body as proxy for board width)",
+      "change": "Replace the one-metronome-body proxy with the threshold two passing stacks actually bracket: the finisher PLUS FIVE OTHER BODIES. Stack 003 measured the finisher plus FOUR other bodies as X=5, 36 unblocked into 40 — the seat survives on 4, so that board is explicitly NOT the kill. Stack 005 measured the finisher plus FIVE other bodies, cast in your own precombat main, as X=6 and exactly 40 trample power — lethal to one seat with zero margin. So the declared proxy is FOUR bodies looser than the verified kill condition. At minimum, record that in the note; better, add a second any_of group requiring five bodies so the simulator measures the condition the stacks priced.",
+      "why": "CORRECTED from iteration 1, which prescribed 'the finisher plus four other bodies' and called the proxy 'three bodies looser'. Both were off by one, and four-other-bodies is precisely the configuration stack 003 measured as surviving. Prescribing the losing board is the single most consequential error this file could make: 40.2% by t6 is the only kill rate this deck has, three columnists quote it, and it is currently measured against a condition a passing stack says is insufficient. The figure has to be right before a human applies it."
     },
     {
-     "kind": "stack",
-     "id": "005",
-     "note": "X=6 over five other bodies in your own precombat main is exactly 40 trample power — the measured lethal board, and the same stack shows the end-step flash line attacking with 10 unpumped power"
+      "target": "GAS drawn — a repeatable draw engine (all but Harmonize gate on power 4+ entering; the declared thin engine)",
+      "change": "Correct the parenthetical. Only Garruk's Uprising gates on power 4+; Elemental Bond and Tribute to the World Tree gate on power 3+; Selvala gates on power greater than each other creature's. Beast Whisperer (any creature spell cast), Fecundity (any creature dies), Toski and Ohran Frostfang (combat damage to a player) and Glademuse (any off-turn cast) carry no power gate at all.",
+      "why": "Six of the ten members do not care how big the creature is, and the deck's window bodies are frequently 1/1s (Wood Elves, Llanowar Elves, Sakura-Tribe Elder). A reader sizing the engine against this deck's actual board from the label would conclude the gas does not run. The membership is right; the sentence describing it is not."
     },
     {
-     "kind": "city",
-     "id": "city-0",
-     "agreement": "full",
-     "note": "4 of 4 in THE WIDE BOARD, one of only four declared components that sit in a single city — because 'creatures you control get +X/+X' IS the function, printed on the card"
+      "target": "An answer to an artifact or enchantment drawn (the breadth floor; Boseiju is a land the sim counts as drawn)",
+      "change": "Add Ravenous Sailback. The component names seven; the deck holds eight.",
+      "why": "Ravenous Sailback's ETB is 'choose one — this creature gains haste until end of turn; or destroy target artifact or enchantment', which is exactly the function the component measures. The omission understates the breadth floor by a card, and the omitted card is a creature — so in this deck it also arrives at instant speed through the window, unlike Beast Within (instant, but no body) or Pick Your Poison (a sorcery, and the one answer here that cannot be held)."
+    },
+    {
+      "target": "SELVALA — the single best engine card, drawn (a declared one-card class: no functional backup exists in the 99)",
+      "change": "Amend the note to record BOTH tutor routes: Chord of Calling at X=3 puts Selvala onto the battlefield at instant speed (verified in stack 007), and Fauna Shaman can discard a spare creature to search her up. Leave the 12.3% hypergeometric alone — it is correct for a one-card class.",
+      "why": "This is the deck's only priced single point of failure, and the label states flatly that no backup exists. A passing stack demonstrates a route the label denies, and the declared TUTOR component holds the second route. The hypergeometric is right; the claim about the deck is not."
+    },
+    {
+      "target": "THE OVERRUN KILL: a mass-pump finisher drawn (Craterhoof class — needs a board, which the bodies rates price separately)",
+      "change": "Either split Return of the Wildspeaker out of the Craterhoof class or record what the four are not: Craterhoof scales on creature COUNT and brings its own haste and trample; Overwhelming Stampede and Pathbreaker Ibex multiply by greatest power; Return of the Wildspeaker is a flat +3/+3, no trample, NON-HUMAN creatures only (the deck runs three Humans), and modal with a draw half. Add the timing split too: Radagast's reduction is creature-spell-only, so Craterhoof and Ibex can ride the window and Stampede (sorcery) and Return (instant) never can.",
+      "why": "The class is priced as four interchangeable finishers at 42.4% by t6. Over the 1/1-heavy board this deck actually assembles they are not the same card, and half of them cannot use the deck's defining permission. The redundancy claim is what iteration 1 leaned on when it called Craterhoof a single point of failure — a claim now withdrawn for want of evidence, which makes getting the label right the remaining way to say the four differ."
+    },
+    {
+      "target": "A METRONOME body drawn (3-5 MV, >=2 generic — the full-value flash-in class)",
+      "change": "Correct the parenthetical or move the four members that contradict it. Four of the nineteen fall outside the stated band: Satyr Wayfinder ({1}{G}, MV 2, one generic), Eternal Witness ({1}{G}{G}, MV 3, one generic), Whiptongue Hydra (MV 6) and Hornet Queen (MV 7). Correcting the label is the safer half — the membership is defensible, since all four are still bodies the window deploys — but note that dropping them instead would take the component from 19 to 15 and move the measured 94.5% with it.",
+      "why": "Same defect class as the GAS parenthetical, and it is owed for the same reason: a component's label is what a reader sizes the engine by. As written it promises a class every member of which the {2} discount pays off in full, and a fifth of it is either too cheap for the discount to matter or too expensive for the band. The size (19) and the rate (94.5% by t6, mean turn 1.615) are correct; the sentence describing the membership is not."
     }
-   ]
+  ],
+  "critic": {
+    "verdict": "fail",
+    "iterations": 3,
+    "findings": [
+      {
+        "where": "stages[0].evidence[1] + lines[5].verified_by",
+        "claim": "the Garenbrig payment is verified by stack 005, not 003: step 3 taps four Forests for the {2}{G}{G} activation and spends all six restricted {G} on the discounted {3}{G}{G}{G}",
+        "status": "supported",
+        "note": "Checked 005 first, as instructed, rather than taking the engineer's word. Stack 005 step 3 action: 'you tap the four Forests for {G}{G}{G}{G}, pay {2}{G}{G} and tap Garenbrig, adding six {G} that can be spent only on creature spells'; its effect: 'All six restricted {G} are spent on the {3}{G}{G}{G} total cost of Craterhoof Behemoth, which is a creature spell, so the spending restriction is satisfied' -- the file's quoted fragment is byte-exact. Arithmetic re-derived: four Forests produce {G}{G}{G}{G}, which pays {2}{G}{G} because {G} pays generic; Craterhoof {5}{G}{G}{G} minus Radagast's {2} = {3}{G}{G}{G} = six mana = Garenbrig's six {G} exactly, no remainder. The checker block passes both step-3 mana-ability citations (605.1a, 605.3a, 601.2g) and step 2's 601.2f. 005 verifies the payment in BOTH its lines -- the end-step flash line (step 3) and the main-phase kill line (step 7, 'four Forests pay Garenbrig's {2}{G}{G}, Garenbrig's six {G} pay the discounted {3}{G}{G}{G}') -- so the mana->wincon arrow is verified end to end by the line that is actually lethal, which is the stronger of the two available readings. Contrast re-confirmed in 003: 'Total cost {3}{G}{G}{G} = six mana, paid from six untapped Forests. Castle Garenbrig is not needed and stays untapped', and its checker note says 'Castle Garenbrig correctly unneeded'. Both via cards (Castle Garenbrig, Craterhoof Behemoth) are named in 005's board and stack, so the re-cite keeps the mechanical gate satisfied -- re-run: OK, 7 stages, 71 placed, 0 unassigned, 9/9 lines verified. The round-2 mis-citation is repaired at both sites, not relabelled at one."
+      },
+      {
+        "where": "stages[0].what_it_does",
+        "claim": "Garenbrig 'APPEARS in three passing stacks (003, 005, 007) and it PAYS in exactly one of them'",
+        "status": "supported",
+        "note": "Re-derived from the stack files rather than from verified.by_card. Scanned all seven scenarios for 'Castle Garenbrig': present in 003, 005 and 007 only; all seven stacks carry checker verdict 'pass', so 'three passing stacks' is right. Pays in exactly one: 003 leaves it untapped (quoted above, and its final_state lands read '6x Forest (tapped for Craterhoof)' / 'Castle Garenbrig (untapped)'); 007 step 4 confirms the negative -- 'Chord is an instant spell, so that mana is not legal payment for it, and the stated payment correctly avoids the Castle' (106.6) -- and the file's added qualifier that 007's plain {T}: Add {G} still works matches 007's own precision note. So one payment, one bystander, one refusal. The softened wording is the correct repair: it separates an appearance count from a load-bearing count, and names which stack is which rather than leaving the reader to check."
+      },
+      {
+        "where": "stages[4].what_it_does (FLASH TRAP span)",
+        "claim": "the declared FLASH TRAP component is 16 cards spanning FIVE stages -- output 6, protection 6, fuel 2, conversion 1 (Frostfang), ignition 1 (Yeva)",
+        "status": "supported",
+        "note": "Computed, not read. Took the FLASH TRAP any_of straight from goldfish_targets.json (16 members) and joined each against this file's own stage arrays: output 6 (Nantuko Vigilante, Wickerbough Elder, Caustic Caterpillar, Chord of Calling, Whiptongue Hydra, Indrik Stomphowler); protection 6 (Heroic Intervention, Veil of Summer, Tyvar's Stand, Inspiring Call, Guardian Augmenter, Saryth); fuel 2 (Hornet Nest, Dawn's Light Archer); conversion 1 (Ohran Frostfang); ignition 1 (Yeva, Nature's Herald). 6+6+2+1+1 = 16 = the declared size, zero members unplaced, five distinct stages. Every figure in the sentence is exact and the two members round 2 said the iteration-2 sentence dropped -- the only one with a passing stack, and the ignition backup -- are now both named. The 91.3% by-t6 rate is unchanged and was re-confirmed supported in round 2. Note this is a different table from map_disagreements[1]'s '6/5/3/1/1', which is the CITY scatter, not the stage scatter; the two coexist correctly and are not a contradiction."
+      },
+      {
+        "where": "stages[4].what_it_does (the count of ten)",
+        "claim": "'Exactly ONE of the ten cannot be held: Pick Your Poison, a sorcery'; Beast Within and Chord are natively instants; the other seven are creatures with no printed flash",
+        "status": "supported",
+        "note": "Every type line checked against cards.json. Pick Your Poison: 'Sorcery', MV 1, no flash -- the claim's load-bearing fact. Beast Within: 'Instant'. Chord of Calling: 'Instant'. The seven named creatures -- Nantuko Vigilante, Wickerbough Elder, Indrik Stomphowler, Whiptongue Hydra, Caustic Caterpillar, Ravenous Sailback, Collector Ouphe -- are all 'Creature -- ...' type lines with no 'flash' anywhere in their oracle text (grepped case-insensitively, zero hits each). Partition arithmetic: 1 sorcery + 2 native instants + 7 no-flash creatures = 10 = the stage's card array, so the enumeration is exhaustive and non-overlapping. The withdrawal itself is correct on substance: stack 007's scenario casts Chord 'during opponent 3's end step' and its checker passed, so the iteration-2 claim that Chord 'does NOT come down at instant speed' was indeed contradicted by a passing stack. Collector Ouphe moving from the iteration-2 exception list into the no-flash-creature list is right -- it is a Creature -- Ouphe, and my own round-2 note counted six here where seven is correct."
+      },
+      {
+        "where": "stages[4].what_it_does",
+        "claim": "'stack 007 casts Chord during an opponent's end step and cites 117.1a for the timing'",
+        "status": "mis-cited",
+        "note": "117.1a does not appear anywhere in stack 007 -- zero occurrences across the whole file, scenario, resolution and checker block. What 007 actually cites for the timing is 304.1, twice: step 1 ('A player who has priority may cast an instant card from their hand. Casting an instant as a spell uses the stack.') and again in step 3. 117.1a is a real rule with the right content, but it belongs to stack 005, which cites it in step 1 and again in its final_state ('a sorcery-speed wrath can only be cast in its caster's main phase (rule 117.1a)'). So the proposition is TRUE and IS verified by 007 -- only the rule number attributed to it is wrong. I record this as my error as much as the engineer's: my round-2 note asserted '007 ... cites 117.1a for the timing' and the engineer copied the attribution rather than re-checking it, so the defect entered the file from the critic. It is nonetheless the same defect class this pass was convened to close -- a rule ID attributed to a named passing stack that does not contain it -- in a repo whose citation contract exists so a reader can follow a number to a rule. Remedy is one token and needs no re-derivation: replace '117.1a' with '304.1', or drop the number and say 'and its checker passed it'."
+      },
+      {
+        "where": "stages[4].what_it_does",
+        "claim": "the seven no-flash creatures 'reach instant speed only through Radagast's once-per-turn window ... since the window fits one of them per turn'",
+        "status": "over-claimed",
+        "note": "NEW in iteration 3 -- the iteration-2 text made no such claim -- and it contradicts this model's own ignition stage. Yeva's oracle in cards.json: 'You may cast green creature spells as though they had flash', with no per-turn limit, which stages[1] itself argues at length ('on TIMING Yeva is strictly broader than Radagast -- every green creature spell, every turn, not just the first'). I checked the seven against that permission: all seven carry colors == ['G'] and all seven are Creature type lines, so Yeva grants every one of them flash, without a cap. With Yeva on the battlefield the word 'only' is false and 'the window fits one of them per turn' stops being the binding constraint. This is the same over-claim class round 2 raised about Yeva and that rebuttals[3] accepted 'and took further than the remedy proposed' -- reintroduced one stage away, in the sentence being rewritten. It also weakens the honest self-criticism the sentence is making, since the label is loose for a different reason than stated. Remedy is one clause: 'reach instant speed only through a flash grant -- Radagast's, once per turn, or Yeva's, without limit'."
+      },
+      {
+        "where": "whole file (regression sweep)",
+        "claim": "nothing outside the three assigned items moved",
+        "status": "supported",
+        "note": "Diffed iteration 3 against the committed iteration 2 (HEAD, 'Iteration 2: the kill gets bracketed by two verified stacks') leaf by leaf over the flattened JSON. Zero keys added, zero removed -- the two key sets are identical, so no stage, line, map_disagreement, open_question, proposed edit, rebuttal or critic finding was inserted or dropped. Exactly five leaves changed, and all five are inside the assigned scope: stages[0].evidence[1].id (003->005), stages[0].evidence[1].note, stages[0].what_it_does (the appearance-vs-payment sentence), lines[5].verified_by (003->005) with its note, and stages[4].what_it_does. Nothing else in the file differs by a character. Specifically checked that the claims I supported in rounds 1-2 are untouched: every quoted rate (0.945/0.936/0.913/0.759/0.630/0.424/0.402/0.123, mean turns 1.615 and 2.467), the thesis, proposed_goldfish_edits[0]'s five-body threshold, the wincon SPOF = null, the protection stage's city-only evidence block, lines[2] and lines[4]'s repaired endpoints, and all seven open questions are byte-identical to the version I passed. The mechanical gate was re-run after the re-cite and still passes. One bookkeeping observation, not a finding and not a regression: the merged `critic` block still carries iteration 1's 20 findings and reads 'iterations: 1', so round 2's findings were never merged into the file -- worth reconciling when this is committed, but it changed nothing in the model."
+      }
+    ],
+    "note": "Loop exhausted at ENGINE_MAX_ITERATIONS. Five of seven findings supported; the two open ones are clauses in a single sentence of stages[4].what_it_does. NOT cache-recorded."
   }
- ],
- "lines": [
-  {
-   "from": "ignition",
-   "to": "fuel",
-   "via": [
-    "Radagast of Rhosgobel",
-    "Wood Elves"
-   ],
-   "verified_by": "001",
-   "note": "Cast on an opponent's turn for {G}: the discount and the flash both applied because Wood Elves was that turn's first creature spell. One window per turn, four per round."
-  },
-  {
-   "from": "ignition",
-   "to": "mana",
-   "via": [
-    "Radagast of Rhosgobel",
-    "Sakura-Tribe Elder"
-   ],
-   "verified_by": "006",
-   "note": "A body flashed on an opponent's end step meets both prongs of 302.6 by your untap: it attacks and it taps freely. Deploying on other people's turns costs no tempo, which is what makes holding mana affordable."
-  },
-  {
-   "from": "wincon",
-   "to": "conversion",
-   "via": [
-    "Craterhoof Behemoth",
-    "Beast Whisperer"
-   ],
-   "verified_by": "003",
-   "note": "Retargeted from iteration 1's fuel->conversion, where neither via card lived in the `from` stage. The cast trigger fires on the finisher itself — the turn the deck tries to win, it also draws a card."
-  },
-  {
-   "from": "fuel",
-   "to": "conversion",
-   "via": [
-    "Scute Swarm",
-    "Fecundity",
-    "Toski, Bearer of Secrets"
-   ],
-   "verified_by": "004",
-   "note": "The only place bodies are consumed for cards, and the deck does not choose it: under an opponent's Day of Judgment you draw 4, because the Insect token's zone-change trigger fires before it ceases to exist and indestructible Toski skips the wake. This is what a fodder stage would look like if the deck had one."
-  },
-  {
-   "from": "ignition",
-   "to": "conversion",
-   "via": [
-    "Radagast of Rhosgobel",
-    "Ohran Frostfang",
-    "Toski, Bearer of Secrets"
-   ],
-   "verified_by": "002",
-   "note": "Retargeted from iteration 1's fuel->output, which contained none of its via cards. Ohran Frostfang has no printed flash: the window is what puts it on the battlefield after blockers, where its static deathtouch applies to damage already lined up, and one unblocked 1/1 then draws exactly 2 off Frostfang and Toski together."
-  },
-  {
-   "from": "mana",
-   "to": "wincon",
-   "via": [
-    "Castle Garenbrig",
-    "Craterhoof Behemoth"
-   ],
-   "verified_by": "003",
-   "note": "Garenbrig's six {G} is spend-restricted to creature spells, which is why a land that would be a liability in most decks is the best one here."
-  },
-  {
-   "from": "fuel",
-   "to": "wincon",
-   "via": [
-    "Scute Swarm",
-    "Wood Elves",
-    "Craterhoof Behemoth"
-   ],
-   "verified_by": "003",
-   "note": "THE FLOOR. Four other bodies under the Hoof is X=5 and 36 unblocked into 40 — the seat survives on 4. This board does not win."
-  },
-  {
-   "from": "fuel",
-   "to": "wincon",
-   "via": [
-    "Scute Swarm",
-    "Wood Elves",
-    "Hornet Nest",
-    "Craterhoof Behemoth"
-   ],
-   "verified_by": "005",
-   "note": "THE THRESHOLD, and it is the next body up. Five other bodies under the Hoof, cast in your own precombat main, is X=6 and exactly 40 trample power into one seat — lethal with no margin at all, and only ever to one seat."
-  },
-  {
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Radagast of Rhosgobel",
-    "Craterhoof Behemoth"
-   ],
-   "verified_by": "005",
-   "note": "The one card the window is wrong for. Flashed on the prior end step, the +6/+6 and trample end at that turn's cleanup (514.2) and the swing is 10 unpumped power. The kill is cast in your own precombat main; the flash mode buys only a wrath-dodge, at the cost of the pump."
-  }
- ],
- "map_disagreements": [
-  {
-   "component": "A METRONOME body drawn (3-5 MV, >=2 generic — the full-value flash-in class)",
-   "cities": [
-    "THE WIDE BOARD",
-    "THE TRAPS",
-    "THE BODYGUARDS",
-    "A CARD PER BODY",
-    "THE SEARCH PARTY"
-   ],
-   "why": "Nineteen cards, five cities, 9/4/3/2/1. The class is defined by a COST BRACKET crossed with a permission printed on a different card. No member of it says anything about being a metronome body — they say 'draw a card', 'destroy target artifact', 'create a token' — so the map files each one under what it says. The law the scatter table demonstrates: a component is coherent on this map exactly when its defining property is printed on its members. THE OVERRUN KILL is 4-for-4 in one city because 'creatures you control get +X/+X' is the function; the metronome is invisible because the function lives on the commander."
-  },
-  {
-   "component": "A FLASH TRAP drawn (instant-speed interaction wearing a creature body, or held protection)",
-   "cities": [
-    "THE BODYGUARDS",
-    "THE TRAPS",
-    "THE WIDE BOARD",
-    "A CARD PER BODY",
-    "THE SEARCH PARTY"
-   ],
-   "why": "Sixteen cards, five cities, 6/5/3/1/1. The map splits cards that ARE instants (THE BODYGUARDS: Heroic Intervention, Veil of Summer, Tyvar's Stand) from cards the window MAKES into instants (THE TRAPS). The deck runs them as one class and pays for them with the same held mana. Whiptongue Hydra is the case in point: six mana, no printed flash, and the deck's premise card."
-  },
-  {
-   "component": "GAS drawn — a repeatable draw engine",
-   "cities": [
-    "A CARD PER BODY",
-    "MANA ON LEGS",
-    "THE WIDE BOARD",
-    "THE BODYGUARDS"
-   ],
-   "why": "Seven of ten sit in A CARD PER BODY, so this one is nearly coherent. The three strays each show the map choosing one of a card's two jobs: Selvala files under mana because she taps for it, Harmonize files under the wide board as a plain draw sorcery, and Toski files under armour because its printed text leads with indestructible and unblockable. Toski is the sharp one — the map reads a bodyguard, the deck runs a draw engine, and both readings are verified: stack 002 for the draw, stack 004 for the armour."
-  },
-  {
-   "component": "RAMP drawn (either hump: a dork/rock-class accelerant or a land-ramp spell)",
-   "cities": [
-    "MANA ON LEGS",
-    "THE SEARCH PARTY",
-    "THE WIDE BOARD",
-    "GREEN ON CURVE"
-   ],
-   "why": "Eighteen cards, four cities, 8/5/4/1 — and only PART of it is a disagreement. The declaration itself says 'either hump', and the map found exactly those two humps: dorks in MANA ON LEGS, land ramp in THE SEARCH PARTY. That much is agreement by design. The four in THE WIDE BOARD are the real split: Utopia Sprawl, Wild Growth and Fertile Ground cluster as enchantments rather than as mana, and Rampant Growth joins them. The one in GREEN ON CURVE is Castle Garenbrig, which is a land. A component that spans cities BY DESIGN is a different finding from one that spans them because its function is unwritten, and this component does both."
-  },
-  {
-   "component": "(undeclared) THE GREATEST-POWER AXIS",
-   "cities": [
-    "THE WIDE BOARD",
-    "MANA ON LEGS"
-   ],
-   "why": "CORRECTED from iteration 1, which said this coupling sits in no city and called five cards its multipliers. FOUR cards read 'greatest power' and multiply by it — Overwhelming Stampede and Pathbreaker Ibex for their pump, Return of the Wildspeaker for both its modes (and its wording is 'greatest power among NON-HUMAN creatures you control'; the deck runs three Humans: Eternal Witness, Saryth and Sylvan Safekeeper), and Selvala for the size of her mana ability. A fifth card SETS the number rather than reading it: Mirkwood Pathmaker, whose power and toughness each equal your land count. Five cards in the coupling, four of them multipliers. No declared goldfish component groups them — that half of the iteration-1 claim stands. But the MAP has it four-fifths right: THE WIDE BOARD holds Stampede, Ibex, Return AND Pathmaker, and only Selvala strays to MANA ON LEGS. By this model's own coherence law that is nearly coherent, because 'greatest power among creatures you control' is printed on three of them. One thing the map cannot see and no component prices: Selvala's DRAW gate is 'if its power is greater than each other creature's power', which compares against opponents' creatures too — so a large Pathmaker may switch her draw trigger off for every subsequent body, and the coupling can run backwards."
-  }
- ],
- "unassigned": [],
- "rebuttals": [
-  {
-   "finding": "critic.findings[9] — stages[6].single_point_of_failure, 'over-claimed'",
-   "response": "accepted-and-withdrawn, with one figure disputed",
-   "what_i_did": "The SPOF claim is withdrawn: single_point_of_failure on the wincon stage is now null, and the prose says plainly that no passing stack resolves Overwhelming Stampede, Pathbreaker Ibex or Return of the Wildspeaker.",
-   "where_the_critic_overreaches": "The critic's replacement arithmetic is itself conditional and should not enter the record as established. It says 'on the eight-land board where an 8-MV Craterhoof is castable, Overwhelming Stampede pumps by ~8'. Stampede's X is the greatest power among creatures you control, not the land count — the two are equal only if Mirkwood Pathmaker is on the battlefield. On stack 003's actual board (Radagast 2/5, Scute Swarm 1/1, Wood Elves 1/1, Beast Whisperer 2/3) the greatest power without Craterhoof is 2, so Stampede over that board pumps by 2 and the swing is 14, not 36. The ~8 figure assumes exactly the Pathmaker coupling that no stack tests and that open_questions[2] exists to ask about. So neither 'Craterhoof is the only functional finisher' nor 'Stampede is comparable' is established. The file now asserts neither and asks instead."
-  },
-  {
-   "finding": "critic.findings[5] — stages[2], 'miscounted' band",
-   "response": "accepted, with the authorship of the error corrected",
-   "what_i_did": "The stage now quotes the declaration's own label verbatim and names the four members that fall outside it: Satyr Wayfinder ({1}{G}, MV 2, one generic), Eternal Witness ({1}{G}{G}, MV 3, one generic), Whiptongue Hydra (MV 6), Hornet Queen (MV 7). Verified card by card against cards.json. A sixth goldfish edit is now owed and filed.",
-   "where_the_critic_overreaches": "The critic calls 'the band the {2} discount pays off fully' the model's own added claim. It was a paraphrase of the declaration's own words — goldfish_targets.json labels the component 'the full-value flash-in class' — so the gloss was reporting, not inventing. The defect is real and it is the DECLARATION's, not a reading imposed on it, which is precisely why the remedy is a proposed edit to the label rather than a quieter sentence here."
-  },
-  {
-   "finding": "critic.findings[13] — map_disagreements[4], 'five cards'",
-   "response": "accepted, with the sentence rebuilt rather than the count changed",
-   "what_i_did": "The verb was wrong, not the population. Four cards READ 'greatest power' and multiply by it (Overwhelming Stampede, Pathbreaker Ibex, Return of the Wildspeaker, Selvala); a fifth, Mirkwood Pathmaker, SETS the number. The coupling is five cards; 'five cards multiply by it' was false of one of them. The entry now says both halves explicitly, carries Return's non-Human qualifier, and adopts the critic's strengthening point about Selvala's 'each other creature's power' comparing against opponents' boards too."
-  },
-  {
-   "finding": "critic.findings[4] — stages[1] / open_questions[4], Yeva",
-   "response": "accepted, and taken further than the remedy proposed",
-   "what_i_did": "The critic asked to narrow open_questions[4] to the two-bodies-in-one-turn half. That half is also settled by the two oracle texts: Yeva grants flash to green creature spells with no per-turn limit, and Radagast's reduction applies only to the first creature spell each turn — so a second body in a turn is castable at instant speed for full price whenever Yeva is out. A question a card's text answers is not a question worth a stack spawn, so it is WITHDRAWN entirely rather than shortened, and the ignition stage now states the split the right way round: Yeva is broader than Radagast on timing and narrower only on price."
-  },
-  {
-   "finding": "critic.findings[8] — stages[5], protection evidenced by stack 004",
-   "response": "accepted in full",
-   "what_i_did": "The stack citation is removed. The stage now carries a city-only evidence block that says in as many words that not one interaction involving any of its eight cards is verified by any passing stack of this deck, and a new open question sends the two sharpest cases (Saryth's 'other' qualifier against an attacking, therefore tapped, Radagast; Guardian Augmenter's hexproof against a wrath) to resolve-stack. Saryth's 'other' is now stated rather than dropped."
-  }
- ],
- "open_questions": [
-  {
-   "question": "Whiptongue Hydra flashed in after blockers are declared: does its ETB sweep the fliers before combat damage, how many +1/+1 counters does it keep, and does it kill your own Hornet Nest tokens and Hornet Queen tokens in the process?",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "This is the deck's premise card — a six-mana creature with no printed flash that is only an answer because the window makes it one — and no card in the output stage has an interaction verified by any passing stack. The premise is unverified, and the collateral question is live: Hornet Nest and Hornet Queen both make 1/1 fliers, and Arasta makes reach Spiders that would survive."
-  },
-  {
-   "question": "Can Scute Swarm alone reach the fifth body BESIDE the finisher? With six or more lands its landfall creates a copy of itself per land entering; how many bodies does the board hold on the turn before Craterhoof, counting one land drop plus a fetch from Wood Elves or Sakura-Tribe Elder?",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "Stack 003 measured four other bodies plus Craterhoof at 36 into 40 — not lethal — and stack 005 measured five other bodies plus Craterhoof at exactly 40. The gap between the two is one body, and Scute Swarm is the only card in the 71 that manufactures bodies without spending a window. It is the deck's cheapest route to the one threshold a verified stack has already priced."
-  },
-  {
-   "question": "Does Mirkwood Pathmaker function as this deck's greatest-power dial? With N lands, what is the X on Overwhelming Stampede and Pathbreaker Ibex, how many cards does Return of the Wildspeaker draw, and does Selvala's 'power greater than each other creature's power' gate then shut off for every subsequent body — including against opponents' creatures?",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "Three of the four finishers, the finisher-that-is-really-a-draw-spell and the deck's single priced point of failure all multiply by one number, and one card sets it. No declared component groups them, no passing stack touches it, and the map has it only four-fifths right. It is also the one place where the coupling may run backwards: Selvala's gate compares against EACH OTHER creature's power, opponents' included, so a large Pathmaker could suppress her draw trigger for the rest of the game."
-  },
-  {
-   "question": "Over the board this deck actually assembles, do the other three finishers close? Specifically: on stack 003's exact board (Radagast 2/5, Scute Swarm 1/1, Wood Elves 1/1, Beast Whisperer 2/3, seven lands), what does Overwhelming Stampede deal, what does Pathbreaker Ibex deal on the turn after it attacks, and what does Return of the Wildspeaker's +3/+3 mode deal given three Humans in the 71?",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "This replaces a withdrawn claim. Iteration 1 called Craterhoof the wincon stage's single point of failure; the audit prices the class as four interchangeable cards at 42.4% by t6, and nothing in this deck's seven passing stacks resolves any of the other three. Both readings — 'the four are one class' and 'Craterhoof is the deck' — are currently unevidenced, and one number decides it: what X is without a Craterhoof on the board, since Stampede and Ibex read greatest power and Craterhoof reads creature count."
-  },
-  {
-   "question": "Does the protection stage hold up the two ways it will actually be attacked? (a) Saryth grants hexproof to OTHER UNTAPPED creatures you control — is an attacking Radagast, and Saryth herself, targetable by a removal spell during combat? (b) Guardian Augmenter grants commanders hexproof, not indestructible — does Radagast survive a Day of Judgment, and does Sylvan Safekeeper's shroud help against one?",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "Eight cards in this deck exist to make one removal spell not be the whole game, and not one of them appears in the scenario of any passing stack. The stage is currently evidenced by a map city and by oracle text alone. Both sub-questions are cases where the printed wording is narrower than the job the stage is filed under, which is exactly the shape of coaching error that propagates."
-  },
-  {
-   "question": "Glademuse reads 'whenever a player casts a spell, if it's not their turn, THAT PLAYER draws a card.' Against a pod with instant-speed decks, does this deck net ahead on it?",
-   "settled_by": "research-strategy",
-   "why_it_matters": "The strategic frame calls Glademuse 'tuned to this deck exactly'. The oracle text is symmetric and pays whoever casts, so the claim is really that this deck casts off-turn more than the table does. That is a claim about the format, not about the card, and nothing in the artifacts checks it."
-  },
-  {
-   "question": "How much of the metronome's real output is the simulator missing? The declaration's own note says the sim models neither Radagast's discount, nor aura ramp (Utopia Sprawl, Wild Growth, Fertile Ground), nor opponent-turn flash casts.",
-   "settled_by": "goldfish",
-   "why_it_matters": "Every rate quoted in this model — 94.5%, 93.6%, 91.3%, 75.9%, 63.0%, 42.4%, 40.2%, 12.3% — is a floor for a deck whose entire design is the three things not being modelled, and the size of the gap is unknown. Three columnists will quote these figures; they should know which direction they are wrong in."
-  }
- ],
- "proposed_goldfish_edits": [
-  {
-   "target": "THE OVERRUN ASSEMBLED: finisher AND a second wave to pump (a metronome body as proxy for board width)",
-   "change": "Replace the one-metronome-body proxy with the threshold two passing stacks actually bracket: the finisher PLUS FIVE OTHER BODIES. Stack 003 measured the finisher plus FOUR other bodies as X=5, 36 unblocked into 40 — the seat survives on 4, so that board is explicitly NOT the kill. Stack 005 measured the finisher plus FIVE other bodies, cast in your own precombat main, as X=6 and exactly 40 trample power — lethal to one seat with zero margin. So the declared proxy is FOUR bodies looser than the verified kill condition. At minimum, record that in the note; better, add a second any_of group requiring five bodies so the simulator measures the condition the stacks priced.",
-   "why": "CORRECTED from iteration 1, which prescribed 'the finisher plus four other bodies' and called the proxy 'three bodies looser'. Both were off by one, and four-other-bodies is precisely the configuration stack 003 measured as surviving. Prescribing the losing board is the single most consequential error this file could make: 40.2% by t6 is the only kill rate this deck has, three columnists quote it, and it is currently measured against a condition a passing stack says is insufficient. The figure has to be right before a human applies it."
-  },
-  {
-   "target": "GAS drawn — a repeatable draw engine (all but Harmonize gate on power 4+ entering; the declared thin engine)",
-   "change": "Correct the parenthetical. Only Garruk's Uprising gates on power 4+; Elemental Bond and Tribute to the World Tree gate on power 3+; Selvala gates on power greater than each other creature's. Beast Whisperer (any creature spell cast), Fecundity (any creature dies), Toski and Ohran Frostfang (combat damage to a player) and Glademuse (any off-turn cast) carry no power gate at all.",
-   "why": "Six of the ten members do not care how big the creature is, and the deck's window bodies are frequently 1/1s (Wood Elves, Llanowar Elves, Sakura-Tribe Elder). A reader sizing the engine against this deck's actual board from the label would conclude the gas does not run. The membership is right; the sentence describing it is not."
-  },
-  {
-   "target": "An answer to an artifact or enchantment drawn (the breadth floor; Boseiju is a land the sim counts as drawn)",
-   "change": "Add Ravenous Sailback. The component names seven; the deck holds eight.",
-   "why": "Ravenous Sailback's ETB is 'choose one — this creature gains haste until end of turn; or destroy target artifact or enchantment', which is exactly the function the component measures. The omission understates the breadth floor by a card, and the omitted card is a creature — so in this deck it also arrives at instant speed through the window, unlike Beast Within (instant, but no body) or Pick Your Poison (a sorcery, and the one answer here that cannot be held)."
-  },
-  {
-   "target": "SELVALA — the single best engine card, drawn (a declared one-card class: no functional backup exists in the 99)",
-   "change": "Amend the note to record BOTH tutor routes: Chord of Calling at X=3 puts Selvala onto the battlefield at instant speed (verified in stack 007), and Fauna Shaman can discard a spare creature to search her up. Leave the 12.3% hypergeometric alone — it is correct for a one-card class.",
-   "why": "This is the deck's only priced single point of failure, and the label states flatly that no backup exists. A passing stack demonstrates a route the label denies, and the declared TUTOR component holds the second route. The hypergeometric is right; the claim about the deck is not."
-  },
-  {
-   "target": "THE OVERRUN KILL: a mass-pump finisher drawn (Craterhoof class — needs a board, which the bodies rates price separately)",
-   "change": "Either split Return of the Wildspeaker out of the Craterhoof class or record what the four are not: Craterhoof scales on creature COUNT and brings its own haste and trample; Overwhelming Stampede and Pathbreaker Ibex multiply by greatest power; Return of the Wildspeaker is a flat +3/+3, no trample, NON-HUMAN creatures only (the deck runs three Humans), and modal with a draw half. Add the timing split too: Radagast's reduction is creature-spell-only, so Craterhoof and Ibex can ride the window and Stampede (sorcery) and Return (instant) never can.",
-   "why": "The class is priced as four interchangeable finishers at 42.4% by t6. Over the 1/1-heavy board this deck actually assembles they are not the same card, and half of them cannot use the deck's defining permission. The redundancy claim is what iteration 1 leaned on when it called Craterhoof a single point of failure — a claim now withdrawn for want of evidence, which makes getting the label right the remaining way to say the four differ."
-  },
-  {
-   "target": "A METRONOME body drawn (3-5 MV, >=2 generic — the full-value flash-in class)",
-   "change": "Correct the parenthetical or move the four members that contradict it. Four of the nineteen fall outside the stated band: Satyr Wayfinder ({1}{G}, MV 2, one generic), Eternal Witness ({1}{G}{G}, MV 3, one generic), Whiptongue Hydra (MV 6) and Hornet Queen (MV 7). Correcting the label is the safer half — the membership is defensible, since all four are still bodies the window deploys — but note that dropping them instead would take the component from 19 to 15 and move the measured 94.5% with it.",
-   "why": "Same defect class as the GAS parenthetical, and it is owed for the same reason: a component's label is what a reader sizes the engine by. As written it promises a class every member of which the {2} discount pays off in full, and a fifth of it is either too cheap for the discount to matter or too expensive for the band. The size (19) and the rate (94.5% by t6, mean turn 1.615) are correct; the sentence describing the membership is not."
-  }
- ],
- "critic": {
-  "verdict": "fail",
-  "iterations": 1,
-  "findings": [
-   {
-    "where": "validator",
-    "claim": "the mechanical gate passes",
-    "status": "supported",
-    "note": "`.venv/bin/manamap pilot validate-engine radagast` → OK: 7 stages, 71 cards placed, 0 unassigned, 9/9 lines verified by a passing stack. Completeness re-checked by hand: 26+2+10+11+10+8+4 = 71 = the number of distinct entries in cards.json, so nothing is silently missing. deck-audit freshness block: goldfish_metrics.json and mana_analysis.json both carry decklist_sha256 231d89ab… and are current, so no quoted rate is stale."
-   },
-   {
-    "where": "stages[*] (all quoted figures)",
-    "claim": "94.5% METRONOME, 93.6% RAMP, 75.9% GAS, 42.4% KILL, 40.2% ASSEMBLED, 12.3% SELVALA, mean turn 1.615; Wood Elves in five stacks, Garenbrig in three, Scute Swarm in three",
-    "status": "supported",
-    "note": "Every one re-derived. `engine-facts radagast --json` audit_engine by_turn_6_rate: 0.945 / 0.936 / 0.759 / 0.424 / 0.402 / 0.123, METRONOME mean_turn 1.615 — exact matches, and each is correctly labelled 'by t6' rather than the assembled_rate the audit prints (0.981 / 0.975 / 0.854 / 0.523 / 0.513 / 0.163). verified.by_card: Wood Elves 001/003/004/005/007 (5), Castle Garenbrig 003/005/007 (3), Scute Swarm 003/004/005 (3). City counts also hold: fuel 9-of-19 in THE WIDE BOARD, conversion 7-of-10 in A CARD PER BODY, output 8-of-10 in THE TRAPS with only Chord and Collector Ouphe straying, wincon 4-of-4, protection == city-3 minus Toski exactly."
-   },
-   {
-    "where": "thesis",
-    "claim": "one discounted flash window per player turn; a card-per-body engine pays for the body; the verified kill threshold is the FIFTH body, not the finisher",
-    "status": "supported",
-    "note": "Stack 001 final_state confirms the window resets per turn ('four windows per round in this four-player pod — but only the FIRST creature spell each turn'). Stack 003 final_state: X=5 over four bodies = 36 into 40, opponent survives at 4, 'a fifth pre-Craterhoof body (X=6, six attackers) would clear it'. Stack 005 final_state independently lands on exactly 40 trample power off a five-body board in the main-phase line. The thesis does not out-run either stack, and it names the deck's real resource (mana left over on other people's turns) rather than a better story."
-   },
-   {
-    "where": "stages[0].evidence[2]",
-    "claim": "GREEN ON CURVE holds only the lands with text; 30 Forests and the whole ramp class live in MANA ON LEGS (city-1) and THE SEARCH PARTY (city-5)",
-    "status": "contradicts-artifact",
-    "note": "Two errors in one sentence, both against the map block of engine-facts. (1) city-4 GREEN ON CURVE's card list literally contains 'Forest', and its own gloss reads 'Thirty-six lands with almost nothing to say' — the Forests are exactly where the model says they are not. (2) The RAMP scatter is MANA ON LEGS 8 / THE SEARCH PARTY 5 / THE WIDE BOARD 4 / GREEN ON CURVE 1, i.e. four cities; Utopia Sprawl, Wild Growth, Fertile Ground and Rampant Growth sit in THE WIDE BOARD. The model states this correctly in map_disagreements[3] and incorrectly here, so it disagrees with itself as well as with the artifact."
-   },
-   {
-    "where": "stages[1] / open_questions[4]",
-    "claim": "Yeva 'covers half the ability: flash for every green creature spell, deck-wide, but no discount and no once-per-turn reset', and whether a second green creature spell is castable at instant speed is a load-bearing open question for resolve-stack",
-    "status": "over-claimed",
-    "note": "cards.json: 'You may cast green creature spells as though they had flash' — no per-turn limit at all, and the deck is mono-green, so Yeva is strictly BETTER than Radagast on timing (every creature spell, every turn) and worse only on cost. 'no once-per-turn reset' reads as a limitation on Yeva when the absence of the limit is the point. Consequently open_questions[4]'s first half is settled by the oracle text and does not need a stack spawn; only the two-bodies-in-one-turn interaction is genuinely open. The Radagast SPOF claim itself survives: a grep of the 99 for 'less to cast' returns exactly one card."
-   },
-   {
-    "where": "stages[2]",
-    "claim": "the declared METRONOME class is '19 cards, 3–5 MV with at least 2 generic — the band the {2} discount pays off fully'",
-    "status": "miscounted",
-    "note": "Four of the nineteen fall outside the stated band, checked card by card against cards.json: Satyr Wayfinder ({1}{G}, MV 2, one generic), Eternal Witness ({1}{G}{G}, MV 3, one generic), Whiptongue Hydra (MV 6) and Hornet Queen (MV 7). The size (19) and the rate are right; the description is not, and the model added the gloss 'the band the {2} discount pays off fully' as its own claim rather than quoting. This is the same defect class the model correctly catches in proposed_goldfish_edits[1] for the GAS parenthetical — a sixth proposed edit is owed for this label."
-   },
-   {
-    "where": "stages[3]",
-    "claim": "'Ten cards, GAS drawn by t6 at 75.9%'",
-    "status": "miscounted",
-    "note": "The conversion stage's `cards` array holds eleven: the ten declared GAS members plus Fauna Shaman, which is in the TUTOR component, not GAS. The rate belongs to the 10-card declaration and the sentence reads as describing the stage. Contrast stages[2], which says 'the declared METRONOME class (19 cards)' explicitly and is unambiguous. Three columnists read this file; 'ten cards' beside an eleven-card list is the kind of figure that gets quoted."
-   },
-   {
-    "where": "stages[3]",
-    "claim": "There is no `fodder` stage in this deck — nothing sacrifices, nothing is consumed",
-    "status": "over-claimed",
-    "note": "The conclusion is right; the supporting sentence is false as written. Grepping the 99 for 'sacrifice': Sakura-Tribe Elder ('Sacrifice this creature: search your library for a basic land'), Caustic Caterpillar ('{1}{G}, Sacrifice this creature'), Sylvan Safekeeper ('Sacrifice a land'), Elvish Reclaimer ('{2}, {T}, Sacrifice a land') and Tireless Provisioner's Food/Treasure tokens. Sakura-Tribe Elder's sacrifice is the mechanism behind this model's own lines[1]. 'No sacrifice THEME, so no fodder stage' is defensible; 'nothing sacrifices' is not."
-   },
-   {
-    "where": "stages[5]",
-    "claim": "the protection stage, evidenced by stack 004 and city-3",
-    "status": "over-claimed",
-    "note": "Stack 004's scenario names Fecundity, Radagast, Scute Swarm, Toski and Wood Elves — none of the stage's eight cards. So every member of this stage is evidenced by a city (a location) plus oracle text, and no interaction involving Guardian Augmenter, Saryth, Sylvan Safekeeper, Heroic Intervention, Tyvar's Stand, Veil of Summer, Inspiring Call or Warg Tactics is verified anywhere in this deck. The oracle claims I checked are accurate (Guardian Augmenter: Flash + 'Commanders you control have hexproof'; Saryth: other untapped creatures hexproof, other tapped creatures deathtouch — the 'other' qualifier is dropped, which matters for Saryth herself). The honest form is either a city-only evidence block that says so, or an open_question for resolve-stack; the stack citation as written implies verification the stage does not have."
-   },
-   {
-    "where": "stages[6].single_point_of_failure",
-    "claim": "Craterhoof Behemoth is the wincon stage's single point of failure despite a nominal four finishers",
-    "status": "over-claimed",
-    "note": "Nothing tests the alternatives — no stack in the deck resolves Overwhelming Stampede, Pathbreaker Ibex or Return of the Wildspeaker — and the model's own map_disagreements[4] undercuts it: Mirkwood Pathmaker's power equals your land count (cards.json: P/T are '*'), so on the eight-land board where an 8-MV Craterhoof is castable, Overwhelming Stampede (MV 5, no discount available since it is a sorcery) pumps by ~8 and also grants trample, against Craterhoof's X = creature count (6 in stack 005). Stampede needs no haste either — it pumps creatures already on board, whereas Craterhoof needs its own. The audit prices the class at four cards and the model gives no evidence that three of them are non-functional. State it as 'Craterhoof is the largest and the only one that scales on count' (true) or open a stack; 'single point of failure' is a stronger word than the file earns."
-   },
-   {
-    "where": "lines[2]",
-    "claim": "from: fuel → to: conversion, via Beast Whisperer + Craterhoof Behemoth, verified_by 003",
-    "status": "unjustified",
-    "note": "The mechanism is verified — stack 003 step 1 has the Whisperer trigger resolving off the Craterhoof cast — but neither via card is in the `fuel` stage: this model files Beast Whisperer under conversion and Craterhoof under wincon. The arrow's stated endpoints are connected by no card in the line. `validate-engine` cannot see this (it only checks that the stack's scenario names the via cards), and the renderer draws the arrow between the two boxes. Correct endpoints are wincon → conversion."
-   },
-   {
-    "where": "lines[4]",
-    "claim": "from: fuel → to: output, via Ohran Frostfang + Toski + Llanowar Elves, verified_by 002",
-    "status": "unjustified",
-    "note": "The note is exactly right — stack 002's summary confirms deathtouch applying to already-declared attackers via 604.2/704.5h and 'you draw exactly 2 cards' — but no via card is in either endpoint stage: Frostfang and Toski are both in conversion, Llanowar Elves is in mana. Neither `fuel` nor `output` contains any of the three. The verified content is a conversion-side claim (combat damage becomes cards) that the arrow files as fuel→output."
-   },
-   {
-    "where": "lines[8]",
-    "claim": "from: output → to: ignition, via Chord of Calling + Radagast + Garenbrig + Beast Whisperer, verified_by 007",
-    "status": "mis-cited",
-    "note": "Stack 007's final_state verifies three NEGATIVES: Chord neither uses nor consumes Radagast's window, cannot be paid with Garenbrig's restricted mana, and fires no Beast Whisperer (Selvala is put, not cast). The stack therefore refutes any flow between these stages, while `lines[]` is the structure that says the engine flows from one stage to the next and is drawn as such. As a boundary statement this is the most valuable paragraph in the file; as a line entry it is a passing stack cited beneath an arrow it disproves. It belongs in the ignition stage's evidence (where the same stack is already cited correctly) or in a prose field, not in lines[]."
-   },
-   {
-    "where": "map_disagreements[4]",
-    "claim": "'Five cards multiply by the single largest power on your board'",
-    "status": "miscounted",
-    "note": "Four are then named: Overwhelming Stampede, Pathbreaker Ibex, Return of the Wildspeaker, Selvala. A grep of all 71 entries in cards.json for 'greatest power' returns exactly those four, so the enumeration is complete and the count is wrong (Selvala contributes two abilities, not two cards; Mirkwood Pathmaker is excluded by the sentence's own construction as the setter). One imprecision inside it: Return of the Wildspeaker reads 'greatest power among NON-HUMAN creatures you control' and the deck runs three Humans — the model knows this (proposed_goldfish_edits[4] says so) and drops the qualifier here. Selvala's draw gate is also 'greater than EACH OTHER creature's power', i.e. it compares against opponents' creatures too, which makes the suppression worry in open_questions[2] stronger than stated, not weaker."
-   },
-   {
-    "where": "map_disagreements[4]",
-    "claim": "the greatest-power coupling 'appears in no declared component and in no city ... the largest thing in this deck that neither the map nor the goldfish declaration knows about'",
-    "status": "contradicts-artifact",
-    "note": "The axis is REAL — I verified every text, including Mirkwood Pathmaker's 'power and toughness are each equal to the number of lands you control' — and the 'no declared component' half is right (no goldfish target groups them). But the map does hold it: engine-facts map.cities city-0 THE WIDE BOARD contains Overwhelming Stampede, Pathbreaker Ibex, Return of the Wildspeaker AND Mirkwood Pathmaker; only Selvala (city-1 MANA ON LEGS) strays. That is 4 of 5 in one city — by this model's own coherence law (map_disagreements[0]: coherent exactly when the defining property is printed on the members) it is close to coherent, since 'greatest power among creatures you control' IS printed on three of them. Rewrite as 'no declared component knows about it, and the map has it four-fifths right'."
-   },
-   {
-    "where": "proposed_goldfish_edits[0]",
-    "claim": "replace the one-body proxy with 'the finisher plus four other bodies — the threshold stack 003 actually measured', the proxy being 'three bodies looser than the verified kill condition'",
-    "status": "miscounted",
-    "note": "Finisher-plus-four-bodies is precisely the configuration stack 003 measured as NOT lethal: 36 damage, opponent alive at 4. The verified threshold is the finisher plus FIVE bodies — stack 003 ('a fifth pre-Craterhoof body (X=6, six attackers) would clear it') and stack 005 (five bodies + Craterhoof in the main phase = exactly 40 trample power, lethal to one seat). So the change prescribes the losing board, and the proxy is four bodies looser than the kill condition, not three. The diagnosis behind the edit is the most valuable thing in the file — the only kill rate this deck has (40.2%) is measured against a condition a passing stack says is insufficient — which is exactly why the number in it has to be right before a human applies it."
-   },
-   {
-    "where": "proposed_goldfish_edits[1]",
-    "claim": "the GAS label's 'all but Harmonize gate on power 4+' is wrong; six of ten carry no power gate",
-    "status": "supported",
-    "note": "Checked every member against cards.json oracle text: Garruk's Uprising 'power 4 or greater' (the only 4+); Elemental Bond 'power 3 or greater'; Tribute to the World Tree 'draw a card if its power is 3 or greater'; Selvala 'if its power is greater than each other creature's power'; Beast Whisperer 'whenever you cast a creature spell'; Fecundity 'whenever a creature dies'; Toski 'combat damage to a player'; Glademuse 'whenever a player casts a spell, if it's not their turn'; Ohran Frostfang combat damage; Harmonize a flat draw three. The membership is right and the parenthetical is wrong exactly as claimed."
-   },
-   {
-    "where": "proposed_goldfish_edits[2]",
-    "claim": "the artifact/enchantment breadth component names seven cards where the deck holds eight — add Ravenous Sailback",
-    "status": "supported",
-    "note": "Verified both halves. goldfish_targets.json's component lists exactly seven: Caustic Caterpillar, Nantuko Vigilante, Wickerbough Elder, Boseiju, Beast Within, Pick Your Poison, Indrik Stomphowler. Ravenous Sailback is in the 99 and reads 'When this creature enters, choose one — this creature gains haste; or destroy target artifact or enchantment', which is the measured function. I also checked for a ninth: grepping the 99 for 'artifact or enchantment' and 'destroy target artifact' returns only those eight, and Collector Ouphe ('Activated abilities of artifacts can't be activated') is correctly excluded as a disabler. Also correct that Sailback is a creature and therefore arrives through the window, unlike Beast Within or Pick Your Poison."
-   },
-   {
-    "where": "proposed_goldfish_edits[3]",
-    "claim": "the SELVALA label's 'no functional backup exists in the 99' should record the Chord route, verified in stack 007",
-    "status": "supported",
-    "note": "Stack 007's final_state verifies it: Chord at X=3 puts Selvala onto the battlefield at instant speed (X must be at least 3 because her mana value is 3), and she can tap for mana on your following turn. The label does deny what a passing stack demonstrates, and the edit correctly leaves the 12.3% hypergeometric alone. Incomplete rather than wrong on one point: Fauna Shaman is a second route (discard a creature card, search your library for a creature card) and is the other member of the declared TUTOR component; the amended note should name both."
-   },
-   {
-    "where": "proposed_goldfish_edits[4]",
-    "claim": "Return of the Wildspeaker is not interchangeable with Craterhoof: +3/+3 flat, no trample, non-Human only (three Humans in the deck), modal with a draw half",
-    "status": "supported",
-    "note": "cards.json: 'Choose one — Draw cards equal to the greatest power among non-Human creatures you control; or Non-Human creatures you control get +3/+3 until end of turn' — flat, no trample, non-Human on BOTH modes. Type lines confirm exactly three Humans: Eternal Witness, Saryth and Sylvan Safekeeper. One point that strengthens the edit and is missing from it: Radagast's discount is creature-spell-only, so Overwhelming Stampede (sorcery, MV 5) and Return (instant, MV 5) can never use the window, while Craterhoof and Pathbreaker Ibex can — a second reason the four are not one class. Note this finding is `supported` while the related SPOF claim in stages[6] is not: 'not interchangeable' is earned, 'single point of failure' is not."
-   }
-  ]
- }
 }
