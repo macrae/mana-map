@@ -773,13 +773,30 @@ Empire") and the renderer does the rest.
 | `pilot-tip` | Actionable advice | Card image + slug + one sentence |
 | `fast-facts` | Spec sheets | Label/value pairs, tabular figures |
 | `power-meter` | Any rate from ◆ data | Segmented bar + printed percentage |
+| `coach-gauge` | Any ★ judgment on a scale | Five stars, no number, labelled whose read it is |
+| `stat-slab` | The issue's signature number | Full-width, stated once, cross-referenced after |
 | `callout-step` | Numbered play sequences | Number + caps mini-headline + 1–3 sentences |
-| `threat-box` | Matchup archetypes | Name, board, your outs, threat meter |
+| `threat-box` | Matchup archetypes | Name, board, your outs, `coach-gauge` |
 | `scenario-box` | Board states | Tinted panel, monospace board list |
 | `dossier-file` | Judge's Desk cases | Manila, tab, stamp, typewriter quotes |
 | `map-key` | Icon legends | ⚡ mana · 🜲 storm · ⛃ Treasure · ♥ life |
 | `pull-quote` | Rhythm breathers | Large oblique display type |
 | `folio` | Page footer | `DEPARTMENT | MANA MAP · VOL. 001` |
+
+**`power-meter` versus `coach-gauge` is a tier claim, not a style choice** (§10). A
+printed percentage says a simulation produced it. Threat level never was one: Know
+Your Enemy admits in the same spread that zero games have been played, and shipping
+"Threat level 60%" next to that admission gives a young reader a number they cannot
+question and an older one a number nobody could have measured. Judgments on a scale
+take stars and say whose read they are. Threat entries carry `level` (1–5), not a
+`rate`. If a figure here ever becomes genuinely derived, it moves to a `power-meter`
+under Ledger's byline — the component is the claim.
+
+**`stat-slab` runs the issue's signature number ONCE.** Vol. 009 found that 36 lands
+is not 40 and then said so in six departments — Command Zone, Game Plan, The 99,
+What's Your Play, The Kill and Table Manners — which sands the best fact in the issue
+flat by repetition. State it full-width, once, at the moment it lands hardest; every
+later department refers back to it rather than re-arguing it.
 | `tax-ladder` | Command Zone only | Successive recast costs |
 | `artist-gallery` | Featured Artist only | Card grid with printing credits and foil sheen |
 

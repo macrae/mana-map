@@ -226,6 +226,25 @@ a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
                display:flex; gap:2px; padding:2px; }
 .meter-seg { flex:1; background:#e4ded1; }
 .meter-seg.on { background:linear-gradient(180deg,var(--y2k-blue),var(--y2k-violet)); }
+/* The signature number. Full-bleed within the column, and big enough that a reader
+   flipping past stops — which is the whole job, and the reason it may appear once. */
+.stat-slab { margin:26px 0; padding:22px 18px; text-align:center; color:#fff;
+  background:linear-gradient(160deg,var(--ink),#2a2440 62%,var(--y2k-violet));
+  border:3px solid var(--ink); box-shadow:6px 6px 0 rgba(0,0,0,.30); }
+.stat-slab .ss-figure { font-family:var(--display); font-size:clamp(3.4rem,13vw,6.2rem);
+  line-height:.86; letter-spacing:-.02em; text-shadow:4px 4px 0 rgba(0,0,0,.42); }
+.stat-slab .ss-label { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.16em; font-size:.9rem; margin-top:12px; color:var(--paper); }
+.stat-slab .ss-note { font-size:.82rem; margin-top:9px; opacity:.82;
+  max-width:48ch; margin-left:auto; margin-right:auto; }
+/* The ★ gauge. Deliberately unlike .meter: a bar reads as measurement, and this
+   is a judgment. Gold, not the data blue/violet ramp. */
+.coach-gauge { display:flex; align-items:center; gap:10px; margin:11px 0; }
+.coach-gauge .cg-label { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.06em; font-size:.72rem; color:var(--ink); }
+.coach-gauge .cg-stars { letter-spacing:.12em; font-size:1.05rem; line-height:1; }
+.coach-gauge .cg-star { color:#d8d2c4; }
+.coach-gauge .cg-star.on { color:var(--tier-coach); text-shadow:1px 1px 0 rgba(0,0,0,.28); }
 
 .callout { display:grid; grid-template-columns:46px 1fr; gap:14px; margin:16px 0;
            align-items:start; }
@@ -494,11 +513,65 @@ def callout(n, title, text, esc_fn=esc):
     )
 
 
-def threat_box(name, meter_label, rate, body_html):
+# A named constant, not an inline literal: `coach_gauge` escapes its own label, so
+# pre-escaping it here rendered "COACH&#x27;S READ" on the page — and the obvious
+# fix (a backslash-escaped apostrophe inside the f-string) is a SyntaxError on
+# Python 3.10, which is the version this project is pinned to.
+COACH_READ = "Coach's read"
+
+
+def stat_slab(figure, label, note=""):
+    """The issue's signature number, full width, once.
+
+    Vol. 009's best finding — 36 lands is not 40 — appeared in six departments.
+    Repetition does not emphasise a fact; it wears it down, and by the third
+    restatement the reader is skipping the sentence that contains it. Print it
+    once at the size it deserves and let every later mention refer back.
+
+    `figure` is set as display type and is never escaped into a paragraph: it is a
+    number or a very short phrase ("36", "42%", "4 WINDOWS"), not a sentence.
+    """
+    return (
+        '<div class="stat-slab">'
+        f'<div class="ss-figure">{esc(figure)}</div>'
+        f'<div class="ss-label">{esc(label)}</div>'
+        + (f'<div class="ss-note">{esc(note)}</div>' if note else "")
+        + "</div>"
+    )
+
+
+def coach_gauge(label, level):
+    """A ★ judgment on a five-point scale. NOT a rate, and it must not look like one.
+
+    `power_meter` prints a percentage because it renders ◆ figures a simulation
+    produced. Threat level is not one of those: it is the Coach's read, and Know
+    Your Enemy says out loud in the same spread that zero games have been played.
+    Rendering it through the data component published "Threat level 60%" beside
+    that admission — a reader young enough to be the target audience does not parse
+    the hedge, and one old enough sees a number nobody could have measured.
+
+    Five stars, no decimals, and the label says whose opinion it is. If a figure
+    here is ever genuinely derived, it belongs in a `power_meter` under Ledger's
+    byline instead — the component is the tier claim (STYLEv3 §10).
+    """
+    n = max(1, min(5, int(round(level))))
+    stars = "".join(f'<span class="cg-star{" on" if i < n else ""}">★</span>'
+                    for i in range(5))
+    return (
+        f'<div class="coach-gauge"><div class="cg-label">{esc(label)}</div>'
+        f'<div class="cg-stars" role="img" aria-label="{n} out of 5">{stars}</div>'
+        f"</div>"
+    )
+
+
+def threat_box(name, meter_label, level, body_html):
     return (
         f'<div class="threat-box"><div class="tb-head"><span>{esc(name)}</span>'
         f"<span>{esc(meter_label)}</span></div>"
-        f'<div class="tb-body">{power_meter("Threat level", rate)}{body_html}</div></div>'
+        # Plain apostrophe: `coach_gauge` escapes its label, so pre-escaping it here
+        # produced a literal "COACH&#x27;S READ" on the page.
+        f'<div class="tb-body">{coach_gauge(COACH_READ, level)}'
+        f"{body_html}</div></div>"
     )
 
 

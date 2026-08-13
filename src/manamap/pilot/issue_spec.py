@@ -164,6 +164,10 @@ COMPONENTS = {
     "violator", "pilot-tip", "fast-facts", "power-meter", "callout-step",
     "threat-box", "scenario-box", "dossier-file", "pull-quote",
     "folio", "tax-ladder", "artist-gallery",
+    # `coach-gauge` is `power-meter`'s ★ counterpart: the same shape of claim on a
+    # five-point scale with no printed percentage, because a percentage asserts a
+    # measurement. `stat-slab` runs the issue's signature number once, full width.
+    "coach-gauge", "stat-slab",
 }
 
 # Issue identity fields required in data/decks/<slug>/issue.json.
@@ -187,4 +191,9 @@ FURNITURE_KEYS = ("pilot_tips", "captions", "callouts", "pull_quote")
 
 MASTHEAD = "MANA MAP"
 SERIES_SLUG = "PILOT'S MANUAL"
+# The same words set in running case, for the places that are not a cover: the
+# <title> tag, og:title, the newsstand. Authored rather than derived because
+# `"PILOT'S MANUAL".title()` is `"Pilot'S Manual"` — Python capitalises after an
+# apostrophe, and a title-cased constant is cheaper than remembering that.
+SERIES_TITLE = "Pilot's Manual"
 STANDING_TAGLINE = "THE INSIDE SOURCE FOR YOUR COMMAND ZONE"

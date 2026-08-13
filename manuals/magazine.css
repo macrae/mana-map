@@ -187,6 +187,25 @@ a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
                display:flex; gap:2px; padding:2px; }
 .meter-seg { flex:1; background:#e4ded1; }
 .meter-seg.on { background:linear-gradient(180deg,var(--y2k-blue),var(--y2k-violet)); }
+/* The signature number. Full-bleed within the column, and big enough that a reader
+   flipping past stops — which is the whole job, and the reason it may appear once. */
+.stat-slab { margin:26px 0; padding:22px 18px; text-align:center; color:#fff;
+  background:linear-gradient(160deg,var(--ink),#2a2440 62%,var(--y2k-violet));
+  border:3px solid var(--ink); box-shadow:6px 6px 0 rgba(0,0,0,.30); }
+.stat-slab .ss-figure { font-family:var(--display); font-size:clamp(3.4rem,13vw,6.2rem);
+  line-height:.86; letter-spacing:-.02em; text-shadow:4px 4px 0 rgba(0,0,0,.42); }
+.stat-slab .ss-label { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.16em; font-size:.9rem; margin-top:12px; color:var(--paper); }
+.stat-slab .ss-note { font-size:.82rem; margin-top:9px; opacity:.82;
+  max-width:48ch; margin-left:auto; margin-right:auto; }
+/* The ★ gauge. Deliberately unlike .meter: a bar reads as measurement, and this
+   is a judgment. Gold, not the data blue/violet ramp. */
+.coach-gauge { display:flex; align-items:center; gap:10px; margin:11px 0; }
+.coach-gauge .cg-label { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.06em; font-size:.72rem; color:var(--ink); }
+.coach-gauge .cg-stars { letter-spacing:.12em; font-size:1.05rem; line-height:1; }
+.coach-gauge .cg-star { color:#d8d2c4; }
+.coach-gauge .cg-star.on { color:var(--tier-coach); text-shadow:1px 1px 0 rgba(0,0,0,.28); }
 
 .callout { display:grid; grid-template-columns:46px 1fr; gap:14px; margin:16px 0;
            align-items:start; }

@@ -44,6 +44,7 @@ from manamap.pilot.design import (
     folio,
     pilot_tip,
     power_meter,
+    stat_slab,
     printing_credit,
     pull_quote,
     threat_box,
@@ -58,6 +59,7 @@ from manamap.pilot.issue_spec import (
     MASTHEAD,
     MASTHEAD_COLUMNISTS,
     SERIES_SLUG,
+    SERIES_TITLE,
     STANDING_TAGLINE,
 )
 
@@ -303,6 +305,13 @@ def dept_close(dept_id, issue):
 def dept_furniture(dept, cards_by_name):
     """Render the plan's furniture for a department: tips, callouts, pull quote."""
     out = []
+    # The signature number leads the department that earns it, before any callout —
+    # it is the thing the reader is meant to stop on, and furniture that follows it
+    # reads as elaboration rather than competition.
+    slab = dept.get("stat_slab")
+    if slab:
+        out.append(stat_slab(slab.get("figure", ""), slab.get("label", ""),
+                             slab.get("note", "")))
     for step in dept.get("callouts", []):
         out.append(callout(step.get("n", "•"), step.get("title", ""),
                            step.get("text", ""), esc_fn=esc_x))
@@ -743,9 +752,16 @@ def render_know_your_enemy(issue, plan, prose_doc, cards_by_name):
     dept = plan_dept(plan, "know-your-enemy")
     boxes = []
     for entry in dept.get("threats", []):
+        # `level` is the field the editor writes now: a 1–5 read, on a scale that
+        # cannot be mistaken for a measurement. `rate` is the old 0..1 form, kept
+        # readable so existing plans render rather than silently flattening to a
+        # default — it converts, it never prints.
+        level = entry.get("level")
+        if level is None:
+            level = round(float(entry.get("rate", 0.5)) * 5)
         boxes.append(threat_box(
             entry.get("archetype", ""), entry.get("meter_label", "Threat"),
-            float(entry.get("rate", 0.5)),
+            level,
             f'<p>{esc_x(entry.get("read", ""))}</p>'
             f'<p><b>Your outs:</b> {esc_x(", ".join(entry.get("outs", [])))}</p>',
         ))
@@ -1234,7 +1250,12 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
     decisions = decisions or []
     volume = issue["volume"]
 
-    title = f"{issue['deck_name']} — Pilot's Manual Vol. {volume:03d}"
+    # Masthead first, series second — the order printed on the cover. The tab and
+    # the og:title were leading with the series slug while the page itself is
+    # branded MANA MAP, so a shared link named a magazine the reader would not find
+    # on the page. Both are built from `issue_spec`, never re-typed here.
+    title = (f"{MASTHEAD} — {issue['deck_name']} · "
+             f"{SERIES_TITLE} Vol. {volume:03d}")
     # art_crop for the same reason the cover uses it: a social preview is
     # magazine photography, not a card scan.
     og_image = (commander.get("art_crop") or commander.get("image")) if commander else ""
