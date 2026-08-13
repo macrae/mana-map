@@ -165,3 +165,19 @@ details.case .body { padding: 0 14px 14px; }
 
 .status { color: var(--ink-soft); font-family: var(--condensed); letter-spacing: .1em;
   text-transform: uppercase; font-size: 12px; padding: 40px 0; }
+
+/* ── The constellation (deck dossier) ────────────────────────────────────
+   Same artifact and same palette as the printed map in the magazine; the one
+   thing the page adds is that every point is hoverable. `.dc-hit` is a
+   transparent disc wider than the dot, because a 4px target is not a target. */
+.deck-constellation { width: 100%; height: auto; display: block;
+  border: 1px solid var(--line, #2a2a35); border-radius: 6px; background: #0B0A14; }
+.dc-label { font-family: "Oswald", "Arial Narrow", sans-serif; font-size: 19px;
+  font-weight: 700; letter-spacing: 1.4px; }
+.dc-card .dc-hit { cursor: help; }
+.dc-card:hover circle:first-child { r: 8; }
+.dc-legend { list-style: none; padding: 0; margin: 14px 0 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px 18px; }
+.dc-legend li { display: block; font-size: .9rem; line-height: 1.45; }
+.dc-legend i { display: inline-block; width: 11px; height: 11px; border-radius: 3px;
+  margin-right: 7px; vertical-align: middle; }

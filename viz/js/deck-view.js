@@ -19,7 +19,8 @@
     issue: 'issue.json', bracket: 'bracket_report.json',
     goldfish: 'goldfish_metrics.json', mana: 'mana_analysis.json',
     considering: 'considering.json', tutors: 'tutor_guide.json',
-    cards: 'cards.json', buildPlan: 'build_plan.json'
+    cards: 'cards.json', buildPlan: 'build_plan.json',
+    deckMap: 'deck_map.json'
   };
 
   function esc(v) {
@@ -267,6 +268,125 @@
                  ['data'], 'var(--slime-green)', body);
   }
 
+
+  // ── The constellation ────────────────────────────────────────────────
+  //
+  // The same `deck_map.json` the magazine renders, drawn the same way and in the
+  // SAME COLOURS — `CITY_INK` here is a transcription of `pilot/design.py`'s list,
+  // and the two must not drift, or the printed map and the site disagree about
+  // which territory is which while both look correct.
+  //
+  // What the page adds over the printed one is the thing print cannot do: hover a
+  // point and the card tells you its name and its city. That was the founder's
+  // first requirement for putting the map on the site at all.
+  var CITY_INK = [
+    ['#E4007C', '#FF66B8'], ['#1B4FD8', '#6E93F5'], ['#3FBF3F', '#8BE28B'],
+    ['#C8A03C', '#EBD08A'], ['#7B2D8B', '#B77BC4'], ['#E4002B', '#FF7A93'],
+    ['#0FA3A3', '#68DADA']
+  ];
+
+  function constellationPanel(d) {
+    var map = d.deckMap;
+    if (!map || !map.cards || !map.cards.length) return '';
+    var W = 900, H = 560, PAD = 66;
+    var xs = map.cards.map(function (c) { return c.x; });
+    var ys = map.cards.map(function (c) { return c.y; });
+    var minX = Math.min.apply(null, xs), maxX = Math.max.apply(null, xs);
+    var minY = Math.min.apply(null, ys), maxY = Math.max.apply(null, ys);
+    var spanX = (maxX - minX) || 1, spanY = (maxY - minY) || 1;
+    var k = Math.min((W - 2 * PAD) / spanX, (H - 2 * PAD) / spanY);
+    var ox = (W - spanX * k) / 2 - minX * k, oy = (H - spanY * k) / 2 - minY * k;
+    var at = function (c) { return [c.x * k + ox, c.y * k + oy]; };
+    var ink = function (i, shade) { return CITY_INK[i % CITY_INK.length][shade || 0]; };
+
+    var parts = ['<svg class="deck-constellation" viewBox="0 0 ' + W + ' ' + H + '">',
+      '<defs><filter id="dcb" x="-30%" y="-30%" width="160%" height="160%">' +
+      '<feGaussianBlur stdDeviation="18"/></filter></defs>',
+      '<rect width="' + W + '" height="' + H + '" fill="#0B0A14"/>'];
+
+    // Density: one soft disc per neighbourhood, at its centroid. A hull in SVG
+    // that the page also has to hit-test is not worth the code — the disc reads
+    // the same at this size and every point stays independently hoverable.
+    var lobes = {};
+    map.cards.forEach(function (c) {
+      var key = c.city + ':' + (c.hood || 0);
+      (lobes[key] = lobes[key] || []).push(at(c));
+    });
+    parts.push('<g filter="url(#dcb)" opacity="0.5">');
+    Object.keys(lobes).forEach(function (key) {
+      var pts = lobes[key];
+      var cx = pts.reduce(function (a, p) { return a + p[0]; }, 0) / pts.length;
+      var cy = pts.reduce(function (a, p) { return a + p[1]; }, 0) / pts.length;
+      var r = 34 + Math.max.apply(null, pts.map(function (p) {
+        return Math.sqrt((p[0] - cx) * (p[0] - cx) + (p[1] - cy) * (p[1] - cy));
+      }));
+      parts.push('<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) +
+                 '" r="' + Math.min(r, 150).toFixed(1) + '" fill="' +
+                 ink(+key.split(':')[0]) + '"/>');
+    });
+    parts.push('</g>');
+
+    (map.edges || []).forEach(function (e) {
+      var a = map.cards[e.a], b = map.cards[e.b];
+      if (!a || !b) return;
+      var pa = at(a), pb = at(b), same = a.city === b.city;
+      parts.push('<line x1="' + pa[0].toFixed(1) + '" y1="' + pa[1].toFixed(1) +
+        '" x2="' + pb[0].toFixed(1) + '" y2="' + pb[1].toFixed(1) + '" stroke="' +
+        (same ? ink(a.city, 1) : '#8A93B5') + '" stroke-opacity="' +
+        (same ? 0.36 : 0.2) + '" stroke-width="1"/>');
+    });
+
+    map.cards.forEach(function (c) {
+      var p = at(c), r = c.commander ? 6 : (c.verified ? 5.5 : 4);
+      // <title> is the hover, and it costs nothing: no JS, no tooltip layer, and
+      // it survives with scripting off. The city name travels with the card, which
+      // is the association the whole page exists to teach.
+      var city = (map.regions || []).filter(function (g) {
+        return g.level === 0 && g.id === 'city-' + c.city; })[0] || {};
+      parts.push('<g class="dc-card"><circle cx="' + p[0].toFixed(1) + '" cy="' +
+        p[1].toFixed(1) + '" r="' + r + '" fill="' +
+        (c.commander ? '#FFD800' : ink(c.city, 1)) + '"' +
+        (c.commander ? ' stroke="#FFD800" stroke-width="2.5" fill-opacity="1"' :
+         (c.verified ? ' stroke="#fff" stroke-width="1.5"' : '')) +
+        '/><circle class="dc-hit" cx="' + p[0].toFixed(1) + '" cy="' +
+        p[1].toFixed(1) + '" r="11" fill="transparent"><title>' + esc(c.name) +
+        ' — ' + esc(city.label || city.fallback || '') +
+        (c.verified ? ' · in a verified line' : '') + '</title></circle></g>');
+    });
+
+    (map.regions || []).filter(function (g) { return g.level === 0; })
+      .forEach(function (g) {
+        var members = map.cards.filter(function (c) {
+          return 'city-' + c.city === g.id; }).map(at);
+        if (!members.length) return;
+        var cx = members.reduce(function (a, p) { return a + p[0]; }, 0) / members.length;
+        var cy = members.reduce(function (a, p) { return a + p[1]; }, 0) / members.length;
+        var i = +g.id.split('-').pop();
+        parts.push('<text x="' + cx.toFixed(1) + '" y="' + cy.toFixed(1) +
+          '" text-anchor="middle" class="dc-label" stroke="#0B0A14" stroke-width="5" ' +
+          'paint-order="stroke" fill="' + ink(i, 1) + '">' +
+          esc((g.label || g.fallback || '').toUpperCase()) + '</text>');
+      });
+    parts.push('</svg>');
+
+    var legend = (map.regions || []).filter(function (g) { return g.level === 0; })
+      .sort(function (a, b) { return b.count - a.count; })
+      .map(function (g) {
+        var i = +g.id.split('-').pop();
+        return '<li><i style="background:' + ink(i, 1) + '"></i><b>' +
+          esc(g.label || g.fallback) + '</b> <span class="ev">' + g.count +
+          ' cards' + (g.verified_count ? ' · ✓' + g.verified_count : '') + '</span>' +
+          (g.gloss ? '<br><span class="ev">' + esc(g.gloss) + '</span>' : '') + '</li>';
+      }).join('');
+
+    var body = '<p class="ev">The deck re-laid-out from its own cards in the 128-dim ' +
+      'ability space, then clustered. Hover any point for the card and its city. ' +
+      'Positions are LOCAL to this deck — they are not positions on the 34,890-card ' +
+      'atlas.</p>' + parts.join('') + '<ul class="dc-legend">' + legend + '</ul>';
+    return panel('constellation', 'The Constellation',
+                 'What shape is this deck?', ['data'], 'var(--hot-magenta)', body);
+  }
+
   // ── Assembly ─────────────────────────────────────────────────────────
 
   function render(slug, d) {
@@ -293,7 +413,7 @@
     document.getElementById('lensLink').href = 'index.html?deck=' + encodeURIComponent(slug);
 
     var html = [
-      bracketPanel(d), manaPanel(d), goldfishPanel(d),
+      constellationPanel(d), bracketPanel(d), manaPanel(d), goldfishPanel(d),
       tenPanel(d), tutorPanel(d), buildPlanPanel(d), stacksPanel(d)
     ].filter(Boolean).join('');
     document.getElementById('panels').innerHTML = html;
