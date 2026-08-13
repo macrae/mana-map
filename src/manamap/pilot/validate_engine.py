@@ -61,6 +61,22 @@ ARTIFACT = "engine.json"
 STAGES = ["mana", "ignition", "fuel", "fodder", "conversion",
           "output", "protection", "wincon"]
 
+# A `what_it_does` longer than this is rejected, and the number is measured rather
+# than chosen. Radagast's `output` stage reached 2,554 characters (~13 sentences)
+# by accreting self-correction across revisions, and it then FAILED FOUR
+# CONSECUTIVE REVISIONS — each one fixed the defect it was sent to fix and
+# introduced a new one somewhere else in the same paragraph. The other six stages
+# ran 836–1,645 characters and were never revised at all.
+#
+# That is the signal: a field is only as revisable as it is short. Past roughly a
+# page, an agent asked to change one clause cannot hold the rest of the argument
+# in view, and the failure mode is not sloppiness — it is a genuinely hard editing
+# task disguised as a small one. 1,800 sits above every stage that has proved
+# revisable here and below the one that has not, which is the most this evidence
+# supports; it is not fitted to make current data pass, since the current data
+# fails it.
+MAX_WHAT_IT_DOES = 1800
+
 AGREEMENTS = {"full", "partial", "cuts-across"}
 EVIDENCE_KINDS = {"stack", "combo", "role", "city"}
 CRITIC_STATUSES = {"supported", "unjustified", "miscounted", "mis-cited",
@@ -121,8 +137,16 @@ def validate(slug, doc=None):
             errors.append(f"{where}: label {label!r} is already used")
         seen_label.add(label.upper())
 
-        if not (stage.get("what_it_does") or "").strip():
+        what = (stage.get("what_it_does") or "").strip()
+        if not what:
             errors.append(f"{where}: what_it_does is empty")
+        elif len(what) > MAX_WHAT_IT_DOES:
+            errors.append(
+                f"{where}: what_it_does is {len(what)} characters (limit "
+                f"{MAX_WHAT_IT_DOES}) — split the argument or cut it. A field this "
+                f"long stops being revisable: the one that reached 2,554 here "
+                f"failed four consecutive revisions, each fixing its named defect "
+                f"and introducing a different one.")
 
         cards = stage.get("cards") or []
         if not cards:

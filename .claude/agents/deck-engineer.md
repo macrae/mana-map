@@ -66,6 +66,13 @@ Every card lands in exactly one stage, or in `unassigned` with a reason.
 Not every deck has all eight. A deck with no sacrifice theme has no `fodder`, and
 saying so is a finding — do not manufacture a stage to fill the table.
 
+**Keep `what_it_does` short, and the reason is not style.** `validate-engine` caps it
+at 1,800 characters. One stage here reached 2,554 by accreting self-correction across
+revisions and then failed four consecutive ones — each fixed the defect it was sent to
+fix and introduced a new one elsewhere in the same paragraph. A field is only as
+revisable as it is short. Put the argument in `evidence` notes and the uncertainty in
+`open_questions`; do not narrate your own previous drafts inside the field.
+
 **`ignition` is the one to get right.** It is the stage everything else waits on,
 it is usually thin, and it is usually the thing a pilot misidentifies. Say what
 has to resolve before the deck is doing its thing, and price it from the brief.
@@ -110,7 +117,7 @@ Write `data/decks/<slug>/.agent-out/deck-engineer.json`, return the PATH and a
   "stages": [{
     "stage": "ignition",
     "label": "THE FIRST WINDOW",
-    "what_it_does": "One or two sentences: what has to happen, and what it unlocks.",
+    "what_it_does": "What has to happen and what it unlocks. Under 1800 characters — the validator rejects longer.",
     "cards": ["Radagast of Rhosgobel"],
     "single_point_of_failure": "Radagast of Rhosgobel",
     "evidence": [

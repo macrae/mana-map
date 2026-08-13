@@ -75,7 +75,7 @@ Run `deck-status` per deck for the live picture. As of this writing:
 | `edgar-vampires` | 006 | 7/9 | 4 | named | — |
 | `gishath` | 007 | 5/5 | 4 | named | — |
 | `yawgmoth-swarm` | 008 | 11/14 | 4 | named | — |
-| `radagast` | 009 | 7/7 | 3 | named | **yes** |
+| `radagast` | 009 | 7/7 | 3 | named | **yes, `pass`** |
 
 *Stacks* is checker-passed / total; a failed artifact is kept as an open question and never
 publishes. **Every deck now carries a bracket target and a named constellation.** Only
@@ -118,10 +118,10 @@ founder's framing is recorded verbatim in `docs/magazine-feedback-2026-08-13.md`
 engine doc is scaffolding each columnist reads and interprets in character, never printed as
 prose. Four parts, in order:
 
-1. **Close the engine loop.** Radagast's `engine.json` carries a `critic: fail` — two
-   clauses in one sentence of `stages[4]` (it cites CR 117.1a where stack 007 cites 304.1,
-   and says the window is "only through Radagast", contradicting its own Yeva argument).
-   The loop is at 3/3, so this is a scoped partial revision. **Not cache-recorded**, correctly.
+1. ~~**Close the engine loop.**~~ **DONE.** Two scoped partial revisions after the 3/3 loop;
+   critic verdict **`pass`**, 5 of 5 findings supported and each re-derived from the
+   artifacts rather than accepted. `deck-engine` is cache-recorded and
+   `deck-status radagast` reads **17/17**. What it cost is recorded in §9.
 2. **A fourth persona** — an editor-in-chief with **no tier and no badge**; the three
    columnists own ◆ ✓ ★ and a fourth that owned one would break §10.
 3. **Two departments**: `editors-letter` (cheap, the magazine-editor writes it) and
@@ -224,6 +224,18 @@ outlier-bearing data it strands strays exactly as average does. The test file as
 bound and documents why it **refuses** to assert the linkage: three attempts each came back
 narrower than the last, and a test asserting it would look like a fact about the algorithm
 while being a fact about one deck. CLAUDE.md is corrected too.
+
+**A second correction, from closing the engine loop.** `stages[4].what_it_does` failed
+**four consecutive revisions** — each fixed the defect it was sent to fix and introduced a
+new one. The cause was not the agent: the field had reached 2,554 characters by accreting
+narration of its own previous drafts, against 836–1,645 for the six stages that were never
+revised at all. **A field is only as revisable as it is short.** `validate-engine` now caps
+`what_it_does` at 1,800 characters, the charter says why, and the fifth revision — cut to
+1,704 by deleting draft narration rather than findings — passed. The limit is measured, not
+fitted: the data failed it when it was added.
+
+The step-0 gate earned itself the same day: `test_pilot_tracked_artifacts_validate.py`
+caught the tracked `engine.json` violating the new limit before anything else did.
 
 **Still owed:**
 
