@@ -30,7 +30,7 @@ builder from a written brief.
 [009 Radagast](https://macrae.github.io/mana-map/manuals/radagast.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-Scale: 42 `manamap pilot` subcommands, 18 top-level subcommands, 15 agents, 17 skills,
+Scale: 44 `manamap pilot` subcommands, 18 top-level subcommands, 16 agents, 17 skills,
 10 cache-gated routines, 17 magazine sections. Test counts live in `docs/testing.md`,
 which states the command that prints them — they change too often to restate elsewhere.
 

@@ -1012,6 +1012,7 @@ RECON_MAX_AGE_DAYS = 120
 # The diagnose loop's bound — doctor ⇄ skeptic, mirroring RESOLVE_MAX_ITERATIONS
 # and DECK_BUILD_MAX_ITERATIONS. A diagnosis that cannot satisfy the skeptic in
 # three passes is a finding about the deck's artifacts, not a reason to keep paying.
+ENGINE_MAX_ITERATIONS = 3
 DIAGNOSE_MAX_ITERATIONS = 3
 
 # Scoring weights. Sum to 1.0. Three deliberate departures from the prototype:
