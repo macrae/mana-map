@@ -677,6 +677,28 @@ def render_after_block(final):
             f'<dl class="branch">{rows}</dl></div>')
 
 
+"""A one-line HOLDING for the front of the book was tried here and removed.
+
+The editor's note is right — the front of book should give the verdict and send
+the argument to the back — and deriving that verdict from the first sentence of
+`final_state.summary` looked free: no re-planning, no new authored field, and the
+two could never contradict each other.
+
+It does not survive contact with the corpus. Measured across radagast's seven
+stacks, one is perfect ("The trap works."), and then: 003's first sentence is
+"Beast Whisperer draws you a card" — true, and NOT the holding, which is that 36
+damage is short of 40. 005 yields "VERDICTS. (1) LEGALITY: yes". 001, 006 and 007
+run past 150 characters because the summaries are built on colons and semicolons
+rather than sentences.
+
+A wrong verdict in the one department that exists for correctness is worse than a
+long right one, and the renderer may not summarise proof (STYLEv3 §5.1). A real
+holding needs an AUTHORED field on the stack, written by the resolver alongside
+the resolution it is a holding for — a schema change, not a rendering trick.
+Recorded so the next attempt starts from the measurement rather than the idea.
+"""
+
+
 def render_the_kill(issue, plan, stacks, prose_doc, cards_by_name):
     dept = plan_dept(plan, "the-kill")
     spreads = []
@@ -692,7 +714,6 @@ def render_the_kill(issue, plan, stacks, prose_doc, cards_by_name):
   <div class="body-copy">{intro}</div>
   {render_board_block(stack.get("scenario"))}
   <p><b>Result.</b> {esc(final.get("summary", ""))}</p>
-  {render_after_block(final)}
   <a class="dossier-pointer" href="#case-{esc(sid)}">
     Full dossier: Judge's Desk, Case A-{esc(sid)} →</a>
   <span style="margin-left:10px">{badge("verified")} cleared in
@@ -1190,6 +1211,7 @@ def render_judges_desk(issue, plan, stacks, cards_by_name):
   </summary>
   {question}
   <ol>{"".join(steps)}</ol>
+  {render_after_block(stack.get("resolution", {}).get("final_state", {}))}
   <p class="small"><a class="xref" href="#line-{esc(sid)}">↩ Back to this line in
     The Kill</a> · <a class="xref" href="#contents">↑ Contents</a></p>
 </details>""")
