@@ -21,6 +21,24 @@ WHAT IS DELIBERATELY NOT CHECKED, and why it will keep looking tempting:
 
   **Whether a stage's reading is right.** Not mechanically checkable, which is
   what `engine-critic` is for.
+
+  **Whether the cited stack SUPPORTS the claim, as opposed to merely naming its
+  cards.** This is the sharpest limit of the gate and it is worth stating exactly,
+  because the difference is invisible in the artifact. Two real examples from
+  radagast, both of which passed everything below and were caught only by a reader:
+
+    * a `mana -> wincon` line claiming "Castle Garenbrig pays for Craterhoof",
+      citing a stack that leaves Garenbrig UNTAPPED. Both cards are named in the
+      scenario, so every check here passes, and the arrow renders solid green —
+      proof, for a flow the stack shows not happening.
+    * a line citing a stack whose resolution verifies three NEGATIVES. The stack
+      passed, the cards are named, and it refutes the connection being drawn.
+
+  A checker-passed stack is evidence that a BOARD resolved a certain way. Reading
+  it as evidence that card A feeds card B is an inference, and inference is the
+  critic's job. Do not try to close this hole with string matching on resolution
+  prose: the same wrong line would survive a rephrase, and a check that catches
+  one wording is worse than an honest gap somebody knows about.
 """
 
 import json
