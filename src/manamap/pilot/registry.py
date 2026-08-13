@@ -25,6 +25,8 @@ PILOT_STEPS = [
      "Merge the cartographer's names into deck_map.json (names only)"),
     ("validate-engine", "manamap.pilot.validate_engine",
      "Form-check an engine model (stages, completeness, verified_by re-checked)"),
+    ("deck-status", "manamap.pilot.deck_status",
+     "Lifecycle completeness + staleness: is this deck finished, and is any of it stale?"),
     ("engine-facts", "manamap.pilot.engine_facts",
      "Deterministic engine brief: declaration + verified pairings + map scatter"),
     ("deck-map", "manamap.pilot.deck_map",
@@ -64,7 +66,7 @@ _DECK_COMMANDS = {
     "validate-issue", "cache-status", "cache-record", "cache-clear", "cache-rebless",
     "cache-snapshot", "cache-rerecord",
     "artist-credits",
-    "bracket-check", "build-deck", "validate-build", "deck-facts", "deck-audit", "deck-map", "engine-facts", "validate-engine", "merge-deck-map", "validate-deck-map", "deck-history",
+    "bracket-check", "build-deck", "validate-build", "deck-facts", "deck-audit", "deck-map", "deck-status", "engine-facts", "validate-engine", "merge-deck-map", "validate-deck-map", "deck-history",
     "mana-analysis", "validate-strategic-frame",
     "validate-considering", "validate-diagnosis", "validate-goldfish-targets",
     "diagnosis-report",
@@ -116,6 +118,8 @@ def add_pilot_parser(subparsers):
         if name == "cache-status":
             cmd.add_argument("--routine", default=None,
                              help="Routine id (e.g. writer-prose, stack:001); omit for all")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "deck-status":
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "engine-facts":
             # Both flags exist in `engine_facts.main` and neither was registered,
