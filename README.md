@@ -213,10 +213,211 @@ encoder stays frozen. They answer different questions and are not interchangeabl
 similarity — the *similar* relation, the walk and drill all read it whichever map is on screen.
 
 That split exists because the alternative was measured and was bad: when similarity followed
-the displayed map, the colour/type space was using 3.2 of its 128 dimensions and *Doubling
+the displayed map, the colour/type space was using 3.9 of its 128 dimensions and *Doubling
 Season*'s nearest neighbours came back as arbitrary green enchantments. `manamap
 eval-embeddings` (step 15) scores every space against a hand-authored golden set so a claim
 like that is a number rather than an opinion.
+
+## The embedding models
+
+*A technical overview. Code: `src/manamap/training/{model,train,train_ability}.py`,
+`src/manamap/ingest/{extract,preprocess}.py`, `src/manamap/analysis/eval_embeddings.py`.
+Every constant named below lives in `config.py`.*
+
+### The problem
+
+34,890 Magic cards, each a short piece of natural language plus a dozen structured
+attributes, into a metric space where "these two cards do the same job" is a nearest-neighbour
+query. There is no click-stream and no relevance judgements — supervision has to be
+manufactured from the cards themselves, which is most of what makes this interesting.
+
+### How a card is decomposed
+
+One card becomes nine parallel inputs. Nothing is learned end-to-end from raw text; the
+sentence encoder is frozen and everything else is a small learned table over an explicit
+feature.
+
+| block | shape | how it is built |
+|---|---|---|
+| frozen text | 384 | `all-MiniLM-L6-v2` over a synthesised sentence (below) |
+| supertype | 1 → 16 | `nn.Embedding(10, 16)` — Creature, Land, Instant… |
+| rarity | 1 → 8 | `nn.Embedding(7, 8)` |
+| colour identity | 1 → 32 / 8 | `nn.Embedding(33, ·)` over the 32 observed WUBRG subsets |
+| layout | 1 → 16 | `nn.Embedding(18, 16)` — normal, split, transform, adventure… |
+| continuous | 2 | normalised CMC; normalised EDHREC rank |
+| keywords | 50 | multi-hot over the 50 most frequent keywords |
+| mechanical tags | 33 | multi-hot, regex over oracle text (function model only) |
+| structured | 15 | power/toughness (3) + mana pips (6) + colour features (6) |
+
+Two details that are load-bearing rather than incidental:
+
+**The sentence is synthesised, and the card's name is deliberately excluded.**
+`build_embedding_text` emits `"{type_line}. Cost {mana_cost}. {P}/{T}. {oracle_text}.
+Keywords: {…}"`. The name used to lead the string and was buying similarity off shared
+tokens rather than shared function — *Rhystic Study* matched *White Rhystic Study* at 0.951,
+*Sol Ring* matched *Sisay's Ring*. A name is also a large fraction of a short card: *Sol
+Ring*'s entire text is eleven words, three of them the name. Dropping it moved held-out
+recall@10 from 0.187 to 0.248 and median rank from 159 to 129.
+
+**Continuous features use fixed scales, never per-run min-max.** EDHREC rank divides by a
+hardcoded 50,000, power/toughness by 15. A per-run normalisation makes the same card's
+features differ between pipeline runs, which silently destroys comparability between two
+runs' embeddings — this was a real bug.
+
+### Architecture
+
+A fusion MLP. Categorical blocks go through embedding tables, the two high-cardinality
+multi-hot blocks (keywords, mechanical tags) through `Linear + ReLU`, and everything is
+concatenated into one wide vector fed to a three-layer trunk:
+
+```
+concat[…] → Linear(d_in, 256) → ReLU → Dropout(0.1)
+          → Linear(256, 128)  → ReLU → Dropout(0.1)
+          → Linear(128, d_out)
+```
+
+**181,272 trainable parameters** for the layout model, **192,672** for the function model.
+That is small on purpose: the frozen 384-dim MiniLM output is the only component that needed
+scale, and it is amortised across every run.
+
+### The output split — the one piece of real design
+
+The layout model returns `F.normalize(x)`, 128 dims, and that is the whole story.
+
+The function model does something else. Its trunk emits 96 dims and a **separate
+`Linear(384, 32)` with no ReLU** projects the frozen text into the remaining 32. Each half
+is L2-normalised independently, then scaled by `√(1−W)` and `√W` with `W = 0.3`:
+
+```python
+learned = F.normalize(x) * sqrt(1 - W)
+text    = F.normalize(text_proj(text_emb)) * sqrt(W)
+return torch.cat([learned, text], dim=1)      # already unit-norm
+```
+
+Because the squared weights sum to 1, the concatenation is unit-norm and the dot product of
+two cards is **exactly**
+
+```
+sim(a, b) = 0.7 · cos_learned(a, b) + 0.3 · cos_text(a, b)
+```
+
+This exists because of a measured failure. The previous function model scored **0.093
+recall@10 against 0.187 for the frozen text it was built from** — training was subtractive,
+and the model had quietly learned to discard the only signal that was working. The split
+makes discarding it *structurally impossible*: the text's contribution is a fixed fraction
+set by architecture, not a fraction the optimiser is free to drive to zero. The rectifier is
+omitted from `text_proj` for the same reason — this half exists to preserve the text
+geometry, and a ReLU folds half of it away.
+
+### Objectives
+
+**Layout model — `TripletMarginLoss`, margin 0.3.** Positives are drawn from the same
+`(supertype, primary_colour)` group with two fallbacks; negatives must differ on *both*.
+This task is nearly trivial, which is the point — its only job is to give PaCMAP something
+with legible colour/type structure to project. Its effective dimensionality of 3.9/128 is
+not a defect for that job; it *is* the job.
+
+**Function model — symmetric in-batch InfoNCE, τ = 0.05.** The dataset yields
+`(anchor, positive)` pairs only; the batch supplies negatives.
+
+```python
+scores = (anchors @ positives.T) / temperature
+labels = torch.arange(len(scores))
+loss   = 0.5 * (cross_entropy(scores, labels) + cross_entropy(scores.T, labels))
+```
+
+At batch 256 that is **255 negatives per anchor for one forward pass**, against the old
+triplet loss's single mined negative. The replacement was diagnostic, not fashionable: a
+margin loss stops producing gradient the moment it is satisfied, which for a task this easy
+was around epoch 3, so nothing pressured the model to preserve structure *within* a class.
+
+### Positive mining
+
+With no labels, the positive-selection rule is effectively the loss function. Three tiers,
+per anchor:
+
+1. **Rarest specific role first.** A 53-role taxonomy (`ROLE_PATTERNS`) covers 72.6% of
+   cards at 1.62 specific roles each. Roles are sorted by group size ascending — two cards
+   sharing `doubler:tokens` (11 cards) say far more about each other than two sharing
+   `value:etb` (5,580), so the positive is spent on the anchor's most specific claim.
+2. **≥2 shared mechanical tags** (the old rule, now a fallback). It covered only 46.9% of
+   the corpus, so for most cards it *was* the random tier wearing a better name.
+3. **Random.**
+
+`ROLE_BODY_FALLBACK` is excluded deliberately: it labels all 19,050 creatures, so "shares
+this role" would be barely narrower than "is a creature" and would rebuild the trivial task
+this design exists to escape. Mining is scoped to each split's own indices — a validation
+positive drawn from the training set is leakage.
+
+**No hard-negative mining, stated as a non-change.** Random in-batch negatives are safe
+here: measured on this corpus, a random pair at batch 256 has a 0.004% chance of being a
+true near-duplicate, about 0.01 false negatives per anchor. That would *not* survive hard
+mining, which selects nearest-non-positives by construction while 39% of cards have a text
+neighbour above 0.75 — it needs a similarity ceiling, and that is a second variable.
+
+Optimiser: Adam, lr 1e-3, batch 256, 10% validation, early stopping on patience 5, seed 42.
+
+### Similarity ranking, and how it is served
+
+Embeddings are L2-normalised at build time, so cosine is a plain dot product and top-k is
+`argpartition` over one matrix-vector product — no index structure, no approximation, 34,890
+rows is small.
+
+Serving is the constrained part, because the browser must branch **synchronously** mid-gesture
+and cannot download a 16.8 MB float matrix. `neighbours.bin` precomputes, per card, 12
+similar + 10 synergy + 5 obsoleted-by row ids: `uint16` ids, similarities quantised to
+`uint8` — **2.4 MB gzipped for the whole discovery boot, against 18.4 MB before.**
+
+The quantised value is used for edge length only, and **ordering is array order.** Re-sorting
+client-side by the lossy value changes the top-10 for roughly two thirds of cards, because
+the space is a narrow cone — median pairwise cosine 0.714, so 8 bits over the observed range
+is coarser than the gaps being ranked. It would read as a model regression rather than a
+precision bug. The header carries a SHA-256 of the embeddings it was built from and a test
+fails if they diverge, because a stale table parses fine and answers confidently.
+
+The 2D map is a separate artifact: PaCMAP, `n_components=2, random_state=42`, over the
+**layout** embeddings only. Nothing reads the projection for similarity.
+
+### Evaluation
+
+`manamap eval-embeddings` scores every space against `data/eval/similarity_golden.json` — 40
+hand-authored groups, 12 dev / 28 test. It must **stay** hand-authored: training mines its
+positives from roles and tags, so an eval derived from those would only measure whether
+training memorised its own supervision.
+
+Three metrics, deliberately including two geometric ones, because recall alone hid the
+collapse for months:
+
+- **recall@k / median rank** against the golden groups.
+- **effective dimensionality** — participation ratio of the PCA spectrum, `(Σλ)²/Σλ²`. Reads
+  as "how many of the nominal dimensions are actually in use"; equals *d* for an isotropic
+  *d*-dimensional cloud and 1 for a line.
+- **neighbour spread** — mean cosine gap between the 1st and 50th neighbour. Near zero means
+  the top neighbours are indistinguishable and whichever one is returned first is an artefact
+  of float ordering.
+
+Current shipped artifacts, test split:
+
+| space | dim | eff. dim | spread | r@10 | r@50 | med. rank |
+|---|---:|---:|---:|---:|---:|---:|
+| layout (colour+type) | 128 | 3.89 | 0.0061 | 0.086 | 0.139 | 1148 |
+| function (ability) | 128 | 27.31 | 0.0323 | 0.232 | 0.464 | **76** |
+| text baseline (frozen MiniLM) | 384 | 51.39 | 0.1341 | **0.244** | 0.414 | 126 |
+
+**Read that table honestly.** Against the previous function model — 5.97 effective dims,
+0.093 recall@10, median rank 995 — the rebuild is a large win, and the current space is
+clearly better at depth: r@50 0.464 vs 0.414, median rank 76 vs 126. But it is still **0.012
+behind the frozen text at r@10**, and the eval prints a warning saying so on every run. It
+is not fixed. `tests/test_embedding_quality.py` also holds a deliberately still-failing
+`xfail(strict=True)` gate on neighbour spread — 0.0323 against a 0.05 target — whose
+threshold was not lowered to match the result.
+
+Two standing rules around this harness:
+
+- **Do not tune hyperparameters on it.** Sweeping the text weight looked like a win (0.258
+  r@10) until selecting on `dev` picked a different value and the two splits disagreed. At
+  this sample size those differences are noise.
+- **Quote the test split.** `dev` was consumed while diagnosing.
 
 ## Extension points
 
