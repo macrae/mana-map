@@ -130,12 +130,14 @@ prose. Four parts, in order:
    may claim.
 3. ~~**Two departments**~~ **DONE.** `editors-letter` and `pilots-log` lead Act I; both are
    in `OPTIONAL_DEPARTMENTS`, so radagast's plan carries 19 and the other eight carry 17 and
-   all nine validate. New `pilot-panel` agent + `panel-prose` routine. **Two misses against
-   the brief, both real and both cosmetic:** the panel splits 34/46/20 rather than roughly
-   thirds (Vera over, Ledger under) and the letter runs 303 words against a 180–260 brief.
-   Neither is a correctness problem and neither is worth the "each revision introduces a new
-   error" risk documented in §9 — but a `~33% each` check is the obvious next lint if it
-   recurs on a second deck.
+   all nine validate. New `pilot-panel` agent + `panel-prose` routine. **One miss against the
+   brief:** the panel splits **33.6 / 45.9 / 20.5** rather than roughly thirds — Sunny is
+   exactly on, Vera over, Ledger under. Not a correctness problem, and not worth the "each
+   revision introduces a new error" risk documented in §9, but a share check is the obvious
+   next lint if it recurs on a second deck. *(The letter was first reported at 303 words
+   against a 180–260 brief and is actually **275** — 15 over, ~6%, which is on brief. The
+   303 was measured on the pre-merge `.agent-out` file and was wrong; corrected here because
+   a figure recorded in this file is one somebody will quote.)*
 4. **Voice separation** — MECHANICAL HALF DONE (the per-byline lint ships and fires on all
    six violation classes; `pilot-panel`'s charter carries the banned lists). What remains is
    applying it to the OTHER departments' prose, which is still written by `manual-writer`
