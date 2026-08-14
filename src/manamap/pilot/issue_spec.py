@@ -244,6 +244,44 @@ REQUIRED_ISSUE_KEYS = {
 NO_FURNITURE_DEPARTMENTS = frozenset({"cover", "contents"})
 FURNITURE_KEYS = ("pilot_tips", "captions", "callouts", "pull_quote")
 
+# Which department renders which `manual_prose.json` key. The other half of this
+# correspondence lives in `build_manual`'s renderers, which name the key inline;
+# `tests/test_pilot_voice_lint.py` asserts the two agree, because a key that
+# drifts out of this map stops being voice-checked SILENTLY — the lint would
+# simply find nothing and pass.
+#
+# It exists so `validate-issue` can ask "who is supposed to be speaking here".
+# `pilots_log` is absent on purpose: its turns carry their own `voice`, which is a
+# better answer than a department byline and the reason that shape was chosen.
+PROSE_KEY_DEPARTMENT = {
+    "how_it_wins": "first-turns",
+    "combo_lines": "the-kill",
+    "card_roles": "the-99",
+    "mulligan": "keep-or-ship",
+    "threat_assessment": "politics-table",
+    "matchups": "know-your-enemy",
+    "mana_base": "sources-say",
+    "upgrades": "upgrade-watch",
+    "editors_letter": "editors-letter",
+}
+
+
+def voices_for(prose_key):
+    """The masthead names a prose key is written under, from its department byline.
+
+    DERIVED, not listed: a byline edit or a fourth columnist updates this with no
+    second place to remember. A shared department ("Coach … with 'Ledger' …")
+    returns both, and the lint then flags only what BOTH voices are barred from —
+    a word banned for Sunny is not an error in a department where Ledger also
+    speaks, because Ledger may have written that sentence.
+    """
+    dept = PROSE_KEY_DEPARTMENT.get(prose_key)
+    if dept is None:
+        return ()
+    byline = (DEPARTMENT_BY_ID[dept]["byline"] or "")
+    return tuple(c["name"] for c in MASTHEAD_COLUMNISTS if c["name"] in byline)
+
+
 MASTHEAD = "MANA MAP"
 SERIES_SLUG = "PILOT'S MANUAL"
 # The same words set in running case, for the places that are not a cover: the

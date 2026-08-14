@@ -343,3 +343,60 @@ def test_lint_is_silent_when_entries_equal_copies(tmp_path, monkeypatch):
     base = _deck_with_mana(tmp_path, monkeypatch,
                            {"mana_base": "A 33-land base."}, entries=33, total=33)
     assert validate_land_counts(base, good_plan()) == []
+
+
+# ── The per-byline voice lint (STYLEv3 §7.7) ────────────────────────────
+
+
+def test_the_voice_lint_fires_on_the_sentence_that_caused_it():
+    """The exemplar, verbatim from the editor who caught it.
+
+    Coach Sunny Brightside — whose bio is "has never once believed you're going to
+    lose" — shipped "the deflection posture the strategic frame prescribes" in
+    Vol. 009. The verdict was "that's not a coach, that's a McKinsey deck".
+    """
+    from manamap.pilot.validate_issue import _voice_violations
+    hits = set(_voice_violations(
+        "Coach Sunny Brightside",
+        "Adopt the deflection posture the strategic frame prescribes."))
+    assert {"posture", "prescribes", "strategic frame"} <= hits
+
+
+def test_the_voice_lint_matches_words_not_substrings():
+    """`"very "` as a substring matches "e-very ".
+
+    The first version of this lint reported 13 violations across the fleet, and
+    every `very` hit was the word "every" inside a correct sentence. It was caught
+    by running it on real decks before shipping — which is the rule this repo has
+    written down repeatedly and broke here anyway.
+    """
+    from manamap.pilot.validate_issue import _voice_violations
+    clean = 'A discount is one generic off every black spell, every turn.'
+    assert not list(_voice_violations('"Ledger" Lin Marginal', clean))
+    assert "huge" in set(_voice_violations('"Ledger" Lin Marginal', "A huge 40.2%."))
+
+
+def test_a_shared_department_only_bans_what_both_voices_are_barred_from():
+    """Keep or Ship is signed by Sunny AND Ledger, so either may have written a
+    given sentence. Flagging a Sunny-only ban there would fire on correct copy."""
+    from manamap.pilot.issue_spec import voices_for
+    assert len(voices_for("mulligan")) == 2
+    assert len(voices_for("mana_base")) == 1
+
+
+def test_every_prose_key_the_renderer_reads_is_voice_mapped():
+    """A key that drifts out of `PROSE_KEY_DEPARTMENT` stops being voice-checked
+    SILENTLY — the lint finds nothing and passes, which looks identical to clean
+    prose. This is the drift guard for that correspondence."""
+    import re
+    from pathlib import Path
+
+    from manamap.pilot.issue_spec import PROSE_KEY_DEPARTMENT
+    src = Path("src/manamap/pilot/build_manual.py").read_text()
+    rendered = set(re.findall(r'prose\(prose_doc, "(\w+)"', src))
+    # `pilots_log` carries a voice per turn and is checked by a different path;
+    # `card_roles` is a dict the renderer reads directly rather than via prose().
+    unmapped = rendered - set(PROSE_KEY_DEPARTMENT) - {"pilots_log"}
+    assert not unmapped, (
+        f"{sorted(unmapped)} render into the magazine and are not in "
+        f"PROSE_KEY_DEPARTMENT, so no voice check applies to them")

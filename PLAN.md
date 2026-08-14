@@ -138,17 +138,19 @@ prose. Four parts, in order:
    against a 180–260 brief and is actually **275** — 15 over, ~6%, which is on brief. The
    303 was measured on the pre-merge `.agent-out` file and was wrong; corrected here because
    a figure recorded in this file is one somebody will quote.)*
-4. **Voice separation** — MECHANICAL HALF DONE (the per-byline lint ships and fires on all
-   six violation classes; `pilot-panel`'s charter carries the banned lists). What remains is
-   applying it to the OTHER departments' prose, which is still written by `manual-writer`
-   under three bylines in one pass — the structural cause the 2026-08 record named. Original
-   text: sentence-level register rules in STYLEv3 §7.7 and a
-   banned-construction list per voice (Sunny may not write "posture", "prescribes",
-   "framework"; Ledger takes no adjectives; Vera keeps the legalese because she is the only
-   one who earns it), backed by a per-byline lint in `validate_issue`. The test is the
-   editor's: **cover the bylines and attribute three paragraphs.** If a reader cannot, the
-   phase is not done. The 2026-08 record predicted this round by leaving it open; do not
-   leave it open again.
+4. ~~**Voice separation**~~ **DONE.** A per-byline lint in `validate_issue` covers the panel
+   (each turn carries its voice) *and* every other prose key, whose voice is DERIVED from
+   its department's byline via `issue_spec.voices_for` — so a byline edit updates it with no
+   second place to remember. A shared department flags only what **both** voices are barred
+   from. Fleet-wide it now reports **0**; it reported 2 genuine register slips in yawgmoth
+   (`posture` twice), fixed as one-word copy edits in both the artifact and the handoff.
+   The blind test passes on radagast's panel.
+
+   **The bans were cut down by measuring, twice.** `"very "` matched inside `"every "` — 13
+   fleet-wide hits, all false. Then `really`/`very`/`extremely` went entirely: hapatra's
+   Ledger writes "a number the deck does not really have", which is a HEDGE and correct, and
+   no regex separates a hedge from an intensifier. What remains is six evaluative adjectives
+   with no hedging reading, plus Sunny's consulting vocabulary.
 
 The Pilot's Log's requirements, from the founder's own words: it opens on a concrete play
 moment tied to a primary win line, segues off what the last voice said, touches three or four

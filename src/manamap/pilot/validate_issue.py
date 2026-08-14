@@ -21,6 +21,7 @@ import json
 from manamap.pilot.common import deck_dir, load_deck_cards, report_errors
 from manamap.pilot.issue_spec import (
     MASTHEAD_COLUMNISTS,
+    voices_for,
     OPTIONAL_DEPARTMENTS,
     BREATHER_AFTER,
     COMPONENTS,
@@ -279,15 +280,35 @@ _VOICE_BANS = {
     '"Ledger" Lin Marginal': (
         # Intensifiers and evaluative adjectives. For Ledger a number is the
         # adjective; "a huge 40.2%" says less than "40.2%".
+        # EVALUATIVE ADJECTIVES ONLY. The first version also banned the
+        # intensifiers "very", "really" and "extremely", and measuring it against
+        # the fleet killed them: hapatra's Ledger writes "a number the deck does
+        # not really have", which is a HEDGE and correct — the ban's rationale is
+        # that a number is the adjective, and a hedge is not an adjective. An
+        # intensifier and a hedge are the same word, so no regex separates them.
+        # These six have no hedging reading.
         "huge", "incredible", "terrible", "amazing", "massive", "insane",
-        "very ", "really ", "extremely",
     ),
+}
+
+# Matched on WORD BOUNDARIES, and the first version was not. `"very "` as a
+# substring matches "e-very " — so the lint's first run reported 13 violations
+# across the fleet of which every `very` hit was the word "every", in sentences
+# that were correct. That is the failure this repo has now written down five
+# times: a validator that fires on accurate data teaches its reader to ignore it,
+# and I shipped one anyway within an hour of documenting the rule. Multi-word
+# entries ("in terms of") still work — `\b` binds to the outer words.
+_VOICE_BAN_RE = {
+    voice: {b: __import__("re").compile(r"\b" + __import__("re").escape(b) + r"\b",
+                                        __import__("re").IGNORECASE)
+            for b in bans}
+    for voice, bans in _VOICE_BANS.items()
 }
 
 
 def _voice_violations(voice, text):
-    for banned in _VOICE_BANS.get(voice, ()):
-        if banned.lower() in text.lower():
+    for banned, pattern in _VOICE_BAN_RE.get(voice, {}).items():
+        if pattern.search(text):
             yield banned
 
 
@@ -421,6 +442,28 @@ def validate_self_containment(base, plan):
                         f"pilots_log[{i}] ({voice}): uses {banned!r}, which this "
                         f"voice does not say (STYLEv3 §7.7). If the bylines were "
                         f"covered, could a reader still tell who is speaking?")
+        # The other departments. `manual-writer` writes six keys under three
+        # bylines in ONE pass, which the 2026-08 record named as the structural
+        # cause of the magazine reading monovocal — so these are the keys where the
+        # check actually bites, not the panel, which already carries a voice per turn.
+        for key, text in sorted(prose_doc.items()):
+            if key in ("pilots_log", "editors_letter") or not isinstance(text, str):
+                continue
+            voices = voices_for(key)
+            if not voices:
+                continue
+            # A word is an error only if EVERY named voice is barred from it. In a
+            # shared department both columnists speak, so a Sunny-banned word may
+            # simply be Ledger's sentence — flagging it would fire on correct copy.
+            common = set.intersection(*[set(_VOICE_BANS.get(v, ())) for v in voices]) \
+                if voices else set()
+            for banned in sorted(common):
+                if any(_VOICE_BAN_RE[v][banned].search(text) for v in voices
+                       if banned in _VOICE_BAN_RE.get(v, {})):
+                    errors.append(
+                        f"{key} ({' + '.join(voices)}): uses {banned!r}, which this "
+                        f"voice does not say (STYLEv3 §7.7)")
+
         letter = prose_doc.get("editors_letter")
         if isinstance(letter, str) and letter.strip():
             # Margot Stet holds no badge and may not make a claim that needs one.
