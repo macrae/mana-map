@@ -431,9 +431,20 @@ def render_contents(issue, plan, stacks, decisions):
             f'<div class="toc-act"><h3 class="toc-act-title">{esc(act_title)}</h3>'
             f'<table class="toc">{"".join(rows)}</table></div>'
         )
+    # A columnist with no tier renders no badge — never a blank one. The absence
+    # is the point (§10, and `issue_spec.MASTHEAD_COLUMNISTS`), so it gets a
+    # spacer that holds the column rather than a placeholder that looks like a
+    # badge failed to load.
+    # A columnist with no tier renders no badge — never a blank one. The absence
+    # is the point (§10, and `issue_spec.MASTHEAD_COLUMNISTS`), so it gets a
+    # spacer that holds the column rather than a placeholder that looks like a
+    # badge failed to load. Built outside the f-string: a backslash in an f-string
+    # expression is a SyntaxError on Python 3.10, which this repo is pinned to and
+    # which has now cost two separate edits.
+    no_badge = '<span class="badge-none"></span>'
     masthead_rows = "".join(
-        f'<div class="legend-row">{badge(c["tier"])}<div><b>{esc(c["name"])}</b> — '
-        f'{esc(c["bio"])}</div></div>'
+        f'<div class="legend-row">{badge(c["tier"]) if c["tier"] else no_badge}'
+        f'<div><b>{esc(c["name"])}</b> — {esc(c["bio"])}</div></div>'
         for c in MASTHEAD_COLUMNISTS
     )
     legend = f"""

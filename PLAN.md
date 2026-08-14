@@ -122,8 +122,12 @@ prose. Four parts, in order:
    critic verdict **`pass`**, 5 of 5 findings supported and each re-derived from the
    artifacts rather than accepted. `deck-engine` is cache-recorded and
    `deck-status radagast` reads **17/17**. What it cost is recorded in §9.
-2. **A fourth persona** — an editor-in-chief with **no tier and no badge**; the three
-   columnists own ◆ ✓ ★ and a fourth that owned one would break §10.
+2. ~~**A fourth persona**~~ **DONE.** **Editor-in-Chief Margot Stet**, on all nine
+   mastheads, carrying **no tier and no glyph** — the three columnists own ◆ ✓ ★, and a
+   fourth badge would make four tiers out of three while a shared one would put two names
+   on one. `badge()` raises on her tier rather than returning a blank, because nothing
+   should ever ask. STYLEv3 §7.7 carries the reasoning and the limit on what her letter
+   may claim.
 3. **Two departments**: `editors-letter` (cheap, the magazine-editor writes it) and
    `pilots-log` (an agentic three-way conversation, ~33% each, opening on a play moment).
    Both go into `DEPARTMENTS` **and** `OPTIONAL_DEPARTMENTS`.

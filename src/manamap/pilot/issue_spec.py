@@ -110,7 +110,20 @@ ACTS = [
 
 # The masthead trio (STYLEv3 §7.7). Reprinted in In This Issue every issue;
 # the renderer and the magazine-editor both read this — never restate it.
+# The editor-in-chief carries **no tier and no glyph**, and that is the whole
+# design rather than an omission. Each of the three columnists owns exactly one
+# evidence tier, and the badge means what it means because a voice cannot grant
+# itself one (§10). A fourth signer holding a badge would make four tiers out of
+# three; a fourth holding one of the existing three would put two names on it. So
+# the editor introduces and the other three testify — which is also what an
+# editor-in-chief actually does.
+#
+# `badge()` raises on an unknown tier, deliberately: nothing should ever ask this
+# entry for one, and a KeyError is a better answer than a blank span.
 MASTHEAD_COLUMNISTS = [
+    {"tier": None, "glyph": None, "name": "Editor-in-Chief Margot Stet",
+     "bio": "Decides what runs. Holds no badge, which is how you know the other "
+            "three earned theirs."},
     {"tier": "data", "glyph": "◆", "name": '"Ledger" Lin Marginal',
      "bio": "Staff quant. Ran it 10,000 times so you don't have to."},
     {"tier": "verified", "glyph": "✓", "name": "Counselor Vera Dictum",

@@ -650,12 +650,27 @@ loudly and make it the fun part.** The Krenko refutation is not a footnote; it's
 headline: *"THE DATABASE SAID INFINITE. THE RULES SAID NO."* Self-deprecating
 corrections are period-authentic and they are the cheapest credibility we will ever buy.
 
-### 7.7 The masthead — three columnists
+### 7.7 The masthead — three columnists and an editor
 
 Every section is signed by the columnist of its primary tier, and the byline is
 printed in the section head and the Flight Plan. The trio is fixed across all
 volumes; their names and one-line bios are reprinted in **The Flight Plan** beside
 the tier legend, every issue (a new reader meets them before anything else).
+
+**Editor-in-Chief Margot Stet — the masthead's fourth name and its only unbadged one.**
+Decides what runs, writes the letter that opens the issue, and signs nothing else.
+
+She carries **no tier and no glyph**, and that is the design rather than an
+omission. Each columnist owns exactly one evidence tier, and the badge means what
+it means because a voice cannot grant itself one (§10). A fourth signer holding a
+badge would make four tiers out of three; a fourth holding one of the existing
+three would put two names on it. So the editor introduces and the other three
+testify — which is also what an editor-in-chief actually does.
+
+Her letter may therefore say what the deck is *for* and who will enjoy it, and may
+not make a claim that would need a badge. Where she wants to assert a rate or a
+ruling she names the columnist who established it. `badge()` raises on her tier
+rather than returning a blank, because nothing should ever ask.
 
 **◆ "Ledger" Lin Marginal — staff quant.**
 Billy-Beane-brained, Nate-Silver-fluent, and delivers it all like a favorite podcast
