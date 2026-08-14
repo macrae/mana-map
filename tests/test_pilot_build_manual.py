@@ -145,6 +145,11 @@ PLAN = {
          "dek": "A dek."},
         {"id": "judges-desk", "kicker": "PROVE IT", "headline": "CASE FILES",
          "dek": "A dek."},
+        # `fetch-quests` is OPTIONAL now (the Act III merge), and an optional
+        # department absent from a plan renders NOTHING — so a fixture that wants
+        # to assert on its output has to opt in, exactly as a real issue does.
+        {"id": "fetch-quests", "kicker": "ONE WISH", "headline": "SPEND IT WELL",
+         "dek": "A dek."},
         {"id": "back-page"},
     ],
 }
@@ -776,3 +781,63 @@ def test_an_optional_department_renders_when_the_plan_asks_for_it():
         # Through the renderer's own escaper: both of these titles carry an
         # apostrophe, which reaches the page as &#x27; and would fail a raw match.
         assert esc(spec["title"]) in html_out
+
+
+def test_at_the_table_merges_three_coach_sections_under_one_opener():
+    """The Act III merge: one department head, three bodies, no lost content.
+
+    Three consecutive Coach departments were three openers, three bylines and
+    three folios answering the same question. The merge has to drop the CHROME
+    and keep everything a reader was getting — so this asserts both halves: the
+    threat boxes, the matchups prose and the tutor guide all still render, and the
+    editor's own sub-headlines survive instead of being replaced by the department
+    titles they came from.
+    """
+    guide = {"slug": "x", "assessment": "Wishes.",
+             "tutors": [{"card": "Sac Outlet", "targets": [
+                 {"scenario": "Turn 3.", "fetch": "Payoff Engine",
+                  "why": "It wins."}]}], "gaps": []}
+    plan = dict(PLAN, departments=[
+        {"id": "cover"}, {"id": "contents"},
+        {"id": "at-the-table", "kicker": "THE READ", "headline": "PAPER CAMOUFLAGE",
+         "dek": "A dek.",
+         "subheads": {"enemy": {"headline": "ONE HYDRA HOLDS THE SKY"},
+                      "tutors": {"headline": "TWO TUTORS, THREE REFUSALS"}},
+         "threats": [{"archetype": "Stax", "meter_label": "Threat", "level": 4,
+                      "read": "This is the one.", "outs": ["Vandalblast"]}]},
+        {"id": "back-page"},
+    ])
+    html_out = render(plan=plan, tutor_guide=guide)
+
+    # One opener for the whole act. Counting `dept-title` would count every
+    # REQUIRED department the renderer emits from the spec regardless of the plan
+    # — the merge's claim is about Act III, so ask Act III.
+    assert html_out.count('id="at-the-table"') == 1
+    for gone in ("politics-table", "know-your-enemy", "fetch-quests"):
+        assert f'id="{gone}"' not in html_out
+
+    # ...and every body that used to have its own department still renders.
+    assert "Stax" in html_out                    # the threat boxes
+    assert "<b>Fetch:</b>" in html_out           # the tutor guide
+    assert "ONE HYDRA HOLDS THE SKY" in html_out
+    assert "TWO TUTORS, THREE REFUSALS" in html_out
+    assert html_out.count('class="act-sub"') == 2
+
+
+def test_a_merged_department_with_no_subheads_falls_back_to_plain_titles():
+    """An `at-the-table` plan that never wrote sub-headlines still reads.
+
+    The fallback matters because the merge is mid-migration: a plan generated
+    before the subhead key existed must render section names rather than two
+    unlabelled rules in the middle of a department.
+    """
+    guide = {"slug": "x", "tutors": [], "gaps": []}
+    plan = dict(PLAN, departments=[
+        {"id": "cover"}, {"id": "contents"},
+        {"id": "at-the-table", "kicker": "K", "headline": "H", "dek": "D",
+         "threats": [{"archetype": "Stax", "meter_label": "Threat", "level": 2,
+                      "read": "r", "outs": ["o"]}]},
+        {"id": "back-page"},
+    ])
+    html_out = render(plan=plan, tutor_guide=guide)
+    assert "Know Your Enemy" in html_out and "Fetch Quests" in html_out

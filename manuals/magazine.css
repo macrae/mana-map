@@ -238,6 +238,10 @@ a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
 .ckeys .dot.cmdr { background:#FFD800; box-shadow:0 0 0 2px #C8A03C; }
 .ckeys .dot.ver { background:#E4007C; box-shadow:0 0 0 1.6px #fff, 0 0 0 2.6px var(--ink); }
 .ckeys .dot.plain { background:#8A93B5; }
+/* Cards the constellation could not fit a label on. Set quieter than the key it
+   follows — it is a completeness note, not a fourth legend row. */
+.cunplaced { margin:2px 0 0; font-size:.74rem; line-height:1.4;
+  color:var(--ink-soft); font-style:italic; }
 .ckeys .edge { width:22px; height:0; border-top:2px solid #8A93B5; display:inline-block; }
 .constellation-fig figcaption { font-size:.78rem; color:var(--ink-soft); margin-top:8px; }
 .stat-slab { margin:26px 0; padding:22px 18px; text-align:center; color:#fff;
@@ -320,6 +324,12 @@ a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
 .soft { color:var(--ink-soft); }
 .small { font-size:.9em; }
 .rule-top { border-top:3px solid var(--ink); padding-top:18px; margin-top:26px; }
+/* A subhead INSIDE a department. Deliberately quieter than `.feature` and louder
+   than an <h3>: it has to read as a turn in one argument, not as the start of a
+   new department — which is the thing the Act III merge exists to stop. */
+.act-sub { font-family:var(--display); font-size:1.6rem; line-height:1.05;
+  text-transform:uppercase; letter-spacing:.01em; margin:34px 0 14px;
+  padding-top:12px; border-top:2px solid var(--accent); color:var(--ink); }
 .chip { font-family:var(--condensed); text-transform:uppercase; font-size:9.5px;
         letter-spacing:.1em; background:var(--ink); color:var(--paper);
         padding:2px 6px; display:inline-block; margin:0 3px 5px 0; }

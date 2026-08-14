@@ -278,6 +278,10 @@ a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
 .ckeys .dot.cmdr { background:#FFD800; box-shadow:0 0 0 2px #C8A03C; }
 .ckeys .dot.ver { background:#E4007C; box-shadow:0 0 0 1.6px #fff, 0 0 0 2.6px var(--ink); }
 .ckeys .dot.plain { background:#8A93B5; }
+/* Cards the constellation could not fit a label on. Set quieter than the key it
+   follows — it is a completeness note, not a fourth legend row. */
+.cunplaced { margin:2px 0 0; font-size:.74rem; line-height:1.4;
+  color:var(--ink-soft); font-style:italic; }
 .ckeys .edge { width:22px; height:0; border-top:2px solid #8A93B5; display:inline-block; }
 .constellation-fig figcaption { font-size:.78rem; color:var(--ink-soft); margin-top:8px; }
 .stat-slab { margin:26px 0; padding:22px 18px; text-align:center; color:#fff;
@@ -360,6 +364,12 @@ a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
 .soft { color:var(--ink-soft); }
 .small { font-size:.9em; }
 .rule-top { border-top:3px solid var(--ink); padding-top:18px; margin-top:26px; }
+/* A subhead INSIDE a department. Deliberately quieter than `.feature` and louder
+   than an <h3>: it has to read as a turn in one argument, not as the start of a
+   new department — which is the thing the Act III merge exists to stop. */
+.act-sub { font-family:var(--display); font-size:1.6rem; line-height:1.05;
+  text-transform:uppercase; letter-spacing:.01em; margin:34px 0 14px;
+  padding-top:12px; border-top:2px solid var(--accent); color:var(--ink); }
 .chip { font-family:var(--condensed); text-transform:uppercase; font-size:9.5px;
         letter-spacing:.1em; background:var(--ink); color:var(--paper);
         padding:2px 6px; display:inline-block; margin:0 3px 5px 0; }
@@ -704,6 +714,10 @@ def engine_figure(doc, caption=""):
 # lit blob with its name across it, and the eye is meant to land on the SHAPE
 # before it reads anything — density first, structure second, labels third.
 
+# A lobe whose RMS spread exceeds this multiple of the deck's MEDIAN lobe spread
+# is drawn as points with no territory. See `deck_constellation`.
+DIFFUSE_LOBE_RATIO = 2.5
+
 # Seven, so the largest deck's cities each get one and no two neighbours collide.
 # Ordered by how loud they are: city-0 is the biggest cluster and takes the
 # strongest colour, which is also the order `deck_map` emits them in.
@@ -775,7 +789,7 @@ def _blob(points, pad):
     return " ".join(path) + " Z"
 
 
-def deck_constellation(doc, width=1000, height=620):
+def deck_constellation(doc, width=1060, height=760):
     """`deck_map.json` → one inline SVG.
 
     Layers, back to front, and the order is the argument: density (what the deck
@@ -818,6 +832,32 @@ def deck_constellation(doc, width=1000, height=620):
     for card, point in zip(cards, pts):
         lobes.setdefault((card["city"], card.get("hood", 0)), []).append(point)
 
+    # A DIFFUSE lobe gets no territory, and that is a finding rather than a
+    # rendering compromise. Radagast's largest lobe has an RMS spread of 0.761
+    # against a 0.153 median — 5x — and hulling it drew a magenta continent down
+    # the middle of the frame that contained three other cities and overlapped a
+    # fourth. There is no territory there: those ten cards are genuinely spread
+    # across the whole deck, and a hull asserting otherwise is the picture lying.
+    #
+    # Threshold is relative to the deck's own median lobe, not absolute, because
+    # the spreads differ 3x across decks (sisay 0.084, yawgmoth 0.225) while the
+    # RATIO separates cleanly everywhere. Measured on all nine: 1–4 diffuse lobes
+    # per deck, never a majority.
+    def _rms(points):
+        cx = sum(q[0] for q in points) / len(points)
+        cy = sum(q[1] for q in points) / len(points)
+        return math.sqrt(sum((q[0]-cx)**2 + (q[1]-cy)**2
+                             for q in points) / len(points))
+
+    spreads = {k: _rms(v) for k, v in lobes.items()}
+    ordered = sorted(spreads.values())
+    median = ordered[len(ordered) // 2] if ordered else 0.0
+    # Lobes under four points are exempt: with two or three members the RMS is
+    # measuring a line segment, not a shape, and a pair that happens to straddle
+    # the frame would lose a territory that is genuinely just "these two cards".
+    solid = {k: v for k, v in lobes.items()
+             if spreads[k] <= DIFFUSE_LOBE_RATIO * median or len(v) < 4}
+
     def trimmed(points, keep=0.85):
         """Drop the farthest few from the centroid before hulling.
 
@@ -847,12 +887,12 @@ def deck_constellation(doc, width=1000, height=620):
 
     # 1. Density — the blurred territory of each city, additively lit.
     parts.append('<g filter="url(#cbloom)" opacity="0.5">')
-    for (city, _hood), members in sorted(lobes.items()):
+    for (city, _hood), members in sorted(solid.items()):
         parts.append(f'<path d="{_blob(trimmed(members), 30)}" fill="{ink(city)}"/>')
     parts.append("</g>")
 
     # 2. The territory outline, so each lobe has an edge to read against.
-    for (city, _hood), members in sorted(lobes.items()):
+    for (city, _hood), members in sorted(solid.items()):
         parts.append(f'<path d="{_blob(trimmed(members), 22)}" fill="{ink(city)}" '
                      f'fill-opacity="0.14" stroke="{ink(city, 1)}" '
                      f'stroke-opacity="0.42" stroke-width="1.4"/>')
@@ -887,16 +927,94 @@ def deck_constellation(doc, width=1000, height=620):
             parts.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="4.2" '
                          f'fill="{colour}" fill-opacity="0.95"/>')
 
-    # 5. City names, across their own territory. Drawn last so nothing covers
+    # WHERE a city's name goes: the centroid of its tightest territory, not of all
+    # its members. THE WIDE BOARD holds 23 cards, ten of which are spread across
+    # the whole frame — averaging those pulls the name off every lobe it belongs to
+    # and drops it into black space, which reads as a label for the emptiness. The
+    # solid lobes are the parts of the city that ARE somewhere; name it there.
+    def anchor_of(city):
+        own = [(k, v) for k, v in solid.items() if k[0] == city]
+        pool = max(own, key=lambda kv: len(kv[1]))[1] if own else by_city.get(city, [])
+        if not pool:
+            return None
+        return (sum(q[0] for q in pool) / len(pool),
+                sum(q[1] for q in pool) / len(pool))
+
+    # 5. CARD NAMES, for the cards a reader would want to find.
+    #
+    # The web version has hover and the printed one does not, so before this the
+    # magazine showed 71 anonymous dots and a reader could learn only that there
+    # were seven groups — which the grid below already says, better. A map whose
+    # points cannot be identified is decoration.
+    #
+    # Labelled, in priority order: the commander, then every card a checker-passed
+    # stack names. That is ~14 of 71 here, which is the most a frame this size
+    # holds. Greedy first-come placement with axis-aligned rejection, priority
+    # first — the same rule `Stage.placer` uses on the atlas, because a label that
+    # collides is worse than a label that is absent.
+    taken = []
+
+    def claim(box):
+        for other in taken:
+            if (box[0] < other[2] + 3 and box[2] > other[0] - 3
+                    and box[1] < other[3] + 3 and box[3] > other[1] - 3):
+                return False
+        taken.append(box)
+        return True
+
+    # City names claim their space FIRST — they are the legend and outrank a card.
+    for region in cities:
+        at = anchor_of(int(region["id"].rsplit("-", 1)[-1]))
+        if at:
+            w = len(region.get("label") or region.get("fallback") or "") * 11.5
+            claim((at[0] - w / 2, at[1] - 22, at[0] + w / 2, at[1] + 30))
+
+    unplaced = []
+    named = [(c, p) for c, p in zip(cards, pts)
+             if c.get("commander") or c.get("verified")]
+    named.sort(key=lambda cp: (not cp[0].get("commander"), cp[0]["name"]))
+    for card, (x, y) in named:
+        short = card["name"].split(" // ")[0].split(",")[0]
+        if len(short) > 22:
+            short = short[:21] + "…"
+        w, h = len(short) * 5.6, 13
+        # Eight candidate positions, nearest first. Two (below, then above) placed
+        # only 6 of 13 on radagast — the load-bearing cards are load-bearing partly
+        # BECAUSE they sit where the deck is dense, so the naive positions are
+        # exactly the contested ones. Side placements are anchored start/end so the
+        # text runs away from the dot rather than back across it.
+        placed = False
+        for dx, dy, anchor in ((0, 13, "middle"), (0, -17, "middle"),
+                               (7, 4, "start"), (-7, 4, "end"),
+                               (0, 25, "middle"), (0, -29, "middle"),
+                               (7, -12, "start"), (-7, -12, "end")):
+            left = x + dx if anchor == "start" else (
+                x - w if anchor == "end" else x - w / 2)
+            box = (left, y + dy - h, left + w, y + dy)
+            if claim(box):
+                parts.append(
+                    f'<text x="{x + dx:.1f}" y="{y + dy:.1f}" text-anchor="{anchor}" '
+                    f'font-family="Inter,system-ui,sans-serif" font-size="10.5" '
+                    f'stroke="#0B0A14" stroke-width="3.5" paint-order="stroke" '
+                    f'fill="#E8E6F0">{esc(short)}</text>')
+                placed = True
+                break
+        if not placed:
+            # The FULL name, not the shortened label. `short` exists because a
+            # dot has ~120px beside it; a prose note has a line, and "Toski"
+            # where the deck lists "Toski, Bearer of Secrets" reads as a
+            # different card.
+            unplaced.append(card["name"].split(" // ")[0])
+
+    # 6. City names, across their own territory. Drawn last so nothing covers
     #    them, with a dark halo because they sit on top of the brightest ink.
     for region in cities:
-        members = by_city.get(int(region["id"].rsplit("-", 1)[-1]), [])
-        if not members:
-            continue
-        cx = sum(p[0] for p in members) / len(members)
-        cy = sum(p[1] for p in members) / len(members)
-        label = (region.get("label") or region.get("fallback") or "").upper()
         city = int(region["id"].rsplit("-", 1)[-1])
+        at = anchor_of(city)
+        if not at:
+            continue
+        cx, cy = at
+        label = (region.get("label") or region.get("fallback") or "").upper()
         parts.append(
             f'<text x="{cx:.1f}" y="{cy:.1f}" text-anchor="middle" '
             f'font-family="Oswald,Arial Narrow,sans-serif" font-size="21" '
@@ -909,7 +1027,15 @@ def deck_constellation(doc, width=1000, height=620):
             f'fill="#CFD3E6">{region["count"]} cards</text>')
 
     parts.append("</svg>")
-    return "".join(parts)
+    # Render facts the caption has to account for, not decoration: a reader who
+    # counts territories and compares against the caption's neighbourhood count
+    # must not find a discrepancy nothing explains.
+    diffuse = [k for k in lobes if k not in solid]
+    return "".join(parts), {
+        "unplaced": unplaced,
+        "diffuse": len(diffuse),
+        "diffuse_cards": sum(len(lobes[k]) for k in diffuse),
+    }
 
 
 def city_head(index, name, count, verified=0, gloss=None):
@@ -933,7 +1059,7 @@ def city_head(index, name, count, verified=0, gloss=None):
 
 def constellation_figure(doc, caption):
     """The constellation with its legend and the honesty line under it."""
-    svg = deck_constellation(doc)
+    svg, notes = deck_constellation(doc)
     if not svg:
         return ""
     keys = (
@@ -942,8 +1068,24 @@ def constellation_figure(doc, caption):
         '<span class="ck"><i class="dot plain"></i>Everything else</span>'
         '<span class="ck"><i class="edge"></i>Nearest neighbour in this deck</span>'
     )
+    # Anything the frame could not hold is NAMED anyway. A load-bearing card that
+    # lost a collision is still load-bearing, and silently dropping it makes the
+    # map's own key a lie — it says verified cards are marked, and three of them
+    # would not be. Placement is a constraint on the picture, not on the facts.
+    tail = ""
+    if notes["diffuse"]:
+        n, cards = notes["diffuse"], notes["diffuse_cards"]
+        tail += (
+            f'<p class="cunplaced">'
+            f'{"One neighbourhood is" if n == 1 else str(n) + " neighbourhoods are"}'
+            f' drawn without a territory: {"its" if n == 1 else "their"} '
+            f'{cards} cards are spread across the whole deck rather than gathered '
+            f'anywhere, so an outline would claim ground that is not there.</p>')
+    if notes["unplaced"]:
+        tail += ('<p class="cunplaced">Also named in a verified line, too close '
+                 f'to label here: {esc(", ".join(sorted(notes["unplaced"])))}.</p>')
     return (f'<figure class="constellation-fig">{svg}'
-            f'<div class="ckeys">{keys}</div>'
+            f'<div class="ckeys">{keys}</div>{tail}'
             f'<figcaption>{esc(caption)}</figcaption></figure>')
 
 

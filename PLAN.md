@@ -149,12 +149,34 @@ engineer pass, ~140k per critic; radagast took four spawns over three iterations
 scoped partial revisions), and `panel-prose` is ~134k. **Pay §9's remaining test debt
 first** — it is small and it guards exactly what eight repetitions would stress.
 
-### 3. The deferred Coach-department merge
+### 3. The Coach-department merge — DONE on radagast, queued for the other eight
 
-`politics-table` + `know-your-enemy` + `fetch-quests` → one **At the Table**. Three
-consecutive Coach sections; the founder approved the merge. **Now genuinely cheap**:
-`OPTIONAL_DEPARTMENTS` plus the renderer's three-way skip means the merged department can
-land on one deck and the other eight keep their three until each is re-planned.
+`politics-table` + `know-your-enemy` + `fetch-quests` → one **At the Table**, live on
+radagast. The four ids are all in `OPTIONAL_DEPARTMENTS` — a **two-way** migration, since
+neither the originals nor their replacement may be required while both shapes exist. Each
+of the other eight moves when it is next re-planned, and the three originals get deleted
+from the spec when the last one does.
+
+**It did not shorten the issue, and the measurement is the point.** Words went 22,713 →
+22,618 and rendered height went 65,977px → 66,278px — the two dropped openers bought about
+800px and the taller constellation spent it back. What the merge actually fixed is
+editorial: the reader met the same byline, colour and page furniture three times before the
+argument had moved once. It is one destination now, and it reads as one argument that turns
+twice.
+
+If length is still the complaint, this is where it lives, measured at 1280px:
+
+| section | px | words |
+|---|---:|---:|
+| The Kill | 10,651 | 3,228 |
+| At the Table | 9,150 | 4,487 |
+| The 99 | 7,930 | 3,268 |
+| What's Your Play? | 6,308 | 3,393 |
+| *(the other twelve, together)* | 27,786 | 8,006 |
+
+Four sections are 55% of the issue. No further department merge reaches that — the next
+cut is inside those four, and it is a cut to CONTENT, which is an editorial call and not a
+renderer change.
 
 ### 4. Verification backlog
 

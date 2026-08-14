@@ -73,6 +73,7 @@ ACCENT = {
     "editors-letter": "var(--ink)", "pilots-log": "var(--burst-yellow)",
     "first-turns": "var(--power-red)", "command-zone": "var(--y2k-violet)",
     "by-the-numbers": "var(--y2k-blue)", "the-kill": "var(--power-red)",
+    "at-the-table": "var(--radical-purple)",
     "politics-table": "var(--radical-purple)", "whats-your-play": "var(--hot-magenta)",
     "know-your-enemy": "var(--radical-purple)", "the-99": "var(--slime-green)",
     "fetch-quests": "var(--tier-coach)", "sources-say": "var(--y2k-blue)",
@@ -833,6 +834,61 @@ def render_pilots_log(issue, plan, prose_doc, cards_by_name):
     )
 
 
+def render_at_the_table(issue, plan, prose_doc, tutor_guide, cards_by_name):
+    """Act III as ONE department: who wants you dead, then what you go get.
+
+    The three sections it replaces are still rendered by their own functions on
+    the eight decks that carry them; this composes the same three BODIES under one
+    opener, one byline and one folio. What it drops is duplication, not content —
+    two department heads, two bylines, two promises and two folios, all of them
+    saying "Coach Sunny Brightside" about the same act.
+
+    The bodies are pulled from the plan entry for `at-the-table` itself: the threat
+    boxes come from its `threats`, the prose from the same `threat_assessment` and
+    `matchups` keys, and the tutor guide is unchanged — it was never department-
+    scoped. An issue that plans the three separately is untouched by this function.
+    """
+    dept = plan_dept(plan, "at-the-table")
+
+    # Subheads keep the editor's own headline and dek for the section they
+    # replace. A merge that threw away three written headlines and substituted the
+    # department titles would be cheaper prose than the issue already had — the
+    # point was to stop repeating the CHROME, not to stop writing.
+    subheads = dept.get("subheads") or {}
+
+    def sub(key, fallback, body):
+        if not body:
+            return ""
+        spec = subheads.get(key) or {}
+        title = spec.get("headline") or fallback
+        dek = f'<p class="dek">{esc(spec["dek"])}</p>' if spec.get("dek") else ""
+        return f'<h2 class="act-sub">{esc(title)}</h2>{dek}{body}'
+
+    boxes = []
+    for entry in dept.get("threats", []):
+        level = entry.get("level")
+        if level is None:
+            level = round(float(entry.get("rate", 0.5)) * 5)
+        boxes.append(threat_box(
+            entry.get("archetype", ""), entry.get("meter_label", "Threat"), level,
+            f'<p>{esc_x(entry.get("read", ""))}</p>'
+            f'<p><b>Your outs:</b> {esc_x(", ".join(entry.get("outs", [])))}</p>',
+        ))
+
+    politics = prose(prose_doc, "threat_assessment")
+    matchups = prose(prose_doc, "matchups")
+    return (
+        dept_open("at-the-table", plan)
+        + (f'<div class="body-copy">{politics}</div>' if politics else "")
+        + sub("enemy", "Know Your Enemy", "".join(boxes)
+              + (f'<div class="body-copy">{matchups}</div>' if matchups else ""))
+        + sub("tutors", "Fetch Quests", tutor_bodies(tutor_guide, cards_by_name))
+        + dept_captions(dept, cards_by_name)
+        + dept_furniture(dept, cards_by_name)
+        + dept_close("at-the-table", issue)
+    )
+
+
 def render_politics(issue, plan, prose_doc, cards_by_name):
     dept = plan_dept(plan, "politics-table")
     return (
@@ -1126,6 +1182,23 @@ def render_fetch_quests(issue, plan, tutor_guide, cards_by_name):
     tutor_guide.json. A deck with no tutors keeps the section (L8) with
     standing copy instead of a TODO — zero tutors is an answer, not a gap."""
     dept = plan_dept(plan, "fetch-quests")
+    return (
+        dept_open("fetch-quests", plan)
+        + tutor_bodies(tutor_guide, cards_by_name)
+        + dept_captions(dept, cards_by_name)
+        + dept_furniture(dept, cards_by_name)
+        + dept_close("fetch-quests", issue)
+    )
+
+
+def tutor_bodies(tutor_guide, cards_by_name):
+    """The Fetch Quests content, with no department chrome around it.
+
+    Shared by `render_fetch_quests` (its own department, eight decks) and
+    `render_at_the_table` (a subhead, radagast) — one implementation, because two
+    copies of a renderer is how the same section starts saying different things on
+    different decks and nothing fails.
+    """
     parts = []
     tutors = (tutor_guide or {}).get("tutors") or []
     if tutor_guide and tutor_guide.get("assessment"):
@@ -1156,13 +1229,7 @@ def render_fetch_quests(issue, plan, tutor_guide, cards_by_name):
             'its pieces the honest way — redundancy and card draw — so every '
             'game plays out a little differently, and the Coach is fine with '
             'that.</p></div>')
-    return (
-        dept_open("fetch-quests", plan)
-        + "".join(parts)
-        + dept_captions(dept, cards_by_name)
-        + dept_furniture(dept, cards_by_name)
-        + dept_close("fetch-quests", issue)
-    )
+    return "".join(parts)
 
 
 def render_sources_say(issue, plan, mana, prose_doc, cards_by_name):
@@ -1450,6 +1517,8 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
                                                     goldfish, cards_by_name),
         "whats-your-play": lambda: render_whats_your_play(issue, plan, decisions,
                                                           cards_by_name),
+        "at-the-table": lambda: render_at_the_table(
+            issue, plan, prose_doc, tutor_guide, cards_by_name),
         "politics-table": lambda: render_politics(issue, plan, prose_doc,
                                                   cards_by_name),
         "know-your-enemy": lambda: render_know_your_enemy(issue, plan, prose_doc,

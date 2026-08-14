@@ -272,9 +272,11 @@ Flight Plan — they are copy, not metadata. `issue_spec.py` is their single sou
 | 7 | **What's Your Play?** | "Real board, real stakes. Commit before the Coach shows his hand." | Brightside | `decisions/*.json` | ★ |
 | 8 | **The Kill** | "The winning lines, argued and affirmed. Every step on the record." | Dictum | verified `stacks/*.json` | ✓ |
 | — | *Act III — At the Table* | | | | |
-| 9 | **Table Manners** | "Three opponents, one you. How to win friends and eliminate people." | Brightside | `threat_assessment` | ★ |
-| 10 | **Know Your Enemy** | "The decks that want you dead, and how to disappoint them." | Brightside | `matchups` | ★ |
-| 11 | **Fetch Quests** | "You get one wish per tutor. Here's how not to waste it." | Brightside | `tutor_guide.json` | ★ |
+| 9 | **At the Table** | "Three opponents, one you. Who wants you dead, and what you go get about it." | Brightside | `threat_assessment` + `matchups` + `tutor_guide.json` | ★ |
+| — | *(the three below are SUPERSEDED — see §5.3; they render only on issues that predate the merge)* | | | | |
+| — | ~~Table Manners~~ | "Three opponents, one you. How to win friends and eliminate people." | Brightside | `threat_assessment` | ★ |
+| — | ~~Know Your Enemy~~ | "The decks that want you dead, and how to disappoint them." | Brightside | `matchups` | ★ |
+| — | ~~Fetch Quests~~ | "You get one wish per tutor. Here's how not to waste it." | Brightside | `tutor_guide.json` | ★ |
 | — | *Act IV — Show Your Work* | | | | |
 | 12 | **Sources Say** | "Pips versus sources — does this mana base keep its promises?" | Marginal | `mana_analysis.json` | ◆ |
 | — | *(full-bleed art break — the declared §6 breather)* | | | | |
@@ -390,7 +392,32 @@ the table above. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**9. Table Manners** — *the multiplayer section* (signed: Coach Sunny Brightside)
+### §5.3 — Act III is ONE department
+
+**9. At the Table** — *the multiplayer section* (signed: Coach Sunny Brightside)
+
+- **Promise**: Every issue, this section tells you who wants you dead, how they
+  come at you, and what you go and get about it.
+- **Shape**: One department opener, then the lead threat-assessment prose, then two
+  **sub-headlines** (`subheads.enemy`, `subheads.tutors`) carrying the THREAT BOXES
+  and the tutor entries. The sub-headlines are WRITTEN, not the department titles
+  they replaced — a merge that substituted generic labels for three real headlines
+  would be worse copy than the issue already had.
+- **Why it merged**: three consecutive Coach departments were three openers, three
+  bylines, three promises and three folios answering one question, and the reader
+  met the same signature three times before the argument had moved. The act header
+  already said *At the Table*; what sat under it were subheads pretending to be
+  destinations.
+- **Failure mode**: writing three essays under one opener. It is one argument that
+  turns twice.
+
+The three sections below are what it replaced. They are kept in the spec, and in
+`OPTIONAL_DEPARTMENTS`, only so the eight issues built against them stay valid —
+**do not plan them for a new issue.** Delete them when every deck has moved.
+
+---
+
+**~~9a. Table Manners~~** — *superseded* (signed: Coach Sunny Brightside)
 
 - **Promise**: Every issue, this section tells you when the table turns on you.
 - **Shape**: Threat-assessment prose with a **THREAT WINDOW** callout naming the exact
@@ -399,7 +426,7 @@ the table above. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**10. Know Your Enemy** — *matchups*
+**~~10a. Know Your Enemy~~** — *superseded; now `subheads.enemy`*
 
 - **Shape**: One **THREAT BOX** per archetype (sweeper control, stax, aggro, combo):
   what their board looks like, what beats you, your named outs, and a threat meter.
@@ -407,7 +434,7 @@ the table above. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**11. Fetch Quests** — *what to tutor* (signed: Coach Sunny Brightside)
+**~~11a. Fetch Quests~~** — *superseded; now `subheads.tutors`*
 
 - **Promise**: Every issue, this section tells you what to actually go get.
 - **Shape**: One entry per maindeck tutor: the card, then numbered scenario
@@ -531,9 +558,7 @@ and the sequence must alternate.
 | Keep or Ship | Medium | Practice |
 | What's Your Play? | High | Active participation |
 | The Kill | **Peak** | Narrative (carrying technical content) |
-| Table Manners | Medium | Reflection |
-| Know Your Enemy | Medium | Reference |
-| Fetch Quests | Medium | Instruction |
+| At the Table | Medium | Reflection, turning to reference then instruction |
 | Sources Say | Medium | Analysis (dense) |
 | *(art break)* | — | *the declared breather* |
 | By the Numbers | Medium | Analysis (dense) |

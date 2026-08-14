@@ -150,12 +150,30 @@ order from `issue_spec.DEPARTMENT_IDS`. Never improvise either, and never
 transcribe them into your output.** As of v3.4 the shape is: Act I *Meet the
 Deck* (Counselor → Coach → Coach), Act II *Fly It*, ending on The Kill — the
 payoff to meeting the deck and learning to fly it. Act III *At the Table* is
-three consecutive Coach sections and Act IV *Show Your Work* is three
-consecutive Ledger ones — both acts are single-voice on purpose, so the reader
-is never whipsawed between registers. The renderer emits the declared art break
+ONE Coach section and Act IV *Show Your Work* is three consecutive Ledger ones —
+both acts are single-voice on purpose, so the reader is never whipsawed between
+registers.
+
+**Act III: plan `at-the-table` and never `politics-table`, `know-your-enemy` or
+`fetch-quests`.** Those three merged into it; they survive in the spec only so the
+issues already built against them stay valid, and planning one for a new issue
+resurrects a shape the magazine retired. The merged entry takes the usual
+kicker/headline/dek for the act's lead argument, plus `threats` and a `subheads`
+object:
+
+```json
+{"id": "at-the-table", "kicker": "THE READ", "headline": "…", "dek": "…",
+ "threats": [...],
+ "subheads": {"enemy":  {"headline": "…", "dek": "…"},
+              "tutors": {"headline": "…", "dek": "…"}}}
+```
+
+Both sub-headlines are WRITTEN — they are the two turns the act's argument takes,
+not labels. Omit `subheads` and the renderer falls back to the old section names,
+which is the migration path and not an acceptable plan. The renderer emits the declared art break
 inside Act IV, between the two dense analysis spreads. Act V is the appendix:
 the proof still anchors the back, and Judge's Desk did not move. Section
-content sources: Fetch Quests renders tutor_guide.json, Sources Say renders
+content sources: At the Table renders threat_assessment + matchups + tutor_guide.json, Sources Say renders
 mana_analysis.json + the writer's mana_base key, The Short List renders
 considering.json — you supply each section's kicker/headline/dek/furniture,
 never its data. Reader-facing copy says

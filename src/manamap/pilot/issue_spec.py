@@ -81,6 +81,22 @@ DEPARTMENTS = [
      "The winning lines, argued and affirmed. Every step on the record.",
      ("verified",), True, "Counselor Vera Dictum"),
     # Act III — At the Table: tactics against three live opponents. Pure Coach.
+    #
+    # ONE department where there were three, because three consecutive Coach
+    # openers were three answers to the same question — who wants you dead, how
+    # they come at you, and what you go and get about it — and the reader met the
+    # same byline, the same colour and the same page furniture three times in a
+    # row. The act header already said "At the Table"; the departments under it
+    # were subheads pretending to be destinations. Merged, the tactics read as one
+    # argument and the issue loses two full openers.
+    #
+    # The three originals stay in the spec and are OPTIONAL, because eight issues
+    # are built against them and a department cannot be changed on one deck any
+    # other way. When every deck carries `at-the-table`, delete them — and the
+    # ones that outlive their migration are the ones nobody finished.
+    ("at-the-table", "At the Table",
+     "Three opponents, one you. Who wants you dead, and what you go get about it.",
+     ("coach",), True, "Coach Sunny Brightside"),
     ("politics-table", "Table Manners",
      "Three opponents, one you. How to win friends and eliminate people.",
      ("coach",), True, "Coach Sunny Brightside"),
@@ -123,7 +139,8 @@ ACTS = [
     ("Meet the Deck", ("editors-letter", "pilots-log",
                        "command-zone", "first-turns", "the-99")),
     ("Fly It", ("keep-or-ship", "whats-your-play", "the-kill")),
-    ("At the Table", ("politics-table", "know-your-enemy", "fetch-quests")),
+    ("At the Table", ("at-the-table", "politics-table",
+                      "know-your-enemy", "fetch-quests")),
     ("Show Your Work", ("sources-say", "by-the-numbers", "upgrade-watch")),
     ("The Appendix", ("judges-desk", "featured-artist", "back-page")),
 ]
@@ -170,7 +187,13 @@ BREATHER_AFTER = frozenset({"sources-say"})
 # skip it". Once a deck's plan carries the department it is validated exactly like
 # any other, and an id should be REMOVED from this set as soon as every deck has
 # it. A permanently optional department is a department nobody committed to.
-OPTIONAL_DEPARTMENTS = frozenset({"editors-letter", "pilots-log"})
+OPTIONAL_DEPARTMENTS = frozenset({
+    "editors-letter", "pilots-log",
+    # The Act III merge, mid-migration in both directions: radagast carries
+    # `at-the-table`, the other eight still carry the three it replaces, and
+    # neither set may be required while both exist.
+    "at-the-table", "politics-table", "know-your-enemy", "fetch-quests",
+})
 
 DEPARTMENT_IDS = [d[0] for d in DEPARTMENTS]
 DEPARTMENT_BY_ID = {d[0]: {"title": d[1], "promise": d[2], "tiers": d[3],
@@ -185,6 +208,7 @@ INTENSITY = {
     "cover": "peak", "contents": "low", "first-turns": "high",
     "editors-letter": "low", "pilots-log": "high",
     "command-zone": "medium", "by-the-numbers": "medium", "the-kill": "peak",
+    "at-the-table": "medium",
     "politics-table": "medium", "whats-your-play": "high",
     "know-your-enemy": "medium", "fetch-quests": "medium",
     "sources-say": "medium", "the-99": "low", "featured-artist": "low",
@@ -203,7 +227,8 @@ MODE = {
     "command-zone": "instruction", "by-the-numbers": "analysis",
     # The Kill carries technical content but *reads* as narrative — that is
     # precisely what makes it the breather after By the Numbers (STYLEv3 §6).
-    "the-kill": "narrative", "politics-table": "reflection",
+    "the-kill": "narrative", "at-the-table": "reflection",
+    "politics-table": "reflection",
     "whats-your-play": "participation", "know-your-enemy": "reference",
     "fetch-quests": "instruction", "sources-say": "analysis",
     "the-99": "browsing", "featured-artist": "appreciation", "keep-or-ship": "practice",
