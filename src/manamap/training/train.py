@@ -1,4 +1,4 @@
-"""Step 4: Train the CardEmbeddingModel with triplet margin loss."""
+"""Step 4a: Train the CardEmbeddingModel with triplet margin loss."""
 
 import random
 from collections import defaultdict

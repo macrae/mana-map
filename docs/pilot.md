@@ -53,6 +53,13 @@ manamap pilot validate-deck <slug>      # 100/commander/singleton/color identity
 manamap pilot validate-stack <slug> [--stack NNN]   # citation contract (stacks + decisions)
 manamap pilot validate-stack <slug> --scenario-only # preflight BEFORE spawning a resolver
 manamap pilot goldfish <slug>           # seeded Monte Carlo metrics → goldfish_metrics.json
+manamap pilot validate-goldfish-targets <slug>  # the DECLARATION itself: cards still in the 99,
+                                        #   and any card in 2+ passing stacks with no component
+manamap pilot mana-analysis <slug>      # Sources Say, deterministic — run AFTER goldfish (embeds its figures)
+manamap pilot scenario-facts <slug> [--stack NNN]  # the deterministic brief for ONE scenario
+manamap pilot validate-considering <slug>   # The Short List: real cards, natural_cut resolves
+manamap pilot validate-tutor-guide <slug>   # every fetch target is in this deck
+manamap pilot diagnosis-report <slug>   # render diagnosis.json as readable markdown
 manamap pilot artist-credits <slug> --json  # standout artists + art themes (Featured Artist)
 manamap pilot build-manual <slug>       # → manuals/<slug>.html
 manamap pilot build-index               # → manuals/index.html gallery
@@ -60,6 +67,10 @@ manamap pilot validate-issue <slug>     # form-check issue.json + issue_plan.jso
 manamap pilot cache-status <slug>       # have an agent routine's inputs changed?
 manamap pilot cache-record <slug> --routine R   # record what produced an artifact
 manamap pilot cache-clear <slug>        # drop cache records
+manamap pilot cache-snapshot <slug>     # every routine's status BEFORE a cache-format change
+manamap pilot cache-rerecord <slug>     # re-fingerprint what a FORMAT change invalidated (gated
+                                        #   on a snapshot; never a way to make a red board green)
+manamap pilot merge-prose <slug> --routine R  # an agent's .agent-out prose in, keys it owns ONLY
 manamap pilot validate-strategy         # form-check strategy.md + CHANGELOG
 manamap pilot build-strategy-db         # chunk + embed strategy.md
 manamap pilot query-strategy "…" --json # semantic top-k strategy search

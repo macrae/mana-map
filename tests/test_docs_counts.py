@@ -144,8 +144,18 @@ def test_no_surface_names_a_deleted_module():
     """A doc naming a file that no longer exists is worse than no doc.
 
     Each of these was deleted and left behind references that read as current.
-    The check is existence-based rather than a fixed list, so it keeps working
-    as the module set changes.
+    The list is FIXED — the docstring used to claim otherwise — but each entry is
+    re-verified as still-gone before it is enforced, so a resurrected module drops
+    out instead of failing forever.
+
+    It coexists with `test_docs_section_count.py`'s general version, which derives
+    from the filesystem instead of a list. The two have genuinely different
+    coverage and neither subsumes the other: this one matches **unquoted** prose
+    mentions of these seven specific names, while the general check only inspects
+    backtick-quoted references (anything looser drowns in false positives) but
+    covers *every* file rather than a curated seven. The general one also exempts a
+    mention sitting in a sentence about the file's removal, which is correct for it
+    and would defeat this one's purpose.
     """
     deleted = [
         "deck-builder.js", "deck-map.js", "mana-map.js.map",

@@ -24,28 +24,53 @@ python -m http.server 8000
 | File | Role |
 |------|------|
 | `viz/index.html` | Map shell: toolbar, plot div, detail panel, deck panel, script tags |
-| `viz/css/mana-map.css` | Map + panel styles, flat hex, no custom properties (~310 lines) |
-| `viz/js/mana-map.js` | Explore mode (~1,330 lines). IIFE; exposes shared state as `window.MM` |
-| `viz/js/drill.js` | Drill mode (~410 lines). IIFE; exposes `window.Drill`; depends on `MM` |
-| `viz/js/stage.js` | Shared canvas primitives (~235 lines). Surface, camera, labels, typed edges |
+| `viz/css/mana-map.css` | Map + panel styles, flat hex, no custom properties (~480 lines) |
+| `viz/js/mana-map.js` | Explore mode (~2,560 lines). IIFE; exposes shared state as `window.MM` |
+| `viz/js/drill.js` | Drill mode (~430 lines). IIFE; exposes `window.Drill`; depends on `MM` |
+| `viz/js/stage.js` | Shared canvas primitives (~260 lines). Surface, camera, labels, typed edges |
 | `viz/js/session.js` | Focus, tray, commander (~130 lines). One answer each; force registers as its graph provider |
-| `viz/js/force.js` | The graph engine (~980 lines). Canvas + d3-force; exposes `window.Force` |
-| `viz/js/build.js` | Build (~780 lines). Deck Lens + Build Deck merged; exposes `window.Build` |
+| `viz/js/force.js` | The graph engine (~1,323 lines). Canvas + d3-force; exposes `window.Force` |
+| `viz/js/discovery.js` | Discover — the front door (~800 lines). Landing card, relations, tray, import, `brief()` |
+| `viz/js/render/canvas.js` | The map renderer (~1,150 lines). The ONLY renderer; owns the aura + ambient drift |
+| `viz/js/decklist.js` | Moxfield paste parser (~90 lines). Fixture-locked to the Python parser |
+| `viz/js/build.js` | Build (~980 lines). Deck Lens + Build Deck merged; exposes `window.Build` |
 | `viz/deck.html` | Dossier shell: masthead, deck picker, panel grid |
-| `viz/css/tokens.css` | The magazine's design tokens in a dark register (~170 lines) |
-| `viz/js/deck-view.js` | The dossier (~340 lines). IIFE; no globals exported, no `MM` dependency |
+| `viz/css/tokens.css` | The magazine's design tokens in a dark register (~180 lines) |
+| `viz/js/deck-view.js` | The dossier (~470 lines). IIFE; no globals exported, no `MM` dependency |
 
 **Script order matters on the map page**: `stage.js` and `session.js` load first, then `mana-map.js` before `build.js` (which reads `MM.*` at load time). mana-map degrades gracefully if either is absent — every call is guarded. `deck.html` loads only `deck-view.js` and shares no code with the map.
 
-## The four map modes
+## The three map modes
 
-`#modeSelect` switches between them and `MM.setMode` owns the transition. Build and Deck
-Lens share one side panel (`#deckPanel`), so entering either exits the other.
+`#modeSelect` switches between them and `MM.setMode` owns the transition. **Discover is
+the front door** — `viz/index.html` opens on one random card, not the 34K scatter;
+`?mode=explore` asks for the atlas and `?deck=<slug>` lands in Build.
 
-| Mode | Panel | Overlay source |
+| Mode | Panel | Surface |
 |---|---|---|
-| Explore | detail panel | — |
-| Build | `#deckPanel` + detail panel | `window.Build` — **its own canvas** in graph view, the atlas overlay in map view |
+| **Discover** | `Discovery.render` owns the panel | the force graph — one card, grow it by clicking relations |
+| **Explore** | detail panel | the atlas (`render/canvas.js`), live-lit with whatever you hold |
+| **Build** | `#deckPanel` + detail panel | `window.Build` — the force graph by default, the atlas overlay by toggle |
+
+Drill is **orthogonal** to all three and is documented in its own section below.
+
+Two mode transitions carry rules that were each learned by breaking them. **Leaving Build
+calls `Force.newWalk(true)`** so Discover gets a clean landing card instead of someone
+else's 97-card deck — but **Explore is exempt**, because it is a lens over whatever graph
+is current and clearing on the way there would empty the thing it exists to show.
+`currentMode` is assigned before the `exit()` calls in `setMode`, which is what lets
+`Build.exit` tell those two destinations apart. And **the panel belongs to the mode, not
+the engine**: `Force.renderPanel` asks `MM.mode`, because one force engine now has two
+owners and "Discovery always owns the panel" repainted Build's roles and curve with
+Discover's landing controls on every reheat.
+
+Formerly four: **The Walk** was Discover with different chrome (four `chrome ===` reads =
+two behaviours and a status string) and is deleted, its panel keepers folded into
+`Discovery.render`; **Deck Lens** and Build Deck merged into `viz/js/build.js`. Deleting a
+mode can strand a capability without deleting it — `Force.seedFrom` (box-select → graph)
+was reachable only by entering The Walk with a selection live, and survived as a working,
+callerless function. `MM.growFromBrowse` is its caller now. **When you delete an entry
+point, grep for what only it could reach.**
 
 **The overlay contract.** Any mode that paints over the base scatter implements exactly
 two methods, and `render()` calls whichever mode is current:
@@ -56,11 +81,13 @@ two methods, and `render()` calls whichever mode is current:
   no dimming.
 
 Row indices are indices into `MM.allData`, which is `projection_2d.json`, which is
-`cards.csv` row order. Both modes also expose `enter()` / `exit()`.
+`cards.csv` row order. Implemented by `build.js` and `drill.js` (Drill's `getDimmedIndices`
+returns `null` — it re-lays-out a subset rather than dimming one), with `mana-map.js`
+supplying the no-overlay default. Both overlay modes also expose `enter()` / `exit()`.
 
 ### Build's map view (formerly Deck Lens)
 
-Overlays a published deck's 99 on the map: the deck lights up, the other ~34,200 cards
+Overlays a published deck's 99 on the map: the deck lights up, the other ~34,800 cards
 dim, and the deck's footprint in card space becomes visible — a storm deck is a tight
 blob, a goodstuff pile is scattered. It reads the same tracked artifacts the magazine and
 the dossier read, and computes nothing beyond a name→index lookup and a role histogram.
@@ -729,12 +756,17 @@ static page cannot run Python. The tray emits a JSON brief (download + clipboard
 the cards and candidate commanders, which a human pastes into Claude Code where that loop
 already works. The brief says so in its own `next_step` field.
 
-## The canvas renderer (`?renderer=canvas`) — Phases 2–3 of the migration
+## The canvas renderer — Phases 2–3 of the migration
 
-`viz/js/render/canvas.js` draws the map. It is now the only renderer — the section below is
-the record of how it got there, when both were live at once:
-`?renderer=canvas` switched, so they could be compared on identical data. The graph engine proved the
-machinery on 500 nodes; this points it at 34,890.
+`viz/js/render/canvas.js` draws the map, and is now the **only** renderer: Plotly is
+deleted, there is no CDN tag, and **`?renderer=` no longer exists** — nothing in the JS
+reads it. The section below is the record of how it got there, from when both were live at
+once and that flag switched between them so they could be compared on identical data. The
+graph engine proved the machinery on 500 nodes; this points it at 34,890.
+
+*(A flag that outlives its migration reads as a supported option. Left as history in the
+prose below, deliberately, because the comparisons are the reasoning — but the heading and
+anything that looks like an instruction must not offer a switch that is gone.)*
 
 **The layer format IS the trace format.** A layer is a Plotly-shaped
 `{x, y, customdata, name, visible, mode, marker: {size, color, opacity, symbol, line}}`, so

@@ -15,7 +15,7 @@ instead. To print the current numbers rather than trust a snapshot:
 .venv/bin/python -m pytest -m "not browser" --collect-only -q | tail -1
 ```
 
-As of 2026-08-13: **1,554 tests** across 61 files — 1,424 fast and 130 browser. One is a
+As of 2026-08-14: **1,564 tests** across 61 files — 1,434 fast and 130 browser. One is a
 deliberately unmet `xfail(strict=True)` ship gate in `test_embedding_quality.py` (see
 below); it is a target the code has not reached, not a broken test.
 
@@ -221,6 +221,36 @@ between them. Deliberately noted in the test: that simulated bug is only PARTIAL
 resting state also halves the stroke weight, so a real regression in both would sit near
 1.0. A threshold chosen only from passing runs tells you nothing about what it catches.
 
+## Inventories drift silently, so generate the comparison
+
+Five documentation defects in one pass, none findable by reading the file that
+contained them — each needed the doc compared against the code:
+
+- `eval_embeddings.py` claimed **"Step 14"**, a number `viz_index.py` already owned, so the
+  pipeline had two step 14s and no step 15 while every doc referred to "step 15" for exactly
+  that module. `train.py` said "Step 4" where the registry says "4a".
+- **Nine of the pilot commands** existed only in the CLI (`mana-analysis`, `scenario-facts`,
+  `diagnosis-report`, `merge-prose`, `cache-snapshot`, `cache-rerecord`, three validators).
+  A reader looking for "how do I check the goldfish declaration" found nothing and would
+  reasonably conclude there was no way — which is how a validator gets written twice.
+- **`data/decks/radagast/None`**: 25 KB of superseded deck map, written by an early run that
+  handed `resolve_out_path` a literal `None` (every call site guards with `if out:` now).
+  Tracked for weeks, read by nothing, city labels all null.
+- `docs/viz.md` documented **`?renderer=canvas`** as a live switch in a heading; nothing in
+  the JS has read it since Plotly was deleted. A flag that outlives its migration reads as a
+  supported option.
+- Its file table was out by up to **35%** on line counts (`force.js` ~980 vs 1,323) and was
+  missing three files entirely.
+
+All five are now `test_docs_section_count.py` guards that compare against the registry, the
+CLI, `git ls-files` and the filesystem — never against a second hand-kept list, which is the
+same argument `build-index` makes for the deck manifest. **The guard's own false-positive
+rate was measured before it was kept**: the file-existence check first fired on
+`docs/testing.md` naming `test_viz_camera.py` to say it was *retired* — a correct mention —
+so it was narrowed to look at the prose around the reference, re-measured to zero false
+positives across every live doc, and then re-checked by reintroducing the real defect to
+confirm it still trips.
+
 ## Do not assert on things outside the code's control
 
 The same shape has now cost three debugging sessions, one layer apart each time.
@@ -364,7 +394,7 @@ every commit, and that promise is not kept. Run `--collect-only -q` for live num
 | File | Covers |
 |---|---|
 | `test_docs_counts.py` | Prose counts match the repo; no doc names a deleted module |
-| `test_docs_section_count.py` | No prose restates the section count or enumerates department ids |
+| `test_docs_section_count.py` | **Documentation inventory guards** (7). No prose restates the section count or enumerates department ids; every step module agrees with `pipeline.STEPS` about its number and no two share one; `docs/pilot.md` lists every subcommand in `PILOT_STEPS`; every tracked per-deck file is documented somewhere; no live doc names a source file that does not exist |
 | `test_decklist_parity.py` | The Python and JS decklist parsers agree on hand-authored fixtures |
 
 **Frontend:** `test_viz_behaviour.py` (playwright, the real gate) plus the source-assertion

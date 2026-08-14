@@ -1,4 +1,4 @@
-"""Step 14: Measure whether an embedding actually represents similarity.
+"""Step 15: Measure whether an embedding actually represents similarity.
 
 A reporter, not a producer — the only step that writes no artifact. It exists
 because every other test in this repo passes against a randomly initialized

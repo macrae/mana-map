@@ -34,7 +34,7 @@ written brief, and the issue now opens on two pictures of the deck: its **conste
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
 Scale: 45 `manamap pilot` subcommands, 18 top-level subcommands, 17 agents, 19 skills,
-13 cache-gated routines, 19 magazine sections. Test counts live in `docs/testing.md`.
+13 cache-gated routines, 20 magazine sections (6 of them optional while two migrations are mid-flight). Test counts live in `docs/testing.md`.
 
 ## Start here on any deck
 
@@ -255,6 +255,17 @@ fitted: the data failed it when it was added.
 The step-0 gate earned itself the same day: `test_pilot_tracked_artifacts_validate.py`
 caught the tracked `engine.json` violating the new limit before anything else did.
 
+**Paid since:** the constellation's two rendering rules are gated
+(`test_pilot_deck_map.py` — the diffuse-lobe suppression proven against a compact-lobe
+control, and the card-labelling completeness contract), the Act III merge has two
+(`test_pilot_build_manual.py`, including the pre-merge fallback), and both browser failures
+are fixed and green on three consecutive full runs. `test_docs_section_count.py` grew three
+inventory guards — step numbers against `pipeline.STEPS`, the pilot command list against
+`PILOT_STEPS`, and tracked per-deck files against the docs. That last one immediately found
+`data/decks/radagast/None`, 25 KB of superseded deck map written by an early run that handed
+`resolve_out_path` a literal `None`; it had been tracked for weeks because nothing ever
+compared the directory against the docs. Deleted.
+
 **Still owed:**
 
 - `merge_deck_map`, `engine_facts` and `deck_status` have no direct unit tests. The
@@ -273,9 +284,16 @@ Still open and genuinely worth doing:
   re-parse the projection because pages are function-scoped. Replace the sleeps with
   condition waits first; only consider page reuse if that misses the budget, since cross-test
   state is this repo's known enemy.
-- **`test_the_spotlight_actually_dims_the_canvas` fails on `main`** and predates this cycle —
-  verified by stashing. Build's verified-line spotlight is not dimming (green pixels 1116 vs
-  1117 where healthy is ~0.6).
+- ~~`test_the_spotlight_actually_dims_the_canvas` fails on `main`~~ — **FIXED 2026-08-14,
+  and the feature was never broken.** The test counted green over the whole canvas, but
+  clearing a spotlight rests the line you were looking at *and* un-mutes the other eleven
+  verified lines; on goblin-storm those cancel (868 px spotlit vs 833 cleared, ratio 0.96)
+  while the line's own box goes 1024 → 301. It reads `Force.spotlitRows` and measures near
+  the line now, with a threshold measured on both sides. The sibling flake,
+  `test_canvas_draws_density_contours` (~1 run in 3), was a `canvas_page` race: `setCamera`
+  no-ops while `baseFit` is null, so the test measured the fitted view believing it had
+  zoomed. Fixed in the fixture — every test on it had the same hole. Full browser suite
+  green on three consecutive runs.
 - **Leave `.git` alone** — history rewriting breaks every clone to reclaim ~76 MB.
 
 Closed deliberately: **`config.py` is NOT split** (most-imported file in the repo; the

@@ -132,10 +132,12 @@ def discover_page(browser, viz_server):
 
 @pytest.fixture
 def canvas_page(browser, viz_server):
-    """The map under the canvas renderer (Phase 2 of the Plotly migration).
+    """The map under the canvas renderer.
 
-    Same page, same code, `?renderer=canvas` — which is the point of the strangler: both
-    renderers are live at once so they can be compared on identical data.
+    `?renderer=canvas` is a HISTORICAL no-op: it selected between Plotly and canvas while
+    both were live, and nothing in the JS has read it since Plotly was deleted. Kept in the
+    URL only so this fixture's boot string is unchanged from the runs its measurements were
+    taken on; `?mode=explore` is the part that still does something.
     """
     page = _boot(browser, viz_server, "?renderer=canvas&mode=explore")
     _wait_for_boot(page, "() => !!document.querySelector('.map-canvas')",

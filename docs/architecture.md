@@ -6,6 +6,10 @@ Mana Map embeds every Magic: The Gathering oracle card (~34,900 and growing) int
 
 ## Models (`src/manamap/training/model.py`)
 
+*A reader-facing overview of the same material — feature decomposition, the loss
+functions, the eval harness — is in README.md under "The embedding models". This
+section is the implementation reference; keep the two consistent.*
+
 **CardEmbeddingModel**: parameterized fusion MLP, 128-dim L2-normalized output.
 
 Constructor parameters customize the model for different training objectives:
@@ -13,18 +17,44 @@ Constructor parameters customize the model for different training objectives:
 - `keyword_emb_dim` — if > 0, keywords pass through a learned Linear+ReLU projection; if 0/None, raw multi-hot passthrough
 - `mechanical_tag_dim` — number of mechanical tag inputs (0 = no tag input)
 - `mechanical_tag_emb_dim` — if > 0 with `mechanical_tag_dim` > 0, learns tag embeddings
+- `structured_dim` — width of the `[power/toughness(3), mana pips(6), colour(6)]` block. 0 keeps the pre-Phase-1 input
+- `text_passthrough` — carve a fixed-weight projection of the frozen text out of the output (below). The layout model leaves this **off**: its job is colour/type organisation and a text floor would fight it
 
-Forward pass: categorical embeddings + text embedding + continuous features + keywords (+ optional tags) → concat → 3-layer MLP (hidden→ReLU→dropout→128→ReLU→dropout→128) → L2 normalize.
+Forward pass: categorical embeddings + text embedding + continuous features + keywords
+(+ optional tags, + optional structured) → concat → 3-layer MLP
+(hidden 256 → ReLU → dropout 0.1 → 128 → ReLU → dropout 0.1 → out) → L2 normalize.
 
-**Color+Type model** (`model.pt`):
-- Inputs: text(384) + supertype(16) + rarity(8) + ci(32) + layout(16) + continuous(2) + keywords(50) = 508-dim
-- ~181K trainable params, no mechanical tag input
+**Layout model** (`model.pt`) — colour and type, feeds `projection_2d.json` only:
+- Inputs: text(384) + supertype(16) + rarity(8) + ci(32) + layout(16) + continuous(2) + keywords(50) = **508-dim**
+- **181,272** trainable params; no mechanical tag input, no structured block
+- Trunk emits the full 128 and returns `F.normalize(x)`
 
-**Ability model** (`model_ability.pt`):
-- Inputs: text(384) + supertype(16) + rarity(8) + ci(**8**, shrunk) + layout(16) + continuous(2) + keywords(**50→32** learned) + tags(**33→32** learned) = 498-dim
-- ~180K trainable params
-- Color identity deliberately shrunk (32→8) so the model *can't* lean on color
-- Result: cards cluster by function — all blink cards together regardless of color
+**Function model** (`model_ability.pt`) — what a card DOES, the sole source of similarity:
+- Inputs: text(384) + supertype(16) + rarity(8) + ci(**8**, shrunk) + layout(16) + continuous(2) + keywords(**50→32** learned) + tags(**33→32** learned) + structured(**15**) = **513-dim**
+- **192,672** trainable params
+- Colour identity deliberately shrunk (32→8) so the model *can't* lean on colour
+- Trunk emits **96**, not 128 — see the output split below
+- Result: cards cluster by function — all blink cards together regardless of colour
+
+### The output split (`text_passthrough=True`)
+
+The function model's 128 dims are **two independently L2-normalized halves**: 96 learned,
+plus 32 from a `Linear(384, 32)` projection of the frozen text. Each is scaled so the
+squared weights sum to 1 (`√(1−W)` and `√W`, `W = TEXT_PASSTHROUGH_WEIGHT = 0.3`), which
+makes the concatenation unit-norm and the dot product of two cards **exactly**
+
+```
+sim(a, b) = 0.7 · cos_learned(a, b) + 0.3 · cos_text(a, b)
+```
+
+The scales are `register_buffer`s, not plain floats, so they move with `.to(device)` and are
+saved in the checkpoint — the weights are meaningless without them.
+
+Why it exists: the previous function model scored **0.093 recall@10 against 0.187 for the
+frozen text it was built from**, using 5.97 of its 128 dimensions. Training was subtractive
+— a model free to discard the text did exactly that. This makes discarding it structurally
+impossible and the floor arithmetic rather than hope. `text_proj` has **no ReLU** on
+purpose: this half exists to preserve the text geometry and a rectifier folds half of it away.
 
 The text encoder (all-MiniLM-L6-v2) is **frozen** — only the MLP trains.
 
@@ -71,35 +101,48 @@ same job. Every "find similar" answer in the product comes from here, on either 
 
 Held-out `test` split of `data/eval/similarity_golden.json`:
 
+Held-out `test` split: 28 groups, 107 queries (`dev` is 12 groups / 56 queries and was
+consumed while diagnosing — always quote `test`).
+
 | space | dim | effective dim | 1st→50th gap | r@10 | r@50 | median rank |
 |---|---|---|---|---|---|---|
-| layout | 128 | 3.20 | 0.0041 | 0.090 | 0.142 | 1651 |
-| frozen MiniLM text (the input) | 384 | 50.41 | 0.1411 | 0.244 | 0.414 | 124 |
-| **function** | 128 | **27.87** | 0.0315 | **0.245** | **0.455** | **78** |
+| layout | 128 | 3.89 | 0.0061 | 0.086 | 0.139 | 1148 |
+| frozen MiniLM text (the input) | 384 | 51.39 | 0.1341 | **0.244** | 0.414 | 126 |
+| **function** | 128 | **27.31** | 0.0323 | 0.232 | **0.464** | **76** |
 
-Recall@10 ties the frozen text it is built from (0.245 vs 0.244 — noise across ~160
-queries); the function space earns its place on depth instead, recall@50 +0.041 and median
-rank 124 → 78.
+**Read this honestly, because the shipped artifact does not win outright.** Against the
+model it replaced — 5.97 effective dims, r@10 0.093, median rank 995 — the rebuild is a
+large win, and the function space is clearly better at depth than the frozen text it is
+built from: recall@50 +0.050 and median rank 126 → 76. But it is **0.012 behind at r@10**,
+and `eval-embeddings` prints a warning saying so on every run. It is not fixed.
+
+(An earlier artifact measured r@10 0.245 against the same baseline's 0.244 — a tie. The
+2026-08-12 corpus refresh re-trained on 34,890 cards and moved both the space and the
+golden set's resolved rows; these are the numbers the committed artifacts produce today.)
 
 **The two halves are complementary, and that is the load-bearing result:**
 
 | | r@10 | r@50 | median rank |
 |---|---|---|---|
-| learned half alone (96d) | 0.136 | 0.341 | 172 |
-| text half alone (32d) | 0.219 | 0.369 | 152 |
-| combined (128d) | **0.245** | **0.455** | **78** |
+| learned half alone (96d) | 0.136 | 0.312 | 224 |
+| text half alone (32d) | 0.214 | 0.361 | 138 |
+| combined (128d) | **0.232** | **0.464** | **76** |
 
-The learned half is *worse alone* than the text half, yet the combination beats both — and
-beats the full 384-dim frozen text at depth. This is why positives are deliberately **not**
+The learned half is *worse alone* than the text half, yet the combination beats both on
+every metric — and beats the full 384-dim frozen text at depth. The 32-dim projection also
+retains most of the 384-dim text's r@10 (0.214 vs 0.244), which is what makes it cheap
+enough to spend a quarter of the output on. This is why positives are deliberately **not**
 gated on text similarity: selecting pairs the text already scores highly would make the
 learned half a copy of the text half instead of a complement to it.
 
-**Do not tune the mixing weight on this golden set.** Everything in W ∈ [0.15, 0.6] falls
-inside noise at ~50 dev and ~160 test queries, and the two splits disagree about the
-optimum — selecting on `test` picks 0.45, selecting on `dev` picks 0.15. The shipped 0.3
-was chosen a priori and fitted to neither.
+**Do not tune the mixing weight on this golden set.** Swept on the pre-refresh artifact,
+everything in W ∈ [0.15, 0.6] fell inside noise, and the two splits disagreed about the
+optimum — selecting on `test` picked 0.45, selecting on `dev` picked 0.15. At 56 dev and
+107 test queries that is a sample-size problem, not a tuning opportunity, and re-running the
+sweep on today's artifact would not change the argument. The shipped 0.3 was chosen a priori
+and fitted to neither split.
 
-**Open:** neighbour spread is 0.0315 against a 0.05 target — the top-50 sit tighter than a
+**Open:** neighbour spread is 0.0323 against a 0.05 target — the top-50 sit tighter than a
 well-separated space would put them. `tests/test_embedding_quality.py` keeps that gate
 failing as `xfail(strict=True)` rather than lowering the threshold to match the result.
 Hard-negative mining is the obvious next lever, and needs a similarity ceiling: 39% of
@@ -116,6 +159,10 @@ way, and *Sol Ring* → *Sisay's Ring*. It is also a large fraction of a short c
 Ring`'s entire text is eleven words, three of them its name. Measured on the held-out
 split:
 
+Measured when the decision was taken, on the artifact of the day — a three-way A/B needs
+three sets of text embeddings, so these are kept as the decision record rather than re-run
+against every corpus refresh:
+
 | text | r@10 | r@50 | median rank |
 |---|---|---|---|
 | name-led | 0.187 | 0.362 | 159 |
@@ -126,7 +173,7 @@ Dropping the name is the win. Cost and P/T are a wash in the *text* (the r@10 di
 inside noise) and earn their place as structured features instead — they are in the string
 because it costs nothing and helps the frozen-text fallback, not because they moved this table.
 
-Note that effective dimensionality *fell* here, 81.0 → 50.4, while quality rose. Names added
+Note that effective dimensionality *fell* here, 81.0 → ~51, while quality rose. Names added
 variance, and variance is not quality: the participation ratio is a collapse **detector**, good
 for telling 3 from 50, not a score to maximise. The evaluation is deliberately independent of every training signal (see
 `data/eval/similarity_golden.json`), and its `test` split was written after the diagnosis, so
