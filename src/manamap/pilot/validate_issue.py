@@ -20,6 +20,7 @@ import json
 
 from manamap.pilot.common import deck_dir, load_deck_cards, report_errors
 from manamap.pilot.issue_spec import (
+    MASTHEAD_COLUMNISTS,
     OPTIONAL_DEPARTMENTS,
     BREATHER_AFTER,
     COMPONENTS,
@@ -258,6 +259,38 @@ def _walk_strings(obj, path=""):
         yield path, obj
 
 
+# Constructions a voice may not use, per STYLEv3 §7.7. Narrow on purpose: each
+# entry is a word that has no innocent reading in that columnist's register, not a
+# word that is merely uncommon there.
+#
+# The evidence this exists on: an editor read Vol. 009 and found Coach Sunny
+# Brightside — whose bio is "has never once believed you're going to lose" —
+# writing "the deflection posture the strategic frame prescribes". The verdict was
+# "that's not a coach, that's a McKinsey deck", and the diagnosis underneath it was
+# that with the bylines covered no reader could attribute a paragraph. A lint
+# cannot check whether prose sounds like a person; it can check the specific words
+# that made it sound like nobody.
+_VOICE_BANS = {
+    "Coach Sunny Brightside": (
+        # Consulting register. Sunny talks about what you DO.
+        "posture", "prescribes", "prescribed", "framework", "optimise", "optimize",
+        "suboptimal", "methodology", "in terms of", "strategic frame",
+    ),
+    '"Ledger" Lin Marginal': (
+        # Intensifiers and evaluative adjectives. For Ledger a number is the
+        # adjective; "a huge 40.2%" says less than "40.2%".
+        "huge", "incredible", "terrible", "amazing", "massive", "insane",
+        "very ", "really ", "extremely",
+    ),
+}
+
+
+def _voice_violations(voice, text):
+    for banned in _VOICE_BANS.get(voice, ()):
+        if banned.lower() in text.lower():
+            yield banned
+
+
 # A citation's `rule` field is where a taxonomy id BELONGS: it is the structured
 # half of the citation contract, the renderer never prints it raw for a strategy
 # citation (only `CR <n>` for rules citations), and a decision branch citing a
@@ -367,6 +400,40 @@ def validate_self_containment(base, plan):
     # to this check while being just as reader-facing as everything above. Nine
     # taxonomy ids survived the first cleanup pass in exactly these two files, and
     # the L10 changelog rule had never been applied to them at all.
+    # The panel: each turn is attributable, and a voice keeps to its register.
+    prose_path = base / "manual_prose.json"
+    if prose_path.exists():
+        with open(prose_path) as f:
+            prose_doc = json.load(f)
+        turns = prose_doc.get("pilots_log")
+        if isinstance(turns, list):
+            known = {c["name"] for c in MASTHEAD_COLUMNISTS}
+            for i, turn in enumerate(turns):
+                voice = (turn or {}).get("voice", "")
+                text = (turn or {}).get("text", "")
+                if voice not in known:
+                    errors.append(
+                        f"pilots_log[{i}]: voice {voice!r} is not on the masthead — "
+                        f"the renderer keys each turn's colour off this name, so a "
+                        f"misspelling renders an unowned grey rail")
+                for banned in _voice_violations(voice, text):
+                    errors.append(
+                        f"pilots_log[{i}] ({voice}): uses {banned!r}, which this "
+                        f"voice does not say (STYLEv3 §7.7). If the bylines were "
+                        f"covered, could a reader still tell who is speaking?")
+        letter = prose_doc.get("editors_letter")
+        if isinstance(letter, str) and letter.strip():
+            # Margot Stet holds no badge and may not make a claim that needs one.
+            # A bare percentage is the commonest such claim and the only shape a
+            # validator can see; a ruling reads like prose and cannot be caught
+            # here, which §7.7 says out loud rather than pretending otherwise.
+            import re as _re
+            for hit in _re.findall(r"\b\d+(?:\.\d+)?\s?%", letter):
+                errors.append(
+                    f"editors_letter: states {hit!r}. The editor-in-chief carries "
+                    f"no tier and may not assert a measured figure — name the "
+                    f"columnist who established it instead (STYLEv3 §7.7)")
+
     for name in ("considering.json", "tutor_guide.json"):
         path = base / name
         if path.exists():

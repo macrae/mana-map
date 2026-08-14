@@ -1169,6 +1169,16 @@ AGENT_ROUTINES = {
         # naming places rather than describing contents.
         "inputs": ["deck:deck_map.json", "deck:strategic_frame.json?"],
     },
+    "panel-prose": {
+        "agent": "pilot-panel",
+        "artifact": "manual_prose.json",
+        "artifact_keys": ["editors_letter", "pilots_log"],
+        # `deck:engine.json` is the load-bearing input: the panel argues in the
+        # engine's stage names and may not assert a line the model draws dashed,
+        # so a re-run of the engine loop MUST re-open the conversation.
+        "inputs": ["cards:semantic", "deck:engine.json",
+                   "deck:strategic_frame.json?", "stacks:passing"],
+    },
     "the-ten": {
         "agent": "short-list-analyst",
         "artifact": "considering.json",

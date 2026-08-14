@@ -33,8 +33,8 @@ written brief, and the issue now opens on two pictures of the deck: its **conste
 [009 Radagast](https://macrae.github.io/mana-map/manuals/radagast.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-Scale: 45 `manamap pilot` subcommands, 18 top-level subcommands, 16 agents, 19 skills,
-12 cache-gated routines, 17 magazine sections. Test counts live in `docs/testing.md`.
+Scale: 45 `manamap pilot` subcommands, 18 top-level subcommands, 17 agents, 19 skills,
+13 cache-gated routines, 19 magazine sections. Test counts live in `docs/testing.md`.
 
 ## Start here on any deck
 
@@ -128,10 +128,19 @@ prose. Four parts, in order:
    on one. `badge()` raises on her tier rather than returning a blank, because nothing
    should ever ask. STYLEv3 §7.7 carries the reasoning and the limit on what her letter
    may claim.
-3. **Two departments**: `editors-letter` (cheap, the magazine-editor writes it) and
-   `pilots-log` (an agentic three-way conversation, ~33% each, opening on a play moment).
-   Both go into `DEPARTMENTS` **and** `OPTIONAL_DEPARTMENTS`.
-4. **Voice separation** — sentence-level register rules in STYLEv3 §7.7 and a
+3. ~~**Two departments**~~ **DONE.** `editors-letter` and `pilots-log` lead Act I; both are
+   in `OPTIONAL_DEPARTMENTS`, so radagast's plan carries 19 and the other eight carry 17 and
+   all nine validate. New `pilot-panel` agent + `panel-prose` routine. **Two misses against
+   the brief, both real and both cosmetic:** the panel splits 34/46/20 rather than roughly
+   thirds (Vera over, Ledger under) and the letter runs 303 words against a 180–260 brief.
+   Neither is a correctness problem and neither is worth the "each revision introduces a new
+   error" risk documented in §9 — but a `~33% each` check is the obvious next lint if it
+   recurs on a second deck.
+4. **Voice separation** — MECHANICAL HALF DONE (the per-byline lint ships and fires on all
+   six violation classes; `pilot-panel`'s charter carries the banned lists). What remains is
+   applying it to the OTHER departments' prose, which is still written by `manual-writer`
+   under three bylines in one pass — the structural cause the 2026-08 record named. Original
+   text: sentence-level register rules in STYLEv3 §7.7 and a
    banned-construction list per voice (Sunny may not write "posture", "prescribes",
    "framework"; Ledger takes no adjectives; Vera keeps the legalese because she is the only
    one who earns it), backed by a per-byline lint in `validate_issue`. The test is the

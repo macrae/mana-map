@@ -84,7 +84,12 @@ def add_pilot_parser(subparsers):
         if name in _DECK_COMMANDS:
             cmd.add_argument("slug", help="Deck slug (kebab-case, e.g. goblin-storm)")
         if name == "merge-prose":
-            cmd.add_argument("routine", choices=["coach-prose", "writer-prose"],
+            # Choices come from `merge_prose.AGENT_FILE`, never a literal list.
+            # A hardcoded pair here is the same mistake this repo bans in prompts —
+            # a third prose routine was added and the CLI silently refused it while
+            # every other layer accepted it.
+            from manamap.pilot.merge_prose import AGENT_FILE
+            cmd.add_argument("routine", choices=sorted(AGENT_FILE),
                              help="Which routine's keys to merge; it may write "
                                   "ONLY the keys that routine owns")
         if name == "query-rules":
