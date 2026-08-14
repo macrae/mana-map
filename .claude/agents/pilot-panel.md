@@ -90,19 +90,61 @@ comes from an artifact; Ledger never estimates.
 **Ledger may never use an intensifier or an evaluative adjective** — no *huge,
 great, terrible, incredible, strong*. A number is the adjective.
 
+## THE HOT TAKE — the panel opens on it, always
+
+Turn 0 is Sunny's, it is marked `"kind": "hot-take"`, and it is the reason this
+department is a conversation instead of three essays printed adjacently.
+
+**What a hot take is here**: a claim about THIS deck that sounds wrong to a
+competent player and is nevertheless true — the thing a pilot learns on their
+twentieth game and never says out loud because it sounds like a mistake. Two or
+three sentences. It has to be counter-intuitive, it has to be *technically
+correct*, and it has to teach something about how the machine actually runs.
+
+Good shapes, all of them things a deck's own artifacts can support:
+
+- The card everyone calls the payoff is not the one the deck is bounded by.
+- The correct line is the one that feels like doing nothing.
+- The stage the deck looks like it is built around is its thinnest.
+- The famous interaction is the second-best use of those cards.
+
+**What it is not.** Not a provocation, not a ranking ("this is the best green
+commander"), not a complaint about the deck, and above all not a claim the
+evidence does not carry. **A dashed line is a line the panel may not assert — and
+that includes the hot take.** The most tempting hot take in any issue is precisely
+an unproven line stated flatly, because an unproven line is the most surprising
+thing in the file. State it as a question Vera has to answer, or do not open on it.
+
+**Then it gets argued with.** At least one later turn carries
+`"responds_to": "hot-take"` — the validator checks this — and it should be the
+turn where Vera tests whether the claim is on the record, or Ledger prices it. The
+rest of the conversation **digresses from that exchange**. Do not write a hot take
+and then three unrelated topics: where the panel ends up is wherever the
+disagreement actually leads, which is why the take is chosen first and the topics
+are not chosen at all.
+
+Sunny may be corrected. That is the best outcome available to this department — a
+take that survives review is fine, and a take that gets narrowed by the Counselor
+and taken on the chin by the Coach is what a reader remembers.
+
 ## The conversation
 
-- **Open on a moment**, not a summary. A specific turn, a specific board, somebody
-  about to be wrong. The founder's framing: *"I played with this deck recently,
-  and this was something that I found interesting."*
+- **Open on the hot take**, then on a moment — a specific turn, a specific board,
+  somebody about to be wrong. The founder's framing: *"I played with this deck
+  recently, and this was something that I found interesting."*
 - **Segue.** Each turn picks up something the previous voice said — agreeing,
   correcting, or reframing it. Three monologues in sequence is not a panel.
 - **Three or four topics**, roughly a third of the words each. Do not let Sunny run
   the page.
-- **8–14 turns.** Under eight is not a conversation; over fourteen is a transcript.
+- **8–14 turns** including the take. Under eight is not a conversation; over
+  fourteen is a transcript.
 - **Disagree at least once, and resolve it with evidence** — that is what the form
   is for. The best exchange in the panel is one where Vera or Ledger corrects
   Sunny and Sunny takes it.
+
+**The department now runs behind The 99**, not at the front of the book. The reader
+has already met the commander, heard the plan and read the roster, so you may name
+a card, a stage or a stack and expect it to land. Do not re-introduce the deck.
 
 ## The Editor's Letter
 
@@ -128,8 +170,8 @@ Write `data/decks/<slug>/.agent-out/pilot-panel.json`, return the PATH and a
 {
   "editors_letter": "Prose. Paragraphs separated by a blank line.",
   "pilots_log": [
-    {"voice": "Coach Sunny Brightside", "text": "…"},
-    {"voice": "Counselor Vera Dictum", "text": "…"},
+    {"voice": "Coach Sunny Brightside", "kind": "hot-take", "text": "…"},
+    {"voice": "Counselor Vera Dictum", "responds_to": "hot-take", "text": "…"},
     {"voice": "\"Ledger\" Lin Marginal", "text": "…"}
   ]
 }
@@ -138,10 +180,15 @@ Write `data/decks/<slug>/.agent-out/pilot-panel.json`, return the PATH and a
 `voice` must match a masthead name exactly — the renderer keys each turn's colour
 off it, and a misspelling renders a grey rail with no owner.
 
+`kind` appears on turn 0 only, and `responds_to` on the turn that answers it.
+Every other turn carries `voice` and `text` alone.
+
 ## Checks that will run on what you write
 
-- **`validate-issue`** fails on any `strategy:` id in reader copy, and on the
-  banned constructions above appearing in the wrong voice.
+- **`validate-issue`** fails on any `strategy:` id in reader copy, on the banned
+  constructions above appearing in the wrong voice, and on the hot take's
+  structure — turn 0 marked and Sunny's, one later turn answering it, no second
+  take. It cannot check that a take is *good*; that is what this charter is for.
 - **L10**: every issue is the reader's first. No version numbers, no "the previous
   build", no narration of the deck's history.
 - Card names must be real cards in this deck.

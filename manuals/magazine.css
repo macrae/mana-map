@@ -191,10 +191,171 @@ a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
    flipping past stops — which is the whole job, and the reason it may appear once. */
 .badge-none { display:inline-block; width:0; }
 /* ── The Editor's Letter and The Pilot's Log ─────────────────────────── */
+/* The letter is the only page in the book that is not a department, and it has
+   to LOOK like it before it is read — a reader flipping past should register
+   "this is the editor" from the shape alone. Hence the tinted stock, the heavy
+   rule, the wordmark device and the two columns: four signals that all say the
+   same thing, because one of them alone reads as a styling accident. */
+.letterhead { background:var(--manila); border:3px solid var(--ink);
+  border-top:12px solid var(--ink); box-shadow:7px 7px 0 rgba(0,0,0,.22);
+  padding:26px 30px 22px; margin:0 0 22px; }
+.letterhead .lh-top { display:flex; align-items:flex-end; gap:16px;
+  flex-wrap:wrap; border-bottom:3px solid var(--ink); padding-bottom:12px; }
+.letterhead .lh-mark { font-family:var(--techno); font-size:clamp(19px,3.1vw,29px);
+  line-height:1; letter-spacing:-.01em; text-transform:uppercase;
+  color:var(--ink); }
+.letterhead .lh-slug { font-family:var(--condensed); font-weight:700;
+  letter-spacing:.34em; text-transform:uppercase; font-size:11px;
+  color:var(--paper); background:var(--stamp-red); padding:4px 10px 3px;
+  display:inline-block; margin-top:7px; }
+.letterhead .lh-vol { margin-left:auto; font-family:var(--type); font-size:.74rem;
+  color:var(--ink-soft); text-align:right; letter-spacing:.04em; }
+.letterhead .lh-body { display:grid; grid-template-columns:1fr 240px; gap:28px;
+  margin-top:20px; align-items:start; }
+/* Two columns of type, which is the actual format break — a letter set at body
+   measure is indistinguishable from the article after it however it is tinted. */
+.letterhead .lh-copy { column-count:2; column-gap:26px;
+  column-rule:1px solid rgba(26,23,20,.28); font-size:.95em; line-height:1.5; }
+.letterhead .lh-copy p { margin:0 0 .85em; }
+.letterhead .lh-copy p:first-of-type::first-letter { font-family:var(--display);
+  font-size:2.9em; line-height:.82; float:left; padding:.06em .1em 0 0;
+  color:var(--stamp-red); }
+.letterhead .lh-card { margin:0; }
+.letterhead .lh-card img { border:3px solid var(--ink);
+  box-shadow:5px 5px 0 rgba(0,0,0,.24); }
+.letterhead .lh-card figcaption { font-family:var(--condensed);
+  text-transform:uppercase; letter-spacing:.1em; font-size:.62rem;
+  color:var(--ink-soft); margin-top:6px; }
+.letterhead .lh-rail { border-top:3px solid var(--ink); margin-top:14px;
+  padding-top:10px; }
+.letterhead .lh-rail h4 { font-family:var(--condensed); font-weight:700;
+  text-transform:uppercase; letter-spacing:.18em; font-size:.7rem; margin:0 0 .6em;
+  color:var(--stamp-red); }
+.letterhead .lh-rail ol { margin:0; padding-left:1.15em; }
+.letterhead .lh-rail li { font-size:.79rem; line-height:1.36; margin-bottom:.6em; }
+.letterhead .lh-rail b { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.06em; display:block; font-size:.82rem; }
+.letterhead .lh-sign { margin-top:18px; border-top:2px solid var(--ink);
+  padding-top:10px; }
+.letterhead .lh-sign .lh-hand { font-family:var(--type); font-size:1.28rem;
+  color:var(--ink); }
+.letterhead .lh-sign .lh-role { font-family:var(--condensed);
+  text-transform:uppercase; letter-spacing:.14em; font-size:.72rem;
+  color:var(--ink-soft); margin-top:2px; }
+@media (max-width:760px) {
+  .letterhead .lh-body { grid-template-columns:1fr; }
+  .letterhead .lh-copy { column-count:1; }
+}
+@media print { .letterhead .lh-copy { column-count:2; } }
 .letter { max-width:62ch; font-size:1.04em; }
 .letter-sign { font-family:var(--condensed); text-transform:uppercase;
   letter-spacing:.14em; font-size:.78rem; color:var(--ink-soft); margin-top:1.4em;
   border-top:2px solid var(--ink); display:inline-block; padding-top:6px; }
+/* ── The stack theatre ──────────────────────────────────────────────────
+   A stack you move through. No script anywhere in this file, so the whole
+   mechanism is radio inputs the labels drive and `:checked ~` selectors. The
+   inputs are visually hidden but NOT display:none — a removed input is a
+   removed tab stop, and the rail has to stay keyboard-reachable. */
+.theatre { margin:22px 0 26px; border:3px solid var(--ink);
+  box-shadow:7px 7px 0 rgba(0,0,0,.28); background:#0B0A14; overflow:hidden; }
+.theatre .th-in { position:absolute; width:1px; height:1px; opacity:0;
+  pointer-events:none; }
+.th-stage { position:relative; height:340px; overflow:hidden;
+  perspective:1000px; perspective-origin:50% 40%; }
+.th-grid { position:absolute; inset:0; width:100%; height:100%; display:block; }
+/* `pointer-events:none` on the deck is load-bearing, not tidiness. The deck is
+   absolutely positioned over the whole stage, so it caught every pointer event
+   before it reached a plate: exactly ONE plate of eight was hit-testable (the
+   front one, whose transform is small enough that its layout box still sits
+   under the cursor) and hover silently did nothing for the other seven. It looks
+   correct in a screenshot and is dead to the hand, which is the failure mode
+   this repo has written down about the canvas twice. Measured both ways —
+   1 of 8 reachable before, 8 of 8 after. */
+.th-deck { position:absolute; inset:0; transform-style:preserve-3d;
+  pointer-events:none; }
+.th-plate { pointer-events:auto; }
+.th-plate { position:absolute; left:50%; top:50%; width:222px; margin:-84px 0 0 -111px;
+  --off:calc(var(--i) - var(--n,6) / 2);
+  background:linear-gradient(168deg,#F6F2E7,#D9D2C2); color:var(--ink);
+  border:2px solid var(--ink); border-radius:5px; padding:8px 9px 9px;
+  box-shadow:0 14px 30px rgba(0,0,0,.55); transform-style:preserve-3d;
+  transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),
+            calc(var(--i) * -44px)) rotateY(-22deg);
+  opacity:.62; transition:transform .42s cubic-bezier(.22,.75,.3,1),
+            opacity .32s ease, filter .32s ease; }
+.th-plate img { width:100%; height:74px; object-fit:cover; border:1px solid var(--ink);
+  margin-bottom:6px; }
+.th-plate .th-n { position:absolute; top:-11px; left:-11px; width:26px; height:26px;
+  border-radius:50%; background:var(--power-red); color:#fff; border:2px solid var(--ink);
+  font-family:var(--condensed); font-weight:700; font-size:13px; line-height:22px;
+  text-align:center; }
+.th-plate h5 { margin:0 0 3px; font-family:var(--condensed); font-weight:700;
+  text-transform:uppercase; letter-spacing:.04em; font-size:.78rem; }
+.th-plate p { margin:0; font-size:.66rem; line-height:1.3; color:var(--ink-soft);
+  display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical;
+  overflow:hidden; }
+/* Hovering lifts a plate out of the deck — the one interaction that needs no
+   click, and the reason the stack reads as a physical object. */
+.th-plate:hover { opacity:1; transform:translate3d(calc(var(--off) * 13px),
+  calc(var(--off) * -8px),calc(var(--i) * -44px + 92px)) rotateY(-10deg); z-index:98; }
+.th-railwrap { display:flex; align-items:center; gap:10px; padding:9px 12px;
+  background:var(--ink); border-top:3px solid var(--ink); }
+.th-rail { display:flex; flex-wrap:wrap; align-items:center; gap:5px; }
+.th-rail-lbl { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.2em; font-size:.62rem; color:var(--burst-yellow);
+  flex:0 0 auto; }
+.th-tab { cursor:pointer; min-width:26px; text-align:center; padding:3px 7px;
+  font-family:var(--condensed); font-weight:700; font-size:.76rem;
+  background:rgba(244,239,228,.14); color:var(--paper); border:1px solid rgba(244,239,228,.4);
+  transition:background .16s ease, transform .16s ease; }
+.th-tab:hover { background:rgba(244,239,228,.34); }
+.th-in:focus-visible ~ .th-railwrap .th-tab { outline:2px solid var(--burst-yellow); }
+.th-body { background:var(--paper); padding:16px 18px 4px; }
+.th-note { display:none; }
+.th-note-n { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.14em; font-size:.64rem; color:var(--power-red); margin-bottom:6px; }
+.th-note > b { display:block; font-size:.95rem; line-height:1.4; margin-bottom:6px; }
+.th-note .effect { font-size:.88rem; line-height:1.45; color:var(--ink-soft);
+  margin-bottom:8px; }
+.th-over { background:var(--paper); margin:0; padding:0 18px 12px;
+  font-size:.76rem; font-style:italic; color:var(--ink-soft); }
+@media (max-width:640px) { .th-stage { height:270px; } .th-plate { width:186px; } }
+/* Motion is the affordance, not the content: with it off the plates still sort
+   themselves by depth and every step is still one tab away. */
+@media (prefers-reduced-motion:reduce) {
+  .th-plate { transition:none; }
+}
+/* On paper there is no cursor, so the stage becomes an illustration and every
+   step prints. A printed page that shows step 1 and hides twenty-three is a
+   printed page missing the proof. */
+@media print {
+  .theatre { box-shadow:none; }
+  .th-stage { height:230px; }
+  .th-railwrap, .th-over { display:none; }
+  .th-plate { opacity:1 !important; filter:none !important; }
+  .th-note { display:block !important; border-top:1px solid rgba(26,23,20,.25);
+    padding-top:10px; margin-bottom:10px; }
+}
+/* The take the rest of the department argues with. Loud on purpose: at body size
+   it is an opinion, at this size it is a position somebody has to answer. */
+.hot-take { margin:0 0 26px; padding:26px 26px 18px; position:relative;
+  background:linear-gradient(155deg,var(--ink) 0%,#2A2036 58%,var(--radical-purple));
+  border:3px solid var(--ink); box-shadow:8px 8px 0 var(--burst-yellow),
+  8px 8px 0 3px var(--ink); color:var(--paper); }
+.hot-take .ht-burst { font-family:var(--comic); font-size:1.5rem;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--ink);
+  background:var(--burst-yellow); display:inline-block; padding:2px 14px 0;
+  transform:rotate(-2.2deg); box-shadow:3px 3px 0 rgba(0,0,0,.45);
+  margin-bottom:14px; }
+.hot-take blockquote { margin:0; font-family:var(--display);
+  font-size:clamp(1.25rem,3.1vw,1.85rem); line-height:1.16;
+  letter-spacing:-.01em; text-shadow:2px 2px 0 rgba(0,0,0,.4); }
+.hot-take blockquote p { margin:0 0 .45em; }
+.hot-take blockquote p:last-child { margin-bottom:0; }
+.hot-take .ht-by { margin-top:16px; padding-top:10px;
+  border-top:2px solid rgba(244,239,228,.45); font-family:var(--condensed);
+  text-transform:uppercase; letter-spacing:.16em; font-size:.72rem;
+  color:var(--burst-yellow); }
 /* A panel is people answering each other, so the turns are indented against a
    speaker rail rather than stacked as blocks — the eye tracks the exchange. */
 .panel { max-width:70ch; }
@@ -244,6 +405,23 @@ a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
   color:var(--ink-soft); font-style:italic; }
 .ckeys .edge { width:22px; height:0; border-top:2px solid #8A93B5; display:inline-block; }
 .constellation-fig figcaption { font-size:.78rem; color:var(--ink-soft); margin-top:8px; }
+/* The Game Plan's conditions. Set as a rail beside the thesis, not under it:
+   a caveat printed after the argument reads as a retraction, and one printed
+   beside it reads as the terms the argument is offered on. */
+.not-modelled { margin:24px 0; padding:16px 18px 12px; background:#F0E6CE;
+  border:3px solid var(--ink); border-left:10px solid var(--stamp-red);
+  box-shadow:5px 5px 0 rgba(0,0,0,.18); }
+.not-modelled h4 { margin:0 0 .5em; font-family:var(--condensed); font-weight:700;
+  text-transform:uppercase; letter-spacing:.14em; font-size:.78rem;
+  color:var(--stamp-red); }
+.not-modelled ul { margin:0; padding-left:1.1em; }
+.not-modelled li { font-size:.86rem; line-height:1.45; margin-bottom:.5em;
+  color:var(--ink); }
+.not-modelled .nm-src { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.1em; font-size:.62rem; background:var(--ink); color:var(--paper);
+  padding:1px 5px; margin-right:6px; vertical-align:1px; }
+.not-modelled .nm-more { margin:.4em 0 0; font-size:.78rem; font-style:italic;
+  color:var(--ink-soft); }
 .stat-slab { margin:26px 0; padding:22px 18px; text-align:center; color:#fff;
   background:linear-gradient(160deg,var(--ink),#2a2440 62%,var(--y2k-violet));
   border:3px solid var(--ink); box-shadow:6px 6px 0 rgba(0,0,0,.30); }
@@ -333,6 +511,11 @@ a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
 .chip { font-family:var(--condensed); text-transform:uppercase; font-size:9.5px;
         letter-spacing:.1em; background:var(--ink); color:var(--paper);
         padding:2px 6px; display:inline-block; margin:0 3px 5px 0; }
+/* The engine stage, wearing the same ink as its bay in the schematic. It leads
+   the synergy chips because the job outranks the resemblance, and it is outlined
+   rather than filled so a tile never reads as two competing black labels. */
+.chip.stage { background:var(--paper); color:var(--st,var(--ink));
+              box-shadow:inset 0 0 0 2px var(--st,var(--ink)); font-weight:700; }
 figure.card-fig { margin:0 0 16px; }
 figure.card-fig img { border:3px solid var(--ink); box-shadow:6px 6px 0 rgba(0,0,0,.22); }
 figcaption { font-size:.87em; line-height:1.42; margin-top:7px; color:var(--ink-soft); }
@@ -465,3 +648,117 @@ table.data tr:nth-child(even) td { background:rgba(255,255,255,.45); }
   .card-pop { display:none!important; }
   details.dossier > *:not(summary) { display:block; }
   details.dossier > summary::after { content:""; } }
+
+/* ── The stack theatre: generated step rules ── */
+.th-in:nth-of-type(1):checked ~ .th-body .th-note:nth-child(1){display:block}
+.th-in:nth-of-type(1):checked ~ .th-railwrap .th-tab:nth-child(1){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(1):checked ~ .th-stage .th-plate:nth-child(1){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(1):checked ~ .th-stage .th-plate:nth-child(-n+1):not(:nth-child(1)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(2):checked ~ .th-body .th-note:nth-child(2){display:block}
+.th-in:nth-of-type(2):checked ~ .th-railwrap .th-tab:nth-child(2){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(2):checked ~ .th-stage .th-plate:nth-child(2){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(2):checked ~ .th-stage .th-plate:nth-child(-n+2):not(:nth-child(2)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(3):checked ~ .th-body .th-note:nth-child(3){display:block}
+.th-in:nth-of-type(3):checked ~ .th-railwrap .th-tab:nth-child(3){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(3):checked ~ .th-stage .th-plate:nth-child(3){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(3):checked ~ .th-stage .th-plate:nth-child(-n+3):not(:nth-child(3)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(4):checked ~ .th-body .th-note:nth-child(4){display:block}
+.th-in:nth-of-type(4):checked ~ .th-railwrap .th-tab:nth-child(4){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(4):checked ~ .th-stage .th-plate:nth-child(4){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(4):checked ~ .th-stage .th-plate:nth-child(-n+4):not(:nth-child(4)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(5):checked ~ .th-body .th-note:nth-child(5){display:block}
+.th-in:nth-of-type(5):checked ~ .th-railwrap .th-tab:nth-child(5){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(5):checked ~ .th-stage .th-plate:nth-child(5){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(5):checked ~ .th-stage .th-plate:nth-child(-n+5):not(:nth-child(5)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(6):checked ~ .th-body .th-note:nth-child(6){display:block}
+.th-in:nth-of-type(6):checked ~ .th-railwrap .th-tab:nth-child(6){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(6):checked ~ .th-stage .th-plate:nth-child(6){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(6):checked ~ .th-stage .th-plate:nth-child(-n+6):not(:nth-child(6)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(7):checked ~ .th-body .th-note:nth-child(7){display:block}
+.th-in:nth-of-type(7):checked ~ .th-railwrap .th-tab:nth-child(7){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(7):checked ~ .th-stage .th-plate:nth-child(7){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(7):checked ~ .th-stage .th-plate:nth-child(-n+7):not(:nth-child(7)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(8):checked ~ .th-body .th-note:nth-child(8){display:block}
+.th-in:nth-of-type(8):checked ~ .th-railwrap .th-tab:nth-child(8){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(8):checked ~ .th-stage .th-plate:nth-child(8){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(8):checked ~ .th-stage .th-plate:nth-child(-n+8):not(:nth-child(8)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(9):checked ~ .th-body .th-note:nth-child(9){display:block}
+.th-in:nth-of-type(9):checked ~ .th-railwrap .th-tab:nth-child(9){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(9):checked ~ .th-stage .th-plate:nth-child(9){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(9):checked ~ .th-stage .th-plate:nth-child(-n+9):not(:nth-child(9)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(10):checked ~ .th-body .th-note:nth-child(10){display:block}
+.th-in:nth-of-type(10):checked ~ .th-railwrap .th-tab:nth-child(10){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(10):checked ~ .th-stage .th-plate:nth-child(10){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(10):checked ~ .th-stage .th-plate:nth-child(-n+10):not(:nth-child(10)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(11):checked ~ .th-body .th-note:nth-child(11){display:block}
+.th-in:nth-of-type(11):checked ~ .th-railwrap .th-tab:nth-child(11){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(11):checked ~ .th-stage .th-plate:nth-child(11){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(11):checked ~ .th-stage .th-plate:nth-child(-n+11):not(:nth-child(11)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(12):checked ~ .th-body .th-note:nth-child(12){display:block}
+.th-in:nth-of-type(12):checked ~ .th-railwrap .th-tab:nth-child(12){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(12):checked ~ .th-stage .th-plate:nth-child(12){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(12):checked ~ .th-stage .th-plate:nth-child(-n+12):not(:nth-child(12)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(13):checked ~ .th-body .th-note:nth-child(13){display:block}
+.th-in:nth-of-type(13):checked ~ .th-railwrap .th-tab:nth-child(13){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(13):checked ~ .th-stage .th-plate:nth-child(13){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(13):checked ~ .th-stage .th-plate:nth-child(-n+13):not(:nth-child(13)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(14):checked ~ .th-body .th-note:nth-child(14){display:block}
+.th-in:nth-of-type(14):checked ~ .th-railwrap .th-tab:nth-child(14){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(14):checked ~ .th-stage .th-plate:nth-child(14){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(14):checked ~ .th-stage .th-plate:nth-child(-n+14):not(:nth-child(14)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(15):checked ~ .th-body .th-note:nth-child(15){display:block}
+.th-in:nth-of-type(15):checked ~ .th-railwrap .th-tab:nth-child(15){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(15):checked ~ .th-stage .th-plate:nth-child(15){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(15):checked ~ .th-stage .th-plate:nth-child(-n+15):not(:nth-child(15)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(16):checked ~ .th-body .th-note:nth-child(16){display:block}
+.th-in:nth-of-type(16):checked ~ .th-railwrap .th-tab:nth-child(16){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(16):checked ~ .th-stage .th-plate:nth-child(16){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(16):checked ~ .th-stage .th-plate:nth-child(-n+16):not(:nth-child(16)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(17):checked ~ .th-body .th-note:nth-child(17){display:block}
+.th-in:nth-of-type(17):checked ~ .th-railwrap .th-tab:nth-child(17){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(17):checked ~ .th-stage .th-plate:nth-child(17){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(17):checked ~ .th-stage .th-plate:nth-child(-n+17):not(:nth-child(17)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(18):checked ~ .th-body .th-note:nth-child(18){display:block}
+.th-in:nth-of-type(18):checked ~ .th-railwrap .th-tab:nth-child(18){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(18):checked ~ .th-stage .th-plate:nth-child(18){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(18):checked ~ .th-stage .th-plate:nth-child(-n+18):not(:nth-child(18)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(19):checked ~ .th-body .th-note:nth-child(19){display:block}
+.th-in:nth-of-type(19):checked ~ .th-railwrap .th-tab:nth-child(19){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(19):checked ~ .th-stage .th-plate:nth-child(19){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(19):checked ~ .th-stage .th-plate:nth-child(-n+19):not(:nth-child(19)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(20):checked ~ .th-body .th-note:nth-child(20){display:block}
+.th-in:nth-of-type(20):checked ~ .th-railwrap .th-tab:nth-child(20){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(20):checked ~ .th-stage .th-plate:nth-child(20){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(20):checked ~ .th-stage .th-plate:nth-child(-n+20):not(:nth-child(20)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(21):checked ~ .th-body .th-note:nth-child(21){display:block}
+.th-in:nth-of-type(21):checked ~ .th-railwrap .th-tab:nth-child(21){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(21):checked ~ .th-stage .th-plate:nth-child(21){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(21):checked ~ .th-stage .th-plate:nth-child(-n+21):not(:nth-child(21)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(22):checked ~ .th-body .th-note:nth-child(22){display:block}
+.th-in:nth-of-type(22):checked ~ .th-railwrap .th-tab:nth-child(22){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(22):checked ~ .th-stage .th-plate:nth-child(22){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(22):checked ~ .th-stage .th-plate:nth-child(-n+22):not(:nth-child(22)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(23):checked ~ .th-body .th-note:nth-child(23){display:block}
+.th-in:nth-of-type(23):checked ~ .th-railwrap .th-tab:nth-child(23){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(23):checked ~ .th-stage .th-plate:nth-child(23){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(23):checked ~ .th-stage .th-plate:nth-child(-n+23):not(:nth-child(23)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(24):checked ~ .th-body .th-note:nth-child(24){display:block}
+.th-in:nth-of-type(24):checked ~ .th-railwrap .th-tab:nth-child(24){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(24):checked ~ .th-stage .th-plate:nth-child(24){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(24):checked ~ .th-stage .th-plate:nth-child(-n+24):not(:nth-child(24)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(25):checked ~ .th-body .th-note:nth-child(25){display:block}
+.th-in:nth-of-type(25):checked ~ .th-railwrap .th-tab:nth-child(25){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(25):checked ~ .th-stage .th-plate:nth-child(25){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(25):checked ~ .th-stage .th-plate:nth-child(-n+25):not(:nth-child(25)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(26):checked ~ .th-body .th-note:nth-child(26){display:block}
+.th-in:nth-of-type(26):checked ~ .th-railwrap .th-tab:nth-child(26){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(26):checked ~ .th-stage .th-plate:nth-child(26){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(26):checked ~ .th-stage .th-plate:nth-child(-n+26):not(:nth-child(26)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(27):checked ~ .th-body .th-note:nth-child(27){display:block}
+.th-in:nth-of-type(27):checked ~ .th-railwrap .th-tab:nth-child(27){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(27):checked ~ .th-stage .th-plate:nth-child(27){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(27):checked ~ .th-stage .th-plate:nth-child(-n+27):not(:nth-child(27)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(28):checked ~ .th-body .th-note:nth-child(28){display:block}
+.th-in:nth-of-type(28):checked ~ .th-railwrap .th-tab:nth-child(28){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(28):checked ~ .th-stage .th-plate:nth-child(28){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(28):checked ~ .th-stage .th-plate:nth-child(-n+28):not(:nth-child(28)){opacity:.24;filter:saturate(.35)}

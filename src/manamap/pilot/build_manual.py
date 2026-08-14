@@ -42,6 +42,10 @@ from manamap.pilot.design import (
     esc,
     fast_facts,
     folio,
+    hot_take,
+    letterhead,
+    stack_theatre,
+    not_modelled_rail,
     pilot_tip,
     power_meter,
     stat_slab,
@@ -89,6 +93,26 @@ TODO = '<p><span class="todo">TODO</span> This section is awaiting content.</p>'
 # and threading one artifact through every department signature to reach one
 # furniture call is worse than a holder that is cleared on the way out.
 _DECK_MAP = {"doc": None, "engine": None}
+
+
+def engine_stage_of():
+    """`{card name: stage}` from the loaded engine model, or `{}` when there is none.
+
+    Built on demand from `stages[].cards` rather than stored, because the engine
+    doc is the single source and a second copy is a second thing to keep true. A
+    card in two stages takes the first in canonical order — the model treats a
+    stage as a job and a card doing two jobs is led by the earlier one, which is
+    also the order the schematic reads in.
+    """
+    engine = _DECK_MAP.get("engine") or {}
+    from manamap.pilot.validate_engine import STAGES as ORDER
+    out = {}
+    for stage in sorted((engine.get("stages") or []),
+                        key=lambda s: ORDER.index(s["stage"])
+                        if s.get("stage") in ORDER else 99):
+        for name in stage.get("cards") or []:
+            out.setdefault(name, stage.get("stage"))
+    return out
 
 
 # ── Loading ─────────────────────────────────────────────────────────────
@@ -481,11 +505,35 @@ def render_contents(issue, plan, stacks, decisions):
 </section>""" + folio(spec_c["title"], issue["volume"])
 
 
-def render_first_turns(issue, plan, prose_doc, cards_by_name):
+def render_first_turns(issue, plan, prose_doc, goldfish, cards_by_name):
+    """The thesis — and, beside it, the conditions the thesis is offered on.
+
+    The rail is emitted by the RENDERER, not asked for by the plan, and that is the
+    point. A department whose job is "why it's going to work" will not volunteer
+    what it assumed away; radagast's read as "assemble five bodies, swing for
+    forty", which is a correct sum over an empty table and silently models no
+    blocker, no removal, no instant and three opponents who do nothing. Where the
+    engine model exists, its own unsettled questions go here, because the analyst's
+    admissions are the honest version of the same caveat and nothing else in the
+    magazine prints them.
+    """
     dept = plan_dept(plan, "first-turns")
+    scope = None
+    if goldfish:
+        meta = goldfish.get("meta") or {}
+        if meta.get("iterations"):
+            scope = (f"{meta['iterations']:,} runs of resource development, not of "
+                     f"games — no opponent acts in any of them.")
+    rail = not_modelled_rail(
+        dept.get("not_modelled") or [],
+        (_DECK_MAP.get("engine") or {}).get("open_questions") or [],
+        scope,
+        esc_fn=esc_x,
+    )
     return (
         dept_open("first-turns", plan)
         + f'<div class="body-copy">{prose(prose_doc, "how_it_wins")}</div>'
+        + rail
         + dept_captions(dept, cards_by_name)
         + dept_furniture(dept, cards_by_name)
         + dept_close("first-turns", issue)
@@ -616,6 +664,22 @@ def _as_text(value):
     return str(value or "")
 
 
+def stack_entry_text(entry):
+    """What a `scenario.stack` entry says, under either key the corpus uses.
+
+    53 entries carry `object`; 11 carry `item` (radagast 8, yawgmoth-swarm 3), and
+    reading only `object` printed those eleven as an empty `<b></b>` on the
+    published page — an unnamed thing on the stack, in the department whose whole
+    job is showing what is on the stack.
+
+    Both keys stay valid and the scenario files are NOT normalised: a scenario block
+    is a cache fingerprint input, so tidying the corpus would MISS every stack
+    routine and cost 42 respawns to change nothing a reader can see.
+    """
+    entry = entry or {}
+    return entry.get("object") or entry.get("item") or ""
+
+
 def render_board_block(scenario, label="The board"):
     """The board, stated before anything argues about it.
 
@@ -681,7 +745,7 @@ def render_board_block(scenario, label="The board"):
             # Stack scenarios carry {pos, object, controller, note}; decision
             # scenarios carry a bare string per entry. Both are in the corpus.
             if isinstance(obj, dict):
-                what, note, who = obj.get("object", ""), obj.get("note"), obj.get("controller")
+                what, note, who = stack_entry_text(obj), obj.get("note"), obj.get("controller")
             else:
                 what, note, who = str(obj), None, None
             meta = " · ".join(x for x in (f"controlled by {who}" if who else "", note) if x)
@@ -749,20 +813,29 @@ Recorded so the next attempt starts from the measurement rather than the idea.
 """
 
 
-def render_the_kill(issue, plan, stacks, prose_doc, cards_by_name):
+def render_the_kill(issue, plan, stacks, cards, prose_doc, cards_by_name):
+    """The lines, argued — and each one as a stack you can walk through.
+
+    The board is stated first (who has what, what is on the stack), then the
+    THEATRE resolves it a step at a time. Judge's Desk still carries the verbatim
+    record and is deliberately untouched: the theatre is a way through the proof,
+    not a replacement for it, and §5.1 forbids the renderer summarising proof.
+    """
     dept = plan_dept(plan, "the-kill")
     spreads = []
     for stack in stacks:
         sid = stack["id"]
         checker = stack.get("checker", {})
         intro = prose(prose_doc, "combo_lines", sid)
-        final = stack.get("resolution", {}).get("final_state", {})
+        resolution = stack.get("resolution", {})
+        final = resolution.get("final_state", {})
         spreads.append(f"""
 <article class="rule-top" id="line-{esc(sid)}">
   <div class="kicker">Verified line {esc(sid)}</div>
   <h3 style="font-family:var(--display);font-size:1.5em">{esc(stack["title"])}</h3>
   <div class="body-copy">{intro}</div>
   {render_board_block(stack.get("scenario"))}
+  {stack_theatre(sid, resolution.get("steps"), cards, esc_fn=esc_x)}
   <p><b>Result.</b> {esc(final.get("summary", ""))}</p>
   <a class="dossier-pointer" href="#case-{esc(sid)}">
     Full dossier: Judge's Desk, Case A-{esc(sid)} →</a>
@@ -778,19 +851,67 @@ def render_the_kill(issue, plan, stacks, prose_doc, cards_by_name):
     )
 
 
-def render_editors_letter(issue, plan, prose_doc, cards_by_name):
+def letter_teases(plan, limit=3):
+    """`(title, line)` for the IN THIS ISSUE rail — authored, else derived.
+
+    The rail is what makes the letter a preview of the magazine rather than a note
+    stapled to the front of it, so it must never be empty. Authored teases win;
+    absent them the editor's own department deks are already exactly this — one
+    line each saying what a department is about — so they are borrowed in reading
+    order, skipping the letter itself and the two pieces of furniture.
+
+    Derived beats blank and authored beats derived; nothing here invents a line.
+    """
+    authored = (plan_dept(plan, "editors-letter").get("in_this_issue") or [])
+    out = []
+    for entry in authored[:limit]:
+        dept_id = (entry or {}).get("department")
+        title = DEPARTMENT_BY_ID.get(dept_id, {}).get("title") or dept_id or ""
+        if title and (entry or {}).get("line"):
+            out.append((title, entry["line"]))
+    if out:
+        return out
+    planned = {d.get("id"): d for d in plan.get("departments") or []}
+    for dept_id in DEPARTMENT_IDS:
+        if dept_id in ("cover", "contents", "editors-letter"):
+            continue
+        dek = (planned.get(dept_id) or {}).get("dek")
+        if dek:
+            out.append((DEPARTMENT_BY_ID[dept_id]["title"], dek))
+        if len(out) == limit:
+            break
+    return out
+
+
+def render_editors_letter(issue, plan, commander, prose_doc, cards_by_name):
     """One page, unbadged. What this deck is and whether it is for you.
 
     The only department signed by someone who holds no evidence tier, so it is
     also the only one that may not make a claim needing one (STYLEv3 §7.7). The
     renderer cannot enforce that — it is a judgment about sentences — but the
     absent badge in the department head is what makes the difference visible.
+
+    The `letterhead` carries the whole page. The card it opens on is the plan's
+    `letter_card` where the editor named one and the commander otherwise, because
+    a letter about a deck should be looking at something and the commander is the
+    one card every issue is guaranteed to have.
     """
     dept = plan_dept(plan, "editors-letter")
+    card = cards_by_name.get(dept.get("letter_card") or "") or commander
+    spec = DEPARTMENT_BY_ID["editors-letter"]
+    volume = f'Vol. {issue.get("volume", "—")} · {issue.get("deck_name", "")}'
+    byline = spec["byline"] or ""
+    # "Editor-in-Chief Margot Stet" → hand-signed name over the printed role, the
+    # way a letter is actually signed. Split rather than restated: the masthead is
+    # the single source for both halves and a retyped name drifts from it.
+    name, _, _tail = byline.rpartition("Editor-in-Chief ")
+    signed = _tail or byline
     return (
         dept_open("editors-letter", plan)
-        + f'<div class="body-copy letter">{prose(prose_doc, "editors_letter")}</div>'
-        + f'<p class="letter-sign">{esc(DEPARTMENT_BY_ID["editors-letter"]["byline"])}</p>'
+        + letterhead(MASTHEAD, "From the Editor", volume,
+                     prose(prose_doc, "editors_letter"),
+                     card=card, teases=letter_teases(plan),
+                     signature=signed, role="Editor-in-Chief")
         + dept_captions(dept, cards_by_name)
         + dept_furniture(dept, cards_by_name)
         + dept_close("editors-letter", issue)
@@ -812,6 +933,16 @@ def render_pilots_log(issue, plan, prose_doc, cards_by_name):
         body = TODO
     else:
         blocks = []
+        # Turn 0 is the HOT TAKE when it says so — the claim the rest of the
+        # department is an argument with. It is still a turn in the list rather
+        # than a sibling key, so the voice lint, the ordering and "who answers
+        # whom" all keep working on one structure. A panel whose opener sat in a
+        # different field would be a panel with a paragraph nobody is checking.
+        if (turns[0] or {}).get("kind") == "hot-take":
+            blocks.append(hot_take((turns[0] or {}).get("text", ""),
+                                   (turns[0] or {}).get("voice", ""),
+                                   esc_fn=esc_x_paras))
+            turns = turns[1:]
         for turn in turns:
             voice = (turn or {}).get("voice", "")
             text = (turn or {}).get("text", "")
@@ -972,6 +1103,7 @@ def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
     roles_todo = "" if roles else TODO
     main = cards
     by_name = {c["name"]: c for c in main}
+    stage_of = engine_stage_of()
 
     # THE CITIES ARE THE ROSTER, when the plan asks for it. The deck map already
     # answers "which cards do the same job" from the embeddings; grouping the grid
@@ -990,7 +1122,8 @@ def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
             if not members:
                 continue
             tiles = "".join(
-                card_tile(c, roles, synergy, anchor_id=CARD_ANCHORS.get(c["name"]))
+                card_tile(c, roles, synergy, anchor_id=CARD_ANCHORS.get(c["name"]),
+                          stage=stage_of.get(c["name"]))
                 for c in members)
             sections.append(
                 city_head(index,
@@ -1003,7 +1136,8 @@ def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
                  if c["name"] not in city_of and not c["is_commander"]]
         if stray:
             tiles = "".join(
-                card_tile(c, roles, synergy, anchor_id=CARD_ANCHORS.get(c["name"]))
+                card_tile(c, roles, synergy, anchor_id=CARD_ANCHORS.get(c["name"]),
+                          stage=stage_of.get(c["name"]))
                 for c in stray)
             sections.append("<h3>Unmapped</h3>"
                             f'<div class="card-grid">{tiles}</div>')
@@ -1033,7 +1167,8 @@ def render_the_99(issue, plan, cards, prose_doc, synergy, cards_by_name):
     for role, group_cards in groups:
         heading = f"<h3>{esc(role)}</h3>" if role else ""
         tiles = "".join(
-            card_tile(c, roles, synergy, anchor_id=CARD_ANCHORS.get(c["name"]))
+            card_tile(c, roles, synergy, anchor_id=CARD_ANCHORS.get(c["name"]),
+                      stage=stage_of.get(c["name"]))
             for c in group_cards)
         sections.append(f'{heading}<div class="card-grid">{tiles}</div>')
     tiles = "".join(sections)
@@ -1512,7 +1647,7 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
         "cover": lambda: render_cover(issue, plan, commander),
         "contents": lambda: render_contents(issue, plan, stacks, decisions),
         "first-turns": lambda: render_first_turns(issue, plan, prose_doc,
-                                                  cards_by_name),
+                                                  goldfish, cards_by_name),
         "keep-or-ship": lambda: render_keep_or_ship(issue, plan, prose_doc,
                                                     goldfish, cards_by_name),
         "whats-your-play": lambda: render_whats_your_play(issue, plan, decisions,
@@ -1535,10 +1670,10 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
                                                       cards_by_name, considering),
         "by-the-numbers": lambda: render_by_the_numbers(issue, plan, goldfish,
                                                         cards_by_name),
-        "the-kill": lambda: render_the_kill(issue, plan, stacks, prose_doc,
-                                            cards_by_name),
-        "editors-letter": lambda: render_editors_letter(issue, plan, prose_doc,
-                                                        cards_by_name),
+        "the-kill": lambda: render_the_kill(issue, plan, stacks, cards,
+                                            prose_doc, cards_by_name),
+        "editors-letter": lambda: render_editors_letter(issue, plan, commander,
+                                                        prose_doc, cards_by_name),
         "pilots-log": lambda: render_pilots_log(issue, plan, prose_doc,
                                                 cards_by_name),
         "judges-desk": lambda: render_judges_desk(issue, plan, stacks,

@@ -4370,3 +4370,115 @@ def test_box_select_catches_what_is_drawn_inside_the_marquee(page):
     assert r["n"] > 50, f"the marquee caught almost nothing ({r['n']})"
     assert r["stray"] == 0, f"{r['stray']} caught cards are drawn outside the marquee"
     assert page.js_errors == []
+
+
+# ── The stack theatre (the magazine's one interactive component) ─────────
+#
+# Everything else in a manual is static HTML, so this is the only place in the
+# magazine where a source-assertion test would be actively misleading: the markup
+# can be perfectly correct while the CSS selects the wrong element. It already
+# was — the rail's "RESOLVE" label sat inside the tab list, so every generated
+# `:nth-child(I)` rule landed one tab early and step 4 rendered with tab 3 lit.
+# The markup was right; the mechanism was off by one. These read computed style.
+
+
+def _theatre(browser, viz_server, slug="radagast"):
+    page = browser.new_page()
+    page.goto(f"{viz_server}/manuals/{slug}.html")
+    page.wait_for_selector(".theatre", timeout=15000)
+    return page
+
+
+def test_the_theatre_step_and_its_tab_and_plate_agree(browser, viz_server):
+    """Clicking step N lights tab N, shows note N, and brings plate N forward."""
+    page = _theatre(browser, viz_server)
+    try:
+        tabs = page.query_selector_all("#th-003 .th-tab")
+        assert len(tabs) >= 6, "radagast 003 has eight steps"
+        for n in (1, 4, 6):
+            page.click(f"#th-003 .th-tab:nth-of-type({n})")
+            page.wait_for_timeout(500)
+            notes = page.eval_on_selector_all(
+                "#th-003 .th-note", "e=>e.map(x=>getComputedStyle(x).display)")
+            shown = [i for i, d in enumerate(notes) if d != "none"]
+            assert shown == [n - 1], f"step {n} shows note(s) {shown}"
+            lit = page.eval_on_selector_all(
+                "#th-003 .th-tab",
+                "e=>e.map(x=>getComputedStyle(x).backgroundColor)")
+            # The active tab is the burst yellow; every other one is the muted
+            # translucent fill. Comparing against its OWN siblings rather than a
+            # literal colour keeps this alive through a palette change.
+            assert lit.count(lit[n - 1]) == 1, f"tab {n} is not uniquely lit"
+            # The front plate is the only one at full opacity.
+            op = page.eval_on_selector_all(
+                "#th-003 .th-plate", "e=>e.map(x=>+getComputedStyle(x).opacity)")
+            assert op[n - 1] == max(op) and op[n - 1] > 0.9
+            assert sum(1 for v in op if v > 0.9) == 1, op
+    finally:
+        page.close()
+
+
+def test_the_theatre_opens_on_a_valid_view_with_no_script(browser, viz_server):
+    """Step 1 is `checked` in the markup, so the page is never a blank stage —
+    and the manual carries no script to make it one either."""
+    page = _theatre(browser, viz_server)
+    try:
+        assert page.eval_on_selector_all("script", "e=>e.length") == 0
+        notes = page.eval_on_selector_all(
+            "#th-001 .th-note", "e=>e.map(x=>getComputedStyle(x).display)")
+        assert [i for i, d in enumerate(notes) if d != "none"] == [0]
+    finally:
+        page.close()
+
+
+def test_the_theatre_prints_every_step(browser, viz_server):
+    """A printed page showing step 1 and hiding seven is a page missing the
+    proof. In print the stage becomes an illustration and the record prints."""
+    page = _theatre(browser, viz_server)
+    try:
+        page.emulate_media(media="print")
+        page.wait_for_timeout(300)
+        notes = page.eval_on_selector_all(
+            "#th-003 .th-note", "e=>e.map(x=>getComputedStyle(x).display)")
+        assert all(d != "none" for d in notes), notes
+        assert page.eval_on_selector(
+            "#th-003 .th-railwrap", "e=>getComputedStyle(e).display") == "none"
+    finally:
+        page.close()
+
+
+def test_hovering_a_plate_lifts_it(browser, viz_server):
+    """The one interaction that needs no click, and the reason the stack reads
+    as an object rather than a diagram.
+
+    The point is found rather than assumed. Playwright hovers an element's
+    CENTRE, and the centre of every back plate is under the front one — the first
+    version of this test hovered a covered pixel, got no `:hover`, and reported
+    that the lift was broken when it was not. Probing for a pixel where the plate
+    is genuinely the topmost element also checks the thing that makes the fan a
+    fan: if no back plate has an exposed pixel, the stack is just one card.
+    """
+    page = _theatre(browser, viz_server)
+    try:
+        plate = "#th-003 .th-plate:nth-of-type(8)"
+        page.eval_on_selector(plate, "e=>e.scrollIntoView({block:'center'})")
+        page.wait_for_timeout(400)
+        spot = page.eval_on_selector(plate, """el => {
+          const r = el.getBoundingClientRect();
+          for (let fy = 0.06; fy < 0.95; fy += 0.08)
+            for (let fx = 0.06; fx < 0.95; fx += 0.08) {
+              const x = r.left + r.width * fx, y = r.top + r.height * fy;
+              const hit = document.elementFromPoint(x, y);
+              if (hit && el.contains(hit)) return {x, y};
+            }
+          return null;
+        }""")
+        assert spot, "no pixel of the last plate is reachable — the fan is flat"
+        before = page.eval_on_selector(plate, "e=>e.getBoundingClientRect().width")
+        page.mouse.move(spot["x"], spot["y"])
+        page.wait_for_timeout(700)
+        after = page.eval_on_selector(plate, "e=>e.getBoundingClientRect().width")
+        # Lifting is a translateZ under perspective, so it reads as growth.
+        assert after > before * 1.05, (before, after)
+    finally:
+        page.close()

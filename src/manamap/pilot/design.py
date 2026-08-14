@@ -231,10 +231,171 @@ a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
    flipping past stops — which is the whole job, and the reason it may appear once. */
 .badge-none { display:inline-block; width:0; }
 /* ── The Editor's Letter and The Pilot's Log ─────────────────────────── */
+/* The letter is the only page in the book that is not a department, and it has
+   to LOOK like it before it is read — a reader flipping past should register
+   "this is the editor" from the shape alone. Hence the tinted stock, the heavy
+   rule, the wordmark device and the two columns: four signals that all say the
+   same thing, because one of them alone reads as a styling accident. */
+.letterhead { background:var(--manila); border:3px solid var(--ink);
+  border-top:12px solid var(--ink); box-shadow:7px 7px 0 rgba(0,0,0,.22);
+  padding:26px 30px 22px; margin:0 0 22px; }
+.letterhead .lh-top { display:flex; align-items:flex-end; gap:16px;
+  flex-wrap:wrap; border-bottom:3px solid var(--ink); padding-bottom:12px; }
+.letterhead .lh-mark { font-family:var(--techno); font-size:clamp(19px,3.1vw,29px);
+  line-height:1; letter-spacing:-.01em; text-transform:uppercase;
+  color:var(--ink); }
+.letterhead .lh-slug { font-family:var(--condensed); font-weight:700;
+  letter-spacing:.34em; text-transform:uppercase; font-size:11px;
+  color:var(--paper); background:var(--stamp-red); padding:4px 10px 3px;
+  display:inline-block; margin-top:7px; }
+.letterhead .lh-vol { margin-left:auto; font-family:var(--type); font-size:.74rem;
+  color:var(--ink-soft); text-align:right; letter-spacing:.04em; }
+.letterhead .lh-body { display:grid; grid-template-columns:1fr 240px; gap:28px;
+  margin-top:20px; align-items:start; }
+/* Two columns of type, which is the actual format break — a letter set at body
+   measure is indistinguishable from the article after it however it is tinted. */
+.letterhead .lh-copy { column-count:2; column-gap:26px;
+  column-rule:1px solid rgba(26,23,20,.28); font-size:.95em; line-height:1.5; }
+.letterhead .lh-copy p { margin:0 0 .85em; }
+.letterhead .lh-copy p:first-of-type::first-letter { font-family:var(--display);
+  font-size:2.9em; line-height:.82; float:left; padding:.06em .1em 0 0;
+  color:var(--stamp-red); }
+.letterhead .lh-card { margin:0; }
+.letterhead .lh-card img { border:3px solid var(--ink);
+  box-shadow:5px 5px 0 rgba(0,0,0,.24); }
+.letterhead .lh-card figcaption { font-family:var(--condensed);
+  text-transform:uppercase; letter-spacing:.1em; font-size:.62rem;
+  color:var(--ink-soft); margin-top:6px; }
+.letterhead .lh-rail { border-top:3px solid var(--ink); margin-top:14px;
+  padding-top:10px; }
+.letterhead .lh-rail h4 { font-family:var(--condensed); font-weight:700;
+  text-transform:uppercase; letter-spacing:.18em; font-size:.7rem; margin:0 0 .6em;
+  color:var(--stamp-red); }
+.letterhead .lh-rail ol { margin:0; padding-left:1.15em; }
+.letterhead .lh-rail li { font-size:.79rem; line-height:1.36; margin-bottom:.6em; }
+.letterhead .lh-rail b { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.06em; display:block; font-size:.82rem; }
+.letterhead .lh-sign { margin-top:18px; border-top:2px solid var(--ink);
+  padding-top:10px; }
+.letterhead .lh-sign .lh-hand { font-family:var(--type); font-size:1.28rem;
+  color:var(--ink); }
+.letterhead .lh-sign .lh-role { font-family:var(--condensed);
+  text-transform:uppercase; letter-spacing:.14em; font-size:.72rem;
+  color:var(--ink-soft); margin-top:2px; }
+@media (max-width:760px) {
+  .letterhead .lh-body { grid-template-columns:1fr; }
+  .letterhead .lh-copy { column-count:1; }
+}
+@media print { .letterhead .lh-copy { column-count:2; } }
 .letter { max-width:62ch; font-size:1.04em; }
 .letter-sign { font-family:var(--condensed); text-transform:uppercase;
   letter-spacing:.14em; font-size:.78rem; color:var(--ink-soft); margin-top:1.4em;
   border-top:2px solid var(--ink); display:inline-block; padding-top:6px; }
+/* ── The stack theatre ──────────────────────────────────────────────────
+   A stack you move through. No script anywhere in this file, so the whole
+   mechanism is radio inputs the labels drive and `:checked ~` selectors. The
+   inputs are visually hidden but NOT display:none — a removed input is a
+   removed tab stop, and the rail has to stay keyboard-reachable. */
+.theatre { margin:22px 0 26px; border:3px solid var(--ink);
+  box-shadow:7px 7px 0 rgba(0,0,0,.28); background:#0B0A14; overflow:hidden; }
+.theatre .th-in { position:absolute; width:1px; height:1px; opacity:0;
+  pointer-events:none; }
+.th-stage { position:relative; height:340px; overflow:hidden;
+  perspective:1000px; perspective-origin:50% 40%; }
+.th-grid { position:absolute; inset:0; width:100%; height:100%; display:block; }
+/* `pointer-events:none` on the deck is load-bearing, not tidiness. The deck is
+   absolutely positioned over the whole stage, so it caught every pointer event
+   before it reached a plate: exactly ONE plate of eight was hit-testable (the
+   front one, whose transform is small enough that its layout box still sits
+   under the cursor) and hover silently did nothing for the other seven. It looks
+   correct in a screenshot and is dead to the hand, which is the failure mode
+   this repo has written down about the canvas twice. Measured both ways —
+   1 of 8 reachable before, 8 of 8 after. */
+.th-deck { position:absolute; inset:0; transform-style:preserve-3d;
+  pointer-events:none; }
+.th-plate { pointer-events:auto; }
+.th-plate { position:absolute; left:50%; top:50%; width:222px; margin:-84px 0 0 -111px;
+  --off:calc(var(--i) - var(--n,6) / 2);
+  background:linear-gradient(168deg,#F6F2E7,#D9D2C2); color:var(--ink);
+  border:2px solid var(--ink); border-radius:5px; padding:8px 9px 9px;
+  box-shadow:0 14px 30px rgba(0,0,0,.55); transform-style:preserve-3d;
+  transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),
+            calc(var(--i) * -44px)) rotateY(-22deg);
+  opacity:.62; transition:transform .42s cubic-bezier(.22,.75,.3,1),
+            opacity .32s ease, filter .32s ease; }
+.th-plate img { width:100%; height:74px; object-fit:cover; border:1px solid var(--ink);
+  margin-bottom:6px; }
+.th-plate .th-n { position:absolute; top:-11px; left:-11px; width:26px; height:26px;
+  border-radius:50%; background:var(--power-red); color:#fff; border:2px solid var(--ink);
+  font-family:var(--condensed); font-weight:700; font-size:13px; line-height:22px;
+  text-align:center; }
+.th-plate h5 { margin:0 0 3px; font-family:var(--condensed); font-weight:700;
+  text-transform:uppercase; letter-spacing:.04em; font-size:.78rem; }
+.th-plate p { margin:0; font-size:.66rem; line-height:1.3; color:var(--ink-soft);
+  display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical;
+  overflow:hidden; }
+/* Hovering lifts a plate out of the deck — the one interaction that needs no
+   click, and the reason the stack reads as a physical object. */
+.th-plate:hover { opacity:1; transform:translate3d(calc(var(--off) * 13px),
+  calc(var(--off) * -8px),calc(var(--i) * -44px + 92px)) rotateY(-10deg); z-index:98; }
+.th-railwrap { display:flex; align-items:center; gap:10px; padding:9px 12px;
+  background:var(--ink); border-top:3px solid var(--ink); }
+.th-rail { display:flex; flex-wrap:wrap; align-items:center; gap:5px; }
+.th-rail-lbl { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.2em; font-size:.62rem; color:var(--burst-yellow);
+  flex:0 0 auto; }
+.th-tab { cursor:pointer; min-width:26px; text-align:center; padding:3px 7px;
+  font-family:var(--condensed); font-weight:700; font-size:.76rem;
+  background:rgba(244,239,228,.14); color:var(--paper); border:1px solid rgba(244,239,228,.4);
+  transition:background .16s ease, transform .16s ease; }
+.th-tab:hover { background:rgba(244,239,228,.34); }
+.th-in:focus-visible ~ .th-railwrap .th-tab { outline:2px solid var(--burst-yellow); }
+.th-body { background:var(--paper); padding:16px 18px 4px; }
+.th-note { display:none; }
+.th-note-n { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.14em; font-size:.64rem; color:var(--power-red); margin-bottom:6px; }
+.th-note > b { display:block; font-size:.95rem; line-height:1.4; margin-bottom:6px; }
+.th-note .effect { font-size:.88rem; line-height:1.45; color:var(--ink-soft);
+  margin-bottom:8px; }
+.th-over { background:var(--paper); margin:0; padding:0 18px 12px;
+  font-size:.76rem; font-style:italic; color:var(--ink-soft); }
+@media (max-width:640px) { .th-stage { height:270px; } .th-plate { width:186px; } }
+/* Motion is the affordance, not the content: with it off the plates still sort
+   themselves by depth and every step is still one tab away. */
+@media (prefers-reduced-motion:reduce) {
+  .th-plate { transition:none; }
+}
+/* On paper there is no cursor, so the stage becomes an illustration and every
+   step prints. A printed page that shows step 1 and hides twenty-three is a
+   printed page missing the proof. */
+@media print {
+  .theatre { box-shadow:none; }
+  .th-stage { height:230px; }
+  .th-railwrap, .th-over { display:none; }
+  .th-plate { opacity:1 !important; filter:none !important; }
+  .th-note { display:block !important; border-top:1px solid rgba(26,23,20,.25);
+    padding-top:10px; margin-bottom:10px; }
+}
+/* The take the rest of the department argues with. Loud on purpose: at body size
+   it is an opinion, at this size it is a position somebody has to answer. */
+.hot-take { margin:0 0 26px; padding:26px 26px 18px; position:relative;
+  background:linear-gradient(155deg,var(--ink) 0%,#2A2036 58%,var(--radical-purple));
+  border:3px solid var(--ink); box-shadow:8px 8px 0 var(--burst-yellow),
+  8px 8px 0 3px var(--ink); color:var(--paper); }
+.hot-take .ht-burst { font-family:var(--comic); font-size:1.5rem;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--ink);
+  background:var(--burst-yellow); display:inline-block; padding:2px 14px 0;
+  transform:rotate(-2.2deg); box-shadow:3px 3px 0 rgba(0,0,0,.45);
+  margin-bottom:14px; }
+.hot-take blockquote { margin:0; font-family:var(--display);
+  font-size:clamp(1.25rem,3.1vw,1.85rem); line-height:1.16;
+  letter-spacing:-.01em; text-shadow:2px 2px 0 rgba(0,0,0,.4); }
+.hot-take blockquote p { margin:0 0 .45em; }
+.hot-take blockquote p:last-child { margin-bottom:0; }
+.hot-take .ht-by { margin-top:16px; padding-top:10px;
+  border-top:2px solid rgba(244,239,228,.45); font-family:var(--condensed);
+  text-transform:uppercase; letter-spacing:.16em; font-size:.72rem;
+  color:var(--burst-yellow); }
 /* A panel is people answering each other, so the turns are indented against a
    speaker rail rather than stacked as blocks — the eye tracks the exchange. */
 .panel { max-width:70ch; }
@@ -284,6 +445,23 @@ a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
   color:var(--ink-soft); font-style:italic; }
 .ckeys .edge { width:22px; height:0; border-top:2px solid #8A93B5; display:inline-block; }
 .constellation-fig figcaption { font-size:.78rem; color:var(--ink-soft); margin-top:8px; }
+/* The Game Plan's conditions. Set as a rail beside the thesis, not under it:
+   a caveat printed after the argument reads as a retraction, and one printed
+   beside it reads as the terms the argument is offered on. */
+.not-modelled { margin:24px 0; padding:16px 18px 12px; background:#F0E6CE;
+  border:3px solid var(--ink); border-left:10px solid var(--stamp-red);
+  box-shadow:5px 5px 0 rgba(0,0,0,.18); }
+.not-modelled h4 { margin:0 0 .5em; font-family:var(--condensed); font-weight:700;
+  text-transform:uppercase; letter-spacing:.14em; font-size:.78rem;
+  color:var(--stamp-red); }
+.not-modelled ul { margin:0; padding-left:1.1em; }
+.not-modelled li { font-size:.86rem; line-height:1.45; margin-bottom:.5em;
+  color:var(--ink); }
+.not-modelled .nm-src { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.1em; font-size:.62rem; background:var(--ink); color:var(--paper);
+  padding:1px 5px; margin-right:6px; vertical-align:1px; }
+.not-modelled .nm-more { margin:.4em 0 0; font-size:.78rem; font-style:italic;
+  color:var(--ink-soft); }
 .stat-slab { margin:26px 0; padding:22px 18px; text-align:center; color:#fff;
   background:linear-gradient(160deg,var(--ink),#2a2440 62%,var(--y2k-violet));
   border:3px solid var(--ink); box-shadow:6px 6px 0 rgba(0,0,0,.30); }
@@ -373,6 +551,11 @@ a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
 .chip { font-family:var(--condensed); text-transform:uppercase; font-size:9.5px;
         letter-spacing:.1em; background:var(--ink); color:var(--paper);
         padding:2px 6px; display:inline-block; margin:0 3px 5px 0; }
+/* The engine stage, wearing the same ink as its bay in the schematic. It leads
+   the synergy chips because the job outranks the resemblance, and it is outlined
+   rather than filled so a tile never reads as two competing black labels. */
+.chip.stage { background:var(--paper); color:var(--st,var(--ink));
+              box-shadow:inset 0 0 0 2px var(--st,var(--ink)); font-weight:700; }
 figure.card-fig { margin:0 0 16px; }
 figure.card-fig img { border:3px solid var(--ink); box-shadow:6px 6px 0 rgba(0,0,0,.22); }
 figcaption { font-size:.87em; line-height:1.42; margin-top:7px; color:var(--ink-soft); }
@@ -597,9 +780,74 @@ ENGINE_STAGE_INK = {
     "protection": "#0FA3A3", "wincon": "#E4007C",
 }
 
+# What each stage HANDS ON — the noun that travels down an arrow leaving it.
+#
+# This is the difference between a schematic and a block diagram. The first
+# version of this figure drew seven boxes and joined them with anonymous arcs,
+# which says only "these two are related" — and an engine is not an adjacency
+# list, it is a sequence of *conversions*. A reader should be able to follow one
+# resource through the machine and watch it become another: mana buys windows,
+# windows buy bodies, bodies buy cards, cards buy damage.
+#
+# An arrow's label is read from the line's own `carries` when the engineer wrote
+# one, and derived from its SOURCE stage otherwise. Deriving costs no schema
+# migration and no ~500k-token respawn of the engineer/critic loop — and the
+# figure's key says which arrows are derived, because an inference wearing an
+# authored label is exactly the thing the dashed-line contract exists to prevent.
+STAGE_CARRIES = {
+    "mana": "mana", "ignition": "windows", "fuel": "bodies",
+    "fodder": "fodder", "conversion": "cards", "output": "answers",
+    "protection": "insurance", "wincon": "damage",
+}
 
-def engine_flow(doc, width=1000):
-    """`engine.json` → one inline SVG of the engine, left to right."""
+# The plain-language job, printed inside each bay. Three of these are the triad
+# every deck has whether or not it has ever named them — the thing that starts
+# the machine, the thing that feeds it, and the thing that ends the game — and a
+# reader who takes nothing else from the figure should take those.
+STAGE_ROLE = {
+    "mana": "PAYS FOR IT", "ignition": "STARTS IT", "fuel": "FEEDS IT",
+    "fodder": "FEEDS IT", "conversion": "TURNS IT OVER",
+    "output": "CLEARS THE WAY", "protection": "KEEPS IT RUNNING",
+    "wincon": "ENDS IT",
+}
+
+
+def line_carries(line):
+    """`(noun, authored)` — what an arrow moves, and whether anyone said so."""
+    authored = (line or {}).get("carries")
+    if authored:
+        return str(authored), True
+    return STAGE_CARRIES.get((line or {}).get("from"), ""), False
+
+
+def _wrap(text, limit, max_lines):
+    """Hand-wrap for SVG, which has no flow. A clipped name reads as a fault."""
+    words, line, lines = str(text or "").split(), "", []
+    for word in words:
+        trial = (line + " " + word).strip()
+        if len(trial) > limit and line:
+            lines.append(line)
+            line = word
+        else:
+            line = trial
+    if line:
+        lines.append(line)
+    return lines[:max_lines]
+
+
+def engine_flow(doc, width=1060):
+    """`engine.json` → an inline SVG SCHEMATIC of the engine, left to right.
+
+    Bays in canonical stage order, and between them arrows that each carry a NAMED
+    resource. Direction is the whole reading: an arrow running forward (down the
+    stage order) arcs ABOVE the rail, and one running backward arcs BELOW it as a
+    feedback loop — which is not decoration, because a loop is the thing that makes
+    an engine an engine rather than a list of steps. Radagast's `wincon → conversion`
+    is exactly that: the finisher pumps the board and the board draws more cards.
+
+    Dashed still means unverified, unchanged and non-negotiable — it is the same
+    line the panel is forbidden to assert.
+    """
     stages = [s for s in (doc or {}).get("stages") or [] if s.get("stage")]
     if not stages:
         return ""
@@ -607,99 +855,161 @@ def engine_flow(doc, width=1000):
     stages.sort(key=lambda s: ORDER.index(s["stage"]) if s["stage"] in ORDER else 99)
 
     n = len(stages)
-    gap, pad = 18, 16
+    gap, pad = 14, 18
     box_w = (width - 2 * pad - gap * (n - 1)) / n
-    box_h, top = 128, 54
-    height = top + box_h + 96
+    box_h = 146
+    # Room above for forward arcs (deepest = widest span) and below for feedback.
+    rail = 236
+    height = rail + box_h + 128
 
+    rank = {s["stage"]: i for i, s in enumerate(stages)}
     at = {}
-    parts = [f'<svg class="engine-flow" viewBox="0 0 {width} {height}" role="img" '
-             f'aria-label="How this deck runs, stage by stage" '
-             f'xmlns="http://www.w3.org/2000/svg">',
-             f'<rect width="{width}" height="{height}" fill="#0B0A14"/>']
+    parts = [
+        f'<svg class="engine-flow" viewBox="0 0 {width} {height}" role="img" '
+        f'aria-label="Schematic: what this deck converts, stage by stage" '
+        f'xmlns="http://www.w3.org/2000/svg">',
+        f'<defs><linearGradient id="ef-sky" x1="0" y1="0" x2="0" y2="1">'
+        f'<stop offset="0" stop-color="#141329"/>'
+        f'<stop offset="1" stop-color="#0B0A14"/></linearGradient></defs>',
+        f'<rect width="{width}" height="{height}" fill="url(#ef-sky)"/>',
+    ]
 
     thinnest = min(stages, key=lambda s: len(s.get("cards") or []))
 
     for i, stage in enumerate(stages):
         x = pad + i * (box_w + gap)
-        ink = ENGINE_STAGE_INK.get(stage["stage"], "#8A93B5")
-        at[stage["stage"]] = (x + box_w / 2, top, top + box_h)
+        name = stage["stage"]
+        ink = ENGINE_STAGE_INK.get(name, "#8A93B5")
+        at[name] = (x + box_w / 2, rail, rail + box_h)
         cards = stage.get("cards") or []
         thin = stage is thinnest
         parts.append(
-            f'<rect x="{x:.1f}" y="{top}" width="{box_w:.1f}" height="{box_h}" '
-            f'rx="4" fill="{ink}" fill-opacity="0.17" stroke="{ink}" '
+            f'<rect x="{x:.1f}" y="{rail}" width="{box_w:.1f}" height="{box_h}" '
+            f'rx="5" fill="{ink}" fill-opacity="0.17" stroke="{ink}" '
             f'stroke-width="{3 if thin else 1.6}"/>')
+        # A tint bar along the top edge, so the bay reads as a labelled unit
+        # rather than as a tinted rectangle that happens to have words in it.
         parts.append(
-            f'<text x="{x + 9:.1f}" y="{top + 21}" fill="{ink}" font-size="10.5" '
+            f'<rect x="{x:.1f}" y="{rail}" width="{box_w:.1f}" height="5" '
+            f'rx="2.5" fill="{ink}"/>')
+        parts.append(
+            f'<text x="{x + 9:.1f}" y="{rail + 26}" fill="{ink}" font-size="10.5" '
             f'font-family="Oswald,Arial Narrow,sans-serif" letter-spacing="1.6">'
-            f'{esc(stage["stage"].upper())}</text>')
-        # The label wraps by hand: SVG has no flow, and a name clipped at the box
-        # edge reads as a rendering fault rather than as a long name.
-        words, line, lines = (stage.get("label") or "").split(), "", []
-        limit = max(8, int(box_w / 7.6))
-        for word in words:
-            trial = (line + " " + word).strip()
-            if len(trial) > limit and line:
-                lines.append(line); line = word
-            else:
-                line = trial
-        if line:
-            lines.append(line)
-        for j, text in enumerate(lines[:3]):
+            f'{esc(name.upper())}</text>')
+        for j, text in enumerate(_wrap(stage.get("label"), max(8, int(box_w / 7.4)), 3)):
             parts.append(
-                f'<text x="{x + 9:.1f}" y="{top + 44 + j * 17}" fill="#F2F0F7" '
+                f'<text x="{x + 9:.1f}" y="{rail + 48 + j * 17}" fill="#F2F0F7" '
                 f'font-size="14" font-weight="700" '
                 f'font-family="Oswald,Arial Narrow,sans-serif">{esc(text)}</text>')
+        role = STAGE_ROLE.get(name)
+        if role:
+            parts.append(
+                f'<text x="{x + 9:.1f}" y="{rail + box_h - 40}" fill="{ink}" '
+                f'font-size="10" font-family="Oswald,Arial Narrow,sans-serif" '
+                f'letter-spacing="1.3" opacity=".95">{esc(role)}</text>')
         parts.append(
-            f'<text x="{x + 9:.1f}" y="{top + box_h - 30}" fill="#AEB4CC" '
+            f'<text x="{x + 9:.1f}" y="{rail + box_h - 23}" fill="#AEB4CC" '
             f'font-size="11.5" font-family="Inter,system-ui,sans-serif">'
             f'{len(cards)} card{"" if len(cards) == 1 else "s"}</text>')
         if stage.get("single_point_of_failure"):
             parts.append(
-                f'<text x="{x + 9:.1f}" y="{top + box_h - 13}" fill="#FFD800" '
+                f'<text x="{x + 9:.1f}" y="{rail + box_h - 10}" fill="#FFD800" '
                 f'font-size="10" font-family="Oswald,Arial Narrow,sans-serif" '
                 f'letter-spacing=".6">ONE CARD DEEP</text>')
         if thin:
             parts.append(
-                f'<text x="{x + box_w - 9:.1f}" y="{top + 21}" fill="{ink}" '
+                f'<text x="{x + box_w - 9:.1f}" y="{rail + 26}" fill="{ink}" '
                 f'text-anchor="end" font-size="10" '
                 f'font-family="Oswald,Arial Narrow,sans-serif">THINNEST</text>')
 
-    # Lines, below the boxes so they never cross a label.
-    base = top + box_h + 16
-    for k, line in enumerate(doc.get("lines") or []):
+    # ── The flows ────────────────────────────────────────────────────────────
+    # Depth scales with span so a long arrow clears the short ones under it.
+    #
+    # `seen` separates arrows that share a pair AND a direction, which is not a
+    # hypothetical: radagast declares `fuel → wincon` twice — once through Hornet
+    # Nest and once without it, resting on two different stacks — and without the
+    # offset they draw at identical coordinates. Two distinct proven lines would
+    # render as one, and the figure's own count would then disagree with the
+    # number of arrows a reader can find. Everything here is deterministic;
+    # nothing is measured at view time.
+    seen = {}
+    for line in doc.get("lines") or []:
         a, b = at.get(line.get("from")), at.get(line.get("to"))
         if not a or not b or a[0] == b[0]:
             continue
         verified = bool(line.get("verified_by"))
-        dip = base + 10 + (k % 3) * 16
+        stroke = "#4CAF50" if verified else "#8A93B5"
+        forward = rank.get(line.get("to"), 0) > rank.get(line.get("from"), 0)
+        span = abs(rank.get(line.get("to"), 0) - rank.get(line.get("from"), 0))
+        noun, authored = line_carries(line)
+
+        key = (line.get("from"), line.get("to"))
+        nth = seen.get(key, 0)
+        seen[key] = nth + 1
+
+        if forward:
+            y0 = y1 = a[1]                       # leave and arrive at the bay tops
+            apex = max(22, rail - 26 - span * 33 + nth * 21)
+            head = f"{b[0]:.1f},{y1 - 1} {b[0] - 5:.1f},{y1 - 11} {b[0] + 5:.1f},{y1 - 11}"
+        else:
+            y0 = y1 = a[2]                       # …or at the bay bottoms
+            apex = rail + box_h + 24 + (span + nth) % 3 * 27
+            head = f"{b[0]:.1f},{y1 + 1} {b[0] - 5:.1f},{y1 + 11} {b[0] + 5:.1f},{y1 + 11}"
+
         parts.append(
-            f'<path d="M {a[0]:.1f} {a[2]} C {a[0]:.1f} {dip:.1f}, '
-            f'{b[0]:.1f} {dip:.1f}, {b[0]:.1f} {b[2]}" fill="none" '
-            f'stroke="{"#4CAF50" if verified else "#8A93B5"}" '
-            f'stroke-width="{2 if verified else 1.4}" '
+            f'<path d="M {a[0]:.1f} {y0} C {a[0]:.1f} {apex:.1f}, '
+            f'{b[0]:.1f} {apex:.1f}, {b[0]:.1f} {y1}" fill="none" '
+            f'stroke="{stroke}" stroke-width="{2.2 if verified else 1.4}" '
             f'stroke-opacity="{0.9 if verified else 0.5}"'
             + ('' if verified else ' stroke-dasharray="5 4"') + '/>')
+        parts.append(f'<polygon points="{head}" fill="{stroke}" '
+                     f'fill-opacity="{0.9 if verified else 0.5}"/>')
+
+        if noun:
+            # The bezier's apex sits at 3/4 of the control offset, not at the
+            # control point — putting the label on the control point floats it
+            # clear of a line it is supposed to be labelling.
+            mid_x = (a[0] + b[0]) / 2
+            mid_y = y0 + 0.75 * (apex - y0)
+            w = 7.0 * len(noun) + 14
+            parts.append(
+                f'<rect x="{mid_x - w / 2:.1f}" y="{mid_y - 10:.1f}" width="{w:.1f}" '
+                f'height="17" rx="8.5" fill="#0B0A14" fill-opacity=".92" '
+                f'stroke="{stroke}" stroke-width=".9" stroke-opacity=".55"/>')
+            parts.append(
+                f'<text x="{mid_x:.1f}" y="{mid_y + 2.5:.1f}" text-anchor="middle" '
+                f'fill="{"#DDE3F2" if authored else "#A8B0C8"}" font-size="10.5" '
+                f'font-family="Inter,system-ui,sans-serif"'
+                + ('' if authored else ' font-style="italic"')
+                + f'>{esc(noun)}</text>')
+
     parts.append("</svg>")
     return "".join(parts)
 
 
 def engine_figure(doc, caption=""):
-    """The flow, its key, and the honesty line under it."""
+    """The schematic, its key, and the honesty line under it."""
     svg = engine_flow(doc)
     if not svg:
         return ""
     lines = doc.get("lines") or []
     proven = sum(1 for l in lines if l.get("verified_by"))
+    derived = sum(1 for l in lines if not (l or {}).get("carries"))
     keys = ('<span class="ck"><i class="eline on"></i>Proven by a rules-verified line</span>'
             '<span class="ck"><i class="eline"></i>The analyst\'s reading, not yet verified</span>'
             '<span class="ck"><i class="dot cmdr"></i>One card deep</span>')
+    # An arrow label the engineer did not write is set in italic and said out loud
+    # here. It is a reasonable inference — an arrow leaving FUEL moves bodies — but
+    # it is still an inference, and this magazine marks those.
+    note = ("" if not derived else
+            f' {derived} arrow label{"" if derived == 1 else "s"} '
+            f'{"is" if derived == 1 else "are"} set in italic: the resource is '
+            f"inferred from the stage it leaves, not stated by the analyst.")
     return (f'<figure class="engine-fig">{svg}'
             f'<div class="ckeys">{keys}</div>'
             f'<figcaption>{esc(caption or "")} '
             f'{proven} of {len(lines)} connections rest on a checker-passed stack.'
-            f'</figcaption></figure>')
+            f'{note}</figcaption></figure>')
 
 
 # ── The deck constellation ──────────────────────────────────────────────
@@ -1093,6 +1403,286 @@ def constellation_figure(doc, caption):
 # pre-escaping it here rendered "COACH&#x27;S READ" on the page — and the obvious
 # fix (a backslash-escaped apostrophe inside the f-string) is a SyntaxError on
 # Python 3.10, which is the version this project is pinned to.
+def letterhead(masthead, slug, volume_line, body_html, card=None,
+               teases=(), signature="", role=""):
+    """The Editor's Letter's own furniture — and the only place it is used.
+
+    It shipped as `.body-copy` with a sign-off, which was editorially right and
+    visually invisible: an editor's page that looks like the article after it is
+    not an editor's page, and a reader flipping through met one more column of
+    type where a magazine puts its most recognisable furniture. Four devices do
+    the work, and they are deliberately redundant — tinted stock, a heavy top
+    rule, the wordmark, and two columns. Any one alone reads as a styling
+    accident; together they say "this is the front of the book" before a word of
+    it is read.
+
+    `card` is a `cards.json` record — the letter opens on something you can see.
+    `teases` are `(department title, line)` pairs for the IN THIS ISSUE rail,
+    which is what makes the page a preview of the magazine rather than a note
+    attached to it. Everything is optional; the letter degrades to the wordmark,
+    the copy and the signature.
+
+    `body_html` arrives already escaped and linkified from the caller — the same
+    contract `card_figure` takes, for the same reason: card links and stack refs
+    are the renderer's job and must survive into this component.
+    """
+    top = [f'<div><div class="lh-mark">{esc(masthead)}</div>'
+           f'<div class="lh-slug">{esc(slug)}</div></div>']
+    if volume_line:
+        top.append(f'<div class="lh-vol">{esc(volume_line)}</div>')
+
+    aside = []
+    if card and (card.get("art_crop") or card.get("image")):
+        image = card.get("art_crop") or card.get("image")
+        img = (f'<img src="{esc(image)}" alt="{esc(card.get("name", ""))}" '
+               f'loading="lazy">')
+        if card.get("foil"):
+            img = f'<span class="foil">{img}</span>'
+        aside.append(f'<figure class="lh-card">{img}'
+                     f'<figcaption>{esc(card.get("name", ""))}</figcaption>'
+                     f'{printing_credit(card)}</figure>')
+    rows = "".join(f"<li><b>{esc(title)}</b>{esc(line)}</li>"
+                   for title, line in (teases or []) if title)
+    if rows:
+        aside.append(f'<div class="lh-rail"><h4>In this issue</h4>'
+                     f"<ol>{rows}</ol></div>")
+
+    sign = ""
+    if signature:
+        sign = (f'<div class="lh-sign"><div class="lh-hand">{esc(signature)}</div>'
+                + (f'<div class="lh-role">{esc(role)}</div>' if role else "")
+                + "</div>")
+
+    return (f'<aside class="letterhead"><div class="lh-top">{"".join(top)}</div>'
+            f'<div class="lh-body"><div><div class="lh-copy">{body_html}</div>'
+            f'{sign}</div><div>{"".join(aside)}</div></div></aside>')
+
+
+# The most steps any one resolution may be stepped through. The corpus tops out at
+# 24 (yawgmoth-swarm's undying loop); the bound is the number of generic CSS rules
+# the stylesheet carries, and a stack that exceeds it still renders every step —
+# it simply stops offering tabs past this one. Measured, not guessed: raise it
+# when a real artifact passes it, and `stack_theatre` says so on the page.
+THEATRE_MAX_STEPS = 28
+
+
+def _theatre_grid(seed):
+    """The backdrop: a vanishing-point grid under a lit horizon.
+
+    1980s vector geometry drawn with 2020s rendering — the lines converge and the
+    horizon glows, but there is no dither, no bevel and no chrome. The period look
+    is in the perspective, not in the artefacts of the hardware that used to draw
+    it, which is the same argument STYLEv3 §L9 makes about every other device here.
+
+    Deterministic: the accent rotates off a hash of the stack id, so a given case
+    always renders identically and two adjacent cases do not look like reprints.
+    """
+    hue = int((stable_angle(seed, 180.0) + 180.0)) % 360
+    vx, vy = 500.0, 168.0                      # the vanishing point
+    parts = [
+        '<svg class="th-grid" viewBox="0 0 1000 420" preserveAspectRatio="none" '
+        'aria-hidden="true" xmlns="http://www.w3.org/2000/svg">',
+        f'<defs><linearGradient id="thg-{esc(seed)}" x1="0" y1="0" x2="0" y2="1">'
+        f'<stop offset="0" stop-color="hsl({hue},58%,9%)"/>'
+        f'<stop offset="0.40" stop-color="hsl({hue},64%,17%)"/>'
+        f'<stop offset="0.42" stop-color="hsl({(hue + 40) % 360},72%,26%)"/>'
+        f'<stop offset="1" stop-color="hsl({(hue + 200) % 360},70%,7%)"/>'
+        f'</linearGradient>'
+        f'<radialGradient id="thh-{esc(seed)}" cx="0.5" cy="0.40" r="0.42">'
+        f'<stop offset="0" stop-color="hsl({(hue + 40) % 360},92%,64%)" '
+        f'stop-opacity=".55"/>'
+        f'<stop offset="1" stop-color="hsl({(hue + 40) % 360},92%,64%)" '
+        f'stop-opacity="0"/></radialGradient></defs>',
+        f'<rect width="1000" height="420" fill="url(#thg-{esc(seed)})"/>',
+        f'<rect width="1000" height="420" fill="url(#thh-{esc(seed)})"/>',
+    ]
+    ink = f"hsl({(hue + 40) % 360},90%,68%)"
+    # Radials: fanned about the vanishing point and run to the bottom edge.
+    for i in range(-9, 10):
+        x_end = vx + i * 132.0
+        parts.append(f'<line x1="{vx}" y1="{vy}" x2="{x_end:.1f}" y2="420" '
+                     f'stroke="{ink}" stroke-width="1.1" stroke-opacity=".30"/>')
+    # Horizontals: spaced so the gaps compress toward the horizon, which is what
+    # actually reads as depth — evenly spaced lines read as a ladder.
+    for i in range(1, 13):
+        t = (i / 12.0) ** 2.35
+        y = vy + 4 + t * (420 - vy - 4)
+        parts.append(f'<line x1="0" y1="{y:.1f}" x2="1000" y2="{y:.1f}" '
+                     f'stroke="{ink}" stroke-width="1.1" '
+                     f'stroke-opacity="{0.13 + 0.30 * t:.2f}"/>')
+    parts.append(f'<line x1="0" y1="{vy}" x2="1000" y2="{vy}" stroke="{ink}" '
+                 f'stroke-width="2" stroke-opacity=".85"/>')
+    parts.append("</svg>")
+    return "".join(parts)
+
+
+def stack_theatre(sid, steps, cards=(), esc_fn=esc):
+    """A stack you move through: the resolution, one plate per step.
+
+    The Kill rendered its lines as a definition list, which is a strange thing to
+    do to the most visual object in the game. Here the resolution IS the stack —
+    plate `n` is step `n`, receding along the vanishing line, and the reader brings
+    each one forward in turn to read what happened and which rules said so.
+
+    **No JavaScript, deliberately.** An issue is a standalone printable file that
+    rebuilds byte-identically (see the constellation's note), so the step-through
+    is radio inputs and `:checked ~` selectors, and the depth is `preserve-3d`. The
+    first step is `checked` in the markup, so a reader with CSS disabled, a printer,
+    and a screen reader all get a valid view rather than a broken one. The generic
+    per-index rules live in the stylesheet (`_theatre_rules`), because per-instance
+    CSS would mean a `<style>` block inside every case and the same rules N times.
+
+    `cards` is the deck's card list; a step whose action names one shows its art.
+    That match is the plainest possible one — first probe found, longest name first
+    — because a plate showing the wrong card is worse than a plate showing none.
+    """
+    steps = [s for s in (steps or []) if s]
+    if not steps:
+        return ""
+    probes = sorted(((c.get("name") or "", c) for c in cards or []),
+                    key=lambda pair: (-len(pair[0]), pair[0]))
+    tabbed = steps[:THEATRE_MAX_STEPS]
+
+    inputs, tabs, plates, notes = [], [], [], []
+    for i, step in enumerate(steps, start=1):
+        action = str(step.get("action") or "")
+        card = next((c for name, c in probes if name and name in action), None)
+        if i <= len(tabbed):
+            rid = f"th-{sid}-{i}"
+            inputs.append(f'<input class="th-in" type="radio" name="th-{sid}" '
+                          f'id="{rid}"{" checked" if i == 1 else ""}>')
+            tabs.append(f'<label class="th-tab" for="{rid}" '
+                        f'title="Step {i}">{i}</label>')
+            art = card.get("art_crop") or card.get("image") if card else None
+            plates.append(
+                f'<article class="th-plate" style="--i:{i - 1}">'
+                + (f'<img src="{esc(art)}" alt="" loading="lazy">' if art else "")
+                + f'<div class="th-n">{i}</div>'
+                + f'<h5>{esc(card["name"] if card else f"Step {i}")}</h5>'
+                + f'<p>{esc(action)}</p></article>')
+        cites = "".join(
+            f'<div class="cite"><b>CR {esc(c.get("rule", ""))}</b> — '
+            f'“{esc(c.get("quote", ""))}”</div>'
+            for c in step.get("citations") or [])
+        notes.append(
+            f'<div class="th-note"><div class="th-note-n">Step {i} of {len(steps)}'
+            + (f' · {esc(card["name"])}' if card else "")
+            + f'</div><b>{esc_fn(action)}</b>'
+            f'<div class="effect">{esc_fn(str(step.get("effect") or ""))}</div>'
+            f"{cites}</div>")
+
+    over = len(steps) - len(tabbed)
+    more = ("" if not over else
+            f'<p class="th-over">{over} further step'
+            f'{"" if over == 1 else "s"} follow{"s" if over == 1 else ""} and '
+            f"{'is' if over == 1 else 'are'} printed in full below.</p>")
+    return (
+        f'<div class="theatre" id="th-{esc(sid)}" style="--n:{len(tabbed)}">'
+        f'{"".join(inputs)}'
+        f'<div class="th-stage">{_theatre_grid(sid)}'
+        f'<div class="th-deck">{"".join(plates)}</div></div>'
+        # The label is a SIBLING of the tab list, never a child of it. Inside the
+        # nav it is child 1, so every `:nth-child(I)` rule lands one tab early —
+        # which rendered as "step 4 is showing and tab 3 is lit", a bug that looks
+        # like a rounding error and is actually a selector counting furniture.
+        f'<div class="th-railwrap"><span class="th-rail-lbl">Resolve</span>'
+        f'<nav class="th-rail" aria-label="Steps in this resolution">'
+        f'{"".join(tabs)}</nav></div>'
+        f'<div class="th-body">{"".join(notes)}</div>{more}</div>')
+
+
+def _theatre_rules(n=THEATRE_MAX_STEPS):
+    """The per-index `:checked ~` rules — generated, never hand-written.
+
+    Three states and nothing arithmetic: CSS cannot compute "the plate before the
+    checked one", so each index gets its own selectors. `:nth-child(-n+I)` is the
+    run up to I and `:nth-child(I)` is singled out of it, which is how a plate can
+    be *resolved* (behind you) rather than merely *not current*.
+    """
+    out = []
+    for i in range(1, n + 1):
+        at = f".th-in:nth-of-type({i}):checked"
+        out.append(f"{at} ~ .th-body .th-note:nth-child({i}){{display:block}}")
+        out.append(f"{at} ~ .th-railwrap .th-tab:nth-child({i}){{"
+                   f"background:var(--burst-yellow);color:var(--ink);"
+                   f"transform:translateY(-2px)}}")
+        out.append(f"{at} ~ .th-stage .th-plate:nth-child({i}){{"
+                   f"transform:translate3d(calc(var(--off) * 13px),"
+                   f"calc(var(--off) * -8px),calc(var(--i) * -44px + 150px))"
+                   f" rotateY(-4deg);opacity:1;z-index:99}}")
+        out.append(f"{at} ~ .th-stage .th-plate:nth-child(-n+{i})"
+                   f":not(:nth-child({i})){{opacity:.24;filter:saturate(.35)}}")
+    return "\n".join(out)
+
+
+# The stylesheet is finalised HERE, not where CSS is opened: the theatre's rules
+# are generated and `_theatre_rules` has to exist first. Everything downstream
+# (`stylesheet_version`, `write_stylesheet`) reads this module attribute at call
+# time, so the content hash covers the generated block like any other rule.
+CSS += "\n/* ── The stack theatre: generated step rules ── */\n" + _theatre_rules() + "\n"
+
+
+def hot_take(text, byline, esc_fn=esc):
+    """The Coach's opener — a counter-intuitive claim that happens to be true.
+
+    The Pilot's Log needs a reason to be a conversation rather than three essays
+    printed adjacently, and a disagreement is that reason. The hot take supplies
+    one: Sunny states something about this deck that sounds wrong and is not, the
+    Counselor tests whether it is actually on the record, Ledger prices it, and
+    where the panel ends up is wherever that argument goes.
+
+    Run full width and set large, because a claim printed at body size is an
+    opinion and a claim printed at this size is a position someone has to answer.
+    It carries ★ and only ★ — the take is a judgment however correct it turns out
+    to be, and a dashed engine line is one Sunny may not assert here either. That
+    rule is the panel's, not the renderer's, and the charter is where it is kept.
+    """
+    if not text:
+        return ""
+    return ('<aside class="hot-take"><div class="ht-burst">Hot take</div>'
+            f'<blockquote>{esc_fn(text)}</blockquote>'
+            f'<div class="ht-by">{badge("coach")} {esc(byline)}</div></aside>')
+
+
+def not_modelled_rail(items, open_questions=(), scope=None, esc_fn=esc):
+    """The Game Plan's conditions — what the thesis quietly assumes away.
+
+    A deck's plan is stated as arithmetic ("five bodies is forty trample damage")
+    and the arithmetic is correct, which is exactly what makes it dangerous: it is
+    a number computed on an empty table. One chump blocker, one instant, one
+    opponent who untaps and it is not a kill, and the reader has been handed a
+    result dressed as a plan. The rail is where the thesis says what it assumed.
+
+    Derived, not authored, so no deck can quietly skip it. `items` are the plan's
+    own additions and lead; `open_questions` are the engine model's OWN admissions
+    — the questions its analyst could not settle — and nothing else in the magazine
+    prints them, so they cost no repetition. Capped at three with the true count
+    stated: a rail long enough to skim past is a rail nobody reads, and a silent
+    truncation would read as "that's all of them", which is the failure this whole
+    component exists to correct.
+
+    `scope` is the simulator's one-sentence limit. The nine full model assumptions
+    stay in By the Numbers, under the byline that earned them — repeating the set
+    here would sand down the best admission in the issue by saying it twice.
+    """
+    rows = [f"<li>{esc_fn(text)}</li>" for text in (items or []) if text]
+    shown = [q for q in (open_questions or []) if (q or {}).get("question")][:3]
+    for q in shown:
+        rows.append(f'<li><span class="nm-src">Unsettled</span> '
+                    f'{esc_fn(q["question"])}</li>')
+    if scope:
+        rows.append(f'<li><span class="nm-src">Simulation</span> {esc_fn(scope)}</li>')
+    if not rows:
+        return ""
+    total = len([q for q in (open_questions or []) if (q or {}).get("question")])
+    more = ("" if total <= len(shown) else
+            f'<p class="nm-more">{total - len(shown)} further question'
+            f'{"" if total - len(shown) == 1 else "s"} about this engine '
+            f"{'is' if total - len(shown) == 1 else 'are'} open and unsettled.</p>")
+    return ('<aside class="not-modelled"><h4>What this does not model</h4>'
+            f'<ul>{"".join(rows)}</ul>{more}</aside>')
+
+
 COACH_READ = "Coach's read"
 
 
@@ -1177,11 +1767,23 @@ def write_stylesheet(directory):
     return path, False
 
 
-def card_tile(card, roles, synergy, printing=False, anchor_id=None):
+def card_tile(card, roles, synergy, printing=False, anchor_id=None, stage=None):
     """A card tile. `printing=True` adds the artist/set credit and foil sheen —
     used by the gallery, where the physical printing is the subject.
     `anchor_id` mints the card-link target — The 99 only, so a card that also
     appears in the Featured Artist gallery never duplicates an id.
+
+    `stage` is the card's engine stage, inked from `ENGINE_STAGE_INK` so the chip
+    and the schematic agree by construction rather than by anyone remembering to
+    keep two palettes in step. It answers the question a roster exists for — what
+    job does this card hold — which the cities deliberately cannot: a city says
+    what a card is LIKE, a stage says what it DOES to the other cards. The repo
+    measured that they disagree (4 of radagast's 10 components sit in one city),
+    so the chip annotates the grid and never regroups it.
+
+    Absent (no `engine.json`, or a card in the engine's `unassigned` list) the tile
+    renders exactly as before. A missing chip means the engine model does not place
+    the card, which is a finding, not a hole to paper over.
 
     Lives here beside card_figure: .card-tile's CSS is this module's, and a
     component whose markup and stylesheet sit in different files drifts.
@@ -1196,6 +1798,10 @@ def card_tile(card, roles, synergy, printing=False, anchor_id=None):
         for label in entry.get("synergies", [])
     })
     chips = "".join(f'<span class="chip">{esc(l)}</span>' for l in labels[:2])
+    if stage:
+        chips = (f'<span class="chip stage" style="--st:'
+                 f'{ENGINE_STAGE_INK.get(stage, "#8A93B5")}">{esc(stage)}</span>'
+                 + chips)
     image = (f'<img src="{esc(card["image"])}" alt="{esc(name)}" loading="lazy">'
              if card.get("image") else "")
     if printing and card.get("foil") and image:

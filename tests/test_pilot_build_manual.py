@@ -841,3 +841,216 @@ def test_a_merged_department_with_no_subheads_falls_back_to_plain_titles():
     ])
     html_out = render(plan=plan, tutor_guide=guide)
     assert "Know Your Enemy" in html_out and "Fetch Quests" in html_out
+
+
+# ── Magazine v5: the front of book, the schematic, and the theatre ──────
+#
+# Five editorial defects the founder found by reading a shipped issue end to end.
+# Each test below pins the behaviour that fixed one, and where the fix is visual
+# the test reads the STRUCTURE the visuals depend on — a rendered pixel is the
+# browser suite's job, but "the selector counts the right children" is not.
+
+
+def test_a_stack_entry_is_named_under_either_corpus_key():
+    """11 entries use `item` where 53 use `object`, and reading only `object`
+    printed those eleven as an empty <b></b> — an unnamed thing on the stack, in
+    the department that exists to show what is on the stack."""
+    from manamap.pilot.build_manual import render_board_block, stack_entry_text
+
+    assert stack_entry_text({"object": "Sol Ring"}) == "Sol Ring"
+    assert stack_entry_text({"item": "Craterhoof Behemoth"}) == "Craterhoof Behemoth"
+    assert stack_entry_text({}) == "" and stack_entry_text(None) == ""
+    out = render_board_block({"stack": [{"pos": 0, "item": "Ambush Hoof"}]})
+    assert "Ambush Hoof" in out
+    assert "<b></b>" not in out
+
+
+def test_the_theatre_lights_the_tab_that_matches_the_step():
+    """The rail's label was a CHILD of the tab list, so every `:nth-child(I)`
+    rule landed one tab early — step 4 showing while tab 3 was lit. The label is
+    a sibling now, and this pins it: a tab and its note must share an index."""
+    from manamap.pilot.design import _theatre_rules, stack_theatre
+
+    html = stack_theatre("003", [{"action": "a", "effect": "e"}] * 3)
+    tabs = html.split('<nav class="th-rail"', 1)[1]
+    assert tabs.count('class="th-tab"') == 3
+    # The label sits outside the nav; if it ever moves back in, the first child
+    # of .th-rail stops being a tab and every generated rule is off by one.
+    assert 'class="th-rail-lbl"' in html.split('<nav class="th-rail"', 1)[0]
+    rules = _theatre_rules(3)
+    assert ".th-railwrap .th-tab:nth-child(2)" in rules
+    assert ".th-body .th-note:nth-child(2)" in rules
+
+
+def test_the_theatre_needs_no_javascript_and_opens_on_a_valid_view():
+    """An issue is a standalone printable file with no scripts. The mechanism is
+    radio inputs, and step 1 is checked in the MARKUP — so CSS-off, print and
+    screen-reader readers get a real first view rather than a blank stage."""
+    from manamap.pilot.design import stack_theatre
+
+    html = stack_theatre("005", [{"action": f"step {i}"} for i in range(1, 5)])
+    assert "<script" not in html and "onclick" not in html
+    assert html.count('type="radio"') == 4
+    assert html.count(" checked") == 1 and 'id="th-005-1" checked' in html
+    # Every step's prose is in the document, not fetched or revealed by code.
+    for i in range(1, 5):
+        assert f"step {i}" in html
+
+
+def test_the_theatre_caps_its_tabs_and_says_so():
+    """A silent truncation reads as "that is all of them" — which is the exact
+    failure the constellation's unplaced-cards caption was added to prevent."""
+    from manamap.pilot.design import THEATRE_MAX_STEPS, stack_theatre
+
+    n = THEATRE_MAX_STEPS + 3
+    html = stack_theatre("x", [{"action": f"s{i}"} for i in range(n)])
+    assert html.count('class="th-tab"') == THEATRE_MAX_STEPS
+    assert html.count('class="th-note"') == n      # every step still prints
+    assert "3 further steps" in html
+
+
+def test_the_theatre_shows_a_card_only_when_the_step_names_one():
+    from manamap.pilot.design import stack_theatre
+
+    cards = [{"name": "Craterhoof Behemoth", "image": "hoof.jpg"}]
+    html = stack_theatre("003", [
+        {"action": "Craterhoof Behemoth resolves and its ETB counts itself."},
+        {"action": "State-based actions are checked."},
+    ], cards)
+    assert "hoof.jpg" in html
+    assert "Craterhoof Behemoth" in html
+    assert "Step 2" in html          # the unnamed step falls back to its number
+
+
+def test_the_engine_schematic_labels_what_each_arrow_carries():
+    """A block diagram says two stages are related; a schematic says what moves
+    between them. Derived labels are marked italic and counted in the caption."""
+    from manamap.pilot.design import engine_figure, engine_flow, line_carries
+
+    doc = {
+        "stages": [{"stage": "fuel", "label": "BODIES", "cards": ["a", "b"]},
+                   {"stage": "wincon", "label": "THE HOOF", "cards": ["c"]}],
+        "lines": [{"from": "fuel", "to": "wincon", "verified_by": "003"}],
+    }
+    assert line_carries({"from": "fuel"}) == ("bodies", False)
+    assert line_carries({"from": "fuel", "carries": "counters"}) == ("counters", True)
+    svg = engine_flow(doc)
+    assert ">bodies<" in svg
+    assert "FEEDS IT" in svg and "ENDS IT" in svg      # the triad, named in place
+    assert "1 arrow label is set in italic" in engine_figure(doc)
+
+
+def test_the_schematic_separates_two_lines_between_the_same_pair():
+    """radagast declares `fuel -> wincon` twice on two different stacks. Drawn at
+    identical coordinates they are one arrow, and the caption's count then
+    disagrees with the number a reader can find on the page."""
+    from manamap.pilot.design import engine_flow
+
+    doc = {
+        "stages": [{"stage": "fuel", "label": "F", "cards": ["a"]},
+                   {"stage": "wincon", "label": "W", "cards": ["b"]}],
+        "lines": [{"from": "fuel", "to": "wincon", "verified_by": "003"},
+                  {"from": "fuel", "to": "wincon", "verified_by": "005"}],
+    }
+    paths = [p for p in engine_flow(doc).split("<path ")[1:]]
+    assert len(paths) == 2
+    assert paths[0][:80] != paths[1][:80], "the two arrows are drawn identically"
+
+
+def test_an_unverified_engine_line_is_still_drawn_dashed():
+    """The dashed line is the contract the panel is bound by; the schematic
+    rewrite must not have quietly turned every arrow solid."""
+    from manamap.pilot.design import engine_flow
+
+    doc = {
+        "stages": [{"stage": "mana", "label": "M", "cards": ["a"]},
+                   {"stage": "wincon", "label": "W", "cards": ["b"]}],
+        "lines": [{"from": "mana", "to": "wincon", "verified_by": None}],
+    }
+    assert "stroke-dasharray" in engine_flow(doc)
+
+
+def test_the_game_plan_states_its_conditions_without_being_asked():
+    """The rail is emitted by the RENDERER. A department whose promise is "why
+    it's going to work" will not volunteer what it assumed away, so the plan is
+    not allowed to be the thing that decides whether the caveat runs."""
+    from manamap.pilot.design import not_modelled_rail
+
+    out = not_modelled_rail(
+        ["The floor loses."],
+        [{"question": f"q{i}"} for i in range(5)],
+        "10,000 runs of resource development, not of games.",
+    )
+    assert "The floor loses." in out
+    assert out.count("<li>") == 1 + 3 + 1        # authored + capped + scope
+    assert "2 further questions" in out
+    assert not_modelled_rail([], [], None) == ""
+
+
+def test_the_card_tile_wears_its_engine_stage_in_the_schematic_ink():
+    """The chip and the bay must agree by construction — two palettes for one
+    taxonomy is two legends that can never agree."""
+    from manamap.pilot.design import ENGINE_STAGE_INK, card_tile
+
+    card = {"name": "Scute Swarm", "image": "s.jpg"}
+    lit = card_tile(card, {}, {}, stage="fuel")
+    assert ENGINE_STAGE_INK["fuel"] in lit and ">fuel<" in lit
+    # No engine model, or a card the model does not place: no chip, nothing else
+    # changes. An absent chip is a finding, not a hole.
+    plain = card_tile(card, {}, {})
+    assert "chip stage" not in plain
+
+
+def test_the_panel_opens_on_a_hot_take_and_someone_answers_it():
+    from manamap.pilot.validate_issue import _hot_take_errors
+
+    good = [
+        {"voice": "Coach Sunny Brightside", "kind": "hot-take", "text": "t"},
+        {"voice": "Counselor Vera Dictum", "responds_to": "hot-take", "text": "t"},
+    ]
+    assert _hot_take_errors(good) == []
+    assert _hot_take_errors([{"voice": "Coach Sunny Brightside", "text": "t"}])
+    # The Coach owns it: it is a ★ judgment and the other two answer it.
+    wrong_voice = copy.deepcopy(good)
+    wrong_voice[0]["voice"] = "Counselor Vera Dictum"
+    assert any("hot take is" in e for e in _hot_take_errors(wrong_voice))
+    # A take nobody answers is an epigraph, not a conversation.
+    unanswered = copy.deepcopy(good)
+    del unanswered[1]["responds_to"]
+    assert any("epigraph" in e for e in _hot_take_errors(unanswered))
+    # One take, argued with — not three takes in a row.
+    twice = copy.deepcopy(good)
+    twice[1]["kind"] = "hot-take"
+    assert any("second hot take" in e for e in _hot_take_errors(twice))
+
+
+def test_the_editors_letter_rail_falls_back_to_the_department_deks():
+    """Derived beats blank and authored beats derived — but the rail is what
+    makes the letter a preview, so it must never be empty."""
+    from manamap.pilot.build_manual import letter_teases
+
+    plan = {"departments": [
+        {"id": "editors-letter"},
+        {"id": "command-zone", "dek": "Meet the wizard."},
+        {"id": "first-turns", "dek": "The plan, stated."},
+        {"id": "the-99", "dek": "Roll call."},
+    ]}
+    assert letter_teases(plan) == [
+        ("The Command Zone", "Meet the wizard."),
+        ("The Game Plan", "The plan, stated."),
+        ("The 99", "Roll call."),
+    ]
+    plan["departments"][0]["in_this_issue"] = [
+        {"department": "the-kill", "line": "Four ways it ends."}]
+    assert letter_teases(plan) == [("The Kill", "Four ways it ends.")]
+
+
+def test_the_pilots_log_runs_behind_the_99():
+    """The panel is the densest thing in the issue and every move it makes refers
+    to material the reader must already have met. Order is encoded in exactly one
+    place, so this is the only place it can be asserted."""
+    order = DEPARTMENT_IDS
+    for earlier in ("command-zone", "first-turns", "the-99"):
+        assert order.index(earlier) < order.index("pilots-log"), earlier
+    assert order.index("editors-letter") < order.index("command-zone")
+    assert order.index("pilots-log") < order.index("keep-or-ship")

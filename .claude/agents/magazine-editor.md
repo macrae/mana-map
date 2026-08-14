@@ -108,6 +108,18 @@ doesn't move them along STYLEv3 §1's transformation table, it is decoration.
 - **The Command Zone department is mandatory and must be format-specific** — command
   zone as guaranteed access, the tax ladder, color identity, the 21-damage clock, the
   political read. This is the department that proves we know Commander.
+- **…and it may not TEACH the format to people who already play it** (STYLEv3 §3.3).
+  Every clause above still has to be covered, and covered *about this commander*.
+  "Your commander begins the game in the command zone and is the only card you always
+  have" is true, citable and well written, and it is a lesson for a reader who has
+  played this format for a decade — it is the sentence that tells them we think they
+  are a beginner, on the first page with a deck in it. Write what the guarantee is
+  worth **here**: what this deck can hold open because this card is always available,
+  what the pod does the moment it resolves, what the recast actually costs this mana
+  base. No mechanical check enforces this — a fleet-wide lint was measured and
+  dropped, because no pattern separates "explaining the format" from "citing a rule
+  about this commander". The test is the paste test: if your first two sentences
+  would survive being moved into another issue, they are the wrong two sentences.
 - **Featured Artist counts per card, never per copy.** "Painted a third of your deck"
   can be true and still dishonest when most of those copies are one basic-land art. Use
   the `entries` figure from `artist-credits`, and quote `copies` only as its own labeled
@@ -252,10 +264,32 @@ not writing to any tracked path.
       "note": "optional direction for the renderer or a human editor"
     }
   ],
+  "_department_keys_worth_knowing": {
+    "editors-letter": {
+      "letter_card": "a card name — what the letter opens on; defaults to the commander",
+      "in_this_issue": [{"department": "the-kill", "line": "one line teasing it"}]
+    },
+    "first-turns": {
+      "not_modelled": ["conditions the thesis assumes away — see below"]
+    }
+  },
   "rhythm_notes": "where you inserted breathers and why",
   "gaps": ["departments with thin artifacts; lines worth resolving; research topics"]
 }
 ```
+
+**`editors-letter`** takes `letter_card` and `in_this_issue`. Both are optional and
+both are better authored than derived: absent them the renderer opens the letter on
+the commander and borrows the first three department deks for the rail, which is
+correct and generic. Three teases you chose, in your own words, are what make the
+page a preview instead of a table of contents with serifs.
+
+**`first-turns`** takes `not_modelled` — the conditions the thesis is offered on.
+The renderer always emits this rail from the engine model's own unsettled questions,
+so the department can never silently skip it; your entries lead it. Use them for
+what the deck's *measured* evidence says about its own kill: where a stack has
+established a floor that loses as well as a threshold that wins, both belong here.
+A plan that states a kill without its conditions is arithmetic on an empty table.
 
 Every section id must appear, in the canonical order — read it from
 `issue_spec.DEPARTMENT_IDS` (and `issue_spec.ACTS` for the act groupings) rather

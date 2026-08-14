@@ -291,7 +291,19 @@ voice, component library); `docs/history/STYLE-v1-visual-research.md` and
 
 The Kill renders combo lines as feature spreads with dossier pointers; **Judge's Desk**
 carries the complete resolutions with every citation verbatim (the renderer may not
-summarize proof). The Command Zone department is mandatory and format-specific — the
+summarize proof).
+
+**The Kill's stack theatre** (`design.stack_theatre`) renders a resolution as a
+receding stack of plates on a vanishing-point grid — one plate per step, hover to
+lift, a tab to bring one forward with its action, effect and citations. It is
+**CSS-only**: an issue is a standalone printable file with no scripts, so the
+mechanism is radio inputs and `:checked ~` selectors, the depth is
+`transform-style: preserve-3d`, and step 1 is `checked` in the markup so CSS-off,
+print and screen-reader readers open on a valid view rather than a blank stage.
+Per-index rules are generated into the stylesheet (`_theatre_rules`, bounded by
+`THEATRE_MAX_STEPS`), because per-instance CSS would put a `<style>` block inside
+every case. It does not replace Judge's Desk and must not: the theatre is a way
+*through* the proof, and §5.1 forbids the renderer summarising proof. The Command Zone department is mandatory and format-specific — the
 tax ladder, color identity, the 21-damage clock — and is what makes this a Commander
 magazine rather than a Magic one.
 
@@ -348,8 +360,16 @@ both earned those badges in The Kill and By the Numbers. Give the panel all thre
 and a conversation becomes a place where a new verified claim can arrive wearing
 three voices at once.
 
+**The panel opens on a HOT TAKE and runs behind The 99.** Turn 0 carries
+`"kind": "hot-take"` and Sunny's voice; a later turn carries
+`"responds_to": "hot-take"`. `validate-issue` checks those three things and no
+semantic ones — whether a take is genuinely counter-intuitive, correct and
+insightful is the charter's problem and an editor's, not a regex's. The department
+moved to the end of Act I because the panel is the densest thing in the issue and
+every move it makes refers to material the reader must already have met.
+
 **The rule that outranks the rest: a line `engine.json` draws DASHED is a line the
-panel may not assert.** A `lines[]` entry with a `verified_by` rests on a
+panel may not assert — and that includes the hot take.** A `lines[]` entry with a `verified_by` rests on a
 checker-passed stack and Vera may state it flatly; a null is the analyst's reading
 and the panel may discuss it, argue about it, or say nobody has checked. That is
 the evidence contract reaching past the picture into the copy.
@@ -433,6 +453,17 @@ combo line is a candidate stamped "needs a stack scenario". A role is a property
 interaction. The synergy graph is retrieval only and is deliberately absent from the brief.
 `lines[].verified_by` is nullable for exactly this reason, and the renderer draws a null one
 **dashed**.
+
+**The figure is a schematic, not a block diagram.** Every arrow is labelled with what it
+carries — the line's own `carries` when the engineer authored one, and otherwise DERIVED from
+the source stage (`design.STAGE_CARRIES`). Deriving costs no schema change and no respawn of
+this loop; derived labels render italic and the caption counts them, because an inference
+wearing an authored label is exactly what the dashed line exists to prevent. A forward arrow
+arcs above the rail and a backward one arcs below as a feedback loop, which is what makes an
+engine an engine rather than a list of steps. Each stage also carries a plain-language job
+(`STAGE_ROLE`), and each card in The 99 wears its stage as a chip inked from the same
+`ENGINE_STAGE_INK` — the chip annotates the grid and never regroups it, because the engine is
+measurably not the clusters.
 
 **What the gate cannot see, stated because it matters:** `validate-engine` checks that a
 cited stack NAMES a line's cards; it can never check that the stack SUPPORTS the line. Two

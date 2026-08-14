@@ -42,24 +42,26 @@ DEPARTMENTS = [
      "You are here. Everything else is one tap away.", (), False, None),
     # Act I — Meet the Deck: who is in charge, what they want, what they brought.
     #
-    # The two front-of-book pieces lead it, in the order the founder described:
-    # the editor hands you the deck, then the three pilots argue about flying it,
-    # and only then do you meet the commander. Both are OPTIONAL_DEPARTMENTS while
-    # they are piloted on one deck — see that constant for why, and remove them
-    # from it once every issue carries them.
+    # The editor's letter opens the book — it is a welcome and a preview, and it
+    # asks the reader to know nothing yet. Everything after it teaches the deck,
+    # and only THEN do the three pilots argue about flying it.
+    #
+    # The Pilot's Log used to sit second, ahead of The Command Zone, and that was
+    # wrong for a reason worth keeping written down: a three-way argument is the
+    # densest thing in the issue and it is *about* material the reader has not met.
+    # Sunny's hot take lands as a contrarian claim about a deck you have not seen,
+    # Vera's "that is not established" refers to a line you have not read, and
+    # Ledger prices an engine you could not name. Behind The 99 all three land,
+    # because by then the reader has met the commander, heard the plan and flipped
+    # through the roster — which is exactly the order in which someone hands you
+    # their deck and then starts arguing with their friends about it.
+    #
+    # Both front-of-book pieces are OPTIONAL_DEPARTMENTS while they are piloted on
+    # one deck — see that constant for why, and remove them once every issue
+    # carries them.
     ("editors-letter", "The Editor's Letter",
      "What this deck is, and whether it is for you.",
      (), True, "Editor-in-Chief Margot Stet"),
-    # Tier is ("coach",) and NOT all three, which is the load-bearing decision. A
-    # department's tier is what the department GRANTS, not what its speakers
-    # mention. Vera will cite a ruling and Ledger a rate, but both were granted
-    # their badges in The Kill and By the Numbers; the panel points at them. Give
-    # this ("verified", "data", "coach") and a conversation becomes a place where
-    # a new verified claim can be smuggled in wearing three voices at once.
-    ("pilots-log", "The Pilot's Log",
-     "Three pilots, one deck, and an argument about how to fly it.",
-     ("coach",), True,
-     'Coach Sunny Brightside, Counselor Vera Dictum and "Ledger" Lin Marginal'),
     ("command-zone", "The Command Zone",
      "Why this commander is exactly where you want to be — on the record.",
      ("verified", "coach"), True,
@@ -70,6 +72,16 @@ DEPARTMENTS = [
     ("the-99", "The 99",
      "Roll call. Every card earns its seat — or hears about it.",
      ("coach",), True, "Coach Sunny Brightside"),
+    # Tier is ("coach",) and NOT all three, which is the load-bearing decision. A
+    # department's tier is what the department GRANTS, not what its speakers
+    # mention. Vera will cite a ruling and Ledger a rate, but both were granted
+    # their badges in The Kill and By the Numbers; the panel points at them. Give
+    # this ("verified", "data", "coach") and a conversation becomes a place where
+    # a new verified claim can be smuggled in wearing three voices at once.
+    ("pilots-log", "The Pilot's Log",
+     "Three pilots, one deck, and an argument about how to fly it.",
+     ("coach",), True,
+     'Coach Sunny Brightside, Counselor Vera Dictum and "Ledger" Lin Marginal'),
     # Act II — Fly It: the hand, the hard call, the kill.
     ("keep-or-ship", "Keep or Ship",
      "Seven cards, one call. The Coach trusts your gut; Ledger brought receipts.",
@@ -136,8 +148,8 @@ DEPARTMENTS = [
 # Acts III and IV are single-voice by construction, which the old grouping never
 # managed: three consecutive Coach sections, then three consecutive Ledger ones.
 ACTS = [
-    ("Meet the Deck", ("editors-letter", "pilots-log",
-                       "command-zone", "first-turns", "the-99")),
+    ("Meet the Deck", ("editors-letter", "command-zone", "first-turns",
+                       "the-99", "pilots-log")),
     ("Fly It", ("keep-or-ship", "whats-your-play", "the-kill")),
     ("At the Table", ("at-the-table", "politics-table",
                       "know-your-enemy", "fetch-quests")),
@@ -248,6 +260,10 @@ COMPONENTS = {
     "coach-gauge", "stat-slab",
     # The two pictures: how the deck RUNS, and what shape it is.
     "engine-flow", "constellation",
+    # `letterhead` is the Editor's Letter's own furniture and belongs to no other
+    # department — a second page dressed as a letter is a second editor.
+    # `stack-theatre` is The Kill's: a stack you move through rather than read.
+    "letterhead", "stack-theatre",
 }
 
 # Issue identity fields required in data/decks/<slug>/issue.json.

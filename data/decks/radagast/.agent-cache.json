@@ -577,9 +577,9 @@
     },
     "issue-plan": {
       "agent": "magazine-editor",
-      "agent_prompt_sha256": "fd4e9c419deb516533eebca8582aed3a0978a8ff9c48b27e75ec4fa4e32de5ff",
+      "agent_prompt_sha256": "5d3e60f775b432375c7f27354447e43d68f626c03da489d9f2bd56100dfae77a",
       "artifact": "data/decks/radagast/issue_plan.json",
-      "artifact_sha256": "40ae735ae35cc703ef847b9fa2721fec203daac33b4d30d85e4b57cb6e04c202",
+      "artifact_sha256": "3477ece9629ad3813bb1cf9430b14252355808a40e2410e9fbb4492fbcf88e6a",
       "card_refs": [
         "Arasta of the Endless Web",
         "Bala Ged Recovery // Bala Ged Sanctuary",
@@ -740,20 +740,22 @@
             "006",
             "007"
           ],
+          "editors_letter": null,
           "how_it_wins": null,
           "mana_base": null,
           "matchups": null,
           "mulligan": null,
+          "pilots_log": null,
           "threat_assessment": null,
           "upgrades": null
         },
         "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
       },
-      "fingerprint": "960f94bc3cf856c2b9bff37ad15e0865865e467e4e224c4f80acc67aa19db0b5",
+      "fingerprint": "7e99494c80be6194c734ab84a28e4995565985785655720ad36cce1c25738426",
       "inputs": [
         {
           "path": "STYLEv3.md",
-          "sha256": "27865d635280e72436bba4227af9f94acea2f1cf588b141b0e5072520485dc50"
+          "sha256": "df3f5f7e0344cfef4449a6f2e0f35d8bcdd5462b34129182192c3a177664c44e"
         },
         {
           "path": "data/combo_graph.json",
@@ -817,19 +819,19 @@
         },
         {
           "path": "src/manamap/pilot/issue_spec.py",
-          "sha256": "7593a7d485987026d69dca15514f2634b9d695bc687a3c3a3b805bdaac61dba0"
+          "sha256": "216bbbed3e894b9a97cc91033d1b49d0fc2acbbe45775e681835d8a6d211f692"
         }
       ]
     },
     "panel-prose": {
       "agent": "pilot-panel",
-      "agent_prompt_sha256": "4ae703acb1a57a559641caf32eafbe43fd79470eb86b6a14cef445ef3a6485f6",
+      "agent_prompt_sha256": "eee6edd6c55f2e9bca4d06f678d2ffa94311fc11e386de4a306dd31f4768bfeb",
       "artifact": "data/decks/radagast/manual_prose.json",
       "artifact_keys": [
         "editors_letter",
         "pilots_log"
       ],
-      "artifact_sha256": "e0cbcaf8d44260c41c92355fe62f90981427b9979f74d5dd7b9f9c3133d167fa",
+      "artifact_sha256": "5a082e1548967546afa36d1f261e6842e2f0c9c24ee70461e681752ddd842736",
       "card_refs": [
         "Beast Whisperer",
         "Castle Garenbrig",
@@ -843,6 +845,7 @@
         "Pathbreaker Ibex",
         "Radagast of Rhosgobel",
         "Return of the Wildspeaker",
+        "Sakura-Tribe Elder",
         "Saryth, the Viper's Fang",
         "Scute Swarm",
         "Selvala, Heart of the Wilds",
@@ -850,7 +853,6 @@
       ],
       "card_refs_by_key": {
         "editors_letter": [
-          "Craterhoof Behemoth",
           "Forest",
           "Radagast of Rhosgobel"
         ],
@@ -867,6 +869,7 @@
           "Pathbreaker Ibex",
           "Radagast of Rhosgobel",
           "Return of the Wildspeaker",
+          "Sakura-Tribe Elder",
           "Saryth, the Viper's Fang",
           "Scute Swarm",
           "Selvala, Heart of the Wilds",
@@ -877,7 +880,7 @@
       "extra": {
         "cards_semantic": "a823cf79e7a698f01337b58a39c19c3923df875b0a622ed4e0cab30853d907c3"
       },
-      "fingerprint": "80ed125e06c874c1ef8e6aaf566af95526f45bab778e1beda9ee813e300fd43c",
+      "fingerprint": "4319608746ea1e3f63ba55075c68d1cbc5e5fff87e425c34fffd0afd9c1c1239",
       "inputs": [
         {
           "path": "data/decks/radagast/engine.json",
@@ -1378,7 +1381,7 @@
     },
     "writer-prose": {
       "agent": "manual-writer",
-      "agent_prompt_sha256": "a5ca4022dfa777004442330e392fed3893c77584f9fa8f57f3ee7997b46e159c",
+      "agent_prompt_sha256": "171c4e47446ed2ae0eb092faa6640ad688ce7dcf13ec57fb7c75391f8d121804",
       "artifact": "data/decks/radagast/manual_prose.json",
       "artifact_keys": [
         "card_roles",
@@ -1388,7 +1391,7 @@
         "mulligan",
         "upgrades"
       ],
-      "artifact_sha256": "e64f8ea946183681953f5752992bfa53f4319b30860e25fdecb517f922f9447f",
+      "artifact_sha256": "c6577bf3c11930795d633e649922eb363409b271d5080547b7b2e5cda8c9d71c",
       "card_refs": [
         "Arasta of the Endless Web",
         "Bala Ged Recovery // Bala Ged Sanctuary",
@@ -1550,12 +1553,13 @@
           "Wood Elves"
         ],
         "how_it_wins": [
+          "Beast Whisperer",
           "Craterhoof Behemoth",
           "Fecundity",
+          "Glademuse",
           "Ohran Frostfang",
           "Radagast of Rhosgobel",
-          "Wood Elves",
-          "Yeva, Nature's Herald"
+          "Wood Elves"
         ],
         "mana_base": [
           "Bala Ged Recovery // Bala Ged Sanctuary",
@@ -1591,7 +1595,7 @@
         "cards_semantic": "a823cf79e7a698f01337b58a39c19c3923df875b0a622ed4e0cab30853d907c3",
         "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
       },
-      "fingerprint": "b539ba6ec87cba878fb985dc49d64a60f583688ca405fbd3c2f6b926052c2729",
+      "fingerprint": "49aaa7c342548befaa70e21ba1ef8e05df580d6a865fb7f988eb55ee5a0fab76",
       "inputs": [
         {
           "path": "data/combo_graph.json",

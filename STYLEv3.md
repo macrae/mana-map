@@ -164,6 +164,25 @@ specifically:
 This department carries ✓ badges where it cites the CR and ★ where it coaches. It is
 the single strongest argument that this publication knows its format.
 
+**It may not teach the format to people who already play it.** The Command Zone is
+the first department with a deck in it, so it is the entrance — and it has been
+spending that entrance explaining what the command zone is, what commander tax
+means, and how a singleton 99 works. Everyone reading this magazine knows. Telling
+them anyway is not merely filler; it is the sentence that tells a reader this
+publication thinks they are a beginner, and it lands on the page where they were
+deciding whether to care.
+
+The reader knows the format. Introduce *this commander* — a character with a job at
+this table, what the pod does the moment they see it, and what the deck is
+committed to now that this card is the one in the zone. The TAX LADDER stays: it is
+a table of what **this** commander costs on each recast, which is a fact about the
+deck, not a lesson about the rules. Every clause above still has to be covered — but
+covered *about this commander*, never in general.
+
+**Failure mode**: an opening paragraph that would be true of any deck in the format.
+If the first two sentences survive being pasted into another issue, they are the
+wrong two sentences.
+
 ### 3.4 Commander vocabulary discipline
 
 Use the format's real language, correctly, always: *the 99*, *the command zone*, *the
@@ -242,6 +261,16 @@ you flip through the cards — which the magazine has already sorted and labelle
 for you. Only then does anyone ask you to keep or ship a hand, because a mulligan
 decision is unreadable until you know what the distribution behind it looks like.
 
+**v3.5 moved The Pilot's Log to the end of Act I**, behind The 99. It shipped
+second, ahead of The Command Zone, and was unreadable there for a structural
+reason rather than a stylistic one: the panel is the densest thing in the issue
+and every one of its moves refers to material the reader has not met. Sunny's hot
+take is a contrarian claim about a deck you have not seen; Vera's "that is not
+established" points at a line you have not read; Ledger prices an engine you could
+not name. Behind the roster all three land — which is also when the argument
+happens in life. Someone hands you their deck, you read the commander, you flip
+through the sleeves, and *then* their pod starts arguing about how to fly it.
+
 **v3.4 replaced the monotonic depth ramp of v3.2**, which ran what-to-do → table
 → zoom-out → numbers → proof, and put the commander ninth and the roster tenth.
 It read as a manual for a deck the reader had not met. Rigor no longer rises
@@ -264,15 +293,17 @@ Flight Plan — they are copy, not metadata. `issue_spec.py` is their single sou
 | 1 | **The Cover** | "Why should I care about this deck?" | — | commander art, verified-line count | — |
 | 2 | **The Flight Plan** | "You are here. Everything else is one tap away." | — | acts + tier legend + masthead | — |
 | — | *Act I — Meet the Deck* | | | | |
-| 3 | **The Command Zone** | "Why this commander is exactly where you want to be — on the record." | Dictum + Brightside | commander card + CR + strategy DB | ✓★ |
-| 4 | **The Game Plan** | "What this deck wants to do — and why it's going to work." | Brightside | `how_it_wins` | ★ |
-| 5 | **The 99** | "Roll call. Every card earns its seat — or hears about it." | Brightside | `card_roles` + graphs | ★ |
+| 3 | **The Editor's Letter** | "What this deck is, and whether it is for you." | Stet | the issue itself | — |
+| 4 | **The Command Zone** | "Why this commander is exactly where you want to be — on the record." | Dictum + Brightside | commander card + CR + strategy DB | ✓★ |
+| 5 | **The Game Plan** | "What this deck wants to do — and why it's going to work." | Brightside | `how_it_wins` + `engine.json` | ★ |
+| 6 | **The 99** | "Roll call. Every card earns its seat — or hears about it." | Brightside | `card_roles` + graphs + `engine.json` | ★ |
+| 7 | **The Pilot's Log** | "Three pilots, one deck, and an argument about how to fly it." | Brightside + Dictum + Marginal | `engine.json` + `strategic_frame.json` | ★ |
 | — | *Act II — Fly It* | | | | |
-| 6 | **Keep or Ship** | "Seven cards, one call. The Coach trusts your gut; Ledger brought receipts." | Brightside + Marginal | `mulligan` + goldfish | ★◆ |
-| 7 | **What's Your Play?** | "Real board, real stakes. Commit before the Coach shows his hand." | Brightside | `decisions/*.json` | ★ |
-| 8 | **The Kill** | "The winning lines, argued and affirmed. Every step on the record." | Dictum | verified `stacks/*.json` | ✓ |
+| 8 | **Keep or Ship** | "Seven cards, one call. The Coach trusts your gut; Ledger brought receipts." | Brightside + Marginal | `mulligan` + goldfish | ★◆ |
+| 9 | **What's Your Play?** | "Real board, real stakes. Commit before the Coach shows his hand." | Brightside | `decisions/*.json` | ★ |
+| 10 | **The Kill** | "The winning lines, argued and affirmed. Every step on the record." | Dictum | verified `stacks/*.json` | ✓ |
 | — | *Act III — At the Table* | | | | |
-| 9 | **At the Table** | "Three opponents, one you. Who wants you dead, and what you go get about it." | Brightside | `threat_assessment` + `matchups` + `tutor_guide.json` | ★ |
+| 11 | **At the Table** | "Three opponents, one you. Who wants you dead, and what you go get about it." | Brightside | `threat_assessment` + `matchups` + `tutor_guide.json` | ★ |
 | — | *(the three below are SUPERSEDED — see §5.3; they render only on issues that predate the merge)* | | | | |
 | — | ~~Table Manners~~ | "Three opponents, one you. How to win friends and eliminate people." | Brightside | `threat_assessment` | ★ |
 | — | ~~Know Your Enemy~~ | "The decks that want you dead, and how to disappoint them." | Brightside | `matchups` | ★ |
@@ -327,41 +358,94 @@ the table above. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**3. The Command Zone** — *the format department* (see §3.3)
+**3. The Editor's Letter** — *the welcome* (signed: Editor-in-Chief Margot Stet)
 
-- **Promise**: Every issue, this department teaches you what your commander means in
-  the format, not just on the battlefield.
+- **Promise**: Every issue, one page tells you what this deck is and whether it is
+  for you — before anybody argues about it.
+- **Shape**: the **LETTERHEAD** — the wordmark device over a `FROM THE EDITOR` slug,
+  a heavy rule, one card image, the letter set in **two columns**, an IN THIS ISSUE
+  rail down the side, and a typewriter sign-off. It sits on its own tinted panel so
+  a reader turning pages can see at a glance that this is not another department.
+- **Voice**: the only unbadged byline in the book. She introduces; the other three
+  testify. She may therefore make no claim that would need a tier (§7.7) — no rates,
+  no rulings, no lines. What she offers is a frame and a welcome.
+- **Failure mode**: a column of body copy indistinguishable from the department after
+  it. An editor's page that looks like an article is not an editor's page.
+
+---
+
+**4. The Command Zone** — *the format department* (see §3.3)
+
+- **Promise**: Every issue, this department tells you what *this commander* means at
+  a table — not what commanders mean.
 - **Shape**: Commander portrait at large scale; a "COMMANDER FILE" fast-facts box
   (mana cost, color identity, cast turn from goldfish, tax schedule at 1st/2nd/3rd
   recast); 2–3 teaching blocks with CR citations; one coaching block on protect-vs-race.
 - **Signature device**: the **TAX LADDER** — a small table showing what the commander
   costs on each successive cast, with the deck's actual mana curve beside it.
-- **Failure mode**: writing about the commander as a creature and forgetting the zone.
+- **Failure mode**: explaining the format to people who play it (§3.3), or writing
+  about the commander as a creature and forgetting the zone.
 
 ---
 
-**4. The Game Plan** — *the thesis* (signed: Coach Sunny Brightside)
+**5. The Game Plan** — *the thesis* (signed: Coach Sunny Brightside)
 
 - **Promise**: Every issue, this section tells you what game this deck is playing.
 - **Shape**: Feature splash — big deck logotype, hero card image, kicker/headline/dek,
-  3–4 short paragraphs. Open with a question (L1).
+  3–4 short paragraphs. Open with a question (L1). Carries the **ENGINE SCHEMATIC**
+  where the deck has one: what the machine takes in, what it converts, and what comes
+  out of it.
 - **Voice**: Second person, confident, no hedging. This is the issue's thesis statement.
-- **Failure mode**: reading like a card-by-card summary instead of a plan.
+- **It must state what it does not model.** A thesis that reads "assemble five bodies
+  and swing for forty" is not a plan, it is an arithmetic result with the game removed
+  from it — the number assumes no blocker, no removal, no instant, and three opponents
+  who do nothing. Where the deck's kill is combat-shaped, the department carries the
+  **WHAT THIS DOES NOT MODEL** rail beside it, naming the unmodelled and, where a
+  stack has measured both, the floor that *loses* as well as the threshold that wins.
+  A thesis that admits its conditions is the one a reader can actually pilot against.
+- **Failure mode**: reading like a card-by-card summary instead of a plan — or stating
+  a kill as though the table were empty.
 
 ---
 
-**5. The 99** — *the roster*
+**6. The 99** — *the roster*
 
 - **Promise**: Every issue, this department explains why each card earned its slot.
-- **Shape**: Card-tile grid with role chips (engine / payoff / interaction / ramp /
-  protection). Grouped by role, not alphabetically. Sideboard and table-aid accessories
-  in a separate labeled strip.
+- **Shape**: Card-tile grid with role chips. Grouped by the deck's own cities where
+  the constellation exists, so the grid and the map share one taxonomy and one ink.
+  Every tile also carries its **engine stage** where `engine.json` exists — ignition,
+  fuel, fodder, conversion, output, wincon — because "which job does this card hold"
+  is the question a roster is for, and the engine answers it where the clusters
+  cannot. The two are different questions and the page must not pretend otherwise:
+  a city says what a card is *like*, a stage says what it *does to the others*.
 - **Failure mode**: 99 blurbs of equal weight. Rank matters; lead with the load-bearing
   cards.
 
 ---
 
-**6. Keep or Ship** — *the drill*
+**7. The Pilot's Log** — *the panel* (signed: Brightside, Dictum and Marginal)
+
+- **Promise**: Every issue, three pilots argue about how to fly this deck, and you
+  get to watch someone be wrong in public.
+- **Shape**: opens on the **HOT TAKE** — Sunny's, always, run as a full-width slab.
+  The rest is a labelled conversation, each turn in its speaker's accent.
+- **The hot take is the department's engine.** It is a claim about this deck that is
+  counter-intuitive and *technically correct* — the thing an experienced pilot learns
+  on their twentieth game and nobody says out loud. Not a provocation, not a
+  contrarian pose: it has to be true, and it has to teach something about how the
+  machine actually runs. The conversation then **digresses from it** — Vera tests
+  whether it is on the record, Ledger prices it, and where they end up is wherever
+  the disagreement takes them, not a list of topics agreed in advance.
+- **It carries ★ only** (§7.7). Vera cites and Ledger measures, but both were granted
+  their badges elsewhere; the panel points at them. A conversation must never be a
+  place a new verified claim can enter wearing three voices at once — and the hot
+  take is the most tempting place in the magazine to do exactly that.
+- **Failure mode**: three essays with names on them. Cover the bylines: if a reader
+  cannot attribute three paragraphs, this department did not happen.
+
+---
+
+**8. Keep or Ship** — *the drill*
 
 - **Shape**: 3–4 sample opening hands as quiz cards, each with a verdict and a one-line
   reason citing the goldfish keep rate. Then the general heuristic.
@@ -369,7 +453,7 @@ the table above. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**7. What's Your Play?** — *the challenge*
+**9. What's Your Play?** — *the challenge*
 
 - **Promise**: Every issue, this department makes you decide before it tells you.
 - **Shape**: Board-state box → the question → 2–4 branch cards (line, signals,
@@ -380,7 +464,7 @@ the table above. "Failure mode" is what the review in §12 looks for.
 
 ---
 
-**8. The Kill** — *the payoff*
+**10. The Kill** — *the payoff*
 
 - **Promise**: Every issue, this department shows you exactly how the deck wins.
 - **Shape**: One feature spread per verified line. Scene-setting box → numbered play
@@ -394,7 +478,7 @@ the table above. "Failure mode" is what the review in §12 looks for.
 
 ### §5.3 — Act III is ONE department
 
-**9. At the Table** — *the multiplayer section* (signed: Coach Sunny Brightside)
+**11. At the Table** — *the multiplayer section* (signed: Coach Sunny Brightside)
 
 - **Promise**: Every issue, this section tells you who wants you dead, how they
   come at you, and what you go and get about it.
@@ -839,6 +923,19 @@ flat by repetition. State it full-width, once, at the moment it lands hardest; e
 later department refers back to it rather than re-arguing it.
 | `tax-ladder` | Command Zone only | Successive recast costs |
 | `artist-gallery` | Featured Artist only | Card grid with printing credits and foil sheen |
+| `letterhead` | Editor's Letter only | Wordmark, card, two columns, IN THIS ISSUE rail, signature |
+| `hot-take` | Pilot's Log only | Sunny's opener, full width, ★; one per issue |
+| `engine-flow` | The Game Plan | The schematic: bays, and arrows labelled with what they carry |
+| `constellation` | The 99 | The deck re-laid-out from its own cards |
+| `stack-theatre` | The Kill only | A resolution stepped through; CSS-only, prints in full |
+
+Three of those are **renderer-emitted rather than plan-requested**, and the
+difference is deliberate. The `not-modelled` rail under The Game Plan, the stack
+theatre under each verified line, and the derived IN THIS ISSUE rail all appear
+whether or not a plan asks for them, because each one is the part of a department
+that the department would not volunteer: a section promising "why it's going to
+work" does not choose to print what it assumed away, and a magazine that lets the
+editor opt out of the caveat has not made a rule, it has made a suggestion.
 
 The authoritative list is `COMPONENTS` in `src/manamap/pilot/issue_spec.py`, which
 `validate-issue` checks against. Keep this table and that set in sync — a component

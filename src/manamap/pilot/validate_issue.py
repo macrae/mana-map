@@ -325,6 +325,70 @@ def _is_citation_id(path):
     return path.endswith(".rule") and ".citations[" in path
 
 
+# A "the Command Zone must not teach the format" lint was prototyped here and
+# REJECTED on measurement, which is the rule this repo keeps breaking and then
+# re-learning. Eight patterns were run against all nine decks' `command-zone.body`:
+#
+#   the command zone is where…        0 hits      commander tax is/means…   0 hits
+#   your commander is a legendary…    0 hits      singleton means…          0 hits
+#   in commander you start with…      0 hits      when your commander dies… 0 hits
+#   every/any commander deck…         0 hits      in this/the format        2 hits
+#
+# The seven targeted patterns find nothing because the defect is not phrased that
+# way anywhere in the corpus, and the one that hits twice (gishath, ur-dragon)
+# matches a clause that is fine in isolation. Meanwhile the defect is real and sits
+# in copy that scores clean: radagast opens "Your commander begins the game in the
+# command zone and is the only card you always have (CR 903.4)" — true, cited,
+# well-written, and a lesson for a reader who has played this format for years.
+#
+# No regex separates "explaining the format" from "citing a rule about this
+# commander", because they are the same sentence with a different subject. The rule
+# is editorial and lives in STYLEv3 §3.3 and the magazine-editor's charter. A
+# validator that fires on correct data teaches everyone to ignore red.
+
+# The Coach's byline, matched loosely on the surname so a masthead rename does not
+# silently disable the check. Derived from MASTHEAD_COLUMNISTS rather than typed:
+# the ★ tier is what makes a voice the Coach, and there is exactly one.
+_COACH = next((c["name"] for c in MASTHEAD_COLUMNISTS if c.get("tier") == "coach"),
+              "")
+
+
+def _hot_take_errors(turns):
+    """The panel opens on a hot take, and somebody answers it.
+
+    Three mechanical checks and no semantic ones. Whether a take is genuinely
+    counter-intuitive, correct and insightful is a judgment — it belongs in the
+    charter and in an editor's read, not in a regex, and the last three checks
+    this repo tried to write about *meaning* were all rejected on measurement.
+
+    What IS checkable is the structure the department depends on: the opener is
+    marked, it is the Coach's, and at least one later turn is explicitly a reply
+    to it. That third one is the load-bearing check — a hot take nobody answers is
+    not a conversation, it is an epigraph, and the whole reason this department
+    exists is that a disagreement makes three voices argue instead of alternate.
+    """
+    errors = []
+    first = turns[0] or {}
+    if first.get("kind") != "hot-take":
+        errors.append(
+            "pilots_log[0]: the panel must open on the hot take — set "
+            '"kind": "hot-take" (STYLEv3 §5, department 7)')
+    elif _COACH and _COACH not in str(first.get("voice") or ""):
+        errors.append(
+            f"pilots_log[0]: the hot take is {_COACH}'s, not "
+            f"{first.get('voice')!r} — it is a ★ judgment, and the other two "
+            f"answer it")
+    if not any((t or {}).get("responds_to") == "hot-take" for t in turns[1:]):
+        errors.append(
+            'pilots_log: no later turn carries "responds_to": "hot-take" — a take '
+            "nobody answers is an epigraph, not a conversation")
+    for i, turn in enumerate(turns[1:], start=1):
+        if (turn or {}).get("kind") == "hot-take":
+            errors.append(f"pilots_log[{i}]: a second hot take — the department "
+                          f"opens on one and argues with it")
+    return errors
+
+
 def _lint_strings(doc, label, skip_key=None):
     errors = []
     for path, text in _walk_strings(doc):
@@ -427,6 +491,8 @@ def validate_self_containment(base, plan):
         with open(prose_path) as f:
             prose_doc = json.load(f)
         turns = prose_doc.get("pilots_log")
+        if isinstance(turns, list) and turns:
+            errors += _hot_take_errors(turns)
         if isinstance(turns, list):
             known = {c["name"] for c in MASTHEAD_COLUMNISTS}
             for i, turn in enumerate(turns):
