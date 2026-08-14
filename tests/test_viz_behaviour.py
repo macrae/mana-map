@@ -31,6 +31,26 @@ from conftest_viz import (  # noqa: F401
 
 pytestmark = pytest.mark.browser
 
+# Region labels are placed by a RENDER PASS, not by boot, so "the page is ready"
+# does not imply "a label exists". Four tests reached for one anyway — two clicked
+# it (`null.click()`, which reads as a broken selector rather than as a race) and
+# two measured the list. All four were green for months and all four fell over the
+# first time the suite got busier, which is the whole signature of a latent flake:
+# it measures the machine, and the machine got slower.
+#
+# Paste this at the top of an `async` evaluate body that touches `.map-label`. It
+# is inlined at each site rather than spliced in from a constant, because these
+# bodies are plain triple-quoted strings and a `" + NAME + "` in the middle of one
+# lands in the page as literal JavaScript text:
+#
+#     for (let i = 0; i < 200 && !document.querySelector('.map-label'); i++) {
+#         await new Promise(r => setTimeout(r, 50));
+#     }
+#
+# It resolves as soon as one label is placed and gives up after ~10 s, so a
+# genuine "no labels were ever placed" still fails on its own assertion instead of
+# hanging until the test timeout.
+
 
 # ── Boot ────────────────────────────────────────────────────────────────
 
@@ -815,13 +835,25 @@ def test_the_walk_shows_the_card_it_pinned(page):
     Walk. The card now renders in the walk's own panel, from the same builder Explore uses.
     """
     r = page.evaluate("""async () => {
+        // Every wait here was a fixed timer (2500 / 8000 / 2000 ms) and the whole
+        // test measured the machine rather than the behaviour: under `-n 4` the
+        // 97-card deck load ran past its 8 s and the panel was read before it had
+        // been written. Wait for the condition, never for a clock.
+        const until = async (fn, tries) => {
+            for (let i = 0; i < (tries || 200); i++) {
+                if (fn()) return true;
+                await new Promise(r => setTimeout(r, 50));
+            }
+            return false;
+        };
         document.getElementById('modeSelect').value = 'discover'; MM.setMode('discover');
-        await new Promise(r => setTimeout(r, 2500));
+        await until(() => MM.mode === 'discover' && Force.nodeCount > 0);
         await Discovery.loadDeck('goblin-storm');
-        await new Promise(r => setTimeout(r, 8000));
+        await until(() => Force.nodeCount > 50);
         const i = MM.allData.findIndex(d => d.n === 'Past in Flames');
         Force.focusCard(i);
-        await new Promise(r => setTimeout(r, 2000));
+        await until(() => document
+            .querySelector('#deckInner .detail-card-image img'));
         const el = document.getElementById('deckInner');
         const img = el.querySelector('.detail-card-image img');
         const txt = (el.innerText || '');
@@ -1037,7 +1069,10 @@ def test_canvas_region_labels_are_real_dom(canvas_page):
     """Plotly drew these as layout annotations: a relayout to change one, no transition
     (the crossfade was an rgba() alpha rebuilt on a 150 ms debounce, so they popped), and
     no click target — clicking a region needed a 30-line hit-test against anchors."""
-    r = canvas_page.evaluate("""() => {
+    r = canvas_page.evaluate("""async () => {
+        for (let i = 0; i < 200 && !document.querySelector('.map-label'); i++) {
+            await new Promise(r => setTimeout(r, 50));
+        }
         const els = document.querySelectorAll('.map-label');
         const first = els[0];
         return {
@@ -2340,6 +2375,10 @@ def test_region_labels_do_not_pile_on_each_other(canvas_page):
     zoom-responsive.
     """
     r = canvas_page.evaluate("""async () => {
+
+        for (let i = 0; i < 200 && !document.querySelector('.map-label'); i++) {
+            await new Promise(r => setTimeout(r, 50));
+        }
         await new Promise(r => setTimeout(r, 2500));
         const all = [...document.querySelectorAll('.map-label')];
         const shown = all.filter(e => e.style.display !== 'none');
@@ -2750,7 +2789,16 @@ def test_clicking_a_cluster_label_zooms_and_filters(page):
             .reduce((n, l) => n + l.x.length, 0);
 
         const before = {span: span(), points: points()};
-        const label = document.querySelector('.map-label');
+        // Label placement is a render pass, not part of boot: under `-n 4` this
+        // ran before the first pass finished and threw on `null.click()`, which
+        // reads as a broken selector rather than as a race. The camera waits
+        // below were already fixed; this one was simply the earlier of the two.
+        let label = null;
+        for (let i = 0; i < 200 && !label; i++) {
+            label = document.querySelector('.map-label');
+            if (!label) await new Promise(r => setTimeout(r, 50));
+        }
+        if (!label) return {error: 'no .map-label was ever placed'};
         label.click();
         // Wait for the FOCUS and for the camera transition to settle, rather than
         // for 2500 ms — under `-n 4` that expired mid-transition and the span
@@ -2788,6 +2836,7 @@ def test_clicking_a_cluster_label_zooms_and_filters(page):
                 escaped: {span: span(), points: points(), focused: !!MM.regionFocus}};
     }""")
     assert page.js_errors == []
+    assert not r.get("error"), r.get("error")
     assert r["after"]["span"] < r["before"]["span"] / 2, "the camera did not zoom to the region"
     # SPOTLIT, not filtered: every point stays drawn and the non-members recede. Removing
     # them left a cluster alone in a void, which answers none of the questions the atlas
@@ -2862,7 +2911,13 @@ def test_selecting_a_card_does_not_leave_the_region(page):
             const c = MM.mapRenderer.getCamera();
             return Math.abs(c.x[1] - c.x[0]);
         };
-        document.querySelector('.map-label').click();
+
+        for (let i = 0; i < 200 && !document.querySelector('.map-label'); i++) {
+            await new Promise(r => setTimeout(r, 50));
+        }
+        const label = document.querySelector('.map-label');
+        if (!label) return {error: 'no .map-label was ever placed'};
+        label.click();
         await new Promise(r => setTimeout(r, 2500));
         const points = () => MM.mapRenderer.layers
             .filter(l => l.customdata && l.mode !== 'edges')
@@ -2886,6 +2941,7 @@ def test_selecting_a_card_does_not_leave_the_region(page):
                 escaped: {span: span(), region: !!MM.regionFocus}};
     }""")
     assert page.js_errors == []
+    assert not r.get("error"), r.get("error")
     assert r["zoomed"]["region"] and r["zoomed"]["span"] < 40
     assert r["picked"]["region"], "selecting a card cleared the region focus"
     # Deliberately NOT an equality check on the span. Opening the detail panel narrows

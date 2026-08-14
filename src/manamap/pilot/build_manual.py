@@ -58,6 +58,7 @@ from manamap.pilot.design import (
     violator,
 )
 from manamap.pilot.scenario_facts import board_bodies, opponents_of
+from manamap.pilot.short_list_art import ARTIFACT as SHORT_LIST_ART
 from manamap.pilot.issue_spec import (
     ACTS,
     OPTIONAL_DEPARTMENTS,
@@ -232,16 +233,32 @@ def _card_probes(cards):
     return probes
 
 
-def set_card_links(cards, commander_name=None):
+def set_card_links(cards, commander_name=None, offdeck=None):
     """Arm the card linker for one render. Probes are esc()-escaped so they
-    match post-escape text; longest-first so full names beat short forms."""
+    match post-escape text; longest-first so full names beat short forms.
+
+    `offdeck` is `considering_art.json`'s `cards` map — The Short List's ten,
+    which are by definition NOT in the 99 and so had no image, no link and no
+    hover preview. They were the only card names in the issue a reader could not
+    look at, in the one department whose entire job is showing you cards you do
+    not own. Their links point OUT (to Scryfall) because there is no tile to point
+    at, and they are marked `.cardref.offdeck` so the page can say so.
+
+    In-deck names always win: a card the analyst recommends and the deck already
+    runs must resolve to its own tile, not to an external page about it.
+    """
     anchors = card_anchor_ids(cards)
     by_name = {c["name"]: c for c in cards}
     meta = {}
+    for name, card in sorted((offdeck or {}).items()):
+        if name in by_name:
+            continue
+        meta[esc(name)] = (card.get("scryfall_uri") or "#upgrade-watch",
+                           card.get("image") or "", True)
     for probe, name in _card_probes(cards).items():
         href = ("#command-zone" if name == commander_name
                 else f"#{anchors[name]}")
-        meta[esc(probe)] = (href, by_name[name].get("image") or "")
+        meta[esc(probe)] = (href, by_name[name].get("image") or "", False)
     pattern = "|".join(re.escape(p) for p in
                        sorted(meta, key=lambda p: (-len(p), p)))
     _CARD_LINKS["regex"] = re.compile(rf"(?<!\w)(?:{pattern})(?!\w)") if meta else None
@@ -266,10 +283,12 @@ def card_linkify(escaped_text):
         return escaped_text
 
     def repl(m):
-        href, image = _CARD_LINKS["meta"][m.group(0)]
+        href, image, offdeck = _CARD_LINKS["meta"][m.group(0)]
         pop = (f'<img class="card-pop" src="{esc(image)}" loading="lazy" alt="">'
                if image else "")
-        return f'<a class="cardref" href="{href}">{m.group(0)}{pop}</a>'
+        cls = "cardref offdeck" if offdeck else "cardref"
+        rel = ' target="_blank" rel="noopener"' if offdeck else ""
+        return f'<a class="{cls}" href="{href}"{rel}>{m.group(0)}{pop}</a>'
 
     return _CARD_LINKS["regex"].sub(repl, escaped_text)
 
@@ -1613,7 +1632,8 @@ def render_back_page(issue, plan, deck_doc, stacks, cards_by_name):
 
 def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
                  goldfish=None, decisions=None,
-                 considering=None, tutor_guide=None, mana=None):
+                 considering=None, tutor_guide=None, mana=None,
+                 short_list_art=None):
     """Assemble a complete issue. Deterministic for fixed inputs."""
     cards = deck_doc["cards"]
     cards_by_name = {c["name"]: c for c in cards}
@@ -1639,7 +1659,10 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
     # Arm the card linker: every card mention in reader-facing copy becomes a
     # link to its tile in The 99 (commander → Command Zone) with a hover
     # preview. Cleared after assembly so renders never leak state into tests.
-    set_card_links(cards, commander["name"] if commander else None)
+    # The Short List's ten are the one set of card names the linker cannot reach
+    # from `cards.json`, because they are deliberately not in the deck.
+    set_card_links(cards, commander["name"] if commander else None,
+                   offdeck=(short_list_art or {}).get("cards"))
 
     # One renderer per section; issue_spec.DEPARTMENT_IDS is the only place
     # the STYLEv3 §5 five-act order lives — reordering the spec reorders the book.
@@ -1742,6 +1765,7 @@ def main(args):
     goldfish = load_json(base / "goldfish_metrics.json")
     synergy = load_synergy_graph() if SYNERGY_GRAPH_PATH.exists() else {}
     considering = load_json(base / "considering.json")
+    short_list_art = load_json(base / SHORT_LIST_ART, {})
     tutor_guide = load_json(base / "tutor_guide.json")
     mana = load_json(base / "mana_analysis.json")
     _DECK_MAP["doc"] = load_json(base / "deck_map.json")
@@ -1749,7 +1773,8 @@ def main(args):
 
     try:
         html_out = render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
-                                goldfish, decisions, considering, tutor_guide, mana)
+                                goldfish, decisions, considering, tutor_guide,
+                                mana, short_list_art)
     finally:
         _DECK_MAP["doc"] = _DECK_MAP["engine"] = None   # cleared like the card links
     MANUALS_DIR.mkdir(parents=True, exist_ok=True)

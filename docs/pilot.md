@@ -61,6 +61,7 @@ manamap pilot validate-considering <slug>   # The Short List: real cards, natura
 manamap pilot validate-tutor-guide <slug>   # every fetch target is in this deck
 manamap pilot diagnosis-report <slug>   # render diagnosis.json as readable markdown
 manamap pilot artist-credits <slug> --json  # standout artists + art themes (Featured Artist)
+manamap pilot short-list-art <slug>     # The Short List's ten → card art (Scryfall; tracked sidecar)
 manamap pilot build-manual <slug>       # → manuals/<slug>.html
 manamap pilot build-index               # → manuals/index.html gallery
 manamap pilot validate-issue <slug>     # form-check issue.json + issue_plan.json

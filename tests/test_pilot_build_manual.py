@@ -1054,3 +1054,63 @@ def test_the_pilots_log_runs_behind_the_99():
         assert order.index(earlier) < order.index("pilots-log"), earlier
     assert order.index("editors-letter") < order.index("command-zone")
     assert order.index("pilots-log") < order.index("keep-or-ship")
+
+
+def test_short_list_cards_get_a_hover_preview_that_leaves_the_magazine():
+    """The Short List's ten are the only card names in an issue with no tile to
+    link to — they are, by definition, cards the deck does not run. Before the
+    art sidecar they were the only names a reader could not look at, in the one
+    department whose whole job is showing you cards you do not own."""
+    from manamap.pilot.build_manual import (
+        card_linkify, clear_card_links, set_card_links)
+    from manamap.pilot.design import esc
+
+    deck = [{"name": "Sol Ring", "image": "sol.jpg", "is_commander": False}]
+    art = {"Seedborn Muse": {"image": "muse.jpg",
+                             "scryfall_uri": "https://scryfall.com/card/x"}}
+    set_card_links(deck, offdeck=art)
+    try:
+        out = card_linkify(esc("Seedborn Muse beside Sol Ring."))
+        assert 'class="cardref offdeck"' in out
+        assert 'href="https://scryfall.com/card/x"' in out
+        assert 'target="_blank"' in out and 'rel="noopener"' in out
+        assert 'src="muse.jpg"' in out
+        # The in-deck card keeps its tile link and is NOT marked off-deck.
+        assert 'href="#card-sol-ring"' in out
+        assert out.count("cardref offdeck") == 1
+    finally:
+        clear_card_links()
+
+
+def test_a_short_list_card_the_deck_already_runs_points_at_its_tile():
+    """An analyst may list a card the deck has since picked up. In-deck always
+    wins: sending a reader off-site for a card printed two pages away is worse
+    than no link at all."""
+    from manamap.pilot.build_manual import (
+        card_linkify, clear_card_links, set_card_links)
+    from manamap.pilot.design import esc
+
+    deck = [{"name": "Vigor", "image": "vigor.jpg", "is_commander": False}]
+    set_card_links(deck, offdeck={"Vigor": {"image": "other.jpg",
+                                            "scryfall_uri": "https://x"}})
+    try:
+        out = card_linkify(esc("Vigor."))
+        assert "offdeck" not in out
+        assert 'href="#card-vigor"' in out and 'src="vigor.jpg"' in out
+    finally:
+        clear_card_links()
+
+
+def test_the_short_list_art_sidecar_reads_only_the_ten():
+    """`natural_cut` names a card that IS in the 99 and is already linked to its
+    own tile — resolving it here would mint a second, external link to a card
+    the reader can reach on the same page."""
+    from manamap.pilot.short_list_art import names_from
+
+    analysis = {"ten": [
+        {"card": "Seedborn Muse", "natural_cut": "Fertile Ground"},
+        {"card": "Vigor"},
+        {"card": "Seedborn Muse"},          # de-duplicated, order preserved
+    ]}
+    assert names_from(analysis) == ["Seedborn Muse", "Vigor"]
+    assert names_from({}) == []

@@ -157,6 +157,14 @@ a.cardref:hover { background:rgba(0,0,0,.05); }
             border:3px solid var(--ink); border-radius:11px;
             box-shadow:6px 6px 0 rgba(0,0,0,.35); background:var(--paper); }
 a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
+/* A card the deck does NOT run — The Short List's ten. Same hover preview, but
+   the link leaves the magazine because there is no tile to point at, and the
+   dotted rule says so before the reader clicks. */
+a.cardref.offdeck { text-decoration-style:dotted; text-decoration-thickness:2px;
+                    text-decoration-color:var(--y2k-blue); }
+/* The list is a column of names; a preview anchored to the line's left edge and
+   opening upward would sit off the top of the first entry. */
+.swap-list .card-pop { bottom:auto; top:1.6em; }
 .folio { display:flex; justify-content:space-between; align-items:center;
          font-family:var(--condensed); text-transform:uppercase; letter-spacing:.18em;
          font-size:11px; border-top:2px solid var(--ink); margin-top:30px;

@@ -43,6 +43,7 @@ PILOT_STEPS = [
     ("validate-tutor-guide", "manamap.pilot.validate_tutor_guide", "Form-check the Fetch Quests tutor guide"),
     ("validate-strategic-frame", "manamap.pilot.validate_strategic_frame", "Form-check a strategic frame"),
     ("artist-credits", "manamap.pilot.artist_credits", "Standout artists and art themes in a deck"),
+    ("short-list-art", "manamap.pilot.short_list_art", "Resolve The Short List's ten to card art (Scryfall; tracked sidecar)"),
     ("build-manual", "manamap.pilot.build_manual", "Render a deck's magazine issue (sections per issue_spec)"),
     ("build-index", "manamap.pilot.build_index", "Render manuals/index.html — the newsstand"),
     ("validate-issue", "manamap.pilot.validate_issue", "Form-check issue.json + issue_plan.json"),
@@ -71,6 +72,7 @@ _DECK_COMMANDS = {
     "validate-considering", "validate-diagnosis", "validate-goldfish-targets",
     "diagnosis-report",
     "validate-tutor-guide", "impact", "scenario-facts", "merge-prose",
+    "short-list-art",
 }
 
 

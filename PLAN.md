@@ -33,7 +33,7 @@ written brief, and the issue now opens on two pictures of the deck: its **conste
 [009 Radagast](https://macrae.github.io/mana-map/manuals/radagast.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-Scale: 45 `manamap pilot` subcommands, 18 top-level subcommands, 17 agents, 19 skills,
+Scale: 46 `manamap pilot` subcommands, 18 top-level subcommands, 17 agents, 19 skills,
 13 cache-gated routines, 20 magazine sections (6 of them optional while two migrations are mid-flight). Test counts live in `docs/testing.md`.
 
 ## Start here on any deck
