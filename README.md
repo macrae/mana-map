@@ -18,7 +18,9 @@ a self-contained web issue: combo lines whose every step cites the Comprehensive
 survived an adversarial checker, resource curves from a seeded simulation, and coaching
 that says out loud when it's coaching.
 
-An issue opens on two pictures of the deck. The **constellation** re-lays-out its cards from
+An issue opens on an editor's letter and then a **panel** — three columnists arguing about
+how to fly the deck, in the vocabulary of its engine model, where a connection the model
+draws *dashed* is one the panel may discuss and may not assert. Then two pictures of it. The **constellation** re-lays-out its cards from
 the embeddings and clusters them into named cities — what shape it is. The **engine flow**
 shows how it runs, stage by stage, with each connection drawn solid when a rules-verified
 line proves it and dashed when it is the analyst's reading. Those are different relations: a
@@ -165,6 +167,7 @@ Run these from Claude Code in the repo root. Each is a skill in `.claude/skills/
 | `manamap pilot goldfish <slug>` | Resource curves from 10k seeded games | **yes** |
 | `manamap pilot deck-map <slug>` | The constellation: local layout + clusters | **yes** |
 | `/analyze-engine` | The engine: stages, lines, what a stack actually proves | no |
+| `pilot-panel` agent | The Editor's Letter and the Pilot's Log | no |
 | `/write-manual` | Strategic frame, coaching, body prose | no |
 | `/design-issue` | The issue plan — cover, departments, headlines | no |
 | `manamap pilot validate-issue <slug>` | Form gate over the plan | **yes** |
@@ -221,7 +224,8 @@ like that is a number rather than an opinion.
 |---|---|
 | A pipeline step | `STEPS` in `pipeline.py`; the module exposes `main()` |
 | A pilot command | `PILOT_STEPS` + `_DECK_COMMANDS` + argparse in `pilot/registry.py`; module exposes `main(args)` |
-| A magazine department | `DEPARTMENTS` in `pilot/issue_spec.py` — changes every issue; treat it like `config.py`. Add to `OPTIONAL_DEPARTMENTS` to pilot it on one deck first |
+| A magazine department | `DEPARTMENTS` in `pilot/issue_spec.py` — changes every issue; treat it like `config.py`. Add to `OPTIONAL_DEPARTMENTS` to pilot it on one deck first, and remove it once every deck carries it |
+| A columnist, or a voice rule | `MASTHEAD_COLUMNISTS` + `_VOICE_BANS` in `pilot/validate_issue.py`. Measure a proposed ban against all nine decks before keeping it |
 | A deck lifecycle phase | `STAGES` in `pilot/deck_status.py`, or the next person will not find it |
 | A data file the viz reads | The `DATA` map in `viz/js/mana-map.js`, plus a `.gitignore` negation |
 | A synergy rule, tag, or threshold | `config.py`, nowhere else |

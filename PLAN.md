@@ -3,7 +3,7 @@
 *The resume-here doc. `README.md` orients, `CLAUDE.md` carries the gotchas, this says what
 exists and what is open. Superseded plans live in `docs/history/`.*
 
-Last updated **2026-08-13**. Everything below is committed and pushed except where marked.
+Last updated **2026-08-14**. Everything below is committed and pushed except where marked.
 Every figure was derived from the repo at write time — **do not quote one from memory**;
 the commands that print them are named beside each.
 
@@ -65,21 +65,22 @@ artifacts is byte-identical. That is why a refactor cannot disturb a published i
 
 Run `deck-status` per deck for the live picture. As of this writing:
 
-| Deck | Vol | Stacks | Bracket | Map | Engine |
-|---|---|---|---|---|---|
-| `goblin-storm` | 001 | 5/5 | 4 | named | — |
-| `hapatra` | 002 | 1/1 | 4 | named | — |
-| `sisay` | 003 | 1/3 | 4 | named | — |
-| `heliod` | 004 | 6/6 | 4 | named | — |
-| `ur-dragon` | 005 | 6/6 | 4 | named | — |
-| `edgar-vampires` | 006 | 7/9 | 4 | named | — |
-| `gishath` | 007 | 5/5 | 4 | named | — |
-| `yawgmoth-swarm` | 008 | 11/14 | 4 | named | — |
-| `radagast` | 009 | 7/7 | 3 | named | **yes, `pass`** |
+| Deck | Vol | Stacks | Bracket | Map | Engine | Front of book |
+|---|---|---|---|---|---|---|
+| `goblin-storm` | 001 | 5/5 | 4 | named | — | — |
+| `hapatra` | 002 | 1/1 | 4 | named | — | — |
+| `sisay` | 003 | 1/3 | 4 | named | — | — |
+| `heliod` | 004 | 6/6 | 4 | named | — | — |
+| `ur-dragon` | 005 | 6/6 | 4 | named | — | — |
+| `edgar-vampires` | 006 | 7/9 | 4 | named | — | — |
+| `gishath` | 007 | 5/5 | 4 | named | — | — |
+| `yawgmoth-swarm` | 008 | 11/14 | 4 | named | — | — |
+| `radagast` | 009 | 7/7 | 3 | named | **yes, `pass`** | **yes** |
 
 *Stacks* is checker-passed / total; a failed artifact is kept as an open question and never
 publishes. **Every deck now carries a bracket target and a named constellation.** Only
-radagast has an engine model — that is the current frontier, not an oversight.
+radagast has an engine model and the front-of-book departments — that is the current
+frontier, not an oversight, and §2 is the rollout.
 
 ## What shipped in the 2026-08-13 cycle
 
@@ -111,71 +112,49 @@ inverse so hit-testing keeps working.
 
 ## Open work
 
-### 1. Phase 3 — the Editor's Letter and the Pilot's Log · **next**
+### 1. Phase 3 — DONE. Radagast carries the whole v4 shape.
 
-The engine stages exist; this is where they become a vocabulary three voices argue in. The
-founder's framing is recorded verbatim in `docs/magazine-feedback-2026-08-13.md` §9 — the
-engine doc is scaffolding each columnist reads and interprets in character, never printed as
-prose. Four parts, in order:
+All four parts shipped. The magazine now opens on **The Editor's Letter** (Margot Stet,
+the masthead's only unbadged name) and **The Pilot's Log** (three columnists arguing in
+the engine model's stage names), then the engine flow, then the constellation and a 99
+grouped by its cities.
 
-1. ~~**Close the engine loop.**~~ **DONE.** Two scoped partial revisions after the 3/3 loop;
-   critic verdict **`pass`**, 5 of 5 findings supported and each re-derived from the
-   artifacts rather than accepted. `deck-engine` is cache-recorded and
-   `deck-status radagast` reads **17/17**. What it cost is recorded in §9.
-2. ~~**A fourth persona**~~ **DONE.** **Editor-in-Chief Margot Stet**, on all nine
-   mastheads, carrying **no tier and no glyph** — the three columnists own ◆ ✓ ★, and a
-   fourth badge would make four tiers out of three while a shared one would put two names
-   on one. `badge()` raises on her tier rather than returning a blank, because nothing
-   should ever ask. STYLEv3 §7.7 carries the reasoning and the limit on what her letter
-   may claim.
-3. ~~**Two departments**~~ **DONE.** `editors-letter` and `pilots-log` lead Act I; both are
-   in `OPTIONAL_DEPARTMENTS`, so radagast's plan carries 19 and the other eight carry 17 and
-   all nine validate. New `pilot-panel` agent + `panel-prose` routine. **One miss against the
-   brief:** the panel splits **33.6 / 45.9 / 20.5** rather than roughly thirds — Sunny is
-   exactly on, Vera over, Ledger under. Not a correctness problem, and not worth the "each
-   revision introduces a new error" risk documented in §9, but a share check is the obvious
-   next lint if it recurs on a second deck. *(The letter was first reported at 303 words
-   against a 180–260 brief and is actually **275** — 15 over, ~6%, which is on brief. The
-   303 was measured on the pre-merge `.agent-out` file and was wrong; corrected here because
-   a figure recorded in this file is one somebody will quote.)*
-4. ~~**Voice separation**~~ **DONE.** A per-byline lint in `validate_issue` covers the panel
-   (each turn carries its voice) *and* every other prose key, whose voice is DERIVED from
-   its department's byline via `issue_spec.voices_for` — so a byline edit updates it with no
-   second place to remember. A shared department flags only what **both** voices are barred
-   from. Fleet-wide it now reports **0**; it reported 2 genuine register slips in yawgmoth
-   (`posture` twice), fixed as one-word copy edits in both the artifact and the handoff.
-   The blind test passes on radagast's panel.
+| | |
+|---|---|
+| Engine loop closed | critic `pass`, `deck-status radagast` **17/17** |
+| Fourth persona | Margot Stet — no tier, no glyph, and `badge()` still raises |
+| Two departments | radagast 19, the other eight 17, all nine validate |
+| Voice separation | fleet-wide **0**; the blind-attribution test passes |
 
-   **The bans were cut down by measuring, twice.** `"very "` matched inside `"every "` — 13
-   fleet-wide hits, all false. Then `really`/`very`/`extremely` went entirely: hapatra's
-   Ledger writes "a number the deck does not really have", which is a HEDGE and correct, and
-   no regex separates a hedge from an intensifier. What remains is six evaluative adjectives
-   with no hedging reading, plus Sunny's consulting vocabulary.
+**What it cost to learn, in one line each** — the detail is in CLAUDE.md:
 
-The Pilot's Log's requirements, from the founder's own words: it opens on a concrete play
-moment tied to a primary win line, segues off what the last voice said, touches three or four
-topics at roughly a third each, and every voice reads the same two inputs — `engine.json` and
-`strategic_frame.json`. **The tie worth building: a line drawn DASHED in the engine flow is a
-line the panel may not assert.** That is the evidence contract reaching into the prose
-instead of stopping at the picture.
+- A field is only as revisable as it is short. One stage failed four consecutive
+  revisions at 2,554 characters; the cap is 1,800 and the artifact failed it on arrival.
+- Run a proposed check against the whole fleet before keeping it. The voice lint shipped
+  matching `"very "` inside `"every "` — 13 false hits — and then lost three more bans to
+  the hedge/intensifier problem.
+- A critic's findings become mechanical checks or its work is re-spent every run.
+- The dashed line reaches the prose: the panel may discuss an unverified line, never
+  assert it.
 
-**The blocker is already removed.** `issue_spec.OPTIONAL_DEPARTMENTS` (empty today) lets a
-department be piloted on one deck instead of arriving on nine at once. Optional means "an
-older plan without it stays valid", NOT "the editor may skip it" — remove an id from the set
-once every deck has it.
+### 2. Roll the v4 shape to the other eight decks · **next**
 
-### 2. Roll the new subsystems to the other eight decks
+Radagast proves every loop; the rest is repetition, in this order per deck:
+`analyze-engine` (engineer ⇄ critic, the expensive one) → opt the two departments into the
+plan → `pilot-panel` → `merge-prose` → `validate-issue` → `build-manual`. `deck-status`
+says what each deck still needs; `/publish-deck` sequences it.
 
-Radagast proves the loop; the rest is repetition. `deck-map` and its naming pass are cheap
-and already done fleet-wide. **`analyze-engine` is not** — eight decks × (engineer + critic)
-is the expensive item, and it should follow Phase 3 so the engine model is being written for
-a consumer that exists.
+Budget honestly: `deck-engine` is the most expensive routine in the repo (~120k per
+engineer pass, ~140k per critic; radagast took four spawns over three iterations plus two
+scoped partial revisions), and `panel-prose` is ~134k. **Pay §9's remaining test debt
+first** — it is small and it guards exactly what eight repetitions would stress.
 
 ### 3. The deferred Coach-department merge
 
 `politics-table` + `know-your-enemy` + `fetch-quests` → one **At the Table**. Three
-consecutive Coach sections; the founder approved the merge. Now cheaper than when it was
-deferred, because `OPTIONAL_DEPARTMENTS` makes a staged department change possible.
+consecutive Coach sections; the founder approved the merge. **Now genuinely cheap**:
+`OPTIONAL_DEPARTMENTS` plus the renderer's three-way skip means the merged department can
+land on one deck and the other eight keep their three until each is re-planned.
 
 ### 4. Verification backlog
 

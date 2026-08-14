@@ -312,6 +312,44 @@ the per-file inventory.
 
 Data-gated tests use `requires_rules` / `requires_deck` / `requires_strategy` / `requires_roles` markers from `tests/conftest.py`.
 
+## The front of the book (`editors_letter`, `pilots_log`, tiers — and ★)
+
+Two departments lead Act I, both **optional** while they are piloted on one deck
+(`issue_spec.OPTIONAL_DEPARTMENTS` — see CLAUDE.md for why the concept exists and
+why an id should not stay in it).
+
+**The Editor's Letter** is signed by Editor-in-Chief Margot Stet, the masthead's
+only unbadged name. Each columnist owns exactly one evidence tier, so a fourth
+badge would make four tiers out of three and a shared one would put two names on
+one. She therefore may not make a claim that needs a badge — `validate-issue`
+fails a bare percentage in her copy — and names the columnist who established a
+figure instead, which is how a real editor's letter reads anyway.
+
+**The Pilot's Log** is a three-way conversation written by `pilot-panel`. Its
+`pilots_log` key is a LIST of turns, not prose: a turn carries the voice that
+speaks it, so the renderer can label and colour it and a reader can follow who is
+answering whom. Handed a string it renders TODO — an unlabelled panel is prose
+with quotation marks.
+
+**Its tier is `("coach",)` and not all three.** A department's tier is what it
+GRANTS, not what its speakers mention: Vera cites a ruling and Ledger a rate, but
+both earned those badges in The Kill and By the Numbers. Give the panel all three
+and a conversation becomes a place where a new verified claim can arrive wearing
+three voices at once.
+
+**The rule that outranks the rest: a line `engine.json` draws DASHED is a line the
+panel may not assert.** A `lines[]` entry with a `verified_by` rests on a
+checker-passed stack and Vera may state it flatly; a null is the analyst's reading
+and the panel may discuss it, argue about it, or say nobody has checked. That is
+the evidence contract reaching past the picture into the copy.
+
+**The per-byline voice lint** covers the panel (each turn carries its voice) and
+every other prose key, whose voice is derived from its department's byline via
+`issue_spec.voices_for`. A shared department flags only what both voices are
+barred from. The bans were cut twice by measuring against the fleet — see
+CLAUDE.md — and what remains is six evaluative adjectives with no hedging reading
+plus Sunny's consulting vocabulary.
+
 ## Deck status — is this deck finished? (`deck-status`, tier ◆)
 
 **Run this first on any deck.** The lifecycle is dozens of skills and subcommands and until
