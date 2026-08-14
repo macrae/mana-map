@@ -3404,11 +3404,56 @@ def test_clicking_a_verified_line_spotlights_it(browser, viz_server):
         page.close()
 
 
+# Green ink in a tight box around the spotlit line's OWN cards — the edge and both
+# rings are inside it, the rest of the graph is not. See the test below for why the
+# whole canvas cannot answer this question.
+_NEAR_LINE = """
+(rows) => {
+  const c = document.querySelector('canvas.force-canvas');
+  const W = c.width, H = c.height, dpr = W / c.clientWidth;
+  const ns = Force.screenNodes().filter(n => rows.indexOf(n.row) !== -1);
+  if (ns.length < 2) return null;
+  const xs = ns.map(n => n.x * dpr), ys = ns.map(n => n.y * dpr), pad = 14 * dpr;
+  const x0 = Math.max(0, Math.min(...xs) - pad), x1 = Math.min(W - 1, Math.max(...xs) + pad);
+  const y0 = Math.max(0, Math.min(...ys) - pad), y1 = Math.min(H - 1, Math.max(...ys) + pad);
+  const d = c.getContext('2d').getImageData(0, 0, W, H).data;
+  let n = 0;
+  for (let y = Math.round(y0); y <= Math.round(y1); y++)
+    for (let x = Math.round(x0); x <= Math.round(x1); x++) {
+      const i = (y * W + x) * 4, r = d[i], g = d[i+1], b = d[i+2], a = d[i+3];
+      if (a > 60 && g > 110 && g > r + 40 && g > b + 40) n++;
+    }
+  return n;
+}
+"""
+
+
 def test_the_spotlight_actually_dims_the_canvas(browser, viz_server):
     """Pixels, not state. A layer being present passes while nothing draws.
 
     Compared at the SAME camera — clearing does not refit — so the difference is the
     dimming and nothing else.
+
+    **The green ink is measured near the LINE, not across the canvas, and the
+    difference is the whole point of this test.** Clearing the spotlight does two
+    things at once: it rests the line you were looking at, and it un-mutes every
+    OTHER verified line. On goblin-storm those cancel almost exactly — 868 green px
+    spotlit against 833 cleared, a ratio of 0.96 that reads as "deselecting does
+    nothing" — while the line's own box goes 1024 -> 301. The bounding boxes say it
+    plainly: spotlit, green occupies 47x294 px; cleared, it is spread across
+    591x687. A whole-canvas count cannot tell "this line stopped shouting" from
+    "eleven other lines started whispering", and for a while it reported the second
+    as a failure of the first.
+
+    Threshold 0.52, measured on both sides rather than fitted to one. Healthy
+    dimming over four runs: 0.204 / 0.255 / 0.422 / 0.439. With the resting ink
+    disabled (`Stage.INK.verifiedQuiet = Stage.INK.verified`, the bug this guards):
+    0.589 / 0.601 / 0.617 / 0.695. That simulated bug is only PARTIAL — the resting
+    state also halves the stroke weight (2.4 -> 1.4 in `weightOf`), which the patch
+    leaves intact — so a real regression in both would sit near 1.0 and this has
+    more headroom than the numbers suggest. The spread inside each group is
+    d3-force layout non-determinism: how many other quiet edges happen to cross the
+    box.
     """
     slug = _a_deck_with_a_drawable_line()
     if not slug:
@@ -3418,25 +3463,24 @@ def test_the_spotlight_actually_dims_the_canvas(browser, viz_server):
         page.click(".lens-line")
         page.wait_for_timeout(1500)          # includes the 450ms fit transition
         spotlit = page.evaluate(_INK)
+        rows = page.evaluate("() => Force.spotlitRows")
+        near_lit = page.evaluate(_NEAR_LINE, rows)
 
         page.click(".lens-line")             # clear; camera stays put
         page.wait_for_timeout(900)
         cleared = page.evaluate(_INK)
+        # Same rows, same camera — only the styling moved.
+        near_off = page.evaluate(_NEAR_LINE, rows)
+
+        assert len(rows) >= 2, rows
+        assert near_lit and near_off is not None
 
         assert spotlit and cleared
         # Lifting the spotlight brings the rest of the deck back: more ink, brighter ink.
         assert cleared["lit"] > spotlit["lit"] * 1.15, (spotlit, cleared)
         assert cleared["mean"] > spotlit["mean"] * 1.05, (spotlit, cleared)
-        # And the line itself must stop shouting. Verified edges are drawn ALWAYS, so
-        # without a resting ink they stayed at full spotlight intensity and deselecting
-        # deselected nothing visible — measured at 2813 green px spotlit vs 2513 cleared,
-        # which this assertion would have caught and the earlier one did not.
-        # Threshold 0.7, not 0.6: the ratio depends on the projection's line
-        # geometry. The bug this guards (edges never resting) measures ~0.9;
-        # healthy dimming measured 0.53 on the July layout and 0.617 on the
-        # 2026-08 refresh's layout. 0.7 still separates the two modes cleanly
-        # without failing on every retrain's new geometry.
-        assert cleared["green"] < spotlit["green"] * 0.7, (spotlit, cleared)
+        # And the line itself must stop shouting — measured WHERE THE LINE IS.
+        assert near_off < near_lit * 0.52, (near_lit, near_off, rows)
         assert page.js_errors == []
     finally:
         page.close()

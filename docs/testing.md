@@ -173,6 +173,54 @@ labelling was broken. **If an assertion depends on layout, network, or a simulat
 settling, wait for that thing — a `setTimeout` long enough to usually work is a flake with
 a delay on it.**
 
+The nastiest variant is a call that **returns early and silently**, because then there is
+nothing slow to wait for and the test does not fail where the mistake is.
+`mapRenderer.setCamera` no-ops when `baseFit` is null, and `baseFit` is built on the first
+`setLayers` — so a test that moved the camera before the renderer was ready simply did not
+move it, and went on to measure the FITTED view believing it had zoomed in.
+`test_canvas_draws_density_contours` then read a halo-saturated baseline (38.7 ink instead
+of 3.8) and reported it as "the contours stopped drawing", about one full-suite run in
+three. In isolation with output attached it was byte-identical five times running, which is
+exactly what kept it looking like a fixed-wait problem.
+
+Two things worth copying from the fix. **The readiness probe was the renderer's own**:
+`getCamera()` returns null under precisely the condition that makes `setCamera` a no-op, so
+there was no need to invent a signal. And **it belongs in the fixture, not the test** —
+`canvas_page` waited for the canvas element and the data but not for the fit, so every test
+on that fixture had the same hole and one of them happened to be sensitive enough to show
+it. Do not fix a shared-fixture race in the one test that caught it.
+
+A failed attempt is worth recording too: moving the `setCamera` call *inside* a
+`wait_for_function` poll made it strictly worse (~3 runs in 6), because the predicate runs
+every animation frame and re-applying the zoom transform continuously left the camera back
+at the fit. Retry-until-it-takes is not a substitute for waiting until it *can* take.
+
+## Measure where the claim is, not across the whole surface
+
+`test_the_spotlight_actually_dims_the_canvas` counted green pixels over the entire canvas
+and asserted the count drops when you clear a spotlight. It failed consistently — and the
+feature was working the whole time.
+
+Clearing a spotlight does two things at once: it rests the line you were looking at, **and
+it un-mutes every other verified line**. On goblin-storm those cancel almost exactly: 868
+green px spotlit against 833 cleared, a ratio of 0.96 sitting right in the range the test
+reserved for the bug it guards. The bounding boxes say what the totals hide — spotlit,
+green occupies 47x294 px; cleared, it is spread across 591x687. Restricted to a box around
+the spotlit line's own cards the same click reads 1024 -> 301.
+
+**A global aggregate cannot distinguish two changes that move it in opposite directions.**
+The test now reads `Force.spotlitRows` and measures only near those cards. When a pixel
+assertion covers more surface than the claim does, a compensating change elsewhere will
+either mask a real regression or manufacture a fake one, and you cannot tell which from the
+number alone.
+
+Its threshold is also measured on **both** sides rather than fitted to the healthy one:
+healthy runs give 0.204 / 0.255 / 0.422 / 0.439, and with the resting ink disabled
+(`Stage.INK.verifiedQuiet = Stage.INK.verified`) 0.589 / 0.601 / 0.617 / 0.695. 0.52 sits
+between them. Deliberately noted in the test: that simulated bug is only PARTIAL, since the
+resting state also halves the stroke weight, so a real regression in both would sit near
+1.0. A threshold chosen only from passing runs tells you nothing about what it catches.
+
 ## Do not assert on things outside the code's control
 
 The same shape has now cost three debugging sessions, one layer apart each time.

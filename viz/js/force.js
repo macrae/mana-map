@@ -1273,6 +1273,13 @@
     get followCount() { return followRuns; },
     get activeLine() { return lineId; },
     get lineRowCount() { return lineRows ? lineRows.size : 0; },
+    // The rows themselves, not just how many. A pixel test cannot assert "the line
+    // stopped shouting" from the whole canvas — clearing the spotlight un-mutes every
+    // OTHER verified line, and their combined quiet ink replaces the one bright line's
+    // almost exactly (measured on goblin-storm: 868 green px spotlit, 833 cleared, while
+    // the line's own box went 1024 -> 301). So the test has to look where the line IS,
+    // and to do that it needs to know which cards it joins.
+    get spotlitRows() { return lineRows ? Array.from(lineRows) : []; },
     get verifiedLinkCount() {
       return links.filter(function (l) { return l.rel === 'verified'; }).length;
     },

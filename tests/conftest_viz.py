@@ -150,6 +150,19 @@ def canvas_page(browser, viz_server):
     page.select_option("#mapSelect", "default")
     _wait_for_boot(page, "() => window.MM && MM.currentMap === 'default' && MM.allData.length",
                    "the colour+type map to load")
+    # WAIT FOR THE RENDERER, not just for its canvas element and its data.
+    #
+    # `baseFit` is computed on the first `setLayers`, and until it exists `setCamera`
+    # returns EARLY AND SILENTLY while `getCamera` returns null. A test that moved the
+    # camera in that window simply did not move it, and then measured the fitted view
+    # believing it was measuring a zoomed one — which under full-suite load hit
+    # `test_canvas_draws_density_contours` about one run in three, reporting a saturated
+    # halo baseline (38.7 ink instead of 3.8) as though the contours had stopped drawing.
+    # `getCamera()` is the renderer's own readiness answer: non-null means both the canvas
+    # and the fit exist. Cheaper and more honest than a longer sleep, and it protects
+    # every test on this fixture rather than the one that happened to catch it.
+    _wait_for_boot(page, "() => MM.mapRenderer && MM.mapRenderer.getCamera() !== null",
+                   "the canvas renderer to compute its base fit")
     page.wait_for_timeout(600)
     try:
         yield page
