@@ -26,9 +26,8 @@ read; it feels like something you get through. No page target was named — the
 observation is about felt length, and it compounds with §2 (things arrive in an
 order that makes you wait for the part you wanted).
 
-Related and stated separately: **there are a lot of coaching sections.** Six of
-the seventeen departments are signed by Coach Sunny Brightside alone, and they
-run consecutively at positions 3–8.
+Related and stated separately: **there are a lot of coaching sections.** Six departments are signed by Coach Sunny Brightside alone, and at the time of
+writing they ran consecutively at positions 3–8.
 
 ## 2. The running order is wrong
 

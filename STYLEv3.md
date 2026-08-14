@@ -220,7 +220,7 @@ it. Therefore:
 
 ## 5. The section system
 
-Seventeen sections, fixed order, every issue. This order is the reading experience;
+Nineteen sections, fixed order, every issue. This order is the reading experience;
 it is not negotiable per-deck. A section with no artifact to fill it renders a
 visible `[TODO]`, never a silent omission.
 

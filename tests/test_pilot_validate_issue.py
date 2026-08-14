@@ -175,7 +175,17 @@ def test_departments_are_stable_across_issues():
     assert "featured-artist" in DEPARTMENT_IDS   # who painted your deck
     assert "fetch-quests" in DEPARTMENT_IDS      # what to tutor
     assert "sources-say" in DEPARTMENT_IDS       # the mana audit
-    assert len(DEPARTMENT_IDS) == 17
+    # NOT `len(...) == 17`. A hardcoded count here is the same mistake this repo
+    # bans in prose — "never transcribe the section list or its count" — and it
+    # turns every deliberate addition into a test edit that says nothing. What
+    # must not drift is the SHAPE: the five acts partition the list exactly, every
+    # department is spoken for, and an optional one is a real department rather
+    # than a stray id. `test_docs_section_count` guards the number against the
+    # spec, which is the only place it belongs.
+    from manamap.pilot.issue_spec import ACTS, OPTIONAL_DEPARTMENTS
+    flattened = [d for _title, ids in ACTS for d in ids]
+    assert flattened == [d for d in DEPARTMENT_IDS if d not in ("cover", "contents")]
+    assert OPTIONAL_DEPARTMENTS <= set(DEPARTMENT_IDS)
 
 
 def test_canonical_plan_has_no_adjacent_dense_departments():

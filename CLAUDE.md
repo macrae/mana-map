@@ -209,7 +209,7 @@ python -m http.server 8000    # serve viz FROM REPO ROOT
 - `docs/pilot.md` — pilot subsystem: three-tier evidence contract, citation contract, rules DB, strategy DB + strategy-researcher agent, resolve loop, build loop, goldfish, manual generation
 - `PLAN.md` — ACTIVE plan: current state, what's done, what's next (read this first when resuming work)
 - **`/publish-deck`** — the deck lifecycle end to end, every phase in dependency order with its gate. `manamap pilot deck-status <slug>` is its machine-readable half and the thing to run first on any deck.
-- `STYLEv3.md` — the magazine's editorial + design constitution (the 17-section five-act system, the Commander Mandate, the three columnists, L10, voice, component library); read before touching `build_manual.py`, `design.py`, or `issue_spec.py`
+- `STYLEv3.md` — the magazine's editorial + design constitution (the 19-section five-act system, the Commander Mandate, the three columnists, L10, voice, component library); read before touching `build_manual.py`, `design.py`, or `issue_spec.py`
 - `docs/frontend-v2.md` — the deck-building surface: what shipped (the dossier), what's next (`viz_index.json`, the Worker port), and the audit header saying which of its premises expired
 - `docs/magazine-feedback-2026-08.md`, `docs/magazine-feedback-2026-08-13.md` — founder + editor feedback records, verbatim, each with what shipped against it. Read the later one before touching voice or department structure; its §0 shows how the previous round's "Still open" list became this round's complaints.
 - `docs/history/PLAN.md` — historical deck-builder planning doc (outdated, unmaintained)

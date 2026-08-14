@@ -230,6 +230,23 @@ a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
 /* The signature number. Full-bleed within the column, and big enough that a reader
    flipping past stops — which is the whole job, and the reason it may appear once. */
 .badge-none { display:inline-block; width:0; }
+/* ── The Editor's Letter and The Pilot's Log ─────────────────────────── */
+.letter { max-width:62ch; font-size:1.04em; }
+.letter-sign { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.14em; font-size:.78rem; color:var(--ink-soft); margin-top:1.4em;
+  border-top:2px solid var(--ink); display:inline-block; padding-top:6px; }
+/* A panel is people answering each other, so the turns are indented against a
+   speaker rail rather than stacked as blocks — the eye tracks the exchange. */
+.panel { max-width:70ch; }
+.panel .turn { border-left:5px solid var(--turn,#8A93B5); padding:2px 0 2px 16px;
+  margin:0 0 1.25em; }
+.panel .turn-voice { font-family:var(--condensed); font-weight:700;
+  text-transform:uppercase; letter-spacing:.12em; font-size:.72rem;
+  color:var(--turn,var(--ink-soft)); margin-bottom:4px; }
+.panel .turn-text p:last-child { margin-bottom:0; }
+.panel .turn-coach { --turn:var(--tier-coach); }
+.panel .turn-verified { --turn:var(--tier-verified); }
+.panel .turn-data { --turn:var(--tier-data); }
 .constellation-fig, .engine-fig { margin:26px 0; }
 .engine-fig .engine-flow { width:100%; height:auto; display:block;
   border:3px solid var(--ink); box-shadow:6px 6px 0 rgba(0,0,0,.30); background:#0B0A14; }

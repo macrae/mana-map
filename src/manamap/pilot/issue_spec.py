@@ -41,6 +41,25 @@ DEPARTMENTS = [
     ("contents", "The Flight Plan",
      "You are here. Everything else is one tap away.", (), False, None),
     # Act I — Meet the Deck: who is in charge, what they want, what they brought.
+    #
+    # The two front-of-book pieces lead it, in the order the founder described:
+    # the editor hands you the deck, then the three pilots argue about flying it,
+    # and only then do you meet the commander. Both are OPTIONAL_DEPARTMENTS while
+    # they are piloted on one deck — see that constant for why, and remove them
+    # from it once every issue carries them.
+    ("editors-letter", "The Editor's Letter",
+     "What this deck is, and whether it is for you.",
+     (), True, "Editor-in-Chief Margot Stet"),
+    # Tier is ("coach",) and NOT all three, which is the load-bearing decision. A
+    # department's tier is what the department GRANTS, not what its speakers
+    # mention. Vera will cite a ruling and Ledger a rate, but both were granted
+    # their badges in The Kill and By the Numbers; the panel points at them. Give
+    # this ("verified", "data", "coach") and a conversation becomes a place where
+    # a new verified claim can be smuggled in wearing three voices at once.
+    ("pilots-log", "The Pilot's Log",
+     "Three pilots, one deck, and an argument about how to fly it.",
+     ("coach",), True,
+     'Coach Sunny Brightside, Counselor Vera Dictum and "Ledger" Lin Marginal'),
     ("command-zone", "The Command Zone",
      "Why this commander is exactly where you want to be — on the record.",
      ("verified", "coach"), True,
@@ -101,7 +120,8 @@ DEPARTMENTS = [
 # Acts III and IV are single-voice by construction, which the old grouping never
 # managed: three consecutive Coach sections, then three consecutive Ledger ones.
 ACTS = [
-    ("Meet the Deck", ("command-zone", "first-turns", "the-99")),
+    ("Meet the Deck", ("editors-letter", "pilots-log",
+                       "command-zone", "first-turns", "the-99")),
     ("Fly It", ("keep-or-ship", "whats-your-play", "the-kill")),
     ("At the Table", ("politics-table", "know-your-enemy", "fetch-quests")),
     ("Show Your Work", ("sources-say", "by-the-numbers", "upgrade-watch")),
@@ -150,7 +170,7 @@ BREATHER_AFTER = frozenset({"sources-say"})
 # skip it". Once a deck's plan carries the department it is validated exactly like
 # any other, and an id should be REMOVED from this set as soon as every deck has
 # it. A permanently optional department is a department nobody committed to.
-OPTIONAL_DEPARTMENTS = frozenset()
+OPTIONAL_DEPARTMENTS = frozenset({"editors-letter", "pilots-log"})
 
 DEPARTMENT_IDS = [d[0] for d in DEPARTMENTS]
 DEPARTMENT_BY_ID = {d[0]: {"title": d[1], "promise": d[2], "tiers": d[3],
@@ -163,6 +183,7 @@ COPY_DEPARTMENTS = [d[0] for d in DEPARTMENTS if d[4]]
 # Rhythm tags (STYLEv3 §6). Used to check that dense departments alternate.
 INTENSITY = {
     "cover": "peak", "contents": "low", "first-turns": "high",
+    "editors-letter": "low", "pilots-log": "high",
     "command-zone": "medium", "by-the-numbers": "medium", "the-kill": "peak",
     "politics-table": "medium", "whats-your-play": "high",
     "know-your-enemy": "medium", "fetch-quests": "medium",
@@ -175,6 +196,10 @@ INTENSITY = {
 DENSE_MODES = {"analysis", "reference", "technical"}
 MODE = {
     "cover": "anticipation", "contents": "orientation", "first-turns": "narrative",
+    # A letter is someone talking to you; a panel is people talking to each other.
+    # Neither is dense, which matters: they sit ahead of The Command Zone's
+    # instruction and give the reader two soft entries before the first hard one.
+    "editors-letter": "welcome", "pilots-log": "conversation",
     "command-zone": "instruction", "by-the-numbers": "analysis",
     # The Kill carries technical content but *reads* as narrative — that is
     # precisely what makes it the breather after By the Numbers (STYLEv3 §6).

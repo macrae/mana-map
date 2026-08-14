@@ -3,7 +3,18 @@ import copy
 
 from manamap.pilot.build_manual import render_issue
 from manamap.pilot.design import esc
-from manamap.pilot.issue_spec import DEPARTMENT_BY_ID, DEPARTMENT_IDS
+from manamap.pilot.issue_spec import (
+    DEPARTMENT_BY_ID,
+    DEPARTMENT_IDS,
+    OPTIONAL_DEPARTMENTS,
+)
+
+# Departments every issue carries. An OPTIONAL department renders only when the
+# plan opts in, so "every department always renders" stopped being true when the
+# first one was added — see `issue_spec.OPTIONAL_DEPARTMENTS`. The tests below
+# assert the new contract in BOTH directions, which is stronger than the old one:
+# required always renders, optional renders exactly when asked for.
+REQUIRED_IDS = [d for d in DEPARTMENT_IDS if d not in OPTIONAL_DEPARTMENTS]
 
 ISSUE = {
     "volume": 1,
@@ -154,14 +165,14 @@ def render(**overrides):
 
 def test_all_departments_render():
     html_out = render()
-    for dept_id in DEPARTMENT_IDS:
+    for dept_id in REQUIRED_IDS:
         assert f'id="{dept_id}"' in html_out, f"missing department {dept_id}"
 
 
 def test_department_titles_render():
     """Every department names itself — except the cover, which wears the masthead."""
     html_out = render()
-    for dept_id in DEPARTMENT_IDS:
+    for dept_id in REQUIRED_IDS:
         if dept_id == "cover":
             continue
         assert esc(DEPARTMENT_BY_ID[dept_id]["title"]) in html_out
@@ -267,7 +278,7 @@ def test_missing_goldfish_does_not_break_build():
 def test_no_plan_still_renders_every_department():
     """Departments never vanish silently, even with no issue plan."""
     html_out = render(plan={})
-    for dept_id in DEPARTMENT_IDS:
+    for dept_id in REQUIRED_IDS:
         assert f'id="{dept_id}"' in html_out
 
 
@@ -402,9 +413,8 @@ def test_featured_artist_works_without_artist_data():
 def test_departments_render_in_canonical_arc_order():
     """Render order mirrors issue_spec.DEPARTMENTS — the single source of truth
     for the STYLEv3 §5 three-act arc."""
-    from manamap.pilot.issue_spec import DEPARTMENT_IDS
     html_out = render()
-    positions = [html_out.index(f'id="{dept_id}"') for dept_id in DEPARTMENT_IDS]
+    positions = [html_out.index(f'id="{dept_id}"') for dept_id in REQUIRED_IDS]
     assert positions == sorted(positions)
 
 
@@ -722,3 +732,47 @@ def test_the_resolver_brief_lives_in_the_case_file_not_the_read_through():
     desk = html_out[html_out.index('id="judges-desk"'):]
     assert esc("How many copies?") not in kill, "the resolver brief is in the read-through"
     assert esc("How many copies?") in desk, "the resolver brief was dropped, not moved"
+
+
+# ── Optional departments: the other half of the contract ────────────────
+
+
+def test_an_optional_department_is_absent_when_the_plan_omits_it():
+    """`OPTIONAL_DEPARTMENTS` exists so a department can be piloted on one deck.
+
+    A department arriving in `DEPARTMENTS` used to invalidate every issue plan at
+    once, which meant a new one landed on nine decks or on none. Optional means an
+    older plan without it stays valid — and the renderer has to agree, or an issue
+    that never opted in prints an empty department with a [TODO] in it.
+    """
+    html_out = render(plan={})
+    for dept_id in OPTIONAL_DEPARTMENTS:
+        assert f'id="{dept_id}"' not in html_out, (
+            f"{dept_id} rendered into an issue whose plan does not carry it")
+
+
+def test_an_optional_department_leaves_no_dead_link_in_the_flight_plan():
+    """The Flight Plan must skip what the body skipped.
+
+    Caught in review rather than by a test: the body correctly omitted the section
+    and the contents page went on linking to it, producing a dead anchor in eight
+    issues — in the one department whose entire job is telling a reader where
+    things are.
+    """
+    html_out = render(plan={})
+    for dept_id in OPTIONAL_DEPARTMENTS:
+        assert f'href="#{dept_id}"' not in html_out, (
+            f"the Flight Plan links to {dept_id}, which this issue does not carry")
+
+
+def test_an_optional_department_renders_when_the_plan_asks_for_it():
+    """And the positive case, or the two tests above pass on a renderer that
+    dropped optional departments entirely."""
+    for dept_id in OPTIONAL_DEPARTMENTS:
+        spec = DEPARTMENT_BY_ID[dept_id]
+        html_out = render(plan={"departments": [
+            {"id": dept_id, "kicker": "K", "headline": "H", "dek": "D"}]})
+        assert f'id="{dept_id}"' in html_out
+        # Through the renderer's own escaper: both of these titles carry an
+        # apostrophe, which reaches the page as &#x27; and would fail a raw match.
+        assert esc(spec["title"]) in html_out

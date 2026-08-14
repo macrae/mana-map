@@ -56,6 +56,7 @@ from manamap.pilot.design import (
 from manamap.pilot.scenario_facts import board_bodies, opponents_of
 from manamap.pilot.issue_spec import (
     ACTS,
+    OPTIONAL_DEPARTMENTS,
     BREATHER_AFTER,
     DEPARTMENT_BY_ID,
     DEPARTMENT_IDS,
@@ -69,6 +70,7 @@ from manamap.pilot.issue_spec import (
 # One accent per department — held across all its pages and its folio tab.
 ACCENT = {
     "cover": "var(--power-red)", "contents": "var(--ink)",
+    "editors-letter": "var(--ink)", "pilots-log": "var(--burst-yellow)",
     "first-turns": "var(--power-red)", "command-zone": "var(--y2k-violet)",
     "by-the-numbers": "var(--y2k-blue)", "the-kill": "var(--power-red)",
     "politics-table": "var(--radical-purple)", "whats-your-play": "var(--hot-magenta)",
@@ -412,9 +414,16 @@ def render_cover(issue, plan, commander):
 def render_contents(issue, plan, stacks, decisions):
     spec_c = DEPARTMENT_BY_ID["contents"]
     acts = []
+    # The SAME optional filter the body uses. Without it the Flight Plan lists a
+    # department this issue does not carry and links to an anchor that is not on
+    # the page — eight dead links, in the one department whose whole job is
+    # telling the reader where everything is.
+    planned = {d.get("id") for d in (plan or {}).get("departments", [])}
     for act_title, dept_ids in ACTS:
         rows = []
         for dept_id in dept_ids:
+            if dept_id in OPTIONAL_DEPARTMENTS and dept_id not in planned:
+                continue
             spec = DEPARTMENT_BY_ID[dept_id]
             badges = "".join(badge(t) for t in spec["tiers"])
             byline = (
@@ -765,6 +774,62 @@ def render_the_kill(issue, plan, stacks, prose_doc, cards_by_name):
         + dept_furniture(dept, cards_by_name)
         + ("".join(spreads) or TODO)
         + dept_close("the-kill", issue)
+    )
+
+
+def render_editors_letter(issue, plan, prose_doc, cards_by_name):
+    """One page, unbadged. What this deck is and whether it is for you.
+
+    The only department signed by someone who holds no evidence tier, so it is
+    also the only one that may not make a claim needing one (STYLEv3 §7.7). The
+    renderer cannot enforce that — it is a judgment about sentences — but the
+    absent badge in the department head is what makes the difference visible.
+    """
+    dept = plan_dept(plan, "editors-letter")
+    return (
+        dept_open("editors-letter", plan)
+        + f'<div class="body-copy letter">{prose(prose_doc, "editors_letter")}</div>'
+        + f'<p class="letter-sign">{esc(DEPARTMENT_BY_ID["editors-letter"]["byline"])}</p>'
+        + dept_captions(dept, cards_by_name)
+        + dept_furniture(dept, cards_by_name)
+        + dept_close("editors-letter", issue)
+    )
+
+
+def render_pilots_log(issue, plan, prose_doc, cards_by_name):
+    """Three pilots arguing about one deck — a conversation, not three essays.
+
+    `pilots_log` is a LIST of turns, not a block of prose, and the shape is the
+    contract: a turn carries the voice that speaks it, so the renderer can label
+    each one and a reader can follow who is answering whom. Handed a string it
+    renders nothing and says so, rather than printing an unattributed wall — an
+    unlabelled panel is just prose with quotation marks.
+    """
+    dept = plan_dept(plan, "pilots-log")
+    turns = (prose_doc or {}).get("pilots_log")
+    if not isinstance(turns, list) or not turns:
+        body = TODO
+    else:
+        blocks = []
+        for turn in turns:
+            voice = (turn or {}).get("voice", "")
+            text = (turn or {}).get("text", "")
+            # The speaker's own accent, so a reader tracks the argument by colour
+            # before they read the name — the same trick the constellation uses.
+            key = ("coach" if "Sunny" in voice else
+                   "verified" if "Vera" in voice else
+                   "data" if "Ledger" in voice else "none")
+            blocks.append(
+                f'<div class="turn turn-{key}">'
+                f'<div class="turn-voice">{esc(voice)}</div>'
+                f'<div class="turn-text">{esc_x_paras(text)}</div></div>')
+        body = f'<div class="panel">{"".join(blocks)}</div>'
+    return (
+        dept_open("pilots-log", plan)
+        + body
+        + dept_captions(dept, cards_by_name)
+        + dept_furniture(dept, cards_by_name)
+        + dept_close("pilots-log", issue)
     )
 
 
@@ -1403,6 +1468,10 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
                                                         cards_by_name),
         "the-kill": lambda: render_the_kill(issue, plan, stacks, prose_doc,
                                             cards_by_name),
+        "editors-letter": lambda: render_editors_letter(issue, plan, prose_doc,
+                                                        cards_by_name),
+        "pilots-log": lambda: render_pilots_log(issue, plan, prose_doc,
+                                                cards_by_name),
         "judges-desk": lambda: render_judges_desk(issue, plan, stacks,
                                                   cards_by_name),
         "featured-artist": lambda: render_featured_artist(issue, plan, cards,
@@ -1412,7 +1481,14 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
     }
     try:
         sections = []
+        planned = {d.get("id") for d in (plan or {}).get("departments", [])}
         for dept_id in DEPARTMENT_IDS:
+            # An OPTIONAL department absent from this plan renders nothing at all.
+            # Without this every issue that has not opted in yet prints an empty
+            # department with a [TODO] in it — which is what "optional" would mean
+            # if the renderer disagreed with the validator about it.
+            if dept_id in OPTIONAL_DEPARTMENTS and dept_id not in planned:
+                continue
             sections.append(renderers[dept_id]())
             if dept_id in BREATHER_AFTER:
                 sections.append(render_art_break(commander, mana))
