@@ -43,4 +43,9 @@ markers = [
     # default run because they are ~100x slower than the rest; run them with
     # `pytest -m browser`, or the fast suite with `pytest -m "not browser"`.
     "browser: drives a real browser via playwright (slow; needs `playwright install chromium`)",
+    # A wall-clock budget measures the machine, so it cannot share one with three other
+    # Chromiums: under `-n 4` the canvas render budget read 41 ms against a 30 ms limit
+    # while the renderer was unchanged. Run these on their own with
+    # `pytest -m "browser and serial_only"`.
+    "serial_only: asserts a wall-clock budget; meaningless under -n (run serially)",
 ]

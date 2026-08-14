@@ -771,9 +771,19 @@ def test_hover_shows_a_card_image_at_the_cursor(page):
         MM.mapRenderer.on('hover', e => { if (hoveredRow === null) hoveredRow = e.row; });
         cv.dispatchEvent(new MouseEvent('mousemove',
             {bubbles: true, clientX: rect.left + px, clientY: rect.top + py}));
-        await new Promise(r => setTimeout(r, 700));
-        const p = document.querySelector('.card-popup');
-        const img = p && p.querySelector('img');
+        // Wait for OUR OWN code to set the popup's src, not for a fixed 700 ms and
+        // not for the image to arrive. The `src` attribute is written by the hover
+        // handler after the 180 ms open delay, so it is a DOM condition we control;
+        // under `-n 4` the fixed wait expired first and read an empty string, which
+        // failed as "popup shows , but Sol Ring was hovered". Whether Scryfall then
+        // serves the bytes is deliberately not asserted anywhere.
+        let p = null, img = null;
+        for (let i = 0; i < 100; i++) {
+            p = document.querySelector('.card-popup');
+            img = p && p.querySelector('img');
+            if (p && p.style.display === 'block' && img && img.getAttribute('src')) break;
+            await new Promise(r => setTimeout(r, 50));
+        }
         const pr = p ? p.getBoundingClientRect() : null;
         return {
             visible: !!p && p.style.display === 'block',
@@ -839,10 +849,17 @@ def test_the_drill_button_reports_what_it_would_do(page, corpus_count):
     r = page.evaluate("""async () => {
         const btn = document.getElementById('drillFiltered');
         const wide = {label: btn.textContent, disabled: btn.classList.contains('is-disabled')};
+        const el = document.getElementById('status');
+        // WAIT FOR THE STATUS TO CHANGE, do not sleep and hope. Under `-n 4` the
+        // machine is running four Chromiums and a fixed 700 ms read the PREVIOUS
+        // status ("34,890 cards shown"), so the refusal assertion failed while the
+        // refusal had happened correctly — a timer measuring load, not behaviour.
+        const was = el.textContent;
         btn.click();
-        await new Promise(r => setTimeout(r, 700));
-        const refused = {active: Drill.isActive(),
-                         status: document.getElementById('status').textContent};
+        for (let i = 0; i < 60 && el.textContent === was; i++) {
+            await new Promise(r => setTimeout(r, 50));
+        }
+        const refused = {active: Drill.isActive(), status: el.textContent};
 
         // Narrow to a supertype small enough to drill.
         document.querySelectorAll('#toggles button').forEach(b => {
@@ -945,8 +962,14 @@ def test_canvas_redraws_when_the_filter_changes(canvas_page):
     """setLayers draws synchronously rather than through rAF — a filter is a discrete
     state change, and rAF does not fire in a hidden tab at all."""
     before = _ink(canvas_page)
+    was = canvas_page.evaluate("document.getElementById('status').textContent")
     canvas_page.evaluate("document.querySelectorAll('#toggles button')[0].click()")
-    canvas_page.wait_for_timeout(900)
+    # Wait for the STATUS to repaint, not for 900 ms. Under `-n 4` this read the
+    # boot status ("34,890 cards loaded — Color + Type map") and failed an
+    # assertion about the filtered count while the filter had applied correctly.
+    canvas_page.wait_for_function(
+        "was => document.getElementById('status').textContent !== was",
+        arg=was, timeout=10000)
     after = _ink(canvas_page)
     status = canvas_page.evaluate("document.getElementById('status').textContent")
     assert canvas_page.js_errors == []
@@ -976,10 +999,18 @@ def test_canvas_click_selects_the_card_under_the_pointer(canvas_page):
     assert r["name"], "selected a row with no card behind it"
 
 
+@pytest.mark.serial_only
 def test_canvas_render_beats_the_plotly_budget(canvas_page):
     """Plotly's render measured ~30 ms on this data. The canvas path must not be slower —
     the quadtree is cached across renders because rebuilding it is 23.5 ms and setLayers
-    runs on every filter and keystroke."""
+    runs on every filter and keystroke.
+
+    **`serial_only`: a wall-clock budget cannot be asserted under contention.** With
+    `-n 4` this machine is running four Chromiums and the median render measured
+    41 ms — the renderer was not slower, the CPU was busier. Deselected by the
+    `-m browser` default so the parallel run stays meaningful; run
+    `pytest -m "browser and serial_only"` to check the budget itself.
+    """
     ms = canvas_page.evaluate("""() => {
         const t = [];
         for (let i = 0; i < 9; i++) { const a = performance.now(); MM.render(); t.push(performance.now() - a); }
@@ -1065,7 +1096,34 @@ def test_canvas_draws_density_contours(canvas_page):
             MM.mapRenderer.setCamera({x: [d.x - 6, d.x + 6], y: [d.y - 3.6, d.y + 3.6]});
         }"""
     )
-    canvas_page.wait_for_timeout(1200)
+    # VERIFY THE CAMERA TOOK, and set it again if a late render refit it.
+    #
+    # The fixture waits for `getCamera()` to answer, which means `baseFit` exists —
+    # necessary but not sufficient. Selecting the map kicks off a render that ends in
+    # a fit, and under `-n 4` that render can land AFTER the camera move above,
+    # resetting it. The test then measured the fitted view, where the halo covers a
+    # third of the canvas, and read 38.7 ink instead of 3.8.
+    #
+    # This is a bounded retry with a settle between attempts, which is NOT the thing
+    # that failed earlier: putting `setCamera` inside a `wait_for_function` predicate
+    # re-applied the zoom every animation frame and left the camera pinned at the fit.
+    for _ in range(10):
+        canvas_page.wait_for_timeout(400)
+        span = canvas_page.evaluate(
+            "() => { const c = MM.mapRenderer.getCamera();"
+            "        return c ? Math.abs(c.x[1] - c.x[0]) : 1e9; }")
+        if span < 20:
+            break
+        canvas_page.evaluate(
+            """() => {
+                const d = MM.allData[100];
+                MM.mapRenderer.setCamera({x: [d.x - 6, d.x + 6], y: [d.y - 3.6, d.y + 3.6]});
+            }""")
+    else:
+        pytest.fail(f"the camera never stayed zoomed in (span {span:.1f}) — "
+                    f"a render keeps refitting it")
+
+    canvas_page.wait_for_timeout(800)
     before = _ink(canvas_page)
     canvas_page.evaluate("document.getElementById('toggleContours').click()")
     canvas_page.wait_for_timeout(1800)
@@ -2694,7 +2752,17 @@ def test_clicking_a_cluster_label_zooms_and_filters(page):
         const before = {span: span(), points: points()};
         const label = document.querySelector('.map-label');
         label.click();
-        await new Promise(r => setTimeout(r, 2500));
+        // Wait for the FOCUS and for the camera transition to settle, rather than
+        // for 2500 ms — under `-n 4` that expired mid-transition and the span
+        // assertion failed on a camera still on its way in.
+        for (let i = 0; i < 80 && !MM.regionFocus; i++) {
+            await new Promise(r => setTimeout(r, 50));
+        }
+        let last = -1;
+        for (let i = 0; i < 80 && Math.abs(span() - last) > 0.01; i++) {
+            last = span();
+            await new Promise(r => setTimeout(r, 50));
+        }
 
         const members = MM.regionFocus ? MM.regionFocus.rows.size : 0;
         // Picking must still work: same points, same coordinates, closer camera.
@@ -2708,7 +2776,14 @@ def test_clicking_a_cluster_label_zooms_and_filters(page):
                        drilling: typeof Drill !== 'undefined' && Drill.isActive()};
 
         document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', bubbles: true}));
-        await new Promise(r => setTimeout(r, 1500));
+        for (let i = 0; i < 60 && MM.regionFocus; i++) {
+            await new Promise(r => setTimeout(r, 50));
+        }
+        last = -1;
+        for (let i = 0; i < 60 && Math.abs(span() - last) > 0.01; i++) {
+            last = span();
+            await new Promise(r => setTimeout(r, 50));
+        }
         return {before: before, after: after,
                 escaped: {span: span(), points: points(), focused: !!MM.regionFocus}};
     }""")

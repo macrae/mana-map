@@ -4,7 +4,8 @@
 .venv/bin/python -m pytest                            # everything, ~10 min
 .venv/bin/python -m pytest -m "not browser"           # fast suite, ~58 s
 .venv/bin/python -m pytest -m "not browser" -n auto   # same, ~32 s (pytest-xdist)
-.venv/bin/python -m pytest -m browser                 # playwright, ~9 min
+.venv/bin/python -m pytest -m "browser and not serial_only" -n 4   # playwright, ~4 min
+.venv/bin/python -m pytest -m browser                 # same, serially, ~10 min
 ```
 
 **This file is the only place that states test counts.** They move on almost every commit,
@@ -220,6 +221,40 @@ healthy runs give 0.204 / 0.255 / 0.422 / 0.439, and with the resting ink disabl
 between them. Deliberately noted in the test: that simulated bug is only PARTIAL, since the
 resting state also halves the stroke weight, so a real regression in both would sit near
 1.0. A threshold chosen only from passing runs tells you nothing about what it catches.
+
+## The browser suite runs in parallel, and getting there found five latent flakes
+
+**`pytest -m "browser and not serial_only" -n 4` is 232 s against ~600 s serial** — 2.6x,
+and it works with no fixture surgery because `viz_server` already picks a free port per
+session and `browser` is session-scoped, so xdist hands each worker its own of both.
+
+The interesting part is what parallelism *exposed*. Five tests failed under load and every
+one was a fixed `wait_for_timeout` measuring the machine rather than the behaviour — the
+mistake this file has now documented four separate times:
+
+| test | read | should have been |
+|---|---|---|
+| `test_the_drill_button_reports_what_it_would_do` | the previous status string | wait for the status to change |
+| `test_canvas_redraws_when_the_filter_changes` | the boot status | wait for the status to change |
+| `test_clicking_a_cluster_label_zooms_and_filters` | a camera mid-transition | poll until the span settles |
+| `test_hover_shows_a_card_image_at_the_cursor` | an empty `src` | wait for the attribute our own code writes |
+| `test_canvas_draws_density_contours` | the fitted view, again | verify the camera took; re-set if a late render refit it |
+
+The last one is worth reading twice. The `canvas_page` fix — waiting for `getCamera()` to
+answer, so `baseFit` exists — is **necessary but not sufficient**: selecting the map starts
+a render that ends in a fit, and under `-n 4` that render can land *after* the test's camera
+move and silently undo it. The fix is a bounded retry with a settle between attempts, which
+is NOT the thing that failed before: putting `setCamera` inside a `wait_for_function`
+predicate re-applies the zoom every animation frame and pins the camera at the fit.
+
+**One test is marked `serial_only` and deselected from the parallel run.**
+`test_canvas_render_beats_the_plotly_budget` asserts a 30 ms wall-clock budget; sharing a
+machine with three other Chromiums it measured 41 ms while the renderer was unchanged. A
+performance assertion under contention measures the contention. Run it with
+`pytest -m "browser and serial_only"`.
+
+Serial still passes — the fixes are condition waits, so they are strictly more robust on an
+idle machine too, and none of them depends on being run in parallel.
 
 ## Inventories drift silently, so generate the comparison
 
