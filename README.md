@@ -50,11 +50,16 @@ python3 -m http.server 8000
 
 Open <http://localhost:8000/viz/index.html>.
 
+*Contributing? [CONTRIBUTING.md](CONTRIBUTING.md) is two commands and a list of landmines.
+[docs/README.md](docs/README.md) sorts the documentation into current reference and
+historical design records, which saves reading 12,000 lines of the latter by accident.*
+
 Three things to know:
 
 - **Serve from the repo root.** The page fetches `../data/*`, so `viz/` and `data/` must
   stay top-level siblings. Opening `viz/index.html` as a `file://` URL fails on CORS.
-- The clone carries ~125 MB of tracked data, but **discovery boots on 1.8 MB** — a slim
+- The clone carries **149 MB of tracked data** (and `git clone` transfers rather more
+  than that), but **discovery boots on 1.8 MB** — a slim
   card index plus a precomputed neighbour table. The heavy artifacts load only if you ask
   for what needs them: the 2.9 MB projection when you open the atlas, the 16.8 MB embedding
   matrix never on the discovery path at all. That the *clone* is large is deliberate — see
@@ -110,7 +115,7 @@ source build of LLVM.
 .venv/bin/manamap pilot build-strategy-db   # the strategy companion's RAG index
 ```
 
-Both are gitignored and must be built locally. `CR_RULES_URL` in `config.py` is pinned to
+All three outputs are gitignored and must be built locally. `CR_RULES_URL` in `config.py` is pinned to
 a specific rules release — update it when Wizards ships a new one.
 
 ### 3. Your deck
@@ -456,9 +461,16 @@ cache-busters stripped.
 ## Testing
 
 ```bash
-.venv/bin/python -m pytest                     # everything
-.venv/bin/python -m pytest -m "not browser"    # skip the playwright suite
+make test          # the inner loop: non-browser, parallel, cached   ~22 s
+make test-fresh    # same, nothing served from the cache             ~29 s
+make test-browser  # the playwright suite                            ~4 min
 ```
+
+A bare `pytest` is `make test`. Four test files recompute an artifact and compare it to
+the tracked copy — 90,000 seeded goldfish simulations among them — so those are cached on
+a hash of their inputs *and* of the code that produces them, recorded only on a pass, and
+kept in gitignored `.pytest_cache/` where they cannot reach another machine or CI. The run
+prints how many it skipped. `make test-fresh` is the one to trust before a PR.
 
 Counts and the per-file inventory live in `docs/testing.md` — they move on almost every
 commit, so restating them here would be one more thing to drift. Five skip markers in `tests/conftest.py` gate on the last
@@ -471,7 +483,7 @@ suite is CWD-independent and honours `MANAMAP_DATA_DIR`.
 - **`python -m manamap.pipeline` starts the full 40–60 minute run** with no arguments and
   no confirmation, overwriting trained models. Use the `manamap` CLI.
 - **Never put `data/` on Git LFS.** GitHub Pages serves LFS pointer files, not content —
-  it would silently break every fetch on the deployed site. The ~123 MB of tracked JSON
+  it would silently break every fetch on the deployed site. The 149 MB of tracked data
   is deliberate.
 - **Index alignment**: `projection[i]` ≡ `cards.csv[i]` ≡ `embeddings[i]`, positionally
   (card names duplicate). Never partially regenerate after a card-count change.
@@ -513,8 +525,14 @@ GitHub Pages serves the repo directly. There is no root index; the two entry poi
 
 ## Non-goals
 
-Lint, formatting and CI are intentionally absent — this is a single-author project and the
-test suite is the gate. Revisit if that changes.
+**Lint and formatting** are intentionally absent. Match the surrounding style; the test
+suite is the gate. Adding a formatter to 20,000 lines would produce one enormous diff and
+no information.
+
+CI *was* on this list, on the grounds that a single-author project does not need it. It is
+here now — `.github/workflows/test.yml` runs the fast suite and checks that every manual
+still rebuilds byte-identically — because a pull request from someone else arrives
+unverified otherwise.
 
 ---
 

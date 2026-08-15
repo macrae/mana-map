@@ -1,0 +1,59 @@
+# NOTICE
+
+The MIT licence in `LICENSE` covers the code in this repository. It does not
+cover the Magic: The Gathering content the repository carries, generates or
+links to. That content belongs to other people, and this file says who.
+
+## Wizards of the Coast
+
+Magic: The Gathering, all card names, card text, mana symbols, set symbols and
+the Comprehensive Rules are property of **Wizards of the Coast LLC**. This
+project is unofficial Fan Content permitted under the Wizards of the Coast Fan
+Content Policy. It is **not approved or endorsed by Wizards**. Portions of the
+materials used are property of Wizards of the Coast. © Wizards of the Coast LLC.
+
+Two places this matters concretely:
+
+- **The Comprehensive Rules.** `manamap pilot download-rules` fetches the CR
+  text from `magic.wizards.com` at build time. It is **not redistributed here** —
+  `data/rules/` is gitignored, and every clone downloads its own copy. The
+  magazine quotes rules verbatim under a citation contract that names the rule
+  number and the effective date, which is quotation for the purpose of
+  explanation, not republication of the document.
+- **Card text.** Oracle text reaches this repository through Scryfall (below)
+  and appears in the embeddings, the map and the published manuals.
+
+## Scryfall
+
+Card data comes from the **Scryfall** bulk data API (`api.scryfall.com`). Card
+images in `viz/` and in `manuals/*.html` are **hot-linked** to
+`cards.scryfall.io` and are not copied into this repository.
+
+Scryfall's own contributions to that data (rulings aggregation, printing
+metadata, the API itself) are made available by Scryfall; the card names, text
+and images within it remain the property of Wizards of the Coast. Scryfall asks
+that projects using its data credit it and not imply endorsement. This project
+does both: it is not affiliated with or endorsed by Scryfall.
+
+## Commander Spellbook
+
+Combo data (`data/combo_details.json`, `data/combo_graph.json`) is derived from
+the **Commander Spellbook** API. Not affiliated with or endorsed by them.
+
+## Third-party code
+
+The frontend loads **d3** v7 from a CDN (BSD-3-Clause). Python dependencies are
+declared in `pyproject.toml` and carry their own licences; none is vendored
+here.
+
+## Fonts
+
+`manuals/` and `viz/deck.html` reference Google Fonts by URL. No font files are
+redistributed in this repository.
+
+## What is safe to reuse under MIT
+
+Everything under `src/`, `tests/`, `viz/js/`, and the prose in `docs/`,
+`STYLEv3.md` and `README.md`. The generated artifacts under `data/` and the
+published issues under `manuals/` are derived works of the card data above and
+carry its constraints, not this licence's permissions.

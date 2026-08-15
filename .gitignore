@@ -26,6 +26,11 @@ __pycache__/
 .claude/settings.local.json
 !data/decks/
 !data/strategy/
+# A physical card collection (`COLLECTION_DIR`), read by `deck-history` to tell a
+# proposed swap you already own from one you would have to buy. Tracked so a
+# clone has a worked example; override with MANAMAP_COLLECTION_DIR to use yours
+# rather than inheriting someone else's boxes.
+!data/collection/
 # The similarity golden set is hand-authored, not generated — losing it means losing
 # the only measurement that can tell a good embedding from a collapsed one.
 !data/eval/

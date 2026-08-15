@@ -1,0 +1,25 @@
+# Generated artifacts, marked so GitHub stops presenting this as a JSON repo and
+# stops rendering their diffs. 134 MB of `data/` is machine-written and reviewing
+# a one-line change to it is neither possible nor useful — but it is TRACKED on
+# purpose (Pages serves LFS pointers, so `data/` may never go to LFS), which is
+# why it needs marking rather than ignoring.
+data/**            linguist-generated=true
+manuals/*.html     linguist-generated=true
+manuals/*.css      linguist-generated=true
+
+# The two embedding matrices and the neighbour table are the only real binaries.
+*.bin              binary
+*.npy              binary
+*.gz               binary
+
+# `linguist-vendored` on the frontend's one vendored asset would go here — there
+# is none: d3 loads from a CDN and nothing is vendored into `viz/`.
+
+# Normalise line endings so a Windows contributor cannot silently rewrite a file.
+# Manuals and data are excluded: they must round-trip BYTE-IDENTICALLY through a
+# deterministic renderer, and a checkout-time translation would break that test
+# on one platform and not another.
+* text=auto
+data/**            -text
+manuals/*.html     -text
+*.bin              -text

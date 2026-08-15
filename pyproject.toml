@@ -6,7 +6,12 @@ build-backend = "setuptools.build_meta"
 name = "manamap"
 version = "0.1.0"
 description = "MTG card embedding pipeline and interactive map visualization"
-requires-python = ">=3.10"
+# 3.10 EXACTLY, and the upper bound is not caution. PyTorch publishes no wheels
+# for 3.13+, and `sentence-transformers<4` / `numpy<2` are pinned against torch
+# 2.2.2. This said `>=3.10` for a long time while the README carried a paragraph
+# explaining that the manifest was lying — which helps nobody on 3.12, who gets
+# an unresolvable dependency graph and no hint why. Say it here, where pip reads.
+requires-python = ">=3.10,<3.11"
 dependencies = [
     "requests",
     "pandas",

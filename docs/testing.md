@@ -1,12 +1,23 @@
 # Testing
 
 ```bash
-.venv/bin/python -m pytest                            # everything, ~10 min
-.venv/bin/python -m pytest -m "not browser"           # fast suite, ~58 s
-.venv/bin/python -m pytest -m "not browser" -n auto   # same, ~32 s (pytest-xdist)
-.venv/bin/python -m pytest -m "browser and not serial_only" -n 4   # playwright, ~4 min
-.venv/bin/python -m pytest -m browser                 # same, serially, ~10 min
+make test            # THE DEFAULT: non-browser, -n auto, cached      ~22 s
+make test-fresh      # same, nothing served from the cache            ~29 s
+make test-browser    # playwright, -n 4, plus the one serial_only test ~4 min
+make test-all        # test-fresh + test-browser
+pytest -n0 -k NAME   # a single test; worker startup outweighs the split
+pytest -m ""         # literally everything, browser included         ~10 min
+pytest --lf          # only what failed last time
 ```
+
+**A bare `pytest` is `make test`** — `addopts` carries `-m 'not browser' -n auto`.
+It used to be all 1,624 cases including the browser suite, because "browser is
+excluded by default" was written in a comment and in no config anyone ran.
+
+Three of those numbers were wrong in three different files before 2026-08-15
+(~19 s, ~32 s and ~58 s for the same command). They are measured on an idle
+8-core machine and they will drift again; the point of stating them here and
+nowhere else is that there is one place to correct.
 
 **This file is the only place that states test counts.** They move on almost every commit,
 so restating them in `README.md` or `CLAUDE.md` guarantees drift; those files point here

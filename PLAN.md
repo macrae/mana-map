@@ -417,7 +417,7 @@ plus artifact reads; the agent loop stays in Claude Code, reached by an exported
 local bridge, because a bridge means the deployed site and your machine run different code
 and only one of them is the one you test.
 
-The costing behind it: the deterministic layer is 45 subcommands answering in 0.2–2.2s with
+The costing behind it: the deterministic layer is 47 subcommands answering in 0.2–2.2s with
 JSON out and zero LLM calls. What genuinely needs an agent is artifact-shaped and expensive —
 the cheapest routine is `coach-prose` at ~54.5k tokens, `candidate-pool` is ~235k.
 

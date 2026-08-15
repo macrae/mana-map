@@ -65,6 +65,9 @@ tests/                # pytest suite; counts in docs/testing.md. Markers in
                       # conftest.py: requires_data/rules/deck/strategy/roles;
                       # `-m browser` needs playwright + chromium
 data/                 # artifacts; mostly gitignored, viz-served files tracked
+  collection/         # a PHYSICAL card collection (COLLECTION_DIR); the only
+                      #   ownership question left, and it is about cardboard.
+                      #   MANAMAP_COLLECTION_DIR overrides it
 viz/                  # static frontend: index.html + deck.html (the dossier).
                       # THREE modes: discover (the FRONT DOOR — one random card, click a
                       # relation, grow a graph) / explore (the 34K atlas, live-lit with
@@ -80,7 +83,7 @@ viz/                  # static frontend: index.html + deck.html (the dossier).
                       #                    is gone. Drifts at altitude (see below)
                       #   deck-view.js  the dossier + the interactive constellation
                       # d3 from CDN, IIFE, window.MM — see docs/viz.md
-docs/                 # reference docs (see Pointers below)
+docs/                 # reference docs; docs/README.md indexes and sorts them
 ```
 
 ## Environment
@@ -104,10 +107,11 @@ manamap synergy && manamap power-creep && manamap cluster-regions && manamap car
                               # fast analysis-only refresh (no retrain)
 manamap pilot <cmd>           # build/publish/diagnose subsystem (47 pilot subcommands)
 
-.venv/bin/python -m pytest    # everything; data-dependent tests skip if artifacts missing
-.venv/bin/python -m pytest -m "not browser"   # skips the playwright suite
-.venv/bin/python -m pytest -m "not browser" -n auto   # same, ~32s (pytest-xdist)
-.venv/bin/python -m pytest -m "browser and not serial_only" -n 4   # the viz suite, ~4 min (was ~10)
+make test                     # THE INNER LOOP — non-browser, -n auto, cached. ~22s
+make test-fresh               # same with nothing cached; trust this one. ~29s
+make test-browser             # the playwright suite, ~4 min
+.venv/bin/pytest -n0 -k NAME  # one test, no worker startup
+.venv/bin/pytest -m ""        # literally everything, ~10 min
 
 python -m http.server 8000    # serve viz FROM REPO ROOT
 # http://localhost:8000/viz/index.html          the card map

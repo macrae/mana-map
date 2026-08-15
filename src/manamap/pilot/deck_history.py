@@ -25,12 +25,12 @@ second hand-kept file that would disagree with this one.
 import json
 import subprocess
 
-from manamap.config import DECKS_DIR
+from manamap.config import COLLECTION_DIR, DECKS_DIR
 from manamap.pilot.common import deck_dir, expand_faces, resolve_out_path
 
-# `share/` and the git root are siblings of `data/`, not of `data/decks/`.
-# Named once because `DECKS_DIR.parent.parent` read as an accident at both
-# call sites, and a wrong number of `.parent`s fails silently as "no history".
+# The git root is a sibling of `data/`, not of `data/decks/`. Named once because
+# `DECKS_DIR.parent.parent` read as an accident at both call sites, and a wrong
+# number of `.parent`s fails silently as "no history".
 _REPO_ROOT = DECKS_DIR.parent.parent
 
 
@@ -106,16 +106,19 @@ def history(slug):
 
 
 def _owned_index():
-    """Every card in share/*.txt -> the files holding it, front faces included.
+    """Every card in `COLLECTION_DIR/*.txt` -> the files holding it, faces included.
 
-    The pilot's box, read the same way `pool-facts` reads a collection.
+    A physical box, read the same way `pool-facts` reads a collection. The
+    directory is configurable (`MANAMAP_COLLECTION_DIR`) and an absent one is not
+    an error — it was a hardcoded top-level `share/`, which meant every clone of
+    this repo answered "do you own this?" from one person's boxes.
     """
     from manamap.pilot.fetch_deck import parse_decklist
-    share = _REPO_ROOT / "share"
+    collection = COLLECTION_DIR
     index = {}
-    if not share.is_dir():
+    if not collection.is_dir():
         return index
-    for path in sorted(share.glob("*.txt")):
+    for path in sorted(collection.glob("*.txt")):
         try:
             entries = parse_decklist(path.read_text())
         except (OSError, ValueError):
@@ -137,11 +140,11 @@ def pending(slug):
     Ownership is DERIVED when the artifact does not carry it. `acquisition` is
     optional and one regeneration dropped it from a deck that previously had it,
     which made every pending swap read as "buy". An absent field is not evidence
-    that a card is unowned, so `share/` is checked before anything is called a
-    purchase.
+    that a card is unowned, so `COLLECTION_DIR` is checked before anything is
+    called a purchase.
 
     Note this is the ONLY ownership question left in the repo, and it is about a
-    physical collection (`share/*.txt`), not about a deck. The Short List itself
+    physical collection, not about a deck. The Short List itself
     is ownership-free by design: it names ten cards worth knowing about, and
     whether one is already in a box is not what the list is for.
     """

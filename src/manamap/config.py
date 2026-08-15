@@ -694,6 +694,19 @@ RULES_QUERY_TOP_K = 8
 # ── Pilot: Decks & Manuals ───────────────────────────────────────────────
 DECKS_DIR = DATA_DIR / "decks"
 MANUALS_DIR = _REPO_ROOT / "manuals"
+
+# A PHYSICAL card collection: `*.txt` decklists of what someone actually owns.
+# `deck_history.pending()` reads it to decide whether a proposed swap reads as
+# "buy" or "own", and that is the only ownership question left in the repo.
+#
+# Overridable, and that matters more than it looks. These files lived in a
+# top-level `share/` with no config entry, absent from the layout diagram and
+# documented in one buried sentence — so every clone of this repo silently
+# answered "do you own this card?" from ONE person's boxes. Point
+# `MANAMAP_COLLECTION_DIR` at your own, or leave it and get the worked example.
+# An absent directory is not an error: no collection means no ownership claim.
+COLLECTION_DIR = Path(os.environ.get("MANAMAP_COLLECTION_DIR",
+                                     DATA_DIR / "collection"))
 SCRYFALL_COLLECTION_URL = "https://api.scryfall.com/cards/collection"
 SCRYFALL_BATCH_SIZE = 75
 SCRYFALL_REQUEST_DELAY_S = 0.1

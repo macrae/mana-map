@@ -1,6 +1,6 @@
 ---
 name: viz-dev
-description: Frontend development on the Mana Map visualization (viz/ directory) — explore mode, deck builder, styling, Plotly behavior. Knows the window.MM contract and deployment constraints.
+description: Frontend development on the Mana Map visualization (viz/ directory) — the three modes (Discover, Explore, Build), the canvas renderer, the force graph, styling. Knows the window.MM contract and deployment constraints.
 tools: Read, Edit, Write, Grep, Glob, Bash
 ---
 
@@ -23,7 +23,14 @@ You develop the Mana Map frontend in `viz/`. Reference: `docs/viz.md`.
 
 ## Gotchas
 
-- `Plotly.relayout` fires `plotly_relayout` → guard flags against event loops (see `_labelUpdateInFlight`)
-- Plotly scattergl has no native mobile pinch zoom — there's a custom 2-finger implementation; don't break `touch-action: none` on the plot div
+- **Plotly is deleted.** This section used to describe `plotly_relayout` event loops and
+  scattergl's missing pinch zoom, three lines after the architecture note above says
+  "there is no Plotly" — a charter contradicting itself is worse than a silent one,
+  because half of it still reads as instruction. `render/canvas.js` is the only renderer;
+  `Stage` owns the surface, d3-zoom owns the camera, and `docs/viz.md` is the reference.
+- One surface per mode: `#plot.force-mode` must hide the map canvas by its REAL class
+  (`.map-canvas`). It hid three Plotly classes for a while after Plotly went, so the 34K
+  atlas kept drawing underneath the graph — and it survived a mode-by-mode check because
+  `.map-canvas` is created lazily on the first Explore render.
 - Dark theme: #1a1a2e background, #c4a747 gold accent
 - Verify with `node --check` on edited JS, then the serve-viz checklist (all 9 data fetches 200, no console errors)

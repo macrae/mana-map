@@ -176,7 +176,7 @@ def add_pilot_parser(subparsers):
             # Takes paths, not a slug: a collection is not a deck, and forcing it
             # into data/decks/<slug>/ would put it in reach of validate-deck.
             cmd.add_argument("targets", nargs="+",
-                             help="Decklist files or directories of them (e.g. share/)")
+                             help="Decklist files or directories of them (e.g. data/collection/)")
             cmd.add_argument("--exclude", action="append", default=[],
                              help="A file to leave out (repeatable) — e.g. a deck "
                                   "you are keeping assembled")
