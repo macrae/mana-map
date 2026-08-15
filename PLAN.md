@@ -34,7 +34,9 @@ written brief, and the issue now opens on two pictures of the deck: its **conste
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
 Scale: 47 `manamap pilot` subcommands, 18 top-level subcommands, 18 agents, 19 skills,
-13 cache-gated routines, 20 magazine sections (6 of them optional while two migrations are mid-flight). Test counts live in `docs/testing.md`.
+13 cache-gated routines, and the magazine's department list as `issue_spec.DEPARTMENTS`
+gives it — **`OPTIONAL_DEPARTMENTS` is empty**, both migrations having landed on all nine
+decks. Test counts live in `docs/testing.md`.
 
 ## Start here on any deck
 
@@ -67,20 +69,20 @@ Run `deck-status` per deck for the live picture. As of this writing:
 
 | Deck | Vol | Stacks | Bracket | Map | Engine | Front of book |
 |---|---|---|---|---|---|---|
-| `goblin-storm` | 001 | 5/5 | 4 | named | — | — |
-| `hapatra` | 002 | 1/1 | 4 | named | — | — |
-| `sisay` | 003 | 1/3 | 4 | named | — | — |
-| `heliod` | 004 | 6/6 | 4 | named | — | — |
-| `ur-dragon` | 005 | 6/6 | 4 | named | — | — |
-| `edgar-vampires` | 006 | 7/9 | 4 | named | — | — |
-| `gishath` | 007 | 5/5 | 4 | named | — | — |
-| `yawgmoth-swarm` | 008 | 11/14 | 4 | named | — | — |
-| `radagast` | 009 | 7/7 | 3 | named | **yes, `pass`** | **yes** |
+| `goblin-storm` | 001 | 5/5 | 4 | named | `pass` | yes |
+| `hapatra` | 002 | 1/1 | 4 | named | `pass` | yes |
+| `sisay` | 003 | 1/3 | 4 | named | `pass` | yes |
+| `heliod` | 004 | 6/6 | 4 | named | `pass` | yes |
+| `ur-dragon` | 005 | 6/6 | 4 | named | `pass` | yes |
+| `edgar-vampires` | 006 | 7/9 | 4 | named | `pass` | yes |
+| `gishath` | 007 | 5/5 | 4 | named | `pass` | yes |
+| `yawgmoth-swarm` | 008 | 11/14 | 4 | named | `pass` | yes |
+| `radagast` | 009 | 7/7 | 3 | named | `pass` | yes |
 
 *Stacks* is checker-passed / total; a failed artifact is kept as an open question and never
-publishes. **Every deck now carries a bracket target and a named constellation.** Only
-radagast has an engine model and the front-of-book departments — that is the current
-frontier, not an oversight, and §2 is the rollout.
+publishes. **The fleet is at parity**: every deck carries a bracket target, a named
+constellation, a critic-passed engine model, an Editor's Letter, a Pilot's Log opening on a
+hot take, and the same seventeen departments in the same order.
 
 ## What shipped in the 2026-08-13 cycle
 
@@ -123,7 +125,7 @@ grouped by its cities.
 |---|---|
 | Engine loop closed | critic `pass`, `deck-status radagast` **17/17** |
 | Fourth persona | Margot Stet — no tier, no glyph, and `badge()` still raises |
-| Two departments | radagast 19, the other eight 17, all nine validate |
+| Two departments | all nine carry them; seventeen departments each, `--strict` clean |
 | Voice separation | fleet-wide **0**; the blind-attribution test passes |
 
 **What it cost to learn, in one line each** — the detail is in CLAUDE.md:
@@ -137,46 +139,89 @@ grouped by its cities.
 - The dashed line reaches the prose: the panel may discuss an unverified line, never
   assert it.
 
-### 2. Roll the v4 shape to the other eight decks · **next**
+### 2. The v4 shape is on all nine decks — DONE
 
-Radagast proves every loop; the rest is repetition, in this order per deck:
-`analyze-engine` (engineer ⇄ critic, the expensive one) → opt the two departments into the
-plan → `pilot-panel` → `merge-prose` → `validate-issue` → `build-manual`. `deck-status`
-says what each deck still needs; `/publish-deck` sequences it.
+Every deck now carries the identical seventeen departments in canonical order, and
+`validate-issue <slug> --strict` exits 0 on all nine. Per deck: `analyze-engine`
+(engineer ⇄ critic) → `pilot-panel` → `merge-prose` → a `magazine-editor` re-plan that
+opts in the two front-of-book departments, merges Act III and turns on the constellation,
+the schematic and the not-modelled rail → `build-manual`.
 
-Budget honestly: `deck-engine` is the most expensive routine in the repo (~120k per
-engineer pass, ~140k per critic; radagast took four spawns over three iterations plus two
-scoped partial revisions), and `panel-prose` is ~134k. **Pay §9's remaining test debt
-first** — it is small and it guards exactly what eight repetitions would stress.
+Every engine passed its critic. Round 1 failed on all nine, which is the loop working:
+the critic caught hapatra's central exchange rate stated the wrong way round, sisay citing
+the meld rule for an MDFC, edgar mis-describing Mondrak, and the refutation defect
+reappearing on radagast. Several engineers rebutted correctly rather than weakening —
+edgar's ten-becomes-nine DFC trap, gishath's Courtyard defence, heliod's fodder argument —
+which is what the charter asks for and the reason the rebuttal instruction is in it.
 
-### 3. The Coach-department merge — DONE on radagast, queued for the other eight
+**Nine hot takes, nine different openings.** Eight decks wrote one and five opened *"Here
+is the thing…"* — a formula I introduced by shipping radagast first. The rule is in the
+`pilot-panel` charter and
+`tests/test_pilot_voice_lint.py::test_no_two_decks_open_their_hot_take_the_same_way`
+enforces it across the fleet, because a formula is invisible in one issue and obvious by
+the second.
 
-`politics-table` + `know-your-enemy` + `fetch-quests` → one **At the Table**, live on
-radagast. The four ids are all in `OPTIONAL_DEPARTMENTS` — a **two-way** migration, since
-neither the originals nor their replacement may be required while both shapes exist. Each
-of the other eight moves when it is next re-planned, and the three originals get deleted
-from the spec when the last one does.
+### 3. The Coach-department merge — DONE, and the ids are DELETED
 
-**It did not shorten the issue, and the measurement is the point.** Words went 22,713 →
-22,618 and rendered height went 65,977px → 66,278px — the two dropped openers bought about
-800px and the taller constellation spent it back. What the merge actually fixed is
-editorial: the reader met the same byline, colour and page furniture three times before the
-argument had moved once. It is one destination now, and it reads as one argument that turns
-twice.
+`politics-table` + `know-your-enemy` + `fetch-quests` → one **At the Table**, on all nine.
+The three originals are gone from `DEPARTMENTS`, `ACTS`, `INTENSITY`, `MODE`, `ACCENT`,
+`PROSE_KEY_DEPARTMENT`, the renderer and the dispatch, and **`OPTIONAL_DEPARTMENTS` is
+empty** for the first time since it was added. `test_the_optional_set_is_empty_until_
+something_is_being_piloted` now fails while it has members, which is the reminder to
+finish a migration rather than let a transitional id outlive it.
 
-If length is still the complaint, this is where it lives, measured at 1280px:
+Two things the emptying broke quietly, both now covered: `PROSE_KEY_DEPARTMENT` still
+pointed `threat_assessment` and `matchups` at deleted ids, which makes `voices_for` return
+nothing and the voice lint **pass by finding nothing**; and three renderer tests that
+iterated `OPTIONAL_DEPARTMENTS` became vacuous, so they inject a synthetic member instead.
 
-| section | px | words |
-|---|---:|---:|
-| The Kill | 10,651 | 3,228 |
-| At the Table | 9,150 | 4,487 |
-| The 99 | 7,930 | 3,268 |
-| What's Your Play? | 6,308 | 3,393 |
-| *(the other twelve, together)* | 27,786 | 8,006 |
+**The merge did not shorten the issue, and that measurement still stands.** What it fixed
+is editorial: the reader met the same byline, colour and furniture three times before the
+argument had moved once.
 
-Four sections are 55% of the issue. No further department merge reaches that — the next
-cut is inside those four, and it is a cut to CONTENT, which is an editorial call and not a
-renderer change.
+### 3a. Length: the budget bought back the additions, and no more
+
+Measured with `manamap pilot issue-length <slug> --rendered`, against a 40-screen target:
+
+| deck | screens | words | visible |
+|---|---:|---:|---:|
+| hapatra | 63.2 | 26,855 | 23,375 |
+| radagast | 71.3 | 39,291 | 30,351 |
+| **yawgmoth-swarm** | **96.5** | **104,068** | **70,445** |
+
+Radagast went **74.5 → 71.3** screens while *gaining* two departments (6.8 screens), the
+constellation and the schematic. The Kill fell 17.6 → 14.6 and Judge's Desk collapsed to
+1.1 — so the cuts were worth about ten screens and the additions spent seven of them.
+
+**The target is not met and the remaining overage is content, not packaging.** On radagast
+four departments are 57% of the scroll: the-kill 14.6, at-the-table 9.7, the-99 9.4,
+whats-your-play 6.7. Each is the thing itself — seven stack theatres, three arguments plus
+five threat boxes, seventy card tiles, ten branch cards.
+
+**Yawgmoth-swarm is the outlier and the reason is structural.** Its Kill is **44,119 words
+in one department**, 42% of the issue, because it has **eleven** checker-passed stacks
+against radagast's seven and its loops run 11–14 steps each (153 total steps against 51).
+The Kill renders every passing stack as a full theatre. The lever nobody has pulled: feature
+the stacks the plan actually names and give the rest an index row into Judge's Desk, which
+already holds the complete record. That is the Part 2 principle — reference material at
+reference weight — applied to a case the length plan did not anticipate. It is an editorial
+policy change touching all nine issues, so it is queued rather than done.
+
+### 3b. Two deliberate reds, and one charter left stale on purpose
+
+`cache-status` is green fleet-wide except two entries on radagast, and **neither will be
+recorded**: `issue-plan`, because its plan was hand-edited after the spec moved rather than
+re-spawned, and `panel-prose`, because the `pilot-panel` charter gained the no-formula rule
+*after* radagast's panel was recorded and a charter edit disqualifies a re-bless by
+construction. The other eight were spawned fresh minutes before recording, which is a real
+record and not a bless.
+
+`.claude/agents/pilot-coach.md` still calls the tutor guide "the Fetch Quests section". It
+is one stale name in a charter that also orders the agent to read `issue_spec` for the
+department list, so the spec corrects it on contact — and fixing it would MISS `coach-prose`
+on all nine decks for a rename with no behavioural effect. That is precisely the cost this
+repo already recorded paying once for "a purely operational note". Fold it in the next time
+`coach-prose` misses for a real reason.
 
 ### 4. Verification backlog
 

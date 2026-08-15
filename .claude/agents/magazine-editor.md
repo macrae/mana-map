@@ -166,10 +166,9 @@ ONE Coach section and Act IV *Show Your Work* is three consecutive Ledger ones â
 both acts are single-voice on purpose, so the reader is never whipsawed between
 registers.
 
-**Act III: plan `at-the-table` and never `politics-table`, `know-your-enemy` or
-`fetch-quests`.** Those three merged into it; they survive in the spec only so the
-issues already built against them stay valid, and planning one for a new issue
-resurrects a shape the magazine retired. The merged entry takes the usual
+**Act III is `at-the-table` and nothing else.** The three Coach departments it
+replaced are DELETED from the spec, so planning one is a validation error rather
+than a style mistake. The merged entry takes the usual
 kicker/headline/dek for the act's lead argument, plus `threats` and a `subheads`
 object:
 
@@ -181,8 +180,8 @@ object:
 ```
 
 Both sub-headlines are WRITTEN â€” they are the two turns the act's argument takes,
-not labels. Omit `subheads` and the renderer falls back to the old section names,
-which is the migration path and not an acceptable plan. The renderer emits the declared art break
+not labels. Omit `subheads` and the renderer falls back to the retired section
+names, which exists so a pre-merge plan still reads and is not an acceptable plan. The renderer emits the declared art break
 inside Act IV, between the two dense analysis spreads. Act V is the appendix:
 the proof still anchors the back, and Judge's Desk did not move. Section
 content sources: At the Table renders threat_assessment + matchups + tutor_guide.json, Sources Say renders

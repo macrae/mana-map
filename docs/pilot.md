@@ -102,7 +102,7 @@ data/decks/<slug>/             all tracked:
                                manual_prose.json     pilot-coach + manual-writer
                                pilot_feedback.md     authored, OPTIONAL (free-text pilot notes)
                                mana_analysis.json    mana-analysis (deterministic, no agent)
-                               tutor_guide.json      pilot-coach (Fetch Quests)
+                               tutor_guide.json      pilot-coach (At the Table's tutor subhead)
                                considering.json      short-list-analyst (The Short List — ten)
                                diagnosis.json        deck-doctor ⇄ deck-skeptic (the improvement loop)
                                deck_recon.json       deck-doctor MODE recon (dated; perishable)
@@ -222,7 +222,7 @@ routine's keys, or have no checker block — a failed run can't poison the cache
 Routines (10 static): `candidate-pool`, `deck-build`, `deck-diagnosis`, `deck-recon`,
 `strategic-frame`, `coach-prose`,
 `writer-prose`, `the-ten` (The Short List — applies to every deck), `tutor-guide`
-(Fetch Quests — `N/A` for a deck with no library-search tutors, via the applicability
+(the tutor guide — `N/A` for a deck with no library-search tutors, via the applicability
 gate in agent_cache), `issue-plan`, plus `stack:<NNN>` and `decision:<NNN>` discovered
 from disk. Declared in `config.AGENT_ROUTINES`.
 
@@ -677,7 +677,7 @@ would change `prose:shape` and invalidate both prose routines for no gain. The w
 `upgrades` key is the section's opening copy and is cached separately. Tiers are marked
 inline: computed evidence ◆, every ranking and verdict ★.
 
-## Fetch Quests (`tutor_guide.json`, tier ★)
+## The tutor guide (`tutor_guide.json`, tier ★)
 
 One wish per tutor. `pilot-coach` authors an entry for every maindeck library-search
 tutor — scenario → the exact card to fetch → why — and `validate-tutor-guide` holds each

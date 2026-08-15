@@ -102,21 +102,14 @@ DEPARTMENTS = [
     # were subheads pretending to be destinations. Merged, the tactics read as one
     # argument and the issue loses two full openers.
     #
-    # The three originals stay in the spec and are OPTIONAL, because eight issues
-    # are built against them and a department cannot be changed on one deck any
-    # other way. When every deck carries `at-the-table`, delete them — and the
-    # ones that outlive their migration are the ones nobody finished.
+    # The three it replaces — `politics-table`, `know-your-enemy`, `fetch-quests`
+    # — were carried here as OPTIONAL for exactly one fleet regeneration, because
+    # eight issues were built against them and a department cannot be changed on
+    # one deck any other way. All nine now carry `at-the-table`, so they are
+    # deleted: a transitional id that outlives its migration is one nobody
+    # finished. Their three arguments survive as this department's `subheads`.
     ("at-the-table", "At the Table",
      "Three opponents, one you. Who wants you dead, and what you go get about it.",
-     ("coach",), True, "Coach Sunny Brightside"),
-    ("politics-table", "Table Manners",
-     "Three opponents, one you. How to win friends and eliminate people.",
-     ("coach",), True, "Coach Sunny Brightside"),
-    ("know-your-enemy", "Know Your Enemy",
-     "The decks that want you dead, and how to disappoint them.",
-     ("coach",), True, "Coach Sunny Brightside"),
-    ("fetch-quests", "Fetch Quests",
-     "You get one wish per tutor. Here's how not to waste it.",
      ("coach",), True, "Coach Sunny Brightside"),
     # Act IV — Show Your Work: the mana, the stats, the future. Pure Ledger.
     ("sources-say", "Sources Say",
@@ -145,14 +138,15 @@ DEPARTMENTS = [
 # headers, in this order. Every section after cover/contents belongs to
 # exactly one act — a test asserts the flattened acts equal DEPARTMENT_IDS.
 #
-# Acts III and IV are single-voice by construction, which the old grouping never
-# managed: three consecutive Coach sections, then three consecutive Ledger ones.
+# Act IV is single-voice by construction, which the old grouping never managed:
+# three consecutive Ledger sections. Act III is single-voice for a different
+# reason — it is one department now, and the three Coach openers it replaced are
+# subheads inside it.
 ACTS = [
     ("Meet the Deck", ("editors-letter", "command-zone", "first-turns",
                        "the-99", "pilots-log")),
     ("Fly It", ("keep-or-ship", "whats-your-play", "the-kill")),
-    ("At the Table", ("at-the-table", "politics-table",
-                      "know-your-enemy", "fetch-quests")),
+    ("At the Table", ("at-the-table",)),
     ("Show Your Work", ("sources-say", "by-the-numbers", "upgrade-watch")),
     ("The Appendix", ("judges-desk", "featured-artist", "back-page")),
 ]
@@ -202,13 +196,13 @@ BREATHER_AFTER = frozenset({"sources-say", "the-kill"})
 # skip it". Once a deck's plan carries the department it is validated exactly like
 # any other, and an id should be REMOVED from this set as soon as every deck has
 # it. A permanently optional department is a department nobody committed to.
-OPTIONAL_DEPARTMENTS = frozenset({
-    "editors-letter", "pilots-log",
-    # The Act III merge, mid-migration in both directions: radagast carries
-    # `at-the-table`, the other eight still carry the three it replaces, and
-    # neither set may be required while both exist.
-    "at-the-table", "politics-table", "know-your-enemy", "fetch-quests",
-})
+#
+# **It is empty, and that is the point.** It has carried five ids through two
+# migrations — the Editor's Letter and the Pilot's Log arriving, and Act III's
+# three Coach departments leaving — and both are finished, so all nine issues are
+# validated against the full canonical list again. Put an id in here to pilot a
+# department on one deck; take it out the same week every deck has it.
+OPTIONAL_DEPARTMENTS = frozenset()
 
 DEPARTMENT_IDS = [d[0] for d in DEPARTMENTS]
 DEPARTMENT_BY_ID = {d[0]: {"title": d[1], "promise": d[2], "tiers": d[3],
@@ -223,9 +217,7 @@ INTENSITY = {
     "cover": "peak", "contents": "low", "first-turns": "high",
     "editors-letter": "low", "pilots-log": "high",
     "command-zone": "medium", "by-the-numbers": "medium", "the-kill": "peak",
-    "at-the-table": "medium",
-    "politics-table": "medium", "whats-your-play": "high",
-    "know-your-enemy": "medium", "fetch-quests": "medium",
+    "at-the-table": "medium", "whats-your-play": "high",
     "sources-say": "medium", "the-99": "low", "featured-artist": "low",
     "keep-or-ship": "medium",
     "upgrade-watch": "low", "judges-desk": "low", "back-page": "low",
@@ -242,10 +234,12 @@ MODE = {
     "command-zone": "instruction", "by-the-numbers": "analysis",
     # The Kill carries technical content but *reads* as narrative — that is
     # precisely what makes it the breather after By the Numbers (STYLEv3 §6).
+    # At the Table is `reflection` and NOT `reference`, even though it absorbed
+    # the threat boxes: the boxes are furniture inside an argument, and the act
+    # reads as Sunny thinking aloud about a table. Tagging it dense would put a
+    # false adjacency warning between it and Sources Say on every deck.
     "the-kill": "narrative", "at-the-table": "reflection",
-    "politics-table": "reflection",
-    "whats-your-play": "participation", "know-your-enemy": "reference",
-    "fetch-quests": "instruction", "sources-say": "analysis",
+    "whats-your-play": "participation", "sources-say": "analysis",
     "the-99": "browsing", "featured-artist": "appreciation", "keep-or-ship": "practice",
     "upgrade-watch": "imagination", "judges-desk": "reference",
     "back-page": "closure",
@@ -302,8 +296,12 @@ PROSE_KEY_DEPARTMENT = {
     "combo_lines": "the-kill",
     "card_roles": "the-99",
     "mulligan": "keep-or-ship",
-    "threat_assessment": "politics-table",
-    "matchups": "know-your-enemy",
+    # Both of Act III's prose keys render in the one department now. They shared a
+    # byline before the merge, so the voice they are checked against did not move
+    # — but the map still had to, or `voices_for` would resolve against an id that
+    # no longer exists and the lint would silently stop checking either key.
+    "threat_assessment": "at-the-table",
+    "matchups": "at-the-table",
     "mana_base": "sources-say",
     "upgrades": "upgrade-watch",
     "editors_letter": "editors-letter",

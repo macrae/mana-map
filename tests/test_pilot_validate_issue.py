@@ -122,7 +122,7 @@ def test_copy_department_missing_headline():
 def test_department_may_not_restyle_its_tier():
     plan = good_plan()
     for dept in plan["departments"]:
-        if dept["id"] == "politics-table":       # coaching department...
+        if dept["id"] == "at-the-table":         # coaching department...
             dept["tiers"] = ["verified"]          # ...claiming verified costume
     errors = validate_plan(plan, CARD_NAMES)
     assert any("may not restyle its evidence tier" in e for e in errors)
@@ -173,7 +173,7 @@ def test_departments_are_stable_across_issues():
     assert "command-zone" in DEPARTMENT_IDS      # the Commander Mandate
     assert "judges-desk" in DEPARTMENT_IDS       # the proof
     assert "featured-artist" in DEPARTMENT_IDS   # who painted your deck
-    assert "fetch-quests" in DEPARTMENT_IDS      # what to tutor
+    assert "at-the-table" in DEPARTMENT_IDS      # the whole of Act III
     assert "sources-say" in DEPARTMENT_IDS       # the mana audit
     # NOT `len(...) == 17`. A hardcoded count here is the same mistake this repo
     # bans in prose — "never transcribe the section list or its count" — and it

@@ -35,6 +35,30 @@
       "note": "Renderer-standard Flight Plan: five acts, promises verbatim from issue_spec, tier legend and masthead trio printed in full."
     },
     {
+      "id": "editors-letter",
+      "kicker": "FROM THE EDITOR",
+      "headline": "LIKED AND UNBEATABLE",
+      "dek": "Three players thank you for the cards, and mean it. Then, on each of their upkeeps, a piece of cardboard nobody has thought about in years asks how many they are holding.",
+      "components": [
+        "letterhead"
+      ],
+      "letter_card": "Iron Maiden",
+      "in_this_issue": [
+        {
+          "department": "command-zone",
+          "line": "A mono-white god running forty blue cards, and the one Phyrexian pip in the fine print that makes it legal."
+        },
+        {
+          "department": "keep-or-ship",
+          "line": "Four opening sevens, called out loud — including the flood the simulator keeps and you should not."
+        },
+        {
+          "department": "at-the-table",
+          "line": "The turn you stop being the friendliest seat. It is not the turn you cast the Reservoir."
+        }
+      ]
+    },
+    {
       "id": "command-zone",
       "kicker": "THE ZONE",
       "headline": "ONE PIP, FORTY BLUE CARDS",
@@ -64,7 +88,8 @@
       "dek": "You are about to hand three opponents free cards, on purpose, every turn. Ten cards in this 99 fill their hands and six charge for the result — the order is the whole skill.",
       "components": [
         "pilot-tip",
-        "pull-quote"
+        "pull-quote",
+        "engine-flow"
       ],
       "captions": {
         "Iron Maiden": "**THE INVOICE:** hand size minus 4, to each opponent, on each opponent's own upkeep — before they get to spend a single card you gave them.",
@@ -77,7 +102,14 @@
           "text": "Lead with Scrawling Crawler whenever it is in your opener — it hands out the cards and bills for them in the same permanent, which is the only card here that lets you skip the wait."
         }
       ],
-      "pull_quote": "A Howling Mine with nothing behind it is you paying three opponents rent."
+      "pull_quote": "A Howling Mine with nothing behind it is you paying three opponents rent.",
+      "engine_flow": true,
+      "engine_caption": "HELIOD, running. Seven stages and no fodder stage — the resource this engine eats belongs to three other people, so it enters at the ignition and leaves as damage. Nine of the thirteen arrows are dashed, including the main flow from the gifts to the bill: unproven is not disproven, and nobody signing this issue may state a dashed arrow as fact.",
+      "not_modelled": [
+        "The Reservoir kill assembles in 0.7% of games, 2.4% with the tutor counted — and 0.7% is a ceiling rather than a rate. The requirement is satisfied by Sol Ring OR Arcane Signet, and stack 001 walked the one-rock board and found no loop at all.",
+        "Hullbreaker Horror is one card deep: 7.1% of opening sevens, 9.1% by turn three, and Long-Term Plans is the only search in the 99 that reaches a creature.",
+        "The third exit is claimed and unpriced. Jace, Wielder of Mysteries turns drawing from an empty library into a win, and nothing here says which turn this deck empties itself — or whether the Jace is on the battlefield when it does."
+      ]
     },
     {
       "id": "the-99",
@@ -219,7 +251,20 @@
           "text": "Land Folio of Fancies before a big draw turn — nobody discards down to seven any more, so Iron Maiden's hand-size-minus-4 loses its ceiling."
         }
       ],
-      "note": "Basics, the utility lands, the rocks and the two medallions fall to the automatic Depth group deliberately — depth should read as depth, and here the depth is the mana."
+      "note": "Basics, the utility lands, the rocks and the two medallions fall to the automatic Depth group deliberately — depth should read as depth, and here the depth is the mana.",
+      "constellation": true,
+      "constellation_caption": "HELIOD, mapped. Six cities across 85 cards, re-laid-out from this deck's own text — so a card sits beside the cards that do its job. The give-and-charge machine is split across two of them: the three upkeep punishers and two of the donation permanents live in THE FLASH FORT, the rest of the engine in GIVE THEN CHARGE, and Mikokoro, Center of the Sea is an eleventh giveaway filed with the lands because it taps for mana. Positions are LOCAL to this deck and are not atlas positions.",
+      "group_by": "city"
+    },
+    {
+      "id": "pilots-log",
+      "kicker": "THE PANEL",
+      "headline": "CLEANUP IS STEALING FROM YOU",
+      "dek": "Sunny opens on the card in the punisher plan that deals zero damage. Vera narrows him twice, and the second narrowing changes which turn you are allowed to ring the Bell.",
+      "components": [
+        "pull-quote"
+      ],
+      "pull_quote": "You can hand a man seventy cards. Iron Maiden still asks him for three."
     },
     {
       "id": "keep-or-ship",
@@ -355,52 +400,25 @@
       "note": "Case files render in numeric order with their intros from manual_prose.combo_lines. The furniture deliberately opens on 003 — the verified line the deck actually casts — so the ledger reads as the ceiling rather than the plan."
     },
     {
-      "id": "politics-table",
+      "id": "at-the-table",
       "kicker": "THE TABLE",
       "headline": "THE INVOICE GOES PUBLIC",
       "dek": "You stop being the friendliest seat the turn Iron Maiden joins a Mine that is already running — not the turn you cast the Reservoir. You want to know that turn before your three opponents do.",
+      "subheads": {
+        "enemy": {
+          "headline": "YOU ARE THE CONTROL SEAT",
+          "dek": "The aggro player you sell attack taxes to is not the one who kills you. It is the combo pilot you just handed twenty-one cards — and against them you are the slower deck, so stop racing and start holding up mana."
+        },
+        "tutors": {
+          "headline": "DELIVERIES, NOT ARRIVALS",
+          "dek": "Three tutors, and not one of them puts a card in your hand. Top, top, and third from the top — so count the cards you are about to draw before you name one."
+        }
+      },
       "components": [
+        "threat-box",
         "callout-step",
         "pilot-tip",
         "pull-quote"
-      ],
-      "callouts": [
-        {
-          "n": 1,
-          "title": "THE THREAT WINDOW",
-          "text": "A punisher on the battlefield alongside any donation engine that is already running. The damage stops being a curiosity and becomes a clock, and every card you handed out turns into evidence. Forced Fruition resolving flips you instantly — seven cards per spell is a price the whole table starts paying at once."
-        },
-        {
-          "n": 2,
-          "title": "SPEND THE GOODWILL FIRST",
-          "text": "The early Mines and the Kwain taps are real gifts. Say so, let three players spend them, and bank the credit for the turn your upkeeps start collecting. Your library and your hand are invisible; the table only assesses what you cast, so a Font of Mythos held two turns costs you nothing."
-        },
-        {
-          "n": 3,
-          "title": "DON'T CONFESS EARLY",
-          "text": "Aetherflux Reservoir standing next to Hullbreaker Horror is a confession, and anyone who has done the reading solves it on sight. Deploy the Reservoir on the commit turn itself, never a turn early to develop — and use Enlightened Tutor as a scheduler, fired on the end step before your untap so your draw step delivers the piece."
-        }
-      ],
-      "captions": {
-        "The Second Doctor": "**THE POLITE NO:** every opponent who accepts a card can't attack you next turn. Generosity with a cover charge, and every answer they give you profits you.",
-        "Propaganda": "**THE TOLL BOOTH:** one enchantment blanks combat math from three seats at once. That is virtual card advantage, tripled."
-      },
-      "pilot_tips": [
-        {
-          "card": "Teferi's Protection",
-          "text": "Never save Teferi's Protection as a combo shield — your life total can't change while it is up, so it cannot share a turn with a ledger that pays fifty life three times."
-        }
-      ],
-      "pull_quote": "The table forgives a Howling Mine. It never forgives an Iron Maiden with the Mine still running."
-    },
-    {
-      "id": "know-your-enemy",
-      "kicker": "THE FIELD",
-      "headline": "YOU ARE THE CONTROL SEAT",
-      "dek": "The aggro player you sell attack taxes to is not the one who kills you. It is the combo pilot you just handed twenty-one cards — and against them you are the slower deck, so stop racing and start holding up mana.",
-      "components": [
-        "threat-box",
-        "pilot-tip"
       ],
       "threats": [
         {
@@ -454,34 +472,45 @@
           ]
         }
       ],
-      "captions": {
-        "Forced Fruition": "**THE ONE GIFT YOU CAN REGRET:** seven cards to the caster of every opposing spell. Against a storm pilot that is their turn, not yours — this is the card that stays in hand."
-      },
-      "pilot_tips": [
+      "callouts": [
         {
-          "card": "Drannith Magistrate",
-          "text": "Know Drannith Magistrate's limit before you tap out — it stops casting from anywhere but hand, so it blanks flashback, escape and commander recasts and does nothing at all to a reanimation spell."
+          "n": 1,
+          "title": "THE THREAT WINDOW",
+          "text": "A punisher on the battlefield alongside any donation engine that is already running. The damage stops being a curiosity and becomes a clock, and every card you handed out turns into evidence. Forced Fruition resolving flips you instantly — seven cards per spell is a price the whole table starts paying at once."
+        },
+        {
+          "n": 2,
+          "title": "SPEND THE GOODWILL FIRST",
+          "text": "The early Mines and the Kwain taps are real gifts. Say so, let three players spend them, and bank the credit for the turn your upkeeps start collecting. Your library and your hand are invisible; the table only assesses what you cast, so a Font of Mythos held two turns costs you nothing."
+        },
+        {
+          "n": 3,
+          "title": "DON'T CONFESS EARLY",
+          "text": "Aetherflux Reservoir standing next to Hullbreaker Horror is a confession, and anyone who has done the reading solves it on sight. Deploy the Reservoir on the commit turn itself, never a turn early to develop — and use Enlightened Tutor as a scheduler, fired on the end step before your untap so your draw step delivers the piece."
         }
-      ]
-    },
-    {
-      "id": "fetch-quests",
-      "kicker": "ONE WISH EACH",
-      "headline": "DELIVERIES, NOT ARRIVALS",
-      "dek": "Three tutors, and not one of them puts a card in your hand. Top, top, and third from the top — so count the cards you are about to draw before you name one.",
-      "components": [
-        "callout-step",
-        "pilot-tip"
       ],
       "captions": {
+        "The Second Doctor": "**THE POLITE NO:** every opponent who accepts a card can't attack you next turn. Generosity with a cover charge, and every answer they give you profits you.",
+        "Propaganda": "**THE TOLL BOOTH:** one enchantment blanks combat math from three seats at once. That is virtual card advantage, tripled.",
+        "Forced Fruition": "**THE ONE GIFT YOU CAN REGRET:** seven cards to the caster of every opposing spell. Against a storm pilot that is their turn, not yours — this is the card that stays in hand.",
         "Long-Term Plans": "**THE SECRET WISH:** third from the top, no reveal, and the only search in the 99 that can find a creature. On a bare board that is three draw steps; under a Font of Mythos it is your very next one."
       },
       "pilot_tips": [
         {
+          "card": "Teferi's Protection",
+          "text": "Never save Teferi's Protection as a combo shield — your life total can't change while it is up, so it cannot share a turn with a ledger that pays fifty life three times."
+        },
+        {
+          "card": "Drannith Magistrate",
+          "text": "Know Drannith Magistrate's limit before you tap out — it stops casting from anywhere but hand, so it blanks flashback, escape and commander recasts and does nothing at all to a reanimation spell."
+        },
+        {
           "card": "Temple Bell",
           "text": "Ring Temple Bell at instant speed to pull a Long-Term Plans delivery a full turn forward — but only with a punisher already down, or you are paying three opponents for your own convenience."
         }
-      ]
+      ],
+      "pull_quote": "The table forgives a Howling Mine. It never forgives an Iron Maiden with the Mine still running.",
+      "note": "Act III as one Coach section. The lead argument is the threat window; the two written subheads are the turns it takes — the matchup grades, then the three deliveries. Renderer draws the threat boxes from `threats`, the prose from threat_assessment and matchups, and the tutor bodies from tutor_guide.json."
     },
     {
       "id": "sources-say",

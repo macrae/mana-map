@@ -35,6 +35,31 @@
       "note": "Five-act Flight Plan, tier legend and the masthead trio render from issue_spec. Nothing to author."
     },
     {
+      "id": "editors-letter",
+      "kicker": "FROM THE EDITOR",
+      "headline": "THE DRAGON YOU NEVER CAST",
+      "dek": "The card on the cover costs nine mana and mostly never arrives. This is an issue about what the deck does in the meantime, and about the one enchantment that decides whether the table comes for you first.",
+      "components": [
+        "letterhead"
+      ],
+      "letter_card": "Aggravated Assault",
+      "in_this_issue": [
+        {
+          "department": "the-kill",
+          "line": "Six lines went to the checker. One came back refuted, and it is the one your whole table believes."
+        },
+        {
+          "department": "sources-say",
+          "line": "Thirty-four lands, five colours, 101 coloured pips. Ledger reads the bill out loud."
+        },
+        {
+          "department": "featured-artist",
+          "line": "Seventy-six painters across ninety-five cards. Nobody owns this deck, and that turned out to be the story."
+        }
+      ],
+      "note": "Margot Stet's letter is already written; this is the packaging around it. The letter opens on the nine-mana commander, so the letterhead card is deliberately NOT him — the cover is already a full-bleed Ur-Dragon and the letter's other subject, the one enchantment the whole table can name on sight, has no picture anywhere else in Act I. The three teases skip the Pilot's Log, which the letter previews itself."
+    },
+    {
       "id": "command-zone",
       "kicker": "COMMANDER FILE",
       "headline": "HE BILLS FROM THE ZONE",
@@ -65,7 +90,8 @@
       "dek": "The loop the whole table fears assembles in 6.4% of your games. Build for the payoff layer that kills in 62.2% of them, and take the loop the turn it walks in.",
       "components": [
         "pilot-tip",
-        "pull-quote"
+        "pull-quote",
+        "engine-flow"
       ],
       "pilot_tips": [
         {
@@ -78,16 +104,24 @@
         "The Ur-Dragon": "**THE DECOY:** mean cast turn 8.967, and 0.0% of games by turn six. Eminence does his work from the zone while three opponents budget answers for a body that mostly never arrives.",
         "Aggravated Assault": "**THE CEILING, NOT THE SCHEDULE:** all three of the deck's two-card infinites route through this one enchantment, and it assembles with a mana Dragon in 3.6% of games by turn six. Play toward Dragons; take this when it arrives."
       },
-      "pull_quote": "The loop is your ceiling. Tempest plus a board is your schedule."
+      "pull_quote": "The loop is your ceiling. Tempest plus a board is your schedule.",
+      "engine_flow": true,
+      "engine_caption": "THE UR-DRAGON, running. Seven stages, from 34 lands paying a five-colour bill to the one enchantment that turns a mana Dragon into unlimited combats — six of the eleven arrows carry a passing stack, and there is no fodder stage because this deck consumes nothing to make anything.",
+      "not_modelled": [
+        "Stack 003's eleven damage a combat is a three-card board — Old Gnawbone is attacking alongside Savage Ventmaw. The named pair alone puts four into a forty-life seat, which is the tenth combat, not the fourth.",
+        "Stack 006 is the half that kills on schedule: seven Treasures a swing, net two a cycle, one seat dead on combat six and the second on combat twelve. It assumes nothing blocks a 7/7 flier and nobody answers the enchantment across twelve combats.",
+        "The discount this plan is built on is eminence, and no checker-passed stack has run a Dragon spell through it. The commander's own mean cast turn is 8.967, with 0.0% of games by turn six."
+      ]
     },
     {
       "id": "the-99",
       "kicker": "THE ROSTER",
       "headline": "NINETY-NINE SEATS, RANKED",
-      "dek": "The engine room first — the cards the checker has already been through — then the payoffs, the discounts, the wallet, and 34 lands carrying a five-colour bill. Twenty-two of your twenty-four creatures are Dragons, and your own sweepers know exactly which two are not.",
+      "dek": "The map sorted this roster before we did: seven cities, and the largest holds a third of the deck plus most of the cards the checker has already been through. Twenty-two of your twenty-four creatures are Dragons, and your own sweepers know exactly which two are not.",
       "components": [
         "pilot-tip",
-        "pull-quote"
+        "pull-quote",
+        "constellation"
       ],
       "roster": [
         {
@@ -242,7 +276,22 @@
           "text": "Empty your hand with Klauth's attack mana, but never budget it for Aggravated Assault — it pays for spells only, and an activated ability is not a spell."
         }
       ],
-      "pull_quote": "Twenty-two of your twenty-four creatures are Dragons. Learn the other two by name."
+      "pull_quote": "Twenty-two of your twenty-four creatures are Dragons. Learn the other two by name.",
+      "constellation": true,
+      "constellation_caption": "THE UR-DRAGON, mapped. Seven cities and fourteen neighbourhoods, re-laid-out from this deck's own cards in the function space, so a card sits beside the cards that do its job — the commander and every card named in a passing stack is labelled. Positions are LOCAL to this deck and are not atlas positions.",
+      "group_by": "city",
+      "note": "Renderer draws per-card prose from manual_prose.card_roles and groups the grid by city, largest first, so the territory on the figure and the block under it share one ink. The authored roster stays in the file as the editorial reading of the same 99; the commander's entry lives in The Command Zone."
+    },
+    {
+      "id": "pilots-log",
+      "kicker": "THE PANEL",
+      "headline": "STOP CASTING YOUR COMMANDER",
+      "dek": "Sunny opens by taking the nine-drop out of the maths, then hands the Counselor the reason and asks her to check it. She takes it off him, keeps his advice, and then costs him a second argument about how fast the famous loop actually kills.",
+      "components": [
+        "pull-quote"
+      ],
+      "pull_quote": "The conclusion is sound and the reason is unearned. Those are different things.",
+      "note": "Sunny's hot take renders first; the panel's spine is the discount nobody has measured, so the pull quote is the Counselor's holding rather than the take. Every line in here points at a badge earned elsewhere — the department grants coach and nothing more."
     },
     {
       "id": "keep-or-ship",
@@ -380,52 +429,25 @@
       "note": "Feature order: 006 (the cover line, walked in the callout-steps), 003, 001, 002, 004, 005. Case pointers A-001 through A-006 are renderer-standing. Two of the deck's three contained two-card infinites are the ones on this docket; the Cavern-Hoard Dragon line is named as unverified everywhere it appears."
     },
     {
-      "id": "politics-table",
+      "id": "at-the-table",
       "kicker": "TABLE READS",
       "headline": "THE SLOWEST DECK IN THE ROOM",
       "dek": "Five-colour Dragons reads as battlecruiser, and your first four turns confirm the story — 1.463 bodies by turn six is nobody's emergency. Keep it that way, because your real tells get answered on sight and you cannot re-buy either of them.",
+      "subheads": {
+        "enemy": {
+          "headline": "FIVE FIGHTS, NAMED OUTS",
+          "dek": "Sweepers, taxes, aggro, faster combo and the graveyard. Four of them you beat with cards that are actually sleeved in this 99 — and the fifth is the one this deck cannot answer at all, so read that box twice."
+        },
+        "tutors": {
+          "headline": "FOUR WISHES, ONE ENCHANTMENT",
+          "dek": "Four tutors get a real decision here, thirteen wishes between them, and three of the four are not shopping for a Dragon at all. A wish is also an announcement — shop the turn before you need the card, never two."
+        }
+      },
       "components": [
+        "threat-box",
         "callout-step",
         "pilot-tip",
         "pull-quote"
-      ],
-      "callouts": [
-        {
-          "n": 1,
-          "title": "WINDOW ONE",
-          "text": "You flip to archenemy the turn Aggravated Assault is live with Old Gnawbone or Savage Ventmaw connecting — funding on the board, protection in hand. The shield is there by turn six in 66.0% of games. Choose the turn; never drift into it."
-        },
-        {
-          "n": 2,
-          "title": "WINDOW TWO",
-          "text": "With Wrathful Red Dragon on the battlefield, welcome the damage sweeper: 39 redirected at one face (stack 004). Say the number out loud before their turn — naming the seat it kills usually keeps the wrath in their hand, which most nights is worth more than the kill."
-        },
-        {
-          "n": 3,
-          "title": "THE HONEST DISCLOSURE",
-          "text": "When someone asks whether you are the combo deck, tell the truth: the loop assembles in 6.4% of games. You are the Dragon deck that occasionally draws a better ending, and saying so buys you turns that lying never would."
-        }
-      ],
-      "captions": {
-        "Miirym, Sentinel Wyrm": "**THE HEAT MAGNET:** she doubles every nontoken Dragon after her from behind ward {2}, and everyone at the table has watched that happen to someone. Expect her to eat the removal your engine wanted.",
-        "Dragonlord Dromoka": "**THE QUIET COMMIT:** opponents cannot cast spells during your turn. Sequence her first on the pivot turn and everything after her resolves in peace."
-      },
-      "pilot_tips": [
-        {
-          "card": "Deflecting Swat",
-          "text": "Save Deflecting Swat for the removal aimed at Aggravated Assault mid-combo — and price it at three mana, because the commander is rarely on the battlefield to make it free."
-        }
-      ],
-      "pull_quote": "Stay boring until the turn you aren't."
-    },
-    {
-      "id": "know-your-enemy",
-      "kicker": "SCOUTING REPORT",
-      "headline": "FIVE FIGHTS, NAMED OUTS",
-      "dek": "Sweepers, taxes, aggro, faster combo and the graveyard. Four of them you beat with cards that are actually sleeved in this 99 — and the fifth is the one this deck cannot answer at all, so read that box twice.",
-      "components": [
-        "threat-box",
-        "pilot-tip"
       ],
       "threats": [
         {
@@ -495,29 +517,43 @@
           ]
         }
       ],
+      "callouts": [
+        {
+          "n": 1,
+          "title": "WINDOW ONE",
+          "text": "You flip to archenemy the turn Aggravated Assault is live with Old Gnawbone or Savage Ventmaw connecting — funding on the board, protection in hand. The shield is there by turn six in 66.0% of games. Choose the turn; never drift into it."
+        },
+        {
+          "n": 2,
+          "title": "WINDOW TWO",
+          "text": "With Wrathful Red Dragon on the battlefield, welcome the damage sweeper: 39 redirected at one face (stack 004). Say the number out loud before their turn — naming the seat it kills usually keeps the wrath in their hand, which most nights is worth more than the kill."
+        },
+        {
+          "n": 3,
+          "title": "THE HONEST DISCLOSURE",
+          "text": "When someone asks whether you are the combo deck, tell the truth: the loop assembles in 6.4% of games. You are the Dragon deck that occasionally draws a better ending, and saying so buys you turns that lying never would."
+        }
+      ],
+      "captions": {
+        "Miirym, Sentinel Wyrm": "**THE HEAT MAGNET:** she doubles every nontoken Dragon after her from behind ward {2}, and everyone at the table has watched that happen to someone. Expect her to eat the removal your engine wanted.",
+        "Dragonlord Dromoka": "**THE QUIET COMMIT:** opponents cannot cast spells during your turn. Sequence her first on the pivot turn and everything after her resolves in peace."
+      },
       "pilot_tips": [
+        {
+          "card": "Deflecting Swat",
+          "text": "Save Deflecting Swat for the removal aimed at Aggravated Assault mid-combo — and price it at three mana, because the commander is rarely on the battlefield to make it free."
+        },
         {
           "card": "Crux of Fate",
           "text": "Count your two non-Dragons before you cast Crux of Fate — the non-Dragon mode kills Dragonspeaker Shaman and Rivaz of the Claw, so fire it after the Shaman has already bought you a discount."
-        }
-      ]
-    },
-    {
-      "id": "fetch-quests",
-      "kicker": "WISH LIST",
-      "headline": "FOUR WISHES, ONE ENCHANTMENT",
-      "dek": "Four tutors get a real decision here and there are thirteen wishes between them — and three of the four are not shopping for a Dragon at all. Tiamat headlines: one resolved cast hands you a five-name package straight to hand.",
-      "components": [
-        "pilot-tip",
-        "pull-quote"
-      ],
-      "pilot_tips": [
+        },
         {
           "card": "Enlightened Tutor",
           "text": "Cast Enlightened Tutor the turn before you need the card, never the turn you do — it puts the card on top of your library, and the reveal announces Aggravated Assault to three opponents who now have a turn to answer it."
         }
       ],
-      "pull_quote": "A wish is also an announcement. Shop the turn before, never two."
+      "pull_quote": "Stay boring until the turn you aren't.",
+      "note": "One act, one opener: the table read leads, the five threat boxes and the matchup prose sit under the first subhead, the tutor guide under the second. Furniture carried forward whole — three callouts, two captions, three PILOT TIPs, one per turn of the argument. Fetch Quests' pull quote survives inside the tutors dek, since a department may print only one."
     },
     {
       "id": "sources-say",
@@ -668,7 +704,7 @@
       "note": "next_issue reads TO BE ANNOUNCED, so the teaser stays the standing series line rather than a named deck. The colophon carries decklist sha edc6644d0683 and the rules version automatically."
     }
   ],
-  "rhythm_notes": "Act I meets the deck in order of what a player would tell you: the Counselor's Command Zone instruction, then Sunny's narrative plan, then the roster's low-intensity browse. Act II climbs — the hand drill, the two participation spreads of What's Your Play, and The Kill as the act's peak, where the 006 payroll is walked step by step and reads as narrative despite carrying the densest rules content in the issue. Act III is three straight Coach sections by design: reflection at the table, the reference block of Know Your Enemy between two instruction spreads, and Fetch Quests to exit. Act IV is Ledger's three, and it is the one place two dense analysis modes meet: the renderer's declared full-bleed breather sits between Sources Say and By the Numbers, and The Short List's imagination mode cools the act out. Act V parks Judge's Desk's opt-in density behind Act IV rather than behind The Kill, exhales through Featured Artist, and exits on the Back Page. Pull quotes act as micro-breathers on the eight longest sections; the only section without one is Know Your Enemy, where five threat boxes already break the page.",
+  "rhythm_notes": "Act I meets the deck in order of what a player would tell you: the Counselor's Command Zone instruction, then Sunny's narrative plan, then the roster's low-intensity browse. Act II climbs — the hand drill, the two participation spreads of What's Your Play, and The Kill as the act's peak, where the 006 payroll is walked step by step and reads as narrative despite carrying the densest rules content in the issue. Act III is three straight Coach sections by design: reflection at the table, the reference block of Know Your Enemy between two instruction spreads, and Fetch Quests to exit. Act IV is Ledger's three, and it is the one place two dense analysis modes meet: the renderer's declared full-bleed breather sits between Sources Say and By the Numbers, and The Short List's imagination mode cools the act out. Act V parks Judge's Desk's opt-in density behind Act IV rather than behind The Kill, exhales through Featured Artist, and exits on the Back Page. Pull quotes act as micro-breathers on the eight longest sections; the only section without one is Know Your Enemy, where five threat boxes already break the page. AMENDED: Act III's three Coach departments (Table Manners, Know Your Enemy, Fetch Quests) have since merged into the single At the Table, which carries all three arguments under written subheads — so any buffering described above between those three is now internal to one department, and the Editor's Letter and the Pilot's Log have joined Act I with the panel running last, behind The 99.",
   "gaps": [
     "Cavern-Hoard Dragon + Aggravated Assault is the one contained two-card infinite with no stack. Its Treasures count the DEFENDING player's artifacts, so the scenario would bound the line rather than bless it — until then every section names it as unverified.",
     "Two frame-flagged scenarios worth buying next: Sneak Attack at instant speed cheating Wrathful Red Dragon in under a sweeper (it would extend verified case A-004), and Miirym plus Sneak Attack — does the token copy survive the end-step sacrifice? A yes changes the rate of the whole velocity plan.",

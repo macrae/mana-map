@@ -921,7 +921,7 @@ the reader on an unfiltered map with a query string they cannot see.
 | Sources Say (pips vs sources, land classes, on-curve) | `mana_analysis.json` | ◆ |
 | By the Numbers (meters, turn table, assumptions) | `goldfish_metrics.json` | ◆ |
 | The Short List (ten) | `considering.json` | ◆★ |
-| Fetch Quests (collapsible per tutor) | `tutor_guide.json` | ★ |
+| The tutor guide (collapsible per tutor) | `tutor_guide.json` | ★ |
 | The Kill (case files, citations verbatim) | `stacks/*.json`, passing only | ✓ |
 | The Builder's Record (slots, scores, runners-up) | `build_plan.json` | ◆ |
 

@@ -60,7 +60,7 @@ artifact at ≤32 citations passed in one or two rounds; every one at ≥59 need
 four or failed, taking correct answers down with it.
 
 **7 — Furnish it.** `/short-list` → `considering.json`. `tutor-guide` →
-Fetch Quests. `/author-decision` → the What's Your Play spreads.
+At the Table's tutor subhead. `/author-decision` → the What's Your Play spreads.
 
 **8 — Write it.** `/write-manual` (writer + coach, merged by key ownership via
 `merge-prose`) → author `issue.json` → `/design-issue` (the magazine editor) →

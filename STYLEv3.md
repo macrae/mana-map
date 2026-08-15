@@ -304,10 +304,6 @@ Flight Plan — they are copy, not metadata. `issue_spec.py` is their single sou
 | 10 | **The Kill** | "The winning lines, argued and affirmed. Every step on the record." | Dictum | verified `stacks/*.json` | ✓ |
 | — | *Act III — At the Table* | | | | |
 | 11 | **At the Table** | "Three opponents, one you. Who wants you dead, and what you go get about it." | Brightside | `threat_assessment` + `matchups` + `tutor_guide.json` | ★ |
-| — | *(the three below are SUPERSEDED — see §5.3; they render only on issues that predate the merge)* | | | | |
-| — | ~~Table Manners~~ | "Three opponents, one you. How to win friends and eliminate people." | Brightside | `threat_assessment` | ★ |
-| — | ~~Know Your Enemy~~ | "The decks that want you dead, and how to disappoint them." | Brightside | `matchups` | ★ |
-| — | ~~Fetch Quests~~ | "You get one wish per tutor. Here's how not to waste it." | Brightside | `tutor_guide.json` | ★ |
 | — | *Act IV — Show Your Work* | | | | |
 | 12 | **Sources Say** | "Pips versus sources — does this mana base keep its promises?" | Marginal | `mana_analysis.json` | ◆ |
 | — | *(full-bleed art break — the declared §6 breather)* | | | | |
@@ -495,41 +491,35 @@ the table above. "Failure mode" is what the review in §12 looks for.
 - **Failure mode**: writing three essays under one opener. It is one argument that
   turns twice.
 
-The three sections below are what it replaced. They are kept in the spec, and in
-`OPTIONAL_DEPARTMENTS`, only so the eight issues built against them stay valid —
-**do not plan them for a new issue.** Delete them when every deck has moved.
+The three departments it replaced — Table Manners, Know Your Enemy and Fetch
+Quests — are **deleted from the spec**, and their rules are folded in below rather
+than lost with them. All nine issues carry `at-the-table`, so nothing renders the
+originals and `OPTIONAL_DEPARTMENTS` is empty again.
 
----
+**The lead — the table read** (was Table Manners)
 
-**~~9a. Table Manners~~** — *superseded* (signed: Coach Sunny Brightside)
-
-- **Promise**: Every issue, this section tells you when the table turns on you.
-- **Shape**: Threat-assessment prose with a **THREAT WINDOW** callout naming the exact
-  board state that flips you to archenemy, plus signaling and sequencing guidance.
+- **Shape**: Threat-assessment prose with a **THREAT WINDOW** callout naming the
+  exact board state that flips you to archenemy, plus signaling and sequencing.
 - **Failure mode**: generic politics advice that isn't about *this* deck's tells.
 
----
+**`subheads.enemy` — who beats you** (was Know Your Enemy)
 
-**~~10a. Know Your Enemy~~** — *superseded; now `subheads.enemy`*
-
-- **Shape**: One **THREAT BOX** per archetype (sweeper control, stax, aggro, combo):
-  what their board looks like, what beats you, your named outs, and a threat meter.
+- **Shape**: One **THREAT BOX** per archetype (sweeper control, stax, aggro,
+  combo): what their board looks like, what beats you, your named outs, and a
+  threat meter carrying `level` (1–5) rather than a rate.
 - **Failure mode**: naming a card as an out that isn't in the 99.
 
----
+**`subheads.tutors` — what you go get** (was Fetch Quests)
 
-**~~11a. Fetch Quests~~** — *superseded; now `subheads.tutors`*
-
-- **Promise**: Every issue, this section tells you what to actually go get.
-- **Shape**: One entry per maindeck tutor: the card, then numbered scenario
-  steps (board state → **Fetch:** the target → why). Rendered from
-  `tutor_guide.json`; the validator holds every fetch to the deck and the
-  tutor's own search constraint.
+- **Shape**: One entry per maindeck tutor: the card, then numbered scenario steps
+  (board state → **Fetch:** the target → why). Rendered from `tutor_guide.json`;
+  the validator holds every fetch to the deck and the tutor's own search
+  constraint.
 - **Rule**: One wish per tutor — every library-search tutor in the 99 gets an
-  entry, and fetch lands belong to Sources Say, not here. A deck with zero
-  tutors keeps the section with its standing no-tutors copy (L8).
-- **Failure mode**: a generic "tutor for your best card" — the scenarios must
-  name real boards and real targets from *this* 99.
+  entry, and fetch lands belong to Sources Say, not here. A deck with zero tutors
+  keeps the subhead with its standing no-tutors copy (L8).
+- **Failure mode**: a generic "tutor for your best card" — the scenarios must name
+  real boards and real targets from *this* 99.
 
 ---
 
@@ -845,9 +835,9 @@ Shark, politician, manager, motivator. Pushes you to the better line, names the 
 you were about to walk into, and never once believes you're going to lose — a positive
 outlook breeds a positive outcome, and Sunny will tell you so while handing you the
 upgrade plan. Every judgment grounded in what Vera verified and Ledger measured, and
-owned as judgment. Signs: The Game Plan, Keep or Ship (lead), Table Manners,
-What's Your Play?, Know Your Enemy, The 99, and the coaching half of every shared
-section.
+owned as judgment. Signs: The Game Plan, Keep or Ship (lead), At the Table (all
+three of its arguments), What's Your Play?, The 99, and the coaching half of every
+shared section.
 
 **The contract stands (§10): personas are presentation only.** The badge means what it
 means; a voice never earns a stamp. Vera cannot bless an unverified line by sounding
@@ -959,7 +949,7 @@ under Ledger's byline — the component is the claim.
 
 **`stat-slab` runs the issue's signature number ONCE.** Vol. 009 found that 36 lands
 is not 40 and then said so in six departments — Command Zone, Game Plan, The 99,
-What's Your Play, The Kill and Table Manners — which sands the best fact in the issue
+What's Your Play, The Kill and At the Table — which sands the best fact in the issue
 flat by repetition. State it full-width, once, at the moment it lands hardest; every
 later department refers back to it rather than re-arguing it.
 | `tax-ladder` | Command Zone only | Successive recast costs |

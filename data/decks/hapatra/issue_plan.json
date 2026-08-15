@@ -37,6 +37,30 @@
       "note": "Generated table: five act headers, promises verbatim from issue_spec, tier legend and masthead trio in full."
     },
     {
+      "id": "editors-letter",
+      "kicker": "FROM THE EDITOR",
+      "headline": "NINETEEN CLAIMS, ONE RECEIPT",
+      "dek": "Somebody at your table has already read this deck's combo list out loud to you. Nineteen two-card infinites are claimed; exactly one board in the file has ever gone in front of a checker.",
+      "components": [
+        "letterhead"
+      ],
+      "letter_card": "Mikaeus, the Unhallowed",
+      "in_this_issue": [
+        {
+          "department": "keep-or-ship",
+          "line": "You keep 79.9% of opening sevens. One of the four hands here is a ship the simulation would have kept."
+        },
+        {
+          "department": "at-the-table",
+          "line": "Fourteen interactive cards and every one of them points at a creature. One permanent class of five, picking your bad matchups in advance."
+        },
+        {
+          "department": "featured-artist",
+          "line": "Eighty painters across 88 cards, nobody past three. Nobody art-directed this deck, and we are not going to pretend otherwise."
+        }
+      ]
+    },
+    {
       "id": "command-zone",
       "kicker": "THE ZONE",
       "headline": "SHE IS NEVER THE PROBLEM",
@@ -68,7 +92,8 @@
       "components": [
         "callout-step",
         "pilot-tip",
-        "pull-quote"
+        "pull-quote",
+        "engine-flow"
       ],
       "callouts": [
         {
@@ -101,7 +126,14 @@
         "Yawgmoth, Thran Physician": "**THE SCARCE HALF:** eight sacrifice outlets here cost no mana, and exactly one of them also places a counter. This is what the first tutor is for.",
         "Nest of Scarabs": "**A SECOND MINT:** your placements make Insects as well as Snakes, so one sweeper pays twice. Deploy it before Black Sun's Zenith, never after."
       },
-      "pull_quote": "Hunt sources, not payoffs. The payoffs are six deep and the sources are two."
+      "pull_quote": "Hunt sources, not payoffs. The payoffs are six deep and the sources are two.",
+      "engine_flow": true,
+      "engine_caption": "HAPATRA, running. Eight stages from the mana to the kill, and fifteen of these eighteen arrows are drawn dashed — no stack has signed them.",
+      "not_modelled": [
+        "Eighteen arrows in the schematic; three carry a stack. The other fifteen are careful readings of oracle text — unexamined rather than refuted, and a pilot should be able to tell those apart at speed.",
+        "Stack 001, the only board anyone has checked, is a refutation: under Mikaeus an altar pairing returns one body and stops, and a sacrificed Snake token ceases to exist before its own undying trigger reaches the stack. What the record establishes about the ceiling is where it is not.",
+        "No goldfish target declares the eight-card counter-source class this whole engine has to start from, so every assembly rate quoted in this issue prices the payoff half — the half that cannot begin."
+      ]
     },
     {
       "id": "the-99",
@@ -274,7 +306,20 @@
       "captions": {
         "Necroskitter": "**THE STEAL:** put counters on their board before you sweep it, not after. Every creature that dies wearing one comes back on your side.",
         "Bitterblossom": "**THE REBUILD:** a body every upkeep for one life, from an enchantment no creature wrath can touch. It is a keep all by itself."
-      }
+      },
+      "constellation": true,
+      "constellation_caption": "HAPATRA, mapped. Six cities and thirteen neighbourhoods, re-laid-out from this deck's own cards — THE COUNTER SUPPLY holds nine and THE BUSINESS END, the payoffs it feeds, holds twenty-six. Positions are LOCAL to this deck and are not atlas positions.",
+      "group_by": "city"
+    },
+    {
+      "id": "pilots-log",
+      "kicker": "THE PANEL",
+      "headline": "SHE DOESN'T MAKE THEM",
+      "dek": "Sunny opens by telling you your commander never places a -1/-1 counter outside combat. Vera narrows him twice on the record, and he takes both.",
+      "components": [
+        "pull-quote"
+      ],
+      "pull_quote": "Count the ones you have watched resolve, then play the deck that number describes."
     },
     {
       "id": "keep-or-ship",
@@ -424,52 +469,26 @@
       "note": "Only stack 001 has passed the checker. No Blowfly, Ivy Lane, Scurry Oak or Host of the Hereafter line may appear in this section, and no altar pairing may be presented as a kill anywhere in the issue."
     },
     {
-      "id": "politics-table",
+      "id": "at-the-table",
       "kicker": "THE TABLE",
       "headline": "STAY BORING ON PURPOSE",
       "dek": "Three opponents look at a 2/2 legend and two 1/1 tokens and file you under snake deck. That read is the most valuable thing you own — here is exactly what spends it.",
       "components": [
         "callout-step",
+        "threat-box",
         "pilot-tip",
         "pull-quote"
       ],
-      "callouts": [
-        {
-          "n": 1,
-          "title": "THREAT WINDOW",
-          "text": "You flip to archenemy the moment a drain converter that hits every seat lands beside a repeatable counter source. Hold the converter in hand for that turn rather than deploying it early to be shot off the table."
+      "subheads": {
+        "enemy": {
+          "headline": "ONE CLASS OF FIVE",
+          "dek": "Fourteen interactive copies, and every one of them points at a creature. Sort each table by the permanent type that beats you and you will know before turn one which seats you answer and which you have to race."
         },
-        {
-          "n": 2,
-          "title": "THE ELEVEN TELLS",
-          "text": "Eleven Game Changers sit in this 99. The turn a Mox, a Demonic Tutor or The One Ring resolves, your Snakes stop reading as chump blockers."
-        },
-        {
-          "n": 3,
-          "title": "SELL THE REAL NUMBER",
-          "text": "In a Rule 0 conversation, say bracket 4, eleven Game Changers, one signed line. That honesty buys you a seat the bigger number would have cost."
+        "tutors": {
+          "headline": "EIGHT TUTORS, ONE ANSWER",
+          "dek": "Eight tutors make the table think you can find anything. You can find one thing that matters, and the first wish nearly always has the same name."
         }
-      ],
-      "pilot_tips": [
-        {
-          "card": "Yawgmoth, Thran Physician",
-          "text": "Put Yawgmoth down with a second body already on board and a turn that converts — anything less spends your scarcest card for one activation."
-        }
-      ],
-      "captions": {
-        "The One Ring": "**THE LOUDEST CARD HERE:** cast it for the cards, on a turn you can afford both the life and the attention — never as a protection turn you are hoping nobody prices."
       },
-      "pull_quote": "Three opponents will hold up mana against nineteen infinites the record credits you with exactly one of. Spend that discount on every value turn in between."
-    },
-    {
-      "id": "know-your-enemy",
-      "kicker": "THE FIELD",
-      "headline": "ONE CLASS OF FIVE",
-      "dek": "Fourteen interactive copies, and every one of them points at a creature. Sort each table by the permanent type that beats you and you will know before turn one which seats you answer and which you have to race.",
-      "components": [
-        "threat-box",
-        "pull-quote"
-      ],
       "threats": [
         {
           "archetype": "Stax and prison",
@@ -533,18 +552,28 @@
           ]
         }
       ],
-      "pull_quote": "Graveyard hate aimed at you costs three cards and nothing else. Let the seat that spent one on you feel good about it."
-    },
-    {
-      "id": "fetch-quests",
-      "kicker": "ONE WISH EACH",
-      "headline": "EIGHT TUTORS, ONE ANSWER",
-      "dek": "Eight tutors make the table think you can find anything. You can find one thing that matters, and the first wish nearly always has the same name.",
-      "components": [
-        "pilot-tip",
-        "pull-quote"
+      "callouts": [
+        {
+          "n": 1,
+          "title": "THREAT WINDOW",
+          "text": "You flip to archenemy the moment a drain converter that hits every seat lands beside a repeatable counter source. Hold the converter in hand for that turn rather than deploying it early to be shot off the table."
+        },
+        {
+          "n": 2,
+          "title": "THE ELEVEN TELLS",
+          "text": "Eleven Game Changers sit in this 99. The turn a Mox, a Demonic Tutor or The One Ring resolves, your Snakes stop reading as chump blockers."
+        },
+        {
+          "n": 3,
+          "title": "SELL THE REAL NUMBER",
+          "text": "In a Rule 0 conversation, say bracket 4, eleven Game Changers, one signed line. That honesty buys you a seat the bigger number would have cost."
+        }
       ],
       "pilot_tips": [
+        {
+          "card": "Yawgmoth, Thran Physician",
+          "text": "Put Yawgmoth down with a second body already on board and a turn that converts — anything less spends your scarcest card for one activation."
+        },
         {
           "card": "Vampiric Tutor",
           "text": "Fire it on the end step before your untap — a card put on top of your library is an appointment, not an arrival."
@@ -555,10 +584,12 @@
         }
       ],
       "captions": {
+        "The One Ring": "**THE LOUDEST CARD HERE:** cast it for the cards, on a turn you can afford both the life and the attention — never as a protection turn you are hoping nobody prices.",
         "Demonic Tutor": "**THE DEFAULT WISH:** point it at a repeatable -1/-1 source. The converter class is four deep and turns up on its own in 51.9% of games.",
-        "Survival of the Fittest": "**ALMOST FREE HERE:** the discard costs you nothing once Phyrexian Reclamation can buy the creature back out of your graveyard."
+        "Survival of the Fittest": "**ALMOST FREE HERE:** the discard costs you nothing once Phyrexian Reclamation can buy the creature back out of your graveyard.",
+        "Ashnod's Altar": "**NOT A TUTOR TARGET:** the record checked all five altars against Mikaeus, and each one buys exactly one undying return. Fetch a repeatable counter source instead."
       },
-      "pull_quote": "Never send a tutor after an altar to loop with Mikaeus. The record checked all five, and each one buys exactly one undying return."
+      "pull_quote": "Three opponents will hold up mana against nineteen infinites the record credits you with exactly one of. Spend that discount on every value turn in between."
     },
     {
       "id": "sources-say",
@@ -691,7 +722,7 @@
       "note": "NEXT ISSUE teaser from issue.json (SISAY, WEATHERLIGHT CAPTAIN), colophon with rules version and decklist sha, Fan Content Policy line."
     }
   ],
-  "rhythm_notes": "The arc is the spec's five acts and I changed nothing in it. Act I opens instructional and lands on The 99, which is browsing — a deliberate soft landing before Act II asks for work. Act II climbs practice to participation to the peak: The Kill closes the act as the payoff to meeting the deck and learning to fly it, and it reads as narrative even though it carries the technical content. Act III is three straight Coach sections and I kept Know Your Enemy's threat boxes as the reference beat between two instructional ones, so reflection, reference and instruction alternate inside a single voice. Act IV is the only place two dense analysis spreads sit together, and the renderer's declared art break after Sources Say is the breather — I added no furniture there. The Short List is deliberately low-intensity imagination after it, and Judge's Desk is buffered by imagination before and appreciation after, exactly as the table wants. The two peaks (cover, The Kill) are the only places I let violators and full-bleed treatment run.",
+  "rhythm_notes": "The arc is the spec's five acts and I changed nothing in it. Act I opens instructional and lands on The 99, which is browsing — a deliberate soft landing before Act II asks for work. Act II climbs practice to participation to the peak: The Kill closes the act as the payoff to meeting the deck and learning to fly it, and it reads as narrative even though it carries the technical content. Act III is three straight Coach sections and I kept Know Your Enemy's threat boxes as the reference beat between two instructional ones, so reflection, reference and instruction alternate inside a single voice. Act IV is the only place two dense analysis spreads sit together, and the renderer's declared art break after Sources Say is the breather — I added no furniture there. The Short List is deliberately low-intensity imagination after it, and Judge's Desk is buffered by imagination before and appreciation after, exactly as the table wants. The two peaks (cover, The Kill) are the only places I let violators and full-bleed treatment run. AMENDED: Act III's three Coach departments (Table Manners, Know Your Enemy, Fetch Quests) have since merged into the single At the Table, which carries all three arguments under written subheads — so any buffering described above between those three is now internal to one department, and the Editor's Letter and the Pilot's Log have joined Act I with the panel running last, behind The 99.",
   "gaps": [
     "manual_prose.json's `upgrades` body names a different ten than considering.json — Beast Within, Nature's Claim, Scavenging Ooze, Forsaken Miner, The Great Henge, Peer into the Abyss and Triskelion, against a list whose ten are Assassin's Trophy, Dawnhand Dissident, Sinister Gnarlbark, Evolution Sage, Gravecrawler, Boseiju Who Endures, Poison-Tip Archer, Reassembling Skeleton, Persistent Constrictor and The Meathook Massacre. The renderer prints that prose immediately above the rendered ten, so a reader sees two different lists on one page. My copy for the section is written against considering.json only; the prose needs a rewrite I am not scoped for.",
     "One checker-passed stack for a deck holding 32 contained combo lines. The single highest-value scenario is whether Mikaeus's anthem switches the Blowfly and Hapatra token loops off — under a +1/+1 anthem a 1/1 token survives one -1/-1 counter, which would make the deck's two headline engines mutually exclusive on the battlefield. Nothing else changes sequencing this much.",

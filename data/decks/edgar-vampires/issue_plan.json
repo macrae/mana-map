@@ -31,6 +31,30 @@
       "note": "Generated flight plan; acts, promises, tier legend and masthead trio come from issue_spec verbatim."
     },
     {
+      "id": "editors-letter",
+      "kicker": "FROM THE EDITOR",
+      "headline": "THE DECK WITH NO BIG TURN",
+      "dek": "Turn two, you cast a 1/1 that nobody at the table reads, and three life totals move at once. That is the whole deck, and it is either the best hour you will spend or the longest.",
+      "components": [
+        "letterhead"
+      ],
+      "letter_card": "Impact Tremors",
+      "in_this_issue": [
+        {
+          "department": "keep-or-ship",
+          "line": "Four openers, graded — and Sunny ships one the simulation was perfectly happy to keep."
+        },
+        {
+          "department": "at-the-table",
+          "line": "Five archetypes read honestly: the seat that beats you is not the one holding the wrath."
+        },
+        {
+          "department": "featured-artist",
+          "line": "Seventy-eight artists, ninety-seven cards, and nobody painted this deck. That is the story."
+        }
+      ]
+    },
+    {
       "id": "command-zone",
       "kicker": "HE WORKS FROM HOME",
       "headline": "THE ZONE IS THE ENGINE",
@@ -64,7 +88,8 @@
         "callout-step",
         "pilot-tip",
         "pull-quote",
-        "folio"
+        "folio",
+        "engine-flow"
       ],
       "callouts": [
         {
@@ -99,7 +124,14 @@
           "text": "Feed Skullclamp eminence tokens, never lords — a 1/1 dies to the toughness change and pays two cards, every single time."
         }
       ],
-      "pull_quote": "They shielded up for combat. The kill never declared an attacker."
+      "pull_quote": "They shielded up for combat. The kill never declared an attacker.",
+      "engine_flow": true,
+      "engine_caption": "EDGAR MARKOV, running. Seven stages from the mana that buys a two-drop to the seat that hits zero — and no fodder stage, because nothing in this 99 exists to be eaten.",
+      "not_modelled": [
+        "Stack 009's kill is exactly lethal: twelve to each of three seats sitting at twelve. One trigger fewer and all three opponents are alive at one or two.",
+        "Stacks 004 and 006 both open on three life already gained from an unnamed source. Everything above that seed is proved; the seed itself is verified by nothing.",
+        "Every checked board is a pod already low — 12 a seat in stack 009, 15 and 9 in 007, 24 and 10 in 008. The go-wide plan is on the record as a finisher, not yet as a clock from 40."
+      ]
     },
     {
       "id": "the-99",
@@ -108,6 +140,7 @@
       "dek": "Sorted by what each card does when a creature enters the battlefield, because that is the moment this deck is built around. The five converters lead; almost everything else exists to feed them.",
       "components": [
         "pilot-tip",
+        "constellation",
         "pull-quote",
         "folio"
       ],
@@ -285,7 +318,21 @@
           "text": "Fire Olivia's Wrath at an opponent's board, never to tidy your own — five of your 29 creatures are not Vampires, and two of them are converters."
         }
       ],
-      "pull_quote": "Rank matters: the load-bearing cards are the five that make a body cost the table something."
+      "pull_quote": "Rank matters: the load-bearing cards are the five that make a body cost the table something.",
+      "constellation": true,
+      "group_by": "city",
+      "constellation_caption": "EDGAR MARKOV, mapped. Seven cities across 97 cards, re-laid-out from this deck's own card text — THE DRAIN is the densest verified block on the map, five marked cards in eight. Positions are LOCAL to this deck and are not atlas positions."
+    },
+    {
+      "id": "pilots-log",
+      "kicker": "THE PANEL",
+      "headline": "KILL HIM AND NOTHING HAPPENS",
+      "dek": "Turn six, somebody points removal at your commander and the whole table exhales. Sunny says they just wasted a card; the Counselor agrees on the rule and then takes about a third of the claim back.",
+      "components": [
+        "pull-quote"
+      ],
+      "pull_quote": "The card you actually have to answer is the one that leaves him standing there doing nothing.",
+      "note": "Panel prose renders from manual_prose.pilots_log, opening on Sunny's HOT TAKE. The panel carries ★ only — Vera's CR 903.9a reading and Ledger's rates were granted their badges elsewhere."
     },
     {
       "id": "keep-or-ship",
@@ -445,46 +492,20 @@
       "note": "Feature order: 009 leads (the primary plan as rules-fact), then 008, 003, 004, 006, 007, with 002 as the foundation box. Only presentable checker-passed stacks appear; full citations live in Judge's Desk."
     },
     {
-      "id": "politics-table",
+      "id": "at-the-table",
       "kicker": "THE READ",
       "headline": "LET THEM UNDERPRICE YOU",
       "dek": "The table sees an empty command zone and prices a deck that starts on turn six. Yours started on turn one — here is when they notice, and what to do before and after that moment.",
-      "components": [
-        "callout-step",
-        "pilot-tip",
-        "pull-quote",
-        "folio"
-      ],
-      "callouts": [
-        {
-          "n": 1,
-          "title": "THREAT WINDOW",
-          "text": "You flip to archenemy the moment a converter is on the battlefield next to a doubler — that is when the table stops seeing chump blockers and starts doing the entry math. Land the pieces while they read as durdle; after the flip, every untapped mana at the table is aimed at you."
+      "subheads": {
+        "enemy": {
+          "headline": "WHO ACTUALLY BEATS YOU",
+          "dek": "Not the sweeper — you charge admission for that. The seats to respect are the lock that stops creatures entering, the combo clock you cannot counter, and the graveyard you answer with tempo instead of cards."
+        },
+        "tutors": {
+          "headline": "BUY THE KILL, NOT THE LOOP",
+          "dek": "Cast a black tutor and three seats decide you are digging for the infinite. You almost never are: sixteen points of your turn-six kill rate live in these three cards, and they belong to the converter layer."
         }
-      ],
-      "captions": {
-        "Anointed Procession": "**VISIBLY DOES NOTHING THE TURN IT RESOLVES:** which is exactly why it survives. Slide it in behind the cheap bodies, before the loud turn.",
-        "Elspeth, Storm Slayer": "**ATTACKED ON SIGHT:** a planeswalker doubling tokens draws every eye at the table. She comes down last, to a board that protects her — never first."
       },
-      "pilot_tips": [
-        {
-          "card": "Blood Artist",
-          "text": "Point Blood Artist at whoever cast the wipe — the drain chooses its target per death, and the invoice lands hardest on the seat that thought the wrath was an exit."
-        }
-      ],
-      "pull_quote": "The clock the table cannot see: two bodies by turn three, 4.2 by turn six, off cards that look like draft commons."
-    },
-    {
-      "id": "know-your-enemy",
-      "kicker": "SCOUTING REPORT",
-      "headline": "WHO ACTUALLY BEATS YOU",
-      "dek": "Not the sweeper — you charge admission for that. The seats to respect are the lock that stops creatures entering, the combo clock you cannot counter, and the graveyard you answer with tempo instead of cards.",
-      "components": [
-        "threat-box",
-        "pilot-tip",
-        "pull-quote",
-        "folio"
-      ],
       "threats": [
         {
           "archetype": "Faster combo",
@@ -557,37 +578,43 @@
           ]
         }
       ],
-      "pilot_tips": [
-        {
-          "card": "Winds of Abandon",
-          "text": "Save Winds of Abandon for the one board wider than yours — overloaded it exiles every creature you do not control, and your tokens stay to swing into the ramp they were handed."
-        }
-      ],
-      "pull_quote": "Their graveyard hate exiles air. Smile and say thank you."
-    },
-    {
-      "id": "fetch-quests",
-      "kicker": "THREE WISHES",
-      "headline": "BUY THE KILL, NOT THE LOOP",
-      "dek": "Cast a black tutor and three seats decide you are digging for the infinite. You almost never are: sixteen points of your turn-six kill rate live in these three cards, and they belong to the converter layer.",
       "components": [
+        "threat-box",
+        "callout-step",
         "pilot-tip",
         "pull-quote",
         "folio"
       ],
-      "captions": {
-        "Demonic Tutor": "**THE WORKHORSE:** two mana, any card, to hand — the only wish you cash the same turn. Plan it as Tutor plus a two-drop on turn four.",
-        "Vampiric Tutor": "**THE END-STEP WISH:** one mana at instant speed, card on top, two life. Cast it when the table's mana is spent, cash it the turn it arrives.",
-        "Diabolic Intent": "**THE SACRIFICE IS FREE:** eminence prints the currency — cast a Vampire first and pay the Intent with the token it minted."
-      },
+      "callouts": [
+        {
+          "n": 1,
+          "title": "THREAT WINDOW",
+          "text": "You flip to archenemy the moment a converter is on the battlefield next to a doubler — that is when the table stops seeing chump blockers and starts doing the entry math. Land the pieces while they read as durdle; after the flip, every untapped mana at the table is aimed at you."
+        }
+      ],
       "pilot_tips": [
+        {
+          "card": "Blood Artist",
+          "text": "Point Blood Artist at whoever cast the wipe — the drain chooses its target per death, and the invoice lands hardest on the seat that thought the wrath was an exit."
+        },
+        {
+          "card": "Winds of Abandon",
+          "text": "Save Winds of Abandon for the one board wider than yours — overloaded it exiles every creature you do not control, and your tokens stay to swing into the ramp they were handed."
+        },
         {
           "card": "Bloodletter of Aclazotz",
           "text": "Never tutor Bloodletter onto a board that cannot pay {B}{B}{B} on schedule — it is the only triple-black cast in the 99, in your thinnest colour."
         }
       ],
+      "captions": {
+        "Anointed Procession": "**VISIBLY DOES NOTHING THE TURN IT RESOLVES:** which is exactly why it survives. Slide it in behind the cheap bodies, before the loud turn.",
+        "Elspeth, Storm Slayer": "**ATTACKED ON SIGHT:** a planeswalker doubling tokens draws every eye at the table. She comes down last, to a board that protects her — never first.",
+        "Diabolic Intent": "**THE SACRIFICE IS FREE:** eminence prints the currency — cast a Vampire first and pay the Intent with the token it minted.",
+        "Demonic Tutor": "**THE WORKHORSE:** two mana, any card, to hand — the only wish you cash the same turn. Plan it as Tutor plus a two-drop on turn four.",
+        "Vampiric Tutor": "**THE END-STEP WISH:** one mana at instant speed, card on top, two life. Cast it when the table's mana is spent, cash it the turn it arrives."
+      },
       "pull_quote": "The loop assembles in 4.8% of your games on natural draws. Carry the ticket; never steer for it.",
-      "note": "Entries render from tutor_guide.json — the kicker/dek frame Sunny's assessment: kill config 41.7% by turn six on natural draws, 57.7% tutor-assisted; the loop 4.8% unassisted, 24.3% with tutors."
+      "note": "One act, one byline: the lead argument is the political read, the enemy subhead renders the threat boxes plus the matchups prose, and the tutors subhead renders tutor_guide.json. Sunny's assessment behind the tutor frame: kill config 41.7% by turn six on natural draws, 57.7% tutor-assisted; the loop 4.8% unassisted, 24.3% with tutors."
     },
     {
       "id": "sources-say",
@@ -639,7 +666,7 @@
         {
           "n": 3,
           "title": "THE KILL CONFIG",
-          "text": "A converter and a multiplier are both drawn by turn six in 41.7% of games — 57.7% when a tutor buys the missing half. That sixteen-point spread is the whole argument of Fetch Quests."
+          "text": "A converter and a multiplier are both drawn by turn six in 41.7% of games — 57.7% when a tutor buys the missing half. That sixteen-point spread is the whole argument of the tutor guide in At the Table."
         },
         {
           "n": 4,
@@ -746,7 +773,7 @@
       "note": "NEXT ISSUE: TO BE ANNOUNCED (per issue.json). Colophon carries rules version, decklist sha and generation provenance; Fan Content Policy line."
     }
   ],
-  "rhythm_notes": "The Kill closes Act II as the peak; its seven case features read as narrative, so the dense pages sit where the spec puts them. The one dense-dense adjacency, Sources Say into By the Numbers, is covered by the declared full-bleed art break after sources-say. Know Your Enemy (reference) is buffered by What's-adjacent instruction on both sides; Judge's Desk is cushioned by The Short List (imagination) before and Featured Artist (appreciation) after. Low-intensity browsing in The 99 lands right after the two Act I features so the reader gets a breather before the Keep or Ship drill.",
+  "rhythm_notes": "The Kill closes Act II as the peak; its seven case features read as narrative, so the dense pages sit where the spec puts them. The one dense-dense adjacency, Sources Say into By the Numbers, is covered by the declared full-bleed art break after sources-say. Know Your Enemy (reference) is buffered by What's-adjacent instruction on both sides; Judge's Desk is cushioned by The Short List (imagination) before and Featured Artist (appreciation) after. Low-intensity browsing in The 99 lands right after the two Act I features so the reader gets a breather before the Keep or Ship drill. AMENDED: Act III's three Coach departments (Table Manners, Know Your Enemy, Fetch Quests) have since merged into the single At the Table, which carries all three arguments under written subheads — so any buffering described above between those three is now internal to one department, and the Editor's Letter and the Pilot's Log have joined Act I with the panel running last, behind The 99.",
   "gaps": [
     "Stacks 002 and 008 cast Gifted Aetherborn, a card not in the 99 — the math holds for any {B}{B} Vampire (Cordial Vampire is the in-deck example), but the scenario boards deserve a touch-up so Judge's Desk never names a card the deck does not run.",
     "Editor-facing context blocks in the extras of stacks 006, 007 and 008 narrate the deck's git history; if the renderer ever prints extras verbatim, they would break the reader's-first rule. Known open issue — needs an artifact-level fix, not a regex.",

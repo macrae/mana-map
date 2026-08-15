@@ -37,6 +37,31 @@
       "note": "The Flight Plan: sections grouped under the five act headers, one lean row each — title, the promise verbatim from issue_spec, tier badge, byline. Print the tier legend and the three-columnist masthead in full; this is somebody's first issue by definition. No chart furniture — the map has to read in one glance."
     },
     {
+      "id": "editors-letter",
+      "kicker": "FROM THE EDITOR",
+      "headline": "TWO DECKS, TAKING TURNS",
+      "dek": "Volume one, and the deck on the cover is two decks sharing a mana base. One of them is built entirely around the commander; the other has never once asked for her.",
+      "components": [
+        "letterhead"
+      ],
+      "letter_card": "Empty the Warrens",
+      "in_this_issue": [
+        {
+          "department": "keep-or-ship",
+          "line": "Four hands, one call each. The keep rule takes 79.1% of first sevens — the drill is spotting the one it should not."
+        },
+        {
+          "department": "the-99",
+          "line": "Seventy-nine cards laid out from their own text into six cities. The largest is called CRITICAL MASS and it is exactly what it sounds like."
+        },
+        {
+          "department": "featured-artist",
+          "line": "Fourteen cards from one brush, thirteen of them consecutive collector numbers. We print the numbers instead of a story about taste."
+        }
+      ],
+      "note": "The letter is Margot Stet's and is already written; this is packaging only. Letterhead art is Empty the Warrens rather than the commander on purpose: the letter's argument is that half this deck never asked for Zada, and she is already at hero scale on the cover and again in The Command Zone two pages later. Teases deliberately avoid the Pilot's Log and the Krenko refutation, which the letter previews itself."
+    },
+    {
       "id": "command-zone",
       "kicker": "ON THE RECORD",
       "headline": "GUARANTEED, NOT REQUIRED",
@@ -68,7 +93,8 @@
       "components": [
         "callout-step",
         "pilot-tip",
-        "pull-quote"
+        "pull-quote",
+        "engine-flow"
       ],
       "callouts": [
         {
@@ -107,13 +133,20 @@
           "text": "Hold Crimson Wisps until Zada has at least three coworkers — one {R} across four bodies is five cards, and the same spell on turn two is just a cantrip."
         }
       ],
-      "pull_quote": "Kill the hub and you have taken the draw engine. You have not taken the kill."
+      "pull_quote": "Kill the hub and you have taken the draw engine. You have not taken the kill.",
+      "engine_flow": true,
+      "engine_caption": "GOBLIN STORM, running. Eight stages, and the two arrows that bend backwards are the whole engine — copies buy cards that buy more copies, and the loop pays for its own next cast.",
+      "not_modelled": [
+        "Stack 003 is the deck's only measured kill and it kills ONE seat: 32 trample power into a single opponent at 30, with a lone 2/2 absorbing two of it. Exactly 30 into 30, and no margin in it.",
+        "Stack 002's '8 to each opponent' is measured against two seats at 32 and 28 with empty boards. A full pod is three players on 40 — 120 life against a turn that deals 8.",
+        "Neither board holds a blocker that matters, an instant, or an opponent who takes an action for a full turn cycle."
+      ]
     },
     {
       "id": "the-99",
       "kicker": "ROLL CALL",
       "headline": "MOB RULES",
-      "dek": "Ten groups, ranked by job rather than alphabet: the case-file cards lead, the lands close, and every card gets one line on what it is actually for.",
+      "dek": "Six cities, cut by what the cards do rather than by what they cost, and the grid shares the map's ink block for block. Start in CRITICAL MASS — twenty-two cards, and most of the reason this deck works.",
       "components": [
         "folio",
         "pilot-tip"
@@ -259,7 +292,25 @@
           "text": "Feed Mogg War Marshal to a sacrifice outlet early — a token on entry and another on death makes him three bodies pretending to be one card."
         }
       ],
-      "note": "Grouped by job and ranked, verified engines first; the ten groups cover all 79 entries with no card unplaced. One thing to keep out of the reader-facing copy: synergy_graph.json gives Zada zero partners inside this 99, and 42 edges fall inside the deck overall. That is a fact about a global top-10 shortlist, not about the commander — no group ordering here is derived from it, and no caption may cite it."
+      "note": "The grid renders by city, so the map on the facing page and the blocks under it are the same six colours; the roster below is kept as the editorial ranking of the same 79 entries and is not what the reader sees. Per-card prose comes from manual_prose.card_roles. One thing to keep out of reader-facing copy: synergy_graph.json gives Zada zero partners inside this 99, and 42 edges fall inside the deck overall. That is a fact about a global top-10 shortlist, not about the commander — no grouping here is derived from it, and no caption may cite it.",
+      "constellation": true,
+      "constellation_caption": "GOBLIN STORM, mapped. Six cities and twelve neighbourhoods, cut from the deck's own cards — a card sits beside the cards that do its job, not beside the cards that cost what it costs. Positions are LOCAL to this deck and are not atlas positions.",
+      "group_by": "city"
+    },
+    {
+      "id": "pilots-log",
+      "kicker": "THE PANEL",
+      "headline": "TWO CARDS, AND NEITHER IS HER",
+      "dek": "Sunny opens by naming the two cards he thinks this deck is actually bounded by. Ledger has no rate for them, and Vera cannot certify the arrow on the deck's most famous turn.",
+      "components": [
+        "pull-quote"
+      ],
+      "captions": {
+        "Impact Tremors": "**ONE OF TWO:** every creature you control entering bills each opponent 1 — no attack step, no target chosen, nobody left out. Stack 002 turns eight tokens into 8 at each seat.",
+        "General Kreat, the Boltbringer": "**THE OTHER ONE:** the same conversion, wearing a body. Sunny's whole count is these two cards and nothing else in the 99."
+      },
+      "pull_quote": "This deck has never once lost because the pilot counted too carefully.",
+      "note": "The panel runs behind The 99 so every card it argues about has already been met. Turn 0 is the hot take and renders as one; the dashed arrow Vera refuses to certify is the same one the engine schematic draws dashed in The Game Plan, and the two should read as one finding across the issue."
     },
     {
       "id": "keep-or-ship",
@@ -427,60 +478,26 @@
       "note": "The issue's peak and the payoff to Act II — the most ambitious layout in the book, one feature spread per case in stack order. The refutation (A-004) is celebrated rather than buried, per house style, and A-005's headline fact is that the loop runs with the commander off the battlefield. Rules citations stay out of the body; every spread ends on its dossier pointer (FULL DOSSIER: JUDGE'S DESK A-00N)."
     },
     {
-      "id": "politics-table",
+      "id": "at-the-table",
       "kicker": "THE READ",
       "headline": "NOBODY FEARS A 1/1",
       "dek": "Three opponents will agree that killing your commander kills your deck. That conclusion is the most useful thing you own — here's how to keep them holding it.",
       "components": [
         "callout-step",
-        "scenario-box",
-        "pilot-tip",
-        "pull-quote"
-      ],
-      "callouts": [
-        {
-          "n": 1,
-          "title": "YOUR COVER STORY IS TRUE",
-          "text": "You average 2.36 bodies on turn three. A Prospector and two tokens is a board nobody wraths and nobody fears, and it is also, precisely, the fuel tank. Deploy it face up and let the read stand."
-        },
-        {
-          "n": 2,
-          "title": "LET THEM PAY FOR THE WRONG CARD",
-          "text": "Everyone at the table has one plan for you: kill the four-mana Goblin. Let them buy it — a premium removal spell aimed at Zada is a card they will want back later. Cast her, pass, and let them spend."
-        },
-        {
-          "n": 3,
-          "title": "THE TELL LADDER",
-          "text": "What a table answers on sight, in order: Skullclamp, because it screams engine; Conspicuous Snoop, because he shows your library top for the rest of the game; Krenko, because everyone has heard the word infinite. Sequence the loud pieces after removal has found other homes — and play Impact Tremors early, onto one Goblin, where it pings for one and reads as durdle."
-        },
-        {
-          "n": 4,
-          "title": "THE KRENKO DISCOUNT",
-          "text": "The databases promise a Krenko loop this deck cannot run; A-004 records it terminating after one activation. So when an opponent burns real removal on him expecting the infinite, they have paid a card for a one-shot. Take the trade and say nothing."
-        }
-      ],
-      "captions": {
-        "Conspicuous Snoop": "**THE INFORMATION TAX:** he casts Goblins off your library top and shows the whole table what is coming, all game. Price that in before he hits the felt.",
-        "Grenzo, Havoc Raiser": "**THE OUTSOURCED DEFENSE:** every connecting Goblin goads a would-be blocker or exiles a card off that player's library for you. The cheapest way to point three armies anywhere but here."
-      },
-      "pilot_tips": [
-        {
-          "card": "Skullclamp",
-          "text": "Deploy Skullclamp on the turn you intend to use it, not the turn you draw it — it is the loudest tell in the 99 and it draws removal the way it draws cards."
-        }
-      ],
-      "pull_quote": "The gap between what your board says and what your hand is building is your entire early game. Protect the gap, not the commander."
-    },
-    {
-      "id": "know-your-enemy",
-      "kicker": "SCOUTING REPORT",
-      "headline": "WHO ACTUALLY BEATS THE SWARM",
-      "dek": "Combo owns the clock, wraths walk into your draw engine, and the aggro seat was never your problem. Know which chair is dangerous before you sit down.",
-      "components": [
         "threat-box",
         "pilot-tip",
         "pull-quote"
       ],
+      "subheads": {
+        "enemy": {
+          "headline": "THE SEAT THE CAMOUFLAGE DOESN'T FOOL",
+          "dek": "Sweepers walk into your draw engine and the aggro seat was never the problem. Graded honestly, exactly one chair beats you, and it beats you on the clock rather than on the board."
+        },
+        "tutors": {
+          "headline": "BOTH WISHES COME BACK A GOBLIN",
+          "dek": "Matron and Moggcatcher search the same creature type and neither one can name a sorcery, so no wish ever reaches the storm half. Send the right Goblin: kicker is paid on cast, and Moggcatcher does not cast."
+        }
+      },
       "threats": [
         {
           "archetype": "Dedicated combo",
@@ -532,35 +549,50 @@
           ]
         }
       ],
-      "pilot_tips": [
+      "callouts": [
         {
-          "card": "Brightstone Ritual",
-          "text": "In the token mirror, read Brightstone Ritual again — it counts every Goblin on the battlefield, so the opposing swarm pays for your storm turn."
+          "n": 1,
+          "title": "YOUR COVER STORY IS TRUE",
+          "text": "You average 2.36 bodies on turn three. A Prospector and two tokens is a board nobody wraths and nobody fears, and it is also, precisely, the fuel tank. Deploy it face up and let the read stand."
+        },
+        {
+          "n": 2,
+          "title": "LET THEM PAY FOR THE WRONG CARD",
+          "text": "Everyone at the table has one plan for you: kill the four-mana Goblin. Let them buy it — a premium removal spell aimed at Zada is a card they will want back later. Cast her, pass, and let them spend."
+        },
+        {
+          "n": 3,
+          "title": "THE TELL LADDER",
+          "text": "What a table answers on sight, in order: Skullclamp, because it screams engine; Conspicuous Snoop, because he shows your library top for the rest of the game; Krenko, because everyone has heard the word infinite. Sequence the loud pieces after removal has found other homes — and play Impact Tremors early, onto one Goblin, where it pings for one and reads as durdle."
+        },
+        {
+          "n": 4,
+          "title": "THE KRENKO DISCOUNT",
+          "text": "The databases promise a Krenko loop this deck cannot run; A-004 records it terminating after one activation. So when an opponent burns real removal on him expecting the infinite, they have paid a card for a one-shot. Take the trade and say nothing."
         }
       ],
-      "pull_quote": "Against combo the last profitable moment for an answer is now. Against everyone else it is later than you think."
-    },
-    {
-      "id": "fetch-quests",
-      "kicker": "THE WISHES",
-      "headline": "TWO WISHES, ONE TRIBE",
-      "dek": "Both your tutors wish in one colour and one creature type, and that is a strength — every wish is on plan. Just don't send the wrong Goblin on the errand.",
-      "components": [
-        "pilot-tip",
-        "pull-quote"
-      ],
       "captions": {
+        "Conspicuous Snoop": "**THE INFORMATION TAX:** he casts Goblins off your library top and shows the whole table what is coming, all game. Price that in before he hits the felt.",
+        "Grenzo, Havoc Raiser": "**THE OUTSOURCED DEFENSE:** every connecting Goblin goads a would-be blocker or exiles a card off that player's library for you. The cheapest way to point three armies anywhere but here.",
         "Goblin Matron": "**THE ERRAND RUNNER:** any Goblin CARD to hand, which includes Gempalm Incinerator's removal and Boggart Shenanigans. Delivery to hand means the fetch still gets cast — kicker still gets paid, cycling still works.",
         "Moggcatcher": "**THE REPEATABLE WISH:** a Goblin permanent straight onto the battlefield for {3} and a tap — no cast, nothing to counter, and no kicker either. Time him like a land, a full rotation before you want the wish."
       },
       "pilot_tips": [
         {
+          "card": "Skullclamp",
+          "text": "Deploy Skullclamp on the turn you intend to use it, not the turn you draw it — it is the loudest tell in the 99 and it draws removal the way it draws cards."
+        },
+        {
+          "card": "Brightstone Ritual",
+          "text": "In the token mirror, read Brightstone Ritual again — it counts every Goblin on the battlefield, so the opposing swarm pays for your storm turn."
+        },
+        {
           "card": "Goblin Bushwhacker",
           "text": "Fetch Goblin Bushwhacker with Matron, never Moggcatcher — kicker is paid as you cast, and a Bushwhacker put onto the battlefield is a 1/1 with stage fright."
         }
       ],
-      "pull_quote": "Finishers to hand with Matron; engines to the battlefield with Moggcatcher.",
-      "note": "Data renders from tutor_guide.json — scenario / fetch / why entries across the two tutors. Two threads worth keeping visible in the layout: neither wish needs the commander, which is the issue's thesis showing up in the search engine; and no wish reaches the storm half at all, because that component is built out of sorceries and no Goblin tutor has ever named one. Aim the wish at the early-token component, which assembles in 60.0% of runs at mean turn 3.18 and three of whose five cards are Goblins."
+      "pull_quote": "The gap between what your board says and what your hand is building is your entire early game. Protect the gap, not the commander.",
+      "note": "One act, one byline, three turns of the same argument: the table's read of you, who actually beats you, and what you go get. Threat boxes and the matchup prose sit under the first subhead; tutor_guide.json renders under the second. Two threads to keep visible in the tutor half: neither wish needs the commander, which is the issue's thesis showing up in the search engine, and no wish reaches the storm half at all because that component is built out of sorceries. Aim the wish at the early-token component, which assembles in 60.0% of runs at mean turn 3.18."
     },
     {
       "id": "sources-say",

@@ -79,9 +79,8 @@ ACCENT = {
     "first-turns": "var(--power-red)", "command-zone": "var(--y2k-violet)",
     "by-the-numbers": "var(--y2k-blue)", "the-kill": "var(--power-red)",
     "at-the-table": "var(--radical-purple)",
-    "politics-table": "var(--radical-purple)", "whats-your-play": "var(--hot-magenta)",
-    "know-your-enemy": "var(--radical-purple)", "the-99": "var(--slime-green)",
-    "fetch-quests": "var(--tier-coach)", "sources-say": "var(--y2k-blue)",
+    "whats-your-play": "var(--hot-magenta)", "the-99": "var(--slime-green)",
+    "sources-say": "var(--y2k-blue)",
     "featured-artist": "var(--hot-magenta)",
     "keep-or-ship": "var(--tier-coach)", "upgrade-watch": "var(--y2k-blue)",
     "judges-desk": "var(--stamp-red)", "back-page": "var(--ink)",
@@ -1085,17 +1084,6 @@ def render_at_the_table(issue, plan, prose_doc, tutor_guide, cards_by_name):
     )
 
 
-def render_politics(issue, plan, prose_doc, cards_by_name):
-    dept = plan_dept(plan, "politics-table")
-    return (
-        dept_open("politics-table", plan)
-        + f'<div class="body-copy">{prose(prose_doc, "threat_assessment")}</div>'
-        + dept_captions(dept, cards_by_name)
-        + dept_furniture(dept, cards_by_name)
-        + dept_close("politics-table", issue)
-    )
-
-
 def render_whats_your_play(issue, plan, decisions, cards_by_name):
     dept = plan_dept(plan, "whats-your-play")
     spreads = []
@@ -1123,33 +1111,6 @@ def render_whats_your_play(issue, plan, decisions, cards_by_name):
         + dept_furniture(dept, cards_by_name)
         + ("".join(spreads) or TODO)
         + dept_close("whats-your-play", issue)
-    )
-
-
-def render_know_your_enemy(issue, plan, prose_doc, cards_by_name):
-    dept = plan_dept(plan, "know-your-enemy")
-    boxes = []
-    for entry in dept.get("threats", []):
-        # `level` is the field the editor writes now: a 1–5 read, on a scale that
-        # cannot be mistaken for a measurement. `rate` is the old 0..1 form, kept
-        # readable so existing plans render rather than silently flattening to a
-        # default — it converts, it never prints.
-        level = entry.get("level")
-        if level is None:
-            level = round(float(entry.get("rate", 0.5)) * 5)
-        boxes.append(threat_box(
-            entry.get("archetype", ""), entry.get("meter_label", "Threat"),
-            level,
-            f'<p>{esc_x(entry.get("read", ""))}</p>'
-            f'<p><b>Your outs:</b> {esc_x(", ".join(entry.get("outs", [])))}</p>',
-        ))
-    return (
-        dept_open("know-your-enemy", plan)
-        + "".join(boxes)
-        + f'<div class="body-copy">{prose(prose_doc, "matchups")}</div>'
-        + dept_captions(dept, cards_by_name)
-        + dept_furniture(dept, cards_by_name)
-        + dept_close("know-your-enemy", issue)
     )
 
 
@@ -1377,27 +1338,15 @@ def render_keep_or_ship(issue, plan, prose_doc, goldfish, cards_by_name):
     )
 
 
-def render_fetch_quests(issue, plan, tutor_guide, cards_by_name):
-    """What to tutor (★): scenario -> fetch -> why, straight from
-    tutor_guide.json. A deck with no tutors keeps the section (L8) with
-    standing copy instead of a TODO — zero tutors is an answer, not a gap."""
-    dept = plan_dept(plan, "fetch-quests")
-    return (
-        dept_open("fetch-quests", plan)
-        + tutor_bodies(tutor_guide, cards_by_name)
-        + dept_captions(dept, cards_by_name)
-        + dept_furniture(dept, cards_by_name)
-        + dept_close("fetch-quests", issue)
-    )
-
-
 def tutor_bodies(tutor_guide, cards_by_name):
-    """The Fetch Quests content, with no department chrome around it.
+    """The tutor guide, with no department chrome around it.
 
-    Shared by `render_fetch_quests` (its own department, eight decks) and
-    `render_at_the_table` (a subhead, radagast) — one implementation, because two
-    copies of a renderer is how the same section starts saying different things on
-    different decks and nothing fails.
+    It was Fetch Quests' whole body and is now At the Table's third subhead. It
+    stayed a function through the merge rather than being inlined, because for one
+    fleet regeneration both shapes rendered and two copies of a renderer is how
+    the same section starts saying different things on different decks with
+    nothing failing. Keeping it separate also keeps `render_at_the_table` legible
+    as three arguments rather than one four-hundred-line function.
     """
     parts = []
     tutors = (tutor_guide or {}).get("tutors") or []
@@ -1741,12 +1690,6 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
                                                           cards_by_name),
         "at-the-table": lambda: render_at_the_table(
             issue, plan, prose_doc, tutor_guide, cards_by_name),
-        "politics-table": lambda: render_politics(issue, plan, prose_doc,
-                                                  cards_by_name),
-        "know-your-enemy": lambda: render_know_your_enemy(issue, plan, prose_doc,
-                                                          cards_by_name),
-        "fetch-quests": lambda: render_fetch_quests(issue, plan, tutor_guide,
-                                                    cards_by_name),
         "sources-say": lambda: render_sources_say(issue, plan, mana, prose_doc,
                                                   cards_by_name),
         "command-zone": lambda: render_command_zone(issue, plan, commander,

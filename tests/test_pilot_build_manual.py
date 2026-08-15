@@ -127,14 +127,17 @@ PLAN = {
         {"id": "by-the-numbers", "kicker": "LAB", "headline": "TEN THOUSAND",
          "dek": "A dek."},
         {"id": "the-kill", "kicker": "VERIFIED", "headline": "THE PAYOFF", "dek": "A dek."},
-        {"id": "politics-table", "kicker": "READ", "headline": "WHEN THEY TURN",
-         "dek": "A dek."},
-        {"id": "whats-your-play", "kicker": "YOUR MOVE", "headline": "TWO TURNS",
-         "dek": "A dek."},
-        {"id": "know-your-enemy", "kicker": "SCOUTING", "headline": "WHO BEATS YOU",
+        # The whole of Act III, in the one department the three Coach openers
+        # merged into. It carries all three of their bodies — the threat boxes
+        # here, `threat_assessment` and `matchups` from the prose doc, and the
+        # tutor guide from its own artifact — with no `subheads`, which is the
+        # fallback path a plan written before that key gets.
+        {"id": "at-the-table", "kicker": "READ", "headline": "WHEN THEY TURN",
          "dek": "A dek.",
          "threats": [{"archetype": "Stax", "meter_label": "Threat", "rate": 0.8,
                       "read": "This is the one.", "outs": ["Vandalblast"]}]},
+        {"id": "whats-your-play", "kicker": "YOUR MOVE", "headline": "TWO TURNS",
+         "dek": "A dek."},
         {"id": "the-99", "kicker": "ROSTER", "headline": "EVERY SLOT", "dek": "A dek.",
          "roster": [{"role": "The engine", "cards": ["Payoff Engine"]}]},
         {"id": "featured-artist", "kicker": "THE GALLERY", "headline": "WHO PAINTED THIS",
@@ -144,11 +147,6 @@ PLAN = {
         {"id": "upgrade-watch", "kicker": "INSIDE", "headline": "SHOPPING LIST",
          "dek": "A dek."},
         {"id": "judges-desk", "kicker": "PROVE IT", "headline": "CASE FILES",
-         "dek": "A dek."},
-        # `fetch-quests` is OPTIONAL now (the Act III merge), and an optional
-        # department absent from a plan renders NOTHING — so a fixture that wants
-        # to assert on its output has to opt in, exactly as a real issue does.
-        {"id": "fetch-quests", "kicker": "ONE WISH", "headline": "SPEND IT WELL",
          "dek": "A dek."},
         {"id": "back-page"},
     ],
@@ -631,7 +629,7 @@ def test_cite_blocks_carry_no_card_links():
 # ── The three v3.3 sections ──────────────────────────────────────────────
 
 
-def test_fetch_quests_renders_wishes_and_no_tutor_fallback():
+def test_the_tutor_guide_renders_wishes_and_a_no_tutor_fallback():
     guide = {"slug": "x", "assessment": "Wishes.",
              "tutors": [{"card": "Sac Outlet", "targets": [
                  {"scenario": "Turn 3.", "fetch": "Payoff Engine",
@@ -767,7 +765,26 @@ def test_the_resolver_brief_lives_in_the_case_file_not_the_read_through():
 # ── Optional departments: the other half of the contract ────────────────
 
 
-def test_an_optional_department_is_absent_when_the_plan_omits_it():
+# `OPTIONAL_DEPARTMENTS` is EMPTY as of the two finished migrations, and iterating
+# it is how these three tests silently stopped testing anything. They inject a
+# synthetic member instead, so the mechanism stays covered whether or not a
+# department happens to be mid-pilot today — which is the only state in which a
+# bug here would ever ship.
+OPTIONAL_UNDER_TEST = "featured-artist"
+
+
+def _as_optional(monkeypatch, dept_id=OPTIONAL_UNDER_TEST):
+    """Declare one real department optional, in both modules that read the set.
+
+    Both do `from .issue_spec import OPTIONAL_DEPARTMENTS`, so the binding to
+    patch is the consumer's own global — patching `issue_spec` would not be seen.
+    """
+    from manamap.pilot import build_manual as bm
+    monkeypatch.setattr(bm, "OPTIONAL_DEPARTMENTS", frozenset({dept_id}))
+    return dept_id
+
+
+def test_an_optional_department_is_absent_when_the_plan_omits_it(monkeypatch):
     """`OPTIONAL_DEPARTMENTS` exists so a department can be piloted on one deck.
 
     A department arriving in `DEPARTMENTS` used to invalidate every issue plan at
@@ -775,13 +792,13 @@ def test_an_optional_department_is_absent_when_the_plan_omits_it():
     older plan without it stays valid — and the renderer has to agree, or an issue
     that never opted in prints an empty department with a [TODO] in it.
     """
+    dept_id = _as_optional(monkeypatch)
     html_out = render(plan={})
-    for dept_id in OPTIONAL_DEPARTMENTS:
-        assert f'id="{dept_id}"' not in html_out, (
-            f"{dept_id} rendered into an issue whose plan does not carry it")
+    assert f'id="{dept_id}"' not in html_out, (
+        f"{dept_id} rendered into an issue whose plan does not carry it")
 
 
-def test_an_optional_department_leaves_no_dead_link_in_the_flight_plan():
+def test_an_optional_department_leaves_no_dead_link_in_the_flight_plan(monkeypatch):
     """The Flight Plan must skip what the body skipped.
 
     Caught in review rather than by a test: the body correctly omitted the section
@@ -789,23 +806,37 @@ def test_an_optional_department_leaves_no_dead_link_in_the_flight_plan():
     issues — in the one department whose entire job is telling a reader where
     things are.
     """
+    dept_id = _as_optional(monkeypatch)
     html_out = render(plan={})
-    for dept_id in OPTIONAL_DEPARTMENTS:
-        assert f'href="#{dept_id}"' not in html_out, (
-            f"the Flight Plan links to {dept_id}, which this issue does not carry")
+    assert f'href="#{dept_id}"' not in html_out, (
+        f"the Flight Plan links to {dept_id}, which this issue does not carry")
 
 
-def test_an_optional_department_renders_when_the_plan_asks_for_it():
+def test_an_optional_department_renders_when_the_plan_asks_for_it(monkeypatch):
     """And the positive case, or the two tests above pass on a renderer that
     dropped optional departments entirely."""
-    for dept_id in OPTIONAL_DEPARTMENTS:
-        spec = DEPARTMENT_BY_ID[dept_id]
-        html_out = render(plan={"departments": [
-            {"id": dept_id, "kicker": "K", "headline": "H", "dek": "D"}]})
-        assert f'id="{dept_id}"' in html_out
-        # Through the renderer's own escaper: both of these titles carry an
-        # apostrophe, which reaches the page as &#x27; and would fail a raw match.
-        assert esc(spec["title"]) in html_out
+    dept_id = _as_optional(monkeypatch)
+    html_out = render(plan={"departments": [
+        {"id": dept_id, "kicker": "K", "headline": "H", "dek": "D"}]})
+    assert f'id="{dept_id}"' in html_out
+    # Through the renderer's own escaper: a title carrying an apostrophe reaches
+    # the page as &#x27; and would fail a raw match.
+    assert esc(DEPARTMENT_BY_ID[dept_id]["title"]) in html_out
+
+
+def test_the_optional_set_is_empty_until_something_is_being_piloted():
+    """Not a style rule — the constant's own contract, made mechanical.
+
+    "An id should be REMOVED as soon as every deck has it." Five ids have passed
+    through here across two migrations and both are finished, so the set is empty
+    and all nine issues validate against the full canonical list again. This test
+    is meant to FAIL while a department is mid-pilot: delete it for the duration,
+    or better, read the failure as the reminder to finish the migration.
+    """
+    assert OPTIONAL_DEPARTMENTS == frozenset(), (
+        f"still piloting {sorted(OPTIONAL_DEPARTMENTS)} — if every deck now "
+        f"carries these, take them out of the set; a permanently optional "
+        f"department is one nobody committed to")
 
 
 def test_at_the_table_merges_three_coach_sections_under_one_opener():
@@ -838,7 +869,11 @@ def test_at_the_table_merges_three_coach_sections_under_one_opener():
     # REQUIRED department the renderer emits from the spec regardless of the plan
     # — the merge's claim is about Act III, so ask Act III.
     assert html_out.count('id="at-the-table"') == 1
+    # The three it replaced are gone from the SPEC, not merely from this plan —
+    # asserting they do not render would now pass on any renderer at all.
     for gone in ("politics-table", "know-your-enemy", "fetch-quests"):
+        assert gone not in DEPARTMENT_IDS, (
+            f"{gone} is back in DEPARTMENTS; the Act III merge is what deleted it")
         assert f'id="{gone}"' not in html_out
 
     # ...and every body that used to have its own department still renders.

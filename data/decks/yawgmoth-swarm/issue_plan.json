@@ -29,6 +29,30 @@
       "id": "contents"
     },
     {
+      "id": "editors-letter",
+      "kicker": "FROM THE EDITOR",
+      "headline": "THE MAN WHO ISN'T THERE",
+      "dek": "Three boards in this deck's file end with every opponent at zero, and the doctor on the box is standing on none of them. This is an issue about six endings and the one hole that none of them close.",
+      "components": [
+        "letterhead"
+      ],
+      "letter_card": "Yawgmoth, Thran Physician",
+      "in_this_issue": [
+        {
+          "department": "the-kill",
+          "line": "Eleven signed files, six kills, every bound written down — two run forever, two you count against your own library."
+        },
+        {
+          "department": "whats-your-play",
+          "line": "Six mana, a running engine, no kill on the board. Commit out loud before the Coach shows his hand."
+        },
+        {
+          "department": "keep-or-ship",
+          "line": "One of these four opening sevens holds a kill and is still a ship."
+        }
+      ]
+    },
+    {
       "id": "command-zone",
       "kicker": "THE ZONE",
       "headline": "TRADE HIM. THEN PROTECT HIM.",
@@ -56,6 +80,7 @@
       "headline": "A VALUE DECK UNTIL IT ISN'T",
       "dek": "The table sees a swarm of one-mana bodies and a doctor drawing cards. What they are looking at is six verified ways to end all of them at once — you just haven't picked one yet.",
       "components": [
+        "engine-flow",
         "callout-step",
         "pilot-tip",
         "pull-quote"
@@ -97,14 +122,22 @@
           "text": "Cast it on turn two every single time — a body every upkeep for 1 life is the cheapest fodder you will ever buy."
         }
       ],
-      "pull_quote": "You are nothing, and then you are the whole table. There is no board in between."
+      "pull_quote": "You are nothing, and then you are the whole table. There is no board in between.",
+      "engine_flow": true,
+      "engine_caption": "YAWGMOTH, running. Eight stages from thirty-six lands to six kills, and eleven of the fifteen arrows are carried by a signed file.",
+      "not_modelled": [
+        "The primary engine is declared as a kill and four signed files measure its board without killing anyone: one Nest rotation from three bodies is 5 to 8 activations and 28 to 52 life off a pod of 160. Stack 004's checker-passed resolution ends \"NOT A KILL, AND NOT EVEN CLOSE\", and none of the four carries the board into a second turn.",
+        "Feed the Swarm is priced as the deck's only answer to a noncreature permanent, and it reads creature or enchantment. Both cheap cards that switch this deck off — Grafdigger's Cage and Cursed Totem — are artifacts, a class all 80 entries answer zero times, so that rate is not 17.1% but zero.",
+        "Every assembly figure in this issue prices the pieces arriving in your hand. The model develops resources rather than playing games, so nothing here prices how many rotations a pod takes to die — that is written down as an open question, not a number."
+      ]
     },
     {
       "id": "the-99",
       "kicker": "ROLL CALL",
-      "headline": "ELEVEN GROUPS, AND THE ONE THAT ISN'T HERE",
-      "dek": "Read the first group and you know how this deck ends games. Read to the end and you will notice the group nobody could write for it: the cards that destroy an artifact.",
+      "headline": "SIX CITIES, AND THE ONE THAT ISN'T HERE",
+      "dek": "Six cities, cut from the deck's own cards, and the biggest block on the page is the fodder — bodies whose whole job is to die twice. Then count the cards that destroy an artifact, because nobody could write that group for this deck.",
       "components": [
+        "constellation",
         "callout-step",
         "pilot-tip",
         "pull-quote"
@@ -278,7 +311,17 @@
           "text": "Use it for outlet work and bulk mana only — its colorless does not pay Gravecrawler's {B}."
         }
       ],
-      "pull_quote": "Thirty-nine combo lines are fully contained in this list, eleven of them two-card infinites. Eight signed files make six of them shapes. Containment is a shortlist, never evidence."
+      "pull_quote": "Thirty-nine combo lines are fully contained in this list, eleven of them two-card infinites. Eight signed files make six of them shapes. Containment is a shortlist, never evidence.",
+      "constellation": true,
+      "constellation_caption": "YAWGMOTH, mapped. Six cities across 80 cards, cut from the deck's own text — a card sits beside the cards that do its job, and the land city is the only one holding no verified card. Positions are LOCAL to this deck and are not atlas positions.",
+      "group_by": "city"
+    },
+    {
+      "id": "pilots-log",
+      "kicker": "THE PANEL",
+      "headline": "THE ON SWITCH IS NOT THE COMMANDER",
+      "dek": "Sunny opens by saying the card on the front of the box is your draw engine and not your on switch. Vera spends the page making that claim smaller without breaking it, and Ledger prices both layers — the outlet turns up first.",
+      "components": []
     },
     {
       "id": "keep-or-ship",
@@ -434,60 +477,26 @@
       "pull_quote": "An unbounded loop is a decision. A counted loop is arithmetic. The engine is a pace. Know which one you are announcing before you go."
     },
     {
-      "id": "politics-table",
+      "id": "at-the-table",
       "kicker": "THREE OPPONENTS",
       "headline": "NOTHING, THEN EVERYTHING",
       "dek": "There is no board where you are lethal on one seat and merely scary to the rest — every signed shape ends the table together. So what do three opponents actually read off your permanents, and how do you spend the misread?",
       "components": [
+        "threat-box",
         "callout-step",
         "pilot-tip",
         "pull-quote"
       ],
-      "callouts": [
-        {
-          "n": 1,
-          "title": "THREAT WINDOW: THE SHAPE, NOT THE SWARM",
-          "text": "The table counts creatures, and the goldfish has you at a mean of 4.239 bodies by turn six — a fair little swarm, and not the plan. The board that ends the game is two to four specific permanents, and nobody at a Commander table audits permanents for a shape. Let them count."
+      "subheads": {
+        "enemy": {
+          "headline": "THE WRATH PAYS YOU. THE CAGE DOESN'T.",
+          "dek": "Six seats graded, and the sweeper is the one you want — nine drains bill the table for every body it takes. Read each box below for the same thing: which of your six shapes does this seat leave alive?"
         },
-        {
-          "n": 2,
-          "title": "THREAT WINDOW: THE SECOND NONCREATURE PAYOFF",
-          "text": "The flip is not board width — it is the second noncreature payoff resolving: Exquisite Blood, an Altar beside a Gravecrawler, Mikaeus untapping. Quiet combo decks are exactly who experienced tables hit, so never claim you have nothing: claim the board they can see — the swarm, the drains — and sell that as the whole story. Then sequence the loud half last, with the table's open mana counted first."
-        },
-        {
-          "n": 3,
-          "title": "THE PERMANENT YOU CANNOT BUY BACK",
-          "text": "Grafdigger's Cage sits on the graveyard-casting and undying halves of the suite on a straight oracle reading; Cursed Totem sits on the creature outlets and the commander himself. Nothing in all 80 entries destroys an artifact, so stop shopping for the answer you do not own. Find the artifact-removal seats at Rule 0, invest early — your spot removal on their problems, your silence on their engines — and the day a Cage resolves, their Disenchant is worth more than any card you draw, so overpay for it."
-        },
-        {
-          "n": 4,
-          "title": "SAY IT STRAIGHT AT RULE ZERO",
-          "text": "Bracket floor 4, Optimized, forced twice over: four Game Changers — Ancient Tomb, Demonic Tutor, Necropotence, Vampiric Tutor — and eleven two-card infinite records, inside a declared target of 4. Then the sentence that matters: six rules-verified kill shapes, two unbounded, every one ending all opponents at once. You never present lethal to a seat, only to the table."
+        "tutors": {
+          "headline": "FIVE WISHES, AND NOT ONE OF THEM FOR AN OUTLET",
+          "dek": "Your enabler classes turn up on their own in four games of five, and your kills do not. A tutor here is never a repair — it is a conversion, and it multiplies every one of the six kill rates on the sheet."
         }
-      ],
-      "captions": {
-        "Grave Pact": "**THE ROOM-CHANGER:** a drain takes life quietly; an edict takes a creature from every opponent in front of everybody, each time a body of yours dies. Expect to be priced on the edicts, not the drains.",
-        "Exquisite Blood": "**IT DOES NOTHING THE TURN IT LANDS:** which is exactly why it resolves. Deploy the lifegain body first — a two-mana cleric reads as fair — and let the enchantment look like a lifegain card.",
-        "Necropotence": "**WHAT ACTUALLY SPENDS YOUR LIFE:** not the engine. This, Bitterblossom, Black Market Connections, City of Brass, Ancient Tomb. One signed loop finishes you at 80 and another nets exactly zero — spend early points like the cheap currency they are."
       },
-      "pilot_tips": [
-        {
-          "card": "Lightning Greaves",
-          "text": "Equip at sorcery speed the turn before the engine turn — after the removal is announced it is decoration."
-        }
-      ],
-      "pull_quote": "You get no warning turn, so neither does the table. Reveal the loud half at the end step before your own."
-    },
-    {
-      "id": "know-your-enemy",
-      "kicker": "THE SEATS ACROSS FROM YOU",
-      "headline": "WHO ACTUALLY BEATS YOU",
-      "dek": "It is not the wrath — the wrath pays you four different ways. It is a one-mana artifact, so read every box below for the same thing: which of the six shapes does this seat leave alive?",
-      "components": [
-        "threat-box",
-        "pilot-tip",
-        "pull-quote"
-      ],
       "threats": [
         {
           "archetype": "Sweeper control",
@@ -579,62 +588,63 @@
           ]
         }
       ],
-      "captions": {
-        "Plumb the Forbidden": "**THE WRATH, CONVERTED:** sacrifice any number of creatures as an additional cost and copy it for each — their announcement becomes your draw step, and every death fires whatever drain you have down.",
-        "Feed the Swarm": "**THE WHOLE ANSWER TO A CLASS:** the only card in the 99 that destroys a noncreature permanent an opponent controls, and it reads creature or enchantment. A resolved artifact has no answer in this library."
-      },
-      "pilot_tips": [
-        {
-          "card": "Bojuka Bog",
-          "text": "Bank it — it enters tapped anyway, so play it on the turn their graveyard matters rather than the turn it is convenient."
-        }
-      ],
-      "pull_quote": "Interaction slots are the price of a linear engine. You paid it, and the bill arrives as a two-mana artifact you cannot remove."
-    },
-    {
-      "id": "fetch-quests",
-      "kicker": "FIVE WISHES",
-      "headline": "WISH FOR THE KILL, NOT THE ENGINE",
-      "dek": "Your enabler classes turn up on their own in four games of five. Your kills do not — so what is a tutor actually buying, and which single card completes two of them?",
-      "components": [
-        "callout-step",
-        "pilot-tip",
-        "pull-quote"
-      ],
       "callouts": [
         {
           "n": 1,
+          "title": "THREAT WINDOW: THE SHAPE, NOT THE SWARM",
+          "text": "The table counts creatures, and the goldfish has you at a mean of 4.239 bodies by turn six — a fair little swarm, and not the plan. The board that ends the game is two to four specific permanents, and nobody at a Commander table audits permanents for a shape. Let them count."
+        },
+        {
+          "n": 2,
+          "title": "THREAT WINDOW: THE SECOND NONCREATURE PAYOFF",
+          "text": "The flip is not board width — it is the second noncreature payoff resolving: Exquisite Blood, an Altar beside a Gravecrawler, Mikaeus untapping. Quiet combo decks are exactly who experienced tables hit, so never claim you have nothing: claim the board they can see — the swarm, the drains — and sell that as the whole story. Then sequence the loud half last, with the table's open mana counted first."
+        },
+        {
+          "n": 3,
+          "title": "THE PERMANENT YOU CANNOT BUY BACK",
+          "text": "Grafdigger's Cage sits on the graveyard-casting and undying halves of the suite on a straight oracle reading; Cursed Totem sits on the creature outlets and the commander himself. Nothing in all 80 entries destroys an artifact, so stop shopping for the answer you do not own. Find the artifact-removal seats at Rule 0, invest early — your spot removal on their problems, your silence on their engines — and the day a Cage resolves, their Disenchant is worth more than any card you draw, so overpay for it."
+        },
+        {
+          "n": 4,
+          "title": "SAY IT STRAIGHT AT RULE ZERO",
+          "text": "Bracket floor 4, Optimized, forced twice over: four Game Changers — Ancient Tomb, Demonic Tutor, Necropotence, Vampiric Tutor — and eleven two-card infinite records, inside a declared target of 4. Then the sentence that matters: six rules-verified kill shapes, two unbounded, every one ending all opponents at once. You never present lethal to a seat, only to the table."
+        },
+        {
+          "n": 5,
           "title": "NEVER WISH FOR A COVERED CLASS",
           "text": "By turn ten, on your own draws: a drain 82.3%, renewable fodder 82.3%, a free repeatable outlet 78.5%, an ignition source 73.8%. Those cards are already coming. The one engine errand a wish is allowed to run is fast mana — three cards, 43.6%, the smallest and lowest-rated class on the sheet."
         },
         {
-          "n": 2,
-          "title": "THE KILLS ARE WHAT MOVES",
-          "text": "The Nest engine goes 7.5% to 38.9% assembled by turn six. Exquisite Blood 6.6% to 42.6% overall — the biggest mover on the sheet. The Mikaeus line 4.6% to 34.3%, the undying pair 1.8% to 26.9%, the Soultrader loop 1.3% to 18.2%, the Altar loop 0.6% to 12.0% — multiples every one, and that is the entire job of these five cards."
-        },
-        {
-          "n": 3,
+          "n": 6,
           "title": "THE DEFAULT FETCH IS NEST OF SCARABS",
           "text": "The primary line runs through one card with no substitute in the colour, and these five tutors are its only redundancy — demand a reason to deviate. When you do: Gravecrawler completes both unbounded kills at once (17.0% on your own draws), and Bastion of Remembrance is the drain five signed files resolved with (17.8%). A wish on either is a wish on several kills."
         },
         {
-          "n": 4,
+          "n": 7,
           "title": "KNOW YOUR OWN CAPS",
           "text": "Beseech the Mirror's bargained free cast stops at mana value 4: it reaches Nest of Scarabs, Bastion of Remembrance, Warren Soultrader, Phyrexian Altar, Marauding Blight-Priest, Starscape Cleric, South Wind Avatar and Feed the Swarm — and never Exquisite Blood at 5 or Mikaeus at 6. Those two belong to Demonic Tutor. Vampiric Tutor lands on top and costs the draw step, so book it at the end step before your own turn."
         }
       ],
-      "captions": {
-        "Diabolic Intent": "**THE COST THAT ISN'T:** the creature you sacrifice is a drain trigger with any payoff down, an edict with Grave Pact, and a Spawn with Pawn of Ulamog out. Pay it with a token, never with a piece.",
-        "Demonic Tutor": "**NO CONDITIONS, NO CEILING:** the only wish that does not care what the card costs, which makes it the only route to Exquisite Blood or Mikaeus on curve.",
-        "Vampiric Tutor": "**AN APPOINTMENT, NOT AN ARRIVAL:** it books the card on top for two life, so the transit turn is the price. Fire it at the end step before your own and the price rounds to nothing."
-      },
       "pilot_tips": [
+        {
+          "card": "Lightning Greaves",
+          "text": "Equip at sorcery speed the turn before the engine turn — after the removal is announced it is decoration."
+        },
+        {
+          "card": "Bojuka Bog",
+          "text": "Bank it — it enters tapped anyway, so play it on the turn their graveyard matters rather than the turn it is convenient."
+        },
         {
           "card": "Insatiable Avarice",
           "text": "Cast both Spree modes and point the draw at yourself — the search resolves first, so the draw delivers exactly what you just booked."
         }
       ],
-      "pull_quote": "You are not tutoring to make this deck function. You are tutoring to convert."
+      "captions": {
+        "Grave Pact": "**THE ROOM-CHANGER:** a drain takes life quietly; an edict takes a creature from every opponent in front of everybody, each time a body of yours dies. Expect to be priced on the edicts, not the drains.",
+        "Feed the Swarm": "**THE WHOLE ANSWER TO A CLASS:** the only card in the 99 that destroys a noncreature permanent an opponent controls, and it reads creature or enchantment. A resolved artifact has no answer in this library.",
+        "Vampiric Tutor": "**AN APPOINTMENT, NOT AN ARRIVAL:** it books the card on top for two life, so the transit turn is the price. Fire it at the end step before your own and the price rounds to nothing."
+      },
+      "pull_quote": "Interaction slots are the price of a linear engine. You paid it, and the bill arrives as a two-mana artifact you cannot remove."
     },
     {
       "id": "sources-say",
@@ -813,7 +823,7 @@
       "note": "Renderer: NEXT ISSUE reads 'TO BE ANNOUNCED' from issue.json — print it as authored rather than inventing a deck. Colophon carries the rules version, the decklist sha and the generation provenance."
     }
   ],
-  "rhythm_notes": "Act I opens on instruction (The Command Zone: one hero image, the tax ladder, the phase rule), climbs to the issue's narrative high in The Game Plan, then drops to the lowest-effort spread in the book — The 99, eleven roster groups you browse rather than read. Act II climbs again: practice in Keep or Ship, two participation spreads in What's Your Play?, then The Kill as the mid-book peak carrying the heaviest furniture in the issue — eight callout-steps for six shapes and their bounds — exactly where the reader has the most momentum. Act III runs single-voice and medium the whole way: reflection (Table Manners), reference (Know Your Enemy's six threat boxes), instruction (Fetch Quests) — the deliberate long exhale after the peak. Act IV carries the issue's only dense adjacency, Sources Say into By the Numbers, and it is legal because the renderer emits the declared full-bleed art break between them; The Short List then drops to imagination as the trough before the appendix. Act V descends cleanly: Judge's Desk is opt-in deep reference with one component and no callouts, Featured Artist is the palate cleanser with a breadth story instead of a manufactured star, the Back Page closes. Furniture is thinnest where intensity is lowest — Judge's Desk carries a pull quote and nothing else; The Short List one caption and no tips.",
+  "rhythm_notes": "Act I opens on instruction (The Command Zone: one hero image, the tax ladder, the phase rule), climbs to the issue's narrative high in The Game Plan, then drops to the lowest-effort spread in the book — The 99, eleven roster groups you browse rather than read. Act II climbs again: practice in Keep or Ship, two participation spreads in What's Your Play?, then The Kill as the mid-book peak carrying the heaviest furniture in the issue — eight callout-steps for six shapes and their bounds — exactly where the reader has the most momentum. Act III runs single-voice and medium the whole way: reflection (Table Manners), reference (Know Your Enemy's six threat boxes), instruction (Fetch Quests) — the deliberate long exhale after the peak. Act IV carries the issue's only dense adjacency, Sources Say into By the Numbers, and it is legal because the renderer emits the declared full-bleed art break between them; The Short List then drops to imagination as the trough before the appendix. Act V descends cleanly: Judge's Desk is opt-in deep reference with one component and no callouts, Featured Artist is the palate cleanser with a breadth story instead of a manufactured star, the Back Page closes. Furniture is thinnest where intensity is lowest — Judge's Desk carries a pull quote and nothing else; The Short List one caption and no tips. AMENDED: Act III's three Coach departments (Table Manners, Know Your Enemy, Fetch Quests) have since merged into the single At the Table, which carries all three arguments under written subheads — so any buffering described above between those three is now internal to one department, and the Editor's Letter and the Pilot's Log have joined Act I with the panel running last, behind The 99.",
   "gaps": [
     "IDENTITY GATE FOR THE ORCHESTRATOR: issue.json stamps decklist_sha256 7eef02f1... while cards.json carries 3ddfb869... — validate-issue will fail the identity check until the stamped hash is deliberately updated to the decklist this issue actually describes.",
     "PRESENTATION GATE: fourteen stacks are checker-passed and eleven are presentable; files 001, 007 and 013 resolve boards holding Blowfly Infestation or Necroskitter, which are not in the 99, so every count in this plan — eleven files, eight kill files, six shapes — is written against the eleven. The proliferate token-count arithmetic (three Insects, not six) is echoed only as settled prose, with no file number attached.",
@@ -822,6 +832,7 @@
     "STACK SCENARIOS WORTH SPAWNING, RANKED: (1) the six shapes under a resolved Grafdigger's Cage — four of six look Cage-shaped on oracle reading, most of this issue's political advice rests on it, and nothing signed settles it; (2) the outlet class under Cursed Totem — whether any kill assembles through the noncreature remainder decides how deep the artifact hole goes; (3) The Meathook Massacre as a substitute drain in the recursion loops, which would widen the slot three signed kills share; (4) Exquisite Blood ignition via Marauding Blight-Priest or Starscape Cleric, since neither gains life by itself and the signed board ignited from the Avatar's own dies-trigger; (5) the bare Mikaeus two-card records — eight of the eleven bracket-forcing infinites are in that family, none has counter-stripping on plain reading, and the strategic frame flags them as the containment block most likely to be refuted.",
     "FEATURED ARTIST IS THIN AND HONEST: no standout exists (deepest credit three cards), so the section runs as a breadth feature; the note states the per-entry counting rule, names the 21-copy Swamp trap, and claims no curation the analysis cannot support (drop_runs is empty).",
     "STRATEGY DB HOLES THIS ISSUE WROTE AROUND (from the frame's gap list): no aristocrats outlet/fodder/payoff section; no vocabulary for what BOUNDS an iterative engine — this issue ships one of each kind; no theory of creation-side versus death-side trigger surface (file 008's finding); nothing pricing a recursive copy above a one-shot in redundancy math; no class for mana-free self-funding kills, this deck's best property under tax; no discipline for reading six correlated kill rates as one number — By the Numbers declines instead; and no guidance for a SPLIT kill suite's commander insurance, which The Command Zone coaches as protect-by-phase.",
-    "TIER DISCIPLINE: the six shapes are stated as fact only with their file numbers; every assembly percentage is phrased as a draw rate, never a win rate; the 39 contained lines and eleven two-card records are named as containment, never evidence; The Command Zone fences its judgment under COACH'S READ. PUN BUDGET: three, all in furniture — 'THE HUB IN FURNITURE'S CLOTHES', 'THE COST THAT ISN'T', and the headline 'SIXTY-EIGHT HANDS, NO HEADLINER'."
+    "TIER DISCIPLINE: the six shapes are stated as fact only with their file numbers; every assembly percentage is phrased as a draw rate, never a win rate; the 39 contained lines and eleven two-card records are named as containment, never evidence; The Command Zone fences its judgment under COACH'S READ. PUN BUDGET: three, all in furniture — 'THE HUB IN FURNITURE'S CLOTHES', 'THE COST THAT ISN'T', and the headline 'SIXTY-EIGHT HANDS, NO HEADLINER'.",
+    "LENGTH: 96.5 rendered screens against a 40-screen target. The Kill alone is 26.1 screens (44,119 words) and At the Table 14.8 — both are agent prose below the packaging layer, not furniture: the eight kill callouts and the merged act's seven are each inside budget. The cut that would move this issue is The Kill's eleven case narrations, not another packaging pass."
   ]
 }
