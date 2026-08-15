@@ -1348,3 +1348,66 @@ def test_an_unknown_feature_id_does_not_take_the_magazine_down():
                       prose_doc=dict(PROSE, combo_lines={"001": "A.", "002": "B."}))
     assert 'class="kill-index"' in html_out
     assert html_out.count('class="th-deck"') == 0
+
+
+# ── Withheld cases ───────────────────────────────────────────────────────
+
+
+def _withheld_stack():
+    """A checker-passed stack held back because a card left the 99."""
+    doc = copy.deepcopy(verified_stack())
+    doc["id"] = "009"
+    doc["title"] = "The old loop: does the bench card still carry it?"
+    # Its resolution must not share a word with the presentable fixture, or the
+    # "does not publish its resolution" assertion cannot discriminate — it caught
+    # exactly that on the first run, matching the OTHER stack's identical text.
+    doc["resolution"]["steps"][0]["action"] = "WITHHELD-ACTION-SENTINEL"
+    doc["resolution"]["steps"][0]["citations"][0]["quote"] = "WITHHELD-QUOTE-SENTINEL"
+    doc["resolution"]["final_state"]["summary"] = "WITHHELD-SUMMARY-SENTINEL"
+    doc["presentable"] = False
+    doc["presentable_note"] = ("Bench Card is on this board and is no longer in "
+                               "the 99. The resolution stands as a rules finding.")
+    return doc
+
+
+def test_a_withheld_case_gets_a_row_and_its_reason():
+    """A published resolution says "as in stack 001" nineteen times across two
+    issues, and stack 001 is in neither — the reader hunts for a case that was
+    deliberately not printed. Judge's Desk now names it and says why."""
+    html_out = render(withheld_stacks=[_withheld_stack()])
+    assert "Named in the issue, not printed here" in html_out
+    assert 'id="case-009"' in html_out, "the dead pointer still has nowhere to land"
+    assert "no longer in the 99" in html_out, "the recorded reason was dropped"
+
+
+def test_a_withheld_case_does_not_publish_its_resolution():
+    """The whole reason it is withheld. It cleared the checker, so its steps are
+    real — and the board is one this deck cannot make, so presenting the line
+    would claim something false about the deck."""
+    withheld = _withheld_stack()
+    html_out = render(withheld_stacks=[withheld])
+    step = withheld["resolution"]["steps"][0]
+    assert step["action"] not in html_out
+    assert step["citations"][0]["quote"] not in html_out
+    assert withheld["resolution"]["final_state"]["summary"] not in html_out
+
+
+def test_no_withheld_block_when_nothing_is_withheld():
+    """Seven of nine decks withhold nothing; their Judge's Desk must not grow a
+    heading explaining an absence that does not exist."""
+    assert "Named in the issue, not printed here" not in render()
+
+
+def test_the_referring_prose_is_never_rewritten():
+    """The tempting fix, and the wrong one.
+
+    A referring stack passed the checker, so its step text is EVIDENCE — editing
+    it to remove a pointer puts a ✓ badge over words no checker read. The
+    renderer prints what the artifact says, and the absence is explained
+    elsewhere. This asserts the renderer does not quietly scrub the reference.
+    """
+    referring = copy.deepcopy(verified_stack())
+    referring["resolution"]["steps"][0]["effect"] = "Identical to stack 009."
+    html_out = render(stacks=[referring], withheld_stacks=[_withheld_stack()],
+                      prose_doc=dict(PROSE, combo_lines={"001": "Intro."}))
+    assert "Identical to stack 009." in html_out
