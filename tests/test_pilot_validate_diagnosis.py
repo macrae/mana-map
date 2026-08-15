@@ -11,7 +11,7 @@ checks that a `natural_cut` is a real card and stops there.
 from manamap.pilot import validate_diagnosis as vd
 from manamap.pilot.common import deck_dir
 
-from conftest import requires_deck, requires_roles, requires_strategy
+from conftest import requires_data, requires_deck, requires_roles, requires_strategy
 
 
 def _deck(main=("Alpha", "Beta"), commander="Cmdr", bench=()):
@@ -375,8 +375,13 @@ def test_prose_closes_is_skipped_not_failed():
     assert vd._named_axis("engine component: ignition") is None
 
 
+# Needs the CORPUS, not just the deck: `_validate_prescription_moves`
+# short-circuits without `_corpus_oracle()`, which reads the gitignored
+# `cards.csv`. Ungated, both of these failed on a fresh clone — the check
+# silently found nothing and the assertion that it finds something failed.
 @requires_deck
 @requires_roles
+@requires_data
 def test_an_add_that_does_not_move_its_named_axis_is_caught():
     """ur-dragon proposed Bojuka Bog to close interaction-breadth.
 
@@ -393,8 +398,13 @@ def test_an_add_that_does_not_move_its_named_axis_is_caught():
     assert any("Bojuka Bog" in e and "interaction-breadth" in e for e in errors)
 
 
+# Needs the CORPUS, not just the deck: `_validate_prescription_moves`
+# short-circuits without `_corpus_oracle()`, which reads the gitignored
+# `cards.csv`. Ungated, both of these failed on a fresh clone — the check
+# silently found nothing and the assertion that it finds something failed.
 @requires_deck
 @requires_roles
+@requires_data
 def test_an_add_redundant_within_its_own_package_is_caught():
     """hapatra proposed Assassin's Trophy AND Nature's Claim, both for breadth.
 

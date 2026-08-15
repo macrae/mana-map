@@ -13,6 +13,15 @@ PIP     := $(VENV)/bin/pip
 PYTEST  := $(PY) -m pytest
 PORT    ?= 8000
 
+# The 3.10 interpreter to build the venv from. Overridable, because plenty of
+# people have 3.10 without having `python3.10` on PATH — this repo's own
+# development venv is a conda build, so `make setup` would have refused to run on
+# the machine that wrote it:
+#
+#   make setup PYTHON310=$$HOME/opt/miniconda3/envs/py310/bin/python3.10
+#   make setup PYTHON310=$$(pyenv which python3.10)
+PYTHON310 ?= python3.10
+
 .DEFAULT_GOAL := help
 .PHONY: help setup test test-all test-browser test-fresh serve manuals clean check
 
@@ -24,13 +33,17 @@ help:  ## Show this help
 	@echo "    python3 -m http.server $(PORT)   then open localhost:$(PORT)/viz/index.html"
 
 $(VENV):
-	@command -v python3.10 >/dev/null 2>&1 || { \
-	  echo "ERROR: python3.10 not found."; \
-	  echo "  This project needs Python 3.10 EXACTLY — PyTorch publishes no wheels"; \
-	  echo "  for 3.13+, and the pins target torch 2.2.2."; \
-	  echo "  macOS:  brew install python@3.10   (or use pyenv / conda)"; \
+	@"$(PYTHON310)" -c 'import sys; sys.exit(0 if sys.version_info[:2]==(3,10) else 1)' \
+	  2>/dev/null || { \
+	  echo "ERROR: no usable Python 3.10 at '$(PYTHON310)'."; \
+	  echo "  This project needs 3.10 EXACTLY — PyTorch publishes no wheels for"; \
+	  echo "  3.13+, and the pins target torch 2.2.2."; \
+	  echo ""; \
+	  echo "  Install one:   brew install python@3.10   |   pyenv install 3.10"; \
+	  echo "  Already have one that isn't called python3.10 on PATH?"; \
+	  echo "    make setup PYTHON310=/path/to/python3.10"; \
 	  exit 1; }
-	python3.10 -m venv $(VENV)
+	"$(PYTHON310)" -m venv $(VENV)
 
 setup: $(VENV)  ## Create .venv and install everything, in the order that works
 	@echo "==> llvmlite + numba FIRST (prebuilt wheels; pacmap would source-build LLVM)"

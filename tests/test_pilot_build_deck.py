@@ -4,6 +4,8 @@
 import pandas as pd
 import pytest
 
+from conftest import requires_data
+
 from manamap.config import DECK_ROLE_BUDGET, DECK_SIZE
 from manamap.pilot import build_deck
 from manamap.pilot.build_deck import (
@@ -418,6 +420,10 @@ def test_must_include_outside_the_pool_is_rejected():
         ))
 
 
+# Reads the POOL through `card_pool`, which is the only reader of the
+# gitignored `cards.csv` — so this needs the corpus, not just a deck. It was
+# ungated and failed on a fresh clone.
+@requires_data
 def test_pool_files_are_parsed_by_the_same_reader_pool_facts_uses(tmp_path):
     """A box analysed and a box built from must never disagree about its contents."""
     lst = tmp_path / "box.txt"
@@ -426,6 +432,7 @@ def test_pool_files_are_parsed_by_the_same_reader_pool_facts_uses(tmp_path):
     assert pool == {"Hapatra, Vizier of Poisons", "Blood Artist"}
 
 
+@requires_data
 def test_an_unresolvable_pool_card_is_rejected_not_ignored(tmp_path):
     lst = tmp_path / "box.txt"
     lst.write_text("1 Hapatra, Vizier of Poisons\n1 Not A Real Card\n")

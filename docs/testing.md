@@ -27,6 +27,30 @@ instead. To print the current numbers rather than trust a snapshot:
 .venv/bin/python -m pytest -m "not browser" --collect-only -q | tail -1
 ```
 
+### Measured 2026-08-15, idle 8-core machine
+
+| | |
+|---|---:|
+| `make test` — cold cache | **36 s** |
+| `make test` — warm cache | **22 s** |
+| `make test-fresh` | **29 s** |
+| serial, before any of this work | 86.5 s |
+| `make test-browser` (`-n 4`) | 234 s |
+| **a fresh clone, cold** | **20 s** (1,360 passed, 129 gate-skipped) |
+
+A fresh clone is FASTER than a developed checkout, which is not a paradox: 129
+cases gate on gitignored artifacts a clone has not generated, and the expensive
+`requires_data` ones are among them.
+
+**That fresh-clone number is measured by actually doing it** — `git clone` into
+an empty directory, `make setup`, `make test` — and the first time anyone did,
+**23 tests failed**. Five read the pool through `card_pool` (the only reader of
+the gitignored `cards.csv`) and eighteen validate `strategy:` citations against a
+DB that is built locally. All 23 were correct tests with missing gates, and no
+amount of running the suite on a developed machine could have found them: the
+artifacts were always there. Re-clone and re-run whenever you add a test that
+touches `data/`.
+
 As of 2026-08-15: **1,624 tests** across 63 files — 1,488 fast and 136 browser. One is a
 deliberately unmet `xfail(strict=True)` ship gate in `test_embedding_quality.py` (see
 below); it is a target the code has not reached, not a broken test.

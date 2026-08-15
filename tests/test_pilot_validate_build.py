@@ -4,6 +4,8 @@
 from manamap.pilot import validate_build
 from manamap.pilot.validate_build import deck_card_names, validate
 
+from conftest import requires_data
+
 
 def _plan(**overrides):
     plan = {
@@ -325,6 +327,10 @@ def _pool_plan(names, files, cards=None):
     }
 
 
+# Reads the POOL through `card_pool`, which is the only reader of the
+# gitignored `cards.csv` — so this needs the corpus, not just a deck. It was
+# ungated and failed on a fresh clone.
+@requires_data
 def test_a_card_outside_the_declared_pool_is_an_error(tmp_path):
     box = tmp_path / "box.txt"
     box.write_text("1 Hapatra, Vizier of Poisons\n1 Blood Artist\n")
@@ -335,6 +341,7 @@ def test_a_card_outside_the_declared_pool_is_an_error(tmp_path):
     assert errors == ["card outside the declared pool: Black Lotus"]
 
 
+@requires_data
 def test_a_build_inside_its_pool_passes(tmp_path):
     box = tmp_path / "box.txt"
     box.write_text("1 Hapatra, Vizier of Poisons\n1 Blood Artist\n1 Zulaport Cutthroat\n")
@@ -343,6 +350,7 @@ def test_a_build_inside_its_pool_passes(tmp_path):
     ) == []
 
 
+@requires_data
 def test_basics_are_exempt_from_the_pool_check(tmp_path):
     """You always own another Swamp; a pool listing four must not cap the base."""
     box = tmp_path / "box.txt"

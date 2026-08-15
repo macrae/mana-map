@@ -21,7 +21,8 @@ import pytest
 
 from manamap.config import (CARD_ROLES_PATH, COMBO_DETAILS_PATH, DECKS_DIR,
                             OBSOLESCENCE_INDEX_PATH, OUTPUT_CSV_PATH,
-                            STRATEGY_DOC_PATH, SYNERGY_GRAPH_PATH)
+                            STRATEGY_DOC_PATH, STRATEGY_INDEX_PATH,
+                            SYNERGY_GRAPH_PATH)
 from manamap.pilot import (
     validate_considering,
     validate_deck_map,
@@ -69,10 +70,22 @@ def _cases():
             for art in sorted(GATED) if (d / art).exists()]
 
 
+# Two validators reach through `validate_stack.load_strategy_sections` and report
+# every `strategy:<id>` citation as an error when the DB is absent. The DB is
+# gitignored and built locally, so on a FRESH CLONE these sixteen cases failed —
+# a newcomer's first `make test` was red for a missing artifact rather than a
+# defect. Found by cloning into an empty directory and running `make setup &&
+# make test`, which is the only check that finds this class of thing.
+NEEDS_STRATEGY = {"tutor_guide.json", "diagnosis.json"}
+
+
 @requires_deck
 @pytest.mark.parametrize("slug,artifact", _cases())
-def test_tracked_artifact_passes_its_validator(slug, artifact, capsys, unchanged):
+def test_tracked_artifact_passes_its_validator(slug, artifact, capsys, unchanged,
+                                               request):
     """A tracked artifact that fails its own gate is a published error."""
+    if artifact in NEEDS_STRATEGY and not STRATEGY_INDEX_PATH.exists():
+        pytest.skip("requires the strategy DB (run `manamap pilot build-strategy-db`)")
     unchanged(*INPUTS, DECKS_DIR / slug)
     try:
         GATED[artifact].main(type("Args", (), {"slug": slug})())
