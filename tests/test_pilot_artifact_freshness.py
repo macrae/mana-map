@@ -21,10 +21,22 @@ import shutil
 
 import pytest
 
-from manamap.config import DECKS_DIR
+from manamap.config import (CARD_ROLES_PATH, COMBO_DETAILS_PATH, DECKS_DIR,
+                            OUTPUT_CSV_PATH)
 from manamap.pilot import bracket, goldfish, mana_analysis
 
-from conftest import requires_deck, requires_data
+from conftest import SRC, requires_deck, requires_data
+
+# What each producer can possibly read: the whole pilot source tree, `config.py`,
+# and the deck's own directory. Naming a producer's exact imports by hand would
+# invalidate less often and could be WRONG — a missed transitive edge does not
+# fail here, it serves a stale pass. See `conftest._digest`.
+#
+# These two are a COMPLETE closure of the code, not merely a conservative guess,
+# and that was checked rather than assumed: no module under `src/manamap/pilot/`
+# imports from anywhere in `manamap` except `manamap.pilot` and `manamap.config`.
+# If that ever stops being true, this tuple has to grow with it.
+CODE = (SRC / "pilot", SRC / "config.py")
 
 
 def _slugs(artifact):
@@ -50,7 +62,7 @@ def _roundtrip(slug, artifact, rerun, tmp_path):
 @requires_deck
 @requires_data
 @pytest.mark.parametrize("slug", _slugs("bracket_report.json"))
-def test_bracket_report_matches_a_fresh_run(slug, tmp_path):
+def test_bracket_report_matches_a_fresh_run(slug, tmp_path, unchanged):
     """The one artifact with no stamp of its own.
 
     `--target` adds `target`/`within_target`/`cut_candidates`, so the rerun has
@@ -58,6 +70,9 @@ def test_bracket_report_matches_a_fresh_run(slug, tmp_path):
     with a target looks stale against a rerun without one, which is a false
     alarm rather than a finding.
     """
+    # Bracket also reads three global artifacts outside the deck directory.
+    unchanged(*CODE, DECKS_DIR / slug, OUTPUT_CSV_PATH, CARD_ROLES_PATH,
+              COMBO_DETAILS_PATH)
     tracked = json.loads((DECKS_DIR / slug / "bracket_report.json").read_text())
     target = tracked.get("target")
 
@@ -74,9 +89,16 @@ def test_bracket_report_matches_a_fresh_run(slug, tmp_path):
 
 @requires_deck
 @pytest.mark.parametrize("slug", _slugs("goldfish_metrics.json"))
-def test_goldfish_metrics_match_a_fresh_run(slug, tmp_path):
+def test_goldfish_metrics_match_a_fresh_run(slug, tmp_path, unchanged):
     """Seeded and deterministic, so a difference is a real change in the model
-    or in the deck — never noise."""
+    or in the deck — never noise.
+
+    Ten thousand games per deck, ninety thousand across the fleet, 20.5 s every
+    run to re-derive nine files that move only when a decklist or the simulator
+    does. That determinism is exactly what makes it safe to cache.
+    """
+    unchanged(*CODE, DECKS_DIR / slug)
+
     def rerun():
         goldfish.main(type("Args", (), {"slug": slug})())
 
@@ -88,9 +110,11 @@ def test_goldfish_metrics_match_a_fresh_run(slug, tmp_path):
 
 @requires_deck
 @pytest.mark.parametrize("slug", _slugs("mana_analysis.json"))
-def test_mana_analysis_matches_a_fresh_run(slug, tmp_path):
+def test_mana_analysis_matches_a_fresh_run(slug, tmp_path, unchanged):
     """Run AFTER goldfish in the real pipeline — it embeds goldfish figures —
     but the tracked copies are consistent, so order does not matter here."""
+    unchanged(*CODE, DECKS_DIR / slug)
+
     def rerun():
         mana_analysis.main(type("Args", (), {"slug": slug})())
 

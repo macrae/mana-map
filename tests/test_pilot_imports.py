@@ -45,7 +45,12 @@ def _bound_names(tree):
 
 
 @pytest.mark.parametrize("path", MODULES, ids=lambda p: p.name)
-def test_module_has_no_unbound_names(path):
+def test_module_has_no_unbound_names(path, unchanged):
+    # The whole answer is a function of this one file's bytes, which makes these
+    # 77 cases the cleanest possible proof that the `unchanged` cache invalidates
+    # correctly: edit any module and exactly one case re-runs. The time saved is
+    # 0.35 s and beside the point.
+    unchanged(path, pathlib.Path(__file__))
     tree = ast.parse(path.read_text())
     used = {n.id for n in ast.walk(tree) if isinstance(n, ast.Name) and isinstance(n.ctx, ast.Load)}
     missing = sorted(used - _bound_names(tree))

@@ -106,6 +106,7 @@ def clear_memo():
     _JSON_MEMO.clear()
     _MTIME_MEMO.clear()
     _STRATEGY_SHA_MEMO.clear()
+    _RULES_DB_MEMO.clear()
 
 
 # Freeing tens of MB of parsed JSON via refcounting is nearly free; letting it
@@ -412,18 +413,45 @@ def load_deck_cards(slug):
         return json.load(f)
 
 
+_RULES_DB_MEMO = {}
+
+
 def load_rules_db():
     """Load the rules DB. Returns (rules, order, embeddings).
 
     rules: {rule_id: {"text", "section", "parent"}}
     order: list of rule_ids, aligned so embeddings[i] embeds order[i]
     embeddings: (N, 384) float32, rows L2-normalized at build time
+
+    **Memoized on both files' (mtime_ns, size)**, and it is the loader in this
+    module that was missed: every neighbour goes through `load_json_memo` /
+    `mtime_memo` while this one re-parsed a 1.3 MB index and re-`np.load`ed a
+    6.0 MB array on *every* `query()` and `lookup()` call.
+
+    **The saving is 10 ms per repeat call, not the seconds it looks like.** It
+    was added on the assumption that it was most of `test_pilot_query_rules.py`'s
+    5.1 s; measured, the load is 10 ms and that 5.1 s is almost entirely the
+    first `sentence_transformers` import and MiniLM load, which `_MODEL_CACHE`
+    already handles. Kept because consistency in a memoized module is worth 20
+    lines and it does help a CLI session that asks several questions — but do not
+    reach for it expecting a win.
+
+    It does not use `mtime_memo` because that keys on a single path and this
+    reads two. They are written by one build step, so keying on the index alone
+    would *usually* be right — and "usually" is how a half-rebuilt DB gets served
+    from cache with the consistency check below skipped. On any signature change
+    both files are re-read and re-checked.
     """
     if not RULES_INDEX_PATH.exists():
         raise FileNotFoundError(
             f"{RULES_INDEX_PATH} not found — run `manamap pilot download-rules` "
             f"then `manamap pilot build-rules-db` first."
         )
+    sig = tuple((p.stat().st_mtime_ns, p.stat().st_size)
+                for p in (RULES_INDEX_PATH, RULES_EMBEDDINGS_PATH))
+    hit = _RULES_DB_MEMO.get("db")
+    if hit is not None and hit[0] == sig:
+        return hit[1]
     with open(RULES_INDEX_PATH) as f:
         index = json.load(f)
     embeddings = np.load(RULES_EMBEDDINGS_PATH)
@@ -433,7 +461,9 @@ def load_rules_db():
             f"Rules DB inconsistent: index has {len(order)} chunks but embeddings "
             f"have {embeddings.shape[0]} rows — re-run `manamap pilot build-rules-db`."
         )
-    return index["rules"], order, embeddings
+    value = (index["rules"], order, embeddings)
+    _RULES_DB_MEMO["db"] = (sig, value)
+    return value
 
 
 _STRATEGY_SHA_MEMO = {}

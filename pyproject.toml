@@ -21,11 +21,15 @@ dependencies = [
 # playwright drives the behavioural viz tests (tests/test_viz_behaviour.py). It needs a
 # one-time browser download: `.venv/bin/python -m playwright install chromium`. Those
 # tests skip cleanly without it, so the suite still runs on a fresh clone.
-# pytest-xdist is opt-in, not a default. `pytest -m "not browser" -n auto` runs the
-# fast suite in ~19 s against ~35 s single-process; both report identically. It is NOT
-# in addopts because the browser suite has never been exercised under parallelism
-# (session-scoped server, one BrowserContext per test) and a perf change should not
-# silently alter how everyone's tests execute.
+#
+# pytest-xdist is now ON by default (see addopts). It was held back on the grounds
+# that "the browser suite has never been exercised under parallelism" — true when
+# written, and since falsified by the repo's own record: `-n 4` runs the browser
+# suite in 232 s against ~600 s serial, and the five flakes that exposed were every
+# one a fixed `wait_for_timeout` measuring the machine rather than the behaviour.
+# They are fixed and one test is quarantined as `serial_only`. Nothing else was
+# needed: `viz_server` already picks a free port per session and `browser` is
+# session-scoped, so each xdist worker gets its own of both.
 dev = ["pytest", "pytest-xdist", "playwright"]
 
 [project.scripts]
@@ -36,7 +40,18 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-q"
+# A bare `pytest` is the INNER LOOP: the non-browser suite, parallel. It used to
+# be all 1,624 cases including the browser suite — about ten minutes — because the
+# "browser is excluded by default" rule lived in the comment below and in no
+# config anyone ran. A default nobody can afford is a default nobody uses.
+#
+#   pytest                          the inner loop
+#   pytest -n0                      same, one process (faster for a single -k;
+#                                   worker startup outweighs the split there)
+#   pytest -m browser -n 4          the viz suite
+#   pytest -m ""                    literally everything, the old default
+#   pytest --no-test-cache          nothing served from the cache (see conftest)
+addopts = "-q -m 'not browser' -n auto"
 markers = [
     # Browser tests. They boot a real Chromium against a real server and assert on what
     # rendered — the only tests here that can catch a viz regression. Excluded from the

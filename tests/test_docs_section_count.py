@@ -11,6 +11,9 @@ import re
 from pathlib import Path
 
 from manamap.pilot.issue_spec import DEPARTMENT_IDS
+# One pruned walk shared with `test_docs_counts.py`, instead of a full-tree glob
+# per reference. `tests/repo_tree.py` records what that cost.
+from repo_tree import exists_anywhere
 
 ROOT = Path(__file__).resolve().parent.parent
 # Every surface that tells an agent or a human how many sections there are.
@@ -85,17 +88,33 @@ def test_every_step_module_agrees_with_the_registry_about_its_number():
     The registry is the authority because it is what `manamap run --from STEP`
     executes. Docstring numbers are documentation, and documentation that
     contradicts the runner is worse than none: it is the thing a reader checks.
+
+    **Read by AST, not by import.** `importlib.import_module` over every step
+    pulls in torch, sentence-transformers and hdbscan — 3.3 s, and the source of
+    the three `SwigPy*` DeprecationWarnings printed on every run of the whole
+    suite — to read a string literal the parser can see for free. That is the
+    same argument `test_pilot_imports.py` already makes, and the same reason the
+    pipeline's own registry uses lazy imports.
     """
-    import importlib
+    import ast
     import re
 
     from manamap.pipeline import STEPS
 
+    def module_docstring(module_path):
+        path = ROOT / "src" / (module_path.replace(".", "/") + ".py")
+        if not path.exists():
+            return None
+        return ast.get_docstring(ast.parse(path.read_text(encoding="utf-8")))
+
     wrong = []
     for name, module_path, description in STEPS:
         expected = re.match(r"Step (\S+?):", description).group(1)
-        doc = (importlib.import_module(module_path).__doc__ or "").strip()
-        first = doc.splitlines()[0] if doc else ""
+        doc = module_docstring(module_path)
+        if doc is None:
+            wrong.append(f"{module_path}: registry names a module with no source file")
+            continue
+        first = doc.strip().splitlines()[0] if doc.strip() else ""
         found = re.match(r"Step (\S+?):", first)
         if not found:
             wrong.append(f"{module_path}: docstring does not open 'Step N: …'")
@@ -226,7 +245,7 @@ def test_live_docs_do_not_name_source_files_that_do_not_exist():
                     continue
                 if not (ROOT / ref).parent.is_dir():
                     continue          # a proposal, not a claim
-            elif any(".venv" not in str(h) for h in ROOT.glob(f"**/{ref}")):
+            elif exists_anywhere(ref):
                 continue
             window = text[max(0, match.start() - 220):match.end() + 220]
             if not gone.search(window):

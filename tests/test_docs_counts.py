@@ -31,6 +31,10 @@ import re
 
 import pytest
 
+# Shared with `test_docs_section_count.py`: one pruned walk instead of a
+# full-tree `rglob` per name. See `tests/repo_tree.py`.
+from repo_tree import exists_anywhere
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DESIGN_RECORDS = {"deck-builder-v2.md", "frontend-v2.md"}
 
@@ -162,10 +166,7 @@ def test_no_surface_names_a_deleted_module():
         "sideboard_facts.py", "validate_sideboard.py",
         "upgrade_facts.py", "validate_upgrade_watch.py",
     ]
-    still_gone = [
-        name for name in deleted
-        if not list(ROOT.rglob(name))
-    ]
+    still_gone = [name for name in deleted if not exists_anywhere(name)]
     offenders = []
     for path in SURFACES:
         if "history" in path.parts:

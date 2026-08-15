@@ -18,10 +18,15 @@ import shutil
 
 import pytest
 
-from manamap.config import DECKS_DIR, MANUALS_DIR
+from manamap.config import DECKS_DIR, MANUALS_DIR, SYNERGY_GRAPH_PATH
 from manamap.pilot import build_manual
 
-from conftest import requires_deck
+from conftest import SRC, requires_deck
+
+# The renderer's whole world: the pilot source tree (a verified closure — nothing
+# under it imports outside `manamap.pilot` and `manamap.config`), the deck's
+# artifacts, the published page, and the one global graph it reads.
+CODE = (SRC / "pilot", SRC / "config.py")
 
 
 def _deck_slugs():
@@ -33,9 +38,10 @@ def _deck_slugs():
 
 @requires_deck
 @pytest.mark.parametrize("slug", _deck_slugs())
-def test_tracked_manual_matches_a_fresh_render(slug, tmp_path):
+def test_tracked_manual_matches_a_fresh_render(slug, tmp_path, unchanged):
     """A committed issue must be what its artifacts render to, today."""
     published = MANUALS_DIR / f"{slug}.html"
+    unchanged(*CODE, DECKS_DIR / slug, published, SYNERGY_GRAPH_PATH)
     backup = tmp_path / f"{slug}.html"
     shutil.copy2(published, backup)
     try:

@@ -19,7 +19,9 @@ everything tracked, every time.
 
 import pytest
 
-from manamap.config import DECKS_DIR
+from manamap.config import (CARD_ROLES_PATH, COMBO_DETAILS_PATH, DECKS_DIR,
+                            OBSOLESCENCE_INDEX_PATH, OUTPUT_CSV_PATH,
+                            STRATEGY_DOC_PATH, SYNERGY_GRAPH_PATH)
 from manamap.pilot import (
     validate_considering,
     validate_deck_map,
@@ -30,7 +32,16 @@ from manamap.pilot import (
     validate_tutor_guide,
 )
 
-from conftest import requires_deck
+from conftest import SRC, requires_deck
+
+# Everything a validator in GATED can read. The pilot tree is a verified closure
+# of the code (nothing under it imports outside `manamap.pilot` / `manamap.config`);
+# the rest is the tracked global artifacts the deck validators reach for — role
+# tags, the two graphs, the combo records, the corpus and the strategy doc. Listed
+# rather than digesting `data/`, which is 326 MB and mostly irrelevant.
+INPUTS = (SRC / "pilot", SRC / "config.py", CARD_ROLES_PATH, COMBO_DETAILS_PATH,
+          OBSOLESCENCE_INDEX_PATH, OUTPUT_CSV_PATH, STRATEGY_DOC_PATH,
+          SYNERGY_GRAPH_PATH)
 
 # artifact filename -> module exposing main(args) taking a slug
 GATED = {
@@ -60,8 +71,9 @@ def _cases():
 
 @requires_deck
 @pytest.mark.parametrize("slug,artifact", _cases())
-def test_tracked_artifact_passes_its_validator(slug, artifact, capsys):
+def test_tracked_artifact_passes_its_validator(slug, artifact, capsys, unchanged):
     """A tracked artifact that fails its own gate is a published error."""
+    unchanged(*INPUTS, DECKS_DIR / slug)
     try:
         GATED[artifact].main(type("Args", (), {"slug": slug})())
     except SystemExit as exit_:
