@@ -994,14 +994,21 @@ def test_canvas_redraws_when_the_filter_changes(canvas_page):
     """setLayers draws synchronously rather than through rAF — a filter is a discrete
     state change, and rAF does not fire in a hidden tab at all."""
     before = _ink(canvas_page)
-    was = canvas_page.evaluate("document.getElementById('status').textContent")
     canvas_page.evaluate("document.querySelectorAll('#toggles button')[0].click()")
-    # Wait for the STATUS to repaint, not for 900 ms. Under `-n 4` this read the
-    # boot status ("34,890 cards loaded — Color + Type map") and failed an
-    # assertion about the filtered count while the filter had applied correctly.
+    # Wait for the CONDITION, not for a change and not for 900 ms. Waiting for
+    # "the status differs from what it was" looks like the same thing and is not:
+    # under `-n 4` the text captured before the click was itself a mid-boot
+    # string, so the boot finishing satisfied the wait and the filtered read
+    # happened before the filter had repainted. Both spellings of the expected
+    # status are accepted for the same reason the assertion below accepts both.
     canvas_page.wait_for_function(
-        "was => document.getElementById('status').textContent !== was",
-        arg=was, timeout=10000)
+        "() => { const t = document.getElementById('status').textContent;"
+        "        return t.includes('15,') || t.includes('cards shown'); }",
+        # Generous because it is waiting on a real repaint of 34,890 points while
+        # three other Chromiums share the machine. 10 s passed in isolation and
+        # timed out one run in two under `-n 4`; the condition was right and the
+        # budget was measuring the contention.
+        timeout=30000)
     after = _ink(canvas_page)
     status = canvas_page.evaluate("document.getElementById('status').textContent")
     assert canvas_page.js_errors == []
