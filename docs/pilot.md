@@ -291,12 +291,33 @@ voice, component library); `docs/history/STYLE-v1-visual-research.md` and
   contract all depend on the renderer staying deterministic.
 - **`design-issue` skill** — the loop: gather → plan → validate → build → review.
 
-The Kill renders combo lines as feature spreads with dossier pointers; **Judge's Desk**
-carries the complete resolutions with every citation verbatim (the renderer may not
-summarize proof) as a **case index** — one scannable row per case, expanding to the
-unchanged record. The proof is printed in exactly ONE place: the theatre prints a
-citation COUNT and points at the case, because shipping it with the quotes inline put
-the identical 120 citations into both departments.
+The Kill renders feature spreads with dossier pointers; **Judge's Desk** carries the
+complete resolutions with every citation verbatim (the renderer may not summarize proof)
+as a **case index** — one scannable row per case, expanding to the unchanged record. The
+proof is printed in exactly ONE place: the theatre prints a citation COUNT and points at
+the case, because shipping it with the quotes inline put the identical 120 citations into
+both departments.
+
+**`the-kill.features` decides which lines get a theatre.** An ordered list of stack ids;
+everything else prints under *Also on the record*, keeping its whole authored intro and
+its result and losing only the staging. Omit the key and every presentable stack features,
+which is right up to about seven and wrong past it — yawgmoth-swarm has eleven and its
+Kill reached **44,119 words, 42% of the issue**, since its loops run 11–14 steps and each
+was staged. Featuring four took it to 19,104 words and 20.4% of scroll, the same share The
+Kill takes on a seven-stack issue.
+
+Two measurements set that design. A rendered stack is ~4,000 words and its authored intro
+is **77–144**, so the intro costs nothing and an index that dropped it would keep the
+department's title while cutting the thing it names. And **word count is a bad proxy for
+scroll here**: −25,015 words bought only −8.1 screens, because the theatre stacks its
+plates in Z and is word-heavy, pixel-light.
+
+`validate-issue` fails a `features` entry naming a non-presentable stack, a repeat, and a
+list naming every presentable stack (that is what omitting the key does, and it rots the
+first time a stack is added). The renderer instead **skips** an unknown id, because a crash
+there turns a copy mistake into a missing magazine. An indexed row carries the `line-<id>`
+anchor Judge's Desk links back to, or every case's *↩ Back to this line in The Kill*
+becomes a dead jump.
 
 ### Length is measured (`issue-length`, `PROSE_BUDGET`)
 
@@ -310,8 +331,10 @@ achieves. `validate-issue` reports breaches; **`--strict` fails on them**, so th
 is real for new work without turning eight pre-budget artifacts red. The two
 deliberate exceptions — `threat_assessment` and `matchups` at 2,500 where the fleet's
 shortest are 3,821 and 4,129 — take their number from
-`validate_engine.MAX_WHAT_IT_DOES` instead, and are the debt the Act III merge left
-when it combined three departments' headers without touching their prose.
+`validate_engine.MAX_WHAT_IT_DOES` instead, and are the debt the Act III merge left when
+it combined three departments' headers without touching their prose. That merge is now
+complete on all nine decks and the three ids are deleted, so the debt is the prose and
+nothing else.
 
 **The Kill's stack theatre** (`design.stack_theatre`) renders a resolution as a
 receding stack of plates on a vanishing-point grid — one plate per step, hover to
@@ -346,20 +369,25 @@ histogram — if those two ever diverge, one of them is wrong.
 
 ## Tests
 
-`tests/test_pilot_*.py` — the largest group in the suite; see `docs/testing.md` for
-the per-file inventory.
+`tests/test_pilot_*.py` — 42 files, the largest group in the suite. **The inventory lives
+in `docs/testing.md`** (what each file covers) and so do the counts, which that file
+declares itself the only home for.
 
-**Build side:** deck builder pool/scoring/slot-filling/emergent-combo pass (`test_pilot_build_deck`, 42), hypergeometric mana math and land selection (`test_pilot_manabase`, 36), bracket floor + drivers + the goblin-storm golden checks (`test_pilot_bracket`, 35), build-plan form gate (`test_pilot_validate_build`, 37).
+This section used to restate both, and ignoring that rule is exactly how it drifted: it
+claimed 42 cases for `test_pilot_build_manual` (91), 29 for `test_pilot_validate_issue`
+(51) and 57 for `test_pilot_agent_cache` (83), while omitting twenty-odd files entirely.
+A number restated in two places is a number that will disagree with itself.
 
-**Publish side:** agent cache incl. N/A scan semantics and memoized loaders (`test_pilot_agent_cache`, 57), renderer determinism/escaping/TOC (`test_pilot_build_manual`, 42), issue form gate incl. the decklist_sha256 stamp (`test_pilot_validate_issue`, 29), artist analysis (`test_pilot_artist_credits`, 24), mocked Scryfall ingestion (`test_pilot_fetch_deck`, 24), citation contract incl. strategy-citation dispatch (`test_pilot_validate_stack`, 18), strategy form validator + changelog (`test_pilot_validate_strategy`, 18), goldfish determinism and the two opening-hand distributions (`test_pilot_goldfish`, 16), strategic-frame form (`test_pilot_validate_strategic_frame`, 15), deck facts (`test_pilot_deck_facts`, 14), CR chunker edge cases (`test_pilot_rules_db`, 12), strategy chunker + real-DB checks (`test_pilot_strategy_db`, 9), rules queries (`test_pilot_query_rules`, 5).
-
-Data-gated tests use `requires_rules` / `requires_deck` / `requires_strategy` / `requires_roles` markers from `tests/conftest.py`.
+Data-gated tests use `requires_rules` / `requires_deck` / `requires_strategy` /
+`requires_roles` markers from `tests/conftest.py`.
 
 ## The front of the book (`editors_letter`, `pilots_log`, tiers — and ★)
 
-Two departments lead Act I, both **optional** while they are piloted on one deck
-(`issue_spec.OPTIONAL_DEPARTMENTS` — see CLAUDE.md for why the concept exists and
-why an id should not stay in it).
+Two departments bracket Act I — the Editor's Letter opens it and the Pilot's Log closes
+it, behind The 99. Both arrived through `issue_spec.OPTIONAL_DEPARTMENTS`, piloted on
+radagast and then rolled to the fleet; **all nine now carry them and that set is empty
+again**, which is the state it should be found in. See CLAUDE.md for why the concept
+exists and why an id should not stay in it.
 
 **The Editor's Letter** is signed by Editor-in-Chief Margot Stet, the masthead's
 only unbadged name. Each columnist owns exactly one evidence tier, so a fourth
@@ -407,13 +435,21 @@ plus Sunny's consulting vocabulary.
 2026-08 nothing said what a COMPLETE deck looks like: each phase knew its own inputs, none
 knew the sequence. So a capability added in one development cycle was reachable only by
 somebody who remembered it existed, and a deck built the following month silently inherited
-the old pipeline. Three capabilities went in during August and every deck built before them
-was missing all three while looking complete from every angle.
+the old pipeline. Five capabilities went in during August (`ADDED_2026_08`) and every deck built before them
+was missing all five while looking complete from every angle.
 
 `pilot/deck_status.py:STAGES` is the single machine-readable statement of what a deck can
 have and in what order; `/publish-deck` sequences the work and reads the same list rather
 than restating it. **When you add a phase to the lifecycle, add it to `STAGES`** or the next
-person will not find it.
+person will not find it. That rule has been broken once already and by the file that states
+it: the front of book and The Short List's art shipped on all nine decks while `deck-status`
+reported nine complete decks without them.
+
+**A stage whose artifact exists for another reason cannot be checked by file presence.**
+`pilot-panel` writes `editors_letter` and `pilots_log` INTO `manual_prose.json`, which the
+writer already created — so the `panel` stage is keyed (`KEYED_STAGES`) and checks for the
+keys. A file-existence stage there would report every deck complete the moment the writer
+ran, which is the same failure this command exists to prevent, one level down.
 
 It separates two things that look alike. **INCOMPLETE is a state** — a half-built deck is
 work in progress. **STALE is an error**: most artifacts stamp the `decklist_sha256` they were

@@ -20,14 +20,16 @@
 > **On the original sequencing.** Two things changed after it was written:
 >
 > 1. **The sequencing is wrong.** It orders M1 (data) → M2 (engine) → M6 (`deck.html`),
->    but every deck artifact is already tracked and servable (~3.6 MB, seven decks,
+>    but every deck artifact is already tracked and servable (7.0 MB, nine decks,
 >    uniform schema), so **`deck.html` has no prerequisites** — while the engine port is
 >    blocked on `data/cards.csv` being gitignored. The dossier ships first. `PLAN.md`
 >    carries the current order.
 > 2. **M3's premise is stale.** It targets a 15-department layout and a component set
->    that predate the v3.2/v3.3 magazine work: there are now 17 sections in five acts,
->    with bylines, three columnists and L10. Port the *tokens* (they are unchanged);
->    re-read `issue_spec.py` and `STYLEv3.md` §5 before porting any layout.
+>    that predate the v3.2/v3.3 magazine work. The count has since been 15, 20 and 17
+>    again — Act III's three Coach departments merged into one and the Editor's Letter
+>    and Pilot's Log arrived — so **do not port a number**: read `issue_spec.DEPARTMENTS`.
+>    Port the *tokens* (they are unchanged); re-read `issue_spec.py` and `STYLEv3.md` §5
+>    before porting any layout.
 >
 > Also corrected by audit: embeddings are **not** loaded twice (fixed in `3d3edc6`); the
 > int8 argument stands on its own. And M6 was re-scoped from a builder-record view to a

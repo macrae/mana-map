@@ -123,7 +123,7 @@ grouped by its cities.
 
 | | |
 |---|---|
-| Engine loop closed | critic `pass`, `deck-status radagast` **17/17** |
+| Engine loop closed | critic `pass`, `deck-status radagast` **19/19** |
 | Fourth persona | Margot Stet — no tier, no glyph, and `badge()` still raises |
 | Two departments | all nine carry them; seventeen departments each, `--strict` clean |
 | Voice separation | fleet-wide **0**; the blind-attribution test passes |
@@ -366,7 +366,7 @@ compared the directory against the docs. Deleted.
 - No regression floor on the balance bound's *effect* — the test asserts the invariant holds
   on a synthetic fixture, not that real decks stay balanced.
 
-Do the rest before rolling `analyze-engine` to the other eight decks.
+`analyze-engine` has since run on all nine decks, so this debt was paid in arrears rather than in advance — which is the wrong order and is why it is still listed. The gap it left is real: `engine_facts` and `deck_status` produced nine decks' worth of output with no unit test under them.
 
 ### 10. Codebase hygiene
 

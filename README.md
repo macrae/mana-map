@@ -83,8 +83,9 @@ mode.
 This half is more involved, and honest about why: **the manual pipeline needs
 [Claude Code](https://claude.com/claude-code).** The Python in this repo makes *zero* LLM
 calls — it is deterministic infrastructure (fetching, simulating, validating, rendering)
-that AI agents drive from the outside. A full generation runs ~330k tokens across four
-serially-dependent agents; an invocation cache is what makes iterating on it affordable.
+that AI agents drive from the outside. A full generation runs ~700k tokens across six
+serially-dependent routines, nearly 40% of it the engine loop; an invocation cache is what
+makes iterating on it affordable. `docs/agent-cost.md` has the breakdown.
 
 ### 1. Environment
 

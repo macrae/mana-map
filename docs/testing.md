@@ -16,13 +16,16 @@ instead. To print the current numbers rather than trust a snapshot:
 .venv/bin/python -m pytest -m "not browser" --collect-only -q | tail -1
 ```
 
-As of 2026-08-14: **1,564 tests** across 61 files — 1,434 fast and 130 browser. One is a
+As of 2026-08-15: **1,624 tests** across 63 files — 1,488 fast and 136 browser. One is a
 deliberately unmet `xfail(strict=True)` ship gate in `test_embedding_quality.py` (see
 below); it is a target the code has not reached, not a broken test.
 
-Why the count cannot be checked mechanically: 144 of those cases are parametrized over
-lists computed at collection time, so the only way to count them is to run pytest — and
-running pytest from inside pytest recurses. `tests/test_docs_counts.py` guards every count
+Why the count cannot be checked mechanically: **371 of those cases do not exist in the
+source** — there are 1,253 `def test_` functions and 1,624 collected cases, the difference
+being parametrization over lists computed at collection time. The only way to count them is
+to run pytest, and running pytest from inside pytest recurses. (That subtraction is the
+cheap way to re-derive the figure: `grep -rhcE "^(async )?def test_" tests/*.py` against a
+collection total.) `tests/test_docs_counts.py` guards every count
 that *can* be derived cheaply (subcommands, agents, skills, decks, routines, pipeline
 steps) and deliberately leaves this one to editorial discipline.
 
@@ -396,6 +399,15 @@ every commit, and that promise is not kept. Run `--collect-only -q` for live num
 | `test_pilot_validate_considering.py` | The Short List: exactly ten, none already in the deck, claims verified |
 | `test_pilot_validate_tutor_guide.py` | One wish per tutor, real fetches, legal targets |
 | `test_pilot_validate_strategic_frame.py` | Frame form, engine `strategy_refs`, candidate-line status |
+| `test_pilot_deck_map.py` | The constellation's balance bound — and its refusal to assert the linkage |
+| `test_pilot_issue_length.py` | Words vs visible words; `<summary>` counts, collapsed bodies do not |
+| `test_pilot_voice_lint.py` | **Cross-deck.** Who is supposed to be speaking, and whether nine decks sound alike |
+
+`test_pilot_voice_lint.py` is the only pilot test that reads the whole fleet, and that is
+structural rather than stylistic: `validate-issue` takes one slug and can never see a
+pattern that exists only across decks. A formula is invisible in a single issue and
+obvious in three — eight decks wrote a hot take and five opened *"Here is the thing…"*,
+which no per-issue check could have caught.
 
 **Pilot — diagnose:**
 

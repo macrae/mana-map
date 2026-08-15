@@ -87,7 +87,26 @@ card database rather than a bench topped up from it.
 `tutor-guide` reports `N/A` for a deck with no library-search tutors, so it never becomes a
 permanent MISS on a tutorless list.
 
-**A full manual regeneration ≈ 330k tokens** across four serially-dependent agents.
+**A full manual regeneration is ≈ 700k tokens across SIX serially-dependent routines**,
+not the 330k across four this line said until 2026-08-15. The number did not drift — the
+pipeline grew two of the most expensive stages it has: `deck-engine` (engineer ⇄ critic)
+and `panel-prose`. Composition for a clean single-iteration run:
+
+| | |
+|---|---:|
+| `strategic-frame` | ~81k |
+| `deck-engine` | ~260k (one engineer + one critic; more if the critic fails) |
+| `coach-prose` | ~55k |
+| `writer-prose` | ~47k |
+| `panel-prose` | ~134k |
+| `issue-plan` | ~113k |
+| **total** | **~690k** |
+
+`deck-engine` is 38% of it and is the one to check the cache on first. `issue-plan`'s
+figure is a fresh mean over the eight-deck fleet re-plan of 2026-08-14 (100,450–125,290),
+which is materially cheaper than the 147,351 measured on a from-scratch plan: a re-plan
+carries most keys forward programmatically and reasons only about what changed.
+
 `resolve-stack` is 2–6 spawns per scenario (resolver + checker, up to
 `RESOLVE_MAX_ITERATIONS = 3`).
 

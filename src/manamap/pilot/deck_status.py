@@ -42,16 +42,24 @@ STAGES = [
     ("engine",     "engine.json",            "decklist_sha256",      False, "how it RUNS — `analyze-engine` loop"),
     ("stacks",     "stacks/",                None,  False, "checker-passed lines: the only fact tier"),
     ("shortlist",  "considering.json",       None,  False, "The Ten — `short-list`"),
-    ("tutors",     "tutor_guide.json",       None,  False, "Fetch Quests — `tutor-guide`"),
+    ("shortlist-art", "considering_art.json", None,  False, "Scryfall art for The Ten — `short-list-art`"),
+    ("tutors",     "tutor_guide.json",       None,  False, "the tutor guide — `tutor-guide`"),
     ("prose",      "manual_prose.json",      None,  False, "writer + coach prose — `write-manual`"),
+    ("panel",      "manual_prose.json",      None,  False, "the front of book — `pilot-panel`"),
     ("issue",      "issue.json",             None,  False, "authored identity: volume, date, price"),
     ("plan",       "issue_plan.json",        None,  False, "the magazine editor's packaging — `design-issue`"),
 ]
 
+# Stages whose artifact exists for another reason, so file presence proves nothing:
+# the panel writes `editors_letter` and `pilots_log` INTO the writer's file, which
+# `prose` already created. Checked by key instead, or a deck with no front of book
+# reports complete.
+KEYED_STAGES = {"panel": ("editors_letter", "pilots_log")}
+
 # Stages this development cycle added. Named explicitly so a deck built before
 # them reports them as MISSING rather than as complete-by-omission — which is the
 # exact way a new capability fails to propagate.
-ADDED_2026_08 = {"map", "map-names", "engine"}
+ADDED_2026_08 = {"map", "map-names", "engine", "panel", "shortlist-art"}
 
 
 def _dig(doc, path):
@@ -100,6 +108,12 @@ def status(slug):
             detail = f"critic: {verdict or 'not run'}"
             if verdict == "fail":
                 state = "unverified"
+        elif key in KEYED_STAGES:
+            wanted = KEYED_STAGES[key]
+            have = [k for k in wanted if (doc or {}).get(k)]
+            state = "present" if len(have) == len(wanted) else "missing"
+            detail = f"{len(have)}/{len(wanted)} keys"
+
         elif sha_path and truth:
             stamped = _dig(doc, sha_path)
             if stamped and stamped != truth:

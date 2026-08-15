@@ -59,14 +59,27 @@ claim; this is how it becomes a fact. **One rules domain per scenario** — ever
 artifact at ≤32 citations passed in one or two rounds; every one at ≥59 needed
 four or failed, taking correct answers down with it.
 
-**7 — Furnish it.** `/short-list` → `considering.json`. `tutor-guide` →
-At the Table's tutor subhead. `/author-decision` → the What's Your Play spreads.
+**7 — Furnish it.** `/short-list` → `considering.json`, then `short-list-art` →
+`considering_art.json`, the tracked sidecar that lets the one department whose
+subject is OUTSIDE the deck actually show you the cards. `tutor-guide` → At the
+Table's tutor subhead. `/author-decision` → the What's Your Play spreads.
 
 **8 — Write it.** `/write-manual` (writer + coach, merged by key ownership via
-`merge-prose`) → author `issue.json` → `/design-issue` (the magazine editor) →
-`validate-issue` → `build-manual` → `build-index`.
+`merge-prose`), then the **`pilot-panel` agent** for the front of book — the
+Editor's Letter and the Pilot's Log, which reads `engine.json` and argues in its
+stage names, so it runs after phase 5 and not before. Its turn 0 is Sunny's HOT
+TAKE and a later turn answers it; `validate-issue` checks that structure and a
+cross-deck test checks that no two decks open theirs the same way.
 
-**9 — Diagnose it**, when the deck is to be improved rather than described:
+**9 — Package it.** Author `issue.json` → `/design-issue` (the magazine editor) →
+`validate-issue --strict` → `build-manual` → `build-index`. Two things the editor
+must decide rather than inherit: `the-kill.features`, which lines get a stack
+theatre (omit it below about seven passing stacks, name a subset above — eleven
+theatres made one Kill 42% of its issue), and whether the plan opts into the
+constellation and the engine schematic. `issue-length <slug> --rendered` is the
+before-and-after measurement; run it, because word count and scroll disagree.
+
+**10 — Diagnose it**, when the deck is to be improved rather than described:
 `/diagnose-deck`. Deliberately NOT a consumer of `engine.json` — the doctor keeps
 its own engine view, and two consumers of one artifact is a migration.
 
