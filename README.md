@@ -1,5 +1,10 @@
 # Mana Map
 
+[![tests](https://github.com/macrae/mana-map/actions/workflows/test.yml/badge.svg)](https://github.com/macrae/mana-map/actions/workflows/test.yml)
+[![licence: MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
+[![the map](https://img.shields.io/badge/live-the%20card%20map-8b5cf6)](https://macrae.github.io/mana-map/viz/index.html)
+[![the newsstand](https://img.shields.io/badge/live-nine%20issues-e11d48)](https://macrae.github.io/mana-map/manuals/index.html)
+
 Two things live here, sharing one data layer and one CLI:
 
 **A card discovery tool** — every Magic: The Gathering oracle card (~34,900) embedded by
@@ -94,18 +99,31 @@ makes iterating on it affordable. `docs/agent-cost.md` has the breakdown.
 
 ### 1. Environment
 
-**Python 3.10 specifically** — PyTorch has no wheels for 3.13/3.14, and the pins
-(`sentence-transformers<4`, `numpy<2`) target torch 2.2.2. `pyproject.toml` says `>=3.10`,
-which is more permissive than reality.
+```bash
+make setup
+```
+
+That is the whole step. It checks for **Python 3.10 exactly** — PyTorch publishes no wheels
+for 3.13+, and the pins (`sentence-transformers<4`, `numpy<2`) target torch 2.2.2 — then
+installs in the one order that works and downloads chromium for the browser tests.
+
+If your 3.10 is not called `python3.10` on `PATH` (a conda or pyenv build, say):
+
+```bash
+make setup PYTHON310=$(pyenv which python3.10)
+```
+
+By hand it is three commands, and the **order is not cosmetic**: pacmap pulls numba, and
+installing it afterwards triggers a source build of LLVM.
 
 ```bash
 python3.10 -m venv .venv
-.venv/bin/pip install llvmlite==0.41.1 numba==0.58.1   # must come first on macOS
+.venv/bin/pip install llvmlite==0.41.1 numba==0.58.1   # must come first
 .venv/bin/pip install -e ".[dev]"
 ```
 
-That ordering is not cosmetic: pacmap pulls numba, and installing it afterwards triggers a
-source build of LLVM.
+Developed on macOS/arm64. Linux should work apart from MPS device selection; Windows is
+untested.
 
 ### 2. One-time databases
 
@@ -440,6 +458,13 @@ Two standing rules around this harness:
 | A bracket rule | `BRACKETS` / `COMBO_BRACKET_TAGS` / `MASS_LAND_DENIAL` in `config.py` |
 | Builder tuning | `DECK_ROLE_BUDGET` / `DECK_BUILD_WEIGHTS` in `config.py` |
 | An agent cache routine | `AGENT_ROUTINES` in `config.py` |
+
+**One thing that is someone's, not the project's.** `data/collection/*.txt` lists a
+physical card collection — `deck-history` reads it to tell a swap you already own from
+one you would have to buy, and it is the only ownership question left in the repo. The
+tracked files are the maintainer's, kept as a worked example. Point
+`MANAMAP_COLLECTION_DIR` at your own boxes, or at nothing: an absent directory means no
+ownership claim rather than an error.
 
 ## Three contracts worth understanding
 

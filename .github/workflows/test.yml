@@ -44,10 +44,16 @@ jobs:
           pip install -e ".[dev]"
 
       - name: Test
-        # The fast suite. Most data-gated tests still run: the artifacts they
-        # need are tracked on purpose, so only ~6% of the suite skips without a
-        # pipeline run. `-n auto` is already the default in pyproject.
-        run: python -m pytest
+        # `make test`, NOT a bare pytest — CI must exercise the entry point
+        # CONTRIBUTING tells people to use, or the Makefile is the one thing
+        # nothing checks. It was, and `make manuals` broke on the first run
+        # because it assumed a `.venv` that CI never creates.
+        #
+        # The fast suite. Most data-gated tests still run — the artifacts they
+        # need are tracked on purpose, so 129 of 1,489 skip without a pipeline
+        # run, each labelled with the command that would enable it. `-n auto` is
+        # already the default in pyproject.
+        run: make test
 
       - name: The manuals must still rebuild byte-identically
         # Cheap (9 s) and it is the project's central determinism claim, so it

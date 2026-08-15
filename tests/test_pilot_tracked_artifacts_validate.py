@@ -24,11 +24,15 @@ from manamap.config import (CARD_ROLES_PATH, COMBO_DETAILS_PATH, DECKS_DIR,
                             STRATEGY_DOC_PATH, STRATEGY_INDEX_PATH,
                             SYNERGY_GRAPH_PATH)
 from manamap.pilot import (
+    validate_build,
     validate_considering,
+    validate_deck,
     validate_deck_map,
     validate_diagnosis,
     validate_engine,
+    validate_goldfish_targets,
     validate_issue,
+    validate_stack,
     validate_strategic_frame,
     validate_tutor_guide,
 )
@@ -60,7 +64,20 @@ GATED = {
     # silently, because both look complete when they are wrong.
     "deck_map.json": validate_deck_map,
     "engine.json": validate_engine,
+    # Added 2026-08-15. Three more validators that existed and were wired into
+    # nothing — the same gap, found the same way, one cycle later. Two tracked
+    # artifacts were failing their own validator at the time and nobody could
+    # have known: yawgmoth's `build_plan.json` named a pool directory that a
+    # rename had moved out from under it, and it stayed broken through a full
+    # test run because no test ran `validate-build` on a tracked plan.
+    "build_plan.json": validate_build,
+    "goldfish_targets.json": validate_goldfish_targets,
+    "cards.json": validate_deck,
 }
+
+# `validate_build` reads the declared pool through `card_pool`, the only reader
+# of the gitignored `cards.csv`.
+NEEDS_CORPUS = {"build_plan.json"}
 
 
 def _cases():
@@ -86,10 +103,46 @@ def test_tracked_artifact_passes_its_validator(slug, artifact, capsys, unchanged
     """A tracked artifact that fails its own gate is a published error."""
     if artifact in NEEDS_STRATEGY and not STRATEGY_INDEX_PATH.exists():
         pytest.skip("requires the strategy DB (run `manamap pilot build-strategy-db`)")
+    if artifact in NEEDS_CORPUS and not OUTPUT_CSV_PATH.exists():
+        pytest.skip("requires the card corpus (run `manamap extract`)")
     unchanged(*INPUTS, DECKS_DIR / slug)
     try:
         GATED[artifact].main(type("Args", (), {"slug": slug})())
     except SystemExit as exit_:
         if exit_.code:
             pytest.fail(f"{slug}/{artifact} fails its validator:\n"
+                        f"{capsys.readouterr().out}")
+
+
+def _deck_slugs():
+    if not DECKS_DIR.is_dir():
+        return []
+    return sorted(d.name for d in DECKS_DIR.iterdir()
+                  if d.is_dir() and (d / "stacks").is_dir())
+
+
+@requires_deck
+@pytest.mark.parametrize("slug", _deck_slugs())
+def test_every_tracked_stack_and_decision_passes_the_citation_contract(slug, capsys,
+                                                                       unchanged):
+    """`validate-stack` over a whole deck — 56 stacks and 18 decisions, ungated.
+
+    The map above is keyed by artifact FILENAME, which is why this one is
+    separate: `validate_stack` takes a slug and walks two directories. That
+    shape is the reason it was never added, and the reason sisay's decision 002
+    was failing its own validator in a tracked artifact while every test passed.
+
+    The citation contract is the load-bearing promise of this whole project — a
+    ✓ badge means every step quotes a real rule verbatim — so an unrun validator
+    here is worse than an unrun validator anywhere else.
+    """
+    if not STRATEGY_INDEX_PATH.exists():
+        pytest.skip("requires the strategy DB (run `manamap pilot build-strategy-db`)")
+    unchanged(*INPUTS, DECKS_DIR / slug)
+    try:
+        validate_stack.main(type("Args", (), {"slug": slug, "stack": None,
+                                              "scenario_only": False})())
+    except SystemExit as exit_:
+        if exit_.code:
+            pytest.fail(f"{slug} stacks/decisions fail the citation contract:\n"
                         f"{capsys.readouterr().out}")

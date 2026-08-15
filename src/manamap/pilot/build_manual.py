@@ -693,7 +693,7 @@ def stack_headline(title):
     They almost all share one shape, though — a real headline, a colon, then the
     question: *"The Frostfang trap: flashed in after blockers are declared, does
     deathtouch apply…"*. Splitting there is free and authored rather than invented:
-    across the 54 presentable stacks the head runs a median of 36 characters, only
+    across the 49 presentable stacks the head runs a median of 36 characters, only
     two exceed 60, and the six titles with no colon keep their whole text. The
     question is not dropped — it becomes the deck under the headline.
     """

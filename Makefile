@@ -8,8 +8,14 @@
 # until afterwards.
 
 VENV    := .venv
-PY      := $(VENV)/bin/python
-PIP     := $(VENV)/bin/pip
+# RESOLVE the tools; do not assume a venv exists. CI installs into the runner's
+# system Python and never makes one, so `make manuals` died on
+# `/bin/sh: .venv/bin/manamap: not found` the first time the workflow ran. A
+# conda user who installed with `pip install -e .` outside a venv hits the same
+# wall. Present venv wins; PATH otherwise.
+PY      := $(if $(wildcard $(VENV)/bin/python),$(VENV)/bin/python,python3)
+PIP     := $(if $(wildcard $(VENV)/bin/pip),$(VENV)/bin/pip,pip)
+MANAMAP := $(if $(wildcard $(VENV)/bin/manamap),$(VENV)/bin/manamap,manamap)
 PYTEST  := $(PY) -m pytest
 PORT    ?= 8000
 
@@ -77,9 +83,9 @@ serve:  ## Serve the map and the manuals (PORT=8000 by default)
 
 manuals:  ## Re-render every published issue (deterministic; should be a no-op)
 	@for slug in $$(ls data/decks | grep -v '^index.json$$'); do \
-	  test -f data/decks/$$slug/issue.json && $(VENV)/bin/manamap pilot build-manual $$slug; \
+	  test -f data/decks/$$slug/issue.json && $(MANAMAP) pilot build-manual $$slug; \
 	done
-	$(VENV)/bin/manamap pilot build-index
+	$(MANAMAP) pilot build-index
 
 clean:  ## Drop caches and bytecode. Never touches data/ or manuals/.
 	rm -rf .pytest_cache

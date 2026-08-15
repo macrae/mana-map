@@ -257,6 +257,47 @@ on all nine decks for a rename with no behavioural effect. That is precisely the
 repo already recorded paying once for "a purely operational note". Fold it in the next time
 `coach-prose` misses for a real reason.
 
+**A survey claimed this deferral had expired and it has not — measured 2026-08-15:
+`coach-prose` is 9/9 HIT, `tutor-guide` is 0/9.** Both are written under this charter, so
+the earlier edit at `c6d2f21` MISSed both and only `coach-prose` was re-recorded. The
+argument that "the cost has already been paid" is therefore half right: `tutor-guide`'s
+share is spent and cannot be spent twice, and `coach-prose`'s is not. What the rename
+actually costs today is nine `coach-prose` respawns, which is the same answer as before at
+half the previously assumed price. Still not worth it for a name the spec overrides on
+contact — but check the board rather than this paragraph, because it moves.
+
+### 3d. Found while shipping — what a survey of §4–§12 turned up
+
+A read of the whole open-work list against the tree, 2026-08-15. The corrections are
+worth more than the confirmations:
+
+- **`next_issue` was six decks, not five, and the chain was wrong on a seventh.** Fixed:
+  every volume now names its successor, derived from the artifacts, 009 wrapping to 001.
+  Vol 003 had pointed at Edgar (Vol 006) since before Heliod existed.
+- **Two tracked artifacts were failing their own validator**, and both are fixed —
+  including the two-validator conflict above, which is the more interesting one.
+- **"Twelve stack artifacts" with L10 preambles is three different numbers**: 14 by
+  preamble, 16 by any reader-facing field, and **4 in fields the renderer actually
+  prints**. `scenario.extras` is read by nobody but `scenario_facts`. The four that reach
+  a reader are the set worth doing (gishath 002, ur-dragon 003, radagast 007,
+  yawgmoth 010); the other twelve are invisible and can wait.
+- **§5's cross-reference problem is more than doubled and reaches print.** edgar's
+  presentable stacks point at withheld 001 in 11 places and **yawgmoth's five stacks point
+  at withheld 001 in eight** — 21 and 9 occurrences in the published HTML. Sharpest:
+  **two of yawgmoth's four staged theatres send the reader to a stack the issue does not
+  contain.** `validate_issue` checks that `features` names presentable stacks and nothing
+  checks that a presentable stack's PROSE does not.
+- **§8's "four strategy-DB gaps" is 49**, across all nine frames. Aristocrats/sacrifice is
+  requested by four decks and yawgmoth calls it "this deck's entire architecture" — the
+  highest-value single write-up in the corpus.
+- **radagast has seven `open_questions`, not six.** **49 presentable stacks, not 54** (that
+  figure was in CLAUDE.md and a renderer docstring; both corrected).
+- **`deck-status` reports presence and staleness, never validity.** It read all nine green
+  while two of them were failing their own validators. Worth stating wherever it is sold
+  as the first thing to run.
+- Untested modules are six, not three: `validate_deck_map`, `query_strategy` and
+  `download_rules` join §9's list. No dead functions anywhere in `pilot/`.
+
 ### 4. Verification backlog
 
 - **Sisay 001** (the tutor chain) is the highest-value fix in the fleet: it would promote the
