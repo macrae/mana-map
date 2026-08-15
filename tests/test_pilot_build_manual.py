@@ -1253,3 +1253,98 @@ def test_the_board_renders_as_a_strip_and_keeps_every_field():
     # The cost payment keeps its OWN labelled run — folding it into Permanents
     # would change the body count, which is what these engines are bounded by.
     assert "Already paid" in out
+
+
+# ── The Kill's feature set ───────────────────────────────────────────────
+
+
+def _two_stacks():
+    """Two presentable stacks, so `features` has something to choose between."""
+    second = copy.deepcopy(verified_stack())
+    second["id"] = "002"
+    second["title"] = "The altar loop: what actually bounds it"
+    second["resolution"]["final_state"]["summary"] = "Not unbounded."
+    return [verified_stack(), second]
+
+
+def test_without_features_every_verified_line_still_gets_a_spread():
+    """The default must not move, or adding the key rewrites eight issues.
+
+    `features` is opt-in precisely so an existing plan renders byte-identically
+    to what it rendered before the key existed.
+    """
+    html_out = render(stacks=_two_stacks(),
+                      prose_doc=dict(PROSE, combo_lines={"001": "A.", "002": "B."}))
+    assert html_out.count('class="th-deck"') == 2, "a stack lost its theatre"
+    assert 'class="kill-index"' not in html_out, (
+        "an index rendered with nothing to index — a plan that features "
+        "everything must look exactly like a plan with no features key")
+
+
+def test_features_stages_the_named_lines_and_indexes_the_rest():
+    plan = dict(PLAN, departments=[
+        dict(d, features=["002"]) if d["id"] == "the-kill" else d
+        for d in PLAN["departments"]])
+    html_out = render(plan=plan, stacks=_two_stacks(),
+                      prose_doc=dict(PROSE, combo_lines={"001": "A.", "002": "B."}))
+
+    # One theatre, for the named line only.
+    assert html_out.count('class="th-deck"') == 1
+    kill = html_out[html_out.index('id="the-kill"'):]
+    assert kill.index('id="line-002"') < kill.index('class="kill-index"'), (
+        "the featured line must be staged ABOVE the index, not inside it")
+    assert 'id="line-001"' in html_out
+
+
+def test_an_indexed_line_keeps_its_whole_argument_and_loses_only_the_staging():
+    """The measurement that set this design: on yawgmoth-swarm a rendered stack
+    is ~4,000 words and its authored intro is 77–144. Dropping the intro would
+    save nothing and cut the one thing the department's title promises."""
+    plan = dict(PLAN, departments=[
+        dict(d, features=["002"]) if d["id"] == "the-kill" else d
+        for d in PLAN["departments"]])
+    html_out = render(plan=plan, stacks=_two_stacks(),
+                      prose_doc=dict(PROSE, combo_lines={
+                          "001": "The clause is the whole case.", "002": "B."}))
+    index = html_out[html_out.index('class="kill-index"'):]
+    assert "The clause is the whole case." in index, "the authored intro was dropped"
+    assert "Eight tokens." in index, "the result was dropped"
+    assert 'href="#case-001"' in index
+
+
+def test_the_index_states_the_true_total():
+    """A cut that does not say it cut reads as completeness."""
+    plan = dict(PLAN, departments=[
+        dict(d, features=["002"]) if d["id"] == "the-kill" else d
+        for d in PLAN["departments"]])
+    html_out = render(plan=plan, stacks=_two_stacks(),
+                      prose_doc=dict(PROSE, combo_lines={"001": "A.", "002": "B."}))
+    assert "1 of this deck's 2 verified lines" in html_out
+
+
+def test_an_indexed_line_keeps_the_anchor_judges_desk_links_back_to():
+    """Judge's Desk prints `↩ Back to this line in The Kill` for every case.
+
+    Index a line without carrying its `line-<id>` anchor and that link becomes a
+    dead jump — quietly, in the department whose job is being findable.
+    """
+    plan = dict(PLAN, departments=[
+        dict(d, features=["002"]) if d["id"] == "the-kill" else d
+        for d in PLAN["departments"]])
+    html_out = render(plan=plan, stacks=_two_stacks(),
+                      prose_doc=dict(PROSE, combo_lines={"001": "A.", "002": "B."}))
+    for sid in ("001", "002"):
+        assert f'href="#line-{sid}">↩' in html_out
+        assert f'id="line-{sid}"' in html_out
+
+
+def test_an_unknown_feature_id_does_not_take_the_magazine_down():
+    """`validate-issue` is where a bad id is an error. The renderer skips it —
+    a crash here turns a copy mistake into a missing issue."""
+    plan = dict(PLAN, departments=[
+        dict(d, features=["999"]) if d["id"] == "the-kill" else d
+        for d in PLAN["departments"]])
+    html_out = render(plan=plan, stacks=_two_stacks(),
+                      prose_doc=dict(PROSE, combo_lines={"001": "A.", "002": "B."}))
+    assert 'class="kill-index"' in html_out
+    assert html_out.count('class="th-deck"') == 0

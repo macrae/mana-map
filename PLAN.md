@@ -198,23 +198,57 @@ four departments are 57% of the scroll: the-kill 14.6, at-the-table 9.7, the-99 
 whats-your-play 6.7. Each is the thing itself — seven stack theatres, three arguments plus
 five threat boxes, seventy card tiles, ten branch cards.
 
-**Yawgmoth-swarm is the outlier and the reason is structural.** Its Kill is **44,119 words
-in one department**, 42% of the issue, because it has **eleven** checker-passed stacks
-against radagast's seven and its loops run 11–14 steps each (153 total steps against 51).
-The Kill renders every passing stack as a full theatre. The lever nobody has pulled: feature
-the stacks the plan actually names and give the rest an index row into Judge's Desk, which
-already holds the complete record. That is the Part 2 principle — reference material at
-reference weight — applied to a case the length plan did not anticipate. It is an editorial
-policy change touching all nine issues, so it is queued rather than done.
+**Yawgmoth-swarm was the outlier and it is FIXED.** Its Kill was **44,119 words in one
+department**, 42% of the issue, because it has **eleven** checker-passed stacks against
+radagast's seven and its loops run 11–14 steps each (153 total steps against 51) — and The
+Kill staged every one. `the-kill.features` now names which lines get a theatre; the rest
+print under *Also on the record*. Yawgmoth features four (002, 004, 012, 011) chosen from
+its own artifacts rather than by taste: 002 is `engine.json`'s most-cited evidence at three
+`verified_by` references and answers the word the goldfish declaration used (NOT unbounded),
+004 is the sharpest refutation in the fleet and §7.6 celebrates those, 012 is the only
+resolution that ends "not a draw — you win", and 011 carries two engine lines plus the
+mana-ability finding.
 
-### 3b. Two deliberate reds, and one charter left stale on purpose
+| | before | after |
+|---|---:|---:|
+| The Kill, words | 44,119 | **19,104** |
+| The Kill, share of scroll | — | **20.4%** (radagast's share on seven stacks) |
+| Issue total | 96.5 screens | **88.4** |
 
-`cache-status` is green fleet-wide except two entries on radagast, and **neither will be
-recorded**: `issue-plan`, because its plan was hand-edited after the spec moved rather than
-re-spawned, and `panel-prose`, because the `pilot-panel` charter gained the no-formula rule
-*after* radagast's panel was recorded and a charter edit disqualifies a re-bless by
-construction. The other eight were spawned fresh minutes before recording, which is a real
-record and not a bless.
+**The first cut was wrong and measuring it said so.** It printed a bare pointer row and
+dropped the authored `combo_lines` intro — but a rendered stack is ~4,000 words and its
+intro is **77–144**, so the intro costs nothing and the theatre is the whole expense. An
+index that dropped the argument would keep the department's title and cut the thing it
+names. Rows keep the intro and the result; only the staging is rationed.
+
+**Word count is a bad proxy for scroll in this department.** −25,015 words bought −8.1
+screens, because the theatre stacks its plates in Z: word-heavy, pixel-light. `issue-length`
+already reports two numbers that disagree on purpose, and this is a third way they can.
+
+Left open, and pre-existing rather than introduced here: `final_state.summary` runs 122–762
+words on yawgmoth and renders ONLY in The Kill — Judge's Desk's `render_after_block` prints
+life and battlefield rows, not the summary. So it cannot simply be dropped from a row, and
+it visibly restates the intro's holding at length. Moving it into the collapsed case file
+would cost no scroll and fix the duplication; it changes all nine issues, so it is a
+decision rather than a tidy-up.
+
+### 3b. `issue-plan` is MISS fleet-wide, and it is bookkeeping rather than work
+
+Adding `the-kill.features` changed the plan schema, so `magazine-editor.md` and STYLEv3
+both moved and every `issue-plan` entry went MISS. That is the cache telling the truth —
+those eight plans were written by editors that had never heard of the key. It is not eight
+respawns of work: **every other deck has seven or fewer presentable stacks** (edgar 7,
+radagast 7, heliod 6, ur-dragon 6, goblin-storm 5, gishath 5, hapatra 1, sisay 1), and
+STYLEv3 now says one theatre per line is right up to about seven. Omitting the key is the
+correct plan for all eight. Re-spawn one only when its stack count grows past seven, or when
+it is being re-planned for another reason anyway.
+
+### 3c. Two deliberate reds, and one charter left stale on purpose
+
+Beyond §3b's fleet-wide `issue-plan` MISS, radagast's `panel-prose` is red and **will not
+be recorded**: the `pilot-panel` charter gained the no-formula rule *after* radagast's panel
+was recorded, and a charter edit disqualifies a re-bless by construction. Everything else
+is green.
 
 `.claude/agents/pilot-coach.md` still calls the tutor guide "the Fetch Quests section". It
 is one stale name in a charter that also orders the agent to read `issue_spec` for the

@@ -882,10 +882,26 @@ def render_the_kill(issue, plan, stacks, cards, prose_doc, cards_by_name):
     THEATRE resolves it a step at a time. Judge's Desk still carries the verbatim
     record and is deliberately untouched: the theatre is a way through the proof,
     not a replacement for it, and §5.1 forbids the renderer summarising proof.
+
+    **`features` decides which lines get a spread, and the rest get a row.** The
+    department rendered a full theatre per passing stack, which is right at seven
+    and wrong at eleven: yawgmoth-swarm's Kill reached **44,119 words — 42% of its
+    issue** — because its loops run 11–14 steps each and every one was staged. The
+    editors have been naming a feature set in prose since the first issue ("Three
+    feature spreads: stack 003, 006, 005") and nothing read it; `features` is that
+    note made machine-readable. Absent, every stack still features, so no existing
+    issue moves without its plan asking.
+
+    What is NOT featured is indexed rather than dropped. A silent cut reads as
+    "that is all of them", and here it would also strand Judge's Desk's own
+    `↩ Back to this line in The Kill` link — so an index row carries the same
+    `line-<id>` anchor a spread would. It is a pointer, not a summary: the id, the
+    authored head, the counts, and a link into the case.
     """
     dept = plan_dept(plan, "the-kill")
+    featured, indexed = split_features(dept, stacks)
     spreads = []
-    for stack in stacks:
+    for stack in featured:
         sid = stack["id"]
         checker = stack.get("checker", {})
         intro = prose(prose_doc, "combo_lines", sid)
@@ -911,8 +927,76 @@ def render_the_kill(issue, plan, stacks, cards, prose_doc, cards_by_name):
         + dept_captions(dept, cards_by_name)
         + dept_furniture(dept, cards_by_name)
         + ("".join(spreads) or TODO)
+        + kill_index(indexed, len(stacks), prose_doc)
         + dept_close("the-kill", issue)
     )
+
+
+def split_features(dept, stacks):
+    """`(featured, indexed)` — the plan's `features`, in the order it wrote them.
+
+    Unknown ids are skipped here rather than raising: `validate-issue` is where a
+    bad id is an error, and a renderer that crashes on one turns a copy mistake
+    into a missing magazine. Everything not featured is indexed, in id order,
+    which is the order a reader scans a list of case numbers in.
+    """
+    named = [str(i) for i in (dept.get("features") or [])]
+    if not named:
+        return list(stacks), []
+    by_id = {s["id"]: s for s in stacks}
+    featured = [by_id[i] for i in named if i in by_id]
+    chosen = {s["id"] for s in featured}
+    return featured, [s for s in stacks if s["id"] not in chosen]
+
+
+def kill_index(indexed, total, prose_doc):
+    """The lines without a spread — **argued in full, just not staged.**
+
+    The first cut here dropped the authored `combo_lines` intro and printed a
+    bare pointer row, and measuring it showed that was throwing away the wrong
+    thing. On yawgmoth-swarm a rendered stack is ~4,000 words and its intro is
+    **77–144** — the board block and the theatre are essentially all of it. So
+    the argument stays and the staging is what gets rationed, which is also the
+    only reading that keeps the department's promise: The Kill is "the winning
+    lines, ARGUED and affirmed", and an index that dropped the argument would be
+    keeping the title and cutting the thing it names.
+
+    The count sentence states the TRUE total, because a cut that does not say it
+    cut reads as completeness. Empty when every line was featured, so an issue
+    whose plan has no `features` renders byte-identically to before the key
+    existed.
+    """
+    if not indexed:
+        return ""
+    rows = []
+    for stack in indexed:
+        sid = stack["id"]
+        resolution = stack.get("resolution", {})
+        n_steps = len(resolution.get("steps") or [])
+        n_cites = sum(len(s.get("citations") or [])
+                      for s in resolution.get("steps") or [])
+        intro = prose(prose_doc, "combo_lines", sid)
+        final = resolution.get("final_state", {})
+        rows.append(f"""
+<article class="kill-row" id="line-{esc(sid)}">
+  <div class="kill-row-head">
+    <span class="case-id">A-{esc(sid)}</span>
+    <span class="case-title">{esc(stack_headline(stack["title"])[0])}</span>
+    <span class="case-meta">{n_steps} step{"" if n_steps == 1 else "s"}
+      · {n_cites} citation{"" if n_cites == 1 else "s"}</span>
+  </div>
+  <div class="body-copy">{intro}</div>
+  <p class="kill-row-result"><b>Result.</b> {esc(final.get("summary", ""))}</p>
+  <a class="xref" href="#case-{esc(sid)}">Full dossier: Judge's Desk, Case
+    A-{esc(sid)} →</a>
+</article>""")
+    n = len(indexed)
+    return (f'<div class="kill-index">'
+            f'<h4 class="kill-index-head">Also on the record</h4>'
+            f'<p class="kill-index-dek">{n} of this deck\'s {total} verified lines '
+            f'are argued here without the stack theatre. They cleared the same '
+            f'review; the step-by-step resolution and every citation are in '
+            f'Judge\'s Desk.</p>{"".join(rows)}</div>')
 
 
 def letter_teases(plan, limit=3):

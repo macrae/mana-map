@@ -197,6 +197,24 @@ short sentences, short paragraphs, one idea each (STYLEv3 §7.1).
 In-text evidence links, collapsible case files and the contents button are
 renderer-provided — never plan or write them.
 
+**The Kill: `features` decides which lines get a stack theatre.** An ordered list
+of stack ids on the `the-kill` entry — `"features": ["002", "004", "012"]` — and
+those get the full spread, in that order. Every other presentable stack keeps its
+whole authored intro and its result and loses only the staging, printed below
+under *Also on the record*.
+
+Omit the key and every verified line is featured, which is right up to about
+seven and wrong past it: yawgmoth-swarm has eleven, and eleven theatres made The
+Kill **42% of that issue**. Choose from the deck's own artifacts rather than by
+taste — `engine.json`'s `verified_by` counts say which stack the model actually
+leans on, a resolution that refutes something is celebrated rather than buried
+(§7.6), and a line that ends "you win" outranks one that ends "not lethal".
+Say in the department's `note` why these and not the others.
+
+Three things the validator will fail: a features list naming a stack that is not
+presentable, a repeat, and a list naming *every* presentable stack (which is what
+omitting the key already does, and it will rot the first time a stack is added).
+
 ## Partial revision mode
 
 When the spawning prompt scopes you to named keys (or departments), that scope

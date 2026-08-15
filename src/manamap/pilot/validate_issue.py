@@ -18,7 +18,8 @@ Checks:
 
 import json
 
-from manamap.pilot.common import deck_dir, load_deck_cards, report_errors
+from manamap.pilot.common import (deck_dir, load_deck_cards, presentable,
+                                   report_errors)
 from manamap.pilot.issue_spec import (
     MASTHEAD_COLUMNISTS,
     voices_for,
@@ -469,6 +470,59 @@ def _editor_only(path):
         and "also_worth_noting" not in path
 
 
+def validate_features(base, plan):
+    """`the-kill.features` must name presentable stacks, and only those.
+
+    The key decides which verified lines get a feature spread and which get an
+    index row, so a typo does not fail loudly — it quietly demotes the issue's
+    best line to a one-liner and nothing else changes. That is why this is a
+    validator rather than a renderer exception: `render_the_kill` skips an unknown
+    id on purpose, because a crash here costs the whole magazine.
+
+    A non-presentable id is the sharper error of the two. It means the plan is
+    trying to feature a line the publication gate already refused, which is the
+    one mistake this department must never make.
+    """
+    errors = []
+    dept = next((d for d in plan.get("departments") or []
+                 if d.get("id") == "the-kill"), None)
+    if not dept or "features" not in dept:
+        return errors
+
+    features = dept["features"]
+    if not isinstance(features, list) or not features:
+        return ["the-kill.features must be a non-empty list of stack ids — omit "
+                "the key entirely to feature every verified line"]
+
+    ids = [str(f) for f in features]
+    duplicates = sorted({i for i in ids if ids.count(i) > 1})
+    if duplicates:
+        errors.append(f"the-kill.features repeats {duplicates} — a line gets one "
+                      f"spread or one row, never both")
+
+    stacks_dir = base / "stacks"
+    available = set()
+    for path in sorted(stacks_dir.glob("*.json")) if stacks_dir.is_dir() else []:
+        with open(path) as f:
+            doc = json.load(f)
+        if presentable(doc):
+            available.add(str(doc.get("id")))
+    if not available:
+        return errors                       # no stacks on disk; nothing to check
+
+    for sid in ids:
+        if sid not in available:
+            errors.append(
+                f"the-kill.features names {sid!r}, which is not a presentable "
+                f"stack — presentable ids are {sorted(available)}")
+    if set(ids) == available and len(available) > 1:
+        errors.append(
+            "the-kill.features names every presentable stack, which is what "
+            "omitting the key already does — drop it rather than restating the "
+            "default, or the index below the spreads renders empty")
+    return errors
+
+
 def validate_self_containment(base, plan):
     """Reader-facing text must carry no memory of previous deck versions."""
     errors = []
@@ -654,6 +708,7 @@ def main(args):
         print("WARN cards.json absent — skipping card-name checks")
 
     errors += validate_plan(plan, card_names, artists)
+    errors += validate_features(base, plan)
     errors += validate_self_containment(base, plan)
     errors += validate_land_counts(base, plan)
 

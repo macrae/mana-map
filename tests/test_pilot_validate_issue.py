@@ -459,3 +459,83 @@ def test_the_budget_reads_the_spec_not_a_transcribed_list():
         assert constant in source
     # No cap typed into the checker itself.
     assert "2500" not in source and "1900" not in source
+
+
+# ── The Kill's feature set ───────────────────────────────────────────────
+
+import json as _json
+
+from manamap.pilot.validate_issue import validate_features
+
+
+def _deck_with_stacks(tmp_path, ids=("001", "002", "003"), refused=()):
+    """A deck dir holding presentable stacks, plus any marked non-presentable."""
+    base = tmp_path / "deck"
+    (base / "stacks").mkdir(parents=True)
+    for sid in list(ids) + list(refused):
+        doc = {
+            "id": sid, "title": f"Line {sid}: the question",
+            "resolution": {"steps": [], "final_state": {"summary": "s"}},
+            "checker": {"verdict": "pass", "iterations": 1},
+        }
+        if sid in refused:
+            doc["presentable"] = False
+        (base / "stacks" / f"{sid}-line.json").write_text(_json.dumps(doc))
+    return base
+
+
+def _plan_with_features(features):
+    dept = {"id": "the-kill", "kicker": "K", "headline": "H", "dek": "D"}
+    if features is not None:
+        dept["features"] = features
+    return {"departments": [dept]}
+
+
+def test_features_absent_is_the_default_and_checks_nothing(tmp_path):
+    base = _deck_with_stacks(tmp_path)
+    assert validate_features(base, _plan_with_features(None)) == []
+
+
+def test_a_valid_subset_passes(tmp_path):
+    base = _deck_with_stacks(tmp_path)
+    assert validate_features(base, _plan_with_features(["002"])) == []
+
+
+def test_featuring_a_line_that_does_not_exist_is_an_error(tmp_path):
+    """The sharp failure mode: a typo silently demotes the issue's best line to
+    an index row and nothing else changes, because the renderer skips unknown
+    ids rather than crashing."""
+    base = _deck_with_stacks(tmp_path)
+    errors = validate_features(base, _plan_with_features(["009"]))
+    assert any("'009'" in e and "not a presentable stack" in e for e in errors)
+
+
+def test_featuring_a_refused_line_is_an_error(tmp_path):
+    """A non-presentable stack failed the publication gate. Featuring one is the
+    single mistake this department must never make."""
+    base = _deck_with_stacks(tmp_path, ids=("001",), refused=("004",))
+    errors = validate_features(base, _plan_with_features(["004"]))
+    assert any("'004'" in e for e in errors)
+
+
+def test_a_repeated_feature_is_an_error(tmp_path):
+    base = _deck_with_stacks(tmp_path)
+    errors = validate_features(base, _plan_with_features(["002", "002"]))
+    assert any("repeats" in e for e in errors)
+
+
+def test_an_empty_features_list_is_an_error(tmp_path):
+    """`[]` would read as "feature nothing" in the issue's peak department.
+    Omitting the key is how you say "feature everything"."""
+    base = _deck_with_stacks(tmp_path)
+    errors = validate_features(base, _plan_with_features([]))
+    assert any("non-empty" in e for e in errors)
+
+
+def test_features_naming_every_stack_is_an_error(tmp_path):
+    """It renders identically to omitting the key and leaves an empty index —
+    so it is a plan restating the default, which will rot the moment a stack
+    is added and nobody remembers to extend the list."""
+    base = _deck_with_stacks(tmp_path)
+    errors = validate_features(base, _plan_with_features(["001", "002", "003"]))
+    assert any("every presentable stack" in e for e in errors)

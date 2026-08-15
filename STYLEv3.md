@@ -463,12 +463,24 @@ the table above. "Failure mode" is what the review in §12 looks for.
 **10. The Kill** — *the payoff*
 
 - **Promise**: Every issue, this department shows you exactly how the deck wins.
-- **Shape**: One feature spread per verified line. Scene-setting box → numbered play
-  sequence with card images → payoff callout → coaching read → **dossier pointer**
-  (`FULL DOSSIER: JUDGE'S DESK A-00N →`).
+- **Shape**: A feature spread per line the plan's `features` names — scene-setting
+  box → the stack theatre → result → **dossier pointer**
+  (`FULL DOSSIER: JUDGE'S DESK A-00N →`) — then *Also on the record*, where every
+  other verified line keeps its whole argument and loses only the staging.
 - **Rule**: Only checker-passed stacks appear here. A refuted line is *also* a feature
   (see §7.6) — it is one of the best stories we have.
+- **Rule (v3.6)**: **The theatre is rationed; the argument is not.** Omitting
+  `features` stages every line, which is right at seven and wrong at eleven —
+  yawgmoth-swarm's Kill reached 44,119 words, **42% of the issue**, because its
+  loops run 11–14 steps and each was staged. Indexing seven of the eleven took it
+  to 19,104 and 20.4% of the scroll, the same share The Kill takes on a
+  seven-stack issue. What made it a cut rather than a loss is what stayed: a
+  rendered stack is ~4,000 words and its authored intro is 77–144, so the intro
+  and the result cost almost nothing and the department keeps its promise. An
+  index that dropped the argument would keep the title and cut the thing it names.
 - **Failure mode**: dumping rules citations into the body. They live in Judge's Desk.
+- **Failure mode**: a silent ration. The index states the true total, always —
+  otherwise four staged lines read as all the deck has.
 
 ---
 

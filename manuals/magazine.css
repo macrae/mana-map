@@ -661,6 +661,34 @@ details.dossier > summary::after { content:"▸"; position:absolute; right:14px;
              flex:0 0 auto; }
 .case-sub { font-family:var(--type); font-size:.7rem; color:var(--ink-soft);
             padding:8px 14px 0; }
+
+/* The Kill's index: the verified lines that did not get a feature spread. They
+   keep their whole authored argument and lose only the staging, so a row is a
+   short article rather than a link — the head is what compresses.
+   It borrows `.case-id` / `.case-title` / `.case-meta` from the appendix on
+   purpose: a reader who has learned that A-00N in a bordered tab means "there
+   is a case file behind this" should not have to learn a second vocabulary two
+   departments earlier. */
+.kill-index { border-top:3px solid var(--ink); margin-top:30px; padding-top:14px; }
+.kill-index-head { font-family:var(--condensed); text-transform:uppercase;
+                   letter-spacing:.14em; font-size:.78rem; margin:0 0 4px; }
+.kill-index-dek { font-family:var(--type); font-size:.82rem; color:var(--ink-soft);
+                  margin:0 0 12px; max-width:58ch; }
+.kill-row { border-bottom:1px solid rgba(0,0,0,.14); padding:12px 0 16px; }
+.kill-row:last-child { border-bottom:none; }
+.kill-row-head { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+                 margin-bottom:8px; }
+.kill-row .body-copy { margin:0; }
+/* Measured to MATCH the prose above it, which is not the same as sharing its
+   number: this block sets in the mono face at .86rem, so 62ch is 521px against
+   the body's 626 and reads as a narrower, unrelated column. 72ch is 605px —
+   aligned. Unconstrained it ran 1,012px, and `final_state.summary` is long
+   enough on some decks (762 words on yawgmoth's stack 004) that full width
+   makes it a wall. Measured on yawgmoth's seven-row index: 62ch 6,690px ·
+   72ch 6,067 · unconstrained 4,529. The 1,538px is what a readable measure
+   costs here, and it is paid out of the 25,000 words this index saved. */
+.kill-row-result { font-family:var(--type); font-size:.86rem; max-width:72ch;
+                   color:var(--ink-soft); margin:8px 0 6px; }
 details.dossier[open] > summary .case-row { border-bottom:2px solid #b9a469; }
 details.dossier[open] > summary::after { content:"▾"; }
 details.dossier > p.small { padding:0 18px 14px; margin:0; }
