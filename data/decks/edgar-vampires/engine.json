@@ -5,7 +5,7 @@
     {
       "stage": "mana",
       "label": "FORTY-THREE CARDS THAT PAY THE ENTRY FEE",
-      "what_it_does": "Thirty-seven lands — 34 entries, because Swamp is a 4-of — plus six accelerants: 43 copies, which is what a shuffler sees, and the entry count is the one that has published a wrong land total before. The job is narrower than usual: this engine does not need a big turn, it needs to cast a cheap Vampire EVERY turn, because that cast is the trigger the whole machine waits on. The declared ramp group is six cards (Sol Ring, Arcane Signet, Talisman of Indulgence, Bontu's Monument, Herald's Horn, Patchwork Banner), priced by the brief at 36.4% of opening sevens, 44.4% by turn three, 68.0% assembled and 56.7% by turn six. Two of the six are cost reducers rather than mana, and the discount is narrower than the card text sounds: a generic reduction cannot pay a coloured pip (CR 601.2f), so Bontu's Monument and Herald's Horn reduce only spells that HAVE a generic component. Nine of the 21 black creature spells in the 99 have none — Vampire Cutthroat {B}, Vampire of the Dire Moon {B}, Knight of the Ebon Legion {B}, Indulgent Aristocrat {B}, Cordial Vampire {B}{B}, Corpse Knight, Legion Lieutenant and Cruel Celebrant at {W}{B}, Vampire Socialite {B}{R} — and they are exactly the cheap bodies this stage says the engine wants every turn. Bontu's Monument is filed here because the declaration prices it as one of only six ramp pieces; its drain half is real and Bloodletter doubles it. The colour load is the pressure point the map already names: black is 39 of 76 pips, much of the fixing is bought with life, and the hardest cast in the 99 is Bloodletter of Aclazotz at {1}{B}{B}{B}, the only triple-black cost here.",
+      "what_it_does": "Thirty-seven lands — 34 entries, because Swamp is a 4-of — plus six accelerants: 43 copies, which is what a shuffler sees, and the entry count is the one that has published a wrong land total before. The job is narrower than usual: this engine does not need a big turn, it needs to cast a cheap Vampire EVERY turn, because that cast is the trigger the whole machine waits on. The declared ramp group is six cards (Sol Ring, Arcane Signet, Talisman of Indulgence, Bontu's Monument, Herald's Horn, Patchwork Banner), priced by the brief at 36.4% of opening sevens, 44.4% by turn three, 68.0% assembled and 56.7% by turn six. Two of the six are cost reducers rather than mana, and the discount is narrower than the card text sounds: a generic reduction cannot pay a coloured pip (CR 601.2f), so Bontu's Monument and Herald's Horn reduce only spells that HAVE a generic component. Nine of the 21 black creature spells in the 99 have none — Vampire Cutthroat {B}, Vampire of the Dire Moon {B}, Knight of the Ebon Legion {B}, Indulgent Aristocrat {B}, Cordial Vampire {B}{B}, Corpse Knight, Legion Lieutenant and Cruel Celebrant at {W}{B}, Vampire Socialite {B}{R} — and they are exactly the cheap bodies this stage says the engine wants every turn. Bontu's Monument is filed here because the declaration prices it as one of only six ramp pieces; its drain half is real and Bloodletter doubles it. The colour load is the pressure point the map already names: mana_analysis.json says black is 39 of 76 pips and under-counts — pip_requirements reads only top-level mana_cost, dropping both DFC front faces (Bloodline Keeper, Legion's Landing); cards.json gives 41 of 79. Fixing is bought with life, and the hardest cast in the 99 is Bloodletter of Aclazotz at {1}{B}{B}{B}, the only triple-black cost here.",
       "cards": [
         "Ancient Tomb",
         "Battlefield Forge",
@@ -229,7 +229,7 @@
     {
       "stage": "protection",
       "label": "FIVE CARDS HELD, NOT CAST",
-      "what_it_does": "The swarm is the deck's whole position, so a sweeper is not a setback but the game. Five cards insure against it: Teferi's Protection, Flawless Maneuver, Boros Charm, Akroma's Will and Deflecting Swat. The brief prices the component at 31.2% of opening sevens, 38.6% by turn three, 60.9% assembled and 50.0% by turn six. It is the one component held in hand rather than deployed, so the goldfish figure and the practical figure differ by whatever you were forced to spend that mana on instead. Two of them are not only insurance. Akroma's Will grants protection from each colour, and with a commander on the battlefield you may choose both modes — flying, vigilance and double strike in the same cast, so the save and the kill are one card. That second half is available in roughly half of games by turn six: goldfish casts Edgar by turn six in 52.1% of runs, mean turn 6.614. Deflecting Swat redirects a removal spell rather than saving the board. Note two more protective clauses that are counted elsewhere because their card does another job: Mondrak sacrifices two permanents instead of dying, and Purphoros is indestructible and frequently not a creature at all — stack 009 computes devotion to red at 3, which costs a body and does nothing to the trigger.",
+      "what_it_does": "The swarm is the deck's whole position, so a sweeper is not a setback but the game. Five cards insure against it: Teferi's Protection, Flawless Maneuver, Boros Charm, Akroma's Will and Deflecting Swat. The brief prices the component at 31.2% of opening sevens, 38.6% by turn three, 60.9% assembled and 50.0% by turn six. It is the one component held in hand rather than deployed, so the goldfish figure and the practical figure differ by whatever you were forced to spend that mana on instead. Two of them are not only insurance. Akroma's Will grants protection from each colour, and with a commander on the battlefield you may choose both modes — flying, vigilance and double strike in the same cast, so the save and the kill are one card. That second half is available in roughly half of games by turn six: goldfish casts Edgar by turn six in 52.1% of runs, mean turn 6.614. Deflecting Swat redirects a removal spell rather than saving the board. Note two more protective clauses that are counted elsewhere because their card does another job: Mondrak can buy an indestructible counter, but it is an activated ability — {1}{W/P}{W/P} plus sacrificing two other artifacts and/or creatures — so the mana has to be held up, the two bodies are spent whether or not the wipe comes, the Phyrexian pips cost up to 4 life on top of the fixing, and the counter answers destruction only, not exile, sacrifice or -X/-X; and Purphoros is indestructible and frequently not a creature at all — stack 009 computes devotion to red at 3, which costs a body and does nothing to the trigger.",
       "cards": [
         "Teferi's Protection",
         "Flawless Maneuver",
@@ -540,7 +540,7 @@
     {
       "target": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source",
       "change": "Widen the drain-source group from ['Sanctum Seeker', 'Throne of the God-Pharaoh'] to include the other unambiguous non-damage life-loss sources in the 99: Corpse Knight, Blood Artist, Cruel Celebrant, Bontu's Monument, Vito, Thorn of the Dusk Rose and Sanguine Bond. Leave the four damage payoffs out until the Bloodletter-doubles-damage question is resolved by a stack.",
-      "why": "Bloodletter replaces any opponent life loss during your turn, from any source; the group names two cards where the deck holds eight halves, and goldfish_targets.json's own `_note` already observes that Corpse Knight causes life loss rather than damage 'so Bloodletter of Aclazotz doubles it' before leaving it out of the group. The 13.7% figure quoted in round 1 was engine-facts' `opening_seven` for the two-card SOURCE HALF alone, not for the component; engine-critic's hypergeometric puts both halves together at 0.84% of opening sevens on N=99/n=7, and 2.6% if the half widens to eight. The declaration's 5.2% assembled stands. The correction strengthens the edit: the line is thinner in an opener than round 1 said, and it is thin because of how it is DECLARED."
+      "why": "Bloodletter replaces any opponent life loss during your turn, from any source; the group names two cards where the deck holds eight halves, and goldfish_targets.json's own `_note` already observes that Corpse Knight causes life loss rather than damage 'so Bloodletter of Aclazotz doubles it' before leaving it out of the group. The 13.7% figure quoted in round 1 was engine-facts' `opening_seven` for the two-card SOURCE HALF alone, not for the component; engine-critic's hypergeometric puts both halves together at 0.84% of opening sevens on N=99/n=7, and 2.9% if the half widens to the eight named above (N=99, n=7, Bloodletter plus at least one of eight = 0.02888; 2.6% is the seven-card figure). The declaration's 5.2% assembled stands. The correction strengthens the edit: the line is thinner in an opener than round 1 said, and it is thin because of how it is DECLARED."
     },
     {
       "target": "THE GO-WIDE KILL: a token->damage payoff AND a multiplier",
@@ -561,7 +561,7 @@
   "absent_stages": [
     {
       "stage": "fodder",
-      "why": "STATED, NOT OMITTED, and argued rather than defined away. `fodder` is the resource the engine converts by consuming it, and the two fleet decks that carry the stage populate it with cards whose job is to BE eaten — hapatra's five body-makers (Bitterblossom, Nest of Scarabs, Flourishing Defenses, Scurry Oak, Ivy Lane Denizen) and yawgmoth-swarm's eleven bodies-and-recursion. Measured on the same role taxonomy, edgar-vampires holds ONE sac-outlet (Indulgent Aristocrat, {2} an activation, not free and not instant-speed-relevant) and ONE sac-cost, against seven and nine outlets in those two decks. Nothing in the 99 exists to be consumed: every body the engine makes has already paid off on entry and is then wanted alive, as an attacker, an anthem target and a Sanctum Seeker or Throne trigger. The four consumption clauses the critic names are costs on cards doing a different job — Skullclamp kills a 1/1 with +1/-1 as the price of two cards, Diabolic Intent sacrifices as an additional cost to tutor, Mondrak sacrifices two permanents to survive a wipe, and the Aristocrat is the one genuine outlet. The three death payoffs (Blood Artist, Cruel Celebrant, Cordial Vampire) are filed in output and fuel for the same reason: with one {2} outlet the deck does not manufacture deaths at will, so those cards mostly pay off deaths the OPPONENTS cause, which makes them a wipe-resilience layer and not a conversion the pilot can choose to run. Opening a fodder stage would either duplicate the token makers already placed in ignition and conversion — a card does one job here — or file the EATERS under the name of what is eaten, inverting the definition the fleet uses. lines[9] (conversion -> fuel, Skullclamp) is not a missing-stage arrow: its source is the body factory, which in this deck IS the conversion stage."
+      "why": "STATED, NOT OMITTED, and argued rather than defined away. `fodder` is the resource the engine converts by consuming it, and the two fleet decks that carry the stage populate it with cards whose job is to BE eaten — hapatra's five body-makers (Bitterblossom, Nest of Scarabs, Flourishing Defenses, Scurry Oak, Ivy Lane Denizen) and yawgmoth-swarm's eleven bodies-and-recursion. Measured on the same role taxonomy, edgar-vampires holds ONE sac-outlet (Indulgent Aristocrat, {2} an activation, not free and not instant-speed-relevant) and ONE sac-cost, against seven and nine outlets in those two decks. Nothing in the 99 exists to be consumed: every body the engine makes has already paid off on entry and is then wanted alive, as an attacker, an anthem target and a Sanctum Seeker or Throne trigger. The four consumption clauses the critic names are costs on cards doing a different job — Skullclamp kills a 1/1 with +1/-1 as the price of two cards, Diabolic Intent sacrifices as an additional cost to tutor, Mondrak's {1}{W/P}{W/P} activated ability sacrifices two other artifacts and/or creatures for an indestructible counter, and the Aristocrat is the one genuine outlet. The three death payoffs (Blood Artist, Cruel Celebrant, Cordial Vampire) are filed in output and fuel for the same reason: with one {2} outlet the deck does not manufacture deaths at will, so those cards mostly pay off deaths the OPPONENTS cause, which makes them a wipe-resilience layer and not a conversion the pilot can choose to run. Opening a fodder stage would either duplicate the token makers already placed in ignition and conversion — a card does one job here — or file the EATERS under the name of what is eaten, inverting the definition the fleet uses. lines[9] (conversion -> fuel, Skullclamp) is not a missing-stage arrow: its source is the body factory, which in this deck IS the conversion stage."
     }
   ],
   "rebuttals": [
@@ -586,122 +586,274 @@
     {
       "finding": "critic.findings[7] — proposed_goldfish_edits[0].why, 'miscounted'",
       "response": "accepted",
-      "what_i_did": "13.7% is engine-facts' `opening_seven` for the two-card SOURCE HALF, and the edit now says so. The component rate for both halves together is not in the brief, so it is quoted as the critic's hypergeometric (0.84% on N=99/n=7, 2.6% if the half widens to eight) and attributed rather than asserted. The 5.2% assembled figure was already the declaration's and stands."
+      "what_i_did": "13.7% is engine-facts' `opening_seven` for the two-card SOURCE HALF, and the edit now says so. The component rate for both halves together is not in the brief, so it is quoted as the critic's hypergeometric (0.84% on N=99/n=7, 2.9% if the half widens to eight — 2.6% was the seven-card figure and was corrected to 2.9% in round 3, which is what the edit now reads) and attributed rather than asserted. The 5.2% assembled figure was already the declaration's and stands."
+    },
+    {
+      "finding": "critic.findings[3] (round 3) / critic.findings[2] (round 2) — the Mondrak clause in stages[5].what_it_does and absent_stages[0].why, 'over-claimed'",
+      "response": "accepted",
+      "what_i_did": "Both sentences are corrected against the card text, which is decisive: Mondrak, Glory Dominus reads '{1}{W/P}{W/P}, Sacrifice two other artifacts and/or creatures: Put an indestructible counter on Mondrak.' The protection stage now says it is an activated ability rather than a replacement effect, prices the whole cost (mana, two other artifacts/creatures, and up to 4 life for the Phyrexian pips) and states that an indestructible counter answers destruction only. absent_stages[0] no longer says he 'sacrifices two permanents to survive a wipe'; it names the ability and its actual cost, which if anything strengthens the fodder argument — the sacrifice is a price paid on a card doing another job, not a conversion the pilot runs.",
+      "where_i_disagree": "Nothing. The critic is right on all three counts (timing, price, what the counter covers) and this was the loop's last unanswered finding. Nothing numeric moves: Mondrak is filed in stages[3] and is not a member of the protection component the brief prices at 31.2/38.6/60.9/50.0."
     }
   ],
   "critic": {
-    "round": 1,
+    "round": 3,
+    "iterations": 3,
     "verdict": "fail",
     "findings": [
       {
-        "where": "stages[0].what_it_does",
-        "claim": "\"Thirty-four lands plus six accelerants\" / \"the job is narrower than usual\"",
-        "status": "miscounted",
-        "note": "34 is the ENTRY count, not the land count. mana_analysis.json reports lands.total = 37 and lands.entries = 34, and the difference is Swamp at quantity 4 (cards.json: 97 entries, 100 copies). The deck plays 37 lands plus six accelerants, i.e. 43 mana sources, not 40. This is the exact defect CLAUDE.md records under \"Count copies, not decklist entries\" — it once published \"18 lands\" for a 33-land deck — and validate-issue ALREADY lints manual prose that quotes lands.entries as a land count. MECHANICALLY CHECKABLE: port that lint to validate_engine, matching a land-count numeral in any what_it_does against mana_analysis.lands.entries."
-      },
-      {
-        "where": "lines[1].note",
-        "claim": "\"Bontu's Monument takes {1} off every black creature spell, so the two-mana Vampire the engine wants every turn becomes a one-mana one\"",
-        "status": "over-claimed",
-        "note": "The via card is Cordial Vampire at {B}{B} (cards.json). A generic {1} reduction cannot reduce a coloured mana requirement (CR 601.2f), so Bontu's Monument reduces Cordial Vampire by nothing — the arrow's own example is the counter-example. It is not an edge case: 10 of the deck's 21 black creature spells have no generic component and are unreachable by the discount, and they are precisely the cheap bodies stages[0] says the engine wants every turn — Vampire Cutthroat {B}, Vampire of the Dire Moon {B}, Indulgent Aristocrat {B}, Knight of the Ebon Legion {B}, Cordial Vampire {B}{B}, Corpse Knight {W}{B}, Legion Lieutenant {W}{B}, Cruel Celebrant {W}{B}, Vampire Socialite {B}{R}, Bloodline Keeper. The line is dashed, but the note is phrased as fact, which is where an over-claim hides. The same reasoning error sits in stages[0].what_it_does (\"Herald's Horn does the same discount for Vampires\") — the card text is quoted correctly and the conclusion drawn from it is not. MECHANICALLY CHECKABLE, narrowly and safely: a line carrying a cost reduction whose via names a spell with no generic pip in its mana_cost."
-      },
-      {
-        "where": "stages[4].what_it_does",
-        "claim": "\"seven payoffs convert a creature ENTRY into simultaneous damage or life loss at every seat (Purphoros, Impact Tremors, Warleader's Call, Witty Roastmaster deal damage; Corpse Knight, Blood Artist, Cruel Celebrant cause life loss)\"",
-        "status": "contradicts-artifact",
-        "note": "Two of the seven are not entry payoffs. cards.json oracle text: Blood Artist — \"Whenever this creature or another creature DIES, target player loses 1 life and you gain 1 life\"; Cruel Celebrant — \"Whenever this creature or another creature or planeswalker you control DIES...\". Five of the seven trigger on an entry (Purphoros, Impact Tremors, Warleader's Call, Witty Roastmaster, Corpse Knight); two trigger on a death. The distinction is load-bearing rather than pedantic — it is the same two cards that make the fodder case in the next finding, and stack 009's verified 12-per-seat count uses only entry payoffs, so the sentence describes a class 009 did not measure. Note the goldfish declaration makes the same conflation in its TOKEN -> DAMAGE group; the model is free to say so, not to repeat it as card text."
-      },
-      {
-        "where": "stages (no `fodder` stage, and no statement anywhere that there is none)",
-        "claim": "the model omits `fodder` silently — the string does not appear in engine.json, in `unassigned` (empty), or in `open_questions`",
-        "status": "unjustified",
-        "note": "Two separate problems. (a) The deck-engineer charter is explicit: \"A deck with no sacrifice theme has no fodder, and SAYING SO IS A FINDING\". The artifact says nothing, so a reader cannot tell an argued omission from an oversight. (b) The reason given in the engineer's summary — that the three body-eaters consume a token rather than a card — is not a distinction the taxonomy makes. `fodder` is defined as \"what it eats — the resource converted\", and a token is exactly the resource this engine manufactures in bulk; on that reading the argument defines the stage away using the deck's own strength. The substantive case is larger than three cards: FOUR consume a body — Skullclamp (+1/-1 kills the 1/1 the mint made, \"whenever equipped creature dies, draw two cards\"), Indulgent Aristocrat (\"{2}, Sacrifice a creature\"), Diabolic Intent (\"as an additional cost, sacrifice a creature\"), Mondrak (\"Sacrifice two other artifacts and/or creatures\") — and THREE pay off deaths: Blood Artist, Cruel Celebrant, Cordial Vampire (\"Whenever this creature or another creature dies, put a +1/+1 counter on each Vampire you control\"). Decisively, lines[9] already draws conversion -> fuel carrying \"tokens turned back into cards\" via Skullclamp: that is a fodder arrow drawn without the stage it needs. Either argue the omission in the artifact or open the stage; do not leave it unstated."
-      },
-      {
-        "where": "stages[1].what_it_does",
-        "claim": "\"he is the one point of failure removal cannot answer — the ability functions from the command zone ... What CAN turn this stage off is a static tax or a Vampire-less hand, not a removal spell\"",
-        "status": "over-claimed",
-        "note": "False for the best-known answer class, and the class exists BECAUSE of commanders like this one. Effects that keep Edgar on the battlefield while stripping his abilities — Song of the Dryads, Imprisoned in the Moon, Darksteel Mutation, Kenrith's Transformation — turn eminence off completely: he never changes zones, so CR 903.9a's command-zone replacement never fires and there is nothing to recur. Control-change effects do it too: eminence would then be controlled by the opponent, and \"whenever YOU cast another Vampire spell\" reads their casts, not yours. The correct claim is narrower and still strong — DESTRUCTION and EXILE cannot answer it, because both route him back to the command zone. As written the sentence tells three columnists the ignition is unanswerable, and the Pilot's Log is licensed to repeat it."
-      },
-      {
-        "where": "stages[1].single_point_of_failure, stages[4].single_point_of_failure, stages[6].single_point_of_failure",
-        "claim": "Edgar Markov (ignition), Bloodletter of Aclazotz (output), Bloodthirsty Conqueror (wincon)",
-        "status": "over-claimed",
-        "note": "All three name a card the stage does not actually depend on — the charter's \"nine redundant outlets and nine priced SPOFs\" shape, in triplicate. OUTPUT: stack 009, the stage's own strongest verified line, kills a three-seat pod at 12 with Bloodletter nowhere on the board; the stage holds seven payoffs at 73.5% assembled plus eight removal spells. Bloodletter is the single point of failure of ONE LINE (the drain doubler, lines[7]/lines[8]), not of the stage — and the model says as much two sentences earlier. WINCON: the same paragraph enumerates a second, independent, far more reliable route — the combat kill, seven cards, 78.9% assembled — and then declares Conqueror the stage's SPOF; he is the SPOF of the infinite only. IGNITION: a SPOF the surrounding paragraph spends four sentences arguing cannot fail is a contradictory data value, whatever the prose says about \"accuracy rather than alarm\" — the field is read as a fragility signal by the renderer and by three columnists, and the honest value here is null with the fact in the prose. Candidate mechanical check, stated cautiously because it could fire on correct data: a `single_point_of_failure` naming a card that appears in none of the stage's own cited passing stacks."
-      },
-      {
-        "where": "stages[1].what_it_does / stages[6].what_it_does",
-        "claim": "\"Edgar's own {3}{W}{B}{R} body is a late bonus\", and the combat kill's counter-placers are \"Vampire Socialite and Drana and Indulgent Aristocrat\"",
-        "status": "unjustified",
-        "note": "Edgar's second ability — \"Whenever Edgar attacks, put a +1/+1 counter on EACH Vampire you control\" (cards.json) — is the largest single pump effect in the 99 and it belongs to the combat kill the model attributes to seven other cards. It is not hypothetical: checker-passed stack 003's resolution records \"All seven attackers have +1/+1 counters from Edgar's trigger\", on the same board the model cites for lines[7]. So the body is not merely \"a late bonus\": it is the anthem the wincon stage forgot, and its 52.1% cast-by-turn-6 rate is a real cost of the ignition living in the command zone — which is the question a reader will ask after being told the commander is never needed. Also, the printed cost is {3}{R}{W}{B} in cards.json, not {3}{W}{B}{R}; trivial in itself, but it is a figure transcribed rather than read."
-      },
-      {
         "where": "proposed_goldfish_edits[0].why",
-        "claim": "\"A two-card half prices the component at 13.7% of opening sevens and 5.2% assembled\"",
-        "status": "miscounted",
-        "note": "13.7% is engine-facts' `opening_seven` for the SOURCE HALF alone (Sanctum Seeker + Throne, size 2); the COMPONENT — Bloodletter AND a source together in an opening seven — is 0.84% by hypergeometric on N=99, n=7. The sentence attributes a half's rate to the component. The correction strengthens the edit rather than weakening it: the declared line is an order of magnitude thinner in an opener than the number quoted, and widening the source half to the eight qualifying cards takes it to 2.6%. The 5.2% assembled figure is correct (goldfish_metrics 0.052)."
+        "claim": "\"engine-critic's hypergeometric puts both halves together at 0.84% of opening sevens on N=99/n=7, and 2.9% if the half widens to the eight named above (N=99, n=7, Bloodletter plus at least one of eight = 0.02888; 2.6% is the seven-card figure)\"",
+        "status": "supported",
+        "note": "REPAIR 1 ACCEPTED, re-derived rather than read. N=99 is right: cards.json holds 97 entries / 100 copies (Swamp x4), commander in the command zone, so the library is 99. All nine cards are singletons in the 99 (Bloodletter of Aclazotz, Sanctum Seeker, Throne of the God-Pharaoh, Corpse Knight, Blood Artist, Cruel Celebrant, Bontu's Monument, Vito Thorn of the Dusk Rose, Sanguine Bond), and the `change` field's list is exactly eight sources. P(Bloodletter in 7) x P(>=1 of k | Bloodletter in 7) = [C(98,6) - C(98-k,6)] / C(99,7): k=2 -> 0.00843, k=7 -> 0.02593, k=8 -> 0.02888, confirmed by 400k-draw Monte Carlo (0.028775 / 0.025995). So 0.84%, 2.9% and the parenthetical attribution of 2.6% to the seven-card half are all correct, and the figure now matches the list in its own entry."
       },
       {
-        "where": "stages[6].what_it_does",
-        "claim": "\"The declaration prices the line at 4.8% assembled, 24.3% with tutors, mean turn 5.4, and calls that the ceiling rather than a defect.\"",
-        "status": "mis-cited",
-        "note": "The three rates are the declaration's and they check out exactly (goldfish_metrics: 0.048 / 0.243 / 5.382). \"A ceiling on the line, not a defect\" is not the declaration's — goldfish_targets.json's `_note` says nothing about it. The phrase is strategic_frame.json's, repeated verbatim in diagnosis.json. Attribute it there; a judgment migrating into the artifact that supplied the numbers beside it is how a claim gains authority it was never given."
+        "where": "stages[0].what_it_does (pip clause)",
+        "claim": "\"mana_analysis.json says black is 39 of 76 pips and under-counts — pip_requirements reads only top-level mana_cost, dropping both DFC front faces (Bloodline Keeper, Legion's Landing); cards.json gives 41 of 79\"",
+        "status": "supported",
+        "note": "REPAIR 2 ACCEPTED, and every clause of it re-derived independently. mana_analysis.json pips: B 39.0, W 26.0, R 11.0 = 76, so '39 of 76' quotes the artifact exactly. Re-running manabase.count_pips over expand_copies(cards.json) reproduces 39/26/11 = 76 with the artifact's own rule, and with a card_faces[0] fallback gives B 41 / W 27 / R 11 = 79. The cause is named correctly and exhaustively: exactly two nonland cards in the 99 have an empty top-level `mana_cost` — Bloodline Keeper // Lord of Lineage ({2}{B}{B}, +2 black) and Legion's Landing // Adanto ({W}, +1 white) — which is precisely 39->41 and 76->79. The sentence now attributes the artifact figure, names the under-count, names the cause and gives the card-level number, which is the shape round 2 asked for. Non-defect note on the same edit: 'much of the fixing is bought with life' became 'Fixing is bought with life'; it still holds — 9 of the 37 lands pay life (three shocks, three fetches, Mana Confluence, Silent Clearing, Castle Locthwain) and five more deal damage (Battlefield Forge, Caves of Koilos, Sulfurous Springs, City of Brass, Ancient Tomb)."
       },
       {
-        "where": "stages[2].evidence[1].note",
-        "claim": "\"the city holds cards from five different stages\" (THE WIDTH ENGINE)",
-        "status": "miscounted",
-        "note": "Six. Cross-tabbing deck_map.json's city membership against the model's own stage lists: THE WIDTH ENGINE contributes mana 2, fuel 10, conversion 5, output 5, protection 1, wincon 5 = 28, which is the city's full size. Six of seven stages, which is a better sentence than five anyway. Every other map count in the model re-derives correctly (see the supported finding below)."
+        "where": "engine.json (whole artifact, outside `critic`)",
+        "claim": "only the two commissioned repairs were made this round",
+        "status": "supported",
+        "note": "Checked by flattening the round-2 artifact (git 827a69a) and the current one to leaf paths and comparing every value. Outside the `critic` block exactly two leaves differ — `proposed_goldfish_edits[0].why` and `stages[0].what_it_does` — and both diffs are confined to the sentences named above; no key was added or removed anywhere, all 7 stages, 13 lines, 6 map_disagreements, 5 open_questions, 4 proposed edits, 4 rebuttals and 1 absent_stage are byte-identical. `manamap pilot validate-engine edgar-vampires` still passes: 7 stages, 97 cards placed, 0 unassigned, 5/13 lines verified. Round 2's other thirteen `supported` findings are therefore untouched and I did not re-litigate them."
       },
       {
-        "where": "stages[5].what_it_does",
-        "claim": "Akroma's Will \"(with a commander out, which is the normal case here)\"",
+        "where": "stages[5].what_it_does and absent_stages[0].why",
+        "claim": "\"Mondrak sacrifices two permanents instead of dying\" / \"Mondrak sacrifices two permanents to survive a wipe\"",
         "status": "over-claimed",
-        "note": "The only figure available says otherwise: goldfish_metrics gives cast_by_turn_6_rate 0.521, mean_cast_turn 6.614 and 1,608 of 10,000 games with Edgar never cast by turn 10. A coin flip at turn six is not \"the normal case\", and the model's own stages[1] calls the body \"a late bonus\" — the two sentences cannot both stand. Both modes of Akroma's Will are a real upside; say it is available in roughly half of games by turn six."
+        "note": "UNREPAIRED AND UNANSWERED. Round 2's findings[2] priced this clause `over-claimed`; the round-3 diff shows both sentences byte-identical to round 2, and `rebuttals` still holds four entries all naming ROUND-ONE findings (critic.findings[3], [5], [1], [7]) — nothing in the artifact accepts, rebuts or even records the finding. Re-verified from cards.json rather than from round 2: Mondrak, Glory Dominus reads '{1}{W/P}{W/P}, Sacrifice two other artifacts and/or creatures: Put an indestructible counter on Mondrak.' Three things the sentence gets wrong, in the stage whose entire job is pricing what protection COSTS: (a) it is an activated ability that must be held up and activated in response, not a replacement effect, so 'instead of dying' misstates the timing; (b) the price is not two permanents, it is two OTHER artifacts/creatures PLUS {1} and two Phyrexian white — up to 4 life on top, in a paragraph whose neighbour sentence says the fixing is already bought with life; (c) an indestructible counter is permanent but narrow, and does not survive the sacrifice-, exile- and -X/-X-based sweepers ('to survive a wipe' promises more than the counter delivers). Nothing numeric depends on it — Mondrak is filed in stages[3] and is not in the 31.2/38.6/60.9/50.0 protection component — but this is the sentence a columnist will quote for what happens when the wrath resolves, and it is the last unaddressed finding in the loop. MECHANICALLY CHECKABLE, and it would have caught this silently: require every non-`supported` finding in the embedded `critic` block to be named by a `rebuttals[].finding`, with `response` in {accepted, rebutted, partial}. rebuttals[3] already writes 'accepted' that way, so the convention exists; enforcing it turns 'the engineer did not answer' from something only a re-read finds into a validator error."
       },
       {
-        "where": "stages[6].what_it_does",
-        "claim": "\"Both pairings are checker-passed table kills (stacks 004 and 006), deterministic, costing no mana and no cards\"",
-        "status": "over-claimed",
-        "note": "Two caveats the stacks state and the stage drops. (a) Both scenarios are TWO-opponent boards — 004 at 30/9, 006 at 26/11 — so \"table kill\" there means two seats, in a stage whose sibling (output) is careful to say \"three seats at 12\". (b) Both loops start from a stated 3-life seed \"from any source\"; \"costing no mana and no cards\" is true of the loop and not of the start, and the model knows this, because lines[10] flags the seed as an unverified claim. Neither point breaks the line; both belong in the sentence a columnist will quote."
+        "where": "rebuttals[3].what_i_did",
+        "claim": "\"it is quoted as the critic's hypergeometric (0.84% on N=99/n=7, 2.6% if the half widens to eight) and attributed rather than asserted\"",
+        "status": "miscounted",
+        "note": "The figure round 2 called miscounted survives in a second field. For an eight-card source half the value is 0.02888 (2.9%), derived above and Monte-Carlo confirmed; 2.6% is the seven-card value. Two consequences, either of which is enough: the arithmetic is wrong on its face, and the sentence also now CONTRADICTS the artifact it describes — it says 'the edit now says so' about a figure `proposed_goldfish_edits[0].why` no longer says, since that entry was corrected to 2.9% this round. Fixing edits[0] and leaving its own account of the fix quoting the superseded number is the accretion pattern CLAUDE.md records: a field narrating a previous draft drifts out of agreement with the draft. Cheapest repair is one character plus a clause: '2.9% if the half widens to eight (2.6% was the seven-card figure, corrected in round 3)'. MECHANICALLY CHECKABLE in the narrow form this repo already uses elsewhere: a percentage appearing in `rebuttals[]` that appears nowhere in the field the rebuttal says it wrote is a stale quotation."
       },
       {
-        "where": "stages[3].evidence[0], stages[4].evidence[1] (stacks 002 and 008)",
-        "claim": "\"a single {B}{B} Vampire cast puts five new bodies on the table\" / \"5 x 2 = 10 damage to each opponent off one {B}{B} spell\"",
-        "status": "mis-cited",
-        "note": "The {B}{B} Vampire in both scenarios is Gifted Aetherborn, which is NOT in the 99 (cards.json). The math is generic and survives — stack 009 deliberately re-ran the same shape on Cordial Vampire and says so in its extras — but 001 and 005 were marked `presentable: false` for exactly this class of staleness (Exquisite Blood off the list), while 002 and 008 carry no such flag and publish. Two stages lean on them without disclosing which Vampire was cast. MECHANICALLY CHECKABLE, and it belongs in the stack layer rather than here: a checker-passed stack whose scenario names a card absent from the 99 and carries no `presentable: false`."
-      },
-      {
-        "where": "lines[7] (ignition -> output, verified_by 003)",
-        "claim": "\"Seven Vampire attackers, seven Sanctum Seeker triggers, each doubled by Bloodletter because it is your turn: 14 per opponent at declare-attackers, before blocks. Your 1 life per trigger is NOT doubled.\"",
+        "where": "stages[0].what_it_does (1,798) and stages[4].what_it_does (1,799)",
+        "claim": "length against validate_engine.MAX_WHAT_IT_DOES = 1800",
         "status": "supported",
-        "note": "Every clause matches stack 003's final_state (opponent 1: 21 - 14 = 7; opponent 2: 14 - 14 = 0, SBA before blockers; you 26 -> 33, undoubled). And the ignition half is stronger than the model argues: the scenario's four \"1/1 black Vampire creature tokens\" can only be eminence's, because every other token maker in the 99 makes something else — Mavren Fein, Legion's Landing and Charismatic Conqueror make 1/1 WHITE Vampires with lifelink, Bloodline Keeper a 2/2 black flier, Ocelot Pride a Cat, Elspeth a Soldier. The arrow is causally carried, not merely co-located."
-      },
-      {
-        "where": "lines[8] (ignition -> output, verified_by 007)",
-        "claim": "\"the stack PARTIALLY REFUTES it as a table kill: seven tapped creatures is 14 each, which kills the 9-life seat and leaves the 15-life seat alive at exactly 1. Bloodletter was untapped and did not count itself.\"",
-        "status": "supported",
-        "note": "Exact against stack 007's final_state, including the untapped-Bloodletter detail that the count turns on. This is the inverse of the radagast failure the charter exists for: a green arrow whose note reports the stack refuting the stronger reading. Lines[4] (008: five triggers x 2 = 10 each), lines[5] (009: nine triggers, 12 per seat, exactly lethal, zero margin, pod total 36 kept distinct from the per-seat 12) and lines[6] (002: five new bodies, the four tokens entering as 2/2 with Socialite out) all reconcile to their stacks' final_state the same way. Five verified lines, five that hold."
-      },
-      {
-        "where": "lines[3].note and open_questions[2]",
-        "claim": "stack 002 \"names Edgar only in its command-zone note, so the scenario's card list does not contain him and the arrow cannot honestly be stamped\"",
-        "status": "supported",
-        "note": "Verified against the implementation, not the prose. build_index.line_cards reads the ordered `stack` entries, `hand` and `graveyard`, falling back to `board.you`; it never reads a stack entry's `note` or `extras`. Running it: 002 -> [Gifted Aetherborn, Anointed Procession, Mondrak, Vampire Socialite, Cordial Vampire] — no Edgar, so validate-engine would reject 002 for this arrow. The dashed line is correct and so is the reason. open_questions[2] is therefore well aimed and not busywork: 003 and 007 DO name Edgar (line_cards finds him in both) but hold no doubler, so no passing stack joins the commander to the multiplication."
-      },
-      {
-        "where": "open_questions[3] and proposed_goldfish_edits[0] (the drain-source half)",
-        "claim": "\"the group names two cards where the deck holds at least eight halves\"",
-        "status": "supported",
-        "note": "Counted against cards.json oracle text. Bloodletter replaces any opponent life loss during your turn, and eight cards in the 99 cause an opponent non-damage life loss: Sanctum Seeker, Throne of the God-Pharaoh (both declared), plus Corpse Knight, Blood Artist, Cruel Celebrant, Bontu's Monument, Vito, Thorn of the Dusk Rose and Sanguine Bond. Exactly eight, exactly the six the edit proposes adding. Two supports the engineer did not use: goldfish_targets.json's own `_note` already states that Corpse Knight \"causes LIFE LOSS rather than damage, so Bloodletter of Aclazotz doubles it\" and then leaves it out of the drain group — the declaration contradicts itself in writing; and widening the half moves the opener from 0.84% to 2.6% and would move the assembled rate materially, which is the point. Holding the four damage payoffs back until open_questions[0] is resolved is the right call, and that question is well-formed: Bloodletter's own reminder text \"(Damage causes loss of life.)\" is prima facie evidence for the doubling, and stack 004's checker ruled on the identical parenthetical in the OTHER direction (207.2a, on Conqueror), so nobody has actually tested this one."
-      },
-      {
-        "where": "every rate, count and cap in the model",
-        "claim": "the figures quoted from the brief throughout stages[] and lines[]",
-        "status": "supported",
-        "note": "Re-derived from goldfish_metrics.json, engine-facts and cards.json, not believed. Correct: ramp 36.4/44.4/68.0/56.7; draw 41.2/73.4/62.2; conversion 45.6/78.9/68.2; entry payoffs 41.2/73.5/62.6; noncreature answers 52.9 (and \"the deck's binding axis\" IS the declaration's phrase); protection 31.2/38.6/60.9/50.0; lords/anthems 45.6/78.9/68.1; drain doubler 5.2 / 24.6 / mean 5.4; infinite 4.8 / 24.3 / mean 5.4; go-wide 57.4; Bloodletter and Conqueror at 7.1 of opening sevens; commander median cast turn 6. Also correct: black is 39 of 76 pips = 51.3%, \"half the pip load\"; Bloodletter at {1}{B}{B}{B} is the only triple-black cost in the 99; eight removal spells in output; 15 / 8 / 5 / 10 stage counts; Olivia's Wrath does spare Vampires. Every map cross-tab re-derives from deck_map.json except the WIDTH ENGINE stage count above — 34 of THE MANA plus four of THE HEAD START plus two of THE WIDTH ENGINE = 40; all seven of THE ANSWERS plus eleven from three cities = 18; five of THE DRAIN here and three in wincon; four of HELD FOR THE WIPE's six. All seven what_it_does fields are inside the 1,800 cap (longest is output at 1,450) and none reads as accreted draft narration. The wincon `combo` evidence entry is correctly labelled `kind: \"combo\"` and discloses that a stack has since passed on it; 004 and 006 are genuinely checker-passed and cited as `kind: \"stack\"`. No combo-database record is dressed as a verified line anywhere in this model."
+        "note": "Reported because it is measured, not as a defect. stages[0] grew 1,624 -> 1,798 absorbing this round's pip repair; stages[4] has stood at 1,799 since round 1. Two stages of seven now sit within two characters of the cap, so neither can take a further clause without a deletion first — the precondition CLAUDE.md records radagast's `output` stage failing four consecutive revisions under. It matters here only for the one open item: the Mondrak clause lives in stages[5] (1,261 characters, 539 free), so the finding above CAN be repaired without touching either full field. Neither long field reads as draft narration and neither needs cutting for content."
       }
     ],
-    "iterations": 1
+    "previous_rounds": [
+      {
+        "round": 2,
+        "verdict": "fail",
+        "findings": [
+          {
+            "where": "proposed_goldfish_edits[0].why",
+            "claim": "\"engine-critic's hypergeometric puts both halves together at 0.84% of opening sevens on N=99/n=7, and 2.6% if the half widens to eight\"",
+            "status": "miscounted",
+            "note": "0.84% is right (hypergeometric, N=99, n=7, Bloodletter AND >=1 of two sources = 0.008435). 2.6% is not: it is the value for a SEVEN-card source half (0.02593). The edit's own `change` field widens the half to EIGHT — Sanctum Seeker, Throne, plus Corpse Knight, Blood Artist, Cruel Celebrant, Bontu's Monument, Vito and Sanguine Bond — and eight gives 0.02888, i.e. 2.9%. The figure and the list in the same entry disagree by one card. Two clean fixes, and the engineer may prefer the second: say 2.9%, OR drop Blood Artist from the list (it reads 'target player', not 'each opponent', so it is the one arguable member) and keep 2.6% — but not both as written. This number is MINE from round 1, quoted and attributed; the charter's instruction is to re-derive rather than copy, and copying it is how the error survived the round it was supposed to die in."
+          },
+          {
+            "where": "stages[0].what_it_does",
+            "claim": "\"black is 39 of 76 pips\"",
+            "status": "miscounted",
+            "note": "Faithful to mana_analysis.json (pips.B.total_pips 39.0, B+R+W = 76, pip_share 0.513) and wrong about the deck. Re-derived from cards.json the count is B 41, W 27, R 11 = 79 (51.9%). The gap is exactly the DFC front-face trap the engineer correctly invoked to rebut my Bloodline Keeper count one field over: manabase.pip_requirements reads `card.get(\"mana_cost\")` with no front-face fallback, so Bloodline Keeper // Lord of Lineage ({2}{B}{B}, top-level mana_cost \"\") contributes 0 black pips and Legion's Landing // Adanto ({W}) contributes 0 white. The engine model's conclusion — 'half the pip load' — survives either number, so this costs the argument nothing to fix. MECHANICALLY CHECKABLE AND FLEET-WIDE: seven of the nine decks hold at least one non-land card with an empty top-level `mana_cost` (gishath 1, hapatra 1, heliod 1, radagast 1, sisay 2, yawgmoth-swarm 2, edgar 2), so every one of their pip shares, source targets and on-curve probabilities is computed on a short count. The fix belongs in manabase.py, not here; the engine model should either quote 41 of 79 from cards.json or attribute 39/76 to the artifact and say it drops two DFC faces."
+          },
+          {
+            "where": "stages[5].what_it_does (and absent_stages[0], same clause)",
+            "claim": "\"Mondrak sacrifices two permanents instead of dying\" / \"Mondrak sacrifices two permanents to survive a wipe\"",
+            "status": "over-claimed",
+            "note": "cards.json oracle text: '{1}{W/P}{W/P}, Sacrifice two other artifacts and/or creatures: Put an indestructible counter on Mondrak.' Three differences from what the sentence says, in the stage whose whole job is pricing what protection costs: it is an ACTIVATED ability, not a replacement, so 'instead of dying' misdescribes the timing; it costs {1} plus two Phyrexian white on top of the two sacrifices (payable as 2 life each, which is a real price in a deck the same paragraph says buys its fixing with life); and it grants a permanent indestructible counter rather than a one-shot save. The protection component's 60.9%/50.0% figures are untouched by this — Mondrak is not in the component — but this is the stage a columnist will quote for 'what happens when the wrath resolves'."
+          },
+          {
+            "where": "stages[4].what_it_does",
+            "claim": "the output stage's argument — five entry payoffs, two death payoffs, two other clocks, eight removal spells, three checker-passed measurements, no SPOF",
+            "status": "supported",
+            "note": "Every clause re-derived and holds: the 5/2 split matches oracle text exactly; 41.2/73.5/62.6 match engine-facts and goldfish_metrics; the noncreature-answer component is 52.9% assembled and 'the deck's binding axis' is the declaration's own phrase; eight removal spells is a correct count of the stage's list; 009 (nine triggers, 12 per seat, zero margin), 008 (five triggers, 10 each) and 003 (seven triggers doubled to 14) all reconcile to their final_state. BUT THE FIELD IS 1,799 CHARACTERS AGAINST A MEASURED CAP OF 1,800. It was 1,450 in round 1 and grew 349 characters absorbing this round's corrections; it now has one character of headroom, so the next revision cannot add a clause anywhere in it without deleting one first — which is the exact condition CLAUDE.md records radagast's `output` stage failing four consecutive revisions under. Nothing in it reads as draft narration and nothing needs to be cut for content; it needs to be cut for room. Also worth a sentence it does not have: strategic_frame.json records that 'Blood Artist drains one target player per death; only Cruel Celebrant hits each opponent', a scope distinction this stage's death-payoff pair does not make. The label EVERY BODY BILLS EVERY SEAT is still true as written, because all five ENTRY payoffs hit each opponent."
+          },
+          {
+            "where": "rebuttals[2] / stages[0].what_it_does / lines[1].note — 'nine of the 21 black creature spells'",
+            "claim": "Bloodline Keeper is {2}{B}{B}, both reducers reach it, so the unreachable count is nine and not ten",
+            "status": "supported",
+            "note": "THE REBUTTAL IS CORRECT AND MY ROUND-1 COUNT WAS WRONG. cards.json: Bloodline Keeper // Lord of Lineage has top-level `mana_cost` \"\" and `card_faces[0].mana_cost` '{2}{B}{B}' — the DFC front-face trap, exactly as claimed. Re-counted from the front face across the 99: 21 black creature spells, of which 9 have no generic component — Vampire Cutthroat {B}, Vampire of the Dire Moon {B}, Knight of the Ebon Legion {B}, Indulgent Aristocrat {B}, Cordial Vampire {B}{B}, Corpse Knight {W}{B}, Legion Lieutenant {W}{B}, Cruel Celebrant {W}{B}, Vampire Socialite {B}{R}. The nine named in the stage are exactly those nine. The replacement via card is sound too: Preacher of the Schism is {2}{B} and is in the fuel stage, so {2}{B} -> {1}{B} is a case the discount actually reaches. One scope note, not a defect: the nine is Bontu's Monument's domain (black creature spells); Herald's Horn's domain is Vampire creature spells, a different set that the sentence folds in under a shared rule."
+          },
+          {
+            "where": "rebuttals[1] / stages[1].single_point_of_failure",
+            "claim": "ignition keeps Edgar Markov as its single point of failure",
+            "status": "supported",
+            "note": "The defence holds and I withdraw that third of round-1 finding 5. The contradiction I priced was between the FIELD and the paragraph; the paragraph was independently wrong (finding 4) and, corrected, the field is the only honest value: the stage is literally one card, nothing in the 99 reproduces eminence, and the prose now names three classes that switch it off. The renderer agrees — design.engine_flow prints 'ONE CARD DEEP' for a stage with a SPOF, and this stage is one card deep. My own candidate check passes: Edgar is in stack 003's scenario board ('Edgar Markov (4/4, first strike, haste)') and build_index.line_cards returns him for 003 and 007. Nulling output and wincon was right for the same reason it is right to keep this one — 009 kills a three-seat pod with Bloodletter absent, and the 78.9% combat route needs no Conqueror."
+          },
+          {
+            "where": "rebuttals[0] / absent_stages[0]",
+            "claim": "the deck has no `fodder` CLASS, measured as one sac-outlet against seven and nine",
+            "status": "supported",
+            "note": "A real structural distinction, and I checked all three sides of it rather than the claim. card_roles.json over each deck's cards.json: edgar-vampires has ONE `sac-outlet` (Indulgent Aristocrat, which is also its only `sac-cost`), hapatra has seven (Ashnod's Altar, Blasting Station, Carrion Feeder, Phyrexian Altar, Viscera Seer, Yahenni, Yawgmoth) and yawgmoth-swarm nine (those minus Yahenni's absence, plus Warren Soultrader and Woe Strider) — 1/7/9 exactly as stated. And the definitional half checks out: hapatra's fodder stage holds five body PRODUCERS (Bitterblossom, Nest of Scarabs, Flourishing Defenses, Scurry Oak, Ivy Lane Denizen) and yawgmoth-swarm's eleven are token engines and recursion, so both fleet fodder stages hold the eaten and not the eaters. Filing edgar's four consumption clauses there would invert that; filing its producers there is impossible, because validate_engine enforces 'a card does one job here' and they are already placed in ignition and conversion. lines[9] is answered too: its source is the doubler that makes the body, which is the conversion stage, so it is not an orphaned fodder arrow. The absence is now STATED with the argument, which was the half of round-1 finding 3 that mattered."
+          },
+          {
+            "where": "stages[0].what_it_does / stages[0].label",
+            "claim": "\"Thirty-seven lands — 34 entries, because Swamp is a 4-of — plus six accelerants: 43 copies\" / FORTY-THREE CARDS THAT PAY THE ENTRY FEE",
+            "status": "supported",
+            "note": "Repaired and correct. mana_analysis.json: lands.total 37, lands.entries 34; cards.json holds 97 entries / 100 copies with Swamp at quantity 4 and no other multiple. 37 + 6 accelerants = 43 copies, and the stage's `cards` array is 40 entries (34 land + 6), which is the right pair of numbers to state together. The declared ramp group is the declaration's six, and Legion's Landing — the fifth `ramp:rock` in card_roles.json — is correctly kept in conversion with the reason given."
+          },
+          {
+            "where": "stages[4].what_it_does (the 5/2 split) and proposed_goldfish_edits[3]",
+            "claim": "five payoffs trigger on a creature ENTRY, two on a DEATH",
+            "status": "supported",
+            "note": "Verified against cards.json oracle text one card at a time. Entry: Purphoros ('whenever another creature you control enters ... 2 damage to each opponent'), Impact Tremors, Warleader's Call, Witty Roastmaster (all 'whenever a/another creature you control enters ... 1 damage to each opponent'), Corpse Knight ('whenever another creature you control enters, each opponent loses 1 life'). Death: Blood Artist and Cruel Celebrant, both 'whenever this creature or another creature ... dies'. The consequence is drawn correctly too — stack 009's verified 12-per-seat uses three ENTRY payoffs — and the model routes the fix to the declaration as a proposed edit instead of restating the 73.5% as if it measured the entry five."
+          },
+          {
+            "where": "stages[1].what_it_does",
+            "claim": "destruction and exile cannot answer eminence; ability-stripping auras, control change, and a tax or a Vampire-less hand can",
+            "status": "supported",
+            "note": "The narrowing is exactly right and the rules citation is load-bearing. CR 903.9a as indexed: 'If a commander is in a GRAVEYARD or in EXILE and that object was put into that zone since the last time state-based actions were checked, its owner may put it into the command zone' — it fires on two zones only, so Song of the Dryads / Darksteel Mutation / Imprisoned in the Moon leave him on the battlefield with nothing to recur, and a control-change effect makes 'whenever YOU cast' read the new controller's casts. The command-zone half is verified rather than asserted: stack 002 step 2 rechecks the intervening 'if' on resolution and resolves the mint with Edgar in the command zone."
+          },
+          {
+            "where": "stages[2].evidence[1] and every other map cross-tab",
+            "claim": "THE WIDTH ENGINE's 28 cards span SIX of this model's seven stages — mana 2, fuel 10, conversion 5, output 5, protection 1, wincon 5",
+            "status": "supported",
+            "note": "Re-tabulated from deck_map.json against the model's own stage lists: city-2 = mana 2 / fuel 10 / conversion 5 / output 5 / protection 1 / wincon 5 = 28, its whole membership, six stages. Round-1's 'five' is repaired. Every other city claim also re-derives exactly: THE MANA 34 all in mana; THE HEAD START four mana + Legion's Landing in conversion; THE ANSWERS all seven in output with eleven more output cards from three other cities (18 total); THE DRAIN five output + three wincon; HELD FOR THE WIPE four protection + Mondrak in conversion + Purphoros in output; TEETH AND TUTORS one ignition + five fuel + one conversion + two wincon. Nine of nine."
+          },
+          {
+            "where": "lines[4], lines[5], lines[6], lines[7], lines[8]",
+            "claim": "the five verified arrows and their notes",
+            "status": "supported",
+            "note": "Re-read against each stack's scenario board and final_state, not against round 1. lines[4]/008: board holds Anointed Procession, Mondrak and Purphoros; four doubled tokens + the cast creature = five triggers x 2 = 10 each, opponent 2 at 10 dies on the fifth — conversion's bodies arriving at an output payoff, which is what the arrow claims. lines[5]/009: Cordial Vampire (fuel) through one doubler into three entry payoffs, nine triggers, 12 per seat, exactly lethal at 12, pod total 36 kept distinct. lines[6]/002: five new bodies, the four tokens entering as 2/2 under Vampire Socialite — the note explicitly declines the damage reading and calls it the combat kill's input. lines[7]/003: 7 triggers x 2 = 14, opponent 1 21->7, opponent 2 14->0 before blockers, your gain undoubled at 26->33. lines[8]/007: the stack partially REFUTES the table kill (15-life seat survives at 1) and the note says so, including the untapped Bloodletter the count turns on. build_index.line_cards confirms every `via` card is in its stack's scenario for all five, and confirms the dashed ones are dashed for the right reason: 002 returns no Edgar, and no passing stack names Edgar beside a fuel-stage card."
+          },
+          {
+            "where": "stages[6].what_it_does",
+            "claim": "the two-opponent boards, the 3-life seed, the 'ceiling' attribution, and Edgar's attack trigger as the eighth pump",
+            "status": "supported",
+            "note": "All four round-1 defects repaired against the artifacts. Stack 004's board is 30/9 and 006's is 26/11, both two opponents, and both scenario stack notes read 'you just gained 3 life (any source)' — the model now states the seed is a claim and points at lines[10]. The 'a ceiling on the line, not a defect' judgment is strategic_frame.json's `engines` entry for Bloodthirsty Conqueror verbatim, repeated in diagnosis.json and surfaced through engine-facts' `declared_engines` (which is literally `frame.get(\"engines\")`), so the new attribution is exactly right and the declaration's 4.8/24.3/5.382 are quoted correctly beside it. Edgar's 'whenever Edgar attacks, put a +1/+1 counter on each Vampire you control' is now the eighth pump, cited to stack 003's resolution ('All seven attackers have +1/+1 counters from Edgar's trigger'), with the 52.1% cast-by-six priced as a cost HERE — and the printed cost is now {3}{R}{W}{B}, matching cards.json. Akroma's Will is 'roughly half of games by turn six' against goldfish's 0.521 / mean 6.614."
+          },
+          {
+            "where": "lines[1].note, stages[3].what_it_does, open_questions[4]",
+            "claim": "the withdrawn Bontu's/Cordial claim and the Gifted Aetherborn disclosures",
+            "status": "supported",
+            "note": "The rules correction is right (CR 601.2f: a generic reduction cannot pay a coloured pip, so {B}{B} is untouched) and the staleness is now disclosed in all four places that lean on 002/008, plus a well-formed open question asking whether those two scenarios should be re-run or flagged `presentable: false` like 001 and 005. One housekeeping note for the next pass, not a defect: lines[1].note opens 'WITHDRAWN AND REPLACED: the round-1 note said...'. Nothing renders `lines[].note` — design.engine_flow draws `carries` only — but a note field is read by three columnists, and a field that narrates its own previous draft is the accretion pattern that took radagast's output stage to 2,554 characters. State the corrected claim; the round-1 text is preserved in `critic` and `rebuttals` already."
+          },
+          {
+            "where": "map_disagreements[0..5], open_questions[0..4]",
+            "claim": "six disagreements with the cluster map and five open questions",
+            "status": "supported",
+            "note": "None of the six is a hedge: each names the cities, names the cards that sit in the wrong one, and says what the map is wrong ABOUT — the payoff split names the EVENT axis neither the map nor the declaration cuts on, the multiplier entry names Mondrak/Elspeth/Legion's Landing and the text that misfiled each, the ignition entry says eminence has no address on the map at all and no declared component either. The open questions are all mechanically settleable and all point at something a stack or a goldfish run would actually change; open_questions[2] in particular is well aimed — line_cards on 002 returns no Edgar, so the deck's defining arrow is dashed for a scenario-authoring reason that a new stack would fix."
+          },
+          {
+            "where": "every remaining rate and count",
+            "claim": "the figures quoted from the brief throughout stages[] and lines[]",
+            "status": "supported",
+            "note": "Re-derived from goldfish_metrics.json and a fresh `engine-facts` run rather than believed. Correct: ramp 36.4/44.4/68.0/56.7; draw 41.2/73.4/62.2; multiplier 45.6/78.9/68.2; entry payoffs 41.2/73.5/62.6; noncreature answers 52.9; protection 31.2/38.6/60.9/50.0; lords and anthems 45.6/78.9/68.1; drain doubler 7.1 opener / 5.2 assembled / 24.6 assisted / mean 5.377; infinite 4.8/24.3/mean 5.382; go-wide 57.4; commander 52.1 by six, mean 6.614, 1,608 never by turn 10; the two-card source half at 13.7 opener. Also correct: Bloodletter {1}{B}{B}{B} is the only cost in the 99 with three black pips; the stage counts 40/1/15/8/18/5/10 total 97 with `unassigned` empty and validate-engine reporting 97 placed; the fuel stage's fifteen are 7 bodies-and-utility + the declared 7-card draw group (Preacher and Champion shared) + 3 tutors; and 'nothing here touches a graveyard' holds card by card across all fifteen."
+          }
+        ]
+      },
+      {
+        "round": 1,
+        "verdict": "fail",
+        "findings": [
+          {
+            "where": "stages[0].what_it_does",
+            "claim": "\"Thirty-four lands plus six accelerants\" / \"the job is narrower than usual\"",
+            "status": "miscounted",
+            "note": "34 is the ENTRY count, not the land count. mana_analysis.json reports lands.total = 37 and lands.entries = 34, and the difference is Swamp at quantity 4 (cards.json: 97 entries, 100 copies). The deck plays 37 lands plus six accelerants, i.e. 43 mana sources, not 40. This is the exact defect CLAUDE.md records under \"Count copies, not decklist entries\" — it once published \"18 lands\" for a 33-land deck — and validate-issue ALREADY lints manual prose that quotes lands.entries as a land count. MECHANICALLY CHECKABLE: port that lint to validate_engine, matching a land-count numeral in any what_it_does against mana_analysis.lands.entries."
+          },
+          {
+            "where": "lines[1].note",
+            "claim": "\"Bontu's Monument takes {1} off every black creature spell, so the two-mana Vampire the engine wants every turn becomes a one-mana one\"",
+            "status": "over-claimed",
+            "note": "The via card is Cordial Vampire at {B}{B} (cards.json). A generic {1} reduction cannot reduce a coloured mana requirement (CR 601.2f), so Bontu's Monument reduces Cordial Vampire by nothing — the arrow's own example is the counter-example. It is not an edge case: 10 of the deck's 21 black creature spells have no generic component and are unreachable by the discount, and they are precisely the cheap bodies stages[0] says the engine wants every turn — Vampire Cutthroat {B}, Vampire of the Dire Moon {B}, Indulgent Aristocrat {B}, Knight of the Ebon Legion {B}, Cordial Vampire {B}{B}, Corpse Knight {W}{B}, Legion Lieutenant {W}{B}, Cruel Celebrant {W}{B}, Vampire Socialite {B}{R}, Bloodline Keeper. The line is dashed, but the note is phrased as fact, which is where an over-claim hides. The same reasoning error sits in stages[0].what_it_does (\"Herald's Horn does the same discount for Vampires\") — the card text is quoted correctly and the conclusion drawn from it is not. MECHANICALLY CHECKABLE, narrowly and safely: a line carrying a cost reduction whose via names a spell with no generic pip in its mana_cost."
+          },
+          {
+            "where": "stages[4].what_it_does",
+            "claim": "\"seven payoffs convert a creature ENTRY into simultaneous damage or life loss at every seat (Purphoros, Impact Tremors, Warleader's Call, Witty Roastmaster deal damage; Corpse Knight, Blood Artist, Cruel Celebrant cause life loss)\"",
+            "status": "contradicts-artifact",
+            "note": "Two of the seven are not entry payoffs. cards.json oracle text: Blood Artist — \"Whenever this creature or another creature DIES, target player loses 1 life and you gain 1 life\"; Cruel Celebrant — \"Whenever this creature or another creature or planeswalker you control DIES...\". Five of the seven trigger on an entry (Purphoros, Impact Tremors, Warleader's Call, Witty Roastmaster, Corpse Knight); two trigger on a death. The distinction is load-bearing rather than pedantic — it is the same two cards that make the fodder case in the next finding, and stack 009's verified 12-per-seat count uses only entry payoffs, so the sentence describes a class 009 did not measure. Note the goldfish declaration makes the same conflation in its TOKEN -> DAMAGE group; the model is free to say so, not to repeat it as card text."
+          },
+          {
+            "where": "stages (no `fodder` stage, and no statement anywhere that there is none)",
+            "claim": "the model omits `fodder` silently — the string does not appear in engine.json, in `unassigned` (empty), or in `open_questions`",
+            "status": "unjustified",
+            "note": "Two separate problems. (a) The deck-engineer charter is explicit: \"A deck with no sacrifice theme has no fodder, and SAYING SO IS A FINDING\". The artifact says nothing, so a reader cannot tell an argued omission from an oversight. (b) The reason given in the engineer's summary — that the three body-eaters consume a token rather than a card — is not a distinction the taxonomy makes. `fodder` is defined as \"what it eats — the resource converted\", and a token is exactly the resource this engine manufactures in bulk; on that reading the argument defines the stage away using the deck's own strength. The substantive case is larger than three cards: FOUR consume a body — Skullclamp (+1/-1 kills the 1/1 the mint made, \"whenever equipped creature dies, draw two cards\"), Indulgent Aristocrat (\"{2}, Sacrifice a creature\"), Diabolic Intent (\"as an additional cost, sacrifice a creature\"), Mondrak (\"Sacrifice two other artifacts and/or creatures\") — and THREE pay off deaths: Blood Artist, Cruel Celebrant, Cordial Vampire (\"Whenever this creature or another creature dies, put a +1/+1 counter on each Vampire you control\"). Decisively, lines[9] already draws conversion -> fuel carrying \"tokens turned back into cards\" via Skullclamp: that is a fodder arrow drawn without the stage it needs. Either argue the omission in the artifact or open the stage; do not leave it unstated."
+          },
+          {
+            "where": "stages[1].what_it_does",
+            "claim": "\"he is the one point of failure removal cannot answer — the ability functions from the command zone ... What CAN turn this stage off is a static tax or a Vampire-less hand, not a removal spell\"",
+            "status": "over-claimed",
+            "note": "False for the best-known answer class, and the class exists BECAUSE of commanders like this one. Effects that keep Edgar on the battlefield while stripping his abilities — Song of the Dryads, Imprisoned in the Moon, Darksteel Mutation, Kenrith's Transformation — turn eminence off completely: he never changes zones, so CR 903.9a's command-zone replacement never fires and there is nothing to recur. Control-change effects do it too: eminence would then be controlled by the opponent, and \"whenever YOU cast another Vampire spell\" reads their casts, not yours. The correct claim is narrower and still strong — DESTRUCTION and EXILE cannot answer it, because both route him back to the command zone. As written the sentence tells three columnists the ignition is unanswerable, and the Pilot's Log is licensed to repeat it."
+          },
+          {
+            "where": "stages[1].single_point_of_failure, stages[4].single_point_of_failure, stages[6].single_point_of_failure",
+            "claim": "Edgar Markov (ignition), Bloodletter of Aclazotz (output), Bloodthirsty Conqueror (wincon)",
+            "status": "over-claimed",
+            "note": "All three name a card the stage does not actually depend on — the charter's \"nine redundant outlets and nine priced SPOFs\" shape, in triplicate. OUTPUT: stack 009, the stage's own strongest verified line, kills a three-seat pod at 12 with Bloodletter nowhere on the board; the stage holds seven payoffs at 73.5% assembled plus eight removal spells. Bloodletter is the single point of failure of ONE LINE (the drain doubler, lines[7]/lines[8]), not of the stage — and the model says as much two sentences earlier. WINCON: the same paragraph enumerates a second, independent, far more reliable route — the combat kill, seven cards, 78.9% assembled — and then declares Conqueror the stage's SPOF; he is the SPOF of the infinite only. IGNITION: a SPOF the surrounding paragraph spends four sentences arguing cannot fail is a contradictory data value, whatever the prose says about \"accuracy rather than alarm\" — the field is read as a fragility signal by the renderer and by three columnists, and the honest value here is null with the fact in the prose. Candidate mechanical check, stated cautiously because it could fire on correct data: a `single_point_of_failure` naming a card that appears in none of the stage's own cited passing stacks."
+          },
+          {
+            "where": "stages[1].what_it_does / stages[6].what_it_does",
+            "claim": "\"Edgar's own {3}{W}{B}{R} body is a late bonus\", and the combat kill's counter-placers are \"Vampire Socialite and Drana and Indulgent Aristocrat\"",
+            "status": "unjustified",
+            "note": "Edgar's second ability — \"Whenever Edgar attacks, put a +1/+1 counter on EACH Vampire you control\" (cards.json) — is the largest single pump effect in the 99 and it belongs to the combat kill the model attributes to seven other cards. It is not hypothetical: checker-passed stack 003's resolution records \"All seven attackers have +1/+1 counters from Edgar's trigger\", on the same board the model cites for lines[7]. So the body is not merely \"a late bonus\": it is the anthem the wincon stage forgot, and its 52.1% cast-by-turn-6 rate is a real cost of the ignition living in the command zone — which is the question a reader will ask after being told the commander is never needed. Also, the printed cost is {3}{R}{W}{B} in cards.json, not {3}{W}{B}{R}; trivial in itself, but it is a figure transcribed rather than read."
+          },
+          {
+            "where": "proposed_goldfish_edits[0].why",
+            "claim": "\"A two-card half prices the component at 13.7% of opening sevens and 5.2% assembled\"",
+            "status": "miscounted",
+            "note": "13.7% is engine-facts' `opening_seven` for the SOURCE HALF alone (Sanctum Seeker + Throne, size 2); the COMPONENT — Bloodletter AND a source together in an opening seven — is 0.84% by hypergeometric on N=99, n=7. The sentence attributes a half's rate to the component. The correction strengthens the edit rather than weakening it: the declared line is an order of magnitude thinner in an opener than the number quoted, and widening the source half to the eight qualifying cards takes it to 2.6%. The 5.2% assembled figure is correct (goldfish_metrics 0.052)."
+          },
+          {
+            "where": "stages[6].what_it_does",
+            "claim": "\"The declaration prices the line at 4.8% assembled, 24.3% with tutors, mean turn 5.4, and calls that the ceiling rather than a defect.\"",
+            "status": "mis-cited",
+            "note": "The three rates are the declaration's and they check out exactly (goldfish_metrics: 0.048 / 0.243 / 5.382). \"A ceiling on the line, not a defect\" is not the declaration's — goldfish_targets.json's `_note` says nothing about it. The phrase is strategic_frame.json's, repeated verbatim in diagnosis.json. Attribute it there; a judgment migrating into the artifact that supplied the numbers beside it is how a claim gains authority it was never given."
+          },
+          {
+            "where": "stages[2].evidence[1].note",
+            "claim": "\"the city holds cards from five different stages\" (THE WIDTH ENGINE)",
+            "status": "miscounted",
+            "note": "Six. Cross-tabbing deck_map.json's city membership against the model's own stage lists: THE WIDTH ENGINE contributes mana 2, fuel 10, conversion 5, output 5, protection 1, wincon 5 = 28, which is the city's full size. Six of seven stages, which is a better sentence than five anyway. Every other map count in the model re-derives correctly (see the supported finding below)."
+          },
+          {
+            "where": "stages[5].what_it_does",
+            "claim": "Akroma's Will \"(with a commander out, which is the normal case here)\"",
+            "status": "over-claimed",
+            "note": "The only figure available says otherwise: goldfish_metrics gives cast_by_turn_6_rate 0.521, mean_cast_turn 6.614 and 1,608 of 10,000 games with Edgar never cast by turn 10. A coin flip at turn six is not \"the normal case\", and the model's own stages[1] calls the body \"a late bonus\" — the two sentences cannot both stand. Both modes of Akroma's Will are a real upside; say it is available in roughly half of games by turn six."
+          },
+          {
+            "where": "stages[6].what_it_does",
+            "claim": "\"Both pairings are checker-passed table kills (stacks 004 and 006), deterministic, costing no mana and no cards\"",
+            "status": "over-claimed",
+            "note": "Two caveats the stacks state and the stage drops. (a) Both scenarios are TWO-opponent boards — 004 at 30/9, 006 at 26/11 — so \"table kill\" there means two seats, in a stage whose sibling (output) is careful to say \"three seats at 12\". (b) Both loops start from a stated 3-life seed \"from any source\"; \"costing no mana and no cards\" is true of the loop and not of the start, and the model knows this, because lines[10] flags the seed as an unverified claim. Neither point breaks the line; both belong in the sentence a columnist will quote."
+          },
+          {
+            "where": "stages[3].evidence[0], stages[4].evidence[1] (stacks 002 and 008)",
+            "claim": "\"a single {B}{B} Vampire cast puts five new bodies on the table\" / \"5 x 2 = 10 damage to each opponent off one {B}{B} spell\"",
+            "status": "mis-cited",
+            "note": "The {B}{B} Vampire in both scenarios is Gifted Aetherborn, which is NOT in the 99 (cards.json). The math is generic and survives — stack 009 deliberately re-ran the same shape on Cordial Vampire and says so in its extras — but 001 and 005 were marked `presentable: false` for exactly this class of staleness (Exquisite Blood off the list), while 002 and 008 carry no such flag and publish. Two stages lean on them without disclosing which Vampire was cast. MECHANICALLY CHECKABLE, and it belongs in the stack layer rather than here: a checker-passed stack whose scenario names a card absent from the 99 and carries no `presentable: false`."
+          },
+          {
+            "where": "lines[7] (ignition -> output, verified_by 003)",
+            "claim": "\"Seven Vampire attackers, seven Sanctum Seeker triggers, each doubled by Bloodletter because it is your turn: 14 per opponent at declare-attackers, before blocks. Your 1 life per trigger is NOT doubled.\"",
+            "status": "supported",
+            "note": "Every clause matches stack 003's final_state (opponent 1: 21 - 14 = 7; opponent 2: 14 - 14 = 0, SBA before blockers; you 26 -> 33, undoubled). And the ignition half is stronger than the model argues: the scenario's four \"1/1 black Vampire creature tokens\" can only be eminence's, because every other token maker in the 99 makes something else — Mavren Fein, Legion's Landing and Charismatic Conqueror make 1/1 WHITE Vampires with lifelink, Bloodline Keeper a 2/2 black flier, Ocelot Pride a Cat, Elspeth a Soldier. The arrow is causally carried, not merely co-located."
+          },
+          {
+            "where": "lines[8] (ignition -> output, verified_by 007)",
+            "claim": "\"the stack PARTIALLY REFUTES it as a table kill: seven tapped creatures is 14 each, which kills the 9-life seat and leaves the 15-life seat alive at exactly 1. Bloodletter was untapped and did not count itself.\"",
+            "status": "supported",
+            "note": "Exact against stack 007's final_state, including the untapped-Bloodletter detail that the count turns on. This is the inverse of the radagast failure the charter exists for: a green arrow whose note reports the stack refuting the stronger reading. Lines[4] (008: five triggers x 2 = 10 each), lines[5] (009: nine triggers, 12 per seat, exactly lethal, zero margin, pod total 36 kept distinct from the per-seat 12) and lines[6] (002: five new bodies, the four tokens entering as 2/2 with Socialite out) all reconcile to their stacks' final_state the same way. Five verified lines, five that hold."
+          },
+          {
+            "where": "lines[3].note and open_questions[2]",
+            "claim": "stack 002 \"names Edgar only in its command-zone note, so the scenario's card list does not contain him and the arrow cannot honestly be stamped\"",
+            "status": "supported",
+            "note": "Verified against the implementation, not the prose. build_index.line_cards reads the ordered `stack` entries, `hand` and `graveyard`, falling back to `board.you`; it never reads a stack entry's `note` or `extras`. Running it: 002 -> [Gifted Aetherborn, Anointed Procession, Mondrak, Vampire Socialite, Cordial Vampire] — no Edgar, so validate-engine would reject 002 for this arrow. The dashed line is correct and so is the reason. open_questions[2] is therefore well aimed and not busywork: 003 and 007 DO name Edgar (line_cards finds him in both) but hold no doubler, so no passing stack joins the commander to the multiplication."
+          },
+          {
+            "where": "open_questions[3] and proposed_goldfish_edits[0] (the drain-source half)",
+            "claim": "\"the group names two cards where the deck holds at least eight halves\"",
+            "status": "supported",
+            "note": "Counted against cards.json oracle text. Bloodletter replaces any opponent life loss during your turn, and eight cards in the 99 cause an opponent non-damage life loss: Sanctum Seeker, Throne of the God-Pharaoh (both declared), plus Corpse Knight, Blood Artist, Cruel Celebrant, Bontu's Monument, Vito, Thorn of the Dusk Rose and Sanguine Bond. Exactly eight, exactly the six the edit proposes adding. Two supports the engineer did not use: goldfish_targets.json's own `_note` already states that Corpse Knight \"causes LIFE LOSS rather than damage, so Bloodletter of Aclazotz doubles it\" and then leaves it out of the drain group — the declaration contradicts itself in writing; and widening the half moves the opener from 0.84% to 2.6% and would move the assembled rate materially, which is the point. Holding the four damage payoffs back until open_questions[0] is resolved is the right call, and that question is well-formed: Bloodletter's own reminder text \"(Damage causes loss of life.)\" is prima facie evidence for the doubling, and stack 004's checker ruled on the identical parenthetical in the OTHER direction (207.2a, on Conqueror), so nobody has actually tested this one."
+          },
+          {
+            "where": "every rate, count and cap in the model",
+            "claim": "the figures quoted from the brief throughout stages[] and lines[]",
+            "status": "supported",
+            "note": "Re-derived from goldfish_metrics.json, engine-facts and cards.json, not believed. Correct: ramp 36.4/44.4/68.0/56.7; draw 41.2/73.4/62.2; conversion 45.6/78.9/68.2; entry payoffs 41.2/73.5/62.6; noncreature answers 52.9 (and \"the deck's binding axis\" IS the declaration's phrase); protection 31.2/38.6/60.9/50.0; lords/anthems 45.6/78.9/68.1; drain doubler 5.2 / 24.6 / mean 5.4; infinite 4.8 / 24.3 / mean 5.4; go-wide 57.4; Bloodletter and Conqueror at 7.1 of opening sevens; commander median cast turn 6. Also correct: black is 39 of 76 pips = 51.3%, \"half the pip load\"; Bloodletter at {1}{B}{B}{B} is the only triple-black cost in the 99; eight removal spells in output; 15 / 8 / 5 / 10 stage counts; Olivia's Wrath does spare Vampires. Every map cross-tab re-derives from deck_map.json except the WIDTH ENGINE stage count above — 34 of THE MANA plus four of THE HEAD START plus two of THE WIDTH ENGINE = 40; all seven of THE ANSWERS plus eleven from three cities = 18; five of THE DRAIN here and three in wincon; four of HELD FOR THE WIPE's six. All seven what_it_does fields are inside the 1,800 cap (longest is output at 1,450) and none reads as accreted draft narration. The wincon `combo` evidence entry is correctly labelled `kind: \"combo\"` and discloses that a stack has since passed on it; 004 and 006 are genuinely checker-passed and cited as `kind: \"stack\"`. No combo-database record is dressed as a verified line anywhere in this model."
+          }
+        ]
+      }
+    ]
   }
 }

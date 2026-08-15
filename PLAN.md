@@ -217,6 +217,19 @@ strong lists for a commander run — so it needs dated web passes judged against
   hapatra yields a different 99, because the embeddings, roles and synergy graph it scored
   against have been regenerated. Nothing tests this.
 - **Five decks carry `next_issue: TO BE ANNOUNCED`.**
+- **`manabase.pip_requirements` cannot see a double-faced card's pips** — it reads
+  `card["mana_cost"]`, which Scryfall leaves empty for transform/MDFC layouts, and
+  never falls back to `card_faces[0]["mana_cost"]`. This is the same trap that once
+  made `cards.json` colours read empty for every DFC; that was fixed for COLOURS
+  and not for PIPS. Measured across the fleet: **10 spells on 7 decks**, and the
+  totals move edgar 76→79, yawgmoth 76→80, sisay 81→84, heliod 77→79, gishath
+  96→97, hapatra 56→57, radagast 82→83. Found by `engine-critic` on edgar, where
+  the engine model quoting `mana_analysis`'s "39 of 76 pips" disagreed with
+  `cards.json`'s 41 of 79. The fix is three lines; the cost is that it changes the
+  maths, so all nine `mana_analysis.json` must be regenerated (a tracked artifact
+  with a staleness test) and any prose quoting a pip figure re-checked. Deliberately
+  NOT done inside the fleet-parity pass — changing it mid-flight would have
+  invalidated figures eight agents were verifying at the time.
 
 ### 8. Strategy-DB gaps
 
