@@ -1,0 +1,594 @@
+{
+  "slug": "sisay",
+  "thesis": "Sisay is a mana-to-battlefield converter whose exchange rate is her own power: five coloured pips buy one legendary permanent, every coloured permanent she buys widens the next purchase, and the currency every other stage is paying for is ACCESS rather than cards or mana.",
+  "stages": [
+    {
+      "stage": "mana",
+      "label": "THE FIVE-PIP BILL",
+      "what_it_does": "The activation this deck exists to make costs {W}{U}{B}{R}{G} — five coloured pips with zero generic — so none of the deck's generic acceleration touches it. That is why 39 land entries carry the load and only four rocks come along. Black is the ceiling: mana_analysis reports W 26, G 27, U 22, R 21 and B 21 sources, against a Karsten target of 36 for black (Sheoldred is {2}{B}{B}) and 22 for the other four; on-curve probability for black is 0.299 on lands alone and 0.610 once rocks and dorks are counted, against 0.944 W and 0.951 G. Black carries 11.1% of the pip load and 18.5% of the sources, so the shortfall is not about casting Toxic Deluge on time — it is that the activation you want to make every turn is one black source away from not happening. The declared 'Early accelerant drawn' component is seven cards: 41.2% in the opener, 49.8% by turn three, 74.7% assembled, mean turn 2.836. Plaza of Heroes sits here because stack 002 taps and untaps it for four of the five pips, though mana_analysis credits it with zero colour sources: both coloured modes are conditional. It is NOT tutorable: its type line is Land, Sisay searches for a legendary permanent card, and no fetchland here finds it either — so its hexproof-and-indestructible mode is protection she can never reach. Delighted Halfling pays none of them: its any-colour mana is spend-only-to-cast-a-legendary-spell and these five pips are an ACTIVATION cost, so mana_analysis records it as producing nothing. Birds of Paradise, unrestricted, pays exactly one of the five. Mox Amber is here rather than at ignition because it is colourless: one of only three legendary permanents below mana value 2, it adds nothing to Sisay's power and produces nothing until a legendary creature or planeswalker is on the board.",
+      "cards": [
+        "Bountiful Promenade",
+        "Breeding Pool",
+        "City of Brass",
+        "Command Tower",
+        "Exotic Orchard",
+        "Forbidden Orchard",
+        "Forest",
+        "Godless Shrine",
+        "Hallowed Fountain",
+        "Island",
+        "Luxury Suite",
+        "Mana Confluence",
+        "Mountain",
+        "Overgrown Tomb",
+        "Plains",
+        "Plaza of Heroes",
+        "Rejuvenating Springs",
+        "Sacred Foundry",
+        "Sea of Clouds",
+        "Secluded Courtyard",
+        "Spectator Seating",
+        "Spire Garden",
+        "Steam Vents",
+        "Stomping Ground",
+        "Swamp",
+        "Temple Garden",
+        "Unclaimed Territory",
+        "Undergrowth Stadium",
+        "Vault of Champions",
+        "Watery Grave",
+        "Arid Mesa",
+        "Flooded Strand",
+        "Marsh Flats",
+        "Misty Rainforest",
+        "Polluted Delta",
+        "Scalding Tarn",
+        "Verdant Catacombs",
+        "Windswept Heath",
+        "Wooded Foothills",
+        "Sol Ring",
+        "Arcane Signet",
+        "Fellwar Stone",
+        "Mox Amber",
+        "Birds of Paradise",
+        "Delighted Halfling"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-1",
+          "agreement": "cuts-across",
+          "note": "THE COLOUR BATTERY (30) and THE MISSING PIP (9) hold the lands; the four rocks are THE FAST START and Birds of Paradise and Delighted Halfling are MANA ON LEGS, filed beside a five-pip engine neither can pay — Birds covers one pip, the Halfling none"
+        },
+        {
+          "kind": "stack",
+          "id": "002",
+          "note": "the floor line taps Command Tower once for {B} and Plaza of Heroes four times for W/U/R/G, so City of Brass and Mana Confluence never have to be tapped and the loop's life cost is 0 per combat"
+        }
+      ]
+    },
+    {
+      "stage": "ignition",
+      "label": "THE SECOND COLOUR",
+      "what_it_does": "Nothing in this deck happens on schedule until Sisay's ability reaches more than three cards, and what it reaches is set by the number of colours among OTHER legendary permanents you control. Counted over cards.json: 3 / 10 / 23 / 28 / 33 / 33 targets at 0 / 1 / 2 / 3 / 4 / 5 colours. The number to hold is TWO, where access more than doubles. These six are the cheapest way there — coloured legendary permanents at mana value 2 or less whose job is not the dial and not a shield, four of them carrying two colours on one card. They share no text at all: Kinnan doubles nonland mana, Lotho taxes second spells into Treasure, Rona loots and untaps on legendary casts, Saffi buys a creature back, Katilda gives Humans (Sisay included) a mana ability, Yoshimaru just grows itself. In this engine their first job is identical — be a coloured legendary permanent on turn two, so the first activation is not choosing between Mox Amber, Yoshimaru and Mikaeus. Sisay herself is filed at conversion, not here: she is the machine rather than the starting gun, and what has to be true before her first activation is worth making is a board state, not a card. Nothing in goldfish_targets measures this, which is the gap the frame's own reading points at — 'Sisay plus payoffs is a hand of payoffs'.",
+      "cards": [
+        "Yoshimaru, Ever Faithful",
+        "Katilda, Dawnhart Prime",
+        "Kinnan, Bonder Prodigy",
+        "Lotho, Corrupt Shirriff",
+        "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+        "Saffi Eriksdotter"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-0",
+          "agreement": "cuts-across",
+          "note": "three in THE TOOLBOX, two in MANA ON LEGS, one in GROW HER GUARD HER — the class is invisible in card text because what these six have in common is printed on Sisay"
+        },
+        {
+          "kind": "role",
+          "id": "threat:body",
+          "note": "the only role every member shares, and it says nothing about the job — a role is a property, not an interaction"
+        }
+      ]
+    },
+    {
+      "stage": "fuel",
+      "label": "PAYING FOR THE SECOND ACTIVATION",
+      "what_it_does": "One activation per turn cycle is a value engine; two is something else, and this stage buys the extra ones. The six declared multi-colour mana sources are not interchangeable. Only Jegantha adds all five off one tap, unconditionally, and its can't-pay-generic clause is irrelevant against a cost with no generic in it. Bloom Tender and Faeburrow Elder pay one mana per colour among ALL permanents you control, which is not the number printed on Sisay: hers counts colours among OTHER LEGENDARY permanents. Ten nonlegendary coloured permanents in this 99 — Rhystic Study, Seedborn Muse, Esper Sentinel and seven more, including both Vivid dorks counting themselves — move the Vivid count and not the dial. Vivid is a strict superset: never behind the ladder, usually ahead. It still compounds with it, since every coloured legend she fetches raises both. Esika grants every OTHER legendary creature '{T}: Add one mana of any color', turning each fetched body into a source. Relic of Legends taps an untapped legendary creature without using that creature's own {T}. Selvala adds X in any combination for the greatest power among your creatures, which in this deck is often Sisay. Measured: 36.4% in the opener, assembled 67.9%, 55.8% by turn 6, mean turn 4.219, six cards deep. The untap half — Ioreth, Samut, Emiel, Derevi, Seedborn Muse — turns those sources over again, and Derevi's is the only one a passing stack proves. The draw half (Rhystic Study, Esper Sentinel, Reki) refills a hand the tutor cannot reach: Sisay PUTS permanents onto the battlefield rather than casting them, so Reki does not trigger off her ability. This deck has no `fodder` stage: nothing is sacrificed, discarded or exiled as a cost to run the engine, and no card in the 99 converts one board resource into another.",
+      "cards": [
+        "Bloom Tender",
+        "Faeburrow Elder",
+        "Jegantha, the Wellspring",
+        "Esika, God of the Tree // The Prismatic Bridge",
+        "Relic of Legends",
+        "Selvala, Heart of the Wilds",
+        "Derevi, Empyrial Tactician",
+        "Ioreth of the Healing House",
+        "Samut, Voice of Dissent",
+        "Emiel the Blessed",
+        "Seedborn Muse",
+        "Rhystic Study",
+        "Esper Sentinel",
+        "Reki, the History of Kamigawa"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-6",
+          "agreement": "cuts-across",
+          "note": "5 / 1 / 7 / 1 over 14: MANA ON LEGS holds five, THE FAST START one (Relic of Legends, filed with the rocks because it is an artifact), seven sit in THE TOOLBOX with the answers, and Emiel the Blessed is alone in GROW HER, GUARD HER"
+        },
+        {
+          "kind": "stack",
+          "id": "002",
+          "note": "Derevi's untap trigger, verified: triggers equal the attacker count and a land can be tapped, untapped by a trigger and retapped inside one damage step"
+        },
+        {
+          "kind": "combo",
+          "id": "Bloom Tender + Derevi, Empyrial Tactician + Emiel the Blessed",
+          "note": "Commander Spellbook line, bracket 1, needs a stack scenario — candidate, not fact. Four more three-card lines run through Emiel, Ioreth, Samut and Selvala"
+        }
+      ]
+    },
+    {
+      "stage": "conversion",
+      "label": "THE DIAL",
+      "what_it_does": "Sisay's gate reads POWER: 'search your library for a legendary permanent card with mana value less than Sisay's power'. Base 2/2, +1/+1 for each colour among other legendary permanents. Two routes move that number and the card does not care which produced it. Colour breadth: Dihada (three colours), Surrak (three), Jodah (five, and the only card in the deck whose own cast cost is the same five pips; at mana value 5 he is legal only at power 6, and Surrak and Kenrith tie him there). Counters and anthems: Mikaeus taps to grow himself and then to grow the team, Bristly Bill puts a counter on every landfall, Heliod turns lifegain into counters, Kenrith buys counters and haste with spare mana, and Flowering of the White Tree gives legendary creatures +2/+1 permanently — two more mana value of reach, plus ward {1}. The declared 'three-colour legend to grow her' component is the thinnest in the deck: four cards, 25.8% in the opener, 41.9% by turn 6, assembled 52.5%. Where the ladder tops out is a fact about this 99 and not about the card — nothing here exceeds mana value 5, so power 6 buys everything and further power buys nothing. Sisay is the single point of failure for the entire model: she is the only card that converts mana into board, and losing her resets the recast tax and every rung already climbed. Her central line is NOT verified. Stack 001 walked exactly this chain and the checker exhausted its iteration bound on one clause, so every arrow leaving this stage is dashed.",
+      "cards": [
+        "Sisay, Weatherlight Captain",
+        "Dihada, Binder of Wills",
+        "Jodah, the Unifier",
+        "Surrak Dragonclaw",
+        "Heliod, Sun-Crowned",
+        "Kenrith, the Returned King",
+        "Mikaeus, the Lunarch",
+        "Bristly Bill, Spine Sower",
+        "Flowering of the White Tree"
+      ],
+      "single_point_of_failure": "Sisay, Weatherlight Captain",
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across",
+          "note": "the map splits one dial into two cities: the colour-breadth legends read as legends and land in THE TOOLBOX, the counter-makers read as counters and land in GROW HER, GUARD HER"
+        },
+        {
+          "kind": "role",
+          "id": "tutor:narrow",
+          "note": "Sisay's only tutor role, shared with Kodama of the West Tree, which fetches a basic land — the taxonomy cannot see that one of these two is the deck"
+        }
+      ]
+    },
+    {
+      "stage": "output",
+      "label": "WHAT ACCESS BUYS",
+      "what_it_does": "Instead of ten removal spells the deck buys virtual advantage, and it buys it on the battlefield where the tutor can reach it. Kutzil stops opponents casting during your turn; Teferi holds them to sorcery speed; Drannith Magistrate cuts them off from anywhere but hand; Thalia makes their creatures and nonbasic lands enter tapped; Kambal and Sheoldred convert their spells and their draws into loss; Dauthi Voidwalker exiles what would reach their graveyards. Loran and Path to Exile are the two targeted answers, Toxic Deluge the reset, Kodama the trample that makes a counter-laden board connect, and Raff the flash grant that lets you deploy legends with counterspell mana still up. The frame's reading of the tax shell holds: 'All six are legendary at mana value 2-4, so each sits inside the fetch pool from the second colour onward' — the answer suite and the ladder's rungs are the same cards, which is exactly why access compounds rather than merely accumulates. deck-audit reads interaction at 8 copies (at target) and interaction-breadth at 3 of 5 classes. This is the one stage where the deck's own map agrees with the engine completely: all twelve sit in THE TOOLBOX, whose gloss — 'one answer at a time, chosen after you see the problem' — is a fair description of what a tutor is for.",
+      "cards": [
+        "Thalia, Heretic Cathar",
+        "Kutzil, Malamet Exemplar",
+        "Teferi, Time Raveler",
+        "Kambal, Consul of Allocation",
+        "Sheoldred, the Apocalypse",
+        "Drannith Magistrate",
+        "Dauthi Voidwalker",
+        "Loran of the Third Path",
+        "Kodama of the West Tree",
+        "Raff Capashen, Ship's Mage",
+        "Path to Exile",
+        "Toxic Deluge"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-0",
+          "agreement": "full",
+          "note": "12 of 12 in THE TOOLBOX — the only stage in this model that a city name addresses correctly"
+        }
+      ]
+    },
+    {
+      "stage": "protection",
+      "label": "INSURANCE ON THE ONLY ENGINE",
+      "what_it_does": "The declared component is eleven cards and it is the healthiest thing in the deck: 57.4% in the opener, 67.0% by turn three, 88.4% assembled, 79.8% by turn 6, mean turn 2.3. All three of Cullen's classes are present — a constant that is itself tutorable (Shalai grants you and your other creatures hexproof), free or cheap instants (Fierce Guardianship, Flawless Maneuver, Heroic Intervention), and a denial layer (Grand Abolisher, Silence, Swan Song, An Offer You Can't Refuse, Dispel, Negate, Arcane Denial), plus Boros Charm's indestructible mode against a wrath. The structural fact the map states by accident: not one of the five cards in THE HELD ANSWERS is legendary, and neither are Heroic Intervention, Flawless Maneuver, Silence, Grand Abolisher or Boros Charm. The commander cannot fetch her own insurance. That is the frame's blind spot made concrete — 26 of the 99 are nonland and not legendary, and that set holds every instant in the deck and all four Game Changers. Protection here is a DRAW problem rather than an access problem, which is the opposite of every other stage in this model. Why the recast tax bites harder than usual: losing Sisay costs {2} more per prior command-zone cast AND every accumulated rung of access, so the protection is not insuring a body, it is insuring a position.",
+      "cards": [
+        "Shalai, Voice of Plenty",
+        "Grand Abolisher",
+        "Silence",
+        "Fierce Guardianship",
+        "Flawless Maneuver",
+        "Heroic Intervention",
+        "Swan Song",
+        "An Offer You Can't Refuse",
+        "Dispel",
+        "Negate",
+        "Arcane Denial",
+        "Boros Charm"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-4",
+          "agreement": "cuts-across",
+          "note": "THE HELD ANSWERS 5, GROW HER GUARD HER 4, THE TOOLBOX 3 — the map separates instants you hold from permanents that shield, and the deck pays for both out of the same held mana"
+        }
+      ]
+    },
+    {
+      "stage": "wincon",
+      "label": "ONE CARD, AND THE ONLY VERIFIED THING HERE",
+      "what_it_does": "Najeela. Stack 002 is this deck's only checker-passed artifact and it settles what the pair IS rather than anything about the bracket: with Derevi it is a deterministic, unbounded combat loop but NOT a self-contained two-card infinite. The floor does not rest on it — bracket_report reaches 4 twice over without Derevi, once from four Game Changers alone and once from a two-card-infinite driver listing four lines, three of which pair Najeela with Faeburrow Elder, Esika or Selvala. It produces no mana, so every iteration re-buys {W}{U}{B}{R}{G} from outside, and it needs at least five of your creatures connecting with a player. The arithmetic it establishes: attackers follow A' = 2A - 1 (3, 5, 9, 17, 33) and Derevi's untap triggers equal the attacker count while the cost stays fixed at five, so combat 1 is funded from pre-combat lands, COMBAT 2 IS BREAK-EVEN (5 triggers against 5 mana) and combat 3 onward runs a surplus. Damage per combat is A + 3 (6, 8, 12, 20, 36); the first opponent dies during combat 4, the second by combat 6, and the life cost floors at 0 per combat. The number to hold in your head is the break-even combat, not the card count. What this model will not claim is that the deck reliably arrives here: goldfish_targets declares four targets and not one of them measures a win line, so how often Najeela and a live five-colour base show up together has never been measured. deck-audit's threat-density counts Boros Charm, Kambal and Samut and not Najeela, so the taxonomy and this engine disagree about what a finisher is here. Everything else that could end a game is filed where its first job is — a board of legends under Jodah's anthem, with Kodama's trample and Kenrith's haste.",
+      "cards": [
+        "Najeela, the Blade-Blossom"
+      ],
+      "single_point_of_failure": "Najeela, the Blade-Blossom",
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "002",
+          "note": "verdict pass, 3 iterations; the resolution also states the negative — the pair alone is not an infinite, which is why the stage is one card and not two"
+        },
+        {
+          "kind": "city",
+          "id": "city-0",
+          "agreement": "full",
+          "note": "Najeela sits in THE TOOLBOX with the answers, because what she SAYS is a token trigger; what she DOES here is end the game"
+        }
+      ]
+    }
+  ],
+  "lines": [
+    {
+      "from": "mana",
+      "to": "conversion",
+      "via": [
+        "Command Tower",
+        "City of Brass",
+        "Sisay, Weatherlight Captain"
+      ],
+      "carries": "five distinct pips",
+      "verified_by": null,
+      "note": "The one bill the deck pays over and over, and the reason it runs 40 land copies rather than rocks: {W}{U}{B}{R}{G} has no generic in it. Dashed because stack 001, which walked this activation, exhausted its iteration bound — the checker verified answers (a) through (e) but the artifact does not pass, so this is a claim."
+    },
+    {
+      "from": "ignition",
+      "to": "conversion",
+      "via": [
+        "Katilda, Dawnhart Prime",
+        "Kinnan, Bonder Prodigy",
+        "Lotho, Corrupt Shirriff",
+        "Sisay, Weatherlight Captain"
+      ],
+      "carries": "colours",
+      "verified_by": null,
+      "note": "Each of these puts two colours on the battlefield for two mana, and the fetch pool goes 3 -> 10 -> 23 targets at 0, 1 and 2 colours among other legends. This is the arrow the deck's opening hand is really about."
+    },
+    {
+      "from": "fuel",
+      "to": "conversion",
+      "via": [
+        "Bloom Tender",
+        "Faeburrow Elder",
+        "Esika, God of the Tree // The Prismatic Bridge",
+        "Sisay, Weatherlight Captain"
+      ],
+      "carries": "mana",
+      "verified_by": null,
+      "note": "The second activation in a turn, and the compounding one: Bloom Tender and Faeburrow Elder pay one mana per colour among all permanents you control — a strict superset of the colours among other legendary permanents that set Sisay's power, so their output never lags the dial and often leads it. Esika makes every other legendary creature a source. Dashed — stack 003 tested exactly whether a freshly fetched legend can be tapped this way and failed on its mana totals."
+    },
+    {
+      "from": "fuel",
+      "to": "conversion",
+      "via": [
+        "Rhystic Study",
+        "Esper Sentinel",
+        "Reki, the History of Kamigawa",
+        "Sisay, Weatherlight Captain"
+      ],
+      "carries": "cards",
+      "verified_by": null,
+      "note": "The tutor finds permanents in the library; it cannot find the 26 nonland non-legendary cards, and it never puts a card in your hand. These three do. Reki is the qualified one: it triggers on CASTING a legendary spell, and Sisay's ability does not cast."
+    },
+    {
+      "from": "conversion",
+      "to": "fuel",
+      "via": [
+        "Sisay, Weatherlight Captain",
+        "Esika, God of the Tree // The Prismatic Bridge",
+        "Selvala, Heart of the Wilds",
+        "Jegantha, the Wellspring"
+      ],
+      "carries": "access",
+      "verified_by": null,
+      "note": "The interlock the ladder hides. Esika and Selvala are mana value 3, legal at power 4 — two other colours — and are the fetches that actually change your mana. Jegantha is mana value 5, legal only at power 6, so the one card that solves the colour problem outright is the last one she can reach. Fetch mana early or draw it."
+    },
+    {
+      "from": "conversion",
+      "to": "output",
+      "via": [
+        "Sisay, Weatherlight Captain",
+        "Thalia, Heretic Cathar",
+        "Sheoldred, the Apocalypse"
+      ],
+      "carries": "access",
+      "verified_by": null,
+      "note": "What the ladder is for: one tax permanent blanks plans at three seats, and each one fetched is also another colour, which widens the next fetch. The rungs and the payoffs are the same cards."
+    },
+    {
+      "from": "conversion",
+      "to": "wincon",
+      "via": [
+        "Sisay, Weatherlight Captain",
+        "Najeela, the Blade-Blossom"
+      ],
+      "carries": "access",
+      "verified_by": null,
+      "note": "Najeela is mana value 3, so she is legal at power 4 — two other colours on board. The fetch is a claim; what happens AFTER she lands is the one thing here a checker has passed."
+    },
+    {
+      "from": "protection",
+      "to": "conversion",
+      "via": [
+        "Shalai, Voice of Plenty",
+        "Fierce Guardianship",
+        "Sisay, Weatherlight Captain"
+      ],
+      "carries": "insurance",
+      "verified_by": null,
+      "note": "Insuring a position rather than a body: losing Sisay costs {2} more per prior command-zone cast and every rung of access already climbed. Shalai is the tutorable half; Fierce Guardianship is the half she can never find."
+    },
+    {
+      "from": "mana",
+      "to": "wincon",
+      "via": [
+        "Command Tower",
+        "Plaza of Heroes",
+        "Najeela, the Blade-Blossom"
+      ],
+      "carries": "five distinct pips",
+      "verified_by": "002",
+      "note": "Verified: combat 1's activation is funded from pre-combat lands, and the floor line pays all five pips with Command Tower for {B} plus Plaza of Heroes' third mode for W/U/R/G, so City of Brass and Mana Confluence are never tapped and the loop costs 0 life per combat."
+    },
+    {
+      "from": "fuel",
+      "to": "wincon",
+      "via": [
+        "Derevi, Empyrial Tactician",
+        "Najeela, the Blade-Blossom"
+      ],
+      "carries": "mana",
+      "verified_by": "002",
+      "note": "Verified: Derevi's untap triggers equal the attacker count while Najeela's cost stays fixed at five, so combat 2 is exactly break-even (5 triggers, 5 mana) and combat 3 onward is surplus. The loop is unbounded and it is not self-contained."
+    },
+    {
+      "from": "fuel",
+      "to": "mana",
+      "via": [
+        "Derevi, Empyrial Tactician",
+        "Plaza of Heroes"
+      ],
+      "carries": "untaps",
+      "verified_by": "002",
+      "note": "The feedback arrow, and the reason five lands can pay a five-pip cost every combat: tap Plaza, pass priority, let a Derevi trigger untap it, retap — all inside one combat damage step. Verified in the stack's floor line, which needs three Plaza untaps."
+    }
+  ],
+  "map_disagreements": [
+    {
+      "component": "IGNITION — the second colour (six coloured legendary permanents at mana value 2 or less)",
+      "cities": [
+        "THE TOOLBOX",
+        "MANA ON LEGS",
+        "GROW HER, GUARD HER"
+      ],
+      "why": "Three, two and one. These six share no text: a mana doubler, a Treasure tax, a looter, a recursion trick, a Human mana-granter and a dog that grows itself. The map files each under what it says, and none of them says the thing that matters — that it is a coloured legendary permanent castable on turn two. The property is printed on Sisay, not on them, so the map cannot see the class at all. This is the same law radagast's scatter demonstrated: a component is coherent on the map exactly when its defining property is printed on its members."
+    },
+    {
+      "component": "CONVERSION — the dial (Sisay plus the eight cards that move her power)",
+      "cities": [
+        "THE TOOLBOX",
+        "GROW HER, GUARD HER"
+      ],
+      "why": "Four and five, and the split is not arbitrary — it is the two ROUTES to one number. Colour breadth (Dihada, Jodah, Surrak) reads as 'legendary permanents' and lands in THE TOOLBOX; counters and anthems (Mikaeus, Bristly Bill, Heliod, Kenrith, Flowering of the White Tree) read as 'counters' and land in GROW HER, GUARD HER. Sisay's gate reads POWER and does not care which route produced it, so the engine sees one stage where the map sees two."
+    },
+    {
+      "component": "Commander protection available (the declared 11-card component)",
+      "cities": [
+        "THE HELD ANSWERS",
+        "GROW HER, GUARD HER",
+        "THE TOOLBOX"
+      ],
+      "why": "5 / 3 / 3 in the scatter table. The map separates instants you HOLD from permanents that shield and from the tax bodies, which is a true distinction about text and the wrong one for the pilot: all of them are bought with the same held mana and compete for the same slot. The useful cut is orthogonal to all three cities — legendary versus not. Nothing in THE HELD ANSWERS is legendary, so the commander cannot fetch any of it."
+    },
+    {
+      "component": "Sisay online with a multi-colour mana engine (the declared 6-card component)",
+      "cities": [
+        "MANA ON LEGS",
+        "THE FAST START"
+      ],
+      "why": "5 / 1. Relic of Legends is an artifact, so it files with Sol Ring and Arcane Signet, and the picture then says it is an accelerant like they are. Functionally it is the same card as Esika for this deck — turn an untapped legendary creature into a coloured mana — and it is one of the three members of this component that are NOT legendary and can therefore never be fetched at any power."
+    },
+    {
+      "component": "MANA — Birds of Paradise and Delighted Halfling",
+      "cities": [
+        "MANA ON LEGS",
+        "THE COLOUR BATTERY"
+      ],
+      "why": "The map puts both in MANA ON LEGS beside Bloom Tender, Faeburrow Elder and Jegantha, because all five are bodies that make coloured mana. The engine separates them, and for two different reasons. Birds of Paradise adds one unrestricted mana of any colour: it CAN pay a pip, and one of five is not an activation. Delighted Halfling cannot pay one at all — its any-colour mode reads 'spend this mana only to cast a legendary spell' and Sisay's and Najeela's costs are activations, not casts, so its only usable mana here is {C}. mana_analysis records exactly that split: Birds produces W/U/B/R/G and the Halfling produces nothing. The Vivid pair and Jegantha pay for the activation itself. One pip versus five is the difference between the mana stage and the fuel stage in this deck."
+    }
+  ],
+  "unassigned": [],
+  "open_questions": [
+    {
+      "question": "Re-run stack 001 (Sisay activated the turn she lands, and the escalating fetch chain) with the single -X/-X clause the checker flagged. Does the deck's central line — pay five pips, fetch a legend, recalculate power mid-resolution, fetch again — pass?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "Every arrow leaving `conversion` is currently dashed and the columnists are barred from asserting a dashed line. The checker's own note says answers (a) through (e) were independently verified correct and only the iteration bound stopped it, so the deck's defining interaction is one clause away from being the fact this model most needs."
+    },
+    {
+      "question": "Re-run stack 003 (Relic of Legends versus Esika's granted ability on a legend Sisay put onto the battlefield this turn), fixing the step-13 Esika vigilance attribution and the step-14 ceiling the checker refuted. Can a freshly fetched legend help pay for the NEXT activation, and what is the real per-turn mana ceiling?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "This is the difference between one activation a turn and two. If a fetched body can be tapped for mana the same turn through Relic's non-{T} cost while Esika's granted {T} ability is locked out by summoning sickness, the ladder can climb twice, and the `fuel -> conversion` arrow becomes the deck's real engine rather than a claim."
+    },
+    {
+      "question": "Add a win-line target and measure it: how often are Najeela plus a mana base that can produce all five colours both available, and by which turn?",
+      "settled_by": "goldfish",
+      "why_it_matters": "goldfish_targets declares four targets and not one measures a win line, so the deck's only rules-verified kill has never been priced. This is the same defect the fleet survey found on heliod (Hullbreaker Horror) and ur-dragon (Aggravated Assault) — the simulator has never measured how this deck wins."
+    },
+    {
+      "question": "What is the accepted source floor for a REPEATABLE five-distinct-pip activation cost, as opposed to a one-time cast? Karsten's table prices triple pips across three colours and calls it incompatible; a {W}{U}{B}{R}{G} cost you want to pay every turn sits off the end of it.",
+      "settled_by": "research-strategy",
+      "why_it_matters": "Black is at 21 sources against a 36 target with on-curve 0.299 on lands alone, and deck-audit's colour-sources axis reads 'under'. But that target is set by Sheoldred's {2}{B}{B} cast, not by the activation, so the deck's most-used ability currently has no cited target at all — the axis is measuring the wrong thing and reporting a shortfall anyway."
+    }
+  ],
+  "proposed_goldfish_edits": [
+    {
+      "target": "(new) The kill: Najeela, the Blade-Blossom plus a five-colour mana source",
+      "change": "Add a fifth target with one any_of group naming Najeela, the Blade-Blossom, and a second naming the sources that can produce all five colours on their own or in pairs (Command Tower, Plaza of Heroes, City of Brass, Mana Confluence, Exotic Orchard, Jegantha, the Wellspring). Semantics as elsewhere: drawn by turn N.",
+      "why": "The declaration measures the mana engine, the three-colour legend, the accelerant and the protection — and nothing about winning. Stack 002 is the deck's only passing artifact and it is about a line the simulator has never looked at. A primary win line with no target is the exact defect validate-goldfish-targets was built to catch on heliod and ur-dragon."
+    },
+    {
+      "target": "(new) A coloured legendary permanent at mana value 2 or less on board",
+      "change": "Add a target with one any_of group of the nine coloured legendary permanents at mana value 2 or less: Mikaeus the Lunarch, Yoshimaru Ever Faithful, Bristly Bill Spine Sower, Katilda Dawnhart Prime, Kinnan Bonder Prodigy, Lotho Corrupt Shirriff, Rona Herald of Invasion, Saffi Eriksdotter, Flowering of the White Tree.",
+      "why": "The existing 'three-colour legend to grow her' component measures the jump to three or five colours, but the frame's own counted ladder says the number that matters is TWO, where the fetch pool goes 10 -> 23. Three of that component's four members are mana value 4 or 5 and must be cast, so it measures the late dial and nothing measures the cold start — which is the failure mode the frame names ('with no other legendary permanent out Sisay is a 2/2 and the gate is mana value below 2 — exactly three cards')."
+    },
+    {
+      "target": "Early accelerant drawn",
+      "change": "Either drop Mox Amber from the group or split the group into 'produces mana unconditionally' (Sol Ring, Arcane Signet, Fellwar Stone, Birds of Paradise, Delighted Halfling, Bloom Tender) and 'conditional' (Mox Amber).",
+      "why": "Mox Amber adds one mana of any colour among legendary creatures and planeswalkers you control — with none on board it produces nothing. Counted as a seven-of, the component reports 41.2% in the opener and mean turn 2.836 for 'early acceleration', a figure that credits a card which is blank in exactly the hands the deck is worst in: a keep with Mox Amber and no cheap legend has drawn an accelerant and cannot accelerate."
+    }
+  ],
+  "critic": {
+    "round": 1,
+    "verdict": "fail",
+    "findings": [
+      {
+        "where": "stages[6].evidence[0] / model-wide",
+        "claim": "This deck has ONE passing stack, not three; the 21 verified pairings are one board.",
+        "status": "supported",
+        "note": "Checked first because everything else depends on it, and it is right. stacks/001 and stacks/003 both carry checker.verdict 'fail' (RESOLVE_MAX_ITERATIONS exhausted; 001 on a single step-11 -X/-X clause, 003 on the step-13/14 mana totals). build-index reports verified: 1 and stack_files ['002-najeela-derevi-combat-loop.json']. engine-facts verified.by_stack == 1 and verified.pairings == 21 == C(7,2) over stack 002's seven named cards, so the 'verified pairings' figure is the complete graph over one scenario and carries no information beyond 'these seven cards were on one board together'. The engineer corrected the brief it was handed and the correction holds."
+      },
+      {
+        "where": "lines[8]",
+        "claim": "Command Tower pays {B} and Plaza of Heroes' third mode pays W/U/R/G, so City of Brass and Mana Confluence are never tapped and the loop costs 0 life per combat.",
+        "status": "supported",
+        "note": "I opened this expecting it to be the mis-cite, because Plaza's third mode is restricted to colours among legendary permanents you control and I had Najeela as mono-black. She is not: cards.json and data/cards.csv independently give Najeela, the Blade-Blossom as {2}{R}, colors ['R'], and Derevi as {1}{G}{W}{U}. Plaza therefore covers exactly W/U/R/G and Command Tower is the only source of {B}. Stack 002 step 24 and final_state.you state the line verbatim, including 'five taps, three untaps' and the never-tapped City of Brass / Mana Confluence. The claim is exactly what resolved."
+      },
+      {
+        "where": "lines[9], lines[10]",
+        "claim": "Derevi's untap triggers equal the attacker count against a fixed 5-mana cost, so combat 2 is break-even; and a land can be tapped, untapped by a trigger and retapped inside one combat damage step.",
+        "status": "supported",
+        "note": "Both are established rather than merely named. Break-even: resolution step 17 spells out the per-trigger tap/pass/untap/retap cycle and step 19's recurrence gives triggers 3, 5, 9, 17, 33 against a constant 5, with final_state.loop_status 'self-sustaining from combat 2 (5 triggers = 5 mana cost)'. The feedback arrow (lines[10], fuel -> mana) is the strong rules claim and it is the one the checker worked hardest on: step 24's floor line needs exactly three Plaza untaps and combat 1 supplies exactly three triggers, so the arrow's 'three Plaza untaps' is the artifact's own number, not a paraphrase. All three solid lines are carried by their evidence; the green ink in this issue is clean."
+      },
+      {
+        "where": "stages[0].what_it_does",
+        "claim": "\"Plaza of Heroes is also the deck's tutorable protection\"",
+        "status": "contradicts-artifact",
+        "note": "Plaza of Heroes' type_line in cards.json is 'Land' — it is not legendary. Sisay searches for 'a legendary permanent card', so she can never find it at any power, and nothing else in the 99 fetches it either (the nine fetchlands find basic land types; Plaza has none). It IS protection — deck-audit lists it under protection.measured.possible_uncounted alongside Katilda — but 'tutorable' is the load-bearing word in a model whose thesis is ACCESS, and it is false. It also contradicts stages[5] in the same model: 'The commander cannot fetch her own insurance.' Mechanically checkable, and worth making so: any card a stage calls tutorable must carry 'Legendary' in its type_line."
+      },
+      {
+        "where": "lines[2].note, stages[2].what_it_does",
+        "claim": "\"Bloom Tender and Faeburrow Elder pay one mana per colour on board, which is the same number that sets Sisay's power\" / \"the same resource the ladder scales off\"",
+        "status": "contradicts-artifact",
+        "note": "Two different counts. Vivid reads 'for each color among permanents you control'; Sisay reads 'for each color among other legendary permanents you control'. This 99 holds TEN nonlegendary coloured permanents — Birds of Paradise, Bloom Tender, Dauthi Voidwalker, Delighted Halfling, Drannith Magistrate, Esper Sentinel, Faeburrow Elder, Grand Abolisher, Rhystic Study, Seedborn Muse — every one of which raises the Vivid count and none of which raises Sisay's power; Bloom Tender and Faeburrow Elder each count themselves. The Vivid count is a strict superset and is always >= the ladder, so the two are systematically unequal, and the error runs in the direction that understates the mana. The compounding claim survives a rewrite (both grow with coloured permanents); 'the same number' does not. Not a green line, but it is body copy in the stage that explains what pays the bill."
+      },
+      {
+        "where": "map_disagreements[4].why, stages[0].what_it_does",
+        "claim": "\"Birds and the Halfling add ONE mana of any colour, i.e. one pip of the five\" / \"the two any-colour dorks\"",
+        "status": "contradicts-artifact",
+        "note": "True of Birds of Paradise, false of Delighted Halfling, and the difference is the more interesting fact. The Halfling's any-colour mode reads 'Spend this mana only to cast a legendary spell'; Najeela's and Sisay's five pips are ACTIVATION costs, so the Halfling contributes zero of the five, not one. Its unrestricted mode is {C}. mana_analysis records this: producers lists Delighted Halfling with produces [] under the deck-builder's restricted-mana rule, while Birds is ['B','G','R','U','W']. The conclusion (neither belongs at `fuel`) is right; the reason given is wrong for one of the two and buries the stronger one — Birds can pay a pip and chooses not to be a five-pip source, the Halfling cannot pay a pip at all."
+      },
+      {
+        "where": "stages[6].what_it_does",
+        "claim": "\"it settles the claim the bracket floor rests on\"",
+        "status": "over-claimed",
+        "note": "The floor does not rest on it. bracket_report.json gives floor 4 from three drivers, and `game_changers` forces 4 on its own (Drannith Magistrate, Fierce Guardianship, Rhystic Study, Seedborn Muse). `two_card_infinite` also forces 4 and lists FOUR lines, three of which do not involve Derevi at all (Najeela + Faeburrow Elder, + Esika, + Selvala). Refuting the Derevi pair outright would leave the floor at 4 twice over. And the stack did not refute it: final_state.claim_under_test says 'As a bracket-4 driver the signal is correct', with the false_part scoped to self-containment. The stack settles WHAT THE PAIR IS, which is worth the stage; it settles nothing about the floor. A phrase, not a finding reversal."
+      },
+      {
+        "where": "stages[2].evidence[0].note",
+        "claim": "\"MANA ON LEGS holds five, THE FAST START one ..., and seven sit in THE TOOLBOX\"",
+        "status": "miscounted",
+        "note": "5 + 1 + 7 = 13 against a 14-card stage. The fourteenth is Emiel the Blessed, in GROW HER, GUARD HER. Every other city arithmetic in the model closes exactly against deck_map.json — mana 30/9/4/2 = 45, ignition 3/2/1 = 6, conversion 4/5 = 9, output 12/12, protection 5/4/3 = 12, declared protection 5/3/3 = 11, declared mana engine 5/1 = 6 — so this is the only one that does not, and the omitted city is the one that would have complicated the sentence. MECHANICALLY CHECKABLE without string-matching the counts: city labels are exact strings from deck_map.json, so validate-engine can require that the set of city labels named in a stage's evidence note equals the set of cities its cards actually occupy. That catches this class on every deck forever."
+      },
+      {
+        "where": "stages[3].what_it_does",
+        "claim": "\"Jodah (five, and at mana value 5 the most expensive permanent here — legal only at power 6)\"",
+        "status": "miscounted",
+        "note": "Not a unique maximum. Surrak Dragonclaw and Kenrith, the Returned King are both mana value 5 and both sit in this stage's own card list; Jegantha and Samut tie it deck-wide. The stage's next sentence gets it right — 'nothing here exceeds mana value 5, so power 6 buys everything' — so the superlative is a slip against the model's own argument, and 'legal only at power 6' is correct for all of them."
+      },
+      {
+        "where": "stages[1].what_it_does, stages[3].what_it_does, lines[1]",
+        "claim": "The fetch ladder is 3 / 10 / 23 / 28 / 33 / 33 targets at 0-5 colours, and only three legendary permanents sit below mana value 2.",
+        "status": "supported",
+        "note": "Recomputed from cards.json rather than read from engine-facts. 33 other legendary permanents (34 minus Sisay), mana-value histogram 0:1, 1:2, 2:7, 3:13, 4:5, 5:5. Power is 2 + colours among other legendary permanents and the gate is STRICTLY less, so the cumulative counts are 3, 10, 23, 28, 33, 33 — exact, including the flat top. Below mana value 2: Mox Amber, Mikaeus, Yoshimaru = three. Maximum mana value among legendary permanents is 5, so power 6 does buy everything. The 10 -> 23 jump at the second colour is real and it is the strongest measured claim in the model."
+      },
+      {
+        "where": "stages[1].what_it_does",
+        "claim": "\"four of them carrying two colours on one card\"",
+        "status": "supported",
+        "note": "Recording this because a naive recheck will flag it as wrong and it is right. cards.json's top-level `colors` for Rona, Herald of Invasion // Rona, Tolarian Obliterator is ['U','B'], which makes five of the six read as two-colour. But card_faces gives the front face as {1}{U}, mono-blue, and a DFC is its front face on the battlefield until it transforms — so Rona is one colour for Sisay's count on the turn-two board this stage is about. The four are Katilda, Kinnan, Lotho and Saffi. The engineer read the faces, not the merged field. Do not 'fix' this to five."
+      },
+      {
+        "where": "stages[0], stages[2], stages[3], stages[4], stages[5]",
+        "claim": "All quoted mana, goldfish and audit figures.",
+        "status": "supported",
+        "note": "Every number re-derived. mana_analysis: sources W 26 / U 22 / B 21 / R 21 / G 27, Karsten targets B 36 and 22 elsewhere, on-curve B 0.299 lands-only and 0.610 with rocks against W 0.944 and G 0.951, B pip share 0.111 and source share 0.185 — all exact. goldfish_metrics: 0.747 / 2.836, 0.679 / 0.558 / 4.219, 0.525 / 0.419, 0.884 / 0.798 / 2.3 — all exact. The opener and by-turn-three percentages are NOT in goldfish_metrics and had to be reproduced: hypergeometric at-least-one over 99 gives 41.2 / 36.4 / 25.8 / 57.4 at seven cards and 49.8 / 67.0 at nine, matching engine-facts' opening_seven / by_turn_three to the digit. deck-audit: interaction 8 copies 'at', interaction-breadth 3 of 5 classes. '26 of the 99 are nonland and not legendary, and that set holds every instant and all four Game Changers' is exactly right (26 entries, all 11 instants, GCs Drannith Magistrate / Fierce Guardianship / Rhystic Study / Seedborn Muse). Land counting is correct in both directions — '39 land entries' where mana_analysis says entries 39 and '40 land copies' where it says total 40, which is the trap this repo has published wrong before. THE HELD ANSWERS is five instants and none is legendary, as claimed. The only near-miss is 'only four rocks come along' against mana_analysis ramp:rock = 5; the fifth is Relic of Legends, which the model deliberately files at `fuel` and explains at length in map_disagreements[3], so the sentence is stage-scoped and I am not calling it an error."
+      },
+      {
+        "where": "stages[3], stages[1]",
+        "claim": "Sisay belongs at `conversion` rather than `ignition`, and ignition is six coloured legendary permanents at mana value 2 or less.",
+        "status": "supported",
+        "note": "Insight, not a stage bent to fit. Her ability literally converts mana into a permanent on the battlefield, which is what `conversion` names, and the ignition argument is measured rather than asserted: the ladder's own 10 -> 23 says the gate is a second colour, which is a board state and not a card. On the boundary — Mikaeus, Bristly Bill and Flowering of the White Tree are also coloured legendary permanents at mana value 2 or less doing the identical first job, and they are at `conversion` because stages partition the 99. The model does not hide this: proposed_goldfish_edits[1] names the true nine-card class, correctly (ten legendary permanents at mana value <= 2, minus colourless Mox Amber). No revision wanted here; the next round should not enlarge the six."
+      },
+      {
+        "where": "stages[3].single_point_of_failure, stages[6].single_point_of_failure, stages[6].cards",
+        "claim": "Sisay and Najeela are single points of failure, and `wincon` is one card.",
+        "status": "supported",
+        "note": "Checked for the coarse-class failure and it is not that: engine-facts' audit block reports single_points_of_failure [], so both are the model's own judgment. Both hold. Sisay is the only card in the 99 with a mana-to-battlefield tutor, and the model prices the real cost of losing her (the recast tax plus every rung) rather than treating a commander as unavailable. Najeela is the hub of all four of bracket_report's two-card infinites, so the one-card stage is a fact about the deck. All three arrows into `wincon` terminate on Najeela, so nothing points at an empty stage, and the stage says out loud what it filed elsewhere. One thing it could say and does not: deck-audit's threat-density counts Boros Charm, Kambal and Samut and NOT Najeela, so the role taxonomy and this engine disagree about what a finisher is in this deck. The engine is right and that disagreement is worth a sentence."
+      }
+    ],
+    "iterations": 1
+  },
+  "rebuttals": [
+    {
+      "finding": "critic.findings[3] — stages[0].what_it_does, 'contradicts-artifact' (Plaza of Heroes called tutorable protection)",
+      "response": "accepted-and-withdrawn",
+      "what_i_did": "The word is gone and the opposite is now stated in the stage that made the error: Plaza's type line is Land, Sisay searches for a legendary PERMANENT card, and no fetchland in the deck finds a land with no basic type, so its hexproof-and-indestructible mode is protection she can never reach. The mana stage now points at the protection stage instead of contradicting it two stages later. Added while I was there, because it is the stronger version of why Plaza is filed at `mana` and not counted as fixing: mana_analysis credits it with ZERO colour sources, both of its coloured modes being conditional — and stack 002 taps it for four pips anyway, which is the whole point of filing it on the verified board rather than on the source table."
+    },
+    {
+      "finding": "critic.findings[4] — stages[2].what_it_does and lines[2].note, 'contradicts-artifact' (Vivid count equated with Sisay's power)",
+      "response": "accepted-and-withdrawn; the compounding claim kept, the equality dropped",
+      "what_i_did": "Vivid reads colours among ALL permanents you control; Sisay reads colours among OTHER LEGENDARY permanents. Both places now say that, name the ten nonlegendary coloured permanents that move one number and not the other (the two Vivid dorks count themselves), and state the DIRECTION the critic identified — Vivid is a strict superset, so it is never behind the dial and usually ahead of it, and the old sentence understated the mana. What survives is the interlock the stage exists to describe: every coloured legend Sisay fetches raises both counts."
+    },
+    {
+      "finding": "critic.findings[5] — map_disagreements[4].why and stages[0], 'contradicts-artifact' (Delighted Halfling counted as one of the five pips)",
+      "response": "accepted, and the reason replaced with the stronger one the critic names",
+      "what_i_did": "The conclusion was right for the wrong reason on one of two cards, which is worse than being wrong, because it makes the two look alike. Birds of Paradise adds unrestricted any-colour mana and CAN pay a pip — it is one of five, not zero. The Halfling's any-colour mode is 'spend this mana only to cast a legendary spell' and the five pips are an ACTIVATION cost, so it pays none of them and its only usable mana here is {C}; mana_analysis records it with produces [] against Birds' W/U/B/R/G. Both the mana stage and the disagreement now draw that line, and the stage's city note stops calling them 'the two any-colour dorks'."
+    },
+    {
+      "finding": "critic.findings[6] — stages[6].what_it_does, 'over-claimed' (stack 002 settles the claim the bracket floor rests on)",
+      "response": "accepted-and-withdrawn",
+      "what_i_did": "The stage now says the stack settles WHAT THE PAIR IS and nothing about the floor, and prices the floor from bracket_report instead: 4 twice over without Derevi — four Game Changers force it alone, and the two_card_infinite driver lists four lines, three of which pair Najeela with Faeburrow Elder, Esika or Selvala. The stack's own claim_under_test agrees, scoping its false_part to self-containment rather than to the bracket signal."
+    },
+    {
+      "finding": "critic.findings[7] — stages[2].evidence[0].note, 'miscounted' (13 against a 14-card stage)",
+      "response": "accepted",
+      "what_i_did": "5 + 1 + 7 + 1 = 14, with Emiel the Blessed named in GROW HER, GUARD HER and the total stated up front so the arithmetic is checkable at a glance. Recounted from deck_map.json rather than from the old sentence; the other six stages' city splits were recounted the same way and are unchanged."
+    },
+    {
+      "finding": "critic.findings[8] — stages[3].what_it_does, 'miscounted' (Jodah as the most expensive permanent here)",
+      "response": "accepted, with the true distinction kept",
+      "what_i_did": "Not a unique maximum — Surrak and Kenrith are also mana value 5 in this stage's own list. The superlative is withdrawn and replaced with the property that IS unique to Jodah and matters to this deck: his cast cost is the same {W}{U}{B}{R}{G} the engine already pays every turn. 'Legal only at power 6' is kept, now stated for all three, and the next sentence's 'nothing here exceeds mana value 5' is unchanged and correct."
+    },
+    {
+      "finding": "critic.findings[12] and [13] — the fact tier, Sisay at `conversion`, and the two single points of failure, all 'supported'",
+      "response": "no change, as instructed, with one sentence added on the critic's suggestion",
+      "what_i_did": "The six-card ignition class was NOT enlarged and the wincon stage is still one card. The one addition is the disagreement the critic said was worth a sentence and I had left implicit: deck-audit's threat-density counts Boros Charm, Kambal and Samut at value 3 and does not count Najeela, so the role taxonomy and this engine disagree about what a finisher is in this deck. Verified against a fresh deck-audit run rather than taken from the critic's note."
+    }
+  ]
+}

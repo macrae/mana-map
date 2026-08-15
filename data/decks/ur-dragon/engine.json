@@ -1,0 +1,607 @@
+{
+  "slug": "ur-dragon",
+  "thesis": "A five-colour typal deck that buys Dragons below sticker price and then taxes every Dragon that enters: one entry multiplies into several, each entry is priced in damage and cards, and the game ends either to one of those cascades or to Aggravated Assault turning a mana dragon into unlimited combats.",
+  "stages": [
+    {
+      "stage": "mana",
+      "label": "THE PRICE OF FIVE COLOURS",
+      "what_it_does": "Twenty-nine land entries (34 copies), six rocks and three land-ramp spells pay for a deck whose Dragons start at five. The declared 'Ramp or fixing drawn' component is nine cards: 49.8% of opening sevens, 81.7% assembled, 71.6% by turn six, mean turn 2.588 — the best-covered thing this deck declares, and it has to be, because nothing else here is affordable on curve. Two properties matter more than the totals. First, the restriction deck-facts flags is narrower than it first reads. Its own note says to read the whole card, and three of the five do carry a plain '{T}: Add {C}' above their spells-only mode — Haven of the Spirit Dragon, Maelstrom of the Spirit Dragon and Unclaimed Territory — and generic mana accepts any type (CR 107.4b, cited in stack 003 step 6), so all three can pay the {3} of Aggravated Assault's {3}{R}{R}. What none of the five can pay is a COLOURED activation cost, and only Klauth and Rivaz (both filed in fuel) are wholly spell-locked with no unrestricted mode at all. Second, Mox Jasper is blank until a Dragon exists: the mana stage contains a card the fuel stage has to switch on. Farseek, Nature's Lore and Skyshroud Claim sit in THE SEARCH PARTY on the map because they say 'search your library'; the deck holds them as lands.",
+      "cards": [
+        "Blood Crypt",
+        "Breeding Pool",
+        "Canopy Vista",
+        "Cinder Glade",
+        "City of Brass",
+        "Clifftop Retreat",
+        "Command Tower",
+        "Exotic Orchard",
+        "Fabled Passage",
+        "Forbidden Orchard",
+        "Forest",
+        "Glacial Fortress",
+        "Haven of the Spirit Dragon",
+        "Island",
+        "Jetmir's Garden",
+        "Maelstrom of the Spirit Dragon",
+        "Mountain",
+        "Overgrown Tomb",
+        "Path of Ancestry",
+        "Reflecting Pool",
+        "Rootbound Crag",
+        "Savage Lands",
+        "Steam Vents",
+        "Stomping Ground",
+        "Sulfur Falls",
+        "Swamp",
+        "The World Tree",
+        "Unclaimed Territory",
+        "Ziatora's Proving Ground",
+        "Sol Ring",
+        "Arcane Signet",
+        "Chromatic Lantern",
+        "Dragon's Hoard",
+        "Mox Jasper",
+        "Relic of Legends",
+        "Farseek",
+        "Nature's Lore",
+        "Skyshroud Claim"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-1",
+          "agreement": "full",
+          "note": "THE FIXING: all 28 of its members are in this stage"
+        },
+        {
+          "kind": "city",
+          "id": "city-3",
+          "agreement": "full",
+          "note": "MANA WITHOUT LANDS: all six rocks are in this stage"
+        },
+        {
+          "kind": "city",
+          "id": "city-5",
+          "agreement": "cuts-across",
+          "note": "three of THE SEARCH PARTY's eight are ramp spells the deck plays as lands; Savage Lands is filed in THE CRITICAL MASS"
+        }
+      ]
+    },
+    {
+      "stage": "ignition",
+      "label": "THE PRICE CUT",
+      "what_it_does": "What has to be true before anything else works: Dragons have to cost less than they say. The eminence half needs nothing to resolve — 'other Dragon spells you cast cost {1} less' runs from the command zone on turn one, cannot be answered by removal and is the only thing the commander reliably does (mean cast turn 8.967, 0% by turn six, per the frame's own goldfish citation). The body is not the plan; the discount is. The half that CAN be answered is the declared 'Cost reducer drawn' component — Urza's Incubator ({2}), Dragonspeaker Shaman ({2}), Herald's Horn ({1}) — three cards, 19.9% of opening sevens, 42.3% assembled, 33.2% by turn six, mean turn 3.494. deck-audit flags it thin and it is the thinnest non-combo component in the declaration. The conjunction the deck actually wants, 'Reducer + ramp assembled (the turn-5-Ur-Dragon hand)', lands at 33.9% assembled and 23.1% by turn six, mean turn 4.645 — so the intended opening happens in roughly one game in four. Dracogenesis is the same axis taken to zero at eight mana: it arrives after the window it would have fixed, which is why it is not in the declared reducer component and should not be counted as a fourth copy.",
+      "cards": [
+        "The Ur-Dragon",
+        "Urza's Incubator",
+        "Herald's Horn",
+        "Dragonspeaker Shaman",
+        "Dracogenesis"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-0",
+          "agreement": "partial",
+          "note": "the reducer trio plus the commander are four of ARRIVE AND SURVIVE's ten; the scatter table calls this component coherent at 1 city"
+        },
+        {
+          "kind": "city",
+          "id": "city-4",
+          "agreement": "cuts-across",
+          "note": "Dracogenesis reads as a Dragon-payoff enchantment and files with THE CRITICAL MASS, not with the discounts it belongs to"
+        }
+      ]
+    },
+    {
+      "stage": "fuel",
+      "label": "BODIES THAT PAY FOR BODIES",
+      "what_it_does": "The Dragons themselves, plus what finds them and what recycles them. Six bodies pay you back for casting them, and they do not pay the same way: Old Gnawbone (a Treasure per point of combat damage), Savage Ventmaw ({R}{R}{R}{G}{G}{G} on attack that survives the phase change), Goldspan (one Treasure per attack, plus a clause making every Treasure you control tap for two mana), Klauth, Rivaz — a Lizard Warlock, not a Dragon, doing a Dragon's job — and Cavern-Hoard Dragon, whose Treasures are one per artifact THE DEFENDING PLAYER controls, which is zero against most tables. Ancient Gold Dragon converts one connection into a d20 roll of Faerie Dragons: stack 001 stipulates fifteen, the card's range is 1 to 20. The finders are the other half: Tiamat fetches five different Dragons on cast, Sarkhan's Triumph and Worldly Tutor fetch one, and Enlightened Tutor is the only card in the 99 that can find Aggravated Assault. The three Dragonstorm enchantments return themselves to hand whenever a Dragon enters, so every entry re-buys their ETB; Patriarch's Bidding rebuilds the whole tribe after a wrath. Two restrictions belong on the pilot's card: Klauth's mana pays for SPELLS only and Rivaz's pays for Dragon creature spells only, so neither can fund Aggravated Assault's activated ability no matter how much mana it makes. The declared castable-dragon component is six cards, 36.4% of openers; joined to a payoff it measures 40.1% assembled, 26.8% by turn six, mean turn 4.721.",
+      "cards": [
+        "Old Gnawbone",
+        "Savage Ventmaw",
+        "Goldspan Dragon",
+        "Cavern-Hoard Dragon",
+        "Klauth, Unrivaled Ancient",
+        "Rivaz of the Claw",
+        "Atsushi, the Blazing Sky",
+        "Ancient Gold Dragon",
+        "Dragonlord Kolaghan",
+        "Korlessa, Scale Singer",
+        "Tiamat",
+        "Worldly Tutor",
+        "Sarkhan's Triumph",
+        "Enlightened Tutor",
+        "Encroaching Dragonstorm",
+        "Roiling Dragonstorm",
+        "Breaching Dragonstorm",
+        "Patriarch's Bidding"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "003",
+          "note": "Ventmaw's attack trigger adds six mana that persists into the postcombat main phase; Gnawbone's Treasures stack on top"
+        },
+        {
+          "kind": "stack",
+          "id": "001",
+          "note": "Ancient Gold Dragon's d20 wave enters as one event and raises the Dragon count that prices every payoff"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "full",
+          "note": "DRAGONS THAT PAY: all seven members are here"
+        },
+        {
+          "kind": "city",
+          "id": "city-4",
+          "agreement": "cuts-across",
+          "note": "six more sit in THE CRITICAL MASS and five in THE SEARCH PARTY — the map splits bodies from the tutors that fetch them, the deck does not"
+        }
+      ]
+    },
+    {
+      "stage": "conversion",
+      "label": "ONE ENTRY BECOMES MANY",
+      "what_it_does": "The engine proper: it does not make Dragons cheaper or bigger, it makes ONE arrival into several. Miirym copies each nontoken Dragon that enters; Panharmonicon doubles every entry trigger in the cascade because each one is caused by a creature entering (stack 002: one Lathliss cast yields two nonlegendary 6/6 token copies and 64 damage across twelve separately-targeted instances). Lathliss adds a 5/5 per nontoken Dragon, Utvara Hellkite a 6/6 per attacking Dragon, Dragonback Assault a 4/4 per land drop, and Thrakkus doubles the power of every Dragon on attack. Sneak Attack converts {R} plus a card in hand into an immediate entry, and Hellkite Courser is the only card in the 99 that moves the commander out of the command zone — stack 005 refutes the strategic frame's claim that Sneak Attack can do that job. Wrathful Red Dragon runs the other way, converting damage dealt to your own Dragons into damage at any non-Dragon target. The brake is printed on the pieces: stack 002 shows every later entry in the cascade is a TOKEN, and both 'nontoken' clauses exclude tokens, which is exactly what keeps the loop finite rather than infinite.",
+      "cards": [
+        "Miirym, Sentinel Wyrm",
+        "Panharmonicon",
+        "Lathliss, Dragon Queen",
+        "Utvara Hellkite",
+        "Thrakkus the Butcher",
+        "Dragonback Assault",
+        "Sneak Attack",
+        "Hellkite Courser",
+        "Wrathful Red Dragon"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "002",
+          "note": "Panharmonicon doubles Miirym; the copies are tokens, so the nontoken clauses stop the cascade"
+        },
+        {
+          "kind": "stack",
+          "id": "005",
+          "note": "Sneak Attack puts Drakuseth in with haste and REFUTES reaching the command zone; Hellkite Courser is the card that does"
+        },
+        {
+          "kind": "stack",
+          "id": "004",
+          "note": "Wrathful Red Dragon yields exactly three redirect triggers by last known information"
+        },
+        {
+          "kind": "city",
+          "id": "city-4",
+          "agreement": "cuts-across",
+          "note": "eight of nine sit in THE CRITICAL MASS but Miirym is filed in ARRIVE AND SURVIVE — stack 002's pairing straddles two cities"
+        }
+      ]
+    },
+    {
+      "stage": "output",
+      "label": "WHAT THE ENTRIES BUY",
+      "what_it_does": "The taps on the engine. Damage per entry: Dragon Tempest deals X equal to your Dragon count (stack 001: fifteen triggers at X=17, 255 available at a single target, and the 30-life seat dies to the second one), Terror of the Peaks deals the entering creature's power, Scourge of Valkas deals your Dragon count again. Cards per entry: Garruk's Uprising and Temur Ascendancy each draw on a power-4-or-greater arrival, and Rishkar's Expertise and Return of the Wildspeaker read the biggest body on the board as a draw spell. Drakuseth's attack trigger spreads 4+3+3 across up to three targets before blockers, and all of it stands after the mandatory end-step sacrifice (stack 005) — the widest spread in the deck, not the largest instance: Dragon Tempest at X=17 (stack 001) and Wrathful Red Dragon's 13-point redirect (stack 004) are each bigger at one target. Five cards answer other people — Swords to Plowshares, Generous Gift, Chaos Warp, Crux of Fate and Blasphemous Act — and one of those five is also an input: Blasphemous Act feeds Wrathful Red Dragon. The declared 'Dragon payoff drawn' component is seven cards, 41.2% of openers, 73.1% assembled, 62.2% by turn six, mean turn 2.865, so the taps are usually there before the Dragons are.",
+      "cards": [
+        "Dragon Tempest",
+        "Terror of the Peaks",
+        "Scourge of Valkas",
+        "Garruk's Uprising",
+        "Temur Ascendancy",
+        "Rishkar's Expertise",
+        "Return of the Wildspeaker",
+        "Drakuseth, Maw of Flames",
+        "Swords to Plowshares",
+        "Generous Gift",
+        "Chaos Warp",
+        "Crux of Fate",
+        "Blasphemous Act"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "001",
+          "note": "X is recomputed per trigger and every one of the fifteen sees 17 Dragons"
+        },
+        {
+          "kind": "stack",
+          "id": "002",
+          "note": "36 damage from Terror and 28 from Tempest off one cast; kills the 32-life seat, the 40 survives at 8"
+        },
+        {
+          "kind": "city",
+          "id": "city-4",
+          "agreement": "partial",
+          "note": "twelve of thirteen are in THE CRITICAL MASS; Blasphemous Act files with ARRIVE AND SURVIVE as wrath insurance"
+        }
+      ]
+    },
+    {
+      "stage": "protection",
+      "label": "THE TURN YOU MUST NOT LOSE",
+      "what_it_does": "A top-heavy board is the thing a wrath was printed for, so this deck holds ten cards for one turn. The declared component is eight — Teferi's Protection, Heroic Intervention, Flawless Maneuver, Boros Charm, Deflecting Swat, Counterspell, Swan Song, Dovin's Veto — at 45.6% of openers, 77.1% assembled, 66.0% by turn six, mean turn 2.778, which makes it the second-best-covered component in the declaration. Two more do the same job and are not counted: Dragonlord Dromoka ('this spell can't be countered' plus 'your opponents can't cast spells during your turn', which protects a whole combat rather than one permanent) and Eerie Interlude, which exiles your creatures in response to a sweeper and returns them at the beginning of the next end step. Eerie Interlude is the placement I am least sure of: with a payoff on the battlefield the return is a second full round of entries, which would make it conversion rather than insurance, and no passing stack has resolved that.",
+      "cards": [
+        "Teferi's Protection",
+        "Heroic Intervention",
+        "Flawless Maneuver",
+        "Boros Charm",
+        "Deflecting Swat",
+        "Counterspell",
+        "Swan Song",
+        "Dovin's Veto",
+        "Eerie Interlude",
+        "Dragonlord Dromoka"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-6",
+          "agreement": "full",
+          "note": "THE HARD NO: all three counterspells are here"
+        },
+        {
+          "kind": "city",
+          "id": "city-0",
+          "agreement": "cuts-across",
+          "note": "four sit in ARRIVE AND SURVIVE and three in THE CRITICAL MASS — the map files by what the card says, the deck pays for all ten out of the same held mana"
+        }
+      ]
+    },
+    {
+      "stage": "wincon",
+      "label": "THE REPEAT BUTTON",
+      "what_it_does": "Two cards in the 95 grant an additional combat phase, and the frame's oracle scan of every entry returns exactly these two. Aggravated Assault is the deck's one single point of failure priced by deck-audit: a component of size 1, 7.1% of opening sevens, and the loop it heads measures 6.4% assembled, 3.6% by turn six, mean turn 5.442 — the thinnest thing this deck declares by a wide margin, and one Disenchant from off. What it does is verified twice. With Old Gnawbone it is +2 Treasures a cycle with the lands never touched, killing a 40-life seat on combat 6 and a 38 on combat 12 (stack 006); with Savage Ventmaw it is +1 mana a cycle, one attack trigger funding one reactivation with {R} to spare, which stack 003 step 6 isolates from the Treasures on purpose. That stack's fourth-combat kill is not the pair's: its board has Old Gnawbone attacking as well, and the 11 a combat is Gnawbone's 7 plus Ventmaw's 4. Ventmaw alone puts 4 a combat into 40 life. Scourge of the Throne is the hedge — untap all attackers and take an extra combat, for no mana, once each turn and only if you attacked the player with the most life — and it appears in none of the six passing stacks. Note what this stage is NOT: the kills verified in stacks 001, 002 and 004 come out of output and conversion without any extra combat. This stage is how a board that is already lethal gets to swing twice.",
+      "cards": [
+        "Aggravated Assault",
+        "Scourge of the Throne"
+      ],
+      "single_point_of_failure": "Aggravated Assault",
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "006",
+          "note": "paying {3}{R}{R} entirely from Treasures is legal; net +2 a cycle; the game ends on combat 12 holding 22 Treasures"
+        },
+        {
+          "kind": "stack",
+          "id": "003",
+          "note": "the six mana from Ventmaw's trigger survives the phase change and covers the {3} generic"
+        },
+        {
+          "kind": "combo",
+          "id": "Aggravated Assault + Old Gnawbone",
+          "note": "certified in the combo data as a bracket-3 infinite; the certification is not the evidence — stacks 003 and 006 are"
+        },
+        {
+          "kind": "city",
+          "id": "city-4",
+          "agreement": "partial",
+          "note": "both cards sit in THE CRITICAL MASS, a 33-card city that also holds members of all six other stages — output 12, conversion 8, fuel 6, protection 3, ignition 1, mana 1"
+        }
+      ]
+    }
+  ],
+  "absent_stages": [
+    {
+      "stage": "fodder",
+      "why": "This deck converts no resource by consuming it. There is no sacrifice outlet, no discard engine and no token-eater: the only sacrifices in the 99 are costs the deck pays reluctantly (Sneak Attack's mandatory end-step sacrifice, Fabled Passage, Ziatora's Proving Ground, Haven and Maelstrom cracking themselves) and Atsushi's death trigger, which is a consolation rather than a conversion. Declaring an empty fodder stage to fill the table would invent a resource loop the deck does not run."
+    }
+  ],
+  "lines": [
+    {
+      "from": "fuel",
+      "to": "wincon",
+      "via": [
+        "Old Gnawbone",
+        "Aggravated Assault"
+      ],
+      "carries": "mana",
+      "verified_by": "006",
+      "note": "Seven Treasures in per unblocked 7/7 hit, five out per {3}{R}{R} activation — net +2 a cycle, and the five lands are never tapped. Opponent 1 at 40 dies on combat 6; opponent 2 at 38, whose ground 2/2 cannot block a flyer, dies on combat 12."
+    },
+    {
+      "from": "fuel",
+      "to": "wincon",
+      "via": [
+        "Savage Ventmaw",
+        "Aggravated Assault"
+      ],
+      "carries": "mana",
+      "verified_by": "003",
+      "note": "The attack trigger adds {R}{R}{R}{G}{G}{G} and Ventmaw's own text keeps it through the phase change, so it pays a {3}{R}{R} reactivation with {R} to spare — +1 mana a cycle, and step 6 states it for this pairing alone, 'without touching the Treasures'. The fourth-combat kill in stack 003's final state belongs to its three-card board: 11 a combat is Gnawbone's 7 plus Ventmaw's 4. What this pair puts into a 40-life seat is Ventmaw's 4. The bound is attack legality and the dragons surviving, not mana."
+    },
+    {
+      "from": "fuel",
+      "to": "output",
+      "via": [
+        "Ancient Gold Dragon",
+        "Dragon Tempest"
+      ],
+      "carries": "bodies",
+      "verified_by": "001",
+      "note": "Fifteen Faerie Dragon tokens enter as one event, so Dragon Tempest triggers fifteen times and every trigger sees X=17. Miirym copies none of them — a token is not a nontoken Dragon. 255 damage available at one target; the 30-life seat dies to the second trigger."
+    },
+    {
+      "from": "conversion",
+      "to": "output",
+      "via": [
+        "Miirym, Sentinel Wyrm",
+        "Terror of the Peaks"
+      ],
+      "carries": "bodies",
+      "verified_by": "002",
+      "note": "Under Panharmonicon, Miirym's trigger doubles: one Lathliss cast becomes two nonlegendary 6/6 token copies, and the entries pay Terror 36 and Tempest 28 across twelve separately-targeted instances. The 32-life seat dies; the 40 survives at 8."
+    },
+    {
+      "from": "conversion",
+      "to": "output",
+      "via": [
+        "Sneak Attack",
+        "Drakuseth, Maw of Flames"
+      ],
+      "carries": "bodies",
+      "verified_by": "005",
+      "note": "{R} puts Drakuseth onto the battlefield with haste; the attack trigger is an attack trigger, not a cast trigger, so it fires the same turn for 4+3+3, and all 17 damage stands after the mandatory end-step sacrifice. The same stack refutes this arrow ever pointing at the commander."
+    },
+    {
+      "from": "output",
+      "to": "conversion",
+      "via": [
+        "Blasphemous Act",
+        "Wrathful Red Dragon"
+      ],
+      "carries": "damage",
+      "verified_by": "004",
+      "note": "A feedback arrow: the deck's own sweeper is an input to its damage engine. Thirteen damage to each creature yields exactly three redirect triggers (one per Dragon dealt damage, Wrathful included), each dealing 13 by last known information — 39 total, enough to kill a 32-life seat or drop a 40 to 1, never both."
+    },
+    {
+      "from": "wincon",
+      "to": "conversion",
+      "via": [
+        "Scourge of the Throne",
+        "Utvara Hellkite"
+      ],
+      "carries": "combats",
+      "verified_by": null,
+      "note": "CLAIM, not a fact: an additional combat re-declares attackers, so Utvara's per-attacking-Dragon token trigger and Thrakkus's doubling should fire a second time in one turn. Scourge of the Throne appears in none of the six passing stacks and its dethrone condition is re-checked against life totals that the first combat just changed."
+    },
+    {
+      "from": "protection",
+      "to": "wincon",
+      "via": [
+        "Dragonlord Dromoka",
+        "Aggravated Assault"
+      ],
+      "carries": "insurance",
+      "verified_by": null,
+      "note": "CLAIM: with Dromoka on the battlefield, opponents cannot cast spells during your turn, so the sorcery-speed activation chain cannot be answered by an instant once it starts. Nothing has resolved this on a stack and Dromoka is not in the declared protection component."
+    },
+    {
+      "from": "ignition",
+      "to": "fuel",
+      "via": [
+        "The Ur-Dragon",
+        "Tiamat"
+      ],
+      "carries": "mana",
+      "verified_by": null,
+      "note": "CLAIM: eminence discounts every other Dragon spell by {1} from the command zone, with nothing to resolve and nothing to remove — the seven-mana Tiamat that fetches five Dragons is a six-mana spell in practice. No stack has been run on the discount."
+    },
+    {
+      "from": "ignition",
+      "to": "conversion",
+      "via": [
+        "Dragonspeaker Shaman",
+        "Miirym, Sentinel Wyrm"
+      ],
+      "carries": "mana",
+      "verified_by": null,
+      "note": "CLAIM: Dragonspeaker's {2} stacked on eminence's {1} is what makes a six-mana Miirym a turn-four play, and the whole cascade in stack 002 assumes Miirym is already down. The stack verifies the cascade, not the discount that paid for it."
+    },
+    {
+      "from": "fuel",
+      "to": "mana",
+      "via": [
+        "Goldspan Dragon",
+        "Mox Jasper"
+      ],
+      "carries": "bodies",
+      "verified_by": null,
+      "note": "CLAIM, and the direction is the point: Mox Jasper activates only if you control a Dragon, so a card in the mana stage is blank until the fuel stage delivers a BODY. Goldspan is one of five five-mana Dragons here and is not the likeliest first one — Korlessa, Scale Singer is {G}{U} and Atsushi is {2}{R}{R}, so on curve Korlessa switches the Mox on first."
+    }
+  ],
+  "map_disagreements": [
+    {
+      "component": "Protection held for the big turn",
+      "cities": [
+        "ARRIVE AND SURVIVE",
+        "THE HARD NO",
+        "THE CRITICAL MASS"
+      ],
+      "why": "Eight declared cards, three cities, 4/3/1 — and my protection stage of ten spreads the same way. The map is reading the ANSWER each card gives: Counterspell, Swan Song and Dovin's Veto all say 'counter target spell' and form their own city; Teferi's Protection and Heroic Intervention say 'you and permanents you control gain protection/hexproof' and file with the wrath insurance; Deflecting Swat says 'change the target' and files with the spells. The deck does not care which answer it is. All ten are held out of the same open mana on the same turn for the same reason, which is a property of the TURN and is printed on none of them."
+    },
+    {
+      "component": "Ramp or fixing drawn",
+      "cities": [
+        "MANA WITHOUT LANDS",
+        "THE SEARCH PARTY"
+      ],
+      "why": "Nine cards, 6/3. Farseek, Nature's Lore and Skyshroud Claim say 'search your library', so the map files them beside Worldly Tutor and Enlightened Tutor, which are looking for a Dragon or an enchantment and cost you a card. The three ramp spells are looking for a land and cost you nothing — functionally they are the untapped rocks in MANA WITHOUT LANDS, not tutors. The same text does two jobs and the map can only see the text."
+    },
+    {
+      "component": "Payoff + a castable dragon by mid-game (the castable half)",
+      "cities": [
+        "DRAGONS THAT PAY",
+        "THE CRITICAL MASS",
+        "THE SEARCH PARTY"
+      ],
+      "why": "Six cards, three cities, 3/2/1. Tiamat is a Dragon that fetches Dragons, so the map hears 'search your library' and files it with the tutors; Lathliss and Thrakkus say what they do to OTHER Dragons and file with the payoffs. The deck holds all six as the same thing: a body it can afford this turn that improves the next one."
+    },
+    {
+      "component": "THE ENTRY-DOUBLING PAIR (my conversion stage, stack 002)",
+      "cities": [
+        "ARRIVE AND SURVIVE",
+        "THE CRITICAL MASS"
+      ],
+      "why": "Not a declared component — a pairing a checker passed. Miirym, Sentinel Wyrm sits in ARRIVE AND SURVIVE and Panharmonicon in THE CRITICAL MASS, so the two halves of the deck's largest verified cascade have different addresses on the map. Miirym clusters with the discounts and the wrath insurance because her text is about permanence and protection of value; the engine reads her as the card that turns one Dragon into two. A verified pairing straddling two cities is the clearest available demonstration that a city name is the wrong address for an engine part."
+    },
+    {
+      "component": "THE CRITICAL MASS (the map's largest city, read as an engine part)",
+      "cities": [
+        "THE CRITICAL MASS"
+      ],
+      "why": "Thirty-three cards and nine verified ones, and it contains members of ALL SEVEN of my stages, recounted from deck_map.json against my stage lists: output 12, conversion 8, fuel 6, protection 3, wincon 2, ignition 1, mana 1. Aggravated Assault and Scourge of the Throne (wincon), Dragon Tempest and Terror of the Peaks (output), Panharmonicon and Sneak Attack (conversion), Ancient Gold Dragon and Korlessa (fuel), Deflecting Swat and Dragonlord Dromoka (protection), Dracogenesis (ignition), Savage Lands (mana). Blasphemous Act is not among them — it files with ARRIVE AND SURVIVE as wrath insurance, which is what the output stage's city evidence says. The map's largest city is every stage at once. It is a coherent city — these cards all talk about Dragons — and it is not a stage: anyone reading the map as an engine diagram would conclude this deck has one big engine and six accessories."
+    }
+  ],
+  "unassigned": [],
+  "open_questions": [
+    {
+      "question": "Re-measure THE INFINITE COMBAT LOOP with the fuel half tested for SUFFICIENCY rather than legality. The declared half is Old Gnawbone, Savage Ventmaw and Cavern-Hoard Dragon — size 3, 19.9% of opening sevens. Cavern-Hoard makes 'a Treasure token for each artifact that player controls', meaning the DEFENDING player: against an artifact-free seat it makes nothing, it needs that player holding five artifacts to cover one {3}{R}{R}, and it appears in neither of the loop's two passing stacks. Klauth and Rivaz are out for a different reason — their mana is spell-locked and an activated ability is not a spell. Goldspan is not excluded by legality at all: its Treasures are unrestricted, and its second clause gives every Treasure you control '{T}, Sacrifice this artifact: Add two mana of any one color', which doubles Gnawbone's and Cavern-Hoard's output. What does 6.4% assembled / 3.6% by turn six become with Cavern-Hoard removed, and what does it become with Goldspan counted as a multiplier on Gnawbone rather than as a mana dragon in its own right?",
+      "settled_by": "goldfish",
+      "why_it_matters": "This is the deck's only single point of failure and a group's size IS its redundancy claim. My previous draft of this question audited the two cards outside the component and never tested the member least able to do the job, and it stated the criterion as 'can this mana legally pay an activated ability' — a test that misclassifies both cards it names, since Goldspan's mana is legal and insufficient while Cavern-Hoard's is legal and usually absent. If the real fuel half is two cards, the 6.4% is measured against a component the deck does not have."
+    },
+    {
+      "question": "Nothing in goldfish_targets.json measures whether the commander ever reaches the battlefield. Hellkite Courser is the only card in the 99 that can put The Ur-Dragon there without paying nine (stack 005 refutes Sneak Attack doing it), and goldfish reports the commander at mean cast turn 8.967 with 0% by turn six. What does a target of {Hellkite Courser} — or {Hellkite Courser + nine mana available} — actually measure?",
+      "settled_by": "goldfish",
+      "why_it_matters": "The attack trigger (draw per attacking Dragon, then put a permanent onto the battlefield free) is the single largest payoff in the deck and the simulator has never priced the only route to it that is faster than turn nine. Every department that talks about the commander is currently talking about eminence, because that is the only half anyone has a number for."
+    },
+    {
+      "question": "Scourge of the Throne in an Ur-Dragon board: does its 'attacks for the first time each turn' trigger untap all attackers and grant the extra combat, and in that second combat do Utvara Hellkite's per-attacking-Dragon token trigger, Thrakkus's doubling and The Ur-Dragon's attack draw all fire again? Also: is the dethrone condition re-checked against life totals the first combat has already changed?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "It is the only hedge against the deck's single point of failure and it is in none of the six passing stacks, so the one arrow drawn out of the wincon stage without Aggravated Assault is currently dashed. If it holds, the deck has two extra-combat routes; if it does not, it has one card."
+    },
+    {
+      "question": "Eerie Interlude with a payoff on the battlefield: exile your Dragons in response to a sweeper, and when they return at the beginning of the next end step, do Dragon Tempest, Terror of the Peaks, Scourge of Valkas and Lathliss each trigger again for every returning Dragon, and does Miirym copy the returning nontoken Dragons?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "It decides which stage the card is in. I filed it under protection because dodging a wrath is what it reliably does; if the return is a second full cascade it belongs in conversion and the deck has a fourth way to fire the entry engine at instant speed. A stage that is wrong about the job propagates into three columnists at once."
+    },
+    {
+      "question": "For strong Ur-Dragon lists, which is treated as the primary kill: the per-entry damage cascade (Dragon Tempest / Terror of the Peaks under Miirym and Panharmonicon) or the extra-combat loop headed by Aggravated Assault? And where do those lists put the redundancy — more entry payoffs, or more combat effects?",
+      "settled_by": "research-strategy",
+      "why_it_matters": "This model's stages say the cascades kill without the wincon stage being involved at all (stacks 001, 002 and 004 all end a seat with no extra combat), while the deck's own declaration treats the loop as a named target. Those are two different decks wearing the same 99, and which one the pilot is playing changes what they hold up and what they mulligan for."
+    }
+  ],
+  "proposed_goldfish_edits": [
+    {
+      "target": "Protection held for the big turn",
+      "change": "Add Dragonlord Dromoka and Eerie Interlude to the eight-card component, taking it to ten.",
+      "why": "The group's job is 'can I protect the turn'. Dromoka cannot be countered and stops opponents casting spells during your turn, which protects an entire combat rather than one permanent; Eerie Interlude answers a sweeper at instant speed for three mana. A group's size is its redundancy claim, and this one currently understates the deck's coverage by two cards while the deck holds ten answers of that kind."
+    },
+    {
+      "target": "THE INFINITE COMBAT LOOP (stacks 003/006): Aggravated Assault + a mana dragon",
+      "change": "Write the membership test into the group and apply it: a member must deliver at least five mana a combat that can pay {3}{R}{R}. On that test remove Cavern-Hoard Dragon, leaving Old Gnawbone and Savage Ventmaw. Record beside the group why the other candidates are out — Klauth and Rivaz make spell-locked mana and an activated ability is not a spell; Goldspan Dragon's Treasures are unrestricted and legal but arrive one per attack, and its real contribution is doubling the other dragons' Treasures rather than funding a cycle alone.",
+      "why": "Cavern-Hoard's Treasures are one per artifact the DEFENDING player controls, which is zero at most tables, and it is in neither of the two stacks that verify this loop — so it is counted as redundancy the deck does not have. A pure legality test written into the file instead would misclassify Goldspan (legal, insufficient) and Cavern-Hoard (legal, usually absent). Removing a member moves the measured 6.4% assembled and 3.6% by turn six, which is why this is a proposal for a human plus a goldfish re-run rather than a correction I can make myself."
+    },
+    {
+      "target": "A new target: the commander actually arrives",
+      "change": "Add a target measuring Hellkite Courser (the only card in the 99 that puts The Ur-Dragon onto the battlefield from the command zone), separately from the nine-mana cast the simulator already reports at mean turn 8.967.",
+      "why": "Stack 005 refutes Sneak Attack as a commander cheat and names Courser as the card that does the job, so the deck has exactly one such route and the declaration measures neither it nor the payoff it unlocks. A primary payoff with no target is the defect validate-goldfish-targets was built to find, and this deck has already had one of them."
+    }
+  ],
+  "critic": {
+    "round": 1,
+    "verdict": "fail",
+    "findings": [
+      {
+        "where": "lines[1].note",
+        "claim": "Savage Ventmaw + Aggravated Assault: \"Opponent 2 dies on the fourth combat.\"",
+        "status": "mis-cited",
+        "note": "The line's `via` is two cards (Savage Ventmaw, Aggravated Assault) and it renders SOLID GREEN, but the fourth-combat figure is not the pair's. Stack 003's board is Ventmaw AND Old Gnawbone AND Aggravated Assault, and its step 9 shows the arithmetic explicitly: 'at 11/combat that is the 4th combat: 40-29-18-7-dead'. Eleven is 4 (Ventmaw) + 7 (Gnawbone). Ventmaw alone is a 4/4: 40 life at 4 damage a combat is the TENTH combat, not the fourth — the quoted kill speed is 2.5x fast for the pairing named. The mana half of this line IS clean and the stack isolates it deliberately (step 6: 'One Ventmaw attack fully funds one activation with +1 mana left over — the pairing is mana-positive without touching the Treasures'), so the fix is to keep '+1 mana a cycle' and either drop the kill speed or state it as stack 003 does, with Gnawbone also attacking. Note the asymmetry: lines[0] gets this exactly right, because stack 006's board holds Gnawbone alone and the engineer quoted it faithfully. Same defect in stages[6].what_it_does: 'with Savage Ventmaw it is +1 mana a cycle and the second seat dies on the fourth combat (stack 003)' joins a two-card claim and a three-card claim in one clause."
+      },
+      {
+        "where": "stages[0].what_it_does",
+        "claim": "\"five of these sources produce RESTRICTED mana that pays for spells only — Haven of the Spirit Dragon, Maelstrom of the Spirit Dragon, Unclaimed Territory, and (from fuel) Klauth and Rivaz — and an activated ability is not a spell, so this stage accelerates toward the wincon without being able to pay for it.\"",
+        "status": "contradicts-artifact",
+        "note": "The five-card list is lifted from `deck-facts`, and so is the framing — but the artifact prints the refutation of this exact inference in the same sentence it prints the list: 'Read the whole card before extending this: several also carry a plain \"{T}: Add {C}\" mode, which is unrestricted and pays the generic part of any cost.' Oracle text confirms it for three of the five: Haven of the Spirit Dragon, Maelstrom of the Spirit Dragon and Unclaimed Territory each open with '{T}: Add {C}' before their restricted mode. Aggravated Assault costs {3}{R}{R} and generic accepts colourless (CR 107.4b, cited in stack 003 step 6, and stack 006 pays the whole cost off Treasures), so all three lands can pay into the wincon. Only Klauth and Rivaz are wholly restricted — which stages[2].what_it_does states correctly and narrowly ('Klauth's mana pays for SPELLS only and Rivaz's pays for Dragon creature spells only'). The mana stage generalises a true two-card claim to five and then draws a stage-wide conclusion from it."
+      },
+      {
+        "where": "stages[4].what_it_does",
+        "claim": "\"Drakuseth's attack trigger is the deck's largest single instance of targeted damage (stack 005: 4+3+3 before blockers)\"",
+        "status": "contradicts-artifact",
+        "note": "Contradicted by a figure in the same field three sentences earlier. Dragon Tempest in stack 001 fires fifteen times at X=17, each a single targeted instance of 17. Drakuseth's largest leg is 4 and its whole trigger totals 10, so it is not the largest by either reading. Wrathful Red Dragon's redirect is 13 to any target (stack 004), which also beats it. Drakuseth is at best third. The sentence is otherwise fine — 4+3+3 and 'all of it stands after the mandatory sacrifice' both match stack 005 — so only the superlative needs to go."
+      },
+      {
+        "where": "map_disagreements[4].why",
+        "claim": "THE CRITICAL MASS \"contains members of six of my seven stages: ... Dragon Tempest and Blasphemous Act (output) ...\"",
+        "status": "contradicts-artifact",
+        "note": "Blasphemous Act is not in THE CRITICAL MASS. `deck_map.json` puts it in city-0, ARRIVE AND SURVIVE — which stages[4].evidence[2] states correctly ('twelve of thirteen are in THE CRITICAL MASS; Blasphemous Act files with ARRIVE AND SURVIVE'). The model contradicts itself about one card's address inside the section whose subject is card addresses. Dragon Tempest alone already carries output, so removing it costs the argument nothing."
+      },
+      {
+        "where": "map_disagreements[4].why",
+        "claim": "\"it contains members of six of my seven stages\"",
+        "status": "miscounted",
+        "note": "Seven, not six — THE CRITICAL MASS holds a member of every stage in the model. Recomputed from deck_map.json against stages[].cards: city-4 = {output 12, conversion 8, fuel 6, protection 3, wincon 2, ignition 1, mana 1}. The sentence's own enumeration names seven (wincon, output, conversion, fuel, protection, ignition, and 'even Savage Lands (mana)'), so the prose refutes its own count in the following clause. This strengthens the finding rather than weakening it: 'the map's largest city is every stage at once' is the sharper version of the point being made."
+      },
+      {
+        "where": "stages[6].evidence[3].note",
+        "claim": "\"a 33-card city that also holds members of five other stages\"",
+        "status": "miscounted",
+        "note": "Six other stages. Same recomputation as above: besides wincon, city-4 holds output, conversion, fuel, protection, ignition and mana. The 33-card count is correct. Two independent undercounts of the same city in one file suggests the number was written from memory in both places rather than recomputed."
+      },
+      {
+        "where": "open_questions[0] / proposed_goldfish_edits[1]",
+        "claim": "The mana-dragon component (Old Gnawbone, Savage Ventmaw, Cavern-Hoard Dragon) \"is actually the complete set of Dragons in the 99 whose mana can legally pay {3}{R}{R} on an ability\", and the open question asks only whether Klauth or Goldspan should be added or excluded.",
+        "status": "unjustified",
+        "note": "The question interrogates the two cards outside the component and never tests the member least able to do the job. Cavern-Hoard Dragon's oracle text is 'Whenever this creature deals combat damage to a player, you create a Treasure token FOR EACH ARTIFACT THAT PLAYER CONTROLS' — not a fixed number. Against an artifact-free opponent it produces zero mana and funds nothing; it needs the defending player to hold five artifacts to cover one {3}{R}{R} reactivation. It appears in neither passing stack. If the real fuel half is two cards rather than three, the 6.4% assembled / 3.6%-by-turn-six figure the model quotes as this deck's redundancy is overstated — the component's own opening-seven odds fall 19.9% to 13.7%. Separately, the stated criterion is the wrong test. Goldspan Dragon's Treasures are unrestricted and CAN legally pay an activated ability, so 'can legally pay' does not exclude it; what excludes it is sufficiency (2 mana a cycle against a 5-mana cost). And Goldspan's second clause — 'Treasures you control have \"{T}, Sacrifice this artifact: Add two mana of any one color\"' — doubles Gnawbone's and Cavern-Hoard's output, which is the interaction the question omits entirely. Writing the proposed exclusion into goldfish_targets.json as drafted would encode a legality test that misclassifies both cards it names."
+      },
+      {
+        "where": "lines[0].carries / lines[1].carries / lines[7].carries",
+        "claim": "Three arrows pointing INTO the wincon stage are labelled \"combats\".",
+        "status": "over-claimed",
+        "note": "`design.line_carries` renders `carries` as the arrow's label and its docstring defines it as 'what an arrow moves' — the figure exists so a reader can follow one resource through the machine. Combats are what the wincon stage PRODUCES; nothing delivers combats to it. What travels fuel -> wincon in lines[0] and lines[1] is mana: seven Treasures per Gnawbone hit, six floating from Ventmaw's trigger, and both stacks are about nothing else but paying {3}{R}{R}. What travels protection -> wincon in lines[7] is insurance (Dromoka stopping the answer), which is what its own note says and what STAGE_CARRIES would have derived. As drawn, the schematic reverses the conversion its evidence establishes on the deck's two most important arrows. lines[6] (wincon -> conversion, 'combats') has the noun in the right place, which is the contrast that makes this legible. lines[10] is the same class in a milder form: fuel -> mana labelled 'mana', where what fuel delivers to Mox Jasper is a Dragon body, not mana."
+      },
+      {
+        "where": "stages[2].what_it_does",
+        "claim": "\"Ancient Gold Dragon converts one connection into fifteen bodies (stack 001).\"",
+        "status": "over-claimed",
+        "note": "Fifteen is one d20 outcome that stack 001 stipulated, not what the card does. Oracle text: 'Whenever this creature deals combat damage to a player, roll a d20. You create a number of 1/1 blue Faerie Dragon creature tokens with flying equal to the result' — range 1 to 20, mean 10.5. Stack 001 is quoted three times in this model (fuel, output, lines[2]) and the roll is never mentioned once, so a reader takes fifteen tokens and the 255 damage that scales off them as fixed properties. lines[2] and the output stage attribute their figures to the stack and are defensible; this sentence describes the card and is not."
+      },
+      {
+        "where": "lines[10].note",
+        "claim": "\"Any Dragon switches it on; Goldspan is only the likeliest first one.\"",
+        "status": "unjustified",
+        "note": "Goldspan Dragon costs {3}{R}{R}. The deck's cheapest Dragon by a wide margin is Korlessa, Scale Singer at {G}{U} — which this model files in its own fuel stage — followed by Atsushi at {2}{R}{R}, and Goldspan then ties with four other five-drops. On the curve, Korlessa is the likeliest first Dragon and therefore the likeliest card to switch Mox Jasper on. The load-bearing half of the note ('a card in the mana stage is blank until the fuel stage delivers') is right and is the reason the arrow exists; only the aside is wrong."
+      },
+      {
+        "where": "stages[*].what_it_does (all figures) / stages[*].evidence (all city notes)",
+        "claim": "Every rate, component size and city count in the model.",
+        "status": "supported",
+        "note": "Re-derived, all exact. The seven opening-seven percentages are cumulative hypergeometrics over 99 at 7 cards and every one lands: size 1 = 7.07% (7.1), 3 = 19.94% (19.9), 6 = 36.36% (36.4), 7 = 41.15% (41.2), 8 = 45.63% (45.6), 9 = 49.81% (49.8). Every assembled / by-turn-six / mean-turn triple matches goldfish_metrics.json to the digit across all seven targets. Land counts match deck-audit (29 entries, 34 copies); 95 cards placed sums correctly across the seven stages; all seven what_it_does fields run 975-1185 characters, comfortably inside MAX_WHAT_IT_DOES and all still revisable. Every city evidence note is right against deck_map.json: city-1 all 28 in mana, city-3 all 6, city-2 all 7 in fuel, city-6 all 3 in protection, the 4-of-10 ignition claim in city-0, conversion 8/1 with Miirym the exception, output 12/1, protection 4/3/3, fuel 7/6/5, and city-4's verified_count of 9. The three numeric splits stated in map_disagreements (4/3/1, 6/3, 3/2/1) all recompute exactly — note that the two defects found above are both in PROSE, in the two disagreements that state their counts in sentences rather than as a split. Stating the split in a field is what kept the other three honest."
+      },
+      {
+        "where": "lines[0], lines[2], lines[3], lines[4], lines[5]",
+        "claim": "Five of the six verified lines and the one-line-per-stack distribution.",
+        "status": "supported",
+        "note": "Each was read against its stack's board, resolution and final_state, and each stack establishes the flow the arrow draws rather than merely naming both cards. lines[0]: stack 006's board is Gnawbone alone with five untapped lands, and its final_state gives 7 in / 5 out / net +2, opponent 1 dead on combat 6, opponent 2 on combat 12, 22 Treasures — the note reproduces all of it including the lands never being tapped. lines[2]: 15 tokens as one event, 15 triggers, X=17 each, 255 at one target, 30-life seat dead to the second, Miirym copying nothing because a token is not a nontoken Dragon. lines[3]: two nonlegendary 6/6 copies, Terror 36 + Tempest 28 across twelve instances, 32-life seat dead and the 40 at 8. lines[4]: attack trigger not a cast trigger, 4+3+3 plus 7 in the air, all 17 standing after the mandatory sacrifice. lines[5]: exactly three redirect triggers by last known information, 13 each, 39 total, enough for a 32 or to drop a 40 to 1 and never both. The 6-lines-for-6-stacks distribution is not tidiness for its own sake: this deck's stacks each isolate one pairing, and no stack was stretched to cover a second arrow. The intra-stage pairing that gets no line (Miirym + Panharmonicon, both in conversion) is correctly surfaced in map_disagreements[3] instead."
+      },
+      {
+        "where": "stages[6].single_point_of_failure / stages[6].evidence[2]",
+        "claim": "Aggravated Assault is the one single point of failure, and the combo certification is not the evidence.",
+        "status": "supported",
+        "note": "Genuinely one card, and not an artifact of a coarse class. deck-audit prices exactly one SPOF; an oracle scan of all 95 entries for 'additional combat phase' returns Aggravated Assault and Scourge of the Throne and nothing else, and Scourge is not redundancy — 'attacks for the first time each turn', an intervening-if on having the most life, and no additional MAIN phase, so it cannot chain. The model says all of this correctly. On the certification: combo_details.json contains THREE fully-contained Aggravated Assault lines, not two (Old Gnawbone, Savage Ventmaw and Cavern-Hoard Dragon, all tagged bracket 3), and the model cites exactly one of them, explicitly labelled 'the certification is not the evidence — stacks 003 and 006 are'. No other place in the file presents a certification as proof; the two loops that carry solid lines are the two with passing stacks. The 6.4% is also genuinely simulator-produced rather than inherited — the target now exists in goldfish_targets.json and `validate-goldfish-targets` passes, so the defect that once left this line unmeasured has been closed."
+      },
+      {
+        "where": "lines[6], lines[8], lines[9] / absent_stages[0] / protection Eerie Interlude hedge",
+        "claim": "The dashed notes and the refused stage.",
+        "status": "supported",
+        "note": "Three of the five CLAIM prefixes do real work. lines[6] uses 'should fire', names the absence ('appears in none of the six passing stacks') and raises a genuine unresolved point about the dethrone check. lines[8] scopes its inference correctly — Dromoka stops SPELLS, and 'cannot be answered by an instant' is precisely the subset that follows — then says nothing has resolved it and that Dromoka is not in the declared component. lines[9] closes with 'The stack verifies the cascade, not the discount that paid for it', which is the sentence this contract exists to produce; its arithmetic checks out (Miirym {3}{G}{U}{R} = 6, a Dragon Spirit, minus Dragonspeaker's {2} and eminence's {1} = 3, castable the turn after a turn-three Shaman). The refusal to declare a fodder stage is right, and the protection stage volunteering that Eerie Interlude is 'the placement I am least sure of' — then following it into open_questions[3] — is the model at its best. One observation rather than a defect: lines[7]'s CLAIM prefix does the least work of the five, because eminence's discount and Tiamat's mana value ({2}{W}{U}{B}{R}{G} = 7, so 6 after the discount — verified) are printed facts with nothing a stack could refute. A dashed line there under-claims rather than over-claims."
+      },
+      {
+        "where": "map_disagreements[3]",
+        "claim": "Miirym and Panharmonicon, the two halves of stack 002, sit in different cities.",
+        "status": "supported",
+        "note": "Confirmed against deck_map.json: Miirym, Sentinel Wyrm is in city-0 ARRIVE AND SURVIVE, Panharmonicon in city-4 THE CRITICAL MASS. This clears the bar the charter sets for a disagreement — it says which artifact is wrong about what and why, rather than hedging. The map is not making an error; it is answering a different question (Miirym's text is about permanence and ward, so she clusters with the insurance) and the disagreement names that mechanism explicitly. It is the strongest of the five because it is a checker-passed pairing rather than a declared component, so no authored grouping is doing the work."
+      }
+    ],
+    "iterations": 1
+  }
+}

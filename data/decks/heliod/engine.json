@@ -1,0 +1,688 @@
+{
+  "slug": "heliod",
+  "thesis": "Heliod hands the whole table free cards and then bills them for holding the cards: eleven symmetric-draw permanents fill every hand, three punishers charge for hand size on each opponent's upkeep (Iron Maiden, Viseling, Ebony Owl Netsuke) while three more drain or mill per card drawn, and the same turbulence pays the commander's discount and the tax layer's rent — behind that median plan sits a rules-verified but very rare one-turn kill built on a single creature.",
+  "stages": [
+    {
+      "stage": "mana",
+      "label": "OPEN MANA AND SEVEN CHEAP ROCKS",
+      "what_it_does": "Thirty-three land copies across 18 entries — 17 of them here, with Mikokoro read as ignition below — plus seven cheap artifacts. Two jobs, and only one of them is 'cast your spells'.\n\nThe first is ordinary: a turn-one Sol Ring buys a three- or four-drop donation permanent on turn two — Temple Bell, Kami of the Crescent Moon, Jace Beleren, Folio of Fancies — because the 99 holds only two donation permanents castable off two lands alone (Howling Mine {2}, Kwain {W}{U}). The ignition component's mean turn of 2.507 is NOT that sequence and cannot be: it is the mean turn the component is DRAWN, and the simulator counts a card drawn whether or not it was ever cast.\n\nThe second job decides games. This deck spends its own turn deploying and still holds counter mana on everyone else's — and the land count alone does not support calling the base draw-go. Deck-audit reads mana-base 33 copies against strategy:deckbuilding.ratios' 37-39 (verdict under, gap 4) and colour-sources under by 5. What makes the posture affordable is the other axis and the price of the spells: counting the six persistent producers, mana-sources is 39 against Burgess's 37, verdict 'at' — and the counter suite is cheap enough to be held rather than cast, at 45.6% of openers and 78.1% of games (67.2% by turn six).\n\nTwo rocks are literal engine parts rather than ramp: Sol Ring and Arcane Signet are the artifacts stacks 004, 005 and 006 recast against each other, where they are the thing being cast for a cast count. Sapphire and Pearl Medallion discount colours; stack 004 states flatly that Sapphire Medallion changes nothing about the loop, because both loop pieces are colourless.",
+      "cards": [
+        "Adarkar Wastes",
+        "Ancient Tomb",
+        "Command Tower",
+        "Deserted Beach",
+        "Eiganjo, Seat of the Empire",
+        "Flooded Strand",
+        "Glacial Fortress",
+        "Hallowed Fountain",
+        "Irrigated Farmland",
+        "Island",
+        "Mana Confluence",
+        "Otawara, Soaring City",
+        "Plains",
+        "Prairie Stream",
+        "Seachrome Coast",
+        "Skycloud Expanse",
+        "Temple of Enlightenment",
+        "Sol Ring",
+        "Arcane Signet",
+        "Azorius Signet",
+        "Talisman of Progress",
+        "Thought Vessel",
+        "Sapphire Medallion",
+        "Pearl Medallion"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-1",
+          "agreement": "partial",
+          "note": "THE OPEN MANA — 17 of its 18 land entries are here; Mikokoro is read as ignition"
+        },
+        {
+          "kind": "city",
+          "id": "city-4",
+          "agreement": "cuts-across",
+          "note": "TWO SPELLS A TURN holds 5 of these 7 rocks; its other two members are read as conversion (Smothering Tithe) and protection (An Offer You Can't Refuse)"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across",
+          "note": "both Medallions cluster into THE FLASH FORT on their cost-reduction text"
+        },
+        {
+          "kind": "stack",
+          "id": "004",
+          "note": "Sol Ring and Arcane Signet are the two recast pieces; the cycle is exactly mana-neutral, 3 spent and 3 produced"
+        }
+      ]
+    },
+    {
+      "stage": "ignition",
+      "label": "THE FIRST GIFT",
+      "what_it_does": "Nothing else in this deck has a resource to charge for until one symmetric-draw permanent resolves. That is the whole ignition: Howling Mine, Font of Mythos, Temple Bell, Dictate of Kruphix, Kami of the Crescent Moon, Folio of Fancies, Forced Fruition, Kwain, The Second Doctor, Jace Beleren — plus Mikokoro, a land that does the same job for {2}. Ten of the eleven are the priced component: 53.7% of opening sevens, 63.3% by turn three, drawn in 85.2% of games (75.4% by turn six) at a mean turn of 2.507 — a DRAWN-by figure, not a deploy turn. It is the most reliable thing the deck does and the cheapest to get wrong, because a punisher with nothing donating is a blank.\n\nTwo of them do a second job the stage name hides. The Second Doctor and Folio of Fancies each read 'Players have no maximum hand size', which removes the cleanup discard — without one of those two, Iron Maiden and Viseling are capped at 3 damage per upkeep by a seven-card hand. That is a two-card sub-requirement inside an eleven-card stage and nothing measures it (see proposed_goldfish_edits).\n\nHeliod is deliberately NOT here. The deck ignites without the commander; what he does to a running engine is conversion.",
+      "cards": [
+        "Howling Mine",
+        "Font of Mythos",
+        "Temple Bell",
+        "Dictate of Kruphix",
+        "Kami of the Crescent Moon",
+        "Folio of Fancies",
+        "Forced Fruition",
+        "Kwain, Itinerant Meddler",
+        "The Second Doctor",
+        "Jace Beleren",
+        "Mikokoro, Center of the Sea"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-3",
+          "agreement": "cuts-across",
+          "note": "GIVE THEN CHARGE holds 8 of these"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across",
+          "note": "Howling Mine and Kami of the Crescent Moon cluster into THE FLASH FORT"
+        },
+        {
+          "kind": "city",
+          "id": "city-1",
+          "agreement": "cuts-across",
+          "note": "Mikokoro clusters with the lands; it taps for mana, so its text reads as mana"
+        },
+        {
+          "kind": "role",
+          "id": "draw:wheel",
+          "note": "the modal role of the priced component; three of these eleven — Howling Mine, Font of Mythos and Dictate of Kruphix — have NO card_roles entry at all (deck-facts lists 12 such cards, most of them engine pieces). A role is a property, and this deck's engine is largely invisible to the taxonomy."
+        }
+      ]
+    },
+    {
+      "stage": "fuel",
+      "label": "YOUR HALF OF THE FLOOD",
+      "what_it_does": "Once cards are flowing, this is what keeps them flowing and makes your share asymmetric. Three kinds of card.\n\nThe tax layer is two different taxes and only one of them touches the donated draws. Consecrated Sphinx ('whenever an opponent draws a card, you may draw two cards') and Faerie Mastermind ('whenever an opponent draws their second card each turn, you draw a card') charge for the draws the ignition stage manufactures. Rhystic Study and Mystic Remora charge for CASTS, and reach the donation engine only second-hand — a fat hand casts more spells, which is a real effect and a different sentence. With Heliod down that seven-card component (it also counts Smothering Tithe and Alhammarret's Archive) assembles in 71.0% of games, 54.0% by turn six, mean turn 5.070, and it is the one component deck-audit marks commander-gated.\n\nThe doublers, Alhammarret's Archive and Teferi's Ageless Insight, take every draw after your first each turn and make it two. The burst — Prosperity, Skyscribing, Mathemagics, Braingeyser, Stroke of Genius, Dig Through Time — fills hands in one shot instead of one card a turn, which is how the punishers turn on inside a single turn cycle rather than across three upkeeps.\n\nThe three tutors sit here rather than with the win conditions, because what they do is convert a card into the missing piece. The measured lift is small and real: with the deck's one modelled unrestricted tutor, the core pair goes 56.7% to 63.5% and win-condition access 61.2% to 68.0%. The kill's 0.7% to 2.4% is quoted in the conversion stage with the caveat it needs.",
+      "cards": [
+        "Rhystic Study",
+        "Mystic Remora",
+        "Consecrated Sphinx",
+        "Faerie Mastermind",
+        "Alhammarret's Archive",
+        "Teferi's Ageless Insight",
+        "Braingeyser",
+        "Stroke of Genius",
+        "Prosperity",
+        "Skyscribing",
+        "Mathemagics",
+        "Dig Through Time",
+        "Enlightened Tutor",
+        "Mystical Tutor",
+        "Long-Term Plans"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-3",
+          "agreement": "cuts-across",
+          "note": "GIVE THEN CHARGE holds most of the draw and burst half"
+        },
+        {
+          "kind": "city",
+          "id": "city-0",
+          "agreement": "cuts-across",
+          "note": "SEEK AND ERASE holds all three tutors, filed with the removal spells"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across",
+          "note": "Braingeyser and Dig Through Time land in THE FLASH FORT"
+        },
+        {
+          "kind": "stack",
+          "id": "002",
+          "note": "Mystical Tutor is the card that set up the winning redraw in the one verified wincon line"
+        }
+      ]
+    },
+    {
+      "stage": "conversion",
+      "label": "TWO MACHINES, ONE STAGE",
+      "what_it_does": "This deck converts twice, on two completely different clocks, and both machines live here.\n\nThe median machine is the punisher rank, and it is not one trigger but three. Iron Maiden and Viseling deal hand size minus 4 on each opponent's upkeep and Ebony Owl Netsuke deals 4 at seven or more cards — those three are the upkeep hand-size tax. Psychosis Crawler drains 1 per card YOU draw and Sphinx's Tutelage mills two per card you draw (no damage at all); Scrawling Crawler drains 1 per card an opponent draws. Smothering Tithe bills each opposing draw for {2} or a Treasure. Six form the priced punisher component: 36.4% of openers, drawn in 67.2% of games, 55.9% by turn six, mean turn 3.045. Assembled WITH a donation engine the pair sits at 56.7% (41.2% by turn six, mean turn 4.215) — the pair is a strict subset of the ignition component, so a real band of games reaches turn six donating with nothing charging for it. Heliod converts the table's draws into a discount and flash: mana and a window, not damage.\n\nThe rare machine is one card. Hullbreaker Horror plus two recastable artifacts is an unbounded, exactly mana-neutral cast loop (stack 004); Displacer Kitten does NOT make it mana-positive (005) and the two-card version does not exist at all (001). Hullbreaker is deck-audit's only single point of failure at 7.1% of openers. The declared KILL target measures 0.7% assembled, 2.4% assisted, 0.3% by turn six, mean turn 6.809 — read those as a CEILING, not the kill's rate: its rock group is any_of [Sol Ring, Arcane Signet], satisfied by either alone, which is the configuration 001 refuted, while 004's loop needs two. See proposed_goldfish_edits[0].",
+      "cards": [
+        "Iron Maiden",
+        "Ebony Owl Netsuke",
+        "Viseling",
+        "Psychosis Crawler",
+        "Sphinx's Tutelage",
+        "Scrawling Crawler",
+        "Smothering Tithe",
+        "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
+        "Hullbreaker Horror",
+        "Displacer Kitten"
+      ],
+      "single_point_of_failure": "Hullbreaker Horror",
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "003",
+          "note": "the punisher arithmetic walked to a number: 7 damage at one upkeep, opponent 18 to 11, with the cleanup discard capping Iron Maiden at 3"
+        },
+        {
+          "kind": "stack",
+          "id": "004",
+          "note": "the loop is real and exactly mana-neutral: unbounded casts, zero net mana"
+        },
+        {
+          "kind": "stack",
+          "id": "005",
+          "note": "REFUTES the mana-positive extension; cited as a boundary on this stage, not as support for a flow"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across",
+          "note": "THE FLASH FORT holds Iron Maiden, Ebony Owl Netsuke, Viseling, Displacer Kitten and Heliod"
+        },
+        {
+          "kind": "city",
+          "id": "city-3",
+          "agreement": "cuts-across",
+          "note": "GIVE THEN CHARGE holds Psychosis Crawler, Scrawling Crawler and Sphinx's Tutelage — the same machine, a different address"
+        },
+        {
+          "kind": "city",
+          "id": "city-5",
+          "agreement": "cuts-across",
+          "note": "Hullbreaker Horror clusters with the counterspells in THE HARD NO"
+        }
+      ]
+    },
+    {
+      "stage": "output",
+      "label": "ANSWERS, AND THE FEW THINGS THAT ACT",
+      "what_it_does": "What the deck produces other than the punisher clock: targeted answers and a small amount of board. Path to Exile, Swords to Plowshares and Teferi, Hero of Dominaria's -3 handle a resolved permanent; Supreme Verdict resets a board none of these stages needs; Cyclonic Rift is the one-sided reset that buys the commit turn; Loran of the Third Path answers an artifact or enchantment on entry. Torrential Gearhulk and Metallurgic Summonings turn the instants this deck spends anyway into a body — the draw-go turns are already happening, and these are what makes them produce something.\n\nThe two planeswalkers here are the sweeper hedge: neither dies to your own Supreme Verdict, and both keep ticking behind an empty board. Note what this stage is NOT: it holds no attacker anyone fears. The deck's damage comes from the conversion stage's upkeep triggers, not from combat, so removal in here is bought to protect a clock rather than to clear a path.",
+      "cards": [
+        "Path to Exile",
+        "Swords to Plowshares",
+        "Supreme Verdict",
+        "Cyclonic Rift",
+        "Loran of the Third Path",
+        "Torrential Gearhulk",
+        "Metallurgic Summonings",
+        "Teferi, Hero of Dominaria",
+        "Teferi, Temporal Pilgrim"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-0",
+          "agreement": "cuts-across",
+          "note": "SEEK AND ERASE holds Path to Exile, Swords to Plowshares and Supreme Verdict, filed beside the tutors this model reads as fuel"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across",
+          "note": "Torrential Gearhulk, Metallurgic Summonings and Teferi, Temporal Pilgrim sit in THE FLASH FORT"
+        },
+        {
+          "kind": "city",
+          "id": "city-5",
+          "agreement": "cuts-across",
+          "note": "Cyclonic Rift clusters with the counterspells"
+        }
+      ]
+    },
+    {
+      "stage": "protection",
+      "label": "THE MANA YOU DID NOT SPEND",
+      "what_it_does": "Eight counterspells, three lock or tax pieces, one fog for the whole turn, and a flash grant. The counter suite is the priced component: 45.6% of openers, held in 78.1% of games, 67.2% by turn six, mean turn 2.764 — the second-most reliable thing this deck has after ignition, and the reason a draw-go posture is affordable at all.\n\nIt guards two different things. Against the table it guards the engine: a deck whose damage arrives on other players' upkeeps has to survive to those upkeeps, and Propaganda plus The Second Doctor's rider mean the survival is bought with taxes rather than blockers. On the commit turn it guards the win, and stack 006 is explicit that it has to: every loop cast and every Reservoir activation opens a fully open priority window, Hullbreaker's trigger provides no protection there, and Grand Abolisher is the in-99 card that closes exactly those windows. Leyline of Anticipation is here rather than in mana because what flash buys this deck is the ability to deploy without ever tapping out on its own turn.\n\nOne taxonomy note: deck-audit's protection axis reads 1 copy, because card_roles tags neither Grand Abolisher nor any counterspell as protection. A role is a property, not a job in this 99.",
+      "cards": [
+        "Fierce Guardianship",
+        "Force of Negation",
+        "Swan Song",
+        "An Offer You Can't Refuse",
+        "Counterspell",
+        "Dovin's Veto",
+        "Arcane Denial",
+        "Archmage's Charm",
+        "Teferi's Protection",
+        "Grand Abolisher",
+        "Propaganda",
+        "Drannith Magistrate",
+        "Leyline of Anticipation"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "006",
+          "note": "names the open priority windows the kill cannot close for itself, and names Grand Abolisher as the closer"
+        },
+        {
+          "kind": "stack",
+          "id": "002",
+          "note": "Swan Song held with {U} up is what makes the Approach cast survivable"
+        },
+        {
+          "kind": "city",
+          "id": "city-5",
+          "agreement": "partial",
+          "note": "THE HARD NO holds 7 of the 8 counterspells"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across",
+          "note": "Teferi's Protection, Grand Abolisher, Drannith Magistrate, Propaganda and Leyline of Anticipation are all in THE FLASH FORT"
+        },
+        {
+          "kind": "city",
+          "id": "city-4",
+          "agreement": "cuts-across",
+          "note": "An Offer You Can't Refuse clusters with the rocks, on its Treasure clause"
+        }
+      ]
+    },
+    {
+      "stage": "wincon",
+      "label": "THREE WAYS OUT, AND ONE OF THEM IS RUNNING OUT",
+      "what_it_does": "Only three cards in the 99 end a game by themselves. Approach of the Second Sun wins during the resolution of its second cast, and stack 002 walks exactly when: the first casting counts even though the card was shuffled back, and the only window to stop it is while the spell is on the stack. Aetherflux Reservoir is the payoff the verified loop keys on — stack 006 walks a three-opponent kill in one main phase from 32 life, and 15 casts is the proven minimum.\n\nJace, Wielder of Mysteries is the third and it is not a rider: this deck decks ITSELF as a matter of course. Font of Mythos gives every player two extra cards each draw step, three more permanents give one, the two doublers double every draw after the first, and Braingeyser, Stroke of Genius and Mathemagics read 'target player' — you are a legal target. Self-decking is the archetype's characteristic loss; Jace converts it into a win.\n\nLife is what this stage eats, and it is why there is no `fodder` stage. The Reservoir manufactures life on the loop's own casts and spends it in the same main phase (stack 006: +120 across 15 casts, -150 across three activations, ending at 2), and the deck pays life for mana besides (Ancient Tomb, Mana Confluence, Talisman of Progress) and to flip Heliod. Nothing in the 99 converts a resource into fodder — no sacrifice outlet, no discard outlet — so life is conversion output and wincon input, and a fodder box would take the Reservoir out of the stage where the game ends.\n\nThe declared 'Win condition access' component is 5 cards at 31.2% of openers and 61.2% of games (50.5% by turn six, 68.0% assisted, mean turn 3.083) — but it mixes finishers with two tutors, so it prices a finisher OR something that finds one. The deck's median win is in conversion, which nothing measures as a win.",
+      "cards": [
+        "Aetherflux Reservoir",
+        "Approach of the Second Sun",
+        "Jace, Wielder of Mysteries"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "002",
+          "note": "the Approach win, checker pass — the only wincon line in this deck verified end to end from a board"
+        },
+        {
+          "kind": "stack",
+          "id": "006",
+          "note": "the Reservoir kill, checker pass, exact ledger: 15 casts from 32 life, three activations, ends at 2 life"
+        },
+        {
+          "kind": "combo",
+          "id": "Approach of the Second Sun + Mystical Tutor",
+          "note": "contained combo line, bracket 3, assumes_commander false — and here it is not a candidate but a verified line, stack 002"
+        },
+        {
+          "kind": "city",
+          "id": "city-3",
+          "agreement": "cuts-across",
+          "note": "Approach and Jace, Wielder of Mysteries sit in GIVE THEN CHARGE"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across",
+          "note": "Aetherflux Reservoir sits in THE FLASH FORT, three cities away from the creature it needs"
+        }
+      ]
+    }
+  ],
+  "lines": [
+    {
+      "from": "mana",
+      "to": "ignition",
+      "via": [
+        "Sol Ring",
+        "Arcane Signet",
+        "Howling Mine"
+      ],
+      "verified_by": null,
+      "carries": "mana",
+      "note": "A rock into a two-mana donation permanent is the deck's standard turn one into turn two; the ignition component's mean turn is 2.507."
+    },
+    {
+      "from": "ignition",
+      "to": "conversion",
+      "via": [
+        "Forced Fruition",
+        "Iron Maiden",
+        "Ebony Owl Netsuke"
+      ],
+      "verified_by": null,
+      "carries": "cards into opponents' hands",
+      "note": "The deck's main flow, drawn on the exact board stack 003 (checker pass) resolved: Forced Fruition donates seven, the punishers bill it at the next upkeep. It is DASHED for one mechanical reason, and the earlier version of this note named only half of it. build_index.line_cards(003) returns ['Naturalize', 'Arcane Denial'] — it reads the stack, hand and graveyard and returns early once two names pass, so the board is never consulted; and Naturalize, one of the two names that trips the threshold, is an OPPONENT'S card that is not in this 99. Gating that threshold on the deck's own cards would drop 003 through to its board and unblock this arrow on every deck. See open_questions."
+    },
+    {
+      "from": "fuel",
+      "to": "conversion",
+      "via": [
+        "Prosperity",
+        "Skyscribing",
+        "Iron Maiden",
+        "Viseling"
+      ],
+      "verified_by": null,
+      "carries": "hand size, in one shot",
+      "note": "The burst half: a symmetric X-draw spikes every hand at once, so hand-size-minus-4 is large on the very next upkeep rather than after three of them."
+    },
+    {
+      "from": "fuel",
+      "to": "conversion",
+      "via": [
+        "Alhammarret's Archive",
+        "Teferi's Ageless Insight",
+        "Psychosis Crawler",
+        "Sphinx's Tutelage"
+      ],
+      "verified_by": null,
+      "carries": "your own draws",
+      "note": "The doublers turn each of your draws into two, and two of the punishers key on YOUR draws rather than theirs — a drain and a mill per card."
+    },
+    {
+      "from": "conversion",
+      "to": "fuel",
+      "via": [
+        "Scrawling Crawler",
+        "Smothering Tithe",
+        "Faerie Mastermind",
+        "Consecrated Sphinx"
+      ],
+      "verified_by": null,
+      "carries": "the table's activity, billed back",
+      "note": "The feedback loop that makes this an engine rather than a list: the same donated draws the punishers charge for are what the tax layer converts into your cards and Treasure. All four key on an opponent DRAWING. Rhystic Study and Mystic Remora are deliberately not on this arrow — they key on casts."
+    },
+    {
+      "from": "conversion",
+      "to": "protection",
+      "via": [
+        "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
+        "Archmage's Charm"
+      ],
+      "verified_by": null,
+      "carries": "windows",
+      "note": "The flipped commander grants flash and takes {1} off per card opponents drew this turn, which is what lets the deck deploy on someone else's turn with counter mana still up."
+    },
+    {
+      "from": "conversion",
+      "to": "output",
+      "via": [
+        "Displacer Kitten",
+        "Loran of the Third Path"
+      ],
+      "verified_by": null,
+      "carries": "re-triggered ETBs",
+      "note": "Every noncreature cast blinks a permanent you control; on Loran that is a second 'destroy up to one target artifact or enchantment'."
+    },
+    {
+      "from": "fuel",
+      "to": "output",
+      "via": [
+        "Dig Through Time",
+        "Torrential Gearhulk"
+      ],
+      "verified_by": null,
+      "carries": "spent instants",
+      "note": "Gearhulk flashes in and recasts an instant already in the graveyard, which is where the draw-go turns leave them."
+    },
+    {
+      "from": "mana",
+      "to": "conversion",
+      "via": [
+        "Sol Ring",
+        "Arcane Signet",
+        "Hullbreaker Horror"
+      ],
+      "verified_by": "004",
+      "carries": "casts — the cycle is exactly mana-neutral, 3 spent and 3 produced",
+      "note": "Stack 004 walks the alternating bounce: each cast's trigger returns the OTHER rock, which is a permanent at that moment. What the mana stage hands the conversion stage is two recastable bodies and a one-time {2}; what comes out is an unbounded cast count within one main phase, and 004's own final_state says the cycle 'nets no mana, no cards, and no damage on its own'."
+    },
+    {
+      "from": "conversion",
+      "to": "wincon",
+      "via": [
+        "Hullbreaker Horror",
+        "Aetherflux Reservoir"
+      ],
+      "verified_by": "006",
+      "carries": "cast count — one Reservoir trigger per cast",
+      "note": "Stack 006's ledger: cast n banks n life, 15 casts from 32 life funds three 'Pay 50 life' activations, three opponents dead in one main phase."
+    },
+    {
+      "from": "fuel",
+      "to": "wincon",
+      "via": [
+        "Mystical Tutor",
+        "Approach of the Second Sun"
+      ],
+      "verified_by": "002",
+      "carries": "the redraw",
+      "note": "Mystical Tutor put the already-cast Approach back on top; the second cast wins during its own resolution."
+    },
+    {
+      "from": "protection",
+      "to": "wincon",
+      "via": [
+        "Swan Song",
+        "Approach of the Second Sun"
+      ],
+      "verified_by": "002",
+      "carries": "the window on the winning cast",
+      "note": "Stack 002: the only place to stop the win is while Approach is on the stack, and Swan Song with {U} up answers the counter that would do it."
+    },
+    {
+      "from": "fuel",
+      "to": "wincon",
+      "via": [
+        "Enlightened Tutor",
+        "Aetherflux Reservoir"
+      ],
+      "verified_by": null,
+      "carries": "the missing piece",
+      "note": "Enlightened Tutor reaches the Reservoir and both loop rocks but no creature; Long-Term Plans is the only card in the 99 that can search out Hullbreaker Horror. Claim, not fact — no stack has walked it."
+    }
+  ],
+  "map_disagreements": [
+    {
+      "component": "THE KILL (stacks 001/006): Hullbreaker Horror + a cheap rock + Aetherflux Reservoir",
+      "cities": [
+        "THE HARD NO",
+        "TWO SPELLS A TURN",
+        "THE FLASH FORT"
+      ],
+      "why": "Each of the kill's three components is internally coherent — one city apiece — and the KILL is still spread over three of the deck's six cities, which is the clearest case in this deck of a city name being the wrong address for a component. Hullbreaker Horror files with the counterspells because its printed text is a cast-trigger that counters or bounces; its job here is neither, it is the only card in the 99 that produces an unbounded cast count. Aetherflux Reservoir files with the fort on its life-gain text. The rocks file as ramp. Nothing in the card text of any of the three says 'these three end the game together', which is exactly why it took four stack artifacts to establish."
+    },
+    {
+      "component": "Draw punisher drawn",
+      "cities": [
+        "THE FLASH FORT",
+        "GIVE THEN CHARGE"
+      ],
+      "why": "The six punishers split 3/3 across two cities on a seam the engine does not have: Iron Maiden, Ebony Owl Netsuke and Viseling talk about the number of cards in an OPPONENT'S hand, while Psychosis Crawler, Scrawling Crawler and Sphinx's Tutelage talk about drawing. Functionally they are one rank with one requirement — that somebody's hand is fat — and the map is reading the direction of the sentence rather than the direction of the damage."
+    },
+    {
+      "component": "Table draw engine drawn",
+      "cities": [
+        "GIVE THEN CHARGE",
+        "THE FLASH FORT",
+        "THE OPEN MANA"
+      ],
+      "why": "Eight of the ten declared donation permanents cluster together; Howling Mine and Kami of the Crescent Moon land in the fort, and this model adds an eleventh member, Mikokoro, which the map files with the lands. A land that reads '{2}, {T}: Each player draws a card' is a donation permanent that happens to tap for mana, and card text puts the mana first."
+    },
+    {
+      "component": "Win condition access",
+      "cities": [
+        "GIVE THEN CHARGE",
+        "SEEK AND ERASE",
+        "THE FLASH FORT"
+      ],
+      "why": "Three cities for five cards, and the split is informative rather than noisy: the two tutors go to SEEK AND ERASE with the removal, which is why this model reads them as fuel and not as wincon. A tutor's text is about searching, and searching is what it shares with Path to Exile in embedding space and with nothing at all in the engine."
+    },
+    {
+      "component": "Free or cheap interaction held",
+      "cities": [
+        "THE HARD NO",
+        "TWO SPELLS A TURN"
+      ],
+      "why": "Seven of eight counterspells cluster cleanly; An Offer You Can't Refuse files with the mana rocks because half its text creates two Treasure tokens. It is the cheapest counter in the deck and the map has it as ramp."
+    }
+  ],
+  "unassigned": [],
+  "open_questions": [
+    {
+      "question": "How many upkeeps does the punisher clock actually need to kill one opponent, and how often does the deck get them? The pair (a donation engine plus a punisher) is measured at 56.7% assembled, 41.2% by turn six — but nothing measures the clock those two produce as a WIN, so the deck's median route to victory has no rate at all.",
+      "settled_by": "goldfish",
+      "why_it_matters": "This is the route the deck takes in most games it wins. Every ◆ figure currently available describes assembly, not lethality, so the magazine can price how often the machine turns on and cannot say what happens next."
+    },
+    {
+      "question": "Does the punisher rank need The Second Doctor or Folio of Fancies to be lethal at all? With a seven-card maximum hand size the cleanup discard caps Iron Maiden and Viseling at 3 damage per upkeep; those two cards remove the cap and nothing measures whether one of them is present.",
+      "settled_by": "goldfish",
+      "why_it_matters": "It is a two-card requirement hiding inside an eleven-card stage. If the clock only becomes a clock with one of two specific cards down, the declared components are pricing the wrong assembly."
+    },
+    {
+      "question": "Can the Aetherflux Reservoir kill be executed through interaction? Stack 006 states every loop cast and every activation opens a fully open priority window on an unprotected board and names Grand Abolisher as the in-99 closer, but no stack has walked the kill with Abolisher deployed or with an opponent holding an instant.",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "The verified kill is currently proved against opponents with empty boards who do nothing. The gap between 'this line is legal' and 'this line resolves at a real table' is where a coaching claim would go wrong."
+    },
+    {
+      "question": "Stack 003 passed the checker and walks the deck's median conversion to an exact number, but build_index.line_cards returns ['Naturalize', 'Arcane Denial'] from its stack and hand and never reads the board, so Forced Fruition, Iron Maiden and Ebony Owl Netsuke are unreachable as a `verified_by`. Naturalize is an opponent's card and not in the 99. Should the threshold be gated on the deck's own cards (a one-condition change in build_index.py) rather than a companion stack being authored?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "The deck's main flow is the one arrow here that cannot be drawn solid, purely because of where the pieces sat in a scenario. Three columnists are forbidden to assert a dashed line, so the best-supported thing this deck does reads as unproven in the magazine. The code fix would unblock it on every deck and costs no spawn; a companion stack costs one and fixes one deck."
+    },
+    {
+      "question": "What is Heliod's discount worth in practice — how many cards do opponents draw per turn cycle once one or two donation permanents are down, and therefore how much does the flipped face take off a spell?",
+      "settled_by": "goldfish",
+      "why_it_matters": "The commander-gated tax component is measured (71.0% assembled, mean turn 5.070) but the discount itself is not. Whether the deck can deploy a threat and hold a counter in one turn is the whole draw-go posture, and it currently rests on judgment."
+    },
+    {
+      "question": "How often, and on what turn, does this deck empty its own library? Font of Mythos plus a doubler draws the controller four or more cards a turn cycle, and Jace, Wielder of Mysteries turns that from the archetype's characteristic loss into a win — but goldfish models resource development over ten turns and measures no library count, so the third win route has no rate at all.",
+      "settled_by": "goldfish",
+      "why_it_matters": "This model now claims self-decking is a real route rather than a dead rider. That claim is unpriced: nothing says whether the library runs out at turn 9 or turn 25, and the difference decides whether Jace is a finisher or an insurance policy against your own engine."
+    }
+  ],
+  "proposed_goldfish_edits": [
+    {
+      "target": "THE KILL (stacks 001/006): Hullbreaker Horror + a cheap rock + Aetherflux Reservoir",
+      "change": "Split the rock requirement into TWO groups, not one. The loop verified in stack 004 needs Hullbreaker Horror plus two recastable artifacts (one on the battlefield to tap, one to cast) — the declared group `any_of: [Sol Ring, Arcane Signet]` is satisfied by either card alone, which is precisely the two-card case stack 001 REFUTED. Also widen the membership: the 99 holds Azorius Signet, Talisman of Progress and Thought Vessel as further cheap recastable artifacts, and the group names two of five.",
+      "why": "As declared the target measures a configuration the deck's own checker-passed stack says does not work, so the 0.7% is a ceiling rather than a rate — a two-of-five requirement is strictly harder to meet than a one-of-two, which is why this model quotes that figure only with the caveat attached. This is the deck's PRIMARY win line and the one deck-audit flags as a single point of failure; the number attached to it should describe the board stack 004 actually walked."
+    },
+    {
+      "target": "Win condition access",
+      "change": "Split into two targets: a finisher group (Approach of the Second Sun, Aetherflux Reservoir, Jace Wielder of Mysteries) and, if the assist route is still wanted, a separate tutor group (Mystical Tutor, Enlightened Tutor, Long-Term Plans). Do not mix them in one any_of.",
+      "why": "The declared group of five prices 'a finisher OR something that finds one' at 61.2%, and a Mystical Tutor with no Approach in the deck's reach is not access to a win. The simulator already models tutor assistance separately as the *_assisted figures, so mixing them into the membership double-counts the same effect."
+    },
+    {
+      "target": "Engine + punisher assembled (the deck's core two-piece)",
+      "change": "Add a third required group for the hand-size cap: any_of [The Second Doctor, Folio of Fancies].",
+      "why": "With neither on the battlefield, opponents discard to seven at cleanup and Iron Maiden and Viseling are hard-capped at 3 damage per upkeep — stack 003 shows the cleanup trim explicitly (hand 8 down to 7). The core two-piece as declared measures a machine that assembles at 56.7% and, without a third card, deals a third of what the pilot is planning around."
+    }
+  ],
+  "critic": {
+    "round": 1,
+    "verdict": "fail",
+    "findings": [
+      {
+        "where": "thesis",
+        "claim": "\"six punishers charge for hand size on each opponent's upkeep\"",
+        "status": "miscounted",
+        "note": "Three do, not six. Oracle text in cards.json: Iron Maiden and Viseling are 'At the beginning of each opponent's upkeep ... X damage ... cards in their hand minus 4'; Ebony Owl Netsuke is 'each opponent's upkeep, if that player has seven or more cards in hand, 4 damage'. The other three do something structurally different: Psychosis Crawler is 'Whenever YOU draw a card, each opponent loses 1 life', Sphinx's Tutelage is 'Whenever YOU draw a card, target opponent MILLS two' (no damage at all), and Scrawling Crawler is 'Whenever an OPPONENT draws a card, that player loses 1 life' — a per-draw trigger, not an upkeep hand-size check. The model already knows this: stages[3] splits them correctly ('Psychosis Crawler and Scrawling Crawler drain per draw, Sphinx's Tutelage mills per draw') and map_disagreements[1] is entirely about this seam ('the map is reading the direction of the sentence rather than the direction of the damage'). So the thesis contradicts two other places in its own file, and it is the sentence a magazine quotes."
+      },
+      {
+        "where": "stages[6].what_it_does",
+        "claim": "\"Jace, Wielder of Mysteries is a third route that asks for an empty library this deck has no way to force, so in practice it is a draw engine with a rider.\"",
+        "status": "contradicts-artifact",
+        "note": "Contradicted by the 99's own oracle text, twice over. (1) Three cards in stages[2] read 'Target player draws X cards' and you are a legal target: Braingeyser {X}{U}{U}, Stroke of Genius {X}{2}{U}, and Mathemagics {X}{X}{U}{U} ('Target player draws 2^X cards' — X=6 draws 64 for 14 mana). (2) More to the point, the deck's own ignition and fuel stages force it without any dedicated card: Font of Mythos ('each player draws TWO additional cards' every draw step), Howling Mine, Dictate of Kruphix and Kami of the Crescent Moon all draw the CONTROLLER too, and Alhammarret's Archive plus Teferi's Ageless Insight then double every one of those after the first. A 99-card library under that engine empties on its own — self-decking is this archetype's characteristic loss, and Jace, Wielder of Mysteries is the card that converts it into a win. Calling it 'a draw engine with a rider' inverts what it is doing in this 99, and it is the reason the wincon stage says there are only 'three ways out, two of them rare' when the third is the one the median engine is already driving toward."
+      },
+      {
+        "where": "stages[3].what_it_does and stages[6].what_it_does",
+        "claim": "\"assembled in 0.7% of games, 2.4% assisted, 0.3% by turn six\" (stages[3]) and \"The Reservoir kill itself assembles in 0.7% of games\" (stages[6])",
+        "status": "contradicts-artifact",
+        "note": "Both quote the THE KILL target's output as the kill's rate with no qualifier, while proposed_goldfish_edits[0] — in the same file — states that this target's rock group is `any_of: [Sol Ring, Arcane Signet]`, i.e. 'precisely the two-card case stack 001 REFUTED'. So the model prices a board its own checker-passed artifact says does not loop, and then reports the figure twice as fact, once inside a paragraph opening 'The measured picture is the honest part'. The caveat must travel with the number or the number should not be quoted in a stage narrative. Note the direction is at least stated correctly: I re-derived it. Over ~17 cards seen, P(>=1 of the 2 declared rocks) = 1 - (82*81)/(99*98) = 0.315; P(>=2 of the 5 real recastable rocks) = 1 - 0.3815 - 0.4157 = 0.203. The corrected requirement is a factor of ~0.64 stricter, so 'if anything optimistic' is right and the true rate is nearer 0.45%."
+      },
+      {
+        "where": "stages[0].what_it_does",
+        "claim": "\"a rock on turn one deploys a two-mana donation permanent on turn two, which is where the ignition component's mean turn of 2.507 comes from\"",
+        "status": "miscounted",
+        "note": "2.507 does not come from that and cannot. goldfish_metrics.json's own model_assumptions say 'Target assembly counts cards DRAWN by a turn (cast cards still count)' — 2.507 is the mean turn the ignition component is DRAWN, over a 10-card any_of, and it is unaffected by whether a rock was cast. stages[1] uses the same figure correctly ('drawn in 85.2% of games (75.4% by turn six) at a mean turn of 2.507'), so the two stages read one number two ways. Secondary: the deployment story does not need the rock either — turn two has two lands, and the 99 holds exactly two two-mana donation permanents (Howling Mine {2}, Kwain {W}{U}); Sol Ring on turn one buys a THREE- or four-drop (Temple Bell, Kami, Jace Beleren, Folio), which is a better sentence and a different one."
+      },
+      {
+        "where": "lines[1].note",
+        "claim": "\"stack 003 (checker pass) walks this exact conversion to a number, but its scenario names the pieces only on the board ... so the citation rule reads the line as being about Arcane Denial\"",
+        "status": "over-claimed",
+        "note": "The mechanism is exactly right and I reproduced it (see the `supported` entry below), but 'this exact conversion' and 'the pieces' are not. This line's `via` is [Howling Mine, Font of Mythos, Iron Maiden, Ebony Owl Netsuke]; stack 003's board is [Forced Fruition, Iron Maiden, Ebony Owl Netsuke, lands]. Howling Mine and Font of Mythos are not in that scenario in ANY zone, so 003 could not verify this line even if line_cards read the board — validate_engine requires every `via` card to appear in the stack's named set. The dashed state therefore has two independent causes and the note names only one, which makes the fix in open_questions[3] look purely editorial. Cheapest honest repair: rewrite `via` as [Forced Fruition, Iron Maiden, Ebony Owl Netsuke] — the actual 003 board, all three in the stages this arrow connects — and keep the note about line_cards, which still blocks it."
+      },
+      {
+        "where": "lines[4].note",
+        "claim": "\"the same donated draws the punishers charge for are what the tax layer converts into your cards and Treasure\", via [Scrawling Crawler, Smothering Tithe, Faerie Mastermind, Rhystic Study]",
+        "status": "over-claimed",
+        "note": "Rhystic Study does not convert draws. Its oracle text is 'Whenever an opponent CASTS A SPELL, you may draw a card unless that player pays {1}' — the feedback arrow as drawn does not run through it. Two of the four named cards do the claimed thing (Smothering Tithe 'Whenever an opponent draws a card, that player may pay {2}'; Faerie Mastermind 'Whenever an opponent draws their second card each turn, you draw a card'). The fix is a one-word swap: Consecrated Sphinx is already in stages[2] and reads 'Whenever an opponent draws a card, you may draw two cards' — the perfect card for this arrow. Same issue, softer, in stages[2]: 'The tax layer — Rhystic Study, Mystic Remora, Consecrated Sphinx, Faerie Mastermind — charges the table for the activity the ignition stage manufactured'. The ignition stage manufactures draws; Rhystic Study and Mystic Remora charge for casts. That is a second-order effect (fat hands cast more), which is a fine thing to argue and not the same as what the sentence says."
+      },
+      {
+        "where": "stages[0].what_it_does",
+        "claim": "\"the mana stage is sized for a draw-go posture rather than for a curve-out\" / \"Eighteen land entries\"",
+        "status": "over-claimed",
+        "note": "Two things. (a) The affirmative claim that the base is SIZED for holding mana up is the one claim in this stage with no figure, and the artifact that has one disagrees: deck-audit reads mana-base 33 against strategy:deckbuilding.ratios' 37-39 — verdict 'under', gap 4 — and colour-sources 'under' by 5. The engineer may well rebut with mana-sources = 39, verdict 'at' under Burgess, which counts the 0-mana rocks; that rebuttal belongs in the stage, because the whole draw-go argument rests on this. (b) 'Eighteen land entries' is literally true and is the only land figure anywhere in the model. mana_analysis.json reports lands.total = 33 copies against lands.entries = 18. A reader — and a columnist — takes '18 lands' away from that sentence, which is the fleet-wide defect this repo already lints for in published prose. State 33."
+      },
+      {
+        "where": "stages",
+        "claim": "the model declares seven stages and omits `fodder` entirely",
+        "status": "unjustified",
+        "note": "Raising this as a shape question, not a false claim — nothing in the artifact asserts a reason, which is itself the problem, since a reader of the schematic sees six of eight canonical stages present and one silently absent. There is a candidate the model's own evidence points at: LIFE. Stack 006 — cited by stages[5], stages[6] and lines[9] — is a life ledger and nothing else (32, +120 gained across 15 casts, -150 paid across three activations, ends at 2), i.e. the engine manufactures a resource the deck owns and the wincon eats it. The deck also pays life for mana (Ancient Tomb 2, Mana Confluence 1, Talisman of Progress 1) and for flipping the commander ({3}{U/P}, '{U/P} can be paid with either {U} or 2 life'). Either place life in `fodder` or say in a stage narrative why the loop's life is conversion output rather than fodder. Not a fail on its own."
+      },
+      {
+        "where": "lines[8]",
+        "claim": "`carries`: \"mana — three spent, three produced, exactly neutral\", mana -> conversion, verified_by 004",
+        "status": "over-claimed",
+        "note": "The weakest of my findings and the arithmetic is exact, but the arrow's noun is the thing a reader reads off the schematic, and this arrow moves zero mana by its own label. Stack 004's final_state: 'It nets no mana, no cards, and no damage on its own.' Stack 005's: payoffs 'must key on CAST COUNT, not mana'; 'unbounded mana does NOT exist in this engine.' What the mana stage actually hands the conversion stage is two recastable bodies and a one-time {2} — and what comes out is a cast count, which lines[9] then correctly names. Consider `carries: \"casts — the cycle is exactly mana-neutral, 3 spent and 3 produced\"`, which is the same fact with the payload named."
+      },
+      {
+        "where": "lines[9]",
+        "claim": "conversion -> wincon via [Hullbreaker Horror, Aetherflux Reservoir], verified_by 006: \"cast n banks n life, 15 casts from 32 life funds three 'Pay 50 life' activations, three opponents dead in one main phase\"",
+        "status": "supported",
+        "note": "Checked against the stack rather than against the citation. Stack 006's scenario board holds both cards and its resolution is this flow end to end: the checker independently recomputed k(k+1)/2 >= 119 -> k=15 (120), confirmed k=14 fails at -13, verified the three payment windows leave 3 / 10 / 2 life (all positive, 704.5a), and closed the loses->leaves->win chain 704.5a -> 104.5 -> 104.2a in iteration 2. final_state: you at 2, opponents at -24 / -10 / -16. The arrow's payload (cast count) is exactly what the stack establishes moves. This is the model's strongest line."
+      },
+      {
+        "where": "lines[10] and lines[11]",
+        "claim": "fuel -> wincon via [Mystical Tutor, Approach of the Second Sun] and protection -> wincon via [Swan Song, Approach of the Second Sun], both verified_by 002",
+        "status": "supported",
+        "note": "Both hold. line_cards(002) = [Approach of the Second Sun, Swan Song, Mystical Tutor], so the citation is real and not a coincidence of two cards sharing a board. lines[11] is directly the stack's finding: 'the only window to stop the win is while Approach is on the stack ... your Swan Song with {U} up can counter that counter'. I checked the mana too — {W}{W}{U}{5} is 8, Approach costs {6}{W} = 7, and the leftover is exactly the {U} Swan Song needs. One nuance worth carrying, not a defect: Mystical Tutor's contribution in lines[10] lives in scenario.extras.game_history, a PREMISE the checker validated rather than a step it resolved. It is load-bearing to the resolution (the 'first casting still counts even though the card was shuffled back' finding depends on that history), so the solid line is earned — but it is proof of a premise, not of a resolution."
+      },
+      {
+        "where": "lines[1].note (the line_cards mechanism)",
+        "claim": "\"the citation rule reads the line as being about Arcane Denial\"",
+        "status": "supported",
+        "note": "Reproduced exactly, and it is mechanically checkable, so it should become a check rather than a note. build_index.line_cards(003.scenario, deck_names) returns ['Naturalize', 'Arcane Denial'] — the board is never consulted, because the function returns early once the stack+hand+graveyard pass names >= 2 cards. The load-bearing detail the model did not spot: **Naturalize is an OPPONENT'S card and is not in heliod's 99**, and it is one of the two names that trips the >= 2 threshold. Gate the threshold on the deck's own cards (`named` filtered to `deck_names`, or require the named set to intersect the 99) and 003 falls through to the board, which holds Forced Fruition, Iron Maiden and Ebony Owl Netsuke — the actual line. That is a one-condition fix in build_index.py that would unblock this arrow on every deck, and it is cheaper than the companion stack open_questions[3] proposes."
+      },
+      {
+        "where": "stages[1].what_it_does",
+        "claim": "The Second Doctor and Folio of Fancies remove the cleanup discard, without which Iron Maiden and Viseling are capped at 3 damage per upkeep",
+        "status": "supported",
+        "note": "Verified end to end and it is the sharpest observation in the model. Oracle text: both read 'Players have no maximum hand size' verbatim, and they are the only two in the 99 that do — Thought Vessel reads 'YOU have no maximum hand size', which does nothing for an opponent's hand. Stack 003 demonstrates the cap in a checker-passed resolution: hand 8 trimmed to 7 at cleanup (514.1/402.2), Iron Maiden then deals 7-4 = 3. proposed_goldfish_edits[2] follows correctly from it. Also verified: the three-of-eleven role gap. card_roles.json has no entry for Howling Mine, Font of Mythos or Dictate of Kruphix, and exactly 12 of this deck's 85 entries are unclassified (85.9% coverage, matching deck-audit's note)."
+      },
+      {
+        "where": "stages[*].evidence (city claims) and map_disagreements",
+        "claim": "every membership count asserted against deck_map.json",
+        "status": "supported",
+        "note": "I checked all of them against deck_map.json's regions and every single one is exact: city-1 holds 18 land entries including Mikokoro; city-4 holds 5 of the 7 rocks with Smothering Tithe and An Offer You Can't Refuse as its other two; both Medallions in city-2; city-3 holds 8 of the 11 ignition cards and all three of Psychosis Crawler / Scrawling Crawler / Sphinx's Tutelage; city-0 holds all three tutors; city-5 holds 7 of the 8 counterspells; the punishers split 3/3 across city-2 and city-3; the KILL spans three of six cities. On charter item 5: none of the five map_disagreements is a hedge — each names which artifact is wrong about what and why (embedding space reads card TEXT, so a tutor files with removal on 'search', a land files as mana on '{T}: Add', a bounce-trigger creature files with counterspells). map_disagreements[1] is the best of them and is exactly the distinction the thesis then loses."
+      },
+      {
+        "where": "stages[3].single_point_of_failure",
+        "claim": "Hullbreaker Horror is this deck's only single point of failure",
+        "status": "supported",
+        "note": "Charter item 4 asks whether the SPOF is one card or a class read too literally. Here it is genuinely one card. deck-audit's closers block for this component reports by_role_total 0 with 'No role and no axis is shared by two or more members, so this component has no signature', and all 16 by_combo_line closers (Tidespout Tyrant, Karn, Cyberdrive Awakener, ...) are cards NOT in the 99. The 99's only unrestricted tutor is Long-Term Plans ('Search your library for a card'); Mystical Tutor is instant/sorcery-only and Enlightened Tutor is artifact/enchantment-only, so lines[12]'s 'Long-Term Plans is the only card in the 99 that can search out Hullbreaker Horror' is correct, and so is stages[2]'s 'the deck's one modelled unrestricted tutor'. lines[12] is also the one dashed line in the model that labels itself: 'Claim, not fact — no stack has walked it.'"
+      },
+      {
+        "where": "stages[*].what_it_does (figures) and stages[5]",
+        "claim": "every rate, count and mean turn quoted in the stage narratives",
+        "status": "supported",
+        "note": "Re-derived from goldfish_metrics.json and a fresh deck-audit run; all exact. Ignition 0.537 openers / 0.633 by t3 / 0.852 / 0.754 / 2.507. Punishers 0.364 / 0.672 / 0.559 / 3.045. Core pair 0.567 / 0.412 / 4.215 and 0.635 assisted. Tax layer 7 cards, commander_gated true, 0.710 / 0.540 / 5.070. Interaction 0.456 openers / 0.781 / 0.672 / 2.764. Win-condition access 5 cards / 0.312 / 0.612 / 0.505 / 0.680 / 3.083. Hullbreaker 0.071 openers; kill 0.007 / 0.024 / 0.003 / 6.809. The assisted deltas quoted in stages[2] (0.567->0.635, 0.612->0.680, 0.007->0.024) all match. stages[5]'s taxonomy note is right too: the protection axis reads 1 copy and its `cards` list is literally ['Teferi's Protection']. And on charter item 6, no what_it_does is near the cap — the longest is stages[3] at 1,368 of 1,800."
+      }
+    ],
+    "iterations": 1
+  }
+}

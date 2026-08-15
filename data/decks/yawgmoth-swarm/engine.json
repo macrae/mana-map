@@ -1,0 +1,683 @@
+{
+  "slug": "yawgmoth-swarm",
+  "thesis": "A free, repeatable sacrifice outlet turns every body you control into three payments at once — a -1/-1 counter, a card, and one life off every seat — and the deck's real question is never how to go infinite but which of six kills the outlet is holding, because the three that ARE unbounded (stacks 009, 011, 012) need no commander and no counter, while the Nest of Scarabs line everyone names was measured by four passing stacks as a body-bounded rotation that grinds rather than wins.",
+  "stages": [
+    {
+      "stage": "mana",
+      "label": "THIRTY-SIX LANDS AND A LIFE TOTAL",
+      "what_it_does": "Nineteen cards: 36 land copies across 16 entries (the two MDFCs are counted elsewhere), plus Sol Ring, Dark Ritual and Jet Medallion. 41 black sources against a 36-source target — five clear, and deck-audit's colour-sources axis reads AT, not short. The 33 that are lands are only part of the count: the target budgets SOURCES, not lands, and eight more come off nonland permanents. 76 black pips spread over 55 cards; mean available mana 5.23 at turn 6, land drop hit rate 58.9% there. FAST mana is only three cards — Sol Ring, Ancient Tomb, Dark Ritual — at 43.6% drawn / 34.8% by turn 6, the smallest and lowest-rated multi-card component the audit prices. The mana is engine-shaped, not acceleration-shaped, and the commander lands on mean turn 4.301 (median 4, 91% by turn 6) rather than turn 2. The second currency is LIFE. Ancient Tomb, City of Brass, Cabal Pit, Ifnir Deadlands and Castle Locthwain all charge it, every card in `fuel` charges it, and the outlet charges 1 per activation; the drains in `output` are the refund, which is why stack 011's loop ends with the pilot at 80. Four lands hold second jobs the mana count cannot see: Phyrexian Tower is a free outlet paying {B}{B}, Cabal Pit shrinks a creature, Takenuma buys a body back, Bojuka Bog exiles a graveyard. NOTHING IN THIS STAGE APPEARS IN A PASSING STACK — the eleven scenarios name Swamps as furniture and the citation index filters them, so every claim here is deterministic arithmetic, not verified board state.",
+      "cards": [
+        "Swamp",
+        "Ancient Tomb",
+        "Bojuka Bog",
+        "Cabal Coffers",
+        "Cabal Pit",
+        "Castle Locthwain",
+        "City of Brass",
+        "Command Tower",
+        "Exotic Orchard",
+        "Ifnir Deadlands",
+        "Nykthos, Shrine to Nyx",
+        "Path of Ancestry",
+        "Phyrexian Tower",
+        "Survivors' Encampment",
+        "Takenuma, Abandoned Mire",
+        "Urborg, Tomb of Yawgmoth",
+        "Sol Ring",
+        "Dark Ritual",
+        "Jet Medallion"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-3",
+          "agreement": "partial",
+          "note": "THE WORKING LANDS is contained whole — all 16 entries — and the stage then adds three cards the map filed by what they say: Sol Ring in THE ON SWITCH, Dark Ritual in THE FUEL, and Jet Medallion in THE FODDER, which is a cost reducer sitting in the body pile"
+        },
+        {
+          "kind": "role",
+          "id": "land:utility",
+          "note": "9 of 16 land entries carry land:utility, which is the taxonomy noticing the same thing the city gloss does: most of this mana holds a second job"
+        }
+      ]
+    },
+    {
+      "stage": "ignition",
+      "label": "A FREE OUTLET, ON THE BATTLEFIELD",
+      "what_it_does": "Nine cards, and the first thing that has to happen. Nothing this deck holds is a resource until one of them is down: a body is only fodder if you can eat it at will, for no mana, at instant speed. Yawgmoth is the best of them — mana-free, instant-speed, and he pays a card back — and the other eight are 78.5% drawn / 68.0% by turn 6, the deck's deepest layer. TEN of the eleven presentable passing stacks open from a board where a sacrifice has ALREADY been paid, which is how load-bearing this stage is: it is assumed, not argued. Stack 006 is the one exception and it cuts the other way — Nest of Scarabs and three Swamps, no outlet anywhere on the board, a counter source making a body with nothing to eat it — which makes 006 the single verified support for the DECLARATION's reading of ignition. I still disagree with that reading. goldfish_targets names 'an ignition source drawn (something that places the first -1/-1 counter)' — eight cards, 73.8% — and that is the ignition of one BRANCH. The three unbounded kills are stacks 009, 011 and 012, and the string '-1/-1' appears nowhere in any of them; neither does Yawgmoth. Two exclude the branch outright by assumption: 012 says 'Nest of Scarabs is NOT on the battlefield' and 009 says 'no Nest of Scarabs, no Blowfly Infestation, no commander'. An outlet is on the board in all three. The counter is what the commander's branch converts; the outlet is what every branch needs. Price of running it: 1 life and one body per Yawgmoth activation, and the draw is MANDATORY — there is no 'may' — which is what bounds two of the six kills (010 and 014 both terminate on the library).",
+      "cards": [
+        "Yawgmoth, Thran Physician",
+        "Carrion Feeder",
+        "Viscera Seer",
+        "Woe Strider",
+        "Yahenni, Undying Partisan",
+        "Ashnod's Altar",
+        "Phyrexian Altar",
+        "Blasting Station",
+        "Warren Soultrader"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "011",
+          "note": "Phyrexian Altar's ability 'is a mana ability, so it never used the stack (605.3b)' — the outlet that also pays, and the loop it runs costs no life at all"
+        },
+        {
+          "kind": "stack",
+          "id": "010",
+          "note": "the stack's own correction: Viscera Seer's free outlet is NOT a strictly favourable extra inside the Mikaeus loop, because only Yawgmoth's -1/-1 counter can strip the +1/+1 an undying return leaves behind. A second outlet is not always a second engine"
+        },
+        {
+          "kind": "city",
+          "id": "city-0",
+          "agreement": "partial",
+          "note": "THE ON SWITCH holds 7 of these 9 and its gloss — 'Nothing converts until one of these is down' — is the same reading this stage reaches from the stacks. The map and the engine AGREE here, which is rare. It disagrees twice: Woe Strider files under THE FODDER for its Goat and Warren Soultrader under THE FUEL for its Treasure, and the city also holds the five tutors and Sol Ring, which are `fuel` and `mana`"
+        }
+      ]
+    },
+    {
+      "stage": "fodder",
+      "label": "BODIES THAT COME BACK",
+      "what_it_does": "Eleven cards: what the outlet eats, and what puts it back. Token engines that pay upkeep by upkeep (Bitterblossom, Ophiomancer, and Sedgemoor Witch off any instant or sorcery), a fat one-card board (Grave Titan), a body that recurs itself for {1}{B} (Reassembling Skeleton), and five ways to buy back a dead one — Animate Dead, Victimize, Persist, Agadeem's Awakening and Phyrexian Reclamation, the slow one because it returns to HAND rather than the battlefield — plus Stitcher's Supplier, which buys nothing back and mills three to fill the yard the other five draw from. Measured: mean bodies on board 4.239 at turn 6, and the audit's nine-card RENEWABLE FODDER class is 82.3% drawn / 72.2% by turn 6. That class is split across three stages here on purpose: Nest of Scarabs and Pawn of Ulamog make bodies only as the output of a death, so they are `conversion`, and Gravecrawler is a kill half, so it is `wincon`. THIS IS THE STAGE EVERY VERIFIED ROTATION RUNS OUT OF. Stacks 002, 003, 004 and 005 each end for the same reason and it is never life and never the library — it is bodies. 002 completes five activations from a three-body board; 005 gets eight because South Wind Avatar's 4 toughness absorbs four counters. One activation costs two bodies and returns one whenever the counter has to go on something of yours that dies to it, so the engine is body-NEGATIVE unless the deck keeps feeding it from here.",
+      "cards": [
+        "Bitterblossom",
+        "Ophiomancer",
+        "Grave Titan",
+        "Sedgemoor Witch",
+        "Reassembling Skeleton",
+        "Stitcher's Supplier",
+        "Animate Dead",
+        "Victimize",
+        "Persist",
+        "Phyrexian Reclamation",
+        "Agadeem's Awakening // Agadeem, the Undercrypt"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "006",
+          "note": "Persist returns Fume Spitter WITH a -1/-1 counter and CR 122.6 makes that count as YOU putting the counter on a creature — so a recursion spell is also a counter source, and the 0/0 it returns dies to state-based actions before the trigger even resolves"
+        },
+        {
+          "kind": "stack",
+          "id": "002",
+          "note": "'the engine is bounded by bodies — each iteration costs two bodies and returns one, net minus one body per activation'; five completed activations, ended by having no other creature to sacrifice"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across",
+          "note": "10 of 11 sit in THE FODDER, which sounds like agreement and is not: that city holds 21 cards and this stage takes fewer than half of them, scattering the rest into `conversion` (Nest of Scarabs, Skullclamp), `wincon` (Gravecrawler, Butcher Ghoul, Mikaeus), `fuel` (Necropotence), `ignition` (Woe Strider) and `protection` (Lightning Greaves, Supernatural Stamina). A city named for bodies collects everything that mentions one"
+        }
+      ]
+    },
+    {
+      "stage": "fuel",
+      "label": "CARDS, BOUGHT WITH LIFE",
+      "what_it_does": "Seven cards, and five of them are tutors. Necropotence and Black Market Connections print cards for life directly; Demonic Tutor, Vampiric Tutor, Beseech the Mirror, Diabolic Intent and Insatiable Avarice convert one card into the exact missing half. The tutor class is 61.2% drawn / 50.3% by turn 6, and the goldfish models a drawn, affordable tutor as filling exactly ONE missing any_of group — that single substitution is the whole distance between the unassisted and assisted rates the rest of this file quotes: KILL E 13.5% → 58.8%, Gravecrawler 17.0% → 66.9%, the lone answer to a noncreature permanent 17.1% → 67.1%. Every tutor spent on defence is a tutor not spent on a kill half, and the simulation cannot model that choice. The bigger draw engine is not in this stage at all: it is the commander's own mandatory 'draw a card', and the goldfish's stated assumptions exclude extra card draw entirely, so every unassisted figure in this model is a FLOOR on games where Yawgmoth sticks and digs. No card in this stage appears in any of the eleven passing stacks — the verified tier covers 18 of the deck's 80 distinct cards and none of them is a tutor.",
+      "cards": [
+        "Necropotence",
+        "Black Market Connections",
+        "Demonic Tutor",
+        "Vampiric Tutor",
+        "Beseech the Mirror",
+        "Diabolic Intent",
+        "Insatiable Avarice"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "role",
+          "id": "tutor:unrestricted",
+          "note": "five copies, the whole assisted-rate mechanism, and the reason a 7.1% combo half is not the same fragility as a 7.1% deck"
+        },
+        {
+          "kind": "city",
+          "id": "city-0",
+          "agreement": "cuts-across",
+          "note": "the five tutors are the one component in the scatter table that is 5-for-5 in a single city (THE ON SWITCH), and this stage still cuts across, because Necropotence sits in THE FODDER and Black Market Connections in THE FUEL — a city called THE FUEL that holds one of the seven cards this engine actually burns as fuel"
+        }
+      ]
+    },
+    {
+      "stage": "conversion",
+      "label": "WHAT A DEATH BECOMES",
+      "what_it_does": "Seven cards, each turning a death into something that is NOT life loss: a token (Nest of Scarabs, Pawn of Ulamog), a Treasure (Pitiless Plunderer), two cards (Skullclamp, Deadly Dispute), one card per body sacrificed (Plumb the Forbidden), a sacrifice at every other seat (Grave Pact). Nest of Scarabs is the marquee — five of the eleven passing stacks name it, more than any card but the commander — and four of those five refute the line the card is famous for. From 002's three-body board the engine completes FIVE activations and stops on body exhaustion: seven deaths, 28 life off a pod of 160, pilot 39 → 42. 003 is the same board with Zulaport Cutthroat and settles that the pilot is never forced to eat his own drain (601.2h, 115.6). 004 is eight drains and its checker-passed resolution ends 'NOT A KILL, AND NOT EVEN CLOSE' — a verdict the adversarial checker did not merely accept: it 'wrote an exhaustive depth-first search over the whole move space' and reproduced every headline figure (8, 7, 28, 24) independently. 005 gets eight activations but only seven drains, because a body that dies at toughness 0 gains 0 life and CR 119.9 says that is not a lifegain event. 008 is the exception that pays double: Mirkwood Bats sees the sacrifice AND the creation, 13 triggers, each opponent 40 → 27. Rate for the declared kill built on this stage: 13.5% assembled / 58.8% assisted, mean turn 6.267. Grave Pact is the one card here with no evidence at all — zero passing stacks name it and no declared kill includes it.",
+      "cards": [
+        "Nest of Scarabs",
+        "Pawn of Ulamog",
+        "Pitiless Plunderer",
+        "Skullclamp",
+        "Deadly Dispute",
+        "Plumb the Forbidden",
+        "Grave Pact"
+      ],
+      "single_point_of_failure": "Nest of Scarabs",
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "004",
+          "note": "the sharpest refutation in the file: 'the engine ends by eating its own payoff' once Blood Artist is the last legal target. Eight drains, and the checker searched the line space exhaustively"
+        },
+        {
+          "kind": "stack",
+          "id": "008",
+          "note": "one activation, TWO Mirkwood Bats triggers, and they never sit on the stack together — the sacrifice is a cost paid while the ability is already on the stack, the creation arrives two resolutions later"
+        },
+        {
+          "kind": "stack",
+          "id": "005",
+          "note": "the bound is proved by case exhaustion over how the Avatar leaves the battlefield, and 'Spellbook's Near-infinite tag is wrong for this board'"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across",
+          "note": "four cities for seven cards: Nest of Scarabs and Skullclamp in THE FODDER, Pawn of Ulamog / Pitiless Plunderer / Deadly Dispute in THE FUEL, Grave Pact and Plumb the Forbidden in THE DEATH TAX. The stage is defined by an EVENT its members do not describe — they describe the by-product, and the map files each one under its by-product"
+        }
+      ]
+    },
+    {
+      "stage": "output",
+      "label": "TWO PRODUCTS, ONE CURRENCY",
+      "what_it_does": "Sixteen cards, and the two halves are the same currency rather than two suites. The DRAIN half is nine deep — Bastion of Remembrance, Zulaport Cutthroat, Blood Artist, Mirkwood Bats, Ayara, South Wind Avatar, Marauding Blight-Priest, Starscape Cleric, The Meathook Massacre — at 82.3% drawn / 72.0% by turn 6, the deck's best-built layer; Gray Merchant is the tenth, a one-shot version of the same text. That nine-card rate is NOT every kill's drain rate, and the split is functional: only KILL E and KILL F draw their drain slot from all nine. KILL A, B and D need a DEATH-triggered drain and take a 3-deep group (Bastion, Zulaport, Ayara); KILL C needs a LIFEGAIN-triggered one and takes a disjoint 3-deep group (South Wind Avatar, Marauding Blight-Priest, Starscape Cleric). Four of the six kills have a three-card drain layer, not a nine-card one. Bastion of Remembrance alone is named in four passing stacks (002, 009, 010, 011). The SUBTRACTION half — Fume Spitter, Skinrender, Soul Snuffers, Black Sun's Zenith, Massacre Girl's wither, Sinister Gnarlbark's blight — is not a second removal suite: a -1/-1 counter placed on anything is a Nest of Scarabs trigger and a shrunken creature is still a body the outlet can eat, so the deck's removal and the deck's engine spend the same resource. Spot removal aimed at a permanent that is a PROBLEM — Fatal Push, Deadly Rollick, Feed the Swarm — lives in `protection` instead, because it answers the table rather than feeding the engine. Both halves feed backwards: the drains refund the life the outlet spends, and 002 measures the refund exactly — five activations against seven death triggers, ending 39 → 42, the board having arrived at 39 with the first activation's life already paid, so the ledger closes as 39 − 4 + 7.",
+      "cards": [
+        "Bastion of Remembrance",
+        "Zulaport Cutthroat",
+        "Blood Artist",
+        "Mirkwood Bats",
+        "Ayara, First of Locthwain",
+        "South Wind Avatar",
+        "Marauding Blight-Priest",
+        "Starscape Cleric",
+        "The Meathook Massacre",
+        "Gray Merchant of Asphodel",
+        "Fume Spitter",
+        "Skinrender",
+        "Soul Snuffers",
+        "Black Sun's Zenith",
+        "Massacre Girl, Known Killer",
+        "Sinister Gnarlbark"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "003",
+          "note": "six of the seven drains are TOKEN deaths and they count: 704.5f puts the 0/0 token in the graveyard and 704.5d removes it only on the NEXT state-based-action check, so it dies first and ceases to exist second"
+        },
+        {
+          "kind": "stack",
+          "id": "002",
+          "note": "the life ledger: five activations against seven Bastion triggers, pilot 39 → 42 (the board was handed over at 39 with the first activation's life already paid) while each opponent goes 40 → 33"
+        },
+        {
+          "kind": "city",
+          "id": "city-5",
+          "agreement": "cuts-across",
+          "note": "THE DEATH TAX holds nine of these and THE SUBTRACTION five, with Ayara in THE ON SWITCH and Massacre Girl in THE FODDER. The map splits the deck's two products into two cities because one set says 'each opponent loses 1 life' and the other says 'put a -1/-1 counter'; the engine spends them as one thing"
+        }
+      ]
+    },
+    {
+      "stage": "protection",
+      "label": "INSURANCE, AND ONE ANSWER",
+      "what_it_does": "Six cards. Lightning Greaves puts shroud on a commander whose entire job is standing on the battlefield being activated. Malakir Rebirth and Supernatural Stamina answer a removal spell by letting the creature die and come straight back — and the death still pays every drain, which is the shape this deck wants from insurance. Deadly Rollick is free while you control a commander, Fatal Push kills the cheap thing, and Feed the Swarm is the card the audit prices as this stage's single point of failure: the deck's only answer to a noncreature permanent, 17.1% drawn / 67.1% if a tutor is spent on defence instead of a kill half. READ THAT FIGURE NARROWLY. Feed the Swarm destroys 'target creature or enchantment an opponent controls' — it cannot touch an artifact — and the format's cheap hosers for THIS deck are artifacts: Grafdigger's Cage on the graveyard casting and the undying returns, Cursed Totem on every creature outlet including the commander. The odds of answering either are not 17.1%; they are zero. The interaction axis reads 2 of 5 classes (creature 14, enchantment 1, artifact 0, graveyard 0, land 0), and no card among the 80 destroys, exiles or bounces an artifact. What binds here is therefore not a draw rate on one enchantment answer — it is a class covered zero times, which no draw improves. Nothing in this stage appears in any passing stack, so none of it is verified in play; it is the layer the eleven scenarios assume away when they state 'no player responds to anything'.",
+      "cards": [
+        "Lightning Greaves",
+        "Malakir Rebirth // Malakir Mire",
+        "Supernatural Stamina",
+        "Deadly Rollick",
+        "Fatal Push",
+        "Feed the Swarm"
+      ],
+      "single_point_of_failure": "Feed the Swarm",
+      "evidence": [
+        {
+          "kind": "role",
+          "id": "removal:spot",
+          "note": "three copies, and the one that can leave the creature type — Feed the Swarm — reaches only enchantments, so the noncreature answer is enchantment-wide, not permanent-wide"
+        },
+        {
+          "kind": "city",
+          "id": "city-4",
+          "agreement": "cuts-across",
+          "note": "three cities for six cards: the answers sit in THE SUBTRACTION beside the five -1/-1 sweepers this model calls `output`, while the two dies-and-returns tricks are filed as recursion in THE FODDER and THE FUEL. The map cannot tell an answer from an engine part when both are written as 'target creature'"
+        }
+      ]
+    },
+    {
+      "stage": "wincon",
+      "label": "SIX KILLS, FIVE HALVES",
+      "what_it_does": "Five cards, each the named half of a declared kill: Gravecrawler (KILL A and KILL B), Exquisite Blood (C), Mikaeus (D), Butcher Ghoul with Geralf's Messenger (F). Three of the six kills are genuinely unbounded and all three are checker-verified. 009: Warren Soultrader plus Gravecrawler plus a drain — each iteration's Treasure exactly funds the next cast, 39 further iterations put all four opponents at 0 at once. 011: Phyrexian Altar instead, and it costs no life at all — the pilot ends at 80. 012: Exquisite Blood plus a you-gain-they-lose body, mandatory, and the checker settled that it is a win and not the CR 104.4b draw because every iteration lowers every opponent's life. The other two are library-bounded and still lethal: 010 needs 39 more activations against the 59 the library permits, 014 kills at ~30 activations inside a ~55 bound with ~25 draws of margin. The rules are not the problem — the rates are. A 1.3% / 18.2% assisted, B 0.6% / 12.0%, C 6.6% / 42.6%, D 4.6% / 34.3%, F 1.8% / 26.9%. The best-drawing line is KILL E at 13.5% / 58.8%, and four passing stacks say its board grinds rather than wins, which is why the card that names it sits in `conversion` and not here.",
+      "cards": [
+        "Gravecrawler",
+        "Exquisite Blood",
+        "Mikaeus, the Unhallowed",
+        "Butcher Ghoul",
+        "Geralf's Messenger"
+      ],
+      "single_point_of_failure": "Gravecrawler",
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "009",
+          "note": "'The loop is self-funding and unbounded; 40 drain events bring a seat to exactly 0 — one has already resolved, so 39 further iterations take all four opponents to 0 at once'"
+        },
+        {
+          "kind": "stack",
+          "id": "012",
+          "note": "'not one that could be repeated indefinitely (732.1b) and there is a way to stop (104.4b)' — the mandatory loop is a win, not a draw, and it needs no outlet: Carrion Feeder's ability at pos 0 never resolves"
+        },
+        {
+          "kind": "stack",
+          "id": "014",
+          "note": "'unbounded is the wrong word' — the mandatory draw caps it at ~55 activations, and lethality at ~30 arrives with ~25 draws to spare"
+        },
+        {
+          "kind": "combo",
+          "id": "Gravecrawler + Phyrexian Altar",
+          "note": "the highest-popularity contained line in the deck (60,592) and one of 11 two-card infinites among 39 contained lines — and the only one of the 39 with a passing stack behind it"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across",
+          "note": "three of the five (Gravecrawler, Butcher Ghoul, Mikaeus) are filed in THE FODDER because their text describes a creature, and two (Exquisite Blood, Geralf's Messenger) in THE DEATH TAX because their text says 'loses life'. Nothing in either city marks them as halves of five DIFFERENT kills, which is the only property that matters about them"
+        }
+      ]
+    }
+  ],
+  "lines": [
+    {
+      "from": "mana",
+      "to": "ignition",
+      "via": [
+        "Dark Ritual",
+        "Yawgmoth, Thran Physician"
+      ],
+      "verified_by": null,
+      "carries": "mana",
+      "note": "DASHED ON PURPOSE. The turn-2 commander needs the three-card fast-mana class (43.6% drawn / 34.8% by turn 6) and no passing stack shows a ritual paying for him. He is on SEVEN of the eleven (002, 003, 004, 005, 008, 010, 014) and each of those seven begins with him already resolved; the other four — 006, 009, 011, 012 — hold no commander at all, which is the thesis. Measured reality is slower: mean cast turn 4.301, median 4, 91% by turn 6."
+    },
+    {
+      "from": "fodder",
+      "to": "ignition",
+      "via": [
+        "Bitterblossom",
+        "Ophiomancer",
+        "Carrion Feeder"
+      ],
+      "verified_by": null,
+      "carries": "bodies",
+      "note": "DASHED, and it is the deck's most basic flow. Not one of the eleven passing stacks puts a token engine on the table next to an outlet: ten open with the sacrifice already paid, and the eleventh (006) has no outlet on the board at all. So the arrow the whole deck rests on is the one with no stack behind it. Mean bodies at turn 6 is 4.239."
+    },
+    {
+      "from": "ignition",
+      "to": "conversion",
+      "via": [
+        "Yawgmoth, Thran Physician",
+        "Nest of Scarabs"
+      ],
+      "verified_by": "002",
+      "carries": "-1/-1 counters",
+      "note": "One activation is 1 life plus a body, and it buys a counter, a card, and one Insect back. Body-neutral only while the counter lands on something that survives it or is not yours; on 002's board that is one 2/2, and after it dies every legal target is your own 1/1."
+    },
+    {
+      "from": "conversion",
+      "to": "output",
+      "via": [
+        "Nest of Scarabs",
+        "Bastion of Remembrance"
+      ],
+      "verified_by": "002",
+      "carries": "bodies",
+      "note": "Seven creature deaths, seven Bastion triggers, 28 life off a pod of 160 — five sacrificed and two counter-killed. The rotation is real and it is finite: 'the lowest life total on the table is 33', so nothing dies."
+    },
+    {
+      "from": "conversion",
+      "to": "output",
+      "via": [
+        "Nest of Scarabs",
+        "Mirkwood Bats"
+      ],
+      "verified_by": "008",
+      "carries": "tokens",
+      "note": "The one drain that gets paid twice per activation, because Bats reads 'create OR sacrifice a token' and one activation supplies both. Thirteen triggers on the 003 board class, each opponent 40 → 27 — more than either sibling engine, and the counter-killed Insects pay only on creation."
+    },
+    {
+      "from": "output",
+      "to": "ignition",
+      "via": [
+        "Bastion of Remembrance",
+        "Yawgmoth, Thran Physician"
+      ],
+      "verified_by": "002",
+      "carries": "life",
+      "note": "THE FEEDBACK LOOP. Yawgmoth charges 1 life an activation and the drain refunds 1 a death; on 002's board five activations meet seven death triggers and the pilot ends 39 → 42 — the board arrived at 39 with the first activation's life already paid, so the ledger is 39 − 4 + 7 rather than 39 − 5 + 7. This is why a deck that pays life on nine other cards can keep paying: the engine is life-positive whenever the drain is down."
+    },
+    {
+      "from": "fodder",
+      "to": "output",
+      "via": [
+        "Persist",
+        "Fume Spitter"
+      ],
+      "verified_by": "006",
+      "carries": "bodies",
+      "note": "Two mana buys a body, a counter and a death at once: Persist returns Fume Spitter WITH a -1/-1 counter, CR 122.6 makes that count as YOU placing it, and the 0/0 dies to state-based actions before the trigger resolves. The Nest of Scarabs on that board is filtered out of the citation index (the stack and graveyard name the line, so the board is skipped), so this arrow claims only what the two named cards do."
+    },
+    {
+      "from": "fodder",
+      "to": "conversion",
+      "via": [
+        "Reassembling Skeleton",
+        "Pitiless Plunderer"
+      ],
+      "verified_by": null,
+      "carries": "mana",
+      "note": "DASHED, AND THE BIGGEST UNDECLARED THING IN THE DECK. With Ashnod's Altar (in `ignition`) these three are a fully contained bracket-1 line: sacrifice the Skeleton for {C}{C} and a Treasure, return it for {1}{B} paid with a {C} and that Treasure, net +{C} and one death per cycle. SEVEN of the nine drains would convert that into a kill — Bastion, Zulaport, Blood Artist one seat at a time, Mirkwood Bats off the Treasure created and sacrificed, Ayara off the black Skeleton re-entering, South Wind Avatar, The Meathook Massacre. The other two do not: Marauding Blight-Priest and Starscape Cleric trigger only on YOU gaining life, and this loop gains none, so with either as the sole drain it runs forever and removes nothing. And the conditional is the point — it is in candidate_lines, in no goldfish target, and no stack has resolved it, on a deck whose stacks 001 and 005 have twice refuted a Spellbook 'near-infinite' tag."
+    },
+    {
+      "from": "fuel",
+      "to": "wincon",
+      "via": [
+        "Demonic Tutor",
+        "Gravecrawler"
+      ],
+      "verified_by": null,
+      "carries": "cards",
+      "note": "DASHED. The five tutors are how the kills actually arrive: one tutor is modelled as filling exactly one missing group, which moves Gravecrawler from 17.0% to 66.9% and KILL E from 13.5% to 58.8%. Spend it on Feed the Swarm instead and both numbers revert."
+    },
+    {
+      "from": "ignition",
+      "to": "wincon",
+      "via": [
+        "Warren Soultrader",
+        "Gravecrawler"
+      ],
+      "verified_by": "009",
+      "carries": "Treasure",
+      "note": "KILL A. Gravecrawler's own ability modifies which zone it can be cast from (113.6f) and Soultrader is the Zombie that turns the permission on and is never sacrificed ('another creature'). Each iteration's Treasure exactly funds the next {B}: self-funding, unbounded, and exactly one drain per iteration, because only Gravecrawler's death matches Bastion's trigger event — 009's own words, 'neither creating nor sacrificing a Treasure adds drain (603.2)'."
+    },
+    {
+      "from": "ignition",
+      "to": "wincon",
+      "via": [
+        "Phyrexian Altar",
+        "Carrion Feeder",
+        "Gravecrawler"
+      ],
+      "verified_by": "011",
+      "carries": "mana",
+      "note": "KILL B, and it is free rather than merely self-funding: no life is paid at any point, the pilot GAINS 1 a cycle and ends at 80. The Altar's ability is a mana ability that never uses the stack (605.3b) and Carrion Feeder is the second Zombie, never eaten."
+    },
+    {
+      "from": "wincon",
+      "to": "output",
+      "via": [
+        "Gravecrawler",
+        "Bastion of Remembrance"
+      ],
+      "verified_by": "011",
+      "carries": "life loss",
+      "note": "Exactly one drain per iteration, and 011 gives its own reason rather than 009's: cards.json gives Bastion TWO triggered abilities, and only the death trigger can fire in this loop because Bastion never re-enters, so nothing fires when Gravecrawler returns (603.2). No figure is imported from 009 — 011's board is Carrion Feeder, not Warren Soultrader, and holds no Treasure at all; the mana comes from Phyrexian Altar. Forty drain events per seat; one has resolved, so 39 further iterations kill all four seats at the same state-based-action check."
+    },
+    {
+      "from": "ignition",
+      "to": "wincon",
+      "via": [
+        "Yawgmoth, Thran Physician",
+        "Mikaeus, the Unhallowed",
+        "Gravecrawler"
+      ],
+      "verified_by": "010",
+      "carries": "-1/-1 counters",
+      "note": "KILL D. The -1/-1 counter is a RESET, not a shrink: 704.5q removes one +1/+1 and one -1/-1 simultaneously, leaving Gravecrawler at zero counters and alive, so undying re-arms it for the next death. Library-bounded — 39 more activations needed against the 59 the mandatory draw permits."
+    },
+    {
+      "from": "wincon",
+      "to": "output",
+      "via": [
+        "Butcher Ghoul",
+        "Geralf's Messenger",
+        "Zulaport Cutthroat"
+      ],
+      "verified_by": "014",
+      "carries": "life loss",
+      "note": "KILL F, three opponents in this scenario rather than four. Per two-activation cycle each opponent loses 2 to Zulaport and the Messenger's chosen seat loses 4 IN TOTAL — its 2 from Zulaport plus 2 from the Messenger's enters trigger — so across the three seats the pod total is 8, and the pilot is net 0 life and 2 cards. The counter-stripping is the mechanism: a body that dies holding a +1/+1 fails undying's intervening 'if' and never triggers."
+    },
+    {
+      "from": "wincon",
+      "to": "output",
+      "via": [
+        "Exquisite Blood",
+        "South Wind Avatar"
+      ],
+      "verified_by": "012",
+      "carries": "life loss",
+      "note": "KILL C, the only kill needing no commander and no recursion — and drawn as a backward arrow because it IS a loop: the Avatar drains, the Blood gains it back, the gain drains again. It does need a SEED: 012's board holds Carrion Feeder and Insect token X was sacrificed to it to pay the cost of the ability on the stack, which is the death that gave the Avatar its 1 life. What 012 establishes is that once any lifegain seeds it the alternation is self-sustaining and needs no outlet to CONTINUE. One drain per cycle, drain #40 takes all four seats to 0 at the same check, and the pilot ends at 80. Fastest-assembling kill by mean turn (5.085)."
+    }
+  ],
+  "map_disagreements": [
+    {
+      "component": "An ignition source drawn (something that places the first -1/-1 counter)",
+      "cities": [
+        "THE SUBTRACTION",
+        "THE FODDER",
+        "THE ON SWITCH",
+        "THE DEATH TAX"
+      ],
+      "why": "Eight cards, four cities, 4/2/1/1 — the worst scatter in the table. The class is defined by an EVENT (a -1/-1 counter arriving on a creature) and its members describe four unrelated things: 'destroy target creature', 'put three -1/-1 counters', 'return target card from your graveyard', 'each creature gets -X/-X'. No member says it is an ignition source, so the map files each one by its by-product. This model also disagrees with the component's NAME: three of the deck's six kills (stacks 009, 011, 012) place no -1/-1 counter anywhere and hold no Yawgmoth either, so BOTH halves of the declared class are absent from every unbounded kill. This class ignites one branch, not the engine."
+    },
+    {
+      "component": "A free repeatable sacrifice outlet drawn (not counting Yawgmoth)",
+      "cities": [
+        "THE ON SWITCH",
+        "THE FODDER",
+        "THE FUEL"
+      ],
+      "why": "Eight cards, 6/1/1, and the two strays are the informative part. Woe Strider files under THE FODDER because its text makes a Goat, and Warren Soultrader under THE FUEL because its text makes a Treasure — both are free repeatable outlets and the map read the by-product instead of the ability. This is the one component where the city NAME is right: THE ON SWITCH's gloss, 'Nothing converts until one of these is down', is the same finding this model's `ignition` stage reaches from the eleven stacks."
+    },
+    {
+      "component": "ENGINE MANA drawn — turns a creature death into castable black",
+      "cities": [
+        "THE FUEL",
+        "THE ON SWITCH",
+        "THE WORKING LANDS"
+      ],
+      "why": "Five cards, three cities. The class is one sentence — a death becomes castable black — and the map cannot see it because Phyrexian Tower is typed as a land, Phyrexian Altar reads as a sacrifice outlet, and Warren Soultrader reads as ramp. This is what makes stack 011's loop free rather than merely repeatable, and it is invisible on the map by construction."
+    },
+    {
+      "component": "The five kill halves (this model's `wincon` stage)",
+      "cities": [
+        "THE FODDER",
+        "THE DEATH TAX"
+      ],
+      "why": "Three of the five (Gravecrawler, Butcher Ghoul, Mikaeus) are filed in THE FODDER because their oracle text is about creatures, and two (Exquisite Blood, Geralf's Messenger) in THE DEATH TAX because theirs says 'loses life'. Both filings are correct readings of the cards and neither can express the property that matters — that these are the named halves of five DIFFERENT kills, three of them unbounded, with assembly rates spanning 0.6% to 6.6% unassisted."
+    },
+    {
+      "component": "Jet Medallion",
+      "cities": [
+        "THE FODDER"
+      ],
+      "why": "A single-card disagreement worth naming because it shows the mechanism cleanly: a two-mana cost reducer sits in the city of bodies. It says nothing about creatures and does nothing with deaths; it belongs with the mana, and the layout put it next to the thing it happens to be cheapest alongside."
+    }
+  ],
+  "unassigned": [],
+  "open_questions": [
+    {
+      "question": "Does Ashnod's Altar + Pitiless Plunderer + Reassembling Skeleton hold as an unbounded line on a real board? Commander Spellbook rates it bracket 1 for infinite colorless mana and infinite death triggers, all three cards are in the 99, and the arithmetic looks self-funding (sacrifice for {C}{C} plus a Treasure, recur for {1}{B}), but nothing has resolved it and neither Plunderer nor the Skeleton appears in any of the eleven passing stacks.",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "It would be the deck's fourth unbounded kill and the first that needs neither the commander nor Gravecrawler — which is to say it would retire the single point of failure the `wincon` stage currently carries at 17.0% drawn."
+    },
+    {
+      "question": "Does Mikaeus, the Unhallowed plus ONE free sacrifice outlet loop without the commander? Seven such pairings are in candidate_lines (Carrion Feeder, Viscera Seer, Woe Strider, Yahenni, Ashnod's Altar, Phyrexian Altar, Blasting Station) and all seven outlets are in the 99, but undying's intervening 'if' fails the moment the body carries a +1/+1 counter — which is exactly what stack 010 needed Yawgmoth's -1/-1 counter to strip.",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "If the pairings are wrong, seven candidate lines are noise for this deck and KILL D is correctly declared as commander-gated; if any is right, the deck holds a two-card kill that does not deck you, and KILL D's declaration understates it."
+    },
+    {
+      "question": "How many Nest of Scarabs rotations, across how many turns, does an average board actually need to kill a four-opponent pod? Stacks 002/003/004/005 each measure exactly ONE rotation from a three-body board — 5 to 8 activations, 7 to 13 drains, 28 to 52 life removed from 160 — and none of them carries the board into a second turn.",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "KILL E's 13.5% / 58.8% is the deck's headline number and it prices assembling a line that four checker-passed stacks say does not win on the spot. Everything downstream — the Game Plan, the coach's turn sequencing — reads that rate as a kill rate. Routing this to `goldfish` would come back unanswered: the simulator's own assumptions say it 'simulates resource development, not full games' and counts cards DRAWN by a turn, so it can never say what a board does across turns. Only the bodies-on-board half is a goldfish question, and that is the third component proposed_goldfish_edits[0] asks for."
+    },
+    {
+      "question": "Against three opponents, is a nine-deep drain layer and an eight-deep outlet layer the right investment when the deck cannot answer an artifact at all? The two hosers that switch this deck off — Grafdigger's Cage on the graveyard casting and the undying returns, Cursed Totem on every creature outlet including the commander — are both artifacts, the artifact class is covered zero times, and Feed the Swarm reaches only creatures and enchantments.",
+      "settled_by": "research-strategy",
+      "why_it_matters": "It decides whether the nine declared single points of failure are a fragility finding at all. All nine are size-1 components at 7.1% in the opener and 9.1% by turn three, and five of the eight distinct cards (Exquisite Blood, Nest of Scarabs, Butcher Ghoul, Mikaeus, Warren Soultrader) are the sole member of their kill's any_of group, so there is no deep layer standing behind them at all. The redundancy sits at the level of SIX KILLS rather than of a layer: losing one half costs one route, not the engine. Feed the Swarm is the exception in kind and not in degree — the class it half-covers is covered zero times, and no draw rate improves a zero."
+    }
+  ],
+  "proposed_goldfish_edits": [
+    {
+      "target": "KILL E — THE ENGINE (stacks 002/003/004): Nest of Scarabs + a drain, Yawgmoth from the zone; ~two drains per body on board, the community's primary line",
+      "change": "Split it the way radagast's finisher was split, into a FLOOR and a THRESHOLD, and add a third component for the number of bodies the rotation needs. Stacks 002, 003, 004 and 005 all measure this exact board and none of them kills — 002 is seven deaths and 28 life off a pod of 160, and 004's checker-passed resolution ends 'NOT A KILL, AND NOT EVEN CLOSE'. As declared, a two-card target scores a per-turn rotation as a win condition. ONE CAVEAT ON THIS EDIT: radagast's split was proved from both sides, a floor that loses and a threshold that is exactly lethal. Here only the FLOOR can be written today, because no passing stack shows this line winning — so the THRESHOLD component should be marked as awaiting a stack rather than declared, or the edit prescribes a measurement nobody can yet take.",
+      "why": "This is the deck's best-drawing declared kill and its rate is quoted everywhere downstream as a kill rate. A target that measures the wrong event is worse than a missing one, because the number looks answered."
+    },
+    {
+      "target": "(no target exists) Ashnod's Altar + Pitiless Plunderer + Reassembling Skeleton",
+      "change": "Add a KILL G target for this line once a stack passes on it — three components: the Altar-or-equivalent free outlet, Pitiless Plunderer, and a recurring body — so the simulator measures a fourth potentially unbounded route.",
+      "why": "It is a fully contained bracket-1 line whose three cards are all in the 99 and which nothing measures. This is the same defect validate-goldfish-targets found twice in the fleet: a primary win line with no target, so the simulator never measures how the deck actually wins."
+    },
+    {
+      "target": "An ignition source drawn (something that places the first -1/-1 counter)",
+      "change": "Rename it for what it is — a -1/-1 counter source, the enabler of the Nest branch — and let 'A free repeatable sacrifice outlet' carry the ignition name; then say explicitly why Yawgmoth is excluded from the outlet group rather than leaving the deck's best outlet out of its own component.",
+      "why": "Three of the six declared kills (009, 011, 012) place no -1/-1 counter at all, so the current names invert which layer starts the engine — and the excluded commander makes the outlet group read 8 deep when it is 9."
+    }
+  ],
+  "critic": {
+    "round": 1,
+    "verdict": "fail",
+    "findings": [
+      {
+        "where": "stages[1].what_it_does + thesis + map_disagreements[0].why",
+        "claim": "\"Stacks 009, 011 and 012 are the deck's three unbounded kills and not one -1/-1 counter appears in any of them\" — so the outlet ignites the engine, not the counter source the declaration names",
+        "status": "supported",
+        "note": "Checked directly and it is TRUE, and stronger than the model states. The string '-1/-1' does not occur ANYWHERE in 009, 011 or 012 — not on the board, not in a step, not in the final_state. Nor does 'Yawgmoth, Thran Physician': none of the three has the commander on the battlefield, so both halves of the declaration's ignition class are absent from all three unbounded kills. Two of the three go further and exclude the branch by assumption: 012's assumptions say 'Nest of Scarabs is NOT on the battlefield' and 009's note_for_the_resolver says 'no Nest of Scarabs, no Blowfly Infestation, no commander'. Meanwhile the outlet is present in all three (Warren Soultrader / Phyrexian Altar + Carrion Feeder / Carrion Feeder) and every one of the eleven boards holds one except 006. This is the model's best finding and the goldfish rename in proposed_goldfish_edits[2] follows from it. MECHANICALLY CHECKABLE: a declared ignition component none of whose cards appears in any checker-passed stack of a declared kill is a reportable mismatch, computable from goldfish_targets + verified.by_stack."
+      },
+      {
+        "where": "lines[11].note",
+        "claim": "\"Exactly one drain per iteration, because only Gravecrawler's death matches the trigger — creating or sacrificing a Treasure adds nothing (603.2)\", verified_by 011",
+        "status": "mis-cited",
+        "note": "There is no Treasure anywhere on stack 011's board. 011's board is Phyrexian Altar, Carrion Feeder, Bastion, Gravecrawler and two Swamps; the mana comes from the Altar, and 'Treasure' occurs in the file only in the checker's contrast against Warren Soultrader. The Treasure/603.2 reasoning is stack 009's: 009's final_state says verbatim 'neither creating nor sacrificing a Treasure adds drain (603.2)'. 011 cites 603.2 for a DIFFERENT thing — that Bastion's enters-trigger cannot fire because Bastion never re-enters — and it explicitly warns against exactly this import: 'Stack 009 shares this board's body count but not its composition ..., so no figure is imported from it.' The line's flow (one drain per iteration, 39 further iterations, four seats at once) IS established by 011; only the reason is borrowed. Fix: give 011's own reason (Bastion has two triggered abilities and only the death trigger can fire) or move the Treasure clause to lines[9], which cites 009."
+      },
+      {
+        "where": "lines[13].note",
+        "claim": "\"each opponent loses 2 to Zulaport and the Messenger's chosen seat loses 4 more — pod total 8\"",
+        "status": "miscounted",
+        "note": "014 says 'each opponent loses 2 (Zulaport), the Messenger-targeted opponent loses 4, pod total 8'. The 4 is that seat's TOTAL (2 from Zulaport + 2 from Geralf's Messenger's enters trigger), not 4 in addition to it. As written, 'loses 4 more' makes the pod total 2 + 2 + 6 = 10, which contradicts the 'pod total 8' in the same clause. 014's own opening ledger confirms the mechanism: three opponents go 40 -> 37/39/39, i.e. one Zulaport drain of 1 to each plus 2 from the Messenger to one seat. Drop the word 'more'."
+      },
+      {
+        "where": "stages[5].what_it_does",
+        "claim": "\"Bastion of Remembrance alone is named in five passing stacks (002, 004, 009, 010, 011)\"",
+        "status": "mis-cited",
+        "note": "Four, not five, and 004 is the wrong one. 004's board is Yawgmoth, Nest of Scarabs, BLOOD ARTIST, two Insect tokens and three Swamps — Bastion is not on it, which is the whole point of 004 (a single-target drain against a four-player table). Bastion appears in the 004 file only as a hypothetical substitution the checker priced at 6 deaths / 24 life and as a card-text verification. engine-facts' verified.by_card is authoritative and lists Bastion of Remembrance under exactly 002, 009, 010, 011. The claim 'the drain that actually loops in three verified lines' in goldfish_targets is the conservative version and is right."
+      },
+      {
+        "where": "stages[0].what_it_does",
+        "claim": "\"33 black sources against a 36-source target\"",
+        "status": "miscounted",
+        "note": "33 is mana_analysis.sources.lands.B — the LAND-only figure — quoted against a target defined over all sources, which reads as a three-source shortfall the deck does not have. mana_analysis.sources.total.B is 41 against source_targets.B = 36, and deck-audit's colour-sources axis reports {'B': {'have': 41, 'target': 36}}, value 5 above, verdict 'at'. mana-sources (Burgess) is also 'at': 42 against a target of 36. This is the defect CLAUDE.md records as 'Burgess's formula budgets sources, not lands'. Write '41 black sources against a 36-source target, five clear' — the stage's own argument (that this mana is engine-shaped rather than fast) survives the correction intact."
+      },
+      {
+        "where": "lines[0].note",
+        "claim": "\"no passing stack shows a ritual paying for him — the eleven scenarios all begin with him already resolved\"",
+        "status": "contradicts-artifact",
+        "note": "Yawgmoth is on 7 of the 11: engine-facts verified.by_card lists him under 002, 003, 004, 005, 008, 010, 014 only. He is absent from 006, 009, 011 and 012 — and the model's own headline finding, four sentences earlier in stages[1], is precisely that 009/011/012 'need no commander'. The first clause (no stack shows a ritual paying for him) is true and is the honest half. Rewrite the second as 'the seven that hold him all begin with him already resolved'; as written the line contradicts the thesis it sits under."
+      },
+      {
+        "where": "stages[1].what_it_does + lines[1].note",
+        "claim": "\"Every one of the eleven passing stacks opens from a board where a sacrifice has ALREADY been paid\" / \"every scenario opens with the sacrifice already paid\"",
+        "status": "contradicts-artifact",
+        "note": "Stack 006 is a counterexample and it is the one that matters. Its board is Nest of Scarabs plus three Swamps — no outlet on the battlefield at all — and the object on the stack is Persist ({1}{B}, cost paid), targeting Fume Spitter in the graveyard. Nothing was sacrificed. Ten of eleven, not eleven of eleven. It cuts against the stage's argument rather than for it: 006 is the one passing stack where a counter source generates a body with no outlet in play, which is the declaration's reading of ignition getting its single piece of verified support. Say so — a stage that argues from a universal is weaker for having one exception hidden than for naming it. The rest of lines[1] holds: no token engine (Bitterblossom, Ophiomancer, Sedgemoor Witch, Grave Titan) appears in any verified stack."
+      },
+      {
+        "where": "lines[7].note",
+        "claim": "\"with any of the nine drains that is the table\" (Ashnod's Altar + Pitiless Plunderer + Reassembling Skeleton, dashed)",
+        "status": "over-claimed",
+        "note": "Two of the nine drain nothing off this loop. Marauding Blight-Priest and Starscape Cleric both read only 'Whenever you gain life, each opponent loses 1 life' (cards.json), and the Altar loop produces deaths, Treasures and colorless mana but NO lifegain — no Bastion, no Zulaport, no Avatar in the line. With either of those two as the sole drain the loop runs forever and removes zero life. Seven of nine work (Bastion, Zulaport, Blood Artist sequentially, Mirkwood Bats off the Treasure create/sacrifice, Ayara off the Skeleton re-entering, South Wind Avatar, The Meathook Massacre). Separately, the note is a dashed line written as fact: the arithmetic IS right (see the supported finding below), but 'that is the table' asserts a kill nothing has resolved, in a file whose own stacks 001 and 005 have twice refuted a Spellbook 'near-infinite' tag. Phrase it conditionally and name the seven."
+      },
+      {
+        "where": "lines[7].note (arithmetic)",
+        "claim": "\"sacrifice the Skeleton for {C}{C} and a Treasure, return it for {1}{B} paid with a {C} and that Treasure, net +{C} and one death per cycle\"",
+        "status": "supported",
+        "note": "Re-derived from oracle text and it closes exactly. Ashnod's Altar 'Sacrifice a creature: Add {C}{C}'; Pitiless Plunderer 'Whenever another creature you control dies, create a Treasure token'; Reassembling Skeleton '{1}{B}: Return this card from your graveyard to the battlefield tapped'. Per cycle: +{C}{C} and +1 Treasure, then {1} paid with one {C} and {B} from sacrificing the Treasure — leaving {C} floating, Treasures net 0, one creature death. All three are in the 99 and none appears in any of the eleven verified stacks, exactly as open_questions[0] states. The open question and the KILL G goldfish edit are correctly raised."
+      },
+      {
+        "where": "stages[6].what_it_does + stages[6].single_point_of_failure",
+        "claim": "\"Feed the Swarm is the single point of failure that actually matters ..., the deck's ONLY answer to a noncreature permanent, 17.1% drawn / 67.1%\" set beside \"the format's cheap hosers for THIS deck are artifacts: Grafdigger's Cage ..., Cursed Totem\"",
+        "status": "over-claimed",
+        "note": "Feed the Swarm reads 'Destroy target creature or enchantment an opponent controls' — it CANNOT touch an artifact, and the stage never says so. Placed one sentence before the two artifact hosers, the 17.1% / 67.1% reads as the odds of answering them; the true odds are zero. I enumerated all 80 entries: no card in the deck can destroy, exile or bounce an artifact, confirming deck-audit's interaction-breadth by_class artifact = 0 (creature 14, enchantment 1, graveyard 0, land 0 — 2 of 5). So the 'only answer to a noncreature permanent' claim is true and the SPOF framing is backwards: what binds is not that one enchantment answer might not be drawn, it is that the named hosers have no answer in the deck at any draw rate. Same correction is needed in open_questions[3].why_it_matters ('only Feed the Swarm has no route around it'). MECHANICALLY CHECKABLE: an uncovered interaction class named as the deck's exposure while the SPOF card's oracle text cannot target that class."
+      },
+      {
+        "where": "open_questions[3].why_it_matters",
+        "claim": "\"eight of them are combo halves inside layers that are 8 or 9 cards deep, and only Feed the Swarm has no route around it\"",
+        "status": "unjustified",
+        "note": "This is the question the charter asks the model to ANSWER rather than restate, and the answer given is not carried by the audit. All nine of deck-audit's single_points_of_failure have component size 1, and in the role each is a SPOF FOR, five of the eight have no layer at all: Exquisite Blood, Nest of Scarabs, Butcher Ghoul, Mikaeus and Warren Soultrader are each the sole member of their kill's any_of group in goldfish_targets. Bastion sits in the 9-deep drain group and Gravecrawler in the 9-deep RENEWABLE FODDER group, but neither is a SPOF in that capacity — Gravecrawler is priced as an irreplaceable kill half, twice. The real argument is available and is better: the redundancy is at the level of SIX kills, not of a deep layer, so losing any one half costs one route and not the engine. Make that argument with the any_of sizes; 'inside layers 8 or 9 deep' is wrong for five of the eight."
+      },
+      {
+        "where": "stages[5].what_it_does",
+        "claim": "\"The DRAIN half is nine deep ... at 82.3% drawn / 72.0% by turn 6, the deck's best-built layer, and all six declared kills route through it\"",
+        "status": "over-claimed",
+        "note": "Both figures are right (goldfish 'A drain drawn' = 0.823 / 0.720 over exactly those nine) but the sentence lends the 9-deep rate to all six kills, and only KILL E's drain slot is that group. In goldfish_targets, KILL A, B and D each take any_of [Bastion of Remembrance, Zulaport Cutthroat, Ayara] — 3 deep; KILL C takes any_of [South Wind Avatar, Marauding Blight-Priest, Starscape Cleric] — 3 deep, and disjoint from the first three; KILL F takes a drain group too. The split is functional, not arbitrary: A/B/D need a death-triggered drain and C needs a lifegain-triggered one, which is the same distinction that breaks lines[7]. Four of the six kills have a 3-card drain layer, and saying so sharpens the stage instead of weakening it."
+      },
+      {
+        "where": "lines[14].note",
+        "claim": "\"KILL C, the only kill needing no outlet, no recursion and no commander\"",
+        "status": "over-claimed",
+        "note": "012's board holds Carrion Feeder, and the loop is ignited by a sacrifice paid to it: Insect token X was sacrificed to Carrion Feeder's ability, which is what made South Wind Avatar's death trigger gain the 1 life that starts the Exquisite Blood alternation. The model's defence in stages[7].evidence — 'Carrion Feeder's ability at pos 0 never resolves' — is about the ABILITY, not the outlet; the cost payment had already happened and is the seed event. 'No commander' and 'no recursion' are both correct. What 012 establishes is that the loop, once seeded by any lifegain, is self-sustaining and needs no outlet to CONTINUE — which is the true and still-remarkable claim."
+      },
+      {
+        "where": "stages[4].what_it_does + proposed_goldfish_edits[0]",
+        "claim": "\"004 is eight drains and its checker writes 'NOT A KILL, AND NOT EVEN CLOSE'\"",
+        "status": "mis-cited",
+        "note": "The quote is verbatim and the finding is real, but it is the RESOLUTION's final_state.summary, not the checker. 004's checker block does not contain the phrase; what it does contain is stronger and worth quoting instead — it re-derived the figure independently ('I wrote an exhaustive depth-first search over the whole move space ... Every headline figure in the file is confirmed: 8, 7, 28, 24'). Attributing the resolver's verdict to the adversarial verifier borrows weight the file does not need. Say 'checker-passed resolution'."
+      },
+      {
+        "where": "stages[7].what_it_does + proposed_goldfish_edits[0]",
+        "claim": "KILL E is the best-drawing declared kill (13.5% / 58.8%) and four passing stacks say its board grinds rather than wins, so Nest of Scarabs sits in `conversion` and not in `wincon`",
+        "status": "supported",
+        "note": "Handled as a floor rather than quietly kept, which is what I came to check. 002, 003, 004 and 005 all measure the same three-body board and all four end on body exhaustion, never on life and never on the library: 002 seven deaths / 28 off a pod of 160 with the lowest seat at 33; 004 eight drains with 'NOT A KILL, AND NOT EVEN CLOSE'; 005 eight activations but seven drains, since a body dying at toughness 0 gains 0 and CR 119.9 makes that no lifegain event. Every one of those figures reproduces. proposed_goldfish_edits[0] then asks for the split. One caveat on that edit: radagast's split was proved from BOTH sides — a floor that loses and a threshold that is exactly lethal — and there is no threshold here, because no passing stack shows this line winning. Say the THRESHOLD half needs a new stack, or the edit prescribes a measurement that cannot yet be taken."
+      },
+      {
+        "where": "open_questions[2].settled_by",
+        "claim": "'How many Nest of Scarabs rotations, across how many turns, does an average board actually need to kill a four-opponent pod?' routed to `goldfish`",
+        "status": "unjustified",
+        "note": "goldfish cannot answer the question as written, by its own stated model_assumptions, which stages[3] quotes: 'Simulates resource development, not full games (no interaction, no removal)' and 'Target assembly counts cards DRAWN by a turn'. It measures whether pieces were drawn, never what a board does with them across turns, so as routed the question comes back unanswered. SETTLED_BY is a closed set of three, so the fix is to split it: the bodies-on-board half IS a goldfish question and is already the third component proposed_goldfish_edits[0] asks for, while 'how many rotations kill a pod' is a resolve-stack question — 002 through 005 each answered exactly one rotation of it."
+      },
+      {
+        "where": "stages[2].what_it_does",
+        "claim": "\"six ways to buy back a dead one — Animate Dead, Victimize, Persist, Phyrexian Reclamation, Agadeem's Awakening, with Stitcher's Supplier filling the yard they draw from\"",
+        "status": "miscounted",
+        "note": "Five are named, and the sixth item in the list explicitly does something else. Stitcher's Supplier mills three; it fills the graveyard rather than buying anything back, as the clause itself says. Either write 'five ways ... plus Stitcher's Supplier filling the yard', or count Reassembling Skeleton as the sixth — it is named one clause earlier as 'a body that recurs itself for {1}{B}', which is a buy-back. (Noting also that Phyrexian Reclamation returns to HAND, not the battlefield, so it is the slow one of the five.) The stage's card list is correct at 11 either way."
+      },
+      {
+        "where": "lines[5].note + stages[5].what_it_does",
+        "claim": "\"002 pays five and collects seven, ending 39 → 42\" / \"002 measures the refund exactly (pay 5, gain 7, 39 → 42)\"",
+        "status": "supported",
+        "note": "Faithful to 002's own ledger — final_state.you records life_paid 5, life_gained 7, life 42 — but the arithmetic only closes because one of the five was paid BEFORE the 39 baseline: the scenario's extras say 'Your 39 is 40 less the 1 life already paid for the ability on the stack', so it is 39 − 4 + 7 = 42. As printed, a reader checks 39 − 5 + 7 and gets 41 and concludes the model is out by one. One clause fixes it. The conclusion the line draws — the engine is life-positive whenever a drain is down — is exactly what 002's net_life_change_per_activation shows (0, 0, +1, +1, 0, steady state +1)."
+      },
+      {
+        "where": "map_disagreements[*]",
+        "claim": "Five disagreements, each naming which artifact is wrong about what",
+        "status": "supported",
+        "note": "I checked every city attribution card-by-card against deck_map.json and all five are exact, including the ones that would be easiest to get wrong. ENGINE MANA really does scatter across three cities (Phyrexian Altar -> THE ON SWITCH, Pitiless Plunderer / Black Market Connections / Warren Soultrader -> THE FUEL, Phyrexian Tower -> THE WORKING LANDS); the outlet strays are right (Woe Strider -> THE FODDER, Warren Soultrader -> THE FUEL); the five kill halves split 3 THE FODDER / 2 THE DEATH TAX as stated; Jet Medallion really is in THE FODDER; and THE ON SWITCH's gloss is quoted verbatim. None is a hedge — each says what the map filed the card under and why the layout could not see the function. The stage-level evidence blocks are equally accurate (Sol Ring in THE ON SWITCH, Dark Ritual in THE FUEL, Necropotence in THE FODDER, Ayara in THE ON SWITCH, the six protection cards across three cities)."
+      },
+      {
+        "where": "stages[*].what_it_does (length) and the goldfish figures throughout",
+        "claim": "Every rate, count and mean turn quoted in the file",
+        "status": "supported",
+        "note": "Sixteen goldfish figures re-derived from goldfish_metrics.json and every one is right, including the two that are easiest to cross-wire: the tutor class at 61.2% / 50.3% (not ENGINE MANA, which is coincidentally 61.2% at a different by-turn-6 rate) and the outlet layer at 78.5% / 68.0% for the EIGHT non-commander outlets while the stage lists nine cards. Also correct: all six per-kill rates and their assisted pairs, KILL C as fastest by mean turn 5.085, Gravecrawler 17.0 -> 66.9, the noncreature answer 17.1 -> 67.1, fast mana 43.6 / 34.8, fodder 82.3 / 72.2, drain 82.3 / 72.0, bodies 4.239 at turn 6, mana 5.23, land-drop 58.9%, commander 4.301 / median 4 / 91%, 36 land copies over 16 entries, 76 B pips over 55 cards, 80 distinct cards, 18 verified cards over 11 stacks, Nest of Scarabs in 5 of them, nine priced SPOFs. Every what_it_does is well inside MAX_WHAT_IT_DOES: the longest is conversion at 1,314 of 1,800, so nothing here is at the length where a revision cannot hold the argument in view."
+      },
+      {
+        "where": "lines[*].verified_by (whole file)",
+        "claim": "Eleven of fifteen lines cite a checker-passed stack",
+        "status": "supported",
+        "note": "The thing this charter exists to catch is NOT present: I read all eleven cited stacks against their arrows and no line is drawn solid for a flow its stack shows not happening. The two radagast failure shapes — a resource claimed to move from a permanent the board lists as untapped, and an arrow reading a resolution's NEGATIVE as proof of the positive — have no counterpart here, and the model is notably careful where it could have taken one: lines[6] flags that 006's Nest of Scarabs is filtered out of the citation index and confines the arrow to the two named cards, and lines[4] says 'the 003 board class' rather than importing 008's 13 triggers onto 003. The defects above are wrong REASONS, wrong COUNTS and one false universal — all repairable in place, none requiring a line to be redrawn or downgraded to dashed. One precision note on 'the eleven passing stacks', used as an absolute throughout: fourteen stacks pass the checker and three (001, 007, 013) are withheld as non-presentable because they hold cards no longer in the 99. Eleven is the right tier — it is what engine-facts exposes — but 'the eleven presentable passing stacks' is what the file means."
+      }
+    ],
+    "iterations": 1
+  }
+}

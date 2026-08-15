@@ -1,0 +1,822 @@
+{
+  "slug": "hapatra",
+  "thesis": "Hapatra does not make -1/-1 counters outside combat — she PRICES them: every counter another card places mints a 1/1 deathtouch Snake, twelve cards eat those Snakes for mana, cards and damage, and five drain pieces charge the table for each death; the counter sources are eight cards deep, every unbounded line routes through Mikaeus, and exactly one board in this deck has ever been checked — a board on which nothing came back.",
+  "stages": [
+    {
+      "stage": "mana",
+      "label": "NONE OF IT FEEDS THE LOOP",
+      "what_it_does": "Thirty-three entries pay for a deck whose curve peaks at two (19 cards) and three (17). Read them in COPIES, not entries: the 22 land entries here are 34 land copies, because Forest and Swamp are seven each. Deck-wide, deck-audit measures 36 land copies across 24 entries (target 36-38, verdict 'at'), 50 mana sources against a Burgess floor of 35, and zero taplands.\n\nHapatra costs {B}{G}. Goldfish casts her on turn 2 in 9,970 of 10,000 runs, mean 2.007, 99.9% by turn 6 — but she is a TWO-drop off two untapped lands, so the land base buys that figure and the accelerants buy something else: a turn-one Hapatra, or a turn-two Hapatra with a counter source in the same turn. Three dorks double as fodder the moment an outlet is down. Grim Backwoods and Lazotep Quarry are filed under conversion because they eat creatures; Svogthos stays here as a land that becomes a threat late.\n\nWhat this stage does NOT do is feed the headline loop. Stack 001 is explicit: Mikaeus + Devoted Druid yields three green on the first pass and ZERO on every pass after, because the returned Druid is a new object that has not been under your control since your turn began and 302.6 blocks its tap ability. The loop is infinite in deaths, counters, Snakes and drain — not in mana. Any plan that spends the loop's mana is spending mana that does not exist.",
+      "cards": [
+        "Abstergo Entertainment",
+        "Bayou",
+        "City of Brass",
+        "Command Tower",
+        "Conduit Pylons",
+        "Darkbore Pathway // Slitherbore Pathway",
+        "Exotic Orchard",
+        "Forbidden Orchard",
+        "Forest",
+        "Gemstone Caverns",
+        "Gond Gate",
+        "Hidden Grotto",
+        "Mana Confluence",
+        "Opal Palace",
+        "Spire of Industry",
+        "Svogthos, the Restless Tomb",
+        "Swamp",
+        "Talon Gates of Madara",
+        "Tarnished Citadel",
+        "The Grey Havens",
+        "The Mycosynth Gardens",
+        "Wastewood Verge",
+        "Sol Ring",
+        "Arcane Signet",
+        "Grim Monolith",
+        "Mana Vault",
+        "Mox Diamond",
+        "Chrome Mox",
+        "Lotus Petal",
+        "Dark Ritual",
+        "Birds of Paradise",
+        "Elvish Mystic",
+        "Llanowar Elves"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-5",
+          "agreement": "full",
+          "note": "BORROWED SPEED is seven cards and all seven are here"
+        },
+        {
+          "kind": "city",
+          "id": "city-1",
+          "agreement": "partial",
+          "note": "22 of UNTAPPED GROUND's 24 land ENTRIES — 34 copies, since Forest and Swamp are seven each; Grim Backwoods and Lazotep Quarry are sacrifice outlets and sit in conversion"
+        },
+        {
+          "kind": "city",
+          "id": "city-0",
+          "agreement": "cuts-across",
+          "note": "four of THE ENGINE ROOM's 14 cards are plain mana (Dark Ritual and the three dorks); the rest of that city is conversion"
+        },
+        {
+          "kind": "stack",
+          "id": "001",
+          "note": "the loop makes no mana: three green on the Druid's first pass, zero after, 302.6 on the returned object"
+        }
+      ]
+    },
+    {
+      "stage": "ignition",
+      "label": "SHE MINTS, SHE DOES NOT MAKE",
+      "what_it_does": "Hapatra has to resolve, and then something else has to place a -1/-1 counter. Her second ability is the whole engine — every -1/-1 counter put on a creature, by anyone, mints a 1/1 deathtouch Snake — but her own placement is a combat-damage trigger and nothing more, which stack 001 step 11 establishes while refuting the scenario's claim. She is an exchange rate, not a source, so the source class is the ignition and it is eight cards: Fume Spitter and Grim Affliction are one-shots, Serrated Arrows is three uses, Contagion Clasp proliferates for {4}, Black Sun's Zenith is the mass version that also turns on Necroskitter, and Devoted Druid puts one on itself for free, repeatably.\n\nThis stage has NO single point of failure — it is eight sources deep, two of them free and repeatable. deck-audit does price Blowfly Infestation as one of the deck's two, at 7.1% of opening sevens and 9.1% by turn three, but that is a property of a declared ONE-CARD component, not of this stage. Read Blowfly's intervening 'if': it triggers on a creature dying that HAD a -1/-1 counter on it, so the pair cannot start itself without a connected attack or a third card. That is open question 1, and a card whose function the model formally doubts cannot also be the card the stage rests on. Host of the Hereafter moves the counters off a dying creature onto one you control and looks like a second copy of that shape; nothing has checked it (open question 2). Hapatra herself is the one piece removal does not answer — she comes back from the command zone.",
+      "cards": [
+        "Hapatra, Vizier of Poisons",
+        "Blowfly Infestation",
+        "Host of the Hereafter",
+        "Fume Spitter",
+        "Grim Affliction",
+        "Contagion Clasp",
+        "Serrated Arrows",
+        "Black Sun's Zenith",
+        "Devoted Druid"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "001",
+          "note": "step 11: Hapatra's -1/-1 ability is a combat-damage trigger, not an at-will placement — she cannot start herself"
+        },
+        {
+          "kind": "city",
+          "id": "city-4",
+          "agreement": "cuts-across",
+          "note": "6 of THE COUNTER SUPPLY's 9 cards; the other three place no counters and sit in output"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across",
+          "note": "Hapatra and Host of the Hereafter cluster with the payoffs in THE BUSINESS END"
+        },
+        {
+          "kind": "city",
+          "id": "city-0",
+          "agreement": "cuts-across",
+          "note": "Devoted Druid clusters with the altars on its mana text; here it is a counter source and half the deck's one true infinite"
+        },
+        {
+          "kind": "role",
+          "id": "removal:debuff",
+          "note": "10 cards carry it, but the role says 'shrinks a creature' — it cannot tell a source from a sweeper that places nothing"
+        }
+      ]
+    },
+    {
+      "stage": "fuel",
+      "label": "EIGHT TUTORS AND SIX REFILLS",
+      "what_it_does": "Fourteen cards that find a piece or refill the hand: eight tutors, four draw pieces and two recursion spells. Search is what makes a two-deep enabler class playable at all. Goldfish has a tutor drawn in 78.0% of games, 67.6% by turn 6, mean turn 2.70, and tutor assistance is precisely what moves Mikaeus + Devoted Druid from 2.5% assembled to 31.7% (1.3% to 19.8% by turn 6). strategy:deckbuilding.redundancy-vs-tutors prices the alternative: '5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%'. Stack 001's closing finding names the default fetch, and it is not an altar: it is a free repeatable -1/-1 source, of which the deck holds one (Yawgmoth, filed under conversion).\n\nDiabolic Intent eats a body and still sits here rather than in conversion, because its job is search and the declaration prices it inside the eight-card tutor class. deck-audit counts eight card-advantage copies against a floor of ten while naming three the taxonomy files elsewhere — Grim Backwoods, The One Ring and Yawgmoth all draw — so that axis is a floor, not a shortfall.",
+      "cards": [
+        "Demonic Tutor",
+        "Vampiric Tutor",
+        "Imperial Seal",
+        "Worldly Tutor",
+        "Survival of the Fittest",
+        "Green Sun's Zenith",
+        "Diabolic Intent",
+        "Grim Tutor",
+        "Grim Haruspex",
+        "Morbid Opportunist",
+        "Night's Whisper",
+        "The One Ring",
+        "Eternal Witness",
+        "Phyrexian Reclamation"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-3",
+          "agreement": "full",
+          "note": "FIND THE PIECE is exactly the eight tutors and the declaration agrees: 8 cards, one city, coherent"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across",
+          "note": "the six draw and recursion pieces sit in THE BUSINESS END with everything else"
+        },
+        {
+          "kind": "stack",
+          "id": "001",
+          "note": "the closing finding names the tutor target: a free repeatable -1/-1 source, of which the deck holds one"
+        }
+      ]
+    },
+    {
+      "stage": "fodder",
+      "label": "THE BODY FACTORY",
+      "what_it_does": "Five cards whose job is to put a disposable body on the table. Nest of Scarabs and Flourishing Defenses are counter payoffs — a body per placement, which is what makes one -1/-1 counter worth two or three creatures once Hapatra is down. Bitterblossom is a body per upkeep for one life and asks the engine for nothing. Scurry Oak and Ivy Lane Denizen are the odd pair: they trade in +1/+1 counters, not -1/-1, and their listed loop needs neither Hapatra nor a -1/-1 counter anywhere — which makes it the only line in the deck that survives an answer to the commander. Nothing dies in it, though, so it needs a free outlet to become a kill (open question 3). Ivy Lane Denizen also carries six of bracket_report's nineteen two-card infinites on its own, paired with each free outlet in turn; on oracle text those look inert, since the Denizen triggers only when another GREEN creature ENTERS and an outlet makes nothing enter (open question 9).\n\nThe declaration files Nest of Scarabs and Flourishing Defenses alongside Blood Artist, Zulaport Cutthroat, Bastion of Remembrance and Obelisk Spider under one label, 'Commander plus any -1/-1 payoff'. Two of those six make bodies and four drain life; they are at opposite ends of this engine and the group's size is doing double duty as a redundancy claim for both. Price it with the right instrument: deck-audit's hypergeometric puts the six-card component in 36.4% of opening sevens and 44.4% by turn three, while goldfish measures the same target assembled in 67.2% of games and 55.7% by turn six.",
+      "cards": [
+        "Bitterblossom",
+        "Nest of Scarabs",
+        "Flourishing Defenses",
+        "Scurry Oak",
+        "Ivy Lane Denizen"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "full",
+          "note": "all five sit in THE BUSINESS END, together with the drain cards the declaration groups them against"
+        },
+        {
+          "kind": "combo",
+          "id": "Scurry Oak + Ivy Lane Denizen",
+          "note": "Commander Spellbook lists infinite +1/+1 counters and tokens; needs a stack scenario, and stack 001 refused to rest the bracket floor on it"
+        }
+      ]
+    },
+    {
+      "stage": "conversion",
+      "label": "EIGHT FREE OUTLETS, ONE OF WHICH PLACES A COUNTER",
+      "what_it_does": "The engine proper: thirteen cards, twelve of which consume a body and hand back mana, a card, damage or a counter. The thirteenth is Pitiless Plunderer, and it consumes nothing — it makes a Treasure whenever another creature you control dies, so it is a death PAYOFF profiting from a body something else ate. Stack 001's checker re-derived the outlet census from every 'sacrific' card in cards.json and the number is eight that need no mana — Ashnod's Altar, Phyrexian Altar, Carrion Feeder, Viscera Seer, Yahenni, Yawgmoth, Blasting Station (it untaps itself whenever a creature enters) and Lazotep Quarry (once per turn, no untapper). Exactly ONE of the eight also places a -1/-1 counter. That asymmetry is the deck: outlets are abundant, sources are thin, and the tutor priority follows from it.\n\nYawgmoth is therefore the real target — pay 1 life, sacrifice another creature, place a counter on up to one target creature, draw. The ability has a single instance of the word 'target', so an illegal target means it does not resolve at all and you do not even draw: a second body is mandatory. His A/B loop is real and library-bounded by his own mandatory draw, which is a strong engine rather than a true infinite. Carrion Feeder is actively anti-synergistic with Mikaeus, since it adds +1/+1 counters. Skullclamp is filed here rather than under draw because on a 1/1 Snake it is not equipment, it is an outlet that pays two cards.",
+      "cards": [
+        "Ashnod's Altar",
+        "Phyrexian Altar",
+        "Carrion Feeder",
+        "Viscera Seer",
+        "Yahenni, Undying Partisan",
+        "Blasting Station",
+        "Yawgmoth, Thran Physician",
+        "Grim Backwoods",
+        "Lazotep Quarry",
+        "Skullclamp",
+        "Village Rites",
+        "Deadly Dispute",
+        "Pitiless Plunderer"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "001",
+          "note": "steps 10 and 12: the eight-outlet census re-derived by the checker from every 'sacrific' card in cards.json, and the single-'target' fizzle that makes a second body mandatory for Yawgmoth"
+        },
+        {
+          "kind": "city",
+          "id": "city-0",
+          "agreement": "cuts-across",
+          "note": "9 of THE ENGINE ROOM's 14; the city also holds four mana cards and Devoted Druid"
+        },
+        {
+          "kind": "city",
+          "id": "city-1",
+          "agreement": "cuts-across",
+          "note": "Grim Backwoods and Lazotep Quarry are outlets that cluster with the mana base because their text is a land"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across",
+          "note": "Skullclamp and Village Rites cluster on their draw text; here they are outlets that eat a Snake"
+        }
+      ]
+    },
+    {
+      "stage": "output",
+      "label": "FOUR CARDS THAT POINT AT THE TABLE",
+      "what_it_does": "Four cards, and the small number is the finding. Almost everything this engine emits is emitted by a card filed in another stage — a Snake from ignition, a card from conversion, a life from wincon — so only four cards exist purely to point outward. Orcish Bowmasters flashes in as a ping plus two bodies and taxes an opponent's draw. Crumbling Ashes destroys a creature with a -1/-1 counter on it every upkeep, which is the deck's counters aimed at the table rather than at its own Snakes. Necroskitter returns an opponent's creature that dies with a -1/-1 counter under your control, so the removal output comes back as fodder.\n\nToxic Deluge is the one to read carefully: it gives all creatures -X/-X until end of turn and places NO counters, so it triggers Hapatra, Nest of Scarabs, Flourishing Defenses and Necroskitter exactly zero times. It is a reset button in a deck where every other sweeper is an engine turn, and the map files it under a city named THE COUNTER SUPPLY — the one thing it does not supply.",
+      "cards": [
+        "Toxic Deluge",
+        "Crumbling Ashes",
+        "Orcish Bowmasters",
+        "Necroskitter"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-4",
+          "agreement": "cuts-across",
+          "note": "three of THE COUNTER SUPPLY's nine supply no counters — Toxic Deluge places none at all, Crumbling Ashes destroys, Necroskitter reanimates"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across",
+          "note": "Orcish Bowmasters clusters on its body-and-value text"
+        }
+      ]
+    },
+    {
+      "stage": "protection",
+      "label": "THREE CARDS, AND ONE OF THEM CHARGES YOU",
+      "what_it_does": "Three cards, for a deck deck-audit prices with two single points of failure. Heroic Intervention answers a wrath or a targeted removal spell; Lightning Greaves and Swiftfoot Boots answer a targeted one and give haste.\n\nGreaves is not free, and stack 001 says where the cost lands. Shroud stops your own Hapatra and Yawgmoth from targeting whatever wears it, which is a real problem because the card that most wants haste is Devoted Druid. On the Druid the equipment restores the mana the loop otherwise does not make — four green a cycle with Greaves (equip {0}), three with Boots (equip {1}) — but it is main-phase-only, because equip is sorcery-speed and the returned Druid is a new object that must be re-equipped every single cycle after the equipment falls off. So this stage is also a mana line, and a fragile one.\n\nThe One Ring's protection-from-everything turn is filed under fuel, where its draw does the heavier work; counting it here would make three look like four.",
+      "cards": [
+        "Heroic Intervention",
+        "Lightning Greaves",
+        "Swiftfoot Boots"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "full",
+          "note": "all three sit in THE BUSINESS END"
+        },
+        {
+          "kind": "stack",
+          "id": "001",
+          "note": "step 14: Greaves nets four green a cycle and Boots three, main-phase only, re-equipped every cycle — and Greaves' shroud shuts Hapatra and Yawgmoth out of targeting whatever wears it"
+        },
+        {
+          "kind": "role",
+          "id": "protection:self",
+          "note": "five cards carry the role, but two of them are Yahenni and The One Ring, whose jobs here are conversion and draw"
+        }
+      ]
+    },
+    {
+      "stage": "wincon",
+      "label": "THREE KILLS, ONE CEILING CARD",
+      "what_it_does": "Three ways to end it, and the ceiling rests on one card. The drain class — Blood Artist, Zulaport Cutthroat, Bastion of Remembrance, Obelisk Spider and Sephiroth — turns deaths into life loss. Zulaport, Bastion and Obelisk Spider drain EACH opponent; Blood Artist names one player per death, which makes it a value card and a wrath tax rather than a table clock. Obelisk Spider is the outlier and the best of them here: it drains on counter PLACEMENT, so against the Druid steady state of four placements and one death per cycle it converts four times faster than any death trigger.\n\nSecond, Walking Ballista. Mikaeus's +1/+1 is a layer-7c modification applied alongside counters, so a counterless Ballista is a 1/1 under him and 704.5f never fires — the 'remove the last counter and it dies' pattern is switched off and an external free outlet is mandatory. That is a three-card assembly, genuinely unbounded, and it needs no drain payoff at all.\n\nThird, Mikaeus + Devoted Druid, a true two-card infinite of deaths, -1/-1 placements, Snakes and drain. Price it honestly: Mikaeus is a one-card component at 7.1% of opening sevens, the pairing measures 2.5% assembled and 1.3% by turn 6 unassisted, 31.7% and 19.8% with a tutor, mean turn 5.69. Six of the nineteen listed two-card infinites route through Mikaeus plus a counter-neutral outlet and stack 001 refutes all six — step 10 gives a NON-TOKEN creature exactly one undying return, and on the board that was actually checked, where the only body was a Snake TOKEN, it gives zero: the token ceases to exist before undying reaches the stack.",
+      "cards": [
+        "Mikaeus, the Unhallowed",
+        "Walking Ballista",
+        "Blood Artist",
+        "Zulaport Cutthroat",
+        "Bastion of Remembrance",
+        "Obelisk Spider",
+        "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel"
+      ],
+      "single_point_of_failure": "Mikaeus, the Unhallowed",
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "001",
+          "note": "step 15 derives the three-card Ballista line (613.4c, 704.5f, 702.93a) and steps 13-14 the Druid infinite; the final state refutes six of the eight Mikaeus two-card entries"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "full",
+          "note": "all seven sit in THE BUSINESS END, which also holds the fodder, the protection and half the fuel"
+        },
+        {
+          "kind": "role",
+          "id": "wincon:drain",
+          "note": "five cards carry it; the role cannot see that three drain each opponent and two name one"
+        }
+      ]
+    }
+  ],
+  "lines": [
+    {
+      "from": "ignition",
+      "to": "conversion",
+      "via": [
+        "Hapatra, Vizier of Poisons",
+        "Ashnod's Altar"
+      ],
+      "verified_by": "001",
+      "carries": "bodies",
+      "note": "Stack 001's board is Hapatra plus her own 1/1 green deathtouch Snake, and step 1 sacrifices that Snake to the Altar as an activation cost for {C}{C}. It is a mana ability, so it never uses the stack and cannot be responded to. The same steps prove the token does not come back: 704.5d retires it before undying is even placed on the stack."
+    },
+    {
+      "from": "conversion",
+      "to": "wincon",
+      "via": [
+        "Ashnod's Altar",
+        "Blood Artist"
+      ],
+      "verified_by": "001",
+      "carries": "drain",
+      "note": "Step 6: the sacrificed Snake's death resolves Blood Artist's trigger, one opponent to 39 and you to 41. This is the deck's shortest complete conversion — a body in, a life out — and it is the only one a checker has ever seen resolve."
+    },
+    {
+      "from": "ignition",
+      "to": "wincon",
+      "via": [
+        "Hapatra, Vizier of Poisons",
+        "Blood Artist"
+      ],
+      "verified_by": "001",
+      "carries": "drain",
+      "note": "The same event read end to end: a Snake Hapatra minted is worth one life from a player of your choice when it dies. Note what the stack does NOT show — Blood Artist names one player, so this arrow is one seat, not the table."
+    },
+    {
+      "from": "wincon",
+      "to": "conversion",
+      "via": [
+        "Mikaeus, the Unhallowed",
+        "Ashnod's Altar"
+      ],
+      "verified_by": null,
+      "carries": "one returned body (non-token only)",
+      "note": "Withdrawn from the fact tier and re-grounded. Stack 001's board holds exactly one sacrificeable body and it is a Snake TOKEN: steps 4, 5 and 9 have it cease to exist under 704.5d before undying is even placed on the stack, and final_state records {C}{C}, one drain, an empty graveyard and no tokens. ZERO bodies return, so 'one returned body' is precisely what that board shows not happening. The '4 colorless and 2 drains' figure is step 10's explicit COUNTERFACTUAL about a non-token creature, and no non-token creature is sacrificed anywhere in this scenario — which puts it in exactly the position of Devoted Druid and Walking Ballista below: derived in the resolution, absent from the board, therefore dashed. The negative the board does establish is in the wincon stage's prose, because an arrow is the wrong shape for a negative."
+    },
+    {
+      "from": "mana",
+      "to": "ignition",
+      "via": [
+        "Sol Ring",
+        "Dark Ritual",
+        "Hapatra, Vizier of Poisons"
+      ],
+      "verified_by": null,
+      "carries": "mana",
+      "note": "Hapatra costs {B}{G}, so the 9,970-of-10,000 turn-2 cast (mean 2.007, 99.9% by turn 6) is bought by 36 land copies with zero taplands and is not evidence for this arrow. What the accelerants buy is the turn where she arrives WITH a source: Sol Ring or Dark Ritual on turn one is a turn-one Hapatra, or a turn-two Hapatra plus Fume Spitter in the same turn. Dashed — no stack has been written for it."
+    },
+    {
+      "from": "fuel",
+      "to": "conversion",
+      "via": [
+        "Demonic Tutor",
+        "Vampiric Tutor",
+        "Yawgmoth, Thran Physician"
+      ],
+      "verified_by": null,
+      "carries": "the piece",
+      "note": "Stack 001's closing finding says the fetch that matters is a free repeatable -1/-1 source and that exactly one of the deck's eight mana-free outlets qualifies. A tutor drawn in 78.0% of games is what makes a one-of playable. Dashed: no stack has resolved a tutor into Yawgmoth."
+    },
+    {
+      "from": "fuel",
+      "to": "wincon",
+      "via": [
+        "Survival of the Fittest",
+        "Mikaeus, the Unhallowed"
+      ],
+      "verified_by": null,
+      "carries": "the piece",
+      "note": "Tutor assistance is the difference between 2.5% and 31.7% assembled on the Mikaeus pairing, 1.3% and 19.8% by turn 6. Dashed: a measured rate is not a resolved board."
+    },
+    {
+      "from": "ignition",
+      "to": "fodder",
+      "via": [
+        "Hapatra, Vizier of Poisons",
+        "Nest of Scarabs",
+        "Flourishing Defenses"
+      ],
+      "verified_by": null,
+      "carries": "-1/-1 counters",
+      "note": "One counter placement becomes a Snake, an Insect and an Elf Warrior at once — the multiplier that makes a single Fume Spitter worth three bodies. Dashed: no stack has resolved a placement with the payoffs on the battlefield. Two instruments price the class and they disagree by roughly 1.8x — deck-audit's hypergeometric puts the six-card payoff component in 36.4% of opening sevens, while the goldfish simulation of the same target measures 67.2% assembled and 55.7% by turn six."
+    },
+    {
+      "from": "fodder",
+      "to": "conversion",
+      "via": [
+        "Nest of Scarabs",
+        "Bitterblossom",
+        "Viscera Seer"
+      ],
+      "verified_by": null,
+      "carries": "bodies",
+      "note": "The tokens the payoffs mint are what the eight free outlets eat. Dashed: stack 001 verifies one token entering one outlet and, crucially, that it does not return — no scenario has run the class."
+    },
+    {
+      "from": "conversion",
+      "to": "fuel",
+      "via": [
+        "Yawgmoth, Thran Physician",
+        "Skullclamp",
+        "Grim Haruspex"
+      ],
+      "verified_by": null,
+      "carries": "cards",
+      "note": "Every body this deck eats is also a card: Yawgmoth draws on each activation, Skullclamp pays two for a 1/1, Grim Haruspex draws off every nontoken death. This is the loop that carries the median game when no infinite exists, and no stack has been written for it."
+    },
+    {
+      "from": "conversion",
+      "to": "wincon",
+      "via": [
+        "Yawgmoth, Thran Physician",
+        "Zulaport Cutthroat",
+        "Obelisk Spider"
+      ],
+      "verified_by": null,
+      "carries": "drain",
+      "note": "Commander Spellbook contains Hapatra + Yawgmoth + Zulaport Cutthroat and Hapatra + Yawgmoth + Obelisk Spider as bracket-3 lines producing near-infinite life loss. Both are stamped 'needs a stack scenario', and stack 001 adds a bound the database does not carry: Yawgmoth's mandatory draw makes the loop library-bounded."
+    },
+    {
+      "from": "ignition",
+      "to": "wincon",
+      "via": [
+        "Devoted Druid",
+        "Mikaeus, the Unhallowed"
+      ],
+      "verified_by": null,
+      "carries": "deaths and -1/-1 counters",
+      "note": "THE headline line, and it is dashed on purpose. Stack 001's RESOLUTION derives it in steps 13-14 and the checker independently re-derived it, but Devoted Druid is not on stack 001's board — the scenario holds Hapatra, Mikaeus, Ashnod's Altar, Blood Artist and a Snake. Steady state without haste is four -1/-1 placements and one death per cycle at zero mana. A scenario with the Druid on the battlefield is the single highest-value stack this deck could be given."
+    },
+    {
+      "from": "conversion",
+      "to": "wincon",
+      "via": [
+        "Ashnod's Altar",
+        "Walking Ballista",
+        "Mikaeus, the Unhallowed"
+      ],
+      "verified_by": null,
+      "carries": "damage",
+      "note": "Derived in stack 001 step 15 and dashed for the same reason: Walking Ballista is not on that board. One damage per iteration plus whatever the outlet yields, unbounded, and it needs no drain payoff — which makes it the line to tutor toward once the converter class has been answered."
+    },
+    {
+      "from": "fodder",
+      "to": "conversion",
+      "via": [
+        "Scurry Oak",
+        "Ivy Lane Denizen",
+        "Viscera Seer"
+      ],
+      "verified_by": null,
+      "carries": "bodies",
+      "note": "The only listed loop in the deck that involves neither Hapatra nor a -1/-1 counter, which is exactly why it matters: it survives an answer to the commander. It ends in conversion and not in wincon, because NOTHING DIES in it — the Oak takes +1/+1 counters and the Denizen sees green Squirrels enter, so a death trigger like Blood Artist is never handed anything and cannot close the line. One of the eight free outlets has to, which is the third card open question 3 asks about. Stack 001 explicitly declined to rest the bracket floor on this pair because it comes from the same unverified source whose Mikaeus half failed six times over."
+    },
+    {
+      "from": "ignition",
+      "to": "output",
+      "via": [
+        "Black Sun's Zenith",
+        "Necroskitter"
+      ],
+      "verified_by": null,
+      "carries": "-1/-1 counters",
+      "note": "One card as a wipe, a Snake wave and a mass reanimation — and it is one CARD, not one placement event. Black Sun's Zenith puts X counters on EACH creature and Hapatra reads 'whenever you put one or more -1/-1 counters on A CREATURE', so a six-creature board is six triggers and six Snakes; Nest of Scarabs and Obelisk Spider are worded the same way and scale the same way. Every opposing creature that dies with a counter then comes back under your control. Oracle text only — no stack has resolved it."
+    },
+    {
+      "from": "conversion",
+      "to": "output",
+      "via": [
+        "Yawgmoth, Thran Physician",
+        "Crumbling Ashes"
+      ],
+      "verified_by": null,
+      "carries": "-1/-1 counters",
+      "note": "The counters this engine spends on its own Snakes can be aimed outward instead: Yawgmoth places one on any target creature and Crumbling Ashes destroys a creature carrying one each upkeep. Dashed — oracle text, no scenario."
+    },
+    {
+      "from": "protection",
+      "to": "ignition",
+      "via": [
+        "Swiftfoot Boots",
+        "Lightning Greaves",
+        "Hapatra, Vizier of Poisons"
+      ],
+      "verified_by": null,
+      "carries": "shroud or hexproof",
+      "note": "Hapatra is recastable, so the equipment buys tempo rather than the engine. What it cannot cover is Blowfly Infestation: an ENCHANTMENT, so neither Equipment can attach to it, and that is where one of deck-audit's two priced single points of failure sits. Mikaeus is a Legendary Creature and equips perfectly well — the haste line below is exactly that — so he is not the exception. The carrier is mixed because the via is: Lightning Greaves grants SHROUD, which also shuts your own Hapatra and Yawgmoth out of the wearer, and Swiftfoot Boots grants hexproof, which does not."
+    },
+    {
+      "from": "protection",
+      "to": "ignition",
+      "via": [
+        "Lightning Greaves",
+        "Swiftfoot Boots",
+        "Devoted Druid"
+      ],
+      "verified_by": null,
+      "carries": "haste",
+      "note": "Re-pointed at the card the mechanism is actually about. Stack 001 step 14: with haste the returned Druid may tap again, so the cycle nets FOUR green with Lightning Greaves (equip {0}) and three with Swiftfoot Boots (equip {1}) instead of zero. It is main-phase-only, because equip is sorcery-speed and the returned Druid is a new object that must be re-equipped every single cycle. Haste delivered to Mikaeus would carry nothing — he taps for nothing and neither relevant ability has a tap cost — so this arrow lands in ignition, and the protection stage is also a mana line. Dashed: neither Equipment is on that board."
+    }
+  ],
+  "map_disagreements": [
+    {
+      "component": "THE BUSINESS END (city-2)",
+      "cities": [
+        "THE BUSINESS END"
+      ],
+      "why": "The largest city is 26 of the deck's 88 distinct cards and it contains SEVEN of the eight engine stages — all of fodder, all of protection, all of wincon, six of fuel, Hapatra and Host of the Hereafter from ignition, Skullclamp and Village Rites from conversion, and Orcish Bowmasters from output. Everything in it says 'a body, a counter or a death', which is one sentence about card text and not one sentence about a job. A reader who takes the city as the engine will read a token maker, an insurance policy and a win condition as the same component."
+    },
+    {
+      "component": "Any drain converter",
+      "cities": [
+        "THE BUSINESS END",
+        "THE ENGINE ROOM"
+      ],
+      "why": "The only declared component the scatter itself marks incoherent (4 cards, 2 cities). Blasting Station clusters with the altars because its text is a sacrifice outlet, and the engine agrees with the map rather than the declaration: it converts a death into DAMAGE, not drain, so it is filed under conversion while the other three sit in wincon. The label is also short by two — Obelisk Spider and Sephiroth both drain on a death or a placement and are in neither the group nor its city."
+    },
+    {
+      "component": "Commander plus any -1/-1 payoff",
+      "cities": [
+        "THE BUSINESS END"
+      ],
+      "why": "Coherent on the map (all six in one city) and split in two by the engine. Nest of Scarabs and Flourishing Defenses make a BODY per placement and are fodder; Blood Artist, Zulaport Cutthroat, Bastion of Remembrance and Obelisk Spider drain a LIFE per death or placement and are wincon. 'Payoff' is a word about card text that hides the difference between the start of the conversion and its end, and deck-audit's 36.4%-of-opening-sevens figure for the group is doing duty as a redundancy claim for both halves at once (the goldfish simulation of the same target measures 67.2% assembled and 55.7% by turn six)."
+    },
+    {
+      "component": "THE COUNTER SUPPLY (city-4)",
+      "cities": [
+        "THE COUNTER SUPPLY"
+      ],
+      "why": "Six of its nine cards supply counters and three do not. Crumbling Ashes destroys a creature that already has one, Necroskitter reanimates one that died with one, and Toxic Deluge places none at all — it gives -X/-X until end of turn, so Hapatra, Nest of Scarabs, Flourishing Defenses and Necroskitter see nothing. The city's name is a fair description of the majority and a false statement about a third of its members; ignition takes the six and adds Devoted Druid from THE ENGINE ROOM and Host of the Hereafter from THE BUSINESS END."
+    },
+    {
+      "component": "Mikaeus + Devoted Druid (the two-card infinite stack 001 verified)",
+      "cities": [
+        "THE BUSINESS END",
+        "THE ENGINE ROOM"
+      ],
+      "why": "The declaration's own scatter splits this one across two cities, and it splits in the engine too: Devoted Druid is ignition (a counter source that resets itself) and Mikaeus is wincon (the ceiling). Devoted Druid clusters in THE ENGINE ROOM on its mana text, which is precisely the half of the card stack 001 shows the loop does not deliver."
+    }
+  ],
+  "unassigned": [],
+  "open_questions": [
+    {
+      "question": "Is Hapatra + Blowfly Infestation actually a two-card kill? Blowfly triggers only when a creature dies that HAD a -1/-1 counter on it, and stack 001 step 11 establishes Hapatra's own placement is a combat-damage trigger — so the pair may need a connected attack or a third card to place the first counter, and it may need a 1-toughness body to keep dying.",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "The declaration prices this as a two-card kill off a one-card component and deck-audit reports Blowfly as one of the deck's two single points of failure. If the pair needs a starter, the 16.3% unassisted assembly rate is measuring an assembly that does not yet kill, and the tutor priority changes."
+    },
+    {
+      "question": "Does Host of the Hereafter loop with Hapatra the way Blowfly Infestation is claimed to? Its trigger moves the counters off a dying creature onto up to one target creature you control, which Hapatra would see as a placement; Commander Spellbook lists the pair as infinite death triggers.",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "If it holds, the deck's loop-grade ignition class is two cards rather than one and Blowfly stops being a single point of failure — a redundancy the declaration and deck-audit both currently miss. If it fails, the reason will probably also explain the Blowfly question above."
+    },
+    {
+      "question": "Is Scurry Oak + Ivy Lane Denizen a real infinite in this deck, and does it need a third card to be a win?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "It is the only listed loop that needs neither Hapatra nor a -1/-1 counter, so it is the deck's answer to a table that has answered the commander. Stack 001 refused to rest the bracket floor on it because it comes from the same unverified source whose Mikaeus half failed six times, so the bracket and the fodder stage are both waiting on it."
+    },
+    {
+      "question": "Does the Yawgmoth A/B loop kill three seats at 40 before the library runs out? Each activation costs 1 life and draws a mandatory card, and stack 001 calls it library-bounded rather than infinite.",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "Yawgmoth is named by the deck's own strategic frame as the real tutor target and the only free repeatable -1/-1 source, and no goldfish target measures him at all. A bound of 'about forty activations' and a drain of one life per death per converter decides whether this is a kill or a very good draw engine."
+    },
+    {
+      "question": "Write a scenario with Devoted Druid on the battlefield alongside Mikaeus, a drain converter and Hapatra, and resolve the steady state to a lethal number.",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "This is the deck's headline line and it is currently a dashed arrow: stack 001 derives it in its resolution but the Druid is not on its board, so validate-engine could not accept a verified_by even if the reasoning is sound. One scenario moves the deck's best line from candidate to fact."
+    },
+    {
+      "question": "What is the assembly rate for 'Hapatra plus any non-combat -1/-1 SOURCE' — the eight-card class this model calls ignition?",
+      "settled_by": "goldfish",
+      "why_it_matters": "goldfish_targets declares the payoff class (six cards, which deck-audit prices at 36.4% of opening sevens and goldfish measures at 67.2% assembled) and never declares the source class, so nothing in the deck's measurement stack prices the thing that actually has to happen first. Every rate the magazine quotes about 'the engine coming online' is currently a rate for the half that cannot start it."
+    },
+    {
+      "question": "Against three seats, does the drain class close faster than the Ballista line? Three of the five converters hit each opponent and two name one player, and the Ballista line needs no converter at all.",
+      "settled_by": "research-strategy",
+      "why_it_matters": "It decides the tutor order under pressure, which is the most repeated in-game decision this deck makes. strategy:multiplayer.asymmetry is the axis, and the deck's own frame flags Blood Artist as a value card rather than a table clock."
+    },
+    {
+      "question": "How should a -1/-1 counters deck value Toxic Deluge — a sweeper its own engine cannot see, since it places no counters and triggers Hapatra, Nest of Scarabs, Flourishing Defenses and Necroskitter zero times?",
+      "settled_by": "research-strategy",
+      "why_it_matters": "It is the one card in the 88 whose engine contribution is negative-by-design (it eats your own Snakes for nothing), and the answer generalises to how much pure reset a combo-engine deck should carry."
+    },
+    {
+      "question": "Do the six Ivy Lane Denizen two-card entries in bracket_report start at all? The Denizen is paired with Ashnod's Altar, Phyrexian Altar, Carrion Feeder, Viscera Seer, Yahenni and Blasting Station, but it triggers only when another GREEN creature you control ENTERS, and a sacrifice outlet makes nothing enter.",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "Six of the nineteen two-card infinites the bracket language rests on are these, and no stage, line or question in the previous version of this model mentioned them. Stack 001 refuted six Mikaeus entries and deliberately left these open — its closing finding is that 'the 19 two-card infinites figure is inflated'. If the six are inert without a token maker or a recursion body, the deck's combo density has been contested from both ends and every figure quoting nineteen is quoting a ceiling nobody has held up."
+    }
+  ],
+  "proposed_goldfish_edits": [
+    {
+      "target": "NEW TARGET — 'Hapatra plus any non-combat -1/-1 source'",
+      "change": "Add a commander-gated target whose any_of is Fume Spitter, Grim Affliction, Contagion Clasp, Serrated Arrows, Black Sun's Zenith, Blowfly Infestation, Host of the Hereafter and Devoted Druid.",
+      "why": "Stack 001 step 11 establishes Hapatra places counters only on combat damage, so a payoff without a source does nothing. The declaration measures payoffs, tutors, converters and two named combos, and never measures the class that has to arrive before any of them matter. This is the deck's ignition and nothing prices it."
+    },
+    {
+      "target": "NEW TARGET — 'Yawgmoth plus a second creature'",
+      "change": "Add a target requiring Yawgmoth, Thran Physician plus any_of a broad creature list (or a second any_of naming the token makers: Bitterblossom, Nest of Scarabs, Flourishing Defenses, Scurry Oak).",
+      "why": "The deck's own strategic frame calls Yawgmoth 'the deck's only free repeatable -1/-1 source, and therefore the real tutor target', and stack 001 step 12 proves a second body is mandatory because the single instance of 'target' fizzles the whole ability. No target measures him. This is the same defect class the fleet survey found on heliod and ur-dragon: a primary line with no target at all."
+    },
+    {
+      "target": "Any drain converter",
+      "change": "Add Obelisk Spider and Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel to the any_of, and either rename the group 'any death-or-placement converter' or move Blasting Station out of it.",
+      "why": "A group's size IS the redundancy claim it makes, and this one says four where the deck holds six. Obelisk Spider drains each opponent on counter PLACEMENT (four times a cycle against the Druid steady state, where a death trigger fires once) and Sephiroth drains on every other creature dying. Blasting Station converts to damage, not drain, which is also why the scatter marks this the only incoherent component."
+    },
+    {
+      "target": "Mikaeus + Devoted Druid (the two-card infinite stack 001 verified)",
+      "change": "Rename to 'Mikaeus + Devoted Druid (derived in stack 001's resolution; no board scenario yet)'.",
+      "why": "The label asserts verification and travels into prose and into the renderer's fact tier, but stack 001's SCENARIO holds Hapatra, Mikaeus, Ashnod's Altar, Blood Artist and a Snake token — not the Druid. validate-engine would reject a verified_by on this pairing for exactly that reason, and a label should not claim what a citation cannot."
+    },
+    {
+      "target": "Hapatra + Blowfly Infestation (two-card kill)",
+      "change": "Hold the group at one card for now, and add Host of the Hereafter only if a stack settles that it loops the same way; if the Blowfly loop turns out to need a starter, rename the target to name it.",
+      "why": "The group's size of 1 is what makes deck-audit price Blowfly as a single point of failure, so widening it on a database record would erase a real warning. But the deck plausibly holds a second copy of the effect and the pair plausibly needs a third card to start — two open questions pointing in opposite directions, and the honest move is to leave the number alone until a checker settles them."
+    }
+  ],
+  "rebuttals": [
+    {
+      "finding": "critic.findings[0] — lines[3], 'mis-cited'",
+      "response": "accepted, re-grounded rather than withdrawn",
+      "what_i_did": "The critic is right and the inconsistency is mine: step 10 is a counterfactual about a non-token creature, which is the same evidentiary position as Devoted Druid (lines[11]) and Walking Ballista (lines[12]), both of which I dashed for it. verified_by is now null, carries says 'non-token only', and the note states the board's actual result — zero returned bodies, {C}{C}, one drain, empty graveyard. The arrow is kept dashed rather than deleted because the non-token case is a real derived claim a future scenario can settle; the negative the board does prove is prose in the wincon stage, since an arrow is the wrong shape for a negative."
+    },
+    {
+      "finding": "critic.findings[1] — Hapatra's mana cost",
+      "response": "accepted",
+      "what_i_did": "Hapatra is {B}{G}, mana value 2. The mana stage now says the 9,970/10,000 turn-2 figure is bought by the land base, not the accelerants, and lines[4]'s note is rewritten to claim only what an accelerant actually buys: a turn-one Hapatra, or a turn-two Hapatra plus a counter source in the same turn."
+    },
+    {
+      "finding": "critic.findings[2] — entry counts presented as card counts",
+      "response": "accepted",
+      "what_i_did": "The stage now reads in copies: 22 land entries here are 34 land copies (Forest and Swamp are seven each), and deck-audit's deck-wide 36 land copies across 24 entries, 50 mana sources against a Burgess floor of 35, and zero taplands are quoted as such. The city-1 evidence note says ENTRIES explicitly."
+    },
+    {
+      "finding": "critic.findings[3] — ignition's single_point_of_failure",
+      "response": "accepted",
+      "what_i_did": "Set to null. The stage is eight sources deep and two of them (Blowfly Infestation, Devoted Druid) are free and repeatable, so nothing here is one-deep. deck-audit's Blowfly SPOF is kept in prose as what it is — a property of a declared one-card component — and the incoherence with open question 1 is now stated rather than papered over."
+    },
+    {
+      "finding": "critic.findings[4] — lines[16], equipment and Mikaeus",
+      "response": "accepted",
+      "what_i_did": "Mikaeus is a Legendary Creature and equips fine; only Blowfly Infestation, an enchantment, is genuinely unequippable. The note says so and cross-refers to the haste line. carries is now 'shroud or hexproof', with Greaves' shroud and Boots' hexproof separated."
+    },
+    {
+      "finding": "critic.findings[5] — lines[17]'s endpoints vs its mechanism",
+      "response": "accepted",
+      "what_i_did": "Re-pointed protection -> ignition via Lightning Greaves, Swiftfoot Boots and Devoted Druid, which is what the note was always about. Mikaeus taps for nothing, so haste delivered to him carries nothing and he is out of the via."
+    },
+    {
+      "finding": "critic.findings[6] — lines[13] routed through Blood Artist",
+      "response": "accepted",
+      "what_i_did": "Nothing dies in the Oak/Denizen loop, so a death trigger cannot close it. The arrow is now fodder -> conversion via Scurry Oak, Ivy Lane Denizen and Viscera Seer, and the note names the missing free outlet as the third card open question 3 asks about."
+    },
+    {
+      "finding": "critic.findings[7] — 36.4% attributed to goldfish",
+      "response": "accepted",
+      "what_i_did": "Fixed in all three places (lines[7], the fodder stage, map_disagreements). 36.4% is deck-audit's hypergeometric for opening sevens; both figures are now quoted together with the goldfish simulation's 67.2% assembled / 55.7% by turn six, since the two instruments disagree by roughly 1.8x."
+    },
+    {
+      "finding": "critic.findings[8] — lines[14], 'one placement event'",
+      "response": "accepted",
+      "what_i_did": "Hapatra triggers per creature that receives counters, so Black Sun's Zenith on six creatures is six triggers and six Snakes. The note says one CARD, and names Nest of Scarabs and Obelisk Spider as scaling the same way."
+    },
+    {
+      "finding": "critic.findings[9] — 'thirteen outlets'",
+      "response": "accepted",
+      "what_i_did": "Pitiless Plunderer consumes nothing — it is a death payoff. The conversion stage now reads thirteen cards, twelve of which consume a body, and the thesis says twelve outlets."
+    },
+    {
+      "finding": "critic.findings[10] — the six unmentioned Ivy Lane Denizen infinites",
+      "response": "accepted",
+      "what_i_did": "Added as open question 9 (resolve-stack) and named in the fodder stage: on oracle text the Denizen needs another green creature ENTERING and an outlet supplies none, which is very likely the inflation stack 001's final state points at."
+    }
+  ],
+  "critic": {
+    "round": 1,
+    "verdict": "fail",
+    "findings": [
+      {
+        "where": "lines[3]",
+        "claim": "wincon -> conversion via Mikaeus + Ashnod's Altar, verified_by 001, carries 'one returned body'; note: 'Total for the pair: 4 colorless and 2 drains.'",
+        "status": "mis-cited",
+        "note": "This is the only solid arrow whose flow the cited stack REFUTES, and it renders green. Stack 001's scenario board holds exactly one sacrificeable body and it is a TOKEN (board.you: 'Snake token (1/1 green, deathtouch)'). Step 4 puts the token's ceasing-to-exist in the SBA check BEFORE undying is placed on the stack; step 5: 'the undying trigger resolves and does nothing'; step 9: 'for Snake tokens the loop produces ZERO iterations... Any line assuming sacrifice a token, get it back is invalid on its face.' final_state confirms it: mana_pool {C}{C}, ONE drain, graveyard [], tokens []. On the board that was checked, Mikaeus returns ZERO bodies to the outlet, so 'one returned body' is precisely the thing the stack shows not happening. The figure in the note (4 colorless, 2 drains) is not the stack's result either; it is step 10's, and step 10 is explicitly a counterfactual — 'for a NON-TOKEN creature with a counter-neutral outlet'. No non-token creature is sacrificed anywhere in this scenario. THE INCONSISTENCY IS THE ENGINEER'S OWN RULE: lines[11] (Devoted Druid) and lines[12] (Walking Ballista) are dashed with the stated reason 'derived in stack 001's RESOLUTION but not on its board'. Step 10's non-token creature stands in exactly that position. The rule is right and it is not applied here. Remedy: dash lines[3], or re-scope it to what the board actually establishes (Mikaeus returns nothing for a token). NOT mechanically checkable — validate-engine's stack check passes because Mikaeus and Ashnod's Altar are both named on the board; what fails is the flow's object, a returned non-token body, which exists nowhere in the artifact. A rephrase would survive any string match."
+      },
+      {
+        "where": "stages[0].what_it_does",
+        "claim": "'Hapatra costs {1}{B}{G} and goldfish casts her on turn 2 in 9,970 of 10,000 runs, mean turn 2.007 — that number is bought here, with seven fast-mana artifacts and Dark Ritual sitting on a 22-land base'",
+        "status": "miscounted",
+        "note": "Hapatra, Vizier of Poisons costs {B}{G}, mana value 2. cards.json: mana_cost '{B}{G}', cmc 2.0. deck-audit axes[mana-sources].measured.commander_mana_value = 2. goldfish_metrics.meta.commander_cmc = 2. She is a two-drop, not a three-drop. The error is load-bearing rather than cosmetic: the sentence reads the 9,970/10,000 turn-2 figure as a number the accelerants BOUGHT, and a {B}{G} commander is cast on turn 2 off two untapped lands with no acceleration at all — which is why the rate is 99.7% instead of the (much lower) rate of holding a turn-one accelerant. lines[4] (mana -> ignition via Sol Ring + Dark Ritual + Hapatra) rests its entire note on the same figure and inherits the same defect: the goldfish number evidences the land base, not Sol Ring and Dark Ritual."
+      },
+      {
+        "where": "stages[0].what_it_does",
+        "claim": "'Thirty-three sources ... sitting on a 22-land base in which nothing enters tapped'; evidence city-1 note '22 of UNTAPPED GROUND's 24 lands'",
+        "status": "miscounted",
+        "note": "Both figures are ENTRY counts presented as card counts. cards.json: Forest quantity 7 and Swamp quantity 7, so this stage's 22 land entries are 34 land COPIES; the deck plays 36 land copies across 24 entries (deck-audit axes[mana-base].measured: value 36, land_entries 24, how 'land copies from deck-facts (copies, not entries)'). 'Thirty-three sources' is likewise 22 land entries + 11 nonland; in copies it is 45, and deck-audit axes[mana-sources] measures 50. As written the stage describes a 22-land deck — 14 short of the 36-38 target the audit scores 'at' — in the one department whose job is the mana base. This is the repo's documented count-copies-not-entries defect, it is mechanically checkable, and validate-issue already lints exactly this in prose; engine.json prose reaches the magazine, so the lint should be extended here. ('nothing enters tapped' is correct and verified: deck-audit axes[taplands].measured.value = 0.)"
+      },
+      {
+        "where": "stages[1].single_point_of_failure",
+        "claim": "ignition's single point of failure is 'Blowfly Infestation'",
+        "status": "unjustified",
+        "note": "The ignition stage the model itself defines is eight sources deep (Fume Spitter, Grim Affliction, Contagion Clasp, Serrated Arrows, Black Sun's Zenith, Devoted Druid, Blowfly Infestation, Host of the Hereafter). Blowfly is deck-audit's SPOF only because goldfish_targets declares a ONE-CARD component for the 'Hapatra + Blowfly Infestation (two-card kill)' target — that is a property of the declaration, not of this stage, and the audit's own component block says so (size 1, shared_roles [], 'the normal case for a named combo half'). Reading the declaration's class as the stage's fragility is the failure mode this field exists to resist. It is also internally incoherent with open_questions[0], which asks whether the Blowfly pair starts at all: a card whose function the model formally doubts cannot simultaneously be the single card the stage rests on. If the intended claim is the narrower 'free repeatable ignition is one card deep', that is wrong on the model's own reading too — Devoted Druid places a -1/-1 counter on itself for free and repeatably, and stages[1] lists it. Set the field to null and keep the narrower claim in prose, or name what is genuinely one-deep. (Contrast stages[7]: Mikaeus IS carried — bracket_report's 19 two-card infinites contain 8 Mikaeus lines and both survivors of stack 001 route through him.)"
+      },
+      {
+        "where": "lines[16].note",
+        "claim": "'the card they cannot protect is Blowfly Infestation or Mikaeus, which is where the two priced single points of failure actually sit'",
+        "status": "contradicts-artifact",
+        "note": "Mikaeus, the Unhallowed is a Legendary CREATURE — Zombie Cleric (cards.json type_line). Lightning Greaves and Swiftfoot Boots attach to target creature you control, so they protect Mikaeus perfectly well; only Blowfly Infestation, an Enchantment, is genuinely unequippable. The model contradicts itself one entry later: lines[17] is an arrow from Lightning Greaves TO Mikaeus, and its note has Greaves being equipped and re-equipped every cycle. Both cannot hold. Separately, carries is 'hexproof' on a via that leads with Lightning Greaves: Greaves grants SHROUD, Boots grant hexproof, and the model gets this right in stages[6] ('Greaves' shroud shuts Hapatra and Yawgmoth out') quoting stack 001 step 14. Mixed carrier on a mixed via."
+      },
+      {
+        "where": "lines[17]",
+        "claim": "protection -> wincon via Lightning Greaves + Mikaeus, carries 'haste'; note describes 'four green with Greaves and three with Boots'",
+        "status": "unjustified",
+        "note": "The mechanism in the note is entirely about DEVOTED DRUID — 'Haste is what turns the Druid loop from zero mana per cycle into four green', and stack 001 step 14's cycle re-equips the haste source onto the returned Druid. The Druid is in stages[1] (ignition), not wincon. Mikaeus taps for nothing and neither of his relevant abilities has a tap cost, so haste delivered to Mikaeus carries nothing. The arrow's endpoints and its carrier describe a different flow from its note: what the note establishes is protection -> ignition carrying haste and yielding mana, which stages[6] itself concedes ('so this stage is also a mana line'). validate-engine's from/to-contains-via check passes because Greaves sits in protection and Mikaeus in wincon — this is that check's blind spot when the mechanism turns on a third card, and it is mechanically checkable: a line's note naming a card in neither endpoint stage is worth flagging."
+      },
+      {
+        "where": "lines[13]",
+        "claim": "fodder -> wincon via Scurry Oak + Ivy Lane Denizen + Blood Artist, carries 'bodies'",
+        "status": "unjustified",
+        "note": "Blood Artist reads 'Whenever this creature or another creature DIES, target player loses 1 life' (cards.json). The Scurry Oak / Ivy Lane Denizen loop makes green Squirrel tokens and puts +1/+1 counters on the Oak; nothing dies in it. No life is lost along this arrow, so Blood Artist is not the converter that closes it — a free sacrifice outlet is, and every one of the eight the model censuses in stages[4] lives in conversion, not in the three cards named. open_questions[2] asks 'does it need a third card to be a win?' while the line has already drawn the arrow with a third card that cannot answer it. Either route the arrow fodder -> conversion -> wincon, or name an outlet in via."
+      },
+      {
+        "where": "lines[7].note",
+        "claim": "'the goldfish target prices this class at 36.4% of opening sevens'; same figure in stages[3].what_it_does and map_disagreements[2]",
+        "status": "mis-cited",
+        "note": "36.4% is deck-audit's hypergeometric — engine.targets['Commander plus any -1/-1 payoff'].components[0].odds.opening_seven = 0.364 — not a goldfish output. The goldfish simulation prices that same target at assembled_rate 0.672 and by_turn_6_rate 0.557 (goldfish_metrics.metrics.targets). The number is correct; the instrument named is not, and the two differ by ~1.8x, so a reader is handed the pessimistic figure under the optimistic instrument's name. Fix the attribution in all three places, or quote both."
+      },
+      {
+        "where": "lines[14].note",
+        "claim": "'X counters on EACH creature is one placement event Hapatra sees'",
+        "status": "over-claimed",
+        "note": "Hapatra reads 'Whenever you put one or more -1/-1 counters on A CREATURE' (cards.json), so Black Sun's Zenith triggers her once PER CREATURE that receives counters — on a six-creature board that is six triggers and six Snakes, not one event. The note's own 'a Snake wave' is the right outcome, but 'one placement event' states the mechanism backwards and is the sentence a columnist would render as one Snake. Nest of Scarabs ('create that many') and Obelisk Spider carry the same wording and the same risk. If the intent was 'one CARD produces the whole wave', say card."
+      },
+      {
+        "where": "stages[4].what_it_does / thesis",
+        "claim": "'thirteen cards that consume a body and hand back mana, a card, damage or a counter' / thesis 'thirteen outlets eat those Snakes'",
+        "status": "miscounted",
+        "note": "Pitiless Plunderer consumes nothing: 'Whenever another creature you control dies, create a Treasure token' (cards.json). It is a death PAYOFF, not a sacrifice outlet — it profits from a body it did not eat. The conversion stage is 13 cards but at most 12 of them are outlets. The eight-free-outlet census inside the same paragraph is exactly right and matches stack 001 step 10's checker-re-derived list; it is only the headline 'thirteen' that overstates, and the thesis repeats it."
+      },
+      {
+        "where": "thesis / open_questions",
+        "claim": "the model's coverage of bracket_report's 19 two-card infinites",
+        "status": "unverified-line",
+        "note": "Reported, not a fail — incompleteness is honest. But the thesis makes the one-stack-against-nineteen-infinites gap the whole risk, and the model accounts for 13 of the 19: 8 Mikaeus entries (6 refuted, Druid and Ballista upheld), 3 Blowfly entries (open_questions[0]), Hapatra + Host of the Hereafter (open_questions[1]), Scurry Oak + Ivy Lane Denizen (open_questions[2]). The remaining SIX are Ivy Lane Denizen paired with each free outlet — Ashnod's Altar, Viscera Seer, Phyrexian Altar, Carrion Feeder, Blasting Station, Yahenni — and no stage, line or question mentions them. They are almost certainly the inflation stack 001's final_state names ('The 19 two-card infinites figure is inflated'), since Ivy Lane Denizen needs another green creature ENTERING and an outlet supplies none. One sentence, in the thesis or a tenth open question, closes the largest silent gap in a model whose subject is that gap."
+      },
+      {
+        "where": "lines[0], lines[1], lines[2]",
+        "claim": "the other three solid arrows: Hapatra -> Ashnod's Altar (bodies), Ashnod's Altar -> Blood Artist (drain), Hapatra -> Blood Artist (drain)",
+        "status": "supported",
+        "note": "Checked against the scenario, the steps and final_state, and the four-card restriction holds. Step 1 sacrifices the Snake to the Altar as an activation cost and correctly calls it a mana ability that never uses the stack; step 6 resolves Blood Artist for exactly the numbers final_state records (you 41, one opponent 39, other two 40). The Snake's attribution to Hapatra is the stack's own (step 9: 'an outlet fed by Hapatra's Snakes') and matches her token spec verbatim. lines[2]'s note volunteers what the stack does NOT show — 'Blood Artist names one player, so this arrow is one seat, not the table' — which is the correct posture for a solid line."
+      },
+      {
+        "where": "lines[11], lines[12]",
+        "claim": "Devoted Druid and Walking Ballista dashed on the grounds they are derived in stack 001's resolution but absent from its board",
+        "status": "supported",
+        "note": "The reasoning is right and the notes are attributed rather than asserted. Confirmed against the artifact: the scenario board is Hapatra, Mikaeus, Ashnod's Altar, Blood Artist and a Snake token; neither the Druid nor the Ballista appears. The Druid steady state ('four -1/-1 placements and one death per cycle at zero mana') matches step 14 exactly, including the 302.6 reason the returned object makes no mana; the Ballista's layer-7c argument matches step 15's '1/1 under Mikaeus, so 704.5f never fires' and its three-card scope. This is the discipline lines[3] needed and did not get."
+      },
+      {
+        "where": "stages[7].what_it_does",
+        "claim": "'Six of the nineteen listed two-card infinites route through Mikaeus plus a counter-neutral outlet and stack 001 refutes all six'; single_point_of_failure Mikaeus",
+        "status": "supported",
+        "note": "Recounted from bracket_report.json: 19 two_card_infinites, of which exactly 8 name Mikaeus. Removing the two the stack upholds (Devoted Druid, Walking Ballista) leaves exactly the six step 10 names — Ashnod's Altar, Phyrexian Altar, Carrion Feeder, Viscera Seer, Yahenni, Blasting Station. Matches the stack's final_state ('six of those eight are refuted') and the six/eight/nineteen arithmetic is right in every place the model states it. The SPOF is carried too: both unbounded lines the stack upholds require Mikaeus."
+      },
+      {
+        "where": "stages[*].evidence (city notes) / map_disagreements",
+        "claim": "every city size and split figure",
+        "status": "supported",
+        "note": "Recomputed from deck_map.json: city-0 14, city-1 24, city-2 26, city-3 8, city-4 9, city-5 7, total 88. Every claim checks. city-2's 26 decomposes exactly as map_disagreements[0] states — 5 fodder + 3 protection + 7 wincon + 6 fuel + Hapatra and Host of the Hereafter + Skullclamp and Village Rites + Orcish Bowmasters = 26 — and it does span seven of the eight stages. Also verified: '22 of UNTAPPED GROUND's 24', '9 of THE ENGINE ROOM's 14' and its 4 mana cards plus Devoted Druid, '6 of THE COUNTER SUPPLY's 9' with Crumbling Ashes / Necroskitter / Toxic Deluge the three that supply none, 'FIND THE PIECE is exactly the eight tutors', 'BORROWED SPEED is seven and all seven are here'. And all five map_disagreements say which artifact is wrong about what — the declaration for 'Any drain converter' (4 declared where 6 drain, Obelisk Spider and Sephiroth missing, verified against goldfish_targets) and for 'Commander plus any -1/-1 payoff' (one label spanning fodder and wincon), the city for the other two. None is a hedge."
+      },
+      {
+        "where": "stages[0-7] quoted rates and figures",
+        "claim": "every goldfish, audit and strategy figure in the model",
+        "status": "supported",
+        "note": "Re-derived from goldfish_metrics.json and a fresh deck-audit run. All match: commander 9,970/10,000 at turn 2, mean 2.007, 99.9% by turn 6; tutors 78.0% / 67.6% / mean 2.695; Mikaeus + Devoted Druid 2.5% and 1.3% unassisted, 31.7% and 19.8% assisted, mean 5.686; Blowfly 16.3% / 66.7% and the 7.1% / 9.1% one-card hypergeometrics; Mikaeus 7.1% of opening sevens; curve two-drops 19 and three-drops 17; card-advantage 8 against a floor of 10 with Grim Backwoods, The One Ring and Yawgmoth named as uncounted, exactly as the audit's possible_uncounted lists them; taplands 0. The redundancy-vs-tutors quote ('5 copies is 31% of openers, 7 is 41%...') is verbatim against deck-audit's redundancy_citation, and open_questions[3]'s strategic_frame quote ('only free repeatable -1/-1 source, and therefore the real tutor target') is verbatim in strategic_frame.json. Only the 36.4% is mis-attributed (see above); no figure is wrong."
+      },
+      {
+        "where": "lines[10]",
+        "claim": "'Commander Spellbook contains Hapatra + Yawgmoth + Zulaport Cutthroat and Hapatra + Yawgmoth + Obelisk Spider as bracket-3 lines producing near-infinite life loss'",
+        "status": "supported",
+        "note": "Both records exist in combo_details.json with bracket 3 and 'Near-infinite lifeloss' in produces (popularity 3,937 and 10,071). The line is correctly dashed, and it adds the bound the database does not carry — stack 001 step 12's mandatory draw making the Yawgmoth loop library-bounded rather than infinite. This is the right way to use the combo sheet: cite it, then say what a checker found that it does not know."
+      },
+      {
+        "where": "stages[1].what_it_does / open_questions[0]",
+        "claim": "Blowfly Infestation's intervening 'if' means the pair cannot start itself",
+        "status": "supported",
+        "note": "Oracle text confirms the reading: 'Whenever a creature dies, IF IT HAD A -1/-1 COUNTER ON IT, put a -1/-1 counter on target creature.' Combined with stack 001 step 11 (Hapatra's placement is a combat-damage trigger), the pair does need a connected attack or a third card to place the first counter. Crucially the model asks this as open_questions[0] rather than asserting it — the right handling for an unverified claim about the deck's own declared two-card kill, and the reason the naming of Blowfly as ignition's SPOF sits so badly beside it."
+      },
+      {
+        "where": "stages[*].what_it_does lengths",
+        "claim": "revisability",
+        "status": "supported",
+        "note": "All eight run 977-1,412 characters against MAX_WHAT_IT_DOES = 1800 (longest: wincon 1,412, ignition 1,386). None is near the cap and none is muddled, so the next revision can hold each argument in view. The two that need edits — stages[0] for the mana cost and the land count, stages[1] for the SPOF — are 996 and 1,386, both comfortably revisable."
+      }
+    ],
+    "iterations": 1
+  }
+}
