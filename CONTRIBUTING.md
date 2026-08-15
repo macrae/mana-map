@@ -27,14 +27,15 @@ python3 -m http.server 8000
 
 The map boots on 1.8 MB because the artifacts it needs are tracked on purpose.
 
-**After `make setup`, with no pipeline run:** about **94% of the test suite**,
+**After `make setup`, with no pipeline run:** **1,360 of the 1,488 fast tests** —
+91%, measured on an actual fresh clone —
 every deterministic `manamap pilot` subcommand that reads a deck rather than the
 corpus, and a byte-identical re-render of all nine issues.
 
 **Needs `manamap run`** (~40–60 min, downloads ~56 MB, internet): anything
 reading `data/cards.csv` — `bracket-check`, `build-deck`, `pool-facts`,
-`fetch-deck`'s card-pool checks — plus retraining and `eval-embeddings`. About
-6% of the suite skips without it, and the skips are labelled.
+`fetch-deck`'s card-pool checks — plus retraining and `eval-embeddings`. 129
+cases skip without it, every one labelled with the command that would enable it.
 
 **Needs [Claude Code](https://claude.com/claude-code):** the agent phases only —
 generating a *new* deck's prose, engine model or issue plan. Everything

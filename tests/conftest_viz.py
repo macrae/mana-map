@@ -105,6 +105,28 @@ def _boot(browser, viz_server, query=""):
 
 
 
+def await_projection(page):
+    """Block until `MM.allData` is populated. For `discover_page` tests ONLY.
+
+    The discovery fixture waits on `Discovery.isReady()` and deliberately NOT on
+    the projection — booting the front door from 0.56 MB without the 12.9 MB
+    projection is the property those tests exist to observe, so the fixture
+    cannot wait for it without destroying what it measures.
+
+    Three tests then went on to read `MM.allData` anyway. It is fetched behind
+    the landing, so on an idle machine it has always arrived and the race is
+    invisible; under `-n 4` it has not, `findIndex` returns -1, and the failure
+    surfaces as `slug not derived from the commander: untitled` — which reads
+    like a brief-schema bug and is a timing bug. Caught once in three parallel
+    runs, in the same family as the five flakes the parallelisation pass fixed:
+    every one was a wait on the machine instead of on the behaviour.
+
+    Call this before touching `MM.allData` on a discovery page, and say why.
+    """
+    _wait_for_boot(page, "() => window.MM && MM.allData && MM.allData.length > 0",
+                   "the projection to arrive behind the landing")
+
+
 @pytest.fixture
 def discover_page(browser, viz_server):
     """The landing, on a card chosen by deep link so the test is not random.

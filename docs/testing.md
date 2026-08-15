@@ -51,12 +51,12 @@ amount of running the suite on a developed machine could have found them: the
 artifacts were always there. Re-clone and re-run whenever you add a test that
 touches `data/`.
 
-As of 2026-08-15: **1,624 tests** across 63 files — 1,488 fast and 136 browser. One is a
+As of 2026-08-15: **1,625 tests** across 63 files — 1,489 fast and 136 browser. One is a
 deliberately unmet `xfail(strict=True)` ship gate in `test_embedding_quality.py` (see
 below); it is a target the code has not reached, not a broken test.
 
 Why the count cannot be checked mechanically: **371 of those cases do not exist in the
-source** — there are 1,253 `def test_` functions and 1,624 collected cases, the difference
+source** — there are 1,254 `def test_` functions and 1,625 collected cases, the difference
 being parametrization over lists computed at collection time. The only way to count them is
 to run pytest, and running pytest from inside pytest recurses. (That subtraction is the
 cheap way to re-derive the figure: `grep -rhcE "^(async )?def test_" tests/*.py` against a
@@ -482,6 +482,27 @@ which no per-issue check could have caught.
 **Frontend:** `test_viz_behaviour.py` (playwright, the real gate) plus the source-assertion
 files `test_viz_{drill,deck_lens,viewer}.py` — see the section above on why the latter
 cannot catch a rendering regression.
+
+## Fixed sleeps in the browser suite — the remaining debt
+
+`test_viz_behaviour.py` holds **49 unconditional `wait_for_timeout` calls
+totalling 53.6 s**, down from 53 and 67.2 s. Four were converted to condition
+waits (4000, 3500 and two 3000 ms): a boot into Explore and a mode switch now
+wait on `mapRenderer.getCamera() !== null` — the renderer's own readiness answer,
+already documented in `canvas_page` — and the two arrow-key walks wait on
+`MM.browseSet.pos > 0`, which is the step itself rather than time passing.
+
+**The other 49 are left deliberately.** Every conversion is a chance to write a
+condition that is subtly not the thing being waited for, and this suite has
+already paid for that lesson twice: putting `setCamera` inside a
+`wait_for_function` predicate re-applied the zoom every frame and pinned the
+camera at the fit, which was *worse* than the sleep. Convert them when a test
+next needs touching, one at a time, each verified by three consecutive `-n 4`
+runs — not in a sweep.
+
+The wall-clock payoff is also smaller than the numbers suggest: 13.5 s of sleeps
+spread across four workers is about 3 s of the 234 s run. The reason to convert
+them is flakiness, not speed.
 
 ## conftest.py
 

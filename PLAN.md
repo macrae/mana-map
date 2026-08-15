@@ -368,6 +368,43 @@ compared the directory against the docs. Deleted.
 
 `analyze-engine` has since run on all nine decks, so this debt was paid in arrears rather than in advance — which is the wrong order and is why it is still listed. The gap it left is real: `engine_facts` and `deck_status` produced nine decks' worth of output with no unit test under them.
 
+### 9b. Going public, and the inner loop — DONE 2026-08-15
+
+The repo has a licence, a setup command and CI, and `pytest` takes 22 s instead
+of ten minutes.
+
+**Speed.** The single biggest cost in the fast suite was a wrong tree walk: two
+doc guards globbed the whole repository per question — 179 times in one — over
+38,669 files of which 37,653 are in `.venv`, then discarded the `.venv` hits.
+`tests/repo_tree.py` does one pruned walk and both files went **12.4 s → 1.9 s**.
+A bare `pytest` is now `-m 'not browser' -n auto`, and four regenerate-and-compare
+files are served from a content-hash cache when nothing they read has moved.
+
+| | |
+|---|---:|
+| serial, before | 86.5 s |
+| `make test` cold / warm | 36 s / **22 s** |
+| `make test-fresh` | 29 s |
+| **fresh clone, cold** | **20 s** |
+
+**The cache's five safety properties were proven, not argued** — key covers the
+code's source, records only on pass, corruption invalidates rather than hides,
+gitignored so CI runs everything, hits printed. The proofs are in the commit and
+in CLAUDE.md.
+
+**Two defects found only by doing the thing.** `make manuals` caught
+`manuals/index.html` referencing a stylesheet hash two generations stale, because
+`test_pilot_manual_freshness` covered the nine issues and not the newsstand that
+links them. And cloning into an empty directory and running `make setup && make
+test` — which nobody had ever done — turned up **23 failures**, all correct tests
+with missing gates on `cards.csv` and the strategy DB. Neither could fail here.
+
+**Still open, deliberately.** 49 fixed `wait_for_timeout` calls remain in the
+browser suite, 53.6 s of them; four were converted and the rest are left because
+a bad condition is worse than a sleep and the wall-clock payoff under `-n 4` is
+about 3 s. `docs/testing.md` records the reasoning. `.claude/agents/pilot-coach.md`
+still keeps one stale department name on purpose (see §3c).
+
 ### 10. Codebase hygiene
 
 Still open and genuinely worth doing:

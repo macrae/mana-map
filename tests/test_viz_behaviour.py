@@ -25,6 +25,7 @@ import pytest
 # used by name in test signatures, never called here, so every unused-import
 # check reports all three — and removing them takes the whole browser suite
 # down with an unrelated-looking "fixture not found".
+from conftest_viz import await_projection  # noqa: F401
 from conftest_viz import (  # noqa: F401
     BOOT_TIMEOUT_MS, canvas_page, corpus_count, discover_page, page, still_page,
 )
@@ -705,7 +706,14 @@ def test_one_card_plus_arrow_walks_its_neighbourhood(page):
     assert page.evaluate("!!MM.browseSet") is False, "selection should not start as a browse"
 
     _key(page, "ArrowRight")
-    page.wait_for_timeout(3000)
+    # Seeding the neighbourhood awaits the embedding matrix, so this is a real
+    # async wait rather than a repaint — but it is still a CONDITION. `pos > 0`
+    # is the step itself; waiting only for `browseSet` to exist would race the
+    # arrow that moves into it.
+    page.wait_for_function(
+        "() => MM.browseSet && MM.browseSet.indices"
+        "      && MM.browseSet.indices.length > 1 && MM.browseSet.pos > 0",
+        timeout=30_000)
 
     r = page.evaluate("""async () => {
         const bs = MM.browseSet;
@@ -741,7 +749,14 @@ def test_enter_reanchors_the_neighbourhood(page):
     page.evaluate("MM.selectByName('Zada, Hedron Grinder')")
     page.wait_for_timeout(700)
     _key(page, "ArrowRight")
-    page.wait_for_timeout(3000)
+    # Seeding the neighbourhood awaits the embedding matrix, so this is a real
+    # async wait rather than a repaint — but it is still a CONDITION. `pos > 0`
+    # is the step itself; waiting only for `browseSet` to exist would race the
+    # arrow that moves into it.
+    page.wait_for_function(
+        "() => MM.browseSet && MM.browseSet.indices"
+        "      && MM.browseSet.indices.length > 1 && MM.browseSet.pos > 0",
+        timeout=30_000)
     was = page.evaluate("MM.allData[MM.browseSet.indices[MM.browseSet.pos]].n")
     _key(page, "Enter")
     page.wait_for_timeout(3000)
@@ -1414,6 +1429,8 @@ def test_filters_narrow_the_pick(discover_page):
 def test_the_atlas_is_still_one_click_away(discover_page):
     """Discovery is the front door, not a replacement — the 34,322-point map still has
     to be reachable, and it still backs Deck Lens."""
+    # Reads MM.allData, which this fixture deliberately does not wait for.
+    await_projection(discover_page)
     r = discover_page.evaluate("""async () => {
         document.getElementById('modeSelect').value = 'explore';
         MM.setMode('explore');
@@ -3208,6 +3225,8 @@ def test_the_brief_is_the_schema_build_deck_reads(discover_page):
     `_manamap` and `next_step` extras, and its derived identity for Edgar Markov ({B,R,W})
     matches what the browser emits.
     """
+    # Reads MM.allData, which this fixture deliberately does not wait for.
+    await_projection(discover_page)
     r = discover_page.evaluate("""async () => {
         const edgar = MM.allData.findIndex(d => d.n === 'Edgar Markov');
 
@@ -3887,7 +3906,12 @@ def test_focusing_a_region_dims_the_map_instead_of_erasing_it(browser, viz_serve
     """
     from conftest_viz import _boot
     page = _boot(browser, viz_server, "?mode=explore")
-    page.wait_for_timeout(4000)
+    # `getCamera() != null` is the renderer's OWN readiness answer — non-null means
+    # the canvas and the base fit both exist, which is exactly the state a 4 s sleep
+    # was approximating. `canvas_page` waits on the same probe and documents why.
+    page.wait_for_function(
+        "() => document.querySelector('.map-canvas') && MM.mapRenderer"
+        "      && MM.mapRenderer.getCamera() !== null", timeout=30_000)
 
     # Alpha, not luminance: the canvas background is transparent, so `getImageData`
     # returns colour un-premultiplied and a point at 0.09 alpha reads as full-brightness
@@ -4180,6 +4204,8 @@ def test_entering_explore_shows_the_whole_map(discover_page):
     switching opened the atlas with almost all of it at 8% alpha and the camera somewhere
     else — which reads as a rendering fault, not as a lens.
     """
+    # Reads MM.allData, which this fixture deliberately does not wait for.
+    await_projection(discover_page)
     page = discover_page
     # Hold something, so the old auto-orient path would have fired.
     # A grown graph is what Session.size() counts, and it is what the old auto-orient
@@ -4194,7 +4220,12 @@ def test_entering_explore_shows_the_whole_map(discover_page):
             s.dispatchEvent(new Event('change'));
         }"""
     )
-    page.wait_for_timeout(3500)
+    # The mode switch loads the projection and refits. Wait for the renderer to say
+    # it has a fit rather than for a number that was tuned on one machine.
+    page.wait_for_function(
+        "() => MM.mode === 'explore' && MM.allData && MM.allData.length > 0"
+        "      && MM.mapRenderer && MM.mapRenderer.getCamera() !== null",
+        timeout=30_000)
 
     assert page.evaluate("() => MM.orientation") is None, "Explore auto-oriented on entry"
     assert page.evaluate("() => MM.regionFocus") is None
