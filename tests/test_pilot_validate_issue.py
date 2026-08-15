@@ -400,3 +400,62 @@ def test_every_prose_key_the_renderer_reads_is_voice_mapped():
     assert not unmapped, (
         f"{sorted(unmapped)} render into the magazine and are not in "
         f"PROSE_KEY_DEPARTMENT, so no voice check applies to them")
+
+
+# ── The length budget (STYLEv3 7.1) ──────────────────────────────────────
+
+
+def test_the_budget_is_reported_by_default_and_fails_only_under_strict(tmp_path):
+    """Eight issues were written before any budget existed. Failing them all the
+    day it lands turns eight tracked artifacts red for copy that was correct when
+    it shipped, and a team that sees permanent red learns to ignore red. `--strict`
+    is the gate for new work; the plain run says where you stand."""
+    import json
+    from manamap.pilot.validate_issue import validate_budget
+
+    plan = {"departments": [
+        {"id": "the-kill",
+         "dek": "One. Two. Three.",
+         "callouts": [{"text": "A. B. C. D."}],
+         "pilot_tips": [{"card": "X", "text": "Do it. Then do it again."}]},
+    ]}
+    (tmp_path / "manual_prose.json").write_text(json.dumps({
+        "matchups": "x" * 4000, "mulligan": "ok"}))
+    notes = validate_budget(tmp_path, plan)
+    joined = "\n".join(notes)
+    assert "the-kill.dek: 3 sentences" in joined
+    assert "the-kill.callouts[0]: 4 sentences" in joined
+    assert "the-kill.pilot_tips[0]: 2 sentences" in joined
+    assert "matchups: 4,000 chars" in joined
+    # A field under budget is silent — a validator that lists compliant fields is
+    # a validator nobody reads to the end of.
+    assert "mulligan" not in joined
+
+
+def test_every_budget_is_a_length_some_deck_already_achieves():
+    """A cap nothing can reach is a target, not a limit. Each one here was
+    calibrated against the fleet — EXCEPT the two the budget exists to bind,
+    whose number comes from the engine model's own measured cap instead."""
+    from manamap.pilot.issue_spec import PROSE_BUDGET
+    from manamap.pilot.validate_engine import MAX_WHAT_IT_DOES
+
+    deliberately_unreachable = {"threat_assessment", "matchups"}
+    assert deliberately_unreachable <= set(PROSE_BUDGET)
+    for key in deliberately_unreachable:
+        assert PROSE_BUDGET[key] > MAX_WHAT_IT_DOES, (
+            f"{key} is capped below the measured revisability limit — that is a "
+            f"stricter claim than the evidence supports")
+    # Nothing is capped so tightly that a normal paragraph breaches it.
+    assert all(cap >= 800 for cap in PROSE_BUDGET.values())
+
+
+def test_the_budget_reads_the_spec_not_a_transcribed_list():
+    """The same rule the department ids live under: one source, no copies."""
+    import inspect
+
+    from manamap.pilot import validate_issue
+    source = inspect.getsource(validate_issue.validate_budget)
+    for constant in ("PROSE_BUDGET", "ENTRY_BUDGET", "BRANCH_BUDGET"):
+        assert constant in source
+    # No cap typed into the checker itself.
+    assert "2500" not in source and "1900" not in source

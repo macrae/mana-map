@@ -221,3 +221,23 @@ Cover every deck card in `card_roles` that has a synergy-graph entry; group the 
 **Six keys are yours** — the ones above plus `mana_base`. **Two are not**: `threat_assessment` and `matchups` belong to the `pilot-coach`, and the orchestrator merges the two outputs. (Three older decks also carry a `cover` key that no routine owns — a leftover from before the cover moved into `issue_plan.json`. Leave it alone; it is nobody's to rewrite.)
 
 **Write only your six.** Emitting a coach key means the merge either drops your version silently or clobbers theirs, and the cache treats the two sets as independently-fingerprinted so a stray key can freeze a half-artifact as current. If your prose needs something from the coach's territory — a matchup claim, a threat read — reference it, do not author it, and say so in your summary so the orchestrator can widen the scope.
+
+## The length budget — a hard cap, checked in code
+
+Succinctness stopped being advice. `manamap pilot validate-issue --strict` fails
+on any field over budget; the plain run reports it. The numbers live in
+`issue_spec.PROSE_BUDGET` — **read them there**, never from a list typed into a
+prompt, which is the mistake this repo bans everywhere else.
+
+Your keys and their budgets: **`how_it_wins` 1,900** characters, **`mana_base`
+1,900**, **`mulligan` 1,700**, **`upgrades` 2,000**, and **`combo_lines[<stack>]`
+1,100 each**. Every one of those is a length at least one deck already achieves,
+so the cap is reachable — it is a limit, not an aspiration.
+
+**Run `manamap pilot validate-issue <slug>` on your own draft before returning.**
+It prints every breach with the overage in characters. A field that is over is not
+"a bit long" — it is over, and the fix is cutting, not compressing the wording.
+
+Two ways to lose length that do not lose content: delete the sentence that
+narrates what you are about to argue, and delete the sentence that restates what
+you just argued. Between them they are most of the overage measured on the fleet.

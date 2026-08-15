@@ -4538,3 +4538,61 @@ def test_hovering_a_plate_lifts_it(browser, viz_server):
         assert after > before * 1.05, (before, after)
     finally:
         page.close()
+
+
+def test_the_case_index_scans_closed_and_holds_the_record_open(browser, viz_server):
+    """Judge's Desk is a list you run your eye down and open ONE of.
+
+    "Shrinks to verdicts" and "may not truncate a citation" are both binding, and
+    they only look contradictory if "shrinks" means "holds less". What shrinks is
+    the footprint: one row per case closed, the complete verbatim record inside.
+    """
+    page = browser.new_page()
+    page.goto(f"{viz_server}/manuals/radagast.html")
+    page.wait_for_selector(".dossier", timeout=15000)
+    try:
+        rows = page.query_selector_all("#judges-desk .case-row")
+        assert len(rows) >= 5, "radagast publishes seven cases"
+        # Closed by default, and cheap: a case row is one line, not a header block.
+        assert page.eval_on_selector_all(
+            "#judges-desk details.dossier", "e=>e.filter(d=>d.open).length") == 0
+        heights = page.eval_on_selector_all(
+            "#judges-desk .case-row", "e=>e.map(r=>r.getBoundingClientRect().height)")
+        assert max(heights) < 90, f"case rows are not one-liners: {heights}"
+
+        # The record is there, in full, the moment one is opened.
+        before = page.eval_on_selector(
+            "#judges-desk", "e=>e.getBoundingClientRect().height")
+        page.eval_on_selector("#judges-desk details.dossier", "d=>{d.open=true}")
+        page.wait_for_timeout(300)
+        after = page.eval_on_selector(
+            "#judges-desk", "e=>e.getBoundingClientRect().height")
+        assert after > before * 2, (before, after)
+        opened = page.eval_on_selector(
+            "#judges-desk details.dossier[open]", "d=>d.innerText")
+        assert "CR " in opened, "an opened case shows no citations"
+    finally:
+        page.close()
+
+
+def test_the_kill_points_at_the_proof_instead_of_reprinting_it(browser, viz_server):
+    """The theatre shipped printing every citation inline, which put the identical
+    120 quotes into both departments. The walkthrough keeps action and effect; the
+    rules live in one place and The Kill links to them."""
+    page = browser.new_page()
+    page.goto(f"{viz_server}/manuals/radagast.html")
+    page.wait_for_selector(".theatre", timeout=15000)
+    try:
+        # A prose MENTION of a rule is legitimate and is what the renderer's
+        # evidence links exist for (STYLEv3 8.4) — a caption may say "CR 302.6"
+        # and become a link to the case. What may not appear here is a citation
+        # BLOCK: the rule number set beside its verbatim quote, which is the
+        # appendix's job and was being printed in both places.
+        assert page.query_selector_all("#the-kill .cite") == []
+        assert page.query_selector_all("#judges-desk .cite") != []
+        # `innerText` reflects text-transform, and this label is set in caps.
+        kill = page.eval_on_selector("#the-kill", "e=>e.innerText").lower()
+        assert "citations on the record" in kill
+        assert page.query_selector("#the-kill a.dossier-pointer") is not None
+    finally:
+        page.close()

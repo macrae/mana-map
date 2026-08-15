@@ -296,3 +296,29 @@ Every section id must appear, in the canonical order — read it from
 than from any list written down here. A list transcribed into a prompt goes stale
 the moment a section is added; the spec cannot. Structural sections (cover,
 contents, back-page) need only an `id` plus whatever furniture you specify.
+
+## The length budget — a hard cap, checked in code
+
+Succinctness stopped being advice. `manamap pilot validate-issue --strict` fails
+on any field over budget; the plain run reports it. The numbers live in
+`issue_spec.PROSE_BUDGET` — **read them there**, never from a list typed into a
+prompt, which is the mistake this repo bans everywhere else.
+
+Your furniture, and all three limits were already in STYLEv3 with nothing
+checking them: **`dek` 2 sentences** (17% of the fleet breached it), **each
+`callouts[].text` 3 sentences** (24% breached, one ran to 7), **each
+`pilot_tips[].text` exactly 1** (5% breached). Captions were already clean and
+take no cap.
+
+You also own the whole-issue number. `manamap pilot issue-length <slug> --rendered`
+reports words and screens per section; the issue's target is **40 screens**, and
+Vol. 009 measured 74.5. When a section is over, say so in `gaps` — the fix is
+usually the prose an agent below you wrote, not your packaging.
+
+**Run `manamap pilot validate-issue <slug>` on your own draft before returning.**
+It prints every breach with the overage in characters. A field that is over is not
+"a bit long" — it is over, and the fix is cutting, not compressing the wording.
+
+Two ways to lose length that do not lose content: delete the sentence that
+narrates what you are about to argue, and delete the sentence that restates what
+you just argued. Between them they are most of the overage measured on the fleet.

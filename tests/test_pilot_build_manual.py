@@ -649,9 +649,34 @@ def test_art_break_renders_after_sources_say():
             "assumptions": [], "notes": []}
     html_out = render(mana=mana)
     pos_sources = html_out.index('id="sources-say"')
-    pos_break = html_out.index('class="art-break"')
     pos_numbers = html_out.index('id="by-the-numbers"')
+    # `BREATHER_AFTER` now holds two ids and The Kill's break comes FIRST in the
+    # document, so this must find the break that follows Sources Say rather than
+    # the first one on the page. The Kill's own break is asserted below.
+    pos_break = html_out.index('class="art-break"', pos_sources)
     assert pos_sources < pos_break < pos_numbers
+
+
+def test_the_kill_gets_a_breather_because_it_is_the_peak():
+    """It is the mid-book peak and it ran straight into the next department's
+    opener, so the issue's loudest moment had nowhere to land. A breather after a
+    peak is not a rhythm exception — it is what makes it a peak (STYLEv3 6)."""
+    from manamap.pilot.issue_spec import BREATHER_AFTER
+
+    assert "the-kill" in BREATHER_AFTER
+    # The break is commander art plus one computed Ledger line, so it needs the
+    # mana analysis — with none, no break renders anywhere, which is also true of
+    # the Sources Say one and is why that test supplies the same fixture.
+    html_out = render(mana={"lands": {"total": 24, "enters_tapped": 12, "classes": {}},
+                            "sources": {}, "pips": {}, "on_curve_probability": {},
+                            "shares": {}, "source_targets": {}, "ramp": {},
+                            "assumptions": [], "notes": []})
+    pos_kill = html_out.index('id="the-kill"')
+    # Whichever department follows — the fixture predates the Act III merge and
+    # carries the three sections it replaced, so naming one here would pin the
+    # test to a migration that is still in flight.
+    pos_next = html_out.index('<section class="dept"', pos_kill + 1)
+    assert pos_kill < html_out.index('class="art-break"', pos_kill) < pos_next
 
 
 # ── The board, stated before anything argues about it ────────────────────
@@ -1114,3 +1139,82 @@ def test_the_short_list_art_sidecar_reads_only_the_ten():
     ]}
     assert names_from(analysis) == ["Seedborn Muse", "Vigor"]
     assert names_from({}) == []
+
+
+# ── Magazine v6: length is a measured quantity ───────────────────────────
+#
+# Vol. 009 reached 43,494 words and 74.5 screens of scroll — 62 A4 pages, where a
+# real issue is 30–50 including full-page art. These pin the structural cuts, so
+# the length cannot drift back the way it drifted there: one department at a
+# time, each addition defensible on its own.
+
+
+def test_the_proof_is_printed_exactly_once():
+    """The Kill and Judge's Desk carried the IDENTICAL 120 CR citations and all 73
+    rules, because the stack theatre put the full record into the read-through —
+    which is the failure mode §5.1 names for that section by name. Judge's Desk
+    holds the citations; The Kill holds the walkthrough and points at them."""
+    from manamap.pilot.design import stack_theatre
+
+    steps = [{"action": "Cast it.", "effect": "It resolves.",
+              "citations": [{"rule": "601.2", "quote": "To cast a spell…"},
+                            {"rule": "608.2", "quote": "…the spell resolves."}]}]
+    html_out = stack_theatre("003", steps)
+    assert "CR 601.2" not in html_out and "To cast a spell" not in html_out
+    assert "Cast it." in html_out and "It resolves." in html_out
+    # The count survives, so the reader knows a record exists and how big it is.
+    assert "2 citations on the record" in html_out
+
+
+def test_a_case_row_carries_counts_and_never_a_derived_holding():
+    """The index says how much record is behind each case. It does NOT say what
+    the case held: deriving that from `final_state.summary` was measured against
+    the corpus and removed (see the note above render_the_kill), and a wrong
+    verdict in the department that exists for correctness is worse than none."""
+    desk = render().split('id="judges-desk"', 1)[1]
+    assert 'class="case-row"' in desk
+    assert 'class="case-id"' in desk and 'class="case-meta"' in desk
+    assert "step" in desk and "citation" in desk
+
+
+def test_a_stack_title_is_split_into_a_headline_and_the_question():
+    """Stack titles are written for the resolver — a median of 74 characters and
+    up to 157 — and ran three lines of display type at feature size. They almost
+    all carry a real headline before a colon; the question becomes the dek."""
+    from manamap.pilot.build_manual import stack_headline
+
+    head, tail = stack_headline(
+        "The Frostfang trap: flashed in after blockers are declared, does "
+        "deathtouch apply to damage already lined up?")
+    assert head == "The Frostfang trap"
+    assert tail.startswith("flashed in after blockers")
+    # Six of the 54 presentable stacks carry no colon; they keep their whole text.
+    assert stack_headline("One ping, five payoffs") == ("One ping, five payoffs", "")
+    # A leading fragment too short to be a headline is not one — a title like
+    # "X: y" must not become the headline "X".
+    assert stack_headline("A: something") == ("A: something", "")
+
+
+def test_the_board_renders_as_a_strip_and_keeps_every_field():
+    """It shipped as a grid of bordered cards holding definition lists and came
+    to 3,782px on radagast — taller than the stack theatre it introduces. Same
+    fields, one line per seat."""
+    from manamap.pilot.build_manual import render_board_block
+
+    out = render_board_block({
+        "board": {
+            "you": ["Sac Outlet (2/2)", "Payoff Engine (enchantment)", "Swamp",
+                    "Insect token (already sacrificed to pay the cost)"],
+            "opponents": [{"name": "P2", "life": 33, "board": ["a 4/4"]}],
+        },
+        "hand": ["Dark Ritual"], "graveyard": ["Bloodghast"],
+        "mana_available": "{2}{B}",
+    })
+    assert 'class="seats"' in out and 'class="seat"' in out
+    assert "<dl>" not in out
+    for kept in ("Sac Outlet", "Payoff Engine", "Swamp", "Dark Ritual",
+                 "Bloodghast", "{2}{B}", "P2", "33 life", "a 4/4"):
+        assert esc(kept) in out, kept
+    # The cost payment keeps its OWN labelled run — folding it into Permanents
+    # would change the body count, which is what these engines are bounded by.
+    assert "Already paid" in out

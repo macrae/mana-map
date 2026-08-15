@@ -184,7 +184,10 @@ MASTHEAD_COLUMNISTS = [
 # Sections followed by a renderer-emitted full-bleed breather spread (STYLEv3
 # §6, v3.3): the dense-adjacency check skips the pair on either side of a
 # declared breather, because the reader gets an art break between them.
-BREATHER_AFTER = frozenset({"sources-say"})
+# The Kill joins it in v3.5: it is the mid-book PEAK (§6) and ran straight into
+# the next department's opener, so the issue's loudest moment had nowhere to land.
+# A breather after a peak is not a rhythm exception, it is what makes it a peak.
+BREATHER_AFTER = frozenset({"sources-say", "the-kill"})
 
 # Departments an issue MAY carry but is not required to.
 #
@@ -322,6 +325,55 @@ def voices_for(prose_key):
     byline = (DEPARTMENT_BY_ID[dept]["byline"] or "")
     return tuple(c["name"] for c in MASTHEAD_COLUMNISTS if c["name"] in byline)
 
+
+# ── The length budget (STYLEv3 §7.1) ────────────────────────────────────
+#
+# "Succinctness is a law, not a preference" has been in the constitution since
+# v3 and nothing enforced it, so length drifted the way any unmeasured quantity
+# drifts: one department at a time, each addition defensible. Vol. 009 measured
+# 43,494 words and 74.5 screens of scroll — roughly 62 A4 pages, where a real
+# issue is 30–50 including full-page art.
+#
+# Every cap below is CALIBRATED AGAINST THE FLEET, not chosen: each one is a
+# length at least one deck already achieves today, so it is a limit rather than
+# an aspiration, and each binds the tail rather than everything. The breach rates
+# when these were set, across all nine decks:
+#
+#   how_it_wins 44%   mulligan 33%   upgrades 67%   mana_base 78%
+#   combo_lines 10%   decision.line 11%   decision.coaching 30%
+#
+# `threat_assessment` and `matchups` are the deliberate exception: NO deck
+# achieves 2500 (the shortest are 3,821 and 4,129), so all nine breach. That cap
+# comes from a different measurement — `validate_engine.MAX_WHAT_IT_DOES = 1800`,
+# where this repo established that past roughly a page an agent asked to change
+# one clause cannot hold the rest of the argument in view. These two run a median
+# of 5,066 and 5,181, are the longest prose in the magazine, and both render in
+# the same department, which is why At the Table is ten screens. The Act III merge
+# combined three departments' headers and never touched their prose.
+#
+# Fields with no cap are fields the fleet already keeps short: `decision.signals`
+# (max 690), `decision.coalition_risk` (max 639), `card_roles` entries (max 365)
+# and `pilots_log` turns (max 1,091). A cap that binds nothing is noise in a
+# validator, and this repo has deleted three checks for exactly that.
+PROSE_BUDGET = {
+    "threat_assessment": 2500,
+    "matchups": 2500,
+    "upgrades": 2000,
+    "how_it_wins": 1900,
+    "mana_base": 1900,
+    "mulligan": 1700,
+    "editors_letter": 1600,
+}
+# Per-entry caps inside a keyed prose block, and inside a decision's branches.
+ENTRY_BUDGET = {"combo_lines": 1100}
+BRANCH_BUDGET = {"line": 800, "coaching": 1100}
+
+# Furniture limits STYLEv3 already sets in prose (§7.2, §8.4) and nothing checked.
+# Measured breach across the nine plans when added: deks 17%, callouts 24%,
+# pilot tips 5%. Captions were already clean at 0% and take no cap.
+MAX_DEK_SENTENCES = 2
+MAX_CALLOUT_SENTENCES = 3
+MAX_PILOT_TIP_SENTENCES = 1
 
 MASTHEAD = "MANA MAP"
 SERIES_SLUG = "PILOT'S MANUAL"

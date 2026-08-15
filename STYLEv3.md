@@ -694,6 +694,47 @@ one breath gets cut in two. One idea per paragraph — the reader should never h
 to re-find their place. Cutting a clause is almost always the right call; a
 columnist's voice lives in word choice and rhythm, never in length.
 
+**And it is now a budget, in code.** The law above shipped with v3 and nothing
+enforced it, so length drifted the way any unmeasured quantity drifts: one
+department at a time, each addition defensible on its own. Vol. 009 measured
+**43,494 words and 74.5 screens of scroll** — about 62 A4 pages, where a real
+issue is 30–50 *including* full-page art.
+
+| Field | Budget | Why that number |
+|---|---|---|
+| `dek` | 2 sentences | §7.2 already said so; 17% of the fleet breached it |
+| `callouts[].text` | 3 sentences | §8.4 already said so; 24% breached, max 7 |
+| `pilot_tips[].text` | 1 sentence | §7.5 already said so; 5% breached |
+| `how_it_wins` | 1,900 chars | at least one deck already writes it this short |
+| `mana_base` | 1,900 | ditto |
+| `mulligan` | 1,700 | ditto |
+| `upgrades` | 2,000 | ditto |
+| `editors_letter` | 1,600 | one page means one page |
+| `combo_lines[<stack>]` | 1,100 | per verified line, not per department |
+| `decisions[].line` | 800 | a branch is a choice, not an essay |
+| `decisions[].coaching` | 1,100 | ditto |
+| **`threat_assessment`** | **2,500** | see below |
+| **`matchups`** | **2,500** | see below |
+
+Every cap except the last two is a length **some deck already achieves**, so it
+is a limit rather than an aspiration. The last two are the exception and are
+deliberately unreachable by today's copy: they run a median of 5,066 and 5,181
+characters, the longest prose in the magazine, and both render in At the Table —
+which is why that one section is ten screens. Their number comes from a different
+measurement, `validate_engine.MAX_WHAT_IT_DOES = 1800`, where this repo
+established that past roughly a page a writer asked to change one clause can no
+longer hold the rest of the argument in view. The Act III merge combined three
+departments' headers and never touched their prose; this is that debt, named.
+
+`manamap pilot validate-issue` reports breaches; `--strict` fails on them.
+`manamap pilot issue-length <slug> --rendered` is the whole-issue measure. The
+authoritative numbers live in `issue_spec.PROSE_BUDGET` — this table is a copy for
+a reader, and the constant wins any disagreement.
+
+**Airiness is bought, not added.** Whitespace comes from removing content; padding
+added around the same words makes a dense page a taller dense page. Every screen
+of air in this magazine is paid for by a cut somewhere else.
+
 ### 7.2 The four-part headline stack
 
 Every feature opener carries all four, in this order:

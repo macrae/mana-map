@@ -64,6 +64,7 @@ manamap pilot artist-credits <slug> --json  # standout artists + art themes (Fea
 manamap pilot short-list-art <slug>     # The Short List's ten → card art (Scryfall; tracked sidecar)
 manamap pilot build-manual <slug>       # → manuals/<slug>.html
 manamap pilot build-index               # → manuals/index.html gallery
+manamap pilot issue-length <slug> [--rendered]  # how long is this issue, and where did the length go?
 manamap pilot validate-issue <slug>     # form-check issue.json + issue_plan.json
 manamap pilot cache-status <slug>       # have an agent routine's inputs changed?
 manamap pilot cache-record <slug> --routine R   # record what produced an artifact
@@ -292,7 +293,25 @@ voice, component library); `docs/history/STYLE-v1-visual-research.md` and
 
 The Kill renders combo lines as feature spreads with dossier pointers; **Judge's Desk**
 carries the complete resolutions with every citation verbatim (the renderer may not
-summarize proof).
+summarize proof) as a **case index** — one scannable row per case, expanding to the
+unchanged record. The proof is printed in exactly ONE place: the theatre prints a
+citation COUNT and points at the case, because shipping it with the quotes inline put
+the identical 120 citations into both departments.
+
+### Length is measured (`issue-length`, `PROSE_BUDGET`)
+
+`manamap pilot issue-length <slug> [--rendered]` reports words and visible words per
+section — visible excludes anything inside a collapsed `<details>`. The gap is the
+point: Judge's Desk was 21% of Vol. 009's words and 2.4% of its scroll, so a single
+number sends you to cut the wrong department half the time.
+
+`issue_spec.PROSE_BUDGET` caps each prose key at a length at least one deck already
+achieves. `validate-issue` reports breaches; **`--strict` fails on them**, so the gate
+is real for new work without turning eight pre-budget artifacts red. The two
+deliberate exceptions — `threat_assessment` and `matchups` at 2,500 where the fleet's
+shortest are 3,821 and 4,129 — take their number from
+`validate_engine.MAX_WHAT_IT_DOES` instead, and are the debt the Act III merge left
+when it combined three departments' headers without touching their prose.
 
 **The Kill's stack theatre** (`design.stack_theatre`) renders a resolution as a
 receding stack of plates on a vanishing-point grid — one plate per step, hover to

@@ -46,6 +46,7 @@ PILOT_STEPS = [
     ("short-list-art", "manamap.pilot.short_list_art", "Resolve The Short List's ten to card art (Scryfall; tracked sidecar)"),
     ("build-manual", "manamap.pilot.build_manual", "Render a deck's magazine issue (sections per issue_spec)"),
     ("build-index", "manamap.pilot.build_index", "Render manuals/index.html — the newsstand"),
+    ("issue-length", "manamap.pilot.issue_length", "How long is this issue, and where did the length go?"),
     ("validate-issue", "manamap.pilot.validate_issue", "Form-check issue.json + issue_plan.json"),
     ("scenario-facts", "manamap.pilot.scenario_facts", "Deterministic brief for a stack scenario (board, bodies, drain arithmetic)"),
     ("merge-prose", "manamap.pilot.merge_prose", "Merge an agent's .agent-out prose into manual_prose.json, keys it owns only"),
@@ -72,7 +73,7 @@ _DECK_COMMANDS = {
     "validate-considering", "validate-diagnosis", "validate-goldfish-targets",
     "diagnosis-report",
     "validate-tutor-guide", "impact", "scenario-facts", "merge-prose",
-    "short-list-art",
+    "short-list-art", "issue-length",
 }
 
 
@@ -115,6 +116,13 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "artist-credits":
             cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "validate-issue":
+            cmd.add_argument("--strict", action="store_true",
+                             help="Fail on the length budget, not just report it")
+        if name == "issue-length":
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+            cmd.add_argument("--rendered", action="store_true",
+                             help="True scroll height via playwright (slower)")
         if name == "build-deck":
             cmd.add_argument("--write-decklist", action="store_true", dest="write_decklist",
                              help="Also write decklist.txt for fetch-deck")

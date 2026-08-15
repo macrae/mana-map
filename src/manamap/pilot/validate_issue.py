@@ -32,6 +32,12 @@ from manamap.pilot.issue_spec import (
     DEPARTMENT_IDS,
     MODE,
     REQUIRED_ISSUE_KEYS,
+    PROSE_BUDGET,
+    ENTRY_BUDGET,
+    BRANCH_BUDGET,
+    MAX_DEK_SENTENCES,
+    MAX_CALLOUT_SENTENCES,
+    MAX_PILOT_TIP_SENTENCES,
 )
 
 REQUIRED_PLAN_KEYS = {"slug", "angle", "cover", "departments"}
@@ -551,6 +557,66 @@ def validate_self_containment(base, plan):
     return errors
 
 
+def _sentences(text):
+    return [s for s in re.split(r"(?<=[.!?])\s+", str(text or "").strip()) if s]
+
+
+def validate_budget(base, plan):
+    """The length budget (STYLEv3 §7.1, `issue_spec.PROSE_BUDGET`).
+
+    Returned SEPARATELY from the form errors and reported rather than failed
+    unless `--strict`. The budget arrived after eight issues were written against
+    no budget at all, and failing them all on the day it lands would turn eight
+    tracked artifacts red for copy that was correct when it shipped — which is how
+    a team learns to ignore red. `--strict` is the gate for new work; the plain
+    run tells you where you stand.
+    """
+    notes = []
+    for dept in plan.get("departments") or []:
+        did = dept.get("id", "?")
+        if dept.get("dek"):
+            n = len(_sentences(dept["dek"]))
+            if n > MAX_DEK_SENTENCES:
+                notes.append(f"{did}.dek: {n} sentences (max {MAX_DEK_SENTENCES})")
+        for i, c in enumerate(dept.get("callouts") or []):
+            n = len(_sentences(c.get("text")))
+            if n > MAX_CALLOUT_SENTENCES:
+                notes.append(f"{did}.callouts[{i}]: {n} sentences "
+                             f"(max {MAX_CALLOUT_SENTENCES})")
+        for i, t in enumerate(dept.get("pilot_tips") or []):
+            n = len(_sentences(t.get("text")))
+            if n > MAX_PILOT_TIP_SENTENCES:
+                notes.append(f"{did}.pilot_tips[{i}]: {n} sentences — a PILOT TIP is "
+                             f"one imperative sentence (STYLEv3 §7.5)")
+
+    prose_path = base / "manual_prose.json"
+    if prose_path.exists():
+        with open(prose_path) as f:
+            prose_doc = json.load(f)
+        for key, cap in sorted(PROSE_BUDGET.items()):
+            text = prose_doc.get(key)
+            if isinstance(text, str) and len(text) > cap:
+                notes.append(f"{key}: {len(text):,} chars (budget {cap:,}) — "
+                             f"{len(text) - cap:,} over")
+        for key, cap in sorted(ENTRY_BUDGET.items()):
+            for sub, text in sorted((prose_doc.get(key) or {}).items()):
+                if isinstance(text, str) and len(text) > cap:
+                    notes.append(f"{key}[{sub}]: {len(text):,} chars (budget {cap:,})")
+
+    decisions = base / "decisions"
+    if decisions.is_dir():
+        for path in sorted(decisions.glob("*.json")):
+            with open(path) as f:
+                doc = json.load(f)
+            for i, branch in enumerate(doc.get("branches") or []):
+                for key, cap in sorted(BRANCH_BUDGET.items()):
+                    text = branch.get(key)
+                    if isinstance(text, str) and len(text) > cap:
+                        notes.append(f"decisions/{path.name} branch[{i}].{key}: "
+                                     f"{len(text):,} chars (budget {cap:,})")
+    return notes
+
+
 def main(args):
     base = deck_dir(args.slug)
     errors = []
@@ -591,11 +657,20 @@ def main(args):
     errors += validate_self_containment(base, plan)
     errors += validate_land_counts(base, plan)
 
+    budget = validate_budget(base, plan)
+    if budget and getattr(args, "strict", False):
+        errors += [f"OVER BUDGET — {n}" for n in budget]
+
     report_errors(f"issue plan for {args.slug}", errors)
     print(
         f"OK   issue plan for {args.slug} — {len(plan['departments'])} departments, "
         f"form holds; angle: {plan['angle'][:60]}"
     )
+    if budget:
+        print(f"\nBUDGET  {len(budget)} field(s) over the length budget "
+              f"(STYLEv3 §7.1) — reported, not failed. `--strict` fails on these.")
+        for note in budget:
+            print(f"  - {note}")
 
 
 if __name__ == "__main__":

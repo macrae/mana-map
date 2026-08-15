@@ -60,7 +60,7 @@ CSS = """
 * { box-sizing:border-box; }
 body {
   margin:0; background:var(--paper); color:var(--ink);
-  font-family:var(--body); font-size:16px; line-height:1.55;
+  font-family:var(--body); font-size:16px; line-height:1.62;
   /* cheap-stock tooth */
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/></filter><rect width='60' height='60' filter='url(%23n)' opacity='0.028'/></svg>");
 }
@@ -102,15 +102,23 @@ h2.dept-title {
 h3 { font-family:var(--condensed); font-weight:700; text-transform:uppercase;
      letter-spacing:.06em; font-size:1.05em; margin:1.4em 0 .4em; }
 p { margin:0 0 1em; }
-.body-copy { max-width:68ch; }
+/* 62ch renders ~66 characters here. The measure was 68ch (~78 characters),
+   which is past the range a reader scans without losing the line — the single
+   cheapest thing on this page that makes it read as dense. */
+.body-copy { max-width:62ch; }
 .body-copy p:first-of-type::first-letter {
   font-family:var(--display); font-size:3.1em; line-height:.82; float:left;
   padding:.06em .12em 0 0; color:var(--power-red);
 }
 
 /* ── Department chrome ──────────────────────────────────────────────── */
-.dept { padding:44px 34px 18px; border-top:6px solid var(--accent,var(--ink));
+/* Space BETWEEN sections goes up and space INSIDE dense furniture comes down —
+   they are opposite moves and both were set from the same 44/34/18. A reader
+   feels "airy" at the seams, where one idea ends and the next begins; padding
+   added inside a dense table just makes the table taller. */
+.dept { padding:64px 34px 26px; border-top:6px solid var(--accent,var(--ink));
         position:relative; }
+.dept-head { margin-bottom:26px; }
 .dept-head { display:flex; align-items:flex-end; gap:14px; flex-wrap:wrap;
              border-bottom:3px solid var(--ink); padding-bottom:10px; margin-bottom:20px; }
 .dept-promise { font-family:var(--condensed); text-transform:uppercase;
@@ -308,7 +316,7 @@ a.cardref.offdeck { text-decoration-style:dotted; text-decoration-thickness:2px;
   box-shadow:7px 7px 0 rgba(0,0,0,.28); background:#0B0A14; overflow:hidden; }
 .theatre .th-in { position:absolute; width:1px; height:1px; opacity:0;
   pointer-events:none; }
-.th-stage { position:relative; height:340px; overflow:hidden;
+.th-stage { position:relative; height:296px; overflow:hidden;
   perspective:1000px; perspective-origin:50% 40%; }
 .th-grid { position:absolute; inset:0; width:100%; height:100%; display:block; }
 /* `pointer-events:none` on the deck is load-bearing, not tidiness. The deck is
@@ -365,9 +373,13 @@ a.cardref.offdeck { text-decoration-style:dotted; text-decoration-thickness:2px;
 .th-note > b { display:block; font-size:.95rem; line-height:1.4; margin-bottom:6px; }
 .th-note .effect { font-size:.88rem; line-height:1.45; color:var(--ink-soft);
   margin-bottom:8px; }
+/* Not the citations — the count of them, and a nudge to where they are kept. */
+.th-cited { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.12em; font-size:.62rem; color:var(--tier-verified);
+  border-top:2px solid rgba(46,125,50,.35); padding-top:6px; }
 .th-over { background:var(--paper); margin:0; padding:0 18px 12px;
   font-size:.76rem; font-style:italic; color:var(--ink-soft); }
-@media (max-width:640px) { .th-stage { height:270px; } .th-plate { width:186px; } }
+@media (max-width:640px) { .th-stage { height:244px; } .th-plate { width:186px; } }
 /* Motion is the affordance, not the content: with it off the plates still sort
    themselves by depth and every step is still one tab away. */
 @media (prefers-reduced-motion:reduce) {
@@ -378,7 +390,7 @@ a.cardref.offdeck { text-decoration-style:dotted; text-decoration-thickness:2px;
    printed page missing the proof. */
 @media print {
   .theatre { box-shadow:none; }
-  .th-stage { height:230px; }
+  .th-stage { height:206px; }
   .th-railwrap, .th-over { display:none; }
   .th-plate { opacity:1 !important; filter:none !important; }
   .th-note { display:block !important; border-top:1px solid rgba(26,23,20,.25);
@@ -509,6 +521,31 @@ a.cardref.offdeck { text-decoration-style:dotted; text-decoration-thickness:2px;
 .scenario .lbl { font-family:var(--condensed); text-transform:uppercase;
                  letter-spacing:.1em; font-size:11px; color:var(--ink-soft); }
 
+/* A verified line's headline and the question it answers. The stack title is
+   authored for a resolver, so its head is the headline and its tail is the dek —
+   set small, because a 157-character question in display type is not a headline. */
+.line-head { font-family:var(--display); font-size:clamp(1.15rem,2.6vw,1.6rem);
+             line-height:1.05; text-transform:none; letter-spacing:-.01em;
+             margin:0 0 .25em; }
+.line-dek { font-size:.92em; line-height:1.42; color:var(--ink-soft);
+            max-width:62ch; margin:0 0 1em; }
+
+/* A board state, at spec-sheet weight. One line per seat, labelled runs inside
+   it — where this used to be a grid of bordered cards each holding a definition
+   list, which on radagast ran taller than the stack theatre it introduces. */
+.seats { margin:8px 0 4px; }
+.seat { display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 12px;
+        padding:5px 0; border-top:1px solid rgba(26,23,20,.16); font-size:.86em;
+        line-height:1.4; }
+.seat:first-child { border-top:none; }
+.seat-who { font-family:var(--condensed); font-weight:700; text-transform:uppercase;
+            letter-spacing:.09em; font-size:.72rem; flex:0 0 auto;
+            min-width:9ch; color:var(--ink); }
+.seat .run { color:var(--ink-soft); }
+.seat .run i { font-family:var(--condensed); font-style:normal;
+               text-transform:uppercase; letter-spacing:.08em; font-size:.64rem;
+               color:var(--ink); opacity:.62; }
+
 .branches { display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); }
 .branch { border:3px solid var(--ink); background:#fff; padding:13px; }
 .branch h4 { font-family:var(--condensed); text-transform:uppercase; margin:0 0 7px;
@@ -517,6 +554,14 @@ a.cardref.offdeck { text-decoration-style:dotted; text-decoration-thickness:2px;
 .branch dt { font-family:var(--condensed); text-transform:uppercase; font-size:10.5px;
              letter-spacing:.1em; color:var(--ink-soft); margin-top:8px; }
 .branch dd { margin:2px 0 0; font-size:.92em; }
+/* A LAYOUT fix for the decision branches was measured and REJECTED. They render
+   328px wide and up to 2,486px tall, which reads badly, and the obvious answer —
+   one branch per full-width row with its fields two-up — makes the section
+   TALLER, because a grid pays only its tallest card per row while stacked rows
+   sum. Measured on radagast's What's Your Play: 3-up (as shipped) 6,074px, 2-up
+   6,859px, 1-up 9,520px. The section is long because it holds 2,727 words of
+   branch prose, and no arrangement of a fixed word count makes it short. It
+   belongs to the editorial budget, not to this stylesheet. */
 .verdict { border:3px solid var(--tier-coach); background:rgba(200,160,60,.14);
            padding:13px 15px; margin-top:16px; }
 
@@ -642,6 +687,21 @@ details.dossier > summary::-webkit-details-marker { display:none; }
 details.dossier > summary .dossier-head { display:flex; }
 details.dossier > summary::after { content:"▸"; position:absolute; right:14px;
                                    top:16px; font-size:.9em; color:var(--ink-soft); }
+/* The case INDEX row: one scannable line per case, not a stacked header block.
+   The appendix reads as a list you run your eye down and open one of. */
+.case-row { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+            padding:9px 32px 9px 14px; }
+.case-id { font-family:var(--condensed); font-weight:700; letter-spacing:.12em;
+           font-size:.72rem; background:var(--ink); color:var(--manila);
+           padding:2px 8px; flex:0 0 auto; }
+.case-title { font-family:var(--condensed); font-weight:700; font-size:.95rem;
+              flex:1 1 16ch; min-width:0; }
+.case-meta { font-family:var(--condensed); text-transform:uppercase;
+             letter-spacing:.1em; font-size:.62rem; color:var(--ink-soft);
+             flex:0 0 auto; }
+.case-sub { font-family:var(--type); font-size:.7rem; color:var(--ink-soft);
+            padding:8px 14px 0; }
+details.dossier[open] > summary .case-row { border-bottom:2px solid #b9a469; }
 details.dossier[open] > summary::after { content:"▾"; }
 details.dossier > p.small { padding:0 18px 14px; margin:0; }
 .dossier, .dept { scroll-margin-top:28px; }
@@ -1568,16 +1628,23 @@ def stack_theatre(sid, steps, cards=(), esc_fn=esc):
                 + f'<div class="th-n">{i}</div>'
                 + f'<h5>{esc(card["name"] if card else f"Step {i}")}</h5>'
                 + f'<p>{esc(action)}</p></article>')
-        cites = "".join(
-            f'<div class="cite"><b>CR {esc(c.get("rule", ""))}</b> — '
-            f'“{esc(c.get("quote", ""))}”</div>'
-            for c in step.get("citations") or [])
+        # The rules go in Judge's Desk and NOWHERE ELSE. This component shipped
+        # printing every citation inline, which put the identical 120 quotes and
+        # all 73 rules into both departments — 3,613 duplicated words, and exactly
+        # the failure mode §5.1 names for The Kill: "dumping rules citations into
+        # the body. They live in Judge's Desk." What the step keeps is what it
+        # ruled and why; the count below is the pointer to the record that proves
+        # it, and the article's dossier link is how you get there.
+        n_cites = len(step.get("citations") or [])
+        cited = ("" if not n_cites else
+                 f'<div class="th-cited">{n_cites} citation'
+                 f'{"" if n_cites == 1 else "s"} on the record</div>')
         notes.append(
             f'<div class="th-note"><div class="th-note-n">Step {i} of {len(steps)}'
             + (f' · {esc(card["name"])}' if card else "")
             + f'</div><b>{esc_fn(action)}</b>'
             f'<div class="effect">{esc_fn(str(step.get("effect") or ""))}</div>'
-            f"{cites}</div>")
+            f"{cited}</div>")
 
     over = len(steps) - len(tabbed)
     more = ("" if not over else

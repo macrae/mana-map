@@ -683,6 +683,46 @@ def _as_text(value):
     return str(value or "")
 
 
+def stack_headline(title):
+    """`(headline, subtitle)` from a stack's authored title.
+
+    Stack titles are written for the RESOLVER, and they read like it: a median of
+    74 characters and up to 157, because they carry the question the scenario was
+    posed to answer. Set at feature size that runs three lines of display type
+    before the reader has learned anything.
+
+    They almost all share one shape, though — a real headline, a colon, then the
+    question: *"The Frostfang trap: flashed in after blockers are declared, does
+    deathtouch apply…"*. Splitting there is free and authored rather than invented:
+    across the 54 presentable stacks the head runs a median of 36 characters, only
+    two exceed 60, and the six titles with no colon keep their whole text. The
+    question is not dropped — it becomes the deck under the headline.
+    """
+    title = str(title or "")
+    head, sep, tail = title.partition(":")
+    if not sep or len(head.strip()) < 8:
+        return title, ""
+    return head.strip(), tail.strip()
+
+
+def _seat_line(head, pairs):
+    """One seat, one line: who, then labelled runs of what they have.
+
+    Replaces a bordered card holding a `<dl>`. Same fields, a fifth of the height
+    — a board state is a spec sheet and belongs at spec-sheet weight, especially
+    in The Kill where it is the preamble to the thing the reader came for.
+    """
+    runs = "".join(
+        f'<span class="run">' +
+        (f'<i>{esc(label)}</i> ' if label else "") +
+        f'{esc(value)}</span>'
+        for label, value in pairs if value)
+    if not runs:
+        return ""
+    return (f'<div class="seat"><span class="seat-who">{esc(head)}</span>'
+            f'{runs}</div>')
+
+
 def stack_entry_text(entry):
     """What a `scenario.stack` entry says, under either key the corpus uses.
 
@@ -712,9 +752,15 @@ def render_board_block(scenario, label="The board"):
 
     Two board shapes, both real: stack scenarios list `board.you` as entries, and
     decision scenarios write it as one prose string with a `table` beside it.
-    Composed from existing furniture (`.scenario`, `.branches`/`.branch`) so it
-    costs no new CSS. Anything absent is omitted — never invented, never a
-    placeholder.
+    Anything absent is omitted — never invented, never a placeholder.
+
+    **Reference weight, not feature weight.** It first shipped as a grid of
+    bordered cards each holding a `<dl>`, and on radagast that came to 3,782px
+    across seven lines — MORE than the 4,835px of stack theatre it exists to
+    introduce, in the issue's most narrative department. Every field it printed
+    then it prints now; they are set as labelled inline runs, one line per seat,
+    so the board reads as the spec sheet it is and the line that follows gets the
+    room. `board_bodies` and `opponents_of` still do all the parsing.
     """
     scenario = scenario or {}
     board = scenario.get("board") or {}
@@ -723,36 +769,34 @@ def render_board_block(scenario, label="The board"):
     you = board.get("you")
     if isinstance(you, (list, tuple)):
         split = board_bodies(you)
-        your_rows = _rows((
+        pairs = [
             ("Creatures", _as_text(split["creature_bodies"])),
             ("Permanents", _as_text(split["other_permanents"])),
             ("Lands", _as_text(split["lands"])),
             # Listed but NOT on the battlefield — folding it into either side
-            # changes the body count, which is what these engines are bounded by.
+            # changes the body count, which is what these engines are bounded by,
+            # so it keeps its own labelled run rather than joining Permanents.
             ("Already paid", _as_text(split["spent_paying_a_cost"])),
-        ))
+        ]
     else:
-        your_rows = _rows((("Battlefield", _as_text(you)),))
-    your_rows += _rows((
+        pairs = [("Battlefield", _as_text(you))]
+    pairs += [
         ("Hand", _as_text(scenario.get("hand"))),
         ("Graveyard", _as_text(scenario.get("graveyard"))),
-        ("Mana available", _as_text(scenario.get("mana_available"))),
-    ))
-    if your_rows:
-        seats.append(f'<div class="branch"><h4>You</h4><dl>{your_rows}</dl></div>')
+        ("Mana", _as_text(scenario.get("mana_available"))),
+    ]
+    if any(v for _, v in pairs):
+        seats.append(_seat_line("You", pairs))
 
     for opp in opponents_of(scenario):
         life = opp.get("life")
-        head = esc(_seat_label(opp["seat"])) + (
-            f" — {esc(life)} life" if life is not None else "")
-        body = _rows((("Board", _as_text(opp.get("board"))),))
-        seats.append(f'<div class="branch"><h4>{head}</h4><dl>{body}</dl></div>')
+        head = _seat_label(opp["seat"]) + (f" — {life} life" if life is not None else "")
+        seats.append(_seat_line(head, [("", _as_text(opp.get("board")))]))
 
     # Decision scenarios describe the rest of the pod as one prose `table` field.
     table = board.get("table")
     if table:
-        seats.append('<div class="branch"><h4>The table</h4>'
-                     f'<dl>{_rows(((" ", _as_text(table)),))}</dl></div>')
+        seats.append(_seat_line("The table", [("", _as_text(table))]))
 
     # `pos` 0 is the BOTTOM of the stack (docs/pilot.md, validate_stack), so the
     # reader's first question — what resolves next — is the LAST entry.
@@ -779,7 +823,7 @@ def render_board_block(scenario, label="The board"):
     if not seats and not on_stack:
         return ""
     return (f'<div class="scenario"><span class="lbl">{esc(label)}</span>'
-            + (f'<div class="branches">{"".join(seats)}</div>' if seats else "")
+            + (f'<div class="seats">{"".join(seats)}</div>' if seats else "")
             + on_stack + "</div>")
 
 
@@ -846,12 +890,14 @@ def render_the_kill(issue, plan, stacks, cards, prose_doc, cards_by_name):
         sid = stack["id"]
         checker = stack.get("checker", {})
         intro = prose(prose_doc, "combo_lines", sid)
+        headline, subtitle = stack_headline(stack["title"])
         resolution = stack.get("resolution", {})
         final = resolution.get("final_state", {})
         spreads.append(f"""
 <article class="rule-top" id="line-{esc(sid)}">
   <div class="kicker">Verified line {esc(sid)}</div>
-  <h3 style="font-family:var(--display);font-size:1.5em">{esc(stack["title"])}</h3>
+  <h3 class="line-head">{esc(headline)}</h3>
+  {f'<p class="line-dek">{esc(subtitle)}</p>' if subtitle else ""}
   <div class="body-copy">{intro}</div>
   {render_board_block(stack.get("scenario"))}
   {stack_theatre(sid, resolution.get("steps"), cards, esc_fn=esc_x)}
@@ -1541,7 +1587,22 @@ def render_short_list(analysis):
 
 
 def render_judges_desk(issue, plan, stacks, cards_by_name):
-    """The proof. Every citation reproduced verbatim — never summarized."""
+    """The proof — a scannable case index, each row opening the full record.
+
+    "Judge's Desk shrinks to verdicts" and "it may not summarize, truncate, or
+    paraphrase a single citation" (§5.1) are both binding, and they only look
+    contradictory if you read "shrinks" as "holds less". What shrinks is the
+    FOOTPRINT: a reader meets a one-line row per case — number, title, status,
+    and how much record is behind it — instead of a stack of tall headers. Open
+    one and the complete resolution is there, every citation verbatim, unchanged.
+
+    The row deliberately carries **no holding**. Deriving one from
+    `final_state.summary` was tried, measured against the corpus and removed — the
+    note above `render_the_kill` records what it produced. A wrong verdict in the
+    one department that exists for correctness is worse than no verdict, and the
+    renderer may not summarise proof. The title is authored, so the title is what
+    the index shows.
+    """
     dept = plan_dept(plan, "judges-desk")
     files = []
     for stack in stacks:
@@ -1565,19 +1626,22 @@ def render_judges_desk(issue, plan, stacks, cards_by_name):
                 f'<li><b>{esc(step.get("action", ""))}</b>'
                 f'<div class="effect">{esc(step.get("effect", ""))}</div>{cites}</li>'
             )
+        resolution = stack.get("resolution", {})
+        n_steps = len(resolution.get("steps") or [])
+        n_cites = sum(len(s.get("citations") or [])
+                      for s in resolution.get("steps") or [])
         files.append(f"""
 <details class="dossier" id="case-{esc(sid)}">
   <summary>
-    <span class="file-tab">Case A-{esc(sid)}</span>
-    <span class="dossier-head">
-      <span><b>{esc(stack["title"])}</b><br>
-        <span style="font-size:.85em;color:var(--ink-soft)">
-          Rules version {esc(stack.get("rules_version", "—"))} ·
-          status: cleared in {esc(checker.get("iterations", "?"))} review cycle(s) ·
-          tap to open</span></span>
-      <span class="stamp">Verified</span>
+    <span class="case-row">
+      <span class="case-id">A-{esc(sid)}</span>
+      <span class="case-title">{esc(stack_headline(stack["title"])[0])}</span>
+      <span class="case-meta">✓ cleared, {esc(checker.get("iterations", "?"))} cycle(s)
+        · {n_steps} step{"" if n_steps == 1 else "s"}
+        · {n_cites} citation{"" if n_cites == 1 else "s"}</span>
     </span>
   </summary>
+  <div class="case-sub">Rules version {esc(stack.get("rules_version", "—"))}</div>
   {question}
   <ol>{"".join(steps)}</ol>
   {render_after_block(stack.get("resolution", {}).get("final_state", {}))}

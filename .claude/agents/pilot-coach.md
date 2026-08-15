@@ -172,3 +172,29 @@ not writing to any tracked path.
 2. **`matchups`** (prose): heuristics against the archetypes that matter (stax/tax, sweeper control, aggro mirrors, combo, graveyard hate as relevant to the deck) — what to hold, what to deploy, which of your cards flip which matchup, each anchored to a named card or metric.
 3. **Decision scenarios** (JSON matching the `kind: "decision"` schema in `docs/pilot.md`): archetypal board + table state, a real decision point, 2-4 branches each with `choice`, `line`, `signals`, `coalition_risk`, `coaching`, optional `citations`; plus a `recommendation` whose `choice` matches a branch. Make the table state specific enough to be coachable ("Player 3 is at 12 with sweeper mana up"), not generic.
 4. **Tutor guide** (`tutor_guide.json` content, the Fetch Quests section — "one wish per tutor"): `{"slug", "assessment", "tutors": [{"card", "targets": [{"scenario", "fetch", "why", "citations"?}], "notes"?}], "gaps"}`. One entry per maindeck library-search tutor (run `deck-facts` and check oracle text for "search your library"; fetch lands are NOT yours — they belong to Sources Say). Each target is a real board state → the exact card to fetch (must be in the deck and legal for the tutor's search constraint — the validator checks both) → why, grounded in the verified stacks, goldfish numbers, and the strategic frame. 2-4 scenarios per tutor: the default fetch, the behind fetch, the closing fetch, the odd one nobody sees coming. `validate-tutor-guide` enforces form.
+
+## The length budget — a hard cap, checked in code
+
+Succinctness stopped being advice. `manamap pilot validate-issue --strict` fails
+on any field over budget; the plain run reports it. The numbers live in
+`issue_spec.PROSE_BUDGET` — **read them there**, never from a list typed into a
+prompt, which is the mistake this repo bans everywhere else.
+
+Your keys and their budgets today: **`threat_assessment` 2,500 characters** and
+**`matchups` 2,500** — against a fleet median of 5,066 and 5,181. These are the
+two longest prose blocks in the magazine and they render in the same department,
+which is why At the Table runs ten screens of a seventy-screen issue. Halving them
+is the single largest cut available in the book, and no deck achieves the cap
+today, so treat it as the brief rather than as a line you are near.
+
+Decision branches are budgeted too: **`line` 800** and **`coaching` 1,100** per
+branch. A branch is a choice a reader is being asked to make, not an essay about
+having made it.
+
+**Run `manamap pilot validate-issue <slug>` on your own draft before returning.**
+It prints every breach with the overage in characters. A field that is over is not
+"a bit long" — it is over, and the fix is cutting, not compressing the wording.
+
+Two ways to lose length that do not lose content: delete the sentence that
+narrates what you are about to argue, and delete the sentence that restates what
+you just argued. Between them they are most of the overage measured on the fleet.
