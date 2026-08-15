@@ -548,156 +548,270 @@
     }
   ],
   "critic": {
-    "round": 2,
-    "iterations": 2,
-    "verdict": "fail",
+    "round": 3,
+    "iterations": 3,
+    "verdict": "pass",
     "findings": [
       {
-        "where": "lines[11].note",
-        "claim": "\"011 gives its own reason rather than 009's: cards.json gives Bastion TWO triggered abilities, and only the death trigger can fire in this loop because Bastion never re-enters (603.2) ... No figure is imported from 009\"",
+        "where": "stages[7].evidence[3]",
+        "claim": "\"EIGHT of the 39 have every one of their cards inside a single checker-passed stack — this one is 011's, and two of the other seven are my own other unbounded kills, 009's and 012's. That count is a set intersection of candidate_lines[].cards with verified.by_card\"",
         "status": "supported",
-        "note": "THE ROUND-1 DEFECT IS FIXED AND THE NEW REASON IS 011's OWN. Stack 011 step 7 reads verbatim: 'cards.json gives Bastion of Remembrance TWO triggered abilities ... the first names Bastion's own entry, and Bastion is already on the battlefield and does not re-enter, while the second names a death, not an entry', citing 603.2 at that step; step 9 repeats it ('of Bastion's two triggered abilities only the death trigger can match here'). The Treasure clause is gone, and correctly so: 'Treasure' does not occur on 011's board, whose mana is {B} from Phyrexian Altar. The disclaimer is 011's own words ('Stack 009 shares this board's body count but not its composition ... so no figure is imported from it'). The figures also re-derive from 011's final_state.kill: drain_events_needed_per_seat 40, already_resolved 1, further_iterations_needed 39, all four at zero 'simultaneously, at the state-based-action check after the 40th trigger resolves'."
+        "note": "REPAIR 1 CONFIRMED BY RE-RUNNING THE INTERSECTION MYSELF. Deduping engine-facts candidate_lines on frozenset gives 39 lines; intersecting each line's cards against verified.by_card returns exactly 8 lines whose every card shares one stack, and the same eight I named in round 2: Bastion+Gravecrawler+Soultrader->009, Bastion+Nest+Yawgmoth->002, Blood Artist+Nest+Yawgmoth->004, Nest+South Wind Avatar+Yawgmoth->005, Nest+Yawgmoth+Zulaport->003, Exquisite Blood+South Wind Avatar->012, Gravecrawler+Phyrexian Altar->011, Mikaeus+Viscera Seer->010. The false exclusivity clause is gone and the two figures in front of it still hold: combo_details gives 39 deduped contained lines, 11 of them two-card and all 11 tagged Infinite, max popularity 60,592 on this very line. The block now also states the check as an intersection, which is the right form: it is mechanically checkable and belongs in engine-facts."
       },
       {
-        "where": "lines[9].note",
-        "claim": "\"only Gravecrawler's death matches Bastion's trigger event — 009's own words, 'neither creating nor sacrificing a Treasure adds drain (603.2)'\", verified_by 009",
+        "where": "stages[4].evidence[3]",
+        "claim": "\"three cities for seven cards: Nest of Scarabs and Skullclamp in THE FODDER, Pawn of Ulamog / Pitiless Plunderer / Deadly Dispute in THE FUEL, Grave Pact and Plumb the Forbidden in THE DEATH TAX\"",
         "status": "supported",
-        "note": "The relocated quote lands on the stack that says it. 009's final_state.summary contains 'Exactly one Bastion trigger occurs per iteration: only Gravecrawler's death matches its trigger event, so neither creating nor sacrificing a Treasure adds drain (603.2)' verbatim, and 009's board is the one that holds a Treasure (Warren Soultrader's ability at pos 0 creates it). The rest of the line re-derives too: 'each activation's Treasure exactly funds the next {B}' and the Zombie condition 'met by Warren Soultrader, which the loop never sacrifices (\"another creature\")' are both 009's own sentences. Both ends of the move are sound."
-      },
-      {
-        "where": "lines[5].note + stages[5].what_it_does (the 39 baseline)",
-        "claim": "\"the board arrived at 39 with the first activation's life already paid, so the ledger is 39 - 4 + 7 rather than 39 - 5 + 7\"",
-        "status": "supported",
-        "note": "THE ENGINEER'S PARTIAL REBUTTAL IS CORRECT AND MY ROUND-1 SOURCING WAS WRONG. The sentence 'Your 39 is 40 less the 1 life already paid for the ability on the stack' is in stack 009's extras.pod_size, not 002's. 002 says it in its own stack entry: 'Cost already paid: 1 life paid (you are at 39)', with extras.life_totals.you = 39. The revision now states the fact in 002's terms and attributes no quote to 002's extras, which is the right fix. The substance re-derives from 002's final_state.you: life_paid 5, life_gained 7, life 42, bastion_triggers 7, completed_activations.sacrifice_ability 5, net_life_change_per_activation steady state +1."
-      },
-      {
-        "where": "stages[5].what_it_does (Bastion stack count)",
-        "claim": "\"Bastion of Remembrance alone is named in four passing stacks (002, 009, 010, 011)\"",
-        "status": "supported",
-        "note": "CONFIRMED against engine-facts verified.by_card, which gives Bastion of Remembrance exactly ['002','009','010','011']. 004 is correctly absent: its board is Yawgmoth / Nest of Scarabs / BLOOD ARTIST / two Insects / three Swamps, and Bastion appears there only as the checker's substitution control ('Bastion substituted into that slot 6 deaths = 24 life with proliferate'). I could not adjudicate the engineer's claim that the field already read 'four' before round 1 — commit 827a69a contains the post-revision file byte-identically, so no pre-revision text survives in git — and I judge the current state, which is right."
-      },
-      {
-        "where": "stages[0].what_it_does",
-        "claim": "\"41 black sources against a 36-source target - five clear ... the target budgets SOURCES, not lands, and eight more come off nonland permanents\"",
-        "status": "supported",
-        "note": "Re-derived: mana_analysis.sources.total.B = 41 = lands 33 + nonland 8, against source_targets.B = 36; deck-audit colour-sources reports per_colour B {have 41, target 36}, value 5, verdict 'at', and mana-sources (Burgess) 42 against 36, also 'at'. The Burgess trap is now named in the sentence itself, which is the repair asked for. The stage's other arithmetic also holds: 36 land copies / 16 entries, 76 B pips over 55 cards, mean mana 5.23 at t6, land-drop 58.9%, fast mana 43.6 / 34.8."
-      },
-      {
-        "where": "lines[13].note",
-        "claim": "\"the Messenger's chosen seat loses 4 IN TOTAL - its 2 from Zulaport plus 2 from the Messenger's enters trigger - so across the three seats the pod total is 8\"",
-        "status": "supported",
-        "note": "Matches 014's final_state.summary exactly ('each opponent loses 2 (Zulaport), the Messenger-targeted opponent loses 4, pod total 8, you net 0 life and draw 2'), and the arithmetic now closes: 2 + 2 + 4 = 8. The word 'more' is gone. The scenario's three seats and the opening ledger (37/39/39) corroborate."
-      },
-      {
-        "where": "lines[0].note + stages[1].what_it_does",
-        "claim": "\"He is on SEVEN of the eleven (002, 003, 004, 005, 008, 010, 014) ... the other four - 006, 009, 011, 012 - hold no commander at all\" / \"TEN of the eleven presentable passing stacks open from a board where a sacrifice has ALREADY been paid ... Stack 006 is the one exception\"",
-        "status": "supported",
-        "note": "Both universals are now true and I checked them the hard way. verified.by_card gives Yawgmoth exactly ['002','003','004','005','008','010','014']. Reading all eleven scenario boards: ten carry an 'already sacrificed to pay the cost' annotation; 006's board is Nest of Scarabs plus three Swamps with Persist on the stack and nothing sacrificed. The line no longer contradicts the thesis it sits under, and stages[1] now uses 006 as the counterexample rather than hiding it."
-      },
-      {
-        "where": "lines[7].note (the seven drains)",
-        "claim": "\"SEVEN of the nine drains would convert that into a kill ... The other two do not: Marauding Blight-Priest and Starscape Cleric trigger only on YOU gaining life, and this loop gains none\"",
-        "status": "supported",
-        "note": "Verified card by card from cards.json. Work: Bastion, Zulaport ('this or another creature you control dies'), Blood Artist (correctly qualified 'one seat at a time' - it reads 'target player loses 1'), Mirkwood Bats ('whenever you create or sacrifice a token' - the Treasure is both), Ayara ('Ayara or another black creature you control enters' - the Skeleton is black and re-enters), South Wind Avatar (death trigger gains toughness-1 life, second ability drains), The Meathook Massacre. Do not: Marauding Blight-Priest and Starscape Cleric, both 'Whenever you gain life, each opponent loses 1 life', and the Altar loop gains none. The line is now phrased conditionally ('would convert') and says plainly that nothing has resolved it. The cycle arithmetic re-closes: Altar {C}{C} + one Treasure per death, {1}{B} paid with one {C} and the Treasure, net +{C}."
-      },
-      {
-        "where": "stages[6].what_it_does + open_questions[3]",
-        "claim": "\"Feed the Swarm destroys 'target creature or enchantment an opponent controls' - it cannot touch an artifact ... the artifact class is covered zero times, and no card among the 80 destroys, exiles or bounces an artifact\"",
-        "status": "supported",
-        "note": "Feed the Swarm's cards.json text is exactly 'Destroy target creature or enchantment an opponent controls.' I re-scanned all 80 entries for destroy/exile/return clauses naming artifact, permanent or nonland: the only hits are Beseech the Mirror's Bargain cost, Blasting Station's own type line, Deadly Dispute's additional cost and Fatal Push's revolt clause - none of them answers an opponent's artifact. deck-audit interaction-breadth by_class reads artifact 0, creature 14, enchantment 1, graveyard 0, land 0, value 2 of 5. The 17.1 / 67.1 figure is now read narrowly and the zero is named as what actually binds."
-      },
-      {
-        "where": "open_questions[3].why_it_matters",
-        "claim": "\"All nine are size-1 components at 7.1% in the opener and 9.1% by turn three, and five of the eight distinct cards ... are the sole member of their kill's any_of group ... The redundancy sits at the level of SIX KILLS rather than of a layer\"",
-        "status": "supported",
-        "note": "deck-audit prices nine single_points_of_failure, every one with component.size 1 and odds {opening_seven 0.071, by_turn_three 0.091}, over eight distinct cards (Gravecrawler twice). In goldfish_targets, Exquisite Blood, Nest of Scarabs, Butcher Ghoul, Mikaeus and Warren Soultrader are each the sole member of their kill's any_of group. The reframing is the argument the audit supports, and it is conservative if anything - Gravecrawler is also a sole any_of member, in both KILL A and KILL B."
-      },
-      {
-        "where": "stages[5].what_it_does (the drain split)",
-        "claim": "\"only KILL E and KILL F draw their drain slot from all nine. KILL A, B and D ... take a 3-deep group (Bastion, Zulaport, Ayara); KILL C ... a disjoint 3-deep group ... Four of the six kills have a three-card drain layer\"",
-        "status": "supported",
-        "note": "Reproduced from goldfish_targets: KILL E and KILL F each carry the nine-card drain any_of; KILL A, KILL B and KILL D each carry ['Bastion of Remembrance','Zulaport Cutthroat','Ayara, First of Locthwain']; KILL C carries ['South Wind Avatar','Marauding Blight-Priest','Starscape Cleric'], disjoint from it. Four of six at 3 deep. The 82.3 / 72.0 pair is the 'A drain drawn' target over exactly the nine cards the stage lists."
-      },
-      {
-        "where": "lines[14].note",
-        "claim": "\"the only kill needing no commander and no recursion ... It does need a SEED: 012's board holds Carrion Feeder and Insect token X was sacrificed to it to pay the cost of the ability on the stack\"",
-        "status": "supported",
-        "note": "012's stack pos 0 is 'Carrion Feeder's activated ability - Cost already paid: Insect token X sacrificed' and pos 1 is South Wind Avatar's trigger 'Triggered on Insect token X'. The seed is now named, the surviving claim ('once any lifegain seeds it the alternation is self-sustaining and needs no outlet to CONTINUE') is what 012 actually establishes, and the rest checks: drain #40 takes all four seats to 0 at the same check, pilot ends at 80, mean turn 5.085 is the fastest of the six."
-      },
-      {
-        "where": "stages[4].what_it_does (004 attribution)",
-        "claim": "\"004 is eight drains and its checker-passed resolution ends 'NOT A KILL, AND NOT EVEN CLOSE' - a verdict the adversarial checker did not merely accept: it 'wrote an exhaustive depth-first search over the whole move space' and reproduced every headline figure (8, 7, 28, 24) independently\"",
-        "status": "supported",
-        "note": "Both attributions are now right. 'NOT A KILL, AND NOT EVEN CLOSE' is in 004's resolution final_state and not in its checker block; the checker block contains 'I wrote an exhaustive depth-first search over the whole move space ... Every headline figure in the file is confirmed: 8, 7, 28, 24' verbatim. The borrowed weight is gone and the stronger sentence is the one quoted."
-      },
-      {
-        "where": "stages[2].what_it_does (recursion count)",
-        "claim": "\"five ways to buy back a dead one - Animate Dead, Victimize, Persist, Agadeem's Awakening and Phyrexian Reclamation, the slow one because it returns to HAND ... plus Stitcher's Supplier, which buys nothing back and mills three\"",
-        "status": "supported",
-        "note": "Five named, five listed, and Stitcher's Supplier is correctly separated out. The stage's card list still totals 11 and every stage count reconciles: 19 + 9 + 11 + 7 + 7 + 16 + 6 + 5 = 80, which is the deck's distinct-card count (80 entries, 100 copies)."
-      },
-      {
-        "where": "open_questions[2] + proposed_goldfish_edits[0]",
-        "claim": "the rotations question is routed to resolve-stack, and the KILL E split carries a caveat that only the FLOOR can be written today",
-        "status": "supported",
-        "note": "settled_by is now 'resolve-stack' and why_it_matters says why goldfish cannot answer it, quoting the simulator's own assumptions ('Simulates resource development, not full games', 'Target assembly counts cards DRAWN by a turn') - both verbatim in goldfish_metrics.meta.model_assumptions - while handing the bodies-on-board half to the goldfish edit. The edit itself now carries the radagast caveat ('only the FLOOR can be written today ... the THRESHOLD component should be marked as awaiting a stack'), which is the honest form of a split that can only be proved from one side."
-      },
-      {
-        "where": "lines[*].verified_by (all eleven cited lines)",
-        "claim": "eleven of fifteen lines cite a checker-passed stack and each stack supports its arrow",
-        "status": "supported",
-        "note": "Re-read all eleven cited stacks against their arrows after the revision. No arrow claims a flow its stack shows not happening, and neither radagast failure shape appears - no resource is claimed to move off a permanent the board shows unavailable, and no line reads a negative resolution as proof of a positive. The care shown at the two easiest places to slip survives the rewrite: lines[6] still notes that 006's Nest of Scarabs is filtered out of the citation index and confines the arrow to Persist and Fume Spitter (I confirmed the mechanism in build_index.line_cards - 006's stack and graveyard name two cards, so the board is skipped, and verified.by_card indeed does not list Nest under 006), and lines[4] still says 'the 003 board class' rather than importing 008's 13 triggers onto 003, which is 008's own instruction ('ONLY 003'S BOARD IS THIS BOARD'). validate-engine passes: 8 stages, 80 cards, 0 unassigned, 11/15 verified."
-      },
-      {
-        "where": "stages[*] figures (goldfish, mana, audit)",
-        "claim": "every rate, count and mean turn quoted in the file",
-        "status": "supported",
-        "note": "Re-derived after the revision. All six kill pairs (A 1.3/18.2, B 0.6/12.0, C 6.6/42.6, D 4.6/34.3, E 13.5/58.8 mean 6.267, F 1.8/26.9), KILL C fastest at 5.085, Gravecrawler 17.0/66.9, noncreature answer 17.1/67.1, drain 82.3/72.0, fodder 82.3/72.2, outlet 78.5/68.0 over eight cards, ignition 73.8 over eight, tutor 61.2/50.3 (not ENGINE MANA's 61.2/51.0), fast mana 43.6/34.8, bodies 4.239, commander 4.301 / median 4 / 91%, 18 verified cards over 11 presentable stacks (14 pass, 3 withheld), Nest of Scarabs in 5, 39 contained lines deduped on frozenset, 11 two-card infinites, Gravecrawler + Phyrexian Altar the highest-popularity contained line at 60,592, and the seven Mikaeus pairings in open_questions[1] are exactly the seven two-card Mikaeus lines in candidate_lines. Length: every what_it_does is under MAX_WHAT_IT_DOES, but `output` is now 1,776 of 1,800 - 24 characters of headroom, up from a 1,314 file maximum in round 1. It is dense rather than muddled, so I am not calling it a defect; a next round asked to add a clause there will have to cut one first."
-      },
-      {
-        "where": "map_disagreements[*]",
-        "claim": "five disagreements, each naming which artifact is wrong about what",
-        "status": "supported",
-        "note": "Re-checked card by card against deck_map.json after the revision and every attribution still holds exactly, including the counts: the ignition class scatters 4/2/1/1 (THE SUBTRACTION Fume Spitter, Soul Snuffers, Skinrender, Black Sun's Zenith; THE FODDER Massacre Girl, Persist; THE ON SWITCH Yawgmoth; THE DEATH TAX The Meathook Massacre), the outlet class 6/1/1 with Woe Strider and Warren Soultrader the strays, ENGINE MANA across three cities, the five kill halves 3 THE FODDER / 2 THE DEATH TAX, Jet Medallion in THE FODDER. Stage-level city evidence is also right where I re-counted it (THE WORKING LANDS contained whole at 16, THE ON SWITCH holding 7 of 9 outlets, THE FODDER at 21 holding 10 of 11 fodder cards, THE DEATH TAX 9 and THE SUBTRACTION 5 of the output stage's 16) - with one exception, reported below."
-      },
-      {
-        "where": "stages[7].evidence[3] (combo: Gravecrawler + Phyrexian Altar)",
-        "claim": "\"the highest-popularity contained line in the deck (60,592) and one of 11 two-card infinites among 39 contained lines - and the only one of the 39 with a passing stack behind it\"",
-        "status": "contradicts-artifact",
-        "note": "THE LAST CLAUSE IS FALSE AND THE FILE REFUTES IT ELSEWHERE. Intersecting each of the 39 contained lines' cards against engine-facts verified.by_card, EIGHT of the 39 have all their cards inside one checker-passed stack: ['Bastion of Remembrance','Gravecrawler','Warren Soultrader'] -> 009, ['Bastion of Remembrance','Nest of Scarabs','Yawgmoth'] -> 002, ['Blood Artist','Nest of Scarabs','Yawgmoth'] -> 004, ['Nest of Scarabs','South Wind Avatar','Yawgmoth'] -> 005, ['Nest of Scarabs','Yawgmoth','Zulaport Cutthroat'] -> 003, ['Exquisite Blood','South Wind Avatar'] -> 012, ['Gravecrawler','Phyrexian Altar'] -> 011, ['Mikaeus, the Unhallowed','Viscera Seer'] -> 010. Two of them are the model's own other unbounded kills: the thesis says stacks 009, 011 and 012 are the three unbounded kills, and 009's and 012's lines are both in the 39. No charitable reading rescues it - restrict to unbounded-and-confirmed and 009 and 012 still qualify; restrict to two-card and 012's Exquisite Blood + South Wind Avatar still qualifies. The two figures in front of it are right (I reproduced 39 deduped contained lines, 11 two-card infinites, and 60,592 as the maximum popularity), so the fix is to delete or requantify one clause. MECHANICALLY CHECKABLE: 'this contained line is the only one with a stack behind it' is a set intersection of candidate_lines[].cards with verified.by_card, computable in engine-facts."
-      },
-      {
-        "where": "stages[4].evidence[3] (city-2)",
-        "claim": "\"four cities for seven cards: Nest of Scarabs and Skullclamp in THE FODDER, Pawn of Ulamog / Pitiless Plunderer / Deadly Dispute in THE FUEL, Grave Pact and Plumb the Forbidden in THE DEATH TAX\"",
-        "status": "miscounted",
-        "note": "Three cities, not four - and the note's own enumeration says so: 2 + 3 + 2 = 7 cards across THREE named cities. deck_map.json confirms each placement (Nest of Scarabs and Skullclamp in THE FODDER; Pawn of Ulamog, Pitiless Plunderer and Deadly Dispute in THE FUEL; Grave Pact and Plumb the Forbidden in THE DEATH TAX) and no conversion-stage card sits in a fourth city. The scatter argument survives the correction unchanged; only the number is wrong. Compare the neighbouring blocks, which are exact: stages[6] says 'three cities for six cards' and lists three."
+        "note": "REPAIR 2 CONFIRMED. Mapping all seven conversion-stage cards through deck_map.json's city index gives exactly three cities in the stated 2/3/2 split, card for card. The count and the enumeration now agree, and the neighbouring blocks close the same way: stages[5].evidence[2] says nine in THE DEATH TAX, five in THE SUBTRACTION, Ayara in THE ON SWITCH, Massacre Girl in THE FODDER — measured 9/5/1/1 = 16, the stage's exact size."
       },
       {
         "where": "stages[2].what_it_does",
-        "claim": "\"the audit's nine-card RENEWABLE FODDER class ... That class is split across three stages here on purpose: Nest of Scarabs and Pawn of Ulamog ... `conversion`, and Gravecrawler is a kill half, so it is `wincon`\"",
-        "status": "miscounted",
-        "note": "Four stages, and the fourth member is unnamed. goldfish_targets' RENEWABLE FODDER any_of is ['Nest of Scarabs','Bitterblossom','Grave Titan','Sedgemoor Witch','Black Market Connections','Reassembling Skeleton','Gravecrawler','Ophiomancer','Pawn of Ulamog']. This model places five of them in `fodder`, two in `conversion`, one in `wincon` - and Black Market Connections in `fuel`, which the sentence accounts for nowhere. Say four stages and name it, or the arithmetic reads 5 + 2 + 1 = 8 against a class the same sentence calls nine deep."
+        "claim": "\"That class is split across FOUR stages here on purpose, five of its nine landing in this one: Nest of Scarabs and Pawn of Ulamog … `conversion`; Gravecrawler … `wincon`; and Black Market Connections … `fuel`\"",
+        "status": "supported",
+        "note": "REPAIR 3 CONFIRMED AND THE ARITHMETIC NOW CLOSES. Mapping goldfish_targets' RENEWABLE FODDER any_of through this model's stage assignment: fodder 5 (Bitterblossom, Grave Titan, Sedgemoor Witch, Reassembling Skeleton, Ophiomancer), conversion 2 (Nest of Scarabs, Pawn of Ulamog), fuel 1 (Black Market Connections), wincon 1 (Gravecrawler) = 5+2+1+1 = 9 against a class the sentence calls nine deep. The previously unnamed fourth member is now named and given its reason. The rest of the stage re-derives: mean bodies 4.239 at turn 6, RENEWABLE FODDER 82.3% / 72.2%, eleven cards listed and eleven placed, and the four body-exhaustion stacks (002/003/004/005) each end on bodies in their own final_state — 005 says it in those words, 'ended by body exhaustion … not life, not library'."
       },
       {
         "where": "stages[4].what_it_does",
-        "claim": "\"Grave Pact is the one card here with no evidence at all - zero passing stacks name it and no declared kill includes it\"",
-        "status": "over-claimed",
-        "note": "Four of the seven cards in this stage pass the test the sentence states, not one. Grave Pact, Skullclamp, Deadly Dispute and Plumb the Forbidden are each absent from verified.by_card, from every goldfish target's any_of, and from all 39 contained combo lines. The three that do have evidence are Nest of Scarabs (5 stacks, KILL E), Pawn of Ulamog (RENEWABLE FODDER, 6 contained lines) and Pitiless Plunderer (ENGINE MANA, 8 contained lines). Either widen the sentence to the four cards, or give Grave Pact a distinguishing test it alone fails - as written the singular is an exclusivity claim that three other cards in the same list also satisfy."
+        "claim": "\"FOUR of the seven have no evidence at all — Grave Pact, Skullclamp, Deadly Dispute and Plumb the Forbidden are each absent from every passing stack, from every goldfish any_of and from all 39 contained lines. Only Nest of Scarabs, Pawn of Ulamog and Pitiless Plunderer carry any.\"",
+        "status": "supported",
+        "note": "REPAIR 4 CONFIRMED ON ALL THREE TESTS FOR ALL SEVEN CARDS. Grave Pact / Skullclamp / Deadly Dispute / Plumb the Forbidden: not in verified.by_card, not in any target's any_of, in 0 of the 39 contained lines. The three that carry evidence do: Nest of Scarabs 5 stacks + KILL E, Pawn of Ulamog RENEWABLE FODDER + 7 contained lines, Pitiless Plunderer ENGINE MANA + 13 contained lines. The singular exclusivity claim is gone and the widened sentence is exactly true — no fourth card in the stage passes the test and no listed card fails it. This is mechanically checkable and is the same intersection the stages[7] repair uses."
       },
       {
-        "where": "lines[7].note (the precedent clause)",
-        "claim": "\"on a deck whose stacks 001 and 005 have twice refuted a Spellbook 'near-infinite' tag\"",
-        "status": "mis-cited",
-        "note": "005 did exactly that - its final_state says \"Spellbook's 'Near-infinite' tag is wrong for this board\" and combo_details tags Nest of Scarabs + South Wind Avatar + Yawgmoth 'Near-infinite ...'. 001 did not. combo_details tags Blowfly Infestation + Nest of Scarabs 'Infinite death triggers / Infinite ETB / Infinite LTB' - not near-infinite - and 001 does not refute that tag; it CONFIRMS it ('The Blowfly Infestation + Nest of Scarabs engine is genuinely unbounded') and refutes the KILL ('REFUTED AS A KILL ON THIS BOARD ... the engine is drainless here ... Total drain: exactly 3 per opponent'). The word 'near-infinite' occurs nowhere in 001. The precedent is real and stronger stated accurately - one stack refuted a Near-infinite tag and one refuted an Infinite line as a kill - and worth being exact about in the file whose round-1 defect was a borrowed reason. Also worth flagging in passing: 001 is one of the three non-presentable stacks (it holds Blowfly Infestation, no longer in the 99), so it can support a precedent in prose but can never be a verified_by."
+        "where": "lines[7].note",
+        "claim": "\"005 refuted a Spellbook 'Near-infinite' tag outright and 001 did something narrower — it CONFIRMED the 'Infinite' tag … ('genuinely unbounded') and refuted it as a KILL, 3 per opponent rather than 40. 001 is non-presentable, so that precedent can be argued in prose and can never be a verified_by.\"",
+        "status": "supported",
+        "note": "REPAIR 5 CONFIRMED WORD BY WORD. 005's final_state contains \"Commander Spellbook's 'Near-infinite' tag is wrong for this board\" and the string 'Near-infinite' occurs three times there. 001 contains no occurrence of 'near-infinite' at all; its final_state reads 'REFUTED AS A KILL ON THIS BOARD. The Blowfly Infestation + Nest of Scarabs engine is genuinely unbounded' and 'Total drain: exactly 3 per opponent … Opponents end at 37, not 0'. combo_details tags that pair ['Infinite death triggers','Infinite ETB','Infinite LTB'], so 'the Infinite tag' is the right name for what 001 confirmed. 001's file carries presentable: false, so the added non-presentability flag is right and is the kind of thing worth stating in the file — a later round cannot promote that precedent to a verified_by by accident."
       },
       {
         "where": "stages[1].what_it_does",
-        "claim": "\"the other eight are 78.5% drawn / 68.0% by turn 6, the deck's deepest layer\"",
-        "status": "over-claimed",
-        "note": "The superlative is contradicted by this file's own numbers four paragraphs later. The eight non-commander outlets are 78.5 / 68.0; the drain layer is NINE cards at 82.3 / 72.0 and RENEWABLE FODDER is NINE cards at 82.3 / 72.2, and stages[5] itself calls the drain half 'the deck's best-built layer'. Counting Yawgmoth makes the outlet layer nine, which ties on size and still loses on rate. Deepest is wrong on both measures - 'the deck's third-deepest layer' or simply 'eight cards deep at 78.5%' is what the goldfish supports, and the stage's argument (that this layer is assumed by ten of eleven stacks) does not depend on the superlative."
+        "claim": "\"the other eight are 78.5% drawn / 68.0% by turn 6 — the third-deepest layer here, behind the nine-card drain layer and the nine-card RENEWABLE FODDER class at 82.3% each\"",
+        "status": "supported",
+        "note": "REPAIR 6 CONFIRMED, AND IT NOW AGREES WITH stages[5]. goldfish_metrics: outlet-not-counting-Yawgmoth 8 cards at 0.785 / 0.680; 'A drain drawn' 9 cards at 0.823 / 0.720; RENEWABLE FODDER 9 cards at 0.823 / 0.722. Third by size (9, 9, 8) and third by rate. Nothing else in the component table beats it: ignition source is also 8 cards but 0.738, ENGINE MANA and tutors are 5 cards at 0.612. The superlative is gone and the stage's real argument — that ten of the eleven presentable stacks assume this layer — is unaffected."
+      },
+      {
+        "where": "(whole model)",
+        "claim": "\"nothing else moved\"",
+        "status": "supported",
+        "note": "MECHANICALLY VERIFIED. A structural diff of the working engine.json against the copy committed at 827a69a (the round-2 revision), ignoring the `critic` block, reports exactly six changed leaves and no additions, removals or length changes anywhere: lines[7].note, stages[1].what_it_does, stages[2].what_it_does, stages[4].evidence[3].note, stages[4].what_it_does, stages[7].evidence[3].note. Those are the six repairs and nothing else. validate-engine still passes: 8 stages, 80 cards placed, 0 unassigned, 11/15 lines verified."
+      },
+      {
+        "where": "lines[*].verified_by",
+        "claim": "eleven lines cite a checker-passed stack; each stack establishes the flow its arrow draws",
+        "status": "supported",
+        "note": "RE-READ ALL ELEVEN AGAINST THEIR STACKS' BOARDS AND final_state, NOT AGAINST THEIR NOTES. Neither radagast failure shape is present. Spot-derivations: lines[3] 'seven deaths, seven Bastion triggers, 28 life off 160' and the quote 'the lowest life total on the table is 33' are both 002's own text; lines[4]'s 13 triggers and 40->27 are 008's ('THIRTEEN Bats triggers. Each opponent loses 13 life: 40 -> 27'); lines[9]'s Treasure-funds-the-next-{B} and 'neither creating nor sacrificing a Treasure adds drain (603.2)' are 009's; lines[10]/[11] match 011 (mana ability 605.3b, no life paid, pilot ends at 80, 40 drains per seat with one resolved); lines[12]'s '39 more activations against the 59 the library permits' is 010's ('the drain clock needs 39 more activations', 'With 59 cards left you may activate at most 59 more times'); lines[13]'s 2+2+4 = pod total 8 across three seats is 014's; lines[14]'s seed, drain #40 and 80 life are 012's. lines[6] still confines itself to Persist and Fume Spitter and states why Nest of Scarabs is out of 006's citation index — I re-read build_index.line_cards: 006's stack and graveyard name cards, so the board is skipped, and verified.by_card indeed lists Nest under 002/003/004/005/008 only."
+      },
+      {
+        "where": "lines[0], lines[1], lines[7], lines[8]",
+        "claim": "four dashed lines, each note phrased as an absence of evidence rather than as fact",
+        "status": "supported",
+        "note": "None of the four asserts the flow. lines[0] says no passing stack shows a ritual paying for the commander and gives the measured 4.301 mean instead of the turn-2 story. lines[1] is the sharpest: 'the arrow the whole deck rests on is the one with no stack behind it'. lines[7] is conditional throughout ('SEVEN of the nine drains WOULD convert that into a kill') and names its own status ('in candidate_lines, in no goldfish target, and no stack has resolved it'); I verified its card arithmetic independently from cards.json — Ashnod's Altar 'Sacrifice a creature: Add {C}{C}', Pitiless Plunderer's Treasure on another creature's death, Reassembling Skeleton's {1}{B} return, so net +{C} per cycle is right — and the 7/2 drain split is right card by card, with Marauding Blight-Priest and Starscape Cleric correctly excluded as 'Whenever you gain life' triggers in a loop that gains none. lines[8]'s tutor mechanism matches goldfish's stated model verbatim ('a tutor that has been drawn and is affordable fills ONE missing any_of group') and its four rates match goldfish_metrics exactly."
+      },
+      {
+        "where": "map_disagreements",
+        "claim": "five disagreements, each naming the cards, the cities and what the map cannot see",
+        "status": "supported",
+        "note": "ALL FIVE SCATTERS RE-MEASURED FROM deck_map.json AND EVERY COUNT IS RIGHT: ignition source 8 cards / 4 cities 4-2-1-1 in the order listed; free repeatable outlet 8 cards 6-1-1 with Woe Strider in THE FODDER and Warren Soultrader in THE FUEL; ENGINE MANA 5 cards / 3 cities 3-1-1; the five kill halves 3 in THE FODDER and 2 in THE DEATH TAX; Jet Medallion in THE FODDER. Each says which artifact is wrong about what — the map files by what a card SAYS, and the first one goes further and disagrees with goldfish_targets' component NAME, on the checkable ground that '-1/-1' and 'Yawgmoth' appear zero times in stacks 009, 011 and 012 (I grepped all three files: zero and zero). That is a finding, not a hedge."
+      },
+      {
+        "where": "open_questions[3] + engine.single_points_of_failure",
+        "claim": "\"All nine are size-1 components at 7.1% in the opener and 9.1% by turn three, and five of the eight distinct cards … are the sole member of their kill's any_of group … The redundancy sits at the level of SIX KILLS rather than of a layer\"",
+        "status": "supported",
+        "note": "deck-audit prices nine SPOFs over eight distinct cards (Gravecrawler twice), every one size 1 at opening_seven 0.071 / by_turn_three 0.091. The reframing is the correct reading of a coarse class rather than a fragility claim, which is exactly the trap this charter names. One precision note, not a defect: the 'five of the eight' list is a FLOOR — Gravecrawler is a sixth, being the sole any_of member of both KILL A and KILL B — so the sentence understates its own argument rather than over-claiming it."
+      },
+      {
+        "where": "stages[5].what_it_does",
+        "claim": "\"nine deep … at 82.3% drawn / 72.0% by turn 6, the deck's best-built layer\"",
+        "status": "supported",
+        "note": "THE FIGURES ARE EXACT AND THE SUPERLATIVE IS A TIE — flagged, not failed. 'A drain drawn' is 0.823 / 0.720; RENEWABLE FODDER is 0.823 / 0.722, i.e. identical drawn and 0.2pp better by turn 6, which at 10,000 seeded iterations (SE ~0.45pp on a 0.72 proportion) is not a measurable difference. So the drain layer is joint-best, not best, and a revision should read 'tied-deepest with RENEWABLE FODDER'. I do not fail on it: no printed figure is wrong, stages[1] now states both layers at 82.3% in the same breath so the model does not contradict itself, and the rest of the stage re-derives (Bastion in exactly ['002','009','010','011']; the 3/3/9 drain split across KILL A/B/D, KILL C and KILL E/F reproduced from goldfish_targets; nine drains + Gray Merchant + six subtraction cards = 16). A superlative over goldfish components is mechanically checkable: max over metrics.targets by assembled_rate."
+      },
+      {
+        "where": "stages[2].evidence[2], stages[6].evidence[1], stages[1].evidence[2]",
+        "claim": "illustrative card enumerations under correct city counts",
+        "status": "supported",
+        "note": "THIS IS THE ONE PLACE I CONSIDERED FAILING AND DID NOT; here is the reasoning so a future round need not re-spend it. Three evidence blocks list a subset of the cards they describe while every stated COUNT is right. stages[2].evidence[2]: THE FODDER really holds 21 and this stage really takes 10, but 'scattering the rest into conversion/wincon/fuel/ignition/protection' names 9 of the 11 remaining — Massacre Girl (`output`) and Jet Medallion (`mana`) are unnamed. stages[6].evidence[1]: 'three cities for six cards' is right (SUBTRACTION 3, FODDER 2, FUEL 1) but the prose accounts for five, leaving Lightning Greaves unnamed. stages[1].evidence[2]: 'the city also holds the five tutors and Sol Ring' — THE ON SWITCH holds 14, and Ayara is the fourteenth. Unlike round 2's two miscounts, no number here is false and no sum fails to close; both omitted cards in the first case are named correctly elsewhere in the same model (map_disagreements[4] for Jet Medallion, stages[5].evidence[2] for Massacre Girl), and each omission strengthens the block's point rather than weakening it. Incompleteness is explicitly not a failing condition."
+      },
+      {
+        "where": "stages[6].what_it_does",
+        "claim": "\"The interaction axis reads 2 of 5 classes (creature 14, enchantment 1, artifact 0, graveyard 0, land 0), and no card among the 80 destroys, exiles or bounces an artifact\"",
+        "status": "supported",
+        "note": "I re-scanned all 80 entries myself for destroy/exile/return clauses naming artifact, permanent or nonland: the single regex hit is Fatal Push's revolt clause, which answers a creature. The binding claim — artifact covered zero times, so no draw rate improves it — is true, and Feed the Swarm's cards.json text is exactly 'Destroy target creature or enchantment an opponent controls', with 17.1% / 67.1% matching goldfish. ONE CAVEAT FOR A FUTURE ROUND, quoted correctly here and therefore not a defect: the axis's 'graveyard 0' is a taxonomy floor, not a fact about the deck — Bojuka Bog exiles a target player's graveyard, and stages[0] of this same model says so. The breadth function skips it because it is classed land:tapped. The stage attributes the zero to the axis rather than asserting it, which is why this reads as accurate; if the sentence is ever rewritten, the artifact zero is the one that survives scrutiny and the graveyard zero is not."
+      },
+      {
+        "where": "stages[0].what_it_does + stages[1].what_it_does",
+        "claim": "\"Phyrexian Tower is a free outlet paying {B}{B}\" (mana) against \"Nine cards … Nothing this deck holds is a resource until one of them is down\" (ignition)",
+        "status": "supported",
+        "note": "Reconcilable and reconciled, but worth recording. Phyrexian Tower is a tenth sacrifice outlet and it sits in `mana`, so stages[1]'s universal is exhaustive only under its own stated qualifier — 'eat it at will, for no mana, at instant speed' — which a tap-limited land fails on repeatability. goldfish_targets draws the same boundary, filing the Tower under ENGINE MANA and not under 'A free repeatable sacrifice outlet'. The model is not hiding it: stages[0] names the Tower's outlet job explicitly. Flagged so a later reader does not take the nine as the deck's whole outlet count."
+      },
+      {
+        "where": "stages[0], stages[3], stages[7] (every figure)",
+        "claim": "the arithmetic quoted across the model",
+        "status": "supported",
+        "note": "RE-DERIVED FROM THE ARTIFACTS, NOT FROM EACH OTHER. mana_analysis: lands 36 copies / 16 entries, sources.total B 41 against source_targets.B 36, 33 of the 41 from lands and 8 from nonland permanents, pips B 76 over 55 cards, land classes utility 9 of 16. deck-audit: colour-sources value 5 verdict 'at', mana-sources (Burgess) 42 against 36 also 'at', interaction-breadth 2 of 5. goldfish_metrics: mean mana 5.230 at t6, land-drop 0.589, mean bodies 4.239, commander mean 4.301 / median 4 / 0.91 by t6, fast mana 0.436 / 0.348 (the smallest and lowest-rated multi-card component — every other multi-card component is >=5 cards and >=0.612), tutors 0.612 / 0.503, and the six kill rates A 1.3/18.2, B 0.6/12.0, C 6.6/42.6, D 4.6/34.3, E 13.5/58.8, F 1.8/26.9 with C's mean turn 5.085 the fastest. Stage sizes 19+9+11+7+7+16+6+5 = 80, which is cards.json's distinct-entry count (80 entries, 100 copies). Not one figure drifted."
+      },
+      {
+        "where": "stages[*].what_it_does (length)",
+        "claim": "every stage under MAX_WHAT_IT_DOES = 1800",
+        "status": "supported",
+        "note": "Measured: mana 1491, ignition 1731, fodder 1535, fuel 1159, conversion 1685, output 1776, protection 1503, wincon 1195. All pass, and none is muddled — I read each for argument order and every one tracks a single line of reasoning. One operational note that corrects the brief I was given: the LONGEST stage is stages[5] `output` at 1,776, not stages[1] at 1,731. That leaves output 24 characters of headroom, so any future edit there must delete before it adds — the radagast failure mode was accretion at exactly this margin."
+      },
+      {
+        "where": "proposed_goldfish_edits + open_questions",
+        "claim": "three edits and four questions, each routed to a subsystem that can answer it",
+        "status": "supported",
+        "note": "The KILL E split carries the radagast caveat that only the FLOOR is provable today, which is the honest form. The rotations question is routed to resolve-stack with the reason goldfish cannot answer it quoted verbatim from goldfish_metrics.meta.model_assumptions. The two never-resolved lines check out as described: Ashnod's Altar + Pitiless Plunderer + Reassembling Skeleton is a real contained candidate line at bracket 1 with all three cards in the 99 and neither Plunderer nor the Skeleton in verified.by_card; and candidate_lines holds exactly the seven Mikaeus-plus-one-outlet pairings the question names (Ashnod's Altar, Blasting Station, Carrion Feeder, Phyrexian Altar, Viscera Seer, Woe Strider, Yahenni), all seven outlets in the 99."
       }
     ],
     "previous_rounds": [
+      {
+        "round": 2,
+        "verdict": "fail",
+        "findings": [
+          {
+            "where": "lines[11].note",
+            "claim": "\"011 gives its own reason rather than 009's: cards.json gives Bastion TWO triggered abilities, and only the death trigger can fire in this loop because Bastion never re-enters (603.2) ... No figure is imported from 009\"",
+            "status": "supported",
+            "note": "THE ROUND-1 DEFECT IS FIXED AND THE NEW REASON IS 011's OWN. Stack 011 step 7 reads verbatim: 'cards.json gives Bastion of Remembrance TWO triggered abilities ... the first names Bastion's own entry, and Bastion is already on the battlefield and does not re-enter, while the second names a death, not an entry', citing 603.2 at that step; step 9 repeats it ('of Bastion's two triggered abilities only the death trigger can match here'). The Treasure clause is gone, and correctly so: 'Treasure' does not occur on 011's board, whose mana is {B} from Phyrexian Altar. The disclaimer is 011's own words ('Stack 009 shares this board's body count but not its composition ... so no figure is imported from it'). The figures also re-derive from 011's final_state.kill: drain_events_needed_per_seat 40, already_resolved 1, further_iterations_needed 39, all four at zero 'simultaneously, at the state-based-action check after the 40th trigger resolves'."
+          },
+          {
+            "where": "lines[9].note",
+            "claim": "\"only Gravecrawler's death matches Bastion's trigger event — 009's own words, 'neither creating nor sacrificing a Treasure adds drain (603.2)'\", verified_by 009",
+            "status": "supported",
+            "note": "The relocated quote lands on the stack that says it. 009's final_state.summary contains 'Exactly one Bastion trigger occurs per iteration: only Gravecrawler's death matches its trigger event, so neither creating nor sacrificing a Treasure adds drain (603.2)' verbatim, and 009's board is the one that holds a Treasure (Warren Soultrader's ability at pos 0 creates it). The rest of the line re-derives too: 'each activation's Treasure exactly funds the next {B}' and the Zombie condition 'met by Warren Soultrader, which the loop never sacrifices (\"another creature\")' are both 009's own sentences. Both ends of the move are sound."
+          },
+          {
+            "where": "lines[5].note + stages[5].what_it_does (the 39 baseline)",
+            "claim": "\"the board arrived at 39 with the first activation's life already paid, so the ledger is 39 - 4 + 7 rather than 39 - 5 + 7\"",
+            "status": "supported",
+            "note": "THE ENGINEER'S PARTIAL REBUTTAL IS CORRECT AND MY ROUND-1 SOURCING WAS WRONG. The sentence 'Your 39 is 40 less the 1 life already paid for the ability on the stack' is in stack 009's extras.pod_size, not 002's. 002 says it in its own stack entry: 'Cost already paid: 1 life paid (you are at 39)', with extras.life_totals.you = 39. The revision now states the fact in 002's terms and attributes no quote to 002's extras, which is the right fix. The substance re-derives from 002's final_state.you: life_paid 5, life_gained 7, life 42, bastion_triggers 7, completed_activations.sacrifice_ability 5, net_life_change_per_activation steady state +1."
+          },
+          {
+            "where": "stages[5].what_it_does (Bastion stack count)",
+            "claim": "\"Bastion of Remembrance alone is named in four passing stacks (002, 009, 010, 011)\"",
+            "status": "supported",
+            "note": "CONFIRMED against engine-facts verified.by_card, which gives Bastion of Remembrance exactly ['002','009','010','011']. 004 is correctly absent: its board is Yawgmoth / Nest of Scarabs / BLOOD ARTIST / two Insects / three Swamps, and Bastion appears there only as the checker's substitution control ('Bastion substituted into that slot 6 deaths = 24 life with proliferate'). I could not adjudicate the engineer's claim that the field already read 'four' before round 1 — commit 827a69a contains the post-revision file byte-identically, so no pre-revision text survives in git — and I judge the current state, which is right."
+          },
+          {
+            "where": "stages[0].what_it_does",
+            "claim": "\"41 black sources against a 36-source target - five clear ... the target budgets SOURCES, not lands, and eight more come off nonland permanents\"",
+            "status": "supported",
+            "note": "Re-derived: mana_analysis.sources.total.B = 41 = lands 33 + nonland 8, against source_targets.B = 36; deck-audit colour-sources reports per_colour B {have 41, target 36}, value 5, verdict 'at', and mana-sources (Burgess) 42 against 36, also 'at'. The Burgess trap is now named in the sentence itself, which is the repair asked for. The stage's other arithmetic also holds: 36 land copies / 16 entries, 76 B pips over 55 cards, mean mana 5.23 at t6, land-drop 58.9%, fast mana 43.6 / 34.8."
+          },
+          {
+            "where": "lines[13].note",
+            "claim": "\"the Messenger's chosen seat loses 4 IN TOTAL - its 2 from Zulaport plus 2 from the Messenger's enters trigger - so across the three seats the pod total is 8\"",
+            "status": "supported",
+            "note": "Matches 014's final_state.summary exactly ('each opponent loses 2 (Zulaport), the Messenger-targeted opponent loses 4, pod total 8, you net 0 life and draw 2'), and the arithmetic now closes: 2 + 2 + 4 = 8. The word 'more' is gone. The scenario's three seats and the opening ledger (37/39/39) corroborate."
+          },
+          {
+            "where": "lines[0].note + stages[1].what_it_does",
+            "claim": "\"He is on SEVEN of the eleven (002, 003, 004, 005, 008, 010, 014) ... the other four - 006, 009, 011, 012 - hold no commander at all\" / \"TEN of the eleven presentable passing stacks open from a board where a sacrifice has ALREADY been paid ... Stack 006 is the one exception\"",
+            "status": "supported",
+            "note": "Both universals are now true and I checked them the hard way. verified.by_card gives Yawgmoth exactly ['002','003','004','005','008','010','014']. Reading all eleven scenario boards: ten carry an 'already sacrificed to pay the cost' annotation; 006's board is Nest of Scarabs plus three Swamps with Persist on the stack and nothing sacrificed. The line no longer contradicts the thesis it sits under, and stages[1] now uses 006 as the counterexample rather than hiding it."
+          },
+          {
+            "where": "lines[7].note (the seven drains)",
+            "claim": "\"SEVEN of the nine drains would convert that into a kill ... The other two do not: Marauding Blight-Priest and Starscape Cleric trigger only on YOU gaining life, and this loop gains none\"",
+            "status": "supported",
+            "note": "Verified card by card from cards.json. Work: Bastion, Zulaport ('this or another creature you control dies'), Blood Artist (correctly qualified 'one seat at a time' - it reads 'target player loses 1'), Mirkwood Bats ('whenever you create or sacrifice a token' - the Treasure is both), Ayara ('Ayara or another black creature you control enters' - the Skeleton is black and re-enters), South Wind Avatar (death trigger gains toughness-1 life, second ability drains), The Meathook Massacre. Do not: Marauding Blight-Priest and Starscape Cleric, both 'Whenever you gain life, each opponent loses 1 life', and the Altar loop gains none. The line is now phrased conditionally ('would convert') and says plainly that nothing has resolved it. The cycle arithmetic re-closes: Altar {C}{C} + one Treasure per death, {1}{B} paid with one {C} and the Treasure, net +{C}."
+          },
+          {
+            "where": "stages[6].what_it_does + open_questions[3]",
+            "claim": "\"Feed the Swarm destroys 'target creature or enchantment an opponent controls' - it cannot touch an artifact ... the artifact class is covered zero times, and no card among the 80 destroys, exiles or bounces an artifact\"",
+            "status": "supported",
+            "note": "Feed the Swarm's cards.json text is exactly 'Destroy target creature or enchantment an opponent controls.' I re-scanned all 80 entries for destroy/exile/return clauses naming artifact, permanent or nonland: the only hits are Beseech the Mirror's Bargain cost, Blasting Station's own type line, Deadly Dispute's additional cost and Fatal Push's revolt clause - none of them answers an opponent's artifact. deck-audit interaction-breadth by_class reads artifact 0, creature 14, enchantment 1, graveyard 0, land 0, value 2 of 5. The 17.1 / 67.1 figure is now read narrowly and the zero is named as what actually binds."
+          },
+          {
+            "where": "open_questions[3].why_it_matters",
+            "claim": "\"All nine are size-1 components at 7.1% in the opener and 9.1% by turn three, and five of the eight distinct cards ... are the sole member of their kill's any_of group ... The redundancy sits at the level of SIX KILLS rather than of a layer\"",
+            "status": "supported",
+            "note": "deck-audit prices nine single_points_of_failure, every one with component.size 1 and odds {opening_seven 0.071, by_turn_three 0.091}, over eight distinct cards (Gravecrawler twice). In goldfish_targets, Exquisite Blood, Nest of Scarabs, Butcher Ghoul, Mikaeus and Warren Soultrader are each the sole member of their kill's any_of group. The reframing is the argument the audit supports, and it is conservative if anything - Gravecrawler is also a sole any_of member, in both KILL A and KILL B."
+          },
+          {
+            "where": "stages[5].what_it_does (the drain split)",
+            "claim": "\"only KILL E and KILL F draw their drain slot from all nine. KILL A, B and D ... take a 3-deep group (Bastion, Zulaport, Ayara); KILL C ... a disjoint 3-deep group ... Four of the six kills have a three-card drain layer\"",
+            "status": "supported",
+            "note": "Reproduced from goldfish_targets: KILL E and KILL F each carry the nine-card drain any_of; KILL A, KILL B and KILL D each carry ['Bastion of Remembrance','Zulaport Cutthroat','Ayara, First of Locthwain']; KILL C carries ['South Wind Avatar','Marauding Blight-Priest','Starscape Cleric'], disjoint from it. Four of six at 3 deep. The 82.3 / 72.0 pair is the 'A drain drawn' target over exactly the nine cards the stage lists."
+          },
+          {
+            "where": "lines[14].note",
+            "claim": "\"the only kill needing no commander and no recursion ... It does need a SEED: 012's board holds Carrion Feeder and Insect token X was sacrificed to it to pay the cost of the ability on the stack\"",
+            "status": "supported",
+            "note": "012's stack pos 0 is 'Carrion Feeder's activated ability - Cost already paid: Insect token X sacrificed' and pos 1 is South Wind Avatar's trigger 'Triggered on Insect token X'. The seed is now named, the surviving claim ('once any lifegain seeds it the alternation is self-sustaining and needs no outlet to CONTINUE') is what 012 actually establishes, and the rest checks: drain #40 takes all four seats to 0 at the same check, pilot ends at 80, mean turn 5.085 is the fastest of the six."
+          },
+          {
+            "where": "stages[4].what_it_does (004 attribution)",
+            "claim": "\"004 is eight drains and its checker-passed resolution ends 'NOT A KILL, AND NOT EVEN CLOSE' - a verdict the adversarial checker did not merely accept: it 'wrote an exhaustive depth-first search over the whole move space' and reproduced every headline figure (8, 7, 28, 24) independently\"",
+            "status": "supported",
+            "note": "Both attributions are now right. 'NOT A KILL, AND NOT EVEN CLOSE' is in 004's resolution final_state and not in its checker block; the checker block contains 'I wrote an exhaustive depth-first search over the whole move space ... Every headline figure in the file is confirmed: 8, 7, 28, 24' verbatim. The borrowed weight is gone and the stronger sentence is the one quoted."
+          },
+          {
+            "where": "stages[2].what_it_does (recursion count)",
+            "claim": "\"five ways to buy back a dead one - Animate Dead, Victimize, Persist, Agadeem's Awakening and Phyrexian Reclamation, the slow one because it returns to HAND ... plus Stitcher's Supplier, which buys nothing back and mills three\"",
+            "status": "supported",
+            "note": "Five named, five listed, and Stitcher's Supplier is correctly separated out. The stage's card list still totals 11 and every stage count reconciles: 19 + 9 + 11 + 7 + 7 + 16 + 6 + 5 = 80, which is the deck's distinct-card count (80 entries, 100 copies)."
+          },
+          {
+            "where": "open_questions[2] + proposed_goldfish_edits[0]",
+            "claim": "the rotations question is routed to resolve-stack, and the KILL E split carries a caveat that only the FLOOR can be written today",
+            "status": "supported",
+            "note": "settled_by is now 'resolve-stack' and why_it_matters says why goldfish cannot answer it, quoting the simulator's own assumptions ('Simulates resource development, not full games', 'Target assembly counts cards DRAWN by a turn') - both verbatim in goldfish_metrics.meta.model_assumptions - while handing the bodies-on-board half to the goldfish edit. The edit itself now carries the radagast caveat ('only the FLOOR can be written today ... the THRESHOLD component should be marked as awaiting a stack'), which is the honest form of a split that can only be proved from one side."
+          },
+          {
+            "where": "lines[*].verified_by (all eleven cited lines)",
+            "claim": "eleven of fifteen lines cite a checker-passed stack and each stack supports its arrow",
+            "status": "supported",
+            "note": "Re-read all eleven cited stacks against their arrows after the revision. No arrow claims a flow its stack shows not happening, and neither radagast failure shape appears - no resource is claimed to move off a permanent the board shows unavailable, and no line reads a negative resolution as proof of a positive. The care shown at the two easiest places to slip survives the rewrite: lines[6] still notes that 006's Nest of Scarabs is filtered out of the citation index and confines the arrow to Persist and Fume Spitter (I confirmed the mechanism in build_index.line_cards - 006's stack and graveyard name two cards, so the board is skipped, and verified.by_card indeed does not list Nest under 006), and lines[4] still says 'the 003 board class' rather than importing 008's 13 triggers onto 003, which is 008's own instruction ('ONLY 003'S BOARD IS THIS BOARD'). validate-engine passes: 8 stages, 80 cards, 0 unassigned, 11/15 verified."
+          },
+          {
+            "where": "stages[*] figures (goldfish, mana, audit)",
+            "claim": "every rate, count and mean turn quoted in the file",
+            "status": "supported",
+            "note": "Re-derived after the revision. All six kill pairs (A 1.3/18.2, B 0.6/12.0, C 6.6/42.6, D 4.6/34.3, E 13.5/58.8 mean 6.267, F 1.8/26.9), KILL C fastest at 5.085, Gravecrawler 17.0/66.9, noncreature answer 17.1/67.1, drain 82.3/72.0, fodder 82.3/72.2, outlet 78.5/68.0 over eight cards, ignition 73.8 over eight, tutor 61.2/50.3 (not ENGINE MANA's 61.2/51.0), fast mana 43.6/34.8, bodies 4.239, commander 4.301 / median 4 / 91%, 18 verified cards over 11 presentable stacks (14 pass, 3 withheld), Nest of Scarabs in 5, 39 contained lines deduped on frozenset, 11 two-card infinites, Gravecrawler + Phyrexian Altar the highest-popularity contained line at 60,592, and the seven Mikaeus pairings in open_questions[1] are exactly the seven two-card Mikaeus lines in candidate_lines. Length: every what_it_does is under MAX_WHAT_IT_DOES, but `output` is now 1,776 of 1,800 - 24 characters of headroom, up from a 1,314 file maximum in round 1. It is dense rather than muddled, so I am not calling it a defect; a next round asked to add a clause there will have to cut one first."
+          },
+          {
+            "where": "map_disagreements[*]",
+            "claim": "five disagreements, each naming which artifact is wrong about what",
+            "status": "supported",
+            "note": "Re-checked card by card against deck_map.json after the revision and every attribution still holds exactly, including the counts: the ignition class scatters 4/2/1/1 (THE SUBTRACTION Fume Spitter, Soul Snuffers, Skinrender, Black Sun's Zenith; THE FODDER Massacre Girl, Persist; THE ON SWITCH Yawgmoth; THE DEATH TAX The Meathook Massacre), the outlet class 6/1/1 with Woe Strider and Warren Soultrader the strays, ENGINE MANA across three cities, the five kill halves 3 THE FODDER / 2 THE DEATH TAX, Jet Medallion in THE FODDER. Stage-level city evidence is also right where I re-counted it (THE WORKING LANDS contained whole at 16, THE ON SWITCH holding 7 of 9 outlets, THE FODDER at 21 holding 10 of 11 fodder cards, THE DEATH TAX 9 and THE SUBTRACTION 5 of the output stage's 16) - with one exception, reported below."
+          },
+          {
+            "where": "stages[7].evidence[3] (combo: Gravecrawler + Phyrexian Altar)",
+            "claim": "\"the highest-popularity contained line in the deck (60,592) and one of 11 two-card infinites among 39 contained lines - and the only one of the 39 with a passing stack behind it\"",
+            "status": "contradicts-artifact",
+            "note": "THE LAST CLAUSE IS FALSE AND THE FILE REFUTES IT ELSEWHERE. Intersecting each of the 39 contained lines' cards against engine-facts verified.by_card, EIGHT of the 39 have all their cards inside one checker-passed stack: ['Bastion of Remembrance','Gravecrawler','Warren Soultrader'] -> 009, ['Bastion of Remembrance','Nest of Scarabs','Yawgmoth'] -> 002, ['Blood Artist','Nest of Scarabs','Yawgmoth'] -> 004, ['Nest of Scarabs','South Wind Avatar','Yawgmoth'] -> 005, ['Nest of Scarabs','Yawgmoth','Zulaport Cutthroat'] -> 003, ['Exquisite Blood','South Wind Avatar'] -> 012, ['Gravecrawler','Phyrexian Altar'] -> 011, ['Mikaeus, the Unhallowed','Viscera Seer'] -> 010. Two of them are the model's own other unbounded kills: the thesis says stacks 009, 011 and 012 are the three unbounded kills, and 009's and 012's lines are both in the 39. No charitable reading rescues it - restrict to unbounded-and-confirmed and 009 and 012 still qualify; restrict to two-card and 012's Exquisite Blood + South Wind Avatar still qualifies. The two figures in front of it are right (I reproduced 39 deduped contained lines, 11 two-card infinites, and 60,592 as the maximum popularity), so the fix is to delete or requantify one clause. MECHANICALLY CHECKABLE: 'this contained line is the only one with a stack behind it' is a set intersection of candidate_lines[].cards with verified.by_card, computable in engine-facts."
+          },
+          {
+            "where": "stages[4].evidence[3] (city-2)",
+            "claim": "\"four cities for seven cards: Nest of Scarabs and Skullclamp in THE FODDER, Pawn of Ulamog / Pitiless Plunderer / Deadly Dispute in THE FUEL, Grave Pact and Plumb the Forbidden in THE DEATH TAX\"",
+            "status": "miscounted",
+            "note": "Three cities, not four - and the note's own enumeration says so: 2 + 3 + 2 = 7 cards across THREE named cities. deck_map.json confirms each placement (Nest of Scarabs and Skullclamp in THE FODDER; Pawn of Ulamog, Pitiless Plunderer and Deadly Dispute in THE FUEL; Grave Pact and Plumb the Forbidden in THE DEATH TAX) and no conversion-stage card sits in a fourth city. The scatter argument survives the correction unchanged; only the number is wrong. Compare the neighbouring blocks, which are exact: stages[6] says 'three cities for six cards' and lists three."
+          },
+          {
+            "where": "stages[2].what_it_does",
+            "claim": "\"the audit's nine-card RENEWABLE FODDER class ... That class is split across three stages here on purpose: Nest of Scarabs and Pawn of Ulamog ... `conversion`, and Gravecrawler is a kill half, so it is `wincon`\"",
+            "status": "miscounted",
+            "note": "Four stages, and the fourth member is unnamed. goldfish_targets' RENEWABLE FODDER any_of is ['Nest of Scarabs','Bitterblossom','Grave Titan','Sedgemoor Witch','Black Market Connections','Reassembling Skeleton','Gravecrawler','Ophiomancer','Pawn of Ulamog']. This model places five of them in `fodder`, two in `conversion`, one in `wincon` - and Black Market Connections in `fuel`, which the sentence accounts for nowhere. Say four stages and name it, or the arithmetic reads 5 + 2 + 1 = 8 against a class the same sentence calls nine deep."
+          },
+          {
+            "where": "stages[4].what_it_does",
+            "claim": "\"Grave Pact is the one card here with no evidence at all - zero passing stacks name it and no declared kill includes it\"",
+            "status": "over-claimed",
+            "note": "Four of the seven cards in this stage pass the test the sentence states, not one. Grave Pact, Skullclamp, Deadly Dispute and Plumb the Forbidden are each absent from verified.by_card, from every goldfish target's any_of, and from all 39 contained combo lines. The three that do have evidence are Nest of Scarabs (5 stacks, KILL E), Pawn of Ulamog (RENEWABLE FODDER, 6 contained lines) and Pitiless Plunderer (ENGINE MANA, 8 contained lines). Either widen the sentence to the four cards, or give Grave Pact a distinguishing test it alone fails - as written the singular is an exclusivity claim that three other cards in the same list also satisfy."
+          },
+          {
+            "where": "lines[7].note (the precedent clause)",
+            "claim": "\"on a deck whose stacks 001 and 005 have twice refuted a Spellbook 'near-infinite' tag\"",
+            "status": "mis-cited",
+            "note": "005 did exactly that - its final_state says \"Spellbook's 'Near-infinite' tag is wrong for this board\" and combo_details tags Nest of Scarabs + South Wind Avatar + Yawgmoth 'Near-infinite ...'. 001 did not. combo_details tags Blowfly Infestation + Nest of Scarabs 'Infinite death triggers / Infinite ETB / Infinite LTB' - not near-infinite - and 001 does not refute that tag; it CONFIRMS it ('The Blowfly Infestation + Nest of Scarabs engine is genuinely unbounded') and refutes the KILL ('REFUTED AS A KILL ON THIS BOARD ... the engine is drainless here ... Total drain: exactly 3 per opponent'). The word 'near-infinite' occurs nowhere in 001. The precedent is real and stronger stated accurately - one stack refuted a Near-infinite tag and one refuted an Infinite line as a kill - and worth being exact about in the file whose round-1 defect was a borrowed reason. Also worth flagging in passing: 001 is one of the three non-presentable stacks (it holds Blowfly Infestation, no longer in the 99), so it can support a precedent in prose but can never be a verified_by."
+          },
+          {
+            "where": "stages[1].what_it_does",
+            "claim": "\"the other eight are 78.5% drawn / 68.0% by turn 6, the deck's deepest layer\"",
+            "status": "over-claimed",
+            "note": "The superlative is contradicted by this file's own numbers four paragraphs later. The eight non-commander outlets are 78.5 / 68.0; the drain layer is NINE cards at 82.3 / 72.0 and RENEWABLE FODDER is NINE cards at 82.3 / 72.2, and stages[5] itself calls the drain half 'the deck's best-built layer'. Counting Yawgmoth makes the outlet layer nine, which ties on size and still loses on rate. Deepest is wrong on both measures - 'the deck's third-deepest layer' or simply 'eight cards deep at 78.5%' is what the goldfish supports, and the stage's argument (that this layer is assumed by ten of eleven stacks) does not depend on the superlative."
+          }
+        ]
+      },
       {
         "round": 1,
         "verdict": "fail",

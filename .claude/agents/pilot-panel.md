@@ -115,6 +115,20 @@ that includes the hot take.** The most tempting hot take in any issue is precise
 an unproven line stated flatly, because an unproven line is the most surprising
 thing in the file. State it as a question Vera has to answer, or do not open on it.
 
+**Do not open it with a formula, and there is one to avoid by name.** Eight decks
+wrote a hot take and **five of them opened "Here is the thing…"** — one deck set
+the pattern and the rest converged on it, which is the same defect STYLEv3 §7.2
+legislates against for deks: fine once, a formula by the second issue, and a
+reader who meets it twice stops hearing the sentence. A test now fails the build
+when two decks share a hot-take opening.
+
+The two that avoided it are the model. *"Stop trying to cast your commander."*
+opens on the instruction. *"Three boards in this deck's record end with every
+opponent at zero and no way to stop it."* opens on the evidence. Both put the
+reader inside the claim in one line; neither spends a clause announcing that a
+claim is coming. Open on the board, the number, the card or the instruction —
+never on the throat-clearing before it.
+
 **Then it gets argued with.** At least one later turn carries
 `"responds_to": "hot-take"` — the validator checks this — and it should be the
 turn where Vera tests whether the claim is on the record, or Ledger prices it. The

@@ -569,144 +569,204 @@
     }
   ],
   "critic": {
-    "round": 2,
-    "iterations": 2,
-    "verdict": "fail",
+    "round": 3,
+    "iterations": 3,
+    "verdict": "pass",
     "findings": [
       {
-        "where": "stages[0].what_it_does",
-        "claim": "thirty-six copies, of which mana_analysis counts 33 as red sources ... it also credits Kher Keep red on a land whose printed mana ability reads '{T}: Add {C}', so 33 is the artifact's figure and an upper bound on it",
+        "where": "stages[2].what_it_does",
+        "claim": "every point of count has to be paid for one card at a time, which is why fuel is one of the two largest non-mana stages, 13 cards, tied with output",
         "status": "supported",
-        "note": "Round-1 finding 1 answered, and the hedge is a fair reading rather than a second derived count. mana_analysis.lands.total = 36, lands.entries = 15, sources.lands.R = 33, and lands.list carries produces: [] for exactly Fountainport, Reliquary Tower and War Room — the three the stage names. Kher Keep's cards.json oracle is '{T}: Add {C}' plus '{1}{R}, {T}: Create a 0/1 Kobold', so its only mana ability adds {C} while lands.list gives it produces: ['R']; 33 therefore over-counts by one and 'upper bound' is exactly the right word. The stage asserts no number of its own: it reports the artifact's 33 and says why 33 is a ceiling, which is the disciplined version of the round-1 fix."
-      },
-      {
-        "where": "stages[1].evidence[1].note",
-        "claim": "Exactly two stages in this model live at one address — this one, and protection, whose two cards are both in THE STAYING POWER",
-        "status": "supported",
-        "note": "Round-1 finding 2 answered. Re-derived by joining stages[].cards to deck_map.json's level-0 city per card: mana 4, ignition 1, fuel 3, fodder 4, conversion 4, output 3, protection 1, wincon 4. Exactly two stages at one city, and the added clause ('ignition is the only one of the two that does work rather than carry insurance') preserves the original point without asserting what protection's own evidence denies. Still mechanically checkable: count distinct level-0 regions per stage and diff against any 'only stage' phrasing."
-      },
-      {
-        "where": "stages[1].what_it_does",
-        "claim": "the earliest of the three declared targets by 1.730 turns against the next-earliest, the storm payoff plus ritual at mean turn 4.914",
-        "status": "supported",
-        "note": "Round-1 finding 3 answered exactly. goldfish_metrics.json mean_turn: 3.184 / 4.914 / 5.266; 4.914 - 3.184 = 1.730, and the sentence now names which target the gap is measured against, which is what made 'two full turns' unfalsifiable. The other figures in the same sentence re-derive: 5 cards, opening_seven 0.312, by_turn_three 0.386, assembled_rate 0.600."
-      },
-      {
-        "where": "stages[4].single_point_of_failure",
-        "claim": "Zada, Hedron Grinder",
-        "status": "supported",
-        "note": "Round-1 finding 4 answered in the direction the evidence points. engine-facts verified.load_bearing_cards is exactly ['Zada, Hedron Grinder'] and she is the only card named by two passing stacks (001, 003). audit_engine.single_points_of_failure IS empty and the reason is mechanical, not a disagreement: deck_audit.py:651 builds that list from targets whose thinnest component size <= 1, and the three declared components are 6, 5 and 4, so nothing can appear there. The model now says so in proposed_goldfish_edits[3].why ('audit_engine.single_points_of_failure is empty because no declared target names her'), which is accurate — Zada is a commander gate on the 'Zada online' target, not a member of any any_of group. The commander-tax rebuttal was kept as an argument inside the stage rather than used to withhold the declaration, and the round-1 asymmetry (protection declaring a SPOF while conversion declared none) is gone."
+        "note": "The round-2 blocking defect is repaired and the repair is exact, not approximate. Re-derived from the model's own stages[].cards: mana 24, ignition 4, fuel 13, fodder 8, conversion 7, output 13, protection 2, wincon 8. Fuel is 13, output is 13, and the next-largest non-mana stage is 8 — so 'one of the two largest, 13 cards, tied with output' is true in all three of its assertions (the count, the tie, and the partner named). The premise it supports is unchanged and still sound: nothing in fuel can be replaced by a storm copy, so the stage has to be wide. This was the only claim in the model that a size superlative was propping up."
       },
       {
         "where": "stages[2].what_it_does",
-        "claim": "Witch's Mark, Faithless Looting, Glimpse the Impossible and Daring Discovery are the deck's paper card advantage, and not one of them refills a hand",
+        "claim": "the trade that paid for the fix: 1728 -> 1633 characters against MAX_WHAT_IT_DOES = 1800",
         "status": "supported",
-        "note": "Round-1 finding 5 answered and each card's reading checks against cards.json: Faithless Looting 'Draw two cards, then discard two cards' (net zero); Witch's Mark 'You may discard a card. If you do, draw two cards' (net +1, gated); Glimpse the Impossible exiles three playable only this turn; Daring Discovery is Discover 4. deck-audit card-advantage is value 8 against low 10, verdict 'under', as quoted. The paragraph's own rule ('every point of count has to be paid for one card at a time') no longer has a false exception attached to it."
+        "note": "Sentence-level diff against the previous state shows exactly two edits: the superlative clause grew by 58 characters, and the closing pair 'Witch's Mark is also a legal Zada target and is absent from the declared cantrip component; that is filed as a proposed goldfish edit' was deleted (-153). Net 1728 -> 1633, so the stage regained 95 characters of headroom rather than spending its remaining 72. No information was lost: proposed_goldfish_edits[1] still carries the whole claim with its own derivation ('Witch's Mark targets up to one target creature you control ... engine-facts puts the declared 6-card group at 36.4% of openers, and the cited redundancy anchor puts 7 copies at 41.1%'), which is what made this the cheapest sentence in the stage to trade. This is the pattern the 1,800 cap exists to produce — a fix bought by deleting a restatement rather than by accreting a clause."
       },
       {
-        "where": "stages[5].what_it_does",
-        "claim": "Siege-Gang Commander, Siege-Gang Lieutenant and Broadside Bombardiers buy damage with a body at a cost, and all three can point it at a player ... Gempalm Incinerator and Goblin Negotiation spend no body and are not that class",
+        "where": "thesis, stages[0..1], stages[3..7], lines, map_disagreements, unassigned, open_questions, proposed_goldfish_edits",
+        "claim": "nothing else moved this round",
         "status": "supported",
-        "note": "Round-1 finding 6 answered. Oracle: Commander '{1}{R}, Sacrifice a Goblin: 2 damage to any target'; Lieutenant '{2}, Sacrifice a Goblin: 1 damage to any target'; Bombardiers 'Boast — Sacrifice another creature or artifact: damage equal to 2 plus the sacrificed permanent's mana value to any target' — all three spend a permanent and all three read 'any target'. Incinerator (cycling, X = Goblin count) and Negotiation (X damage, then tokens from excess) target a creature only, exactly as the revision now says. Two cards moved out of the class and the class shrank from five to three."
+        "note": "Verified by diff, not by re-reading. The committed HEAD copy of engine.json is byte-identical to the round-2 state (its what_it_does lengths are exactly the 1725/1045/1728/1195/1500/1525/913/1058 round 2 recorded). Diffing the current file against it: thesis, lines, map_disagreements, unassigned, open_questions and proposed_goldfish_edits are all byte-identical, seven of eight stages have zero changed keys, and stages[2].what_it_does is the single changed value in the entire model. Independently, every verbatim claim quoted in a round-2 finding still appears verbatim in the model except the one superlative that was the finding. So the verified layer, the ten cited arrows, the five dashed notes and the five disagreements are unregressed by construction, and I have not re-litigated them."
       },
       {
-        "where": "proposed_goldfish_edits[1].why",
-        "claim": "engine-facts puts the declared 6-card group at 36.4% of openers, and the cited redundancy anchor puts 7 copies at 41.1%. The 5-copy figure of 31% is not this edit's baseline",
+        "where": "stages[*].what_it_does",
+        "claim": "a 'largest / only / thinnest stage' superlative should be diffed mechanically against len(stages[i].cards)",
         "status": "supported",
-        "note": "Round-1 finding 7 answered, including the explicit disclaimer of the wrong anchor. Recomputed: 1 - C(93,7)/C(99,7) = 0.3636 and 1 - C(92,7)/C(99,7) = 0.4115, matching engine-facts' 0.364 for the six-card group and the strategy quote's 41.1%. The edit now prices +4.7 points rather than +10.1."
+        "note": "Agreed, and worth making permanent — with one scoping caveat, and it is measured against the fleet before proposing it, per the repo's own rule. VERIFICATION is exact and free: validate_engine already holds stages[].cards, so 'is there another stage of equal or greater size' is decidable, and the goblin-storm defect was precisely a TIE, which a size ranking sees and a reader does not. The round-1 'exactly two stages live at one address' claim needs one extra join — deck_map.json's level-0 city per card, tracked in the same deck directory — after which the distinct-city count per stage is equally exact. DETECTION is the fuzzy half, so this must be WARN-shaped, not an error: scanning all nine tracked engine.json files for /(largest|smallest|thinnest|widest|biggest|fewest|only)[^.;]{0,60}stage/i returns 5 sentences (edgar 2, goblin-storm 1, radagast 1, sisay 1), of which only goblin-storm's is a size claim — edgar's 'the only stage that does not have to be found' and sisay's 'the only stage a city name addresses correctly' are semantic and city-coherence claims respectively and would be false positives against a size check. The useful shape is therefore: on a match, print the computed size ranking (and the per-stage distinct-city count) as a warning for a human or the critic to diff. Fleet cost: 5 warnings, 0 spurious errors."
       },
       {
-        "where": "lines[2].note",
-        "claim": "storm count is all it pays there: stack 002's board is Impact Tremors and four Mountains with zero Goblin tokens on it, so the stack shows the token maker paying once, not twice",
+        "where": "lines[3]",
+        "claim": "mana -> wincon via Battle Hymn, Brightstone Ritual, Empty the Warrens, carries 'storm count, not mana', verified_by 002",
         "status": "supported",
-        "note": "Round-1 finding 8 answered by narrowing the note to what the board shows. Stack 002's scenario board is ['Impact Tremors', 'Mountain x4'] with opponents at 32 and 28 and no tokens; extras.spells_cast_before_this_turn is 3 and the graveyard holds Battle Hymn, Brightstone Ritual, Dragon Fodder. The line's carries ('storm count') and its note now agree with the board rather than with the deck's general behaviour."
+        "note": "Re-checked directly this round even though the array is unchanged, because this is the exact shape of the radagast Castle-Garenbrig failure the charter exists for: a mana-stage arrow into a kill. Stack 002's scenario board gives you Impact Tremors and Mountain x4 with mana_available '{R}{R}{R}{R}', and both rituals are in the GRAVEYARD as two of the three prior casts (extras.spells_cast_before_this_turn = 3, graveyard = Battle Hymn, Brightstone Ritual, Dragon Fodder). The four mana that cast Empty the Warrens therefore come from the four Mountains, and the rituals contribute spell count. The line's carries says 'storm count, not mana' and its note says 'The mana claim is not what the stack shows'. That is the arrow declining the inference the stack does not support, in the one place it would have been easiest to make."
       },
       {
         "where": "stages[3].what_it_does",
-        "claim": "stack 004 measured one activation at five tokens, because Krenko counts himself — four Goblins were out when he was cast and five when the ability resolved — leaving ten Goblins on the table",
+        "claim": "Krenko, Mob Boss is the largest single producer",
         "status": "supported",
-        "note": "Round-1 finding 9 answered verbatim against stack 004 step 5 ('X is determined now, at resolution: you control 5 Goblins (Krenko, Warchief, Prospector, 2 tokens), so X = 5') and its board of ten. The off-by-one that would have taught the reader X = pre-cast board count is gone and the correct rule is stated."
+        "note": "Recording the scope rather than a defect, because the proposed mechanical check must not be over-scoped to catch it. This is a CARD-level claim inside 'THE BODY PILE' and is true within stages[3]: Krenko made five tokens in stack 004 against Redcap Gutter-Dweller's two and Howlsquad Heavy's one per attack. Deck-wide it would be arguable — Empty the Warrens put eight tokens on the board in stack 002 — but Empty the Warrens is in stages[7] (wincon) and the sentence is bounded by the preceding one ('the pile is a stage in its own right'). It stays true as stage-scoped prose; it would become wrong if lifted into shared copy. A len(stages[i].cards) diff cannot see this claim and should not try to."
       },
       {
-        "where": "stages[2].what_it_does",
-        "claim": "Past in Flames ... that is the rebuild plan, and it is one card. Goblin Dark-Dwellers recasts exactly one spell, and only at mana value 3 or less — a far smaller second option, not redundancy for it",
+        "where": "stages[5].what_it_does, proposed_goldfish_edits[1].why, proposed_goldfish_edits[2].why",
+        "claim": "the thinnest declared component is four cards at 25.8%; the declared cantrip group is 6 at 36.4% and 7 copies is 41.1%",
         "status": "supported",
-        "note": "Round-1 finding 10 answered. Oracle confirms Past in Flames grants flashback to every instant and sorcery in the graveyard and Dark-Dwellers casts one card of mana value 3 or less on ETB. The rebuild class is now stated as one card deep, so nothing downstream can quote 'two cards deep' as redundancy."
-      },
-      {
-        "where": "stages[4].what_it_does",
-        "claim": "Idol of Oblivion draws one card per TURN, gated on having created a token — the one rate in this paragraph that is not per unit",
-        "status": "supported",
-        "note": "Round-1 finding 11 answered. Oracle: '{T}: Draw a card. Activate only if you created a token this turn.' The revision also flags the asymmetry with Skullclamp and Bombardment in the same paragraph rather than leaving the reader to infer a per-token rate from the surrounding sentences."
+        "note": "Re-derived from a fresh engine-facts run rather than from the round-2 record. audit_engine.targets gives component sizes 6 (opening_seven 0.364), 5 (0.312), 4 (0.258) and 4 (0.258), so thinnest_size 4 at 25.8% is right in both places it is quoted. Hypergeometrics recomputed independently: 1 - C(99-n,7)/C(99,7) = 0.2577 / 0.3124 / 0.3636 / 0.4115 for n = 4/5/6/7, matching 25.8, 31.2, 36.4 and 41.1 as printed. verified.load_bearing_cards is exactly ['Zada, Hedron Grinder'] and audit_engine.single_points_of_failure is [] — both still as stages[4] and proposed_goldfish_edits[3].why describe them."
       },
       {
         "where": "stages[0].what_it_does",
-        "claim": "The utility lands are mostly NOT here for their mana ... (The taxonomy reads ramp:ritual at 6, adding Ancestors' Aid and Glimpse the Impossible; this model files the second of those in fuel.)",
+        "claim": "1,725 characters against MAX_WHAT_IT_DOES = 1800",
         "status": "supported",
-        "note": "Round-1 finding 12 answered on both halves. Reliquary Tower's 'You have no maximum hand size', War Room's '{3}, {T}, Pay life: Draw a card' (deck-audit lists War Room under card-advantage.possible_uncounted, as the stage says) and Fountainport's '{2}, {T}, Sacrifice a token: Draw a card' all check. The ritual slip is fixed by naming the DECLARED group of four (engine-facts' component is exactly Battle Hymn, Brightstone Ritual, Mana Geyser, Seething Song) and stating the taxonomy's 6 beside it; card_roles gives ramp:ritual to exactly those four plus Ancestors' Aid and Glimpse the Impossible, and Glimpse is in stages[2].cards as claimed."
+        "note": "Unchanged and legal, but it is now the model's longest field and the only one near the cap, with 75 characters of headroom. It is organised rather than muddled — a card-by-card sequence, no narration of previous drafts — which is the distinction the cap was measured on, so it is not a defect. Flagging it only so a future revision knows that any addition here has to be a trade, and that the safest trade is not the Kher Keep hedge or the Sol Ring / Ruby Medallion / Throne of Eldraine sentence, both of which are load-bearing against a red-source miscount."
       },
       {
-        "where": "lines[0], lines[1], lines[8], lines[9]",
-        "claim": "the two feedback pairs — Zada <-> Crimson Wisps (001) and Haze of Rage <-> Storm-Kiln Artist (005)",
+        "where": "engine.json",
+        "claim": "the model as a whole",
         "status": "supported",
-        "note": "Byte-identical to round 1 (diffed the whole lines[] array) and re-read against the stacks anyway, because a backward arrow is where causation is easiest to fake. 001: one {R} in at step 1, five cards out at steps 4-8, final_state cards_drawn 5. 005: step 7 gives 4 Treasures on cast #1, step 10 gives 5 on cast #2 (nine on board), step 4 establishes each COPY as a magecraft trigger and step 11 gives 'iteration k ... costs 4 mana, and yields k+3 Treasures'. Both directions are established by the cited stack, not merely mentioned in it."
-      },
-      {
-        "where": "lines[10]",
-        "claim": "the deck's headline kill and it is NOT verifiable as drawn (verified_by null)",
-        "status": "supported",
-        "note": "Untouched, and still the right call. engine-facts verified.by_stack['002'].cards is exactly [Battle Hymn, Brightstone Ritual, Dragon Fodder, Empty the Warrens, Grapeshot] — build_index.line_cards stops once stack+hand+graveyard name two cards, so Impact Tremors, which sits on 002's battlefield, never enters the list and validate-engine could not accept a citation here. The line stayed dashed and open_questions[0] still routes the remedy to resolve-stack; nothing was re-pointed at two cards 002 does name in order to buy a green arrow."
-      },
-      {
-        "where": "lines[11], lines[12], lines[13], lines[14]",
-        "claim": "the four other dashed lines and their notes",
-        "status": "supported",
-        "note": "All four untouched and none is phrased as fact. lines[11] 'the attrition line nobody has checked', lines[12] '...; unchecked', lines[14] 'No stack has been run on it'. lines[13]'s one factual assertion — Swiftfoot Boots is the only card in the 99 that can make the hub untargetable — was re-derived, not taken over: scanning all 79 cards.json entries for hexproof/shroud/protection from/ward/'can't be the target' returns exactly Swiftfoot Boots and Roaming Throne, whose ward {2} protects only itself. Its card-text claims also hold (Skullclamp +1/-1 kills a 1/1 and draws two; Mogg War Marshal makes a token on enter and on death; Bombardment plus Boggart Shenanigans is two damage per Goblin body)."
-      },
-      {
-        "where": "stages[5].what_it_does, stages[7].evidence[3]",
-        "claim": "Impact Tremors and General Kreat are the only two each-opponent ETB damage cards; the three Krenko combo lines are refuted here",
-        "status": "supported",
-        "note": "Both survived the revision unchanged and both re-checked. Scanning all 79 entries for 'each opponent' returns four cards; only Impact Tremors ('Whenever a creature you control enters, deals 1 damage to each opponent') and General Kreat ('Whenever another creature you control enters ... 1 damage to each opponent') deal damage on an ETB. The Krenko refutation is still stated with its actual reason (Zada is the commander, so 903.9a never returns Krenko; he is also tapped) in stages[4].evidence[1], lines[7].note and stages[7].evidence[3], and stack 004's final_state says the same. No re-adoption of the assumes_commander lines in engine-facts.candidate_lines."
-      },
-      {
-        "where": "map_disagreements",
-        "claim": "five disagreements, each naming which artifact is wrong about what",
-        "status": "supported",
-        "note": "Untouched, and every city list re-derived from deck_map.json rather than re-read: cantrip group CRITICAL MASS 4 / MANA FOR ONE TURN 1 / THE STAYING POWER 1; payoff half CRITICAL MASS 2 / BODIES INTO DAMAGE 1 / THE TOKEN FACTORY 1; conversion 2/2/2/1 across four cities; wincon 5/1/1/1. engine-facts' scatter still reads coherent: false on all four components. The other city figures in the file also re-derive exactly: THE RED FLOOR is precisely the fifteen land entries, ten of thirteen in fuel are CRITICAL MASS, ten of thirteen in output are BODIES INTO DAMAGE, THE STAYING POWER is eleven cards wide, and the mana stage splits 4 rituals-plus-Ancestors'-Aid / 4 rocks-and-Warchief / 1 Seething Song exactly as evidence[2] says."
-      },
-      {
-        "where": "stages[*].cards",
-        "claim": "coverage and the declared figures",
-        "status": "supported",
-        "note": "79 cards placed, each exactly once, all present in cards.json, unassigned empty — recomputed, and validate-engine passes (8 stages, 10/15 lines verified). Re-derived figures that survived the rewrite: turn-five mean available mana 4.589; thinnest declared component 4 cards at opening_seven 0.258; deck-audit protection 2 copies against the 5-7 target, verdict under, both cards carrying protection:self; stack 003's +3/+4/+5/+6 and +7 for 32 power with at least 30 reaching (steps 8-9); stack 002's eight tokens and eight damage to each of two opponents and the following Grapeshot at storm count 4 (steps 7-8). Hypergeometrics 25.8 / 31.2 / 36.4 / 41.1 all recomputed to the printed value."
-      },
-      {
-        "where": "open_questions",
-        "claim": "five open questions, three routed to resolve-stack",
-        "status": "supported",
-        "note": "Untouched, and this is the one block of the model the renderer actually publishes (build_manual reads engine.open_questions and the schematic; what_it_does is agent-facing only). Re-checked the two that decide placements: Zada's type line is 'Legendary Creature — Goblin Ally', so Roaming Throne naming Goblin does reach her and open_questions[1] is genuinely open; Frontline Heroism's oracle is one Soldier and one copy at that token regardless of width, so open_questions[2] states the literal reading correctly and neither card was moved on the strength of an unresolved question."
-      },
-      {
-        "where": "stages[2].what_it_does",
-        "claim": "every point of count has to be paid for one card at a time, which is why this is the largest non-mana stage",
-        "status": "miscounted",
-        "note": "Fuel holds 13 cards and OUTPUT also holds 13 (Blasphemous Act, Boggart Shenanigans, Broadside Bombardiers, Chaos Warp, Gempalm Incinerator, General Kreat, Goblin Negotiation, Grapeshot, Impact Tremors, Pashalik Mons, Siege-Gang Commander, Siege-Gang Lieutenant, Vandalblast). Full non-mana counts from the model's own stages[].cards: ignition 4, fuel 13, fodder 8, conversion 7, output 13, protection 2, wincon 8. Fuel is TIED for largest, not the largest, so the sentence's conclusion does not follow from its premise as stated — and the premise is fine, so the fix is 'tied with output as the largest' or simply 'one of the two largest'. This is the same class as round-1 finding 3: a superlative that is 'almost true' propping up a real argument. Mechanically checkable and worth adding: any 'largest/only/thinnest stage' phrasing can be diffed against len(stages[i].cards), which is data validate_engine already loads."
-      },
-      {
-        "where": "stages[0].what_it_does, stages[2].what_it_does",
-        "claim": "the two rewritten stages are 1725 and 1728 characters against MAX_WHAT_IT_DOES = 1800",
-        "status": "supported",
-        "note": "Recording the headroom, not a defect: all eight stages are legal (1725 / 1045 / 1728 / 1195 / 1500 / 1525 / 913 / 1058) and both long ones are organised rather than muddled — each is a sequence of card-by-card readings, not accreted narration of previous drafts, which is the failure mode the cap was measured against. But the round-1 fixes were bought entirely with length (stages[0] was 913 and stages[2] 1110), and 72-75 characters of headroom means the one-clause fix above cannot be ADDED, it has to be traded. The cheapest trade in stages[2] is the closing sentence about Witch's Mark, which repeats proposed_goldfish_edits[1] in full."
-      },
-      {
-        "where": "stages[0].what_it_does",
-        "claim": "Add Sol Ring, Ruby Medallion and Throne of Eldraine. That part only has to hit drops.",
-        "status": "supported",
-        "note": "Checked because it sits one sentence after a red-source count and could be read as three more red sources, which would contradict mana_analysis: Sol Ring is in producers with produces: [] (it adds {C}{C}), Throne of Eldraine and Ruby Medallion are not producers at all, and sources.nonland.R = 10 names none of the three. It survives because deck-audit's ramp axis files exactly these three together (Sol Ring and Ruby Medallion as measured ramp, Throne of Eldraine as possible_uncounted), so 'add' reads as the deck's non-land mana furniture rather than as red sources, and no combined number is ever stated. If stages[0] is edited anyway, one word ('three artifacts beside them') removes the ambiguity — but Ruby Medallion adds no mana at all, so do not let a revision turn this list into a source count."
+        "note": "validate-engine passes: 8 stages, 79 cards placed, each exactly once, 0 unassigned, 10 of 15 lines verified by a passing stack. Five dashed lines with honest notes on a deck with five passing stacks is a complete model of what has been checked, not an incomplete one."
       }
     ],
     "previous_rounds": [
+      {
+        "round": 2,
+        "verdict": "fail",
+        "findings": [
+          {
+            "where": "stages[0].what_it_does",
+            "claim": "thirty-six copies, of which mana_analysis counts 33 as red sources ... it also credits Kher Keep red on a land whose printed mana ability reads '{T}: Add {C}', so 33 is the artifact's figure and an upper bound on it",
+            "status": "supported",
+            "note": "Round-1 finding 1 answered, and the hedge is a fair reading rather than a second derived count. mana_analysis.lands.total = 36, lands.entries = 15, sources.lands.R = 33, and lands.list carries produces: [] for exactly Fountainport, Reliquary Tower and War Room — the three the stage names. Kher Keep's cards.json oracle is '{T}: Add {C}' plus '{1}{R}, {T}: Create a 0/1 Kobold', so its only mana ability adds {C} while lands.list gives it produces: ['R']; 33 therefore over-counts by one and 'upper bound' is exactly the right word. The stage asserts no number of its own: it reports the artifact's 33 and says why 33 is a ceiling, which is the disciplined version of the round-1 fix."
+          },
+          {
+            "where": "stages[1].evidence[1].note",
+            "claim": "Exactly two stages in this model live at one address — this one, and protection, whose two cards are both in THE STAYING POWER",
+            "status": "supported",
+            "note": "Round-1 finding 2 answered. Re-derived by joining stages[].cards to deck_map.json's level-0 city per card: mana 4, ignition 1, fuel 3, fodder 4, conversion 4, output 3, protection 1, wincon 4. Exactly two stages at one city, and the added clause ('ignition is the only one of the two that does work rather than carry insurance') preserves the original point without asserting what protection's own evidence denies. Still mechanically checkable: count distinct level-0 regions per stage and diff against any 'only stage' phrasing."
+          },
+          {
+            "where": "stages[1].what_it_does",
+            "claim": "the earliest of the three declared targets by 1.730 turns against the next-earliest, the storm payoff plus ritual at mean turn 4.914",
+            "status": "supported",
+            "note": "Round-1 finding 3 answered exactly. goldfish_metrics.json mean_turn: 3.184 / 4.914 / 5.266; 4.914 - 3.184 = 1.730, and the sentence now names which target the gap is measured against, which is what made 'two full turns' unfalsifiable. The other figures in the same sentence re-derive: 5 cards, opening_seven 0.312, by_turn_three 0.386, assembled_rate 0.600."
+          },
+          {
+            "where": "stages[4].single_point_of_failure",
+            "claim": "Zada, Hedron Grinder",
+            "status": "supported",
+            "note": "Round-1 finding 4 answered in the direction the evidence points. engine-facts verified.load_bearing_cards is exactly ['Zada, Hedron Grinder'] and she is the only card named by two passing stacks (001, 003). audit_engine.single_points_of_failure IS empty and the reason is mechanical, not a disagreement: deck_audit.py:651 builds that list from targets whose thinnest component size <= 1, and the three declared components are 6, 5 and 4, so nothing can appear there. The model now says so in proposed_goldfish_edits[3].why ('audit_engine.single_points_of_failure is empty because no declared target names her'), which is accurate — Zada is a commander gate on the 'Zada online' target, not a member of any any_of group. The commander-tax rebuttal was kept as an argument inside the stage rather than used to withhold the declaration, and the round-1 asymmetry (protection declaring a SPOF while conversion declared none) is gone."
+          },
+          {
+            "where": "stages[2].what_it_does",
+            "claim": "Witch's Mark, Faithless Looting, Glimpse the Impossible and Daring Discovery are the deck's paper card advantage, and not one of them refills a hand",
+            "status": "supported",
+            "note": "Round-1 finding 5 answered and each card's reading checks against cards.json: Faithless Looting 'Draw two cards, then discard two cards' (net zero); Witch's Mark 'You may discard a card. If you do, draw two cards' (net +1, gated); Glimpse the Impossible exiles three playable only this turn; Daring Discovery is Discover 4. deck-audit card-advantage is value 8 against low 10, verdict 'under', as quoted. The paragraph's own rule ('every point of count has to be paid for one card at a time') no longer has a false exception attached to it."
+          },
+          {
+            "where": "stages[5].what_it_does",
+            "claim": "Siege-Gang Commander, Siege-Gang Lieutenant and Broadside Bombardiers buy damage with a body at a cost, and all three can point it at a player ... Gempalm Incinerator and Goblin Negotiation spend no body and are not that class",
+            "status": "supported",
+            "note": "Round-1 finding 6 answered. Oracle: Commander '{1}{R}, Sacrifice a Goblin: 2 damage to any target'; Lieutenant '{2}, Sacrifice a Goblin: 1 damage to any target'; Bombardiers 'Boast — Sacrifice another creature or artifact: damage equal to 2 plus the sacrificed permanent's mana value to any target' — all three spend a permanent and all three read 'any target'. Incinerator (cycling, X = Goblin count) and Negotiation (X damage, then tokens from excess) target a creature only, exactly as the revision now says. Two cards moved out of the class and the class shrank from five to three."
+          },
+          {
+            "where": "proposed_goldfish_edits[1].why",
+            "claim": "engine-facts puts the declared 6-card group at 36.4% of openers, and the cited redundancy anchor puts 7 copies at 41.1%. The 5-copy figure of 31% is not this edit's baseline",
+            "status": "supported",
+            "note": "Round-1 finding 7 answered, including the explicit disclaimer of the wrong anchor. Recomputed: 1 - C(93,7)/C(99,7) = 0.3636 and 1 - C(92,7)/C(99,7) = 0.4115, matching engine-facts' 0.364 for the six-card group and the strategy quote's 41.1%. The edit now prices +4.7 points rather than +10.1."
+          },
+          {
+            "where": "lines[2].note",
+            "claim": "storm count is all it pays there: stack 002's board is Impact Tremors and four Mountains with zero Goblin tokens on it, so the stack shows the token maker paying once, not twice",
+            "status": "supported",
+            "note": "Round-1 finding 8 answered by narrowing the note to what the board shows. Stack 002's scenario board is ['Impact Tremors', 'Mountain x4'] with opponents at 32 and 28 and no tokens; extras.spells_cast_before_this_turn is 3 and the graveyard holds Battle Hymn, Brightstone Ritual, Dragon Fodder. The line's carries ('storm count') and its note now agree with the board rather than with the deck's general behaviour."
+          },
+          {
+            "where": "stages[3].what_it_does",
+            "claim": "stack 004 measured one activation at five tokens, because Krenko counts himself — four Goblins were out when he was cast and five when the ability resolved — leaving ten Goblins on the table",
+            "status": "supported",
+            "note": "Round-1 finding 9 answered verbatim against stack 004 step 5 ('X is determined now, at resolution: you control 5 Goblins (Krenko, Warchief, Prospector, 2 tokens), so X = 5') and its board of ten. The off-by-one that would have taught the reader X = pre-cast board count is gone and the correct rule is stated."
+          },
+          {
+            "where": "stages[2].what_it_does",
+            "claim": "Past in Flames ... that is the rebuild plan, and it is one card. Goblin Dark-Dwellers recasts exactly one spell, and only at mana value 3 or less — a far smaller second option, not redundancy for it",
+            "status": "supported",
+            "note": "Round-1 finding 10 answered. Oracle confirms Past in Flames grants flashback to every instant and sorcery in the graveyard and Dark-Dwellers casts one card of mana value 3 or less on ETB. The rebuild class is now stated as one card deep, so nothing downstream can quote 'two cards deep' as redundancy."
+          },
+          {
+            "where": "stages[4].what_it_does",
+            "claim": "Idol of Oblivion draws one card per TURN, gated on having created a token — the one rate in this paragraph that is not per unit",
+            "status": "supported",
+            "note": "Round-1 finding 11 answered. Oracle: '{T}: Draw a card. Activate only if you created a token this turn.' The revision also flags the asymmetry with Skullclamp and Bombardment in the same paragraph rather than leaving the reader to infer a per-token rate from the surrounding sentences."
+          },
+          {
+            "where": "stages[0].what_it_does",
+            "claim": "The utility lands are mostly NOT here for their mana ... (The taxonomy reads ramp:ritual at 6, adding Ancestors' Aid and Glimpse the Impossible; this model files the second of those in fuel.)",
+            "status": "supported",
+            "note": "Round-1 finding 12 answered on both halves. Reliquary Tower's 'You have no maximum hand size', War Room's '{3}, {T}, Pay life: Draw a card' (deck-audit lists War Room under card-advantage.possible_uncounted, as the stage says) and Fountainport's '{2}, {T}, Sacrifice a token: Draw a card' all check. The ritual slip is fixed by naming the DECLARED group of four (engine-facts' component is exactly Battle Hymn, Brightstone Ritual, Mana Geyser, Seething Song) and stating the taxonomy's 6 beside it; card_roles gives ramp:ritual to exactly those four plus Ancestors' Aid and Glimpse the Impossible, and Glimpse is in stages[2].cards as claimed."
+          },
+          {
+            "where": "lines[0], lines[1], lines[8], lines[9]",
+            "claim": "the two feedback pairs — Zada <-> Crimson Wisps (001) and Haze of Rage <-> Storm-Kiln Artist (005)",
+            "status": "supported",
+            "note": "Byte-identical to round 1 (diffed the whole lines[] array) and re-read against the stacks anyway, because a backward arrow is where causation is easiest to fake. 001: one {R} in at step 1, five cards out at steps 4-8, final_state cards_drawn 5. 005: step 7 gives 4 Treasures on cast #1, step 10 gives 5 on cast #2 (nine on board), step 4 establishes each COPY as a magecraft trigger and step 11 gives 'iteration k ... costs 4 mana, and yields k+3 Treasures'. Both directions are established by the cited stack, not merely mentioned in it."
+          },
+          {
+            "where": "lines[10]",
+            "claim": "the deck's headline kill and it is NOT verifiable as drawn (verified_by null)",
+            "status": "supported",
+            "note": "Untouched, and still the right call. engine-facts verified.by_stack['002'].cards is exactly [Battle Hymn, Brightstone Ritual, Dragon Fodder, Empty the Warrens, Grapeshot] — build_index.line_cards stops once stack+hand+graveyard name two cards, so Impact Tremors, which sits on 002's battlefield, never enters the list and validate-engine could not accept a citation here. The line stayed dashed and open_questions[0] still routes the remedy to resolve-stack; nothing was re-pointed at two cards 002 does name in order to buy a green arrow."
+          },
+          {
+            "where": "lines[11], lines[12], lines[13], lines[14]",
+            "claim": "the four other dashed lines and their notes",
+            "status": "supported",
+            "note": "All four untouched and none is phrased as fact. lines[11] 'the attrition line nobody has checked', lines[12] '...; unchecked', lines[14] 'No stack has been run on it'. lines[13]'s one factual assertion — Swiftfoot Boots is the only card in the 99 that can make the hub untargetable — was re-derived, not taken over: scanning all 79 cards.json entries for hexproof/shroud/protection from/ward/'can't be the target' returns exactly Swiftfoot Boots and Roaming Throne, whose ward {2} protects only itself. Its card-text claims also hold (Skullclamp +1/-1 kills a 1/1 and draws two; Mogg War Marshal makes a token on enter and on death; Bombardment plus Boggart Shenanigans is two damage per Goblin body)."
+          },
+          {
+            "where": "stages[5].what_it_does, stages[7].evidence[3]",
+            "claim": "Impact Tremors and General Kreat are the only two each-opponent ETB damage cards; the three Krenko combo lines are refuted here",
+            "status": "supported",
+            "note": "Both survived the revision unchanged and both re-checked. Scanning all 79 entries for 'each opponent' returns four cards; only Impact Tremors ('Whenever a creature you control enters, deals 1 damage to each opponent') and General Kreat ('Whenever another creature you control enters ... 1 damage to each opponent') deal damage on an ETB. The Krenko refutation is still stated with its actual reason (Zada is the commander, so 903.9a never returns Krenko; he is also tapped) in stages[4].evidence[1], lines[7].note and stages[7].evidence[3], and stack 004's final_state says the same. No re-adoption of the assumes_commander lines in engine-facts.candidate_lines."
+          },
+          {
+            "where": "map_disagreements",
+            "claim": "five disagreements, each naming which artifact is wrong about what",
+            "status": "supported",
+            "note": "Untouched, and every city list re-derived from deck_map.json rather than re-read: cantrip group CRITICAL MASS 4 / MANA FOR ONE TURN 1 / THE STAYING POWER 1; payoff half CRITICAL MASS 2 / BODIES INTO DAMAGE 1 / THE TOKEN FACTORY 1; conversion 2/2/2/1 across four cities; wincon 5/1/1/1. engine-facts' scatter still reads coherent: false on all four components. The other city figures in the file also re-derive exactly: THE RED FLOOR is precisely the fifteen land entries, ten of thirteen in fuel are CRITICAL MASS, ten of thirteen in output are BODIES INTO DAMAGE, THE STAYING POWER is eleven cards wide, and the mana stage splits 4 rituals-plus-Ancestors'-Aid / 4 rocks-and-Warchief / 1 Seething Song exactly as evidence[2] says."
+          },
+          {
+            "where": "stages[*].cards",
+            "claim": "coverage and the declared figures",
+            "status": "supported",
+            "note": "79 cards placed, each exactly once, all present in cards.json, unassigned empty — recomputed, and validate-engine passes (8 stages, 10/15 lines verified). Re-derived figures that survived the rewrite: turn-five mean available mana 4.589; thinnest declared component 4 cards at opening_seven 0.258; deck-audit protection 2 copies against the 5-7 target, verdict under, both cards carrying protection:self; stack 003's +3/+4/+5/+6 and +7 for 32 power with at least 30 reaching (steps 8-9); stack 002's eight tokens and eight damage to each of two opponents and the following Grapeshot at storm count 4 (steps 7-8). Hypergeometrics 25.8 / 31.2 / 36.4 / 41.1 all recomputed to the printed value."
+          },
+          {
+            "where": "open_questions",
+            "claim": "five open questions, three routed to resolve-stack",
+            "status": "supported",
+            "note": "Untouched, and this is the one block of the model the renderer actually publishes (build_manual reads engine.open_questions and the schematic; what_it_does is agent-facing only). Re-checked the two that decide placements: Zada's type line is 'Legendary Creature — Goblin Ally', so Roaming Throne naming Goblin does reach her and open_questions[1] is genuinely open; Frontline Heroism's oracle is one Soldier and one copy at that token regardless of width, so open_questions[2] states the literal reading correctly and neither card was moved on the strength of an unresolved question."
+          },
+          {
+            "where": "stages[2].what_it_does",
+            "claim": "every point of count has to be paid for one card at a time, which is why this is the largest non-mana stage",
+            "status": "miscounted",
+            "note": "Fuel holds 13 cards and OUTPUT also holds 13 (Blasphemous Act, Boggart Shenanigans, Broadside Bombardiers, Chaos Warp, Gempalm Incinerator, General Kreat, Goblin Negotiation, Grapeshot, Impact Tremors, Pashalik Mons, Siege-Gang Commander, Siege-Gang Lieutenant, Vandalblast). Full non-mana counts from the model's own stages[].cards: ignition 4, fuel 13, fodder 8, conversion 7, output 13, protection 2, wincon 8. Fuel is TIED for largest, not the largest, so the sentence's conclusion does not follow from its premise as stated — and the premise is fine, so the fix is 'tied with output as the largest' or simply 'one of the two largest'. This is the same class as round-1 finding 3: a superlative that is 'almost true' propping up a real argument. Mechanically checkable and worth adding: any 'largest/only/thinnest stage' phrasing can be diffed against len(stages[i].cards), which is data validate_engine already loads."
+          },
+          {
+            "where": "stages[0].what_it_does, stages[2].what_it_does",
+            "claim": "the two rewritten stages are 1725 and 1728 characters against MAX_WHAT_IT_DOES = 1800",
+            "status": "supported",
+            "note": "Recording the headroom, not a defect: all eight stages are legal (1725 / 1045 / 1728 / 1195 / 1500 / 1525 / 913 / 1058) and both long ones are organised rather than muddled — each is a sequence of card-by-card readings, not accreted narration of previous drafts, which is the failure mode the cap was measured against. But the round-1 fixes were bought entirely with length (stages[0] was 913 and stages[2] 1110), and 72-75 characters of headroom means the one-clause fix above cannot be ADDED, it has to be traded. The cheapest trade in stages[2] is the closing sentence about Witch's Mark, which repeats proposed_goldfish_edits[1] in full."
+          },
+          {
+            "where": "stages[0].what_it_does",
+            "claim": "Add Sol Ring, Ruby Medallion and Throne of Eldraine. That part only has to hit drops.",
+            "status": "supported",
+            "note": "Checked because it sits one sentence after a red-source count and could be read as three more red sources, which would contradict mana_analysis: Sol Ring is in producers with produces: [] (it adds {C}{C}), Throne of Eldraine and Ruby Medallion are not producers at all, and sources.nonland.R = 10 names none of the three. It survives because deck-audit's ramp axis files exactly these three together (Sol Ring and Ruby Medallion as measured ramp, Throne of Eldraine as possible_uncounted), so 'add' reads as the deck's non-land mana furniture rather than as red sources, and no combined number is ever stated. If stages[0] is edited anyway, one word ('three artifacts beside them') removes the ambiguity — but Ruby Medallion adds no mana at all, so do not let a revision turn this list into a source count."
+          }
+        ]
+      },
       {
         "round": 1,
         "verdict": "fail",

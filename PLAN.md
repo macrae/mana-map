@@ -229,7 +229,7 @@ strong lists for a commander run — so it needs dated web passes judged against
   maths, so all nine `mana_analysis.json` must be regenerated (a tracked artifact
   with a staleness test) and any prose quoting a pip figure re-checked. Deliberately
   NOT done inside the fleet-parity pass — changing it mid-flight would have
-  invalidated figures eight agents were verifying at the time.
+  invalidated figures that a fleet of agents was verifying at the time.
 
 ### 8. Strategy-DB gaps
 

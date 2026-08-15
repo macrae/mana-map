@@ -433,6 +433,140 @@
         }
       ]
     },
+    "deck-engine": {
+      "agent": "deck-engineer+engine-critic",
+      "agent_prompt_sha256": "27f0c21e8379320fbb6771c3373a038c99d16b03e00a627cdb46d624f1131c20",
+      "artifact": "data/decks/sisay/engine.json",
+      "artifact_sha256": "329c53452a52d67e0ee5fc2587fdc1b96e1edd7faf6aa9c5b4cb02ecf6df42f5",
+      "card_refs": [
+        "An Offer You Can't Refuse",
+        "Arcane Denial",
+        "Arcane Signet",
+        "Arid Mesa",
+        "Birds of Paradise",
+        "Bloom Tender",
+        "Boros Charm",
+        "Bountiful Promenade",
+        "Breeding Pool",
+        "Bristly Bill, Spine Sower",
+        "City of Brass",
+        "Command Tower",
+        "Dauthi Voidwalker",
+        "Delighted Halfling",
+        "Derevi, Empyrial Tactician",
+        "Dihada, Binder of Wills",
+        "Dispel",
+        "Drannith Magistrate",
+        "Emiel the Blessed",
+        "Esika, God of the Tree // The Prismatic Bridge",
+        "Esper Sentinel",
+        "Exotic Orchard",
+        "Faeburrow Elder",
+        "Fellwar Stone",
+        "Fierce Guardianship",
+        "Flawless Maneuver",
+        "Flooded Strand",
+        "Flowering of the White Tree",
+        "Forbidden Orchard",
+        "Forest",
+        "Godless Shrine",
+        "Grand Abolisher",
+        "Hallowed Fountain",
+        "Heliod, Sun-Crowned",
+        "Heroic Intervention",
+        "Ioreth of the Healing House",
+        "Island",
+        "Jegantha, the Wellspring",
+        "Jodah, the Unifier",
+        "Kambal, Consul of Allocation",
+        "Katilda, Dawnhart Prime",
+        "Kenrith, the Returned King",
+        "Kinnan, Bonder Prodigy",
+        "Kodama of the West Tree",
+        "Kutzil, Malamet Exemplar",
+        "Loran of the Third Path",
+        "Lotho, Corrupt Shirriff",
+        "Luxury Suite",
+        "Mana Confluence",
+        "Marsh Flats",
+        "Mikaeus, the Lunarch",
+        "Misty Rainforest",
+        "Mountain",
+        "Mox Amber",
+        "Najeela, the Blade-Blossom",
+        "Negate",
+        "Overgrown Tomb",
+        "Path to Exile",
+        "Plains",
+        "Plaza of Heroes",
+        "Polluted Delta",
+        "Raff Capashen, Ship's Mage",
+        "Rejuvenating Springs",
+        "Reki, the History of Kamigawa",
+        "Relic of Legends",
+        "Rhystic Study",
+        "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+        "Sacred Foundry",
+        "Saffi Eriksdotter",
+        "Samut, Voice of Dissent",
+        "Scalding Tarn",
+        "Sea of Clouds",
+        "Secluded Courtyard",
+        "Seedborn Muse",
+        "Selvala, Heart of the Wilds",
+        "Shalai, Voice of Plenty",
+        "Sheoldred, the Apocalypse",
+        "Silence",
+        "Sisay, Weatherlight Captain",
+        "Sol Ring",
+        "Spectator Seating",
+        "Spire Garden",
+        "Steam Vents",
+        "Stomping Ground",
+        "Surrak Dragonclaw",
+        "Swamp",
+        "Swan Song",
+        "Teferi, Time Raveler",
+        "Temple Garden",
+        "Thalia, Heretic Cathar",
+        "Toxic Deluge",
+        "Unclaimed Territory",
+        "Undergrowth Stadium",
+        "Vault of Champions",
+        "Verdant Catacombs",
+        "Watery Grave",
+        "Windswept Heath",
+        "Wooded Foothills",
+        "Yoshimaru, Ever Faithful"
+      ],
+      "card_refs_version": 2,
+      "extra": {
+        "cards_semantic": "483e45f69b3fc48e527d58c52ba826b57b4a50b3cdb4fa9b6287084b40293215"
+      },
+      "fingerprint": "655351c317083077e0a636b28b0edd01ab57a46da8a0a1309307cbce83b9b4f8",
+      "inputs": [
+        {
+          "path": "data/combo_details.json",
+          "sha256": "2164926ed9f3b34d05507e9609a8a07132a7fcfcbd82a79a76a7aabb58914044"
+        },
+        {
+          "path": "data/decks/sisay/deck_map.json",
+          "sha256": "1ae749a2eb0c3e93749532f53e5cee6a3382aa6fd1197cb5943bfe78ac65181c"
+        },
+        {
+          "path": "data/decks/sisay/goldfish_targets.json",
+          "sha256": "0dd9c6905f73c2849c09ce45d2b5b904247a144df27e6792cccb95c76ec10c89"
+        },
+        {
+          "path": "data/decks/sisay/stacks/002-najeela-derevi-combat-loop.json",
+          "sha256": "05139bf5c2f29ae6e12e49e22262166f9c1e3c240a919c8812a37ebee9bf3af9"
+        },
+        {
+          "path": "data/decks/sisay/strategic_frame.json",
+          "sha256": "b028f233d8dc8d4479601d086a298bf70c77c10ef7ddbe525ad5617b1a192a6d"
+        }
+      ]
+    },
     "deck-map-names": {
       "agent": "deck-cartographer",
       "agent_prompt_sha256": "4eb95b6871eb8975449e52120f4ffbe55759f896e4b62b683eaf0d2d4fd1b778",
@@ -665,6 +799,92 @@
         {
           "path": "src/manamap/pilot/issue_spec.py",
           "sha256": "b7baf84f36393146bbe853d82eb023b0ca8f8a2fb0bd21940cb364b808fb12e4"
+        }
+      ]
+    },
+    "panel-prose": {
+      "agent": "pilot-panel",
+      "agent_prompt_sha256": "ed4e2fb1e407cf9bb7a234556bc0b0673383b60c4fb66c57af5e09ab3383379d",
+      "artifact": "data/decks/sisay/manual_prose.json",
+      "artifact_keys": [
+        "editors_letter",
+        "pilots_log"
+      ],
+      "artifact_sha256": "b79694f5b9b5737e0e07b95e0d2daa7fa2f048a93daa3aa1c47baa351d634def",
+      "card_refs": [
+        "Arid Mesa",
+        "City of Brass",
+        "Command Tower",
+        "Delighted Halfling",
+        "Derevi, Empyrial Tactician",
+        "Exotic Orchard",
+        "Forbidden Orchard",
+        "Godless Shrine",
+        "Katilda, Dawnhart Prime",
+        "Kinnan, Bonder Prodigy",
+        "Luxury Suite",
+        "Mana Confluence",
+        "Marsh Flats",
+        "Najeela, the Blade-Blossom",
+        "Overgrown Tomb",
+        "Plaza of Heroes",
+        "Polluted Delta",
+        "Relic of Legends",
+        "Secluded Courtyard",
+        "Sol Ring",
+        "Swamp",
+        "Swan Song",
+        "Verdant Catacombs",
+        "Watery Grave",
+        "Yoshimaru, Ever Faithful"
+      ],
+      "card_refs_by_key": {
+        "editors_letter": [],
+        "pilots_log": [
+          "Arid Mesa",
+          "City of Brass",
+          "Command Tower",
+          "Delighted Halfling",
+          "Derevi, Empyrial Tactician",
+          "Exotic Orchard",
+          "Forbidden Orchard",
+          "Godless Shrine",
+          "Katilda, Dawnhart Prime",
+          "Kinnan, Bonder Prodigy",
+          "Luxury Suite",
+          "Mana Confluence",
+          "Marsh Flats",
+          "Najeela, the Blade-Blossom",
+          "Overgrown Tomb",
+          "Plaza of Heroes",
+          "Polluted Delta",
+          "Relic of Legends",
+          "Secluded Courtyard",
+          "Sol Ring",
+          "Swamp",
+          "Swan Song",
+          "Verdant Catacombs",
+          "Watery Grave",
+          "Yoshimaru, Ever Faithful"
+        ]
+      },
+      "card_refs_version": 2,
+      "extra": {
+        "cards_semantic": "483e45f69b3fc48e527d58c52ba826b57b4a50b3cdb4fa9b6287084b40293215"
+      },
+      "fingerprint": "50ee1e32df9ff75e6b4d9faf255dd56b6542d639f9796155317ac3ac351778e7",
+      "inputs": [
+        {
+          "path": "data/decks/sisay/engine.json",
+          "sha256": "d79b13bd0430b710b300165e9684af6f52236f900f1886b26855068f332c1a4f"
+        },
+        {
+          "path": "data/decks/sisay/stacks/002-najeela-derevi-combat-loop.json",
+          "sha256": "05139bf5c2f29ae6e12e49e22262166f9c1e3c240a919c8812a37ebee9bf3af9"
+        },
+        {
+          "path": "data/decks/sisay/strategic_frame.json",
+          "sha256": "b028f233d8dc8d4479601d086a298bf70c77c10ef7ddbe525ad5617b1a192a6d"
         }
       ]
     },
