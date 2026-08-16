@@ -127,8 +127,10 @@ every fetch is `../data/<file>`.
 
 ## Sending a change
 
-Branch, commit, open a PR. CI runs `make test` and checks that the manuals still
-rebuild byte-identically.
+Branch, commit, open a PR. **`main` is protected** — it takes an approving review
+and signed commits, so a direct push will be refused even if you have write
+access. CI runs `make test` and checks that the manuals still rebuild
+byte-identically.
 
 **Commit messages here are longer than usual and that is on purpose.** The
 history is the project's real design record: what was measured, what was tried

@@ -266,6 +266,32 @@ actually costs today is nine `coach-prose` respawns, which is the same answer as
 half the previously assumed price. Still not worth it for a name the spec overrides on
 contact — but check the board rather than this paragraph, because it moves.
 
+### 3e. `main` is branch-protected, and the launch is one merge away
+
+**Correction to something this document and I both got wrong.** `gh repo view`
+does not report branch protection, so an audit read "no branch protection" and the
+plan filed it under out-of-scope as "meaningless with one maintainer". It is on,
+and it is strict: **1 approving review, code-owner review, require-last-push
+approval, and required signed commits.** `enforce_admins` is off, so an admin can
+bypass in the UI; nothing else can.
+
+That is a good setting to have discovered rather than a problem — but it means the
+solo "commit straight to main" workflow recorded elsewhere no longer applies, and
+CONTRIBUTING should say so.
+
+**State at the moment of writing:** `origin/main` carries the licence, NOTICE,
+CONTRIBUTING, the Makefile, CI and `docs/README.md`. It does **not** carry the two
+commits that fix the red CI run, make GitHub detect the licence as MIT, chain the
+nine volumes, gate four unwatched validators and close the dead case pointers.
+Both sit in **PR #2**, which contains PR #1's commit as well, so the launch is:
+
+1. merge **PR #2** (green); close PR #1 as superseded
+2. flip visibility to public
+
+Flipping before that publishes a default branch whose latest CI run is red, whose
+licence reads "Other", and whose issues end on "TO BE ANNOUNCED" six times.
+Deliberately not done for that reason, on a repo whose whole pitch is rigour.
+
 ### 3d. Found while shipping — what a survey of §4–§12 turned up
 
 A read of the whole open-work list against the tree, 2026-08-15. The corrections are
