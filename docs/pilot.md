@@ -156,6 +156,45 @@ Verdict `pass` requires all findings `supported` **and** the mechanical validato
 
 ## Goldfish metrics (`goldfish_metrics.json`, tier ◆)
 
+### The Treasure model (opt-in per deck)
+
+A Treasure is **not** a mana rock and modelling it as one is the trap: a rock
+produces every turn forever, a Treasure produces once and is gone. `simulate_once`
+keeps a **stockpile** spent only when lands and rocks fall short, which is both how
+it is played and what makes a hoard-counting payoff measurable.
+
+**Only triggers a goldfish can see are modelled** — upkeep, landfall, cast, Saga
+chapters (recurring) and enters-the-battlefield (once). This simulation has no
+combat and no opponents, so `whenever this creature deals combat damage` and
+`whenever an opponent draws` produce **nothing**. That is a finding, not a
+shortcoming: measured across the nine decks, **16 of 19 Treasure sources are
+combat- or opponent-gated**, and a naive `create a Treasure token` match would have
+handed eight decks free mana they never get — turning a deliberately conservative
+model optimistic. Unmodelled sources are NAMED in
+`meta.treasure_sources_not_modelled`, so a hoard of zero is legible rather than
+mysterious. Ur-dragon's four Treasure Dragons are all combat-gated and all report
+zero, which is the single most useful thing the model says about that deck.
+
+**It is opt-in**, via `"model_treasures": true` in `goldfish_targets.json`, and for
+the same reason `OPTIONAL_DEPARTMENTS` existed: a model that changes every deck's
+numbers at once cannot be landed on one deck first. Turning it on fleet-wide moves
+three decks (gishath, goblin-storm, radagast) and **gishath's `mean_cast_turn`
+alone — 7.969 → 7.912 — is quoted sixteen times across seven tracked artifacts**,
+including agent-authored prose and an `engine.json` carrying a critic verdict.
+With the flag off the treasure keys and the two extra `model_assumptions` lines are
+**absent rather than zeroed**, so a non-opted deck's artifact is byte-identical to
+before the model existed. `goldfish` prints a WARNING naming the sources it is
+ignoring, so a deck cannot sit un-opted by accident. Remove the flag once every
+deck has been re-baselined — a permanently optional model is one nobody committed
+to.
+
+What it reports when on: `treasure.mean_treasures_in_hoard_by_turn` and
+`treasure.engine_online_rate_by_turn`. The second is the consistency figure, and it
+is unforgiving — a six-card Treasure package in a 99 measured **28.7% online by
+turn six**.
+
+
+
 `pilot/goldfish.py`: seeded Monte Carlo (seed 42, 10K iterations) simulating **resource development, not full games** — model assumptions are embedded in the artifact and rendered in the manual. Metrics: opening-hand/mulligan stats, land-drop and mana curves, commander-cast turn distribution, per-deck target-set assembly (`goldfish_targets.json`, `any_of` groups, drawn-by-turn semantics), bodies-by-turn (labeled crude). Deterministic: the data-gated test regenerates and compares byte-for-byte.
 
 ## Decision scenarios (`decisions/NNN-<kebab>.json`, tier ★)

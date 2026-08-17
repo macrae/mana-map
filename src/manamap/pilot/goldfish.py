@@ -51,6 +51,21 @@ MODEL_ASSUMPTIONS = [
     "Cost reducers, rituals, and extra card draw are not modeled (conservative).",
 ]
 
+# Appended only for a deck that opts in. Stating "Treasures are modelled" on a
+# deck where they are not is worse than saying nothing — and keeping them out
+# keeps every non-opted deck's artifact byte-identical, which is the whole point
+# of the flag.
+TREASURE_ASSUMPTIONS = [
+    "Treasures are a one-shot STOCKPILE, not a mana rock: spent only when lands "
+    "and rocks fall short, and gone once broken. Reported separately from "
+    "mean_available_mana_by_turn, which still means repeatable mana per turn.",
+    "Only Treasure triggers a goldfish can see are modeled — upkeep, landfall "
+    "and cast (recurring), Saga chapters, plus enters-the-battlefield (once). "
+    "Combat- and opponent-gated sources produce NOTHING here, because this model "
+    "has no combat and no opponents; they are named in "
+    "meta.treasure_sources_not_modelled so a low hoard figure is legible.",
+]
+
 _NUMBER_WORDS = {
     "a": 1, "an": 1, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
     "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10, "x": 0,
@@ -79,6 +94,72 @@ _TUTOR_MODE_COST_RE = re.compile(r"\+\s*\{(\d+)\}[^\n]{0,4}—[^\n]{0,40}search 
 # Diabolic Intent's additional cost. A tutor you cannot pay for is not a wildcard.
 _TUTOR_SAC_RE = re.compile(r"as an additional cost.{0,40}sacrifice a creature",
                            re.IGNORECASE | re.DOTALL)
+
+
+# ── Treasures ─────────────────────────────────────────────────────────────
+#
+# A Treasure is NOT a mana rock and modelling it as one is the whole trap: a
+# rock produces every turn forever, a Treasure produces once and is gone. The
+# stockpile below is spent only when lands and rocks come up short, which is
+# both how it is played and what makes a hoard-counting payoff measurable.
+#
+# **Only triggers this simulation can honestly see are modelled.** There is no
+# combat here and there are no opponents, so "whenever this creature deals
+# combat damage to a player" (Old Gnawbone, Cavern-Hoard Dragon) and "whenever
+# an opponent draws a card" (Smothering Tithe) produce NOTHING — and that is a
+# finding rather than a shortcoming. Measured across the fleet, 16 of the 19
+# Treasure sources in the nine decks are combat- or opponent-gated; a naive
+# "create a Treasure token" match would hand eight decks free mana they never
+# get, turning a deliberately conservative model optimistic. Unmodelled sources
+# are NAMED in the output so a low number is legible instead of mysterious.
+_TREASURE_RE = re.compile(r"creates?\s+(?:[\w\-]+\s+)*?Treasure tokens?", re.IGNORECASE)
+_TREASURE_N_RE = re.compile(
+    r"creates?\s+(a|an|one|two|three|four|five|X|\d+)\s+(?:[\w\-]+\s+)*?Treasure",
+    re.IGNORECASE)
+# Recurring, and free at the point of use.
+_TRE_UPKEEP_RE   = re.compile(r"at the beginning of your upkeep", re.IGNORECASE)
+_TRE_LANDFALL_RE = re.compile(r"whenever a land you control enters|landfall", re.IGNORECASE)
+_TRE_CAST_RE     = re.compile(r"whenever you cast", re.IGNORECASE)
+# A Saga adds a lore counter "after your draw step" every turn, so a Saga whose
+# chapters make Treasures IS a recurring engine — The Misty Mountains Cold makes
+# one on each of four chapters. Modelled as recurring and NOT sacrificed at IV:
+# the chapter payout is the mana question, and the 6/6 Dragon it converts into is
+# a body the bodies series would need to know about. Slightly generous after turn
+# four on that one card, and stated here rather than hidden.
+_TRE_SAGA_RE     = re.compile(r"Enchantment — Saga|add a lore counter", re.IGNORECASE)
+# One-shot, on resolution.
+_TRE_ETB_RE      = re.compile(r"when (?:this creature|this artifact|[A-Z][\w' ,-]{2,30}) enters",
+                              re.IGNORECASE)
+# Xorn: "instead create those tokens plus an additional Treasure token."
+_TRE_EXTRA_RE = re.compile(r"instead create those tokens plus an additional Treasure",
+                           re.IGNORECASE)
+
+
+def treasure_profile(card):
+    """How this card makes Treasures, and whether a goldfish can see it.
+
+    Returns `(per_event, trigger)` where trigger is one of `upkeep`,
+    `landfall`, `cast` (recurring), `etb` (once), or `unmodelled`.
+    A card with no Treasure text returns `(0, None)`.
+    """
+    text = card.get("oracle_text") or ""
+    if not _TREASURE_RE.search(text):
+        return 0, None
+    match = _TREASURE_N_RE.search(text)
+    word = (match.group(1).lower() if match else "a")
+    # "X Treasures" is opponent- or board-dependent every time it appears in
+    # this corpus, so it is counted as one rather than guessed at.
+    count = int(word) if word.isdigit() else _NUMBER_WORDS.get(word, 1) or 1
+    saga = _TRE_SAGA_RE.search(card.get("type_line", "") or "") or _TRE_SAGA_RE.search(text)
+    if saga:
+        return count, "upkeep"
+    for trigger, pattern in (("upkeep", _TRE_UPKEEP_RE),
+                             ("landfall", _TRE_LANDFALL_RE),
+                             ("cast", _TRE_CAST_RE),
+                             ("etb", _TRE_ETB_RE)):
+        if pattern.search(text):
+            return count, trigger
+    return count, "unmodelled"
 
 
 def produced_mana(oracle_text):
@@ -117,6 +198,10 @@ def classify(card):
         # A top-of-library tutor delivers on the next draw step, not this turn.
         "tutor_delay": 1 if is_tutor and _TUTOR_TO_TOP_RE.search(text) else 0,
         "tutor_needs_body": bool(is_tutor and _TUTOR_SAC_RE.search(text)),
+        "treasure_n": 0 if is_land else treasure_profile(card)[0],
+        "treasure_trigger": None if is_land else treasure_profile(card)[1],
+        # Xorn makes no Treasure of its own; it adds one to every event.
+        "treasure_bonus": bool(_TRE_EXTRA_RE.search(text)),
     }
 
 
@@ -153,7 +238,8 @@ def _target_met(target, names_in_hand, commander_cast, tutors=0):
     return unmet <= tutors
 
 
-def simulate_once(rng, library, commander_cmc, targets, max_turn):
+def simulate_once(rng, library, commander_cmc, targets, max_turn,
+                  model_treasures=False):
     """One goldfish iteration. Returns a per-iteration result dict."""
     deck = library[:]
     rng.shuffle(deck)
@@ -181,6 +267,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn):
 
     lands_in_play = 0
     rock_production = 0
+    treasures = 0                 # a STOCKPILE: each one is spendable once
+    treasure_engines = []         # (per_event, trigger) for modelled sources in play
+    treasure_bonus = 0            # Xorn-style +N per creation event
+    treasures_by_turn = []
+    treasure_online_by_turn = []
     commander_turn = None
     land_hits = []
     mana_by_turn = []
@@ -204,17 +295,41 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn):
         else:
             land_hits.append(False)
 
-        pool = lands_in_play + rock_production
-        mana_by_turn.append(pool)
+        # Recurring Treasure engines already in play fire before you spend.
+        # `landfall` only pays out on a turn a land actually entered, which is
+        # what makes Tireless Provisioner worth less than an upkeep trigger.
+        for per_event, trigger in treasure_engines:
+            if trigger == "landfall" and not land_hits[-1]:
+                continue
+            if trigger in ("upkeep", "landfall"):
+                treasures += per_event + treasure_bonus
 
-        if commander_turn is None and pool >= commander_cmc:
+        pool = lands_in_play + rock_production
+        # Reported WITHOUT the stockpile, so this series keeps meaning exactly
+        # what it has always meant: repeatable mana per turn. Treasures are a
+        # one-shot reserve and get their own series.
+        mana_by_turn.append(pool)
+        treasures_by_turn.append(treasures)
+        treasure_online_by_turn.append(bool(treasure_engines))
+
+        def spend(cost):
+            """Pay from lands and rocks first, then break Treasures. Returns True."""
+            nonlocal pool, treasures
+            if pool + treasures < cost:
+                return False
+            if cost <= pool:
+                pool -= cost
+            else:
+                treasures -= cost - pool
+                pool = 0
+            return True
+
+        if commander_turn is None and spend(commander_cmc):
             commander_turn = turn
-            pool -= commander_cmc
 
         # Cast rocks cheapest-first; they produce starting next turn.
         for card in sorted((c for c in hand if c["produces"] > 0), key=lambda c: c["cmc"]):
-            if card["cmc"] <= pool:
-                pool -= card["cmc"]
+            if spend(card["cmc"]):
                 rock_production += card["produces"]
                 hand.remove(card)
 
@@ -222,20 +337,30 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn):
         # for the same mana. Previously tutors had bodies=0 and produces=0, so
         # they were never cast at all and their mana silently went to creatures.
         for card in sorted((c for c in hand if c["tutor"]), key=lambda c: c["tutor_cmc"]):
-            if card["tutor_cmc"] > pool:
-                continue
             if card["tutor_needs_body"] and bodies_cum < 1:
                 continue
-            pool -= card["tutor_cmc"]
+            if not spend(card["tutor_cmc"]):
+                continue
             hand.remove(card)
             tutor_ready_turns.append(turn + card["tutor_delay"])
 
         # Spend what's left on bodies, cheapest-first.
         for card in sorted((c for c in hand if c["bodies"] > 0), key=lambda c: c["cmc"]):
-            if card["cmc"] <= pool:
-                pool -= card["cmc"]
+            if spend(card["cmc"]):
                 bodies_cum += card["bodies"]
                 hand.remove(card)
+                # Casting it turns its Treasure engine on for later turns, and
+                # an ETB or cast trigger pays out immediately.
+                if not model_treasures:
+                    pass
+                elif card["treasure_bonus"]:
+                    treasure_bonus += 1
+                if not model_treasures:
+                    pass
+                elif card["treasure_trigger"] in ("upkeep", "landfall"):
+                    treasure_engines.append((card["treasure_n"], card["treasure_trigger"]))
+                elif card["treasure_trigger"] in ("etb", "cast"):
+                    treasures += card["treasure_n"] + treasure_bonus
         bodies_by_turn.append(bodies_cum)
 
         tutors = sum(1 for t in tutor_ready_turns if t <= turn)
@@ -256,6 +381,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn):
         "bodies_by_turn": bodies_by_turn,
         "target_turns": target_turns,
         "target_turns_unassisted": target_turns_unassisted,
+        "treasures_by_turn": treasures_by_turn,
+        "treasure_online_by_turn": treasure_online_by_turn,
     }
 
 
@@ -263,7 +390,7 @@ def _round(x):
     return round(x, 3)
 
 
-def aggregate(results, targets, max_turn):
+def aggregate(results, targets, max_turn, model_treasures=False):
     n = len(results)
     turns = list(range(1, max_turn + 1))
 
@@ -332,6 +459,20 @@ def aggregate(results, targets, max_turn):
         "mean_bodies_by_turn": {
             str(t): _round(sum(r["bodies_by_turn"][t - 1] for r in results) / n) for t in turns
         },
+        # A Treasure is a one-shot reserve, so it is reported SEPARATELY from
+        # `mean_available_mana_by_turn` rather than folded into it. Folding it in
+        # would have changed what that series has always meant — repeatable mana
+        # per turn — and it is quoted in published prose across the fleet.
+        **({} if not model_treasures else {"treasure": {
+            "mean_treasures_in_hoard_by_turn": {
+                str(t): _round(sum(r["treasures_by_turn"][t - 1] for r in results) / n)
+                for t in turns
+            },
+            "engine_online_rate_by_turn": {
+                str(t): _round(sum(1 for r in results if r["treasure_online_by_turn"][t - 1]) / n)
+                for t in turns
+            },
+        }}),
         "targets": target_stats,
     }
 
@@ -350,9 +491,26 @@ def run(slug, iterations=None, seed=None, max_turn=None):
 
     targets_path = deck_dir(slug) / "goldfish_targets.json"
     targets = []
+    # OPT-IN, and for the same reason `OPTIONAL_DEPARTMENTS` existed: a model
+    # that changes every deck's numbers at once cannot be landed on one deck
+    # first. Measured before choosing this — turning it on fleet-wide moves
+    # three decks' published figures, and gishath's `mean_cast_turn` alone
+    # (7.969 -> 7.912) is quoted SIXTEEN times across seven tracked artifacts
+    # including agent-authored prose and an `engine.json` carrying a critic
+    # verdict. Silently invalidating that is the "confident and wrong" failure
+    # this project exists to avoid, so a deck opts in when it is next
+    # re-baselined deliberately.
+    #
+    # With the model off the treasure keys are ABSENT rather than zeroed, so the
+    # six unaffected decks stay byte-identical and nothing needs regenerating.
+    # Remove this flag once every deck has been re-baselined; a permanently
+    # optional model is one nobody committed to.
+    model_treasures = False
     if targets_path.exists():
         with open(targets_path) as f:
-            targets = json.load(f)["targets"]
+            targets_doc = json.load(f)
+        targets = targets_doc["targets"]
+        model_treasures = bool(targets_doc.get("model_treasures"))
         # A target member not in the deck can never be drawn — it silently
         # deflates the assembly rate (a target naming a card ur-dragon had moved
         # out once cost it a wrong "cost reducer drawn" figure). Warn loudly; the
@@ -366,9 +524,30 @@ def run(slug, iterations=None, seed=None, max_turn=None):
                           f"cards not in the maindeck (can never be drawn): "
                           f"{', '.join(ghosts)}")
 
+    # Name every Treasure source the model CANNOT see. Silence here would make a
+    # low hoard figure look like a modelling bug instead of a fact about the
+    # deck — and the fact is usually load-bearing: ur-dragon's four Treasure
+    # makers are all combat-triggered, so a goldfish that never attacks reports
+    # zero and is right to.
+    unmodelled = sorted({
+        c["name"] for c in doc.get("cards", [])
+        if not c.get("is_commander") and treasure_profile(c)[1] == "unmodelled"
+    })
+    if not model_treasures:
+        visible = sorted({
+            c["name"] for c in doc.get("cards", [])
+            if not c.get("is_commander")
+            and treasure_profile(c)[1] in ("upkeep", "landfall", "cast", "etb")
+        })
+        if visible:
+            print(f"  WARNING {slug} has {len(visible)} Treasure source(s) this model "
+                  f"CAN simulate and `model_treasures` is not set in "
+                  f"goldfish_targets.json, so they are ignored: {', '.join(visible)}")
+
     rng = random.Random(seed)
     results = [
-        simulate_once(rng, library, commander_cmc, targets, max_turn)
+        simulate_once(rng, library, commander_cmc, targets, max_turn,
+                      model_treasures=model_treasures)
         for _ in range(iterations)
     ]
 
@@ -381,9 +560,11 @@ def run(slug, iterations=None, seed=None, max_turn=None):
             "max_turn": max_turn,
             "commander": commanders[0]["name"],
             "commander_cmc": commander_cmc,
-            "model_assumptions": MODEL_ASSUMPTIONS,
+            "model_assumptions": MODEL_ASSUMPTIONS + (
+                TREASURE_ASSUMPTIONS if model_treasures else []),
+            **({"treasure_sources_not_modelled": unmodelled} if model_treasures else {}),
         },
-        "metrics": aggregate(results, targets, max_turn),
+        "metrics": aggregate(results, targets, max_turn, model_treasures),
     }
 
 
