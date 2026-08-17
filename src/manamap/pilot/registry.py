@@ -32,6 +32,8 @@ PILOT_STEPS = [
     ("deck-map", "manamap.pilot.deck_map",
      "A deck's own constellation: local layout + 2-level clusters"),
     ("deck-audit", "manamap.pilot.deck_audit", "Cited axis targets + engine activation: is this deck any good?"),
+    ("card-value", "manamap.pilot.card_value",
+     "What is each card WORTH: swap it for a blank and measure what the deck loses"),
     ("mana-analysis", "manamap.pilot.mana_analysis", "Deterministic mana/land analysis behind Sources Say"),
     ("pool-facts", "manamap.pilot.pool_facts", "What deck can I build from a box of cards?"),
     ("build-deck", "manamap.pilot.build_deck", "brief.json -> build_plan.json, deterministic"),
@@ -73,7 +75,7 @@ _DECK_COMMANDS = {
     "validate-considering", "validate-diagnosis", "validate-goldfish-targets",
     "diagnosis-report",
     "validate-tutor-guide", "impact", "scenario-facts", "merge-prose",
-    "short-list-art", "issue-length",
+    "short-list-art", "issue-length", "card-value",
 }
 
 
@@ -136,6 +138,15 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "deck-status":
             cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "card-value":
+            cmd.add_argument("--metric", default="kill-by-8",
+                             choices=["kill-by-8", "kill-by-10", "board-power", "hoard"],
+                             help="What to rank by (they rank differently — say which)")
+            cmd.add_argument("--iterations", type=int, default=None,
+                             help="Games per card (default 3000; the full 10000 is ~3x slower)")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+            cmd.add_argument("--out", default=None,
+                             help="Also write JSON here (a view, never tracked)")
         if name == "engine-facts":
             # Both flags exist in `engine_facts.main` and neither was registered,
             # so the agent this brief was built for could not reach the arrays it

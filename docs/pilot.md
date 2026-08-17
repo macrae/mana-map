@@ -38,6 +38,9 @@ manamap pilot bracket-check <slug> [--target N] [--json]  # bracket floor → br
 manamap pilot deck-facts <slug> [--out F]  # the deterministic brief agents read first
 manamap pilot deck-history <slug> [--json]  # applied swaps (from git) + the pending ten
 manamap pilot deck-audit <slug> [--archetype A] [--json] [--out D/]  # cited axis targets + engine activation
+manamap pilot card-value <slug> [--metric M] [--iterations N] [--json] [--out D/]
+                                        # what each card is WORTH: swap it for a blank, measure the loss
+                                        # needs `model_combat`; invisible cards are EXCLUDED, not ranked last
 manamap pilot validate-diagnosis <slug>    # diagnosis form; axes re-derived, cuts checked against verified stacks
 manamap pilot deck-map <slug>           # the constellation: local layout + cities/neighbourhoods
 manamap pilot merge-deck-map <slug>     # cartographer's names in — `label`/`gloss` ONLY
