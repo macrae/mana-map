@@ -512,6 +512,30 @@ from `config.py`**, never hand-edited, with a parity test. Goldfish determinism 
 MT19937 port; the honest fallback is labelling a browser-computed goldfish an *estimate* that
 never overwrites a ◆ artifact.
 
+### 13. Ur-Dragon two-engine rebuild — proposed, not applied
+
+A 20-swap rebuild into Dragons + Treasure was measured on 2026-08-17 and **nothing was
+applied**: `data/decks/ur-dragon/` is untouched and the build lives only in a scratch
+`MANAMAP_DATA_DIR`. The list and its figures are in the memory store
+(`ur-dragon-deck.md`), deliberately not duplicated here — swap history is derived, and a
+second hand-kept copy would disagree with it.
+
+What matters for planning is the **debt applying it creates**. It is a full issue
+regeneration, not a swap: all 20 cuts are named across seven tracked artifacts,
+`decisions/002` is about Tiamat end to end, three of `engine.json`'s `lines[]` break
+(`wincon → conversion`, `protection → wincon`, `ignition → fuel`), and stack **005's
+checker verified Hellkite Courser as "maindeck"** — a card fact inside a ✓ artifact that
+the rebuild falsifies. The rules holding survives (Sneak Attack still cannot reach the
+command zone) and §5.1 forbids editing a passing artifact's text post-hoc, so the fix is
+regeneration, not a patch. Until then Vol. 005 describes a deck the pilot may no longer
+be holding.
+
+Also open and cheap: the deck's only verified kills are a burst (stack 004) and a bounded
+loop (006), while the new combat clock measures an ordinary damage race — **neither**. A
+turn-seven race scenario against three seats with a flier or reach blocker would close the
+gap between "faster board" and "wins more", which is currently a correlate with no
+verified mechanism.
+
 ## Decisions that bind
 
 ### The frontend stays LLM-free
