@@ -30,6 +30,7 @@ from manamap.config import (
     GOLDFISH_MAX_TURN,
     GOLDFISH_MULLIGAN_MAX_LANDS,
     GOLDFISH_MULLIGAN_MIN_LANDS,
+    GOLDFISH_OPPONENT_LIFE,
     GOLDFISH_SEED,
 )
 from manamap.pilot.common import deck_dir, load_deck_cards
@@ -66,10 +67,34 @@ TREASURE_ASSUMPTIONS = [
     "meta.treasure_sources_not_modelled so a low hoard figure is legible.",
 ]
 
+# Appended only for a deck that opts in, same contract as TREASURE_ASSUMPTIONS.
+COMBAT_ASSUMPTIONS = [
+    "COMBAT: one opponent at 40 life who does nothing — no blockers, no removal, "
+    "no interaction. This is a goldfish in the literal sense, so `kill_turn` is "
+    "the turn an UNOPPOSED board would finish ONE seat, not a win rate.",
+    "Attacks with every creature that is not summoning-sick; haste is read from "
+    "the type line. There is nothing to block, so nothing is ever held back — in "
+    "a real four-player game you would keep blockers, which makes this an "
+    "optimistic clock and a pessimistic board.",
+    "Attack triggers, combat-damage triggers and additional combat phases are "
+    "modelled, which is what makes Treasure sources gated on combat produce here "
+    "when they produce nothing without this flag. Effects the parser cannot read "
+    "are named in meta.combat_effects_not_modelled.",
+    "Bodies count CREATURES only under this flag. Without it a Treasure token "
+    "scores as a creature, which inflates `mean_bodies_by_turn` for any deck "
+    "that makes non-creature tokens.",
+]
+
 _NUMBER_WORDS = {
     "a": 1, "an": 1, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
     "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10, "x": 0,
 }
+
+# Token types that are NOT creatures. `_TOKEN_RE` matches "create ... token"
+# generically, so without this list a Treasure scores as a body — measured on
+# ur-dragon, that was 37% of the reported turn-six board.
+_NONCREATURE_TOKENS = ("treasure", "clue", "food", "blood", "gold", "powerstone",
+                       "map", "incubator", "junk", "shard")
 
 _TOKEN_RE = re.compile(r"create (\w+)(?: [\w/+-]+)* tokens?", re.IGNORECASE)
 _TAP_ADD_RE = re.compile(r"\{T\}: Add ((?:\{[WUBRGC0-9]\})+)")
@@ -162,6 +187,177 @@ def treasure_profile(card):
     return count, "unmodelled"
 
 
+# ── Combat ────────────────────────────────────────────────────────────────
+#
+# OPT-IN, for exactly the reason `model_treasures` is: switching combat on
+# changes `mean_bodies_by_turn` for every deck that makes non-creature tokens
+# (all nine of them), and those figures are quoted in published prose on five
+# decks and in one `engine.json` carrying a critic verdict. A deck opts in when
+# it is next re-baselined deliberately.
+#
+# The discipline is the same as the Treasure model's: model only what can be
+# read honestly, and NAME what cannot. What this buys is the class of card the
+# resource model priced at exactly zero — attack triggers (Savage Ventmaw's
+# {R}{R}{R}{G}{G}{G}, Old Gnawbone's Treasures, Smaug's ping), additional combat
+# phases (Scourge of the Throne, Aggravated Assault), and therefore the
+# combat-gated Treasure sources that `treasure_profile` returns `unmodelled` for.
+# On ur-dragon that was nine of fourteen sources and both halves of the deck's
+# only verified win line.
+
+_HASTE_RE = re.compile(r"\bhaste\b", re.IGNORECASE)
+# "create a 1/1 red Dragon creature token", "create two 2/2 ... tokens"
+_TOKEN_PT_RE = re.compile(r"create (\w+) ([\dX]+)/([\dX]+)([^.]*?)tokens?", re.IGNORECASE)
+_ATTACKS_RE = re.compile(
+    r"whenever (?:this creature|[A-Z][\w' ,-]{2,30}|one or more [\w ]+ you control) attacks",
+    re.IGNORECASE)
+_COMBAT_DMG_RE = re.compile(
+    r"whenever (?:this creature|[A-Z][\w' ,-]{2,30}) deals combat damage to a player",
+    re.IGNORECASE)
+_EXTRA_COMBAT_RE = re.compile(r"additional combat phase", re.IGNORECASE)
+# An ACTIVATED extra combat (Aggravated Assault's {3}{R}{R}), as opposed to a
+# triggered one (Scourge of the Throne). The cost decides whether it is a free
+# repeat button or one you have to buy every turn.
+# Sentence-crossing on PURPOSE. Aggravated Assault reads "{3}{R}{R}: Untap all
+# creatures you control. After this main phase, there is an additional combat
+# phase" — a `[^.]` bound stops at that period, the cost never binds, and the
+# deck's only verified win line silently becomes unmodelled. Caught by test.
+_ACTIVATED_COMBAT_RE = re.compile(
+    r"((?:\{[WUBRGC0-9]\})+)\s*:.{0,160}?additional combat phase",
+    re.IGNORECASE | re.DOTALL)
+_DMG_EQUAL_TREASURE_RE = re.compile(
+    r"deals damage equal to the number of Treasures", re.IGNORECASE)
+
+
+def _mana_pips(cost_string):
+    """How much generic-equivalent mana a '{3}{R}{R}' style string costs."""
+    total = 0
+    for sym in re.findall(r"\{([WUBRGC0-9])\}", cost_string or ""):
+        total += int(sym) if sym.isdigit() else 1
+    return total
+
+
+def _stat(value):
+    """Power/toughness as an int; '*' and None become 0 (conservative)."""
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return 0
+
+
+def creature_body_count(card):
+    """Bodies counting CREATURES only — a Treasure token is not a blocker.
+
+    This is `body_count` with the non-creature tokens removed. It is reached
+    only under `model_combat` so that a deck which has not opted in keeps the
+    number it published.
+    """
+    text = card.get("oracle_text", "") or ""
+    bodies = 1 if "Creature" in card.get("type_line", "") else 0
+    for match in _TOKEN_RE.finditer(text):
+        clause = text[match.start():match.end() + 60].lower()
+        if any(k in clause for k in _NONCREATURE_TOKENS):
+            continue
+        word = match.group(1).lower()
+        bodies += int(word) if word.isdigit() else _NUMBER_WORDS.get(word, 1)
+    return bodies
+
+
+def combat_profile(card):
+    """What this card does once there is a combat step.
+
+    Returns a dict the simulation reads directly. `unreadable` is set when the
+    card clearly has a combat trigger whose EFFECT the parser cannot price —
+    those are surfaced in the metrics rather than silently scoring zero.
+    """
+    text = card.get("oracle_text", "") or ""
+    type_line = card.get("type_line", "") or ""
+    is_creature = "Creature" in type_line
+
+    profile = {
+        "is_creature": is_creature,
+        "power": _stat(card.get("power")) if is_creature else 0,
+        "haste": bool(_HASTE_RE.search(text)),
+        "token_power": 0,
+        "token_bodies": 0,
+        "attack_mana": 0,
+        "attack_treasure": 0,
+        "attack_draw": 0,
+        "attack_damage": 0,
+        "attack_token_power": 0,
+        "attack_token_bodies": 0,
+        "damage_scales_with_treasure": False,
+        "extra_combat_free": False,
+        "extra_combat_cost": None,
+        "unreadable": None,
+    }
+
+    # Creature tokens this card makes, with their power.
+    for match in _TOKEN_PT_RE.finditer(text):
+        tail = (match.group(4) or "").lower()
+        if any(k in tail for k in _NONCREATURE_TOKENS):
+            continue
+        word = match.group(1).lower()
+        count = int(word) if word.isdigit() else _NUMBER_WORDS.get(word, 1)
+        profile["token_bodies"] += count
+        profile["token_power"] += count * _stat(match.group(2))
+
+    combat_trigger = _ATTACKS_RE.search(text) or _COMBAT_DMG_RE.search(text)
+    if combat_trigger:
+        window = text[combat_trigger.start():combat_trigger.start() + 220]
+        mana = _TAP_ADD_RE.search(window) or re.search(
+            r"add ((?:\{[WUBRGC0-9]\})+)", window, re.IGNORECASE)
+        if mana:
+            profile["attack_mana"] = _mana_pips(mana.group(1))
+        if re.search(r"treasure token", window, re.IGNORECASE):
+            n = _TREASURE_N_RE.search(window)
+            word = (n.group(1).lower() if n else "a")
+            # "for each" / "equal to" counts are board-dependent; one is the
+            # conservative read, matching what `treasure_profile` does.
+            profile["attack_treasure"] = int(word) if word.isdigit() else \
+                _NUMBER_WORDS.get(word, 1) or 1
+        drawn = re.search(r"draw (\w+) cards?", window, re.IGNORECASE)
+        if drawn:
+            word = drawn.group(1).lower()
+            profile["attack_draw"] = int(word) if word.isdigit() else \
+                _NUMBER_WORDS.get(word, 1)
+        if _DMG_EQUAL_TREASURE_RE.search(window):
+            profile["damage_scales_with_treasure"] = True
+        # Direct damage on attack (Drakuseth). Only the FIRST "deals N damage"
+        # is counted: the follow-on clauses ("and 3 damage to each of up to two
+        # other targets") usually point at creatures, and this model has none to
+        # point at, so crediting them to the opponent's face would invent reach.
+        fixed = re.search(r"deals (\d+) damage", window, re.IGNORECASE)
+        if fixed:
+            profile["attack_damage"] = int(fixed.group(1))
+        # Creature tokens made on attack (Utvara Hellkite). Counted ONCE per
+        # combat even where the trigger is per-attacker, for the same reason.
+        for tok in _TOKEN_PT_RE.finditer(window):
+            if any(k in (tok.group(4) or "").lower() for k in _NONCREATURE_TOKENS):
+                continue
+            word = tok.group(1).lower()
+            count = int(word) if word.isdigit() else _NUMBER_WORDS.get(word, 1)
+            profile["attack_token_bodies"] += count
+            profile["attack_token_power"] += count * _stat(tok.group(2))
+        if not any((profile["attack_mana"], profile["attack_treasure"],
+                    profile["attack_draw"], profile["damage_scales_with_treasure"],
+                    profile["attack_damage"], profile["attack_token_bodies"],
+                    # Checked against the FULL text, not the window: Scourge of
+                    # the Throne's reminder clause pushes "additional combat
+                    # phase" past 220 characters, and flagging a card whose
+                    # effect IS modelled makes the not-modelled list a liar.
+                    _EXTRA_COMBAT_RE.search(text))):
+            profile["unreadable"] = card.get("name")
+
+    if _EXTRA_COMBAT_RE.search(text):
+        activated = _ACTIVATED_COMBAT_RE.search(text)
+        if activated:
+            profile["extra_combat_cost"] = _mana_pips(activated.group(1))
+        elif combat_trigger:
+            profile["extra_combat_free"] = True
+
+    return profile
+
+
 def produced_mana(oracle_text):
     """Mana a persistent '{T}: Add ...' producer yields per turn (0 if none)."""
     match = _TAP_ADD_RE.search(oracle_text or "")
@@ -194,6 +390,11 @@ def classify(card):
         "tutor_cmc": int(card.get("cmc") or 0) + (int(mode_cost.group(1)) if mode_cost else 0),
         "produces": 0 if "Land" in type_line else produced_mana(card.get("oracle_text")),
         "bodies": 0 if "Land" in type_line else body_count(card),
+        # Creature-only body count and the combat profile ride along always;
+        # they are READ only under `model_combat`, so a non-opted deck is
+        # byte-identical and this stays a pure widening of the sim card.
+        "creature_bodies": 0 if "Land" in type_line else creature_body_count(card),
+        "combat": combat_profile(card),
         "tutor": is_tutor,
         # A top-of-library tutor delivers on the next draw step, not this turn.
         "tutor_delay": 1 if is_tutor and _TUTOR_TO_TOP_RE.search(text) else 0,
@@ -239,7 +440,7 @@ def _target_met(target, names_in_hand, commander_cast, tutors=0):
 
 
 def simulate_once(rng, library, commander_cmc, targets, max_turn,
-                  model_treasures=False):
+                  model_treasures=False, model_combat=False):
     """One goldfish iteration. Returns a per-iteration result dict."""
     deck = library[:]
     rng.shuffle(deck)
@@ -277,6 +478,17 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     mana_by_turn = []
     bodies_cum = 0
     bodies_by_turn = []
+    # Combat state. `battlefield` holds one entry per creature that can attack:
+    # (power, turn_it_arrived, has_haste). Kept only under model_combat so the
+    # resource-only path allocates nothing extra.
+    battlefield = []
+    combat_engines = []           # per-attack triggers of creatures in play
+    extra_combat_free = 0         # Scourge-style, one additional phase
+    extra_combat_costs = []       # Aggravated Assault-style, buy each time
+    opponent_life = GOLDFISH_OPPONENT_LIFE
+    kill_turn = None
+    damage_by_turn = []
+    board_power_by_turn = []
     target_turns = [None] * len(targets)
     target_turns_unassisted = [None] * len(targets)
     tutor_ready_turns = []
@@ -344,11 +556,47 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             hand.remove(card)
             tutor_ready_turns.append(turn + card["tutor_delay"])
 
+        # A permanent that grants an ADDITIONAL COMBAT PHASE is neither a rock,
+        # a tutor nor a body, so the resource-only loop never cast it at all --
+        # Aggravated Assault sat in hand for ten turns while being the deck's
+        # only verified win line. Bought before creatures, because it is the
+        # thing the creatures are for.
+        if model_combat:
+            for card in sorted((c for c in hand
+                                if not c["is_land"] and c["bodies"] == 0
+                                and (c["combat"]["extra_combat_cost"] is not None
+                                     or c["combat"]["extra_combat_free"])),
+                               key=lambda c: c["cmc"]):
+                if spend(card["cmc"]):
+                    hand.remove(card)
+                    if card["combat"]["extra_combat_cost"] is not None:
+                        extra_combat_costs.append(card["combat"]["extra_combat_cost"])
+                    else:
+                        extra_combat_free += 1
+
         # Spend what's left on bodies, cheapest-first.
         for card in sorted((c for c in hand if c["bodies"] > 0), key=lambda c: c["cmc"]):
             if spend(card["cmc"]):
-                bodies_cum += card["bodies"]
+                bodies_cum += card["creature_bodies"] if model_combat else card["bodies"]
                 hand.remove(card)
+                if model_combat:
+                    combat = card["combat"]
+                    if combat["is_creature"]:
+                        battlefield.append((combat["power"], turn, combat["haste"]))
+                    # Creature tokens arrive with summoning sickness too, and
+                    # they arrive on the turn their maker resolved.
+                    if combat["token_bodies"]:
+                        each = combat["token_power"] // max(combat["token_bodies"], 1)
+                        for _ in range(combat["token_bodies"]):
+                            battlefield.append((each, turn, False))
+                    if combat["extra_combat_free"]:
+                        extra_combat_free += 1
+                    if combat["extra_combat_cost"] is not None:
+                        extra_combat_costs.append(combat["extra_combat_cost"])
+                    if any((combat["attack_mana"], combat["attack_treasure"],
+                            combat["attack_draw"], combat["damage_scales_with_treasure"],
+                            combat["attack_damage"], combat["attack_token_bodies"])):
+                        combat_engines.append(combat)
                 # Casting it turns its Treasure engine on for later turns, and
                 # an ETB or cast trigger pays out immediately.
                 if not model_treasures:
@@ -362,6 +610,58 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 elif card["treasure_trigger"] in ("etb", "cast"):
                     treasures += card["treasure_n"] + treasure_bonus
         bodies_by_turn.append(bodies_cum)
+
+        # ── Combat step ────────────────────────────────────────────────────
+        # Nothing blocks, so every creature that can attack does. Each combat
+        # phase fires the attack triggers again, which is what makes an
+        # additional combat phase worth more than its own power.
+        if model_combat:
+            attackers = [p for p, arrived, haste in battlefield
+                         if haste or arrived < turn]
+            swing = sum(attackers)
+            phases = 1 + extra_combat_free
+            # Buy as many extra combats as the leftover mana allows, cheapest
+            # first. `pool` is what survived the main phase.
+            for cost in sorted(extra_combat_costs):
+                while pool + treasures >= cost:
+                    if not spend(cost):
+                        break
+                    phases += 1
+                    if phases > 20:       # runaway guard; an infinite is a win
+                        break
+                if phases > 20:
+                    break
+
+            dealt = 0
+            for _ in range(phases):
+                if not attackers:
+                    break
+                bonus = treasures if any(
+                    e["damage_scales_with_treasure"] for e in combat_engines) else 0
+                dealt += swing + bonus
+                for engine in combat_engines:
+                    pool += engine["attack_mana"]
+                    dealt += engine["attack_damage"]
+                    if model_treasures:
+                        treasures += engine["attack_treasure"]
+                    for _ in range(engine["attack_draw"]):
+                        if deck:
+                            extra = deck.pop(0)
+                            hand.append(extra)
+                            seen.add(extra["name"])
+                    # Tokens made mid-combat are summoning-sick, so they swell
+                    # the board for NEXT turn rather than this swing.
+                    if engine["attack_token_bodies"]:
+                        each = (engine["attack_token_power"]
+                                // max(engine["attack_token_bodies"], 1))
+                        for _ in range(engine["attack_token_bodies"]):
+                            battlefield.append((each, turn, False))
+                        bodies_cum += engine["attack_token_bodies"]
+            opponent_life -= dealt
+            damage_by_turn.append(dealt)
+            board_power_by_turn.append(sum(p for p, _, _ in battlefield))
+            if kill_turn is None and opponent_life <= 0:
+                kill_turn = turn
 
         tutors = sum(1 for t in tutor_ready_turns if t <= turn)
         for i, target in enumerate(targets):
@@ -383,6 +683,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "target_turns_unassisted": target_turns_unassisted,
         "treasures_by_turn": treasures_by_turn,
         "treasure_online_by_turn": treasure_online_by_turn,
+        "damage_by_turn": damage_by_turn,
+        "board_power_by_turn": board_power_by_turn,
+        "kill_turn": kill_turn,
     }
 
 
@@ -390,7 +693,7 @@ def _round(x):
     return round(x, 3)
 
 
-def aggregate(results, targets, max_turn, model_treasures=False):
+def aggregate(results, targets, max_turn, model_treasures=False, model_combat=False):
     n = len(results)
     turns = list(range(1, max_turn + 1))
 
@@ -473,6 +776,30 @@ def aggregate(results, targets, max_turn, model_treasures=False):
                 for t in turns
             },
         }}),
+        # The clock. `kill_turn` is the turn an UNOPPOSED board would finish one
+        # 40-life seat — deliberately not a win rate, because nothing here models
+        # blockers, removal or three opponents. Reported beside board power so a
+        # fast clock built out of 2/2s is legible as such.
+        **({} if not model_combat else {"combat": (lambda kills: {
+            "mean_board_power_by_turn": {
+                str(t): _round(sum(r["board_power_by_turn"][t - 1] for r in results) / n)
+                for t in turns
+            },
+            "mean_damage_by_turn": {
+                str(t): _round(sum(r["damage_by_turn"][t - 1] for r in results) / n)
+                for t in turns
+            },
+            "kill_turn_histogram": dict(sorted(
+                ((str(k), sum(1 for r in results if r["kill_turn"] == k))
+                 for k in {r["kill_turn"] for r in results} if k is not None),
+                key=lambda kv: int(kv[0]))),
+            "mean_kill_turn": _round(sum(kills) / len(kills)) if kills else None,
+            "median_kill_turn": kills[len(kills) // 2] if kills else None,
+            "kill_by_turn_rate": {
+                str(t): _round(sum(1 for k in kills if k <= t) / n) for t in turns
+            },
+            "no_kill_by_max_turn_rate": _round((n - len(kills)) / n),
+        })(sorted(r["kill_turn"] for r in results if r["kill_turn"] is not None))}),
         "targets": target_stats,
     }
 
@@ -506,11 +833,13 @@ def run(slug, iterations=None, seed=None, max_turn=None):
     # Remove this flag once every deck has been re-baselined; a permanently
     # optional model is one nobody committed to.
     model_treasures = False
+    model_combat = False
     if targets_path.exists():
         with open(targets_path) as f:
             targets_doc = json.load(f)
         targets = targets_doc["targets"]
         model_treasures = bool(targets_doc.get("model_treasures"))
+        model_combat = bool(targets_doc.get("model_combat"))
         # A target member not in the deck can never be drawn — it silently
         # deflates the assembly rate (a target naming a card ur-dragon had moved
         # out once cost it a wrong "cost reducer drawn" figure). Warn loudly; the
@@ -544,10 +873,17 @@ def run(slug, iterations=None, seed=None, max_turn=None):
                   f"CAN simulate and `model_treasures` is not set in "
                   f"goldfish_targets.json, so they are ignored: {', '.join(visible)}")
 
+    # Same contract as the Treasure warning above, one layer out: a combat
+    # trigger whose EFFECT the parser cannot price scores zero, and a zero
+    # nobody is told about reads as a fact about the deck.
+    combat_unreadable = sorted({
+        c["combat"]["unreadable"] for c in library if c["combat"]["unreadable"]
+    }) if model_combat else []
+
     rng = random.Random(seed)
     results = [
         simulate_once(rng, library, commander_cmc, targets, max_turn,
-                      model_treasures=model_treasures)
+                      model_treasures=model_treasures, model_combat=model_combat)
         for _ in range(iterations)
     ]
 
@@ -561,10 +897,13 @@ def run(slug, iterations=None, seed=None, max_turn=None):
             "commander": commanders[0]["name"],
             "commander_cmc": commander_cmc,
             "model_assumptions": MODEL_ASSUMPTIONS + (
-                TREASURE_ASSUMPTIONS if model_treasures else []),
+                TREASURE_ASSUMPTIONS if model_treasures else []) + (
+                COMBAT_ASSUMPTIONS if model_combat else []),
             **({"treasure_sources_not_modelled": unmodelled} if model_treasures else {}),
+            **({"combat_effects_not_modelled": combat_unreadable}
+               if model_combat and combat_unreadable else {}),
         },
-        "metrics": aggregate(results, targets, max_turn, model_treasures),
+        "metrics": aggregate(results, targets, max_turn, model_treasures, model_combat),
     }
 
 

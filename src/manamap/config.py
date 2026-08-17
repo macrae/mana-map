@@ -1060,6 +1060,11 @@ GOLDFISH_MAX_TURN = 10
 GOLDFISH_MULLIGAN_MIN_LANDS = 2
 GOLDFISH_MULLIGAN_MAX_LANDS = 5
 GOLDFISH_MAX_MULLIGANS = 2
+# Combat model (opt-in per deck via `model_combat` in goldfish_targets.json).
+# ONE opponent, because a goldfish kill clock answers "how fast could this board
+# finish a seat", not "how fast does it win a four-player game" — summing three
+# opponents' life would invent a number the model cannot support.
+GOLDFISH_OPPONENT_LIFE = 40
 
 # ── Pilot: Strategy Knowledge Base ───────────────────────────────────────
 STRATEGY_DIR = DATA_DIR / "strategy"
