@@ -266,33 +266,29 @@ actually costs today is nine `coach-prose` respawns, which is the same answer as
 half the previously assumed price. Still not worth it for a name the spec overrides on
 contact — but check the board rather than this paragraph, because it moves.
 
-### 3e. `main` is branch-protected, and the launch is one merge away
+### 3e. The repo is PUBLIC — 2026-08-16
 
-**Correction to something this document and I both got wrong.** `gh repo view`
-does not report branch protection, so an audit read "no branch protection" and the
-plan filed it under out-of-scope as "meaningless with one maintainer". It is on,
-and it is strict: **1 approving review, code-owner review, require-last-push
-approval, and required signed commits.** `enforce_admins` is off, so an admin can
-bypass in the UI; nothing else can.
+<https://github.com/macrae/mana-map>. Verified anonymously: repo page, raw
+README and raw LICENSE all 200; the map, the newsstand and an issue all serve;
+GitHub reads the licence as **MIT** and the CI badge says **passing**.
 
-That is a good setting to have discovered rather than a problem — but it means the
-solo "commit straight to main" workflow recorded elsewhere no longer applies, and
-CONTRIBUTING should say so.
+**One correction worth keeping.** `gh repo view` does not report branch
+protection, so an audit read "none" and an earlier version of this plan filed it
+under out-of-scope as "meaningless with one maintainer". It was on the whole
+time, and strict: one approving review, code-owner review, require-last-push
+approval, required signed commits, `enforce_admins` off. Three merge routes were
+refused in a row — `--admin` bypass, a direct push to `main`, and approving my
+own PR — and the last is the one that should be refused hardest. Merging is a
+human's click here, which is the correct shape and is now written into
+CONTRIBUTING, because "commit straight to main" was recorded elsewhere as this
+repo's workflow and stopped being true.
 
-**State at the moment of writing:** `origin/main` carries the licence, NOTICE,
-CONTRIBUTING, the Makefile, CI and `docs/README.md`. It does **not** carry the two
-commits that fix the red CI run, make GitHub detect the licence as MIT, chain the
-nine volumes, gate four unwatched validators and close the dead case pointers.
-Both sit in **PR #2**, which contains PR #1's commit as well, so the launch is:
+The launch itself was held one turn for a measured reason: `main`'s latest CI run
+was RED, the licence read "Other", and six issues ended on "TO BE ANNOUNCED".
+Publishing a red default branch on a project whose pitch is rigour costs more
+than waiting for one merge.
 
-1. merge **PR #2** (green); close PR #1 as superseded
-2. flip visibility to public
-
-Flipping before that publishes a default branch whose latest CI run is red, whose
-licence reads "Other", and whose issues end on "TO BE ANNOUNCED" six times.
-Deliberately not done for that reason, on a repo whose whole pitch is rigour.
-
-### 3d. Found while shipping — what a survey of §4–§12 turned up
+### 3d. Found while shipping### 3d. Found while shipping — what a survey of §4–§12 turned up
 
 A read of the whole open-work list against the tree, 2026-08-15. The corrections are
 worth more than the confirmations:
