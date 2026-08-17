@@ -662,9 +662,11 @@ details.dossier > summary::after { content:"▸"; position:absolute; right:14px;
 .case-sub { font-family:var(--type); font-size:.7rem; color:var(--ink-soft);
             padding:8px 14px 0; }
 
-/* The Kill's index: the verified lines that did not get a feature spread. They
-   keep their whole authored argument and lose only the staging, so a row is a
-   short article rather than a link — the head is what compresses.
+/* The index row, used twice: The Kill's verified lines that did not get a
+   feature spread (they keep their whole authored argument and lose only the
+   staging), and Judge's Desk's withheld cases (which keep only the reason they
+   are withheld). Both are "a case compressed to a row", so both wear the same
+   furniture — a short article rather than a link; the head is what compresses.
    It borrows `.case-id` / `.case-title` / `.case-meta` from the appendix on
    purpose: a reader who has learned that A-00N in a bordered tab means "there
    is a case file behind this" should not have to learn a second vocabulary two

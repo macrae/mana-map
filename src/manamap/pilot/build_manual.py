@@ -24,7 +24,9 @@ import re
 
 from manamap.config import MANUALS_DIR, SYNERGY_GRAPH_PATH
 from manamap.pilot.common import (
+    checker_passed,
     presentable,
+    withheld,
     deck_dir,
     load_deck_cards,
     load_json,
@@ -131,6 +133,33 @@ def load_verified_stacks(slug):
         if presentable(doc):
             stacks.append(doc)
     return stacks
+
+
+def load_withheld_stacks(slug):
+    """Checker-PASSED stacks held back from publication, in id order.
+
+    They are not failures. Each passed the citation contract and was then
+    withheld because a card left the 99 — the rules finding stands, the board is
+    one this deck can no longer make. `presentable_note` records which card.
+
+    They are loaded because the published prose REFERS TO THEM. Nineteen times
+    across edgar and yawgmoth, a presentable stack's resolution says "exactly as
+    in stack 001" or "the same lock that refuted stack 001" — and stack 001 is
+    nowhere in the issue, so the reader hunts for a case that was deliberately
+    not printed. Judge's Desk gives each one an index row saying so.
+
+    **Their resolutions are still not published, and that is the point.** Editing
+    the referring prose instead was the obvious fix and is the wrong one: those
+    are checker-PASSED artifacts, so their step text is evidence, and rewriting
+    it post-hoc puts a ✓ over words no checker read.
+    """
+    out = []
+    for path in sorted((deck_dir(slug) / "stacks").glob("*.json")):
+        with open(path) as f:
+            doc = json.load(f)
+        if withheld(doc) and checker_passed(doc):
+            out.append(doc)
+    return out
 
 
 def load_decisions(slug):
@@ -693,7 +722,7 @@ def stack_headline(title):
     They almost all share one shape, though — a real headline, a colon, then the
     question: *"The Frostfang trap: flashed in after blockers are declared, does
     deathtouch apply…"*. Splitting there is free and authored rather than invented:
-    across the 54 presentable stacks the head runs a median of 36 characters, only
+    across the 49 presentable stacks the head runs a median of 36 characters, only
     two exceed 60, and the six titles with no colon keep their whole text. The
     question is not dropped — it becomes the deck under the headline.
     """
@@ -1619,7 +1648,7 @@ def render_short_list(analysis):
     return "".join(parts)
 
 
-def render_judges_desk(issue, plan, stacks, cards_by_name):
+def render_judges_desk(issue, plan, stacks, cards_by_name, withheld_stacks=()):
     """The proof — a scannable case index, each row opening the full record.
 
     "Judge's Desk shrinks to verdicts" and "it may not summarize, truncate, or
@@ -1686,9 +1715,54 @@ def render_judges_desk(issue, plan, stacks, cards_by_name):
         + '<p class="dek">Every claim the magazine made, with the rule text that backs '
           "it. Nothing here is paraphrased. Tap a case to open its full record.</p>"
         + ("".join(files) or TODO)
+        + withheld_cases(withheld_stacks)
         + dept_furniture(dept, cards_by_name)
         + dept_close("judges-desk", issue)
     )
+
+
+def withheld_cases(stacks):
+    """Cases the issue names and does not print, with the reason it does not.
+
+    A published resolution says "exactly as in stack 001" nineteen times across
+    two issues, and stack 001 is not in either of them — so the reader goes
+    looking for a case that was deliberately withheld and finds a gap. A dead
+    pointer in the department whose job is being findable.
+
+    Each is a checker-PASSED artifact held back because a card left the 99: the
+    rules finding stands, the board is one this deck can no longer make, and
+    `presentable_note` says which card. So the honest row is the reason, not the
+    record — the resolution stays unpublished, because it is about a board this
+    deck cannot assemble, and the reader stops hunting.
+
+    Nothing in the referring prose is touched. Those artifacts passed the
+    checker; their step text is evidence, and rewriting it to remove a pointer
+    would put a ✓ over words no checker read.
+    """
+    if not stacks:
+        return ""
+    rows = []
+    for stack in stacks:
+        sid = stack["id"]
+        note = stack.get("presentable_note") or (
+            "withheld from this issue; the resolution stands as a rules finding")
+        rows.append(f"""
+<div class="kill-row" id="case-{esc(sid)}">
+  <div class="kill-row-head">
+    <span class="case-id">A-{esc(sid)}</span>
+    <span class="case-title">{esc(stack_headline(stack["title"])[0])}</span>
+    <span class="case-meta">withheld</span>
+  </div>
+  <p class="kill-row-result">{esc(note)}</p>
+</div>""")
+    n = len(stacks)
+    return (f'<div class="kill-index">'
+            f'<h4 class="kill-index-head">Named in the issue, not printed here</h4>'
+            f'<p class="kill-index-dek">{n} case{"" if n == 1 else "s"} cleared the same '
+            f'review and {"is" if n == 1 else "are"} held back for the reason given: the '
+            f'board is one this deck can no longer make. The finding stands; the line is '
+            f'not one you can assemble, so it is not presented as one.</p>'
+            f'{"".join(rows)}</div>')
 
 
 def render_back_page(issue, plan, deck_doc, stacks, cards_by_name):
@@ -1730,7 +1804,7 @@ def render_back_page(issue, plan, deck_doc, stacks, cards_by_name):
 def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
                  goldfish=None, decisions=None,
                  considering=None, tutor_guide=None, mana=None,
-                 short_list_art=None):
+                 short_list_art=None, withheld_stacks=()):
     """Assemble a complete issue. Deterministic for fixed inputs."""
     cards = deck_doc["cards"]
     cards_by_name = {c["name"]: c for c in cards}
@@ -1791,7 +1865,7 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
         "pilots-log": lambda: render_pilots_log(issue, plan, prose_doc,
                                                 cards_by_name),
         "judges-desk": lambda: render_judges_desk(issue, plan, stacks,
-                                                  cards_by_name),
+                                                  cards_by_name, withheld_stacks),
         "featured-artist": lambda: render_featured_artist(issue, plan, cards,
                                                           cards_by_name),
         "back-page": lambda: render_back_page(issue, plan, deck_doc, stacks,
@@ -1851,6 +1925,7 @@ def main(args):
 
     deck_doc = load_deck_cards(slug)
     stacks = load_verified_stacks(slug)
+    withheld_stacks = load_withheld_stacks(slug)
     decisions = load_decisions(slug)
     prose_doc = load_json(base / "manual_prose.json", {})
     goldfish = load_json(base / "goldfish_metrics.json")
@@ -1865,7 +1940,7 @@ def main(args):
     try:
         html_out = render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
                                 goldfish, decisions, considering, tutor_guide,
-                                mana, short_list_art)
+                                mana, short_list_art, withheld_stacks)
     finally:
         _DECK_MAP["doc"] = _DECK_MAP["engine"] = None   # cleared like the card links
     MANUALS_DIR.mkdir(parents=True, exist_ok=True)

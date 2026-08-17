@@ -37,8 +37,29 @@ REQUIRED_DECISION_KEYS = {"id", "slug", "deck", "title", "scenario", "branches",
 REQUIRED_BRANCH_KEYS = {"choice", "line", "signals", "coalition_risk", "coaching"}
 
 
+# An inline cross-reference in `strategy.md` — "…the deflection budget
+# (strategy:multiplayer.threat-deflection) lasts until…". There are 43 of them.
+_STRATEGY_XREF_RE = re.compile(r"\s*\(strategy:[a-z0-9-]+\.[a-z0-9-]+\)")
+
+
 def _normalize_ws(text):
-    return re.sub(r"\s+", " ", text).strip()
+    """Whitespace-flatten, and drop `strategy.md`'s inline cross-references.
+
+    **Two validators used to make this quote impossible to write.**
+    `validate_stack` requires a `strategy:` citation to be VERBATIM; `validate_issue`
+    forbids an internal taxonomy id in reader copy. Where a quotable sentence has a
+    `(strategy:…)` cross-reference in the middle of it, keeping the tag fails the
+    second check and dropping it failed the first — and sisay's decision 002 sat
+    broken between them, quoting the sentence without the tag, invisible because
+    neither validator was wired into a test.
+
+    The tag is APPARATUS, not prose: it points a reader of the strategy doc at a
+    sibling section, and it means nothing in a magazine that has no strategy
+    bibliography. So it is stripped from both sides here, which makes a quotation
+    that elides it verbatim in every sense that matters and leaves the reader-copy
+    lint free to keep banning the id. Both rules stay whole; neither bends.
+    """
+    return re.sub(r"\s+", " ", _STRATEGY_XREF_RE.sub("", text)).strip()
 
 
 def validate_citations(citations, rules, where, errors, strategy_sections=None):
