@@ -274,6 +274,48 @@ REQUIRED_ISSUE_KEYS = {
     "cover_tagline", "next_issue", "decklist_sha256",
 }
 
+# ── Issue status ─────────────────────────────────────────────────────────
+#
+# An issue is a PUBLISHED RECORD and stays readable forever. When the deck it
+# describes stops existing — broken down for parts, superseded by a later
+# volume — the honest move is to MARK the issue, never to edit or delete it:
+# every figure in it was true when it shipped, and §5.1's rule against editing a
+# passing artifact post-hoc applies to a whole magazine as much as to a stack.
+#
+# `status` is OPTIONAL on `issue.json`. Absent means live, which keeps every
+# existing issue byte-identical. Present, it renders a banner at the top of the
+# issue and a mark on the newsstand card, so a reader cannot mistake a retired
+# list for a current one.
+ISSUE_STATUSES = {
+    "broken-down": (
+        "BROKEN DOWN FOR PARTS",
+        "This deck no longer exists physically — its cards were pulled and "
+        "sleeved into another list. Everything below was true when it shipped "
+        "and is kept as published; the decklist is no longer maintained."),
+    "superseded": (
+        "SUPERSEDED",
+        "A later volume corrects this one. It is kept as published, because "
+        "what it measured was true at the time."),
+    "retired": (
+        "RETIRED",
+        "This list is no longer maintained. It is kept as published rather "
+        "than edited or removed."),
+}
+
+
+def issue_status(issue):
+    """`(slug, headline, body)` for an issue's status, or None if it is live.
+
+    Tolerates an unknown status by returning None rather than raising: a typo in
+    an authored field should not be able to take a published magazine offline.
+    `validate-issue` is where an unknown value is reported.
+    """
+    key = (issue or {}).get("status")
+    if not key or key not in ISSUE_STATUSES:
+        return None
+    headline, body = ISSUE_STATUSES[key]
+    return key, headline, body
+
 # Departments with bespoke layouts that take no per-department furniture.
 # The cover's bursts live in the plan's top-level `cover` block; the contents
 # page is a generated table. Every other department renders whatever furniture

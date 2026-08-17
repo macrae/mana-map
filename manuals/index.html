@@ -8,7 +8,7 @@
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://cards.scryfall.io/art_crop/front/b/1/b17fb671-f7ff-4633-bdef-39375c6f857c.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bangers&family=Inter:wght@400;600;800&family=Michroma&family=Oswald:wght@500;700&family=Special+Elite&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="magazine.css?v=f1058f01">
+<link rel="stylesheet" href="magazine.css?v=d4a2adfc">
 <style>
 .newsstand { padding:40px 34px 60px; }
 .stand-head { text-align:center; border-bottom:5px solid var(--ink); padding-bottom:20px;
@@ -27,6 +27,12 @@ a.issue h2 { font-family:var(--display); text-transform:uppercase; font-size:1.2
              margin:0 0 5px; line-height:1; }
 a.issue .tag { color:var(--ink-soft); font-size:.9em; margin-bottom:10px; }
 a.issue .stats { display:flex; flex-wrap:wrap; gap:5px; }
+/* Retired issues stay on the rack, muted rather than removed — the record is
+   published and stays readable; only the claim that it is CURRENT is withdrawn. */
+a.issue.is-retired { opacity:.72; }
+a.issue .retired { display:inline-block; font-weight:700; text-transform:uppercase;
+             letter-spacing:.07em; font-size:.72em; border:2px solid currentColor;
+             padding:1px 6px; margin:0 0 7px; }
 .stand-foot { text-align:center; margin-top:44px; font-size:.86em; color:var(--ink-soft); }
 </style></head>
 <body><div class="trim"><div class="newsstand">
@@ -44,17 +50,19 @@ a.issue .stats { display:flex; flex-wrap:wrap; gap:5px; }
     <img src="https://cards.scryfall.io/art_crop/front/b/1/b17fb671-f7ff-4633-bdef-39375c6f857c.jpg" alt="Zada, Hedron Grinder" loading="lazy">
     <div class="meta">
       <h2>GOBLIN STORM</h2>
+      
       <div class="tag">THE HAZE LOOP</div>
       <div class="tag" style="font-size:.82em">Zada, Hedron Grinder ·
         5 verified line(s) · 2 decision spread(s)</div>
       <div class="stats"><span class="badge badge-verified">✓ RULES-VERIFIED</span><span class="badge badge-coach">★ COACHING</span><span class="badge badge-data">◆ DATA-DERIVED</span></div>
     </div>
   </a>
-  <a class="issue" href="hapatra.html">
+  <a class="issue is-retired" href="hapatra.html">
     <div class="vol"><span>Vol. 002</span><span>September 2026</span></div>
     <img src="https://cards.scryfall.io/art_crop/front/d/1/d19e17fc-ae3e-4533-ab94-70d5f2e1b8cd.jpg" alt="Hapatra, Vizier of Poisons" loading="lazy">
     <div class="meta">
       <h2>HAPATRA</h2>
+      <div class="retired">BROKEN DOWN FOR PARTS</div>
       <div class="tag">ZERO MANA, INFINITE SNAKES</div>
       <div class="tag" style="font-size:.82em">Hapatra, Vizier of Poisons ·
         1 verified line(s) · 2 decision spread(s)</div>
@@ -66,6 +74,7 @@ a.issue .stats { display:flex; flex-wrap:wrap; gap:5px; }
     <img src="https://cards.scryfall.io/art_crop/front/5/a/5a293c45-1e73-4527-be2f-2dcd5c47b610.jpg" alt="Sisay, Weatherlight Captain" loading="lazy">
     <div class="meta">
       <h2>SISAY</h2>
+      
       <div class="tag">THE LOOP IS REAL. THE &#x27;INFINITE&#x27; ISN&#x27;T.</div>
       <div class="tag" style="font-size:.82em">Sisay, Weatherlight Captain ·
         1 verified line(s) · 2 decision spread(s)</div>
@@ -77,6 +86,7 @@ a.issue .stats { display:flex; flex-wrap:wrap; gap:5px; }
     <img src="https://cards.scryfall.io/art_crop/front/a/7/a7113c93-6c6d-410f-aeec-abc5ee121cdf.jpg" alt="Heliod, the Radiant Dawn // Heliod, the Warped Eclipse" loading="lazy">
     <div class="meta">
       <h2>HELIOD, THE WARPED ECLIPSE</h2>
+      
       <div class="tag">SEVEN ON THEIR UPKEEP</div>
       <div class="tag" style="font-size:.82em">Heliod, the Radiant Dawn // Heliod, the Warped Eclipse ·
         6 verified line(s) · 2 decision spread(s)</div>
@@ -88,6 +98,7 @@ a.issue .stats { display:flex; flex-wrap:wrap; gap:5px; }
     <img src="https://cards.scryfall.io/art_crop/front/1/0/10d42b35-844f-4a64-9981-c6118d45e826.jpg" alt="The Ur-Dragon" loading="lazy">
     <div class="meta">
       <h2>THE UR-DRAGON</h2>
+      
       <div class="tag">ONE DRAGON FUNDS THE NIGHT</div>
       <div class="tag" style="font-size:.82em">The Ur-Dragon ·
         6 verified line(s) · 2 decision spread(s)</div>
@@ -99,6 +110,7 @@ a.issue .stats { display:flex; flex-wrap:wrap; gap:5px; }
     <img src="https://cards.scryfall.io/art_crop/front/a/5/a577ba08-0aa8-45be-aa83-d5078770127c.jpg" alt="Edgar Markov" loading="lazy">
     <div class="meta">
       <h2>EDGAR MARKOV</h2>
+      
       <div class="tag">TWELVE TO EVERY SEAT</div>
       <div class="tag" style="font-size:.82em">Edgar Markov ·
         7 verified line(s) · 2 decision spread(s)</div>
@@ -110,6 +122,7 @@ a.issue .stats { display:flex; flex-wrap:wrap; gap:5px; }
     <img src="https://cards.scryfall.io/art_crop/front/b/c/bc4a65de-23b5-48f0-b8b7-94608eaced3e.jpg" alt="Gishath, Sun&#x27;s Avatar" loading="lazy">
     <div class="meta">
       <h2>GISHATH, SUN&#x27;S AVATAR</h2>
+      
       <div class="tag">THE INFINITE THAT ISN&#x27;T</div>
       <div class="tag" style="font-size:.82em">Gishath, Sun&#x27;s Avatar ·
         5 verified line(s) · 2 decision spread(s)</div>
@@ -121,6 +134,7 @@ a.issue .stats { display:flex; flex-wrap:wrap; gap:5px; }
     <img src="https://cards.scryfall.io/art_crop/front/b/5/b5a79f5d-d0df-4799-ac3a-84305e3af0c9.jpg" alt="Yawgmoth, Thran Physician" loading="lazy">
     <div class="meta">
       <h2>YAWGMOTH — THE SCARAB SWARM</h2>
+      
       <div class="tag">SIX WAYS TO END A TABLE</div>
       <div class="tag" style="font-size:.82em">Yawgmoth, Thran Physician ·
         11 verified line(s) · 2 decision spread(s)</div>
@@ -132,6 +146,7 @@ a.issue .stats { display:flex; flex-wrap:wrap; gap:5px; }
     <img src="https://cards.scryfall.io/art_crop/front/5/7/5741bbad-a6e4-45e0-b827-73f48c9975bf.jpg" alt="Radagast of Rhosgobel" loading="lazy">
     <div class="meta">
       <h2>RADAGAST</h2>
+      
       <div class="tag">CAST THE HOOF AT HOME</div>
       <div class="tag" style="font-size:.82em">Radagast of Rhosgobel ·
         7 verified line(s) · 2 decision spread(s)</div>

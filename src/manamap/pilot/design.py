@@ -508,6 +508,18 @@ a.cardref.offdeck { text-decoration-style:dotted; text-decoration-thickness:2px;
 .callout .t { font-family:var(--condensed); font-weight:700; text-transform:uppercase;
               letter-spacing:.07em; display:block; margin-bottom:2px; }
 
+/* A retired issue's banner. Deliberately the FIRST thing on the page and
+   deliberately not pretty: an issue whose deck no longer exists must say so
+   before a reader starts taking its numbers as current. It is a mark, never an
+   edit — the issue below it is kept exactly as published. */
+.issue-status { border:3px solid var(--ink); background:repeating-linear-gradient(
+                  135deg, #f4e4c8, #f4e4c8 12px, #eddcbc 12px, #eddcbc 24px);
+                padding:14px 18px; margin:0 0 22px; box-shadow:6px 6px 0 rgba(0,0,0,.16); }
+.issue-status .s-head { font-family:var(--condensed); font-weight:700;
+                text-transform:uppercase; letter-spacing:.09em; font-size:15px;
+                display:block; margin-bottom:4px; }
+.issue-status .s-body { font-size:14px; line-height:1.5; margin:0; }
+
 .threat-box { border:3px solid var(--ink); margin:18px 0; background:#fff;
               box-shadow:6px 6px 0 rgba(0,0,0,.16); }
 .threat-box .tb-head { background:var(--radical-purple); color:#fff; padding:9px 14px;
@@ -844,6 +856,20 @@ def power_meter(label, rate, segments=20):
         f'<div class="meter"><div class="meter-label"><span>{esc(label)}</span>'
         f"<b>{rate:.0%}</b></div>"
         f'<div class="meter-track">{segs}</div></div>'
+    )
+
+
+def issue_status_banner(status):
+    """Banner for a retired/superseded issue. `status` is `issue_spec.issue_status`'s
+    `(key, headline, body)` triple, or None for a live issue — in which case this
+    renders NOTHING, so every live issue stays byte-identical."""
+    if not status:
+        return ""
+    key, headline, body = status
+    return (
+        f'<div class="issue-status" data-status="{esc(key)}">'
+        f'<span class="s-head">{esc(headline)}</span>'
+        f'<p class="s-body">{esc(body)}</p></div>'
     )
 
 

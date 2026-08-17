@@ -21,6 +21,7 @@ import json
 from manamap.pilot.common import (deck_dir, load_deck_cards, presentable,
                                    report_errors)
 from manamap.pilot.issue_spec import (
+    ISSUE_STATUSES,
     MASTHEAD_COLUMNISTS,
     voices_for,
     OPTIONAL_DEPARTMENTS,
@@ -60,6 +61,16 @@ def validate_identity(issue, deck_sha256=None):
     volume = issue.get("volume")
     if not isinstance(volume, int) or volume < 1:
         errors.append(f"issue.json volume must be a positive integer, got {volume!r}")
+    # `status` is optional, but a value the renderer does not know silently
+    # renders NOTHING — the deck reads as live when someone meant to retire it.
+    # The renderer tolerates it (a typo must not take a magazine offline); this
+    # is where it gets reported.
+    status = issue.get("status")
+    if status is not None and status not in ISSUE_STATUSES:
+        errors.append(
+            f"issue.json status {status!r} is not one of "
+            f"{sorted(ISSUE_STATUSES)} — the banner will not render"
+        )
     stamped = issue.get("decklist_sha256")
     if deck_sha256 and stamped and stamped != deck_sha256:
         errors.append(

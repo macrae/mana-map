@@ -34,6 +34,7 @@ from manamap.pilot.common import (
 )
 from manamap.pilot.design import (
     card_tile,
+    issue_status_banner,
     stylesheet_link,
     write_stylesheet,
     FONT_LINK,
@@ -63,6 +64,7 @@ from manamap.pilot.scenario_facts import board_bodies, opponents_of
 from manamap.pilot.short_list_art import ARTIFACT as SHORT_LIST_ART
 from manamap.pilot.issue_spec import (
     ACTS,
+    issue_status,
     OPTIONAL_DEPARTMENTS,
     BREATHER_AFTER,
     DEPARTMENT_BY_ID,
@@ -1884,7 +1886,10 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
             sections.append(renderers[dept_id]())
             if dept_id in BREATHER_AFTER:
                 sections.append(render_art_break(commander, mana))
-        body = "".join(sections) + (
+        # Before the cover, deliberately: a reader must learn the deck no longer
+        # exists BEFORE they start reading its figures as current. Empty string
+        # for a live issue, so nothing byte-shifts on the other eight.
+        body = issue_status_banner(issue_status(issue)) + "".join(sections) + (
             '<a class="toc-float" href="#contents" '
             'title="Back to The Flight Plan">☰</a>')
     finally:

@@ -499,9 +499,12 @@ trade belongs to a person — and **five flagged "duplications" were false**.
 
 ### 11. Deck versioning — the remaining third
 
-`HISTORY.md` and a validated `decklist_sha256` exist. Still open: **`supersedes` in
-`issue.json`**, so "Vol. 009 corrects Vol. 004" is expressible and `build_index` has
-something to key on besides the slug — it emits at most one entry per deck today, so a second
+`HISTORY.md` and a validated `decklist_sha256` exist. An optional **`status`** on
+`issue.json` now exists too (`issue_spec.ISSUE_STATUSES`: `broken-down` / `superseded` /
+`retired`) — it banners the issue and mutes its newsstand card without editing or deleting
+it, first used on hapatra Vol. 002. Still open: **`supersedes`**, the *pointer* half — a
+`superseded` issue cannot yet say WHICH volume corrects it, and `build_index` still has
+nothing to key on besides the slug, so it emits at most one entry per deck and a second
 issue for one deck would silently overwrite `manuals/<slug>.html`.
 
 ### 12. Frontend engine port — not started

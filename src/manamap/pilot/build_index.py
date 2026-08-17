@@ -14,7 +14,8 @@ from manamap.pilot.common import load_json, presentable, withheld
 from manamap.config import DECKS_DIR, MANUALS_DIR
 from manamap.pilot.design import stylesheet_link, write_stylesheet
 from manamap.pilot.design import FONT_LINK, badge, barcode, esc
-from manamap.pilot.issue_spec import MASTHEAD, SERIES_SLUG, STANDING_TAGLINE
+from manamap.pilot.issue_spec import (
+    MASTHEAD, SERIES_SLUG, STANDING_TAGLINE, issue_status)
 
 EXTRA_CSS = """
 .newsstand { padding:40px 34px 60px; }
@@ -34,6 +35,12 @@ a.issue h2 { font-family:var(--display); text-transform:uppercase; font-size:1.2
              margin:0 0 5px; line-height:1; }
 a.issue .tag { color:var(--ink-soft); font-size:.9em; margin-bottom:10px; }
 a.issue .stats { display:flex; flex-wrap:wrap; gap:5px; }
+/* Retired issues stay on the rack, muted rather than removed — the record is
+   published and stays readable; only the claim that it is CURRENT is withdrawn. */
+a.issue.is-retired { opacity:.72; }
+a.issue .retired { display:inline-block; font-weight:700; text-transform:uppercase;
+             letter-spacing:.07em; font-size:.72em; border:2px solid currentColor;
+             padding:1px 6px; margin:0 0 7px; }
 .stand-foot { text-align:center; margin-top:44px; font-size:.86em; color:var(--ink-soft); }
 """
 
@@ -261,6 +268,8 @@ def gather_entries():
             "verified": verified,
             "decisions": decisions,
             "mean_cast": mean_cast,
+            # None for a live issue, so every existing entry is unchanged.
+            "status": issue_status(issue),
             "stack_files": stack_files,
             "stack_cards": stack_cards,
         })
@@ -278,12 +287,17 @@ def render_index(entries):
             stats.append(badge("coach"))
         if e["mean_cast"] is not None:
             stats.append(badge("data"))
+        # A retired issue stays on the rack and stays clickable — it is a
+        # published record. It just says so on the card, so nobody picks it up
+        # believing the deck is still assembled.
+        retired = f'<div class="retired">{esc(e["status"][1])}</div>' if e.get("status") else ""
         issues.append(f"""
-  <a class="issue" href="{esc(e["slug"])}.html">
+  <a class="issue{' is-retired' if e.get("status") else ''}" href="{esc(e["slug"])}.html">
     <div class="vol"><span>Vol. {e["volume"]:03d}</span><span>{esc(e["issue_date"])}</span></div>
     {image}
     <div class="meta">
       <h2>{esc(e["deck_name"])}</h2>
+      {retired}
       <div class="tag">{esc(e["coverline"])}</div>
       <div class="tag" style="font-size:.82em">{esc(e["commander"])} ·
         {e["verified"]} verified line(s) · {e["decisions"]} decision spread(s)</div>

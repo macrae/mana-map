@@ -317,6 +317,17 @@ voice, component library); `docs/history/STYLE-v1-visual-research.md` and
 - **`issue.json`** (tracked, **authored by a human**) — volume, issue_date, cover_price,
   deck_name, commander, cover_tagline, next_issue. Never generated: a generated date
   would break byte-identical rebuilds.
+  - Optional **`status`** — one of `issue_spec.ISSUE_STATUSES` (`broken-down`,
+    `superseded`, `retired`). An issue is a **published record**: when the deck it
+    describes stops existing, it is MARKED, never edited or deleted. §5.1's rule
+    against editing a passing artifact post-hoc applies to a whole magazine as much
+    as to a stack, and every figure in a retired issue was true when it shipped.
+    Set, it renders a banner above the cover and mutes-but-keeps the newsstand card;
+    absent (the default) it renders **nothing**, so live issues stay byte-identical.
+    An unknown value renders nothing and is reported by `validate-issue` — a typo
+    must not be able to take a magazine offline, nor silently read as live.
+    First use: `hapatra` (Vol. 002), broken down for parts so its aristocrats shell
+    could be sleeved into `yawgmoth-swarm`; the two lists share **27** nonbasics.
 - **`issue_plan.json`** (tracked, human-editable) — the packaging layer from the
   `magazine-editor` agent: the issue's angle, cover lines, per-department
   kicker/headline/dek, captions, PILOT TIPs, callouts, pull quotes, roster grouping,
