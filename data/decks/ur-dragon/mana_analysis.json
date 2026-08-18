@@ -1,20 +1,28 @@
 {
   "slug": "ur-dragon",
-  "decklist_sha256": "edc6644d0683b956d48876ce2b149fe13d0c3fe124f7865a479222126debc3ce",
+  "decklist_sha256": "eb35d333bb1887876d0a3f11156661dea81ce5be0e024f1a8db5476b11c59093",
   "lands": {
-    "total": 34,
-    "entries": 29,
+    "total": 36,
+    "entries": 31,
     "enters_tapped": 16,
     "enters_tapped_always": 5,
     "classes": {
       "basic": 9,
       "fetch": 1,
-      "fixing": 10,
+      "fixing": 11,
       "tapped": 16,
-      "untapped-dual": 7,
-      "utility": 7
+      "untapped-dual": 8,
+      "utility": 9
     },
     "list": [
+      {
+        "name": "Ancient Tomb",
+        "copies": 1,
+        "classes": [
+          "utility"
+        ],
+        "produces": []
+      },
       {
         "name": "Blood Crypt",
         "copies": 1,
@@ -205,6 +213,22 @@
         "produces": []
       },
       {
+        "name": "Mana Confluence",
+        "copies": 1,
+        "classes": [
+          "fixing",
+          "untapped-dual",
+          "utility"
+        ],
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      {
         "name": "Mountain",
         "copies": 4,
         "classes": [
@@ -356,25 +380,25 @@
   },
   "sources": {
     "lands": {
-      "W": 10,
-      "U": 11,
-      "B": 11,
-      "R": 20,
-      "G": 18
+      "W": 11,
+      "U": 12,
+      "B": 12,
+      "R": 21,
+      "G": 19
     },
     "nonland": {
-      "W": 5,
-      "U": 5,
-      "B": 5,
-      "R": 7,
-      "G": 6
+      "W": 8,
+      "U": 8,
+      "B": 8,
+      "R": 10,
+      "G": 9
     },
     "total": {
-      "W": 15,
-      "U": 16,
-      "B": 16,
-      "R": 27,
-      "G": 24
+      "W": 19,
+      "U": 20,
+      "B": 20,
+      "R": 31,
+      "G": 28
     },
     "producers": [
       {
@@ -414,17 +438,9 @@
         ]
       },
       {
-        "name": "Goldspan Dragon",
+        "name": "Gadrak, the Crown-Scourge",
         "kind": "ramp:dork",
-        "cmc": 5.0,
-        "produces": [
-          "R"
-        ]
-      },
-      {
-        "name": "Mox Jasper",
-        "kind": "ramp:rock",
-        "cmc": 0.0,
+        "cmc": 3.0,
         "produces": [
           "B",
           "G",
@@ -434,8 +450,16 @@
         ]
       },
       {
-        "name": "Relic of Legends",
-        "kind": "ramp:rock",
+        "name": "Goldspan Dragon",
+        "kind": "ramp:dork",
+        "cmc": 5.0,
+        "produces": [
+          "R"
+        ]
+      },
+      {
+        "name": "Patron of the Arts",
+        "kind": "ramp:dork",
         "cmc": 3.0,
         "produces": [
           "B",
@@ -465,121 +489,157 @@
         "kind": "ramp:rock",
         "cmc": 1.0,
         "produces": []
+      },
+      {
+        "name": "Swashbuckler Extraordinaire",
+        "kind": "ramp:dork",
+        "cmc": 3.0,
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      {
+        "name": "The Misty Mountains Cold",
+        "kind": "ramp:rock",
+        "cmc": 3.0,
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      {
+        "name": "Tireless Provisioner",
+        "kind": "ramp:dork",
+        "cmc": 3.0,
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
       }
     ]
   },
   "pips": {
     "B": {
-      "total_pips": 8.0,
+      "total_pips": 4.0,
       "max_pips": 2,
-      "cards": 6,
+      "cards": 3,
       "earliest_turn": 3,
       "effective_pips": 2
     },
     "G": {
-      "total_pips": 22.0,
-      "max_pips": 2,
-      "cards": 20,
+      "total_pips": 19.0,
+      "max_pips": 3,
+      "cards": 15,
       "earliest_turn": 1,
-      "effective_pips": 1
+      "effective_pips": 2
     },
     "R": {
-      "total_pips": 47.0,
+      "total_pips": 44.0,
       "max_pips": 3,
-      "cards": 32,
+      "cards": 31,
       "earliest_turn": 2,
       "effective_pips": 2
     },
     "U": {
-      "total_pips": 11.0,
+      "total_pips": 8.0,
       "max_pips": 2,
-      "cards": 10,
+      "cards": 7,
       "earliest_turn": 1,
       "effective_pips": 1
     },
     "W": {
-      "total_pips": 13.0,
+      "total_pips": 12.0,
       "max_pips": 2,
-      "cards": 12,
+      "cards": 11,
       "earliest_turn": 1,
       "effective_pips": 1
     }
   },
   "shares": {
     "B": {
-      "pip_share": 0.079,
-      "source_share": 0.157
+      "pip_share": 0.046,
+      "source_share": 0.16
     },
     "G": {
       "pip_share": 0.218,
-      "source_share": 0.257
+      "source_share": 0.253
     },
     "R": {
-      "pip_share": 0.465,
-      "source_share": 0.286
+      "pip_share": 0.506,
+      "source_share": 0.28
     },
     "U": {
-      "pip_share": 0.109,
-      "source_share": 0.157
+      "pip_share": 0.092,
+      "source_share": 0.16
     },
     "W": {
-      "pip_share": 0.129,
-      "source_share": 0.143
+      "pip_share": 0.138,
+      "source_share": 0.147
     }
   },
   "source_targets": {
     "B": 36,
-    "G": 22,
+    "G": 36,
     "R": 36,
     "U": 22,
     "W": 22
   },
   "on_curve_probability": {
     "lands_only": {
-      "W": 0.633,
-      "U": 0.67,
-      "B": 0.261,
-      "R": 0.58,
-      "G": 0.849
+      "W": 0.67,
+      "U": 0.704,
+      "B": 0.299,
+      "R": 0.61,
+      "G": 0.548
     },
     "with_rocks_and_dorks": {
-      "W": 0.787,
-      "U": 0.81,
-      "B": 0.446,
-      "R": 0.764,
-      "G": 0.927
+      "W": 0.866,
+      "U": 0.881,
+      "B": 0.58,
+      "R": 0.839,
+      "G": 0.785
     }
   },
   "ramp": {
-    "ramp:cost-reduction": 5,
-    "ramp:dork": 3,
-    "ramp:land": 3,
-    "ramp:rock": 6
+    "ramp:cost-reduction": 6,
+    "ramp:dork": 7,
+    "ramp:land": 2,
+    "ramp:rock": 5
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.351,
-      "2": 0.993,
-      "3": 0.883,
-      "4": 0.739,
-      "5": 0.603,
-      "6": 0.497,
-      "7": 0.415,
-      "8": 0.391,
-      "9": 0.358
+      "10": 0.372,
+      "2": 0.997,
+      "3": 0.902,
+      "4": 0.772,
+      "5": 0.649,
+      "6": 0.54,
+      "7": 0.465,
+      "8": 0.414,
+      "9": 0.396
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 6.539,
-      "2": 2.138,
-      "3": 3.042,
-      "4": 3.8,
-      "5": 4.424,
-      "6": 4.937,
-      "7": 5.375,
-      "8": 5.787,
-      "9": 6.165
+      "10": 6.823,
+      "2": 2.152,
+      "3": 3.077,
+      "4": 3.873,
+      "5": 4.545,
+      "6": 5.106,
+      "7": 5.589,
+      "8": 6.021,
+      "9": 6.434
     }
   },
   "assumptions": [
@@ -589,11 +649,11 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 11 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 34-land deck; rocks and dorks lift the count to 16.",
-    "G: 18 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 34-land deck; rocks and dorks lift the count to 24.",
-    "R: 20 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 34-land deck; rocks and dorks lift the count to 27.",
-    "U: 11 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 34-land deck; rocks and dorks lift the count to 16.",
-    "W: 10 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 34-land deck; rocks and dorks lift the count to 15.",
-    "16 of 34 lands enter tapped (47%) — over the one-in-three budget the deck builder allows itself."
+    "B: 12 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 20.",
+    "G: 19 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 28.",
+    "R: 21 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 31.",
+    "U: 12 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 20.",
+    "W: 11 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 19.",
+    "16 of 36 lands enter tapped (44%) — over the one-in-three budget the deck builder allows itself."
   ]
 }
