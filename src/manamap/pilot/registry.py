@@ -39,6 +39,8 @@ PILOT_STEPS = [
     ("build-deck", "manamap.pilot.build_deck", "brief.json -> build_plan.json, deterministic"),
     ("validate-build", "manamap.pilot.validate_build", "Form-check a build plan against the contract"),
     ("validate-considering", "manamap.pilot.validate_considering", "Form-check The Short List (the ten)"),
+    ("validate-pending", "manamap.pilot.validate_pending",
+     "The queue of changes decided but not applied; closure is DERIVED from the deck"),
     ("validate-diagnosis", "manamap.pilot.validate_diagnosis", "Form-check a deck diagnosis (axes re-derived, cuts checked against verified stacks)"),
     ("validate-goldfish-targets", "manamap.pilot.validate_goldfish_targets", "Form-check the engine declaration goldfish and deck-audit price"),
     ("diagnosis-report", "manamap.pilot.diagnosis_report", "Render a deck diagnosis as readable markdown"),
@@ -75,7 +77,7 @@ _DECK_COMMANDS = {
     "validate-considering", "validate-diagnosis", "validate-goldfish-targets",
     "diagnosis-report",
     "validate-tutor-guide", "impact", "scenario-facts", "merge-prose",
-    "short-list-art", "issue-length", "card-value",
+    "short-list-art", "issue-length", "card-value", "validate-pending",
 }
 
 
@@ -87,7 +89,12 @@ def add_pilot_parser(subparsers):
     for name, _, description in PILOT_STEPS:
         cmd = pilot_sub.add_parser(name, help=description)
         if name in _DECK_COMMANDS:
-            cmd.add_argument("slug", help="Deck slug (kebab-case, e.g. goblin-storm)")
+            # `deck-status --all` is the fleet view, so its slug is optional.
+            # Every other per-deck command still requires one — an optional slug
+            # elsewhere is how a command silently operates on the wrong deck.
+            nargs = "?" if name == "deck-status" else None
+            cmd.add_argument("slug", nargs=nargs,
+                             help="Deck slug (kebab-case, e.g. goblin-storm)")
         if name == "merge-prose":
             # Choices come from `merge_prose.AGENT_FILE`, never a literal list.
             # A hardcoded pair here is the same mistake this repo bans in prompts —
@@ -137,6 +144,12 @@ def add_pilot_parser(subparsers):
                              help="Routine id (e.g. writer-prose, stack:001); omit for all")
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "deck-status":
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+            # The fleet view. Nine decks and no way to ask "what is outstanding
+            # everywhere" was the other half of the problem `pending.json` fixes.
+            cmd.add_argument("--all", action="store_true", dest="all_decks",
+                             help="Every deck, one row each, plus fleet totals")
+        if name == "validate-pending":
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "card-value":
             cmd.add_argument("--metric", default="kill-by-8",

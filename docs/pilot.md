@@ -41,6 +41,8 @@ manamap pilot deck-audit <slug> [--archetype A] [--json] [--out D/]  # cited axi
 manamap pilot card-value <slug> [--metric M] [--iterations N] [--json] [--out D/]
                                         # what each card is WORTH: swap it for a blank, measure the loss
                                         # needs `model_combat`; invisible cards are EXCLUDED, not ranked last
+manamap pilot validate-pending <slug> [--json]   # the queue: decided, not yet applied
+manamap pilot deck-status --all         # THE FLEET VIEW: every deck, stale count, queued count
 manamap pilot validate-diagnosis <slug>    # diagnosis form; axes re-derived, cuts checked against verified stacks
 manamap pilot deck-map <slug>           # the constellation: local layout + cities/neighbourhoods
 manamap pilot merge-deck-map <slug>     # cartographer's names in — `label`/`gloss` ONLY
@@ -328,6 +330,28 @@ voice, component library); `docs/history/STYLE-v1-visual-research.md` and
     must not be able to take a magazine offline, nor silently read as live.
     First use: `hapatra` (Vol. 002), broken down for parts so its aristocrats shell
     could be sleeved into `yawgmoth-swarm`; the two lists share **27** nonbasics.
+- **`pending.json`** (tracked, **hand-authored**, optional) — the queue of changes
+  DECIDED but not yet applied. The repo had two homes for a swap and neither could
+  hold an intention: applied swaps are derived from git, and `considering.json` is
+  fixed at exactly ten entries, forbids a pick already in the deck, and is
+  regenerated wholesale on any decklist edit. A three-land swap decided in
+  conversation fell through that gap and was lost, which is why this exists.
+  - Entries carry `id` / `decided` / `why` plus **list-valued `in` and `out`**, so a
+    three-for-three swap is one decision rather than three picks that each look
+    wrong alone. `settled_by` names the routine that closes it, reusing
+    `open_questions`' routing vocabulary.
+  - **Closure is DERIVED, never declared** — there is no `applied: true` field,
+    because a hand-set flag is exactly how `HISTORY.md` became append-only and
+    append-forgotten. `state_of()` reads the deck: **the cuts decide it, not the
+    additions**, since a card the deck already runs cannot prove it just arrived.
+    An APPLIED entry is deleted rather than ticked; git owns it from then on.
+  - **PARTIAL is a signal, not an error.** A cut no longer in the deck means either
+    "applied" or "left for another reason" and nothing separates them, so the
+    validator declines to guess. There is deliberately no stranded-cut check.
+  - **Not a cache input.** Declaring it would MISS agent routines for a decision
+    nobody has acted on; intent must not invalidate content.
+  - Report-only, and never read by the renderer — a queue of unmade changes is the
+    "previous build" framing STYLEv3 L10 bans from print.
 - **`issue_plan.json`** (tracked, human-editable) — the packaging layer from the
   `magazine-editor` agent: the issue's angle, cover lines, per-department
   kicker/headline/dek, captions, PILOT TIPs, callouts, pull quotes, roster grouping,

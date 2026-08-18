@@ -1,0 +1,26 @@
+{
+  "slug": "yawgmoth-swarm",
+  "pending": [
+    {
+      "id": "2026-08-17-mono-black-lands",
+      "decided": "2026-08-17",
+      "in": ["Swamp", "Swamp", "Swamp"],
+      "out": ["City of Brass", "Exotic Orchard", "Survivors' Encampment"],
+      "closes": "mana-consistency",
+      "settled_by": "fetch-deck",
+      "why": "Three lands that pay a real cost for an ability this deck cannot use. The 99 is mono-black identity with ZERO non-black pips, so 'add one mana of any color' is worth nothing here. City of Brass is the only pain land in the deck that buys nothing back — Ancient Tomb buys {C}{C} on turn one, Cabal Pit buys threshold removal, Ifnir Deadlands buys a Desert — and it taxes the resource Yawgmoth's engine spends, since 'Pay 1 life, Sacrifice another creature' is the deck's whole loop. Exotic Orchard makes its colour contingent on opponents' boards for a colour with 33 sources. Survivors' Encampment taps for {C} unless you tap a creature.",
+      "evidence": {
+        "colour_identity": "B",
+        "non_black_pips_in_99": 0,
+        "cabal_coffers": "Coffers reads 'for each SWAMP you control'. Without Urborg on the battlefield it counts only basic Swamps, so 21 -> 24 is +3 mana per activation in every game Urborg has not shown up.",
+        "totals_unchanged": "36 lands, B33 sources, 87% on-curve, 2 taplands — measured before and after; the swap costs nothing measurable.",
+        "orphans_stack": "none — no checker-passed stack scenario names any of the three (all 11 passing stacks checked)",
+        "measured_on": "2026-08-17, mana-analysis + deck-audit + oracle scan"
+      }
+    }
+  ],
+  "notes": [
+    "Held rather than applied because a decklist edit re-stamps decklist_sha256 and forces a ~690k regeneration; batching it with the next pass is cheaper than two.",
+    "The 11 passing stacks survive this swap untouched, so it is materially cheaper than the ur-dragon rebuild was."
+  ]
+}

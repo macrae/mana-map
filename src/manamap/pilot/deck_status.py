@@ -126,7 +126,63 @@ def status(slug):
     return rows
 
 
+def fleet():
+    """One row per deck. Nine decks and no way to ask "what is outstanding
+    everywhere" is the other half of the problem `pending.json` exists for —
+    `deck-status` answered it one slug at a time, so nobody ever asked it nine
+    times and the fleet picture lived only in a hand-kept PLAN.md table."""
+    from manamap.config import DECKS_DIR
+    from manamap.pilot.validate_pending import summarise
+    out = []
+    for path in sorted(DECKS_DIR.glob("*/cards.json")):
+        slug = path.parent.name
+        rows = status(slug)
+        stale = [r["stage"] for r in rows if r["state"] == "STALE"]
+        try:
+            pend = summarise(slug)
+        except Exception:
+            pend = {"open": 0, "applied": 0, "partial": 0}
+        out.append({
+            "slug": slug,
+            "done": sum(1 for r in rows if r["state"] == "present"),
+            "total": len(rows),
+            "stale": stale,
+            "pending_open": pend["open"],
+            "pending_applied": pend["applied"],
+            "pending_partial": pend["partial"],
+        })
+    return out
+
+
+def _fleet_main(args):
+    rows = fleet()
+    if getattr(args, "as_json", False):
+        print(json.dumps({"decks": rows}, indent=2))
+        return
+    print(f"FLEET STATUS — {len(rows)} decks\n")
+    print(f"  {'deck':18}{'stages':>9}{'stale':>7}{'queued':>8}   notes")
+    for r in rows:
+        q = r["pending_open"] + r["pending_partial"]
+        note = []
+        if r["stale"]:
+            note.append("STALE: " + ", ".join(r["stale"]))
+        if r["pending_applied"]:
+            note.append(f"{r['pending_applied']} queued entry now applied — delete it")
+        print(f"  {r['slug']:18}{r['done']:>4}/{r['total']:<4}{len(r['stale']):>7}"
+              f"{q:>8}   {'; '.join(note)}")
+    tot_stale = sum(len(r["stale"]) for r in rows)
+    tot_q = sum(r["pending_open"] + r["pending_partial"] for r in rows)
+    print(f"\n  {tot_stale} stale artifact(s), {tot_q} queued change(s) across the fleet")
+    errors = [f"{r['slug']}: {s} is STALE" for r in rows for s in r["stale"]]
+    report_errors("fleet status", errors,
+                  f"OK   {len(rows)} decks, nothing stale, {tot_q} change(s) queued")
+
+
 def main(args):
+    if getattr(args, "all_decks", False):
+        return _fleet_main(args)
+    if not args.slug:
+        raise SystemExit("deck-status needs a slug, or --all for the fleet view.")
     rows = status(args.slug)
     if getattr(args, "as_json", False):
         print(json.dumps({"slug": args.slug, "stages": rows}, indent=2))
@@ -143,6 +199,19 @@ def main(args):
 
     done = sum(1 for r in rows if r["state"] == "present")
     print(f"\n  {done}/{len(rows)} stages complete")
+
+    # Deliberately NOT a STAGES row: a queued change is intent, not a lifecycle
+    # stage, and must not move the completeness count. An APPLIED entry is the
+    # queue erasing itself — git owns the change now, so the entry goes.
+    from manamap.pilot.validate_pending import summarise
+    pend = summarise(args.slug)
+    if pend["entries"]:
+        bits = [f"{pend['open']} open"]
+        if pend["partial"]:
+            bits.append(f"{pend['partial']} partial")
+        if pend["applied"]:
+            bits.append(f"{pend['applied']} APPLIED (delete the entry)")
+        print(f"  pending.json: {', '.join(bits)}")
 
     # Staleness is an ERROR; incompleteness is a state. A half-built deck is a
     # deck in progress; a deck whose artifacts disagree about which decklist they

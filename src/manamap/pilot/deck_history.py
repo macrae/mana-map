@@ -150,11 +150,43 @@ def pending(slug):
     """
     from manamap.pilot.common import load_json
     doc = load_json(deck_dir(slug) / "considering.json", default=None)
-    if not doc:
-        return []
     box = _owned_index()
 
     out = []
+    # Two sources, tagged. `considering.json` is the Short List — ten cards
+    # worth knowing about, authored by an agent and regenerated wholesale.
+    # `pending.json` is a decision somebody actually made and has not applied
+    # yet, which the ten cannot hold: it is fixed at ten, forbids a pick already
+    # in the deck, and cannot express a three-for-three swap as one change.
+    try:
+        from manamap.pilot.validate_pending import summarise
+        for e in summarise(slug)["entries"]:
+            ins = e.get("in") or []
+            outs = e.get("out") or []
+            ins = [ins] if isinstance(ins, str) else ins
+            outs = [outs] if isinstance(outs, str) else outs
+            # Ownership derived exactly as it is for the ten, and the SOURCE is
+            # carried with it. Claiming "owned" while naming no box is what the
+            # ownership test exists to catch — an unsourced claim reads as
+            # confident and is unverifiable.
+            files = sorted({f for n in ins for f in (box.get(n) or set())})
+            owned = bool(ins) and all(box.get(n) for n in ins)
+            out.append({
+                "in": ", ".join(ins) or None,
+                "out": ", ".join(outs) or None,
+                "closes": e.get("closes"),
+                "acquisition": "owned" if owned else "purchase",
+                "derived": True,
+                "source_file": ", ".join(files) if owned and files else None,
+                "source": "pending.json",
+                "id": e.get("id"),
+                "state": e.get("state"),
+            })
+    except Exception:
+        pass
+
+    if not doc:
+        return out
     for e in doc.get("ten", []):
         name = e.get("card")
         acq = e.get("acquisition") or {}
@@ -173,6 +205,9 @@ def pending(slug):
             "acquisition": status,
             "derived": not (e.get("acquisition") or {}).get("status"),
             "source_file": source,
+            "source": "considering.json",
+            "id": None,
+            "state": None,
         })
     return out
 
