@@ -318,7 +318,7 @@ worth more than the confirmations:
   highest-value single write-up in the corpus.
 - **radagast has seven `open_questions`, not six.** **49 presentable stacks, not 54** (that
   figure was in CLAUDE.md and a renderer docstring; both corrected).
-- **`deck-status` reports presence and staleness, never validity.** It read all nine green
+- **`deck-status` reports presence, staleness AND validity** (validity added 2026-08-18). It read all nine green
   while two of them were failing their own validators. Worth stating wherever it is sold
   as the first thing to run.
 - Untested modules are six, not three: `validate_deck_map`, `query_strategy` and

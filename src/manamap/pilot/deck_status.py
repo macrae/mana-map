@@ -70,7 +70,15 @@ def _dig(doc, path):
     return doc
 
 
-def status(slug):
+def status(slug, validate=True):
+    """Presence, staleness AND validity.
+
+    Validity was the missing third. `deck-status` compared shas and counted
+    files, which is a claim about bookkeeping rather than about correctness —
+    PLAN.md recorded it reading nine decks green while two were failing their
+    own validators, and it did it again live on ur-dragon mid-swap. The gates
+    existed; nothing in the command ran them.
+    """
     base = deck_dir(slug)
     cards = load_json(base / "cards.json") or {}
     truth = cards.get("decklist_sha256")
@@ -120,10 +128,86 @@ def status(slug):
                 state = "STALE"
                 detail = f"built against {str(stamped)[:12]}…, deck is {truth[:12]}…"
 
+        # Validity LAST, and only for an artifact that is otherwise fine.
+        # STALE already outranks it: an artifact built against another decklist
+        # is wrong for a reason the gate cannot see, and reporting both would
+        # bury the one that explains the other.
+        if state == "present" and validate:
+            ok, why = _validity(slug, name)
+            if ok is False:
+                state, detail = "INVALID", why
+            elif ok is None and why:
+                detail = detail or why
+
         rows.append({"stage": key, "artifact": name, "what": what, "state": state,
                      "detail": detail, "required": required,
                      "new": key in ADDED_2026_08})
     return rows
+
+
+# artifact filename -> the module whose `main(args)` gates it. Modules import
+# LAZILY inside `_validity` so `manamap --help` stays fast, the same reason
+# `registry.PILOT_STEPS` holds dotted strings rather than modules.
+#
+# This map used to live only in `tests/test_pilot_tracked_artifacts_validate.py`,
+# which meant the TEST knew which artifacts had gates and `deck-status` — the
+# command the runbook says to start with, every time — did not. It reported
+# presence and staleness and called that health. Measured on ur-dragon mid-swap:
+# `deck-status` FAIL=0 while `validate-issue` FAIL=1 on the same deck, in the
+# same second. A dashboard that is green while the gate is red is worse than no
+# dashboard, because people stop checking the gate.
+VALIDATED = {
+    "cards.json": "manamap.pilot.validate_deck",
+    "considering.json": "manamap.pilot.validate_considering",
+    "deck_map.json": "manamap.pilot.validate_deck_map",
+    "diagnosis.json": "manamap.pilot.validate_diagnosis",
+    "engine.json": "manamap.pilot.validate_engine",
+    "goldfish_targets.json": "manamap.pilot.validate_goldfish_targets",
+    "issue_plan.json": "manamap.pilot.validate_issue",
+    "pending.json": "manamap.pilot.validate_pending",
+    "strategic_frame.json": "manamap.pilot.validate_strategic_frame",
+    "tutor_guide.json": "manamap.pilot.validate_tutor_guide",
+}
+
+# Two validators reach for the gitignored strategy DB and report every
+# `strategy:<id>` citation as an error when it is absent; one reads the corpus
+# through `card_pool`. On a fresh clone those are MISSING INPUTS, not defects, so
+# they report `unverified` rather than failing — the same distinction
+# `tests/conftest.py`'s markers make.
+_NEEDS_STRATEGY = {"tutor_guide.json", "diagnosis.json"}
+_NEEDS_CORPUS = {"build_plan.json"}
+
+
+def _validity(slug, artifact):
+    """`(ok, detail)` — None when nothing gates it or the gate cannot run here."""
+    import contextlib
+    import importlib
+    import io
+
+    dotted = VALIDATED.get(artifact)
+    if not dotted:
+        return None, ""
+    from manamap.config import OUTPUT_CSV_PATH, STRATEGY_INDEX_PATH
+    if artifact in _NEEDS_STRATEGY and not STRATEGY_INDEX_PATH.exists():
+        return None, "gate needs the strategy DB"
+    if artifact in _NEEDS_CORPUS and not OUTPUT_CSV_PATH.exists():
+        return None, "gate needs the card corpus"
+
+    module = importlib.import_module(dotted)
+    buf = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(buf):
+            module.main(type("Args", (), {"slug": slug})())
+    except SystemExit as exit_:
+        if exit_.code:
+            first = next((ln.strip() for ln in buf.getvalue().splitlines()
+                          if ln.strip().startswith("-")), "")
+            n = sum(1 for ln in buf.getvalue().splitlines()
+                    if ln.strip().startswith("-"))
+            return False, f"{n} error(s){': ' + first.lstrip('- ')[:60] if first else ''}"
+    except Exception as exc:                      # a broken gate is not a green deck
+        return False, f"validator raised {type(exc).__name__}: {exc}"[:90]
+    return True, ""
 
 
 def fleet():
@@ -138,6 +222,7 @@ def fleet():
         slug = path.parent.name
         rows = status(slug)
         stale = [r["stage"] for r in rows if r["state"] == "STALE"]
+        invalid = [r["stage"] for r in rows if r["state"] == "INVALID"]
         try:
             pend = summarise(slug)
         except Exception:
@@ -147,6 +232,7 @@ def fleet():
             "done": sum(1 for r in rows if r["state"] == "present"),
             "total": len(rows),
             "stale": stale,
+            "invalid": invalid,
             "pending_open": pend["open"],
             "pending_applied": pend["applied"],
             "pending_partial": pend["partial"],
@@ -160,22 +246,28 @@ def _fleet_main(args):
         print(json.dumps({"decks": rows}, indent=2))
         return
     print(f"FLEET STATUS — {len(rows)} decks\n")
-    print(f"  {'deck':18}{'stages':>9}{'stale':>7}{'queued':>8}   notes")
+    print(f"  {'deck':18}{'stages':>9}{'stale':>7}{'FAIL':>6}{'queued':>8}   notes")
     for r in rows:
         q = r["pending_open"] + r["pending_partial"]
         note = []
         if r["stale"]:
             note.append("STALE: " + ", ".join(r["stale"]))
+        if r["invalid"]:
+            note.append("FAILS ITS GATE: " + ", ".join(r["invalid"]))
         if r["pending_applied"]:
             note.append(f"{r['pending_applied']} queued entry now applied — delete it")
         print(f"  {r['slug']:18}{r['done']:>4}/{r['total']:<4}{len(r['stale']):>7}"
-              f"{q:>8}   {'; '.join(note)}")
+              f"{len(r['invalid']):>6}{q:>8}   {'; '.join(note)}")
     tot_stale = sum(len(r["stale"]) for r in rows)
+    tot_bad = sum(len(r["invalid"]) for r in rows)
     tot_q = sum(r["pending_open"] + r["pending_partial"] for r in rows)
-    print(f"\n  {tot_stale} stale artifact(s), {tot_q} queued change(s) across the fleet")
-    errors = [f"{r['slug']}: {s} is STALE" for r in rows for s in r["stale"]]
+    print(f"\n  {tot_stale} stale, {tot_bad} failing their own gate, "
+          f"{tot_q} queued change(s) across the fleet")
+    errors = [f"{r['slug']}: {st} is STALE" for r in rows for st in r["stale"]]
+    errors += [f"{r['slug']}: {bad} FAILS its validator" for r in rows for bad in r["invalid"]]
     report_errors("fleet status", errors,
-                  f"OK   {len(rows)} decks, nothing stale, {tot_q} change(s) queued")
+                  f"OK   {len(rows)} decks, nothing stale, nothing failing a gate, "
+                  f"{tot_q} change(s) queued")
 
 
 def main(args):
@@ -188,7 +280,8 @@ def main(args):
         print(json.dumps({"slug": args.slug, "stages": rows}, indent=2))
         return
 
-    mark = {"present": "OK  ", "missing": "  --", "STALE": "STALE", "unverified": " ?  "}
+    mark = {"present": "OK  ", "missing": "  --", "STALE": "STALE",
+            "INVALID": "FAIL", "unverified": " ?  "}
     print(f"DECK STATUS — {args.slug}\n")
     for row in rows:
         flag = " NEW" if row["new"] and row["state"] == "missing" else ""
@@ -218,6 +311,9 @@ def main(args):
     # describe is one that will publish a wrong number.
     errors = [f"{r['stage']} ({r['artifact']}) is STALE — {r['detail']}"
               for r in rows if r["state"] == "STALE"]
+    # An artifact that fails its own gate is a published error, not a warning.
+    errors += [f"{r['stage']} ({r['artifact']}) FAILS its validator — {r['detail']}"
+               for r in rows if r["state"] == "INVALID"]
     missing_required = [r["stage"] for r in rows
                         if r["required"] and r["state"] == "missing"]
     errors += [f"{s} is required and absent" for s in missing_required]

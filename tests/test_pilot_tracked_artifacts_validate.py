@@ -17,12 +17,15 @@ A validator is only a gate if something runs it. This runs all of them, over
 everything tracked, every time.
 """
 
+import importlib
+
 import pytest
 
 from manamap.config import (CARD_ROLES_PATH, COMBO_DETAILS_PATH, DECKS_DIR,
                             OBSOLESCENCE_INDEX_PATH, OUTPUT_CSV_PATH,
                             STRATEGY_DOC_PATH, STRATEGY_INDEX_PATH,
                             SYNERGY_GRAPH_PATH)
+from manamap.pilot.deck_status import VALIDATED
 from manamap.pilot import (
     validate_build,
     validate_considering,
@@ -48,32 +51,21 @@ INPUTS = (SRC / "pilot", SRC / "config.py", CARD_ROLES_PATH, COMBO_DETAILS_PATH,
           OBSOLESCENCE_INDEX_PATH, OUTPUT_CSV_PATH, STRATEGY_DOC_PATH,
           SYNERGY_GRAPH_PATH)
 
-# artifact filename -> module exposing main(args) taking a slug
-GATED = {
-    "considering.json": validate_considering,
-    "tutor_guide.json": validate_tutor_guide,
-    "strategic_frame.json": validate_strategic_frame,
-    "issue_plan.json": validate_issue,
-    "diagnosis.json": validate_diagnosis,
-    # Added 2026-08-13 with the subsystems that write them. Both were shipped a
-    # cycle earlier than this line and neither was gated, which is precisely the
-    # shape of the failure this file's docstring describes — a validator nothing
-    # runs is not a gate. `deck_map.json` carries agent-supplied names over a
-    # measured membership; `engine.json` carries `verified_by` claims against
-    # checker-passed stacks. Both are exactly the kind of artifact that rots
-    # silently, because both look complete when they are wrong.
-    "deck_map.json": validate_deck_map,
-    "engine.json": validate_engine,
-    # Added 2026-08-15. Three more validators that existed and were wired into
-    # nothing — the same gap, found the same way, one cycle later. Two tracked
-    # artifacts were failing their own validator at the time and nobody could
-    # have known: yawgmoth's `build_plan.json` named a pool directory that a
-    # rename had moved out from under it, and it stayed broken through a full
-    # test run because no test ran `validate-build` on a tracked plan.
-    "build_plan.json": validate_build,
-    "goldfish_targets.json": validate_goldfish_targets,
-    "cards.json": validate_deck,
-}
+# artifact filename -> module exposing main(args) taking a slug.
+#
+# The map now lives in `deck_status.VALIDATED` and is imported rather than
+# restated. It was duplicated here for one cycle, which meant the TEST knew
+# which artifacts had gates while `deck-status` — the command the runbook says
+# to run first, every time — did not, and reported a deck green while
+# `validate-issue` failed on it in the same second. Two maps that can disagree
+# about what is gated is the same class of defect as two records of what is
+# applied.
+#
+# `build_plan.json` is gated here only: it is not a lifecycle stage, so it has
+# no `STAGES` row for `deck-status` to hang a verdict on.
+GATED = {name: importlib.import_module(dotted)
+         for name, dotted in VALIDATED.items()}
+GATED["build_plan.json"] = validate_build
 
 # `validate_build` reads the declared pool through `card_pool`, the only reader
 # of the gitignored `cards.csv`.

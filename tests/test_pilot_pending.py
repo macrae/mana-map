@@ -163,3 +163,66 @@ def test_every_tracked_pending_file_validates():
         doc = json.loads(path.read_text())
         deck = json.loads((path.parent / "cards.json").read_text())
         assert vp.validate(doc, deck) == [], f"{slug}: {vp.validate(doc, deck)}"
+
+
+# ── deck-status reports VALIDITY, not just bookkeeping ────────────────────
+
+def test_deck_status_runs_the_gates_and_reports_a_failure(tmp_path, monkeypatch):
+    """The gap this closes, pinned.
+
+    `deck-status` compared shas and counted files and called that health. The
+    gates existed and nothing in the command ran them, so PLAN.md recorded it
+    reading nine decks green while two failed their own validators — and it did
+    it again live on ur-dragon mid-swap: `deck-status` FAIL=0 while
+    `validate-issue` FAIL=1 on the same deck in the same second.
+
+    A dashboard that is green while the gate is red is worse than no dashboard,
+    because people stop checking the gate.
+    """
+    from manamap.pilot import deck_status as ds
+
+    monkeypatch.setitem(ds.VALIDATED, "cards.json", "tests._always_fails")
+    import sys
+    import types
+    mod = types.ModuleType("tests._always_fails")
+
+    def _main(args):
+        print("  - deliberately broken")
+        raise SystemExit(1)
+
+    mod.main = _main
+    sys.modules["tests._always_fails"] = mod
+    try:
+        ok, why = ds._validity("yawgmoth-swarm", "cards.json")
+        assert ok is False and "error(s)" in why, (ok, why)
+    finally:
+        del sys.modules["tests._always_fails"]
+
+
+def test_a_validator_that_raises_is_not_a_green_deck(monkeypatch):
+    """A broken gate must never read as a passing artifact — silence is the
+    failure mode this whole file exists to stop."""
+    from manamap.pilot import deck_status as ds
+    import sys
+    import types
+    mod = types.ModuleType("tests._explodes")
+
+    def _main(args):
+        raise ValueError("gate itself is broken")
+
+    mod.main = _main
+    sys.modules["tests._explodes"] = mod
+    monkeypatch.setitem(ds.VALIDATED, "cards.json", "tests._explodes")
+    try:
+        ok, why = ds._validity("yawgmoth-swarm", "cards.json")
+        assert ok is False and "ValueError" in why, (ok, why)
+    finally:
+        del sys.modules["tests._explodes"]
+
+
+def test_the_validator_map_is_the_one_the_test_suite_gates_on():
+    """Two maps that can disagree about what is gated is the same defect as two
+    records of what is applied. The artifact test imports this one."""
+    from manamap.pilot.deck_status import VALIDATED
+    from tests.test_pilot_tracked_artifacts_validate import GATED  # noqa: F401
+    assert set(VALIDATED) <= set(GATED)
