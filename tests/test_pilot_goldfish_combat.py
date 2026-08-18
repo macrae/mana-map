@@ -187,12 +187,21 @@ def test_every_tracked_deck_is_byte_identical_with_the_flag_absent():
     from manamap.config import DATA_DIR
     decks = sorted(p.parent.name for p in (DATA_DIR / "decks").glob("*/goldfish_metrics.json"))
     assert decks, "no tracked goldfish metrics found"
+    checked = 0
     for slug in decks:
         targets = DATA_DIR / "decks" / slug / "goldfish_targets.json"
-        if targets.exists():
-            assert "model_combat" not in json.loads(targets.read_text()), (
-                f"{slug} has opted in; update this test's premise deliberately")
+        if targets.exists() and json.loads(targets.read_text()).get("model_combat"):
+            # ur-dragon opted in when its two-engine rebuild was applied, which is
+            # exactly the "re-baselined deliberately" condition the flag exists
+            # for. An opted-in deck is not evidence against the invariant — the
+            # invariant is about decks that did NOT ask.
+            continue
         on_disk = json.loads((DATA_DIR / "decks" / slug / "goldfish_metrics.json").read_text())
         fresh = goldfish.run(slug)
         assert json.dumps(fresh, sort_keys=True) == json.dumps(on_disk, sort_keys=True), (
             f"{slug} moved without opting in")
+        checked += 1
+    assert checked >= len(decks) - 1, (
+        f"only {checked} of {len(decks)} decks are un-opted — if the fleet is "
+        "being re-baselined, retire this invariant deliberately rather than "
+        "letting it quietly stop checking anything")

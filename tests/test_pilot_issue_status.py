@@ -128,8 +128,16 @@ def test_hapatra_is_marked_broken_down_and_still_published():
 
 
 @pytest.mark.skipif(not MANUALS.exists(), reason="manuals not built")
-def test_no_other_issue_carries_a_status_banner():
-    """The mechanism is opt-in per issue; nothing else may have been swept up."""
-    marked = [p.name for p in MANUALS.glob("*.html")
-              if p.name != "index.html" and "issue-status" in p.read_text()]
-    assert marked == ["hapatra.html"], marked
+def test_only_the_decks_that_opted_in_carry_a_status_banner():
+    """The mechanism is opt-in per issue; nothing may be swept up by accident.
+
+    The list is derived from the tracked `issue.json` files rather than
+    hardcoded, so retiring a deck updates this test's premise with it — a
+    literal would fail on the next retirement and teach nothing.
+    """
+    expected = sorted(
+        f"{p.parent.name}.html" for p in DECKS_DIR.glob("*/issue.json")
+        if json.loads(p.read_text()).get("status"))
+    marked = sorted(p.name for p in MANUALS.glob("*.html")
+                    if p.name != "index.html" and "issue-status" in p.read_text())
+    assert marked == expected, f"marked {marked}, issue.json says {expected}"
