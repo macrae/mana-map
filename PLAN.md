@@ -223,7 +223,13 @@ was in Forge's source — the `forge` marker, the parser with CIs and two honest
 figures, `validate-sim`, the `deck-info` panel, the first tracked 4-seat run on radagast —
 0 of 8, deals the most combat damage and wins none — and the bridge: `sim-scenario` lifts a
 board at a CR step into a `game_state` v2 scenario; `validate-stack`/`scenario-facts` read
-v2). **S3 is done** — the pod as dictated (giada-angels, abaddon [best guess for "Abigail"], baylen-tokens, vito) under `data/opponents/` via `fetch-opponent`, and the first table: radagast 0 of 20, Giada 11, Vito 9 (by life loss the damage parser cannot see — named as a limit, to fix in S5). S5 (sim debrief + `prescribe` reading sim; the drain blind spot) remains. `manual-v5` is parked with its spec on its own branch.
+v2). **S3 is done** — the pod as dictated (giada-angels, abaddon [best guess for "Abigail"], baylen-tokens, vito) under `data/opponents/` via `fetch-opponent`, and the first table: radagast 0 of 20, Giada 11, Vito 9 (by life loss the damage parser cannot see — named as a limit, to fix in S5). **The chain ran once for real**: `stacks/008-sim-g1-t33-declare-attackers.json` — a board
+lifted from game 1 of the first run at turn 33, Craterhoof into six blockers, one sacrificed
+before damage — resolved and checker-PASSED in three iterations (~570k tokens); the resolver's
+assignment matched Forge's log line for line, and the checker found two triggers the
+authored scenario had missed that the log confirms. Radagast's eighth verified line, the first
+from a simulated table. S5 (sim debrief + `prescribe` reading sim; the drain blind spot;
+token types in the bridge) remains. `manual-v5` is parked with its spec on its own branch.
 
 **The MVP as scoped on 2026-08-19 is complete**: versions, notes, basic stats, goldfish,
 and the agent audit/enrichment. What remains is the audit's optional item 8

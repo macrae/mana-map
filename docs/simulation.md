@@ -109,6 +109,37 @@ pilot and an upper bound on nothing. What the run *is* good for already: the pod
 clock (mean round 21.8 with three AIs trading), and which seats win by what (edgar by
 damage, heliod by Approach) — the shape of the table, before S2 reads the events.
 
+## The chain, run once for real (2026-08-19)
+
+**simulate → parse → lift → pose → resolve → check → ✓**, end to end, on a board no
+one authored: game 1 of the first tracked run, global turn 33, the start of declare
+attackers — radagast resolves Craterhoof with eleven creatures and swings everything at
+yawgmoth at 16 life; yawgmoth blocks with six and sacrifices one of Craterhoof's two
+blockers to Ayara before damage. `sim-scenario … --stack` lifted the board into
+`stacks/008-sim-g1-t33-declare-attackers.json` (v2); the author added the two Zombie tokens
+the log shows blocking (tokens that had not yet acted are invisible to the bridge — the
+note said so), the attack/block/sacrifice actions exactly as logged, the continuous effects
+in force (Craterhoof X = 11, Saryth's deathtouch), and ONE question in one rules domain:
+combat damage assignment with trample and deathtouch, one blocker removed before damage.
+
+**Three iterations, six spawns, ~570k tokens, verdict pass.** The resolver's damage
+assignment matched Forge's actual log line for line — Craterhoof 15 through + 1 lethal to
+Grave Titan, Saryth 12 through + 2 to her Zombie, 136 total — a ✓ on the engine's play as
+well as on the rules. What the loop found that the author had not: the resolver read the
+oracle text and corrected the authored scenario twice (Ayara's ability draws and does not
+gain life; Saryth grants deathtouch to OTHER tapped creatures, so she assigns 2, which is
+exactly what Forge did); the checker found two missed triggers on boards the scenario
+carried — seat-4's Scrawling Crawler on Ayara's draw (which is why Forge's log has yawgmoth
+at 15, not 16, when damage hit) and seat-2's Bloodthirsty Conqueror on the 136-point loss
+(the 136 life edgar gained in the log) — then held the artifact on three one-sentence slips
+until they were fixed. Round 3 passed with 62 citations, which re-confirms the repo's
+measured rule that an artifact past ~59 citations takes three or four rounds: the cut was
+right, the question was one domain, and the board was simply full.
+
+`scenario-facts` files the four Insect tokens under `other_permanents` because the bridge
+cannot know a token's type from the log — a nit the checker read past via the attack list;
+fix when the bridge learns token types from the creating card's text.
+
 ## Artifacts and where they live
 
 ```
