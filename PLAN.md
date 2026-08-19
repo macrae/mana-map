@@ -17,7 +17,7 @@ agents that turn a question into a priced, checked answer. Optimised for one pla
 used to be the product is a frozen legacy renderer until the compact deck page replaces
 it. The card atlas in `viz/` is unchanged and live.
 
-Scale (derived; `tests/test_docs_counts.py` polices these): 60 `manamap pilot`
+Scale (derived; `tests/test_docs_counts.py` polices these): 61 `manamap pilot`
 subcommands, 18 top-level subcommands, 15 agents, 19 skills, 10 static cache routines
 (plus `stack:`/`decision:`/`prescription:` per artifact). Test counts live in
 `docs/testing.md` only.
@@ -78,10 +78,11 @@ will teach the agents more than another sprint would.
 
 ### Next, in order
 
-1. **`experiment`** — A/B two versions under the same seeds and the same table: N games
-   each, a diff of the two `analysis` blocks with intervals, one artifact. The "controlled
-   experiment" in the brief; the pieces (`deck-version`, `simulate --seed`, `sim/parse`)
-   exist. About a day.
+1. ~~`experiment`~~ — **DONE 2026-08-19**: `experiment <slug> --a <ref> --b <ref> --vs …`,
+   one accumulating artifact with both arms, the delta and the overlap sentence; arms never
+   touch the deck dir; `--profile` on it and on `simulate` (measured: aggro profiles make a
+   hold-up deck worse; Default stays default). First tracked one: radagast V1 vs V5 —
+   win-rate delta is noise, damage +27.6/game and token share 0 → 0.19 are not.
 2. **The first real logged games** — any deck, `deck-notes add`, then `/debrief` and
    `/prescribe`. Only the pilot can do this.
 3. **Forge AI profiles** (`-a`, found in Forge's source, untested) — does a better profile fly

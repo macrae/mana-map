@@ -27,6 +27,8 @@ PILOT_STEPS = [
      "Merge the debrief agent's annotations into log_annotations.json, by entry id"),
     ("simulate", "manamap.sim.forge",
      "Run N Commander games of this deck against opponents in Forge, headless; record the run (◆ sampled)"),
+    ("experiment", "manamap.sim.experiment",
+     "A/B two versions of one deck against the same table: one artifact, each figure for both arms, the delta and whether it is noise"),
     ("fetch-opponent", "manamap.sim.opponents",
      "An opponent seat under data/opponents/<slug>/ from EDHREC's average deck for a commander"),
     ("sim-scenario", "manamap.sim.bridge",
@@ -101,7 +103,7 @@ _DECK_COMMANDS = {
     "validate-tutor-guide", "impact", "scenario-facts", "merge-prose",
     "short-list-art", "issue-length", "card-value", "validate-pending",
     "deck-notes", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
-    "deck-version", "deck-info", "simulate", "validate-sim", "sim-scenario",
+    "deck-version", "deck-info", "simulate", "validate-sim", "sim-scenario", "experiment",
 }
 
 
@@ -248,6 +250,8 @@ def add_pilot_parser(subparsers):
                              help="print the JVM commands and the run id; run nothing")
             cmd.add_argument("--seed", type=int, default=None,
                              help="RNG seed (default derives from the configuration, so the default REPLAYS; pass one for a new sample)")
+            cmd.add_argument("--profile", default=None, choices=["Default", "Cautious", "Reckless", "Experimental"],
+                             help="AI profile for YOUR seat (opponents stay Default; measured: aggro profiles make a hold-up deck worse)")
             cmd.add_argument("--force", action="store_true",
                              help="replay an existing run id (it writes the same bytes)")
             cmd.add_argument("--analyze", default=None, metavar="RUN_ID",
@@ -275,6 +279,22 @@ def add_pilot_parser(subparsers):
                              help="list this deck's prescriptions")
             cmd.add_argument("--merge", default=None, metavar="ID",
                              help="merge the doctor's (and skeptic's) handoff into prescription ID")
+        if name == "experiment":
+            cmd.add_argument("--a", dest="a", default=None, metavar="REF",
+                             help="arm A: a version (V4 / tag / sha) or `working`")
+            cmd.add_argument("--b", dest="b", default=None, metavar="REF",
+                             help="arm B: a version ref or `working`")
+            cmd.add_argument("--vs", action="append", default=[], metavar="SLUG",
+                             help="an opponent seat; repeatable — the same table for both arms")
+            cmd.add_argument("--games", type=int, default=None, help="games PER ARM (default SIM_DEFAULT_GAMES)")
+            cmd.add_argument("--jobs", type=int, default=None)
+            cmd.add_argument("--clock", type=int, default=None)
+            cmd.add_argument("--seed", type=int, default=None,
+                             help="seed base (default derives from both arms' lists; same seed replays)")
+            cmd.add_argument("--profile", default=None, choices=["Default", "Cautious", "Reckless", "Experimental"],
+                             help="AI profile for YOUR seat in both arms (opponents stay Default)")
+            cmd.add_argument("--list", action="store_true")
+            cmd.add_argument("--dry-run", action="store_true", dest="dry_run")
         if name == "fetch-opponent":
             cmd.add_argument("commander", nargs="?", default=None,
                              help="commander name or EDHREC slug; omit (or --list) to list the pod")

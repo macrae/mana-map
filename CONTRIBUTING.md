@@ -40,7 +40,7 @@ cases skip without it, every one labelled with the command that would enable it.
 **Needs [Claude Code](https://claude.com/claude-code):** the agent phases only —
 generating a *new* deck's prose, engine model, debrief or prescription. Everything
 deterministic is a CLI subcommand. If you do not have it, you can still work on
-the frontend, the models, the pipeline, the 60 pilot subcommands, the Forge
+the frontend, the models, the pipeline, the 61 pilot subcommands, the Forge
 harness, the renderer and the tests, which is nearly all of the code.
 
 ---

@@ -55,6 +55,7 @@ manamap pilot simulate <slug> --vs A [--vs B…] [--games N] [--jobs J]   # N se
 manamap pilot simulate <slug> --list | --dry-run | --analyze <run-id>
 manamap pilot validate-sim <slug>                 # form + re-derive the analysis from logs where they exist
 manamap pilot fetch-opponent "<commander>" [--as slug] [--note …] | --list   # a pod seat under data/opponents/ from EDHREC's average deck
+manamap pilot experiment <slug> --a V4 --b working --vs <opp>… --games N   # A/B same table; one artifact with the delta
 manamap pilot sim-scenario <slug> <run> --game G --turn T [--step "declare blockers"] [--stack]
                                         #   lift one board into a game_state v2 scenario (question left to you)
 manamap pilot deck-version <slug> [list] [--json]   # every list this deck has been, from git; games per version

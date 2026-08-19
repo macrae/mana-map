@@ -78,19 +78,34 @@ def seat_dir(slug):
     raise SystemExit(f"no decklist.txt for seat {slug!r} under data/opponents/ or data/decks/")
 
 
-def to_dck(slug):
-    """Forge .dck text for a seat, through the repo's own decklist parser."""
+def dck_from_text(meta_name, decklist_text, who="the list"):
+    """Forge .dck text from a decklist TEXT, through the repo's own parser — so an
+    experiment arm's historical list converts exactly the way a live seat's does."""
     from manamap.pilot.fetch_deck import parse_decklist
-    text = (seat_dir(slug) / "decklist.txt").read_text(encoding="utf-8")
-    entries = parse_decklist(text)
+    entries = parse_decklist(decklist_text)
     cmd = [e for e in entries if e.get("is_commander")]
     main = [e for e in entries if not e.get("is_commander")]
     if not cmd:
-        raise SystemExit(f"{slug}: decklist names no commander (*CMDR* or a Commander: section)")
-    lines = ["[metadata]", f"Name={SIM_DECK_PREFIX}{slug}", "[Commander]"]
+        raise SystemExit(f"{who}: decklist names no commander (*CMDR* or a Commander: section)")
+    lines = ["[metadata]", f"Name={meta_name}", "[Commander]"]
     lines += [f"{int(e.get('quantity') or 1)} {e['name']}" for e in cmd]
     lines += ["[Main]"] + [f"{int(e.get('quantity') or 1)} {e['name']}" for e in main]
     return "\n".join(lines) + "\n"
+
+
+def to_dck(slug):
+    """Forge .dck text for a seat directory."""
+    text = (seat_dir(slug) / "decklist.txt").read_text(encoding="utf-8")
+    return dck_from_text(f"{SIM_DECK_PREFIX}{slug}", text, who=slug)
+
+
+def install_named(meta_name, decklist_text, decks_dir=None):
+    """Install an arbitrary list under an explicit Forge meta name (experiments)."""
+    decks_dir = decks_dir or FORGE_DECKS_DIR
+    decks_dir.mkdir(parents=True, exist_ok=True)
+    (decks_dir / f"{meta_name}.dck").write_text(
+        dck_from_text(meta_name, decklist_text, who=meta_name), encoding="utf-8")
+    return meta_name
 
 
 def install_deck(slug, decks_dir=None):
@@ -147,11 +162,20 @@ def split_games(games, jobs):
     return [base + (1 if i < extra else 0) for i in range(jobs)]
 
 
-def command(seat_names, games, clock, jar=None, seed=None):
-    """The exact argv one JVM runs. A pure function so a test can read it."""
+def command(seat_names, games, clock, jar=None, seed=None, profiles=None):
+    """The exact argv one JVM runs. A pure function so a test can read it.
+
+    `profiles` is per-seat AI profiles in `-d` order (Forge's `-a`), from
+    res/ai/: Default, Cautious, Reckless, Experimental. Measured 2026-08-19 on
+    radagast vs a Default edgar, 6 seeded games per profile on OUR seat:
+    Default 3/6, Experimental 2/6, Reckless 2/6 — the aggro profiles make a
+    hold-up deck worse, so Default stays the default and the AI caveat stands.
+    """
     jar = jar or forge_jar()
     argv = ["java", *FORGE_JVM_ARGS, "-jar", str(jar), "sim",
             "-d", *seat_names, "-f", "commander", "-n", str(games), "-c", str(clock)]
+    if profiles:
+        argv += ["-a", *profiles]
     if seed is not None:
         argv += ["-s", str(int(seed))]
     return argv
@@ -210,7 +234,7 @@ def _seat_label(seat_names):
 
 
 def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOCK_SECONDS,
-        seed=None, force=False, dry_run=False, home=None, decks_dir=None):
+        seed=None, force=False, dry_run=False, home=None, decks_dir=None, profile=None):
     """Run the games and write the run record. Returns (record_path, record)."""
     if not opponents:
         raise SystemExit("simulate needs at least one opponent: --vs <slug> (repeatable)")
@@ -229,7 +253,9 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
                          f"replays the same games. Pass --seed N for a new sample, or --force "
                          f"to replay it.")
     jar = forge_jar(home)
-    cmds = [command(names, g, clock, jar, seed=seeds[i]) for i, g in enumerate(parts)]
+    profiles = ([profile] + ["Default"] * len(opponents)) if profile else None
+    cmds = [command(names, g, clock, jar, seed=seeds[i], profiles=profiles)
+            for i, g in enumerate(parts)]
     if dry_run:
         return record_path, {"run_id": rid, "seats": seats, "jobs": len(parts),
                              "games_per_job": parts, "seeds": seeds, "commands": cmds}
@@ -272,6 +298,7 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
                   for i, s in enumerate(seats)],
         "games_requested": int(games), "games_completed": len(outcomes),
         "jobs": len(cmds), "games_per_job": parts, "seed_base": seed_base, "seeds": seeds,
+        "profiles": profiles,
         "clock_seconds": clock,
         "wall_seconds": wall, "nonzero_exit_jobs": sum(1 for _, rc in results if rc),
         "summary": {"wins": wins, "draws": draws,
@@ -355,7 +382,8 @@ def main(args):
         return
     path, rec = run(slug, args.vs, games=args.games or SIM_DEFAULT_GAMES, jobs=args.jobs,
                     clock=args.clock or SIM_GAME_CLOCK_SECONDS, seed=getattr(args, "seed", None),
-                    force=getattr(args, "force", False), dry_run=getattr(args, "dry_run", False))
+                    force=getattr(args, "force", False), dry_run=getattr(args, "dry_run", False),
+                    profile=getattr(args, "profile", None))
     if getattr(args, "dry_run", False):
         print(f"would run {rec['games_per_job']} games across {rec['jobs']} JVM(s), seeds "
               f"{rec['seeds']} → {path}")

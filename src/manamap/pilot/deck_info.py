@@ -28,6 +28,7 @@ from manamap.pilot import deck_versions as versions_mod
 from manamap.pilot.common import deck_dir, load_json
 from manamap.pilot.deck_notes import annotations, read_log
 from manamap.pilot.prescribe import list_all as prescriptions_of
+from manamap.sim.experiment import list_all as experiments_of
 from manamap.sim.forge import list_runs as sim_runs
 
 
@@ -147,6 +148,7 @@ def compose(slug):
                                      if rx else None)},
         "open_questions": _open_questions(base),
         "simulation": _simulation(slug),
+        "experiments": _experiments(slug),
     }
     info["next"] = _next(info)
     return info
@@ -167,6 +169,17 @@ def _simulation(slug):
             "mean_round": (r.get("summary") or {}).get("mean_round"),
             "token_damage_share": (tok.get("token_damage_share") or {}).get("mean"),
             "tokens_observed": (tok.get("tokens_observed") or {}).get("mean")}
+
+
+def _experiments(slug):
+    docs = experiments_of(slug)
+    if not docs:
+        return None
+    d = docs[-1]
+    w = d["delta"]["win_rate"]
+    return {"count": len(docs), "latest": {"question": d["question"], "at": d["at"],
+            "games_per_arm": d["games_per_arm"], "win_a": w["a"], "win_b": w["b"],
+            "overlap": w["intervals_overlap"], "reading": d["delta"]["reading"]}}
 
 
 def _next(info):
@@ -206,7 +219,10 @@ def _next(info):
         nxt.append("open questions routed: " + ", ".join(f"{k} ×{v}" for k, v in sorted(by.items())))
     if info["simulation"] is None:
         nxt.append(f"no simulation runs — `simulate {slug} --vs <opp> [--vs …] --games N` "
-                   f"(Forge; ◆ sampled)")
+                   f"(Forge; ◆ seeded)")
+    elif info["experiments"] is None and info["version"]["of"] > 1:
+        nxt.append(f"{info['version']['of']} versions and no experiment — "
+                   f"`experiment {slug} --a V<n> --b working --vs <pod> --games N` measures a swap")
     if info["bracket"] and info["bracket"].get("within_target") is False:
         nxt.append(f"bracket floor {info['bracket']['floor']} exceeds target "
                    f"{info['bracket']['target']} — `bracket-check {slug}` names the drivers")
@@ -267,6 +283,11 @@ def _print(info):
         print(f"  simulated  {sm['runs']} run(s) · latest {sm['games']} games vs {', '.join(sm['vs'])} · "
               f"win {sm['win_rate']} ci95 {sm['win_rate_ci95']} · mean round {sm['mean_round']} · "
               f"eliminated by {sm['eliminated_by']} · token dmg share {sm['token_damage_share']}")
+    xp = info["experiments"]
+    if xp:
+        l = xp["latest"]
+        print(f"  tested     {xp['count']} experiment(s) · latest {l['question'][:70]}")
+        print(f"             win {l['win_a']} → {l['win_b']} over {l['games_per_arm']}/arm · {l['reading'][:80]}")
     p = info["prescriptions"]
     if p["count"]:
         lt = p["latest"]

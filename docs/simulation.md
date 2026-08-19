@@ -140,6 +140,31 @@ right, the question was one domain, and the board was simply full.
 cannot know a token's type from the log — a nit the checker read past via the attack list;
 fix when the bridge learns token types from the creating card's text.
 
+## The controlled experiment (`experiment`, one artifact)
+
+`manamap pilot experiment <slug> --a <ref> --b <ref> --vs <opp>… --games N [--profile P]`
+runs two versions of one deck — a version ref (`V4`, a tag, a sha) or `working` — against
+the SAME table, N games per arm, and writes one accumulating artifact under
+`data/decks/<slug>/experiments/`: each figure for both arms (win rate with intervals,
+elimination turn, damage dealt and taken, first attack, the token figures), the delta,
+and the one sentence people skip — whether the win-rate intervals overlap at this N.
+Arms run under their own Forge meta names and never touch the deck directory; each arm's
+decklist text rides IN the artifact, so the gitignored logs are exactly regenerable.
+**Same seeds are not paired games** — a changed list changes every shuffle; the control
+is same table, same N, same profile, same engine, and the assumptions say so. An A/A is
+refused with the reason (it measures the noise floor; pass different lists knowingly).
+
+First real one (2026-08-19, tracked): radagast **V1 vs V5**, 10/arm vs giada + vito —
+win 0 → 0 (overlap: noise), but Δ combat damage **+27.6/game**, Δ eliminated turn
+**+5.4**, token damage share **0 → 0.19**: the four swap waves measurably improved the
+deck's table presence even where the AI cannot convert it.
+
+**AI profiles** (`--profile`, also on `simulate`): Forge ships Default / Cautious /
+Reckless / Experimental. Measured on radagast's seat vs a Default edgar, 6 seeded games
+each: Default 3/6, Experimental 2/6, Reckless 2/6 — the aggro profiles make a hold-up
+deck worse, so Default stays the default and the AI caveat stands. Also learned: a game
+that hits the `-c` clock still declares a winner.
+
 ## Artifacts and where they live
 
 ```
