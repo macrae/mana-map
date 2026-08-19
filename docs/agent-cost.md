@@ -72,6 +72,7 @@ number is visible rather than quietly overwritten:
 | Routine | Agent | Tokens (est.) | Typical trigger |
 |---|---|---|---|
 | `deck-recon` | deck-doctor (MODE recon) | 60,000–90,000 | age, not inputs — see below |
+| `debrief` | debrief | **est. 15,000–30,000** per batch of un-debriefed entries | a new `log.jsonl` entry (N/A until one exists) |
 | `deck-diagnosis` | deck-doctor ⇄ deck-skeptic | 200,000–300,000 | decklist edit, new verified stack, goldfish re-run |
 
 `deck-recon` is the only routine in `AGENT_ROUTINES` whose staleness is **time**

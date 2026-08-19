@@ -19,6 +19,12 @@ PILOT_STEPS = [
     ("bracket-check", "manamap.pilot.bracket", "Computed bracket floor and its evidence"),
     ("deck-facts", "manamap.pilot.deck_facts", "Deterministic deck facts agents would else re-derive"),
     ("deck-history", "manamap.pilot.deck_history", "Applied swaps (from git) + the swaps still pending"),
+    ("deck-notes", "manamap.pilot.deck_notes",
+     "The captain's log: add a note about a game, list them, show one (append-only, authored)"),
+    ("validate-debrief", "manamap.pilot.validate_debrief",
+     "Form-check the debrief annotations against the log they annotate"),
+    ("merge-debrief", "manamap.pilot.merge_debrief",
+     "Merge the debrief agent's annotations into log_annotations.json, by entry id"),
     ("validate-deck-map", "manamap.pilot.validate_deck_map",
      "Form-check a named deck map (distinct names, membership untouched)"),
     ("merge-deck-map", "manamap.pilot.merge_deck_map",
@@ -78,6 +84,7 @@ _DECK_COMMANDS = {
     "diagnosis-report",
     "validate-tutor-guide", "impact", "scenario-facts", "merge-prose",
     "short-list-art", "issue-length", "card-value", "validate-pending",
+    "deck-notes", "validate-debrief", "merge-debrief",
 }
 
 
@@ -193,6 +200,23 @@ def add_pilot_parser(subparsers):
         if name == "fetch-deck":
             cmd.add_argument("--force", action="store_true",
                              help="Re-fetch from Scryfall even if the decklist is unchanged")
+        if name == "deck-notes":
+            cmd.add_argument("action", choices=["add", "list", "show"],
+                             help="add a note / list the log / show one entry")
+            cmd.add_argument("text", nargs="?", default=None,
+                             help="the note (add), or the entry id (show)")
+            cmd.add_argument("--file", default=None,
+                             help="read the note from this file (`-` for stdin) instead")
+            cmd.add_argument("--result", default=None, choices=["win", "loss", "draw"])
+            cmd.add_argument("--opponents", type=int, default=None,
+                             help="how many OTHER players sat down")
+            cmd.add_argument("--tag", action="append", default=[],
+                             help="free tag, repeatable (e.g. --tag orinda --tag weekly)")
+            cmd.add_argument("--at", default=None,
+                             help="ISO timestamp override, for backfilling a game played earlier")
+            cmd.add_argument("--since", default=None,
+                             help="list: only entries at or after this ISO date")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "deck-facts":
             cmd.add_argument("--out", default=None,
                              help="Write JSON here instead of stdout (a view, never tracked)")

@@ -469,7 +469,20 @@ def _tutor_guide_applicable(slug):
 # scan turns the raised MissingInput into an N/A row; an explicit --routine
 # call exits 2 with the reason. The Short List (`the-ten`) has no gate: every
 # deck gets exactly ten, bench-first, pool-filled.
+def _debrief_applicable(slug):
+    """A debrief needs a log. No entries → N/A rather than MISS: a deck nobody
+    has played yet has nothing to annotate, and a permanent MISS there would
+    teach the reader to ignore the board."""
+    path = deck_dir(slug) / "log.jsonl"
+    return path.exists() and any(line.strip() for line in path.read_text().splitlines())
+
+
 _APPLICABILITY = {
+    "debrief": (
+        _debrief_applicable,
+        "nothing in the captain's log — `deck-notes <slug> add` a game first; "
+        "nothing to spawn or cache",
+    ),
     "tutor-guide": (
         _tutor_guide_applicable,
         "deck runs zero library-search tutors — Fetch Quests renders its "

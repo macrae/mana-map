@@ -1202,6 +1202,19 @@ AGENT_ROUTINES = {
         "inputs": ["cards:semantic", "stacks:passing", "deck:strategic_frame.json?",
                    "deck:goldfish_metrics.json!meta.decklist_sha256", "strategy:doc"],
     },
+    # The captain's log. `deck:log.jsonl` is the load-bearing input — a new game
+    # logged MUST re-open the debrief, and a scoped spawn annotates only the new
+    # ids while merge-debrief carries the rest. cards:semantic because the
+    # validator holds every named card to the 99; stacks:passing because a line
+    # the pilot saw at the table is `verified` only if a checker already said so;
+    # engine.json? because the annotation may file a game under the stage it
+    # exposed. N/A for a deck with nothing logged (agent_cache applicability).
+    "debrief": {
+        "agent": "debrief",
+        "artifact": "log_annotations.json",
+        "inputs": ["deck:log.jsonl", "cards:semantic", "stacks:passing",
+                   "deck:engine.json?"],
+    },
     # The diagnosis loop. `deck-recon` is the one routine in this registry whose
     # staleness is TIME rather than inputs: a decklist edit does not change what
     # strong lists for this commander run, so hashing cards.json here would MISS a

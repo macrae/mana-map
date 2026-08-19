@@ -37,6 +37,11 @@ manamap pilot validate-build <slug>     # form gate over a build plan
 manamap pilot bracket-check <slug> [--target N] [--json]  # bracket floor → bracket_report.json
 manamap pilot deck-facts <slug> [--out F]  # the deterministic brief agents read first
 manamap pilot deck-history <slug> [--json]  # applied swaps (from git) + the pending ten
+manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents N] [--tag T]
+                                        #   the captain's log: AUTHORED, append-only, sha-stamped
+manamap pilot deck-notes <slug> list [--since D] | show <id>
+manamap pilot merge-debrief <slug>      # the debrief agent's annotations in, by entry id
+manamap pilot validate-debrief <slug>   # the annotation held to the log and the 99
 manamap pilot deck-audit <slug> [--archetype A] [--json] [--out D/]  # cited axis targets + engine activation
 manamap pilot card-value <slug> [--metric M] [--iterations N] [--json] [--out D/]
                                         # what each card is WORTH: swap it for a blank, measure the loss
@@ -106,7 +111,9 @@ data/decks/<slug>/             all tracked:
                                strategic_frame.json  strategy-researcher (consult)
                                manual_prose.json     pilot-notes (five keys; card_roles/mana_base/upgrades/
                                                      editors_letter/pilots_log are FROZEN legacy, unowned)
-                               pilot_feedback.md     authored, OPTIONAL (free-text pilot notes)
+                               pilot_feedback.md     authored, OPTIONAL (free-text pilot notes; the log supersedes it)
+                               log.jsonl             AUTHORED, append-only — `deck-notes add` (the captain's log)
+                               log_annotations.json  debrief agent, by entry id — `merge-debrief` / `validate-debrief`
                                mana_analysis.json    mana-analysis (deterministic, no agent)
                                tutor_guide.json      pilot-notes (At the Table's tutor subhead)
                                considering.json      short-list-analyst (The Short List — ten)
@@ -264,9 +271,9 @@ someone else's regeneration as a cache hit, and `git log` answers "which inputs
 produced this prose?"). `record()` refuses artifacts that are missing, lack their
 routine's keys, or have no checker block — a failed run can't poison the cache.
 
-Routines (10 static): `candidate-pool`, `deck-build`, `deck-diagnosis`, `deck-recon`,
-`deck-engine`, `deck-map-names`, `strategic-frame`, `pilot-notes` (five keys of
-`manual_prose.json`), `the-ten` (The Short List — applies to every deck), `tutor-guide`
+Routines (11 static): `candidate-pool`, `deck-build`, `deck-diagnosis`, `deck-recon`,
+`deck-engine`, `deck-map-names`, `debrief` (N/A until something is logged),
+`strategic-frame`, `pilot-notes` (five keys of `manual_prose.json`), `the-ten` (The Short List — applies to every deck), `tutor-guide`
 (the tutor guide — `N/A` for a deck with no library-search tutors, via the applicability
 gate in agent_cache), plus `stack:<NNN>` and `decision:<NNN>` discovered
 from disk. Declared in `config.AGENT_ROUTINES`.
@@ -790,6 +797,26 @@ Rendered as **The Short List**, straight from the artifact with no prose key —
 would change `prose:shape` and invalidate both prose routines for no gain. The writer's
 `upgrades` key is the section's opening copy and is cached separately. Tiers are marked
 inline: computed evidence ◆, every ranking and verdict ★.
+
+## The captain's log (`log.jsonl`, authored) and the debrief (`log_annotations.json`, ★)
+
+What happened when the deck was PLAYED — the one thing no other artifact records.
+`manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents N]
+[--tag T]` appends one JSON line (`id`, `at`, `decklist_sha256` of `decklist.txt` as it
+stood, `result`, `opponents`, `tags`, `text`) and nothing ever rewrites it; `list
+[--since]` and `show <id>` read it back, marking which entries the debrief has read.
+Light structure on purpose: the point is that a note costs one sentence.
+
+The `debrief` agent (`/debrief`, cheapest agent in the set) reads the un-debriefed ids
+and writes, per entry: `summary`, `opponents[]` (each with a verbatim `evidence` phrase
+of the note), `cards[]` (`read` ∈ over/under/as-expected/missed), `decisions[]`
+(`worth_a_spread` → `/author-decision`), `takeaways[]`, `engine_stages[]` (names from
+`engine.json`), `lines[]` (`verified` only with a checker-passed `stack_artifact`, else
+`needs a stack scenario`) and `open_questions[]` routed to
+`resolve-stack|goldfish|research-strategy|diagnose`. `merge-debrief` writes by id,
+rejects ids the log lacks and carries earlier annotations; `validate-debrief` fails the
+annotation on any of those contracts. The one rule is that the debrief may name nothing
+the pilot and the 99 did not — it is a reader, not a witness.
 
 ## The tutor guide (`tutor_guide.json`, tier ★)
 

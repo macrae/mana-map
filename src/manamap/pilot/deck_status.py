@@ -43,14 +43,15 @@ STAGES = [
     ("shortlist",  "considering.json",       None,  False, "The Ten — `short-list`"),
     ("shortlist-art", "considering_art.json", None,  False, "Scryfall art for The Ten — `short-list-art`"),
     ("tutors",     "tutor_guide.json",       None,  False, "the tutor guide — `tutor-guide`"),
-    ("prose",      "manual_prose.json",      None,  False, "writer + coach prose — `write-manual`"),
+    ("prose",      "manual_prose.json",      None,  False, "the pilot's notes — `write-manual`"),
+    ("log",        "log.jsonl",              None,  False, "the captain's log — `deck-notes add`; debriefed by the `debrief` agent"),
     ("issue",      "issue.json",             None,  False, "authored identity: volume, date, price"),
 ]
 
 # Stages this development cycle added. Named explicitly so a deck built before
 # them reports them as MISSING rather than as complete-by-omission — which is the
 # exact way a new capability fails to propagate.
-ADDED_2026_08 = {"map", "engine", "shortlist-art"}
+ADDED_2026_08 = {"map", "engine", "shortlist-art", "log"}
 
 # RETIRED 2026-08-19 with the workbench pivot (docs/agent-audit-2026-08-19.md):
 # `map-names` (the cartographer is optional now — the deterministic fallback
@@ -107,7 +108,22 @@ def status(slug, validate=True):
         doc = load_json(path) if name.endswith(".json") else {}
         detail, state = "", "present"
 
-        if key == "engine":
+        if key == "log":
+            # One line per game; `detail` says how many the debrief has read.
+            # The stage's artifact is the AUTHORED log, which has no gate; the
+            # DERIVED annotation beside it does, and the row runs it — a green
+            # row over a broken debrief is the exact failure the last commit
+            # before this stage existed to stop.
+            from manamap.pilot.deck_notes import ANNOTATIONS_FILE, annotations, read_log
+            entries = read_log(slug)
+            state = "present" if entries else "missing"
+            done = sum(1 for e in entries if e["id"] in annotations(slug))
+            detail = f"{len(entries)} logged, {done} debriefed"
+            if state == "present" and validate and (base / ANNOTATIONS_FILE).exists():
+                ok, why = _validity(slug, ANNOTATIONS_FILE)
+                if ok is False:
+                    state, detail = "INVALID", why
+        elif key == "engine":
             verdict = ((doc or {}).get("critic") or {}).get("verdict")
             detail = f"critic: {verdict or 'not run'}"
             if verdict == "fail":
@@ -153,6 +169,7 @@ VALIDATED = {
     "diagnosis.json": "manamap.pilot.validate_diagnosis",
     "engine.json": "manamap.pilot.validate_engine",
     "goldfish_targets.json": "manamap.pilot.validate_goldfish_targets",
+    "log_annotations.json": "manamap.pilot.validate_debrief",
     "pending.json": "manamap.pilot.validate_pending",
     "strategic_frame.json": "manamap.pilot.validate_strategic_frame",
     "tutor_guide.json": "manamap.pilot.validate_tutor_guide",

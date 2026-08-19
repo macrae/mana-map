@@ -33,8 +33,8 @@ written brief, and the issue now opens on two pictures of the deck: its **conste
 [009 Radagast](https://macrae.github.io/mana-map/manuals/radagast.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-Scale: 49 `manamap pilot` subcommands, 18 top-level subcommands, 15 agents, 18 skills,
-10 cache-gated routines, and the magazine's department list as `issue_spec.DEPARTMENTS`
+Scale: 52 `manamap pilot` subcommands, 18 top-level subcommands, 16 agents, 19 skills,
+11 cache-gated routines, and the magazine's department list as `issue_spec.DEPARTMENTS`
 gives it — **`OPTIONAL_DEPARTMENTS` is empty**, both migrations having landed on all nine
 decks. Test counts live in `docs/testing.md`.
 
@@ -159,8 +159,19 @@ never touches them, and the renderer still prints them until the manual is simpl
 stage labels). `validate_issue`'s voice lint is unchanged and the new charter carries its
 bans, so new prose stays satisfiable under the legacy gate.
 
-Next: step 4 (`debrief` + `deck-notes` CLI), step 5 (`deck-doctor` MODE prescribe,
-folding `short-list-analyst`).
+**Step 4 is done — the captain's log, the MVP's heart.** `manamap pilot deck-notes
+<slug> add "…" [--result] [--opponents] [--tag]` appends to an AUTHORED `log.jsonl`
+stamped with the decklist sha as it stood; `list`/`show` read it back. The `debrief`
+agent (charter + `/debrief` skill + `debrief` cache routine, N/A until something is
+logged) writes `log_annotations.json` by entry id; `merge-debrief` carries earlier
+entries and rejects ids the log lacks; `validate-debrief` holds the annotation to the
+note and the 99 (verbatim opponent evidence, cards in deck or note, lines verified only
+by a passing stack, routes in a closed set incl. `diagnose`, stages from `engine.json`).
+`deck-status` has a `log` stage reporting `N logged, M debriefed`. Seventeen tests.
+Nothing is logged on any deck yet — the first real entry is yours to write.
+
+Next: step 5 (`deck-doctor` MODE prescribe reading the log + a prompt, folding
+`short-list-analyst`), step 7 (the `game_state` v2 schema, docs only).
 
 ### 1. Phase 3 — DONE. Radagast carries the whole v4 shape.
 
