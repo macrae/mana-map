@@ -44,6 +44,8 @@ manamap pilot deck-info <slug> [--json]            # THE WORKBENCH VIEW: version
 manamap pilot simulate <slug> --vs A [--vs B…] [--games N] [--jobs J]   # N Commander games in Forge, headless; a ◆ SAMPLED run record
 manamap pilot simulate <slug> --list | --dry-run | --analyze <run-id>
 manamap pilot validate-sim <slug>                 # form + re-derive the analysis from logs where they exist
+manamap pilot sim-scenario <slug> <run> --game G --turn T [--step "declare blockers"] [--stack]
+                                        #   lift one board into a game_state v2 scenario (question left to you)
 manamap pilot deck-version <slug> [list] [--json]   # every list this deck has been, from git; games per version
 manamap pilot deck-version <slug> show V4 [--full] | tag <name> [--at V4] [--note …] | restore V4 [--write]
 manamap pilot merge-debrief <slug>      # the debrief agent's annotations in, by entry id
@@ -180,9 +182,12 @@ Verdict `pass` requires all findings `supported` **and** the mechanical validato
 
 ## Game state v2 — the schema the simulation branch inherits (SPEC ONLY, 2026-08-19)
 
-**Status: specified, not consumed.** Nothing reads `version: 2` yet — not
-`validate-stack`, not `scenario-facts`, not the resolver. It is written down now
-because three things already want to name a seat the same way (the resolver's
+**Status: consumed since S4 (2026-08-19).** `pilot/game_state.py` holds the vocabulary and
+the form check; `validate-stack` runs it on any `version: 2` scenario (preflight and the
+loop), `scenario-facts` reads `seats[]` and board objects, and `manamap pilot sim-scenario`
+(the bridge, `sim/bridge.py`) WRITES v2 scenarios lifted from Forge games. The resolver and
+checker charters carry a paragraph each. It was written down first because three things
+already wanted to name a seat the same way (the resolver's
 board, `debrief`'s `opponents[]`, `prescribe`'s pod) and the simulation branch will
 need a state an *actor* can act on. The audit's finding was that the combat /
 interaction gap is a **schema** gap before it is a prompt gap: v1's opponents are
@@ -286,9 +291,10 @@ steps it skipped, and nothing about the citation contract changes.
 
 | consumer | reads | today | under v2 |
 |---|---|---|---|
-| `stack-resolver` / `rules-checker` | board, hand, mana, stack, question | prose board, static opponents | `seats[]`, `actions[]`; the checker's missing-steps list names combat steps (506–511) by the `step` vocabulary |
-| `scenario-facts` | `board_bodies`, `opponents_of` | regex over strings | the object fields, falling back to the string regex per entry |
-| `goldfish` (`model_combat`) | one opponent, 40 life, does nothing | internal | could emit a v2 `seats[]` snapshot at turn N — the bridge from simulation to a scenario the resolver can be handed |
+| `stack-resolver` / `rules-checker` | board, hand, mana, stack, question | prose board, static opponents | **now**: `seats[]`, `actions[]`; the checker's missing-steps list names combat steps (506–511) by the `step` vocabulary |
+| `scenario-facts` | `board_bodies`, `opponents_of` | regex over strings | **now**: the object fields (`pt`, `token`, `annotations`, `type`), falling back to the string regex per entry |
+| `sim-scenario` (the bridge) | a Forge game's events up to a cut | — | **now**: writes a v2 scenario — life exact, lands exact (tapped since the controller's last untap), cast permanents from resolve lines, tokens from first use, commander exit read as `command`, hand as `{unknown: n, estimate: true}`; every approximation in `extras.reconstruction_notes`; `question` empty on purpose |
+| `goldfish` (`model_combat`) | one opponent, 40 life, does nothing | internal | could emit a v2 `seats[]` snapshot at turn N |
 | `debrief` | `opponents[].seat / archetype / commander` | free text | the same three words; `seat` ids are the vocabulary for "the Dimir player" |
 | `prescribe` | pod description in the prompt | free text | may carry `seats[]` with `archetype` only — the doctor reasons about a pod, not a board |
 | `opponent` (post-MVP) | everything its seat may see | — | the actor: given a state with its own hand known and others `{unknown: n}`, emits the next `action` |
@@ -305,10 +311,10 @@ steps it skipped, and nothing about the citation contract changes.
 - **No migration of the 49 passing stacks.** They are evidence; their scenario blocks
   are cache fingerprint inputs; touching them would MISS every stack routine to change
   nothing a reader can see (the same argument that left `object`/`item` both accepted).
-- **No consumer until the simulation branch.** Writing the reader before the writer
-  exists produces code that is tested against a fixture nobody authored for real. The
-  first v2 artifact is authored by hand for a real question; `validate-stack` learns
-  v2 the same week; `scenario-facts` the same day; the opponent actor last.
+- **The first writer was the bridge, not a hand.** The consumers (`validate-stack`,
+  `scenario-facts`) landed the same commit as `sim-scenario`, tested against a board lifted
+  from a real Forge game rather than a fixture nobody authored for a reason. The opponent
+  actor is still last.
 
 ## Goldfish metrics (`goldfish_metrics.json`, tier ◆)
 

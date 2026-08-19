@@ -23,6 +23,13 @@ Two of these are worth your attention specifically:
 
 Do not accept a sibling comparison on the resolution's word. Read the sibling artifact.
 
+**For a v2 scenario** (`seats[]`, `actions[]`): the missing-steps audit names the combat
+steps by the `step` vocabulary — beginning of combat, declare attackers (508), declare
+blockers (509), combat damage (510), end of combat (511) — and a resolver that narrates an
+`attack` action without the declare-blockers priority round has skipped a step. Read
+`extras.reconstruction_notes`: a resolution that leans on a figure the notes call an
+estimate is `unsupported` unless it says so.
+
 ## Procedure
 
 1. Run the mechanical gate first: `.venv/bin/manamap pilot validate-stack <slug> --stack <id>`. If it fails, stop — return verdict `fail` with a finding per mechanical error (the resolver must fix form before you judge substance).

@@ -20,6 +20,7 @@ import re
 import sys
 
 from manamap.config import RESOLVE_SCOPE_BUDGET
+from manamap.pilot import game_state
 from manamap.pilot.common import (
     RULE_ID_RE, STRATEGY_ID_RE, deck_dir, expand_faces, load_rules_db)
 
@@ -121,11 +122,17 @@ def validate_preflight(doc):
     missing = REQUIRED_SCENARIO_KEYS - set(scenario)
     if missing:
         errors.append(f"scenario missing keys: {sorted(missing)}")
+    if not str(scenario.get("question", "")).strip():
+        errors.append("scenario.question is empty — there is nothing to resolve")
+    # A v2 game state (docs/pilot.md → Game state v2) has seats that can act and may
+    # resolve a list of ACTIONS instead of a stack; its form is checked by the shared
+    # vocabulary module, and the v1 hand/board conventions below do not apply to it.
+    if game_state.is_v2(scenario):
+        errors += game_state.validate_v2(scenario)
+        return errors, warnings
     stack = scenario.get("stack")
     if not isinstance(stack, list) or not stack:
         errors.append("scenario.stack must be a non-empty ordered list (pos 0 = bottom)")
-    if not str(scenario.get("question", "")).strip():
-        errors.append("scenario.question is empty — there is nothing to resolve")
 
     parts = {m.group(1) for m in _SUBQUESTION_RE.finditer(str(scenario.get("question", "")))}
     limit = RESOLVE_SCOPE_BUDGET["max_subquestions"]
@@ -204,9 +211,12 @@ def unknown_cards(doc, slug):
         name = card["name"]
         main_names.update(expand_faces(name))
 
-    you = board_bodies((scenario.get("board") or {}).get("you"))
-    named = you["creature_bodies"] + you["other_permanents"] + you["spent_paying_a_cost"]
-    named += [h for h in (scenario.get("hand") or []) if isinstance(h, str)]
+    if game_state.is_v2(scenario):
+        named = game_state.our_named_cards(scenario)
+    else:
+        you = board_bodies((scenario.get("board") or {}).get("you"))
+        named = you["creature_bodies"] + you["other_permanents"] + you["spent_paying_a_cost"]
+        named += [h for h in (scenario.get("hand") or []) if isinstance(h, str)]
 
     # Three outcomes, not two — but the third is now "a real card this deck does not
     # run", not "a benched card". With no sideboard the zone cannot grade anything,
@@ -280,9 +290,12 @@ def validate_scenario(doc, rules, strategy_sections=None):
     missing = REQUIRED_SCENARIO_KEYS - set(doc["scenario"])
     if missing:
         errors.append(f"scenario missing keys: {sorted(missing)}")
-    stack = doc["scenario"].get("stack")
-    if not isinstance(stack, list) or not stack:
-        errors.append("scenario.stack must be a non-empty ordered list (pos 0 = bottom)")
+    if game_state.is_v2(doc["scenario"]):
+        errors += game_state.validate_v2(doc["scenario"])
+    else:
+        stack = doc["scenario"].get("stack")
+        if not isinstance(stack, list) or not stack:
+            errors.append("scenario.stack must be a non-empty ordered list (pos 0 = bottom)")
 
     steps = doc["resolution"].get("steps", [])
     if not steps:

@@ -54,9 +54,11 @@ def test_an_opponent_dir_outranks_a_deck_of_the_same_name(seats):
         forge.seat_dir("nobody")
 
 
-def test_the_run_id_moves_with_any_seats_decklist(seats):
+def test_the_run_id_moves_with_any_seats_decklist_and_carries_the_seed(seats):
     a = forge.run_id("mine", ["rival"], 20)
     assert a.startswith("rival-n20-") and forge.run_id("mine", ["rival"], 20) == a
+    assert a.endswith(f"-s{forge.default_seed('mine', ['rival'])}"), "the default seed is derived, so the default replays"
+    assert forge.run_id("mine", ["rival"], 20, seed=7).endswith("-s7")
     (seats / "opponents" / "rival" / "decklist.txt").write_text("1 Yawgmoth, Thran Physician *CMDR*\n1 Swamp\n1 Sol Ring\n")
     assert forge.run_id("mine", ["rival"], 20) != a
     assert forge.run_id("mine", ["rival"], 21) != a
@@ -71,10 +73,11 @@ def test_games_split_evenly_with_no_empty_job():
 
 def test_the_argv_is_what_the_spike_ran(tmp_path):
     jar = tmp_path / "forge-gui-desktop-9.9.9-jar-with-dependencies.jar"
-    argv = forge.command(["mm-a", "mm-b", "mm-c"], 7, 300, jar=jar)
+    argv = forge.command(["mm-a", "mm-b", "mm-c"], 7, 300, jar=jar, seed=42)
     assert argv[:1] == ["java"] and "-jar" in argv and str(jar) in argv
     i = argv.index("sim")
-    assert argv[i:] == ["sim", "-d", "mm-a", "mm-b", "mm-c", "-f", "commander", "-n", "7", "-c", "300"]
+    assert argv[i:] == ["sim", "-d", "mm-a", "mm-b", "mm-c", "-f", "commander", "-n", "7", "-c", "300", "-s", "42"]
+    assert "-s" not in forge.command(["mm-a"], 1, 120, jar=jar), "no seed flag without a seed"
 
 
 def test_outcomes_parse_winner_round_global_turn_and_losses():
@@ -107,18 +110,23 @@ def test_forge_seat_labels_map_back_to_slugs():
     assert label == {"Ai(1)-mm-radagast": "radagast", "Ai(2)-mm-edgar-vampires": "edgar-vampires"}
 
 
-def test_a_dry_run_writes_nothing_and_a_second_sample_is_a_second_file(seats, tmp_path, monkeypatch):
+def test_a_dry_run_writes_nothing_and_the_same_seed_is_a_replay_not_a_sample(seats, tmp_path):
     home = tmp_path / "forge"; home.mkdir()
     (home / "forge-gui-desktop-0.0.1-jar-with-dependencies.jar").write_text("")
     decks = tmp_path / "forgedecks"
     path, rec = forge.run("mine", ["rival"], games=4, jobs=2, dry_run=True, home=home, decks_dir=decks)
     assert rec["games_per_job"] == [2, 2] and len(rec["commands"]) == 2
+    base = forge.default_seed("mine", ["rival"])
+    assert rec["seeds"] == [base, base + 1], "job i runs seed_base + i"
+    assert all("-s" in c for c in rec["commands"])
     assert path.name.startswith("rival-n4-") and not path.exists()
     assert (decks / "mm-mine.dck").exists() and (decks / "mm-rival.dck").exists(), "decks are installed even on a dry run"
     assert not (seats / "decks" / "mine" / "sim" / "logs").exists()
     path.parent.mkdir(parents=True); path.write_text("{}")
-    path2, _ = forge.run("mine", ["rival"], games=4, jobs=2, dry_run=True, home=home, decks_dir=decks)
-    assert path2.name == path.name.replace(".json", "-2.json")
+    with pytest.raises(SystemExit):                       # same config + seed = the same bytes
+        forge.run("mine", ["rival"], games=4, jobs=2, home=home, decks_dir=decks)
+    path2, _ = forge.run("mine", ["rival"], games=4, jobs=2, seed=99, dry_run=True, home=home, decks_dir=decks)
+    assert path2.name.endswith("-s99.json") and path2 != path, "a new seed is a new sample"
 
 
 @pytest.mark.forge
@@ -141,4 +149,5 @@ def test_one_real_two_seat_game_records_a_run(tmp_path, monkeypatch):
     o = rec["outcomes"][0]
     assert o["winner"] in ("radagast", "edgar-vampires", None)
     assert o["global_turn"] and o["round"] and o["global_turn"] >= o["round"]
-    assert rec["engine"]["forge"]["version"] and any("SAMPLED" in a for a in rec["assumptions"])
+    assert rec["engine"]["forge"]["version"] and any("SEEDED" in a for a in rec["assumptions"])
+    assert rec["seeds"] == [rec["seed_base"]] and o["seed"] == rec["seed_base"] and o["game_in_job"] == 1

@@ -27,6 +27,8 @@ PILOT_STEPS = [
      "Merge the debrief agent's annotations into log_annotations.json, by entry id"),
     ("simulate", "manamap.sim.forge",
      "Run N Commander games of this deck against opponents in Forge, headless; record the run (◆ sampled)"),
+    ("sim-scenario", "manamap.sim.bridge",
+     "Lift one game at one moment out of a Forge run into a game_state v2 scenario for resolve-stack"),
     ("validate-sim", "manamap.sim.validate_sim",
      "Form-check simulation run records; re-derive the analysis from logs where they exist"),
     ("deck-info", "manamap.pilot.deck_info",
@@ -97,7 +99,7 @@ _DECK_COMMANDS = {
     "validate-tutor-guide", "impact", "scenario-facts", "merge-prose",
     "short-list-art", "issue-length", "card-value", "validate-pending",
     "deck-notes", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
-    "deck-version", "deck-info", "simulate", "validate-sim",
+    "deck-version", "deck-info", "simulate", "validate-sim", "sim-scenario",
 }
 
 
@@ -242,6 +244,10 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--list", action="store_true", help="list this deck's runs")
             cmd.add_argument("--dry-run", action="store_true", dest="dry_run",
                              help="print the JVM commands and the run id; run nothing")
+            cmd.add_argument("--seed", type=int, default=None,
+                             help="RNG seed (default derives from the configuration, so the default REPLAYS; pass one for a new sample)")
+            cmd.add_argument("--force", action="store_true",
+                             help="replay an existing run id (it writes the same bytes)")
             cmd.add_argument("--analyze", default=None, metavar="RUN_ID",
                              help="re-derive a run's analysis from its kept logs (where the run was made)")
         if name == "deck-info":
@@ -267,6 +273,14 @@ def add_pilot_parser(subparsers):
                              help="list this deck's prescriptions")
             cmd.add_argument("--merge", default=None, metavar="ID",
                              help="merge the doctor's (and skeptic's) handoff into prescription ID")
+        if name == "sim-scenario":
+            cmd.add_argument("run", help="the run id (see `simulate <slug> --list`)")
+            cmd.add_argument("--game", type=int, required=True, help="1-based game index in the run")
+            cmd.add_argument("--turn", type=int, required=True, help="GLOBAL turn number to cut at")
+            cmd.add_argument("--step", default=None,
+                             help="CR step/phase name to cut at the START of (default: precombat main)")
+            cmd.add_argument("--stack", action="store_true",
+                             help="write into stacks/NNN-sim-….json (next number) instead of sim/scenarios/")
         if name == "validate-prescription":
             cmd.add_argument("--id", default=None, help="only this prescription; omit for all")
         if name == "deck-facts":

@@ -1,11 +1,12 @@
 """Simulation: form-check a run record, and prove its analysis is what its logs say.
 
-A run record is tier ◆ SAMPLED: the games cannot be replayed, but the parser over them
-is deterministic, so the one thing a validator CAN prove is that the tracked `analysis`
-block is exactly what `sim.parse` derives from the logs — where the logs exist. Where
-they do not (a fresh clone; they are gitignored), the record is form-checked: the keys a
-consumer relies on, counts that agree with each other, every seat's decklist sha present,
-and the SAMPLED assumption stated. A record that cannot be re-derived is still evidence
+A run record is tier ◆ SEEDED (runs made with `-s`, replayable byte for byte) or
+◆ SAMPLED (the first runs, made before the seed flag was known). Either way the parser
+over the logs is deterministic, so the one thing a validator CAN prove is that the tracked
+`analysis` block is exactly what `sim.parse` derives from the logs — where the logs exist.
+Where they do not (a fresh clone; they are gitignored), the record is form-checked: the
+keys a consumer relies on, counts that agree with each other, every seat's decklist sha
+present, and the SEEDED/SAMPLED assumption that matches whether seeds are recorded. A record that cannot be re-derived is still evidence
 of a run; it just cannot be re-proven here, and the OK line says so.
 """
 
@@ -49,8 +50,13 @@ def validate(rec, slug, logs_text=None):
         lo, hi = (d.get("win_rate_ci95") or [None, None])
         if lo is not None and not (0 <= lo <= (d.get("win_rate") or 0) <= hi <= 1):
             errors.append(f"analysis.seats[{s}]: win_rate {d.get('win_rate')} outside ci95 [{lo}, {hi}]")
-    if not any("SAMPLED" in str(x) for x in rec["assumptions"]):
-        errors.append("assumptions must state SAMPLED — the figures are not seeded")
+    seeded = bool(rec.get("seeds"))
+    want = "SEEDED" if seeded else "SAMPLED"
+    if not any(want in str(x) for x in rec["assumptions"]):
+        errors.append(f"assumptions must state {want} — the record "
+                      f"{'carries seeds' if seeded else 'has no seeds'}")
+    if seeded and len(rec["seeds"]) != rec.get("jobs"):
+        errors.append(f"{len(rec['seeds'])} seeds for {rec.get('jobs')} jobs")
     if logs_text:
         label = _seat_label([s["forge_name"] for s in seats])
         _, derived = sim_parse.analyze_logs(logs_text, label)

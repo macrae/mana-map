@@ -32,6 +32,16 @@ Prefer it to your own reading of the scenario. Five errors reached agent briefs 
 
 `.claude/skills/resolve-stack/SKILL.md` step 1 is the spec. The parts that change how you read a board: an entry annotated *"— already sacrificed to pay the cost of the ability now on the stack"* is **gone from the battlefield**; `hand: []` means an empty hand; `extras` (including `note_for_the_resolver` and `assumptions`) is scaffolding, not part of the rules question.
 
+**A v2 scenario (`scenario.version == 2`, `docs/pilot.md` → Game state v2)** has `seats[]`
+(`"you"` plus `seat-2`…, each with life, a board of strings or objects, a hand that is a
+list or `{unknown: n}`, a commander with zone and casts) and `turn`/`phase`/`step` in the
+CR's own names. It may carry `actions[]` instead of, or as well as, a `stack`: resolve the
+actions left to right, each followed by the priority round it implies, with the same
+citation discipline; triggers are never actions — you put them on the stack. One lifted
+from a Forge game carries `extras.reconstruction_notes`; treat every note as a fact about
+the board you are NOT given (an estimated hand, an unobserved token) and say so when it
+bears on the answer.
+
 ## The citation contract (non-negotiable)
 
 - **Never state a game effect without a citation.** Every step's `citations` array must contain at least one `{"rule": "<id>", "quote": "<verbatim text>"}`.

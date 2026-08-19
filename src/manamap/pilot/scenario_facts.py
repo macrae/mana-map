@@ -76,6 +76,22 @@ def board_bodies(entries):
     """
     bodies, others, lands, spent = [], [], [], []
     for entry in entries or []:
+        if isinstance(entry, dict):
+            # A v2 board object says what it is; no regex over prose. `annotations`
+            # carries the house "already sacrificed" note verbatim, so the one reading
+            # that sets the body count survives the upgrade unchanged.
+            name = str(entry.get("name") or "").strip()
+            if not name:
+                continue
+            if any(_ALREADY_PAID.search(a) for a in entry.get("annotations") or []):
+                spent.append(name)
+            elif entry.get("pt"):
+                bodies.append(name)
+            elif _LAND_WORDS.search(name) or str(entry.get("type") or "").lower().startswith("land"):
+                lands.append(name)
+            else:
+                others.append(name)
+            continue
         raw = str(entry)
         name = _strip_annotation(entry)
         if not name:
@@ -98,8 +114,25 @@ def board_bodies(entries):
             "lands": lands, "spent_paying_a_cost": spent}
 
 
+def game_state_our(scenario):
+    from manamap.pilot import game_state
+    return game_state.our_seat(scenario)
+
+
+def your_board(scenario):
+    """Your board entries, whichever version: v1 `board.you`, v2 the "you" seat."""
+    from manamap.pilot import game_state
+    if game_state.is_v2(scenario):
+        me = game_state.our_seat(scenario) or {}
+        return me.get("board") or []
+    return (scenario.get("board") or {}).get("you")
+
+
 def opponents_of(scenario):
     """Opponent life totals and boards, whichever board shape the scenario uses.
+
+    v2 (`seats[]`, docs/pilot.md → Game state v2): every non-"you" seat, with its
+    `archetype` alongside — read through the shared vocabulary module.
 
     Two shapes exist in the corpus: `opponents: [{life, board}]` on seven decks
     and `opponent_a..d` bare lists on yawgmoth-swarm. Reading only one silently
@@ -109,6 +142,10 @@ def opponents_of(scenario):
     magazine could not answer "what does the opponent have" without it, and the
     entry that carries the life total is the entry that carries the permanents.
     """
+    from manamap.pilot import game_state
+    if game_state.is_v2(scenario):
+        return [{"seat": s.get("seat"), "life": s.get("life"), "board": s.get("board"),
+                 "archetype": s.get("archetype")} for s in game_state.opponent_seats(scenario)]
     board = scenario.get("board") or {}
     # `extras` is a free-form block and decision scenarios write it as a STRING.
     # Reaching for .get() on one threw the moment the magazine started calling
@@ -194,12 +231,12 @@ def comparable_siblings(this_id, all_scenarios):
     mine = all_scenarios.get(this_id)
     if not mine:
         return []
-    my_bodies = Counter(board_bodies((mine.get("board") or {}).get("you"))["creature_bodies"])
+    my_bodies = Counter(board_bodies(your_board(mine))["creature_bodies"])
     out = []
     for sid, sc in sorted(all_scenarios.items()):
         if sid == this_id:
             continue
-        theirs = Counter(board_bodies((sc.get("board") or {}).get("you"))["creature_bodies"])
+        theirs = Counter(board_bodies(your_board(sc))["creature_bodies"])
         shared = sum((my_bodies & theirs).values())
         same_count = sum(my_bodies.values()) == sum(theirs.values())
         only_theirs = sorted((theirs - my_bodies).elements())
@@ -239,7 +276,7 @@ def analyze(slug, stack_id=None):
     for sid, sc in scenarios.items():
         if stack_id and sid != stack_id:
             continue
-        you = board_bodies((sc.get("board") or {}).get("you"))
+        you = board_bodies(your_board(sc))
         opps = opponents_of(sc)
         named = you["creature_bodies"] + you["other_permanents"] + you["spent_paying_a_cost"]
         out["stacks"][sid] = {
@@ -247,8 +284,10 @@ def analyze(slug, stack_id=None):
             "opponents": opps,
             "drain_arithmetic": drain_arithmetic(opps),
             "card_membership": membership(named, deck_names),
-            "mana_available": sc.get("mana_available"),
-            "hand": sc.get("hand"),
+            "mana_available": (sc.get("mana_available") if not sc.get("version") == 2
+                               else ((game_state_our(sc) or {}).get("mana") or {}).get("available")),
+            "hand": (sc.get("hand") if not sc.get("version") == 2
+                     else (game_state_our(sc) or {}).get("hand")),
             "comparable_siblings": comparable_siblings(sid, scenarios),
         }
     out["notes"] = _notes(out)

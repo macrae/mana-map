@@ -7,17 +7,21 @@ the repo's own parser (so a seat can never disagree with `fetch-deck`), placing 
 where Forge's sim mode looks, splitting N games across J JVMs, capturing every game log,
 and writing ONE tracked run record beside them.
 
-WHAT A RUN RECORD IS. `data/decks/<slug>/sim/<run-id>.json` — tier ◆ **sampled**: the
-parser over it is deterministic, the games under it are not (Forge has no seed; identical
-runs diverge). So the record states N, what it measured per game, and the assumptions that
-bound it, including Forge's own verdict on its AI, verbatim. The raw logs sit in
-`sim/logs/<run-id>/` and are gitignored: large, regenerable, and a sample is not evidence
-one game at a time.
+WHAT A RUN RECORD IS. `data/decks/<slug>/sim/<run-id>.json` — tier ◆ **seeded**: Forge's
+sim mode takes `-s <seed>` (undocumented in its wiki, present in its source and in this
+release), and with it identical inputs reproduce the logs BYTE FOR BYTE — measured twice
+on this machine, including a two-game sequence under one seed. The first runs in this
+repo were made before that was known and are recorded as SAMPLED; they stay valid as
+history. A seeded run is replayable game by game (`-n g -s <seed+job>`), which is what
+the S4 bridge stands on. The record states N, the seeds, what it measured per game, and
+the assumptions that bound it — including Forge's own verdict on its AI, verbatim. The
+raw logs sit in `sim/logs/<run-id>/` and are gitignored: large and regenerable, now
+exactly.
 
-The run id is `<opponents>-n<N>-<sha8 over every seat's decklist>`: re-running the same
-configuration after a swap is a NEW run and the old one stays — history, like a
-prescription. Re-running the identical configuration appends a suffix rather than
-overwriting, because a second sample is a second sample.
+The run id is `<opponents>-n<N>-<sha8 over every seat's decklist>-s<seed>`. The default
+seed is derived from that digest, so the same configuration replays the same games; a
+NEW sample is a new `--seed`, and a swap is a new digest. Re-running an existing id is a
+replay and is refused without `--force` (it would write the same bytes).
 
 S1 records per-game OUTCOME only (winner, turn, wall ms, how each seat lost) — those lines
 are unambiguous in the log. The event parser that turns the rest of the log into damage,
@@ -45,9 +49,14 @@ FORGE_AI_CAVEAT = ('Forge\'s AI "is not trained"; it is "best with aggro and mid
                    'decks, poor to ok in control decks, pretty bad for most combo decks" '
                    '(Forge docs/AI.md). A control deck\'s win rate here is a lower bound '
                    'on a competent pilot\'s; a combo deck\'s is not a measurement.')
+SEEDED_NOTE = ("SEEDED: every JVM job ran `-s <seed>` (seeds recorded per job), and with this "
+               "Forge build identical inputs reproduce the logs byte for byte — game g of job j "
+               "replays as `-n g -s <seed_j>`. Still a sample of N games: the interval is the "
+               "claim, the seed is the receipt.")
+SAMPLED_NOTE = ("SAMPLED, NOT SEEDED: this run was made before `-s` was known. Identical runs "
+                "diverge; every figure is a sample of N games and no single game is replayable.")
 ASSUMPTIONS = [
-    "SAMPLED, NOT SEEDED: Forge exposes no seed, and identical runs diverge. Every figure "
-    "is a sample of N games with the stated N; no single game is replayable.",
+    SEEDED_NOTE,
     FORGE_AI_CAVEAT,
     "Seats are Forge AIs on both sides — including YOUR deck. A result is AI-vs-AI, "
     "never pilot-vs-pod.",
@@ -116,10 +125,19 @@ def seat_sha(slug):
     return hashlib.sha256(text_path.read_bytes()).hexdigest()
 
 
-def run_id(slug, opponents, games):
-    digest = hashlib.sha256(
+def config_digest(slug, opponents):
+    return hashlib.sha256(
         "\n".join(f"{s}:{seat_sha(s)}" for s in [slug, *opponents]).encode()).hexdigest()[:8]
-    return f"{'-vs-'.join(opponents)}-n{games}-{digest}"
+
+
+def default_seed(slug, opponents):
+    """Derived from the configuration, so the default replays; pass --seed for a new sample."""
+    return int(config_digest(slug, opponents), 16) % 2_000_000_000
+
+
+def run_id(slug, opponents, games, seed=None):
+    seed = default_seed(slug, opponents) if seed is None else int(seed)
+    return f"{'-vs-'.join(opponents)}-n{games}-{config_digest(slug, opponents)}-s{seed}"
 
 
 def split_games(games, jobs):
@@ -129,11 +147,14 @@ def split_games(games, jobs):
     return [base + (1 if i < extra else 0) for i in range(jobs)]
 
 
-def command(seat_names, games, clock, jar=None):
+def command(seat_names, games, clock, jar=None, seed=None):
     """The exact argv one JVM runs. A pure function so a test can read it."""
     jar = jar or forge_jar()
-    return ["java", *FORGE_JVM_ARGS, "-jar", str(jar), "sim",
+    argv = ["java", *FORGE_JVM_ARGS, "-jar", str(jar), "sim",
             "-d", *seat_names, "-f", "commander", "-n", str(games), "-c", str(clock)]
+    if seed is not None:
+        argv += ["-s", str(int(seed))]
+    return argv
 
 
 # ── Outcome parsing (the unambiguous lines; the event parser is S2) ─────────
@@ -189,7 +210,7 @@ def _seat_label(seat_names):
 
 
 def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOCK_SECONDS,
-        dry_run=False, home=None, decks_dir=None):
+        seed=None, force=False, dry_run=False, home=None, decks_dir=None):
     """Run the games and write the run record. Returns (record_path, record)."""
     if not opponents:
         raise SystemExit("simulate needs at least one opponent: --vs <slug> (repeatable)")
@@ -197,20 +218,21 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     names = [install_deck(s, decks_dir) for s in seats]
     jobs = jobs or max(1, (os.cpu_count() or 2) - 1)
     parts = split_games(games, jobs)
-    rid = run_id(slug, opponents, games)
+    seed_base = default_seed(slug, opponents) if seed is None else int(seed)
+    seeds = [seed_base + i for i in range(len(parts))]
+    rid = run_id(slug, opponents, games, seed_base)
     out_dir = deck_dir(slug) / SIM_DIR
     log_dir = out_dir / "logs" / rid
     record_path = out_dir / f"{rid}.json"
-    n = 1
-    while record_path.exists():              # a second sample is a second sample
-        n += 1
-        record_path = out_dir / f"{rid}-{n}.json"
-        log_dir = out_dir / "logs" / f"{rid}-{n}"
+    if record_path.exists() and not force and not dry_run:
+        raise SystemExit(f"{slug}: {record_path.name} exists — the same configuration and seed "
+                         f"replays the same games. Pass --seed N for a new sample, or --force "
+                         f"to replay it.")
     jar = forge_jar(home)
-    cmds = [command(names, g, clock, jar) for g in parts]
+    cmds = [command(names, g, clock, jar, seed=seeds[i]) for i, g in enumerate(parts)]
     if dry_run:
         return record_path, {"run_id": rid, "seats": seats, "jobs": len(parts),
-                             "games_per_job": parts, "commands": cmds}
+                             "games_per_job": parts, "seeds": seeds, "commands": cmds}
 
     log_dir.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
@@ -230,13 +252,14 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     label = _seat_label(names)
     outcomes = []
     for log, rc in results:
-        for g in parse_outcomes(log.read_text(encoding="utf-8", errors="replace")):
+        for gi, g in enumerate(parse_outcomes(log.read_text(encoding="utf-8", errors="replace"))):
             outcomes.append({
                 "winner": label.get(g["winner"], g["winner"]) if g["winner"] else None,
                 "won_by": g["won_by"], "draw": g["draw"], "round": g["round"],
                 "global_turn": g["global_turn"], "ms": g["ms"],
                 "lost": {label.get(k, k): v for k, v in g["lost"].items()},
-                "log": log.name})
+                "log": log.name, "seed": seeds[int(log.stem.split("-")[1])],
+                "game_in_job": gi + 1})
     texts = [log.read_text(encoding="utf-8", errors="replace") for log, _ in results]
     facts, analysis = sim_parse.analyze_logs(texts, label)
     wins = {s: sum(1 for o in outcomes if o["winner"] == s) for s in seats}
@@ -248,7 +271,8 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
         "seats": [{"slug": s, "forge_name": names[i], "decklist_sha256": seat_sha(s)}
                   for i, s in enumerate(seats)],
         "games_requested": int(games), "games_completed": len(outcomes),
-        "jobs": len(cmds), "games_per_job": parts, "clock_seconds": clock,
+        "jobs": len(cmds), "games_per_job": parts, "seed_base": seed_base, "seeds": seeds,
+        "clock_seconds": clock,
         "wall_seconds": wall, "nonzero_exit_jobs": sum(1 for _, rc in results if rc),
         "summary": {"wins": wins, "draws": draws,
                     "win_rate": (round(wins[slug] / len(outcomes), 3) if outcomes else None),
@@ -330,10 +354,11 @@ def main(args):
             print(f"      vs {', '.join(x['slug'] for x in r['seats'][1:])}  ·  wins {s['wins']}")
         return
     path, rec = run(slug, args.vs, games=args.games or SIM_DEFAULT_GAMES, jobs=args.jobs,
-                    clock=args.clock or SIM_GAME_CLOCK_SECONDS,
-                    dry_run=getattr(args, "dry_run", False))
+                    clock=args.clock or SIM_GAME_CLOCK_SECONDS, seed=getattr(args, "seed", None),
+                    force=getattr(args, "force", False), dry_run=getattr(args, "dry_run", False))
     if getattr(args, "dry_run", False):
-        print(f"would run {rec['games_per_job']} games across {rec['jobs']} JVM(s) → {path}")
+        print(f"would run {rec['games_per_job']} games across {rec['jobs']} JVM(s), seeds "
+              f"{rec['seeds']} → {path}")
         for c in rec["commands"]:
             print("  " + " ".join(c))
         return
@@ -348,7 +373,8 @@ def main(args):
     me = rec["analysis"]["seats"].get(slug, {})
     print(f"  ci95 {me.get('win_rate_ci95')} · eliminated by {me.get('eliminated_by')} · "
           f"token damage share {(me.get('tokens') or {}).get('token_damage_share', {}).get('mean')}")
-    print(f"  ◆ sampled, not seeded — {len(rec['assumptions'])} assumptions in the record")
+    print(f"  ◆ seeded ({rec['seed_base']}; per job {rec['seeds']}) — {len(rec['assumptions'])} "
+          f"assumptions in the record; game g of job j replays as `-n g -s <seed_j>`")
 
 
 if __name__ == "__main__":

@@ -42,6 +42,7 @@ _PERM = r"(.+?) \((\d+)\)"                    # "Cat Token (414)" → name, id
 RX = {
     "turn":      re.compile(r"^Turn: Turn (\d+) \(" + _SEAT + r"\)"),
     "phase":     re.compile(r"^Phase: " + _SEAT + r"'s? (.*)$"),
+    "mana":      re.compile(r"^Mana: " + _PERM + r" - (.*)$"),
     "mulligan":  re.compile(r"^Mulligan: " + _SEAT + r" has kept a hand of (\d+) cards"),
     "land":      re.compile(r"^Land: " + _SEAT + r" played " + _PERM),
     "stack":     re.compile(r"^Add To Stack: " + _SEAT + r" (cast|triggered|activated) (.+?)(?: targeting \[(.*)\])?$"),
@@ -119,10 +120,16 @@ def parse_games(text):
 
 
 def _event(line, g):
+    m = RX["phase"].match(line)
+    if m:
+        return {"kind": "phase", "seat": m.group(1), "text": m.group(2).rstrip()}
+    m = RX["mana"].match(line)
+    if m:
+        return {"kind": "mana", "perm": (m.group(1), m.group(2)), "ability": m.group(3)}
     m = RX["land"].match(line)
     if m:
         g["owner"][m.group(3)] = m.group(1)
-        return {"kind": "land", "seat": m.group(1), "card": m.group(2)}
+        return {"kind": "land", "seat": m.group(1), "card": m.group(2), "id": m.group(3)}
     m = RX["stack"].match(line)
     if m:
         return {"kind": m.group(2), "seat": m.group(1), "what": m.group(3),
