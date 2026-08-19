@@ -177,5 +177,1368 @@
     "A game past the clock is recorded as a draw, not dropped.",
     "radagast's strategic frame calls it 'Mono-green Draw-Go Stompy: a creature-dense midrange deck whose commander turns every creature into a potential instant, playing ambush-control until the overrun window opens.' — read the AI caveat against that."
   ],
-  "logs": "sim/logs/edgar-vampires-vs-yawgmoth-swarm-vs-heliod-n8-dfd75e54/ (gitignored; regenerate by re-running)"
+  "logs": "sim/logs/edgar-vampires-vs-yawgmoth-swarm-vs-heliod-n8-dfd75e54/ (gitignored; regenerate by re-running)",
+  "analysis": {
+    "games": 8,
+    "seats": {
+      "radagast": {
+        "wins": 0,
+        "win_rate": 0.0,
+        "win_rate_ci95": [
+          0.0,
+          0.324
+        ],
+        "eliminated_turn": {
+          "mean": 43.5,
+          "ci95": [
+            39.12,
+            47.88
+          ],
+          "n": 6
+        },
+        "eliminated_by": {
+          "edgar-vampires": 2,
+          "yawgmoth-swarm": 1,
+          "heliod": 1
+        },
+        "lands": {
+          "mean": 10.25,
+          "ci95": [
+            9.04,
+            11.46
+          ],
+          "n": 8
+        },
+        "casts": {
+          "mean": 15.0,
+          "ci95": [
+            12.3,
+            17.7
+          ],
+          "n": 8
+        },
+        "combat_damage_dealt_to_players": {
+          "mean": 45.62,
+          "ci95": [
+            12.1,
+            79.15
+          ],
+          "n": 8
+        },
+        "combat_damage_taken": {
+          "mean": 13.38,
+          "ci95": [
+            5.93,
+            20.82
+          ],
+          "n": 8
+        },
+        "first_attack_turn": {
+          "mean": 11.25,
+          "ci95": [
+            7.39,
+            15.11
+          ],
+          "n": 8
+        },
+        "tokens": {
+          "token_resolutions": {
+            "mean": 9.12,
+            "ci95": [
+              0.87,
+              17.38
+            ],
+            "n": 8
+          },
+          "tokens_observed": {
+            "mean": 1.88,
+            "ci95": [
+              0.74,
+              3.01
+            ],
+            "n": 8
+          },
+          "token_attackers": {
+            "mean": 1.62,
+            "ci95": [
+              0.35,
+              2.9
+            ],
+            "n": 8
+          },
+          "token_blockers": {
+            "mean": 0.25,
+            "ci95": [
+              -0.07,
+              0.57
+            ],
+            "n": 8
+          },
+          "token_combat_damage_to_players": {
+            "mean": 9.12,
+            "ci95": [
+              -3.22,
+              21.47
+            ],
+            "n": 8
+          },
+          "token_damage_share": {
+            "mean": 0.12,
+            "ci95": [
+              0.02,
+              0.23
+            ],
+            "n": 8
+          },
+          "tokens_chumped": {
+            "mean": 0.25,
+            "ci95": [
+              -0.07,
+              0.57
+            ],
+            "n": 8
+          }
+        }
+      },
+      "edgar-vampires": {
+        "wins": 4,
+        "win_rate": 0.5,
+        "win_rate_ci95": [
+          0.215,
+          0.785
+        ],
+        "eliminated_turn": {
+          "mean": 31.5,
+          "ci95": [
+            24.5,
+            38.5
+          ],
+          "n": 4
+        },
+        "eliminated_by": {
+          "radagast": 2,
+          "yawgmoth-swarm": 1
+        },
+        "lands": {
+          "mean": 7.25,
+          "ci95": [
+            5.88,
+            8.62
+          ],
+          "n": 8
+        },
+        "casts": {
+          "mean": 11.38,
+          "ci95": [
+            8.28,
+            14.47
+          ],
+          "n": 8
+        },
+        "combat_damage_dealt_to_players": {
+          "mean": 22.0,
+          "ci95": [
+            4.17,
+            39.83
+          ],
+          "n": 8
+        },
+        "combat_damage_taken": {
+          "mean": 25.62,
+          "ci95": [
+            10.5,
+            40.75
+          ],
+          "n": 8
+        },
+        "first_attack_turn": {
+          "mean": 13.25,
+          "ci95": [
+            9.57,
+            16.93
+          ],
+          "n": 8
+        },
+        "tokens": {
+          "token_resolutions": {
+            "mean": 12.38,
+            "ci95": [
+              2.62,
+              22.13
+            ],
+            "n": 8
+          },
+          "tokens_observed": {
+            "mean": 2.0,
+            "ci95": [
+              1.02,
+              2.98
+            ],
+            "n": 8
+          },
+          "token_attackers": {
+            "mean": 1.5,
+            "ci95": [
+              0.45,
+              2.55
+            ],
+            "n": 8
+          },
+          "token_blockers": {
+            "mean": 0.5,
+            "ci95": [
+              -0.02,
+              1.02
+            ],
+            "n": 8
+          },
+          "token_combat_damage_to_players": {
+            "mean": 7.5,
+            "ci95": [
+              -1.3,
+              16.3
+            ],
+            "n": 8
+          },
+          "token_damage_share": {
+            "mean": 0.3,
+            "ci95": [
+              0.16,
+              0.44
+            ],
+            "n": 8
+          },
+          "tokens_chumped": {
+            "mean": 0.5,
+            "ci95": [
+              -0.02,
+              1.02
+            ],
+            "n": 8
+          }
+        }
+      },
+      "yawgmoth-swarm": {
+        "wins": 2,
+        "win_rate": 0.25,
+        "win_rate_ci95": [
+          0.071,
+          0.591
+        ],
+        "eliminated_turn": {
+          "mean": 40.0,
+          "ci95": [
+            34.81,
+            45.19
+          ],
+          "n": 5
+        },
+        "eliminated_by": {
+          "radagast": 2
+        },
+        "lands": {
+          "mean": 8.62,
+          "ci95": [
+            7.72,
+            9.53
+          ],
+          "n": 8
+        },
+        "casts": {
+          "mean": 14.38,
+          "ci95": [
+            11.17,
+            17.58
+          ],
+          "n": 8
+        },
+        "combat_damage_dealt_to_players": {
+          "mean": 19.12,
+          "ci95": [
+            3.63,
+            34.62
+          ],
+          "n": 8
+        },
+        "combat_damage_taken": {
+          "mean": 30.12,
+          "ci95": [
+            -2.68,
+            62.93
+          ],
+          "n": 8
+        },
+        "first_attack_turn": {
+          "mean": 16.62,
+          "ci95": [
+            9.49,
+            23.76
+          ],
+          "n": 8
+        },
+        "tokens": {
+          "token_resolutions": {
+            "mean": 9.75,
+            "ci95": [
+              1.58,
+              17.92
+            ],
+            "n": 8
+          },
+          "tokens_observed": {
+            "mean": 1.75,
+            "ci95": [
+              -0.86,
+              4.36
+            ],
+            "n": 8
+          },
+          "token_attackers": {
+            "mean": 1.38,
+            "ci95": [
+              -1.32,
+              4.07
+            ],
+            "n": 8
+          },
+          "token_blockers": {
+            "mean": 0.38,
+            "ci95": [
+              0.02,
+              0.73
+            ],
+            "n": 8
+          },
+          "token_combat_damage_to_players": {
+            "mean": 3.62,
+            "ci95": [
+              -3.48,
+              10.73
+            ],
+            "n": 8
+          },
+          "token_damage_share": {
+            "mean": 0.05,
+            "ci95": [
+              -0.05,
+              0.16
+            ],
+            "n": 8
+          },
+          "tokens_chumped": {
+            "mean": 0.38,
+            "ci95": [
+              0.02,
+              0.73
+            ],
+            "n": 8
+          }
+        }
+      },
+      "heliod": {
+        "wins": 2,
+        "win_rate": 0.25,
+        "win_rate_ci95": [
+          0.071,
+          0.591
+        ],
+        "eliminated_turn": {
+          "mean": 41.33,
+          "ci95": [
+            36.79,
+            45.88
+          ],
+          "n": 6
+        },
+        "eliminated_by": {
+          "edgar-vampires": 2,
+          "yawgmoth-swarm": 2
+        },
+        "lands": {
+          "mean": 9.5,
+          "ci95": [
+            8.76,
+            10.24
+          ],
+          "n": 8
+        },
+        "casts": {
+          "mean": 18.12,
+          "ci95": [
+            13.78,
+            22.47
+          ],
+          "n": 8
+        },
+        "combat_damage_dealt_to_players": {
+          "mean": 3.12,
+          "ci95": [
+            1.99,
+            4.26
+          ],
+          "n": 8
+        },
+        "combat_damage_taken": {
+          "mean": 20.75,
+          "ci95": [
+            7.83,
+            33.67
+          ],
+          "n": 8
+        },
+        "first_attack_turn": {
+          "mean": 28.57,
+          "ci95": [
+            21.93,
+            35.21
+          ],
+          "n": 7
+        },
+        "tokens": {
+          "token_resolutions": {
+            "mean": 3.25,
+            "ci95": [
+              0.48,
+              6.02
+            ],
+            "n": 8
+          },
+          "tokens_observed": {
+            "mean": 0.5,
+            "ci95": [
+              -0.02,
+              1.02
+            ],
+            "n": 8
+          },
+          "token_attackers": {
+            "mean": 0.12,
+            "ci95": [
+              -0.12,
+              0.37
+            ],
+            "n": 8
+          },
+          "token_blockers": {
+            "mean": 0.38,
+            "ci95": [
+              -0.14,
+              0.89
+            ],
+            "n": 8
+          },
+          "token_combat_damage_to_players": {
+            "mean": 0.12,
+            "ci95": [
+              -0.12,
+              0.37
+            ],
+            "n": 8
+          },
+          "token_damage_share": {
+            "mean": 0.05,
+            "ci95": [
+              -0.05,
+              0.14
+            ],
+            "n": 7
+          },
+          "tokens_chumped": {
+            "mean": 0.12,
+            "ci95": [
+              -0.12,
+              0.37
+            ],
+            "n": 8
+          }
+        }
+      }
+    },
+    "our_cumulative_combat_damage_by_round": [
+      {
+        "round": 1,
+        "mean": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "n": 8
+      },
+      {
+        "round": 2,
+        "mean": 0.25,
+        "ci95": [
+          -0.07,
+          0.57
+        ],
+        "n": 8
+      },
+      {
+        "round": 3,
+        "mean": 0.75,
+        "ci95": [
+          0.03,
+          1.47
+        ],
+        "n": 8
+      },
+      {
+        "round": 4,
+        "mean": 2.5,
+        "ci95": [
+          1.11,
+          3.89
+        ],
+        "n": 8
+      },
+      {
+        "round": 5,
+        "mean": 6.62,
+        "ci95": [
+          0.07,
+          13.18
+        ],
+        "n": 8
+      },
+      {
+        "round": 6,
+        "mean": 10.62,
+        "ci95": [
+          1.42,
+          19.83
+        ],
+        "n": 8
+      },
+      {
+        "round": 7,
+        "mean": 15.12,
+        "ci95": [
+          3.52,
+          26.73
+        ],
+        "n": 8
+      },
+      {
+        "round": 8,
+        "mean": 21.62,
+        "ci95": [
+          8.23,
+          35.02
+        ],
+        "n": 8
+      },
+      {
+        "round": 9,
+        "mean": 38.62,
+        "ci95": [
+          4.75,
+          72.5
+        ],
+        "n": 8
+      },
+      {
+        "round": 10,
+        "mean": 44.88,
+        "ci95": [
+          10.98,
+          78.77
+        ],
+        "n": 8
+      },
+      {
+        "round": 11,
+        "mean": 44.88,
+        "ci95": [
+          10.98,
+          78.77
+        ],
+        "n": 8
+      },
+      {
+        "round": 12,
+        "mean": 44.88,
+        "ci95": [
+          10.98,
+          78.77
+        ],
+        "n": 8
+      },
+      {
+        "round": 13,
+        "mean": 45.62,
+        "ci95": [
+          12.1,
+          79.15
+        ],
+        "n": 8
+      },
+      {
+        "round": 14,
+        "mean": 45.62,
+        "ci95": [
+          12.1,
+          79.15
+        ],
+        "n": 8
+      },
+      {
+        "round": 15,
+        "mean": 45.62,
+        "ci95": [
+          12.1,
+          79.15
+        ],
+        "n": 8
+      },
+      {
+        "round": 16,
+        "mean": 45.62,
+        "ci95": [
+          12.1,
+          79.15
+        ],
+        "n": 8
+      }
+    ],
+    "round": {
+      "mean": 21.75,
+      "ci95": [
+        20.23,
+        23.27
+      ],
+      "n": 8
+    },
+    "global_turn": {
+      "mean": 43.12,
+      "ci95": [
+        40.25,
+        46.0
+      ],
+      "n": 8
+    },
+    "won_by": {
+      "all opponents have lost": 6,
+      "effect of 'Approach of the Second Sun'": 2
+    },
+    "limits": [
+      "tokens_observed counts distinct token ids that attacked or blocked (or dealt combat damage) for the seat; a token that only sat on the board is invisible to the log.",
+      "token_resolutions counts token-creating abilities that resolved; it is blind to how many tokens each made (X, doubling) — a floor on creation events, not a token count.",
+      "eliminated_by is the controller of the last damage source before the life line that crossed zero, learned from attack/block/land/cast lines; null when the source was never seen acting (e.g. a drain from a permanent that never attacked).",
+      "All figures are sampled (Forge has no seed); ci95 is a Wilson interval for rates and a normal interval for means, and both are meaningless below ~10 games."
+    ]
+  },
+  "games": [
+    {
+      "winner": "edgar-vampires",
+      "won_by": "all opponents have lost",
+      "round": 19,
+      "global_turn": 38,
+      "ms": 123927,
+      "per_seat": {
+        "radagast": {
+          "lands": 9,
+          "casts": 10,
+          "activations": 3,
+          "triggers": 35,
+          "combat_damage_dealt_to_players": 150,
+          "combat_damage_taken": 29,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 2,
+          "tokens_observed": 4,
+          "token_attackers": 4,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 52,
+          "tokens_chumped": 0,
+          "creatures_lost": 2,
+          "eliminated_turn": 34,
+          "eliminated_by": "Ai(2)-mm-edgar-vampires",
+          "first_attack_turn": 9,
+          "token_damage_share": 0.347
+        },
+        "edgar-vampires": {
+          "lands": 8,
+          "casts": 14,
+          "activations": 5,
+          "triggers": 55,
+          "combat_damage_dealt_to_players": 81,
+          "combat_damage_taken": 11,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 5,
+          "tokens_observed": 5,
+          "token_attackers": 5,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 38,
+          "tokens_chumped": 0,
+          "creatures_lost": 4,
+          "eliminated_turn": null,
+          "eliminated_by": null,
+          "first_attack_turn": 14,
+          "token_damage_share": 0.469
+        },
+        "yawgmoth-swarm": {
+          "lands": 7,
+          "casts": 9,
+          "activations": 2,
+          "triggers": 18,
+          "combat_damage_dealt_to_players": 4,
+          "combat_damage_taken": 144,
+          "noncombat_damage_dealt_to_players": 11,
+          "token_resolutions": 1,
+          "tokens_observed": 1,
+          "token_attackers": 0,
+          "token_blockers": 1,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 1,
+          "creatures_lost": 1,
+          "eliminated_turn": 33,
+          "eliminated_by": "Ai(1)-mm-radagast",
+          "first_attack_turn": 7,
+          "token_damage_share": 0.0
+        },
+        "heliod": {
+          "lands": 10,
+          "casts": 13,
+          "activations": 2,
+          "triggers": 53,
+          "combat_damage_dealt_to_players": 3,
+          "combat_damage_taken": 54,
+          "noncombat_damage_dealt_to_players": 14,
+          "token_resolutions": 0,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 0,
+          "eliminated_turn": 38,
+          "eliminated_by": "Ai(2)-mm-edgar-vampires",
+          "first_attack_turn": 35,
+          "token_damage_share": 0.0
+        }
+      }
+    },
+    {
+      "winner": "edgar-vampires",
+      "won_by": "all opponents have lost",
+      "round": 22,
+      "global_turn": 43,
+      "ms": 75020,
+      "per_seat": {
+        "radagast": {
+          "lands": 9,
+          "casts": 12,
+          "activations": 2,
+          "triggers": 4,
+          "combat_damage_dealt_to_players": 4,
+          "combat_damage_taken": 28,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 0,
+          "tokens_observed": 1,
+          "token_attackers": 0,
+          "token_blockers": 1,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 1,
+          "creatures_lost": 3,
+          "eliminated_turn": 43,
+          "eliminated_by": null,
+          "first_attack_turn": 13,
+          "token_damage_share": 0.0
+        },
+        "edgar-vampires": {
+          "lands": 6,
+          "casts": 10,
+          "activations": 1,
+          "triggers": 25,
+          "combat_damage_dealt_to_players": 4,
+          "combat_damage_taken": 5,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 6,
+          "tokens_observed": 1,
+          "token_attackers": 1,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 2,
+          "tokens_chumped": 0,
+          "creatures_lost": 4,
+          "eliminated_turn": null,
+          "eliminated_by": null,
+          "first_attack_turn": 6,
+          "token_damage_share": 0.5
+        },
+        "yawgmoth-swarm": {
+          "lands": 10,
+          "casts": 10,
+          "activations": 3,
+          "triggers": 34,
+          "combat_damage_dealt_to_players": 66,
+          "combat_damage_taken": 6,
+          "noncombat_damage_dealt_to_players": 8,
+          "token_resolutions": 21,
+          "tokens_observed": 11,
+          "token_attackers": 11,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 29,
+          "tokens_chumped": 0,
+          "creatures_lost": 6,
+          "eliminated_turn": 41,
+          "eliminated_by": null,
+          "first_attack_turn": 15,
+          "token_damage_share": 0.439
+        },
+        "heliod": {
+          "lands": 8,
+          "casts": 10,
+          "activations": 3,
+          "triggers": 11,
+          "combat_damage_dealt_to_players": 4,
+          "combat_damage_taken": 39,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 1,
+          "tokens_observed": 1,
+          "token_attackers": 0,
+          "token_blockers": 1,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 0,
+          "eliminated_turn": 35,
+          "eliminated_by": "Ai(3)-mm-yawgmoth-swarm",
+          "first_attack_turn": 28,
+          "token_damage_share": 0.0
+        }
+      }
+    },
+    {
+      "winner": "heliod",
+      "won_by": "effect of 'Approach of the Second Sun'",
+      "round": 21,
+      "global_turn": 42,
+      "ms": 69335,
+      "per_seat": {
+        "radagast": {
+          "lands": 8,
+          "casts": 16,
+          "activations": 0,
+          "triggers": 22,
+          "combat_damage_dealt_to_players": 67,
+          "combat_damage_taken": 4,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 0,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 1,
+          "eliminated_turn": null,
+          "eliminated_by": null,
+          "first_attack_turn": 5,
+          "token_damage_share": 0.0
+        },
+        "edgar-vampires": {
+          "lands": 5,
+          "casts": 10,
+          "activations": 0,
+          "triggers": 4,
+          "combat_damage_dealt_to_players": 9,
+          "combat_damage_taken": 69,
+          "noncombat_damage_dealt_to_players": 8,
+          "token_resolutions": 3,
+          "tokens_observed": 2,
+          "token_attackers": 1,
+          "token_blockers": 1,
+          "token_combat_damage_to_players": 3,
+          "tokens_chumped": 1,
+          "creatures_lost": 2,
+          "eliminated_turn": 37,
+          "eliminated_by": "Ai(1)-mm-radagast",
+          "first_attack_turn": 6,
+          "token_damage_share": 0.333
+        },
+        "yawgmoth-swarm": {
+          "lands": 7,
+          "casts": 14,
+          "activations": 6,
+          "triggers": 14,
+          "combat_damage_dealt_to_players": 10,
+          "combat_damage_taken": 4,
+          "noncombat_damage_dealt_to_players": 8,
+          "token_resolutions": 1,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 2,
+          "eliminated_turn": null,
+          "eliminated_by": null,
+          "first_attack_turn": 23,
+          "token_damage_share": 0.0
+        },
+        "heliod": {
+          "lands": 10,
+          "casts": 14,
+          "activations": 1,
+          "triggers": 32,
+          "combat_damage_dealt_to_players": 5,
+          "combat_damage_taken": 14,
+          "noncombat_damage_dealt_to_players": 6,
+          "token_resolutions": 0,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 2,
+          "eliminated_turn": null,
+          "eliminated_by": null,
+          "first_attack_turn": 28,
+          "token_damage_share": 0.0
+        }
+      }
+    },
+    {
+      "winner": "heliod",
+      "won_by": "effect of 'Approach of the Second Sun'",
+      "round": 19,
+      "global_turn": 38,
+      "ms": 168430,
+      "per_seat": {
+        "radagast": {
+          "lands": 11,
+          "casts": 20,
+          "activations": 1,
+          "triggers": 31,
+          "combat_damage_dealt_to_players": 64,
+          "combat_damage_taken": 14,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 20,
+          "tokens_observed": 2,
+          "token_attackers": 2,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 5,
+          "tokens_chumped": 0,
+          "creatures_lost": 6,
+          "eliminated_turn": null,
+          "eliminated_by": null,
+          "first_attack_turn": 13,
+          "token_damage_share": 0.078
+        },
+        "edgar-vampires": {
+          "lands": 5,
+          "casts": 5,
+          "activations": 0,
+          "triggers": 3,
+          "combat_damage_dealt_to_players": 10,
+          "combat_damage_taken": 40,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 3,
+          "tokens_observed": 2,
+          "token_attackers": 2,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 4,
+          "tokens_chumped": 0,
+          "creatures_lost": 0,
+          "eliminated_turn": 21,
+          "eliminated_by": "Ai(1)-mm-radagast",
+          "first_attack_turn": 14,
+          "token_damage_share": 0.4
+        },
+        "yawgmoth-swarm": {
+          "lands": 10,
+          "casts": 16,
+          "activations": 10,
+          "triggers": 20,
+          "combat_damage_dealt_to_players": 9,
+          "combat_damage_taken": 29,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 33,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 1,
+          "eliminated_turn": 37,
+          "eliminated_by": null,
+          "first_attack_turn": 19,
+          "token_damage_share": 0.0
+        },
+        "heliod": {
+          "lands": 11,
+          "casts": 26,
+          "activations": 5,
+          "triggers": 115,
+          "combat_damage_dealt_to_players": 0,
+          "combat_damage_taken": 0,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 3,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 0,
+          "eliminated_turn": null,
+          "eliminated_by": null,
+          "first_attack_turn": null,
+          "token_damage_share": null
+        }
+      }
+    },
+    {
+      "winner": "edgar-vampires",
+      "won_by": "all opponents have lost",
+      "round": 21,
+      "global_turn": 42,
+      "ms": 232458,
+      "per_seat": {
+        "edgar-vampires": {
+          "lands": 8,
+          "casts": 13,
+          "activations": 2,
+          "triggers": 25,
+          "combat_damage_dealt_to_players": 21,
+          "combat_damage_taken": 4,
+          "noncombat_damage_dealt_to_players": 8,
+          "token_resolutions": 8,
+          "tokens_observed": 1,
+          "token_attackers": 1,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 10,
+          "tokens_chumped": 0,
+          "creatures_lost": 3,
+          "eliminated_turn": null,
+          "eliminated_by": null,
+          "first_attack_turn": 13,
+          "token_damage_share": 0.476
+        },
+        "yawgmoth-swarm": {
+          "lands": 8,
+          "casts": 12,
+          "activations": 2,
+          "triggers": 8,
+          "combat_damage_dealt_to_players": 5,
+          "combat_damage_taken": 13,
+          "noncombat_damage_dealt_to_players": 2,
+          "token_resolutions": 1,
+          "tokens_observed": 1,
+          "token_attackers": 0,
+          "token_blockers": 1,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 1,
+          "creatures_lost": 2,
+          "eliminated_turn": 40,
+          "eliminated_by": null,
+          "first_attack_turn": 14,
+          "token_damage_share": 0.0
+        },
+        "heliod": {
+          "lands": 8,
+          "casts": 19,
+          "activations": 3,
+          "triggers": 62,
+          "combat_damage_dealt_to_players": 3,
+          "combat_damage_taken": 29,
+          "noncombat_damage_dealt_to_players": 1,
+          "token_resolutions": 2,
+          "tokens_observed": 2,
+          "token_attackers": 0,
+          "token_blockers": 2,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 1,
+          "creatures_lost": 3,
+          "eliminated_turn": 37,
+          "eliminated_by": null,
+          "first_attack_turn": 19,
+          "token_damage_share": 0.0
+        },
+        "radagast": {
+          "lands": 11,
+          "casts": 10,
+          "activations": 0,
+          "triggers": 4,
+          "combat_damage_dealt_to_players": 17,
+          "combat_damage_taken": 0,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 2,
+          "tokens_observed": 1,
+          "token_attackers": 0,
+          "token_blockers": 1,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 1,
+          "creatures_lost": 2,
+          "eliminated_turn": 42,
+          "eliminated_by": null,
+          "first_attack_turn": 16,
+          "token_damage_share": 0.0
+        }
+      }
+    },
+    {
+      "winner": "edgar-vampires",
+      "won_by": "all opponents have lost",
+      "round": 25,
+      "global_turn": 50,
+      "ms": 157946,
+      "per_seat": {
+        "radagast": {
+          "lands": 12,
+          "casts": 19,
+          "activations": 1,
+          "triggers": 29,
+          "combat_damage_dealt_to_players": 18,
+          "combat_damage_taken": 8,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 31,
+          "tokens_observed": 4,
+          "token_attackers": 4,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 4,
+          "tokens_chumped": 0,
+          "creatures_lost": 2,
+          "eliminated_turn": 50,
+          "eliminated_by": "Ai(2)-mm-edgar-vampires",
+          "first_attack_turn": 21,
+          "token_damage_share": 0.222
+        },
+        "edgar-vampires": {
+          "lands": 11,
+          "casts": 20,
+          "activations": 4,
+          "triggers": 50,
+          "combat_damage_dealt_to_players": 34,
+          "combat_damage_taken": 21,
+          "noncombat_damage_dealt_to_players": 1,
+          "token_resolutions": 36,
+          "tokens_observed": 3,
+          "token_attackers": 1,
+          "token_blockers": 2,
+          "token_combat_damage_to_players": 1,
+          "tokens_chumped": 2,
+          "creatures_lost": 7,
+          "eliminated_turn": null,
+          "eliminated_by": null,
+          "first_attack_turn": 14,
+          "token_damage_share": 0.029
+        },
+        "yawgmoth-swarm": {
+          "lands": 9,
+          "casts": 15,
+          "activations": 4,
+          "triggers": 30,
+          "combat_damage_dealt_to_players": 18,
+          "combat_damage_taken": 32,
+          "noncombat_damage_dealt_to_players": 8,
+          "token_resolutions": 10,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 6,
+          "eliminated_turn": 49,
+          "eliminated_by": "Ai(1)-mm-radagast",
+          "first_attack_turn": 7,
+          "token_damage_share": 0.0
+        },
+        "heliod": {
+          "lands": 10,
+          "casts": 28,
+          "activations": 8,
+          "triggers": 125,
+          "combat_damage_dealt_to_players": 3,
+          "combat_damage_taken": 12,
+          "noncombat_damage_dealt_to_players": 13,
+          "token_resolutions": 10,
+          "tokens_observed": 1,
+          "token_attackers": 1,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 1,
+          "tokens_chumped": 0,
+          "creatures_lost": 2,
+          "eliminated_turn": 50,
+          "eliminated_by": "Ai(2)-mm-edgar-vampires",
+          "first_attack_turn": 36,
+          "token_damage_share": 0.333
+        }
+      }
+    },
+    {
+      "winner": "yawgmoth-swarm",
+      "won_by": "all opponents have lost",
+      "round": 24,
+      "global_turn": 47,
+      "ms": 209002,
+      "per_seat": {
+        "edgar-vampires": {
+          "lands": 7,
+          "casts": 11,
+          "activations": 15,
+          "triggers": 36,
+          "combat_damage_dealt_to_players": 10,
+          "combat_damage_taken": 20,
+          "noncombat_damage_dealt_to_players": 5,
+          "token_resolutions": 34,
+          "tokens_observed": 1,
+          "token_attackers": 1,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 2,
+          "tokens_chumped": 0,
+          "creatures_lost": 1,
+          "eliminated_turn": 34,
+          "eliminated_by": "Ai(3)-mm-yawgmoth-swarm",
+          "first_attack_turn": 17,
+          "token_damage_share": 0.2
+        },
+        "yawgmoth-swarm": {
+          "lands": 10,
+          "casts": 24,
+          "activations": 31,
+          "triggers": 49,
+          "combat_damage_dealt_to_players": 39,
+          "combat_damage_taken": 11,
+          "noncombat_damage_dealt_to_players": 6,
+          "token_resolutions": 10,
+          "tokens_observed": 1,
+          "token_attackers": 0,
+          "token_blockers": 1,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 1,
+          "creatures_lost": 6,
+          "eliminated_turn": null,
+          "eliminated_by": null,
+          "first_attack_turn": 10,
+          "token_damage_share": 0.0
+        },
+        "heliod": {
+          "lands": 10,
+          "casts": 19,
+          "activations": 16,
+          "triggers": 84,
+          "combat_damage_dealt_to_players": 5,
+          "combat_damage_taken": 16,
+          "noncombat_damage_dealt_to_players": 3,
+          "token_resolutions": 1,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 1,
+          "eliminated_turn": 43,
+          "eliminated_by": "Ai(3)-mm-yawgmoth-swarm",
+          "first_attack_turn": 15,
+          "token_damage_share": 0.0
+        },
+        "radagast": {
+          "lands": 13,
+          "casts": 17,
+          "activations": 3,
+          "triggers": 0,
+          "combat_damage_dealt_to_players": 10,
+          "combat_damage_taken": 17,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 17,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 4,
+          "eliminated_turn": 47,
+          "eliminated_by": "Ai(3)-mm-yawgmoth-swarm",
+          "first_attack_turn": 8,
+          "token_damage_share": 0.0
+        }
+      }
+    },
+    {
+      "winner": "yawgmoth-swarm",
+      "won_by": "all opponents have lost",
+      "round": 23,
+      "global_turn": 45,
+      "ms": 53931,
+      "per_seat": {
+        "radagast": {
+          "lands": 9,
+          "casts": 16,
+          "activations": 0,
+          "triggers": 24,
+          "combat_damage_dealt_to_players": 35,
+          "combat_damage_taken": 7,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 1,
+          "tokens_observed": 3,
+          "token_attackers": 3,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 12,
+          "tokens_chumped": 0,
+          "creatures_lost": 9,
+          "eliminated_turn": 45,
+          "eliminated_by": "Ai(4)-mm-heliod",
+          "first_attack_turn": 5,
+          "token_damage_share": 0.343
+        },
+        "edgar-vampires": {
+          "lands": 8,
+          "casts": 8,
+          "activations": 0,
+          "triggers": 9,
+          "combat_damage_dealt_to_players": 7,
+          "combat_damage_taken": 35,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 4,
+          "tokens_observed": 1,
+          "token_attackers": 0,
+          "token_blockers": 1,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 1,
+          "creatures_lost": 3,
+          "eliminated_turn": 34,
+          "eliminated_by": null,
+          "first_attack_turn": 22,
+          "token_damage_share": 0.0
+        },
+        "yawgmoth-swarm": {
+          "lands": 8,
+          "casts": 15,
+          "activations": 12,
+          "triggers": 125,
+          "combat_damage_dealt_to_players": 2,
+          "combat_damage_taken": 2,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 1,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 1,
+          "eliminated_turn": null,
+          "eliminated_by": null,
+          "first_attack_turn": 38,
+          "token_damage_share": 0.0
+        },
+        "heliod": {
+          "lands": 9,
+          "casts": 16,
+          "activations": 3,
+          "triggers": 37,
+          "combat_damage_dealt_to_players": 2,
+          "combat_damage_taken": 2,
+          "noncombat_damage_dealt_to_players": 6,
+          "token_resolutions": 9,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 1,
+          "eliminated_turn": 45,
+          "eliminated_by": null,
+          "first_attack_turn": 39,
+          "token_damage_share": 0.0
+        }
+      }
+    }
+  ]
 }

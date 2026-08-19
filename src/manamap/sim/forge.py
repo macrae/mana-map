@@ -37,6 +37,7 @@ from manamap.config import (DECKS_DIR, FORGE_DECKS_DIR, FORGE_HOME, FORGE_JVM_AR
                             SIM_DECK_PREFIX, SIM_DEFAULT_GAMES, SIM_DIR,
                             SIM_GAME_CLOCK_SECONDS)
 from manamap.pilot.common import deck_dir, load_json
+from manamap.sim import parse as sim_parse
 
 # Forge's own verdict on its AI, from its docs/AI.md. Quoted into every run record so a
 # number never travels without the limit that bounds it.
@@ -236,6 +237,8 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
                 "global_turn": g["global_turn"], "ms": g["ms"],
                 "lost": {label.get(k, k): v for k, v in g["lost"].items()},
                 "log": log.name})
+    texts = [log.read_text(encoding="utf-8", errors="replace") for log, _ in results]
+    facts, analysis = sim_parse.analyze_logs(texts, label)
     wins = {s: sum(1 for o in outcomes if o["winner"] == s) for s in seats}
     draws = sum(1 for o in outcomes if o["draw"] or not o["winner"])
     frame = load_json(deck_dir(slug) / "strategic_frame.json") or {}
@@ -254,6 +257,8 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
                     "mean_global_turn": (round(sum(o["global_turn"] or 0 for o in outcomes) / len(outcomes), 1)
                                          if outcomes and all(o["global_turn"] for o in outcomes) else None)},
         "outcomes": outcomes,
+        "analysis": analysis,
+        "games": [sim_parse.compact(f, label) for f in facts],
         "assumptions": ASSUMPTIONS + ([f"{slug}'s strategic frame calls it "
                                        f"{frame.get('archetype')!r} — read the AI caveat "
                                        f"against that."] if frame.get("archetype") else []),
@@ -261,6 +266,28 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     }
     record_path.write_text(json.dumps(record, indent=2, ensure_ascii=False) + "\n")
     return record_path, record
+
+
+def analyze(slug, run_id_or_path):
+    """Re-derive a run's analysis from its kept logs and rewrite the record. The logs
+    are gitignored, so this works only where the run was made; `validate-sim` uses the
+    same path to prove the tracked analysis is what the logs say."""
+    base = deck_dir(slug) / SIM_DIR
+    path = base / (run_id_or_path if str(run_id_or_path).endswith(".json") else f"{run_id_or_path}.json")
+    if not path.exists():
+        raise SystemExit(f"{slug}: no run record {path.name} under {SIM_DIR}/")
+    rec = load_json(path)
+    log_dir = base / "logs" / path.stem
+    logs = sorted(log_dir.glob("part-*.log"))
+    if not logs:
+        raise SystemExit(f"{slug}: no logs under {log_dir} — the raw games are gitignored and "
+                         f"only exist where the run was made")
+    label = _seat_label([s["forge_name"] for s in rec["seats"]])
+    facts, analysis = sim_parse.analyze_logs([l.read_text(encoding="utf-8", errors="replace") for l in logs], label)
+    rec["analysis"] = analysis
+    rec["games"] = [sim_parse.compact(f, label) for f in facts]
+    path.write_text(json.dumps(rec, indent=2, ensure_ascii=False) + "\n")
+    return path, rec
 
 
 def _java_version():
@@ -278,6 +305,14 @@ def list_runs(slug):
 
 def main(args):
     slug = args.slug
+    if getattr(args, "analyze", None):
+        path, rec = analyze(slug, args.analyze)
+        a = rec["analysis"]
+        me = a["seats"].get(slug, {})
+        print(f"{slug}: re-derived {a['games']} game(s) from logs → {path.name}")
+        print(f"  win rate {me.get('win_rate')} ci95 {me.get('win_rate_ci95')} · "
+              f"token damage share {me.get('tokens', {}).get('token_damage_share')}")
+        return
     if getattr(args, "list", False) or not getattr(args, "vs", None):
         runs = list_runs(slug)
         if not runs:
@@ -287,8 +322,10 @@ def main(args):
         print(f"SIMULATION RUNS — {slug} ({len(runs)})\n")
         for r in runs:
             s = r["summary"]
+            me = (r.get("analysis") or {}).get("seats", {}).get(slug, {})
+            ci = me.get("win_rate_ci95")
             print(f"{r['run_id']}  {r['at']}  {r['games_completed']}/{r['games_requested']} games  "
-                  f"win {s['win_rate']}  mean round {s['mean_round']}  "
+                  f"win {s['win_rate']}{' ci95 ' + str(ci) if ci else ''}  mean round {s['mean_round']}  "
                   f"{r['wall_seconds']}s on {r['jobs']} JVM(s)")
             print(f"      vs {', '.join(x['slug'] for x in r['seats'][1:])}  ·  wins {s['wins']}")
         return
@@ -308,6 +345,9 @@ def main(args):
     if rec["nonzero_exit_jobs"]:
         print(f"  WARNING {rec['nonzero_exit_jobs']} JVM(s) exited non-zero — read the logs")
     print(f"  → {path.relative_to(deck_dir(slug))}  (logs: {rec['logs']})")
+    me = rec["analysis"]["seats"].get(slug, {})
+    print(f"  ci95 {me.get('win_rate_ci95')} · eliminated by {me.get('eliminated_by')} · "
+          f"token damage share {(me.get('tokens') or {}).get('token_damage_share', {}).get('mean')}")
     print(f"  ◆ sampled, not seeded — {len(rec['assumptions'])} assumptions in the record")
 
 

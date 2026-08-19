@@ -27,6 +27,8 @@ PILOT_STEPS = [
      "Merge the debrief agent's annotations into log_annotations.json, by entry id"),
     ("simulate", "manamap.sim.forge",
      "Run N Commander games of this deck against opponents in Forge, headless; record the run (◆ sampled)"),
+    ("validate-sim", "manamap.sim.validate_sim",
+     "Form-check simulation run records; re-derive the analysis from logs where they exist"),
     ("deck-info", "manamap.pilot.deck_info",
      "The workbench view: one deck, one screen — version, record, status, figures, and what to do next"),
     ("deck-version", "manamap.pilot.deck_versions",
@@ -95,7 +97,7 @@ _DECK_COMMANDS = {
     "validate-tutor-guide", "impact", "scenario-facts", "merge-prose",
     "short-list-art", "issue-length", "card-value", "validate-pending",
     "deck-notes", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
-    "deck-version", "deck-info", "simulate",
+    "deck-version", "deck-info", "simulate", "validate-sim",
 }
 
 
@@ -240,6 +242,8 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--list", action="store_true", help="list this deck's runs")
             cmd.add_argument("--dry-run", action="store_true", dest="dry_run",
                              help="print the JVM commands and the run id; run nothing")
+            cmd.add_argument("--analyze", default=None, metavar="RUN_ID",
+                             help="re-derive a run's analysis from its kept logs (where the run was made)")
         if name == "deck-info":
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "deck-version":

@@ -85,6 +85,14 @@ a refusal.
 
 ## What the first run says, and does not
 
+With S2's analysis on the same eight games: radagast deals the **most** combat damage per
+game of the four seats (45.6 mean; edgar 22.0) and wins none — it is eliminated latest on
+average (global turn 43.5) by edgar twice, yawgmoth once, heliod once, and its token damage
+share is 0.12 against edgar's 0.30. Its cumulative damage curve is 6.6 → 21.6 → 38.6 across
+rounds 5–9: the deck *does* develop the kill the goldfish measured; what it lacks at an
+AI-piloted four-seat table is the last fifteen points before the table closes on it.
+Eight games; every interval is wide; `win_rate_ci95` is [0, 0.324].
+
 `radagast` 0 of 8 against three of its own stablemates. Read with the record's assumptions:
 every seat is Forge's AI, which it rates "poor to ok" on control and radagast's frame
 calls the deck control; the deck's plan is flash bodies held across opponents' turns and
@@ -112,7 +120,7 @@ after a swap is a new run; the old one stays — it is history, like a prescript
 |---|---|---|
 | **S0** | this document + the spike (done) | — |
 | **S1** ✅ | `src/manamap/sim/forge.py` — `.dck` conversion, run, N across JVMs, log capture; `manamap pilot simulate <slug> --vs <opp>… --games N [--jobs J] [--clock S] [--list] [--dry-run]` | **done**: the harness, a `forge` pytest marker (opt-in, one real game), and the first tracked run — `data/decks/radagast/sim/edgar-vampires-vs-yawgmoth-swarm-vs-heliod-n8-dfd75e54.json`: 8 four-seat games, 404 s on 4 JVMs (~50 s/game under contention, not the solo 30 s), radagast 0 · edgar 4 · yawgmoth 2 · heliod 2, mean round 21.8 (global turn 43.1). **Two things the first run corrected**: Forge's `Game Outcome: Turn N` is the winner's own turn count (a ROUND), not the global turn — the record carries both; and an alternate win condition prints `has won due to effect of '…'`, not `has won because` — two Approach of the Second Sun wins read as draws until matched. The record carries `won_by` now |
-| **S2** | the parser — event model, per-game facts, aggregates + CIs, token metrics (created by turn, damage share, chumped, on board at kill), `validate-sim` | the ◆ artifact and `deck-info`'s sim panel |
+| **S2** ✅ | `src/manamap/sim/parse.py` — events → per-game facts → aggregates with CIs (Wilson for rates, normal for means); the run record gains `analysis` + compact per-game rows; `simulate --analyze <run>` re-derives from kept logs; `validate-sim` re-proves the tracked analysis against the logs where they exist and form-checks where they do not; `deck-info` gets a `simulated` panel | **done.** Token figures are two, each with its limit named in `analysis.limits`: `token_resolutions` (creation abilities that resolved — blind to X and doubling) and `tokens_observed` (distinct ids that attacked/blocked/dealt combat damage — a token that sat is invisible), plus `token_damage_share`, `tokens_chumped`, and our seat's **cumulative combat damage by round** — the shape of the kill. Seat attribution is learned from assignment/land lines, never assumed; `eliminated_by` is the controller of the last damage source before the life line that crossed zero, null when never seen acting. **One bug the fixture caught**: the seat pattern `\S+` swallowed the comma after an `Activator:` tag and mis-attributed every token resolution to the active seat |
 | **S3** | opponents — `data/opponents/`, `deck-recon` → authored pod lists, `simulate --vs pod` | your table, not your other decks |
 | **S4** | the bridge — `sim-scenario <slug> <run> --game G --turn T` → a v2 stack scenario; `validate-stack` learns `version: 2` | the ✓ tier on what the sample surfaced |
 | **S5** | the sim debrief + `prescribe` reading sim aggregates | the doctor sees the table |

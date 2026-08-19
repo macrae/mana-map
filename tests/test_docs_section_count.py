@@ -185,17 +185,18 @@ def test_every_tracked_per_deck_artifact_is_documented():
     tracked for weeks because no inventory ever compared the directory against
     the docs.
 
-    Filenames only — semantics live in `docs/pilot.md`. Per-stack and per-decision
-    files are excluded: they are numbered instances of two documented shapes, not
-    distinct artifacts.
+    Filenames only — semantics live in `docs/pilot.md`. Per-stack, per-decision,
+    per-prescription and per-simulation-run files are excluded: they are keyed
+    instances of four documented shapes, not distinct artifacts.
     """
     import subprocess
 
     tracked = subprocess.run(
         ["git", "ls-files", "data/decks/"], cwd=ROOT,
         capture_output=True, text=True, check=True).stdout.split()
+    instanced = ("/stacks/", "/decisions/", "/prescriptions/", "/sim/")
     names = sorted({Path(t).name for t in tracked
-                    if "/stacks/" not in t and "/decisions/" not in t})
+                    if not any(d in t for d in instanced)})
     prose = ((ROOT / "docs" / "data-artifacts.md").read_text(encoding="utf-8")
              + (ROOT / "docs" / "pilot.md").read_text(encoding="utf-8"))
     undocumented = [n for n in names if n not in prose]

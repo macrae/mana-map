@@ -33,7 +33,7 @@ written brief, and the issue now opens on two pictures of the deck: its **conste
 [009 Radagast](https://macrae.github.io/mana-map/manuals/radagast.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-Scale: 57 `manamap pilot` subcommands, 18 top-level subcommands, 15 agents, 19 skills,
+Scale: 58 `manamap pilot` subcommands, 18 top-level subcommands, 15 agents, 19 skills,
 10 cache-gated routines (plus `stack:`/`decision:`/`prescription:` per artifact), and the magazine's department list as `issue_spec.DEPARTMENTS`
 gives it — **`OPTIONAL_DEPARTMENTS` is empty**, both migrations having landed on all nine
 decks. Test counts live in `docs/testing.md`.
@@ -218,9 +218,10 @@ future UI's shape. Four tests.
 Commander, failed (c) byte-level reproducibility (no seed; statistical only), ~6 s/2-seat
 and ~30 s/4-seat game, AI caveat verbatim. **Verdict: Forge is the engine; we build the
 harness (`simulate`), the parser (◆ sampled, with CIs), and the bridge to `game_state` v2 →
-`resolve-stack`.** Road B (own engine) shelved. Phases S1–S5 in the doc; **S1 is done** (`simulate`, the
-`forge` marker, and the first tracked 4-seat run on radagast — 0 of 8, with the AI caveat
-in the record). `manual-v5` is parked with its spec on its own branch.
+`resolve-stack`.** Road B (own engine) shelved. Phases S1–S5 in the doc; **S1 and S2 are done** (`simulate`, the
+`forge` marker, the parser with CIs and two honest token figures, `validate-sim`, the
+`deck-info` panel, and the first tracked 4-seat run on radagast — 0 of 8, deals the most
+combat damage and wins none, with the AI caveat in the record). `manual-v5` is parked with its spec on its own branch.
 
 **The MVP as scoped on 2026-08-19 is complete**: versions, notes, basic stats, goldfish,
 and the agent audit/enrichment. What remains is the audit's optional item 8

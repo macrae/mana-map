@@ -161,3 +161,25 @@ def test_every_tracked_prescription_passes_its_validator(slug, capsys, unchanged
         if exit_.code:
             pytest.fail(f"{slug} prescriptions fail their validator:\n"
                         f"{capsys.readouterr().out}")
+
+
+def _sim_slugs():
+    if not DECKS_DIR.is_dir():
+        return []
+    return sorted(d.name for d in DECKS_DIR.iterdir()
+                  if d.is_dir() and (d / "sim").is_dir() and list((d / "sim").glob("*.json")))
+
+
+@requires_deck
+@pytest.mark.parametrize("slug", _sim_slugs())
+def test_every_tracked_simulation_run_passes_its_validator(slug, capsys, unchanged):
+    """`validate-sim` over a deck's runs: form always; analysis re-derived from the logs
+    where they exist (gitignored, so only where the run was made). A sampled artifact
+    cannot be replayed, but its parser can be re-run — that is the whole check."""
+    from manamap.sim import validate_sim
+    unchanged(*INPUTS, DECKS_DIR / slug / "sim")
+    try:
+        validate_sim.main(type("Args", (), {"slug": slug})())
+    except SystemExit as exit_:
+        if exit_.code:
+            pytest.fail(f"{slug} simulation runs fail their validator:\n{capsys.readouterr().out}")

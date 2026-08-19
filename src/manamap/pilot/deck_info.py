@@ -28,6 +28,7 @@ from manamap.pilot import deck_versions as versions_mod
 from manamap.pilot.common import deck_dir, load_json
 from manamap.pilot.deck_notes import annotations, read_log
 from manamap.pilot.prescribe import list_all as prescriptions_of
+from manamap.sim.forge import list_runs as sim_runs
 
 
 def _pct(x):
@@ -145,9 +146,27 @@ def compose(slug):
                                       "skeptic": (rx[-1].get("skeptic") or {}).get("verdict")}
                                      if rx else None)},
         "open_questions": _open_questions(base),
+        "simulation": _simulation(slug),
     }
     info["next"] = _next(info)
     return info
+
+
+def _simulation(slug):
+    runs = sim_runs(slug)
+    if not runs:
+        return None
+    r = runs[-1]
+    me = (r.get("analysis") or {}).get("seats", {}).get(slug, {})
+    tok = me.get("tokens") or {}
+    return {"runs": len(runs), "latest": r["run_id"], "at": r.get("at"),
+            "games": r.get("games_completed"),
+            "vs": [s["slug"] for s in r.get("seats", [])[1:]],
+            "win_rate": me.get("win_rate"), "win_rate_ci95": me.get("win_rate_ci95"),
+            "eliminated_by": me.get("eliminated_by"),
+            "mean_round": (r.get("summary") or {}).get("mean_round"),
+            "token_damage_share": (tok.get("token_damage_share") or {}).get("mean"),
+            "tokens_observed": (tok.get("tokens_observed") or {}).get("mean")}
 
 
 def _next(info):
@@ -185,6 +204,9 @@ def _next(info):
             by.setdefault(q["settled_by"], 0)
             by[q["settled_by"]] += 1
         nxt.append("open questions routed: " + ", ".join(f"{k} ×{v}" for k, v in sorted(by.items())))
+    if info["simulation"] is None:
+        nxt.append(f"no simulation runs — `simulate {slug} --vs <opp> [--vs …] --games N` "
+                   f"(Forge; ◆ sampled)")
     if info["bracket"] and info["bracket"].get("within_target") is False:
         nxt.append(f"bracket floor {info['bracket']['floor']} exceeds target "
                    f"{info['bracket']['target']} — `bracket-check {slug}` names the drivers")
@@ -240,6 +262,11 @@ def _print(info):
         d = info["diagnosis"]
         print(f"  diagnosis  skeptic {d['skeptic']}{' · STALE' if d['stale'] else ''}")
         print(f"             {str(d['verdict'])[:100]}")
+    sm = info["simulation"]
+    if sm:
+        print(f"  simulated  {sm['runs']} run(s) · latest {sm['games']} games vs {', '.join(sm['vs'])} · "
+              f"win {sm['win_rate']} ci95 {sm['win_rate_ci95']} · mean round {sm['mean_round']} · "
+              f"eliminated by {sm['eliminated_by']} · token dmg share {sm['token_damage_share']}")
     p = info["prescriptions"]
     if p["count"]:
         lt = p["latest"]

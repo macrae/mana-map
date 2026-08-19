@@ -42,7 +42,8 @@ manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents 
 manamap pilot deck-notes <slug> list [--since D] | show <id>
 manamap pilot deck-info <slug> [--json]            # THE WORKBENCH VIEW: version · record · status · figures · what to do next
 manamap pilot simulate <slug> --vs A [--vs B…] [--games N] [--jobs J]   # N Commander games in Forge, headless; a ◆ SAMPLED run record
-manamap pilot simulate <slug> --list | --dry-run
+manamap pilot simulate <slug> --list | --dry-run | --analyze <run-id>
+manamap pilot validate-sim <slug>                 # form + re-derive the analysis from logs where they exist
 manamap pilot deck-version <slug> [list] [--json]   # every list this deck has been, from git; games per version
 manamap pilot deck-version <slug> show V4 [--full] | tag <name> [--at V4] [--note …] | restore V4 [--write]
 manamap pilot merge-debrief <slug>      # the debrief agent's annotations in, by entry id
