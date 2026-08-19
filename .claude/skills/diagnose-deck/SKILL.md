@@ -18,6 +18,11 @@ present an agent pass as the thing that produced the numbers.
 **Analysis-only.** Nothing in this loop edits `decklist.txt` or `cards.json`.
 Applying a swap is a separate, human act.
 
+**One question instead of the whole reading → `/prescribe`.** Same doctor, same
+skeptic, same contract, scoped to a prompt, accumulating under `prescriptions/`. Both
+modes read the captain's log (`log_annotations.json`); if games are logged but not
+debriefed, run `/debrief` first.
+
 ## Loop (max DIAGNOSE_MAX_ITERATIONS = 3, from config.py)
 
 0. **Facts** — free, run them all; they are the doctor's brief and yours:

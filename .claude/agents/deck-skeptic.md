@@ -36,6 +36,17 @@ its own limits, and two of them decide findings:
   against a different decklist, every figure sourced from it is stale. A diagnosis
   quoting a stale figure without saying so is `contradicts-artifact`.
 
+## Prescriptions are diagnoses scoped to a question
+
+When spawned on `prescriptions/<id>-….json` (MODE prescribe's output), everything
+below applies to its `cut_candidates`, `add_candidates`, `axes_engaged` and
+`open_questions` — the mechanical gate is `validate-prescription <slug> --id <id>` and
+you write `deck-skeptic-prescribe-<id>.json`. Two findings are specific to the shape:
+an add that does not answer the **prompt's** stated problem is `unjustified` however
+good the card, and a `reading` that accepts a premise the audit contradicts is
+`over-claimed`. A `log_entries_read` id whose annotation does not say what the
+reading says it says is `contradicts-artifact` — read the entry.
+
 ## Procedure
 
 1. **Mechanical gate first.** `.venv/bin/manamap pilot validate-diagnosis <slug>`.

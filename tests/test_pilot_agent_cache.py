@@ -517,8 +517,8 @@ def test_scan_json_separates_applicable_from_not():
     assert {"slug", "any_miss", "routines", "not_applicable"} <= set(doc)
     na = {r["routine"]: r["reason"] for r in doc["not_applicable"]}
     assert "brief.json" in na["candidate-pool"]
-    # the-ten has no applicability gate — every deck gets a Short List.
-    assert "the-ten" not in na
+    # strategic-frame has no applicability gate — every deck gets one.
+    assert "strategic-frame" not in na
 
 
 # ── The iteration bound, enforced rather than quoted ─────────────────────
@@ -571,7 +571,7 @@ def test_runs_within_the_bound_need_no_override(deck):
     assert "iteration_bound_override" not in entry
 
 
-# ── Applicability gating (tutor-guide; the-ten has no gate) ──────────────
+# ── Applicability gating (tutor-guide, debrief) ─────────────────────────
 
 
 def test_tutor_guide_is_na_without_tutors(deck):

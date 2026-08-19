@@ -42,6 +42,9 @@ manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents 
 manamap pilot deck-notes <slug> list [--since D] | show <id>
 manamap pilot merge-debrief <slug>      # the debrief agent's annotations in, by entry id
 manamap pilot validate-debrief <slug>   # the annotation held to the log and the 99
+manamap pilot prescribe <slug> "<question>"   # open ONE question to the doctor (accumulates under prescriptions/)
+manamap pilot prescribe <slug> --list | --merge <id>
+manamap pilot validate-prescription <slug> [--id ID]  # the diagnosis contract, scoped; stale = form only
 manamap pilot deck-audit <slug> [--archetype A] [--json] [--out D/]  # cited axis targets + engine activation
 manamap pilot card-value <slug> [--metric M] [--iterations N] [--json] [--out D/]
                                         # what each card is WORTH: swap it for a blank, measure the loss
@@ -116,7 +119,8 @@ data/decks/<slug>/             all tracked:
                                log_annotations.json  debrief agent, by entry id — `merge-debrief` / `validate-debrief`
                                mana_analysis.json    mana-analysis (deterministic, no agent)
                                tutor_guide.json      pilot-notes (At the Table's tutor subhead)
-                               considering.json      short-list-analyst (The Short List — ten)
+                               considering.json      FROZEN legacy (The Short List; its rule lives in prescriptions now)
+                               prescriptions/<id>-*.json  AUTHORED question + deck-doctor ⇄ deck-skeptic answer — `prescribe`
                                diagnosis.json        deck-doctor ⇄ deck-skeptic (the improvement loop)
                                deck_recon.json       deck-doctor MODE recon (dated; perishable)
                                issue.json            authored (never generated)
@@ -271,11 +275,11 @@ someone else's regeneration as a cache hit, and `git log` answers "which inputs
 produced this prose?"). `record()` refuses artifacts that are missing, lack their
 routine's keys, or have no checker block — a failed run can't poison the cache.
 
-Routines (11 static): `candidate-pool`, `deck-build`, `deck-diagnosis`, `deck-recon`,
+Routines (10 static): `candidate-pool`, `deck-build`, `deck-diagnosis`, `deck-recon`,
 `deck-engine`, `deck-map-names`, `debrief` (N/A until something is logged),
-`strategic-frame`, `pilot-notes` (five keys of `manual_prose.json`), `the-ten` (The Short List — applies to every deck), `tutor-guide`
+`strategic-frame`, `pilot-notes` (five keys of `manual_prose.json`), `tutor-guide`
 (the tutor guide — `N/A` for a deck with no library-search tutors, via the applicability
-gate in agent_cache), plus `stack:<NNN>` and `decision:<NNN>` discovered
+gate in agent_cache), plus `prescription:<id>` (one question to the doctor; `prompt:self` digests only the authored question) and `stack:<NNN>` and `decision:<NNN>` discovered
 from disk. Declared in `config.AGENT_ROUTINES`.
 
 The two build routines take **no `cards:semantic`** — it digests a `cards.json`
@@ -817,6 +821,22 @@ of the note), `cards[]` (`read` ∈ over/under/as-expected/missed), `decisions[]
 rejects ids the log lacks and carries earlier annotations; `validate-debrief` fails the
 annotation on any of those contracts. The one rule is that the debrief may name nothing
 the pilot and the 99 did not — it is a reader, not a witness.
+
+## Prescriptions (`prescriptions/<id>-*.json`, the diagnosis scoped to a question)
+
+`diagnosis.json` is deterministic over the deck and takes no prompt. The workbench asks
+the doctor *questions* — "I keep getting wrathed on five", "make it faster", "should I
+run Sol Ring" — so a question is an ARTIFACT, deterministic over (deck, question).
+`manamap pilot prescribe <slug> "…"` writes the authored half (`prompt`, `id` = hash of
+the normalized prompt, `as_of_decklist_sha256`); `deck-doctor` MODE prescribe writes the
+answered half (`reading`, `log_entries_read`, optional `axes_engaged`, `cut_candidates`,
+`add_candidates` RANKED and capped at ten — The Short List's rule, relocated —
+`open_questions`, `gaps`); `deck-skeptic` reviews it like a diagnosis; `prescribe --merge
+<id>` folds both in, answer keys only. The cache routine `prescription:<id>` digests only
+the prompt (`prompt:self`), so merging never self-invalidates; `cache-record` refuses a
+file without a passing skeptic. Prescriptions ACCUMULATE and are never overwritten: a
+later decklist makes one stale (MISS; `validate-prescription` checks form only), never
+wrong. Both doctor modes read `log_annotations.json`.
 
 ## The tutor guide (`tutor_guide.json`, tier ★)
 

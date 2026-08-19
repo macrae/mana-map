@@ -33,8 +33,8 @@ written brief, and the issue now opens on two pictures of the deck: its **conste
 [009 Radagast](https://macrae.github.io/mana-map/manuals/radagast.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-Scale: 52 `manamap pilot` subcommands, 18 top-level subcommands, 16 agents, 19 skills,
-11 cache-gated routines, and the magazine's department list as `issue_spec.DEPARTMENTS`
+Scale: 54 `manamap pilot` subcommands, 18 top-level subcommands, 15 agents, 19 skills,
+10 cache-gated routines (plus `stack:`/`decision:`/`prescription:` per artifact), and the magazine's department list as `issue_spec.DEPARTMENTS`
 gives it — **`OPTIONAL_DEPARTMENTS` is empty**, both migrations having landed on all nine
 decks. Test counts live in `docs/testing.md`.
 
@@ -170,8 +170,22 @@ by a passing stack, routes in a closed set incl. `diagnose`, stages from `engine
 `deck-status` has a `log` stage reporting `N logged, M debriefed`. Seventeen tests.
 Nothing is logged on any deck yet — the first real entry is yours to write.
 
-Next: step 5 (`deck-doctor` MODE prescribe reading the log + a prompt, folding
-`short-list-analyst`), step 7 (the `game_state` v2 schema, docs only).
+**Step 5 is done — prescriptions, the researcher analyst.** `manamap pilot prescribe
+<slug> "…"` opens one question to the doctor under `prescriptions/<id>-….json`
+(accumulating, never overwritten; the id is the prompt's hash). `deck-doctor` gained
+MODE prescribe — the diagnosis contract scoped to the question, `add_candidates` ranked
+and capped at ten (The Short List's rule, relocated), reading the captain's log — and
+`deck-skeptic` reviews it the same way. `validate-prescription` reuses the diagnosis
+validator's functions; stale prescriptions are form-checked only. Cache routine
+`prescription:<id>` with `prompt:self`; `cache-record` refuses without a passing skeptic.
+`short-list-analyst`, `/short-list` and `the-ten` are retired; the nine `considering.json`
+are frozen legacy. Both doctor modes read `log_annotations.json`. Twelve tests + a
+per-deck gate. Follow-up worth doing: `deck-history pending` should read open
+prescriptions' `add_candidates` as a source beside the legacy `considering.json`.
+
+Next: step 6 cosmetics are done; step 7 (the `game_state` v2 schema, docs only, beside
+the scenario spec) and step 8 (`deck-analyst` MODE query / `card-search` CLI) remain —
+then the MVP's Sprint 1 (deck versioning) and Sprint 3 (workbench CLI).
 
 ### 1. Phase 3 — DONE. Radagast carries the whole v4 shape.
 

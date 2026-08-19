@@ -34,6 +34,8 @@ from manamap.config import (
     AGENT_PROMPTS_DIR,
     AGENT_ROUTINE_DECISION_AGENT,
     AGENT_ROUTINE_DECISION_INPUTS,
+    AGENT_ROUTINE_PRESCRIPTION_AGENT,
+    AGENT_ROUTINE_PRESCRIPTION_INPUTS,
     AGENT_ROUTINE_STACK_AGENT,
     AGENT_ROUTINE_STACK_INPUTS,
     AGENT_ROUTINES,
@@ -46,11 +48,11 @@ from manamap.pilot.common import (
     canonical_json, checker_passed, deck_dir, load_json_memo)
 
 _REPO_ROOT = config.DATA_DIR.parent
-_DYNAMIC_RE = re.compile(r"^(stack|decision):(\w+)$")
+_DYNAMIC_RE = re.compile(r"^(stack|decision|prescription):(\w+)$")
 
 
 class UnknownRoutine(ValueError):
-    """The routine id isn't in the registry and doesn't match stack:/decision:."""
+    """The routine id isn't in the registry and doesn't match stack:/decision:/prescription:."""
 
 
 class MissingInput(ValueError):
@@ -258,7 +260,8 @@ def routine_spec(slug, routine):
     if not match:
         raise UnknownRoutine(
             f"Unknown routine {routine!r}. Known: "
-            f"{', '.join(sorted(AGENT_ROUTINES))}, stack:<NNN>, decision:<NNN>"
+            f"{', '.join(sorted(AGENT_ROUTINES))}, stack:<NNN>, decision:<NNN>, "
+            f"prescription:<id>"
         )
     kind, number = match.groups()
     artifact = _artifact_for(deck_dir(slug), kind, number)
@@ -267,6 +270,10 @@ def routine_spec(slug, routine):
     if kind == "stack":
         return {"agent": AGENT_ROUTINE_STACK_AGENT, "artifact": artifact.name,
                 "artifact_subdir": "stacks", "inputs": list(AGENT_ROUTINE_STACK_INPUTS)}
+    if kind == "prescription":
+        return {"agent": AGENT_ROUTINE_PRESCRIPTION_AGENT, "artifact": artifact.name,
+                "artifact_subdir": "prescriptions",
+                "inputs": list(AGENT_ROUTINE_PRESCRIPTION_INPUTS)}
     return {"agent": AGENT_ROUTINE_DECISION_AGENT, "artifact": artifact.name,
             "artifact_subdir": "decisions", "inputs": list(AGENT_ROUTINE_DECISION_INPUTS)}
 
@@ -279,10 +286,10 @@ def artifact_path(slug, spec):
 
 
 def discover_routines(slug):
-    """Static routines plus every stack:/decision: artifact on disk."""
+    """Static routines plus every stack:/decision:/prescription: artifact on disk."""
     base = deck_dir(slug)
     routines = list(AGENT_ROUTINES)
-    for kind in ("stack", "decision"):
+    for kind in ("stack", "decision", "prescription"):
         for path in sorted((base / f"{kind}s").glob("*.json")):
             number = path.name.split("-", 1)[0]
             routines.append(f"{kind}:{number}")
@@ -341,6 +348,12 @@ def resolve_inputs(slug, spec):
                 raise MissingInput(f"{rel(path)} is required by this routine but missing")
             entries.append({"path": f"{rel(path)}#scenario",
                             "sha256": scenario_block_digest(path)})
+        elif token == "prompt:self":
+            path = artifact_path(slug, spec)
+            if not path.exists():
+                raise MissingInput(f"{rel(path)} is required by this routine but missing")
+            entries.append({"path": f"{rel(path)}#prompt",
+                            "sha256": json_sha256({"prompt": load_json_memo(path).get("prompt")})})
         elif token == "cards:semantic":
             path = base / "cards.json"
             if not path.exists():
@@ -685,6 +698,16 @@ def record(slug, routine):
         kfps = key_fingerprints(slug, spec, keys)
         if kfps:
             entry["key_fingerprints"] = kfps
+    if routine.startswith("prescription:"):
+        # Same bar as a stack's checker: the skeptic's pass is what makes the
+        # answer recordable. A prescription reaches a decklist; an unreviewed one
+        # frozen as HIT would reach it wearing a green light.
+        verdict = (doc.get("skeptic") or {}).get("verdict")
+        if verdict != "pass":
+            raise MissingInput(
+                f"{rel(artifact)} has no passing skeptic block (verdict "
+                f"{verdict!r}) — run the loop to a pass before recording")
+        entry["verdict"] = verdict
     if routine.startswith("stack:"):
         checker = doc.get("checker")
         if not checker:

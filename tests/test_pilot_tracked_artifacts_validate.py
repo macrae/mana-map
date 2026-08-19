@@ -35,6 +35,7 @@ from manamap.pilot import (
     validate_engine,
     validate_goldfish_targets,
     validate_issue,
+    validate_prescription,
     validate_stack,
     validate_strategic_frame,
     validate_tutor_guide,
@@ -137,4 +138,26 @@ def test_every_tracked_stack_and_decision_passes_the_citation_contract(slug, cap
     except SystemExit as exit_:
         if exit_.code:
             pytest.fail(f"{slug} stacks/decisions fail the citation contract:\n"
+                        f"{capsys.readouterr().out}")
+
+
+def _prescription_slugs():
+    if not DECKS_DIR.is_dir():
+        return []
+    return sorted(d.name for d in DECKS_DIR.iterdir()
+                  if d.is_dir() and (d / "prescriptions").is_dir())
+
+
+@requires_deck
+@pytest.mark.parametrize("slug", _prescription_slugs())
+def test_every_tracked_prescription_passes_its_validator(slug, capsys, unchanged):
+    """`validate-prescription` over a whole deck. Keyed by directory like stacks, so
+    it cannot ride the filename map; a stale one (older decklist) is form-checked
+    only by design — prescriptions accumulate and history is not an error."""
+    unchanged(*INPUTS, DECKS_DIR / slug)
+    try:
+        validate_prescription.main(type("Args", (), {"slug": slug, "id": None})())
+    except SystemExit as exit_:
+        if exit_.code:
+            pytest.fail(f"{slug} prescriptions fail their validator:\n"
                         f"{capsys.readouterr().out}")

@@ -1121,6 +1121,8 @@ DECK_AUDIT_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "deck_audit.py"
 #   decisions:all      every decisions/*.json
 #   global:<CONST>     repo-level artifact named by a config constant
 #   repo:<CONST>       tracked source file named by a config constant
+#   prompt:self        the {prompt} slice of a prescription — the authored
+#                      question, never the doctor's answer
 #   scenario:self      the {title, scenario} slice of the routine's own
 #                      artifact — so the resolution/checker blocks the loop
 #                      writes back never self-invalidate
@@ -1180,19 +1182,6 @@ AGENT_ROUTINES = {
         # naming places rather than describing contents.
         "inputs": ["deck:deck_map.json", "deck:strategic_frame.json?"],
     },
-    "the-ten": {
-        "agent": "short-list-analyst",
-        "artifact": "considering.json",
-        # deck:diagnosis.json? was added 2026-08-03: when a diagnosis exists the
-        # ten answer its NAMED deficits instead of index hits, so a re-diagnosis
-        # must MISS this routine. Optional, because most decks have none yet and
-        # the bench-first contract stands on its own without one.
-        "inputs": ["cards:semantic", "stacks:passing", "deck:strategic_frame.json?",
-                   "deck:bracket_report.json?", "deck:pilot_feedback.md?",
-                   "deck:diagnosis.json?",
-                   "global:COMBO_DETAILS_PATH", "global:SYNERGY_GRAPH_PATH",
-                   "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
-    },
     # Fetch Quests (v3.3): the coach's tutor guide — one wish per tutor.
     # N/A for decks with zero library-search tutors in the 99 (the renderer
     # prints standing copy instead; see agent_cache applicability).
@@ -1241,6 +1230,10 @@ AGENT_ROUTINES = {
                    "deck:goldfish_targets.json?", "deck:bracket_report.json?",
                    "deck:mana_analysis.json?", "deck:strategic_frame.json?",
                    "deck:deck_recon.json?", "deck:pilot_feedback.md?",
+                   # The captain's log, debriefed: what happened at the table is
+                   # evidence the doctor reads (2026-08-19). Optional, because a
+                   # deck nobody has played yet still gets a diagnosis.
+                   "deck:log_annotations.json?",
                    "repo:DECK_AUDIT_PATH",
                    "global:CARD_ROLES_PATH", "global:COMBO_DETAILS_PATH",
                    "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
@@ -1282,6 +1275,21 @@ AGENT_ROUTINE_DECISION_AGENT = "pilot-notes"
 AGENT_ROUTINE_DECISION_INPUTS = ["scenario:self", "cards:semantic",
                                  "deck:goldfish_metrics.json!meta.decklist_sha256",
                                  "deck:strategic_frame.json?", "strategy:doc"]
+# prescription:<id> — one question to the doctor, answered by the doctor ⇄ skeptic
+# loop (pilot/prescribe.py). `prompt:self` digests only the authored question, the
+# way `scenario:self` digests only a stack's scenario, so merging the answer never
+# self-invalidates. The rest mirrors deck-diagnosis: a prescription is a diagnosis
+# scoped to a question, and it reaches a decklist the same way.
+AGENT_ROUTINE_PRESCRIPTION_AGENT = "deck-doctor+deck-skeptic"
+AGENT_ROUTINE_PRESCRIPTION_INPUTS = [
+    "prompt:self", "cards:semantic", "stacks:passing",
+    "deck:goldfish_metrics.json!meta.decklist_sha256",
+    "deck:goldfish_targets.json?", "deck:bracket_report.json?",
+    "deck:mana_analysis.json?", "deck:strategic_frame.json?",
+    "deck:deck_recon.json?", "deck:diagnosis.json?", "deck:log_annotations.json?",
+    "repo:DECK_AUDIT_PATH",
+    "global:CARD_ROLES_PATH", "global:COMBO_DETAILS_PATH",
+    "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"]
 
 # What each manual_prose key ACTUALLY depends on — the per-key refinement of
 # the owning routine's input list. A routine-level MISS consults this to name

@@ -60,10 +60,10 @@ claim; this is how it becomes a fact. **One rules domain per scenario** — ever
 artifact at ≤32 citations passed in one or two rounds; every one at ≥59 needed
 four or failed, taking correct answers down with it.
 
-**7 — Furnish it.** `/short-list` → `considering.json`, then `short-list-art` →
-`considering_art.json`, the tracked sidecar that lets the one department whose
-subject is OUTSIDE the deck actually show you the cards. `tutor-guide` → At the
-Table's tutor subhead. `/author-decision` → the What's Your Play spreads. Both are
+**7 — Furnish it.** `tutor-guide` → At the
+Table's tutor subhead. (The Short List — `/short-list` → `considering.json` +
+`short-list-art` — is **retired**: its rule lives in `/prescribe`'s ranked adds, and
+the nine tracked `considering.json` files are frozen legacy the renderer still reads.) `/author-decision` → the What's Your Play spreads. Both are
 `pilot-notes` under their own routines.
 
 **8 — Write it.** `/write-manual` — one `pilot-notes` spawn for the five prose keys,
@@ -78,7 +78,8 @@ plan, `build-manual` renders with department defaults. `validate-issue --strict`
 still gates the legacy plans on already-published decks.
 
 **10 — Diagnose it**, when the deck is to be improved rather than described:
-`/diagnose-deck`. Deliberately NOT a consumer of `engine.json` — the doctor keeps
+`/diagnose-deck` — and **`/prescribe`** for one question at a time ("I keep getting
+wrathed on five"), which reads the captain's log (`deck-notes add`, then `/debrief`). Deliberately NOT a consumer of `engine.json` — the doctor keeps
 its own engine view, and two consumers of one artifact is a migration.
 
 ## Gates, in the order they catch things
@@ -89,7 +90,9 @@ manamap pilot validate-deck <slug>            # 100 cards, commander, singleton
 manamap pilot validate-goldfish-targets <slug>
 manamap pilot validate-deck-map <slug>        # names distinct, membership untouched
 manamap pilot validate-engine <slug>          # stages, completeness, verified_by
-manamap pilot validate-considering <slug>
+manamap pilot validate-considering <slug>     # legacy Short Lists only (published decks)
+manamap pilot validate-debrief <slug>         # the captain's log's annotations
+manamap pilot validate-prescription <slug>    # every question the doctor answered
 manamap pilot validate-tutor-guide <slug>
 manamap pilot validate-issue <slug>           # legacy plans only (published decks)
 .venv/bin/python -m pytest -m "not browser" -n auto

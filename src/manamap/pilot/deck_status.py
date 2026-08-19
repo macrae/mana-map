@@ -40,8 +40,6 @@ STAGES = [
     ("map",        "deck_map.json",          "decklist_sha256",      False, "the constellation — `deck-map`"),
     ("engine",     "engine.json",            "decklist_sha256",      False, "how it RUNS — `analyze-engine` loop"),
     ("stacks",     "stacks/",                None,  False, "checker-passed lines: the only fact tier"),
-    ("shortlist",  "considering.json",       None,  False, "The Ten — `short-list`"),
-    ("shortlist-art", "considering_art.json", None,  False, "Scryfall art for The Ten — `short-list-art`"),
     ("tutors",     "tutor_guide.json",       None,  False, "the tutor guide — `tutor-guide`"),
     ("prose",      "manual_prose.json",      None,  False, "the pilot's notes — `write-manual`"),
     ("log",        "log.jsonl",              None,  False, "the captain's log — `deck-notes add`; debriefed by the `debrief` agent"),
@@ -51,7 +49,7 @@ STAGES = [
 # Stages this development cycle added. Named explicitly so a deck built before
 # them reports them as MISSING rather than as complete-by-omission — which is the
 # exact way a new capability fails to propagate.
-ADDED_2026_08 = {"map", "engine", "shortlist-art", "log"}
+ADDED_2026_08 = {"map", "engine", "log"}
 
 # RETIRED 2026-08-19 with the workbench pivot (docs/agent-audit-2026-08-19.md):
 # `map-names` (the cartographer is optional now — the deterministic fallback
@@ -60,6 +58,10 @@ ADDED_2026_08 = {"map", "engine", "shortlist-art", "log"}
 # `plan` (issue_plan.json — magazine-editor is deleted; build-manual renders
 # with department defaults when no plan exists, and the tracked plans on the
 # published decks are frozen legacy inputs until the manual is simplified).
+# `shortlist` and `shortlist-art` followed on the same day: The Short List's rule
+# (ten ranked cards worth knowing about, ownership not a criterion) lives in the
+# doctor's prescriptions now; the nine tracked considering.json files are frozen
+# legacy the renderer still reads and `validate-considering` still gates.
 # A stage whose artifact exists for another reason cannot be checked by file
 # presence — `panel` was checked by KEY for that reason, and the mechanism went
 # with the stage; bring it back with the first such stage, not before.

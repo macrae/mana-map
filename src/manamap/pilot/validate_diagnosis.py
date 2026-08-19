@@ -58,7 +58,11 @@ REQUIRED_QUESTION_KEYS = {"question", "settled_by", "why_it_matters"}
 
 AXIS_VERDICTS = {"strength", "adequate", "weakness", "liability"}
 CUT_DIFFICULTIES = {"easy", "contested", "painful"}
-ADD_SOURCES = {"pool", "recon"}
+# `prompt` and `log` joined 2026-08-19: a prescription may be asked about a named
+# card ("should I run Sol Ring?"), and both modes now read the captain's log, where
+# the pilot may have named one. Neither is a licence to conjure — the add still
+# has to close a named axis and survive the same checks as a pool card.
+ADD_SOURCES = {"pool", "recon", "prompt", "log"}
 SETTLED_BY = {"resolve-stack", "research-strategy", "goldfish"}
 SKEPTIC_STATUSES = {"supported", "unjustified", "miscounted", "mis-cited",
                     "over-claimed", "unverified-line", "contradicts-artifact"}
