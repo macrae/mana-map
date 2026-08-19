@@ -27,6 +27,8 @@ PILOT_STEPS = [
      "Merge the debrief agent's annotations into log_annotations.json, by entry id"),
     ("simulate", "manamap.sim.forge",
      "Run N Commander games of this deck against opponents in Forge, headless; record the run (◆ sampled)"),
+    ("fetch-opponent", "manamap.sim.opponents",
+     "An opponent seat under data/opponents/<slug>/ from EDHREC's average deck for a commander"),
     ("sim-scenario", "manamap.sim.bridge",
      "Lift one game at one moment out of a Forge run into a game_state v2 scenario for resolve-stack"),
     ("validate-sim", "manamap.sim.validate_sim",
@@ -273,6 +275,12 @@ def add_pilot_parser(subparsers):
                              help="list this deck's prescriptions")
             cmd.add_argument("--merge", default=None, metavar="ID",
                              help="merge the doctor's (and skeptic's) handoff into prescription ID")
+        if name == "fetch-opponent":
+            cmd.add_argument("commander", nargs="?", default=None,
+                             help="commander name or EDHREC slug; omit (or --list) to list the pod")
+            cmd.add_argument("--as", dest="as_slug", default=None, help="opponent slug (default: from the commander)")
+            cmd.add_argument("--note", default=None, help="why this seat is at your table")
+            cmd.add_argument("--list", action="store_true")
         if name == "sim-scenario":
             cmd.add_argument("run", help="the run id (see `simulate <slug> --list`)")
             cmd.add_argument("--game", type=int, required=True, help="1-based game index in the run")

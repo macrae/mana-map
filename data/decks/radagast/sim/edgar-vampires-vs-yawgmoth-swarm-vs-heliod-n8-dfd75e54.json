@@ -824,7 +824,8 @@
       "tokens_observed counts distinct token ids that attacked or blocked (or dealt combat damage) for the seat; a token that only sat on the board is invisible to the log.",
       "token_resolutions counts token-creating abilities that resolved; it is blind to how many tokens each made (X, doubling) — a floor on creation events, not a token count.",
       "eliminated_by is the controller of the last damage source before the life line that crossed zero, learned from attack/block/land/cast lines; null when the source was never seen acting (e.g. a drain from a permanent that never attacked).",
-      "All figures are sampled (Forge has no seed); ci95 is a Wilson interval for rates and a normal interval for means, and both are meaningless below ~10 games."
+      "Damage figures see DAMAGE only. Life LOSS that is not damage (Vito's drain, Blood Artist, 'each opponent loses 1 life') shows in life_by_turn and eliminated_turn but not in any damage total, and eliminated_by — the controller of the last DAMAGE source before the life line that crossed zero — is WRONG for a drain kill. Measured: Vito wins 9 of 20 on 7.0 combat damage a game.",
+      "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. Seeded runs replay exactly; the interval is still the claim."
     ]
   },
   "games": [

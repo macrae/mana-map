@@ -33,7 +33,7 @@ written brief, and the issue now opens on two pictures of the deck: its **conste
 [009 Radagast](https://macrae.github.io/mana-map/manuals/radagast.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-Scale: 59 `manamap pilot` subcommands, 18 top-level subcommands, 15 agents, 19 skills,
+Scale: 60 `manamap pilot` subcommands, 18 top-level subcommands, 15 agents, 19 skills,
 10 cache-gated routines (plus `stack:`/`decision:`/`prescription:` per artifact), and the magazine's department list as `issue_spec.DEPARTMENTS`
 gives it — **`OPTIONAL_DEPARTMENTS` is empty**, both migrations having landed on all nine
 decks. Test counts live in `docs/testing.md`.
@@ -223,7 +223,7 @@ was in Forge's source — the `forge` marker, the parser with CIs and two honest
 figures, `validate-sim`, the `deck-info` panel, the first tracked 4-seat run on radagast —
 0 of 8, deals the most combat damage and wins none — and the bridge: `sim-scenario` lifts a
 board at a CR step into a `game_state` v2 scenario; `validate-stack`/`scenario-facts` read
-v2). S3 (your table's opponents) and S5 (sim debrief) remain. `manual-v5` is parked with its spec on its own branch.
+v2). **S3 is done** — the pod as dictated (giada-angels, abaddon [best guess for "Abigail"], baylen-tokens, vito) under `data/opponents/` via `fetch-opponent`, and the first table: radagast 0 of 20, Giada 11, Vito 9 (by life loss the damage parser cannot see — named as a limit, to fix in S5). S5 (sim debrief + `prescribe` reading sim; the drain blind spot) remains. `manual-v5` is parked with its spec on its own branch.
 
 **The MVP as scoped on 2026-08-19 is complete**: versions, notes, basic stats, goldfish,
 and the agent audit/enrichment. What remains is the audit's optional item 8

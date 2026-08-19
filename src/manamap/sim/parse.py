@@ -64,9 +64,14 @@ _ACTIVATOR = re.compile(r"\[(?:Card: .*?, )?Activator: " + _SEAT)
 _PLAYER_TAG = re.compile(r"\[(?:Player|Phase): " + _SEAT + r"\]")
 
 
+_SEP = re.compile(r"^(?:,\s*|\s*and\s+)+")
+
+
 def _perms(text):
-    """Every `Name (id)` in a combat assignment list ('A (1) and B (2)' or 'A (1), B (2)')."""
-    return [(m.group(1).strip(), m.group(2)) for m in re.finditer(_PERM, text)]
+    """Every `Name (id)` in a combat assignment list ('A (1) and B (2)' or 'A (1), B (2)').
+    The non-greedy name starts right after the previous id, so the list separator is
+    stripped — measured: a lifted board read ', Insect Token' and 'and Insect Token'."""
+    return [(_SEP.sub("", m.group(1)).strip(), m.group(2)) for m in re.finditer(_PERM, text)]
 
 
 def _is_token(name):
@@ -349,8 +354,13 @@ def aggregate(facts, slug_label, label):
         "eliminated_by is the controller of the last damage source before the life line that "
         "crossed zero, learned from attack/block/land/cast lines; null when the source was "
         "never seen acting (e.g. a drain from a permanent that never attacked).",
-        "All figures are sampled (Forge has no seed); ci95 is a Wilson interval for rates and "
-        "a normal interval for means, and both are meaningless below ~10 games.",
+        "Damage figures see DAMAGE only. Life LOSS that is not damage (Vito's drain, Blood "
+        "Artist, 'each opponent loses 1 life') shows in life_by_turn and eliminated_turn but "
+        "not in any damage total, and eliminated_by — the controller of the last DAMAGE source "
+        "before the life line that crossed zero — is WRONG for a drain kill. Measured: Vito wins "
+        "9 of 20 on 7.0 combat damage a game.",
+        "ci95 is a Wilson interval for rates and a normal interval for means; both are "
+        "meaningless below ~10 games. Seeded runs replay exactly; the interval is still the claim.",
     ]
     return out
 

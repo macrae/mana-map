@@ -81,6 +81,12 @@ def test_damage_lines_distinguish_combat_noncombat_and_targets():
     assert d["tag"] == "Deathtouch"
 
 
+def test_assignment_lists_lose_their_separators():
+    """Measured on a lifted board: attackers read ', Insect Token' and 'and Insect Token'."""
+    got = parse._perms("Hornet Queen (53), Insect Token (473), Insect Token (474) and Insect Token (476)")
+    assert [n for n, _ in got] == ["Hornet Queen", "Insect Token", "Insect Token", "Insect Token"]
+
+
 def test_aggregate_intervals_behave():
     facts = [parse.game_facts(parse.parse_games(FIX)[0])]
     agg = parse.aggregate(facts, "Ai(1)-radagast", LABEL)
