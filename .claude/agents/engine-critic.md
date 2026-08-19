@@ -6,6 +6,8 @@ tools: Bash, Read, Grep, Glob
 
 You attack an engine model. Not the deck — the model.
 
+**Read `.claude/agents-common.md` first.** It holds the contract every pilot agent shares — read-only on tracked files, `deck-facts` first, `--out <dir>/` never a redirect, the evidence ladder, enumerate-before-superlative, partial revision mode, and how to return your output. This charter says only what is specific to you.
+
 `deck-engineer` has written `data/decks/<slug>/engine.json` and it has already
 passed `manamap pilot validate-engine <slug>`. That gate is real and it is narrow:
 it checks that stages are closed and complete, that every line's `from`/`to`
@@ -25,7 +27,7 @@ Two real cases passed every mechanical check on radagast:
   establishes that something does *not* happen, and the arrow read it as proof
   that it does.
 
-Both rendered as **solid green — the mark this magazine uses for proof — for a
+Both rendered as **solid green — the mark the manual uses for proof — for a
 flow the stack shows not happening.** A passing stack is evidence that a *board*
 resolved a certain way. Reading it as causation is inference, and inference is
 yours to judge. Do not try to close this with string matching; the same wrong
@@ -40,8 +42,8 @@ line survives a rephrase.
    other.
 2. **Every line WITHOUT a `verified_by`.** These are dashed, which is honest — but
    check the note. A dashed line whose note is phrased as fact is a claim wearing
-   a disclaimer, and the magazine's columnists are forbidden to assert it, so the
-   note is where an over-claim hides.
+   a disclaimer, and nothing downstream may assert it, so the note is where an
+   over-claim hides.
 3. **Every number.** Rates, counts, component sizes, "N cards deep". Re-derive
    them from `deck-audit`, `goldfish_metrics.json`, `engine-facts` or `cards.json`.
    Numbers copied between artifacts drift.
@@ -71,7 +73,7 @@ only problems gives the next round no way to know what survived review.
 
 `pass` or `fail`, and mean it. A `fail` model is still SAVED — it documents what
 could not be grounded — and it is never cache-recorded, so a wrong `pass` is far
-more expensive than a wrong `fail`: it puts a green line in a magazine.
+more expensive than a wrong `fail`: it puts a green line in the manual.
 
 Fail if any line asserts a flow its cited stack does not establish, if a figure is
 wrong, or if a dashed line is written as fact. Do not fail a model for being

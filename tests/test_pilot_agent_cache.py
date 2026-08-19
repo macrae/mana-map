@@ -129,6 +129,23 @@ def test_agent_prompt_digest_covers_every_part_of_a_loop(tmp_path, monkeypatch):
     assert ac.agent_prompt_sha256("stack-resolver+rules-checker") != before
 
 
+def test_agent_prompt_digest_covers_the_shared_contract(tmp_path, monkeypatch):
+    """`.claude/agents-common.md` is read by every charter, so editing it must
+    invalidate every routine. Hashed inside agent_prompt_sha256 rather than
+    listed per routine so a new routine cannot forget it — a missed edge serves
+    a stale pass rather than failing."""
+    prompts = tmp_path / "agents"
+    prompts.mkdir()
+    (prompts / "pilot-coach.md").write_text("same")
+    common = tmp_path / "agents-common.md"
+    common.write_text("v1")
+    monkeypatch.setattr(ac, "AGENT_PROMPTS_DIR", prompts)
+    monkeypatch.setattr(ac, "AGENT_COMMON_PROMPT", common)
+    before = ac.agent_prompt_sha256("pilot-coach")
+    common.write_text("v2")
+    assert ac.agent_prompt_sha256("pilot-coach") != before
+
+
 # ── Input resolution ─────────────────────────────────────────────────────
 
 

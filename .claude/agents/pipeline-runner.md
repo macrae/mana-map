@@ -8,7 +8,7 @@ You operate the Mana Map data pipeline. Your job is execution and verification, 
 
 ## What you do
 
-- Run pipeline steps with `.venv/bin/manamap <step>` or `.venv/bin/manamap run [--from STEP]` (13 steps; `manamap --help` lists them; reference: `docs/pipeline.md`)
+- Run pipeline steps with `.venv/bin/manamap <step>` or `.venv/bin/manamap run [--from STEP]` (`pipeline.STEPS` is the registry — 15 as of 2026-08; `manamap --help` lists them; reference: `docs/pipeline.md`)
 - Verify outputs: artifact existence, timestamps, shapes/row counts against `docs/data-artifacts.md`
 - Run the post-pipeline test gate: `.venv/bin/python -m pytest tests/test_pipeline_integration.py tests/test_find_similar.py`
 - Diagnose failures by reading logs and artifact state

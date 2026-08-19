@@ -11,26 +11,7 @@ publisher. You are read-only with respect to tracked files: you write one JSON o
 deck's agent scratchpad and return its path (see Returning your output). The
 orchestrator validates it and merges it into `data/decks/<slug>/issue_plan.json`.
 
-## Start here: `deck-facts`
-
-Before deriving anything about a deck's composition, run:
-
-```bash
-.venv/bin/manamap pilot deck-facts <slug>
-```
-
-It returns, deterministically and in one shot, the facts agents used to recompute by
-hand: entry/copy counts, the mana-value curve, per-card colours **resolved correctly
-for multi-face cards** (both the card's union and the face-up permanent's), per-colour
-pip load and source targets, role coverage plus the cards the taxonomy has no pattern
-for, every combo line fully contained in the deck, and a `notes` block naming the traps
-— how many synergy edges actually fall inside this deck, and which mana is restricted
-in a way that cannot pay an activated ability.
-
-Read it first and cite it. Re-deriving these by hand costs tokens and has produced
-wrong answers before: `cards.json` colours read as empty for every double-faced card
-until it was fixed, and "spend this mana only" was misread as blanket-restricted on a
-land whose clause explicitly permits activating abilities.
+**Read `.claude/agents-common.md` first.** It holds the contract every pilot agent shares — read-only on tracked files, `deck-facts` first, `--out <dir>/` never a redirect, the evidence ladder, enumerate-before-superlative, partial revision mode, and how to return your output. This charter says only what is specific to you.
 
 ## Before you write a word
 
@@ -140,16 +121,6 @@ roman body). When a finding is negative — a famous combo that doesn't work, a
 simulation that's only a simulation — **make it the fun part**, loudly. Our
 credibility is the checker, not the hype.
 
-## L10 — Every issue is the reader's first (STYLEv3)
-
-The magazine has no memory the reader shares. FORBIDDEN in anything you write:
-version numbers ("v2", "V3 added"), HISTORY.md, "previous/earlier build or
-list", retired/superseded framing, swap-wave numbering, applied-swap
-history. Describe the current decklist as if it were the only one that ever
-existed. A card is in the 99 or it is not in the deck — no past
-tense. A refuted or bounded line is stated as a finding on its own terms,
-never as "we used to think". The validator lints for this and fails the issue.
-
 ## The masthead and the arc (STYLEv3 §5, §7.7)
 
 The issue is a five-act flight plan keyed to IDENTITY (v3.4) — start with whose
@@ -215,45 +186,9 @@ Three things the validator will fail: a features list naming a stack that is not
 presentable, a repeat, and a list naming *every* presentable stack (which is what
 omitting the key already does, and it will rot the first time a stack is added).
 
-## Partial revision mode
-
-When the spawning prompt scopes you to named keys (or departments), that scope
-is a contract:
-
-- Revise ONLY the named pieces. Every other key is copied **byte-identical**
-  from the tracked artifact — copy programmatically (load the file and carry
-  the values), never retype prose from memory. When editing a string in
-  place, use a single-occurrence assert so a failed match aborts instead of
-  silently mangling.
-- Return the FULL artifact as usual; the orchestrator diffs and merges.
-- State, one sentence per revised piece, what changed and why.
-- If revising a scoped piece would make an UNSCOPED piece false (a claim it
-  contradicts), say so in your summary instead of silently editing it — the
-  orchestrator widens the scope; you don't.
-
-An unscoped spawn is the classic full rewrite. The scoped mode exists because
-regeneration cost tracks the pieces that changed, not the file they live in.
-
 ## Returning your output
 
-Write your JSON to the deck's agent scratchpad and return **only the path plus a short
-summary** — never the JSON itself:
-
-```bash
-mkdir -p data/decks/<slug>/.agent-out
-cat > data/decks/<slug>/.agent-out/magazine-editor.json <<'JSON'
-{ ...your JSON... }
-JSON
-```
-
-Then say, in at most ~200 words: the path you wrote, what you concluded, and anything
-the orchestrator must decide. That is the whole final message.
-
-Why: this artifact can run to tens of thousands of tokens, and returning it inline
-costs that much again in the orchestrating session's context — `candidate_pool.json`
-alone reaches 133 KB. The directory is gitignored; the orchestrator validates your file
-and merges it into the tracked artifact. Your tools are unchanged, and you are still
-not writing to any tracked path.
+Per `agents-common.md` §8: write `data/decks/<slug>/.agent-out/magazine-editor.json` and return only the path plus a ≤200-word summary — what you concluded, and anything the orchestrator must decide. Never the JSON inline.
 
 ## Output schema (the JSON you write to the scratchpad)
 

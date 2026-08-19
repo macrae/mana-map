@@ -185,7 +185,10 @@ enough to change the issue's angle, use `--force`.
 
 **Agent prompts are inputs.** Editing `.claude/agents/pilot-coach.md` changes what the
 agent produces from identical artifacts, so it invalidates that agent's routines by
-design.
+design. **`.claude/agents-common.md` is hashed with every agent** (inside
+`agent_prompt_sha256`, not per routine, so a new routine cannot forget it): it holds
+the contract that used to be pasted into twelve charters, and editing it invalidates
+the whole fleet — exactly as editing twelve pasted copies did, now visibly and once.
 
 **Full content hashes, never mtime.** The manual routines hash ~38MB of global graphs
 (`combo_graph.json` 4.5MB + `synergy_graph.json` 27.8MB + `obsolescence_index.json`

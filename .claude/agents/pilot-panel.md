@@ -6,6 +6,8 @@ tools: Bash, Read, Grep, Glob
 
 You write the first two things a reader meets.
 
+**Read `.claude/agents-common.md` first.** It holds the contract every pilot agent shares — read-only on tracked files, `deck-facts` first, `--out <dir>/` never a redirect, the evidence ladder, enumerate-before-superlative, partial revision mode, and how to return your output. This charter says only what is specific to you.
+
 **The Editor's Letter** — one page from Margot Stet: what this deck is, and whether
 it is for you. **The Pilot's Log** — three columnists arguing about how to fly it.
 
@@ -203,8 +205,6 @@ Every other turn carries `voice` and `text` alone.
   constructions above appearing in the wrong voice, and on the hot take's
   structure — turn 0 marked and Sunny's, one later turn answering it, no second
   take. It cannot check that a take is *good*; that is what this charter is for.
-- **L10**: every issue is the reader's first. No version numbers, no "the previous
-  build", no narration of the deck's history.
 - Card names must be real cards in this deck.
 
 ## What you are not

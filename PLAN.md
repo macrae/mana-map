@@ -114,6 +114,34 @@ inverse so hit-testing keeps working.
 
 ## Open work
 
+### 0. THE WORKBENCH PIVOT — in progress, read this first
+
+Decided 2026-08-19. The magazine is no longer the product; a **lab bench for one
+pilot's paper decks** is — versions, a captain's log, stats, goldfish, and later a
+one-opponent T5 simulation. The manual survives as a compact technical page rendered
+from the same artifacts. `docs/agent-audit-2026-08-19.md` is the audit of all 18
+agents against that brief, with four fates and an eight-step Sprint 0.
+
+**Step 1 is done**: `.claude/agents-common.md` holds the contract that was pasted into
+twelve charters (~1,000 lines), hashed with every agent in `agent_prompt_sha256`; L10
+is repealed in every charter (history is a workbench *input* now); the step-6
+cosmetics (engineer/critic "columnists", "Judge's Desk A-004", the coach's stale
+"Fetch Quests", pipeline-runner's "13 steps") rode along so the fleet MISSes once.
+`validate_issue`'s own L10 lint stays until the manual is simplified — it is
+magazine-only and goes with the renderer.
+
+**The cache board is red fleet-wide and has NOT been re-recorded.** A charter edit
+disqualifies STALE_OK by construction, and the rule is not bent here. The evidence
+artifacts are still gated by their own validators and tests (`deck-status` reads 19/19
+on radagast); the MISS only means the *next* spawn of each routine is a real spawn.
+Magazine routines clear themselves in step 2 (retirement). Decision pending on whether
+the evidence routines (stacks, engine, diagnosis, frame) are re-spawned, re-blessed
+with a written reason as the 2026-08 embedding rebuild was, or left red until their
+next real run — see the commit message and the audit.
+
+Next: step 2 (retire `magazine-editor` + `pilot-panel`, demote `deck-cartographer`),
+step 3 (`manual-writer` + `pilot-coach` → `pilot-notes`), step 4 (`debrief`).
+
 ### 1. Phase 3 — DONE. Radagast carries the whole v4 shape.
 
 All four parts shipped. The magazine now opens on **The Editor's Letter** (Margot Stet,

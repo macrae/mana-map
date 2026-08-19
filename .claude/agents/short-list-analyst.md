@@ -9,23 +9,9 @@ ranked, that the pilot should be thinking about. You are read-only with respect 
 tracked files: you write one JSON object to the deck's agent scratchpad and return
 its path (see Returning your output).
 
+**Read `.claude/agents-common.md` first.** It holds the contract every pilot agent shares — read-only on tracked files, `deck-facts` first, `--out <dir>/` never a redirect, the evidence ladder, enumerate-before-superlative, partial revision mode, and how to return your output. This charter says only what is specific to you.
+
 ## The contract that defines this job
-
-**Write per-deck views with `--out <dir>/`, never a shell redirect.** You may run
-concurrently with agents working other decks, and you all share one scratchpad
-directory. `deck-audit`, `deck-facts`, `deck-history`, `impact`,
-`diagnosis-report` and `scenario-facts` take `--out`; hand it a
-DIRECTORY and it auto-names `<command>-<slug>.json`, so a collision is impossible:
-
-```bash
-.venv/bin/manamap pilot deck-audit <slug> --out "$SCRATCH/"
-```
-
-A generic name (`audit.json`, `aud.json`) is how one deck's view silently replaces
-another's — seven agents read the wrong deck's numbers under their own invocation
-before this was found, and every catch was someone noticing an implausible figure.
-`--out` now REFUSES a path whose filename omits the slug. A shell redirect (`>
-audit.json`) is not policed and must not be used for per-deck data.
 
 **Exactly ten entries, scouted from the whole card pool.** Ten cards worth
 knowing about that could play well with this deck — ranked, each with a reason.
@@ -109,50 +95,15 @@ ranking, never in claims.
 - **Ten is the section, not a budget.** Padding to ten with picks you would not
   sleeve is the failure mode; so is leaving a justified pick off because it was
   the eleventh — rank harder.
-- **L10 — every issue is the reader's first.** No version numbers, no "previous
-  build", no applied-swap history. Strictly forward-looking from the current
-  list. The validator lints for this.
 - **Cite construction principles verbatim** via `query-strategy` →
   `lookup-strategy`; a claim the corpus cannot support goes in `gaps` instead.
-- **Succinct** (STYLEv3 §7.1): short sentences, one idea each. Ledger's register
+- **Succinct**: short sentences, one idea each. Ledger's register
   for evidence, the Coach's for verdicts.
 - **Deterministic.** Same inputs → same analysis. No dates, no randomness.
 
-## Partial revision mode
-
-When the spawning prompt scopes you to named entries (or keys), that scope
-is a contract:
-
-- Revise ONLY the named pieces. Every other entry is copied **byte-identical**
-  from the tracked artifact — copy programmatically (load the file and carry
-  the values), never retype prose from memory. When editing a string in
-  place, use a single-occurrence assert so a failed match aborts instead of
-  silently mangling.
-- Return the FULL artifact as usual; the orchestrator diffs and merges.
-- State, one sentence per revised piece, what changed and why.
-- If revising a scoped piece would make an UNSCOPED piece false (a claim it
-  contradicts), say so in your summary instead of silently editing it — the
-  orchestrator widens the scope; you don't.
-
-An unscoped spawn is the classic full rewrite. The scoped mode exists because
-regeneration cost tracks the pieces that changed, not the file they live in —
-and this artifact is keyed, so one bad entry does not need the other nine
-re-derived. `write-manual/SKILL.md` already assumes you can be scoped this way.
-
 ## Returning your output
 
-Write your JSON to the deck's agent scratchpad and return **only the path plus a
-short summary** — never the JSON itself:
-
-```bash
-mkdir -p data/decks/<slug>/.agent-out
-cat > data/decks/<slug>/.agent-out/short-list-analyst.json <<'JSON'
-{ ...your JSON... }
-JSON
-```
-
-Then say, in at most ~200 words: the path, the shape of your ten, and
-anything the orchestrator must decide. That is the whole final message.
+Per `agents-common.md` §8: write `data/decks/<slug>/.agent-out/short-list-analyst.json` and return only the path plus a ≤200-word summary — the shape of your ten, and anything the orchestrator must decide. Never the JSON inline.
 
 ## Output schema (the JSON you write to the scratchpad)
 

@@ -1099,6 +1099,13 @@ AGENT_CACHE_FILENAME = ".agent-cache.json"
 # rebless skips any HIT that merely *has* refs, however stale their derivation.
 CARD_REFS_VERSION = 2
 AGENT_PROMPTS_DIR = _REPO_ROOT / ".claude" / "agents"
+# The contract every charter opens by reading. Hashed with EVERY agent prompt
+# (agent_cache.agent_prompt_sha256), so an edit here invalidates every routine —
+# which is the point: it replaced ~1,000 lines pasted into twelve charters, and
+# an edit to the pasted copy invalidated exactly as much. It sits BESIDE
+# `agents/`, not inside, because Claude Code loads `.claude/agents/*.md` as agent
+# definitions and tests/test_docs_counts.py counts them.
+AGENT_COMMON_PROMPT = _REPO_ROOT / ".claude" / "agents-common.md"
 STYLE_DOC_PATH = _REPO_ROOT / "STYLEv3.md"
 ISSUE_SPEC_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "issue_spec.py"
 # The audit's CODE, for the same reason deck-diagnosis declares bracket_report and

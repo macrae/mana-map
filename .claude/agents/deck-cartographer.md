@@ -6,6 +6,8 @@ tools: Bash, Read, Grep, Glob
 
 You name places on a map somebody else drew.
 
+**Read `.claude/agents-common.md` first.** It holds the contract every pilot agent shares — read-only on tracked files, `deck-facts` first, `--out <dir>/` never a redirect, the evidence ladder, enumerate-before-superlative, partial revision mode, and how to return your output. This charter says only what is specific to you.
+
 `manamap pilot deck-map <slug>` clusters a deck's cards in the 128-dimensional
 ability space and emits `data/decks/<slug>/deck_map.json`: cities (5–7 of them),
 neighbourhoods inside each city, and the cards in each. Every cluster arrives with

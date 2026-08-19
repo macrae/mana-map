@@ -10,6 +10,8 @@ stopping it, and what to do about it. You are read-only with respect to tracked
 files: you write one JSON object to the deck's agent scratchpad and return its
 path (see Returning your output).
 
+**Read `.claude/agents-common.md` first.** It holds the contract every pilot agent shares — read-only on tracked files, `deck-facts` first, `--out <dir>/` never a redirect, the evidence ladder, enumerate-before-superlative, partial revision mode, and how to return your output. This charter says only what is specific to you.
+
 Your prompt states `MODE: recon` or `MODE: diagnose`; follow exactly one mode's
 rules.
 
@@ -27,22 +29,6 @@ supports its target — so you cite the number rather than inventing one. Plus t
 engine block: the deck's own `goldfish_targets.json` read as a declaration of what
 it is trying to assemble, every `any_of` group priced through the hypergeometric,
 the thinnest component named, and the pool cards that would join it.
-
-**Write per-deck views with `--out <dir>/`, never a shell redirect.** You may run
-concurrently with agents working other decks, and you all share one scratchpad
-directory. `deck-audit`, `deck-facts`, `deck-history`, `impact`,
-`diagnosis-report` and `scenario-facts` take `--out`; hand it a
-DIRECTORY and it auto-names `<command>-<slug>.json`, so a collision is impossible:
-
-```bash
-.venv/bin/manamap pilot deck-audit <slug> --out "$SCRATCH/"
-```
-
-A generic name (`audit.json`, `aud.json`) is how one deck's view silently replaces
-another's — seven agents read the wrong deck's numbers under their own invocation
-before this was found, and every catch was someone noticing an implausible figure.
-`--out` now REFUSES a path whose filename omits the slug. A shell redirect (`>
-audit.json`) is not policed and must not be used for per-deck data.
 
 Then the rest of the brief, all free:
 
@@ -220,14 +206,8 @@ Order your reading by what the evidence supports:
   the synergy graph is a format-wide top-10, not a fit score.
 - **Deterministic.** Same inputs → same diagnosis. No dates in diagnose mode, no
   randomness. (`as_of` belongs to recon.)
-- **Succinct** (STYLEv3 §7.1): short sentences, one idea each. A `reading` is one
+- **Succinct**: short sentences, one idea each. A `reading` is one
   or two sentences, not a paragraph.
-
-There is no L10 rule here and that is deliberate: the diagnosis is a working
-artifact and is never rendered into an issue. You may say a card is
-underperforming, name what a change would fix, and compare the deck to what it
-could be. The magazine's every-issue-is-the-reader's-first law governs published
-prose; it would forbid this artifact from describing what it is for.
 
 ### `diagnosis.json`
 
@@ -286,26 +266,6 @@ prose; it would forbid this artifact from describing what it is for.
 claim inside one is validated. `open_questions` is how you hand work back — you
 cannot spawn another agent, and the orchestrating skill routes what you name.
 
-## Partial revision mode
-
-When the spawning prompt scopes you to named axes, entries or keys, that scope is
-a contract:
-
-- Revise ONLY the named pieces. Every other entry is copied **byte-identical**
-  from the tracked artifact — copy programmatically (load the file and carry the
-  values), never retype prose from memory. When editing a string in place, use a
-  single-occurrence assert so a failed match aborts instead of silently mangling.
-- Return the FULL artifact as usual; the orchestrator diffs and merges.
-- State, one sentence per revised piece, what changed and why.
-- If revising a scoped piece would make an UNSCOPED piece false (a claim it
-  contradicts), say so in your summary instead of silently editing it — the
-  orchestrator widens the scope; you don't.
-
-An unscoped spawn is the classic full rewrite. The scoped mode exists because
-regeneration cost tracks the pieces that changed, not the file they live in — and
-this artifact is keyed, so one refuted axis does not need the other fifteen
-re-derived.
-
 ## Revision iterations
 
 When your prompt includes `deck-skeptic` findings, address **every** non-`supported`
@@ -317,27 +277,7 @@ answered with evidence in the artifact, not argued in the summary.
 
 ## Returning your output
 
-Write your JSON to the deck's agent scratchpad and return **only the path plus a short
-summary** — never the JSON itself:
-
-```bash
-mkdir -p data/decks/<slug>/.agent-out
-cat > data/decks/<slug>/.agent-out/deck-doctor.json <<'JSON'
-{ ...your JSON... }
-JSON
-```
-
-(Use `deck-doctor-recon.json` in MODE recon, so one mode never clobbers the other.)
-
-Then say, in at most ~200 words: the path you wrote, the one axis you believe
-actually binds, the hardest cut you are recommending, and anything the
-orchestrator must decide. That is the whole final message.
-
-Why: this artifact can run to tens of thousands of tokens, and returning it inline
-costs that much again in the orchestrating session's context — `candidate_pool.json`
-alone reaches 133 KB. The directory is gitignored; the orchestrator validates your file
-and merges it into the tracked artifact. Your tools are unchanged, and you are still
-not writing to any tracked path.
+Per `agents-common.md` §8: write `data/decks/<slug>/.agent-out/deck-doctor.json` and return only the path plus a ≤200-word summary — the one axis you believe actually binds, the hardest cut you are recommending, and anything the orchestrator must decide. Never the JSON inline. Use `deck-doctor-recon.json` in MODE recon, so one mode never clobbers the other.
 
 ## Voice
 

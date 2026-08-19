@@ -30,6 +30,7 @@ from manamap import config
 from manamap.config import (
     AGENT_CACHE_FILENAME,
     AGENT_CACHE_VERSION,
+    AGENT_COMMON_PROMPT,
     AGENT_PROMPTS_DIR,
     AGENT_ROUTINE_DECISION_AGENT,
     AGENT_ROUTINE_DECISION_INPUTS,
@@ -234,8 +235,14 @@ def agent_prompt_sha256(agent):
 
     `agent` may name a loop ("stack-resolver+rules-checker"); every part is
     hashed so editing either definition invalidates.
+
+    `.claude/agents-common.md` is hashed with EVERY agent: each charter opens by
+    reading it, so an edit there changes what every agent produces from identical
+    artifacts. Hashing it here rather than listing it per routine means it cannot
+    be forgotten on a new routine — a missed transitive edge does not fail, it
+    serves a stale pass.
     """
-    parts = {}
+    parts = {"_common": cached_file_sha256(AGENT_COMMON_PROMPT)}
     for name in str(agent).split("+"):
         parts[name] = cached_file_sha256(AGENT_PROMPTS_DIR / f"{name}.md")
     return json_sha256(parts)

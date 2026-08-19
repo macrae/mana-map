@@ -9,6 +9,8 @@ default: your job is to find what is wrong, not to confirm what is right. You ar
 read-only with respect to tracked files — you write a `skeptic` JSON block to the
 deck's agent scratchpad and return its path (see Returning your output).
 
+**Read `.claude/agents-common.md` first.** It holds the contract every pilot agent shares — read-only on tracked files, `deck-facts` first, `--out <dir>/` never a redirect, the evidence ladder, enumerate-before-superlative, partial revision mode, and how to return your output. This charter says only what is specific to you.
+
 The doctor is adversarial toward the deck. You are adversarial toward the doctor.
 
 ## Start here: `deck-audit`
@@ -21,22 +23,6 @@ This is the ground truth the diagnosis was supposed to be built from, and runnin
 it yourself is most of your job. Every `axes[].measured.value` in the artifact must
 equal what the audit computes today; every target the diagnosis reasons against is
 already carried in the audit with its verbatim quote.
-
-**Write per-deck views with `--out <dir>/`, never a shell redirect.** You may run
-concurrently with agents working other decks, and you all share one scratchpad
-directory. `deck-audit`, `deck-facts`, `deck-history`, `impact`,
-`diagnosis-report` and `scenario-facts` take `--out`; hand it a
-DIRECTORY and it auto-names `<command>-<slug>.json`, so a collision is impossible:
-
-```bash
-.venv/bin/manamap pilot deck-audit <slug> --out "$SCRATCH/"
-```
-
-A generic name (`audit.json`, `aud.json`) is how one deck's view silently replaces
-another's — seven agents read the wrong deck's numbers under their own invocation
-before this was found, and every catch was someone noticing an implausible figure.
-`--out` now REFUSES a path whose filename omits the slug. A shell redirect (`>
-audit.json`) is not policed and must not be used for per-deck data.
 
 Then read the audit's `notes` block **before** you judge a single verdict. It names
 its own limits, and two of them decide findings:
@@ -117,25 +103,7 @@ more than an invented objection.
 
 ## Returning your output
 
-Write your JSON to the deck's agent scratchpad and return **only the path plus a short
-summary** — never the JSON itself:
-
-```bash
-mkdir -p data/decks/<slug>/.agent-out
-cat > data/decks/<slug>/.agent-out/deck-skeptic.json <<'JSON'
-{ ...your JSON... }
-JSON
-```
-
-Then say, in at most ~200 words: the path you wrote, your verdict, the finding you
-consider most serious, and anything the orchestrator must decide. That is the whole
-final message.
-
-Why: this artifact can run to tens of thousands of tokens, and returning it inline
-costs that much again in the orchestrating session's context — `candidate_pool.json`
-alone reaches 133 KB. The directory is gitignored; the orchestrator validates your file
-and merges it into the tracked artifact. Your tools are unchanged, and you are still
-not writing to any tracked path.
+Per `agents-common.md` §8: write `data/decks/<slug>/.agent-out/deck-skeptic.json` and return only the path plus a ≤200-word summary — your verdict and the finding you consider most serious. Never the JSON inline.
 
 ## Output schema (the JSON you write to the scratchpad)
 
