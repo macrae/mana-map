@@ -213,6 +213,14 @@ new, so it cannot disagree with the command that owns each figure — and a deri
 **`next`** list that names the command for each condition true right now. `--json` is the
 future UI's shape. Four tests.
 
+**Simulation leads (decided 2026-08-19, after the MVP).** Branch `simulation`;
+`docs/simulation.md` is S0: the Forge spike passed (a) parseable events and (b) 4-seat
+Commander, failed (c) byte-level reproducibility (no seed; statistical only), ~6 s/2-seat
+and ~30 s/4-seat game, AI caveat verbatim. **Verdict: Forge is the engine; we build the
+harness (`simulate`), the parser (◆ sampled, with CIs), and the bridge to `game_state` v2 →
+`resolve-stack`.** Road B (own engine) shelved. Phases S1–S5 in the doc. `manual-v5` is
+parked with its spec on its own branch.
+
 **The MVP as scoped on 2026-08-19 is complete**: versions, notes, basic stats, goldfish,
 and the agent audit/enrichment. What remains is the audit's optional item 8
 (`card-search` CLI) and the two feature branches: the simplified manual (seven decks,
