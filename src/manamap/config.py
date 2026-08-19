@@ -1106,6 +1106,24 @@ AGENT_PROMPTS_DIR = _REPO_ROOT / ".claude" / "agents"
 # `agents/`, not inside, because Claude Code loads `.claude/agents/*.md` as agent
 # definitions and tests/test_docs_counts.py counts them.
 AGENT_COMMON_PROMPT = _REPO_ROOT / ".claude" / "agents-common.md"
+
+# ── Simulation (docs/simulation.md) ──────────────────────────────────────
+# Forge is the rules engine; it lives OUTSIDE the repo (~470 MB, its own licence).
+# The harness finds the jar under FORGE_HOME and writes .dck files where Forge's
+# sim mode actually looks — the documented `-D` override did not take effect in
+# the spike, so the userdata Commander folder is the contract. Both are env-
+# overridable for another machine or a CI box with Forge installed elsewhere.
+FORGE_HOME = Path(os.environ.get("MANAMAP_FORGE_HOME", Path.home() / ".mana-map" / "forge"))
+FORGE_DECKS_DIR = Path(os.environ.get(
+    "MANAMAP_FORGE_DECKS_DIR",
+    Path.home() / "Library" / "Application Support" / "Forge" / "decks" / "commander"))
+FORGE_JVM_ARGS = ["-Xmx4096m", "-Dio.netty.tryReflectionSetAccessible=true",
+                  "-Dfile.encoding=UTF-8"]
+SIM_DIR = "sim"                       # data/decks/<slug>/sim/<run-id>.json (tracked) + logs/ (ignored)
+SIM_DEFAULT_GAMES = 20
+SIM_GAME_CLOCK_SECONDS = 300          # Forge's -c: a game past this is a draw; 4-seat games run ~30 s
+SIM_DECK_PREFIX = "mm-"               # our .dck files in Forge's folder carry this so they never
+                                      # clobber a deck the pilot built in Forge itself
 # The audit's CODE, for the same reason deck-diagnosis declares bracket_report and
 # mana_analysis: a diagnosis must carry deck-audit's figures, so a change to the
 # regexes that compute them can flip a recorded diagnosis from true to false. Fixing

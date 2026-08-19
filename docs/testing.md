@@ -1,7 +1,8 @@
 # Testing
 
 ```bash
-make test            # THE DEFAULT: non-browser, -n auto, cached      ~22 s
+make test            # THE DEFAULT: non-browser, non-forge, -n auto, cached  ~22 s
+pytest -m forge      # ONE real Forge game (~10 s; needs ~/.mana-map/forge)
 make test-fresh      # same, nothing served from the cache            ~29 s
 make test-browser    # playwright, -n 4, plus the one serial_only test ~4 min
 make test-all        # test-fresh + test-browser

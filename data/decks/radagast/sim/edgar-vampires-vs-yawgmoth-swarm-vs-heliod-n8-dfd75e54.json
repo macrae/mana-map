@@ -1,0 +1,181 @@
+{
+  "run_id": "edgar-vampires-vs-yawgmoth-swarm-vs-heliod-n8-dfd75e54",
+  "slug": "radagast",
+  "at": "2026-08-19",
+  "engine": {
+    "forge": {
+      "version": "2.0.14",
+      "build": "2026-08-08 22:49:26"
+    },
+    "java": "java version \"21.0.9\" 2025-10-21 LTS"
+  },
+  "seats": [
+    {
+      "slug": "radagast",
+      "forge_name": "mm-radagast",
+      "decklist_sha256": "231d89abca22a6a3b6d9f98414f36a325342344ffecef6dfa1df1e3b49c612d2"
+    },
+    {
+      "slug": "edgar-vampires",
+      "forge_name": "mm-edgar-vampires",
+      "decklist_sha256": "bdaa14183bcd959c4c772153b8516f964ca2503b0fa39dd11c9bcfa202c7cc6e"
+    },
+    {
+      "slug": "yawgmoth-swarm",
+      "forge_name": "mm-yawgmoth-swarm",
+      "decklist_sha256": "3ddfb869fa7b2ae006eeb0771c1ffb95aa9df8149fbc2ba3feae4edd2bcd2a59"
+    },
+    {
+      "slug": "heliod",
+      "forge_name": "mm-heliod",
+      "decklist_sha256": "2d7f07f993482fe0cacf3623e0b41061f6e37ef0bca55f645a1b3da9ef38b62b"
+    }
+  ],
+  "games_requested": 8,
+  "games_completed": 8,
+  "jobs": 4,
+  "games_per_job": [
+    2,
+    2,
+    2,
+    2
+  ],
+  "clock_seconds": 300,
+  "wall_seconds": 403.7,
+  "nonzero_exit_jobs": 0,
+  "summary": {
+    "wins": {
+      "radagast": 0,
+      "edgar-vampires": 4,
+      "yawgmoth-swarm": 2,
+      "heliod": 2
+    },
+    "draws": 0,
+    "win_rate": 0.0,
+    "mean_round": 21.8,
+    "mean_global_turn": 43.1
+  },
+  "outcomes": [
+    {
+      "winner": "edgar-vampires",
+      "won_by": "all opponents have lost",
+      "draw": false,
+      "round": 19,
+      "global_turn": 38,
+      "ms": 123927,
+      "lost": {
+        "radagast": "life total reached 0",
+        "yawgmoth-swarm": "life total reached 0",
+        "heliod": "life total reached 0"
+      },
+      "log": "part-00.log"
+    },
+    {
+      "winner": "edgar-vampires",
+      "won_by": "all opponents have lost",
+      "draw": false,
+      "round": 22,
+      "global_turn": 43,
+      "ms": 75020,
+      "lost": {
+        "radagast": "life total reached 0",
+        "yawgmoth-swarm": "life total reached 0",
+        "heliod": "life total reached 0"
+      },
+      "log": "part-00.log"
+    },
+    {
+      "winner": "heliod",
+      "won_by": "effect of 'Approach of the Second Sun'",
+      "draw": false,
+      "round": 21,
+      "global_turn": 42,
+      "ms": 69335,
+      "lost": {
+        "radagast": "an opponent has won by spell 'Approach of the Second Sun'",
+        "edgar-vampires": "life total reached 0",
+        "yawgmoth-swarm": "an opponent has won by spell 'Approach of the Second Sun'"
+      },
+      "log": "part-01.log"
+    },
+    {
+      "winner": "heliod",
+      "won_by": "effect of 'Approach of the Second Sun'",
+      "draw": false,
+      "round": 19,
+      "global_turn": 38,
+      "ms": 168430,
+      "lost": {
+        "radagast": "an opponent has won by spell 'Approach of the Second Sun'",
+        "edgar-vampires": "life total reached 0",
+        "yawgmoth-swarm": "life total reached 0"
+      },
+      "log": "part-01.log"
+    },
+    {
+      "winner": "edgar-vampires",
+      "won_by": "all opponents have lost",
+      "draw": false,
+      "round": 21,
+      "global_turn": 42,
+      "ms": 232458,
+      "lost": {
+        "radagast": "life total reached 0",
+        "yawgmoth-swarm": "life total reached 0",
+        "heliod": "life total reached 0"
+      },
+      "log": "part-02.log"
+    },
+    {
+      "winner": "edgar-vampires",
+      "won_by": "all opponents have lost",
+      "draw": false,
+      "round": 25,
+      "global_turn": 50,
+      "ms": 157946,
+      "lost": {
+        "radagast": "life total reached 0",
+        "yawgmoth-swarm": "life total reached 0",
+        "heliod": "life total reached 0"
+      },
+      "log": "part-02.log"
+    },
+    {
+      "winner": "yawgmoth-swarm",
+      "won_by": "all opponents have lost",
+      "draw": false,
+      "round": 24,
+      "global_turn": 47,
+      "ms": 209002,
+      "lost": {
+        "radagast": "life total reached 0",
+        "edgar-vampires": "life total reached 0",
+        "heliod": "life total reached 0"
+      },
+      "log": "part-03.log"
+    },
+    {
+      "winner": "yawgmoth-swarm",
+      "won_by": "all opponents have lost",
+      "draw": false,
+      "round": 23,
+      "global_turn": 45,
+      "ms": 53931,
+      "lost": {
+        "radagast": "life total reached 0",
+        "edgar-vampires": "life total reached 0",
+        "heliod": "life total reached 0"
+      },
+      "log": "part-03.log"
+    }
+  ],
+  "assumptions": [
+    "SAMPLED, NOT SEEDED: Forge exposes no seed, and identical runs diverge. Every figure is a sample of N games with the stated N; no single game is replayable.",
+    "Forge's AI \"is not trained\"; it is \"best with aggro and midrange decks, poor to ok in control decks, pretty bad for most combo decks\" (Forge docs/AI.md). A control deck's win rate here is a lower bound on a competent pilot's; a combo deck's is not a measurement.",
+    "Seats are Forge AIs on both sides — including YOUR deck. A result is AI-vs-AI, never pilot-vs-pod.",
+    "Two turn counts: `round` is the winner's own turn count (Forge's `Game Outcome: Turn N`), `global_turn` is the game's last `Turn:` line — in a 4-seat game round 8 is global turn ~32. Measured on a 2-seat log: Outcome Turn 8, last Turn: line 16.",
+    "A game past the clock is recorded as a draw, not dropped.",
+    "radagast's strategic frame calls it 'Mono-green Draw-Go Stompy: a creature-dense midrange deck whose commander turns every creature into a potential instant, playing ambush-control until the overrun window opens.' — read the AI caveat against that."
+  ],
+  "logs": "sim/logs/edgar-vampires-vs-yawgmoth-swarm-vs-heliod-n8-dfd75e54/ (gitignored; regenerate by re-running)"
+}

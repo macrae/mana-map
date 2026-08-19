@@ -25,6 +25,8 @@ PILOT_STEPS = [
      "Form-check the debrief annotations against the log they annotate"),
     ("merge-debrief", "manamap.pilot.merge_debrief",
      "Merge the debrief agent's annotations into log_annotations.json, by entry id"),
+    ("simulate", "manamap.sim.forge",
+     "Run N Commander games of this deck against opponents in Forge, headless; record the run (◆ sampled)"),
     ("deck-info", "manamap.pilot.deck_info",
      "The workbench view: one deck, one screen — version, record, status, figures, and what to do next"),
     ("deck-version", "manamap.pilot.deck_versions",
@@ -93,7 +95,7 @@ _DECK_COMMANDS = {
     "validate-tutor-guide", "impact", "scenario-facts", "merge-prose",
     "short-list-art", "issue-length", "card-value", "validate-pending",
     "deck-notes", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
-    "deck-version", "deck-info",
+    "deck-version", "deck-info", "simulate",
 }
 
 
@@ -226,6 +228,18 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--since", default=None,
                              help="list: only entries at or after this ISO date")
             cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "simulate":
+            cmd.add_argument("--vs", action="append", default=[], metavar="SLUG",
+                             help="an opponent seat (data/opponents/<slug> or data/decks/<slug>); repeatable")
+            cmd.add_argument("--games", type=int, default=None,
+                             help="number of games (default SIM_DEFAULT_GAMES)")
+            cmd.add_argument("--jobs", type=int, default=None,
+                             help="JVMs to run in parallel (default: CPUs - 1)")
+            cmd.add_argument("--clock", type=int, default=None,
+                             help="seconds before Forge calls a game a draw (default SIM_GAME_CLOCK_SECONDS)")
+            cmd.add_argument("--list", action="store_true", help="list this deck's runs")
+            cmd.add_argument("--dry-run", action="store_true", dest="dry_run",
+                             help="print the JVM commands and the run id; run nothing")
         if name == "deck-info":
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "deck-version":

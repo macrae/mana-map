@@ -1,0 +1,315 @@
+"""Simulation S1: the Forge harness — run N Commander games of one deck against
+opponents, headless, across JVMs, and record the run.
+
+Forge is the rules engine (docs/simulation.md records the spike and the verdict). This
+module owns everything around it: converting `decklist.txt` to Forge's `.dck` through
+the repo's own parser (so a seat can never disagree with `fetch-deck`), placing decks
+where Forge's sim mode looks, splitting N games across J JVMs, capturing every game log,
+and writing ONE tracked run record beside them.
+
+WHAT A RUN RECORD IS. `data/decks/<slug>/sim/<run-id>.json` — tier ◆ **sampled**: the
+parser over it is deterministic, the games under it are not (Forge has no seed; identical
+runs diverge). So the record states N, what it measured per game, and the assumptions that
+bound it, including Forge's own verdict on its AI, verbatim. The raw logs sit in
+`sim/logs/<run-id>/` and are gitignored: large, regenerable, and a sample is not evidence
+one game at a time.
+
+The run id is `<opponents>-n<N>-<sha8 over every seat's decklist>`: re-running the same
+configuration after a swap is a NEW run and the old one stays — history, like a
+prescription. Re-running the identical configuration appends a suffix rather than
+overwriting, because a second sample is a second sample.
+
+S1 records per-game OUTCOME only (winner, turn, wall ms, how each seat lost) — those lines
+are unambiguous in the log. The event parser that turns the rest of the log into damage,
+tokens, blocks and life is S2, and reads the same logs.
+"""
+
+import hashlib
+import json
+import os
+import re
+import subprocess
+import time
+from concurrent.futures import ThreadPoolExecutor
+from datetime import date
+
+from manamap.config import (DECKS_DIR, FORGE_DECKS_DIR, FORGE_HOME, FORGE_JVM_ARGS,
+                            SIM_DECK_PREFIX, SIM_DEFAULT_GAMES, SIM_DIR,
+                            SIM_GAME_CLOCK_SECONDS)
+from manamap.pilot.common import deck_dir, load_json
+
+# Forge's own verdict on its AI, from its docs/AI.md. Quoted into every run record so a
+# number never travels without the limit that bounds it.
+FORGE_AI_CAVEAT = ('Forge\'s AI "is not trained"; it is "best with aggro and midrange '
+                   'decks, poor to ok in control decks, pretty bad for most combo decks" '
+                   '(Forge docs/AI.md). A control deck\'s win rate here is a lower bound '
+                   'on a competent pilot\'s; a combo deck\'s is not a measurement.')
+ASSUMPTIONS = [
+    "SAMPLED, NOT SEEDED: Forge exposes no seed, and identical runs diverge. Every figure "
+    "is a sample of N games with the stated N; no single game is replayable.",
+    FORGE_AI_CAVEAT,
+    "Seats are Forge AIs on both sides — including YOUR deck. A result is AI-vs-AI, "
+    "never pilot-vs-pod.",
+    "Two turn counts: `round` is the winner's own turn count (Forge's `Game Outcome: "
+    "Turn N`), `global_turn` is the game's last `Turn:` line — in a 4-seat game round 8 "
+    "is global turn ~32. Measured on a 2-seat log: Outcome Turn 8, last Turn: line 16.",
+    "A game past the clock is recorded as a draw, not dropped.",
+]
+
+_OPPONENT_ROOTS = ("opponents", "decks")     # data/opponents/<slug> first (S3), then a deck
+
+
+def seat_dir(slug):
+    """A seat is a deck under data/opponents/ (the pod) or data/decks/ (your own)."""
+    for root in _OPPONENT_ROOTS:
+        p = DECKS_DIR.parent / root / slug
+        if (p / "decklist.txt").exists():
+            return p
+    raise SystemExit(f"no decklist.txt for seat {slug!r} under data/opponents/ or data/decks/")
+
+
+def to_dck(slug):
+    """Forge .dck text for a seat, through the repo's own decklist parser."""
+    from manamap.pilot.fetch_deck import parse_decklist
+    text = (seat_dir(slug) / "decklist.txt").read_text(encoding="utf-8")
+    entries = parse_decklist(text)
+    cmd = [e for e in entries if e.get("is_commander")]
+    main = [e for e in entries if not e.get("is_commander")]
+    if not cmd:
+        raise SystemExit(f"{slug}: decklist names no commander (*CMDR* or a Commander: section)")
+    lines = ["[metadata]", f"Name={SIM_DECK_PREFIX}{slug}", "[Commander]"]
+    lines += [f"{int(e.get('quantity') or 1)} {e['name']}" for e in cmd]
+    lines += ["[Main]"] + [f"{int(e.get('quantity') or 1)} {e['name']}" for e in main]
+    return "\n".join(lines) + "\n"
+
+
+def install_deck(slug, decks_dir=None):
+    """Write the seat's .dck where Forge's sim mode looks. Returns the meta name."""
+    decks_dir = decks_dir or FORGE_DECKS_DIR
+    decks_dir.mkdir(parents=True, exist_ok=True)
+    name = f"{SIM_DECK_PREFIX}{slug}"
+    (decks_dir / f"{name}.dck").write_text(to_dck(slug), encoding="utf-8")
+    return name
+
+
+def forge_jar(home=None):
+    home = home or FORGE_HOME
+    jars = sorted(home.glob("forge-gui-desktop-*-jar-with-dependencies.jar"))
+    if not jars:
+        raise SystemExit(f"no Forge desktop jar under {home} — install Forge there or set "
+                         f"MANAMAP_FORGE_HOME (docs/simulation.md)")
+    return jars[-1]
+
+
+def forge_version(home=None):
+    jar = forge_jar(home)
+    m = re.search(r"forge-gui-desktop-([\d.]+)-jar", jar.name)
+    build = (home or FORGE_HOME) / "build.txt"
+    return {"version": m.group(1) if m else jar.name,
+            "build": build.read_text().strip().splitlines()[0] if build.exists() else None}
+
+
+def seat_sha(slug):
+    base = seat_dir(slug)
+    text_path = base / "decklist.txt"
+    return hashlib.sha256(text_path.read_bytes()).hexdigest()
+
+
+def run_id(slug, opponents, games):
+    digest = hashlib.sha256(
+        "\n".join(f"{s}:{seat_sha(s)}" for s in [slug, *opponents]).encode()).hexdigest()[:8]
+    return f"{'-vs-'.join(opponents)}-n{games}-{digest}"
+
+
+def split_games(games, jobs):
+    """N games across J processes, as evenly as integers allow, no empty job."""
+    jobs = max(1, min(int(jobs), int(games)))
+    base, extra = divmod(int(games), jobs)
+    return [base + (1 if i < extra else 0) for i in range(jobs)]
+
+
+def command(seat_names, games, clock, jar=None):
+    """The exact argv one JVM runs. A pure function so a test can read it."""
+    jar = jar or forge_jar()
+    return ["java", *FORGE_JVM_ARGS, "-jar", str(jar), "sim",
+            "-d", *seat_names, "-f", "commander", "-n", str(games), "-c", str(clock)]
+
+
+# ── Outcome parsing (the unambiguous lines; the event parser is S2) ─────────
+
+_OUTCOME_TURN = re.compile(r"^Game Outcome: Turn (\d+)")
+_TURN = re.compile(r"^Turn: Turn (\d+)")
+# "has won because all opponents have lost" is the common line; an alternate win
+# condition prints "has won due to effect of 'Approach of the Second Sun'". Measured on
+# the first tracked run: two heliod wins read as draws until the second form was matched.
+_OUTCOME_WON = re.compile(r"^Game Outcome: (Ai\(\d+\)-\S+) has won (?:because|due to) (.*)$")
+_OUTCOME_LOST = re.compile(r"^Game Outcome: (Ai\(\d+\)-\S+) has lost because (.*)$")
+_OUTCOME_DRAW = re.compile(r"^Game Outcome: .*draw", re.I)
+_RESULT = re.compile(r"^Game Result: Game (\d+) ended in (\d+) ms")
+
+
+def parse_outcomes(text):
+    """Per-game outcomes from one JVM's log: winner, turn, ms, how each seat lost."""
+    games, cur, last_turn = [], None, None
+    for line in text.splitlines():
+        m = _TURN.match(line)
+        if m:
+            last_turn = int(m.group(1)); continue
+        if cur is None and line.startswith("Game Outcome:"):
+            cur = {"winner": None, "won_by": None, "round": None, "global_turn": last_turn,
+                   "draw": False, "lost": {}, "ms": None}
+            last_turn = None
+        if cur is None:
+            continue
+        m = _OUTCOME_TURN.match(line)
+        if m:
+            cur["round"] = int(m.group(1)); continue
+        m = _OUTCOME_WON.match(line)
+        if m:
+            cur["winner"] = m.group(1); cur["won_by"] = m.group(2).rstrip("."); continue
+        m = _OUTCOME_LOST.match(line)
+        if m:
+            cur["lost"][m.group(1)] = m.group(2).rstrip("."); continue
+        if _OUTCOME_DRAW.match(line):
+            cur["draw"] = True; continue
+        m = _RESULT.match(line)
+        if m:
+            cur["ms"] = int(m.group(2))
+            games.append(cur); cur = None
+    if cur is not None and (cur["winner"] or cur["draw"]):   # a final game with no Result line
+        games.append(cur)
+    return games
+
+
+def _seat_label(seat_names):
+    """Forge labels seats `Ai(k)-<meta name>` in -d order; map back to slugs."""
+    return {f"Ai({i + 1})-{name}": name[len(SIM_DECK_PREFIX):] if name.startswith(SIM_DECK_PREFIX) else name
+            for i, name in enumerate(seat_names)}
+
+
+def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOCK_SECONDS,
+        dry_run=False, home=None, decks_dir=None):
+    """Run the games and write the run record. Returns (record_path, record)."""
+    if not opponents:
+        raise SystemExit("simulate needs at least one opponent: --vs <slug> (repeatable)")
+    seats = [slug, *opponents]
+    names = [install_deck(s, decks_dir) for s in seats]
+    jobs = jobs or max(1, (os.cpu_count() or 2) - 1)
+    parts = split_games(games, jobs)
+    rid = run_id(slug, opponents, games)
+    out_dir = deck_dir(slug) / SIM_DIR
+    log_dir = out_dir / "logs" / rid
+    record_path = out_dir / f"{rid}.json"
+    n = 1
+    while record_path.exists():              # a second sample is a second sample
+        n += 1
+        record_path = out_dir / f"{rid}-{n}.json"
+        log_dir = out_dir / "logs" / f"{rid}-{n}"
+    jar = forge_jar(home)
+    cmds = [command(names, g, clock, jar) for g in parts]
+    if dry_run:
+        return record_path, {"run_id": rid, "seats": seats, "jobs": len(parts),
+                             "games_per_job": parts, "commands": cmds}
+
+    log_dir.mkdir(parents=True, exist_ok=True)
+    t0 = time.time()
+
+    def one(i_cmd):
+        i, cmd = i_cmd
+        log = log_dir / f"part-{i:02d}.log"
+        with open(log, "w", encoding="utf-8") as f:
+            proc = subprocess.run(cmd, stdout=f, stderr=subprocess.STDOUT,
+                                  cwd=str(jar.parent), text=True)
+        return log, proc.returncode
+
+    with ThreadPoolExecutor(max_workers=len(cmds)) as ex:
+        results = list(ex.map(one, enumerate(cmds)))
+    wall = round(time.time() - t0, 1)
+
+    label = _seat_label(names)
+    outcomes = []
+    for log, rc in results:
+        for g in parse_outcomes(log.read_text(encoding="utf-8", errors="replace")):
+            outcomes.append({
+                "winner": label.get(g["winner"], g["winner"]) if g["winner"] else None,
+                "won_by": g["won_by"], "draw": g["draw"], "round": g["round"],
+                "global_turn": g["global_turn"], "ms": g["ms"],
+                "lost": {label.get(k, k): v for k, v in g["lost"].items()},
+                "log": log.name})
+    wins = {s: sum(1 for o in outcomes if o["winner"] == s) for s in seats}
+    draws = sum(1 for o in outcomes if o["draw"] or not o["winner"])
+    frame = load_json(deck_dir(slug) / "strategic_frame.json") or {}
+    record = {
+        "run_id": record_path.stem, "slug": slug, "at": date.today().isoformat(),
+        "engine": {"forge": forge_version(home), "java": _java_version()},
+        "seats": [{"slug": s, "forge_name": names[i], "decklist_sha256": seat_sha(s)}
+                  for i, s in enumerate(seats)],
+        "games_requested": int(games), "games_completed": len(outcomes),
+        "jobs": len(cmds), "games_per_job": parts, "clock_seconds": clock,
+        "wall_seconds": wall, "nonzero_exit_jobs": sum(1 for _, rc in results if rc),
+        "summary": {"wins": wins, "draws": draws,
+                    "win_rate": (round(wins[slug] / len(outcomes), 3) if outcomes else None),
+                    "mean_round": (round(sum(o["round"] or 0 for o in outcomes) / len(outcomes), 1)
+                                   if outcomes else None),
+                    "mean_global_turn": (round(sum(o["global_turn"] or 0 for o in outcomes) / len(outcomes), 1)
+                                         if outcomes and all(o["global_turn"] for o in outcomes) else None)},
+        "outcomes": outcomes,
+        "assumptions": ASSUMPTIONS + ([f"{slug}'s strategic frame calls it "
+                                       f"{frame.get('archetype')!r} — read the AI caveat "
+                                       f"against that."] if frame.get("archetype") else []),
+        "logs": f"{SIM_DIR}/logs/{log_dir.name}/ (gitignored; regenerate by re-running)",
+    }
+    record_path.write_text(json.dumps(record, indent=2, ensure_ascii=False) + "\n")
+    return record_path, record
+
+
+def _java_version():
+    try:
+        out = subprocess.run(["java", "-version"], capture_output=True, text=True)
+        return (out.stderr or out.stdout).strip().splitlines()[0]
+    except (OSError, IndexError):
+        return None
+
+
+def list_runs(slug):
+    base = deck_dir(slug) / SIM_DIR
+    return [load_json(p) for p in sorted(base.glob("*.json"))] if base.is_dir() else []
+
+
+def main(args):
+    slug = args.slug
+    if getattr(args, "list", False) or not getattr(args, "vs", None):
+        runs = list_runs(slug)
+        if not runs:
+            print(f"{slug}: no simulation runs — "
+                  f"`manamap pilot simulate {slug} --vs <opponent> [--vs …] --games N`")
+            return
+        print(f"SIMULATION RUNS — {slug} ({len(runs)})\n")
+        for r in runs:
+            s = r["summary"]
+            print(f"{r['run_id']}  {r['at']}  {r['games_completed']}/{r['games_requested']} games  "
+                  f"win {s['win_rate']}  mean round {s['mean_round']}  "
+                  f"{r['wall_seconds']}s on {r['jobs']} JVM(s)")
+            print(f"      vs {', '.join(x['slug'] for x in r['seats'][1:])}  ·  wins {s['wins']}")
+        return
+    path, rec = run(slug, args.vs, games=args.games or SIM_DEFAULT_GAMES, jobs=args.jobs,
+                    clock=args.clock or SIM_GAME_CLOCK_SECONDS,
+                    dry_run=getattr(args, "dry_run", False))
+    if getattr(args, "dry_run", False):
+        print(f"would run {rec['games_per_job']} games across {rec['jobs']} JVM(s) → {path}")
+        for c in rec["commands"]:
+            print("  " + " ".join(c))
+        return
+    s = rec["summary"]
+    print(f"{slug}: {rec['games_completed']}/{rec['games_requested']} games vs "
+          f"{', '.join(args.vs)} in {rec['wall_seconds']}s on {rec['jobs']} JVM(s)")
+    print(f"  wins {s['wins']}  draws {s['draws']}  win rate {s['win_rate']}  "
+          f"mean round {s['mean_round']} (global turn {s['mean_global_turn']})")
+    if rec["nonzero_exit_jobs"]:
+        print(f"  WARNING {rec['nonzero_exit_jobs']} JVM(s) exited non-zero — read the logs")
+    print(f"  → {path.relative_to(deck_dir(slug))}  (logs: {rec['logs']})")
+    print(f"  ◆ sampled, not seeded — {len(rec['assumptions'])} assumptions in the record")
+
+
+if __name__ == "__main__":
+    raise SystemExit("Run via `manamap pilot simulate <slug> --vs <opponent> [--games N]`.")

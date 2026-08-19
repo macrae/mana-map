@@ -83,6 +83,16 @@ a refusal.
 | turn a surfaced board into a **v2 scenario** and hand it to the resolve loop | resolve anything without the checker |
 | in `prescribe`, cite a sim aggregate as evidence with its CI | cite a single game |
 
+## What the first run says, and does not
+
+`radagast` 0 of 8 against three of its own stablemates. Read with the record's assumptions:
+every seat is Forge's AI, which it rates "poor to ok" on control and radagast's frame
+calls the deck control; the deck's plan is flash bodies held across opponents' turns and
+an AI that taps out on its own turn is not flying it. The figure is a lower bound on a
+pilot and an upper bound on nothing. What the run *is* good for already: the pod's
+clock (mean round 21.8 with three AIs trading), and which seats win by what (edgar by
+damage, heliod by Approach) — the shape of the table, before S2 reads the events.
+
 ## Artifacts and where they live
 
 ```
@@ -101,7 +111,7 @@ after a swap is a new run; the old one stays — it is history, like a prescript
 | | | ships |
 |---|---|---|
 | **S0** | this document + the spike (done) | — |
-| **S1** | `src/manamap/sim/forge.py` — `.dck` conversion, run, N across JVMs, log capture; `manamap pilot simulate <slug> --vs <opp>… --games N` | the harness; one tracked run on radagast vs. three of your own decks as stand-in opponents |
+| **S1** ✅ | `src/manamap/sim/forge.py` — `.dck` conversion, run, N across JVMs, log capture; `manamap pilot simulate <slug> --vs <opp>… --games N [--jobs J] [--clock S] [--list] [--dry-run]` | **done**: the harness, a `forge` pytest marker (opt-in, one real game), and the first tracked run — `data/decks/radagast/sim/edgar-vampires-vs-yawgmoth-swarm-vs-heliod-n8-dfd75e54.json`: 8 four-seat games, 404 s on 4 JVMs (~50 s/game under contention, not the solo 30 s), radagast 0 · edgar 4 · yawgmoth 2 · heliod 2, mean round 21.8 (global turn 43.1). **Two things the first run corrected**: Forge's `Game Outcome: Turn N` is the winner's own turn count (a ROUND), not the global turn — the record carries both; and an alternate win condition prints `has won due to effect of '…'`, not `has won because` — two Approach of the Second Sun wins read as draws until matched. The record carries `won_by` now |
 | **S2** | the parser — event model, per-game facts, aggregates + CIs, token metrics (created by turn, damage share, chumped, on board at kill), `validate-sim` | the ◆ artifact and `deck-info`'s sim panel |
 | **S3** | opponents — `data/opponents/`, `deck-recon` → authored pod lists, `simulate --vs pod` | your table, not your other decks |
 | **S4** | the bridge — `sim-scenario <slug> <run> --game G --turn T` → a v2 stack scenario; `validate-stack` learns `version: 2` | the ✓ tier on what the sample surfaced |

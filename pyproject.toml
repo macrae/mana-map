@@ -56,7 +56,7 @@ testpaths = ["tests"]
 #   pytest -m browser -n 4          the viz suite
 #   pytest -m ""                    literally everything, the old default
 #   pytest --no-test-cache          nothing served from the cache (see conftest)
-addopts = "-q -m 'not browser' -n auto"
+addopts = "-q -m 'not browser and not forge' -n auto"
 markers = [
     # Browser tests. They boot a real Chromium against a real server and assert on what
     # rendered — the only tests here that can catch a viz regression. Excluded from the
@@ -68,4 +68,8 @@ markers = [
     # while the renderer was unchanged. Run these on their own with
     # `pytest -m "browser and serial_only"`.
     "serial_only: asserts a wall-clock budget; meaningless under -n (run serially)",
+    # A real Forge game: ~6 s for two seats, needs the engine installed outside the
+    # repo (docs/simulation.md). Opt in with `pytest -m forge`; the harness's own
+    # logic is tested without it.
+    "forge: runs the Forge engine headless (slow; needs ~/.mana-map/forge)",
 ]

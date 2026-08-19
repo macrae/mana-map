@@ -42,3 +42,6 @@ data/strategy/.strategy-db-meta.json
 # 133 KB candidate_pool never crosses the orchestrator's context. The orchestrator
 # validates and merges into the tracked artifact; these are working files.
 data/decks/*/.agent-out/
+# Forge simulation: the raw game logs are samples, large, and regenerable; the run
+# record beside them (data/decks/<slug>/sim/<run-id>.json) is tracked.
+data/decks/*/sim/logs/
