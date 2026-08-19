@@ -183,9 +183,19 @@ are frozen legacy. Both doctor modes read `log_annotations.json`. Twelve tests +
 per-deck gate. Follow-up worth doing: `deck-history pending` should read open
 prescriptions' `add_candidates` as a source beside the legacy `considering.json`.
 
-Next: step 6 cosmetics are done; step 7 (the `game_state` v2 schema, docs only, beside
-the scenario spec) and step 8 (`deck-analyst` MODE query / `card-search` CLI) remain —
-then the MVP's Sprint 1 (deck versioning) and Sprint 3 (workbench CLI).
+**Step 7 is done — the `game_state` v2 schema, docs only** (`docs/pilot.md` → *Game
+state v2*): one `seat` object for you and every opponent (archetype, commander zone +
+casts, life, hand as a list or `{unknown: n}`, library count, mana available/open/pool,
+a board of strings-or-objects), `turn`/`active_seat`/`phase`/`step`/`priority` in the
+CR's own words, and an `actions[]` list (cast, activate, play_land, attack, block, pass,
+special) that is the difference between resolving a stack and resolving a turn.
+Additive (`version: 2` per artifact; every v1 string still accepted), no rules engine,
+no probabilities, no migration of the 49 passing stacks, and **no consumer until the
+simulation branch** — the first v2 artifact is authored by hand for a real question.
+`debrief`'s `opponents[]` and `prescribe`'s pod use the same seat words.
+
+Next: step 8 (`deck-analyst` MODE query / `card-search` CLI) — then the MVP's Sprint 1
+(deck versioning, extending `deck-history`) and Sprint 3 (workbench CLI).
 
 ### 1. Phase 3 — DONE. Radagast carries the whole v4 shape.
 

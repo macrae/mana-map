@@ -262,7 +262,7 @@ python -m http.server 8000    # serve viz FROM REPO ROOT
 - `docs/viz.md` — frontend structure, `window.MM` API, DATA map, the deck dossier, Pages deployment
 - `docs/testing.md` — test layout, skip markers, conventions
 - `docs/agent-cost.md` — where LLM spend lives, per-routine token sizing, the invocation cache
-- `docs/agent-audit-2026-08-19.md` — the workbench pivot's audit of the agents (18 at the time; 16 after step 2): four fates, per-agent notes, and the Sprint 0 order of work (steps 1–5 done: the shared contract, L10 repealed, the editor and panel retired, writer + coach folded into `pilot-notes`, the captain's log + `debrief`, prescriptions — the doctor's MODE prescribe — with the Short List folded in)
+- `docs/agent-audit-2026-08-19.md` — the workbench pivot's audit of the agents (18 at the time; 16 after step 2): four fates, per-agent notes, and the Sprint 0 order of work (steps 1–7 done: the shared contract, L10 repealed, the editor and panel retired, writer + coach folded into `pilot-notes`, the captain's log + `debrief`, prescriptions — the doctor's MODE prescribe — with the Short List folded in, and the `game_state` v2 schema on paper in `docs/pilot.md`)
 - `docs/pilot.md` — pilot subsystem: three-tier evidence contract, citation contract, rules DB, strategy DB + strategy-researcher agent, resolve loop, build loop, goldfish, manual generation
 - `PLAN.md` — ACTIVE plan: current state, what's done, what's next (read this first when resuming work)
 - **`/publish-deck`** — the deck lifecycle end to end, every phase in dependency order with its gate. `manamap pilot deck-status <slug>` is its machine-readable half and the thing to run first on any deck.

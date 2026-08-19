@@ -171,6 +171,138 @@ arithmetic, deck membership, and which siblings are comparable.
 
 Verdict `pass` requires all findings `supported` **and** the mechanical validator passing. Failed artifacts are saved (they document open questions) but never published.
 
+## Game state v2 — the schema the simulation branch inherits (SPEC ONLY, 2026-08-19)
+
+**Status: specified, not consumed.** Nothing reads `version: 2` yet — not
+`validate-stack`, not `scenario-facts`, not the resolver. It is written down now
+because three things already want to name a seat the same way (the resolver's
+board, `debrief`'s `opponents[]`, `prescribe`'s pod) and the simulation branch will
+need a state an *actor* can act on. The audit's finding was that the combat /
+interaction gap is a **schema** gap before it is a prompt gap: v1's opponents are
+`{life, board}` — furniture that cannot hold priority, cannot block, has no hand.
+
+**Design rules.** (1) **Additive.** A v1 scenario is valid forever; v2 is opted into
+per artifact with `"version": 2` inside `scenario`, and every v1 string form is still
+accepted wherever v2 allows an object, so a board can be upgraded one entry at a
+time. (2) **One `seat` object**, used for you and for every opponent — what differs
+between seats is what is *known*, not what fields exist. (3) **CR names, verbatim.**
+Phases and steps are the Comprehensive Rules' own words (CR 500.1), so a resolver
+citing `506.1` and a state saying `"step": "declare blockers"` are talking about the
+same thing. (4) **Hidden information is a count, never a guess.** A seat's hand is
+either a list of names (known) or `{"unknown": n}`; an actor only sees what it
+should. (5) **Actions are the unit of resolution.** A v1 scenario asks "what happens
+when this stack resolves"; a v2 scenario may also ask "what happens when these
+actions are taken in order" — and that is the whole difference between resolving a
+stack and resolving a turn.
+
+### The shape
+
+```
+scenario:
+  version: 2
+  turn: 4                          # game turn number, 1-based
+  active_seat: "you"               # whose turn it is — a seat id
+  phase: "combat"                  # CR 500.1: beginning | precombat main | combat |
+                                   #           postcombat main | ending
+  step: "declare blockers"         # the step within the phase (CR 500.1), or null
+                                   #   beginning: untap | upkeep | draw
+                                   #   combat: beginning of combat | declare attackers |
+                                   #           declare blockers | combat damage | end of combat
+                                   #   ending: end | cleanup
+  priority: "seat-2"               # the seat that currently holds priority, or null
+  seats:                           # ordered in turn order, starting from the active seat
+    - seat: "you"                  # id; "you" is the pilot, opponents are "seat-2".."seat-N"
+      archetype: null              # free text for opponents ("Dimir control"); the debrief
+                                   #   and prescribe use the same field and the same words
+      commander: {name, zone: "battlefield|command|library|graveyard|exile",
+                  casts: 1}        # casts so far → the tax is derived, never stated
+      life: 40
+      poison: 0
+      hand: ["Craterhoof Behemoth"]          # known — a list of names
+      # or   {"unknown": 4}                   # hidden — a count, never a guess
+      # or   {"known": ["Counterspell"], "unknown": 3}   # partially revealed
+      library: {"count": 61}                  # a count; "known_top": [...] when revealed
+      graveyard: []                           # names; v1 already carries this for "you"
+      exile: []
+      mana:
+        available: "{G}{G}{G}{G}{G}{G}"       # v1's mana_available string, per seat
+        open: 6                               # untapped sources — the number an opponent
+                                              #   actually reads across the table
+        pool: "{0}"                           # floating mana, if any
+      board: [ <board entry>, ... ]
+  stack: [ {pos: 0, item: "…"} | <stack entry> ]   # pos 0 = bottom, unchanged
+  actions: [ <action>, ... ]       # OPTIONAL; absent = "resolve the stack" (v1 semantics)
+  extras: {…}                      # non-normative scaffolding, unchanged
+  question: "…"
+```
+
+**Board entry.** A string (v1, still fully accepted — including the house annotation
+`— already sacrificed to pay the cost of the ability now on the stack`, which means
+LISTED and NOT on the battlefield) **or** an object:
+
+```
+{name: "Scute Swarm", controller: "you",
+ tapped: false, summoning_sick: false, pt: "1/1", token: false,
+ counters: {"+1/+1": 2}, attached_to: null, face_down: false,
+ annotations: ["already sacrificed to pay the cost of the ability now on the stack"]}
+```
+
+`annotations` is where v1's prose qualifiers go, verbatim, so `scenario-facts`'
+reading of "already paid" survives the upgrade unchanged. A v2 `board_bodies` reads
+`pt`/`token` from the object instead of regexing the string; the split it reports is
+the same split.
+
+**Stack entry.** `{pos, item}` (v1) **or** `{pos, object, controller, source, targets:
+[...], kind: "spell|ability|triggered"}` — `item` may be kept alongside as the
+human-readable line.
+
+**Action** — what an actor does, in order. Each carries `seat` and one `kind`:
+
+```
+{seat: "you",    kind: "cast",      card: "Craterhoof Behemoth", paying: "{3}{G}{G}{G}"}
+{seat: "you",    kind: "activate",  source: "Castle Garenbrig", ability: "…", paying: "…"}
+{seat: "you",    kind: "play_land", card: "Forest"}
+{seat: "you",    kind: "attack",    attackers: [{attacker: "Scute Swarm", defending: "seat-2"}]}
+{seat: "seat-2", kind: "block",     blocks: [{blocker: "Wall of Omens", blocking: "Scute Swarm"}]}
+{seat: "seat-2", kind: "pass"}                    # passes priority
+{seat: "seat-2", kind: "cast", card: "Counterspell", targets: ["Craterhoof Behemoth"]}
+{seat: "you",    kind: "special",   text: "turn Hidden Face up"}   # anything else, in words
+```
+
+Triggers are never actions — they are consequences the resolver puts on the stack,
+which is exactly what the checker's missing-steps audit (triggers, SBA, priority)
+already looks for. An `actions` list is resolved left to right, each action followed
+by the priority round it implies; the resolver narrates, the checker audits the
+steps it skipped, and nothing about the citation contract changes.
+
+### Who reads what
+
+| consumer | reads | today | under v2 |
+|---|---|---|---|
+| `stack-resolver` / `rules-checker` | board, hand, mana, stack, question | prose board, static opponents | `seats[]`, `actions[]`; the checker's missing-steps list names combat steps (506–511) by the `step` vocabulary |
+| `scenario-facts` | `board_bodies`, `opponents_of` | regex over strings | the object fields, falling back to the string regex per entry |
+| `goldfish` (`model_combat`) | one opponent, 40 life, does nothing | internal | could emit a v2 `seats[]` snapshot at turn N — the bridge from simulation to a scenario the resolver can be handed |
+| `debrief` | `opponents[].seat / archetype / commander` | free text | the same three words; `seat` ids are the vocabulary for "the Dimir player" |
+| `prescribe` | pod description in the prompt | free text | may carry `seats[]` with `archetype` only — the doctor reasons about a pod, not a board |
+| `opponent` (post-MVP) | everything its seat may see | — | the actor: given a state with its own hand known and others `{unknown: n}`, emits the next `action` |
+
+### What it deliberately does not do
+
+- **No rules engine.** The state is a description; the rules are in the CR and the
+  checker. A v2 scenario is resolved by the same loop with the same citation contract,
+  and the checker's verdict is still atomic over the artifact — so **one rules domain
+  per scenario** still governs, and a five-action turn across combat, triggers and
+  layers is still five chances to fail in one file. Split it.
+- **No probabilities.** A v2 state is one board. What happens *on average* is the
+  goldfish's job; what happens *here* is the resolver's.
+- **No migration of the 49 passing stacks.** They are evidence; their scenario blocks
+  are cache fingerprint inputs; touching them would MISS every stack routine to change
+  nothing a reader can see (the same argument that left `object`/`item` both accepted).
+- **No consumer until the simulation branch.** Writing the reader before the writer
+  exists produces code that is tested against a fixture nobody authored for real. The
+  first v2 artifact is authored by hand for a real question; `validate-stack` learns
+  v2 the same week; `scenario-facts` the same day; the opponent actor last.
+
 ## Goldfish metrics (`goldfish_metrics.json`, tier ◆)
 
 ### The Treasure model (opt-in per deck)

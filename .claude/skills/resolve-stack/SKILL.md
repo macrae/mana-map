@@ -60,6 +60,10 @@ Runs the resolver→checker loop for one scenario and saves the artifact at
    `life_totals` are scaffolding for the agent, not part of the question. Say
    anything there that helps; it does not change the rules problem.
 
+   **A v2 game state exists on paper** (`docs/pilot.md` → *Game state v2*): seats that
+   hold priority, CR step names, an `actions[]` list. Nothing consumes it yet — author
+   v1 scenarios until `validate-stack` learns `version: 2` in the simulation branch.
+
    ### Before you write one: `manamap pilot scenario-facts <slug> [--stack NNN]`
 
    The deterministic brief for this scenario — board split into creature bodies /
