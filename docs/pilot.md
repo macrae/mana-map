@@ -40,6 +40,7 @@ manamap pilot deck-history <slug> [--json]  # applied swaps (from git) + the pen
 manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents N] [--tag T]
                                         #   the captain's log: AUTHORED, append-only, sha-stamped
 manamap pilot deck-notes <slug> list [--since D] | show <id>
+manamap pilot deck-info <slug> [--json]            # THE WORKBENCH VIEW: version · record · status · figures · what to do next
 manamap pilot deck-version <slug> [list] [--json]   # every list this deck has been, from git; games per version
 manamap pilot deck-version <slug> show V4 [--full] | tag <name> [--at V4] [--note …] | restore V4 [--write]
 manamap pilot merge-debrief <slug>      # the debrief agent's annotations in, by entry id
@@ -956,6 +957,22 @@ of the note), `cards[]` (`read` ∈ over/under/as-expected/missed), `decisions[]
 rejects ids the log lacks and carries earlier annotations; `validate-debrief` fails the
 annotation on any of those contracts. The one rule is that the debrief may name nothing
 the pilot and the 99 did not — it is a reader, not a witness.
+
+## The workbench view (`deck-info`, tier ◆, computed on demand)
+
+One deck, one screen: commander and identity, the current version and its tags, the
+lifecycle status (with STALE/INVALID named), the bracket floor against target, the
+record from the captain's log (games, W/L, last played, un-debriefed), the goldfish
+headline figures, the engine's verified-line count and critic verdict, the audit's
+under/over axes, the diagnosis verdict and skeptic, the prescriptions asked and
+answered, and every open question across engine/diagnosis/debrief with its route. It
+computes nothing new — every figure is read from the module or artifact that owns it —
+so it cannot disagree with `deck-status`, `deck-version`, `deck-notes`, `prescribe` or
+`deck-audit`. **The `next` block is the point**: each suggestion is derived from a
+condition true right now (un-debriefed games → `/debrief`; an uncommitted working list →
+commit it; a stale stage → regenerate; no games → play it; open prescriptions → run the
+loop) and names the command. No judgment about the deck lives there. `--json` is the
+shape a future UI reads.
 
 ## Deck versions (`deck-version`, derived from git; `deck_versions.json`, authored tags)
 

@@ -33,7 +33,7 @@ written brief, and the issue now opens on two pictures of the deck: its **conste
 [009 Radagast](https://macrae.github.io/mana-map/manuals/radagast.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-Scale: 55 `manamap pilot` subcommands, 18 top-level subcommands, 15 agents, 19 skills,
+Scale: 56 `manamap pilot` subcommands, 18 top-level subcommands, 15 agents, 19 skills,
 10 cache-gated routines (plus `stack:`/`decision:`/`prescription:` per artifact), and the magazine's department list as `issue_spec.DEPARTMENTS`
 gives it — **`OPTIONAL_DEPARTMENTS` is empty**, both migrations having landed on all nine
 decks. Test counts live in `docs/testing.md`.
@@ -205,9 +205,19 @@ file** — a commit's sha is unknown inside the commit; the viz history viewer w
 copy at deploy time. Six tests on a throwaway git repo. The MVP loop is closed: log ↔
 versions ↔ prescriptions.
 
-Next: the audit's item 8 (`card-search` CLI, then maybe `deck-analyst` MODE query), MVP
-Sprint 3 (the unified workbench view — `deck-info`), then the feature branches
-(simplified manual; simulation).
+**MVP Sprint 3 is done — `deck-info <slug>`**, the workbench view: one screen composing
+version, lifecycle status (STALE/INVALID named), bracket floor vs target, the log's
+record, goldfish headlines, engine lines + critic, the audit's under/over axes, the
+diagnosis, prescriptions, and every open question with its route — computing nothing
+new, so it cannot disagree with the command that owns each figure — and a derived
+**`next`** list that names the command for each condition true right now. `--json` is the
+future UI's shape. Four tests.
+
+**The MVP as scoped on 2026-08-19 is complete**: versions, notes, basic stats, goldfish,
+and the agent audit/enrichment. What remains is the audit's optional item 8
+(`card-search` CLI) and the two feature branches: the simplified manual (seven decks,
+compact, surfaced in the viz's Deck builder) and the one-opponent T5 simulation on the
+`game_state` v2 schema. The first real log entry has not been written yet.
 
 ### 1. Phase 3 — DONE. Radagast carries the whole v4 shape.
 

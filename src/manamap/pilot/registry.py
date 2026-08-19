@@ -25,6 +25,8 @@ PILOT_STEPS = [
      "Form-check the debrief annotations against the log they annotate"),
     ("merge-debrief", "manamap.pilot.merge_debrief",
      "Merge the debrief agent's annotations into log_annotations.json, by entry id"),
+    ("deck-info", "manamap.pilot.deck_info",
+     "The workbench view: one deck, one screen — version, record, status, figures, and what to do next"),
     ("deck-version", "manamap.pilot.deck_versions",
      "Every list this deck has been: numbered from git, tagged by you, joined to the games played on it"),
     ("prescribe", "manamap.pilot.prescribe",
@@ -91,7 +93,7 @@ _DECK_COMMANDS = {
     "validate-tutor-guide", "impact", "scenario-facts", "merge-prose",
     "short-list-art", "issue-length", "card-value", "validate-pending",
     "deck-notes", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
-    "deck-version",
+    "deck-version", "deck-info",
 }
 
 
@@ -223,6 +225,8 @@ def add_pilot_parser(subparsers):
                              help="ISO timestamp override, for backfilling a game played earlier")
             cmd.add_argument("--since", default=None,
                              help="list: only entries at or after this ISO date")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "deck-info":
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "deck-version":
             cmd.add_argument("action", nargs="?", default="list",
