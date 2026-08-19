@@ -40,6 +40,8 @@ manamap pilot deck-history <slug> [--json]  # applied swaps (from git) + the pen
 manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents N] [--tag T]
                                         #   the captain's log: AUTHORED, append-only, sha-stamped
 manamap pilot deck-notes <slug> list [--since D] | show <id>
+manamap pilot deck-version <slug> [list] [--json]   # every list this deck has been, from git; games per version
+manamap pilot deck-version <slug> show V4 [--full] | tag <name> [--at V4] [--note …] | restore V4 [--write]
 manamap pilot merge-debrief <slug>      # the debrief agent's annotations in, by entry id
 manamap pilot validate-debrief <slug>   # the annotation held to the log and the 99
 manamap pilot prescribe <slug> "<question>"   # open ONE question to the doctor (accumulates under prescriptions/)
@@ -117,6 +119,7 @@ data/decks/<slug>/             all tracked:
                                pilot_feedback.md     authored, OPTIONAL (free-text pilot notes; the log supersedes it)
                                log.jsonl             AUTHORED, append-only — `deck-notes add` (the captain's log)
                                log_annotations.json  debrief agent, by entry id — `merge-debrief` / `validate-debrief`
+                               deck_versions.json    AUTHORED tags on git-derived versions — `deck-version tag`
                                mana_analysis.json    mana-analysis (deterministic, no agent)
                                tutor_guide.json      pilot-notes (At the Table's tutor subhead)
                                considering.json      FROZEN legacy (The Short List; its rule lives in prescriptions now)
@@ -953,6 +956,26 @@ of the note), `cards[]` (`read` ∈ over/under/as-expected/missed), `decisions[]
 rejects ids the log lacks and carries earlier annotations; `validate-debrief` fails the
 annotation on any of those contracts. The one rule is that the debrief may name nothing
 the pilot and the 99 did not — it is a reader, not a witness.
+
+## Deck versions (`deck-version`, derived from git; `deck_versions.json`, authored tags)
+
+Every change to the 99 is a commit (`decklist.txt` is tracked), so the list of lists
+this deck has been is already on disk. `manamap pilot deck-version <slug>` numbers them
+— `V1` the first tracked list, `V2` the first content change — reusing `deck-history`'s
+git walk and parser, so a comment-only edit adds a byte-sha to the version it belongs
+to and never a new version. The captain's log stamps each entry with the byte-sha of
+`decklist.txt` as it stood, so the join is exact: each version reports its games and
+W/L, and an entry played on an uncommitted working copy is reported **unmatched** rather
+than guessed (commit the list and it resolves). `show V4` diffs a version against the
+working list; `tag <name> [--at V4] [--note]` writes the authored `deck_versions.json`
+(the one version datum a browser can read without git); `restore V4` is a **dry run**
+unless `--write`, after which `fetch-deck` → `goldfish` → `mana-analysis` and a commit.
+`deck-status` prints the current version in its header.
+
+**Why the version list is not a tracked file:** the commit that changes `decklist.txt`
+gets its sha AFTER anything written in the same commit, so a generated `versions.json`
+would be one behind forever. Computed on demand; the viz history viewer gets its copy
+from a deploy-time step with git available.
 
 ## Prescriptions (`prescriptions/<id>-*.json`, the diagnosis scoped to a question)
 

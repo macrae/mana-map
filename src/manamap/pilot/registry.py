@@ -25,6 +25,8 @@ PILOT_STEPS = [
      "Form-check the debrief annotations against the log they annotate"),
     ("merge-debrief", "manamap.pilot.merge_debrief",
      "Merge the debrief agent's annotations into log_annotations.json, by entry id"),
+    ("deck-version", "manamap.pilot.deck_versions",
+     "Every list this deck has been: numbered from git, tagged by you, joined to the games played on it"),
     ("prescribe", "manamap.pilot.prescribe",
      "Ask the deck doctor one question: open a prescription, list them, or merge the answer"),
     ("validate-prescription", "manamap.pilot.validate_prescription",
@@ -89,6 +91,7 @@ _DECK_COMMANDS = {
     "validate-tutor-guide", "impact", "scenario-facts", "merge-prose",
     "short-list-art", "issue-length", "card-value", "validate-pending",
     "deck-notes", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
+    "deck-version",
 }
 
 
@@ -220,6 +223,20 @@ def add_pilot_parser(subparsers):
                              help="ISO timestamp override, for backfilling a game played earlier")
             cmd.add_argument("--since", default=None,
                              help="list: only entries at or after this ISO date")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "deck-version":
+            cmd.add_argument("action", nargs="?", default="list",
+                             choices=["list", "show", "tag", "restore"],
+                             help="list versions / show one vs the working list / name one / "
+                                  "write one back to decklist.txt (dry run without --write)")
+            cmd.add_argument("ref", nargs="?", default=None,
+                             help="V4, a tag name, or a sha prefix (tag: the new tag's name)")
+            cmd.add_argument("--at", default=None, dest="at",
+                             help="tag: the version to name (default: the committed working list)")
+            cmd.add_argument("--note", default=None, help="tag: why this list earned a name")
+            cmd.add_argument("--full", action="store_true", help="show: print the whole decklist")
+            cmd.add_argument("--write", action="store_true",
+                             help="restore: actually write decklist.txt (default is a dry run)")
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "prescribe":
             cmd.add_argument("prompt", nargs="?", default=None,

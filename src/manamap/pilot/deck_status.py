@@ -290,7 +290,25 @@ def main(args):
 
     mark = {"present": "OK  ", "missing": "  --", "STALE": "STALE",
             "INVALID": "FAIL", "unverified": " ?  "}
-    print(f"DECK STATUS — {args.slug}\n")
+    print(f"DECK STATUS — {args.slug}")
+    # Which list this is. Derived from git on demand; a deck outside a repo
+    # reports nothing rather than guessing.
+    try:
+        from manamap.pilot.deck_versions import report as _versions
+        vdoc = _versions(args.slug)
+        if vdoc["versions"]:
+            cur = vdoc["current_version"]
+            v = next((x for x in vdoc["versions"] if x["version"] == cur), None)
+            if v:
+                tag_s = f" [{', '.join(v['tags'])}]" if v["tags"] else ""
+                print(f"  version V{cur} of {len(vdoc['versions'])} · {v['first_date']} · "
+                      f"{v['games']} game(s) logged{tag_s}")
+            else:
+                print(f"  version: uncommitted working list "
+                      f"({len(vdoc['versions'])} committed)")
+    except Exception:                    # noqa: BLE001 — a header, never a gate
+        pass
+    print()
     for row in rows:
         flag = " NEW" if row["new"] and row["state"] == "missing" else ""
         print(f"  {mark[row['state']]:6s} {row['stage']:11s} {row['artifact']:24s}"

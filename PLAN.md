@@ -33,7 +33,7 @@ written brief, and the issue now opens on two pictures of the deck: its **conste
 [009 Radagast](https://macrae.github.io/mana-map/manuals/radagast.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-Scale: 54 `manamap pilot` subcommands, 18 top-level subcommands, 15 agents, 19 skills,
+Scale: 55 `manamap pilot` subcommands, 18 top-level subcommands, 15 agents, 19 skills,
 10 cache-gated routines (plus `stack:`/`decision:`/`prescription:` per artifact), and the magazine's department list as `issue_spec.DEPARTMENTS`
 gives it — **`OPTIONAL_DEPARTMENTS` is empty**, both migrations having landed on all nine
 decks. Test counts live in `docs/testing.md`.
@@ -194,8 +194,20 @@ no probabilities, no migration of the 49 passing stacks, and **no consumer until
 simulation branch** — the first v2 artifact is authored by hand for a real question.
 `debrief`'s `opponents[]` and `prescribe`'s pod use the same seat words.
 
-Next: step 8 (`deck-analyst` MODE query / `card-search` CLI) — then the MVP's Sprint 1
-(deck versioning, extending `deck-history`) and Sprint 3 (workbench CLI).
+**MVP Sprint 1 is done — deck versioning** (`deck-version <slug> list|show|tag|restore`,
+`pilot/deck_versions.py`): versions derived from git by reusing `deck-history`'s walk (a
+content change, not a commit — a comment edit adds a sha to its version), the captain's
+log joined to them by the stamped sha (games + W/L per list; an uncommitted working copy
+reports unmatched, never guessed), authored tags in `deck_versions.json`, `show` diffs
+against the working list, `restore` dry-runs unless `--write`, and `deck-status` prints
+the current version in its header. **The version list is deliberately not a tracked
+file** — a commit's sha is unknown inside the commit; the viz history viewer will get its
+copy at deploy time. Six tests on a throwaway git repo. The MVP loop is closed: log ↔
+versions ↔ prescriptions.
+
+Next: the audit's item 8 (`card-search` CLI, then maybe `deck-analyst` MODE query), MVP
+Sprint 3 (the unified workbench view — `deck-info`), then the feature branches
+(simplified manual; simulation).
 
 ### 1. Phase 3 — DONE. Radagast carries the whole v4 shape.
 
