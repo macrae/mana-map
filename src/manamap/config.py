@@ -21,7 +21,7 @@ Sections, in file order:
                      hyperparameters, MECHANICAL_TAGS, the InfoNCE objective
     rulebooks        SYNERGY_RULES (24), ROLE_PATTERNS and friends (53 roles in
                      19 families), power-creep criteria, region clustering
-    pilot            rules DB, decks and manuals, Commander brackets, deck
+    pilot            rules DB, decks and their pages, Commander brackets, deck
                      construction, DECK_AXIS_TARGETS (the diagnosis substrate),
                      goldfish, strategy KB, AGENT_ROUTINES (the cache registry)
 
@@ -1171,12 +1171,10 @@ AGENT_ROUTINES = {
                    "deck:engine.json?",
                    "deck:goldfish_metrics.json!meta.decklist_sha256", "strategy:doc"],
     },
-    # The Short List (v3.3): one artifact replaces the sideboard-analysis /
-    # upgrade-watch pair — the ten cards most worth the pilot's sleeves,
-    # bench-first, pool-filled. Applicable to every deck. Deliberately NOT an
-    # input to pilot-notes: a bench edit should cost one
-    # analysis, not a full manual regeneration — the renderer reads the
-    # artifact directly, so the coupling stays one-way.
+    # (`the-ten`, the Short List's routine, was retired 2026-08-19 — its rule lives
+    # in prescriptions. Its artifact, considering.json, is frozen on the published
+    # decks and is deliberately NOT an input to pilot-notes: the legacy renderer reads
+    # it directly, so the coupling stays one-way.)
     "deck-engine": {
         "agent": "deck-engineer+engine-critic",
         "artifact": "engine.json",
@@ -1201,7 +1199,7 @@ AGENT_ROUTINES = {
         # naming places rather than describing contents.
         "inputs": ["deck:deck_map.json", "deck:strategic_frame.json?"],
     },
-    # Fetch Quests (v3.3): the coach's tutor guide — one wish per tutor.
+    # The tutor guide — one wish per tutor; written by pilot-notes.
     # N/A for decks with zero library-search tutors in the 99 (the renderer
     # prints standing copy instead; see agent_cache applicability).
     "tutor-guide": {

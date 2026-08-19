@@ -1,3 +1,5 @@
+> **Historical (moved to `docs/history/` 2026-08-19).** Superseded by `docs/vision.md` and the 2026-08-19 workbench pivot; kept verbatim as the record of how the previous design was reasoned. Nothing here is current guidance.
+
 # Pilot's Manual — founder feedback, 2026-08-05
 
 > **STATUS: shipped 2026-08-05** in `fc2277b`, `25f7378`, `233722a`, `9a7ff81`.

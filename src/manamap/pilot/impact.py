@@ -1,6 +1,6 @@
 """Pilot: what does the latest deck change actually touch? Report-only.
 
-The manual regeneration sweep used to run on orchestrator judgment: grep the
+The regeneration sweep after a swap used to run on orchestrator judgment: grep the
 prose for cut cards, eyeball which stacks mention a moved card, hand-compare
 goldfish figures at three roundings. This module makes that judgment
 mechanical — a deterministic, zero-cost report that names every artifact
@@ -70,7 +70,9 @@ def deck_diff(base, cache):
 # ── 2. reference impact ──────────────────────────────────────────────────
 
 # artifact filename -> the manual_prose-style keys to scope by, or None for
-# whole-document impact. issue_plan gets department-level treatment below.
+# whole-document impact. issue_plan (LEGACY: the frozen magazine plan on published
+# decks) still gets department-level treatment below so a card leaving the 99 is
+# reported against the copy that names it until the page is re-rendered.
 _PROSE_KEYS = ("how_it_wins", "combo_lines", "card_roles", "mulligan",
                "upgrades", "threat_assessment", "matchups")
 

@@ -43,7 +43,7 @@ STAGES = [
     ("tutors",     "tutor_guide.json",       None,  False, "the tutor guide — `tutor-guide`"),
     ("prose",      "manual_prose.json",      None,  False, "the pilot's notes — `write-manual`"),
     ("log",        "log.jsonl",              None,  False, "the captain's log — `deck-notes add`; debriefed by the `debrief` agent"),
-    ("issue",      "issue.json",             None,  False, "authored identity: volume, date, price"),
+    ("issue",      "issue.json",             None,  False, "authored identity: name, commander, status (volume/price are legacy fields)"),
 ]
 
 # Stages this development cycle added. Named explicitly so a deck built before
@@ -161,7 +161,7 @@ def status(slug, validate=True):
 # which meant the TEST knew which artifacts had gates and `deck-status` — the
 # command the runbook says to start with, every time — did not. It reported
 # presence and staleness and called that health. Measured on ur-dragon mid-swap:
-# `deck-status` FAIL=0 while `validate-issue` FAIL=1 on the same deck, in the
+# `deck-status` FAIL=0 while `validate-issue` (legacy plan gate) FAIL=1 on the same deck, in the
 # same second. A dashboard that is green while the gate is red is worse than no
 # dashboard, because people stop checking the gate.
 VALIDATED = {

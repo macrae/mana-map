@@ -1,5 +1,11 @@
-"""Artist credits: standout detection, honest counting, theme detection."""
+"""Artist credits: standout detection, honest counting, theme detection.
 
+LEGACY (2026-08-19): the magazine renderer. It still renders the nine frozen issues from
+artifacts nothing regenerates any more (issue_plan.json, the panel keys,
+card_roles/mana_base/upgrades, considering.json), and it is replaced by the compact deck
+page in docs/manual-v5-spec.md. Do not extend it; internals below are accurate for what it
+does.
+"""
 from conftest import requires_deck
 from manamap.pilot.artist_credits import (
     analyze,

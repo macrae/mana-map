@@ -10,7 +10,7 @@ The ledger is already on disk and it is exact: `decklist.txt` is tracked, so
 every change to the 99 is a commit. Deriving from `git log` cannot drift,
 cannot be forgotten, and needs no maintenance — the same argument
 `build-index` makes for the deck manifest, and the same one the manual-freshness
-guard makes for the rendered issue.
+guard makes for the rendered deck page.
 
 **Report-only and computed on demand**, like `deck-facts` and `impact`. It reads
 git; it never writes a tracked path.
@@ -144,7 +144,7 @@ def pending(slug):
     called a purchase.
 
     Note this is the ONLY ownership question left in the repo, and it is about a
-    physical collection, not about a deck. The Short List itself
+    physical collection, not about a deck. The retired Short List itself
     is ownership-free by design: it names ten cards worth knowing about, and
     whether one is already in a box is not what the list is for.
     """
@@ -153,7 +153,8 @@ def pending(slug):
     box = _owned_index()
 
     out = []
-    # Two sources, tagged. `considering.json` is the Short List — ten cards
+    # Two sources, tagged. `considering.json` is the retired Short List (frozen on
+    # published decks; prescriptions carry its rule now) — ten cards
     # worth knowing about, authored by an agent and regenerated wholesale.
     # `pending.json` is a decision somebody actually made and has not applied
     # yet, which the ten cannot hold: it is fixed at ten, forbids a pick already

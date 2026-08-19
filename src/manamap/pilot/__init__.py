@@ -1,1 +1,2 @@
-"""Pilot subsystem: rules-cited stack resolution and pilot's-manual generation."""
+"""The pilot bench: decks, versions, the captain's log, prescriptions, rules-cited
+stack resolution, the engine model, simulation, and the deck page (docs/vision.md)."""

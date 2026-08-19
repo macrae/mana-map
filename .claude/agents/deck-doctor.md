@@ -76,7 +76,7 @@ a finding.
 
 ## MODE: recon — what the world runs that this deck does not
 
-The one thing no artifact in this repo can tell you. `docs/deck-builder-v2.md`
+The one thing no artifact in this repo can tell you. `docs/history/deck-builder-v2.md`
 names the hole explicitly: there are no per-commander inclusion rates in any bulk
 data we have, and inclusion rate is the real staples signal. So you go and look.
 
@@ -98,7 +98,7 @@ data we have, and inclusion rate is the real staples signal. So you go and look.
 
 **Recon is perishable and is kept out of `strategy.md` on purpose.** Durable
 theory and dated meta claims have different shelf lives and must invalidate
-differently — that is the lesson `docs/deck-builder-v2.md` recorded when
+differently — that is the lesson `docs/history/deck-builder-v2.md` recorded when
 `meta-analyst` was traded away. So every recon artifact carries an `as_of` date,
 and the diagnose mode is required to say when it is leaning on one.
 
@@ -309,7 +309,7 @@ price every cut, every add `closes` a named axis or component. What changes:
 - **Read the log.** `log_entries_read` names the captain's-log ids you leaned on; the
   validator checks they exist. A recurring takeaway is the strongest evidence a
   question can have; an absent log is a `gap`, not a licence to guess.
-- **`add_candidates` is RANKED and capped at ten.** This is The Short List's rule,
+- **`add_candidates` is RANKED and capped at ten.** This is the retired Short List's rule,
   relocated: ten cards worth knowing about, ownership is not a criterion, the
   forward-looking half-step posture by default. Ten is the section, not a budget —
   do not pad, and do not leave a justified pick off because it was eleventh; rank

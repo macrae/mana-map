@@ -139,7 +139,7 @@ def opponents_of(scenario):
     reports zero opponents on the other.
 
     `board` rides along because a life total is only half of what a seat is: the
-    magazine could not answer "what does the opponent have" without it, and the
+    deck page could not answer "what does the opponent have" without it, and the
     entry that carries the life total is the entry that carries the permanents.
     """
     from manamap.pilot import game_state
@@ -148,7 +148,7 @@ def opponents_of(scenario):
                  "archetype": s.get("archetype")} for s in game_state.opponent_seats(scenario)]
     board = scenario.get("board") or {}
     # `extras` is a free-form block and decision scenarios write it as a STRING.
-    # Reaching for .get() on one threw the moment the magazine started calling
+    # Reaching for .get() on one threw the moment the renderer started calling
     # this on decisions rather than only on stacks.
     extras = scenario.get("extras")
     lives = (extras.get("life_totals") or {}) if isinstance(extras, dict) else {}

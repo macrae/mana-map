@@ -111,10 +111,9 @@ debriefed, run `/debrief` first.
 - **Tier discipline.** Every axis measurement is ◆ (deterministic, reproducible,
   re-derived by the validator). Every verdict, ranking and prescription is ★. A
   line a proposed add would open stays a candidate until a stack artifact passes.
-- **The diagnosis is not published.** It carries no L10 obligation and never
-  becomes a magazine department — it may name a weakness plainly, which is the one
-  thing the every-issue-is-the-reader's-first law would forbid. It feeds The Short
-  List and the pilot; the renderer never reads it.
+- **The diagnosis is a working artifact, not a page.** It may name a weakness
+  plainly and compare the deck to what it could be — it feeds `/prescribe` and the
+  pilot; the deck page never reads it.
 - **Recon is evidence, not authority.** "Most lists run this" is a fact about other
   people's decks. Whether it belongs in this one is decided against this deck's
   measured axes, and a recon-sourced add still needs a `closes`.

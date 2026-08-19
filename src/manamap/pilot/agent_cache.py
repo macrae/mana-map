@@ -471,7 +471,7 @@ def _extra_changes(old_extra, new_extra):
 
 
 def _tutor_guide_applicable(slug):
-    """Fetch Quests exists only for decks that actually tutor.
+    """The tutor guide exists only for decks that actually tutor.
 
     Zero maindeck library-search tutors → N/A: the renderer prints standing
     copy instead, and there is nothing for the coach to author. Missing
@@ -487,8 +487,8 @@ def _tutor_guide_applicable(slug):
 
 # routine -> (predicate, reason shown when it does not apply). The whole-deck
 # scan turns the raised MissingInput into an N/A row; an explicit --routine
-# call exits 2 with the reason. The Short List (`the-ten`) has no gate: every
-# deck gets exactly ten, bench-first, pool-filled.
+# call exits 2 with the reason. (`the-ten`, the retired Short List, had no gate: every
+# deck got exactly ten.)
 def _debrief_applicable(slug):
     """A debrief needs a log. No entries → N/A rather than MISS: a deck nobody
     has played yet has nothing to annotate, and a permanent MISS there would
@@ -505,7 +505,7 @@ _APPLICABILITY = {
     ),
     "tutor-guide": (
         _tutor_guide_applicable,
-        "deck runs zero library-search tutors — Fetch Quests renders its "
+        "deck runs zero library-search tutors — the tutor guide renders its "
         "standing no-tutors copy; nothing to spawn or cache",
     ),
 }

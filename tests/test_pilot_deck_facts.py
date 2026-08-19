@@ -232,7 +232,7 @@ def test_mana_facts_counts_copies_not_entries():
     """A mana base is about physical cards: 11 Islands are 11 blue sources.
 
     The `counts` block stays per-entry by convention (and reports both); the
-    mana block must not, or every source figure in the magazine is halved.
+    mana block must not, or every source figure on the deck page is halved.
     """
     cards = [
         {"name": "Island", "type_line": "Basic Land — Island", "quantity": 11,

@@ -1,6 +1,6 @@
 """The deck constellation: determinism, balance, and the rules that were measured.
 
-`deck_map.json` is TRACKED and drawn in two places — the printed magazine and the
+`deck_map.json` is TRACKED and drawn in two places — the printed deck page and the
 dossier — so a layout that wobbles between runs is not a cosmetic problem: it is a
 diff on every rebuild and a different picture for the same deck.
 
@@ -126,7 +126,7 @@ def test_no_city_holds_more_than_the_balance_bound():
 
 
 def test_every_card_lands_in_exactly_one_city_and_one_neighbourhood():
-    """The contract the magazine page rests on: a map with a hole in it is not a map."""
+    """The contract the printed deck page rests on: a map with a hole in it is not a map."""
     vectors = _fixture_vectors()
     cities, hoods = deck_map.cluster(_unit(vectors), len(vectors))
     assert len(cities) == len(hoods) == len(vectors)

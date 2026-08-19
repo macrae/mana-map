@@ -1,11 +1,14 @@
 ---
 name: write-manual
-description: Generate a deck's pilot's manual — evidence gathering, prose writing, and deterministic zine HTML build. Use when the user wants a manual (re)generated for a deck that has cards.json and verified stack scenarios.
+description: Write a deck's pilot notes (the five prose keys, via pilot-notes) and render its deck page — evidence gathering, prose, and the deterministic HTML build (legacy magazine renderer until manual-v5). Use when the user wants the notes or the page (re)generated for a deck that has cards.json and verified stack scenarios.
 ---
 
-# Write a pilot's manual (v2 pipeline)
+# Write the pilot notes and render the deck page
 
-Pipeline for `data/decks/<slug>/` → `manuals/<slug>.html`. Evidence tiers: ✓ rules-verified, ◆ data-derived, ★ coaching (see `docs/pilot.md`).
+Pipeline for `data/decks/<slug>/` → `manuals/<slug>.html`. The HTML step is the **legacy
+magazine renderer** (frozen; replaced by the compact deck page in `docs/manual-v5-spec.md`)
+— it still renders from the same artifacts, byte-identically. Evidence tiers: ✓
+rules-verified, ◆ data-derived, ★ coaching (see `docs/pilot.md`, `docs/vision.md`).
 
 0. **Cache gate** (do this first — the agents below cost ~200k tokens together):
    `.venv/bin/manamap pilot cache-status <slug>` prints one line per routine and exits
@@ -42,23 +45,23 @@ Pipeline for `data/decks/<slug>/` → `manuals/<slug>.html`. Evidence tiers: ✓
    `manamap pilot merge-prose <slug> pilot-notes` — the merge touches ONLY the five
    owned keys, so the frozen legacy keys on a published deck (`card_roles`,
    `mana_base`, `upgrades`, `editors_letter`, `pilots_log`) survive — then
-   `validate-issue <slug>` (budgets, taxonomy leaks, the voice bans) and
+   `validate-issue <slug>` (the legacy page gate: budgets, taxonomy leaks, the voice bans) and
    `cache-record <slug> --routine pilot-notes`. Zero-guessing rule throughout;
    surface "needs a stack scenario" flags to the user. Decision spreads and the tutor
    guide are the same agent under their own routines — `decision:<NNN>` (the
    author-decision skill) and `tutor-guide`.
-6. **Build**: `.venv/bin/manamap pilot build-manual <slug>` then `.venv/bin/manamap pilot build-index` — deterministic; only verified stacks appear; missing prose renders [TODO].
-7. **Review**: open `manuals/<slug>.html`; decisions, coaching sections, and the strategic frame are the founder-review surface (tracked JSON, red-linable).
+6. **Build** (legacy renderer): `.venv/bin/manamap pilot build-manual <slug>` then `.venv/bin/manamap pilot build-index` — deterministic; only verified stacks appear; missing prose renders [TODO]. This is the magazine renderer kept frozen until manual-v5; do not extend it.
+7. **Review**: open `manuals/<slug>.html` (legacy output); the decisions, the notes and the strategic frame are the review surface (tracked JSON, red-linable).
 
 `manual_prose.json` is tracked and human-editable — tune the wording directly and rebuild without re-running agents. The cache reports a hand edit as `EDITED` and still says "don't spawn"; run `cache-record` to bless it.
 
-## After a deck change: regenerate the diff, not the manual
+## After a deck change: regenerate the diff, not the page
 
 The cache is card-scoped. When the decklist changes:
 
 1. `.venv/bin/manamap pilot impact <slug>` — FIRST, before any rebless (a
    rebless advances the card baseline and blinds the deck-diff). The report:
-   which artifacts/keys/departments reference the changed cards, stale prose
+   which artifacts/keys/page sections reference the changed cards, stale prose
    figures, goldfish-target ghosts, zone-framing flags. Report-only.
 2. `.venv/bin/manamap pilot cache-rebless <slug>` — clears every `STALE_OK`
    routine (deck changed, but nothing that artifact references) without a

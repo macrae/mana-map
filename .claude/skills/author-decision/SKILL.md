@@ -1,6 +1,6 @@
 ---
 name: author-decision
-description: Author a table-politics decision scenario (tier-3 coaching artifact) for a deck's pilot's manual — archetypal board state, branches with signaling/coalition analysis, validated form. Use when the user wants a "what do I do here" spot turned into a reviewable decision spread.
+description: Author a table-politics decision scenario (tier-3 coaching artifact) for a deck — archetypal board state, branches with signaling/coalition analysis, validated form. Use when the user wants a "what do I do here" spot turned into a reviewable decision spread.
 ---
 
 # Author a decision scenario

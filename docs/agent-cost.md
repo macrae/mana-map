@@ -23,122 +23,60 @@ Two consequences:
 
 - **There is nothing to mock in `conftest.py`** and no HTTP request/response pair to
   memoize. A Python-level API cache would intercept zero calls.
-- **`manamap pilot build-manual` already costs $0.** It is pure deterministic
+- **Rendering already costs $0.** `build-manual` (the legacy page) is pure deterministic
   rendering, and it is deliberately *not* cached — a cache there would buy nothing and
-  risk stale HTML.
+  risk stale HTML. The same is true of every `deck-*`, `validate-*` and `sim` command.
 
 All the money is in subagent spawns, so the cache lives at the **skill-orchestration
 layer**: before spawning, a skill asks the CLI whether the agent's declared inputs have
 changed since its output artifact was recorded.
 
-## Measured cost per routine
+## Measured cost per routine — the bench (current)
 
-> **Retired 2026-08-19** (workbench pivot, `docs/agent-audit-2026-08-19.md`):
-> `issue-plan` (magazine-editor) and `panel-prose` (pilot-panel) no longer exist as
-> routines or agents; `coach-prose` (pilot-coach) and `writer-prose` (manual-writer)
-> folded into one `pilot-notes` routine owning five keys; `deck-map-names` survives but
-> is optional and no longer a `deck-status` stage. The rows below are kept as the
-> measurement of what the magazine cost.
+Every figure is a token count from a real spawn, with the date it was measured; an
+estimate is marked as one. The cache routines are `config.AGENT_ROUTINES` plus the
+per-artifact `stack:<NNN>`, `decision:<NNN>` and `prescription:<id>`.
 
-Real numbers from the session that built the magazine layer (2026-07-25):
-
-| Routine | Agent | Tokens | Typical trigger |
+| Routine | Agent(s) | Tokens | Typical trigger |
 |---|---|---|---|
-| `issue-plan` | magazine-editor | **147,351** | any STYLEv3 edit, prose change, new stack |
-| *(research pass)* | strategy-researcher (research) | 117,827 / 91,332 | explicit research request |
-| `strategic-frame` | strategy-researcher (consult) | 80,948 | new decklist or newly verified line |
-| `coach-prose` | pilot-coach | 54,515 | frame change, new stack |
-| `deck-map-names` | deck-cartographer | ~60,000–93,000 (9 spawns, the fleet batch) | `deck-map` re-run: a decklist edit or a retrain moves the clusters |
-| `deck-engine` | deck-engineer ⇄ engine-critic | **~120k per engineer pass, ~140k per critic** — radagast took 4 spawns over 3 iterations | decklist edit, a newly passing stack (it may turn a dashed line solid) |
-| `writer-prose` | manual-writer | 47,188 | frame change, new stack, graph refresh |
-| `stack:<NNN>` resolve | stack-resolver | 35,278 / 38,231 | new or re-run scenario |
-| `stack:<NNN>` check | rules-checker | 29,625 / 28,097 | every resolver iteration |
+| `stack:<NNN>` resolve | stack-resolver | 35,278 / 38,231 (2026-07-25); **97k / 95k / 60k** on the v2 board of radagast 008 (2026-08-19) | new or re-run scenario |
+| `stack:<NNN>` check | rules-checker | 29,625 / 28,097 (2026-07-25); **96k / 115k / 106k** on radagast 008 | every resolver iteration |
+| `deck-engine` | deck-engineer ⇄ engine-critic | **~120k per engineer pass, ~140k per critic** — radagast took 4 spawns over 3 iterations | decklist edit; a newly passing stack (it may turn a dashed line solid) |
+| `strategic-frame` | strategy-researcher (consult) | 80,948 / 130,161 | new decklist or newly verified line |
+| `deck-diagnosis` | deck-doctor ⇄ deck-skeptic | 200,000–300,000 (est.) | decklist edit, new verified stack, goldfish re-run, a new sim run (`sim:runs`), a new debrief |
+| `prescription:<id>` | deck-doctor ⇄ deck-skeptic | ≈ one diagnosis pass (est.; unmeasured — none run yet) | the question's own prompt (`prompt:self`); otherwise as `deck-diagnosis` |
+| `deck-recon` | deck-doctor (MODE recon) | 60,000–90,000 (est.) | age, not inputs — see below |
+| `debrief` | debrief | **est. 15,000–30,000** per batch of un-debriefed entries (unmeasured — nothing logged yet) | a new `log.jsonl` entry (N/A until one exists) |
+| `pilot-notes` | pilot-notes | unmeasured; its two predecessors cost 54,515 + 47,188 for the same keys (2026-07-25) | frame change, new stack, engine change |
+| `tutor-guide` | pilot-notes | 60,000–90,000 (7 spawns, 2026-07) | a tutor enters or leaves the 99 |
+| `deck-map-names` | deck-cartographer | ~60,000–93,000 (9 spawns, 2026-08) — optional, no longer a lifecycle stage | `deck-map` re-run |
+| `candidate-pool` | deck-analyst | **235,579** / 130,161 | new brief, role or combo-data refresh |
+| `deck-build` | deck-architect ⇄ deck-critic | 105,096 + 96,380 (architect, revision) + 94,468 (critic); ~430,000 for a full loop | new pool, critic findings |
+| *(research pass)* | strategy-researcher (research) | 91,332–166,544 per pass | an explicit research request |
 
-From the session that built the deck builder and built hapatra (2026-07-25):
-
-| Routine | Agent | Tokens | Typical trigger |
-|---|---|---|---|
-| `candidate-pool` | deck-analyst | **235,579** | new brief, role or combo-data refresh |
-| `deck-build` | deck-architect | 105,096 + 96,380 (revision) | new pool, critic findings |
-| `deck-build` | deck-critic | 94,468 | every architect iteration |
-| *(research pass)* | strategy-researcher (research) | 120,545 / 92,559 / 166,544 | the `strategy:deckbuilding` corpus, 3 passes |
-| `the-ten` | short-list-analyst | 76,000–115,000 (7 spawns, the fleet batch) | decklist edit, new pilot feedback, pool refresh |
-| `tutor-guide` | pilot-coach | 60,000–90,000 (7 spawns) | a tutor enters or leaves the 99 |
-
-The diagnosis loop (2026-08-03), **estimates until the first run measures them** —
-recorded here as estimates on purpose, so the gap between the guess and the real
-number is visible rather than quietly overwritten:
-
-| Routine | Agent | Tokens (est.) | Typical trigger |
-|---|---|---|---|
-| `deck-recon` | deck-doctor (MODE recon) | 60,000–90,000 | age, not inputs — see below |
-| `debrief` | debrief | **est. 15,000–30,000** per batch of un-debriefed entries | a new `log.jsonl` entry (N/A until one exists) |
-| `deck-diagnosis` | deck-doctor ⇄ deck-skeptic | 200,000–300,000 | decklist edit, new verified stack, goldfish re-run |
+**The resolve loop is the outlier, and it is measured twice.** hapatra's stack 001
+(2026-07-26) reached **~600k** over 4 resolver + 4 checker passes; radagast's stack 008
+(2026-08-19, the first board lifted from a Forge game) reached **~570k** over 3
+iterations — 62 citations, against the scope budget of 40. Both confirm the rule in
+`docs/pilot.md` → *Scenario scope*: an artifact past ~59 citations takes three or four
+rounds however right the question is. `RESOLVE_MAX_ITERATIONS = 3` is the bound;
+stack 001 overrode it deliberately to reach a verdict.
 
 `deck-recon` is the only routine in `AGENT_ROUTINES` whose staleness is **time**
 rather than inputs. A decklist edit does not change what strong lists for that
 commander run, so hashing `cards.json` here would buy a web pass on every swap;
 its declared input is `deck:brief.json?` and `RECON_MAX_AGE_DAYS` is judged by the
-skill. It is also deliberately not an input to any manual routine — a recon
-refresh should cost one diagnosis, not a regeneration.
+skill. It is also deliberately not an input to the notes — a recon refresh should
+cost one diagnosis, not a regeneration.
 
-The deterministic half costs **zero**: `manamap pilot deck-audit` joins five
-existing artifacts into sixteen cited axes plus the engine-activation read, and a
-cache miss on both routines still leaves the whole measurement on the table.
+The deterministic half costs **zero**: `deck-audit` joins five existing artifacts into
+sixteen cited axes plus the engine-activation read; `simulate` runs N Forge games and
+`sim/parse.py` turns them into intervals; `deck-info`, `deck-version`, `deck-notes` and
+every validator are Python. A cache miss on an agent routine still leaves the whole
+measurement on the table.
 
-`the-ten` is The Short List: ten cards worth knowing about that could play well with the
-deck, scouted from the whole card pool (one routine, one artifact — `considering.json`).
-It replaced the retired `sideboard-analysis`/`upgrade-watch` pair, and then the sideboard
-itself was retired: ownership is no longer a criterion, so the pool is always the whole
-card database rather than a bench topped up from it.
-
-`tutor-guide` reports `N/A` for a deck with no library-search tutors, so it never becomes a
-permanent MISS on a tutorless list.
-
-**A full manual regeneration is ≈ 700k tokens across SIX serially-dependent routines**,
-not the 330k across four this line said until 2026-08-15. The number did not drift — the
-pipeline grew two of the most expensive stages it has: `deck-engine` (engineer ⇄ critic)
-and `panel-prose`. Composition for a clean single-iteration run:
-
-| | |
-|---|---:|
-| `strategic-frame` | ~81k |
-| `deck-engine` | ~260k (one engineer + one critic; more if the critic fails) |
-| `coach-prose` | ~55k |
-| `writer-prose` | ~47k |
-| `panel-prose` | ~134k |
-| `issue-plan` | ~113k |
-| **total** | **~690k** |
-
-`deck-engine` is 38% of it and is the one to check the cache on first. `issue-plan`'s
-figure is a fresh mean over the eight-deck fleet re-plan of 2026-08-14 (100,450–125,290),
-which is materially cheaper than the 147,351 measured on a from-scratch plan: a re-plan
-carries most keys forward programmatically and reasons only about what changed.
-
-`resolve-stack` is 2–6 spawns per scenario (resolver + checker, up to
-`RESOLVE_MAX_ITERATIONS = 3`).
-
-From the session that published Vol. 002 (2026-07-26):
-
-| Routine | Agent | Tokens | Note |
-|---|---|---|---|
-| `candidate-pool` | deck-analyst | 235,579 / 130,161 | rebuilt on the bracket retarget |
-| `deck-build` | deck-architect ⇄ deck-critic | ~430,000 | 2 architect passes + 1 critic pass |
-| `strategic-frame` | strategy-researcher (consult) | 130,161 | |
-| `coach-prose` | pilot-coach | 78,093 | |
-| `writer-prose` | manual-writer | 68,798 | |
-| `issue-plan` | magazine-editor | 152,697 | |
-| `stack:001` | stack-resolver ⇄ rules-checker | **~600,000** | 4 resolver passes, 4 checks |
-
-**The stack is the outlier and it is worth understanding before queueing more.** Vol. 001
-resolved *five* lines for less than stack 001 cost alone. The spend was earned — the answer
-overturned the deck's premise and the checker was right on every pass — but it is not a
-repeatable rate, and `RESOLVE_MAX_ITERATIONS = 3` was deliberately overridden to reach a
-verdict. See `PLAN.md` for the structural fix that implies.
-
-**A full publish ≈ 1.7M tokens** for a deck built from scratch, dominated by the build loop
-and one hard rules question. A deck with an existing decklist and no contested combo skips
-both and lands nearer Vol. 001's ~330k.
+`tutor-guide` reports `N/A` for a deck with no library-search tutors and `debrief` for a
+deck with nothing logged, so neither becomes a permanent MISS.
 
 **A full build ≈ 530k tokens** for a first pass with one critic iteration
 (pool → architect → critic → architect), bounded by `DECK_BUILD_MAX_ITERATIONS = 3`.
@@ -147,9 +85,31 @@ The pool dominates, which is why `candidate-pool` is cached separately from
 And the deterministic builder underneath costs **zero** — a cache miss on both
 routines still leaves you a legal, bracket-compliant 99.
 
-What this bought before the cache: re-running `write-manual` after a one-word prose
-tweak paid all four agents again, and `design-issue` paid another 147k because
-`manual_prose.json` was one of the editor's declared inputs.
+### Legacy measurements — the magazine (retired 2026-08-19)
+
+Kept as the record of what the magazine cost; none of these routines or agents exist now
+(`docs/agent-audit-2026-08-19.md`). `issue-plan` (magazine-editor) and `panel-prose`
+(pilot-panel) were deleted; `coach-prose` (pilot-coach) and `writer-prose`
+(manual-writer) folded into `pilot-notes`; `the-ten` (short-list-analyst) folded into
+`prescribe`.
+
+| Routine | Agent | Tokens | Measured |
+|---|---|---|---|
+| `issue-plan` | magazine-editor | 147,351 from scratch; 100,450–125,290 on a re-plan (mean ~113k) | 2026-07-25 / 2026-08-14 |
+| `panel-prose` | pilot-panel | ~134,000 | 2026-08-14 |
+| `coach-prose` | pilot-coach | 54,515 / 78,093 | 2026-07-25 / 07-26 |
+| `writer-prose` | manual-writer | 47,188 / 68,798 | 2026-07-25 / 07-26 |
+| `the-ten` | short-list-analyst | 76,000–115,000 (7 spawns) | 2026-08 |
+
+A full manual regeneration was **≈ 690k tokens across six serially-dependent routines**
+(`strategic-frame` ~81k · `deck-engine` ~260k · `coach-prose` ~55k · `writer-prose` ~47k ·
+`panel-prose` ~134k · `issue-plan` ~113k), and a full publish of a deck built from
+scratch **≈ 1.7M**, dominated by the build loop and one hard rules question. The pivot
+deleted roughly 350k of that per deck and kept the evidence routines. Before the cache
+existed, re-running `write-manual` after a one-word prose tweak paid all four agents
+again, and `design-issue` paid another 147k because `manual_prose.json` was one of the
+editor's declared inputs — which is why `prose:shape` (hash the key skeleton, not the
+words) was invented, and why it was deleted with the editor.
 
 ## What the cache does
 
@@ -185,12 +145,6 @@ cache.
 
 ## Design decisions worth knowing
 
-**Prose structure, not prose text.** `issue-plan` hashes only `manual_prose.json`'s key
-skeleton (which sections and which cards/stacks have copy), never the wording. The
-editor *packages* prose; it doesn't rewrite it. So a typo fix is free, while adding a
-combo line or dropping a section correctly forces a re-plan. If a rewrite is heavy
-enough to change the issue's angle, use `--force`.
-
 **Agent prompts are inputs.** Editing `.claude/agents/pilot-notes.md` changes what the
 agent produces from identical artifacts, so it invalidates that agent's routines by
 design. **`.claude/agents-common.md` is hashed with every agent** (inside
@@ -198,9 +152,8 @@ design. **`.claude/agents-common.md` is hashed with every agent** (inside
 the contract that used to be pasted into twelve charters, and editing it invalidates
 the whole fleet — exactly as editing twelve pasted copies did, now visibly and once.
 
-**Full content hashes, never mtime.** The manual routines hash ~38MB of global graphs
-(`combo_graph.json` 4.5MB + `synergy_graph.json` 27.8MB + `obsolescence_index.json`
-5.9MB); the build routines hash ~34MB (`combo_graph.json` 4.5MB as the documented
+**Full content hashes, never mtime.** The diagnosis routines hash the combo records and
+the obsolescence index, and the build routines hash ~34MB (`combo_graph.json` 4.5MB as the documented
 proxy for `combo_details.json` + `card_roles.json` 1.9MB + `synergy_graph.json`
 27.8MB). Using size+mtime would be actively harmful: `regen-analysis`
 rewrites them byte-identical on every run, which would false-invalidate ~200k tokens of
@@ -219,14 +172,14 @@ which hashes `strategy.md` bytes — never the derived index. So
 `{title, scenario}` of its artifact, so the `resolution` and `checker` blocks the loop
 writes back never self-invalidate.
 
-**Coach and writer share a file, not a fingerprint.** Both write `manual_prose.json`
-but own disjoint keys; each digests only its own keys, so one running doesn't make the
-other look hand-edited.
+**`pilot-notes` shares `manual_prose.json` with keys nobody owns.** The routine digests
+only its five keys, so the frozen legacy keys beside them (`card_roles`, `mana_base`,
+`upgrades`, the panel keys) can never make it read EDITED, and `merge-prose` never touches
+them. (Until 2026-08-19 the same mechanism kept two agents, coach and writer, from
+clobbering each other in the same file.)
 
-**Art is a separate token.** `cards:printing` (artist, set, collector number, border,
-frame effects, finishes, foil) is an input to `issue-plan` only, because the
-magazine-editor is the one agent that reads it — Featured Artist names an artist. Coach,
-writer, stacks and decisions don't reason about art, so they never see it.
+**Art was a separate token, and it is gone.** `cards:printing` existed only because the
+magazine-editor read printings for Featured Artist; it was deleted with the editor.
 
 **Only passing stacks are inputs.** A failing stack can't be published, so editing one
 doesn't invalidate downstream prose — but flipping it to `pass` does.
@@ -242,8 +195,8 @@ agent tokens** instead of ~330k.
 
 `fetch_deck.py` computed `decklist_sha256` and wrote it into `cards.json` but never
 read it back, so every run re-POSTed the whole decklist to Scryfall *and rewrote
-`cards.json`*. The rewrite was the expensive part: `cards.json` is an input to all four
-agent routines, so a habitual no-op re-fetch could silently cost a 330k-token
+`cards.json`*. The rewrite was the expensive part: `cards.json` is an input to nearly every
+agent routine, so a habitual no-op re-fetch could silently cost a 330k-token
 regeneration. It now short-circuits when the decklist is unchanged (`--force` to
 override). The hash covers the decklist text, not Scryfall's data, so oracle errata
 need `--force` — the right default for a locked-decklist subsystem.

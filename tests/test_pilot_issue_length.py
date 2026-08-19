@@ -1,4 +1,12 @@
-"""`issue-length`: the measure the cuts are argued against."""
+"""`issue-length`: the measure the cuts are argued against.
+
+LEGACY (2026-08-19): the magazine renderer. It still renders the nine frozen issues from
+artifacts nothing regenerates any more (issue_plan.json, the panel keys,
+card_roles/mana_base/upgrades, considering.json), and it is replaced by the compact deck
+page in docs/manual-v5-spec.md. Do not extend it; internals below are accurate for what it
+does.
+"""
+
 import json
 
 from manamap.pilot import issue_length as il

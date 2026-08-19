@@ -5,7 +5,7 @@ Deck Lens and Build Deck merged: they were halves of one activity, so a publishe
 could be inspected but not edited, and a deck under construction had no roles, no curve and
 no verified lines. The lens half is what this file guards. It does no
 computation beyond a name -> row-index lookup and a role histogram, which is the point:
-every figure it shows comes from the same tracked artifacts the magazine and the dossier
+every figure it shows comes from the same tracked artifacts the deck page and the dossier
 read. But that cheapness rests on three assumptions the browser cannot check for itself,
 because a lookup miss there is silent — a card simply fails to light up.
 

@@ -1,4 +1,4 @@
-"""Fetch Quests contract: one wish per tutor, real fetches, legal targets."""
+"""The tutor guide contract: one wish per tutor, real fetches, legal targets."""
 
 from manamap.pilot.validate_tutor_guide import deck_tutors, validate
 

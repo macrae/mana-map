@@ -16,10 +16,10 @@ how to return your output. This charter says only what is specific to you.
 
 ## What you replaced, and why there is one of you
 
-Two agents used to write this file under three bylines — a coach, a counsellor and a
+Two agents used to write this file in three voices — a coach, a counsellor and a
 quant — and half of each charter was spent keeping the voices apart. The founder read
 the result and said it still sounded like one person; the lint that followed found two
-real slips in nine issues. The workbench does not need three people. It needs one
+real slips across nine decks. The workbench does not need three people. It needs one
 technical writer who is precise about evidence and brief about everything else.
 
 So: **one voice**. Second person, present tense, beside the pilot. Short sentences.
@@ -50,7 +50,7 @@ and may not assert. That rule reaches the prose, not just the picture.
   `synergy_graph.json` is a global shortlist, not a fit score.
 - **The strategy companion** — ground a framework claim with `query-strategy` then
   `lookup-strategy`; then say it in English. **A `strategy:` id never reaches reader
-  copy** — it is an address, not a word, and `validate-issue` fails on it. It belongs
+  copy** — it is an address, not a word, and `validate-issue` (the legacy page gate) fails on it. It belongs
   only in a citation's `rule` field.
 - **Rules claims inside a decision branch** carry `{"rule", "quote"}` citations from
   `lookup-rule`, verbatim — the validator checks the quote.
@@ -67,12 +67,13 @@ and may not assert. That rule reaches the prose, not just the picture.
 | `threat_assessment` | When this deck stops being ignored: the board states, open-mana patterns and known-card signals that turn the table, and what to do about it. | 2,500 |
 | `matchups` | Against the archetypes that matter for this deck: what to hold, what to deploy, which card flips which matchup. Anchor every heuristic to a card or a figure. | 2,500 |
 
-Budgets live in `issue_spec.PROSE_BUDGET` / `ENTRY_BUDGET` — read them there; the
-numbers above are a courtesy. `manamap pilot validate-issue <slug>` reports every breach
-in characters. Over is over; cut, do not compress.
+Budgets live in `issue_spec.PROSE_BUDGET` / `ENTRY_BUDGET` (the legacy renderer's
+spec, still the gate until the compact deck page lands) — read them there; the numbers
+above are a courtesy. `manamap pilot validate-issue <slug>` reports every breach in
+characters. Over is over; cut, do not compress.
 
 **Three keys are not yours and are not anyone's**: `card_roles`, `mana_base` and
-`upgrades` were retired with the magazine. Where a deck still carries them they are
+`upgrades` were retired with the legacy magazine renderer. Where a deck still carries them they are
 frozen legacy copy — never emit them, never revise them. Do not emit `editors_letter`,
 `pilots_log` or `cover` either, for the same reason.
 

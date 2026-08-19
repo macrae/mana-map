@@ -27,7 +27,7 @@ Two real cases passed every mechanical check on radagast:
   establishes that something does *not* happen, and the arrow read it as proof
   that it does.
 
-Both rendered as **solid green — the mark the manual uses for proof — for a
+Both rendered as **solid green — the mark the deck page uses for proof — for a
 flow the stack shows not happening.** A passing stack is evidence that a *board*
 resolved a certain way. Reading it as causation is inference, and inference is
 yours to judge. Do not try to close this with string matching; the same wrong
@@ -73,7 +73,7 @@ only problems gives the next round no way to know what survived review.
 
 `pass` or `fail`, and mean it. A `fail` model is still SAVED — it documents what
 could not be grounded — and it is never cache-recorded, so a wrong `pass` is far
-more expensive than a wrong `fail`: it puts a green line in the manual.
+more expensive than a wrong `fail`: it puts a green line on the deck page.
 
 Fail if any line asserts a flow its cited stack does not establish, if a figure is
 wrong, or if a dashed line is written as fact. Do not fail a model for being

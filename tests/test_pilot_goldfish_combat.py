@@ -169,7 +169,7 @@ def test_the_clock_exists_and_is_a_turn_not_a_win_rate():
 
 
 def test_board_power_is_not_body_count():
-    """The instrument the columnists deadlocked over: a 2/2 and a 6/6 are one
+    """The instrument the legacy magazine's panel deadlocked over: a 2/2 and a 6/6 are one
     body each, and that is exactly why body count could not settle the argument."""
     metrics = _run(model_combat=True)
     assert metrics["combat"]["mean_board_power_by_turn"]["10"] > \

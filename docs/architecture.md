@@ -240,7 +240,7 @@ Colour-source counts are **computed hypergeometrically** (callers must pass `com
 ## Mana audit (`src/manamap/pilot/mana_analysis.py`)
 
 The same hypergeometric kit, pointed at a *finished* deck instead of a pool, and the one
-magazine section with **no agent at all**: `manamap pilot mana-analysis <slug>` writes
+measurement with **no agent at all**: `manamap pilot mana-analysis <slug>` writes
 `mana_analysis.json` deterministically. It classifies each land (basic / snow / mdfc /
 fetch / tapped / untapped-dual / utility, reusing `ROLE_LAND_PATTERNS` deck-locally),
 counts land and nonland sources per colour, computes pip share against source share, and

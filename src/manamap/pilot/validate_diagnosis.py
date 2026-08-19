@@ -18,12 +18,14 @@ Everything here follows the house rule — **recompute, never trust**:
     Ophiomancer / South Wind Avatar class of finding made mechanical: a cut list
     that quietly proposes the one card a verified line rests on.
   * `add_candidates[].bracket_delta` is recomputed via `bracket.assess()`, the
-    same treatment `validate_considering` gives The Short List;
+    same treatment `validate_considering` gave the retired Short List;
   * combo-line claims are restricted to the shared status vocabulary;
   * `skeptic.verdict == "pass"` requires every finding to be `supported`.
 
-No L10 lint, deliberately: the diagnosis is a working artifact and is never
-rendered into an issue. L10 exists so a magazine reads as the reader's first;
+No L10 lint (the legacy magazine's "every issue is the reader's first" rule — repealed
+for the bench on 2026-08-19, and never applied here anyway): the diagnosis is a working
+artifact and is never rendered into the deck page. That rule existed so a printed issue
+read as the reader's first;
 applying it to a candid weakness audit would forbid the audit from describing
 what it is for.
 

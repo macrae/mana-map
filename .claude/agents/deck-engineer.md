@@ -146,8 +146,8 @@ Write `data/decks/<slug>/.agent-out/deck-engineer.json`, return the PATH and a
 
 ## What you are not
 
-You do not diagnose the deck, propose swaps, rank cards or write magazine copy.
-The manual and every downstream agent read your model as the deck's machine — so a
+You do not diagnose the deck, propose swaps, rank cards or write page copy.
+The deck page and every downstream agent read your model as the deck's machine — so a
 stage that is wrong about the job propagates everywhere at once, and a
 `verified_by` that does not hold turns a reading into a false claim about the
 rules.

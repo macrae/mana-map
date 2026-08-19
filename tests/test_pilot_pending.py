@@ -174,7 +174,7 @@ def test_deck_status_runs_the_gates_and_reports_a_failure(tmp_path, monkeypatch)
     gates existed and nothing in the command ran them, so PLAN.md recorded it
     reading nine decks green while two failed their own validators — and it did
     it again live on ur-dragon mid-swap: `deck-status` FAIL=0 while
-    `validate-issue` FAIL=1 on the same deck in the same second.
+    `validate-issue` (the legacy plan gate) FAIL=1 on the same deck in the same second.
 
     A dashboard that is green while the gate is red is worse than no dashboard,
     because people stop checking the gate.

@@ -1,6 +1,6 @@
 """Pilot: goldfish simulation — seeded Monte Carlo resource-development metrics.
 
-Tier-2 (data-derived) evidence for the pilot's manual. The model simulates
+Tier-2 (data-derived) evidence for the bench. The model simulates
 resource development, NOT full games; its assumptions are stated in the output
 artifact and rendered in the manual. Deterministic: same seed and deck produce
 byte-identical metrics.

@@ -46,7 +46,7 @@ INFINITE_PREFIX = "infinite"
 
 # Commander Spellbook is format-agnostic about *which* card sits in the command
 # zone: a line can quietly assume one of its pieces is your commander, and
-# "commander" in `produces` is the tell. Judge's Desk A-004 is the cautionary
+# "commander" in `produces` is the tell. goblin-storm stack 004 is the cautionary
 # tale — the combo graph promised goblin-storm an infinite off Krenko, but CR
 # 903.9a scopes the graveyard-to-command-zone action to *a commander*, and Zada
 # holds that seat. Counting those lines toward a bracket floor would inflate

@@ -1,5 +1,11 @@
 """Pilot: the Pilot's Manual design system (STYLEv3 §8).
 
+LEGACY (2026-08-19): the magazine renderer. It still renders the nine frozen issues from
+artifacts nothing regenerates any more (issue_plan.json, the panel keys,
+card_roles/mana_base/upgrades, considering.json), and it is replaced by the compact deck
+page in docs/manual-v5-spec.md. Do not extend it; internals below are accurate for what it
+does.
+
 The visual layer of the magazine: design tokens, the stylesheet, and the fixed
 component library the issue plan composes from. Kept separate from
 build_manual.py so the renderer reads as editorial assembly and the costume

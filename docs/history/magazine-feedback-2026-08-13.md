@@ -1,3 +1,5 @@
+> **Historical (moved to `docs/history/` 2026-08-19).** Superseded by `docs/vision.md` and the 2026-08-19 workbench pivot; kept verbatim as the record of how the previous design was reasoned. Nothing here is current guidance.
+
 # Pilot's Manual — editor + founder feedback, 2026-08-13
 
 > **STATUS: input, not decision.** This is the record of what was asked for, in

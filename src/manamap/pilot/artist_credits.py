@@ -1,5 +1,11 @@
 """Pilot: who painted this deck — standout artists and art themes.
 
+LEGACY (2026-08-19): the magazine renderer. It still renders the nine frozen issues from
+artifacts nothing regenerates any more (issue_plan.json, the panel keys,
+card_roles/mana_base/upgrades, considering.json), and it is replaced by the compact deck
+page in docs/manual-v5-spec.md. Do not extend it; internals below are accurate for what it
+does.
+
 Reads the printing metadata `fetch-deck` stores (artist, set, collector number,
 border, frame effects, finishes, foil) and finds the story in it: an artist who
 painted a disproportionate share, clusters of two or three, whether a Secret

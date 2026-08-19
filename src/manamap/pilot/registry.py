@@ -56,24 +56,24 @@ PILOT_STEPS = [
     ("deck-audit", "manamap.pilot.deck_audit", "Cited axis targets + engine activation: is this deck any good?"),
     ("card-value", "manamap.pilot.card_value",
      "What is each card WORTH: swap it for a blank and measure what the deck loses"),
-    ("mana-analysis", "manamap.pilot.mana_analysis", "Deterministic mana/land analysis behind Sources Say"),
+    ("mana-analysis", "manamap.pilot.mana_analysis", "Deterministic mana/land analysis: pips vs sources, castability, tapped lands"),
     ("pool-facts", "manamap.pilot.pool_facts", "What deck can I build from a box of cards?"),
     ("build-deck", "manamap.pilot.build_deck", "brief.json -> build_plan.json, deterministic"),
     ("validate-build", "manamap.pilot.validate_build", "Form-check a build plan against the contract"),
-    ("validate-considering", "manamap.pilot.validate_considering", "Form-check The Short List (the ten)"),
+    ("validate-considering", "manamap.pilot.validate_considering", "Form-check a legacy considering.json (the retired Short List; frozen on published decks)"),
     ("validate-pending", "manamap.pilot.validate_pending",
      "The queue of changes decided but not applied; closure is DERIVED from the deck"),
     ("validate-diagnosis", "manamap.pilot.validate_diagnosis", "Form-check a deck diagnosis (axes re-derived, cuts checked against verified stacks)"),
     ("validate-goldfish-targets", "manamap.pilot.validate_goldfish_targets", "Form-check the engine declaration goldfish and deck-audit price"),
     ("diagnosis-report", "manamap.pilot.diagnosis_report", "Render a deck diagnosis as readable markdown"),
-    ("validate-tutor-guide", "manamap.pilot.validate_tutor_guide", "Form-check the Fetch Quests tutor guide"),
+    ("validate-tutor-guide", "manamap.pilot.validate_tutor_guide", "Form-check the tutor guide (one wish per tutor)"),
     ("validate-strategic-frame", "manamap.pilot.validate_strategic_frame", "Form-check a strategic frame"),
     ("artist-credits", "manamap.pilot.artist_credits", "Standout artists and art themes in a deck"),
-    ("short-list-art", "manamap.pilot.short_list_art", "Resolve The Short List's ten to card art (Scryfall; tracked sidecar)"),
-    ("build-manual", "manamap.pilot.build_manual", "Render a deck's magazine issue (sections per issue_spec)"),
-    ("build-index", "manamap.pilot.build_index", "Render manuals/index.html — the newsstand"),
-    ("issue-length", "manamap.pilot.issue_length", "How long is this issue, and where did the length go?"),
-    ("validate-issue", "manamap.pilot.validate_issue", "Form-check issue.json + issue_plan.json"),
+    ("short-list-art", "manamap.pilot.short_list_art", "LEGACY: resolve a frozen considering.json's ten to card art (Scryfall; tracked sidecar)"),
+    ("build-manual", "manamap.pilot.build_manual", "LEGACY: render a deck's page with the frozen magazine renderer (replaced by manual-v5)"),
+    ("build-index", "manamap.pilot.build_index", "Render manuals/index.html and data/decks/index.json (the deck list + manifest)"),
+    ("issue-length", "manamap.pilot.issue_length", "LEGACY: how long is this page, and where did the length go?"),
+    ("validate-issue", "manamap.pilot.validate_issue", "Form-check issue.json + the LEGACY issue_plan.json on published decks"),
     ("scenario-facts", "manamap.pilot.scenario_facts", "Deterministic brief for a stack scenario (board, bodies, drain arithmetic)"),
     ("merge-prose", "manamap.pilot.merge_prose", "Merge an agent's .agent-out prose into manual_prose.json, keys it owns only"),
     ("cache-status", "manamap.pilot.agent_cache", "Have an agent routine's inputs changed?"),
@@ -107,7 +107,7 @@ _DECK_COMMANDS = {
 
 def add_pilot_parser(subparsers):
     """Attach the `pilot` subcommand group to the top-level subparsers."""
-    pilot = subparsers.add_parser("pilot", help="Pilot's-manual subsystem commands")
+    pilot = subparsers.add_parser("pilot", help="The pilot bench: decks, log, versions, sim, evidence")
     pilot_sub = pilot.add_subparsers(dest="pilot_command", required=True)
 
     for name, _, description in PILOT_STEPS:
@@ -210,7 +210,7 @@ def add_pilot_parser(subparsers):
                              help="Always report MISS (deliberate rebuild)")
         if name == "cache-record":
             cmd.add_argument("--routine", required=True,
-                             help="Routine id (e.g. issue-plan, stack:004)")
+                             help="Routine id (e.g. pilot-notes, stack:004, prescription:<id>)")
         if name == "cache-clear":
             cmd.add_argument("--routine", default=None,
                              help="Routine id; omit to clear the whole deck")

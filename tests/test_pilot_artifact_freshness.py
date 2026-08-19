@@ -1,7 +1,7 @@
 """Every deterministic deck artifact must equal a fresh recomputation.
 
-`test_pilot_manual_freshness` covers the rendered issue. This covers the layer
-underneath it — the artifacts the issue quotes figures from.
+`test_pilot_manual_freshness` covers the rendered deck page. This covers the layer
+underneath it — the artifacts the page quotes figures from.
 
 The gap this closes is specific. `goldfish_metrics.json` and
 `mana_analysis.json` stamp the decklist they were built from, so a decklist edit

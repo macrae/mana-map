@@ -1,5 +1,11 @@
 """The Short List contract: exactly ten, none already in the deck, claims verified.
 
+LEGACY (2026-08-19): the magazine renderer. It still renders the nine frozen issues from
+artifacts nothing regenerates any more (issue_plan.json, the panel keys,
+card_roles/mana_base/upgrades, considering.json), and it is replaced by the compact deck
+page in docs/manual-v5-spec.md. Do not extend it; internals below are accurate for what it
+does.
+
 Ownership is not part of the contract. The list used to carry
 `source: "sideboard" | "pool"` and rank bench picks first; a card is now on the
 list because it is worth knowing about, and whether the pilot owns it is not a

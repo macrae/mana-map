@@ -5,9 +5,10 @@ exactly two homes for a swap, and neither could hold an intention:
 
   * **applied** — derived from `git log` over `decklist.txt` (`deck_history.py`),
     exact and silent about anything not yet done;
-  * **proposed** — `considering.json`, which is *exactly ten* entries, forbids a
-    pick already in the deck, is the `short-list-analyst`'s cache-fingerprinted
-    file, and is regenerated wholesale on any decklist edit.
+  * **proposed** — `considering.json`, the retired Short List (frozen on the
+    published decks since 2026-08-19; prescriptions carry its rule now): exactly
+    ten entries, forbade a pick already in the deck, and was regenerated wholesale
+    on any decklist edit, so an applied ten left no trace.
 
 So a three-land swap decided on a Tuesday had nowhere to live, and was lost.
 
@@ -25,8 +26,8 @@ file refuses to repeat it: applying a change makes its entry report APPLIED on
 its own, and the entry is then deleted rather than ticked.
 
 Report-only, computed on demand, like `deck-history` and `impact`. It is never
-read by the renderer: a queue of unmade changes is exactly the "previous build"
-framing STYLEv3 L10 bans from print.
+read by the legacy renderer (its "every issue is the reader's first" rule banned a
+queue of unmade changes from print); on the bench, history is an input.
 """
 
 import json

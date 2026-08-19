@@ -147,7 +147,7 @@ merges it into the tracked artifact.
 - **Deterministic by default.** Same inputs → same output; no dates, no randomness.
   Exceptions are named per charter (`as_of` in recon mode; a prompted mode keyed by its
   prompt).
-- **History is allowed.** The old magazine law "every issue is the reader's first" (L10)
+- **History is allowed.** The legacy magazine law "every issue is the reader's first" (L10)
   is repealed for the workbench: a deck's versions, what changed and why, and what
   happened in a logged game are *inputs*, and you may name them. The one thing that
   still may not be rewritten is a checker-passed artifact's text — regenerate, never

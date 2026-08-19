@@ -20,7 +20,7 @@ cache says MISS; the validator checks form only) — never wrong.
 
 The id is a hash of the normalized prompt, so asking the same question twice finds
 the same file, and asking it again after a swap is the cache's MISS, not a new file.
-`add_candidates` is ranked and capped at ten: The Short List's "ten cards worth
+`add_candidates` is ranked and capped at ten: the retired Short List's "ten cards worth
 knowing about, ownership not a criterion" rule lives here now.
 """
 

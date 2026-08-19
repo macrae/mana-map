@@ -77,7 +77,7 @@ def test_is_infinite_false_for_ordinary_value():
     assert not is_infinite(_combo(["A", "B"], produces=["Lock", "Card draw"]))
 
 
-# ── the commander assumption (Judge's Desk A-004) ──
+# ── the commander assumption (goblin-storm stack 004) ──
 
 
 def test_combo_assuming_its_own_commander_is_excluded():

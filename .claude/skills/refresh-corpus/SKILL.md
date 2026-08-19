@@ -71,7 +71,7 @@ counts. Update by hand (grep for the old total to find any new ones):
 - `CLAUDE.md` — the header total, the supertype percentages (Creature share,
   Planeswalker, Battle counts), the discovery-boot notes if sizes moved.
 - `docs/architecture.md`, `docs/data-artifacts.md` — totals, coverage ratios,
-  file sizes. (`docs/deck-builder-v2.md` and `docs/frontend-v2.md` are frozen
+  file sizes. (`docs/history/deck-builder-v2.md` and `docs/history/frontend-v2.md` are frozen
   design records — leave them.)
 
 ## 4b. Region names: a re-cluster orphans authored names, and naming them is a STEP
@@ -96,9 +96,10 @@ JS/CSS changed, which this runbook does not do.
 ## 6. The cache pass (8 decks, and impact runs FIRST)
 
 Regenerating `synergy_graph.json`, `obsolescence_index.json`, `card_roles.json`
-and the combo files MISSes **four routines per deck**: `the-ten`,
-`deck-diagnosis`, `candidate-pool`, `deck-build` (`pilot-notes` no longer hashes the
-graphs — only the retired `card_roles`/`upgrades` keys read them)
+and the combo files MISSes, per deck, `strategic-frame`, `deck-diagnosis`,
+`candidate-pool`, `deck-build` and every `prescription:<id>` — read which tokens each
+declares in `config.py` `AGENT_ROUTINES` rather than this sentence (`pilot-notes` no
+longer hashes the graphs; `the-ten` is retired)
 (`config.py` AGENT_ROUTINES). `cards.csv` itself is a declared input to none —
 deck digests hash each deck's own `cards.json`, which a refresh never touches.
 

@@ -14,7 +14,7 @@ What is different, and why:
   `prescription_id(prompt)` — a hand-edited prompt under an old id would make the
   cache's `prompt:self` digest and the filename disagree about which question this
   answers.
-- **`add_candidates` is ranked and capped at `MAX_ADDS` (10).** The Short List's
+- **`add_candidates` is ranked and capped at `MAX_ADDS` (10).** The retired Short List's
   rule, relocated: ten is the section, not a budget, and the eleventh is the one you
   rank harder to leave off.
 - **Stale is not wrong.** Prescriptions accumulate. One written against an older

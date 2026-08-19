@@ -325,7 +325,7 @@ def commander_rejection(row):
 def checker_passed(doc):
     """The publication gate: only a checker-passed artifact may be stated as fact.
 
-    One predicate, three consumers (renderer, cache, newsstand) — if the gate
+    One predicate, three consumers (renderer, cache, deck manifest) — if the gate
     ever changes shape, it changes for all of them at once.
     """
     return (doc.get("checker") or {}).get("verdict") == "pass"
@@ -355,7 +355,7 @@ def presentable(doc):
     `scenario:self` fingerprints only `{title, scenario}`, so marking one costs
     no re-verification.
 
-    One predicate, three consumers (the renderer, the newsstand manifest and the
+    One predicate, three consumers (the renderer, the deck manifest and the
     deck dossier) — if the gate ever changes shape, it changes for all of them.
     """
     return checker_passed(doc) and not withheld(doc)

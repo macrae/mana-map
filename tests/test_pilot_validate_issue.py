@@ -1,5 +1,11 @@
-"""Issue-plan form validator: identity block, department system, contract integrity."""
+"""Issue-plan form validator: identity block, department system, contract integrity.
 
+LEGACY (2026-08-19): the magazine renderer. It still renders the nine frozen issues from
+artifacts nothing regenerates any more (issue_plan.json, the panel keys,
+card_roles/mana_base/upgrades, considering.json), and it is replaced by the compact deck
+page in docs/manual-v5-spec.md. Do not extend it; internals below are accurate for what it
+does.
+"""
 
 from manamap.pilot.issue_spec import COPY_DEPARTMENTS, DEPARTMENT_IDS
 from manamap.pilot.validate_issue import validate_identity, validate_plan

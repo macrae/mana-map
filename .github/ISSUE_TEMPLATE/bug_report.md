@@ -15,7 +15,7 @@ labels: bug
 ## Which half
 
 - [ ] The card map / deck dossier (`viz/`)
-- [ ] A published issue (`manuals/`)
+- [ ] A deck page (`manuals/`, the legacy renderer)
 - [ ] The pipeline (`manamap run`, or one step)
 - [ ] A pilot subcommand (`manamap pilot …`)
 - [ ] The tests

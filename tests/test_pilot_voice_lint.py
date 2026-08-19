@@ -1,5 +1,11 @@
 """The voice layer: who is supposed to be speaking, and whether they all sound alike.
 
+LEGACY (2026-08-19): the magazine renderer. It still renders the nine frozen issues from
+artifacts nothing regenerates any more (issue_plan.json, the panel keys,
+card_roles/mana_base/upgrades, considering.json), and it is replaced by the compact deck
+page in docs/manual-v5-spec.md. Do not extend it; internals below are accurate for what it
+does.
+
 This module is referenced by name in CLAUDE.md as the thing that keeps
 `issue_spec.PROSE_KEY_DEPARTMENT` honest — and it had never been written. The
 first test below is that promise, paid.

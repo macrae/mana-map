@@ -1,6 +1,6 @@
 ---
 name: deck-analyst
-description: Read-only analyst over Mana Map's card data — combo details, synergy graph, obsolescence index, card roles, embeddings. Produces candidate_pool.json for the deck-building loop, and evidence shortlists for pilot's-manual generation. Returns structured, evidence-backed data, never prose essays.
+description: Read-only analyst over Mana Map's card data — combo details, synergy graph, obsolescence index, card roles, embeddings. Produces candidate_pool.json for the deck-building loop, and evidence shortlists for the bench's other agents. Returns structured, evidence-backed data, never prose essays.
 tools: Bash, Read, Grep, Glob
 ---
 

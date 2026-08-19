@@ -12,8 +12,8 @@ labels: enhancement
 
 ## Have you checked whether it was tried?
 
-<!-- Not a gate, just a shortcut. `docs/frontend-v2.md` and
-     `docs/deck-builder-v2.md` are design records of things planned and in some
+<!-- Not a gate, just a shortcut. `docs/history/frontend-v2.md` and
+     `docs/history/deck-builder-v2.md` are design records of things planned and in some
      cases deliberately abandoned, and CLAUDE.md's gotchas list is a hundred-odd
      paragraphs of "we measured this and it did not work". If your idea is in
      there, the reasoning is worth arguing with — it is often out of date. -->
@@ -21,7 +21,7 @@ labels: enhancement
 ## Which half
 
 - [ ] The card map / deck dossier (`viz/`)
-- [ ] The magazine (`manuals/`, the renderer, the editorial system)
+- [ ] The deck page (`manuals/`, the legacy renderer — see docs/manual-v5-spec.md)
 - [ ] The pipeline or the models
 - [ ] The pilot subsystem (decks, stacks, validators)
 - [ ] Developer experience — setup, tests, docs

@@ -7,7 +7,7 @@ description: Build a Commander deck from a brief — deterministic 99, then deck
 
 Turns `data/decks/<slug>/brief.json` into a validated 99, a `decklist.txt`, and a
 fetched `cards.json` the rest of the pilot subsystem can consume. Schema reference:
-`docs/pilot.md`; design rationale: `docs/deck-builder-v2.md`.
+`docs/pilot.md`; design rationale: `docs/history/deck-builder-v2.md`.
 
 **The deterministic builder always runs and always succeeds on its own.** The agents
 improve a baseline they can be measured against; if you skip them entirely you still
@@ -93,7 +93,7 @@ thing that made the deck legal — the code did that.
 
 ## Notes
 
-- The deck flows straight into the manual pipeline from step 8 — a built deck is an
+- The deck flows straight into the lifecycle from step 8 (`/publish-deck`: measure, frame, engine, notes, page, then simulate/log/prescribe) — a built deck is an
   ordinary deck. `/write-manual` needs nothing special from here.
 - Engines the architect names are **candidates**, never facts. Promoting one to ✓
   means running `/resolve-stack` on it like any other line.

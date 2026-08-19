@@ -1,4 +1,4 @@
-"""Sources Say's deterministic core: classes, sources, producer kinds."""
+"""mana-analysis's deterministic core: classes, sources, producer kinds."""
 
 from conftest import requires_deck
 

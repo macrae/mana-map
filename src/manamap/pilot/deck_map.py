@@ -8,7 +8,7 @@ the structure a global projection compressed out to preserve global shape.
 
 So this re-lays-out the deck ALONE, from the 128-d ability embeddings, and
 clusters the result into cities and neighbourhoods. It is `viz/js/drill.js`'s
-argument applied to a decklist, and it produces the picture a magazine can open
+argument applied to a decklist, and it produces the picture a deck page can open
 on: the engine, visible before a word of prose.
 
 WHICH EMBEDDING SPACE, AND WHY IT IS NOT A CHOICE. `embeddings_ability.npy` — the
@@ -17,7 +17,7 @@ type, so clustering a mono-green deck in it produces one green blob and a land
 pile, which is a true statement about nothing. Every similarity question in this
 repo reads the ability space; this is one more.
 
-DETERMINISM. The magazine rebuilds byte-identically, so the layout may not wobble
+DETERMINISM. The deck page rebuilds byte-identically, so the layout may not wobble
 between runs. Classical MDS gives a fixed starting configuration from the
 eigendecomposition, SMACOF refines it, and the result is then canonically
 oriented (see `_orient`) — because a rotation or a reflection is free in MDS and
@@ -52,7 +52,7 @@ from manamap.pilot.common import (
 
 ARTIFACT = "deck_map.json"
 
-# Cities and neighbourhoods, sized for a magazine spread rather than for a
+# Cities and neighbourhoods, sized for a printed deck page rather than for a
 # statistic. Five to seven named regions is what a reader can hold; twelve is a
 # legend they skip. Deck sizes here run 60–100 distinct cards (basics collapse to
 # one entry, which is right for a map — eleven Forests are one place).
@@ -140,7 +140,7 @@ def _orient(points):
     """Pin rotation, reflection and scale, so a rerun draws the same picture.
 
     MDS is indifferent to all three: the same deck can come back mirrored, and the
-    magazine would render a different map from identical inputs. Principal axis
+    deck page would render a different map from identical inputs. Principal axis
     to +x, the half with more mass to the right, the half with more mass on top,
     then scale to a unit box.
     """
@@ -189,7 +189,7 @@ def _cut(unit, members, n_clusters):
 
     Agglomerative rather than the HDBSCAN the atlas uses: at 34,890 points density
     estimation is meaningful and "noise" is a real answer; at 71 points it labels
-    most of the deck noise, which on a magazine page is a map with a hole in it.
+    most of the deck noise, which on a printed page is a map with a hole in it.
     Every card belongs to a city here — that is the contract this page rests on.
     """
     if len(members) <= 1 or n_clusters <= 1:

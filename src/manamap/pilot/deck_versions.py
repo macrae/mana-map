@@ -15,8 +15,8 @@ bytes but not the 99; it gets no new version, but its byte-sha still maps to the
 version it belongs to, which is how a log entry stamped on it finds its list.
 
 A tag is a name the pilot gives a version ("the-lock", "orinda-4-1") and lives in
-the tracked, authored `deck_versions.json` — the same rule `issue.json` and the
-log live under. Tags are the one piece of version data a browser can read without
+the tracked, authored `deck_versions.json` — the same rule the log and `issue.json`
+(the deck's authored identity) live under. Tags are the one piece of version data a browser can read without
 git, which is why they are a file and the version list is not.
 
 WHY THE VERSION LIST IS NOT A TRACKED FILE. The commit that changes `decklist.txt`

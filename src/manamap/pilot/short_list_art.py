@@ -1,5 +1,11 @@
 """Pilot: card art for The Short List's ten, so the reader can see what is offered.
 
+LEGACY (2026-08-19): the magazine renderer. It still renders the nine frozen issues from
+artifacts nothing regenerates any more (issue_plan.json, the panel keys,
+card_roles/mana_base/upgrades, considering.json), and it is replaced by the compact deck
+page in docs/manual-v5-spec.md. Do not extend it; internals below are accurate for what it
+does.
+
 Every other card the magazine names is in the 99, so `build_manual`'s card linker
 already has its image from `cards.json` and can pop a preview on hover. The Short
 List is the one department whose subject is deliberately OUTSIDE the deck — ten

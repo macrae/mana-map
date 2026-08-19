@@ -204,10 +204,10 @@ def shape_card(sc, quantity, is_commander, foil=False):
     """Project a Scryfall card object onto the cards.json schema.
 
     Printing metadata (set, collector number, artist, finishes, borderless/frame
-    effects, art_crop) is what lets the manual show the *physical* cards in the
+    effects, art_crop) is what lets the deck page show the *physical* cards in the
     deck — the borderless Secret Lair, not a default reprint. `art_crop` in
-    particular is full-bleed art with no frame, which is what reads as magazine
-    photography rather than a card scan.
+    particular is full-bleed art with no frame, which is what reads as a photo of
+    the card rather than a scan.
 
     Two fields look alike and mean different things: `finishes` is Scryfall's
     list of finishes this printing was *released in*, while `foil` comes from

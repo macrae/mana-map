@@ -1,5 +1,11 @@
 """Pilot: mechanically enforce the contract on The Short List (considering.json).
 
+LEGACY (2026-08-19): the magazine renderer. It still renders the nine frozen issues from
+artifacts nothing regenerates any more (issue_plan.json, the panel keys,
+card_roles/mana_base/upgrades, considering.json), and it is replaced by the compact deck
+page in docs/manual-v5-spec.md. Do not extend it; internals below are accurate for what it
+does.
+
 Ten cards worth knowing about that could play well with this deck. One artifact,
 one question — and deliberately NOT "do you own it". The list used to carry
 `source: "sideboard" | "pool"` and rank bench cards first, which made ownership

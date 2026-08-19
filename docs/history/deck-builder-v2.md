@@ -1,3 +1,5 @@
+> **Historical (moved to `docs/history/` 2026-08-19).** Superseded by `docs/vision.md` and the 2026-08-19 workbench pivot; kept verbatim as the record of how the previous design was reasoned. Nothing here is current guidance.
+
 # Deck Building v2 — design plan
 
 *Status: **Phases 0–3 shipped and proven end to end** — hapatra was built from a brief and

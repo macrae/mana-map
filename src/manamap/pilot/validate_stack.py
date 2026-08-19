@@ -48,14 +48,14 @@ def _normalize_ws(text):
 
     **Two validators used to make this quote impossible to write.**
     `validate_stack` requires a `strategy:` citation to be VERBATIM; `validate_issue`
-    forbids an internal taxonomy id in reader copy. Where a quotable sentence has a
+    (the legacy page gate) forbids an internal taxonomy id in reader copy. Where a quotable sentence has a
     `(strategy:…)` cross-reference in the middle of it, keeping the tag fails the
     second check and dropping it failed the first — and sisay's decision 002 sat
     broken between them, quoting the sentence without the tag, invisible because
     neither validator was wired into a test.
 
     The tag is APPARATUS, not prose: it points a reader of the strategy doc at a
-    sibling section, and it means nothing in a magazine that has no strategy
+    sibling section, and it means nothing on a deck page that prints no strategy
     bibliography. So it is stripped from both sides here, which makes a quotation
     that elides it verbatim in every sense that matters and leaves the reader-copy
     lint free to keep banning the id. Both rules stay whole; neither bends.

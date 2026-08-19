@@ -1,5 +1,11 @@
 """A retired issue is MARKED, never edited or deleted.
 
+LEGACY (2026-08-19): the magazine renderer. It still renders the nine frozen issues from
+artifacts nothing regenerates any more (issue_plan.json, the panel keys,
+card_roles/mana_base/upgrades, considering.json), and it is replaced by the compact deck
+page in docs/manual-v5-spec.md. Do not extend it; internals below are accurate for what it
+does.
+
 An issue is a published record. When the deck it describes stops existing — the
 first case being hapatra, broken down for parts so its aristocrats shell could be
 sleeved into yawgmoth-swarm — the honest move is a banner, not a rewrite. Every

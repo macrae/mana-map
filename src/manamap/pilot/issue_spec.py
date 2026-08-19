@@ -1,5 +1,11 @@
 """Pilot: the canonical department system for a Pilot's Manual issue.
 
+LEGACY (2026-08-19): the magazine renderer. It still renders the nine frozen issues from
+artifacts nothing regenerates any more (issue_plan.json, the panel keys,
+card_roles/mana_base/upgrades, considering.json), and it is replaced by the compact deck
+page in docs/manual-v5-spec.md. Do not extend it; internals below are accurate for what it
+does.
+
 Single source of truth shared by the issue-plan validator, the renderer, and the
 `magazine-editor` agent's contract. The department list, its order, and each
 department's evidence tier come from STYLEv3.md §5 — the fixed reading
@@ -24,7 +30,7 @@ may not override its tier — costume never earns the badge (STYLEv3 §10).
 # them verbatim in the Flight Plan.
 #
 # v3.4 replaced a monotonic depth ramp with an identity-first one, on the
-# founder's reading of the shipped issues (docs/magazine-feedback-2026-08.md).
+# founder's reading of the shipped issues (docs/history/magazine-feedback-2026-08.md).
 # The argument, in his words: "all commanders are built around a commander —
 # when you ask somebody what deck are you playing, they lead with who the
 # commander is." The book now opens the way a player hands you their deck. You

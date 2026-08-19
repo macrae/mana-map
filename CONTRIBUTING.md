@@ -22,7 +22,7 @@ zero LLM calls.** You do not need a GPU, and you do not need to run the pipeline
 ```bash
 python3 -m http.server 8000
 # localhost:8000/viz/index.html            the card map, all three modes
-# localhost:8000/manuals/index.html        the nine published issues
+# localhost:8000/manuals/index.html        the deck pages (legacy magazine renderer)
 ```
 
 The map boots on 1.8 MB because the artifacts it needs are tracked on purpose.
@@ -30,7 +30,7 @@ The map boots on 1.8 MB because the artifacts it needs are tracked on purpose.
 **After `make setup`, with no pipeline run:** **1,360 of the 1,488 fast tests** —
 91%, measured on an actual fresh clone —
 every deterministic `manamap pilot` subcommand that reads a deck rather than the
-corpus, and a byte-identical re-render of all nine issues.
+corpus, and a byte-identical re-render of every deck page.
 
 **Needs `manamap run`** (~40–60 min, downloads ~56 MB, internet): anything
 reading `data/cards.csv` — `bracket-check`, `build-deck`, `pool-facts`,
@@ -38,10 +38,10 @@ reading `data/cards.csv` — `bracket-check`, `build-deck`, `pool-facts`,
 cases skip without it, every one labelled with the command that would enable it.
 
 **Needs [Claude Code](https://claude.com/claude-code):** the agent phases only —
-generating a *new* deck's prose, engine model or issue plan. Everything
+generating a *new* deck's prose, engine model, debrief or prescription. Everything
 deterministic is a CLI subcommand. If you do not have it, you can still work on
-the frontend, the models, the pipeline, the 47 pilot subcommands, the renderer
-and the tests, which is nearly all of the code.
+the frontend, the models, the pipeline, the 60 pilot subcommands, the Forge
+harness, the renderer and the tests, which is nearly all of the code.
 
 ---
 
@@ -103,7 +103,7 @@ asserts it, because a mismatched pair is how `build.js` ends up calling a stale
 
 **A manual must equal a fresh render of its artifacts.** `make manuals` is free
 and deterministic; run it after touching the renderer and commit the result.
-Four issues once spent days serving content their own artifacts no longer
+Four deck pages once spent days serving content their own artifacts no longer
 supported, and a stale manual renders perfectly.
 
 **Never put `data/` on Git LFS.** GitHub Pages serves LFS pointers, which would
@@ -115,9 +115,9 @@ back to the changed pipeline step and run forward from there.
 
 **Editing an agent charter is expensive.** `.claude/agents/*.md` files are inputs
 to a content-addressed cache over agent output. Changing one — even a typo —
-invalidates that agent's routines across all nine decks, and re-running them
-costs real money. If the fix is cosmetic, say so in the PR and let it ride until
-the next real regeneration. Never "re-record" a cache entry to make the board
+invalidates that agent's routines across every deck, and re-running them
+costs real money. (Since 2026-08-19 the board is red fleet-wide by decision; a
+charter edit does not make it redder.) If the fix is cosmetic, say so in the PR. Never "re-record" a cache entry to make the board
 green; that is the one rule this project holds without exception.
 
 **Serve from the repo root.** `viz/` and `data/` must stay top-level siblings;

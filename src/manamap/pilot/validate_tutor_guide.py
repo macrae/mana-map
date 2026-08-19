@@ -1,10 +1,10 @@
-"""Pilot: mechanically enforce the contract on Fetch Quests (tutor_guide.json).
+"""Pilot: mechanically enforce the contract on the tutor guide (tutor_guide.json).
 
-The coach writes scenario → fetch → why for every tutor in the 99. Code
+`pilot-notes` writes scenario → fetch → why for every tutor in the 99. Code
 enforces form; the checks that keep a ★ artifact honest:
 
   * every `card` is a maindeck NONLAND whose oracle text actually searches the
-    library — fetch lands belong to Sources Say, not here;
+    library — fetch lands belong to mana-analysis, not here;
   * every maindeck tutor appears exactly once — a tutor with no entry is a
     hole in the promise ("one wish per tutor");
   * every `fetch` target is a real card in the deck (commander included — a
@@ -30,7 +30,7 @@ REQUIRED_TOP_KEYS = {"slug", "assessment", "tutors", "gaps"}
 REQUIRED_TARGET_KEYS = {"scenario", "fetch", "why"}
 SEARCH_RE = re.compile(r"search your library", re.IGNORECASE)
 # A search clause that only finds lands is mana, not a wish — Cultivate and
-# Nature's Lore belong to Sources Say. Tutors with broader clauses stay.
+# Nature's Lore belong to mana-analysis. Tutors with broader clauses stay.
 _LAND_ONLY_RE = re.compile(
     r"search your library for [^.]*?"
     r"(?:land cards?|plains|island|swamp|mountain|forest|wastes)",
@@ -45,7 +45,7 @@ _TYPE_WORDS = ("creature", "land", "artifact", "enchantment", "instant",
 
 def deck_tutors(cards):
     """Maindeck nonland cards whose oracle searches the library for nonland
-    targets — the cards Fetch Quests owes an entry."""
+    targets — the cards the tutor guide owes an entry."""
     names = []
     for c in cards:
         text = str(c.get("oracle_text", "") or "")
@@ -54,7 +54,7 @@ def deck_tutors(cards):
         clauses = re.findall(r"search your librar(?:y|ies)[^.]*", text,
                              re.IGNORECASE)
         if clauses and all(_LAND_ONLY_RE.search(cl) for cl in clauses):
-            continue  # pure land ramp — Sources Say territory
+            continue  # pure land ramp — mana-analysis territory
         names.append(c["name"])
     return sorted(names)
 
@@ -105,7 +105,7 @@ def validate(doc, deck_doc, rules=None, strategy_sections=None):
         if name not in expected:
             errors.append(
                 f"{label}: not a maindeck library-search tutor (lands belong "
-                f"to Sources Say; the reveal isn't a search)")
+                f"to mana-analysis; the reveal isn't a search)")
             continue
         if covered.count(name) > 1:
             errors.append(f"{label}: duplicate entry")

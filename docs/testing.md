@@ -11,7 +11,7 @@ pytest -m ""         # literally everything, browser included         ~10 min
 pytest --lf          # only what failed last time
 ```
 
-**A bare `pytest` is `make test`** — `addopts` carries `-m 'not browser' -n auto`.
+**A bare `pytest` is `make test`** — `addopts` carries `-m 'not browser and not forge' -n auto`.
 It used to be all 1,624 cases including the browser suite, because "browser is
 excluded by default" was written in a comment and in no config anyone ran.
 
@@ -52,12 +52,13 @@ amount of running the suite on a developed machine could have found them: the
 artifacts were always there. Re-clone and re-run whenever you add a test that
 touches `data/`.
 
-As of 2026-08-17: **1,704 tests** across 66 files — 1,568 fast and 136 browser. One is a
-deliberately unmet `xfail(strict=True)` ship gate in `test_embedding_quality.py` (see
-below); it is a target the code has not reached, not a broken test.
+As of 2026-08-19: **1,813 tests** across 79 files — 1,676 fast, 136 browser and 1 `forge`
+(a real Forge game, opt-in). One is a deliberately unmet `xfail(strict=True)` ship gate in
+`test_embedding_quality.py` (see below); it is a target the code has not reached, not a
+broken test.
 
-Why the count cannot be checked mechanically: **414 of those cases do not exist in the
-source** — there are 1,290 `def test_` functions and 1,704 collected cases, the difference
+Why the count cannot be checked mechanically: **425 of those cases do not exist in the
+source** — there are 1,388 `def test_` functions and 1,813 collected cases, the difference
 being parametrization over lists computed at collection time. The only way to count them is
 to run pytest, and running pytest from inside pytest recurses. (That subtraction is the
 cheap way to re-derive the figure: `grep -rhcE "^(async )?def test_" tests/*.py` against a
@@ -427,12 +428,12 @@ every commit, and that promise is not kept. Run `--collect-only -q` for live num
 | `test_pilot_validate_stack.py` | The citation contract, decision form, strategy dispatch, golden artifacts |
 | `test_pilot_goldfish.py` | Seeded determinism, mulligan rule, target assembly |
 | `test_pilot_mana_analysis.py` | Land classes, sources, producer kinds |
-| `test_pilot_build_manual.py` | Department completeness, contract integrity, furniture, determinism, escaping |
+| `test_pilot_build_manual.py` | LEGACY renderer: section completeness, contract integrity, furniture, determinism, escaping |
 | `test_pilot_build_index.py` | The manifest the browser reads instead of listing a directory |
-| `test_pilot_validate_issue.py` | Issue identity, department order, tier-costume integrity, card-name accuracy |
+| `test_pilot_validate_issue.py` | LEGACY gate: issue identity, section order, tier-costume integrity, card-name accuracy |
 | `test_pilot_artist_credits.py` | Standout detection, per-entry counting, drop runs |
-| `test_pilot_merge_prose.py` | Two agents writing one file, each confined to the keys it owns |
-| `test_pilot_validate_considering.py` | The Short List: exactly ten, none already in the deck, claims verified |
+| `test_pilot_merge_prose.py` | One agent (`pilot-notes`) writing a file that also holds frozen legacy keys; every legacy key survives a merge |
+| `test_pilot_validate_considering.py` | LEGACY gate on the frozen `considering.json`: exactly ten, none in the deck, claims verified |
 | `test_pilot_validate_tutor_guide.py` | One wish per tutor, real fetches, legal targets |
 | `test_pilot_validate_strategic_frame.py` | Frame form, engine `strategy_refs`, candidate-line status |
 | `test_pilot_deck_map.py` | The constellation's balance bound — and its refusal to assert the linkage |
@@ -457,11 +458,24 @@ which no per-issue check could have caught.
 | `test_pilot_validate_diagnosis.py` | Axis re-derivation, marginal prescription frame, computed `orphans_stack` |
 | `test_pilot_validate_goldfish_targets.py` | Declared cards still in the 99; undeclared win lines reported |
 
+**Pilot — the bench (2026-08-19):**
+
+| File | Covers |
+|---|---|
+| `test_pilot_deck_notes.py` | The captain's log appends and stamps the decklist as it stood; `merge-debrief` by id; `validate-debrief` — the annotation may name nothing the note and the 99 do not; the `log` row runs the debrief gate |
+| `test_pilot_prescribe.py` | A question's id is its hash; the merge writes answer keys only; `prescription:<id>` digests only the prompt; `record` refuses without a passing skeptic; stale prescriptions are form-checked only |
+| `test_pilot_deck_versions.py` | A version is a content change not a commit; the log joins by the stamped sha; an uncommitted working list is reported not guessed; tags resolve; `restore` is a dry run unless asked |
+| `test_pilot_deck_info.py` | The workbench view composes a bare deck without crashing and derives `next` from what is true |
+| `test_sim_forge.py` | The Forge harness: `.dck` from the repo parser, seats, run id with seed, game splitting, argv, outcome parsing (round vs global turn, alternate win lines), dry run; one `forge`-marked real game |
+| `test_sim_parse.py` | Logs → events → facts → aggregates on a real game: seats learned from assignment lines, tokens counted two honest ways, drain kills attributed, intervals, `validate-sim` re-proof |
+| `test_sim_bridge.py` | `game_state` v2 form check; `validate-stack`/`scenario-facts` on v2; a board lifted at a CR step — lands exact, Morph unmorphs, tokens from first use, commander exit as `command`, hand an estimate, question left empty |
+| `test_sim_opponents.py` | `fetch-opponent`: the EDHREC slug, the repo-format decklist, the on-disk shape with provenance |
+
 **Pilot — infrastructure:**
 
 | File | Covers |
 |---|---|
-| `test_pilot_agent_cache.py` | Fingerprint stability, prose-shape semantics, staleness diffs, record guards, exit codes |
+| `test_pilot_agent_cache.py` | Fingerprint stability, per-key staleness, the shared charter contract, staleness diffs, record guards, exit codes |
 | `test_pilot_card_refs.py` | The card-reference matcher and its ambiguity handling |
 | `test_pilot_impact.py` | Reference/figure/target/zone staleness reporting |
 | `test_pilot_memo.py` | One memo discipline; a rewrite must be noticed |
@@ -477,7 +491,7 @@ which no per-issue check could have caught.
 | File | Covers |
 |---|---|
 | `test_docs_counts.py` | Prose counts match the repo; no doc names a deleted module |
-| `test_docs_section_count.py` | **Documentation inventory guards** (7). No prose restates the section count or enumerates department ids; every step module agrees with `pipeline.STEPS` about its number and no two share one; `docs/pilot.md` lists every subcommand in `PILOT_STEPS`; every tracked per-deck file is documented somewhere; no live doc names a source file that does not exist |
+| `test_docs_section_count.py` | **Documentation inventory guards** (7). No prose restates the legacy section count or enumerates its ids; every step module agrees with `pipeline.STEPS` about its number and no two share one; `docs/pilot.md` lists every subcommand in `PILOT_STEPS`; every tracked per-deck file is documented somewhere; no live doc names a source file that does not exist |
 | `test_decklist_parity.py` | The Python and JS decklist parsers agree on hand-authored fixtures |
 
 **Frontend:** `test_viz_behaviour.py` (playwright, the real gate) plus the source-assertion

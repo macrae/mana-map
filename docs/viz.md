@@ -6,8 +6,10 @@ directory and nothing else:
 - **`index.html` — the card map.** One renderer: `<canvas>` + d3 v7 throughout, the atlas
   via `js/render/canvas.js` and the graph modes via `js/force.js`. Plotly is gone. Dark theme
   (#1a1a2e background, #c4a747 gold accents), styles in `css/mana-map.css`.
-- **`deck.html` — the deck dossier.** No `mana-map.js` at all; the magazine's design
-  tokens in `css/tokens.css` (ported from `pilot/design.py`) plus Google Fonts.
+- **`deck.html` — the deck dossier.** No `mana-map.js` at all; the design tokens in
+  `css/tokens.css` (ported from `pilot/design.py`, the legacy page's stylesheet) plus Google
+  Fonts. This is the surface the workbench's deck page grows into (notes, versions, sim,
+  prescriptions, the compact manual as a tab — `docs/manual-v5-spec.md`).
 
 ## Serving
 
@@ -35,7 +37,7 @@ python -m http.server 8000
 | `viz/js/decklist.js` | Moxfield paste parser (~90 lines). Fixture-locked to the Python parser |
 | `viz/js/build.js` | Build (~980 lines). Deck Lens + Build Deck merged; exposes `window.Build` |
 | `viz/deck.html` | Dossier shell: masthead, deck picker, panel grid |
-| `viz/css/tokens.css` | The magazine's design tokens in a dark register (~180 lines) |
+| `viz/css/tokens.css` | The design tokens (from `pilot/design.py`) in a dark register (~180 lines) |
 | `viz/js/deck-view.js` | The dossier (~470 lines). IIFE; no globals exported, no `MM` dependency |
 
 **Script order matters on the map page**: `stage.js` and `session.js` load first, then `mana-map.js` before `build.js` (which reads `MM.*` at load time). mana-map degrades gracefully if either is absent — every call is guarded. `deck.html` loads only `deck-view.js` and shares no code with the map.
@@ -89,7 +91,7 @@ supplying the no-overlay default. Both overlay modes also expose `enter()` / `ex
 
 Overlays a published deck's 99 on the map: the deck lights up, the other ~34,800 cards
 dim, and the deck's footprint in card space becomes visible — a storm deck is a tight
-blob, a goodstuff pile is scattered. It reads the same tracked artifacts the magazine and
+blob, a goodstuff pile is scattered. It reads the same tracked artifacts the deck page and
 the dossier read, and computes nothing beyond a name→index lookup and a role histogram.
 
 | Layer | Artifact | Rendering |
@@ -889,7 +891,7 @@ was right and the bytes were old.
 
 Manual `?v=N` query strings, per page: `index.html` on all **nine** JS files and `mana-map.css`; `deck.html` on `deck-view.js` and `tokens.css`. **Bump the version on the page you touched** before pushing — Pages/browser caches are aggressive. On `index.html` all nine script busts must move together; a test asserts it, because a mismatched pair is how `build.js` ends up talking to a stale `mana-map.js`.
 
-For contrast, `manuals/magazine.css` is **content-addressed** (`?v=<sha8>` from the CSS text, in `pilot/design.py`), so a stylesheet change there obligates rebuilding every manual page but can never go stale. That is the pattern to copy if `viz/` ever outgrows manual bumps.
+For contrast, `manuals/magazine.css` (the legacy page's stylesheet) is **content-addressed** (`?v=<sha8>` from the CSS text, in `pilot/design.py`), so a stylesheet change there obligates rebuilding every manual page but can never go stale. That is the pattern to copy if `viz/` ever outgrows manual bumps.
 
 ## Data paths
 
@@ -932,29 +934,29 @@ only `hapatra` and `yawgmoth-swarm` have a `build_plan.json`, so six of eight do
 panel. `tests/test_pilot_deck_manifest.py` asserts the manifest matches the artifacts and
 that every stack it lists is checker-passed.
 
-The three surfaces now form a cycle. Each issue's Back Page links to
-`../viz/deck.html?deck=<slug>`; the dossier links to the issue, the newsstand, and
-`index.html?deck=<slug>`; the Lens links back to both the issue and the dossier. Before
-the dossier shipped, the two products shared exactly one link, one-way.
+The three surfaces form a cycle. Each legacy page's back matter links to
+`../viz/deck.html?deck=<slug>`; the dossier links to the page, the deck list, and
+`index.html?deck=<slug>`; the Lens links back to both. Before the dossier shipped, the two
+products shared exactly one link, one-way.
 
 ### The Constellation panel
 
-The same `deck_map.json` the magazine prints, drawn the same way, in the **same colours** —
+The same `deck_map.json` the legacy page prints, drawn the same way, in the **same colours** —
 and the one thing print cannot do: hover a point and it names the card and its city.
 *"Ohran Frostfang — A CARD PER BODY."* That association is the whole reason the panel
-exists, since the city names are the vocabulary the issue's prose speaks in.
+exists, since the city names are the vocabulary the notes and the engine model speak in.
 
 The hover is a plain SVG `<title>` on a **transparent 11px disc** over each 4px dot. No
 tooltip layer, no JS, works with scripting off. A 4px hover target is not a target; the
 invisible disc is what makes it one.
 
-Density is one soft disc per neighbourhood rather than the magazine's convex hull. At this
+Density is one soft disc per neighbourhood rather than the printed page's convex hull. At this
 size it reads the same, and a hull the page also has to hit-test through is code bought for
 nothing.
 
 **`CITY_INK` in `deck-view.js` is a TRANSCRIPTION of `pilot/design.py`'s list, and that is a
-standing drift hazard.** There is no shared module: the magazine must render with no JS and
-the page with no Python. If the two lists diverge, the printed map and the site disagree
+standing drift hazard.** There is no shared module: the printed page must render with no JS
+and this page with no Python. If the two lists diverge, the printed map and the site disagree
 about which territory is which **while both look perfectly correct**. Noted at both sites;
 change them together.
 
@@ -1024,7 +1026,7 @@ that made Plotly's own hover cost 37 ms a render; it reads `MM.allData[i]` on de
 `pointer-events: none` on the popup is essential — it sits under the cursor by construction,
 so without it the card steals the hover from the point that summoned it and flickers.
 
-The magazine has a card preview too (`design.py` `.card-pop`), but it is pure CSS anchored
+The legacy page has a card preview too (`design.py` `.card-pop`), but it is pure CSS anchored
 to a static inline element. A point in a WebGL scatter is not an element, so only the look
 transfers, not the mechanism.
 

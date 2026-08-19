@@ -1,6 +1,6 @@
 ---
 name: resolve-stack
-description: Resolve a stack scenario with rules citations and adversarial verification — the resolver→validator→checker quality loop. Use when the user wants a combo line or rules interaction resolved and saved as a verified artifact for a deck's pilot's manual.
+description: Resolve a stack scenario with rules citations and adversarial verification — the resolver→validator→checker quality loop. Use when the user wants a combo line or rules interaction resolved and saved as a verified artifact for a deck — a ✓ line on its deck page and in its engine model.
 ---
 
 # Resolve a stack scenario (the quality loop)
@@ -60,9 +60,14 @@ Runs the resolver→checker loop for one scenario and saves the artifact at
    `life_totals` are scaffolding for the agent, not part of the question. Say
    anything there that helps; it does not change the rules problem.
 
-   **A v2 game state exists on paper** (`docs/pilot.md` → *Game state v2*): seats that
-   hold priority, CR step names, an `actions[]` list. Nothing consumes it yet — author
-   v1 scenarios until `validate-stack` learns `version: 2` in the simulation branch.
+   **A v2 game state is a second scenario form** (`docs/pilot.md` → *Game state v2*;
+   `pilot/game_state.py` is the vocabulary): `seats[]` that hold priority, CR step names,
+   and an `actions[]` list resolved left to right. It is consumed now — `validate-stack`
+   and `scenario-facts` read `version: 2`, and `manamap pilot sim-scenario <slug> <run>
+   --game G --turn T --step S --stack` WRITES one, lifted from a Forge game, with
+   `question` empty for you to pose (stack 008 on radagast is the first, checker-passed).
+   Author v1 for a board you describe yourself; v2 for a board a simulation surfaced.
+   The same citation contract, the same loop, the same scope budget apply to both.
 
    ### Before you write one: `manamap pilot scenario-facts <slug> [--stack NNN]`
 

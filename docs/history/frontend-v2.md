@@ -1,3 +1,5 @@
+> **Historical (moved to `docs/history/` 2026-08-19).** Superseded by `docs/vision.md` and the 2026-08-19 workbench pivot; kept verbatim as the record of how the previous design was reasoned. Nothing here is current guidance.
+
 # Frontend v2 — a deck-building surface
 
 *Status: proposed. Written 2026-07-26; **audited 2026-07-29; largely superseded 2026-07-31**.*

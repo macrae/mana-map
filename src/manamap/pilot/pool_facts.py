@@ -142,7 +142,7 @@ def pool_printings(paths, cards):
     decklist's `(SET) 123 *F*` suffix; `read_sources` deliberately drops all of it
     because counting copies does not care. Building a deck from a physical
     collection does care, and dropping it here is how a 100-card list of cards you
-    own became a Scryfall default for every one of them — the pilot's manual
+    own became a Scryfall default for every one of them — the legacy page
     credited Marvel Super Heroes Commander art for a Sol Ring that is nothing of
     the sort, and Featured Artist counts artists per printing.
 

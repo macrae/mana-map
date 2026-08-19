@@ -3,11 +3,11 @@
 `deck_map.json` holds two kinds of thing and they have different authors.
 Positions, cities, neighbourhoods, membership and the verified flags are a
 MEASUREMENT: `deck-map` computes them from the ability embeddings and they are
-reproducible from the decklist. Labels and glosses are editorial.
+reproducible from the decklist. Labels and glosses are names someone chose.
 
 A whole-file copy from `.agent-out/` would let an agent's paraphrase of the map
 silently replace the map — a card moved to a different city because a language
-model thought it belonged there, with every downstream department then describing
+model thought it belonged there, with every downstream reader then describing
 a cluster the embeddings never found. So this writes exactly two keys per region
 and refuses everything else, which is the same argument `merge_prose` makes about
 two agents sharing one file, one layer down.

@@ -1,3 +1,9 @@
+> **SUPERSEDED 2026-08-19** — this constitution governs the **LEGACY** magazine renderer only
+> (`build_manual.py`, `issue_spec.py`, `design.py`, `validate_issue.py`), which still renders
+> the nine frozen issues until the compact deck page in `docs/manual-v5-spec.md` replaces
+> it. Nothing new is written to it; nothing here applies to the workbench, its agents, or
+> its prose. The Nine Laws and the evidence contract live on in `docs/vision.md`.
+
 # STYLEv3 — The Pilot's Manual Editorial & Design Constitution
 
 **Status: canonical.** This document supersedes `docs/history/STYLE-v1-visual-research.md`

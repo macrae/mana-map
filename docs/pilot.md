@@ -1,16 +1,26 @@
-# Pilot Subsystem
+# Pilot Subsystem — the bench, the evidence, and the loops
 
-Turns a locked 100-card Commander decklist into a **pilot's manual** — a coaching zine whose combo lines are backed by rules-cited, machine-verified stack resolutions, whose numbers come from seeded simulations, and whose coaching is labeled as coaching.
+The deck side of Mana Map: everything under `manamap pilot`, the agents it spawns, and
+the artifacts under `data/decks/<slug>/`. **Read `docs/vision.md` first** — it says who
+this is for and what the bench does end to end; this document is the reference for how
+each piece works and why it is shaped the way it is.
 
-## The three-tier evidence contract (manual v2)
+It turns a 100-card Commander decklist into a deck the pilot can **measure** (goldfish,
+a Forge table), **prove** (rules-cited, machine-checked stack resolutions), **understand**
+(the engine model, the audit, the diagnosis), **remember** (the captain's log and its
+debrief), **version** (from git, joined to the games played), and **ask** (prescriptions).
+The magazine it used to publish is a legacy renderer, described in the last section.
 
-Every section of a manual wears a badge declaring its epistemic status:
+## The three-tier evidence contract
+
+Every artifact and every figure carries its epistemic status, and the rest of the repo
+exists to keep that honest:
 
 | Tier | Badge | Content | Enforcement |
 |---|---|---|---|
-| Rules-verified | ✓ green | Stack resolutions | Citation contract + adversarial checker |
-| Data-derived | ◆ blue | Goldfish metrics, upgrade data | Seeded, reproducible artifacts (byte-identical re-runs) |
-| Coaching | ★ gold | Threat assessment, matchups, decision trees | Labeled judgment grounded in tier 1/2 artifacts; founder review via tracked JSON |
+| Rules-verified | ✓ | Stack resolutions (v1 boards and v2 game states) | Citation contract + adversarial `rules-checker`; only a `pass` is a fact |
+| Data-derived | ◆ | goldfish, Forge runs, the audit, mana analysis, versions, `deck-info` | Deterministic Python over committed artifacts; **seeded** where randomness exists, **sampled** said out loud where it cannot be |
+| Coaching | ★ | the debrief, prescriptions' readings, decisions, the notes | Labelled judgment grounded in ✓/◆ artifacts; never wears a badge it was not granted |
 
 ## The citation contract
 
@@ -19,12 +29,12 @@ Every section of a manual wears a badge declaring its epistemic status:
 Enforcement is layered:
 1. **Form (code)** — `manamap pilot validate-stack`: every step has ≥1 citation; every rule ID matches `RULE_ID_RE` and exists in the index; every quote is a whitespace-normalized substring of real rule text. A resolution that fails form never reaches the checker.
 2. **Meaning (agent)** — the `rules-checker` agent exact-fetches every cited rule and judges the *full* rule text against the claim (guards out-of-context quoting), and audits for missing steps (state-based actions, priority, triggers).
-3. **Publication** — `build-manual` renders only stacks with `checker.verdict == "pass"`.
+3. **Publication** — only stacks with `checker.verdict == "pass"` are facts anywhere downstream: the engine's solid lines, the doctor's `verified` claims, the deck page.
 
 ## Commands
 
-**`manamap pilot deck-status <slug>` first, always** — it says which of these a deck still
-needs, and `/publish-deck` sequences them.
+**`manamap pilot deck-info <slug>` first** — the workbench view, with a derived *next*;
+`deck-status` is its lifecycle half, and `/publish-deck` sequences the phases.
 
 ```bash
 manamap pilot deck-status <slug> [--json]  # lifecycle completeness + STALENESS. Start here.
@@ -41,7 +51,7 @@ manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents 
                                         #   the captain's log: AUTHORED, append-only, sha-stamped
 manamap pilot deck-notes <slug> list [--since D] | show <id>
 manamap pilot deck-info <slug> [--json]            # THE WORKBENCH VIEW: version · record · status · figures · what to do next
-manamap pilot simulate <slug> --vs A [--vs B…] [--games N] [--jobs J]   # N Commander games in Forge, headless; a ◆ SAMPLED run record
+manamap pilot simulate <slug> --vs A [--vs B…] [--games N] [--jobs J]   # N seeded Commander games in Forge, headless; a ◆ run record
 manamap pilot simulate <slug> --list | --dry-run | --analyze <run-id>
 manamap pilot validate-sim <slug>                 # form + re-derive the analysis from logs where they exist
 manamap pilot fetch-opponent "<commander>" [--as slug] [--note …] | --list   # a pod seat under data/opponents/ from EDHREC's average deck
@@ -77,17 +87,17 @@ manamap pilot validate-stack <slug> --scenario-only # preflight BEFORE spawning 
 manamap pilot goldfish <slug>           # seeded Monte Carlo metrics → goldfish_metrics.json
 manamap pilot validate-goldfish-targets <slug>  # the DECLARATION itself: cards still in the 99,
                                         #   and any card in 2+ passing stacks with no component
-manamap pilot mana-analysis <slug>      # Sources Say, deterministic — run AFTER goldfish (embeds its figures)
+manamap pilot mana-analysis <slug>      # the mana audit, deterministic — run AFTER goldfish (embeds its figures)
 manamap pilot scenario-facts <slug> [--stack NNN]  # the deterministic brief for ONE scenario
-manamap pilot validate-considering <slug>   # The Short List: real cards, natural_cut resolves
+manamap pilot validate-considering <slug>   # LEGACY gate on the frozen considering.json
 manamap pilot validate-tutor-guide <slug>   # every fetch target is in this deck
 manamap pilot diagnosis-report <slug>   # render diagnosis.json as readable markdown
-manamap pilot artist-credits <slug> --json  # standout artists + art themes (Featured Artist)
-manamap pilot short-list-art <slug>     # The Short List's ten → card art (Scryfall; tracked sidecar)
-manamap pilot build-manual <slug>       # → manuals/<slug>.html
-manamap pilot build-index               # → manuals/index.html gallery
-manamap pilot issue-length <slug> [--rendered]  # how long is this issue, and where did the length go?
-manamap pilot validate-issue <slug>     # form-check issue.json + issue_plan.json
+manamap pilot artist-credits <slug> --json  # standout artists + art themes (legacy page)
+manamap pilot short-list-art <slug>     # LEGACY: card art for a frozen considering.json
+manamap pilot build-manual <slug>       # → manuals/<slug>.html (LEGACY magazine renderer, until manual-v5)
+manamap pilot build-index               # → manuals/index.html + data/decks/index.json (the deck manifest the viz reads)
+manamap pilot issue-length <slug> [--rendered]  # LEGACY: words + screens per section of the rendered page
+manamap pilot validate-issue <slug>     # LEGACY gate: issue.json + the frozen issue_plan.json
 manamap pilot cache-status <slug>       # have an agent routine's inputs changed?
 manamap pilot cache-record <slug> --routine R   # record what produced an artifact
 manamap pilot cache-clear <slug>        # drop cache records
@@ -128,33 +138,197 @@ data/decks/<slug>/             all tracked:
                                log_annotations.json  debrief agent, by entry id — `merge-debrief` / `validate-debrief`
                                deck_versions.json    AUTHORED tags on git-derived versions — `deck-version tag`
                                mana_analysis.json    mana-analysis (deterministic, no agent)
-                               tutor_guide.json      pilot-notes (At the Table's tutor subhead)
+                               tutor_guide.json      pilot-notes (one wish per tutor)
                                considering.json      FROZEN legacy (The Short List; its rule lives in prescriptions now)
                                prescriptions/<id>-*.json  AUTHORED question + deck-doctor ⇄ deck-skeptic answer — `prescribe`
                                diagnosis.json        deck-doctor ⇄ deck-skeptic (the improvement loop)
                                deck_recon.json       deck-doctor MODE recon (dated; perishable)
                                issue.json            authored (never generated)
-                               issue_plan.json       magazine-editor
+                               issue_plan.json       LEGACY, frozen — the retired magazine-editor's packaging
                                .agent-cache.json     cache-record
-manuals/<slug>.html            tracked; manuals/index.html gallery tracked
+data/opponents/<slug>/         tracked: the pod — decklist.txt + source.json (`fetch-opponent`)
+manuals/<slug>.html            tracked; the LEGACY magazine render per deck + manuals/index.html
 ```
 
 **Exact printings**: `fetch-deck` resolves a Moxfield export's `(SET) COLLECTOR [*F*]`
 annotations against Scryfall's `/cards/collection` by set + collector number **first**,
 falling back to name lookup only for unannotated lines. `cards.json` therefore carries
 the physical card the pilot owns — artist, set, collector number, border, frame
-effects, finishes, foil, plus `art_crop` for full-bleed magazine art. Image URLs have
+effects, finishes, foil, plus `art_crop` for full-bleed art. Image URLs have
 Scryfall's cache-busting query string stripped so re-fetches stay byte-stable, and the
 run short-circuits entirely when the decklist hash is unchanged (`--force` to override
 after an oracle update).
 
 Deck slugs are kebab-case. Scenario files are `NNN-<kebab>.json`, zero-padded, authoring order. Card names use the full `" // "` form, matching the combo/synergy/obsolescence graph keys.
 
-## Rules DB
+## Deck status — is this deck finished? (`deck-status`, tier ◆)
 
-One chunk per numbered CR rule — **chunk ID = rule number = citation ID** — plus `glossary:<term>` chunks. `Example:` and continuation lines attach to the owning rule, so quotes from examples satisfy the contract. Embedded text is prefixed with `id + section title` (helps MiniLM find "storm" for 702.40a, whose text never says storm); stored text is verbatim CR. Embeddings are L2-normalized MiniLM (reuses `compute_text_embeddings`); row i ↔ `order[i]`.
+**Run this first on any deck.** The lifecycle is dozens of skills and subcommands and until
+2026-08 nothing said what a COMPLETE deck looks like: each phase knew its own inputs, none
+knew the sequence. So a capability added in one development cycle was reachable only by
+somebody who remembered it existed, and a deck built the following month silently inherited
+the old pipeline. Capabilities added in August (`ADDED_2026_08` — the map, the engine, the log) are named so a
+deck built before them reports them MISSING rather than complete-by-omission.
 
-**CR refresh** (each set release): get the current TXT link from https://magic.wizards.com/en/rules, update `CR_RULES_URL` in `src/manamap/config.py`, run `download-rules` + `build-rules-db`. Artifacts record their `rules_version`.
+`pilot/deck_status.py:STAGES` is the single machine-readable statement of what a deck can
+have and in what order; `/publish-deck` sequences the work and reads the same list rather
+than restating it. **When you add a phase to the lifecycle, add it to `STAGES`** or the next
+person will not find it. That rule has been broken once already and by the file that states
+it: two legacy stages shipped on all nine decks while `deck-status` reported nine complete
+decks without them.
+
+**A stage whose artifact exists for another reason cannot be checked by file presence.**
+The retired `panel` stage wrote its keys INTO `manual_prose.json`, which the writer had
+already created, so it was checked by KEY rather than by file; the stage and the keyed
+mechanism left `STAGES` together when the magazine agents were retired (2026-08-19). The
+lesson stands: bring the mechanism back with the first stage that needs it, not before.
+The `log` stage is the current example of the same care — the authored log has no gate,
+so the row runs the debrief's validator on the annotation beside it.
+
+It separates two things that look alike. **INCOMPLETE is a state** — a half-built deck is
+work in progress. **STALE is an error**: most artifacts stamp the `decklist_sha256` they were
+derived from, and one whose stamp no longer matches `cards.json` is not incomplete but
+CONFIDENT AND WRONG, which is worse and looks finished from every angle except this one.
+
+## The workbench view (`deck-info`, tier ◆, computed on demand)
+
+One deck, one screen: commander and identity, the current version and its tags, the
+lifecycle status (with STALE/INVALID named), the bracket floor against target, the
+record from the captain's log (games, W/L, last played, un-debriefed), the goldfish
+headline figures, the engine's verified-line count and critic verdict, the audit's
+under/over axes, the diagnosis verdict and skeptic, the prescriptions asked and
+answered, and every open question across engine/diagnosis/debrief with its route. It
+computes nothing new — every figure is read from the module or artifact that owns it —
+so it cannot disagree with `deck-status`, `deck-version`, `deck-notes`, `prescribe` or
+`deck-audit`. **The `next` block is the point**: each suggestion is derived from a
+condition true right now (un-debriefed games → `/debrief`; an uncommitted working list →
+commit it; a stale stage → regenerate; no games → play it; open prescriptions → run the
+loop) and names the command. No judgment about the deck lives there. `--json` is the
+shape a future UI reads.
+
+## Deck versions (`deck-version`, derived from git; `deck_versions.json`, authored tags)
+
+Every change to the 99 is a commit (`decklist.txt` is tracked), so the list of lists
+this deck has been is already on disk. `manamap pilot deck-version <slug>` numbers them
+— `V1` the first tracked list, `V2` the first content change — reusing `deck-history`'s
+git walk and parser, so a comment-only edit adds a byte-sha to the version it belongs
+to and never a new version. The captain's log stamps each entry with the byte-sha of
+`decklist.txt` as it stood, so the join is exact: each version reports its games and
+W/L, and an entry played on an uncommitted working copy is reported **unmatched** rather
+than guessed (commit the list and it resolves). `show V4` diffs a version against the
+working list; `tag <name> [--at V4] [--note]` writes the authored `deck_versions.json`
+(the one version datum a browser can read without git); `restore V4` is a **dry run**
+unless `--write`, after which `fetch-deck` → `goldfish` → `mana-analysis` and a commit.
+`deck-status` prints the current version in its header.
+
+**Why the version list is not a tracked file:** the commit that changes `decklist.txt`
+gets its sha AFTER anything written in the same commit, so a generated `versions.json`
+would be one behind forever. Computed on demand; the viz history viewer gets its copy
+from a deploy-time step with git available.
+
+## The captain's log (`log.jsonl`, authored) and the debrief (`log_annotations.json`, ★)
+
+What happened when the deck was PLAYED — the one thing no other artifact records.
+`manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents N]
+[--tag T]` appends one JSON line (`id`, `at`, `decklist_sha256` of `decklist.txt` as it
+stood, `result`, `opponents`, `tags`, `text`) and nothing ever rewrites it; `list
+[--since]` and `show <id>` read it back, marking which entries the debrief has read.
+Light structure on purpose: the point is that a note costs one sentence.
+
+The `debrief` agent (`/debrief`, cheapest agent in the set) reads the un-debriefed ids
+and writes, per entry: `summary`, `opponents[]` (each with a verbatim `evidence` phrase
+of the note), `cards[]` (`read` ∈ over/under/as-expected/missed), `decisions[]`
+(`worth_a_spread` → `/author-decision`), `takeaways[]`, `engine_stages[]` (names from
+`engine.json`), `lines[]` (`verified` only with a checker-passed `stack_artifact`, else
+`needs a stack scenario`) and `open_questions[]` routed to
+`resolve-stack|goldfish|research-strategy|diagnose`. `merge-debrief` writes by id,
+rejects ids the log lacks and carries earlier annotations; `validate-debrief` fails the
+annotation on any of those contracts. The one rule is that the debrief may name nothing
+the pilot and the 99 did not — it is a reader, not a witness.
+
+## Prescriptions (`prescriptions/<id>-*.json`, the diagnosis scoped to a question)
+
+`diagnosis.json` is deterministic over the deck and takes no prompt. The workbench asks
+the doctor *questions* — "I keep getting wrathed on five", "make it faster", "should I
+run Sol Ring" — so a question is an ARTIFACT, deterministic over (deck, question).
+`manamap pilot prescribe <slug> "…"` writes the authored half (`prompt`, `id` = hash of
+the normalized prompt, `as_of_decklist_sha256`); `deck-doctor` MODE prescribe writes the
+answered half (`reading`, `log_entries_read`, optional `axes_engaged`, `cut_candidates`,
+`add_candidates` RANKED and capped at ten — The Short List's rule, relocated —
+`open_questions`, `gaps`); `deck-skeptic` reviews it like a diagnosis; `prescribe --merge
+<id>` folds both in, answer keys only. The cache routine `prescription:<id>` digests only
+the prompt (`prompt:self`), so merging never self-invalidates; `cache-record` refuses a
+file without a passing skeptic. Prescriptions ACCUMULATE and are never overwritten: a
+later decklist makes one stale (MISS; `validate-prescription` checks form only), never
+wrong. Both doctor modes read `log_annotations.json`.
+
+## Simulation — a table, not a goldfish (`simulate`, tier ◆ seeded)
+
+Forge is the rules engine; this repo owns the harness, the parser and the bridge.
+`manamap pilot simulate <slug> --vs <opponent>… --games N` runs N seeded Commander games
+headless against seats from `data/opponents/` (your pod, via `fetch-opponent`) or your
+other decks, and writes one tracked run record — win rate with a Wilson interval, who
+eliminated whom and how (damage or life loss), combat damage by round, the token figures
+counted two honest ways — with Forge's own AI caveat in its assumptions. `validate-sim`
+re-derives the analysis from the logs where they exist; `sim-scenario` lifts one board at
+a CR step into a **game state v2** scenario for `/resolve-stack`. The design, the spike
+and the measured limits are in **`docs/simulation.md`**; the v2 schema is below.
+
+## Goldfish metrics (`goldfish_metrics.json`, tier ◆)
+
+### The Treasure model (opt-in per deck)
+
+A Treasure is **not** a mana rock and modelling it as one is the trap: a rock
+produces every turn forever, a Treasure produces once and is gone. `simulate_once`
+keeps a **stockpile** spent only when lands and rocks fall short, which is both how
+it is played and what makes a hoard-counting payoff measurable.
+
+**Only triggers a goldfish can see are modelled** — upkeep, landfall, cast, Saga
+chapters (recurring) and enters-the-battlefield (once). This simulation has no
+combat and no opponents, so `whenever this creature deals combat damage` and
+`whenever an opponent draws` produce **nothing**. That is a finding, not a
+shortcoming: measured across the nine decks, **16 of 19 Treasure sources are
+combat- or opponent-gated**, and a naive `create a Treasure token` match would have
+handed eight decks free mana they never get — turning a deliberately conservative
+model optimistic. Unmodelled sources are NAMED in
+`meta.treasure_sources_not_modelled`, so a hoard of zero is legible rather than
+mysterious. Ur-dragon's four Treasure Dragons are all combat-gated and all report
+zero, which is the single most useful thing the model says about that deck.
+
+**It is opt-in**, via `"model_treasures": true` in `goldfish_targets.json`, and for
+the same reason `OPTIONAL_DEPARTMENTS` existed: a model that changes every deck's
+numbers at once cannot be landed on one deck first. Turning it on fleet-wide moves
+three decks (gishath, goblin-storm, radagast) and **gishath's `mean_cast_turn`
+alone — 7.969 → 7.912 — is quoted sixteen times across seven tracked artifacts**,
+including agent-authored prose and an `engine.json` carrying a critic verdict.
+With the flag off the treasure keys and the two extra `model_assumptions` lines are
+**absent rather than zeroed**, so a non-opted deck's artifact is byte-identical to
+before the model existed. `goldfish` prints a WARNING naming the sources it is
+ignoring, so a deck cannot sit un-opted by accident. Remove the flag once every
+deck has been re-baselined — a permanently optional model is one nobody committed
+to.
+
+What it reports when on: `treasure.mean_treasures_in_hoard_by_turn` and
+`treasure.engine_online_rate_by_turn`. The second is the consistency figure, and it
+is unforgiving — a six-card Treasure package in a 99 measured **28.7% online by
+turn six**.
+
+
+
+`pilot/goldfish.py`: seeded Monte Carlo (seed 42, 10K iterations) simulating **resource development, not full games** — model assumptions are embedded in the artifact and rendered in the manual. Metrics: opening-hand/mulligan stats, land-drop and mana curves, commander-cast turn distribution, per-deck target-set assembly (`goldfish_targets.json`, `any_of` groups, drawn-by-turn semantics), bodies-by-turn (labeled crude). Deterministic: the data-gated test regenerates and compares byte-for-byte.
+
+## Goldfish: two opening-hand distributions
+
+`goldfish_metrics.json` reports **both** `first_seven_land_histogram` and
+`kept_hand_land_histogram`, and they answer different questions. The first is the deck's
+real land distribution and moves when you change the mana base. The second is that
+distribution *after* the keep rule has filtered it, so it sits near 100% inside the 2–5
+window for every deck — informative about the mulligan rule, useless as a fitness signal.
+
+They replace a single `land_histogram` key that carried the second while being read as the
+first, which made the metric nearly invariant to deck composition. `keep_first_seven_rate`
+is unaffected, and by construction it equals the in-window share of the *first-seven*
+histogram — if those two ever diverge, one of them is wrong.
 
 ## Scenario schema (`stacks/NNN-<kebab>.json`)
 
@@ -181,7 +355,7 @@ arithmetic, deck membership, and which siblings are comparable.
 
 Verdict `pass` requires all findings `supported` **and** the mechanical validator passing. Failed artifacts are saved (they document open questions) but never published.
 
-## Game state v2 — the schema the simulation branch inherits (SPEC ONLY, 2026-08-19)
+## Game state v2 — seats that can act (consumed since S4, 2026-08-19)
 
 **Status: consumed since S4 (2026-08-19).** `pilot/game_state.py` holds the vocabulary and
 the form check; `validate-stack` runs it on any `version: 2` scenario (preflight and the
@@ -317,52 +491,31 @@ steps it skipped, and nothing about the citation contract changes.
   from a real Forge game rather than a fixture nobody authored for a reason. The opponent
   actor is still last.
 
-## Goldfish metrics (`goldfish_metrics.json`, tier ◆)
+## Scenario scope, and why it is the loop's main cost lever
 
-### The Treasure model (opt-in per deck)
+The checker's verdict is atomic over the whole artifact, so every citation is another
+chance for all of it to fail. Measured across three published decks: every artifact at
+**≤32 citations passed in 1–2 rounds**; every one at **≥59 needed 4 rounds or failed**.
+goblin-storm's five narrow scenarios produced 5 verified lines in 6 rounds; sisay's three
+broad ones produced 1 in 9, and sisay 003's answers (a)–(d) were verified correct three
+times before being discarded with the file.
 
-A Treasure is **not** a mana rock and modelling it as one is the trap: a rock
-produces every turn forever, a Treasure produces once and is gone. `simulate_once`
-keeps a **stockpile** spent only when lands and rocks fall short, which is both how
-it is played and what makes a hoard-counting payoff measurable.
+`RESOLVE_SCOPE_BUDGET` (config.py, and actually imported) warns above 12 steps, 40
+citations, or 3 lettered sub-questions. `validate-stack --scenario-only` runs the
+sub-question check **before** a resolver spawn, for free. The rule: **one rules domain per
+scenario**; split multi-part questions into separate artifacts so they fail independently.
 
-**Only triggers a goldfish can see are modelled** — upkeep, landfall, cast, Saga
-chapters (recurring) and enters-the-battlefield (once). This simulation has no
-combat and no opponents, so `whenever this creature deals combat damage` and
-`whenever an opponent draws` produce **nothing**. That is a finding, not a
-shortcoming: measured across the nine decks, **16 of 19 Treasure sources are
-combat- or opponent-gated**, and a naive `create a Treasure token` match would have
-handed eight decks free mana they never get — turning a deliberately conservative
-model optimistic. Unmodelled sources are NAMED in
-`meta.treasure_sources_not_modelled`, so a hoard of zero is legible rather than
-mysterious. Ur-dragon's four Treasure Dragons are all combat-gated and all report
-zero, which is the single most useful thing the model says about that deck.
+## The resolve loop (agents)
 
-**It is opt-in**, via `"model_treasures": true` in `goldfish_targets.json`, and for
-the same reason `OPTIONAL_DEPARTMENTS` existed: a model that changes every deck's
-numbers at once cannot be landed on one deck first. Turning it on fleet-wide moves
-three decks (gishath, goblin-storm, radagast) and **gishath's `mean_cast_turn`
-alone — 7.969 → 7.912 — is quoted sixteen times across seven tracked artifacts**,
-including agent-authored prose and an `engine.json` carrying a critic verdict.
-With the flag off the treasure keys and the two extra `model_assumptions` lines are
-**absent rather than zeroed**, so a non-opted deck's artifact is byte-identical to
-before the model existed. `goldfish` prints a WARNING naming the sources it is
-ignoring, so a deck cannot sit un-opted by accident. Remove the flag once every
-deck has been re-baselined — a permanently optional model is one nobody committed
-to.
+Run via the `resolve-stack` skill: `stack-resolver` agent drafts → `validate-stack` (mechanical gate, short-circuits on form errors) → `rules-checker` agent verdict → re-spawn resolver with findings while iterations < `RESOLVE_MAX_ITERATIONS` (3). Agents are read-only; the orchestrating session writes files. Batch scale-out (many scenarios in parallel) is a Workflow-tool upgrade path.
 
-What it reports when on: `treasure.mean_treasures_in_hoard_by_turn` and
-`treasure.engine_online_rate_by_turn`. The second is the consistency figure, and it
-is unforgiving — a six-card Treasure package in a 99 measured **28.7% online by
-turn six**.
+**Definition of done**: run `/resolve-stack` on a scenario; confirm the saved artifact passes `manamap pilot validate-stack` and the golden-artifact test (`tests/test_pilot_validate_stack.py::test_all_committed_stacks_validate_and_pass`) unskips and passes.
 
+## Rules DB
 
+One chunk per numbered CR rule — **chunk ID = rule number = citation ID** — plus `glossary:<term>` chunks. `Example:` and continuation lines attach to the owning rule, so quotes from examples satisfy the contract. Embedded text is prefixed with `id + section title` (helps MiniLM find "storm" for 702.40a, whose text never says storm); stored text is verbatim CR. Embeddings are L2-normalized MiniLM (reuses `compute_text_embeddings`); row i ↔ `order[i]`.
 
-`pilot/goldfish.py`: seeded Monte Carlo (seed 42, 10K iterations) simulating **resource development, not full games** — model assumptions are embedded in the artifact and rendered in the manual. Metrics: opening-hand/mulligan stats, land-drop and mana curves, commander-cast turn distribution, per-deck target-set assembly (`goldfish_targets.json`, `any_of` groups, drawn-by-turn semantics), bodies-by-turn (labeled crude). Deterministic: the data-gated test regenerates and compares byte-for-byte.
-
-## Decision scenarios (`decisions/NNN-<kebab>.json`, tier ★)
-
-`kind: "decision"` artifacts: archetypal board + table state, a decision question, 2–4 branches each with `choice`, `line`, `signals`, `coalition_risk`, `coaching`, optional `citations` (same verbatim-quote contract), and a `recommendation` matching a branch. Mechanically form-checked by `validate-stack`; substantively reviewed by humans — the tracked JSON is the red-line surface. Authored via the `pilot-coach` agent (`author-decision` skill).
+**CR refresh** (each set release): get the current TXT link from https://magic.wizards.com/en/rules, update `CR_RULES_URL` in `src/manamap/config.py`, run `download-rules` + `build-rules-db`. Artifacts record their `rules_version`.
 
 ## Strategy DB (`data/strategy/`, tier ★ grounding)
 
@@ -402,368 +555,6 @@ claim rules-verified.
   scenario", feeding the resolve-stack queue), matchup frames, gaps (feeding
   the next research pass). The write-manual pipeline generates it after the
   evidence pull; pilot-notes and the engineer consume it.
-
-## Agent invocation cache
-
-Subagent spawns are the only real cost here (the renderer is free and deterministic —
-there are **no LLM calls in Python at all**). A full manual regeneration is ~330k
-tokens across four serially-dependent agents, so every skill that spawns one checks
-first:
-
-```
-check → (miss) spawn → write → validate → record
-```
-
-`manamap pilot cache-status <slug>` reports per routine — `HIT`/`EDITED` exit 0 (don't
-spawn), `MISS` exits 1 (spawn), a missing required input exits 2 (stop). Records live
-in `data/decks/<slug>/.agent-cache.json` (**tracked**, so a `git pull` transfers
-someone else's regeneration as a cache hit, and `git log` answers "which inputs
-produced this prose?"). `record()` refuses artifacts that are missing, lack their
-routine's keys, or have no checker block — a failed run can't poison the cache.
-
-Routines (10 static): `candidate-pool`, `deck-build`, `deck-diagnosis`, `deck-recon`,
-`deck-engine`, `deck-map-names`, `debrief` (N/A until something is logged),
-`strategic-frame`, `pilot-notes` (five keys of `manual_prose.json`), `tutor-guide`
-(the tutor guide — `N/A` for a deck with no library-search tutors, via the applicability
-gate in agent_cache), plus `prescription:<id>` (one question to the doctor; `prompt:self` digests only the authored question) and `stack:<NNN>` and `decision:<NNN>` discovered
-from disk. Declared in `config.AGENT_ROUTINES`.
-
-The two build routines take **no `cards:semantic`** — it digests a `cards.json`
-that by definition doesn't exist before a build, so the authored `brief.json` is
-their root input instead. Conversely a hand-built deck has no `brief.json`, so
-those routines report **`N/A`** in the all-routines scan rather than aborting it;
-an explicit `--routine` still exits 2, because there you asked about that routine
-specifically and a missing input means fix it, don't spawn.
-
-`validate-build` checks the role budget **per role**, not just in total — a budget that
-sums correctly while every line is wrong is not a budget — and cross-checks the plan's
-self-reported bracket floor against `bracket_report.json`, the `lands` array against
-`land_counts`, and the mana base's `spell_slots` stamp against the current slot count so
-diagnostics computed for a deck you no longer run are rejected.
-
-Four semantics worth knowing: agent prompts are inputs (editing
-`.claude/agents/*.md` invalidates that agent's routines by design); `issue-plan`
-hashes prose *structure* not wording, so a typo fix is free but a new section
-re-plans; `strategy:doc` hashes `strategy.md` bytes so `build-strategy-db` never
-invalidates anything; and `stack:<NNN>` hashes only its own scenario slice so the
-resolver/checker loop can't self-invalidate. Full sizing and rationale:
-`docs/agent-cost.md`.
-
-`build-manual` is deliberately **uncached** — already $0 and deterministic.
-
-## The resolve loop (agents)
-
-Run via the `resolve-stack` skill: `stack-resolver` agent drafts → `validate-stack` (mechanical gate, short-circuits on form errors) → `rules-checker` agent verdict → re-spawn resolver with findings while iterations < `RESOLVE_MAX_ITERATIONS` (3). Agents are read-only; the orchestrating session writes files. Batch scale-out (many scenarios in parallel) is a Workflow-tool upgrade path.
-
-**Manual DoD verification**: run `/resolve-stack` on a scenario; confirm the saved artifact passes `manamap pilot validate-stack` and the golden-artifact test (`tests/test_pilot_validate_stack.py::test_all_committed_stacks_validate_and_pass`) unskips and passes.
-
-## The magazine layer (STYLEv3)
-
-Each deck is a complete **issue** of *Pilot's Manual* — a fixed set of sections in a
-fixed order (see `issue_spec.DEPARTMENTS`; never transcribe the list or its count into
-a prompt), grouped into five acts that ramp from what to do, through tactics and the
-long game, into the numbers and the proof. Readers learn the publication once and
-navigate it forever. Every section is signed by one of three columnists — `"Ledger"
-Lin Marginal` (◆), `Counselor Vera Dictum` (✓), `Coach Sunny Brightside` (★) — and
-STYLEv3 L10 holds that every issue is the reader's first: no version numbers, no
-changelog voice, enforced by `validate_issue.validate_self_containment()`. The design
-authority is `STYLEv3.md` (editorial laws, the Commander Mandate, section specs,
-voice, component library); `docs/history/STYLE-v1-visual-research.md` and
-`-v2-editorial-method.md` are its archived sources.
-
-- **`src/manamap/pilot/issue_spec.py`** — the canonical department system: ids, order,
-  promises, evidence tiers, rhythm tags, component library. Changing it changes every
-  issue; treat it like `config.py`.
-- **`issue.json`** (tracked, **authored by a human**) — volume, issue_date, cover_price,
-  deck_name, commander, cover_tagline, next_issue. Never generated: a generated date
-  would break byte-identical rebuilds.
-  - Optional **`status`** — one of `issue_spec.ISSUE_STATUSES` (`broken-down`,
-    `superseded`, `retired`). An issue is a **published record**: when the deck it
-    describes stops existing, it is MARKED, never edited or deleted. §5.1's rule
-    against editing a passing artifact post-hoc applies to a whole magazine as much
-    as to a stack, and every figure in a retired issue was true when it shipped.
-    Set, it renders a banner above the cover and mutes-but-keeps the newsstand card;
-    absent (the default) it renders **nothing**, so live issues stay byte-identical.
-    An unknown value renders nothing and is reported by `validate-issue` — a typo
-    must not be able to take a magazine offline, nor silently read as live.
-    First use: `hapatra` (Vol. 002), broken down for parts so its aristocrats shell
-    could be sleeved into `yawgmoth-swarm`; the two lists share **27** nonbasics.
-- **`pending.json`** (tracked, **hand-authored**, optional) — the queue of changes
-  DECIDED but not yet applied. The repo had two homes for a swap and neither could
-  hold an intention: applied swaps are derived from git, and `considering.json` is
-  fixed at exactly ten entries, forbids a pick already in the deck, and is
-  regenerated wholesale on any decklist edit. A three-land swap decided in
-  conversation fell through that gap and was lost, which is why this exists.
-  - Entries carry `id` / `decided` / `why` plus **list-valued `in` and `out`**, so a
-    three-for-three swap is one decision rather than three picks that each look
-    wrong alone. `settled_by` names the routine that closes it, reusing
-    `open_questions`' routing vocabulary.
-  - **Closure is DERIVED, never declared** — there is no `applied: true` field,
-    because a hand-set flag is exactly how `HISTORY.md` became append-only and
-    append-forgotten. `state_of()` reads the deck: **the cuts decide it, not the
-    additions**, since a card the deck already runs cannot prove it just arrived.
-    An APPLIED entry is deleted rather than ticked; git owns it from then on.
-  - **PARTIAL is a signal, not an error.** A cut no longer in the deck means either
-    "applied" or "left for another reason" and nothing separates them, so the
-    validator declines to guess. There is deliberately no stranded-cut check.
-  - **Not a cache input.** Declaring it would MISS agent routines for a decision
-    nobody has acted on; intent must not invalidate content.
-  - Report-only, and never read by the renderer — a queue of unmade changes is the
-    "previous build" framing STYLEv3 L10 bans from print.
-- **`issue_plan.json`** (tracked, human-editable) — the packaging layer from the
-  `magazine-editor` agent: the issue's angle, cover lines, per-department
-  kicker/headline/dek, captions, PILOT TIPs, callouts, pull quotes, roster grouping,
-  threat boxes, sample hands. `manual_prose.json` remains the body-copy layer; the
-  renderer merges them.
-- **`validate-issue`** — the mechanical gate: identity block complete (including a
-  `decklist_sha256` that must match `cards.json`), every section present in canonical
-  order, copy completeness, components from the fixed library, **tier costume never
-  overridden**, every PILOT TIP / caption / roster card name real, no two dense
-  sections adjacent unless a breather is declared (`BREATHER_AFTER`), no changelog
-  voice (L10), and no reader-facing copy quoting `lands.entries` as a land count.
-- **`magazine-editor` agent** — reads STYLEv3 and every artifact, returns the plan as
-  JSON. It never writes HTML: determinism, mechanical validation, and the citation
-  contract all depend on the renderer staying deterministic.
-- **`design-issue` skill** — the loop: gather → plan → validate → build → review.
-
-The Kill renders feature spreads with dossier pointers; **Judge's Desk** carries the
-complete resolutions with every citation verbatim (the renderer may not summarize proof)
-as a **case index** — one scannable row per case, expanding to the unchanged record. The
-proof is printed in exactly ONE place: the theatre prints a citation COUNT and points at
-the case, because shipping it with the quotes inline put the identical 120 citations into
-both departments.
-
-**`the-kill.features` decides which lines get a theatre.** An ordered list of stack ids;
-everything else prints under *Also on the record*, keeping its whole authored intro and
-its result and losing only the staging. Omit the key and every presentable stack features,
-which is right up to about seven and wrong past it — yawgmoth-swarm has eleven and its
-Kill reached **44,119 words, 42% of the issue**, since its loops run 11–14 steps and each
-was staged. Featuring four took it to 19,104 words and 20.4% of scroll, the same share The
-Kill takes on a seven-stack issue.
-
-Two measurements set that design. A rendered stack is ~4,000 words and its authored intro
-is **77–144**, so the intro costs nothing and an index that dropped it would keep the
-department's title while cutting the thing it names. And **word count is a bad proxy for
-scroll here**: −25,015 words bought only −8.1 screens, because the theatre stacks its
-plates in Z and is word-heavy, pixel-light.
-
-`validate-issue` fails a `features` entry naming a non-presentable stack, a repeat, and a
-list naming every presentable stack (that is what omitting the key does, and it rots the
-first time a stack is added). The renderer instead **skips** an unknown id, because a crash
-there turns a copy mistake into a missing magazine. An indexed row carries the `line-<id>`
-anchor Judge's Desk links back to, or every case's *↩ Back to this line in The Kill*
-becomes a dead jump.
-
-### Length is measured (`issue-length`, `PROSE_BUDGET`)
-
-`manamap pilot issue-length <slug> [--rendered]` reports words and visible words per
-section — visible excludes anything inside a collapsed `<details>`. The gap is the
-point: Judge's Desk was 21% of Vol. 009's words and 2.4% of its scroll, so a single
-number sends you to cut the wrong department half the time.
-
-`issue_spec.PROSE_BUDGET` caps each prose key at a length at least one deck already
-achieves. `validate-issue` reports breaches; **`--strict` fails on them**, so the gate
-is real for new work without turning eight pre-budget artifacts red. The two
-deliberate exceptions — `threat_assessment` and `matchups` at 2,500 where the fleet's
-shortest are 3,821 and 4,129 — take their number from
-`validate_engine.MAX_WHAT_IT_DOES` instead, and are the debt the Act III merge left when
-it combined three departments' headers without touching their prose. That merge is now
-complete on all nine decks and the three ids are deleted, so the debt is the prose and
-nothing else.
-
-**The Kill's stack theatre** (`design.stack_theatre`) renders a resolution as a
-receding stack of plates on a vanishing-point grid — one plate per step, hover to
-lift, a tab to bring one forward with its action, effect and citations. It is
-**CSS-only**: an issue is a standalone printable file with no scripts, so the
-mechanism is radio inputs and `:checked ~` selectors, the depth is
-`transform-style: preserve-3d`, and step 1 is `checked` in the markup so CSS-off,
-print and screen-reader readers open on a valid view rather than a blank stage.
-Per-index rules are generated into the stylesheet (`_theatre_rules`, bounded by
-`THEATRE_MAX_STEPS`), because per-instance CSS would put a `<style>` block inside
-every case. It does not replace Judge's Desk and must not: the theatre is a way
-*through* the proof, and §5.1 forbids the renderer summarising proof. The Command Zone department is mandatory and format-specific — the
-tax ladder, color identity, the 21-damage clock — and is what makes this a Commander
-magazine rather than a Magic one.
-
-## Manual generation
-
-Content pipeline (`write-manual` skill) — goldfish → `deck-analyst` evidence pull → **strategic frame** (`strategy-researcher` MODE consult → `strategic_frame.json`; its `candidate_missing_lines` feed the resolve-stack queue, its `gaps` feed the next research pass) → `pilot-notes` (the five prose keys + decisions + the tutor guide, receives the frame and `engine.json`; since 2026-08-19 one agent in one voice replaces the coach + writer pair) (zero-guessing: combo lines only from verified stacks, claims trace to graphs/oracle text; receives the frame) → `manual_prose.json` (tracked, human-editable) → `manamap pilot build-manual <slug>` + `build-index` (deterministic, byte-identical rebuilds, `[TODO]` placeholders for missing prose, only checker-passed stacks render).
-
-## Goldfish: two opening-hand distributions
-
-`goldfish_metrics.json` reports **both** `first_seven_land_histogram` and
-`kept_hand_land_histogram`, and they answer different questions. The first is the deck's
-real land distribution and moves when you change the mana base. The second is that
-distribution *after* the keep rule has filtered it, so it sits near 100% inside the 2–5
-window for every deck — informative about the mulligan rule, useless as a fitness signal.
-
-They replace a single `land_histogram` key that carried the second while being read as the
-first, which made the metric nearly invariant to deck composition. `keep_first_seven_rate`
-is unaffected, and by construction it equals the in-window share of the *first-seven*
-histogram — if those two ever diverge, one of them is wrong.
-
-## Tests
-
-`tests/test_pilot_*.py` — 42 files, the largest group in the suite. **The inventory lives
-in `docs/testing.md`** (what each file covers) and so do the counts, which that file
-declares itself the only home for.
-
-This section used to restate both, and ignoring that rule is exactly how it drifted: it
-claimed 42 cases for `test_pilot_build_manual` (91), 29 for `test_pilot_validate_issue`
-(51) and 57 for `test_pilot_agent_cache` (83), while omitting twenty-odd files entirely.
-A number restated in two places is a number that will disagree with itself.
-
-Data-gated tests use `requires_rules` / `requires_deck` / `requires_strategy` /
-`requires_roles` markers from `tests/conftest.py`.
-
-## The front of the book (`editors_letter`, `pilots_log`, tiers — and ★)
-
-Two departments bracket Act I — the Editor's Letter opens it and the Pilot's Log closes
-it, behind The 99. Both arrived through `issue_spec.OPTIONAL_DEPARTMENTS`, piloted on
-radagast and then rolled to the fleet; **all nine now carry them and that set is empty
-again**, which is the state it should be found in. See CLAUDE.md for why the concept
-exists and why an id should not stay in it.
-
-**The Editor's Letter** is signed by Editor-in-Chief Margot Stet, the masthead's
-only unbadged name. Each columnist owns exactly one evidence tier, so a fourth
-badge would make four tiers out of three and a shared one would put two names on
-one. She therefore may not make a claim that needs a badge — `validate-issue`
-fails a bare percentage in her copy — and names the columnist who established a
-figure instead, which is how a real editor's letter reads anyway.
-
-**The Pilot's Log** is a three-way conversation written by `pilot-panel`. Its
-`pilots_log` key is a LIST of turns, not prose: a turn carries the voice that
-speaks it, so the renderer can label and colour it and a reader can follow who is
-answering whom. Handed a string it renders TODO — an unlabelled panel is prose
-with quotation marks.
-
-**Its tier is `("coach",)` and not all three.** A department's tier is what it
-GRANTS, not what its speakers mention: Vera cites a ruling and Ledger a rate, but
-both earned those badges in The Kill and By the Numbers. Give the panel all three
-and a conversation becomes a place where a new verified claim can arrive wearing
-three voices at once.
-
-**The panel opens on a HOT TAKE and runs behind The 99.** Turn 0 carries
-`"kind": "hot-take"` and Sunny's voice; a later turn carries
-`"responds_to": "hot-take"`. `validate-issue` checks those three things and no
-semantic ones — whether a take is genuinely counter-intuitive, correct and
-insightful is the charter's problem and an editor's, not a regex's. The department
-moved to the end of Act I because the panel is the densest thing in the issue and
-every move it makes refers to material the reader must already have met.
-
-**The rule that outranks the rest: a line `engine.json` draws DASHED is a line the
-panel may not assert — and that includes the hot take.** A `lines[]` entry with a `verified_by` rests on a
-checker-passed stack and Vera may state it flatly; a null is the analyst's reading
-and the panel may discuss it, argue about it, or say nobody has checked. That is
-the evidence contract reaching past the picture into the copy.
-
-**The per-byline voice lint** covers the panel (each turn carries its voice) and
-every other prose key, whose voice is derived from its department's byline via
-`issue_spec.voices_for`. A shared department flags only what both voices are
-barred from. The bans were cut twice by measuring against the fleet — see
-CLAUDE.md — and what remains is six evaluative adjectives with no hedging reading
-plus Sunny's consulting vocabulary.
-
-## Deck status — is this deck finished? (`deck-status`, tier ◆)
-
-**Run this first on any deck.** The lifecycle is dozens of skills and subcommands and until
-2026-08 nothing said what a COMPLETE deck looks like: each phase knew its own inputs, none
-knew the sequence. So a capability added in one development cycle was reachable only by
-somebody who remembered it existed, and a deck built the following month silently inherited
-the old pipeline. Five capabilities went in during August (`ADDED_2026_08`) and every deck built before them
-was missing all five while looking complete from every angle.
-
-`pilot/deck_status.py:STAGES` is the single machine-readable statement of what a deck can
-have and in what order; `/publish-deck` sequences the work and reads the same list rather
-than restating it. **When you add a phase to the lifecycle, add it to `STAGES`** or the next
-person will not find it. That rule has been broken once already and by the file that states
-it: the front of book and The Short List's art shipped on all nine decks while `deck-status`
-reported nine complete decks without them.
-
-**A stage whose artifact exists for another reason cannot be checked by file presence.**
-`pilot-panel` writes `editors_letter` and `pilots_log` INTO `manual_prose.json`, which the
-writer already created — so the `panel` stage is keyed (`KEYED_STAGES`) and checks for the
-keys. A file-existence stage there would report every deck complete the moment the writer
-ran, which is the same failure this command exists to prevent, one level down.
-
-It separates two things that look alike. **INCOMPLETE is a state** — a half-built deck is
-work in progress. **STALE is an error**: most artifacts stamp the `decklist_sha256` they were
-derived from, and one whose stamp no longer matches `cards.json` is not incomplete but
-CONFIDENT AND WRONG, which is worse and looks finished from every angle except this one.
-
-## The constellation (`deck_map.json`, tier ◆ + ★ names)
-
-`manamap pilot deck-map <slug>` re-lays-out ONE deck's cards from `embeddings_ability.npy` —
-the FUNCTION space; the layout space knows only colour and type, so a mono-green deck
-clusters there into a green blob and a land pile — and cuts two levels of cities and
-neighbourhoods. It is `viz/js/drill.js`'s argument applied to a decklist: a hundred cards
-scattered across the 34,890-card atlas are dust, because the structure that matters is
-exactly what a global projection compressed out.
-
-**Tracked**, because the embeddings are gitignored and a fresh clone must still render
-manuals — the same argument the projections are committed under. **Positions are LOCAL** and
-are not atlas positions; everything that draws it says so.
-
-Three parameters were measured rather than assumed:
-
-- **Ward, not average linkage.** Average linkage on cosine distance chains: on radagast it
-  put 37 of 71 cards in one city and 1 in another.
-- **The city count is chosen by BALANCE**, not by a cards-per-city divisor — that divisor
-  still put 54% in one city. Grow k until the largest holds under 35%, stop at seven, because
-  past seven regions a reader consults a key instead of seeing a shape. (Ward on radagast:
-  k=4 54%, k=6 42%, k=7 32%, k=9 14%.)
-- **Territories draw per NEIGHBOURHOOD.** A spread-out city's convex hull covered every other
-  city and the map read as one continent with labels floating on it.
-
-`deck-cartographer` then names each region for the job its cards do, and `merge-deck-map`
-writes **`label` and `gloss` and nothing else** — positions and membership are a measurement,
-and a whole-file copy from `.agent-out/` would let a model's paraphrase silently replace the
-map. `validate-deck-map` checks names are distinct within a level and that membership still
-totals.
-
-## The engine (`engine.json`, tiers ✓ ◆ ★)
-
-The constellation's own limit, found by the cartographers and then measured: **a card is
-clustered by what it SAYS, and an engine is what cards DO TO EACH OTHER.** On radagast only
-**4 of 10** declared components sit in a single city — the metronome class and the flash
-traps span five each — so a city name is the wrong address for a component.
-
-`manamap pilot engine-facts <slug>` is the deterministic brief: `deck_audit.engine_activation`
-(components already priced hypergeometrically), the verified pairings from checker-passed
-stacks via `build_index.line_cards`, the contained combo lines deduped on `frozenset`, and a
-**scatter table** so the agent starts from the disagreement rather than discovering it.
-Computed on demand, never committed.
-
-`/analyze-engine` runs `deck-engineer` ⇄ `engine-critic`, gated by `validate-engine`, into an
-eight-stage model: `mana · ignition · fuel · fodder · conversion · output · protection ·
-wincon`. Not every deck has all eight — radagast has no `fodder` because nothing in the 99
-sacrifices, and saying so is a finding.
-
-**The evidence ladder is the whole job.** A checker-passed stack is the only fact. A contained
-combo line is a candidate stamped "needs a stack scenario". A role is a property, not an
-interaction. The synergy graph is retrieval only and is deliberately absent from the brief.
-`lines[].verified_by` is nullable for exactly this reason, and the renderer draws a null one
-**dashed**.
-
-**The figure is a schematic, not a block diagram.** Every arrow is labelled with what it
-carries — the line's own `carries` when the engineer authored one, and otherwise DERIVED from
-the source stage (`design.STAGE_CARRIES`). Deriving costs no schema change and no respawn of
-this loop; derived labels render italic and the caption counts them, because an inference
-wearing an authored label is exactly what the dashed line exists to prevent. A forward arrow
-arcs above the rail and a backward one arcs below as a feedback loop, which is what makes an
-engine an engine rather than a list of steps. Each stage also carries a plain-language job
-(`STAGE_ROLE`), and each card in The 99 wears its stage as a chip inked from the same
-`ENGINE_STAGE_INK` — the chip annotates the grid and never regroups it, because the engine is
-measurably not the clusters.
-
-**What the gate cannot see, stated because it matters:** `validate-engine` checks that a
-cited stack NAMES a line's cards; it can never check that the stack SUPPORTS the line. Two
-real radagast lines passed every mechanical check while citing a stack that showed the
-opposite — one claimed Castle Garenbrig paid for Craterhoof, citing a stack that leaves
-Garenbrig untapped. Both rendered as solid green, the mark for proof. A passing stack is
-evidence a BOARD resolved a certain way; reading it as causation is inference, and inference
-is the critic's job. Do not close it with string matching — the same wrong line survives a
-rephrase.
 
 ## Deck facts — the brief agents read instead of re-deriving
 
@@ -897,7 +688,7 @@ into `/resolve-stack`, `/research-strategy` or a goldfish-target edit. **Analysi
 nothing in the loop edits a decklist.
 
 `deck-doctor` has two modes. **MODE recon** is the only place in this subsystem that
-touches the web: it fills a hole `docs/deck-builder-v2.md` names outright — there are no
+touches the web: it fills a hole `docs/history/deck-builder-v2.md` names outright — there are no
 per-commander inclusion rates in any bulk data we have, and inclusion rate is the real
 staples signal. Its `deck_recon.json` is dated (`as_of`) and deliberately kept **out of
 `strategy.md`**: durable theory and perishable meta claims must invalidate differently,
@@ -921,10 +712,383 @@ No L10 rule applies, deliberately: the diagnosis is a working artifact and is ne
 rendered into an issue. It may name a weakness plainly, which is the one thing
 every-issue-is-the-reader's-first would forbid.
 
-## The Short List (`considering.json`, tiers ◆ + ★)
+## The engine (`engine.json`, tiers ✓ ◆ ★)
+
+The constellation's own limit, found by the cartographers and then measured: **a card is
+clustered by what it SAYS, and an engine is what cards DO TO EACH OTHER.** On radagast only
+**4 of 10** declared components sit in a single city — the metronome class and the flash
+traps span five each — so a city name is the wrong address for a component.
+
+`manamap pilot engine-facts <slug>` is the deterministic brief: `deck_audit.engine_activation`
+(components already priced hypergeometrically), the verified pairings from checker-passed
+stacks via `build_index.line_cards`, the contained combo lines deduped on `frozenset`, and a
+**scatter table** so the agent starts from the disagreement rather than discovering it.
+Computed on demand, never committed.
+
+`/analyze-engine` runs `deck-engineer` ⇄ `engine-critic`, gated by `validate-engine`, into an
+eight-stage model: `mana · ignition · fuel · fodder · conversion · output · protection ·
+wincon`. Not every deck has all eight — radagast has no `fodder` because nothing in the 99
+sacrifices, and saying so is a finding.
+
+**The evidence ladder is the whole job.** A checker-passed stack is the only fact. A contained
+combo line is a candidate stamped "needs a stack scenario". A role is a property, not an
+interaction. The synergy graph is retrieval only and is deliberately absent from the brief.
+`lines[].verified_by` is nullable for exactly this reason, and the renderer draws a null one
+**dashed**.
+
+**The figure is a schematic, not a block diagram.** Every arrow is labelled with what it
+carries — the line's own `carries` when the engineer authored one, and otherwise DERIVED from
+the source stage (`design.STAGE_CARRIES`). Deriving costs no schema change and no respawn of
+this loop; derived labels render italic and the caption counts them, because an inference
+wearing an authored label is exactly what the dashed line exists to prevent. A forward arrow
+arcs above the rail and a backward one arcs below as a feedback loop, which is what makes an
+engine an engine rather than a list of steps. Each stage also carries a plain-language job
+(`STAGE_ROLE`), and each card in The 99 wears its stage as a chip inked from the same
+`ENGINE_STAGE_INK` — the chip annotates the grid and never regroups it, because the engine is
+measurably not the clusters.
+
+**What the gate cannot see, stated because it matters:** `validate-engine` checks that a
+cited stack NAMES a line's cards; it can never check that the stack SUPPORTS the line. Two
+real radagast lines passed every mechanical check while citing a stack that showed the
+opposite — one claimed Castle Garenbrig paid for Craterhoof, citing a stack that leaves
+Garenbrig untapped. Both rendered as solid green, the mark for proof. A passing stack is
+evidence a BOARD resolved a certain way; reading it as causation is inference, and inference
+is the critic's job. Do not close it with string matching — the same wrong line survives a
+rephrase.
+
+## The constellation (`deck_map.json`, tier ◆ + ★ names)
+
+`manamap pilot deck-map <slug>` re-lays-out ONE deck's cards from `embeddings_ability.npy` —
+the FUNCTION space; the layout space knows only colour and type, so a mono-green deck
+clusters there into a green blob and a land pile — and cuts two levels of cities and
+neighbourhoods. It is `viz/js/drill.js`'s argument applied to a decklist: a hundred cards
+scattered across the 34,890-card atlas are dust, because the structure that matters is
+exactly what a global projection compressed out.
+
+**Tracked**, because the embeddings are gitignored and a fresh clone must still render
+manuals — the same argument the projections are committed under. **Positions are LOCAL** and
+are not atlas positions; everything that draws it says so.
+
+Three parameters were measured rather than assumed:
+
+- **Ward, not average linkage.** Average linkage on cosine distance chains: on radagast it
+  put 37 of 71 cards in one city and 1 in another.
+- **The city count is chosen by BALANCE**, not by a cards-per-city divisor — that divisor
+  still put 54% in one city. Grow k until the largest holds under 35%, stop at seven, because
+  past seven regions a reader consults a key instead of seeing a shape. (Ward on radagast:
+  k=4 54%, k=6 42%, k=7 32%, k=9 14%.)
+- **Territories draw per NEIGHBOURHOOD.** A spread-out city's convex hull covered every other
+  city and the map read as one continent with labels floating on it.
+
+`deck-cartographer` then names each region for the job its cards do, and `merge-deck-map`
+writes **`label` and `gloss` and nothing else** — positions and membership are a measurement,
+and a whole-file copy from `.agent-out/` would let a model's paraphrase silently replace the
+map. `validate-deck-map` checks names are distinct within a level and that membership still
+totals.
+
+## Decision scenarios (`decisions/NNN-<kebab>.json`, tier ★)
+
+`kind: "decision"` artifacts: archetypal board + table state, a decision question, 2–4 branches each with `choice`, `line`, `signals`, `coalition_risk`, `coaching`, optional `citations` (same verbatim-quote contract), and a `recommendation` matching a branch. Mechanically form-checked by `validate-stack`; substantively reviewed by humans — the tracked JSON is the red-line surface. Authored via the `pilot-coach` agent (`author-decision` skill).
+
+## The tutor guide (`tutor_guide.json`, tier ★)
+
+One wish per tutor. `pilot-notes` authors an entry for every maindeck library-search
+tutor — scenario → the exact card to fetch → why — and `validate-tutor-guide` holds each
+one to the deck and to that tutor's own search constraint, **per clause**: a DFC or
+chapter card can carry several search clauses (Huatli's front face fetches a basic land;
+Roar III fetches Dinosaurs), so a fetch is legal if any clause permits it. Pure land ramp
+(Cultivate, Nature's Lore) is excluded — that is the mana analysis's business. A deck with
+no tutors reports `N/A` and the legacy page prints standing copy.
+
+## The mana analysis (`mana_analysis.json`, tier ◆)
+
+The mana audit — rendered as *Sources Say* by the legacy page — and the one with **no agent at all**: `manamap pilot
+mana-analysis <slug>` computes it deterministically, reusing the deck-builder's own
+hypergeometric kit (`manabase.py`). Land classes, per-colour land and nonland sources,
+pip share vs source share, on-curve probability with and without rocks, the ramp census,
+and a stated-assumptions block. (The legacy `mana_base` prose key that narrated it is retired and frozen.)
+
+**Count copies, not decklist entries.** `cards.json` stores basics as one entry with
+`quantity: N`, and counting entries once published "18 lands" for a 33-land deck and
+understated every colour's sources fleet-wide. `common.expand_copies()` is the shared
+primitive; `lands.total` is copies and `lands.entries` is distinct cards, both reported so
+they can never be confused again. Three guards: a unit fixture (11 Islands = 11 blue
+sources), a staleness test recomputing every tracked artifact, and a legacy `validate-issue` lint
+rejecting reader-facing copy that quotes the entry count as a land count.
+
+**The trap this exists to catch.** Sazacap's Brew is tagged `buff:pump` because its text
+contains "+2/+0", and Vol. 001 shipped advice to test it in the Witch's Mark slot. Both are wrong: the Brew's first target is a *player*, so
+Zada — which copies instants targeting **only** Zada — never copies it, while Witch's Mark
+targets a creature and is copyable. Reading the card rather than its role tag inverted the
+recommendation, and the published prose was corrected to match. That is the whole value of
+the pass.
+
+## Agent invocation cache
+
+Subagent spawns are the only real cost here (the renderer is free and deterministic —
+there are **no LLM calls in Python at all**). A full manual regeneration is ~330k
+tokens across four serially-dependent agents, so every skill that spawns one checks
+first:
+
+```
+check → (miss) spawn → write → validate → record
+```
+
+`manamap pilot cache-status <slug>` reports per routine — `HIT`/`EDITED` exit 0 (don't
+spawn), `MISS` exits 1 (spawn), a missing required input exits 2 (stop). Records live
+in `data/decks/<slug>/.agent-cache.json` (**tracked**, so a `git pull` transfers
+someone else's regeneration as a cache hit, and `git log` answers "which inputs
+produced this prose?"). `record()` refuses artifacts that are missing, lack their
+routine's keys, or have no checker block — a failed run can't poison the cache.
+
+Routines (10 static): `candidate-pool`, `deck-build`, `deck-diagnosis`, `deck-recon`,
+`deck-engine`, `deck-map-names`, `debrief` (N/A until something is logged),
+`strategic-frame`, `pilot-notes` (five keys of `manual_prose.json`), `tutor-guide`
+(the tutor guide — `N/A` for a deck with no library-search tutors, via the applicability
+gate in agent_cache), plus `prescription:<id>` (one question to the doctor; `prompt:self` digests only the authored question) and `stack:<NNN>` and `decision:<NNN>` discovered
+from disk. Declared in `config.AGENT_ROUTINES`.
+
+The two build routines take **no `cards:semantic`** — it digests a `cards.json`
+that by definition doesn't exist before a build, so the authored `brief.json` is
+their root input instead. Conversely a hand-built deck has no `brief.json`, so
+those routines report **`N/A`** in the all-routines scan rather than aborting it;
+an explicit `--routine` still exits 2, because there you asked about that routine
+specifically and a missing input means fix it, don't spawn.
+
+`validate-build` checks the role budget **per role**, not just in total — a budget that
+sums correctly while every line is wrong is not a budget — and cross-checks the plan's
+self-reported bracket floor against `bracket_report.json`, the `lands` array against
+`land_counts`, and the mana base's `spell_slots` stamp against the current slot count so
+diagnostics computed for a deck you no longer run are rejected.
+
+Four semantics worth knowing: agent prompts are inputs (editing
+`.claude/agents/*.md` invalidates that agent's routines by design); `issue-plan`
+hashes prose *structure* not wording, so a typo fix is free but a new section
+re-plans; `strategy:doc` hashes `strategy.md` bytes so `build-strategy-db` never
+invalidates anything; and `stack:<NNN>` hashes only its own scenario slice so the
+resolver/checker loop can't self-invalidate. Full sizing and rationale:
+`docs/agent-cost.md`.
+
+`build-manual` is deliberately **uncached** — already $0 and deterministic.
+
+## Agent handoff
+
+Deck agents write their JSON to `data/decks/<slug>/.agent-out/<agent>.json` (gitignored)
+and return only that path plus a short summary. The orchestrator reads, validates, and
+merges into the tracked artifact. `candidate_pool.json` reaches 133 KB — returning it
+inline costs ~35k tokens of orchestrator context for nothing, and the agent's tools are
+unchanged either way.
+## Tests
+
+`tests/test_pilot_*.py` — 42 files, the largest group in the suite. **The inventory lives
+in `docs/testing.md`** (what each file covers) and so do the counts, which that file
+declares itself the only home for.
+
+This section used to restate both, and ignoring that rule is exactly how it drifted: it
+claimed 42 cases for `test_pilot_build_manual` (91), 29 for `test_pilot_validate_issue`
+(51) and 57 for `test_pilot_agent_cache` (83), while omitting twenty-odd files entirely.
+A number restated in two places is a number that will disagree with itself.
+
+Data-gated tests use `requires_rules` / `requires_deck` / `requires_strategy` /
+`requires_roles` markers from `tests/conftest.py`.
+
+## LEGACY — the magazine renderer (frozen; replaced by `docs/manual-v5-spec.md`)
+
+Until 2026-08-19 each deck was published as an **issue** of a magazine, *Pilot's Manual*.
+The renderer (`build_manual.py`, `issue_spec.py`, `design.py`, `validate_issue.py`, the
+constitution `STYLEv3.md`) still runs and still renders the nine decks from the artifacts it
+reads, and those artifacts — `issue_plan.json`, the panel keys and `card_roles` /
+`mana_base` / `upgrades` in `manual_prose.json`, `considering.json` + its art sidecar —
+are **frozen**: no agent regenerates them (`magazine-editor`, `pilot-panel`,
+`manual-writer`, `pilot-coach` and `short-list-analyst` are retired), the cache has no
+routine for them, and the compact deck page in `docs/manual-v5-spec.md` replaces the whole
+layer. Everything below is kept because it is an accurate account of that code and of the
+lessons it cost to learn — the length measurements, the theatre, the voice lint — not
+because any of it is the product.
+
+### The magazine layer (STYLEv3)
+
+Each deck is a complete **issue** of *Pilot's Manual* — a fixed set of sections in a
+fixed order (see `issue_spec.DEPARTMENTS`; never transcribe the list or its count into
+a prompt), grouped into five acts that ramp from what to do, through tactics and the
+long game, into the numbers and the proof. Readers learn the publication once and
+navigate it forever. Every section is signed by one of three columnists — `"Ledger"
+Lin Marginal` (◆), `Counselor Vera Dictum` (✓), `Coach Sunny Brightside` (★) — and
+STYLEv3 L10 holds that every issue is the reader's first: no version numbers, no
+changelog voice, enforced by `validate_issue.validate_self_containment()`. The design
+authority is `STYLEv3.md` (editorial laws, the Commander Mandate, section specs,
+voice, component library); `docs/history/STYLE-v1-visual-research.md` and
+`-v2-editorial-method.md` are its archived sources.
+
+- **`src/manamap/pilot/issue_spec.py`** — the canonical department system: ids, order,
+  promises, evidence tiers, rhythm tags, component library. Changing it changes every
+  issue; treat it like `config.py`.
+- **`issue.json`** (tracked, **authored by a human**) — volume, issue_date, cover_price,
+  deck_name, commander, cover_tagline, next_issue. Never generated: a generated date
+  would break byte-identical rebuilds.
+  - Optional **`status`** — one of `issue_spec.ISSUE_STATUSES` (`broken-down`,
+    `superseded`, `retired`). An issue is a **published record**: when the deck it
+    describes stops existing, it is MARKED, never edited or deleted. §5.1's rule
+    against editing a passing artifact post-hoc applies to a whole magazine as much
+    as to a stack, and every figure in a retired issue was true when it shipped.
+    Set, it renders a banner above the cover and mutes-but-keeps the newsstand card;
+    absent (the default) it renders **nothing**, so live issues stay byte-identical.
+    An unknown value renders nothing and is reported by `validate-issue` — a typo
+    must not be able to take a magazine offline, nor silently read as live.
+    First use: `hapatra` (Vol. 002), broken down for parts so its aristocrats shell
+    could be sleeved into `yawgmoth-swarm`; the two lists share **27** nonbasics.
+- **`pending.json`** (tracked, **hand-authored**, optional) — the queue of changes
+  DECIDED but not yet applied. The repo had two homes for a swap and neither could
+  hold an intention: applied swaps are derived from git, and `considering.json` is
+  fixed at exactly ten entries, forbids a pick already in the deck, and is
+  regenerated wholesale on any decklist edit. A three-land swap decided in
+  conversation fell through that gap and was lost, which is why this exists.
+  - Entries carry `id` / `decided` / `why` plus **list-valued `in` and `out`**, so a
+    three-for-three swap is one decision rather than three picks that each look
+    wrong alone. `settled_by` names the routine that closes it, reusing
+    `open_questions`' routing vocabulary.
+  - **Closure is DERIVED, never declared** — there is no `applied: true` field,
+    because a hand-set flag is exactly how `HISTORY.md` became append-only and
+    append-forgotten. `state_of()` reads the deck: **the cuts decide it, not the
+    additions**, since a card the deck already runs cannot prove it just arrived.
+    An APPLIED entry is deleted rather than ticked; git owns it from then on.
+  - **PARTIAL is a signal, not an error.** A cut no longer in the deck means either
+    "applied" or "left for another reason" and nothing separates them, so the
+    validator declines to guess. There is deliberately no stranded-cut check.
+  - **Not a cache input.** Declaring it would MISS agent routines for a decision
+    nobody has acted on; intent must not invalidate content.
+  - Report-only, and never read by the renderer — a queue of unmade changes is the
+    "previous build" framing STYLEv3 L10 bans from print.
+- **`issue_plan.json`** (tracked, human-editable) — the packaging layer from the
+  `magazine-editor` agent: the issue's angle, cover lines, per-department
+  kicker/headline/dek, captions, PILOT TIPs, callouts, pull quotes, roster grouping,
+  threat boxes, sample hands. `manual_prose.json` remains the body-copy layer; the
+  renderer merges them.
+- **`validate-issue`** — the mechanical gate: identity block complete (including a
+  `decklist_sha256` that must match `cards.json`), every section present in canonical
+  order, copy completeness, components from the fixed library, **tier costume never
+  overridden**, every PILOT TIP / caption / roster card name real, no two dense
+  sections adjacent unless a breather is declared (`BREATHER_AFTER`), no changelog
+  voice (L10), and no reader-facing copy quoting `lands.entries` as a land count.
+- **`magazine-editor` agent and `design-issue` skill** — RETIRED 2026-08-19; the nine
+  `issue_plan.json` files are frozen inputs the renderer still reads.
+
+The Kill renders feature spreads with dossier pointers; **Judge's Desk** carries the
+complete resolutions with every citation verbatim (the renderer may not summarize proof)
+as a **case index** — one scannable row per case, expanding to the unchanged record. The
+proof is printed in exactly ONE place: the theatre prints a citation COUNT and points at
+the case, because shipping it with the quotes inline put the identical 120 citations into
+both departments.
+
+**`the-kill.features` decides which lines get a theatre.** An ordered list of stack ids;
+everything else prints under *Also on the record*, keeping its whole authored intro and
+its result and losing only the staging. Omit the key and every presentable stack features,
+which is right up to about seven and wrong past it — yawgmoth-swarm has eleven and its
+Kill reached **44,119 words, 42% of the issue**, since its loops run 11–14 steps and each
+was staged. Featuring four took it to 19,104 words and 20.4% of scroll, the same share The
+Kill takes on a seven-stack issue.
+
+Two measurements set that design. A rendered stack is ~4,000 words and its authored intro
+is **77–144**, so the intro costs nothing and an index that dropped it would keep the
+department's title while cutting the thing it names. And **word count is a bad proxy for
+scroll here**: −25,015 words bought only −8.1 screens, because the theatre stacks its
+plates in Z and is word-heavy, pixel-light.
+
+`validate-issue` fails a `features` entry naming a non-presentable stack, a repeat, and a
+list naming every presentable stack (that is what omitting the key does, and it rots the
+first time a stack is added). The renderer instead **skips** an unknown id, because a crash
+there turns a copy mistake into a missing magazine. An indexed row carries the `line-<id>`
+anchor Judge's Desk links back to, or every case's *↩ Back to this line in The Kill*
+becomes a dead jump.
+
+#### Length is measured (`issue-length`, `PROSE_BUDGET`)
+
+`manamap pilot issue-length <slug> [--rendered]` reports words and visible words per
+section — visible excludes anything inside a collapsed `<details>`. The gap is the
+point: Judge's Desk was 21% of Vol. 009's words and 2.4% of its scroll, so a single
+number sends you to cut the wrong department half the time.
+
+`issue_spec.PROSE_BUDGET` caps each prose key at a length at least one deck already
+achieves. `validate-issue` reports breaches; **`--strict` fails on them**, so the gate
+is real for new work without turning eight pre-budget artifacts red. The two
+deliberate exceptions — `threat_assessment` and `matchups` at 2,500 where the fleet's
+shortest are 3,821 and 4,129 — take their number from
+`validate_engine.MAX_WHAT_IT_DOES` instead, and are the debt the Act III merge left when
+it combined three departments' headers without touching their prose. That merge is now
+complete on all nine decks and the three ids are deleted, so the debt is the prose and
+nothing else.
+
+**The Kill's stack theatre** (`design.stack_theatre`) renders a resolution as a
+receding stack of plates on a vanishing-point grid — one plate per step, hover to
+lift, a tab to bring one forward with its action, effect and citations. It is
+**CSS-only**: an issue is a standalone printable file with no scripts, so the
+mechanism is radio inputs and `:checked ~` selectors, the depth is
+`transform-style: preserve-3d`, and step 1 is `checked` in the markup so CSS-off,
+print and screen-reader readers open on a valid view rather than a blank stage.
+Per-index rules are generated into the stylesheet (`_theatre_rules`, bounded by
+`THEATRE_MAX_STEPS`), because per-instance CSS would put a `<style>` block inside
+every case. It does not replace Judge's Desk and must not: the theatre is a way
+*through* the proof, and §5.1 forbids the renderer summarising proof. The Command Zone department is mandatory and format-specific — the
+tax ladder, color identity, the 21-damage clock — and is what makes this a Commander
+magazine rather than a Magic one.
+
+### The legacy render pipeline
+
+The `write-manual` skill still drives it — goldfish → `deck-analyst` evidence pull → **strategic frame** (`strategy-researcher` MODE consult → `strategic_frame.json`; its `candidate_missing_lines` feed the resolve-stack queue, its `gaps` feed the next research pass) → `pilot-notes` (the five prose keys + decisions + the tutor guide, receives the frame and `engine.json`; since 2026-08-19 one agent in one voice replaces the coach + writer pair) (zero-guessing: combo lines only from verified stacks, claims trace to graphs/oracle text; receives the frame) → `manual_prose.json` (tracked, human-editable) → `manamap pilot build-manual <slug>` + `build-index` (deterministic, byte-identical rebuilds, `[TODO]` placeholders for missing prose, only checker-passed stacks render).
+
+### The front of the book (`editors_letter`, `pilots_log`, tiers — and ★)
+
+Two departments bracket Act I — the Editor's Letter opens it and the Pilot's Log closes
+it, behind The 99. Both arrived through `issue_spec.OPTIONAL_DEPARTMENTS`, piloted on
+radagast and then rolled to the fleet; **all nine now carry them and that set is empty
+again**, which is the state it should be found in. See CLAUDE.md for why the concept
+exists and why an id should not stay in it.
+
+**The Editor's Letter** is signed by Editor-in-Chief Margot Stet, the masthead's
+only unbadged name. Each columnist owns exactly one evidence tier, so a fourth
+badge would make four tiers out of three and a shared one would put two names on
+one. She therefore may not make a claim that needs a badge — `validate-issue`
+fails a bare percentage in her copy — and names the columnist who established a
+figure instead, which is how a real editor's letter reads anyway.
+
+**The Pilot's Log** was a three-way conversation written by `pilot-panel` (retired 2026-08-19; the nine keys are frozen). Its
+`pilots_log` key is a LIST of turns, not prose: a turn carries the voice that
+speaks it, so the renderer can label and colour it and a reader can follow who is
+answering whom. Handed a string it renders TODO — an unlabelled panel is prose
+with quotation marks.
+
+**Its tier is `("coach",)` and not all three.** A department's tier is what it
+GRANTS, not what its speakers mention: Vera cites a ruling and Ledger a rate, but
+both earned those badges in The Kill and By the Numbers. Give the panel all three
+and a conversation becomes a place where a new verified claim can arrive wearing
+three voices at once.
+
+**The panel opens on a HOT TAKE and runs behind The 99.** Turn 0 carries
+`"kind": "hot-take"` and Sunny's voice; a later turn carries
+`"responds_to": "hot-take"`. `validate-issue` checks those three things and no
+semantic ones — whether a take is genuinely counter-intuitive, correct and
+insightful is the charter's problem and an editor's, not a regex's. The department
+moved to the end of Act I because the panel is the densest thing in the issue and
+every move it makes refers to material the reader must already have met.
+
+**The rule that outranks the rest: a line `engine.json` draws DASHED is a line the
+panel may not assert — and that includes the hot take.** A `lines[]` entry with a `verified_by` rests on a
+checker-passed stack and Vera may state it flatly; a null is the analyst's reading
+and the panel may discuss it, argue about it, or say nobody has checked. That is
+the evidence contract reaching past the picture into the copy.
+
+**The per-byline voice lint** covers the panel (each turn carries its voice) and
+every other prose key, whose voice is derived from its department's byline via
+`issue_spec.voices_for`. A shared department flags only what both voices are
+barred from. The bans were cut twice by measuring against the fleet — see
+CLAUDE.md — and what remains is six evaluative adjectives with no hedging reading
+plus Sunny's consulting vocabulary.
+
+### The Short List (`considering.json`) — RETIRED 2026-08-19, frozen on the nine decks
 
 **Exactly ten cards**, ranked, that the pilot should be thinking about — one artifact and
-one routine (`the-ten`) for every deck, replacing the retired `sideboard_analysis.json` /
+one routine (`the-ten`, retired with the `short-list-analyst` agent; its rule — ten ranked
+adds, ownership not a criterion — now lives in `/prescribe`'s `add_candidates`) for every deck, replacing the retired `sideboard_analysis.json` /
 `upgrade_watch.json` pair — and, once the sideboard itself was retired, the last artifact
 standing on the question "what else could this deck play".
 
@@ -948,129 +1112,3 @@ would change `prose:shape` and invalidate both prose routines for no gain. The w
 `upgrades` key is the section's opening copy and is cached separately. Tiers are marked
 inline: computed evidence ◆, every ranking and verdict ★.
 
-## The captain's log (`log.jsonl`, authored) and the debrief (`log_annotations.json`, ★)
-
-What happened when the deck was PLAYED — the one thing no other artifact records.
-`manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents N]
-[--tag T]` appends one JSON line (`id`, `at`, `decklist_sha256` of `decklist.txt` as it
-stood, `result`, `opponents`, `tags`, `text`) and nothing ever rewrites it; `list
-[--since]` and `show <id>` read it back, marking which entries the debrief has read.
-Light structure on purpose: the point is that a note costs one sentence.
-
-The `debrief` agent (`/debrief`, cheapest agent in the set) reads the un-debriefed ids
-and writes, per entry: `summary`, `opponents[]` (each with a verbatim `evidence` phrase
-of the note), `cards[]` (`read` ∈ over/under/as-expected/missed), `decisions[]`
-(`worth_a_spread` → `/author-decision`), `takeaways[]`, `engine_stages[]` (names from
-`engine.json`), `lines[]` (`verified` only with a checker-passed `stack_artifact`, else
-`needs a stack scenario`) and `open_questions[]` routed to
-`resolve-stack|goldfish|research-strategy|diagnose`. `merge-debrief` writes by id,
-rejects ids the log lacks and carries earlier annotations; `validate-debrief` fails the
-annotation on any of those contracts. The one rule is that the debrief may name nothing
-the pilot and the 99 did not — it is a reader, not a witness.
-
-## The workbench view (`deck-info`, tier ◆, computed on demand)
-
-One deck, one screen: commander and identity, the current version and its tags, the
-lifecycle status (with STALE/INVALID named), the bracket floor against target, the
-record from the captain's log (games, W/L, last played, un-debriefed), the goldfish
-headline figures, the engine's verified-line count and critic verdict, the audit's
-under/over axes, the diagnosis verdict and skeptic, the prescriptions asked and
-answered, and every open question across engine/diagnosis/debrief with its route. It
-computes nothing new — every figure is read from the module or artifact that owns it —
-so it cannot disagree with `deck-status`, `deck-version`, `deck-notes`, `prescribe` or
-`deck-audit`. **The `next` block is the point**: each suggestion is derived from a
-condition true right now (un-debriefed games → `/debrief`; an uncommitted working list →
-commit it; a stale stage → regenerate; no games → play it; open prescriptions → run the
-loop) and names the command. No judgment about the deck lives there. `--json` is the
-shape a future UI reads.
-
-## Deck versions (`deck-version`, derived from git; `deck_versions.json`, authored tags)
-
-Every change to the 99 is a commit (`decklist.txt` is tracked), so the list of lists
-this deck has been is already on disk. `manamap pilot deck-version <slug>` numbers them
-— `V1` the first tracked list, `V2` the first content change — reusing `deck-history`'s
-git walk and parser, so a comment-only edit adds a byte-sha to the version it belongs
-to and never a new version. The captain's log stamps each entry with the byte-sha of
-`decklist.txt` as it stood, so the join is exact: each version reports its games and
-W/L, and an entry played on an uncommitted working copy is reported **unmatched** rather
-than guessed (commit the list and it resolves). `show V4` diffs a version against the
-working list; `tag <name> [--at V4] [--note]` writes the authored `deck_versions.json`
-(the one version datum a browser can read without git); `restore V4` is a **dry run**
-unless `--write`, after which `fetch-deck` → `goldfish` → `mana-analysis` and a commit.
-`deck-status` prints the current version in its header.
-
-**Why the version list is not a tracked file:** the commit that changes `decklist.txt`
-gets its sha AFTER anything written in the same commit, so a generated `versions.json`
-would be one behind forever. Computed on demand; the viz history viewer gets its copy
-from a deploy-time step with git available.
-
-## Prescriptions (`prescriptions/<id>-*.json`, the diagnosis scoped to a question)
-
-`diagnosis.json` is deterministic over the deck and takes no prompt. The workbench asks
-the doctor *questions* — "I keep getting wrathed on five", "make it faster", "should I
-run Sol Ring" — so a question is an ARTIFACT, deterministic over (deck, question).
-`manamap pilot prescribe <slug> "…"` writes the authored half (`prompt`, `id` = hash of
-the normalized prompt, `as_of_decklist_sha256`); `deck-doctor` MODE prescribe writes the
-answered half (`reading`, `log_entries_read`, optional `axes_engaged`, `cut_candidates`,
-`add_candidates` RANKED and capped at ten — The Short List's rule, relocated —
-`open_questions`, `gaps`); `deck-skeptic` reviews it like a diagnosis; `prescribe --merge
-<id>` folds both in, answer keys only. The cache routine `prescription:<id>` digests only
-the prompt (`prompt:self`), so merging never self-invalidates; `cache-record` refuses a
-file without a passing skeptic. Prescriptions ACCUMULATE and are never overwritten: a
-later decklist makes one stale (MISS; `validate-prescription` checks form only), never
-wrong. Both doctor modes read `log_annotations.json`.
-
-## The tutor guide (`tutor_guide.json`, tier ★)
-
-One wish per tutor. `pilot-notes` authors an entry for every maindeck library-search
-tutor — scenario → the exact card to fetch → why — and `validate-tutor-guide` holds each
-one to the deck and to that tutor's own search constraint, **per clause**: a DFC or
-chapter card can carry several search clauses (Huatli's front face fetches a basic land;
-Roar III fetches Dinosaurs), so a fetch is legal if any clause permits it. Pure land ramp
-(Cultivate, Nature's Lore) is excluded — that belongs to Sources Say. A deck with no
-tutors keeps the section and prints standing copy; the routine reports `N/A`.
-
-## Sources Say (`mana_analysis.json`, tier ◆)
-
-The mana audit, and the one section with **no agent at all**: `manamap pilot
-mana-analysis <slug>` computes it deterministically, reusing the deck-builder's own
-hypergeometric kit (`manabase.py`). Land classes, per-colour land and nonland sources,
-pip share vs source share, on-curve probability with and without rocks, the ramp census,
-and a stated-assumptions block. The writer's `mana_base` key narrates it.
-
-**Count copies, not decklist entries.** `cards.json` stores basics as one entry with
-`quantity: N`, and counting entries once published "18 lands" for a 33-land deck and
-understated every colour's sources fleet-wide. `common.expand_copies()` is the shared
-primitive; `lands.total` is copies and `lands.entries` is distinct cards, both reported so
-they can never be confused again. Three guards: a unit fixture (11 Islands = 11 blue
-sources), a staleness test recomputing every tracked artifact, and a `validate-issue` lint
-rejecting any reader-facing copy that quotes the entry count as a land count.
-
-**The trap this exists to catch.** Sazacap's Brew is tagged `buff:pump` because its text
-contains "+2/+0", and Vol. 001 shipped advice to test it in the Witch's Mark slot. Both are wrong: the Brew's first target is a *player*, so
-Zada — which copies instants targeting **only** Zada — never copies it, while Witch's Mark
-targets a creature and is copyable. Reading the card rather than its role tag inverted the
-recommendation, and the published prose was corrected to match. That is the whole value of
-the pass.
-
-## Scenario scope, and why it is the loop's main cost lever
-
-The checker's verdict is atomic over the whole artifact, so every citation is another
-chance for all of it to fail. Measured across three published decks: every artifact at
-**≤32 citations passed in 1–2 rounds**; every one at **≥59 needed 4 rounds or failed**.
-goblin-storm's five narrow scenarios produced 5 verified lines in 6 rounds; sisay's three
-broad ones produced 1 in 9, and sisay 003's answers (a)–(d) were verified correct three
-times before being discarded with the file.
-
-`RESOLVE_SCOPE_BUDGET` (config.py, and actually imported) warns above 12 steps, 40
-citations, or 3 lettered sub-questions. `validate-stack --scenario-only` runs the
-sub-question check **before** a resolver spawn, for free. The rule: **one rules domain per
-scenario**; split multi-part questions into separate artifacts so they fail independently.
-
-## Agent handoff
-
-Deck agents write their JSON to `data/decks/<slug>/.agent-out/<agent>.json` (gitignored)
-and return only that path plus a short summary. The orchestrator reads, validates, and
-merges into the tracked artifact. `candidate_pool.json` reaches 133 KB — returning it
-inline costs ~35k tokens of orchestrator context for nothing, and the agent's tools are
-unchanged either way.

@@ -1,5 +1,11 @@
 """Pilot: render a deck's issue of Pilot's Manual as standalone magazine HTML.
 
+LEGACY (2026-08-19): the magazine renderer. It still renders the nine frozen issues from
+artifacts nothing regenerates any more (issue_plan.json, the panel keys,
+card_roles/mana_base/upgrades, considering.json), and it is replaced by the compact deck
+page in docs/manual-v5-spec.md. Do not extend it; internals below are accurate for what it
+does.
+
 Fully deterministic — no LLM calls, no dates, no randomness. The editorial layer
 arrives as data (`issue.json` identity + `issue_plan.json` packaging from the
 magazine-editor agent) and the body prose as `manual_prose.json`; this module

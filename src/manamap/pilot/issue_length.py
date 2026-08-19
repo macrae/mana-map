@@ -1,5 +1,11 @@
 """Pilot: how long is this issue, and where did the length go?
 
+LEGACY (2026-08-19): the magazine renderer. It still renders the nine frozen issues from
+artifacts nothing regenerates any more (issue_plan.json, the panel keys,
+card_roles/mana_base/upgrades, considering.json), and it is replaced by the compact deck
+page in docs/manual-v5-spec.md. Do not extend it; internals below are accurate for what it
+does.
+
 The magazine got good and got long. Vol. 009 measured 43,494 words and 74.5
 screens of scroll — about 62 A4 pages, where a real issue is 30–50 including
 full-page art. Nothing in the repo could say that, so length drifted the way any

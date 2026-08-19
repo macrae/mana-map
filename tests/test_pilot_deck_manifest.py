@@ -1,5 +1,11 @@
 """The deck manifest — the contract between the pilot artifacts and viz/deck.html.
 
+LEGACY (2026-08-19): the magazine renderer. It still renders the nine frozen issues from
+artifacts nothing regenerates any more (issue_plan.json, the panel keys,
+card_roles/mana_base/upgrades, considering.json), and it is replaced by the compact deck
+page in docs/manual-v5-spec.md. Do not extend it; internals below are accurate for what it
+does.
+
 A browser can list neither the deck directory nor `stacks/`, so `build-index`
 writes `data/decks/index.json` from the same scan that builds the newsstand. If
 that manifest drifts from the artifacts, the dossier renders a stale or empty

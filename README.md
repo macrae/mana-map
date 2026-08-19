@@ -3,7 +3,11 @@
 [![tests](https://github.com/macrae/mana-map/actions/workflows/test.yml/badge.svg)](https://github.com/macrae/mana-map/actions/workflows/test.yml)
 [![licence: MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
 [![the map](https://img.shields.io/badge/live-the%20card%20map-8b5cf6)](https://macrae.github.io/mana-map/viz/index.html)
-[![the newsstand](https://img.shields.io/badge/live-nine%20issues-e11d48)](https://macrae.github.io/mana-map/manuals/index.html)
+
+**A lab bench for one pilot's paper Commander decks.** It exists to make one player
+measurably better — as a builder, as a pilot, and as a repeated winner at one table in
+Orinda — and it is open-sourced so anyone can stand up their own bench, not so anyone
+else is supported. `docs/vision.md` is the page everything else is written against.
 
 Two things live here, sharing one data layer and one CLI:
 
@@ -12,32 +16,40 @@ two small neural nets. It opens on **one card**: hover it, click a relation, and
 neighbours join a force-directed graph you grow by clicking. Load one of your own decks and
 it lights up with its commander ringed, so you can see where it sits in card space and walk
 outward from it. The 34,890-point atlas is still there, one click away — and it drifts
-slowly at altitude, settling to a stop as you zoom in to read.
-
-Three relations, each precomputed so a click is instant: **similar** (embedding neighbours),
-**synergy** (rule-based complements, each edge labelled with the rule), and **outclassed by**
+slowly at altitude, settling to a stop as you zoom in to read. Three relations, each
+precomputed so a click is instant: **similar** (embedding neighbours), **synergy**
+(rule-based complements, each edge labelled with the rule), and **outclassed by**
 (strictly-better replacements). Boot costs 1.8 MB.
 
-**Pilot's Manual** — a magazine generator. Point it at one Commander deck and it produces
-a self-contained web issue: combo lines whose every step cites the Comprehensive Rules and
-survived an adversarial checker, resource curves from a seeded simulation, and coaching
-that says out loud when it's coaching.
+**The bench** — for a deck you actually sleeve. One loop, every piece of it on the CLI:
 
-An issue opens on an editor's letter and then a **panel** — three columnists arguing about
-how to fly the deck, in the vocabulary of its engine model, where a connection the model
-draws *dashed* is one the panel may discuss and may not assert. Then two pictures of it. The **constellation** re-lays-out its cards from
-the embeddings and clusters them into named cities — what shape it is. The **engine flow**
-shows how it runs, stage by stage, with each connection drawn solid when a rules-verified
-line proves it and dashed when it is the analyst's reading. Those are different relations: a
-card clusters by what it *says*, and an engine is what cards *do to each other*.
+```
+decide a list → version it → (simulate it) → play it → log it → debrief → ask → prescribe → swap → repeat
+deck-version    simulate       paper       deck-notes   /debrief  /prescribe            deck-version
+```
 
-The fastest way to understand the second one is to read an issue:
-**Nine issues live** — [001 Goblin Storm](https://macrae.github.io/mana-map/manuals/goblin-storm.html) · [002 Hapatra](https://macrae.github.io/mana-map/manuals/hapatra.html) · [003 Sisay](https://macrae.github.io/mana-map/manuals/sisay.html) · [004 Heliod](https://macrae.github.io/mana-map/manuals/heliod.html) · [005 Ur-Dragon](https://macrae.github.io/mana-map/manuals/ur-dragon.html) · [006 Edgar](https://macrae.github.io/mana-map/manuals/edgar-vampires.html) · [007 Gishath](https://macrae.github.io/mana-map/manuals/gishath.html) · [008 Yawgmoth](https://macrae.github.io/mana-map/manuals/yawgmoth-swarm.html) · [009 Radagast](https://macrae.github.io/mana-map/manuals/radagast.html)
-· [the newsstand](https://macrae.github.io/mana-map/manuals/index.html)
+- `deck-info <slug>` — where the deck stands right now, and a derived **next**.
+- `deck-version` — every list the deck has been, from git, joined to the games you played on it.
+- `goldfish` — seeded Monte Carlo resource development against nobody; `simulate --vs <pod>`
+  — N seeded games in **Forge**, real rules, against your table's actual decks: win rate with
+  its interval, who kills you and how, the kill curve, token pay-off.
+- `deck-notes add` — the captain's log in your words, stamped with the list you held;
+  `/debrief` turns a note into structured findings and routed questions.
+- `/prescribe <slug> "…"` — the doctor, scoped to your question, reading the log and the
+  sim: ranked adds that close a named axis, cuts priced, skeptic-checked.
+- `/resolve-stack` — a board (authored, or **lifted from a simulated game**) resolved step by
+  step with Comprehensive Rules citations and adversarially checked. The ✓ tier.
+- `analyze-engine` — the deck's machine as eight stages, solid where a stack proves a line,
+  dashed where it is a reading.
 
-Vol. 001 was hand-built. **Vol. 002 was not** — the deck was generated from a three-line
-brief naming a commander and a power bracket, and the issue's headline finding is that the
-deck's own combo count was wrong.
+Under it all is a **three-tier evidence contract** that never moves: ✓ rules-verified, ◆
+data-derived (seeded where randomness is involved), ★ coaching — labelled judgment, never
+disguised as measurement. Every agent returns JSON a validator checks; the Python makes
+zero LLM calls; the deployed site and your machine run the same code.
+
+**The deck page.** Each deck still renders to a self-contained HTML page. Today that page is
+the *legacy magazine* (nine issues, frozen; [the rack](https://macrae.github.io/mana-map/manuals/index.html));
+it is being replaced by a compact technical page — `docs/manual-v5-spec.md`.
 
 ---
 
@@ -88,14 +100,16 @@ The atlas is a launchpad: clicking a relation there carries you into the walk se
 card, rather than doing something subtly different because you happened to be in a different
 mode.
 
-## Generate a manual for your own deck
+## Set up the bench for your own decks
 
-This half is more involved, and honest about why: **the manual pipeline needs
+This half is more involved, and honest about why: **the agent phases need
 [Claude Code](https://claude.com/claude-code).** The Python in this repo makes *zero* LLM
 calls — it is deterministic infrastructure (fetching, simulating, validating, rendering)
-that AI agents drive from the outside. A full generation runs ~700k tokens across six
-serially-dependent routines, nearly 40% of it the engine loop; an invocation cache is what
-makes iterating on it affordable. `docs/agent-cost.md` has the breakdown.
+that AI agents drive from the outside, and most of the bench (`deck-info`, `deck-version`,
+`deck-notes`, `goldfish`, `simulate`, every validator) is pure CLI. The agent routines —
+the doctor, the resolver and checker, the engineer and critic, the notes writer, the
+debrief — are what cost tokens; an invocation cache is what makes iterating on them
+affordable. `docs/agent-cost.md` has the breakdown.
 
 ### 1. Environment
 
@@ -147,8 +161,8 @@ mkdir -p data/decks/<slug>/{stacks,decisions}
 
 **Use a Moxfield export.** Lines like `1 Zada, Hedron Grinder (SLD) 2406 *F*` carry the
 set, collector number and foil marker, and `fetch-deck` resolves those *first* — so the
-manual shows the actual cards in your deck, with the right artist and the right art. A
-name-only list works but yields default reprints and a visibly weaker issue.
+deck page shows the actual cards in your deck, with the right art. A name-only list works
+but yields default reprints.
 
 `fetch-deck` short-circuits when the decklist hasn't changed; use `--force` after oracle
 errata.
@@ -160,7 +174,7 @@ Nothing scaffolds these. `data/decks/goblin-storm/` is the worked reference.
 | File | Why it's manual |
 |---|---|
 | `decklist.txt` | It's your deck — **unless you let the builder write it**, see below |
-| `issue.json` | Volume, date, cover price, next issue. **The build hard-exits without it** — a *generated* date would break byte-identical rebuilds |
+| `issue.json` | The deck page's authored identity (name, commander, status). **The legacy build hard-exits without it** — a *generated* date would break byte-identical rebuilds |
 | `goldfish_targets.json` | Which key-piece sets are worth simulating is a judgment call — though `/build-deck` derives it from the plan's declared engines |
 
 ### 4b. Or don't write a decklist at all
@@ -175,35 +189,35 @@ If you have a commander in mind rather than a list, the builder makes one:
 
 That alone produces a legal, tier-conditioned, goldfishable 99. Running the `/build-deck`
 skill on top adds the agent loop, which is what makes it *good* rather than merely legal —
-and the whole path from brief to published issue is proven: see Vol. 002.
+and the whole path from brief to a finished deck is proven (hapatra was built this way).
 
-### 5. The agent phases
+### 5. The lifecycle, then the loop
 
-Run these from Claude Code in the repo root. Each is a skill in `.claude/skills/`.
-**`/publish-deck` sequences all of them** — start there, and run
-`manamap pilot deck-status <slug>` at any point to see what a deck still needs.
+Run the skills from Claude Code in the repo root (each is in `.claude/skills/`).
+**`/publish-deck` sequences the lifecycle** and `manamap pilot deck-info <slug>` tells you
+where a deck stands and what to do next; start with both.
 
 | Step | Produces | Pure CLI? |
 |---|---|---|
 | `/build-deck` | A 99 from a brief: pool → architect ⇄ critic, bracket-gated | no |
 | `manamap pilot bracket-check <slug>` | Computed bracket floor + its evidence | **yes** |
-| `/resolve-stack` | A verified combo line: resolver → validator → adversarial checker | no |
 | `manamap pilot goldfish <slug>` | Resource curves from 10k seeded games | **yes** |
 | `manamap pilot deck-map <slug>` | The constellation: local layout + clusters | **yes** |
 | `/analyze-engine` | The engine: stages, lines, what a stack actually proves | no |
-| `/write-manual` | Strategic frame, coaching, body prose | no |
-| `manamap pilot validate-issue <slug>` | Form gate over the legacy plan (published decks) | **yes** |
+| `/resolve-stack` | A verified line: resolver → validator → adversarial checker | no |
+| `/write-manual` | The pilot's notes: game plan, mulligan, line intros, threats, matchups | no |
+| `manamap pilot build-manual <slug>` + `build-index` | The deck page (legacy renderer, deterministic, byte-identical) | **yes** |
 
-### 6. Build and read
+Then the loop the bench exists for — all CLI except the two agents:
 
-```bash
-.venv/bin/manamap pilot build-manual <slug>
-.venv/bin/manamap pilot build-index          # run after build-manual
-open manuals/<slug>.html
-```
-
-Rendering is free, deterministic and repeatable — the same artifacts always produce the
-same bytes.
+| | | |
+|---|---|---|
+| `manamap pilot deck-version <slug> [tag …]` | commit the list; every version numbered from git | **yes** |
+| `manamap pilot fetch-opponent "<commander>"` / `simulate <slug> --vs <pod> --games N` | your table, in Forge, seeded | **yes** |
+| `manamap pilot deck-notes <slug> add "…" --result win\|loss` | the captain's log | **yes** |
+| `/debrief <slug>` | the note, structured and routed | no |
+| `/prescribe <slug> "<question>"` | the doctor's answer, priced and skeptic-checked | no |
+| `manamap pilot sim-scenario <slug> <run> --game G --turn T --stack` → `/resolve-stack` | a simulated board, proven | mixed |
 
 ---
 
@@ -447,9 +461,9 @@ Two standing rules around this harness:
 |---|---|
 | A pipeline step | `STEPS` in `pipeline.py`; the module exposes `main()` |
 | A pilot command | `PILOT_STEPS` + `_DECK_COMMANDS` + argparse in `pilot/registry.py`; module exposes `main(args)` |
-| A magazine department | `DEPARTMENTS` in `pilot/issue_spec.py` — changes every issue; treat it like `config.py`. Add to `OPTIONAL_DEPARTMENTS` to pilot it on one deck first, and remove it once every deck carries it |
-| A columnist, or a voice rule | `MASTHEAD_COLUMNISTS` + `_VOICE_BANS` in `pilot/validate_issue.py`. Measure a proposed ban against all nine decks before keeping it |
 | A deck lifecycle phase | `STAGES` in `pilot/deck_status.py`, or the next person will not find it |
+| A pod seat | `manamap pilot fetch-opponent "<commander>"`, or a `decklist.txt` under `data/opponents/<slug>/` |
+| A section of the (legacy) deck page | **don't** — the magazine renderer (`issue_spec.DEPARTMENTS`, `design.py`) is frozen; the compact page is `docs/manual-v5-spec.md` |
 | A data file the viz reads | The `DATA` map in `viz/js/mana-map.js`, plus a `.gitignore` negation |
 | A synergy rule, tag, or threshold | `config.py`, nowhere else |
 | A deckbuilding role | `ROLE_PATTERNS` in `config.py`, then re-run `manamap card-roles` |
@@ -466,9 +480,10 @@ ownership claim rather than an error.
 
 ## Three contracts worth understanding
 
-**Evidence tiers.** Every section of a manual wears a badge: ✓ rules-verified,
-◆ data-derived, ★ coaching. `validate-issue` enforces that a department cannot claim a
-tier the system didn't grant it — costume never earns the badge.
+**Evidence tiers.** Every artifact and every figure carries a tier: ✓ rules-verified,
+◆ data-derived (seeded where randomness is involved; *sampled* said out loud where it cannot
+be), ★ coaching. A validator per artifact enforces that nothing claims a tier it was not
+granted — costume never earns the badge.
 
 **Validation gates — form in code, meaning by agent, publication by verdict.** A mechanical
 validator checks structure: does every step cite a rule, does that rule exist, is the quote
@@ -478,8 +493,8 @@ they document open questions.
 
 **Determinism.** Agents return JSON and never write HTML. That keeps the renderer a pure
 function of committed artifacts, byte-identical on rebuild and enforced by tests — and it
-is *why* the issue date is authored, why goldfish is seeded, and why image URLs get their
-cache-busters stripped.
+is *why* the deck page's date is authored, why goldfish and Forge runs are seeded, and why
+image URLs get their cache-busters stripped.
 
 ## Testing
 
@@ -524,30 +539,34 @@ suite is CWD-independent and honours `MANAMAP_DATA_DIR`.
 - **Bump `?v=N`** on the script and CSS tags in `viz/index.html` after any frontend edit.
 - **The combo graph is format-agnostic.** Commander Spellbook lines may quietly assume a
   card is *your commander* — `"Infinite commander casts"` in `produces` is the tell.
-  Verify before publishing; Judge's Desk Case A-004 is the cautionary tale.
+  Verify with a stack before stating it as a line; goblin-storm stack 004 is the cautionary tale.
 - **Rebuild the strategy DB after editing `strategy.md`** — the loader hard-errors on a
   sha256 mismatch.
 
 ## Deployment
 
 GitHub Pages serves the repo directly. There is no root index; the two entry points are
-`/viz/index.html` and `/manuals/index.html`. Pushing to `main` deploys.
+`/viz/index.html` (the card map) and `/manuals/index.html` (the deck pages — the legacy
+rack until the compact page lands). Pushing to `main` deploys.
 
 ## Where to read next
 
 | Doc | Covers |
 |---|---|
+| `docs/vision.md` | **Start here.** Who this is for, what the bench does, what is live / legacy / next |
 | `CLAUDE.md` | Orientation, environment, gotchas — the densest single page |
 | `PLAN.md` | Current state and what's next |
 | `/publish-deck` | The deck lifecycle: every phase in order, with its gate |
-| `STYLEv3.md` | The magazine's editorial and design constitution |
+| `docs/simulation.md` | The Forge engine: the spike, the harness, the parser, the pod, the bridge |
+| `docs/manual-v5-spec.md` | The compact deck page that replaces the magazine (spec) |
+| `docs/agent-audit-2026-08-19.md` | The agent audit behind the pivot |
+| `STYLEv3.md` | The LEGACY magazine's constitution — governs the frozen renderer only |
 | `docs/architecture.md` | Models, mechanical tags, synergy rules, power creep, regions |
 | `docs/pipeline.md` | All 15 steps: inputs, outputs, runtimes, when to re-run |
 | `docs/data-artifacts.md` | Every `data/` file: producer, size, git status, consumers |
 | `docs/viz.md` | Frontend structure, the `window.MM` API, Pages layout |
 | `docs/testing.md` | Test layout, skip markers, conventions |
-| `docs/pilot.md` | Evidence contract, rules and strategy DBs, the magazine layer |
-| `docs/deck-builder-v2.md` | The deck builder: bracket engine, role taxonomy, architect ⇄ critic loop |
+| `docs/pilot.md` | Evidence contract, the bench's commands and artifacts, rules and strategy DBs |
 | `docs/agent-cost.md` | Where LLM spend lives, per-routine costs, the cache |
 
 ## Non-goals
@@ -557,7 +576,7 @@ suite is the gate. Adding a formatter to 20,000 lines would produce one enormous
 no information.
 
 CI *was* on this list, on the grounds that a single-author project does not need it. It is
-here now — `.github/workflows/test.yml` runs the fast suite and checks that every manual
+here now — `.github/workflows/test.yml` runs the fast suite and checks that every deck page
 still rebuilds byte-identically — because a pull request from someone else arrives
 unverified otherwise.
 

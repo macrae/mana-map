@@ -9,7 +9,8 @@ data the workbench exists to collect, and it was being kept nowhere (or in
 
 THE LOG IS AUTHORED. `log.jsonl` is one JSON object per line, appended by
 `manamap pilot deck-notes <slug> add`, and NEVER rewritten by any agent or
-command — the same rule `issue.json` lives under. A note is what the pilot said,
+command — the same rule the deck's authored identity file lives under. A note is
+what the pilot said,
 stamped with when they said it and which decklist they were holding
 (`decklist_sha256` of `decklist.txt` at that moment), so a note written before a
 swap can be told from one written after without anyone remembering the date.

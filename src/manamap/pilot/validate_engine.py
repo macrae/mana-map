@@ -1,7 +1,7 @@
 """Pilot: form-check a deck's engine model — re-derive, never trust.
 
-`engine.json` is read by three magazine columnists, The Short List and the
-builder, and it is drawn. A stage that is wrong about the job therefore
+`engine.json` is read by the notes writer, the debrief, the doctor and the deck
+page's schematic, and it is drawn. A stage that is wrong about the job therefore
 propagates into several places at once, and a `verified_by` that does not hold
 turns a coaching line into a false claim about the rules. So this checks the
 things that are mechanically checkable and re-derives every figure rather than

@@ -1,4 +1,4 @@
-"""Pilot: the deterministic mana/land analysis behind Sources Say (◆).
+"""Pilot: the deterministic mana/land analysis — pips vs sources, castability, tapped lands (◆).
 
 Everything here is a pure function of cards.json (+ goldfish_metrics.json for
 the turn-by-turn tie-ins) — no LLM, no network, no randomness. The renderer
@@ -88,8 +88,8 @@ def analyze(slug):
     entries = deck_doc["cards"]
     # Every count below is about the library the shuffler sees, so it runs on
     # COPIES: eleven Islands are eleven blue sources, not one. Counting entries
-    # here understates the mana base by every duplicated basic (STYLEv3 §7.6 —
-    # the honest number is the whole point of this section).
+    # here understates the mana base by every duplicated basic — the honest
+    # number is the whole point of this analysis.
     cards = expand_copies(entries)
     identity = {
         c

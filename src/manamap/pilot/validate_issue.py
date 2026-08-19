@@ -1,5 +1,11 @@
 """Pilot: mechanically enforce form on an issue plan (STYLEv3 §11).
 
+LEGACY (2026-08-19): the magazine renderer. It still renders the nine frozen issues from
+artifacts nothing regenerates any more (issue_plan.json, the panel keys,
+card_roles/mana_base/upgrades, considering.json), and it is replaced by the compact deck
+page in docs/manual-v5-spec.md. Do not extend it; internals below are accurate for what it
+does.
+
 The `magazine-editor` agent writes packaging decisions and copy as structured
 data; this module is the gate that runs before the renderer. Same philosophy as
 validate_stack.py: code enforces *form*, humans judge *substance*.
@@ -239,7 +245,7 @@ _CONTINUITY_RE = re.compile(
 # strategy sections, and the tag is what grounding looks like in the agent's own
 # reasoning, so it leaks by a very natural mistake and nothing caught it: 68
 # occurrences reached the rendered HTML of all eight published issues before this
-# existed (docs/magazine-feedback-2026-08-13.md §2).
+# existed (docs/history/magazine-feedback-2026-08-13.md §2).
 #
 # Matched anywhere, not just in parentheses. Every live occurrence happened to be a
 # trailing parenthetical, which made the cleanup mechanical — but a rule written to
