@@ -141,7 +141,7 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "cache-status":
             cmd.add_argument("--routine", default=None,
-                             help="Routine id (e.g. writer-prose, stack:001); omit for all")
+                             help="Routine id (e.g. pilot-notes, stack:001); omit for all")
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "deck-status":
             cmd.add_argument("--json", action="store_true", dest="as_json")

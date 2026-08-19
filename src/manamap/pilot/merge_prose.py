@@ -1,9 +1,12 @@
 """Pilot: merge an agent's prose into manual_prose.json — only the keys it owns.
 
-Two agents write into one file. `manual-writer` owns six keys and `pilot-coach`
-owns two, and neither may touch the other's: a whole-file copy from either
-`.agent-out/` artifact silently deletes the other agent's work, and the loss is
-invisible until the manual renders a section short.
+One agent writes into a file that also holds keys nobody owns. `pilot-notes`
+owns five keys; the published decks still carry `card_roles`, `mana_base`,
+`upgrades`, `editors_letter` and `pilots_log` as FROZEN legacy copy from the
+retired magazine agents. A whole-file copy from the `.agent-out/` artifact would
+silently delete them, and the loss is invisible until the manual renders a
+section short. (Before 2026-08-19 the same merge kept two agents — manual-writer
+and pilot-coach — from clobbering each other; the mechanism is unchanged.)
 
 That made the merge a ~40-line script every orchestrator re-derived from scratch
 at the end of a prose refresh, which is exactly the shape of thing that gets it
@@ -22,8 +25,7 @@ from manamap.pilot.common import deck_dir
 # Which `.agent-out/` file each routine's agent writes. The agent name is the
 # filename by the handoff convention (agents return a path, never inline JSON).
 AGENT_FILE = {
-    "coach-prose": "pilot-coach.json",
-    "writer-prose": "manual-writer.json",
+    "pilot-notes": "pilot-notes.json",
 }
 
 PROSE_ARTIFACT = "manual_prose.json"

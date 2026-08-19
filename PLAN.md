@@ -33,8 +33,8 @@ written brief, and the issue now opens on two pictures of the deck: its **conste
 [009 Radagast](https://macrae.github.io/mana-map/manuals/radagast.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-Scale: 49 `manamap pilot` subcommands, 18 top-level subcommands, 16 agents, 18 skills,
-11 cache-gated routines, and the magazine's department list as `issue_spec.DEPARTMENTS`
+Scale: 49 `manamap pilot` subcommands, 18 top-level subcommands, 15 agents, 18 skills,
+10 cache-gated routines, and the magazine's department list as `issue_spec.DEPARTMENTS`
 gives it — **`OPTIONAL_DEPARTMENTS` is empty**, both migrations having landed on all nine
 decks. Test counts live in `docs/testing.md`.
 
@@ -148,7 +148,19 @@ department defaults when no plan exists, so a new deck needs no editor; the nine
 tracked `issue_plan.json` and the panel keys are **frozen legacy inputs** the current
 renderer still reads, gated by `validate-issue`, until the manual is simplified.
 
-Next: step 3 (`manual-writer` + `pilot-coach` → `pilot-notes`), step 4 (`debrief`).
+**Step 3 is done**: `manual-writer` + `pilot-coach` → one **`pilot-notes`** agent in one
+technical voice, owning five keys (`how_it_wins`, `mulligan`, `combo_lines`,
+`threat_assessment`, `matchups`) plus `decisions/` and `tutor_guide.json` outright. The
+three keys it does not own — `card_roles`, `mana_base`, `upgrades` — are retired and
+**frozen on the published decks** (decided 2026-08-19): no routine owns them, `merge-prose`
+never touches them, and the renderer still prints them until the manual is simplified.
+`coach-prose` + `writer-prose` → one `pilot-notes` routine; the graphs left its inputs
+(only the retired keys read them) and `deck:engine.json?` joined (the notes argue in
+stage labels). `validate_issue`'s voice lint is unchanged and the new charter carries its
+bans, so new prose stays satisfiable under the legacy gate.
+
+Next: step 4 (`debrief` + `deck-notes` CLI), step 5 (`deck-doctor` MODE prescribe,
+folding `short-list-analyst`).
 
 ### 1. Phase 3 — DONE. Radagast carries the whole v4 shape.
 
@@ -286,21 +298,9 @@ be recorded**: the `pilot-panel` charter gained the no-formula rule *after* rada
 was recorded, and a charter edit disqualifies a re-bless by construction. Everything else
 is green.
 
-`.claude/agents/pilot-coach.md` still calls the tutor guide "the Fetch Quests section". It
-is one stale name in a charter that also orders the agent to read `issue_spec` for the
-department list, so the spec corrects it on contact — and fixing it would MISS `coach-prose`
-on all nine decks for a rename with no behavioural effect. That is precisely the cost this
-repo already recorded paying once for "a purely operational note". Fold it in the next time
-`coach-prose` misses for a real reason.
-
-**A survey claimed this deferral had expired and it has not — measured 2026-08-15:
-`coach-prose` is 9/9 HIT, `tutor-guide` is 0/9.** Both are written under this charter, so
-the earlier edit at `c6d2f21` MISSed both and only `coach-prose` was re-recorded. The
-argument that "the cost has already been paid" is therefore half right: `tutor-guide`'s
-share is spent and cannot be spent twice, and `coach-prose`'s is not. What the rename
-actually costs today is nine `coach-prose` respawns, which is the same answer as before at
-half the previously assumed price. Still not worth it for a name the spec overrides on
-contact — but check the board rather than this paragraph, because it moves.
+*(Resolved 2026-08-19: the stale "Fetch Quests" name in the coach's charter was fixed in
+step 1, when every routine MISSed anyway, and the charter itself was folded into
+`pilot-notes` in step 3. The deferral argument above is kept in git, not here.)*
 
 ### 3e. `main` is branch-protected, and the launch is one merge away
 
@@ -586,7 +586,7 @@ and only one of them is the one you test.
 
 The costing behind it: the deterministic layer is 47 subcommands answering in 0.2–2.2s with
 JSON out and zero LLM calls. What genuinely needs an agent is artifact-shaped and expensive —
-the cheapest routine is `coach-prose` at ~54.5k tokens, `candidate-pool` is ~235k.
+the cheapest routine was `coach-prose` at ~54.5k tokens (now folded into `pilot-notes`), `candidate-pool` is ~235k.
 
 ### Similarity comes from the function space, always
 

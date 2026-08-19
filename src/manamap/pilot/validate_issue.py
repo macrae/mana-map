@@ -579,10 +579,11 @@ def validate_self_containment(base, plan):
                         f"pilots_log[{i}] ({voice}): uses {banned!r}, which this "
                         f"voice does not say (STYLEv3 §7.7). If the bylines were "
                         f"covered, could a reader still tell who is speaking?")
-        # The other departments. `manual-writer` writes six keys under three
-        # bylines in ONE pass, which the 2026-08 record named as the structural
-        # cause of the magazine reading monovocal — so these are the keys where the
-        # check actually bites, not the panel, which already carries a voice per turn.
+        # The other departments. One agent wrote six keys under three bylines in
+        # ONE pass, which the 2026-08 record named as the structural cause of the
+        # magazine reading monovocal — so these are the keys where the check bites.
+        # Since 2026-08-19 there is one writer (pilot-notes) in one technical voice;
+        # its charter carries these bans, so the legacy lint stays satisfiable.
         for key, text in sorted(prose_doc.items()):
             if key in ("pilots_log", "editors_letter") or not isinstance(text, str):
                 continue

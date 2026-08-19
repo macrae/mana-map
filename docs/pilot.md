@@ -102,12 +102,13 @@ data/decks/<slug>/             all tracked:
                                goldfish_targets.json authored
                                goldfish_metrics.json goldfish
                                stacks/NNN-*.json     authored scenario + resolve loop
-                               decisions/NNN-*.json  pilot-coach
+                               decisions/NNN-*.json  pilot-notes
                                strategic_frame.json  strategy-researcher (consult)
-                               manual_prose.json     pilot-coach + manual-writer
+                               manual_prose.json     pilot-notes (five keys; card_roles/mana_base/upgrades/
+                                                     editors_letter/pilots_log are FROZEN legacy, unowned)
                                pilot_feedback.md     authored, OPTIONAL (free-text pilot notes)
                                mana_analysis.json    mana-analysis (deterministic, no agent)
-                               tutor_guide.json      pilot-coach (At the Table's tutor subhead)
+                               tutor_guide.json      pilot-notes (At the Table's tutor subhead)
                                considering.json      short-list-analyst (The Short List — ten)
                                diagnosis.json        deck-doctor ⇄ deck-skeptic (the improvement loop)
                                deck_recon.json       deck-doctor MODE recon (dated; perishable)
@@ -243,7 +244,7 @@ claim rules-verified.
   role assignment, engine map, candidate missing lines (flagged "needs a stack
   scenario", feeding the resolve-stack queue), matchup frames, gaps (feeding
   the next research pass). The write-manual pipeline generates it after the
-  evidence pull; pilot-coach and manual-writer consume it.
+  evidence pull; pilot-notes and the engineer consume it.
 
 ## Agent invocation cache
 
@@ -264,10 +265,10 @@ produced this prose?"). `record()` refuses artifacts that are missing, lack thei
 routine's keys, or have no checker block — a failed run can't poison the cache.
 
 Routines (10 static): `candidate-pool`, `deck-build`, `deck-diagnosis`, `deck-recon`,
-`strategic-frame`, `coach-prose`,
-`writer-prose`, `the-ten` (The Short List — applies to every deck), `tutor-guide`
+`deck-engine`, `deck-map-names`, `strategic-frame`, `pilot-notes` (five keys of
+`manual_prose.json`), `the-ten` (The Short List — applies to every deck), `tutor-guide`
 (the tutor guide — `N/A` for a deck with no library-search tutors, via the applicability
-gate in agent_cache), `issue-plan`, plus `stack:<NNN>` and `decision:<NNN>` discovered
+gate in agent_cache), plus `stack:<NNN>` and `decision:<NNN>` discovered
 from disk. Declared in `config.AGENT_ROUTINES`.
 
 The two build routines take **no `cards:semantic`** — it digests a `cards.json`
@@ -429,7 +430,7 @@ magazine rather than a Magic one.
 
 ## Manual generation
 
-Content pipeline (`write-manual` skill) — goldfish → `deck-analyst` evidence pull → **strategic frame** (`strategy-researcher` MODE consult → `strategic_frame.json`; its `candidate_missing_lines` feed the resolve-stack queue, its `gaps` feed the next research pass) → `pilot-coach` coaching (threat/matchups + decisions, receives the frame) → `manual-writer` prose (zero-guessing: combo lines only from verified stacks, claims trace to graphs/oracle text; receives the frame) → `manual_prose.json` (tracked, human-editable) → `manamap pilot build-manual <slug>` + `build-index` (deterministic, byte-identical rebuilds, `[TODO]` placeholders for missing prose, only checker-passed stacks render).
+Content pipeline (`write-manual` skill) — goldfish → `deck-analyst` evidence pull → **strategic frame** (`strategy-researcher` MODE consult → `strategic_frame.json`; its `candidate_missing_lines` feed the resolve-stack queue, its `gaps` feed the next research pass) → `pilot-notes` (the five prose keys + decisions + the tutor guide, receives the frame and `engine.json`; since 2026-08-19 one agent in one voice replaces the coach + writer pair) (zero-guessing: combo lines only from verified stacks, claims trace to graphs/oracle text; receives the frame) → `manual_prose.json` (tracked, human-editable) → `manamap pilot build-manual <slug>` + `build-index` (deterministic, byte-identical rebuilds, `[TODO]` placeholders for missing prose, only checker-passed stacks render).
 
 ## Goldfish: two opening-hand distributions
 
@@ -792,7 +793,7 @@ inline: computed evidence ◆, every ranking and verdict ★.
 
 ## The tutor guide (`tutor_guide.json`, tier ★)
 
-One wish per tutor. `pilot-coach` authors an entry for every maindeck library-search
+One wish per tutor. `pilot-notes` authors an entry for every maindeck library-search
 tutor — scenario → the exact card to fetch → why — and `validate-tutor-guide` holds each
 one to the deck and to that tutor's own search constraint, **per clause**: a DFC or
 chapter card can carry several search clauses (Huatli's front face fetches a basic land;

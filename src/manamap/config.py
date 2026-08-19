@@ -1134,36 +1134,26 @@ AGENT_ROUTINES = {
         "inputs": ["cards:semantic", "deck:goldfish_metrics.json!meta.decklist_sha256",
                    "stacks:passing", "strategy:doc"],
     },
-    "coach-prose": {
-        "agent": "pilot-coach",
+    # One writer since 2026-08-19 (docs/agent-audit-2026-08-19.md): pilot-notes
+    # replaced manual-writer (six keys) + pilot-coach (two) and owns FIVE. The
+    # three it does not own — card_roles, mana_base, upgrades — were retired with
+    # the magazine and survive on the published decks as frozen legacy copy that
+    # no routine owns and merge-prose never touches. The graphs are gone from the
+    # inputs because only card_roles/upgrades read them; deck:engine.json? is new
+    # because the notes argue in the engine's stage labels.
+    "pilot-notes": {
+        "agent": "pilot-notes",
         "artifact": "manual_prose.json",
-        "artifact_keys": ["threat_assessment", "matchups"],
-        "inputs": ["cards:semantic", "deck:goldfish_metrics.json!meta.decklist_sha256", "stacks:passing",
-                   "deck:strategic_frame.json?", "strategy:doc"],
-    },
-    # deck:goldfish_metrics.json was added 2026-07-28: the writer quotes
-    # goldfish figures in how_it_wins/mulligan, and the cache not knowing
-    # that is why figure staleness used to need hand-grepped re-spawns.
-    "writer-prose": {
-        "agent": "manual-writer",
-        "artifact": "manual_prose.json",
-        # No "cover" key: issue_plan.json owns the cover (build_manual.render_cover
-        # reads plan["cover"] and issue["cover_tagline"], never manual_prose).
-        "artifact_keys": ["how_it_wins", "combo_lines", "card_roles",
-                          "mulligan", "upgrades", "mana_base"],
-        # COMBO_GRAPH_PATH stands in for COMBO_DETAILS_PATH here on purpose: agents
-        # read the details file, but process_combos writes both in one step, so the
-        # 4.5 MB graph is a faithful invalidation proxy for the 25.7 MB details and
-        # costs far less to hash.
+        "artifact_keys": ["how_it_wins", "mulligan", "combo_lines",
+                          "threat_assessment", "matchups"],
         "inputs": ["cards:semantic", "stacks:passing", "deck:strategic_frame.json?",
-                   "deck:goldfish_metrics.json!meta.decklist_sha256", "deck:mana_analysis.json?",
-                   "global:COMBO_GRAPH_PATH", "global:SYNERGY_GRAPH_PATH",
-                   "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
+                   "deck:engine.json?",
+                   "deck:goldfish_metrics.json!meta.decklist_sha256", "strategy:doc"],
     },
     # The Short List (v3.3): one artifact replaces the sideboard-analysis /
     # upgrade-watch pair — the ten cards most worth the pilot's sleeves,
     # bench-first, pool-filled. Applicable to every deck. Deliberately NOT an
-    # input to writer-prose: a bench edit should cost one
+    # input to pilot-notes: a bench edit should cost one
     # analysis, not a full manual regeneration — the renderer reads the
     # artifact directly, so the coupling stays one-way.
     "deck-engine": {
@@ -1207,7 +1197,7 @@ AGENT_ROUTINES = {
     # N/A for decks with zero library-search tutors in the 99 (the renderer
     # prints standing copy instead; see agent_cache applicability).
     "tutor-guide": {
-        "agent": "pilot-coach",
+        "agent": "pilot-notes",
         "artifact": "tutor_guide.json",
         "inputs": ["cards:semantic", "stacks:passing", "deck:strategic_frame.json?",
                    "deck:goldfish_metrics.json!meta.decklist_sha256", "strategy:doc"],
@@ -1250,7 +1240,7 @@ AGENT_ROUTINES = {
         "agent": "deck-analyst",
         "artifact": "candidate_pool.json",
         # COMBO_GRAPH_PATH as the invalidation proxy for combo_details — same
-        # reasoning as writer-prose above: process_combos writes both in one
+        # reasoning as the retired writer-prose: process_combos writes both in one
         # step, and the 4.5 MB graph hashes for a tenth of the 25.7 MB details.
         "inputs": ["deck:brief.json", "global:CARD_ROLES_PATH",
                    "global:COMBO_GRAPH_PATH", "global:SYNERGY_GRAPH_PATH",
@@ -1275,7 +1265,7 @@ AGENT_ROUTINES = {
 # Dynamic routines (stack:NNN / decision:NNN) — resolved per artifact.
 AGENT_ROUTINE_STACK_AGENT = "stack-resolver+rules-checker"
 AGENT_ROUTINE_STACK_INPUTS = ["scenario:self", "cards:semantic", "rules:version"]
-AGENT_ROUTINE_DECISION_AGENT = "pilot-coach"
+AGENT_ROUTINE_DECISION_AGENT = "pilot-notes"
 AGENT_ROUTINE_DECISION_INPUTS = ["scenario:self", "cards:semantic",
                                  "deck:goldfish_metrics.json!meta.decklist_sha256",
                                  "deck:strategic_frame.json?", "strategy:doc"]
@@ -1286,19 +1276,15 @@ AGENT_ROUTINE_DECISION_INPUTS = ["scenario:self", "cards:semantic",
 # routine-level fingerprint is untouched (these ride outside it). A key not
 # listed here falls back to whole-routine staleness.
 PROSE_KEY_INPUTS = {
-    # writer-prose
-    "card_roles": ["cards:semantic"],
+    # pilot-notes (the five it owns; the retired legacy keys are listed nowhere)
     "combo_lines": ["stacks:passing"],
-    "how_it_wins": ["cards:semantic", "deck:strategic_frame.json?",
+    "how_it_wins": ["cards:semantic", "deck:strategic_frame.json?", "deck:engine.json?",
                     "deck:goldfish_metrics.json!meta.decklist_sha256", "stacks:passing"],
     "mulligan": ["cards:semantic", "deck:goldfish_metrics.json!meta.decklist_sha256"],
-    "upgrades": ["cards:semantic", "deck:strategic_frame.json?", "stacks:passing"],
-    "mana_base": ["cards:semantic", "deck:mana_analysis.json?",
-                  "deck:goldfish_metrics.json!meta.decklist_sha256"],
-    # coach-prose
     "threat_assessment": ["cards:semantic", "deck:goldfish_metrics.json!meta.decklist_sha256",
-                          "stacks:passing", "deck:strategic_frame.json?",
+                          "stacks:passing", "deck:strategic_frame.json?", "deck:engine.json?",
                           "strategy:doc"],
     "matchups": ["cards:semantic", "deck:goldfish_metrics.json!meta.decklist_sha256",
-                 "stacks:passing", "deck:strategic_frame.json?", "strategy:doc"],
+                 "stacks:passing", "deck:strategic_frame.json?", "deck:engine.json?",
+                 "strategy:doc"],
 }

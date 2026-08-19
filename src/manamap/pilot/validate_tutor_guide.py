@@ -153,7 +153,7 @@ def main(args):
     path = base / "tutor_guide.json"
     if not path.exists():
         raise SystemExit(
-            f"{path} not found — spawn pilot-coach for the Fetch Quests "
+            f"{path} not found — spawn pilot-notes for the tutor guide "
             f"artifact first (write-manual skill, tutor-guide routine).")
     with open(path) as f:
         doc = json.load(f)

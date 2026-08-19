@@ -96,8 +96,9 @@ JS/CSS changed, which this runbook does not do.
 ## 6. The cache pass (8 decks, and impact runs FIRST)
 
 Regenerating `synergy_graph.json`, `obsolescence_index.json`, `card_roles.json`
-and the combo files MISSes **six routines per deck**: `writer-prose`, `the-ten`,
-`deck-diagnosis`, `candidate-pool`, `deck-build`
+and the combo files MISSes **four routines per deck**: `the-ten`,
+`deck-diagnosis`, `candidate-pool`, `deck-build` (`pilot-notes` no longer hashes the
+graphs — only the retired `card_roles`/`upgrades` keys read them)
 (`config.py` AGENT_ROUTINES). `cards.csv` itself is a declared input to none —
 deck digests hash each deck's own `cards.json`, which a refresh never touches.
 

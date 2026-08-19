@@ -14,7 +14,7 @@ Produces `data/decks/<slug>/decisions/NNN-<kebab>.json` (`kind: "decision"`). Sc
    stands; do not spawn. Exit 2 means a required input is missing (the routine
    declares `goldfish_metrics.json`; `strategic_frame.json` is optional) — fix that
    first, don't spawn. Canonical exit-code table: `docs/agent-cost.md`. On exit 1
-   (or for a brand-new spread), spawn the `pilot-coach`
+   (or for a brand-new spread), spawn the `pilot-notes`
    agent with the slug, the spot, and pointers to `goldfish_metrics.json` + verified
    stacks. It returns the decision JSON: 2-4 branches, each with `choice`, `line`,
    `signals`, `coalition_risk`, `coaching` (+ `citations` for any rules claim), and a

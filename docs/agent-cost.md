@@ -35,9 +35,10 @@ changed since its output artifact was recorded.
 
 > **Retired 2026-08-19** (workbench pivot, `docs/agent-audit-2026-08-19.md`):
 > `issue-plan` (magazine-editor) and `panel-prose` (pilot-panel) no longer exist as
-> routines or agents; `deck-map-names` survives but is optional and no longer a
-> `deck-status` stage. Their rows below are kept as the measurement of what the
-> magazine cost — ~250k per deck between the two deleted routines.
+> routines or agents; `coach-prose` (pilot-coach) and `writer-prose` (manual-writer)
+> folded into one `pilot-notes` routine owning five keys; `deck-map-names` survives but
+> is optional and no longer a `deck-status` stage. The rows below are kept as the
+> measurement of what the magazine cost.
 
 Real numbers from the session that built the magazine layer (2026-07-25):
 
@@ -189,7 +190,7 @@ editor *packages* prose; it doesn't rewrite it. So a typo fix is free, while add
 combo line or dropping a section correctly forces a re-plan. If a rewrite is heavy
 enough to change the issue's angle, use `--force`.
 
-**Agent prompts are inputs.** Editing `.claude/agents/pilot-coach.md` changes what the
+**Agent prompts are inputs.** Editing `.claude/agents/pilot-notes.md` changes what the
 agent produces from identical artifacts, so it invalidates that agent's routines by
 design. **`.claude/agents-common.md` is hashed with every agent** (inside
 `agent_prompt_sha256`, not per routine, so a new routine cannot forget it): it holds

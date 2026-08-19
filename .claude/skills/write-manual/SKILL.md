@@ -7,7 +7,7 @@ description: Generate a deck's pilot's manual — evidence gathering, prose writ
 
 Pipeline for `data/decks/<slug>/` → `manuals/<slug>.html`. Evidence tiers: ✓ rules-verified, ◆ data-derived, ★ coaching (see `docs/pilot.md`).
 
-0. **Cache gate** (do this first — these four agents cost ~330k tokens together):
+0. **Cache gate** (do this first — the agents below cost ~200k tokens together):
    `.venv/bin/manamap pilot cache-status <slug>` prints one line per routine and exits
    0 only if every routine is current. Each agent step below is individually guarded;
    run its `cache-status --routine <R>` **before** spawning:
@@ -33,24 +33,24 @@ Pipeline for `data/decks/<slug>/` → `manuals/<slug>.html`. Evidence tiers: ✓
    then `cache-record <slug> --routine strategic-frame`. Queue its
    `candidate_missing_lines` for resolve-stack runs (ask the user which to resolve now);
    carry its `gaps` list as topics for the next research-strategy pass.
-5. **Coaching** (★): check `cache-status <slug> --routine coach-prose`. On exit 0, keep
-   the existing `threat_assessment` + `matchups` keys and go to step 6. On exit 1, spawn
-   `pilot-coach` for that prose (grounded in the goldfish numbers, verified stacks, and
-   the strategic frame) and decision scenarios → save decisions to `decisions/NNN-*.json`,
-   validate with `manamap pilot validate-stack <slug>`, then
-   `cache-record <slug> --routine coach-prose`. Decision spreads are cached separately as
-   `decision:<NNN>` — see the author-decision skill.
-6. **Prose**: check `cache-status <slug> --routine writer-prose`. On exit 0, keep the
-   existing writer keys and go to step 7. On exit 1, spawn `manual-writer` for
-   cover/how-it-wins/combo-line intros/card-roles/mulligan/upgrades (it also receives the
-   strategic frame). Merge its keys into `manual_prose.json` **without touching the
-   coach's `threat_assessment`/`matchups` keys**, then
-   `cache-record <slug> --routine writer-prose`. Zero-guessing rule throughout; surface
-   "needs a stack scenario" flags to the user.
-7. **Build**: `.venv/bin/manamap pilot build-manual <slug>` then `.venv/bin/manamap pilot build-index` — deterministic; only verified stacks appear; missing prose renders [TODO].
-8. **Review**: open `manuals/<slug>.html`; decisions, coaching sections, and the strategic frame are the founder-review surface (tracked JSON, red-linable).
+5. **The notes** (★/✓): check `cache-status <slug> --routine pilot-notes`. On exit 0,
+   keep the existing five keys and go to step 6. On exit 1, spawn `pilot-notes` —
+   it reads `engine.json`, the frame, the goldfish figures and the verified stacks
+   and writes `how_it_wins`, `mulligan`, `combo_lines[<stack>]`, `threat_assessment`
+   and `matchups` in one technical voice. On a keyed MISS, `cache-status` names the
+   `stale keys:`; scope the spawn to exactly those. Then
+   `manamap pilot merge-prose <slug> pilot-notes` — the merge touches ONLY the five
+   owned keys, so the frozen legacy keys on a published deck (`card_roles`,
+   `mana_base`, `upgrades`, `editors_letter`, `pilots_log`) survive — then
+   `validate-issue <slug>` (budgets, taxonomy leaks, the voice bans) and
+   `cache-record <slug> --routine pilot-notes`. Zero-guessing rule throughout;
+   surface "needs a stack scenario" flags to the user. Decision spreads and the tutor
+   guide are the same agent under their own routines — `decision:<NNN>` (the
+   author-decision skill) and `tutor-guide`.
+6. **Build**: `.venv/bin/manamap pilot build-manual <slug>` then `.venv/bin/manamap pilot build-index` — deterministic; only verified stacks appear; missing prose renders [TODO].
+7. **Review**: open `manuals/<slug>.html`; decisions, coaching sections, and the strategic frame are the founder-review surface (tracked JSON, red-linable).
 
-`manual_prose.json` is tracked and human-editable — tune voice directly and rebuild without re-running agents. The cache reports a hand edit as `EDITED` and still says "don't spawn"; run `cache-record` to bless it. Rewording prose never invalidates the issue plan — the editor's cache hashes prose *structure*, not text.
+`manual_prose.json` is tracked and human-editable — tune the wording directly and rebuild without re-running agents. The cache reports a hand edit as `EDITED` and still says "don't spawn"; run `cache-record` to bless it.
 
 ## After a deck change: regenerate the diff, not the manual
 
@@ -65,8 +65,7 @@ The cache is card-scoped. When the decklist changes:
    single spawn. What remains MISS is real work.
 3. For a keyed routine's MISS, `cache-status` names `stale keys:` — spawn the
    agent **scoped to exactly those keys** (the charters' Partial revision
-   mode); merge, validate, record as usual. Same for the editor: list the
-   impacted departments and instruct "carry the rest verbatim".
+   mode); merge, validate, record as usual.
 4. Figures flagged by the impact audit are revised by the owning agent in a
    scoped spawn — never hand-patched into prose.
 

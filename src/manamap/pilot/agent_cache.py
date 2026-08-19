@@ -95,8 +95,9 @@ def rel(path):
 def artifact_digest(path, keys=None):
     """Digest an artifact, or only the keys a routine owns.
 
-    coach-prose and writer-prose write the same manual_prose.json but own
-    disjoint key sets; digesting only the owned keys keeps them independent.
+    pilot-notes writes five keys of a manual_prose.json that also carries
+    frozen legacy keys nobody owns; digesting only the owned keys means a
+    legacy key is never what makes the routine read EDITED.
     """
     if not path.exists():
         return None
@@ -128,7 +129,7 @@ def file_digest_excluding(path, exclude):
 
     `goldfish_metrics.json` embeds `meta.decklist_sha256`, so ANY decklist edit
     changed the file's bytes and MISSed every routine that declares it —
-    strategic-frame, coach-prose, writer-prose, tutor-guide and every
+    strategic-frame, pilot-notes, tutor-guide and every
     decision — even when not one metric had moved. Observed directly: restoring
     comment lines in a decklist re-MISSed five prose routines whose figures were
     byte-identical. The provenance stamp is worth keeping in the artifact; it just

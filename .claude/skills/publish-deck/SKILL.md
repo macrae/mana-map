@@ -63,10 +63,11 @@ four or failed, taking correct answers down with it.
 **7 — Furnish it.** `/short-list` → `considering.json`, then `short-list-art` →
 `considering_art.json`, the tracked sidecar that lets the one department whose
 subject is OUTSIDE the deck actually show you the cards. `tutor-guide` → At the
-Table's tutor subhead. `/author-decision` → the What's Your Play spreads.
+Table's tutor subhead. `/author-decision` → the What's Your Play spreads. Both are
+`pilot-notes` under their own routines.
 
-**8 — Write it.** `/write-manual` (writer + coach, merged by key ownership via
-`merge-prose`). The front of book (`pilot-panel`) and the magazine editor
+**8 — Write it.** `/write-manual` — one `pilot-notes` spawn for the five prose keys,
+merged by key ownership via `merge-prose` so the frozen legacy keys survive. The front of book (`pilot-panel`) and the magazine editor
 (`/design-issue`) are **retired** with the workbench pivot
 (`docs/agent-audit-2026-08-19.md`); the published decks keep their tracked
 `issue_plan.json` and panel keys as frozen legacy inputs until the manual is

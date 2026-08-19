@@ -1,7 +1,7 @@
 """Pilot: query the strategy DB — semantic top-k search and exact section lookup.
 
 The `--json` CLI output is the agent interface: the strategy-researcher (and
-pilot-coach / manual-writer) discover relevant theory with `query-strategy`,
+pilot-notes, the doctor) discover relevant theory with `query-strategy`,
 and ground claims with `lookup-strategy` (exact fetch only — never semantic).
 """
 

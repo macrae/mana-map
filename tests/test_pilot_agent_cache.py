@@ -79,43 +79,43 @@ def fp(slug, routine):
 
 
 def test_fingerprint_stable_across_calls(deck):
-    assert fp(SLUG, "coach-prose") == fp(SLUG, "coach-prose")
+    assert fp(SLUG, "pilot-notes") == fp(SLUG, "pilot-notes")
 
 
 def test_fingerprint_order_independent(deck):
-    spec = ac.routine_spec(SLUG, "coach-prose")
+    spec = ac.routine_spec(SLUG, "pilot-notes")
     entries, extra = ac.resolve_inputs(SLUG, spec)
-    a = ac.fingerprint("coach-prose", spec, entries, extra)
-    b = ac.fingerprint("coach-prose", spec, list(reversed(entries)), extra)
+    a = ac.fingerprint("pilot-notes", spec, entries, extra)
+    b = ac.fingerprint("pilot-notes", spec, list(reversed(entries)), extra)
     assert a == b
 
 
 def test_fingerprint_changes_on_content_change(deck):
-    before = fp(SLUG, "coach-prose")
+    before = fp(SLUG, "pilot-notes")
     write_json(deck / "cards.json", {"deck": SLUG, "cards": [{"name": "Other"}]})
     ac._SHA_MEMO.clear()
-    assert fp(SLUG, "coach-prose") != before
+    assert fp(SLUG, "pilot-notes") != before
 
 
 def test_routine_id_prevents_collision(deck):
     """Two routines with overlapping inputs must not share a fingerprint."""
-    assert fp(SLUG, "coach-prose") != fp(SLUG, "strategic-frame")
+    assert fp(SLUG, "pilot-notes") != fp(SLUG, "strategic-frame")
 
 
 def test_fingerprint_changes_on_cache_version_bump(deck, monkeypatch):
-    before = fp(SLUG, "coach-prose")
+    before = fp(SLUG, "pilot-notes")
     monkeypatch.setattr(ac, "AGENT_CACHE_VERSION", 999)
-    assert fp(SLUG, "coach-prose") != before
+    assert fp(SLUG, "pilot-notes") != before
 
 
 def test_fingerprint_changes_on_agent_prompt_edit(deck, monkeypatch, tmp_path):
     prompts = tmp_path / "agents"
     prompts.mkdir()
-    (prompts / "pilot-coach.md").write_text("v1")
+    (prompts / "pilot-notes.md").write_text("v1")
     monkeypatch.setattr(ac, "AGENT_PROMPTS_DIR", prompts)
-    before = fp(SLUG, "coach-prose")
-    (prompts / "pilot-coach.md").write_text("v2")
-    assert fp(SLUG, "coach-prose") != before
+    before = fp(SLUG, "pilot-notes")
+    (prompts / "pilot-notes.md").write_text("v2")
+    assert fp(SLUG, "pilot-notes") != before
 
 
 def test_agent_prompt_digest_covers_every_part_of_a_loop(tmp_path, monkeypatch):
@@ -136,14 +136,14 @@ def test_agent_prompt_digest_covers_the_shared_contract(tmp_path, monkeypatch):
     a stale pass rather than failing."""
     prompts = tmp_path / "agents"
     prompts.mkdir()
-    (prompts / "pilot-coach.md").write_text("same")
+    (prompts / "pilot-notes.md").write_text("same")
     common = tmp_path / "agents-common.md"
     common.write_text("v1")
     monkeypatch.setattr(ac, "AGENT_PROMPTS_DIR", prompts)
     monkeypatch.setattr(ac, "AGENT_COMMON_PROMPT", common)
-    before = ac.agent_prompt_sha256("pilot-coach")
+    before = ac.agent_prompt_sha256("pilot-notes")
     common.write_text("v2")
-    assert ac.agent_prompt_sha256("pilot-coach") != before
+    assert ac.agent_prompt_sha256("pilot-notes") != before
 
 
 # ── Input resolution ─────────────────────────────────────────────────────
@@ -151,7 +151,7 @@ def test_agent_prompt_digest_covers_the_shared_contract(tmp_path, monkeypatch):
 
 def test_missing_optional_input_recorded_as_null(deck):
     (deck / "strategic_frame.json").unlink()
-    spec = ac.routine_spec(SLUG, "coach-prose")
+    spec = ac.routine_spec(SLUG, "pilot-notes")
     entries, _ = ac.resolve_inputs(SLUG, spec)
     frame = [e for e in entries if e["path"].endswith("strategic_frame.json")]
     assert len(frame) == 1 and frame[0]["sha256"] is None
@@ -160,20 +160,20 @@ def test_missing_optional_input_recorded_as_null(deck):
 def test_optional_input_appearing_changes_fingerprint(deck):
     (deck / "strategic_frame.json").unlink()
     ac._SHA_MEMO.clear()
-    without = fp(SLUG, "coach-prose")
+    without = fp(SLUG, "pilot-notes")
     write_json(deck / "strategic_frame.json", {"slug": SLUG, "angle": "back"})
     ac._SHA_MEMO.clear()
-    assert fp(SLUG, "coach-prose") != without
+    assert fp(SLUG, "pilot-notes") != without
 
 
 def test_missing_required_input_raises(deck):
     (deck / "cards.json").unlink()
     with pytest.raises(ac.MissingInput):
-        fp(SLUG, "coach-prose")
+        fp(SLUG, "pilot-notes")
 
 
 def test_only_passing_stacks_are_inputs(deck):
-    spec = ac.routine_spec(SLUG, "coach-prose")
+    spec = ac.routine_spec(SLUG, "pilot-notes")
     entries, _ = ac.resolve_inputs(SLUG, spec)
     paths = [e["path"] for e in entries]
     assert any("001-first.json" in p for p in paths)
@@ -181,19 +181,19 @@ def test_only_passing_stacks_are_inputs(deck):
 
 
 def test_failing_stack_edit_does_not_invalidate_downstream(deck):
-    before = fp(SLUG, "coach-prose")
+    before = fp(SLUG, "pilot-notes")
     doc = stack_doc("002", verdict="fail")
     doc["resolution"]["final_state"]["summary"] = "rewritten"
     write_json(deck / "stacks" / "002-failed.json", doc)
     ac._SHA_MEMO.clear()
-    assert fp(SLUG, "coach-prose") == before
+    assert fp(SLUG, "pilot-notes") == before
 
 
 def test_stack_flipping_to_pass_invalidates_downstream(deck):
-    before = fp(SLUG, "coach-prose")
+    before = fp(SLUG, "pilot-notes")
     write_json(deck / "stacks" / "002-failed.json", stack_doc("002", verdict="pass"))
     ac._SHA_MEMO.clear()
-    assert fp(SLUG, "coach-prose") != before
+    assert fp(SLUG, "pilot-notes") != before
 
 
 def test_scenario_digest_ignores_resolution_and_checker(deck):
@@ -232,43 +232,46 @@ def test_discover_routines_finds_dynamic_ones(deck):
 # ── Artifact key isolation ───────────────────────────────────────────────
 
 
-def test_coach_and_writer_keys_are_independent(deck):
-    ac.record(SLUG, "coach-prose")
-    ac.record(SLUG, "writer-prose")
-    rewritten = dict(PROSE, how_it_wins="Writer rewrote this.")
-    write_json(deck / "manual_prose.json", rewritten)
+def test_a_legacy_key_edit_is_not_an_edit_to_the_notes(deck):
+    """The published decks carry card_roles/mana_base/upgrades as frozen copy no
+    routine owns. Touching one must not read as a hand edit to pilot-notes —
+    the routine digests only its five keys, so the legacy keys are invisible."""
+    ac.record(SLUG, "pilot-notes")
+    write_json(deck / "manual_prose.json", dict(PROSE, mana_base="Legacy, retouched."))
     ac._SHA_MEMO.clear()
-    assert ac.status(SLUG, "coach-prose")["status"] == "HIT"
-    assert ac.status(SLUG, "writer-prose")["status"] == "EDITED"
+    assert ac.status(SLUG, "pilot-notes")["status"] == "HIT"
+    write_json(deck / "manual_prose.json", dict(PROSE, how_it_wins="Hand-tuned."))
+    ac._SHA_MEMO.clear()
+    assert ac.status(SLUG, "pilot-notes")["status"] == "EDITED"
 
 
 # ── Status ───────────────────────────────────────────────────────────────
 
 
 def test_status_miss_when_no_record(deck):
-    assert ac.status(SLUG, "coach-prose")["status"] == "MISS"
+    assert ac.status(SLUG, "pilot-notes")["status"] == "MISS"
 
 
 def test_status_hit_after_record(deck):
-    ac.record(SLUG, "coach-prose")
-    assert ac.status(SLUG, "coach-prose")["status"] == "HIT"
+    ac.record(SLUG, "pilot-notes")
+    assert ac.status(SLUG, "pilot-notes")["status"] == "HIT"
 
 
 def test_status_miss_names_the_changed_input(deck):
-    ac.record(SLUG, "coach-prose")
+    ac.record(SLUG, "pilot-notes")
     write_json(deck / "strategic_frame.json", {"slug": SLUG, "angle": "different"})
     ac._SHA_MEMO.clear()
-    result = ac.status(SLUG, "coach-prose")
+    result = ac.status(SLUG, "pilot-notes")
     assert result["status"] == "MISS"
     changed = [c for c in result["changed"] if c["path"].endswith("strategic_frame.json")]
     assert changed and changed[0]["change"] == "modified"
 
 
 def test_status_reports_added_stack_as_now_passing(deck):
-    ac.record(SLUG, "coach-prose")
+    ac.record(SLUG, "pilot-notes")
     write_json(deck / "stacks" / "003-new.json", stack_doc("003"))
     ac._SHA_MEMO.clear()
-    result = ac.status(SLUG, "coach-prose")
+    result = ac.status(SLUG, "pilot-notes")
     added = [c for c in result["changed"] if c["change"] == "added"]
     assert added and added[0]["note"] == "now passing"
 
@@ -288,8 +291,8 @@ def test_status_miss_when_artifact_deleted(deck):
 
 
 def test_force_always_misses(deck):
-    ac.record(SLUG, "coach-prose")
-    result = ac.status(SLUG, "coach-prose", force=True)
+    ac.record(SLUG, "pilot-notes")
+    result = ac.status(SLUG, "pilot-notes", force=True)
     assert result["status"] == "MISS" and result["reason"] == "forced"
 
 
@@ -318,7 +321,7 @@ def test_record_stores_verdict_and_iterations(deck):
 def test_record_refuses_when_owned_keys_absent(deck):
     write_json(deck / "manual_prose.json", {"how_it_wins": "only writer keys"})
     with pytest.raises(ac.MissingInput):
-        ac.record(SLUG, "coach-prose")
+        ac.record(SLUG, "pilot-notes")
 
 
 def test_record_refuses_a_partial_artifact(deck):
@@ -329,11 +332,11 @@ def test_record_refuses_a_partial_artifact(deck):
     sections short. artifact_digest hashes absent keys as None, so nothing
     downstream would have noticed.
     """
-    keys = config.AGENT_ROUTINES["writer-prose"]["artifact_keys"]
+    keys = config.AGENT_ROUTINES["pilot-notes"]["artifact_keys"]
     partial = {keys[0]: "the writer stopped after one section"}
     write_json(deck / "manual_prose.json", partial)
     with pytest.raises(ac.MissingInput) as excinfo:
-        ac.record(SLUG, "writer-prose")
+        ac.record(SLUG, "pilot-notes")
     message = str(excinfo.value)
     # The message must name what is missing, so the fix is obvious without a re-read.
     for absent in keys[1:]:
@@ -341,26 +344,26 @@ def test_record_refuses_a_partial_artifact(deck):
 
 
 def test_record_accepts_a_complete_artifact(deck):
-    keys = config.AGENT_ROUTINES["writer-prose"]["artifact_keys"]
+    keys = config.AGENT_ROUTINES["pilot-notes"]["artifact_keys"]
     write_json(deck / "manual_prose.json", {k: f"{k} prose" for k in keys})
-    entry, _ = ac.record(SLUG, "writer-prose")
+    entry, _ = ac.record(SLUG, "pilot-notes")
     assert entry["artifact"].endswith("manual_prose.json")
 
 
-def test_writer_prose_does_not_own_a_cover_key(deck):
+def test_pilot_notes_does_not_own_a_cover_key(deck):
     """The cover is renderer furniture; build_manual never reads prose['cover'].
 
     The key was declared, produced on every deck, cached — and rendered nowhere.
     """
-    assert "cover" not in config.AGENT_ROUTINES["writer-prose"]["artifact_keys"]
+    assert "cover" not in config.AGENT_ROUTINES["pilot-notes"]["artifact_keys"]
 
 
 # ── Sidecar ──────────────────────────────────────────────────────────────
 
 
 def test_save_cache_skips_identical_write(deck):
-    ac.record(SLUG, "coach-prose")
-    _, wrote_again = ac.record(SLUG, "coach-prose")
+    ac.record(SLUG, "pilot-notes")
+    _, wrote_again = ac.record(SLUG, "pilot-notes")
     assert wrote_again is False
 
 
@@ -370,7 +373,7 @@ def test_sidecar_has_no_timestamps(deck):
     Checks keys rather than raw text: paths legitimately contain arbitrary
     words (pytest's own tmp dir is named after this test).
     """
-    ac.record(SLUG, "coach-prose")
+    ac.record(SLUG, "pilot-notes")
     cache = json.loads(ac.cache_path(SLUG).read_text())
 
     def keys(obj):
@@ -389,12 +392,12 @@ def test_sidecar_has_no_timestamps(deck):
 
 
 def test_clear_drops_records(deck):
-    ac.record(SLUG, "coach-prose")
-    ac.record(SLUG, "writer-prose")
-    dropped = ac.clear(SLUG, "coach-prose")
-    assert dropped == ["coach-prose"]
-    assert ac.status(SLUG, "coach-prose")["status"] == "MISS"
-    assert ac.status(SLUG, "writer-prose")["status"] == "HIT"
+    ac.record(SLUG, "pilot-notes")
+    ac.record(SLUG, "deck-recon")
+    dropped = ac.clear(SLUG, "pilot-notes")
+    assert dropped == ["pilot-notes"]
+    assert ac.status(SLUG, "pilot-notes")["status"] == "MISS"
+    assert ac.status(SLUG, "deck-recon")["status"] == "HIT"
 
 
 # ── The strategy-DB hazard ───────────────────────────────────────────────
@@ -409,9 +412,9 @@ def test_strategy_db_rebuild_does_not_invalidate(deck, monkeypatch):
         return "constant-doc-hash"
 
     monkeypatch.setattr(ac, "strategy_doc_digest", fake_digest)
-    before = fp(SLUG, "coach-prose")
+    before = fp(SLUG, "pilot-notes")
     # A rebuild rewrites strategy_index.json / .strategy-db-meta.json, never the doc.
-    assert fp(SLUG, "coach-prose") == before
+    assert fp(SLUG, "pilot-notes") == before
     assert calls["n"] == 2
 
 
@@ -481,7 +484,7 @@ def test_scan_reports_every_applicable_routine_despite_an_inapplicable_one():
     assert code in (0, 1), f"scan should not exit 2, got {code}"
     assert "N/A" in out and "candidate-pool" in out
     # ...and the routines that DO apply are still reported
-    assert "writer-prose" in out
+    assert "pilot-notes" in out
     assert "stack:001" in out
 
 
@@ -798,11 +801,11 @@ def test_keyed_routine_records_refs_by_key(deck):
     prose["how_it_wins"] = "No cards named here."
     write_json(deck / "manual_prose.json", prose)
     ac._SHA_MEMO.clear(); common.clear_memo()
-    entry, _ = ac.record(SLUG, "writer-prose")
+    entry, _ = ac.record(SLUG, "pilot-notes")
     assert "Sac Outlet" in entry["card_refs_by_key"]["mulligan"]
     assert entry["card_refs_by_key"]["how_it_wins"] == []
-    # card_roles keys count as refs
-    assert "Sac Outlet" in entry["card_refs_by_key"]["card_roles"]
+    # a legacy key (card_roles) is not owned, so it is not a ref source either
+    assert "card_roles" not in entry["card_refs_by_key"]
 
 
 def test_scan_exit_zero_with_stale_ok(deck):
@@ -822,32 +825,34 @@ def test_scan_exit_zero_with_stale_ok(deck):
 
 def test_record_stores_key_fingerprints(deck):
     _two_card_deck(deck)
-    entry, _ = ac.record(SLUG, "writer-prose")
+    entry, _ = ac.record(SLUG, "pilot-notes")
     assert set(entry["key_fingerprints"]) == {
-        "how_it_wins", "combo_lines", "card_roles", "mulligan", "upgrades",
-        "mana_base"}
+        "how_it_wins", "combo_lines", "mulligan", "threat_assessment", "matchups"}
 
 
 def test_goldfish_change_stales_only_goldfish_keys(deck):
     _two_card_deck(deck)
-    ac.record(SLUG, "writer-prose")
+    ac.record(SLUG, "pilot-notes")
     write_json(deck / "goldfish_metrics.json", {"meta": {"seed": 42},
                                                 "metrics": {"new": True}})
     ac._SHA_MEMO.clear(); common.clear_memo()
-    result = ac.status(SLUG, "writer-prose")
+    result = ac.status(SLUG, "pilot-notes")
     assert result["status"] == "MISS"
     assert set(result["stale_keys"]) == {"how_it_wins", "mulligan",
-                                         "mana_base"}
+                                         "threat_assessment", "matchups"}
+    assert "combo_lines" not in result["stale_keys"], "the one key that ignores goldfish"
 
 
 def test_new_passing_stack_stales_stack_keys(deck):
     _two_card_deck(deck)
-    ac.record(SLUG, "writer-prose")
+    ac.record(SLUG, "pilot-notes")
     write_json(deck / "stacks" / "003-new.json", stack_doc("003"))
     ac._SHA_MEMO.clear(); common.clear_memo()
-    result = ac.status(SLUG, "writer-prose")
+    result = ac.status(SLUG, "pilot-notes")
     assert result["status"] == "MISS"
-    assert set(result["stale_keys"]) == {"combo_lines", "how_it_wins", "upgrades"}
+    assert set(result["stale_keys"]) == {"combo_lines", "how_it_wins",
+                                         "threat_assessment", "matchups"}
+    assert "mulligan" not in result["stale_keys"], "the one key that ignores stacks"
 
 
 def test_unreferenced_card_change_refines_stale_keys(deck):
@@ -856,15 +861,14 @@ def test_unreferenced_card_change_refines_stale_keys(deck):
     _two_card_deck(deck)
     prose = json.loads((deck / "manual_prose.json").read_text())
     prose["mulligan"] = "Keep Sac Outlet hands."
-    prose["card_roles"] = {"Sac Outlet": "the engine."}
     write_json(deck / "manual_prose.json", prose)
     ac._SHA_MEMO.clear(); common.clear_memo()
-    ac.record(SLUG, "writer-prose")
+    ac.record(SLUG, "pilot-notes")
     cards = json.loads((deck / "cards.json").read_text())
     cards["cards"][1]["oracle_text"] = "changed filler"
     write_json(deck / "cards.json", cards)
     ac._SHA_MEMO.clear(); common.clear_memo()
-    result = ac.status(SLUG, "writer-prose")
+    result = ac.status(SLUG, "pilot-notes")
     assert result["status"] == "STALE_OK"
 
 
@@ -873,18 +877,16 @@ def test_referenced_card_change_names_the_stale_keys(deck):
     prose = json.loads((deck / "manual_prose.json").read_text())
     prose["mulligan"] = "Keep Sac Outlet hands."
     prose["how_it_wins"] = "No names here."
-    prose["card_roles"] = {"Sac Outlet": "the engine."}
     write_json(deck / "manual_prose.json", prose)
     ac._SHA_MEMO.clear(); common.clear_memo()
-    ac.record(SLUG, "writer-prose")
+    ac.record(SLUG, "pilot-notes")
     cards = json.loads((deck / "cards.json").read_text())
     cards["cards"][0]["oracle_text"] = "Sacrifice everything."
     write_json(deck / "cards.json", cards)
     ac._SHA_MEMO.clear(); common.clear_memo()
-    result = ac.status(SLUG, "writer-prose")
+    result = ac.status(SLUG, "pilot-notes")
     assert result["status"] == "MISS"
     assert "mulligan" in result["stale_keys"]
-    assert "card_roles" in result["stale_keys"]
     assert "how_it_wins" not in result["stale_keys"]
 
 
@@ -1037,7 +1039,7 @@ def test_goldfish_provenance_stamp_is_excluded_from_the_fingerprint(deck):
     """A decklist edit that moves no metric must not MISS the prose routines.
 
     goldfish_metrics.json embeds meta.decklist_sha256, so ANY decklist change
-    rewrote the file and invalidated strategic-frame, coach-prose, writer-prose,
+    rewrote the file and invalidated strategic-frame, pilot-notes,
     tutor-guide and every decision — regardless of whether a single
     figure moved. Observed directly: restoring comment lines to a decklist
     re-MISSed five prose routines whose numbers were byte-identical.
@@ -1046,19 +1048,19 @@ def test_goldfish_provenance_stamp_is_excluded_from_the_fingerprint(deck):
     write_json(gf, {"meta": {"seed": 42, "decklist_sha256": "aaa"},
                     "metrics": {"commander": {"mean_cast_turn": 4.2}}})
     ac._SHA_MEMO.clear(); common.clear_memo()
-    before = fp(SLUG, "coach-prose")
+    before = fp(SLUG, "pilot-notes")
 
     # Same metrics, new provenance stamp — the decklist changed, the maths did not.
     write_json(gf, {"meta": {"seed": 42, "decklist_sha256": "bbb"},
                     "metrics": {"commander": {"mean_cast_turn": 4.2}}})
     ac._SHA_MEMO.clear(); common.clear_memo()
-    assert fp(SLUG, "coach-prose") == before, "provenance stamp still invalidates"
+    assert fp(SLUG, "pilot-notes") == before, "provenance stamp still invalidates"
 
     # But a real metric moving must still invalidate.
     write_json(gf, {"meta": {"seed": 42, "decklist_sha256": "bbb"},
                     "metrics": {"commander": {"mean_cast_turn": 5.9}}})
     ac._SHA_MEMO.clear(); common.clear_memo()
-    assert fp(SLUG, "coach-prose") != before, "a changed metric must invalidate"
+    assert fp(SLUG, "pilot-notes") != before, "a changed metric must invalidate"
 
 
 def test_exclusion_is_by_omission_so_new_fields_stay_covered(deck):
@@ -1066,9 +1068,9 @@ def test_exclusion_is_by_omission_so_new_fields_stay_covered(deck):
     gf = deck / "goldfish_metrics.json"
     write_json(gf, {"meta": {"decklist_sha256": "aaa"}, "metrics": {"a": 1}})
     ac._SHA_MEMO.clear(); common.clear_memo()
-    before = fp(SLUG, "coach-prose")
+    before = fp(SLUG, "pilot-notes")
     # A metric nobody anticipated appears. An inclusion list would ignore it.
     write_json(gf, {"meta": {"decklist_sha256": "aaa"},
                     "metrics": {"a": 1}, "brand_new_section": {"x": 1}})
     ac._SHA_MEMO.clear(); common.clear_memo()
-    assert fp(SLUG, "coach-prose") != before
+    assert fp(SLUG, "pilot-notes") != before
