@@ -47,6 +47,10 @@ good the card, and a `reading` that accepts a premise the audit contradicts is
 `over-claimed`. A `log_entries_read` id whose annotation does not say what the
 reading says it says is `contradicts-artifact` — read the entry.
 
+**A sim figure without its interval and its N is `over-claimed`**, and one that forgets the
+AI caveat on a control or combo deck is `mis-cited`. Re-read the run record
+(`simulate <slug> --list`, then the file) — the doctor's number must be the record's.
+
 ## Procedure
 
 1. **Mechanical gate first.** `.venv/bin/manamap pilot validate-diagnosis <slug>`.

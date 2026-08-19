@@ -228,8 +228,7 @@ lifted from game 1 of the first run at turn 33, Craterhoof into six blockers, on
 before damage — resolved and checker-PASSED in three iterations (~570k tokens); the resolver's
 assignment matched Forge's log line for line, and the checker found two triggers the
 authored scenario had missed that the log confirms. Radagast's eighth verified line, the first
-from a simulated table. S5 (sim debrief + `prescribe` reading sim; the drain blind spot;
-token types in the bridge) remains. `manual-v5` is parked with its spec on its own branch.
+from a simulated table. **S5 is done, minimal by choice**: drain kills attributed (`eliminated_how`), `sim:runs` as a cache input to the diagnosis and prescriptions, and the doctor/skeptic charters read run records with interval, N and the AI caveat — no separate prose sim-debrief (the record's `analysis` is the debrief; reading it into advice is `/prescribe`). Open: token types in the bridge; `manual-v5`; the first real logged game. `manual-v5` is parked with its spec on its own branch.
 
 **The MVP as scoped on 2026-08-19 is complete**: versions, notes, basic stats, goldfish,
 and the agent audit/enrichment. What remains is the audit's optional item 8

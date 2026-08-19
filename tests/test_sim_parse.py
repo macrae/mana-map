@@ -87,6 +87,24 @@ def test_assignment_lists_lose_their_separators():
     assert [n for n, _ in got] == ["Hornet Queen", "Insect Token", "Insect Token", "Insect Token"]
 
 
+def test_a_drain_kill_is_attributed_to_the_ability_controller_not_the_last_damage():
+    """Measured on the pod run: Vito wins 9 of 20 on 7 combat damage a game — every one a
+    drain — and damage-only attribution got all of them wrong."""
+    text = ("Mulligan: Ai(1)-mm-a has kept a hand of 7 cards\nMulligan: Ai(2)-mm-vito has kept a hand of 7 cards\n"
+            "Turn: Turn 5 (Ai(2)-mm-vito)\n"
+            "Combat: Ai(1)-mm-a assigned Bear (9) to attack Ai(2)-mm-vito.\n"
+            "Damage: Bear (9) deals 2 combat damage to Ai(2)-mm-vito.\nLife: Life: Ai(2)-mm-vito 40 > 38\n"
+            "Resolve Stack: Whenever you gain life, each opponent loses that much life. [Player: Ai(2)-mm-vito]\n"
+            "Life: Life: Ai(1)-mm-a 3 > -7\n"
+            "Game Outcome: Turn 3\nGame Outcome: Ai(2)-mm-vito has won because all opponents have lost\n"
+            "Game Outcome: Ai(1)-mm-a has lost because life total reached 0\n"
+            "Game Result: Game 1 ended in 10 ms. Ai(2)-mm-vito has won!\n")
+    f = parse.game_facts(parse.parse_games(text)[0])
+    a = f["per_seat"]["Ai(1)-mm-a"]
+    assert a["eliminated_by"] == "Ai(2)-mm-vito" and a["eliminated_how"] == "life loss"
+    assert a["combat_damage_taken"] == 0, "a drain is not damage and never enters a damage total"
+
+
 def test_aggregate_intervals_behave():
     facts = [parse.game_facts(parse.parse_games(FIX)[0])]
     agg = parse.aggregate(facts, "Ai(1)-radagast", LABEL)

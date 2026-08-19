@@ -339,6 +339,13 @@ def resolve_inputs(slug, spec):
         elif token == "decisions:all":
             for path in sorted((base / "decisions").glob("*.json")):
                 add(path)
+        elif token == "sim:runs":
+            # Every tracked simulation run record (data/decks/<slug>/sim/*.json). A new
+            # run or a re-derived analysis is new evidence the doctor reads, so it MISSes
+            # the routines that declare it; absence is hashed as nothing, so a deck with
+            # no runs is simply a deck with no runs.
+            for path in sorted((base / "sim").glob("*.json")):
+                add(path)
         elif token.startswith("global:") or token.startswith("repo:"):
             path = getattr(config, token.split(":", 1)[1])
             add(path)

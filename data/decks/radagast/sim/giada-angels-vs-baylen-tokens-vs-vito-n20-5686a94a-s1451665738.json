@@ -397,9 +397,13 @@
           "n": 18
         },
         "eliminated_by": {
-          "vito": 2,
-          "giada-angels": 9,
+          "vito": 5,
+          "giada-angels": 10,
           "baylen-tokens": 1
+        },
+        "eliminated_how": {
+          "life loss": 6,
+          "damage": 10
         },
         "lands": {
           "mean": 6.8,
@@ -517,7 +521,12 @@
         },
         "eliminated_by": {
           "radagast": 1,
-          "baylen-tokens": 2
+          "baylen-tokens": 2,
+          "vito": 2
+        },
+        "eliminated_how": {
+          "life loss": 3,
+          "damage": 2
         },
         "lands": {
           "mean": 7.7,
@@ -636,7 +645,11 @@
         "eliminated_by": {
           "giada-angels": 10,
           "radagast": 3,
-          "vito": 1
+          "vito": 3
+        },
+        "eliminated_how": {
+          "damage": 11,
+          "life loss": 5
         },
         "lands": {
           "mean": 5.25,
@@ -756,6 +769,9 @@
           "giada-angels": 7,
           "baylen-tokens": 1,
           "radagast": 1
+        },
+        "eliminated_how": {
+          "damage": 9
         },
         "lands": {
           "mean": 6.7,
@@ -1025,8 +1041,8 @@
     "limits": [
       "tokens_observed counts distinct token ids that attacked or blocked (or dealt combat damage) for the seat; a token that only sat on the board is invisible to the log.",
       "token_resolutions counts token-creating abilities that resolved; it is blind to how many tokens each made (X, doubling) — a floor on creation events, not a token count.",
-      "eliminated_by is the controller of the last damage source before the life line that crossed zero, learned from attack/block/land/cast lines; null when the source was never seen acting (e.g. a drain from a permanent that never attacked).",
-      "Damage figures see DAMAGE only. Life LOSS that is not damage (Vito's drain, Blood Artist, 'each opponent loses 1 life') shows in life_by_turn and eliminated_turn but not in any damage total, and eliminated_by — the controller of the last DAMAGE source before the life line that crossed zero — is WRONG for a drain kill. Measured: Vito wins 9 of 20 on 7.0 combat damage a game.",
+      "eliminated_by is the controller of the last thing that could have cost the seat life before the life line that crossed zero — a damage source (its controller learned from attack/block/land/cast lines) or a resolved ability whose text says the victim loses life (its Activator/Player tag, else the active seat); eliminated_how says which. Null when neither was seen.",
+      "Damage figures see DAMAGE only. Life LOSS that is not damage (Vito's drain, Blood Artist, 'each opponent loses 1 life') shows in life_by_turn, eliminated_turn and eliminated_how='life loss', never in a damage total. Measured: Vito wins 9 of 20 on 7.0 combat damage a game.",
       "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. Seeded runs replay exactly; the interval is still the claim."
     ]
   },
@@ -1054,7 +1070,8 @@
           "tokens_chumped": 0,
           "creatures_lost": 0,
           "eliminated_turn": 20,
-          "eliminated_by": null,
+          "eliminated_by": "Ai(4)-mm-vito",
+          "eliminated_how": "life loss",
           "first_attack_turn": null,
           "token_damage_share": null
         },
@@ -1075,6 +1092,7 @@
           "creatures_lost": 0,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 10,
           "token_damage_share": 0.0
         },
@@ -1095,6 +1113,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 23,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": null,
           "token_damage_share": null
         },
@@ -1115,6 +1134,7 @@
           "creatures_lost": 1,
           "eliminated_turn": 24,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": null,
           "token_damage_share": null
         }
@@ -1144,6 +1164,7 @@
           "creatures_lost": 1,
           "eliminated_turn": 24,
           "eliminated_by": "Ai(4)-mm-vito",
+          "eliminated_how": "life loss",
           "first_attack_turn": 17,
           "token_damage_share": 0.0
         },
@@ -1164,6 +1185,7 @@
           "creatures_lost": 1,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 6,
           "token_damage_share": 0.127
         },
@@ -1184,6 +1206,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 34,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": null,
           "token_damage_share": null
         },
@@ -1204,6 +1227,7 @@
           "creatures_lost": 1,
           "eliminated_turn": 36,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": 24,
           "token_damage_share": 0.0
         }
@@ -1233,6 +1257,7 @@
           "creatures_lost": 2,
           "eliminated_turn": 35,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": 17,
           "token_damage_share": 0.238
         },
@@ -1253,6 +1278,7 @@
           "creatures_lost": 1,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 10,
           "token_damage_share": 0.0
         },
@@ -1273,6 +1299,7 @@
           "creatures_lost": 1,
           "eliminated_turn": 34,
           "eliminated_by": "Ai(1)-mm-radagast",
+          "eliminated_how": "damage",
           "first_attack_turn": 19,
           "token_damage_share": 0.29
         },
@@ -1293,6 +1320,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 27,
           "eliminated_by": "Ai(3)-mm-baylen-tokens",
+          "eliminated_how": "damage",
           "first_attack_turn": 20,
           "token_damage_share": 0.0
         }
@@ -1322,6 +1350,7 @@
           "creatures_lost": 1,
           "eliminated_turn": 28,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 17,
           "token_damage_share": 0.6
         },
@@ -1342,6 +1371,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 29,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 14,
           "token_damage_share": 0.0
         },
@@ -1362,6 +1392,7 @@
           "creatures_lost": 1,
           "eliminated_turn": 25,
           "eliminated_by": "Ai(1)-mm-radagast",
+          "eliminated_how": "damage",
           "first_attack_turn": 15,
           "token_damage_share": 0.357
         },
@@ -1382,6 +1413,7 @@
           "creatures_lost": 0,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 24,
           "token_damage_share": 0.0
         }
@@ -1411,6 +1443,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 21,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 13,
           "token_damage_share": 0.231
         },
@@ -1431,6 +1464,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 21,
           "eliminated_by": "Ai(1)-mm-radagast",
+          "eliminated_how": "life loss",
           "first_attack_turn": 6,
           "token_damage_share": 0.0
         },
@@ -1451,6 +1485,7 @@
           "creatures_lost": 2,
           "eliminated_turn": 21,
           "eliminated_by": "Ai(1)-mm-radagast",
+          "eliminated_how": "life loss",
           "first_attack_turn": 19,
           "token_damage_share": 0.111
         },
@@ -1471,6 +1506,7 @@
           "creatures_lost": 0,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 20,
           "token_damage_share": 0.0
         }
@@ -1500,6 +1536,7 @@
           "creatures_lost": 1,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 17,
           "token_damage_share": 0.323
         },
@@ -1519,7 +1556,8 @@
           "tokens_chumped": 1,
           "creatures_lost": 3,
           "eliminated_turn": 31,
-          "eliminated_by": null,
+          "eliminated_by": "Ai(4)-mm-vito",
+          "eliminated_how": "life loss",
           "first_attack_turn": null,
           "token_damage_share": null
         },
@@ -1540,6 +1578,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 34,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": 19,
           "token_damage_share": 0.0
         },
@@ -1559,7 +1598,8 @@
           "tokens_chumped": 0,
           "creatures_lost": 1,
           "eliminated_turn": 31,
-          "eliminated_by": null,
+          "eliminated_by": "Ai(4)-mm-vito",
+          "eliminated_how": "life loss",
           "first_attack_turn": 24,
           "token_damage_share": 0.0
         }
@@ -1589,6 +1629,7 @@
           "creatures_lost": 4,
           "eliminated_turn": 27,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": 5,
           "token_damage_share": 0.0
         },
@@ -1609,6 +1650,7 @@
           "creatures_lost": 1,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 6,
           "token_damage_share": 0.0
         },
@@ -1629,6 +1671,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 22,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": null,
           "token_damage_share": null
         },
@@ -1649,6 +1692,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 25,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": 16,
           "token_damage_share": 0.0
         }
@@ -1678,6 +1722,7 @@
           "creatures_lost": 4,
           "eliminated_turn": 49,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": 25,
           "token_damage_share": 0.0
         },
@@ -1698,6 +1743,7 @@
           "creatures_lost": 3,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 10,
           "token_damage_share": 0.142
         },
@@ -1718,6 +1764,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 38,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": null,
           "token_damage_share": null
         },
@@ -1738,6 +1785,7 @@
           "creatures_lost": 1,
           "eliminated_turn": 47,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": 16,
           "token_damage_share": 0.0
         }
@@ -1767,6 +1815,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 22,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": null,
           "token_damage_share": null
         },
@@ -1787,6 +1836,7 @@
           "creatures_lost": 6,
           "eliminated_turn": 36,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 14,
           "token_damage_share": 0.422
         },
@@ -1807,6 +1857,7 @@
           "creatures_lost": 2,
           "eliminated_turn": 28,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": 23,
           "token_damage_share": 0.0
         },
@@ -1827,6 +1878,7 @@
           "creatures_lost": 3,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 24,
           "token_damage_share": 0.0
         }
@@ -1856,6 +1908,7 @@
           "creatures_lost": 3,
           "eliminated_turn": 48,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": 17,
           "token_damage_share": 0.0
         },
@@ -1876,6 +1929,7 @@
           "creatures_lost": 2,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 14,
           "token_damage_share": 0.0
         },
@@ -1896,6 +1950,7 @@
           "creatures_lost": 2,
           "eliminated_turn": 44,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": 30,
           "token_damage_share": 0.333
         },
@@ -1916,6 +1971,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 25,
           "eliminated_by": "Ai(1)-mm-radagast",
+          "eliminated_how": "damage",
           "first_attack_turn": 16,
           "token_damage_share": 0.0
         }
@@ -1945,6 +2001,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 30,
           "eliminated_by": "Ai(3)-mm-baylen-tokens",
+          "eliminated_how": "damage",
           "first_attack_turn": 9,
           "token_damage_share": 0.0
         },
@@ -1965,6 +2022,7 @@
           "creatures_lost": 3,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 22,
           "token_damage_share": 0.327
         },
@@ -1985,6 +2043,7 @@
           "creatures_lost": 0,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 27,
           "token_damage_share": null
         },
@@ -2005,6 +2064,7 @@
           "creatures_lost": 0,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 32,
           "token_damage_share": 0.0
         }
@@ -2034,6 +2094,7 @@
           "creatures_lost": 1,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 13,
           "token_damage_share": 0.134
         },
@@ -2054,6 +2115,7 @@
           "creatures_lost": 1,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": null,
           "token_damage_share": null
         },
@@ -2074,6 +2136,7 @@
           "creatures_lost": 0,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": null,
           "token_damage_share": null
         },
@@ -2094,6 +2157,7 @@
           "creatures_lost": 1,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 12,
           "token_damage_share": 0.0
         }
@@ -2122,7 +2186,8 @@
           "tokens_chumped": 1,
           "creatures_lost": 5,
           "eliminated_turn": 24,
-          "eliminated_by": null,
+          "eliminated_by": "Ai(4)-mm-vito",
+          "eliminated_how": "life loss",
           "first_attack_turn": 5,
           "token_damage_share": 0.375
         },
@@ -2142,7 +2207,8 @@
           "tokens_chumped": 0,
           "creatures_lost": 0,
           "eliminated_turn": 30,
-          "eliminated_by": null,
+          "eliminated_by": "Ai(4)-mm-vito",
+          "eliminated_how": "life loss",
           "first_attack_turn": 10,
           "token_damage_share": 0.0
         },
@@ -2162,7 +2228,8 @@
           "tokens_chumped": 0,
           "creatures_lost": 1,
           "eliminated_turn": 32,
-          "eliminated_by": null,
+          "eliminated_by": "Ai(4)-mm-vito",
+          "eliminated_how": "life loss",
           "first_attack_turn": 15,
           "token_damage_share": 0.0
         },
@@ -2183,6 +2250,7 @@
           "creatures_lost": 0,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 16,
           "token_damage_share": 0.0
         }
@@ -2211,7 +2279,8 @@
           "tokens_chumped": 0,
           "creatures_lost": 0,
           "eliminated_turn": 28,
-          "eliminated_by": null,
+          "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "life loss",
           "first_attack_turn": 24,
           "token_damage_share": 0.0
         },
@@ -2232,6 +2301,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 28,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 10,
           "token_damage_share": 0.0
         },
@@ -2252,6 +2322,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 22,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": null,
           "token_damage_share": null
         },
@@ -2272,6 +2343,7 @@
           "creatures_lost": 0,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 12,
           "token_damage_share": 0.0
         }
@@ -2301,6 +2373,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 33,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": null,
           "token_damage_share": null
         },
@@ -2321,6 +2394,7 @@
           "creatures_lost": 2,
           "eliminated_turn": 40,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 10,
           "token_damage_share": 0.0
         },
@@ -2341,6 +2415,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 30,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": 15,
           "token_damage_share": 0.0
         },
@@ -2361,6 +2436,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 40,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 24,
           "token_damage_share": 0.0
         }
@@ -2390,6 +2466,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 31,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": null,
           "token_damage_share": null
         },
@@ -2410,6 +2487,7 @@
           "creatures_lost": 4,
           "eliminated_turn": 35,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": 18,
           "token_damage_share": 0.0
         },
@@ -2430,6 +2508,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 28,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": 19,
           "token_damage_share": 0.174
         },
@@ -2450,6 +2529,7 @@
           "creatures_lost": 0,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 16,
           "token_damage_share": 0.0
         }
@@ -2479,6 +2559,7 @@
           "creatures_lost": 1,
           "eliminated_turn": 30,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "life loss",
           "first_attack_turn": null,
           "token_damage_share": null
         },
@@ -2499,6 +2580,7 @@
           "creatures_lost": 1,
           "eliminated_turn": 30,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 30,
           "token_damage_share": 0.0
         },
@@ -2519,6 +2601,7 @@
           "creatures_lost": 2,
           "eliminated_turn": 30,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "life loss",
           "first_attack_turn": 11,
           "token_damage_share": 0.0
         },
@@ -2539,6 +2622,7 @@
           "creatures_lost": 2,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 8,
           "token_damage_share": 0.0
         }
@@ -2568,6 +2652,7 @@
           "creatures_lost": 1,
           "eliminated_turn": 40,
           "eliminated_by": "Ai(4)-mm-vito",
+          "eliminated_how": "damage",
           "first_attack_turn": 17,
           "token_damage_share": 0.75
         },
@@ -2588,6 +2673,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 42,
           "eliminated_by": "Ai(3)-mm-baylen-tokens",
+          "eliminated_how": "damage",
           "first_attack_turn": 10,
           "token_damage_share": 0.0
         },
@@ -2608,6 +2694,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 43,
           "eliminated_by": "Ai(4)-mm-vito",
+          "eliminated_how": "life loss",
           "first_attack_turn": 35,
           "token_damage_share": 0.643
         },
@@ -2628,6 +2715,7 @@
           "creatures_lost": 1,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 28,
           "token_damage_share": 0.0
         }
@@ -2657,6 +2745,7 @@
           "creatures_lost": 1,
           "eliminated_turn": 31,
           "eliminated_by": "Ai(3)-mm-baylen-tokens",
+          "eliminated_how": "damage",
           "first_attack_turn": 5,
           "token_damage_share": 0.0
         },
@@ -2676,7 +2765,8 @@
           "tokens_chumped": 0,
           "creatures_lost": 0,
           "eliminated_turn": 54,
-          "eliminated_by": null,
+          "eliminated_by": "Ai(4)-mm-vito",
+          "eliminated_how": "life loss",
           "first_attack_turn": 10,
           "token_damage_share": 0.0
         },
@@ -2697,6 +2787,7 @@
           "creatures_lost": 3,
           "eliminated_turn": 31,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 15,
           "token_damage_share": 0.368
         },
@@ -2717,6 +2808,7 @@
           "creatures_lost": 1,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 28,
           "token_damage_share": 0.0
         }
@@ -2746,6 +2838,7 @@
           "creatures_lost": 1,
           "eliminated_turn": 26,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": 9,
           "token_damage_share": 0.0
         },
@@ -2766,6 +2859,7 @@
           "creatures_lost": 1,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 18,
           "token_damage_share": 0.272
         },
@@ -2786,6 +2880,7 @@
           "creatures_lost": 1,
           "eliminated_turn": 29,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": null,
           "token_damage_share": null
         },
@@ -2806,6 +2901,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 31,
           "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
           "first_attack_turn": null,
           "token_damage_share": null
         }

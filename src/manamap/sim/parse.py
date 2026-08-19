@@ -60,6 +60,7 @@ RX = {
 }
 _TOKEN = re.compile(r"\bToken$")
 _CREATE = re.compile(r"\bcreates?\b.*\btokens?\b", re.I)
+_LOSES_LIFE = re.compile(r"\b(loses?|lose) (that much |\d+ |X )?life\b|\bdrain", re.I)
 _ACTIVATOR = re.compile(r"\[(?:Card: .*?, )?Activator: " + _SEAT)
 _PLAYER_TAG = re.compile(r"\[(?:Player|Phase): " + _SEAT + r"\]")
 
@@ -193,10 +194,16 @@ def game_facts(g):
                "token_blockers": set(), "token_combat_damage_to_players": 0,
                "tokens_chumped": 0, "creatures_lost": 0,
                "life_by_turn": {}, "eliminated_turn": None, "eliminated_by": None,
+               "eliminated_how": None,
                "first_attack_turn": None, "damage_to_players_by_turn": defaultdict(int)}
            for s in seats}
     owner = g["owner"]
-    last_damage = None
+    # The last thing that could have cost a seat life: a DAMAGE line (source's controller)
+    # or a resolved ability whose text says the victim LOSES life (its controller, from the
+    # Activator/Player tag or the active seat). Measured on the pod run: Vito wins 9 of 20
+    # on 7 combat damage a game — every one a drain, and damage-only attribution got them
+    # all wrong. Whichever came later decides.
+    last_cause = None                      # (seat, turn, kind)
     blockers_this_turn = {}          # token id -> (seat, turn) for chump detection
     for ev in g["events"]:
         k = ev["kind"]
@@ -208,8 +215,11 @@ def game_facts(g):
             per[ev["seat"]]["activations"] += 1
         elif k == "triggered":
             per[ev["seat"]]["triggers"] += 1
-        elif k == "resolve" and ev["creates_token"] and ev["seat"] in per:
-            per[ev["seat"]]["token_resolutions"] += 1
+        elif k == "resolve":
+            if ev["creates_token"] and ev["seat"] in per:
+                per[ev["seat"]]["token_resolutions"] += 1
+            if _LOSES_LIFE.search(ev["text"]) and ev["seat"] in per:
+                last_cause = (ev["seat"], ev["turn"], "life loss")
         elif k == "attack":
             p = per[ev["seat"]]
             if p["first_attack_turn"] is None:
@@ -239,7 +249,7 @@ def game_facts(g):
                                 per[src_seat]["tokens_observed"].add(src_id)
                     elif ev["noncombat"] and src_seat in per:
                         per[src_seat]["noncombat_damage_dealt_to_players"] += ev["amount"]
-                last_damage = (src_seat, src_name, ev["turn"])
+                last_cause = (src_seat, ev["turn"], "damage")
         elif k == "life":
             p = per.get(ev["seat"])
             if p is None:
@@ -247,8 +257,9 @@ def game_facts(g):
             p["life_by_turn"][ev["turn"]] = ev["to"]
             if ev["to"] <= 0 and p["eliminated_turn"] is None:
                 p["eliminated_turn"] = ev["turn"]
-                if last_damage and last_damage[2] == ev["turn"] and last_damage[0] and last_damage[0] != ev["seat"]:
-                    p["eliminated_by"] = last_damage[0]
+                if last_cause and last_cause[1] == ev["turn"] and last_cause[0] and last_cause[0] != ev["seat"]:
+                    p["eliminated_by"] = last_cause[0]
+                    p["eliminated_how"] = last_cause[2]
         elif k == "zone" and ev["to"] == "Graveyard" and ev["from"] == "Battlefield":
             s = owner.get(ev["id"])
             if s in per:
@@ -313,6 +324,7 @@ def aggregate(facts, slug_label, label):
             "eliminated_turn": mean_ci([p["eliminated_turn"] for p in ps]),
             "eliminated_by": dict(Counter(label.get(p["eliminated_by"], p["eliminated_by"])
                                           for p in ps if p["eliminated_by"])),
+            "eliminated_how": dict(Counter(p["eliminated_how"] for p in ps if p["eliminated_how"])),
             "lands": mean_ci([p["lands"] for p in ps]),
             "casts": mean_ci([p["casts"] for p in ps]),
             "combat_damage_dealt_to_players": mean_ci([p["combat_damage_dealt_to_players"] for p in ps]),
@@ -351,14 +363,15 @@ def aggregate(facts, slug_label, label):
         "damage) for the seat; a token that only sat on the board is invisible to the log.",
         "token_resolutions counts token-creating abilities that resolved; it is blind to how "
         "many tokens each made (X, doubling) — a floor on creation events, not a token count.",
-        "eliminated_by is the controller of the last damage source before the life line that "
-        "crossed zero, learned from attack/block/land/cast lines; null when the source was "
-        "never seen acting (e.g. a drain from a permanent that never attacked).",
+        "eliminated_by is the controller of the last thing that could have cost the seat life "
+        "before the life line that crossed zero — a damage source (its controller learned from "
+        "attack/block/land/cast lines) or a resolved ability whose text says the victim loses "
+        "life (its Activator/Player tag, else the active seat); eliminated_how says which. Null "
+        "when neither was seen.",
         "Damage figures see DAMAGE only. Life LOSS that is not damage (Vito's drain, Blood "
-        "Artist, 'each opponent loses 1 life') shows in life_by_turn and eliminated_turn but "
-        "not in any damage total, and eliminated_by — the controller of the last DAMAGE source "
-        "before the life line that crossed zero — is WRONG for a drain kill. Measured: Vito wins "
-        "9 of 20 on 7.0 combat damage a game.",
+        "Artist, 'each opponent loses 1 life') shows in life_by_turn, eliminated_turn and "
+        "eliminated_how='life loss', never in a damage total. Measured: Vito wins 9 of 20 on "
+        "7.0 combat damage a game.",
         "ci95 is a Wilson interval for rates and a normal interval for means; both are "
         "meaningless below ~10 games. Seeded runs replay exactly; the interval is still the claim.",
     ]

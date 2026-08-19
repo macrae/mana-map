@@ -39,6 +39,22 @@ Then the rest of the brief, all free:
 cat data/decks/<slug>/log_annotations.json           # the debrief: what happened at the table
 ```
 
+```bash
+.venv/bin/manamap pilot simulate <slug> --list                # the simulation runs, with intervals
+```
+
+**A simulation run is evidence about the deck at a TABLE, read with two caveats that
+ride in the record.** `sim/<run-id>.json` carries `analysis`: win rate with a 95% interval,
+who eliminated whom and how (damage or life loss), combat damage dealt and taken, the
+token figures (two honest ways — `analysis.limits` says what each cannot see), and our
+seat's cumulative damage by round. Cite a figure WITH its interval and its N ("0 of 20,
+ci95 [0, 0.16]"), never the point alone; and every seat is Forge's AI — its own rating is
+"poor to ok in control, pretty bad for combo", quoted in `assumptions` — so a control
+deck's rate is a lower bound and a combo deck's is not a measurement. A run against
+`data/opponents/` (the pod) says more than one against your other decks. What a run is
+best at: the clock the table sets, who kills you and how, and whether the kill the goldfish
+measured actually lands — the curve.
+
 **The log is evidence about the deck in play, and it outranks a hunch.** A takeaway
 that recurs across entries ("lost the Hoof to open blue" twice) is a finding with ids
 you cite — `log_entries_read` in a prescription, an `evidence` note in a diagnosis. A

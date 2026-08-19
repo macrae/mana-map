@@ -1137,6 +1137,7 @@ DECK_AUDIT_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "deck_audit.py"
 #                      is still hashed, so an input appearing invalidates)
 #   stacks:passing     every stacks/*.json with checker.verdict == "pass"
 #   decisions:all      every decisions/*.json
+#   sim:runs           every sim/*.json run record (the doctor's table evidence)
 #   global:<CONST>     repo-level artifact named by a config constant
 #   repo:<CONST>       tracked source file named by a config constant
 #   prompt:self        the {prompt} slice of a prescription — the authored
@@ -1231,6 +1232,8 @@ AGENT_ROUTINES = {
     # RECON_MAX_AGE_DAYS, because deck_audit is deterministic and never reads the
     # clock. Deliberately NOT an input to deck-diagnosis's siblings: a recon
     # refresh should cost one diagnosis, not a manual regeneration.
+    # ^ deck-diagnosis: `sim:runs` (2026-08-19) — a simulation run record is evidence
+    # about the deck at a table, read with its interval and its AI caveat.
     "deck-recon": {
         "agent": "deck-doctor",
         "artifact": "deck_recon.json",
@@ -1251,7 +1254,7 @@ AGENT_ROUTINES = {
                    # The captain's log, debriefed: what happened at the table is
                    # evidence the doctor reads (2026-08-19). Optional, because a
                    # deck nobody has played yet still gets a diagnosis.
-                   "deck:log_annotations.json?",
+                   "deck:log_annotations.json?", "sim:runs",
                    "repo:DECK_AUDIT_PATH",
                    "global:CARD_ROLES_PATH", "global:COMBO_DETAILS_PATH",
                    "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
@@ -1305,7 +1308,7 @@ AGENT_ROUTINE_PRESCRIPTION_INPUTS = [
     "deck:goldfish_targets.json?", "deck:bracket_report.json?",
     "deck:mana_analysis.json?", "deck:strategic_frame.json?",
     "deck:deck_recon.json?", "deck:diagnosis.json?", "deck:log_annotations.json?",
-    "repo:DECK_AUDIT_PATH",
+    "sim:runs", "repo:DECK_AUDIT_PATH",
     "global:CARD_ROLES_PATH", "global:COMBO_DETAILS_PATH",
     "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"]
 

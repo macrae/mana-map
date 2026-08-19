@@ -197,9 +197,13 @@
           "n": 6
         },
         "eliminated_by": {
-          "edgar-vampires": 2,
+          "edgar-vampires": 3,
           "yawgmoth-swarm": 1,
           "heliod": 1
+        },
+        "eliminated_how": {
+          "damage": 2,
+          "life loss": 3
         },
         "lands": {
           "mean": 10.25,
@@ -319,6 +323,9 @@
           "radagast": 2,
           "yawgmoth-swarm": 1
         },
+        "eliminated_how": {
+          "damage": 3
+        },
         "lands": {
           "mean": 7.25,
           "ci95": [
@@ -435,6 +442,9 @@
         },
         "eliminated_by": {
           "radagast": 2
+        },
+        "eliminated_how": {
+          "damage": 2
         },
         "lands": {
           "mean": 8.62,
@@ -553,6 +563,10 @@
         "eliminated_by": {
           "edgar-vampires": 2,
           "yawgmoth-swarm": 2
+        },
+        "eliminated_how": {
+          "damage": 3,
+          "life loss": 1
         },
         "lands": {
           "mean": 9.5,
@@ -823,8 +837,8 @@
     "limits": [
       "tokens_observed counts distinct token ids that attacked or blocked (or dealt combat damage) for the seat; a token that only sat on the board is invisible to the log.",
       "token_resolutions counts token-creating abilities that resolved; it is blind to how many tokens each made (X, doubling) — a floor on creation events, not a token count.",
-      "eliminated_by is the controller of the last damage source before the life line that crossed zero, learned from attack/block/land/cast lines; null when the source was never seen acting (e.g. a drain from a permanent that never attacked).",
-      "Damage figures see DAMAGE only. Life LOSS that is not damage (Vito's drain, Blood Artist, 'each opponent loses 1 life') shows in life_by_turn and eliminated_turn but not in any damage total, and eliminated_by — the controller of the last DAMAGE source before the life line that crossed zero — is WRONG for a drain kill. Measured: Vito wins 9 of 20 on 7.0 combat damage a game.",
+      "eliminated_by is the controller of the last thing that could have cost the seat life before the life line that crossed zero — a damage source (its controller learned from attack/block/land/cast lines) or a resolved ability whose text says the victim loses life (its Activator/Player tag, else the active seat); eliminated_how says which. Null when neither was seen.",
+      "Damage figures see DAMAGE only. Life LOSS that is not damage (Vito's drain, Blood Artist, 'each opponent loses 1 life') shows in life_by_turn, eliminated_turn and eliminated_how='life loss', never in a damage total. Measured: Vito wins 9 of 20 on 7.0 combat damage a game.",
       "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. Seeded runs replay exactly; the interval is still the claim."
     ]
   },
@@ -853,6 +867,7 @@
           "creatures_lost": 2,
           "eliminated_turn": 34,
           "eliminated_by": "Ai(2)-mm-edgar-vampires",
+          "eliminated_how": "damage",
           "first_attack_turn": 9,
           "token_damage_share": 0.347
         },
@@ -873,6 +888,7 @@
           "creatures_lost": 4,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 14,
           "token_damage_share": 0.469
         },
@@ -893,6 +909,7 @@
           "creatures_lost": 1,
           "eliminated_turn": 33,
           "eliminated_by": "Ai(1)-mm-radagast",
+          "eliminated_how": "damage",
           "first_attack_turn": 7,
           "token_damage_share": 0.0
         },
@@ -913,6 +930,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 38,
           "eliminated_by": "Ai(2)-mm-edgar-vampires",
+          "eliminated_how": "damage",
           "first_attack_turn": 35,
           "token_damage_share": 0.0
         }
@@ -941,7 +959,8 @@
           "tokens_chumped": 1,
           "creatures_lost": 3,
           "eliminated_turn": 43,
-          "eliminated_by": null,
+          "eliminated_by": "Ai(2)-mm-edgar-vampires",
+          "eliminated_how": "life loss",
           "first_attack_turn": 13,
           "token_damage_share": 0.0
         },
@@ -962,6 +981,7 @@
           "creatures_lost": 4,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 6,
           "token_damage_share": 0.5
         },
@@ -982,6 +1002,7 @@
           "creatures_lost": 6,
           "eliminated_turn": 41,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 15,
           "token_damage_share": 0.439
         },
@@ -1002,6 +1023,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 35,
           "eliminated_by": "Ai(3)-mm-yawgmoth-swarm",
+          "eliminated_how": "damage",
           "first_attack_turn": 28,
           "token_damage_share": 0.0
         }
@@ -1031,6 +1053,7 @@
           "creatures_lost": 1,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 5,
           "token_damage_share": 0.0
         },
@@ -1051,6 +1074,7 @@
           "creatures_lost": 2,
           "eliminated_turn": 37,
           "eliminated_by": "Ai(1)-mm-radagast",
+          "eliminated_how": "damage",
           "first_attack_turn": 6,
           "token_damage_share": 0.333
         },
@@ -1071,6 +1095,7 @@
           "creatures_lost": 2,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 23,
           "token_damage_share": 0.0
         },
@@ -1091,6 +1116,7 @@
           "creatures_lost": 2,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 28,
           "token_damage_share": 0.0
         }
@@ -1120,6 +1146,7 @@
           "creatures_lost": 6,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 13,
           "token_damage_share": 0.078
         },
@@ -1140,6 +1167,7 @@
           "creatures_lost": 0,
           "eliminated_turn": 21,
           "eliminated_by": "Ai(1)-mm-radagast",
+          "eliminated_how": "damage",
           "first_attack_turn": 14,
           "token_damage_share": 0.4
         },
@@ -1160,6 +1188,7 @@
           "creatures_lost": 1,
           "eliminated_turn": 37,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 19,
           "token_damage_share": 0.0
         },
@@ -1180,6 +1209,7 @@
           "creatures_lost": 0,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": null,
           "token_damage_share": null
         }
@@ -1209,6 +1239,7 @@
           "creatures_lost": 3,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 13,
           "token_damage_share": 0.476
         },
@@ -1229,6 +1260,7 @@
           "creatures_lost": 2,
           "eliminated_turn": 40,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 14,
           "token_damage_share": 0.0
         },
@@ -1249,6 +1281,7 @@
           "creatures_lost": 3,
           "eliminated_turn": 37,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 19,
           "token_damage_share": 0.0
         },
@@ -1269,6 +1302,7 @@
           "creatures_lost": 2,
           "eliminated_turn": 42,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 16,
           "token_damage_share": 0.0
         }
@@ -1298,6 +1332,7 @@
           "creatures_lost": 2,
           "eliminated_turn": 50,
           "eliminated_by": "Ai(2)-mm-edgar-vampires",
+          "eliminated_how": "life loss",
           "first_attack_turn": 21,
           "token_damage_share": 0.222
         },
@@ -1318,6 +1353,7 @@
           "creatures_lost": 7,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 14,
           "token_damage_share": 0.029
         },
@@ -1338,6 +1374,7 @@
           "creatures_lost": 6,
           "eliminated_turn": 49,
           "eliminated_by": "Ai(1)-mm-radagast",
+          "eliminated_how": "damage",
           "first_attack_turn": 7,
           "token_damage_share": 0.0
         },
@@ -1358,6 +1395,7 @@
           "creatures_lost": 2,
           "eliminated_turn": 50,
           "eliminated_by": "Ai(2)-mm-edgar-vampires",
+          "eliminated_how": "life loss",
           "first_attack_turn": 36,
           "token_damage_share": 0.333
         }
@@ -1387,6 +1425,7 @@
           "creatures_lost": 1,
           "eliminated_turn": 34,
           "eliminated_by": "Ai(3)-mm-yawgmoth-swarm",
+          "eliminated_how": "damage",
           "first_attack_turn": 17,
           "token_damage_share": 0.2
         },
@@ -1407,6 +1446,7 @@
           "creatures_lost": 6,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 10,
           "token_damage_share": 0.0
         },
@@ -1427,6 +1467,7 @@
           "creatures_lost": 1,
           "eliminated_turn": 43,
           "eliminated_by": "Ai(3)-mm-yawgmoth-swarm",
+          "eliminated_how": "damage",
           "first_attack_turn": 15,
           "token_damage_share": 0.0
         },
@@ -1447,6 +1488,7 @@
           "creatures_lost": 4,
           "eliminated_turn": 47,
           "eliminated_by": "Ai(3)-mm-yawgmoth-swarm",
+          "eliminated_how": "damage",
           "first_attack_turn": 8,
           "token_damage_share": 0.0
         }
@@ -1476,6 +1518,7 @@
           "creatures_lost": 9,
           "eliminated_turn": 45,
           "eliminated_by": "Ai(4)-mm-heliod",
+          "eliminated_how": "life loss",
           "first_attack_turn": 5,
           "token_damage_share": 0.343
         },
@@ -1496,6 +1539,7 @@
           "creatures_lost": 3,
           "eliminated_turn": 34,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 22,
           "token_damage_share": 0.0
         },
@@ -1516,6 +1560,7 @@
           "creatures_lost": 1,
           "eliminated_turn": null,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 38,
           "token_damage_share": 0.0
         },
@@ -1536,6 +1581,7 @@
           "creatures_lost": 1,
           "eliminated_turn": 45,
           "eliminated_by": null,
+          "eliminated_how": null,
           "first_attack_turn": 39,
           "token_damage_share": 0.0
         }
