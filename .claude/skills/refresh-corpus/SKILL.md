@@ -97,7 +97,7 @@ JS/CSS changed, which this runbook does not do.
 
 Regenerating `synergy_graph.json`, `obsolescence_index.json`, `card_roles.json`
 and the combo files MISSes **six routines per deck**: `writer-prose`, `the-ten`,
-`issue-plan`, `deck-diagnosis`, `candidate-pool`, `deck-build`
+`deck-diagnosis`, `candidate-pool`, `deck-build`
 (`config.py` AGENT_ROUTINES). `cards.csv` itself is a declared input to none —
 deck digests hash each deck's own `cards.json`, which a refresh never touches.
 

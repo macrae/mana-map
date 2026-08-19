@@ -19,7 +19,7 @@ you do not read a design record as a description of the code.
 | [architecture.md](architecture.md) | 316 | The two embedding models, how a card is decomposed, tag and role taxonomies, synergy rules, power-creep criteria, region clustering. |
 | [viz.md](viz.md) | 1,206 | The frontend: the three modes, the `window.MM` contract, the canvas renderer, the deck dossier, Pages deployment. The largest doc, and the one to read before any `viz/` change. |
 | [pilot.md](pilot.md) | 769 | The magazine subsystem: the evidence contract, the citation contract, the rules and strategy RAG databases, the resolve loop, and what every per-deck artifact means. |
-| [agent-audit-2026-08-19.md](agent-audit-2026-08-19.md) | 399 | The workbench pivot's audit of all 18 agents: four fates (keep/fold/retire/new), per-agent strengths and enrichment, and the Sprint 0 order of work. Read before touching a charter. |
+| [agent-audit-2026-08-19.md](agent-audit-2026-08-19.md) | 399 | The workbench pivot's audit of the agents (18 then, 16 after step 2): four fates (keep/fold/retire/new), per-agent strengths and enrichment, and the Sprint 0 order of work. Read before touching a charter. |
 | [agent-cost.md](agent-cost.md) | 279 | Where LLM spend lives, per-routine token sizing, and how the invocation cache decides what to re-run. Only relevant if you are driving the agent phases. |
 
 The magazine's editorial and design constitution is **[../STYLEv3.md](../STYLEv3.md)**

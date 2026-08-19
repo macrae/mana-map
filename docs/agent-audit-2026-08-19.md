@@ -9,7 +9,8 @@ technical manual rendered from the same artifacts.*
 
 ## Summary
 
-Eighteen agents, four fates.
+All eighteen charters as they stood on the audit date, four fates. (Step 2 has since
+retired two; sixteen remain.)
 
 | Fate | Agents | What it means |
 |---|---|---|

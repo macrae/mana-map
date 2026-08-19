@@ -33,8 +33,8 @@ written brief, and the issue now opens on two pictures of the deck: its **conste
 [009 Radagast](https://macrae.github.io/mana-map/manuals/radagast.html) ·
 [newsstand](https://macrae.github.io/mana-map/manuals/index.html)
 
-Scale: 49 `manamap pilot` subcommands, 18 top-level subcommands, 18 agents, 19 skills,
-13 cache-gated routines, and the magazine's department list as `issue_spec.DEPARTMENTS`
+Scale: 49 `manamap pilot` subcommands, 18 top-level subcommands, 16 agents, 18 skills,
+11 cache-gated routines, and the magazine's department list as `issue_spec.DEPARTMENTS`
 gives it — **`OPTIONAL_DEPARTMENTS` is empty**, both migrations having landed on all nine
 decks. Test counts live in `docs/testing.md`.
 
@@ -120,7 +120,7 @@ Decided 2026-08-19. The magazine is no longer the product; a **lab bench for one
 pilot's paper decks** is — versions, a captain's log, stats, goldfish, and later a
 one-opponent T5 simulation. The manual survives as a compact technical page rendered
 from the same artifacts. `docs/agent-audit-2026-08-19.md` is the audit of all 18
-agents against that brief, with four fates and an eight-step Sprint 0.
+agents against that brief, with four fates and a Sprint 0 of eight items.
 
 **Step 1 is done**: `.claude/agents-common.md` holds the contract that was pasted into
 twelve charters (~1,000 lines), hashed with every agent in `agent_prompt_sha256`; L10
@@ -139,8 +139,16 @@ the evidence routines (stacks, engine, diagnosis, frame) are re-spawned, re-bles
 with a written reason as the 2026-08 embedding rebuild was, or left red until their
 next real run — see the commit message and the audit.
 
-Next: step 2 (retire `magazine-editor` + `pilot-panel`, demote `deck-cartographer`),
-step 3 (`manual-writer` + `pilot-coach` → `pilot-notes`), step 4 (`debrief`).
+**Step 2 is done**: `magazine-editor` and `pilot-panel` are deleted (charters, the
+`issue-plan` and `panel-prose` routines, the `design-issue` skill, the `prose:shape`
+and `cards:printing` cache tokens only they consumed); `deck-cartographer` survives but
+`map-names` is no longer a `deck_status` stage; `panel` and `plan` left `STAGES` with
+the keyed-stage mechanism that existed only for `panel`. `build-manual` renders with
+department defaults when no plan exists, so a new deck needs no editor; the nine
+tracked `issue_plan.json` and the panel keys are **frozen legacy inputs** the current
+renderer still reads, gated by `validate-issue`, until the manual is simplified.
+
+Next: step 3 (`manual-writer` + `pilot-coach` → `pilot-notes`), step 4 (`debrief`).
 
 ### 1. Phase 3 — DONE. Radagast carries the whole v4 shape.
 

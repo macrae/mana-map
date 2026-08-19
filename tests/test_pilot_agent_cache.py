@@ -58,7 +58,7 @@ def deck(tmp_path, monkeypatch):
     write_json(base / "strategic_frame.json", {"slug": SLUG, "angle": "An angle."})
     write_json(base / "manual_prose.json", PROSE)
     write_json(base / "issue.json", {"volume": 1, "deck_name": "TEST"})
-    write_json(base / "issue_plan.json", {"slug": SLUG, "angle": "x", "departments": []})
+    write_json(base / "deck_recon.json", {"slug": SLUG, "as_of": "2026-01-01", "findings": []})
     write_json(base / "stacks" / "001-first.json", stack_doc("001"))
     write_json(base / "stacks" / "002-failed.json", stack_doc("002", verdict="fail"))
     write_json(base / "decisions" / "001-a-call.json",
@@ -224,35 +224,9 @@ def test_unknown_routine_raises(deck):
 
 def test_discover_routines_finds_dynamic_ones(deck):
     routines = ac.discover_routines(SLUG)
-    assert "issue-plan" in routines
+    assert "deck-recon" in routines
     assert "stack:001" in routines and "stack:002" in routines
     assert "decision:001" in routines
-
-
-# ── Prose shape ──────────────────────────────────────────────────────────
-
-
-def test_prose_shape_ignores_wording(deck):
-    before = ac.prose_shape(deck / "manual_prose.json")
-    reworded = dict(PROSE, how_it_wins="COMPLETELY different wording here.")
-    write_json(deck / "manual_prose.json", reworded)
-    assert ac.prose_shape(deck / "manual_prose.json") == before
-
-
-def test_prose_reword_does_not_invalidate_issue_plan(deck):
-    """The headline win: a typo fix must not cost a re-plan."""
-    before = fp(SLUG, "issue-plan")
-    write_json(deck / "manual_prose.json", dict(PROSE, mulligan="Reworded entirely."))
-    ac._SHA_MEMO.clear()
-    assert fp(SLUG, "issue-plan") == before
-
-
-def test_new_section_does_invalidate_issue_plan(deck):
-    before = fp(SLUG, "issue-plan")
-    grown = dict(PROSE, combo_lines={"001": "Intro.", "002": "New line."})
-    write_json(deck / "manual_prose.json", grown)
-    ac._SHA_MEMO.clear()
-    assert fp(SLUG, "issue-plan") != before
 
 
 # ── Artifact key isolation ───────────────────────────────────────────────
@@ -300,17 +274,17 @@ def test_status_reports_added_stack_as_now_passing(deck):
 
 
 def test_status_edited_when_artifact_hand_edited(deck):
-    ac.record(SLUG, "issue-plan")
-    write_json(deck / "issue_plan.json",
-               {"slug": SLUG, "angle": "hand-tuned headline", "departments": []})
+    ac.record(SLUG, "deck-recon")
+    write_json(deck / "deck_recon.json",
+               {"slug": SLUG, "as_of": "2026-01-01", "findings": ["hand-added"]})
     ac._SHA_MEMO.clear()
-    assert ac.status(SLUG, "issue-plan")["status"] == "EDITED"
+    assert ac.status(SLUG, "deck-recon")["status"] == "EDITED"
 
 
 def test_status_miss_when_artifact_deleted(deck):
-    ac.record(SLUG, "issue-plan")
-    (deck / "issue_plan.json").unlink()
-    assert ac.status(SLUG, "issue-plan")["status"] == "MISS"
+    ac.record(SLUG, "deck-recon")
+    (deck / "deck_recon.json").unlink()
+    assert ac.status(SLUG, "deck-recon")["status"] == "MISS"
 
 
 def test_force_always_misses(deck):
@@ -323,9 +297,9 @@ def test_force_always_misses(deck):
 
 
 def test_record_refuses_missing_artifact(deck):
-    (deck / "issue_plan.json").unlink()
+    (deck / "deck_recon.json").unlink()
     with pytest.raises(ac.MissingInput):
-        ac.record(SLUG, "issue-plan")
+        ac.record(SLUG, "deck-recon")
 
 
 def test_record_refuses_stack_without_checker(deck):
@@ -374,7 +348,7 @@ def test_record_accepts_a_complete_artifact(deck):
 
 
 def test_writer_prose_does_not_own_a_cover_key(deck):
-    """issue_plan.json owns the cover; build_manual never reads prose['cover'].
+    """The cover is renderer furniture; build_manual never reads prose['cover'].
 
     The key was declared, produced on every deck, cached — and rendered nowhere.
     """
@@ -1064,7 +1038,7 @@ def test_goldfish_provenance_stamp_is_excluded_from_the_fingerprint(deck):
 
     goldfish_metrics.json embeds meta.decklist_sha256, so ANY decklist change
     rewrote the file and invalidated strategic-frame, coach-prose, writer-prose,
-    tutor-guide, issue-plan and every decision — regardless of whether a single
+    tutor-guide and every decision — regardless of whether a single
     figure moved. Observed directly: restoring comment lines to a decklist
     re-MISSed five prose routines whose numbers were byte-identical.
     """

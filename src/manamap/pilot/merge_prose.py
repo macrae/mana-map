@@ -24,7 +24,6 @@ from manamap.pilot.common import deck_dir
 AGENT_FILE = {
     "coach-prose": "pilot-coach.json",
     "writer-prose": "manual-writer.json",
-    "panel-prose": "pilot-panel.json",
 }
 
 PROSE_ARTIFACT = "manual_prose.json"

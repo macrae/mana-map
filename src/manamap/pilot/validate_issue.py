@@ -704,8 +704,8 @@ def main(args):
     plan_path = base / "issue_plan.json"
     if not plan_path.exists():
         raise SystemExit(
-            f"{plan_path} not found — run the design-issue skill "
-            f"(magazine-editor agent) to produce it."
+            f"{plan_path} not found — the magazine-editor is retired; this "
+            f"validator gates the LEGACY plans on already-published decks only."
         )
     with open(plan_path) as f:
         plan = json.load(f)

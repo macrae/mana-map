@@ -128,7 +128,7 @@ def file_digest_excluding(path, exclude):
 
     `goldfish_metrics.json` embeds `meta.decklist_sha256`, so ANY decklist edit
     changed the file's bytes and MISSed every routine that declares it —
-    strategic-frame, coach-prose, writer-prose, tutor-guide, issue-plan and every
+    strategic-frame, coach-prose, writer-prose, tutor-guide and every
     decision — even when not one metric had moved. Observed directly: restoring
     comment lines in a decklist re-MISSed five prose routines whose figures were
     byte-identical. The provenance stamp is worth keeping in the artifact; it just
@@ -193,41 +193,6 @@ def diff_card_maps(old_map, new_map):
     changed_keys |= {k for k in set(old_map or {}) & set(new_map or {})
                      if (old_map or {})[k] != (new_map or {})[k]}
     return sorted({k.split("\x00", 1)[0] for k in changed_keys})
-
-
-# How cards *look*. Only the magazine-editor reads this (Featured Artist), so
-# it is a separate token rather than part of CARD_SEMANTIC_FIELDS — adding it
-# there would needlessly invalidate coach, writer, stacks and decisions, none of
-# which reason about art.
-CARD_PRINTING_FIELDS = (
-    "name", "artist", "set", "set_name", "collector_number",
-    "border_color", "frame_effects", "finishes", "foil",
-)
-
-
-def cards_printing_digest(path):
-    """Digest the printing identity of every card — artist, set, treatment."""
-    if not path.exists():
-        return None
-    doc = load_json_memo(path)
-    cards = [
-        {k: card.get(k) for k in CARD_PRINTING_FIELDS}
-        for card in doc.get("cards", [])
-    ]
-    cards.sort(key=lambda c: str(c.get("name")))
-    return json_sha256(cards)
-
-
-def prose_shape(path):
-    """manual_prose.json's key skeleton with all leaf text dropped.
-
-    The editor packages prose; it doesn't rewrite it. Rewording a paragraph
-    must not cost a re-plan, but adding or removing a section must.
-    """
-    if not path.exists():
-        return None
-    doc = load_json_memo(path)
-    return {k: (sorted(v) if isinstance(v, dict) else None) for k, v in sorted(doc.items())}
 
 
 def agent_prompt_sha256(agent):
@@ -380,15 +345,8 @@ def resolve_inputs(slug, spec):
             if not path.exists():
                 raise MissingInput(f"{rel(path)} is required by this routine but missing")
             extra["cards_semantic"] = cards_semantic_digest(path)
-        elif token == "cards:printing":
-            path = base / "cards.json"
-            if not path.exists():
-                raise MissingInput(f"{rel(path)} is required by this routine but missing")
-            extra["cards_printing"] = cards_printing_digest(path)
         elif token == "strategy:doc":
             extra["strategy_doc_sha256"] = strategy_doc_digest()
-        elif token == "prose:shape":
-            extra["prose_shape"] = prose_shape(base / "manual_prose.json")
         elif token == "rules:version":
             extra["rules_version"] = rules_version()
         else:
@@ -483,8 +441,7 @@ def diff_inputs(old_entries, new_entries):
 def _extra_changes(old_extra, new_extra):
     changes = []
     labels = {"strategy_doc_sha256": "strategy.md changed",
-              "rules_version": "rules version changed",
-              "prose_shape": "prose structure changed"}
+              "rules_version": "rules version changed"}
     for key in sorted(set(old_extra or {}) | set(new_extra or {})):
         if (old_extra or {}).get(key) != (new_extra or {}).get(key):
             changes.append({"path": key, "change": "changed",

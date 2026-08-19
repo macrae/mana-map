@@ -38,28 +38,30 @@ STAGES = [
     ("mana",       "mana_analysis.json",     "decklist_sha256",      False, "hypergeometric colour sources — run AFTER goldfish"),
     ("frame",      "strategic_frame.json",   None,  False, "the strategist's read — `research-strategy` consult"),
     ("map",        "deck_map.json",          "decklist_sha256",      False, "the constellation — `deck-map`"),
-    ("map-names",  "deck_map.json",          None,  False, "cities named by `deck-cartographer` + `merge-deck-map`"),
     ("engine",     "engine.json",            "decklist_sha256",      False, "how it RUNS — `analyze-engine` loop"),
     ("stacks",     "stacks/",                None,  False, "checker-passed lines: the only fact tier"),
     ("shortlist",  "considering.json",       None,  False, "The Ten — `short-list`"),
     ("shortlist-art", "considering_art.json", None,  False, "Scryfall art for The Ten — `short-list-art`"),
     ("tutors",     "tutor_guide.json",       None,  False, "the tutor guide — `tutor-guide`"),
     ("prose",      "manual_prose.json",      None,  False, "writer + coach prose — `write-manual`"),
-    ("panel",      "manual_prose.json",      None,  False, "the front of book — `pilot-panel`"),
     ("issue",      "issue.json",             None,  False, "authored identity: volume, date, price"),
-    ("plan",       "issue_plan.json",        None,  False, "the magazine editor's packaging — `design-issue`"),
 ]
-
-# Stages whose artifact exists for another reason, so file presence proves nothing:
-# the panel writes `editors_letter` and `pilots_log` INTO the writer's file, which
-# `prose` already created. Checked by key instead, or a deck with no front of book
-# reports complete.
-KEYED_STAGES = {"panel": ("editors_letter", "pilots_log")}
 
 # Stages this development cycle added. Named explicitly so a deck built before
 # them reports them as MISSING rather than as complete-by-omission — which is the
 # exact way a new capability fails to propagate.
-ADDED_2026_08 = {"map", "map-names", "engine", "panel", "shortlist-art"}
+ADDED_2026_08 = {"map", "engine", "shortlist-art"}
+
+# RETIRED 2026-08-19 with the workbench pivot (docs/agent-audit-2026-08-19.md):
+# `map-names` (the cartographer is optional now — the deterministic fallback
+# names are honest, and a gate on wit is a gate nobody should have to pass),
+# `panel` (the Editor's Letter and Pilot's Log — pilot-panel is deleted) and
+# `plan` (issue_plan.json — magazine-editor is deleted; build-manual renders
+# with department defaults when no plan exists, and the tracked plans on the
+# published decks are frozen legacy inputs until the manual is simplified).
+# A stage whose artifact exists for another reason cannot be checked by file
+# presence — `panel` was checked by KEY for that reason, and the mechanism went
+# with the stage; bring it back with the first such stage, not before.
 
 
 def _dig(doc, path):
@@ -105,23 +107,11 @@ def status(slug, validate=True):
         doc = load_json(path) if name.endswith(".json") else {}
         detail, state = "", "present"
 
-        if key == "map-names":
-            regions = (doc or {}).get("regions") or []
-            cities = [r for r in regions if r.get("level") == 0]
-            named = [r for r in cities if r.get("label")]
-            state = "present" if cities and len(named) == len(cities) else "missing"
-            detail = f"{len(named)}/{len(cities)} cities named"
-        elif key == "engine":
+        if key == "engine":
             verdict = ((doc or {}).get("critic") or {}).get("verdict")
             detail = f"critic: {verdict or 'not run'}"
             if verdict == "fail":
                 state = "unverified"
-        elif key in KEYED_STAGES:
-            wanted = KEYED_STAGES[key]
-            have = [k for k in wanted if (doc or {}).get(k)]
-            state = "present" if len(have) == len(wanted) else "missing"
-            detail = f"{len(have)}/{len(wanted)} keys"
-
         elif sha_path and truth:
             stamped = _dig(doc, sha_path)
             if stamped and stamped != truth:
@@ -163,7 +153,6 @@ VALIDATED = {
     "diagnosis.json": "manamap.pilot.validate_diagnosis",
     "engine.json": "manamap.pilot.validate_engine",
     "goldfish_targets.json": "manamap.pilot.validate_goldfish_targets",
-    "issue_plan.json": "manamap.pilot.validate_issue",
     "pending.json": "manamap.pilot.validate_pending",
     "strategic_frame.json": "manamap.pilot.validate_strategic_frame",
     "tutor_guide.json": "manamap.pilot.validate_tutor_guide",

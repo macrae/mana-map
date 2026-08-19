@@ -26,7 +26,7 @@ Sections, in file order:
                      goldfish, strategy KB, AGENT_ROUTINES (the cache registry)
 
 Three source files and every agent charter are declared cache inputs
-(`repo:STYLE_DOC_PATH`, `repo:ISSUE_SPEC_PATH`, `repo:DECK_AUDIT_PATH`). This
+(`repo:DECK_AUDIT_PATH`). This
 file is NOT one of them — editing it invalidates nothing by itself, but changing
 a VALUE an artifact was derived from does.
 """
@@ -1106,8 +1106,6 @@ AGENT_PROMPTS_DIR = _REPO_ROOT / ".claude" / "agents"
 # `agents/`, not inside, because Claude Code loads `.claude/agents/*.md` as agent
 # definitions and tests/test_docs_counts.py counts them.
 AGENT_COMMON_PROMPT = _REPO_ROOT / ".claude" / "agents-common.md"
-STYLE_DOC_PATH = _REPO_ROOT / "STYLEv3.md"
-ISSUE_SPEC_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "issue_spec.py"
 # The audit's CODE, for the same reason deck-diagnosis declares bracket_report and
 # mana_analysis: a diagnosis must carry deck-audit's figures, so a change to the
 # regexes that compute them can flip a recorded diagnosis from true to false. Fixing
@@ -1128,8 +1126,6 @@ DECK_AUDIT_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "deck_audit.py"
 #                      writes back never self-invalidate
 #   strategy:doc       strategy.md bytes via common.strategy_doc_sha256();
 #                      never the derived index, so build-strategy-db is free
-#   prose:shape        manual_prose.json key skeleton only — rewording is free,
-#                      adding or removing a section is not
 #   rules:version      effective_date from data/rules/.rules-meta.json
 AGENT_ROUTINES = {
     "strategic-frame": {
@@ -1167,7 +1163,7 @@ AGENT_ROUTINES = {
     # The Short List (v3.3): one artifact replaces the sideboard-analysis /
     # upgrade-watch pair — the ten cards most worth the pilot's sleeves,
     # bench-first, pool-filled. Applicable to every deck. Deliberately NOT an
-    # input to writer-prose or issue-plan: a bench edit should cost one
+    # input to writer-prose: a bench edit should cost one
     # analysis, not a full manual regeneration — the renderer reads the
     # artifact directly, so the coupling stays one-way.
     "deck-engine": {
@@ -1194,16 +1190,6 @@ AGENT_ROUTINES = {
         # naming places rather than describing contents.
         "inputs": ["deck:deck_map.json", "deck:strategic_frame.json?"],
     },
-    "panel-prose": {
-        "agent": "pilot-panel",
-        "artifact": "manual_prose.json",
-        "artifact_keys": ["editors_letter", "pilots_log"],
-        # `deck:engine.json` is the load-bearing input: the panel argues in the
-        # engine's stage names and may not assert a line the model draws dashed,
-        # so a re-run of the engine loop MUST re-open the conversation.
-        "inputs": ["cards:semantic", "deck:engine.json",
-                   "deck:strategic_frame.json?", "stacks:passing"],
-    },
     "the-ten": {
         "agent": "short-list-analyst",
         "artifact": "considering.json",
@@ -1225,16 +1211,6 @@ AGENT_ROUTINES = {
         "artifact": "tutor_guide.json",
         "inputs": ["cards:semantic", "stacks:passing", "deck:strategic_frame.json?",
                    "deck:goldfish_metrics.json!meta.decklist_sha256", "strategy:doc"],
-    },
-    "issue-plan": {
-        "agent": "magazine-editor",
-        "artifact": "issue_plan.json",
-        "inputs": ["repo:STYLE_DOC_PATH", "repo:ISSUE_SPEC_PATH",
-                   "deck:issue.json", "cards:semantic", "stacks:passing",
-                   "decisions:all", "deck:goldfish_metrics.json!meta.decklist_sha256",
-                   "deck:strategic_frame.json?", "prose:shape", "cards:printing",
-                   "global:COMBO_GRAPH_PATH", "global:SYNERGY_GRAPH_PATH",
-                   "global:OBSOLESCENCE_INDEX_PATH", "strategy:doc"],
     },
     # The diagnosis loop. `deck-recon` is the one routine in this registry whose
     # staleness is TIME rather than inputs: a decklist edit does not change what

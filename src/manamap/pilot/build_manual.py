@@ -1926,7 +1926,7 @@ def main(args):
     plan = load_json(base / "issue_plan.json", {})
     if not plan:
         print("WARN issue_plan.json absent — rendering with department defaults "
-              "(run the design-issue skill for the full magazine treatment)")
+              "(the magazine-editor is retired; a plan is a legacy input)")
 
     deck_doc = load_deck_cards(slug)
     stacks = load_verified_stacks(slug)

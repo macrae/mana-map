@@ -43,9 +43,10 @@ simulator never measured how they actually win.
 
 **3 — Understand it.** `/research-strategy` consult → `strategic_frame.json`.
 
-**4 — Map it.** `deck-map` → spawn `deck-cartographer` → `merge-deck-map` →
-`validate-deck-map`. The constellation: the deck re-laid-out from its own cards
-and clustered into named cities. **Cheap and agent-light** — one small naming pass.
+**4 — Map it.** `deck-map` → `validate-deck-map`. The constellation: the deck
+re-laid-out from its own cards and clustered into cities. Naming them
+(`deck-cartographer` → `merge-deck-map`) is **optional** since the workbench pivot —
+the deterministic fallback names are honest, and it is not a `deck-status` stage.
 
 **5 — Engine it.** `/analyze-engine` — `deck-engineer` ⇄ `engine-critic`, gated by
 `validate-engine`. **This is where the clusters become an input rather than an
@@ -65,19 +66,15 @@ subject is OUTSIDE the deck actually show you the cards. `tutor-guide` → At th
 Table's tutor subhead. `/author-decision` → the What's Your Play spreads.
 
 **8 — Write it.** `/write-manual` (writer + coach, merged by key ownership via
-`merge-prose`), then the **`pilot-panel` agent** for the front of book — the
-Editor's Letter and the Pilot's Log, which reads `engine.json` and argues in its
-stage names, so it runs after phase 5 and not before. Its turn 0 is Sunny's HOT
-TAKE and a later turn answers it; `validate-issue` checks that structure and a
-cross-deck test checks that no two decks open theirs the same way.
+`merge-prose`). The front of book (`pilot-panel`) and the magazine editor
+(`/design-issue`) are **retired** with the workbench pivot
+(`docs/agent-audit-2026-08-19.md`); the published decks keep their tracked
+`issue_plan.json` and panel keys as frozen legacy inputs until the manual is
+simplified.
 
-**9 — Package it.** Author `issue.json` → `/design-issue` (the magazine editor) →
-`validate-issue --strict` → `build-manual` → `build-index`. Two things the editor
-must decide rather than inherit: `the-kill.features`, which lines get a stack
-theatre (omit it below about seven passing stacks, name a subset above — eleven
-theatres made one Kill 42% of its issue), and whether the plan opts into the
-constellation and the engine schematic. `issue-length <slug> --rendered` is the
-before-and-after measurement; run it, because word count and scroll disagree.
+**9 — Render it.** Author `issue.json` → `build-manual` → `build-index`. Without a
+plan, `build-manual` renders with department defaults. `validate-issue --strict`
+still gates the legacy plans on already-published decks.
 
 **10 — Diagnose it**, when the deck is to be improved rather than described:
 `/diagnose-deck`. Deliberately NOT a consumer of `engine.json` — the doctor keeps
@@ -93,7 +90,7 @@ manamap pilot validate-deck-map <slug>        # names distinct, membership untou
 manamap pilot validate-engine <slug>          # stages, completeness, verified_by
 manamap pilot validate-considering <slug>
 manamap pilot validate-tutor-guide <slug>
-manamap pilot validate-issue <slug>           # taxonomy leaks, question deks, L10
+manamap pilot validate-issue <slug>           # legacy plans only (published decks)
 .venv/bin/python -m pytest -m "not browser" -n auto
 ```
 
@@ -105,8 +102,8 @@ four times, once in the session that wrote this file.
 New decks inherit these because they are in `deck_status.STAGES` and in the gates
 above, not because anyone remembers them.
 
-- **`deck-map` + `deck-cartographer`** — the constellation, and cities named for
-  the job their cards do. Ward not average linkage (average put 37 of 71 cards in
+- **`deck-map`** (+ the optional `deck-cartographer`) — the constellation, and
+  cities named for the job their cards do. Ward not average linkage (average put 37 of 71 cards in
   one city); city count grown until the largest holds under 35%; territories drawn
   per neighbourhood because a spread city's hull swallowed the map.
 - **`analyze-engine`** — the eight-stage model. It caught a prescription for the

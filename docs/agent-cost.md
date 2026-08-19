@@ -33,6 +33,12 @@ changed since its output artifact was recorded.
 
 ## Measured cost per routine
 
+> **Retired 2026-08-19** (workbench pivot, `docs/agent-audit-2026-08-19.md`):
+> `issue-plan` (magazine-editor) and `panel-prose` (pilot-panel) no longer exist as
+> routines or agents; `deck-map-names` survives but is optional and no longer a
+> `deck-status` stage. Their rows below are kept as the measurement of what the
+> magazine cost — ~250k per deck between the two deleted routines.
+
 Real numbers from the session that built the magazine layer (2026-07-25):
 
 | Routine | Agent | Tokens | Typical trigger |

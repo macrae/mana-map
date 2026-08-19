@@ -94,7 +94,7 @@ thing that made the deck legal — the code did that.
 ## Notes
 
 - The deck flows straight into the manual pipeline from step 8 — a built deck is an
-  ordinary deck. `/write-manual` and `/design-issue` need nothing special from here.
+  ordinary deck. `/write-manual` needs nothing special from here.
 - Engines the architect names are **candidates**, never facts. Promoting one to ✓
   means running `/resolve-stack` on it like any other line.
 - If the user asks for a bracket the commander can't reach without its best cards,

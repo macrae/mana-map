@@ -191,10 +191,8 @@ Run these from Claude Code in the repo root. Each is a skill in `.claude/skills/
 | `manamap pilot goldfish <slug>` | Resource curves from 10k seeded games | **yes** |
 | `manamap pilot deck-map <slug>` | The constellation: local layout + clusters | **yes** |
 | `/analyze-engine` | The engine: stages, lines, what a stack actually proves | no |
-| `pilot-panel` agent | The Editor's Letter and the Pilot's Log | no |
 | `/write-manual` | Strategic frame, coaching, body prose | no |
-| `/design-issue` | The issue plan — cover, departments, headlines | no |
-| `manamap pilot validate-issue <slug>` | Form gate over the plan | **yes** |
+| `manamap pilot validate-issue <slug>` | Form gate over the legacy plan (published decks) | **yes** |
 
 ### 6. Build and read
 
