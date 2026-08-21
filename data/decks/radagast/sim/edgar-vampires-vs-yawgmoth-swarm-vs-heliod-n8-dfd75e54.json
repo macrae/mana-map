@@ -13,22 +13,34 @@
     {
       "slug": "radagast",
       "forge_name": "mm-radagast",
-      "decklist_sha256": "231d89abca22a6a3b6d9f98414f36a325342344ffecef6dfa1df1e3b49c612d2"
+      "decklist_sha256": "231d89abca22a6a3b6d9f98414f36a325342344ffecef6dfa1df1e3b49c612d2",
+      "commander": [
+        "Radagast of Rhosgobel"
+      ]
     },
     {
       "slug": "edgar-vampires",
       "forge_name": "mm-edgar-vampires",
-      "decklist_sha256": "bdaa14183bcd959c4c772153b8516f964ca2503b0fa39dd11c9bcfa202c7cc6e"
+      "decklist_sha256": "bdaa14183bcd959c4c772153b8516f964ca2503b0fa39dd11c9bcfa202c7cc6e",
+      "commander": [
+        "Edgar Markov"
+      ]
     },
     {
       "slug": "yawgmoth-swarm",
       "forge_name": "mm-yawgmoth-swarm",
-      "decklist_sha256": "3ddfb869fa7b2ae006eeb0771c1ffb95aa9df8149fbc2ba3feae4edd2bcd2a59"
+      "decklist_sha256": "3ddfb869fa7b2ae006eeb0771c1ffb95aa9df8149fbc2ba3feae4edd2bcd2a59",
+      "commander": [
+        "Yawgmoth, Thran Physician"
+      ]
     },
     {
       "slug": "heliod",
       "forge_name": "mm-heliod",
-      "decklist_sha256": "2d7f07f993482fe0cacf3623e0b41061f6e37ef0bca55f645a1b3da9ef38b62b"
+      "decklist_sha256": "2d7f07f993482fe0cacf3623e0b41061f6e37ef0bca55f645a1b3da9ef38b62b",
+      "commander": [
+        "Heliod, the Radiant Dawn"
+      ]
     }
   ],
   "games_requested": 8,
@@ -302,6 +314,31 @@
             ],
             "n": 8
           }
+        },
+        "commander_damage": {
+          "commander": [
+            "Radagast of Rhosgobel"
+          ],
+          "dealt_total": {
+            "mean": 5.12,
+            "ci95": [
+              2.17,
+              8.08
+            ],
+            "n": 8
+          },
+          "max_on_one_defender": {
+            "mean": 5.12,
+            "ci95": [
+              2.17,
+              8.08
+            ],
+            "n": 8
+          },
+          "best_single_game_max": 12,
+          "games_reaching_21": 0,
+          "games_reaching_21_rate": 0.0,
+          "games_dealing_any": 6
         }
       },
       "edgar-vampires": {
@@ -423,6 +460,31 @@
             ],
             "n": 8
           }
+        },
+        "commander_damage": {
+          "commander": [
+            "Edgar Markov"
+          ],
+          "dealt_total": {
+            "mean": 5.38,
+            "ci95": [
+              0.6,
+              10.15
+            ],
+            "n": 8
+          },
+          "max_on_one_defender": {
+            "mean": 4.12,
+            "ci95": [
+              1.42,
+              6.83
+            ],
+            "n": 8
+          },
+          "best_single_game_max": 11,
+          "games_reaching_21": 0,
+          "games_reaching_21_rate": 0.0,
+          "games_dealing_any": 5
         }
       },
       "yawgmoth-swarm": {
@@ -543,6 +605,31 @@
             ],
             "n": 8
           }
+        },
+        "commander_damage": {
+          "commander": [
+            "Yawgmoth, Thran Physician"
+          ],
+          "dealt_total": {
+            "mean": 1.5,
+            "ci95": [
+              0.07,
+              2.93
+            ],
+            "n": 8
+          },
+          "max_on_one_defender": {
+            "mean": 1.25,
+            "ci95": [
+              0.22,
+              2.28
+            ],
+            "n": 8
+          },
+          "best_single_game_max": 4,
+          "games_reaching_21": 0,
+          "games_reaching_21_rate": 0.0,
+          "games_dealing_any": 4
         }
       },
       "heliod": {
@@ -665,6 +752,31 @@
             ],
             "n": 8
           }
+        },
+        "commander_damage": {
+          "commander": [
+            "Heliod, the Radiant Dawn"
+          ],
+          "dealt_total": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "n": 8
+          },
+          "max_on_one_defender": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "n": 8
+          },
+          "best_single_game_max": 0,
+          "games_reaching_21": 0,
+          "games_reaching_21_rate": 0.0,
+          "games_dealing_any": 0
         }
       }
     },
@@ -839,7 +951,8 @@
       "token_resolutions counts token-creating abilities that resolved; it is blind to how many tokens each made (X, doubling) — a floor on creation events, not a token count.",
       "eliminated_by is the controller of the last thing that could have cost the seat life before the life line that crossed zero — a damage source (its controller learned from attack/block/land/cast lines) or a resolved ability whose text says the victim loses life (its Activator/Player tag, else the active seat); eliminated_how says which. Null when neither was seen.",
       "Damage figures see DAMAGE only. Life LOSS that is not damage (Vito's drain, Blood Artist, 'each opponent loses 1 life') shows in life_by_turn, eliminated_turn and eliminated_how='life loss', never in a damage total. Measured: Vito wins 9 of 20 on 7.0 combat damage a game.",
-      "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. Seeded runs replay exactly; the interval is still the claim."
+      "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. Seeded runs replay exactly; the interval is still the claim.",
+      "commander_damage is per DEFENDER (CR 903.10a asks for 21 from the same commander on one player), so max_on_one_defender is the number the win condition reads and dealt_total is not — a commander that hit three seats for 20 each dealt 60 and killed nobody. It counts COMBAT damage by a permanent whose logged name matches the seat's commander; a commander dealing noncombat damage does not count toward 903.10a and is excluded here too. The block is ABSENT when the seat's commander is unknown, because the log never names one."
     ]
   },
   "games": [
@@ -869,6 +982,11 @@
           "eliminated_by": "Ai(2)-mm-edgar-vampires",
           "eliminated_how": "damage",
           "first_attack_turn": 9,
+          "commander_damage_by_defender": {
+            "Ai(3)-mm-yawgmoth-swarm": 12
+          },
+          "commander_damage_max": 12,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.347
         },
         "edgar-vampires": {
@@ -890,6 +1008,11 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 14,
+          "commander_damage_by_defender": {
+            "Ai(1)-mm-radagast": 6
+          },
+          "commander_damage_max": 6,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.469
         },
         "yawgmoth-swarm": {
@@ -911,6 +1034,9 @@
           "eliminated_by": "Ai(1)-mm-radagast",
           "eliminated_how": "damage",
           "first_attack_turn": 7,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         },
         "heliod": {
@@ -932,6 +1058,9 @@
           "eliminated_by": "Ai(2)-mm-edgar-vampires",
           "eliminated_how": "damage",
           "first_attack_turn": 35,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         }
       }
@@ -962,6 +1091,9 @@
           "eliminated_by": "Ai(2)-mm-edgar-vampires",
           "eliminated_how": "life loss",
           "first_attack_turn": 13,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         },
         "edgar-vampires": {
@@ -983,6 +1115,9 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 6,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.5
         },
         "yawgmoth-swarm": {
@@ -1004,6 +1139,9 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 15,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.439
         },
         "heliod": {
@@ -1025,6 +1163,9 @@
           "eliminated_by": "Ai(3)-mm-yawgmoth-swarm",
           "eliminated_how": "damage",
           "first_attack_turn": 28,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         }
       }
@@ -1055,6 +1196,11 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 5,
+          "commander_damage_by_defender": {
+            "Ai(2)-mm-edgar-vampires": 6
+          },
+          "commander_damage_max": 6,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         },
         "edgar-vampires": {
@@ -1076,6 +1222,9 @@
           "eliminated_by": "Ai(1)-mm-radagast",
           "eliminated_how": "damage",
           "first_attack_turn": 6,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.333
         },
         "yawgmoth-swarm": {
@@ -1097,6 +1246,9 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 23,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         },
         "heliod": {
@@ -1118,6 +1270,9 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 28,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         }
       }
@@ -1148,6 +1303,11 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 13,
+          "commander_damage_by_defender": {
+            "Ai(2)-mm-edgar-vampires": 8
+          },
+          "commander_damage_max": 8,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.078
         },
         "edgar-vampires": {
@@ -1169,6 +1329,9 @@
           "eliminated_by": "Ai(1)-mm-radagast",
           "eliminated_how": "damage",
           "first_attack_turn": 14,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.4
         },
         "yawgmoth-swarm": {
@@ -1190,6 +1353,11 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 19,
+          "commander_damage_by_defender": {
+            "Ai(2)-mm-edgar-vampires": 2
+          },
+          "commander_damage_max": 2,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         },
         "heliod": {
@@ -1211,6 +1379,9 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": null,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": null
         }
       }
@@ -1241,6 +1412,11 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 13,
+          "commander_damage_by_defender": {
+            "Ai(4)-mm-heliod": 5
+          },
+          "commander_damage_max": 5,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.476
         },
         "yawgmoth-swarm": {
@@ -1262,6 +1438,9 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 14,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         },
         "heliod": {
@@ -1283,6 +1462,9 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 19,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         },
         "radagast": {
@@ -1304,6 +1486,11 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 16,
+          "commander_damage_by_defender": {
+            "Ai(4)-mm-heliod": 2
+          },
+          "commander_damage_max": 2,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         }
       }
@@ -1334,6 +1521,9 @@
           "eliminated_by": "Ai(2)-mm-edgar-vampires",
           "eliminated_how": "life loss",
           "first_attack_turn": 21,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.222
         },
         "edgar-vampires": {
@@ -1355,6 +1545,13 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 14,
+          "commander_damage_by_defender": {
+            "Ai(1)-mm-radagast": 5,
+            "Ai(3)-mm-yawgmoth-swarm": 5,
+            "Ai(4)-mm-heliod": 11
+          },
+          "commander_damage_max": 11,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.029
         },
         "yawgmoth-swarm": {
@@ -1376,6 +1573,11 @@
           "eliminated_by": "Ai(1)-mm-radagast",
           "eliminated_how": "damage",
           "first_attack_turn": 7,
+          "commander_damage_by_defender": {
+            "Ai(2)-mm-edgar-vampires": 2
+          },
+          "commander_damage_max": 2,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         },
         "heliod": {
@@ -1397,6 +1599,9 @@
           "eliminated_by": "Ai(2)-mm-edgar-vampires",
           "eliminated_how": "life loss",
           "first_attack_turn": 36,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.333
         }
       }
@@ -1427,6 +1632,11 @@
           "eliminated_by": "Ai(3)-mm-yawgmoth-swarm",
           "eliminated_how": "damage",
           "first_attack_turn": 17,
+          "commander_damage_by_defender": {
+            "Ai(4)-mm-heliod": 6
+          },
+          "commander_damage_max": 6,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.2
         },
         "yawgmoth-swarm": {
@@ -1448,6 +1658,12 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 10,
+          "commander_damage_by_defender": {
+            "Ai(1)-mm-radagast": 4,
+            "Ai(4)-mm-heliod": 2
+          },
+          "commander_damage_max": 4,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         },
         "heliod": {
@@ -1469,6 +1685,9 @@
           "eliminated_by": "Ai(3)-mm-yawgmoth-swarm",
           "eliminated_how": "damage",
           "first_attack_turn": 15,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         },
         "radagast": {
@@ -1490,6 +1709,11 @@
           "eliminated_by": "Ai(3)-mm-yawgmoth-swarm",
           "eliminated_how": "damage",
           "first_attack_turn": 8,
+          "commander_damage_by_defender": {
+            "Ai(2)-mm-edgar-vampires": 8
+          },
+          "commander_damage_max": 8,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         }
       }
@@ -1520,6 +1744,11 @@
           "eliminated_by": "Ai(4)-mm-heliod",
           "eliminated_how": "life loss",
           "first_attack_turn": 5,
+          "commander_damage_by_defender": {
+            "Ai(2)-mm-edgar-vampires": 5
+          },
+          "commander_damage_max": 5,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.343
         },
         "edgar-vampires": {
@@ -1541,6 +1770,11 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 22,
+          "commander_damage_by_defender": {
+            "Ai(1)-mm-radagast": 5
+          },
+          "commander_damage_max": 5,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         },
         "yawgmoth-swarm": {
@@ -1562,6 +1796,11 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 38,
+          "commander_damage_by_defender": {
+            "Ai(4)-mm-heliod": 2
+          },
+          "commander_damage_max": 2,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         },
         "heliod": {
@@ -1583,6 +1822,9 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 39,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         }
       }

@@ -13,12 +13,18 @@
     {
       "slug": "kianne",
       "forge_name": "mm-kianne",
-      "decklist_sha256": "571f60c84b55d4f3faa33ad90f6c67267a463b58fbed91d009d0c437b2043136"
+      "decklist_sha256": "571f60c84b55d4f3faa33ad90f6c67267a463b58fbed91d009d0c437b2043136",
+      "commander": [
+        "Kianne, Corrupted Memory"
+      ]
     },
     {
       "slug": "giada-angels",
       "forge_name": "mm-giada-angels",
-      "decklist_sha256": "c322a5893413429edc0fa8b35e4b18d294eb9ad5e26646920a6fab0561611df4"
+      "decklist_sha256": "c322a5893413429edc0fa8b35e4b18d294eb9ad5e26646920a6fab0561611df4",
+      "commander": [
+        "Giada, Font of Hope"
+      ]
     }
   ],
   "games_requested": 12,
@@ -346,6 +352,31 @@
             ],
             "n": 12
           }
+        },
+        "commander_damage": {
+          "commander": [
+            "Kianne, Corrupted Memory"
+          ],
+          "dealt_total": {
+            "mean": 2.75,
+            "ci95": [
+              -0.64,
+              6.14
+            ],
+            "n": 12
+          },
+          "max_on_one_defender": {
+            "mean": 2.75,
+            "ci95": [
+              -0.64,
+              6.14
+            ],
+            "n": 12
+          },
+          "best_single_game_max": 20,
+          "games_reaching_21": 0,
+          "games_reaching_21_rate": 0.0,
+          "games_dealing_any": 3
         }
       },
       "giada-angels": {
@@ -458,6 +489,31 @@
             ],
             "n": 12
           }
+        },
+        "commander_damage": {
+          "commander": [
+            "Giada, Font of Hope"
+          ],
+          "dealt_total": {
+            "mean": 11.25,
+            "ci95": [
+              7.97,
+              14.53
+            ],
+            "n": 12
+          },
+          "max_on_one_defender": {
+            "mean": 11.25,
+            "ci95": [
+              7.97,
+              14.53
+            ],
+            "n": 12
+          },
+          "best_single_game_max": 20,
+          "games_reaching_21": 0,
+          "games_reaching_21_rate": 0.0,
+          "games_dealing_any": 11
         }
       }
     },
@@ -631,7 +687,8 @@
       "token_resolutions counts token-creating abilities that resolved; it is blind to how many tokens each made (X, doubling) — a floor on creation events, not a token count.",
       "eliminated_by is the controller of the last thing that could have cost the seat life before the life line that crossed zero — a damage source (its controller learned from attack/block/land/cast lines) or a resolved ability whose text says the victim loses life (its Activator/Player tag, else the active seat); eliminated_how says which. Null when neither was seen.",
       "Damage figures see DAMAGE only. Life LOSS that is not damage (Vito's drain, Blood Artist, 'each opponent loses 1 life') shows in life_by_turn, eliminated_turn and eliminated_how='life loss', never in a damage total. Measured: Vito wins 9 of 20 on 7.0 combat damage a game.",
-      "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. Seeded runs replay exactly; the interval is still the claim."
+      "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. Seeded runs replay exactly; the interval is still the claim.",
+      "commander_damage is per DEFENDER (CR 903.10a asks for 21 from the same commander on one player), so max_on_one_defender is the number the win condition reads and dealt_total is not — a commander that hit three seats for 20 each dealt 60 and killed nobody. It counts COMBAT damage by a permanent whose logged name matches the seat's commander; a commander dealing noncombat damage does not count toward 903.10a and is excluded here too. The block is ABSENT when the seat's commander is unknown, because the log never names one."
     ]
   },
   "games": [
@@ -661,6 +718,11 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 11,
+          "commander_damage_by_defender": {
+            "Ai(1)-mm-kianne": 6
+          },
+          "commander_damage_max": 6,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         },
         "kianne": {
@@ -682,6 +744,11 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": 6,
+          "commander_damage_by_defender": {
+            "Ai(2)-mm-giada-angels": 6
+          },
+          "commander_damage_max": 6,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         }
       }
@@ -712,6 +779,9 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": null,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": null
         },
         "giada-angels": {
@@ -733,6 +803,11 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 6,
+          "commander_damage_by_defender": {
+            "Ai(1)-mm-kianne": 13
+          },
+          "commander_damage_max": 13,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         }
       }
@@ -763,6 +838,9 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": null,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": null
         },
         "giada-angels": {
@@ -784,6 +862,11 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 8,
+          "commander_damage_by_defender": {
+            "Ai(1)-mm-kianne": 5
+          },
+          "commander_damage_max": 5,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.114
         }
       }
@@ -814,6 +897,9 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": 7,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         },
         "giada-angels": {
@@ -835,6 +921,9 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 10,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         }
       }
@@ -865,6 +954,9 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": null,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": null
         },
         "giada-angels": {
@@ -886,6 +978,11 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 6,
+          "commander_damage_by_defender": {
+            "Ai(1)-mm-kianne": 8
+          },
+          "commander_damage_max": 8,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         }
       }
@@ -916,6 +1013,11 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": 9,
+          "commander_damage_by_defender": {
+            "Ai(2)-mm-giada-angels": 7
+          },
+          "commander_damage_max": 7,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         },
         "giada-angels": {
@@ -937,6 +1039,11 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 6,
+          "commander_damage_by_defender": {
+            "Ai(1)-mm-kianne": 17
+          },
+          "commander_damage_max": 17,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.267
         }
       }
@@ -967,6 +1074,11 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 5,
+          "commander_damage_by_defender": {
+            "Ai(1)-mm-kianne": 16
+          },
+          "commander_damage_max": 16,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         },
         "kianne": {
@@ -988,6 +1100,9 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": 10,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         }
       }
@@ -1018,6 +1133,9 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": 5,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         },
         "giada-angels": {
@@ -1039,6 +1157,11 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 10,
+          "commander_damage_by_defender": {
+            "Ai(1)-mm-kianne": 12
+          },
+          "commander_damage_max": 12,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.136
         }
       }
@@ -1069,6 +1192,11 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 5,
+          "commander_damage_by_defender": {
+            "Ai(1)-mm-kianne": 13
+          },
+          "commander_damage_max": 13,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         },
         "kianne": {
@@ -1090,6 +1218,9 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": 12,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         }
       }
@@ -1120,6 +1251,9 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 9,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.5
         },
         "giada-angels": {
@@ -1141,6 +1275,11 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 6,
+          "commander_damage_by_defender": {
+            "Ai(1)-mm-kianne": 9
+          },
+          "commander_damage_max": 9,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         }
       }
@@ -1171,6 +1310,11 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": 7,
+          "commander_damage_by_defender": {
+            "Ai(2)-mm-giada-angels": 20
+          },
+          "commander_damage_max": 20,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         },
         "giada-angels": {
@@ -1192,6 +1336,11 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 6,
+          "commander_damage_by_defender": {
+            "Ai(1)-mm-kianne": 16
+          },
+          "commander_damage_max": 16,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.308
         }
       }
@@ -1222,6 +1371,11 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 5,
+          "commander_damage_by_defender": {
+            "Ai(1)-mm-kianne": 20
+          },
+          "commander_damage_max": 20,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         },
         "kianne": {
@@ -1243,6 +1397,9 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": 10,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
           "token_damage_share": 0.0
         }
       }

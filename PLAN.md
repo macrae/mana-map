@@ -113,7 +113,12 @@ suggestions that would need a deck to shuffle.
   (a Craterhoof pump) are not tracked and must be authored into the scenario. Every one is
   written into `extras.reconstruction_notes`.
 - **Parser**: damage figures see damage only; drain kills show in `life_by_turn` and
-  `eliminated_how`, never in a damage total.
+  `eliminated_how`, never in a damage total. **Commander damage is now measured**
+  (2026-08-21) — per DEFENDER, because CR 903.10a asks for 21 from one commander on one
+  player and `combat_damage_dealt_to_players` sums every source and every seat at once.
+  The commander names ride IN the record (`seats[].commander`), never looked up from
+  disk at validate time; a record without the field re-derives exactly as before, and
+  `simulate <slug> --analyze <run>` is the migration.
 - **DFC pips**: `manabase.pip_requirements` reads `card["mana_cost"]`, empty for
   transform/MDFC layouts; 10 spells on 7 decks. Three-line fix that changes every
   `mana_analysis.json` — deliberately not done mid-flight.

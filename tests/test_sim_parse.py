@@ -137,3 +137,71 @@ def test_validate_sim_reproves_the_analysis_from_logs_and_catches_drift():
     assert any("SAMPLED" in e for e in validate_sim.validate(bad2, "radagast"))
     bad3 = json.loads(json.dumps(rec)); bad3["seats"][1]["decklist_sha256"] = "short"
     assert any("sha256" in e for e in validate_sim.validate(bad3, "radagast"))
+
+
+# ── Commander damage (CR 903.10a) ───────────────────────────────────────────
+
+CMD = {"Ai(1)-radagast": {"Radagast of Rhosgobel"},
+       "Ai(2)-edgar-vampires": {"Edgar Markov"}}
+
+
+def test_commander_damage_is_tallied_per_defender(game):
+    """21 from the same commander on ONE player is a whole archetype's only win
+    condition, and the parser could not see it: `combat_damage_dealt_to_players` sums
+    every source and every defender, so a commander that hit three seats for 20 each
+    looked exactly like one that hit a single seat for 60 and killed them.
+
+    In the fixture each commander connects for 11 on the other — 2 + 2 + 7 for
+    Radagast, 5 + 6 for Edgar — and neither is lethal.
+    """
+    f = parse.game_facts(game, CMD)
+    rad = f["per_seat"]["Ai(1)-radagast"]
+    edg = f["per_seat"]["Ai(2)-edgar-vampires"]
+    assert rad["commander_damage_by_defender"] == {"Ai(2)-edgar-vampires": 11}
+    assert edg["commander_damage_by_defender"] == {"Ai(1)-radagast": 11}
+    assert rad["commander_damage_max"] == 11 and rad["commander_damage_lethal"] is False
+
+
+def test_an_unknown_commander_is_absent_rather_than_zero(game):
+    """The Forge log never names a commander, so the names come from the seat's own
+    decklist. When they are unavailable the block must not appear at all — reporting
+    "dealt 0" for a commander nobody identified is a measurement the run did not make.
+    """
+    f = parse.game_facts(game)
+    for p in f["per_seat"].values():
+        assert not [k for k in p if "commander_damage" in k]
+    _, agg = parse.analyze_logs([FIX], LABEL)
+    assert all("commander_damage" not in s for s in agg["seats"].values())
+
+
+def test_only_combat_damage_counts_toward_the_21(game):
+    """903.10a asks for COMBAT damage. The fixture has Purphoros dealing 2 non-combat
+    damage to radagast; make the same source the seat's commander and it still must not
+    be counted, or a Purphoros deck would read as closing on commander damage it can
+    never deal."""
+    f = parse.game_facts(game, {"Ai(2)-edgar-vampires": {"Purphoros, God of the Forge"}})
+    assert f["per_seat"]["Ai(2)-edgar-vampires"]["commander_damage_by_defender"] == {}
+
+
+def test_a_commander_is_matched_on_its_face_as_well_as_the_joined_name():
+    """Forge logs a transformed permanent under the face on the battlefield while the
+    decklist names the card, so `A // B` has to match a log line saying just `A`."""
+    assert parse._is_commander("Brutal Cathar", {"Brutal Cathar // Moonrage Brute"})
+    assert parse._is_commander("Moonrage Brute", {"Brutal Cathar // Moonrage Brute"})
+    assert parse._is_commander("Edgar Markov", {"Edgar Markov"})
+    assert not parse._is_commander("Edgar Markov", {"Radagast of Rhosgobel"})
+    assert not parse._is_commander("Edgar Markov", None)
+
+
+def test_the_aggregate_separates_total_dealt_from_the_number_that_kills():
+    """`dealt_total` and `max_on_one_defender` are different questions and the run
+    record must carry both — spreading 60 across three seats wins nothing."""
+    _, agg = parse.analyze_logs([FIX], LABEL, CMD)
+    cd = agg["seats"]["radagast"]["commander_damage"]
+    assert cd["commander"] == ["Radagast of Rhosgobel"]
+    assert cd["dealt_total"]["mean"] == 11.0
+    assert cd["max_on_one_defender"]["mean"] == 11.0
+    assert cd["best_single_game_max"] == 11
+    assert cd["games_reaching_21"] == 0 and cd["games_dealing_any"] == 1
+    assert any("903.10a" in x for x in agg["limits"]), \
+        "the limit that explains per-defender must travel with the figure"

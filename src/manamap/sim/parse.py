@@ -79,6 +79,31 @@ def _is_token(name):
     return bool(_TOKEN.search(name))
 
 
+# CR 903.10a: a player dealt 21 combat damage by the same commander over the course of
+# the game loses. It is the ONLY win condition some decks have, and until now the parser
+# could not see it: `combat_damage_dealt_to_players` sums every source and every
+# defender at once, so a commander that hit three seats for 20 each looked identical to
+# one that hit a single seat for 60 and killed them.
+COMMANDER_DAMAGE_LETHAL = 21
+
+
+def _is_commander(source_name, names):
+    """Does this damage source name the seat's commander?
+
+    Matched on the face as well as the joined `A // B` form, because Forge logs a
+    transformed or melded permanent under the face that is on the battlefield while a
+    decklist names the card. Falls back to False when the seat's commander is unknown,
+    which is what keeps the whole block absent rather than wrong.
+    """
+    if not names or not source_name:
+        return False
+    src = str(source_name).strip()
+    for n in names:
+        if src == n or src in {f.strip() for f in str(n).split(" // ")}:
+            return True
+    return False
+
+
 def _new_game():
     return {"seats": [], "turn": 0, "active": None, "events": [], "owner": {},
             "mulligan": {}, "outcome": {"winner": None, "won_by": None, "round": None,
@@ -185,8 +210,13 @@ def _event(line, g):
 
 # ── Per-game facts ──────────────────────────────────────────────────────────
 
-def game_facts(g):
+def game_facts(g, commanders=None):
+    """Per-game facts. `commanders` maps a Forge seat label to that seat's commander
+    name(s); pass it and the seat gains a per-defender commander-damage tally, omit it
+    and the key is ABSENT rather than zero — the log does not name a commander anywhere,
+    so an unknown one must not be reported as "dealt 0"."""
     seats = list(g["seats"])
+    commanders = commanders or {}
     per = {s: {"lands": 0, "casts": 0, "activations": 0, "triggers": 0,
                "combat_damage_dealt_to_players": 0, "combat_damage_taken": 0,
                "noncombat_damage_dealt_to_players": 0,
@@ -195,7 +225,8 @@ def game_facts(g):
                "tokens_chumped": 0, "creatures_lost": 0,
                "life_by_turn": {}, "eliminated_turn": None, "eliminated_by": None,
                "eliminated_how": None,
-               "first_attack_turn": None, "damage_to_players_by_turn": defaultdict(int)}
+               "first_attack_turn": None, "damage_to_players_by_turn": defaultdict(int),
+               "commander_damage_by_defender": defaultdict(int)}
            for s in seats}
     owner = g["owner"]
     # The last thing that could have cost a seat life: a DAMAGE line (source's controller)
@@ -244,6 +275,8 @@ def game_facts(g):
                         if src_seat in per:
                             per[src_seat]["combat_damage_dealt_to_players"] += ev["amount"]
                             per[src_seat]["damage_to_players_by_turn"][ev["turn"]] += ev["amount"]
+                            if _is_commander(src_name, commanders.get(src_seat)):
+                                per[src_seat]["commander_damage_by_defender"][tgt] += ev["amount"]
                             if _is_token(src_name):
                                 per[src_seat]["token_combat_damage_to_players"] += ev["amount"]
                                 per[src_seat]["tokens_observed"].add(src_id)
@@ -272,6 +305,13 @@ def game_facts(g):
         p["token_attackers"] = len(p["token_attackers"])
         p["token_blockers"] = len(p["token_blockers"])
         p["damage_to_players_by_turn"] = dict(sorted(p["damage_to_players_by_turn"].items()))
+        if commanders.get(s):
+            cd = dict(sorted(p["commander_damage_by_defender"].items()))
+            p["commander_damage_by_defender"] = cd
+            p["commander_damage_max"] = max(cd.values(), default=0)
+            p["commander_damage_lethal"] = p["commander_damage_max"] >= COMMANDER_DAMAGE_LETHAL
+        else:
+            p.pop("commander_damage_by_defender")
         p["life_by_turn"] = dict(sorted(p["life_by_turn"].items()))
         d = p["combat_damage_dealt_to_players"]
         p["token_damage_share"] = round(p["token_combat_damage_to_players"] / d, 3) if d else None
@@ -307,9 +347,10 @@ def mean_ci(xs):
     return {"mean": round(mean, 2), "ci95": [round(mean - half, 2), round(mean + half, 2)], "n": n}
 
 
-def aggregate(facts, slug_label, label):
+def aggregate(facts, slug_label, label, commanders=None):
     """`facts` is a list of game_facts; `slug_label` the Forge seat label of OUR deck;
-    `label` maps Forge seat labels to slugs."""
+    `label` maps Forge seat labels to slugs; `commanders` seat label -> commander name(s)."""
+    commanders = commanders or {}
     n = len(facts)
     seats = sorted({s for f in facts for s in f["seats"]})
     wins = Counter(f["winner"] for f in facts if f["winner"])
@@ -340,6 +381,20 @@ def aggregate(facts, slug_label, label):
                 "tokens_chumped": mean_ci([p["tokens_chumped"] for p in ps]),
             },
         }
+        # Present only where the seat's commander is known — see game_facts.
+        if commanders.get(s) and any("commander_damage_max" in p for p in ps):
+            maxes = [p.get("commander_damage_max", 0) for p in ps]
+            lethal = sum(1 for p in ps if p.get("commander_damage_lethal"))
+            dealt = [sum((p.get("commander_damage_by_defender") or {}).values()) for p in ps]
+            out["seats"][name]["commander_damage"] = {
+                "commander": sorted(commanders[s]),
+                "dealt_total": mean_ci(dealt),
+                "max_on_one_defender": mean_ci(maxes),
+                "best_single_game_max": max(maxes, default=0),
+                "games_reaching_21": lethal,
+                "games_reaching_21_rate": round(lethal / n, 3) if n else None,
+                "games_dealing_any": sum(1 for d in dealt if d),
+            }
     # Our seat's clock: mean CUMULATIVE combat damage to players by ROUND (global turn
     # divided by the seat count), rounds 1..16. The shape of the kill, not one number.
     if slug_label and facts:
@@ -374,6 +429,13 @@ def aggregate(facts, slug_label, label):
         "7.0 combat damage a game.",
         "ci95 is a Wilson interval for rates and a normal interval for means; both are "
         "meaningless below ~10 games. Seeded runs replay exactly; the interval is still the claim.",
+        "commander_damage is per DEFENDER (CR 903.10a asks for 21 from the same commander "
+        "on one player), so max_on_one_defender is the number the win condition reads and "
+        "dealt_total is not — a commander that hit three seats for 20 each dealt 60 and "
+        "killed nobody. It counts COMBAT damage by a permanent whose logged name matches "
+        "the seat's commander; a commander dealing noncombat damage does not count toward "
+        "903.10a and is excluded here too. The block is ABSENT when the seat's commander "
+        "is unknown, because the log never names one.",
     ]
     return out
 
@@ -387,12 +449,14 @@ def compact(fact, label):
                          for s, p in fact["per_seat"].items()}}
 
 
-def analyze_logs(log_texts, label):
+def analyze_logs(log_texts, label, commanders=None):
     """All games across a run's JVM logs → (facts, aggregate). `label` maps Forge seat
-    labels (Ai(k)-<name>) to slugs; the first seat in `label` order is ours."""
+    labels (Ai(k)-<name>) to slugs; the first seat in `label` order is ours.
+    `commanders` maps the same labels to commander name(s); omit it and every
+    commander-damage key is absent rather than zero."""
     facts = []
     for text in log_texts:
         for g in parse_games(text):
-            facts.append(game_facts(g))
+            facts.append(game_facts(g, commanders))
     slug_label = next(iter(label)) if label else None
-    return facts, aggregate(facts, slug_label, label)
+    return facts, aggregate(facts, slug_label, label, commanders)

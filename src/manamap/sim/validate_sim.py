@@ -15,7 +15,7 @@ import re
 from manamap.config import SIM_DIR
 from manamap.pilot.common import deck_dir, load_json, report_errors
 from manamap.sim import parse as sim_parse
-from manamap.sim.forge import _seat_label
+from manamap.sim.forge import _seat_label, record_commanders
 
 REQUIRED = {"run_id", "slug", "at", "engine", "seats", "games_requested", "games_completed",
             "summary", "outcomes", "analysis", "assumptions"}
@@ -59,7 +59,7 @@ def validate(rec, slug, logs_text=None):
         errors.append(f"{len(rec['seeds'])} seeds for {rec.get('jobs')} jobs")
     if logs_text:
         label = _seat_label([s["forge_name"] for s in seats])
-        _, derived = sim_parse.analyze_logs(logs_text, label)
+        _, derived = sim_parse.analyze_logs(logs_text, label, record_commanders(rec))
         if derived != rec["analysis"]:
             keys = [k for k in set(derived) | set(rec["analysis"]) if derived.get(k) != rec["analysis"].get(k)]
             errors.append(f"analysis does not match what the logs derive (differs at {sorted(keys)}) — "

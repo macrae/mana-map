@@ -78,6 +78,51 @@ def seat_dir(slug):
     raise SystemExit(f"no decklist.txt for seat {slug!r} under data/opponents/ or data/decks/")
 
 
+def _commanders_by_slug(seats):
+    """{slug -> set of commander names} read from each seat's decklist.
+
+    The Forge log never says which permanent is a commander, so the decklist is the only
+    honest source — but it is read ONCE, when the run is made or migrated, and then
+    written into the record (see `record_commanders`). A seat whose decklist cannot be
+    read is omitted, which makes its commander-damage block absent rather than zero.
+    """
+    from manamap.pilot.fetch_deck import parse_decklist
+    out = {}
+    for slug in seats:
+        try:
+            text = (seat_dir(slug) / "decklist.txt").read_text(encoding="utf-8")
+            cmd = {e["name"] for e in parse_decklist(text) if e.get("is_commander")}
+        except (SystemExit, OSError):
+            continue
+        if cmd:
+            out[slug] = cmd
+    return out
+
+
+def record_commanders(rec):
+    """{Forge seat label -> commander name(s)} taken from the RUN RECORD, never from disk.
+
+    Re-derivation must depend only on the record and its logs. Looking the commander up
+    from `data/decks/<slug>/decklist.txt` at validate time would mean a later commander
+    swap on any seat reads as parser drift on a run that was correct when it was made —
+    and a record written before this field existed would suddenly gain a block its
+    stored analysis does not have, turning every old run red.
+
+    A record whose seats carry no `commander` therefore yields nothing, and re-derives
+    exactly as it always did. `simulate <slug> --analyze <run>` is the migration: it
+    reads the decklists once, writes the field, and rewrites the analysis with it.
+    """
+    out = {}
+    for i, seat in enumerate(rec.get("seats") or []):
+        names = seat.get("commander")
+        if not names:
+            continue
+        if isinstance(names, str):
+            names = [names]
+        out[f"Ai({i + 1})-{seat['forge_name']}"] = set(names)
+    return out
+
+
 def dck_from_text(meta_name, decklist_text, who="the list"):
     """Forge .dck text from a decklist TEXT, through the repo's own parser — so an
     experiment arm's historical list converts exactly the way a live seat's does."""
@@ -287,14 +332,18 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
                 "log": log.name, "seed": seeds[int(log.stem.split("-")[1])],
                 "game_in_job": gi + 1})
     texts = [log.read_text(encoding="utf-8", errors="replace") for log, _ in results]
-    facts, analysis = sim_parse.analyze_logs(texts, label)
+    cmd_by_slug = {s: sorted(c) for s, c in _commanders_by_slug(seats).items()}
+    commanders = {f"Ai({i + 1})-{names[i]}": set(cmd_by_slug[s])
+                  for i, s in enumerate(seats) if cmd_by_slug.get(s)}
+    facts, analysis = sim_parse.analyze_logs(texts, label, commanders)
     wins = {s: sum(1 for o in outcomes if o["winner"] == s) for s in seats}
     draws = sum(1 for o in outcomes if o["draw"] or not o["winner"])
     frame = load_json(deck_dir(slug) / "strategic_frame.json") or {}
     record = {
         "run_id": record_path.stem, "slug": slug, "at": date.today().isoformat(),
         "engine": {"forge": forge_version(home), "java": _java_version()},
-        "seats": [{"slug": s, "forge_name": names[i], "decklist_sha256": seat_sha(s)}
+        "seats": [{"slug": s, "forge_name": names[i], "decklist_sha256": seat_sha(s),
+                   "commander": sorted(cmd_by_slug.get(s, []))}
                   for i, s in enumerate(seats)],
         "games_requested": int(games), "games_completed": len(outcomes),
         "jobs": len(cmds), "games_per_job": parts, "seed_base": seed_base, "seeds": seeds,
@@ -333,8 +382,18 @@ def analyze(slug, run_id_or_path):
     if not logs:
         raise SystemExit(f"{slug}: no logs under {log_dir} — the raw games are gitignored and "
                          f"only exist where the run was made")
-    label = _seat_label([s["forge_name"] for s in rec["seats"]])
-    facts, analysis = sim_parse.analyze_logs([l.read_text(encoding="utf-8", errors="replace") for l in logs], label)
+    names = [s["forge_name"] for s in rec["seats"]]
+    label = _seat_label(names)
+    # The one place a decklist is consulted: --analyze backfills the commander names on a
+    # record written before the field existed, so the block can appear at all. After this
+    # the record is self-describing and nothing reads disk again.
+    by_slug = _commanders_by_slug([s["slug"] for s in rec["seats"]])
+    for seat in rec["seats"]:
+        if not seat.get("commander") and by_slug.get(seat["slug"]):
+            seat["commander"] = sorted(by_slug[seat["slug"]])
+    facts, analysis = sim_parse.analyze_logs(
+        [l.read_text(encoding="utf-8", errors="replace") for l in logs], label,
+        record_commanders(rec))
     rec["analysis"] = analysis
     rec["games"] = [sim_parse.compact(f, label) for f in facts]
     path.write_text(json.dumps(rec, indent=2, ensure_ascii=False) + "\n")

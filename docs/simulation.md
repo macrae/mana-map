@@ -165,6 +165,38 @@ each: Default 3/6, Experimental 2/6, Reckless 2/6 — the aggro profiles make a 
 deck worse, so Default stays the default and the AI caveat stands. Also learned: a game
 that hits the `-c` clock still declares a winner.
 
+## Commander damage (CR 903.10a), per defender
+
+A player dealt 21 combat damage by the same commander over a game loses — for some decks
+it is the *only* win condition, and until 2026-08-21 the parser could not see it.
+`combat_damage_dealt_to_players` sums every source and every defender at once, so a
+commander that hit three seats for 20 each looked identical to one that hit a single seat
+for 60 and killed them. Each seat's analysis now carries a `commander_damage` block:
+`dealt_total`, `max_on_one_defender` (**the number the win condition reads**),
+`best_single_game_max`, `games_reaching_21` and `games_dealing_any`.
+
+Three decisions worth keeping:
+
+- **Per defender, not per game.** Spreading 60 across three seats wins nothing, and the
+  two numbers are reported separately so no reader can confuse them.
+- **Combat only.** 903.10a asks for combat damage, so a commander that pings for
+  noncombat damage does not count here. A Purphoros deck must not read as closing on
+  commander damage it can never deal.
+- **The names ride IN the record** (`seats[].commander`), read from the decklists once
+  when the run is made. Re-derivation depends on the record and its logs alone: looking
+  the commander up from disk at validate time would make a later commander swap read as
+  parser drift on a run that was correct when it was made, and would turn every record
+  written before the field existed red at once. A record without the field re-derives
+  exactly as it always did; `simulate <slug> --analyze <run>` backfills it.
+
+Measured on the first deck that needed it — kianne, whose single win condition is 21
+commander damage: over 12 pod games she dealt 12.25 a game, reached 21 on one seat in
+**1 of 12**, and in the game she won she finished baylen 24 / giada 34 / vito 22, killing
+the whole table through the command zone on round 18. The 1v1 run against the same list
+never got there, best 20 in a single game — one short. As a control, Vito (a drain deck)
+reads 0.35 commander damage a game across 20 games, which is what a correct measurement
+of a deck that does not attack should say.
+
 ## Artifacts and where they live
 
 ```
