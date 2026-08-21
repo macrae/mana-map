@@ -15,7 +15,7 @@ from manamap.analysis.card_roles import (
     classify_land,
     classify_row,
 )
-from tests.conftest import requires_roles
+from conftest import requires_roles
 
 
 def _card(name, supertype, type_line, oracle_text, keywords="", legal="legal"):

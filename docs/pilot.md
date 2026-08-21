@@ -207,6 +207,21 @@ commit it; a stale stage → regenerate; no games → play it; open prescription
 loop) and names the command. No judgment about the deck lives there. `--json` is the
 shape a future UI reads.
 
+**A deck that no longer exists says so, and is not told to go and play itself.** The
+`status` field on `issue.json` (`broken-down` / `retired` / `superseded`, absent = live)
+is the deck's authored *existence*, distinct from the stage lifecycle above. It renders
+as a banner under the header, and for the two statuses that mean there is no cardboard
+to shuffle — `broken-down`, `retired` — the suggestions that end in "play it", "simulate"
+or "run an experiment" are **withheld and said to be withheld**, because a silently
+shorter list reads as "nothing to do here". `superseded` is deliberately not in that set:
+that list is still sleeved. Everything a published record can still do — fix a failing
+gate, regenerate a stale artifact, settle an open rules question — survives.
+
+The vocabulary lives in `pilot/common.py` (`DECK_STATUSES`, `UNPLAYABLE_STATUSES`,
+`deck_lifecycle`), not in `issue_spec`, where it started: the workbench has to read it and
+`issue_spec` is the frozen renderer that gets deleted with the magazine. `issue_spec`
+re-exports it under the old names so the legacy banner is unchanged.
+
 ## Deck versions (`deck-version`, derived from git; `deck_versions.json`, authored tags)
 
 Every change to the 99 is a commit (`decklist.txt` is tracked), so the list of lists

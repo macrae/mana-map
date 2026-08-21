@@ -25,7 +25,7 @@ import json
 from manamap.pilot import deck_facts as facts_mod
 from manamap.pilot import deck_status as status_mod
 from manamap.pilot import deck_versions as versions_mod
-from manamap.pilot.common import deck_dir, load_json
+from manamap.pilot.common import UNPLAYABLE_STATUSES, deck_dir, deck_lifecycle, load_json
 from manamap.pilot.deck_notes import annotations, read_log
 from manamap.pilot.prescribe import list_all as prescriptions_of
 from manamap.sim.experiment import list_all as experiments_of
@@ -110,9 +110,12 @@ def compose(slug):
               "last_played": max((e["at"][:10] for e in log), default=None),
               "undebriefed": [e["id"] for e in log if e["id"] not in done]}
     lines = engine.get("lines") or []
+    life = deck_lifecycle(slug)
     info = {
         "slug": slug,
         "commander": facts.get("commander"),
+        "lifecycle": ({"status": life[0], "headline": life[1], "body": life[2]}
+                      if life else None),
         "colour_identity": identity,
         "size": counts.get("copies"), "lands": counts.get("land_copies"),
         "version": {"current": vdoc["current_version"], "of": len(vdoc["versions"]),
@@ -187,6 +190,19 @@ def _next(info):
     command. No judgment about the deck lives here."""
     nxt = []
     slug = info["slug"]
+    # A deck that has been pulled apart cannot be shuffled, so every suggestion
+    # that ends in "play it" or "measure it before you play it" is an
+    # instruction the pilot cannot follow. Say the status instead, and say what
+    # is being withheld — a silently shorter list reads as "nothing to do here",
+    # which is a different claim. What survives is everything that still works
+    # on a published record: a failing gate, a stale artifact, an open rules
+    # question. `superseded` is NOT in this set — that list is still sleeved.
+    closed = (info["lifecycle"] or {}).get("status") in UNPLAYABLE_STATUSES
+    if closed:
+        nxt.append(f"{info['lifecycle']['headline'].lower()} — the play/measure loop is "
+                   f"closed for this deck ({info['lifecycle']['status']}); its artifacts "
+                   f"stay as published. Suggestions to log a game, simulate or run an "
+                   f"experiment are withheld")
     if info["status"]["invalid"]:
         nxt.append(f"{len(info['status']['invalid'])} artifact(s) fail their own gate "
                    f"({', '.join(info['status']['invalid'])}) — `deck-status {slug}` names them; "
@@ -197,7 +213,7 @@ def _next(info):
     if info["version"]["uncommitted"]:
         nxt.append("decklist.txt differs from every committed version — commit it so the "
                    "log can stamp games against a version (`deck-version` will then show it)")
-    if info["record"]["games"] == 0:
+    if info["record"]["games"] == 0 and not closed:
         nxt.append(f"nothing in the captain's log — play it, then "
                    f"`deck-notes {slug} add \"…\" --result win|loss --opponents N`")
     elif info["record"]["undebriefed"]:
@@ -217,10 +233,10 @@ def _next(info):
             by.setdefault(q["settled_by"], 0)
             by[q["settled_by"]] += 1
         nxt.append("open questions routed: " + ", ".join(f"{k} ×{v}" for k, v in sorted(by.items())))
-    if info["simulation"] is None:
+    if info["simulation"] is None and not closed:
         nxt.append(f"no simulation runs — `simulate {slug} --vs <opp> [--vs …] --games N` "
                    f"(Forge; ◆ seeded)")
-    elif info["experiments"] is None and info["version"]["of"] > 1:
+    elif info["experiments"] is None and info["version"]["of"] > 1 and not closed:
         nxt.append(f"{info['version']['of']} versions and no experiment — "
                    f"`experiment {slug} --a V<n> --b working --vs <pod> --games N` measures a swap")
     if info["bracket"] and info["bracket"].get("within_target") is False:
@@ -228,13 +244,18 @@ def _next(info):
                    f"{info['bracket']['target']} — `bracket-check {slug}` names the drivers")
     if not nxt:
         nxt.append("nothing outstanding — ask the doctor something (`/prescribe`) or play it")
+    elif closed and len(nxt) == 1:
+        nxt.append("nothing else outstanding — this deck's record is complete as it stands")
     return nxt
 
 
 def _print(info):
     ci = "".join(info["colour_identity"]) or "C"
     print(f"WORKBENCH — {info['slug']} · {' / '.join(info['commander'] or [])} · {ci} · "
-          f"{info['size']} cards ({info['lands']} lands)\n")
+          f"{info['size']} cards ({info['lands']} lands)")
+    if info["lifecycle"]:
+        print(f"  ⚑ {info['lifecycle']['headline']} — {info['lifecycle']['body']}")
+    print()
     v = info["version"]
     vline = (f"V{v['current']} of {v['of']} · {v['date']}" if v["current"]
              else (f"uncommitted working list ({v['of']} committed)" if v["of"] else "no git history"))

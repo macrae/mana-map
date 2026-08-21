@@ -18,6 +18,8 @@ Tier semantics are inherited from the three-tier evidence contract
 may not override its tier — costume never earns the badge (STYLEv3 §10).
 """
 
+from manamap.pilot.common import DECK_STATUSES, deck_status_of
+
 # (id, title, promise, tiers, needs_copy, byline)
 # `tiers`: badge(s) the section renders; () = structural, no evidence claim.
 # `needs_copy`: section requires kicker/headline/dek from the issue plan.
@@ -292,35 +294,13 @@ REQUIRED_ISSUE_KEYS = {
 # existing issue byte-identical. Present, it renders a banner at the top of the
 # issue and a mark on the newsstand card, so a reader cannot mistake a retired
 # list for a current one.
-ISSUE_STATUSES = {
-    "broken-down": (
-        "BROKEN DOWN FOR PARTS",
-        "This deck no longer exists physically — its cards were pulled and "
-        "sleeved into another list. Everything below was true when it shipped "
-        "and is kept as published; the decklist is no longer maintained."),
-    "superseded": (
-        "SUPERSEDED",
-        "A later volume corrects this one. It is kept as published, because "
-        "what it measured was true at the time."),
-    "retired": (
-        "RETIRED",
-        "This list is no longer maintained. It is kept as published rather "
-        "than edited or removed."),
-}
-
-
-def issue_status(issue):
-    """`(slug, headline, body)` for an issue's status, or None if it is live.
-
-    Tolerates an unknown status by returning None rather than raising: a typo in
-    an authored field should not be able to take a published magazine offline.
-    `validate-issue` is where an unknown value is reported.
-    """
-    key = (issue or {}).get("status")
-    if not key or key not in ISSUE_STATUSES:
-        return None
-    headline, body = ISSUE_STATUSES[key]
-    return key, headline, body
+#
+# The vocabulary itself MOVED to `common` and is re-exported here: whether a
+# deck still exists is a fact about cardboard that the workbench has to read,
+# and this module is the frozen renderer, deleted when the compact page lands.
+# These two names keep the legacy banner and its tests working unchanged.
+ISSUE_STATUSES = DECK_STATUSES
+issue_status = deck_status_of
 
 # Departments with bespoke layouts that take no per-department furniture.
 # The cover's bursts live in the plan's top-level `cover` block; the contents

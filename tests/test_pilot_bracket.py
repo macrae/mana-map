@@ -13,7 +13,7 @@ from manamap.pilot.bracket import (
     offending_cards,
 )
 from manamap.pilot.common import load_deck_cards
-from tests.conftest import requires_data, requires_deck, requires_roles
+from conftest import requires_data, requires_deck, requires_roles
 
 
 def _details(combos):

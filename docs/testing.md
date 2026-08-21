@@ -52,19 +52,29 @@ amount of running the suite on a developed machine could have found them: the
 artifacts were always there. Re-clone and re-run whenever you add a test that
 touches `data/`.
 
-As of 2026-08-19: **1,813 tests** across 79 files — 1,676 fast, 136 browser and 1 `forge`
+As of 2026-08-21: **1,821 tests** across 80 files — 1,684 fast, 136 browser and 1 `forge`
 (a real Forge game, opt-in). One is a deliberately unmet `xfail(strict=True)` ship gate in
 `test_embedding_quality.py` (see below); it is a target the code has not reached, not a
 broken test.
 
-Why the count cannot be checked mechanically: **425 of those cases do not exist in the
-source** — there are 1,388 `def test_` functions and 1,813 collected cases, the difference
+Why the count cannot be checked mechanically: **426 of those cases do not exist in the
+source** — there are 1,395 `def test_` functions and 1,821 collected cases, the difference
 being parametrization over lists computed at collection time. The only way to count them is
 to run pytest, and running pytest from inside pytest recurses. (That subtraction is the
 cheap way to re-derive the figure: `grep -rhcE "^(async )?def test_" tests/*.py` against a
 collection total.) `tests/test_docs_counts.py` guards every count
 that *can* be derived cheaply (subcommands, agents, skills, decks, routines, pipeline
 steps) and deliberately leaves this one to editorial discipline.
+
+## Import `conftest`, never `tests.conftest`
+
+Two files imported `from tests.conftest import …` and collected fine under `make test`,
+which runs `python -m pytest` — that form puts the repo root on `sys.path`, so `tests` is
+importable as a package. The **console script** does not, so every invocation CLAUDE.md
+documents (`.venv/bin/pytest -n0 -k NAME`, `.venv/bin/pytest -m ""`) died at collection
+with `ModuleNotFoundError: No module named 'tests'`, taking the whole run down rather than
+those two files — a collection error is not a test failure and does not isolate. The other
+78 files use bare `from conftest import …`, which works under both. Match them.
 
 ## Source assertions do not catch regressions
 

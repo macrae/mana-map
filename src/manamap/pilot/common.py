@@ -390,6 +390,67 @@ def report_errors(fail_label, errors, ok_line=None):
         print(ok_line)
 
 
+# ── A deck's LIFECYCLE status ────────────────────────────────────────────
+#
+# Whether a deck still EXISTS is a fact about cardboard, not about a renderer.
+# It is authored on `issue.json` (the deck's authored identity file) and it is
+# optional: absent means the deck is live, which keeps every existing file
+# byte-identical.
+#
+# The vocabulary lives HERE rather than in `issue_spec` — where it started —
+# because the workbench has to read it and `issue_spec` is the frozen magazine
+# renderer, deleted in one commit when the compact page lands
+# (`docs/manual-v5-spec.md` §"What gets unfrozen"). A live command importing a
+# module scheduled for deletion is a break with a date on it. `issue_spec`
+# re-exports these two names, so the legacy banner keeps rendering unchanged.
+#
+# `deck-info` is the reason this moved: it told the pilot to go and play
+# `hapatra`, which had been broken down for parts and sleeved into
+# yawgmoth-swarm since before the pivot. A workbench view that cannot see that
+# a deck no longer exists gives confident instructions about a box of nothing.
+DECK_STATUSES = {
+    "broken-down": (
+        "BROKEN DOWN FOR PARTS",
+        "This deck no longer exists physically — its cards were pulled and "
+        "sleeved into another list. Everything below was true when it shipped "
+        "and is kept as published; the decklist is no longer maintained."),
+    "superseded": (
+        "SUPERSEDED",
+        "A later volume corrects this one. It is kept as published, because "
+        "what it measured was true at the time."),
+    "retired": (
+        "RETIRED",
+        "This list is no longer maintained. It is kept as published rather "
+        "than edited or removed."),
+}
+
+# A deck in one of these states has no physical cards to shuffle, so anything
+# that asks the pilot to PLAY it — log a game, run a table, measure a swap — is
+# an instruction they cannot follow. `superseded` is deliberately absent: a
+# superseded list can still be sleeved and played, it is just no longer the
+# best version of itself.
+UNPLAYABLE_STATUSES = frozenset({"broken-down", "retired"})
+
+
+def deck_status_of(issue):
+    """`(key, headline, body)` for a deck's lifecycle status, or None if live.
+
+    Tolerates an unknown status by returning None rather than raising: a typo in
+    an authored field should not be able to take a published page offline or
+    crash the workbench view. `validate-issue` is where an unknown value is
+    reported.
+    """
+    key = (issue or {}).get("status")
+    if not key or key not in DECK_STATUSES:
+        return None
+    return (key,) + DECK_STATUSES[key]
+
+
+def deck_lifecycle(slug):
+    """The lifecycle status of a deck by slug, read from its authored identity."""
+    return deck_status_of(load_json(DECKS_DIR / slug / "issue.json", {}))
+
+
 def deck_dir(slug):
     """Return the deck directory for a slug, or fail with an actionable message."""
     path = DECKS_DIR / slug

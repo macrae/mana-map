@@ -58,11 +58,15 @@ this writing (derived from the stack, bracket, engine, sim and log artifacts):
 | `edgar-vampires` | 9/9 (7 presentable) | 4/4 | pass | 0 | 0 | paper rebuild in progress (v4 LOCK) |
 | `gishath` | 5/5 | 4/4 | pass | 0 | 0 | |
 | `yawgmoth-swarm` | 14/14 (11 presentable) | 4/4 | pass | 0 | 0 | paper rebuild in progress |
-| `radagast` | **8/8** | 1/3 | pass | **2** | 0 | stack 008 is a board lifted from a Forge game |
+| `radagast` | **8/8** | 1/3 | pass | **2** | 0 | `broken-down` (2026-08-21; cards pulled for the next build) |
 
 **Nothing is logged on any deck yet.** The log, debrief, prescriptions and versions are
 built and tested with zero real entries — the first one is the pilot's to write, and it
 will teach the agents more than another sprint would.
+
+Three decks no longer exist as cardboard (`hapatra`, `sisay`, `radagast`). Their
+artifacts stay exactly as published; `deck-info` states the status and withholds the
+suggestions that would need a deck to shuffle.
 
 ## Where the pivot stands (2026-08-19)
 
@@ -85,8 +89,11 @@ will teach the agents more than another sprint would.
    win-rate delta is noise, damage +27.6/game and token share 0 → 0.19 are not.
 2. **The first real logged games** — any deck, `deck-notes add`, then `/debrief` and
    `/prescribe`. Only the pilot can do this.
-3. **Forge AI profiles** (`-a`, found in Forge's source, untested) — does a better profile fly
-   radagast at all? An hour. If not, that is the evidence for 5.
+3. ~~**Forge AI profiles**~~ — **DONE 2026-08-19**, alongside `experiment`: `-a` is per-seat
+   in `-d` order and `--profile` rides on both commands. Measured on radagast's seat vs a
+   Default edgar, 6 seeded games each — Default 3/6, Experimental 2/6, Reckless 2/6. No
+   profile flies a hold-up deck better than Default, so Default stays the default and the
+   AI caveat stands unchanged. That is the evidence for 5.
 4. **The deck page in the viz** — notes, versions (a deploy-time JSON, since the version
    list cannot be committed in the commit that creates it), sim, prescriptions, the manual
    as a tab. The magazine gets simplified *into* this (`docs/manual-v5-spec.md`), not rewritten.

@@ -74,3 +74,51 @@ def test_a_real_deck_composes_every_panel():
     assert info["goldfish"]["commander_mean_cast_turn"] is not None
     assert info["bracket"]["floor"] is not None and info["audit"]["archetype"]
     assert info["version"]["of"] >= 1 and not info["status"]["invalid"]
+
+
+def test_a_broken_down_deck_is_not_told_to_go_and_play_it(bare_deck):
+    """The workbench told the pilot to play a deck that no longer existed.
+
+    `hapatra` was marked `broken-down` — its cards pulled and sleeved into
+    yawgmoth-swarm — before the pivot, and `deck-info`, the START HERE command,
+    kept answering "nothing in the captain's log — play it". The status was
+    authored on `issue.json` and read only by the magazine renderer, so the
+    bench could not see it.
+
+    Three things are asserted because each failed differently: the status is
+    SAID (a shorter list is not a statement), the impossible instructions are
+    withheld, and the still-possible work survives — a published record can
+    still have a failing gate or an open rules question.
+    """
+    info = deck_info.compose(SLUG)
+    assert info["lifecycle"] is None, "no issue.json means live, not unknown"
+    assert any("play it" in n for n in info["next"])
+
+    (bare_deck / "issue.json").write_text(json.dumps(
+        {"commander": "Radagast of Rhosgobel", "status": "broken-down"}))
+    (bare_deck / "log_annotations.json").write_text(json.dumps(
+        {"slug": SLUG, "entries": {"001": {"summary": "s", "takeaways": [],
+                                           "open_questions": [{"question": "?",
+                                                               "settled_by": "resolve-stack",
+                                                               "why_it_matters": "?"}]}}}))
+    info = deck_info.compose(SLUG)
+    assert info["lifecycle"]["status"] == "broken-down"
+    assert any("BROKEN DOWN FOR PARTS".lower() in n.lower() for n in info["next"]), \
+        "the status must be stated, not merely acted on"
+    # Match the COMMAND forms, not the words: the withholding line itself has to
+    # name what it withheld, so a bare word scan flags the statement it wants.
+    assert not any("play it" in n or "`simulate " in n or "`experiment " in n
+                   for n in info["next"]), "an instruction the pilot cannot follow"
+    assert any("resolve-stack ×1" in n for n in info["next"]), \
+        "settling a rules question needs no cardboard"
+
+
+def test_a_superseded_deck_is_still_playable(bare_deck):
+    """`superseded` is deliberately outside `UNPLAYABLE_STATUSES`: a superseded
+    list is still sleeved and can still be played, it is just no longer the best
+    version of itself. Collapsing the three statuses into "not live" would have
+    silenced a deck the pilot can pick up tonight."""
+    (bare_deck / "issue.json").write_text(json.dumps({"status": "superseded"}))
+    info = deck_info.compose(SLUG)
+    assert info["lifecycle"]["status"] == "superseded"
+    assert any("play it" in n for n in info["next"])

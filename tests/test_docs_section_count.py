@@ -186,15 +186,22 @@ def test_every_tracked_per_deck_artifact_is_documented():
     the docs.
 
     Filenames only — semantics live in `docs/pilot.md`. Per-stack, per-decision,
-    per-prescription and per-simulation-run files are excluded: they are keyed
-    instances of four documented shapes, not distinct artifacts.
+    per-prescription, per-simulation-run and per-experiment files are excluded:
+    they are keyed instances of five documented shapes, not distinct artifacts.
+
+    `/experiments/` joined that list late and the omission turned `main` red the
+    moment the first one was tracked: `experiments/<id>.json` is documented in
+    `docs/data-artifacts.md` exactly like the other four, but the run id in the
+    filename made it read as an undocumented one-off. When a command starts
+    writing a keyed instance under a new directory, it belongs here in the same
+    commit.
     """
     import subprocess
 
     tracked = subprocess.run(
         ["git", "ls-files", "data/decks/"], cwd=ROOT,
         capture_output=True, text=True, check=True).stdout.split()
-    instanced = ("/stacks/", "/decisions/", "/prescriptions/", "/sim/")
+    instanced = ("/stacks/", "/decisions/", "/prescriptions/", "/sim/", "/experiments/")
     names = sorted({Path(t).name for t in tracked
                     if not any(d in t for d in instanced)})
     prose = ((ROOT / "docs" / "data-artifacts.md").read_text(encoding="utf-8")
