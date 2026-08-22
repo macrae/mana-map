@@ -652,6 +652,27 @@ pre-answers the traps agents kept rediscovering:
   saying nothing: sisay's strategic frame asserted Secluded Courtyard was dead to its own
   commander, and it isn't.
 
+**The baseline builds a curve, and finishes a combo line it half-holds.** `fill_slots`
+fills a per-ROLE quota (`DECK_ROLE_BUDGET`) crossed with a per-MANA-VALUE quota derived
+from `DECK_AXIS_TARGETS["curve"]` — the cited target `deck_audit` already measured
+against. Without the second quota the builder scored every card independently and took
+the top N, and since `curve_fit` penalises every point above mana value 3 the top N were
+always cheap: kinnan's first baseline had **nothing above 3** across 64 nonland cards,
+29 of them mana producers, and `validate_build` passed it because form is not substance.
+A role whose shape-fitting candidates run out still gets its slots — a legal deck of the
+right size beats a perfect curve.
+
+`complete_combos` then swaps in the ONE missing card of a combo line the deck already
+half-holds, bounded by `DECK_BUILD_COMBO_COMPLETIONS`. It reads real lines from
+`combo_details`, never the flat `combo_partners` map: that map is co-occurrence, so
+"partners with something present" is true of a hundred cards once the commander is on
+the list and cannot tell a completion from a coincidence. A completion is allowed to
+score *lower* than what it replaces, because the one-shot score is exactly the thing
+that cannot see a pair — kinnan's baseline held 23 Kinnan partners and zero completions.
+The swaps are surfaced in `build_plan.json` under `combo_completions`, like
+`cut_for_bracket`, because a swap made for a reason the score does not show must be
+readable.
+
 ## Pool facts — building from parts
 
 `manamap pilot pool-facts <paths…>` answers the question a physical collection asks:

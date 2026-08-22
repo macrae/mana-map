@@ -1046,6 +1046,12 @@ DECK_BUILD_WEIGHTS = {
 
 # Curve scoring. Commander is not a format where a 13-mana card is a ramp
 # payoff, and the prototype's hardcoded 7-bucket target had no derivation.
+# How many combo completions the builder may swap in. The scorer sees cards, not
+# pairs, so a commander whose plan IS a two-card line got 23 partners and zero
+# completions; this is bounded because a deck that is only combo pieces is a
+# different failure from a deck that has none.
+DECK_BUILD_COMBO_COMPLETIONS = 4
+
 DECK_CURVE_SWEET_SPOT = 3
 DECK_CURVE_TOLERANCE = 5.0
 

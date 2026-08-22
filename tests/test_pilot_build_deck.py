@@ -1,13 +1,17 @@
 """Tests for the deterministic deck builder (pilot/build_deck.py)."""
 
 
+import collections
+import json
+
 import pandas as pd
 import pytest
 
-from conftest import requires_data
+from conftest import requires_data, requires_deck
 
-from manamap.config import DECK_ROLE_BUDGET, DECK_SIZE
+from manamap.config import DECK_ROLE_BUDGET, DECK_SIZE, DECKS_DIR
 from manamap.pilot import build_deck
+from manamap.pilot.card_pool import load_pool
 from manamap.pilot.build_deck import (
     BriefError,
     candidate_pool,
@@ -592,3 +596,80 @@ def test_foil_marker_survives_the_round_trip():
 def test_no_pool_means_no_printings_and_bare_names():
     plan = {"commander": "Sol Ring", "slots": [], "land_counts": {}}
     assert decklist_text(plan).strip() == "1 Sol Ring *CMDR*"
+
+
+# ── The output, not the parts ────────────────────────────────────────────────
+#
+# Everything above tests a pure function in isolation or a synthetic `_scored`
+# list. `build()` was never called in this file at all, which is how a deck with
+# NOTHING above mana value 3 and zero combo completions passed every test and
+# `validate_build` too. These assert on the shape of a real deck.
+
+def test_curve_targets_follow_the_cited_axis_and_total_exactly():
+    """The target is `DECK_AXIS_TARGETS["curve"]`'s quote — modal two, ~15 two-drops
+    and ~15 three-drops, ~1.5 at mana value 8+ — so the builder adds no new uncited
+    constant. `deck_audit` has always measured against it; the builder never read it.
+    """
+    t = build_deck.curve_targets(64)
+    assert sum(t.values()) == 64, "rounding remainder must be handed back, not lost"
+    assert t[2] == max(t.values()), "the cited mode is two"
+    assert t[2] >= 14 and t[3] >= 14, "~15.7 two-drops and ~15.4 three-drops"
+    assert t[8] <= 2, "'only ~1.5 cards at mana value 8+'"
+    assert sum(build_deck.curve_targets(40).values()) == 40, "shares scale"
+
+
+def test_curve_bucket_folds_the_tail_at_eight():
+    assert build_deck.curve_bucket(0) == 0 and build_deck.curve_bucket(3) == 3
+    assert build_deck.curve_bucket(12) == 8, "8 means 8-or-more, matching the quote"
+    assert build_deck.curve_bucket(None) == 0
+
+
+@requires_data
+@requires_deck
+def test_a_built_deck_has_a_TOP_END(tmp_path):
+    """The defect this phase exists for.
+
+    The first kinnan baseline was 64 nonland cards with curve {0:1, 1:11, 2:28, 3:24}
+    — nothing above mana value 3 — and 29 of them mana producers: a legal deck that
+    ramps into nothing. `validate_build` passed it (100 cards, singleton, legal, floor
+    within target, role counts exact), because it checks form and this is substance.
+    Cause: cards are scored INDEPENDENTLY and the top N taken, while `curve_fit` is a
+    flat plateau to 3 then a monotone decline — so the top N are always cheap. N
+    independent maxima are not a distribution.
+    """
+    plan = json.loads((DECKS_DIR / "kinnan" / "build_plan.json").read_text())
+    pool = load_pool()
+    curve = collections.Counter()
+    for slot in plan["slots"]:
+        row = pool.get(slot["name"])
+        if row is not None:
+            curve[build_deck.curve_bucket(row["cmc"])] += 1
+    assert sum(n for mv, n in curve.items() if mv >= 4) >= 15, \
+        f"a deck with no top end ramps into nothing: {dict(sorted(curve.items()))}"
+    # The quota is crossed with the ROLE quota, and a role can run out of cards in
+    # a bucket — so the realised mode lands at 2 or 3 rather than exactly on the
+    # cited 2. Measured here: 2:15 against 3:16, one card apart. Asserting exactness
+    # would be asserting that no role ever runs dry, which is not true and not the
+    # property that matters.
+    mode = max(curve, key=lambda mv: (curve[mv], -mv))
+    assert mode in (2, 3), f"the cheap end should still be the bulk: {dict(curve)}"
+    assert curve[2] + curve[3] >= 28, "the cited pair is ~15.7 + ~15.4"
+    assert max(curve) >= 6, "something expensive to ramp INTO"
+
+
+@requires_data
+@requires_deck
+def test_a_built_deck_completes_a_combo_line_it_half_holds():
+    """kinnan's defining line is a two-card infinite and the baseline contained
+    **23 Kinnan combo partners and not one completion** — the scorer sees cards, not
+    pairs, so a card that FINISHES a line earns nothing for finishing it."""
+    plan = json.loads((DECKS_DIR / "kinnan" / "build_plan.json").read_text())
+    completions = plan.get("combo_completions") or []
+    assert completions, "the builder must assemble at least one line it half-held"
+    for c in completions:
+        assert c["added"] and c["replaced"] and c["line"], c
+        assert c["added"] in c["line"], "a completion must belong to the line it names"
+        assert {s["name"] for s in plan["slots"]} >= {c["added"]}, "and be in the deck"
+    names = {s["name"] for s in plan["slots"]} | {plan["commander"]}
+    assert any(set(c["line"]) <= names for c in completions), \
+        "at least one named line must be FULLY contained once the swap is made"

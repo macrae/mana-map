@@ -36,6 +36,7 @@ from manamap.config import (
     BRACKET_MAX,
     BRACKETS,
     DECK_BUILD_ALTERNATES,
+    DECK_BUILD_COMBO_COMPLETIONS,
     DECK_BUILD_EDHREC_BY_BRACKET,
     DECK_BUILD_MAX_BRACKET_PASSES,
     DECK_BUILD_WEIGHTS,
@@ -298,7 +299,45 @@ def score_candidates(pool, embeddings, name_index, commander_name, identity,
     return scores
 
 
-def fill_slots(scored, roles, budget, must_include):
+# The cited curve, as a share of the nonland deck. `DECK_AXIS_TARGETS["curve"]`
+# quotes strategy:deckbuilding.curve — "puts the modal mana value at 2, with 15.7
+# two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana
+# value 8+" — and `deck_audit` has always MEASURED against it while the builder never
+# read it. These are that quote's numbers over a ~64-card nonland deck, with the
+# unstated middle filled monotonically down from the mode and the 8+ tail set by the
+# "~1.5" clause. Shares rather than counts so a different nonland total scales.
+CURVE_SHARE = {0: 0.02, 1: 0.14, 2: 0.245, 3: 0.24, 4: 0.16, 5: 0.10, 6: 0.06,
+               7: 0.02, 8: 0.015}
+
+
+def curve_targets(nonland_total):
+    """`{mana value bucket: how many cards belong there}`, 8 meaning "8 or more".
+
+    The builder scored each card independently and took the top N per role, and
+    `curve_fit` is a flat plateau to mana value 3 then a monotone decline — so the
+    top N were ALWAYS cheap. Measured on the first kinnan baseline: 64 nonland cards
+    with curve {0:1, 1:11, 2:28, 3:24} and NOTHING above 3, 29 of them mana dorks. A
+    legal deck that ramps into nothing. N independent maxima are not a distribution;
+    this is the distribution.
+    """
+    raw = {mv: share * nonland_total for mv, share in CURVE_SHARE.items()}
+    out = {mv: int(v) for mv, v in raw.items()}
+    # Hand the rounding remainder to the buckets that lost the most to truncation,
+    # so the totals match exactly and the mode is never starved by rounding.
+    short = nonland_total - sum(out.values())
+    for mv in sorted(raw, key=lambda m: raw[m] - out[m], reverse=True)[:max(0, short)]:
+        out[mv] += 1
+    return out
+
+
+def curve_bucket(cmc):
+    """A card's curve bucket; 8 is "8 or more", matching the cited tail."""
+    if cmc is None or (isinstance(cmc, float) and math.isnan(cmc)):
+        return 0
+    return min(int(float(cmc)), 8)
+
+
+def fill_slots(scored, roles, budget, must_include, cmcs=None):
     """Fill each budget line with the best-scoring cards that satisfy it.
 
     Returns (slots, taken, effective_budget). Each slot carries its runners-up so
@@ -329,13 +368,36 @@ def fill_slots(scored, roles, budget, must_include):
     def count_in(group):
         return sum(1 for s in slots if s["role"] == group)
 
-    def take(group, want):
-        """Fill `want` more slots from `group`, best score first."""
+    # The curve is a SHAPE, filled across every role rather than inside one. Role
+    # quotas and mana-value quotas are crossed: a card is taken in score order unless
+    # its bucket is already full, and a bucket that cannot be filled from a role's
+    # candidates simply is not — `flex` and the remainder pass absorb it, exactly as
+    # they already absorb role overflow and shortfall.
+    nonland_total = sum(v for k, v in budget.items() if k != "lands")
+    curve_left = curve_targets(nonland_total) if cmcs else {}
+    for slot in slots:                      # must-includes already spent their bucket
+        b = curve_bucket((cmcs or {}).get(slot["name"]))
+        if b in curve_left:
+            curve_left[b] -= 1
+
+    def take(group, want, respect_curve=True):
+        """Fill `want` more slots from `group`, best score first.
+
+        `respect_curve=False` is the second pass: once a group's shape-fitting
+        candidates are exhausted, a legal deck of the right SIZE beats a perfect
+        curve, so the remainder is filled on score alone.
+        """
         if want <= 0:
             return
         available = ([e for e in scored if e["name"] not in taken] if group == "flex"
                      else [e for e in by_group.get(group, []) if e["name"] not in taken])
-        for i, entry in enumerate(available[:want]):
+        placed = 0
+        for i, entry in enumerate(available):
+            if placed >= want:
+                break
+            bucket = curve_bucket((cmcs or {}).get(entry["name"]))
+            if respect_curve and curve_left and curve_left.get(bucket, 0) <= 0:
+                continue
             alternates = [
                 {"name": alt["name"], "delta": round(entry["score"] - alt["score"], 4)}
                 for alt in available[i + 1: i + 1 + DECK_BUILD_ALTERNATES]
@@ -349,6 +411,9 @@ def fill_slots(scored, roles, budget, must_include):
                 "alternates": alternates,
             })
             taken.add(entry["name"])
+            if bucket in curve_left:
+                curve_left[bucket] -= 1
+            placed += 1
 
     # `flex` is the slack line and is filled LAST, because it is the only group
     # that can absorb the other two failure modes. Both are real and both shipped
@@ -368,6 +433,8 @@ def fill_slots(scored, roles, budget, must_include):
         if group in ("lands", "flex"):
             continue
         take(group, count - count_in(group))
+        # A role whose shape-fitting candidates ran out still owes its slots.
+        take(group, count - count_in(group), respect_curve=False)
 
     effective = dict(budget)
     for group in budget:
@@ -378,9 +445,78 @@ def fill_slots(scored, roles, budget, must_include):
         nonland_target = sum(v for k, v in budget.items() if k != "lands")
         placed = sum(effective[g] for g in effective if g not in ("lands", "flex"))
         take("flex", (nonland_target - placed) - count_in("flex"))
+        take("flex", (nonland_target - placed) - count_in("flex"), respect_curve=False)
         effective["flex"] = count_in("flex")
 
     return slots, taken, effective
+
+
+def complete_combos(slots, scored, roles, details, seed_names, limit=DECK_BUILD_COMBO_COMPLETIONS):
+    """Swap in the ONE missing card of a combo line the deck already half-holds.
+
+    `score_candidates` scores every card ONCE, against `{commander}`, so its combo
+    term only ever asks "does this combo with the commander" — never "with anything
+    already chosen" — and a single partner earns at most `combo_weight × 1/3`. The
+    first kinnan baseline held **23 Kinnan combo partners and not one completion**:
+    the halves that also scored well on similarity and curve got in, and the cards
+    that would have finished a line did not, because nothing in the pipeline knows a
+    pair is a pair.
+
+    Reads real LINES, not `combo_partners`. That map is flat co-occurrence, so
+    "partners with something present" is true of a hundred cards the moment the
+    commander is on the list — it cannot tell a completion from a coincidence. A
+    completion here means: some line in `combo_details` has exactly one card the deck
+    does not hold, and this is it.
+
+    Bounded like `enforce_bracket`, and for the same reason — a deck that is only
+    combo pieces is a different failure from one that has none. The victim is the
+    lowest-scoring slot of the completion's own role, so the role budget survives;
+    a completion is ALLOWED to score lower than what it replaces, because raw score
+    is exactly the thing that cannot see the pair.
+    """
+    present = {s["name"] for s in slots} | set(seed_names)
+    by_name = {e["name"]: e for e in scored}
+    combos, by_card = details.get("combos") or [], details.get("by_card") or {}
+    completed, protected = [], set(seed_names)
+    for _ in range(limit):
+        # Every line reachable from what the deck already holds.
+        best = None
+        seen = set()
+        for held in sorted(present):
+            for idx in by_card.get(held, []):
+                if idx in seen:
+                    continue
+                seen.add(idx)
+                line = combos[idx] if idx < len(combos) else None
+                if not line:
+                    continue
+                missing = [c for c in line["cards"] if c not in present]
+                if len(missing) != 1:
+                    continue
+                cand = by_name.get(missing[0])
+                if cand is None:            # out of pool, identity or bracket
+                    continue
+                if best is None or cand["score"] > best[0]["score"]:
+                    best = (cand, line)
+        if best is None:
+            return slots, completed
+        entry, line = best
+        group = role_group(roles.get(entry["name"], []))
+        victims = [s for s in slots if s.get("reason") != "must_include"
+                   and s["role"] == group and s["name"] not in protected]
+        if not victims:
+            return slots, completed
+        victim = min(victims, key=lambda s: (s.get("score", 0.0), s["name"]))
+        slots = [s for s in slots if s is not victim]
+        slots.append({"name": entry["name"], "role": group,
+                      "score": round(entry["score"], 4), "components": entry["components"],
+                      "alternates": [], "reason": "combo_completion"})
+        present.discard(victim["name"])
+        present.add(entry["name"])
+        protected.add(entry["name"])
+        completed.append({"added": entry["name"], "replaced": victim["name"],
+                          "line": line["cards"], "produces": line.get("produces")})
+    return slots, completed
 
 
 def enforce_bracket(slots, scored, roles, card_flags, details, commanders, target):
@@ -481,7 +617,11 @@ def build(slug):
     )
 
     budget = dict(DECK_ROLE_BUDGET)
-    slots, _, effective_budget = fill_slots(scored, roles, budget, brief["must_include"])
+    cmcs = dict(zip(spell_pool["name"], spell_pool["cmc"]))
+    slots, taken, effective_budget = fill_slots(
+        scored, roles, budget, brief["must_include"], cmcs=cmcs)
+    slots, completed = complete_combos(
+        slots, scored, roles, details, {commander["name"]})
     slots, cut, report = enforce_bracket(
         slots, scored, roles, flags, details, {commander["name"]}, target
     )
@@ -547,6 +687,10 @@ def build(slug):
         "land_counts": _land_counts(lands),
         "manabase": mana_diag,
         "cut_for_bracket": cut,
+        # What the one-shot scorer could not see: a card that FINISHES a line the
+        # deck already half-holds. Surfaced like `cut_for_bracket`, because a swap
+        # the plan made for a reason the score does not show must be readable.
+        "combo_completions": completed,
         "notes": report["notes"],
         "generated_by": "manamap pilot build-deck (deterministic; no agent involvement)",
     }
