@@ -1,0 +1,169 @@
+{
+  "slug": "hapatra",
+  "commander": [
+    "Hapatra, Vizier of Poisons"
+  ],
+  "lifecycle": {
+    "status": "broken-down",
+    "headline": "BROKEN DOWN FOR PARTS",
+    "body": "This deck no longer exists physically — its cards were pulled and sleeved into another list. Everything below was true when it shipped and is kept as published; the decklist is no longer maintained."
+  },
+  "colour_identity": [
+    "B",
+    "G"
+  ],
+  "size": 100,
+  "lands": 36,
+  "status": {
+    "complete": 14,
+    "of": 15,
+    "stale": [],
+    "invalid": [],
+    "missing": [
+      "log"
+    ]
+  },
+  "bracket": {
+    "floor": 4,
+    "floor_name": "Optimized",
+    "target": 4,
+    "within_target": true
+  },
+  "record": {
+    "games": 0,
+    "win": 0,
+    "loss": 0,
+    "draw": 0,
+    "last_played": null,
+    "undebriefed": []
+  },
+  "goldfish": {
+    "seed": 42,
+    "iterations": 10000,
+    "commander_mean_cast_turn": 2.007,
+    "commander_cast_by_turn_6_pct": 100,
+    "targets": [
+      {
+        "label": "Commander plus any -1/-1 payoff",
+        "by_turn_6_pct": 56
+      },
+      {
+        "label": "Hapatra + Blowfly Infestation (two-card kill)",
+        "by_turn_6_pct": 12
+      },
+      {
+        "label": "Mikaeus + Devoted Druid (the two-card infinite stack 001 verified)",
+        "by_turn_6_pct": 1
+      },
+      {
+        "label": "Any drain converter",
+        "by_turn_6_pct": 42
+      },
+      {
+        "label": "Any tutor drawn",
+        "by_turn_6_pct": 68
+      }
+    ]
+  },
+  "engine": {
+    "thesis": "Hapatra does not make -1/-1 counters outside combat — she PRICES them: every placement another of your cards makes onto a creature mints one 1/1 deathtouch Snake (one per creature per placement, not one per counter), twelve cards eat those Snakes for mana, cards and damage, and five drain pieces bill for each death — though only three charge the whole table (Blood Artist and Sephiroth name one seat) and Obelisk Spider charges on counter PLACEMENT rather than on a death at all; the counter sources are eight cards deep, every unbounded line a CHECKER HAS UPHELD routes through Mikaeus — 11 of bracket_report's 19 two-card infinites do not name him and stack 001 explicitly declines to close nine of those — and exactly one board in this deck has ever been checked, a board on which nothing came back.",
+    "critic": "pass",
+    "lines": 18,
+    "verified_lines": 3
+  },
+  "diagnosis": {
+    "verdict": "This deck functions and it converts. It casts a 2-mana commander on turn 2 in 9,970 of 10,000 goldfish games, hits the turn-3 land drop 90.2% of the time with zero unconditional taplands, and assembles commander-plus-a-payoff 67.2% of the time. What limits it is that every answer it owns points at a creature: across all 88 entries in cards.json, exactly two cards destroy anything (Crumbling Ashes, Mikaeus) and both destroy creatures, and nothing in the 99 destroys or exiles an artifact, an enchantment, or a land on the battlefield. One axis that reads as a problem is not: card-advantage's 8 misses The One Ring, Yawgmoth and Grim Backwoods. Ramp's 16 against 10-12 is a real overage of four copies. The one prescribed swap takes a single slot from it, Arcane Signet; a second ranked cut candidate, Dark Ritual, sits on the same axis and is not prescribed.",
+    "skeptic": "pass",
+    "stale": false
+  },
+  "audit": {
+    "archetype": "combo",
+    "under": [
+      "card-advantage",
+      "interaction-breadth"
+    ],
+    "over": [
+      "ramp"
+    ],
+    "stale": []
+  },
+  "prescriptions": {
+    "count": 0,
+    "answered": 0,
+    "latest": null
+  },
+  "open_questions": [
+    {
+      "from": "engine",
+      "question": "Is Hapatra + Blowfly Infestation actually a two-card kill? Blowfly triggers only when a creature dies that HAD a -1/-1 counter on it, and stack 001 step 11 establishes Hapatra's own placement is a combat-damage trigger — so the pair may need a connected attack or a third card to place the first counter, and it may need a 1-toughness body to keep dying.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Does Host of the Hereafter loop with Hapatra the way Blowfly Infestation is claimed to? Its trigger moves the counters off a dying creature onto up to one target creature you control, which Hapatra would see as a placement; Commander Spellbook lists the pair as infinite death triggers.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Is Scurry Oak + Ivy Lane Denizen a real infinite in this deck, and does it need a third card to be a win?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Does the Yawgmoth A/B loop kill three seats at 40 before the library runs out? Each activation costs 1 life and draws a mandatory card, and stack 001 calls it library-bounded rather than infinite.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Write a scenario with Devoted Druid on the battlefield alongside Mikaeus, a drain converter and Hapatra, and resolve the steady state to a lethal number.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "What is the assembly rate for 'Hapatra plus any non-combat -1/-1 SOURCE' — the eight-card class this model calls ignition?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "engine",
+      "question": "Against three seats, does the drain class close faster than the Ballista line? Three of the five converters hit each opponent and two name one player, and the Ballista line needs no converter at all.",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "engine",
+      "question": "How should a -1/-1 counters deck value Toxic Deluge — a sweeper its own engine cannot see, since it places no counters and triggers Hapatra, Nest of Scarabs, Flourishing Defenses and Necroskitter zero times?",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "engine",
+      "question": "Do the six Ivy Lane Denizen two-card entries in bracket_report start at all? The Denizen is paired with Ashnod's Altar, Phyrexian Altar, Carrion Feeder, Viscera Seer, Yahenni and Blasting Station, but it triggers only when another GREEN creature you control ENTERS, and a sacrifice outlet makes nothing enter.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Does Ivy Lane Denizen loop in this deck, and does it convert? It is in the 99 and appears in seven of the nineteen two-card entries bracket_report.json lists: with Scurry Oak, and with six of the eight mana-free sacrifice outlets (Ashnod's Altar, Phyrexian Altar, Carrion Feeder, Viscera Seer, Yahenni, Blasting Station).",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Is Hapatra + Blowfly Infestation actually a two-card kill? goldfish_targets.json declares it as one and the audit measures it at 16.3% assembled (66.7% with tutors), but no stack has ever resolved it.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "What is this deck's real rate of assembling ANY kill, rather than each named one separately?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Do the three Blowfly Infestation entries and the Hapatra + Host of the Hereafter entry survive a resolve-stack run, and what is the defensible two-card-infinite count?",
+      "settled_by": "resolve-stack"
+    }
+  ],
+  "simulation": null,
+  "experiments": null,
+  "next": [
+    "broken down for parts — the play/measure loop is closed for this deck (broken-down); its artifacts stay as published. Suggestions to log a game, simulate or run an experiment are withheld",
+    "open questions routed: goldfish ×2, research-strategy ×2, resolve-stack ×9"
+  ],
+  "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
+}

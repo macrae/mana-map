@@ -1,0 +1,151 @@
+{
+  "slug": "sisay",
+  "commander": [
+    "Sisay, Weatherlight Captain"
+  ],
+  "lifecycle": {
+    "status": "retired",
+    "headline": "RETIRED",
+    "body": "This list is no longer maintained. It is kept as published rather than edited or removed."
+  },
+  "colour_identity": [
+    "W",
+    "U",
+    "B",
+    "R",
+    "G"
+  ],
+  "size": 100,
+  "lands": 40,
+  "status": {
+    "complete": 13,
+    "of": 15,
+    "stale": [],
+    "invalid": [],
+    "missing": [
+      "brief",
+      "log"
+    ]
+  },
+  "bracket": {
+    "floor": 4,
+    "floor_name": "Optimized",
+    "target": 4,
+    "within_target": true
+  },
+  "record": {
+    "games": 0,
+    "win": 0,
+    "loss": 0,
+    "draw": 0,
+    "last_played": null,
+    "undebriefed": []
+  },
+  "goldfish": {
+    "seed": 42,
+    "iterations": 10000,
+    "commander_mean_cast_turn": 2.963,
+    "commander_cast_by_turn_6_pct": 99,
+    "targets": [
+      {
+        "label": "Sisay online with a multi-colour mana engine (only Jegantha adds all five off one activation)",
+        "by_turn_6_pct": 56
+      },
+      {
+        "label": "Sisay online with a three-colour legend to grow her",
+        "by_turn_6_pct": 42
+      },
+      {
+        "label": "Early accelerant drawn",
+        "by_turn_6_pct": 64
+      },
+      {
+        "label": "Commander protection available",
+        "by_turn_6_pct": 80
+      }
+    ]
+  },
+  "engine": {
+    "thesis": "Sisay is a mana-to-battlefield converter whose exchange rate is her own power: five coloured pips buy one legendary permanent, every new colour she buys widens the next purchase, and the currency every other stage is paying for is ACCESS rather than cards or mana.",
+    "critic": "pass",
+    "lines": 11,
+    "verified_lines": 3
+  },
+  "diagnosis": {
+    "verdict": "This deck deploys its commander on schedule and then cannot afford her. Sisay lands at a median turn 3 and 99.1% by turn 6, the mana base is 55 sources against a target of 39 with zero unconditional taplands, and the deck still averages 4.894 available mana on turn 5 against an ability that costs five coloured pips with no generic in it. What limits it is that {W}{U}{B}{R}{G} bill — the same cost Najeela's loop re-charges every combat — and no axis measures it. The colour-sources reading of -15 is not that problem: black carries only 7 pip-bearing cards, so mana_analysis's 20% quorum is 2 cards and the deck holds exactly 2 double-black costs — cutting either one takes the axis to -1.",
+    "skeptic": "pass",
+    "stale": false
+  },
+  "audit": {
+    "archetype": null,
+    "under": [
+      "colour-sources",
+      "card-advantage",
+      "interaction-breadth"
+    ],
+    "over": [
+      "mana-base",
+      "ramp"
+    ],
+    "stale": []
+  },
+  "prescriptions": {
+    "count": 0,
+    "answered": 0,
+    "latest": null
+  },
+  "open_questions": [
+    {
+      "from": "engine",
+      "question": "Re-run stack 001 (Sisay activated the turn she lands, and the escalating fetch chain) with the single -X/-X clause the checker flagged. Does the deck's central line — pay five pips, fetch a legend, recalculate power mid-resolution, fetch again — pass?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Re-run stack 003 (Relic of Legends versus Esika's granted ability on a legend Sisay put onto the battlefield this turn), fixing the step-13 Esika vigilance attribution and the step-14 ceiling the checker refuted. Can a freshly fetched legend help pay for the NEXT activation, and what is the real per-turn mana ceiling?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Add a win-line target and measure it: how often are Najeela plus a mana base that can produce all five colours both available, and by which turn?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "engine",
+      "question": "What is the accepted source floor for a REPEATABLE five-distinct-pip activation cost, as opposed to a one-time cast? Karsten's table prices triple pips across three colours and calls it incompatible; a {W}{U}{B}{R}{G} cost you want to pay every turn sits off the end of it.",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Stack 001 failed at the iteration bound with one clause left: the -X/-X death case is priced at exactly -6/-6 and generalised to 'or larger', but CR 107.1b allows power below zero, so a -8/-8 gives a different ceiling. Fix that clause and re-run — every other answer in the artifact was independently verified.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Stack 003 failed on the turn-total mana material: whether a second untap trigger aimed at an already-untapped Relic of Legends converts to another mana in the priority window between resolutions, and whether Esika's vigilance grant covers Esika itself.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Does Bear Umbra on Najeela, the Blade-Blossom actually sustain the loop — specifically, does the attack trigger untap the lands before the {W}{U}{B}{R}{G} for the additional combat is due, and is Najeela re-declared as an attacker in each additional combat?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "How does Intruder Alarm's 'Creatures don't untap during their controllers' untap steps' interact with Seedborn Muse, which untaps all your permanents during each other player's untap step, and with the nine mana dorks in the 99?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "goldfish_targets.json declares four targets — a mana engine, a three-colour legend, an early accelerant and protection — and not one of them is a win line. Add a target for the Najeela kill and re-run.",
+      "settled_by": "goldfish"
+    }
+  ],
+  "simulation": null,
+  "experiments": null,
+  "next": [
+    "retired — the play/measure loop is closed for this deck (retired); its artifacts stay as published. Suggestions to log a game, simulate or run an experiment are withheld",
+    "open questions routed: goldfish ×2, research-strategy ×1, resolve-stack ×6"
+  ],
+  "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
+}

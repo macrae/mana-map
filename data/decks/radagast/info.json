@@ -1,0 +1,201 @@
+{
+  "slug": "radagast",
+  "commander": [
+    "Radagast of Rhosgobel"
+  ],
+  "lifecycle": {
+    "status": "broken-down",
+    "headline": "BROKEN DOWN FOR PARTS",
+    "body": "This deck no longer exists physically — its cards were pulled and sleeved into another list. Everything below was true when it shipped and is kept as published; the decklist is no longer maintained."
+  },
+  "colour_identity": [
+    "G"
+  ],
+  "size": 100,
+  "lands": 36,
+  "status": {
+    "complete": 14,
+    "of": 15,
+    "stale": [],
+    "invalid": [],
+    "missing": [
+      "log"
+    ]
+  },
+  "bracket": {
+    "floor": 1,
+    "floor_name": "Exhibition",
+    "target": 3,
+    "within_target": true
+  },
+  "record": {
+    "games": 0,
+    "win": 0,
+    "loss": 0,
+    "draw": 0,
+    "last_played": null,
+    "undebriefed": []
+  },
+  "goldfish": {
+    "seed": 42,
+    "iterations": 10000,
+    "commander_mean_cast_turn": 4.015,
+    "commander_cast_by_turn_6_pct": 94,
+    "targets": [
+      {
+        "label": "A METRONOME body drawn (3-5 MV, >=2 generic — the full-value flash-in class)",
+        "by_turn_6_pct": 94
+      },
+      {
+        "label": "A FLASH TRAP drawn (instant-speed interaction wearing a creature body, or held protection)",
+        "by_turn_6_pct": 91
+      },
+      {
+        "label": "GAS drawn — a repeatable draw engine (all but Harmonize gate on power 4+ entering; the declared thin engine)",
+        "by_turn_6_pct": 76
+      },
+      {
+        "label": "RAMP drawn (either hump: a dork/rock-class accelerant or a land-ramp spell)",
+        "by_turn_6_pct": 94
+      },
+      {
+        "label": "THE OVERRUN KILL: a mass-pump finisher drawn (Craterhoof class — needs a board, which the bodies rates price separately)",
+        "by_turn_6_pct": 42
+      },
+      {
+        "label": "THE OVERRUN ASSEMBLED: finisher AND a second wave to pump (a metronome body as proxy for board width)",
+        "by_turn_6_pct": 40
+      },
+      {
+        "label": "An answer to an artifact or enchantment drawn (the breadth floor; Boseiju is a land the sim counts as drawn)",
+        "by_turn_6_pct": 63
+      },
+      {
+        "label": "SELVALA — the single best engine card, drawn (a declared one-card class: no functional backup exists in the 99)",
+        "by_turn_6_pct": 12
+      },
+      {
+        "label": "A TUTOR drawn (Chord finds any trap at instant speed; Fauna Shaman loops spares into answers)",
+        "by_turn_6_pct": 23
+      }
+    ]
+  },
+  "engine": {
+    "thesis": "This is a mono-green deck that spends the three turns which are not yours: Radagast opens one discounted flash window per player turn, a creature walks through each one, a card-per-body engine pays for the creature, and the accumulated board is cashed in by a mass-pump finisher — whose verified kill threshold is FIVE other bodies beside the finisher, not the finisher itself.",
+    "critic": "pass",
+    "lines": 9,
+    "verified_lines": 9
+  },
+  "diagnosis": {
+    "verdict": "The mana is the best-measured in the fleet's terms (51 Burgess sources vs 36, turn-3 land hit 0.91, commander mean cast t4.0) and the ambush machinery is verified and dense (flash trap drawn 96.1%, metronome body 98.1%). What binds is still board WIDTH: the kill needs five bodies (stack 003) and the goldfish reaches a mean of 3.767 by t6, crossing the bar around t8 (5.313), with finisher-plus-second-wave assembled 40.2% by t6. Coverage is now complete: all five breadth classes answered, and Whiptongue Hydra gives the deck its first sweeper — within Zupke's cap, if far under the control-override band. Stack 005's lesson stands: bodies deploy at end steps (006: they wake attack-ready), the finisher is an own-main cast.",
+    "skeptic": "pass",
+    "stale": false
+  },
+  "audit": {
+    "archetype": "control",
+    "under": [
+      "mana-base",
+      "interaction",
+      "sweepers",
+      "threat-density"
+    ],
+    "over": [
+      "ramp",
+      "protection"
+    ],
+    "stale": []
+  },
+  "prescriptions": {
+    "count": 0,
+    "answered": 0,
+    "latest": null
+  },
+  "open_questions": [
+    {
+      "from": "engine",
+      "question": "Whiptongue Hydra flashed in after blockers are declared: does its ETB sweep the fliers before combat damage, how many +1/+1 counters does it keep, and does it kill your own Hornet Nest tokens and Hornet Queen tokens in the process?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Can Scute Swarm alone reach the fifth body BESIDE the finisher? With six or more lands its landfall creates a copy of itself per land entering; how many bodies does the board hold on the turn before Craterhoof, counting one land drop plus a fetch from Wood Elves or Sakura-Tribe Elder?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Does Mirkwood Pathmaker function as this deck's greatest-power dial? With N lands, what is the X on Overwhelming Stampede and Pathbreaker Ibex, how many cards does Return of the Wildspeaker draw, and does Selvala's 'power greater than each other creature's power' gate then shut off for every subsequent body — including against opponents' creatures?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Over the board this deck actually assembles, do the other three finishers close? Specifically: on stack 003's exact board (Radagast 2/5, Scute Swarm 1/1, Wood Elves 1/1, Beast Whisperer 2/3, seven lands), what does Overwhelming Stampede deal, what does Pathbreaker Ibex deal on the turn after it attacks, and what does Return of the Wildspeaker's +3/+3 mode deal given three Humans in the 71?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Does the protection stage hold up the two ways it will actually be attacked? (a) Saryth grants hexproof to OTHER UNTAPPED creatures you control — is an attacking Radagast, and Saryth herself, targetable by a removal spell during combat? (b) Guardian Augmenter grants commanders hexproof, not indestructible — does Radagast survive a Day of Judgment, and if he does not, does Heroic Intervention's indestructible cover the rest of a board the wrath is aimed at?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Glademuse reads 'whenever a player casts a spell, if it's not their turn, THAT PLAYER draws a card.' Against a pod with instant-speed decks, does this deck net ahead on it?",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "engine",
+      "question": "How much of the metronome's real output is the simulator missing? The declaration's own note says the sim models neither Radagast's discount, nor aura ramp (Utopia Sprawl, Wild Growth, Fertile Ground), nor opponent-turn flash casts.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Can Selvala's tapped mana pay for the flashed cast in the same window (frame candidate line 2)?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "How much do the goldfish's three declared blind spots (no discount, no opponent-turn flash casts, no aura ramp) understate board density?",
+      "settled_by": "goldfish"
+    }
+  ],
+  "simulation": {
+    "runs": 2,
+    "latest": "giada-angels-vs-baylen-tokens-vs-vito-n20-5686a94a-s1451665738",
+    "at": "2026-08-19",
+    "games": 20,
+    "vs": [
+      "giada-angels",
+      "baylen-tokens",
+      "vito"
+    ],
+    "win_rate": 0.0,
+    "win_rate_ci95": [
+      0.0,
+      0.161
+    ],
+    "eliminated_by": {
+      "vito": 5,
+      "giada-angels": 10,
+      "baylen-tokens": 1
+    },
+    "mean_round": 17.6,
+    "token_damage_share": 0.15,
+    "tokens_observed": 0.55
+  },
+  "experiments": {
+    "count": 1,
+    "latest": {
+      "question": "V1 (2026-08-12, radagast: goldfish baseline — best commander profi)  vs  V5 (2026-08-12, radagast: the $4 trio ships — Vol. 009 second prin), same table",
+      "at": "2026-08-19",
+      "games_per_arm": 10,
+      "win_a": 0.0,
+      "win_b": 0.0,
+      "overlap": true,
+      "reading": "the win-rate intervals OVERLAP at this N — the difference is noise until more games say otherwise"
+    }
+  },
+  "next": [
+    "broken down for parts — the play/measure loop is closed for this deck (broken-down); its artifacts stay as published. Suggestions to log a game, simulate or run an experiment are withheld",
+    "open questions routed: goldfish ×2, research-strategy ×1, resolve-stack ×6"
+  ],
+  "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
+}

@@ -1,0 +1,188 @@
+{
+  "slug": "yawgmoth-swarm",
+  "commander": [
+    "Yawgmoth, Thran Physician"
+  ],
+  "lifecycle": null,
+  "colour_identity": [
+    "B"
+  ],
+  "size": 100,
+  "lands": 36,
+  "status": {
+    "complete": 14,
+    "of": 15,
+    "stale": [],
+    "invalid": [],
+    "missing": [
+      "log"
+    ]
+  },
+  "bracket": {
+    "floor": 4,
+    "floor_name": "Optimized",
+    "target": 4,
+    "within_target": true
+  },
+  "record": {
+    "games": 0,
+    "win": 0,
+    "loss": 0,
+    "draw": 0,
+    "last_played": null,
+    "undebriefed": []
+  },
+  "goldfish": {
+    "seed": 42,
+    "iterations": 10000,
+    "commander_mean_cast_turn": 4.301,
+    "commander_cast_by_turn_6_pct": 91,
+    "targets": [
+      {
+        "label": "KILL A (stack 009, unbounded): Warren Soultrader + Gravecrawler + an each-opponent drain",
+        "by_turn_6_pct": 0
+      },
+      {
+        "label": "KILL B (stack 011, unbounded and free): Gravecrawler + Phyrexian Altar + a second Zombie + an each-opponent drain",
+        "by_turn_6_pct": 0
+      },
+      {
+        "label": "KILL C (stack 012): Exquisite Blood + a you-gain-life-each-opponent-loses drain",
+        "by_turn_6_pct": 4
+      },
+      {
+        "label": "KILL D (stack 010, lethal but library-bounded): Mikaeus + Yawgmoth + a non-Human body + an each-opponent drain",
+        "by_turn_6_pct": 2
+      },
+      {
+        "label": "KILL E — THE ENGINE (stacks 002/003/004): Nest of Scarabs + a drain, Yawgmoth from the zone; ~two drains per body on board, the community's primary line",
+        "by_turn_6_pct": 8
+      },
+      {
+        "label": "KILL F (stack 014, library-bounded, lethal in ~30 activations): Butcher Ghoul + Geralf's Messenger + a drain, Yawgmoth from the zone",
+        "by_turn_6_pct": 1
+      },
+      {
+        "label": "GRAVECRAWLER — the single card two unbounded kills both route through",
+        "by_turn_6_pct": 13
+      },
+      {
+        "label": "BASTION OF REMEMBRANCE — the drain that actually loops in three verified lines",
+        "by_turn_6_pct": 14
+      },
+      {
+        "label": "A drain drawn — the payoff every loop routes through",
+        "by_turn_6_pct": 72
+      },
+      {
+        "label": "RENEWABLE FODDER drawn",
+        "by_turn_6_pct": 72
+      },
+      {
+        "label": "ENGINE MANA drawn — turns a creature death into castable black",
+        "by_turn_6_pct": 51
+      },
+      {
+        "label": "A free repeatable sacrifice outlet drawn (not counting Yawgmoth)",
+        "by_turn_6_pct": 68
+      },
+      {
+        "label": "An ignition source drawn (something that places the first -1/-1 counter)",
+        "by_turn_6_pct": 63
+      },
+      {
+        "label": "An answer to a noncreature permanent drawn (the binding axis)",
+        "by_turn_6_pct": 13
+      },
+      {
+        "label": "Fast mana drawn (the turn-2-Yawgmoth enabler)",
+        "by_turn_6_pct": 35
+      },
+      {
+        "label": "A tutor drawn (any of five can fetch a missing combo half)",
+        "by_turn_6_pct": 50
+      }
+    ]
+  },
+  "engine": {
+    "thesis": "A free, repeatable sacrifice outlet turns every body you control into three payments at once — a -1/-1 counter, a card, and one life off every seat — and the deck's real question is never how to go infinite but which of six kills the outlet is holding, because the three that ARE unbounded (stacks 009, 011, 012) need no commander and no counter, while the Nest of Scarabs line everyone names was measured by four passing stacks as a body-bounded rotation that grinds rather than wins.",
+    "critic": "pass",
+    "lines": 15,
+    "verified_lines": 11
+  },
+  "diagnosis": {
+    "verdict": "The staples pass bought exactly what it claimed: RENEWABLE FODDER is now nine members drawn in 82.3% of games (72.2% by turn 6), the drain layer matches it at 82.3%, mean bodies at turn 6 is 4.239 in the committed artifact, and every mana axis is at target with the turn-3 land drop landing 91.6%. What binds is unchanged in name and narrower in content: interaction-breadth at 2 of 5 classes — zero artifact answers by enumeration of all 80 entries' oracle text — while three of the six declared kills are commander-gated and the recursion kills sit directly under the format's artifact-based graveyard hate. Behind it, fast mana (3 cards, 43.6%) is the smallest and lowest-rated multi-card engine class. The prescription is the prior diagnosis's two unapplied adds, re-validated against the new 99 with new natural cuts: Gate to Phyrexia and Culling the Weak.",
+    "skeptic": "pass",
+    "stale": false
+  },
+  "audit": {
+    "archetype": "combo",
+    "under": [
+      "card-advantage",
+      "protection",
+      "interaction-breadth"
+    ],
+    "over": [],
+    "stale": []
+  },
+  "prescriptions": {
+    "count": 0,
+    "answered": 0,
+    "latest": null
+  },
+  "open_questions": [
+    {
+      "from": "engine",
+      "question": "Does Ashnod's Altar + Pitiless Plunderer + Reassembling Skeleton hold as an unbounded line on a real board? Commander Spellbook rates it bracket 1 for infinite colorless mana and infinite death triggers, all three cards are in the 99, and the arithmetic looks self-funding (sacrifice for {C}{C} plus a Treasure, recur for {1}{B}), but nothing has resolved it and neither Plunderer nor the Skeleton appears in any of the eleven passing stacks.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Does Mikaeus, the Unhallowed plus ONE free sacrifice outlet loop without the commander? Seven such pairings are in candidate_lines (Carrion Feeder, Viscera Seer, Woe Strider, Yahenni, Ashnod's Altar, Phyrexian Altar, Blasting Station) and all seven outlets are in the 99, but undying's intervening 'if' fails the moment the body carries a +1/+1 counter — which is exactly what stack 010 needed Yawgmoth's -1/-1 counter to strip.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "How many Nest of Scarabs rotations, across how many turns, does an average board actually need to kill a four-opponent pod? Stacks 002/003/004/005 each measure exactly ONE rotation from a three-body board — 5 to 8 activations, 7 to 13 drains, 28 to 52 life removed from 160 — and none of them carries the board into a second turn.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Against three opponents, is a nine-deep drain layer and an eight-deep outlet layer the right investment when the deck cannot answer an artifact at all? The two hosers that switch this deck off — Grafdigger's Cage on the graveyard casting and the undying returns, Cursed Totem on every creature outlet including the commander — are both artifacts, the artifact class is covered zero times, and Feed the Swarm reaches only creatures and enchantments.",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "diagnosis",
+      "question": "RESOLVED by stack 014 (checker pass at iteration 1, 22 citations): does KILL F function as declared? Yes, with one correction — 'unbounded' is REFUTED. Yawgmoth's draw is mandatory ('and draw a card', no 'may'), so every activation consumes a library card: ~55 activations available mid-game, lethal to the pod in ~30 (per two-activation cycle each opponent loses 2 to the drain and the Messenger-targeted seat 4, at net-zero life to the pilot), leaving ~25 cards of margin. goldfish_targets' KILL F label now carries the corrected wording: 'stack 014, library-bounded, lethal in ~30 activations'.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Under Grafdigger's Cage, do KILL A (009), KILL B (011), KILL D (010) and now KILL F still function? A and B cast Gravecrawler from the graveyard, D and F return creature cards from the graveyard via undying — all four look Cage-shaped, which is the concrete case for Gate to Phyrexia.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Under an opposing Cursed Totem, what survives of the outlet component? Five of its eight members are creatures with activated abilities, and Yawgmoth himself is shut off.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "How often does the deck assemble ANY of its six kills? The audit's schema states it cannot express the union, and averaging would invent a number the simulation never measured.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Should the fast-mana any_of be re-curated after the purchase lands — adding Culling the Weak if bought, and deciding whether Jet Medallion belongs (it accelerates Yawgmoth to an effective 3 but is cost-reduction, not mana)?",
+      "settled_by": "goldfish"
+    }
+  ],
+  "simulation": null,
+  "experiments": null,
+  "next": [
+    "nothing in the captain's log — play it, then `deck-notes yawgmoth-swarm add \"…\" --result win|loss --opponents N`",
+    "open questions routed: goldfish ×2, research-strategy ×1, resolve-stack ×6",
+    "no simulation runs — `simulate yawgmoth-swarm --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
+  ],
+  "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
+}

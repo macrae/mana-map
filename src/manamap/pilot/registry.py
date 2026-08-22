@@ -263,6 +263,9 @@ def add_pilot_parser(subparsers):
                              help="re-derive a run's analysis from its kept logs (where the run was made)")
         if name == "deck-info":
             cmd.add_argument("--json", action="store_true", dest="as_json")
+            cmd.add_argument("--write", action="store_true",
+                             help="write data/decks/<slug>/info.json for the deck page "
+                                  "(committed, staleness-gated, no version block)")
         if name == "deck-version":
             cmd.add_argument("action", nargs="?", default="list",
                              choices=["list", "show", "tag", "restore"],

@@ -1,0 +1,166 @@
+{
+  "slug": "edgar-vampires",
+  "commander": [
+    "Edgar Markov"
+  ],
+  "lifecycle": null,
+  "colour_identity": [
+    "W",
+    "B",
+    "R"
+  ],
+  "size": 100,
+  "lands": 37,
+  "status": {
+    "complete": 13,
+    "of": 15,
+    "stale": [],
+    "invalid": [],
+    "missing": [
+      "brief",
+      "log"
+    ]
+  },
+  "bracket": {
+    "floor": 4,
+    "floor_name": "Optimized",
+    "target": 4,
+    "within_target": true
+  },
+  "record": {
+    "games": 0,
+    "win": 0,
+    "loss": 0,
+    "draw": 0,
+    "last_played": null,
+    "undebriefed": []
+  },
+  "goldfish": {
+    "seed": 42,
+    "iterations": 10000,
+    "commander_mean_cast_turn": 6.614,
+    "commander_cast_by_turn_6_pct": 52,
+    "targets": [
+      {
+        "label": "TOKEN -> DAMAGE drawn (the dimension the pilot asked about)",
+        "by_turn_6_pct": 63
+      },
+      {
+        "label": "A token multiplier or extra token-maker drawn",
+        "by_turn_6_pct": 68
+      },
+      {
+        "label": "THE GO-WIDE KILL: a token->damage payoff AND a multiplier",
+        "by_turn_6_pct": 42
+      },
+      {
+        "label": "A Vampire lord or anthem drawn (the combat plan)",
+        "by_turn_6_pct": 68
+      },
+      {
+        "label": "THE SURVIVING INFINITE (stacks 004 and 006): Bloodthirsty Conqueror + a lifegain-loss half",
+        "by_turn_6_pct": 3
+      },
+      {
+        "label": "Ramp or fixing drawn",
+        "by_turn_6_pct": 57
+      },
+      {
+        "label": "A draw engine drawn",
+        "by_turn_6_pct": 62
+      },
+      {
+        "label": "Protection held for the swarm",
+        "by_turn_6_pct": 50
+      },
+      {
+        "label": "An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Generous Gift, Stroke of Midnight",
+        "by_turn_6_pct": 43
+      },
+      {
+        "label": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source",
+        "by_turn_6_pct": 3
+      }
+    ]
+  },
+  "engine": {
+    "thesis": "Edgar's eminence mints a free body every time you cast a Vampire, the doublers turn one mint into four, and the entry payoffs bill all three seats at once — so this deck wins by CASTING cheap creatures, and attacking is only one of the ways it converts them.",
+    "critic": "pass",
+    "lines": 13,
+    "verified_lines": 5
+  },
+  "diagnosis": {
+    "verdict": "The LOCK bought what it paid for: the token-to-damage kill assembles in 57.4% of games (74.4% tutor-assisted), every engine component except the two declared one-card bonus lines sits between 52.9% and 78.9%, and the deck keeps 80.8% of opening sevens with a 91.9% turn-3 land drop. What binds is black mana: 27 B sources against a Karsten target of 36, 76.4% on-curve castability with rocks against the 90% standard — and black is where the drain payoffs live. The only other measured weakness is interaction breadth: zero answers to a graveyard, confirmed by oracle read. Everything else is at or above target once the taxonomy's floors are read against the cards.",
+    "skeptic": "pass",
+    "stale": false
+  },
+  "audit": {
+    "archetype": "aggro",
+    "under": [
+      "colour-sources",
+      "ramp",
+      "card-advantage",
+      "interaction-breadth"
+    ],
+    "over": [
+      "mana-base",
+      "interaction"
+    ],
+    "stale": []
+  },
+  "prescriptions": {
+    "count": 0,
+    "answered": 0,
+    "latest": null
+  },
+  "open_questions": [
+    {
+      "from": "engine",
+      "question": "Does Bloodletter of Aclazotz double DAMAGE, not just direct life loss? Its own reminder text reads '(Damage causes loss of life.)' and stack 004's checker treated the identical parenthetical on Bloodthirsty Conqueror as reminder text under 207.2a, but stacks 003 and 007 only ever tested 'each opponent loses N life' from Sanctum Seeker and Throne. Nobody has run the other direction: does Purphoros dealing 2 to each opponent become 4?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "How many two-mana Vampire casts does the payoff suite need to take one seat from 40 to 0 with only ONE doubler on the battlefield? Stack 009 is exactly lethal at 12 life per seat and stack 008 measures 10 damage per cast with two doublers.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Can eminence be verified with Edgar Markov actually named in a scenario's board or stack list? Stacks 002, 008 and 009 all resolve his trigger but keep him in a command-zone note, so the deck has no passing stack that joins the commander to the doublers.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "What is the real assembled rate of the drain-doubler line if the drain-source half is declared with every source Bloodletter doubles rather than only Sanctum Seeker and Throne of the God-Pharaoh?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "engine",
+      "question": "Should stacks 002 and 008 be re-run on a Vampire that is still in the 99, or marked `presentable: false` like 001 and 005? Both scenarios cast Gifted Aetherborn, which the deck no longer plays; 001 and 005 were pulled from publication for exactly this class of staleness (Exquisite Blood), and these two carry no flag and publish.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Should Exquisite Blood come back to edgar-vampires or stay in yawgmoth-swarm? Sandbox the (Exquisite Blood in, Vampire of the Dire Moon out) swap seed-matched against the LOCK baseline, the way the LOCK itself was verified.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "What is the cheapest graveyard answer the interaction-breadth measure actually credits? A utility land (Bojuka Bog, Scavenger Grounds) shows the function but carries only land tags, so the axis heuristic skips it and the measured 4/5 would not move.",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Does a second fixing swap beyond the Forge slot pay for itself? Black remains 8 sources short after Path of Ancestry, and on-curve B castability is 76.4% against Karsten's 90%.",
+      "settled_by": "goldfish"
+    }
+  ],
+  "simulation": null,
+  "experiments": null,
+  "next": [
+    "nothing in the captain's log — play it, then `deck-notes edgar-vampires add \"…\" --result win|loss --opponents N`",
+    "open questions routed: goldfish ×3, research-strategy ×1, resolve-stack ×4",
+    "no simulation runs — `simulate edgar-vampires --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
+  ],
+  "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
+}

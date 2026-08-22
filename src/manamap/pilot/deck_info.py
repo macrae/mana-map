@@ -16,8 +16,17 @@ the log can stamp a version; a stale stage → the command that regenerates it; 
 games logged → play it), and each names the command. None of it is judgment about
 the deck — that is the doctor's, behind `/prescribe`.
 
-Read-only, computed on demand, never committed — like `deck-facts` and `impact`.
-`--json` is the shape a future UI reads; the human print is the same dict laid out.
+Read-only and computed on demand. `--json` is the shape a future UI reads; the human
+print is the same dict laid out.
+
+`--write` puts that shape on disk as `info.json` so the deck page can fetch it, and
+that artifact IS committed — unlike `deck-facts`, which stays uncommitted because
+nothing reads it but an agent standing right there. Two consequences, both handled:
+it is staleness-gated like `mana_analysis.json` (regenerate after a decklist change or
+the test fails), and it OMITS the version block. Versions are derived from a git walk,
+so a committed copy is one commit behind forever — the deck page gets them from a
+deploy-time `versions.json` instead, which CI can build because `deck_versions` needs
+only git while `deck_audit` needs the gitignored corpus.
 """
 
 import json
@@ -323,8 +332,30 @@ def _print(info):
         print(f"   · {n}")
 
 
+# Everything except the version block, which cannot be committed accurately.
+def fetchable(info):
+    """`info` minus what a committed artifact would misreport.
+
+    `version` is derived by walking git, and the commit that changes `decklist.txt`
+    receives its sha AFTER anything written in the same commit — so a committed copy
+    names the previous version forever. It is dropped rather than frozen, and the
+    page reads `versions.json` (built at deploy time) instead. A wrong version number
+    is worse than an absent one: the log stamps games against it.
+    """
+    out = {k: v for k, v in info.items() if k != "version"}
+    out["_note"] = ("Written by `deck-info --write`. The version block is deliberately "
+                    "absent: it is a git walk, and a committed copy is one commit "
+                    "behind forever. The deck page reads versions.json instead.")
+    return out
+
+
 def main(args):
     info = compose(args.slug)
+    if getattr(args, "write", False):
+        path = deck_dir(args.slug) / "info.json"
+        path.write_text(json.dumps(fetchable(info), indent=2, ensure_ascii=False) + "\n")
+        print(f"Wrote {path}")
+        return
     if getattr(args, "as_json", False):
         print(json.dumps(info, indent=2, ensure_ascii=False))
     else:

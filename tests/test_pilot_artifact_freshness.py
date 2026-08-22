@@ -23,7 +23,7 @@ import pytest
 
 from manamap.config import (CARD_ROLES_PATH, COMBO_DETAILS_PATH, DECKS_DIR,
                             OUTPUT_CSV_PATH)
-from manamap.pilot import bracket, goldfish, mana_analysis
+from manamap.pilot import bracket, deck_info, goldfish, mana_analysis
 
 from conftest import SRC, requires_deck, requires_data
 
@@ -122,3 +122,46 @@ def test_mana_analysis_matches_a_fresh_run(slug, tmp_path, unchanged):
     assert fresh == old, (
         f"{slug}/mana_analysis.json is stale — rerun "
         f"`manamap pilot mana-analysis {slug}` and commit it.")
+
+
+@requires_data
+@requires_deck
+@pytest.mark.parametrize("slug", _slugs("info.json"))
+def test_info_json_matches_a_fresh_run(slug, tmp_path, unchanged):
+    """`info.json` is what the deck page fetches, and it is the only COMMITTED
+    artifact composed from every other one — status, bracket, goldfish, engine,
+    audit, diagnosis, sim, experiments, prescriptions and the derived `next`.
+
+    That breadth is exactly why it needs this gate: it goes stale when ANY of its
+    inputs move, and it stamps nothing. `deck-info` was "never committed" precisely
+    to avoid this problem; committing it is what makes the deck page possible, and
+    recomputation is the price.
+
+    The version block is absent by construction (`deck_info.fetchable`), so this test
+    cannot fail on a git walk that a committed copy could never keep up with.
+    """
+    unchanged(*CODE, DECKS_DIR / slug, OUTPUT_CSV_PATH, CARD_ROLES_PATH,
+              COMBO_DETAILS_PATH)
+
+    def rerun():
+        deck_info.main(type("Args", (), {"slug": slug, "write": True})())
+
+    fresh, old = _roundtrip(slug, "info.json", rerun, tmp_path)
+    assert fresh == old, (
+        f"{slug}/info.json is stale — rerun `manamap pilot deck-info {slug} --write` "
+        f"and commit it.")
+
+
+@requires_deck
+@pytest.mark.parametrize("slug", _slugs("info.json"))
+def test_info_json_never_carries_a_version_block(slug):
+    """A committed version number is one commit behind FOREVER — the commit that
+    changes `decklist.txt` gets its sha after anything written in the same commit.
+    A wrong version is worse than an absent one, because the captain's log stamps
+    games against it. The page reads a deploy-time `versions.json` instead."""
+    path = DECKS_DIR / slug / "info.json"
+    if not path.exists():
+        pytest.skip(f"{slug} has no info.json yet")
+    doc = json.loads(path.read_text())
+    assert "version" not in doc, "versions cannot be committed accurately"
+    assert "_note" in doc and "one commit behind" in doc["_note"]

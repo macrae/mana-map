@@ -1,0 +1,146 @@
+{
+  "slug": "goblin-storm",
+  "commander": [
+    "Zada, Hedron Grinder"
+  ],
+  "lifecycle": null,
+  "colour_identity": [
+    "R"
+  ],
+  "size": 100,
+  "lands": 36,
+  "status": {
+    "complete": 13,
+    "of": 15,
+    "stale": [],
+    "invalid": [],
+    "missing": [
+      "brief",
+      "log"
+    ]
+  },
+  "bracket": {
+    "floor": 4,
+    "floor_name": "Optimized",
+    "target": 4,
+    "within_target": true
+  },
+  "record": {
+    "games": 0,
+    "win": 0,
+    "loss": 0,
+    "draw": 0,
+    "last_played": null,
+    "undebriefed": []
+  },
+  "goldfish": {
+    "seed": 42,
+    "iterations": 10000,
+    "commander_mean_cast_turn": 4.352,
+    "commander_cast_by_turn_6_pct": 90,
+    "targets": [
+      {
+        "label": "Zada online with a cantrip drawn",
+        "by_turn_6_pct": 50
+      },
+      {
+        "label": "Early token maker drawn",
+        "by_turn_6_pct": 49
+      },
+      {
+        "label": "Storm payoff plus ritual drawn",
+        "by_turn_6_pct": 17
+      }
+    ]
+  },
+  "engine": {
+    "thesis": "A Goblin swarm that is really a spell-count machine: bodies make the mana and set the copy count, cheap spells pointed at Zada turn each body into a card, and one payoff turn cashes the whole board into damage.",
+    "critic": "pass",
+    "lines": 15,
+    "verified_lines": 10
+  },
+  "diagnosis": {
+    "verdict": "This deck functions and it converts. Mana is at or over target on every mana axis, the turn-3 land drop lands 90% of the time, and five checker-passed stacks record what the board actually does — including a mana-positive Haze of Rage loop that needs no commander at all. What limits it is the shape of its interaction, not the amount. I read all 13 oracle texts on the audit's interaction axis: 11 can point at an opposing permanent, and nearly all of that is damage, which never touches an enchantment, a land or a graveyard. A search of all 79 entries for destroy / exile target / target permanent / gain control / counter / return target returns four cards, and only Chaos Warp answers an opposing enchantment or land — a named singleton, which the corpus prices at 10.1% by ten cards seen.",
+    "skeptic": "pass",
+    "stale": false
+  },
+  "audit": {
+    "archetype": null,
+    "under": [
+      "card-advantage",
+      "sweepers",
+      "protection",
+      "threat-density",
+      "interaction-breadth"
+    ],
+    "over": [
+      "ramp"
+    ],
+    "stale": []
+  },
+  "prescriptions": {
+    "count": 0,
+    "answered": 0,
+    "latest": null
+  },
+  "open_questions": [
+    {
+      "from": "engine",
+      "question": "Can a stack scenario verify the Empty the Warrens -> Impact Tremors arrow under the citation contract? Stack 002 resolves it (eight tokens, eight damage to each opponent) but names Impact Tremors only on the battlefield, and `line_cards` skips the board when the stack, hand and graveyard already name two or more cards — so the deck's headline kill has no citable link between the token flood and the damage.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "With Goblin chosen, does Roaming Throne's 'triggers an additional time' clause apply to Zada's copy trigger — and if it does, how many copies result: 2N, or N doubled with each set choosing targets separately?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Does Frontline Heroism's copy clause behave as the strategic frame describes it — a second copy hub? Read literally it creates one Soldier and copies the spell once, at that token, regardless of board width, which is one extra copy rather than one per creature.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "What rate does the deck assemble the stack-002 kill — an each-opponent ETB damage payoff (Impact Tremors or General Kreat) together with a token maker — by turn six? No declared target measures this pair at all.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "engine",
+      "question": "Does the strategy doc's commander-insurance target (deck-audit reads 2 copies against 5-7) apply to a commander whose engine is OPTIONAL? Half of this deck — rituals, Empty the Warrens, Grapeshot, the Haze of Rage loop — functions with Zada in the command zone.",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Which section governs the protection budget? strategy:deckbuilding.threat-density states \"5-7 protection slots\" with no archetype condition, while strategy:deckbuilding.interaction-suite budgets answers-to-answers at 2-4 generic / 4-6 combo / 6-8 Voltron. config.DECK_AXIS_TARGETS['protection'] hardwires the former, which is why the axis reads UNDER at 2.",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "diagnosis",
+      "question": "On a board of Pashalik Mons, Boggart Shenanigans and N Goblin tokens, how much damage does casting Blasphemous Act actually convert into, and where can it be pointed? Boggart Shenanigans reads \"target player or planeswalker\" and Pashalik Mons reads \"any target\"; both are leaves-the-battlefield triggers under CR 603.10a.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Does adding Jeska's Will to the ritual group move the \"Storm payoff plus ritual\" target's measured assembly, and by how much against the current 26.5% / 16.9% by turn 6?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Do Reiterate's in-deck lines work in this 99 — Reiterate + Mana Geyser, Reiterate + Seething Song + Storm-Kiln Artist, Reiterate + Seething Song + Ruby Medallion?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "When a spell targets only Zada and Frontline Heroism is on the battlefield, does the Heroism Soldier token exist in time to be a legal target for Zada's copies, and does Heroism's own copy trigger?",
+      "settled_by": "resolve-stack"
+    }
+  ],
+  "simulation": null,
+  "experiments": null,
+  "next": [
+    "nothing in the captain's log — play it, then `deck-notes goblin-storm add \"…\" --result win|loss --opponents N`",
+    "open questions routed: goldfish ×2, research-strategy ×2, resolve-stack ×6",
+    "no simulation runs — `simulate goblin-storm --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
+  ],
+  "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
+}

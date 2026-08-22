@@ -1,0 +1,164 @@
+{
+  "slug": "kianne",
+  "commander": [
+    "Kianne, Corrupted Memory"
+  ],
+  "lifecycle": null,
+  "colour_identity": [
+    "U",
+    "G"
+  ],
+  "size": 100,
+  "lands": 33,
+  "status": {
+    "complete": 6,
+    "of": 15,
+    "stale": [],
+    "invalid": [],
+    "missing": [
+      "brief",
+      "frame",
+      "map",
+      "engine",
+      "stacks",
+      "tutors",
+      "prose",
+      "log",
+      "issue"
+    ]
+  },
+  "bracket": {
+    "floor": 4,
+    "floor_name": "Optimized",
+    "target": 4,
+    "within_target": true
+  },
+  "record": {
+    "games": 0,
+    "win": 0,
+    "loss": 0,
+    "draw": 0,
+    "last_played": null,
+    "undebriefed": []
+  },
+  "goldfish": {
+    "seed": 42,
+    "iterations": 10000,
+    "commander_mean_cast_turn": 4.188,
+    "commander_cast_by_turn_6_pct": 89,
+    "targets": [
+      {
+        "label": "RAMP drawn (the brief's 9; claimed 73% by T6)",
+        "by_turn_6_pct": 71
+      },
+      {
+        "label": "DRAW -> KIANNE drawn (the brief's 12; claimed 83% by T6)",
+        "by_turn_6_pct": 82
+      },
+      {
+        "label": "COUNTER MULTIPLIER drawn (the brief's 8; claimed 69% by T6)",
+        "by_turn_6_pct": 68
+      },
+      {
+        "label": "MANA ON THEIR TURNS drawn (the brief's 6; claimed 58% by T6)",
+        "by_turn_6_pct": 56
+      },
+      {
+        "label": "GET THROUGH drawn (the brief's 7; claimed 64% by T6)",
+        "by_turn_6_pct": 62
+      },
+      {
+        "label": "KEYWORD GRANTER drawn (the brief's 5; claimed 51% by T6)",
+        "by_turn_6_pct": 49
+      },
+      {
+        "label": "PROTECTION drawn (the brief's 7; claimed 64% by T6)",
+        "by_turn_6_pct": 62
+      },
+      {
+        "label": "INTERACTION drawn (the brief's 5; claimed 51% by T6)",
+        "by_turn_6_pct": 49
+      },
+      {
+        "label": "BLINK drawn (the brief's 3; claimed 35% by T6)",
+        "by_turn_6_pct": 32
+      },
+      {
+        "label": "TUTOR / RECURSION drawn (the brief's 2; claimed 25% by T6)",
+        "by_turn_6_pct": 23
+      },
+      {
+        "label": "FLASH REDUNDANCY drawn (the brief's 2; claimed 25% by T6)",
+        "by_turn_6_pct": 23
+      },
+      {
+        "label": "THE SWING ASSEMBLED — a counter multiplier AND a way through AND a keyword granter",
+        "by_turn_6_pct": 21
+      }
+    ]
+  },
+  "engine": null,
+  "diagnosis": null,
+  "audit": {
+    "archetype": null,
+    "under": [
+      "mana-base",
+      "colour-sources",
+      "ramp",
+      "card-advantage",
+      "interaction",
+      "sweepers",
+      "interaction-breadth"
+    ],
+    "over": [
+      "protection"
+    ],
+    "stale": []
+  },
+  "prescriptions": {
+    "count": 0,
+    "answered": 0,
+    "latest": null
+  },
+  "open_questions": [],
+  "simulation": {
+    "runs": 2,
+    "latest": "giada-angels-vs-vito-vs-baylen-tokens-n12-79925da4-s39635364",
+    "at": "2026-08-21",
+    "games": 12,
+    "vs": [
+      "giada-angels",
+      "vito",
+      "baylen-tokens"
+    ],
+    "win_rate": 0.083,
+    "win_rate_ci95": [
+      0.015,
+      0.354
+    ],
+    "eliminated_by": {
+      "vito": 1,
+      "giada-angels": 4,
+      "baylen-tokens": 1
+    },
+    "mean_round": 18.8,
+    "token_damage_share": 0.09,
+    "tokens_observed": 0.08
+  },
+  "experiments": {
+    "count": 1,
+    "latest": {
+      "question": "V1 (2026-08-21, Kianne, Corrupted Memory: the deck on the bench, m)  vs  working copy, same table",
+      "at": "2026-08-21",
+      "games_per_arm": 12,
+      "win_a": 0.0,
+      "win_b": 0.083,
+      "overlap": true,
+      "reading": "the win-rate intervals OVERLAP at this N — the difference is noise until more games say otherwise"
+    }
+  },
+  "next": [
+    "nothing in the captain's log — play it, then `deck-notes kianne add \"…\" --result win|loss --opponents N`"
+  ],
+  "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
+}

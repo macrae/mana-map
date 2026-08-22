@@ -52,7 +52,7 @@ manamap pilot deck-history <slug> [--json]  # applied swaps (from git) + the pen
 manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents N] [--tag T]
                                         #   the captain's log: AUTHORED, append-only, sha-stamped
 manamap pilot deck-notes <slug> list [--since D] | show <id>
-manamap pilot deck-info <slug> [--json]            # THE WORKBENCH VIEW: version · record · status · figures · what to do next
+manamap pilot deck-info <slug> [--json] [--write]            # THE WORKBENCH VIEW: version · record · status · figures · what to do next
 manamap pilot simulate <slug> --vs A [--vs B…] [--games N] [--jobs J]   # N seeded Commander games in Forge, headless; a ◆ run record
 manamap pilot simulate <slug> --list | --dry-run | --analyze <run-id>
 manamap pilot validate-sim <slug>                 # form + re-derive the analysis from logs where they exist
@@ -208,6 +208,18 @@ condition true right now (un-debriefed games → `/debrief`; an uncommitted work
 commit it; a stale stage → regenerate; no games → play it; open prescriptions → run the
 loop) and names the command. No judgment about the deck lives there. `--json` is the
 shape a future UI reads.
+
+**`--write` puts the same shape on disk as `info.json`, and that one IS committed.**
+It is what `viz/deck.html` fetches — the only committed artifact composed from every
+other one, which is exactly why it is staleness-gated by recomputation
+(`tests/test_pilot_artifact_freshness.py`) rather than by a stamp: it goes stale when
+ANY input moves and it stamps nothing. It **omits the version block** by construction
+(`deck_info.fetchable`), because versions come from a git walk and the commit that
+changes `decklist.txt` gets its sha after anything written in the same commit — a
+committed version number is one commit behind forever, and a wrong version is worse
+than an absent one when the captain's log stamps games against it. The page reads a
+deploy-time `versions.json` instead, which CI can build because `deck_versions` needs
+only git while `deck_audit` needs the gitignored corpus.
 
 **A deck that no longer exists says so, and is not told to go and play itself.** The
 `status` field on `issue.json` (`broken-down` / `retired` / `superseded`, absent = live)

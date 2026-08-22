@@ -1,0 +1,166 @@
+{
+  "slug": "heliod",
+  "commander": [
+    "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"
+  ],
+  "lifecycle": null,
+  "colour_identity": [
+    "W",
+    "U"
+  ],
+  "size": 100,
+  "lands": 33,
+  "status": {
+    "complete": 13,
+    "of": 15,
+    "stale": [],
+    "invalid": [],
+    "missing": [
+      "brief",
+      "log"
+    ]
+  },
+  "bracket": {
+    "floor": 4,
+    "floor_name": "Optimized",
+    "target": 4,
+    "within_target": true
+  },
+  "record": {
+    "games": 0,
+    "win": 0,
+    "loss": 0,
+    "draw": 0,
+    "last_played": null,
+    "undebriefed": []
+  },
+  "goldfish": {
+    "seed": 42,
+    "iterations": 10000,
+    "commander_mean_cast_turn": 4.133,
+    "commander_cast_by_turn_6_pct": 90,
+    "targets": [
+      {
+        "label": "Table draw engine drawn",
+        "by_turn_6_pct": 75
+      },
+      {
+        "label": "Draw punisher drawn",
+        "by_turn_6_pct": 56
+      },
+      {
+        "label": "Engine + punisher assembled (the deck's core two-piece)",
+        "by_turn_6_pct": 41
+      },
+      {
+        "label": "Heliod down with an asymmetric card engine",
+        "by_turn_6_pct": 54
+      },
+      {
+        "label": "Free or cheap interaction held",
+        "by_turn_6_pct": 67
+      },
+      {
+        "label": "Win condition access",
+        "by_turn_6_pct": 50
+      },
+      {
+        "label": "THE KILL (stacks 001/006): Hullbreaker Horror + a cheap rock + Aetherflux Reservoir",
+        "by_turn_6_pct": 0
+      }
+    ]
+  },
+  "engine": {
+    "thesis": "Heliod hands the whole table free cards and then bills them for holding the cards: ten symmetric-draw permanents fill every hand, three punishers charge for hand size on each opponent's upkeep (Iron Maiden, Viseling, Ebony Owl Netsuke) while three more drain or mill per card drawn, and the same turbulence pays the commander's discount and the tax layer's rent — behind that median plan sits a rules-verified but very rare one-turn kill built on a single creature.",
+    "critic": "pass",
+    "lines": 13,
+    "verified_lines": 4
+  },
+  "diagnosis": {
+    "verdict": "It functions and it never runs out of cards: turn-three land drops at 0.866, the commander available in 90.2% of goldfish games by turn six, 22 card-advantage copies against a floor of 10, and six checker-passed stacks including a complete table kill. What limits it is the payoff half of its own engine. By turn six the deck has DRAWN a draw engine in 75.4% of games and drawn both halves in 41.2%; the pair event is a strict subset of the engine event, so 34.2 points of games reach turn six holding an engine and no punisher. Over the full ten-turn simulation the gap narrows — 85.2% against 56.7% — so about half that band gets its punisher late rather than never. The simulation counts cards drawn, not cast: whether a Howling Mine actually hits the battlefield without a punisher is the pilot's choice, which is why the prescription below is a sequencing and mulligan rule and a widening of the six-card payoff group, not a claim that the deck has already given the cards away. The audit flags five axes under. Two are genuine and each gets a slot below: colour-sources, and interaction-breadth, where the graveyard class is uncovered in all 146 entries. Two are taxonomy floors — protection reads 1 next to Grand Abolisher and eight counterspells, sweepers reads 1 against an override that contradicts its own citation. One, mana-base, is answered by a second axis: 33 lands, 39 mana sources.",
+    "skeptic": "pass",
+    "stale": false
+  },
+  "audit": {
+    "archetype": "control",
+    "under": [
+      "mana-base",
+      "colour-sources",
+      "sweepers",
+      "protection",
+      "interaction-breadth"
+    ],
+    "over": [],
+    "stale": []
+  },
+  "prescriptions": {
+    "count": 0,
+    "answered": 0,
+    "latest": null
+  },
+  "open_questions": [
+    {
+      "from": "engine",
+      "question": "How many upkeeps does the punisher clock actually need to kill one opponent, and how often does the deck get them? The pair (a donation engine plus a punisher) is measured at 56.7% assembled, 41.2% by turn six — but nothing measures the clock those two produce as a WIN, so the deck's median route to victory has no rate at all.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "engine",
+      "question": "Does the punisher rank need The Second Doctor or Folio of Fancies to be lethal at all? With a seven-card maximum hand size the cleanup discard caps Iron Maiden and Viseling at 3 damage per upkeep; those two cards remove the cap and nothing measures whether one of them is present.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "engine",
+      "question": "Can the Aetherflux Reservoir kill be executed through interaction? Stack 006 states every loop cast and every activation opens a fully open priority window on an unprotected board and names Grand Abolisher as the in-99 closer, but no stack has walked the kill with Abolisher deployed or with an opponent holding an instant.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Stack 003 passed the checker and walks the deck's median conversion to an exact number, but build_index.line_cards returns ['Naturalize', 'Arcane Denial'] from its stack and hand and never reads the board, so Forced Fruition, Iron Maiden and Ebony Owl Netsuke are unreachable as a `verified_by`. Naturalize is an opponent's card and not in the 99. Should the threshold be gated on the deck's own cards (a one-condition change in build_index.py) rather than a companion stack being authored?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "What is Heliod's discount worth in practice — how many cards do opponents draw per turn cycle once one or two donation permanents are down, and therefore how much does the flipped face take off a spell?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "engine",
+      "question": "How often, and on what turn, does this deck empty its own library? Font of Mythos plus a doubler draws the controller four or more cards a turn cycle, and Jace, Wielder of Mysteries turns that from the archetype's characteristic loss into a win — but goldfish models resource development over ten turns and measures no library count, so the third win route has no rate at all.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "goldfish_targets.json declares no target for the deck's primary verified kill. 'Win condition access' lists Approach of the Second Sun, Aetherflux Reservoir, Mystical Tutor, Jace Wielder of Mysteries and Enlightened Tutor, and never names Hullbreaker Horror — without which the Reservoir is not a kill. Add a target requiring Hullbreaker Horror AND Sol Ring AND a two-mana rock AND Aetherflux Reservoir, and measure how often the deck's headline line is actually available.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Re-run goldfish with Black Vise added to the punisher any_of group and Forced Fruition removed from the table-draw group, and report the new 'Engine + punisher assembled' by-turn-six rate against the current 41.2%.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Teferi's Protection cast on the turn before yours: 'Until your next turn, your life total can't change' and the permanents phase in before your untap step. Does the restriction and the phased-out board both end before your first main phase, so that it can be held on an opponent's end step and the Aetherflux Reservoir ledger still runs on your own turn?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Does Grand Abolisher's static actually close every priority window stack 006 leaves open, including a channel ability activated from a card in hand (Otawara, Soaring City)?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Is there a strategy section to be written on forced-draw / group-hug punisher archetypes — specifically, the arithmetic of when a symmetric draw effect pays for itself against three opponents?",
+      "settled_by": "research-strategy"
+    }
+  ],
+  "simulation": null,
+  "experiments": null,
+  "next": [
+    "nothing in the captain's log — play it, then `deck-notes heliod add \"…\" --result win|loss --opponents N`",
+    "open questions routed: goldfish ×6, research-strategy ×1, resolve-stack ×4",
+    "no simulation runs — `simulate heliod --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
+  ],
+  "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
+}

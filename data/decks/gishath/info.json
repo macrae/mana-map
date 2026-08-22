@@ -1,0 +1,157 @@
+{
+  "slug": "gishath",
+  "commander": [
+    "Gishath, Sun's Avatar"
+  ],
+  "lifecycle": null,
+  "colour_identity": [
+    "W",
+    "R",
+    "G"
+  ],
+  "size": 100,
+  "lands": 35,
+  "status": {
+    "complete": 13,
+    "of": 15,
+    "stale": [],
+    "invalid": [],
+    "missing": [
+      "brief",
+      "log"
+    ]
+  },
+  "bracket": {
+    "floor": 4,
+    "floor_name": "Optimized",
+    "target": 4,
+    "within_target": true
+  },
+  "record": {
+    "games": 0,
+    "win": 0,
+    "loss": 0,
+    "draw": 0,
+    "last_played": null,
+    "undebriefed": []
+  },
+  "goldfish": {
+    "seed": 42,
+    "iterations": 10000,
+    "commander_mean_cast_turn": 7.969,
+    "commander_cast_by_turn_6_pct": 8,
+    "targets": [
+      {
+        "label": "Ramp or fixing drawn",
+        "by_turn_6_pct": 87
+      },
+      {
+        "label": "Cost reducer or cheat-into-play drawn",
+        "by_turn_6_pct": 56
+      },
+      {
+        "label": "Dinosaur payoff drawn (per-dino trigger engine)",
+        "by_turn_6_pct": 62
+      },
+      {
+        "label": "The Gishath connection kit (haste or evasion for the 7/6)",
+        "by_turn_6_pct": 51
+      },
+      {
+        "label": "Enrage engine drawn",
+        "by_turn_6_pct": 51
+      },
+      {
+        "label": "Protection held for the board",
+        "by_turn_6_pct": 48
+      },
+      {
+        "label": "THE ONE-SIDED APOCALYPSE (stack 004): Blasphemous Act + Temple Altisaur",
+        "by_turn_6_pct": 1
+      }
+    ]
+  },
+  "engine": {
+    "thesis": "This is a big-mana Dinosaur deck with two engines that share a board: an eight-mana commander who converts combat damage into free Dinosaurs off the top of the library, and a four-mana Human who converts a Dinosaur entering into one damage to everything, which four enrage bodies plus Wrathful Raptors then turn into cards, tokens, lands and exile — and the second engine is the one that is actually online, because goldfish never casts the first one by turn 10 in 55% of games.",
+    "critic": "pass",
+    "lines": 10,
+    "verified_lines": 4
+  },
+  "diagnosis": {
+    "verdict": "The deck functions early and interacts unusually well for a linear typal list: 89.4% turn-3 land drop, ramp assembled 93.9% at mean turn 2.044, 11 removal pieces inside an 18-card interactive suite, all five permanent classes covered. What limits it is the top end. Six of 65 nonland entries sit at mana value 8+ against a corpus average of ~1.5, the commander is one of them, and the deck's own goldfish puts mean available mana at 7.321 on turn 10. Two of the six discount themselves off a board — Blasphemous Act and Ghalta — so it is four of them, the commander among them, that compete for the one big-mana cast a seven-to-ten-turn game pays for. Colour compounds it: white and red sit at 20 sources each against a 36 target, 58% on curve. The enrage web is the healthier plan and is not commander-gated.",
+    "skeptic": "pass",
+    "stale": false
+  },
+  "audit": {
+    "archetype": null,
+    "under": [
+      "mana-base",
+      "colour-sources",
+      "card-advantage"
+    ],
+    "over": [
+      "ramp"
+    ],
+    "stale": []
+  },
+  "prescriptions": {
+    "count": 0,
+    "answered": 0,
+    "latest": null
+  },
+  "open_questions": [
+    {
+      "from": "engine",
+      "question": "What rate does the enrage web ACTUALLY assemble at — a self-damage source AND a converter in the same game? goldfish_targets.json declares the five converters ('Enrage engine drawn', 60.8% assembled, 50.6% by turn 6) and declares no source at all, so the measured number describes five payoffs with nothing to ping them.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "engine",
+      "question": "What board actually kills a 40-life opponent here, and from how far? No checker-passed stack resolves a lethal swing; the closest measurement is stack 004's 16 redirected damage taking one opponent from 26 to 10, explicitly not lethal.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "What is the commander's mean cast turn with Otepec Huntmaster and Urza's Incubator modelled? The stated goldfish assumptions exclude cost reducers entirely, so 7.969 / median 8 / 5,533 of 10,000 never by turn 10 is a floor of the problem and not the expectation.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "engine",
+      "question": "How many self-damage sources does a five-converter enrage package want? The deck runs one free repeatable source (Forerunner) and four one-shots that are primarily removal, and no strategy target names a ratio.",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Declare a goldfish target pairing an enrage converter with a damage source you control, and measure the conjunction. The present 'Enrage engine drawn' group measures only that a converter was drawn.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Does the commander's mean cast turn actually move when two more cost reducers are added? The goldfish's own assumption block says 'Cost reducers, rituals, and extra card draw are not modeled (conservative)'.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Does Forerunner of the Empire plus Wrathful Raptors plus Temple Altisaur produce a repeatable one-sided board wipe with no Blasphemous Act, and where does it stop?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "With a maindeck sacrifice outlet on the battlefield, is Marauding Raptor safe to run alongside Polyraptor?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Is there corpus guidance on the specific trade a reveal-trigger commander forces: cutting the expensive payoffs the commander cheats in, in order to cast the commander at all?",
+      "settled_by": "research-strategy"
+    }
+  ],
+  "simulation": null,
+  "experiments": null,
+  "next": [
+    "nothing in the captain's log — play it, then `deck-notes gishath add \"…\" --result win|loss --opponents N`",
+    "open questions routed: goldfish ×4, research-strategy ×2, resolve-stack ×3",
+    "no simulation runs — `simulate gishath --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
+  ],
+  "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
+}

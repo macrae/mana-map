@@ -1,0 +1,161 @@
+{
+  "slug": "ur-dragon",
+  "commander": [
+    "The Ur-Dragon"
+  ],
+  "lifecycle": null,
+  "colour_identity": [
+    "W",
+    "U",
+    "B",
+    "R",
+    "G"
+  ],
+  "size": 100,
+  "lands": 34,
+  "status": {
+    "complete": 13,
+    "of": 15,
+    "stale": [],
+    "invalid": [],
+    "missing": [
+      "brief",
+      "log"
+    ]
+  },
+  "bracket": {
+    "floor": 4,
+    "floor_name": "Optimized",
+    "target": 4,
+    "within_target": true
+  },
+  "record": {
+    "games": 0,
+    "win": 0,
+    "loss": 0,
+    "draw": 0,
+    "last_played": null,
+    "undebriefed": []
+  },
+  "goldfish": {
+    "seed": 42,
+    "iterations": 10000,
+    "commander_mean_cast_turn": 8.967,
+    "commander_cast_by_turn_6_pct": 0,
+    "targets": [
+      {
+        "label": "Cost reducer drawn (the deck's real curve fixer)",
+        "by_turn_6_pct": 33
+      },
+      {
+        "label": "Ramp or fixing drawn",
+        "by_turn_6_pct": 72
+      },
+      {
+        "label": "Dragon payoff drawn (per-dragon trigger engine)",
+        "by_turn_6_pct": 62
+      },
+      {
+        "label": "Reducer + ramp assembled (the turn-5-Ur-Dragon hand)",
+        "by_turn_6_pct": 23
+      },
+      {
+        "label": "Payoff + a castable dragon by mid-game",
+        "by_turn_6_pct": 27
+      },
+      {
+        "label": "Protection held for the big turn",
+        "by_turn_6_pct": 66
+      },
+      {
+        "label": "THE INFINITE COMBAT LOOP (stacks 003/006): Aggravated Assault + a mana dragon",
+        "by_turn_6_pct": 4
+      }
+    ]
+  },
+  "engine": {
+    "thesis": "A five-colour typal deck that buys Dragons below sticker price and then taxes every Dragon that enters: one entry multiplies into several, each entry is priced in damage and cards, and the game ends either to one of those cascades or to Aggravated Assault turning a mana dragon into unlimited combats.",
+    "critic": "pass",
+    "lines": 11,
+    "verified_lines": 6
+  },
+  "diagnosis": {
+    "verdict": "Four checker-passed stacks certify three independent kills, and two of them — stack 001's Dragon Tempest burst and stack 004's Blasphemous Act redirect — never touch Aggravated Assault, so the deck is not one enchantment away from having no way to win. What limits it is mana at the point of deployment: 34 land copies against 36-38, and a land drop that holds at 88.3% on turn three and then falls to 60.3% on five and 49.7% on six, against 27 entries in the 99 that cost five or more. Card advantage is the second-order cause and reads 4 against a floor of 10, but the uncounted draw in this deck is board-dependent, so it pays on the turns the deck is already winning rather than the turns it is stuck.",
+    "skeptic": "pass",
+    "stale": false
+  },
+  "audit": {
+    "archetype": "combo",
+    "under": [
+      "mana-base",
+      "colour-sources",
+      "card-advantage",
+      "threat-density",
+      "interaction-breadth"
+    ],
+    "over": [
+      "ramp"
+    ],
+    "stale": []
+  },
+  "prescriptions": {
+    "count": 0,
+    "answered": 0,
+    "latest": null
+  },
+  "open_questions": [
+    {
+      "from": "engine",
+      "question": "Re-measure THE INFINITE COMBAT LOOP with the fuel half tested for SUFFICIENCY rather than legality. The declared half is Old Gnawbone, Savage Ventmaw and Cavern-Hoard Dragon — size 3, 19.9% of opening sevens. Cavern-Hoard makes 'a Treasure token for each artifact that player controls', meaning the DEFENDING player: against an artifact-free seat it makes nothing, it needs that player holding five artifacts to cover one {3}{R}{R}, and it appears in neither of the loop's two passing stacks. Klauth and Rivaz are out for a different reason — their mana is spell-locked and an activated ability is not a spell. Goldspan is not excluded by legality at all: its Treasures are unrestricted, and its second clause gives every Treasure you control '{T}, Sacrifice this artifact: Add two mana of any one color', which doubles Gnawbone's and Cavern-Hoard's output. What does 6.4% assembled / 3.6% by turn six become with Cavern-Hoard removed, and what does it become with Goldspan counted as a multiplier on Gnawbone rather than as a mana dragon in its own right?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "engine",
+      "question": "Nothing in goldfish_targets.json measures whether the commander ever reaches the battlefield. Hellkite Courser is the only card in the 99 that can put The Ur-Dragon there without paying nine (stack 005 refutes Sneak Attack doing it), and goldfish reports the commander at mean cast turn 8.967 with 0% by turn six. What does a target of {Hellkite Courser} — or {Hellkite Courser + nine mana available} — actually measure?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "engine",
+      "question": "Scourge of the Throne in an Ur-Dragon board: does its 'attacks for the first time each turn' trigger untap all attackers and grant the extra combat, and in that second combat do Utvara Hellkite's per-attacking-Dragon token trigger, Thrakkus's doubling and The Ur-Dragon's attack draw all fire again? Also: is the dethrone condition re-checked against life totals the first combat has already changed?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Eerie Interlude with a payoff on the battlefield: exile your Dragons in response to a sweeper, and when they return at the beginning of the next end step, do Dragon Tempest, Terror of the Peaks, Scourge of Valkas and Lathliss each trigger again for every returning Dragon, and does Miirym copy the returning nontoken Dragons?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "For strong Ur-Dragon lists, which is treated as the primary kill: the per-entry damage cascade (Dragon Tempest / Terror of the Peaks under Miirym and Panharmonicon) or the extra-combat loop headed by Aggravated Assault? And where do those lists put the redundancy — more entry payoffs, or more combat effects?",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "diagnosis",
+      "question": "At 36 lands (Mana Confluence and Ancient Tomb in, Patriarch's Bidding and Klauth out), do the turn-five and turn-six land-drop rates move off 0.603 and 0.497?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "goldfish_targets.json declares no component for either of the two non-Assault kills the checker certified — nothing names Ancient Gold Dragon (stack 001) or Wrathful Red Dragon (stack 004).",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Does Old Gnawbone plus Hellkite Charger sustain? The combo record prices the activation at {5}{R}{R} and the question is whether one connection's Treasures fund the next.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Cavern-Hoard Dragon plus Aggravated Assault is listed by bracket_report as a two-card infinite that says 'Target opponent loses the game', and it has no stack artifact.",
+      "settled_by": "resolve-stack"
+    }
+  ],
+  "simulation": null,
+  "experiments": null,
+  "next": [
+    "nothing in the captain's log — play it, then `deck-notes ur-dragon add \"…\" --result win|loss --opponents N`",
+    "open questions routed: goldfish ×4, research-strategy ×1, resolve-stack ×4",
+    "no simulation runs — `simulate ur-dragon --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
+  ],
+  "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
+}
