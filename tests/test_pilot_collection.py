@@ -29,21 +29,27 @@ def _box(tmp_path, monkeypatch, files, decks=None):
     return cdir, ddir
 
 
-def test_a_card_in_a_deck_is_owned_but_has_no_box(tmp_path, monkeypatch):
-    """Owning a card is not the same as it being on a shelf.
+def test_ownership_means_a_BOX_and_deck_membership_does_not_count(tmp_path, monkeypatch):
+    """This module shipped with the opposite default and `validate-recon` refuted it
+    within the hour.
 
-    kinnan's recon marked Drover of the Mighty owned while the box did not hold it,
-    because it is sleeved into a tracked deck — and it was right. You would have to
-    unsleeve it, which is a decision, not a purchase. So the default sense is the
-    union, the narrow sense is opt-out, and only the box sense can name a source.
+    The first version reasoned that a card sleeved into a tracked deck is still owned,
+    since unsleeving is a decision rather than a purchase. But `data/decks/` holds
+    BUILD PLANS as well as assembled decks and nothing distinguishes them: `kinnan`
+    was built from the whole format as a deterministic baseline — the pilot does not
+    own its commander, let alone Tropical Island — so counting its 99 made 99 unowned
+    cards read as owned, and a recon that correctly said "buy this" failed the gate.
+
+    `include_decks=True` survives for a caller who wants the union and knows what is
+    in it. No gate uses it.
     """
     _box(tmp_path, monkeypatch, {"Green.txt": "1 Llanowar Elves\n"},
-         decks={"kinnan": ["Drover of the Mighty"]})
-    assert coll.owns("Llanowar Elves") and coll.owns("Drover of the Mighty")
-    assert coll.owns("Llanowar Elves", include_decks=False)
-    assert not coll.owns("Drover of the Mighty", include_decks=False)
+         decks={"kinnan": ["Tropical Island"]})
+    assert coll.owns("Llanowar Elves")
+    assert not coll.owns("Tropical Island"), "a build plan is not a shelf"
+    assert coll.owns("Tropical Island", include_decks=True), "the union is still askable"
     assert coll.sources_for("Llanowar Elves") == {"Green"}
-    assert coll.sources_for("Drover of the Mighty") == set(), \
+    assert coll.sources_for("Tropical Island") == set(), \
         "a card that is in no box has no box to name"
 
 

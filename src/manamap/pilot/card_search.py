@@ -132,6 +132,7 @@ def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_m
     # `pool-facts` knew the box but could not filter by oracle text; this could
     # filter by oracle text but could not see the box. Every "what could I add that I
     # already have" question needed both, so it was answered by hand every time.
+    # Boxes only — deck membership is not ownership; see `pilot.collection`.
     have = collection.owned_names() if owned is not None else set()
 
     rows, skipped_illegal = [], 0
@@ -187,7 +188,7 @@ def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_m
             "commander_illegal_skipped": skipped_illegal}
     if owned is not None:
         meta["ownership_filter"] = "owned" if owned else "unowned"
-        meta["collection"] = collection.summary()["distinct_including_decks"]
+        meta["collection"] = collection.summary()["distinct_in_boxes"]
     if len(rows) > limit:
         # Say what was dropped. A silently truncated list reads as "that is all
         # of them", which is the claim this tool must never make by accident.

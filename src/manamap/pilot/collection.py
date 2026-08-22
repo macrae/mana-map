@@ -16,11 +16,19 @@ Same nine files, two answers. This module is the single reader; `pool_facts` kee
 its own path-driven entry point because *that* answers a different question ("analyse
 these boxes I am pointing at"), and this one answers "what does the pilot have".
 
-**Owning a card is not the same as it being on a shelf.** A card sleeved into a
-tracked deck is still owned — you would have to unsleeve it, which is a decision, not
-a purchase. `kinnan`'s recon marked Drover of the Mighty owned while the box did not
-contain it, because it is in that deck's 99, and it was right. So `owned_names`
-defaults to the union and `include_decks=False` asks the narrower shelf question.
+**Ownership means a BOX, and deck membership deliberately does not count.** The first
+version of this module defaulted to "in a box OR sleeved in a tracked deck", reasoning
+that unsleeving is a decision rather than a purchase. `validate-recon` refuted it
+immediately: `data/decks/` holds build plans as well as assembled decks, and nothing
+distinguishes them. `kinnan` was built from the WHOLE FORMAT as a deterministic
+baseline — the pilot does not own its commander, let alone Tropical Island or Walking
+Ballista — so counting its 99 made 99 unowned cards read as owned, and a recon that
+correctly said "buy this" failed the gate.
+
+`include_decks=True` is still available for a caller who wants the union and knows
+what it contains, but it is not the default and no gate uses it. If the bench ever
+learns which decks are physically sleeved (`issue.json` status is the nearest thing,
+and it only marks the dead ones), this becomes answerable properly.
 
 Memoized on a signature over every file AND the directory listing, following
 `common._RULES_DB_MEMO` rather than `mtime_memo`: that keys on a single path, and a
@@ -121,11 +129,12 @@ def deck_names():
     return _build_deck_names()
 
 
-def owned_names(include_decks=True):
-    """Every name the pilot has: in a box, and by default also sleeved in a deck.
+def owned_names(include_decks=False):
+    """Every name the pilot has in a box.
 
-    `include_decks=False` is the narrower "is it on a shelf right now" question —
-    what `deck_history` wants when it reports which box to pull a card from.
+    `include_decks=True` adds every card in every tracked deck's 99 — which includes
+    decks that exist only as build plans, so it overstates ownership. See the module
+    docstring; no gate uses it.
     """
     names = set(owned_index())
     if include_decks:
@@ -133,7 +142,7 @@ def owned_names(include_decks=True):
     return names
 
 
-def owns(name, include_decks=True):
+def owns(name, include_decks=False):
     """Does the pilot have this card, under either face?"""
     have = owned_names(include_decks)
     return bool(expand_faces(name) & have)
@@ -154,5 +163,5 @@ def summary():
     return {
         "files": [p.name for p in _files()],
         "distinct_in_boxes": len(index),
-        "distinct_including_decks": len(owned_names()),
+        "distinct_including_decks": len(owned_names(include_decks=True)),
     }

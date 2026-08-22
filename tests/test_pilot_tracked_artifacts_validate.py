@@ -21,7 +21,7 @@ import importlib
 
 import pytest
 
-from manamap.config import (CARD_ROLES_PATH, COMBO_DETAILS_PATH, DECKS_DIR,
+from manamap.config import (CARD_ROLES_PATH, COLLECTION_DIR, COMBO_DETAILS_PATH, DECKS_DIR,
                             OBSOLESCENCE_INDEX_PATH, OUTPUT_CSV_PATH,
                             STRATEGY_DOC_PATH, STRATEGY_INDEX_PATH,
                             SYNERGY_GRAPH_PATH)
@@ -50,7 +50,11 @@ from conftest import SRC, requires_deck
 # rather than digesting `data/`, which is 326 MB and mostly irrelevant.
 INPUTS = (SRC / "pilot", SRC / "config.py", CARD_ROLES_PATH, COMBO_DETAILS_PATH,
           OBSOLESCENCE_INDEX_PATH, OUTPUT_CSV_PATH, STRATEGY_DOC_PATH,
-          SYNERGY_GRAPH_PATH)
+          SYNERGY_GRAPH_PATH,
+          # `validate_recon` falsifies a recon's `ownership` claims against the
+          # pilot's boxes, so a box edit changes a verdict. Without this the cache
+          # keys on bytes that did not move and serves a stale pass.
+          COLLECTION_DIR)
 
 # artifact filename -> module exposing main(args) taking a slug.
 #
@@ -68,9 +72,10 @@ GATED = {name: importlib.import_module(dotted)
          for name, dotted in VALIDATED.items()}
 GATED["build_plan.json"] = validate_build
 
-# `validate_build` reads the declared pool through `card_pool`, the only reader
-# of the gitignored `cards.csv`.
-NEEDS_CORPUS = {"build_plan.json"}
+# Both read the corpus through `card_pool`, the only reader of the gitignored
+# `cards.csv` — `validate_build` for the declared pool, `validate_recon` to prove
+# every named card is real, legal and in identity.
+NEEDS_CORPUS = {"build_plan.json", "deck_recon.json"}
 
 
 def _cases():

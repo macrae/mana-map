@@ -47,6 +47,7 @@ manamap pilot validate-build <slug>     # form gate over a build plan
 manamap pilot bracket-check <slug> [--target N] [--json]  # bracket floor → bracket_report.json
 manamap pilot deck-facts <slug> [--out F]  # the deterministic brief agents read first
 manamap pilot card-search [--deck <slug>] [--identity GU] [--oracle REGEX]…  # mine the corpus for candidates
+manamap pilot validate-recon <slug>                 # form-check deck_recon.json: cards real, legal, in identity
 manamap pilot deck-history <slug> [--json]  # applied swaps (from git) + the pending ten
 manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents N] [--tag T]
                                         #   the captain's log: AUTHORED, append-only, sha-stamped

@@ -168,6 +168,7 @@ VALIDATED = {
     "cards.json": "manamap.pilot.validate_deck",
     "considering.json": "manamap.pilot.validate_considering",
     "deck_map.json": "manamap.pilot.validate_deck_map",
+    "deck_recon.json": "manamap.pilot.validate_recon",
     "diagnosis.json": "manamap.pilot.validate_diagnosis",
     "engine.json": "manamap.pilot.validate_engine",
     "goldfish_targets.json": "manamap.pilot.validate_goldfish_targets",
@@ -183,7 +184,7 @@ VALIDATED = {
 # they report `unverified` rather than failing — the same distinction
 # `tests/conftest.py`'s markers make.
 _NEEDS_STRATEGY = {"tutor_guide.json", "diagnosis.json"}
-_NEEDS_CORPUS = {"build_plan.json"}
+_NEEDS_CORPUS = {"build_plan.json", "deck_recon.json"}
 
 
 def _validity(slug, artifact):

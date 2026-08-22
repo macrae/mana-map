@@ -17,7 +17,7 @@ agents that turn a question into a priced, checked answer. Optimised for one pla
 used to be the product is a frozen legacy renderer until the compact deck page replaces
 it. The card atlas in `viz/` is unchanged and live.
 
-Scale (derived; `tests/test_docs_counts.py` polices these): 62 `manamap pilot`
+Scale (derived; `tests/test_docs_counts.py` polices these): 63 `manamap pilot`
 subcommands, 18 top-level subcommands, 15 agents, 19 skills, 10 static cache routines
 (plus `stack:`/`decision:`/`prescription:` per artifact). Test counts live in
 `docs/testing.md` only.
