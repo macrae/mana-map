@@ -150,6 +150,32 @@ def status(slug, validate=True):
         rows.append({"stage": key, "artifact": name, "what": what, "state": state,
                      "detail": detail, "required": required,
                      "new": key in ADDED_2026_08})
+
+    # GATED ARTIFACTS THAT ARE NOT LIFECYCLE STAGES.
+    #
+    # `VALIDATED` and `STAGES` are different lists and always were: `diagnosis.json`,
+    # `build_plan.json` and `deck_recon.json` have gates but no stage row, so the loop
+    # above never reached them and `deck-status` could not report them. It said
+    # "0 failing a gate" for the whole fleet while `validate-diagnosis heliod` failed
+    # in the same second — the precise divergence the `VALIDATED` map was extracted to
+    # end, reappearing through the other door. A dashboard that is green while a gate
+    # is red is worse than no dashboard, because people stop checking the gate.
+    #
+    # Reported as `state: "gate"` rather than as a stage: these are not steps in
+    # building a deck and must not move the "N/15 stages" count.
+    staged = {r["artifact"] for r in rows}
+    for artifact in sorted(set(VALIDATED) - staged):
+        if not (base / artifact).exists():
+            continue
+        row = {"stage": "—", "artifact": artifact, "what": "gated, not a lifecycle stage",
+               "state": "gate", "detail": "", "required": False, "new": False}
+        if validate:
+            ok, why = _validity(slug, artifact)
+            if ok is False:
+                row["state"], row["detail"] = "INVALID", why
+            elif ok is None and why:
+                row["detail"] = why
+        rows.append(row)
     return rows
 
 
@@ -230,16 +256,23 @@ def fleet():
     for path in sorted(DECKS_DIR.glob("*/cards.json")):
         slug = path.parent.name
         rows = status(slug)
-        stale = [r["stage"] for r in rows if r["state"] == "STALE"]
-        invalid = [r["stage"] for r in rows if r["state"] == "INVALID"]
+        # Name the ARTIFACT, not the stage: a gate row has no stage and reported as
+        # "FAILS ITS GATE: —", which tells a reader nothing about what to fix.
+        def _name(r):
+            return r["stage"] if r["stage"] != "—" else r["artifact"]
+        stale = [_name(r) for r in rows if r["state"] == "STALE"]
+        invalid = [_name(r) for r in rows if r["state"] == "INVALID"]
+        # Gates are not stages — counting them makes a deck with MORE evidence look
+        # less finished. Same rule the single-deck view follows.
+        stage_rows = [r for r in rows if r["stage"] != "—"]
         try:
             pend = summarise(slug)
         except Exception:
             pend = {"open": 0, "applied": 0, "partial": 0}
         out.append({
             "slug": slug,
-            "done": sum(1 for r in rows if r["state"] == "present"),
-            "total": len(rows),
+            "done": sum(1 for r in stage_rows if r["state"] == "present"),
+            "total": len(stage_rows),
             "stale": stale,
             "invalid": invalid,
             "pending_open": pend["open"],
@@ -290,7 +323,10 @@ def main(args):
         return
 
     mark = {"present": "OK  ", "missing": "  --", "STALE": "STALE",
-            "INVALID": "FAIL", "unverified": " ?  "}
+            "INVALID": "FAIL", "unverified": " ?  ",
+            # A gated artifact that is not a lifecycle stage — it passed its gate
+            # but is not a step in building a deck, so it must not read as one.
+            "gate": "GATE"}
     print(f"DECK STATUS — {args.slug}")
     # Which list this is. Derived from git on demand; a deck outside a repo
     # reports nothing rather than guessing.
@@ -317,8 +353,12 @@ def main(args):
         if row["state"] == "missing" and row["new"]:
             print(f"         ^ added 2026-08 — a deck built before it does not have it")
 
-    done = sum(1 for r in rows if r["state"] == "present")
-    print(f"\n  {done}/{len(rows)} stages complete")
+    # Gate rows are NOT stages — they are artifacts that have a validator but no
+    # step in building a deck. Counting them would make "13/15" become "13/17" and
+    # a deck look less finished for having MORE evidence, which is backwards.
+    stages = [r for r in rows if r["stage"] != "—"]
+    done = sum(1 for r in stages if r["state"] == "present")
+    print(f"\n  {done}/{len(stages)} stages complete")
 
     # Deliberately NOT a STAGES row: a queued change is intent, not a lifecycle
     # stage, and must not move the completeness count. An APPLIED entry is the

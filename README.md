@@ -4,52 +4,94 @@
 [![licence: MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
 [![the map](https://img.shields.io/badge/live-the%20card%20map-8b5cf6)](https://macrae.github.io/mana-map/viz/index.html)
 
-**A lab bench for one pilot's paper Commander decks.** It exists to make one player
-measurably better — as a builder, as a pilot, and as a repeated winner at one table in
-Orinda — and it is open-sourced so anyone can stand up their own bench, not so anyone
-else is supported. `docs/vision.md` is the page everything else is written against.
+**A workbench for crafting, experimenting, researching and analysing Commander decks.**
+It is built around one idea: **a claim about a deck is worth what the experiment behind it
+is worth.** `docs/vision.md` is the page everything else is written against.
 
-Two things live here, sharing one data layer and one CLI:
+At the centre is **simulation** — two engines answering different questions:
 
-**A card discovery tool** — every Magic: The Gathering oracle card (~34,900) embedded by
-two small neural nets. It opens on **one card**: hover it, click a relation, and its
-neighbours join a force-directed graph you grow by clicking. Load one of your own decks and
-it lights up with its commander ringed, so you can see where it sits in card space and walk
-outward from it. The 34,890-point atlas is still there, one click away — and it drifts
-slowly at altitude, settling to a stop as you zoom in to read. Three relations, each
-precomputed so a click is instant: **similar** (embedding neighbours), **synergy**
-(rule-based complements, each edge labelled with the rule), and **outclassed by**
-(strictly-better replacements). Boot costs 1.8 MB.
+- **Forge**, the real rules engine, run headless and **seeded**, playing your list against
+  your pod's actual decks. Same inputs, same games, byte for byte.
+- **A seeded Monte Carlo goldfish** — 10,000 games of resource development against nobody,
+  for the questions that are about a curve rather than a table.
 
-**The bench** — for a deck you actually sleeve. One loop, every piece of it on the CLI:
+Around them sit the things that make an experiment mean something: a deterministic builder,
+a rules-citation loop for lines that must be *proven* rather than measured, dated web
+reconnaissance, deterministic card mining over 34,890 cards, and a frontend that surfaces
+the results.
+
+Optimised for one player; open-sourced so anyone can stand up their own bench, not so
+anyone else is supported.
+
+## The hypothesis loop
 
 ```
-decide a list → version it → (simulate it) → play it → log it → debrief → ask → prescribe → swap → repeat
-deck-version    simulate       paper       deck-notes   /debrief  /prescribe            deck-version
+  a question                     →  an experiment              →  a result you can cite
+  "does it want more lands?"        experiment --a V1 --b V2      +0.27 mana on t5
+  "is this line lethal?"            /resolve-stack                ✓ or refuted, with CR cites
+  "how fast does it go off?"        goldfish                      mean t4.19, 89% by t6
+  "what do strong lists run?"       deck-recon, /prescribe        ranked, cited, skeptic-checked
+  "what would fix this axis?"       deck-audit + card-search      candidates that move the number
 ```
 
-- `deck-info <slug>` — where the deck stands right now, and a derived **next**.
-- `deck-version` — every list the deck has been, from git, joined to the games you played on it.
-- `goldfish` — seeded Monte Carlo resource development against nobody; `simulate --vs <pod>`
-  — N seeded games in **Forge**, real rules, against your table's actual decks: win rate with
-  its interval, who kills you and how, the kill curve, token pay-off.
-- `deck-notes add` — the captain's log in your words, stamped with the list you held;
-  `/debrief` turns a note into structured findings and routed questions.
-- `/prescribe <slug> "…"` — the doctor, scoped to your question, reading the log and the
-  sim: ranked adds that close a named axis, cuts priced, skeptic-checked.
-- `/resolve-stack` — a board (authored, or **lifted from a simulated game**) resolved step by
-  step with Comprehensive Rules citations and adversarially checked. The ✓ tier.
-- `analyze-engine` — the deck's machine as eight stages, solid where a stack proves a line,
-  dashed where it is a reading.
+**`experiment` is the flagship.** Two versions of a deck, the same table, the same N, the
+same seeds, one artifact carrying both arms, the delta, and the sentence people skip —
+whether the intervals overlap. Same seeds are **not** paired games (a changed list changes
+every shuffle), so seeds buy per-arm replayability and the control is N. An A/A is refused
+with the reason.
+
+## Two frontends over one data layer
+
+**The card atlas** — every Magic oracle card (~34,900) embedded by two small neural nets.
+It opens on **one card**: hover it, click a relation, and its neighbours join a
+force-directed graph you grow by clicking. Load one of your own decks and it lights up with
+its commander ringed. The 34,890-point atlas is one click away, and drifts slowly at
+altitude, settling as you zoom in to read. Three relations, each precomputed so a click is
+instant: **similar** (embedding neighbours), **synergy** (rule-based complements, each edge
+labelled with its rule), **outclassed by** (strictly-better replacements). Boot costs 1.8 MB.
+
+**The deck page** (`viz/deck.html?deck=<slug>`) — the workbench surface: what to do next,
+where the deck stands, every list it has been, what limits it, the engine, **the
+experiments and simulation runs with their intervals**, prescriptions, the captain's log,
+open questions, and the deck's own constellation. It renders `info.json` — the shape
+`deck-info` composes — rather than re-deriving anything, so it cannot disagree with the
+command that owns each figure.
+
+## The commands behind it
+
+- `simulate <slug> --vs <pod> --games N` — N seeded Forge games: win rate with its interval,
+  who kills you and how, the kill curve, **commander damage per defender**, token pay-off.
+- `experiment <slug> --a <ref> --b <ref> --vs <pod>` — the controlled A/B.
+- `goldfish` — seeded Monte Carlo resource development; Treasure and combat opt-in.
+- `build-deck` — a legal 99 from a brief: role budget crossed with a **cited curve target**,
+  combo lines completed, bracket-gated. No agents required.
+- `deck-audit` — 16 axes, each carrying the verbatim `strategy.md` quote that sets its target.
+- `card-search` — deterministic mining over the corpus: identity, oracle/name regex, role,
+  cmc, and `--owned` against your physical boxes.
+- `deck-info <slug>` — the whole join, and a derived **next**.
+- `deck-version` — every list the deck has been, from git, joined to the games played on it.
+- `deck-notes add` → `/debrief` → `/prescribe` — the table, structured, then answered.
+- `/resolve-stack` — a board (authored, or **lifted from a simulated game**) resolved with
+  Comprehensive Rules citations and adversarially checked. The ✓ tier.
+- `analyze-engine` — the deck's machine as eight stages, solid where a stack proves a line.
 
 Under it all is a **three-tier evidence contract** that never moves: ✓ rules-verified, ◆
 data-derived (seeded where randomness is involved), ★ coaching — labelled judgment, never
-disguised as measurement. Every agent returns JSON a validator checks; the Python makes
-zero LLM calls; the deployed site and your machine run the same code.
+disguised as measurement. **A figure travels with its interval, its N and its limits, or it
+does not travel** — enforced in code, not by convention. Every agent returns JSON a
+validator checks; the Python makes zero LLM calls; the deployed site and your machine run
+the same code.
 
-**The deck page.** Each deck still renders to a self-contained HTML page. Today that page is
-the *legacy magazine* (nine issues, frozen; [the rack](https://macrae.github.io/mana-map/manuals/index.html));
-it is being replaced by a compact technical page — `docs/manual-v5-spec.md`.
+**Two things this is honest about.** Forge's AI pilots every seat *including yours*, and
+rates itself "poor to ok in control, pretty bad for combo" — a sentence quoted verbatim in
+every run record, which makes a control deck's win rate a lower bound on the pilot. And
+nothing has been logged at a real table yet: the log, debrief and prescription surfaces are
+built and tested against zero real entries.
+
+**The deck page in `manuals/`.** Each deck also renders to a self-contained printable HTML
+file. Today that is the *legacy magazine* (nine issues, frozen;
+[the rack](https://macrae.github.io/mana-map/manuals/index.html)); it is being replaced by a
+compact technical page — `docs/manual-v5-spec.md`.
 
 ---
 
@@ -229,18 +271,73 @@ Two pipelines, same pattern: each stage writes artifacts the next one reads, and
 stage is independently runnable and testable.
 
 ```
-Card map   download → extract → preprocess → train ×2 → embed → reduce
-                    → combos → export → synergy → power-creep → regions → card-roles → viz
+Card map    download → extract → preprocess → train ×2 → embed → reduce
+                     → combos → export → synergy → power-creep → regions → card-roles → viz
 
-Build      brief.json → build-deck → bracket-check → architect ⇄ critic → decklist
+Build       brief.json → build-deck → bracket-check → architect ⇄ critic → decklist
 
-Manual     fetch-deck → goldfish + RAG DBs → agents author JSON
-                    → validators gate → renderer builds → GitHub Pages
+Experiment  decklist → fetch-deck → goldfish ─┐
+            pod       → fetch-opponent ───────┼→ simulate / experiment → parse → analysis
+                                              └→ sim-scenario → /resolve-stack → ✓
+
+Surface     artifacts → deck-info --write → info.json ─┐
+            build-index → index.json ──────────────────┴→ viz/deck.html
 ```
 
 `manamap run` drives the first (15 steps, ~40–60 min, internet at two of them).
-`manamap pilot <cmd>` drives the second (63 pilot subcommands). All constants live in
+`manamap pilot <cmd>` drives the rest (63 pilot subcommands). All constants live in
 `src/manamap/config.py`; both CLIs are registry-driven with lazy imports.
+
+## Simulation — the centre of the bench
+
+*Code: `src/manamap/sim/{forge,parse,experiment,bridge,opponents,validate_sim}.py`.
+Design, the spike and the verdict: `docs/simulation.md`.*
+
+**Forge was chosen by measurement, not preference.** Three things were checked before
+committing to it: every log line parses, 4-seat Commander runs headless, and `-s` makes a
+run byte-replayable. Writing a rules engine was shelved for one narrow deterministic case.
+
+**A run is seeded.** `simulate` converts each seat's `decklist.txt` to a Forge `.dck`
+*through the repo's own parser* — so a deck analysed and a deck simulated can never
+disagree about what is in it — then runs N Commander games across J JVMs. The default seed
+derives from the configuration, so **the default replays**; `--seed` asks for a new sample.
+Job *i* runs `seed_base + i`, and a same-id re-run is refused without `--force`.
+
+**The record is one tracked JSON.** Outcomes, per-game rows, every seat's decklist sha,
+Forge and Java versions, wall time, the seeds, and an `analysis` block with Wilson
+intervals for rates and normal intervals for means. `validate-sim` **re-derives that
+analysis from the kept logs** where they exist and form-checks where they do not, so a
+figure in the record is not merely asserted.
+
+**Two turn counts, and they are not the same.** `round` is the winner's own turn count
+(Forge's `Game Outcome: Turn N`); `global_turn` is the game's last `Turn:` line. In a
+4-seat game round 8 is global turn ~32.
+
+**Three things the parser gets right on purpose.** Tokens are reported two honest ways —
+`token_resolutions` (creation abilities that resolved; blind to X and doubling) and
+`tokens_observed` (distinct ids seen acting) — because Forge names a token on first *use*,
+never on creation. Damage figures see **damage only**: a drain kill shows in `life_by_turn`
+and `eliminated_how`, never in a damage total. And **commander damage is per defender**,
+because CR 903.10a asks for 21 from one commander on one *player* — 60 damage spread over
+three seats wins nothing.
+
+**Every aggregate carries median, min, max and an interval.** A mean over a skewed sample
+is a true number that describes no game: one measured arm read mean 17.42 with a **median
+of 0**, the whole difference being two games out of twelve.
+
+**The bridge closes the loop.** `sim-scenario <slug> <run> --game G --turn T --step S`
+lifts a board out of a simulated game into a `game_state` v2 scenario, which
+`/resolve-stack` then proves with rules citations. Life and lands are exact; hand size is
+an estimate; every approximation is written into `extras.reconstruction_notes`. This has
+run for real: radagast stack 008 is a board lifted from a simulated game, resolved and
+checker-passed in three iterations, and the checker caught two triggers the author missed
+that the log confirms.
+
+**The AI caveat is not a footnote.** Every seat is a Forge AI including yours, and Forge's
+own rating — "poor to ok in control, pretty bad for combo" — is quoted verbatim in every
+run record's `assumptions`. Measured: no AI profile flies a hold-up deck better than
+Default (Default 3/6, Experimental 2/6, Reckless 2/6 over seeded games), so Default stays
+the default.
 
 Two lightweight fusion MLPs (~180K params each) produce the 128-dim embeddings; the text
 encoder stays frozen. They answer different questions and are not interchangeable. The
@@ -463,6 +560,9 @@ Two standing rules around this harness:
 | A pilot command | `PILOT_STEPS` + `_DECK_COMMANDS` + argparse in `pilot/registry.py`; module exposes `main(args)` |
 | A deck lifecycle phase | `STAGES` in `pilot/deck_status.py`, or the next person will not find it |
 | A pod seat | `manamap pilot fetch-opponent "<commander>"`, or a `decklist.txt` under `data/opponents/<slug>/` |
+| A figure the sim reports | `game_facts` + `aggregate` in `sim/parse.py`, then re-derive every run with `--analyze` — the record is compared against the logs, so an added key must be backfilled |
+| A panel on the deck page | a `*Panel(d)` function in `viz/js/deck-view.js` returning `''` when its artifact is absent, plus the artifact's filename in `build_index.gather_entries` if a browser cannot list it |
+| A field the deck page reads | `deck_info.compose`, then `deck-info <slug> --write` for every deck — `info.json` is committed and staleness-gated |
 | A section of the (legacy) deck page | **don't** — the magazine renderer (`issue_spec.DEPARTMENTS`, `design.py`) is frozen; the compact page is `docs/manual-v5-spec.md` |
 | A data file the viz reads | The `DATA` map in `viz/js/mana-map.js`, plus a `.gitignore` negation |
 | A synergy rule, tag, or threshold | `config.py`, nowhere else |
@@ -542,12 +642,35 @@ suite is CWD-independent and honours `MANAMAP_DATA_DIR`.
   Verify with a stack before stating it as a line; goblin-storm stack 004 is the cautionary tale.
 - **Rebuild the strategy DB after editing `strategy.md`** — the loader hard-errors on a
   sha256 mismatch.
+- **A mean is not a result.** Report the median and the interval beside it or the number
+  lies on a skewed sample. `mean_ci` emits all of them; do not unpack only `mean`.
+- **Scryfall leaves `mana_cost` EMPTY on transform and MDFC layouts** and puts the cost on
+  each face — and holds *both halves* on adventure and split layouts. Read
+  `common.front_field(card, "mana_cost")`, never `card["mana_cost"]`, or you under-count
+  one class of card and double-count another.
+- **`--identity` takes letters, and `parse_color_identity` splits on commas.** It is right
+  for `cards.csv`'s `"G, U"` and returns `{"GU"}` — one token nothing can be a subset of —
+  for the compact form a human types. `card_search.parse_identity_arg` is the CLI parser.
+- **Ownership means a BOX.** `data/decks/` holds build plans as well as sleeved decks and
+  nothing tells them apart, so `collection.owned_names()` deliberately does not count deck
+  membership.
+- **`VALIDATED` and `STAGES` are different lists.** An artifact with a gate but no
+  lifecycle stage still has to be reported, or `deck-status` says green while the gate is
+  red — which it did, fleet-wide, for three artifacts.
 
 ## Deployment
 
-GitHub Pages serves the repo directly. There is no root index; the two entry points are
-`/viz/index.html` (the card map) and `/manuals/index.html` (the deck pages — the legacy
-rack until the compact page lands). Pushing to `main` deploys.
+GitHub Pages serves the repo directly. There is no root index; the entry points are
+`/viz/index.html` (the card atlas), `/viz/deck.html?deck=<slug>` (the workbench surface for
+one deck) and `/manuals/index.html` (the printable pages — the legacy rack until the
+compact page lands). Pushing to `main` deploys.
+
+One artifact the deployed site cannot carry yet: **the version list**. `deck-version`
+derives it by walking git, and the commit that changes `decklist.txt` receives its sha
+*after* anything written in the same commit — so a committed copy is one version behind
+forever. It needs a deploy-time step (a Pages workflow checking out with `fetch-depth: 0`),
+and until that exists the deck page's version panel simply does not render, which is what
+every panel there does when its artifact is absent.
 
 ## Where to read next
 

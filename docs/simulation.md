@@ -1,7 +1,15 @@
-# Simulation — design (S0) and the Forge spike, 2026-08-19
+# Simulation — the centre of the workbench
 
-*Branch `simulation`. What this subsystem is for, what was measured before building it,
-the verdict, and the phases. The `game_state` v2 schema it consumes is in `docs/pilot.md`.*
+*What this subsystem is for, what was measured before building it, the verdict, and how it
+grew. The `game_state` v2 schema it consumes is in `docs/pilot.md`. Last revised
+2026-08-22.*
+
+**This is the thing the rest of the bench serves.** A claim about a deck is worth what the
+experiment behind it is worth, and this is where experiments run: `simulate` for a deck
+against a real pod, `experiment` for two versions of a deck against the same pod, and the
+seeded goldfish for the questions that are about a curve rather than a table. Everything
+downstream — the audit's targets, the doctor's prescriptions, the deck page's figures —
+either feeds an experiment or reads one.
 
 ## What it is for
 

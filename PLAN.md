@@ -4,18 +4,25 @@
 gotchas; this says what exists and what is open. The magazine era's plan is archived
 verbatim at `docs/history/PLAN-2026-08-magazine-era.md`.*
 
-Last updated **2026-08-19**. Everything below is committed and pushed to `main` except
+Last updated **2026-08-22**. Everything below is committed and pushed to `main` except
 where marked. Every figure was derived from the repo at write time — **do not quote one
 from memory**; the command that prints it is named beside it.
 
 ## What this is
 
-A **lab bench for one pilot's paper Commander decks** — versions, a captain's log, stats,
-a seeded goldfish, a real-rules simulator against the pilot's own table, and a set of
-agents that turn a question into a priced, checked answer. Optimised for one player
-(the maintainer, in Orinda); open-sourced, not externally supported. The magazine that
-used to be the product is a frozen legacy renderer until the compact deck page replaces
-it. The card atlas in `viz/` is unchanged and live.
+A **workbench for crafting, experimenting, researching and analysing Commander decks**,
+built around one idea: a claim about a deck is worth what the experiment behind it is
+worth. **Simulation is the centre** — Forge for the real rules against a real pod, a
+seeded Monte Carlo goldfish for the questions that are about a curve rather than a table —
+and `experiment` is the flagship: two versions, one table, one artifact, the delta and the
+overlap sentence. Around it sit a deterministic builder, a rules-citation loop for lines
+that must be proven, dated reconnaissance, deterministic card mining, and a frontend that
+surfaces the results.
+
+Optimised for one player (the maintainer, in Orinda); open-sourced, not externally
+supported. The magazine that used to be the product is a frozen legacy renderer until the
+compact deck page replaces it. The card atlas in `viz/` is unchanged and live; the **deck
+page** (`viz/deck.html?deck=<slug>`) is new and is the workbench surface.
 
 Scale (derived; `tests/test_docs_counts.py` polices these): 63 `manamap pilot`
 subcommands, 18 top-level subcommands, 15 agents, 19 skills, 10 static cache routines
@@ -48,17 +55,22 @@ was not granted; a figure travels with its interval, its N and its limits.
 `deck-info <slug>` per deck for the live picture; `deck-status --all` for the fleet. As of
 this writing (derived from the stack, bracket, engine, sim and log artifacts):
 
-| deck | stacks ✓/total | bracket floor/target | engine | sim runs | logged games | status |
+| deck | stacks ✓/total | bracket floor/target | engine | sim runs | logged | status |
 |---|---|---|---|---|---|---|
 | `goblin-storm` | 5/5 | 4/4 | pass | 0 | 0 | |
 | `hapatra` | 1/1 | 4/4 | pass | 0 | 0 | `broken-down` (cards live in yawgmoth) |
-| `sisay` | 1/3 | 4/4 | pass | 0 | 0 | `retired` |
-| `heliod` | 6/6 | 4/4 | pass | 0 | 0 | |
-| `ur-dragon` | 6/6 | 4/4 | pass | 0 | 0 | |
+| `sisay` | 1/3 | 4/4 | pass | 0 | 0 | `retired` — **not the pilot's deck** |
+| `heliod` | 6/6 | 4/4 | pass | 0 | 0 | white short by 16, not 5 — see the DFC fix |
+| `ur-dragon` | 6/6 | 4/4 | pass | 0 | 0 | two-engine rebuild proposed, not applied |
 | `edgar-vampires` | 9/9 (7 presentable) | 4/4 | pass | 0 | 0 | paper rebuild in progress (v4 LOCK) |
 | `gishath` | 5/5 | 4/4 | pass | 0 | 0 | |
 | `yawgmoth-swarm` | 14/14 (11 presentable) | 4/4 | pass | 0 | 0 | paper rebuild in progress |
-| `radagast` | **8/8** | 1/3 | pass | **2** | 0 | `broken-down` (2026-08-21; cards pulled for the next build) |
+| `radagast` | 8/8 | 1/3 | pass | **2** | 0 | `broken-down` (2026-08-21) |
+| `kianne` | 0/0 | 4/4 | — | **2** | 0 | **concept abandoned** — voltron is 10 decks of 970; the shell is sound, the win condition is not |
+| `kinnan` | 0/0 | 4/4 | — | 0 | 0 | deterministic baseline built; recon done; commander not owned |
+
+**Four Forge runs and two experiments exist**, all on radagast and kianne. They are the
+only decks that have been simulated at all.
 
 **Nothing is logged on any deck yet.** The log, debrief, prescriptions and versions are
 built and tested with zero real entries — the first one is the pilot's to write, and it
@@ -68,43 +80,51 @@ Three decks no longer exist as cardboard (`hapatra`, `sisay`, `radagast`). Their
 artifacts stay exactly as published; `deck-info` states the status and withholds the
 suggestions that would need a deck to shuffle.
 
-## Where the pivot stands (2026-08-19)
+## Where it stands (2026-08-22)
 
 | | | where |
 |---|---|---|
 | Agent audit + Sprint 0 | 18 → 15 agents; shared contract (`.claude/agents-common.md`); L10 repealed; magazine editor/panel/short-list retired; writer + coach → `pilot-notes`; `debrief` new; doctor MODE prescribe | `docs/agent-audit-2026-08-19.md` |
 | MVP Sprints 1–3 | `deck-version`, `deck-notes` + `/debrief`, `prescribe`, `deck-info` | `docs/pilot.md` |
-| Simulation S0–S5 | Forge spike + verdict; seeded harness `simulate`; parser with CIs; `validate-sim`; the pod (`fetch-opponent`, `data/opponents/`); the bridge `sim-scenario` → `game_state` v2 (`validate-stack`/`scenario-facts` read v2); the doctor reads the table | `docs/simulation.md` |
-| The chain, once for real | stack 008 — a board lifted from game 1 of the first run, resolved + checker-passed in 3 iterations; matched Forge's log line for line | `docs/simulation.md` |
-| Compact deck page | spec drafted, awaiting the pilot's strikes | `docs/manual-v5-spec.md` (branch `manual-v5` for the work) |
+| Simulation S0–S5 | Forge spike + verdict; seeded harness; parser with CIs; `validate-sim`; the pod; the bridge `sim-scenario` → `game_state` v2; the doctor reads the table | `docs/simulation.md` |
+| The chain, once for real | stack 008 — a board lifted from a simulated game, resolved + checker-passed in 3 iterations; matched Forge's log line for line | `docs/simulation.md` |
+| `experiment` + AI profiles | the controlled A/B, one accumulating artifact; `--profile` on both commands (Default stays default, measured) | `docs/simulation.md` |
+| Commander damage | per DEFENDER through the parser, the record and `experiment`'s delta; all runs migrated | `sim/parse.py` |
+| The distribution | `mean_ci` carries median/min/max beside the mean — a skewed arm read mean 17.42, median 0 | `sim/parse.py` |
+| `card-search` | deterministic corpus mining: identity, oracle/name regex, role, cmc, `--owned` | `docs/pilot.md` |
+| The collection | `pilot/collection.py`, the one reader of `COLLECTION_DIR`, memoized | `docs/pilot.md` |
+| `validate-recon` | the gate `deck_recon.json` never had; its first catch was a data gap, not an agent error | `pilot/validate_recon.py` |
+| Builder curve + combos | role quota crossed with a **cited** mana-value target; `complete_combos` finishes a line the deck half-holds | `pilot/build_deck.py` |
+| **The deck page** | `viz/deck.html` — nine workbench panels over `info.json`, sim figures with intervals, lifecycle flag | `docs/viz.md` |
 
 ## Open work
 
 ### Next, in order
 
-1. ~~`experiment`~~ — **DONE 2026-08-19**: `experiment <slug> --a <ref> --b <ref> --vs …`,
-   one accumulating artifact with both arms, the delta and the overlap sentence; arms never
-   touch the deck dir; `--profile` on it and on `simulate` (measured: aggro profiles make a
-   hold-up deck worse; Default stays default). First tracked one: radagast V1 vs V5 —
-   win-rate delta is noise, damage +27.6/game and token share 0 → 0.19 are not.
-2. **The first real logged games** — any deck, `deck-notes add`, then `/debrief` and
-   `/prescribe`. Only the pilot can do this.
-3. ~~**Forge AI profiles**~~ — **DONE 2026-08-19**, alongside `experiment`: `-a` is per-seat
-   in `-d` order and `--profile` rides on both commands. Measured on radagast's seat vs a
-   Default edgar, 6 seeded games each — Default 3/6, Experimental 2/6, Reckless 2/6. No
-   profile flies a hold-up deck better than Default, so Default stays the default and the
-   AI caveat stands unchanged. That is the evidence for 5.
-4. **The deck page in the viz** — notes, versions (a deploy-time JSON, since the version
-   list cannot be committed in the commit that creates it), sim, prescriptions, the manual
-   as a tab. The magazine gets simplified *into* this (`docs/manual-v5-spec.md`), not rewritten.
-5. **An agent in the pilot's seat** for a handful of seeded games on one question — only
-   once 1–3 show the AI's play is the thing limiting the measurement.
-6. ~~`card-search`~~ — **DONE 2026-08-21**: deterministic card mining over `cards.csv`
-   (identity derived from a deck's commander, oracle/name regex, role, type, cmc,
-   Game-Changer filter), the deck's own cards excluded by default. Built because
-   kianne's audit ended in "which cards fix this" and nothing could answer it. Neighbour
-   search is NOT in it — that would be a second retrieval opinion beside the synergy
-   graph. The audit's item 8.
+1. **The first real logged games** — any deck, `deck-notes add`, then `/debrief` and
+   `/prescribe`. **Only the pilot can do this**, and it is the highest-value thing
+   available: the log, the debrief, prescriptions and three panels of the deck page are
+   built and tested against **zero real entries**.
+2. **The versions deploy-time step** — a Pages workflow checking out with
+   `fetch-depth: 0` and running `deck-version list --json` per deck into `versions.json`.
+   The producer already exists and the deck page's panel is already written; it renders
+   nothing until the artifact does. Needs the Pages source flipped from "branch" to
+   "GitHub Actions" in repo settings, which only the maintainer can do.
+3. **An agent in the pilot's seat** for a handful of seeded games on one question — the
+   evidence for it is in: no Forge AI profile flies a hold-up deck better than Default,
+   so the AI is the thing limiting the measurement rather than the configuration.
+4. **The magazine unfreeze** (`docs/manual-v5-spec.md` phases 2–4) — blocked on the
+   pilot's answers to five open questions in that spec, all about the printable page.
+   The deck page in the viz was phase 5 and shipped first, because the spec separates the
+   surfaces: "the manual does not grow a log or a version panel."
+5. **Content-addressed cache busting for `deck.html`** — it went from nine artifact
+   fetches to fifteen, and `manuals/magazine.css`'s `?v=<sha8>` is the pattern to copy.
+
+**Done since the last revision:** `experiment` and AI profiles (2026-08-19); `card-search`,
+commander damage per defender, the collection primitive, `validate-recon`, deck lifecycle
+in `deck-info` (2026-08-21); the builder's curve quota and combo completion, `mean_ci`'s
+distribution, `deck-info --write`, the manifest's instanced files, the deck page, the DFC
+pip fix, and `deck-status`'s gate blind spot (2026-08-22).
 
 ### Known gaps, named in the artifacts
 
@@ -138,11 +158,32 @@ suggestions that would need a deck to shuffle.
   line the deck half-holds. kinnan went from 23 partners and 0 completions to **4
   contained combos and 2 two-card infinites**, including Kinnan + Pili-Pala +
   Enduring Vitality. And `build()` now has end-to-end tests: there were none.
-- **DFC pips**: `manabase.pip_requirements` reads `card["mana_cost"]`, empty for
-  transform/MDFC layouts; 10 spells on 7 decks. Three-line fix that changes every
-  `mana_analysis.json` — deliberately not done mid-flight.
-- **hapatra's `bracket_report.json`** contradicts a verified stack (an inflated two-card-
-  infinite count). **`build_plan.json` is not reproducible** from today's data.
+- ~~**DFC pips**~~ — **FIXED 2026-08-22**, and it was two defects rather than one.
+  `pip_requirements` read `card["mana_cost"]`, which Scryfall leaves EMPTY on
+  transform/MDFC layouts (counting zero pips) and which holds BOTH halves on
+  adventure/split layouts (counting double). `common.front_field` is the one shared
+  reader now, replacing `deck_facts._front`, which had solved this for colours and never
+  for pips. It produced a real finding: **heliod's commander is `{2}{W}{W}` and that
+  second pip was invisible**, so its white target read 22 when it should read 36 — short
+  by 16 against 20 sources, not by 5, with white rather than blue the binding colour.
+  Seven `mana_analysis.json` regenerated. Same-class defect still unfixed in
+  `build_deck.castability` (`build_deck.py`, `getattr(row, "mana_cost", "")`).
+- **hapatra's `bracket_report.json`** contradicts a verified stack: two of its three
+  `drivers` cite lines that stack 001 refuted or explicitly declined to rest on, and the
+  "19 two-card infinites" figure is inflated by six. The contradiction is duplicated
+  verbatim into `build_plan.json`. Blocked on a schema question — the refutation is prose
+  inside `resolution.final_state.summary`, and there is no machine-readable `refutes`
+  field for a gate to read.
+- **`build_plan.json` is not reproducible** from today's data, and is now *further* from
+  it: the builder gained a mana-value quota and `complete_combos` on 2026-08-22, so
+  re-running produces a different 99 by design. Open question whether historical build
+  plans should be reproducible at all — they are records of a build that happened, like
+  `log.jsonl`.
+- **A diagnosis can go stale without its decklist moving.** The DFC fix changed the audit
+  underneath heliod's `diagnosis.json`, which had cited the old figures correctly when
+  written. `validate_diagnosis` re-derives every axis, so it failed — right, but there is
+  no staleness *class* for "the measurement code moved", the way there is for "an older
+  decklist". The only route is a re-spawn.
 
 ### Verification backlog (✓ work)
 
@@ -154,15 +195,27 @@ suggestions that would need a deck to shuffle.
 
 ### Still owed
 
-- `deck-recon` on six decks (time-based staleness, ~600k).
-- Strategy-DB gaps — 49 across the frames; aristocrats/sacrifice first.
-- Unit tests for `merge_deck_map`, `engine_facts`; no regression floor on the balance
-  bound's effect on real decks.
-- Ur-Dragon two-engine rebuild — proposed, measured, not applied (`ur-dragon-deck` memory).
-- `deck-history pending` should read open prescriptions' adds beside the legacy
-  `considering.json`.
-- Versioning: `deck-version` replaced the hand-kept `HISTORY.md`; the `supersedes` pointer
-  for a deck page's status is still open.
+Sized 2026-08-22; each is small and independent unless noted.
+
+- **`merge_deck_map` / `engine_facts` have ZERO test coverage** — no test file imports
+  either. ~300 lines, blocked on nothing. `merge_deck_map`'s whole reason to exist is the
+  `OWNED = ("label", "gloss")` whitelist, and nothing asserts it.
+- **No regression floor on the balance bound.** Nothing reads the nine tracked
+  `deck_map.json`. Note edgar-vampires sits at **35.05%** against a 35% bound, so the
+  floor must encode the `MAX_CITIES` escape the synthetic test already uses.
+- **`deck-recon` on four LIVE decks** — gishath, goblin-storm, heliod, ur-dragon. It is
+  *absence*, not staleness: nothing is stale by `RECON_MAX_AGE_DAYS` (oldest 19 days
+  against 120). hapatra and sisay are dead cardboard and should be skipped — a perishable
+  meta artifact for a deck nobody can shuffle is ~100k spent on nothing.
+- **`deck-history pending` should read prescriptions' adds.** Blocked twice over: "open"
+  is the wrong predicate (an open prescription has *no* adds; the wanted state is
+  answered-but-unapplied), and **zero prescription files exist fleet-wide**.
+- **`supersedes`** — no scaffolding at all; the status half exists (`DECK_STATUSES`) and
+  the pointer does not. Blocked on a decision: it lives in the frozen magazine layer.
+- **Strategy-DB gaps** — 49 across the frames; aristocrats/sacrifice first.
+- **Ur-Dragon two-engine rebuild** — proposed, measured, not applied.
+- **`build_deck.castability` reads `getattr(row, "mana_cost", "")`** — the same defect the
+  DFC fix just closed in `manabase`, still open one module over.
 
 ### Legacy, frozen — and what unfreezes it
 

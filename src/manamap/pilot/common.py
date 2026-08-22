@@ -186,6 +186,39 @@ def front_face(type_line):
     return str(type_line or "").split(" // ")[0]
 
 
+def front_field(card, key, default=""):
+    """A field from a card's FRONT FACE, falling back to the top-level value.
+
+    Scryfall leaves the top-level `mana_cost` EMPTY on transform and MDFC layouts
+    and puts the real cost on each face — so `card["mana_cost"]` is `""` for every
+    double-faced spell, and anything that reads it counts zero pips. That is not a
+    hypothetical: `manabase.pip_requirements` did exactly this, and it under-counted
+    coloured requirements on 10 spells across 7 decks. edgar-vampires' own
+    `engine.json` narrates the discrepancy in prose — "cards.json gives 41 of 79"
+    against the artifact's 39 of 76.
+
+    It corrects the OPPOSITE error too, which is why the fleet deltas do not all
+    move one way. On `adventure` and `split` layouts the top-level cost holds BOTH
+    halves — Monster Manual // Zoological Study is `'{3}{G} // {2}{G}'` — so reading
+    it counted two green pips for a card that asks for one, whichever half you cast.
+    gishath netted to zero on green precisely because Huatli gained a pip and
+    Monster Manual lost a phantom one.
+
+    The other half of the same bug was fixed for COLOURS and not for pips, in
+    `deck_facts._front`, which this replaces: two implementations of one rule is how
+    the halves drift. `front_face(type_line)` above answers the different question
+    "what IS this" from a joined string and stays separate.
+
+    Front face rather than the union, because the face that is up on the battlefield
+    is the one that contributes: Esika's card colours are both faces, the permanent
+    you control is mono-green.
+    """
+    faces = card.get("card_faces") or []
+    if faces and faces[0].get(key):
+        return faces[0][key]
+    return card.get(key, default)
+
+
 def expand_faces(name):
     """{joined name} | {each face} — every string that could mean this card.
 

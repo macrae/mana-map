@@ -5,11 +5,18 @@ the artifacts under `data/decks/<slug>/`. **Read `docs/vision.md` first** — it
 this is for and what the bench does end to end; this document is the reference for how
 each piece works and why it is shaped the way it is.
 
-It turns a 100-card Commander decklist into a deck the pilot can **measure** (goldfish,
-a Forge table), **prove** (rules-cited, machine-checked stack resolutions), **understand**
-(the engine model, the audit, the diagnosis), **remember** (the captain's log and its
-debrief), **version** (from git, joined to the games played), and **ask** (prescriptions).
-The magazine it used to publish is a legacy renderer, described in the last section.
+It turns a 100-card Commander decklist into a deck the pilot can **experiment on**
+(`experiment`, the controlled A/B of two versions on one table), **measure** (a seeded
+Forge run against the pod, a Monte Carlo goldfish against nobody), **prove** (rules-cited,
+machine-checked stack resolutions), **understand** (the engine model, the 16-axis audit,
+the diagnosis), **research** (dated `deck-recon`, `card-search` over the corpus),
+**remember** (the captain's log and its debrief), **version** (from git, joined to the
+games played), and **ask** (prescriptions).
+
+**The experiment is the shape everything else serves.** A question becomes an arm, an arm
+becomes a figure, and the figure travels with its interval, its N and its limits or it does
+not travel. `viz/deck.html?deck=<slug>` is where the results are read; the magazine it used
+to publish is a legacy renderer, described in the last section.
 
 ## The three-tier evidence contract
 

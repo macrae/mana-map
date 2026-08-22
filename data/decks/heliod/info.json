@@ -12,7 +12,7 @@
   "lands": 33,
   "status": {
     "complete": 13,
-    "of": 15,
+    "of": 17,
     "stale": [],
     "invalid": [],
     "missing": [
@@ -77,8 +77,8 @@
     "verified_lines": 4
   },
   "diagnosis": {
-    "verdict": "It functions and it never runs out of cards: turn-three land drops at 0.866, the commander available in 90.2% of goldfish games by turn six, 22 card-advantage copies against a floor of 10, and six checker-passed stacks including a complete table kill. What limits it is the payoff half of its own engine. By turn six the deck has DRAWN a draw engine in 75.4% of games and drawn both halves in 41.2%; the pair event is a strict subset of the engine event, so 34.2 points of games reach turn six holding an engine and no punisher. Over the full ten-turn simulation the gap narrows — 85.2% against 56.7% — so about half that band gets its punisher late rather than never. The simulation counts cards drawn, not cast: whether a Howling Mine actually hits the battlefield without a punisher is the pilot's choice, which is why the prescription below is a sequencing and mulligan rule and a widening of the six-card payoff group, not a claim that the deck has already given the cards away. The audit flags five axes under. Two are genuine and each gets a slot below: colour-sources, and interaction-breadth, where the graveyard class is uncovered in all 146 entries. Two are taxonomy floors — protection reads 1 next to Grand Abolisher and eight counterspells, sweepers reads 1 against an override that contradicts its own citation. One, mana-base, is answered by a second axis: 33 lands, 39 mana sources.",
-    "skeptic": "pass",
+    "verdict": "It functions, it never runs out of cards, and it knows how it wins: turn-three land drops at 0.866, 39 mana sources against a Burgess target of 37, 22 card-advantage copies against a floor of 10, and six checker-passed stacks including a complete table kill. What limits it is white mana at the point of deployment. The deck holds 20 white sources against a target of 36 — short 16, against blue's 5 — and its own commander is {2}{W}{W}. The measured cost is the number to argue with: the probability of two white sources by turn three is 0.41 off lands alone and 0.58 counting rocks, where blue is 0.742 and 0.839. The payoff-timing problem the previous reading named is still real and still second: 75.4% of games have drawn a table-draw engine by turn six and 41.2% have drawn both halves of the pair.",
+    "skeptic": null,
     "stale": false
   },
   "audit": {
@@ -131,7 +131,12 @@
     },
     {
       "from": "diagnosis",
-      "question": "goldfish_targets.json declares no target for the deck's primary verified kill. 'Win condition access' lists Approach of the Second Sun, Aetherflux Reservoir, Mystical Tutor, Jace Wielder of Mysteries and Enlightened Tutor, and never names Hullbreaker Horror — without which the Reservoir is not a kill. Add a target requiring Hullbreaker Horror AND Sol Ring AND a two-mana rock AND Aetherflux Reservoir, and measure how often the deck's headline line is actually available.",
+      "question": "Re-run mana-analysis and goldfish on the list with the basics at 11 Islands / 6 Plains and the four mana adds applied (Chromatic Lantern, Sea of Clouds, City of Brass, Mystic Gate), and report colour-sources, on_curve_probability and the turn-three land-drop rate against the current -16 / W 0.58 / 0.866.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "goldfish_targets.json declares no target for the deck's primary verified kill. 'Win condition access' lists Approach of the Second Sun, Aetherflux Reservoir, Mystical Tutor, Jace Wielder of Mysteries and Enlightened Tutor, and never names Hullbreaker Horror — without which the Reservoir is not a kill. Add a target requiring Hullbreaker Horror AND a cheap rock AND Aetherflux Reservoir and measure it.",
       "settled_by": "goldfish"
     },
     {
@@ -141,12 +146,12 @@
     },
     {
       "from": "diagnosis",
-      "question": "Teferi's Protection cast on the turn before yours: 'Until your next turn, your life total can't change' and the permanents phase in before your untap step. Does the restriction and the phased-out board both end before your first main phase, so that it can be held on an opponent's end step and the Aetherflux Reservoir ledger still runs on your own turn?",
+      "question": "Teferi's Protection cast on the turn before yours: 'Until your next turn, your life total can't change', and the permanents phase in before your untap step. Do the restriction and the phased-out board both end before your first main phase, so it can be held on an opponent's end step and the Aetherflux Reservoir ledger still run on your own turn?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
-      "question": "Does Grand Abolisher's static actually close every priority window stack 006 leaves open, including a channel ability activated from a card in hand (Otawara, Soaring City)?",
+      "question": "Does Grand Abolisher's static close every priority window stack 006 leaves open, including a channel ability activated from a card in hand (Otawara, Soaring City)?",
       "settled_by": "resolve-stack"
     },
     {
@@ -159,7 +164,7 @@
   "experiments": null,
   "next": [
     "nothing in the captain's log — play it, then `deck-notes heliod add \"…\" --result win|loss --opponents N`",
-    "open questions routed: goldfish ×6, research-strategy ×1, resolve-stack ×4",
+    "open questions routed: goldfish ×7, research-strategy ×1, resolve-stack ×4",
     "no simulation runs — `simulate heliod --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

@@ -36,6 +36,7 @@ from manamap.pilot.bracket import combos_in_deck, is_infinite
 from manamap.pilot.common import (
     resolve_out_path,
     expand_copies,
+    front_field,
     is_land,
     load_card_roles,
     load_combo_details,
@@ -56,17 +57,11 @@ from manamap.pilot.manabase import (
 PERMANENT_TYPES = ("Creature", "Artifact", "Enchantment", "Land", "Planeswalker", "Battle")
 
 
-def _front(card, key, default=""):
-    """A field from the front face, falling back to the whole card.
-
-    The face that is up on the battlefield is the one that contributes colours and
-    type, and it is not always what the top-level field says: Esika's card colours
-    are the union of both faces, but the permanent you control is mono-green.
-    """
-    faces = card.get("card_faces") or []
-    if faces and faces[0].get(key):
-        return faces[0][key]
-    return card.get(key, default)
+# Lifted to `common.front_field` so `manabase` shares it. It was written here for
+# COLOURS and the same rule was never applied to PIPS, which is exactly how the two
+# halves of one bug drift apart — `pip_requirements` read the empty top-level
+# `mana_cost` and under-counted 10 spells across 7 decks.
+_front = front_field
 
 
 _is_land = is_land  # canonical predicate lives in common; alias kept for callers
