@@ -37,6 +37,7 @@ from manamap.pilot.common import deck_dir, load_json
 from manamap.pilot.deck_notes import read_log
 
 TAGS_FILE = "deck_versions.json"
+PAPER_KEY = "paper"
 
 
 def _sha(blob):
@@ -78,6 +79,98 @@ def versions(slug):
 def tags(slug):
     doc = load_json(deck_dir(slug) / TAGS_FILE) or {}
     return doc.get("tags") or {}
+
+
+def paper(slug):
+    """The version that is SLEEVED, or None. Authored, tracked, never derived.
+
+    LOCKED IS AN ASSERTION AND NOTHING ELSE COULD MAKE IT. `DECK_STATUSES` marks
+    only the DEAD decks — `broken-down`, `superseded`, `retired` — so "live" has
+    always meant "not explicitly killed": an absence, not a claim. Nothing in the
+    repo said *this deck is sleeved and I can play it tonight*, which is the one
+    question the workbench's front door needs to filter on, and it is not
+    derivable from any artifact because it is a fact about cardboard.
+
+    It hangs off a VERSION rather than a deck, because what is sleeved is one
+    exact list. That is also what makes drift computable: the repo moves on every
+    swap and the cardboard does not.
+    """
+    doc = load_json(deck_dir(slug) / TAGS_FILE) or {}
+    return doc.get(PAPER_KEY) or None
+
+
+def paper_state(slug, vers=None, current_version=None):
+    """Locked, in sync, and if not — exactly which cards differ.
+
+    The two sides of the drift are the physical instruction, which is why they
+    are named for the hands rather than for the diff: `pull` is in the sleeved
+    list and no longer in the repo's, `add` is the reverse.
+    """
+    p = paper(slug)
+    if not p:
+        return None
+    vers = vers if vers is not None else versions(slug)
+    if current_version is None:
+        by_sha = {s: v["version"] for v in vers for s in v["decklist_sha256s"]}
+        current_version = by_sha.get(working_sha(slug))
+    n = p.get("version")
+    out = {"version": n, "built_at": p.get("built_at"), "note": p.get("note") or "",
+           "locked": True, "in_sync": None, "versions_behind": None, "drift": None}
+    target = next((v for v in vers if v["version"] == n), None)
+    if target is None:
+        # A lock naming a version git no longer carries — a rewritten history, or
+        # a hand-edited file. Report it rather than crashing or silently
+        # unlocking: an unresolvable lock is a fact worth seeing.
+        out["unresolved"] = True
+        return out
+    out["in_sync"] = current_version == n
+    if current_version is not None:
+        out["versions_behind"] = max(0, current_version - n)
+    if not out["in_sync"]:
+        d = diff_vs_working(slug, target)
+        out["drift"] = {"pull": d["in_then_not_now"], "add": d["in_now_not_then"]}
+    return out
+
+
+def set_paper(slug, ref=None, built_at=None, note=None, clear=False):
+    """Assert (or withdraw) that a version is the one sleeved."""
+    path = deck_dir(slug) / TAGS_FILE
+    doc = load_json(path) or {"slug": slug, "tags": {}}
+    if clear:
+        if PAPER_KEY not in doc:
+            raise SystemExit(f"{slug}: not locked — nothing to clear")
+        doc.pop(PAPER_KEY)
+        _write_tags(path, doc)
+        return None
+    vers = versions(slug)
+    if not vers:
+        raise SystemExit(f"{slug}: no committed versions to lock")
+    target = resolve(slug, ref, vers) if ref else None
+    if ref and target is None:
+        raise SystemExit(f"{slug}: no version {ref!r}")
+    if target is None:
+        cur = working_sha(slug)
+        target = next((v for v in vers if cur in v["decklist_sha256s"]), None)
+        if target is None:
+            raise SystemExit(f"{slug}: decklist.txt is uncommitted — commit it, or "
+                             f"name the version you sleeved with --at")
+    doc[PAPER_KEY] = {"version": target["version"], "sha": target["sha"],
+                      "decklist_sha256": target["decklist_sha256"],
+                      "built_at": built_at or date.today().isoformat(),
+                      "note": note or ""}
+    _write_tags(path, doc)
+    return target
+
+
+def _write_tags(path, doc):
+    """One writer, so `paper` and `tags` cannot disagree about key order."""
+    doc.setdefault("tags", {})
+    doc["tags"] = dict(sorted(doc["tags"].items()))
+    ordered = {"slug": doc.get("slug")}
+    if PAPER_KEY in doc:
+        ordered[PAPER_KEY] = doc[PAPER_KEY]
+    ordered["tags"] = doc["tags"]
+    path.write_text(json.dumps(ordered, indent=2, ensure_ascii=False) + "\n")
 
 
 def working_sha(slug):
@@ -136,9 +229,16 @@ def report(slug):
     if unmatched:
         notes.append(f"{len(unmatched)} log entr{'y' if len(unmatched) == 1 else 'ies'} "
                      f"({', '.join(unmatched)}) stamped with a decklist no commit carries")
+    state = paper_state(slug, vers, current_version)
+    if state and state.get("in_sync") is False and state.get("drift"):
+        d = state["drift"]
+        notes.append(f"the sleeved list is V{state['version']}; the repo is at "
+                     f"V{current_version} — pull {len(d['pull'])}, add {len(d['add'])} "
+                     f"to bring the cardboard level")
     return {"slug": slug, "current_version": current_version,
             "working_decklist_sha256": current, "versions": vers,
-            "tags": tags(slug), "unmatched_log_entries": unmatched, "notes": notes}
+            "tags": tags(slug), "paper": state,
+            "unmatched_log_entries": unmatched, "notes": notes}
 
 
 def tag(slug, name, ref=None, note=None):
@@ -164,8 +264,7 @@ def tag(slug, name, ref=None, note=None):
     doc["tags"][name] = {"version": target["version"], "sha": target["sha"],
                          "decklist_sha256": target["decklist_sha256"],
                          "at": date.today().isoformat(), "note": note or ""}
-    doc["tags"] = dict(sorted(doc["tags"].items()))
-    path.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n")
+    _write_tags(path, doc)
     return target
 
 
@@ -192,11 +291,19 @@ def restore(slug, version, write=False):
 
 
 def _print_list(doc):
+    p = doc.get("paper") or {}
+    lock = ""
+    if p:
+        lock = (f", SLEEVED V{p['version']}"
+                + ("" if p.get("in_sync") else f" — {p.get('versions_behind') or '?'} behind"))
     print(f"DECK VERSIONS — {doc['slug']} ({len(doc['versions'])}, "
-          f"current: {'V' + str(doc['current_version']) if doc['current_version'] else 'uncommitted'})\n")
+          f"current: {'V' + str(doc['current_version']) if doc['current_version'] else 'uncommitted'}"
+          f"{lock})\n")
     for v in doc["versions"]:
         tag_s = f"  [{', '.join(v['tags'])}]" if v["tags"] else ""
         cur = " ◀ current" if v["version"] == doc["current_version"] else ""
+        if p and v["version"] == p.get("version"):
+            cur += " ◆ SLEEVED"
         r = v["record"]
         rec = f"{r['win']}W {r['loss']}L" if v["games"] else "—"
         print(f"V{v['version']:<3} {v['first_date']}  {v['first_sha']}  [{v['size']:>3}]  "
@@ -216,6 +323,22 @@ def main(args):
             print(json.dumps(doc, indent=2, ensure_ascii=False))
         else:
             _print_list(doc)
+        return
+    if action == "paper":
+        if getattr(args, "clear", False):
+            set_paper(slug, clear=True)
+            print(f"{slug}: lock withdrawn — no longer marked as built in paper")
+            return
+        v = set_paper(slug, ref=getattr(args, "at", None) or getattr(args, "ref", None),
+                      built_at=getattr(args, "built_at", None),
+                      note=getattr(args, "note", None))
+        state = paper_state(slug)
+        print(f"{slug}: LOCKED to V{v['version']} ({v['first_sha']}, {v['first_date']}) "
+              f"— built in paper, playable at a table → {TAGS_FILE}")
+        if state and state.get("in_sync") is False:
+            d = state["drift"]
+            print(f"  the repo has moved on: pull {len(d['pull'])}, add {len(d['add'])} "
+                  f"to bring the cardboard level")
         return
     if action == "tag":
         if not args.ref:
@@ -258,4 +381,4 @@ def main(args):
 
 
 if __name__ == "__main__":
-    raise SystemExit("Run via `manamap pilot deck-version <slug> list|show|tag|restore`.")
+    raise SystemExit("Run via `manamap pilot deck-version <slug> list|show|tag|restore|paper`.")

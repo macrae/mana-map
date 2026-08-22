@@ -285,11 +285,27 @@ def gather_entries():
                             "log_annotations", "deck_versions")}
         has["log"] = (deck_path / "log.jsonl").exists()
 
+        # IS THIS DECK BUILT IN PAPER? The workbench's front door filters on it,
+        # and no other field answers it — `status` marks only the dead decks, so
+        # "live" means "not explicitly killed", an absence rather than a claim.
+        #
+        # Computed ONLY for decks that carry a lock. `paper_state` walks git to
+        # number the versions and diff the sleeved list against the working one,
+        # which is far too expensive to pay eleven times over for a field that is
+        # null on every unlocked deck. Unlocked costs one file read.
+        paper = None
+        if has["deck_versions"]:
+            from manamap.pilot import deck_versions
+            if deck_versions.paper(slug):
+                paper = deck_versions.paper_state(slug)
+
         entries.append({
             "slug": slug,
             "published": published,
             **instanced,
             "has": has,
+            "paper": paper,                       # None = not built in paper
+            "locked": bool(paper),                # the front door's predicate
             "volume": issue.get("volume", 999),   # sentinel: un-numbered issues sort last
             "issue_date": issue.get("issue_date", ""),
             "deck_name": issue.get("deck_name") or commander.get("name", slug),
@@ -382,7 +398,10 @@ def write_manifest(entries):
                                "coverline", "verified", "decisions", "stack_files",
                                "stack_cards", "published", "status",
                                "sim_runs", "experiments", "prescriptions",
-                               "decision_files", "has")}
+                               "decision_files", "has",
+                               # The workbench landing: art for the rack, and the
+                               # one predicate it filters on.
+                               "image", "paper", "locked")}
             for e in entries
         ]
     }

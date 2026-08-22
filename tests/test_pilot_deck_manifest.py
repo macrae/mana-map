@@ -30,6 +30,12 @@ MANIFEST_KEYS = {
     "slug", "volume", "deck_name", "commander", "coverline", "verified",
     "decisions", "stack_files", "stack_cards", "published", "status",
     "sim_runs", "experiments", "prescriptions", "decision_files", "has",
+    # The workbench landing (viz/workbench.html): `image` is the rack's art and
+    # `locked`/`paper` are the predicate it filters on — which deck is built in
+    # paper and playable at a table tonight. `paper` is null on an unlocked deck
+    # rather than absent, so the browser never has to distinguish "no lock" from
+    # "field not in this manifest".
+    "image", "paper", "locked",
 }
 
 
