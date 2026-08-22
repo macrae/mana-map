@@ -8,7 +8,8 @@ go" and nothing even represents the question.
 
 This module is the join. Two blocks:
 
-  **axes** — thirteen measurements, each against a target the strategy corpus can
+  **axes** — one measurement per row of `config.DECK_AXIS_TARGETS`, each against a
+  target the strategy corpus can
   actually support, carried with the VERBATIM quote that supports it. The point is
   not the arithmetic (every figure here already existed somewhere); it is that an
   agent reading this can cite the number instead of inventing one. That is the
@@ -289,7 +290,14 @@ def _interaction_breadth(cards, roles):
 
 
 def build_axes(slug, cards, roles, facts, mana, goldfish, bracket, overrides):
-    """The thirteen rows. Every measurement traces to an artifact or to `roles`."""
+    """One row per `DECK_AXIS_TARGETS` entry, plus the conditional ones
+    (`colour-sources`, `consistency`, `power`) when their artifact exists. Every
+    measurement traces to an artifact or to `roles`.
+
+    The count is deliberately NOT stated here. Both this docstring and the module
+    header said "thirteen" while `DECK_AXIS_TARGETS` held sixteen — the same
+    transcribed-registry-count failure `test_docs_section_count` exists to catch,
+    living inside the module that owns the registry."""
     axes = []
     commanders = [c for c in cards if c.get("is_commander")]
     identity = sorted({col for c in commanders for col in (c.get("color_identity") or [])})

@@ -57,10 +57,33 @@ def _goldfish(base):
            "commander_cast_by_turn_6_pct": _pct(cmd.get("cast_by_turn_6_rate")),
            "targets": [{"label": t.get("label"), "by_turn_6_pct": _pct(t.get("by_turn_6_rate"))}
                        for t in (m.get("targets") or [])]}
+    # The clock, when the deck opted into `model_combat`. Absent otherwise, which
+    # is every deck that has not been deliberately re-baselined — see the opt-in
+    # contract in `goldfish.py`.
+    #
+    # THIS BLOCK HAD NEVER EXECUTED. It asked for `kill_by_turn_8_pct`,
+    # `kill_turn_distribution` and `never_by_turn_10_pct`; the producer emits
+    # `kill_by_turn_rate`, `kill_turn_histogram` and `no_kill_by_max_turn_rate`.
+    # Not one key matched, so the first deck to opt in would have written
+    # `"combat": {}` into a tracked `info.json` and rendered nothing — dead code
+    # that no test could catch, because no artifact has ever carried a combat
+    # block for it to run against.
     combat = m.get("combat") or {}
     if combat:
-        out["combat"] = {k: combat.get(k) for k in ("kill_by_turn_8_pct", "kill_turn_distribution",
-                                                       "never_by_turn_10_pct") if k in combat}
+        max_turn = (doc.get("meta") or {}).get("max_turn")
+        by_turn = combat.get("kill_by_turn_rate") or {}
+        out["combat"] = {
+            "mean_kill_turn": combat.get("mean_kill_turn"),
+            "median_kill_turn": combat.get("median_kill_turn"),
+            "kill_by_turn_6_pct": _pct(by_turn.get("6")),
+            "kill_by_turn_8_pct": _pct(by_turn.get("8")),
+            # Named from the artifact rather than hardcoded: the producer's rate is
+            # over GOLDFISH_MAX_TURN, and a key saying "by_turn_10" would quietly
+            # lie the moment that constant moved.
+            "max_turn": max_turn,
+            "no_kill_by_max_turn_pct": _pct(combat.get("no_kill_by_max_turn_rate")),
+            "kill_turn_histogram": combat.get("kill_turn_histogram"),
+        }
     return out
 
 
