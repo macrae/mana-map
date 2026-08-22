@@ -9,6 +9,7 @@ import importlib
 # (name, dotted module, description)
 PILOT_STEPS = [
     ("check-in", "manamap.pilot.check_in", "a paper decklist -> decklist.txt (diff, refuse, apply, re-derive)"),
+    ("targeting", "manamap.sim.threat", "who the pod attacks, measured from sim logs (opponent modelling)"),
     ("fetch-deck", "manamap.pilot.fetch_deck", "decklist.txt -> cards.json via Scryfall"),
     ("validate-deck", "manamap.pilot.validate_deck", "Check 100-card/commander/singleton invariants"),
     ("download-rules", "manamap.pilot.download_rules", "Download the Comprehensive Rules TXT"),
@@ -97,7 +98,7 @@ PILOT_STEPS = [
 ]
 
 _DECK_COMMANDS = {
-    "check-in", "fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual",
+    "check-in", "targeting", "fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual",
     "validate-issue", "cache-status", "cache-record", "cache-clear", "cache-rebless",
     "cache-snapshot", "cache-rerecord",
     "artist-credits",
@@ -222,6 +223,15 @@ def add_pilot_parser(subparsers):
         if name == "cache-clear":
             cmd.add_argument("--routine", default=None,
                              help="Routine id; omit to clear the whole deck")
+        if name == "targeting":
+            cmd.add_argument("--run", action="append",
+                             help="limit to one run id (repeatable); default pools every run")
+            cmd.add_argument("--seed", type=int, default=0,
+                             help="permutation seed (default 0; the test replays exactly)")
+            cmd.add_argument("--iterations", type=int, default=None,
+                             help="permutation iterations (default 10000)")
+            cmd.add_argument("--json", action="store_true", dest="as_json",
+                             help="print instead of writing threat/targeting.json")
         if name == "check-in":
             cmd.add_argument("--from", dest="source", required=True,
                              help="the paper decklist: a file, or - for stdin")

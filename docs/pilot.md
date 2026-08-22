@@ -91,6 +91,7 @@ manamap pilot cache-rebless <slug>             # re-record every STALE_OK routin
 manamap pilot impact <slug> [--json]           # card/figure/target/zone staleness report (free)
 manamap pilot validate-strategic-frame <slug>  # frame form + candidate-line flags
 manamap pilot check-in <slug> --from F  # a PAPER list → decklist.txt: diff, refuse, apply
+manamap pilot targeting <slug>          # who the pod attacks, measured from sim logs
 manamap pilot fetch-deck <slug>         # decklist.txt → cards.json (Scryfall)
 manamap pilot validate-deck <slug>      # 100/commander/singleton/color identity
 manamap pilot validate-stack <slug> [--stack NNN]   # citation contract (stacks + decisions)
@@ -337,6 +338,48 @@ The last step is a commit, and it is not optional bookkeeping: `decklist.txt` is
 so the commit is what `deck-version` numbers and what the captain's log stamps games
 against. Check a deck in without committing and tonight's games attach to no version at
 all. Then `deck-version <slug> paper` marks it as sleeved.
+
+### targeting — who the pod actually attacks
+
+`manamap pilot targeting <slug>` is the one measurement here about the OPPONENTS'
+choices rather than our deck's development. It walks every sim run and experiment arm's
+logs and asks, at each declare-attackers step with **at least two living opponents**,
+which seat the attacker chose — then scores that against three rankings: the seat that
+has dealt the most combat damage, the lowest-life seat, and the highest-life seat.
+
+**The unit is a decision, not a game.** That is what makes the question answerable:
+twelve games is nothing, but twelve games hold hundreds of targeting decisions. A forced
+choice is not a choice, so a one-on-one run contributes zero by construction rather than
+being filtered out by hand. It is not per attacking creature either — five creatures
+almost always go at the same player, which would multiply the sample without adding one
+independent choice.
+
+**Ties count the whole tied set**, and the null expectation for that decision is the tied
+set over the choice set. Early on every seat is at forty life; a rule that broke that tie
+arbitrarily would manufacture signal out of nothing. Inference is a **seeded permutation
+test** over each decision's own eligible set — the null is a sum of Bernoullis with
+different probabilities, not one binomial, which is why it is simulated rather than looked
+up. The pooled Wilson interval and a **game-clustered** mean are both reported, because
+decisions cluster inside games and the pooled one is optimistic.
+
+Measured on both decks that have logs, and they agree: the pod attacks the
+biggest revealed threat **0.685** (radagast, 444 decisions) and **0.675** (kianne, 335)
+against uniform baselines of 0.54 and 0.52, p = 0.0001. But on the 196 radagast decisions
+where "biggest threat" and "easiest kill" name **different** seats, it is 0.541 against
+0.403 with overlapping intervals — **not enough to say which it follows.** Both halves
+ship in the artifact.
+
+**Strength is REVEALED cumulative combat damage, not board power.** Forge prints printed
+P/T on resolution and `bridge.py` parses it, but counters, anthems, auras, equipment and
+token counts are invisible in a log — so a board-power ranking would be biased against
+token, counter and anthem decks, which is most of this pod.
+
+**What it can and cannot claim.** This is empirical **opponent modelling**: the input half
+of a game-theoretic argument, and the first thing here about opponents' choices. It is not
+an equilibrium, a solution concept, or human politics — no deals, no grudges, no table
+talk, no player who remembers last turn. The artifact key is `forge_ai_targeting_policy`
+rather than anything shorter precisely so the caveat cannot be trimmed off, and
+`limits[]` carries `FORGE_AI_CAVEAT` as the imported constant.
 
 **Why the version list is not a tracked file:** the commit that changes `decklist.txt`
 gets its sha AFTER anything written in the same commit, so a generated `versions.json`

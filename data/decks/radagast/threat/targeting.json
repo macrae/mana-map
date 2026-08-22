@@ -1,0 +1,122 @@
+{
+  "slug": "radagast",
+  "at": "2026-08-22",
+  "runs": [
+    "edgar-vampires-vs-yawgmoth-swarm-vs-heliod-n8-dfd75e54",
+    "giada-angels-vs-baylen-tokens-vs-vito-n20-5686a94a-s1451665738",
+    "v1-vs-v5-x-giada-angels-vito-n10-a50f20db-s577662891"
+  ],
+  "games": 48,
+  "decisions": 444,
+  "seed": 0,
+  "permutation_iterations": 10000,
+  "forge_ai_targeting_policy": {
+    "most_damage_dealt": {
+      "hypothesis": "attacks the seat that has dealt the most combat damage",
+      "decisions": 444,
+      "hits": 304,
+      "rate": 0.6847,
+      "ci95": [
+        0.64,
+        0.726
+      ],
+      "uniform_expected_rate": 0.5424,
+      "permutation_p": 0.0001,
+      "per_game_rate": {
+        "mean": 0.72,
+        "median": 0.73,
+        "min": 0.18,
+        "max": 1.0,
+        "n": 48,
+        "ci95": [
+          0.66,
+          0.78
+        ]
+      }
+    },
+    "lowest_life": {
+      "hypothesis": "attacks the lowest-life seat",
+      "decisions": 444,
+      "hits": 258,
+      "rate": 0.5811,
+      "ci95": [
+        0.535,
+        0.626
+      ],
+      "uniform_expected_rate": 0.4891,
+      "permutation_p": 0.0001,
+      "per_game_rate": {
+        "mean": 0.58,
+        "median": 0.56,
+        "min": 0.17,
+        "max": 1.0,
+        "n": 48,
+        "ci95": [
+          0.53,
+          0.64
+        ]
+      }
+    },
+    "highest_life": {
+      "hypothesis": "attacks the highest-life seat",
+      "decisions": 444,
+      "hits": 188,
+      "rate": 0.4234,
+      "ci95": [
+        0.378,
+        0.47
+      ],
+      "uniform_expected_rate": 0.5086,
+      "permutation_p": 1.0,
+      "per_game_rate": {
+        "mean": 0.45,
+        "median": 0.45,
+        "min": 0.09,
+        "max": 0.83,
+        "n": 48,
+        "ci95": [
+          0.39,
+          0.51
+        ]
+      }
+    }
+  },
+  "when_the_hypotheses_disagree": {
+    "decisions": 196,
+    "note": "only the decisions where the two hypotheses name different seats. The three outcomes are mutually exclusive shares of one multinomial, so the intervals below are marginal and comparing two of them needs an interval on the difference of CORRELATED proportions — not offered here, and not to be eyeballed from the overlap.",
+    "most_damage_dealt": {
+      "hits": 106,
+      "rate": 0.5408,
+      "ci95": [
+        0.471,
+        0.609
+      ]
+    },
+    "lowest_life": {
+      "hits": 79,
+      "rate": 0.4031,
+      "ci95": [
+        0.337,
+        0.473
+      ]
+    },
+    "neither": {
+      "hits": 11,
+      "rate": 0.0561,
+      "ci95": [
+        0.032,
+        0.098
+      ]
+    }
+  },
+  "limits": [
+    "THIS MEASURES FORGE'S AI TARGET SELECTION. It is not human politics: there are no deals, no grudges, no table talk, and no player who remembers what you did last turn.",
+    "Forge's AI \"is not trained\"; it is \"best with aggro and midrange decks, poor to ok in control decks, pretty bad for most combo decks\" (Forge docs/AI.md). A control deck's win rate here is a lower bound on a competent pilot's; a combo deck's is not a measurement.",
+    "Four fixed decks in four fixed seats. Any policy measured here is confounded with deck identity and with turn order — it is a statement about this pod, not about Commander.",
+    "Strength is REVEALED cumulative combat damage dealt to players. Printed board power is only partly recoverable from a Forge log — counters, anthems, auras, equipment and token counts are invisible — so a board-power ranking would be biased against token, counter and anthem decks, which is most of this pod.",
+    "The unit is one declare-attackers step with at least two living opponents, not one attacker: five creatures almost always go at the same player. A one-on-one run contributes zero decisions by construction.",
+    "Decisions cluster within games, so the pooled Wilson interval is optimistic; the game-clustered mean is reported beside it.",
+    "Pooled over 3 run(s), 48 game(s), 444 decision(s).",
+    "SEEDED: every JVM job ran `-s <seed>` (seeds recorded per job), and with this Forge build identical inputs reproduce the logs byte for byte — game g of job j replays as `-n g -s <seed_j>`. Still a sample of N games: the interval is the claim, the seed is the receipt."
+  ]
+}
