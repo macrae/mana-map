@@ -179,11 +179,26 @@
     "token_damage_share": 0.35,
     "tokens_observed": 2.85
   },
-  "experiments": null,
+  "experiments": {
+    "count": 1,
+    "latest": {
+      "question": "V5 (2026-08-04, Edgar: the six-pair pass, and the deck's primary p)  vs  V6 (2026-08-10, edgar: THE LOCK — 12 swaps for goblin-storm consis), same table",
+      "at": "2026-08-22",
+      "games_per_arm": 20,
+      "win_a": 0.15,
+      "win_b": 0.0,
+      "win_diff_ci95": [
+        -0.3604,
+        0.0384
+      ],
+      "differs": false,
+      "minimum_detectable_difference": 0.405,
+      "reading": "the 95% interval on the win-rate difference is [-0.360, +0.038] and CONTAINS zero. At 20 games per arm this experiment could only have detected a difference of +0.405 or larger, so it is uninformative about anything smaller — that is not evidence of no effect."
+    }
+  },
   "next": [
     "nothing in the captain's log — play it, then `deck-notes edgar-vampires add \"…\" --result win|loss --opponents N`",
-    "open questions routed: goldfish ×3, research-strategy ×1, resolve-stack ×4",
-    "6 versions and no experiment — `experiment edgar-vampires --a V<n> --b working --vs <pod> --games N` measures a swap"
+    "open questions routed: goldfish ×3, research-strategy ×1, resolve-stack ×4"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }
