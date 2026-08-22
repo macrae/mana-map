@@ -32,11 +32,21 @@ from conftest import SRC, requires_deck, requires_data
 # invalidate less often and could be WRONG — a missed transitive edge does not
 # fail here, it serves a stale pass. See `conftest._digest`.
 #
-# These two are a COMPLETE closure of the code, not merely a conservative guess,
-# and that was checked rather than assumed: no module under `src/manamap/pilot/`
-# imports from anywhere in `manamap` except `manamap.pilot` and `manamap.config`.
-# If that ever stops being true, this tuple has to grow with it.
-CODE = (SRC / "pilot", SRC / "config.py")
+# This is the WHOLE package, and it is deliberately not a hand-traced list. The
+# previous version named `pilot/` + `config.py` and asserted in this comment that
+# they were "a COMPLETE closure … checked rather than assumed: no module under
+# `src/manamap/pilot/` imports from anywhere in `manamap` except `manamap.pilot`
+# and `manamap.config`". That was false when written or became false after, in
+# NINE modules across three subpackages: `deck_info` imports `manamap.sim`,
+# `manabase`/`card_pool`/`deck_facts`/`pool_facts`/`build_deck`/`validate_build`
+# import `manamap.analysis.common`, and `fetch_deck`/`deck_facts` plus the three
+# DB builders import `manamap.ingest`. So a change to `sim/`, `analysis/` or
+# `ingest/` left these tests served from a stale cache — silently passing, which
+# is the exact failure the paragraph above warns about.
+#
+# Naming the package costs some cache hits and cannot be wrong. A missed edge does
+# not fail here, it serves a stale pass, so conservative is the only safe side.
+CODE = (SRC,)
 
 
 def _slugs(artifact):

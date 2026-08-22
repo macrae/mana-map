@@ -32,7 +32,10 @@ from conftest import SRC, requires_deck
 # The renderer's whole world: the pilot source tree (a verified closure — nothing
 # under it imports outside `manamap.pilot` and `manamap.config`), the deck's
 # artifacts, the published page, and the one global graph it reads.
-CODE = (SRC / "pilot", SRC / "config.py")
+# The whole package: `pilot/` alone is NOT a closure — nine modules import
+# from `manamap.sim`, `manamap.analysis` and `manamap.ingest`. See
+# tests/test_pilot_artifact_freshness.py for the full accounting.
+CODE = (SRC,)
 
 
 def _deck_slugs():

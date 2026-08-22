@@ -48,7 +48,7 @@ from conftest import SRC, requires_deck
 # the rest is the tracked global artifacts the deck validators reach for — role
 # tags, the two graphs, the combo records, the corpus and the strategy doc. Listed
 # rather than digesting `data/`, which is 326 MB and mostly irrelevant.
-INPUTS = (SRC / "pilot", SRC / "config.py", CARD_ROLES_PATH, COMBO_DETAILS_PATH,
+INPUTS = (SRC, CARD_ROLES_PATH, COMBO_DETAILS_PATH,
           OBSOLESCENCE_INDEX_PATH, OUTPUT_CSV_PATH, STRATEGY_DOC_PATH,
           SYNERGY_GRAPH_PATH,
           # `validate_recon` falsifies a recon's `ownership` claims against the
