@@ -41,7 +41,7 @@ Cost = radagast today, words / screens (from `issue-length --rendered`; 71.3 scr
 
 **Estimated result:** ~12–15 screens on radagast (Plan 1.5 · 99 3 · Keep 0.7 · Play 1.5 collapsed · Kill ~4 collapsed · Table 2.5 · Sources 0.7 · Numbers 0.7 · Desk 1.1) against 71.3 today. Yawgmoth's eleven lines collapse the same way, so its 88 screens land near the same number.
 
-## New page order (eight blocks + header/footer)
+## New page order (header/footer plus the blocks below)
 
 ```
 header   commander · identity · 100 cards · V5 (2026-08-12) · ✓◆★ legend
@@ -58,6 +58,21 @@ footer   decklist sha · built date · evidence legend
 
 One technical voice throughout (the notes are `pilot-notes`' already). **Tiers ✓◆★ stay** on
 every section and every figure — that is the product, not the magazine.
+
+**Amended 2026-08-22, when the renderer was built.** The order above is authoritative and
+lives in `pilot/page_spec.py:SECTIONS`; do not restate the count here, because that is what
+went stale. Two changes made against this draft, both recorded there:
+
+- A **ninth section, THE DEBRIEF**, sits after PLAY. Line 16 above forbids the manual
+  growing "a log or a version panel", and that forbids a FEED rather than synthesis — the
+  mechanical form of the rule is that the section may print nothing keyed by a log entry id
+  or a timestamp, which a test asserts. It renders aggregated takeaways and card reads with
+  the sample size stated, and nothing at all when no games are logged.
+- The **tutor table is two columns, scenario and fetch**, not the
+  `default / behind / closing` the row above proposes. `tutor_guide.json` carries free-text
+  scenarios; deriving three labelled situations from them is invention, which
+  `validate_tutor_guide` exists to prevent. Getting the proposed shape needs an authored
+  schema change and a `pilot-notes` respawn on nine decks.
 
 ## What goes from the renderer and its gates
 

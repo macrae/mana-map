@@ -11,6 +11,7 @@ import re
 from pathlib import Path
 
 from manamap.pilot.issue_spec import DEPARTMENT_IDS
+from manamap.pilot.page_spec import SECTION_IDS
 # One pruned walk shared with `test_docs_counts.py`, instead of a full-tree glob
 # per reference. `tests/repo_tree.py` records what that cost.
 from repo_tree import exists_anywhere
@@ -35,19 +36,33 @@ SURFACES = [
     *sorted((ROOT / "src" / "manamap" / "pilot").glob("*.py")),
 ]
 
-_WORDS = {"fifteen": 15, "sixteen": 16, "seventeen": 17, "eighteen": 18}
+# Spelled-out counts, and the small ones matter now. The map used to start at
+# "fifteen", so a doc saying "eight sections" or "nine sections" was invisible to
+# this check — which is exactly how `docs/manual-v5-spec.md` passed while saying
+# "eight blocks" and how `page_spec.py`'s own docstring passed saying "nine
+# sections". The gate was blind below fifteen, not tolerant.
+_WORDS = {"eight": 8, "nine": 9, "ten": 10, "eleven": 11, "twelve": 12,
+          "thirteen": 13, "fourteen": 14, "fifteen": 15, "sixteen": 16,
+          "seventeen": 17, "eighteen": 18}
 # `[^|\n]` guards against markdown table rows ("| # | Section |"), where the
 # number and the noun are different cells rather than one phrase.
 # The lookbehind rejects heading numbers ("§5.1 Section specifications") and the
 # `[ -]` (not `\s`) rejects markdown table rows, where the number and the noun are
 # different cells rather than one phrase.
 _COUNT_RE = re.compile(
-    r"(?<![\d.])\b(\d{1,2}|fifteen|sixteen|seventeen|eighteen)"
+    r"(?<![\d.])\b(\d{1,2}|" + "|".join(_WORDS) + r")"
     r"[ -](?:fixed[ ]+)?(?:departments?|sections?)\b", re.IGNORECASE)
 
 
 def test_no_surface_states_a_wrong_section_count():
-    truth = len(DEPARTMENT_IDS)
+    """TWO registries during the migration, so two acceptable counts.
+
+    `issue_spec.DEPARTMENTS` is the frozen magazine's seventeen; `page_spec.
+    SECTIONS` is the compact page's nine. A stated number is wrong only if it
+    matches NEITHER. This collapses back to a single truth the moment
+    `build_manual.py` is deleted — if you are reading this after that, take the
+    set apart."""
+    truth = {len(DEPARTMENT_IDS), len(SECTION_IDS)}
     wrong = []
     for path in SURFACES:
         if "history" in path.parts:
@@ -55,9 +70,9 @@ def test_no_surface_states_a_wrong_section_count():
         for match in _COUNT_RE.finditer(path.read_text(encoding="utf-8")):
             token = match.group(1).lower()
             stated = _WORDS.get(token, int(token) if token.isdigit() else None)
-            if stated is not None and stated != truth:
+            if stated is not None and stated not in truth:
                 wrong.append(f"{path.relative_to(ROOT)}: {match.group()!r} "
-                             f"(spec says {truth})")
+                             f"(the registries say {sorted(truth)})")
     assert not wrong, "stale section counts:\n  " + "\n  ".join(wrong)
 
 
@@ -69,9 +84,10 @@ def test_no_surface_hardcodes_the_department_id_list():
     the v3.4 resequence would have turned it into a sentinel that matches
     nothing and silently protects nothing, which is worse than no test.
     """
-    probe = ", ".join(DEPARTMENT_IDS[:3])
+    probes = [", ".join(DEPARTMENT_IDS[:3]), ", ".join(SECTION_IDS[:3])]
     offenders = [p.relative_to(ROOT) for p in SURFACES
-                 if "history" not in p.parts and probe in p.read_text(encoding="utf-8")]
+                 if "history" not in p.parts
+                 and any(probe in p.read_text(encoding="utf-8") for probe in probes)]
     assert not offenders, (
         f"{offenders} enumerate section ids; read issue_spec.DEPARTMENT_IDS instead")
 

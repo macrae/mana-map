@@ -23,7 +23,7 @@ the code. **Start with the vision; everything else is written against it.**
 | [viz.md](viz.md) | 1,208 | The frontend: the three modes, the `window.MM` contract, the canvas renderer, the deck dossier, Pages deployment. Read before any `viz/` change. |
 | [agent-cost.md](agent-cost.md) | 243 | Where LLM spend lives, per-routine token sizing (current first, legacy measurements after), and how the invocation cache decides what to re-run. |
 | [agent-audit-2026-08-19.md](agent-audit-2026-08-19.md) | 400 | The pivot's audit of the agents (18 then; 15 now): four fates, per-agent strengths and enrichment, the Sprint 0 order of work — all since executed. Read before touching a charter. |
-| [manual-v5-spec.md](manual-v5-spec.md) | 100 | DRAFT: the compact deck page that replaces the magazine — what survives section by section, the eight-section order, what the renderer and its gates lose, the phases. Waiting on the pilot's strikes. |
+| [manual-v5-spec.md](manual-v5-spec.md) | 100 | DRAFT: the compact deck page that replaces the magazine — what survives section by section, the section order, what the renderer and its gates lose, the phases. Waiting on the pilot's strikes. |
 
 The LEGACY magazine renderer's constitution is **[../STYLEv3.md](../STYLEv3.md)** (1,116
 lines), banner-marked SUPERSEDED: it governs `build_manual.py`, `design.py`,
