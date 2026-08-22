@@ -24,7 +24,10 @@
     // The page renders it rather than re-deriving anything, so it cannot disagree
     // with the command that owns each figure. `cards.json` was fetched here for
     // years and read by nothing; it is gone.
-    info: 'info.json', engine: 'engine.json', versions: 'versions.json'
+    info: 'info.json', engine: 'engine.json', versions: 'versions.json',
+    // Fixed filename, so no manifest entry is needed — the browser cannot
+    // list `threat/` but it does not have to.
+    targeting: 'threat/targeting.json'
   };
 
   function esc(v) {
@@ -565,6 +568,44 @@
       'var(--tier-data)', body);
   }
 
+  function targetingPanel(d) {
+    var doc = d.targeting;
+    if (!doc) return '';
+    var pol = doc.forge_ai_targeting_policy || {};
+    var rows = Object.keys(pol).map(function (k) {
+      var h = pol[k];
+      return [h.hypothesis,
+              (h.rate * 100).toFixed(1) + '% ' +
+              'ci95 [' + (h.ci95[0] * 100).toFixed(0) + ', ' + (h.ci95[1] * 100).toFixed(0) + ']' +
+              '  vs ' + (h.uniform_expected_rate * 100).toFixed(1) + '% at random' +
+              '  p ' + h.permutation_p];
+    });
+    var body = facts(rows);
+    var c = doc.when_the_hypotheses_disagree;
+    if (c) {
+      // The honest half. The two leading hypotheses agree most of the time, so
+      // the headline rate cannot separate them; only the disagreements can.
+      body += '<h3 class="slug-line">Where "biggest threat" and "easiest kill" ' +
+        'name different seats (' + c.decisions + ' decisions)</h3>' +
+        facts(['most_damage_dealt', 'lowest_life', 'neither'].map(function (k) {
+          var s = c[k];
+          return [k.replace(/_/g, ' '),
+                  (s.rate * 100).toFixed(1) + '% ci95 [' +
+                  (s.ci95[0] * 100).toFixed(0) + ', ' + (s.ci95[1] * 100).toFixed(0) + ']'];
+        })) +
+        '<p class="ev">' + esc(c.note) + '</p>';
+    }
+    body += '<p class="ev"><b>This measures Forge\'s AI, not human politics.</b> ' +
+      'There are no deals here, no grudges, no table talk, and no player who ' +
+      'remembers what you did last turn. Four fixed decks in four fixed seats, so ' +
+      'any policy measured is confounded with deck identity and turn order — it is ' +
+      'a statement about this pod, not about Commander.</p>';
+    return panel('targeting', 'Who the table attacks',
+                 doc.decisions + ' targeting decisions across ' + doc.games +
+                 ' simulated games. Opponent modelling, not equilibrium.',
+                 ['data'], 'y2k-blue', body);
+  }
+
   function askedPanel(d) {
     var rx = d.prescriptions || [];
     if (!rx.length) return '';
@@ -651,7 +692,7 @@
     // "where is this, and what do I do", not "what shape is the mana curve".
     var html = [
       nextPanel(d), statusPanel(d), recordPanel(d), auditPanel(d),
-      enginePanel(d), tablePanel(d), askedPanel(d), logPanel(d),
+      enginePanel(d), tablePanel(d), targetingPanel(d), askedPanel(d), logPanel(d),
       questionsPanel(d),
       constellationPanel(d), bracketPanel(d), manaPanel(d), goldfishPanel(d),
       tenPanel(d), tutorPanel(d), buildPlanPanel(d), stacksPanel(d)
