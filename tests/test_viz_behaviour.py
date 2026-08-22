@@ -4634,3 +4634,143 @@ def test_the_kill_points_at_the_proof_instead_of_reprinting_it(browser, viz_serv
         assert page.query_selector("#the-kill a.dossier-pointer") is not None
     finally:
         page.close()
+
+
+# ── The Workbench landing ────────────────────────────────────────────────
+#
+# The front door answers ONE question before any other — which decks can I play
+# tonight — and it is the only question in the repo that no artifact derives,
+# because it is a fact about cardboard. These drive the renderer against a
+# STUBBED manifest rather than a locked deck: `deck_versions.json` is tracked and
+# scanned by `build-index`, so locking one in a test races every other test that
+# reads the manifest. Routing the fetch tests the rendering, which is the part
+# that can break.
+
+
+def _workbench(browser, viz_server, decks, infos=None):
+    page = browser.new_page()
+    import json as _json
+    page.route("**/data/decks/index.json", lambda route: route.fulfill(
+        status=200, content_type="application/json",
+        body=_json.dumps({"decks": decks})))
+    page.route("**/data/decks/*/info.json", lambda route: route.fulfill(
+        status=200, content_type="application/json",
+        body=_json.dumps((infos or {}).get(route.request.url.split("/")[-2], {}))))
+    page.goto(f"{viz_server}/viz/workbench.html")
+    page.wait_for_timeout(1200)
+    return page
+
+
+def _deck(slug, **kw):
+    base = {"slug": slug, "deck_name": slug.upper(), "commander": "Someone",
+            "image": None, "status": None, "verified": 0, "decisions": 0,
+            "sim_runs": [], "experiments": [], "prescriptions": [],
+            "locked": False, "paper": None, "published": True}
+    base.update(kw)
+    return base
+
+
+def test_the_workbench_splits_locked_from_the_bench(browser, viz_server):
+    """The split IS the page. A deck that exists only as JSON and a deck you can
+    put on a table are different objects, and the old picker — one line of text
+    links — could not tell you which was which."""
+    page = _workbench(browser, viz_server, [
+        _deck("sleeved", locked=True,
+              paper={"version": 6, "in_sync": True, "versions_behind": 0, "drift": None}),
+        _deck("onbench"),
+        _deck("dead", status=["broken-down", "BROKEN DOWN FOR PARTS", "…"]),
+    ])
+    try:
+        heads = page.eval_on_selector_all(
+            ".wb-rack h2", "els => els.map(e => e.textContent.trim().split(' ')[0])")
+        assert heads == ["Locked", "On", "History"], heads
+        racks = page.eval_on_selector_all(
+            ".wb-rack", "els => els.map(e => e.querySelectorAll('.wb-card').length)")
+        assert racks == [1, 1, 1], racks
+        assert page.eval_on_selector_all(
+            ".wb-rack:first-of-type .wb-card h3", "els => els.map(e => e.textContent)") \
+            == ["SLEEVED"]
+    finally:
+        page.close()
+
+
+def test_a_drifted_lock_says_what_to_pull_and_add(browser, viz_server):
+    """The two sides are the physical instruction. A lock that only said
+    "drifted" would send the pilot to go and diff it by hand."""
+    page = _workbench(browser, viz_server, [
+        _deck("drifted", locked=True, paper={
+            "version": 5, "in_sync": False, "versions_behind": 1,
+            "drift": {"pull": ["a", "b", "c"], "add": ["d"]}}),
+    ])
+    try:
+        chips = page.eval_on_selector_all(
+            ".wb-chip", "els => els.map(e => e.textContent.trim())")
+        assert any("V5" in c and "1 behind" in c.lower() for c in chips), chips
+        assert any("pull 3" in c.lower() and "add 1" in c.lower() for c in chips), chips
+        warn = page.eval_on_selector_all(".wb-chip.wb-warn", "els => els.length")
+        assert warn == 2, "drift must be coloured as a warning, not as neutral chrome"
+    finally:
+        page.close()
+
+
+def test_an_in_sync_lock_reads_as_ok_not_as_a_warning(browser, viz_server):
+    page = _workbench(browser, viz_server, [
+        _deck("level", locked=True,
+              paper={"version": 6, "in_sync": True, "versions_behind": 0, "drift": None}),
+    ])
+    try:
+        assert page.eval_on_selector_all(".wb-chip.wb-ok", "els => els.length") == 1
+        assert page.eval_on_selector_all(".wb-chip.wb-warn", "els => els.length") == 0
+    finally:
+        page.close()
+
+
+def test_an_unresolvable_lock_is_not_reported_as_in_sync(browser, viz_server):
+    """`in_sync` is tri-state — true, false, or null when the lock names a version
+    git no longer carries. Null must not read as fine."""
+    page = _workbench(browser, viz_server, [
+        _deck("ghost", locked=True,
+              paper={"version": 9, "in_sync": None, "unresolved": True, "drift": None}),
+    ])
+    try:
+        chips = page.eval_on_selector_all(
+            ".wb-chip", "els => els.map(e => e.textContent.trim())")
+        assert any("not in git" in c for c in chips), chips
+        assert page.eval_on_selector_all(".wb-chip.wb-ok", "els => els.length") == 0
+    finally:
+        page.close()
+
+
+def test_the_empty_state_names_the_command_that_fixes_it(browser, viz_server):
+    """Every deck is unlocked today, so this is the state the page actually opens
+    in — and a rack with no explanation reads as a bug rather than as a fact."""
+    page = _workbench(browser, viz_server, [_deck("onbench")])
+    try:
+        assert page.is_visible(".wb-empty")
+        assert "deck-version" in page.text_content(".wb-empty")
+    finally:
+        page.close()
+
+
+def test_every_card_links_to_that_decks_dossier(browser, viz_server):
+    """`deck.html?deck=<slug>` is an inbound contract the dossier and every
+    published manual already rely on."""
+    page = _workbench(browser, viz_server, [_deck("alpha"), _deck("beta")])
+    try:
+        hrefs = page.eval_on_selector_all(
+            ".wb-card", "els => els.map(e => e.getAttribute('href'))")
+        assert hrefs == ["deck.html?deck=alpha", "deck.html?deck=beta"], hrefs
+    finally:
+        page.close()
+
+
+def test_a_dead_deck_shows_its_headline_and_is_dimmed(browser, viz_server):
+    page = _workbench(browser, viz_server, [
+        _deck("gone", status=["retired", "RETIRED", "kept as published"]),
+    ])
+    try:
+        assert page.text_content(".wb-dead").strip() == "RETIRED"
+        opacity = page.eval_on_selector(".wb-card", "e => getComputedStyle(e).opacity")
+        assert float(opacity) < 0.8, f"a retired deck should read as history, got {opacity}"
+    finally:
+        page.close()

@@ -192,3 +192,59 @@ details.case .body { padding: 0 14px 14px; }
 .wb-list i { font-style: italic; color: var(--ink-soft); }
 .wb-list .ev { display: block; }
 .panel h3.slug-line { margin: 14px 0 6px; }
+
+/* ── The Workbench landing (workbench.html) ──────────────────────────────
+ *
+ * A rack per state, and the states are not decoration: LOCKED means built in
+ * paper and playable tonight, which is the one question the front door exists to
+ * answer. Everything else is a list on disk.
+ */
+.wb-rack { margin: 0 0 40px; }
+.wb-rack h2 {
+  font-family: var(--display); text-transform: uppercase; letter-spacing: .02em;
+  font-size: 20px; margin: 0 0 4px; display: flex; align-items: baseline; gap: 10px;
+}
+.wb-count {
+  font-family: var(--condensed); font-size: 13px; color: var(--ink-soft);
+  border: 1px solid var(--rule); border-radius: 999px; padding: 1px 9px;
+}
+.wb-blurb { margin: 0 0 16px; color: var(--ink-soft); font-size: 13.5px; }
+.wb-grid {
+  display: grid; gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+.wb-card {
+  display: block; text-decoration: none; color: inherit;
+  background: var(--panel); border: 1px solid var(--rule); border-radius: 4px;
+  overflow: hidden; transition: border-color .12s, transform .12s;
+}
+.wb-card:hover { border-color: var(--y2k-blue); transform: translateY(-2px); }
+.wb-card.is-dead { opacity: .58; }
+.wb-card.is-dead:hover { opacity: 1; }
+.wb-art { width: 100%; aspect-ratio: 626 / 262; object-fit: cover; }
+.wb-art-none { background: var(--panel-hi); }
+.wb-body { padding: 12px 14px 14px; }
+.wb-body h3 {
+  font-family: var(--condensed); text-transform: uppercase; font-size: 16px;
+  margin: 0 0 2px; line-height: 1.15;
+}
+.wb-sub { color: var(--ink-soft); font-size: 12.5px; margin-bottom: 8px; }
+.wb-dead {
+  font-family: var(--condensed); text-transform: uppercase; font-size: 11px;
+  color: var(--stamp-red); letter-spacing: .04em; margin-bottom: 8px;
+}
+.wb-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.wb-chip {
+  font-family: var(--condensed); font-size: 11px; letter-spacing: .03em;
+  text-transform: uppercase; padding: 2px 7px; border-radius: 3px;
+  border: 1px solid var(--rule); color: var(--ink-soft); white-space: nowrap;
+}
+/* Two states worth colouring, and only two: the deck is level with the repo, or
+ * the cardboard has drifted from it. */
+.wb-chip.wb-ok   { border-color: var(--tier-verified); color: var(--tier-verified); }
+.wb-chip.wb-warn { border-color: var(--tier-coach);    color: var(--tier-coach); }
+.wb-empty {
+  background: var(--panel); border: 1px solid var(--rule); border-radius: 4px;
+  padding: 16px 18px; color: var(--ink-soft); margin: 0 0 34px;
+}
+.wb-empty code { color: var(--ink); font-family: var(--type); }

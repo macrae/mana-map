@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Always revalidate the HTML; its versioned assets may cache forever. Same note
+     as index.html and deck.html — a cached page pins the script ?v=, which pins
+     every data fetch, and the rack silently goes stale. -->
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<title>The Workbench — Mana Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;800&family=Michroma&family=Oswald:wght@500;700&family=Special+Elite&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css?v=8">
+</head><body>
+<div class="trim">
+  <div class="dossier-head">
+    <div>
+      <div class="slug-line">Mana Map</div>
+      <h1>The Workbench</h1>
+      <div class="slug-line">Your decks, and what the bench knows about them</div>
+    </div>
+    <div class="head-links">
+      <a href="index.html">The bench — 34,890 cards →</a>
+      <a href="../manuals/index.html">Manuals →</a>
+    </div>
+  </div>
+  <div id="racks"></div>
+  <div id="status" class="status">Reading the manifest…</div>
+</div>
+<script src="js/workbench.js?v=2"></script>
+</body></html>

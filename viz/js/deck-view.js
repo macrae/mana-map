@@ -39,9 +39,17 @@
     return typeof x === 'number' ? x.toFixed(digits === undefined ? 0 : digits) : '—';
   }
 
+  /* `cache: 'no-cache'` forces revalidation on every artifact fetch, and it is
+   * load-bearing rather than defensive. These files are NOT content-addressed the
+   * way `MM.DATA`'s URLs are — locking a deck rewrites `index.json` and bumps no
+   * version constant anywhere — so a heuristically-cached copy shows yesterday's
+   * answer with no way for the page to know. Caught in a browser: two decks were
+   * locked on disk and the rack still said "no deck is marked as built in paper".
+   * They are small JSON; a revalidation round-trip is the right trade. */
   function getJSON(url) {
-    return fetch(url).then(function (r) { return r.ok ? r.json() : null; })
-                     .catch(function () { return null; });
+    return fetch(url, { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .catch(function () { return null; });
   }
 
   function badge(tier) {
