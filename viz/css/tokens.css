@@ -181,3 +181,14 @@ details.case .body { padding: 0 14px 14px; }
 .dc-legend li { display: block; font-size: .9rem; line-height: 1.45; }
 .dc-legend i { display: inline-block; width: 11px; height: 11px; border-radius: 3px;
   margin-right: 7px; vertical-align: middle; }
+
+/* The workbench lists. NOT `.dc-legend` — that is the constellation's colour key,
+   and `.dc-legend i` is an 11px swatch, so reusing it turned every <i> in an engine
+   line into a little square sitting on top of the text. */
+.wb-list { list-style: none; padding: 0; margin: 10px 0 0; }
+.wb-list li { display: block; font-size: .92rem; line-height: 1.5;
+  padding: 7px 0; border-bottom: 1px solid var(--rule); }
+.wb-list li:last-child { border-bottom: 0; }
+.wb-list i { font-style: italic; color: var(--ink-soft); }
+.wb-list .ev { display: block; }
+.panel h3.slug-line { margin: 14px 0 6px; }

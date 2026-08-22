@@ -916,8 +916,22 @@ Renders a deck's **committed pilot artifacts** and nothing else. Slug comes from
 `index.html?deck=<slug>` enters **Build** with that deck loaded rather than dropping
 the reader on an unfiltered map with a query string they cannot see.
 
+**The workbench half comes first**, because the questions a pilot sits down with are
+"where is this, and what do I do" — not "what shape is the mana curve". Those panels read
+`info.json`, the shape `deck-info --write` composes; the page renders it rather than
+re-deriving anything, so it cannot disagree with the command that owns each figure.
+
 | Panel | Artifact | Tier |
 |---|---|---|
+| **What to do next** (the derived `next`) | `info.json` | ◆ |
+| Where it stands (stages, gates, bracket, record) | `info.json` | ◆ |
+| Every list this deck has been | `versions.json` (deploy-time) | ◆ |
+| What limits it (audit axes + diagnosis) | `info.json` | ◆★ |
+| The engine (stages, lines solid where a stack proves them) | `engine.json` | ✓◆★ |
+| At a table (sim runs + experiments) | `sim/*.json`, `experiments/*.json` | ◆ |
+| Asked and answered | `prescriptions/*.json` | ◆★ |
+| The captain's log (+ the debrief beside each entry) | `log.jsonl`, `log_annotations.json` | ★ |
+| Open questions, and the loop that would settle each | `info.json` | ★ |
 | **The Constellation** (below) | `deck_map.json` | ◆ |
 | Bracket Floor + its named driver | `bracket_report.json` | ◆ |
 | Sources Say (pips vs sources, land classes, on-curve) | `mana_analysis.json` | ◆ |
@@ -926,6 +940,20 @@ the reader on an unfiltered map with a query string they cannot see.
 | The tutor guide (collapsible per tutor) | `tutor_guide.json` | ★ |
 | The Kill (case files, citations verbatim) | `stacks/*.json`, passing only | ✓ |
 | The Builder's Record (slots, scores, runners-up) | `build_plan.json` | ◆ |
+
+**A browser cannot list a directory**, which is why `data/decks/index.json` names the
+files in `sim/`, `experiments/`, `prescriptions/` and `decisions/` alongside the stack
+filenames it always carried. Nothing else was blocking those panels — every one of those
+artifacts is tracked and fetchable; the page simply had no way to learn their names.
+
+**Every sim figure carries its median, its interval, its N and the AI caveat**, or it does
+not appear. `figure()` builds them that way, and the panel closes with Forge's own rating
+of its AI. A mean without its spread is a number that describes no game: kianne's
+experiment arm B read mean 17.42 with a **median of 0**.
+
+**Use `.wb-list`, never `.dc-legend`, for a generic list.** `.dc-legend i` is an 11px
+colour swatch for the constellation key, so reusing that class turned every `<i>` in an
+engine line into a little square sitting on top of the text.
 
 **Nothing is recomputed in the browser and nothing is hardcoded.** The manual renders these
 same artifacts as ◆ reproducible evidence, so a second implementation that drifted would

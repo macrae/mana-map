@@ -170,3 +170,29 @@ def test_build_picks_the_cheap_dimming_path_when_it_can():
     assert re.search(r"dimmedIndices\.has\(idx\) \? 0\.08 : 0\.\d+", map_src), (
         "the per-point path must survive — it is the whole point of getDimmedIndices"
     )
+
+
+def test_deck_html_busts_its_own_assets():
+    """`deck.html` had NO test on its two `?v=` bumps — grep for `deck-view.js`
+    across `tests/` returned zero before this.
+
+    `index.html` has had one since the day a mismatched pair let `build.js` call a
+    stale `mana-map.js`. The dossier is the page that just grew from nine artifact
+    fetches to fifteen, including `info.json`, which is composed from every other
+    artifact — the surface where a stale script serves a confidently wrong deck is
+    now larger here than there.
+    """
+    import re
+    from pathlib import Path
+
+    html = (Path(__file__).resolve().parents[1] / "viz" / "deck.html").read_text()
+    busts = dict(re.findall(r'(?:src|href)="(?:js|css)/([\w-]+)\.(?:js|css)\?v=(\d+)"', html))
+    assert set(busts) == {"deck-view", "tokens"}, busts
+    assert all(int(v) > 0 for v in busts.values())
+
+
+def test_deck_html_loads_the_dossier_script():
+    from pathlib import Path
+    html = (Path(__file__).resolve().parents[1] / "viz" / "deck.html").read_text()
+    assert 'src="js/deck-view.js?v=' in html
+    assert 'href="css/tokens.css?v=' in html

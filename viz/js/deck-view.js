@@ -19,8 +19,12 @@
     issue: 'issue.json', bracket: 'bracket_report.json',
     goldfish: 'goldfish_metrics.json', mana: 'mana_analysis.json',
     considering: 'considering.json', tutors: 'tutor_guide.json',
-    cards: 'cards.json', buildPlan: 'build_plan.json',
-    deckMap: 'deck_map.json'
+    buildPlan: 'build_plan.json', deckMap: 'deck_map.json',
+    // The join: `deck-info --write`'s shape, composed from every other artifact.
+    // The page renders it rather than re-deriving anything, so it cannot disagree
+    // with the command that owns each figure. `cards.json` was fetched here for
+    // years and read by nothing; it is gone.
+    info: 'info.json', engine: 'engine.json', versions: 'versions.json'
   };
 
   function esc(v) {
@@ -387,6 +391,204 @@
                  'What shape is this deck?', ['data'], 'var(--hot-magenta)', body);
   }
 
+
+  // ── The workbench half ───────────────────────────────────────────────
+  //
+  // Everything below reads `info.json` — the shape `deck-info` composes and
+  // `deck-info --write` puts on disk. It is deliberately NOT re-derived here: the
+  // CLI owns each figure, and a second implementation in the browser is how the
+  // deck-builder's scorer drifted from the pipeline's on five of six factors.
+
+  function list(items, cls) {
+    return '<ul class="' + (cls || 'wb-list') + '">' +
+      items.map(function (i) { return '<li>' + i + '</li>'; }).join('') + '</ul>';
+  }
+
+  // A mean without its interval is a number that describes no game. Measured on
+  // kianne: arm B's commander damage read mean 17.42 with a median of 0, the whole
+  // difference being two games out of twelve.
+  function figure(m) {
+    if (!m || typeof m.mean !== 'number') return '—';
+    var out = String(m.mean);
+    if (typeof m.median === 'number' && m.median !== m.mean) out += ' (med ' + m.median + ')';
+    if (m.ci95) out += ' ci95 [' + m.ci95[0] + ', ' + m.ci95[1] + ']';
+    if (m.n) out += ' n=' + m.n;
+    return out;
+  }
+
+  function nextPanel(d) {
+    var info = d.info;
+    if (!info || !info.next || !info.next.length) return '';
+    return panel('next', 'What to do next',
+      'Derived from a condition that is true right now.', ['data'],
+      'var(--tier-data)',
+      list(info.next.map(esc)) +
+      '<p class="ev">Every line names the command that would settle it. None of it is ' +
+      'judgment about the deck — that is the doctor\'s, behind /prescribe.</p>');
+  }
+
+  function recordPanel(d) {
+    // `versions.json` is built at DEPLOY time, not committed: versions are a git
+    // walk and the commit that changes decklist.txt gets its sha after anything
+    // written in the same commit, so a committed copy is one version behind
+    // forever. Absent locally is normal — the panel simply does not render, which
+    // is what every panel here does when its artifact is missing.
+    var v = d.versions;
+    if (!v || !v.versions || !v.versions.length) return '';
+    var rows = v.versions.map(function (ver) {
+      var cur = ver.version === v.current_version;
+      var rec = ver.record || {};
+      return (cur ? '<b>' : '') + 'V' + ver.version + (cur ? '</b>' : '') +
+        ' <span class="ev">' + esc(ver.first_date || '') + '</span> ' +
+        (ver.tags && ver.tags.length ? '<span class="chip">' + esc(ver.tags.join(', ')) + '</span> ' : '') +
+        (ver.games ? ver.games + ' game(s) · ' + (rec.win || 0) + 'W ' + (rec.loss || 0) + 'L'
+                   : '<span class="ev">no games</span>');
+    });
+    var body = list(rows);
+    if (v.unmatched_log_entries && v.unmatched_log_entries.length) {
+      body += '<p class="ev">' + v.unmatched_log_entries.length + ' logged game(s) played ' +
+        'on an uncommitted list — reported unmatched rather than guessed.</p>';
+    }
+    return panel('record', 'Every list this deck has been',
+      'Numbered from git, joined to the log by the decklist sha.', ['data'],
+      'var(--tier-data)', body);
+  }
+
+  function statusPanel(d) {
+    var info = d.info;
+    if (!info || !info.status) return '';
+    var st = info.status, b = info.bracket || {};
+    var rows = [['Stages complete', st.complete + ' / ' + st.of]];
+    if (st.stale && st.stale.length) rows.push(['STALE', st.stale.join(', ')]);
+    if (st.invalid && st.invalid.length) rows.push(['INVALID', st.invalid.join(', ')]);
+    if (st.missing && st.missing.length) rows.push(['Missing', st.missing.join(', ')]);
+    if (b.floor) rows.push(['Bracket floor', b.floor + (b.floor_name ? ' (' + b.floor_name + ')' : '')]);
+    if (b.target) rows.push(['Target', b.target + (b.within_target ? ' ✓' : ' ✗')]);
+    var r = info.record || {};
+    rows.push(['Games logged', r.games || 0]);
+    if (r.games) rows.push(['Record', r.win + 'W ' + r.loss + 'L' + (r.draw ? ' ' + r.draw + 'D' : '')]);
+    return panel('status', 'Where it stands',
+      'Lifecycle, gates and the record.', ['data'], 'var(--tier-data)', facts(rows));
+  }
+
+  function auditPanel(d) {
+    var a = (d.info || {}).audit;
+    if (!a) return '';
+    var rows = [];
+    if (a.archetype) rows.push(['Archetype', a.archetype]);
+    if (a.under && a.under.length) rows.push(['Under', a.under.join(', ')]);
+    if (a.over && a.over.length) rows.push(['Over', a.over.join(', ')]);
+    var diag = (d.info || {}).diagnosis;
+    var body = facts(rows);
+    if (diag) {
+      body += '<p class="ev"><b>Diagnosis</b> (skeptic ' + esc(diag.skeptic) +
+        (diag.stale ? ', STALE' : '') + '): ' + esc(diag.verdict || '') + '</p>';
+    }
+    return panel('audit', 'What limits it',
+      'Sixteen cited axes; each target quotes strategy.md.', ['data', 'coach'],
+      'var(--tier-coach)', body);
+  }
+
+  function enginePanel(d) {
+    var e = d.engine;
+    if (!e) return '';
+    var lines = (e.lines || []).map(function (l) {
+      var proved = !!l.verified_by;
+      return '<span class="chip">' + (proved ? '✓' : '·') + '</span> ' +
+        esc(l.from) + ' → ' + esc(l.to) +
+        (l.carries ? ' <i>(' + esc(l.carries) + ')</i>' : '') +
+        (proved ? ' <span class="ev">' + esc(l.verified_by) + '</span>'
+                : ' <span class="ev">a reading, not a proof</span>');
+    });
+    var body = '<p class="ev">' + esc(e.thesis || '') + '</p>' + list(lines);
+    var v = (e.critic || {}).verdict;
+    if (v) body += '<p class="ev">Critic verdict: <b>' + esc(v) + '</b></p>';
+    return panel('engine', 'The engine',
+      'Eight stages, and what moves between them.', ['verified', 'data', 'coach'],
+      'var(--tier-verified)', body);
+  }
+
+  function tablePanel(d) {
+    var runs = d.sims || [], exps = d.experiments || [];
+    if (!runs.length && !exps.length) return '';
+    var body = '';
+    runs.forEach(function (run) {
+      var me = ((run.analysis || {}).seats || {})[run.slug] || {};
+      var rows = [
+        ['Table', (run.seats || []).slice(1).map(function (s) { return s.slug; }).join(', ')],
+        ['Games', run.games_completed],
+        ['Win rate', me.win_rate + (me.win_rate_ci95 ? ' ci95 [' + me.win_rate_ci95.join(', ') + ']' : '')],
+        ['Eliminated turn', figure(me.eliminated_turn)],
+        ['Combat damage dealt', figure(me.combat_damage_dealt_to_players)]
+      ];
+      var cd = me.commander_damage;
+      if (cd) {
+        rows.push(['Cmdr damage on one seat', figure(cd.max_on_one_defender)]);
+        rows.push(['Games reaching 21', cd.games_reaching_21 + ' / ' + run.games_completed]);
+      }
+      body += '<h3 class="slug-line">' + esc(run.run_id.slice(0, 46)) + '</h3>' + facts(rows);
+    });
+    exps.forEach(function (x) {
+      var w = (x.delta || {}).win_rate || {};
+      body += '<h3 class="slug-line">' + esc(x.question || '') + '</h3>' +
+        facts([['A', w.a], ['B', w.b], ['Δ', w.diff],
+               ['Games per arm', x.games_per_arm]]) +
+        '<p class="ev">' + esc((x.delta || {}).reading || '') + '</p>';
+    });
+    body += '<p class="ev"><b>Every seat is a Forge AI, including this deck.</b> Forge ' +
+      'rates its own AI "poor to ok in control, pretty bad for combo", so a control ' +
+      'deck\'s rate is a lower bound and a combo deck\'s is not a measurement. A ' +
+      'figure without its interval and its N is not a figure.</p>';
+    return panel('table', 'At a table',
+      'Seeded Forge games against the pilot\'s own pod.', ['data'],
+      'var(--tier-data)', body);
+  }
+
+  function askedPanel(d) {
+    var rx = d.prescriptions || [];
+    if (!rx.length) return '';
+    var items = rx.map(function (p) {
+      var answered = p.add_candidates !== undefined && p.add_candidates !== null;
+      return '<b>' + esc(p.prompt || p.id) + '</b> — ' +
+        (answered ? (p.add_candidates || []).length + ' add(s), ' +
+                    (p.cut_candidates || []).length + ' cut(s), skeptic ' +
+                    esc((p.skeptic || {}).verdict)
+                  : '<i>open — no answer yet</i>');
+    });
+    return panel('asked', 'Asked and answered',
+      'One question to the doctor, scoped and skeptic-checked.', ['data', 'coach'],
+      'var(--tier-coach)', list(items));
+  }
+
+  function logPanel(d) {
+    var entries = d.log || [];
+    if (!entries.length) return '';
+    var notes = (d.debrief || {}).entries || {};
+    var items = entries.slice().reverse().map(function (e) {
+      var n = notes[e.id];
+      return '<b>' + esc(e.at ? e.at.slice(0, 10) : e.id) + '</b> ' +
+        (e.result ? '<span class="chip">' + esc(e.result) + '</span> ' : '') +
+        esc(e.text || '') +
+        (n ? '<span class="ev">' + esc(n.summary || '') + '</span>'
+           : '<span class="ev">not yet debriefed</span>');
+    });
+    return panel('log', 'The captain\'s log',
+      'What happened at the table, in the pilot\'s words.', ['coach'],
+      'var(--tier-coach)', list(items));
+  }
+
+  function questionsPanel(d) {
+    var qs = (d.info || {}).open_questions || [];
+    if (!qs.length) return '';
+    var items = qs.map(function (q) {
+      return '<span class="chip">' + esc(q.settled_by || '?') + '</span> ' +
+        esc(q.question) + '<span class="ev">from ' + esc(q.from) + '</span>';
+    });
+    return panel('questions', 'Open questions',
+      'What nobody has settled yet, and which loop would settle it.', ['coach'],
+      'var(--tier-coach)', list(items));
+  }
+
   // ── Assembly ─────────────────────────────────────────────────────────
 
   function render(slug, d) {
@@ -400,6 +602,18 @@
     // separate, later, expensive step. Linking to `../manuals/<slug>.html`
     // unconditionally sent every unpublished deck to a 404 — the manifest carries
     // `published` precisely so this link can tell the two apart.
+    // A deck that no longer exists as cardboard says so, rather than inviting
+    // someone to sleeve it. The flag rides in the manifest.
+    var life = (d.info || {}).lifecycle;
+    if (life) {
+      var head = document.querySelector('.dossier-head');
+      var flag = document.createElement('div');
+      flag.className = 'slug-line';
+      flag.style.cssText = 'color:var(--tier-coach);margin-top:6px';
+      flag.textContent = '⚑ ' + life.headline + ' — ' + life.body;
+      head.firstElementChild.appendChild(flag);
+    }
+
     var link = document.getElementById('issueLink');
     if (!d.published) {
       link.hidden = true;
@@ -412,13 +626,22 @@
     // into the overlay rather than dropping the reader on an unfiltered map.
     document.getElementById('lensLink').href = 'index.html?deck=' + encodeURIComponent(slug);
 
+    // Workbench first, reference second: the questions a pilot sits down with are
+    // "where is this, and what do I do", not "what shape is the mana curve".
     var html = [
+      nextPanel(d), statusPanel(d), recordPanel(d), auditPanel(d),
+      enginePanel(d), tablePanel(d), askedPanel(d), logPanel(d),
+      questionsPanel(d),
       constellationPanel(d), bracketPanel(d), manaPanel(d), goldfishPanel(d),
       tenPanel(d), tutorPanel(d), buildPlanPanel(d), stacksPanel(d)
     ].filter(Boolean).join('');
     document.getElementById('panels').innerHTML = html;
+    var bits = [d.stacks.length + ' verified line(s)'];
+    if ((d.sims || []).length) bits.push(d.sims.length + ' sim run(s)');
+    if ((d.experiments || []).length) bits.push(d.experiments.length + ' experiment(s)');
+    if (!d.info) bits.push('no info.json — run `deck-info ' + slug + ' --write`');
     document.getElementById('status').textContent =
-      d.stacks.length + ' verified line(s) · artifacts read from data/decks/' + slug + '/';
+      bits.join(' · ') + ' · artifacts read from data/decks/' + slug + '/';
   }
 
   function pickerHTML(decks, current) {
@@ -451,11 +674,39 @@
       var stackJobs = (entry.stack_files || []).map(function (f) {
         return getJSON(BASE + entry.slug + '/stacks/' + f);
       });
+      // The manifest names these because a browser cannot list a directory. Without
+      // it the page can fetch only what it knows the name of, which is why the
+      // dossier showed no simulation, no experiment and no prescription for a year.
+      function dirJobs(key, dir) {
+        return (entry[key] || []).map(function (f) {
+          return getJSON(BASE + entry.slug + '/' + dir + '/' + f);
+        });
+      }
+      var simJobs = dirJobs('sim_runs', 'sim');
+      var expJobs = dirJobs('experiments', 'experiments');
+      var rxJobs = dirJobs('prescriptions', 'prescriptions');
+      var logJob = (entry.has || {}).log
+        ? fetch(BASE + entry.slug + '/log.jsonl').then(function (r) {
+            return r.ok ? r.text() : '';
+          }).catch(function () { return ''; })
+        : Promise.resolve('');
+      var debriefJob = (entry.has || {}).log_annotations
+        ? getJSON(BASE + entry.slug + '/log_annotations.json') : Promise.resolve(null);
 
-      return Promise.all([Promise.all(jobs), Promise.all(stackJobs)])
+      return Promise.all([Promise.all(jobs), Promise.all(stackJobs),
+                          Promise.all(simJobs), Promise.all(expJobs),
+                          Promise.all(rxJobs), logJob, debriefJob])
         .then(function (both) {
           var d = { stacks: both[1].filter(Boolean) };
           both[0].forEach(function (p) { d[p[0]] = p[1]; });
+          d.sims = both[2].filter(Boolean);
+          d.experiments = both[3].filter(Boolean);
+          d.prescriptions = both[4].filter(Boolean);
+          // JSONL, one game per line — the log is append-only and authored.
+          d.log = String(both[5] || '').split('\n').filter(Boolean).map(function (ln) {
+            try { return JSON.parse(ln); } catch (e) { return null; }
+          }).filter(Boolean);
+          d.debrief = both[6];
           // From the MANIFEST, not from issue.json — an unpublished deck has no
           // issue.json at all, so reading the flag off `d.issue` would always be
           // undefined and the dead-link guard would never fire.
