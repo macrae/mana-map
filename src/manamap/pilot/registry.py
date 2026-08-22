@@ -356,8 +356,12 @@ def add_pilot_parser(subparsers):
         if name == "pool-facts":
             # Takes paths, not a slug: a collection is not a deck, and forcing it
             # into data/decks/<slug>/ would put it in reach of validate-deck.
-            cmd.add_argument("targets", nargs="+",
-                             help="Decklist files or directories of them (e.g. data/collection/)")
+            # nargs="*": with no target it analyses COLLECTION_DIR, which is the
+            # question asked nearly every time. Typing the path on every invocation
+            # is how the same nine files got parsed by hand ten times in one session.
+            cmd.add_argument("targets", nargs="*", default=None,
+                             help="Decklist files or directories of them; "
+                                  "omit for the pilot's collection (COLLECTION_DIR)")
             cmd.add_argument("--exclude", action="append", default=[],
                              help="A file to leave out (repeatable) — e.g. a deck "
                                   "you are keeping assembled")

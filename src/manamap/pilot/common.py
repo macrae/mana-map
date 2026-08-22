@@ -107,6 +107,10 @@ def clear_memo():
     _MTIME_MEMO.clear()
     _STRATEGY_SHA_MEMO.clear()
     _RULES_DB_MEMO.clear()
+    # Imported here rather than at module scope: `collection` imports `expand_faces`
+    # from this module, so a top-level import would be a cycle.
+    from manamap.pilot.collection import _COLLECTION_MEMO
+    _COLLECTION_MEMO.clear()
 
 
 # Freeing tens of MB of parsed JSON via refcounting is nearly free; letting it

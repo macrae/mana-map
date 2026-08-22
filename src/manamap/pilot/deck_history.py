@@ -112,22 +112,15 @@ def _owned_index():
     directory is configurable (`MANAMAP_COLLECTION_DIR`) and an absent one is not
     an error — it was a hardcoded top-level `share/`, which meant every clone of
     this repo answered "do you own this?" from one person's boxes.
+
+    Now a thin alias over `pilot.collection`, which is the single reader and is
+    memoized; this function had re-globbed and re-parsed the whole directory on
+    every `pending()` call. It keeps the BOX-only sense on purpose — `pending`
+    reports which box to pull a card from, and a card sleeved in another deck has
+    no box to name.
     """
-    from manamap.pilot.fetch_deck import parse_decklist
-    collection = COLLECTION_DIR
-    index = {}
-    if not collection.is_dir():
-        return index
-    for path in sorted(collection.glob("*.txt")):
-        try:
-            entries = parse_decklist(path.read_text())
-        except (OSError, ValueError):
-            continue
-        for entry in entries:
-            name = entry["name"]
-            for face in expand_faces(name):
-                index.setdefault(face, set()).add(path.stem)
-    return index
+    from manamap.pilot import collection as collection_mod
+    return collection_mod.owned_index()
 
 
 def pending(slug):

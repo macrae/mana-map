@@ -50,6 +50,7 @@ import pandas as pd
 
 from manamap.analysis.common import WUBRG, parse_color_identity, parse_tag_set
 from manamap.config import (
+    COLLECTION_DIR,
     DECK_ROLE_BUDGET,
     OBSOLESCENCE_INDEX_PATH,
     OUTPUT_CSV_PATH,
@@ -605,7 +606,10 @@ def format_report(facts):
 
 
 def main(args):
-    facts = analyze(args.targets, getattr(args, "exclude", None))
+    # No target means the pilot's own collection. `collect_paths` still raises if
+    # that directory is empty or absent, so the error stays actionable.
+    targets = getattr(args, "targets", None) or [str(COLLECTION_DIR)]
+    facts = analyze(targets, getattr(args, "exclude", None))
     if getattr(args, "as_json", False):
         print(json.dumps(facts, indent=2, sort_keys=True, ensure_ascii=False))
     else:
