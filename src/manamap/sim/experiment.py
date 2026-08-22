@@ -35,6 +35,7 @@ from manamap.config import SIM_DECK_PREFIX, SIM_DEFAULT_GAMES, SIM_GAME_CLOCK_SE
 from manamap.pilot.common import deck_dir, load_json
 from manamap.pilot import deck_versions as dv
 from manamap.sim import parse as sim_parse
+from manamap.sim import stats
 from manamap.sim.forge import (ASSUMPTIONS, FORGE_AI_CAVEAT, _commanders_by_slug,
                                _java_version, _seat_label, command, commanders_from_text,
                                forge_jar, forge_version, install_deck, install_named,
@@ -97,28 +98,165 @@ def _dig(d, path):
     return d
 
 
-def delta(analysis_a, analysis_b, slug):
-    """Per-figure a/b/diff, plus whether the win-rate intervals overlap."""
+# How to read a per-game row for each figure that is a MEAN. The aggregates
+# already carry the mean; these give the raw distribution, which is what a Welch
+# interval, a permutation test and a bootstrap all need and none of which can be
+# recovered from a rounded `ci95` half-width.
+PER_GAME = {
+    "eliminated_turn": lambda p: p.get("eliminated_turn"),
+    "combat_damage_dealt_to_players": lambda p: p.get("combat_damage_dealt_to_players"),
+    "combat_damage_taken": lambda p: p.get("combat_damage_taken"),
+    "first_attack_turn": lambda p: p.get("first_attack_turn"),
+    "token_damage_share": lambda p: p.get("token_damage_share"),
+    "tokens_observed": lambda p: p.get("tokens_observed"),
+    "token_resolutions": lambda p: p.get("token_resolutions"),
+    "commander_damage_max_on_one_defender": lambda p: p.get("commander_damage_max"),
+    "commander_damage_dealt_total": lambda p: (
+        sum((p.get("commander_damage_by_defender") or {}).values())
+        if p.get("commander_damage_by_defender") is not None else None),
+}
+
+# Counts out of games, not means — so they get Newcombe rather than Welch.
+PROPORTIONS = ("win_rate", "commander_damage_games_reaching_21")
+
+# Figures whose sample is routinely mostly zeros with a long tail. A t interval on
+# `0 0 0 0 0 0 0 0 0 0 31 178` is a true number describing no game, so these also
+# report a bootstrap interval on the MEDIAN. Measured, not guessed: that sample is
+# arm B's real commander damage from the kianne experiment.
+SKEWED = ("commander_damage_max_on_one_defender", "commander_damage_dealt_total",
+          "combat_damage_dealt_to_players")
+
+# The one figure permitted a verdict. Everything else is descriptive: eleven
+# figures at alpha=0.05 means roughly one interval in two experiments excludes
+# zero by chance, and a reader who treats them all as tests will find a result
+# every time. This is a pre-registration, not a limitation.
+PRIMARY_ENDPOINT = "win_rate"
+
+
+def _per_game_values(games, slug, name):
+    """The arm's raw per-game values for one figure, or None if unavailable."""
+    fn = PER_GAME.get(name)
+    if fn is None or not games:
+        return None
+    out = []
+    for g in games:
+        row = (g.get("per_seat") or {}).get(slug)
+        if row is None:
+            continue
+        out.append(fn(row))
+    vals = [v for v in out if v is not None]
+    return vals if vals else None
+
+
+def delta(analysis_a, analysis_b, slug, games_a=None, games_b=None):
+    """Per-figure a/b/diff with an interval ON THE DIFFERENCE, plus power.
+
+    WHAT THIS REPLACED, AND WHY. The previous version compared eleven figures and
+    tested one, by asking whether the two win-rate intervals OVERLAPPED, then
+    reading an overlap as "the difference is noise until more games say
+    otherwise". That is the overlap fallacy in the artifact's own voice:
+    non-overlap does imply a difference, but overlap implies nothing at all,
+    because two marginal intervals can overlap while the interval on their
+    difference excludes zero. The other ten figures had their `ci95` blocks
+    sitting one dict level away and unread.
+
+    Every figure now carries `ci95_diff`, its N and the method that produced it,
+    and no figure carries a bare `diff`. Only `win_rate` carries a verdict.
+
+    And `power` answers the question the old artifact could not: not "was there a
+    difference" but "what difference could this experiment have found at all". At
+    twelve games an arm the answer is almost nothing, and saying so is the most
+    useful sentence in the file.
+    """
     sa = (analysis_a.get("seats") or {}).get(slug, {})
     sb = (analysis_b.get("seats") or {}).get(slug, {})
+    n_a = analysis_a.get("games") or 0
+    n_b = analysis_b.get("games") or 0
     out = {}
+
     for name, path in DELTA_KEYS:
         va, vb = _dig(sa, path), _dig(sb, path)
-        out[name] = {"a": va, "b": vb,
-                     "diff": (round(vb - va, 3) if isinstance(va, (int, float))
-                              and isinstance(vb, (int, float)) else None)}
-    ca, cb = sa.get("win_rate_ci95") or [None, None], sb.get("win_rate_ci95") or [None, None]
-    overlap = None
-    if None not in (*ca, *cb):
-        overlap = not (ca[1] < cb[0] or cb[1] < ca[0])
-    out["win_rate"]["ci95_a"], out["win_rate"]["ci95_b"] = ca, cb
-    out["win_rate"]["intervals_overlap"] = overlap
-    out["reading"] = (
-        "the win-rate intervals OVERLAP at this N — the difference is noise until more games say otherwise"
-        if overlap else
-        "the win-rate intervals are disjoint — a real difference at this N" if overlap is not None
-        else "no interval available")
+        row = {"a": va, "b": vb, "n_a": n_a, "n_b": n_b,
+               "diff": (round(vb - va, 3) if isinstance(va, (int, float))
+                        and isinstance(vb, (int, float)) else None)}
+
+        if name in PROPORTIONS:
+            k_a = sa.get("wins") if name == "win_rate" else _dig(
+                sa, ("commander_damage", "games_reaching_21"))
+            k_b = sb.get("wins") if name == "win_rate" else _dig(
+                sb, ("commander_damage", "games_reaching_21"))
+            if None not in (k_a, k_b) and n_a and n_b:
+                d = stats.diff_proportions(int(k_a), n_a, int(k_b), n_b)
+                row.update({"ci95_diff": d["ci95"], "excludes_zero": d["excludes_zero"],
+                            "method": d["method"]})
+            else:
+                row["method"] = "not measured on both arms"
+        else:
+            xs = _per_game_values(games_a, slug, name)
+            ys = _per_game_values(games_b, slug, name)
+            d = stats.diff_means(xs, ys) if xs and ys else None
+            if d:
+                row.update({"ci95_diff": d["ci95"], "excludes_zero": d["excludes_zero"],
+                            "df": d.get("df"), "method": d["method"],
+                            "permutation_p": stats.permutation_p(xs, ys, seed=n_a)})
+                if name in SKEWED:
+                    m = stats.diff_medians(xs, ys, seed=n_a)
+                    if m:
+                        row["median_diff"] = m["diff"]
+                        row["median_ci95_diff"] = m["ci95"]
+            else:
+                # An older artifact whose logs are gone re-derives to a bare diff
+                # rather than failing. Saying so is the point: an absent interval
+                # must never read as a narrow one.
+                row["method"] = "no per-game values available; difference is unbounded"
+
+        out[name] = row
+
+    # Power, on the primary endpoint only.
+    wins_a = sa.get("wins")
+    if n_a and n_b and wins_a is not None:
+        p_a = wins_a / n_a
+        mde = stats.mde_proportion(p_a, n_a, n_b)
+        out["power"] = {
+            "primary_endpoint": PRIMARY_ENDPOINT,
+            "n_per_arm": n_a if n_a == n_b else [n_a, n_b],
+            "alpha": 0.05, "target_power": 0.8,
+            "baseline_rate_a": round(p_a, 4),
+            **(mde or {"minimum_detectable_rate_b": None,
+                       "note": "no rate for arm B would reach 80% power at this N"}),
+            "games_per_arm_to_detect_0.10": stats.games_for_difference(p_a, 0.10),
+            "method": ("exact enumeration of the two-binomial grid; the test is the "
+                       "Newcombe score interval on the difference excluding zero"),
+        }
+
+    out["reading"] = _reading(out)
     return out
+
+
+def _reading(out):
+    """One sentence, and it must not commit the fallacy it replaced.
+
+    Two clauses on purpose. The first says what the interval on the difference
+    does; the second says what the experiment could have detected — because "we
+    found nothing" and "we could not have found anything" are different
+    statements and only one of them is about the deck.
+    """
+    w = out.get(PRIMARY_ENDPOINT) or {}
+    ci = w.get("ci95_diff")
+    power = out.get("power") or {}
+    mde = power.get("minimum_detectable_difference")
+    if not ci:
+        return "no interval available for the win rate"
+    if w.get("excludes_zero"):
+        return (f"the 95% interval on the win-rate difference is [{ci[0]:+.3f}, {ci[1]:+.3f}] "
+                f"and EXCLUDES zero — a real difference at this N.")
+    tail = ""
+    if mde is not None:
+        tail = (f" At {power.get('n_per_arm')} games per arm this experiment could only have "
+                f"detected a difference of {mde:+.3f} or larger, so it is uninformative about "
+                f"anything smaller — that is not evidence of no effect.")
+    return (f"the 95% interval on the win-rate difference is [{ci[0]:+.3f}, {ci[1]:+.3f}] "
+            f"and CONTAINS zero.{tail}")
 
 
 def _run_arm(arm_letter, meta_name, opp_names, games, jobs, clock, seed, profiles,
@@ -190,8 +328,14 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
             if opp_cmd.get(o):
                 m[f"Ai({i + 2})-{opp_names[i]}"] = opp_cmd[o]
         return {k: v for k, v in m.items() if v}
-    _, analysis_a = sim_parse.analyze_logs(texts_a, label_a, _cmd_map(names_a, a))
-    _, analysis_b = sim_parse.analyze_logs(texts_b, label_b, _cmd_map(names_b, b))
+    # KEEP THE FACTS. `run` discarded them, so `delta` had only rounded aggregate
+    # means to work with and could not compute an interval on a difference at all
+    # — the raw distribution is what Welch, the permutation test and the bootstrap
+    # all need. `forge.py` already does this for run records; this mirrors it.
+    facts_a, analysis_a = sim_parse.analyze_logs(texts_a, label_a, _cmd_map(names_a, a))
+    facts_b, analysis_b = sim_parse.analyze_logs(texts_b, label_b, _cmd_map(names_b, b))
+    games_a = [sim_parse.compact(f, label_a) for f in facts_a]
+    games_b = [sim_parse.compact(f, label_b) for f in facts_b]
 
     doc = {
         "experiment_id": eid, "slug": slug, "at": date.today().isoformat(),
@@ -204,12 +348,12 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
         "arms": {
             "a": {"ref": a["ref"], "label": a["label"], "decklist_sha256": a["decklist_sha256"],
                   "decklist_text": a["decklist_text"], "games": analysis_a.get("games"),
-                  "analysis": analysis_a},
+                  "analysis": analysis_a, "games_detail": games_a},
             "b": {"ref": b["ref"], "label": b["label"], "decklist_sha256": b["decklist_sha256"],
                   "decklist_text": b["decklist_text"], "games": analysis_b.get("games"),
-                  "analysis": analysis_b},
+                  "analysis": analysis_b, "games_detail": games_b},
         },
-        "delta": delta(analysis_a, analysis_b, slug),
+        "delta": delta(analysis_a, analysis_b, slug, games_a, games_b),
         "assumptions": [
             "SAME TABLE, NOT PAIRED GAMES: both arms ran the same opponents, N, profiles, "
             "engine build and seed set — but a changed list changes every shuffle, so seeds "
@@ -259,10 +403,14 @@ def analyze(slug, experiment_id_or_path):
             if opp_cmd.get(o):
                 cmd[f"Ai({i + 2})-{opp_names[i]}"] = opp_cmd[o]
         texts = [l.read_text(encoding="utf-8", errors="replace") for l in logs]
-        _, analysis = sim_parse.analyze_logs(texts, label, {k: v for k, v in cmd.items() if v})
+        facts, analysis = sim_parse.analyze_logs(texts, label,
+                                                 {k: v for k, v in cmd.items() if v})
         doc["arms"][letter]["analysis"] = analysis
         doc["arms"][letter]["games"] = analysis.get("games")
-    doc["delta"] = delta(doc["arms"]["a"]["analysis"], doc["arms"]["b"]["analysis"], slug)
+        doc["arms"][letter]["games_detail"] = [sim_parse.compact(f, label) for f in facts]
+    doc["delta"] = delta(doc["arms"]["a"]["analysis"], doc["arms"]["b"]["analysis"], slug,
+                         doc["arms"]["a"].get("games_detail"),
+                         doc["arms"]["b"].get("games_detail"))
     path.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n")
     return path, doc
 
@@ -280,7 +428,10 @@ def main(args):
         print(f"{slug}: re-derived both arms from logs → {path.name}")
         for k, _ in DELTA_KEYS:
             v = d[k]
-            print(f"  {k:<40} A {v['a']}   B {v['b']}   Δ {v['diff']}")
+            ci = v.get("ci95_diff")
+            band = ("[%+.3f, %+.3f]" % (ci[0], ci[1])) if ci else "—"
+            print(f"  {k:<40} A {v['a']}   B {v['b']}   Δ {v['diff']}   95% {band}")
+        print(f"\n  {d.get('reading', '')}")
         return
     if getattr(args, "list", False) or not (getattr(args, "a", None) and getattr(args, "b", None)):
         docs = list_all(slug)
@@ -291,9 +442,13 @@ def main(args):
         print(f"EXPERIMENTS — {slug} ({len(docs)})\n")
         for d in docs:
             w = d["delta"]["win_rate"]
+            ci = w.get("ci95_diff")
+            verdict = ("DIFFERENT" if w.get("excludes_zero")
+                       else "spans zero" if ci else "no interval")
             print(f"{d['experiment_id'][:64]}  {d['at']}  n={d['games_per_arm']}/arm")
             print(f"      {d['question']}")
-            print(f"      win {w['a']} → {w['b']}  ({'overlap' if w['intervals_overlap'] else 'DISJOINT'})")
+            print(f"      win {w['a']} → {w['b']}   Δ95% "
+                  f"{('[%+.3f, %+.3f]' % (ci[0], ci[1])) if ci else '—'}  ({verdict})")
         return
     path, doc = run(slug, args.a, args.b, args.vs, games=args.games or SIM_DEFAULT_GAMES,
                     jobs=args.jobs, clock=args.clock or SIM_GAME_CLOCK_SECONDS,

@@ -212,9 +212,19 @@ def _experiments(slug):
         return None
     d = docs[-1]
     w = d["delta"]["win_rate"]
-    return {"count": len(docs), "latest": {"question": d["question"], "at": d["at"],
-            "games_per_arm": d["games_per_arm"], "win_a": w["a"], "win_b": w["b"],
-            "overlap": w["intervals_overlap"], "reading": d["delta"]["reading"]}}
+    power = d["delta"].get("power") or {}
+    # `overlap` is gone rather than deprecated. It named the overlap fallacy —
+    # two marginal intervals overlapping says nothing about their difference —
+    # and leaving the key in the artifact re-invites the error it was removed
+    # for. What replaces it is the interval on the DIFFERENCE, and the effect
+    # size this experiment could have detected at all.
+    return {"count": len(docs), "latest": {
+        "question": d["question"], "at": d["at"],
+        "games_per_arm": d["games_per_arm"], "win_a": w["a"], "win_b": w["b"],
+        "win_diff_ci95": w.get("ci95_diff"),
+        "differs": w.get("excludes_zero"),
+        "minimum_detectable_difference": power.get("minimum_detectable_difference"),
+        "reading": d["delta"]["reading"]}}
 
 
 def _next(info):

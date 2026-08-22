@@ -537,11 +537,24 @@
       body += '<h3 class="slug-line">' + esc(run.run_id.slice(0, 46)) + '</h3>' + facts(rows);
     });
     exps.forEach(function (x) {
-      var w = (x.delta || {}).win_rate || {};
-      body += '<h3 class="slug-line">' + esc(x.question || '') + '</h3>' +
-        facts([['A', w.a], ['B', w.b], ['Δ', w.diff],
-               ['Games per arm', x.games_per_arm]]) +
-        '<p class="ev">' + esc((x.delta || {}).reading || '') + '</p>';
+      var d = x.delta || {}, w = d.win_rate || {}, pw = d.power || {};
+      // The interval is on the DIFFERENCE, which is the quantity anyone actually
+      // wants and the thing the old artifact could not state — it compared the two
+      // arms' marginal intervals and read an overlap as "noise", which is the
+      // overlap fallacy. And the minimum detectable difference answers the question
+      // a null result raises: could this experiment have found anything at all?
+      var band = w.ci95_diff
+        ? '[' + w.ci95_diff[0].toFixed(3) + ', ' + w.ci95_diff[1].toFixed(3) + ']'
+        : '—';
+      var rows = [['A', w.a], ['B', w.b], ['Δ win rate', w.diff],
+                  ['Δ 95% interval', band],
+                  ['Games per arm', x.games_per_arm]];
+      if (pw.minimum_detectable_difference !== undefined &&
+          pw.minimum_detectable_difference !== null) {
+        rows.push(['Smallest detectable Δ', '±' + pw.minimum_detectable_difference]);
+      }
+      body += '<h3 class="slug-line">' + esc(x.question || '') + '</h3>' + facts(rows) +
+        '<p class="ev">' + esc(d.reading || '') + '</p>';
     });
     body += '<p class="ev"><b>Every seat is a Forge AI, including this deck.</b> Forge ' +
       'rates its own AI "poor to ok in control, pretty bad for combo", so a control ' +

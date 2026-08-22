@@ -153,8 +153,13 @@
       "games_per_arm": 12,
       "win_a": 0.0,
       "win_b": 0.083,
-      "overlap": true,
-      "reading": "the win-rate intervals OVERLAP at this N — the difference is noise until more games say otherwise"
+      "win_diff_ci95": [
+        -0.1686,
+        0.3539
+      ],
+      "differs": false,
+      "minimum_detectable_difference": 0.415,
+      "reading": "the 95% interval on the win-rate difference is [-0.169, +0.354] and CONTAINS zero. At 12 games per arm this experiment could only have detected a difference of +0.415 or larger, so it is uninformative about anything smaller — that is not evidence of no effect."
     }
   },
   "next": [

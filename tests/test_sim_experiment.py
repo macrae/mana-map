@@ -83,18 +83,64 @@ def _analysis(win, n, dmg, share):
                    "token_resolutions": {"mean": 2.0, "n": n}}}}}
 
 
-def test_the_delta_reports_both_arms_and_overlap_honestly():
+def test_the_delta_puts_an_interval_on_the_difference_not_on_each_arm():
+    """The fix. `intervals_overlap` is GONE, not deprecated — it named the overlap
+    fallacy, and a key left in the artifact re-invites the error it was removed
+    for. Every figure now carries an interval on the difference, its N and the
+    method that produced it, and no figure carries a bare `diff`."""
     d = ex.delta(_analysis(0.1, 20, 10.0, 0.0), _analysis(0.2, 20, 30.0, 0.19), SLUG)
     w = d["win_rate"]
     assert w["a"] == 0.1 and w["b"] == 0.2 and w["diff"] == 0.1
-    assert w["intervals_overlap"] is True and "noise" in d["reading"]
-    assert d["combat_damage_dealt_to_players"]["diff"] == 20.0
-    assert d["token_damage_share"]["diff"] == 0.19
-    d2 = ex.delta(_analysis(0.05, 400, 1, 0), _analysis(0.9, 400, 1, 0), SLUG)
-    # force disjoint intervals
-    d2 = ex.delta({"games": 9, "seats": {SLUG: {**_analysis(0.05, 9, 1, 0)["seats"][SLUG], "win_rate_ci95": [0.0, 0.2]}}},
-                  {"games": 9, "seats": {SLUG: {**_analysis(0.9, 9, 1, 0)["seats"][SLUG], "win_rate_ci95": [0.5, 1.0]}}}, SLUG)
-    assert d2["win_rate"]["intervals_overlap"] is False and "DISJOINT" in d2["reading"].upper() or "real difference" in d2["reading"]
+    assert "intervals_overlap" not in w
+    assert w["ci95_diff"][0] < 0 < w["ci95_diff"][1], "0.1 vs 0.2 at n=20 cannot be called"
+    assert w["excludes_zero"] is False
+    assert "Newcombe" in w["method"]
+    for name, _ in ex.DELTA_KEYS:
+        assert "n_a" in d[name] and "method" in d[name], f"{name} travels without its N"
+
+
+def test_a_real_win_rate_difference_is_called():
+    d = ex.delta(_analysis(0.05, 200, 1, 0), _analysis(0.60, 200, 1, 0), SLUG)
+    assert d["win_rate"]["excludes_zero"] is True
+    assert "EXCLUDES zero" in d["reading"]
+
+
+def test_the_reading_never_calls_an_uninformative_result_no_effect():
+    """The old string said an overlap meant "the difference is noise". At n=20 the
+    experiment cannot detect anything under about a 40-point swing, and saying so
+    is a different claim from saying there is no difference."""
+    d = ex.delta(_analysis(0.1, 20, 10.0, 0.0), _analysis(0.2, 20, 30.0, 0.19), SLUG)
+    assert "CONTAINS zero" in d["reading"]
+    assert "not evidence of no effect" in d["reading"]
+    assert "noise" not in d["reading"]
+
+
+def test_the_power_block_says_what_could_have_been_detected():
+    d = ex.delta(_analysis(0.0, 12, 1, 0), _analysis(0.0, 12, 1, 0), SLUG)
+    p = d["power"]
+    assert p["primary_endpoint"] == "win_rate" and p["n_per_arm"] == 12
+    assert p["minimum_detectable_rate_b"] == 0.415, (
+        "at twelve games an arm, arm B must win five of twelve to be called")
+    assert p["games_per_arm_to_detect_0.10"] is not None
+
+
+def test_only_the_win_rate_is_pre_registered():
+    """Eleven figures at alpha=0.05 means roughly one interval in two experiments
+    excludes zero by chance. The other ten are descriptive and must not carry a
+    verdict of their own."""
+    d = ex.delta(_analysis(0.1, 20, 10.0, 0.0), _analysis(0.2, 20, 30.0, 0.19), SLUG)
+    assert d["power"]["primary_endpoint"] == ex.PRIMARY_ENDPOINT
+    assert ex.PRIMARY_ENDPOINT == "win_rate"
+
+
+def test_a_figure_with_no_per_game_values_says_so_rather_than_implying_precision():
+    """An older artifact whose logs are gone re-derives to a bare difference. An
+    absent interval must never read as a narrow one."""
+    d = ex.delta(_analysis(0.1, 20, 10.0, 0.0), _analysis(0.2, 20, 30.0, 0.19), SLUG)
+    m = d["combat_damage_dealt_to_players"]
+    assert m["diff"] == 20.0
+    assert m.get("ci95_diff") is None
+    assert "no per-game values" in m["method"]
 
 
 def test_the_tracked_artifact_carries_the_honesty_lines():
@@ -106,7 +152,11 @@ def test_the_tracked_artifact_carries_the_honesty_lines():
     assert any("SEEDED" in a for a in doc["assumptions"])
     assert doc["arms"]["a"]["decklist_text"] and doc["arms"]["b"]["decklist_text"], \
         "the arms' lists ride in the artifact so the gitignored logs are exactly regenerable"
-    assert doc["delta"]["win_rate"]["intervals_overlap"] is True
+    w = doc["delta"]["win_rate"]
+    assert "intervals_overlap" not in w, "the overlap fallacy must not survive in the artifact"
+    assert w["ci95_diff"] and "Newcombe" in w["method"]
+    assert doc["delta"]["power"]["minimum_detectable_difference"] is not None, (
+        "an experiment that reports no difference must say what it could have found")
 
 
 def test_the_delta_carries_commander_damage_per_defender():
