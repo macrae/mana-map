@@ -23,21 +23,63 @@ from manamap.pilot import build_index
 from manamap.pilot.common import checker_passed, load_json
 
 
+# The dossier destructures exactly these; a rename breaks the page silently,
+# because `getJSON` swallows every failure to null and an absent key reads the
+# same as an absent artifact.
+MANIFEST_KEYS = {
+    "slug", "volume", "deck_name", "commander", "coverline", "verified",
+    "decisions", "stack_files", "stack_cards", "published", "status",
+    "sim_runs", "experiments", "prescriptions", "decision_files", "has",
+}
+
+
+@requires_deck
 def test_manifest_carries_the_fields_the_dossier_reads():
-    entries = [{
-        "slug": "x", "volume": 1, "deck_name": "X", "commander": "C",
-        "coverline": "L", "verified": 2, "decisions": 1,
-        "stack_files": ["001-a.json"], "image": None, "issue_date": "", "mean_cast": None,
-    }]
-    manifest = {"decks": [
-        {k: e[k] for k in ("slug", "volume", "deck_name", "commander",
-                           "coverline", "verified", "decisions", "stack_files")}
-        for e in entries
-    ]}
-    # The dossier destructures exactly these keys; a rename breaks the page.
-    assert set(manifest["decks"][0]) == {
-        "slug", "volume", "deck_name", "commander", "coverline",
-        "verified", "decisions", "stack_files"}
+    path = DECKS_DIR / "index.json"
+    if not path.exists():
+        pytest.skip("no manifest yet — run `manamap pilot build-index`")
+    for deck in json.loads(path.read_text())["decks"]:
+        assert set(deck) == MANIFEST_KEYS, deck["slug"]
+
+
+@requires_deck
+def test_the_manifest_names_every_directory_a_browser_cannot_list():
+    """`stacks/` was named here from the start for exactly this reason, and four
+    other directories of keyed instances were not — so the dossier could show eight
+    panels and no simulation, no experiment, no prescription and no decision.
+
+    A browser cannot list a directory. If the manifest does not name the file, the
+    page cannot fetch it, and no amount of frontend work fixes that.
+    """
+    manifest = {d["slug"]: d for d in
+                json.loads((DECKS_DIR / "index.json").read_text())["decks"]}
+    for slug, deck in manifest.items():
+        for key, subdir in (("sim_runs", "sim"), ("experiments", "experiments"),
+                            ("prescriptions", "prescriptions")):
+            on_disk = sorted(p.name for p in (DECKS_DIR / slug / subdir).glob("*.json"))
+            assert deck[key] == on_disk, f"{slug}.{key} disagrees with {subdir}/"
+            for name in deck[key]:
+                assert (DECKS_DIR / slug / subdir / name).exists(), f"{slug}: {name}"
+
+
+@requires_deck
+def test_presence_flags_match_the_files_on_disk():
+    """`has` exists so the page knows whether to fetch at all. `getJSON` swallows a
+    404 to null, so "absent artifact" and "failed request" are indistinguishable —
+    the flag is what makes them different."""
+    for deck in json.loads((DECKS_DIR / "index.json").read_text())["decks"]:
+        base = DECKS_DIR / deck["slug"]
+        for name, flag in deck["has"].items():
+            path = base / ("log.jsonl" if name == "log" else f"{name}.json")
+            assert flag == path.exists(), f"{deck['slug']}.has[{name}]"
+
+
+def test_the_manifest_is_byte_deterministic():
+    """CI's last step is `make manuals && git diff --exit-code -- … index.json`, so a
+    manifest that reorders between runs turns main red for no reason."""
+    a = build_index.gather_entries()
+    b = build_index.gather_entries()
+    assert json.dumps(a, sort_keys=True) == json.dumps(b, sort_keys=True)
 
 
 @requires_deck

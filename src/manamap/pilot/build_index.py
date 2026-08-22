@@ -262,9 +262,34 @@ def gather_entries():
             if cards:
                 stack_cards[name] = cards
 
+        # A browser cannot list a directory. `stacks/` was already named here for
+        # exactly that reason; these are the four other directories of KEYED
+        # INSTANCES the deck page needs — sim runs, experiments, prescriptions and
+        # decision spreads. Without them the page can fetch an artifact it knows the
+        # name of and nothing else, which is why the dossier showed eight panels and
+        # no simulation, no experiment and no prescription.
+        instanced = {
+            "sim_runs": sorted(p.name for p in (deck_path / "sim").glob("*.json")),
+            "experiments": sorted(p.name for p in (deck_path / "experiments").glob("*.json")),
+            "prescriptions": sorted(p.name for p in (deck_path / "prescriptions").glob("*.json")),
+            "decision_files": sorted(
+                p.name for p in (deck_path / "decisions").glob("*.json")
+                if not withheld(load_json(p, {}))),
+        }
+        # Presence of the single-file artifacts, so the page knows whether to fetch
+        # rather than firing a request per deck and reading a 404 as "absent" — the
+        # ambiguity `getJSON` currently cannot resolve.
+        has = {name: (deck_path / f"{name}.json").exists()
+               for name in ("engine", "diagnosis", "deck_recon", "deck_map",
+                            "build_plan", "manual_prose", "pending",
+                            "log_annotations", "deck_versions")}
+        has["log"] = (deck_path / "log.jsonl").exists()
+
         entries.append({
             "slug": slug,
             "published": published,
+            **instanced,
+            "has": has,
             "volume": issue.get("volume", 999),   # sentinel: un-numbered issues sort last
             "issue_date": issue.get("issue_date", ""),
             "deck_name": issue.get("deck_name") or commander.get("name", slug),
@@ -355,7 +380,9 @@ def write_manifest(entries):
         "decks": [
             {k: e[k] for k in ("slug", "volume", "deck_name", "commander",
                                "coverline", "verified", "decisions", "stack_files",
-                               "stack_cards", "published")}
+                               "stack_cards", "published", "status",
+                               "sim_runs", "experiments", "prescriptions",
+                               "decision_files", "has")}
             for e in entries
         ]
     }
