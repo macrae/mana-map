@@ -285,7 +285,7 @@ Surface     artifacts → deck-info --write → info.json ─┐
 ```
 
 `manamap run` drives the first (15 steps, ~40–60 min, internet at two of them).
-`manamap pilot <cmd>` drives the rest (63 pilot subcommands). All constants live in
+`manamap pilot <cmd>` drives the rest (64 pilot subcommands). All constants live in
 `src/manamap/config.py`; both CLIs are registry-driven with lazy imports.
 
 ## Simulation — the centre of the bench

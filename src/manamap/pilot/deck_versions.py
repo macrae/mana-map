@@ -188,7 +188,16 @@ def resolve(slug, ref, vers=None):
         ref = ref[1:]
     if ref.isdigit():
         n = int(ref)
-        return next((v for v in vers if v["version"] == n), None)
+        hit = next((v for v in vers if v["version"] == n), None)
+        if hit is not None:
+            return hit
+        # FALL THROUGH, do not return None. A git sha is hex, so an all-digit
+        # short prefix is not exotic: (10/16)**7 is about one 7-char prefix in
+        # 27. Returning None here meant a perfectly good sha silently resolved
+        # to nothing roughly 3.7% of the time — which is exactly how often
+        # `test_tags_are_authored_and_resolve` failed under the full suite while
+        # passing every time in isolation, and it would have done the same to a
+        # pilot typing `deck-version <slug> show 1234567`.
     t = tags(slug).get(ref)
     if t:
         return next((v for v in vers if v["version"] == t.get("version")), None)

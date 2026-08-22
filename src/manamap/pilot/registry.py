@@ -8,6 +8,7 @@ import importlib
 
 # (name, dotted module, description)
 PILOT_STEPS = [
+    ("check-in", "manamap.pilot.check_in", "a paper decklist -> decklist.txt (diff, refuse, apply, re-derive)"),
     ("fetch-deck", "manamap.pilot.fetch_deck", "decklist.txt -> cards.json via Scryfall"),
     ("validate-deck", "manamap.pilot.validate_deck", "Check 100-card/commander/singleton invariants"),
     ("download-rules", "manamap.pilot.download_rules", "Download the Comprehensive Rules TXT"),
@@ -96,7 +97,7 @@ PILOT_STEPS = [
 ]
 
 _DECK_COMMANDS = {
-    "fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual",
+    "check-in", "fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual",
     "validate-issue", "cache-status", "cache-record", "cache-clear", "cache-rebless",
     "cache-snapshot", "cache-rerecord",
     "artist-credits",
@@ -221,6 +222,17 @@ def add_pilot_parser(subparsers):
         if name == "cache-clear":
             cmd.add_argument("--routine", default=None,
                              help="Routine id; omit to clear the whole deck")
+        if name == "check-in":
+            cmd.add_argument("--from", dest="source", required=True,
+                             help="the paper decklist: a file, or - for stdin")
+            cmd.add_argument("--write", action="store_true",
+                             help="apply it, then run fetch-deck -> goldfish -> mana-analysis "
+                                  "(default is a dry-run diff)")
+            cmd.add_argument("--no-chain", action="store_true", dest="no_chain",
+                             help="write decklist.txt only; skip the re-derivation")
+            cmd.add_argument("--force", action="store_true",
+                             help="apply despite a refusal. You want this approximately never")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "fetch-deck":
             cmd.add_argument("--force", action="store_true",
                              help="Re-fetch from Scryfall even if the decklist is unchanged")

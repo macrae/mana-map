@@ -121,3 +121,20 @@ def test_no_git_history_is_an_empty_list_not_an_error(tmp_path, monkeypatch):
     monkeypatch.setattr(dh, "_REPO_ROOT", tmp_path)
     doc = dv.report(SLUG)
     assert doc["versions"] == [] and doc["current_version"] is None
+
+
+def test_an_all_digit_sha_prefix_still_resolves(repo, monkeypatch):
+    """A git sha is hex, so a short prefix is all digits about one time in 27 —
+    (10/16)**7. `resolve` matched the version-number branch on those and returned
+    early, so a real sha resolved to nothing 3.7% of the time. It surfaced as a
+    flake in the test above (passing alone, failing under the full suite) and
+    would have hit any pilot whose commit happened to start with digits."""
+    vers = dv.versions(SLUG)
+    monkeypatch.setattr(dv, "versions", lambda slug: [
+        {**v, "first_sha": "1234567890ab", "sha": "1234567890ab"} if v["version"] == 1 else v
+        for v in vers])
+    hit = dv.resolve(SLUG, "1234567")
+    assert hit is not None, "an all-digit sha prefix must not be read as a version number"
+    assert hit["version"] == 1
+    # and a real version number still wins over a sha that starts with it
+    assert dv.resolve(SLUG, "2")["version"] == 2

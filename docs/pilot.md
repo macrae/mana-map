@@ -90,6 +90,7 @@ manamap pilot pool-facts <paths…> [--exclude F] [--json] [--out F]  # a BOX OF
 manamap pilot cache-rebless <slug>             # re-record every STALE_OK routine, zero spawns
 manamap pilot impact <slug> [--json]           # card/figure/target/zone staleness report (free)
 manamap pilot validate-strategic-frame <slug>  # frame form + candidate-line flags
+manamap pilot check-in <slug> --from F  # a PAPER list → decklist.txt: diff, refuse, apply
 manamap pilot fetch-deck <slug>         # decklist.txt → cards.json (Scryfall)
 manamap pilot validate-deck <slug>      # 100/commander/singleton/color identity
 manamap pilot validate-stack <slug> [--stack NNN]   # citation contract (stacks + decisions)
@@ -307,6 +308,35 @@ working list; `tag <name> [--at V4] [--note]` writes the authored `deck_versions
 (the one version datum a browser can read without git); `restore V4` is a **dry run**
 unless `--write`, after which `fetch-deck` → `goldfish` → `mana-analysis` and a commit.
 `deck-status` prints the current version in its header.
+
+### check-in — a paper deck arrives
+
+`manamap pilot check-in <slug> --from <file>` (or `-` for stdin) is how a rebuilt
+paper deck enters the repo. It parses the pasted list with `fetch_deck.parse_decklist`
+— the same parser the browser importer is fixture-locked to — diffs it against
+`decklist.txt` at **copy** level, and reports **PULL** (leaves the sleeves) and **ADD**
+(goes in). A dry run by default; `--write` applies it and then runs `fetch-deck` →
+`goldfish` → `mana-analysis`, because those two artifacts stamp the decklist sha and
+leaving them behind makes the deck read as stale forever.
+
+**It refuses rather than guesses**, and that is the whole point. A paper list is typed
+by a human reading sleeves, so it arrives with a card written twice, a name
+misremembered, or ninety-nine cards where there should be a hundred — every one of
+which `fetch-deck` would survive silently, leaving a repo list that is not the deck on
+the table. Blocking: a non-basic card listed more than once (singleton forbids it;
+basics are exempt), a total that is not 100, a name matching nothing in the corpus, no
+commander. Warning-only: a changed commander (that is a different deck, and probably
+wants a new slug) and an absent corpus, which cannot check names but must not stop a
+fresh clone accepting a deck. `--force` overrides; you want it approximately never.
+
+The written file is **canonical**, not verbatim — `Commander:` block, then `Deck:`
+sorted by name, printings and foil markers carried through. Reformatting cannot
+manufacture a version, because `deck-history` and `deck-version` compare parsed entries.
+
+The last step is a commit, and it is not optional bookkeeping: `decklist.txt` is tracked,
+so the commit is what `deck-version` numbers and what the captain's log stamps games
+against. Check a deck in without committing and tonight's games attach to no version at
+all. Then `deck-version <slug> paper` marks it as sleeved.
 
 **Why the version list is not a tracked file:** the commit that changes `decklist.txt`
 gets its sha AFTER anything written in the same commit, so a generated `versions.json`
