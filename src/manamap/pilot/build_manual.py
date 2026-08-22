@@ -105,8 +105,14 @@ TODO = '<p><span class="todo">TODO</span> This section is awaiting content.</p>'
 _DECK_MAP = {"doc": None, "engine": None}
 
 
-def engine_stage_of():
-    """`{card name: stage}` from the loaded engine model, or `{}` when there is none.
+def engine_stage_of(engine=None):
+    """`{card name: stage}` from the engine model, or `{}` when there is none.
+
+    Takes the doc as an argument when given, and falls back to the per-render
+    holder otherwise. The holder exists because threading one artifact through
+    every department signature to reach one furniture call was worse than a
+    module global; a second renderer that does not use the holder is a better
+    reason to accept the parameter than to make it set the global.
 
     Built on demand from `stages[].cards` rather than stored, because the engine
     doc is the single source and a second copy is a second thing to keep true. A
@@ -114,7 +120,7 @@ def engine_stage_of():
     stage as a job and a card doing two jobs is led by the earlier one, which is
     also the order the schematic reads in.
     """
-    engine = _DECK_MAP.get("engine") or {}
+    engine = engine if engine is not None else (_DECK_MAP.get("engine") or {})
     from manamap.pilot.validate_engine import STAGES as ORDER
     out = {}
     for stage in sorted((engine.get("stages") or []),
@@ -1656,24 +1662,18 @@ def render_short_list(analysis):
     return "".join(parts)
 
 
-def render_judges_desk(issue, plan, stacks, cards_by_name, withheld_stacks=()):
-    """The proof — a scannable case index, each row opening the full record.
+def judges_desk_files(stacks, back_label="The Kill", contents_link=True):
+    """The case files themselves, with no department furniture around them.
 
-    "Judge's Desk shrinks to verdicts" and "it may not summarize, truncate, or
-    paraphrase a single citation" (§5.1) are both binding, and they only look
-    contradictory if you read "shrinks" as "holds less". What shrinks is the
-    FOOTPRINT: a reader meets a one-line row per case — number, title, status,
-    and how much record is behind it — instead of a stack of tall headers. Open
-    one and the complete resolution is there, every citation verbatim, unchanged.
-
-    The row deliberately carries **no holding**. Deriving one from
-    `final_state.summary` was tried, measured against the corpus and removed — the
-    note above `render_the_kill` records what it produced. A wrong verdict in the
-    one department that exists for correctness is worse than no verdict, and the
-    renderer may not summarise proof. The title is authored, so the title is what
-    the index shows.
+    Extracted so the compact page can render the same record without
+    `dept_open`/`dept_close`, which need an `issue["volume"]` that only a
+    magazine has. `back_label` names the section the ↩ link returns to,
+    because the two renderers call that section different things and a link
+    that says "The Kill" on a page with no Kill is a small lie in the one
+    department that exists for correctness.
     """
-    dept = plan_dept(plan, "judges-desk")
+    contents = (' · <a class="xref" href="#contents">↑ Contents</a>'
+                if contents_link else "")
     files = []
     for stack in stacks:
         sid = stack["id"]
@@ -1716,13 +1716,35 @@ def render_judges_desk(issue, plan, stacks, cards_by_name, withheld_stacks=()):
   <ol>{"".join(steps)}</ol>
   {render_after_block(stack.get("resolution", {}).get("final_state", {}))}
   <p class="small"><a class="xref" href="#line-{esc(sid)}">↩ Back to this line in
-    The Kill</a> · <a class="xref" href="#contents">↑ Contents</a></p>
+    {esc(back_label)}</a>{contents}</p>
 </details>""")
+    return "".join(files)
+
+
+def render_judges_desk(issue, plan, stacks, cards_by_name, withheld_stacks=()):
+    """The proof — a scannable case index, each row opening the full record.
+
+    "Judge's Desk shrinks to verdicts" and "it may not summarize, truncate, or
+    paraphrase a single citation" (§5.1) are both binding, and they only look
+    contradictory if you read "shrinks" as "holds less". What shrinks is the
+    FOOTPRINT: a reader meets a one-line row per case — number, title, status,
+    and how much record is behind it — instead of a stack of tall headers. Open
+    one and the complete resolution is there, every citation verbatim, unchanged.
+
+    The row deliberately carries **no holding**. Deriving one from
+    `final_state.summary` was tried, measured against the corpus and removed — the
+    note above `render_the_kill` records what it produced. A wrong verdict in the
+    one department that exists for correctness is worse than no verdict, and the
+    renderer may not summarise proof. The title is authored, so the title is what
+    the index shows.
+    """
+    dept = plan_dept(plan, "judges-desk")
+    files_html = judges_desk_files(stacks)
     return (
         dept_open("judges-desk", plan)
         + '<p class="dek">Every claim the magazine made, with the rule text that backs '
           "it. Nothing here is paraphrased. Tap a case to open its full record.</p>"
-        + ("".join(files) or TODO)
+        + (files_html or TODO)
         + withheld_cases(withheld_stacks)
         + dept_furniture(dept, cards_by_name)
         + dept_close("judges-desk", issue)

@@ -9,6 +9,7 @@ import importlib
 # (name, dotted module, description)
 PILOT_STEPS = [
     ("check-in", "manamap.pilot.check_in", "a paper decklist -> decklist.txt (diff, refuse, apply, re-derive)"),
+    ("build-page", "manamap.pilot.build_page", "the compact deck page (the Pilot's Manual)"),
     ("targeting", "manamap.sim.threat", "who the pod attacks, measured from sim logs (opponent modelling)"),
     ("fetch-deck", "manamap.pilot.fetch_deck", "decklist.txt -> cards.json via Scryfall"),
     ("validate-deck", "manamap.pilot.validate_deck", "Check 100-card/commander/singleton invariants"),
@@ -98,7 +99,7 @@ PILOT_STEPS = [
 ]
 
 _DECK_COMMANDS = {
-    "check-in", "targeting", "fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual",
+    "check-in", "targeting", "build-page", "fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual",
     "validate-issue", "cache-status", "cache-record", "cache-clear", "cache-rebless",
     "cache-snapshot", "cache-rerecord",
     "artist-credits",
@@ -223,6 +224,9 @@ def add_pilot_parser(subparsers):
         if name == "cache-clear":
             cmd.add_argument("--routine", default=None,
                              help="Routine id; omit to clear the whole deck")
+        if name == "build-page":
+            cmd.add_argument("--out", default=None,
+                             help="write elsewhere (a directory, or a path naming the slug)")
         if name == "targeting":
             cmd.add_argument("--run", action="append",
                              help="limit to one run id (repeatable); default pools every run")

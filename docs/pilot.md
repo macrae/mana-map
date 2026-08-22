@@ -92,6 +92,7 @@ manamap pilot impact <slug> [--json]           # card/figure/target/zone stalene
 manamap pilot validate-strategic-frame <slug>  # frame form + candidate-line flags
 manamap pilot check-in <slug> --from F  # a PAPER list → decklist.txt: diff, refuse, apply
 manamap pilot targeting <slug>          # who the pod attacks, measured from sim logs
+manamap pilot build-page <slug>         # the compact deck page (the Pilot's Manual)
 manamap pilot fetch-deck <slug>         # decklist.txt → cards.json (Scryfall)
 manamap pilot validate-deck <slug>      # 100/commander/singleton/color identity
 manamap pilot validate-stack <slug> [--stack NNN]   # citation contract (stacks + decisions)
@@ -338,6 +339,42 @@ The last step is a commit, and it is not optional bookkeeping: `decklist.txt` is
 so the commit is what `deck-version` numbers and what the captain's log stamps games
 against. Check a deck in without committing and tonight's games attach to no version at
 all. Then `deck-version <slug> paper` marks it as sleeved.
+
+### build-page — the Pilot's Manual
+
+`manamap pilot build-page <slug>` renders the compact deck page from
+`pilot/page_spec.py:SECTIONS` — the plan, the roster, the mulligan, the lines, the table
+read, the debrief, the numbers, the proof. It is the replacement for the magazine
+(`docs/manual-v5-spec.md`), built alongside the frozen `build_manual.py` rather than over
+it, and it writes to the same `manuals/<slug>.html` path.
+
+**Measured, not estimated.** Radagast 71.3 screens → **15.5**; yawgmoth-swarm 88.4 →
+**21.9**; edgar 16.1; goblin-storm 12.8. Visible words on radagast fall 34,653 → ~5,900,
+because the folds do most of the work.
+
+Two measurements changed the design mid-build, and both are worth knowing:
+
+- **A page whose stylesheet is missing measures three times its real height.** The first
+  render came in at 83.4 screens — *worse than the magazine* — because it was written to a
+  scratch directory where the relatively-linked `magazine.css` 404s, so every hover-preview
+  image rendered inline at full size. `build-page --out` now copies both sheets beside the
+  page. Nothing about the renderer was wrong.
+- **THE LINES folds the board WITH the theatre.** With the board open the section was 8.2
+  screens against the spec's ~4, while every other section matched or beat its estimate —
+  so ~4 was only ever reachable with the board folded. The argument stays open (question,
+  intro, result); the evidence folds. The result is the authored `final_state.summary`
+  rather than a second board block: that block is 266px, the same height as the board it
+  followed, and `judges_desk_files` already renders it inside every case in THE RECORD, so
+  the page was drawing the same board twice.
+
+**Every section degrades to absent**, never to `[TODO]` — that was a magazine convention,
+needed because the contents page indexed every department whether or not it had copy. The
+nav rail here is generated from what actually rendered. Measured: of the nine, `kinnan` (a bare build
+plan) renders two, `kianne` four and `radagast` eight — and none of them raise.
+(Spelled out on purpose. `test_no_surface_states_a_wrong_section_count` cannot tell a sentence counting how many rendered from one stating how many the registry holds — no regex can — and a doc is cheaper to reword than a check is to make smarter and wronger.)
+
+Rebuilds are byte-identical: no build date anywhere, and the authored `issue_date` is
+printed only when there is one.
 
 ### targeting — who the pod actually attacks
 
