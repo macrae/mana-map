@@ -73,11 +73,22 @@ def test_presence_flags_match_the_files_on_disk():
     """`has` exists so the page knows whether to fetch at all. `getJSON` swallows a
     404 to null, so "absent artifact" and "failed request" are indistinguishable —
     the flag is what makes them different."""
+    from manamap.config import MANUALS_DIR
     for deck in json.loads((DECKS_DIR / "index.json").read_text())["decks"]:
-        base = DECKS_DIR / deck["slug"]
+        slug = deck["slug"]
+        base = DECKS_DIR / slug
         for name, flag in deck["has"].items():
-            path = base / ("log.jsonl" if name == "log" else f"{name}.json")
-            assert flag == path.exists(), f"{deck['slug']}.has[{name}]"
+            # Almost every flag names a file in the deck's own directory. `page`
+            # is the exception on purpose: the compact Pilot's Manual is a
+            # RENDERED page, so it lives under `manuals/p/` beside the magazine
+            # it replaces, not in the artifact directory it was rendered from.
+            if name == "page":
+                path = MANUALS_DIR / "p" / f"{slug}.html"
+            elif name == "log":
+                path = base / "log.jsonl"
+            else:
+                path = base / f"{name}.json"
+            assert flag == path.exists(), f"{slug}.has[{name}] vs {path}"
 
 
 def test_the_manifest_is_byte_deterministic():

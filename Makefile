@@ -29,7 +29,7 @@ PORT    ?= 8000
 PYTHON310 ?= python3.10
 
 .DEFAULT_GOAL := help
-.PHONY: help setup test test-all test-browser test-fresh serve manuals clean check
+.PHONY: help setup test test-all test-browser test-fresh serve manuals clean check demo
 
 help:  ## Show this help
 	@grep -hE '^[a-z-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -86,6 +86,30 @@ manuals:  ## Re-render every published issue (deterministic; should be a no-op)
 	  test -f data/decks/$$slug/issue.json && $(MANAMAP) pilot build-manual $$slug; \
 	done
 	$(MANAMAP) pilot build-index
+
+demo:  ## Rebuild everything the demo shows, then serve it. Run before presenting.
+	@echo "==> the deck manifest (which decks exist, which are locked, what each has)"
+	$(MANAMAP) pilot build-index
+	@echo "==> the composed workbench view for every deck with cards"
+	@for slug in $$(ls data/decks | grep -v '^index.json$$'); do \
+	  test -f data/decks/$$slug/cards.json && $(MANAMAP) pilot deck-info $$slug --write >/dev/null \
+	    && echo "    info.json  $$slug"; \
+	done
+	@echo "==> the compact Pilot's Manual for every deck that can render one"
+	@for slug in $$(ls data/decks | grep -v '^index.json$$'); do \
+	  test -f data/decks/$$slug/cards.json && $(MANAMAP) pilot build-page $$slug >/dev/null \
+	    && echo "    manuals/p/$$slug.html"; \
+	done
+	@$(MANAMAP) pilot build-index
+	@echo ""
+	@echo "  Workbench   http://localhost:$(PORT)/viz/workbench.html   <- START HERE"
+	@echo "  A deck      http://localhost:$(PORT)/viz/deck.html?deck=edgar-vampires"
+	@echo "  The atlas   http://localhost:$(PORT)/viz/index.html"
+	@echo ""
+	@echo "  DO NOT run 'simulate' or 'experiment' while presenting - Forge saturates"
+	@echo "  every core and the browser stops responding mid-click."
+	@echo ""
+	python3 -m http.server $(PORT)
 
 clean:  ## Drop caches and bytecode. Never touches data/ or manuals/.
 	rm -rf .pytest_cache

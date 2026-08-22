@@ -284,6 +284,9 @@ def gather_entries():
                             "build_plan", "manual_prose", "pending",
                             "log_annotations", "deck_versions")}
         has["log"] = (deck_path / "log.jsonl").exists()
+        # The compact Pilot's Manual. Under `manuals/p/` while it coexists with
+        # the magazine; the browser cannot list a directory, so presence rides here.
+        has["page"] = (MANUALS_DIR / "p" / f"{slug}.html").exists()
 
         # IS THIS DECK BUILT IN PAPER? The workbench's front door filters on it,
         # and no other field answers it — `status` marks only the dead decks, so

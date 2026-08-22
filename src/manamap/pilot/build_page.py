@@ -515,7 +515,12 @@ def main(args):
     d = load(slug)
     html = render_page(d)
     out = getattr(args, "out", None)
-    path = (DECKS_DIR.parent.parent / MANUALS / f"{slug}.html") if not out else None
+    # `manuals/p/<slug>.html`, NOT `manuals/<slug>.html`. The compact page is
+    # meant to replace the magazine and eventually will, but until the phase that
+    # deletes `build_manual.py` they coexist — and writing to the magazine's path
+    # would silently overwrite nine tracked, byte-compared files the moment
+    # anyone ran this.
+    path = (MANUALS_DIR_PATH / "p" / f"{slug}.html") if not out else None
     if out:
         from manamap.pilot.common import resolve_out_path
         path = resolve_out_path(out, slug, "build-page", ext=".html")
@@ -526,7 +531,11 @@ def main(args):
     # its real height, which is how the first measurement of this renderer came
     # in worse than the magazine it replaces.
     pd.write_stylesheet()
-    if out:
+    # Both sheets sit beside the page wherever it lands. They are linked
+    # relatively, and a page whose stylesheet 404s measures three times its real
+    # height — which is how the first render of this module came in worse than
+    # the magazine it replaces.
+    if path.parent != MANUALS_DIR_PATH:
         (path.parent / "page.css").write_bytes(pd.stylesheet_bytes())
         import shutil
         mag = MANUALS_DIR_PATH / "magazine.css"

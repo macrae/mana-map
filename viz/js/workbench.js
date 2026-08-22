@@ -82,15 +82,23 @@
     var art = e.image
       ? '<img class="wb-art" src="' + esc(e.image) + '" alt="" loading="lazy">'
       : '<div class="wb-art wb-art-none"></div>';
-    return '<a class="wb-card' + (dead ? ' is-dead' : '') + '" href="deck.html?deck='
-      + encodeURIComponent(e.slug) + '">'
+    // The card is one link to the deck's own page. The manual gets its own small
+    // link INSIDE it rather than a second card-sized target — a card that opens
+    // two different things depending on where you click is the interaction bug
+    // this repo has already fixed once, in the atlas.
+    var manual = (e.has && e.has.page)
+      ? '<a class="wb-manual" href="../manuals/p/' + encodeURIComponent(e.slug)
+        + '.html">Pilot\'s Manual &rarr;</a>'
+      : '';
+    return '<div class="wb-card' + (dead ? ' is-dead' : '') + '">'
+      + '<a class="wb-hit" href="deck.html?deck=' + encodeURIComponent(e.slug) + '">'
       + art
       + '<div class="wb-body">'
       +   '<h3>' + esc(e.deck_name || e.slug) + '</h3>'
       +   '<div class="wb-sub">' + esc(e.commander || '') + '</div>'
       +   (dead ? '<div class="wb-dead">' + esc(dead[1]) + '</div>' : '')
       +   '<div class="wb-chips">' + lockChips(e.paper) + evidenceChips(e, info) + '</div>'
-      + '</div></a>';
+      + '</div></a>' + manual + '</div>';
   }
 
   function rack(title, blurb, entries, infos) {

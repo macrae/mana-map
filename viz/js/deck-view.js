@@ -624,7 +624,25 @@
 
   function logPanel(d) {
     var entries = d.log || [];
-    if (!entries.length) return '';
+    // A LOCKED deck with no games is not "nothing to show" — it is the most
+    // actionable state on the page, and a panel that simply vanishes says
+    // nothing at all. An unlocked deck genuinely has no table to log from, so
+    // that one still renders no panel.
+    if (!entries.length) {
+      if (!(d.entry && d.entry.locked)) return '';
+      return panel('log', 'The captain\'s log',
+        'What happened at the table, in the pilot\'s words.', ['coach'],
+        'var(--tier-coach)',
+        '<p>No games logged on this deck yet. This deck is sleeved, so the next '
+        + 'one you play lands here — stamped with the exact list you played it '
+        + 'on, so its record attaches to that version and not to the deck in '
+        + 'general.</p>'
+        + '<p class="ev">Log a game: <code>manamap pilot deck-notes '
+        + esc(d.slug || '&lt;slug&gt;')
+        + ' add "…" --result win|loss --opponents 3</code>. The debrief agent '
+        + 'then reads it and routes what it raises to the loop that can settle '
+        + 'it — a goldfish run, a rules resolution, a question to the doctor.</p>');
+    }
     var notes = (d.debrief || {}).entries || {};
     var items = entries.slice().reverse().map(function (e) {
       var n = notes[e.id];
@@ -683,6 +701,20 @@
     } else {
       link.hidden = false;
       link.href = '../manuals/' + slug + '.html';
+    }
+    // The compact Pilot's Manual lives under manuals/p/ while it coexists with
+    // the magazine it replaces. Hidden rather than dead when a deck has none —
+    // the same rule the issue link follows, and for the same reason: a link that
+    // 404s is worse than a link that is not there.
+    var manual = document.getElementById('manualLink');
+    if (manual) {
+      if (d.has && d.has.page) {
+        manual.hidden = false;
+        manual.href = '../manuals/p/' + slug + '.html';
+      } else {
+        manual.hidden = true;
+        manual.removeAttribute('href');
+      }
     }
     // The map's Deck Lens reads ?deck=<slug> on entry, so this deep-links straight
     // into the overlay rather than dropping the reader on an unfiltered map.
@@ -773,6 +805,12 @@
           // issue.json at all, so reading the flag off `d.issue` would always be
           // undefined and the dead-link guard would never fire.
           d.published = entry.published !== false;
+          // The manifest entry itself, for the panels that need to know what
+          // KIND of deck this is rather than what artifacts it has — whether it
+          // is sleeved, above all. An empty log means something different on a
+          // locked deck than on a build plan.
+          d.entry = entry;
+          d.slug = entry.slug;
           render(entry.slug, d);
         });
     }).catch(function (e) {

@@ -4665,7 +4665,7 @@ def _deck(slug, **kw):
     base = {"slug": slug, "deck_name": slug.upper(), "commander": "Someone",
             "image": None, "status": None, "verified": 0, "decisions": 0,
             "sim_runs": [], "experiments": [], "prescriptions": [],
-            "locked": False, "paper": None, "published": True}
+            "locked": False, "paper": None, "published": True, "has": {}}
     base.update(kw)
     return base
 
@@ -4758,8 +4758,28 @@ def test_every_card_links_to_that_decks_dossier(browser, viz_server):
     page = _workbench(browser, viz_server, [_deck("alpha"), _deck("beta")])
     try:
         hrefs = page.eval_on_selector_all(
-            ".wb-card", "els => els.map(e => e.getAttribute('href'))")
+            ".wb-hit", "els => els.map(e => e.getAttribute('href'))")
         assert hrefs == ["deck.html?deck=alpha", "deck.html?deck=beta"], hrefs
+    finally:
+        page.close()
+
+
+def test_the_manual_link_appears_only_when_there_is_a_manual(browser, viz_server):
+    """A card is ONE hit area to the deck page, with the manual as its own small
+    link inside it. A card that opens two different things depending on where you
+    click is the interaction bug the atlas already fixed once. And a link to a
+    page that does not exist is worse than no link, so it is hidden rather than
+    dead — the same rule the dossier's issue link follows."""
+    page = _workbench(browser, viz_server, [
+        _deck("withpage", has={"page": True}),
+        _deck("nopage", has={"page": False}),
+    ])
+    try:
+        links = page.eval_on_selector_all(
+            ".wb-manual", "els => els.map(e => e.getAttribute('href'))")
+        assert links == ["../manuals/p/withpage.html"], links
+        # and the card is still exactly one target to the dossier
+        assert page.eval_on_selector_all(".wb-hit", "els => els.length") == 2
     finally:
         page.close()
 

@@ -248,3 +248,16 @@ details.case .body { padding: 0 14px 14px; }
   padding: 16px 18px; color: var(--ink-soft); margin: 0 0 34px;
 }
 .wb-empty code { color: var(--ink); font-family: var(--type); }
+
+/* The card is one hit area to the deck page; the manual is its own small link
+   inside it. A card that opens two different things depending on where you
+   click is the interaction bug the atlas already fixed once. */
+.wb-card { display: flex; flex-direction: column; }
+.wb-hit { display: block; text-decoration: none; color: inherit; flex: 1; }
+.wb-manual {
+  display: block; padding: 8px 14px 11px; text-decoration: none;
+  border-top: 1px solid var(--rule); color: var(--y2k-blue);
+  font-family: var(--condensed); text-transform: uppercase;
+  letter-spacing: .05em; font-size: 11px;
+}
+.wb-manual:hover { background: var(--panel-hi); }

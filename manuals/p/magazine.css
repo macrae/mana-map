@@ -1,0 +1,874 @@
+
+/* ── Tokens ─────────────────────────────────────────────────────────── */
+:root {
+  --paper:#F4EFE4; --ink:#1A1714; --ink-soft:#4A4038; --rule:#1A1714;
+  --power-red:#E4002B; --burst-yellow:#FFD800; --radical-purple:#7B2D8B;
+  --slime-green:#3FBF3F; --hot-magenta:#E4007C;
+  --chrome-hi:#E8ECF0; --chrome-lo:#7A8699; --y2k-blue:#1B4FD8; --y2k-violet:#5B2E9E;
+  --tier-verified:#2E7D32; --tier-data:#1B4FD8; --tier-coach:#C8A03C;
+  --manila:#E8D9A8; --stamp-red:#C41E1E;
+  --trim:1080px;
+  --display:"Archivo Black","Arial Black",sans-serif;
+  --condensed:"Oswald","Arial Narrow",sans-serif;
+  --techno:"Michroma","Arial Black",sans-serif;
+  --comic:"Bangers",cursive;
+  --type:"Special Elite","Courier New",monospace;
+  --body:"Inter",system-ui,-apple-system,sans-serif;
+}
+
+/* ── Paper ──────────────────────────────────────────────────────────── */
+* { box-sizing:border-box; }
+body {
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--body); font-size:16px; line-height:1.62;
+  /* cheap-stock tooth */
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/></filter><rect width='60' height='60' filter='url(%23n)' opacity='0.028'/></svg>");
+}
+.trim { max-width:var(--trim); margin:0 auto; background:var(--paper);
+        box-shadow:0 0 60px rgba(0,0,0,.22); }
+img { max-width:100%; display:block; }
+a { color:inherit; }
+
+/* ── Display type ───────────────────────────────────────────────────── */
+.masthead {
+  font-family:var(--techno); font-size:clamp(38px,8.5vw,86px); line-height:.92;
+  letter-spacing:-.02em; text-transform:uppercase; color:var(--chrome-hi);
+  background:linear-gradient(180deg,#fff 0%,#cfd8e2 42%,#7A8699 52%,#e9eef4 68%,#fff 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  filter:drop-shadow(3px 3px 0 var(--power-red)) drop-shadow(5px 5px 0 rgba(0,0,0,.55));
+  margin:0;
+}
+.series-slug {
+  font-family:var(--condensed); font-weight:700; letter-spacing:.42em;
+  text-transform:uppercase; font-size:13px; color:var(--paper);
+  background:var(--ink); display:inline-block; padding:4px 12px 3px; margin-top:6px;
+}
+h1.feature {
+  font-family:var(--display); font-size:clamp(30px,5.4vw,58px); line-height:.95;
+  text-transform:uppercase; margin:.12em 0 .18em; letter-spacing:-.015em;
+  text-shadow:3px 3px 0 rgba(0,0,0,.16);
+}
+.kicker {
+  font-family:var(--condensed); font-weight:700; text-transform:uppercase;
+  letter-spacing:.2em; font-size:12.5px; color:var(--power-red);
+  display:inline-block; border-bottom:3px solid currentColor; padding-bottom:2px;
+}
+.dek { font-size:1.12em; line-height:1.45; color:var(--ink-soft); max-width:60ch;
+       margin:0 0 1em; }
+h2.dept-title {
+  font-family:var(--display); text-transform:uppercase; font-size:clamp(22px,3.4vw,34px);
+  margin:0; line-height:1; letter-spacing:-.01em;
+}
+h3 { font-family:var(--condensed); font-weight:700; text-transform:uppercase;
+     letter-spacing:.06em; font-size:1.05em; margin:1.4em 0 .4em; }
+p { margin:0 0 1em; }
+/* 62ch renders ~66 characters here. The measure was 68ch (~78 characters),
+   which is past the range a reader scans without losing the line — the single
+   cheapest thing on this page that makes it read as dense. */
+.body-copy { max-width:62ch; }
+.body-copy p:first-of-type::first-letter {
+  font-family:var(--display); font-size:3.1em; line-height:.82; float:left;
+  padding:.06em .12em 0 0; color:var(--power-red);
+}
+
+/* ── Department chrome ──────────────────────────────────────────────── */
+/* Space BETWEEN sections goes up and space INSIDE dense furniture comes down —
+   they are opposite moves and both were set from the same 44/34/18. A reader
+   feels "airy" at the seams, where one idea ends and the next begins; padding
+   added inside a dense table just makes the table taller. */
+.dept { padding:64px 34px 26px; border-top:6px solid var(--accent,var(--ink));
+        position:relative; }
+.dept-head { margin-bottom:26px; }
+.dept-head { display:flex; align-items:flex-end; gap:14px; flex-wrap:wrap;
+             border-bottom:3px solid var(--ink); padding-bottom:10px; margin-bottom:20px; }
+.dept-promise { font-family:var(--condensed); text-transform:uppercase;
+                letter-spacing:.12em; font-size:11.5px; color:var(--ink-soft);
+                margin-left:auto; text-align:right; max-width:34ch; }
+.byline { font-family:var(--condensed); text-transform:uppercase;
+          letter-spacing:.14em; font-size:11px; color:var(--ink-soft);
+          margin-top:3px; }
+/* The Flight Plan: sections grouped by act — lean rows, no chart furniture. */
+.toc-act { margin:18px 0 6px; }
+.toc-act-title { font-family:var(--condensed); text-transform:uppercase;
+                 letter-spacing:.22em; font-size:12.5px; color:var(--accent,var(--ink));
+                 border-bottom:2px solid var(--ink); padding-bottom:4px;
+                 margin:0 0 2px; }
+table.toc { width:100%; border-collapse:collapse; font-size:.92em; }
+table.toc td { padding:7px 10px 7px 0; border-bottom:1px solid #cdc5b5;
+               vertical-align:baseline; }
+table.toc tr:last-child td { border-bottom:none; }
+td.toc-title { white-space:nowrap; width:1%; padding-right:18px; }
+td.toc-title a { color:var(--ink); text-decoration:none; }
+td.toc-title a:hover b { color:var(--accent,var(--ink)); }
+td.toc-promise { color:var(--ink-soft); font-style:italic; }
+.toc-byline { display:block; font-family:var(--condensed); text-transform:uppercase;
+              letter-spacing:.1em; font-size:10px; color:var(--ink-soft);
+              margin-top:3px; white-space:nowrap; }
+/* ── Art break: the declared breather between dense spreads (§6) ────── */
+.art-break { position:relative; border-top:6px solid var(--ink); }
+.art-break img { width:100%; max-height:420px; object-fit:cover; }
+.art-break .pull-quote { position:absolute; left:34px; bottom:26px; margin:0;
+  background:rgba(26,23,20,.82); color:var(--paper); padding:12px 18px;
+  border-left:6px solid var(--burst-yellow); max-width:32ch; }
+.art-break .art-credit, .art-break .printing { position:absolute; right:12px;
+  bottom:6px; color:rgba(244,239,228,.75); font-size:.72em; }
+.art-break .printing { bottom:22px; }
+
+/* ── Card links: tap → tile in The 99, hover → card preview ─────────── */
+a.cardref { color:inherit; position:relative;
+            text-decoration:underline solid; text-decoration-thickness:1px;
+            text-decoration-color:var(--accent,var(--ink-soft));
+            text-underline-offset:2px; }
+a.cardref:hover { background:rgba(0,0,0,.05); }
+.card-pop { display:none; position:absolute; left:0; bottom:1.5em;
+            width:230px; max-width:60vw; z-index:70;
+            border:3px solid var(--ink); border-radius:11px;
+            box-shadow:6px 6px 0 rgba(0,0,0,.35); background:var(--paper); }
+a.cardref:hover .card-pop, a.cardref:focus .card-pop { display:block; }
+/* A card the deck does NOT run — The Short List's ten. Same hover preview, but
+   the link leaves the magazine because there is no tile to point at, and the
+   dotted rule says so before the reader clicks. */
+a.cardref.offdeck { text-decoration-style:dotted; text-decoration-thickness:2px;
+                    text-decoration-color:var(--y2k-blue); }
+/* The list is a column of names; a preview anchored to the line's left edge and
+   opening upward would sit off the top of the first entry. */
+.swap-list .card-pop { bottom:auto; top:1.6em; }
+.folio { display:flex; justify-content:space-between; align-items:center;
+         font-family:var(--condensed); text-transform:uppercase; letter-spacing:.18em;
+         font-size:11px; border-top:2px solid var(--ink); margin-top:30px;
+         padding:7px 34px 22px; color:var(--ink-soft); }
+.folio strong { color:var(--accent,var(--ink)); }
+
+/* ── Tier badges ────────────────────────────────────────────────────── */
+.badge { font-family:var(--condensed); font-weight:700; text-transform:uppercase;
+         letter-spacing:.13em; font-size:10.5px; padding:4px 9px; display:inline-block;
+         white-space:nowrap; border:2px solid; }
+.badge-verified { color:#fff; background:var(--tier-verified); border-color:var(--tier-verified); }
+.badge-data     { color:#fff; background:var(--tier-data); border-color:var(--tier-data); }
+.badge-coach    { color:var(--ink); background:rgba(200,160,60,.2); border-color:var(--tier-coach); }
+/* Inline tier marks, for a section that genuinely mixes tiers inside one
+   department — a computed bracket delta beside a judgment about a swap. The
+   department badge still comes from the spec; these only label the sentence. */
+.tier-data  { color:var(--tier-data); font-weight:800; }
+.tier-coach { color:var(--tier-coach); font-weight:800; }
+.swap-list { list-style:none; padding:0; margin:14px 0; }
+.swap-list li { border-left:5px solid var(--y2k-blue); background:rgba(27,79,216,.05);
+                padding:11px 14px; margin:9px 0; line-height:1.5; }
+.legend { border:3px double var(--ink); padding:16px 18px; margin:20px 0;
+          background:rgba(255,255,255,.5); }
+.legend h3 { margin-top:0; }
+.legend-row { display:flex; gap:12px; align-items:flex-start; margin:9px 0;
+              font-size:.92em; }
+.legend-row .badge { flex:0 0 auto; min-width:132px; text-align:center; }
+
+/* ── Components ─────────────────────────────────────────────────────── */
+.violator {
+  position:absolute; font-family:var(--comic); background:var(--burst-yellow);
+  color:var(--ink); border:3px solid var(--ink); padding:12px 16px; z-index:5;
+  font-size:clamp(15px,2.4vw,22px); line-height:1; text-transform:uppercase;
+  box-shadow:4px 4px 0 rgba(0,0,0,.5); letter-spacing:.02em;
+  clip-path:polygon(50% 0,61% 12%,77% 6%,79% 23%,95% 27%,86% 41%,100% 52%,86% 62%,
+                    95% 77%,79% 80%,77% 96%,61% 90%,50% 100%,39% 90%,23% 96%,21% 80%,
+                    5% 77%,14% 62%,0 52%,14% 41%,5% 27%,21% 23%,23% 6%,39% 12%);
+  padding:26px 24px; text-align:center; min-width:150px;
+}
+.violator.plain { clip-path:none; padding:9px 14px; }
+
+.pilot-tip {
+  display:grid; grid-template-columns:88px 1fr; gap:14px; align-items:center;
+  border:3px solid var(--ink); background:linear-gradient(180deg,#fff,rgba(255,216,0,.22));
+  padding:12px 14px; margin:18px 0; box-shadow:5px 5px 0 rgba(0,0,0,.18);
+}
+.pilot-tip img { border:2px solid var(--ink); }
+.pilot-tip .slug { font-family:var(--comic); font-size:1.35em; color:var(--power-red);
+                   letter-spacing:.03em; display:block; line-height:1; margin-bottom:3px; }
+
+.fast-facts { border:3px solid var(--ink); background:#fff; padding:0; margin:18px 0; }
+.fast-facts .ff-head { background:var(--ink); color:var(--paper); font-family:var(--techno);
+                       font-size:11px; letter-spacing:.16em; padding:7px 12px;
+                       text-transform:uppercase; }
+.fast-facts dl { display:grid; grid-template-columns:auto 1fr; margin:0; }
+.fast-facts dt { font-family:var(--condensed); text-transform:uppercase; font-size:11.5px;
+                 letter-spacing:.09em; padding:7px 12px; border-bottom:1px solid #d9d2c4;
+                 color:var(--ink-soft); }
+.fast-facts dd { margin:0; padding:7px 12px; border-bottom:1px solid #d9d2c4;
+                 font-variant-numeric:tabular-nums; font-weight:600; text-align:right; }
+
+.meter { margin:11px 0; }
+.meter-label { display:flex; justify-content:space-between; font-family:var(--condensed);
+               text-transform:uppercase; letter-spacing:.09em; font-size:11.5px;
+               margin-bottom:3px; }
+.meter-label b { font-variant-numeric:tabular-nums; }
+.meter-track { height:16px; border:2px solid var(--ink); background:#fff;
+               display:flex; gap:2px; padding:2px; }
+.meter-seg { flex:1; background:#e4ded1; }
+.meter-seg.on { background:linear-gradient(180deg,var(--y2k-blue),var(--y2k-violet)); }
+/* The signature number. Full-bleed within the column, and big enough that a reader
+   flipping past stops — which is the whole job, and the reason it may appear once. */
+.badge-none { display:inline-block; width:0; }
+/* ── The Editor's Letter and The Pilot's Log ─────────────────────────── */
+/* The letter is the only page in the book that is not a department, and it has
+   to LOOK like it before it is read — a reader flipping past should register
+   "this is the editor" from the shape alone. Hence the tinted stock, the heavy
+   rule, the wordmark device and the two columns: four signals that all say the
+   same thing, because one of them alone reads as a styling accident. */
+.letterhead { background:var(--manila); border:3px solid var(--ink);
+  border-top:12px solid var(--ink); box-shadow:7px 7px 0 rgba(0,0,0,.22);
+  padding:26px 30px 22px; margin:0 0 22px; }
+.letterhead .lh-top { display:flex; align-items:flex-end; gap:16px;
+  flex-wrap:wrap; border-bottom:3px solid var(--ink); padding-bottom:12px; }
+.letterhead .lh-mark { font-family:var(--techno); font-size:clamp(19px,3.1vw,29px);
+  line-height:1; letter-spacing:-.01em; text-transform:uppercase;
+  color:var(--ink); }
+.letterhead .lh-slug { font-family:var(--condensed); font-weight:700;
+  letter-spacing:.34em; text-transform:uppercase; font-size:11px;
+  color:var(--paper); background:var(--stamp-red); padding:4px 10px 3px;
+  display:inline-block; margin-top:7px; }
+.letterhead .lh-vol { margin-left:auto; font-family:var(--type); font-size:.74rem;
+  color:var(--ink-soft); text-align:right; letter-spacing:.04em; }
+.letterhead .lh-body { display:grid; grid-template-columns:1fr 240px; gap:28px;
+  margin-top:20px; align-items:start; }
+/* Two columns of type, which is the actual format break — a letter set at body
+   measure is indistinguishable from the article after it however it is tinted. */
+.letterhead .lh-copy { column-count:2; column-gap:26px;
+  column-rule:1px solid rgba(26,23,20,.28); font-size:.95em; line-height:1.5; }
+.letterhead .lh-copy p { margin:0 0 .85em; }
+.letterhead .lh-copy p:first-of-type::first-letter { font-family:var(--display);
+  font-size:2.9em; line-height:.82; float:left; padding:.06em .1em 0 0;
+  color:var(--stamp-red); }
+.letterhead .lh-card { margin:0; }
+.letterhead .lh-card img { border:3px solid var(--ink);
+  box-shadow:5px 5px 0 rgba(0,0,0,.24); }
+.letterhead .lh-card figcaption { font-family:var(--condensed);
+  text-transform:uppercase; letter-spacing:.1em; font-size:.62rem;
+  color:var(--ink-soft); margin-top:6px; }
+.letterhead .lh-rail { border-top:3px solid var(--ink); margin-top:14px;
+  padding-top:10px; }
+.letterhead .lh-rail h4 { font-family:var(--condensed); font-weight:700;
+  text-transform:uppercase; letter-spacing:.18em; font-size:.7rem; margin:0 0 .6em;
+  color:var(--stamp-red); }
+.letterhead .lh-rail ol { margin:0; padding-left:1.15em; }
+.letterhead .lh-rail li { font-size:.79rem; line-height:1.36; margin-bottom:.6em; }
+.letterhead .lh-rail b { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.06em; display:block; font-size:.82rem; }
+.letterhead .lh-sign { margin-top:18px; border-top:2px solid var(--ink);
+  padding-top:10px; }
+.letterhead .lh-sign .lh-hand { font-family:var(--type); font-size:1.28rem;
+  color:var(--ink); }
+.letterhead .lh-sign .lh-role { font-family:var(--condensed);
+  text-transform:uppercase; letter-spacing:.14em; font-size:.72rem;
+  color:var(--ink-soft); margin-top:2px; }
+@media (max-width:760px) {
+  .letterhead .lh-body { grid-template-columns:1fr; }
+  .letterhead .lh-copy { column-count:1; }
+}
+@media print { .letterhead .lh-copy { column-count:2; } }
+.letter { max-width:62ch; font-size:1.04em; }
+.letter-sign { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.14em; font-size:.78rem; color:var(--ink-soft); margin-top:1.4em;
+  border-top:2px solid var(--ink); display:inline-block; padding-top:6px; }
+/* ── The stack theatre ──────────────────────────────────────────────────
+   A stack you move through. No script anywhere in this file, so the whole
+   mechanism is radio inputs the labels drive and `:checked ~` selectors. The
+   inputs are visually hidden but NOT display:none — a removed input is a
+   removed tab stop, and the rail has to stay keyboard-reachable. */
+.theatre { margin:22px 0 26px; border:3px solid var(--ink);
+  box-shadow:7px 7px 0 rgba(0,0,0,.28); background:#0B0A14; overflow:hidden; }
+.theatre .th-in { position:absolute; width:1px; height:1px; opacity:0;
+  pointer-events:none; }
+.th-stage { position:relative; height:296px; overflow:hidden;
+  perspective:1000px; perspective-origin:50% 40%; }
+.th-grid { position:absolute; inset:0; width:100%; height:100%; display:block; }
+/* `pointer-events:none` on the deck is load-bearing, not tidiness. The deck is
+   absolutely positioned over the whole stage, so it caught every pointer event
+   before it reached a plate: exactly ONE plate of eight was hit-testable (the
+   front one, whose transform is small enough that its layout box still sits
+   under the cursor) and hover silently did nothing for the other seven. It looks
+   correct in a screenshot and is dead to the hand, which is the failure mode
+   this repo has written down about the canvas twice. Measured both ways —
+   1 of 8 reachable before, 8 of 8 after. */
+.th-deck { position:absolute; inset:0; transform-style:preserve-3d;
+  pointer-events:none; }
+.th-plate { pointer-events:auto; }
+.th-plate { position:absolute; left:50%; top:50%; width:222px; margin:-84px 0 0 -111px;
+  --off:calc(var(--i) - var(--n,6) / 2);
+  background:linear-gradient(168deg,#F6F2E7,#D9D2C2); color:var(--ink);
+  border:2px solid var(--ink); border-radius:5px; padding:8px 9px 9px;
+  box-shadow:0 14px 30px rgba(0,0,0,.55); transform-style:preserve-3d;
+  transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),
+            calc(var(--i) * -44px)) rotateY(-22deg);
+  opacity:.62; transition:transform .42s cubic-bezier(.22,.75,.3,1),
+            opacity .32s ease, filter .32s ease; }
+.th-plate img { width:100%; height:74px; object-fit:cover; border:1px solid var(--ink);
+  margin-bottom:6px; }
+.th-plate .th-n { position:absolute; top:-11px; left:-11px; width:26px; height:26px;
+  border-radius:50%; background:var(--power-red); color:#fff; border:2px solid var(--ink);
+  font-family:var(--condensed); font-weight:700; font-size:13px; line-height:22px;
+  text-align:center; }
+.th-plate h5 { margin:0 0 3px; font-family:var(--condensed); font-weight:700;
+  text-transform:uppercase; letter-spacing:.04em; font-size:.78rem; }
+.th-plate p { margin:0; font-size:.66rem; line-height:1.3; color:var(--ink-soft);
+  display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical;
+  overflow:hidden; }
+/* Hovering lifts a plate out of the deck — the one interaction that needs no
+   click, and the reason the stack reads as a physical object. */
+.th-plate:hover { opacity:1; transform:translate3d(calc(var(--off) * 13px),
+  calc(var(--off) * -8px),calc(var(--i) * -44px + 92px)) rotateY(-10deg); z-index:98; }
+.th-railwrap { display:flex; align-items:center; gap:10px; padding:9px 12px;
+  background:var(--ink); border-top:3px solid var(--ink); }
+.th-rail { display:flex; flex-wrap:wrap; align-items:center; gap:5px; }
+.th-rail-lbl { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.2em; font-size:.62rem; color:var(--burst-yellow);
+  flex:0 0 auto; }
+.th-tab { cursor:pointer; min-width:26px; text-align:center; padding:3px 7px;
+  font-family:var(--condensed); font-weight:700; font-size:.76rem;
+  background:rgba(244,239,228,.14); color:var(--paper); border:1px solid rgba(244,239,228,.4);
+  transition:background .16s ease, transform .16s ease; }
+.th-tab:hover { background:rgba(244,239,228,.34); }
+.th-in:focus-visible ~ .th-railwrap .th-tab { outline:2px solid var(--burst-yellow); }
+.th-body { background:var(--paper); padding:16px 18px 4px; }
+.th-note { display:none; }
+.th-note-n { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.14em; font-size:.64rem; color:var(--power-red); margin-bottom:6px; }
+.th-note > b { display:block; font-size:.95rem; line-height:1.4; margin-bottom:6px; }
+.th-note .effect { font-size:.88rem; line-height:1.45; color:var(--ink-soft);
+  margin-bottom:8px; }
+/* Not the citations — the count of them, and a nudge to where they are kept. */
+.th-cited { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.12em; font-size:.62rem; color:var(--tier-verified);
+  border-top:2px solid rgba(46,125,50,.35); padding-top:6px; }
+.th-over { background:var(--paper); margin:0; padding:0 18px 12px;
+  font-size:.76rem; font-style:italic; color:var(--ink-soft); }
+@media (max-width:640px) { .th-stage { height:244px; } .th-plate { width:186px; } }
+/* Motion is the affordance, not the content: with it off the plates still sort
+   themselves by depth and every step is still one tab away. */
+@media (prefers-reduced-motion:reduce) {
+  .th-plate { transition:none; }
+}
+/* On paper there is no cursor, so the stage becomes an illustration and every
+   step prints. A printed page that shows step 1 and hides twenty-three is a
+   printed page missing the proof. */
+@media print {
+  .theatre { box-shadow:none; }
+  .th-stage { height:206px; }
+  .th-railwrap, .th-over { display:none; }
+  .th-plate { opacity:1 !important; filter:none !important; }
+  .th-note { display:block !important; border-top:1px solid rgba(26,23,20,.25);
+    padding-top:10px; margin-bottom:10px; }
+}
+/* The take the rest of the department argues with. Loud on purpose: at body size
+   it is an opinion, at this size it is a position somebody has to answer. */
+.hot-take { margin:0 0 26px; padding:26px 26px 18px; position:relative;
+  background:linear-gradient(155deg,var(--ink) 0%,#2A2036 58%,var(--radical-purple));
+  border:3px solid var(--ink); box-shadow:8px 8px 0 var(--burst-yellow),
+  8px 8px 0 3px var(--ink); color:var(--paper); }
+.hot-take .ht-burst { font-family:var(--comic); font-size:1.5rem;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--ink);
+  background:var(--burst-yellow); display:inline-block; padding:2px 14px 0;
+  transform:rotate(-2.2deg); box-shadow:3px 3px 0 rgba(0,0,0,.45);
+  margin-bottom:14px; }
+.hot-take blockquote { margin:0; font-family:var(--display);
+  font-size:clamp(1.25rem,3.1vw,1.85rem); line-height:1.16;
+  letter-spacing:-.01em; text-shadow:2px 2px 0 rgba(0,0,0,.4); }
+.hot-take blockquote p { margin:0 0 .45em; }
+.hot-take blockquote p:last-child { margin-bottom:0; }
+.hot-take .ht-by { margin-top:16px; padding-top:10px;
+  border-top:2px solid rgba(244,239,228,.45); font-family:var(--condensed);
+  text-transform:uppercase; letter-spacing:.16em; font-size:.72rem;
+  color:var(--burst-yellow); }
+/* A panel is people answering each other, so the turns are indented against a
+   speaker rail rather than stacked as blocks — the eye tracks the exchange. */
+.panel { max-width:70ch; }
+.panel .turn { border-left:5px solid var(--turn,#8A93B5); padding:2px 0 2px 16px;
+  margin:0 0 1.25em; }
+.panel .turn-voice { font-family:var(--condensed); font-weight:700;
+  text-transform:uppercase; letter-spacing:.12em; font-size:.72rem;
+  color:var(--turn,var(--ink-soft)); margin-bottom:4px; }
+.panel .turn-text p:last-child { margin-bottom:0; }
+.panel .turn-coach { --turn:var(--tier-coach); }
+.panel .turn-verified { --turn:var(--tier-verified); }
+.panel .turn-data { --turn:var(--tier-data); }
+.constellation-fig, .engine-fig { margin:26px 0; }
+.engine-fig .engine-flow { width:100%; height:auto; display:block;
+  border:3px solid var(--ink); box-shadow:6px 6px 0 rgba(0,0,0,.30); background:#0B0A14; }
+.engine-fig figcaption { font-size:.78rem; color:var(--ink-soft); margin-top:8px; }
+.ckeys .eline { width:24px; height:0; border-top:2px dashed #8A93B5; display:inline-block; }
+.ckeys .eline.on { border-top:2px solid #4CAF50; }
+/* A 99 group heading wearing its city's colour, so the grid reads as the map's
+   legend rather than as a second taxonomy. */
+.city-head { display:flex; align-items:center; gap:10px; margin:1.9em 0 .6em;
+  padding-bottom:6px; border-bottom:3px solid var(--city,var(--ink));
+  font-family:var(--display); text-transform:uppercase; letter-spacing:.02em;
+  font-size:1.18em; color:var(--ink); }
+.city-head .city-chip { width:16px; height:16px; flex:0 0 16px; border-radius:3px;
+  background:var(--city); box-shadow:0 0 0 2px var(--ink), 3px 3px 0 var(--city-lt); }
+.city-head .city-count { margin-left:auto; font-family:var(--condensed);
+  font-weight:500; font-size:.62em; letter-spacing:.14em; color:var(--ink-soft); }
+.city-gloss { margin:-.2em 0 1em; max-width:62ch; color:var(--ink-soft);
+  font-size:.92em; }
+.city-head .city-verified { font-family:var(--condensed); font-size:.6em;
+  letter-spacing:.08em; color:var(--tier-verified); border:2px solid currentColor;
+  padding:1px 5px; }
+.constellation-fig .constellation { width:100%; height:auto; display:block;
+  border:3px solid var(--ink); box-shadow:6px 6px 0 rgba(0,0,0,.30); background:#0B0A14; }
+.ckeys { display:flex; flex-wrap:wrap; gap:14px; margin:10px 0 4px;
+  font-family:var(--condensed); text-transform:uppercase; letter-spacing:.06em;
+  font-size:.7rem; color:var(--ink-soft); }
+.ckeys .ck { display:flex; align-items:center; gap:6px; }
+.ckeys .dot { width:11px; height:11px; border-radius:50%; display:inline-block; }
+.ckeys .dot.cmdr { background:#FFD800; box-shadow:0 0 0 2px #C8A03C; }
+.ckeys .dot.ver { background:#E4007C; box-shadow:0 0 0 1.6px #fff, 0 0 0 2.6px var(--ink); }
+.ckeys .dot.plain { background:#8A93B5; }
+/* Cards the constellation could not fit a label on. Set quieter than the key it
+   follows — it is a completeness note, not a fourth legend row. */
+.cunplaced { margin:2px 0 0; font-size:.74rem; line-height:1.4;
+  color:var(--ink-soft); font-style:italic; }
+.ckeys .edge { width:22px; height:0; border-top:2px solid #8A93B5; display:inline-block; }
+.constellation-fig figcaption { font-size:.78rem; color:var(--ink-soft); margin-top:8px; }
+/* The Game Plan's conditions. Set as a rail beside the thesis, not under it:
+   a caveat printed after the argument reads as a retraction, and one printed
+   beside it reads as the terms the argument is offered on. */
+.not-modelled { margin:24px 0; padding:16px 18px 12px; background:#F0E6CE;
+  border:3px solid var(--ink); border-left:10px solid var(--stamp-red);
+  box-shadow:5px 5px 0 rgba(0,0,0,.18); }
+.not-modelled h4 { margin:0 0 .5em; font-family:var(--condensed); font-weight:700;
+  text-transform:uppercase; letter-spacing:.14em; font-size:.78rem;
+  color:var(--stamp-red); }
+.not-modelled ul { margin:0; padding-left:1.1em; }
+.not-modelled li { font-size:.86rem; line-height:1.45; margin-bottom:.5em;
+  color:var(--ink); }
+.not-modelled .nm-src { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.1em; font-size:.62rem; background:var(--ink); color:var(--paper);
+  padding:1px 5px; margin-right:6px; vertical-align:1px; }
+.not-modelled .nm-more { margin:.4em 0 0; font-size:.78rem; font-style:italic;
+  color:var(--ink-soft); }
+.stat-slab { margin:26px 0; padding:22px 18px; text-align:center; color:#fff;
+  background:linear-gradient(160deg,var(--ink),#2a2440 62%,var(--y2k-violet));
+  border:3px solid var(--ink); box-shadow:6px 6px 0 rgba(0,0,0,.30); }
+.stat-slab .ss-figure { font-family:var(--display); font-size:clamp(3.4rem,13vw,6.2rem);
+  line-height:.86; letter-spacing:-.02em; text-shadow:4px 4px 0 rgba(0,0,0,.42); }
+.stat-slab .ss-label { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.16em; font-size:.9rem; margin-top:12px; color:var(--paper); }
+.stat-slab .ss-note { font-size:.82rem; margin-top:9px; opacity:.82;
+  max-width:48ch; margin-left:auto; margin-right:auto; }
+/* The ★ gauge. Deliberately unlike .meter: a bar reads as measurement, and this
+   is a judgment. Gold, not the data blue/violet ramp. */
+.coach-gauge { display:flex; align-items:center; gap:10px; margin:11px 0; }
+.coach-gauge .cg-label { font-family:var(--condensed); text-transform:uppercase;
+  letter-spacing:.06em; font-size:.72rem; color:var(--ink); }
+.coach-gauge .cg-stars { letter-spacing:.12em; font-size:1.05rem; line-height:1; }
+.coach-gauge .cg-star { color:#d8d2c4; }
+.coach-gauge .cg-star.on { color:var(--tier-coach); text-shadow:1px 1px 0 rgba(0,0,0,.28); }
+
+.callout { display:grid; grid-template-columns:46px 1fr; gap:14px; margin:16px 0;
+           align-items:start; }
+.callout .n { font-family:var(--display); font-size:30px; line-height:.9; color:#fff;
+              background:var(--power-red); border:3px solid var(--ink); text-align:center;
+              padding:6px 0 4px; box-shadow:3px 3px 0 rgba(0,0,0,.35); }
+.callout .t { font-family:var(--condensed); font-weight:700; text-transform:uppercase;
+              letter-spacing:.07em; display:block; margin-bottom:2px; }
+
+/* A retired issue's banner. Deliberately the FIRST thing on the page and
+   deliberately not pretty: an issue whose deck no longer exists must say so
+   before a reader starts taking its numbers as current. It is a mark, never an
+   edit — the issue below it is kept exactly as published. */
+.issue-status { border:3px solid var(--ink); background:repeating-linear-gradient(
+                  135deg, #f4e4c8, #f4e4c8 12px, #eddcbc 12px, #eddcbc 24px);
+                padding:14px 18px; margin:0 0 22px; box-shadow:6px 6px 0 rgba(0,0,0,.16); }
+.issue-status .s-head { font-family:var(--condensed); font-weight:700;
+                text-transform:uppercase; letter-spacing:.09em; font-size:15px;
+                display:block; margin-bottom:4px; }
+.issue-status .s-body { font-size:14px; line-height:1.5; margin:0; }
+
+.threat-box { border:3px solid var(--ink); margin:18px 0; background:#fff;
+              box-shadow:6px 6px 0 rgba(0,0,0,.16); }
+.threat-box .tb-head { background:var(--radical-purple); color:#fff; padding:9px 14px;
+                       font-family:var(--display); text-transform:uppercase;
+                       display:flex; justify-content:space-between; align-items:center;
+                       gap:10px; font-size:1.02em; }
+.threat-box .tb-body { padding:14px; }
+
+.scenario { border:2px dashed var(--ink); background:rgba(255,255,255,.6);
+            padding:13px 15px; margin:16px 0; font-size:.94em; }
+.scenario .lbl { font-family:var(--condensed); text-transform:uppercase;
+                 letter-spacing:.1em; font-size:11px; color:var(--ink-soft); }
+
+/* A verified line's headline and the question it answers. The stack title is
+   authored for a resolver, so its head is the headline and its tail is the dek —
+   set small, because a 157-character question in display type is not a headline. */
+.line-head { font-family:var(--display); font-size:clamp(1.15rem,2.6vw,1.6rem);
+             line-height:1.05; text-transform:none; letter-spacing:-.01em;
+             margin:0 0 .25em; }
+.line-dek { font-size:.92em; line-height:1.42; color:var(--ink-soft);
+            max-width:62ch; margin:0 0 1em; }
+
+/* A board state, at spec-sheet weight. One line per seat, labelled runs inside
+   it — where this used to be a grid of bordered cards each holding a definition
+   list, which on radagast ran taller than the stack theatre it introduces. */
+.seats { margin:8px 0 4px; }
+.seat { display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 12px;
+        padding:5px 0; border-top:1px solid rgba(26,23,20,.16); font-size:.86em;
+        line-height:1.4; }
+.seat:first-child { border-top:none; }
+.seat-who { font-family:var(--condensed); font-weight:700; text-transform:uppercase;
+            letter-spacing:.09em; font-size:.72rem; flex:0 0 auto;
+            min-width:9ch; color:var(--ink); }
+.seat .run { color:var(--ink-soft); }
+.seat .run i { font-family:var(--condensed); font-style:normal;
+               text-transform:uppercase; letter-spacing:.08em; font-size:.64rem;
+               color:var(--ink); opacity:.62; }
+
+.branches { display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); }
+.branch { border:3px solid var(--ink); background:#fff; padding:13px; }
+.branch h4 { font-family:var(--condensed); text-transform:uppercase; margin:0 0 7px;
+             font-size:1em; letter-spacing:.05em; border-bottom:2px solid var(--burst-yellow);
+             padding-bottom:4px; }
+.branch dt { font-family:var(--condensed); text-transform:uppercase; font-size:10.5px;
+             letter-spacing:.1em; color:var(--ink-soft); margin-top:8px; }
+.branch dd { margin:2px 0 0; font-size:.92em; }
+/* A LAYOUT fix for the decision branches was measured and REJECTED. They render
+   328px wide and up to 2,486px tall, which reads badly, and the obvious answer —
+   one branch per full-width row with its fields two-up — makes the section
+   TALLER, because a grid pays only its tallest card per row while stacked rows
+   sum. Measured on radagast's What's Your Play: 3-up (as shipped) 6,074px, 2-up
+   6,859px, 1-up 9,520px. The section is long because it holds 2,727 words of
+   branch prose, and no arrangement of a fixed word count makes it short. It
+   belongs to the editorial budget, not to this stylesheet. */
+.verdict { border:3px solid var(--tier-coach); background:rgba(200,160,60,.14);
+           padding:13px 15px; margin-top:16px; }
+
+.pull-quote { font-family:var(--display); font-size:clamp(20px,3.2vw,30px); line-height:1.12;
+              text-transform:uppercase; color:var(--power-red); border-top:5px solid var(--ink);
+              border-bottom:5px solid var(--ink); padding:18px 0; margin:26px 0;
+              transform:skewY(-.6deg); }
+
+.map-key { display:flex; flex-wrap:wrap; gap:16px; border:2px solid var(--ink);
+           padding:9px 13px; margin:14px 0; font-family:var(--condensed);
+           text-transform:uppercase; font-size:11.5px; letter-spacing:.08em;
+           background:rgba(255,255,255,.6); }
+
+.tax-ladder { width:100%; border-collapse:collapse; margin:16px 0; }
+.tax-ladder th { background:var(--y2k-violet); color:#fff; font-family:var(--techno);
+                 font-size:10.5px; letter-spacing:.1em; padding:8px; text-transform:uppercase; }
+.tax-ladder td { border:2px solid var(--ink); padding:8px 10px; text-align:center;
+                 font-variant-numeric:tabular-nums; font-weight:600; }
+
+/* ── Cards ──────────────────────────────────────────────────────────── */
+.card-grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fill,minmax(158px,1fr)); }
+.card-tile { border:3px solid var(--ink); background:#fff; padding:9px;
+             box-shadow:4px 4px 0 rgba(0,0,0,.2); }
+.card-tile img { border:1px solid var(--ink); margin-bottom:7px; }
+.card-tile h4 { font-family:var(--condensed); text-transform:uppercase; font-size:.9em;
+                margin:0 0 4px; letter-spacing:.03em; }
+.card-tile p { font-size:.82em; line-height:1.4; margin:0; color:var(--ink-soft); }
+
+/* Utility classes for the handful of styles the renderer repeated inline —
+   promoted so the output stops carrying 40+ copies of the same declaration. */
+.soft { color:var(--ink-soft); }
+.small { font-size:.9em; }
+.rule-top { border-top:3px solid var(--ink); padding-top:18px; margin-top:26px; }
+/* A subhead INSIDE a department. Deliberately quieter than `.feature` and louder
+   than an <h3>: it has to read as a turn in one argument, not as the start of a
+   new department — which is the thing the Act III merge exists to stop. */
+.act-sub { font-family:var(--display); font-size:1.6rem; line-height:1.05;
+  text-transform:uppercase; letter-spacing:.01em; margin:34px 0 14px;
+  padding-top:12px; border-top:2px solid var(--accent); color:var(--ink); }
+.chip { font-family:var(--condensed); text-transform:uppercase; font-size:9.5px;
+        letter-spacing:.1em; background:var(--ink); color:var(--paper);
+        padding:2px 6px; display:inline-block; margin:0 3px 5px 0; }
+/* The engine stage, wearing the same ink as its bay in the schematic. It leads
+   the synergy chips because the job outranks the resemblance, and it is outlined
+   rather than filled so a tile never reads as two competing black labels. */
+.chip.stage { background:var(--paper); color:var(--st,var(--ink));
+              box-shadow:inset 0 0 0 2px var(--st,var(--ink)); font-weight:700; }
+figure.card-fig { margin:0 0 16px; }
+figure.card-fig img { border:3px solid var(--ink); box-shadow:6px 6px 0 rgba(0,0,0,.22); }
+figcaption { font-size:.87em; line-height:1.42; margin-top:7px; color:var(--ink-soft); }
+figcaption b { color:var(--ink); font-family:var(--condensed); text-transform:uppercase;
+               letter-spacing:.06em; }
+.hero-art { position:relative; }
+.hero-art img { border:4px solid var(--ink); box-shadow:10px 10px 0 rgba(0,0,0,.3); }
+.art-credit { font-family:var(--condensed); text-transform:uppercase; font-size:10.5px;
+              letter-spacing:.14em; color:var(--ink-soft); margin-top:6px; }
+.printing { font-family:var(--condensed); text-transform:uppercase; font-size:10px;
+            letter-spacing:.12em; color:var(--ink-soft); margin-top:2px; }
+
+/* Foil: a real property of the physical card, not decoration. */
+.foil { position:relative; display:inline-block; }
+.foil::after {
+  content:""; position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen;
+  background:linear-gradient(115deg, rgba(255,0,128,.34) 8%, rgba(255,214,0,.30) 24%,
+    rgba(0,255,170,.30) 40%, rgba(0,170,255,.32) 56%, rgba(170,0,255,.30) 72%,
+    rgba(255,0,128,.28) 88%);
+  background-size:220% 220%; background-position:38% 42%;
+}
+.foil-tag { font-family:var(--comic); font-size:.95em; letter-spacing:.04em;
+            background:linear-gradient(100deg,#ff4fa3,#ffd600,#00e0b0,#4aa8ff,#c04fff);
+            -webkit-background-clip:text; background-clip:text; color:transparent;
+            filter:drop-shadow(1px 1px 0 rgba(0,0,0,.45)); }
+
+/* ── Cover ──────────────────────────────────────────────────────────── */
+.cover { position:relative; padding:26px 30px 34px; overflow:hidden;
+         background:radial-gradient(circle at 50% 22%,#fff 0%,var(--paper) 62%); }
+.cover-top { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; }
+.cover-meta { font-family:var(--condensed); text-transform:uppercase; font-size:11px;
+              letter-spacing:.14em; text-align:right; line-height:1.75; }
+.cover-body { display:grid; grid-template-columns:1fr 300px; gap:26px; margin-top:22px;
+              align-items:start; }
+.coverline { font-family:var(--display); text-transform:uppercase; line-height:.92;
+             font-size:clamp(34px,6.6vw,68px); margin:.12em 0;
+             text-shadow:4px 4px 0 var(--burst-yellow), 7px 7px 0 rgba(0,0,0,.5); }
+.teases { list-style:none; padding:0; margin:16px 0 0; }
+.teases li { font-family:var(--condensed); font-weight:700; text-transform:uppercase;
+             font-size:clamp(12px,1.6vw,15px); letter-spacing:.05em; padding:7px 0 7px 24px;
+             border-top:2px solid var(--ink); position:relative; }
+.teases li::before { content:"\25B6"; position:absolute; left:0; color:var(--power-red); }
+.barcode { display:flex; gap:1.5px; align-items:flex-end; height:38px; margin-top:14px; }
+.barcode i { display:block; width:2px; background:var(--ink); }
+
+/* ── Dossiers (Judge's Desk) ────────────────────────────────────────── */
+.dossier { background:var(--manila); border:2px solid #b9a469; margin:20px 0;
+           box-shadow:6px 6px 0 rgba(0,0,0,.18); position:relative; }
+.dossier .file-tab { position:absolute; top:-19px; left:22px; background:var(--manila);
+                     border:2px solid #b9a469; border-bottom:none; padding:3px 16px;
+                     font-family:var(--condensed); text-transform:uppercase;
+                     letter-spacing:.14em; font-size:11px; }
+.dossier .dossier-head { padding:16px 18px 12px; border-bottom:2px solid #b9a469;
+                         display:flex; justify-content:space-between; gap:14px;
+                         align-items:center; flex-wrap:wrap; }
+.stamp { font-family:var(--display); text-transform:uppercase; color:var(--stamp-red);
+         border:3px solid var(--stamp-red); padding:5px 11px; font-size:.86em;
+         letter-spacing:.08em; opacity:.85; }
+.dossier ol { margin:0; padding:14px 18px 16px 40px; }
+.dossier li { margin-bottom:13px; }
+.dossier .effect { color:var(--ink-soft); }
+.cite { font-family:var(--type); font-size:.85em; background:rgba(255,255,255,.62);
+        border-left:4px solid var(--stamp-red); padding:6px 10px; margin:7px 0 0; }
+.cite b { font-family:var(--condensed); letter-spacing:.06em; }
+.dossier-pointer { font-family:var(--condensed); text-transform:uppercase;
+                   letter-spacing:.12em; font-size:11.5px; border:2px solid var(--ink);
+                   padding:7px 12px; display:inline-block; margin-top:12px;
+                   background:var(--manila); text-decoration:none; }
+
+/* Collapsible case files: the summary carries the tab, title and stamp; the
+   record opens on tap. Print always shows the full record — proof does not
+   collapse on paper. */
+details.dossier > summary { cursor:pointer; list-style:none; position:relative;
+                            display:block; }
+details.dossier > summary::-webkit-details-marker { display:none; }
+details.dossier > summary .dossier-head { display:flex; }
+details.dossier > summary::after { content:"▸"; position:absolute; right:14px;
+                                   top:16px; font-size:.9em; color:var(--ink-soft); }
+/* The case INDEX row: one scannable line per case, not a stacked header block.
+   The appendix reads as a list you run your eye down and open one of. */
+.case-row { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+            padding:9px 32px 9px 14px; }
+.case-id { font-family:var(--condensed); font-weight:700; letter-spacing:.12em;
+           font-size:.72rem; background:var(--ink); color:var(--manila);
+           padding:2px 8px; flex:0 0 auto; }
+.case-title { font-family:var(--condensed); font-weight:700; font-size:.95rem;
+              flex:1 1 16ch; min-width:0; }
+.case-meta { font-family:var(--condensed); text-transform:uppercase;
+             letter-spacing:.1em; font-size:.62rem; color:var(--ink-soft);
+             flex:0 0 auto; }
+.case-sub { font-family:var(--type); font-size:.7rem; color:var(--ink-soft);
+            padding:8px 14px 0; }
+
+/* The index row, used twice: The Kill's verified lines that did not get a
+   feature spread (they keep their whole authored argument and lose only the
+   staging), and Judge's Desk's withheld cases (which keep only the reason they
+   are withheld). Both are "a case compressed to a row", so both wear the same
+   furniture — a short article rather than a link; the head is what compresses.
+   It borrows `.case-id` / `.case-title` / `.case-meta` from the appendix on
+   purpose: a reader who has learned that A-00N in a bordered tab means "there
+   is a case file behind this" should not have to learn a second vocabulary two
+   departments earlier. */
+.kill-index { border-top:3px solid var(--ink); margin-top:30px; padding-top:14px; }
+.kill-index-head { font-family:var(--condensed); text-transform:uppercase;
+                   letter-spacing:.14em; font-size:.78rem; margin:0 0 4px; }
+.kill-index-dek { font-family:var(--type); font-size:.82rem; color:var(--ink-soft);
+                  margin:0 0 12px; max-width:58ch; }
+.kill-row { border-bottom:1px solid rgba(0,0,0,.14); padding:12px 0 16px; }
+.kill-row:last-child { border-bottom:none; }
+.kill-row-head { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+                 margin-bottom:8px; }
+.kill-row .body-copy { margin:0; }
+/* Measured to MATCH the prose above it, which is not the same as sharing its
+   number: this block sets in the mono face at .86rem, so 62ch is 521px against
+   the body's 626 and reads as a narrower, unrelated column. 72ch is 605px —
+   aligned. Unconstrained it ran 1,012px, and `final_state.summary` is long
+   enough on some decks (762 words on yawgmoth's stack 004) that full width
+   makes it a wall. Measured on yawgmoth's seven-row index: 62ch 6,690px ·
+   72ch 6,067 · unconstrained 4,529. The 1,538px is what a readable measure
+   costs here, and it is paid out of the 25,000 words this index saved. */
+.kill-row-result { font-family:var(--type); font-size:.86rem; max-width:72ch;
+                   color:var(--ink-soft); margin:8px 0 6px; }
+details.dossier[open] > summary .case-row { border-bottom:2px solid #b9a469; }
+details.dossier[open] > summary::after { content:"▾"; }
+details.dossier > p.small { padding:0 18px 14px; margin:0; }
+.dossier, .dept { scroll-margin-top:28px; }
+
+/* ── Navigation (renderer-provided; STYLEv3 §8.4) ────────────────────── */
+a.xref { color:inherit; text-decoration:underline dotted;
+         text-decoration-color:var(--accent, var(--ink-soft));
+         text-underline-offset:2px; }
+a.xref:hover { text-decoration-style:solid; }
+.toc-float { position:fixed; right:18px; bottom:18px; width:44px; height:44px;
+             display:flex; align-items:center; justify-content:center;
+             background:var(--ink); color:var(--paper); border:2px solid var(--paper);
+             box-shadow:3px 3px 0 rgba(0,0,0,.3); font-size:18px;
+             text-decoration:none; z-index:60; }
+.toc-float:hover { background:var(--power-red); }
+.masthead-block .legend-row b { font-family:var(--condensed);
+                                letter-spacing:.05em; text-transform:uppercase; }
+
+/* ── Tables ─────────────────────────────────────────────────────────── */
+table.data { width:100%; border-collapse:collapse; margin:16px 0; font-size:.9em; }
+table.data th { background:var(--ink); color:var(--paper); font-family:var(--condensed);
+                text-transform:uppercase; letter-spacing:.08em; font-size:10.5px;
+                padding:7px 9px; text-align:left; }
+table.data td { border:1px solid #cdc5b5; padding:6px 9px; font-variant-numeric:tabular-nums; }
+table.data tr:nth-child(even) td { background:rgba(255,255,255,.45); }
+
+.assumptions { border-left:5px solid var(--tier-data); background:rgba(27,79,216,.06);
+               padding:12px 15px; margin:16px 0; font-size:.9em; }
+.assumptions ul { margin:6px 0 0; padding-left:20px; }
+.todo { background:var(--power-red); color:#fff; font-family:var(--condensed);
+        letter-spacing:.1em; padding:2px 8px; text-transform:uppercase; font-size:11px; }
+
+/* ── Responsive & a11y ──────────────────────────────────────────────── */
+@media (max-width:820px) {
+  .cover-body { grid-template-columns:1fr; }
+  .dept { padding:30px 18px 14px; }
+  .folio { padding:7px 18px 18px; }
+  .violator { position:static; margin:14px auto; }
+  .body-copy p:first-of-type::first-letter { font-size:2.4em; }
+  /* Touch: no hover — the tap follows the anchor to the tile instead. */
+  .card-pop { display:none!important; }
+  /* The Flight Plan stacks: title row, then promise + byline beneath. */
+  table.toc, table.toc tr { display:block; }
+  table.toc td { display:block; border-bottom:none; padding:1px 0; }
+  td.toc-title { white-space:normal; width:auto; padding-top:8px; }
+  table.toc tr { border-bottom:1px solid #cdc5b5; padding:2px 0 8px; }
+  table.toc tr:last-child { border-bottom:none; }
+}
+@media (prefers-reduced-motion:reduce) { * { transition:none!important; animation:none!important; } }
+@media print { .trim { box-shadow:none; } body { background:#fff; }
+  .toc-float { display:none; }
+  .card-pop { display:none!important; }
+  details.dossier > *:not(summary) { display:block; }
+  details.dossier > summary::after { content:""; } }
+
+/* ── The stack theatre: generated step rules ── */
+.th-in:nth-of-type(1):checked ~ .th-body .th-note:nth-child(1){display:block}
+.th-in:nth-of-type(1):checked ~ .th-railwrap .th-tab:nth-child(1){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(1):checked ~ .th-stage .th-plate:nth-child(1){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(1):checked ~ .th-stage .th-plate:nth-child(-n+1):not(:nth-child(1)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(2):checked ~ .th-body .th-note:nth-child(2){display:block}
+.th-in:nth-of-type(2):checked ~ .th-railwrap .th-tab:nth-child(2){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(2):checked ~ .th-stage .th-plate:nth-child(2){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(2):checked ~ .th-stage .th-plate:nth-child(-n+2):not(:nth-child(2)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(3):checked ~ .th-body .th-note:nth-child(3){display:block}
+.th-in:nth-of-type(3):checked ~ .th-railwrap .th-tab:nth-child(3){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(3):checked ~ .th-stage .th-plate:nth-child(3){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(3):checked ~ .th-stage .th-plate:nth-child(-n+3):not(:nth-child(3)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(4):checked ~ .th-body .th-note:nth-child(4){display:block}
+.th-in:nth-of-type(4):checked ~ .th-railwrap .th-tab:nth-child(4){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(4):checked ~ .th-stage .th-plate:nth-child(4){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(4):checked ~ .th-stage .th-plate:nth-child(-n+4):not(:nth-child(4)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(5):checked ~ .th-body .th-note:nth-child(5){display:block}
+.th-in:nth-of-type(5):checked ~ .th-railwrap .th-tab:nth-child(5){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(5):checked ~ .th-stage .th-plate:nth-child(5){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(5):checked ~ .th-stage .th-plate:nth-child(-n+5):not(:nth-child(5)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(6):checked ~ .th-body .th-note:nth-child(6){display:block}
+.th-in:nth-of-type(6):checked ~ .th-railwrap .th-tab:nth-child(6){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(6):checked ~ .th-stage .th-plate:nth-child(6){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(6):checked ~ .th-stage .th-plate:nth-child(-n+6):not(:nth-child(6)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(7):checked ~ .th-body .th-note:nth-child(7){display:block}
+.th-in:nth-of-type(7):checked ~ .th-railwrap .th-tab:nth-child(7){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(7):checked ~ .th-stage .th-plate:nth-child(7){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(7):checked ~ .th-stage .th-plate:nth-child(-n+7):not(:nth-child(7)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(8):checked ~ .th-body .th-note:nth-child(8){display:block}
+.th-in:nth-of-type(8):checked ~ .th-railwrap .th-tab:nth-child(8){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(8):checked ~ .th-stage .th-plate:nth-child(8){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(8):checked ~ .th-stage .th-plate:nth-child(-n+8):not(:nth-child(8)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(9):checked ~ .th-body .th-note:nth-child(9){display:block}
+.th-in:nth-of-type(9):checked ~ .th-railwrap .th-tab:nth-child(9){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(9):checked ~ .th-stage .th-plate:nth-child(9){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(9):checked ~ .th-stage .th-plate:nth-child(-n+9):not(:nth-child(9)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(10):checked ~ .th-body .th-note:nth-child(10){display:block}
+.th-in:nth-of-type(10):checked ~ .th-railwrap .th-tab:nth-child(10){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(10):checked ~ .th-stage .th-plate:nth-child(10){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(10):checked ~ .th-stage .th-plate:nth-child(-n+10):not(:nth-child(10)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(11):checked ~ .th-body .th-note:nth-child(11){display:block}
+.th-in:nth-of-type(11):checked ~ .th-railwrap .th-tab:nth-child(11){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(11):checked ~ .th-stage .th-plate:nth-child(11){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(11):checked ~ .th-stage .th-plate:nth-child(-n+11):not(:nth-child(11)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(12):checked ~ .th-body .th-note:nth-child(12){display:block}
+.th-in:nth-of-type(12):checked ~ .th-railwrap .th-tab:nth-child(12){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(12):checked ~ .th-stage .th-plate:nth-child(12){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(12):checked ~ .th-stage .th-plate:nth-child(-n+12):not(:nth-child(12)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(13):checked ~ .th-body .th-note:nth-child(13){display:block}
+.th-in:nth-of-type(13):checked ~ .th-railwrap .th-tab:nth-child(13){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(13):checked ~ .th-stage .th-plate:nth-child(13){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(13):checked ~ .th-stage .th-plate:nth-child(-n+13):not(:nth-child(13)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(14):checked ~ .th-body .th-note:nth-child(14){display:block}
+.th-in:nth-of-type(14):checked ~ .th-railwrap .th-tab:nth-child(14){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(14):checked ~ .th-stage .th-plate:nth-child(14){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(14):checked ~ .th-stage .th-plate:nth-child(-n+14):not(:nth-child(14)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(15):checked ~ .th-body .th-note:nth-child(15){display:block}
+.th-in:nth-of-type(15):checked ~ .th-railwrap .th-tab:nth-child(15){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(15):checked ~ .th-stage .th-plate:nth-child(15){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(15):checked ~ .th-stage .th-plate:nth-child(-n+15):not(:nth-child(15)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(16):checked ~ .th-body .th-note:nth-child(16){display:block}
+.th-in:nth-of-type(16):checked ~ .th-railwrap .th-tab:nth-child(16){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(16):checked ~ .th-stage .th-plate:nth-child(16){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(16):checked ~ .th-stage .th-plate:nth-child(-n+16):not(:nth-child(16)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(17):checked ~ .th-body .th-note:nth-child(17){display:block}
+.th-in:nth-of-type(17):checked ~ .th-railwrap .th-tab:nth-child(17){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(17):checked ~ .th-stage .th-plate:nth-child(17){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(17):checked ~ .th-stage .th-plate:nth-child(-n+17):not(:nth-child(17)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(18):checked ~ .th-body .th-note:nth-child(18){display:block}
+.th-in:nth-of-type(18):checked ~ .th-railwrap .th-tab:nth-child(18){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(18):checked ~ .th-stage .th-plate:nth-child(18){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(18):checked ~ .th-stage .th-plate:nth-child(-n+18):not(:nth-child(18)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(19):checked ~ .th-body .th-note:nth-child(19){display:block}
+.th-in:nth-of-type(19):checked ~ .th-railwrap .th-tab:nth-child(19){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(19):checked ~ .th-stage .th-plate:nth-child(19){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(19):checked ~ .th-stage .th-plate:nth-child(-n+19):not(:nth-child(19)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(20):checked ~ .th-body .th-note:nth-child(20){display:block}
+.th-in:nth-of-type(20):checked ~ .th-railwrap .th-tab:nth-child(20){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(20):checked ~ .th-stage .th-plate:nth-child(20){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(20):checked ~ .th-stage .th-plate:nth-child(-n+20):not(:nth-child(20)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(21):checked ~ .th-body .th-note:nth-child(21){display:block}
+.th-in:nth-of-type(21):checked ~ .th-railwrap .th-tab:nth-child(21){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(21):checked ~ .th-stage .th-plate:nth-child(21){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(21):checked ~ .th-stage .th-plate:nth-child(-n+21):not(:nth-child(21)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(22):checked ~ .th-body .th-note:nth-child(22){display:block}
+.th-in:nth-of-type(22):checked ~ .th-railwrap .th-tab:nth-child(22){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(22):checked ~ .th-stage .th-plate:nth-child(22){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(22):checked ~ .th-stage .th-plate:nth-child(-n+22):not(:nth-child(22)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(23):checked ~ .th-body .th-note:nth-child(23){display:block}
+.th-in:nth-of-type(23):checked ~ .th-railwrap .th-tab:nth-child(23){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(23):checked ~ .th-stage .th-plate:nth-child(23){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(23):checked ~ .th-stage .th-plate:nth-child(-n+23):not(:nth-child(23)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(24):checked ~ .th-body .th-note:nth-child(24){display:block}
+.th-in:nth-of-type(24):checked ~ .th-railwrap .th-tab:nth-child(24){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(24):checked ~ .th-stage .th-plate:nth-child(24){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(24):checked ~ .th-stage .th-plate:nth-child(-n+24):not(:nth-child(24)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(25):checked ~ .th-body .th-note:nth-child(25){display:block}
+.th-in:nth-of-type(25):checked ~ .th-railwrap .th-tab:nth-child(25){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(25):checked ~ .th-stage .th-plate:nth-child(25){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(25):checked ~ .th-stage .th-plate:nth-child(-n+25):not(:nth-child(25)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(26):checked ~ .th-body .th-note:nth-child(26){display:block}
+.th-in:nth-of-type(26):checked ~ .th-railwrap .th-tab:nth-child(26){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(26):checked ~ .th-stage .th-plate:nth-child(26){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(26):checked ~ .th-stage .th-plate:nth-child(-n+26):not(:nth-child(26)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(27):checked ~ .th-body .th-note:nth-child(27){display:block}
+.th-in:nth-of-type(27):checked ~ .th-railwrap .th-tab:nth-child(27){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(27):checked ~ .th-stage .th-plate:nth-child(27){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(27):checked ~ .th-stage .th-plate:nth-child(-n+27):not(:nth-child(27)){opacity:.24;filter:saturate(.35)}
+.th-in:nth-of-type(28):checked ~ .th-body .th-note:nth-child(28){display:block}
+.th-in:nth-of-type(28):checked ~ .th-railwrap .th-tab:nth-child(28){background:var(--burst-yellow);color:var(--ink);transform:translateY(-2px)}
+.th-in:nth-of-type(28):checked ~ .th-stage .th-plate:nth-child(28){transform:translate3d(calc(var(--off) * 13px),calc(var(--off) * -8px),calc(var(--i) * -44px + 150px)) rotateY(-4deg);opacity:1;z-index:99}
+.th-in:nth-of-type(28):checked ~ .th-stage .th-plate:nth-child(-n+28):not(:nth-child(28)){opacity:.24;filter:saturate(.35)}
